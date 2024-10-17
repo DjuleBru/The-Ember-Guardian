@@ -13,9 +13,9 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
+  - Reflections
+  - Obstructors
+  - WaterPostProcessing
   - 
   - 
   - 
@@ -38,6 +38,21 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Sky
+    uniqueID: 287276665
+    locked: 0
+  - name: Parallax_Unlit
+    uniqueID: 1665198007
+    locked: 0
+  - name: Parallax_Lit
+    uniqueID: 2898317573
+    locked: 0
+  - name: GroundTilemap
+    uniqueID: 3137771285
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: ForeWater
+    uniqueID: 270865205
     locked: 0
