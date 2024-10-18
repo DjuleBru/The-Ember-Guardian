@@ -15,9 +15,27 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "JumpDir",
+                    "type": "Value",
+                    "id": "b35b4390-2b4d-4d09-bed0-4762a4b39adb",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Run",
                     "type": "Button",
                     "id": "b21bedab-f182-42fc-ad50-867a64f02e77",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "75ca3390-7fc8-46a0-b85a-450663975b41",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -26,7 +44,7 @@
             ],
             "bindings": [
                 {
-                    "name": "WASD",
+                    "name": "AD",
                     "id": "164d0cec-9db2-4b7c-8e80-21f81a92ebc5",
                     "path": "1DAxis",
                     "interactions": "",
@@ -68,6 +86,50 @@
                     "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "48a99236-893f-484f-b00f-a0d80ac460d0",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "a662c942-04c0-4c2d-b356-80d4b4a98061",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "JumpDir",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "1ce866f4-096a-4ef5-835e-8f1a2e4aca0b",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "JumpDir",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "18e07c63-c210-4c58-99c0-4ffe416db1fe",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "JumpDir",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

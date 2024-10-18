@@ -37,9 +37,27 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""JumpDir"",
+                    ""type"": ""Value"",
+                    ""id"": ""b35b4390-2b4d-4d09-bed0-4762a4b39adb"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Run"",
                     ""type"": ""Button"",
                     ""id"": ""b21bedab-f182-42fc-ad50-867a64f02e77"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""75ca3390-7fc8-46a0-b85a-450663975b41"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -48,7 +66,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": ""WASD"",
+                    ""name"": ""AD"",
                     ""id"": ""164d0cec-9db2-4b7c-8e80-21f81a92ebc5"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -90,6 +108,50 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""48a99236-893f-484f-b00f-a0d80ac460d0"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""a662c942-04c0-4c2d-b356-80d4b4a98061"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""JumpDir"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""1ce866f4-096a-4ef5-835e-8f1a2e4aca0b"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""JumpDir"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""18e07c63-c210-4c58-99c0-4ffe416db1fe"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""JumpDir"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -111,7 +173,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+        m_Player_JumpDir = m_Player.FindAction("JumpDir", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
+        m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -179,13 +243,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
+    private readonly InputAction m_Player_JumpDir;
     private readonly InputAction m_Player_Run;
+    private readonly InputAction m_Player_Jump;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
         public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
+        public InputAction @JumpDir => m_Wrapper.m_Player_JumpDir;
         public InputAction @Run => m_Wrapper.m_Player_Run;
+        public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -198,9 +266,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @JumpDir.started += instance.OnJumpDir;
+            @JumpDir.performed += instance.OnJumpDir;
+            @JumpDir.canceled += instance.OnJumpDir;
             @Run.started += instance.OnRun;
             @Run.performed += instance.OnRun;
             @Run.canceled += instance.OnRun;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -208,9 +282,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @JumpDir.started -= instance.OnJumpDir;
+            @JumpDir.performed -= instance.OnJumpDir;
+            @JumpDir.canceled -= instance.OnJumpDir;
             @Run.started -= instance.OnRun;
             @Run.performed -= instance.OnRun;
             @Run.canceled -= instance.OnRun;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -240,6 +320,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnJumpDir(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }
