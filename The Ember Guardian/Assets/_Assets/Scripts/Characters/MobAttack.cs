@@ -58,8 +58,8 @@ public class MobAttack : MonoBehaviour
         }
     }
 
-    public void SetAttackTargetTransform(IDamageable attackTargetIDamageable) {
-        this.attackTargetIDamageable = attackTargetIDamageable;
+    public void SetAttackTargetTransform(Transform transform) {
+        this.attackTargetIDamageable = transform.GetComponent<IDamageable>();
         previousAttackTargetIDamageable = attackTargetIDamageable;
     }
 

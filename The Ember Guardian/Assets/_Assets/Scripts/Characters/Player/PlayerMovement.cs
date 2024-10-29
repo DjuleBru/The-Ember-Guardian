@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] Vector2 boxSize;
     [SerializeField] private LayerMask groundLayerMask;
 
-    private float lastMoveDir;
+    private float lastMoveDir = 1;
     private bool isCrouching;
     private bool isJumping;
     private bool isJumpTop;

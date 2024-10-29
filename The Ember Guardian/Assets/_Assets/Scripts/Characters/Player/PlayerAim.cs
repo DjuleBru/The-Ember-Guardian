@@ -26,6 +26,8 @@ public class PlayerAim : MonoBehaviour
     private void Start() {
         float angle = Mathf.Atan2(1, 0) * Mathf.Rad2Deg;
         aimTransform.eulerAngles = new Vector3(0, 0, angle);
+
+
     }
 
     private void Update() {
@@ -42,7 +44,6 @@ public class PlayerAim : MonoBehaviour
         Vector3 mousePosition = GetMouseWorldPosition();
         mousePositionY = mousePosition.y;
 
-
         if (Mathf.Abs(mousePositionY - lastMousePositionY) > mouseYDeltaTreshold) {
             float mouseDeltaY = mousePositionY - lastMousePositionY;
             aimHeight += mouseDeltaY;
@@ -52,7 +53,6 @@ public class PlayerAim : MonoBehaviour
 
 
         Vector3 aimDir = new Vector3(8 * PlayerMovement.Instance.GetLastMoveDir(), aimHeight + currentRecoil, 0);
-
         aimAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
 
         Vector2 localScale = new Vector2(1, 1);
@@ -72,7 +72,6 @@ public class PlayerAim : MonoBehaviour
 
     private float ClampAimAngle(float inputAngle, Vector3 aimDir) {
         float outputAngle = inputAngle;
-
 
         if (PlayerMovement.Instance.GetLastMoveDir() >= 0) {
 
@@ -96,8 +95,6 @@ public class PlayerAim : MonoBehaviour
                 aimDir.x = -aimDir.x;
                 outputAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
             }
-
-            Debug.Log(outputAngle);
             if (inputAngle < 0 && inputAngle > (-90 + minAngle)) {
                 outputAngle = -90 + minAngle;
             }

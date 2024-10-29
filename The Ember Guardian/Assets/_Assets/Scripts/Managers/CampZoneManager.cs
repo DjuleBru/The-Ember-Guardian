@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class CampZoneManager : MonoBehaviour
 
     private float minZoneLimit = 0;
     private float maxZoneLimit = 0;
+
+    public event EventHandler OnCampZoneLimitsChanged;
 
     private void Awake() {
         Instance = this;
@@ -30,10 +33,12 @@ public class CampZoneManager : MonoBehaviour
         if(structureLocation.GetStructureSOToBuild().structureType == StructureSO.StructureType.barricade) {
             if(structureLocation.transform.position.x < minZoneLimit) {
                 minZoneLimit = structureLocation.transform.position.x;
+                OnCampZoneLimitsChanged?.Invoke(this, EventArgs.Empty);
             }
 
             if (structureLocation.transform.position.x > maxZoneLimit) {
                 maxZoneLimit = structureLocation.transform.position.x;
+                OnCampZoneLimitsChanged?.Invoke(this, EventArgs.Empty);
             }
         }
     }

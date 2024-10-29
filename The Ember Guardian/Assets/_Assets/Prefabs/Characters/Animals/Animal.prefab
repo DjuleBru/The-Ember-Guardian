@@ -406,9 +406,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6403854156431032292}
   - component: {fileID: 1420941586403054799}
-  - component: {fileID: 5904002734546314394}
   - component: {fileID: 2242113373876001478}
+  - component: {fileID: 6553101672226868008}
   - component: {fileID: 701421747445381007}
+  - component: {fileID: 8468162483521844312}
   m_Layer: 14
   m_Name: Animal
   m_TagString: Untagged
@@ -448,18 +449,6 @@ MonoBehaviour:
   projectileParent: {fileID: 7572017442506466054}
   animalSO: {fileID: 0}
   dropSpawnPoint: {fileID: 2261491866871385124}
---- !u!114 &5904002734546314394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7614527968333331765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aac167c27c29d9140970c5f535ab60b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2242113373876001478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,6 +465,18 @@ MonoBehaviour:
   acceleration: 7
   deceleration: 7
   velPower: 0.9
+--- !u!114 &6553101672226868008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7614527968333331765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aac167c27c29d9140970c5f535ab60b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!50 &701421747445381007
 Rigidbody2D:
   serializedVersion: 4
@@ -503,3 +504,43 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &8468162483521844312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7614527968333331765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d7b55c7ecdb49a4a89fa5e6f9022861, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startWhenEnabled: 1
+  asynchronousLoad: 0
+  pauseWhenDisabled: 0
+  restartWhenComplete: 1
+  logTaskChanges: 0
+  group: 0
+  resetValuesOnRestart: 0
+  externalBehavior: {fileID: 0}
+  mBehaviorSource:
+    behaviorName: Behavior
+    behaviorDescription: 
+    mTaskData:
+      types: []
+      parentIndex: 
+      startIndex: 
+      variableStartIndex: 
+      JSONSerialization: '{}'
+      fieldSerializationData:
+        typeName: []
+        fieldNameHash: 
+        startIndex: 
+        dataPosition: 
+        unityObjects: []
+        byteData: 
+        byteDataArray: 
+      Version: 1.7.8
+  gizmoViewMode: 2
+  showBehaviorDesignerGizmo: 1

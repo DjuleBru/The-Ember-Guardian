@@ -37,7 +37,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     private HunterState state;
 
     private void Update() {
-
+        return;
         if (targetAnimal != null) {
             Debug.DrawLine(mobMovement.transform.position, targetAnimal.transform.position, Color.red);
         }
@@ -79,7 +79,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
                     return;
                 };
 
-                hunterAttack.SetAttackTargetTransform(targetAnimal);
+                //hunterAttack.SetAttackTargetTransform(targetAnimal);
 
                 break;
 

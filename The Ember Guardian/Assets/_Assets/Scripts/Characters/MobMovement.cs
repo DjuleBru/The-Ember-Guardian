@@ -27,17 +27,18 @@ public class MobMovement : MonoBehaviour
 
     private void FixedUpdate() {
 
-        if (Mathf.Abs(targetDestination.x - transform.position.x) < .1f) {
-            moveDirFloat = 0;
+        //if (Mathf.Abs(targetDestination.x - transform.position.x) < .1f) {
+        //    moveDirFloat = 0;
 
-            if(!destinationReached) {
-                OnDestinationReached?.Invoke(this, EventArgs.Empty);
-                rb.velocity = Vector3.zero;
-                destinationReached = true;  
-            }
-        } else {
-            HandleMovementForces();
-        }
+        //    if(!destinationReached) {
+        //        Debug.Log("destinationReached");
+        //        OnDestinationReached?.Invoke(this, EventArgs.Empty);
+        //        rb.velocity = Vector3.zero;
+        //        destinationReached = true;  
+        //    }
+        //} else {
+        //    //HandleMovementForces();
+        //}
 
         Debug.DrawLine(transform.position, targetDestination);
     }
@@ -49,6 +50,41 @@ public class MobMovement : MonoBehaviour
         if(moveDirection.x <0) {
             moveDirFloat = -1;
         } else {
+            moveDirFloat = 1;
+        }
+
+        float targetSpeed = moveDirFloat * mobSpeed;
+        float speedDif = targetSpeed - rb.velocity.x;
+
+        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
+
+        float movement = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, velPower) * Mathf.Sign(speedDif);
+
+        rb.AddForce(movement * Vector2.right);
+    }
+
+    public void HeadToDestination(Vector3 targetDestination) {
+
+        // Check if destination reached;
+        if (Mathf.Abs(targetDestination.x - transform.position.x) < .1f) {
+            moveDirFloat = 0;
+
+            if (!destinationReached) {
+                Debug.Log("destinationReached");
+                OnDestinationReached?.Invoke(this, EventArgs.Empty);
+                rb.velocity = Vector3.zero;
+                destinationReached = true;
+            }
+
+            return;
+        }
+
+        Vector3 moveDirection = targetDestination - transform.position;
+
+        if (moveDirection.x < 0) {
+            moveDirFloat = -1;
+        }
+        else {
             moveDirFloat = 1;
         }
 

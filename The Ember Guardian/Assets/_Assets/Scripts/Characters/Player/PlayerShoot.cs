@@ -12,6 +12,7 @@ public class PlayerShoot : MonoBehaviour
 
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private Transform projectilePrefab;
+    [SerializeField] private ParticleSystem shootPS;
     [SerializeField] private float projectileInitialForce;
 
     [SerializeField] private GunSO gunSO;
@@ -30,14 +31,15 @@ public class PlayerShoot : MonoBehaviour
         Vector2 gunKnockbackForce = new Vector2(PlayerMovement.Instance.GetLastMoveDir() * gunSO.gunKnockback * -1 , 0);
         Player.Instance.AddKnockBack(gunKnockbackForce);
 
-        Transform projectileInstantiated = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
+        shootPS.Emit(5);
+        //Transform projectileInstantiated = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
 
-        float shootAngle = PlayerAim.Instance.GetAimAngle();
+        //float shootAngle = PlayerAim.Instance.GetAimAngle();
 
-        Vector3 shootDir = new Vector3(Mathf.Cos(shootAngle * Mathf.Deg2Rad), Mathf.Sin(shootAngle * Mathf.Deg2Rad), 0);
-        Vector2 projectileInitialForceVector = shootDir * projectileInitialForce;
+        //Vector3 shootDir = new Vector3(Mathf.Cos(shootAngle * Mathf.Deg2Rad), Mathf.Sin(shootAngle * Mathf.Deg2Rad), 0);
+        //Vector2 projectileInitialForceVector = shootDir * projectileInitialForce;
 
-        projectileInstantiated.GetComponent<Rigidbody2D>().AddForce(projectileInitialForceVector, ForceMode2D.Impulse);
+        //projectileInstantiated.GetComponent<Rigidbody2D>().AddForce(projectileInitialForceVector, ForceMode2D.Impulse);
     }
 
     private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {

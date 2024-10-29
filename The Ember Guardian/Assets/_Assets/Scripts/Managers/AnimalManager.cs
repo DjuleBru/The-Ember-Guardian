@@ -47,6 +47,15 @@ public class AnimalManager : MonoBehaviour
         return closestAnimalInRadius;
     }
 
+    public List<Transform> GetAllSpawnedAnimalTransformList() {
+        List<Transform> allSpawnedAnimals = new List<Transform>();
+        foreach(Animal animal in spawnedAnimalList) {
+            allSpawnedAnimals.Add(animal.transform);
+        }
+
+        return allSpawnedAnimals;
+    }
+
     public void AddAnimalSpawned(Animal animal) {
         spawnedAnimalList.Add(animal);
     }

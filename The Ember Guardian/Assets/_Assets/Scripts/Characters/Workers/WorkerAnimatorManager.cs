@@ -31,9 +31,11 @@ public class WorkerAnimatorManager : MonoBehaviour
         mobAttack.OnMobAttack += MobAttack_OnMobAttack;
     }
 
+    private void Start() {
+        RefreshJobAnimator();
+    }
 
     private void Update() {
-
         moveDir = mobMovement.GetMoveDirFloat();
 
         HandleXScale();
@@ -99,6 +101,10 @@ public class WorkerAnimatorManager : MonoBehaviour
     }
 
     private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
+        RefreshJobAnimator();
+    }
+
+    private void RefreshJobAnimator() {
 
         if (workerAI.GetJob() == WorkerAI.JobTypes.wild) {
             animator.runtimeAnimatorController = joblessAnimator;
