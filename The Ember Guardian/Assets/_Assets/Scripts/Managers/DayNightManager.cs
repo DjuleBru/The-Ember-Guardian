@@ -1,0 +1,156 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+public class DayNightManager : MonoBehaviour
+{
+
+    public static DayNightManager Instance;
+
+    [SerializeField] private float dawnDuration;
+    [SerializeField] private float dayDuration;
+    [SerializeField] private float duskDuration;
+    [SerializeField] private float nightDuration;
+
+    [SerializeField] private bool debugMode;
+    [SerializeField] private State debugState;
+
+    private float cycleTimer;
+    private float totalDayTimer;
+    private float totalNightTimer;
+
+    public enum State { 
+    Dawn,
+    Day,
+    Dusk,
+    Night,
+    }
+
+    private State state;
+
+    public event EventHandler OnDawnStart;
+    public event EventHandler OnDayStart;
+    public event EventHandler OnDuskStart;
+    public event EventHandler OnNightStart;
+
+    private void Awake() {
+        Instance = this;
+    }
+
+    private void Start() {
+        if(debugMode) {
+            ChangeState(debugState);
+            return;
+        }
+
+        state = State.Dawn;
+        OnDawnStart?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Update() {
+        cycleTimer += Time.deltaTime;
+
+        switch (state) {
+
+            case State.Dawn:
+                totalDayTimer += Time.deltaTime;
+                if (cycleTimer > dawnDuration) {
+                    ChangeState(State.Day);
+                    cycleTimer = 0;
+                }
+                break;
+
+            case State.Day:
+                totalDayTimer += Time.deltaTime;
+                if (cycleTimer > dayDuration) {
+                    ChangeState(State.Dusk);
+                    cycleTimer = 0;
+                }
+                break;
+
+            case State.Dusk:
+                totalDayTimer += Time.deltaTime;
+
+                if (cycleTimer > duskDuration) {
+                    ChangeState(State.Night);
+                    cycleTimer = 0;
+                    totalDayTimer = 0;
+                }
+                break;
+
+            case State.Night:
+                totalNightTimer += Time.deltaTime;
+                if (cycleTimer > nightDuration) {
+                    ChangeState(State.Dawn);
+                    cycleTimer = 0;
+                    totalNightTimer = 0;
+                }
+                break;
+        }
+    }
+
+    public void ChangeState(State newState) {
+        state = newState;
+
+        if(newState == State.Day) {
+            OnDayStart?.Invoke(this, EventArgs.Empty);
+        }
+        if(newState == State.Dawn) {
+            OnDawnStart?.Invoke(this, EventArgs.Empty);
+        }
+        if(newState == State.Night) {
+            OnNightStart?.Invoke(this, EventArgs.Empty);
+        }
+        if(newState == State.Dusk) {
+            OnDuskStart?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public float GetCycleTimer() {
+        return cycleTimer;
+    }
+
+    public float GetDuskDuration() {
+        return duskDuration;
+    }
+    public float GetDayDuration() {
+        return dayDuration;
+    }
+    public float GetDawnDuration() {
+        return dawnDuration;
+    }
+
+    public float GetNightDuration() {
+        return nightDuration;
+    }
+
+    public float GetTotalDayDuration() {
+        return duskDuration + dayDuration + dawnDuration;
+    }
+
+    public float GetTotalDayDurationNormalized() {
+        return totalDayTimer/GetTotalDayDuration();
+    }
+
+    public float GetDayDurationNormalized() {
+        return cycleTimer / dayDuration;
+    }
+
+    public float GetDuskDurationNormalized() {
+        return cycleTimer / duskDuration;
+    }
+
+    public float GetDawnDurationNormalized() {
+        return cycleTimer /dawnDuration;
+    }
+
+    public float GetNightDurationNormalized() {
+        return totalNightTimer / nightDuration;
+    }
+
+    public State GetDayNightCycleState() {
+        return state;
+    }
+}

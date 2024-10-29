@@ -31,7 +31,6 @@ public class ParallaxBackground : MonoBehaviour {
 
 
     private void FixedUpdate() {
-
         HandleParallaxOriginal();
     }
 

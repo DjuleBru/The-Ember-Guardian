@@ -14,6 +14,14 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnPlayerJumpStarted;
     public event EventHandler OnPlayerJumpCanceled;
 
+    public event EventHandler OnPlayerInteractStarted;
+    public event EventHandler OnPlayerInteractCanceled;
+
+    public event EventHandler OnPlayerShootStarted;
+    public event EventHandler OnPlayerShootCanceled;
+
+    public event EventHandler OnPlayerLeftRightSwitchPerformed;
+
     private void Awake() {
         Instance = this;
         playerInputActions = new PlayerInputActions();
@@ -25,6 +33,32 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.Run.canceled += Run_canceled;
         playerInputActions.Player.Jump.started += Jump_started;
         playerInputActions.Player.Jump.canceled += Jump_canceled;
+        playerInputActions.Player.Interact.started += Interact_started;
+        playerInputActions.Player.Interact.canceled += Interact_canceled;
+        playerInputActions.Player.Shoot.started += Shoot_started;
+        playerInputActions.Player.Shoot.canceled += Shoot_canceled;
+
+        playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
+    }
+
+    private void Shoot_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        OnPlayerShootCanceled?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Shoot_started(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        OnPlayerShootStarted?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void LeftRightSwitch_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        OnPlayerLeftRightSwitchPerformed?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Interact_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        OnPlayerInteractCanceled?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Interact_started(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        OnPlayerInteractStarted?.Invoke(this, EventArgs.Empty);
     }
 
     private void Jump_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
@@ -50,5 +84,9 @@ public class GameInput : MonoBehaviour
     public float GetJumpDirNormalized() {
         float jumpDir = playerInputActions.Player.JumpDir.ReadValue<float>();
         return jumpDir;
+    }
+    public float GetLeftRightDir() {
+        float leftRightDir = playerInputActions.Player.LeftRightSwitch.ReadValue<float>();
+        return leftRightDir;
     }
 }

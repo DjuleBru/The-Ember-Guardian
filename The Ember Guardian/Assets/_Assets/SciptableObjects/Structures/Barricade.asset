@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df36671b0790e8341a67078a96cfcbc5, type: 3}
+  m_Name: Barricade
+  m_EditorClassIdentifier: 
+  structureType: 3
+  structurePrefab: {fileID: 376005918902835770, guid: 0e5690236b01384439cf9578498c6acc, type: 3}
+  maxLevel: 4
+  buildingUpgradeSpriteList:
+  - {fileID: 559212063, guid: 175cfa9d756b5754aa0efe65d7ec62ef, type: 3}
+  - {fileID: 1823990122, guid: 175cfa9d756b5754aa0efe65d7ec62ef, type: 3}
+  - {fileID: 2004263150, guid: 175cfa9d756b5754aa0efe65d7ec62ef, type: 3}
+  - {fileID: 602297912, guid: 175cfa9d756b5754aa0efe65d7ec62ef, type: 3}
