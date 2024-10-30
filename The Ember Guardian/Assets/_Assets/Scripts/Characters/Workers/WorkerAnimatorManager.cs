@@ -11,7 +11,6 @@ public class WorkerAnimatorManager : MonoBehaviour
     [SerializeField] private AnimatorController minerAnimator;
 
     private Worker worker;
-    private WorkerAI workerAI;
     private MobAttack mobAttack;
     private MobMovement mobMovement;
     private Animator animator;
@@ -22,12 +21,11 @@ public class WorkerAnimatorManager : MonoBehaviour
 
     private void Awake() {
         worker = GetComponentInParent<Worker>();
-        workerAI = GetComponentInParent<WorkerAI>();
         mobMovement = GetComponentInParent<MobMovement>();
         mobAttack = GetComponentInParent<MobAttack>();
         animator = GetComponent<Animator>();
 
-        workerAI.OnJobChanged += WorkerAI_OnJobChanged;
+        worker.OnJobChanged += Worker_OnJobChanged;
         mobAttack.OnMobAttack += MobAttack_OnMobAttack;
     }
 
@@ -100,31 +98,31 @@ public class WorkerAnimatorManager : MonoBehaviour
         animator.SetTrigger("Attack");
     }
 
-    private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
+    private void Worker_OnJobChanged(object sender, System.EventArgs e) {
         RefreshJobAnimator();
     }
 
     private void RefreshJobAnimator() {
 
-        if (workerAI.GetJob() == WorkerAI.JobTypes.wild) {
+        if (worker.GetJob() == Worker.JobTypes.wild) {
             animator.runtimeAnimatorController = joblessAnimator;
             animator.speed = .75f;
         }
 
-        if (workerAI.GetJob() == WorkerAI.JobTypes.jobless) {
+        if (worker.GetJob() == Worker.JobTypes.jobless) {
             animator.runtimeAnimatorController = joblessAnimator;
             animator.speed = 1f;
         }
 
-        if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
+        if (worker.GetJob() == Worker.JobTypes.hunter) {
             animator.runtimeAnimatorController = hunterAnimator;
         }
 
-        if (workerAI.GetJob() == WorkerAI.JobTypes.guard) {
+        if (worker.GetJob() == Worker.JobTypes.guard) {
             animator.runtimeAnimatorController = guardAnimator;
         }
 
-        if (workerAI.GetJob() == WorkerAI.JobTypes.miner) {
+        if (worker.GetJob() == Worker.JobTypes.miner) {
             animator.runtimeAnimatorController = minerAnimator;
         }
 

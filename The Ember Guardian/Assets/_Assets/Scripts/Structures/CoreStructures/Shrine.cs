@@ -27,7 +27,7 @@ public class Shrine : Structure
         Worker joblessWorker = WorkerManager.Instance.GetFirstJoblessWorker();
         if(shrineType == ShrineType.hunterShrine) {
             joblessWorker.transform.position = workerSpawnPosition.position;
-            joblessWorker.GetComponent<WorkerAI>().SetJob(WorkerAI.JobTypes.hunter);
+            joblessWorker.GetComponent<Worker>().SetJob(Worker.JobTypes.hunter);
         }
 
         OnShrineActivated?.Invoke(this, EventArgs.Empty);

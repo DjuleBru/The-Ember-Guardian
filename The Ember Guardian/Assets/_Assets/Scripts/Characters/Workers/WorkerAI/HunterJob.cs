@@ -132,7 +132,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         return false;
     }
 
-    private void TargetAnimal(Animal newTargetAnimal) {
+    public void TargetAnimal(Animal newTargetAnimal) {
         if (targetAnimal == newTargetAnimal) return;
 
         if (targetAnimal != null) {
@@ -195,7 +195,6 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         state = newState;
     }
 
-
     private void Collectible_OnCollectibleDestroyed(object sender, System.EventArgs e) {
         Collectible collectible = sender as Collectible;
         RemoveOrbToCollect(collectible);
@@ -207,6 +206,9 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         }
     }
 
+    public List<Collectible> GetOrbsToCollectList() {
+        return orbsToCollect;
+    }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
 

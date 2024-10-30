@@ -35,24 +35,21 @@ public class Collectible : MonoBehaviour
         };
 
 
-        WorkerAI workerAI = collision.gameObject.GetComponent<WorkerAI>();
-        if (workerAI != null) {
+        Worker worker = collision.gameObject.GetComponent<Worker>();
+        if (worker != null) {
 
-            if(workerAI.GetJob() == WorkerAI.JobTypes.wild) {
-                workerAI.RecruitWorker();
+            if(worker.GetJob() == Worker.JobTypes.wild) {
+                worker.RecruitWorker();
                 Destroy(gameObject);
                 return;
             }
 
             if(canBePickedUpByWorker) {
-                workerAI.GetComponent<Worker>().CollectOrb(this);
+                worker.GetComponent<Worker>().CollectOrb();
                 Destroy(gameObject);
                 return;
             }
         }
-
-
-
     }
 
     private void OnTriggerExit2D(Collider2D collision) {

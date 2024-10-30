@@ -20,7 +20,7 @@ public class WorkerManager : MonoBehaviour
         List<Worker> joblessWorkers = new List<Worker>();
 
         foreach(Worker worker in recruitedWorkers) {
-            if(worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.jobless) {
+            if(worker.GetJob() == Worker.JobTypes.jobless) {
                 joblessWorkers.Add(worker);
             }
         }

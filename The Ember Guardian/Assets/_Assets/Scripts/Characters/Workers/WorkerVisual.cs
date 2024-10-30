@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class WorkerVisual : MobVisual {
 
-    private WorkerAI workerAI;
+    private Worker worker;
 
     [SerializeField] private Material emptyMaterial;
     [SerializeField] private SpriteRenderer workerBodySpriteRenderer;
 
     protected override void Awake() {
         base.Awake();
-        workerAI = GetComponentInParent<WorkerAI>();
+        worker = GetComponentInParent<Worker>();
     }
 
     private void Start() {
-        workerAI.OnJobChanged += WorkerAI_OnJobChanged;
+        worker.OnJobChanged += Worker_OnJobChanged;
     }
 
-    private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
-        if(workerAI.GetJob() != WorkerAI.JobTypes.wild) {
+    private void Worker_OnJobChanged(object sender, System.EventArgs e) {
+        if(worker.GetJob() != Worker.JobTypes.wild) {
             workerBodySpriteRenderer.material = emptyMaterial;
         }
     }

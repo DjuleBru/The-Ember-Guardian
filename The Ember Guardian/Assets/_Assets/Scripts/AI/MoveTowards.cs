@@ -13,7 +13,7 @@ public class MoveTowards : Action
 
     public override TaskStatus OnUpdate() {
 
-        if(target == null) {
+        if(target.Value == null) {
             return TaskStatus.Failure;
         }
 

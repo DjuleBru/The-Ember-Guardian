@@ -23,8 +23,7 @@ public class MobAttack : MonoBehaviour
 
     private void Update() {
 
-
-        if((attackTargetIDamageable as MonoBehaviour)!= null) {
+        if ((attackTargetIDamageable as MonoBehaviour)!= null) {
             attacking = true;
             attackTimer -= Time.deltaTime;
 

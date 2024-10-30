@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 860173671428369790}
   - component: {fileID: 7421188879430317132}
-  - component: {fileID: 6873851068007498257}
   - component: {fileID: 7588648122274022809}
   - component: {fileID: 1575986665310858867}
-  - component: {fileID: 8486478444676101179}
+  - component: {fileID: 2165556354458744065}
   - component: {fileID: 1648183774965061190}
   - component: {fileID: 5076915509093076505}
   - component: {fileID: 7815349781651484210}
@@ -58,18 +57,10 @@ MonoBehaviour:
   projectileTarget: {fileID: 0}
   projectileParent: {fileID: 0}
   blueOrbPrefab: {fileID: 0}
---- !u!114 &6873851068007498257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 477107457430138900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5de8ac7bfc37f4d4b9df0a0aca4baff8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  wildBehavior: {fileID: 0}
+  hunterBehavior: {fileID: 11400000, guid: acf074e2617c32b489c0f7e6cce149a7, type: 2}
+  minerBehavior: {fileID: 0}
+  guardBehavior: {fileID: 0}
 --- !u!114 &7588648122274022809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,7 +93,7 @@ MonoBehaviour:
   roamMoveSpeed: 1.5
   headToCampMoveSpeed: 2
   roamChangeDestinationRate: 5
---- !u!114 &8486478444676101179
+--- !u!114 &2165556354458744065
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,7 +109,7 @@ MonoBehaviour:
   headToCampMoveSpeed: 2
   trackAnimalMoveSpeed: 2
   roamChangeDestinationRate: 5
-  huntingRange: 12
+  huntingRange: 4
 --- !u!114 &1648183774965061190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,7 +245,7 @@ MonoBehaviour:
       parentIndex: 
       startIndex: 
       variableStartIndex: 
-      JSONSerialization: '{"Variables":[{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"attackTargetSet","IsShared":true,"BooleanmValue":false}]}'
+      JSONSerialization: '{"Variables":[{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"attackTargetSet","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"hasHitAnimal","IsShared":true,"BooleanmValue":false}]}'
       fieldSerializationData:
         typeName: []
         fieldNameHash: 
