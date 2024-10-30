@@ -14,6 +14,7 @@ public class StructureSO : ScriptableObject
         hunterShrine,
         minerShrine,
         guardShrine,
+        tower,
     }
 
     public StructureType structureType;

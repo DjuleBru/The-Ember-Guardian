@@ -45,6 +45,11 @@ public class WildJob : MonoBehaviour, IJobBehavior {
         worker.GetComponent<MobMovement>().SetMoveTarget(blueOrbAggroed.transform.position);
     }
 
+    public void UnAggroBlueOrb() {
+        if (blueOrbAggroed == null) return;
+        blueOrbAggroed.SetAggroedByWildWorker(false);
+    }
+
     public void Roam() {
 
         if (!hasSetSpeed) {
@@ -65,7 +70,7 @@ public class WildJob : MonoBehaviour, IJobBehavior {
         if (blueOrbAggroed != null) return;
 
         if(Mathf.Abs(Player.Instance.transform.position.x - worker.transform.position.x) < distanceToAggroOrb) {
-            e.blueOrbDropped.SetAggroedByWildWorker();
+            e.blueOrbDropped.SetAggroedByWildWorker(true);
             blueOrbAggroed = e.blueOrbDropped;
             blueOrbAggroed.OnCollectibleDestroyed += BlueOrbAggroed_OnCollectibleDestroyed;
             hasSetSpeed = false;

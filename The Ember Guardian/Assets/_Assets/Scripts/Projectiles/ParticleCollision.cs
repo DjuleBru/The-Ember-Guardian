@@ -40,8 +40,6 @@ public class ParticleCollision : MonoBehaviour
         ParticleSystem p = explosion.GetComponent<ParticleSystem>();
         //var pmain = p.main;
 
-        //cam.GetComponent<CinemachineImpulseSource>().GenerateImpulse();
-
         // Récupère la liste des particules actives
         ParticleSystem.Particle[] particles = new ParticleSystem.Particle[ps.particleCount];
         int particleCount = ps.GetParticles(particles);

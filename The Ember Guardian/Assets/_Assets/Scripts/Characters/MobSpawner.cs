@@ -4,30 +4,35 @@ using UnityEngine;
 
 public class MobSpawner : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer sceneViewSpawnerSpriteRenderer;
-    [SerializeField] private Transform mobPrefab;
-    [SerializeField] private Transform spawnPosition;
-    [SerializeField] private int mobAmountToSpawn;
+    [SerializeField] protected SpriteRenderer sceneViewSpawnerSpriteRenderer;
+    [SerializeField] protected Transform mobPrefab;
+    [SerializeField] protected Transform spawnPosition;
+    [SerializeField] protected int mobAmountToSpawn;
+    [SerializeField] protected int maxMobsRespawningAtDawn;
 
-    private List<Mob> mobSpawnedList = new List<Mob>();
+    protected List<Mob> mobSpawnedList = new List<Mob>();
 
-    private void Start() {
+    protected void Start() {
         sceneViewSpawnerSpriteRenderer.enabled = false;
         SpawnMobs(mobAmountToSpawn);
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
     }
 
-    public void RemoveMobFromMobSpawnedList(Worker worker) {
-        mobSpawnedList.Remove(worker);
+    public void RemoveMobFromMobSpawnedList(Mob mob) {
+        mobSpawnedList.Remove(mob);
     }
 
-    private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
-        int workerAmountToSpawnOnDawn = mobAmountToSpawn - mobSpawnedList.Count;
+    protected void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
+        int mobAmountToSpawnOnDawn = mobAmountToSpawn - mobSpawnedList.Count;
 
-        SpawnMobs(workerAmountToSpawnOnDawn);
+        if(mobAmountToSpawnOnDawn > maxMobsRespawningAtDawn) {
+            mobAmountToSpawnOnDawn = maxMobsRespawningAtDawn;
+        }
+
+        SpawnMobs(mobAmountToSpawnOnDawn);
     }
 
-    private void SpawnMobs(int workerAmount) {
+    protected void SpawnMobs(int workerAmount) {
         for (int i = 0; i < workerAmount; i++) {
             Mob mob = Instantiate(mobPrefab, spawnPosition.position, Quaternion.identity).GetComponent<Mob>();
             mobSpawnedList.Add(mob);

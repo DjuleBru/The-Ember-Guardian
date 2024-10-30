@@ -25,21 +25,28 @@ public class AnimalManager : MonoBehaviour
         return closestAnimal;
     }
 
-    public Animal GetClosestAnimalInRadius(Vector2 position, float radius) {
+    public Animal GetClosestAnimalInRadius(Vector2 position, CampZoneManager.CampSide campSide, float radius) {
+
         float closestXDistance = Mathf.Infinity;
         Animal closestAnimalInRadius = null;
 
         foreach (Animal animal in spawnedAnimalList) {
 
             if ((Mathf.Abs(animal.transform.position.x - position.x)) < closestXDistance) {
+                // Animal is the closest one
 
-                // Check if animal is within distance from closest exterior zone limit
-                if(Mathf.Abs(animal.transform.position.x - CampZoneManager.Instance.GetClosestExteriorZoneLimit(animal.transform.position).x) < radius) {
+                if ((animal.transform.position.x < 0 && campSide == CampZoneManager.CampSide.left) || (animal.transform.position.x > 0 && campSide == CampZoneManager.CampSide.right)) {
+                    // Check if animal is on the same side as worker
 
-                    closestXDistance = Mathf.Abs(animal.transform.position.x - position.x);
-                    closestAnimalInRadius = animal;
+                    // Check if animal is within distance from closest exterior zone limit
+                    if (Mathf.Abs(animal.transform.position.x - CampZoneManager.Instance.GetClosestExteriorZoneLimit(animal.transform.position).x) < radius) {
 
+                        closestXDistance = Mathf.Abs(animal.transform.position.x - position.x);
+                        closestAnimalInRadius = animal;
+
+                    }
                 }
+                
             }
 
         }

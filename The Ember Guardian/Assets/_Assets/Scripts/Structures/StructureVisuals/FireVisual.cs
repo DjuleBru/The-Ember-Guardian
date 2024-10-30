@@ -56,7 +56,6 @@ public class FireVisual : StructureVisual
     }
 
     private void Fire_OnFireChangedState(object sender, Fire.OnFireChangedStateEventArgs e) {
-        Debug.Log(e.newState);
         if (e.newState == Fire.State.extinguished) {
             fireAnimator.ResetTrigger("Calm");
             fireAnimator.SetTrigger("Extinguished");

@@ -36,6 +36,8 @@ public class Projectile : MonoBehaviour
     private bool projectileHasHit;
     public event EventHandler OnProjectileHit;
 
+    private Mob mobHit;
+
     private void Awake() {
         //rb = GetComponent<Rigidbody2D>();
     }
@@ -49,6 +51,10 @@ public class Projectile : MonoBehaviour
 
         trajectoryEndPoint = trajectoryEndPointRandomized;
         trajectoryRange = trajectoryEndPoint - trajectoryStartPoint;
+
+        if(trajectoryRange.x == 0) {
+            Debug.LogError("Projectile trajectory range is 0");
+        }
 
         float distanceToTarget = Mathf.Abs(trajectoryEndPointRandomized.x - transform.position.x);
         trajectoryMaxRelativeHeight = distanceToTarget * projectileTrajectoryYCurve;
@@ -120,14 +126,14 @@ public class Projectile : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if (projectileHasHit) return;
 
-        Animal animalHit = collision.GetComponentInParent<Animal>();
+        mobHit = collision.GetComponentInParent<Animal>();
 
-        if(animalHit != null) {
-            animalHit.OnMobDied += AnimalHit_OnMobDied;
+        if(mobHit != null) {
+            mobHit.OnMobDied += AnimalHit_OnMobDied;
 
             ProjectileHasHit(true);
-            animalHit.TakeDamage(1, trajectoryStartPoint);
-            transform.parent = animalHit.GetProjectileParent();
+            mobHit.TakeDamage(1, trajectoryStartPoint);
+            transform.parent = mobHit.GetProjectileParent();
             return;
         }
     }
@@ -135,6 +141,10 @@ public class Projectile : MonoBehaviour
     private void AnimalHit_OnMobDied(object sender, EventArgs e) {
         Debug.Log("AnimalHit_OnMobDied");
         Destroy(gameObject);
+    }
+
+    private void OnDestroy() {
+        mobHit.OnMobDied -= AnimalHit_OnMobDied;
     }
 
 }

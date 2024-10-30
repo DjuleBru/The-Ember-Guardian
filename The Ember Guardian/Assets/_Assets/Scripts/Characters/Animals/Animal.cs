@@ -23,6 +23,7 @@ public class Animal : Mob
         base.Die();
 
         AnimalManager.Instance.RemoveAnimalSpawned(this);
+        mobSpawner.RemoveMobFromMobSpawnedList(this);
 
         List<Collectible> collectiblesDropped = new List<Collectible>();
 

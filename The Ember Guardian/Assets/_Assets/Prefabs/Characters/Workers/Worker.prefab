@@ -19,7 +19,6 @@ GameObject:
   - component: {fileID: 7815349781651484210}
   - component: {fileID: 9134356489787824175}
   - component: {fileID: 3098784747123191084}
-  - component: {fileID: 3191669076667704559}
   m_Layer: 13
   m_Name: Worker
   m_TagString: Untagged
@@ -57,7 +56,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileTarget: {fileID: 0}
   projectileParent: {fileID: 0}
-  blueOrbPrefab: {fileID: 0}
+  blueOrbPrefab: {fileID: 4096008502524423227, guid: 7187c138d57b2dc43b18d3d2bd569bed, type: 3}
+  collectibleLayerMask:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!114 &6873851068007498257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,46 +228,6 @@ MonoBehaviour:
   projectileSpawnPoint: {fileID: 2310341056989899468}
   attackRate: 3
   attackAnimationDelay: 0.6
---- !u!114 &3191669076667704559
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 477107457430138900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d7b55c7ecdb49a4a89fa5e6f9022861, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startWhenEnabled: 1
-  asynchronousLoad: 0
-  pauseWhenDisabled: 0
-  restartWhenComplete: 1
-  logTaskChanges: 0
-  group: 0
-  resetValuesOnRestart: 0
-  externalBehavior: {fileID: 11400000, guid: acf074e2617c32b489c0f7e6cce149a7, type: 2}
-  mBehaviorSource:
-    behaviorName: Behavior
-    behaviorDescription: 
-    mTaskData:
-      types: []
-      parentIndex: 
-      startIndex: 
-      variableStartIndex: 
-      JSONSerialization: '{"Variables":[{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"attackTargetSet","IsShared":true,"BooleanmValue":false}]}'
-      fieldSerializationData:
-        typeName: []
-        fieldNameHash: 
-        startIndex: 
-        dataPosition: 
-        unityObjects: []
-        byteData: 
-        byteDataArray: 
-      Version: 1.7.8
-  gizmoViewMode: 2
-  showBehaviorDesignerGizmo: 1
 --- !u!1 &905933179199607543
 GameObject:
   m_ObjectHideFlags: 0

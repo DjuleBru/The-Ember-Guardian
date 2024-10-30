@@ -18,13 +18,14 @@ public class MobAttack : MonoBehaviour
     private IDamageable previousAttackTargetIDamageable;
 
     public event EventHandler OnMobAttack;
+    public event EventHandler OnAttackTargetSet;
 
     private bool attacking;
 
     private void Update() {
 
-
         if((attackTargetIDamageable as MonoBehaviour)!= null) {
+
             attacking = true;
             attackTimer -= Time.deltaTime;
 
@@ -32,6 +33,7 @@ public class MobAttack : MonoBehaviour
                 attackTimer = attackRate;
                 Attack();
             }
+
         } else {
             attacking = false;
         }
@@ -47,20 +49,26 @@ public class MobAttack : MonoBehaviour
 
     private IEnumerator SpawnProjectileAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
-        Projectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity).GetComponent<Projectile>();
-
-        Vector3 projectileTarget = new Vector3(previousAttackTargetIDamageable.GetProjectileTarget().position.x, 0, 0);
-        projectile.ActivateAndInitialize(projectileTarget);
 
         // Projectile can be instantiated AFTER attack target reset, so must keep track of previous attack target
         if ((attackTargetIDamageable as MonoBehaviour) == null) {
             previousAttackTargetIDamageable = null;
         }
+
+        if (previousAttackTargetIDamageable != null) {
+
+            Projectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity).GetComponent<Projectile>();
+
+            Vector3 projectileTarget = new Vector3(previousAttackTargetIDamageable.GetProjectileTarget().position.x, 0, 0);
+            projectile.ActivateAndInitialize(projectileTarget);
+        }
     }
 
-    public void SetAttackTargetTransform(Transform transform) {
-        this.attackTargetIDamageable = transform.GetComponent<IDamageable>();
+    public void SetAttackTarget(IDamageable iDamageable) {
+        this.attackTargetIDamageable = iDamageable;
         previousAttackTargetIDamageable = attackTargetIDamageable;
+
+        OnAttackTargetSet?.Invoke(this, EventArgs.Empty);
     }
 
     public void RemoveAttackTarget() {

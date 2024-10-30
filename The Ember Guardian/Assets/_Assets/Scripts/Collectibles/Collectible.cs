@@ -15,6 +15,7 @@ public class Collectible : MonoBehaviour
     private bool droppedByPlayer;
     private bool playerInTriggerArea;
     private bool aggroedByWildWorker;
+    private bool collected;
 
     private Collider2D triggerCollider;
     private Rigidbody2D rb;
@@ -22,6 +23,11 @@ public class Collectible : MonoBehaviour
     private void Awake() {
         triggerCollider = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start() {
+        // Set Can be picked up by worker after 3 seconds 
+        Invoke("SetCanBePickedUpByWorker", 3f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -35,24 +41,24 @@ public class Collectible : MonoBehaviour
         };
 
 
-        WorkerAI workerAI = collision.gameObject.GetComponent<WorkerAI>();
-        if (workerAI != null) {
+        Worker worker = collision.gameObject.GetComponent<Worker>();
 
-            if(workerAI.GetJob() == WorkerAI.JobTypes.wild) {
-                workerAI.RecruitWorker();
+        if (worker != null) {
+
+            if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.wild && !collected) {
+                collected = true;
+                worker.RecruitWorker();
                 Destroy(gameObject);
                 return;
             }
 
-            if(canBePickedUpByWorker) {
-                workerAI.GetComponent<Worker>().CollectOrb(this);
+            if (canBePickedUpByWorker && !collected) {
+                collected = true;
+                worker.GetComponent<Worker>().CollectOrb();
                 Destroy(gameObject);
                 return;
             }
         }
-
-
-
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
@@ -138,13 +144,23 @@ public class Collectible : MonoBehaviour
         return currencyType;
     }
 
-    public void SetAggroedByWildWorker() {
-        aggroedByWildWorker = true;
+    public void SetAggroedByWildWorker(bool aggroed) {
+        aggroedByWildWorker = aggroed;
     }
 
     public bool GetAggroedByWildWorker() {
         return aggroedByWildWorker;
     }
+
+    public void SetCollected() {
+        collected = true;
+    }
+
+    public bool GetCollected() {
+        Debug.Log("GetCollected " + collected);
+        return collected;
+    }
+
 
     private void OnDestroy() {
         OnCollectibleDestroyed?.Invoke(this, EventArgs.Empty);

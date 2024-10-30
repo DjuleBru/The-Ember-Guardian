@@ -18,6 +18,7 @@ public class WorkerAnimatorManager : MonoBehaviour
 
     private bool moving;
     private float moveDir;
+    private float watchDir;
     private float previousWatchDir = 1f;
 
     private void Awake() {
@@ -65,35 +66,44 @@ public class WorkerAnimatorManager : MonoBehaviour
     }
 
     private void HandleXScale() {
-        if(moving) {
 
-            if (moveDir < 0 && previousWatchDir > 0) {
-                previousWatchDir = moveDir;
-                Vector3 newScale = new Vector3(-1, 1, 1);
-                transform.localScale = newScale;
-            }
-
-            if (moveDir > 0 && previousWatchDir < 0) {
-                previousWatchDir = moveDir;
-                Vector3 newScale = new Vector3(1, 1, 1);
-                transform.localScale = newScale;
-            }
-
-        } 
-        
-        if(mobAttack.GetAttacking()) {
-            if (mobAttack.GetAttackDir().x < 0 && previousWatchDir > 0) {
-                previousWatchDir = moveDir;
-                Vector3 newScale = new Vector3(-1, 1, 1);
-                transform.localScale = newScale;
-            }
-
-            if (mobAttack.GetAttackDir().x > 0 && previousWatchDir < 0) {
-                previousWatchDir = moveDir;
-                Vector3 newScale = new Vector3(1, 1, 1);
-                transform.localScale = newScale;
-            }
+        if (moving) {
+            HandleScaleChange(moveDir);
+            return;
         }
+
+        if(mobAttack.GetAttacking()) {
+            HandleScaleChange(mobAttack.GetAttackDir().x);
+            return;
+        }
+
+        if(worker.GetPlayerIsClose()) {
+            float watchDir = Player.Instance.transform.position.x - transform.position.x;
+            HandleScaleChange(watchDir);
+            return;
+        }
+
+
+        HandleScaleChange(watchDir);
+    }
+
+    private void HandleScaleChange(float watchDir) {
+        if (watchDir < 0 && previousWatchDir > 0) {
+            previousWatchDir = watchDir;
+            Vector3 newScale = new Vector3(-1, 1, 1);
+            transform.localScale = newScale;
+        }
+
+        if (watchDir > 0 && previousWatchDir < 0) {
+            previousWatchDir = watchDir;
+            Vector3 newScale = new Vector3(1, 1, 1);
+            transform.localScale = newScale;
+        }
+    }
+
+    public void SetWatchDir(float watchDir) {
+        Debug.Log(watchDir);
+        this.watchDir = watchDir;
     }
 
     private void MobAttack_OnMobAttack(object sender, System.EventArgs e) {
@@ -130,4 +140,5 @@ public class WorkerAnimatorManager : MonoBehaviour
 
         moving = false;
     }
+
 }

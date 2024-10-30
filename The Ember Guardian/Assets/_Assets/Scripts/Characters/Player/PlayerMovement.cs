@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float castDistance;
     [SerializeField] Vector2 boxSize;
     [SerializeField] private LayerMask groundLayerMask;
+    [SerializeField] private LayerMask platformLayerMask;
 
     private float lastMoveDir = 1;
     private bool isCrouching;
@@ -197,7 +198,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     public bool IsGrounded() {
-        if(Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, groundLayerMask)) {
+        if(Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, groundLayerMask) || Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, platformLayerMask)) {
             return true;
         } else {
             return false;
@@ -209,7 +210,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     public Platform GetPlatformStanding() {
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, groundLayerMask);
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, platformLayerMask);
 
         if (hit.collider != null) {
             Platform platformHit = hit.collider.GetComponent<Platform>();

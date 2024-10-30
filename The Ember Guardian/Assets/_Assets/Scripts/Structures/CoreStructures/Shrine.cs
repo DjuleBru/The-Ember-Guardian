@@ -34,6 +34,7 @@ public class Shrine : Structure
     }
 
     private void WorkerManager_OnJoblessWorkerAmountChanged(object sender, EventArgs e) {
+
         if(WorkerManager.Instance.GetJoblessWorkerAmount() == 0) {
             SetStructureFunctionLocked();
         } else {

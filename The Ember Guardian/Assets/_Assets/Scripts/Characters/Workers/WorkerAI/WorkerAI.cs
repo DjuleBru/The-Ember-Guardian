@@ -47,20 +47,16 @@ public class WorkerAI : MonoBehaviour
         }
 
         if (currentJob == JobTypes.hunter) {
+            WorkerManager.Instance.RemoveJoblessWorker(worker);
             hunterJob.enabled = true;
         }
 
         if (currentJob == JobTypes.jobless) {
+            wildJob.UnAggroBlueOrb();
             joblessJob.enabled = true;
         }
 
         OnJobChanged?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void RecruitWorker() {
-        WorkerManager.Instance.AddRecruitedWorker(worker);
-        worker.GetMobSpawner().RemoveMobFromMobSpawnedList(worker);
-        SetJob(JobTypes.jobless);
     }
 
     private void SetAllJobTypesInactive() {

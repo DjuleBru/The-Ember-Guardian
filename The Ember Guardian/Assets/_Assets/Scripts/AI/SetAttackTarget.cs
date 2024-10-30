@@ -16,7 +16,7 @@ public class SetAttackTarget : Action
     public override TaskStatus OnUpdate() {
 
         if(!attackTargetSet.Value) {
-            mobAttack.SetAttackTargetTransform(target.Value);
+            //mobAttack.SetAttackTarget(target.Value);
             attackTargetSet.Value = true;
         }
 

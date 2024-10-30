@@ -44,7 +44,6 @@ public class Mob : MonoBehaviour, IDamageable
 
     protected IEnumerator DestroyGameObjectAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
-        Debug.Log("DestroyGameObjectAfterDelay");
 
         Destroy(gameObject);
     }

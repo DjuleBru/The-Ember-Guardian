@@ -17,15 +17,15 @@ public class WithinSight : Conditional
 
     public override TaskStatus OnUpdate() {
 
-        if(targetType == TargetType.animal) {
+        //if(targetType == TargetType.animal) {
 
-            Animal closestHuntableAnimal = AnimalManager.Instance.GetClosestAnimalInRadius(transform.position, maxAnimalTargetingDistanceToCampOuterPoint);
-            if(closestHuntableAnimal != null ) {
-                target.Value = closestHuntableAnimal.transform;
-                return TaskStatus.Success;
-            }
+        //    Animal closestHuntableAnimal = AnimalManager.Instance.GetClosestAnimalInRadius(transform.position, maxAnimalTargetingDistanceToCampOuterPoint);
+        //    if(closestHuntableAnimal != null ) {
+        //        target.Value = closestHuntableAnimal.transform;
+        //        return TaskStatus.Success;
+        //    }
 
-        }
+        //}
 
         return TaskStatus.Failure;
     }

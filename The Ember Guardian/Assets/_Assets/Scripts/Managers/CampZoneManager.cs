@@ -6,6 +6,11 @@ using UnityEngine;
 public class CampZoneManager : MonoBehaviour
 {
 
+    public enum CampSide {
+        left,
+        right,
+    }
+
     public static CampZoneManager Instance;
 
     [SerializeField] private float campCenterMinLimit;
@@ -51,19 +56,31 @@ public class CampZoneManager : MonoBehaviour
         return maxZoneLimit;
     }
 
-    public Vector3 GetClosestExteriorZoneLimit(Vector3 targetPosition) {
+    public Vector3 GetClosestExteriorZoneLimit(Vector3 initialPosition, float distanceToSafety = 0f) {
         Vector3 closestExteriorZoneLimit = new Vector3(0,0,0);
 
-        if(targetPosition.x < 0) {
-            closestExteriorZoneLimit.x = minZoneLimit;
+        if(initialPosition.x < 0) {
+            closestExteriorZoneLimit.x = minZoneLimit + distanceToSafety;
         }
         else
         {
-            closestExteriorZoneLimit.x = maxZoneLimit;
+            closestExteriorZoneLimit.x = maxZoneLimit - distanceToSafety;
         }
 
         return closestExteriorZoneLimit;
-        
+    }
+
+    public Vector3 GetClosestExteriorZoneLimit(CampSide campSide, float distanceToSafety = 0f) {
+        Vector3 closestExteriorZoneLimit = new Vector3(0, 0, 0);
+
+        if (campSide == CampSide.left) {
+            closestExteriorZoneLimit.x = minZoneLimit + distanceToSafety;
+        }
+        else {
+            closestExteriorZoneLimit.x = maxZoneLimit - distanceToSafety;
+        }
+
+        return closestExteriorZoneLimit;
     }
 
     public float GetCampCenterMinLimit() {
@@ -72,5 +89,14 @@ public class CampZoneManager : MonoBehaviour
 
     public float GetCampCenterMaxLimit() {
         return campCenterMaxLimit;
+    }
+
+    public CampSide AssignCampSide(Vector3 position) {
+        if(position.x < 0) {
+            return CampSide.left;
+        }
+        else {
+            return CampSide.right;
+        }
     }
 }

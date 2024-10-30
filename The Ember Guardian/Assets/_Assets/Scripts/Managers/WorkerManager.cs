@@ -10,6 +10,9 @@ public class WorkerManager : MonoBehaviour
     private List<Worker> recruitedWorkers = new List<Worker>();
     private List<Worker> joblessWorkers = new List<Worker>();
 
+    private List<Worker> leftSideAssignedWorkers = new List<Worker>();
+    private List<Worker> rightSideAssignedWorkers = new List<Worker>();
+
     public event EventHandler OnJoblessWorkerAmountChanged;
 
     private void Awake() {
@@ -36,7 +39,24 @@ public class WorkerManager : MonoBehaviour
         recruitedWorkers.Add(worker);
         joblessWorkers.Add(worker);
 
+        AssignSideToWorker(worker);
         OnJoblessWorkerAmountChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void AssignSideToWorker(Worker worker) {
+
+        if(leftSideAssignedWorkers.Count < rightSideAssignedWorkers.Count) {
+
+            leftSideAssignedWorkers.Add(worker);
+            worker.AssignSide(CampZoneManager.CampSide.left);
+
+        } else {
+
+            rightSideAssignedWorkers.Add(worker);
+            worker.AssignSide(CampZoneManager.CampSide.right);
+
+        }
+
     }
 
     public void RemoveJoblessWorker(Worker worker) {

@@ -9,6 +9,7 @@ public class Structure : MonoBehaviour {
     [SerializeField] protected bool upgradeUnlocked;
     [SerializeField] protected bool functionUnlocked;
 
+    private CampZoneManager.CampSide campSide;
     protected PayOrbsUI payOrbsUI;
 
     public event EventHandler OnPlayerTriggeredIn;
@@ -17,6 +18,7 @@ public class Structure : MonoBehaviour {
 
     public event EventHandler OnStructureFunctionLocked;
     public event EventHandler OnStructureFunctionUnlocked;
+    public static event EventHandler OnAnyStructureBuilt;
 
     protected bool playerInTriggerArea;
     protected bool playerCanInteract;
@@ -37,10 +39,14 @@ public class Structure : MonoBehaviour {
     }
 
     protected virtual void Start() {
+        campSide = CampZoneManager.Instance.AssignCampSide(transform.position);
+
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractStarted += GameInput_OnPlayerInteractStarted;
 
         payOrbsUI.OnOrbPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
+
+        OnAnyStructureBuilt?.Invoke(this, EventArgs.Empty);
     }
 
     protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
@@ -58,8 +64,6 @@ public class Structure : MonoBehaviour {
 
     protected virtual void UpgradeStructure() {
         structureLevel++;
-
-        Debug.Log(structureLevel);
         if (structureLevel == structureSO.maxLevel) {
             SetStructureUpgradableUnlocked(false);
         }
@@ -94,6 +98,10 @@ public class Structure : MonoBehaviour {
 
     public int GetStructureLevel() {
         return structureLevel;
+    }
+
+    public CampZoneManager.CampSide GetCampSide() {
+        return campSide;
     }
 
     public StructureSO GetStructureSO() {

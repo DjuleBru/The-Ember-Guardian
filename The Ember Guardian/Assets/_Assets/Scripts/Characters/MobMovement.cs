@@ -27,18 +27,19 @@ public class MobMovement : MonoBehaviour
 
     private void FixedUpdate() {
 
-        //if (Mathf.Abs(targetDestination.x - transform.position.x) < .1f) {
-        //    moveDirFloat = 0;
 
-        //    if(!destinationReached) {
-        //        Debug.Log("destinationReached");
-        //        OnDestinationReached?.Invoke(this, EventArgs.Empty);
-        //        rb.velocity = Vector3.zero;
-        //        destinationReached = true;  
-        //    }
-        //} else {
-        //    //HandleMovementForces();
-        //}
+        if (Mathf.Abs(targetDestination.x - transform.position.x) < .1f) {
+            moveDirFloat = 0;
+
+            if (!destinationReached) {
+                OnDestinationReached?.Invoke(this, EventArgs.Empty);
+                rb.velocity = Vector3.zero;
+                destinationReached = true;
+            }
+        }
+        else {
+            HandleMovementForces();
+        }
 
         Debug.DrawLine(transform.position, targetDestination);
     }
@@ -53,7 +54,7 @@ public class MobMovement : MonoBehaviour
             moveDirFloat = 1;
         }
 
-        float targetSpeed = moveDirFloat * mobSpeed;
+        float targetSpeed = moveDirFloat * mobSpeed * rb.mass;
         float speedDif = targetSpeed - rb.velocity.x;
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
@@ -103,6 +104,7 @@ public class MobMovement : MonoBehaviour
     }
 
     public void SetMoveTarget(Vector3 moveTarget) {
+        
         OnDestinationSet?.Invoke(this, EventArgs.Empty);
         this.targetDestination = moveTarget;
         destinationReached = false;
