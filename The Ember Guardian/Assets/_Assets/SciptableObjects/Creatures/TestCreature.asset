@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57289136e0e1e6418ec81259b9649b2, type: 3}
   m_Name: TestCreature
   m_EditorClassIdentifier: 
-  creaturePrefab: {fileID: 6409776439602011119, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
-  moveSpeed: 3
+  enemyName: Crawler
+  description: Basic monster, a bit swarmy.
+  creaturePrefab: {fileID: 38783848799533230, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+  moveSpeed: 7
+  moveSpeedRandomizerDelta: 2
   maxHealth: 3
-  damage: 2
+  damage: 1
+  difficulty: 1
+  spawnProbability: 0.602

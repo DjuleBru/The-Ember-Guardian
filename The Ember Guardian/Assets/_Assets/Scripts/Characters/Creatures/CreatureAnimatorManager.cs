@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CreatureAnimatorManager : MonoBehaviour
 {
+    private Creature creature;
     private MobAttack mobAttack;
     private MobMovement mobMovement;
     private Animator animator;
@@ -14,11 +15,13 @@ public class CreatureAnimatorManager : MonoBehaviour
     private float previousWatchDir = 1f;
 
     private void Awake() {
+        creature = GetComponentInParent<Creature>();
         mobMovement = GetComponentInParent<MobMovement>();
         mobAttack = GetComponentInParent<MobAttack>();
         animator = GetComponent<Animator>();
 
         mobAttack.OnMobAttack += MobAttack_OnMobAttack;
+        creature.OnMobDied += Creature_OnMobDied;
     }
 
     private void Update() {
@@ -81,5 +84,8 @@ public class CreatureAnimatorManager : MonoBehaviour
         animator.SetTrigger("Attack");
     }
 
+    private void Creature_OnMobDied(object sender, System.EventArgs e) {
+        animator.SetTrigger("Die");
+    }
 
 }

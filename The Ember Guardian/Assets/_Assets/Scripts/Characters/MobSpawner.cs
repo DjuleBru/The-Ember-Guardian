@@ -32,8 +32,8 @@ public class MobSpawner : MonoBehaviour
         SpawnMobs(mobAmountToSpawnOnDawn);
     }
 
-    protected void SpawnMobs(int workerAmount) {
-        for (int i = 0; i < workerAmount; i++) {
+    protected void SpawnMobs(int mobAmount) {
+        for (int i = 0; i < mobAmount; i++) {
             Mob mob = Instantiate(mobPrefab, spawnPosition.position, Quaternion.identity).GetComponent<Mob>();
             mobSpawnedList.Add(mob);
             mob.SetMobSpawner(this);

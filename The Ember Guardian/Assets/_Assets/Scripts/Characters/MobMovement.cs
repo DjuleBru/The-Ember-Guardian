@@ -5,29 +5,27 @@ using UnityEngine;
 
 public class MobMovement : MonoBehaviour
 {
-    [SerializeField] private float mobSpeed;
+    [SerializeField] protected float initialMobSpeed;
 
-    [SerializeField] private float acceleration;
-    [SerializeField] private float deceleration;
-    [SerializeField] private float velPower;
+    [SerializeField] protected float acceleration;
+    [SerializeField] protected float deceleration;
+    [SerializeField] protected float velPower;
 
-    private Rigidbody2D rb;
-    private Vector3 targetDestination;
-    private float moveDirFloat;
+    protected Rigidbody2D rb;
+    protected Vector3 targetDestination;
+    protected float moveDirFloat;
 
-    private bool destinationReached;
+    protected bool destinationReached;
     public event EventHandler OnDestinationReached;
     public event EventHandler OnDestinationSet;
 
-    private void Awake() {
+    protected virtual void Awake() {
         rb = GetComponent<Rigidbody2D>();
 
         targetDestination = transform.position;
     }
 
-    private void FixedUpdate() {
-
-
+    protected void FixedUpdate() {
         if (Mathf.Abs(targetDestination.x - transform.position.x) < .1f) {
             moveDirFloat = 0;
 
@@ -40,11 +38,9 @@ public class MobMovement : MonoBehaviour
         else {
             HandleMovementForces();
         }
-
-        Debug.DrawLine(transform.position, targetDestination);
     }
 
-    private void HandleMovementForces() {
+    protected void HandleMovementForces() {
 
         Vector3 moveDirection = targetDestination - transform.position;
 
@@ -54,7 +50,7 @@ public class MobMovement : MonoBehaviour
             moveDirFloat = 1;
         }
 
-        float targetSpeed = moveDirFloat * mobSpeed * rb.mass;
+        float targetSpeed = moveDirFloat * initialMobSpeed * rb.mass;
         float speedDif = targetSpeed - rb.velocity.x;
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
@@ -89,7 +85,7 @@ public class MobMovement : MonoBehaviour
             moveDirFloat = 1;
         }
 
-        float targetSpeed = moveDirFloat * mobSpeed;
+        float targetSpeed = moveDirFloat * initialMobSpeed;
         float speedDif = targetSpeed - rb.velocity.x;
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
@@ -100,7 +96,7 @@ public class MobMovement : MonoBehaviour
     }
 
     public void SetMoveSpeed(float moveSpeed) {
-        mobSpeed = moveSpeed;
+        initialMobSpeed = moveSpeed;
     }
 
     public void SetMoveTarget(Vector3 moveTarget) {
@@ -118,7 +114,7 @@ public class MobMovement : MonoBehaviour
         return moveDirFloat;
     }
 
-    private void OnDisable() {
+    protected void OnDisable() {
         rb.velocity = Vector2.zero;
     }
 

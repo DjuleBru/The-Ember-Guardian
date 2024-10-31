@@ -12,12 +12,14 @@ public class ParticleCollision : MonoBehaviour
     public GameObject explosionPrefab;
     private float collisionDistanceThreshold = .25f;
 
-    private float hitKnockbackForce = 10f;
+    [SerializeField] private float hitKnockbackForce = 15f;
+    [SerializeField] private int bulletDamage = 1;
 
     void Start()
     {
         ps = GetComponent<ParticleSystem>();
         collisionEvents = new List<ParticleCollisionEvent>();
+
     }
 
     void LateUpdate() {
@@ -62,8 +64,19 @@ public class ParticleCollision : MonoBehaviour
             }
         }
 
+
+        // Knockback : Calculer la direction du tir
         if (other.GetComponent<Rigidbody2D>() != null) {
-            other.GetComponent<Rigidbody2D>().AddForceAtPosition(collisionEvents[0].intersection * hitKnockbackForce - transform.position, collisionEvents[0].intersection, ForceMode2D.Impulse);
+            Vector3 direction = (collisionEvents[0].intersection - transform.position).normalized;
+            direction.y = 0;
+            direction.z = 0;
+
+            other.GetComponent<Rigidbody2D>().AddForceAtPosition(direction * hitKnockbackForce, collisionEvents[0].intersection, ForceMode2D.Impulse);
+        }
+        
+        // Damage : 
+        if(other.GetComponent<Mob>() != null) {
+            other.GetComponent<Mob>().TakeDamage(bulletDamage, collisionEvents[0].intersection);
         }
     }
 

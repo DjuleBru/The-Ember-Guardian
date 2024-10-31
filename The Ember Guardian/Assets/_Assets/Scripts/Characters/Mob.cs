@@ -28,6 +28,7 @@ public class Mob : MonoBehaviour, IDamageable
 
     public void TakeDamage(int damage, Vector3 damageSourcePosition) {
         health -= damage;
+
         OnMobDamageTaken?.Invoke(this, new OnMobDamageTakenEventArgs {
             damageOriginPosition = damageSourcePosition,
         });

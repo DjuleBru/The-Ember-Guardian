@@ -17,6 +17,8 @@ public class DayNightManager : MonoBehaviour
     [SerializeField] private bool debugMode;
     [SerializeField] private State debugState;
 
+    private int currentDay;
+
     private float cycleTimer;
     private float totalDayTimer;
     private float totalNightTimer;
@@ -98,6 +100,7 @@ public class DayNightManager : MonoBehaviour
             OnDayStart?.Invoke(this, EventArgs.Empty);
         }
         if(newState == State.Dawn) {
+            currentDay++;
             OnDawnStart?.Invoke(this, EventArgs.Empty);
         }
         if(newState == State.Night) {
@@ -152,5 +155,9 @@ public class DayNightManager : MonoBehaviour
 
     public State GetDayNightCycleState() {
         return state;
+    }
+
+    public int GetCurrentDay() {
+        return currentDay;
     }
 }

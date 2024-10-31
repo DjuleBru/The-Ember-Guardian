@@ -16,6 +16,8 @@ public class CreatureAI : MonoBehaviour {
 
     private void Start() {
         moveSpeed = creature.GetCreatureSO().moveSpeed;
+        moveSpeed += Random.Range(-creature.GetCreatureSO().moveSpeedRandomizerDelta, creature.GetCreatureSO().moveSpeedRandomizerDelta);
+
         mobMovement.SetMoveSpeed(moveSpeed);
 
         mobMovement.OnDestinationReached += MobMovement_OnDestinationReached;
