@@ -15,10 +15,12 @@ public class Creature : Mob
 
     public override void Die() {
         base.Die();
+
+        StartCoroutine(DisableGameObjectAfterDelay());
+
         CreaturesManager.Instance.RemoveCreatureSpawned(this);
         GetComponent<Collider2D>().enabled = false;
         GetComponent<Rigidbody2D>().gravityScale = 0;
-
     }
 
     private IEnumerator DisableGameObjectAfterDelay() {

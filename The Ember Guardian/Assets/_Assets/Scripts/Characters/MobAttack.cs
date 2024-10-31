@@ -5,24 +5,27 @@ using UnityEngine;
 
 public class MobAttack : MonoBehaviour
 {
-    [SerializeField] private bool isProjectileAttack;
+    [SerializeField] protected bool isProjectileAttack;
 
-    [SerializeField] private Transform projectilePrefab;
-    [SerializeField] private Transform projectileSpawnPoint;
-    [SerializeField] private float attackRate;
-    [SerializeField] private float attackAnimationDelay;
+    [SerializeField] protected Transform projectilePrefab;
+    [SerializeField] protected Transform projectileSpawnPoint;
+    [SerializeField] protected float attackRate;
+    [SerializeField] protected float attackAnimationDelay;
+    [SerializeField] protected float totalAttackAnimationTime;
 
-    private float attackTimer;
+    protected float attackTimer;
+    protected int attackDamage;
 
-    private IDamageable attackTargetIDamageable;
-    private IDamageable previousAttackTargetIDamageable;
+    protected IDamageable attackTargetIDamageable;
+    protected IDamageable previousAttackTargetIDamageable;
 
     public event EventHandler OnMobAttack;
     public event EventHandler OnAttackTargetSet;
 
-    private bool attacking;
+    protected bool attacking;
+    protected bool attackStarted;
 
-    private void Update() {
+    protected void Update() {
 
         if((attackTargetIDamageable as MonoBehaviour)!= null) {
 
@@ -39,15 +42,17 @@ public class MobAttack : MonoBehaviour
         }
     }
 
-    private void Attack() {
+    protected void Attack() {
         OnMobAttack?.Invoke(this, EventArgs.Empty);
 
         if(isProjectileAttack) {
             StartCoroutine(SpawnProjectileAfterDelay(attackAnimationDelay));
+        } else {
+            StartCoroutine(DealDamageAfterDelay(attackAnimationDelay, totalAttackAnimationTime));
         }
     }
 
-    private IEnumerator SpawnProjectileAfterDelay(float delay) {
+    protected IEnumerator SpawnProjectileAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
 
         // Projectile can be instantiated AFTER attack target reset, so must keep track of previous attack target
@@ -64,6 +69,19 @@ public class MobAttack : MonoBehaviour
         }
     }
 
+    protected IEnumerator DealDamageAfterDelay(float delayToDealDamage, float totalAttackAnimationTime) {
+        attackStarted = true;
+        yield return new WaitForSeconds(delayToDealDamage);
+
+        if (previousAttackTargetIDamageable != null) {
+            previousAttackTargetIDamageable.TakeDamage(attackDamage, transform.position);
+        }
+
+        yield return new WaitForSeconds(totalAttackAnimationTime - delayToDealDamage);
+
+        attackStarted = false;
+    }
+
     public void SetAttackTarget(IDamageable iDamageable) {
         this.attackTargetIDamageable = iDamageable;
         previousAttackTargetIDamageable = attackTargetIDamageable;
@@ -71,7 +89,8 @@ public class MobAttack : MonoBehaviour
         OnAttackTargetSet?.Invoke(this, EventArgs.Empty);
     }
 
-    public void RemoveAttackTarget() {
+    public virtual void RemoveAttackTarget() {
+        attacking = false;
         attackTargetIDamageable = null;
     }
 
@@ -81,6 +100,10 @@ public class MobAttack : MonoBehaviour
 
     public bool GetAttacking() {
         return attacking;
+    }
+
+    public bool GetAttackStarted() {
+        return attackStarted;
     }
 
 }

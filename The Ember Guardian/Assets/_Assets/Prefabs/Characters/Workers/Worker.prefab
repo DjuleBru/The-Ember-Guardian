@@ -116,9 +116,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8873dc9cc7175844ba47666712253995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roamMoveSpeed: 1.5
-  headToCampMoveSpeed: 2
-  trackAnimalMoveSpeed: 2
+  roamMoveSpeed: 1
+  headToCampMoveSpeed: 1.5
+  trackAnimalMoveSpeed: 1.25
   roamChangeDestinationRate: 5
   huntingRange: 12
 --- !u!114 &1648183774965061190
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec4d71574bd09b84dac0b0916d6e7efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mobSpeed: 3
+  initialMobSpeed: 0
   acceleration: 7
   deceleration: 7
   velPower: 0.9

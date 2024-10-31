@@ -26,7 +26,6 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
     private bool hasSetSpeed;
     private bool hasHitAnimal;
-    private bool isSafe;
 
     private List<Collectible> orbsToCollect = new List<Collectible>();
 

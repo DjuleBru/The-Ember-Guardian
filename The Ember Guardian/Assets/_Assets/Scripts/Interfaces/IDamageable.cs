@@ -8,4 +8,5 @@ public interface IDamageable
     void Die();
 
     Transform GetProjectileTarget();
+    Transform GetMeleeAttackPosition();
 }

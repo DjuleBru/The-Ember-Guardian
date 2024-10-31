@@ -4296,7 +4296,7 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 32832
+      m_Bits: 163904
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -5349,6 +5349,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   explosionPrefab: {fileID: 8231705165639236091, guid: 82e336898533c014b8945778df5b8b8f, type: 3}
+  hitKnockbackForce: 15
+  bulletDamage: 1
 --- !u!1 &3047301841400764818
 GameObject:
   m_ObjectHideFlags: 0
@@ -5628,6 +5630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8590004d33102444a71b438e6f11041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectileTarget: {fileID: 0}
 --- !u!114 &8501995130765655673
 MonoBehaviour:
   m_ObjectHideFlags: 0

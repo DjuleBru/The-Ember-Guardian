@@ -60,13 +60,25 @@ public class WorkerManager : MonoBehaviour
     }
 
     public void RemoveJoblessWorker(Worker worker) {
-        joblessWorkers.Remove(worker);
+        if(joblessWorkers.Contains(worker)) {
+            joblessWorkers.Remove(worker);
+        }
 
         OnJoblessWorkerAmountChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void RemoveRecruitedWorker(Worker worker) {
         recruitedWorkers.Remove(worker);
+    }
+
+    public void RemoveWorker(Worker worker) {
+        if (joblessWorkers.Contains(worker)) {
+            joblessWorkers.Remove(worker);
+        }
+        if(recruitedWorkers.Contains(worker)) {
+            recruitedWorkers.Remove(worker);
+        }
+        OnJoblessWorkerAmountChanged?.Invoke(this, EventArgs.Empty);
     }
 
 }

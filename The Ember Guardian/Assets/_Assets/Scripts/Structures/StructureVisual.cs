@@ -24,7 +24,7 @@ public class StructureVisual : MonoBehaviour
         structure.OnStructureUpgraded += Structure_OnStructureUpgraded;
     }
 
-    protected void Structure_OnStructureUpgraded(object sender, System.EventArgs e) {
+    protected virtual void Structure_OnStructureUpgraded(object sender, System.EventArgs e) {
         int structureLevel = structure.GetStructureLevel();
         structureSpriteRenderer.sprite = structure.GetStructureSO().buildingUpgradeSpriteList[structureLevel - 1];
     }

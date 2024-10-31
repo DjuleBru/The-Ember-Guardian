@@ -30,7 +30,9 @@ public class WorkerAnimatorManager : MonoBehaviour
 
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
         mobAttack.OnMobAttack += MobAttack_OnMobAttack;
+        worker.OnMobDied += Worker_OnMobDied;
     }
+
 
     private void Start() {
         RefreshJobAnimator();
@@ -112,6 +114,10 @@ public class WorkerAnimatorManager : MonoBehaviour
 
     private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
         RefreshJobAnimator();
+    }
+
+    private void Worker_OnMobDied(object sender, System.EventArgs e) {
+        animator.SetTrigger("Die");
     }
 
     private void RefreshJobAnimator() {

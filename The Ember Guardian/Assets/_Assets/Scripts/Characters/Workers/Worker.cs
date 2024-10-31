@@ -18,11 +18,17 @@ public class Worker : Mob {
 
     private bool playerIsClose;
     private bool droppingOrbs;
+    private bool recruited;
     private float playerIsCloseTimer;
 
     private void Awake() {
         workerAI = GetComponent<WorkerAI>();    
     }
+
+    private void Start() {
+        workerAI.OnJobChanged += WorkerAI_OnJobChanged;
+    }
+
 
     private void Update() {
         //CheckOrbsNearby();
@@ -33,6 +39,7 @@ public class Worker : Mob {
         WorkerManager.Instance.AddRecruitedWorker(this);
         mobSpawner.RemoveMobFromMobSpawnedList(this);
         workerAI.SetJob(WorkerAI.JobTypes.jobless);
+        recruited = true;
     }
 
     public void CollectOrb() {
@@ -158,6 +165,28 @@ public class Worker : Mob {
 
     public void AssignStructure(Structure structure) {
         structureAssigned = structure;
+    }
+
+    public bool GetRecruited() {
+        return recruited;
+    }
+
+    public override void Die() {
+        base.Die();
+
+        GetComponent<Collider2D>().enabled = false;
+        GetComponent<Rigidbody2D>().gravityScale = 0;
+        WorkerManager.Instance.RemoveWorker(this);
+
+        StartCoroutine(DestroyGameObjectAfterDelay(1f));
+    }
+
+    private void WorkerAI_OnJobChanged(object sender, EventArgs e) {
+        if(workerAI.GetJob() == WorkerAI.JobTypes.guard) {
+            health = 5;
+        } else {
+            health = 1;
+        }
     }
 
 }
