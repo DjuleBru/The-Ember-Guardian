@@ -70,6 +70,8 @@ public class CreatureAI : MonoBehaviour {
                 }
 
                 if(!CheckAttackTargetInRange() && !mobAttack.GetAttackStarted()) {
+                    Debug.Log("mobAttack.GetAttackStarted() " + mobAttack.GetAttackStarted());
+                    Debug.Log("CheckAttackTargetInRange() " + CheckAttackTargetInRange());
                     ChangeState(State.moveToTarget);
                     return;
                 }
@@ -79,7 +81,6 @@ public class CreatureAI : MonoBehaviour {
     }
 
     private void ChangeState(State newState) {
-        Debug.Log(newState);
         mobMovement.SetMoveTarget(transform.position);
 
         if(newState == State.attacking) {
@@ -114,7 +115,7 @@ public class CreatureAI : MonoBehaviour {
             hasSetSpeed = true;
         }
 
-        Vector3 targetDestination = (attackTarget as MonoBehaviour).transform.position;
+        Vector3 targetDestination = attackTarget.GetMeleeAttackPosition().position;
         mobMovement.SetMoveTarget(targetDestination);
         hasSetSpeed = false;
 

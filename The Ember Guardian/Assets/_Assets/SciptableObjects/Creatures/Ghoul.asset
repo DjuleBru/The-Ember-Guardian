@@ -23,6 +23,9 @@ MonoBehaviour:
   attackRange: 0.1
   attackAnimationDelay: 0.2
   totalAttackAnimationTime: 0.6
+  workerTargetingPriority: 1
+  playerTargetingPriority: 3
+  barricadeTargetingPriority: 2
   difficulty: 3
   initialWaveSpawn: 3
   spawnProbability: 0.262

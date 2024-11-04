@@ -74,15 +74,15 @@ public class Fire : Structure
     private void CheckFireFeedable() {
 
         if(fuelLevel >= maxFuelTreshold) {
-            SetStructureFunctionLocked();
+            SetStructureFunctionUnlocked(false);
         }
 
         if(fuelLevel + orbFuelValue <= maxFuelTreshold) {
-            SetStructureFunctionUnlocked();
+            SetStructureFunctionUnlocked(true);
         }
 
         if (state == State.extinguished) {
-            SetStructureFunctionLocked();
+            SetStructureFunctionUnlocked(false);
         }
     } 
     private void CheckFireStateDowngrade() {

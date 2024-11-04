@@ -8,7 +8,7 @@ public class StructureUI : MonoBehaviour
 
     [SerializeField] protected GameObject functionUIGameObject;
     [SerializeField] protected GameObject upgradeGameObject;
-    [SerializeField] protected List<GameObject> switchUIGameObjectList;
+    [SerializeField] protected GameObject switchUIGameObjectList;
 
     [SerializeField] protected GameObject functionPayOrbsUIList;
 
@@ -25,28 +25,27 @@ public class StructureUI : MonoBehaviour
         payOrbsUI = structure.GetComponent<PayOrbsUI>();
 
         SetUIActive(false);
+        SetUIXAxisScale();
     }
 
     protected void Start() {
         structure.OnPlayerTriggeredIn += Structure_OnPlayerTriggeredIn;
         structure.OnPlayerTriggeredOut += Structure_OnPlayerTriggeredOut;
-        structure.OnStructureUpgraded += Structure_OnStructureUpgraded;
-        structure.OnStructureFunctionLocked += Structure_OnStructureFunctionLocked;
-        structure.OnStructureFunctionUnlocked += Structure_OnStructureFunctionUnlocked;
+        structure.OnStructureInteractionsUpdated += Structure_OnStructureInteractionsUpdated;
 
         GameInput.Instance.OnPlayerLeftRightSwitchPerformed += GameInput_OnPlayerLeftRightSwitchPerformed;
     }
 
-    private void Structure_OnStructureUpgraded(object sender, System.EventArgs e) {
 
-        if(!structure.GetUpgradableUnlocked()) {
-            RefreshShownUI();
-            ActivateUpgradeUI(false);
-        } else {
-            ShowStructureUpgradeUI();
+    private void SetUIXAxisScale() {
+        if (structure.transform.position.x < 0) {
+            Vector3 localScale = new Vector3(-1, 1, 1);
+            transform.localScale = localScale;
         }
+    }
 
-        UpdateSwitchUIGameObjectActivation();
+    private void Structure_OnStructureInteractionsUpdated(object sender, System.EventArgs e) {
+        RefreshShownUI();
     }
 
     private void GameInput_OnPlayerLeftRightSwitchPerformed(object sender, System.EventArgs e) {
@@ -85,13 +84,9 @@ public class StructureUI : MonoBehaviour
     protected void UpdateSwitchUIGameObjectActivation() {
 
         if(structure.GetActiveStructureInteractionTypeList().Count > 1) {
-            foreach (GameObject gameObject in switchUIGameObjectList) {
-                gameObject.SetActive(true);
-            }
+            switchUIGameObjectList.SetActive(true);
         } else {
-            foreach (GameObject gameObject in switchUIGameObjectList) {
-                gameObject.SetActive(false);
-            }
+            switchUIGameObjectList.SetActive(false);
         }
     }
 
@@ -110,7 +105,6 @@ public class StructureUI : MonoBehaviour
         upgradeGameObject.SetActive(true);
 
         int structureLevel = structure.GetStructureLevel();
-
         foreach(GameObject gameObject in upgradeToNextLevelUIGameObjectList) {
             gameObject.SetActive(false);
         }
@@ -127,8 +121,10 @@ public class StructureUI : MonoBehaviour
     protected void RefreshShownUI() {
         // Lower Upgrade types are higher priority
 
+        Debug.Log("RefreshShownUI " + structure.GetActiveStructureInteractionTypeList().Contains(Structure.StructureInteractionType.upgrade));
+
         // Upgrade
-        if(structure.GetActiveStructureInteractionTypeList().Contains(Structure.StructureInteractionType.upgrade)) {
+        if (structure.GetActiveStructureInteractionTypeList().Contains(Structure.StructureInteractionType.upgrade)) {
             ShowStructureUpgradeUI();
         } else {
            upgradeGameObject.SetActive(false);

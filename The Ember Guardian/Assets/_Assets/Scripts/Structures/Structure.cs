@@ -16,8 +16,8 @@ public class Structure : MonoBehaviour {
     public event EventHandler OnPlayerTriggeredOut;
     public event EventHandler OnStructureUpgraded;
 
-    public event EventHandler OnStructureFunctionLocked;
-    public event EventHandler OnStructureFunctionUnlocked;
+    public event EventHandler OnStructureInteractionsUpdated;
+
     public static event EventHandler OnAnyStructureBuilt;
 
     protected bool playerInTriggerArea;
@@ -35,7 +35,7 @@ public class Structure : MonoBehaviour {
 
     protected virtual void Awake() {
         payOrbsUI = GetComponent<PayOrbsUI>();
-        InitializeActiveStructureUITypeList();
+        DebugInitializeActiveStructureUITypeList();
     }
 
     protected virtual void Start() {
@@ -43,10 +43,14 @@ public class Structure : MonoBehaviour {
 
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractStarted += GameInput_OnPlayerInteractStarted;
+        DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
+        DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
 
         payOrbsUI.OnOrbPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
 
         OnAnyStructureBuilt?.Invoke(this, EventArgs.Empty);
+
+        RefreshStructureUpgradeInteraction();
     }
 
     protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
@@ -64,28 +68,21 @@ public class Structure : MonoBehaviour {
 
     protected virtual void UpgradeStructure() {
         structureLevel++;
-        if (structureLevel == structureSO.maxLevel) {
-            SetStructureUpgradableUnlocked(false);
-        }
-
+        RefreshStructureUpgradeInteraction();
+        
         OnStructureUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetStructureUpgradableUnlocked(bool upgradable) {
+        Debug.Log("SetStructureUpgradableUnlocked " + upgradable);
         upgradeUnlocked = upgradable;
         ActivateStructureUpgradeInteraction(upgradable);
     }
 
-    public void SetStructureFunctionLocked() {
-        functionUnlocked = false;
-        ActivateStructureFunctionInteraction(false);
-        OnStructureFunctionLocked?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void SetStructureFunctionUnlocked() {
-        functionUnlocked = true;
-        ActivateStructureFunctionInteraction(true);
-        OnStructureFunctionUnlocked?.Invoke(this, EventArgs.Empty);
+    public void SetStructureFunctionUnlocked(bool unlocked) {
+        Debug.Log("SetStructureFunctionUnlocked " + unlocked);
+        functionUnlocked = unlocked;
+        ActivateStructureFunctionInteraction(unlocked);
     }
 
     public bool GetUpgradableUnlocked() {
@@ -108,6 +105,58 @@ public class Structure : MonoBehaviour {
         return structureSO;
     }
 
+
+    protected virtual void DayNightManager_OnDawnStart(object sender, EventArgs e) {
+        if (!structureSO.functionUsableAtNight && functionUnlocked) {
+            ActivateStructureFunctionInteraction(true);
+        }
+    }
+
+    protected virtual void DayNightManager_OnNightStart(object sender, EventArgs e) {
+        if (!structureSO.functionUsableAtNight) {
+            ActivateStructureFunctionInteraction(false);
+        }
+    }
+
+    protected virtual void RefreshStructureUpgradeInteraction() {
+        // Unlock upgrades if tent upgrade allows for new unlocks
+
+        if (structureLevel == structureSO.maxLevel) {
+            SetStructureUpgradableUnlocked(false);
+            return;
+        }
+
+        if(structureLevel == 1) {
+            if (Tent.Instance.GetStructureLevel() >= structureSO.level2UpgradeTentNecessaryLevel) {
+                SetStructureUpgradableUnlocked(true);
+            } else {
+                SetStructureUpgradableUnlocked(false);
+            }
+        }
+        
+        if(structureLevel == 2) {
+            if (Tent.Instance.GetStructureLevel() >= structureSO.level3UpgradeTentNecessaryLevel) {
+                SetStructureUpgradableUnlocked(true);
+            }
+            else {
+                SetStructureUpgradableUnlocked(false);
+            }
+        }
+       
+        if(structureLevel == 3) {
+            if (Tent.Instance.GetStructureLevel() >= structureSO.level4UpgradeTentNecessaryLevel) {
+                SetStructureUpgradableUnlocked(true);
+            }
+            else {
+                SetStructureUpgradableUnlocked(false);
+            }
+        }
+
+        if (structureLevel == 4) {
+            Debug.LogWarning("structure level 4 and less than max level ?");
+        }
+
+    }
     protected void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (!playerCanInteract) return;
@@ -148,7 +197,7 @@ public class Structure : MonoBehaviour {
 
     #region InteractionTypes
 
-    protected void InitializeActiveStructureUITypeList() {
+    protected void DebugInitializeActiveStructureUITypeList() {
 
         if (functionUnlocked) {
             if (!activeStructureInteractionsTypeList.Contains(StructureInteractionType.function)) {
@@ -176,10 +225,13 @@ public class Structure : MonoBehaviour {
                 activeStructureInteractionsTypeList.Remove(StructureInteractionType.function);
             }
         }
+
+        OnStructureInteractionsUpdated?.Invoke(this, EventArgs.Empty);
         RefreshPlayerCanInteract();
     }
 
     protected void ActivateStructureUpgradeInteraction(bool active) {
+
         if (active) {
 
             if (!activeStructureInteractionsTypeList.Contains(StructureInteractionType.upgrade)) {
@@ -193,6 +245,8 @@ public class Structure : MonoBehaviour {
                 activeStructureInteractionsTypeList.Remove(StructureInteractionType.upgrade);
             }
         }
+
+        OnStructureInteractionsUpdated?.Invoke(this, EventArgs.Empty);
         RefreshPlayerCanInteract();
     }
 

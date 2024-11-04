@@ -5,15 +5,11 @@ using UnityEngine;
 
 public class Tent : Structure
 {
+    public static Tent Instance;
     [SerializeField] private int maxLevel;
 
-    protected override void Start() {
-        base.Start();
+    protected override void Awake() {
+        base.Awake();
+        Instance = this;
     }
-
-    protected override void UpgradeStructure() {
-        base.UpgradeStructure();
-        StructuresManager.Instance.UnlockNextStructureLocations();
-    }
-
 }

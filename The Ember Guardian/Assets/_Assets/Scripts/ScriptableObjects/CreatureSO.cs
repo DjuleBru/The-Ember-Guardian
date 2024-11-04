@@ -18,7 +18,6 @@ public class CreatureSO : ScriptableObject
 
     [HorizontalGroup("Game Data", 75)]
     [PreviewField(75)]
-    [HideLabel]
     public GameObject creaturePrefab;
 
     [VerticalGroup("Game Data/Stats")]
@@ -52,14 +51,29 @@ public class CreatureSO : ScriptableObject
     [LabelWidth(200)]
     public float totalAttackAnimationTime;
 
-    [VerticalGroup("Game Data/Wave Stats")]
+
+    [BoxGroup("AI")]
+    [LabelWidth(200)]
+    [Range(1, 5)]
+    public int workerTargetingPriority;
+    [BoxGroup("AI")]
+    [LabelWidth(200)]
+    [Range(1, 5)]
+    public int playerTargetingPriority;
+    [BoxGroup("AI")]
+    [LabelWidth(200)]
+    [Range(1, 5)]
+    public int barricadeTargetingPriority;
+
+    [BoxGroup("Wave Stats")]
     [LabelWidth(200)]
     [Range(1, 10)]
     public int difficulty; // between 1 and 10
+    [BoxGroup("Wave Stats")]
     [LabelWidth(200)]
     [Range(1, 10)]
     public int initialWaveSpawn; // between 1 and 10
-    [VerticalGroup("Game Data/Wave Stats")]
+    [BoxGroup("Wave Stats")]
     [LabelWidth(200)]
     [Range(0, 1)]
     public float spawnProbability; // between 0 and 1

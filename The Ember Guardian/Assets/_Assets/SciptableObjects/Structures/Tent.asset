@@ -12,8 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df36671b0790e8341a67078a96cfcbc5, type: 3}
   m_Name: Tent
   m_EditorClassIdentifier: 
+  structureType: 0
   structurePrefab: {fileID: 6212992262444972498, guid: dbba6f77d96419640a98b881771de681, type: 3}
   maxLevel: 3
+  level2UpgradeTentNecessaryLevel: 0
+  level3UpgradeTentNecessaryLevel: 0
+  level4UpgradeTentNecessaryLevel: 0
+  buildableAtNight: 0
+  functionUsableAtNight: 1
   buildingUpgradeSpriteList:
   - {fileID: 1699954747, guid: 78b613df896cc8341ab089cfa6c78fc2, type: 3}
   - {fileID: 428198014, guid: 78b613df896cc8341ab089cfa6c78fc2, type: 3}

@@ -16,6 +16,8 @@ public class CampZoneManager : MonoBehaviour
     [SerializeField] private float campCenterMinLimit;
     [SerializeField] private float campCenterMaxLimit;
 
+    private List<Barricade> functionalBarricades = new List<Barricade>();
+
     private float minZoneLimit = 0;
     private float maxZoneLimit = 0;
 
@@ -29,24 +31,48 @@ public class CampZoneManager : MonoBehaviour
     }
 
     private void Start() {
-        StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
+        Barricade.OnAnyBarricadeBuilt += Barricade_OnAnyBarricadeBuilt;
+        Barricade.OnAnyBarricadeDestroyed += Barricade_OnAnyBarricadeDestroyed;
+        Barricade.OnAnyBarricadeRepaired += Barricade_OnAnyBarricadeRepaired; ;
     }
 
-    private void StructureLocation_OnAnyStructureBuilt(object sender, System.EventArgs e) {
-        StructureLocation structureLocation = sender as StructureLocation;
+    private void Barricade_OnAnyBarricadeBuilt(object sender, EventArgs e) {
+        functionalBarricades.Add((sender as Barricade));
+        RefreshCampZoneLimits();
+    }
 
-        if(structureLocation.GetStructureSOToBuild().structureType == StructureSO.StructureType.barricade) {
-            if(structureLocation.transform.position.x < minZoneLimit) {
-                minZoneLimit = structureLocation.transform.position.x;
-                OnCampZoneLimitsChanged?.Invoke(this, EventArgs.Empty);
+    private void Barricade_OnAnyBarricadeRepaired(object sender, EventArgs e) {
+        functionalBarricades.Add((sender as Barricade));
+        RefreshCampZoneLimits();
+    }
+
+    private void Barricade_OnAnyBarricadeDestroyed(object sender, EventArgs e) {
+        functionalBarricades.Remove((sender as Barricade));
+        RefreshCampZoneLimits();
+    }
+
+    private void RefreshCampZoneLimits() {
+        float minZoneLimit = campCenterMinLimit;
+        float maxZoneLimit = campCenterMaxLimit;
+
+        foreach(Barricade barricade in functionalBarricades) {
+
+            if(barricade.transform.position.x < minZoneLimit) {
+                minZoneLimit = barricade.transform.position.x;
             }
 
-            if (structureLocation.transform.position.x > maxZoneLimit) {
-                maxZoneLimit = structureLocation.transform.position.x;
-                OnCampZoneLimitsChanged?.Invoke(this, EventArgs.Empty);
+            if (barricade.transform.position.x > maxZoneLimit) {
+                maxZoneLimit = barricade.transform.position.x;
             }
+
         }
+
+        this.minZoneLimit = minZoneLimit;
+        this.maxZoneLimit = maxZoneLimit;
+
+        OnCampZoneLimitsChanged?.Invoke(this, EventArgs.Empty);
     }
+
 
     public float GetMinZoneLimit() {
         return minZoneLimit;
@@ -54,6 +80,14 @@ public class CampZoneManager : MonoBehaviour
 
     public float GetMaxZoneLimit() {
         return maxZoneLimit;
+    }
+
+    public bool IsWithinCampZoneLimits(Vector3 position) {
+        if(position.x >= minZoneLimit && position.x <= maxZoneLimit) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Vector3 GetClosestExteriorZoneLimit(Vector3 initialPosition, float distanceToSafety = 0f) {

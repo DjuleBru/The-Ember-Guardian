@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,9 +7,44 @@ public class Barricade : Structure, IDamageable {
 
     [SerializeField] private Transform projectileTarget;
     [SerializeField] private Transform meleeAttackPosition;
+    [SerializeField] private Collider2D barricadeColliderLevel1;
+    [SerializeField] private Collider2D barricadeColliderLevel2;
+    [SerializeField] private Collider2D barricadeColliderLevel3;
+    [SerializeField] private Collider2D barricadeColliderLevel4;
+    private Collider2D currentBarricadeCollider;
+
+    private int level1Health = 12;
+    private int level2Health = 24;
+    private int level3Health = 48;
+    private int level4Health = 60;
+
+    private int barricadeMaxHealth;
+    private int barricadeHealth;
+
+    public event EventHandler OnBarricadeDamageTaken;
+    public event EventHandler OnBarricadeDestroyed;
+    public static event EventHandler OnAnyBarricadeDestroyed;
+    public event EventHandler OnBarricadeRepaired;
+    public static event EventHandler OnAnyBarricadeRepaired;
+    public static event EventHandler OnAnyBarricadeBuilt;
+
+    protected override void Start() {
+        base.Start();
+
+        DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+
+        barricadeMaxHealth = level1Health;
+        barricadeHealth = level1Health;
+        currentBarricadeCollider = barricadeColliderLevel1;
+
+        OnAnyBarricadeBuilt?.Invoke(this, EventArgs.Empty);
+    }
+
 
     public void Die() {
-
+        OnBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
+        OnAnyBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
+        currentBarricadeCollider.enabled = false;
     }
 
     public Transform GetProjectileTarget() {
@@ -16,10 +52,85 @@ public class Barricade : Structure, IDamageable {
     }
 
     public void TakeDamage(int damage, Vector3 damageSourcePosition) {
-        Debug.Log("Barricade take damage " + damage);
+        barricadeHealth -= damage;
+
+        if(barricadeHealth <= 0) {
+            Die();
+        }
+
+        RefreshBarricadeRepair();
+        OnBarricadeDamageTaken?.Invoke(this, EventArgs.Empty);
     }
 
     public Transform GetMeleeAttackPosition() {
         return meleeAttackPosition;
     }
+
+    public float GetBarricadeHealthNormalized() {
+        return (float)barricadeHealth/ (float)barricadeMaxHealth;
+    }
+
+    protected override void UpgradeStructure() {
+        base.UpgradeStructure();
+
+        if(structureLevel == 2) {
+            barricadeMaxHealth = level2Health;
+            barricadeHealth = level2Health;
+
+            ActivateCollider(barricadeColliderLevel2);
+        }
+        if (structureLevel == 3) {
+            barricadeMaxHealth = level3Health;
+            barricadeHealth = level3Health;
+
+            ActivateCollider(barricadeColliderLevel3);
+
+        }
+        if (structureLevel == 4) {
+            barricadeMaxHealth = level4Health;
+            barricadeHealth = level4Health;
+            ActivateCollider(barricadeColliderLevel4);
+        }
+    }
+
+    private void ActivateCollider(Collider2D collider) {
+
+        currentBarricadeCollider.gameObject.SetActive(false);
+        currentBarricadeCollider = collider;
+        currentBarricadeCollider.gameObject.SetActive(true);
+
+    }
+    protected override void DayNightManager_OnDawnStart(object sender, EventArgs e) {
+        base.DayNightManager_OnDawnStart(sender, e);
+        RefreshBarricadeRepair();
+    }
+
+    private void RefreshBarricadeRepair() {
+        if (barricadeHealth <= barricadeMaxHealth) {
+            SetStructureFunctionUnlocked(true);
+            SetStructureUpgradableUnlocked(false);
+        }
+    }
+
+    protected override void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
+        payOrbsUI.SetPlayerInteracting(false);
+
+        if (currentStructureInteractionType == StructureInteractionType.function) {
+            RepairBarricade();
+            return;
+        }
+
+        if (currentStructureInteractionType == StructureInteractionType.upgrade) {
+            UpgradeStructure();
+            return;
+        }
+    }
+
+    private void RepairBarricade() {
+        barricadeHealth = barricadeMaxHealth;
+        OnBarricadeRepaired?.Invoke(this, EventArgs.Empty);
+        SetStructureFunctionUnlocked(false);
+        SetStructureUpgradableUnlocked(true);
+    }
+
 }

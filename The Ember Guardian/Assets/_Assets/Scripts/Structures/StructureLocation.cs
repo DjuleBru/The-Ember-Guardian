@@ -30,7 +30,6 @@ public class StructureLocation : MonoBehaviour {
         GameInput.Instance.OnPlayerInteractStarted += GameInput_OnPlayerInteractStarted;
 
         payOrbsUI.OnOrbPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
-
         payOrbsUI.SetOrbTemplateUIList(buildStructureOrbTemplates);
     }
 
@@ -39,8 +38,10 @@ public class StructureLocation : MonoBehaviour {
     }
 
     private void BuildStructure() {
+
         Instantiate(structureSOToBuild.structurePrefab, transform.position, Quaternion.identity);
         OnAnyStructureBuilt?.Invoke(this, EventArgs.Empty);
+
         Destroy(gameObject);
     }
 

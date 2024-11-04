@@ -69,7 +69,8 @@ public class CreaturesSpawnManager : MonoBehaviour
     }
  
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
-        SetWaveParameters(DayNightManager.Instance.GetCurrentDay());
+        currentWaveNumber++;
+        SetWaveParameters(currentWaveNumber);
     }
 
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
@@ -101,7 +102,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         // Préparer la liste de toutes les créatures à spawner pour cette vague
         waveCreaturesDictionary.Clear();
 
-       for(int i=0; i < subWaveNumber; i++) {
+       for(int i=0 ; i < subWaveNumber; i++) {
             float subWaveDifficulty = subWaveDifficultyCurve.Evaluate((float)i / subWaveNumber) * waveDifficulty;
 
             List<SpawnedCreatureInfo> subWaveCreatures = PrepareSubWaveCreatures(subWaveDifficulty, waveDifficultyLeftProportion, subWaveNumber);

@@ -22,6 +22,11 @@ public class StructureSO : ScriptableObject
     public Transform structurePrefab;
 
     public int maxLevel = 1;
+    public int level2UpgradeTentNecessaryLevel;
+    public int level3UpgradeTentNecessaryLevel;
+    public int level4UpgradeTentNecessaryLevel;
+    public bool buildableAtNight;
+    public bool functionUsableAtNight;
 
     public List<Sprite> buildingUpgradeSpriteList;
 }
