@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class BodyVisualAnimatorManager : MonoBehaviour
 {
-    private Animator animator;
-    [SerializeField] private Mob mob;
+    protected Animator animator;
+    [SerializeField] protected Mob mob;
 
-    private void Awake() {
+    protected virtual void Awake() {
         animator = GetComponent<Animator>();
     }
 
-    private void Start() {
+    protected virtual void Start() {
         mob.OnMobDamageTaken += Mob_OnMobDamageTaken;
     }
 
-    private void Mob_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {
+    protected void Mob_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {
         animator.SetTrigger("Hit");
     }
 }

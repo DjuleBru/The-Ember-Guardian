@@ -15,14 +15,15 @@ MonoBehaviour:
   enemyName: Crawler
   description: Basic monster, a bit swarmy.
   creaturePrefab: {fileID: 2465624883499499618, guid: a7d7975db41abfd489cd11f7f596df5f, type: 3}
-  moveSpeed: 6
-  moveSpeedRandomizerDelta: 2
+  moveSpeed: 9
+  moveSpeedRandomizerDelta: 1
   maxHealth: 3
   damage: 1
   attackRate: 2
   attackRange: 0.2
   attackAnimationDelay: 0.3
   totalAttackAnimationTime: 0.6
+  baseMovementAnimationSpeed: 1.5
   workerTargetingPriority: 1
   playerTargetingPriority: 2
   barricadeTargetingPriority: 3

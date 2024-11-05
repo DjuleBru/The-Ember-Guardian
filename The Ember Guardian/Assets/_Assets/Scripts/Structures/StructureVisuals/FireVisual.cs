@@ -189,7 +189,7 @@ public class FireVisual : StructureVisual
             AOEFirePS.gameObject.SetActive(false);
         }
 
-        AOEFireLight.pointLightOuterRadius = fireRadius;
+        AOEFireLight.pointLightOuterRadius = fireRadius + fireRadius / 10;
         AOEFireLight.pointLightInnerRadius = fireRadius - fireRadius / 10;
 
         fireAtmosphericLight1.pointLightOuterRadius = fireRadius*3/4;
@@ -199,10 +199,10 @@ public class FireVisual : StructureVisual
         fireAtmosphericLight2.pointLightInnerRadius = fireRadius/5;
 
         var shape = AOEFirePS.shape;
-        shape.radius = fireRadius - fireRadius/10;
+        shape.radius = fireRadius;
 
         var shape2 = atmosphericPS.shape;
-        shape2.radius = fireRadius - fireRadius / 10;
+        shape2.radius = fireRadius;
     }
 
     private void ChangeFireVisualsLightIntensity(float lightIntensity) {

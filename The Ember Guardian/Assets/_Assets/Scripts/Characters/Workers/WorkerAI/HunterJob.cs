@@ -10,19 +10,21 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     private WorkerAnimatorManager workerAnimatorManager;
     private MobAttack hunterAttack;
     private Animal targetAnimal;
+    private Creature targetCreature;
 
     [SerializeField] private float roamMoveSpeed = 1.5f;
     [SerializeField] private float headToCampMoveSpeed = 2.5f;
     [SerializeField] private float trackAnimalMoveSpeed = 2f;
     [SerializeField] private float roamChangeDestinationRate = 5f;
 
-    [SerializeField] private float huntingRange = 4f;
+    private float initialFiringRange = 8f;
+    private float firingRange;
 
     private float maxAnimalTargetingDistanceToCampOuterPoint = 60f;
 
     private float roamTimer;
-    private float checkClosestAnimalTimer;
-    private float checkClosestAnimalRate = 1f;
+    private float checkClosestTargetTimer;
+    private float checkClosestTargetCooldown = .25f;
 
     private bool hasSetSpeed;
     private bool hasHitAnimal;
@@ -35,7 +37,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         pickingUpOrbs,
         droppingOrbs,
         hunting,
-        headingToSafety,
+        headingToGuard,
         guarding,
     }
 
@@ -57,11 +59,13 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         dayHunterStates.Add(HunterState.headingToHunt);
         dayHunterStates.Add(HunterState.hunting);
 
-        duskAndNightHunterStates.Add(HunterState.headingToSafety);
+        duskAndNightHunterStates.Add(HunterState.headingToGuard);
         duskAndNightHunterStates.Add(HunterState.guarding);
 
         dayAndNightHunterStates.Add(HunterState.pickingUpOrbs);
         dayAndNightHunterStates.Add(HunterState.droppingOrbs);
+
+        firingRange = initialFiringRange;
     }
 
     private void Update() {
@@ -69,8 +73,13 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         if (targetAnimal != null) {
             Debug.DrawLine(mobMovement.transform.position, targetAnimal.transform.position, Color.red);
         }
+        if (targetCreature != null) {
+            Debug.DrawLine(mobMovement.transform.position, targetCreature.transform.position, Color.red);
+        }
 
-        if(DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
+        DebugExtention.DrawCircle(mobMovement.transform.position, firingRange, 20, Color.white);
+
+        if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
             CheckDroporbsToPlayer();
             CheckOrbsToCollect();
         }
@@ -97,7 +106,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
                 if (targetAnimal == null) return;
 
                 HeadToTargetAnimal();
-                if(TargetAnimalIsInHuntingRange()) {
+                if(TargetIsInHuntingRange(targetAnimal)) {
                     ChangeState(HunterState.hunting);
                 };
 
@@ -111,7 +120,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
             case HunterState.hunting:
 
-                if (!TargetAnimalIsInHuntingRange()) {
+                if (!TargetIsInHuntingRange(targetAnimal)) {
                     hunterAttack.RemoveAttackTarget();
                     ChangeState(HunterState.headingToHunt);
                     return;
@@ -142,7 +151,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
                 break;
 
 
-            case HunterState.headingToSafety:
+            case HunterState.headingToGuard:
 
                 destinationTower = StructuresManager.Instance.GetClosestTower(worker.GetCampSideAddigned(), transform.position);
 
@@ -159,14 +168,30 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
                 // Keep checking if tower spots have been opened
                 if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
+
                     if (worker.GetStructureAssigned() != null) return;
 
                     destinationTower = StructuresManager.Instance.GetClosestTower(worker.GetCampSideAddigned(), transform.position);
 
                     if (destinationTower != null) {
-                        ChangeState(HunterState.headingToSafety);
+                        ChangeState(HunterState.headingToGuard);
                     }
 
+                } else {
+
+                    if(targetCreature == null) {
+
+                        CheckClosestCreature();
+
+                    } else {
+
+                        if(!TargetIsInHuntingRange(targetCreature)) {
+                            hunterAttack.RemoveAttackTarget();
+                        } else {
+                            hunterAttack.SetAttackTarget(targetCreature);
+                        }
+
+                    }
                 }
 
                 break;
@@ -174,13 +199,14 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
     }
 
-    private bool TargetAnimalIsInHuntingRange() {
-        if(Mathf.Abs(targetAnimal.transform.position.x - mobMovement.transform.position.x) < huntingRange) {
+    private bool TargetIsInHuntingRange(IDamageable iDamageable) {
+        if(Mathf.Abs((iDamageable as MonoBehaviour).transform.position.x - mobMovement.transform.position.x) < firingRange) {
             return true;
         } else {
             return false;
         }
     }
+
 
     public void Roam() {
 
@@ -201,10 +227,10 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
         if (hasHitAnimal) return false;
 
-        checkClosestAnimalTimer -= Time.deltaTime;
+        checkClosestTargetTimer -= Time.deltaTime;
 
-        if(checkClosestAnimalTimer < 0 ) {
-            checkClosestAnimalTimer = checkClosestAnimalRate;
+        if(checkClosestTargetTimer < 0 ) {
+            checkClosestTargetTimer = checkClosestTargetCooldown;
 
             Animal newTargetAnimal = AnimalManager.Instance.GetClosestAnimalInRadius(mobMovement.transform.position, worker.GetCampSideAddigned(), maxAnimalTargetingDistanceToCampOuterPoint);
 
@@ -223,9 +249,31 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         return false;
     }
 
+    private bool CheckClosestCreature() {
+        checkClosestTargetTimer -= Time.deltaTime;
+
+        if (checkClosestTargetTimer < 0) {
+            checkClosestTargetTimer = checkClosestTargetCooldown;
+
+            Creature newTargetCreature = CreaturesManager.Instance.GetClosestCreatureInRadius(mobMovement.transform.position, firingRange);
+
+            if (newTargetCreature == null) {
+                targetCreature = null;
+                return false;
+
+            }
+            else {
+                TargetCreature(newTargetCreature);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void CheckDusk() {
         if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk) {
-            ChangeState(HunterState.headingToSafety);
+            ChangeState(HunterState.headingToGuard);
         }
     }
 
@@ -245,12 +293,29 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         if (targetAnimal == newTargetAnimal) return;
 
         if (targetAnimal != null) {
-            newTargetAnimal.OnAnimalDroppedCollectibles -= TargetAnimal_OnAnimalDroppedCollectibles;
+            targetAnimal.OnAnimalDroppedCollectibles -= TargetAnimal_OnAnimalDroppedCollectibles;
+            targetAnimal.OnMobDamageTaken -= TargetAnimal_OnMobDamageTaken;
         }
 
         targetAnimal = newTargetAnimal;
-        targetAnimal.OnAnimalDroppedCollectibles += TargetAnimal_OnAnimalDroppedCollectibles;
-        targetAnimal.OnMobDamageTaken += TargetAnimal_OnMobDamageTaken;
+        newTargetAnimal.OnAnimalDroppedCollectibles += TargetAnimal_OnAnimalDroppedCollectibles;
+        newTargetAnimal.OnMobDamageTaken += TargetAnimal_OnMobDamageTaken;
+    }
+
+    private void TargetCreature(Creature newTargetCreature) {
+        if (targetCreature == newTargetCreature) return;
+
+        if (targetCreature != null) {
+            targetCreature.OnMobDied -= TargetCreature_OnMobDied;
+        }
+
+        targetCreature = newTargetCreature;
+        targetCreature.OnMobDied += TargetCreature_OnMobDied;
+    }
+
+    private void TargetCreature_OnMobDied(object sender, System.EventArgs e) {
+        targetCreature = null;
+        hunterAttack.RemoveAttackTarget();
     }
 
     private void TargetAnimal_OnAnimalDroppedCollectibles(object sender, Animal.OnAnimalDroppedCollectibleEventArgs e) {
@@ -341,23 +406,29 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     }
 
     public void SetGarrisoned(Vector3 position, Tower tower) {
-        Debug.Log("SetGarrisoned " + position);
         mobMovement.SetMoveTarget(position);
 
         worker.AssignStructure(tower);
         workerAnimatorManager.SetWatchDir(position.x);
     }
 
+    public void BuffRange(float buff) {
+        firingRange *= buff;
+    }
+
+    public void ResetRangeBuff() {
+        firingRange = initialFiringRange;
+    }
 
     private void ChangeState(HunterState newState) {
         if (newState == state) return;
 
         previousState = state;
-        Debug.Log("previousState " + previousState);
+        //Debug.Log("previousState " + previousState);
 
         mobMovement.SetMoveTarget(mobMovement.transform.position);
 
-        Debug.Log("newState " + newState);
+        //Debug.Log("newState " + newState);
         state = newState;
     }
 
@@ -373,11 +444,11 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
-        ChangeState(HunterState.headingToSafety);
+        ChangeState(HunterState.headingToGuard);
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
-        checkClosestAnimalTimer = 0;
+        checkClosestTargetTimer = 0;
 
         targetAnimal = null;
         hasHitAnimal = false;
@@ -405,7 +476,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
             ChangeState(HunterState.idle);
         } else {
-            ChangeState(HunterState.headingToSafety);
+            ChangeState(HunterState.headingToGuard);
         }
 
     }

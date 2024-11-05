@@ -104,7 +104,6 @@ public class WorkerAnimatorManager : MonoBehaviour
     }
 
     public void SetWatchDir(float watchDir) {
-        Debug.Log(watchDir);
         this.watchDir = watchDir;
     }
 

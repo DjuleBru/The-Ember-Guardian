@@ -14,15 +14,25 @@ public class MobMovement : MonoBehaviour
     protected Rigidbody2D rb;
     protected Vector3 targetDestination;
     protected float moveDirFloat;
+    protected float moveSpeed;
+    protected float moveSpeedBuff = 1f;
 
     protected bool destinationReached;
     public event EventHandler OnDestinationReached;
     public event EventHandler OnDestinationSet;
 
+    public event EventHandler<OnMoveSpeedBuffedEventArgs> OnMoveSpeedBuffChanged;
+
+    public class OnMoveSpeedBuffedEventArgs : EventArgs {
+        public float moveSpeedBuff;
+    }
+
     protected virtual void Awake() {
         rb = GetComponent<Rigidbody2D>();
 
         targetDestination = transform.position;
+
+        moveSpeed = initialMobSpeed;
     }
 
     protected void FixedUpdate() {
@@ -50,7 +60,7 @@ public class MobMovement : MonoBehaviour
             moveDirFloat = 1;
         }
 
-        float targetSpeed = moveDirFloat * initialMobSpeed * rb.mass;
+        float targetSpeed = moveDirFloat * moveSpeed * rb.mass;
         float speedDif = targetSpeed - rb.velocity.x;
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
@@ -85,7 +95,7 @@ public class MobMovement : MonoBehaviour
             moveDirFloat = 1;
         }
 
-        float targetSpeed = moveDirFloat * initialMobSpeed;
+        float targetSpeed = moveDirFloat * moveSpeed;
         float speedDif = targetSpeed - rb.velocity.x;
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
@@ -96,7 +106,35 @@ public class MobMovement : MonoBehaviour
     }
 
     public void SetMoveSpeed(float moveSpeed) {
-        initialMobSpeed = moveSpeed;
+        this.moveSpeed = moveSpeed;
+    }
+
+    public void BuffMoveSpeed(float moveSpeedBuff) {
+        this.moveSpeedBuff *= moveSpeedBuff;
+        moveSpeed = initialMobSpeed * this.moveSpeedBuff;
+
+        OnMoveSpeedBuffChanged?.Invoke(this, new OnMoveSpeedBuffedEventArgs {
+            moveSpeedBuff = this.moveSpeedBuff
+        });
+    }
+
+    public void DebuffMoveSpeed(float moveSpeedBuff) {
+        this.moveSpeedBuff /= moveSpeedBuff;
+        moveSpeed = initialMobSpeed * this.moveSpeedBuff;
+
+        OnMoveSpeedBuffChanged?.Invoke(this, new OnMoveSpeedBuffedEventArgs {
+            moveSpeedBuff = this.moveSpeedBuff
+        });
+    }
+
+    public void ResetTempMoveSpeedBuffs() {
+
+        moveSpeedBuff = 1f;
+        moveSpeed = initialMobSpeed;
+
+        OnMoveSpeedBuffChanged?.Invoke(this, new OnMoveSpeedBuffedEventArgs {
+            moveSpeedBuff = moveSpeedBuff
+        });
     }
 
     public void SetMoveTarget(Vector3 moveTarget) {

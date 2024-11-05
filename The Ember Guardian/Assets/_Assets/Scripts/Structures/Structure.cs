@@ -57,6 +57,7 @@ public class Structure : MonoBehaviour {
         payOrbsUI.SetPlayerInteracting(false);
         
         if(currentStructureInteractionType == StructureInteractionType.function) {
+            TriggerStructureFunction();
             return;
         }
 
@@ -64,6 +65,10 @@ public class Structure : MonoBehaviour {
             UpgradeStructure();
             return;
         }
+    }
+
+    protected virtual void TriggerStructureFunction() {
+
     }
 
     protected virtual void UpgradeStructure() {
@@ -74,13 +79,11 @@ public class Structure : MonoBehaviour {
     }
 
     public void SetStructureUpgradableUnlocked(bool upgradable) {
-        Debug.Log("SetStructureUpgradableUnlocked " + upgradable);
         upgradeUnlocked = upgradable;
         ActivateStructureUpgradeInteraction(upgradable);
     }
 
     public void SetStructureFunctionUnlocked(bool unlocked) {
-        Debug.Log("SetStructureFunctionUnlocked " + unlocked);
         functionUnlocked = unlocked;
         ActivateStructureFunctionInteraction(unlocked);
     }
@@ -105,17 +108,23 @@ public class Structure : MonoBehaviour {
         return structureSO;
     }
 
-
     protected virtual void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         if (!structureSO.functionUsableAtNight && functionUnlocked) {
             ActivateStructureFunctionInteraction(true);
         }
+
+        if(upgradeUnlocked) {
+            ActivateStructureUpgradeInteraction(true);
+        }
     }
 
     protected virtual void DayNightManager_OnNightStart(object sender, EventArgs e) {
+
         if (!structureSO.functionUsableAtNight) {
             ActivateStructureFunctionInteraction(false);
         }
+
+        ActivateStructureUpgradeInteraction(false);
     }
 
     protected virtual void RefreshStructureUpgradeInteraction() {
@@ -157,22 +166,6 @@ public class Structure : MonoBehaviour {
         }
 
     }
-    protected void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
-        if (!playerInTriggerArea) return;
-        if (!playerCanInteract) return;
-
-        playerInteracting = true;
-        payOrbsUI.SetPlayerInteracting(true);
-    }
-
-    protected void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
-        if (!playerInTriggerArea) return;
-        if (!playerCanInteract) return;
-        if (!playerInteracting) return;
-
-        playerInteracting = false;
-        payOrbsUI.CancelOrbPayment();
-    }
 
     protected void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
@@ -197,6 +190,22 @@ public class Structure : MonoBehaviour {
 
     #region InteractionTypes
 
+    protected void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
+        if (!playerInTriggerArea) return;
+        if (!playerCanInteract) return;
+
+        playerInteracting = true;
+        payOrbsUI.SetPlayerInteracting(true);
+    }
+
+    protected void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+        if (!playerInTriggerArea) return;
+        if (!playerCanInteract) return;
+        if (!playerInteracting) return;
+
+        playerInteracting = false;
+        payOrbsUI.CancelOrbPayment();
+    }
     protected void DebugInitializeActiveStructureUITypeList() {
 
         if (functionUnlocked) {

@@ -16,6 +16,9 @@ MonoBehaviour:
   reticleSprite: {fileID: 0}
   gunAnimator: {fileID: 0}
   maxAmmo: 10
+  shotsPerClip: 3
+  shootCooldownTime: 0.75
+  reloadTime: 2.5
   gunKnockback: 1.5
   gunRecoil: 2
   gunRecoilDamping: 4

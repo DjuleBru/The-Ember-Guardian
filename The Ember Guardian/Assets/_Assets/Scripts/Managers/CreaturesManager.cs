@@ -13,6 +13,25 @@ public class CreaturesManager : MonoBehaviour
         Instance = this;
     }
 
+    public Creature GetClosestCreatureInRadius(Vector2 position, float radius) {
+
+        float closestXDistance = Mathf.Infinity;
+        Creature closestCreatureInRadius = null;
+
+        foreach (Creature creature in creaturesSpawnedList) {
+            float distanceToCreature = Mathf.Abs(creature.transform.position.x - position.x);
+            if ((distanceToCreature) < radius && (distanceToCreature < closestXDistance)) {
+                // Creature is the closest one
+
+                closestXDistance = Mathf.Abs(creature.transform.position.x - position.x);
+                closestCreatureInRadius = creature;
+            }
+
+        }
+
+        return closestCreatureInRadius;
+    }
+
     public void AddCreatureSpawned(Creature creature) {
         creaturesSpawnedList.Add(creature);
     }

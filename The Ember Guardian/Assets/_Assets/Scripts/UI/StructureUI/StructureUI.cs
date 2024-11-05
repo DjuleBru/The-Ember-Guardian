@@ -121,8 +121,6 @@ public class StructureUI : MonoBehaviour
     protected void RefreshShownUI() {
         // Lower Upgrade types are higher priority
 
-        Debug.Log("RefreshShownUI " + structure.GetActiveStructureInteractionTypeList().Contains(Structure.StructureInteractionType.upgrade));
-
         // Upgrade
         if (structure.GetActiveStructureInteractionTypeList().Contains(Structure.StructureInteractionType.upgrade)) {
             ShowStructureUpgradeUI();

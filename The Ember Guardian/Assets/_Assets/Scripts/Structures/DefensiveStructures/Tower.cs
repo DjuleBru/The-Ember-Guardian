@@ -18,6 +18,11 @@ public class Tower : Structure
     [SerializeField] private List<Transform> level3GarrisonPositions;
     [SerializeField] private List<Transform> level4GarrisonPositions;
 
+    private float level1RangeMultiplier = 1.25f;
+    private float level2RangeMultiplier = 1.5f;
+    private float level3RangeMultiplier = 1.5f;
+    private float level4RangeMultiplier = 2f;
+
     protected override void Start() {
         base.Start();
         DisableAllGarrisonColliders();
@@ -64,25 +69,35 @@ public class Tower : Structure
     private void SetWorkerGarrisonPosition(Worker worker) {
         int workerIndex = assignedWorkersList.IndexOf(worker);
         Vector3 garrisonPosition = new Vector3(0, 0, 0);
+        float rangeBuff = 1f;
 
         if (structureLevel == 1) {
             garrisonPosition = level1GarrisonPositions[workerIndex].position;
+            rangeBuff = level1RangeMultiplier;
         }
 
         if (structureLevel == 2) {
             garrisonPosition = level2GarrisonPositions[workerIndex].position;
+            rangeBuff = level2RangeMultiplier;
         }
 
         if (structureLevel == 3) {
             garrisonPosition = level3GarrisonPositions[workerIndex].position;
+            rangeBuff = level3RangeMultiplier;
         }
 
         if (structureLevel == 4) {
             garrisonPosition = level4GarrisonPositions[workerIndex].position;
+            if(workerIndex == 1) {
+                rangeBuff = level4RangeMultiplier;
+            } else {
+                rangeBuff = level3RangeMultiplier;
+            }
         }
 
         worker.transform.position = garrisonPosition;
         worker.GetComponent<HunterJob>().SetGarrisoned(garrisonPosition, this);
+        worker.GetComponent<HunterJob>().BuffRange(rangeBuff);
     }
 
     public bool GetTowerFull() {
@@ -94,7 +109,9 @@ public class Tower : Structure
         return false;
     }
 
-    private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
+    protected override void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
+        base.DayNightManager_OnDawnStart(sender, e);
+
         StartCoroutine(UnGarrisonWorkersCoroutine());
     }
 
@@ -105,6 +122,7 @@ public class Tower : Structure
             Vector3 groundPosition = new Vector3(transform.position.x, 1, 0);
             worker.transform.position = groundPosition;
             worker.AssignStructure(null);
+            worker.GetComponent<HunterJob>().ResetRangeBuff();
             yield return new WaitForSeconds(.2f);
 
         }

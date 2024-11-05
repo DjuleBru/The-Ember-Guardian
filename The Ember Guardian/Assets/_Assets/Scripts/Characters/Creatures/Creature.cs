@@ -7,6 +7,10 @@ public class Creature : Mob
 {
 
     [SerializeField] private CreatureSO creatureSO;
+    private bool enteredLight;
+
+    public event EventHandler OnCreatureEnteredLight;
+    public event EventHandler OnCreatureExitedLight;
 
     private void OnEnable() {
         CreaturesManager.Instance.AddCreatureSpawned(this);
@@ -14,11 +18,12 @@ public class Creature : Mob
     }
 
     public override void Die() {
+        CreaturesManager.Instance.RemoveCreatureSpawned(this);
+
         base.Die();
 
         StartCoroutine(DisableGameObjectAfterDelay());
 
-        CreaturesManager.Instance.RemoveCreatureSpawned(this);
         GetComponent<Collider2D>().enabled = false;
         GetComponent<Rigidbody2D>().gravityScale = 0;
     }
@@ -30,5 +35,23 @@ public class Creature : Mob
 
     public CreatureSO GetCreatureSO() {
         return creatureSO;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if(collision.gameObject.GetComponentInParent<Fire>() != null) {
+            if (enteredLight) return;
+            Debug.Log("OnCreatureEnteredLight");
+            OnCreatureEnteredLight?.Invoke(this, EventArgs.Empty);
+            enteredLight = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) {
+        if (collision.gameObject.GetComponentInParent<Fire>() != null) {
+            if (!enteredLight) return;
+            Debug.Log("OnCreatureExitedLight");
+            OnCreatureExitedLight?.Invoke(this, EventArgs.Empty);
+            enteredLight = false;
+        }
     }
 }

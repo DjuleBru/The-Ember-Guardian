@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MobVisual : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer bodySpriteRenderer;
+    [SerializeField] protected SpriteRenderer bodySpriteRenderer;
     public static int currentMaxSortingOrder;
 
     protected Mob mob;

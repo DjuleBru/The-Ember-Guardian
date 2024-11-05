@@ -22,7 +22,7 @@ public class CreatureSO : ScriptableObject
 
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
-    [Range(5,20)]
+    [Range(1,20)]
     public float moveSpeed;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
@@ -50,6 +50,10 @@ public class CreatureSO : ScriptableObject
     [VerticalGroup("Game Data/Animation Parameters")]
     [LabelWidth(200)]
     public float totalAttackAnimationTime;
+    [VerticalGroup("Game Data/Animation Parameters")]
+    [LabelWidth(200)]
+    [Range(.5f, 2)]
+    public float baseMovementAnimationSpeed;
 
 
     [BoxGroup("AI")]

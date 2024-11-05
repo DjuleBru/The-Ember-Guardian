@@ -125,11 +125,12 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (projectileHasHit) return;
+        if (collision.gameObject.GetComponent<CreatureDetectionCollider>() != null) return;
 
-        mobHit = collision.GetComponentInParent<Animal>();
+        mobHit = collision.GetComponentInParent<Mob>();
 
         if(mobHit != null) {
-            mobHit.OnMobDied += AnimalHit_OnMobDied;
+            mobHit.OnMobDied += MobHit_OnMobDied;
 
             ProjectileHasHit(true);
             mobHit.TakeDamage(1, trajectoryStartPoint);
@@ -138,13 +139,10 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private void AnimalHit_OnMobDied(object sender, EventArgs e) {
-        Debug.Log("AnimalHit_OnMobDied");
+    private void MobHit_OnMobDied(object sender, EventArgs e) {
+
+        mobHit.OnMobDied -= MobHit_OnMobDied;
         Destroy(gameObject);
-    }
 
-    private void OnDestroy() {
-        mobHit.OnMobDied -= AnimalHit_OnMobDied;
     }
-
 }

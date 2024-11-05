@@ -4925,6 +4925,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f206d62afccd804d9f823dbbaf4a4a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2688749729732424139
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8022115201985466501}
+  - component: {fileID: 7294656095997144733}
+  m_Layer: 16
+  m_Name: FireRadiusCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8022115201985466501
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2688749729732424139}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3205007466584431920}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &7294656095997144733
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2688749729732424139}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &3049927667730748529
 GameObject:
   m_ObjectHideFlags: 0
@@ -19809,6 +19876,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2323155349443575450, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1159074042134772847}
+    - targetCorrespondingSourceObject: {fileID: 2323155349443575450, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8022115201985466501}
     - targetCorrespondingSourceObject: {fileID: 9013458545296523658, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7632168051396773141}
@@ -19864,12 +19934,13 @@ MonoBehaviour:
   structureSO: {fileID: 11400000, guid: 9829931b3277cd94f913e96ff2756212, type: 2}
   upgradeUnlocked: 0
   functionUnlocked: 0
-  calmFireRadius: 8
-  mildFireRadius: 15
-  wildFireRadius: 20
-  insaneFireRadius: 25
+  fireRadiusCollider: {fileID: 7294656095997144733}
+  calmFireRadius: 15
+  mildFireRadius: 25
+  wildFireRadius: 35
+  insaneFireRadius: 45
   orbFuelValue: 5
-  fuelDepletionRate: 0.1
+  fuelDepletionRate: 0.01
   calmFuelTreshold: 0
   mildFuelTreshold: 5
   wildFuelTreshold: 10

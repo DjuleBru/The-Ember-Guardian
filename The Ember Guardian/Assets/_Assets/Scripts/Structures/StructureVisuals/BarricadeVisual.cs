@@ -37,9 +37,6 @@ public class BarricadeVisual : StructureVisual
         float barricadeHealthNormalized = barricade.GetBarricadeHealthNormalized();
         float spriteIndexNormalized = 1 - ((float)spriteIndex / (float)currentLevelBarricadeSprites.Count);
 
-        Debug.Log("barricadeHealthNormalized " + barricadeHealthNormalized);
-        Debug.Log("spriteIndexNormalized " + spriteIndexNormalized);
-
         Vector2 force = new Vector2(Random.Range(0, 2), Random.Range(2, 4));
         float torque = Random.Range(-2, 2);
 
@@ -81,7 +78,6 @@ public class BarricadeVisual : StructureVisual
     }
 
     private void ActivateSprites(List<GameObject> gameObjectList) {
-        Debug.Log("ActivateSprites " + gameObjectList.Count);
         foreach(GameObject gameObject in gameObjectList) {
             gameObject.SetActive(true);
         }

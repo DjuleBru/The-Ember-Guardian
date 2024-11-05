@@ -43,7 +43,7 @@ public class CreatureDetectionCollider : MonoBehaviour
         // Worker
         Worker worker = other.GetComponent<Worker>();
         if (worker != null) {
-            if(worker.GetRecruited()) {
+            if(worker.GetRecruited() && !(worker.GetStructureAssigned() is Tower)) {
                 worker.OnMobDied += Worker_OnMobDied;
                 AddIDamageableInDetectionRange(worker);
             }
@@ -117,7 +117,9 @@ public class CreatureDetectionCollider : MonoBehaviour
             if (iDamageable is Player) {
                 // Check if player is out of camp
                 if (!CampZoneManager.Instance.IsWithinCampZoneLimits(Player.Instance.transform.position)) {
-                    currentPriority = creature.GetCreatureSO().playerTargetingPriority;
+
+                     currentPriority = creature.GetCreatureSO().playerTargetingPriority;
+
                 }
             }
 

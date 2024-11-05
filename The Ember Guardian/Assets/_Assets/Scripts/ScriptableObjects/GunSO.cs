@@ -9,6 +9,10 @@ public class GunSO : ScriptableObject
     public Sprite reticleSprite;
     public Animator gunAnimator;
     public int maxAmmo;
+    public int shotsPerClip;
+
+    public float shootCooldownTime;
+    public float reloadTime;
 
     public float gunKnockback;
     public float gunRecoil;

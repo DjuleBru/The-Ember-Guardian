@@ -9,7 +9,7 @@ public class MobAttack : MonoBehaviour
 
     [SerializeField] protected Transform projectilePrefab;
     [SerializeField] protected Transform projectileSpawnPoint;
-    [SerializeField] protected float attackRate;
+    [SerializeField] protected float attackCooldown;
     [SerializeField] protected float attackAnimationDelay;
     [SerializeField] protected float totalAttackAnimationTime;
 
@@ -33,7 +33,7 @@ public class MobAttack : MonoBehaviour
             attackTimer -= Time.deltaTime;
 
             if(attackTimer <= 0 ) {
-                attackTimer = attackRate;
+                attackTimer = attackCooldown;
                 Attack();
             }
 

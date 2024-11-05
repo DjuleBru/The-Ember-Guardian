@@ -48,7 +48,7 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     private void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
-
+        Debug.Log(Player.Instance.GetCanDropOrbOnTheFloor());
         if(Player.Instance.GetCanDropOrbOnTheFloor()) {
             if(blueOrbAmount >= 1) {
 

@@ -9,9 +9,10 @@ public class CreatureAI : MonoBehaviour {
     private MobAttack mobAttack;
 
     private float initialMoveSpeed;
+    private float foundTargetMoveSpeedBuff = 1.5f;
     private float attackRange;
     private float maxAttackRange;
-    private bool hasSetSpeed;
+    private bool followingTargetBuffedSpeed;
     private bool detectedAttackTarget;
 
     private IDamageable attackTarget;
@@ -33,10 +34,6 @@ public class CreatureAI : MonoBehaviour {
     private void Start() {
         attackRange = creature.GetCreatureSO().attackRange + Random.Range(-creature.GetCreatureSO().attackRange/10, creature.GetCreatureSO().attackRange/10);
         maxAttackRange = attackRange + attackRange/5;
-
-        initialMoveSpeed = creature.GetCreatureSO().moveSpeed + Random.Range(-creature.GetCreatureSO().moveSpeedRandomizerDelta, creature.GetCreatureSO().moveSpeedRandomizerDelta);
-
-        mobMovement.SetMoveSpeed(initialMoveSpeed);
     }
 
     private void Update() {
@@ -70,8 +67,6 @@ public class CreatureAI : MonoBehaviour {
                 }
 
                 if(!CheckAttackTargetInRange() && !mobAttack.GetAttackStarted()) {
-                    Debug.Log("mobAttack.GetAttackStarted() " + mobAttack.GetAttackStarted());
-                    Debug.Log("CheckAttackTargetInRange() " + CheckAttackTargetInRange());
                     ChangeState(State.moveToTarget);
                     return;
                 }
@@ -85,13 +80,27 @@ public class CreatureAI : MonoBehaviour {
 
         if(newState == State.attacking) {
             mobAttack.SetAttackTarget(attackTarget);
+
+            if (followingTargetBuffedSpeed) {
+                mobMovement.DebuffMoveSpeed(foundTargetMoveSpeedBuff);
+                followingTargetBuffedSpeed = false;
+            }
+
         }
 
         if(newState == State.walking) {
             mobAttack.RemoveAttackTarget();
+
+            if(followingTargetBuffedSpeed) {
+                mobMovement.DebuffMoveSpeed(foundTargetMoveSpeedBuff);
+                followingTargetBuffedSpeed = false;
+            }
+
         }
 
         if(newState == State.moveToTarget) {
+            mobMovement.BuffMoveSpeed(foundTargetMoveSpeedBuff);
+            followingTargetBuffedSpeed = true;
             mobAttack.RemoveAttackTarget();
         }
 
@@ -109,15 +118,17 @@ public class CreatureAI : MonoBehaviour {
     }
 
     private void HeadToTarget() {
-
-        if (!hasSetSpeed) {
-            mobMovement.SetMoveSpeed(initialMoveSpeed * 1.5f);
-            hasSetSpeed = true;
-        }
-
         Vector3 targetDestination = attackTarget.GetMeleeAttackPosition().position;
         mobMovement.SetMoveTarget(targetDestination);
-        hasSetSpeed = false;
+
+        if(attackTarget == Player.Instance.GetComponent<IDamageable>()) {
+
+            if (Mathf.Abs(transform.position.x - targetDestination.x) < attackRange && (Player.Instance.transform.position.y < 2f)) {
+                ChangeState(State.attacking);
+            }
+
+            return;
+        }
 
         if (Mathf.Abs(transform.position.x - targetDestination.x) < attackRange) {
             ChangeState(State.attacking);
@@ -125,16 +136,9 @@ public class CreatureAI : MonoBehaviour {
     }
 
     private void MoveTowardsFire() {
-
-        if (!hasSetSpeed) {
-            mobMovement.SetMoveSpeed(initialMoveSpeed);
-            hasSetSpeed = true;
-        }
-
         Vector3 targetDestination = new Vector3(0, 0, 0);
 
         mobMovement.SetMoveTarget(targetDestination);
-        hasSetSpeed = false;
     }
 
     public void ResetAttackTargetInProximity() {

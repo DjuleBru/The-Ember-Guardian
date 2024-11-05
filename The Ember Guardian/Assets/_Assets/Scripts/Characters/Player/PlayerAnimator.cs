@@ -5,10 +5,13 @@ using UnityEngine;
 public class PlayerAnimator : MonoBehaviour
 {
     [SerializeField] private Animator playerAnimator;
+    [SerializeField] private Animator bodyAnimator;
+    [SerializeField] private Animator gunBodyAnimator;
 
     private float previousMoveDir = 1f;
     private float moveDir;
 
+    private bool dead;
     private bool moving;
 
     private void Start() {
@@ -21,10 +24,29 @@ public class PlayerAnimator : MonoBehaviour
         PlayerMovement.Instance.OnPlayerLanded += PlayerMovement_OnPlayerLanded;
         PlayerMovement.Instance.OnPlayerCrouched += PlayerMovement_OnPlayerCrouched;
         PlayerMovement.Instance.OnPlayerCrouchedEnded += PlayerMovement_OnPlayerCrouchedEnded;
+
+        Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
+        Player.Instance.OnPlayerDied += Player_OnPlayerDied;
+        Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
     }
 
+    private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
+        playerAnimator.Play("Idle");
+        dead = false;
+    }
+
+    private void Player_OnPlayerDied(object sender, System.EventArgs e) {
+        playerAnimator.SetTrigger("Die");
+        dead = true;
+    }
+
+    private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
+        bodyAnimator.SetTrigger("Hit");
+        gunBodyAnimator.SetTrigger("Hit");
+    }
 
     private void Update() {
+        if (dead) return;
         moveDir = GameInput.Instance.GetMovementFloatNormalized();
 
         HandleXScale();

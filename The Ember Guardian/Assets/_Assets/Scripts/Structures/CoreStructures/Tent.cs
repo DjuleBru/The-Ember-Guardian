@@ -12,4 +12,21 @@ public class Tent : Structure
         base.Awake();
         Instance = this;
     }
+
+    protected override void Start() {
+        base.Start();
+        Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
+    }
+
+    protected void Player_OnPlayerDamaged(object sender, EventArgs e) {
+        ActivateStructureFunctionInteraction(true);
+    }
+
+    protected override void TriggerStructureFunction() {
+        base.TriggerStructureFunction();
+        Player.Instance.HealPlayer();
+        ActivateStructureFunctionInteraction(false);
+    }
+
+
 }

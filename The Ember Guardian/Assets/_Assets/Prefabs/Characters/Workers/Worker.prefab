@@ -120,7 +120,6 @@ MonoBehaviour:
   headToCampMoveSpeed: 1.5
   trackAnimalMoveSpeed: 1.25
   roamChangeDestinationRate: 5
-  huntingRange: 12
 --- !u!114 &1648183774965061190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,8 +225,9 @@ MonoBehaviour:
   isProjectileAttack: 1
   projectilePrefab: {fileID: 7911136206213874445, guid: a311ce4e518152146b39355d91931a25, type: 3}
   projectileSpawnPoint: {fileID: 2310341056989899468}
-  attackRate: 3
+  attackCooldown: 3
   attackAnimationDelay: 0.6
+  totalAttackAnimationTime: 0
 --- !u!1 &905933179199607543
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,7 +419,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2138060921
-  m_SortingLayer: -4
+  m_SortingLayer: -3
   m_SortingOrder: 0
   m_Sprite: {fileID: 1554863834, guid: 49f2e46cdbf228743b6a48ae488bf451, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

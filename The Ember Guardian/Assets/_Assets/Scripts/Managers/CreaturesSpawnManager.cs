@@ -21,7 +21,7 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     private float leftCreatureSpawnPosition;
     private float rightCreatureSpawnPosition;
-    private float spawnDistanceToCampZoneLimit = 40f;
+    private float spawnDistanceToCampZoneLimit = 20f;
 
     public List<CreatureSO> creatureTypes;
 
@@ -111,7 +111,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         }
     }
 
-    IEnumerator SpawnWave() {
+    private IEnumerator SpawnWave() {
         int subWaveIndex = 0;
         int spawnedCount = 0;
 

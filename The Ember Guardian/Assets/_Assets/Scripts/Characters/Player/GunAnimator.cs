@@ -13,6 +13,12 @@ public class GunAnimator : MonoBehaviour
     private void Start() {
         PlayerShoot.Instance.OnPlayerShootStopped += PlayerShoot_OnPlayerShootStopped;
         PlayerShoot.Instance.OnPlayerShotProjectile += PlayerShoot_OnPlayerShotProjectile;
+
+        Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
+    }
+
+    private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
+        animator.Play("Idle");
     }
 
     private void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {

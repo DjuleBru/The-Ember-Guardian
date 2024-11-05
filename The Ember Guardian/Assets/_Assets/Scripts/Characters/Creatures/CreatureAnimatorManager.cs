@@ -13,6 +13,8 @@ public class CreatureAnimatorManager : MonoBehaviour
     private float moveDir;
     private float watchDir;
     private float previousWatchDir = 1f;
+    private float animatorSpeedMultiplier = 1f;
+    private float baseMovementAnimationSpeed;
 
     private void Awake() {
         creature = GetComponentInParent<Creature>();
@@ -22,6 +24,18 @@ public class CreatureAnimatorManager : MonoBehaviour
 
         mobAttack.OnMobAttack += MobAttack_OnMobAttack;
         creature.OnMobDied += Creature_OnMobDied;
+        mobMovement.OnMoveSpeedBuffChanged += MobMovement_OnMoveSpeedBuffChanged;
+    }
+
+    private void Start() {
+        baseMovementAnimationSpeed = creature.GetCreatureSO().baseMovementAnimationSpeed;
+        animatorSpeedMultiplier = baseMovementAnimationSpeed;
+        animator.SetFloat("AnimationSpeedMultiplier", animatorSpeedMultiplier);
+    }
+
+    private void MobMovement_OnMoveSpeedBuffChanged(object sender, MobMovement.OnMoveSpeedBuffedEventArgs e) {
+        animatorSpeedMultiplier = baseMovementAnimationSpeed * e.moveSpeedBuff;
+        animator.SetFloat("AnimationSpeedMultiplier", animatorSpeedMultiplier);
     }
 
     private void Update() {
@@ -67,6 +81,7 @@ public class CreatureAnimatorManager : MonoBehaviour
 
         HandleScaleChange(watchDir);
     }
+
     private void HandleScaleChange(float watchDir) {
         if (watchDir < 0 && previousWatchDir > 0) {
             previousWatchDir = watchDir;
@@ -80,6 +95,7 @@ public class CreatureAnimatorManager : MonoBehaviour
             transform.localScale = newScale;
         }
     }
+
     private void MobAttack_OnMobAttack(object sender, System.EventArgs e) {
         animator.SetTrigger("Attack");
     }
