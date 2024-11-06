@@ -29,4 +29,8 @@ public class StructureSO : ScriptableObject
     public bool functionUsableAtNight;
 
     public List<Sprite> buildingUpgradeSpriteList;
+
+    public AudioClip buildAudioClip;
+    public AudioClip useFunctionAudioClip;
+    public AudioClip upgradeAudioClip;
 }

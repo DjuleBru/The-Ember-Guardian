@@ -22,15 +22,13 @@ public class StructuresManager : MonoBehaviour
     }
 
     private void Start() {
-        Structure.OnAnyStructureBuilt += Structure_OnAnyStructureBuilt;
 
         foreach (StructureLocation location in level1StructureLocationsUnlocked) {
             location.UnlockStructureLocation();
         }
     }
 
-    private void Structure_OnAnyStructureBuilt(object sender, System.EventArgs e) {
-        Structure structure = sender as Structure;
+    public void AddStructure(Structure structure) {
         builtStructures.Add(structure);
 
         if(structure is Tower) {

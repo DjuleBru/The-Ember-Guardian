@@ -1,10 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class StructureVisual : MonoBehaviour
 {
     [SerializeField] protected SpriteRenderer structureSpriteRenderer;
+    [SerializeField] protected SpriteRenderer structureFunctionIconSpriteRenderer;
+    [SerializeField] protected Color greyedStructionIconColor;
+    [SerializeField] protected Material unhoveredMaterial;
+    [SerializeField] protected Material hoveredMaterial;
+    [SerializeField] protected bool structureHasFunctionIcon;
+
     protected Structure structure;
 
     protected virtual void Awake() {
@@ -19,13 +26,42 @@ public class StructureVisual : MonoBehaviour
         }
     }
 
-
     protected virtual void Start() {
         structure.OnStructureUpgraded += Structure_OnStructureUpgraded;
+        structure.OnStructureInteractionsUpdated += Structure_OnStructureInteractionsUpdated;
+        structure.OnPlayerTriggeredIn += Structure_OnPlayerTriggeredIn;
+        structure.OnPlayerTriggeredOut += Structure_OnPlayerTriggeredOut;
+    }
+
+    private void Structure_OnStructureInteractionsUpdated(object sender, System.EventArgs e) {
+        if(structure.GetActiveStructureInteractionTypeList().Contains(Structure.StructureInteractionType.function)) {
+            HighlightStructureFunctionIcon(true);
+        }
+        else {
+            HighlightStructureFunctionIcon(false);
+        }
     }
 
     protected virtual void Structure_OnStructureUpgraded(object sender, System.EventArgs e) {
         int structureLevel = structure.GetStructureLevel();
         structureSpriteRenderer.sprite = structure.GetStructureSO().buildingUpgradeSpriteList[structureLevel - 1];
     }
+
+    protected virtual void HighlightStructureFunctionIcon(bool highlight) {
+        if (!structureHasFunctionIcon) return;
+        if(highlight) {
+            structureFunctionIconSpriteRenderer.color = Color.white;
+        } else {
+            structureFunctionIconSpriteRenderer.color = greyedStructionIconColor;
+        }
+    }
+
+    protected virtual void Structure_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
+        structureSpriteRenderer.material = unhoveredMaterial;
+    }
+
+    protected virtual void Structure_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        structureSpriteRenderer.material = hoveredMaterial;
+    }
+
 }

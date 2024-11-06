@@ -9,6 +9,7 @@ public class PlayerCurrencies : MonoBehaviour
 
     [SerializeField] private int initialOrbAmountDebug;
     [SerializeField] private Transform blueOrbPrefab;
+    [SerializeField] private Transform blueOrbDropPoint;
 
     public enum CurrencyType {
         blueOrb,
@@ -48,13 +49,13 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     private void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
-        Debug.Log(Player.Instance.GetCanDropOrbOnTheFloor());
         if(Player.Instance.GetCanDropOrbOnTheFloor()) {
             if(blueOrbAmount >= 1) {
 
-                lastBlueOrbDroppedOnTheFloor = Instantiate(blueOrbPrefab, transform.position, Quaternion.identity).GetComponent<Collectible>();
+                lastBlueOrbDroppedOnTheFloor = Instantiate(blueOrbPrefab, blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
 
-                lastBlueOrbDroppedOnTheFloor.ApplyRandomFrontForce(2f * PlayerMovement.Instance.GetLastMoveDir(), 3f * PlayerMovement.Instance.GetLastMoveDir());
+                float aimDirX = PlayerAim.Instance.GetAimDir().x;
+                lastBlueOrbDroppedOnTheFloor.ApplyRandomForce(1f * aimDirX, 2f * aimDirX, 6f, 8f);
                 lastBlueOrbDroppedOnTheFloor.SetCollectibleUnInteractable(3f);
                 lastBlueOrbDroppedOnTheFloor.SetDroppedByPlayer();
 

@@ -106,6 +106,7 @@ public class BarricadeVisual : StructureVisual
         }
     }
 
+
     protected void RepairStructureVisual() {
         int i = 0;
 
@@ -115,6 +116,18 @@ public class BarricadeVisual : StructureVisual
             gameObject.transform.rotation = Quaternion.identity;
             gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
             i++;
+        }
+    }
+
+    protected override void Structure_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
+        foreach(GameObject go in currentLevelBarricadeSprites) {
+            go.GetComponent<SpriteRenderer>().material = unhoveredMaterial;
+        }
+    }
+
+    protected override void Structure_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        foreach (GameObject go in currentLevelBarricadeSprites) {
+            go.GetComponent<SpriteRenderer>().material = hoveredMaterial;
         }
     }
 }

@@ -17,9 +17,10 @@ public class PlayerUI_HPBar : MonoBehaviour
     public float fadeInDuration = .2f;  // Durée du fade-in
 
     private bool hpBarCritical;
-    private float timer = 0f;
+    private float hpBarDiplayTimer = 0f;
     private bool isFadingOut = false;
     private bool isFadingIn = false;
+    private bool inTentArea = false;
 
     private void Awake() {
         Instance = this;
@@ -36,63 +37,65 @@ public class PlayerUI_HPBar : MonoBehaviour
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
 
         Tent.Instance.OnPlayerTriggeredIn += Tent_OnPlayerTriggeredIn;
+        Tent.Instance.OnPlayerTriggeredOut += Tent_OnPlayerTriggeredOut;
 
         RefreshHPBar();
 
         hpBarGameObject.SetActive(false);
     }
 
+
     private void Update() {
         if (hpBarCritical) return;
-        //if (!showHPBar) return;
 
         if (isFadingIn) {
             HandleFadeIn();
             return;
         }
 
+        if (inTentArea) return;
         HandleFadeOut();
 
     }
 
     private void HandleFadeIn() {
         // Réduit le timer pour le fade-in
-        timer -= Time.deltaTime;
+        hpBarDiplayTimer -= Time.deltaTime;
 
-        float alpha = Mathf.Clamp01(1 - (timer / fadeInDuration)); 
+        float alpha = Mathf.Clamp01(1 - (hpBarDiplayTimer / fadeInDuration)); 
         hpBarCanvasGroup.alpha = alpha;
 
         // Quand le fade-in est terminé
-        if (timer <= 0f) {
+        if (hpBarDiplayTimer <= 0f) {
             hpBarCanvasGroup.alpha = 1f;
             isFadingIn = false;
-            timer = hpBarDisplayTime; // Initialise le timer pour maintenir la barre visible
+            hpBarDiplayTimer = hpBarDisplayTime; // Initialise le timer pour maintenir la barre visible
         }
     }
 
     private void HandleFadeOut() {
 
         // Si le timer est en cours et que le fade-out n'a pas commencé
-        if (timer > 0f && !isFadingOut) {
-            timer -= Time.deltaTime;
+        if (hpBarDiplayTimer > 0f && !isFadingOut) {
+            hpBarDiplayTimer -= Time.deltaTime;
 
             // Démarre le fade-out lorsque le timer atteint 0
-            if (timer <= 0f) {
+            if (hpBarDiplayTimer <= 0f) {
                 isFadingOut = true;
-                timer = fadeOutDuration; // Initialise le timer pour le fade
+                hpBarDiplayTimer = fadeOutDuration; // Initialise le timer pour le fade
             }
         }
 
         // Gestion du fade-out
         if (isFadingOut) {
-            float alpha = Mathf.Clamp01(timer / fadeOutDuration);
+            float alpha = Mathf.Clamp01(hpBarDiplayTimer / fadeOutDuration);
             hpBarCanvasGroup.alpha = alpha;
 
             // Réduit le timer pour le fade-out
-            timer -= Time.deltaTime;
+            hpBarDiplayTimer -= Time.deltaTime;
 
             // Quand le fade-out est terminé
-            if (timer <= 0f) {
+            if (hpBarDiplayTimer <= 0f) {
                 hpBarCanvasGroup.alpha = 0;
                 isFadingOut = false;
             }
@@ -163,20 +166,27 @@ public class PlayerUI_HPBar : MonoBehaviour
     }
 
     private void Tent_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        inTentArea = true;
+        FadeInHPBar();
+    }
+    private void Tent_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
+        inTentArea = false;
         FadeInHPBar();
     }
 
     private void FadeInHPBar() {
-        isFadingIn = true;
-        hpBarGameObject.SetActive(true);
+        if(hpBarDiplayTimer <= 0) {
+            isFadingIn = true;
+        }
 
-        timer = fadeInDuration;
+        hpBarGameObject.SetActive(true);
+        hpBarDiplayTimer = fadeInDuration;
         hpBarDisplayTime = 3f;
     }
 
     private void ShowHPBar(float displayTime = 1f) {
         hpBarCanvasGroup.alpha = 1;
-        timer = displayTime;
+        hpBarDiplayTimer = displayTime;
         isFadingOut = false;
     }
 }

@@ -49,7 +49,7 @@ public class PlayerAnimator : MonoBehaviour
         if (dead) return;
         moveDir = GameInput.Instance.GetMovementFloatNormalized();
 
-        HandleXScale();
+        //HandleXScale();
         HandleAnimatorMovementBool();
     }
 

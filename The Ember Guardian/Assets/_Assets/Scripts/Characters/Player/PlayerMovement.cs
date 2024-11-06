@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour {
     public static PlayerMovement Instance;
 
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float moveSpeedBackwardsMultiplier = .7f;
     [SerializeField] private float runAccelerationFactor = 1.3f;
     [SerializeField] private float crouchAccelerationFactor = .7f;
 
@@ -28,6 +29,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private LayerMask platformLayerMask;
 
     private float lastMoveDir = 1;
+    private bool isMovingBackwards;
     private bool isCrouching;
     private bool isJumping;
     private bool isJumpTop;
@@ -64,6 +66,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private void Update() {
         HandleCrouch();
+        HandleMovingBackwards();
 
         // LAST MOVE DIR
         float lastMoveInput = GameInput.Instance.GetMovementFloatNormalized();
@@ -112,12 +115,6 @@ public class PlayerMovement : MonoBehaviour {
         } else {
             StartJumping();
         }
-
-        //if(GameInput.Instance.GetJumpDirNormalized() >= -.5) {
-        //    StartJumping();
-        //} else {
-        //    PlatformJumpDown();
-        //}
     }
 
     private void GameInput_OnPlayerJumpCanceled(object sender, System.EventArgs e) {
@@ -136,6 +133,19 @@ public class PlayerMovement : MonoBehaviour {
 
     private void GameInput_OnPlayerRunStarted(object sender, System.EventArgs e) {
         moveSpeed *= runAccelerationFactor;
+    }
+
+    private void HandleMovingBackwards() {
+
+        if((lastMoveDir > 0 && PlayerAim.Instance.GetAimDir().x < 0) || (lastMoveDir < 0 && PlayerAim.Instance.GetAimDir().x > 0)) {
+
+            isMovingBackwards = true;
+
+        } else {
+
+            isMovingBackwards = false;
+
+        }
     }
 
     private void HandleCrouch() {
@@ -188,6 +198,11 @@ public class PlayerMovement : MonoBehaviour {
 
     private void HandleMovementForces() {
         float targetSpeed = GameInput.Instance.GetMovementFloatNormalized() * moveSpeed;
+
+        if (isMovingBackwards) {
+            targetSpeed *= moveSpeedBackwardsMultiplier;
+        }
+
         float speedDif = targetSpeed - rb.velocity.x;
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
@@ -220,6 +235,10 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         return null; // Pas de plateforme touchée
+    }
+
+    public float GetMoveSpeed() {
+        return rb.velocity.x;
     }
 
     private void OnDrawGizmos() {

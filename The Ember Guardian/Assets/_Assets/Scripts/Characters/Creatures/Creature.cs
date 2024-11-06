@@ -40,7 +40,6 @@ public class Creature : Mob
     private void OnTriggerEnter2D(Collider2D collision) {
         if(collision.gameObject.GetComponentInParent<Fire>() != null) {
             if (enteredLight) return;
-            Debug.Log("OnCreatureEnteredLight");
             OnCreatureEnteredLight?.Invoke(this, EventArgs.Empty);
             enteredLight = true;
         }
@@ -49,7 +48,6 @@ public class Creature : Mob
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponentInParent<Fire>() != null) {
             if (!enteredLight) return;
-            Debug.Log("OnCreatureExitedLight");
             OnCreatureExitedLight?.Invoke(this, EventArgs.Empty);
             enteredLight = false;
         }

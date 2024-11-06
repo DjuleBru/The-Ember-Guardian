@@ -6,6 +6,8 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 {
     [SerializeField] private GameObject ammoBarGameObject;
     [SerializeField] private GameObject ammoBarBackgroundGameObject;
+    [SerializeField] private RectTransform ammoBarRightPosition;
+    [SerializeField] private RectTransform ammoBarLeftPosition;
 
     [SerializeField] private Transform ammoTickTemplate;
     [SerializeField] private Transform ammoTickContainer;
@@ -14,75 +16,93 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     [SerializeField] private Transform ammoTickContainerBackground;
 
     private CanvasGroup ammoBarCanvasGroup;
-    public float ammoBarDisplayTime = 2f;   // Durée d'affichage de la barre
-    public float fadeOutDuration = .2f;  // Durée du fade-out
-    public float fadeInDuration = .2f;  // Durée du fade-in
+    private float ammoBarDisplayTime;   // Durée d'affichage de la barre
+    private float ammoBarReloadDisplayTime = 2f;   // Durée d'affichage de la barre
+    private float ammoBarExitCampDisplayTime = 3f;   // Durée d'affichage de la barre
+    private float fadeOutDuration = .2f;  // Durée du fade-out
+    private float fadeInDuration = .2f;  // Durée du fade-in
 
-    private float timer = 0f;
+    private float ammoBarDisplayTimer = 0f;
     private bool isFadingOut = false;
     private bool isFadingIn = false;
     private bool ammoBarCritical = false;
+    private bool inAmmoCrafterArea = false;
 
     private void Start() {
+
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
+        PlayerShoot.Instance.OnPlayerAmmoRefilled += PlayerShoot_OnPlayerAmmoRefilled;
+        Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
+        Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
+        Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn;
+        Structure.OnAnyPlayerTriggeredOut += Structure_OnAnyPlayerTriggeredOut;
+
         RefreshAmmoBar();
         RefreshAmmoBarBackground();
         ammoBarGameObject.SetActive(false);
         ammoBarBackgroundGameObject.SetActive(false);
+        ammoBarCanvasGroup = ammoBarGameObject.GetComponent<CanvasGroup>();
     }
 
     private void Update() {
+        if (ammoBarCritical) return;
 
         if (isFadingIn) {
             HandleFadeIn();
             return;
         }
 
+        if (inAmmoCrafterArea) return;
+
         HandleFadeOut();
     }
 
     private void HandleFadeIn() {
         // Réduit le timer pour le fade-in
-        timer -= Time.deltaTime;
+        ammoBarDisplayTimer -= Time.deltaTime;
 
-        float alpha = Mathf.Clamp01(1 - (timer / fadeInDuration));
+        float alpha = Mathf.Clamp01(1 - (ammoBarDisplayTimer / fadeInDuration));
         ammoBarCanvasGroup.alpha = alpha;
 
         // Quand le fade-in est terminé
-        if (timer <= 0f) {
+        if (ammoBarDisplayTimer <= 0f) {
             ammoBarCanvasGroup.alpha = 1f;
             isFadingIn = false;
-            timer = ammoBarDisplayTime; // Initialise le timer pour maintenir la barre visible
+            ammoBarDisplayTimer = ammoBarDisplayTime; // Initialise le timer pour maintenir la barre visible
         }
     }
 
     private void HandleFadeOut() {
 
         // Si le timer est en cours et que le fade-out n'a pas commencé
-        if (timer > 0f && !isFadingOut) {
-            timer -= Time.deltaTime;
+        if (ammoBarDisplayTimer > 0f && !isFadingOut) {
+            ammoBarDisplayTimer -= Time.deltaTime;
 
             // Démarre le fade-out lorsque le timer atteint 0
-            if (timer <= 0f) {
+            if (ammoBarDisplayTimer <= 0f) {
                 isFadingOut = true;
-                timer = fadeOutDuration; // Initialise le timer pour le fade
+                ammoBarDisplayTimer = fadeOutDuration; // Initialise le timer pour le fade
             }
         }
 
         // Gestion du fade-out
         if (isFadingOut) {
-            float alpha = Mathf.Clamp01(timer / fadeOutDuration);
+            float alpha = Mathf.Clamp01(ammoBarDisplayTimer / fadeOutDuration);
             ammoBarCanvasGroup.alpha = alpha;
 
             // Réduit le timer pour le fade-out
-            timer -= Time.deltaTime;
+            ammoBarDisplayTimer -= Time.deltaTime;
 
             // Quand le fade-out est terminé
-            if (timer <= 0f) {
+            if (ammoBarDisplayTimer <= 0f) {
                 ammoBarCanvasGroup.alpha = 0;
                 isFadingOut = false;
             }
         }
+    }
+
+    private void PlayerShoot_OnPlayerAmmoRefilled(object sender, System.EventArgs e) {
+        RefreshAmmoBar();
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
@@ -91,16 +111,20 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         if (PlayerShoot.Instance.GetCurrentAmmo() != 0) {
             ammoBarGameObject.SetActive(true);
             ammoBarBackgroundGameObject.SetActive(true);
+            ammoBarCanvasGroup.alpha = 1f;
+            ammoBarDisplayTime = ammoBarReloadDisplayTime;
+            ammoBarDisplayTimer = ammoBarDisplayTime;
         }
 
         if (PlayerShoot.Instance.GetCurrentAmmo() <= PlayerShoot.Instance.GetMaxAmmo() / 3) {
             ammoBarCritical = true;
+        } else {
+            ammoBarCritical = false;
         }
 
         RectTransform[] hpTickArray = ammoTickContainer.GetComponentsInChildren<RectTransform>();
         hpTickArray[1].SetParent(transform);
         hpTickArray[1].GetComponent<PlayerUI_TickTemplate>().RemoveTick();
-
 
         RefreshAmmoBar();
     }
@@ -137,5 +161,39 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         }
 
         ammoTickTemplateBackground.gameObject.SetActive(false);
+    }
+
+    private void Player_OnPlayerExitedCamp(object sender, System.EventArgs e) {
+        FadeInAmmoBar();
+    }
+
+    private void Player_OnPlayerEnteredCamp(object sender, System.EventArgs e) {
+        FadeInAmmoBar();
+    }
+
+    private void Structure_OnAnyPlayerTriggeredOut(object sender, System.EventArgs e) {
+        if (sender is AmmoCrafter) {
+            inAmmoCrafterArea = false;
+            FadeInAmmoBar();
+        }
+    }
+
+    private void Structure_OnAnyPlayerTriggeredIn(object sender, System.EventArgs e) {
+        if (sender is AmmoCrafter) {
+            inAmmoCrafterArea = true;
+            FadeInAmmoBar();
+        }
+    }
+
+    private void FadeInAmmoBar() {
+
+        if (ammoBarDisplayTimer <= 0) {
+            isFadingIn = true;
+        }
+
+        ammoBarGameObject.SetActive(true);
+
+        ammoBarDisplayTimer = fadeInDuration;
+        ammoBarDisplayTime = ammoBarExitCampDisplayTime;
     }
 }

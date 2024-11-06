@@ -8,6 +8,7 @@ public class CreatureVisual : MobVisual
 
     [SerializeField] private Material cleanMaterial;
     [SerializeField] private Material debuffedMaterial;
+    [SerializeField] private GameObject debuffedGameObject;
 
     protected override void Awake() {
         base.Awake();
@@ -18,13 +19,16 @@ public class CreatureVisual : MobVisual
         creature.OnCreatureEnteredLight += Creature_OnCreatureEnteredLight;
         creature.OnCreatureExitedLight += Creature_OnCreatureExitedLight;
         bodySpriteRenderer.material = cleanMaterial;
+        debuffedGameObject.SetActive(false);
     }
 
     private void Creature_OnCreatureExitedLight(object sender, System.EventArgs e) {
         bodySpriteRenderer.material = cleanMaterial;
+        debuffedGameObject.SetActive(false);
     }
 
     private void Creature_OnCreatureEnteredLight(object sender, System.EventArgs e) {
         bodySpriteRenderer.material = debuffedMaterial;
+        debuffedGameObject.SetActive(true);
     }
 }

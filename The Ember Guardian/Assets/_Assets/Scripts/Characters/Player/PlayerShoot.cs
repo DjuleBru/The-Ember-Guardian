@@ -9,7 +9,11 @@ public class PlayerShoot : MonoBehaviour
 
     public event EventHandler OnPlayerShotProjectile;
     public event EventHandler OnPlayerShootStopped;
+    public event EventHandler OnPlayerCooldownTrigger;
     public event EventHandler OnPlayerReload;
+    public event EventHandler OnPlayerReloadEnded;
+    public event EventHandler OnPlayerAmmoRefilled;
+    public event EventHandler OnClipsChanged;
 
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private Transform projectilePrefab;
@@ -18,15 +22,19 @@ public class PlayerShoot : MonoBehaviour
 
     private float shootCooldownTimer;
     private float shootCooldownTime;
+    private float shootCooldownSFXTriggerTime;
     private float reloadTimer;
+    private float singleClipReloadTime;
+    private float singleClipReloadTimer;
     private float reloadTime;
     private bool coolingDown;
     private bool reloading;
+    private bool coolDownSFXTriggered;
 
     private int currentAmmo;
     private int maxAmmo;
     private int currentClip;
-    private int shotsPerClip;
+    private int clipsPerAmmo;
 
     [SerializeField] private GunSO gunSO;
 
@@ -34,10 +42,11 @@ public class PlayerShoot : MonoBehaviour
         Instance = this;
 
         shootCooldownTime = gunSO.shootCooldownTime;
+        shootCooldownSFXTriggerTime = gunSO.shootCooldownSFXTriggerTime;
         reloadTime = gunSO.reloadTime;
 
-        shotsPerClip = gunSO.shotsPerClip;
-        currentClip = shotsPerClip;
+        clipsPerAmmo = gunSO.shotsPerClip;
+        currentClip = clipsPerAmmo;
 
         maxAmmo = gunSO.maxAmmo;
         currentAmmo = maxAmmo;
@@ -46,23 +55,38 @@ public class PlayerShoot : MonoBehaviour
     private void Start() {
         GameInput.Instance.OnPlayerShootCanceled += GameInput_OnPlayerShootCanceled;
         GameInput.Instance.OnPlayerShootStarted += GameInput_OnPlayerShootStarted;
-
     }
 
     private void Update() {
+
         if(coolingDown) {
             shootCooldownTimer -= Time.deltaTime;
 
-            if(shootCooldownTimer <= 0 ) {
-                coolingDown = false;
+            if(shootCooldownTimer <= (shootCooldownTime - shootCooldownSFXTriggerTime) && !coolDownSFXTriggered) {
+                OnPlayerCooldownTrigger?.Invoke(this, EventArgs.Empty);
+                coolDownSFXTriggered = true;
             }
+
+            if(shootCooldownTimer <= 0 ) {
+                CooldownFinished();
+            }
+            return;
         }
+
         if(reloading) {
             reloadTimer -= Time.deltaTime;
+            singleClipReloadTimer -= Time.deltaTime;
+
+            if(singleClipReloadTimer <= 0 ) {
+                singleClipReloadTimer = singleClipReloadTime;
+                currentClip += 1;
+                OnClipsChanged?.Invoke(this, EventArgs.Empty);
+            }
 
             if (reloadTimer <= 0) {
-                currentClip = shotsPerClip;
+                currentClip = clipsPerAmmo;
                 reloading = false;
+                OnPlayerReloadEnded?.Invoke(this, EventArgs.Empty);
             }
         }
     }
@@ -70,27 +94,48 @@ public class PlayerShoot : MonoBehaviour
     private void Shoot() {
         PlayerAim.Instance.AddRecoil(gunSO.gunRecoil, gunSO.gunRecoilDamping);
 
-        Vector2 gunKnockbackForce = new Vector2(PlayerMovement.Instance.GetLastMoveDir() * gunSO.gunKnockback * -1 , 0);
+        float aimDir = 1f;
+        if(PlayerAim.Instance.GetAimDir().x <0) {
+            aimDir = -1f;
+        }
+
+        Vector2 gunKnockbackForce = new Vector2(aimDir * gunSO.gunKnockback * -1 , 0);
         Player.Instance.AddKnockBack(gunKnockbackForce);
 
         shootPS.Emit(5);
 
         currentClip -= 1;
+        OnClipsChanged?.Invoke(this, EventArgs.Empty);
 
-        if(currentClip <= 0 ) {
-
-            reloading = true;
-            reloadTimer = reloadTime;
-            currentAmmo -= 1;
-            OnPlayerReload?.Invoke(this, EventArgs.Empty);
-
-        } else {
-
+        // Handle cooldown
+        if (shootCooldownTime != 0) {
+            coolDownSFXTriggered = false;
             coolingDown = true;
             shootCooldownTimer = shootCooldownTime;
+        };
+    }
 
+    private void CooldownFinished() {
+        coolingDown = false;
+
+        // Handle reload
+        if (currentClip <= 0) {
+            reloading = true;
+            reloadTimer = reloadTime;
+
+            singleClipReloadTime = reloadTime / clipsPerAmmo;
+            singleClipReloadTimer = singleClipReloadTime;
+            currentAmmo -= 1;
+            OnPlayerReload?.Invoke(this, EventArgs.Empty);
         }
+    }
 
+    public void AddAmmo(int ammoCount) {
+        currentAmmo += ammoCount;
+        if(currentAmmo > maxAmmo) {
+            currentAmmo = maxAmmo;
+        }
+        OnPlayerAmmoRefilled?.Invoke(this, EventArgs.Empty);
     }
 
     public int GetCurrentAmmo() {
@@ -99,6 +144,14 @@ public class PlayerShoot : MonoBehaviour
 
     public int GetMaxAmmo() {
         return maxAmmo;
+    }
+
+    public int GetCurrentClips() {
+        return currentClip;
+    }
+
+    public int GetMaxClips() {
+        return clipsPerAmmo;
     }
 
     private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {
@@ -110,6 +163,14 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnPlayerShootCanceled(object sender, System.EventArgs e) {
+    }
+
+    public GunSO GetGunSO() {
+        return gunSO;
+    }
+
+    public float GetReloadTime() {
+        return reloadTime;
     }
 
 }

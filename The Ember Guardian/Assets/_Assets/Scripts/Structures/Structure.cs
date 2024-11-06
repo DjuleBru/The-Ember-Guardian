@@ -13,12 +13,12 @@ public class Structure : MonoBehaviour {
     protected PayOrbsUI payOrbsUI;
 
     public event EventHandler OnPlayerTriggeredIn;
+    public static event EventHandler OnAnyPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
+    public static event EventHandler OnAnyPlayerTriggeredOut;
     public event EventHandler OnStructureUpgraded;
-
+    public static event EventHandler OnAnyStructureUpgraded;
     public event EventHandler OnStructureInteractionsUpdated;
-
-    public static event EventHandler OnAnyStructureBuilt;
 
     protected bool playerInTriggerArea;
     protected bool playerCanInteract;
@@ -48,7 +48,7 @@ public class Structure : MonoBehaviour {
 
         payOrbsUI.OnOrbPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
 
-        OnAnyStructureBuilt?.Invoke(this, EventArgs.Empty);
+        StructuresManager.Instance.AddStructure(this);
 
         RefreshStructureUpgradeInteraction();
     }
@@ -76,6 +76,7 @@ public class Structure : MonoBehaviour {
         RefreshStructureUpgradeInteraction();
         
         OnStructureUpgraded?.Invoke(this, EventArgs.Empty);
+        OnAnyStructureUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetStructureUpgradableUnlocked(bool upgradable) {
@@ -171,6 +172,7 @@ public class Structure : MonoBehaviour {
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
+        OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         playerInTriggerArea = true;
 
         if(playerCanInteract) {
@@ -182,6 +184,7 @@ public class Structure : MonoBehaviour {
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+        OnAnyPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
         playerInTriggerArea = false;
         payOrbsUI.SetPlayerInteracting(false);
 
@@ -190,7 +193,7 @@ public class Structure : MonoBehaviour {
 
     #region InteractionTypes
 
-    protected void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
+    protected virtual void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (!playerCanInteract) return;
 

@@ -1,4 +1,5 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,9 @@ public class ParticleCollision : MonoBehaviour
 
     [SerializeField] private float hitKnockbackForce = 15f;
     [SerializeField] private int bulletDamage = 1;
+
+    public static event EventHandler OnAnyBulletHitGround;
+    public static event EventHandler OnAnyBulletHitEnemy;
 
     void Start()
     {
@@ -77,6 +81,9 @@ public class ParticleCollision : MonoBehaviour
         // Damage : 
         if(other.GetComponent<Mob>() != null) {
             other.GetComponent<Mob>().TakeDamage(bulletDamage, collisionEvents[0].intersection);
+            OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
+        } else {
+            OnAnyBulletHitGround?.Invoke(this, EventArgs.Empty);
         }
     }
 

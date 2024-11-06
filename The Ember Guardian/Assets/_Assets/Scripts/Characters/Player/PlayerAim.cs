@@ -19,6 +19,9 @@ public class PlayerAim : MonoBehaviour
     private float recoilDamping;
     private float currentRecoil;
 
+    private Vector3 aimDir;
+    private Vector3 previousAimDir = new Vector3(1,0,0);
+
     private void Awake() {
         Instance = this;
     }
@@ -26,13 +29,11 @@ public class PlayerAim : MonoBehaviour
     private void Start() {
         float angle = Mathf.Atan2(1, 0) * Mathf.Rad2Deg;
         aimTransform.eulerAngles = new Vector3(0, 0, angle);
-
-
     }
 
     private void Update() {
-
-        HandleAimMouse2();
+        HandleAimMouse3();
+        HandleXScale();
         HandleRecoil();
     }
 
@@ -61,10 +62,24 @@ public class PlayerAim : MonoBehaviour
             localScale.y = -1;
         }
 
-        aimAngle = ClampAimAngle(aimAngle, aimDir);
+        //aimAngle = ClampAimAngle(aimAngle, aimDir);
 
         aimTransform.localScale = localScale;
         aimTransform.eulerAngles = new Vector3(0, 0, aimAngle);
+
+        // Smooth recoil back to zero
+        currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
+    }
+
+    private void HandleAimMouse3() {
+        Vector3 mousePosition = GetMouseWorldPosition();
+
+        aimDir = (mousePosition - aimTransform.position).normalized;
+
+        aimDir.y += currentRecoil;
+
+        float angle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
+        aimTransform.eulerAngles = new Vector3(0,0,angle);
 
         // Smooth recoil back to zero
         currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
@@ -126,6 +141,33 @@ public class PlayerAim : MonoBehaviour
 
     public float GetAimAngle() {
         return aimAngle;
+    }
+
+    private void HandleXScale() {
+
+        if (aimDir.x < 0 && previousAimDir.x > 0) {
+            previousAimDir = aimDir;
+            Vector3 newScale = new Vector3(-1, 1, 1);
+            transform.localScale = newScale;
+        }
+
+        if (aimDir.x > 0 && previousAimDir.x < 0) {
+            previousAimDir = aimDir;
+            Vector3 newScale = new Vector3(1, 1, 1);
+            transform.localScale = newScale;
+        }
+
+        Vector2 localScale = new Vector2(1, 1);
+        if (aimDir.x < 0) {
+            localScale.x = -1;
+            localScale.y = -1;
+        }
+
+        aimTransform.localScale = localScale;
+    }
+
+    public Vector3 GetAimDir() {
+        return aimDir;
     }
 
 }

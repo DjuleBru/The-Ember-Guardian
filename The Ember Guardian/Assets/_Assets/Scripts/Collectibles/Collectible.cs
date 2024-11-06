@@ -9,6 +9,7 @@ public class Collectible : MonoBehaviour
     [SerializeField] private int currencyAmount;
 
     public event EventHandler OnCollectibleDestroyed;
+    public static event EventHandler OnAnyCollectibleTouchedFloor;
 
     private bool interactable;
     private bool canBePickedUpByWorker;
@@ -40,7 +41,6 @@ public class Collectible : MonoBehaviour
             return;
         };
 
-
         Worker worker = collision.gameObject.GetComponent<Worker>();
 
         if (worker != null) {
@@ -59,16 +59,19 @@ public class Collectible : MonoBehaviour
                 return;
             }
         }
+
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+            OnAnyCollectibleTouchedFloor?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
         Player player = collision.gameObject.GetComponent<Player>();
+
         if (player != null) {
             playerInTriggerArea = false;
 
-            if (!interactable) {
-                interactable = true;
-            }
             return;
         };
 
@@ -136,6 +139,15 @@ public class Collectible : MonoBehaviour
         float force = UnityEngine.Random.Range(minForce, maxForce);
    
         Vector2 forceDir = new Vector2(UnityEngine.Random.Range(.5f, 1f) * force, UnityEngine.Random.Range(.1f, .25f) * force);
+
+        rb.AddForce(forceDir, ForceMode2D.Impulse);
+    }
+
+    public void ApplyRandomForce(float minForceX, float maxForceX, float minForceY, float maxForceY) {
+        float forceX = UnityEngine.Random.Range(minForceX, maxForceX);
+        float forceY = UnityEngine.Random.Range(minForceY, maxForceY);
+
+        Vector2 forceDir = new Vector2(forceX, forceY);
 
         rb.AddForce(forceDir, ForceMode2D.Impulse);
     }

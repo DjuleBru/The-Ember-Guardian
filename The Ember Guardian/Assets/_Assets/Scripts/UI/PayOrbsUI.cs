@@ -21,6 +21,12 @@ public class PayOrbsUI : MonoBehaviour
 
     public event EventHandler OnOrbPaymentCanceled;
     public event EventHandler OnOrbPaymentSuccess;
+    public static event EventHandler<OnSingleOrbFilledEventArgs> OnSingleOrbFilled;
+
+    public class OnSingleOrbFilledEventArgs : EventArgs {
+        public int orbIndex;
+    }
+
 
     protected void Update() {
         if (playerInteracting) {
@@ -67,6 +73,11 @@ public class PayOrbsUI : MonoBehaviour
             orbTemplateWorldUI.SetOrbPaid(true);
             PlayerCurrencies.Instance.ChangeCurrencyAmount(PlayerCurrencies.CurrencyType.blueOrb, -1);
             fillPaymentOrbRate += fillPaymentOrbRateIncrease;
+
+            OnSingleOrbFilled?.Invoke(this, new OnSingleOrbFilledEventArgs {
+                orbIndex = orbIndex
+            });
+
             orbIndex++;
         }
         else {
