@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,9 @@ public class PlayerAim : MonoBehaviour
 {
     public static PlayerAim Instance;
 
-    [SerializeField] private Transform aimTransform;
+    [SerializeField] private Transform gunTransform;
+    [SerializeField] private Transform visualTransform;
+
     [SerializeField] private int minAngle;
     [SerializeField] private int maxAngle;
 
@@ -22,13 +25,15 @@ public class PlayerAim : MonoBehaviour
     private Vector3 aimDir;
     private Vector3 previousAimDir = new Vector3(1,0,0);
 
+    public event EventHandler OnXAimDirChanged;
+
     private void Awake() {
         Instance = this;
     }
 
     private void Start() {
         float angle = Mathf.Atan2(1, 0) * Mathf.Rad2Deg;
-        aimTransform.eulerAngles = new Vector3(0, 0, angle);
+        gunTransform.eulerAngles = new Vector3(0, 0, angle);
     }
 
     private void Update() {
@@ -64,8 +69,8 @@ public class PlayerAim : MonoBehaviour
 
         //aimAngle = ClampAimAngle(aimAngle, aimDir);
 
-        aimTransform.localScale = localScale;
-        aimTransform.eulerAngles = new Vector3(0, 0, aimAngle);
+        gunTransform.localScale = localScale;
+        gunTransform.eulerAngles = new Vector3(0, 0, aimAngle);
 
         // Smooth recoil back to zero
         currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
@@ -74,12 +79,12 @@ public class PlayerAim : MonoBehaviour
     private void HandleAimMouse3() {
         Vector3 mousePosition = GetMouseWorldPosition();
 
-        aimDir = (mousePosition - aimTransform.position).normalized;
+        aimDir = (mousePosition - gunTransform.position).normalized;
 
         aimDir.y += currentRecoil;
 
         float angle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
-        aimTransform.eulerAngles = new Vector3(0,0,angle);
+        gunTransform.eulerAngles = new Vector3(0,0,angle);
 
         // Smooth recoil back to zero
         currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
@@ -148,26 +153,29 @@ public class PlayerAim : MonoBehaviour
         if (aimDir.x < 0 && previousAimDir.x > 0) {
             previousAimDir = aimDir;
             Vector3 newScale = new Vector3(-1, 1, 1);
-            transform.localScale = newScale;
+            OnXAimDirChanged?.Invoke(this, EventArgs.Empty);
         }
 
         if (aimDir.x > 0 && previousAimDir.x < 0) {
             previousAimDir = aimDir;
             Vector3 newScale = new Vector3(1, 1, 1);
-            transform.localScale = newScale;
+            OnXAimDirChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        Vector2 localScale = new Vector2(1, 1);
-        if (aimDir.x < 0) {
-            localScale.x = -1;
-            localScale.y = -1;
-        }
+        //Vector2 localScale = new Vector2(1, 1);
+        //if (aimDir.x < 0) {
+        //    localScale.x = -1;
+        //    localScale.y = -1;
+        //}
 
-        aimTransform.localScale = localScale;
+        //gunTransform.localScale = localScale;
     }
 
     public Vector3 GetAimDir() {
         return aimDir;
+    }
+    public Vector3 GetPreviousAimDir() {
+        return previousAimDir;
     }
 
 }

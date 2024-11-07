@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,13 @@ public class CreatureAI : MonoBehaviour {
 
     private IDamageable attackTarget;
 
+
+
+    private bool aggroedRecently;
+    private float aggroTimer;
+    private float aggroDelay = 3f;
+    public event EventHandler OnCreatureAggro;
+
     public enum State {
         walking,
         moveToTarget,
@@ -32,18 +40,19 @@ public class CreatureAI : MonoBehaviour {
     }
 
     private void Start() {
-        attackRange = creature.GetCreatureSO().attackRange + Random.Range(-creature.GetCreatureSO().attackRange/10, creature.GetCreatureSO().attackRange/10);
+        attackRange = creature.GetCreatureSO().attackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRange/10, creature.GetCreatureSO().attackRange/10);
         maxAttackRange = attackRange + attackRange/5;
     }
 
     private void Update() {
+        HandleAggroRecently();
 
         switch (state) {
 
             case State.walking:
 
                 MoveTowardsFire();
-                if(detectedAttackTarget) {
+                if(detectedAttackTarget && !aggroedRecently) {
                     ChangeState(State.moveToTarget);
                 }
 
@@ -66,7 +75,7 @@ public class CreatureAI : MonoBehaviour {
                     return;
                 }
 
-                if(!CheckAttackTargetInRange() && !mobAttack.GetAttackStarted()) {
+                if(!CheckAttackTargetInRange() && !mobAttack.GetAttackStarted() && !aggroedRecently) {
                     ChangeState(State.moveToTarget);
                     return;
                 }
@@ -75,10 +84,22 @@ public class CreatureAI : MonoBehaviour {
         }
     }
 
+    private void HandleAggroRecently() {
+        if (aggroedRecently) {
+
+            aggroTimer -= Time.deltaTime;
+
+            if (aggroTimer < 0) {
+                aggroTimer = aggroDelay;
+                aggroedRecently = false;
+            }
+        }
+    } 
+
     private void ChangeState(State newState) {
-        mobMovement.SetMoveTarget(transform.position);
 
         if(newState == State.attacking) {
+            mobMovement.SetMoveTarget(transform.position);
             mobAttack.SetAttackTarget(attackTarget);
 
             if (followingTargetBuffedSpeed) {
@@ -89,6 +110,7 @@ public class CreatureAI : MonoBehaviour {
         }
 
         if(newState == State.walking) {
+            mobMovement.SetMoveTarget(transform.position);
             mobAttack.RemoveAttackTarget();
 
             if(followingTargetBuffedSpeed) {
@@ -99,6 +121,10 @@ public class CreatureAI : MonoBehaviour {
         }
 
         if(newState == State.moveToTarget) {
+            aggroedRecently = true;
+            aggroTimer = aggroDelay;
+
+            CheckAggoFeedbacks();
             mobMovement.BuffMoveSpeed(foundTargetMoveSpeedBuff);
             followingTargetBuffedSpeed = true;
             mobAttack.RemoveAttackTarget();
@@ -152,5 +178,9 @@ public class CreatureAI : MonoBehaviour {
         attackTarget = iDamageable;
     }
 
+    private void CheckAggoFeedbacks() {
+        if (attackTarget is Barricade) return;
+        OnCreatureAggro?.Invoke(this, EventArgs.Empty);
+    }
 
 }

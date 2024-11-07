@@ -22,6 +22,10 @@ public class CreatureSO : ScriptableObject
 
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
+    [Range(1, 20)]
+    public float mass;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
     [Range(1,20)]
     public float moveSpeed;
     [VerticalGroup("Game Data/Stats")]
@@ -82,4 +86,16 @@ public class CreatureSO : ScriptableObject
     [Range(0, 1)]
     public float spawnProbability; // between 0 and 1
 
+
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public AudioClip[] dieAudioClips;
+
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public AudioClip[] aggroAudioClips;
+
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public AudioClip[] idleAudioClips;
 }

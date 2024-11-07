@@ -340,7 +340,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     public void HeadToTargetAnimal() {
 
         if (!hasSetSpeed) {
-            mobMovement.SetMoveSpeed(roamMoveSpeed);
+            mobMovement.SetMoveSpeed(trackAnimalMoveSpeed);
             hasSetSpeed = true;
         }
 

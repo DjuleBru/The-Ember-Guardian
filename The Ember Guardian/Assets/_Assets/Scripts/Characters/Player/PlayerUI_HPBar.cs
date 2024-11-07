@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -21,6 +22,8 @@ public class PlayerUI_HPBar : MonoBehaviour
     private bool isFadingOut = false;
     private bool isFadingIn = false;
     private bool inTentArea = false;
+
+    public event EventHandler OnHPTickAdded;
 
     private void Awake() {
         Instance = this;
@@ -123,21 +126,37 @@ public class PlayerUI_HPBar : MonoBehaviour
             hpBarCritical = true;
         }
 
-        RectTransform[] hpTickArray = hpTickContainer.GetComponentsInChildren<RectTransform>();
-        hpTickArray[hpTickArray.Length - 1].SetParent(transform);
-        hpTickArray[hpTickArray.Length - 1].GetComponent<PlayerUI_TickTemplate>().RemoveTick();
+        PlayerUI_TickTemplate[] hpTickArray = hpTickContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
+        hpTickArray[hpTickArray.Length - 1].GetComponent<RectTransform>().SetParent(transform);
+        hpTickArray[hpTickArray.Length - 1].RemoveTick();
         
         ShowHPBar();
         RefreshHPBar();
     }
 
 
-    private void Player_OnPlayerHealed(object sender, System.EventArgs e) {
-        hpBarCritical = true;
+    private void Player_OnPlayerHealed(object sender, Player.OnPlayerHealedEventArgs e) {
         isFadingIn = true;
-        ShowHPBar(2f);
-        RefreshHPBar();
+        //ShowHPBar(2f);
+        StartCoroutine(RefillHPBar(e.healAmount));
     }
+
+    private IEnumerator RefillHPBar(int hpCount) {
+
+        for (int i = 0; i < hpCount; i++) {
+
+            PlayerUI_TickTemplate ammoTick = Instantiate(hpTickTemplate, hpTickContainer).GetComponent<PlayerUI_TickTemplate>();
+
+            ammoTick.gameObject.SetActive(true);
+            PlayerUI_TickTemplate[] hpTickArray = hpTickContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
+            hpTickArray[hpTickArray.Length - 1].AddTick();
+            OnHPTickAdded?.Invoke(this, EventArgs.Empty);
+
+            yield return new WaitForSeconds(.25f);
+        }
+
+    }
+
 
     private void RefreshHPBar() {
         hpTickTemplate.gameObject.SetActive(true);

@@ -117,8 +117,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roamMoveSpeed: 1
-  headToCampMoveSpeed: 1.5
-  trackAnimalMoveSpeed: 1.25
+  headToCampMoveSpeed: 1.75
+  trackAnimalMoveSpeed: 1.75
   roamChangeDestinationRate: 5
 --- !u!114 &1648183774965061190
 MonoBehaviour:
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isProjectileAttack: 1
-  projectilePrefab: {fileID: 7911136206213874445, guid: a311ce4e518152146b39355d91931a25, type: 3}
+  projectileSO: {fileID: 11400000, guid: fc5a371a9204ee043880c5cf26d510e9, type: 2}
   projectileSpawnPoint: {fileID: 2310341056989899468}
   attackCooldown: 3
   attackAnimationDelay: 0.6

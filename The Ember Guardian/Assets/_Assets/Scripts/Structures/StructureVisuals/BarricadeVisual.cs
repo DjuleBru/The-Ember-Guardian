@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,8 @@ public class BarricadeVisual : StructureVisual
 
     private Barricade barricade;
     private int spriteIndex = 1;
+
+    public event EventHandler OnBarricadeSpriteFell;
 
     protected override void Awake() {
         base.Awake();
@@ -37,8 +40,8 @@ public class BarricadeVisual : StructureVisual
         float barricadeHealthNormalized = barricade.GetBarricadeHealthNormalized();
         float spriteIndexNormalized = 1 - ((float)spriteIndex / (float)currentLevelBarricadeSprites.Count);
 
-        Vector2 force = new Vector2(Random.Range(0, 2), Random.Range(2, 4));
-        float torque = Random.Range(-2, 2);
+        Vector2 force = new Vector2(UnityEngine.Random.Range(0, 2), UnityEngine.Random.Range(2, 4));
+        float torque = UnityEngine.Random.Range(-2, 2);
 
         if (spriteIndex == currentLevelBarricadeSprites.Count +1) return;
 
@@ -46,6 +49,7 @@ public class BarricadeVisual : StructureVisual
             currentLevelBarricadeSprites[spriteIndex -1].GetComponent<Rigidbody2D>().gravityScale = 1.5f;
             currentLevelBarricadeSprites[spriteIndex -1].GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
             currentLevelBarricadeSprites[spriteIndex -1].GetComponent<Rigidbody2D>().AddTorque(torque, ForceMode2D.Impulse);
+            OnBarricadeSpriteFell?.Invoke(this, EventArgs.Empty);
 
             StartCoroutine(DeactivateBarricadeSpriteAfterDelay(currentLevelBarricadeSprites[spriteIndex - 1]));
 

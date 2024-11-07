@@ -6,7 +6,7 @@ using UnityEngine;
 public class AmmoCrafter : Structure
 {
     private float ammoCraftTimer;
-    private float ammoCraftTime = 45f;
+    [SerializeField] private float ammoCraftTime = 45f;
     private int ammoCraftAmount = 3;
 
     private bool craftingAmmo;

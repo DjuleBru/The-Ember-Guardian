@@ -13,7 +13,8 @@ public class FireSound : MonoBehaviour
     [SerializeField] private AudioClip wildFireAudioClip;
     [SerializeField] private AudioClip insaneFireAudioClip;
 
-    [SerializeField] private AudioClip[] orbDroppedInFireAudioClipArray;
+    [SerializeField] private AudioClip[] orbDroppedInFireAudioClipArray1;
+    [SerializeField] private AudioClip[] orbDroppedInFireAudioClipArray2;
 
     private void Awake() { 
         fire = GetComponentInParent<Fire>();
@@ -25,7 +26,7 @@ public class FireSound : MonoBehaviour
     }
 
     private void Start() {
-        Invoke("StartFireSound", 0.1f); // Délai de 0.1 seconde
+        //Invoke("StartFireSound", 0.1f); // Délai de 0.1 seconde
     }
 
     private void StartFireSound() {
@@ -35,12 +36,11 @@ public class FireSound : MonoBehaviour
     }
 
     private void Fire_OnFireFuelled(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(orbDroppedInFireAudioClipArray[Random.Range(0, orbDroppedInFireAudioClipArray.Length)]);
+        audioSource.PlayOneShot(orbDroppedInFireAudioClipArray1[Random.Range(0, orbDroppedInFireAudioClipArray1.Length)], .7f);
+        audioSource.PlayOneShot(orbDroppedInFireAudioClipArray2[Random.Range(0, orbDroppedInFireAudioClipArray2.Length)], .7f);
     }
 
     private void Fire_OnFireChangedState(object sender, Fire.OnFireChangedStateEventArgs e) {
-
-        Debug.Log("Fire_OnFireChangedState " + fire.GetState());
 
         if (fire.GetState() == Fire.State.calm) {
             audioSource.clip = calmFireAudioClip;

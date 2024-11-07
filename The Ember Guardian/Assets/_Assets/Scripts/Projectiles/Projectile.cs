@@ -9,13 +9,15 @@ public class Projectile : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask animalLayer;
 
-    [SerializeField] private AnimationCurve projectileTrajectoryAnimationCurve;
-    [SerializeField] private AnimationCurve projectileYDifferentialWithTargetAnimationCurve;
-    [SerializeField] private AnimationCurve projectileSpeedAnimationCurve;
+    private ProjectileSO projectileSO;
 
-    [SerializeField] private float projectileMaxMoveSpeed;
-    [SerializeField] protected float projectileTrajectoryYCurve = .2f;
-    [SerializeField] private float trajectoryEndPointRandomOffsetValue;
+    private AnimationCurve projectileTrajectoryAnimationCurve;
+    private AnimationCurve projectileYDifferentialWithTargetAnimationCurve;
+    private AnimationCurve projectileSpeedAnimationCurve;
+
+    private float projectileMaxMoveSpeed;
+    protected float projectileTrajectoryYCurve = .2f;
+    private float trajectoryEndPointRandomOffsetValue;
 
     private Rigidbody2D rb;
 
@@ -35,15 +37,20 @@ public class Projectile : MonoBehaviour
 
     private bool projectileHasHit;
     public event EventHandler OnProjectileHit;
+    public static event EventHandler OnAnyProjectileInstantiated;
+    public static event EventHandler OnAnyProjectileHit;
 
     private Mob mobHit;
 
-    private void Awake() {
-        //rb = GetComponent<Rigidbody2D>();
-    }
+    public void ActivateAndInitialize(Vector3 targetPosition, ProjectileSO projectileSO) {
+        this.projectileSO = projectileSO;
+        projectileTrajectoryAnimationCurve = projectileSO.projectileTrajectoryAnimationCurve;
+        projectileYDifferentialWithTargetAnimationCurve = projectileSO.projectileYDifferentialWithTargetAnimationCurve;
+        projectileSpeedAnimationCurve = projectileSO.projectileSpeedAnimationCurve;
+        projectileMaxMoveSpeed = projectileSO.projectileMaxMoveSpeed;
+        projectileTrajectoryYCurve = projectileSO.projectileTrajectoryYCurve;
+        trajectoryEndPointRandomOffsetValue = projectileSO.trajectoryEndPointRandomOffsetValue;
 
-    public void ActivateAndInitialize(Vector3 targetPosition) {
-       
         trajectoryStartPoint = transform.position;
 
         Vector3 trajectoryEndPointRandomOffset = new Vector3(UnityEngine.Random.Range(-trajectoryEndPointRandomOffsetValue, trajectoryEndPointRandomOffsetValue), 0, 0);
@@ -58,6 +65,8 @@ public class Projectile : MonoBehaviour
 
         float distanceToTarget = Mathf.Abs(trajectoryEndPointRandomized.x - transform.position.x);
         trajectoryMaxRelativeHeight = distanceToTarget * projectileTrajectoryYCurve;
+
+        OnAnyProjectileInstantiated?.Invoke(this, EventArgs.Empty);
     }
 
     private void Update() {
@@ -105,6 +114,7 @@ public class Projectile : MonoBehaviour
     protected virtual void ProjectileHasHit(bool mobHit) {
         projectileHasHit = true;
         OnProjectileHit?.Invoke(this, EventArgs.Empty);
+        OnAnyProjectileHit?.Invoke(this, EventArgs.Empty);
 
         if (mobHit) return;
         StartCoroutine(DestroySelf(2f));
@@ -137,6 +147,10 @@ public class Projectile : MonoBehaviour
             transform.parent = mobHit.GetProjectileParent();
             return;
         }
+    }
+
+    public ProjectileSO GetProjectileSO() {
+        return projectileSO;
     }
 
     private void MobHit_OnMobDied(object sender, EventArgs e) {

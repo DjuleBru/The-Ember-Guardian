@@ -9,7 +9,10 @@ public class Collectible : MonoBehaviour
     [SerializeField] private int currencyAmount;
 
     public event EventHandler OnCollectibleDestroyed;
+
     public static event EventHandler OnAnyCollectibleTouchedFloor;
+    public static event EventHandler OnAnyCollectiblePickedUpByPlayer;
+    public static event EventHandler OnAnyCollectiblePickedUpByWorker;
 
     private bool interactable;
     private bool canBePickedUpByWorker;
@@ -18,6 +21,7 @@ public class Collectible : MonoBehaviour
     private bool aggroedByWildWorker;
     private bool collected;
 
+    private Worker aggroedWildWorker;
     private Collider2D triggerCollider;
     private Rigidbody2D rb;
 
@@ -45,10 +49,14 @@ public class Collectible : MonoBehaviour
 
         if (worker != null) {
 
+            if (aggroedByWildWorker && worker != aggroedWildWorker) return;
+
             if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.wild && !collected) {
                 collected = true;
                 worker.RecruitWorker();
                 Destroy(gameObject);
+
+                OnAnyCollectiblePickedUpByWorker?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
@@ -56,8 +64,11 @@ public class Collectible : MonoBehaviour
                 collected = true;
                 worker.GetComponent<Worker>().CollectOrb();
                 Destroy(gameObject);
+
+                OnAnyCollectiblePickedUpByWorker?.Invoke(this, EventArgs.Empty);
                 return;
             }
+
         }
 
 
@@ -78,6 +89,7 @@ public class Collectible : MonoBehaviour
     }
 
     public void PlayerCollectThis() {
+        OnAnyCollectiblePickedUpByPlayer?.Invoke(this, EventArgs.Empty);
         PlayerCurrencies.Instance.ChangeCurrencyAmount(currencyType, currencyAmount);
         Destroy(gameObject);
     }
@@ -156,8 +168,9 @@ public class Collectible : MonoBehaviour
         return currencyType;
     }
 
-    public void SetAggroedByWildWorker(bool aggroed) {
+    public void SetAggroedByWildWorker(bool aggroed, Worker worker) {
         aggroedByWildWorker = aggroed;
+        aggroedWildWorker = worker;
     }
 
     public bool GetAggroedByWildWorker() {

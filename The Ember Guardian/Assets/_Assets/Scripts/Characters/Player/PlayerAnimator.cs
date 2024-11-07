@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,8 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private Animator bodyAnimator;
     [SerializeField] private Animator gunBodyAnimator;
+
+    public event EventHandler OnFootStepTriggered;
 
     private float previousMoveDir = 1f;
     private float moveDir;
@@ -123,5 +126,9 @@ public class PlayerAnimator : MonoBehaviour
             Vector3 newScale = new Vector3(1, 1, 1);
             transform.localScale = newScale;
         }
+    }
+
+    public void FootStepEvent() {
+        OnFootStepTriggered?.Invoke(this, EventArgs.Empty);
     }
 }

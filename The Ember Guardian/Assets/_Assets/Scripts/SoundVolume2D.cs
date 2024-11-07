@@ -21,7 +21,6 @@ public class SoundVolume2D : MonoBehaviour
     }
 
     public void SetMaxDistanceToHear(float distance) {
-        Debug.Log(distance);
         maxDistanceToHear = distance;
     }
 

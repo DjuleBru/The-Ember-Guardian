@@ -4,33 +4,40 @@ using UnityEngine;
 
 public class PlayerSounds : MonoBehaviour
 {
-    [SerializeField] private AudioSource playerMovementAudioSource;
+    [SerializeField] private AudioSource playerAudioSource;
+
+    [SerializeField] private AudioClip[] footStepAudioClips;
+    [SerializeField] private AudioClip[] playerDamagedAudioClips;
+    [SerializeField] private AudioClip[] playerDiedAudioClips;
+    [SerializeField] private AudioClip[] playerDamagedElectricAudioClips;
+
+    [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private AnimationCurve pitchWithSpeedAnimationCurve;
 
-    private float minSpeedToPlaySound = .3f;
-    private bool moveAudioPaused;
-
-    private void Update() {
-        HandleMovementAudio();
+    private void Start() {
+        playerAnimator.OnFootStepTriggered += PlayerAnimator_OnFootStepTriggered;
+        Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
+        Player.Instance.OnPlayerDied += Player_OnPlayerDied;
     }
 
-    private void HandleMovementAudio() {
-        float moveSpeed = Mathf.Abs(PlayerMovement.Instance.GetMoveSpeed());
+    private void Player_OnPlayerDied(object sender, System.EventArgs e) {
+        playerAudioSource.PlayOneShot(playerDiedAudioClips[Random.Range(0, playerDiedAudioClips.Length)]);
+    }
 
-        float pitch = pitchWithSpeedAnimationCurve.Evaluate(moveSpeed);
-        playerMovementAudioSource.pitch = pitch;
+    private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
+        playerAudioSource.PlayOneShot(playerDamagedElectricAudioClips[Random.Range(0, playerDamagedElectricAudioClips.Length)]);
 
-        if (moveSpeed < minSpeedToPlaySound && !moveAudioPaused) {
-            moveAudioPaused = true;
-            playerMovementAudioSource.Pause();
-        }
+        if (Player.Instance.GetHP() == 0) return;
+        StartCoroutine(PlayHumanDamagedAudioClip());
+    }
 
-        if(moveSpeed > minSpeedToPlaySound &&  moveAudioPaused) {
-            moveAudioPaused = false;
-            playerMovementAudioSource.Play();
-        }
+    private IEnumerator PlayHumanDamagedAudioClip() {
+        yield return new WaitForSeconds(.075f);
+        playerAudioSource.PlayOneShot(playerDamagedAudioClips[Random.Range(0, playerDamagedAudioClips.Length)]);
+    }
 
-
+    private void PlayerAnimator_OnFootStepTriggered(object sender, System.EventArgs e) {
+        playerAudioSource.PlayOneShot(footStepAudioClips[Random.Range(0, footStepAudioClips.Length)]);
     }
 
 }

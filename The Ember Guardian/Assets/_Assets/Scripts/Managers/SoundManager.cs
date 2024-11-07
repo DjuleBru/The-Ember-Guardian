@@ -23,13 +23,75 @@ public class SoundManager : MonoBehaviour
         PlayerShoot.Instance.OnPlayerShotProjectile += PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoor_OnPlayerCooldownSFXTrigger;
+        PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
+
+        PlayerUI_AmmoBar.Instance.OnAmmoTickAdded += PlayerUI_AmmoBar_OnAmmoTickAdded;
+        PlayerUI_HPBar.Instance.OnHPTickAdded += PlayerUI_HPBar_OnHPTickAdded;
+
         ParticleCollision.OnAnyBulletHitEnemy += ParticleCollision_OnAnyBulletHitEnemy;
         ParticleCollision.OnAnyBulletHitGround += ParticleCollision_OnAnyBulletHitGround;
 
         Collectible.OnAnyCollectibleTouchedFloor += Collectible_OnAnyCollectibleTouchedFloor;
+        Collectible.OnAnyCollectiblePickedUpByPlayer += Collectible_OnAnyCollectiblePickedUpByPlayer;
+        Collectible.OnAnyCollectiblePickedUpByWorker += Collectible_OnAnyCollectiblePickedUpByWorker;
 
         PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor += PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;
+
+        Worker.OnAnyOrbDroppedByWorker += Worker_OnAnyOrbDroppedByWorker;
+        Worker.OnAnyWorkerRecruited += Worker_OnAnyWorkerRecruited;
+        Worker.OnAnyWorkerAssignedHunter += Worker_OnAnyWorkerAssignedHunter;
+        Worker.OnAnyWorkerDied += Worker_OnAnyWorkerDied;
+
+        Projectile.OnAnyProjectileHit += Projectile_OnAnyProjectileHit;
+        Projectile.OnAnyProjectileInstantiated += Projectile_OnAnyProjectileInstantiated;
+
     }
+
+    #region PLAYER UI
+
+    private void PlayerUI_HPBar_OnHPTickAdded(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.hpTickAdded,.7f);
+    }
+
+    private void PlayerUI_AmmoBar_OnAmmoTickAdded(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.ammoTickAdded,.7f);
+    }
+
+
+    #endregion
+
+    #region Attacks
+
+    private void Projectile_OnAnyProjectileInstantiated(object sender, System.EventArgs e) {
+        Projectile projectile = (Projectile)sender;
+        PlaySound3D(projectile.GetProjectileSO().projectileInstantiatedAudioClips, (sender as MonoBehaviour).transform.position, .5f);
+    }
+
+    private void Projectile_OnAnyProjectileHit(object sender, System.EventArgs e) {
+        Projectile projectile = (Projectile)sender;
+        PlaySound3D(projectile.GetProjectileSO().projectileHitAudioClips, (sender as MonoBehaviour).transform.position, .5f);
+    }
+
+    #endregion
+
+    #region WORKERS
+
+    private void Worker_OnAnyOrbDroppedByWorker(object sender, System.EventArgs e) {
+        PlaySound3D(soundRefsSO.orbDroppedUpByWorker, (sender as MonoBehaviour).transform.position, .5f);
+    }
+
+    private void Worker_OnAnyWorkerRecruited(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.workerRecruited, .5f);
+    }
+    private void Worker_OnAnyWorkerAssignedHunter(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.workerHunterJobAssigned);
+    }
+
+    private void Worker_OnAnyWorkerDied(object sender, System.EventArgs e) {
+        PlaySound3D(soundRefsSO.workerDied, (sender as MonoBehaviour).transform.position);
+    }
+
+    #endregion
 
     #region CURRENCIES
 
@@ -38,6 +100,22 @@ public class SoundManager : MonoBehaviour
 
         if(collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.blueOrb) {
             PlaySound3D(soundRefsSO.orbTouchedFloor, (sender as MonoBehaviour).transform.position);
+        }
+    }
+    private void Collectible_OnAnyCollectiblePickedUpByPlayer(object sender, System.EventArgs e) {
+        Collectible collectible = (Collectible)sender;
+
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.blueOrb) {
+            PlaySound3D(soundRefsSO.orbPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+        }
+    }
+
+
+    private void Collectible_OnAnyCollectiblePickedUpByWorker(object sender, System.EventArgs e) {
+        Collectible collectible = (Collectible)sender;
+
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.blueOrb) {
+            PlaySound3D(soundRefsSO.orbPickedUpByWorker, (sender as MonoBehaviour).transform.position);
         }
     }
 
@@ -58,19 +136,25 @@ public class SoundManager : MonoBehaviour
         PlaySound3D(audioClipArray, (sender as MonoBehaviour).transform.position, .5f);
     }
 
+
+    private void PlayerShoot_OnPlayerTryShoot_OutOfAmmo(object sender, System.EventArgs e) {
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetGunSO().outOfAmmoSound;
+        PlaySound2D(audioClipArray, .75f);
+    }
+
     private void PlayerShoor_OnPlayerCooldownSFXTrigger(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetGunSO().cooldownGunSound;
-        PlaySound2D(audioClipArray);
+        PlaySound2D(audioClipArray, .5f);
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetGunSO().reloadGunSound;
-        PlaySound2D(audioClipArray);
+        PlaySound2D(audioClipArray, .5f);
     }
 
     private void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetGunSO().shootGunSound;
-        PlaySound2D(audioClipArray);
+        PlaySound2D(audioClipArray, .5f);
     }
 
     #endregion
@@ -108,5 +192,13 @@ public class SoundManager : MonoBehaviour
     }
 
     #endregion
+
+    private bool TestPlaySound(float probabilityToPlaySound) {
+        float randomFloat = Random.Range(0f, 1f);
+
+        if(probabilityToPlaySound > randomFloat) {
+            return true;
+        } else { return false; }
+    }
 
 }

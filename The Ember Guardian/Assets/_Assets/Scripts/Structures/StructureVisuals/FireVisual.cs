@@ -56,6 +56,35 @@ public class FireVisual : StructureVisual
     }
 
     private void Fire_OnFireChangedState(object sender, Fire.OnFireChangedStateEventArgs e) {
+        // PREVIOUS STATE
+        if (e.previousState == Fire.State.calm) {
+            initialFireAOEValue = fire.GetCalmFireRadius();
+            initialFireLightIntensityValue = calmLightIntensityValue;
+            initialFirePSEmissionRateValue = calmPSEmissionRateValue;
+        }
+        if (e.previousState == Fire.State.mild) {
+            initialFireAOEValue = fire.GetMildFireRadius();
+            initialFireLightIntensityValue = mildLightIntensityValue;
+            initialFirePSEmissionRateValue = mildPSEmissionRateValue;
+        }
+        if (e.previousState == Fire.State.insane) {
+            initialFireAOEValue = fire.GetInsaneFireRadius();
+            initialFireLightIntensityValue = insaneLightIntensityValue;
+            initialFirePSEmissionRateValue = insanePSEmissionRateValue;
+        }
+        if (e.previousState == Fire.State.wild) {
+            initialFireAOEValue = fire.GetWildFireRadius();
+            initialFireLightIntensityValue = wildLightIntensityValue;
+            initialFirePSEmissionRateValue = wildPSEmissionRateValue;
+        }
+        if (e.previousState == Fire.State.extinguished) {
+            initialFireAOEValue = 0;
+            initialFireLightIntensityValue = 0;
+            initialFirePSEmissionRateValue = 0;
+        }
+
+
+        // NEW STATE
         if (e.newState == Fire.State.extinguished) {
             fireAnimator.ResetTrigger("Calm");
             fireAnimator.SetTrigger("Extinguished");
@@ -64,12 +93,6 @@ public class FireVisual : StructureVisual
             finalFireLightIntensityValue = 0;
             finalFirePSEmissionRateValue = 0;
             ChangeContinuousPSEmissionRate(0);
-
-            if (e.previousState == Fire.State.calm) {
-                initialFireAOEValue = fire.GetCalmFireRadius();
-                initialFireLightIntensityValue = calmLightIntensityValue;
-                initialFirePSEmissionRateValue = calmPSEmissionRateValue;
-            }
         }
 
         if (e.newState == Fire.State.wild) {
@@ -80,17 +103,6 @@ public class FireVisual : StructureVisual
             finalFirePSEmissionRateValue = wildPSEmissionRateValue;
 
             ChangeContinuousPSEmissionRate(continuousPSWildEmissionRate);
-
-            if (e.previousState == Fire.State.mild) {
-                initialFireAOEValue = fire.GetMildFireRadius();
-                initialFireLightIntensityValue = mildLightIntensityValue;
-                initialFirePSEmissionRateValue = mildPSEmissionRateValue;
-            }
-            if(e.previousState == Fire.State.insane) {
-                initialFireAOEValue = fire.GetInsaneFireRadius();
-                initialFireLightIntensityValue = insaneLightIntensityValue;
-                initialFirePSEmissionRateValue = insanePSEmissionRateValue;
-            }
         }
 
         if (e.newState == Fire.State.mild) {
@@ -102,17 +114,6 @@ public class FireVisual : StructureVisual
             finalFirePSEmissionRateValue = mildPSEmissionRateValue;
 
             ChangeContinuousPSEmissionRate(continuousPSMildEmissionRate);
-
-            if (e.previousState == Fire.State.calm) {
-                initialFireAOEValue = fire.GetCalmFireRadius();
-                initialFireLightIntensityValue = calmLightIntensityValue;
-                initialFirePSEmissionRateValue = calmPSEmissionRateValue;
-            }
-            if (e.previousState == Fire.State.wild) {
-                initialFireAOEValue = fire.GetWildFireRadius();
-                initialFireLightIntensityValue = wildLightIntensityValue;
-                initialFirePSEmissionRateValue = wildPSEmissionRateValue;
-            }
         }
 
         if (e.newState == Fire.State.insane) {
@@ -123,12 +124,6 @@ public class FireVisual : StructureVisual
             finalFirePSEmissionRateValue = insanePSEmissionRateValue;
 
             ChangeContinuousPSEmissionRate(continuousPSInsaneEmissionRate);
-
-            if (e.previousState == Fire.State.wild) {
-                initialFireAOEValue = fire.GetWildFireRadius();
-                initialFireLightIntensityValue = wildLightIntensityValue;
-                initialFirePSEmissionRateValue = wildPSEmissionRateValue;
-            }
         }
 
         if (e.newState == Fire.State.calm) {
@@ -137,18 +132,6 @@ public class FireVisual : StructureVisual
             finalFireAOEValue = fire.GetCalmFireRadius();
             finalFireLightIntensityValue = calmLightIntensityValue;
             finalFirePSEmissionRateValue = calmPSEmissionRateValue;
-
-            if (e.previousState == Fire.State.mild) {
-                initialFireAOEValue = fire.GetMildFireRadius();
-                initialFireLightIntensityValue = mildLightIntensityValue;
-                initialFirePSEmissionRateValue = mildPSEmissionRateValue;
-            }
-
-            if (e.previousState == Fire.State.extinguished) {
-                initialFireAOEValue = 0;
-                initialFireLightIntensityValue = 0;
-                initialFirePSEmissionRateValue = 0;
-            }
         }
 
         lerping = true;

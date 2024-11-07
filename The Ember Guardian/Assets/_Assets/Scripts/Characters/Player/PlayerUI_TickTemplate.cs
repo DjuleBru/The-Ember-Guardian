@@ -7,11 +7,17 @@ using UnityEngine.UI;
 public class PlayerUI_TickTemplate : MonoBehaviour
 {
     private Rigidbody2D rb;
-    private MMF_Player mmfPlayer;
+    private Image image;
+    [SerializeField] private MMF_Player outMmfPlayer;
+    [SerializeField] private MMF_Player inMmfPlayer;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
-        mmfPlayer = GetComponent<MMF_Player>();
+        image = GetComponent<Image>();
+    }
+
+    public void AddTick() {
+        inMmfPlayer.PlayFeedbacks();
     }
 
     public void RemoveTick() {
@@ -24,7 +30,7 @@ public class PlayerUI_TickTemplate : MonoBehaviour
         rb.AddForce(force, ForceMode2D.Impulse);
         rb.AddTorque(torque, ForceMode2D.Impulse);
 
-        mmfPlayer.PlayFeedbacks();
+        outMmfPlayer.PlayFeedbacks();
 
         StartCoroutine(DestroyGameObjectAfterDelay(1f));
     }
@@ -32,5 +38,9 @@ public class PlayerUI_TickTemplate : MonoBehaviour
     private IEnumerator DestroyGameObjectAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
         Destroy(gameObject);
+    }
+
+    public void SetImageAlphaFull() {
+        image.color = Color.white;
     }
 }

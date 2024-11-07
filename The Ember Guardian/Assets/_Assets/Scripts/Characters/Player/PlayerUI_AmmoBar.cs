@@ -1,9 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerUI_AmmoBar : MonoBehaviour
 {
+
+    public static PlayerUI_AmmoBar Instance;
+
     [SerializeField] private GameObject ammoBarGameObject;
     [SerializeField] private GameObject ammoBarBackgroundGameObject;
     [SerializeField] private RectTransform ammoBarRightPosition;
@@ -28,6 +33,12 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     private bool ammoBarCritical = false;
     private bool inAmmoCrafterArea = false;
 
+    public event EventHandler OnAmmoTickAdded;
+
+    private void Awake() {
+        Instance = this;
+    }
+
     private void Start() {
 
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
@@ -43,6 +54,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         ammoBarBackgroundGameObject.SetActive(false);
         ammoBarCanvasGroup = ammoBarGameObject.GetComponent<CanvasGroup>();
     }
+
 
     private void Update() {
         if (ammoBarCritical) return;
@@ -101,10 +113,9 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         }
     }
 
-    private void PlayerShoot_OnPlayerAmmoRefilled(object sender, System.EventArgs e) {
-        RefreshAmmoBar();
+    private void PlayerShoot_OnPlayerAmmoRefilled(object sender, PlayerShoot.OnAmmoRefilledEventArgs e) {
+        StartCoroutine(RefillAmmoBar(e.ammoAmount));
     }
-
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
         if (PlayerShoot.Instance.GetCurrentAmmo() < 0) return;
 
@@ -122,11 +133,27 @@ public class PlayerUI_AmmoBar : MonoBehaviour
             ammoBarCritical = false;
         }
 
-        RectTransform[] hpTickArray = ammoTickContainer.GetComponentsInChildren<RectTransform>();
-        hpTickArray[1].SetParent(transform);
-        hpTickArray[1].GetComponent<PlayerUI_TickTemplate>().RemoveTick();
+        PlayerUI_TickTemplate[] ammoTickArray = ammoTickContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
+        ammoTickArray[0].GetComponent<RectTransform>().SetParent(transform);
+        ammoTickArray[0].RemoveTick();
 
         RefreshAmmoBar();
+    }
+
+    private IEnumerator RefillAmmoBar(int ammoCount) {
+
+        for (int i = 0; i < ammoCount; i++) {
+
+            PlayerUI_TickTemplate ammoTick = Instantiate(ammoTickTemplate, ammoTickContainer).GetComponent<PlayerUI_TickTemplate>();
+
+            ammoTick.gameObject.SetActive(true);
+            PlayerUI_TickTemplate[] ammoTickArray = ammoTickContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
+            ammoTickArray[0].AddTick();
+            OnAmmoTickAdded?.Invoke(this, EventArgs.Empty);
+
+            yield return new WaitForSeconds(.25f);
+        }
+
     }
 
     private void RefreshAmmoBar() {
@@ -140,7 +167,8 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         int playerAmmo = PlayerShoot.Instance.GetCurrentAmmo();
 
         for (int i = 0; i < playerAmmo; i++) {
-            Instantiate(ammoTickTemplate, ammoTickContainer);
+            PlayerUI_TickTemplate ammoTick = Instantiate(ammoTickTemplate, ammoTickContainer).GetComponent<PlayerUI_TickTemplate>();
+            ammoTick.SetImageAlphaFull();
         }
 
         ammoTickTemplate.gameObject.SetActive(false);

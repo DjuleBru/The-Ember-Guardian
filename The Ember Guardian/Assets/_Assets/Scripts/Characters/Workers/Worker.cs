@@ -21,6 +21,11 @@ public class Worker : Mob {
     private bool recruited;
     private float playerIsCloseTimer;
 
+    public static event EventHandler OnAnyOrbDroppedByWorker;
+    public static event EventHandler OnAnyWorkerRecruited;
+    public static event EventHandler OnAnyWorkerAssignedHunter;
+    public static event EventHandler OnAnyWorkerDied;
+
     private void Awake() {
         workerAI = GetComponent<WorkerAI>();    
     }
@@ -40,6 +45,8 @@ public class Worker : Mob {
         mobSpawner.RemoveMobFromMobSpawnedList(this);
         workerAI.SetJob(WorkerAI.JobTypes.jobless);
         recruited = true;
+
+        OnAnyWorkerRecruited?.Invoke(this, EventArgs.Empty);
     }
 
     public void CollectOrb() {
@@ -151,6 +158,7 @@ public class Worker : Mob {
             Collectible lastBlueOrbDroppedOnTheFloor = Instantiate(blueOrbPrefab, transform.position, Quaternion.identity).GetComponent<Collectible>();
             lastBlueOrbDroppedOnTheFloor.ApplyRandomFrontForce(2f, 3f);
             lastBlueOrbDroppedOnTheFloor.SetCollectibleUnInteractable(1f);
+            OnAnyOrbDroppedByWorker?.Invoke(this, EventArgs.Empty);
 
             yield return new WaitForSeconds(delayBetweenOrbs);
         }
@@ -177,6 +185,7 @@ public class Worker : Mob {
         GetComponent<Collider2D>().enabled = false;
         GetComponent<Rigidbody2D>().gravityScale = 0;
         WorkerManager.Instance.RemoveWorker(this);
+        OnAnyWorkerDied?.Invoke(this, EventArgs.Empty);
 
         StartCoroutine(DestroyGameObjectAfterDelay(1f));
     }
@@ -186,6 +195,10 @@ public class Worker : Mob {
             health = 5;
         } else {
             health = 1;
+        }
+
+        if(workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
+            OnAnyWorkerAssignedHunter?.Invoke(this, EventArgs.Empty);
         }
     }
 

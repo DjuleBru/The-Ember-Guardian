@@ -21,6 +21,14 @@ public class PayOrbsUI_SoundManager : MonoBehaviour
 
     private void PayOrbsUI_OnSingleOrbFilled1(object sender, PayOrbsUI.OnSingleOrbFilledEventArgs e) {
 
+        Structure structureFromWhichOrbWasPaid = (sender as PayOrbsUI).GetComponent<Structure>();
+        if(structureFromWhichOrbWasPaid != null ) {
+            if (structureFromWhichOrbWasPaid.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.function) {
+                return;
+            }
+        }
+        
+
         pitch = initialPitch + e.orbIndex*pitchIncreasePerOrb;
         audioSource.pitch = pitch;
 

@@ -6,8 +6,8 @@ using UnityEngine;
 public class MobAttack : MonoBehaviour
 {
     [SerializeField] protected bool isProjectileAttack;
+    [SerializeField] protected ProjectileSO projectileSO;
 
-    [SerializeField] protected Transform projectilePrefab;
     [SerializeField] protected Transform projectileSpawnPoint;
     [SerializeField] protected float attackCooldown;
     [SerializeField] protected float attackAnimationDelay;
@@ -62,10 +62,10 @@ public class MobAttack : MonoBehaviour
 
         if (previousAttackTargetIDamageable != null) {
 
-            Projectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity).GetComponent<Projectile>();
+            Projectile projectile = Instantiate(projectileSO.projectilePrefab, projectileSpawnPoint.position, Quaternion.identity).GetComponent<Projectile>();
 
             Vector3 projectileTarget = new Vector3(previousAttackTargetIDamageable.GetProjectileTarget().position.x, 0, 0);
-            projectile.ActivateAndInitialize(projectileTarget);
+            projectile.ActivateAndInitialize(projectileTarget, projectileSO);
         }
     }
 

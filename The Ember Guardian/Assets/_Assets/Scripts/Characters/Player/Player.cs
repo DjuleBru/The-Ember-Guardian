@@ -24,9 +24,13 @@ public class Player : MonoBehaviour, IDamageable
     public event EventHandler OnPlayerEnteredCamp;
     public event EventHandler OnPlayerExitedCamp;
     public event EventHandler OnPlayerDamaged;
-    public event EventHandler OnPlayerHealed;
+    public event EventHandler<OnPlayerHealedEventArgs> OnPlayerHealed;
     public event EventHandler OnPlayerDied;
     public event EventHandler OnPlayerRespawned;
+
+    public class OnPlayerHealedEventArgs : EventArgs {
+        public int healAmount;
+    }
 
     private void Awake() {
         Instance = this;
@@ -137,8 +141,12 @@ public class Player : MonoBehaviour, IDamageable
         return playerHealth;
     }
 
-    public void HealPlayer() {
+    public void RefillPlayerHealth() {
+        int healAmount = playerMaxHealth - playerHealth;
+
         playerHealth = playerMaxHealth;
-        OnPlayerHealed?.Invoke(this, EventArgs.Empty);
+        OnPlayerHealed?.Invoke(this, new OnPlayerHealedEventArgs {
+            healAmount = healAmount
+        });
     }
 }

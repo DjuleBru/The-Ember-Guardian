@@ -23,6 +23,8 @@ public class Tower : Structure
     private float level3RangeMultiplier = 1.5f;
     private float level4RangeMultiplier = 2f;
 
+    public event EventHandler OnHunterAssigned;
+
     protected override void Start() {
         base.Start();
         DisableAllGarrisonColliders();
@@ -64,6 +66,7 @@ public class Tower : Structure
     public void AssignWorker(Worker worker) {
         assignedWorkersList.Add(worker);
         SetWorkerGarrisonPosition(worker);
+        OnHunterAssigned?.Invoke(this, EventArgs.Empty);
     }
 
     private void SetWorkerGarrisonPosition(Worker worker) {

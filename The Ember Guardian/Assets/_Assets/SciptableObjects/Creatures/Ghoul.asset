@@ -15,6 +15,7 @@ MonoBehaviour:
   enemyName: Ghoul
   description: Melee mob that can respawn after it's first death !
   creaturePrefab: {fileID: 4997657120178985709, guid: 61fc72d8cc17be84eb6679397d2fd53c, type: 3}
+  mass: 20
   moveSpeed: 5
   moveSpeedRandomizerDelta: 0.47
   maxHealth: 3
@@ -30,3 +31,6 @@ MonoBehaviour:
   difficulty: 3
   initialWaveSpawn: 3
   spawnProbability: 0.262
+  dieAudioClips: []
+  aggroAudioClips: []
+  idleAudioClips: []

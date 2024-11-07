@@ -5,10 +5,11 @@ using UnityEngine;
 public class WildJob : MonoBehaviour, IJobBehavior {
 
     private Collectible blueOrbAggroed;
+    private List<Collectible> blueOrbDroppedByPlayerNearby = new List<Collectible>();
 
     private Worker worker;  
 
-    [SerializeField] private float distanceToAggroOrb = 5f;
+    [SerializeField] private float distanceToAggroOrb = 7.5f;
     [SerializeField] private float roamMoveSpeed = 1.5f;
     [SerializeField] private float blueOrbAggroMoveSpeed = 2.5f;
     [SerializeField] private float roamRadius = 3f;
@@ -24,7 +25,7 @@ public class WildJob : MonoBehaviour, IJobBehavior {
 
     private void Update() {
         if (blueOrbAggroed != null) {
-            AggroBlueOrb();
+            HeadToAggroedBlueOrb();
         }
         else {
             Roam();
@@ -35,7 +36,7 @@ public class WildJob : MonoBehaviour, IJobBehavior {
         PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor -= PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;
     }
 
-    public void AggroBlueOrb() {
+    public void HeadToAggroedBlueOrb() {
 
         if (!hasSetSpeed) {
             worker.GetComponent<MobMovement>().SetMoveSpeed(blueOrbAggroMoveSpeed);
@@ -47,7 +48,7 @@ public class WildJob : MonoBehaviour, IJobBehavior {
 
     public void UnAggroBlueOrb() {
         if (blueOrbAggroed == null) return;
-        blueOrbAggroed.SetAggroedByWildWorker(false);
+        blueOrbAggroed.SetAggroedByWildWorker(false, null);
     }
 
     public void Roam() {
@@ -66,20 +67,44 @@ public class WildJob : MonoBehaviour, IJobBehavior {
     }
 
     private void PlayerCurrencies_OnBlueOrbDroppedOnTheFloor(object sender, PlayerCurrencies.OnBlueOrbDroppedOnTheFloorEventArgs e) {
-        if (e.blueOrbDropped.GetAggroedByWildWorker()) return;
-        if (blueOrbAggroed != null) return;
 
         if(Mathf.Abs(Player.Instance.transform.position.x - worker.transform.position.x) < distanceToAggroOrb) {
-            e.blueOrbDropped.SetAggroedByWildWorker(true);
-            blueOrbAggroed = e.blueOrbDropped;
-            blueOrbAggroed.OnCollectibleDestroyed += BlueOrbAggroed_OnCollectibleDestroyed;
-            hasSetSpeed = false;
+            blueOrbDroppedByPlayerNearby.Add(e.blueOrbDropped);
+            e.blueOrbDropped.OnCollectibleDestroyed += BlueOrbDropped_OnCollectibleDestroyed;
+
+            if (!e.blueOrbDropped.GetAggroedByWildWorker() && blueOrbAggroed == null) {
+                // Blue orb has not been aggroed
+
+                e.blueOrbDropped.SetAggroedByWildWorker(true, worker);
+                blueOrbAggroed = e.blueOrbDropped;
+                
+                hasSetSpeed = false;
+            }
+
         }
     }
 
-    private void BlueOrbAggroed_OnCollectibleDestroyed(object sender, System.EventArgs e) {
-        blueOrbAggroed.OnCollectibleDestroyed -= BlueOrbAggroed_OnCollectibleDestroyed;
-        blueOrbAggroed = null;
-        hasSetSpeed = false;
+    private void BlueOrbDropped_OnCollectibleDestroyed(object sender, System.EventArgs e) {
+        Collectible blueOrb = sender as Collectible;
+        blueOrb.OnCollectibleDestroyed -= BlueOrbDropped_OnCollectibleDestroyed;
+        blueOrbDroppedByPlayerNearby.Remove(blueOrb);
+
+        if (blueOrb == blueOrbAggroed) {
+            blueOrbAggroed = null;
+            hasSetSpeed = false;
+        } else {
+            RefreshAggroedOrb();
+        }
+
+    }
+
+    private void RefreshAggroedOrb() {
+        foreach(Collectible collectible in blueOrbDroppedByPlayerNearby) {
+            if(!collectible.GetAggroedByWildWorker()) {
+                collectible.SetAggroedByWildWorker(true, worker);
+                blueOrbAggroed = collectible;
+                hasSetSpeed = false;
+            }
+        }
     }
 }

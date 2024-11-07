@@ -25,8 +25,8 @@ MonoBehaviour:
   - {fileID: 1944388709, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
   - {fileID: -356857735, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
   gunAnimator: {fileID: 0}
-  maxAmmo: 10
-  shotsPerClip: 4
+  maxAmmo: 4
+  shotsPerClip: 3
   shootCooldownTime: 0.8
   shootCooldownSFXTriggerTime: 0.3
   reloadTime: 2
@@ -54,3 +54,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 32433cb07860c854f8514231e93f3813, type: 3}
   - {fileID: 8300000, guid: 7c4ef5419b0a7a24b9c549ea14b1e263, type: 3}
   - {fileID: 8300000, guid: 3aa5ce64a65a5a2489835833a2a763a5, type: 3}
+  outOfAmmoSound:
+  - {fileID: 8300000, guid: e8e5aa23dc10e764bb3d3654d35014c5, type: 3}

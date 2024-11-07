@@ -8,12 +8,17 @@ public class PlayerShoot : MonoBehaviour
     public static PlayerShoot Instance;
 
     public event EventHandler OnPlayerShotProjectile;
+    public event EventHandler OnPlayerTryShoot_OutOfAmmo;
     public event EventHandler OnPlayerShootStopped;
     public event EventHandler OnPlayerCooldownTrigger;
     public event EventHandler OnPlayerReload;
     public event EventHandler OnPlayerReloadEnded;
-    public event EventHandler OnPlayerAmmoRefilled;
+    public event EventHandler<OnAmmoRefilledEventArgs> OnPlayerAmmoRefilled;
     public event EventHandler OnClipsChanged;
+
+    public class OnAmmoRefilledEventArgs : EventArgs {
+        public int ammoAmount;
+    }
 
     [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private Transform projectilePrefab;
@@ -131,11 +136,16 @@ public class PlayerShoot : MonoBehaviour
     }
 
     public void AddAmmo(int ammoCount) {
-        currentAmmo += ammoCount;
-        if(currentAmmo > maxAmmo) {
-            currentAmmo = maxAmmo;
+
+        int ammoRefilled = ammoCount;
+        if(currentAmmo + ammoRefilled > maxAmmo) {
+            ammoRefilled = maxAmmo - currentAmmo;
         }
-        OnPlayerAmmoRefilled?.Invoke(this, EventArgs.Empty);
+        currentAmmo += ammoRefilled;
+
+        OnPlayerAmmoRefilled?.Invoke(this, new OnAmmoRefilledEventArgs {
+            ammoAmount = ammoRefilled
+        });
     }
 
     public int GetCurrentAmmo() {
@@ -157,9 +167,14 @@ public class PlayerShoot : MonoBehaviour
     private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {
         if (coolingDown) return;
         if (reloading) return;
+        if (Player.Instance.GetHP() == 0) return;
 
-        Shoot();
-        OnPlayerShotProjectile?.Invoke(this, EventArgs.Empty);
+        if(currentAmmo == 0) {
+            OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+        } else {
+            Shoot();
+            OnPlayerShotProjectile?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void GameInput_OnPlayerShootCanceled(object sender, System.EventArgs e) {

@@ -7,14 +7,36 @@ public class Creature : Mob
 {
 
     [SerializeField] private CreatureSO creatureSO;
+    private Rigidbody2D rb;
     private bool enteredLight;
 
     public event EventHandler OnCreatureEnteredLight;
     public event EventHandler OnCreatureExitedLight;
 
+    public event EventHandler OnCreatureDied;
+    public event EventHandler OnCreatureIdleSoundTriggered;
+
+    private float triggerSoundTimer;
+    private float triggerSoundTime = 5f;
+
+    private void Awake() {
+        rb = GetComponent<Rigidbody2D>();
+        rb.mass = creatureSO.mass;
+        triggerSoundTimer = UnityEngine.Random.Range(0, triggerSoundTime);
+    }
+
     private void OnEnable() {
         CreaturesManager.Instance.AddCreatureSpawned(this);
         health = creatureSO.maxHealth;
+    }
+
+    private void Update() {
+        triggerSoundTimer -= Time.deltaTime;
+
+        if(triggerSoundTimer < 0) {
+            OnCreatureIdleSoundTriggered?.Invoke(this, EventArgs.Empty);
+            triggerSoundTimer = triggerSoundTime;
+        }
     }
 
     public override void Die() {
@@ -22,8 +44,8 @@ public class Creature : Mob
 
         base.Die();
 
+        OnCreatureDied?.Invoke(this, EventArgs.Empty);
         StartCoroutine(DisableGameObjectAfterDelay());
-
         GetComponent<Collider2D>().enabled = false;
         GetComponent<Rigidbody2D>().gravityScale = 0;
     }

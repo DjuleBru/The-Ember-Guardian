@@ -150,14 +150,16 @@ public class Fire : Structure {
 
     private void ChangeState(State newState) {
 
-        OnFireChangedState?.Invoke(this, new OnFireChangedStateEventArgs {
-            previousState = state,
-            newState = newState
-        });
-
         SetFireAOEValues(newState);
 
+        State previousState = state;
+        
         state = newState;
+
+        OnFireChangedState?.Invoke(this, new OnFireChangedStateEventArgs {
+            previousState = previousState,
+            newState = newState
+        });
 
         CheckFireFeedable();
     }

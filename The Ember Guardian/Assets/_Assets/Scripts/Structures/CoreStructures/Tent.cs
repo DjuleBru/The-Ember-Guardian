@@ -24,7 +24,7 @@ public class Tent : Structure
 
     protected override void TriggerStructureFunction() {
         base.TriggerStructureFunction();
-        Player.Instance.HealPlayer();
+        Player.Instance.RefillPlayerHealth();
         ActivateStructureFunctionInteraction(false);
     }
 

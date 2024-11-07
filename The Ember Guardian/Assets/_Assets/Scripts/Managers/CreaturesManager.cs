@@ -39,4 +39,8 @@ public class CreaturesManager : MonoBehaviour
     public void RemoveCreatureSpawned(Creature creature) {
         creaturesSpawnedList.Remove(creature);
     }
+
+    public int GetSpawnedCreatureCount() {
+        return creaturesSpawnedList.Count;
+    }
 }
