@@ -53,7 +53,7 @@ public class DayNightManager : MonoBehaviour
 
     private void Update() {
         cycleTimer += Time.deltaTime;
-
+        HandleDebugNextState();
         switch (state) {
 
             case State.Dawn:
@@ -90,6 +90,31 @@ public class DayNightManager : MonoBehaviour
                     totalNightTimer = 0;
                 }
                 break;
+        }
+    }
+
+    private void HandleDebugNextState() {
+        if(Input.GetKeyDown(KeyCode.N)) {
+            switch (state) {
+
+                case State.Dawn:
+                        ChangeState(State.Day);
+                    break;
+
+                case State.Day:
+                        ChangeState(State.Dusk);
+                    break;
+
+                case State.Dusk:
+                        ChangeState(State.Night);
+                    break;
+
+                case State.Night:
+                        ChangeState(State.Dawn);
+                    break;
+            }
+            cycleTimer = 0;
+            totalNightTimer = 0; totalDayTimer = 0;
         }
     }
 

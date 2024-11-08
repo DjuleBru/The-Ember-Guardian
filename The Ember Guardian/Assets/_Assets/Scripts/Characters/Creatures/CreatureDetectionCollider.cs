@@ -16,6 +16,16 @@ public class CreatureDetectionCollider : MonoBehaviour
         creatureAI = GetComponentInParent<CreatureAI>();
     }
 
+    private void Start() {
+        Player.Instance.OnPlayerDied += Player_OnPlayerDied;
+    }
+
+    private void Player_OnPlayerDied(object sender, System.EventArgs e) {
+        if(iDamageablesInDetectionRange.Contains(Player.Instance)) {
+            RemoveIDamageableInDetectionRange(Player.Instance);
+        }
+    }
+
     private void Update() {
         refreshTargetTimer -= Time.deltaTime;
         if(refreshTargetTimer < 0) {
@@ -99,6 +109,7 @@ public class CreatureDetectionCollider : MonoBehaviour
     private void RefreshHighestPriorityTarget() {
 
         if (iDamageablesInDetectionRange.Count == 0) return;
+
 
         IDamageable highestPriorityTarget = iDamageablesInDetectionRange[0];
         int highestPriority = int.MaxValue; // Initialise à une valeur élevée

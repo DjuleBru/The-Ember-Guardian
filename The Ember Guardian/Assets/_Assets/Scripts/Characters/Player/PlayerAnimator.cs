@@ -31,6 +31,12 @@ public class PlayerAnimator : MonoBehaviour
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
+        Player.Instance.OnPlayerDamagedRecentlyEnded += Player_OnPlayerDamagedRecentlyEnded;
+    }
+
+    private void Player_OnPlayerDamagedRecentlyEnded(object sender, EventArgs e) {
+        bodyAnimator.SetBool("DamagedRecently", false);
+        gunBodyAnimator.SetBool("DamagedRecently", false);
     }
 
     private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
@@ -46,6 +52,10 @@ public class PlayerAnimator : MonoBehaviour
     private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
         bodyAnimator.SetTrigger("Hit");
         gunBodyAnimator.SetTrigger("Hit");
+
+        if (Player.Instance.GetDead()) return;
+        bodyAnimator.SetBool("DamagedRecently", true);
+        gunBodyAnimator.SetBool("DamagedRecently", true);
     }
 
     private void Update() {

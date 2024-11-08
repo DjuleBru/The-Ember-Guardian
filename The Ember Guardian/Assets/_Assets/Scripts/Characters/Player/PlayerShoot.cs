@@ -29,8 +29,6 @@ public class PlayerShoot : MonoBehaviour
     private float shootCooldownTime;
     private float shootCooldownSFXTriggerTime;
     private float reloadTimer;
-    private float singleClipReloadTime;
-    private float singleClipReloadTimer;
     private float reloadTime;
     private bool coolingDown;
     private bool reloading;
@@ -80,13 +78,6 @@ public class PlayerShoot : MonoBehaviour
 
         if(reloading) {
             reloadTimer -= Time.deltaTime;
-            singleClipReloadTimer -= Time.deltaTime;
-
-            if(singleClipReloadTimer <= 0 ) {
-                singleClipReloadTimer = singleClipReloadTime;
-                currentClip += 1;
-                OnClipsChanged?.Invoke(this, EventArgs.Empty);
-            }
 
             if (reloadTimer <= 0) {
                 currentClip = clipsPerAmmo;
@@ -128,8 +119,6 @@ public class PlayerShoot : MonoBehaviour
             reloading = true;
             reloadTimer = reloadTime;
 
-            singleClipReloadTime = reloadTime / clipsPerAmmo;
-            singleClipReloadTimer = singleClipReloadTime;
             currentAmmo -= 1;
             OnPlayerReload?.Invoke(this, EventArgs.Empty);
         }

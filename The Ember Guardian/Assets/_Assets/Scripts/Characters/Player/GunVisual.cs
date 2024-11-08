@@ -23,7 +23,7 @@ public class GunVisual : MonoBehaviour
 
         int currentGunReloadSpriteIndex = Mathf.RoundToInt(clipsAmountNormalized * gunReloadSprites.Count);
 
-        gunLightsSpriteRenderer.sprite = gunReloadSprites[currentGunReloadSpriteIndex ];
+        gunLightsSpriteRenderer.sprite = gunReloadSprites[currentGunReloadSpriteIndex];
     }
 
     private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {

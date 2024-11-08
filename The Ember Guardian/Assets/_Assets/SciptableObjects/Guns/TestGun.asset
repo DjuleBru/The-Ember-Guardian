@@ -26,10 +26,11 @@ MonoBehaviour:
   - {fileID: -356857735, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
   gunAnimator: {fileID: 0}
   maxAmmo: 4
-  shotsPerClip: 3
+  shotsPerClip: 1
   shootCooldownTime: 0.8
   shootCooldownSFXTriggerTime: 0.3
-  reloadTime: 2
+  reloadTime: 1
+  animationReloadTime: 0.8
   gunKnockback: 1.5
   gunRecoil: 0.3
   gunRecoilDamping: 4

@@ -13,8 +13,11 @@ public class Player : MonoBehaviour, IDamageable
     private Rigidbody2D rb;
     private bool canDropOrbOnTheFloor = true;
     private bool dead;
+    private bool damagedRecently;
     private bool insideCamp;
 
+    private float damagedTimer;
+    private float damagedImmunityTime = 1f;
     private float deadTimer;
     private float respawnTime = 5f;
 
@@ -24,6 +27,7 @@ public class Player : MonoBehaviour, IDamageable
     public event EventHandler OnPlayerEnteredCamp;
     public event EventHandler OnPlayerExitedCamp;
     public event EventHandler OnPlayerDamaged;
+    public event EventHandler OnPlayerDamagedRecentlyEnded;
     public event EventHandler<OnPlayerHealedEventArgs> OnPlayerHealed;
     public event EventHandler OnPlayerDied;
     public event EventHandler OnPlayerRespawned;
@@ -40,6 +44,14 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Update() {
         CheckExitingCamp();
+
+        if (damagedRecently) {
+            damagedTimer -= Time.deltaTime;
+            if(damagedTimer < 0 ) {
+                OnPlayerDamagedRecentlyEnded?.Invoke(this, EventArgs.Empty);
+                damagedRecently = false;
+            }
+        }
 
         if (dead) {
             deadTimer += Time.deltaTime;
@@ -83,11 +95,17 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public void TakeDamage(int damage, Vector3 damageSourcePosition) {
+        if (damagedRecently) return;
+        if (dead) return;
+
         playerHealth -= 1;
 
         if(playerHealth <= 0) {
             Die();
         }
+
+        damagedTimer = damagedImmunityTime;
+        damagedRecently = true;
 
         OnPlayerDamaged?.Invoke(this, EventArgs.Empty);
     }
@@ -97,8 +115,6 @@ public class Player : MonoBehaviour, IDamageable
         GetComponent<PlayerAim>().enabled = false;
         GetComponent<PlayerShoot>().enabled = false;
         GetComponent<PlayerCurrencies>().enabled = false;
-        GetComponent<Collider2D>().enabled = false;
-        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
 
         OnPlayerDied?.Invoke(this, EventArgs.Empty);
 
@@ -117,8 +133,6 @@ public class Player : MonoBehaviour, IDamageable
         GetComponent<PlayerAim>().enabled = true;
         GetComponent<PlayerShoot>().enabled = true;
         GetComponent<PlayerCurrencies>().enabled = true;
-        GetComponent<Collider2D>().enabled = true;
-        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
         OnPlayerRespawned?.Invoke(this, EventArgs.Empty);
 
@@ -148,5 +162,9 @@ public class Player : MonoBehaviour, IDamageable
         OnPlayerHealed?.Invoke(this, new OnPlayerHealedEventArgs {
             healAmount = healAmount
         });
+    }
+
+    public bool GetDead() {
+        return dead;
     }
 }

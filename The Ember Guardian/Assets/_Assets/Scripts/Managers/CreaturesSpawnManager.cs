@@ -129,7 +129,8 @@ public class CreaturesSpawnManager : MonoBehaviour
     }
 
     private void SpawnCreatureAtSide(CreatureSO creatureToSpawn, float position) {
-        Instantiate(creatureToSpawn.creaturePrefab, GetSpawnPosition(position), Quaternion.identity);
+        Creature creature = Instantiate(creatureToSpawn.creaturePrefab, GetSpawnPosition(position), Quaternion.identity).GetComponent<Creature>();
+        creature.SetAsDayCreature(false);
     }
 
     private List<CreatureSO> GetCreatureSOListToSpawn(float difficultyBudget) {

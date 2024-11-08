@@ -7,7 +7,9 @@ public class Creature : Mob
 {
 
     [SerializeField] private CreatureSO creatureSO;
+    [SerializeField] private CircleCollider2D detectionCollider;
     private Rigidbody2D rb;
+    private bool dayCreature;
     private bool enteredLight;
 
     public event EventHandler OnCreatureEnteredLight;
@@ -73,5 +75,21 @@ public class Creature : Mob
             OnCreatureExitedLight?.Invoke(this, EventArgs.Empty);
             enteredLight = false;
         }
+    }
+
+    public void SetAsDayCreature(bool dayCreature) {
+        this.dayCreature = dayCreature;
+
+        if (dayCreature) {
+            float radiusRandomizer = UnityEngine.Random.Range(-creatureSO.detectionRange_Day / 5, creatureSO.detectionRange_Day / 5);
+            detectionCollider.radius = creatureSO.detectionRange_Day + radiusRandomizer;
+        }
+        else {
+            detectionCollider.radius = creatureSO.detectionRange_Night;
+        }
+    }
+
+    public bool IsDayCreature() { 
+        return dayCreature;
     }
 }

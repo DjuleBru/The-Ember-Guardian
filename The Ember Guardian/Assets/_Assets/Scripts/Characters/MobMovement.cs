@@ -36,6 +36,7 @@ public class MobMovement : MonoBehaviour
     }
 
     protected void FixedUpdate() {
+        Debug.DrawLine(transform.position, targetDestination);
         if (Mathf.Abs(targetDestination.x - transform.position.x) < .1f) {
             moveDirFloat = 0;
 

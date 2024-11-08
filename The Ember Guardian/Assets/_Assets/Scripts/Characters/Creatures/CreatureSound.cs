@@ -5,6 +5,7 @@ using UnityEngine;
 public class CreatureSound : MonoBehaviour
 {
     private AudioSource creatureAudioSource;
+    [SerializeField] private AudioSource creatureIdleAudioSource;
 
     [SerializeField] private Creature creature;
     [SerializeField] private CreatureAI creatureAI;
@@ -30,8 +31,7 @@ public class CreatureSound : MonoBehaviour
 
     private void Creature_OnAnyCreatureIdleSoundTriggered(object sender, System.EventArgs e) {
         if (diedRecently) return;
-
-        creatureAudioSource.PlayOneShot(creature.GetCreatureSO().idleAudioClips[Random.Range(0, creature.GetCreatureSO().idleAudioClips.Length)], .5f);
+        creatureIdleAudioSource.PlayOneShot(creature.GetCreatureSO().idleAudioClips[Random.Range(0, creature.GetCreatureSO().idleAudioClips.Length)], .5f);
     }
 
     private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {

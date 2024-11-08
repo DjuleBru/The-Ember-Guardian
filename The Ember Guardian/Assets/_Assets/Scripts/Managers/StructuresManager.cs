@@ -26,6 +26,22 @@ public class StructuresManager : MonoBehaviour
         foreach (StructureLocation location in level1StructureLocationsUnlocked) {
             location.UnlockStructureLocation();
         }
+
+        Tent.Instance.OnStructureUpgraded += Tent_OnStructureUpgraded;
+    }
+
+    private void Tent_OnStructureUpgraded(object sender, EventArgs e) {
+        if(Tent.Instance.GetStructureLevel() == 2) {
+            foreach (StructureLocation location in level2StructureLocationsUnlocked) {
+                location.UnlockStructureLocation();
+            }
+        }
+
+        if (Tent.Instance.GetStructureLevel() == 3) {
+            foreach (StructureLocation location in level3StructureLocationsUnlocked) {
+                location.UnlockStructureLocation();
+            }
+        }
     }
 
     public void AddStructure(Structure structure) {

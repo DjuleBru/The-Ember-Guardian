@@ -26,6 +26,14 @@ public class CreatureSO : ScriptableObject
     public float mass;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
+    [Range(1, 20)]
+    public float detectionRange_Day;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
+    [Range(1, 20)]
+    public float detectionRange_Night;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
     [Range(1,20)]
     public float moveSpeed;
     [VerticalGroup("Game Data/Stats")]

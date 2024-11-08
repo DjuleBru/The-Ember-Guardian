@@ -4782,7 +4782,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 023f01da2142829468b512b9192e97b2, type: 2}
+  - {fileID: 2100000, guid: ba3e1ca4f9525114686d6dd1d97eb271, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5092,6 +5092,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDistanceToHear: 20
+  maxAudioSourceVolume: 1
 --- !u!1 &2688749729732424139
 GameObject:
   m_ObjectHideFlags: 0
@@ -9999,7 +10000,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 023f01da2142829468b512b9192e97b2, type: 2}
+  - {fileID: 2100000, guid: ba3e1ca4f9525114686d6dd1d97eb271, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10104,7 +10105,7 @@ MonoBehaviour:
   m_Intensity: 2.21
   m_LightVolumeIntensity: 0
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 159706bb000000003513251005d1c0ac63b1ca2919c70efd4302e2a04142e35601e06951
+  m_ApplyToSortingLayers: 159706bb000000003513251005d1c0ac63b1ca2919c70efd4302e2a04142e35601e06951c5f28fcad99f534587c78f80
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -14915,7 +14916,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3d7c27dce3fbff24fa752a29296b1726, type: 2}
+  - {fileID: 2100000, guid: ba3e1ca4f9525114686d6dd1d97eb271, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19749,7 +19750,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 023f01da2142829468b512b9192e97b2, type: 2}
+  - {fileID: 2100000, guid: ba3e1ca4f9525114686d6dd1d97eb271, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19850,11 +19851,11 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.438
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1.1
+  m_Color: {r: 1, g: 0.9079551, b: 0.6273585, a: 1}
+  m_Intensity: 2
   m_LightVolumeIntensity: 0
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 159706bb000000003513251005d1c0ac63b1ca2919c70efd4302e2a04142e35601e06951
+  m_ApplyToSortingLayers: 0000000063b1ca2901e06951c5f28fcad99f534587c78f8005d1c0ac4302e2a0159706bb19c70efd4142e35635132510
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -19936,12 +19937,12 @@ MonoBehaviour:
   m_Intensity: 2.21
   m_LightVolumeIntensity: 0
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 159706bb000000003513251005d1c0ac63b1ca2919c70efd4302e2a04142e35601e06951
+  m_ApplyToSortingLayers: 159706bb000000003513251005d1c0ac63b1ca2919c70efd4302e2a04142e35601e06951c5f28fcad99f534587c78f80
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
   m_AlphaBlendOnOverlap: 0
-  m_OverlapOperation: 1
+  m_OverlapOperation: 0
   m_NormalMapDistance: 3
   m_NormalMapQuality: 0
   m_UseNormalMap: 0
@@ -20026,6 +20027,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -2028772083, guid: 79bfd788c6d2c1e42a6306455c7a4995, type: 3}
+    - target: {fileID: 2858744977638243454, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
     - target: {fileID: 3549839082585346721, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 1.156
@@ -20105,10 +20110,10 @@ MonoBehaviour:
   upgradeUnlocked: 0
   functionUnlocked: 0
   fireRadiusCollider: {fileID: 7294656095997144733}
-  calmFireRadius: 15
-  mildFireRadius: 25
-  wildFireRadius: 35
-  insaneFireRadius: 45
+  calmFireRadius: 10
+  mildFireRadius: 20
+  wildFireRadius: 30
+  insaneFireRadius: 40
   orbFuelValue: 5
   fuelDepletionRate: 0.01
   calmFuelTreshold: 0
@@ -20168,7 +20173,7 @@ MonoBehaviour:
   structureSpriteRenderer: {fileID: 3164822574766202836}
   structureFunctionIconSpriteRenderer: {fileID: 3493313870643483912}
   greyedStructionIconColor: {r: 0, g: 0, b: 0, a: 0}
-  unhoveredMaterial: {fileID: 2100000, guid: fe6ab2471487a0a47a4d6cda2cf8e4b7, type: 2}
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
   structureHasFunctionIcon: 0
   AOEFireLight: {fileID: 383687344151973833}
@@ -20178,10 +20183,10 @@ MonoBehaviour:
   atmosphericPS: {fileID: 749338915286513291}
   continuousPS: {fileID: 4686977853202011417}
   fuelledPS: {fileID: 7539768649894214490}
-  calmLightIntensityValue: 0.3
-  mildLightIntensityValue: 0.8
-  wildLightIntensityValue: 1
-  insaneLightIntensityValue: 1.5
+  calmLightIntensityValue: 0.5
+  mildLightIntensityValue: 0.7
+  wildLightIntensityValue: 0.8
+  insaneLightIntensityValue: 1
   calmPSEmissionRateValue: 60
   mildPSEmissionRateValue: 100
   wildPSEmissionRateValue: 150

@@ -357,6 +357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDistanceToHear: 6
+  maxAudioSourceVolume: 1
 --- !u!114 &9070717348681560644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -645,6 +646,7 @@ MonoBehaviour:
   structureSO: {fileID: 11400000, guid: c7afad7f68fa6aa4d9911acecc53b4f9, type: 2}
   upgradeUnlocked: 0
   functionUnlocked: 0
+  ammoCraftTime: 45
 --- !u!224 &6117757297469953653 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8209206451638645461, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
@@ -675,7 +677,7 @@ MonoBehaviour:
   structureSpriteRenderer: {fileID: 190870229499975902}
   structureFunctionIconSpriteRenderer: {fileID: 1816938978050232834}
   greyedStructionIconColor: {r: 1, g: 1, b: 1, a: 0.3137255}
-  unhoveredMaterial: {fileID: 2100000, guid: fe6ab2471487a0a47a4d6cda2cf8e4b7, type: 2}
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
   structureHasFunctionIcon: 1
   craftAmmo_PayOrbsGameObject: {fileID: 7203990799742609256}

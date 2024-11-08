@@ -24,7 +24,7 @@ public class PlayerUI_TickTemplate : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.gravityScale = 1.5f;
 
-        Vector2 force = new Vector2(0, Random.Range(3, 6));
+        Vector2 force = new Vector2(0, Random.Range(5, 8));
         float torque = Random.Range(-2f, 2f);
 
         rb.AddForce(force, ForceMode2D.Impulse);

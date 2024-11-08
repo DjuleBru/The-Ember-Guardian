@@ -49,6 +49,16 @@ public class PlayerUI_HPBar : MonoBehaviour
 
 
     private void Update() {
+
+        if(Input.GetKeyDown(KeyCode.K)) {
+            PlayerUI_TickTemplate[] hpTickArray = hpTickContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
+            hpTickArray[hpTickArray.Length - 1].GetComponent<RectTransform>().SetParent(transform);
+            hpTickArray[hpTickArray.Length - 1].RemoveTick();
+
+            ShowHPBar();
+            RefreshHPBar();
+        }
+
         if (hpBarCritical) return;
 
         if (isFadingIn) {

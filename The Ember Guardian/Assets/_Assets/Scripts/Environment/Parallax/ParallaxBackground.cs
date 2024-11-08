@@ -29,7 +29,6 @@ public class ParallaxBackground : MonoBehaviour {
         cameraTransform = Camera.main.transform;
     }
 
-
     private void FixedUpdate() {
         HandleParallaxOriginal();
     }

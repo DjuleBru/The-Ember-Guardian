@@ -55,6 +55,7 @@ MonoBehaviour:
   projectileTarget: {fileID: 3169633286473734908}
   projectileParent: {fileID: 1926586374160934664}
   creatureSO: {fileID: 11400000, guid: 4677f0daccecce74488f30b387df3971, type: 2}
+  detectionCollider: {fileID: 4621125121055982351}
 --- !u!114 &2201482587927928448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -792,7 +793,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 95ee0c72c4389654f894e18705a7b2f9, type: 2}
+  - {fileID: 2100000, guid: 23dfa3674f193fb49a69726e1eef2751, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1292,6 +1293,7 @@ MonoBehaviour:
   cleanMaterial: {fileID: 2100000, guid: c5ccc01428e550247b6486858bd903dc, type: 2}
   debuffedMaterial: {fileID: 2100000, guid: 95ee0c72c4389654f894e18705a7b2f9, type: 2}
   debuffedGameObject: {fileID: 6355303796101193538}
+  creatureLight: {fileID: 0}
 --- !u!1 &3753561343068245250
 GameObject:
   m_ObjectHideFlags: 0
@@ -1308,7 +1310,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2018473351705415985
 Transform:
   m_ObjectHideFlags: 0
@@ -1318,7 +1320,7 @@ Transform:
   m_GameObject: {fileID: 3753561343068245250}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.203, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1402,6 +1404,149 @@ MonoBehaviour:
   - {x: 0.4157348, y: -0.27778515, z: 0}
   - {x: 0.46193978, y: -0.19134171, z: 0}
   - {x: 0.49039266, y: -0.09754512, z: 0}
+--- !u!1 &4028292893792921011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2847206202282216212}
+  - component: {fileID: 67990355953189852}
+  - component: {fileID: 1495661165240872269}
+  m_Layer: 15
+  m_Name: IdleAudioSource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2847206202282216212
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4028292893792921011}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7954929331775950098}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &67990355953189852
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4028292893792921011}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.501
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &1495661165240872269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4028292893792921011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8b52ebbea11cad48b0d93c2883134ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistanceToHear: 10
+  maxAudioSourceVolume: 0.5
 --- !u!1 &5217539790380235402
 GameObject:
   m_ObjectHideFlags: 0
@@ -1464,7 +1609,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2847206202282216212}
   m_Father: {fileID: 6409776439602011119}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2165978147866165786
@@ -1479,6 +1625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce7ec275ea019e349931593740d2ac34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creatureIdleAudioSource: {fileID: 67990355953189852}
   creature: {fileID: 5757064800425388701}
   creatureAI: {fileID: 6447040630869028713}
   enteredLightAudioClips:
@@ -1497,6 +1644,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDistanceToHear: 20
+  maxAudioSourceVolume: 1
 --- !u!82 &478046112683351384
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1778,4 +1926,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.28660572}
   serializedVersion: 2
-  m_Radius: 1.5334395
+  m_Radius: 2

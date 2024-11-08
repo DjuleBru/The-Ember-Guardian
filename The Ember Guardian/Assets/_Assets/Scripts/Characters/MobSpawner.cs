@@ -10,6 +10,8 @@ public class MobSpawner : MonoBehaviour
     [SerializeField] protected int mobAmountToSpawn;
     [SerializeField] protected int maxMobsRespawningAtDawn;
 
+    [SerializeField] protected bool isCreatureSpawner;
+
     protected List<Mob> mobSpawnedList = new List<Mob>();
 
     protected void Start() {
@@ -37,6 +39,10 @@ public class MobSpawner : MonoBehaviour
             Mob mob = Instantiate(mobPrefab, spawnPosition.position, Quaternion.identity).GetComponent<Mob>();
             mobSpawnedList.Add(mob);
             mob.SetMobSpawner(this);
+
+            if(isCreatureSpawner) {
+                mob.GetComponent<Creature>().SetAsDayCreature(true);
+            }
         }
     }
 }

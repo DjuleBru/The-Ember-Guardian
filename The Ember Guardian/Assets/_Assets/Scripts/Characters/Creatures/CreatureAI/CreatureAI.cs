@@ -9,7 +9,6 @@ public class CreatureAI : MonoBehaviour {
     private MobMovement mobMovement;
     private MobAttack mobAttack;
 
-    private float initialMoveSpeed;
     private float foundTargetMoveSpeedBuff = 1.5f;
     private float attackRange;
     private float maxAttackRange;
@@ -18,7 +17,11 @@ public class CreatureAI : MonoBehaviour {
 
     private IDamageable attackTarget;
 
-
+    private Vector3 positionToRoamAmound;
+    private float roamMoveSpeed;
+    private float roamChangeDestinationRate;
+    private float roamRadius;
+    private float roamTimer;
 
     private bool aggroedRecently;
     private float aggroTimer;
@@ -26,7 +29,9 @@ public class CreatureAI : MonoBehaviour {
     public event EventHandler OnCreatureAggro;
 
     public enum State {
-        walking,
+        idle,
+        walkingToFire,
+        walkingToSpawner,
         moveToTarget,
         attacking,
     }
@@ -40,8 +45,23 @@ public class CreatureAI : MonoBehaviour {
     }
 
     private void Start() {
-        attackRange = creature.GetCreatureSO().attackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRange/10, creature.GetCreatureSO().attackRange/10);
+        attackRange = creature.GetCreatureSO().attackRange + UnityEngine.Random.Range(-.5f, .5f);
         maxAttackRange = attackRange + attackRange/5;
+
+        if (creature.IsDayCreature()) {
+
+            positionToRoamAmound = creature.GetMobSpawner().transform.position;
+            roamMoveSpeed = creature.GetCreatureSO().moveSpeed/2;
+            roamChangeDestinationRate = 10f;
+            roamRadius = 10f;
+
+            ChangeState(State.idle);
+
+        } else {
+
+            ChangeState(State.walkingToFire);
+
+        }
     }
 
     private void Update() {
@@ -49,7 +69,17 @@ public class CreatureAI : MonoBehaviour {
 
         switch (state) {
 
-            case State.walking:
+            case State.idle:
+
+                if (detectedAttackTarget && !aggroedRecently) {
+                    ChangeState(State.moveToTarget);
+                }
+
+                Roam();
+
+                break;
+
+            case State.walkingToFire:
 
                 MoveTowardsFire();
                 if(detectedAttackTarget && !aggroedRecently) {
@@ -58,10 +88,23 @@ public class CreatureAI : MonoBehaviour {
 
             break;
 
+            case State.walkingToSpawner:
+
+                MoveTowardsSpawner();
+                if (detectedAttackTarget && !aggroedRecently) {
+                    ChangeState(State.moveToTarget);
+                }
+
+                break;
+
             case State.moveToTarget:
 
                 if(!detectedAttackTarget) {
-                    ChangeState(State.walking);
+                    if(creature.IsDayCreature()) {
+                        ChangeState(State.walkingToSpawner);
+                    } else {
+                        ChangeState(State.walkingToFire);
+                    }
                 }
 
                 HeadToTarget();
@@ -71,16 +114,25 @@ public class CreatureAI : MonoBehaviour {
             case State.attacking:
 
                 if (!detectedAttackTarget) {
-                    ChangeState(State.walking);
+                    ChangeState(State.walkingToFire);
                     return;
                 }
 
-                if(!CheckAttackTargetInRange() && !mobAttack.GetAttackStarted() && !aggroedRecently) {
+                if(!CheckAttackTargetInRange() && !mobAttack.GetAttackStarted()) {
                     ChangeState(State.moveToTarget);
                     return;
                 }
 
                 break;
+        }
+    }
+    private void Roam() {
+
+        roamTimer -= Time.deltaTime;
+
+        if (roamTimer < 0) {
+            roamTimer = roamChangeDestinationRate;
+            RoamBehavior.RoamAroundPoint(mobMovement, roamRadius, positionToRoamAmound);
         }
     }
 
@@ -98,6 +150,12 @@ public class CreatureAI : MonoBehaviour {
 
     private void ChangeState(State newState) {
 
+        if(newState == State.idle) {
+            mobMovement.SetMoveSpeed(roamMoveSpeed);
+        } else {
+            mobMovement.SetMoveSpeed(creature.GetCreatureSO().moveSpeed);
+        }
+
         if(newState == State.attacking) {
             mobMovement.SetMoveTarget(transform.position);
             mobAttack.SetAttackTarget(attackTarget);
@@ -109,7 +167,7 @@ public class CreatureAI : MonoBehaviour {
 
         }
 
-        if(newState == State.walking) {
+        if(newState == State.walkingToFire) {
             mobMovement.SetMoveTarget(transform.position);
             mobAttack.RemoveAttackTarget();
 
@@ -117,14 +175,26 @@ public class CreatureAI : MonoBehaviour {
                 mobMovement.DebuffMoveSpeed(foundTargetMoveSpeedBuff);
                 followingTargetBuffedSpeed = false;
             }
-
         }
 
-        if(newState == State.moveToTarget) {
-            aggroedRecently = true;
-            aggroTimer = aggroDelay;
+        if (newState == State.walkingToSpawner) {
+            mobMovement.SetMoveTarget(transform.position);
+            mobAttack.RemoveAttackTarget();
 
-            CheckAggoFeedbacks();
+            if (followingTargetBuffedSpeed) {
+                mobMovement.DebuffMoveSpeed(foundTargetMoveSpeedBuff);
+                followingTargetBuffedSpeed = false;
+            }
+        }
+
+        if (newState == State.moveToTarget) {
+
+            if(!aggroedRecently) {
+                aggroedRecently = true;
+                aggroTimer = aggroDelay;
+                TriggerAggoFeedbacks();
+            }
+
             mobMovement.BuffMoveSpeed(foundTargetMoveSpeedBuff);
             followingTargetBuffedSpeed = true;
             mobAttack.RemoveAttackTarget();
@@ -144,13 +214,17 @@ public class CreatureAI : MonoBehaviour {
     }
 
     private void HeadToTarget() {
+
         Vector3 targetDestination = attackTarget.GetMeleeAttackPosition().position;
+
         mobMovement.SetMoveTarget(targetDestination);
 
         if(attackTarget == Player.Instance.GetComponent<IDamageable>()) {
 
+            // Take in account player Y position for when he jumps over creatures
             if (Mathf.Abs(transform.position.x - targetDestination.x) < attackRange && (Player.Instance.transform.position.y < 2f)) {
                 ChangeState(State.attacking);
+                return;
             }
 
             return;
@@ -167,6 +241,12 @@ public class CreatureAI : MonoBehaviour {
         mobMovement.SetMoveTarget(targetDestination);
     }
 
+    private void MoveTowardsSpawner() {
+        Vector3 targetDestination = creature.GetMobSpawner().transform.position;
+
+        mobMovement.SetMoveTarget(targetDestination);
+    }
+
     public void ResetAttackTargetInProximity() {
         detectedAttackTarget = false;
     }
@@ -178,8 +258,9 @@ public class CreatureAI : MonoBehaviour {
         attackTarget = iDamageable;
     }
 
-    private void CheckAggoFeedbacks() {
+    private void TriggerAggoFeedbacks() {
         if (attackTarget is Barricade) return;
+
         OnCreatureAggro?.Invoke(this, EventArgs.Empty);
     }
 
