@@ -45,7 +45,7 @@ public class CreatureFeedbacks : MonoBehaviour
 
     private void CreatureAI_OnCreatureAggro(object sender, System.EventArgs e) {
         aggroFeedbacks.PlayFeedbacks();
-        AddVerticalForce();
+        //AddVerticalForce();
     }
 
     private void AddVerticalForce() {

@@ -44,7 +44,6 @@ public class AnimalAI : MonoBehaviour
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
     }
 
-
     private void Update() {
 
         if (isSafe) {

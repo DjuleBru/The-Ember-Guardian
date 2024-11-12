@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ad119f31ca28824aad1883e1ac68ecb, type: 3}
+  m_Name: SpitterProjectile
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 7911136206213874445, guid: 633b6fa6e55658540b5a5461f59a52dd, type: 3}
+  projectileTrajectoryAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2.3279412
+      outSlope: 2.3279412
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.1043574
+    - serializedVersion: 3
+      time: 0.55
+      value: 1
+      inSlope: -0.035392124
+      outSlope: -0.035392124
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.19862552
+    - serializedVersion: 3
+      time: 1.001831
+      value: 0.00030517578
+      inSlope: -3.870154
+      outSlope: -3.870154
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.06928966
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.0745881
+      value: -0.3624644
+      inSlope: -6.276533
+      outSlope: -6.276533
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.5224944
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  projectileYDifferentialWithTargetAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  projectileSpeedAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.6
+      outSlope: -0.6
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.7
+      inSlope: -0.012486565
+      outSlope: -0.012486565
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.14880955
+      outWeight: 0.16071427
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.6
+      outSlope: 0.6
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  projectileMaxMoveSpeed: 8
+  projectileTrajectoryYCurve: 0.5
+  trajectoryEndPointRandomOffsetValue: 0.5
+  projectileInstantiatedAudioClips:
+  - {fileID: 8300000, guid: b61e7a58c80f544409551ae17ae120ce, type: 3}
+  - {fileID: 8300000, guid: 9319c286fa470054599ea79023524ff4, type: 3}
+  projectileHitAudioClips:
+  - {fileID: 8300000, guid: f62a745c9b1be8149bca61f45b72abc1, type: 3}
+  - {fileID: 8300000, guid: c802cad54184658488a4449778180b20, type: 3}
+  - {fileID: 8300000, guid: 69918578fddcf7d46ad8be1a513ac7f2, type: 3}

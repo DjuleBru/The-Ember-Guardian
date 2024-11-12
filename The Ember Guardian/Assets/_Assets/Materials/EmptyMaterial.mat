@@ -13,6 +13,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - GLOWLIGHT_ON
+  - GLOW_ON
   m_InvalidKeywords:
   - ETC1_EXTERNAL_ALPHA
   - _GLOWAFFECTLIGHT_ON
@@ -131,7 +132,7 @@ Material:
     - _GhostTransparency: 0
     - _GlitchAmount: 3
     - _GlitchSize: 1
-    - _Glow: 10
+    - _Glow: 0
     - _GlowAffectLight: 1
     - _GlowGlobal: 1
     - _GlowTexUsed: 0

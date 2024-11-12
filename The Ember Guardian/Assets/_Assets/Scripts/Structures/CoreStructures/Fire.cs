@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fire : Structure {
+public class Fire : Structure, IDamageable {
+
+    public static Fire Instance;
 
     [SerializeField] private CircleCollider2D fireRadiusCollider;
 
@@ -25,6 +27,7 @@ public class Fire : Structure {
 
     private FireOrbCollider fireOrbCollider;
     private float fuelLevel;
+    private float damageToFuelConversionRate = 5f;
 
     public enum State {
         extinguished,
@@ -42,6 +45,7 @@ public class Fire : Structure {
     }
 
     public event EventHandler OnFireFuelled;
+    public event EventHandler OnFireDamageTaken;
 
     private bool lerping;
     private float lerpTimer;
@@ -50,7 +54,10 @@ public class Fire : Structure {
     private float finalFireAOEValue;
 
     protected override void Awake() {
+        Instance = this;
+
         base.Awake();
+
         fireOrbCollider = GetComponentInChildren<FireOrbCollider>();
     }
 
@@ -88,6 +95,7 @@ public class Fire : Structure {
 
         CheckFireStateDowngrade();
     }
+    
 
     private void ChangeFireRadius(float fireRadius) {
         fireRadiusCollider.radius = fireRadius;
@@ -95,6 +103,11 @@ public class Fire : Structure {
 
     private void FireOrbCollider_OnOrbFellInFire(object sender, EventArgs e) {
         fuelLevel += orbFuelValue;
+
+        if(fuelLevel >= maxFuelTreshold) {
+            fuelLevel = maxFuelTreshold;
+        }
+
         CheckFireStateUpgrade();
 
         OnFireFuelled?.Invoke(this, EventArgs.Empty);
@@ -114,6 +127,7 @@ public class Fire : Structure {
             SetStructureFunctionUnlocked(false);
         }
     } 
+
     private void CheckFireStateDowngrade() {
 
         if (fuelLevel < 0 && state == State.calm) {
@@ -217,5 +231,51 @@ public class Fire : Structure {
     }
     public float GetInsaneFireRadius() {
         return insaneFireRadius;
+    }
+
+    public float GetCalmFireTreshold() {
+        return calmFuelTreshold;
+    }
+
+    public float GetMildFireTreshold() {
+        return mildFuelTreshold;
+    }
+
+    public float GetWildFireTreshold() {
+        return wildFuelTreshold;
+    }
+
+    public float GetInsaneFireTreshold() {
+        return insaneFuelTreshold;
+    }
+
+    public float GetMaxFireTreshold() {
+        return maxFuelTreshold;
+    }
+
+    public float GetOrbFuelValue() {
+        return orbFuelValue;
+    }
+
+    public float GetCurrentFuelLevel() {
+        return fuelLevel;
+    }
+
+    public void TakeDamage(int damage, Vector3 damageSourcePosition) {
+        fuelLevel -= (damage * damageToFuelConversionRate);
+        CheckFireStateDowngrade();
+        OnFireDamageTaken?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void Die() {
+
+    }
+
+    public Transform GetProjectileTarget() {
+        return transform;
+    }
+
+    public Transform GetMeleeAttackPosition() {
+        return transform;
     }
 }

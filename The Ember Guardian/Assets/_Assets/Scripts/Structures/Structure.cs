@@ -281,5 +281,10 @@ public class Structure : MonoBehaviour {
     public void SetCurrentStructureInteractionType(StructureInteractionType interactionType) {
         currentStructureInteractionType = interactionType;
     }
+
+    public void InvokeOnStructureUpgraded() {
+        OnStructureUpgraded?.Invoke(this, EventArgs.Empty);
+    }
+
     #endregion
 }

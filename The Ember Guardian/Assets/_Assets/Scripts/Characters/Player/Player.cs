@@ -17,7 +17,7 @@ public class Player : MonoBehaviour, IDamageable
     private bool insideCamp;
 
     private float damagedTimer;
-    private float damagedImmunityTime = 1f;
+    private float damagedImmunityTime = 1.5f;
     private float deadTimer;
     private float respawnTime = 5f;
 

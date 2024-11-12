@@ -25,12 +25,12 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     public List<CreatureSO> creatureTypes;
 
-    public int baseDifficulty = 10;
-    public float growthFactor = 1.2f;
-    public float minWaveDuration = 10f; // 1 minute
-    public float maxWaveDuration = 30f; // 3 minutes
-    public float waveIntensityFactor = 0.6f;
-    private float delayBetweenSubWaves = 10f;
+    public int baseDifficulty;
+    public float growthFactor;
+    public float minWaveDuration;
+    public float maxWaveDuration;
+    public float waveIntensityFactor;
+    public float delayBetweenSubWaves;
 
     private float waveDifficulty;
     private float waveDifficultyLeftProportion;
@@ -55,8 +55,6 @@ public class CreaturesSpawnManager : MonoBehaviour
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
 
         CampZoneManager.Instance.OnCampZoneLimitsChanged += CampZoneManager_OnCampZoneLimitsChanged;
-
-        RefreshSpawnPositions();
     }
 
     private void CampZoneManager_OnCampZoneLimitsChanged(object sender, System.EventArgs e) {
@@ -65,7 +63,9 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     private void RefreshSpawnPositions() {
         leftCreatureSpawnPosition = CampZoneManager.Instance.GetMinZoneLimit() - spawnDistanceToCampZoneLimit;
-        rightCreatureSpawnPosition = CampZoneManager.Instance.GetMinZoneLimit() + spawnDistanceToCampZoneLimit;
+        rightCreatureSpawnPosition = CampZoneManager.Instance.GetMaxZoneLimit() + spawnDistanceToCampZoneLimit;
+        Debug.Log("leftCreatureSpawnPosition " + leftCreatureSpawnPosition);
+        Debug.Log("rightCreatureSpawnPosition " + rightCreatureSpawnPosition);
     }
  
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
@@ -98,6 +98,8 @@ public class CreaturesSpawnManager : MonoBehaviour
         Debug.Log("WaveDifficulty " + waveDifficulty);
         Debug.Log("waveDifficultyLeftProportion " + waveDifficultyLeftProportion);
         Debug.Log("waveDifficultyRightProportion " + waveDifficultyRightProportion);
+
+        DayNightManager.Instance.SetNightDuration(waveDuration + waveDuration / 5);
 
         // Préparer la liste de toutes les créatures à spawner pour cette vague
         waveCreaturesDictionary.Clear();
@@ -180,7 +182,7 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     private List<SpawnedCreatureInfo> PrepareSubWaveCreatures(float subWaveDifficulty, float leftProportion, int subWaveIndex) {
 
-        Debug.Log("PrepareSubWaveCreatures " + subWaveDifficulty);
+        Debug.Log("Subwave " + subWaveIndex + " Difficulty " + subWaveDifficulty);
 
         List<SpawnedCreatureInfo> waveCreatures = new List<SpawnedCreatureInfo>();
 

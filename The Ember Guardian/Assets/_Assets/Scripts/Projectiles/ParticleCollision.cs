@@ -40,6 +40,9 @@ public class ParticleCollision : MonoBehaviour
     }
 
     private void OnParticleCollision(GameObject other) {
+        // Liste pour garder la trace des particules ayant déjà infligé des dégâts lors de cette collision
+        List<int> damagedParticles = new List<int>();
+
         int numCollisionEvents = ps.GetCollisionEvents(other, collisionEvents);
 
         GameObject explosion = Instantiate(explosionPrefab, collisionEvents[0].intersection, Quaternion.identity);
@@ -54,8 +57,28 @@ public class ParticleCollision : MonoBehaviour
         for (int i = 0; i < numCollisionEvents; i++) {
             Vector3 collisionPosition = collisionEvents[i].intersection;
 
+
+
             // Parcours chaque particule pour voir laquelle est proche de la collision
             for (int j = 0; j < particleCount; j++) {
+
+                // Vérifie si la particule n'a pas déjà infligé des dégâts pour cette collision
+                if (!damagedParticles.Contains(j) && Vector3.Distance(particles[j].position, collisionPosition) < collisionDistanceThreshold) {
+                    particles[j].remainingLifetime = 0; // Détruit seulement la particule proche de l'impact
+                    ps.SetParticles(particles, particleCount); // Réinjecte les particules mises à jour dans le système
+
+                    // Applique des dégâts et ajoute l'index de la particule à la liste
+                    if (other.GetComponent<Mob>() != null) {
+                        other.GetComponent<Mob>().TakeDamage(bulletDamage, collisionPosition);
+                        OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
+                    }
+                    else {
+                        OnAnyBulletHitGround?.Invoke(this, EventArgs.Empty);
+                    }
+
+                    damagedParticles.Add(j); // Marque cette particule comme ayant déjà infligé des dégâts
+                    break; // Sort de la boucle pour passer à la collision suivante
+                }
 
                 if (Vector3.Distance(particles[j].position, collisionPosition) < collisionDistanceThreshold) {
 
@@ -68,23 +91,6 @@ public class ParticleCollision : MonoBehaviour
             }
         }
 
-
-        // Knockback : Calculer la direction du tir
-        if (other.GetComponent<Rigidbody2D>() != null) {
-            Vector3 direction = (collisionEvents[0].intersection - transform.position).normalized;
-            direction.y = 0;
-            direction.z = 0;
-
-            other.GetComponent<Rigidbody2D>().AddForceAtPosition(direction * hitKnockbackForce, collisionEvents[0].intersection, ForceMode2D.Impulse);
-        }
-        
-        // Damage : 
-        if(other.GetComponent<Mob>() != null) {
-            other.GetComponent<Mob>().TakeDamage(bulletDamage, collisionEvents[0].intersection);
-            OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
-        } else {
-            OnAnyBulletHitGround?.Invoke(this, EventArgs.Empty);
-        }
     }
 
 }

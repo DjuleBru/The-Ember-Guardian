@@ -33,7 +33,9 @@ public class CampZoneManager : MonoBehaviour
     private void Start() {
         Barricade.OnAnyBarricadeBuilt += Barricade_OnAnyBarricadeBuilt;
         Barricade.OnAnyBarricadeDestroyed += Barricade_OnAnyBarricadeDestroyed;
-        Barricade.OnAnyBarricadeRepaired += Barricade_OnAnyBarricadeRepaired; ;
+        Barricade.OnAnyBarricadeRepaired += Barricade_OnAnyBarricadeRepaired;
+
+        RefreshCampZoneLimits();
     }
 
     private void Barricade_OnAnyBarricadeBuilt(object sender, EventArgs e) {

@@ -20,7 +20,7 @@ public class ParallaxEnvironment : MonoBehaviour
 
     public void SetParallaxTransparency(float transparency) {
 
-        if(transparency < .5f) {
+        if(transparency < .05f) {
             transparency = 0;
         }
         if (transparency > .95f) {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,13 +8,17 @@ public class CreatureAttack : MobAttack
     private Creature creature;
     private float enteredLightAttackSpeedDebuff = 1.4f;
 
-    protected void Awake() {
+    protected override void Awake() {
+        base.Awake();
         creature = GetComponent<Creature>();
 
         attackCooldown = creature.GetCreatureSO().attackRate;
         attackDamage = creature.GetCreatureSO().damage;
         attackAnimationDelay = creature.GetCreatureSO().attackAnimationDelay;
         totalAttackAnimationTime = creature.GetCreatureSO().totalAttackAnimationTime;
+    }
+    protected override void Attack() {
+        base.Attack();
     }
 
     protected void Start() {

@@ -973,6 +973,7 @@ Transform:
   - {fileID: 4959335473103312796}
   - {fileID: 5440757532894419489}
   - {fileID: 6909711943450153630}
+  - {fileID: 3339449912389990811}
   m_Father: {fileID: 3361532791816449055}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &8236170804758533910
@@ -5958,7 +5959,7 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 163904
+      m_Bits: 426048
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -6943,8 +6944,8 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6395452d77bac1542814acc737c565e0, type: 2}
-  - {fileID: 2100000, guid: 6395452d77bac1542814acc737c565e0, type: 2}
+  - {fileID: 2100000, guid: e1a5980a30928174bb88fa21dc366e6f, type: 2}
+  - {fileID: 2100000, guid: e1a5980a30928174bb88fa21dc366e6f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -13020,7 +13021,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8590004d33102444a71b438e6f11041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileTarget: {fileID: 0}
+  projectileTarget: {fileID: 3339449912389990811}
 --- !u!114 &8501995130765655673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13080,7 +13081,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed98323fe188bb14e81eba902f3be1f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialOrbAmountDebug: 100
+  initialOrbAmountDebug: 5
   blueOrbPrefab: {fileID: 4096008502524423227, guid: 7187c138d57b2dc43b18d3d2bd569bed, type: 3}
   blueOrbDropPoint: {fileID: 6909711943450153630}
 --- !u!114 &7037577414899589081
@@ -15246,6 +15247,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4959335473103312796}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8852946631850490199
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3339449912389990811}
+  m_Layer: 0
+  m_Name: ProjectileTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3339449912389990811
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8852946631850490199}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.009, y: -0.522, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2157084316927466674}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5585592080828048826
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15297,7 +15329,7 @@ PrefabInstance:
     - target: {fileID: 3539393163596176914, guid: ac339e72352a33c43b41c4156642971e, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 6395452d77bac1542814acc737c565e0, type: 2}
+      objectReference: {fileID: 2100000, guid: e1a5980a30928174bb88fa21dc366e6f, type: 2}
     - target: {fileID: 6455426156918751658, guid: ac339e72352a33c43b41c4156642971e, type: 3}
       propertyPath: m_Name
       value: TrailPS

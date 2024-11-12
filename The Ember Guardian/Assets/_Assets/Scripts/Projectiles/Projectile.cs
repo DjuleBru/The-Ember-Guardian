@@ -40,10 +40,18 @@ public class Projectile : MonoBehaviour
     public static event EventHandler OnAnyProjectileInstantiated;
     public static event EventHandler OnAnyProjectileHit;
 
+    private Mob parentMob;
     private Mob mobHit;
+    private bool enemyProjectile;
 
-    public void ActivateAndInitialize(Vector3 targetPosition, ProjectileSO projectileSO) {
+    public void ActivateAndInitialize(Vector3 targetPosition, ProjectileSO projectileSO, Mob parentMob) {
+        this.parentMob = parentMob;
         this.projectileSO = projectileSO;
+
+        if(parentMob is Creature) {
+            enemyProjectile = true;
+        }
+
         projectileTrajectoryAnimationCurve = projectileSO.projectileTrajectoryAnimationCurve;
         projectileYDifferentialWithTargetAnimationCurve = projectileSO.projectileYDifferentialWithTargetAnimationCurve;
         projectileSpeedAnimationCurve = projectileSO.projectileSpeedAnimationCurve;
@@ -81,7 +89,13 @@ public class Projectile : MonoBehaviour
             projectileMoveSpeed = -projectileMoveSpeed;
         }
 
-        if(transform.position.y < 0 ) {
+        if(transform.position.y < 0 && !projectileHasHit) {
+
+            // Fire hit ?
+            if (Mathf.Abs(transform.position.x) < .5f) {
+                Fire.Instance.TakeDamage(1, trajectoryStartPoint);
+            }
+
             ProjectileHasHit(false);
             return;
         }
@@ -116,7 +130,6 @@ public class Projectile : MonoBehaviour
         OnProjectileHit?.Invoke(this, EventArgs.Empty);
         OnAnyProjectileHit?.Invoke(this, EventArgs.Empty);
 
-        if (mobHit) return;
         StartCoroutine(DestroySelf(2f));
     }
 
@@ -139,7 +152,21 @@ public class Projectile : MonoBehaviour
 
         mobHit = collision.GetComponentInParent<Mob>();
 
-        if(mobHit != null) {
+        if (mobHit != null && !enemyProjectile && mobHit != parentMob) {
+            HandleMobCollision(mobHit);
+            return;
+        }
+
+        if(collision.GetComponentInParent<Player>() != null && enemyProjectile) {
+            ProjectileHasHit(false);
+            Player.Instance.TakeDamage(1, trajectoryStartPoint);
+        }
+
+    }
+
+    private void HandleMobCollision(Mob mob) {
+
+        if (mobHit != null) {
             mobHit.OnMobDied += MobHit_OnMobDied;
 
             ProjectileHasHit(true);

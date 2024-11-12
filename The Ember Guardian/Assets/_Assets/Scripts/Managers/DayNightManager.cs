@@ -154,6 +154,10 @@ public class DayNightManager : MonoBehaviour
         return nightDuration;
     }
 
+    public void SetNightDuration(float nightDuration) {
+        this.nightDuration = nightDuration;
+    }
+
     public float GetTotalDayDuration() {
         return duskDuration + dayDuration + dawnDuration;
     }

@@ -15,6 +15,7 @@ public class FireSound : MonoBehaviour
 
     [SerializeField] private AudioClip[] orbDroppedInFireAudioClipArray1;
     [SerializeField] private AudioClip[] orbDroppedInFireAudioClipArray2;
+    [SerializeField] private AudioClip[] fireDamagedAudioClipArray;
 
     private void Awake() { 
         fire = GetComponentInParent<Fire>();
@@ -22,17 +23,11 @@ public class FireSound : MonoBehaviour
         volume2D = GetComponent<SoundVolume2D>();
         fire.OnFireChangedState += Fire_OnFireChangedState;
         fire.OnFireFuelled += Fire_OnFireFuelled;
-
+        fire.OnFireDamageTaken += Fire_OnFireDamageTaken;
     }
 
-    private void Start() {
-        //Invoke("StartFireSound", 0.1f); // Délai de 0.1 seconde
-    }
-
-    private void StartFireSound() {
-
-        audioSource.clip = calmFireAudioClip;
-        audioSource.Play();
+    private void Fire_OnFireDamageTaken(object sender, System.EventArgs e) {
+        audioSource.PlayOneShot(fireDamagedAudioClipArray[Random.Range(0, fireDamagedAudioClipArray.Length)]);
     }
 
     private void Fire_OnFireFuelled(object sender, System.EventArgs e) {

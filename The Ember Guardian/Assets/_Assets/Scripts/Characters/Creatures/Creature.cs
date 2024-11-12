@@ -72,6 +72,7 @@ public class Creature : Mob
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponentInParent<Fire>() != null) {
             if (!enteredLight) return;
+
             OnCreatureExitedLight?.Invoke(this, EventArgs.Empty);
             enteredLight = false;
         }

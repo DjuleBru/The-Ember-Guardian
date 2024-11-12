@@ -16,6 +16,8 @@ public class MobMovement : MonoBehaviour
     protected float moveDirFloat;
     protected float moveSpeed;
     protected float moveSpeedBuff = 1f;
+    protected float targetSpeed;
+    protected float movementForce;
 
     protected bool destinationReached;
     public event EventHandler OnDestinationReached;
@@ -61,14 +63,14 @@ public class MobMovement : MonoBehaviour
             moveDirFloat = 1;
         }
 
-        float targetSpeed = moveDirFloat * moveSpeed * rb.mass;
+        targetSpeed = moveDirFloat * moveSpeed;
         float speedDif = targetSpeed - rb.velocity.x;
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
 
-        float movement = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, velPower) * Mathf.Sign(speedDif);
+        movementForce = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, velPower) * Mathf.Sign(speedDif);
 
-        rb.AddForce(movement * Vector2.right);
+        rb.AddForce(movementForce * rb.mass * Vector2.right);
     }
 
     public void HeadToDestination(Vector3 targetDestination) {
@@ -101,9 +103,9 @@ public class MobMovement : MonoBehaviour
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
 
-        float movement = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, velPower) * Mathf.Sign(speedDif);
+        movementForce = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, velPower) * Mathf.Sign(speedDif);
 
-        rb.AddForce(movement * Vector2.right);
+        rb.AddForce(movementForce * rb.mass * Vector2.right);
     }
 
     public void SetMoveSpeed(float moveSpeed) {

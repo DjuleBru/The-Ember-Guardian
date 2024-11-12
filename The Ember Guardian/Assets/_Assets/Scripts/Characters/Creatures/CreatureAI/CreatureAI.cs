@@ -18,12 +18,12 @@ public class CreatureAI : MonoBehaviour {
     private IDamageable attackTarget;
 
     private Vector3 positionToRoamAmound;
-    private float roamMoveSpeed;
     private float roamChangeDestinationRate;
     private float roamRadius;
     private float roamTimer;
 
     private bool aggroedRecently;
+    private bool died;
     private float aggroTimer;
     private float aggroDelay = 3f;
     public event EventHandler OnCreatureAggro;
@@ -45,13 +45,12 @@ public class CreatureAI : MonoBehaviour {
     }
 
     private void Start() {
-        attackRange = creature.GetCreatureSO().attackRange + UnityEngine.Random.Range(-.5f, .5f);
+        attackRange = creature.GetCreatureSO().attackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
         maxAttackRange = attackRange + attackRange/5;
 
         if (creature.IsDayCreature()) {
 
             positionToRoamAmound = creature.GetMobSpawner().transform.position;
-            roamMoveSpeed = creature.GetCreatureSO().moveSpeed/2;
             roamChangeDestinationRate = 10f;
             roamRadius = 10f;
 
@@ -65,6 +64,8 @@ public class CreatureAI : MonoBehaviour {
     }
 
     private void Update() {
+        if (died) return;
+
         HandleAggroRecently();
 
         switch (state) {
@@ -149,12 +150,6 @@ public class CreatureAI : MonoBehaviour {
     } 
 
     private void ChangeState(State newState) {
-
-        if(newState == State.idle) {
-            mobMovement.SetMoveSpeed(roamMoveSpeed);
-        } else {
-            mobMovement.SetMoveSpeed(creature.GetCreatureSO().moveSpeed);
-        }
 
         if(newState == State.attacking) {
             mobMovement.SetMoveTarget(transform.position);
@@ -260,7 +255,6 @@ public class CreatureAI : MonoBehaviour {
 
     private void TriggerAggoFeedbacks() {
         if (attackTarget is Barricade) return;
-
         OnCreatureAggro?.Invoke(this, EventArgs.Empty);
     }
 

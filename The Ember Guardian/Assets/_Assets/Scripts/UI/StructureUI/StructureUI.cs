@@ -20,7 +20,7 @@ public class StructureUI : MonoBehaviour
     protected PayOrbsUI payOrbsUI;
     protected Structure structure;
 
-    protected void Awake() {
+    protected virtual void Awake() {
         structure = GetComponentInParent<Structure>();
         payOrbsUI = structure.GetComponent<PayOrbsUI>();
 
@@ -28,27 +28,35 @@ public class StructureUI : MonoBehaviour
         SetUIXAxisScale();
     }
 
-    protected void Start() {
+    protected virtual void Start() {
         structure.OnPlayerTriggeredIn += Structure_OnPlayerTriggeredIn;
         structure.OnPlayerTriggeredOut += Structure_OnPlayerTriggeredOut;
         structure.OnStructureInteractionsUpdated += Structure_OnStructureInteractionsUpdated;
+        structure.OnStructureUpgraded += Structure_OnStructureUpgraded;
 
         GameInput.Instance.OnPlayerLeftRightSwitchPerformed += GameInput_OnPlayerLeftRightSwitchPerformed;
     }
 
+    protected void Structure_OnStructureUpgraded(object sender, System.EventArgs e) {
+        foreach(GameObject go in levelSlotVisualContainerList) {
+            go.SetActive(false);
+        }
 
-    private void SetUIXAxisScale() {
+        levelSlotVisualContainerList[structure.GetStructureLevel() -1].SetActive(true);
+    }
+
+    protected void SetUIXAxisScale() {
         if (structure.transform.position.x < 0) {
             Vector3 localScale = new Vector3(-1, 1, 1);
             transform.localScale = localScale;
         }
     }
 
-    private void Structure_OnStructureInteractionsUpdated(object sender, System.EventArgs e) {
+    protected void Structure_OnStructureInteractionsUpdated(object sender, System.EventArgs e) {
         RefreshShownUI();
     }
 
-    private void GameInput_OnPlayerLeftRightSwitchPerformed(object sender, System.EventArgs e) {
+    protected void GameInput_OnPlayerLeftRightSwitchPerformed(object sender, System.EventArgs e) {
         if (structure.GetActiveStructureInteractionTypeList().Count <= 1) return;
 
         if(structure.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.function) {
@@ -68,11 +76,11 @@ public class StructureUI : MonoBehaviour
         RefreshShownUI();
     }
 
-    private void Structure_OnStructureFunctionUnlocked(object sender, System.EventArgs e) {
+    protected void Structure_OnStructureFunctionUnlocked(object sender, System.EventArgs e) {
         RefreshShownUI();
     }
 
-    private void Structure_OnStructureFunctionLocked(object sender, System.EventArgs e) {
+    protected void Structure_OnStructureFunctionLocked(object sender, System.EventArgs e) {
         RefreshShownUI();
     }
 
@@ -139,7 +147,7 @@ public class StructureUI : MonoBehaviour
         UpdateSwitchUIGameObjectActivation();
     }
 
-    private List<OrbTemplateWorldUI> RecomposePayOrbsUIList(GameObject upgradeToNextLevelPayOrbsUIGameObject) {
+    protected List<OrbTemplateWorldUI> RecomposePayOrbsUIList(GameObject upgradeToNextLevelPayOrbsUIGameObject) {
         List<OrbTemplateWorldUI> payOrbsUIList = new List<OrbTemplateWorldUI>();
         OrbTemplateWorldUI[] orbTemplateWorldUIs = upgradeToNextLevelPayOrbsUIGameObject.GetComponentsInChildren<OrbTemplateWorldUI>();
 

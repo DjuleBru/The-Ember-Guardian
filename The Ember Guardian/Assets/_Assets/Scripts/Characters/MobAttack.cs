@@ -13,6 +13,8 @@ public class MobAttack : MonoBehaviour
     [SerializeField] protected float attackAnimationDelay;
     [SerializeField] protected float totalAttackAnimationTime;
 
+    protected Mob mob;
+
     protected float attackTimer;
     protected int attackDamage;
 
@@ -24,6 +26,10 @@ public class MobAttack : MonoBehaviour
 
     protected bool attacking;
     protected bool attackStarted;
+
+    protected virtual void Awake() {
+        mob = GetComponent<Mob>();
+    }
 
     protected void Update() {
 
@@ -42,7 +48,7 @@ public class MobAttack : MonoBehaviour
         }
     }
 
-    protected void Attack() {
+    protected virtual void Attack() {
         OnMobAttack?.Invoke(this, EventArgs.Empty);
 
         if(isProjectileAttack) {
@@ -65,7 +71,7 @@ public class MobAttack : MonoBehaviour
             Projectile projectile = Instantiate(projectileSO.projectilePrefab, projectileSpawnPoint.position, Quaternion.identity).GetComponent<Projectile>();
 
             Vector3 projectileTarget = new Vector3(previousAttackTargetIDamageable.GetProjectileTarget().position.x, 0, 0);
-            projectile.ActivateAndInitialize(projectileTarget, projectileSO);
+            projectile.ActivateAndInitialize(projectileTarget, projectileSO, mob);
         }
     }
 
@@ -75,6 +81,10 @@ public class MobAttack : MonoBehaviour
 
         if (previousAttackTargetIDamageable != null) {
             previousAttackTargetIDamageable.TakeDamage(attackDamage, transform.position);
+        }
+
+        if ((attackTargetIDamageable as MonoBehaviour) == Fire.Instance) {
+            mob.Die();
         }
 
         yield return new WaitForSeconds(totalAttackAnimationTime - delayToDealDamage);

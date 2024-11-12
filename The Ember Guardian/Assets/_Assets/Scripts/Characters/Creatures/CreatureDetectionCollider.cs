@@ -50,6 +50,12 @@ public class CreatureDetectionCollider : MonoBehaviour
             AddIDamageableInDetectionRange(barricade);
         }
 
+        // Fire
+        Fire fire = other.GetComponent<Fire>();
+        if (fire != null) {
+            AddIDamageableInDetectionRange(fire);
+        }
+
         // Worker
         Worker worker = other.GetComponent<Worker>();
         if (worker != null) {
@@ -74,6 +80,12 @@ public class CreatureDetectionCollider : MonoBehaviour
         if (barricade != null) {
             barricade.OnBarricadeDestroyed -= Barricade_OnBarricadeDestroyed;
             RemoveIDamageableInDetectionRange(barricade);
+        }
+
+        // Fire
+        Fire fire = other.GetComponent<Fire>();
+        if (fire != null) {
+            RemoveIDamageableInDetectionRange(fire);
         }
 
         // Worker
@@ -123,6 +135,10 @@ public class CreatureDetectionCollider : MonoBehaviour
 
             if (iDamageable is Barricade) {
                 currentPriority = creature.GetCreatureSO().barricadeTargetingPriority;
+            }
+
+            if (iDamageable is Fire) {
+                currentPriority = 0;
             }
 
             if (iDamageable is Player) {

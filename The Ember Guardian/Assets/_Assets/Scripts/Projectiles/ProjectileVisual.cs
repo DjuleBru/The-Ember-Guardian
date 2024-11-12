@@ -7,6 +7,7 @@ public class ProjectileVisual : MonoBehaviour
     private Projectile projectile;
     [SerializeField] private ParticleSystem projectileTrailPS;
     [SerializeField] private ParticleSystem projectileHitPS;
+    [SerializeField] private Animator projectileAnimator;
 
     private bool projectileHasHit;
 
@@ -20,8 +21,18 @@ public class ProjectileVisual : MonoBehaviour
 
     private void Projectile_OnProjectileHit(object sender, System.EventArgs e) {
         projectileHasHit = true;
-        projectileHitPS.Play();
-        projectileTrailPS.Stop();
+
+        if(projectileTrailPS != null) {
+            projectileTrailPS.Stop();
+        }
+
+        if(projectileHitPS != null) {
+            projectileHitPS.Play();
+        }
+
+        if(projectileAnimator != null) {
+            projectileAnimator.SetTrigger("Hit");
+        }
     }
 
     private void Update() {
