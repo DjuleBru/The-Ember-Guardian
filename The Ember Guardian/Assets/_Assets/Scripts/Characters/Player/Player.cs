@@ -22,6 +22,7 @@ public class Player : MonoBehaviour, IDamageable
     private float respawnTime = 5f;
 
     private int playerMaxHealth = 7;
+    private int playerRespawnHealth = 3;
     private int playerHealth;
 
     public event EventHandler OnPlayerEnteredCamp;
@@ -122,7 +123,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     private IEnumerator RespawnCoroutine() {
-        playerHealth = playerMaxHealth;
+        playerHealth = playerRespawnHealth;
 
         Vector2 respawnPosition = new Vector2(Tent.Instance.transform.position.x, transform.position.y);
         transform.position = respawnPosition;

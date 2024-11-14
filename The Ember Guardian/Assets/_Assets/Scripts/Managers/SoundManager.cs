@@ -27,6 +27,7 @@ public class SoundManager : MonoBehaviour
 
         PlayerUI_AmmoBar.Instance.OnAmmoTickAdded += PlayerUI_AmmoBar_OnAmmoTickAdded;
         PlayerUI_HPBar.Instance.OnHPTickAdded += PlayerUI_HPBar_OnHPTickAdded;
+        StructureUI_Fire.OnFireTickRemoved += StructureUI_Fire_OnFireTickRemoved;
 
         ParticleCollision.OnAnyBulletHitEnemy += ParticleCollision_OnAnyBulletHitEnemy;
         ParticleCollision.OnAnyBulletHitGround += ParticleCollision_OnAnyBulletHitGround;
@@ -47,7 +48,7 @@ public class SoundManager : MonoBehaviour
 
     }
 
-    #region PLAYER UI
+    #region UI
 
     private void PlayerUI_HPBar_OnHPTickAdded(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.hpTickAdded,.7f);
@@ -57,6 +58,9 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(soundRefsSO.ammoTickAdded,.7f);
     }
 
+    private void StructureUI_Fire_OnFireTickRemoved(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.fireTickRemoved, .7f);
+    }
 
     #endregion
 

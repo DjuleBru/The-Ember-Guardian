@@ -19,6 +19,7 @@ public class StructureUI : MonoBehaviour
 
     protected PayOrbsUI payOrbsUI;
     protected Structure structure;
+    protected bool playerInTriggerArea;
 
     protected virtual void Awake() {
         structure = GetComponentInParent<Structure>();
@@ -66,12 +67,14 @@ public class StructureUI : MonoBehaviour
         }
     }
 
-    protected void Structure_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
+    protected virtual void Structure_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
+        playerInTriggerArea = false;
         ShowStructureFunctionUI();
         SetUIActive(false);
     }
 
-    protected void Structure_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+    protected virtual void Structure_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        playerInTriggerArea = true;
         SetUIActive(true);
         RefreshShownUI();
     }
@@ -84,7 +87,7 @@ public class StructureUI : MonoBehaviour
         RefreshShownUI();
     }
 
-    protected void SetUIActive(bool active) {
+    protected virtual void SetUIActive(bool active) {
         UIGameObject.SetActive(active);
         UpdateSwitchUIGameObjectActivation();
     }

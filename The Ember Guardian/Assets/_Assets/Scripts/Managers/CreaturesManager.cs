@@ -43,4 +43,24 @@ public class CreaturesManager : MonoBehaviour
     public int GetSpawnedCreatureCount() {
         return creaturesSpawnedList.Count;
     }
+
+    public bool CreatureIsBetweenPositions(float initialPositionX, float destinationPositionX) {
+        bool creatureIsBetweenPositions = false;
+
+        float minPositionX = destinationPositionX;
+        float maxPositionX = initialPositionX;
+
+        if(initialPositionX < destinationPositionX) {
+            minPositionX = initialPositionX;
+            maxPositionX = destinationPositionX;
+        }
+
+        foreach(Creature creature in creaturesSpawnedList) {
+            if(creature.transform.position.x >= minPositionX && creature.transform.position.x <= maxPositionX) {
+                creatureIsBetweenPositions = true;
+            }
+        }
+
+        return creatureIsBetweenPositions;
+    }
 }

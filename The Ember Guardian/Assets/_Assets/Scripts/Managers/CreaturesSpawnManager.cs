@@ -7,6 +7,8 @@ public class CreaturesSpawnManager : MonoBehaviour
 {
 
     [SerializeField] private AnimationCurve subWaveDifficultyCurve;
+    [SerializeField] private int startWaveToSpawnFromBothSides;
+
     public class SpawnedCreatureInfo {
         public CreatureSO creature; // Type de créature à spawner
         public float spawnPosition; // Position de spawn (gauche ou droite)
@@ -79,18 +81,10 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     private void SetWaveParameters(int waveNumber) {
         waveDifficulty = baseDifficulty * Mathf.Pow(growthFactor, waveNumber);
-        waveDuration = Mathf.Lerp(minWaveDuration, maxWaveDuration, waveNumber / 10f);
+        waveDuration = Mathf.Lerp(minWaveDuration, maxWaveDuration, (waveNumber-1) / 10f);
         subWaveNumber = (int)(waveDuration / delayBetweenSubWaves);
-        waveDifficultyLeftProportion = Random.Range(0f, 1f);
 
-        if(waveDifficultyLeftProportion < 0.2) {
-            waveDifficultyLeftProportion = 0;
-        }
-        if (waveDifficultyLeftProportion > 0.8) {
-            waveDifficultyLeftProportion = 1;
-        }
-
-        waveDifficultyRightProportion = 1 - waveDifficultyLeftProportion;
+        SetWaveSidesProportion(waveNumber);
 
         Debug.Log("waveNumber " + waveNumber);
         Debug.Log("WaveDuration " + waveDuration);
@@ -111,6 +105,35 @@ public class CreaturesSpawnManager : MonoBehaviour
             waveCreaturesDictionary.Add(i, subWaveCreatures);
             CountCreatureOccurrences(subWaveCreatures);
         }
+    }
+
+    private void SetWaveSidesProportion(int waveNumber) {
+
+        waveDifficultyLeftProportion = Random.Range(0f, 1f);
+        float allFromOneSideTreshold = .2f;
+
+        bool initialWaves = waveNumber < startWaveToSpawnFromBothSides;
+        if (initialWaves) {
+            float leftOrRightSide = Random.Range(0f, 1f);
+            if (leftOrRightSide > .5f) {
+                waveDifficultyLeftProportion = 0;
+            }
+            else {
+                waveDifficultyLeftProportion = 1;
+            }
+        }
+        else {
+
+            if (waveDifficultyLeftProportion < allFromOneSideTreshold) {
+                waveDifficultyLeftProportion = 0;
+            }
+            if (waveDifficultyLeftProportion > (1 - allFromOneSideTreshold)) {
+                waveDifficultyLeftProportion = 1;
+            }
+        }
+
+        waveDifficultyRightProportion = 1 - waveDifficultyLeftProportion;
+
     }
 
     private IEnumerator SpawnWave() {

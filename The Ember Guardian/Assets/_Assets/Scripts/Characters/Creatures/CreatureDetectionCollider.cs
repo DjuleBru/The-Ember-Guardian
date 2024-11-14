@@ -6,6 +6,7 @@ public class CreatureDetectionCollider : MonoBehaviour
 {
     private Creature creature;
     private CreatureAI creatureAI;
+    private CreatureAttack creatureAttack;
     private List<IDamageable> iDamageablesInDetectionRange = new List<IDamageable>();
 
     private float refreshTargetTimer;
@@ -14,6 +15,7 @@ public class CreatureDetectionCollider : MonoBehaviour
     private void Awake() {
         creature = GetComponentInParent<Creature>();
         creatureAI = GetComponentInParent<CreatureAI>();
+        creatureAttack = GetComponentInParent<CreatureAttack>();
     }
 
     private void Start() {
@@ -94,6 +96,7 @@ public class CreatureDetectionCollider : MonoBehaviour
             worker.OnMobDied -= Worker_OnMobDied;
             RemoveIDamageableInDetectionRange(worker);
         }
+
     }
 
     private void Worker_OnMobDied(object sender, System.EventArgs e) {
@@ -123,7 +126,7 @@ public class CreatureDetectionCollider : MonoBehaviour
         if (iDamageablesInDetectionRange.Count == 0) return;
 
 
-        IDamageable highestPriorityTarget = iDamageablesInDetectionRange[0];
+        IDamageable highestPriorityTarget = null;
         int highestPriority = int.MaxValue; // Initialise à une valeur élevée
 
         foreach (IDamageable iDamageable in iDamageablesInDetectionRange) {
@@ -142,11 +145,15 @@ public class CreatureDetectionCollider : MonoBehaviour
             }
 
             if (iDamageable is Player) {
+
+                // Check if player is on a tower !
+                if ((Player.Instance.transform.position.y - 1.5f > creature.GetCreatureSO().attackRange) && !creatureAttack.GetIsRangedAttack()) {
+                    continue;
+                }
+
                 // Check if player is out of camp
                 if (!CampZoneManager.Instance.IsWithinCampZoneLimits(Player.Instance.transform.position)) {
-
                      currentPriority = creature.GetCreatureSO().playerTargetingPriority;
-
                 }
             }
 
@@ -156,9 +163,9 @@ public class CreatureDetectionCollider : MonoBehaviour
                 highestPriority = currentPriority;
             }
 
-            creatureAI.SetAttackTarget(highestPriorityTarget);
-
         }
+
+        creatureAI.SetAttackTarget(highestPriorityTarget);
     }
 
 }

@@ -7,24 +7,24 @@ using UnityEngine.UI;
 public class PlayerUI_TickTemplate : MonoBehaviour
 {
     private Rigidbody2D rb;
-    private Image image;
+    [SerializeField] private Image image;
     [SerializeField] private MMF_Player outMmfPlayer;
     [SerializeField] private MMF_Player inMmfPlayer;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
-        image = GetComponent<Image>();
     }
 
     public void AddTick() {
         inMmfPlayer.PlayFeedbacks();
     }
 
-    public void RemoveTick() {
+    public void RemoveTick(float forceMultiplier = 1f) {
+        rb = GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.gravityScale = 1.5f;
 
-        Vector2 force = new Vector2(0, Random.Range(5, 8));
+        Vector2 force = new Vector2(0, Random.Range(5, 8)*forceMultiplier);
         float torque = Random.Range(-2f, 2f);
 
         rb.AddForce(force, ForceMode2D.Impulse);
@@ -42,5 +42,9 @@ public class PlayerUI_TickTemplate : MonoBehaviour
 
     public void SetImageAlphaFull() {
         image.color = Color.white;
+    }
+
+    public void SetImageColor(Color color) {
+        image.color = color;
     }
 }

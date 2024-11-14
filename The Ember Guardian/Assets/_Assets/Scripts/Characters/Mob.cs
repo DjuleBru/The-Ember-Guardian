@@ -40,7 +40,10 @@ public class Mob : MonoBehaviour, IDamageable
     public virtual void Die() {
         OnMobDied?.Invoke(this, EventArgs.Empty);
         GetComponent<MobMovement>().enabled = false;
-        GetComponent<MobAttack>().enabled = false;
+
+        if(GetComponent<MobAttack>() != null) {
+            GetComponent<MobAttack>().enabled = false;
+        }
     }
 
     protected IEnumerator DestroyGameObjectAfterDelay(float delay) {

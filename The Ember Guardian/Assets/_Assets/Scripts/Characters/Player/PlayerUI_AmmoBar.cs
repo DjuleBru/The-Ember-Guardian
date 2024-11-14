@@ -117,9 +117,9 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         StartCoroutine(RefillAmmoBar(e.ammoAmount));
     }
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
-        if (PlayerShoot.Instance.GetCurrentAmmo() < 0) return;
+        if (PlayerShoot.Instance.GetCurrentAmmoClip() < 0) return;
 
-        if (PlayerShoot.Instance.GetCurrentAmmo() != 0) {
+        if (PlayerShoot.Instance.GetCurrentAmmoClip() != 0) {
             ammoBarGameObject.SetActive(true);
             ammoBarBackgroundGameObject.SetActive(true);
             ammoBarCanvasGroup.alpha = 1f;
@@ -127,7 +127,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
             ammoBarDisplayTimer = ammoBarDisplayTime;
         }
 
-        if (PlayerShoot.Instance.GetCurrentAmmo() <= PlayerShoot.Instance.GetMaxAmmo() / 3) {
+        if (PlayerShoot.Instance.GetCurrentAmmoClip() <= PlayerShoot.Instance.GetMaxAmmoClips() / 3) {
             ammoBarCritical = true;
         } else {
             ammoBarCritical = false;
@@ -164,7 +164,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        int playerAmmo = PlayerShoot.Instance.GetCurrentAmmo();
+        int playerAmmo = PlayerShoot.Instance.GetCurrentAmmoClip();
 
         for (int i = 0; i < playerAmmo; i++) {
             PlayerUI_TickTemplate ammoTick = Instantiate(ammoTickTemplate, ammoTickContainer).GetComponent<PlayerUI_TickTemplate>();
@@ -182,7 +182,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        int playerAmmo = PlayerShoot.Instance.GetCurrentAmmo();
+        int playerAmmo = PlayerShoot.Instance.GetCurrentAmmoClip();
 
         for (int i = 0; i < playerAmmo; i++) {
             Instantiate(ammoTickTemplateBackground, ammoTickContainerBackground);

@@ -25,12 +25,46 @@ public class Tower : Structure
 
     public event EventHandler OnHunterAssigned;
 
+    private bool playerJustStartedInteracting;
+    private float playerJustStartedInteractingTimer;
+
     protected override void Start() {
         base.Start();
         DisableAllGarrisonColliders();
         level1TowerCollider.SetActive(true);
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+    }
+
+    private void Update() {
+        if(playerJustStartedInteracting) {
+            playerJustStartedInteractingTimer += Time.deltaTime;
+            if(playerJustStartedInteractingTimer >= .15f) {
+                playerJustStartedInteracting = false;
+            }
+        }
+    }
+
+    protected override void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
+        base.GameInput_OnPlayerInteractStarted(sender, e);
+        playerJustStartedInteracting = true;
+        playerJustStartedInteractingTimer = 0;
+    }
+
+    protected override void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+        base.GameInput_OnPlayerInteractCanceled(sender, e);
+        Debug.Log(playerCanInteract);
+
+        if(playerJustStartedInteracting && Player.Instance.transform.position.y <2f) {
+            MovePlayerOnTower();
+        }
+
+        playerJustStartedInteracting = false;
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D collision) {
+        base.OnTriggerEnter2D(collision);
+        Player.Instance.SetCanDropOrbOnTheFloor(false);
     }
 
     private void DisableAllGarrisonColliders() {
@@ -64,6 +98,7 @@ public class Tower : Structure
     }
 
     public void AssignWorker(Worker worker) {
+        Debug.Log("assign worker " + worker);
         assignedWorkersList.Add(worker);
         SetWorkerGarrisonPosition(worker);
         OnHunterAssigned?.Invoke(this, EventArgs.Empty);
@@ -120,17 +155,41 @@ public class Tower : Structure
 
     private IEnumerator UnGarrisonWorkersCoroutine() {
 
-        foreach (Worker worker in assignedWorkersList) {
 
+        for (int i = assignedWorkersList.Count - 1; i >= 0; i--) {
+            Worker worker = assignedWorkersList[i];
             Vector3 groundPosition = new Vector3(transform.position.x, 1, 0);
             worker.transform.position = groundPosition;
             worker.AssignStructure(null);
             worker.GetComponent<HunterJob>().ResetRangeBuff();
             yield return new WaitForSeconds(.2f);
-
         }
 
         assignedWorkersList.Clear();
+    }
+
+    private void MovePlayerOnTower() {
+        Vector3 garrisonPosition = Vector3.zero;
+
+        if (structureLevel == 1) {
+            garrisonPosition = level1GarrisonPositions[0].position;
+        }
+
+        if (structureLevel == 2) {
+            garrisonPosition = level2GarrisonPositions[0].position;
+        }
+
+        if (structureLevel == 3) {
+            garrisonPosition = level3GarrisonPositions[0].position;
+        }
+
+        if (structureLevel == 4) {
+            garrisonPosition = level4GarrisonPositions[0].position;
+        }
+
+        garrisonPosition = new Vector3(garrisonPosition.x, garrisonPosition.y + 1f, garrisonPosition.z);
+
+        Player.Instance.transform.position = garrisonPosition;
     }
 
 }

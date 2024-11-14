@@ -168,7 +168,7 @@ public class Structure : MonoBehaviour {
 
     }
 
-    protected void OnTriggerEnter2D(Collider2D collision) {
+    protected virtual void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
@@ -180,7 +180,7 @@ public class Structure : MonoBehaviour {
         }
     }
 
-    protected void OnTriggerExit2D(Collider2D collision) {
+    protected virtual void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
@@ -201,7 +201,7 @@ public class Structure : MonoBehaviour {
         payOrbsUI.SetPlayerInteracting(true);
     }
 
-    protected void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+    protected virtual void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (!playerCanInteract) return;
         if (!playerInteracting) return;

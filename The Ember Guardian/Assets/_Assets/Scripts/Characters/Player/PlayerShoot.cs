@@ -14,7 +14,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerReload;
     public event EventHandler OnPlayerReloadEnded;
     public event EventHandler<OnAmmoRefilledEventArgs> OnPlayerAmmoRefilled;
-    public event EventHandler OnClipsChanged;
+    public event EventHandler OnBulletsChanged;
 
     public class OnAmmoRefilledEventArgs : EventArgs {
         public int ammoAmount;
@@ -34,10 +34,10 @@ public class PlayerShoot : MonoBehaviour
     private bool reloading;
     private bool coolDownSFXTriggered;
 
-    private int currentAmmo;
+    private int currentAmmoClip;
     private int maxAmmo;
-    private int currentClip;
-    private int clipsPerAmmo;
+    private int currentBullet;
+    private int bulletsPerAmmoClip;
 
     [SerializeField] private GunSO gunSO;
 
@@ -48,16 +48,17 @@ public class PlayerShoot : MonoBehaviour
         shootCooldownSFXTriggerTime = gunSO.shootCooldownSFXTriggerTime;
         reloadTime = gunSO.reloadTime;
 
-        clipsPerAmmo = gunSO.shotsPerClip;
-        currentClip = clipsPerAmmo;
+        bulletsPerAmmoClip = gunSO.shotsPerClip;
+        currentBullet = bulletsPerAmmoClip;
 
         maxAmmo = gunSO.maxAmmo;
-        currentAmmo = maxAmmo;
+        currentAmmoClip = maxAmmo;
     }
 
     private void Start() {
         GameInput.Instance.OnPlayerShootCanceled += GameInput_OnPlayerShootCanceled;
         GameInput.Instance.OnPlayerShootStarted += GameInput_OnPlayerShootStarted;
+        GameInput.Instance.OnPlayerReloadPerformed += GameInput_OnPlayerReloadPerformed;
     }
 
     private void Update() {
@@ -80,7 +81,7 @@ public class PlayerShoot : MonoBehaviour
             reloadTimer -= Time.deltaTime;
 
             if (reloadTimer <= 0) {
-                currentClip = clipsPerAmmo;
+                currentBullet = bulletsPerAmmoClip;
                 reloading = false;
                 OnPlayerReloadEnded?.Invoke(this, EventArgs.Empty);
             }
@@ -100,8 +101,8 @@ public class PlayerShoot : MonoBehaviour
 
         shootPS.Emit(5);
 
-        currentClip -= 1;
-        OnClipsChanged?.Invoke(this, EventArgs.Empty);
+        currentBullet -= 1;
+        OnBulletsChanged?.Invoke(this, EventArgs.Empty);
 
         // Handle cooldown
         if (shootCooldownTime != 0) {
@@ -115,42 +116,53 @@ public class PlayerShoot : MonoBehaviour
         coolingDown = false;
 
         // Handle reload
-        if (currentClip <= 0) {
+        if (currentBullet <= 0) {
             reloading = true;
             reloadTimer = reloadTime;
 
-            currentAmmo -= 1;
+            currentAmmoClip -= 1;
             OnPlayerReload?.Invoke(this, EventArgs.Empty);
         }
     }
 
-    public void AddAmmo(int ammoCount) {
+    public void AddAmmoClip(int ammoCount) {
 
         int ammoRefilled = ammoCount;
-        if(currentAmmo + ammoRefilled > maxAmmo) {
-            ammoRefilled = maxAmmo - currentAmmo;
+        if(currentAmmoClip + ammoRefilled > maxAmmo) {
+            ammoRefilled = maxAmmo - currentAmmoClip;
         }
-        currentAmmo += ammoRefilled;
+        currentAmmoClip += ammoRefilled;
 
         OnPlayerAmmoRefilled?.Invoke(this, new OnAmmoRefilledEventArgs {
             ammoAmount = ammoRefilled
         });
     }
 
-    public int GetCurrentAmmo() {
-        return currentAmmo;
+    public int GetCurrentAmmoClip() {
+        return currentAmmoClip;
     }
 
-    public int GetMaxAmmo() {
+    public int GetMaxAmmoClips() {
         return maxAmmo;
     }
 
-    public int GetCurrentClips() {
-        return currentClip;
+    public int GetCurrentBullets() {
+        return currentBullet;
     }
 
-    public int GetMaxClips() {
-        return clipsPerAmmo;
+    public int GetMaxBulletsPerClip() {
+        return bulletsPerAmmoClip;
+    }
+
+    private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
+        if (currentBullet == bulletsPerAmmoClip) return;
+        if (reloading) return;
+        if (coolingDown) return;
+
+        currentAmmoClip -= 1;
+        reloading = true;
+        reloadTimer = reloadTime;
+        OnPlayerReload?.Invoke(this, EventArgs.Empty);
     }
 
     private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {
@@ -158,7 +170,7 @@ public class PlayerShoot : MonoBehaviour
         if (reloading) return;
         if (Player.Instance.GetHP() == 0) return;
 
-        if(currentAmmo == 0) {
+        if(currentAmmoClip == 0) {
             OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
         } else {
             Shoot();
@@ -175,6 +187,10 @@ public class PlayerShoot : MonoBehaviour
 
     public float GetReloadTime() {
         return reloadTime;
+    }
+
+    public float GetShootCooldownTime() {
+        return shootCooldownTime;
     }
 
 }

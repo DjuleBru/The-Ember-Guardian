@@ -18,6 +18,7 @@ public class MobAttack : MonoBehaviour
     protected float attackTimer;
     protected int attackDamage;
 
+    protected GameObject attackTargetGameObject;
     protected IDamageable attackTargetIDamageable;
     protected IDamageable previousAttackTargetIDamageable;
 
@@ -26,6 +27,7 @@ public class MobAttack : MonoBehaviour
 
     protected bool attacking;
     protected bool attackStarted;
+    protected bool homingProjectile;
 
     protected virtual void Awake() {
         mob = GetComponent<Mob>();
@@ -70,8 +72,7 @@ public class MobAttack : MonoBehaviour
 
             Projectile projectile = Instantiate(projectileSO.projectilePrefab, projectileSpawnPoint.position, Quaternion.identity).GetComponent<Projectile>();
 
-            Vector3 projectileTarget = new Vector3(previousAttackTargetIDamageable.GetProjectileTarget().position.x, 0, 0);
-            projectile.ActivateAndInitialize(projectileTarget, projectileSO, mob);
+            projectile.ActivateAndInitialize(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, mob, attackDamage, homingProjectile);
         }
     }
 
@@ -95,6 +96,7 @@ public class MobAttack : MonoBehaviour
     public void SetAttackTarget(IDamageable iDamageable) {
         this.attackTargetIDamageable = iDamageable;
         previousAttackTargetIDamageable = attackTargetIDamageable;
+        attackTargetGameObject = (attackTargetIDamageable as MonoBehaviour).gameObject;
 
         OnAttackTargetSet?.Invoke(this, EventArgs.Empty);
     }
@@ -102,6 +104,11 @@ public class MobAttack : MonoBehaviour
     public virtual void RemoveAttackTarget() {
         attacking = false;
         attackTargetIDamageable = null;
+        attackTargetGameObject = null;
+    }
+
+    public void SetHomingProjectile(bool homing) {
+        homingProjectile = homing;
     }
 
     public Vector3 GetAttackDir() {
@@ -114,6 +121,10 @@ public class MobAttack : MonoBehaviour
 
     public bool GetAttackStarted() {
         return attackStarted;
+    }
+
+    public bool GetIsRangedAttack() {
+        return isProjectileAttack;
     }
 
 }

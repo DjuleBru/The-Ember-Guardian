@@ -19,12 +19,14 @@ public class Shrine : Structure
     protected override void Start() {
         base.Start();
         WorkerManager.Instance.OnJoblessWorkerAmountChanged += WorkerManager_OnJoblessWorkerAmountChanged;
+        RefreshShrineActivation();
     }
 
     protected override void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         base.PayOrbsUI_OnOrbPaymentSuccess(sender, e);
 
         Worker joblessWorker = WorkerManager.Instance.GetFirstJoblessWorker();
+
         if(shrineType == ShrineType.hunterShrine) {
             joblessWorker.transform.position = workerSpawnPosition.position;
             joblessWorker.GetComponent<WorkerAI>().SetJob(WorkerAI.JobTypes.hunter);
@@ -34,13 +36,16 @@ public class Shrine : Structure
     }
 
     private void WorkerManager_OnJoblessWorkerAmountChanged(object sender, EventArgs e) {
+        RefreshShrineActivation();
+    }
 
-        if(WorkerManager.Instance.GetJoblessWorkerAmount() == 0) {
+    private void RefreshShrineActivation() {
+        if (WorkerManager.Instance.GetJoblessWorkerAmount() == 0) {
             SetStructureFunctionUnlocked(false);
-        } else {
+        }
+        else {
             SetStructureFunctionUnlocked(true);
         }
     }
-
 
 }

@@ -32,10 +32,10 @@ public class FireVisual : StructureVisual
     [SerializeField] private int continuousPSWildEmissionRate;
     [SerializeField] private int continuousPSInsaneEmissionRate;
 
-    private float calmLightRadius = 2f;
-    private float mildLightRadius = 3.96f;
-    private float wildLightRadius = 5.92f;
-    private float insaneLightRadius = 7.92f;
+    private float calmLightRadius = 2.1f;
+    private float mildLightRadius = 4.05f;
+    private float wildLightRadius = 6.05f;
+    private float insaneLightRadius = 8.05f;
 
     private float initialFireAOEValue;
     private float finalFireAOEValue;

@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 55ed6e6a11ee8c245a9e1fee2d250e82, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecef69d4df5caea4a91a425c05ced4ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  image: {fileID: 5606577157506389885}
   outMmfPlayer: {fileID: 6960148751860723964}
   inMmfPlayer: {fileID: 7042251412593344124}
 --- !u!114 &3230428631069327153
@@ -888,7 +889,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 55ed6e6a11ee8c245a9e1fee2d250e82, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -7075,7 +7076,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 84daae7459c20664c9feb1d7e7c96f0f, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -7132,6 +7133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecef69d4df5caea4a91a425c05ced4ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  image: {fileID: 1751611225479368113}
   outMmfPlayer: {fileID: 699775936921796180}
   inMmfPlayer: {fileID: 811116668742593659}
 --- !u!1 &3047301841400764818
@@ -7243,7 +7245,7 @@ Transform:
   m_GameObject: {fileID: 3417344446590316173}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.03, y: 0.072, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14395,7 +14397,7 @@ Transform:
   m_GameObject: {fileID: 7915249734270255090}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.029, y: -0.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -11,6 +11,7 @@ public class Barricade : Structure, IDamageable {
     [SerializeField] private Collider2D barricadeColliderLevel2;
     [SerializeField] private Collider2D barricadeColliderLevel3;
     [SerializeField] private Collider2D barricadeColliderLevel4;
+    [SerializeField] private BarricadeVisual barricadeVisual;
     private Collider2D currentBarricadeCollider;
 
     private int level1Health = 12;
@@ -28,6 +29,8 @@ public class Barricade : Structure, IDamageable {
     public static event EventHandler OnAnyBarricadeRepaired;
     public static event EventHandler OnAnyBarricadeBuilt;
 
+    private bool barricadeRepairable;
+
     protected override void Start() {
         base.Start();
 
@@ -40,7 +43,6 @@ public class Barricade : Structure, IDamageable {
         OnAnyBarricadeBuilt?.Invoke(this, EventArgs.Empty);
     }
 
-
     public void Die() {
         OnBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
         OnAnyBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
@@ -48,7 +50,7 @@ public class Barricade : Structure, IDamageable {
     }
 
     public Transform GetProjectileTarget() {
-        return projectileTarget;
+        return transform;
     }
 
     public void TakeDamage(int damage, Vector3 damageSourcePosition) {
@@ -58,8 +60,8 @@ public class Barricade : Structure, IDamageable {
             Die();
         }
 
-        RefreshBarricadeRepair();
         OnBarricadeDamageTaken?.Invoke(this, EventArgs.Empty);
+        RefreshBarricadeRepair();
     }
 
     public Transform GetMeleeAttackPosition() {
@@ -100,15 +102,22 @@ public class Barricade : Structure, IDamageable {
         currentBarricadeCollider.gameObject.SetActive(true);
 
     }
+
     protected override void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         base.DayNightManager_OnDawnStart(sender, e);
         RefreshBarricadeRepair();
+
+        if(!barricadeRepairable) {
+            barricadeHealth = barricadeMaxHealth;
+        }
     }
 
     private void RefreshBarricadeRepair() {
-        if (barricadeHealth <= barricadeMaxHealth) {
+        if(!barricadeVisual.GetBarricadeHasAllSprites()) {
+            // At least 1 sprite fell
             SetStructureFunctionUnlocked(true);
             SetStructureUpgradableUnlocked(false);
+            barricadeRepairable = true;
         }
     }
 
@@ -131,6 +140,21 @@ public class Barricade : Structure, IDamageable {
         OnBarricadeRepaired?.Invoke(this, EventArgs.Empty);
         SetStructureFunctionUnlocked(false);
         SetStructureUpgradableUnlocked(true);
+        barricadeRepairable = true;
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D collision) {
+        base.OnTriggerEnter2D(collision);
+        if(barricadeRepairable) {
+            barricadeVisual.ShowRepairStructureVisual(true);
+        }
+    }
+
+    protected override void OnTriggerExit2D(Collider2D collision) {
+        base.OnTriggerExit2D(collision);
+        if (barricadeRepairable) {
+            barricadeVisual.ShowRepairStructureVisual(false);
+        }
     }
 
 }

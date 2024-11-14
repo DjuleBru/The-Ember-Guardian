@@ -27,4 +27,5 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip nightStartWhoosh;
     public AudioClip ammoTickAdded;
     public AudioClip hpTickAdded;
+    public AudioClip fireTickRemoved;
 }

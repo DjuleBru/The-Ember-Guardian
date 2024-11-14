@@ -1282,6 +1282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDistanceToHear: 10
+  maxAudioSourceVolume: 1
 --- !u!114 &5157858432586823543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2475,6 +2476,14 @@ PrefabInstance:
     - target: {fileID: 6067243271262904690, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506368512435722411, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_Size.x
+      value: 1.191897
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506368512435722411, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.033488214
       objectReference: {fileID: 0}
     - target: {fileID: 8530259388772487901, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_AnchoredPosition.y

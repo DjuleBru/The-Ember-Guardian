@@ -20,14 +20,15 @@ public class CampZoneManager : MonoBehaviour
 
     private float minZoneLimit = 0;
     private float maxZoneLimit = 0;
+    [SerializeField] private Transform huntingMaxZoneTransform;
+    [SerializeField] private Transform huntingMinZoneTransform;
+
+    private float maxAnimalTargetingDistanceToCampOuterPoint = 60f;
 
     public event EventHandler OnCampZoneLimitsChanged;
 
     private void Awake() {
         Instance = this;
-
-        minZoneLimit = campCenterMinLimit;
-        maxZoneLimit = campCenterMaxLimit;
     }
 
     private void Start() {
@@ -71,6 +72,8 @@ public class CampZoneManager : MonoBehaviour
 
         this.minZoneLimit = minZoneLimit;
         this.maxZoneLimit = maxZoneLimit;
+        huntingMinZoneTransform.position = new Vector3(minZoneLimit - maxAnimalTargetingDistanceToCampOuterPoint, 0, 0);
+        huntingMaxZoneTransform.position = new Vector3(maxZoneLimit + maxAnimalTargetingDistanceToCampOuterPoint, 0, 0);
 
         OnCampZoneLimitsChanged?.Invoke(this, EventArgs.Empty);
     }
@@ -134,5 +137,13 @@ public class CampZoneManager : MonoBehaviour
         else {
             return CampSide.right;
         }
+    }
+
+    public float GetHuntingMaxZoneLimit() {
+        return huntingMaxZoneTransform.position.x;
+    }
+
+    public float GetHuntingMinZoneLimit() {
+        return huntingMinZoneTransform.position.x;
     }
 }

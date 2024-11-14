@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BarricadeVisual : StructureVisual
-{
+public class BarricadeVisual : StructureVisual {
+    [SerializeField] private Material repairBarricadeMaterial;
     [SerializeField] private List<GameObject> level1BarricadeSprites;
     [SerializeField] private List<GameObject> level2BarricadeSprites;
     [SerializeField] private List<GameObject> level3BarricadeSprites;
@@ -110,6 +110,27 @@ public class BarricadeVisual : StructureVisual
         }
     }
 
+    public void ShowRepairStructureVisual(bool show) {
+
+        if(show) {
+
+            for(int i = 0; i < spriteIndex-1; i++) {
+                GameObject barricadeSprite = currentLevelBarricadeSprites[i];
+                barricadeSprite.gameObject.SetActive(true);
+                barricadeSprite.gameObject.transform.position = currentLevelBarricadeSpritesPositions[i];
+                barricadeSprite.gameObject.transform.rotation = Quaternion.identity;
+                barricadeSprite.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
+                barricadeSprite.gameObject.GetComponent<SpriteRenderer>().material = repairBarricadeMaterial;
+            }
+        }
+        else {
+            for (int i = 0; i < spriteIndex-1; i++) {
+                GameObject barricadeSprite = currentLevelBarricadeSprites[i];
+                barricadeSprite.gameObject.SetActive(false);
+            }
+        }
+        
+    }
 
     protected void RepairStructureVisual() {
         int i = 0;
@@ -119,6 +140,7 @@ public class BarricadeVisual : StructureVisual
             gameObject.transform.position = currentLevelBarricadeSpritesPositions[i];
             gameObject.transform.rotation = Quaternion.identity;
             gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
+            gameObject.GetComponent<SpriteRenderer>().material = unhoveredMaterial;
             i++;
         }
     }
@@ -132,6 +154,14 @@ public class BarricadeVisual : StructureVisual
     protected override void Structure_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
         foreach (GameObject go in currentLevelBarricadeSprites) {
             go.GetComponent<SpriteRenderer>().material = hoveredMaterial;
+        }
+    }
+
+    public bool GetBarricadeHasAllSprites() {
+        if (spriteIndex == 1) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

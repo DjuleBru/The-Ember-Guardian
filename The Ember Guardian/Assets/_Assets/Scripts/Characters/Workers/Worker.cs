@@ -57,7 +57,7 @@ public class Worker : Mob {
         if (droppingOrbs) return;
 
         droppingOrbs = true;
-        StartCoroutine(DropOrbsCoroutine(.2f));
+        StartCoroutine(DropOrbsCoroutine(.15f));
     }
 
     public int GetOrbAmount() {

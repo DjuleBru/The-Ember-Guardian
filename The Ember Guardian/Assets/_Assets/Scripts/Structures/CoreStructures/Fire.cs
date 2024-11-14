@@ -66,7 +66,7 @@ public class Fire : Structure, IDamageable {
 
         fireOrbCollider.OnOrbFellInFire += FireOrbCollider_OnOrbFellInFire;
 
-        fuelLevel = orbFuelValue;
+        fuelLevel = mildFuelTreshold - 1;
         ChangeState(State.calm);
     }
 
@@ -96,7 +96,6 @@ public class Fire : Structure, IDamageable {
         CheckFireStateDowngrade();
     }
     
-
     private void ChangeFireRadius(float fireRadius) {
         fireRadiusCollider.radius = fireRadius;
     }

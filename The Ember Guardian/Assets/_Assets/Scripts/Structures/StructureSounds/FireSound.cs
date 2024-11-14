@@ -16,6 +16,7 @@ public class FireSound : MonoBehaviour
     [SerializeField] private AudioClip[] orbDroppedInFireAudioClipArray1;
     [SerializeField] private AudioClip[] orbDroppedInFireAudioClipArray2;
     [SerializeField] private AudioClip[] fireDamagedAudioClipArray;
+    [SerializeField] private AudioClip fireTickRemovedAudioClip;
 
     private void Awake() { 
         fire = GetComponentInParent<Fire>();

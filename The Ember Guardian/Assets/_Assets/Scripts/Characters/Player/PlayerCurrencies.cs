@@ -49,6 +49,7 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     private void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
+
         if(Player.Instance.GetCanDropOrbOnTheFloor()) {
             if(blueOrbAmount >= 1) {
 
@@ -90,10 +91,6 @@ public class PlayerCurrencies : MonoBehaviour
             return blueOrbAmount;
         }
         return 0;
-    }
-
-    public Collectible GetLastBlueOrbDroppedOnTheFloor() {
-        return lastBlueOrbDroppedOnTheFloor;
     }
 
 }

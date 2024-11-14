@@ -24,6 +24,7 @@ public class Projectile : MonoBehaviour
     private Vector3 trajectoryRange;
     private Vector3 trajectoryStartPoint;
     private Vector3 trajectoryEndPoint;
+    private Transform projectileTarget;
     private Vector3 projectileStartPoint;
     private Vector3 projectileMoveDir;
 
@@ -43,12 +44,17 @@ public class Projectile : MonoBehaviour
     private Mob parentMob;
     private Mob mobHit;
     private bool enemyProjectile;
+    private bool homingProjectile;
+    private int damage;
 
-    public void ActivateAndInitialize(Vector3 targetPosition, ProjectileSO projectileSO, Mob parentMob) {
+    public void ActivateAndInitialize(Transform targetTransform, ProjectileSO projectileSO, Mob parentMob, int damage, bool homingProjectile) {
         this.parentMob = parentMob;
         this.projectileSO = projectileSO;
+        this.damage = damage;
+        this.homingProjectile = homingProjectile;
+        projectileTarget = targetTransform;
 
-        if(parentMob is Creature) {
+        if (parentMob is Creature) {
             enemyProjectile = true;
         }
 
@@ -62,7 +68,7 @@ public class Projectile : MonoBehaviour
         trajectoryStartPoint = transform.position;
 
         Vector3 trajectoryEndPointRandomOffset = new Vector3(UnityEngine.Random.Range(-trajectoryEndPointRandomOffsetValue, trajectoryEndPointRandomOffsetValue), 0, 0);
-        trajectoryEndPointRandomized = targetPosition + trajectoryEndPointRandomOffset;
+        trajectoryEndPointRandomized = targetTransform.position + trajectoryEndPointRandomOffset;
 
         trajectoryEndPoint = trajectoryEndPointRandomized;
         trajectoryRange = trajectoryEndPoint - trajectoryStartPoint;
@@ -83,6 +89,11 @@ public class Projectile : MonoBehaviour
     }
 
     private void UpdateProjectilePosition() {
+
+        if (homingProjectile) {
+            trajectoryEndPoint = projectileTarget.transform.position;
+            trajectoryRange = trajectoryEndPoint - trajectoryStartPoint;
+        }
 
         if (trajectoryRange.x < 0) {
             // Target is located behind shooted
@@ -150,16 +161,26 @@ public class Projectile : MonoBehaviour
         if (projectileHasHit) return;
         if (collision.gameObject.GetComponent<CreatureDetectionCollider>() != null) return;
 
+        // Hit mob
         mobHit = collision.GetComponentInParent<Mob>();
-
         if (mobHit != null && !enemyProjectile && mobHit != parentMob) {
+            // Check if worker is shooting another worker
+            if (mobHit is Worker && !enemyProjectile) return;
             HandleMobCollision(mobHit);
             return;
         }
 
+        // Hit Player
         if(collision.GetComponentInParent<Player>() != null && enemyProjectile) {
             ProjectileHasHit(false);
-            Player.Instance.TakeDamage(1, trajectoryStartPoint);
+            Player.Instance.TakeDamage(damage, trajectoryStartPoint);
+        }
+
+        // Hit Barricade
+        Barricade barricade = collision.gameObject.GetComponentInParent<Barricade>();
+        if (barricade != null && enemyProjectile) {
+            ProjectileHasHit(false);
+            barricade.TakeDamage(damage, trajectoryStartPoint);
         }
 
     }
@@ -170,7 +191,7 @@ public class Projectile : MonoBehaviour
             mobHit.OnMobDied += MobHit_OnMobDied;
 
             ProjectileHasHit(true);
-            mobHit.TakeDamage(1, trajectoryStartPoint);
+            mobHit.TakeDamage(damage, trajectoryStartPoint);
             transform.parent = mobHit.GetProjectileParent();
             return;
         }
@@ -185,5 +206,11 @@ public class Projectile : MonoBehaviour
         mobHit.OnMobDied -= MobHit_OnMobDied;
         Destroy(gameObject);
 
+    }
+
+    private void OnDestroy() {
+        if(mobHit != null) {
+            mobHit.OnMobDied -= MobHit_OnMobDied;
+        }
     }
 }

@@ -90,7 +90,8 @@ public class Collectible : MonoBehaviour
 
     public void PlayerCollectThis() {
         OnAnyCollectiblePickedUpByPlayer?.Invoke(this, EventArgs.Empty);
-        PlayerCurrencies.Instance.ChangeCurrencyAmount(currencyType, currencyAmount);
+        //PlayerCurrencies.Instance.ChangeCurrencyAmount(currencyType, currencyAmount);
+        UIOrbManager.Instance.AddBlueOrb();
         Destroy(gameObject);
     }
 

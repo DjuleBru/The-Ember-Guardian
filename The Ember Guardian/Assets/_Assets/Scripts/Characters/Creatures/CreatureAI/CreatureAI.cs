@@ -52,7 +52,7 @@ public class CreatureAI : MonoBehaviour {
 
             positionToRoamAmound = creature.GetMobSpawner().transform.position;
             roamChangeDestinationRate = 10f;
-            roamRadius = 10f;
+            roamRadius = 3f;
 
             ChangeState(State.idle);
 
@@ -209,7 +209,7 @@ public class CreatureAI : MonoBehaviour {
     }
 
     private void HeadToTarget() {
-
+        if (attackTarget == null) return;
         Vector3 targetDestination = attackTarget.GetMeleeAttackPosition().position;
 
         mobMovement.SetMoveTarget(targetDestination);
@@ -217,7 +217,7 @@ public class CreatureAI : MonoBehaviour {
         if(attackTarget == Player.Instance.GetComponent<IDamageable>()) {
 
             // Take in account player Y position for when he jumps over creatures
-            if (Mathf.Abs(transform.position.x - targetDestination.x) < attackRange && (Player.Instance.transform.position.y < 2f)) {
+            if (Mathf.Abs(transform.position.x - targetDestination.x) < attackRange && ((Player.Instance.transform.position.y - 1.51f) < creature.GetCreatureSO().attackRange)) {
                 ChangeState(State.attacking);
                 return;
             }
@@ -247,10 +247,19 @@ public class CreatureAI : MonoBehaviour {
     }
 
     public void SetAttackTarget(IDamageable iDamageable) {
+        if(iDamageable == null) {
+            detectedAttackTarget = false;
+            attackTarget = null;
+            return;
+        }
+
         detectedAttackTarget = true;
 
         if (attackTarget == iDamageable) return;
+
         attackTarget = iDamageable;
+
+        ChangeState(State.moveToTarget);
     }
 
     private void TriggerAggoFeedbacks() {

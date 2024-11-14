@@ -62,7 +62,7 @@ public class AmmoCrafter : Structure
             if (!craftedAmmo) return;
             // Ammo has not finished crafting
 
-            if (PlayerShoot.Instance.GetCurrentAmmo() == PlayerShoot.Instance.GetMaxAmmo()) return;
+            if (PlayerShoot.Instance.GetCurrentAmmoClip() == PlayerShoot.Instance.GetMaxAmmoClips()) return;
             // Player has max ammo
 
             CollectAmmoFromCrafter();
@@ -72,7 +72,7 @@ public class AmmoCrafter : Structure
 
     private void CollectAmmoFromCrafter() {
         craftedAmmo = false;
-        PlayerShoot.Instance.AddAmmo(ammoCraftAmount);
+        PlayerShoot.Instance.AddAmmoClip(ammoCraftAmount);
         OnPlayerCollectedAmmo?.Invoke(this, EventArgs.Empty);
     }
 

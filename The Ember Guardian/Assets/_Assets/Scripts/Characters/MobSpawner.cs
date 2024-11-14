@@ -43,17 +43,14 @@ public class MobSpawner : MonoBehaviour
             if(isCreatureSpawner) {
                 mob.GetComponent<Creature>().SetAsDayCreature(true);
                 mob.transform.parent = SpawnedObjects.Instance.creaturesContainer;
-                return;
             }
 
             if(mob is Worker) {
                 mob.transform.parent = SpawnedObjects.Instance.workersContainer;
-                return;
             }
 
             if (mob is Animal) {
                 mob.transform.parent = SpawnedObjects.Instance.AnimalsContainer;
-                return;
             }
         }
     }
