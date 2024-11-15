@@ -44,27 +44,28 @@ public class PlayerCurrencies : MonoBehaviour
         blueOrbAmount = initialOrbAmountDebug;
     }
 
+
     private void Start() {
-        GameInput.Instance.OnPlayerInteractStarted += GameInput_OnPlayerInteractStarted;
+        UIOrbManager.Instance.OnBigBlueOrbDropped += UIOrbManager_OnBigBlueOrbDropped;
     }
 
-    private void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
 
-        if(Player.Instance.GetCanDropOrbOnTheFloor()) {
-            if(blueOrbAmount >= 1) {
+    private void UIOrbManager_OnBigBlueOrbDropped(object sender, EventArgs e) {
+        DropBigOrbOnFloor();
+    }
 
-                lastBlueOrbDroppedOnTheFloor = Instantiate(blueOrbPrefab, blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
 
-                float aimDirX = PlayerAim.Instance.GetAimDir().x;
-                lastBlueOrbDroppedOnTheFloor.ApplyRandomForce(1f * aimDirX, 2f * aimDirX, 6f, 8f);
-                lastBlueOrbDroppedOnTheFloor.SetCollectibleUnInteractable(3f);
-                lastBlueOrbDroppedOnTheFloor.SetDroppedByPlayer();
+    public void DropBigOrbOnFloor() {
+        lastBlueOrbDroppedOnTheFloor = Instantiate(blueOrbPrefab, blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
 
-                OnBlueOrbDroppedOnTheFloor?.Invoke(this, new OnBlueOrbDroppedOnTheFloorEventArgs {
-                    blueOrbDropped = lastBlueOrbDroppedOnTheFloor
-                });
-            }
-        }
+        float aimDirX = PlayerAim.Instance.GetAimDir().x;
+        lastBlueOrbDroppedOnTheFloor.ApplyRandomForce(1f * aimDirX, 2f * aimDirX, 6f, 8f);
+        lastBlueOrbDroppedOnTheFloor.SetCollectibleUnInteractable(3f);
+        lastBlueOrbDroppedOnTheFloor.SetDroppedByPlayer();
+
+        OnBlueOrbDroppedOnTheFloor?.Invoke(this, new OnBlueOrbDroppedOnTheFloorEventArgs {
+            blueOrbDropped = lastBlueOrbDroppedOnTheFloor
+        });
     }
 
     public void ChangeCurrencyAmount(CurrencyType currencyType, int amount) {
