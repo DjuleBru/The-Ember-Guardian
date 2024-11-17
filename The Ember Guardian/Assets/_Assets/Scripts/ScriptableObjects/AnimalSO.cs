@@ -6,9 +6,11 @@ using UnityEngine;
 public class AnimalSO : ScriptableObject
 {
     public PlayerCurrencies.CurrencyType currencyTypeDropped;
-    public Transform currencyPrefab;
-
     public int currencyDropAmount;
+
+    public PlayerCurrencies.CurrencyType currency2TypeDropped;
+    public int currency2DropAmount;
+
     public int maxHP;
 
     public float roamMoveSpeed;

@@ -21,6 +21,8 @@ public class PlayerShoot : MonoBehaviour
     }
 
     [SerializeField] private Transform projectileSpawnPoint;
+    [SerializeField] private Transform ammoDestinationPoint;
+    [SerializeField] private Transform ammoSpawnPoint;
     [SerializeField] private Transform projectilePrefab;
     [SerializeField] private ParticleSystem shootPS;
     [SerializeField] private float projectileInitialForce;
@@ -28,11 +30,16 @@ public class PlayerShoot : MonoBehaviour
     private float shootCooldownTimer;
     private float shootCooldownTime;
     private float shootCooldownSFXTriggerTime;
+    private float playerJustPressedReloadTimer;
+    private float transferringAmmoFromBagTimer;
+    private float transferringAmmoFromBagCooldown = 1f;
     private float reloadTimer;
     private float reloadTime;
     private bool coolingDown;
     private bool reloading;
     private bool coolDownSFXTriggered;
+    private bool playerJustPressedReload;
+    private bool transferringAmmoFromBag;
 
     private int currentAmmoClip;
     private int maxAmmo;
@@ -59,9 +66,29 @@ public class PlayerShoot : MonoBehaviour
         GameInput.Instance.OnPlayerShootCanceled += GameInput_OnPlayerShootCanceled;
         GameInput.Instance.OnPlayerShootStarted += GameInput_OnPlayerShootStarted;
         GameInput.Instance.OnPlayerReloadPerformed += GameInput_OnPlayerReloadPerformed;
+        GameInput.Instance.OnPlayerReloadCanceled += GameInput_OnPlayerReloadCanceled;
+
+        UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
     }
 
+
     private void Update() {
+
+        if(playerJustPressedReload) {
+            playerJustPressedReloadTimer += Time.deltaTime;
+            if(playerJustPressedReloadTimer > .15f) {
+                playerJustPressedReload = false;
+                StartTransferringAmmoFromBagInGun();
+            }
+        }
+
+        if(transferringAmmoFromBag) {
+            transferringAmmoFromBagTimer += Time.deltaTime;
+            if(transferringAmmoFromBagTimer > transferringAmmoFromBagCooldown) {
+                transferringAmmoFromBagTimer = 0;
+                TransferNextAmmoFromBag();
+            }
+        }
 
         if(coolingDown) {
             shootCooldownTimer -= Time.deltaTime;
@@ -125,6 +152,23 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
+    private void StartTransferringAmmoFromBagInGun() {
+        transferringAmmoFromBagTimer = 0;
+        transferringAmmoFromBag = true;
+        TransferNextAmmoFromBag();
+    }
+
+    private void TransferNextAmmoFromBag() {
+        int ammoAmountInBag = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count;
+
+        if (ammoAmountInBag > 0 && currentAmmoClip < maxAmmo) {
+            UICurrencyManager.Instance.DropNextCurrencyInBag(PlayerCurrencies.CurrencyType.ammo);
+        } else {
+            transferringAmmoFromBag = false;
+        }
+        
+    }
+
     public void AddAmmoClip(int ammoCount) {
 
         int ammoRefilled = ammoCount;
@@ -154,7 +198,27 @@ public class PlayerShoot : MonoBehaviour
         return bulletsPerAmmoClip;
     }
 
+    private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        if(e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
+            Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
+            collectible.SetMoving(true, ammoDestinationPoint);
+            collectible.SetScale(.5f);
+        }
+    }
+
     private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
+        playerJustPressedReload = true;
+        playerJustPressedReloadTimer = 0;
+    }
+
+    private void GameInput_OnPlayerReloadCanceled(object sender, EventArgs e) {
+
+        if (!playerJustPressedReload) {
+            // Player is transferring ammo from bag in gun
+
+
+            return;
+        };
         if (currentBullet == bulletsPerAmmoClip) return;
         if (reloading) return;
         if (coolingDown) return;

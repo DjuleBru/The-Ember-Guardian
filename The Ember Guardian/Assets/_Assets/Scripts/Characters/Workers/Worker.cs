@@ -14,7 +14,7 @@ public class Worker : Mob {
 
     private Structure structureAssigned;
 
-    private int orbAmount;
+    private Dictionary<PlayerCurrencies.CurrencyType, int> collectedCurrencies = new Dictionary<PlayerCurrencies.CurrencyType, int>();
 
     private bool playerIsClose;
     private bool droppingOrbs;
@@ -49,19 +49,32 @@ public class Worker : Mob {
         OnAnyWorkerRecruited?.Invoke(this, EventArgs.Empty);
     }
 
-    public void CollectOrb() {
-        orbAmount++;
+    public void CollectCurrency(PlayerCurrencies.CurrencyType currencyType) {
+        if (!collectedCurrencies.ContainsKey(currencyType)) {
+            collectedCurrencies[currencyType] = 0;
+        }
+        collectedCurrencies[currencyType]++;
     }
 
-    public void DropOrbs() {
+    public void DropCurrencies() {
         if (droppingOrbs) return;
 
         droppingOrbs = true;
-        StartCoroutine(DropOrbsCoroutine(.15f));
+        StartCoroutine(DropCurrenciesCoroutine(0.15f));
+    }
+    public int GetTotalCurrencyAmount() {
+        int totalAmount = 0;
+        foreach (var amount in collectedCurrencies.Values) {
+            totalAmount += amount;
+        }
+        return totalAmount;
     }
 
-    public int GetOrbAmount() {
-        return orbAmount;
+    public int GetCurrencyAmount(PlayerCurrencies.CurrencyType currencyType) {
+        if (collectedCurrencies.ContainsKey(currencyType)) {
+            return collectedCurrencies[currencyType];
+        }
+        return 0; // Retourne 0 si le type n'est pas collecté
     }
 
     public void CheckPlayerIsClose() {
@@ -102,69 +115,20 @@ public class Worker : Mob {
         return sideAssigned;
     }
 
-    private void CheckOrbsNearby() {
-        float range = .15f;
+    private IEnumerator DropCurrenciesCoroutine(float delayBetweenDrops) {
+        foreach (var currency in collectedCurrencies) {
 
-        // Check right
+            for (int i = 0; i < currency.Value; i++) {
+                Transform prefabToDrop = CurrenciesManager.Instance.GetCurrencyPrefab(currency.Key);
+                Collectible droppedCurrency = Instantiate(prefabToDrop, transform.position, Quaternion.identity).GetComponent<Collectible>();
+                droppedCurrency.ApplyRandomFrontForce(2f, 3f);
+                droppedCurrency.SetCollectibleUnInteractable(1f);
+                OnAnyOrbDroppedByWorker?.Invoke(this, EventArgs.Empty);
 
-        Vector2 directionLeft = new Vector2(1, 0);
-        Vector2 directionRight = new Vector2(1, 0);
-
-        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, directionLeft, range, collectibleLayerMask);
-        RaycastHit2D hitRight = Physics2D.Raycast(transform.position, directionRight, range, collectibleLayerMask);
-
-        Collectible orbCollected = null;
-
-        if(hitLeft.collider != null) {
-            Collectible collectibleHit = hitLeft.collider.gameObject.GetComponent<Collectible>();
-
-            if(collectibleHit != null) {
-                if(collectibleHit.GetCurrencyType() == PlayerCurrencies.CurrencyType.blueOrb && collectibleHit.GetCanBePickedUpByWorker() && !collectibleHit.GetCollected()) {
-                    orbCollected = collectibleHit;
-                    orbCollected.SetCollected();
-                }
+                yield return new WaitForSeconds(delayBetweenDrops);
             }
+
         }
-
-        if (hitRight.collider != null) {
-            Collectible collectibleHit = hitRight.collider.gameObject.GetComponent<Collectible>();
-
-            if (collectibleHit != null) {
-                if (collectibleHit.GetCurrencyType() == PlayerCurrencies.CurrencyType.blueOrb && collectibleHit.GetCanBePickedUpByWorker() && !collectibleHit.GetCollected()) {
-                    orbCollected = collectibleHit;
-                    orbCollected.SetCollected();
-                }
-            }
-        }
-
-
-        if(orbCollected != null) {
-
-            orbCollected.SetCollected();
-            Destroy(orbCollected);
-
-            if (workerAI.GetJob() == WorkerAI.JobTypes.wild) {
-                RecruitWorker();
-            }
-            else {
-                CollectOrb();
-            }
-        }
-    }
-
-    private IEnumerator DropOrbsCoroutine(float delayBetweenOrbs) {
-        for (int i = 0; i < orbAmount; i++) {
-
-            Collectible lastBlueOrbDroppedOnTheFloor = Instantiate(blueOrbPrefab, transform.position, Quaternion.identity).GetComponent<Collectible>();
-            lastBlueOrbDroppedOnTheFloor.ApplyRandomFrontForce(2f, 3f);
-            lastBlueOrbDroppedOnTheFloor.SetCollectibleUnInteractable(1f);
-            OnAnyOrbDroppedByWorker?.Invoke(this, EventArgs.Empty);
-
-            yield return new WaitForSeconds(delayBetweenOrbs);
-        }
-
-        droppingOrbs = false;
-        orbAmount = 0;
     }
 
     public Structure GetStructureAssigned() {

@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class WorkerAnimatorManager : MonoBehaviour
 {
-    [SerializeField] private AnimatorController joblessAnimator;
-    [SerializeField] private AnimatorController hunterAnimator;
-    [SerializeField] private AnimatorController guardAnimator;
-    [SerializeField] private AnimatorController minerAnimator;
+    [SerializeField] private RuntimeAnimatorController joblessAnimator;
+    [SerializeField] private RuntimeAnimatorController hunterAnimator;
+    [SerializeField] private RuntimeAnimatorController guardAnimator;
+    [SerializeField] private RuntimeAnimatorController minerAnimator;
 
     private Worker worker;
     private WorkerAI workerAI;

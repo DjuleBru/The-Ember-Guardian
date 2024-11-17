@@ -21,6 +21,7 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnPlayerShootCanceled;
 
     public event EventHandler OnPlayerReloadPerformed;
+    public event EventHandler OnPlayerReloadCanceled;
 
     public event EventHandler OnPlayerLeftRightSwitchPerformed;
 
@@ -40,8 +41,13 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.Shoot.started += Shoot_started;
         playerInputActions.Player.Shoot.canceled += Shoot_canceled;
         playerInputActions.Player.Reload.performed += Reload_performed;
+        playerInputActions.Player.Reload.canceled += Reload_canceled;
 
         playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
+    }
+
+    private void Reload_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        OnPlayerReloadCanceled?.Invoke(this, EventArgs.Empty);
     }
 
     private void Reload_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {

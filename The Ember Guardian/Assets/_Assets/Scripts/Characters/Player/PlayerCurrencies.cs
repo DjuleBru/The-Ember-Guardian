@@ -11,21 +11,18 @@ public class PlayerCurrencies : MonoBehaviour
     [SerializeField] private Transform blueOrbPrefab;
     [SerializeField] private Transform blueOrbDropPoint;
 
+    private List<Collectible> collectiblesBeingPaid = new List<Collectible>();
+
     public enum CurrencyType {
-        blueOrb,
-        redOrb,
+        bigBlueOrb,
+        smallBlueOrb,
+        bigRedOrb,
+        smallRedOrb,
         greenGem,
         redGem,
         ember,
         ammo,
     }
-
-    private int blueOrbAmount;
-    private int redOrbAmount;
-    private int greenGemOrbAmount;
-    private int redGemOrbAmount;
-    private int emberAmount;
-    private int ammoAmount;
 
     public event EventHandler<OnCurrencyChangedEventArgs> OnBlueOrbChanged;
     public event EventHandler<OnBlueOrbDroppedOnTheFloorEventArgs> OnBlueOrbDroppedOnTheFloor;
@@ -36,26 +33,34 @@ public class PlayerCurrencies : MonoBehaviour
     public class OnBlueOrbDroppedOnTheFloorEventArgs : EventArgs {
         public Collectible blueOrbDropped;
     }
+
     private Collectible lastBlueOrbDroppedOnTheFloor;
+    private Collectible lastBlueOrbPaying;
 
 
     private void Awake() {
         Instance = this;
-        blueOrbAmount = initialOrbAmountDebug;
     }
 
 
     private void Start() {
-        UIOrbManager.Instance.OnBigBlueOrbDropped += UIOrbManager_OnBigBlueOrbDropped;
+        UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
+        UICurrencyManager.Instance.OnBigBlueOrbTryPay += UIOrbManager_OnBigBlueOrbTryPay;
+    }
+
+    private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        if(e.currencyUIDropped.GetCurrencyType() == CurrencyType.bigBlueOrb) {
+            DropBigOrbOnFloor();
+        }
+    }
+
+    private void UIOrbManager_OnBigBlueOrbTryPay(object sender, UICurrencyManager.OnBigOrbTryPayEventArgs e) {
+        DropBigOrbToPay(e.destionationOrbTemplate);
     }
 
 
-    private void UIOrbManager_OnBigBlueOrbDropped(object sender, EventArgs e) {
-        DropBigOrbOnFloor();
-    }
-
-
-    public void DropBigOrbOnFloor() {
+    private void DropBigOrbOnFloor() {
+        Debug.Log("DropBigOrbOnFloor");
         lastBlueOrbDroppedOnTheFloor = Instantiate(blueOrbPrefab, blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
 
         float aimDirX = PlayerAim.Instance.GetAimDir().x;
@@ -68,30 +73,29 @@ public class PlayerCurrencies : MonoBehaviour
         });
     }
 
-    public void ChangeCurrencyAmount(CurrencyType currencyType, int amount) {
-        if(currencyType == CurrencyType.blueOrb) {
-            blueOrbAmount += amount;
+    private void DropBigOrbToPay(OrbTemplateWorldUI destination) {
+        Debug.Log("DropBigOrbToPay");
+        lastBlueOrbPaying = Instantiate(blueOrbPrefab, blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
+        lastBlueOrbPaying.SetMoving(true, destination.transform);
+        collectiblesBeingPaid.Add(lastBlueOrbPaying);
 
-            OnBlueOrbChanged?.Invoke(this, new OnCurrencyChangedEventArgs() {
-                previousAmount = blueOrbAmount - amount,
-                newAmount = blueOrbAmount
-            });
-        }
-
-        if(currencyType == CurrencyType.redOrb) {
-            redOrbAmount += amount;
-        }
-
-        if (currencyType == CurrencyType.ammo) {
-            ammoAmount += amount;
-        }
     }
 
-    public int GetCurrencyAmount(CurrencyType currencyType) {
-        if(currencyType == CurrencyType.blueOrb) {
-            return blueOrbAmount;
+    public void FinalizeCurrencyPayment() {
+        Debug.Log("FinalizeCurrencyPayment");
+        foreach (Collectible collectible in collectiblesBeingPaid) {
+            Destroy(collectible.gameObject);
         }
-        return 0;
+        collectiblesBeingPaid.Clear();
+    }
+
+    public void CancelCurrencyPayment() {
+        Debug.Log("CancelCurrencyPayment");
+        foreach(Collectible collectible in collectiblesBeingPaid) {
+            collectible.SetMoving(false);
+            collectible.ApplyRandomUpwardsForce(1, 5);
+        }
+        collectiblesBeingPaid.Clear();
     }
 
 }

@@ -9,10 +9,13 @@ public class Collectible : MonoBehaviour
     [SerializeField] private int currencyAmount;
 
     public event EventHandler OnCollectibleDestroyed;
+    public event EventHandler OnCollectibleEnteredSlot;
 
     public static event EventHandler OnAnyCollectibleTouchedFloor;
     public static event EventHandler OnAnyCollectiblePickedUpByPlayer;
     public static event EventHandler OnAnyCollectiblePickedUpByWorker;
+
+    private float initialGravityScale;
 
     private bool interactable;
     private bool canBePickedUpByWorker;
@@ -21,6 +24,10 @@ public class Collectible : MonoBehaviour
     private bool aggroedByWildWorker;
     private bool collected;
 
+    private bool moving;
+    private float smoothTime = 3f;
+    private Transform paymentDestination;
+
     private Worker aggroedWildWorker;
     private Collider2D triggerCollider;
     private Rigidbody2D rb;
@@ -28,6 +35,7 @@ public class Collectible : MonoBehaviour
     private void Awake() {
         triggerCollider = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
+        initialGravityScale = rb.gravityScale;
     }
 
     private void Start() {
@@ -35,46 +43,70 @@ public class Collectible : MonoBehaviour
         Invoke("SetCanBePickedUpByWorker", 3f);
     }
 
+    private void Update() {
+        if(moving && paymentDestination != null) {
+            // Lerp vers la position locale de la destination
+            transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, smoothTime * Time.deltaTime);
+
+            if (currencyType == PlayerCurrencies.CurrencyType.ammo && Vector3.Distance(transform.localPosition, Vector3.zero) < .1f) {
+                PlayerShoot.Instance.AddAmmoClip(1);
+                Destroy(gameObject);
+            }
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision) {
-        Player player = collision.gameObject.GetComponent<Player>();
-        if (player != null) {
-            playerInTriggerArea = true;
-            if (!interactable) return;
-
-            PlayerCollectThis();
-            return;
-        };
-
-        Worker worker = collision.gameObject.GetComponent<Worker>();
-
-        if (worker != null) {
-
-            if (aggroedByWildWorker && worker != aggroedWildWorker) return;
-
-            if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.wild && !collected) {
-                collected = true;
-                worker.RecruitWorker();
-                Destroy(gameObject);
-
-                OnAnyCollectiblePickedUpByWorker?.Invoke(this, EventArgs.Empty);
-                return;
+        Debug.Log(collision.gameObject);
+        if (moving) {
+            // Orb Collisions with OrbTemplateWorldUI
+            OrbTemplateWorldUI orbTemplateWorldUI = collision.GetComponent<OrbTemplateWorldUI>();
+            if (orbTemplateWorldUI != null && orbTemplateWorldUI.transform == paymentDestination && !orbTemplateWorldUI.GetOrbPaid()) {
+                OnCollectibleEnteredSlot?.Invoke(this, EventArgs.Empty);
+                orbTemplateWorldUI.SetOrbPaid(true);
             }
 
-            if (canBePickedUpByWorker && !collected) {
-                collected = true;
-                worker.GetComponent<Worker>().CollectOrb();
-                Destroy(gameObject);
+        } else {
 
-                OnAnyCollectiblePickedUpByWorker?.Invoke(this, EventArgs.Empty);
+            Player player = collision.gameObject.GetComponent<Player>();
+            if (player != null) {
+                playerInTriggerArea = true;
+                if (!interactable) return;
+
+                PlayerCollectThis(currencyType);
                 return;
+            };
+
+            Worker worker = collision.gameObject.GetComponent<Worker>();
+
+            if (worker != null) {
+
+                if (aggroedByWildWorker && worker != aggroedWildWorker) return;
+
+                if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.wild && !collected && currencyType == PlayerCurrencies.CurrencyType.bigBlueOrb) {
+                    collected = true;
+                    worker.RecruitWorker();
+                    Destroy(gameObject);
+
+                    OnAnyCollectiblePickedUpByWorker?.Invoke(this, EventArgs.Empty);
+                    return;
+                }
+
+                if (canBePickedUpByWorker && !collected) {
+                    collected = true;
+                    worker.GetComponent<Worker>().CollectCurrency(currencyType);
+                    Destroy(gameObject);
+
+                    OnAnyCollectiblePickedUpByWorker?.Invoke(this, EventArgs.Empty);
+                    return;
+                }
+
             }
 
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+                OnAnyCollectibleTouchedFloor?.Invoke(this, EventArgs.Empty);
+            }
         }
 
-
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
-            OnAnyCollectibleTouchedFloor?.Invoke(this, EventArgs.Empty);
-        }
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
@@ -88,10 +120,9 @@ public class Collectible : MonoBehaviour
 
     }
 
-    public void PlayerCollectThis() {
+    public void PlayerCollectThis(PlayerCurrencies.CurrencyType currencyType) {
         OnAnyCollectiblePickedUpByPlayer?.Invoke(this, EventArgs.Empty);
-        //PlayerCurrencies.Instance.ChangeCurrencyAmount(currencyType, currencyAmount);
-        UIOrbManager.Instance.AddBigBlueOrb();
+        UICurrencyManager.Instance.AddCurrencyInBag(currencyType);
         Destroy(gameObject);
     }
 
@@ -105,8 +136,28 @@ public class Collectible : MonoBehaviour
         interactable = true;
 
         if(playerInTriggerArea) {
-            PlayerCollectThis();
+            PlayerCollectThis(currencyType);
         }
+    }
+
+    public void SetMoving(bool moving, Transform destination = null) {
+        this.moving = moving;
+        paymentDestination = destination;
+        transform.SetParent(destination);
+
+        if(moving) {
+            rb.gravityScale = 0;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+        } else {
+            rb.gravityScale = initialGravityScale;
+            rb.angularVelocity = 0;
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            StartCoroutine(SetCollectibleInteractableAfterDelay(1f));
+        }
+    }
+
+    public void SetScale(float scale) {
+        transform.localScale = new Vector3(scale, scale, scale);
     }
 
     public void SetDroppedByPlayer() {
@@ -115,6 +166,10 @@ public class Collectible : MonoBehaviour
 
     public bool GetDroppedByPlayer() {
         return droppedByPlayer;
+    }
+
+    public bool GetPaying() {
+        return moving;
     }
 
     public void SetCanBePickedUpByWorker() {

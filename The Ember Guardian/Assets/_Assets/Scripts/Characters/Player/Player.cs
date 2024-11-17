@@ -63,6 +63,11 @@ public class Player : MonoBehaviour, IDamageable
             }
 
         }
+
+        if (Input.GetKeyDown(KeyCode.B)) {
+            TakeDamage(1, Vector3.zero);
+        }
+
     }
 
     private void CheckExitingCamp() {

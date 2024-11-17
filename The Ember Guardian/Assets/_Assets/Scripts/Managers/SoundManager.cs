@@ -102,14 +102,14 @@ public class SoundManager : MonoBehaviour
     private void Collectible_OnAnyCollectibleTouchedFloor(object sender, System.EventArgs e) {
         Collectible collectible = (Collectible)sender;
 
-        if(collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.blueOrb) {
+        if(collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigBlueOrb) {
             PlaySound3D(soundRefsSO.orbTouchedFloor, (sender as MonoBehaviour).transform.position);
         }
     }
     private void Collectible_OnAnyCollectiblePickedUpByPlayer(object sender, System.EventArgs e) {
         Collectible collectible = (Collectible)sender;
 
-        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.blueOrb) {
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigBlueOrb) {
             PlaySound3D(soundRefsSO.orbPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
         }
     }
@@ -118,7 +118,7 @@ public class SoundManager : MonoBehaviour
     private void Collectible_OnAnyCollectiblePickedUpByWorker(object sender, System.EventArgs e) {
         Collectible collectible = (Collectible)sender;
 
-        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.blueOrb) {
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigBlueOrb) {
             PlaySound3D(soundRefsSO.orbPickedUpByWorker, (sender as MonoBehaviour).transform.position);
         }
     }

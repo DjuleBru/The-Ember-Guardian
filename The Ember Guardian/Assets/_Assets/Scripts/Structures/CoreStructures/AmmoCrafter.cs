@@ -7,6 +7,7 @@ public class AmmoCrafter : Structure
 {
     private float ammoCraftTimer;
     [SerializeField] private float ammoCraftTime = 45f;
+    [SerializeField] private Transform ammoSpawnPoint;
     private int ammoCraftAmount = 3;
 
     private bool craftingAmmo;
@@ -40,10 +41,6 @@ public class AmmoCrafter : Structure
             ammoCraftTimer = ammoCraftTime;
             OnAmmoCraftingStarted?.Invoke(this, EventArgs.Empty);
 
-        } else {
-
-            CollectAmmoFromCrafter();
-
         }
     }
 
@@ -62,18 +59,22 @@ public class AmmoCrafter : Structure
             if (!craftedAmmo) return;
             // Ammo has not finished crafting
 
-            if (PlayerShoot.Instance.GetCurrentAmmoClip() == PlayerShoot.Instance.GetMaxAmmoClips()) return;
-            // Player has max ammo
-
-            CollectAmmoFromCrafter();
+            StartCoroutine(CollectAmmoFromCrafter(.2f));
 
         }
     }
 
-    private void CollectAmmoFromCrafter() {
+    private IEnumerator CollectAmmoFromCrafter(float delayBetweenAmmoInstantiation) {
         craftedAmmo = false;
-        PlayerShoot.Instance.AddAmmoClip(ammoCraftAmount);
         OnPlayerCollectedAmmo?.Invoke(this, EventArgs.Empty);
+
+        for (int i = 0; i < ammoCraftAmount; i++) {
+            Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo), ammoSpawnPoint.position, Quaternion.identity).GetComponent<Collectible>();
+            collectible.SetCollectibleUnInteractable(1.5f);
+            collectible.ApplyRandomForce(-1, 1, 3, 5);
+
+            yield return new WaitForSeconds(delayBetweenAmmoInstantiation);
+        }
     }
 
     public int GetAmmoCraftAmount() {

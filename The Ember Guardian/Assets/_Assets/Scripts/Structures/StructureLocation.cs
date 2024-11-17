@@ -56,6 +56,7 @@ public class StructureLocation : MonoBehaviour {
         if (!playerInTriggerArea) return;
         if (!structureLocationUnlocked) return;
 
+        payOrbsUI.SetPlayerInteracting(false);
         payOrbsUI.CancelOrbPayment();
     }
 

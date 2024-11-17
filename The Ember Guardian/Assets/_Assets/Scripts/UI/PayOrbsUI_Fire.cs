@@ -17,26 +17,16 @@ public class PayOrbsUI_Fire : PayOrbsUI
             orbTemplateWorldUI.SetFillAmount(0);
         }
 
-        fillPaymentOrbTimer = 0;
+        //paymentOrbTimer = 0;
         orbIndex = 0;
 
         playerInteracting = false;
     }
 
-    protected override void TryPayOrb(OrbTemplateWorldUI orbTemplateWorldUI) {
-        if (PlayerCurrencies.Instance.GetCurrencyAmount(PlayerCurrencies.CurrencyType.blueOrb) >= 1) {
+    protected override void OrbTemplate_OnOrbPaid(object sender, EventArgs e) {
+        base.OrbTemplate_OnOrbPaid(sender, e);
 
-            Collectible collectibleWorld = Instantiate(blueOrbPrefab, orbTemplateWorldUI.transform.position, Quaternion.identity).GetComponent<Collectible>();
-            collectibleWorld.SetCollectibleUnInteractable(1f);
-
-            orbTemplateWorldUI.SetOrbPaid(true);
-            PlayerCurrencies.Instance.ChangeCurrencyAmount(PlayerCurrencies.CurrencyType.blueOrb, -1);
-            initialFillPaymentOrbRate += fillPaymentOrbRateIncrease;
-            orbIndex++;
-        }
-        else {
-            CancelOrbPayment();
-            TriggerOnPayOrbsCanceled();
-        }
+        Collectible collectibleWorld = Instantiate(blueOrbPrefab, (sender as MonoBehaviour).transform.position, Quaternion.identity).GetComponent<Collectible>();
+        collectibleWorld.SetCollectibleUnInteractable(1f);
     }
 }

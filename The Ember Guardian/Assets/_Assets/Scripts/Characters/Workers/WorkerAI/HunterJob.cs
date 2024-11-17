@@ -88,7 +88,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         DebugExtention.DrawCircle(mobMovement.transform.position, firingRange, 20, Color.white);
 
         if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
-            CheckDroporbsToPlayer();
+            CheckDropCurrenciesToPlayer();
             CheckOrbsToCollect();
         }
 
@@ -167,13 +167,13 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
             case HunterState.droppingOrbs:
 
-                if(worker.GetOrbAmount() == 0) {
+                if(worker.GetTotalCurrencyAmount() == 0) {
                     ChangeState(previousState);
                     return;
                 }
 
                 if (worker.PlayerIsCloseAndStayedAround()) {
-                    worker.DropOrbs();
+                    worker.DropCurrencies();
                     return;
                 }
 
@@ -355,8 +355,8 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         }
     }
 
-    private void CheckDroporbsToPlayer() {
-        if (worker.GetOrbAmount() > 0 && worker.GetPlayerIsClose()) {
+    private void CheckDropCurrenciesToPlayer() {
+        if (worker.GetTotalCurrencyAmount() > 0 && worker.GetPlayerIsClose()) {
             ChangeState(HunterState.droppingOrbs);
         }
     }

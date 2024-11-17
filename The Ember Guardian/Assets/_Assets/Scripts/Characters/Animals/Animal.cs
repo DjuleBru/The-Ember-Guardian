@@ -10,6 +10,7 @@ public class Animal : Mob
 
     public event EventHandler<OnAnimalDroppedCollectibleEventArgs> OnAnimalDroppedCollectibles;
 
+    List<Collectible> collectiblesDropped = new List<Collectible>();
     public class OnAnimalDroppedCollectibleEventArgs {
         public List<Collectible> collectibleDroppedList;
     }
@@ -25,15 +26,10 @@ public class Animal : Mob
         AnimalManager.Instance.RemoveAnimalSpawned(this);
         mobSpawner.RemoveMobFromMobSpawnedList(this);
 
-        List<Collectible> collectiblesDropped = new List<Collectible>();
+        SpawnDroppedCurrencies(animalSO.currencyTypeDropped, animalSO.currencyDropAmount);
 
-        for (int i = 0; i < animalSO.currencyDropAmount; i++) {
-            Collectible lastBlueOrbDroppedOnTheFloor = Instantiate(animalSO.currencyPrefab, dropSpawnPoint.position, Quaternion.identity).GetComponent<Collectible>();
-            lastBlueOrbDroppedOnTheFloor.ApplyRandomUpwardsForce(3,6);
-            lastBlueOrbDroppedOnTheFloor.SetCollectibleUnInteractable(1f);
-            lastBlueOrbDroppedOnTheFloor.SetCanBePickedUpByWorker();
-
-            collectiblesDropped.Add(lastBlueOrbDroppedOnTheFloor);
+        if(animalSO.currency2DropAmount > 0) {
+            SpawnDroppedCurrencies(animalSO.currency2TypeDropped, animalSO.currency2DropAmount);
         }
 
         OnAnimalDroppedCollectibles?.Invoke(this, new OnAnimalDroppedCollectibleEventArgs {
@@ -41,6 +37,20 @@ public class Animal : Mob
         });
 
         StartCoroutine(DestroyGameObjectAfterDelay(animalSO.dieAnimationTime));
+    }
+
+   private void SpawnDroppedCurrencies(PlayerCurrencies.CurrencyType currencyType, int dropAmount) {
+
+        for (int i = 0; i < dropAmount; i++) {
+            Transform currencyPrefab = CurrenciesManager.Instance.GetCurrencyPrefab(currencyType);
+            Collectible lastBlueOrbDroppedOnTheFloor = Instantiate(currencyPrefab, dropSpawnPoint.position, Quaternion.identity).GetComponent<Collectible>();
+            lastBlueOrbDroppedOnTheFloor.ApplyRandomUpwardsForce(3, 6);
+            lastBlueOrbDroppedOnTheFloor.SetCollectibleUnInteractable(1f);
+            lastBlueOrbDroppedOnTheFloor.SetCanBePickedUpByWorker();
+
+            collectiblesDropped.Add(lastBlueOrbDroppedOnTheFloor);
+        }
+
     }
 
     public AnimalSO GetAnimalSO() {

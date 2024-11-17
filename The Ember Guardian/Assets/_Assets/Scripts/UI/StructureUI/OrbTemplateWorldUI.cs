@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,11 +11,18 @@ public class OrbTemplateWorldUI : MonoBehaviour
 
     private bool orbPaid;
 
+    public event EventHandler OnOrbPaid;
+
     public void SetFillAmount(float amount) {
         orbImageFill.fillAmount = amount;
     }
 
     public void SetOrbPaid(bool paid) {
+
+        if(paid) {
+            OnOrbPaid?.Invoke(this, EventArgs.Empty);
+            
+        }
         orbPaid = paid;
     }
 

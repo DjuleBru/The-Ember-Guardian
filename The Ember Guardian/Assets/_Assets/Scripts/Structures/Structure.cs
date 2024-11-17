@@ -207,8 +207,9 @@ public class Structure : MonoBehaviour {
         if (!playerInteracting) return;
 
         playerInteracting = false;
-        payOrbsUI.CancelOrbPayment();
+        payOrbsUI.SetPlayerInteracting(false);
     }
+
     protected void DebugInitializeActiveStructureUITypeList() {
 
         if (functionUnlocked) {
