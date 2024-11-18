@@ -20,19 +20,14 @@ public class PayCurrencyUI : MonoBehaviour
 
     protected void Update() {
         if (playerInteracting) {
-
                 if (!playerInteracting) return;
                 // Build was canceled due do lack of resources
-
-                
         }
     }
 
-    public virtual void CancelCurrencyPayment() {
+    public virtual void ResetCurrencyPayment() {
         foreach (PayCurrencyTemplateWorldUI orbTemplateWorldUI in currencyTemplateWorldUIList) {
-            if (orbTemplateWorldUI.GetCurrencyPaid()) {
-                orbTemplateWorldUI.SetCurrencyPaid(false);
-            }
+            orbTemplateWorldUI.SetCurrencyPaid(false);
         }
 
         currencyIndex = 0;
@@ -41,10 +36,7 @@ public class PayCurrencyUI : MonoBehaviour
     }
 
     public void SetPlayerInteracting(bool isInteracting) {
-
         if (playerInteracting == isInteracting) return;
-
-        Debug.Log("SetPlayerInteracting " + isInteracting);
 
         PlayerCurrencies.CurrencyType currencyTypeToPay = currencyTemplateWorldUIList[0].GetCurrencyTypeToPay();
         playerInteracting = isInteracting;
@@ -65,13 +57,12 @@ public class PayCurrencyUI : MonoBehaviour
 
     public void SetOrbTemplateUIList(List<PayCurrencyTemplateWorldUI> orbTemplateList) {
         foreach (PayCurrencyTemplateWorldUI orbTemplate in currencyTemplateWorldUIList) {
-            orbTemplate.OnOrbPaid -= OrbTemplate_OnOrbPaid;
+            orbTemplate.OnCurrencyPaid -= OrbTemplate_OnOrbPaid;
         }
-
         currencyTemplateWorldUIList = orbTemplateList;
 
         foreach(PayCurrencyTemplateWorldUI orbTemplate in currencyTemplateWorldUIList) {
-            orbTemplate.OnOrbPaid += OrbTemplate_OnOrbPaid;
+            orbTemplate.OnCurrencyPaid += OrbTemplate_OnOrbPaid;
         }
     }
 
@@ -95,6 +86,10 @@ public class PayCurrencyUI : MonoBehaviour
                 currencyIndex = currencyIndex,
             });
         }
+    }
+
+    public bool GetIsLastCurrencyPaid() {
+        return currencyIndex == currencyTemplateWorldUIList.Count;
     }
 
     public PayCurrencyTemplateWorldUI GetCurrentCurrencyTemplateWorldUI() {

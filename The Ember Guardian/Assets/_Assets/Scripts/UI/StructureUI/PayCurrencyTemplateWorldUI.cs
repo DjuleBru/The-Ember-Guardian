@@ -11,27 +11,27 @@ public class PayCurrencyTemplateWorldUI : MonoBehaviour
    [SerializeField] private Image orbImageOutline;
     private Color initialImageOutlineColor;
 
-    private bool orbPaid;
+    private bool currencyPaid;
 
-    public event EventHandler OnOrbPaid;
+    public event EventHandler OnCurrencyPaid;
 
     private void Awake() {
         initialImageOutlineColor = orbImageOutline.color;
     }
 
     public void SetCurrencyPaid(bool paid) {
+        currencyPaid = paid;
 
-        if(paid) {
-            OnOrbPaid?.Invoke(this, EventArgs.Empty);
+        if (paid) {
+            OnCurrencyPaid?.Invoke(this, EventArgs.Empty);
             orbImageOutline.color = Color.white;
         } else {
             orbImageOutline.color = initialImageOutlineColor;
         }
-        orbPaid = paid;
     }
 
     public bool GetCurrencyPaid() {
-        return orbPaid;
+        return currencyPaid;
     }
 
     public PlayerCurrencies.CurrencyType GetCurrencyTypeToPay() {

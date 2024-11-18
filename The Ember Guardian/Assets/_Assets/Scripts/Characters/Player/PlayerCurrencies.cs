@@ -73,7 +73,6 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     private void StartPayingCurrency(CurrencyType currencyType, PayCurrencyTemplateWorldUI destination) {
-        Debug.Log("StartPayingCurrency");
         Transform currencyPrefab = CurrenciesManager.Instance.GetCurrencyPrefab(currencyType);
 
         lastCurrencyPaying = Instantiate(currencyPrefab, blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
@@ -83,7 +82,6 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     public void FinalizeCurrencyPayment() {
-        Debug.Log("FinalizeCurrencyPayment");
         foreach (Collectible collectible in collectiblesBeingPaid) {
             Destroy(collectible.gameObject);
         }
@@ -91,7 +89,6 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     public void CancelCurrencyPayment() {
-        Debug.Log("CancelCurrencyPayment");
         foreach(Collectible collectible in collectiblesBeingPaid) {
             collectible.SetMovingForPayment(false);
             collectible.ApplyRandomUpwardsForce(1, 5);

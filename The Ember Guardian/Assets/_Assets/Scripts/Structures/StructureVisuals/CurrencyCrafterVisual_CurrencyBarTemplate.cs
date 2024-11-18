@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AmmoCrafterVisual_AmmoBarTemplate : MonoBehaviour
+public class CurrencyCrafterVisual_CurrencyBarTemplate : MonoBehaviour
 {
-    [SerializeField] private Image ammoBarFill;
+    [SerializeField] private Image currencyBarFill;
     [SerializeField] private Material glowMaterial;
 
     public void SetFillAmount(float amount) {
-        ammoBarFill.fillAmount = amount;
+        currencyBarFill.fillAmount = amount;
     }
 
     public void SetGlowMaterial() {
-        ammoBarFill.material = glowMaterial;
+        currencyBarFill.material = glowMaterial;
     }
 }

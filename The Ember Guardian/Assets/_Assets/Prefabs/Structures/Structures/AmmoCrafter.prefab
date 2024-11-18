@@ -272,8 +272,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf16fc757248e9a409e771145e737b1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammoBarFill: {fileID: 162971975254427532}
-  glowMaterial: {fileID: 2100000, guid: 1e3ce34ed49b4264b9efd16e3781ce23, type: 2}
+  currencyBarFill: {fileID: 162971975254427532}
+  glowMaterial: {fileID: 2100000, guid: 84daae7459c20664c9feb1d7e7c96f0f, type: 2}
 --- !u!1 &7433427125034709217
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,6 +403,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startCraftingAudioClip: {fileID: 8300000, guid: 655e2d34e50becc46856d586d3484ee7, type: 3}
   endCraftingAudioClip: {fileID: 8300000, guid: 690fb909be0b63140a9a11623c74b726, type: 3}
+  currencyInstantiatedAudioClip: {fileID: 8300000, guid: ef3132fb6948a3349a81264e3676013a, type: 3}
 --- !u!82 &5718330213909410202
 AudioSource:
   m_ObjectHideFlags: 0
@@ -680,8 +681,9 @@ MonoBehaviour:
   structureSO: {fileID: 11400000, guid: c7afad7f68fa6aa4d9911acecc53b4f9, type: 2}
   upgradeUnlocked: 0
   functionUnlocked: 0
-  ammoCraftTime: 45
-  ammoSpawnPoint: {fileID: 7441869313988092870}
+  currencyCraftTime: 5
+  currencySpawnPoint: {fileID: 7441869313988092870}
+  currencyTypeCrafted: 7
 --- !u!4 &4039759338917417633 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2097073961957946881, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
@@ -720,7 +722,7 @@ MonoBehaviour:
   unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
   structureHasFunctionIcon: 1
-  craftAmmo_PayOrbsGameObject: {fileID: 7203990799742609256}
-  craftAmmo_craftingAmmoGameObject: {fileID: 9106199492425929992}
-  ammoBarContainer: {fileID: 8736111962518800507}
-  ammoBarTemplate: {fileID: 3931816421194257169}
+  craftCurrency_PayOrbsGameObject: {fileID: 7203990799742609256}
+  craftCurrency_craftingCurrencyGameObject: {fileID: 9106199492425929992}
+  currencyBarContainer: {fileID: 8736111962518800507}
+  currencyBarTemplate: {fileID: 3931816421194257169}

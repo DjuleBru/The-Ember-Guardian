@@ -105,12 +105,24 @@ public class SoundManager : MonoBehaviour
         if(collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigBlueOrb) {
             PlaySound3D(soundRefsSO.orbTouchedFloor, (sender as MonoBehaviour).transform.position);
         }
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.smallBlueOrb) {
+            PlaySound3D(soundRefsSO.smallOrbTouchedFloor, (sender as MonoBehaviour).transform.position);
+        }
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
+            PlaySound3D(soundRefsSO.ammoTouchedFloor, (sender as MonoBehaviour).transform.position, .7f);
+        }
     }
     private void Collectible_OnAnyCollectiblePickedUpByPlayer(object sender, System.EventArgs e) {
         Collectible collectible = (Collectible)sender;
 
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigBlueOrb) {
             PlaySound3D(soundRefsSO.orbPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+        }
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.smallBlueOrb) {
+            PlaySound3D(soundRefsSO.smallOrbPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+        }
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
+            PlaySound3D(soundRefsSO.ammoPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
         }
     }
 

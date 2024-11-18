@@ -57,7 +57,7 @@ public class StructureLocation : MonoBehaviour {
         if (!structureLocationUnlocked) return;
 
         payOrbsUI.SetPlayerInteracting(false);
-        payOrbsUI.CancelCurrencyPayment();
+        payOrbsUI.ResetCurrencyPayment();
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

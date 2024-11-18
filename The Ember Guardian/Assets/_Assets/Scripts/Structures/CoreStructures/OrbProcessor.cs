@@ -9,7 +9,6 @@ public class OrbProcessor : Structure
     [SerializeField] private float orbCraftTime = 45f;
     [SerializeField] private Transform orbSpawnPoint;
 
-    private OrbProcessorOrbCollider orbProcessorOrbCollider;
     private int smallOrbsToBigOrbRatio = 5;
     private int smallOrbCapacity = 5;
     private int smallOrbsInProcessor;
@@ -24,14 +23,11 @@ public class OrbProcessor : Structure
 
     protected override void Awake() {
         base.Awake();
-        orbProcessorOrbCollider = GetComponentInChildren<OrbProcessorOrbCollider>();
     }
 
     protected override void Start() {
         base.Start();
         ActivateStructureFunctionInteraction(true);
-
-        orbProcessorOrbCollider.OnOrbFellInOrbProcessor += OrbProcessorOrbCollider_OnOrbFellInOrbProcessor;
     }
 
     private void Update() {
@@ -73,13 +69,6 @@ public class OrbProcessor : Structure
             // Ammo has not finished crafting
 
             StartCoroutine(CollectOrbsFromCrafter(.2f));
-
-        }
-    }
-
-    private void OrbProcessorOrbCollider_OnOrbFellInOrbProcessor(object sender, EventArgs e) {
-        smallOrbsInProcessor++;
-        if(smallOrbsInProcessor == smallOrbCapacity) {
 
         }
     }

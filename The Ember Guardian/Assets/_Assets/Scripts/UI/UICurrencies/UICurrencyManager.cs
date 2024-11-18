@@ -23,16 +23,10 @@ public class UICurrencyManager : MonoBehaviour
     [SerializeField] private int smallOrbValue = 5;
     [SerializeField] private float smallOrbSmoothTime = 5f;
 
-    private Canvas canvas;
-
-    private float bigOrbSmoothTime = 1f;
-
     List<Currency_UI> smallOrbsInBag;
     List<Currency_UI> currenciesInBag;
-    //List<Currency_UI> smallOrbsFormingBigOrb = new List<Currency_UI>();
 
     private PayCurrencyUI currentPayCurrencyUI;
-
 
     private float timeBetweenSmallOrbsPickup = .2f;
     private float smallOrbsPickupTimer;
@@ -50,7 +44,7 @@ public class UICurrencyManager : MonoBehaviour
         public Currency_UI currencyUIDropped;
     }
 
-    private bool payingOrb;
+    private bool payingCurrencies;
     private bool formingBigOrb;
     private bool formingBigOrbCanceled;
     private bool droppingCurrency;
@@ -61,14 +55,13 @@ public class UICurrencyManager : MonoBehaviour
     private float tryingToDropOrbHoldTime = .2f;
 
     int debugInitialBigOrbs = 5;
-    int debugInitialSmallOrbs = 2;
+    int debugInitialSmallOrbs = 0;
     int debugInitialBigRedOrbs = 0;
     int debugInitialSmallRedOrbs = 0;
     int debugInitialAmmo = 3;
 
     private void Awake() {
         Instance = this;
-        canvas = GetComponentInParent<Canvas>();
     }
 
     private void Start() {
@@ -111,63 +104,6 @@ public class UICurrencyManager : MonoBehaviour
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.smallBlueOrb);
         }
     }
-    //private void FormBigOrbWithSmallOrb() {
-
-    //    if (smallOrbIndex < 0) {
-    //        formingBigOrbCanceled = true;
-    //        formingBigOrb = false;
-    //    }
-
-    //    smallOrbsPickupTimer -= Time.deltaTime;
-
-    //    if (smallOrbsPickupTimer <= 0) {
-
-    //        smallOrbsInBag = GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.smallBlueOrb);
-    //        smallOrbsInBag[smallOrbIndex].SetMoving(true);
-    //        smallOrbsInBag[smallOrbIndex].SetDestination(blueOrbsSpawnPosition, smallOrbSmoothTime);
-    //        smallOrbsFormingBigOrb.Add(smallOrbsInBag[smallOrbIndex]);
-
-    //        if (smallOrbsFormingBigOrb.Count < smallOrbsNecessaryToFormBigOrb) {
-
-    //            // Next small orb
-    //            smallOrbsPickupTimer = timeBetweenSmallOrbsPickup;
-    //            smallOrbIndex--;
-
-    //        }
-    //        else {
-    //            // Enough small orbs extracted : FORM BIG ORB
-    //        }
-    //    }
-    //}
-
-    //public void CancelOrbFormation() {
-    //    formingBigOrbCanceled = true;
-    //    formingBigOrb = false;
-
-    //    foreach (Currency_UI smallOrb in smallOrbsFormingBigOrb) {
-    //        // Not enough small orbs extracted : CANCEL
-    //        smallOrb.SetMoving(false);
-    //    }
-    //    smallOrbsFormingBigOrb.Clear();
-    //}
-
-    //public void MergeSmallOrbs() {
-    //    formingBigOrb = false;
-    //    formingBigOrbCanceled = false;
-
-    //    foreach (Currency_UI smallOrb in smallOrbsFormingBigOrb) {
-    //        Destroy(smallOrb.gameObject);
-    //    }
-
-    //    Currency_UI bigOrb = Instantiate(blueOrbUIPrefab, blueOrbsSpawnPosition.transform.position, Quaternion.identity, currencyContainer).GetComponent<Currency_UI>();
-        
-    //    if(droppingCurrency) {
-    //        // Player is dropping orb
-    //        DropCurrencyFromBag(bigOrb);
-    //    }
-
-    //    smallOrbsFormingBigOrb.Clear();
-    //}
 
     public void AddCurrencyInBag(PlayerCurrencies.CurrencyType currencyType) {
         Vector2 force = new Vector2(UnityEngine.Random.Range(0, 0), 0);
@@ -243,7 +179,6 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     public void SetPayingCurrency(PayCurrencyUI payOrbsUI, PlayerCurrencies.CurrencyType currencyTypeToPay, bool payingCurrency) {
-        Debug.Log("SetPayingOrbs " + payingCurrency);
        
         if (currentPayCurrencyUI != null) {
             currentPayCurrencyUI.OnSingleCurrencyPaid -= CurrentPayOrbsUI_OnSingleOrbPaid;
@@ -256,16 +191,16 @@ public class UICurrencyManager : MonoBehaviour
             currentPayCurrencyUI.OnCurrencyPaymentSuccess += CurrentPayOrbsUI_OnOrbPaymentSuccess;
             PayNextCurrency(currencyTypeToPay);
         }
+
+        payingCurrencies = payingCurrency;
     }
 
     private void CurrentPayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
-        Debug.Log("CurrentPayOrbsUI_OnOrbPaymentSuccess");
         currentPayCurrencyUI.OnSingleCurrencyPaid -= CurrentPayOrbsUI_OnSingleOrbPaid;
         currentPayCurrencyUI.OnCurrencyPaymentSuccess -= CurrentPayOrbsUI_OnOrbPaymentSuccess;
     }
 
     private void CurrentPayOrbsUI_OnSingleOrbPaid(object sender, PayCurrencyUI.OnSingleOrbFilledEventArgs e) {
-        Debug.Log("CurrentPayOrbsUI_OnSingleOrbPaid");
 
         PlayerCurrencies.CurrencyType nextCurrencyTypeToPay = currentPayCurrencyUI.GetCurrentCurrencyTemplateWorldUI().GetCurrencyTypeToPay();
 
@@ -273,7 +208,6 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     private void PayNextCurrency(PlayerCurrencies.CurrencyType currencyTypeToPay) {
-        Debug.Log("PayNextBigOrb");
         PayCurrencyTemplateWorldUI currencyTemplateUI = currentPayCurrencyUI.GetCurrentCurrencyTemplateWorldUI();
 
         currenciesInBag = GetCurrenciesInBagOfType(currencyTypeToPay);
@@ -287,7 +221,7 @@ public class UICurrencyManager : MonoBehaviour
             });
 
         } else {
-            currentPayCurrencyUI.CancelCurrencyPayment();
+            currentPayCurrencyUI.ResetCurrencyPayment();
             PlayerCurrencies.Instance.CancelCurrencyPayment();
         }
     }
@@ -305,7 +239,12 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     private void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
-        if (structureJustBuilt) return;
+        if (structureJustBuilt) {
+            structureJustBuilt = false;
+            return;
+        };
+
+        if (payingCurrencies) return;
 
         if (Player.Instance.GetCanDropOrbOnTheFloor()) {
             if (GetHasBigOrb()) {
@@ -314,7 +253,6 @@ public class UICurrencyManager : MonoBehaviour
         }
 
         tryingToDropOrb = false;
-        structureJustBuilt = false;
     }
 
 

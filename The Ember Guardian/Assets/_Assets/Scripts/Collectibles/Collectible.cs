@@ -23,9 +23,10 @@ public class Collectible : MonoBehaviour
     private bool playerInTriggerArea;
     private bool aggroedByWildWorker;
     private bool collected;
+    private bool touchedFloor;
 
     private bool movingForPayment;
-    private float smoothTime = 3f;
+    private float smoothTime = 5f;
     private Transform paymentDestination;
 
     private Worker aggroedWildWorker;
@@ -56,10 +57,15 @@ public class Collectible : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
+        if (!touchedFloor && collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+            touchedFloor = true;
+            OnAnyCollectibleTouchedFloor?.Invoke(this, EventArgs.Empty);
+        }
 
         if (movingForPayment) {
             // Orb Collisions with OrbTemplateWorldUI
             PayCurrencyTemplateWorldUI orbTemplateWorldUI = collision.GetComponent<PayCurrencyTemplateWorldUI>();
+
             if (orbTemplateWorldUI != null && orbTemplateWorldUI.transform == paymentDestination && !orbTemplateWorldUI.GetCurrencyPaid()) {
                 OnCollectibleEnteredSlot?.Invoke(this, EventArgs.Empty);
                 orbTemplateWorldUI.SetCurrencyPaid(true);
@@ -100,10 +106,6 @@ public class Collectible : MonoBehaviour
                     return;
                 }
 
-            }
-
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
-                OnAnyCollectibleTouchedFloor?.Invoke(this, EventArgs.Empty);
             }
         }
 

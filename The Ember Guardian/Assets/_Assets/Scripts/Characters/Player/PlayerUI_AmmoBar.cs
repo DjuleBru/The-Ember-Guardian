@@ -200,14 +200,15 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     }
 
     private void Structure_OnAnyPlayerTriggeredOut(object sender, System.EventArgs e) {
-        if (sender is AmmoCrafter) {
+        if (sender is CurrencyCrafter) {
             inAmmoCrafterArea = false;
             FadeInAmmoBar();
         }
     }
 
     private void Structure_OnAnyPlayerTriggeredIn(object sender, System.EventArgs e) {
-        if (sender is AmmoCrafter) {
+        if (sender is CurrencyCrafter) {
+            if ((sender as CurrencyCrafter).GetCurrencyTypeCrafted() != PlayerCurrencies.CurrencyType.ammo) return;
             inAmmoCrafterArea = true;
             FadeInAmmoBar();
         }

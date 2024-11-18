@@ -7,7 +7,12 @@ public class SoundRefsSO : ScriptableObject
 {
     public AudioClip[] orbDropped;
     public AudioClip[] orbTouchedFloor;
+    public AudioClip[] smallOrbTouchedFloor;
+    public AudioClip[] ammoTouchedFloor;
     public AudioClip[] orbPickedUpByPlayer;
+    public AudioClip[] smallOrbPickedUpByPlayer;
+    public AudioClip[] ammoPickedUpByPlayer;
+
     public AudioClip[] orbPickedUpByWorker;
     public AudioClip[] orbDroppedUpByWorker;
 

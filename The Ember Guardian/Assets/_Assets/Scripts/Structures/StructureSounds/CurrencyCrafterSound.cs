@@ -2,22 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AmmoCrafterSound : MonoBehaviour
+public class CurrencyCrafterSound : MonoBehaviour
 {
-    private AmmoCrafter ammoCrafter;
+    private CurrencyCrafter currencyCrafter;
     private AudioSource audioSource;
     [SerializeField] private AudioClip startCraftingAudioClip;
     [SerializeField] private AudioClip endCraftingAudioClip;
+    [SerializeField] private AudioClip currencyInstantiatedAudioClip;
 
     private void Awake() {
-        ammoCrafter = GetComponentInParent<AmmoCrafter>();
+        currencyCrafter = GetComponentInParent<CurrencyCrafter>();
         audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
     {
-        ammoCrafter.OnAmmoCraftingEnded += AmmoCrafter_OnAmmoCraftingEnded;
-        ammoCrafter.OnAmmoCraftingStarted += AmmoCrafter_OnAmmoCraftingStarted;
+        currencyCrafter.OnCurrencyCraftingEnded += AmmoCrafter_OnAmmoCraftingEnded;
+        currencyCrafter.OnCurrencyCraftingStarted += AmmoCrafter_OnAmmoCraftingStarted;
+        currencyCrafter.OnCurrencyInstantiated += AmmoCrafter_OnCurrencyInstantiated;
+    }
+
+    private void AmmoCrafter_OnCurrencyInstantiated(object sender, System.EventArgs e) {
+        audioSource.PlayOneShot(currencyInstantiatedAudioClip);
     }
 
     private void AmmoCrafter_OnAmmoCraftingStarted(object sender, System.EventArgs e) {

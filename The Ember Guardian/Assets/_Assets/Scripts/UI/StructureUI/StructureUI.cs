@@ -154,6 +154,7 @@ public class StructureUI : MonoBehaviour
         List<PayCurrencyTemplateWorldUI> payOrbsUIList = new List<PayCurrencyTemplateWorldUI>();
         PayCurrencyTemplateWorldUI[] orbTemplateWorldUIs = upgradeToNextLevelPayOrbsUIGameObject.GetComponentsInChildren<PayCurrencyTemplateWorldUI>();
 
+
         foreach (PayCurrencyTemplateWorldUI orbTemplateWorldUI in orbTemplateWorldUIs) {
             payOrbsUIList.Add(orbTemplateWorldUI);
         }

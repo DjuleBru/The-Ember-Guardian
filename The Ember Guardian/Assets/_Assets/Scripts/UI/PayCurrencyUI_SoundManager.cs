@@ -6,9 +6,8 @@ public class PayCurrencyUI_SoundManager : MonoBehaviour
 {
     private AudioSource audioSource;
     [SerializeField] private AudioClip[] payOrbsUIAudioClips;
+    [SerializeField] private AudioClip[] paySmallOrbsUIAudioClips;
 
-    //[SerializeField] private float initialPitch = 0;
-    //[SerializeField] private float pitchIncreasePerOrb = .2f;
     private float pitch;
 
     private void Awake() {
@@ -21,18 +20,12 @@ public class PayCurrencyUI_SoundManager : MonoBehaviour
 
     private void PayOrbsUI_OnSingleOrbFilled1(object sender, PayCurrencyUI.OnSingleOrbFilledEventArgs e) {
 
-        Structure structureFromWhichOrbWasPaid = (sender as PayCurrencyUI).GetComponent<Structure>();
-        if(structureFromWhichOrbWasPaid != null ) {
-            if (structureFromWhichOrbWasPaid.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.function) {
-                return;
-            }
-        }
-        
-
-        //pitch = initialPitch + e.orbIndex*pitchIncreasePerOrb;
-        //audioSource.pitch = pitch;
-
         AudioClip audioClip = payOrbsUIAudioClips[Random.Range(0, payOrbsUIAudioClips.Length)];
+        
+        if((sender as PayCurrencyUI).GetCurrentCurrencyTemplateWorldUI().GetCurrencyTypeToPay() == PlayerCurrencies.CurrencyType.smallBlueOrb) {
+            audioClip = paySmallOrbsUIAudioClips[Random.Range(0, paySmallOrbsUIAudioClips.Length)];
+        }
+
         audioSource.PlayOneShot(audioClip);
     }
 
