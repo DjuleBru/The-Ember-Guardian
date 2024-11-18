@@ -27,7 +27,7 @@ public class OrbMergeCollider : MonoBehaviour
                     if (smallOrbs.Count == UICurrencyManager.Instance.GetSmallOrbValue()) {
                         smallOrbs.Clear();
 
-                        UICurrencyManager.Instance.MergeSmallOrbs();
+                        //UICurrencyManager.Instance.MergeSmallOrbs();
                     }
 
                 }

@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class StructureLocation : MonoBehaviour {
 
-    private PayOrbsUI payOrbsUI;
+    private PayCurrencyUI payOrbsUI;
     [SerializeField] private StructureSO structureSOToBuild;
     [SerializeField] protected Transform orbTemplateWorldUIParent;
 
-    private List<OrbTemplateWorldUI> buildStructureOrbTemplates = new List<OrbTemplateWorldUI>();
+    private List<PayCurrencyTemplateWorldUI> buildStructureOrbTemplates = new List<PayCurrencyTemplateWorldUI>();
 
     public event EventHandler OnPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
@@ -20,7 +20,7 @@ public class StructureLocation : MonoBehaviour {
     private bool playerInTriggerArea;
 
     private void Awake() {
-        payOrbsUI = GetComponent<PayOrbsUI>();
+        payOrbsUI = GetComponent<PayCurrencyUI>();
         InitializeOrbTemplateList();
 
     }
@@ -29,7 +29,7 @@ public class StructureLocation : MonoBehaviour {
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractStarted += GameInput_OnPlayerInteractStarted;
 
-        payOrbsUI.OnOrbPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
+        payOrbsUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
         payOrbsUI.SetOrbTemplateUIList(buildStructureOrbTemplates);
     }
 
@@ -57,7 +57,7 @@ public class StructureLocation : MonoBehaviour {
         if (!structureLocationUnlocked) return;
 
         payOrbsUI.SetPlayerInteracting(false);
-        payOrbsUI.CancelOrbPayment();
+        payOrbsUI.CancelCurrencyPayment();
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -89,9 +89,9 @@ public class StructureLocation : MonoBehaviour {
     }
 
     private void InitializeOrbTemplateList() {
-        OrbTemplateWorldUI[] orbTemplates = orbTemplateWorldUIParent.GetComponentsInChildren<OrbTemplateWorldUI>(); 
+        PayCurrencyTemplateWorldUI[] orbTemplates = orbTemplateWorldUIParent.GetComponentsInChildren<PayCurrencyTemplateWorldUI>(); 
 
-        foreach(OrbTemplateWorldUI orbTemplateWorldUI in orbTemplates) {
+        foreach(PayCurrencyTemplateWorldUI orbTemplateWorldUI in orbTemplates) {
             buildStructureOrbTemplates.Add(orbTemplateWorldUI);
         }
     }

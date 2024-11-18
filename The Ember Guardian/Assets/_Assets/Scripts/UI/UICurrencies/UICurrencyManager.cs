@@ -29,9 +29,9 @@ public class UICurrencyManager : MonoBehaviour
 
     List<Currency_UI> smallOrbsInBag;
     List<Currency_UI> currenciesInBag;
-    List<Currency_UI> smallOrbsFormingBigOrb = new List<Currency_UI>();
+    //List<Currency_UI> smallOrbsFormingBigOrb = new List<Currency_UI>();
 
-    private PayOrbsUI currentPayOrbsUI;
+    private PayCurrencyUI currentPayCurrencyUI;
 
 
     private float timeBetweenSmallOrbsPickup = .2f;
@@ -41,9 +41,10 @@ public class UICurrencyManager : MonoBehaviour
     int smallOrbsNecessaryToFormBigOrb = 5;
 
     public event EventHandler<OnCurrencyDroppedEventArgs> OnCurrencyDropped;
-    public event EventHandler<OnBigOrbTryPayEventArgs> OnBigBlueOrbTryPay;
-    public class OnBigOrbTryPayEventArgs : EventArgs {
-        public OrbTemplateWorldUI destionationOrbTemplate;
+    public event EventHandler<OnCurrencyTryPayEventArgs> OnCurrencyTryPay;
+    public class OnCurrencyTryPayEventArgs : EventArgs {
+        public PlayerCurrencies.CurrencyType currencyType;
+        public PayCurrencyTemplateWorldUI destionationOrbTemplate;
     }
     public class OnCurrencyDroppedEventArgs : EventArgs {
         public Currency_UI currencyUIDropped;
@@ -54,15 +55,16 @@ public class UICurrencyManager : MonoBehaviour
     private bool formingBigOrbCanceled;
     private bool droppingCurrency;
     private bool tryingToDropOrb;
+    private bool structureJustBuilt;
 
     private float tryingToDropOrbTimer;
     private float tryingToDropOrbHoldTime = .2f;
 
     int debugInitialBigOrbs = 5;
     int debugInitialSmallOrbs = 2;
-    int debugInitialBigRedOrbs = 2;
-    int debugInitialSmallRedOrbs = 7;
-    int debugInitialAmmo = 8;
+    int debugInitialBigRedOrbs = 0;
+    int debugInitialSmallRedOrbs = 0;
+    int debugInitialAmmo = 3;
 
     private void Awake() {
         Instance = this;
@@ -72,6 +74,8 @@ public class UICurrencyManager : MonoBehaviour
     private void Start() {
         GameInput.Instance.OnPlayerInteractStarted += GameInput_OnPlayerInteractStarted;
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
+        GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
+        StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
 
         StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.bigBlueOrb, debugInitialBigOrbs));
         StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.smallBlueOrb, debugInitialSmallOrbs));
@@ -92,9 +96,9 @@ public class UICurrencyManager : MonoBehaviour
 
         }
 
-        if (formingBigOrb) {
-            FormBigOrbWithSmallOrb();
-        }
+        //if (formingBigOrb) {
+        //    FormBigOrbWithSmallOrb();
+        //}
 
 
         if(Input.GetKeyDown(KeyCode.J)) {
@@ -107,63 +111,63 @@ public class UICurrencyManager : MonoBehaviour
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.smallBlueOrb);
         }
     }
-    private void FormBigOrbWithSmallOrb() {
+    //private void FormBigOrbWithSmallOrb() {
 
-        if (smallOrbIndex < 0) {
-            formingBigOrbCanceled = true;
-            formingBigOrb = false;
-        }
+    //    if (smallOrbIndex < 0) {
+    //        formingBigOrbCanceled = true;
+    //        formingBigOrb = false;
+    //    }
 
-        smallOrbsPickupTimer -= Time.deltaTime;
+    //    smallOrbsPickupTimer -= Time.deltaTime;
 
-        if (smallOrbsPickupTimer <= 0) {
+    //    if (smallOrbsPickupTimer <= 0) {
 
-            smallOrbsInBag = GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.smallBlueOrb);
-            smallOrbsInBag[smallOrbIndex].SetMoving(true);
-            smallOrbsInBag[smallOrbIndex].SetDestination(blueOrbsSpawnPosition, smallOrbSmoothTime);
-            smallOrbsFormingBigOrb.Add(smallOrbsInBag[smallOrbIndex]);
+    //        smallOrbsInBag = GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.smallBlueOrb);
+    //        smallOrbsInBag[smallOrbIndex].SetMoving(true);
+    //        smallOrbsInBag[smallOrbIndex].SetDestination(blueOrbsSpawnPosition, smallOrbSmoothTime);
+    //        smallOrbsFormingBigOrb.Add(smallOrbsInBag[smallOrbIndex]);
 
-            if (smallOrbsFormingBigOrb.Count < smallOrbsNecessaryToFormBigOrb) {
+    //        if (smallOrbsFormingBigOrb.Count < smallOrbsNecessaryToFormBigOrb) {
 
-                // Next small orb
-                smallOrbsPickupTimer = timeBetweenSmallOrbsPickup;
-                smallOrbIndex--;
+    //            // Next small orb
+    //            smallOrbsPickupTimer = timeBetweenSmallOrbsPickup;
+    //            smallOrbIndex--;
 
-            }
-            else {
-                // Enough small orbs extracted : FORM BIG ORB
-            }
-        }
-    }
+    //        }
+    //        else {
+    //            // Enough small orbs extracted : FORM BIG ORB
+    //        }
+    //    }
+    //}
 
-    public void CancelOrbFormation() {
-        formingBigOrbCanceled = true;
-        formingBigOrb = false;
+    //public void CancelOrbFormation() {
+    //    formingBigOrbCanceled = true;
+    //    formingBigOrb = false;
 
-        foreach (Currency_UI smallOrb in smallOrbsFormingBigOrb) {
-            // Not enough small orbs extracted : CANCEL
-            smallOrb.SetMoving(false);
-        }
-        smallOrbsFormingBigOrb.Clear();
-    }
+    //    foreach (Currency_UI smallOrb in smallOrbsFormingBigOrb) {
+    //        // Not enough small orbs extracted : CANCEL
+    //        smallOrb.SetMoving(false);
+    //    }
+    //    smallOrbsFormingBigOrb.Clear();
+    //}
 
-    public void MergeSmallOrbs() {
-        formingBigOrb = false;
-        formingBigOrbCanceled = false;
+    //public void MergeSmallOrbs() {
+    //    formingBigOrb = false;
+    //    formingBigOrbCanceled = false;
 
-        foreach (Currency_UI smallOrb in smallOrbsFormingBigOrb) {
-            Destroy(smallOrb.gameObject);
-        }
+    //    foreach (Currency_UI smallOrb in smallOrbsFormingBigOrb) {
+    //        Destroy(smallOrb.gameObject);
+    //    }
 
-        Currency_UI bigOrb = Instantiate(blueOrbUIPrefab, blueOrbsSpawnPosition.transform.position, Quaternion.identity, currencyContainer).GetComponent<Currency_UI>();
+    //    Currency_UI bigOrb = Instantiate(blueOrbUIPrefab, blueOrbsSpawnPosition.transform.position, Quaternion.identity, currencyContainer).GetComponent<Currency_UI>();
         
-        if(droppingCurrency) {
-            // Player is dropping orb
-            DropCurrencyFromBag(bigOrb);
-        }
+    //    if(droppingCurrency) {
+    //        // Player is dropping orb
+    //        DropCurrencyFromBag(bigOrb);
+    //    }
 
-        smallOrbsFormingBigOrb.Clear();
-    }
+    //    smallOrbsFormingBigOrb.Clear();
+    //}
 
     public void AddCurrencyInBag(PlayerCurrencies.CurrencyType currencyType) {
         Vector2 force = new Vector2(UnityEngine.Random.Range(0, 0), 0);
@@ -238,65 +242,53 @@ public class UICurrencyManager : MonoBehaviour
         droppingCurrency = false;
     }
 
-    public void SetPayingOrbs(PayOrbsUI payOrbsUI, bool payingOrbs) {
-        Debug.Log("SetPayingOrbs " + payingOrbs);
+    public void SetPayingCurrency(PayCurrencyUI payOrbsUI, PlayerCurrencies.CurrencyType currencyTypeToPay, bool payingCurrency) {
+        Debug.Log("SetPayingOrbs " + payingCurrency);
        
-        if (currentPayOrbsUI != null) {
-            currentPayOrbsUI.OnSingleOrbPaid -= CurrentPayOrbsUI_OnSingleOrbPaid;
-            currentPayOrbsUI.OnOrbPaymentSuccess -= CurrentPayOrbsUI_OnOrbPaymentSuccess;
+        if (currentPayCurrencyUI != null) {
+            currentPayCurrencyUI.OnSingleCurrencyPaid -= CurrentPayOrbsUI_OnSingleOrbPaid;
+            currentPayCurrencyUI.OnCurrencyPaymentSuccess -= CurrentPayOrbsUI_OnOrbPaymentSuccess;
         }
 
-        if (payingOrbs) {
-            currentPayOrbsUI = payOrbsUI;
-            currentPayOrbsUI.OnSingleOrbPaid += CurrentPayOrbsUI_OnSingleOrbPaid;
-            currentPayOrbsUI.OnOrbPaymentSuccess += CurrentPayOrbsUI_OnOrbPaymentSuccess;
-            PayNextBigOrb();
+        if (payingCurrency) {
+            currentPayCurrencyUI = payOrbsUI;
+            currentPayCurrencyUI.OnSingleCurrencyPaid += CurrentPayOrbsUI_OnSingleOrbPaid;
+            currentPayCurrencyUI.OnCurrencyPaymentSuccess += CurrentPayOrbsUI_OnOrbPaymentSuccess;
+            PayNextCurrency(currencyTypeToPay);
         }
     }
 
     private void CurrentPayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         Debug.Log("CurrentPayOrbsUI_OnOrbPaymentSuccess");
-        currentPayOrbsUI.OnSingleOrbPaid -= CurrentPayOrbsUI_OnSingleOrbPaid;
-        currentPayOrbsUI.OnOrbPaymentSuccess -= CurrentPayOrbsUI_OnOrbPaymentSuccess;
+        currentPayCurrencyUI.OnSingleCurrencyPaid -= CurrentPayOrbsUI_OnSingleOrbPaid;
+        currentPayCurrencyUI.OnCurrencyPaymentSuccess -= CurrentPayOrbsUI_OnOrbPaymentSuccess;
     }
 
-    private void CurrentPayOrbsUI_OnSingleOrbPaid(object sender, PayOrbsUI.OnSingleOrbFilledEventArgs e) {
+    private void CurrentPayOrbsUI_OnSingleOrbPaid(object sender, PayCurrencyUI.OnSingleOrbFilledEventArgs e) {
         Debug.Log("CurrentPayOrbsUI_OnSingleOrbPaid");
 
-        currentPayOrbsUI.GetCurrentOrbTemplateWorldUI();
+        PlayerCurrencies.CurrencyType nextCurrencyTypeToPay = currentPayCurrencyUI.GetCurrentCurrencyTemplateWorldUI().GetCurrencyTypeToPay();
 
-        PayNextBigOrb();
+        PayNextCurrency(nextCurrencyTypeToPay);
     }
 
-    private void PayNextBigOrb() {
+    private void PayNextCurrency(PlayerCurrencies.CurrencyType currencyTypeToPay) {
         Debug.Log("PayNextBigOrb");
-        OrbTemplateWorldUI orbTemplate = currentPayOrbsUI.GetCurrentOrbTemplateWorldUI();
+        PayCurrencyTemplateWorldUI currencyTemplateUI = currentPayCurrencyUI.GetCurrentCurrencyTemplateWorldUI();
 
-        currenciesInBag = GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.bigBlueOrb);
+        currenciesInBag = GetCurrenciesInBagOfType(currencyTypeToPay);
 
         if (currenciesInBag.Count > 0 ) {
             currenciesInBag[0].RemoveFromBag();
 
-            OnBigBlueOrbTryPay?.Invoke(this, new OnBigOrbTryPayEventArgs {
-                destionationOrbTemplate = orbTemplate
+            OnCurrencyTryPay?.Invoke(this, new OnCurrencyTryPayEventArgs {
+                currencyType = currencyTypeToPay,
+                destionationOrbTemplate = currencyTemplateUI
             });
+
         } else {
-            currentPayOrbsUI.CancelOrbPayment();
+            currentPayCurrencyUI.CancelCurrencyPayment();
             PlayerCurrencies.Instance.CancelCurrencyPayment();
-        }
-    }
-
-    public void CrackleBigOrb(Vector3 originPosition) {
-
-        for (int i = 0; i < smallOrbValue; i++) {
-
-            Vector3 spawnPosition = new Vector3(originPosition.x + UnityEngine.Random.Range(-3f, 3f), originPosition.y + UnityEngine.Random.Range(-3f, 3f), 0);
-
-            Rigidbody2D smallOrbRigidBody = Instantiate(smallBlueOrbUIPrefab, spawnPosition, Quaternion.identity, currencyContainer).GetComponent<Rigidbody2D>();
-
-            Vector2 forceDirectionNormalized = (smallOrbRigidBody.transform.position - originPosition).normalized;
-            float force = 75f;
-            smallOrbRigidBody.AddForce(forceDirectionNormalized * force, ForceMode2D.Impulse);
         }
     }
 
@@ -308,23 +300,26 @@ public class UICurrencyManager : MonoBehaviour
         }
     }
 
+    private void GameInput_OnPlayerInteractHeldDown(object sender, EventArgs e) {
+
+    }
+
     private void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+        if (structureJustBuilt) return;
 
-        if (tryingToDropOrbTimer < tryingToDropOrbHoldTime) {
-            // Player pressed Interact once
-
-            if (Player.Instance.GetCanDropOrbOnTheFloor()) {
-                if (GetHasBigOrb()) {
-                    DropNextCurrencyInBag(PlayerCurrencies.CurrencyType.bigBlueOrb);
-                }
+        if (Player.Instance.GetCanDropOrbOnTheFloor()) {
+            if (GetHasBigOrb()) {
+                DropNextCurrencyInBag(PlayerCurrencies.CurrencyType.bigBlueOrb);
             }
-        }
-        else {
-            // Player was holding Interact
-            CancelOrbFormation();
         }
 
         tryingToDropOrb = false;
+        structureJustBuilt = false;
+    }
+
+
+    private void StructureLocation_OnAnyStructureBuilt(object sender, EventArgs e) {
+        structureJustBuilt = true;
     }
 
     public int GetSmallOrbValue() {

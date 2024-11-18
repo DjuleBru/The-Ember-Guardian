@@ -24,7 +24,7 @@ public class Collectible : MonoBehaviour
     private bool aggroedByWildWorker;
     private bool collected;
 
-    private bool moving;
+    private bool movingForPayment;
     private float smoothTime = 3f;
     private Transform paymentDestination;
 
@@ -44,7 +44,7 @@ public class Collectible : MonoBehaviour
     }
 
     private void Update() {
-        if(moving && paymentDestination != null) {
+        if(movingForPayment && paymentDestination != null) {
             // Lerp vers la position locale de la destination
             transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, smoothTime * Time.deltaTime);
 
@@ -56,13 +56,13 @@ public class Collectible : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        Debug.Log(collision.gameObject);
-        if (moving) {
+
+        if (movingForPayment) {
             // Orb Collisions with OrbTemplateWorldUI
-            OrbTemplateWorldUI orbTemplateWorldUI = collision.GetComponent<OrbTemplateWorldUI>();
-            if (orbTemplateWorldUI != null && orbTemplateWorldUI.transform == paymentDestination && !orbTemplateWorldUI.GetOrbPaid()) {
+            PayCurrencyTemplateWorldUI orbTemplateWorldUI = collision.GetComponent<PayCurrencyTemplateWorldUI>();
+            if (orbTemplateWorldUI != null && orbTemplateWorldUI.transform == paymentDestination && !orbTemplateWorldUI.GetCurrencyPaid()) {
                 OnCollectibleEnteredSlot?.Invoke(this, EventArgs.Empty);
-                orbTemplateWorldUI.SetOrbPaid(true);
+                orbTemplateWorldUI.SetCurrencyPaid(true);
             }
 
         } else {
@@ -140,8 +140,14 @@ public class Collectible : MonoBehaviour
         }
     }
 
-    public void SetMoving(bool moving, Transform destination = null) {
-        this.moving = moving;
+    private IEnumerator SetDroppedByPlayerAfterDelay(bool droppedByPlayer, float delay) {
+        this.droppedByPlayer = droppedByPlayer;
+        yield return new WaitForSeconds(delay);
+        this.droppedByPlayer = !droppedByPlayer;
+    }
+
+    public void SetMovingForPayment(bool moving, Transform destination = null) {
+        this.movingForPayment = moving;
         paymentDestination = destination;
         transform.SetParent(destination);
 
@@ -153,6 +159,7 @@ public class Collectible : MonoBehaviour
             rb.angularVelocity = 0;
             rb.bodyType = RigidbodyType2D.Dynamic;
             StartCoroutine(SetCollectibleInteractableAfterDelay(1f));
+            StartCoroutine(SetDroppedByPlayerAfterDelay(true, 1f));
         }
     }
 
@@ -168,8 +175,12 @@ public class Collectible : MonoBehaviour
         return droppedByPlayer;
     }
 
-    public bool GetPaying() {
-        return moving;
+    public bool GetMovingForPayment() {
+        return movingForPayment;
+    }
+
+    public bool GetInteractable() {
+        return interactable;
     }
 
     public void SetCanBePickedUpByWorker() {

@@ -10,7 +10,7 @@ public class Structure : MonoBehaviour {
     [SerializeField] protected bool functionUnlocked;
 
     private CampZoneManager.CampSide campSide;
-    protected PayOrbsUI payOrbsUI;
+    protected PayCurrencyUI payOrbsUI;
 
     public event EventHandler OnPlayerTriggeredIn;
     public static event EventHandler OnAnyPlayerTriggeredIn;
@@ -25,6 +25,8 @@ public class Structure : MonoBehaviour {
     protected bool playerInteracting;
     protected int structureLevel = 1;
 
+    private float playerInteractingTimer;
+
     public enum StructureInteractionType {
         function,
         upgrade,
@@ -34,7 +36,7 @@ public class Structure : MonoBehaviour {
     protected StructureInteractionType currentStructureInteractionType;
 
     protected virtual void Awake() {
-        payOrbsUI = GetComponent<PayOrbsUI>();
+        payOrbsUI = GetComponent<PayCurrencyUI>();
         DebugInitializeActiveStructureUITypeList();
     }
 
@@ -43,15 +45,17 @@ public class Structure : MonoBehaviour {
 
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractStarted += GameInput_OnPlayerInteractStarted;
+        GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
 
-        payOrbsUI.OnOrbPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
+        payOrbsUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
 
         StructuresManager.Instance.AddStructure(this);
 
         RefreshStructureUpgradeInteraction();
     }
+
 
     protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         payOrbsUI.SetPlayerInteracting(false);
@@ -176,7 +180,7 @@ public class Structure : MonoBehaviour {
         playerInTriggerArea = true;
 
         if(playerCanInteract) {
-            Player.Instance.SetCanDropOrbOnTheFloor(false);
+            //Player.Instance.SetCanDropOrbOnTheFloor(false);
         }
     }
 
@@ -194,11 +198,6 @@ public class Structure : MonoBehaviour {
     #region InteractionTypes
 
     protected virtual void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
-        if (!playerInTriggerArea) return;
-        if (!playerCanInteract) return;
-
-        playerInteracting = true;
-        payOrbsUI.SetPlayerInteracting(true);
     }
 
     protected virtual void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
@@ -208,6 +207,14 @@ public class Structure : MonoBehaviour {
 
         playerInteracting = false;
         payOrbsUI.SetPlayerInteracting(false);
+    }
+
+    private void GameInput_OnPlayerInteractHeldDown(object sender, EventArgs e) {
+        if (!playerInTriggerArea) return;
+        if (!playerCanInteract) return;
+
+        playerInteracting = true;
+        payOrbsUI.SetPlayerInteracting(true);
     }
 
     protected void DebugInitializeActiveStructureUITypeList() {

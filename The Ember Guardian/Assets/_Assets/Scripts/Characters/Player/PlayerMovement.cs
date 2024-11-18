@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private LayerMask platformLayerMask;
 
     private float lastMoveDir = 1;
+    private bool isRunning;
     private bool isMovingBackwards;
     private bool isCrouching;
     private bool isJumping;
@@ -128,10 +129,12 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void GameInput_OnPlayerRunCanceled(object sender, System.EventArgs e) {
+        isRunning = false;
         moveSpeed /= runAccelerationFactor;
     }
 
     private void GameInput_OnPlayerRunStarted(object sender, System.EventArgs e) {
+        isRunning = true;
         moveSpeed *= runAccelerationFactor;
     }
 
@@ -218,6 +221,10 @@ public class PlayerMovement : MonoBehaviour {
         } else {
             return false;
         }
+    }
+
+    public bool IsRunning() {
+        return isRunning;
     }
 
     public float GetLastMoveDir() {

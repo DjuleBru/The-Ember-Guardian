@@ -15,6 +15,7 @@ public class StructureSO : ScriptableObject
         minerShrine,
         guardShrine,
         tower,
+        orbProcessor,
     }
 
     public StructureType structureType;

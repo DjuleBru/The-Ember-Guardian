@@ -25,9 +25,6 @@ public class Tower : Structure
 
     public event EventHandler OnHunterAssigned;
 
-    private bool playerJustStartedInteracting;
-    private float playerJustStartedInteractingTimer;
-
     protected override void Start() {
         base.Start();
         DisableAllGarrisonColliders();
@@ -36,30 +33,15 @@ public class Tower : Structure
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
     }
 
-    private void Update() {
-        if(playerJustStartedInteracting) {
-            playerJustStartedInteractingTimer += Time.deltaTime;
-            if(playerJustStartedInteractingTimer >= .15f) {
-                playerJustStartedInteracting = false;
-            }
-        }
-    }
-
-    protected override void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
-        base.GameInput_OnPlayerInteractStarted(sender, e);
-        playerJustStartedInteracting = true;
-        playerJustStartedInteractingTimer = 0;
-    }
-
     protected override void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
         base.GameInput_OnPlayerInteractCanceled(sender, e);
-        Debug.Log(playerCanInteract);
 
-        if(playerJustStartedInteracting && Player.Instance.transform.position.y <2f) {
+        bool playerWasHoldingInteract = GameInput.Instance.GetWasHoldingInteract();
+
+        if(!playerWasHoldingInteract && playerInTriggerArea && Player.Instance.transform.position.y <2f) {
             MovePlayerOnTower();
         }
 
-        playerJustStartedInteracting = false;
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {

@@ -17,13 +17,13 @@ public class StructureUI : MonoBehaviour
 
     [SerializeField] protected List<GameObject> levelSlotVisualContainerList;
 
-    protected PayOrbsUI payOrbsUI;
+    protected PayCurrencyUI payOrbsUI;
     protected Structure structure;
     protected bool playerInTriggerArea;
 
     protected virtual void Awake() {
         structure = GetComponentInParent<Structure>();
-        payOrbsUI = structure.GetComponent<PayOrbsUI>();
+        payOrbsUI = structure.GetComponent<PayCurrencyUI>();
 
         SetUIActive(false);
         SetUIXAxisScale();
@@ -150,11 +150,11 @@ public class StructureUI : MonoBehaviour
         UpdateSwitchUIGameObjectActivation();
     }
 
-    protected List<OrbTemplateWorldUI> RecomposePayOrbsUIList(GameObject upgradeToNextLevelPayOrbsUIGameObject) {
-        List<OrbTemplateWorldUI> payOrbsUIList = new List<OrbTemplateWorldUI>();
-        OrbTemplateWorldUI[] orbTemplateWorldUIs = upgradeToNextLevelPayOrbsUIGameObject.GetComponentsInChildren<OrbTemplateWorldUI>();
+    protected List<PayCurrencyTemplateWorldUI> RecomposePayOrbsUIList(GameObject upgradeToNextLevelPayOrbsUIGameObject) {
+        List<PayCurrencyTemplateWorldUI> payOrbsUIList = new List<PayCurrencyTemplateWorldUI>();
+        PayCurrencyTemplateWorldUI[] orbTemplateWorldUIs = upgradeToNextLevelPayOrbsUIGameObject.GetComponentsInChildren<PayCurrencyTemplateWorldUI>();
 
-        foreach (OrbTemplateWorldUI orbTemplateWorldUI in orbTemplateWorldUIs) {
+        foreach (PayCurrencyTemplateWorldUI orbTemplateWorldUI in orbTemplateWorldUIs) {
             payOrbsUIList.Add(orbTemplateWorldUI);
         }
 

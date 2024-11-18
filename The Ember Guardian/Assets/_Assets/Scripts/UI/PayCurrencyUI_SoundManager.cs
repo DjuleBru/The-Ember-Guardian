@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PayOrbsUI_SoundManager : MonoBehaviour
+public class PayCurrencyUI_SoundManager : MonoBehaviour
 {
     private AudioSource audioSource;
     [SerializeField] private AudioClip[] payOrbsUIAudioClips;
@@ -16,12 +16,12 @@ public class PayOrbsUI_SoundManager : MonoBehaviour
     }
 
     private void Start() {
-        PayOrbsUI.OnAnySingleOrbPaid += PayOrbsUI_OnSingleOrbFilled1;
+        PayCurrencyUI.OnAnySingleCurrencyPaid += PayOrbsUI_OnSingleOrbFilled1;
     }
 
-    private void PayOrbsUI_OnSingleOrbFilled1(object sender, PayOrbsUI.OnSingleOrbFilledEventArgs e) {
+    private void PayOrbsUI_OnSingleOrbFilled1(object sender, PayCurrencyUI.OnSingleOrbFilledEventArgs e) {
 
-        Structure structureFromWhichOrbWasPaid = (sender as PayOrbsUI).GetComponent<Structure>();
+        Structure structureFromWhichOrbWasPaid = (sender as PayCurrencyUI).GetComponent<Structure>();
         if(structureFromWhichOrbWasPaid != null ) {
             if (structureFromWhichOrbWasPaid.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.function) {
                 return;

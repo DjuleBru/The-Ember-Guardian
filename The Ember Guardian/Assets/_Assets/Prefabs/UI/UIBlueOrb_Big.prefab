@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4938592641832932186}
   - component: {fileID: 2248992798773173307}
   - component: {fileID: 9141255554404471189}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: UIBlueOrb_Big
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,8 +28,8 @@ RectTransform:
   m_GameObject: {fileID: 222862552863732904}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 54, y: 54, z: 54}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4176429600697389849}
   - {fileID: 1350234962581297906}
@@ -39,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 50}
+  m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!50 &4938592641832932186
 Rigidbody2D:
@@ -56,7 +56,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 100
+  m_GravityScale: 2
   m_Material: {fileID: 6200000, guid: 18ddfb156027a5449b80245f603d4f26, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -102,7 +102,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 14.71
+  m_Radius: 0.3
 --- !u!114 &9141255554404471189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,7 +127,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1350234962581297906}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Feedbacks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 9218558148015598609}
   - component: {fileID: 6145859072363811076}
   - component: {fileID: 6870585348113360294}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: DetectionCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,7 +226,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 17.48
+  m_Radius: 0.4
 --- !u!50 &6145859072363811076
 Rigidbody2D:
   serializedVersion: 4
@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 4176429600697389849}
   - component: {fileID: 8442226911896508694}
   - component: {fileID: 5796230011081490224}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,7 +351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8455879956937574544}
   - component: {fileID: 5049285963174592083}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: DropOrb
   m_TagString: Untagged
   m_Icon: {fileID: 0}

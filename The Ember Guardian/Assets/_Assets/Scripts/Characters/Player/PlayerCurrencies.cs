@@ -24,7 +24,6 @@ public class PlayerCurrencies : MonoBehaviour
         ammo,
     }
 
-    public event EventHandler<OnCurrencyChangedEventArgs> OnBlueOrbChanged;
     public event EventHandler<OnBlueOrbDroppedOnTheFloorEventArgs> OnBlueOrbDroppedOnTheFloor;
     public class OnCurrencyChangedEventArgs : EventArgs {
         public int previousAmount;
@@ -35,7 +34,7 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     private Collectible lastBlueOrbDroppedOnTheFloor;
-    private Collectible lastBlueOrbPaying;
+    private Collectible lastCurrencyPaying;
 
 
     private void Awake() {
@@ -45,7 +44,7 @@ public class PlayerCurrencies : MonoBehaviour
 
     private void Start() {
         UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
-        UICurrencyManager.Instance.OnBigBlueOrbTryPay += UIOrbManager_OnBigBlueOrbTryPay;
+        UICurrencyManager.Instance.OnCurrencyTryPay += UICurrencyManager_OnCurrencyTryPay;
     }
 
     private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -54,8 +53,8 @@ public class PlayerCurrencies : MonoBehaviour
         }
     }
 
-    private void UIOrbManager_OnBigBlueOrbTryPay(object sender, UICurrencyManager.OnBigOrbTryPayEventArgs e) {
-        DropBigOrbToPay(e.destionationOrbTemplate);
+    private void UICurrencyManager_OnCurrencyTryPay(object sender, UICurrencyManager.OnCurrencyTryPayEventArgs e) {
+        StartPayingCurrency(e.currencyType, e.destionationOrbTemplate);
     }
 
 
@@ -73,11 +72,13 @@ public class PlayerCurrencies : MonoBehaviour
         });
     }
 
-    private void DropBigOrbToPay(OrbTemplateWorldUI destination) {
-        Debug.Log("DropBigOrbToPay");
-        lastBlueOrbPaying = Instantiate(blueOrbPrefab, blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
-        lastBlueOrbPaying.SetMoving(true, destination.transform);
-        collectiblesBeingPaid.Add(lastBlueOrbPaying);
+    private void StartPayingCurrency(CurrencyType currencyType, PayCurrencyTemplateWorldUI destination) {
+        Debug.Log("StartPayingCurrency");
+        Transform currencyPrefab = CurrenciesManager.Instance.GetCurrencyPrefab(currencyType);
+
+        lastCurrencyPaying = Instantiate(currencyPrefab, blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
+        lastCurrencyPaying.SetMovingForPayment(true, destination.transform);
+        collectiblesBeingPaid.Add(lastCurrencyPaying);
 
     }
 
@@ -92,7 +93,7 @@ public class PlayerCurrencies : MonoBehaviour
     public void CancelCurrencyPayment() {
         Debug.Log("CancelCurrencyPayment");
         foreach(Collectible collectible in collectiblesBeingPaid) {
-            collectible.SetMoving(false);
+            collectible.SetMovingForPayment(false);
             collectible.ApplyRandomUpwardsForce(1, 5);
         }
         collectiblesBeingPaid.Clear();

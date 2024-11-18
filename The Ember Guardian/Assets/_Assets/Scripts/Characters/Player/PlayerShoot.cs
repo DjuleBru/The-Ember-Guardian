@@ -201,7 +201,7 @@ public class PlayerShoot : MonoBehaviour
     private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         if(e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
             Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
-            collectible.SetMoving(true, ammoDestinationPoint);
+            collectible.SetMovingForPayment(true, ammoDestinationPoint);
             collectible.SetScale(.5f);
         }
     }
