@@ -18,8 +18,6 @@ public class PlayerAnimator : MonoBehaviour
     private bool moving;
 
     private void Start() {
-        GameInput.Instance.OnPlayerRunStarted += GameInput_OnPlayerRunStarted;
-        GameInput.Instance.OnPlayerRunCanceled += GameInput_OnPlayerRunCanceled;
 
         PlayerMovement.Instance.OnPlayerJumpUp += PlayerMovement_OnPlayerJumpUp;
         PlayerMovement.Instance.OnPlayerJumpTop += PlayerMovement_OnPlayerJumpTop;
@@ -27,12 +25,17 @@ public class PlayerAnimator : MonoBehaviour
         PlayerMovement.Instance.OnPlayerLanded += PlayerMovement_OnPlayerLanded;
         PlayerMovement.Instance.OnPlayerCrouched += PlayerMovement_OnPlayerCrouched;
         PlayerMovement.Instance.OnPlayerCrouchedEnded += PlayerMovement_OnPlayerCrouchedEnded;
+        PlayerMovement.Instance.OnPlayerRunStarted += PlayerMovement_OnPlayerRunStarted;
+        PlayerMovement.Instance.OnPlayerRunStopped += PlayerMovement_OnPlayerRunStopped;
+        PlayerMovement.Instance.OnPlayerExhaustionStarted += PlayerMovement_OnPlayerExhaustionStarted;
+        PlayerMovement.Instance.OnPlayerExhaustionStopped += PlayerMovement_OnPlayerExhaustionStopped;
 
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
         Player.Instance.OnPlayerDamagedRecentlyEnded += Player_OnPlayerDamagedRecentlyEnded;
     }
+
 
     private void Player_OnPlayerDamagedRecentlyEnded(object sender, EventArgs e) {
         bodyAnimator.SetBool("DamagedRecently", false);
@@ -94,17 +97,21 @@ public class PlayerAnimator : MonoBehaviour
         playerAnimator.ResetTrigger("Land");
     }
 
-    private void GameInput_OnPlayerRunCanceled(object sender, System.EventArgs e) {
-        playerAnimator.SetBool("Running", false);
+    private void PlayerMovement_OnPlayerRunStopped(object sender, EventArgs e) {
+        playerAnimator.SetFloat("WalkAnimationSpeed", PlayerMovement.Instance.GetMoveSpeedNormalized());
     }
 
-    private void GameInput_OnPlayerRunStarted(object sender, System.EventArgs e) {
-        if (!moving) return;
-
-        playerAnimator.SetBool("Walking", true);
-        playerAnimator.SetBool("Running", true);
+    private void PlayerMovement_OnPlayerRunStarted(object sender, EventArgs e) {
+        playerAnimator.SetFloat("WalkAnimationSpeed", PlayerMovement.Instance.GetMoveSpeedNormalized());
     }
 
+    private void PlayerMovement_OnPlayerExhaustionStopped(object sender, EventArgs e) {
+        playerAnimator.SetFloat("WalkAnimationSpeed", PlayerMovement.Instance.GetMoveSpeedNormalized());
+    }
+
+    private void PlayerMovement_OnPlayerExhaustionStarted(object sender, EventArgs e) {
+        playerAnimator.SetFloat("WalkAnimationSpeed", PlayerMovement.Instance.GetMoveSpeedNormalized());
+    }
     private void HandleAnimatorMovementBool() {
 
         if (moveDir != 0) {

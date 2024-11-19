@@ -8,7 +8,7 @@ public class GunSpotLight : MonoBehaviour
     [SerializeField] private Transform gunSpotLightTransform;
     private Light2D gunSpotLight;
 
-    private bool lightActive = false;
+    private bool lightActive = true;
 
     private void Awake() {
         gunSpotLight = gunSpotLightTransform.GetComponent<Light2D>();
