@@ -29,12 +29,13 @@ public class CampZoneManager : MonoBehaviour
 
     private void Awake() {
         Instance = this;
-    }
 
-    private void Start() {
         Barricade.OnAnyBarricadeBuilt += Barricade_OnAnyBarricadeBuilt;
         Barricade.OnAnyBarricadeDestroyed += Barricade_OnAnyBarricadeDestroyed;
         Barricade.OnAnyBarricadeRepaired += Barricade_OnAnyBarricadeRepaired;
+    }
+
+    private void Start() {
 
         RefreshCampZoneLimits();
     }
@@ -60,7 +61,7 @@ public class CampZoneManager : MonoBehaviour
 
         foreach(Barricade barricade in functionalBarricades) {
 
-            if(barricade.transform.position.x < minZoneLimit) {
+            if (barricade.transform.position.x < minZoneLimit) {
                 minZoneLimit = barricade.transform.position.x;
             }
 

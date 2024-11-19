@@ -61,7 +61,6 @@ public class Barricade : Structure, IDamageable {
         }
 
         OnBarricadeDamageTaken?.Invoke(this, EventArgs.Empty);
-        RefreshBarricadeRepair();
     }
 
     public Transform GetMeleeAttackPosition() {
@@ -145,15 +144,21 @@ public class Barricade : Structure, IDamageable {
 
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);
-        if(barricadeRepairable) {
-            barricadeVisual.ShowRepairStructureVisual(true);
+
+        if (collision.gameObject.GetComponent<Player>() != null && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
+            if (barricadeRepairable) {
+                barricadeVisual.ShowRepairStructureVisual(true);
+            }
         }
     }
 
     protected override void OnTriggerExit2D(Collider2D collision) {
         base.OnTriggerExit2D(collision);
-        if (barricadeRepairable) {
-            barricadeVisual.ShowRepairStructureVisual(false);
+
+        if(collision.gameObject.GetComponent<Player>()  != null && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
+            if (barricadeRepairable) {
+                barricadeVisual.ShowRepairStructureVisual(false);
+            }
         }
     }
 

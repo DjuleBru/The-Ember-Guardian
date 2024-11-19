@@ -18,6 +18,7 @@ public class Structure : MonoBehaviour {
     public static event EventHandler OnAnyPlayerTriggeredOut;
     public event EventHandler OnStructureUpgraded;
     public static event EventHandler OnAnyStructureUpgraded;
+    public static event EventHandler OnAnyStructureFunctionUsed;
     public event EventHandler OnStructureInteractionsUpdated;
 
     protected bool playerInTriggerArea;
@@ -72,7 +73,8 @@ public class Structure : MonoBehaviour {
     }
 
     protected virtual void TriggerStructureFunction() {
-
+        Debug.Log("TriggerStructureFunction");
+        OnAnyStructureFunctionUsed?.Invoke(this, EventArgs.Empty);
     }
 
     protected virtual void UpgradeStructure() {

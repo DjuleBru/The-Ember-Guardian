@@ -20,17 +20,6 @@ public class CreatureVisual : MobVisual
         creature.OnCreatureExitedLight += Creature_OnCreatureExitedLight;
         bodySpriteRenderer.material = cleanMaterial;
         debuffedGameObject.SetActive(false);
-
-        DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
-        DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
-    }
-
-    private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
-
-    }
-
-    private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
-
     }
 
     private void Creature_OnCreatureExitedLight(object sender, System.EventArgs e) {

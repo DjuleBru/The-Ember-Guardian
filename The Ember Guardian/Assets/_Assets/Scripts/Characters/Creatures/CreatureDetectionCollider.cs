@@ -133,7 +133,13 @@ public class CreatureDetectionCollider : MonoBehaviour
             int currentPriority = int.MaxValue;
 
             if (iDamageable is Worker) {
-                currentPriority = creature.GetCreatureSO().workerTargetingPriority;
+
+                Worker worker = (Worker)iDamageable;
+                // Check if worker is out of camp
+                if (!CampZoneManager.Instance.IsWithinCampZoneLimits(worker.transform.position)) {
+                    currentPriority = creature.GetCreatureSO().workerTargetingPriority;
+                }
+
             }
 
             if (iDamageable is Barricade) {
@@ -146,7 +152,7 @@ public class CreatureDetectionCollider : MonoBehaviour
 
             if (iDamageable is Player) {
 
-                // Check if player is on a tower !
+                // Check if player is in range in the y axis !
                 if ((Player.Instance.transform.position.y - 1.5f > creature.GetCreatureSO().attackRange) && !creatureAttack.GetIsRangedAttack()) {
                     continue;
                 }
@@ -165,7 +171,7 @@ public class CreatureDetectionCollider : MonoBehaviour
 
         }
 
-        creatureAI.SetAttackTarget(highestPriorityTarget);
+        creatureAI.SetAttackTarget(highestPriorityTarget, iDamageablesInDetectionRange);
     }
 
 }

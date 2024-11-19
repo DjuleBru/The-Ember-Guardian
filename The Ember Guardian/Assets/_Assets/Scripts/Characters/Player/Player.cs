@@ -121,6 +121,7 @@ public class Player : MonoBehaviour, IDamageable
         GetComponent<PlayerAim>().enabled = false;
         GetComponent<PlayerShoot>().enabled = false;
         GetComponent<PlayerCurrencies>().enabled = false;
+        SetCanDropOrbOnTheFloor(false);
 
         OnPlayerDied?.Invoke(this, EventArgs.Empty);
 
@@ -139,6 +140,7 @@ public class Player : MonoBehaviour, IDamageable
         GetComponent<PlayerAim>().enabled = true;
         GetComponent<PlayerShoot>().enabled = true;
         GetComponent<PlayerCurrencies>().enabled = true;
+        SetCanDropOrbOnTheFloor(true);
 
         OnPlayerRespawned?.Invoke(this, EventArgs.Empty);
 

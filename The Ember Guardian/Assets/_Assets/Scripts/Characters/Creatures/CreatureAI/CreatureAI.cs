@@ -16,6 +16,7 @@ public class CreatureAI : MonoBehaviour {
     private bool detectedAttackTarget;
 
     private IDamageable attackTarget;
+    private List<IDamageable> iDamageablesInRange;
 
     private Vector3 positionToRoamAmound;
     private float roamChangeDestinationRate;
@@ -246,20 +247,24 @@ public class CreatureAI : MonoBehaviour {
         detectedAttackTarget = false;
     }
 
-    public void SetAttackTarget(IDamageable iDamageable) {
-        if(iDamageable == null) {
+    public void SetAttackTarget(IDamageable iDamageable, List<IDamageable> iDamageablesInRange) {
+        this.iDamageablesInRange = iDamageablesInRange;
+
+        if(iDamageablesInRange.Count == 0) {
             detectedAttackTarget = false;
             attackTarget = null;
             return;
+        } 
+
+        if(iDamageable != null) {
+            detectedAttackTarget = true;
+
+            if (attackTarget == iDamageable) return;
+
+            attackTarget = iDamageable;
+
+            ChangeState(State.moveToTarget);
         }
-
-        detectedAttackTarget = true;
-
-        if (attackTarget == iDamageable) return;
-
-        attackTarget = iDamageable;
-
-        ChangeState(State.moveToTarget);
     }
 
     private void TriggerAggoFeedbacks() {

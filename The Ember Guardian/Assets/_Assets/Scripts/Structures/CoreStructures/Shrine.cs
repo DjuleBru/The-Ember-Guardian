@@ -24,7 +24,7 @@ public class Shrine : Structure
 
     protected override void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         base.PayOrbsUI_OnOrbPaymentSuccess(sender, e);
-
+        
         Worker joblessWorker = WorkerManager.Instance.GetFirstJoblessWorker();
 
         if(shrineType == ShrineType.hunterShrine) {

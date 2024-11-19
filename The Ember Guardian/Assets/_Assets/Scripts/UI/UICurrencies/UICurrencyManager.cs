@@ -23,6 +23,12 @@ public class UICurrencyManager : MonoBehaviour
     [SerializeField] private int smallOrbValue = 5;
     [SerializeField] private float smallOrbSmoothTime = 5f;
 
+    [SerializeField] int debugInitialBigOrbs = 5;
+    [SerializeField] int debugInitialSmallOrbs = 0;
+    [SerializeField] int debugInitialBigRedOrbs = 0;
+    [SerializeField] int debugInitialSmallRedOrbs = 0;
+    [SerializeField] int debugInitialAmmo = 3;
+
     List<Currency_UI> currenciesInBag = new List<Currency_UI>();
 
     private PayCurrencyUI currentPayCurrencyUI;
@@ -49,16 +55,11 @@ public class UICurrencyManager : MonoBehaviour
     private bool formingBigOrb;
     private bool formingBigOrbCanceled;
     private bool tryingToDropOrb;
-    private bool structureJustBuilt;
+    private bool justInteractedWithStructure;
+    private bool structureFunctionJustUsed;
 
     private float tryingToDropOrbTimer;
     private float tryingToDropOrbHoldTime = .2f;
-
-    int debugInitialBigOrbs = 5;
-    int debugInitialSmallOrbs = 0;
-    int debugInitialBigRedOrbs = 0;
-    int debugInitialSmallRedOrbs = 0;
-    int debugInitialAmmo = 3;
 
     private void Awake() {
         Instance = this;
@@ -69,6 +70,7 @@ public class UICurrencyManager : MonoBehaviour
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
+        Structure.OnAnyStructureFunctionUsed += Structure_OnAnyStructureFunctionUsed;
 
         StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.bigBlueOrb, debugInitialBigOrbs));
         StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.smallBlueOrb, debugInitialSmallOrbs));
@@ -77,6 +79,7 @@ public class UICurrencyManager : MonoBehaviour
         StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.ammo, debugInitialAmmo));
         
     }
+
 
     private void Update() {
 
@@ -97,9 +100,9 @@ public class UICurrencyManager : MonoBehaviour
         //if(Input.GetKeyDown(KeyCode.J)) {
         //    AddCurrencyInBag(PlayerCurrencies.CurrencyType.ammo);
         //}
-        //if (Input.GetKeyDown(KeyCode.K)) {
-        //    AddCurrencyInBag(PlayerCurrencies.CurrencyType.bigBlueOrb);
-        //}
+        if (Input.GetKeyDown(KeyCode.K)) {
+            AddCurrencyInBag(PlayerCurrencies.CurrencyType.bigBlueOrb);
+        }
         //if (Input.GetKeyDown(KeyCode.L)) {
         //    AddCurrencyInBag(PlayerCurrencies.CurrencyType.smallBlueOrb);
         //}
@@ -254,8 +257,8 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     private void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
-        if (structureJustBuilt) {
-            structureJustBuilt = false;
+        if (justInteractedWithStructure) {
+            justInteractedWithStructure = false;
             return;
         };
 
@@ -276,7 +279,11 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     private void StructureLocation_OnAnyStructureBuilt(object sender, EventArgs e) {
-        structureJustBuilt = true;
+        justInteractedWithStructure = true;
+    }
+
+    private void Structure_OnAnyStructureFunctionUsed(object sender, EventArgs e) {
+        justInteractedWithStructure = true;
     }
 
     public int GetSmallOrbValue() {

@@ -286,12 +286,10 @@ public class PlayerMovement : MonoBehaviour {
 
     public void BuffMoveSpeed(float buffAmount) {
         moveSpeed *= buffAmount;
-        Debug.Log("buffMoveSpeed " + buffAmount + " new move speed " + moveSpeed);
     }
 
     public void DebuffMoveSpeed(float buffAmount) {
         moveSpeed /= buffAmount;
-        Debug.Log("DebuffMoveSpeed " + buffAmount + " new move speed " + moveSpeed);
     }
 
     public bool IsGrounded() {
@@ -328,7 +326,6 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     public float GetMoveSpeedNormalized() {
-        Debug.Log(moveSpeed / initialMoveSpeed);
         return moveSpeed / initialMoveSpeed;
     }
 

@@ -114,6 +114,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerAmmoRefilled(object sender, PlayerShoot.OnAmmoRefilledEventArgs e) {
+        FadeInAmmoBar();
         StartCoroutine(RefillAmmoBar(e.ammoAmount));
     }
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {

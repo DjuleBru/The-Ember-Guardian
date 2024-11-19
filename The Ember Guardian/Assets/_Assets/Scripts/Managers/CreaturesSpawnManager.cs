@@ -11,19 +11,18 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     public class SpawnedCreatureInfo {
         public CreatureSO creature; // Type de créature à spawner
-        public float spawnPosition; // Position de spawn (gauche ou droite)
+        public SpawnSide spawnSide; // Position de spawn (gauche ou droite)
 
-        public SpawnedCreatureInfo(CreatureSO creature, float spawnPosition) {
+        public SpawnedCreatureInfo(CreatureSO creature, SpawnSide spawnSide) {
             this.creature = creature;
-            this.spawnPosition = spawnPosition;
+            this.spawnSide = spawnSide;
         }
     }
 
     private Dictionary<int, List<SpawnedCreatureInfo>> waveCreaturesDictionary = new Dictionary<int, List<SpawnedCreatureInfo>>();
 
-    private float leftCreatureSpawnPosition;
-    private float rightCreatureSpawnPosition;
-    private float spawnDistanceToCampZoneLimit = 40f;
+    public enum SpawnSide { Left, Right };
+    private float spawnDistanceToPlayerOrCamp = 30f;
 
     public List<CreatureSO> creatureTypes;
 
@@ -55,19 +54,6 @@ public class CreaturesSpawnManager : MonoBehaviour
     private void Start() {
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
-
-        CampZoneManager.Instance.OnCampZoneLimitsChanged += CampZoneManager_OnCampZoneLimitsChanged;
-    }
-
-    private void CampZoneManager_OnCampZoneLimitsChanged(object sender, System.EventArgs e) {
-        RefreshSpawnPositions();
-    }
-
-    private void RefreshSpawnPositions() {
-        leftCreatureSpawnPosition = CampZoneManager.Instance.GetMinZoneLimit() - spawnDistanceToCampZoneLimit;
-        rightCreatureSpawnPosition = CampZoneManager.Instance.GetMaxZoneLimit() + spawnDistanceToCampZoneLimit;
-        Debug.Log("leftCreatureSpawnPosition " + leftCreatureSpawnPosition);
-        Debug.Log("rightCreatureSpawnPosition " + rightCreatureSpawnPosition);
     }
  
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
@@ -144,7 +130,7 @@ public class CreaturesSpawnManager : MonoBehaviour
             // Détermine combien de créatures spawn à chaque intervalle
 
             foreach(SpawnedCreatureInfo creatureInfo in waveCreaturesDictionary[subWaveIndex]) {
-                SpawnCreatureAtSide(creatureInfo.creature, creatureInfo.spawnPosition);
+                SpawnCreatureAtSide(creatureInfo.creature, creatureInfo.spawnSide);
                 spawnedCount++;
             }
 
@@ -153,8 +139,9 @@ public class CreaturesSpawnManager : MonoBehaviour
         }
     }
 
-    private void SpawnCreatureAtSide(CreatureSO creatureToSpawn, float position) {
-        Creature creature = Instantiate(creatureToSpawn.creaturePrefab, GetSpawnPosition(position), Quaternion.identity).GetComponent<Creature>();
+    private void SpawnCreatureAtSide(CreatureSO creatureToSpawn, SpawnSide spawnSide) {
+
+        Creature creature = Instantiate(creatureToSpawn.creaturePrefab, GetSpawnPosition(spawnSide), Quaternion.identity).GetComponent<Creature>();
         creature.SetAsDayCreature(false);
         CreaturesManager.Instance.AddCreatureToNightWave(creature);
     }
@@ -229,7 +216,7 @@ public class CreaturesSpawnManager : MonoBehaviour
 
             for (int i = 0; i < leftMonstersCount; i++) {
                 CreatureSO creatureToSpawn = creaturesToSpawn[i];
-                waveCreatures.Add(new SpawnedCreatureInfo(creatureToSpawn, leftCreatureSpawnPosition)); // Tous à gauche
+                waveCreatures.Add(new SpawnedCreatureInfo(creatureToSpawn, SpawnSide.Left)); // Tous à gauche
             }
         }
         else if (spawnDecision > 0.8f) // 20% de chance que les monstres viennent seulement de droite
@@ -238,7 +225,7 @@ public class CreaturesSpawnManager : MonoBehaviour
 
             for (int i = 0; i < rightMonstersCount; i++) {
                 CreatureSO creatureToSpawn = creaturesToSpawn[i];
-                waveCreatures.Add(new SpawnedCreatureInfo(creatureToSpawn, rightCreatureSpawnPosition)); // Tous à droite
+                waveCreatures.Add(new SpawnedCreatureInfo(creatureToSpawn, SpawnSide.Right)); // Tous à droite
             }
         }
         else // 60% de chance de répartir entre gauche et droite
@@ -248,22 +235,40 @@ public class CreaturesSpawnManager : MonoBehaviour
             // Spawns des monstres à gauche
             for (int i = 0; i < leftMonstersCount; i++) {
                 CreatureSO creatureToSpawn = creaturesToSpawn[i];
-                waveCreatures.Add(new SpawnedCreatureInfo(creatureToSpawn, leftCreatureSpawnPosition));
+                waveCreatures.Add(new SpawnedCreatureInfo(creatureToSpawn, SpawnSide.Left));
             }
 
             // Spawns des monstres à droite
             for (int i = leftMonstersCount; i < totalCreaturesToSpawn; i++) {
                 CreatureSO creatureToSpawn = creaturesToSpawn[i];
-                waveCreatures.Add(new SpawnedCreatureInfo(creatureToSpawn, rightCreatureSpawnPosition));
+                waveCreatures.Add(new SpawnedCreatureInfo(creatureToSpawn, SpawnSide.Right));
             }
         }
 
         return waveCreatures;
     }
 
-    Vector3 GetSpawnPosition(float xPosition) {
+    Vector3 GetSpawnPosition(SpawnSide spawnSide) {
         // Logique pour choisir une position de spawn, par exemple autour d'une zone spécifique
-        return new Vector3(xPosition + Random.Range(-2, 2), 1, 0);
+        float xSpawnPosition = 0;
+        if(spawnSide == SpawnSide.Left) {
+            if(Player.Instance.transform.position.x < CampZoneManager.Instance.GetCampCenterMinLimit()) {
+                xSpawnPosition = Player.Instance.transform.position.x - spawnDistanceToPlayerOrCamp;
+            } else {
+                xSpawnPosition = CampZoneManager.Instance.GetCampCenterMinLimit() - spawnDistanceToPlayerOrCamp;
+            }
+        } else {
+            if (Player.Instance.transform.position.x > CampZoneManager.Instance.GetCampCenterMinLimit()) {
+                xSpawnPosition = Player.Instance.transform.position.x + spawnDistanceToPlayerOrCamp;
+            }
+            else {
+                xSpawnPosition = CampZoneManager.Instance.GetCampCenterMaxLimit() + spawnDistanceToPlayerOrCamp;
+            }
+        }
+
+        Debug.Log(xSpawnPosition);
+        return new Vector3(xSpawnPosition + Random.Range(-2, 2), 1, 0);
+
     }
 
     public void CountCreatureOccurrences(List<SpawnedCreatureInfo> spawnedCreatures) {
@@ -275,7 +280,7 @@ public class CreaturesSpawnManager : MonoBehaviour
             if (spawnedCreature.creature != null) // Vérifie que la créature n'est pas nulle
             {
                 // Déterminer la position (left ou right)
-                string spawnPosition = spawnedCreature.spawnPosition < 0 ? "left" : "right";
+                string spawnPosition = spawnedCreature.spawnSide < 0 ? "left" : "right";
 
                 // Créer une clé pour le dictionnaire
                 var key = (spawnedCreature.creature, spawnPosition);

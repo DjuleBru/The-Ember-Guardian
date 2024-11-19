@@ -27381,7 +27381,7 @@ MonoBehaviour:
   wildFireRadius: 30
   insaneFireRadius: 40
   orbFuelValue: 10
-  fuelDepletionRate: 0.01
+  fuelDepletionRate: 0.03
   calmFuelTreshold: 0
   mildFuelTreshold: 20
   wildFuelTreshold: 50
@@ -27400,10 +27400,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeb486cf12e6b4948be3767e7bcfe50a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blueOrbPrefab: {fileID: 4096008502524423227, guid: 7187c138d57b2dc43b18d3d2bd569bed, type: 3}
-  fillPaymentOrbTime: 1
-  initialFillPaymentOrbRate: 4
-  fillPaymentOrbRateIncrease: 0.3
 --- !u!1 &1534934469428122919 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1804490928981325453, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}

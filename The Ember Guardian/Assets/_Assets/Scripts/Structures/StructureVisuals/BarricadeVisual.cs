@@ -34,6 +34,7 @@ public class BarricadeVisual : StructureVisual {
 
     private void Barricade_OnBarricadeRepaired(object sender, System.EventArgs e) {
         RepairStructureVisual();
+        spriteIndex = 1;
     }
 
     private void Barricade_OnBarricadeDamageTaken(object sender, System.EventArgs e) {

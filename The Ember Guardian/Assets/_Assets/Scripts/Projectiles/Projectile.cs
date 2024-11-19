@@ -128,6 +128,11 @@ public class Projectile : MonoBehaviour
         CalculateNewProjectileMoveSpeed(nextPositionXNormalized);
         projectileMoveDir = nextPosition - transform.position;
 
+        if(nextPositionXNormalized > 1.1) {
+            // Projectile has reached the end of its animation curve
+            ProjectileHasHit(false);
+        }
+
         transform.position = nextPosition;
     }
 

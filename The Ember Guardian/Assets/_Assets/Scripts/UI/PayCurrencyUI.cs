@@ -75,11 +75,8 @@ public class PayCurrencyUI : MonoBehaviour
         currencyIndex++;
         if (currencyIndex == currencyTemplateWorldUIList.Count) {
 
-            playerInteracting = false;
             PlayerCurrencies.Instance.FinalizeCurrencyPayment();
-
             OnCurrencyPaymentSuccess?.Invoke(this, EventArgs.Empty);
-
         }
         else {
             OnSingleCurrencyPaid?.Invoke(this, new OnSingleOrbFilledEventArgs {

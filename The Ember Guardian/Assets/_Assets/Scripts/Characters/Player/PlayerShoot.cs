@@ -203,9 +203,6 @@ public class PlayerShoot : MonoBehaviour
             Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
             collectible.SetMovingForPayment(true, ammoDestinationPoint);
             collectible.SetScale(.5f);
-            OnPlayerAmmoRefilled?.Invoke(this, new OnAmmoRefilledEventArgs {
-                ammoAmount = 1
-            });
         }
     }
 
@@ -215,19 +212,19 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnPlayerReloadCanceled(object sender, EventArgs e) {
-
         if (!playerJustPressedReload) {
             // Player is transferring ammo from bag in gun
-
-
+            transferringAmmoFromBag = false;
             return;
         };
+
         if (currentBullet == bulletsPerAmmoClip) return;
         if (reloading) return;
         if (coolingDown) return;
 
         currentAmmoClip -= 1;
         reloading = true;
+        playerJustPressedReload = false;
         reloadTimer = reloadTime;
         OnPlayerReload?.Invoke(this, EventArgs.Empty);
     }
