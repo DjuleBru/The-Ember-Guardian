@@ -98,6 +98,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwitchGunLight"",
+                    ""type"": ""Button"",
+                    ""id"": ""fb1e3a3e-6389-415c-a19d-5d6cad62cf71"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -254,6 +263,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0f3dd052-f348-48c4-b52e-f3facc5014e2"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""SwitchGunLight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -282,6 +302,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_LeftRightSwitch = m_Player.FindAction("LeftRightSwitch", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
+        m_Player_SwitchGunLight = m_Player.FindAction("SwitchGunLight", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -356,6 +377,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_LeftRightSwitch;
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_Reload;
+    private readonly InputAction m_Player_SwitchGunLight;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -368,6 +390,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @LeftRightSwitch => m_Wrapper.m_Player_LeftRightSwitch;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
+        public InputAction @SwitchGunLight => m_Wrapper.m_Player_SwitchGunLight;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -401,6 +424,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Reload.started += instance.OnReload;
             @Reload.performed += instance.OnReload;
             @Reload.canceled += instance.OnReload;
+            @SwitchGunLight.started += instance.OnSwitchGunLight;
+            @SwitchGunLight.performed += instance.OnSwitchGunLight;
+            @SwitchGunLight.canceled += instance.OnSwitchGunLight;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -429,6 +455,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Reload.started -= instance.OnReload;
             @Reload.performed -= instance.OnReload;
             @Reload.canceled -= instance.OnReload;
+            @SwitchGunLight.started -= instance.OnSwitchGunLight;
+            @SwitchGunLight.performed -= instance.OnSwitchGunLight;
+            @SwitchGunLight.canceled -= instance.OnSwitchGunLight;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -465,5 +494,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnLeftRightSwitch(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnSwitchGunLight(InputAction.CallbackContext context);
     }
 }

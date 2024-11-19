@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,9 @@ public class CreaturesManager : MonoBehaviour
 
     private List<Creature> creaturePoolList = new List<Creature>();
     private List<Creature> creaturesSpawnedList = new List<Creature>();
+    private List<Creature> creaturesSpawnedAtNightList = new List<Creature>();
+
+    public event EventHandler OnAllCreaturesAtNightKilled;
 
     private void Awake() {
         Instance = this;
@@ -38,6 +42,7 @@ public class CreaturesManager : MonoBehaviour
 
     public void RemoveCreatureSpawned(Creature creature) {
         creaturesSpawnedList.Remove(creature);
+        RemoveCreatureFromNightWave(creature);
     }
 
     public int GetSpawnedCreatureCount() {
@@ -62,5 +67,23 @@ public class CreaturesManager : MonoBehaviour
         }
 
         return creatureIsBetweenPositions;
+    }
+
+
+    public void AddCreatureToNightWave(Creature creature) {
+        Debug.Log("AddCreatureToNightWave");
+
+        if (creaturesSpawnedAtNightList.Contains(creature)) return;
+        creaturesSpawnedAtNightList.Add(creature);
+    }
+
+    public void RemoveCreatureFromNightWave(Creature creature) {
+        if (!creaturesSpawnedAtNightList.Contains(creature)) return;
+
+        creaturesSpawnedAtNightList.Remove(creature);
+
+        if (creaturesSpawnedAtNightList.Count == 0) {
+            OnAllCreaturesAtNightKilled?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

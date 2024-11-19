@@ -24,6 +24,8 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnPlayerReloadPerformed;
     public event EventHandler OnPlayerReloadCanceled;
 
+    public event EventHandler OnPlayerGunLightSwitch;
+
     public event EventHandler OnPlayerLeftRightSwitchPerformed;
 
     private bool interactPressed;
@@ -47,9 +49,11 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.Shoot.canceled += Shoot_canceled;
         playerInputActions.Player.Reload.performed += Reload_performed;
         playerInputActions.Player.Reload.canceled += Reload_canceled;
+        playerInputActions.Player.SwitchGunLight.performed += SwitchGunLight_performed;
 
         playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
     }
+
 
     private void Update() {
         if(interactPressed) {
@@ -62,6 +66,9 @@ public class GameInput : MonoBehaviour
         }
     }
 
+    private void SwitchGunLight_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        OnPlayerGunLightSwitch?.Invoke(this, EventArgs.Empty);
+    }
     private void Reload_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
         OnPlayerReloadCanceled?.Invoke(this, EventArgs.Empty);
     }

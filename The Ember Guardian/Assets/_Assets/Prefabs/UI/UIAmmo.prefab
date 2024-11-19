@@ -12,6 +12,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIAmmo
       objectReference: {fileID: 0}
+    - target: {fileID: 222862552863732904, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 385202981112139797, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3097506622609963512, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 4369961835802259716, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -38,11 +50,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4369961835802259716, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0.5
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 4369961835802259716, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0.5
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 4369961835802259716, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -99,13 +111,17 @@ PrefabInstance:
     - target: {fileID: 4938592641832932186, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 6200000, guid: 1b74b2223fdfa3f45a1a7230194b9ec6, type: 2}
+      objectReference: {fileID: 6200000, guid: fe712a0e85e641b4489f6bd0f8f7b455, type: 2}
     - target: {fileID: 4938592641832932186, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       propertyPath: m_LinearDrag
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4938592641832932186, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       propertyPath: m_AngularDrag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4938592641832932186, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
+      propertyPath: m_Constraints
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4938592641832932186, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
@@ -124,6 +140,14 @@ PrefabInstance:
       propertyPath: m_PreserveAspect
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7417755253276467997, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7507147582029617342, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 9141255554404471189, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       propertyPath: currencyType
       value: 7
@@ -136,7 +160,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 222862552863732904, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 291389530693787337}
+      addedObject: {fileID: 1522482915170366502}
     - targetCorrespondingSourceObject: {fileID: 3097506622609963512, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6485945203662175846}
@@ -178,16 +202,16 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0015928483, y: -0.0010598323}
-  m_Size: {x: 0.52348894, y: 0.16410659}
+  m_Offset: {x: 0.007998643, y: -0.0024318532}
+  m_Size: {x: 0.77836025, y: 0.2819522}
   m_Direction: 1
 --- !u!1 &2717374580390098472 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 222862552863732904, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
   m_PrefabInstance: {fileID: 2783727627305616000}
   m_PrefabAsset: {fileID: 0}
---- !u!61 &291389530693787337
-BoxCollider2D:
+--- !u!70 &1522482915170366502
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -218,16 +242,6 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0010716915, y: 0.0007533878}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.4710344, y: 0.12786296}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0.0013713137, y: 0.004109789}
+  m_Size: {x: 0.707465, y: 0.22962387}
+  m_Direction: 1

@@ -7,8 +7,6 @@ public class PlayerCurrencies : MonoBehaviour
 {
     public static PlayerCurrencies Instance;
 
-    [SerializeField] private int initialOrbAmountDebug;
-    [SerializeField] private Transform blueOrbPrefab;
     [SerializeField] private Transform blueOrbDropPoint;
 
     private List<Collectible> collectiblesBeingPaid = new List<Collectible>();
@@ -60,7 +58,7 @@ public class PlayerCurrencies : MonoBehaviour
 
     private void DropBigOrbOnFloor() {
         Debug.Log("DropBigOrbOnFloor");
-        lastBlueOrbDroppedOnTheFloor = Instantiate(blueOrbPrefab, blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
+        lastBlueOrbDroppedOnTheFloor = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(CurrencyType.bigBlueOrb), blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
 
         float aimDirX = PlayerAim.Instance.GetAimDir().x;
         lastBlueOrbDroppedOnTheFloor.ApplyRandomForce(1f * aimDirX, 2f * aimDirX, 6f, 8f);

@@ -671,7 +671,7 @@ MonoBehaviour:
   m_Intensity: 0.45
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 63b1ca294142e356c5f28fca43b5ffae
+  m_ApplyToSortingLayers: 63b1ca294142e356c5f28fca43b5ffae8db138b1
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -742,6 +742,7 @@ GameObject:
   - component: {fileID: 5968215271334894618}
   - component: {fileID: 1870011486312142491}
   - component: {fileID: 1137720052709999322}
+  - component: {fileID: 8635932299923233260}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -771,6 +772,7 @@ Transform:
   - {fileID: 5469421926583304801}
   - {fileID: 2541241187479884349}
   - {fileID: 3413267901129346197}
+  - {fileID: 5730413854482163264}
   m_Father: {fileID: 2157084316927466674}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1235412671815679238
@@ -833,6 +835,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunLightsSpriteRenderer: {fileID: 7318233327382682661}
+  gunSportLightTransform: {fileID: 5730413854482163264}
+--- !u!114 &8635932299923233260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710054126561131175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35fa912af05e27049b4b3a26304fdfbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunSpotLightTransform: {fileID: 5730413854482163264}
 --- !u!1 &776748526929420811
 GameObject:
   m_ObjectHideFlags: 0
@@ -7220,7 +7236,7 @@ MonoBehaviour:
   m_Intensity: 0
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 05d1c0ac4302e2a001e06951c5f28fca63b1ca2987c78f8043b5ffae159706bb19c70efd000000004142e35635132510b73efa16
+  m_ApplyToSortingLayers: 05d1c0ac4302e2a001e06951c5f28fca63b1ca2987c78f8043b5ffae159706bb19c70efd000000004142e35635132510b73efa168db138b1
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -12671,6 +12687,88 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+--- !u!1 &4374744408983440382
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5730413854482163264}
+  - component: {fileID: 2985663103340478574}
+  m_Layer: 0
+  m_Name: GunLight2D
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5730413854482163264
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4374744408983440382}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0.802, y: -0.10700005, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4959335473103312796}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+--- !u!114 &2985663103340478574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4374744408983440382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ComponentVersion: 1
+  m_LightType: 3
+  m_BlendStyleIndex: 2
+  m_FalloffIntensity: 0.456
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 1
+  m_LightVolumeIntensity: 0.22
+  m_LightVolumeIntensityEnabled: 1
+  m_ApplyToSortingLayers: 05d1c0ac8db138b14302e2a0159706bb01e06951c5f28fcad99f534563b1ca2987c78f8019c70efd000000004142e35635132510
+  m_LightCookieSprite: {fileID: 0}
+  m_DeprecatedPointLightCookieSprite: {fileID: 0}
+  m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
+  m_OverlapOperation: 0
+  m_NormalMapDistance: 3
+  m_NormalMapQuality: 2
+  m_UseNormalMap: 0
+  m_ShadowIntensityEnabled: 0
+  m_ShadowIntensity: 0.75
+  m_ShadowVolumeIntensityEnabled: 0
+  m_ShadowVolumeIntensity: 0.75
+  m_LocalBounds:
+    m_Center: {x: 0, y: -0.00000011920929, z: 0}
+    m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
+  m_PointLightInnerAngle: 14.670078
+  m_PointLightOuterAngle: 48.42412
+  m_PointLightInnerRadius: 0
+  m_PointLightOuterRadius: 9.08
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.5
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: 0.5, z: 0}
+  - {x: -0.5, y: 0.5, z: 0}
 --- !u!1 &4540016661341050447
 GameObject:
   m_ObjectHideFlags: 0
@@ -13100,6 +13198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunTransform: {fileID: 4959335473103312796}
+  gunLightTransform: {fileID: 5730413854482163264}
   visualTransform: {fileID: 2157084316927466674}
   minAngle: -45
   maxAngle: 45
@@ -13115,8 +13214,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed98323fe188bb14e81eba902f3be1f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialOrbAmountDebug: 5
-  blueOrbPrefab: {fileID: 4096008502524423227, guid: 7187c138d57b2dc43b18d3d2bd569bed, type: 3}
   blueOrbDropPoint: {fileID: 6909711943450153630}
 --- !u!114 &7037577414899589081
 MonoBehaviour:
@@ -14534,7 +14631,7 @@ GameObject:
   - component: {fileID: 1383406599006589576}
   - component: {fileID: 7318233327382682661}
   m_Layer: 0
-  m_Name: LightsVisual
+  m_Name: AmmoLightsVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

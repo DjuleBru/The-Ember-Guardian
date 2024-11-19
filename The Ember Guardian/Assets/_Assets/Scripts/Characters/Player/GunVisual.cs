@@ -6,6 +6,8 @@ public class GunVisual : MonoBehaviour
 {
     private GunSO gunSO;
     [SerializeField] private SpriteRenderer gunLightsSpriteRenderer;
+    [SerializeField] private Transform gunSportLightTransform;
+
     private List<Sprite> gunReloadSprites;
     private int gunLightSpriteIndex;
 
@@ -16,9 +18,19 @@ public class GunVisual : MonoBehaviour
         PlayerShoot.Instance.OnBulletsChanged += PlayerShoot_OnClipsChanged;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
 
+        PlayerAim.Instance.OnXAimDirChanged += PlayerAim_OnXAimDirChanged;
+
         gunSO = PlayerShoot.Instance.GetGunSO();
         gunReloadSprites = gunSO.shotCountSprites;
         gunLightSpriteIndex = gunSO.shotCountSprites.Count -1;
+    }
+
+    private void PlayerAim_OnXAimDirChanged(object sender, System.EventArgs e) {
+        Vector3 scale = new Vector3(1, 1, 1);
+        if(PlayerAim.Instance.GetAimDir().x < 0) {
+            //scale = new Vector3(-1, -1, 1);
+        }
+        gunSportLightTransform.localScale = scale;
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {

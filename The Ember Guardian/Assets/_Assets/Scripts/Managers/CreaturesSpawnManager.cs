@@ -23,7 +23,7 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     private float leftCreatureSpawnPosition;
     private float rightCreatureSpawnPosition;
-    private float spawnDistanceToCampZoneLimit = 20f;
+    private float spawnDistanceToCampZoneLimit = 40f;
 
     public List<CreatureSO> creatureTypes;
 
@@ -93,7 +93,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         Debug.Log("waveDifficultyLeftProportion " + waveDifficultyLeftProportion);
         Debug.Log("waveDifficultyRightProportion " + waveDifficultyRightProportion);
 
-        DayNightManager.Instance.SetNightDuration(waveDuration + waveDuration / 5);
+        DayNightManager.Instance.SetNightDuration(waveDuration + waveDuration / 4);
 
         // Préparer la liste de toutes les créatures à spawner pour cette vague
         waveCreaturesDictionary.Clear();
@@ -156,6 +156,7 @@ public class CreaturesSpawnManager : MonoBehaviour
     private void SpawnCreatureAtSide(CreatureSO creatureToSpawn, float position) {
         Creature creature = Instantiate(creatureToSpawn.creaturePrefab, GetSpawnPosition(position), Quaternion.identity).GetComponent<Creature>();
         creature.SetAsDayCreature(false);
+        CreaturesManager.Instance.AddCreatureToNightWave(creature);
     }
 
     private List<CreatureSO> GetCreatureSOListToSpawn(float difficultyBudget) {
@@ -298,5 +299,6 @@ public class CreaturesSpawnManager : MonoBehaviour
             Debug.Log($"Creature Type: {creatureType.name}, Spawn Position: {position}, Count: {kvp.Value}");
         }
     }
+
 
 }

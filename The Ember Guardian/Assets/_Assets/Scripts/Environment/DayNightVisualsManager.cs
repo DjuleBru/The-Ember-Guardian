@@ -217,13 +217,16 @@ public class DayNightVisualsManager : MonoBehaviour
             }
         }
 
-        float moonPositionY = sunAnimationCurve.Evaluate(moonPositionXNormalized) * sunArcRadius;
-        float moonPositionX = moonPositionXNormalized * sunArcRadius - sunArcRadius / 2;
+        if(moonPositionXNormalized <1f) {
+            float moonPositionY = sunAnimationCurve.Evaluate(moonPositionXNormalized) * sunArcRadius;
+            float moonPositionX = moonPositionXNormalized * sunArcRadius - sunArcRadius / 2;
 
-        moonPositionX = Camera.main.transform.position.x + moonPositionX;
-        moonPositionY = Camera.main.transform.position.y + moonPositionY;
+            moonPositionX = Camera.main.transform.position.x + moonPositionX;
+            moonPositionY = Camera.main.transform.position.y + moonPositionY;
 
-        moonLight2D.transform.position = new Vector3(moonPositionX, moonPositionY);
+            moonLight2D.transform.position = new Vector3(moonPositionX, moonPositionY);
+        }
+
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {

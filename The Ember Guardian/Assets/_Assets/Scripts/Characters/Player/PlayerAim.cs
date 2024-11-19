@@ -8,6 +8,7 @@ public class PlayerAim : MonoBehaviour
     public static PlayerAim Instance;
 
     [SerializeField] private Transform gunTransform;
+    [SerializeField] private Transform gunLightTransform;
     [SerializeField] private Transform visualTransform;
 
     [SerializeField] private int minAngle;
@@ -83,8 +84,8 @@ public class PlayerAim : MonoBehaviour
 
         aimDir.y += currentRecoil;
 
-        float angle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
-        gunTransform.eulerAngles = new Vector3(0,0,angle);
+        aimAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
+        gunTransform.eulerAngles = new Vector3(0,0, aimAngle);
 
         // Smooth recoil back to zero
         currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
@@ -161,14 +162,6 @@ public class PlayerAim : MonoBehaviour
             Vector3 newScale = new Vector3(1, 1, 1);
             OnXAimDirChanged?.Invoke(this, EventArgs.Empty);
         }
-
-        //Vector2 localScale = new Vector2(1, 1);
-        //if (aimDir.x < 0) {
-        //    localScale.x = -1;
-        //    localScale.y = -1;
-        //}
-
-        //gunTransform.localScale = localScale;
     }
 
     public Vector3 GetAimDir() {

@@ -42,7 +42,9 @@ public class DayNightManager : MonoBehaviour
     }
 
     private void Start() {
-        if(debugMode) {
+        CreaturesManager.Instance.OnAllCreaturesAtNightKilled += CreaturesManager_OnAllCreaturesAtNightKilled;
+
+        if (debugMode) {
             ChangeState(debugState);
             return;
         }
@@ -51,9 +53,11 @@ public class DayNightManager : MonoBehaviour
         OnDawnStart?.Invoke(this, EventArgs.Empty);
     }
 
+
     private void Update() {
         cycleTimer += Time.deltaTime;
         HandleDebugNextState();
+
         switch (state) {
 
             case State.Dawn:
@@ -84,13 +88,14 @@ public class DayNightManager : MonoBehaviour
 
             case State.Night:
                 totalNightTimer += Time.deltaTime;
-                if (cycleTimer > nightDuration) {
-                    ChangeState(State.Dawn);
-                    cycleTimer = 0;
-                    totalNightTimer = 0;
-                }
                 break;
         }
+    }
+
+    private void CreaturesManager_OnAllCreaturesAtNightKilled(object sender, EventArgs e) {
+        ChangeState(State.Dawn);
+        cycleTimer = 0;
+        totalNightTimer = 0;
     }
 
     private void HandleDebugNextState() {

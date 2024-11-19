@@ -18,6 +18,7 @@ public class Currency_UI : MonoBehaviour
     private Collider2D currencyCOllider2D;
 
     private float initialTimer;
+    private float maxSpeed = 5f;
     private bool initialTimerOver;
 
     private void Awake() {
@@ -34,15 +35,11 @@ public class Currency_UI : MonoBehaviour
         }
     }
 
-    private void FixedUpdate() {
-        //if(!initialTimerOver) {
-        //    initialTimer += Time.deltaTime;
-        //    if (initialTimer > .5f) {
-        //        initialTimerOver = true;
-        //        rb.gravityScale = 3;
-        //    }
+    void FixedUpdate() {
+        //if (rb.velocity.magnitude > maxSpeed) {
+        //    Debug.Log("limitingSpeed " + rb.velocity.magnitude);
+        //    rb.velocity = rb.velocity.normalized * maxSpeed;
         //}
-        
     }
 
     public void SetMoving(bool movingOrb) {
@@ -65,14 +62,16 @@ public class Currency_UI : MonoBehaviour
     }
 
     public void RemoveFromBag() {
+        UICurrencyManager.Instance.RemoveCurrencyUIFromInventoryList(this);
         dropCurrencyFeedback.PlayFeedbacks();
         StartCoroutine(DestroyAfterDelay(.2f));
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("DestroyCurrency")) {
-
-            Destroy(gameObject);
+            UICurrencyManager.Instance.CurrencyFellFromBag(this);
+            dropCurrencyFeedback.PlayFeedbacks();
+            StartCoroutine(DestroyAfterDelay(.2f));
         }
     }
 

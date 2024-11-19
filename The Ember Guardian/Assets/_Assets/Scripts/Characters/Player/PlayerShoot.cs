@@ -203,6 +203,9 @@ public class PlayerShoot : MonoBehaviour
             Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
             collectible.SetMovingForPayment(true, ammoDestinationPoint);
             collectible.SetScale(.5f);
+            OnPlayerAmmoRefilled?.Invoke(this, new OnAmmoRefilledEventArgs {
+                ammoAmount = 1
+            });
         }
     }
 
