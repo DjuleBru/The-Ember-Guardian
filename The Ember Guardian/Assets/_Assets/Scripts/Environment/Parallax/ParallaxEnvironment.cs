@@ -18,6 +18,18 @@ public class ParallaxEnvironment : MonoBehaviour
         }
     }
 
+    private void Start() {
+        Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
+    }
+
+    private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
+        if(isCampParallax) {
+            SetParallaxTransparency(1f);
+        } else {
+            SetParallaxTransparency(0f);
+        }
+    }
+
     public void SetParallaxTransparency(float transparency) {
 
         if(transparency < .05f) {

@@ -35,7 +35,7 @@ public class SoundManager : MonoBehaviour
         Collectible.OnAnyCollectibleTouchedFloor += Collectible_OnAnyCollectibleTouchedFloor;
         Collectible.OnAnyCollectiblePickedUpByPlayer += Collectible_OnAnyCollectiblePickedUpByPlayer;
         Collectible.OnAnyCollectiblePickedUpByWorker += Collectible_OnAnyCollectiblePickedUpByWorker;
-
+        Chest.OnAnyChestSpawnedCollectible += Chest_OnAnyChestSpawnedCollectible;
         PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor += PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;
 
         Worker.OnAnyOrbDroppedByWorker += Worker_OnAnyOrbDroppedByWorker;
@@ -103,10 +103,22 @@ public class SoundManager : MonoBehaviour
         Collectible collectible = (Collectible)sender;
 
         if(collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigBlueOrb) {
-            PlaySound3D(soundRefsSO.orbTouchedFloor, (sender as MonoBehaviour).transform.position);
+            PlaySound3D(soundRefsSO.bigBlueOrbTouchedFloor, (sender as MonoBehaviour).transform.position);
         }
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.smallBlueOrb) {
-            PlaySound3D(soundRefsSO.smallOrbTouchedFloor, (sender as MonoBehaviour).transform.position);
+            PlaySound3D(soundRefsSO.smallBlueOrbTouchedFloor, (sender as MonoBehaviour).transform.position);
+        }
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigRedOrb) {
+            PlaySound3D(soundRefsSO.bigRedOrbTouchedFloor, (sender as MonoBehaviour).transform.position);
+        }
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.smallRedOrb) {
+            PlaySound3D(soundRefsSO.smallRedOrbTouchedFloor, (sender as MonoBehaviour).transform.position);
+        }
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.greenGem) {
+            PlaySound3D(soundRefsSO.gemTouchedFloor, (sender as MonoBehaviour).transform.position);
+        }
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.redGem) {
+            PlaySound3D(soundRefsSO.gemTouchedFloor, (sender as MonoBehaviour).transform.position);
         }
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
             PlaySound3D(soundRefsSO.ammoTouchedFloor, (sender as MonoBehaviour).transform.position, .7f);
@@ -116,27 +128,57 @@ public class SoundManager : MonoBehaviour
         Collectible collectible = (Collectible)sender;
 
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigBlueOrb) {
-            PlaySound3D(soundRefsSO.orbPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+            PlaySound3D(soundRefsSO.bigBlueOrbPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
         }
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.smallBlueOrb) {
-            PlaySound3D(soundRefsSO.smallOrbPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+            PlaySound3D(soundRefsSO.smallBlueOrbPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+        }
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigRedOrb) {
+            PlaySound3D(soundRefsSO.bigRedOrbPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+        }
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.smallRedOrb) {
+            PlaySound3D(soundRefsSO.smallRedOrbPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+        }
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.greenGem) {
+            PlaySound3D(soundRefsSO.gemPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+        }
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.redGem) {
+            PlaySound3D(soundRefsSO.gemPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
         }
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
             PlaySound3D(soundRefsSO.ammoPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
         }
     }
-
-
-    private void Collectible_OnAnyCollectiblePickedUpByWorker(object sender, System.EventArgs e) {
-        Collectible collectible = (Collectible)sender;
-
-        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigBlueOrb) {
-            PlaySound3D(soundRefsSO.orbPickedUpByWorker, (sender as MonoBehaviour).transform.position);
+    private void Chest_OnAnyChestSpawnedCollectible(object sender, Chest.OnAnyChestSpawnedCollectibleEventArgs e) {
+        if (e.currencyType == PlayerCurrencies.CurrencyType.bigBlueOrb) {
+            PlaySound3D(soundRefsSO.bigBlueOrbDropped, (sender as MonoBehaviour).transform.position);
+        }
+        if (e.currencyType == PlayerCurrencies.CurrencyType.smallBlueOrb) {
+            PlaySound3D(soundRefsSO.smallBlueOrbDropped, (sender as MonoBehaviour).transform.position);
+        }
+        if (e.currencyType == PlayerCurrencies.CurrencyType.bigRedOrb) {
+            PlaySound3D(soundRefsSO.bigRedOrbDropped, (sender as MonoBehaviour).transform.position);
+        }
+        if (e.currencyType == PlayerCurrencies.CurrencyType.smallRedOrb) {
+            PlaySound3D(soundRefsSO.smallRedOrbDropped, (sender as MonoBehaviour).transform.position);
+        }
+        if (e.currencyType == PlayerCurrencies.CurrencyType.greenGem) {
+            PlaySound3D(soundRefsSO.gemDropped, (sender as MonoBehaviour).transform.position);
+        }
+        if (e.currencyType == PlayerCurrencies.CurrencyType.redGem) {
+            PlaySound3D(soundRefsSO.gemDropped, (sender as MonoBehaviour).transform.position);
+        }
+        if (e.currencyType == PlayerCurrencies.CurrencyType.ammo) {
+            PlaySound3D(soundRefsSO.ammoDropped, (sender as MonoBehaviour).transform.position);
         }
     }
 
+    private void Collectible_OnAnyCollectiblePickedUpByWorker(object sender, System.EventArgs e) {
+        PlaySound3D(soundRefsSO.orbPickedUpByWorker, (sender as MonoBehaviour).transform.position);
+    }
+
     private void PlayerCurrencies_OnBlueOrbDroppedOnTheFloor(object sender, PlayerCurrencies.OnBlueOrbDroppedOnTheFloorEventArgs e) {
-        PlaySound3D(soundRefsSO.orbDropped, (sender as MonoBehaviour).transform.position);
+        PlaySound3D(soundRefsSO.bigBlueOrbDropped, (sender as MonoBehaviour).transform.position);
     }
 
     #endregion

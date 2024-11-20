@@ -5,14 +5,43 @@ using UnityEngine;
 
 public class Mob : MonoBehaviour, IDamageable
 {
-    [SerializeField] private Transform projectileTarget;
-    [SerializeField] private Transform projectileParent;
+    [SerializeField] protected Transform projectileTarget;
+    [SerializeField] protected Transform projectileParent;
+    [SerializeField] protected Transform dropSpawnPoint;
+
     protected MobSpawner mobSpawner;
-    
+
+    protected List<Collectible> collectiblesDropped = new List<Collectible>();
+    public class OnMobDroppedCollectibleEventArgs {
+        public List<Collectible> collectibleDroppedList;
+    }
+
     protected int health;
 
     public event EventHandler OnMobDied;
     public event EventHandler<OnMobDamageTakenEventArgs> OnMobDamageTaken;
+    public event EventHandler<OnMobDroppedCollectibleEventArgs> OnMobDroppedCollectibles;
+
+    protected void SpawnDroppedCurrencies(List<PlayerCurrencies.CurrencyType> currencyTypeList, List<int> dropAmountList) {
+        int j = 0;
+        foreach(PlayerCurrencies.CurrencyType currencyType in currencyTypeList) {
+            int currencyDropAmount = dropAmountList[j];
+
+            for (int i = 0; i < currencyDropAmount; i++) {
+                Transform currencyPrefab = CurrenciesManager.Instance.GetCurrencyPrefab(currencyType);
+                Collectible lastBlueOrbDroppedOnTheFloor = Instantiate(currencyPrefab, dropSpawnPoint.position, Quaternion.identity).GetComponent<Collectible>();
+                lastBlueOrbDroppedOnTheFloor.ApplyRandomUpwardsForce(3, 6);
+                lastBlueOrbDroppedOnTheFloor.SetCollectibleUnInteractable(1f);
+                lastBlueOrbDroppedOnTheFloor.SetCanBePickedUpByWorker();
+
+                collectiblesDropped.Add(lastBlueOrbDroppedOnTheFloor);
+            }
+            j++;
+
+        }
+
+
+    }
 
     public class OnMobDamageTakenEventArgs {
         public Vector3 damageOriginPosition;
@@ -27,6 +56,8 @@ public class Mob : MonoBehaviour, IDamageable
     }
 
     public void TakeDamage(int damage, Vector3 damageSourcePosition) {
+        if (health <= 0) return;
+
         health -= damage;
         OnMobDamageTaken?.Invoke(this, new OnMobDamageTakenEventArgs {
             damageOriginPosition = damageSourcePosition,
@@ -62,5 +93,11 @@ public class Mob : MonoBehaviour, IDamageable
 
     public Transform GetProjectileParent() {
         return projectileParent;
+    }
+
+    public void InvokeOnMobDroppedCollectibles(List<Collectible> collectibleDroppedList) {
+        OnMobDroppedCollectibles?.Invoke(this, new OnMobDroppedCollectibleEventArgs {
+            collectibleDroppedList = collectiblesDropped
+        });
     }
 }

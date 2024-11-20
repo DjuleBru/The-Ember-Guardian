@@ -19,13 +19,13 @@ public class Tent : Structure
     }
 
     protected void Player_OnPlayerDamaged(object sender, EventArgs e) {
-        ActivateStructureFunctionInteraction(true);
+        ActivateStructurePrimaryFunctionInteraction(true);
     }
 
-    protected override void TriggerStructureFunction() {
-        base.TriggerStructureFunction();
+    protected override void TriggerStructurePrimaryFunction() {
+        base.TriggerStructurePrimaryFunction();
         Player.Instance.RefillPlayerHealth();
-        ActivateStructureFunctionInteraction(false);
+        ActivateStructurePrimaryFunctionInteraction(false);
     }
 
 

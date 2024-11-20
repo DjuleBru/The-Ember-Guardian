@@ -41,10 +41,10 @@ public class Shrine : Structure
 
     private void RefreshShrineActivation() {
         if (WorkerManager.Instance.GetJoblessWorkerAmount() == 0) {
-            SetStructureFunctionUnlocked(false);
+            SetStructurePrimaryFunctionUnlocked(false);
         }
         else {
-            SetStructureFunctionUnlocked(true);
+            SetStructurePrimaryFunctionUnlocked(true);
         }
     }
 

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2378217407296977779}
   - component: {fileID: 3230428631069327153}
   m_Layer: 12
-  m_Name: TickTemplate
+  m_Name: HPTickTemplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 69202565581270230}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -874,12 +874,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 776748526929420811}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5183419474665660514}
+  m_Father: {fileID: 1143792611874337937}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1524,7 +1524,7 @@ GameObject:
   - component: {fileID: 2802890732744336651}
   - component: {fileID: 7130320629888095817}
   m_Layer: 12
-  m_Name: TickContainerBackground
+  m_Name: AmmoTickContainerBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1537,13 +1537,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1630923619444502028}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 648194524246551284}
-  m_Father: {fileID: 4736914871900288309}
+  m_Father: {fileID: 628397188419548560}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1884,7 +1884,7 @@ MonoBehaviour:
         RemapRangeFalloff: {x: 0, y: 1}
         Owner: {fileID: 7042251412593344124}
         DebugActive: 0
-        BoundImage: {fileID: 1751611225479368113}
+        BoundImage: {fileID: 5606577157506389885}
         Mode: 0
         Duration: 0.05
         AllowAdditivePlays: 0
@@ -1990,7 +1990,7 @@ MonoBehaviour:
         Owner: {fileID: 7042251412593344124}
         DebugActive: 0
         Mode: 0
-        AnimateScaleTarget: {fileID: 6446471661291364031}
+        AnimateScaleTarget: {fileID: 7336909787552260279}
         AnimateScaleDuration: 0.2
         RemapCurveZero: 1
         RemapCurveOne: 2
@@ -2798,7 +2798,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 18.8
+    angle: 16.66
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
@@ -7061,7 +7061,7 @@ GameObject:
   - component: {fileID: 6378392532417396735}
   - component: {fileID: 2546311394458477606}
   m_Layer: 12
-  m_Name: TickTemplate
+  m_Name: AmmoTickTemplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7074,7 +7074,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2493541805074181168}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -17627,7 +17627,7 @@ GameObject:
   - component: {fileID: 4648521848492034320}
   - component: {fileID: 1812716192719347924}
   m_Layer: 12
-  m_Name: TickTemplate
+  m_Name: AmmoTickTemplateBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17640,7 +17640,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4540016661341050447}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -17841,9 +17841,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5183419474665660514}
-  - component: {fileID: 3334532396878190142}
+  - component: {fileID: 4239530931714297029}
   m_Layer: 12
-  m_Name: HPBarGameObject
+  m_Name: HPBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17861,8 +17861,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 684266640740317510}
-  - {fileID: 6251372985596987253}
+  - {fileID: 1143792611874337937}
   m_Father: {fileID: 7087634527195409296}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -17870,18 +17869,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0.564}
   m_SizeDelta: {x: 1.55, y: 0.4}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!225 &3334532396878190142
-CanvasGroup:
+--- !u!114 &4239530931714297029
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4877001110949422943}
   m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7ef798364c23b84cbb689bc0d0caabc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpBarGameObject: {fileID: 7177597056381026574}
+  hpTickTemplate: {fileID: 7336909787552260279}
+  hpTickContainer: {fileID: 6251372985596987253}
+  hpBarDisplayTime: 2
+  fadeOutDuration: 0.2
+  fadeInDuration: 0.2
 --- !u!1 &4895566687938163436
 GameObject:
   m_ObjectHideFlags: 0
@@ -18304,8 +18309,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7087634527195409296}
-  - component: {fileID: 8231267545529354141}
-  - component: {fileID: 3085296678079943611}
   - component: {fileID: 5282506726491809560}
   - component: {fileID: 4344630752224681108}
   - component: {fileID: 5383965482874016125}
@@ -18339,44 +18342,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 5, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8231267545529354141
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5683153108517591176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7ef798364c23b84cbb689bc0d0caabc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpBarGameObject: {fileID: 4877001110949422943}
-  hpTickTemplate: {fileID: 7336909787552260279}
-  hpTickContainer: {fileID: 6251372985596987253}
-  hpBarDisplayTime: 2
-  fadeOutDuration: 0.2
-  fadeInDuration: 0.2
---- !u!114 &3085296678079943611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5683153108517591176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aabf2da0a7a8d14abc7844aa16ed1ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ammoBarGameObject: {fileID: 7318226590484563439}
-  ammoBarBackgroundGameObject: {fileID: 1630923619444502028}
-  ammoBarRightPosition: {fileID: 3641024503741475026}
-  ammoBarLeftPosition: {fileID: 7425993475763613498}
-  ammoTickTemplate: {fileID: 6446471661291364031}
-  ammoTickContainer: {fileID: 5435482482912318343}
-  ammoTickTemplateBackground: {fileID: 648194524246551284}
-  ammoTickContainerBackground: {fileID: 2802890732744336651}
 --- !u!223 &5282506726491809560
 Canvas:
   m_ObjectHideFlags: 0
@@ -18451,7 +18416,7 @@ GameObject:
   - component: {fileID: 6251372985596987253}
   - component: {fileID: 2859351054660134568}
   m_Layer: 12
-  m_Name: TickContainer
+  m_Name: HPTickContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18464,13 +18429,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5757262073764255856}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7336909787552260279}
-  m_Father: {fileID: 5183419474665660514}
+  m_Father: {fileID: 1143792611874337937}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -18514,7 +18479,7 @@ GameObject:
   - component: {fileID: 5435482482912318343}
   - component: {fileID: 1149489699556149942}
   m_Layer: 12
-  m_Name: TickContainer
+  m_Name: AmmoTickContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18527,13 +18492,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5776812044137331657}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6446471661291364031}
-  m_Father: {fileID: 4736914871900288309}
+  m_Father: {fileID: 628397188419548560}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -18601,6 +18566,56 @@ RectTransform:
   m_AnchoredPosition: {x: -0.6079998, y: -0.557}
   m_SizeDelta: {x: -4.75, y: -4}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &7177597056381026574
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1143792611874337937}
+  - component: {fileID: 4144677104980127339}
+  m_Layer: 12
+  m_Name: HPBarGameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1143792611874337937
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7177597056381026574}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 684266640740317510}
+  - {fileID: 6251372985596987253}
+  m_Father: {fileID: 5183419474665660514}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &4144677104980127339
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7177597056381026574}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7276637571224947752
 GameObject:
   m_ObjectHideFlags: 0
@@ -18656,9 +18671,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4736914871900288309}
-  - component: {fileID: 1726357838990616482}
+  - component: {fileID: 5533642734957346242}
   m_Layer: 12
-  m_Name: AmmoGameObject
+  m_Name: AmmoBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18676,9 +18691,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5520018719238272961}
-  - {fileID: 5435482482912318343}
-  - {fileID: 2802890732744336651}
+  - {fileID: 628397188419548560}
   m_Father: {fileID: 7087634527195409296}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -18686,18 +18699,26 @@ RectTransform:
   m_AnchoredPosition: {x: -0.608, y: -0.557}
   m_SizeDelta: {x: 0.25, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!225 &1726357838990616482
-CanvasGroup:
+--- !u!114 &5533642734957346242
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7318226590484563439}
   m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aabf2da0a7a8d14abc7844aa16ed1ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ammoBarGameObject: {fileID: 7878750243571338022}
+  ammoBarBackgroundGameObject: {fileID: 1630923619444502028}
+  ammoBarRightPosition: {fileID: 3641024503741475026}
+  ammoBarLeftPosition: {fileID: 7425993475763613498}
+  ammoTickTemplate: {fileID: 6446471661291364031}
+  ammoTickContainer: {fileID: 5435482482912318343}
+  ammoTickTemplateBackground: {fileID: 648194524246551284}
+  ammoTickContainerBackground: {fileID: 2802890732744336651}
 --- !u!1 &7853792992362668171
 GameObject:
   m_ObjectHideFlags: 0
@@ -19469,6 +19490,57 @@ MonoBehaviour:
           m_RotationOrder: 4
         Amplitude: 1
         RelativeIntensity: 0
+--- !u!1 &7878750243571338022
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 628397188419548560}
+  - component: {fileID: 6263376001960348990}
+  m_Layer: 12
+  m_Name: AmmoBarGameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &628397188419548560
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7878750243571338022}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5520018719238272961}
+  - {fileID: 5435482482912318343}
+  - {fileID: 2802890732744336651}
+  m_Father: {fileID: 4736914871900288309}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &6263376001960348990
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7878750243571338022}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7915249734270255090
 GameObject:
   m_ObjectHideFlags: 0
@@ -20266,12 +20338,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8255802807040986003}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4736914871900288309}
+  m_Father: {fileID: 628397188419548560}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

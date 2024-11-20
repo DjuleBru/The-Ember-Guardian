@@ -8,6 +8,7 @@ public class Creature : Mob
 
     [SerializeField] private CreatureSO creatureSO;
     [SerializeField] private CircleCollider2D detectionCollider;
+
     private Rigidbody2D rb;
     private bool dayCreature;
     private bool enteredLight;
@@ -45,6 +46,9 @@ public class Creature : Mob
         CreaturesManager.Instance.RemoveCreatureSpawned(this);
 
         base.Die();
+
+        SpawnDroppedCurrencies(creatureSO.currencyTypeDroppedList, creatureSO.currencyDropAmountList);
+        InvokeOnMobDroppedCollectibles(collectiblesDropped);
 
         OnCreatureDied?.Invoke(this, EventArgs.Empty);
         StartCoroutine(DisableGameObjectAfterDelay());

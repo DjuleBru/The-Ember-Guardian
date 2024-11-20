@@ -6,8 +6,8 @@ using UnityEngine;
 public class Chest : MonoBehaviour
 {
     [SerializeField] private Transform orbSpawnPosition;
-    [SerializeField] private PlayerCurrencies.CurrencyType currencyTypeToReward;
-    [SerializeField] private int rewardAmount;
+    [SerializeField] private List<PlayerCurrencies.CurrencyType> currencyTypeToRewardList;
+    [SerializeField] private List<int> rewardAmountList;
 
     [SerializeField] private float delayToChestUnlockAnimation;
     [SerializeField] private float delayToSpawnCollectibles;
@@ -15,6 +15,10 @@ public class Chest : MonoBehaviour
     private bool chestOpened;
     public event EventHandler OnChestUnlocked;
     public event EventHandler OnChestOpened;
+    public static event EventHandler<OnAnyChestSpawnedCollectibleEventArgs> OnAnyChestSpawnedCollectible;
+    public class OnAnyChestSpawnedCollectibleEventArgs : EventArgs {
+        public PlayerCurrencies.CurrencyType currencyType;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (chestOpened) return;
@@ -34,13 +38,24 @@ public class Chest : MonoBehaviour
 
         yield return new WaitForSeconds(delayToSpawnCollectibles - delayToChestUnlockAnimation);
 
-        for(int i = 0; i < rewardAmount; i++) {
-            Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyTypeToReward), orbSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
+        int j = 0;
+        foreach(PlayerCurrencies.CurrencyType currencyType in currencyTypeToRewardList) {
+            int rewardAmount = rewardAmountList[j];
 
-            yield return new WaitForSeconds(.1f);
-            collectible.ApplyRandomUpwardsForce(5, 8);
-            collectible.SetCollectibleUnInteractable(1f);
+            for (int i = 0; i < rewardAmount; i++) {
+                Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyType), orbSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
+
+                OnAnyChestSpawnedCollectible?.Invoke(this, new OnAnyChestSpawnedCollectibleEventArgs {
+                    currencyType = currencyType
+                });
+
+                yield return new WaitForSeconds(.2f);
+                collectible.ApplyRandomUpwardsForce(5, 8);
+                collectible.SetCollectibleUnInteractable(1f);
+            }
         }
+
+        
 
     }
 }

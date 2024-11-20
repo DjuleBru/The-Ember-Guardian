@@ -12,25 +12,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94eaf02c95d18be4c99f491760dacbce, type: 3}
   m_Name: SoundRefs
   m_EditorClassIdentifier: 
-  orbDropped:
+  bigBlueOrbDropped:
   - {fileID: 8300000, guid: 3c251547637eb0d45bfe5cbcdc28ade4, type: 3}
-  orbTouchedFloor:
+  smallBlueOrbDropped:
+  - {fileID: 8300000, guid: f6355d07e130f884181a9ef8de4c80b2, type: 3}
+  bigRedOrbDropped:
+  - {fileID: 8300000, guid: 8c952b701952e8a4fa34eec675d5a44e, type: 3}
+  smallRedOrbDropped:
+  - {fileID: 8300000, guid: 6e4a2bf8396e60144a85cc37f573c6bf, type: 3}
+  ammoDropped:
+  - {fileID: 8300000, guid: d48865624c56a1a4290b234a33a1a25e, type: 3}
+  - {fileID: 8300000, guid: df452645b5311a844a00ff453516c234, type: 3}
+  - {fileID: 8300000, guid: c641e76a146d66641b6a626865052e8e, type: 3}
+  - {fileID: 8300000, guid: 3d2cd08eea55196478bdac059c26b52e, type: 3}
+  - {fileID: 8300000, guid: 62e4065dc06c4174da22d9033e81c688, type: 3}
+  gemDropped:
+  - {fileID: 8300000, guid: 7f363cfc4e5fd52419e5059cdc05f9d6, type: 3}
+  bigBlueOrbTouchedFloor:
   - {fileID: 8300000, guid: 81da813c47976f4409c77d9e3078b5ea, type: 3}
   - {fileID: 8300000, guid: 24655d92ce4b27746a690c7027c21962, type: 3}
-  smallOrbTouchedFloor:
+  smallBlueOrbTouchedFloor:
   - {fileID: 8300000, guid: e3503626ed46efd439af50ad0808ff4d, type: 3}
+  bigRedOrbTouchedFloor:
+  - {fileID: 8300000, guid: 0a97626f0e917944bb65332f0d17a861, type: 3}
+  - {fileID: 8300000, guid: cec68372a46d875498d7ca3254637f39, type: 3}
+  - {fileID: 8300000, guid: 3dcbf20dca7904f46bab470b16c124b9, type: 3}
+  smallRedOrbTouchedFloor:
+  - {fileID: 8300000, guid: 1015357087d64654c94c7bf87dbfd069, type: 3}
+  - {fileID: 8300000, guid: 3b381d9bd85f927479126480121bee92, type: 3}
+  - {fileID: 8300000, guid: 19ee7e3bd095b9d49b6f422acbd9545f, type: 3}
   ammoTouchedFloor:
   - {fileID: 8300000, guid: 66597da8f21ca8f4298fa52a2d6d952c, type: 3}
   - {fileID: 8300000, guid: 1bdedab04fd13664788b559de6340cb7, type: 3}
   - {fileID: 8300000, guid: 4f73522c12e2aa94082bf861bf396ffa, type: 3}
-  orbPickedUpByPlayer:
+  gemTouchedFloor:
+  - {fileID: 8300000, guid: 6e0e6e0a396b5f049a9ef05dd09572ba, type: 3}
+  - {fileID: 8300000, guid: d3c7e1155bcc21244aa22dbdb067027e, type: 3}
+  bigBlueOrbPickedUpByPlayer:
   - {fileID: 8300000, guid: de656a5820d5cf649ac2bc519e42a326, type: 3}
-  smallOrbPickedUpByPlayer:
+  smallBlueOrbPickedUpByPlayer:
   - {fileID: 8300000, guid: 7ad348a274fb1a243b4657a0ee9a841f, type: 3}
+  bigRedOrbPickedUpByPlayer:
+  - {fileID: 8300000, guid: 294f138b44671854f86b207394a3c4a6, type: 3}
+  - {fileID: 8300000, guid: 29890bceed55c944bb73b4f992e2f479, type: 3}
+  - {fileID: 8300000, guid: e1f2394576fcf5c42bda5fcaeb3efe8a, type: 3}
+  - {fileID: 8300000, guid: 6702737fa8567ad48a810ae1e5a87c6e, type: 3}
+  smallRedOrbPickedUpByPlayer:
+  - {fileID: 8300000, guid: d49323489359e244d81f2e0f76f18b47, type: 3}
+  - {fileID: 8300000, guid: 7ad4f9361f2a74c4a82b4e35d2614679, type: 3}
+  - {fileID: 8300000, guid: dd7ead372631b7b449663f1ccd1ea7d3, type: 3}
+  - {fileID: 8300000, guid: 8de0bc399f8ea9148905b748b3bbb92a, type: 3}
   ammoPickedUpByPlayer:
   - {fileID: 8300000, guid: 3fc27a79c89d5774980ccd4acbe349c1, type: 3}
   - {fileID: 8300000, guid: f6d1a848ce0b12f46a7f69a5f5c4765b, type: 3}
   - {fileID: 8300000, guid: 4f05ea045b674ab42940154745c2e342, type: 3}
+  gemPickedUpByPlayer:
+  - {fileID: 8300000, guid: 5cc9ecd0abee0e942be43b2e6d32329d, type: 3}
+  - {fileID: 8300000, guid: c8932dad49910e444a53e8119ea8b54e, type: 3}
+  - {fileID: 8300000, guid: 5f4ccfe29621e964297b06ebb4502961, type: 3}
   orbPickedUpByWorker:
   - {fileID: 8300000, guid: 88bc533c6be2223459d9a6cdcf542c7a, type: 3}
   orbDroppedUpByWorker:

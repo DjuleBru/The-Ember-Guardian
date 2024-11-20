@@ -17203,6 +17203,94 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &7274123596762503657
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3278131492016181884}
+  - component: {fileID: 9209152702871245020}
+  m_Layer: 0
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3278131492016181884
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7274123596762503657}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6583722523015944935}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0.61}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!212 &9209152702871245020
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7274123596762503657}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 168283212, guid: d0af007943e4dc249900c24a9b0644db, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.4375, y: 0.8125}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &7593087514789019079
 GameObject:
   m_ObjectHideFlags: 0
@@ -27261,6 +27349,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2508875015344436976, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.03
+      objectReference: {fileID: 0}
     - target: {fileID: 2599746549960306044, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: payOrbsUI
       value: 
@@ -27284,6 +27376,18 @@ PrefabInstance:
     - target: {fileID: 5738346740003807192, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.185
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937401065631940523, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6468682074147149086, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6819761507502285850, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: currencyTypeToPay
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8209206451638645461, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -27338,6 +27442,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8209206451638645461, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       insertIndex: -1
       addedObject: {fileID: 612635853085971541}
+    - targetCorrespondingSourceObject: {fileID: 6276308091143600461, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3278131492016181884}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 977070045626552078, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       insertIndex: -1
@@ -27374,7 +27481,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureSO: {fileID: 11400000, guid: 9829931b3277cd94f913e96ff2756212, type: 2}
   upgradeUnlocked: 0
-  functionUnlocked: 0
+  primaryFunctionUnlocked: 0
   fireRadiusCollider: {fileID: 7294656095997144733}
   calmFireRadius: 10
   mildFireRadius: 20
@@ -27455,6 +27562,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6419487770454074272, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
   m_PrefabInstance: {fileID: 884948754251948970}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6161654533063112372 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6468682074147149086, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+  m_PrefabInstance: {fileID: 884948754251948970}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6354216934424298877 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6082479181377922775, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
@@ -27524,6 +27636,11 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!224 &6583722523015944935 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6276308091143600461, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+  m_PrefabInstance: {fileID: 884948754251948970}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6783013657125641217 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5937401065631940523, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
@@ -27568,9 +27685,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UIGameObject: {fileID: 1789648050097970014}
   functionUIGameObject: {fileID: 6783013657125641217}
+  secondaryFunctionUIGameObject: {fileID: 6161654533063112372}
   upgradeGameObject: {fileID: 4181146338195577452}
   switchUIGameObjectList: {fileID: 6147802896860545034}
   functionPayOrbsUIList: {fileID: 5382955344090603618}
+  decondaryFunctionPayOrbsUIList: {fileID: 0}
   upgradeToNextLevelPayOrbsUIList:
   - {fileID: 8529392425079162832}
   - {fileID: 6354216934424298877}

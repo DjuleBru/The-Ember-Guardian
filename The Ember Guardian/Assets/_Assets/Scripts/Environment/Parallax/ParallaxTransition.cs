@@ -31,7 +31,6 @@ public class ParallaxTransition : MonoBehaviour
         leftTransitionPosition = transform.position.x - transitionRadius;
         rightTransitionPosition = transform.position.x + transitionRadius;
 
-
         leftCameraTransitionPosition = transform.position.x - cameraTransitionRadius;
         rightCameraTransitionPosition = transform.position.x + cameraTransitionRadius;
     }

@@ -10,6 +10,7 @@ public class UICurrencyManager : MonoBehaviour
 
     [SerializeField] private Transform blueOrbsSpawnPosition;
     [SerializeField] private Transform redOrbsSpawnPosition;
+    [SerializeField] private Transform gemsSpawnPosition;
     [SerializeField] private Transform ammoSpawnPosition;
 
     [SerializeField] private Transform currencyContainer;
@@ -18,6 +19,8 @@ public class UICurrencyManager : MonoBehaviour
     [SerializeField] private Transform smallBlueOrbUIPrefab;
     [SerializeField] private Transform redOrbUIPrefab;
     [SerializeField] private Transform smallRedOrbUIPrefab;
+    [SerializeField] private Transform greenGemUIPrefab;
+    [SerializeField] private Transform redGemUIPrefab;
     [SerializeField] private Transform ammoUIPrefab;
 
     [SerializeField] private int smallOrbValue = 5;
@@ -70,7 +73,7 @@ public class UICurrencyManager : MonoBehaviour
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
-        Structure.OnAnyStructureFunctionUsed += Structure_OnAnyStructureFunctionUsed;
+        Structure.OnAnyStructurePrimaryFunctionUsed += Structure_OnAnyStructureFunctionUsed;
 
         StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.bigBlueOrb, debugInitialBigOrbs));
         StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.smallBlueOrb, debugInitialSmallOrbs));
@@ -129,6 +132,16 @@ public class UICurrencyManager : MonoBehaviour
 
         if (currencyType == PlayerCurrencies.CurrencyType.smallRedOrb) {
             currencyTransform = Instantiate(smallRedOrbUIPrefab, redOrbsSpawnPosition.position, Quaternion.identity, currencyContainer);
+            currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+        }
+
+        if (currencyType == PlayerCurrencies.CurrencyType.greenGem) {
+            currencyTransform = Instantiate(greenGemUIPrefab, gemsSpawnPosition.position, Quaternion.identity, currencyContainer);
+            currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+        }
+
+        if (currencyType == PlayerCurrencies.CurrencyType.redGem) {
+            currencyTransform = Instantiate(redGemUIPrefab, gemsSpawnPosition.position, Quaternion.identity, currencyContainer);
             currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
         }
 

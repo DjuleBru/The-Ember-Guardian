@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Worker : Mob {
@@ -17,9 +18,12 @@ public class Worker : Mob {
     private Dictionary<PlayerCurrencies.CurrencyType, int> collectedCurrencies = new Dictionary<PlayerCurrencies.CurrencyType, int>();
 
     private bool playerIsClose;
-    private bool droppingOrbs;
+    private bool droppingCurrencies;
     private bool recruited;
     private float playerIsCloseTimer;
+
+    private float dropDelay = 0.15f; // Délai entre chaque drop
+    private float dropTimer = 0f; // Compteur pour suivre le temps écoulé
 
     public static event EventHandler OnAnyOrbDroppedByWorker;
     public static event EventHandler OnAnyWorkerRecruited;
@@ -36,7 +40,9 @@ public class Worker : Mob {
 
 
     private void Update() {
-        //CheckOrbsNearby();
+        if(droppingCurrencies) {
+            HandleDroppingCurrencies();
+        }
         CheckPlayerIsClose();
     }
 
@@ -57,11 +63,12 @@ public class Worker : Mob {
     }
 
     public void DropCurrencies() {
-        if (droppingOrbs) return;
+        if (droppingCurrencies) return;
 
-        droppingOrbs = true;
-        StartCoroutine(DropCurrenciesCoroutine(0.15f));
+        droppingCurrencies = true; // On commence le processus de drop
+        dropTimer = 0f; // Réinitialiser le timer
     }
+
     public int GetTotalCurrencyAmount() {
         int totalAmount = 0;
         foreach (var amount in collectedCurrencies.Values) {
@@ -115,19 +122,40 @@ public class Worker : Mob {
         return sideAssigned;
     }
 
-    private IEnumerator DropCurrenciesCoroutine(float delayBetweenDrops) {
-        foreach (var currency in collectedCurrencies) {
+    private void HandleDroppingCurrencies() {
+        // Si on est en train de dropper des currencies
+        if (droppingCurrencies) {
+            dropTimer += Time.deltaTime; // Ajouter le temps écoulé
 
-            for (int i = 0; i < currency.Value; i++) {
-                Transform prefabToDrop = CurrenciesManager.Instance.GetCurrencyPrefab(currency.Key);
-                Collectible droppedCurrency = Instantiate(prefabToDrop, transform.position, Quaternion.identity).GetComponent<Collectible>();
-                droppedCurrency.ApplyRandomFrontForce(2f, 3f);
-                droppedCurrency.SetCollectibleUnInteractable(1f);
-                OnAnyOrbDroppedByWorker?.Invoke(this, EventArgs.Empty);
+            // Si le délai entre deux drops est écoulé
+            if (dropTimer >= dropDelay) {
+                dropTimer = 0f; // Réinitialiser le timer
 
-                yield return new WaitForSeconds(delayBetweenDrops);
+                // Essayer de dropper toutes les currencies collectées
+                foreach (var currency in collectedCurrencies.ToList()) {
+                    if (currency.Value > 0) {
+                        Transform prefabToDrop = CurrenciesManager.Instance.GetCurrencyPrefab(currency.Key);
+                        Collectible droppedCurrency = Instantiate(prefabToDrop, transform.position, Quaternion.identity).GetComponent<Collectible>();
+                        droppedCurrency.ApplyRandomFrontForce(2f, 3f);
+                        droppedCurrency.SetCollectibleUnInteractable(1f);
+                        OnAnyOrbDroppedByWorker?.Invoke(this, EventArgs.Empty);
+
+                        // Réduire la valeur après chaque drop
+                        collectedCurrencies[currency.Key]--;
+
+                        // Si la valeur atteint 0, retirer l'élément du dictionnaire
+                        if (collectedCurrencies[currency.Key] <= 0) {
+                            collectedCurrencies.Remove(currency.Key);
+                        }
+                        break; // Quitter la boucle dès qu'on a fait un drop
+                    }
+                }
+
+                // Si plus rien à dropper, arrêter le processus
+                if (collectedCurrencies.Count == 0) {
+                    droppingCurrencies = false;
+                }
             }
-
         }
     }
 

@@ -7,7 +7,8 @@ public class Structure : MonoBehaviour {
 
     [SerializeField] protected StructureSO structureSO;
     [SerializeField] protected bool upgradeUnlocked;
-    [SerializeField] protected bool functionUnlocked;
+    [SerializeField] protected bool primaryFunctionUnlocked;
+    [SerializeField] protected bool secondaryFunctionUnlocked;
 
     private CampZoneManager.CampSide campSide;
     protected PayCurrencyUI payOrbsUI;
@@ -18,7 +19,7 @@ public class Structure : MonoBehaviour {
     public static event EventHandler OnAnyPlayerTriggeredOut;
     public event EventHandler OnStructureUpgraded;
     public static event EventHandler OnAnyStructureUpgraded;
-    public static event EventHandler OnAnyStructureFunctionUsed;
+    public static event EventHandler OnAnyStructurePrimaryFunctionUsed;
     public event EventHandler OnStructureInteractionsUpdated;
 
     protected bool playerInTriggerArea;
@@ -29,7 +30,8 @@ public class Structure : MonoBehaviour {
     private float playerInteractingTimer;
 
     public enum StructureInteractionType {
-        function,
+        primaryFunction,
+        secondaryFunction,
         upgrade,
     }
 
@@ -61,8 +63,8 @@ public class Structure : MonoBehaviour {
     protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         payOrbsUI.SetPlayerInteracting(false);
         
-        if(currentStructureInteractionType == StructureInteractionType.function) {
-            TriggerStructureFunction();
+        if(currentStructureInteractionType == StructureInteractionType.primaryFunction) {
+            TriggerStructurePrimaryFunction();
             return;
         }
 
@@ -72,9 +74,8 @@ public class Structure : MonoBehaviour {
         }
     }
 
-    protected virtual void TriggerStructureFunction() {
-        Debug.Log("TriggerStructureFunction");
-        OnAnyStructureFunctionUsed?.Invoke(this, EventArgs.Empty);
+    protected virtual void TriggerStructurePrimaryFunction() {
+        OnAnyStructurePrimaryFunctionUsed?.Invoke(this, EventArgs.Empty);
     }
 
     protected virtual void UpgradeStructure() {
@@ -90,17 +91,24 @@ public class Structure : MonoBehaviour {
         ActivateStructureUpgradeInteraction(upgradable);
     }
 
-    public void SetStructureFunctionUnlocked(bool unlocked) {
-        functionUnlocked = unlocked;
-        ActivateStructureFunctionInteraction(unlocked);
+    public void SetStructurePrimaryFunctionUnlocked(bool unlocked) {
+        if (primaryFunctionUnlocked == unlocked) return;
+        primaryFunctionUnlocked = unlocked;
+        ActivateStructurePrimaryFunctionInteraction(unlocked);
+    }
+
+    public void SetStructureSecondaryFunctionUnlocked(bool unlocked) {
+        if(secondaryFunctionUnlocked == unlocked) return;
+        secondaryFunctionUnlocked = unlocked;
+        ActivateStructureSecondaryFunctionInteraction(unlocked);
     }
 
     public bool GetUpgradableUnlocked() {
         return upgradeUnlocked;
     }
 
-    public bool GetFunctionUnlocked() {
-        return functionUnlocked;
+    public bool GetPrimaryFunctionUnlocked() {
+        return primaryFunctionUnlocked;
     }
 
     public int GetStructureLevel() {
@@ -116,8 +124,8 @@ public class Structure : MonoBehaviour {
     }
 
     protected virtual void DayNightManager_OnDawnStart(object sender, EventArgs e) {
-        if (!structureSO.functionUsableAtNight && functionUnlocked) {
-            ActivateStructureFunctionInteraction(true);
+        if (!structureSO.functionUsableAtNight && primaryFunctionUnlocked) {
+            ActivateStructurePrimaryFunctionInteraction(true);
         }
 
         if(upgradeUnlocked) {
@@ -128,7 +136,7 @@ public class Structure : MonoBehaviour {
     protected virtual void DayNightManager_OnNightStart(object sender, EventArgs e) {
 
         if (!structureSO.functionUsableAtNight) {
-            ActivateStructureFunctionInteraction(false);
+            ActivateStructurePrimaryFunctionInteraction(false);
         }
 
         ActivateStructureUpgradeInteraction(false);
@@ -221,9 +229,15 @@ public class Structure : MonoBehaviour {
 
     protected void DebugInitializeActiveStructureUITypeList() {
 
-        if (functionUnlocked) {
-            if (!activeStructureInteractionsTypeList.Contains(StructureInteractionType.function)) {
-                activeStructureInteractionsTypeList.Add(StructureInteractionType.function);
+        if (primaryFunctionUnlocked) {
+            if (!activeStructureInteractionsTypeList.Contains(StructureInteractionType.primaryFunction)) {
+                activeStructureInteractionsTypeList.Add(StructureInteractionType.primaryFunction);
+            }
+        }
+
+        if (secondaryFunctionUnlocked) {
+            if (!activeStructureInteractionsTypeList.Contains(StructureInteractionType.secondaryFunction)) {
+                activeStructureInteractionsTypeList.Add(StructureInteractionType.secondaryFunction);
             }
         }
 
@@ -235,16 +249,33 @@ public class Structure : MonoBehaviour {
         RefreshPlayerCanInteract();
     }
 
-    protected void ActivateStructureFunctionInteraction(bool active) {
+    protected void ActivateStructurePrimaryFunctionInteraction(bool active) {
         if (active) {
-            if (!activeStructureInteractionsTypeList.Contains(StructureInteractionType.function)) {
-                activeStructureInteractionsTypeList.Add(StructureInteractionType.function);
+            if (!activeStructureInteractionsTypeList.Contains(StructureInteractionType.primaryFunction)) {
+                activeStructureInteractionsTypeList.Add(StructureInteractionType.primaryFunction);
             }
 
         }
         else {
-            if (activeStructureInteractionsTypeList.Contains(StructureInteractionType.function)) {
-                activeStructureInteractionsTypeList.Remove(StructureInteractionType.function);
+            if (activeStructureInteractionsTypeList.Contains(StructureInteractionType.primaryFunction)) {
+                activeStructureInteractionsTypeList.Remove(StructureInteractionType.primaryFunction);
+            }
+        }
+
+        OnStructureInteractionsUpdated?.Invoke(this, EventArgs.Empty);
+        RefreshPlayerCanInteract();
+    }
+
+    protected void ActivateStructureSecondaryFunctionInteraction(bool active) {
+        if (active) {
+            if (!activeStructureInteractionsTypeList.Contains(StructureInteractionType.secondaryFunction)) {
+                activeStructureInteractionsTypeList.Add(StructureInteractionType.secondaryFunction);
+            }
+
+        }
+        else {
+            if (activeStructureInteractionsTypeList.Contains(StructureInteractionType.secondaryFunction)) {
+                activeStructureInteractionsTypeList.Remove(StructureInteractionType.secondaryFunction);
             }
         }
 

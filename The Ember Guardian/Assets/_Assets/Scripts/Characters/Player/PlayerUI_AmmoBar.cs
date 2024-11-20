@@ -117,6 +117,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         FadeInAmmoBar();
         StartCoroutine(RefillAmmoBar(e.ammoAmount));
     }
+
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
         if (PlayerShoot.Instance.GetCurrentAmmoClip() < 0) return;
 
@@ -135,6 +136,8 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         }
 
         PlayerUI_TickTemplate[] ammoTickArray = ammoTickContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
+        Debug.Log(ammoTickArray.Length);
+        Debug.Log(ammoTickArray[0]);
         ammoTickArray[0].GetComponent<RectTransform>().SetParent(transform);
         ammoTickArray[0].RemoveTick();
 
@@ -142,7 +145,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     }
 
     private IEnumerator RefillAmmoBar(int ammoCount) {
-
+        Debug.Log("RefillAmmoBar");
         for (int i = 0; i < ammoCount; i++) {
 
             PlayerUI_TickTemplate ammoTick = Instantiate(ammoTickTemplate, ammoTickContainer).GetComponent<PlayerUI_TickTemplate>();

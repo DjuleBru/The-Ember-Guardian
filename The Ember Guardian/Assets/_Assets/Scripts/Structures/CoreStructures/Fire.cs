@@ -68,6 +68,7 @@ public class Fire : Structure, IDamageable {
 
         fuelLevel = mildFuelTreshold - 1;
         ChangeState(State.calm);
+        SetFireCurrentMaxFuelTreshold();
     }
 
     private void Update() {
@@ -114,16 +115,14 @@ public class Fire : Structure, IDamageable {
 
     private void CheckFireFeedable() {
 
-        if(fuelLevel >= maxFuelTreshold) {
-            SetStructureFunctionUnlocked(false);
-        }
-
         if(fuelLevel + orbFuelValue <= maxFuelTreshold) {
-            SetStructureFunctionUnlocked(true);
+            SetStructurePrimaryFunctionUnlocked(true);
+        } else {
+            SetStructurePrimaryFunctionUnlocked(false);
         }
 
         if (state == State.extinguished) {
-            SetStructureFunctionUnlocked(false);
+            SetStructurePrimaryFunctionUnlocked(false);
         }
     } 
 
@@ -145,36 +144,60 @@ public class Fire : Structure, IDamageable {
             ChangeState(State.wild);
         }
 
+        CheckFireSecondaryFunctionInteractable();
+        CheckFireFeedable();
     }
 
     private void CheckFireStateUpgrade() {
-        if (fuelLevel >= mildFuelTreshold && state == State.calm) {
+        State maxState = LevelManager.Instance.GetLevelSO().maxFireState;
+
+        if (state == State.calm && fuelLevel >= mildFuelTreshold) {
             ChangeState(State.mild);
         }
 
-        if(fuelLevel >= wildFuelTreshold && state == State.mild) {
+        if (state == State.mild && fuelLevel >= wildFuelTreshold) {
             ChangeState(State.wild);
         }
 
-        if(fuelLevel >= insaneFuelTreshold && state == State.wild) {
+        if(state == State.wild && fuelLevel >= insaneFuelTreshold) {
             ChangeState(State.insane);
         }
     }
 
-    private void ChangeState(State newState) {
+    private void CheckFireSecondaryFunctionInteractable() {
+        State maxState = LevelManager.Instance.GetLevelSO().maxFireState;
 
+        if(state == maxState) {
+            SetStructureSecondaryFunctionUnlocked(true);
+        } else {
+            SetStructureSecondaryFunctionUnlocked(false);
+        }
+    }
+
+    private void ChangeState(State newState) {
         SetFireAOEValues(newState);
 
         State previousState = state;
-        
         state = newState;
 
         OnFireChangedState?.Invoke(this, new OnFireChangedStateEventArgs {
             previousState = previousState,
             newState = newState
         });
+    }
 
-        CheckFireFeedable();
+    private void SetFireCurrentMaxFuelTreshold() {
+        Debug.Log("SetFireCurrentMaxFuelTreshold");
+        State state = LevelManager.Instance.GetLevelSO().maxFireState;
+        if (state == State.calm) {
+            maxFuelTreshold = mildFuelTreshold;
+        }
+        if (state == State.mild) {
+            maxFuelTreshold = wildFuelTreshold;
+        }
+        if (state == State.wild) {
+            maxFuelTreshold = insaneFuelTreshold;
+        }
     }
 
     private void SetFireAOEValues(State newState) {

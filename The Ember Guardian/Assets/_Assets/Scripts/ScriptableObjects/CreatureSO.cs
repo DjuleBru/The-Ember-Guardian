@@ -89,6 +89,14 @@ public class CreatureSO : ScriptableObject
     [Range(1, 5)]
     public int barricadeTargetingPriority;
 
+
+    [BoxGroup("Drop Stats")]
+    [LabelWidth(200)]
+    public List<PlayerCurrencies.CurrencyType> currencyTypeDroppedList;
+    [BoxGroup("Drop Stats")]
+    [LabelWidth(200)]
+    public List<int> currencyDropAmountList;
+
     [BoxGroup("Wave Stats")]
     [LabelWidth(200)]
     [Range(1, 10)]

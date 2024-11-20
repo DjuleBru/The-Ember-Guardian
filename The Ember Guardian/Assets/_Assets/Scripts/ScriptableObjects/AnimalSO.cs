@@ -5,11 +5,8 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class AnimalSO : ScriptableObject
 {
-    public PlayerCurrencies.CurrencyType currencyTypeDropped;
-    public int currencyDropAmount;
-
-    public PlayerCurrencies.CurrencyType currency2TypeDropped;
-    public int currency2DropAmount;
+    public List<PlayerCurrencies.CurrencyType> currencyTypeDroppedList;
+    public List<int> currencyDropAmountList;
 
     public int maxHP;
 

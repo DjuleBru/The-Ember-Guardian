@@ -23,7 +23,7 @@ public class CurrencyCrafter : Structure
 
     protected override void Start() {
         base.Start();
-        ActivateStructureFunctionInteraction(true);
+        ActivateStructurePrimaryFunctionInteraction(true);
     }
 
     private void Update() {
@@ -38,7 +38,7 @@ public class CurrencyCrafter : Structure
         }
     }
 
-    protected override void TriggerStructureFunction() {
+    protected override void TriggerStructurePrimaryFunction() {
         if(!craftedCurrency) {
 
             craftingCurrency = true;

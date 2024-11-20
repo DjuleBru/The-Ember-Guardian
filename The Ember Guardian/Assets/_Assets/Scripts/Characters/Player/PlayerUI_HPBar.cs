@@ -152,13 +152,14 @@ public class PlayerUI_HPBar : MonoBehaviour
     }
 
     private IEnumerator RefillHPBar(int hpCount) {
-
+        Debug.Log("RefillHPBar");
         for (int i = 0; i < hpCount; i++) {
 
-            PlayerUI_TickTemplate ammoTick = Instantiate(hpTickTemplate, hpTickContainer).GetComponent<PlayerUI_TickTemplate>();
+            PlayerUI_TickTemplate hpTick = Instantiate(hpTickTemplate, hpTickContainer).GetComponent<PlayerUI_TickTemplate>();
 
-            ammoTick.gameObject.SetActive(true);
+            hpTick.gameObject.SetActive(true);
             PlayerUI_TickTemplate[] hpTickArray = hpTickContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
+
             hpTickArray[hpTickArray.Length - 1].AddTick();
             OnHPTickAdded?.Invoke(this, EventArgs.Empty);
 

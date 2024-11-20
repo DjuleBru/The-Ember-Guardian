@@ -27,6 +27,8 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnPlayerGunLightSwitch;
 
     public event EventHandler OnPlayerLeftRightSwitchPerformed;
+    public event EventHandler OnPlayerLeftSwitchPerformed;
+    public event EventHandler OnPlayerRightSwitchPerformed;
 
     private bool interactPressed;
     private bool holdingInteract;
@@ -86,6 +88,13 @@ public class GameInput : MonoBehaviour
     }
 
     private void LeftRightSwitch_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        float leftRightDir = GetLeftRightDir();
+
+        if(leftRightDir > 0) {
+            OnPlayerRightSwitchPerformed?.Invoke(this, EventArgs.Empty);
+        } else {
+            OnPlayerLeftSwitchPerformed?.Invoke(this, EventArgs.Empty);
+        }
         OnPlayerLeftRightSwitchPerformed?.Invoke(this, EventArgs.Empty);
     }
 

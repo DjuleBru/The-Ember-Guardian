@@ -5,13 +5,26 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class SoundRefsSO : ScriptableObject
 {
-    public AudioClip[] orbDropped;
-    public AudioClip[] orbTouchedFloor;
-    public AudioClip[] smallOrbTouchedFloor;
+    public AudioClip[] bigBlueOrbDropped;
+    public AudioClip[] smallBlueOrbDropped;
+    public AudioClip[] bigRedOrbDropped;
+    public AudioClip[] smallRedOrbDropped;
+    public AudioClip[] ammoDropped;
+    public AudioClip[] gemDropped;
+
+    public AudioClip[] bigBlueOrbTouchedFloor;
+    public AudioClip[] smallBlueOrbTouchedFloor;
+    public AudioClip[] bigRedOrbTouchedFloor;
+    public AudioClip[] smallRedOrbTouchedFloor;
     public AudioClip[] ammoTouchedFloor;
-    public AudioClip[] orbPickedUpByPlayer;
-    public AudioClip[] smallOrbPickedUpByPlayer;
+    public AudioClip[] gemTouchedFloor;
+
+    public AudioClip[] bigBlueOrbPickedUpByPlayer;
+    public AudioClip[] smallBlueOrbPickedUpByPlayer;
+    public AudioClip[] bigRedOrbPickedUpByPlayer;
+    public AudioClip[] smallRedOrbPickedUpByPlayer;
     public AudioClip[] ammoPickedUpByPlayer;
+    public AudioClip[] gemPickedUpByPlayer;
 
     public AudioClip[] orbPickedUpByWorker;
     public AudioClip[] orbDroppedUpByWorker;

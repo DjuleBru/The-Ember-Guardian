@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Currency_UI : MonoBehaviour
 {
-    [SerializeField] private Transform smallOrbPrefab;
     [SerializeField] private MMF_Player dropCurrencyFeedback;
 
     [SerializeField] private PlayerCurrencies.CurrencyType currencyType;
@@ -33,13 +32,6 @@ public class Currency_UI : MonoBehaviour
             // Lerp vers la destination pour un mouvement lissé
             transform.position = Vector3.Lerp(transform.position, destinationTransform.position, smoothTime * Time.deltaTime);
         }
-    }
-
-    void FixedUpdate() {
-        //if (rb.velocity.magnitude > maxSpeed) {
-        //    Debug.Log("limitingSpeed " + rb.velocity.magnitude);
-        //    rb.velocity = rb.velocity.normalized * maxSpeed;
-        //}
     }
 
     public void SetMoving(bool movingOrb) {

@@ -143,7 +143,10 @@ public class CreatureDetectionCollider : MonoBehaviour
             }
 
             if (iDamageable is Barricade) {
-                currentPriority = creature.GetCreatureSO().barricadeTargetingPriority;
+                Barricade barricade = (Barricade)iDamageable;
+                if(barricade.GetBarricadeHealthNormalized() > 0) {
+                    currentPriority = creature.GetCreatureSO().barricadeTargetingPriority;
+                }
             }
 
             if (iDamageable is Fire) {

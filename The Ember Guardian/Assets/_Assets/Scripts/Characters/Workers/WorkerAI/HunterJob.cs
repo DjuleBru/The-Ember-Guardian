@@ -144,6 +144,12 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
 
             case HunterState.pickingUpOrbs:
+
+                if (CheckBlockedByCreature()) {
+                    ChangeState(HunterState.blockedByCreatures);
+                    return;
+                };
+
                 HeadToPickUpClosestOrb();
                 break;
 
@@ -356,7 +362,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     }
 
     private void CheckDropCurrenciesToPlayer() {
-        if (worker.GetTotalCurrencyAmount() > 0 && worker.GetPlayerIsClose()) {
+        if (worker.GetPlayerIsClose() && worker.GetTotalCurrencyAmount() > 0) {
             ChangeState(HunterState.droppingOrbs);
         }
     }
@@ -371,12 +377,12 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         if (targetAnimal == newTargetAnimal) return;
 
         if (targetAnimal != null) {
-            targetAnimal.OnAnimalDroppedCollectibles -= TargetAnimal_OnAnimalDroppedCollectibles;
+            targetAnimal.OnMobDroppedCollectibles -= TargetAnimal_OnAnimalDroppedCollectibles;
             targetAnimal.OnMobDamageTaken -= TargetAnimal_OnMobDamageTaken;
         }
 
         targetAnimal = newTargetAnimal;
-        newTargetAnimal.OnAnimalDroppedCollectibles += TargetAnimal_OnAnimalDroppedCollectibles;
+        newTargetAnimal.OnMobDroppedCollectibles += TargetAnimal_OnAnimalDroppedCollectibles;
         newTargetAnimal.OnMobDamageTaken += TargetAnimal_OnMobDamageTaken;
     }
 
@@ -396,7 +402,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         hunterAttack.RemoveAttackTarget();
     }
 
-    private void TargetAnimal_OnAnimalDroppedCollectibles(object sender, Animal.OnAnimalDroppedCollectibleEventArgs e) {
+    private void TargetAnimal_OnAnimalDroppedCollectibles(object sender, Animal.OnMobDroppedCollectibleEventArgs e) {
         foreach(Collectible collectible1 in e.collectibleDroppedList) {
             orbsToCollect.Add(collectible1);
         }
@@ -576,7 +582,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         mobMovement.OnDestinationReached -= WorkerMovement_OnDestinationReached;
 
         if (targetAnimal != null) {
-            targetAnimal.OnAnimalDroppedCollectibles -= TargetAnimal_OnAnimalDroppedCollectibles;
+            targetAnimal.OnMobDroppedCollectibles -= TargetAnimal_OnAnimalDroppedCollectibles;
             targetAnimal.OnMobDamageTaken -= TargetAnimal_OnMobDamageTaken;
         }
 
@@ -587,7 +593,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     private void OnDestroy() {
         mobMovement.OnDestinationReached -= WorkerMovement_OnDestinationReached;
         if (targetAnimal != null) {
-            targetAnimal.OnAnimalDroppedCollectibles -= TargetAnimal_OnAnimalDroppedCollectibles;
+            targetAnimal.OnMobDroppedCollectibles -= TargetAnimal_OnAnimalDroppedCollectibles;
             targetAnimal.OnMobDamageTaken -= TargetAnimal_OnMobDamageTaken;
         }
 

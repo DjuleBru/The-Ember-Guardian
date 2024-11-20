@@ -10,6 +10,8 @@ public class CurrenciesManager : MonoBehaviour
     [SerializeField] private Transform smallBlueOrbPrefab;
     [SerializeField] private Transform bigRedOrbPrefab;
     [SerializeField] private Transform smallRedOrbPrefab;
+    [SerializeField] private Transform greenGemPrefab;
+    [SerializeField] private Transform redGemPrefab;
     [SerializeField] private Transform ammoPrefab;
 
     private void Awake() {
@@ -28,6 +30,12 @@ public class CurrenciesManager : MonoBehaviour
         }
         if (currencyType == PlayerCurrencies.CurrencyType.smallRedOrb) {
             return smallRedOrbPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.redGem) {
+            return redGemPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.greenGem) {
+            return greenGemPrefab;
         }
         if (currencyType == PlayerCurrencies.CurrencyType.ammo) {
             return ammoPrefab;

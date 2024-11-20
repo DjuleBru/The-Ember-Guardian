@@ -156,7 +156,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureSO: {fileID: 0}
   upgradeUnlocked: 0
-  functionUnlocked: 0
+  primaryFunctionUnlocked: 0
+  secondaryFunctionUnlocked: 0
 --- !u!114 &932857151962827383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,10 +170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d2d1cbe4cb17047b221f9b5bffc894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blueOrbPrefab: {fileID: 4096008502524423227, guid: 7187c138d57b2dc43b18d3d2bd569bed, type: 3}
-  fillPaymentOrbTime: 1
-  initialFillPaymentOrbRate: 1
-  fillPaymentOrbRateIncrease: 0.3
 --- !u!61 &7506368512435722411
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -306,6 +303,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8116224641355240844}
+  - {fileID: 6276308091143600461}
   - {fileID: 4468203636006394266}
   - {fileID: 3644515315673796037}
   m_Father: {fileID: 8209206451638645461}
@@ -1472,6 +1470,7 @@ GameObject:
   - component: {fileID: 2839788138442365929}
   - component: {fileID: 4973937595811623306}
   - component: {fileID: 1001473344330192437}
+  - component: {fileID: 1529802897476368443}
   m_Layer: 0
   m_Name: RightArrow
   m_TagString: Untagged
@@ -1518,7 +1517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1536,6 +1535,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &1529802897476368443
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5373461397930287400}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 95728800a8da15d44933b5c50e678def, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5783679595893191563
 GameObject:
   m_ObjectHideFlags: 0
@@ -1547,6 +1567,7 @@ GameObject:
   - component: {fileID: 3533274121821214988}
   - component: {fileID: 4460507136428913283}
   - component: {fileID: 5887796953182875718}
+  - component: {fileID: 2076108877471129441}
   m_Layer: 0
   m_Name: LeftArrow
   m_TagString: Untagged
@@ -1593,7 +1614,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1611,6 +1632,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &2076108877471129441
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5783679595893191563}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 95728800a8da15d44933b5c50e678def, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5920252083705114421
 GameObject:
   m_ObjectHideFlags: 0
@@ -1656,7 +1698,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8116224641355240844}
   m_Layer: 0
-  m_Name: FunctionUI
+  m_Name: PrimaryFunctionUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1820,7 +1862,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3644515315673796037
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1835,6 +1877,41 @@ RectTransform:
   m_Children:
   - {fileID: 3533274121821214988}
   - {fileID: 2839788138442365929}
+  m_Father: {fileID: 8117753600237234414}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &6468682074147149086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6276308091143600461}
+  m_Layer: 0
+  m_Name: SecondaryFunctionUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &6276308091143600461
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6468682074147149086}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
   m_Father: {fileID: 8117753600237234414}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1981,9 +2058,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UIGameObject: {fileID: 1482215751263975668}
   functionUIGameObject: {fileID: 5937401065631940523}
+  secondaryFunctionUIGameObject: {fileID: 6468682074147149086}
   upgradeGameObject: {fileID: 3909566777382549958}
   switchUIGameObjectList: {fileID: 6419487770454074272}
   functionPayOrbsUIList: {fileID: 5112677845429322696}
+  decondaryFunctionPayOrbsUIList: {fileID: 0}
   upgradeToNextLevelPayOrbsUIList:
   - {fileID: 8798209634761237626}
   - {fileID: 6082479181377922775}

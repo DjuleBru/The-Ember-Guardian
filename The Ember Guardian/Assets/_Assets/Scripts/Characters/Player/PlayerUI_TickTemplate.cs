@@ -47,4 +47,5 @@ public class PlayerUI_TickTemplate : MonoBehaviour
     public void SetImageColor(Color color) {
         image.color = color;
     }
+
 }

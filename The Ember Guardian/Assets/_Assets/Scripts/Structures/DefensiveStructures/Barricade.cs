@@ -114,7 +114,7 @@ public class Barricade : Structure, IDamageable {
     private void RefreshBarricadeRepair() {
         if(!barricadeVisual.GetBarricadeHasAllSprites()) {
             // At least 1 sprite fell
-            SetStructureFunctionUnlocked(true);
+            SetStructurePrimaryFunctionUnlocked(true);
             SetStructureUpgradableUnlocked(false);
             barricadeRepairable = true;
         }
@@ -123,7 +123,7 @@ public class Barricade : Structure, IDamageable {
     protected override void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         payOrbsUI.SetPlayerInteracting(false);
 
-        if (currentStructureInteractionType == StructureInteractionType.function) {
+        if (currentStructureInteractionType == StructureInteractionType.primaryFunction) {
             RepairBarricade();
             return;
         }
@@ -137,7 +137,7 @@ public class Barricade : Structure, IDamageable {
     private void RepairBarricade() {
         barricadeHealth = barricadeMaxHealth;
         OnBarricadeRepaired?.Invoke(this, EventArgs.Empty);
-        SetStructureFunctionUnlocked(false);
+        SetStructurePrimaryFunctionUnlocked(false);
         SetStructureUpgradableUnlocked(true);
         barricadeRepairable = true;
     }

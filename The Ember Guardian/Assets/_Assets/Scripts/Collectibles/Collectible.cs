@@ -45,7 +45,7 @@ public class Collectible : MonoBehaviour
     }
 
     private void Update() {
-        if(movingForPayment && paymentDestination != null) {
+        if (movingForPayment && paymentDestination != null) {
             // Lerp vers la position locale de la destination
             transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, smoothTime * Time.deltaTime);
 
@@ -57,6 +57,7 @@ public class Collectible : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
+
         if (!touchedFloor && collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
             touchedFloor = true;
             OnAnyCollectibleTouchedFloor?.Invoke(this, EventArgs.Empty);
@@ -149,6 +150,7 @@ public class Collectible : MonoBehaviour
     }
 
     public void SetMovingForPayment(bool moving, Transform destination = null) {
+
         this.movingForPayment = moving;
         paymentDestination = destination;
         transform.SetParent(destination);

@@ -34,7 +34,7 @@ public class StructureVisual : MonoBehaviour
     }
 
     private void Structure_OnStructureInteractionsUpdated(object sender, System.EventArgs e) {
-        if(structure.GetActiveStructureInteractionTypeList().Contains(Structure.StructureInteractionType.function)) {
+        if(structure.GetActiveStructureInteractionTypeList().Contains(Structure.StructureInteractionType.primaryFunction)) {
             HighlightStructureFunctionIcon(true);
         }
         else {
