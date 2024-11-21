@@ -34,7 +34,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
             return;
         }
 
-        HandleFadeOut();
+        //HandleFadeOut();
     }
 
     private void UICurrencyManager_OnCurrencyFailedToDrop(object sender, System.EventArgs e) {

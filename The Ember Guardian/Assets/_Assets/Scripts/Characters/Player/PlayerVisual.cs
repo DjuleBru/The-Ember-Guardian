@@ -18,4 +18,6 @@ public class PlayerVisual : MonoBehaviour
     private void PlayerMovement_OnPlayerExhaustionStarted(object sender, System.EventArgs e) {
         exhaustedPS.Play();
     }
+
+
 }

@@ -7,6 +7,7 @@ public class PayCurrencyUI_SoundManager : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField] private AudioClip[] payOrbsUIAudioClips;
     [SerializeField] private AudioClip[] paySmallOrbsUIAudioClips;
+    [SerializeField] private AudioClip payEmberAudioClip;
 
     private float pitch;
 
@@ -24,6 +25,10 @@ public class PayCurrencyUI_SoundManager : MonoBehaviour
         
         if((sender as PayCurrencyUI).GetCurrentCurrencyTemplateWorldUI().GetCurrencyTypeToPay() == PlayerCurrencies.CurrencyType.smallBlueOrb) {
             audioClip = paySmallOrbsUIAudioClips[Random.Range(0, paySmallOrbsUIAudioClips.Length)];
+        }
+
+        if ((sender as PayCurrencyUI).GetCurrentCurrencyTemplateWorldUI().GetCurrencyTypeToPay() == PlayerCurrencies.CurrencyType.ember) {
+            audioClip = payEmberAudioClip;
         }
 
         audioSource.PlayOneShot(audioClip);

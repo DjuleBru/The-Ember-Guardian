@@ -18,7 +18,6 @@ public class PlayerAnimator : MonoBehaviour
     private bool moving;
 
     private void Start() {
-
         PlayerMovement.Instance.OnPlayerJumpUp += PlayerMovement_OnPlayerJumpUp;
         PlayerMovement.Instance.OnPlayerJumpTop += PlayerMovement_OnPlayerJumpTop;
         PlayerMovement.Instance.OnPlayerJumpDown += PlayerMovement_OnPlayerJumpDown;
@@ -34,6 +33,7 @@ public class PlayerAnimator : MonoBehaviour
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
         Player.Instance.OnPlayerDamagedRecentlyEnded += Player_OnPlayerDamagedRecentlyEnded;
+        Portal.OnPlayerTeleported += Portal_OnPlayerTeleported;
     }
 
 
@@ -59,6 +59,12 @@ public class PlayerAnimator : MonoBehaviour
         if (Player.Instance.GetDead()) return;
         bodyAnimator.SetBool("DamagedRecently", true);
         gunBodyAnimator.SetBool("DamagedRecently", true);
+    }
+
+    private void Portal_OnPlayerTeleported(object sender, EventArgs e) {
+        Debug.Log("teleport");
+        bodyAnimator.SetBool("Teleport", true);
+        gunBodyAnimator.SetBool("Teleport", true);
     }
 
     private void Update() {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,13 @@ public class MobSpawner : MonoBehaviour
 
     protected List<Mob> mobSpawnedList = new List<Mob>();
 
+    public event EventHandler<OnMobSpawnedEventArgs> OnMobSpawned;
+    public event EventHandler<OnMobSpawnedEventArgs> OnMobRemoved;
+
+    public class OnMobSpawnedEventArgs : EventArgs {
+        public Mob mob;
+    }
+
     protected void Start() {
         sceneViewSpawnerSpriteRenderer.enabled = false;
         SpawnMobs(mobAmountToSpawn);
@@ -22,6 +30,9 @@ public class MobSpawner : MonoBehaviour
 
     public void RemoveMobFromMobSpawnedList(Mob mob) {
         mobSpawnedList.Remove(mob);
+        OnMobRemoved?.Invoke(this, new OnMobSpawnedEventArgs {
+            mob = mob,
+        });
     }
 
     protected void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
@@ -52,6 +63,10 @@ public class MobSpawner : MonoBehaviour
             if (mob is Animal) {
                 mob.transform.parent = SpawnedObjects.Instance.AnimalsContainer;
             }
+
+            OnMobSpawned?.Invoke(this, new OnMobSpawnedEventArgs {
+                mob = mob,
+            });
         }
     }
 }

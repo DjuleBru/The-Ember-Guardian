@@ -9,9 +9,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1889169557929450536, guid: d040cd4b445823e4da75474306fda053, type: 3}
+      propertyPath: m_SortingLayer
+      value: -9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1889169557929450536, guid: d040cd4b445823e4da75474306fda053, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1595801021
+      objectReference: {fileID: 0}
+    - target: {fileID: 1889169557929450536, guid: d040cd4b445823e4da75474306fda053, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 314c5a774da28f640bde94732d840a46, type: 2}
+      objectReference: {fileID: 2100000, guid: 6a27916ae22b8d94ea07e343fd427909, type: 2}
     - target: {fileID: 3985059724309330760, guid: d040cd4b445823e4da75474306fda053, type: 3}
       propertyPath: m_Name
       value: Prop_Animated_Tree1

@@ -9,6 +9,9 @@ public class Fire : Structure, IDamageable {
 
     [SerializeField] private CircleCollider2D fireRadiusCollider;
 
+    [SerializeField] private bool isMainFire;
+    [SerializeField] private bool isEndLevelFire;
+
     [SerializeField] private float calmFireRadius;
     [SerializeField] private float mildFireRadius;
     [SerializeField] private float wildFireRadius;
@@ -22,7 +25,7 @@ public class Fire : Structure, IDamageable {
     [SerializeField] private int wildFuelTreshold;
     [SerializeField] private int insaneFuelTreshold;
     [SerializeField] private int maxFuelTreshold;
-
+    [SerializeField] private float extractingEmberFuelRateDepletion = 5f;
     [SerializeField] private float debugFuelLevel;
 
     private FireOrbCollider fireOrbCollider;
@@ -46,15 +49,28 @@ public class Fire : Structure, IDamageable {
 
     public event EventHandler OnFireFuelled;
     public event EventHandler OnFireDamageTaken;
+    public event EventHandler OnFireEmberExtractionStarted;
+    public event EventHandler OnFireEmberExtractionStopped;
 
     private bool lerping;
+    private bool extractingEmber;
+    private float extractingEmberTimer;
+    private float extractingEmberTime = 5f;
+   
     private float lerpTimer;
     private float lerpDuration = 1f;
     private float initialFireAOEValue;
     private float finalFireAOEValue;
 
     protected override void Awake() {
-        Instance = this;
+        
+        if(isMainFire) {
+            Instance = this;
+        }
+
+        if(isEndLevelFire) {
+            EndLevelArea.Instance.SetEndLevelFireLit();
+        }
 
         base.Awake();
 
@@ -66,17 +82,24 @@ public class Fire : Structure, IDamageable {
 
         fireOrbCollider.OnOrbFellInFire += FireOrbCollider_OnOrbFellInFire;
 
-        fuelLevel = mildFuelTreshold - 1;
-        ChangeState(State.calm);
+
+        if (isMainFire) {
+
+            fuelLevel = mildFuelTreshold - 1;
+            ChangeState(State.calm);
+
+        } else {
+
+            fuelLevel = insaneFuelTreshold - 1 ;
+            lerpDuration = 5f;
+            ChangeState(State.wild);
+
+        }
+
         SetFireCurrentMaxFuelTreshold();
     }
 
     private void Update() {
-
-        if(fuelLevel > 0) {
-            fuelLevel -= Time.deltaTime * fuelDepletionRate;
-            debugFuelLevel = fuelLevel;
-        }
 
         if (lerping) {
 
@@ -94,7 +117,23 @@ public class Fire : Structure, IDamageable {
             ChangeFireRadius(currentFireAOEValue);
         }
 
+        if(extractingEmber) {
+            extractingEmberTimer -= Time.deltaTime;
+            fuelLevel -= Time.deltaTime * extractingEmberFuelRateDepletion;
+            if(extractingEmberTimer < 0) {
+                extractingEmber = false;
+                ExtractEmber();
+            }
+
+        } else {
+            if (fuelLevel > 0) {
+                fuelLevel -= Time.deltaTime * fuelDepletionRate;
+            }
+        }
+
         CheckFireStateDowngrade();
+        CheckFireSecondaryFunctionInteractable();
+        debugFuelLevel = fuelLevel;
     }
     
     private void ChangeFireRadius(float fireRadius) {
@@ -111,6 +150,13 @@ public class Fire : Structure, IDamageable {
         CheckFireStateUpgrade();
 
         OnFireFuelled?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void ExtractEmber() {
+        Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ember), transform.position, Quaternion.identity).GetComponent<Collectible>();
+        collectible.ApplyRandomForce(-7,7,3, 5);
+        collectible.SetCollectibleUnInteractable(1f);
+        collectible.SetCanNeverBePickedUpByWorker();
     }
 
     private void CheckFireFeedable() {
@@ -143,8 +189,6 @@ public class Fire : Structure, IDamageable {
         if (fuelLevel <= insaneFuelTreshold && state == State.insane) {
             ChangeState(State.wild);
         }
-
-        CheckFireSecondaryFunctionInteractable();
         CheckFireFeedable();
     }
 
@@ -165,9 +209,11 @@ public class Fire : Structure, IDamageable {
     }
 
     private void CheckFireSecondaryFunctionInteractable() {
+        if (extractingEmber) return;
+
         State maxState = LevelManager.Instance.GetLevelSO().maxFireState;
 
-        if(state == maxState) {
+        if(state == maxState && !PlayerCurrencies.Instance.GetCarryingEmber()) {
             SetStructureSecondaryFunctionUnlocked(true);
         } else {
             SetStructureSecondaryFunctionUnlocked(false);
@@ -238,6 +284,37 @@ public class Fire : Structure, IDamageable {
         lerping = true;
     }
 
+    protected override void GameInput_OnPlayerInteractHeldDown(object sender, EventArgs e) {
+        if (!playerInTriggerArea) return;
+        if (!playerCanInteract) return;
+
+        playerInteracting = true;
+
+        if (currentStructureInteractionType == StructureInteractionType.secondaryFunction) {
+            // Player is trying to extract ember
+            OnFireEmberExtractionStarted?.Invoke(this, EventArgs.Empty);
+            extractingEmber = true;
+            extractingEmberTimer = extractingEmberTime;
+        } else {
+            payCurrencyUI.SetPlayerInteracting(true);
+        }
+
+    }
+
+    protected override void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+        if (!playerInTriggerArea) return;
+        if (!playerCanInteract) return;
+        if (!playerInteracting) return;
+
+        playerInteracting = false;
+        payCurrencyUI.SetPlayerInteracting(false);
+
+        if(extractingEmber) {
+            extractingEmber = false;
+            OnFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
     public State GetState() {
         return state;
     }
@@ -275,6 +352,9 @@ public class Fire : Structure, IDamageable {
         return maxFuelTreshold;
     }
 
+    public float GetLerpDuration() {
+        return lerpDuration;
+    }
     public float GetOrbFuelValue() {
         return orbFuelValue;
     }

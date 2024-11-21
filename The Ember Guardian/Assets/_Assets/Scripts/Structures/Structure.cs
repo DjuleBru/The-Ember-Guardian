@@ -11,7 +11,7 @@ public class Structure : MonoBehaviour {
     [SerializeField] protected bool secondaryFunctionUnlocked;
 
     private CampZoneManager.CampSide campSide;
-    protected PayCurrencyUI payOrbsUI;
+    protected PayCurrencyUI payCurrencyUI;
 
     public event EventHandler OnPlayerTriggeredIn;
     public static event EventHandler OnAnyPlayerTriggeredIn;
@@ -39,7 +39,7 @@ public class Structure : MonoBehaviour {
     protected StructureInteractionType currentStructureInteractionType;
 
     protected virtual void Awake() {
-        payOrbsUI = GetComponent<PayCurrencyUI>();
+        payCurrencyUI = GetComponent<PayCurrencyUI>();
         DebugInitializeActiveStructureUITypeList();
     }
 
@@ -52,7 +52,7 @@ public class Structure : MonoBehaviour {
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
 
-        payOrbsUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
+        payCurrencyUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
 
         StructuresManager.Instance.AddStructure(this);
 
@@ -61,7 +61,7 @@ public class Structure : MonoBehaviour {
 
 
     protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
-        payOrbsUI.SetPlayerInteracting(false);
+        payCurrencyUI.SetPlayerInteracting(false);
         
         if(currentStructureInteractionType == StructureInteractionType.primaryFunction) {
             TriggerStructurePrimaryFunction();
@@ -200,7 +200,7 @@ public class Structure : MonoBehaviour {
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
         OnAnyPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
         playerInTriggerArea = false;
-        payOrbsUI.SetPlayerInteracting(false);
+        payCurrencyUI.SetPlayerInteracting(false);
 
         Player.Instance.SetCanDropOrbOnTheFloor(true);
     }
@@ -216,15 +216,15 @@ public class Structure : MonoBehaviour {
         if (!playerInteracting) return;
 
         playerInteracting = false;
-        payOrbsUI.SetPlayerInteracting(false);
+        payCurrencyUI.SetPlayerInteracting(false);
     }
 
-    private void GameInput_OnPlayerInteractHeldDown(object sender, EventArgs e) {
+    protected virtual void GameInput_OnPlayerInteractHeldDown(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (!playerCanInteract) return;
 
         playerInteracting = true;
-        payOrbsUI.SetPlayerInteracting(true);
+        payCurrencyUI.SetPlayerInteracting(true);
     }
 
     protected void DebugInitializeActiveStructureUITypeList() {

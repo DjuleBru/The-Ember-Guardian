@@ -8,6 +8,8 @@ public class Collectible : MonoBehaviour
     [SerializeField] private PlayerCurrencies.CurrencyType currencyType;
     [SerializeField] private int currencyAmount;
 
+    [SerializeField] private Collider2D solidCollider;
+
     public event EventHandler OnCollectibleDestroyed;
     public event EventHandler OnCollectibleEnteredSlot;
 
@@ -18,6 +20,7 @@ public class Collectible : MonoBehaviour
     private float initialGravityScale;
 
     private bool interactable;
+    private bool canNeverBePickedUpByWorker;
     private bool canBePickedUpByWorker;
     private bool droppedByPlayer;
     private bool playerInTriggerArea;
@@ -40,8 +43,11 @@ public class Collectible : MonoBehaviour
     }
 
     private void Start() {
-        // Set Can be picked up by worker after 3 seconds 
-        Invoke("SetCanBePickedUpByWorker", 3f);
+        if(!canNeverBePickedUpByWorker) {
+            // Set Can be picked up by worker after 3 seconds 
+            Invoke("SetCanBePickedUpByWorker", 3f);
+        }
+
     }
 
     private void Update() {
@@ -57,7 +63,6 @@ public class Collectible : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-
         if (!touchedFloor && collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
             touchedFloor = true;
             OnAnyCollectibleTouchedFloor?.Invoke(this, EventArgs.Empty);
@@ -126,12 +131,28 @@ public class Collectible : MonoBehaviour
     public void PlayerCollectThis(PlayerCurrencies.CurrencyType currencyType) {
         OnAnyCollectiblePickedUpByPlayer?.Invoke(this, EventArgs.Empty);
         UICurrencyManager.Instance.AddCurrencyInBag(currencyType);
-        Destroy(gameObject);
+
+        if(currencyType != PlayerCurrencies.CurrencyType.ember) {
+
+            Destroy(gameObject);
+
+        } else {
+            transform.SetParent(PlayerCurrencies.Instance.GetEmberHoldPosition());
+            transform.position = PlayerCurrencies.Instance.GetEmberHoldPosition().position;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            interactable = false;
+            PlayerCurrencies.Instance.SetCarryingEmber(true);
+        }
     }
 
     public void SetCollectibleUnInteractable(float delay) {
         interactable = false;
         StartCoroutine(SetCollectibleInteractableAfterDelay(delay));
+    }
+
+    public void SetCollectibleFellFromBag() {
+        GetComponent<Collider2D>().enabled = false;
+        solidCollider.enabled = false;
     }
 
     private IEnumerator SetCollectibleInteractableAfterDelay(float delay) {
@@ -191,8 +212,8 @@ public class Collectible : MonoBehaviour
         canBePickedUpByWorker = true;
     }
 
-    public bool GetCanBePickedUpByWorker() {
-        return canBePickedUpByWorker;
+    public void SetCanNeverBePickedUpByWorker() {
+        canNeverBePickedUpByWorker = true;
     }
 
     public void ApplyRandomUpwardsForce(float minForce, float maxForce) {

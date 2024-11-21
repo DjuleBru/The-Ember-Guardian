@@ -106,7 +106,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4938592641832932186, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       propertyPath: m_Mass
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4938592641832932186, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       propertyPath: m_Material
@@ -114,11 +114,11 @@ PrefabInstance:
       objectReference: {fileID: 6200000, guid: fe712a0e85e641b4489f6bd0f8f7b455, type: 2}
     - target: {fileID: 4938592641832932186, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       propertyPath: m_LinearDrag
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4938592641832932186, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       propertyPath: m_AngularDrag
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4938592641832932186, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       propertyPath: m_Constraints
@@ -202,8 +202,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.007998643, y: -0.0024318532}
-  m_Size: {x: 0.77836025, y: 0.2819522}
+  m_Offset: {x: 0.0058294516, y: -0.0024324004}
+  m_Size: {x: 0.83260345, y: 0.3123286}
   m_Direction: 1
 --- !u!1 &2717374580390098472 stripped
 GameObject:
@@ -242,6 +242,6 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0013713137, y: 0.004109789}
-  m_Size: {x: 0.707465, y: 0.22962387}
+  m_Offset: {x: 0.007337614, y: 0.0041096155}
+  m_Size: {x: 0.8148704, y: 0.2578339}
   m_Direction: 1

@@ -24,7 +24,6 @@ public class Chest : MonoBehaviour
         if (chestOpened) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
-        Debug.Log(collision.gameObject);
         chestOpened = true;
         StartCoroutine(OpenChest());
         OnChestOpened?.Invoke(this, EventArgs.Empty);

@@ -27,30 +27,10 @@ public class Currency_UI : MonoBehaviour
     }
 
     private void Update() {
-
         if (movingOrb) {
             // Lerp vers la destination pour un mouvement lissé
             transform.position = Vector3.Lerp(transform.position, destinationTransform.position, smoothTime * Time.deltaTime);
         }
-    }
-
-    public void SetMoving(bool movingOrb) {
-
-        if (movingOrb) {
-            rb.gravityScale = 0;
-            currencyCOllider2D.enabled = false;
-        }
-        else {
-            rb.gravityScale = initialGravityScale;
-            currencyCOllider2D.enabled = true;
-        }
-
-        this.movingOrb = movingOrb;
-    }
-
-    public void SetDestination(Transform destinationTransform, float smoothTime) {
-        this.destinationTransform = destinationTransform;
-        this.smoothTime = smoothTime;
     }
 
     public void RemoveFromBag() {

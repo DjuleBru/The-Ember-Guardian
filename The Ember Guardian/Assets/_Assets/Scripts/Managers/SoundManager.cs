@@ -46,7 +46,11 @@ public class SoundManager : MonoBehaviour
         Projectile.OnAnyProjectileHit += Projectile_OnAnyProjectileHit;
         Projectile.OnAnyProjectileInstantiated += Projectile_OnAnyProjectileInstantiated;
 
+        EndLevelAreaProp.OnAnyEndLevelAreaPropBurned += EndLevelAreaProp_OnAnyEndLevelAreaPropBurned;
+
     }
+
+
 
     #region UI
 
@@ -148,6 +152,9 @@ public class SoundManager : MonoBehaviour
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
             PlaySound3D(soundRefsSO.ammoPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
         }
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember) {
+            PlaySound3D(soundRefsSO.emberPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+        }
     }
     private void Chest_OnAnyChestSpawnedCollectible(object sender, Chest.OnAnyChestSpawnedCollectibleEventArgs e) {
         if (e.currencyType == PlayerCurrencies.CurrencyType.bigBlueOrb) {
@@ -226,6 +233,15 @@ public class SoundManager : MonoBehaviour
     private void StructureLocation_OnAnyStructureBuilt(object sender, System.EventArgs e) {
         AudioClip audioClip = (sender as StructureLocation).GetStructureSOToBuild().buildAudioClip;
         PlaySound2D(audioClip);
+    }
+
+    #endregion
+
+    #region PROPS
+
+    private void EndLevelAreaProp_OnAnyEndLevelAreaPropBurned(object sender, System.EventArgs e) {
+        AudioClip[] audioClipArray = soundRefsSO.propBurned;
+        PlaySound3D(audioClipArray, (sender as MonoBehaviour).transform.position, .5f);
     }
 
     #endregion

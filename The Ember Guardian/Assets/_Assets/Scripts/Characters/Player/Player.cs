@@ -32,6 +32,7 @@ public class Player : MonoBehaviour, IDamageable
     public event EventHandler<OnPlayerHealedEventArgs> OnPlayerHealed;
     public event EventHandler OnPlayerDied;
     public event EventHandler OnPlayerRespawned;
+    public event EventHandler OnPlayerTeleported;
 
     public class OnPlayerHealedEventArgs : EventArgs {
         public int healAmount;
@@ -92,6 +93,7 @@ public class Player : MonoBehaviour, IDamageable
         canDropOrbOnTheFloor = canDrop;
     }
 
+
     public bool GetCanDropOrbOnTheFloor() {
         return canDropOrbOnTheFloor;
     }
@@ -122,6 +124,7 @@ public class Player : MonoBehaviour, IDamageable
         GetComponent<PlayerShoot>().enabled = false;
         GetComponent<PlayerCurrencies>().enabled = false;
         SetCanDropOrbOnTheFloor(false);
+        PlayerCurrencies.Instance.SetCarryingEmber(false);
 
         OnPlayerDied?.Invoke(this, EventArgs.Empty);
 
@@ -145,6 +148,15 @@ public class Player : MonoBehaviour, IDamageable
         OnPlayerRespawned?.Invoke(this, EventArgs.Empty);
 
         dead = false;
+    }
+
+    public void MoveOnTeleporter(Transform teleporterPlayerPosition) {
+        transform.position = teleporterPlayerPosition.position;
+        GetComponent<PlayerMovement>().enabled = false;
+        GetComponent<PlayerAim>().enabled = false;
+        GetComponent<PlayerShoot>().enabled = false;
+        GetComponent<PlayerCurrencies>().enabled = false;
+        SetCanDropOrbOnTheFloor(false);
     }
 
     public Transform GetProjectileTarget() {

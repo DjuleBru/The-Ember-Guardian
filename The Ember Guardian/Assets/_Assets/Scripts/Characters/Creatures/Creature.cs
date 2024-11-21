@@ -45,6 +45,10 @@ public class Creature : Mob
     public override void Die() {
         CreaturesManager.Instance.RemoveCreatureSpawned(this);
 
+        if(IsDayCreature()) {
+            mobSpawner.RemoveMobFromMobSpawnedList(this);
+        }
+
         base.Die();
 
         SpawnDroppedCurrencies(creatureSO.currencyTypeDroppedList, creatureSO.currencyDropAmountList);

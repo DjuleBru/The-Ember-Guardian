@@ -169,7 +169,7 @@ public class Tower : Structure
             garrisonPosition = level4GarrisonPositions[0].position;
         }
 
-        garrisonPosition = new Vector3(garrisonPosition.x, garrisonPosition.y + 1f, garrisonPosition.z);
+        garrisonPosition = new Vector3(garrisonPosition.x, garrisonPosition.y, garrisonPosition.z);
 
         Player.Instance.transform.position = garrisonPosition;
     }

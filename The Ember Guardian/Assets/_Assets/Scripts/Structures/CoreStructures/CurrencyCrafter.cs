@@ -56,7 +56,7 @@ public class CurrencyCrafter : Structure
 
         if(!craftedCurrency && !craftingCurrency) {
 
-            payOrbsUI.SetPlayerInteracting(true);
+            payCurrencyUI.SetPlayerInteracting(true);
 
         } else {
 
@@ -70,7 +70,7 @@ public class CurrencyCrafter : Structure
 
     private IEnumerator CollectCurrencyFromCrafter(float delayBetweenAmmoInstantiation) {
         craftedCurrency = false;
-        payOrbsUI.ResetCurrencyPayment();
+        payCurrencyUI.ResetCurrencyPayment();
         OnPlayerCollectedCurrency?.Invoke(this, EventArgs.Empty);
 
         for (int i = 0; i < currencyCraftAmount; i++) {

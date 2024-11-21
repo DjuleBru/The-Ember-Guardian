@@ -121,7 +121,7 @@ public class Barricade : Structure, IDamageable {
     }
 
     protected override void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
-        payOrbsUI.SetPlayerInteracting(false);
+        payCurrencyUI.SetPlayerInteracting(false);
 
         if (currentStructureInteractionType == StructureInteractionType.primaryFunction) {
             RepairBarricade();

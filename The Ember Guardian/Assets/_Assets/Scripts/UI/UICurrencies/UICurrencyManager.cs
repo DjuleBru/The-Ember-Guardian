@@ -14,6 +14,7 @@ public class UICurrencyManager : MonoBehaviour
     [SerializeField] private Transform ammoSpawnPosition;
 
     [SerializeField] private Transform currencyContainer;
+    [SerializeField] private Transform emberContainer;
 
     [SerializeField] private Transform blueOrbUIPrefab;
     [SerializeField] private Transform smallBlueOrbUIPrefab;
@@ -22,6 +23,7 @@ public class UICurrencyManager : MonoBehaviour
     [SerializeField] private Transform greenGemUIPrefab;
     [SerializeField] private Transform redGemUIPrefab;
     [SerializeField] private Transform ammoUIPrefab;
+    [SerializeField] private Transform emberUIPrefab;
 
     [SerializeField] private int smallOrbValue = 5;
     [SerializeField] private float smallOrbSmoothTime = 5f;
@@ -150,6 +152,11 @@ public class UICurrencyManager : MonoBehaviour
             currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
         }
 
+        if (currencyType == PlayerCurrencies.CurrencyType.ember) {
+            currencyTransform = Instantiate(emberUIPrefab, emberContainer.position, Quaternion.identity, emberContainer);
+            currencyTransform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+        }
+
         Currency_UI currencyUICollected = currencyTransform.GetComponent<Currency_UI>();
         OnCurrencyCollected?.Invoke(this, new OnCurrencyDroppedEventArgs {
             currencyUIDropped = currencyUICollected
@@ -205,6 +212,7 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     public void CurrencyFellFromBag(Currency_UI currencyUI) {
+        PlayerCurrencies.Instance.CurrencyFellFromBag(currencyUI.GetCurrencyType());
         currenciesInBag.Remove(currencyUI);
     }
 

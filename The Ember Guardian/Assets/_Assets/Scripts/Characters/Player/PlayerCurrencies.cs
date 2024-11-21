@@ -8,6 +8,7 @@ public class PlayerCurrencies : MonoBehaviour
     public static PlayerCurrencies Instance;
 
     [SerializeField] private Transform blueOrbDropPoint;
+    [SerializeField] private Transform emberHoldPosition;
 
     private List<Collectible> collectiblesBeingPaid = new List<Collectible>();
 
@@ -23,6 +24,7 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     public event EventHandler<OnBlueOrbDroppedOnTheFloorEventArgs> OnBlueOrbDroppedOnTheFloor;
+
     public class OnCurrencyChangedEventArgs : EventArgs {
         public int previousAmount;
         public int newAmount;
@@ -34,6 +36,7 @@ public class PlayerCurrencies : MonoBehaviour
     private Collectible lastBlueOrbDroppedOnTheFloor;
     private Collectible lastCurrencyPaying;
 
+    private bool carryingEmber;
 
     private void Awake() {
         Instance = this;
@@ -43,6 +46,14 @@ public class PlayerCurrencies : MonoBehaviour
     private void Start() {
         UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
         UICurrencyManager.Instance.OnCurrencyTryPay += UICurrencyManager_OnCurrencyTryPay;
+    }
+
+    public void SetCarryingEmber(bool carryingEmber) {
+        if (this.carryingEmber && !carryingEmber) {
+            Destroy(emberHoldPosition.GetComponentInChildren<Collectible>().gameObject);
+        }
+
+        this.carryingEmber = carryingEmber;
     }
 
     private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -69,12 +80,31 @@ public class PlayerCurrencies : MonoBehaviour
         });
     }
 
-    private void StartPayingCurrency(CurrencyType currencyType, PayCurrencyTemplateWorldUI destination) {
-        Transform currencyPrefab = CurrenciesManager.Instance.GetCurrencyPrefab(currencyType);
+    public void CurrencyFellFromBag(CurrencyType currencyType) {
+        lastBlueOrbDroppedOnTheFloor = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyType), blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
 
-        lastCurrencyPaying = Instantiate(currencyPrefab, blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
-        lastCurrencyPaying.SetMovingForPayment(true, destination.transform);
-        collectiblesBeingPaid.Add(lastCurrencyPaying);
+        lastBlueOrbDroppedOnTheFloor.ApplyRandomUpwardsForce(3, 10);
+        lastBlueOrbDroppedOnTheFloor.SetCollectibleUnInteractable(3f);
+        lastBlueOrbDroppedOnTheFloor.SetCollectibleFellFromBag();
+        lastBlueOrbDroppedOnTheFloor.SetDroppedByPlayer();
+    }
+
+    private void StartPayingCurrency(CurrencyType currencyType, PayCurrencyTemplateWorldUI destination) {
+
+        if(currencyType != PlayerCurrencies.CurrencyType.ember) {
+            Transform currencyPrefab = CurrenciesManager.Instance.GetCurrencyPrefab(currencyType);
+
+            lastCurrencyPaying = Instantiate(currencyPrefab, blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
+            lastCurrencyPaying.SetMovingForPayment(true, destination.transform);
+            collectiblesBeingPaid.Add(lastCurrencyPaying);
+
+        } else {
+
+            Collectible emberCarriedByPlayer = emberHoldPosition.GetComponentInChildren<Collectible>();
+            emberCarriedByPlayer.SetMovingForPayment(true, destination.transform);
+            collectiblesBeingPaid.Add(emberCarriedByPlayer);
+
+        }
 
     }
 
@@ -91,6 +121,14 @@ public class PlayerCurrencies : MonoBehaviour
             collectible.ApplyRandomUpwardsForce(1, 5);
         }
         collectiblesBeingPaid.Clear();
+    }
+
+    public bool GetCarryingEmber() {
+        return carryingEmber;
+    }
+
+    public Transform GetEmberHoldPosition() {
+        return emberHoldPosition;
     }
 
 }

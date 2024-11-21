@@ -25,6 +25,7 @@ public class GunVisual : MonoBehaviour
         gunLightSpriteIndex = gunSO.shotCountSprites.Count -1;
     }
 
+
     private void PlayerAim_OnXAimDirChanged(object sender, System.EventArgs e) {
         Vector3 scale = new Vector3(1, 1, 1);
         if(PlayerAim.Instance.GetAimDir().x < 0) {

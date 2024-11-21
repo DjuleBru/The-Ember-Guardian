@@ -37,7 +37,6 @@ public class StructureUI : MonoBehaviour
         structure.OnStructureInteractionsUpdated += Structure_OnStructureInteractionsUpdated;
         structure.OnStructureUpgraded += Structure_OnStructureUpgraded;
 
-        //GameInput.Instance.OnPlayerLeftRightSwitchPerformed += GameInput_OnPlayerLeftRightSwitchPerformed;
         GameInput.Instance.OnPlayerRightSwitchPerformed += GameInput_OnPlayerRightSwitchPerformed;
         GameInput.Instance.OnPlayerLeftSwitchPerformed += GameInput_OnPlayerLeftSwitchPerformed;
     }

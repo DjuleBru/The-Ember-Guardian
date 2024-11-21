@@ -57,7 +57,10 @@ public class FireVisual : StructureVisual
 
         fire.OnFireChangedState += Fire_OnFireChangedState;
         fire.OnFireFuelled += Fire_OnFireFuelled;
+        fire.OnFireEmberExtractionStarted += Fire_OnFireEmberExtractionStarted;
+        fire.OnFireEmberExtractionStopped += Fire_OnFireEmberExtractionStopped;
     }
+
 
     private void Fire_OnFireFuelled(object sender, System.EventArgs e) {
         fuelledPS.Play();
@@ -160,11 +163,21 @@ public class FireVisual : StructureVisual
         lerpTimer = 0;
     }
 
+    private void Fire_OnFireEmberExtractionStopped(object sender, System.EventArgs e) {
+        continuousPS.Play();
+        atmosphericPS.Play();
+    }
+
+    private void Fire_OnFireEmberExtractionStarted(object sender, System.EventArgs e) {
+        continuousPS.Stop();
+        atmosphericPS.Stop();
+    }
+
     private void Update() {
         if(lerping) {
 
             lerpTimer += Time.deltaTime;
-            float normalizedTime = lerpTimer / lerpDuration;
+            float normalizedTime = lerpTimer / fire.GetLerpDuration();
 
             if (normalizedTime >= 1) {
                 normalizedTime = 1;

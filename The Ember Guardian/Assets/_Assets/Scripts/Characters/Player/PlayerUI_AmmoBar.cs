@@ -136,8 +136,6 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         }
 
         PlayerUI_TickTemplate[] ammoTickArray = ammoTickContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
-        Debug.Log(ammoTickArray.Length);
-        Debug.Log(ammoTickArray[0]);
         ammoTickArray[0].GetComponent<RectTransform>().SetParent(transform);
         ammoTickArray[0].RemoveTick();
 

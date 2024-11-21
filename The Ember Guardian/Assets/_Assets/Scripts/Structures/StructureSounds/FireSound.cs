@@ -8,6 +8,8 @@ public class FireSound : MonoBehaviour
     private AudioSource audioSource;
     private SoundVolume2D volume2D;
 
+    [SerializeField] private AudioSource extractingEmberAudioSource;
+
     [SerializeField] private AudioClip calmFireAudioClip;
     [SerializeField] private AudioClip mildFireAudioClip;
     [SerializeField] private AudioClip wildFireAudioClip;
@@ -17,14 +19,28 @@ public class FireSound : MonoBehaviour
     [SerializeField] private AudioClip[] orbDroppedInFireAudioClipArray2;
     [SerializeField] private AudioClip[] fireDamagedAudioClipArray;
     [SerializeField] private AudioClip fireTickRemovedAudioClip;
+    [SerializeField] private AudioClip extractingEmberAudioClip;
 
     private void Awake() { 
         fire = GetComponentInParent<Fire>();
         audioSource = GetComponent<AudioSource>();
         volume2D = GetComponent<SoundVolume2D>();
+
+        extractingEmberAudioSource.clip = extractingEmberAudioClip;
+
         fire.OnFireChangedState += Fire_OnFireChangedState;
         fire.OnFireFuelled += Fire_OnFireFuelled;
         fire.OnFireDamageTaken += Fire_OnFireDamageTaken;
+        fire.OnFireEmberExtractionStopped += Fire_OnFireEmberExtractionStopped;
+        fire.OnFireEmberExtractionStarted += Fire_OnFireEmberExtractionStarted;
+    }
+
+    private void Fire_OnFireEmberExtractionStarted(object sender, System.EventArgs e) {
+        extractingEmberAudioSource.Play();
+    }
+
+    private void Fire_OnFireEmberExtractionStopped(object sender, System.EventArgs e) {
+        extractingEmberAudioSource.Stop();
     }
 
     private void Fire_OnFireDamageTaken(object sender, System.EventArgs e) {

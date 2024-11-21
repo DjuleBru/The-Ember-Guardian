@@ -13,6 +13,7 @@ public class CurrenciesManager : MonoBehaviour
     [SerializeField] private Transform greenGemPrefab;
     [SerializeField] private Transform redGemPrefab;
     [SerializeField] private Transform ammoPrefab;
+    [SerializeField] private Transform emberPrefab;
 
     private void Awake() {
         Instance = this;
@@ -39,6 +40,9 @@ public class CurrenciesManager : MonoBehaviour
         }
         if (currencyType == PlayerCurrencies.CurrencyType.ammo) {
             return ammoPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.ember) {
+            return emberPrefab;
         }
         return bigBlueOrbPrefab;
     }

@@ -60,7 +60,7 @@ public class OrbProcessor : Structure
 
         if (!craftedOrb && !craftingOrb) {
 
-            payOrbsUI.SetPlayerInteracting(true);
+            payCurrencyUI.SetPlayerInteracting(true);
 
         }
         else {
