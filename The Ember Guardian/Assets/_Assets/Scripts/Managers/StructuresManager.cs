@@ -9,6 +9,8 @@ public class StructuresManager : MonoBehaviour
 
     private int structureLocationsUnlockedLevel = 1;
 
+    [SerializeField] private StructureLocation initialFireStructureLocation;
+    [SerializeField] private List<Structure> initialStructures;
     [SerializeField] private List<StructureLocation> level1StructureLocationsUnlocked;
     [SerializeField] private List<StructureLocation> level2StructureLocationsUnlocked;
     [SerializeField] private List<StructureLocation> level3StructureLocationsUnlocked;
@@ -16,18 +18,29 @@ public class StructuresManager : MonoBehaviour
     private List<Structure> builtStructures = new List<Structure>();
     private List<Structure> builtTowers = new List<Structure>();
 
-
     private void Awake() {
         Instance = this;
     }
 
     private void Start() {
+        initialFireStructureLocation.UnlockStructureLocation();
 
-        foreach (StructureLocation location in level1StructureLocationsUnlocked) {
+        Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
+        Tent.Instance.OnStructureUpgraded += Tent_OnStructureUpgraded;
+
+        foreach (Structure structure in initialStructures) {
+            structure.gameObject.SetActive(false);
+        }
+    }
+
+    private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
+        foreach(StructureLocation location in level1StructureLocationsUnlocked) {
             location.UnlockStructureLocation();
         }
 
-        Tent.Instance.OnStructureUpgraded += Tent_OnStructureUpgraded;
+        foreach (Structure structure in initialStructures) {
+            structure.gameObject.SetActive(true);
+        }
     }
 
     private void Tent_OnStructureUpgraded(object sender, EventArgs e) {

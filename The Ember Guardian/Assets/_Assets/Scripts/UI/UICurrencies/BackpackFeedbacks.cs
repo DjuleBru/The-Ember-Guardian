@@ -44,7 +44,10 @@ public class BackpackFeedbacks : MonoBehaviour
 
     private void PlayerAnimator_OnFootStepTriggered(object sender, System.EventArgs e) {
         if (PlayerMovement.Instance.IsRunning()) {
-            runningFeedbacks.PlayFeedbacks();
+            if(!runningFeedbacks.IsPlaying) {
+                runningFeedbacks.PlayFeedbacks();
+            }
+
             OnBackpackFeedbacksPlay?.Invoke(this, EventArgs.Empty);
         } else {
             walkingFeedbacks.PlayFeedbacks();

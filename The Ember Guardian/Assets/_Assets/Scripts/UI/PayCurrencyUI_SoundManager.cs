@@ -30,8 +30,10 @@ public class PayCurrencyUI_SoundManager : MonoBehaviour
         if ((sender as PayCurrencyUI).GetCurrentCurrencyTemplateWorldUI().GetCurrencyTypeToPay() == PlayerCurrencies.CurrencyType.ember) {
             audioClip = payEmberAudioClip;
         }
-
         audioSource.PlayOneShot(audioClip);
     }
 
+    private void OnDestroy() {
+        PayCurrencyUI.OnAnySingleCurrencyPaid -= PayOrbsUI_OnSingleOrbFilled1;
+    }
 }

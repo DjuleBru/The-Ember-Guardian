@@ -37,6 +37,7 @@ public class Player : MonoBehaviour, IDamageable
     public class OnPlayerHealedEventArgs : EventArgs {
         public int healAmount;
     }
+    private bool isLevelScene;
 
     private void Awake() {
         Instance = this;
@@ -44,7 +45,12 @@ public class Player : MonoBehaviour, IDamageable
         playerHealth = playerMaxHealth;
     }
 
+    private void Start() {
+        isLevelScene = (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level);
+    }
+
     private void Update() {
+        if (!isLevelScene) return;
         CheckExitingCamp();
 
         if (damagedRecently) {
@@ -64,11 +70,6 @@ public class Player : MonoBehaviour, IDamageable
             }
 
         }
-
-        if (Input.GetKeyDown(KeyCode.B)) {
-            TakeDamage(1, Vector3.zero);
-        }
-
     }
 
     private void CheckExitingCamp() {
@@ -92,7 +93,6 @@ public class Player : MonoBehaviour, IDamageable
     public void SetCanDropOrbOnTheFloor(bool canDrop) {
         canDropOrbOnTheFloor = canDrop;
     }
-
 
     public bool GetCanDropOrbOnTheFloor() {
         return canDropOrbOnTheFloor;
@@ -124,7 +124,7 @@ public class Player : MonoBehaviour, IDamageable
         GetComponent<PlayerShoot>().enabled = false;
         GetComponent<PlayerCurrencies>().enabled = false;
         SetCanDropOrbOnTheFloor(false);
-        PlayerCurrencies.Instance.SetCarryingEmber(false);
+        PlayerCurrencies.Instance.DropEmber();
 
         OnPlayerDied?.Invoke(this, EventArgs.Empty);
 
@@ -151,12 +151,21 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public void MoveOnTeleporter(Transform teleporterPlayerPosition) {
-        transform.position = teleporterPlayerPosition.position;
         GetComponent<PlayerMovement>().enabled = false;
-        GetComponent<PlayerAim>().enabled = false;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         GetComponent<PlayerShoot>().enabled = false;
         GetComponent<PlayerCurrencies>().enabled = false;
+        GetComponentInChildren<PlayerAnimator>().enabled = false;
         SetCanDropOrbOnTheFloor(false);
+        transform.position = teleporterPlayerPosition.position;
+    }
+
+    public void ReleasePlayerFromTeleporter() {
+        GetComponent<PlayerMovement>().enabled = true;
+        GetComponent<PlayerShoot>().enabled = true;
+        GetComponent<PlayerCurrencies>().enabled = true;
+        GetComponentInChildren<PlayerAnimator>().enabled = true;
+        SetCanDropOrbOnTheFloor(true);
     }
 
     public Transform GetProjectileTarget() {

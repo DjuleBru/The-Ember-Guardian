@@ -5,27 +5,31 @@ using UnityEngine;
 
 public class StructureLocation : MonoBehaviour {
 
-    private PayCurrencyUI payOrbsUI;
-    [SerializeField] private StructureSO structureSOToBuild;
+    protected PayCurrencyUI payOrbsUI;
+    [SerializeField] protected StructureSO structureSOToBuild;
     [SerializeField] protected Transform orbTemplateWorldUIParent;
+    [SerializeField] protected bool isAlwaysUnlocked;
 
-    private List<PayCurrencyTemplateWorldUI> buildStructureOrbTemplates = new List<PayCurrencyTemplateWorldUI>();
+    protected List<PayCurrencyTemplateWorldUI> buildStructureOrbTemplates = new List<PayCurrencyTemplateWorldUI>();
 
     public event EventHandler OnPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
     public event EventHandler OnStructureLocationUnlocked;
     public static event EventHandler OnAnyStructureBuilt;
 
-    private bool structureLocationUnlocked;
-    private bool playerInTriggerArea;
+    protected bool structureLocationUnlocked;
+    protected bool playerInTriggerArea;
 
-    private void Awake() {
+    protected void Awake() {
         payOrbsUI = GetComponent<PayCurrencyUI>();
         InitializeOrbTemplateList();
 
+        if(isAlwaysUnlocked) {
+            structureLocationUnlocked = true;
+        }
     }
 
-    private void Start() {
+    protected void Start() {
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractStarted += GameInput_OnPlayerInteractStarted;
 
@@ -33,11 +37,12 @@ public class StructureLocation : MonoBehaviour {
         payOrbsUI.SetOrbTemplateUIList(buildStructureOrbTemplates);
     }
 
-    private void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
+
+    protected void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         BuildStructure();
     }
 
-    private void BuildStructure() {
+    protected virtual void BuildStructure() {
 
         Instantiate(structureSOToBuild.structurePrefab, transform.position, Quaternion.identity);
         OnAnyStructureBuilt?.Invoke(this, EventArgs.Empty);
@@ -45,14 +50,14 @@ public class StructureLocation : MonoBehaviour {
         Destroy(gameObject);
     }
 
-    private void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
+    protected void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (!structureLocationUnlocked) return;
 
         payOrbsUI.SetPlayerInteracting(true);
     }
 
-    private void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+    protected void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (!structureLocationUnlocked) return;
 
@@ -60,7 +65,7 @@ public class StructureLocation : MonoBehaviour {
         payOrbsUI.ResetCurrencyPayment();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
+    protected void OnTriggerEnter2D(Collider2D collision) {
         if (!structureLocationUnlocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
@@ -69,7 +74,7 @@ public class StructureLocation : MonoBehaviour {
         playerInTriggerArea = true;
     }
 
-    private void OnTriggerExit2D(Collider2D collision) {
+    protected void OnTriggerExit2D(Collider2D collision) {
         if (!structureLocationUnlocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
@@ -88,7 +93,7 @@ public class StructureLocation : MonoBehaviour {
         OnStructureLocationUnlocked?.Invoke(this, EventArgs.Empty);
     }
 
-    private void InitializeOrbTemplateList() {
+    protected void InitializeOrbTemplateList() {
         PayCurrencyTemplateWorldUI[] orbTemplates = orbTemplateWorldUIParent.GetComponentsInChildren<PayCurrencyTemplateWorldUI>(); 
 
         foreach(PayCurrencyTemplateWorldUI orbTemplateWorldUI in orbTemplates) {

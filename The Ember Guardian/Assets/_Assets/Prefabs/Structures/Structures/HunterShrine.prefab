@@ -87,6 +87,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -236347599, guid: f1a9abab3be99fd42a9b60f4e52f5a1f, type: 3}
+    - target: {fileID: 2858744977638243454, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
     - target: {fileID: 3188464822276457179, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: structureSO
       value: 
@@ -107,9 +111,37 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -1.56
       objectReference: {fileID: 0}
+    - target: {fileID: 5323468552995092115, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.488
+      objectReference: {fileID: 0}
+    - target: {fileID: 5526079968964710946, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701359116775254949, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6419487770454074272, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090641175042523384, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090641175042523384, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_Color.g
+      value: 0.6401701
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090641175042523384, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7090641175042523384, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_Intensity
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506368512435722411, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_Size.x
@@ -189,7 +221,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureSO: {fileID: 11400000, guid: 2a068ad8d9af19545bf32a427b301ded, type: 2}
   upgradeUnlocked: 0
-  functionUnlocked: 0
+  primaryFunctionUnlocked: 0
+  secondaryFunctionUnlocked: 0
   workerSpawnPosition: {fileID: 6664458144435640411}
   shrineType: 0
 --- !u!1 &8212365878099605028 stripped

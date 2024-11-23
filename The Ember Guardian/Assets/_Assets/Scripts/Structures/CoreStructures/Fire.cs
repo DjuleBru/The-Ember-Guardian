@@ -11,6 +11,7 @@ public class Fire : Structure, IDamageable {
 
     [SerializeField] private bool isMainFire;
     [SerializeField] private bool isEndLevelFire;
+    [SerializeField] private bool isHubFire;
 
     [SerializeField] private float calmFireRadius;
     [SerializeField] private float mildFireRadius;
@@ -47,6 +48,7 @@ public class Fire : Structure, IDamageable {
         public State newState;
     }
 
+    public event EventHandler OnInitialFireActivated;
     public event EventHandler OnFireFuelled;
     public event EventHandler OnFireDamageTaken;
     public event EventHandler OnFireEmberExtractionStarted;
@@ -58,14 +60,14 @@ public class Fire : Structure, IDamageable {
     private float extractingEmberTime = 5f;
    
     private float lerpTimer;
-    private float lerpDuration = 1f;
+    private float lerpDuration = 2f;
     private float initialFireAOEValue;
     private float finalFireAOEValue;
 
     protected override void Awake() {
-        
         if(isMainFire) {
             Instance = this;
+            gameObject.SetActive(false);
         }
 
         if(isEndLevelFire) {
@@ -82,24 +84,52 @@ public class Fire : Structure, IDamageable {
 
         fireOrbCollider.OnOrbFellInFire += FireOrbCollider_OnOrbFellInFire;
 
-
         if (isMainFire) {
 
             fuelLevel = mildFuelTreshold - 1;
             ChangeState(State.calm);
 
-        } else {
-
-            fuelLevel = insaneFuelTreshold - 1 ;
-            lerpDuration = 5f;
-            ChangeState(State.wild);
-
         }
 
-        SetFireCurrentMaxFuelTreshold();
+        if(isEndLevelFire) {
+            fuelLevel = insaneFuelTreshold - 1;
+            lerpDuration = 5f;
+            ChangeState(State.wild);
+        }
+
+        if(isHubFire) {
+            state = State.calm;
+            ChangeState(State.calm);
+        }
+
+
+        if(isHubFire) {
+            SetStructureSecondaryFunctionUnlocked(true);
+            ActivateStructureSecondaryFunctionInteraction(true);
+            SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);
+            SetStructurePrimaryFunctionUnlocked(false);
+        } else {
+            SetFireCurrentMaxFuelTreshold();
+        }
     }
 
     private void Update() {
+        if (extractingEmber) {
+            extractingEmberTimer -= Time.deltaTime;
+            fuelLevel -= Time.deltaTime * extractingEmberFuelRateDepletion;
+            if (extractingEmberTimer < 0) {
+                extractingEmber = false;
+                StartCoroutine(ExtractEmber());
+            }
+
+        }
+        else {
+            if (fuelLevel > 0) {
+                fuelLevel -= Time.deltaTime * fuelDepletionRate;
+            }
+        }
+
+        if (isHubFire) return;
 
         if (lerping) {
 
@@ -115,20 +145,6 @@ public class Fire : Structure, IDamageable {
             float currentFireAOEValue = Mathf.Lerp(initialFireAOEValue, finalFireAOEValue, normalizedTime);
 
             ChangeFireRadius(currentFireAOEValue);
-        }
-
-        if(extractingEmber) {
-            extractingEmberTimer -= Time.deltaTime;
-            fuelLevel -= Time.deltaTime * extractingEmberFuelRateDepletion;
-            if(extractingEmberTimer < 0) {
-                extractingEmber = false;
-                ExtractEmber();
-            }
-
-        } else {
-            if (fuelLevel > 0) {
-                fuelLevel -= Time.deltaTime * fuelDepletionRate;
-            }
         }
 
         CheckFireStateDowngrade();
@@ -152,11 +168,13 @@ public class Fire : Structure, IDamageable {
         OnFireFuelled?.Invoke(this, EventArgs.Empty);
     }
 
-    private void ExtractEmber() {
+    private IEnumerator ExtractEmber() {
         Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ember), transform.position, Quaternion.identity).GetComponent<Collectible>();
         collectible.ApplyRandomForce(-7,7,3, 5);
         collectible.SetCollectibleUnInteractable(1f);
         collectible.SetCanNeverBePickedUpByWorker();
+        yield return new WaitForSeconds(2f);
+        OnFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
     }
 
     private void CheckFireFeedable() {
@@ -233,7 +251,6 @@ public class Fire : Structure, IDamageable {
     }
 
     private void SetFireCurrentMaxFuelTreshold() {
-        Debug.Log("SetFireCurrentMaxFuelTreshold");
         State state = LevelManager.Instance.GetLevelSO().maxFireState;
         if (state == State.calm) {
             maxFuelTreshold = mildFuelTreshold;
@@ -313,6 +330,11 @@ public class Fire : Structure, IDamageable {
             extractingEmber = false;
             OnFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
         }
+    }
+
+    public void ActivateInitialFire() {
+        OnInitialFireActivated?.Invoke(this, EventArgs.Empty);
+        PlayerCurrencies.Instance.SetCarryingEmber(false);
     }
 
     public State GetState() {

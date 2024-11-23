@@ -27,6 +27,9 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip[] emberPickedUpByPlayer;
     public AudioClip[] gemPickedUpByPlayer;
 
+    public AudioClip[] bigCollectiblePlouf;
+    public AudioClip[] smallCollectiblePlouf;
+
     public AudioClip[] orbPickedUpByWorker;
     public AudioClip[] orbDroppedUpByWorker;
 
@@ -37,6 +40,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip[] hunterArrowHit;
 
     public AudioClip[] propBurned;
+    public AudioClip gunLightSwitch;
 
     public AudioClip dawnStart;
     public AudioClip dawnStartWhoosh;

@@ -46,14 +46,25 @@ public class PlayerCurrencies : MonoBehaviour
     private void Start() {
         UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
         UICurrencyManager.Instance.OnCurrencyTryPay += UICurrencyManager_OnCurrencyTryPay;
+
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            SetCarryingEmber(true);
+        }
     }
 
     public void SetCarryingEmber(bool carryingEmber) {
-        if (this.carryingEmber && !carryingEmber) {
-            Destroy(emberHoldPosition.GetComponentInChildren<Collectible>().gameObject);
+        if(!this.carryingEmber && carryingEmber) {
+            Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(CurrencyType.ember), emberHoldPosition).GetComponent<Collectible>();
+            collectible.SetAsCarriedEmber();
+            UICurrencyManager.Instance.AddCurrencyInBag(CurrencyType.ember);
         }
 
         this.carryingEmber = carryingEmber;
+    }
+
+    public void DropEmber() {
+        carryingEmber = false;
+        Destroy(emberHoldPosition.GetComponentInChildren<Collectible>().gameObject);
     }
 
     private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -65,7 +76,6 @@ public class PlayerCurrencies : MonoBehaviour
     private void UICurrencyManager_OnCurrencyTryPay(object sender, UICurrencyManager.OnCurrencyTryPayEventArgs e) {
         StartPayingCurrency(e.currencyType, e.destionationOrbTemplate);
     }
-
 
     private void DropBigOrbOnFloor() {
         lastBlueOrbDroppedOnTheFloor = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(CurrencyType.bigBlueOrb), blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
@@ -83,7 +93,7 @@ public class PlayerCurrencies : MonoBehaviour
     public void CurrencyFellFromBag(CurrencyType currencyType) {
         lastBlueOrbDroppedOnTheFloor = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyType), blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
 
-        lastBlueOrbDroppedOnTheFloor.ApplyRandomUpwardsForce(3, 10);
+        lastBlueOrbDroppedOnTheFloor.ApplyRandomForce(0,0,3, 10);
         lastBlueOrbDroppedOnTheFloor.SetCollectibleUnInteractable(3f);
         lastBlueOrbDroppedOnTheFloor.SetCollectibleFellFromBag();
         lastBlueOrbDroppedOnTheFloor.SetDroppedByPlayer();

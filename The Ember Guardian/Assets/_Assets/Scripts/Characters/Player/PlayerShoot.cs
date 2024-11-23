@@ -71,7 +71,6 @@ public class PlayerShoot : MonoBehaviour
         UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
     }
 
-
     private void Update() {
 
         if(playerJustPressedReload) {
@@ -221,12 +220,17 @@ public class PlayerShoot : MonoBehaviour
         if (currentBullet == bulletsPerAmmoClip) return;
         if (reloading) return;
         if (coolingDown) return;
+        ReloadGun();
+    }
+
+    private void ReloadGun() {
 
         currentAmmoClip -= 1;
         reloading = true;
         playerJustPressedReload = false;
         reloadTimer = reloadTime;
         OnPlayerReload?.Invoke(this, EventArgs.Empty);
+
     }
 
     private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {
@@ -255,6 +259,13 @@ public class PlayerShoot : MonoBehaviour
 
     public float GetShootCooldownTime() {
         return shootCooldownTime;
+    }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerShootCanceled -= GameInput_OnPlayerShootCanceled;
+        GameInput.Instance.OnPlayerShootStarted -= GameInput_OnPlayerShootStarted;
+        GameInput.Instance.OnPlayerReloadPerformed -= GameInput_OnPlayerReloadPerformed;
+        GameInput.Instance.OnPlayerReloadCanceled -= GameInput_OnPlayerReloadCanceled;
     }
 
 }

@@ -32,6 +32,11 @@ public class PlayerUI_HPBar : MonoBehaviour
     }
 
     private void Start() {
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Level) {
+            hpBarGameObject.SetActive(false);
+            return;
+        }
+
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         Player.Instance.OnPlayerHealed += Player_OnPlayerHealed;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
@@ -49,16 +54,6 @@ public class PlayerUI_HPBar : MonoBehaviour
 
 
     private void Update() {
-
-        if(Input.GetKeyDown(KeyCode.K)) {
-            PlayerUI_TickTemplate[] hpTickArray = hpTickContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
-            hpTickArray[hpTickArray.Length - 1].GetComponent<RectTransform>().SetParent(transform);
-            hpTickArray[hpTickArray.Length - 1].RemoveTick();
-
-            ShowHPBar();
-            RefreshHPBar();
-        }
-
         if (hpBarCritical) return;
 
         if (isFadingIn) {

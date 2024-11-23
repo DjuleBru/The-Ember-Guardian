@@ -31,6 +31,7 @@ public class DayNightManager : MonoBehaviour
     }
 
     private State state;
+    private bool cyclePaused = true;
 
     public event EventHandler OnDawnStart;
     public event EventHandler OnDayStart;
@@ -43,6 +44,10 @@ public class DayNightManager : MonoBehaviour
 
     private void Start() {
         CreaturesManager.Instance.OnAllCreaturesAtNightKilled += CreaturesManager_OnAllCreaturesAtNightKilled;
+        Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
+        Fire.Instance.OnFireEmberExtractionStarted += Fire_OnFireEmberExtractionStarted;
+        Fire.Instance.OnFireEmberExtractionStopped += Fire_OnFireEmberExtractionStopped;
+        Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
 
         if (debugMode) {
             ChangeState(debugState);
@@ -53,8 +58,10 @@ public class DayNightManager : MonoBehaviour
         OnDawnStart?.Invoke(this, EventArgs.Empty);
     }
 
-
     private void Update() {
+        if (cyclePaused) return;
+
+
         cycleTimer += Time.deltaTime;
         HandleDebugNextState();
 
@@ -98,6 +105,22 @@ public class DayNightManager : MonoBehaviour
         totalNightTimer = 0;
     }
 
+    private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
+        SetCyclePaused(false);
+    }
+
+    private void Fire_OnFireEmberExtractionStopped(object sender, EventArgs e) {
+        SetCyclePaused(false);
+    }
+
+    private void Fire_OnFireEmberExtractionStarted(object sender, EventArgs e) {
+        SetCyclePaused(true);
+    }
+
+    private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, EventArgs e) {
+        SetCyclePaused(true);
+    }
+
     private void HandleDebugNextState() {
         if(Input.GetKeyDown(KeyCode.N)) {
             switch (state) {
@@ -139,6 +162,10 @@ public class DayNightManager : MonoBehaviour
         if(newState == State.Dusk) {
             OnDuskStart?.Invoke(this, EventArgs.Empty);
         }
+    }
+
+    public void SetCyclePaused(bool paused) {
+        cyclePaused = paused;
     }
 
     public float GetCycleTimer() {

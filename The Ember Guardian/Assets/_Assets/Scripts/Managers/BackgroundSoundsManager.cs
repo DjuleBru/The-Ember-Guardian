@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BackgroundSoundsManager : MonoBehaviour
 {
+    public static BackgroundSoundsManager Instance;
+
     [SerializeField] private AudioSource audioSource1;
     [SerializeField] private AudioSource audioSource2;
     [SerializeField] private AudioSource cycleTransitionSounds;
@@ -11,6 +13,7 @@ public class BackgroundSoundsManager : MonoBehaviour
 
     [SerializeField] private AudioClip dayAudioClip;
     [SerializeField] private AudioClip nightAudioClip;
+    [SerializeField] private AudioClip cavernAudioClip;
 
     [SerializeField] private SoundRefsSO soundRefs;
 
@@ -20,6 +23,11 @@ public class BackgroundSoundsManager : MonoBehaviour
     public float transitionDuration = 2.0f; // Durée de la transition en secondes
 
     private bool isTransitioning = false;
+    private bool isInCavern = false;
+
+    private void Awake() {
+        Instance = this;
+    }
 
     private void Start() {
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
@@ -50,21 +58,22 @@ public class BackgroundSoundsManager : MonoBehaviour
     }
 
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
-        TransitionToClip(nightAudioClip, audioClipVolume_Night);
-
         cycleTransitionWhoosh.PlayOneShot(soundRefs.nightStartWhoosh);
         //cycleTransitionSounds.PlayOneShot(soundRefs.dawnStart);
-
         StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, .3f, 1f));
+
+        if (isInCavern) return;
+        TransitionToClip(nightAudioClip, audioClipVolume_Night);
+
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
-        TransitionToClip(dayAudioClip, audioClipVolume_Day);
-
         cycleTransitionWhoosh.PlayOneShot(soundRefs.dawnStartWhoosh);
         cycleTransitionSounds.PlayOneShot(soundRefs.dawnStart);
-
         StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, .3f, 1f));
+
+        if (isInCavern) return;
+        TransitionToClip(dayAudioClip, audioClipVolume_Day);
     }
 
     public void TransitionToClip(AudioClip newClip, float volumeToReach) {
@@ -79,6 +88,19 @@ public class BackgroundSoundsManager : MonoBehaviour
 
         // Démarre la transition
         StartCoroutine(Crossfade(activeSource, nextSource, volumeToReach));
+    }
+
+    public void SetInCavern(bool inCavern, AudioClip cavernBackgroundAudioClip, float cavernBackgroundVolume) { 
+        isInCavern = inCavern;
+        if(isInCavern) {
+            TransitionToClip(cavernBackgroundAudioClip, cavernBackgroundVolume);
+        } else {
+            if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+                TransitionToClip(nightAudioClip, audioClipVolume_Night);
+            } else {
+                TransitionToClip(dayAudioClip, audioClipVolume_Day);
+            }
+        }
     }
 
     private IEnumerator Crossfade(AudioSource fromSource, AudioSource toSource, float volumeToReach) {

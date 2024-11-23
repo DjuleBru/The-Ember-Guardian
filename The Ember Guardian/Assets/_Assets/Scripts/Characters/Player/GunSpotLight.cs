@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,18 +10,23 @@ public class GunSpotLight : MonoBehaviour
     private Light2D gunSpotLight;
 
     private bool lightActive = true;
+    public static event EventHandler OnAnyLightSwitched;
 
     private void Awake() {
         gunSpotLight = gunSpotLightTransform.GetComponent<Light2D>();
     }
 
     private void Start() {
-        DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
-        DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+            DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
+            Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
+            GameInput.Instance.OnPlayerGunLightSwitch += GameInput_OnPlayerGunLightSwitch;
+        }
 
-        GameInput.Instance.OnPlayerGunLightSwitch += GameInput_OnPlayerGunLightSwitch;
-
-        Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
+        lightActive = false;
+        gunSpotLight.enabled = false;
+        
     }
 
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
@@ -41,6 +47,7 @@ public class GunSpotLight : MonoBehaviour
         else {
             gunSpotLight.enabled = false;
         }
+        OnAnyLightSwitched?.Invoke(this, EventArgs.Empty);
     }
 
     private void Update() {
@@ -51,6 +58,7 @@ public class GunSpotLight : MonoBehaviour
         if (lightActive) {
             lightActive = false;
             gunSpotLight.enabled = false;
+            OnAnyLightSwitched?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -58,6 +66,7 @@ public class GunSpotLight : MonoBehaviour
         if (!lightActive) {
             lightActive = true;
             gunSpotLight.enabled = true;
+            OnAnyLightSwitched?.Invoke(this, EventArgs.Empty);
         }
     }
 }

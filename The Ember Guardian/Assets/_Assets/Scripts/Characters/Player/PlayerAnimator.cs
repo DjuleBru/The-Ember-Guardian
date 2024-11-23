@@ -17,6 +17,12 @@ public class PlayerAnimator : MonoBehaviour
     private bool dead;
     private bool moving;
 
+
+    private void Awake() {
+        Portal.OnPlayerTeleported += Portal_OnPlayerTeleported;
+        Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
+    }
+
     private void Start() {
         PlayerMovement.Instance.OnPlayerJumpUp += PlayerMovement_OnPlayerJumpUp;
         PlayerMovement.Instance.OnPlayerJumpTop += PlayerMovement_OnPlayerJumpTop;
@@ -33,7 +39,6 @@ public class PlayerAnimator : MonoBehaviour
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
         Player.Instance.OnPlayerDamagedRecentlyEnded += Player_OnPlayerDamagedRecentlyEnded;
-        Portal.OnPlayerTeleported += Portal_OnPlayerTeleported;
     }
 
 
@@ -62,9 +67,13 @@ public class PlayerAnimator : MonoBehaviour
     }
 
     private void Portal_OnPlayerTeleported(object sender, EventArgs e) {
-        Debug.Log("teleport");
-        bodyAnimator.SetBool("Teleport", true);
-        gunBodyAnimator.SetBool("Teleport", true);
+        bodyAnimator.SetTrigger("Teleport");
+        gunBodyAnimator.SetTrigger("Teleport");
+    }
+
+    private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {
+        bodyAnimator.SetTrigger("Teleport_Out");
+        gunBodyAnimator.SetTrigger("Teleport_Out");
     }
 
     private void Update() {
@@ -154,4 +163,30 @@ public class PlayerAnimator : MonoBehaviour
     public void FootStepEvent() {
         OnFootStepTriggered?.Invoke(this, EventArgs.Empty);
     }
+
+    private void OnDestroy() {
+        PlayerMovement.Instance.OnPlayerJumpUp -= PlayerMovement_OnPlayerJumpUp;
+        PlayerMovement.Instance.OnPlayerJumpTop -= PlayerMovement_OnPlayerJumpTop;
+        PlayerMovement.Instance.OnPlayerJumpDown -= PlayerMovement_OnPlayerJumpDown;
+        PlayerMovement.Instance.OnPlayerLanded -= PlayerMovement_OnPlayerLanded;
+        PlayerMovement.Instance.OnPlayerCrouched -= PlayerMovement_OnPlayerCrouched;
+        PlayerMovement.Instance.OnPlayerCrouchedEnded -= PlayerMovement_OnPlayerCrouchedEnded;
+        PlayerMovement.Instance.OnPlayerRunStarted -= PlayerMovement_OnPlayerRunStarted;
+        PlayerMovement.Instance.OnPlayerRunStopped -= PlayerMovement_OnPlayerRunStopped;
+        PlayerMovement.Instance.OnPlayerExhaustionStarted -= PlayerMovement_OnPlayerExhaustionStarted;
+        PlayerMovement.Instance.OnPlayerExhaustionStopped -= PlayerMovement_OnPlayerExhaustionStopped;
+
+        Player.Instance.OnPlayerDamaged -= Player_OnPlayerDamaged;
+        Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
+        Player.Instance.OnPlayerRespawned -= Player_OnPlayerRespawned;
+        Player.Instance.OnPlayerDamagedRecentlyEnded -= Player_OnPlayerDamagedRecentlyEnded;
+        Portal.OnPlayerTeleported -= Portal_OnPlayerTeleported;
+        Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
+    }
+
+    private void OnDisable() {
+        playerAnimator.SetBool("Walking", false);
+        moving = false;
+    }
+
 }

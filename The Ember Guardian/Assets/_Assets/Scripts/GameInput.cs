@@ -35,7 +35,14 @@ public class GameInput : MonoBehaviour
     private float interactHoldTimer;
 
     private void Awake() {
+
+        if (Instance != null && Instance != this) {
+            Destroy(gameObject); // Détruit les doublons
+            return;
+        }
+
         Instance = this;
+        DontDestroyOnLoad(gameObject);
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable();
     }

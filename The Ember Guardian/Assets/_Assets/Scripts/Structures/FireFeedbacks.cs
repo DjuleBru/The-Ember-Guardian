@@ -20,7 +20,6 @@ public class FireFeedbacks : MonoBehaviour
     }
 
     private void Fire_OnFireEmberExtractionStopped(object sender, System.EventArgs e) {
-        Debug.Log("stop");
         ectractingEmberFeedbacks.StopFeedbacks();
         ectractingEmberFeedbacks.StopAllCoroutines();
     }

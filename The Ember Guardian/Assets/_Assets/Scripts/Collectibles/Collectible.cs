@@ -12,10 +12,17 @@ public class Collectible : MonoBehaviour
 
     public event EventHandler OnCollectibleDestroyed;
     public event EventHandler OnCollectibleEnteredSlot;
+    public event EventHandler OnCollectibleFellFromBag;
 
     public static event EventHandler OnAnyCollectibleTouchedFloor;
     public static event EventHandler OnAnyCollectiblePickedUpByPlayer;
     public static event EventHandler OnAnyCollectiblePickedUpByWorker;
+    public static event EventHandler<OnAnyCollectiblePouffedEventArgs> OnAnyCollectiblePlouffed;
+    public event EventHandler OnCollectiblePlouffed;
+
+    public class OnAnyCollectiblePouffedEventArgs : EventArgs {
+        public PlayerCurrencies.CurrencyType currencyType;
+    }
 
     private float initialGravityScale;
 
@@ -91,7 +98,7 @@ public class Collectible : MonoBehaviour
             Worker worker = collision.gameObject.GetComponent<Worker>();
 
             if (worker != null) {
-
+                if (currencyType == PlayerCurrencies.CurrencyType.ember) return;
                 if (aggroedByWildWorker && worker != aggroedWildWorker) return;
 
                 if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.wild && !collected && currencyType == PlayerCurrencies.CurrencyType.bigBlueOrb) {
@@ -130,18 +137,14 @@ public class Collectible : MonoBehaviour
 
     public void PlayerCollectThis(PlayerCurrencies.CurrencyType currencyType) {
         OnAnyCollectiblePickedUpByPlayer?.Invoke(this, EventArgs.Empty);
-        UICurrencyManager.Instance.AddCurrencyInBag(currencyType);
 
         if(currencyType != PlayerCurrencies.CurrencyType.ember) {
-
+            UICurrencyManager.Instance.AddCurrencyInBag(currencyType);
             Destroy(gameObject);
 
         } else {
-            transform.SetParent(PlayerCurrencies.Instance.GetEmberHoldPosition());
-            transform.position = PlayerCurrencies.Instance.GetEmberHoldPosition().position;
-            rb.bodyType = RigidbodyType2D.Kinematic;
-            interactable = false;
             PlayerCurrencies.Instance.SetCarryingEmber(true);
+            Destroy(gameObject);
         }
     }
 
@@ -151,8 +154,24 @@ public class Collectible : MonoBehaviour
     }
 
     public void SetCollectibleFellFromBag() {
+        float delayToPlouf = UnityEngine.Random.Range(.5f, .6f);
+        StartCoroutine(CollectibleFallsInWater(delayToPlouf));
+    }
+
+    private IEnumerator CollectibleFallsInWater(float delayToPlouf) {
+        yield return new WaitForSeconds(.1f);
+
+        OnCollectibleFellFromBag?.Invoke(this, EventArgs.Empty);
         GetComponent<Collider2D>().enabled = false;
         solidCollider.enabled = false;
+
+        yield return new WaitForSeconds(delayToPlouf);
+        Debug.Log("plouf");
+        OnCollectiblePlouffed?.Invoke(this, EventArgs.Empty);
+        OnAnyCollectiblePlouffed?.Invoke(this, new OnAnyCollectiblePouffedEventArgs { currencyType = currencyType});
+
+        yield return new WaitForSeconds(1f);
+        Destroy(gameObject);
     }
 
     private IEnumerator SetCollectibleInteractableAfterDelay(float delay) {
@@ -168,6 +187,13 @@ public class Collectible : MonoBehaviour
         this.droppedByPlayer = droppedByPlayer;
         yield return new WaitForSeconds(delay);
         this.droppedByPlayer = !droppedByPlayer;
+    }
+
+    public void SetAsCarriedEmber() {
+        transform.SetParent(PlayerCurrencies.Instance.GetEmberHoldPosition());
+        transform.position = PlayerCurrencies.Instance.GetEmberHoldPosition().position;
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        interactable = false;
     }
 
     public void SetMovingForPayment(bool moving, Transform destination = null) {
@@ -217,6 +243,7 @@ public class Collectible : MonoBehaviour
     }
 
     public void ApplyRandomUpwardsForce(float minForce, float maxForce) {
+        Debug.Log("ApplyRandomUpwardsForce");
         float force = UnityEngine.Random.Range(minForce, maxForce);
 
         Vector2 forceDir = new Vector2(UnityEngine.Random.Range(-.5f, .5f)*force, UnityEngine.Random.Range(.5f, 1f) * force);
@@ -225,6 +252,7 @@ public class Collectible : MonoBehaviour
     }
 
     public void ApplyRandomSidewardsForce(float minForce, float maxForce) {
+        Debug.Log("ApplyRandomSidewardsForce");
         float force = UnityEngine.Random.Range(minForce, maxForce);
         float xDir = UnityEngine.Random.Range(-1, 1);
 
@@ -240,6 +268,7 @@ public class Collectible : MonoBehaviour
     }
 
     public void ApplyRandomFrontForce(float minForce, float maxForce) {
+        Debug.Log("ApplyRandomFrontForce");
         float force = UnityEngine.Random.Range(minForce, maxForce);
    
         Vector2 forceDir = new Vector2(UnityEngine.Random.Range(.5f, 1f) * force, UnityEngine.Random.Range(.1f, .25f) * force);
@@ -248,11 +277,12 @@ public class Collectible : MonoBehaviour
     }
 
     public void ApplyRandomForce(float minForceX, float maxForceX, float minForceY, float maxForceY) {
+        Debug.Log("ApplyRandomForce");
         float forceX = UnityEngine.Random.Range(minForceX, maxForceX);
         float forceY = UnityEngine.Random.Range(minForceY, maxForceY);
 
         Vector2 forceDir = new Vector2(forceX, forceY);
-
+        Debug.Log(forceDir);
         rb.AddForce(forceDir, ForceMode2D.Impulse);
     }
 

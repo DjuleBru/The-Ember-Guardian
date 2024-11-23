@@ -44,21 +44,21 @@ public class Structure : MonoBehaviour {
     }
 
     protected virtual void Start() {
-        campSide = CampZoneManager.Instance.AssignCampSide(transform.position);
-
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractStarted += GameInput_OnPlayerInteractStarted;
         GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
-        DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
-        DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
+            DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+            campSide = CampZoneManager.Instance.AssignCampSide(transform.position);
+            StructuresManager.Instance.AddStructure(this);
+        }
 
         payCurrencyUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
 
-        StructuresManager.Instance.AddStructure(this);
-
         RefreshStructureUpgradeInteraction();
     }
-
 
     protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         payCurrencyUI.SetPlayerInteracting(false);

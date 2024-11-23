@@ -77,12 +77,14 @@ public class UICurrencyManager : MonoBehaviour
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyStructurePrimaryFunctionUsed += Structure_OnAnyStructureFunctionUsed;
 
-        StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.bigBlueOrb, debugInitialBigOrbs));
-        StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.smallBlueOrb, debugInitialSmallOrbs));
-        StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.bigRedOrb, debugInitialBigRedOrbs));
-        StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.smallRedOrb, debugInitialSmallRedOrbs));
-        StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.ammo, debugInitialAmmo));
-        
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.bigBlueOrb, debugInitialBigOrbs));
+            StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.smallBlueOrb, debugInitialSmallOrbs));
+            StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.bigRedOrb, debugInitialBigRedOrbs));
+            StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.smallRedOrb, debugInitialSmallRedOrbs));
+            StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.ammo, debugInitialAmmo));
+
+        }
     }
 
 
@@ -108,9 +110,9 @@ public class UICurrencyManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.bigBlueOrb);
         }
-        //if (Input.GetKeyDown(KeyCode.L)) {
-        //    AddCurrencyInBag(PlayerCurrencies.CurrencyType.smallBlueOrb);
-        //}
+        if (Input.GetKeyDown(KeyCode.J)) {
+            AddCurrencyInBag(PlayerCurrencies.CurrencyType.smallBlueOrb);
+        }
     }
 
     public void AddCurrencyInBag(PlayerCurrencies.CurrencyType currencyType) {
@@ -313,6 +315,12 @@ public class UICurrencyManager : MonoBehaviour
 
     public bool GetHasBigOrb() {
         return GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.bigBlueOrb).Count > 0;
+    }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerInteractStarted -= GameInput_OnPlayerInteractStarted;
+        GameInput.Instance.OnPlayerInteractCanceled -= GameInput_OnPlayerInteractCanceled;
+        GameInput.Instance.OnPlayerInteractHeldDown -= GameInput_OnPlayerInteractHeldDown;
     }
 
 }

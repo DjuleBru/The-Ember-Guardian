@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UICurrencyManagerVisual : MonoBehaviour
 {
+    [SerializeField] private bool debugAlwaysShow;
     [SerializeField] private UICurrencyManager uICurrencyManager;
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private BackpackFeedbacks backpackFeedbacks;
@@ -24,17 +25,20 @@ public class UICurrencyManagerVisual : MonoBehaviour
         uICurrencyManager.OnCurrencyTryPay += UICurrencyManager_OnCurrencyTryPay;
         uICurrencyManager.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         uICurrencyManager.OnCurrencyFailedToDrop += UICurrencyManager_OnCurrencyFailedToDrop;
+
+        PlayerShoot.Instance.OnPlayerShotProjectile += PlayerShoot_OnPlayerShotProjectile;
+        Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
     }
 
     private void Update() {
-        if (backpackAlmostFull) return;
+        if (debugAlwaysShow) return;
 
         if (isFadingIn) {
             HandleFadeIn();
             return;
         }
 
-        //HandleFadeOut();
+        HandleFadeOut();
     }
 
     private void UICurrencyManager_OnCurrencyFailedToDrop(object sender, System.EventArgs e) {
@@ -113,6 +117,18 @@ public class UICurrencyManagerVisual : MonoBehaviour
             }
         }
         backpackAlmostFull = isAlmostFull;
+    }
+
+    private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
+        if (backpackAlmostFull) {
+            ShowBackpack(2f);
+        }
+    }
+
+    private void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
+        if (backpackAlmostFull) {
+            ShowBackpack(2f);
+        }
     }
 
 }

@@ -35,6 +35,7 @@ public class SoundManager : MonoBehaviour
         Collectible.OnAnyCollectibleTouchedFloor += Collectible_OnAnyCollectibleTouchedFloor;
         Collectible.OnAnyCollectiblePickedUpByPlayer += Collectible_OnAnyCollectiblePickedUpByPlayer;
         Collectible.OnAnyCollectiblePickedUpByWorker += Collectible_OnAnyCollectiblePickedUpByWorker;
+        Collectible.OnAnyCollectiblePlouffed += Collectible_OnAnyCollectiblePlouffed; ;
         Chest.OnAnyChestSpawnedCollectible += Chest_OnAnyChestSpawnedCollectible;
         PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor += PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;
 
@@ -47,8 +48,10 @@ public class SoundManager : MonoBehaviour
         Projectile.OnAnyProjectileInstantiated += Projectile_OnAnyProjectileInstantiated;
 
         EndLevelAreaProp.OnAnyEndLevelAreaPropBurned += EndLevelAreaProp_OnAnyEndLevelAreaPropBurned;
-
+        GunSpotLight.OnAnyLightSwitched += GunSpotLight_OnAnyLightSwitched;
     }
+
+
 
 
 
@@ -187,6 +190,23 @@ public class SoundManager : MonoBehaviour
     private void PlayerCurrencies_OnBlueOrbDroppedOnTheFloor(object sender, PlayerCurrencies.OnBlueOrbDroppedOnTheFloorEventArgs e) {
         PlaySound3D(soundRefsSO.bigBlueOrbDropped, (sender as MonoBehaviour).transform.position);
     }
+    private void Collectible_OnAnyCollectiblePlouffed(object sender, Collectible.OnAnyCollectiblePouffedEventArgs e) {
+        bool isBigCollectible = false;
+
+        if (e.currencyType == PlayerCurrencies.CurrencyType.bigBlueOrb) {
+            isBigCollectible = true;
+        }
+        if (e.currencyType == PlayerCurrencies.CurrencyType.bigRedOrb) {
+            isBigCollectible = true;
+        }
+
+        if(isBigCollectible) {
+            PlaySound3D(soundRefsSO.bigCollectiblePlouf, (sender as MonoBehaviour).transform.position);
+        } else {
+            PlaySound3D(soundRefsSO.smallCollectiblePlouf, (sender as MonoBehaviour).transform.position);
+        }
+
+    }
 
     #endregion
 
@@ -246,6 +266,13 @@ public class SoundManager : MonoBehaviour
 
     #endregion
 
+    #region OTHER
+    private void GunSpotLight_OnAnyLightSwitched(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.gunLightSwitch);
+    }
+
+    #endregion
+
     #region PLAY SOUNDS
 
     private void PlaySound3D(AudioClip[] audioClipArray, Vector3 position, float volume = 1f) {
@@ -273,6 +300,40 @@ public class SoundManager : MonoBehaviour
         if(probabilityToPlaySound > randomFloat) {
             return true;
         } else { return false; }
+    }
+
+    private void OnDestroy() {
+        StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
+        Structure.OnAnyStructureUpgraded -= Structure_OnAnyStructureUpgraded;
+
+        PlayerShoot.Instance.OnPlayerShotProjectile -= PlayerShoot_OnPlayerShotProjectile;
+        PlayerShoot.Instance.OnPlayerReload -= PlayerShoot_OnPlayerReload;
+        PlayerShoot.Instance.OnPlayerCooldownTrigger -= PlayerShoor_OnPlayerCooldownSFXTrigger;
+        PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo -= PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
+
+        PlayerUI_AmmoBar.Instance.OnAmmoTickAdded -= PlayerUI_AmmoBar_OnAmmoTickAdded;
+        PlayerUI_HPBar.Instance.OnHPTickAdded -= PlayerUI_HPBar_OnHPTickAdded;
+        StructureUI_Fire.OnFireTickRemoved -= StructureUI_Fire_OnFireTickRemoved;
+
+        ParticleCollision.OnAnyBulletHitEnemy -= ParticleCollision_OnAnyBulletHitEnemy;
+        ParticleCollision.OnAnyBulletHitGround -= ParticleCollision_OnAnyBulletHitGround;
+
+        Collectible.OnAnyCollectibleTouchedFloor -= Collectible_OnAnyCollectibleTouchedFloor;
+        Collectible.OnAnyCollectiblePickedUpByPlayer -= Collectible_OnAnyCollectiblePickedUpByPlayer;
+        Collectible.OnAnyCollectiblePickedUpByWorker -= Collectible_OnAnyCollectiblePickedUpByWorker;
+        Chest.OnAnyChestSpawnedCollectible -= Chest_OnAnyChestSpawnedCollectible;
+        PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor -= PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;
+
+        Worker.OnAnyOrbDroppedByWorker -= Worker_OnAnyOrbDroppedByWorker;
+        Worker.OnAnyWorkerRecruited -= Worker_OnAnyWorkerRecruited;
+        Worker.OnAnyWorkerAssignedHunter -= Worker_OnAnyWorkerAssignedHunter;
+        Worker.OnAnyWorkerDied -= Worker_OnAnyWorkerDied;
+
+        Projectile.OnAnyProjectileHit -= Projectile_OnAnyProjectileHit;
+        Projectile.OnAnyProjectileInstantiated -= Projectile_OnAnyProjectileInstantiated;
+
+        EndLevelAreaProp.OnAnyEndLevelAreaPropBurned -= EndLevelAreaProp_OnAnyEndLevelAreaPropBurned;
+        GunSpotLight.OnAnyLightSwitched -= GunSpotLight_OnAnyLightSwitched;
     }
 
 }

@@ -40,7 +40,6 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     }
 
     private void Start() {
-
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerAmmoRefilled += PlayerShoot_OnPlayerAmmoRefilled;
         Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
