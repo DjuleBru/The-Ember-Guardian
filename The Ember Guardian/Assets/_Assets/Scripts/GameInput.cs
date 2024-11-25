@@ -26,6 +26,8 @@ public class GameInput : MonoBehaviour
 
     public event EventHandler OnPlayerGunLightSwitch;
 
+    public event EventHandler OnPlayerLeftRightDirPerformed;
+
     public event EventHandler OnPlayerLeftRightSwitchPerformed;
     public event EventHandler OnPlayerLeftSwitchPerformed;
     public event EventHandler OnPlayerRightSwitchPerformed;
@@ -61,8 +63,8 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.SwitchGunLight.performed += SwitchGunLight_performed;
 
         playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
+        playerInputActions.Player.Move.performed += Move_performed;
     }
-
 
     private void Update() {
         if(interactPressed) {
@@ -73,6 +75,10 @@ public class GameInput : MonoBehaviour
                 OnPlayerInteractHeldDown?.Invoke(this, EventArgs.Empty);
             }
         }
+    }
+
+    private void Move_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        OnPlayerLeftRightDirPerformed?.Invoke(this, EventArgs.Empty);
     }
 
     private void SwitchGunLight_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
@@ -145,7 +151,6 @@ public class GameInput : MonoBehaviour
         float leftRightDir = playerInputActions.Player.LeftRightSwitch.ReadValue<float>();
         return leftRightDir;
     }
-
     public bool GetWasHoldingInteract() {
         return holdingInteract;
     }

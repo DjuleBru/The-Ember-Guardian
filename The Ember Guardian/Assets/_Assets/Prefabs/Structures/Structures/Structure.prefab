@@ -2133,6 +2133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2097073961957946881}
   - component: {fileID: 5785561889710023120}
+  - component: {fileID: 8124003534650656326}
   m_Layer: 0
   m_Name: StructureVisual
   m_TagString: Untagged
@@ -2174,6 +2175,27 @@ MonoBehaviour:
   unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
   structureHasFunctionIcon: 0
+--- !u!95 &8124003534650656326
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6121088288681775748}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6419487770454074272
 GameObject:
   m_ObjectHideFlags: 0

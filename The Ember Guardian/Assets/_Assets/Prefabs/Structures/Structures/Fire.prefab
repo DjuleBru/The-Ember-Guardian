@@ -33015,9 +33015,9 @@ MonoBehaviour:
   isEndLevelFire: 0
   isHubFire: 0
   calmFireRadius: 10
-  mildFireRadius: 20
-  wildFireRadius: 30
-  insaneFireRadius: 40
+  mildFireRadius: 25
+  wildFireRadius: 40
+  insaneFireRadius: 55
   orbFuelValue: 10
   fuelDepletionRate: 0.03
   calmFuelTreshold: 0
@@ -33147,6 +33147,11 @@ MonoBehaviour:
   continuousPSMildEmissionRate: 6
   continuousPSWildEmissionRate: 10
   continuousPSInsaneEmissionRate: 15
+  fireLimitLightSpriteRenderer: {fileID: 5337861354308121070}
+  fireLimitLightSprite1: {fileID: 21300000, guid: bb89a9673f1665d428aeabe73cc3bdf8, type: 3}
+  fireLimitLightSprite2: {fileID: 21300000, guid: 3f798d388c0c31a42bbd0f5de3a3f6f5, type: 3}
+  fireLimitLightSprite3: {fileID: 21300000, guid: 0b0bb3618dd374949aafb3713ccd0064, type: 3}
+  fireLimitLightSprite4: {fileID: 21300000, guid: d610036d5378db84ab1ef31aa40f93c3, type: 3}
 --- !u!95 &5163658974638121378
 Animator:
   serializedVersion: 5

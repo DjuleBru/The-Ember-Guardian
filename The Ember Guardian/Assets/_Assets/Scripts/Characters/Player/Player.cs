@@ -11,10 +11,11 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField] private Transform projectileTarget;
 
     private Rigidbody2D rb;
-    private bool canDropOrbOnTheFloor = true;
     private bool dead;
     private bool damagedRecently;
     private bool insideCamp;
+    private bool canDropOrbOnTheFloor = true;
+    private bool canMove = true;
 
     private float damagedTimer;
     private float damagedImmunityTime = 1.5f;
@@ -37,6 +38,7 @@ public class Player : MonoBehaviour, IDamageable
     public class OnPlayerHealedEventArgs : EventArgs {
         public int healAmount;
     }
+
     private bool isLevelScene;
 
     private void Awake() {
@@ -118,6 +120,7 @@ public class Player : MonoBehaviour, IDamageable
         OnPlayerDamaged?.Invoke(this, EventArgs.Empty);
     }
 
+    #region PLAYER CONTROLS RESTRICTIONS
     public void Die() {
         GetComponent<PlayerMovement>().enabled = false;
         GetComponent<PlayerAim>().enabled = false;
@@ -151,23 +154,39 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public void MoveOnTeleporter(Transform teleporterPlayerPosition) {
+        canMove = false;
+
         GetComponent<PlayerMovement>().enabled = false;
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         GetComponent<PlayerShoot>().enabled = false;
         GetComponent<PlayerCurrencies>().enabled = false;
-        GetComponentInChildren<PlayerAnimator>().enabled = false;
         SetCanDropOrbOnTheFloor(false);
         transform.position = teleporterPlayerPosition.position;
     }
 
     public void ReleasePlayerFromTeleporter() {
+        canMove = true;
+
         GetComponent<PlayerMovement>().enabled = true;
         GetComponent<PlayerShoot>().enabled = true;
         GetComponent<PlayerCurrencies>().enabled = true;
-        GetComponentInChildren<PlayerAnimator>().enabled = true;
         SetCanDropOrbOnTheFloor(true);
     }
 
+    public void StartInteractingWithMerchant() {
+        canMove = false;
+        GetComponent<PlayerMovement>().enabled = false;
+        GetComponent<PlayerShoot>().enabled = false;
+    }
+    
+    public void StopInteractingWithMerchant() {
+        canMove = true;
+
+        GetComponent<PlayerMovement>().enabled = true;
+        GetComponent<PlayerShoot>().enabled = true;
+    }
+
+    #endregion
     public Transform GetProjectileTarget() {
         return projectileTarget;
     }
@@ -195,5 +214,9 @@ public class Player : MonoBehaviour, IDamageable
 
     public bool GetDead() {
         return dead;
+    }
+
+    public bool GetCanMove() {
+        return canMove;
     }
 }

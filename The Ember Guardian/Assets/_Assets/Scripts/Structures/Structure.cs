@@ -19,6 +19,7 @@ public class Structure : MonoBehaviour {
     public static event EventHandler OnAnyPlayerTriggeredOut;
     public event EventHandler OnStructureUpgraded;
     public static event EventHandler OnAnyStructureUpgraded;
+    public event EventHandler OnStructurePrimaryFunctionUsed;
     public static event EventHandler OnAnyStructurePrimaryFunctionUsed;
     public event EventHandler OnStructureInteractionsUpdated;
 
@@ -76,6 +77,7 @@ public class Structure : MonoBehaviour {
 
     protected virtual void TriggerStructurePrimaryFunction() {
         OnAnyStructurePrimaryFunctionUsed?.Invoke(this, EventArgs.Empty);
+        OnStructurePrimaryFunctionUsed?.Invoke(this, EventArgs.Empty);
     }
 
     protected virtual void UpgradeStructure() {
@@ -84,23 +86,6 @@ public class Structure : MonoBehaviour {
         
         OnStructureUpgraded?.Invoke(this, EventArgs.Empty);
         OnAnyStructureUpgraded?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void SetStructureUpgradableUnlocked(bool upgradable) {
-        upgradeUnlocked = upgradable;
-        ActivateStructureUpgradeInteraction(upgradable);
-    }
-
-    public void SetStructurePrimaryFunctionUnlocked(bool unlocked) {
-        if (primaryFunctionUnlocked == unlocked) return;
-        primaryFunctionUnlocked = unlocked;
-        ActivateStructurePrimaryFunctionInteraction(unlocked);
-    }
-
-    public void SetStructureSecondaryFunctionUnlocked(bool unlocked) {
-        if(secondaryFunctionUnlocked == unlocked) return;
-        secondaryFunctionUnlocked = unlocked;
-        ActivateStructureSecondaryFunctionInteraction(unlocked);
     }
 
     public bool GetUpgradableUnlocked() {
@@ -226,6 +211,24 @@ public class Structure : MonoBehaviour {
         playerInteracting = true;
         payCurrencyUI.SetPlayerInteracting(true);
     }
+
+    public void SetStructureUpgradableUnlocked(bool upgradable) {
+        upgradeUnlocked = upgradable;
+        ActivateStructureUpgradeInteraction(upgradable);
+    }
+
+    public void SetStructurePrimaryFunctionUnlocked(bool unlocked) {
+        if (primaryFunctionUnlocked == unlocked) return;
+        primaryFunctionUnlocked = unlocked;
+        ActivateStructurePrimaryFunctionInteraction(unlocked);
+    }
+
+    public void SetStructureSecondaryFunctionUnlocked(bool unlocked) {
+        if (secondaryFunctionUnlocked == unlocked) return;
+        secondaryFunctionUnlocked = unlocked;
+        ActivateStructureSecondaryFunctionInteraction(unlocked);
+    }
+
 
     protected void DebugInitializeActiveStructureUITypeList() {
 

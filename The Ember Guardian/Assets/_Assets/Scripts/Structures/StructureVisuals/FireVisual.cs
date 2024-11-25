@@ -32,10 +32,16 @@ public class FireVisual : StructureVisual
     [SerializeField] private int continuousPSWildEmissionRate;
     [SerializeField] private int continuousPSInsaneEmissionRate;
 
+    [SerializeField] private Light2D fireLimitLightSpriteRenderer;
+    [SerializeField] private Sprite fireLimitLightSprite1;
+    [SerializeField] private Sprite fireLimitLightSprite2;
+    [SerializeField] private Sprite fireLimitLightSprite3;
+    [SerializeField] private Sprite fireLimitLightSprite4;
+
     private float calmLightRadius = 2.1f;
-    private float mildLightRadius = 4.05f;
-    private float wildLightRadius = 6.05f;
-    private float insaneLightRadius = 8.05f;
+    private float mildLightRadius = 5.16f;
+    private float wildLightRadius = 8.23f;
+    private float insaneLightRadius = 11.17f;
 
     private float initialFireAOEValue;
     private float finalFireAOEValue;
@@ -108,7 +114,6 @@ public class FireVisual : StructureVisual
         if (e.newState == Fire.State.extinguished) {
             fireAnimator.ResetTrigger("Calm");
             fireAnimator.SetTrigger("Extinguished");
-
             finalFireLightLimiValue = 0;
             finalFireAOEValue = 0;
             finalFireLightIntensityValue = 0;
@@ -123,6 +128,7 @@ public class FireVisual : StructureVisual
             finalFireLightLimiValue = wildLightRadius;
             finalFireLightIntensityValue = wildLightIntensityValue;
             finalFirePSEmissionRateValue = wildPSEmissionRateValue;
+            fireLimitLightSpriteRenderer.lightCookieSprite = fireLimitLightSprite3;
 
             ChangeContinuousPSEmissionRate(continuousPSWildEmissionRate);
         }
@@ -135,6 +141,7 @@ public class FireVisual : StructureVisual
             finalFireLightLimiValue = mildLightRadius;
             finalFireLightIntensityValue = mildLightIntensityValue;
             finalFirePSEmissionRateValue = mildPSEmissionRateValue;
+            fireLimitLightSpriteRenderer.lightCookieSprite = fireLimitLightSprite2;
 
             ChangeContinuousPSEmissionRate(continuousPSMildEmissionRate);
         }
@@ -146,6 +153,7 @@ public class FireVisual : StructureVisual
             finalFireLightLimiValue = insaneLightRadius;
             finalFireLightIntensityValue = insaneLightIntensityValue;
             finalFirePSEmissionRateValue = insanePSEmissionRateValue;
+            fireLimitLightSpriteRenderer.lightCookieSprite = fireLimitLightSprite4;
 
             ChangeContinuousPSEmissionRate(continuousPSInsaneEmissionRate);
         }
@@ -157,6 +165,7 @@ public class FireVisual : StructureVisual
             finalFireLightLimiValue = calmLightRadius;
             finalFireLightIntensityValue = calmLightIntensityValue;
             finalFirePSEmissionRateValue = calmPSEmissionRateValue;
+            fireLimitLightSpriteRenderer.lightCookieSprite = fireLimitLightSprite1;
         }
 
         lerping = true;
@@ -189,15 +198,14 @@ public class FireVisual : StructureVisual
             float currentLightValue = Mathf.Lerp(initialFireLightIntensityValue, finalFireLightIntensityValue, normalizedTime);
             float currentPSEmissionRateValue = Mathf.Lerp(initialFirePSEmissionRateValue, finalFirePSEmissionRateValue, normalizedTime);
 
-            ChangeFireLightRadius(lightLimitValue);
+            ChangeFireLightScale(lightLimitValue);
             ChangeFireVisualsRadius(currentFireAOEValue);
             ChangeFireVisualsLightIntensity(currentLightValue);
             ChangeFirePSEmissionRate(currentPSEmissionRateValue);
         }
     }
 
-    private void ChangeFireLightRadius(float fireRadius) {
-
+    private void ChangeFireLightScale(float fireRadius) {
         fireLimitLight.transform.localScale = new Vector3(fireRadius, fireRadius, 1);
     }
 

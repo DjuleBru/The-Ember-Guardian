@@ -13,9 +13,13 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - CLIPPING_ON
+  - DISTORT_ON
   - GLOWLIGHT_ON
+  - GLOW_ON
+  - GREYSCALE_ON
   - HITEFFECT_ON
   - HOLOGRAM_ON
+  - SHINE_ON
   m_InvalidKeywords:
   - ETC1_EXTERNAL_ALPHA
   - _GLOWAFFECTLIGHT_ON
@@ -117,7 +121,7 @@ Material:
     - _ColorSwapRedLuminosity: 0.5
     - _Contrast: 1
     - _CullingOption: 0
-    - _DistortAmount: 0.5
+    - _DistortAmount: 0
     - _DistortTexXSpeed: 5
     - _DistortTexYSpeed: 5
     - _EditorDrawers: 14
@@ -125,7 +129,7 @@ Material:
     - _FadeBurnGlow: 2
     - _FadeBurnTransition: 0.075
     - _FadeBurnWidth: 0.025
-    - _FishEyeUvAmount: 0.35
+    - _FishEyeUvAmount: 0
     - _FlickerAlpha: 0
     - _FlickerFreq: 0.2
     - _FlickerPercent: 0.05
@@ -134,7 +138,7 @@ Material:
     - _GhostTransparency: 0
     - _GlitchAmount: 3
     - _GlitchSize: 1
-    - _Glow: 10
+    - _Glow: 0
     - _GlowAffectLight: 1
     - _GlowGlobal: 1
     - _GlowTexUsed: 0
@@ -147,7 +151,7 @@ Material:
     - _GrassRadialBend: 0.1
     - _GrassSpeed: 2
     - _GrassWind: 20
-    - _GreyscaleBlend: 1
+    - _GreyscaleBlend: 0
     - _GreyscaleLuminosity: 0
     - _GreyscaleOutline: 0
     - _HandDrawnAmount: 10
@@ -205,7 +209,7 @@ Material:
     - _PosterizeGamma: 0.75
     - _PosterizeNumColors: 8
     - _PosterizeOutline: 0
-    - _RadialClip: 45
+    - _RadialClip: 0
     - _RadialClip2: 0
     - _RadialStartAngle: 90
     - _RandomSeed: 0
@@ -219,10 +223,10 @@ Material:
     - _ShakeUvSpeed: 2.5
     - _ShakeUvX: 1.5
     - _ShakeUvY: 1
-    - _ShineGlow: 1
-    - _ShineLocation: 0.5
+    - _ShineGlow: 0
+    - _ShineLocation: 0
     - _ShineRotate: 0
-    - _ShineWidth: 0.1
+    - _ShineWidth: 0.05
     - _TextureScrollXSpeed: 1
     - _TextureScrollYSpeed: 0
     - _TwistUvAmount: 1

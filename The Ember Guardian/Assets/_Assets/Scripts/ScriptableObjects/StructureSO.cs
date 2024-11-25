@@ -16,6 +16,9 @@ public class StructureSO : ScriptableObject
         guardShrine,
         tower,
         orbProcessor,
+        merchant_skills,
+        merchant_guns,
+        merchant_plants,
     }
 
     public StructureType structureType;

@@ -28,10 +28,10 @@ public class UICurrencyManager : MonoBehaviour
     [SerializeField] private int smallOrbValue = 5;
     [SerializeField] private float smallOrbSmoothTime = 5f;
 
-    [SerializeField] int debugInitialBigOrbs = 5;
+    [SerializeField] int debugInitialBigOrbs = 10;
     [SerializeField] int debugInitialSmallOrbs = 0;
-    [SerializeField] int debugInitialBigRedOrbs = 0;
-    [SerializeField] int debugInitialSmallRedOrbs = 0;
+    [SerializeField] int debugInitialBigRedOrbs = 10;
+    [SerializeField] int debugInitialSmallRedOrbs = 10;
     [SerializeField] int debugInitialAmmo = 3;
 
     List<Currency_UI> currenciesInBag = new List<Currency_UI>();

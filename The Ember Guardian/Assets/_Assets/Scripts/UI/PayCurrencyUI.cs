@@ -86,7 +86,11 @@ public class PayCurrencyUI : MonoBehaviour
     }
 
     public bool GetIsLastCurrencyPaid() {
-        return currencyIndex == currencyTemplateWorldUIList.Count;
+        return (currencyIndex+1) == currencyTemplateWorldUIList.Count;
+    }
+
+    public bool GetPlayerInteracting() {
+        return playerInteracting;
     }
 
     public PayCurrencyTemplateWorldUI GetCurrentCurrencyTemplateWorldUI() {

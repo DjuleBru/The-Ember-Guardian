@@ -128,6 +128,13 @@ public class PlayerAnimator : MonoBehaviour
         playerAnimator.SetFloat("WalkAnimationSpeed", PlayerMovement.Instance.GetMoveSpeedNormalized());
     }
     private void HandleAnimatorMovementBool() {
+        if(!Player.Instance.GetCanMove()) {
+            if(moving) {
+                playerAnimator.SetBool("Walking", false);
+                moving = false;
+            }
+            return;
+        }
 
         if (moveDir != 0) {
             if (!moving) {
