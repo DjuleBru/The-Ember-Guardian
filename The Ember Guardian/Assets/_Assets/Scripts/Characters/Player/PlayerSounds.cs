@@ -14,18 +14,27 @@ public class PlayerSounds : MonoBehaviour
     [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private AnimationCurve pitchWithSpeedAnimationCurve;
 
+    private float sfxVolume;
+
     private void Start() {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+
         playerAnimator.OnFootStepTriggered += PlayerAnimator_OnFootStepTriggered;
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
     }
 
+    private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+    }
+
     private void Player_OnPlayerDied(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(playerDiedAudioClips[Random.Range(0, playerDiedAudioClips.Length)]);
+        playerAudioSource.PlayOneShot(playerDiedAudioClips[Random.Range(0, playerDiedAudioClips.Length)], sfxVolume);
     }
 
     private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(playerDamagedElectricAudioClips[Random.Range(0, playerDamagedElectricAudioClips.Length)]);
+        playerAudioSource.PlayOneShot(playerDamagedElectricAudioClips[Random.Range(0, playerDamagedElectricAudioClips.Length)], sfxVolume);
 
         if (Player.Instance.GetHP() == 0) return;
         StartCoroutine(PlayHumanDamagedAudioClip());
@@ -33,11 +42,11 @@ public class PlayerSounds : MonoBehaviour
 
     private IEnumerator PlayHumanDamagedAudioClip() {
         yield return new WaitForSeconds(.075f);
-        playerAudioSource.PlayOneShot(playerDamagedAudioClips[Random.Range(0, playerDamagedAudioClips.Length)]);
+        playerAudioSource.PlayOneShot(playerDamagedAudioClips[Random.Range(0, playerDamagedAudioClips.Length)], sfxVolume);
     }
 
     private void PlayerAnimator_OnFootStepTriggered(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(footStepAudioClips[Random.Range(0, footStepAudioClips.Length)]);
+        playerAudioSource.PlayOneShot(footStepAudioClips[Random.Range(0, footStepAudioClips.Length)], sfxVolume);
     }
 
 }

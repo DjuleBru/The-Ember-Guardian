@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CurrencyCrafterSound : MonoBehaviour
+public class CurrencyCrafterSound : StructureSounds
 {
     private CurrencyCrafter currencyCrafter;
     private AudioSource audioSource;
@@ -15,32 +15,33 @@ public class CurrencyCrafterSound : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         currencyCrafter.OnCurrencyCraftingEnded += AmmoCrafter_OnAmmoCraftingEnded;
         currencyCrafter.OnCurrencyCraftingStarted += AmmoCrafter_OnAmmoCraftingStarted;
         currencyCrafter.OnCurrencyInstantiated += AmmoCrafter_OnCurrencyInstantiated;
     }
 
     private void AmmoCrafter_OnCurrencyInstantiated(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(currencyInstantiatedAudioClip);
+        audioSource.PlayOneShot(currencyInstantiatedAudioClip, sfxVolume);
     }
 
     private void AmmoCrafter_OnAmmoCraftingStarted(object sender, System.EventArgs e) {
-        audioSource.volume = 1f;
-        audioSource.PlayOneShot(startCraftingAudioClip);
+        audioSource.volume = 1f * sfxVolume;
+        audioSource.PlayOneShot(startCraftingAudioClip, sfxVolume);
         StartCoroutine(StartPlayingLoop());
     }
 
     private IEnumerator StartPlayingLoop() {
         yield return new WaitForSeconds(1f);
-        audioSource.volume = .3f;
+        audioSource.volume = .3f * sfxVolume;
         audioSource.Play();
     }
 
     private void AmmoCrafter_OnAmmoCraftingEnded(object sender, System.EventArgs e) {
-        audioSource.volume = 1f;
-        audioSource.PlayOneShot(endCraftingAudioClip);
+        audioSource.volume = 1f * sfxVolume;
+        audioSource.PlayOneShot(endCraftingAudioClip, sfxVolume);
         audioSource.Stop();
     }
 }

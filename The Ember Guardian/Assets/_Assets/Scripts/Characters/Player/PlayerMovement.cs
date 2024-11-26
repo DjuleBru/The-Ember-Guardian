@@ -9,13 +9,9 @@ public class PlayerMovement : MonoBehaviour {
 
     public static PlayerMovement Instance;
 
-    [SerializeField] private float initialMoveSpeed = 5f;
-    [SerializeField] private float runMaxTime = 15f;
-    [SerializeField] private float exhaustionTime = 5f;
     [SerializeField] private float moveSpeedBackwardsMultiplier = .7f;
     [SerializeField] private float exhaustedSpeedFactor = 1.3f;
-    [SerializeField] private float runAccelerationFactor = 1.3f;
-    [SerializeField] private float runRecoverFactor = 1.5f;
+    [SerializeField] private float runRecoverFactor = 1f;
     [SerializeField] private float crouchAccelerationFactor = .7f;
 
     [SerializeField] private float acceleration;
@@ -65,10 +61,11 @@ public class PlayerMovement : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = gravityScale;
         Instance = this;
-        moveSpeed = initialMoveSpeed;
     }
 
     private void Start() {
+        moveSpeed = PlayerStats.Instance.GetInitialMoveSpeed();
+
         GameInput.Instance.OnPlayerRunStarted += GameInput_OnPlayerRunStarted;
         GameInput.Instance.OnPlayerRunCanceled += GameInput_OnPlayerRunCanceled;
         GameInput.Instance.OnPlayerJumpCanceled += GameInput_OnPlayerJumpCanceled;
@@ -238,7 +235,7 @@ public class PlayerMovement : MonoBehaviour {
         if(isExhausted) {
             exhaustionTimer += Time.deltaTime;
 
-            if(exhaustionTimer >= exhaustionTime) {
+            if(exhaustionTimer >= PlayerStats.Instance.GetExhaustionTime()) {
                 StopExhausted();
             }
         }
@@ -246,7 +243,7 @@ public class PlayerMovement : MonoBehaviour {
         if(isRunning && (moveSpeed != 0)) {
             runTimer += Time.deltaTime;
 
-            if(runTimer > runMaxTime) {
+            if(runTimer > PlayerStats.Instance.GetRunMaxTime()) {
                 StartExhausted();
                 StopRunning();
             }
@@ -261,13 +258,13 @@ public class PlayerMovement : MonoBehaviour {
 
     private void StartRunning() {
         isRunning = true;
-        BuffMoveSpeed(runAccelerationFactor);
+        BuffMoveSpeed(PlayerStats.Instance.GetRunAccelerationFactor());
         OnPlayerRunStarted?.Invoke(this, EventArgs.Empty);
     }
 
     private void StopRunning() {
         isRunning = false;
-        DebuffMoveSpeed(runAccelerationFactor);
+        DebuffMoveSpeed(PlayerStats.Instance.GetRunAccelerationFactor());
         OnPlayerRunStopped?.Invoke(this, EventArgs.Empty);
     }
 
@@ -326,7 +323,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     public float GetMoveSpeedNormalized() {
-        return moveSpeed / initialMoveSpeed;
+        return moveSpeed / PlayerStats.Instance.GetMoveSpeed();
     }
 
     private void OnDrawGizmos() {

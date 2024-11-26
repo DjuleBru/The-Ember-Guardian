@@ -10,7 +10,7 @@ public class PayCurrencyTemplateWorldUI : MonoBehaviour
 
    [SerializeField] private PlayerCurrencies.CurrencyType currencyTypeToPay;
    [SerializeField] private Image orbImageOutline;
-   private Animator payCurrencyUIAnimator;
+   [SerializeField] private Animator payCurrencyUIAnimator;
 
     private Color initialImageOutlineColor;
 
@@ -20,7 +20,6 @@ public class PayCurrencyTemplateWorldUI : MonoBehaviour
 
     private void Awake() {
         initialImageOutlineColor = orbImageOutline.color;
-        payCurrencyUIAnimator = GetComponent<Animator>();
     }
 
     public void SetCurrencyPaid(bool paid) {

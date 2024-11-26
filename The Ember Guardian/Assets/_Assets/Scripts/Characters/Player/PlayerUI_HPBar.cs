@@ -127,7 +127,7 @@ public class PlayerUI_HPBar : MonoBehaviour
             hpBarGameObject.SetActive(true);
         }
 
-        if (Player.Instance.GetHP() <= Player.Instance.GetMaxHP() / 3) {
+        if (Player.Instance.GetHP() <= PlayerStats.Instance.GetPlayerMaxHP() / 3) {
             hpBarCritical = true;
         }
 
@@ -173,7 +173,7 @@ public class PlayerUI_HPBar : MonoBehaviour
         }
 
         int playerHP = Player.Instance.GetHP();
-        int playerMaxHP = Player.Instance.GetMaxHP();
+        int playerMaxHP = PlayerStats.Instance.GetPlayerMaxHP();
 
         for(int i = 0; i < playerHP; i++) {
             Instantiate(hpTickTemplate, hpTickContainer);

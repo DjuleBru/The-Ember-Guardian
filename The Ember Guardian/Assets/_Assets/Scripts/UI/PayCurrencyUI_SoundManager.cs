@@ -12,13 +12,20 @@ public class PayCurrencyUI_SoundManager : MonoBehaviour
     [SerializeField] private AudioClip payEmberAudioClip;
 
     private float pitch;
+    private float sfxVolume;
 
     private void Awake() {
         audioSource = GetComponent<AudioSource>();
     }
 
     private void Start() {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
         PayCurrencyUI.OnAnySingleCurrencyPaid += PayOrbsUI_OnSingleOrbFilled1;
+    }
+
+    private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
     }
 
     private void PayOrbsUI_OnSingleOrbFilled1(object sender, PayCurrencyUI.OnSingleOrbFilledEventArgs e) {
@@ -28,7 +35,7 @@ public class PayCurrencyUI_SoundManager : MonoBehaviour
 
         if ((sender as PayCurrencyUI).GetCurrentCurrencyTemplateWorldUI().GetCurrencyTypeToPay() == PlayerCurrencies.CurrencyType.ember) {
             audioClip = payEmberAudioClip;
-            audioSource.PlayOneShot(audioClip);
+            audioSource.PlayOneShot(audioClip, sfxVolume);
             return;
         }
 
@@ -47,7 +54,7 @@ public class PayCurrencyUI_SoundManager : MonoBehaviour
             audioClip = paySmallRedOrbsUIAudioClips[Random.Range(0, paySmallRedOrbsUIAudioClips.Length)];
         }
 
-        audioSource.PlayOneShot(audioClip);
+        audioSource.PlayOneShot(audioClip, sfxVolume);
 
     }
 

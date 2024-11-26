@@ -18,12 +18,8 @@ public class Player : MonoBehaviour, IDamageable
     private bool canMove = true;
 
     private float damagedTimer;
-    private float damagedImmunityTime = 1.5f;
     private float deadTimer;
-    private float respawnTime = 5f;
 
-    private int playerMaxHealth = 7;
-    private int playerRespawnHealth = 3;
     private int playerHealth;
 
     public event EventHandler OnPlayerEnteredCamp;
@@ -44,7 +40,7 @@ public class Player : MonoBehaviour, IDamageable
     private void Awake() {
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
-        playerHealth = playerMaxHealth;
+        playerHealth = PlayerStats.Instance.GetPlayerMaxHP();
     }
 
     private void Start() {
@@ -66,7 +62,7 @@ public class Player : MonoBehaviour, IDamageable
         if (dead) {
             deadTimer += Time.deltaTime;
 
-            if(deadTimer > respawnTime) {
+            if(deadTimer > PlayerStats.Instance.GetRespawnTime()) {
                 StartCoroutine(RespawnCoroutine());
                 deadTimer = 0;
             }
@@ -114,7 +110,7 @@ public class Player : MonoBehaviour, IDamageable
             Die();
         }
 
-        damagedTimer = damagedImmunityTime;
+        damagedTimer = PlayerStats.Instance.GetDamagedImmunityTime();
         damagedRecently = true;
 
         OnPlayerDamaged?.Invoke(this, EventArgs.Empty);
@@ -135,7 +131,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     private IEnumerator RespawnCoroutine() {
-        playerHealth = playerRespawnHealth;
+        playerHealth = PlayerStats.Instance.GetPlayerRespawnHealth();
 
         Vector2 respawnPosition = new Vector2(Tent.Instance.transform.position.x, transform.position.y);
         transform.position = respawnPosition;
@@ -187,6 +183,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     #endregion
+
     public Transform GetProjectileTarget() {
         return projectileTarget;
     }
@@ -195,18 +192,14 @@ public class Player : MonoBehaviour, IDamageable
         return transform;
     }
 
-    public int GetMaxHP() {
-        return playerMaxHealth;
-    }
-
     public int GetHP() {
         return playerHealth;
     }
 
     public void RefillPlayerHealth() {
-        int healAmount = playerMaxHealth - playerHealth;
+        int healAmount = PlayerStats.Instance.GetPlayerMaxHP() - playerHealth;
 
-        playerHealth = playerMaxHealth;
+        playerHealth = PlayerStats.Instance.GetPlayerMaxHP();
         OnPlayerHealed?.Invoke(this, new OnPlayerHealedEventArgs {
             healAmount = healAmount
         });

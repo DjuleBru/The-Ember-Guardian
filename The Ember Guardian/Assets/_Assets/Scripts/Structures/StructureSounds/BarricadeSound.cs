@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BarricadeSound : MonoBehaviour
+public class BarricadeSound : StructureSounds
 {
     private AudioSource barricadeAudioSource;
 
@@ -18,7 +18,8 @@ public class BarricadeSound : MonoBehaviour
         barricadeAudioSource = GetComponent<AudioSource>(); 
     }
 
-    private void Start() {
+    protected override void Start() {
+        base.Start();
         barricade.OnBarricadeDamageTaken += Barricade_OnBarricadeDamageTaken;
         barricade.OnBarricadeDestroyed += Barricade_OnBarricadeDestroyed;
         barricade.OnBarricadeRepaired += Barricade_OnBarricadeRepaired;
@@ -27,19 +28,19 @@ public class BarricadeSound : MonoBehaviour
 
 
     private void BarricadeVisual_OnBarricadeSpriteFell(object sender, System.EventArgs e) {
-        barricadeAudioSource.PlayOneShot(spriteFellAudioClips[Random.Range(0, spriteFellAudioClips.Length)], .75f);
+        barricadeAudioSource.PlayOneShot(spriteFellAudioClips[Random.Range(0, spriteFellAudioClips.Length)], .75f * sfxVolume);
     }
 
     private void Barricade_OnBarricadeRepaired(object sender, System.EventArgs e) {
-        barricadeAudioSource.PlayOneShot(repairedAudioClips[Random.Range(0, repairedAudioClips.Length)]);
+        barricadeAudioSource.PlayOneShot(repairedAudioClips[Random.Range(0, repairedAudioClips.Length)], sfxVolume);
     }
 
     private void Barricade_OnBarricadeDestroyed(object sender, System.EventArgs e) {
-        barricadeAudioSource.PlayOneShot(destroyedAudioClips[Random.Range(0, destroyedAudioClips.Length)], .75f);
+        barricadeAudioSource.PlayOneShot(destroyedAudioClips[Random.Range(0, destroyedAudioClips.Length)], .75f * sfxVolume);
     }
 
     private void Barricade_OnBarricadeDamageTaken(object sender, System.EventArgs e) {
         if (barricade.GetBarricadeHealthNormalized() <= 0) return; 
-        barricadeAudioSource.PlayOneShot(damagedAudioClips[Random.Range(0, damagedAudioClips.Length)], .5f);
+        barricadeAudioSource.PlayOneShot(damagedAudioClips[Random.Range(0, damagedAudioClips.Length)], .5f * sfxVolume);
     }
 }

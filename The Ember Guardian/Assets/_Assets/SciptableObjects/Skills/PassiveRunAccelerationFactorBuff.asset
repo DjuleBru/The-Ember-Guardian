@@ -10,12 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8c809380acb1014c852c47b344da906, type: 3}
-  m_Name: TestPassiveSkill1
+  m_Name: PassiveRunAccelerationFactorBuff
   m_EditorClassIdentifier: 
   itemType: 1
-  SkillName: PassiveSkill 1
-  Description: Is an nice passive skill
-  StatChanges: +20% Speed
-  Icon: {fileID: 1837699333, guid: c147a8728bdd82a45b6d7d838d3914f9, type: 3}
+  skillType: 2
+  passiveSkillEffect: {fileID: 11400000, guid: 17642d15dbcdcba4fb865102384523e3, type: 2}
+  SkillName: Kinetic Amplifier
+  StatChanges: 
+  Icon: {fileID: 766937645, guid: c147a8728bdd82a45b6d7d838d3914f9, type: 3}
   currencyTypeToPay: 3
-  Price: 2
+  Price: 4
+  maxLevel: 5
+  Description: Augment your sprint acceleration with neural link enhancements for
+    quick bursts of speed.

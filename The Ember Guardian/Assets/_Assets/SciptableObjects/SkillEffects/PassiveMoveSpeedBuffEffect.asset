@@ -9,11 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8c809380acb1014c852c47b344da906, type: 3}
-  m_Name: TestActiveSkill1
+  m_Script: {fileID: 11500000, guid: 80b3ed05aeb30aa4faf5753f10bb89d4, type: 3}
+  m_Name: PassiveMoveSpeedBuffEffect
   m_EditorClassIdentifier: 
-  SkillName: ActiveSkill 1
-  Description: Is an awesome active skill
-  Icon: {fileID: 1629547876, guid: 869a9f9d33a6507458c0cde97ad4d248, type: 3}
-  currencyTypeToPay: 2
-  Price: 6
+  skillType: 0
+  valuesByLevel:
+  - 10
+  - 15
+  - 20
+  - 25
+  - 30

@@ -27,7 +27,7 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
         descriptionPanelItemIcon.sprite = merchantItem.icon;
         descriptionPanelItemName.text = merchantItem.itemName;
         descriptionPanelItemStatChanges.text = merchantItem.itemStatChanges;
-        descriptionPanelItemDescription.text = merchantItem.itemName;
+        descriptionPanelItemDescription.text = merchantItem.itemDescription;
     }
 
 }

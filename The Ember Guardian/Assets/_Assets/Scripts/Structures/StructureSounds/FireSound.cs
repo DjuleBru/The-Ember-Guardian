@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireSound : MonoBehaviour
+public class FireSound : StructureSounds
 {
     private Fire fire;
     private AudioSource audioSource;
@@ -35,6 +35,12 @@ public class FireSound : MonoBehaviour
         fire.OnFireEmberExtractionStarted += Fire_OnFireEmberExtractionStarted;
     }
 
+    protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        extractingEmberAudioSource.volume = sfxVolume;
+        audioSource.volume = sfxVolume;
+    }
+
     private void Fire_OnFireEmberExtractionStarted(object sender, System.EventArgs e) {
         extractingEmberAudioSource.Play();
     }
@@ -44,16 +50,15 @@ public class FireSound : MonoBehaviour
     }
 
     private void Fire_OnFireDamageTaken(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(fireDamagedAudioClipArray[Random.Range(0, fireDamagedAudioClipArray.Length)]);
+        audioSource.PlayOneShot(fireDamagedAudioClipArray[Random.Range(0, fireDamagedAudioClipArray.Length)], sfxVolume);
     }
 
     private void Fire_OnFireFuelled(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(orbDroppedInFireAudioClipArray1[Random.Range(0, orbDroppedInFireAudioClipArray1.Length)], .7f);
-        audioSource.PlayOneShot(orbDroppedInFireAudioClipArray2[Random.Range(0, orbDroppedInFireAudioClipArray2.Length)], .7f);
+        audioSource.PlayOneShot(orbDroppedInFireAudioClipArray1[Random.Range(0, orbDroppedInFireAudioClipArray1.Length)], .7f * sfxVolume);
+        audioSource.PlayOneShot(orbDroppedInFireAudioClipArray2[Random.Range(0, orbDroppedInFireAudioClipArray2.Length)], .7f * sfxVolume);
     }
 
     private void Fire_OnFireChangedState(object sender, Fire.OnFireChangedStateEventArgs e) {
-
         if (fire.GetState() == Fire.State.calm) {
             audioSource.clip = calmFireAudioClip;
             volume2D.SetMaxDistanceToHear(fire.GetCalmFireRadius());

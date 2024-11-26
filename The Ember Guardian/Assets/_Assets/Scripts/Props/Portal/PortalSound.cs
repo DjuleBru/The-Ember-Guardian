@@ -18,12 +18,16 @@ public class PortalSound : MonoBehaviour
     private AudioSource teleporterAudioSource;
     private Portal portal;
 
+    private float sfxVolume;
+
     private void Awake() {
         portal = GetComponentInParent<Portal>();
         teleporterAudioSource = GetComponent<AudioSource>();
     }
 
     private void Start() {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
         if(!portal.GetPortalUnlocked()) {
             teleporterIdleAudioSource.enabled = false;
         }
@@ -38,34 +42,38 @@ public class PortalSound : MonoBehaviour
         teleporterIdleAudioSource.Play();
     }
 
+    private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+    }
+
     private void Portal_OnTeleporterActivatedOut(object sender, System.EventArgs e) {
-        teleporterAudioSource.PlayOneShot(beamLightOnAudioClip, .5f);
+        teleporterAudioSource.PlayOneShot(beamLightOnAudioClip, .5f * sfxVolume);
         StartCoroutine(PlayShortTeleportSoundAfterDelay(delayToPlayShortTeleportOut));
     }
 
     private void Portal_OnPortalDisappeared(object sender, System.EventArgs e) {
-        teleporterAudioSource.PlayOneShot(appearAudioClip, .15f);
+        teleporterAudioSource.PlayOneShot(appearAudioClip, .15f * sfxVolume);
     }
 
     private void Portal_OnPlayerExitedTriggerArea(object sender, System.EventArgs e) {
-        teleporterAudioSource.PlayOneShot(beamLightOffAudioClip, .5f);
+        teleporterAudioSource.PlayOneShot(beamLightOffAudioClip, .5f * sfxVolume);
     }
 
     private void Portal_OnPlayerEnteredTriggerArea(object sender, System.EventArgs e) {
-        teleporterAudioSource.PlayOneShot(beamLightOnAudioClip, .5f);
+        teleporterAudioSource.PlayOneShot(beamLightOnAudioClip, .5f * sfxVolume);
     }
 
     private void Portal_OnPortalAppeared(object sender, System.EventArgs e) {
-        teleporterAudioSource.PlayOneShot(appearAudioClip, .15f);
+        teleporterAudioSource.PlayOneShot(appearAudioClip, .15f * sfxVolume);
     }
 
     private void Portal_OnPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
-        teleporterAudioSource.PlayOneShot(teleportAudioClip);
+        teleporterAudioSource.PlayOneShot(teleportAudioClip, sfxVolume);
     }
 
     private IEnumerator PlayShortTeleportSoundAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
-        teleporterAudioSource.PlayOneShot(teleportShortAudioClip, .5f);
+        teleporterAudioSource.PlayOneShot(teleportShortAudioClip, .5f * sfxVolume);
     }
 
 }

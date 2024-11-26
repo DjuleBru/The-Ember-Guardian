@@ -25,11 +25,16 @@ public class BackgroundSoundsManager : MonoBehaviour
     private bool isTransitioning = false;
     private bool isInCavern = false;
 
+    private float sfxVolume;
+
     private void Awake() {
         Instance = this;
     }
 
     private void Start() {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
         DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
@@ -41,6 +46,10 @@ public class BackgroundSoundsManager : MonoBehaviour
 
         audioSource1.clip = dayAudioClip;
         audioSource1.Play();
+    }
+
+    private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
@@ -92,6 +101,7 @@ public class BackgroundSoundsManager : MonoBehaviour
 
     public void SetInCavern(bool inCavern, AudioClip cavernBackgroundAudioClip, float cavernBackgroundVolume) { 
         isInCavern = inCavern;
+
         if(isInCavern) {
             TransitionToClip(cavernBackgroundAudioClip, cavernBackgroundVolume);
         } else {
@@ -109,8 +119,8 @@ public class BackgroundSoundsManager : MonoBehaviour
 
         while (timeElapsed < transitionDuration) {
             float t = timeElapsed / transitionDuration;
-            fromSource.volume = Mathf.Lerp(volumeToReach, 0.0f, t);
-            toSource.volume = Mathf.Lerp(0.0f, volumeToReach, t);
+            fromSource.volume = Mathf.Lerp(volumeToReach * sfxVolume, 0.0f, t);
+            toSource.volume = Mathf.Lerp(0.0f, volumeToReach * sfxVolume, t);
 
             timeElapsed += Time.deltaTime;
             yield return null;
@@ -126,11 +136,11 @@ public class BackgroundSoundsManager : MonoBehaviour
 
     private IEnumerator FadeInThenOutCoroutine(AudioSource audioSource, float fadeDuration, float volumeToReach, float timeBetweenFades) {
 
-        StartCoroutine(FadeAudioCoroutine(audioSource, fadeDuration, volumeToReach, true));
+        StartCoroutine(FadeAudioCoroutine(audioSource, fadeDuration, volumeToReach * sfxVolume, true));
 
         yield return new WaitForSeconds(timeBetweenFades + fadeDuration);
 
-        StartCoroutine(FadeAudioCoroutine(audioSource, fadeDuration, volumeToReach, false));
+        StartCoroutine(FadeAudioCoroutine(audioSource, fadeDuration, volumeToReach * sfxVolume, false));
 
     }
 
@@ -140,7 +150,7 @@ public class BackgroundSoundsManager : MonoBehaviour
 
         if (fadeIn) {
             startVolume = 0;
-            endVolume = volumeToReach;
+            endVolume = volumeToReach * sfxVolume;
             audioSource.Play();
         }
         else {

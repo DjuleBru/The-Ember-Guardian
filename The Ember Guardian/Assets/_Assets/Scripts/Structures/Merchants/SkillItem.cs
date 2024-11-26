@@ -2,29 +2,72 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillItem : MerchantItem
-{
-    public SkillSO skillData { get; private set; }
+public class SkillItem : MerchantItem {
+
+    public enum SkillType {
+        passiveMoveSpeedBuff,
+        passiveRunMaxTimeBuff,
+        passiveRunAccelerationFactorBuff,
+        passiveChanceToDoubleXPDrop,
+        passiveShieldGenerator,
+        passiveHealthRegen,
+        passiveMaxHPIncrease,
+        passiveAmmoGenerator,
+        activeMoveSpeedBuff,
+        activeTeleportation,
+        activeShootSpeedBuff,
+    }
+
+    public SkillSO skillSO { get; private set; }
+    public SkillType skillType { get; private set; }
     public int CustomPrice { get; private set; } // Prix modifié selon le marchand
+    public int maxLevel;
+    public string effectDescription;
 
     public override void Initialize(ScriptableObject data) {
         SkillSO SkillDataSO = data as SkillSO;
 
         if (SkillDataSO != null) {
-            skillData = SkillDataSO;
+            skillSO = SkillDataSO;
 
-            itemName = skillData.name;
-            itemStatChanges = skillData.StatChanges;
-            itemDescription = skillData.Description;
-            itemType = skillData.itemType;
-            price = skillData.Price;
-            icon = skillData.Icon;
-            currencyTypeToPay = skillData.currencyTypeToPay;
+            itemName = skillSO.SkillName;
+            itemStatChanges = skillSO.StatChanges;
+            itemDescription = skillSO.Description;
+            itemType = skillSO.itemType;
+            price = skillSO.Price;
+            icon = skillSO.Icon;
+            maxLevel = skillSO.maxLevel;
+            currencyTypeToPay = skillSO.currencyTypeToPay;
         }
+    }
+
+    public bool UpgradeSkill() {
+        if (currentLevel < maxLevel) {
+            currentLevel++;
+            UpdateEffectDescription();
+            return true;
+        }
+        return false;
+    }
+
+    private void UpdateEffectDescription() {
+        // Logique pour mettre à jour la description en fonction du niveau
+        effectDescription = $"Level {currentLevel}: Improved Effect!";
     }
 
     public override void Purchase() {
         base.Purchase();
-        //player.LearnSkill(SkillData);
+
+        if (itemType == MerchantItemType.ActiveSkill) {
+            PlayerSkills.Instance.AddActiveSkill(this);
+        }
+
+        if (itemType == MerchantItemType.PassiveSkill) {
+            PlayerSkills.Instance.AddPassiveSkill(this);
+        }
+    }
+
+    public SkillSO GetSkillSO() {
+        return skillSO;
     }
 }

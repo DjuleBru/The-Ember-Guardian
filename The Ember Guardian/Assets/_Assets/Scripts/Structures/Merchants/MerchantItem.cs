@@ -7,6 +7,7 @@ public class MerchantItem
     public enum MerchantItemType {
         ActiveSkill,
         PassiveSkill,
+        SkillUpgrade,
         NewGun,
         GunUpgrade,
         Plant
@@ -16,6 +17,7 @@ public class MerchantItem
     public string itemDescription;
     public string itemStatChanges;
     public int price;
+    public int currentLevel = 1;
     public Sprite icon;
     public PlayerCurrencies.CurrencyType currencyTypeToPay;
     public MerchantItemType itemType;
@@ -31,6 +33,10 @@ public class MerchantItem
         // Logique générique pour l'achat (soustraction d'or, ajout à l'inventaire, etc.)
 
         isPurchased = true;
-        Debug.Log(itemName + " " + "purchased "!);
+
+    }
+
+    public virtual void Unpurchase() {
+        isPurchased = false;
     }
 }

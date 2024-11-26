@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private SoundRefsSO soundRefsSO;
     
     private AudioSource audioSource2D;
+    private float sfxVolume;
 
     private void Awake() {
         Instance = this;
@@ -17,8 +18,12 @@ public class SoundManager : MonoBehaviour
     }
 
     private void Start() {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyStructureUpgraded += Structure_OnAnyStructureUpgraded;
+        Structure.OnAnyStructurePrimaryFunctionUsed += Structure_OnAnyStructurePrimaryFunctionUsed;
 
         PlayerShoot.Instance.OnPlayerShotProjectile += PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
@@ -51,8 +56,9 @@ public class SoundManager : MonoBehaviour
         GunSpotLight.OnAnyLightSwitched += GunSpotLight_OnAnyLightSwitched;
     }
 
-
-
+    private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+    }
 
 
     #region UI
@@ -245,6 +251,12 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region STRUCTURES
+
+    private void Structure_OnAnyStructurePrimaryFunctionUsed(object sender, System.EventArgs e) {
+        AudioClip audioClip = (sender as Structure).GetStructureSO().useFunctionAudioClip;
+        PlaySound2D(audioClip);
+    }
+
     private void Structure_OnAnyStructureUpgraded(object sender, System.EventArgs e) {
         AudioClip audioClip = (sender as Structure).GetStructureSO().upgradeAudioClip;
         PlaySound2D(audioClip);
@@ -281,7 +293,7 @@ public class SoundManager : MonoBehaviour
 
     private void PlaySound3D(AudioClip audioClip, Vector3 position, float volume = 1f) {
         Vector3 newPosition = new Vector3(position.x, position.y, Camera.main.transform.position.z);
-        AudioSource.PlayClipAtPoint(audioClip, newPosition, volume);
+        AudioSource.PlayClipAtPoint(audioClip, newPosition, volume * sfxVolume);
     }
 
     private void PlaySound2D(AudioClip[] audioClipArray, float volume = 1f) {
@@ -289,7 +301,7 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlaySound2D(AudioClip audioClip, float volume = 1f) {
-        audioSource2D.PlayOneShot(audioClip, volume);
+        audioSource2D.PlayOneShot(audioClip, volume * sfxVolume);
     }
 
     #endregion

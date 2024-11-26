@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c809380acb1014c852c47b344da906, type: 3}
+  m_Name: PassiveMaxHPIncrease
+  m_EditorClassIdentifier: 
+  itemType: 1
+  skillType: 6
+  passiveSkillEffect: {fileID: 11400000, guid: 5ef36415287ad804b88146ec22b17695, type: 2}
+  SkillName: Vital Core
+  StatChanges: 
+  Icon: {fileID: 766937645, guid: c147a8728bdd82a45b6d7d838d3914f9, type: 3}
+  currencyTypeToPay: 3
+  Price: 8
+  maxLevel: 5
+  Description: Advanced nanite injections reinforce your cellular structure, increasing
+    your maximum health capacity.

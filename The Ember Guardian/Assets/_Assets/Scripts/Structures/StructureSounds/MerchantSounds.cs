@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MerchantSounds : MonoBehaviour
+public class MerchantSounds : StructureSounds
 {
     private AudioSource audioSource;
     [SerializeField] private AudioSource idleAudioSource;
@@ -14,13 +14,16 @@ public class MerchantSounds : MonoBehaviour
     [SerializeField] private AudioClip buyMajorItemAudioClip;
     [SerializeField] private AudioClip buyMinorItemAudioClip;
 
-    private float volume = .5f;
+    private float merchantSFXVolume = .5f;
+    private float buyMajorItemSFXVolume = 1f;
 
     private void Awake() {
         audioSource = GetComponent<AudioSource>();
     }
 
-    private void Start() {
+    protected override void Start() {
+        base.Start();
+
         merchantUI.OnNewItemHovered += MerchantUI_OnNewItemHovered;
         merchantUI.OnDescriptionPanelOpened += MerchantUI_OnDescriptionPanelOpened;
         merchantUI.OnPlayerBoughtMajorItem += MerchantUI_OnPlayerBoughtMajorItem;
@@ -29,20 +32,24 @@ public class MerchantSounds : MonoBehaviour
         idleAudioSource.clip = merchantIdleAudioClip;
         idleAudioSource.Play();
     }
+    protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        idleAudioSource.volume = sfxVolume;
+    }
 
     private void MerchantUI_OnPlayerBoughtMinorItem(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(buyMinorItemAudioClip, volume);
+        audioSource.PlayOneShot(buyMinorItemAudioClip, merchantSFXVolume * sfxVolume);
     }
 
     private void MerchantUI_OnPlayerBoughtMajorItem(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(buyMajorItemAudioClip, volume);
+        audioSource.PlayOneShot(buyMajorItemAudioClip, buyMajorItemSFXVolume * sfxVolume);
     }
 
     private void MerchantUI_OnDescriptionPanelOpened(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(panelAppearAudioClip, volume);
+        audioSource.PlayOneShot(panelAppearAudioClip, merchantSFXVolume * sfxVolume);
     }
 
     private void MerchantUI_OnNewItemHovered(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(hoverItemAudioClip, volume);
+        audioSource.PlayOneShot(hoverItemAudioClip, merchantSFXVolume * sfxVolume);
     }
 }

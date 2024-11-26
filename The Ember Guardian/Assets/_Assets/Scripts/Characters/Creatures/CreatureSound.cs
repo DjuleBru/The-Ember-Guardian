@@ -13,35 +13,42 @@ public class CreatureSound : MonoBehaviour
     [SerializeField] private AudioClip[] enteredLightAudioClips;
 
     private bool diedRecently;
+    private float sfxVolume;
 
     private void Awake() {
         creatureAudioSource = GetComponent<AudioSource>();
     }
 
     private void Start() {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
         creature.OnCreatureEnteredLight += Creature_OnCreatureEnteredLight;
         creature.OnCreatureDied += Creature_OnAnyCreatureDied;
         creatureAI.OnCreatureAggro += CreatureAI_OnAnyCreatureAggro;
         creature.OnCreatureIdleSoundTriggered += Creature_OnAnyCreatureIdleSoundTriggered;
     }
 
+    private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+    }
+
     private void Creature_OnCreatureEnteredLight(object sender, System.EventArgs e) {
-        creatureAudioSource.PlayOneShot(enteredLightAudioClips[Random.Range(0, enteredLightAudioClips.Length)]);
+        creatureAudioSource.PlayOneShot(enteredLightAudioClips[Random.Range(0, enteredLightAudioClips.Length)], sfxVolume);
     }
 
     private void Creature_OnAnyCreatureIdleSoundTriggered(object sender, System.EventArgs e) {
         if (diedRecently) return;
-        creatureIdleAudioSource.PlayOneShot(creature.GetCreatureSO().idleAudioClips[Random.Range(0, creature.GetCreatureSO().idleAudioClips.Length)], .5f);
+        creatureIdleAudioSource.PlayOneShot(creature.GetCreatureSO().idleAudioClips[Random.Range(0, creature.GetCreatureSO().idleAudioClips.Length)], .5f * sfxVolume);
     }
 
     private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {
         if (diedRecently) return;
 
-        creatureAudioSource.PlayOneShot(creature.GetCreatureSO().aggroAudioClips[Random.Range(0, creature.GetCreatureSO().aggroAudioClips.Length)], .5f);
+        creatureAudioSource.PlayOneShot(creature.GetCreatureSO().aggroAudioClips[Random.Range(0, creature.GetCreatureSO().aggroAudioClips.Length)], .5f * sfxVolume);
     }
 
     private void Creature_OnAnyCreatureDied(object sender, System.EventArgs e) {
         diedRecently = true;
-        creatureAudioSource.PlayOneShot(creature.GetCreatureSO().dieAudioClips[Random.Range(0, creature.GetCreatureSO().dieAudioClips.Length)], .75f);
+        creatureAudioSource.PlayOneShot(creature.GetCreatureSO().dieAudioClips[Random.Range(0, creature.GetCreatureSO().dieAudioClips.Length)], .75f* sfxVolume);
     }
 }

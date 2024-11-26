@@ -14,17 +14,22 @@ public class Merchant : Structure {
     [SerializeField] protected MerchantType merchantType;
 
     // Listes d'objets disponibles à la vente pour chaque type de marchand
-    [SerializeField] protected List<SkillSO> merchantSkillSOList;
     protected List<MerchantItem> allItemsForSale = new List<MerchantItem>();
     protected List<MerchantItem> allMajorMerchantItems = new List<MerchantItem>();
     protected List<MerchantItem> allMinorMerchantItems = new List<MerchantItem>();
 
-    protected MerchantItem majorItemForSale;
-    protected List<MerchantItem> minorItemsForSale = new List<MerchantItem>();
+    protected List<MerchantItem> majorItemListForSale;
+    protected List<MerchantItem> minorItemListForSale = new List<MerchantItem>();
+
+    protected MerchantItem currentHoveredItem;
 
     public event EventHandler OnPlayerOpenedMerchantShop;
     public event EventHandler OnPlayerClosedMerchantShop;
-    public event EventHandler OnPlayerBoughtItem;
+    public event EventHandler<OnPlayerBoughtItemEventArgs> OnPlayerBoughtItem;
+
+    public class OnPlayerBoughtItemEventArgs : EventArgs {
+        public MerchantItem boughtItem;
+    }
 
     protected bool shopOpened;
     protected bool currentSelectedItemAlreadyPurchased;
@@ -39,11 +44,20 @@ public class Merchant : Structure {
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
     }
 
+    private void Update() {
+        if (Input.GetKeyUp(KeyCode.R)) {
+            RefreshShopItems();
+            ActivateStructurePrimaryFunctionInteraction(true);
+            playerPayedToRefreshShop = false;
+        }
+    }
+
     protected override void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         base.DayNightManager_OnDawnStart(sender, e);
 
-        RefreshCurrentMajorItemForSale();
-        RefreshCurrentMinorItemListForSale();
+        RefreshShopItems();
+        ActivateStructurePrimaryFunctionInteraction(true);
+        playerPayedToRefreshShop = false;
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {
@@ -62,49 +76,18 @@ public class Merchant : Structure {
 
         } else {
 
-            OnPlayerBoughtItem?.Invoke(this, EventArgs.Empty);
+            OnPlayerBoughtItem?.Invoke(this, new OnPlayerBoughtItemEventArgs {
+                boughtItem = currentHoveredItem
+            });
         }
 
         playerJustTriggeredInteraction = true;
     }
 
-    protected void InitializeMerchantItems() {
-        allItemsForSale = new List<MerchantItem>();
-
-        switch (merchantType) {
-            case MerchantType.Skills:
-                InitializeSkillItems();
-                break;
-        }
-
-        RefreshCurrentMajorItemForSale();
-        RefreshCurrentMinorItemListForSale();
+    protected virtual void RefreshShopItems() {
     }
 
-    protected void InitializeSkillItems() {
-        foreach (SkillSO skillSO in merchantSkillSOList) {
-            var skillItem = new SkillItem();
-            skillItem.Initialize(skillSO);
-            allItemsForSale.Add(skillItem);
-
-            if(skillSO.itemType == MerchantItem.MerchantItemType.ActiveSkill) {
-                Debug.Log("major " + skillItem.itemName);
-                allMajorMerchantItems.Add(skillItem);
-            }
-
-            if (skillSO.itemType == MerchantItem.MerchantItemType.PassiveSkill) {
-                Debug.Log("minor " + skillItem.itemName);
-                allMinorMerchantItems.Add(skillItem);
-            }
-        }
-    }
-
-    protected void RefreshCurrentMajorItemForSale() {
-        majorItemForSale = allMajorMerchantItems[UnityEngine.Random.Range(0, allMajorMerchantItems.Count)];
-    }
-
-    protected void RefreshCurrentMinorItemListForSale() {
-        minorItemsForSale = allMinorMerchantItems;
+    protected virtual void InitializeMerchantItems() {
     }
 
     protected override void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
@@ -113,7 +96,10 @@ public class Merchant : Structure {
 
     protected override void GameInput_OnPlayerInteractHeldDown(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
-        if (currentSelectedItemAlreadyPurchased) return;
+        if(shopOpened) {
+            // Player is trying to buy an item
+            if (currentSelectedItemAlreadyPurchased) return;
+        }
 
         playerInteracting = true;
         payCurrencyUI.SetPlayerInteracting(true);
@@ -156,20 +142,19 @@ public class Merchant : Structure {
         }
     }
 
+    public virtual void SetItemSold(MerchantItem merchantItem) {
+    }
+
     public bool GetShopOpen() {
         return shopOpened;
     }
 
-    public int GetSmallItemsToDisplayAmount() {
-        return smallItemsToDisplayAmount;
-    }
-
-    public MerchantItem GetMajorItemForSale() {
-        return majorItemForSale;
+    public List<MerchantItem> GetMajorItemListForSale() {
+        return majorItemListForSale;
     }
 
     public List<MerchantItem> GetMinorItemListForSale() {
-        return minorItemsForSale;
+        return minorItemListForSale;
     }
 
     public List<MerchantItem> GetAllItemsForSale() {
@@ -178,6 +163,10 @@ public class Merchant : Structure {
 
     public void SetCurrentSelectedItemPurchased(bool bought) {
         currentSelectedItemAlreadyPurchased = bought;
+    }
+
+    public void SetCurrentHoveredItem(MerchantItem merchantItem) {
+        currentHoveredItem = merchantItem;
     }
 
 }

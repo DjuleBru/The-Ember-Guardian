@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class MerchantItemUI : MonoBehaviour
@@ -10,6 +11,9 @@ public class MerchantItemUI : MonoBehaviour
     [SerializeField] private Animator itemCurrencyContainerUIAnimator;
 
     [SerializeField] private Image merchantItemImage;
+    [SerializeField] private GameObject merchantItemTextGameObject;
+    [SerializeField] private TextMeshProUGUI merchantItemLevelText;
+
     [SerializeField] private RectTransform currencyUIParent;
     [SerializeField] private RectTransform currencyUITemplate;
     [SerializeField] private List<PayCurrencyTemplateWorldUI> payCurrencyUIList = new List<PayCurrencyTemplateWorldUI>();
@@ -18,17 +22,29 @@ public class MerchantItemUI : MonoBehaviour
     private bool itemPurchased;
 
     private void Awake() {
-        merchantItemImage.material = new Material(merchantItemImage.material);
+        InitializeVisuals();
     }
 
     public void SetLinkedItem(MerchantItem item) {
-        linkedItem = item;
+        merchantItemImage.material.SetFloat("_GreyscaleBlend", 0f);
+        currencyUIParent.gameObject.SetActive(true);
 
-        Debug.Log(item.itemName);
-        //itemNameText.text = item.itemName;
+        linkedItem = item;
+        itemPurchased = item.isPurchased;
+
         merchantItemImage.sprite = item.icon;
+        if(item.currentLevel != 1) {
+            merchantItemLevelText.text = item.currentLevel.ToString();
+            merchantItemTextGameObject.SetActive(true);
+        }
 
         RefreshItemPriceCurrencyUI();
+        HighlightItem(false);
+    }
+
+    private void InitializeVisuals() {
+        merchantItemImage.material = new Material(merchantItemImage.material);
+        merchantItemTextGameObject.SetActive(false);
     }
 
     public void PurchaseItem() {
@@ -42,13 +58,17 @@ public class MerchantItemUI : MonoBehaviour
     private void RefreshItemPriceCurrencyUI() {
         payCurrencyUIList.Clear();
 
+        foreach(RectTransform child in currencyUIParent) {
+            if (child == currencyUITemplate) continue;
+            Destroy(child.gameObject);
+        }
+
         payCurrencyUIList.Add(currencyUITemplate.GetComponent<PayCurrencyTemplateWorldUI>());
 
         for (int i = 0; i < linkedItem.price; i++) {
             PayCurrencyTemplateWorldUI payCurrencyUITemplate = Instantiate(currencyUITemplate, currencyUIParent).GetComponent<PayCurrencyTemplateWorldUI>();
             payCurrencyUIList.Add(payCurrencyUITemplate);
         }
-
     }
 
     public void HighlightItem(bool highlighted) {

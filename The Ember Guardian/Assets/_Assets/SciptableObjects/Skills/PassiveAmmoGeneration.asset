@@ -10,12 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8c809380acb1014c852c47b344da906, type: 3}
-  m_Name: TestPassiveSkill3
+  m_Name: PassiveAmmoGeneration
   m_EditorClassIdentifier: 
   itemType: 1
-  SkillName: PassiveSkill 3
-  Description: Is an awesome passive skill
-  StatChanges: +1 HP / 10 seconds
+  skillType: 7
+  passiveSkillEffect: {fileID: 11400000, guid: c494cce8054840941ac912ab992a19ba, type: 2}
+  SkillName: Resupply Nexus
+  StatChanges: 
   Icon: {fileID: 766937645, guid: c147a8728bdd82a45b6d7d838d3914f9, type: 3}
   currencyTypeToPay: 3
-  Price: 4
+  Price: 8
+  maxLevel: 5
+  Description: An integrated ammunition replicator periodically generates ammo for
+    your equipped weapons, ensuring you're never out of the fight.
