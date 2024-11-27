@@ -46,7 +46,9 @@ public class CollectibleVisual : MonoBehaviour
     }
 
     private IEnumerator CollectibleFellInWater() {
-        collectibleLight.enabled = false;
+        if(collectibleLight != null) {
+            collectibleLight.enabled = false;
+        }
         obstructorGameObject.SetActive(true);
         collectibleAnimator.SetTrigger("Plouf");
 

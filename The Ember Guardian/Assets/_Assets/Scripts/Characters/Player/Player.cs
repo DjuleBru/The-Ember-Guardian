@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IDamageable
 {
-
     public static Player Instance;
 
     [SerializeField] private Transform projectileTarget;
@@ -14,11 +13,14 @@ public class Player : MonoBehaviour, IDamageable
     private bool dead;
     private bool damagedRecently;
     private bool insideCamp;
+    private bool hasHPRegen;
     private bool canDropOrbOnTheFloor = true;
     private bool canMove = true;
 
     private float damagedTimer;
     private float deadTimer;
+    private float hpRegenTimer;
+    private float hpRegenTime;
 
     private int playerHealth;
 
@@ -45,11 +47,22 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Start() {
         isLevelScene = (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level);
+
+        PlayerStats.Instance.OnPlayerMaxHPChanged += PlayerStats_OnPlayerMaxHPChanged;
+        PlayerStats.Instance.OnPlayerHPRegenChanged += PlayerStats_OnPlayerHPRegenChanged;
     }
 
     private void Update() {
         if (!isLevelScene) return;
         CheckExitingCamp();
+
+        if(hasHPRegen) {
+            hpRegenTimer -= Time.deltaTime;
+            if(hpRegenTimer < 0) {
+                hpRegenTimer = hpRegenTime;
+                HealPlayer(1);
+            }
+        }
 
         if (damagedRecently) {
             damagedTimer -= Time.deltaTime;
@@ -104,6 +117,8 @@ public class Player : MonoBehaviour, IDamageable
         if (damagedRecently) return;
         if (dead) return;
 
+        if (ShieldTanksDamage(damage, damageSourcePosition)) return;
+
         playerHealth -= 1;
 
         if(playerHealth <= 0) {
@@ -114,6 +129,26 @@ public class Player : MonoBehaviour, IDamageable
         damagedRecently = true;
 
         OnPlayerDamaged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private bool ShieldTanksDamage(int damage, Vector3 damageSourcePosition) {
+        if(PlayerSkills.Instance.GetPassiveShield().GetShieldActive()) {
+            PlayerSkills.Instance.GetPassiveShield().TakeDamage(damage, damageSourcePosition);
+            Debug.Log("ShieldTanksDamage");
+            return true;
+        } else {
+            Debug.Log("Shield ddoes not TanksDamage");
+            return false;
+        }
+    }
+
+    private void PlayerStats_OnPlayerHPRegenChanged(object sender, EventArgs e) {
+        hpRegenTime = PlayerStats.Instance.GetHpRegenTime();
+        hasHPRegen = true;
+    }
+
+    private void PlayerStats_OnPlayerMaxHPChanged(object sender, EventArgs e) {
+        HealPlayer(1);
     }
 
     #region PLAYER CONTROLS RESTRICTIONS
@@ -200,6 +235,19 @@ public class Player : MonoBehaviour, IDamageable
         int healAmount = PlayerStats.Instance.GetPlayerMaxHP() - playerHealth;
 
         playerHealth = PlayerStats.Instance.GetPlayerMaxHP();
+        OnPlayerHealed?.Invoke(this, new OnPlayerHealedEventArgs {
+            healAmount = healAmount
+        });
+    }
+
+    public void HealPlayer(int healAmount) {
+        if(playerHealth + healAmount > PlayerStats.Instance.GetPlayerMaxHP()) {
+            healAmount = PlayerStats.Instance.GetPlayerMaxHP() - playerHealth;
+        }
+
+        if (healAmount == 0) return;
+
+        playerHealth += healAmount;
         OnPlayerHealed?.Invoke(this, new OnPlayerHealedEventArgs {
             healAmount = healAmount
         });

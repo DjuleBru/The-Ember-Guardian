@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,7 +32,7 @@ public class PlayerStats : MonoBehaviour
     # region Health
     [BoxGroup("Health")]
     [LabelWidth(125)]
-    [SerializeField] private int initialMaxPlayerHP = 7;
+    [SerializeField] private int initialMaxPlayerHP = 3;
     [BoxGroup("Health")]
     [LabelWidth(125)]
     [SerializeField] private float initialDamagedImmunityTime = 1.5f;
@@ -49,9 +50,21 @@ public class PlayerStats : MonoBehaviour
     private float damagedImmunityTime;
     private float respawnTime;
     private int playerRespawnHealth;
-    private float hpRegenTimer;
+    private bool hasHpRegenPassive;
+    private float hpRegenTime;
 
+    public event EventHandler OnPlayerMaxHPChanged;
+    public event EventHandler OnPlayerHPRegenChanged;
 
+    #endregion
+
+    #region OTHER
+    private float shieldRegenTime;
+    private float ammoRegenTime;
+    private float chanceToDropx2;
+
+    public event EventHandler OnPlayerShieldRegenTimeChanged;
+    public event EventHandler OnPlayerAmmoRegenTimeChanged;
     #endregion
 
     private void Awake() {
@@ -69,7 +82,7 @@ public class PlayerStats : MonoBehaviour
         damagedImmunityTime += initialDamagedImmunityTime;
         respawnTime = initialRespawnTime;
         playerRespawnHealth = initialPlayerRespawnHealth;
-        hpRegenTimer += initialHpRegenTimer;
+        hpRegenTime += initialHpRegenTimer;
     }
 
     #region GET PARAMETERS
@@ -90,8 +103,8 @@ public class PlayerStats : MonoBehaviour
         return playerRespawnHealth;
     }
 
-    public float GetHpRegenTimer() {
-        return hpRegenTimer;
+    public float GetHpRegenTime() {
+        return hpRegenTime;
     }
 
     public float GetMoveSpeed() {
@@ -108,6 +121,14 @@ public class PlayerStats : MonoBehaviour
 
     public float GetRunAccelerationFactor() {
         return runAccelerationFactor;
+    }
+
+    public float GetAmmoRegenTime() {
+        return ammoRegenTime;
+    }
+
+    public float GetChanceToDropx2() {
+        return chanceToDropx2;
     }
 
     #endregion
@@ -152,6 +173,38 @@ public class PlayerStats : MonoBehaviour
 
     #endregion
 
+    public float GetSkillStat(SkillItem skillItem) {
+        float skillStat = 0f;
+
+        switch (skillItem.skillType) {
+
+            case SkillItem.SkillType.passiveMaxHPIncrease:
+                skillStat = maxPlayerHP;
+            break;
+
+            case SkillItem.SkillType.passiveShieldGenerator:
+                skillStat = shieldRegenTime;
+            break;
+
+            case SkillItem.SkillType.passiveRunAccelerationFactorBuff:
+                skillStat = runAccelerationFactor;
+            break;
+
+            case SkillItem.SkillType.passiveHealthRegen:
+                skillStat = hpRegenTime;
+            break;
+            case SkillItem.SkillType.passiveAmmoGenerator:
+                skillStat = ammoRegenTime;
+            break;
+            case SkillItem.SkillType.passiveMoveSpeedBuff:
+                skillStat = moveSpeed;
+            break;
+        }
+
+        return skillStat;
+    }
+
+
     #region BUFF PARAMETERS
 
     public void BuffMoveSpeed(float buffAmount) {
@@ -169,5 +222,27 @@ public class PlayerStats : MonoBehaviour
         runMaxTime += buffAmount;
     }
 
+    public void BuffMaxHP(int buffAmount) {
+        Debug.Log("BuffMaxHP " + buffAmount);
+        maxPlayerHP += buffAmount;
+        OnPlayerMaxHPChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void BuffPlayerHealthRegen(float buffAmount) {
+        Debug.Log("BuffPlayerHealthRegen " + buffAmount);
+        hpRegenTime = buffAmount;
+        OnPlayerHPRegenChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void BuffPlayerAmmoRegen(float buffAmount) {
+        Debug.Log("BuffPlayerAmmoRegen " + buffAmount);
+        ammoRegenTime = buffAmount;
+        OnPlayerAmmoRegenTimeChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void BuffChanceToDropx2(float buffAmount) {
+        Debug.Log("BuffChanceToDropx2 " + buffAmount);
+        chanceToDropx2 += buffAmount;
+    }
     #endregion
 }

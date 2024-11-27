@@ -7,13 +7,33 @@ public class PlayerSkills : MonoBehaviour
 {
     public static PlayerSkills Instance;
 
+    [SerializeField] private PassiveShield passiveShield;
+
     private List<SkillItem> passiveSkillList = new List<SkillItem>();
     private SkillItem activeSkillLeft;
     private SkillItem activeSkillRight;
 
+    private float rightSkillCooldownTimer;
+    private float rightSkillCooldown;
+    private float leftSkillCooldownTimer;
+    private float leftSkillCooldown;
+
+    private bool moveSpeedBuffActive;
+    private float moveSpeedBuffAmount;
+    private float moveSpeedBuffTimer;
+    private float moveSpeedBuffTime = 5f;
+
+    private bool leftSkillReady;
+    private bool leftSkillRunning;
+    private bool rightSkillReady;
+    private bool rightSkillRunning;
+
     public event EventHandler<OnSkillAddedEventArgs> OnActiveSkillAdded;
     public event EventHandler<OnSkillAddedEventArgs> OnPassiveSkillAdded;
-
+    public event EventHandler OnLeftActiveSkillActivated;
+    public event EventHandler OnLeftActiveSkillDeactivated;
+    public event EventHandler OnRightActiveSkillActivated;
+    public event EventHandler OnRightActiveSkillDeactivated;
     public class OnSkillAddedEventArgs : EventArgs {
         public SkillItem skillItemAdded;
     }
@@ -22,19 +42,125 @@ public class PlayerSkills : MonoBehaviour
         Instance = this;
     }
 
+    private void Start() {
+        GameInput.Instance.OnPlayerLeftSkillPerformed += GameInput_OnPlayerLeftSkillPerformed;
+        GameInput.Instance.OnPlayerRightSkillPerformed += GameInput_OnPlayerRightSkillPerformed;
+    }
+
+    private void Update() {
+        HandleActiveSkillsCooldowns();
+        HandleActiveMoveSpeedBuff();
+    }
+
+    private void HandleActiveSkillsCooldowns() {
+        if (activeSkillLeft != null) {
+            if (leftSkillReady) return;
+            if (leftSkillRunning) return;
+
+            leftSkillCooldownTimer -= Time.deltaTime;
+            if (leftSkillCooldownTimer <= 0) {
+                leftSkillReady = true;
+            }
+        }
+
+        if (activeSkillRight != null) {
+            if (rightSkillReady) return;
+            if (rightSkillRunning) return;
+
+            rightSkillCooldownTimer -= Time.deltaTime;
+            if (rightSkillCooldownTimer <= 0) {
+                rightSkillReady = true;
+            }
+        }
+    }
+
+    private void HandleActiveMoveSpeedBuff() {
+        if (!moveSpeedBuffActive) return;
+
+        moveSpeedBuffTimer -= Time.deltaTime;
+
+        if(moveSpeedBuffTimer <= 0) {
+            PlayerMovement.Instance.DebuffMoveSpeed(moveSpeedBuffAmount);
+            moveSpeedBuffActive = false;
+
+            if(activeSkillLeft != null && activeSkillLeft.skillType == SkillItem.SkillType.activeMoveSpeedBuff) {
+                leftSkillRunning = false;
+                leftSkillCooldownTimer = leftSkillCooldown;
+                OnLeftActiveSkillDeactivated?.Invoke(this, EventArgs.Empty);
+            }
+
+            if (activeSkillRight != null && activeSkillRight.skillType == SkillItem.SkillType.activeMoveSpeedBuff) {
+                rightSkillRunning = false;
+                rightSkillCooldownTimer = rightSkillCooldown;
+                OnRightActiveSkillDeactivated?.Invoke(this, EventArgs.Empty);
+            }
+        }
+    }
+
+    private void GameInput_OnPlayerRightSkillPerformed(object sender, EventArgs e) {
+        if (activeSkillRight == null) return;
+        if (!rightSkillReady) return;
+
+        ActivateActiveSkill(activeSkillRight, false);
+        rightSkillReady = false;
+    }
+
+    private void GameInput_OnPlayerLeftSkillPerformed(object sender, EventArgs e) {
+        if (activeSkillLeft == null) return;
+        if (!leftSkillReady) return;
+
+        ActivateActiveSkill(activeSkillLeft, true);
+        leftSkillReady = false;
+    }
+
+    public void ActivateActiveSkill(SkillItem skillItem, bool isLeftSkill) {
+        if(isLeftSkill) {
+            leftSkillRunning = true;
+            OnLeftActiveSkillActivated?.Invoke(this, EventArgs.Empty);
+        } else {
+            rightSkillRunning = true;
+            OnRightActiveSkillActivated?.Invoke(this, EventArgs.Empty);
+        }
+
+        switch (skillItem.skillType) {
+
+            case SkillItem.SkillType.activeMoveSpeedBuff:
+
+                moveSpeedBuffAmount = (100 + skillItem.skillSO.activeSkillEffect.GetValueAtLevel(skillItem.currentLevel))/100;
+                PlayerMovement.Instance.BuffMoveSpeed(moveSpeedBuffAmount);
+
+                moveSpeedBuffTimer = moveSpeedBuffTime;
+                moveSpeedBuffActive = true;
+
+            break;
+
+            case SkillItem.SkillType.activeTeleportation:
+            break;
+
+            case SkillItem.SkillType.activeShootSpeedBuff:
+            break;
+        }
+    }
+
     public void AddActiveSkill(SkillItem skillItem) {
         if (activeSkillLeft != null && activeSkillRight != null) return;
 
-        if(activeSkillLeft == null) {
+        if(activeSkillLeft == null || activeSkillLeft.skillType == skillItem.skillType) {
+            // Active skill left is null OR player is upgrading left skill
+
             activeSkillLeft = skillItem;
+            leftSkillCooldown = activeSkillLeft.skillSO.activeSkillEffect.GetCooldownAtLevel(skillItem.currentLevel);
             OnActiveSkillAdded?.Invoke(this, new OnSkillAddedEventArgs {
                 skillItemAdded = skillItem
             });
             return;
         }
 
-        if (activeSkillRight == null) {
+        if (activeSkillRight == null || activeSkillRight.skillType == skillItem.skillType) {
+            // Active skill right is null OR player is upgrading right skill
+
             activeSkillRight = skillItem;
+            rightSkillCooldown = activeSkillLeft.skillSO.activeSkillEffect.GetCooldownAtLevel(skillItem.currentLevel);
             OnActiveSkillAdded?.Invoke(this, new OnSkillAddedEventArgs {
                 skillItemAdded = skillItem
             });
@@ -73,32 +199,62 @@ public class PlayerSkills : MonoBehaviour
         SkillSO skillItemSO = skillItem.GetSkillSO();
         PassiveSkillEffectSO skillEffect = skillItemSO.passiveSkillEffect;
 
-        float buffEffectValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
+        float absoluteBuffEffectValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
+        float relativeBuffEffectValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
 
         if(skillItem.currentLevel > 1) {
-            buffEffectValue -= skillEffect.GetValueAtLevel(skillItem.currentLevel-1);
+            relativeBuffEffectValue -= skillEffect.GetValueAtLevel(skillItem.currentLevel-1);
         }
 
         if (skillEffect != null) {
             switch (skillEffect.skillType) {
                 case SkillItem.SkillType.passiveMoveSpeedBuff:
 
-                    PlayerStats.Instance.BuffMoveSpeed(buffEffectValue/100);
+                    PlayerStats.Instance.BuffMoveSpeed(relativeBuffEffectValue/100);
 
                     break;
 
                 case SkillItem.SkillType.passiveRunAccelerationFactorBuff:
 
-                    PlayerStats.Instance.BuffRunAccelerationFactor(buffEffectValue / 100);
+                    PlayerStats.Instance.BuffRunAccelerationFactor(relativeBuffEffectValue / 100);
 
                     break;
 
                 case SkillItem.SkillType.passiveRunMaxTimeBuff:
 
-                    PlayerStats.Instance.BuffRunMaxTime(buffEffectValue);
+                    PlayerStats.Instance.BuffRunMaxTime(relativeBuffEffectValue);
 
                     break;
 
+                case SkillItem.SkillType.passiveMaxHPIncrease:
+
+                    PlayerStats.Instance.BuffMaxHP((int)relativeBuffEffectValue);
+
+                    break;
+
+                case SkillItem.SkillType.passiveHealthRegen:
+
+                    PlayerStats.Instance.BuffPlayerHealthRegen((int)relativeBuffEffectValue);
+
+                break;
+
+                case SkillItem.SkillType.passiveAmmoGenerator:
+
+                    PlayerStats.Instance.BuffPlayerAmmoRegen((int)relativeBuffEffectValue);
+
+                break;
+
+                case SkillItem.SkillType.passiveChanceToDoubleXPDrop:
+
+                    PlayerStats.Instance.BuffChanceToDropx2((int)relativeBuffEffectValue);
+
+                break;
+
+                case SkillItem.SkillType.passiveShieldGenerator:
+
+                    passiveShield.UnlockShield(absoluteBuffEffectValue);
+
+                    break;
                 default:
                     Debug.LogWarning($"Unhandled skill type: {skillEffect.skillType}");
                     break;
@@ -121,6 +277,7 @@ public class PlayerSkills : MonoBehaviour
 
     public List<SkillItem> GetPassiveSkillList() { return passiveSkillList; }
 
+    public PassiveShield GetPassiveShield() { return passiveShield;}
 
     public int GetCurrentSkillLevel(SkillItem skillItem) {
         foreach(SkillItem playerSkillItem in passiveSkillList) {
@@ -137,6 +294,14 @@ public class PlayerSkills : MonoBehaviour
         }
 
         return 0;
+    }
+
+    public float GetLeftActiveTimerNormalized() {
+        return (1 - leftSkillCooldownTimer / leftSkillCooldown);
+    }
+
+    public float GetRightActiveTimerNormalized() {
+        return (1 - rightSkillCooldownTimer / rightSkillCooldown);
     }
 
 }

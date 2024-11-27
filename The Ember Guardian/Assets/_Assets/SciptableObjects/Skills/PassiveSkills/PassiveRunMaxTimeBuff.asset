@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c809380acb1014c852c47b344da906, type: 3}
+  m_Name: PassiveRunMaxTimeBuff
+  m_EditorClassIdentifier: 
+  itemType: 1
+  skillType: 1
+  passiveSkillEffect: {fileID: 11400000, guid: dbfd3713259a614458abae9cc3f3644c, type: 2}
+  SkillName: Endurance Core
+  StatChanges: Sprint duration
+  Icon: {fileID: -1482752524, guid: 81ff5ea95548b2547a26f5c0525a3295, type: 3}
+  currencyTypeToPay: 3
+  Price: 1
+  maxLevel: 5
+  Description: A built-in energy core extends your stamina, allowing you to run longer
+    without fatigue.

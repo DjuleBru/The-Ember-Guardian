@@ -74,7 +74,7 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     private void UICurrencyManager_OnCurrencyTryPay(object sender, UICurrencyManager.OnCurrencyTryPayEventArgs e) {
-        StartPayingCurrency(e.currencyType, e.destionationOrbTemplate);
+        StartPayingCurrency(e.currencyType, e.destionationOrbTemplate, e.currencyIndexNormalized);
     }
 
     private void DropBigOrbOnFloor() {
@@ -99,19 +99,21 @@ public class PlayerCurrencies : MonoBehaviour
         lastBlueOrbDroppedOnTheFloor.SetDroppedByPlayer();
     }
 
-    private void StartPayingCurrency(CurrencyType currencyType, PayCurrencyTemplateWorldUI destination) {
+    private void StartPayingCurrency(CurrencyType currencyType, PayCurrencyTemplateWorldUI destination, float currencyIndexNormalized) {
+
+        float smoothTime = destination.GetInitialPayCurrencySmoothTime() * (currencyIndexNormalized) + destination.GetInitialPayCurrencySmoothTime();
 
         if(currencyType != PlayerCurrencies.CurrencyType.ember) {
             Transform currencyPrefab = CurrenciesManager.Instance.GetCurrencyPrefab(currencyType);
 
             lastCurrencyPaying = Instantiate(currencyPrefab, blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
-            lastCurrencyPaying.SetMovingForPayment(true, destination.transform);
+            lastCurrencyPaying.SetMovingForPayment(true, smoothTime, destination.transform);
             collectiblesBeingPaid.Add(lastCurrencyPaying);
 
         } else {
 
             Collectible emberCarriedByPlayer = emberHoldPosition.GetComponentInChildren<Collectible>();
-            emberCarriedByPlayer.SetMovingForPayment(true, destination.transform);
+            emberCarriedByPlayer.SetMovingForPayment(true, 3f, destination.transform);
             collectiblesBeingPaid.Add(emberCarriedByPlayer);
 
         }

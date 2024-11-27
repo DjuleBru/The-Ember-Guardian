@@ -89,6 +89,10 @@ public class PayCurrencyUI : MonoBehaviour
         return (currencyIndex+1) == currencyTemplateWorldUIList.Count;
     }
 
+    public float GetCurrencyIndexNormalized() {
+        return (float)currencyIndex / (float)currencyTemplateWorldUIList.Count;
+    }
+
     public bool GetPlayerInteracting() {
         return playerInteracting;
     }

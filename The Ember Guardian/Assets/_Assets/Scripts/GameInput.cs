@@ -32,6 +32,9 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnPlayerLeftSwitchPerformed;
     public event EventHandler OnPlayerRightSwitchPerformed;
 
+    public event EventHandler OnPlayerLeftSkillPerformed;
+    public event EventHandler OnPlayerRightSkillPerformed;
+
     private bool interactPressed;
     private bool holdingInteract;
     private float interactHoldTimer;
@@ -61,10 +64,13 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.Reload.performed += Reload_performed;
         playerInputActions.Player.Reload.canceled += Reload_canceled;
         playerInputActions.Player.SwitchGunLight.performed += SwitchGunLight_performed;
+        playerInputActions.Player.RightSkill.performed += RightSkill_performed;
+        playerInputActions.Player.LeftSkill.performed += LeftSkill_performed;
 
         playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
         playerInputActions.Player.Move.performed += Move_performed;
     }
+
 
     private void Update() {
         if(interactPressed) {
@@ -79,6 +85,14 @@ public class GameInput : MonoBehaviour
 
     private void Move_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
         OnPlayerLeftRightDirPerformed?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void LeftSkill_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        OnPlayerLeftSkillPerformed?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void RightSkill_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+        OnPlayerRightSkillPerformed?.Invoke(this, EventArgs.Empty);
     }
 
     private void SwitchGunLight_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {

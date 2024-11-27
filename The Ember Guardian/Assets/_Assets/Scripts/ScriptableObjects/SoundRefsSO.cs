@@ -42,6 +42,9 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip[] propBurned;
     public AudioClip gunLightSwitch;
 
+    public AudioClip passiveShieldActivate;
+    public AudioClip passiveShieldDie;
+
     public AudioClip dawnStart;
     public AudioClip dawnStartWhoosh;
     public AudioClip dayStart;

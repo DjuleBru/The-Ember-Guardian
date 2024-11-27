@@ -30,11 +30,17 @@ public class SkillItem : MerchantItem {
         if (SkillDataSO != null) {
             skillSO = SkillDataSO;
 
+            if(skillSO.itemType == MerchantItemType.PassiveSkill) {
+                price = skillSO.passiveSkillEffect.GetPriceAtLevel(1);
+            } else {
+                price = skillSO.activeSkillEffect.GetPriceAtLevel(1);
+            }
+
             itemName = skillSO.SkillName;
             itemStatChanges = skillSO.StatChanges;
             itemDescription = skillSO.Description;
             itemType = skillSO.itemType;
-            price = skillSO.Price;
+            skillType = skillSO.skillType;
             icon = skillSO.Icon;
             maxLevel = skillSO.maxLevel;
             currencyTypeToPay = skillSO.currencyTypeToPay;

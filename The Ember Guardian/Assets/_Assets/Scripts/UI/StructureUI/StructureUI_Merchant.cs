@@ -81,14 +81,14 @@ public class StructureUI_Merchant : StructureUI {
             List<MerchantItem> allItems = merchant.GetAllItemsForSale();
             int itemCount = allItems.Count;
 
-            if (selectDir > 0) {
-                // Naviguer à droite
-                selectedItemIndex = (selectedItemIndex + 1) % itemCount;
-            }
-            else {
-                // Naviguer à gauche
-                selectedItemIndex = (selectedItemIndex - 1 + itemCount) % itemCount;
-            }
+            do {
+                if (selectDir > 0) {
+                    selectedItemIndex = (selectedItemIndex + 1) % itemCount;
+                }
+                else {
+                    selectedItemIndex = (selectedItemIndex - 1 + itemCount) % itemCount;
+                }
+            } while (allItems[selectedItemIndex].isPurchased);
 
             OnNewItemHovered?.Invoke(this, EventArgs.Empty);
 

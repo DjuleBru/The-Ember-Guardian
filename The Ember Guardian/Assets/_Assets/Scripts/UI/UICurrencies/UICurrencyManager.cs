@@ -51,6 +51,7 @@ public class UICurrencyManager : MonoBehaviour
     public class OnCurrencyTryPayEventArgs : EventArgs {
         public PlayerCurrencies.CurrencyType currencyType;
         public PayCurrencyTemplateWorldUI destionationOrbTemplate;
+        public float currencyIndexNormalized;
     }
     public class OnCurrencyDroppedEventArgs : EventArgs {
         public Currency_UI currencyUIDropped;
@@ -249,6 +250,7 @@ public class UICurrencyManager : MonoBehaviour
 
     private void PayNextCurrency(PlayerCurrencies.CurrencyType currencyTypeToPay) {
         PayCurrencyTemplateWorldUI currencyTemplateUI = currentPayCurrencyUI.GetCurrentCurrencyTemplateWorldUI();
+        float currencyIndexNormalized = currentPayCurrencyUI.GetCurrencyIndexNormalized();
 
         List<Currency_UI> currenciesInBagOfType = GetCurrenciesInBagOfType(currencyTypeToPay);
 
@@ -257,7 +259,8 @@ public class UICurrencyManager : MonoBehaviour
 
             OnCurrencyTryPay?.Invoke(this, new OnCurrencyTryPayEventArgs {
                 currencyType = currencyTypeToPay,
-                destionationOrbTemplate = currencyTemplateUI
+                destionationOrbTemplate = currencyTemplateUI,
+                currencyIndexNormalized = currencyIndexNormalized
             });
 
         } else {

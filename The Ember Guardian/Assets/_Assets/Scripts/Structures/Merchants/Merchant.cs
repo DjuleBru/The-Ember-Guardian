@@ -35,7 +35,8 @@ public class Merchant : Structure {
     protected bool currentSelectedItemAlreadyPurchased;
     protected bool playerJustTriggeredInteraction;
     protected bool playerPayedToRefreshShop;
-    protected int smallItemsToDisplayAmount = 3;
+    protected int smallItemsToDisplayAmount = 2;
+    protected int bigItemsToDisplayAmount = 1;
 
     protected override void Start() {
         base.Start();

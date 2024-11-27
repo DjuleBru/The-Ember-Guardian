@@ -23,9 +23,17 @@ public class Mob : MonoBehaviour, IDamageable
     public event EventHandler<OnMobDroppedCollectibleEventArgs> OnMobDroppedCollectibles;
 
     protected void SpawnDroppedCurrencies(List<PlayerCurrencies.CurrencyType> currencyTypeList, List<int> dropAmountList) {
-        int j = 0;
+
+        // Chance to drop x2 skill
+        int dropMultiplier = 1;
+        float dropMultiplierRandom = UnityEngine.Random.Range(0f, 100f);
+        if(dropMultiplierRandom < PlayerStats.Instance.GetChanceToDropx2()) {
+            dropMultiplier = 2;
+        }
+
+        int j = 0;        
         foreach(PlayerCurrencies.CurrencyType currencyType in currencyTypeList) {
-            int currencyDropAmount = dropAmountList[j];
+            int currencyDropAmount = dropAmountList[j] * dropMultiplier;
 
             for (int i = 0; i < currencyDropAmount; i++) {
                 Transform currencyPrefab = CurrenciesManager.Instance.GetCurrencyPrefab(currencyType);
@@ -39,7 +47,6 @@ public class Mob : MonoBehaviour, IDamageable
             j++;
 
         }
-
 
     }
 

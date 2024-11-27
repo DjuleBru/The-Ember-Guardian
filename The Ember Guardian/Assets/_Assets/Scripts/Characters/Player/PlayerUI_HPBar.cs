@@ -11,6 +11,8 @@ public class PlayerUI_HPBar : MonoBehaviour
     [SerializeField] private GameObject hpBarGameObject;
     [SerializeField] private Transform hpTickTemplate;
     [SerializeField] private Transform hpTickContainer;
+    private float tickWidth = .15f;
+    private float sidesWidth = .5f;
 
     private CanvasGroup hpBarCanvasGroup;
     public float hpBarDisplayTime = 2f;   // Durée d'affichage de la barre
@@ -43,6 +45,7 @@ public class PlayerUI_HPBar : MonoBehaviour
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
         Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
+        PlayerStats.Instance.OnPlayerMaxHPChanged += PlayerStats_OnPlayerMaxHPChanged;
 
         Tent.Instance.OnPlayerTriggeredIn += Tent_OnPlayerTriggeredIn;
         Tent.Instance.OnPlayerTriggeredOut += Tent_OnPlayerTriggeredOut;
@@ -146,8 +149,12 @@ public class PlayerUI_HPBar : MonoBehaviour
         StartCoroutine(RefillHPBar(e.healAmount));
     }
 
+    private void PlayerStats_OnPlayerMaxHPChanged(object sender, EventArgs e) {
+        RefreshHPBar();
+    }
+
     private IEnumerator RefillHPBar(int hpCount) {
-        Debug.Log("RefillHPBar");
+
         for (int i = 0; i < hpCount; i++) {
 
             PlayerUI_TickTemplate hpTick = Instantiate(hpTickTemplate, hpTickContainer).GetComponent<PlayerUI_TickTemplate>();
@@ -163,8 +170,8 @@ public class PlayerUI_HPBar : MonoBehaviour
 
     }
 
-
     private void RefreshHPBar() {
+        RefreshHPBarSize();
         hpTickTemplate.gameObject.SetActive(true);
 
         foreach (Transform child in hpTickContainer) {
@@ -180,6 +187,11 @@ public class PlayerUI_HPBar : MonoBehaviour
         }
 
         hpTickTemplate.gameObject.SetActive(false);
+    }
+
+    private void RefreshHPBarSize() {
+        RectTransform rt = GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(sidesWidth + tickWidth * PlayerStats.Instance.GetPlayerMaxHP(), .4f);
     }
 
     private void Player_OnPlayerExitedCamp(object sender, System.EventArgs e) {

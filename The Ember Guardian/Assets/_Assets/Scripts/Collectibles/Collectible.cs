@@ -196,11 +196,13 @@ public class Collectible : MonoBehaviour
         interactable = false;
     }
 
-    public void SetMovingForPayment(bool moving, Transform destination = null) {
+    public void SetMovingForPayment(bool moving, float smoothTime = 1f, Transform destination = null) {
 
         this.movingForPayment = moving;
+        this.smoothTime = smoothTime;
         paymentDestination = destination;
         transform.SetParent(destination);
+
 
         if(moving) {
             rb.gravityScale = 0;

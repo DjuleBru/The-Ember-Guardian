@@ -75,7 +75,7 @@ public class Merchant_Skills : Merchant
     }
 
     protected void RefreshCurrentMajorItemForSale() {
-        majorSkillItemsForSale = DrawSkillsWithoutReplacement(majorSkillList,1);
+        majorSkillItemsForSale = DrawSkillsWithoutReplacement(majorSkillList, bigItemsToDisplayAmount);
         majorItemListForSale = ConvertSkillListInMerchantItemList(majorSkillItemsForSale);
 
         foreach(SkillItem skillItem in majorItemListForSale) {
@@ -84,7 +84,7 @@ public class Merchant_Skills : Merchant
     }
 
     protected void RefreshCurrentMinorItemListForSale() {
-        minorSkillItemsForSale = DrawSkillsWithoutReplacement(minorSkillList, 3);
+        minorSkillItemsForSale = DrawSkillsWithoutReplacement(minorSkillList, smallItemsToDisplayAmount);
         minorItemListForSale = ConvertSkillListInMerchantItemList(minorSkillItemsForSale);
 
         foreach (SkillItem skillItem in minorItemListForSale) {
@@ -130,6 +130,10 @@ public class Merchant_Skills : Merchant
     }
 
     private int CalculateCost(SkillItem skill) {
-        return skill.price + skill.currentLevel-1; // Exemple simple : coût basé sur le niveau
+        if(skill.itemType == MerchantItem.MerchantItemType.PassiveSkill) {
+            return skill.skillSO.passiveSkillEffect.GetPriceAtLevel(skill.currentLevel);
+        } else {
+            return skill.skillSO.activeSkillEffect.GetPriceAtLevel(skill.currentLevel);
+        }
     }
 }

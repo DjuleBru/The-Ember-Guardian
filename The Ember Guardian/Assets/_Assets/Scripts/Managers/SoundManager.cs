@@ -30,6 +30,9 @@ public class SoundManager : MonoBehaviour
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoor_OnPlayerCooldownSFXTrigger;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
 
+        PassiveShield.OnAnyPassiveShieldActivated += PassiveShield_OnAnyPassiveShieldActivated;
+        PassiveShield.OnAnyPassiveShieldDied += PassiveShield_OnAnyPassiveShieldDied;
+
         PlayerUI_AmmoBar.Instance.OnAmmoTickAdded += PlayerUI_AmmoBar_OnAmmoTickAdded;
         PlayerUI_HPBar.Instance.OnHPTickAdded += PlayerUI_HPBar_OnHPTickAdded;
         StructureUI_Fire.OnFireTickRemoved += StructureUI_Fire_OnFireTickRemoved;
@@ -246,6 +249,20 @@ public class SoundManager : MonoBehaviour
     private void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetGunSO().shootGunSound;
         PlaySound2D(audioClipArray, .5f);
+    }
+
+    #endregion
+
+    #region PLAYER SKILLS
+
+    private void PassiveShield_OnAnyPassiveShieldDied(object sender, System.EventArgs e) {
+        AudioClip audioClip = soundRefsSO.passiveShieldDie;
+        PlaySound2D(audioClip);
+    }
+
+    private void PassiveShield_OnAnyPassiveShieldActivated(object sender, System.EventArgs e) {
+        AudioClip audioClip = soundRefsSO.passiveShieldActivate;
+        PlaySound2D(audioClip);
     }
 
     #endregion

@@ -125,6 +125,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeftSkill"",
+                    ""type"": ""Button"",
+                    ""id"": ""7d0010b1-7327-437b-8e18-8a10e378b566"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightSkill"",
+                    ""type"": ""Button"",
+                    ""id"": ""59d2d600-41e8-4c37-b40e-e9f01528f7d7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -314,6 +332,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c5d7ec5-bad3-424f-8774-ef1519de7a13"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""LeftSkill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7640c20c-432d-4fd4-bd24-db362f869a86"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""RightSkill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -345,6 +385,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_SwitchGunLight = m_Player.FindAction("SwitchGunLight", throwIfNotFound: true);
         m_Player_Back = m_Player.FindAction("Back", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
+        m_Player_LeftSkill = m_Player.FindAction("LeftSkill", throwIfNotFound: true);
+        m_Player_RightSkill = m_Player.FindAction("RightSkill", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -422,6 +464,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SwitchGunLight;
     private readonly InputAction m_Player_Back;
     private readonly InputAction m_Player_Pause;
+    private readonly InputAction m_Player_LeftSkill;
+    private readonly InputAction m_Player_RightSkill;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -437,6 +481,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @SwitchGunLight => m_Wrapper.m_Player_SwitchGunLight;
         public InputAction @Back => m_Wrapper.m_Player_Back;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
+        public InputAction @LeftSkill => m_Wrapper.m_Player_LeftSkill;
+        public InputAction @RightSkill => m_Wrapper.m_Player_RightSkill;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -479,6 +525,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @LeftSkill.started += instance.OnLeftSkill;
+            @LeftSkill.performed += instance.OnLeftSkill;
+            @LeftSkill.canceled += instance.OnLeftSkill;
+            @RightSkill.started += instance.OnRightSkill;
+            @RightSkill.performed += instance.OnRightSkill;
+            @RightSkill.canceled += instance.OnRightSkill;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -516,6 +568,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @LeftSkill.started -= instance.OnLeftSkill;
+            @LeftSkill.performed -= instance.OnLeftSkill;
+            @LeftSkill.canceled -= instance.OnLeftSkill;
+            @RightSkill.started -= instance.OnRightSkill;
+            @RightSkill.performed -= instance.OnRightSkill;
+            @RightSkill.canceled -= instance.OnRightSkill;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -555,5 +613,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnSwitchGunLight(InputAction.CallbackContext context);
         void OnBack(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnLeftSkill(InputAction.CallbackContext context);
+        void OnRightSkill(InputAction.CallbackContext context);
     }
 }

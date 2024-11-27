@@ -41,6 +41,10 @@ public class PlayerShoot : MonoBehaviour
     private bool playerJustPressedReload;
     private bool transferringAmmoFromBag;
 
+    private bool hasAmmoRegen;
+    private float ammoRegenTime;
+    private float ammoRegenTimer;
+
     private int currentAmmoClip;
     private int maxAmmo;
     private int currentBullet;
@@ -68,12 +72,15 @@ public class PlayerShoot : MonoBehaviour
         GameInput.Instance.OnPlayerReloadPerformed += GameInput_OnPlayerReloadPerformed;
         GameInput.Instance.OnPlayerReloadCanceled += GameInput_OnPlayerReloadCanceled;
 
+        PlayerStats.Instance.OnPlayerAmmoRegenTimeChanged += PlayerStats_OnPlayerAmmoRegenTimeChanged;
+
         UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
     }
 
+
     private void Update() {
 
-        if(playerJustPressedReload) {
+        if (playerJustPressedReload) {
             playerJustPressedReloadTimer += Time.deltaTime;
             if(playerJustPressedReloadTimer > .15f) {
                 playerJustPressedReload = false;
@@ -110,6 +117,14 @@ public class PlayerShoot : MonoBehaviour
                 currentBullet = bulletsPerAmmoClip;
                 reloading = false;
                 OnPlayerReloadEnded?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        if (hasAmmoRegen) {
+            ammoRegenTimer -= Time.deltaTime;
+            if (ammoRegenTimer <= 0) {
+                ammoRegenTimer = ammoRegenTime;
+                AddAmmoClip(1);
             }
         }
     }
@@ -174,6 +189,8 @@ public class PlayerShoot : MonoBehaviour
         if(currentAmmoClip + ammoRefilled > maxAmmo) {
             ammoRefilled = maxAmmo - currentAmmoClip;
         }
+
+        if (ammoRefilled == 0) return;
         currentAmmoClip += ammoRefilled;
 
         OnPlayerAmmoRefilled?.Invoke(this, new OnAmmoRefilledEventArgs {
@@ -200,7 +217,7 @@ public class PlayerShoot : MonoBehaviour
     private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         if(e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
             Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
-            collectible.SetMovingForPayment(true, ammoDestinationPoint);
+            collectible.SetMovingForPayment(true, 1f, ammoDestinationPoint);
             collectible.SetScale(.5f);
         }
     }
@@ -231,6 +248,11 @@ public class PlayerShoot : MonoBehaviour
         reloadTimer = reloadTime;
         OnPlayerReload?.Invoke(this, EventArgs.Empty);
 
+    }
+
+    private void PlayerStats_OnPlayerAmmoRegenTimeChanged(object sender, EventArgs e) {
+        hasAmmoRegen = true;
+        ammoRegenTime = PlayerStats.Instance.GetAmmoRegenTime();
     }
 
     private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {
