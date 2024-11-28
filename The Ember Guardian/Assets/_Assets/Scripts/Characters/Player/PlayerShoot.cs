@@ -28,13 +28,11 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private float projectileInitialForce;
 
     private float shootCooldownTimer;
-    private float shootCooldownTime;
     private float shootCooldownSFXTriggerTime;
     private float playerJustPressedReloadTimer;
     private float transferringAmmoFromBagTimer;
     private float transferringAmmoFromBagCooldown = 1f;
     private float reloadTimer;
-    private float reloadTime;
     private bool coolingDown;
     private bool reloading;
     private bool coolDownSFXTriggered;
@@ -54,10 +52,7 @@ public class PlayerShoot : MonoBehaviour
 
     private void Awake() {
         Instance = this;
-
-        shootCooldownTime = gunSO.shootCooldownTime;
         shootCooldownSFXTriggerTime = gunSO.shootCooldownSFXTriggerTime;
-        reloadTime = gunSO.reloadTime;
 
         bulletsPerAmmoClip = gunSO.shotsPerClip;
         currentBullet = bulletsPerAmmoClip;
@@ -67,6 +62,10 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void Start() {
+
+        PlayerStats.Instance.SetShootCooldownTime(gunSO.shootCooldownTime);
+        PlayerStats.Instance.SetReloadTime(gunSO.reloadTime);
+
         GameInput.Instance.OnPlayerShootCanceled += GameInput_OnPlayerShootCanceled;
         GameInput.Instance.OnPlayerShootStarted += GameInput_OnPlayerShootStarted;
         GameInput.Instance.OnPlayerReloadPerformed += GameInput_OnPlayerReloadPerformed;
@@ -99,7 +98,7 @@ public class PlayerShoot : MonoBehaviour
         if(coolingDown) {
             shootCooldownTimer -= Time.deltaTime;
 
-            if(shootCooldownTimer <= (shootCooldownTime - shootCooldownSFXTriggerTime) && !coolDownSFXTriggered) {
+            if(shootCooldownTimer <= (PlayerStats.Instance.GetShootCooldownTime() - shootCooldownSFXTriggerTime) && !coolDownSFXTriggered) {
                 OnPlayerCooldownTrigger?.Invoke(this, EventArgs.Empty);
                 coolDownSFXTriggered = true;
             }
@@ -146,10 +145,10 @@ public class PlayerShoot : MonoBehaviour
         OnBulletsChanged?.Invoke(this, EventArgs.Empty);
 
         // Handle cooldown
-        if (shootCooldownTime != 0) {
+        if (PlayerStats.Instance.GetShootCooldownTime() != 0) {
             coolDownSFXTriggered = false;
             coolingDown = true;
-            shootCooldownTimer = shootCooldownTime;
+            shootCooldownTimer = PlayerStats.Instance.GetShootCooldownTime();
         };
     }
 
@@ -159,7 +158,7 @@ public class PlayerShoot : MonoBehaviour
         // Handle reload
         if (currentBullet <= 0) {
             reloading = true;
-            reloadTimer = reloadTime;
+            reloadTimer = PlayerStats.Instance.GetReloadTime();
 
             currentAmmoClip -= 1;
             OnPlayerReload?.Invoke(this, EventArgs.Empty);
@@ -245,7 +244,7 @@ public class PlayerShoot : MonoBehaviour
         currentAmmoClip -= 1;
         reloading = true;
         playerJustPressedReload = false;
-        reloadTimer = reloadTime;
+        reloadTimer = PlayerStats.Instance.GetReloadTime();
         OnPlayerReload?.Invoke(this, EventArgs.Empty);
 
     }
@@ -273,14 +272,6 @@ public class PlayerShoot : MonoBehaviour
 
     public GunSO GetGunSO() {
         return gunSO;
-    }
-
-    public float GetReloadTime() {
-        return reloadTime;
-    }
-
-    public float GetShootCooldownTime() {
-        return shootCooldownTime;
     }
 
     private void OnDestroy() {

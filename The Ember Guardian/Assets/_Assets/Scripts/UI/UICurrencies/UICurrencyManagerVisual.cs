@@ -121,13 +121,13 @@ public class UICurrencyManagerVisual : MonoBehaviour
 
     private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
         if (backpackAlmostFull) {
-            ShowBackpack(2f);
+            //ShowBackpack(2f);
         }
     }
 
     private void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
         if (backpackAlmostFull) {
-            ShowBackpack(2f);
+            //ShowBackpack(2f);
         }
     }
 

@@ -7,12 +7,8 @@ public class PlayerAim : MonoBehaviour
 {
     public static PlayerAim Instance;
 
+    [SerializeField] private List<Transform> followAimDirTransformList;
     [SerializeField] private Transform gunTransform;
-    [SerializeField] private Transform gunLightTransform;
-    [SerializeField] private Transform visualTransform;
-
-    [SerializeField] private int minAngle;
-    [SerializeField] private int maxAngle;
 
     private float aimAngle;
     private float aimHeight;
@@ -34,7 +30,11 @@ public class PlayerAim : MonoBehaviour
 
     private void Start() {
         float angle = Mathf.Atan2(1, 0) * Mathf.Rad2Deg;
-        gunTransform.eulerAngles = new Vector3(0, 0, angle);
+
+        foreach(Transform transform in followAimDirTransformList) {
+            transform.eulerAngles = new Vector3(0, 0, angle);
+        }
+
     }
 
     private void Update() {
@@ -70,8 +70,11 @@ public class PlayerAim : MonoBehaviour
 
         //aimAngle = ClampAimAngle(aimAngle, aimDir);
 
-        gunTransform.localScale = localScale;
-        gunTransform.eulerAngles = new Vector3(0, 0, aimAngle);
+        foreach (Transform transform in followAimDirTransformList) {
+            transform.localScale = localScale;
+            transform.eulerAngles = new Vector3(0, 0, aimAngle);
+        }
+
 
         // Smooth recoil back to zero
         currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
@@ -85,48 +88,13 @@ public class PlayerAim : MonoBehaviour
         aimDir.y += currentRecoil;
 
         aimAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
-        gunTransform.eulerAngles = new Vector3(0,0, aimAngle);
+
+        foreach (Transform transform in followAimDirTransformList) {
+            transform.eulerAngles = new Vector3(0, 0, aimAngle);
+        }
 
         // Smooth recoil back to zero
         currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
-    }
-
-    private float ClampAimAngle(float inputAngle, Vector3 aimDir) {
-        float outputAngle = inputAngle;
-
-        if (PlayerMovement.Instance.GetLastMoveDir() >= 0) {
-
-            if (aimDir.x < 0) {
-                aimDir.x = -aimDir.x;
-                outputAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
-            }
-
-            if (inputAngle < minAngle && inputAngle > (-90 + minAngle)) {
-                outputAngle = minAngle;
-            }
-
-            if (inputAngle > maxAngle) {
-                outputAngle = maxAngle;
-            }
-
-        }
-
-        else {
-            if (aimDir.x > 0) {
-                aimDir.x = -aimDir.x;
-                outputAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
-            }
-            if (inputAngle < 0 && inputAngle > (-90 + minAngle)) {
-                outputAngle = -90 + minAngle;
-            }
-
-            if (inputAngle > 0 && inputAngle < (90 + maxAngle)) {
-                outputAngle = 90 + maxAngle;
-            }
-        }
-
-
-        return outputAngle;
     }
 
     public void AddRecoil(float recoil, float recoilDamping) {

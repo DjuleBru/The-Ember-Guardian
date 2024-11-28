@@ -2,9 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class BarricadeVisual : StructureVisual {
+
     [SerializeField] private Material repairBarricadeMaterial;
+    [SerializeField] private Light2D barricadeSpotLight;
     [SerializeField] private List<GameObject> level1BarricadeSprites;
     [SerializeField] private List<GameObject> level2BarricadeSprites;
     [SerializeField] private List<GameObject> level3BarricadeSprites;
@@ -144,6 +147,10 @@ public class BarricadeVisual : StructureVisual {
             gameObject.GetComponent<SpriteRenderer>().material = unhoveredMaterial;
             i++;
         }
+    }
+
+    public void SetAsOuterBarricade(bool outerBarricade) {
+        barricadeSpotLight.enabled = outerBarricade;
     }
 
     protected override void Structure_OnPlayerTriggeredOut(object sender, System.EventArgs e) {

@@ -30,8 +30,11 @@ public class SoundManager : MonoBehaviour
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoor_OnPlayerCooldownSFXTrigger;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
 
+        PlayerSkills.Instance.OnActiveSkillReady += PlayerSkills_OnActiveSkillReady;
+        PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
         PassiveShield.OnAnyPassiveShieldActivated += PassiveShield_OnAnyPassiveShieldActivated;
         PassiveShield.OnAnyPassiveShieldDied += PassiveShield_OnAnyPassiveShieldDied;
+        ActiveTeleportation.Instance.OnPlayerTeleported += ActiveTeleportation_OnPlayerTeleported;
 
         PlayerUI_AmmoBar.Instance.OnAmmoTickAdded += PlayerUI_AmmoBar_OnAmmoTickAdded;
         PlayerUI_HPBar.Instance.OnHPTickAdded += PlayerUI_HPBar_OnHPTickAdded;
@@ -254,6 +257,22 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region PLAYER SKILLS
+
+    private void ActiveTeleportation_OnPlayerTeleported(object sender, System.EventArgs e) {
+        AudioClip audioClip = soundRefsSO.playerActiveTeleport;
+        PlaySound2D(audioClip);
+    }
+
+    private void PlayerSkills_OnActiveSkillReady(object sender, System.EventArgs e) {
+        AudioClip skillAudioClip = soundRefsSO.activeSkillReady;
+        PlaySound2D(skillAudioClip, .5f);
+    }
+    private void PlayerSkills_OnActiveSkillActivated(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
+        SkillItem skillItem = e.skillItemAdded;
+        AudioClip skillAudioClip = skillItem.GetSkillSO().activateSkillAudioClip;
+        PlaySound2D(skillAudioClip);
+    }
+
 
     private void PassiveShield_OnAnyPassiveShieldDied(object sender, System.EventArgs e) {
         AudioClip audioClip = soundRefsSO.passiveShieldDie;

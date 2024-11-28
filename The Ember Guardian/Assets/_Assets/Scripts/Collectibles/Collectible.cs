@@ -166,7 +166,6 @@ public class Collectible : MonoBehaviour
         solidCollider.enabled = false;
 
         yield return new WaitForSeconds(delayToPlouf);
-        Debug.Log("plouf");
         OnCollectiblePlouffed?.Invoke(this, EventArgs.Empty);
         OnAnyCollectiblePlouffed?.Invoke(this, new OnAnyCollectiblePouffedEventArgs { currencyType = currencyType});
 
@@ -278,12 +277,10 @@ public class Collectible : MonoBehaviour
     }
 
     public void ApplyRandomForce(float minForceX, float maxForceX, float minForceY, float maxForceY) {
-        Debug.Log("ApplyRandomForce");
         float forceX = UnityEngine.Random.Range(minForceX, maxForceX);
         float forceY = UnityEngine.Random.Range(minForceY, maxForceY);
 
         Vector2 forceDir = new Vector2(forceX, forceY);
-        Debug.Log(forceDir);
         rb.AddForce(forceDir, ForceMode2D.Impulse);
     }
 

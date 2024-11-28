@@ -45,14 +45,6 @@ public class CreatureFeedbacks : MonoBehaviour
 
     private void CreatureAI_OnCreatureAggro(object sender, System.EventArgs e) {
         aggroFeedbacks.PlayFeedbacks();
-        //AddVerticalForce();
-    }
-
-    private void AddVerticalForce() {
-        float forceY = Random.Range(minAggroYForce, maxAggroYForce);
-        Vector2 force = new Vector2(0, forceY);
-
-        creatureAI.GetComponent<Rigidbody2D>().AddForce(force * creature.GetCreatureSO().mass, ForceMode2D.Impulse);
     }
 
 }

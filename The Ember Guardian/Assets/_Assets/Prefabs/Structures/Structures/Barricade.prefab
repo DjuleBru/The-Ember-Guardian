@@ -4700,6 +4700,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2097073961957946881, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
   m_PrefabInstance: {fileID: 2669040421589755040}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5002505982994471546 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6946290811585887962, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+  m_PrefabInstance: {fileID: 2669040421589755040}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6349067041674093866 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9013458545296523658, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
@@ -4739,6 +4750,7 @@ MonoBehaviour:
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
   structureHasFunctionIcon: 0
   repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
+  barricadeSpotLight: {fileID: 5002505982994471546}
   level1BarricadeSprites:
   - {fileID: 1438354265499989707}
   - {fileID: 8825719235940526573}

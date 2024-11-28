@@ -15,7 +15,11 @@ public class Tent : Structure
 
     protected override void Start() {
         base.Start();
+        ActivateStructurePrimaryFunctionInteraction(false);
+        //ActivateStructureUpgradeInteraction(false);
+
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
+    
     }
 
     protected void Player_OnPlayerDamaged(object sender, EventArgs e) {

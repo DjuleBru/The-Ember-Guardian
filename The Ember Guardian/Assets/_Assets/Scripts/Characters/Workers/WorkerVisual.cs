@@ -30,7 +30,6 @@ public class WorkerVisual : MobVisual {
     private void HunterJob_OnHunterChangedState(object sender, System.EventArgs e) {
         HunterJob.HunterState state = hunterJob.GetState();
 
-        Debug.Log(state.ToString());
         if(state == HunterJob.HunterState.blockedByCreatures) {
             workerStatusSpriteRenderer.sprite = exclamationMarkSprite;
         } else {

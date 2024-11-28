@@ -134,10 +134,8 @@ public class Player : MonoBehaviour, IDamageable
     private bool ShieldTanksDamage(int damage, Vector3 damageSourcePosition) {
         if(PlayerSkills.Instance.GetPassiveShield().GetShieldActive()) {
             PlayerSkills.Instance.GetPassiveShield().TakeDamage(damage, damageSourcePosition);
-            Debug.Log("ShieldTanksDamage");
             return true;
         } else {
-            Debug.Log("Shield ddoes not TanksDamage");
             return false;
         }
     }

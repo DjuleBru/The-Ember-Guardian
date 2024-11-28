@@ -64,7 +64,10 @@ public class PlayerCurrencies : MonoBehaviour
 
     public void DropEmber() {
         carryingEmber = false;
-        Destroy(emberHoldPosition.GetComponentInChildren<Collectible>().gameObject);
+        Collectible ember = emberHoldPosition.GetComponentInChildren<Collectible>();
+        if(ember != null) {
+            Destroy(emberHoldPosition.GetComponentInChildren<Collectible>().gameObject);
+        }
     }
 
     private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -116,6 +119,7 @@ public class PlayerCurrencies : MonoBehaviour
             emberCarriedByPlayer.SetMovingForPayment(true, 3f, destination.transform);
             collectiblesBeingPaid.Add(emberCarriedByPlayer);
 
+            carryingEmber = false;
         }
 
     }

@@ -58,6 +58,11 @@ public class PlayerStats : MonoBehaviour
 
     #endregion
 
+    #region SHOOTING
+    private float shootCooldownTime;
+    private float reloadTime;
+    #endregion
+
     #region OTHER
     private float shieldRegenTime;
     private float ammoRegenTime;
@@ -65,6 +70,7 @@ public class PlayerStats : MonoBehaviour
 
     public event EventHandler OnPlayerShieldRegenTimeChanged;
     public event EventHandler OnPlayerAmmoRegenTimeChanged;
+    public event EventHandler OnMoveSpeedChanged;
     #endregion
 
     private void Awake() {
@@ -131,6 +137,14 @@ public class PlayerStats : MonoBehaviour
         return chanceToDropx2;
     }
 
+    public float GetReloadTime() {
+        return reloadTime;
+    }
+
+    public float GetShootCooldownTime() {
+        return shootCooldownTime;
+    }
+
     #endregion
 
     #region GET INITIAL PARAMETERS
@@ -173,6 +187,16 @@ public class PlayerStats : MonoBehaviour
 
     #endregion
 
+    #region SET SHOOT PARAMETERS
+    public void SetShootCooldownTime(float shootCooldownTime) {
+        this.shootCooldownTime = shootCooldownTime;
+    }
+
+    public void SetReloadTime(float reloadTime) {
+        this.reloadTime = reloadTime;
+    }
+    #endregion
+
     public float GetSkillStat(SkillItem skillItem) {
         float skillStat = 0f;
 
@@ -210,6 +234,22 @@ public class PlayerStats : MonoBehaviour
     public void BuffMoveSpeed(float buffAmount) {
         Debug.Log("BuffMoveSpeed " + initialMoveSpeed * buffAmount);
         moveSpeed += initialMoveSpeed * buffAmount;
+        OnMoveSpeedChanged?.Invoke(this, EventArgs.Empty);
+    }
+    public void DebuffMoveSpeed(float buffAmount) {
+        Debug.Log("DebuffMoveSpeed " + initialMoveSpeed * buffAmount);
+        moveSpeed -= initialMoveSpeed * buffAmount;
+        OnMoveSpeedChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void BuffShootCooldown(float buffAmount) {
+        Debug.Log("BuffShootCooldown " + buffAmount);
+        shootCooldownTime /= buffAmount;
+    }
+
+    public void DebuffShootCooldown(float buffAmount) {
+        Debug.Log("DebuffShootCooldown " +buffAmount);
+        shootCooldownTime *= buffAmount;
     }
 
     public void BuffRunAccelerationFactor(float buffAmount) {

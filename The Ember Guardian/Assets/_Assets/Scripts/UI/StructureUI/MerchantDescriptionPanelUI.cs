@@ -70,17 +70,17 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
         SkillSO skillSO = skillItem.skillSO;
 
         PassiveSkillEffectSO skillEffect = skillSO.passiveSkillEffect;
-        string absoluteStatText = "";
-        string relativeStatText = "";
+        string previousStatText = "";
+        string currentStatText = "";
 
-        float buffAbsoluteValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
+        float currentBuffValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
         float previousStatValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
+        float relativeStatValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
 
-        float relativeBuffValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
         if (skillItem.currentLevel > 1) {
-            relativeBuffValue -= skillEffect.GetValueAtLevel(skillItem.currentLevel - 1);
             previousStatValue = skillEffect.GetValueAtLevel(skillItem.currentLevel - 1);
-            absoluteStatText = "";
+            relativeStatValue = currentBuffValue - previousStatValue;
+            previousStatText = "";
         }
         else {
             previousStatValue = 0;
@@ -88,48 +88,48 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
 
         switch (skillSO.skillType) {
             case SkillItem.SkillType.passiveMaxHPIncrease:
-                absoluteStatText = "(" + (int)(PlayerStats.Instance.GetPlayerMaxHP()) + ")";
-                relativeStatText = "+" + ((int)(relativeBuffValue)).ToString();
+                previousStatText = "(+" + (int)(previousStatValue) + ")";
+                currentStatText = "+" + ((int)(currentBuffValue)).ToString();
                 break;
 
             case SkillItem.SkillType.passiveMoveSpeedBuff:
-                absoluteStatText = "(" + (int)(previousStatValue) + "%)";
-                relativeStatText = "+" + ((int)(relativeBuffValue)).ToString() + "%";
+                previousStatText = "(+" + (int)(previousStatValue) + "%)";
+                currentStatText = "+" + ((int)(currentBuffValue)).ToString() + "%";
                 break;
 
             case SkillItem.SkillType.passiveRunMaxTimeBuff:
-                absoluteStatText = "(" + (int)(PlayerStats.Instance.GetRunMaxTime()) + "s)";
-                relativeStatText = "+" + ((int)(relativeBuffValue)).ToString() + "s";
+                previousStatText = "(" + (int)(PlayerStats.Instance.GetRunMaxTime()) + "s)";
+                currentStatText = ((int)(PlayerStats.Instance.GetRunMaxTime() + relativeStatValue)).ToString() + "s";
                 break;
 
             case SkillItem.SkillType.passiveRunAccelerationFactorBuff:
-                absoluteStatText = "(" + (int)(previousStatValue) + "%)";
-                relativeStatText = "+" + ((int)(relativeBuffValue)).ToString() + "%";
+                previousStatText = "(+" + (int)(previousStatValue) + "%)";
+                currentStatText = "+" + ((int)(currentBuffValue)).ToString() + "%";
                 break;
 
             case SkillItem.SkillType.passiveAmmoGenerator:
-                absoluteStatText = "(" + (int)previousStatValue + "s)";
-                relativeStatText = "" + ((int)(buffAbsoluteValue)).ToString() + "s";
+                previousStatText = "(" + (int)previousStatValue + "s)";
+                currentStatText = "" + ((int)(currentBuffValue)).ToString() + "s";
                 break;
 
             case SkillItem.SkillType.passiveHealthRegen:
-                absoluteStatText = "(" + (int)(previousStatValue) + "s)"; ;
-                relativeStatText = "" + ((int)(buffAbsoluteValue)).ToString() + "s";
+                previousStatText = "(" + (int)(previousStatValue) + "s)"; ;
+                currentStatText = "" + ((int)(currentBuffValue)).ToString() + "s";
                 break;
 
             case SkillItem.SkillType.passiveChanceToDoubleXPDrop:
-                absoluteStatText = "(" + (int)(previousStatValue) + "%)"; ;
-                relativeStatText = "+" + ((int)(relativeBuffValue)).ToString() + "%";
+                previousStatText = "(+" + (int)(previousStatValue) + "%)"; ;
+                currentStatText = "+" + ((int)(currentBuffValue)).ToString() + "%";
                 break;
 
             case SkillItem.SkillType.passiveShieldGenerator:
-                absoluteStatText = "(" + (int)(PlayerStats.Instance.GetSkillStat(skillItem)) + "s)"; ;
-                relativeStatText = ((int)(relativeBuffValue)).ToString() + "s";
+                previousStatText = "(" + previousStatValue + "s)"; ;
+                currentStatText = ((int)(currentBuffValue)).ToString() + "s";
                 break;
         }
 
-        passiveItemStatValue.text = relativeStatText;
-        passiveItemStatChangesDescription.text = skillSO.StatChanges + " " + absoluteStatText;
+        passiveItemStatValue.text = currentStatText;
+        passiveItemStatChangesDescription.text = skillSO.StatChanges + " " + previousStatText;
     }
 
     private void SetActiveSkillStatsDescription(SkillItem skillItem) {
@@ -143,27 +143,66 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
         string previousCooldownStatText = "";
         string cooldownStatDescriptionText = "";
 
-        float buffAbsoluteValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
+        float currentStatValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
         float currentCooldownValue = skillEffect.GetCooldownAtLevel(skillItem.currentLevel);
-
-        float relativeBuffValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
+        float previousStatValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
 
         if (skillItem.currentLevel > 1) {
-            relativeBuffValue -= skillEffect.GetValueAtLevel(skillItem.currentLevel - 1);
-            float previousStatValue = skillEffect.GetValueAtLevel(skillItem.currentLevel - 1);
+            previousStatValue = skillEffect.GetValueAtLevel(skillItem.currentLevel - 1);
             float previousCooldownValue = skillEffect.GetCooldownAtLevel(skillItem.currentLevel -1);
 
-            previousStatText = " (" + previousStatValue.ToString() + ")";
             previousCooldownStatText = " (" + previousCooldownValue.ToString() + "s)";
             absoluteStatText = "";
+
+            // Stat fonts
+            if(previousStatValue != currentStatValue) {
+                activeItemStatValue.fontMaterial = UpgradeFontMaterial;
+            } else {
+                activeItemStatValue.fontMaterial = cleanFontMaterial;
+            }
+
+            if (previousCooldownValue != currentCooldownValue) {
+                activeItemCooldownValue.fontMaterial = UpgradeFontMaterial;
+            }
+            else {
+                activeItemCooldownValue.fontMaterial = cleanFontMaterial;
+            }
+
         } else {
             previousCooldownStatText = "";
         }
 
         switch (skillSO.skillType) {
             case SkillItem.SkillType.activeMoveSpeedBuff:
-                absoluteStatText = "+ " + buffAbsoluteValue + "%";
-                absoluteStatDescriptionText = "Move Speed Boost" + previousStatText;
+
+                if (skillItem.currentLevel > 1) {
+                    previousStatText = " (" + previousStatValue.ToString() + "s)";
+                }
+                absoluteStatText = currentStatValue + "s";
+                absoluteStatDescriptionText = "Duration" + previousStatText;
+                cooldownStatText = currentCooldownValue.ToString() + "s";
+
+            break;
+
+            case SkillItem.SkillType.activeShootSpeedBuff:
+
+                if (skillItem.currentLevel > 1) {
+                    previousStatText = " (" + previousStatValue.ToString() + "%)";
+                }
+
+                absoluteStatText = "+" + currentStatValue + "%";
+                absoluteStatDescriptionText = "Fire Rate" + previousStatText;
+                cooldownStatText = currentCooldownValue.ToString() + "s";
+            break;
+
+            case SkillItem.SkillType.activeTeleportation:
+
+                if (skillItem.currentLevel > 1) {
+                    previousStatText = " (" + previousStatValue.ToString() + "m)";
+                }
+
+                absoluteStatText = "+" + currentStatValue + "m";
+                absoluteStatDescriptionText = "Warp distance" + previousStatText;
                 cooldownStatText = currentCooldownValue.ToString() + "s";
             break;
         }

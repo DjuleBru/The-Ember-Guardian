@@ -322,8 +322,6 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     }
 
     private bool CheckBlockedByCreature() {
-        if (targetAnimal == null) return true;
-
         if(workerDetectionCollider.CreaturesInDetectionCollider()) {
             return true;
         } else {

@@ -5,7 +5,9 @@ using UnityEngine;
 public class CreatureMovement : MobMovement
 {
     private Creature creature;
-    private float enteredLightSpeedDebuff = 1.6f;
+    private float enteredLightSpeedDebuff = 2f;
+    private bool aggroMoveSpeedSet;
+    private float aggroMoveSpeedBuff = 1.5f;
 
     protected override void Awake() {
         base.Awake();
@@ -18,6 +20,18 @@ public class CreatureMovement : MobMovement
     protected void Start() {
         creature.OnCreatureExitedLight += Creature_OnCreatureExitedLight;
         creature.OnCreatureEnteredLight += Creature_OnCreatureEnteredLight;
+    }
+
+    public void SetCreatureAggroMoveSpeed(bool aggroMoveSpeed) {
+        if(!aggroMoveSpeed && aggroMoveSpeedSet) {
+            DebuffMoveSpeed(aggroMoveSpeedBuff);
+        }
+
+        if(aggroMoveSpeed && !aggroMoveSpeedSet) {
+            BuffMoveSpeed(aggroMoveSpeedBuff);
+        }
+
+        aggroMoveSpeedSet = aggroMoveSpeed;
     }
 
     private void Creature_OnCreatureEnteredLight(object sender, System.EventArgs e) {

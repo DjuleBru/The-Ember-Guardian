@@ -28,11 +28,14 @@ public class LevelUI_Skills : MonoBehaviour
     private void PlayerSkills_OnActiveSkillAdded(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
         if(PlayerSkills.Instance.GetActiveSkillLeft() != null) {
             activeSkillLeftRectTransform.gameObject.SetActive(true);
+            Debug.Log(PlayerSkills.Instance.GetActiveSkillLeft().skillType + " " + PlayerSkills.Instance.GetActiveSkillLeft().currentLevel);
             activeSkillLeftRectTransform.GetComponent<LevelUI_SkillUI>().SetLinkedSkill(PlayerSkills.Instance.GetActiveSkillLeft());
         }
+
         if (PlayerSkills.Instance.GetActiveSkillRight() != null) {
-            activeSkillLeftRectTransform.gameObject.SetActive(true);
-            activeSkillLeftRectTransform.GetComponent<LevelUI_SkillUI>().SetLinkedSkill(PlayerSkills.Instance.GetActiveSkillRight());
+            activeSkillRightRectTransform.gameObject.SetActive(true);
+            Debug.Log(PlayerSkills.Instance.GetActiveSkillRight().skillType + " " + PlayerSkills.Instance.GetActiveSkillRight().currentLevel);
+            activeSkillRightRectTransform.GetComponent<LevelUI_SkillUI>().SetLinkedSkill(PlayerSkills.Instance.GetActiveSkillRight());
         }
     }
 

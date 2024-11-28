@@ -21,7 +21,7 @@ public class GunAnimator : MonoBehaviour
 
     private void PlayerSHoot_OnPlayerReload(object sender, System.EventArgs e) {
 
-        float reloadAnimationSpeed = PlayerShoot.Instance.GetGunSO().animationReloadTime/PlayerShoot.Instance.GetReloadTime();
+        float reloadAnimationSpeed = PlayerShoot.Instance.GetGunSO().animationReloadTime/PlayerStats.Instance.GetReloadTime();
         animator.speed = reloadAnimationSpeed;
         animator.SetTrigger("Reload");
     

@@ -37,7 +37,7 @@ public class GunVisual : MonoBehaviour
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
         int finalGunReloadSpriteIndex = gunReloadSprites.Count;
 
-        float delayBetweenSprites = PlayerShoot.Instance.GetReloadTime() / (float)Mathf.Abs(finalGunReloadSpriteIndex - gunLightSpriteIndex);
+        float delayBetweenSprites = PlayerStats.Instance.GetReloadTime() / (float)Mathf.Abs(finalGunReloadSpriteIndex - gunLightSpriteIndex);
 
 
         StartCoroutine(ChangeRemainingBulletsVisuals(delayBetweenSprites, gunLightSpriteIndex, finalGunReloadSpriteIndex));
@@ -48,7 +48,7 @@ public class GunVisual : MonoBehaviour
         float bulletsAmountNormalized = (float)PlayerShoot.Instance.GetCurrentBullets()/ (float)PlayerShoot.Instance.GetMaxBulletsPerClip();
 
         int finalGunReloadSpriteIndex = Mathf.RoundToInt(bulletsAmountNormalized * gunReloadSprites.Count);
-        float delayBetweenSprites = PlayerShoot.Instance.GetShootCooldownTime() / (float)Mathf.Abs(finalGunReloadSpriteIndex - gunLightSpriteIndex);
+        float delayBetweenSprites = PlayerStats.Instance.GetShootCooldownTime() / (float)Mathf.Abs(finalGunReloadSpriteIndex - gunLightSpriteIndex);
 
 
         StartCoroutine(ChangeRemainingBulletsVisuals(delayBetweenSprites, gunLightSpriteIndex, finalGunReloadSpriteIndex));

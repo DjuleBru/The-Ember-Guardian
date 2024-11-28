@@ -36,7 +36,6 @@ public class CampZoneManager : MonoBehaviour
     }
 
     private void Start() {
-
         RefreshCampZoneLimits();
     }
 
@@ -59,6 +58,7 @@ public class CampZoneManager : MonoBehaviour
         float minZoneLimit = campCenterMinLimit;
         float maxZoneLimit = campCenterMaxLimit;
 
+        Debug.Log(functionalBarricades.Count);
         foreach(Barricade barricade in functionalBarricades) {
 
             if (barricade.transform.position.x < minZoneLimit) {
@@ -68,11 +68,22 @@ public class CampZoneManager : MonoBehaviour
             if (barricade.transform.position.x > maxZoneLimit) {
                 maxZoneLimit = barricade.transform.position.x;
             }
-
         }
 
         this.minZoneLimit = minZoneLimit;
         this.maxZoneLimit = maxZoneLimit;
+
+        foreach(Barricade barricade in functionalBarricades) {
+            Debug.Log(barricade + " " + barricade.transform.position.x);
+            if (barricade.transform.position.x == this.minZoneLimit || barricade.transform.position.x == this.maxZoneLimit) {
+                barricade.SetAsOuterBarricade(true);
+            }
+            else {
+                barricade.SetAsOuterBarricade(false);
+            }
+
+        }
+
         huntingMinZoneTransform.position = new Vector3(minZoneLimit - maxAnimalTargetingDistanceToCampOuterPoint, 0, 0);
         huntingMaxZoneTransform.position = new Vector3(maxZoneLimit + maxAnimalTargetingDistanceToCampOuterPoint, 0, 0);
 

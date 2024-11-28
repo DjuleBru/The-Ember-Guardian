@@ -10,9 +10,11 @@ public class PlayerSounds : MonoBehaviour
     [SerializeField] private AudioClip[] playerDamagedAudioClips;
     [SerializeField] private AudioClip[] playerDiedAudioClips;
     [SerializeField] private AudioClip[] playerDamagedElectricAudioClips;
+    [SerializeField] private AudioClip activeMoveSpeedBoostFootstepAudioClip;
 
     [SerializeField] private PlayerAnimator playerAnimator;
     [SerializeField] private AnimationCurve pitchWithSpeedAnimationCurve;
+    [SerializeField] private ActiveMoveSpeedBoostVisual activeMoveSpeedBoostVisual;
 
     private float sfxVolume;
 
@@ -23,7 +25,10 @@ public class PlayerSounds : MonoBehaviour
         playerAnimator.OnFootStepTriggered += PlayerAnimator_OnFootStepTriggered;
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
+
+        activeMoveSpeedBoostVisual.OnMoveSpeedFootStepTriggered += ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered;
     }
+
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
@@ -49,4 +54,7 @@ public class PlayerSounds : MonoBehaviour
         playerAudioSource.PlayOneShot(footStepAudioClips[Random.Range(0, footStepAudioClips.Length)], sfxVolume);
     }
 
+    private void ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered(object sender, System.EventArgs e) {
+        playerAudioSource.PlayOneShot(activeMoveSpeedBoostFootstepAudioClip, sfxVolume / 8);
+    }
 }

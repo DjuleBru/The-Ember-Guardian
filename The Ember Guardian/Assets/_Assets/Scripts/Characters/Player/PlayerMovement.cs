@@ -70,6 +70,8 @@ public class PlayerMovement : MonoBehaviour {
         GameInput.Instance.OnPlayerRunCanceled += GameInput_OnPlayerRunCanceled;
         GameInput.Instance.OnPlayerJumpCanceled += GameInput_OnPlayerJumpCanceled;
         GameInput.Instance.OnPlayerJumpStarted += GameInput_OnPlayerJumpStarted;
+
+        PlayerStats.Instance.OnMoveSpeedChanged += PlayerState_OnMoveSpeedChanged;
     }
 
     private void FixedUpdate() {
@@ -88,7 +90,7 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         // GRAVITY FALL
-        if (!isJumpTop && rb.velocity.y < 1 && rb.velocity.y > 0) {
+        if (isJumping && !isJumpTop && rb.velocity.y < 1 && rb.velocity.y > 0) {
             // Y velocity is low : reach top of jump
             OnPlayerJumpTop?.Invoke(this, EventArgs.Empty);
             isJumpTop = true;
@@ -96,17 +98,16 @@ public class PlayerMovement : MonoBehaviour {
         }
 
 
-        if(!isJumpDown && rb.velocity.y < 0) {
+        if(isJumping && !isJumpDown && rb.velocity.y < 0) {
             OnPlayerJumpDown?.Invoke(this, EventArgs.Empty);
             isJumpDown = true;
             //Debug.Log("isJumpDown");
         }
 
-        if(!isLanded && rb.velocity.y < 2 && IsGrounded()) {
+        if(isJumping && !isLanded && rb.velocity.y < 2 && IsGrounded()) {
             OnPlayerLanded?.Invoke(this, EventArgs.Empty);
             isLanded = true;
             isJumping = false;
-            //Debug.Log("isLanded");
         }
 
         if (rb.velocity.y < -0.1) {
@@ -117,6 +118,9 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
+    private void PlayerState_OnMoveSpeedChanged(object sender, EventArgs e) {
+        moveSpeed = PlayerStats.Instance.GetMoveSpeed();
+    }
     private void GameInput_OnPlayerJumpStarted(object sender, System.EventArgs e) {
         if (isJumping) return;
 
@@ -169,7 +173,7 @@ public class PlayerMovement : MonoBehaviour {
     private void HandleCrouch() {
         if (isJumping) return;
         if (GameInput.Instance.GetJumpDirNormalized() <= -.5) {
-            if(!isCrouching) {
+            if (!isCrouching) {
                 isCrouching = true;
                 moveSpeed *= crouchAccelerationFactor;
                 OnPlayerCrouched?.Invoke(this, EventArgs.Empty);

@@ -6,10 +6,9 @@ using UnityEngine;
 public class CreatureAI : MonoBehaviour {
 
     private Creature creature;
-    private MobMovement mobMovement;
+    private CreatureMovement creatureMovement;
     private MobAttack mobAttack;
 
-    private float foundTargetMoveSpeedBuff = 1.5f;
     private float attackRange;
     private float maxAttackRange;
     private bool followingTargetBuffedSpeed;
@@ -40,7 +39,7 @@ public class CreatureAI : MonoBehaviour {
     private State state;
 
     private void Awake() {
-        mobMovement = GetComponent<MobMovement>();
+        creatureMovement = GetComponent<CreatureMovement>();
         mobAttack = GetComponent<MobAttack>();
         creature = GetComponent<Creature>();
     }
@@ -134,7 +133,7 @@ public class CreatureAI : MonoBehaviour {
 
         if (roamTimer < 0) {
             roamTimer = roamChangeDestinationRate;
-            RoamBehavior.RoamAroundPoint(mobMovement, roamRadius, positionToRoamAmound);
+            RoamBehavior.RoamAroundPoint(creatureMovement, roamRadius, positionToRoamAmound);
         }
     }
 
@@ -153,32 +152,31 @@ public class CreatureAI : MonoBehaviour {
     private void ChangeState(State newState) {
 
         if(newState == State.attacking) {
-            mobMovement.SetMoveTarget(transform.position);
+            creatureMovement.SetMoveTarget(transform.position);
             mobAttack.SetAttackTarget(attackTarget);
 
             if (followingTargetBuffedSpeed) {
-                mobMovement.DebuffMoveSpeed(foundTargetMoveSpeedBuff);
+                creatureMovement.SetCreatureAggroMoveSpeed(false);
                 followingTargetBuffedSpeed = false;
             }
-
         }
 
         if(newState == State.walkingToFire) {
-            mobMovement.SetMoveTarget(transform.position);
+            creatureMovement.SetMoveTarget(transform.position);
             mobAttack.RemoveAttackTarget();
 
             if(followingTargetBuffedSpeed) {
-                mobMovement.DebuffMoveSpeed(foundTargetMoveSpeedBuff);
+                creatureMovement.SetCreatureAggroMoveSpeed(false);
                 followingTargetBuffedSpeed = false;
             }
         }
 
         if (newState == State.walkingToSpawner) {
-            mobMovement.SetMoveTarget(transform.position);
+            creatureMovement.SetMoveTarget(transform.position);
             mobAttack.RemoveAttackTarget();
 
             if (followingTargetBuffedSpeed) {
-                mobMovement.DebuffMoveSpeed(foundTargetMoveSpeedBuff);
+                creatureMovement.SetCreatureAggroMoveSpeed(false);
                 followingTargetBuffedSpeed = false;
             }
         }
@@ -191,7 +189,7 @@ public class CreatureAI : MonoBehaviour {
                 TriggerAggoFeedbacks();
             }
 
-            mobMovement.BuffMoveSpeed(foundTargetMoveSpeedBuff);
+            creatureMovement.SetCreatureAggroMoveSpeed(true);
             followingTargetBuffedSpeed = true;
             mobAttack.RemoveAttackTarget();
         }
@@ -213,7 +211,7 @@ public class CreatureAI : MonoBehaviour {
         if (attackTarget == null) return;
         Vector3 targetDestination = attackTarget.GetMeleeAttackPosition().position;
 
-        mobMovement.SetMoveTarget(targetDestination);
+        creatureMovement.SetMoveTarget(targetDestination);
 
         if(attackTarget == Player.Instance.GetComponent<IDamageable>()) {
 
@@ -234,13 +232,13 @@ public class CreatureAI : MonoBehaviour {
     private void MoveTowardsFire() {
         Vector3 targetDestination = new Vector3(0, 0, 0);
 
-        mobMovement.SetMoveTarget(targetDestination);
+        creatureMovement.SetMoveTarget(targetDestination);
     }
 
     private void MoveTowardsSpawner() {
         Vector3 targetDestination = creature.GetMobSpawner().transform.position;
 
-        mobMovement.SetMoveTarget(targetDestination);
+        creatureMovement.SetMoveTarget(targetDestination);
     }
 
     public void ResetAttackTargetInProximity() {

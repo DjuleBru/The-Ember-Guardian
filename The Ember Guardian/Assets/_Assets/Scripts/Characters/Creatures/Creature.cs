@@ -22,10 +22,19 @@ public class Creature : Mob
     private float triggerSoundTimer;
     private float triggerSoundTime = 5f;
 
+    private float detectionRangeIncreasedTimer;
+    private float detectionRangeIncreasedTime = 2f;
+    private bool detectionRangeIncreased;
+    private float playerShootDetectionRangeMultiplier = 1.3f;
+
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
         rb.mass = creatureSO.mass;
         triggerSoundTimer = UnityEngine.Random.Range(0, triggerSoundTime);
+    }
+
+    private void Start() {
+        PlayerShoot.Instance.OnPlayerShotProjectile += PlayerShoot_OnPlayerShotProjectile;
     }
 
     private void OnEnable() {
@@ -39,6 +48,14 @@ public class Creature : Mob
         if(triggerSoundTimer < 0) {
             OnCreatureIdleSoundTriggered?.Invoke(this, EventArgs.Empty);
             triggerSoundTimer = triggerSoundTime;
+        }
+
+        if(detectionRangeIncreased) {
+            detectionRangeIncreasedTimer -= Time.deltaTime;
+            if(detectionRangeIncreasedTimer < 0) {
+                CreatureHeardPlayerShoot(false);
+                detectionRangeIncreased = false;
+            }
         }
     }
 
@@ -95,6 +112,23 @@ public class Creature : Mob
         }
         else {
             detectionCollider.radius = creatureSO.detectionRange_Night;
+        }
+    }
+
+    private void PlayerShoot_OnPlayerShotProjectile(object sender, EventArgs e) {
+        detectionRangeIncreased = true;
+        detectionRangeIncreasedTimer = detectionRangeIncreasedTime;
+        CreatureHeardPlayerShoot(true);
+    }
+
+    private void CreatureHeardPlayerShoot(bool heard) {
+        // Player is too far
+        if (Mathf.Abs(Player.Instance.transform.position.x - transform.position.x) > detectionCollider.radius*2) return;
+
+        if (heard) {
+            detectionCollider.radius *= playerShootDetectionRangeMultiplier;
+        } else {
+            detectionCollider.radius /= playerShootDetectionRangeMultiplier;
         }
     }
 

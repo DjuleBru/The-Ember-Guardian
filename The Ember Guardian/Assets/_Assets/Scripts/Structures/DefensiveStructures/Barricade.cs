@@ -142,6 +142,10 @@ public class Barricade : Structure, IDamageable {
         barricadeRepairable = true;
     }
 
+    public void SetAsOuterBarricade(bool outerBarricade) {
+        barricadeVisual.SetAsOuterBarricade(outerBarricade);
+    }
+
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);
 

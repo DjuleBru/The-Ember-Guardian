@@ -18,7 +18,7 @@ public class Merchant : Structure {
     protected List<MerchantItem> allMajorMerchantItems = new List<MerchantItem>();
     protected List<MerchantItem> allMinorMerchantItems = new List<MerchantItem>();
 
-    protected List<MerchantItem> majorItemListForSale;
+    protected List<MerchantItem> majorItemListForSale = new List<MerchantItem>();
     protected List<MerchantItem> minorItemListForSale = new List<MerchantItem>();
 
     protected MerchantItem currentHoveredItem;
@@ -156,6 +156,16 @@ public class Merchant : Structure {
 
     public List<MerchantItem> GetMinorItemListForSale() {
         return minorItemListForSale;
+    }
+    public List<MerchantItem> GetAllCurrentItemsForSale() {
+        List<MerchantItem> allCurrentItemsForSale = new List<MerchantItem>();
+        foreach(MerchantItem merchantItem in majorItemListForSale) {
+            allCurrentItemsForSale.Add(merchantItem);
+        }
+        foreach (MerchantItem merchantItem in minorItemListForSale) {
+            allCurrentItemsForSale.Add(merchantItem);
+        }
+        return allCurrentItemsForSale;
     }
 
     public List<MerchantItem> GetAllItemsForSale() {

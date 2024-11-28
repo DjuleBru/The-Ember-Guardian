@@ -56,10 +56,7 @@ public class StructureUI_Merchant : StructureUI {
 
     protected void Merchant_OnPlayerStartedInteractedWithMerchant(object sender, System.EventArgs e) {
         ShowItemsToSale(true);
-
-        selectedItemIndex = 0;
-        UpdateSelectedItemUI();
-        UpdateDescriptionPanelVisuals();
+        SelectFirstAvailableItem();
     }
 
     protected void Merchant_OnStructurePrimaryFunctionUsed(object sender, System.EventArgs e) {
@@ -78,7 +75,7 @@ public class StructureUI_Merchant : StructureUI {
 
         if (selectDir != 0) {
             // Naviguer à travers tous les items
-            List<MerchantItem> allItems = merchant.GetAllItemsForSale();
+            List<MerchantItem> allItems = merchant.GetAllCurrentItemsForSale();
             int itemCount = allItems.Count;
 
             do {
@@ -96,6 +93,22 @@ public class StructureUI_Merchant : StructureUI {
             UpdateDescriptionPanelVisuals();
             previousSelectedItemIndex = selectedItemIndex;
         }
+    }
+
+    protected void SelectFirstAvailableItem() {
+        // Naviguer à travers tous les items
+        List<MerchantItem> allItems = merchant.GetAllCurrentItemsForSale();
+        int itemCount = allItems.Count;
+
+        do {
+            selectedItemIndex = (selectedItemIndex + 1) % itemCount;
+        } while (allItems[selectedItemIndex].isPurchased);
+
+        OnNewItemHovered?.Invoke(this, EventArgs.Empty);
+
+        UpdateSelectedItemUI();
+        UpdateDescriptionPanelVisuals();
+        previousSelectedItemIndex = selectedItemIndex;
     }
 
     protected void UpdateSelectedItemUI() {
@@ -179,6 +192,15 @@ public class StructureUI_Merchant : StructureUI {
         MerchantItemUI merchantItemUI = FindMerchantItemUI(e.boughtItem);
         merchantItemUI.PurchaseItem();
         merchant.SetItemSold(merchantItemUI.GetMerchantItemLinked());
+
+        SelectNextItem();
+    }
+
+    private void SelectNextItem() {
+        List<MerchantItem> allItems = merchant.GetAllCurrentItemsForSale();
+        selectedItemIndex = (selectedItemIndex + 1) % allItems.Count;
+        UpdateSelectedItemUI();
+        UpdateDescriptionPanelVisuals();
     }
 
     private MerchantItemUI FindMerchantItemUI(MerchantItem merchantItem) {

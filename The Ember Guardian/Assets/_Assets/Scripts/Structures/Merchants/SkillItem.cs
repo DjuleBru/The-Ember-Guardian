@@ -64,12 +64,18 @@ public class SkillItem : MerchantItem {
     public override void Purchase() {
         base.Purchase();
 
+        SkillItem skillItemCopy = new SkillItem {
+            currentLevel = currentLevel,
+        };
+
+        skillItemCopy.Initialize(skillSO);
+
         if (itemType == MerchantItemType.ActiveSkill) {
-            PlayerSkills.Instance.AddActiveSkill(this);
+            PlayerSkills.Instance.AddActiveSkill(skillItemCopy);
         }
 
         if (itemType == MerchantItemType.PassiveSkill) {
-            PlayerSkills.Instance.AddPassiveSkill(this);
+            PlayerSkills.Instance.AddPassiveSkill(skillItemCopy);
         }
     }
 

@@ -15,6 +15,7 @@ public class SkillSO : ScriptableObject
     public Sprite Icon;
     public PlayerCurrencies.CurrencyType currencyTypeToPay;
     public int maxLevel;
+    public AudioClip activateSkillAudioClip;
 
     [LabelWidth(100)]
     [TextArea]
