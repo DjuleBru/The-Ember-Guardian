@@ -97,6 +97,7 @@ public class Merchant : Structure {
 
     protected override void GameInput_OnPlayerInteractHeldDown(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
+
         if(shopOpened) {
             // Player is trying to buy an item
             if (currentSelectedItemAlreadyPurchased) return;
@@ -143,7 +144,8 @@ public class Merchant : Structure {
         }
     }
 
-    public virtual void SetItemSold(MerchantItem merchantItem) {
+    public virtual void SetItemSold(MerchantItem merchantItemBought) {
+       
     }
 
     public bool GetShopOpen() {
@@ -157,6 +159,7 @@ public class Merchant : Structure {
     public List<MerchantItem> GetMinorItemListForSale() {
         return minorItemListForSale;
     }
+
     public List<MerchantItem> GetAllCurrentItemsForSale() {
         List<MerchantItem> allCurrentItemsForSale = new List<MerchantItem>();
         foreach(MerchantItem merchantItem in majorItemListForSale) {

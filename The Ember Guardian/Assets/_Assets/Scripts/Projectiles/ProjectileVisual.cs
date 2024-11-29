@@ -6,6 +6,7 @@ public class ProjectileVisual : MonoBehaviour
 {
     private Projectile projectile;
     [SerializeField] private ParticleSystem projectileTrailPS;
+    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private ParticleSystem projectileHitPS;
     [SerializeField] private Animator projectileAnimator;
 
@@ -26,12 +27,14 @@ public class ProjectileVisual : MonoBehaviour
             projectileTrailPS.Stop();
         }
 
-        if(projectileHitPS != null) {
+        if (projectileHitPS != null) {
             projectileHitPS.Play();
         }
 
         if(projectileAnimator != null) {
             projectileAnimator.SetTrigger("Hit");
+        } else {
+            spriteRenderer.enabled = false;
         }
     }
 
@@ -39,6 +42,7 @@ public class ProjectileVisual : MonoBehaviour
         if (projectileHasHit) return;
         UpdateProjectileRotation();
     }
+
     private void UpdateProjectileRotation() {
         Vector3 projectileDir = projectile.GetProjectileMoveDir();
 

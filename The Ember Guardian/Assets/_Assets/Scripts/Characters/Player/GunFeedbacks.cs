@@ -1,3 +1,4 @@
+using Lofelt.NiceVibrations;
 using MoreMountains.Feedbacks;
 using System.Collections;
 using System.Collections.Generic;

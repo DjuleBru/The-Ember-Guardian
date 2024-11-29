@@ -33,6 +33,8 @@ public class PlayerShoot : MonoBehaviour
     private float transferringAmmoFromBagTimer;
     private float transferringAmmoFromBagCooldown = 1f;
     private float reloadTimer;
+
+    private bool canShoot = true;
     private bool coolingDown;
     private bool reloading;
     private bool coolDownSFXTriggered;
@@ -67,7 +69,7 @@ public class PlayerShoot : MonoBehaviour
         PlayerStats.Instance.SetReloadTime(gunSO.reloadTime);
 
         GameInput.Instance.OnPlayerShootCanceled += GameInput_OnPlayerShootCanceled;
-        GameInput.Instance.OnPlayerShootStarted += GameInput_OnPlayerShootStarted;
+        GameInput.Instance.OnPlayerShootPerformed += GameInput_OnPlayerShootStarted;
         GameInput.Instance.OnPlayerReloadPerformed += GameInput_OnPlayerReloadPerformed;
         GameInput.Instance.OnPlayerReloadCanceled += GameInput_OnPlayerReloadCanceled;
 
@@ -216,12 +218,13 @@ public class PlayerShoot : MonoBehaviour
     private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         if(e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
             Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
-            collectible.SetMovingForPayment(true, 1f, ammoDestinationPoint);
+            collectible.SetMovingForPayment(true, 5f, ammoDestinationPoint);
             collectible.SetScale(.5f);
         }
     }
 
     private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
+        if (!canShoot) return;
         playerJustPressedReload = true;
         playerJustPressedReloadTimer = 0;
     }
@@ -257,6 +260,7 @@ public class PlayerShoot : MonoBehaviour
     private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {
         if (coolingDown) return;
         if (reloading) return;
+        if (!canShoot) return;
         if (Player.Instance.GetHP() == 0) return;
 
         if(currentAmmoClip == 0) {
@@ -270,13 +274,17 @@ public class PlayerShoot : MonoBehaviour
     private void GameInput_OnPlayerShootCanceled(object sender, System.EventArgs e) {
     }
 
+    public void SetCanShoot(bool canShoot) {
+        this.canShoot = canShoot;
+    }
+
     public GunSO GetGunSO() {
         return gunSO;
     }
 
     private void OnDestroy() {
         GameInput.Instance.OnPlayerShootCanceled -= GameInput_OnPlayerShootCanceled;
-        GameInput.Instance.OnPlayerShootStarted -= GameInput_OnPlayerShootStarted;
+        GameInput.Instance.OnPlayerShootPerformed -= GameInput_OnPlayerShootStarted;
         GameInput.Instance.OnPlayerReloadPerformed -= GameInput_OnPlayerReloadPerformed;
         GameInput.Instance.OnPlayerReloadCanceled -= GameInput_OnPlayerReloadCanceled;
     }

@@ -66,10 +66,10 @@ public class PlayerMovement : MonoBehaviour {
     private void Start() {
         moveSpeed = PlayerStats.Instance.GetInitialMoveSpeed();
 
-        GameInput.Instance.OnPlayerRunStarted += GameInput_OnPlayerRunStarted;
+        GameInput.Instance.OnPlayerRunPerformed += GameInput_OnPlayerRunStarted;
         GameInput.Instance.OnPlayerRunCanceled += GameInput_OnPlayerRunCanceled;
         GameInput.Instance.OnPlayerJumpCanceled += GameInput_OnPlayerJumpCanceled;
-        GameInput.Instance.OnPlayerJumpStarted += GameInput_OnPlayerJumpStarted;
+        GameInput.Instance.OnPlayerJumpPerformed += GameInput_OnPlayerJumpStarted;
 
         PlayerStats.Instance.OnMoveSpeedChanged += PlayerState_OnMoveSpeedChanged;
     }

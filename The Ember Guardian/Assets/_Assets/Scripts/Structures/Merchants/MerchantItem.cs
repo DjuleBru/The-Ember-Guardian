@@ -33,7 +33,7 @@ public class MerchantItem
         // Logique générique pour l'achat (soustraction d'or, ajout à l'inventaire, etc.)
 
         isPurchased = true;
-
+        Debug.Log(isPurchased);
     }
 
     public virtual void Unpurchase() {

@@ -33,9 +33,12 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
     }
 
     public void OpenPanel() {
+        descriptionPanelRectTransform.gameObject.SetActive(true);
         descriptionPanelAnimator.SetTrigger("Open");
     }
-
+    public void ClosePanel() {
+        descriptionPanelRectTransform.gameObject.SetActive(false);   
+    }
     public void UpdateDescriptionPanelVisuals(MerchantItem merchantItem) {
         descriptionPanelItemIcon.sprite = merchantItem.icon;
         descriptionPanelItemName.text = merchantItem.itemName + " " + merchantItem.currentLevel.ToString();

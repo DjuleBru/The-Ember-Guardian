@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class StructureVisual : MonoBehaviour
-{
+public class StructureVisual : MonoBehaviour {
+
+    [SerializeField] protected List<GameObject> structureLights;
     [SerializeField] protected SpriteRenderer structureSpriteRenderer;
     [SerializeField] protected SpriteRenderer structureFunctionIconSpriteRenderer;
     [SerializeField] protected Color greyedStructionIconColor;
@@ -31,6 +32,21 @@ public class StructureVisual : MonoBehaviour
         structure.OnStructureInteractionsUpdated += Structure_OnStructureInteractionsUpdated;
         structure.OnPlayerTriggeredIn += Structure_OnPlayerTriggeredIn;
         structure.OnPlayerTriggeredOut += Structure_OnPlayerTriggeredOut;
+
+        DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
+        DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+    }
+
+    private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
+        foreach (GameObject gameObject in structureLights) {
+            gameObject.SetActive(true);
+        }
+    }
+
+    private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
+        foreach(GameObject gameObject in structureLights) {
+            gameObject.SetActive(false);
+        }
     }
 
     private void Structure_OnStructureInteractionsUpdated(object sender, System.EventArgs e) {

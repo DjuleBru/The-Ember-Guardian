@@ -58,7 +58,6 @@ public class CampZoneManager : MonoBehaviour
         float minZoneLimit = campCenterMinLimit;
         float maxZoneLimit = campCenterMaxLimit;
 
-        Debug.Log(functionalBarricades.Count);
         foreach(Barricade barricade in functionalBarricades) {
 
             if (barricade.transform.position.x < minZoneLimit) {
@@ -74,7 +73,6 @@ public class CampZoneManager : MonoBehaviour
         this.maxZoneLimit = maxZoneLimit;
 
         foreach(Barricade barricade in functionalBarricades) {
-            Debug.Log(barricade + " " + barricade.transform.position.x);
             if (barricade.transform.position.x == this.minZoneLimit || barricade.transform.position.x == this.maxZoneLimit) {
                 barricade.SetAsOuterBarricade(true);
             }

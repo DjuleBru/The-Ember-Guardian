@@ -31,7 +31,6 @@ public class Player : MonoBehaviour, IDamageable
     public event EventHandler<OnPlayerHealedEventArgs> OnPlayerHealed;
     public event EventHandler OnPlayerDied;
     public event EventHandler OnPlayerRespawned;
-    public event EventHandler OnPlayerTeleported;
 
     public class OnPlayerHealedEventArgs : EventArgs {
         public int healAmount;
@@ -153,8 +152,8 @@ public class Player : MonoBehaviour, IDamageable
     public void Die() {
         GetComponent<PlayerMovement>().enabled = false;
         GetComponent<PlayerAim>().enabled = false;
-        GetComponent<PlayerShoot>().enabled = false;
         GetComponent<PlayerCurrencies>().enabled = false;
+        PlayerShoot.Instance.SetCanShoot(false);
         SetCanDropOrbOnTheFloor(false);
         PlayerCurrencies.Instance.DropEmber();
 
@@ -174,7 +173,7 @@ public class Player : MonoBehaviour, IDamageable
         GetComponent<PlayerMovement>().enabled = true;
         GetComponent<PlayerAim>().enabled = true;
         GetComponent<PlayerShoot>().enabled = true;
-        GetComponent<PlayerCurrencies>().enabled = true;
+        PlayerShoot.Instance.SetCanShoot(true);
         SetCanDropOrbOnTheFloor(true);
 
         OnPlayerRespawned?.Invoke(this, EventArgs.Empty);
@@ -187,8 +186,8 @@ public class Player : MonoBehaviour, IDamageable
 
         GetComponent<PlayerMovement>().enabled = false;
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        GetComponent<PlayerShoot>().enabled = false;
         GetComponent<PlayerCurrencies>().enabled = false;
+        PlayerShoot.Instance.SetCanShoot(false);
         SetCanDropOrbOnTheFloor(false);
         transform.position = teleporterPlayerPosition.position;
     }
@@ -197,22 +196,22 @@ public class Player : MonoBehaviour, IDamageable
         canMove = true;
 
         GetComponent<PlayerMovement>().enabled = true;
-        GetComponent<PlayerShoot>().enabled = true;
         GetComponent<PlayerCurrencies>().enabled = true;
+        PlayerShoot.Instance.SetCanShoot(true);
         SetCanDropOrbOnTheFloor(true);
     }
 
     public void StartInteractingWithMerchant() {
         canMove = false;
         GetComponent<PlayerMovement>().enabled = false;
-        GetComponent<PlayerShoot>().enabled = false;
+        PlayerShoot.Instance.SetCanShoot(false);
     }
     
     public void StopInteractingWithMerchant() {
         canMove = true;
 
         GetComponent<PlayerMovement>().enabled = true;
-        GetComponent<PlayerShoot>().enabled = true;
+        PlayerShoot.Instance.SetCanShoot(true);
     }
 
     #endregion

@@ -72,7 +72,7 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     private void Start() {
-        GameInput.Instance.OnPlayerInteractStarted += GameInput_OnPlayerInteractStarted;
+        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
@@ -111,8 +111,11 @@ public class UICurrencyManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.bigBlueOrb);
         }
-        if (Input.GetKeyDown(KeyCode.J)) {
+        if (Input.GetKeyDown(KeyCode.L)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.smallBlueOrb);
+        }
+        if (Input.GetKeyDown(KeyCode.M)) {
+            AddCurrencyInBag(PlayerCurrencies.CurrencyType.smallRedOrb);
         }
     }
 
@@ -321,7 +324,7 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     private void OnDestroy() {
-        GameInput.Instance.OnPlayerInteractStarted -= GameInput_OnPlayerInteractStarted;
+        GameInput.Instance.OnPlayerInteractPerformed -= GameInput_OnPlayerInteractStarted;
         GameInput.Instance.OnPlayerInteractCanceled -= GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractHeldDown -= GameInput_OnPlayerInteractHeldDown;
     }

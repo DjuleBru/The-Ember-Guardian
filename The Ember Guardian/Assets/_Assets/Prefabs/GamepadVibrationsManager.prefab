@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &768716517490467473
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8260855120294187292}
+  - component: {fileID: 1756210380906795961}
+  m_Layer: 0
+  m_Name: GamepadVibrationsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8260855120294187292
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768716517490467473}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1756210380906795961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768716517490467473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3c6607de633e364591b5eec7c0206c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleporterHapticClip: {fileID: -8404250095460277587, guid: 88ea752cd53264cdd8eb2ad769b8c19d, type: 3}
+  teleporterAppearHapticClip: {fileID: -8404250095460277587, guid: 05308c4aa64da4ba2ab52866c1733bea, type: 3}
+  teleporterDisappearHapticClip: {fileID: -8404250095460277587, guid: 05308c4aa64da4ba2ab52866c1733bea, type: 3}
+  emberExtractionHapticClip: {fileID: -8404250095460277587, guid: e6d33a698322947bba2f08602e361b37, type: 3}

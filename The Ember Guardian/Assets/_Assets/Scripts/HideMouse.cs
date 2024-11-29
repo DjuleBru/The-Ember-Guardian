@@ -18,7 +18,23 @@ public class HideMouse : MonoBehaviour
     {
         cursorHotspot = new Vector2(cursorTexture.width/2, cursorTexture.height/2);
         Cursor.SetCursor(cursorTexture, cursorHotspot, CursorMode.Auto);
-        //ShowMouse(false);
+
+        GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
+        RefreshMouseHideWithGamepad();
+    }
+
+    private void GameInput_OnPlayerInputChanged(object sender, System.EventArgs e) {
+        RefreshMouseHideWithGamepad();
+    }
+
+    private void RefreshMouseHideWithGamepad() {
+
+        if (GameInput.Instance.IsUsingGamepad()) {
+            ShowMouse(false);
+        }
+        else {
+            ShowMouse(true);
+        }
     }
 
     public void ShowMouse(bool show) {

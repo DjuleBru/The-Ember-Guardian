@@ -27,5 +27,6 @@ public class PayCurrencyUI_Fire : PayCurrencyUI
 
         Collectible collectibleWorld = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.bigBlueOrb), (sender as MonoBehaviour).transform.position, Quaternion.identity).GetComponent<Collectible>();
         collectibleWorld.SetCollectibleUnInteractable(1f);
+        collectibleWorld.SetDroppedInFire();
     }
 }

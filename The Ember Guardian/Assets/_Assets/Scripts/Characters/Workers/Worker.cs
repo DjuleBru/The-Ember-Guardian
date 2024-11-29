@@ -135,7 +135,7 @@ public class Worker : Mob {
                 foreach (var currency in collectedCurrencies.ToList()) {
                     if (currency.Value > 0) {
                         Transform prefabToDrop = CurrenciesManager.Instance.GetCurrencyPrefab(currency.Key);
-                        Collectible droppedCurrency = Instantiate(prefabToDrop, transform.position, Quaternion.identity).GetComponent<Collectible>();
+                        Collectible droppedCurrency = Instantiate(prefabToDrop, dropSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
                         droppedCurrency.ApplyRandomFrontForce(2f, 3f);
                         droppedCurrency.SetCollectibleUnInteractable(1f);
                         OnAnyOrbDroppedByWorker?.Invoke(this, EventArgs.Empty);

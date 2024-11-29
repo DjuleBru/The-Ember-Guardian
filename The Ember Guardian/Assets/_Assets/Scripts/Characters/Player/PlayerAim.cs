@@ -10,6 +10,8 @@ public class PlayerAim : MonoBehaviour
     [SerializeField] private List<Transform> followAimDirTransformList;
     [SerializeField] private Transform gunTransform;
 
+    private bool isUsingGamepad;
+
     private float aimAngle;
     private float aimHeight;
     private float lastMousePositionY;
@@ -20,6 +22,7 @@ public class PlayerAim : MonoBehaviour
     private float currentRecoil;
 
     private Vector3 aimDir;
+    private Vector3 previousGamepadAim = new Vector3(1,0,0);
     private Vector3 previousAimDir = new Vector3(1,0,0);
 
     public event EventHandler OnXAimDirChanged;
@@ -35,10 +38,22 @@ public class PlayerAim : MonoBehaviour
             transform.eulerAngles = new Vector3(0, 0, angle);
         }
 
+        GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
+        isUsingGamepad = GameInput.Instance.IsUsingGamepad();
+    }
+
+    private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
+        isUsingGamepad = GameInput.Instance.IsUsingGamepad();
     }
 
     private void Update() {
-        HandleAimMouse3();
+
+        if(isUsingGamepad) {
+            HandleAimGamepad(GameInput.Instance.GetAimInput());
+        } else {
+            HandleAimMouse();
+        }
+
         HandleXScale();
         HandleRecoil();
     }
@@ -47,40 +62,28 @@ public class PlayerAim : MonoBehaviour
 
     }
 
-    private void HandleAimMouse2() {
-        Vector3 mousePosition = GetMouseWorldPosition();
-        mousePositionY = mousePosition.y;
+    private void HandleAimGamepad(Vector2 lookInput) {
 
-        if (Mathf.Abs(mousePositionY - lastMousePositionY) > mouseYDeltaTreshold) {
-            float mouseDeltaY = mousePositionY - lastMousePositionY;
-            aimHeight += mouseDeltaY;
-
-            lastMousePositionY  = mousePositionY;
+        if(lookInput.magnitude > GameInput.gamepadDeadzone) {
+            aimDir = new Vector3(lookInput.x, lookInput.y, 0).normalized;
+            previousGamepadAim = aimDir;
+        } else {
+            aimDir = previousGamepadAim;
         }
 
+        aimDir.y += currentRecoil;
 
-        Vector3 aimDir = new Vector3(8 * PlayerMovement.Instance.GetLastMoveDir(), aimHeight + currentRecoil, 0);
         aimAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
 
-        Vector2 localScale = new Vector2(1, 1);
-        if (PlayerMovement.Instance.GetLastMoveDir() < 0) {
-            localScale.x = -1;
-            localScale.y = -1;
-        }
-
-        //aimAngle = ClampAimAngle(aimAngle, aimDir);
-
         foreach (Transform transform in followAimDirTransformList) {
-            transform.localScale = localScale;
             transform.eulerAngles = new Vector3(0, 0, aimAngle);
         }
-
 
         // Smooth recoil back to zero
         currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
     }
 
-    private void HandleAimMouse3() {
+    private void HandleAimMouse() {
         Vector3 mousePosition = GetMouseWorldPosition();
 
         aimDir = (mousePosition - gunTransform.position).normalized;

@@ -31,7 +31,7 @@ public class StructureLocation : MonoBehaviour {
 
     protected void Start() {
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
-        GameInput.Instance.OnPlayerInteractStarted += GameInput_OnPlayerInteractStarted;
+        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
 
         payOrbsUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
         payOrbsUI.SetOrbTemplateUIList(buildStructureOrbTemplates);

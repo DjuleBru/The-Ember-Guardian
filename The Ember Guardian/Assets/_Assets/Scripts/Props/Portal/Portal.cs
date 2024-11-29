@@ -25,22 +25,29 @@ public class Portal : MonoBehaviour
     private bool playerIsSetOnTeleporter;
 
     public static event EventHandler OnAnyPortalSetToTeleportPlayer;
-    public  event EventHandler OnPortalSetToTeleportPlayer;
+    public event EventHandler OnPortalSetToTeleportPlayer;
     public event EventHandler OnPortalAppeared;
+    public static event EventHandler OnAnyPortalAppeared;
     public event EventHandler OnPortalDisappeared;
+    public static event EventHandler OnAnyPortalDisappeared;
     public event EventHandler OnPlayerEnteredTriggerArea;
     public event EventHandler OnPlayerExitedTriggerArea;
     public event EventHandler OnPlayerMovedOnTeleporter;
     public static event EventHandler OnAnyPlayerMovedOnTeleporter;
     public event EventHandler OnTeleporterActivated;
+    public static event EventHandler OnAnyTeleporterActivated;
     public event EventHandler OnTeleporterActivatedOut;
     public static event EventHandler OnAnyTeleporterActivatedOut;
     public static event EventHandler OnAnyTeleporterTeleportedPlayerOut;
-    public static event EventHandler OnPlayerTeleported;
+    public static event EventHandler OnAnyPlayerTeleported;
 
     private void Start() {
-        GameInput.Instance.OnPlayerInteractStarted += GameInput_OnPlayerInteractStarted;
+        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
         floorCollider.enabled = false;
+
+        if (isHUBTeleporter) {
+            StartCoroutine(TeleportPlayerOutInHub());
+        }
 
         if (DEBUGMODE) return;
         if (isEndLevelTeleporter) {
@@ -50,14 +57,16 @@ public class Portal : MonoBehaviour
         if(isStartLevelTeleporter) {
             StartCoroutine(TeleportPlayerOutInLevel());
         }
-
-        if (isHUBTeleporter) {
-            StartCoroutine(TeleportPlayerOutInHub());
-        }
     }
 
     private void GameInput_OnPlayerInteractStarted(object sender, System.EventArgs e) {
         if (!playerInTriggerArea) return;
+
+        Debug.Log(PlayerCurrencies.Instance.GetCarryingEmber());
+        if (isHUBTeleporter && !PlayerCurrencies.Instance.GetCarryingEmber() && !DEBUGMODE) {
+            PlayerWorldUITooltip.Instance.ShowTooltip("I must carry an ember ...", 2f);
+            return;
+        }
 
         StartCoroutine(TeleportPlayerIn());
     }
@@ -100,6 +109,7 @@ public class Portal : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
         OnPortalDisappeared?.Invoke(this, EventArgs.Empty);
+        OnAnyPortalDisappeared?.Invoke(this, EventArgs.Empty);
 
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);
@@ -113,9 +123,10 @@ public class Portal : MonoBehaviour
 
         yield return new WaitForSeconds(delayToActivateTeleporter);
         OnTeleporterActivated?.Invoke(this, EventArgs.Empty);
+        OnAnyTeleporterActivated?.Invoke(this, EventArgs.Empty);
 
         yield return new WaitForSeconds(delayToTeleportPlayerAnimation);
-        OnPlayerTeleported?.Invoke(this, EventArgs.Empty);
+        OnAnyPlayerTeleported?.Invoke(this, EventArgs.Empty);
 
         yield return new WaitForSeconds(delayToStartCrossfade);
 
@@ -175,6 +186,7 @@ public class Portal : MonoBehaviour
 
     public void MakePortalAppear() {
         OnPortalAppeared?.Invoke(this, EventArgs.Empty);
+        OnAnyPortalAppeared?.Invoke(this, EventArgs.Empty);
     }
 
     public bool GetPortalUnlocked() {

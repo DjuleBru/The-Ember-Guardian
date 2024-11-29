@@ -50,9 +50,12 @@ public class Fire : Structure, IDamageable {
 
     public event EventHandler OnInitialFireActivated;
     public event EventHandler OnFireFuelled;
+    public static event EventHandler OnAnyFireFuelled;
     public event EventHandler OnFireDamageTaken;
     public event EventHandler OnFireEmberExtractionStarted;
+    public static event EventHandler OnAnyFireEmberExtractionStarted;
     public event EventHandler OnFireEmberExtractionStopped;
+    public static event EventHandler OnAnyFireEmberExtractionStopped;
 
     private bool lerping;
     private bool extractingEmber;
@@ -166,6 +169,7 @@ public class Fire : Structure, IDamageable {
         CheckFireStateUpgrade();
 
         OnFireFuelled?.Invoke(this, EventArgs.Empty);
+        OnAnyFireFuelled?.Invoke(this, EventArgs.Empty);
     }
 
     private IEnumerator ExtractEmber() {
@@ -175,6 +179,7 @@ public class Fire : Structure, IDamageable {
         collectible.SetCanNeverBePickedUpByWorker();
         yield return new WaitForSeconds(2f);
         OnFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
+        OnAnyFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
     }
 
     private void CheckFireFeedable() {
@@ -310,6 +315,7 @@ public class Fire : Structure, IDamageable {
         if (currentStructureInteractionType == StructureInteractionType.secondaryFunction) {
             // Player is trying to extract ember
             OnFireEmberExtractionStarted?.Invoke(this, EventArgs.Empty);
+            OnAnyFireEmberExtractionStarted?.Invoke(this, EventArgs.Empty);
             extractingEmber = true;
             extractingEmberTimer = extractingEmberTime;
         } else {
@@ -329,6 +335,7 @@ public class Fire : Structure, IDamageable {
         if(extractingEmber) {
             extractingEmber = false;
             OnFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
+            OnAnyFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
         }
     }
 

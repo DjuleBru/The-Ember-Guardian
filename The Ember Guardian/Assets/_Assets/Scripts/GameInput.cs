@@ -2,23 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameInput : MonoBehaviour
 {
     public static GameInput Instance;
     private PlayerInputActions playerInputActions;
 
-    public event EventHandler OnPlayerRunStarted;
+    public event EventHandler OnPlayerInputChanged;
+
+    public event EventHandler OnPlayerRunPerformed;
     public event EventHandler OnPlayerRunCanceled;
 
-    public event EventHandler OnPlayerJumpStarted;
+    public event EventHandler OnPlayerJumpPerformed;
     public event EventHandler OnPlayerJumpCanceled;
 
-    public event EventHandler OnPlayerInteractStarted;
+    public event EventHandler OnPlayerInteractPerformed;
     public event EventHandler OnPlayerInteractHeldDown;
     public event EventHandler OnPlayerInteractCanceled;
 
-    public event EventHandler OnPlayerShootStarted;
+    public event EventHandler OnPlayerShootPerformed;
     public event EventHandler OnPlayerShootCanceled;
 
     public event EventHandler OnPlayerReloadPerformed;
@@ -39,6 +42,11 @@ public class GameInput : MonoBehaviour
     private bool holdingInteract;
     private float interactHoldTimer;
 
+    private string currentControlScheme;
+    private Vector2 lastMousePosition;
+    private bool isUsingGamepad;
+    public const float gamepadDeadzone = 0.2f;
+
     private void Awake() {
 
         if (Instance != null && Instance != this) {
@@ -53,13 +61,13 @@ public class GameInput : MonoBehaviour
     }
 
     private void Start() {
-        playerInputActions.Player.Run.started += Run_started;
+        playerInputActions.Player.Run.performed += Run_performed;
         playerInputActions.Player.Run.canceled += Run_canceled;
-        playerInputActions.Player.Jump.started += Jump_started;
+        playerInputActions.Player.Jump.performed += Jump_performed;
         playerInputActions.Player.Jump.canceled += Jump_canceled;
-        playerInputActions.Player.Interact.started += Interact_started;
+        playerInputActions.Player.Interact.performed += Interact_performed;
         playerInputActions.Player.Interact.canceled += Interact_canceled;
-        playerInputActions.Player.Shoot.started += Shoot_started;
+        playerInputActions.Player.Shoot.performed += Shoot_performed;
         playerInputActions.Player.Shoot.canceled += Shoot_canceled;
         playerInputActions.Player.Reload.performed += Reload_performed;
         playerInputActions.Player.Reload.canceled += Reload_canceled;
@@ -73,7 +81,9 @@ public class GameInput : MonoBehaviour
 
 
     private void Update() {
-        if(interactPressed) {
+        DetectControlScheme();
+
+        if (interactPressed) {
             interactHoldTimer += Time.deltaTime;
 
             if(interactHoldTimer > .15f && !holdingInteract) {
@@ -81,6 +91,38 @@ public class GameInput : MonoBehaviour
                 OnPlayerInteractHeldDown?.Invoke(this, EventArgs.Empty);
             }
         }
+    }
+    private void DetectControlScheme() {
+        Vector2 mousePosition = Input.mousePosition;
+        Vector2 gamepadLookInput = playerInputActions.Player.Aim.ReadValue<Vector2>();
+
+        // Détecte l'utilisation de la souris
+        if ((mousePosition - lastMousePosition).sqrMagnitude > 0.01f) {
+            lastMousePosition = mousePosition;
+            if (isUsingGamepad) {
+                currentControlScheme = "Keyboard";
+                isUsingGamepad = false;
+                OnPlayerInputChanged?.Invoke(this, EventArgs.Empty);
+            };
+        }
+
+        // Détecte l'utilisation du joystick droit
+        if (gamepadLookInput.magnitude > 0.1f) {
+            if(!isUsingGamepad) {
+                currentControlScheme = "Gamepad";
+                isUsingGamepad = true;
+                OnPlayerInputChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+    }
+
+    public Vector2 GetGamepadLookInput() {
+        Vector2 input = playerInputActions.Player.Aim.ReadValue<Vector2>();
+        return input.magnitude > gamepadDeadzone ? input : Vector2.zero;
+    }
+
+    public bool IsUsingGamepad() {
+        return currentControlScheme == "Gamepad";
     }
 
     private void Move_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
@@ -110,8 +152,8 @@ public class GameInput : MonoBehaviour
         OnPlayerShootCanceled?.Invoke(this, EventArgs.Empty);
     }
 
-    private void Shoot_started(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
-        OnPlayerShootStarted?.Invoke(this, EventArgs.Empty);
+    private void Shoot_performed(InputAction.CallbackContext obj) {
+        OnPlayerShootPerformed?.Invoke(this, EventArgs.Empty);
     }
 
     private void LeftRightSwitch_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
@@ -130,27 +172,29 @@ public class GameInput : MonoBehaviour
         OnPlayerInteractCanceled?.Invoke(this, EventArgs.Empty);
     }
 
-    private void Interact_started(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
+    private void Interact_performed(InputAction.CallbackContext obj) {
         interactPressed = true;
         holdingInteract = false;
         interactHoldTimer = 0;
-        OnPlayerInteractStarted?.Invoke(this, EventArgs.Empty);
+        OnPlayerInteractPerformed?.Invoke(this, EventArgs.Empty);
     }
-
     private void Jump_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
         OnPlayerJumpCanceled?.Invoke(this, EventArgs.Empty);
     }
 
-    private void Jump_started(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
-        OnPlayerJumpStarted?.Invoke(this, EventArgs.Empty);
+    private void Jump_performed(InputAction.CallbackContext obj) {
+        OnPlayerJumpPerformed?.Invoke(this, EventArgs.Empty);
     }
 
     private void Run_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
         OnPlayerRunCanceled?.Invoke(this, EventArgs.Empty);
     }
 
-    private void Run_started(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
-        OnPlayerRunStarted?.Invoke(this, EventArgs.Empty);
+    private void Run_performed(InputAction.CallbackContext obj) {
+        OnPlayerRunPerformed?.Invoke(this, EventArgs.Empty);
+    }
+    public Vector2 GetAimInput() {
+        return playerInputActions.Player.Aim.ReadValue<Vector2>();
     }
 
     public float GetMovementFloatNormalized() {

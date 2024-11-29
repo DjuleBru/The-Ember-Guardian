@@ -12,6 +12,7 @@ public class Collectible : MonoBehaviour
 
     public event EventHandler OnCollectibleDestroyed;
     public event EventHandler OnCollectibleEnteredSlot;
+    public static event EventHandler OnAnyCollectibleEnteredSlot;
     public event EventHandler OnCollectibleFellFromBag;
 
     public static event EventHandler OnAnyCollectibleTouchedFloor;
@@ -30,6 +31,7 @@ public class Collectible : MonoBehaviour
     private bool canNeverBePickedUpByWorker;
     private bool canBePickedUpByWorker;
     private bool droppedByPlayer;
+    private bool droppedInFire;
     private bool playerInTriggerArea;
     private bool aggroedByWildWorker;
     private bool collected;
@@ -81,6 +83,7 @@ public class Collectible : MonoBehaviour
 
             if (orbTemplateWorldUI != null && orbTemplateWorldUI.transform == paymentDestination && !orbTemplateWorldUI.GetCurrencyPaid()) {
                 OnCollectibleEnteredSlot?.Invoke(this, EventArgs.Empty);
+                OnAnyCollectibleEnteredSlot?.Invoke(this, EventArgs.Empty);
                 orbTemplateWorldUI.SetCurrencyPaid(true);
             }
 
@@ -223,10 +226,16 @@ public class Collectible : MonoBehaviour
         droppedByPlayer = true;
     }
 
+    public void SetDroppedInFire() {
+        droppedInFire = true;
+    }
+
     public bool GetDroppedByPlayer() {
         return droppedByPlayer;
     }
-
+    public bool GetDroppedInFire() {
+        return droppedInFire;
+    }
     public bool GetMovingForPayment() {
         return movingForPayment;
     }

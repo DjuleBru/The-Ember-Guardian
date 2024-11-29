@@ -56,6 +56,7 @@ public class PayCurrencyUI : MonoBehaviour
     }
 
     public void SetOrbTemplateUIList(List<PayCurrencyTemplateWorldUI> orbTemplateList) {
+
         foreach (PayCurrencyTemplateWorldUI orbTemplate in currencyTemplateWorldUIList) {
             orbTemplate.OnCurrencyPaid -= OrbTemplate_OnOrbPaid;
         }

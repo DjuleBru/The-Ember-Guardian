@@ -15,6 +15,7 @@ public class Chest : MonoBehaviour
     private bool chestOpened;
     public event EventHandler OnChestUnlocked;
     public event EventHandler OnChestOpened;
+    public event EventHandler OnChestDisappear;
     public static event EventHandler<OnAnyChestSpawnedCollectibleEventArgs> OnAnyChestSpawnedCollectible;
     public class OnAnyChestSpawnedCollectibleEventArgs : EventArgs {
         public PlayerCurrencies.CurrencyType currencyType;
@@ -52,9 +53,15 @@ public class Chest : MonoBehaviour
                 collectible.ApplyRandomUpwardsForce(5, 8);
                 collectible.SetCollectibleUnInteractable(1f);
             }
+            j++;
         }
 
-        
+        yield return new WaitForSeconds(2f);
+
+        OnChestDisappear?.Invoke(this, EventArgs.Empty);
+
+        yield return new WaitForSeconds(3f);
+        Destroy(gameObject);
 
     }
 }

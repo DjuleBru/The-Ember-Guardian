@@ -15,7 +15,6 @@ public class CreatureAI : MonoBehaviour {
     private bool detectedAttackTarget;
 
     private IDamageable attackTarget;
-    private List<IDamageable> iDamageablesInRange;
 
     private Vector3 positionToRoamAmound;
     private float roamChangeDestinationRate;
@@ -27,6 +26,7 @@ public class CreatureAI : MonoBehaviour {
     private float aggroTimer;
     private float aggroDelay = 3f;
     public event EventHandler OnCreatureAggro;
+    public static event EventHandler OnAnyCreatureAggro;
 
     public enum State {
         idle,
@@ -246,8 +246,6 @@ public class CreatureAI : MonoBehaviour {
     }
 
     public void SetAttackTarget(IDamageable iDamageable, List<IDamageable> iDamageablesInRange) {
-        this.iDamageablesInRange = iDamageablesInRange;
-
         if(iDamageablesInRange.Count == 0) {
             detectedAttackTarget = false;
             attackTarget = null;
@@ -266,8 +264,10 @@ public class CreatureAI : MonoBehaviour {
     }
 
     private void TriggerAggoFeedbacks() {
-        if (attackTarget is Barricade) return;
-        OnCreatureAggro?.Invoke(this, EventArgs.Empty);
+        if (attackTarget is Player) {
+            OnCreatureAggro?.Invoke(this, EventArgs.Empty);
+            OnAnyCreatureAggro?.Invoke(this, EventArgs.Empty);
+        };
     }
 
 }

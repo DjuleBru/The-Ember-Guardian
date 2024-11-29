@@ -12,8 +12,7 @@ public class FireOrbCollider : MonoBehaviour
 
         if(collectibleCollided != null) {
             if(collectibleCollided.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigBlueOrb) {
-                if (collectibleCollided.GetDroppedByPlayer()) return;
-                if (collectibleCollided.GetMovingForPayment()) return;
+                if (!collectibleCollided.GetDroppedInFire()) return;
 
                 OnOrbFellInFire?.Invoke(this, EventArgs.Empty);
                 Destroy(collectibleCollided.gameObject);

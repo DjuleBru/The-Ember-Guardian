@@ -47,10 +47,9 @@ public class StructureUI_Merchant : StructureUI {
         GameInput.Instance.OnPlayerLeftRightDirPerformed += GameInput_OnPlayerLeftRightDirPerformed;
     }
 
-
     protected void Merchant_OnPlayerStoppedInteractedWithMerchant(object sender, System.EventArgs e) {
         selectedItemIndex = 0;
-        UpdateSelectedItemUI();
+        payCurrencyUI.SetOrbTemplateUIList(RecomposePayOrbsUIList(functionPayOrbsUIList));
         ShowItemsToSale(false);
     }
 
@@ -62,6 +61,7 @@ public class StructureUI_Merchant : StructureUI {
     protected void Merchant_OnStructurePrimaryFunctionUsed(object sender, System.EventArgs e) {
         RefreshMerchantItemsUI();
         ShowItemsToSale(true);
+        UpdateSelectedItemUI();
         UpdateDescriptionPanelVisuals();
     }
 
@@ -72,6 +72,9 @@ public class StructureUI_Merchant : StructureUI {
 
     protected void NavigateUIItems() {
         float selectDir = GameInput.Instance.GetMovementFloatNormalized();
+
+        // Compteur pour limiter les essais et éviter les boucles infinies
+        int attempts = 0;
 
         if (selectDir != 0) {
             // Naviguer à travers tous les items
@@ -85,6 +88,15 @@ public class StructureUI_Merchant : StructureUI {
                 else {
                     selectedItemIndex = (selectedItemIndex - 1 + itemCount) % itemCount;
                 }
+
+                attempts++;
+
+                if (attempts >= itemCount) {
+                    Debug.LogWarning("All items are purchased! Navigation aborted.");
+                    HideItemUI();
+                    return;
+                }
+
             } while (allItems[selectedItemIndex].isPurchased);
 
             OnNewItemHovered?.Invoke(this, EventArgs.Empty);
@@ -95,20 +107,54 @@ public class StructureUI_Merchant : StructureUI {
         }
     }
 
-    protected void SelectFirstAvailableItem() {
-        // Naviguer à travers tous les items
+    private void SelectNextAvailableItem() {
         List<MerchantItem> allItems = merchant.GetAllCurrentItemsForSale();
         int itemCount = allItems.Count;
 
+        int attempts = 0;
+
         do {
             selectedItemIndex = (selectedItemIndex + 1) % itemCount;
-        } while (allItems[selectedItemIndex].isPurchased);
 
-        OnNewItemHovered?.Invoke(this, EventArgs.Empty);
+            if (!allItems[selectedItemIndex].isPurchased) {
+                UpdateSelectedItemUI(); // Met à jour l'UI avec le prochain item valide
+                UpdateDescriptionPanelVisuals();
+                previousSelectedItemIndex = selectedItemIndex;
+                return;
+            }
 
-        UpdateSelectedItemUI();
-        UpdateDescriptionPanelVisuals();
-        previousSelectedItemIndex = selectedItemIndex;
+            attempts++;
+        } while (attempts < itemCount);
+
+        // Si tous les items sont achetés
+        Debug.LogWarning("All items are purchased! No valid item to select.");
+        HideItemUI();
+
+    }
+
+    protected void SelectFirstAvailableItem() {
+        List<MerchantItem> allItems = merchant.GetAllCurrentItemsForSale();
+        int itemCount = allItems.Count;
+
+        // Commence toujours à l'index 0 pour chercher le premier item valide
+        int attempts = 0;
+        selectedItemIndex = 0;
+
+        do {
+            if (!allItems[selectedItemIndex].isPurchased) {
+                UpdateSelectedItemUI(); // Met à jour l'UI avec le premier item valide
+                UpdateDescriptionPanelVisuals();
+                previousSelectedItemIndex = selectedItemIndex;
+                return;
+            }
+
+            selectedItemIndex = (selectedItemIndex + 1) % itemCount; // Passe à l'item suivant
+            attempts++;
+        } while (attempts < itemCount);
+
+        // Si tous les items sont achetés
+        Debug.LogWarning("All items are purchased! No valid item to select.");
+        HideItemUI();
     }
 
     protected void UpdateSelectedItemUI() {
@@ -179,6 +225,24 @@ public class StructureUI_Merchant : StructureUI {
 
     }
 
+    private void HideItemUI() {
+        merchantDescriptionPanelUI.ClosePanel();
+        int majorItemsCount = bigMerchantItemUIContainer.childCount - 1;
+        int minorItemsCount = smallMerchantItemUIContainer.childCount - 1;
+
+        // Parcourir les items majeurs
+        for (int i = 1; i <= majorItemsCount; i++) {
+            MerchantItemUI merchantItemUI = bigMerchantItemUIContainer.GetChild(i).GetComponent<MerchantItemUI>();
+            merchantItemUI.HighlightItem(false);
+        }
+
+        // Parcourir les items mineurs
+        for (int i = 1; i <= minorItemsCount; i++) {
+            MerchantItemUI merchantItemUI = smallMerchantItemUIContainer.GetChild(i).GetComponent<MerchantItemUI>();
+            merchantItemUI.HighlightItem(false);
+        }
+    }
+
     private void Merchant_OnPlayerBoughtItem1(object sender, Merchant.OnPlayerBoughtItemEventArgs e) {
 
         if(e.boughtItem.itemType == MerchantItem.MerchantItemType.ActiveSkill) {
@@ -193,14 +257,7 @@ public class StructureUI_Merchant : StructureUI {
         merchantItemUI.PurchaseItem();
         merchant.SetItemSold(merchantItemUI.GetMerchantItemLinked());
 
-        SelectNextItem();
-    }
-
-    private void SelectNextItem() {
-        List<MerchantItem> allItems = merchant.GetAllCurrentItemsForSale();
-        selectedItemIndex = (selectedItemIndex + 1) % allItems.Count;
-        UpdateSelectedItemUI();
-        UpdateDescriptionPanelVisuals();
+        SelectNextAvailableItem();
     }
 
     private MerchantItemUI FindMerchantItemUI(MerchantItem merchantItem) {
@@ -281,8 +338,6 @@ public class StructureUI_Merchant : StructureUI {
         } else {
             merchantUIAnimator.SetTrigger("Hide");
         }
-
-        UpdateSelectedItemUI();
     }
 
 

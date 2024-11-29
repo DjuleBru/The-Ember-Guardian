@@ -4705,7 +4705,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6946290811585887962, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
   m_PrefabInstance: {fileID: 2669040421589755040}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 7644048891647020805}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
@@ -4714,6 +4714,11 @@ MonoBehaviour:
 --- !u!4 &6349067041674093866 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9013458545296523658, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+  m_PrefabInstance: {fileID: 2669040421589755040}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7644048891647020805 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5701359116775254949, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
   m_PrefabInstance: {fileID: 2669040421589755040}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7685645564674227064 stripped
@@ -4743,6 +4748,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1bb37fa1ed667c43ab1a576db8d7290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  structureLights:
+  - {fileID: 7644048891647020805}
   structureSpriteRenderer: {fileID: 190870229499975902}
   structureFunctionIconSpriteRenderer: {fileID: 0}
   greyedStructionIconColor: {r: 0, g: 0, b: 0, a: 0}

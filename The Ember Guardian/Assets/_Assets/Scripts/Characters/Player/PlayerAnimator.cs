@@ -19,7 +19,7 @@ public class PlayerAnimator : MonoBehaviour
 
 
     private void Awake() {
-        Portal.OnPlayerTeleported += Portal_OnPlayerTeleported;
+        Portal.OnAnyPlayerTeleported += Portal_OnPlayerTeleported;
         Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
     }
 
@@ -187,7 +187,7 @@ public class PlayerAnimator : MonoBehaviour
         Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
         Player.Instance.OnPlayerRespawned -= Player_OnPlayerRespawned;
         Player.Instance.OnPlayerDamagedRecentlyEnded -= Player_OnPlayerDamagedRecentlyEnded;
-        Portal.OnPlayerTeleported -= Portal_OnPlayerTeleported;
+        Portal.OnAnyPlayerTeleported -= Portal_OnPlayerTeleported;
         Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
     }
 

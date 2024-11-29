@@ -44,6 +44,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         PlayerShoot.Instance.OnPlayerAmmoRefilled += PlayerShoot_OnPlayerAmmoRefilled;
         Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
+
         Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn;
         Structure.OnAnyPlayerTriggeredOut += Structure_OnAnyPlayerTriggeredOut;
 
@@ -142,7 +143,6 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     }
 
     private IEnumerator RefillAmmoBar(int ammoCount) {
-        Debug.Log("RefillAmmoBar");
         for (int i = 0; i < ammoCount; i++) {
 
             PlayerUI_TickTemplate ammoTick = Instantiate(ammoTickTemplate, ammoTickContainer).GetComponent<PlayerUI_TickTemplate>();
@@ -225,5 +225,10 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 
         ammoBarDisplayTimer = fadeInDuration;
         ammoBarDisplayTime = ammoBarExitCampDisplayTime;
+    }
+
+    private void OnDestroy() {
+        Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn;
+        Structure.OnAnyPlayerTriggeredOut -= Structure_OnAnyPlayerTriggeredOut;
     }
 }

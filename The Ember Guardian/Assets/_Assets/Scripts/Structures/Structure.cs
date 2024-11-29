@@ -46,7 +46,7 @@ public class Structure : MonoBehaviour {
 
     protected virtual void Start() {
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
-        GameInput.Instance.OnPlayerInteractStarted += GameInput_OnPlayerInteractStarted;
+        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
         GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
 
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
@@ -175,7 +175,7 @@ public class Structure : MonoBehaviour {
         playerInTriggerArea = true;
 
         if(playerCanInteract) {
-            //Player.Instance.SetCanDropOrbOnTheFloor(false);
+            Player.Instance.SetCanDropOrbOnTheFloor(false);
         }
     }
 

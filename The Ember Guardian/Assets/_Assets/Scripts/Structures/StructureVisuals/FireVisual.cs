@@ -66,7 +66,19 @@ public class FireVisual : StructureVisual
         fire.OnFireEmberExtractionStarted += Fire_OnFireEmberExtractionStarted;
         fire.OnFireEmberExtractionStopped += Fire_OnFireEmberExtractionStopped;
     }
+    
+    protected override void Start() {
+        base.Start();
+        DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
+        DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+    }
 
+    private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
+        AOEFireLight.enabled = true;
+    }
+    private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
+        AOEFireLight.enabled = false;
+    }
 
     private void Fire_OnFireFuelled(object sender, System.EventArgs e) {
         fuelledPS.Play();
