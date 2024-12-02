@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbc96e1564c4fd42a7ef7eee87d437f, type: 3}
+  m_Name: UZI
+  m_EditorClassIdentifier: 
+  gunSprite: {fileID: 557911418, guid: a412631a79fa435459cf27cf3db82ef1, type: 3}
+  reticleSprite: {fileID: 0}
+  shotCountSprites:
+  - {fileID: -621782071, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
+  - {fileID: -28728358, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
+  - {fileID: -340342470, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
+  - {fileID: 1106805494, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
+  - {fileID: 1003959454, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
+  - {fileID: -2146848304, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
+  - {fileID: 1906003518, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
+  gunAnimator: {fileID: 0}
+  automaticWeapon: 1
+  damagePerBullet: 4
+  maxAmmo: 6
+  pelletsPerBullet: 1
+  shotsPerClip: 18
+  shootCooldownTime: 0.13
+  shootCooldownSFXTriggerTime: 0
+  reloadTime: 2
+  animationReloadTime: 0.8
+  gunKnockback: 0.8
+  gunRecoil: 0.1
+  gunRecoilDamping: 4
+  shootGunSound:
+  - {fileID: 8300000, guid: a1fab048b9ef6784ea8325739a804936, type: 3}
+  - {fileID: 8300000, guid: f18f0ca163f1d164f8a232bf04867b9b, type: 3}
+  - {fileID: 8300000, guid: 805f0c787aecdb0439ccee0b59d4f917, type: 3}
+  - {fileID: 8300000, guid: 6c063825aae89184cbfe1d91d214d33d, type: 3}
+  - {fileID: 8300000, guid: f4353cc25da1b2543a6d5df3630ee730, type: 3}
+  - {fileID: 8300000, guid: 508a6154ce5b1cd47a1805628840e204, type: 3}
+  reloadGunSound:
+  - {fileID: 8300000, guid: 424960b7103131841868fb50af25771b, type: 3}
+  cooldownGunSound:
+  - {fileID: 8300000, guid: 44410cc1b7956fa48b296fe59bf65d00, type: 3}
+  bulletHitGroundSound:
+  - {fileID: 8300000, guid: 59dcfb178b39c434495515f32be26dd4, type: 3}
+  - {fileID: 8300000, guid: f1838753b53df84439313b212c62a244, type: 3}
+  - {fileID: 8300000, guid: c0353d6efb03226488a061199578493c, type: 3}
+  bulletHitEnemySound:
+  - {fileID: 8300000, guid: 5f188511e9287924ab0bc56282bb5bb1, type: 3}
+  - {fileID: 8300000, guid: 370af63962d422e42a9ddc6c19243081, type: 3}
+  - {fileID: 8300000, guid: 32433cb07860c854f8514231e93f3813, type: 3}
+  - {fileID: 8300000, guid: 7c4ef5419b0a7a24b9c549ea14b1e263, type: 3}
+  - {fileID: 8300000, guid: 3aa5ce64a65a5a2489835833a2a763a5, type: 3}
+  outOfAmmoSound:
+  - {fileID: 8300000, guid: e8e5aa23dc10e764bb3d3654d35014c5, type: 3}

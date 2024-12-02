@@ -38,7 +38,7 @@ public class AnimalManager : MonoBehaviour
                 if ((animal.transform.position.x < 0 && campSide == CampZoneManager.CampSide.left) || (animal.transform.position.x > 0 && campSide == CampZoneManager.CampSide.right)) {
                     // Check if animal is on the same side as worker
 
-                    // Check if animal is within distance from closest exterior zone limit
+                    // Check if animal is within hunting limits
 
                     if(animal.transform.position.x < 0) {
                         if (animal.transform.position.x > CampZoneManager.Instance.GetHuntingMinZoneLimit()) {

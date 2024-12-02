@@ -38,6 +38,10 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnPlayerLeftSkillPerformed;
     public event EventHandler OnPlayerRightSkillPerformed;
 
+    public event EventHandler OnPlayerSwapGunPerformed;
+    public event EventHandler OnPlayerPrimaryGunSelected;
+    public event EventHandler OnPlayerSecondaryGunSelected;
+
     private bool interactPressed;
     private bool holdingInteract;
     private float interactHoldTimer;
@@ -71,6 +75,9 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.Shoot.canceled += Shoot_canceled;
         playerInputActions.Player.Reload.performed += Reload_performed;
         playerInputActions.Player.Reload.canceled += Reload_canceled;
+        playerInputActions.Player.SwapGun.performed += SwapGun_performed;
+        playerInputActions.Player.SelectPrimaryGun.performed += SelectPrimaryGun_performed;
+        playerInputActions.Player.SelectSecondaryGun.performed += SelectSecondaryGun_performed;
         playerInputActions.Player.SwitchGunLight.performed += SwitchGunLight_performed;
         playerInputActions.Player.RightSkill.performed += RightSkill_performed;
         playerInputActions.Player.LeftSkill.performed += LeftSkill_performed;
@@ -144,6 +151,17 @@ public class GameInput : MonoBehaviour
         OnPlayerReloadCanceled?.Invoke(this, EventArgs.Empty);
     }
 
+    private void SelectSecondaryGun_performed(InputAction.CallbackContext obj) {
+        OnPlayerSecondaryGunSelected?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void SelectPrimaryGun_performed(InputAction.CallbackContext obj) {
+        OnPlayerPrimaryGunSelected?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void SwapGun_performed(InputAction.CallbackContext obj) {
+        OnPlayerSwapGunPerformed?.Invoke(this, EventArgs.Empty);
+    }
     private void Reload_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
         OnPlayerReloadPerformed?.Invoke(this, EventArgs.Empty);
     }

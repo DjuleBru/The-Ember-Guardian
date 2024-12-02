@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerShoot : MonoBehaviour
 {
     public static PlayerShoot Instance;
 
-    public event EventHandler OnPlayerShotProjectile;
+    public event EventHandler OnPlayerShot;
     public event EventHandler OnPlayerTryShoot_OutOfAmmo;
     public event EventHandler OnPlayerShootStopped;
     public event EventHandler OnPlayerCooldownTrigger;
@@ -15,6 +16,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerReloadEnded;
     public event EventHandler<OnAmmoRefilledEventArgs> OnPlayerAmmoRefilled;
     public event EventHandler OnBulletsChanged;
+    public event EventHandler OnPlayerSwappedGun;
 
     public class OnAmmoRefilledEventArgs : EventArgs {
         public int ammoAmount;
@@ -24,7 +26,6 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private Transform ammoDestinationPoint;
     [SerializeField] private Transform ammoSpawnPoint;
     [SerializeField] private Transform projectilePrefab;
-    [SerializeField] private ParticleSystem shootPS;
     [SerializeField] private float projectileInitialForce;
 
     private float shootCooldownTimer;
@@ -41,43 +42,69 @@ public class PlayerShoot : MonoBehaviour
     private bool playerJustPressedReload;
     private bool transferringAmmoFromBag;
 
+    private bool automaticWeapon;
+    private bool playerIsHoldingDownShoot;
     private bool hasAmmoRegen;
     private float ammoRegenTime;
     private float ammoRegenTimer;
 
-    private int currentAmmoClip;
-    private int maxAmmo;
-    private int currentBullet;
-    private int bulletsPerAmmoClip;
-
-    [SerializeField] private GunSO gunSO;
+    private Gun heldGun;
+    private GunSO heldGunSO;
+    [SerializeField] private GunSO primaryGunSO;
+    [SerializeField] private GunSO secondayGunSO;
+    [SerializeField] private List<Gun> allGunsList;
 
     private void Awake() {
         Instance = this;
-        shootCooldownSFXTriggerTime = gunSO.shootCooldownSFXTriggerTime;
-
-        bulletsPerAmmoClip = gunSO.shotsPerClip;
-        currentBullet = bulletsPerAmmoClip;
-
-        maxAmmo = gunSO.maxAmmo;
-        currentAmmoClip = maxAmmo;
     }
 
     private void Start() {
-
-        PlayerStats.Instance.SetShootCooldownTime(gunSO.shootCooldownTime);
-        PlayerStats.Instance.SetReloadTime(gunSO.reloadTime);
+        InitializeGuns();
+        SetGun(primaryGunSO);
 
         GameInput.Instance.OnPlayerShootCanceled += GameInput_OnPlayerShootCanceled;
         GameInput.Instance.OnPlayerShootPerformed += GameInput_OnPlayerShootStarted;
         GameInput.Instance.OnPlayerReloadPerformed += GameInput_OnPlayerReloadPerformed;
         GameInput.Instance.OnPlayerReloadCanceled += GameInput_OnPlayerReloadCanceled;
+        GameInput.Instance.OnPlayerPrimaryGunSelected += GameInput_OnPlayerPrimaryGunSelected;
+        GameInput.Instance.OnPlayerSecondaryGunSelected += GameInput_OnPlayerSecondaryGunSelected;
+        GameInput.Instance.OnPlayerSwapGunPerformed += GameInput_OnPlayerSwapGunPerformed;
 
         PlayerStats.Instance.OnPlayerAmmoRegenTimeChanged += PlayerStats_OnPlayerAmmoRegenTimeChanged;
 
         UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
     }
 
+
+    private void SetGun(GunSO gunSO) {
+        Gun activeGun = null;
+        foreach(Gun gun in allGunsList) {
+            gun.gameObject.SetActive(false);
+            gun.SetGunActive(false);
+            if(gun.GetGunSO() == gunSO) {
+                activeGun = gun;
+            }
+        }
+
+        activeGun.gameObject.SetActive(true);
+        heldGunSO = gunSO;
+        heldGun = activeGun;
+        heldGun.SetGunActive(true);
+
+        automaticWeapon = gunSO.automaticWeapon;
+        shootCooldownSFXTriggerTime = heldGunSO.shootCooldownSFXTriggerTime;
+        PlayerStats.Instance.SetShootCooldownTime(heldGunSO.shootCooldownTime);
+        PlayerStats.Instance.SetReloadTime(heldGunSO.reloadTime);
+
+        OnPlayerSwappedGun?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void InitializeGuns() {
+        foreach (Gun gun in allGunsList) {
+            gun.InitializeGun();
+            gun.gameObject.SetActive(false);
+        }
+    }
 
     private void Update() {
 
@@ -115,7 +142,7 @@ public class PlayerShoot : MonoBehaviour
             reloadTimer -= Time.deltaTime;
 
             if (reloadTimer <= 0) {
-                currentBullet = bulletsPerAmmoClip;
+                heldGun.SetCurrentBullet(heldGun.GetBulletsPerAmmoClip());
                 reloading = false;
                 OnPlayerReloadEnded?.Invoke(this, EventArgs.Empty);
             }
@@ -131,19 +158,17 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void Shoot() {
-        PlayerAim.Instance.AddRecoil(gunSO.gunRecoil, gunSO.gunRecoilDamping);
+        PlayerAim.Instance.AddRecoil(heldGunSO.gunRecoil, heldGunSO.gunRecoilDamping);
 
         float aimDir = 1f;
         if(PlayerAim.Instance.GetAimDir().x <0) {
             aimDir = -1f;
         }
 
-        Vector2 gunKnockbackForce = new Vector2(aimDir * gunSO.gunKnockback * -1 , 0);
+        Vector2 gunKnockbackForce = new Vector2(aimDir * heldGunSO.gunKnockback * -1 , 0);
         Player.Instance.AddKnockBack(gunKnockbackForce);
 
-        shootPS.Emit(5);
-
-        currentBullet -= 1;
+        heldGun.SetCurrentBullet(heldGun.GetCurrentBullet()-1);
         OnBulletsChanged?.Invoke(this, EventArgs.Empty);
 
         // Handle cooldown
@@ -152,22 +177,29 @@ public class PlayerShoot : MonoBehaviour
             coolingDown = true;
             shootCooldownTimer = PlayerStats.Instance.GetShootCooldownTime();
         };
+
+        OnPlayerShot?.Invoke(this, EventArgs.Empty);
     }
 
     private void CooldownFinished() {
         coolingDown = false;
 
         // Handle reload
-        if (currentBullet <= 0) {
+        if (heldGun.GetCurrentBullet() <= 0) {
             reloading = true;
             reloadTimer = PlayerStats.Instance.GetReloadTime();
 
-            currentAmmoClip -= 1;
+            heldGun.SetCurrentAmmoClip(heldGun.GetCurrentAmmoClip() - 1);
             OnPlayerReload?.Invoke(this, EventArgs.Empty);
+        } else {
+            if(automaticWeapon && playerIsHoldingDownShoot) {
+                Shoot();
+            }
         }
     }
 
     private void StartTransferringAmmoFromBagInGun() {
+        Debug.Log("StartTransferringAmmoFromBagInGun");
         transferringAmmoFromBagTimer = 0;
         transferringAmmoFromBag = true;
         TransferNextAmmoFromBag();
@@ -176,7 +208,7 @@ public class PlayerShoot : MonoBehaviour
     private void TransferNextAmmoFromBag() {
         int ammoAmountInBag = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count;
 
-        if (ammoAmountInBag > 0 && currentAmmoClip < maxAmmo) {
+        if (ammoAmountInBag > 0 && heldGun.GetCurrentAmmoClip() < heldGun.GetMaxAmmo()) {
             UICurrencyManager.Instance.DropNextCurrencyInBag(PlayerCurrencies.CurrencyType.ammo);
         } else {
             transferringAmmoFromBag = false;
@@ -187,32 +219,36 @@ public class PlayerShoot : MonoBehaviour
     public void AddAmmoClip(int ammoCount) {
 
         int ammoRefilled = ammoCount;
-        if(currentAmmoClip + ammoRefilled > maxAmmo) {
-            ammoRefilled = maxAmmo - currentAmmoClip;
+        if(heldGun.GetCurrentAmmoClip() + ammoRefilled > heldGun.GetMaxAmmo()) {
+            ammoRefilled = heldGun.GetMaxAmmo() - heldGun.GetCurrentAmmoClip();
         }
 
         if (ammoRefilled == 0) return;
-        currentAmmoClip += ammoRefilled;
+        heldGun.SetCurrentAmmoClip(heldGun.GetCurrentAmmoClip() + ammoRefilled);
 
         OnPlayerAmmoRefilled?.Invoke(this, new OnAmmoRefilledEventArgs {
             ammoAmount = ammoRefilled
         });
     }
 
+    public int GetDamagePerBullet() {
+        return heldGun.GetDamagePerBullet();
+    }
+
     public int GetCurrentAmmoClip() {
-        return currentAmmoClip;
+        return heldGun.GetCurrentAmmoClip();
     }
 
     public int GetMaxAmmoClips() {
-        return maxAmmo;
+        return heldGun.GetMaxAmmo();
     }
 
     public int GetCurrentBullets() {
-        return currentBullet;
+        return heldGun.GetCurrentBullet();
     }
 
     public int GetMaxBulletsPerClip() {
-        return bulletsPerAmmoClip;
+        return heldGun.GetBulletsPerAmmoClip();
     }
 
     private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -225,6 +261,7 @@ public class PlayerShoot : MonoBehaviour
 
     private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
         if (!canShoot) return;
+
         playerJustPressedReload = true;
         playerJustPressedReloadTimer = 0;
     }
@@ -236,20 +273,42 @@ public class PlayerShoot : MonoBehaviour
             return;
         };
 
-        if (currentBullet == bulletsPerAmmoClip) return;
+        playerJustPressedReload = false;
+        playerJustPressedReloadTimer = 0;
+        if (heldGun.GetCurrentBullet() == heldGun.GetBulletsPerAmmoClip()) return;
         if (reloading) return;
         if (coolingDown) return;
+
         ReloadGun();
     }
 
-    private void ReloadGun() {
+    private void GameInput_OnPlayerSwapGunPerformed(object sender, EventArgs e) {
+        SwapGun();
+    }
 
-        currentAmmoClip -= 1;
+    private void GameInput_OnPlayerSecondaryGunSelected(object sender, EventArgs e) {
+        SetGun(secondayGunSO);
+    }
+
+    private void GameInput_OnPlayerPrimaryGunSelected(object sender, EventArgs e) {
+        SetGun(primaryGunSO);
+    }
+
+    private void ReloadGun() {
+        heldGun.SetCurrentAmmoClip(heldGun.GetCurrentAmmoClip() - 1);
         reloading = true;
         playerJustPressedReload = false;
         reloadTimer = PlayerStats.Instance.GetReloadTime();
         OnPlayerReload?.Invoke(this, EventArgs.Empty);
 
+    }
+
+    private void SwapGun() {
+        if(heldGunSO == secondayGunSO) {
+            SetGun(primaryGunSO);
+        } else {
+            SetGun(secondayGunSO);
+        }
     }
 
     private void PlayerStats_OnPlayerAmmoRegenTimeChanged(object sender, EventArgs e) {
@@ -263,23 +322,24 @@ public class PlayerShoot : MonoBehaviour
         if (!canShoot) return;
         if (Player.Instance.GetHP() == 0) return;
 
-        if(currentAmmoClip == 0) {
+        if(heldGun.GetCurrentAmmoClip() == 0) {
             OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
         } else {
             Shoot();
-            OnPlayerShotProjectile?.Invoke(this, EventArgs.Empty);
+            playerIsHoldingDownShoot = true;
         }
     }
 
     private void GameInput_OnPlayerShootCanceled(object sender, System.EventArgs e) {
+        playerIsHoldingDownShoot = false;
     }
 
     public void SetCanShoot(bool canShoot) {
         this.canShoot = canShoot;
     }
 
-    public GunSO GetGunSO() {
-        return gunSO;
+    public GunSO GetHeldGunSO() {
+        return heldGunSO;
     }
 
     private void OnDestroy() {

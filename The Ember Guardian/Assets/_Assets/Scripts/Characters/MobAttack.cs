@@ -81,7 +81,7 @@ public class MobAttack : MonoBehaviour
         yield return new WaitForSeconds(delayToDealDamage);
 
         if (previousAttackTargetIDamageable != null) {
-            previousAttackTargetIDamageable.TakeDamage(attackDamage, transform.position);
+            previousAttackTargetIDamageable.TakeDamage(attackDamage, transform);
         }
 
         if ((attackTargetIDamageable as MonoBehaviour) == Fire.Instance) {

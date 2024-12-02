@@ -152,6 +152,33 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SwapGun"",
+                    ""type"": ""Button"",
+                    ""id"": ""d6c75996-7622-4d92-9f2d-304a2422b839"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectPrimaryGun"",
+                    ""type"": ""Button"",
+                    ""id"": ""a749a9d0-5f8e-4db6-a943-63cd003a1822"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectSecondaryGun"",
+                    ""type"": ""Button"",
+                    ""id"": ""81ef6d20-16d7-4b2f-9855-dfcde37a2b96"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -583,6 +610,39 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Aim"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1141dabb-53db-4f03-ae69-8766f2e3af30"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""SwapGun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ae8fa7f3-9c9f-49f4-8ca2-745c1392c7a8"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""SelectPrimaryGun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b8d12568-825c-4577-9fb0-7fa99c3b45c4"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""SelectSecondaryGun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -628,6 +688,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_LeftSkill = m_Player.FindAction("LeftSkill", throwIfNotFound: true);
         m_Player_RightSkill = m_Player.FindAction("RightSkill", throwIfNotFound: true);
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
+        m_Player_SwapGun = m_Player.FindAction("SwapGun", throwIfNotFound: true);
+        m_Player_SelectPrimaryGun = m_Player.FindAction("SelectPrimaryGun", throwIfNotFound: true);
+        m_Player_SelectSecondaryGun = m_Player.FindAction("SelectSecondaryGun", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -708,6 +771,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_LeftSkill;
     private readonly InputAction m_Player_RightSkill;
     private readonly InputAction m_Player_Aim;
+    private readonly InputAction m_Player_SwapGun;
+    private readonly InputAction m_Player_SelectPrimaryGun;
+    private readonly InputAction m_Player_SelectSecondaryGun;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -726,6 +792,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @LeftSkill => m_Wrapper.m_Player_LeftSkill;
         public InputAction @RightSkill => m_Wrapper.m_Player_RightSkill;
         public InputAction @Aim => m_Wrapper.m_Player_Aim;
+        public InputAction @SwapGun => m_Wrapper.m_Player_SwapGun;
+        public InputAction @SelectPrimaryGun => m_Wrapper.m_Player_SelectPrimaryGun;
+        public InputAction @SelectSecondaryGun => m_Wrapper.m_Player_SelectSecondaryGun;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -777,6 +846,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Aim.started += instance.OnAim;
             @Aim.performed += instance.OnAim;
             @Aim.canceled += instance.OnAim;
+            @SwapGun.started += instance.OnSwapGun;
+            @SwapGun.performed += instance.OnSwapGun;
+            @SwapGun.canceled += instance.OnSwapGun;
+            @SelectPrimaryGun.started += instance.OnSelectPrimaryGun;
+            @SelectPrimaryGun.performed += instance.OnSelectPrimaryGun;
+            @SelectPrimaryGun.canceled += instance.OnSelectPrimaryGun;
+            @SelectSecondaryGun.started += instance.OnSelectSecondaryGun;
+            @SelectSecondaryGun.performed += instance.OnSelectSecondaryGun;
+            @SelectSecondaryGun.canceled += instance.OnSelectSecondaryGun;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -823,6 +901,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Aim.started -= instance.OnAim;
             @Aim.performed -= instance.OnAim;
             @Aim.canceled -= instance.OnAim;
+            @SwapGun.started -= instance.OnSwapGun;
+            @SwapGun.performed -= instance.OnSwapGun;
+            @SwapGun.canceled -= instance.OnSwapGun;
+            @SelectPrimaryGun.started -= instance.OnSelectPrimaryGun;
+            @SelectPrimaryGun.performed -= instance.OnSelectPrimaryGun;
+            @SelectPrimaryGun.canceled -= instance.OnSelectPrimaryGun;
+            @SelectSecondaryGun.started -= instance.OnSelectSecondaryGun;
+            @SelectSecondaryGun.performed -= instance.OnSelectSecondaryGun;
+            @SelectSecondaryGun.canceled -= instance.OnSelectSecondaryGun;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -874,5 +961,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnLeftSkill(InputAction.CallbackContext context);
         void OnRightSkill(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
+        void OnSwapGun(InputAction.CallbackContext context);
+        void OnSelectPrimaryGun(InputAction.CallbackContext context);
+        void OnSelectSecondaryGun(InputAction.CallbackContext context);
     }
 }

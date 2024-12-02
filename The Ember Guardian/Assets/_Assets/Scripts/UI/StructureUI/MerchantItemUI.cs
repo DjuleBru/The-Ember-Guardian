@@ -26,6 +26,7 @@ public class MerchantItemUI : MonoBehaviour
     }
 
     public void SetLinkedItem(MerchantItem item) {
+        Debug.Log("SetLinkedItem " + item.itemName + " " + gameObject.GetInstanceID());
         merchantItemImage.material.SetFloat("_GreyscaleBlend", 0f);
         currencyUIParent.gameObject.SetActive(true);
 
@@ -102,6 +103,7 @@ public class MerchantItemUI : MonoBehaviour
     }
 
     public MerchantItem GetMerchantItemLinked() {
+        Debug.Log("GetMerchantItemLinked " + linkedItem.itemName + " " + gameObject.GetInstanceID());
         return linkedItem;
     }
 }

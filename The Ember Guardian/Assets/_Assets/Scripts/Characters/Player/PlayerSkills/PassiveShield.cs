@@ -1,4 +1,3 @@
-using Sirenix.OdinInspector.Editor.Validation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -49,7 +48,7 @@ public class PassiveShield : MonoBehaviour, IDamageable
         return transform;
     }
 
-    public void TakeDamage(int damage, Vector3 damageSourcePosition) {
+    public void TakeDamage(int damage, Transform damageSource) {
         shieldActive = false;
         OnShieldDied?.Invoke(this, EventArgs.Empty);
         OnAnyPassiveShieldDied?.Invoke(this, EventArgs.Empty);

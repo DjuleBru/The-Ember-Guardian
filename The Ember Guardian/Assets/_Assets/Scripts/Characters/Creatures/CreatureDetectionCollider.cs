@@ -9,6 +9,10 @@ public class CreatureDetectionCollider : MonoBehaviour
     private CreatureAttack creatureAttack;
     private List<IDamageable> iDamageablesInDetectionRange = new List<IDamageable>();
 
+    private bool playerShotCreature;
+    private float playerShotCreatureTimer;
+    private float playerShotCreatureAggroTime = 5f;
+
     private float refreshTargetTimer;
     private float refreshTargetcooldown = .25f;
 
@@ -20,6 +24,7 @@ public class CreatureDetectionCollider : MonoBehaviour
 
     private void Start() {
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
+        creature.OnMobDamageTaken += Creature_OnMobDamageTaken;
     }
 
     private void Player_OnPlayerDied(object sender, System.EventArgs e) {
@@ -29,11 +34,14 @@ public class CreatureDetectionCollider : MonoBehaviour
     }
 
     private void Update() {
+
         refreshTargetTimer -= Time.deltaTime;
         if(refreshTargetTimer < 0) {
             refreshTargetTimer = refreshTargetcooldown;
             RefreshHighestPriorityTarget();
         }
+
+        HandlePlayerShotCreature();
     }
 
     void OnTriggerEnter2D(Collider2D other) {
@@ -99,6 +107,24 @@ public class CreatureDetectionCollider : MonoBehaviour
 
     }
 
+    private void HandlePlayerShotCreature() {
+        if (playerShotCreature) {
+            playerShotCreatureTimer -= Time.deltaTime;
+            if (playerShotCreatureTimer <= 0) {
+                playerShotCreature = false;
+                if(iDamageablesInDetectionRange.Count == 0) {
+                    creatureAI.ResetAttackTargetInProximity();
+                }
+            }
+        }
+    }
+    private void Creature_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {
+        if (e.damageOriginTransform.GetComponent<Player>() != null) {
+            playerShotCreature = true;
+            playerShotCreatureTimer = playerShotCreatureAggroTime;
+        }
+    }
+
     private void Worker_OnMobDied(object sender, System.EventArgs e) {
         RemoveIDamageableInDetectionRange(sender as Worker);
     }
@@ -122,14 +148,22 @@ public class CreatureDetectionCollider : MonoBehaviour
     }
 
     private void RefreshHighestPriorityTarget() {
+        List<IDamageable> iDamageablesDetected = new List<IDamageable>();
 
-        if (iDamageablesInDetectionRange.Count == 0) return;
+        foreach(IDamageable iDamageable in iDamageablesInDetectionRange) {
+            iDamageablesDetected.Add(iDamageable);
+        }
 
+        if (playerShotCreature && !iDamageablesInDetectionRange.Contains(Player.Instance)) {
+            iDamageablesDetected.Add(Player.Instance);
+        }
+
+        if (iDamageablesDetected.Count == 0) return;
 
         IDamageable highestPriorityTarget = null;
         int highestPriority = int.MaxValue; // Initialise à une valeur élevée
 
-        foreach (IDamageable iDamageable in iDamageablesInDetectionRange) {
+        foreach (IDamageable iDamageable in iDamageablesDetected) {
             int currentPriority = int.MaxValue;
 
             if (iDamageable is Worker) {
@@ -174,7 +208,7 @@ public class CreatureDetectionCollider : MonoBehaviour
 
         }
 
-        creatureAI.SetAttackTarget(highestPriorityTarget, iDamageablesInDetectionRange);
+        creatureAI.SetAttackTarget(highestPriorityTarget, iDamageablesDetected);
     }
 
 }

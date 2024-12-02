@@ -10,7 +10,10 @@ public class GunSO : ScriptableObject
     public List<Sprite> shotCountSprites;
 
     public Animator gunAnimator;
+    public bool automaticWeapon;
+    public int damagePerBullet;
     public int maxAmmo;
+    public int pelletsPerBullet;
     public int shotsPerClip;
 
     public float shootCooldownTime;

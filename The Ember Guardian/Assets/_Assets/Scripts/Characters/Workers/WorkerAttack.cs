@@ -6,7 +6,7 @@ public class WorkerAttack : MobAttack
 {
 
     private void Start() {
-        attackDamage = 2;
+        attackDamage = 20;
     }
 
 }

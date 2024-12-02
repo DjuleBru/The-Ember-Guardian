@@ -26,7 +26,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
         uICurrencyManager.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         uICurrencyManager.OnCurrencyFailedToDrop += UICurrencyManager_OnCurrencyFailedToDrop;
 
-        PlayerShoot.Instance.OnPlayerShotProjectile += PlayerShoot_OnPlayerShotProjectile;
+        PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
     }
 

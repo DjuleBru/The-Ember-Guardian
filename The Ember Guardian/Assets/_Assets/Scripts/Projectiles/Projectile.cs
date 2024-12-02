@@ -21,6 +21,7 @@ public class Projectile : MonoBehaviour
 
     private Rigidbody2D rb;
 
+    private Transform sourceTransform;
     private Vector3 trajectoryRange;
     private Vector3 trajectoryStartPoint;
     private Vector3 trajectoryEndPoint;
@@ -104,7 +105,7 @@ public class Projectile : MonoBehaviour
 
             // Fire hit ?
             if (Mathf.Abs(transform.position.x) < .5f) {
-                Fire.Instance.TakeDamage(1, trajectoryStartPoint);
+                Fire.Instance.TakeDamage(1, parentMob.transform);
             }
 
             ProjectileHasHit(false);
@@ -178,14 +179,14 @@ public class Projectile : MonoBehaviour
         // Hit Player
         if(collision.GetComponentInParent<Player>() != null && enemyProjectile) {
             ProjectileHasHit(false);
-            Player.Instance.TakeDamage(damage, trajectoryStartPoint);
+            Player.Instance.TakeDamage(damage, parentMob.transform);
         }
 
         // Hit Barricade
         Barricade barricade = collision.gameObject.GetComponentInParent<Barricade>();
         if (barricade != null && enemyProjectile) {
             ProjectileHasHit(false);
-            barricade.TakeDamage(damage, trajectoryStartPoint);
+            barricade.TakeDamage(damage, parentMob.transform);
         }
 
     }
@@ -196,7 +197,7 @@ public class Projectile : MonoBehaviour
             mobHit.OnMobDied += MobHit_OnMobDied;
 
             ProjectileHasHit(true);
-            mobHit.TakeDamage(damage, trajectoryStartPoint);
+            mobHit.TakeDamage(damage, parentMob.transform);
             transform.parent = mobHit.GetProjectileParent();
             return;
         }

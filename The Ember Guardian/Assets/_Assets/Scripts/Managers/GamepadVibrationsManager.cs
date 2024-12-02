@@ -19,7 +19,7 @@ public class GamepadVibrationsManager : MonoBehaviour
     private float currentLerpValue;
 
     private void Start() {
-        PlayerShoot.Instance.OnPlayerShotProjectile += PlayerShoot_OnPlayerShotProjectile;
+        PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerAmmoRefilled += PlayerSHoot_OnPlayerAmmoRefilled;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
 

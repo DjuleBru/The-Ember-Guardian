@@ -20,8 +20,9 @@ public class CampZoneManager : MonoBehaviour
 
     private float minZoneLimit = 0;
     private float maxZoneLimit = 0;
-    [SerializeField] private Transform huntingMaxZoneTransform;
-    [SerializeField] private Transform huntingMinZoneTransform;
+
+    [SerializeField] private HuntingFlag huntingFlagMax;
+    [SerializeField] private HuntingFlag huntingFlaxMin;
 
     private float maxAnimalTargetingDistanceToCampOuterPoint = 60f;
 
@@ -82,8 +83,8 @@ public class CampZoneManager : MonoBehaviour
 
         }
 
-        huntingMinZoneTransform.position = new Vector3(minZoneLimit - maxAnimalTargetingDistanceToCampOuterPoint, 0, 0);
-        huntingMaxZoneTransform.position = new Vector3(maxZoneLimit + maxAnimalTargetingDistanceToCampOuterPoint, 0, 0);
+        huntingFlaxMin.SetCampHuntingLimit(new Vector3(minZoneLimit - maxAnimalTargetingDistanceToCampOuterPoint, 0, 0));
+        huntingFlagMax.SetCampHuntingLimit(new Vector3(maxZoneLimit + maxAnimalTargetingDistanceToCampOuterPoint, 0, 0));
 
         OnCampZoneLimitsChanged?.Invoke(this, EventArgs.Empty);
     }
@@ -101,6 +102,15 @@ public class CampZoneManager : MonoBehaviour
         if(position.x >= minZoneLimit && position.x <= maxZoneLimit) {
             return true;
         } else {
+            return false;
+        }
+    }
+
+    public bool IsWithinHuntingLimits(Vector3 position) {
+        if (position.x >= GetHuntingMinZoneLimit() && position.x <= GetHuntingMaxZoneLimit()) {
+            return true;
+        }
+        else {
             return false;
         }
     }
@@ -150,10 +160,10 @@ public class CampZoneManager : MonoBehaviour
     }
 
     public float GetHuntingMaxZoneLimit() {
-        return huntingMaxZoneTransform.position.x;
+        return huntingFlagMax.GetCampHuntingLimit();
     }
 
     public float GetHuntingMinZoneLimit() {
-        return huntingMinZoneTransform.position.x;
+        return huntingFlaxMin.GetCampHuntingLimit();
     }
 }

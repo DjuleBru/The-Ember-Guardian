@@ -51,7 +51,7 @@ public class Mob : MonoBehaviour, IDamageable
     }
 
     public class OnMobDamageTakenEventArgs {
-        public Vector3 damageOriginPosition;
+        public Transform damageOriginTransform;
     }
 
     public void SetMobSpawner(MobSpawner mobSpawner) {
@@ -62,12 +62,12 @@ public class Mob : MonoBehaviour, IDamageable
         return mobSpawner;
     }
 
-    public void TakeDamage(int damage, Vector3 damageSourcePosition) {
+    public void TakeDamage(int damage, Transform damageSource) {
         if (health <= 0) return;
 
         health -= damage;
         OnMobDamageTaken?.Invoke(this, new OnMobDamageTakenEventArgs {
-            damageOriginPosition = damageSourcePosition,
+            damageOriginTransform = damageSource,
         });
 
         if (health <= 0) {

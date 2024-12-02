@@ -42,6 +42,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     private void Start() {
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerAmmoRefilled += PlayerShoot_OnPlayerAmmoRefilled;
+        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
         Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
 
@@ -113,6 +114,12 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         }
     }
 
+    private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
+        RefreshAmmoBar();
+        RefreshAmmoBarBackground();
+        FadeInAmmoBar();
+    }
+
     private void PlayerShoot_OnPlayerAmmoRefilled(object sender, PlayerShoot.OnAmmoRefilledEventArgs e) {
         FadeInAmmoBar();
         StartCoroutine(RefillAmmoBar(e.ammoAmount));
@@ -166,7 +173,6 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         }
 
         int playerAmmo = PlayerShoot.Instance.GetCurrentAmmoClip();
-
         for (int i = 0; i < playerAmmo; i++) {
             PlayerUI_TickTemplate ammoTick = Instantiate(ammoTickTemplate, ammoTickContainer).GetComponent<PlayerUI_TickTemplate>();
             ammoTick.SetImageAlphaFull();
@@ -183,7 +189,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        int playerAmmo = PlayerShoot.Instance.GetCurrentAmmoClip();
+        int playerAmmo = PlayerShoot.Instance.GetMaxAmmoClips();
 
         for (int i = 0; i < playerAmmo; i++) {
             Instantiate(ammoTickTemplateBackground, ammoTickContainerBackground);

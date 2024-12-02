@@ -125,7 +125,6 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
                 break;
 
             case HunterState.headingToHunt:
-
                 CheckClosestAnimal();
 
                 if (targetAnimal == null) return;
@@ -160,7 +159,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
                     return;
                 };
 
-                if (!TargetIsStillInHuntingRange(targetAnimal) ) {
+                if (!TargetIsStillInHuntingRange(targetAnimal) || !TargetAnimalIsWithinHuntingLimits(targetAnimal)) {
                     hunterAttack.RemoveAttackTarget();
                     ChangeState(HunterState.headingToHunt);
                     return;
@@ -256,6 +255,10 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         }
     }
 
+    private bool TargetAnimalIsWithinHuntingLimits(Animal animal) {
+        return CampZoneManager.Instance.IsWithinHuntingLimits(animal.transform.position);
+    }
+
     public void Roam() {
 
         if (!hasSetSpeed) {
@@ -298,21 +301,18 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     }
 
     private bool CheckClosestAnimal() {
-        if (hasHitAnimal) return true;
-
         checkClosestTargetTimer -= Time.deltaTime;
 
-        if(checkClosestTargetTimer < 0 ) {
+        if (checkClosestTargetTimer < 0 ) {
             checkClosestTargetTimer = checkClosestTargetCooldown;
 
             Animal newTargetAnimal = AnimalManager.Instance.GetClosestAnimalInRadius(mobMovement.transform.position, worker.GetCampSideAddigned());
-           
-            if(newTargetAnimal == null && targetAnimal != null) {
+            if (newTargetAnimal == null && targetAnimal != null) {
                 targetAnimal = null;
                 OnHunterFindsNoAnimal?.Invoke(this, EventArgs.Empty);
+            }
 
-            } 
-            if(newTargetAnimal != null && targetAnimal == null) {
+            if (newTargetAnimal != null && targetAnimal == null) {
                 OnHunterFoundAnimal?.Invoke(this, EventArgs.Empty);
                 TargetAnimal(newTargetAnimal);
             }
@@ -378,7 +378,6 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
             targetAnimal.OnMobDroppedCollectibles -= TargetAnimal_OnAnimalDroppedCollectibles;
             targetAnimal.OnMobDamageTaken -= TargetAnimal_OnMobDamageTaken;
         }
-
         targetAnimal = newTargetAnimal;
         newTargetAnimal.OnMobDroppedCollectibles += TargetAnimal_OnAnimalDroppedCollectibles;
         newTargetAnimal.OnMobDamageTaken += TargetAnimal_OnMobDamageTaken;

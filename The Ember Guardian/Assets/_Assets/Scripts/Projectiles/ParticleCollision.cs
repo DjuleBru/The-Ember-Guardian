@@ -11,10 +11,9 @@ public class ParticleCollision : MonoBehaviour
     public List<ParticleCollisionEvent> collisionEvents;
     public CinemachineVirtualCamera cam;
     public GameObject explosionPrefab;
-    private float collisionDistanceThreshold = .25f;
 
+    [SerializeField] private float collisionDistanceThreshold = .25f;
     [SerializeField] private float hitKnockbackForce = 15f;
-    [SerializeField] private int bulletDamage = 1;
 
     public static event EventHandler OnAnyBulletHitGround;
     public static event EventHandler OnAnyBulletHitEnemy;
@@ -57,8 +56,6 @@ public class ParticleCollision : MonoBehaviour
         for (int i = 0; i < numCollisionEvents; i++) {
             Vector3 collisionPosition = collisionEvents[i].intersection;
 
-
-
             // Parcours chaque particule pour voir laquelle est proche de la collision
             for (int j = 0; j < particleCount; j++) {
 
@@ -69,7 +66,7 @@ public class ParticleCollision : MonoBehaviour
 
                     // Applique des dégâts et ajoute l'index de la particule à la liste
                     if (other.GetComponent<Mob>() != null) {
-                        other.GetComponent<Mob>().TakeDamage(bulletDamage, collisionPosition);
+                        other.GetComponent<Mob>().TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform);
                         OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
                     }
                     else {
@@ -89,6 +86,8 @@ public class ParticleCollision : MonoBehaviour
                 }
 
             }
+
+
         }
 
     }

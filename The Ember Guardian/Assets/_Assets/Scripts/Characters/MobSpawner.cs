@@ -12,6 +12,7 @@ public class MobSpawner : MonoBehaviour
     [SerializeField] protected int maxMobsRespawningAtDawn;
 
     [SerializeField] protected bool isCreatureSpawner;
+    [SerializeField] protected bool isAnimalSpawner;
 
     protected List<Mob> mobSpawnedList = new List<Mob>();
 
@@ -40,6 +41,11 @@ public class MobSpawner : MonoBehaviour
 
         if(mobAmountToSpawnOnDawn > maxMobsRespawningAtDawn) {
             mobAmountToSpawnOnDawn = maxMobsRespawningAtDawn;
+        }
+
+        if ((isAnimalSpawner || isCreatureSpawner) && CampZoneManager.Instance.IsWithinCampZoneLimits(transform.position)) {
+            Debug.Log(this + " Spawner is within camp zone limits ! Spawn cancelled");
+            return;
         }
 
         SpawnMobs(mobAmountToSpawnOnDawn);

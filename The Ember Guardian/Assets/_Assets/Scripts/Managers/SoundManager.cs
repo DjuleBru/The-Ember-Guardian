@@ -25,10 +25,11 @@ public class SoundManager : MonoBehaviour
         Structure.OnAnyStructureUpgraded += Structure_OnAnyStructureUpgraded;
         Structure.OnAnyStructurePrimaryFunctionUsed += Structure_OnAnyStructurePrimaryFunctionUsed;
 
-        PlayerShoot.Instance.OnPlayerShotProjectile += PlayerShoot_OnPlayerShotProjectile;
+        PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoor_OnPlayerCooldownSFXTrigger;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
+        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
 
         PlayerSkills.Instance.OnActiveSkillReady += PlayerSkills_OnActiveSkillReady;
         PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
@@ -61,6 +62,9 @@ public class SoundManager : MonoBehaviour
         Projectile.OnAnyProjectileInstantiated += Projectile_OnAnyProjectileInstantiated;
 
         EndLevelAreaProp.OnAnyEndLevelAreaPropBurned += EndLevelAreaProp_OnAnyEndLevelAreaPropBurned;
+        HuntingFlag.OnAnyHuntingFlagReset += HuntingFlag_OnAnyHuntingFlagReset;
+        HuntingFlag_PlayerDefined.OnAnyHuntingFlagNewPositionSet += HuntingFlag_PlayerDefined_OnAnyHuntingFlagNewPositionSet;
+        HuntingFlag_PlayerDefined.OnAnyHuntingFlagPickedUp += HuntingFlag_PlayerDefined_OnAnyHuntingFlagPickedUp;
         GunSpotLight.OnAnyLightSwitched += GunSpotLight_OnAnyLightSwitched;
     }
 
@@ -97,12 +101,12 @@ public class SoundManager : MonoBehaviour
 
     private void Projectile_OnAnyProjectileInstantiated(object sender, System.EventArgs e) {
         Projectile projectile = (Projectile)sender;
-        PlaySound3D(projectile.GetProjectileSO().projectileInstantiatedAudioClips, (sender as MonoBehaviour).transform.position, .5f);
+        PlaySound3D(projectile.GetProjectileSO().projectileInstantiatedAudioClips, (sender as MonoBehaviour).transform.position);
     }
 
     private void Projectile_OnAnyProjectileHit(object sender, System.EventArgs e) {
         Projectile projectile = (Projectile)sender;
-        PlaySound3D(projectile.GetProjectileSO().projectileHitAudioClips, (sender as MonoBehaviour).transform.position, .5f);
+        PlaySound3D(projectile.GetProjectileSO().projectileHitAudioClips, (sender as MonoBehaviour).transform.position);
     }
 
     #endregion
@@ -234,33 +238,37 @@ public class SoundManager : MonoBehaviour
 
     #region SHOOTING
     private void ParticleCollision_OnAnyBulletHitGround(object sender, System.EventArgs e) {
-        AudioClip[] audioClipArray = PlayerShoot.Instance.GetGunSO().bulletHitGroundSound;
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitGroundSound;
         PlaySound3D(audioClipArray, (sender as MonoBehaviour).transform.position, .5f);
     }
 
     private void ParticleCollision_OnAnyBulletHitEnemy(object sender, System.EventArgs e) {
-        AudioClip[] audioClipArray = PlayerShoot.Instance.GetGunSO().bulletHitEnemySound;
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitEnemySound;
         PlaySound3D(audioClipArray, (sender as MonoBehaviour).transform.position, .5f);
     }
 
+    private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().cooldownGunSound;
+        PlaySound2D(audioClipArray);
+    }
 
     private void PlayerShoot_OnPlayerTryShoot_OutOfAmmo(object sender, System.EventArgs e) {
-        AudioClip[] audioClipArray = PlayerShoot.Instance.GetGunSO().outOfAmmoSound;
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().outOfAmmoSound;
         PlaySound2D(audioClipArray, .75f);
     }
 
     private void PlayerShoor_OnPlayerCooldownSFXTrigger(object sender, System.EventArgs e) {
-        AudioClip[] audioClipArray = PlayerShoot.Instance.GetGunSO().cooldownGunSound;
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().cooldownGunSound;
         PlaySound2D(audioClipArray, .5f);
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
-        AudioClip[] audioClipArray = PlayerShoot.Instance.GetGunSO().reloadGunSound;
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().reloadGunSound;
         PlaySound2D(audioClipArray, .5f);
     }
 
     private void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
-        AudioClip[] audioClipArray = PlayerShoot.Instance.GetGunSO().shootGunSound;
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().shootGunSound;
         PlaySound2D(audioClipArray, .5f);
     }
 
@@ -317,6 +325,19 @@ public class SoundManager : MonoBehaviour
 
     #region PROPS
 
+
+    private void HuntingFlag_PlayerDefined_OnAnyHuntingFlagPickedUp(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.huntingFlagPickedUp);
+    }
+
+    private void HuntingFlag_PlayerDefined_OnAnyHuntingFlagNewPositionSet(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.huntingFlagDropped);
+    }
+
+    private void HuntingFlag_OnAnyHuntingFlagReset(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.huntingFlagReset);
+    }
+
     private void EndLevelAreaProp_OnAnyEndLevelAreaPropBurned(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = soundRefsSO.propBurned;
         PlaySound3D(audioClipArray, (sender as MonoBehaviour).transform.position, .5f);
@@ -364,7 +385,7 @@ public class SoundManager : MonoBehaviour
         StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyStructureUpgraded -= Structure_OnAnyStructureUpgraded;
 
-        PlayerShoot.Instance.OnPlayerShotProjectile -= PlayerShoot_OnPlayerShotProjectile;
+        PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerReload -= PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerCooldownTrigger -= PlayerShoor_OnPlayerCooldownSFXTrigger;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo -= PlayerShoot_OnPlayerTryShoot_OutOfAmmo;

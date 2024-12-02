@@ -8,6 +8,7 @@ public class Player : MonoBehaviour, IDamageable
     public static Player Instance;
 
     [SerializeField] private Transform projectileTarget;
+    [SerializeField] private Transform carryingFlagPosition;
 
     private Rigidbody2D rb;
     private bool dead;
@@ -15,6 +16,7 @@ public class Player : MonoBehaviour, IDamageable
     private bool insideCamp;
     private bool hasHPRegen;
     private bool canDropOrbOnTheFloor = true;
+    private bool interactingWithOtherObject;
     private bool canMove = true;
 
     private float damagedTimer;
@@ -104,19 +106,25 @@ public class Player : MonoBehaviour, IDamageable
         canDropOrbOnTheFloor = canDrop;
     }
 
+    public void SetInteractingWithOtherObject(bool interactingWithOtherObject) {
+        Debug.Log("SetInteractingWithOtherObject " + interactingWithOtherObject);
+        this.interactingWithOtherObject = interactingWithOtherObject;
+        canDropOrbOnTheFloor = !interactingWithOtherObject;
+    }
+
     public bool GetCanDropOrbOnTheFloor() {
-        return canDropOrbOnTheFloor;
+        return canDropOrbOnTheFloor && !interactingWithOtherObject;
     }
 
     public void AddKnockBack(Vector2 knockbackDir) {
         rb.AddForce(knockbackDir, ForceMode2D.Impulse);
     }
 
-    public void TakeDamage(int damage, Vector3 damageSourcePosition) {
+    public void TakeDamage(int damage, Transform damageSource) {
         if (damagedRecently) return;
         if (dead) return;
 
-        if (ShieldTanksDamage(damage, damageSourcePosition)) return;
+        if (ShieldTanksDamage(damage, damageSource)) return;
 
         playerHealth -= 1;
 
@@ -130,9 +138,9 @@ public class Player : MonoBehaviour, IDamageable
         OnPlayerDamaged?.Invoke(this, EventArgs.Empty);
     }
 
-    private bool ShieldTanksDamage(int damage, Vector3 damageSourcePosition) {
+    private bool ShieldTanksDamage(int damage, Transform damageSource) {
         if(PlayerSkills.Instance.GetPassiveShield().GetShieldActive()) {
-            PlayerSkills.Instance.GetPassiveShield().TakeDamage(damage, damageSourcePosition);
+            PlayerSkills.Instance.GetPassiveShield().TakeDamage(damage, damageSource);
             return true;
         } else {
             return false;
@@ -218,6 +226,10 @@ public class Player : MonoBehaviour, IDamageable
 
     public Transform GetProjectileTarget() {
         return projectileTarget;
+    }
+
+    public Transform GetCarryingFlagPosition() {
+        return carryingFlagPosition;
     }
 
     public Transform GetMeleeAttackPosition() {

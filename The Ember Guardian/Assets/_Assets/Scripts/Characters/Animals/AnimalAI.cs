@@ -61,7 +61,7 @@ public class AnimalAI : MonoBehaviour
     private void Animal_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {
         isSafe = false;
 
-        positionToRoamAmound = FleeBehavior.GetFleeFromTargetDestination(animalMovement, e.damageOriginPosition, fleeDistance);
+        positionToRoamAmound = FleeBehavior.GetFleeFromTargetDestination(animalMovement, e.damageOriginTransform.position, fleeDistance);
         animalMovement.SetMoveTarget(positionToRoamAmound);
         animalMovement.SetMoveSpeed(fleeMoveSpeed);
     }

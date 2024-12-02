@@ -12,7 +12,7 @@ public class GunAnimator : MonoBehaviour
 
     private void Start() {
         PlayerShoot.Instance.OnPlayerShootStopped += PlayerShoot_OnPlayerShootStopped;
-        PlayerShoot.Instance.OnPlayerShotProjectile += PlayerShoot_OnPlayerShotProjectile;
+        PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoot_OnPlayerCooldownSFXTrigger;
         PlayerShoot.Instance.OnPlayerReload += PlayerSHoot_OnPlayerReload;
 
@@ -21,7 +21,7 @@ public class GunAnimator : MonoBehaviour
 
     private void PlayerSHoot_OnPlayerReload(object sender, System.EventArgs e) {
 
-        float reloadAnimationSpeed = PlayerShoot.Instance.GetGunSO().animationReloadTime/PlayerStats.Instance.GetReloadTime();
+        float reloadAnimationSpeed = PlayerShoot.Instance.GetHeldGunSO().animationReloadTime/PlayerStats.Instance.GetReloadTime();
         animator.speed = reloadAnimationSpeed;
         animator.SetTrigger("Reload");
     

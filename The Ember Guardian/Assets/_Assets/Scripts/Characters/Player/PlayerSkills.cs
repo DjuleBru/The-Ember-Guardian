@@ -309,8 +309,14 @@ public class PlayerSkills : MonoBehaviour
     public List<SkillItem> GetActiveSkillList() {
 
         List < SkillItem > activeSkillList = new List<SkillItem> ();
-        activeSkillList.Add(activeSkillRight);
-        activeSkillList.Add (activeSkillLeft);
+
+        if(activeSkillLeft != null) {
+            activeSkillList.Add(activeSkillLeft);
+        }
+
+        if(activeSkillRight != null) {
+            activeSkillList.Add(activeSkillRight);
+        }
 
         return activeSkillList; 
     }
@@ -323,16 +329,21 @@ public class PlayerSkills : MonoBehaviour
 
     public int GetCurrentSkillLevel(SkillItem skillItem) {
         foreach(SkillItem playerSkillItem in passiveSkillList) {
-            if(playerSkillItem.itemType == skillItem.itemType) {
+            if(playerSkillItem.skillType == skillItem.skillType) {
                 return playerSkillItem.currentLevel;
             }
         }
 
-        if(skillItem == activeSkillLeft) {
-            return activeSkillLeft.currentLevel;
+        if(activeSkillLeft != null) {
+            if (skillItem.skillType == activeSkillLeft.skillType) {
+                return activeSkillLeft.currentLevel;
+            }
         }
-        if (skillItem == activeSkillRight) {
-            return activeSkillRight.currentLevel;
+
+        if(activeSkillRight != null) {
+            if (skillItem.skillType == activeSkillRight.skillType) {
+                return activeSkillRight.currentLevel;
+            }
         }
 
         return 0;

@@ -34,7 +34,7 @@ public class Creature : Mob
     }
 
     private void Start() {
-        PlayerShoot.Instance.OnPlayerShotProjectile += PlayerShoot_OnPlayerShotProjectile;
+        PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
     }
 
     private void OnEnable() {

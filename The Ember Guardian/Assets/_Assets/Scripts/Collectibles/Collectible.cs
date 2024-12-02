@@ -277,7 +277,6 @@ public class Collectible : MonoBehaviour
     }
 
     public void ApplyRandomFrontForce(float minForce, float maxForce) {
-        Debug.Log("ApplyRandomFrontForce");
         float force = UnityEngine.Random.Range(minForce, maxForce);
    
         Vector2 forceDir = new Vector2(UnityEngine.Random.Range(.5f, 1f) * force, UnityEngine.Random.Range(.1f, .25f) * force);

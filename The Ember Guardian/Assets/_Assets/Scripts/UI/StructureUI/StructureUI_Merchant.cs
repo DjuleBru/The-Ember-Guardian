@@ -32,6 +32,10 @@ public class StructureUI_Merchant : StructureUI {
     protected int selectedItemIndex;
     protected int previousSelectedItemIndex;
 
+
+    private List<MerchantItemUI> smallMerchantItemUIList = new List<MerchantItemUI>();
+    private List<MerchantItemUI> bigMerchantItemUIList = new List<MerchantItemUI>();
+
     protected override void Awake() {
         base.Awake();
         merchant = GetComponentInParent<Merchant>();
@@ -56,13 +60,12 @@ public class StructureUI_Merchant : StructureUI {
     protected void Merchant_OnPlayerStartedInteractedWithMerchant(object sender, System.EventArgs e) {
         ShowItemsToSale(true);
         SelectFirstAvailableItem();
+        UpdateSelectedItemUI();
+        UpdateDescriptionPanelVisuals();
     }
 
     protected void Merchant_OnStructurePrimaryFunctionUsed(object sender, System.EventArgs e) {
         RefreshMerchantItemsUI();
-        ShowItemsToSale(true);
-        UpdateSelectedItemUI();
-        UpdateDescriptionPanelVisuals();
     }
 
     protected void GameInput_OnPlayerLeftRightDirPerformed(object sender, System.EventArgs e) {
@@ -158,18 +161,22 @@ public class StructureUI_Merchant : StructureUI {
     }
 
     protected void UpdateSelectedItemUI() {
-        //Ignore template
-        int majorItemsCount = bigMerchantItemUIContainer.childCount -1;
-        int minorItemsCount = smallMerchantItemUIContainer.childCount -1;
+        // Ignore template dans les listes
+        int majorItemsCount = bigMerchantItemUIList.Count;
+        int minorItemsCount = smallMerchantItemUIList.Count;
+
+        // Initialisation de l'item sélectionné
+        selectedMerchantItem = null;
 
         // Parcourir les items majeurs
-        for (int i = 1; i <= majorItemsCount; i++) {
-            MerchantItemUI merchantItemUI = bigMerchantItemUIContainer.GetChild(i).GetComponent<MerchantItemUI>();
+        for (int i = 0; i < majorItemsCount; i++) {
+            MerchantItemUI merchantItemUI = bigMerchantItemUIList[i];
 
-            if (i-1 == selectedItemIndex) {
+            if (i == selectedItemIndex) {
                 merchantItemUI.HighlightItem(true);
                 payCurrencyUI.SetOrbTemplateUIList(merchantItemUI.GetPayCurrencyTemplateWorldUIList());
                 selectedMerchantItem = merchantItemUI.GetMerchantItemLinked();
+                Debug.Log("UpdateSelectedItemUI (Major) " + selectedMerchantItem.itemName);
             }
             else {
                 merchantItemUI.HighlightItem(false);
@@ -177,23 +184,29 @@ public class StructureUI_Merchant : StructureUI {
         }
 
         // Parcourir les items mineurs
-        for (int i = 1; i <= minorItemsCount; i++) {
-            MerchantItemUI merchantItemUI = smallMerchantItemUIContainer.GetChild(i).GetComponent<MerchantItemUI>();
+        for (int i = 0; i < minorItemsCount; i++) {
+            MerchantItemUI merchantItemUI = smallMerchantItemUIList[i];
 
             // L'index global commence après les items majeurs
-            if (i-1 + majorItemsCount == selectedItemIndex) {
+            if (i + majorItemsCount == selectedItemIndex) {
                 merchantItemUI.HighlightItem(true);
                 payCurrencyUI.SetOrbTemplateUIList(merchantItemUI.GetPayCurrencyTemplateWorldUIList());
                 selectedMerchantItem = merchantItemUI.GetMerchantItemLinked();
+                Debug.Log("UpdateSelectedItemUI (Minor) " + selectedMerchantItem.itemName);
             }
             else {
                 merchantItemUI.HighlightItem(false);
             }
         }
 
-        // Met à jour l'état de l'item sélectionné
-        merchant.SetCurrentHoveredItem(selectedMerchantItem);
-        merchant.SetCurrentSelectedItemPurchased(selectedMerchantItem.isPurchased);
+        // Vérifie si un item valide est trouvé
+        if (selectedMerchantItem != null) {
+            merchant.SetCurrentHoveredItem(selectedMerchantItem);
+            merchant.SetCurrentSelectedItemPurchased(selectedMerchantItem.isPurchased);
+        }
+        else {
+            Debug.LogWarning("UpdateSelectedItemUI: No valid item found for selection!");
+        }
     }
 
     protected void UpdateDescriptionPanelVisuals() {
@@ -283,6 +296,9 @@ public class StructureUI_Merchant : StructureUI {
     }
 
     protected virtual void RefreshMerchantItemsUI() {
+        bigMerchantItemUIList.Clear();
+        smallMerchantItemUIList.Clear();
+
         foreach (RectTransform child in smallMerchantItemUIContainer) {
             if (child == smallMerchantItemUITemplate) continue;
             Destroy(child.gameObject);
@@ -298,8 +314,9 @@ public class StructureUI_Merchant : StructureUI {
             List<MerchantItem> majorItemList = merchant.GetMajorItemListForSale();
             bigMerchantItemUITemplate.gameObject.SetActive(true);
             foreach (MerchantItem merchantItem in majorItemList) {
-                MerchantItemUI minorMerchantItemUI = Instantiate(bigMerchantItemUITemplate, bigMerchantItemUIContainer).GetComponent<MerchantItemUI>();
-                minorMerchantItemUI.SetLinkedItem(merchantItem);
+                MerchantItemUI majorMerchantItemUI = Instantiate(bigMerchantItemUITemplate, bigMerchantItemUIContainer).GetComponent<MerchantItemUI>();
+                majorMerchantItemUI.SetLinkedItem(merchantItem);
+                bigMerchantItemUIList.Add(majorMerchantItemUI);
             }
             bigMerchantItemUITemplate.gameObject.SetActive(false);
 
@@ -309,6 +326,7 @@ public class StructureUI_Merchant : StructureUI {
             foreach (MerchantItem merchantItem in minorItemList) {
                 MerchantItemUI minorMerchantItemUI = Instantiate(smallMerchantItemUITemplate, smallMerchantItemUIContainer).GetComponent<MerchantItemUI>();
                 minorMerchantItemUI.SetLinkedItem(merchantItem);
+                smallMerchantItemUIList.Add(minorMerchantItemUI);
             }
             smallMerchantItemUITemplate.gameObject.SetActive(false);
         }

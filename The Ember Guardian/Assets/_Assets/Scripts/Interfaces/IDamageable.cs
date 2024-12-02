@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IDamageable 
 {
-    void TakeDamage(int damage, Vector3 damageSourcePosition);
+    void TakeDamage(int damage, Transform damageSource);
     void Die();
 
     Transform GetProjectileTarget();

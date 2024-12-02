@@ -19,7 +19,7 @@ public class BackpackFeedbacks : MonoBehaviour
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         PlayerMovement.Instance.OnPlayerLanded += PlayerMovement_OnPlayerLanded;
         PlayerMovement.Instance.OnPlayerCrouched += PlayerMovement_OnPlayerCrouched;
-        PlayerShoot.Instance.OnPlayerShotProjectile += Player_OnPlayerShotProjectile;
+        PlayerShoot.Instance.OnPlayerShot += Player_OnPlayerShotProjectile;
         playerAnimator.OnFootStepTriggered += PlayerAnimator_OnFootStepTriggered;
     }
 

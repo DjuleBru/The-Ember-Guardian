@@ -17,11 +17,11 @@ public class PlayerVisual : MonoBehaviour
         PlayerMovement.Instance.OnPlayerExhaustionStopped += PlayerMovement_OnPlayerExhaustionStopped;
 
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
-        RefreshGamepadReticle();
+        //RefreshGamepadReticle();
     }
 
     private void GameInput_OnPlayerInputChanged(object sender, System.EventArgs e) {
-        RefreshGamepadReticle();
+        //RefreshGamepadReticle();
     }
 
     private void RefreshGamepadReticle() {

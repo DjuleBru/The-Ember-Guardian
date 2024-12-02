@@ -392,7 +392,7 @@ public class Fire : Structure, IDamageable {
         return fuelLevel;
     }
 
-    public void TakeDamage(int damage, Vector3 damageSourcePosition) {
+    public void TakeDamage(int damage, Transform damageSource) {
         fuelLevel -= (damage * damageToFuelConversionRate);
         CheckFireStateDowngrade();
         OnFireDamageTaken?.Invoke(this, EventArgs.Empty);

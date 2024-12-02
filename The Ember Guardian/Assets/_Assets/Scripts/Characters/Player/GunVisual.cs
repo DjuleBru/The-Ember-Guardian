@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class GunVisual : MonoBehaviour
 {
+    private Gun gun;
     private GunSO gunSO;
     [SerializeField] private SpriteRenderer gunLightsSpriteRenderer;
     [SerializeField] private Transform gunSportLightTransform;
 
     private List<Sprite> gunReloadSprites;
     private int gunLightSpriteIndex;
+
+    private void Awake() {
+        gun = GetComponent<Gun>();
+    }
 
     private void Start() {
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
@@ -20,13 +25,15 @@ public class GunVisual : MonoBehaviour
 
         PlayerAim.Instance.OnXAimDirChanged += PlayerAim_OnXAimDirChanged;
 
-        gunSO = PlayerShoot.Instance.GetGunSO();
+        gunSO = gun.GetGunSO();
         gunReloadSprites = gunSO.shotCountSprites;
         gunLightSpriteIndex = gunSO.shotCountSprites.Count -1;
     }
 
 
     private void PlayerAim_OnXAimDirChanged(object sender, System.EventArgs e) {
+        if (!gun.GetGunActive()) return;
+
         Vector3 scale = new Vector3(1, 1, 1);
         if(PlayerAim.Instance.GetAimDir().x < 0) {
             //scale = new Vector3(-1, -1, 1);
@@ -35,16 +42,17 @@ public class GunVisual : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
+        if (!gun.GetGunActive()) return;
+
         int finalGunReloadSpriteIndex = gunReloadSprites.Count;
-
         float delayBetweenSprites = PlayerStats.Instance.GetReloadTime() / (float)Mathf.Abs(finalGunReloadSpriteIndex - gunLightSpriteIndex);
-
 
         StartCoroutine(ChangeRemainingBulletsVisuals(delayBetweenSprites, gunLightSpriteIndex, finalGunReloadSpriteIndex));
 
     }
 
     private void PlayerShoot_OnClipsChanged(object sender, System.EventArgs e) {
+        if (!gun.GetGunActive()) return;
         float bulletsAmountNormalized = (float)PlayerShoot.Instance.GetCurrentBullets()/ (float)PlayerShoot.Instance.GetMaxBulletsPerClip();
 
         int finalGunReloadSpriteIndex = Mathf.RoundToInt(bulletsAmountNormalized * gunReloadSprites.Count);
@@ -52,10 +60,10 @@ public class GunVisual : MonoBehaviour
 
 
         StartCoroutine(ChangeRemainingBulletsVisuals(delayBetweenSprites, gunLightSpriteIndex, finalGunReloadSpriteIndex));
-
     }
 
     private IEnumerator ChangeRemainingBulletsVisuals(float delayBetweenSprites, int initialSpriteIndex, int finalSpriteIndex) {
+        if (!gun.GetGunActive()) yield return null;
         gunLightsSpriteRenderer.sprite = gunReloadSprites[initialSpriteIndex];
 
         // Vérifie que les indices sont dans les limites du tableau
@@ -85,10 +93,12 @@ public class GunVisual : MonoBehaviour
     }
 
     private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
+        if (!gun.GetGunActive()) return;
         gameObject.SetActive(true);
     }
 
     private void Player_OnPlayerDied(object sender, System.EventArgs e) {
+        if (!gun.GetGunActive()) return;
         gameObject.SetActive(false);
     }
 }
