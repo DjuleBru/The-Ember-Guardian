@@ -2,24 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MusicManager : MonoBehaviour
-{
-    private float delayToStartPlayingMusic = 2f;
-    private float audioVolume = .2f;
+public class MusicManager : MonoBehaviour {
+
+    public static MusicManager Instance;
+
+    [SerializeField] private float audioVolume = .2f;
+
+    private float hubDelayToStartPlayingMusic = 2f;
     private AudioSource audioSource;
 
+    private void Awake() {
+        Instance = this;
+    }
+
     private void Start() {
-        Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
         audioSource = GetComponent<AudioSource>();
         SetAudioVolume();
-        audioSource.PlayDelayed(delayToStartPlayingMusic);
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
+            audioSource.PlayDelayed(hubDelayToStartPlayingMusic);
+        }
     }
 
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
         FadeOutMusic();
     }
 
-    private void FadeOutMusic() {
+    public void FadeOutMusic() {
         StartCoroutine(FadeOutCoroutine());
     }
     private IEnumerator FadeOutCoroutine() {
@@ -37,7 +47,22 @@ public class MusicManager : MonoBehaviour
         audioSource.Stop(); // Arrêter la musique
     }
 
+    private IEnumerator FadeInCoroutine(float fadeDuration) {
+        float endVolume = audioVolume;
+
+        // Augmenter progressivement le volume
+        for (float t = 0; t < fadeDuration; t += Time.deltaTime) {
+            audioSource.volume = Mathf.Lerp(0, endVolume, t / fadeDuration);
+            yield return null; // Attendre le prochain frame
+        }
+    }
     private void SetAudioVolume() {
         audioSource.volume = audioVolume;
+    }
+
+    public void FadeInMusic(float fadeDuration) {
+        audioSource.volume = 0f;
+        audioSource.Play();
+        StartCoroutine(FadeInCoroutine(fadeDuration));
     }
 }

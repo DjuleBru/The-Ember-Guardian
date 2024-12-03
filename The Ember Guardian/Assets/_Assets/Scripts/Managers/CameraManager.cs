@@ -35,6 +35,7 @@ public class CameraManager : MonoBehaviour
     public void ZoomOut(bool toInitialValue, float targetZoomOutOrthographicSizeMultiplier = 1f, float zoomDuration = 1f) {
         // Démarre le zoom vers l'extérieur
         float targetOrthographicSize = initialCameraOrthographicSize * 1 / targetZoomOutOrthographicSizeMultiplier;
+
         if (toInitialValue) {
             targetOrthographicSize = initialCameraOrthographicSize;
         }

@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e57289136e0e1e6418ec81259b9649b2, type: 3}
+  m_Name: Ghoul_Tutorial
+  m_EditorClassIdentifier: 
+  enemyName: Ghoul
+  description: Melee mob that can respawn after it's first death !
+  creaturePrefab: {fileID: 4997657120178985709, guid: a348dcd32c6420442bf13c1e8971f0de, type: 3}
+  mass: 20
+  detectionRange_Day: 15
+  detectionRange_Night: 2
+  moveSpeed: 1.75
+  moveSpeedRandomizerDelta: 0
+  maxHealth: 50
+  damage: 1
+  attackRate: 2.04
+  attackRange: 1.5
+  attackRangeRandomizer: 0.5
+  relativeDamageToFire: 1
+  attackAnimationDelay: 0.2
+  totalAttackAnimationTime: 0.6
+  baseMovementAnimationSpeed: 0.85
+  workerTargetingPriority: 1
+  playerTargetingPriority: 3
+  barricadeTargetingPriority: 2
+  currencyTypeDroppedList: 02000000
+  currencyDropAmountList: 01000000
+  difficulty: 3
+  initialWaveSpawn: 2
+  spawnProbability: 0.55
+  dieAudioClips:
+  - {fileID: 8300000, guid: 5754133c60f687f4f948198eb0096c83, type: 3}
+  - {fileID: 8300000, guid: 3db2b71397825294c9ee1bc322b68620, type: 3}
+  - {fileID: 8300000, guid: 479107985b9f66d4cab75842a9701e97, type: 3}
+  - {fileID: 8300000, guid: 0683238f879e26f44a455ef7fc82db18, type: 3}
+  aggroAudioClips:
+  - {fileID: 8300000, guid: 621fd224240f24f4da55ca60a08080ca, type: 3}
+  - {fileID: 8300000, guid: 09714533c5bc0f645b482e3f1ed6e3e3, type: 3}
+  - {fileID: 8300000, guid: a342ad29969dcc54eb2e92743940c990, type: 3}
+  idleAudioClips:
+  - {fileID: 8300000, guid: 0955a64cf2c91f441a67c383939107a9, type: 3}
+  - {fileID: 8300000, guid: 5cf867f48b95cb84f9c42ae6f8bc4ccb, type: 3}
+  - {fileID: 8300000, guid: daf5413b001d7bd48b7fa8d122b963b1, type: 3}
+  - {fileID: 8300000, guid: b6b4cb3eb0a834d4397f21bbec007b86, type: 3}

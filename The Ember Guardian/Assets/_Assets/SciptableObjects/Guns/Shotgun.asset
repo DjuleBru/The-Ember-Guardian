@@ -15,16 +15,17 @@ MonoBehaviour:
   gunSprite: {fileID: 557911418, guid: a412631a79fa435459cf27cf3db82ef1, type: 3}
   reticleSprite: {fileID: 0}
   shotCountSprites:
-  - {fileID: 2045174408, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
-  - {fileID: 1348036990, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
-  - {fileID: -2024233470, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
-  - {fileID: -1021583364, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
-  - {fileID: 927807186, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
   - {fileID: -541716545, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
   - {fileID: 816458851, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
   - {fileID: 1944388709, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
   - {fileID: -356857735, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
+  - {fileID: -778625743, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
+  - {fileID: 1512547999, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
+  - {fileID: 788613549, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
+  - {fileID: 1400576997, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
+  - {fileID: 58153473, guid: 9bea550ac58a6004cbc1ea015b52154f, type: 3}
   gunAnimator: {fileID: 0}
+  automaticWeapon: 0
   damagePerBullet: 10
   maxAmmo: 8
   pelletsPerBullet: 5
@@ -34,7 +35,7 @@ MonoBehaviour:
   reloadTime: 1
   animationReloadTime: 0.8
   gunKnockback: 1.5
-  gunRecoil: 0.3
+  gunRecoil: 0.4
   gunRecoilDamping: 4
   shootGunSound:
   - {fileID: 8300000, guid: 0a51e394b348d4d47b2d5038515dfd8e, type: 3}
@@ -59,3 +60,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3aa5ce64a65a5a2489835833a2a763a5, type: 3}
   outOfAmmoSound:
   - {fileID: 8300000, guid: e8e5aa23dc10e764bb3d3654d35014c5, type: 3}
+  swapToWeaponSound: {fileID: 8300000, guid: 10385280c450953468ec7ea73a4a71ff, type: 3}

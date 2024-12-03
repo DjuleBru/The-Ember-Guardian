@@ -19,6 +19,7 @@ public class Mob : MonoBehaviour, IDamageable
     protected int health;
 
     public event EventHandler OnMobDied;
+    public static event EventHandler OnAnyMobDied;
     public event EventHandler<OnMobDamageTakenEventArgs> OnMobDamageTaken;
     public event EventHandler<OnMobDroppedCollectibleEventArgs> OnMobDroppedCollectibles;
 
@@ -77,6 +78,7 @@ public class Mob : MonoBehaviour, IDamageable
 
     public virtual void Die() {
         OnMobDied?.Invoke(this, EventArgs.Empty);
+        OnAnyMobDied?.Invoke(this, EventArgs.Empty);
         GetComponent<MobMovement>().enabled = false;
 
         if(GetComponent<MobAttack>() != null) {

@@ -84,7 +84,13 @@ public class PlayerCurrencies : MonoBehaviour
         lastBlueOrbDroppedOnTheFloor = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(CurrencyType.bigBlueOrb), blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
 
         float aimDirX = PlayerAim.Instance.GetAimDir().x;
-        lastBlueOrbDroppedOnTheFloor.ApplyRandomForce(1f * aimDirX, 2f * aimDirX, 6f, 8f);
+        if(aimDirX > 0) {
+            aimDirX = 1;
+        } else {
+            aimDirX = -1;
+        }
+
+        lastBlueOrbDroppedOnTheFloor.ApplyRandomForce(aimDirX, aimDirX*2, 6f, 8f);
         lastBlueOrbDroppedOnTheFloor.SetCollectibleUnInteractable(3f);
         lastBlueOrbDroppedOnTheFloor.SetDroppedByPlayer();
 

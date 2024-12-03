@@ -107,7 +107,6 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public void SetInteractingWithOtherObject(bool interactingWithOtherObject) {
-        Debug.Log("SetInteractingWithOtherObject " + interactingWithOtherObject);
         this.interactingWithOtherObject = interactingWithOtherObject;
         canDropOrbOnTheFloor = !interactingWithOtherObject;
     }

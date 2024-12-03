@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e57289136e0e1e6418ec81259b9649b2, type: 3}
+  m_Name: Crawler_Tutorial
+  m_EditorClassIdentifier: 
+  enemyName: Crawler
+  description: Basic monster, a bit swarmy.
+  creaturePrefab: {fileID: 2465624883499499618, guid: f2addbd63028f044780e833f0f22a9f0, type: 3}
+  mass: 10
+  detectionRange_Day: 12
+  detectionRange_Night: 2
+  moveSpeed: 2.5
+  moveSpeedRandomizerDelta: 0
+  maxHealth: 30
+  damage: 1
+  attackRate: 2
+  attackRange: 0.2
+  attackRangeRandomizer: 0.1
+  relativeDamageToFire: 0.5
+  attackAnimationDelay: 0.3
+  totalAttackAnimationTime: 0.6
+  baseMovementAnimationSpeed: 1.3
+  workerTargetingPriority: 1
+  playerTargetingPriority: 2
+  barricadeTargetingPriority: 3
+  currencyTypeDroppedList: 03000000
+  currencyDropAmountList: 01000000
+  difficulty: 1
+  initialWaveSpawn: 1
+  spawnProbability: 0.874
+  dieAudioClips:
+  - {fileID: 8300000, guid: 52e684d65259c2d41ae7b4c7146d8c51, type: 3}
+  - {fileID: 8300000, guid: e88c8549c00d7a44aa981ca39aaebf2a, type: 3}
+  aggroAudioClips:
+  - {fileID: 8300000, guid: 43abb15c0f28ff54eb24358ac1de6815, type: 3}
+  - {fileID: 8300000, guid: 53448b7318d133e40a6b4cc290ed50fe, type: 3}
+  - {fileID: 8300000, guid: 4013e7d05ef23794abf297127c81fa72, type: 3}
+  - {fileID: 8300000, guid: 38cf1486263bd8d48b5fa282ff196775, type: 3}
+  - {fileID: 8300000, guid: ee747f428e6ad55488ee38af3144a2c6, type: 3}
+  idleAudioClips:
+  - {fileID: 8300000, guid: da9e25fd2aefae542ac329ac8758e86e, type: 3}
+  - {fileID: 8300000, guid: 147bad03bd5aed64aa27fb139104ae62, type: 3}
+  - {fileID: 8300000, guid: 58ae6616e6320ac438ed55dcdabe8b2e, type: 3}
+  - {fileID: 8300000, guid: 2b9cfe9a942c8044aac53687c668610f, type: 3}
+  - {fileID: 8300000, guid: e7cdb85cd45361f4ebbdb441913a609a, type: 3}
+  - {fileID: 8300000, guid: 351da722d37a47e41a56ad2dcae1787d, type: 3}
+  - {fileID: 8300000, guid: 149f4e798c029a74e95703722f31582e, type: 3}
+  - {fileID: 8300000, guid: 484b4d4dc3885b74b8dd6f74ab745a83, type: 3}
+  - {fileID: 8300000, guid: 400fd73989155ae4daaac07d6d316c33, type: 3}
+  - {fileID: 8300000, guid: fdb88e49f918dba4a82cd16992a80ace, type: 3}
+  - {fileID: 8300000, guid: 1adb54c5f2c898b4cbf55f90fa7f1825, type: 3}

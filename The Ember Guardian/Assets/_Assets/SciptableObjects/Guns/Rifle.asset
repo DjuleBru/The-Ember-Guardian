@@ -15,6 +15,7 @@ MonoBehaviour:
   gunSprite: {fileID: 557911418, guid: a412631a79fa435459cf27cf3db82ef1, type: 3}
   reticleSprite: {fileID: 0}
   shotCountSprites:
+  - {fileID: -1347035189, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
   - {fileID: 1616089201, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
   - {fileID: 58984468, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
   - {fileID: 1525623778, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
@@ -39,7 +40,7 @@ MonoBehaviour:
   reloadTime: 2
   animationReloadTime: 0.8
   gunKnockback: 0.8
-  gunRecoil: 0.1
+  gunRecoil: 0.2
   gunRecoilDamping: 4
   shootGunSound:
   - {fileID: 8300000, guid: 4e6a70b9a752bfe4baa989d422d548a7, type: 3}
@@ -63,4 +64,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7c4ef5419b0a7a24b9c549ea14b1e263, type: 3}
   - {fileID: 8300000, guid: 3aa5ce64a65a5a2489835833a2a763a5, type: 3}
   outOfAmmoSound:
-  - {fileID: 8300000, guid: e8e5aa23dc10e764bb3d3654d35014c5, type: 3}
+  - {fileID: 8300000, guid: b98aaa1d97aed8244b1576b894d0d598, type: 3}
+  swapToWeaponSound: {fileID: 8300000, guid: 44410cc1b7956fa48b296fe59bf65d00, type: 3}

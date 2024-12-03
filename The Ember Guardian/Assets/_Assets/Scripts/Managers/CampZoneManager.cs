@@ -34,9 +34,19 @@ public class CampZoneManager : MonoBehaviour
         Barricade.OnAnyBarricadeBuilt += Barricade_OnAnyBarricadeBuilt;
         Barricade.OnAnyBarricadeDestroyed += Barricade_OnAnyBarricadeDestroyed;
         Barricade.OnAnyBarricadeRepaired += Barricade_OnAnyBarricadeRepaired;
+        StructureLocation_StartLevelFire.OnAnyStructureBuilt += StructureLocation_StartLevelFire_OnAnyStructureBuilt;
+
+        huntingFlagMax.gameObject.SetActive(false);
+        huntingFlaxMin.gameObject.SetActive(false);
     }
 
     private void Start() {
+        RefreshCampZoneLimits();
+    }
+
+    private void StructureLocation_StartLevelFire_OnAnyStructureBuilt(object sender, EventArgs e) {
+        huntingFlagMax.gameObject.SetActive(true);
+        huntingFlaxMin.gameObject.SetActive(true);
         RefreshCampZoneLimits();
     }
 

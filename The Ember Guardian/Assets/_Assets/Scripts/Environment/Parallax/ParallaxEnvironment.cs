@@ -7,10 +7,12 @@ public class ParallaxEnvironment : MonoBehaviour
     private SpriteRenderer[] parallaxBackgrounds;
 
     [SerializeField] private bool isCampParallax;
+    [SerializeField] private bool customTransparency;
 
     private void Awake() {
         parallaxBackgrounds = GetComponentsInChildren<SpriteRenderer>();
 
+        if (customTransparency) return;
         if(isCampParallax) {
             SetParallaxTransparency(1f);
         } else {

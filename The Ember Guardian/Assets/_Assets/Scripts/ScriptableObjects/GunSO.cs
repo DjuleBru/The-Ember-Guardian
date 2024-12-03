@@ -32,4 +32,5 @@ public class GunSO : ScriptableObject
     public AudioClip[] bulletHitGroundSound;
     public AudioClip[] bulletHitEnemySound;
     public AudioClip[] outOfAmmoSound;
+    public AudioClip swapToWeaponSound;
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class JoblessJob : MonoBehaviour, IJobBehavior {
 
     private MobMovement mobMovement;
+    private WorkerDetectionCollider workerDetectionCollider;
 
     [SerializeField] private float roamMoveSpeed = 1.5f;
     [SerializeField]  private float headToCampMoveSpeed = 2f;
@@ -17,7 +18,16 @@ public class JoblessJob : MonoBehaviour, IJobBehavior {
 
     private bool isInSafeZone;
 
+    private void Awake() {
+        workerDetectionCollider = GetComponentInChildren<WorkerDetectionCollider>();
+    }
+
     private void Update() {
+
+        if (CheckBlockedByCreature()) {
+            mobMovement.SetMoveTarget(mobMovement.transform.position);
+            return;
+        }
 
         if (isInSafeZone) {
             Roam();
@@ -26,6 +36,14 @@ public class JoblessJob : MonoBehaviour, IJobBehavior {
             HeadToCampCenter();
         }
 
+    }
+    private bool CheckBlockedByCreature() {
+        if (workerDetectionCollider.CreaturesInDetectionCollider()) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public void HeadToCampCenter() {

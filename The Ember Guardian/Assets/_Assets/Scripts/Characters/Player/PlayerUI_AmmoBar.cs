@@ -164,7 +164,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 
     }
 
-    private void RefreshAmmoBar() {
+    public void RefreshAmmoBar() {
         ammoTickTemplate.gameObject.SetActive(true);
 
         foreach (Transform child in ammoTickContainer) {

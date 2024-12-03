@@ -63,4 +63,5 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip fireTickRemoved;
     public AudioClip tooltipShown;
     public AudioClip tooltipHidden;
+    public AudioClip objectiveShown;
 }

@@ -142,7 +142,7 @@ public class CreatureDetectionCollider : MonoBehaviour
     private void RemoveIDamageableInDetectionRange(IDamageable iDamageable) {
         iDamageablesInDetectionRange.Remove(iDamageable);
 
-        if (iDamageablesInDetectionRange.Count == 0) {
+        if (iDamageablesInDetectionRange.Count == 0 && !playerShotCreature) {
             creatureAI.ResetAttackTargetInProximity();
         }
     }

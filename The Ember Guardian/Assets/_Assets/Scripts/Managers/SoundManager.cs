@@ -40,8 +40,9 @@ public class SoundManager : MonoBehaviour
         PlayerUI_AmmoBar.Instance.OnAmmoTickAdded += PlayerUI_AmmoBar_OnAmmoTickAdded;
         PlayerUI_HPBar.Instance.OnHPTickAdded += PlayerUI_HPBar_OnHPTickAdded;
         StructureUI_Fire.OnFireTickRemoved += StructureUI_Fire_OnFireTickRemoved;
-        PlayerWorldUITooltip.Instance.OnTooltipHidden += PlayerWorldUITooltip_OnTooltipHidden;
-        PlayerWorldUITooltip.Instance.OnTooltipShown += PlayerWorldUITooltup_OnTooltipShown;
+        PlayerWorldUITooltip.OnTooltipHidden += PlayerWorldUITooltip_OnTooltipHidden;
+        PlayerWorldUITooltip.OnTooltipShown += PlayerWorldUITooltup_OnTooltipShown;
+        LevelUI_ObjectiveUI.Instance.OnObjectiveUIShown += LevelUI_ObjectiveUI_OnObjectiveUIShown;
 
         ParticleCollision.OnAnyBulletHitEnemy += ParticleCollision_OnAnyBulletHitEnemy;
         ParticleCollision.OnAnyBulletHitGround += ParticleCollision_OnAnyBulletHitGround;
@@ -68,7 +69,6 @@ public class SoundManager : MonoBehaviour
         GunSpotLight.OnAnyLightSwitched += GunSpotLight_OnAnyLightSwitched;
     }
 
-
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
     }
@@ -76,6 +76,9 @@ public class SoundManager : MonoBehaviour
 
     #region UI
 
+    private void LevelUI_ObjectiveUI_OnObjectiveUIShown(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.objectiveShown, .5f);
+    }
     private void PlayerWorldUITooltup_OnTooltipShown(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.tooltipShown, .7f);
     }
@@ -248,7 +251,7 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
-        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().cooldownGunSound;
+        AudioClip audioClipArray = PlayerShoot.Instance.GetHeldGunSO().swapToWeaponSound;
         PlaySound2D(audioClipArray);
     }
 
@@ -393,8 +396,8 @@ public class SoundManager : MonoBehaviour
         PlayerUI_AmmoBar.Instance.OnAmmoTickAdded -= PlayerUI_AmmoBar_OnAmmoTickAdded;
         PlayerUI_HPBar.Instance.OnHPTickAdded -= PlayerUI_HPBar_OnHPTickAdded;
         StructureUI_Fire.OnFireTickRemoved -= StructureUI_Fire_OnFireTickRemoved;
-        PlayerWorldUITooltip.Instance.OnTooltipHidden -= PlayerWorldUITooltip_OnTooltipHidden;
-        PlayerWorldUITooltip.Instance.OnTooltipShown -= PlayerWorldUITooltup_OnTooltipShown;
+        PlayerWorldUITooltip.OnTooltipHidden -= PlayerWorldUITooltip_OnTooltipHidden;
+        PlayerWorldUITooltip.OnTooltipShown -= PlayerWorldUITooltup_OnTooltipShown;
 
         ParticleCollision.OnAnyBulletHitEnemy -= ParticleCollision_OnAnyBulletHitEnemy;
         ParticleCollision.OnAnyBulletHitGround -= ParticleCollision_OnAnyBulletHitGround;

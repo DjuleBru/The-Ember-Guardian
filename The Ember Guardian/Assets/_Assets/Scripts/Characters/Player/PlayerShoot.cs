@@ -35,6 +35,7 @@ public class PlayerShoot : MonoBehaviour
     private float transferringAmmoFromBagCooldown = 1f;
     private float reloadTimer;
 
+    private bool autoReload;
     private bool canShoot = true;
     private bool coolingDown;
     private bool reloading;
@@ -74,8 +75,6 @@ public class PlayerShoot : MonoBehaviour
 
         UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
     }
-
-
     private void SetGun(GunSO gunSO) {
         Gun activeGun = null;
         foreach(Gun gun in allGunsList) {
@@ -97,6 +96,14 @@ public class PlayerShoot : MonoBehaviour
         PlayerStats.Instance.SetReloadTime(heldGunSO.reloadTime);
 
         OnPlayerSwappedGun?.Invoke(this, EventArgs.Empty);
+    }
+    public void SetGunAmmo(GunSO gunSO, int ammoCount) {
+        foreach (Gun gun in allGunsList) {
+            if (gun.GetGunSO() == gunSO) {
+                gun.SetGunAmmo(ammoCount, 0);
+            }
+        }
+        OnBulletsChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void InitializeGuns() {
@@ -186,11 +193,16 @@ public class PlayerShoot : MonoBehaviour
 
         // Handle reload
         if (heldGun.GetCurrentBullet() <= 0) {
-            reloading = true;
-            reloadTimer = PlayerStats.Instance.GetReloadTime();
+            if(autoReload) {
+                reloading = true;
+                reloadTimer = PlayerStats.Instance.GetReloadTime();
 
-            heldGun.SetCurrentAmmoClip(heldGun.GetCurrentAmmoClip() - 1);
-            OnPlayerReload?.Invoke(this, EventArgs.Empty);
+                heldGun.SetCurrentAmmoClip(heldGun.GetCurrentAmmoClip() - 1);
+                OnPlayerReload?.Invoke(this, EventArgs.Empty);
+            } else {
+                return;
+            }
+
         } else {
             if(automaticWeapon && playerIsHoldingDownShoot) {
                 Shoot();
@@ -275,19 +287,29 @@ public class PlayerShoot : MonoBehaviour
 
         playerJustPressedReload = false;
         playerJustPressedReloadTimer = 0;
+
         if (heldGun.GetCurrentBullet() == heldGun.GetBulletsPerAmmoClip()) return;
         if (reloading) return;
         if (coolingDown) return;
+
+        if (heldGun.GetCurrentAmmoClip() == 0) {
+            OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+            return;
+        };
 
         ReloadGun();
     }
 
     private void GameInput_OnPlayerSwapGunPerformed(object sender, EventArgs e) {
-        SwapGun();
+        if(secondayGunSO != null) {
+            SwapGun();
+        }
     }
 
     private void GameInput_OnPlayerSecondaryGunSelected(object sender, EventArgs e) {
-        SetGun(secondayGunSO);
+        if(secondayGunSO != null) {
+            SetGun(secondayGunSO);
+        }
     }
 
     private void GameInput_OnPlayerPrimaryGunSelected(object sender, EventArgs e) {
@@ -300,7 +322,6 @@ public class PlayerShoot : MonoBehaviour
         playerJustPressedReload = false;
         reloadTimer = PlayerStats.Instance.GetReloadTime();
         OnPlayerReload?.Invoke(this, EventArgs.Empty);
-
     }
 
     private void SwapGun() {
@@ -322,7 +343,7 @@ public class PlayerShoot : MonoBehaviour
         if (!canShoot) return;
         if (Player.Instance.GetHP() == 0) return;
 
-        if(heldGun.GetCurrentAmmoClip() == 0) {
+        if(heldGun.GetCurrentAmmoClip() < 0 || heldGun.GetCurrentBullet() ==0) {
             OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
         } else {
             Shoot();

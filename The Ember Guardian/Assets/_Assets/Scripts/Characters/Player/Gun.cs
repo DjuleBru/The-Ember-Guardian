@@ -18,7 +18,6 @@ public class Gun : MonoBehaviour
 
     private void Start() {
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
-
     }
 
     public void InitializeGun() {
@@ -29,6 +28,11 @@ public class Gun : MonoBehaviour
         bulletsPerAmmoClip = gunSO.shotsPerClip;
         currentBullet = bulletsPerAmmoClip;
         currentAmmoClip = maxAmmo;
+    }
+
+    public void SetGunAmmo(int ammoCount, int currentBuller) {
+        currentAmmoClip = ammoCount;
+        currentBullet = currentBuller;
     }
 
     private void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {

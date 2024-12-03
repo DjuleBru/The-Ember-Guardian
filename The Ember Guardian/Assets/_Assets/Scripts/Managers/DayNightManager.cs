@@ -14,7 +14,8 @@ public class DayNightManager : MonoBehaviour
     [SerializeField] private float duskDuration;
     [SerializeField] private float nightDuration;
 
-    [SerializeField] private bool debugMode;
+    [SerializeField] private bool manualInitialCycleSet;
+    [SerializeField] private bool cyclePaused;
     [SerializeField] private State debugState;
 
     private int currentDay;
@@ -31,7 +32,7 @@ public class DayNightManager : MonoBehaviour
     }
 
     private State state;
-    private bool cyclePaused = true;
+    
 
     public event EventHandler OnDawnStart;
     public event EventHandler OnDayStart;
@@ -49,7 +50,7 @@ public class DayNightManager : MonoBehaviour
         Fire.Instance.OnFireEmberExtractionStopped += Fire_OnFireEmberExtractionStopped;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
 
-        if (debugMode) {
+        if (manualInitialCycleSet) {
             ChangeState(debugState);
             return;
         }
@@ -59,11 +60,10 @@ public class DayNightManager : MonoBehaviour
     }
 
     private void Update() {
+        HandleDebugNextState();
         if (cyclePaused) return;
 
-
         cycleTimer += Time.deltaTime;
-        HandleDebugNextState();
 
         switch (state) {
 

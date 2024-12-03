@@ -99,8 +99,7 @@ public class CreatureAI : MonoBehaviour {
                 break;
 
             case State.moveToTarget:
-
-                if(!detectedAttackTarget) {
+                if (!detectedAttackTarget) {
                     if(creature.IsDayCreature()) {
                         ChangeState(State.walkingToSpawner);
                     } else {
@@ -136,7 +135,6 @@ public class CreatureAI : MonoBehaviour {
             RoamBehavior.RoamAroundPoint(creatureMovement, roamRadius, positionToRoamAmound);
         }
     }
-
 
     private void HandleAggroRecently() {
         if (aggroedRecently) {

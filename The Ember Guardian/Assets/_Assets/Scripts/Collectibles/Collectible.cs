@@ -261,7 +261,6 @@ public class Collectible : MonoBehaviour
     }
 
     public void ApplyRandomSidewardsForce(float minForce, float maxForce) {
-        Debug.Log("ApplyRandomSidewardsForce");
         float force = UnityEngine.Random.Range(minForce, maxForce);
         float xDir = UnityEngine.Random.Range(-1, 1);
 

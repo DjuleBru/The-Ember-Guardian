@@ -62,9 +62,8 @@ public class Portal : MonoBehaviour
     private void GameInput_OnPlayerInteractStarted(object sender, System.EventArgs e) {
         if (!playerInTriggerArea) return;
 
-        Debug.Log(PlayerCurrencies.Instance.GetCarryingEmber());
         if (isHUBTeleporter && !PlayerCurrencies.Instance.GetCarryingEmber() && !DEBUGMODE) {
-            PlayerWorldUITooltip.Instance.ShowTooltip("I must carry an ember ...", 2f);
+            PlayerUI_World.Instance.GetTooltipLeft().ShowTooltip("I must carry an ember ...", 2f);
             return;
         }
 
