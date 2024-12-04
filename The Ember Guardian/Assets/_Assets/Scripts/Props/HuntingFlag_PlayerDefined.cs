@@ -13,6 +13,7 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
 
     public static event EventHandler OnAnyHuntingFlagPickedUp;
     public static event EventHandler OnAnyHuntingFlagNewPositionSet;
+    public static event EventHandler OnAnyPlayerTriggeredIn;
 
     private void Awake() {
         huntingFlag = GetComponentInParent<HuntingFlag>();
@@ -80,6 +81,7 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
             Player.Instance.SetInteractingWithOtherObject(true);
             spriteRenderer.material.SetFloat("_Glow", .2f);
 
+            OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         }
     }
 

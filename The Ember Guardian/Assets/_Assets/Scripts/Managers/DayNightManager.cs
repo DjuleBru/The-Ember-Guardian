@@ -106,6 +106,7 @@ public class DayNightManager : MonoBehaviour
     }
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
+        if (Tutorial.Instance != null) return;
         SetCyclePaused(false);
     }
 
@@ -149,6 +150,8 @@ public class DayNightManager : MonoBehaviour
     public void ChangeState(State newState) {
         state = newState;
 
+        Debug.Log(newState);
+
         if(newState == State.Day) {
             OnDayStart?.Invoke(this, EventArgs.Empty);
         }
@@ -165,6 +168,7 @@ public class DayNightManager : MonoBehaviour
     }
 
     public void SetCyclePaused(bool paused) {
+        Debug.Log("SetCyclePaused " + paused);
         cyclePaused = paused;
     }
 

@@ -268,6 +268,19 @@ public class Fire : Structure, IDamageable {
         }
     }
 
+    public void ManualSetFireCurrentMaxFuelTreshold(State state) {
+        Debug.Log("ManualSetFireCurrentMaxFuelTreshold");
+        if (state == State.calm) {
+            maxFuelTreshold = mildFuelTreshold;
+        }
+        if (state == State.mild) {
+            maxFuelTreshold = wildFuelTreshold;
+        }
+        if (state == State.wild) {
+            maxFuelTreshold = insaneFuelTreshold;
+        }
+    }
+
     private void SetFireAOEValues(State newState) {
 
         if (state == State.extinguished) {

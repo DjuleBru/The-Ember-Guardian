@@ -44,6 +44,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip huntingFlagDropped;
     public AudioClip huntingFlagReset;
     public AudioClip gunLightSwitch;
+    public AudioClip spotLightActivate;
 
     public AudioClip activeSkillReady;
     public AudioClip passiveShieldActivate;
@@ -64,4 +65,6 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip tooltipShown;
     public AudioClip tooltipHidden;
     public AudioClip objectiveShown;
+    public AudioClip objectiveCompleted;
+    public AudioClip subObjectiveCompleted;
 }

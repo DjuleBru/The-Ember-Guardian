@@ -17,8 +17,11 @@ public class CurrencyCrafter : Structure
     private bool craftedCurrency;
 
     public event EventHandler OnCurrencyCraftingStarted;
+    public static event EventHandler OnAnyCurrencyCraftingStarted;
     public event EventHandler OnCurrencyCraftingEnded;
+    public static event EventHandler OnAnyCurrencyCraftingEnded;
     public event EventHandler OnPlayerCollectedCurrency;
+    public static event EventHandler OnPlayerCollectedAnyCurrency;
     public event EventHandler OnCurrencyInstantiated;
 
     protected override void Start() {
@@ -33,6 +36,7 @@ public class CurrencyCrafter : Structure
 
         if(currencyCraftTimer < 0) {
             OnCurrencyCraftingEnded?.Invoke(this, EventArgs.Empty);
+            OnAnyCurrencyCraftingEnded?.Invoke(this, EventArgs.Empty);
             craftingCurrency = false;
             craftedCurrency = true;
         }
@@ -44,6 +48,7 @@ public class CurrencyCrafter : Structure
             craftingCurrency = true;
             currencyCraftTimer = currencyCraftTime;
             OnCurrencyCraftingStarted?.Invoke(this, EventArgs.Empty);
+            OnAnyCurrencyCraftingStarted?.Invoke(this, EventArgs.Empty);
 
         }
     }
@@ -72,6 +77,7 @@ public class CurrencyCrafter : Structure
         craftedCurrency = false;
         payCurrencyUI.ResetCurrencyPayment();
         OnPlayerCollectedCurrency?.Invoke(this, EventArgs.Empty);
+        OnPlayerCollectedAnyCurrency?.Invoke(this, EventArgs.Empty);
 
         for (int i = 0; i < currencyCraftAmount; i++) {
             Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyTypeCrafted), currencySpawnPoint.position, Quaternion.identity).GetComponent<Collectible>();

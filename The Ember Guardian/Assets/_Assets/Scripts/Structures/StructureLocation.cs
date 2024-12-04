@@ -93,6 +93,10 @@ public class StructureLocation : MonoBehaviour {
         OnStructureLocationUnlocked?.Invoke(this, EventArgs.Empty);
     }
 
+    public void InvokeOnAnyStructureBuilt() {
+        OnAnyStructureBuilt?.Invoke(this, EventArgs.Empty);
+    }
+
     protected void InitializeOrbTemplateList() {
         PayCurrencyTemplateWorldUI[] orbTemplates = orbTemplateWorldUIParent.GetComponentsInChildren<PayCurrencyTemplateWorldUI>(); 
 

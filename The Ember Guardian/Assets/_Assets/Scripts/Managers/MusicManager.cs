@@ -26,14 +26,13 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
-        FadeOutMusic();
+        FadeOutMusic(1f);
     }
 
-    public void FadeOutMusic() {
-        StartCoroutine(FadeOutCoroutine());
+    public void FadeOutMusic(float fadeDuration) {
+        StartCoroutine(FadeOutCoroutine(fadeDuration));
     }
-    private IEnumerator FadeOutCoroutine() {
-        float fadeDuration = 1f; // Durée du fade-out en secondes
+    private IEnumerator FadeOutCoroutine(float fadeDuration) {
         float startVolume = audioSource.volume;
 
         // Réduire progressivement le volume

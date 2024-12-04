@@ -6,6 +6,7 @@ using UnityEngine;
 public class Shrine : Structure
 {
     public event EventHandler OnShrineActivated;
+    public static event EventHandler OnAnyShrineActivated;
 
     public enum ShrineType {
         hunterShrine,
@@ -33,6 +34,7 @@ public class Shrine : Structure
         }
 
         OnShrineActivated?.Invoke(this, EventArgs.Empty);
+        OnAnyShrineActivated?.Invoke(this, EventArgs.Empty);
     }
 
     private void WorkerManager_OnJoblessWorkerAmountChanged(object sender, EventArgs e) {

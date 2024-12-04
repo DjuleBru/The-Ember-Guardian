@@ -38,12 +38,10 @@ public class WorkerVisual : MobVisual {
     }
 
     private void HunterJob_OnHunterFindsNoAnimal(object sender, System.EventArgs e) {
-        Debug.Log("HunterJob_OnHunterFindsNoAnimal");
         workerStatusSpriteRenderer.sprite = questionMarkSprite;
     }
 
     private void HunterJob_OnHunterFoundAnimal(object sender, System.EventArgs e) {
-        Debug.Log("HunterJob_OnHunterFoundAnimal");
         workerStatusSpriteRenderer.sprite = null;
     }
 

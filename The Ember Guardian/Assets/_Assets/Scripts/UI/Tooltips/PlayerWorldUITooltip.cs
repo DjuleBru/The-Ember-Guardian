@@ -39,7 +39,6 @@ public class PlayerWorldUITooltip : MonoBehaviour
         }
     }
 
-
     public void ShowTooltip(string textToShow, float displayTime) {
         if (isActive) return;
 
@@ -88,12 +87,9 @@ public class PlayerWorldUITooltip : MonoBehaviour
         isActive = true;
         OnTooltipShown?.Invoke(this, EventArgs.Empty);
 
-        Debug.Log("ShowTooltipInstruction");
-
     }
 
     private IEnumerator HideTooltipCoroutine() {
-        Debug.Log("HideTooltipCoroutine");
         OnTooltipHidden?.Invoke(this, EventArgs.Empty);
         tooltipAnimator.SetTrigger("Hide");
         yield return new WaitForSeconds(.1f);
@@ -103,7 +99,6 @@ public class PlayerWorldUITooltip : MonoBehaviour
     }
 
     public void HideTooltip() {
-        Debug.Log("HideTooltip");
         StartCoroutine(HideTooltipCoroutine());
     }
 }

@@ -706,7 +706,7 @@ MonoBehaviour:
   upgradeUnlocked: 0
   primaryFunctionUnlocked: 0
   secondaryFunctionUnlocked: 0
-  currencyCraftTime: 45
+  currencyCraftTime: 3
   currencySpawnPoint: {fileID: 7441869313988092870}
   currencyTypeCrafted: 7
   currencyCraftAmount: 3
@@ -742,6 +742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d89fafabbc0b84bbe8ef126a386e55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  structureLights: []
   structureSpriteRenderer: {fileID: 190870229499975902}
   structureFunctionIconSpriteRenderer: {fileID: 1816938978050232834}
   greyedStructionIconColor: {r: 1, g: 1, b: 1, a: 0.3137255}

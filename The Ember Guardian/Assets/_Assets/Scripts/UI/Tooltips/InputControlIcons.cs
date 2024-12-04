@@ -14,6 +14,7 @@ public class InputControlIcons : MonoBehaviour
         Interact,
         Move,
         Run,
+        LightSwitch,
     }
 
     public Sprite gamepadYSprite;
@@ -25,6 +26,7 @@ public class InputControlIcons : MonoBehaviour
     public Sprite gamepadRtSprite;
     public Sprite gamepadLtSprite;
     public Sprite gamepadR3Sprite;
+    public Sprite gamepadL3Sprite;
     public Sprite gamepadRLeftRightSprite;
 
     public Sprite keyboardRSprite;
@@ -33,6 +35,7 @@ public class InputControlIcons : MonoBehaviour
     public Sprite keyboardQSprite;
     public Sprite keyboardDSprite;
     public Sprite keyboardESprite;
+    public Sprite keyboardLSprite;
     public Sprite keyboard1Sprite;
     public Sprite keyboard2Sprite;
     public Sprite keyboardShiftSprite;
@@ -70,6 +73,9 @@ public class InputControlIcons : MonoBehaviour
             if (control == Control.Run) {
                 spriteList.Add(gamepadLbSprite);
             }
+            if (control == Control.LightSwitch) {
+                spriteList.Add(gamepadL3Sprite);
+            }
         } else {
             if (control == Control.Reload) {
                 spriteList.Add(keyboardRSprite);
@@ -91,6 +97,9 @@ public class InputControlIcons : MonoBehaviour
             }
             if (control == Control.Run) {
                 spriteList.Add(keyboardShiftSprite);
+            }
+            if (control == Control.LightSwitch) {
+                spriteList.Add(keyboardLSprite);
             }
             if (control == Control.Move) {
                 spriteList.Add(keyboardQSprite);

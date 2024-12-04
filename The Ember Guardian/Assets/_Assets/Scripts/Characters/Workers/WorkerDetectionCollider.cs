@@ -6,7 +6,18 @@ public class WorkerDetectionCollider : MonoBehaviour
 {
     private List<Creature> creaturesInDetectionColliderRange = new List<Creature>();
     private bool creaturesInDetectionCollider;
+    private CircleCollider2D detectionCollider;
 
+    private void Awake() {
+        detectionCollider = GetComponent<CircleCollider2D>();
+        RandomizeDetectionColliderRadius();
+    }
+
+    private void RandomizeDetectionColliderRadius() {
+        float radius = detectionCollider.radius;
+        float radiusRandomized = radius + UnityEngine.Random.Range(-radius/10,radius/10);
+        detectionCollider.radius = radiusRandomized;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision) {
         Creature creature = collision.gameObject.GetComponent<Creature>();

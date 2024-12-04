@@ -43,6 +43,8 @@ public class SoundManager : MonoBehaviour
         PlayerWorldUITooltip.OnTooltipHidden += PlayerWorldUITooltip_OnTooltipHidden;
         PlayerWorldUITooltip.OnTooltipShown += PlayerWorldUITooltup_OnTooltipShown;
         LevelUI_ObjectiveUI.Instance.OnObjectiveUIShown += LevelUI_ObjectiveUI_OnObjectiveUIShown;
+        LevelUI_ObjectiveUI.Instance.OnObjectiveUICompleted += LevelUI_OnObjectiveUICompleted;
+        LevelUI_ObjectiveUI.Instance.OnSubObjectiveUICompleted += LevelUI_OnSubObjectiveUICompleted;
 
         ParticleCollision.OnAnyBulletHitEnemy += ParticleCollision_OnAnyBulletHitEnemy;
         ParticleCollision.OnAnyBulletHitGround += ParticleCollision_OnAnyBulletHitGround;
@@ -67,6 +69,8 @@ public class SoundManager : MonoBehaviour
         HuntingFlag_PlayerDefined.OnAnyHuntingFlagNewPositionSet += HuntingFlag_PlayerDefined_OnAnyHuntingFlagNewPositionSet;
         HuntingFlag_PlayerDefined.OnAnyHuntingFlagPickedUp += HuntingFlag_PlayerDefined_OnAnyHuntingFlagPickedUp;
         GunSpotLight.OnAnyLightSwitched += GunSpotLight_OnAnyLightSwitched;
+
+        Tutorial.OnAnySpotLightActivated += Tutorial_OnAnySpotLightActivated;
     }
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
@@ -79,6 +83,14 @@ public class SoundManager : MonoBehaviour
     private void LevelUI_ObjectiveUI_OnObjectiveUIShown(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.objectiveShown, .5f);
     }
+    private void LevelUI_OnSubObjectiveUICompleted(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.subObjectiveCompleted, .5f);
+    }
+
+    private void LevelUI_OnObjectiveUICompleted(object sender, System.EventArgs e) {
+        //PlaySound2D(soundRefsSO.objectiveCompleted, .5f);
+    }
+
     private void PlayerWorldUITooltup_OnTooltipShown(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.tooltipShown, .7f);
     }
@@ -348,7 +360,11 @@ public class SoundManager : MonoBehaviour
 
     #endregion
 
-    #region OTHER
+    #region LIGHT
+    private void Tutorial_OnAnySpotLightActivated(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.gunLightSwitch);
+    }
+
     private void GunSpotLight_OnAnyLightSwitched(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.gunLightSwitch);
     }
