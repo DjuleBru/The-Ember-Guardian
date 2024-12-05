@@ -7,6 +7,8 @@ public class MusicManager : MonoBehaviour {
     public static MusicManager Instance;
 
     [SerializeField] private float audioVolume = .2f;
+    [SerializeField] private AudioClip endLevelMusic;
+
 
     private float hubDelayToStartPlayingMusic = 2f;
     private AudioSource audioSource;
@@ -17,7 +19,7 @@ public class MusicManager : MonoBehaviour {
 
     private void Start() {
         audioSource = GetComponent<AudioSource>();
-        SetAudioVolume();
+        SetAudioVolume(audioVolume);
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
@@ -37,8 +39,11 @@ public class MusicManager : MonoBehaviour {
 
         // Réduire progressivement le volume
         for (float t = 0; t < fadeDuration; t += Time.deltaTime) {
-            audioSource.volume = Mathf.Lerp(startVolume, 0, t / fadeDuration);
-            yield return null; // Attendre le prochain frame
+            float progress = t / fadeDuration;
+
+            // Appliquer une courbe logarithmique pour le ressenti
+            audioSource.volume = Mathf.Lerp(startVolume, 0, Mathf.Sqrt(progress));
+            yield return null;
         }
 
         // S'assurer que le volume est bien à 0 à la fin
@@ -48,15 +53,27 @@ public class MusicManager : MonoBehaviour {
 
     private IEnumerator FadeInCoroutine(float fadeDuration) {
         float endVolume = audioVolume;
+        audioSource.volume = 0;
+        audioSource.Play(); // Assure que la musique démarre
 
         // Augmenter progressivement le volume
         for (float t = 0; t < fadeDuration; t += Time.deltaTime) {
-            audioSource.volume = Mathf.Lerp(0, endVolume, t / fadeDuration);
+            float progress = t / fadeDuration;
+
+            // Appliquer une courbe logarithmique inverse pour le ressenti
+            audioSource.volume = Mathf.Lerp(0, endVolume, progress * progress);
             yield return null; // Attendre le prochain frame
         }
+
+        // S'assurer que le volume atteint la valeur finale
+        audioSource.volume = endVolume;
     }
-    private void SetAudioVolume() {
-        audioSource.volume = audioVolume;
+    public void SetAudioVolume(float volume) {
+        audioSource.volume = volume;
+    }
+
+    public void SetAudioTargerVolume(float volume) {
+        audioVolume = volume;
     }
 
     public void FadeInMusic(float fadeDuration) {
@@ -64,4 +81,10 @@ public class MusicManager : MonoBehaviour {
         audioSource.Play();
         StartCoroutine(FadeInCoroutine(fadeDuration));
     }
+
+    public void SetEndLevelMusic() {
+        audioSource.clip = endLevelMusic;
+    }
+
+
 }

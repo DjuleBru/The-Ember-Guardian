@@ -8,6 +8,7 @@ public class Creature : Mob
 
     [SerializeField] private CreatureSO creatureSO;
     [SerializeField] private CircleCollider2D detectionCollider;
+    [SerializeField] private List<Collider2D> critZoneColliders;
 
     private Rigidbody2D rb;
     private bool dayCreature;
@@ -74,6 +75,11 @@ public class Creature : Mob
         OnCreatureDied?.Invoke(this, EventArgs.Empty);
         StartCoroutine(DisableGameObjectAfterDelay());
         GetComponent<Collider2D>().enabled = false;
+
+        foreach(Collider2D cd in critZoneColliders) {
+            cd.enabled = false;
+        }
+
         GetComponent<Rigidbody2D>().gravityScale = 0;
     }
 

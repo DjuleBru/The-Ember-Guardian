@@ -18,8 +18,8 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     [SerializeField] private float headToCampMoveSpeed = 2.5f;
     [SerializeField] private float trackAnimalMoveSpeed = 2f;
     [SerializeField] private float roamChangeDestinationRate = 5f;
+    [SerializeField] private float initialFiringRange = 10f;
 
-    private float initialFiringRange = 10f;
     private float firingRange;
 
     private float roamTimer;
@@ -205,6 +205,14 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
             case HunterState.guarding:
 
+                // Keep checking if camp limits have changed
+                Vector3 targetDestination = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned(), 2f);
+
+                if (Mathf.Abs(transform.position.x - targetDestination.x) > 2f) {
+                    ChangeState(HunterState.headingToGuard);
+                    return;
+                }
+
                 // Keep checking if tower spots have been opened
                 if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
 
@@ -218,15 +226,17 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
                 } else {
 
-                    if(targetCreature == null) {
+                    if (targetCreature == null) {
 
                         CheckClosestCreature();
 
-                    } else {
+                    }
+                    else {
 
-                        if(!TargetIsInHuntingRange(targetCreature)) {
+                        if (!TargetIsInHuntingRange(targetCreature)) {
                             hunterAttack.RemoveAttackTarget();
-                        } else {
+                        }
+                        else {
                             hunterAttack.SetAttackTarget(targetCreature);
                         }
 

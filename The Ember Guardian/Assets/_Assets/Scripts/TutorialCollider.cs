@@ -8,6 +8,7 @@ public class TutorialCollider : MonoBehaviour
     [SerializeField] private bool isStopMusicCollider;
     [SerializeField] private bool isLightTipCollider;
     [SerializeField] private bool isEndLevelAreaCollider;
+    [SerializeField] private bool isEndLevelAreaBlockingCollider;
 
     private Tutorial tutorial;
     private Collider2D tutorialCollider;
@@ -40,11 +41,21 @@ public class TutorialCollider : MonoBehaviour
 
         if (isEndLevelAreaCollider && !playerCollided) {
             playerCollided = true;
-            LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.DestroyNest);
+            StartCoroutine(FoundNestCoroutine());
         }
     }
 
     public void SetColliderTrigger() {
         tutorialCollider.isTrigger = true;
+    }
+
+    private IEnumerator FoundNestCoroutine() {
+        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FindNest);
+        
+        yield return new WaitForSeconds(4f);
+
+        LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.DestroyNest);
+        List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveTypes = new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.ClearNest };
+        LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveTypes);
     }
 }

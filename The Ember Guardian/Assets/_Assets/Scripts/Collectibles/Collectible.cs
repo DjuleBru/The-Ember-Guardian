@@ -102,9 +102,12 @@ public class Collectible : MonoBehaviour
 
             if (worker != null) {
                 if (currencyType == PlayerCurrencies.CurrencyType.ember) return;
+                if (currencyType == PlayerCurrencies.CurrencyType.redGem) return;
+                if (currencyType == PlayerCurrencies.CurrencyType.greenGem) return;
                 if (aggroedByWildWorker && worker != aggroedWildWorker) return;
 
-                if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.wild && !collected && currencyType == PlayerCurrencies.CurrencyType.bigBlueOrb) {
+                WorkerAI.JobTypes workerJob = worker.GetComponent<WorkerAI>().GetJob();
+                if (workerJob == WorkerAI.JobTypes.wild && !collected && currencyType == PlayerCurrencies.CurrencyType.bigBlueOrb) {
                     collected = true;
                     worker.RecruitWorker();
                     Destroy(gameObject);
@@ -113,7 +116,7 @@ public class Collectible : MonoBehaviour
                     return;
                 }
 
-                if (canBePickedUpByWorker && !collected) {
+                if (workerJob != WorkerAI.JobTypes.jobless && workerJob != WorkerAI.JobTypes.wild && canBePickedUpByWorker && !collected) {
                     collected = true;
                     worker.GetComponent<Worker>().CollectCurrency(currencyType);
                     Destroy(gameObject);
@@ -196,6 +199,7 @@ public class Collectible : MonoBehaviour
         transform.position = PlayerCurrencies.Instance.GetEmberHoldPosition().position;
         rb.bodyType = RigidbodyType2D.Kinematic;
         interactable = false;
+        solidCollider.enabled = false;
     }
 
     public void SetMovingForPayment(bool moving, float smoothTime = 1f, Transform destination = null) {

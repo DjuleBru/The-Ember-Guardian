@@ -12,17 +12,13 @@ PrefabInstance:
       propertyPath: mobPrefab
       value: 
       objectReference: {fileID: 860173671428369790, guid: 61aa75413f6dfed43afbcec4a72fa6bb, type: 3}
+    - target: {fileID: 2780275624035290928, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
+      propertyPath: sceneViewSpawnerSpriteRenderer
+      value: 
+      objectReference: {fileID: 2135839067699540585}
     - target: {fileID: 4798202510917334166, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
       propertyPath: m_Name
       value: WorkerSpawner
-      objectReference: {fileID: 0}
-    - target: {fileID: 5032015013220033746, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
-      propertyPath: m_SortingLayer
-      value: -9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5032015013220033746, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -1595801021
       objectReference: {fileID: 0}
     - target: {fileID: 8363332504539451143, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
       propertyPath: m_LocalPosition.x
@@ -69,3 +65,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
+--- !u!212 &2135839067699540585 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5032015013220033746, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
+  m_PrefabInstance: {fileID: 6372954862967609019}
+  m_PrefabAsset: {fileID: 0}

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,10 @@ public class JoblessJob : MonoBehaviour, IJobBehavior {
     private bool hasSetCampDestination;
 
     private bool isInSafeZone;
+
+    private bool blockedByCreatures;
+    public event EventHandler OnJoblessBlockedByCreatures;
+    public event EventHandler OnJoblessNotBlockedByCreatures;
 
     private void Awake() {
         workerDetectionCollider = GetComponentInChildren<WorkerDetectionCollider>();
@@ -39,11 +44,21 @@ public class JoblessJob : MonoBehaviour, IJobBehavior {
     }
     private bool CheckBlockedByCreature() {
         if (workerDetectionCollider.CreaturesInDetectionCollider()) {
+            if(!blockedByCreatures) {
+                blockedByCreatures = true;
+                OnJoblessBlockedByCreatures?.Invoke(this, EventArgs.Empty);
+            }
             return true;
         }
-        else {
-            return false;
+       
+        if(!workerDetectionCollider.CreaturesInDetectionCollider()) {
+            if(blockedByCreatures) {
+                blockedByCreatures = false;
+                OnJoblessNotBlockedByCreatures?.Invoke(this, EventArgs.Empty);
+            }
         }
+
+        return false;
     }
 
     public void HeadToCampCenter() {

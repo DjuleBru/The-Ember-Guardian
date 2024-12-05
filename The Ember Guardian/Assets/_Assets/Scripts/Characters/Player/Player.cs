@@ -119,7 +119,7 @@ public class Player : MonoBehaviour, IDamageable
         rb.AddForce(knockbackDir, ForceMode2D.Impulse);
     }
 
-    public void TakeDamage(int damage, Transform damageSource) {
+    public void TakeDamage(int damage, Transform damageSource, bool critHit = false) {
         if (damagedRecently) return;
         if (dead) return;
 
@@ -139,7 +139,7 @@ public class Player : MonoBehaviour, IDamageable
 
     private bool ShieldTanksDamage(int damage, Transform damageSource) {
         if(PlayerSkills.Instance.GetPassiveShield().GetShieldActive()) {
-            PlayerSkills.Instance.GetPassiveShield().TakeDamage(damage, damageSource);
+            PlayerSkills.Instance.GetPassiveShield().TakeDamage(damage, damageSource, false);
             return true;
         } else {
             return false;

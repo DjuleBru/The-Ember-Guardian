@@ -48,7 +48,7 @@ public class Projectile : MonoBehaviour
     private bool homingProjectile;
     private int damage;
 
-    public void ActivateAndInitialize(Transform targetTransform, ProjectileSO projectileSO, Mob parentMob, int damage, bool homingProjectile) {
+    public void ActivateAndInitialize(Transform targetTransform, ProjectileSO projectileSO, Mob parentMob, int damage, Vector3 endPointRandomOffsetValue,  bool homingProjectile) {
         this.parentMob = parentMob;
         this.projectileSO = projectileSO;
         this.damage = damage;
@@ -68,8 +68,7 @@ public class Projectile : MonoBehaviour
 
         trajectoryStartPoint = transform.position;
 
-        Vector3 trajectoryEndPointRandomOffset = new Vector3(UnityEngine.Random.Range(-trajectoryEndPointRandomOffsetValue, trajectoryEndPointRandomOffsetValue), 0, 0);
-        trajectoryEndPointRandomized = targetTransform.position + trajectoryEndPointRandomOffset;
+        trajectoryEndPointRandomized = targetTransform.position + endPointRandomOffsetValue;
 
         trajectoryEndPoint = trajectoryEndPointRandomized;
         trajectoryRange = trajectoryEndPoint - trajectoryStartPoint;
@@ -197,7 +196,7 @@ public class Projectile : MonoBehaviour
             mobHit.OnMobDied += MobHit_OnMobDied;
 
             ProjectileHasHit(true);
-            mobHit.TakeDamage(damage, parentMob.transform);
+            mobHit.TakeDamage(damage, parentMob.transform, false);
             transform.parent = mobHit.GetProjectileParent();
             return;
         }

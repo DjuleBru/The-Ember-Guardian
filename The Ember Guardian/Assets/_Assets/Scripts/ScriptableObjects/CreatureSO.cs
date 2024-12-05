@@ -62,6 +62,10 @@ public class CreatureSO : ScriptableObject
     public float attackRangeRandomizer;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
+    [Range(.1f, 10)]
+    public float attackRangeMaxDistanceMiss;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
     [Range(0, 2)]
     public float relativeDamageToFire;
     [VerticalGroup("Game Data/Animation Parameters")]

@@ -11,6 +11,10 @@ public class ParticleCollision : MonoBehaviour
     public List<ParticleCollisionEvent> collisionEvents;
     public CinemachineVirtualCamera cam;
     public GameObject explosionPrefab;
+    public GameObject critHitPrefab;
+
+    private Vector3 previousPosition;
+    private Vector3 particleMoveDir;
 
     [SerializeField] private float collisionDistanceThreshold = .25f;
     [SerializeField] private float hitKnockbackForce = 15f;
@@ -22,12 +26,17 @@ public class ParticleCollision : MonoBehaviour
     {
         ps = GetComponent<ParticleSystem>();
         collisionEvents = new List<ParticleCollisionEvent>();
-
+        previousPosition = transform.position;
     }
 
     void LateUpdate() {
         ParticleSystem.Particle[] particles = new ParticleSystem.Particle[ps.particleCount];
         int particleCount = ps.GetParticles(particles);
+
+        if(Mathf.Abs(Vector3.Distance(previousPosition, transform.position)) > .5f) {
+            particleMoveDir = transform.position - previousPosition;
+            previousPosition = transform.position;
+        };
 
         for (int i = 0; i < particleCount; i++) {
             Vector3 velocity = particles[i].velocity;
@@ -44,10 +53,6 @@ public class ParticleCollision : MonoBehaviour
 
         int numCollisionEvents = ps.GetCollisionEvents(other, collisionEvents);
 
-        GameObject explosion = Instantiate(explosionPrefab, collisionEvents[0].intersection, Quaternion.identity);
-        ParticleSystem p = explosion.GetComponent<ParticleSystem>();
-        //var pmain = p.main;
-
         // Récupère la liste des particules actives
         ParticleSystem.Particle[] particles = new ParticleSystem.Particle[ps.particleCount];
         int particleCount = ps.GetParticles(particles);
@@ -56,21 +61,44 @@ public class ParticleCollision : MonoBehaviour
         for (int i = 0; i < numCollisionEvents; i++) {
             Vector3 collisionPosition = collisionEvents[i].intersection;
 
+            // Trouve la particule responsable de cette collision
+
             // Parcours chaque particule pour voir laquelle est proche de la collision
             for (int j = 0; j < particleCount; j++) {
 
                 // Vérifie si la particule n'a pas déjà infligé des dégâts pour cette collision
                 if (!damagedParticles.Contains(j) && Vector3.Distance(particles[j].position, collisionPosition) < collisionDistanceThreshold) {
+
+                    // Calcule l'angle pour orienter l'explosion prefab
+                    float angle = Mathf.Atan2(particleMoveDir.y, particleMoveDir.x) * Mathf.Rad2Deg;
+
                     particles[j].remainingLifetime = 0; // Détruit seulement la particule proche de l'impact
                     ps.SetParticles(particles, particleCount); // Réinjecte les particules mises à jour dans le système
 
-                    // Applique des dégâts et ajoute l'index de la particule à la liste
                     if (other.GetComponent<Mob>() != null) {
-                        other.GetComponent<Mob>().TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform);
+                        other.GetComponent<Mob>().TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, false);
                         OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
-                    }
-                    else {
+                    } else {
+
+                        Instantiate(explosionPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
                         OnAnyBulletHitGround?.Invoke(this, EventArgs.Empty);
+
+                    }
+
+                    // Effectue un CircleCast autour du point d'impact
+                    RaycastHit2D[] hits = Physics2D.CircleCastAll(collisionPosition, .15f, Vector2.zero);
+
+                    foreach (var hit in hits) {
+                        if (hit.collider != null) {
+
+                            // Vérifie si le collider appartient à une zone critique
+                            if (hit.collider.CompareTag("CritHitZone")) {
+                                Debug.Log("CritHitZone ");
+                                hit.collider.GetComponentInParent<Mob>().TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, true);
+                                Instantiate(critHitPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
+
+                            } 
+                        }
                     }
 
                     damagedParticles.Add(j); // Marque cette particule comme ayant déjà infligé des dégâts

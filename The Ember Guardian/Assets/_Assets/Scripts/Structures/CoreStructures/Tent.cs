@@ -31,6 +31,13 @@ public class Tent : Structure
         Player.Instance.RefillPlayerHealth();
         ActivateStructurePrimaryFunctionInteraction(false);
     }
+    protected override void RefreshStructureUpgradeInteraction() {
+        // Unlock upgrades if tent upgrade allows for new unlocks
 
+        if (structureLevel >= LevelManager.Instance.GetLevelSO().maxTentLevel) {
+            SetStructureUpgradableUnlocked(false);
+            return;
+        }
+    }
 
 }

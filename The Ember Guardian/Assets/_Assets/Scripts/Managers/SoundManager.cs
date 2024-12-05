@@ -84,7 +84,7 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(soundRefsSO.objectiveShown, .5f);
     }
     private void LevelUI_OnSubObjectiveUICompleted(object sender, System.EventArgs e) {
-        PlaySound2D(soundRefsSO.subObjectiveCompleted, .5f);
+        PlaySound2D(soundRefsSO.subObjectiveCompleted, .35f);
     }
 
     private void LevelUI_OnObjectiveUICompleted(object sender, System.EventArgs e) {

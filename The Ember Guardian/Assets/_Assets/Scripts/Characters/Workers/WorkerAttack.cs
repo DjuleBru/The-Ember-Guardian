@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class WorkerAttack : MobAttack
 {
-
     private void Start() {
         attackDamage = 20;
-    }
 
+    }
 }

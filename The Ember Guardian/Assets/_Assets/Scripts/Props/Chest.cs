@@ -5,12 +5,21 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour
 {
+    public enum ChestType {
+        orbChest,
+        gemChest,
+        ammoChest,
+        initialChest,
+        hugeChest
+    }
+
+    [SerializeField] private ChestType chestType;
     [SerializeField] private Transform orbSpawnPosition;
     [SerializeField] private List<PlayerCurrencies.CurrencyType> currencyTypeToRewardList;
     [SerializeField] private List<int> rewardAmountList;
 
-    [SerializeField] private float delayToChestUnlockAnimation;
-    [SerializeField] private float delayToSpawnCollectibles;
+    private float delayToChestUnlockAnimation;
+    private float delayToSpawnCollectibles;
 
     private bool chestOpened;
     public event EventHandler OnChestUnlocked;
@@ -19,6 +28,29 @@ public class Chest : MonoBehaviour
     public static event EventHandler<OnAnyChestSpawnedCollectibleEventArgs> OnAnyChestSpawnedCollectible;
     public class OnAnyChestSpawnedCollectibleEventArgs : EventArgs {
         public PlayerCurrencies.CurrencyType currencyType;
+    }
+
+    private void Awake() {
+        if(chestType == ChestType.orbChest) {
+            delayToChestUnlockAnimation = 2.5f;
+            delayToSpawnCollectibles = 3.4f;
+        }
+        if (chestType == ChestType.gemChest) {
+            delayToChestUnlockAnimation = 2.1f;
+            delayToSpawnCollectibles = 2.8f;
+        }
+        if (chestType == ChestType.ammoChest) {
+            delayToChestUnlockAnimation = 2.3f;
+            delayToSpawnCollectibles = 4.8f;
+        }
+        if (chestType == ChestType.initialChest) {
+            delayToChestUnlockAnimation = 1.9f;
+            delayToSpawnCollectibles = 2.6f;
+        }
+        if (chestType == ChestType.hugeChest) {
+            delayToChestUnlockAnimation = 2.2f;
+            delayToSpawnCollectibles = 3.2f;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -63,5 +95,9 @@ public class Chest : MonoBehaviour
         yield return new WaitForSeconds(3f);
         Destroy(gameObject);
 
+    }
+
+    public ChestType GetChestType() {
+        return chestType;
     }
 }

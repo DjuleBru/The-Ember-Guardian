@@ -15,6 +15,7 @@ public class EndLevelArea : MonoBehaviour
     private List<Mob> mobsInArea = new List<Mob>();
 
     public event EventHandler OnEndLevelAreaCleared;
+    public event EventHandler OnEndLevelFireLit;
 
     private void Awake() {
         Instance = this;
@@ -40,10 +41,14 @@ public class EndLevelArea : MonoBehaviour
         if(mobsInArea.Count == 0) {
             endLevelAreaFire.SetActive(true);
             OnEndLevelAreaCleared?.Invoke(this, EventArgs.Empty);
+            MusicManager.Instance.FadeOutMusic(3f);
         }
     }
 
     public void SetEndLevelFireLit() {
+        OnEndLevelFireLit?.Invoke(this, EventArgs.Empty);
+        if (Tutorial.Instance != null) return;
+
         StartCoroutine(EnableEndLevelPortal());
     }
 
@@ -51,5 +56,6 @@ public class EndLevelArea : MonoBehaviour
         yield return new WaitForSeconds(4f);
         endLevelPortal.gameObject.SetActive(true);
     }
+
 
 }

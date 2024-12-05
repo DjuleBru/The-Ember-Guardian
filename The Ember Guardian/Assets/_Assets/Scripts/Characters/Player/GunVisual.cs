@@ -45,9 +45,10 @@ public class GunVisual : MonoBehaviour
         if (!gun.GetGunActive()) return;
 
         int finalGunReloadSpriteIndex = gunReloadSprites.Count;
-        float delayBetweenSprites = PlayerStats.Instance.GetReloadTime() / (float)Mathf.Abs(finalGunReloadSpriteIndex - gunLightSpriteIndex);
+        float reloadTime = PlayerStats.Instance.GetReloadTime();
+        float delayBetweenSprites = (reloadTime / (float)Mathf.Abs(finalGunReloadSpriteIndex - gunLightSpriteIndex)/3);
 
-        StartCoroutine(ChangeRemainingBulletsVisuals(delayBetweenSprites, gunLightSpriteIndex, finalGunReloadSpriteIndex));
+        StartCoroutine(ReloadBulletsVisual(reloadTime, delayBetweenSprites, gunLightSpriteIndex, finalGunReloadSpriteIndex));
 
     }
 
@@ -83,12 +84,28 @@ public class GunVisual : MonoBehaviour
             }
         }
         else {
-            // Reloading: on monte les index
-            for (int i = initialSpriteIndex + 1; i <= finalSpriteIndex; i++) {
-                gunLightsSpriteRenderer.sprite = gunReloadSprites[i];
-                yield return new WaitForSeconds(delayBetweenSprites);
-                gunLightSpriteIndex = i;
-            }
+            
+        }
+    }
+
+    private IEnumerator ReloadBulletsVisual(float reloadTime, float delayBetweenSprites, int initialSpriteIndex, int finalSpriteIndex) {
+        if (!gun.GetGunActive()) yield return null;
+        gunLightsSpriteRenderer.sprite = gunReloadSprites[initialSpriteIndex];
+
+        // Vérifie que les indices sont dans les limites du tableau
+        if (initialSpriteIndex < 0) initialSpriteIndex = 0;
+        if (initialSpriteIndex >= gunReloadSprites.Count) initialSpriteIndex = gunReloadSprites.Count - 1;
+        if (finalSpriteIndex < 0) finalSpriteIndex = 0;
+        if (finalSpriteIndex >= gunReloadSprites.Count) finalSpriteIndex = gunReloadSprites.Count - 1;
+
+        yield return new WaitForSeconds(reloadTime/3*2);
+        
+        // Reloading: on monte les index
+        for (int i = initialSpriteIndex + 1; i <= finalSpriteIndex; i++) {
+            Debug.Log(i);
+            gunLightsSpriteRenderer.sprite = gunReloadSprites[i];
+            yield return new WaitForSeconds(delayBetweenSprites);
+            gunLightSpriteIndex = i;
         }
     }
 

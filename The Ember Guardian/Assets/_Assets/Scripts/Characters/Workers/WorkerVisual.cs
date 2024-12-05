@@ -6,6 +6,7 @@ public class WorkerVisual : MobVisual {
 
     private WorkerAI workerAI;
     private HunterJob hunterJob;
+    private JoblessJob joblessJob;
 
     [SerializeField] private Material emptyMaterial;
     [SerializeField] private SpriteRenderer workerBodySpriteRenderer;
@@ -17,6 +18,7 @@ public class WorkerVisual : MobVisual {
         base.Awake();
         workerAI = GetComponentInParent<WorkerAI>();
         hunterJob = GetComponentInParent<HunterJob>();
+        joblessJob = GetComponentInParent<JoblessJob>();
         workerStatusSpriteRenderer.sprite = null;
     }
 
@@ -25,6 +27,16 @@ public class WorkerVisual : MobVisual {
         hunterJob.OnHunterFindsNoAnimal += HunterJob_OnHunterFindsNoAnimal;
         hunterJob.OnHunterChangedState += HunterJob_OnHunterChangedState;
         hunterJob.OnHunterFoundAnimal += HunterJob_OnHunterFoundAnimal;
+        joblessJob.OnJoblessBlockedByCreatures += JoblessJob_OnJoblessBlockedByCreatures;
+        joblessJob.OnJoblessNotBlockedByCreatures += JoblessJob_OnJoblessNotBlockedByCreatures;
+    }
+
+    private void JoblessJob_OnJoblessNotBlockedByCreatures(object sender, System.EventArgs e) {
+        workerStatusSpriteRenderer.sprite = null;
+    }
+
+    private void JoblessJob_OnJoblessBlockedByCreatures(object sender, System.EventArgs e) {
+        workerStatusSpriteRenderer.sprite = exclamationMarkSprite;
     }
 
     private void HunterJob_OnHunterChangedState(object sender, System.EventArgs e) {

@@ -57,6 +57,7 @@ public class Fire : Structure, IDamageable {
     public event EventHandler OnFireEmberExtractionStopped;
     public static event EventHandler OnAnyFireEmberExtractionStopped;
 
+    private bool isTutorial;
     private bool lerping;
     private bool extractingEmber;
     private float extractingEmberTimer;
@@ -84,6 +85,7 @@ public class Fire : Structure, IDamageable {
 
     protected override void Start() {
         base.Start();
+        isTutorial = Tutorial.Instance != null;
 
         fireOrbCollider.OnOrbFellInFire += FireOrbCollider_OnOrbFellInFire;
 
@@ -183,6 +185,7 @@ public class Fire : Structure, IDamageable {
     }
 
     private void CheckFireFeedable() {
+        if (isTutorial) return;
 
         if(fuelLevel + orbFuelValue <= maxFuelTreshold) {
             SetStructurePrimaryFunctionUnlocked(true);
@@ -232,11 +235,17 @@ public class Fire : Structure, IDamageable {
     }
 
     private void CheckFireSecondaryFunctionInteractable() {
+
+        if (PlayerCurrencies.Instance.GetCarryingEmber()) {
+            SetStructureSecondaryFunctionUnlocked(false);
+        };
+
         if (extractingEmber) return;
+        if (isTutorial) return;
 
         State maxState = LevelManager.Instance.GetLevelSO().maxFireState;
 
-        if(state == maxState && !PlayerCurrencies.Instance.GetCarryingEmber()) {
+        if(fuelLevel > (maxFuelTreshold - orbFuelValue)) {
             SetStructureSecondaryFunctionUnlocked(true);
         } else {
             SetStructureSecondaryFunctionUnlocked(false);
@@ -405,7 +414,7 @@ public class Fire : Structure, IDamageable {
         return fuelLevel;
     }
 
-    public void TakeDamage(int damage, Transform damageSource) {
+    public void TakeDamage(int damage, Transform damageSource, bool critHit = false) {
         fuelLevel -= (damage * damageToFuelConversionRate);
         CheckFireStateDowngrade();
         OnFireDamageTaken?.Invoke(this, EventArgs.Empty);

@@ -25,12 +25,13 @@ public class SubObjectiveUI : MonoBehaviour
     }
 
     public void SetCompleted() {
+        if (completed) return;
         completed = true;
         StartCoroutine(SetCompletedObjective());
     }
 
     public void SetNext(LevelUI_ObjectiveUI.SubObjectiveType subObjectiveType) {
-        completed = true;
+        completed = false;
         this.subObjectiveType = subObjectiveType;
         StartCoroutine(SetNextSubObjective(LevelUI_ObjectiveUI.Instance.GetSubObjectiveTextFromType(subObjectiveType)));
     }

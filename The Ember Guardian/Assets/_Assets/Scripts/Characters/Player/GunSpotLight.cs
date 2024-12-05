@@ -9,6 +9,7 @@ public class GunSpotLight : MonoBehaviour
     [SerializeField] private Transform gunSpotLightTransform;
     private Light2D gunSpotLight;
 
+    private bool autoSwitchWithDay;
     private bool lightActive = true;
     public static event EventHandler OnAnyLightSwitched;
 
@@ -55,6 +56,7 @@ public class GunSpotLight : MonoBehaviour
     }
 
     private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
+        if (!autoSwitchWithDay) return;
         if (lightActive) {
             lightActive = false;
             gunSpotLight.enabled = false;
@@ -63,6 +65,7 @@ public class GunSpotLight : MonoBehaviour
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
+        if (!autoSwitchWithDay) return;
         if (!lightActive) {
             lightActive = true;
             gunSpotLight.enabled = true;

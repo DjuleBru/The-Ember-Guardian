@@ -13,6 +13,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         PrepareForNight,
         Explore,
         Survive,
+        FindNest,
         DestroyNest,
     }
 
@@ -31,6 +32,10 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         WaitForHunt,
         CollectOrbsFromHunters,
         FuelFire,
+        ExtractEmber,
+        FindNest,
+        ClearNest,
+        LightFire,
     }
 
     public static LevelUI_ObjectiveUI Instance;
@@ -69,6 +74,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         OnObjectiveUIShown?.Invoke(this, EventArgs.Empty);
 
         currentObjectiveType = objectiveType;
+        Debug.Log("SetNewObjectiveUI " + currentObjectiveType);
     }
 
     public void SetSubObjectivesUI(List<SubObjectiveType> subObjectiveTypeList) {
@@ -104,6 +110,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         bool allSubObjectivesCompleted = true;
 
         foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>()) {
+            Debug.Log("current subObjectives " + subObjectiveUI.GetSubObjectiveType().ToString());
 
             if (subObjectiveUI.GetSubObjectiveType() == subObjectiveTypeCompleted) {
                 subObjectiveUI.SetCompleted();
@@ -116,18 +123,26 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
             }
         }
 
+        Debug.Log("allSubObjectivesCompleted " + allSubObjectivesCompleted);
+
         if(subObjectiveTypeUnlockedList != null) {
             yield return new WaitForSeconds(1f);
             StartCoroutine(SetSubObjectivesUICoroutine(subObjectiveTypeUnlockedList, 1f));
             yield return null;
         } else {
             if (allSubObjectivesCompleted) {
-                StartCoroutine(SetObjectiveCompleted(1f));
+                StartCoroutine(SetObjectiveCompletedCoroutine(1f));
             }
         }
     }
 
-    public IEnumerator SetObjectiveCompleted(float delay) {
+    public void SetObjectiveCompleted(float delay) {
+        Debug.Log("SetObjectiveCompleted " + delay);
+        StartCoroutine(SetObjectiveCompletedCoroutine(delay));
+    }
+
+    public IEnumerator SetObjectiveCompletedCoroutine(float delay) {
+        Debug.Log("SetObjectiveCompletedCoroutine " + delay);
         yield return new WaitForSeconds(delay);
         objectiveAnimator.SetTrigger("Completed");
         yield return new WaitForSeconds(.5f);
@@ -140,9 +155,9 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
 
     private IEnumerator EndCampSetupObjective() {
         Debug.Log("EndCampSetupObjective");
-        SetObjectiveCompleted(1f);
+        SetObjectiveCompletedCoroutine(0f);
 
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(5f);
 
         DayNightManager.Instance.ChangeState(DayNightManager.State.Dusk);
 
@@ -156,6 +171,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         SetNewObjectiveUI(ObjectiveType.PrepareForNight);
         SetSubObjectivesUI(subObjectivesUnlocked);
         Fire.Instance.ManualSetFireCurrentMaxFuelTreshold(Fire.State.mild);
+        Fire.Instance.SetStructurePrimaryFunctionUnlocked(true);
     }
 
     public string GetSubObjectiveTextFromType(SubObjectiveType subObjectiveType) {
@@ -185,10 +201,10 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
             return "Wait for ammo to be crafted";
         }
         if (subObjectiveType == SubObjectiveType.Recruit2Hunters) {
-            return "Recruit 2 hunters";
+            return "Recruit at least 2 trappers";
         }
         if (subObjectiveType == SubObjectiveType.RecruitMoreEmberlings) {
-            return "Recruit move emberlings";
+            return "Explore to recruit more emberlings";
         }
         if (subObjectiveType == SubObjectiveType.WaitForHunt) {
             return "Wait for trappers to hunt animals";
@@ -198,6 +214,18 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         }
         if (subObjectiveType == SubObjectiveType.FuelFire) {
             return "Add fuel to the fire";
+        }
+        if (subObjectiveType == SubObjectiveType.ClearNest) {
+            return "Clear the nest from the darklings";
+        }
+        if (subObjectiveType == SubObjectiveType.LightFire) {
+            return "Light the fire to destroy the nest";
+        }
+        if (subObjectiveType == SubObjectiveType.ExtractEmber) {
+            return "Extract an ember from the main fire";
+        }
+        if (subObjectiveType == SubObjectiveType.FindNest) {
+            return "Find the darklings nest";
         }
         return "";
     }
@@ -218,6 +246,9 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         }
         if (objectiveType == ObjectiveType.Survive) {
             return "Survive the night";
+        }
+        if (objectiveType == ObjectiveType.FindNest) {
+            return "Find the darklings nest";
         }
         if (objectiveType == ObjectiveType.DestroyNest) {
             return "Destroy the darklings nest";

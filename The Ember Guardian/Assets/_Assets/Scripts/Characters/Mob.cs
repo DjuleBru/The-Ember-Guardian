@@ -21,6 +21,8 @@ public class Mob : MonoBehaviour, IDamageable
     public event EventHandler OnMobDied;
     public static event EventHandler OnAnyMobDied;
     public event EventHandler<OnMobDamageTakenEventArgs> OnMobDamageTaken;
+    public event EventHandler<OnMobDamageTakenEventArgs> OnMobCritDamageTaken;
+    public event EventHandler OnAnyMobCritDamageTaken;
     public event EventHandler<OnMobDroppedCollectibleEventArgs> OnMobDroppedCollectibles;
 
     protected void SpawnDroppedCurrencies(List<PlayerCurrencies.CurrencyType> currencyTypeList, List<int> dropAmountList) {
@@ -63,10 +65,20 @@ public class Mob : MonoBehaviour, IDamageable
         return mobSpawner;
     }
 
-    public void TakeDamage(int damage, Transform damageSource) {
+    public void TakeDamage(int damage, Transform damageSource, bool critHit) {
         if (health <= 0) return;
+        
+        if(critHit) {
+            damage *= 2;
+            health -= damage;
+            OnMobCritDamageTaken?.Invoke(this, new OnMobDamageTakenEventArgs {
+                damageOriginTransform = damageSource,
+            });
+        } else {
+            health -= damage;
+        }
+        Debug.Log("take damage " + damage);
 
-        health -= damage;
         OnMobDamageTaken?.Invoke(this, new OnMobDamageTakenEventArgs {
             damageOriginTransform = damageSource,
         });

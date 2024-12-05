@@ -16,11 +16,11 @@ public class BackpackFeedbacks : MonoBehaviour
     public event EventHandler OnBackpackFeedbacksPlay;
  
     private void Start() {
-        Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
-        PlayerMovement.Instance.OnPlayerLanded += PlayerMovement_OnPlayerLanded;
-        PlayerMovement.Instance.OnPlayerCrouched += PlayerMovement_OnPlayerCrouched;
-        PlayerShoot.Instance.OnPlayerShot += Player_OnPlayerShotProjectile;
-        playerAnimator.OnFootStepTriggered += PlayerAnimator_OnFootStepTriggered;
+        //Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
+        //PlayerMovement.Instance.OnPlayerLanded += PlayerMovement_OnPlayerLanded;
+        //PlayerMovement.Instance.OnPlayerCrouched += PlayerMovement_OnPlayerCrouched;
+        //PlayerShoot.Instance.OnPlayerShot += Player_OnPlayerShotProjectile;
+        //playerAnimator.OnFootStepTriggered += PlayerAnimator_OnFootStepTriggered;
     }
 
     private void PlayerMovement_OnPlayerCrouched(object sender, System.EventArgs e) {

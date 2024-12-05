@@ -34,6 +34,14 @@ public class CreatureAttack : MobAttack
         attackCooldown *= enteredLightAttackSpeedDebuff;
     }
 
+    protected override Vector3 GetEndPointRandomized() {
+        float distanceToTargetNormalized = Mathf.Abs(attackTargetGameObject.transform.position.x - transform.position.x)/ creature.GetCreatureSO().attackRange;
+
+        Vector3 endPointRandomized = new Vector3(distanceToTargetNormalized * creature.GetCreatureSO().attackRangeMaxDistanceMiss, 0, 0);
+        
+        return endPointRandomized;
+    }
+
     public override void RemoveAttackTarget() {
         attacking = false;
         attackTargetIDamageable = null;

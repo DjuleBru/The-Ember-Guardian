@@ -20,11 +20,12 @@ MonoBehaviour:
   detectionRange_Night: 2
   moveSpeed: 1.75
   moveSpeedRandomizerDelta: 0
-  maxHealth: 50
+  maxHealth: 60
   damage: 1
   attackRate: 2.04
   attackRange: 1.5
   attackRangeRandomizer: 0.5
+  attackRangeMaxDistanceMiss: 0
   relativeDamageToFire: 1
   attackAnimationDelay: 0.2
   totalAttackAnimationTime: 0.6
@@ -35,7 +36,7 @@ MonoBehaviour:
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
   difficulty: 3
-  initialWaveSpawn: 2
+  initialWaveSpawn: 1
   spawnProbability: 0.55
   dieAudioClips:
   - {fileID: 8300000, guid: 5754133c60f687f4f948198eb0096c83, type: 3}

@@ -72,7 +72,9 @@ public class MobAttack : MonoBehaviour
 
             Projectile projectile = Instantiate(projectileSO.projectilePrefab, projectileSpawnPoint.position, Quaternion.identity).GetComponent<Projectile>();
 
-            projectile.ActivateAndInitialize(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, mob, attackDamage, homingProjectile);
+            Vector3 endPointRandomized = GetEndPointRandomized();
+
+            projectile.ActivateAndInitialize(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, mob, attackDamage, endPointRandomized, homingProjectile);
         }
     }
 
@@ -93,6 +95,9 @@ public class MobAttack : MonoBehaviour
         attackStarted = false;
     }
 
+    protected virtual Vector3 GetEndPointRandomized() {
+        return Vector3.zero;
+    }
     public void SetAttackTarget(IDamageable iDamageable) {
         this.attackTargetIDamageable = iDamageable;
         previousAttackTargetIDamageable = attackTargetIDamageable;
@@ -126,5 +131,6 @@ public class MobAttack : MonoBehaviour
     public bool GetIsRangedAttack() {
         return isProjectileAttack;
     }
+
 
 }

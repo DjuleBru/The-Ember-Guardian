@@ -53,7 +53,7 @@ public class Barricade : Structure, IDamageable {
         return transform;
     }
 
-    public void TakeDamage(int damage, Transform damageSource) {
+    public void TakeDamage(int damage, Transform damageSource, bool critHit = false) {
         barricadeHealth -= damage;
 
         if(barricadeHealth <= 0) {

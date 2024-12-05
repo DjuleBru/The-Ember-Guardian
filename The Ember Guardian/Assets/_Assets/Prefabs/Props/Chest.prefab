@@ -219,7 +219,7 @@ Animator:
   m_GameObject: {fileID: 4664202429566326197}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d8eb54724320f0e42866cebdd5d2823b, type: 2}
+  m_Controller: {fileID: 22100000, guid: 9117941dfe3d127458c4e26193ca7cd7, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -242,6 +242,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 054659347fc77874c97739d4eb9a5524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialChestAnimator: {fileID: 22100000, guid: 9117941dfe3d127458c4e26193ca7cd7, type: 2}
+  ammoChestAnimator: {fileID: 22100000, guid: d0fbcf4d67644544ab34b0f9b94affb1, type: 2}
+  gemChestAnimator: {fileID: 22100000, guid: c48b5548148104949b0c8b1cd11ef274, type: 2}
+  orbChestAnimator: {fileID: 9100000, guid: d8eb54724320f0e42866cebdd5d2823b, type: 2}
+  hugeChestAnimator: {fileID: 22100000, guid: 01840261963901c408e21c90b42cd3ac, type: 2}
 --- !u!1 &7533033605761610429
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,11 +379,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af3f2696dca26043a68a81b7ef978d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chestType: 0
   orbSpawnPosition: {fileID: 5709709022671916459}
   currencyTypeToRewardList: 00000000
   rewardAmountList: 03000000
-  delayToChestUnlockAnimation: 2.5
-  delayToSpawnCollectibles: 3.4
 --- !u!50 &2181923871841356642
 Rigidbody2D:
   serializedVersion: 4

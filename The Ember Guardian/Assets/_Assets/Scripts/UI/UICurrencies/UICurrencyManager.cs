@@ -104,7 +104,9 @@ public class UICurrencyManager : MonoBehaviour
         //    FormBigOrbWithSmallOrb();
         //}
 
-
+        if (Input.GetKeyDown(KeyCode.P)) {
+            AddCurrencyInBag(PlayerCurrencies.CurrencyType.ammo);
+        }
         if (Input.GetKeyDown(KeyCode.J)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.bigRedOrb);
         }

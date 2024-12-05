@@ -5,6 +5,7 @@ using System.Linq;
 
 public class CreaturesSpawnManager : MonoBehaviour
 {
+    public static CreaturesSpawnManager Instance;
 
     [SerializeField] private AnimationCurve subWaveDifficultyCurve;
     [SerializeField] private int startWaveToSpawnFromBothSides;
@@ -41,12 +42,18 @@ public class CreaturesSpawnManager : MonoBehaviour
     private int currentWaveNumber;
     private int subWaveNumber;
 
+    private void Awake() {
+        Instance = this;
+    }
+
     private void Update() {
         if (Input.GetKeyDown(KeyCode.U)) {
             currentWaveNumber++;
+            Debug.Log(currentWaveNumber);
             SetWaveParameters(currentWaveNumber);
         }
         if (Input.GetKeyDown(KeyCode.T)) {
+            Debug.Log("SpawnWave");
             StartCoroutine(SpawnWave());
         }
     }
@@ -65,7 +72,12 @@ public class CreaturesSpawnManager : MonoBehaviour
         StartCoroutine(SpawnWave());
     }
 
-    private void SetWaveParameters(int waveNumber) {
+    public void SetTutorialWave() {
+        currentWaveNumber++;
+        SetWaveParameters(currentWaveNumber);
+    }
+
+    public void SetWaveParameters(int waveNumber) {
         waveDifficulty = baseDifficulty * Mathf.Pow(growthFactor, waveNumber);
         waveDuration = Mathf.Lerp(minWaveDuration, maxWaveDuration, (waveNumber-1) / 10f);
         subWaveNumber = (int)(waveDuration / delayBetweenSubWaves);
@@ -79,7 +91,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         Debug.Log("waveDifficultyLeftProportion " + waveDifficultyLeftProportion);
         Debug.Log("waveDifficultyRightProportion " + waveDifficultyRightProportion);
 
-        DayNightManager.Instance.SetNightDuration(waveDuration + waveDuration / 4);
+        DayNightManager.Instance.SetNightDuration(waveDuration + waveDuration / 3);
 
         // Préparer la liste de toutes les créatures à spawner pour cette vague
         waveCreaturesDictionary.Clear();
@@ -87,7 +99,7 @@ public class CreaturesSpawnManager : MonoBehaviour
        for(int i=0 ; i < subWaveNumber; i++) {
             float subWaveDifficulty = subWaveDifficultyCurve.Evaluate((float)i / subWaveNumber) * waveDifficulty;
 
-            List<SpawnedCreatureInfo> subWaveCreatures = PrepareSubWaveCreatures(subWaveDifficulty, waveDifficultyLeftProportion, subWaveNumber);
+            List<SpawnedCreatureInfo> subWaveCreatures = PrepareSubWaveCreatures(subWaveDifficulty, waveDifficultyLeftProportion, i);
             waveCreaturesDictionary.Add(i, subWaveCreatures);
             CountCreatureOccurrences(subWaveCreatures);
         }

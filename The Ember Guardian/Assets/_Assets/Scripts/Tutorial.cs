@@ -11,9 +11,11 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private bool testing;
     [SerializeField] private TutorialCollider firstCreatureCollider;
     [SerializeField] private TutorialCollider blockingWorkersCollider;
+    [SerializeField] private TutorialCollider endLevelAreaCollider;
     [SerializeField] private StructureLocation startFireLocation;
     [SerializeField] private StructureLocation ammoCrafterLocation;
     [SerializeField] private StructureLocation hunterShrineLocation;
+    [SerializeField] private EndLevelArea endLevelArea;
     [SerializeField] private Light2D firstCreatureSpotLight;
 
     private bool moveTooltipShown;
@@ -39,13 +41,17 @@ public class Tutorial : MonoBehaviour
     private bool ammoCrafted;
     private bool duskStarted;
     private bool dawnStarted;
+    private bool emberExtracted;
     private bool animalDied;
     private bool workerDroppedOrb;
     private bool fireFuelled;
+    private bool emberExtractionObjectiveStarted;
+    private bool emberExtractionObjectiveEnded;
 
     private bool nightStarted;
     private int barricadeNumberBuilt;
     private int hunterNumberRecruited;
+    private int fireFuelledNumber;
 
     private bool showingGetReady;
 
@@ -79,8 +85,12 @@ public class Tutorial : MonoBehaviour
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         Animal.OnAnyMobDied += Animal_OnAnyMobDied;
         Fire.Instance.OnFireFuelled += Fire_OnFireFuelled;
+        Fire.Instance.OnPlayerTriggeredIn += Fire_OnPlayerTriggeredIn;
+        Fire.Instance.OnFireEmberExtractionStarted += Fire_OnFireEmberExtractionStarted;
         Worker.OnAnyOrbDroppedByWorker += Worker_OnAnyOrbDroppedByWorker;
         HuntingFlag_PlayerDefined.OnAnyPlayerTriggeredIn += HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn;
+        endLevelArea.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
+        endLevelArea.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
 
         StartCoroutine(ShowMoveTooltipAfterDelay());
     }
@@ -101,12 +111,20 @@ public class Tutorial : MonoBehaviour
             HandleBlockingCollider(blockingWorkersCollider.transform.position, "I should recruit the lost souls first");
         }
 
+        if (reloadTooltipHidden && !dawnStarted) {
+            HandleBlockingCollider(endLevelAreaCollider.transform.position, "This seems too dangerous for now");
+        }
+
+        if (dawnStarted && !emberExtracted) {
+            HandleBlockingCollider(endLevelAreaCollider.transform.position, "I should extract an ember first");
+        }
+
         if (Input.GetKeyDown(KeyCode.V)) {
-            StartCoroutine(StartGuardingWorkersObjective(.5f));
+            StartCoroutine(StartGuardingWorkersObjective(0f));
         }
 
         //if (Input.GetKeyDown(KeyCode.B)) {
-        //    StartCoroutine(StartSetupCampObjectiveCoroutine());
+        //    StartCoroutine(StartSurviveTheNightObjective());
         //}
     }
 
@@ -123,16 +141,26 @@ public class Tutorial : MonoBehaviour
     }
 
     private void Fire_OnFireFuelled(object sender, EventArgs e) {
-        if (fireFuelled) return;
+        fireFuelledNumber++;
 
-        fireFuelled = true;
+        if (fireFuelledNumber == 1) {
+            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FuelFire);
+            PlayerUI_World.Instance.GetTooltipRight().ShowTooltip("The fire's light seems to weaken the creatures... ", 4f);
 
-        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FuelFire);
-        PlayerUI_World.Instance.GetTooltipRight().ShowTooltip("The fire's light seems to weaken the creatures... ", 4f);
+            if (barricadeNumberBuilt == 2) {
+                StartCoroutine(StartSurviveTheNightObjective());
+            }
+            Fire.Instance.SetStructurePrimaryFunctionUnlocked(false);
 
-        if (barricadeNumberBuilt == 2) {
-            StartCoroutine(StartSurviveTheNightObjective());
         }
+
+        if(fireFuelledNumber == 3) {
+            Fire.Instance.SetStructurePrimaryFunctionUnlocked(false);
+            Fire.Instance.SetStructureSecondaryFunctionUnlocked(true);
+            HideTooltipAfterDelay(0f);
+            StartCoroutine(ShowTooltipAfterDelay(1f, "Hold", "To extract en ember", InputControlIcons.Control.Interact));
+        }
+
     }
 
     private void Worker_OnAnyWorkerRecruited(object sender, System.EventArgs e) {
@@ -170,6 +198,8 @@ public class Tutorial : MonoBehaviour
 
         if (structureSO.structureType == StructureSO.StructureType.fire) {
             if (fireBuilt) return;
+
+            Fire.Instance.SetStructureSecondaryFunctionUnlocked(false);
 
             fireBuilt = true;
             Fire.Instance.ManualSetFireCurrentMaxFuelTreshold(Fire.State.calm);
@@ -225,13 +255,20 @@ public class Tutorial : MonoBehaviour
     }
 
     private void Animal_OnAnyMobDied(object sender, EventArgs e) {
-        if (animalDied) return;
+        if (animalDied || hunterNumberRecruited < 2) return;
         animalDied = true;
 
         LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.WaitForHunt, LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbsFromHunters);
     }
 
     #region OBJECTIVES
+
+    private void EndLevelArea_OnEndLevelFireLit(object sender, EventArgs e) {
+        StartCoroutine(EndTutorialCorioutine());
+    }
+    private void EndLevelArea_OnEndLevelAreaCleared(object sender, EventArgs e) {
+        LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.ClearNest, LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
+    }
 
     private void CurrencyCrafter_OnAnyCurrencyCraftingEnded(object sender, EventArgs e) {
         LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.WaitCraftingAmmo, LevelUI_ObjectiveUI.SubObjectiveType.CollectCrafterAmmo);
@@ -245,8 +282,9 @@ public class Tutorial : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.Survive);
+        CreaturesSpawnManager.Instance.SetTutorialWave();
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
         DayNightManager.Instance.SetCyclePaused(false);
         DayNightManager.Instance.ChangeState(DayNightManager.State.Night);
     }
@@ -261,9 +299,9 @@ public class Tutorial : MonoBehaviour
     private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         if (dawnStarted) return;
         dawnStarted = true;
-
         DayNightManager.Instance.SetCyclePaused(true);
-        LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.Explore);
+
+        StartCoroutine(StartDestroyNestObjective(1.5f));
     }
 
     private void CurrencyCrafter_OnPlayerCollectedAnyCurrency(object sender, EventArgs e) {
@@ -306,10 +344,44 @@ public class Tutorial : MonoBehaviour
         StartCoroutine(HideTooltipAfterDelay(4f));
     }
 
+    private IEnumerator StartDestroyNestObjective(float delay) {
+        emberExtractionObjectiveStarted = true;
+        LevelUI_ObjectiveUI.Instance.SetObjectiveCompleted(2f);
+
+        yield return new WaitForSeconds(delay);
+
+        //Fire.Instance.SetStructureSecondaryFunctionUnlocked(true);
+        Fire.Instance.SetStructurePrimaryFunctionUnlocked(true);
+
+        LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.FindNest);
+        List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.ExtractEmber };
+
+        LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
+    }
+
+    private IEnumerator DebugStartDestroyNestObjective(float delay) {
+        LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.Survive);
+
+        yield return new WaitForSeconds(4f);
+
+        emberExtractionObjectiveStarted = true;
+        LevelUI_ObjectiveUI.Instance.SetObjectiveCompleted(2f);
+
+        yield return new WaitForSeconds(delay);
+
+        //Fire.Instance.SetStructureSecondaryFunctionUnlocked(true);
+        Fire.Instance.SetStructurePrimaryFunctionUnlocked(true);
+
+        LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.FindNest);
+        List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.ExtractEmber };
+
+        LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
+    }
+
     private IEnumerator StartSetupCampObjectiveCoroutine() {
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.Keep2WorkersAlive);
 
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(5f);
 
         LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.SetupCamp);
         List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectivesTypesList = new List<LevelUI_ObjectiveUI.SubObjectiveType> {
@@ -322,6 +394,19 @@ public class Tutorial : MonoBehaviour
     #endregion
 
     #region CONTROL TOOLTIPS
+
+    private void Fire_OnFireEmberExtractionStarted(object sender, EventArgs e) {
+        StartCoroutine(HideTooltipAfterDelay(1f));
+    }
+
+    private void Fire_OnPlayerTriggeredIn(object sender, EventArgs e) {
+        if(emberExtractionObjectiveStarted && !emberExtractionObjectiveEnded && Fire.Instance.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.primaryFunction) {
+            emberExtractionObjectiveEnded = true;
+
+            StartCoroutine(ShowTooltipAfterDelay(0f, "Hold", "To add fuel", InputControlIcons.Control.Interact));
+        }
+    }
+
     private void PlayerSHoot_OnPlayerShot(object sender, System.EventArgs e) {
         if (!shootTipShown) return;
         if (shootTipHidden) return;
@@ -355,10 +440,16 @@ public class Tutorial : MonoBehaviour
 
         if (!dropOrbShown) {
             if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigBlueOrb) {
-                StartCoroutine(ShowTooltipAfterDelay(1f, "Press", "To recruit a lost soul", InputControlIcons.Control.Interact));
+                StartCoroutine(ShowTooltipAfterDelay(1f, "Press", "To recruit an emberling", InputControlIcons.Control.Interact));
                 dropOrbShown = true;
                 return;
             }
+        }
+
+        if(e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember) {
+            emberExtracted = true;
+            endLevelAreaCollider.SetColliderTrigger();
+            LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.ExtractEmber, LevelUI_ObjectiveUI.SubObjectiveType.FindNest);
         }
 
     }
@@ -391,8 +482,6 @@ public class Tutorial : MonoBehaviour
         PlayerUI_World.Instance.GetTooltipLeft().HideTooltip();
 
         yield return new WaitForSeconds(3f);
-
-        Debug.Log(PlayerShoot.Instance.GetCurrentBullets());
 
         if (PlayerShoot.Instance.GetCurrentBullets() == 0) {
             StartCoroutine(ShowTooltipAfterDelay(0f, "Press", "To reload", InputControlIcons.Control.Reload));
@@ -428,7 +517,7 @@ public class Tutorial : MonoBehaviour
         }
 
         if (!saveAmmoTooltipShown) {
-            if (PlayerShoot.Instance.GetCurrentBullets() != PlayerShoot.Instance.GetMaxBulletsPerClip()) {
+            if (PlayerShoot.Instance.GetCurrentBullets() != 0) {
                 PlayerUI_World.Instance.GetTooltipRight().ShowTooltip("I should save my ammo ... ", 3f);
                 saveAmmoTooltipShown = true;
             }
@@ -445,7 +534,7 @@ public class Tutorial : MonoBehaviour
     }
 
     public IEnumerator ShowLightTipCoroutine() {
-        StartCoroutine(ShowTooltipAfterDelay(0f, "Press", "To switch your flashlight", InputControlIcons.Control.LightSwitch));
+        StartCoroutine(ShowTooltipAfterDelay(0f, "Press", "To toggle your flashlight", InputControlIcons.Control.LightSwitch));
         yield return new WaitForSeconds(4f);
         PlayerUI_World.Instance.GetTooltipLeft().HideTooltip();
     }
@@ -492,5 +581,12 @@ public class Tutorial : MonoBehaviour
 
         firstCreatureSpotLight.enabled = true;
         OnAnySpotLightActivated?.Invoke(this, EventArgs.Empty);
+    }
+
+
+    private IEnumerator EndTutorialCorioutine() {
+        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
+        yield return new WaitForSeconds(6f);
+        SceneLoader.Instance.LoadHub();
     }
 }
