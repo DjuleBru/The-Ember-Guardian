@@ -36,6 +36,7 @@ public class Collectible : MonoBehaviour
     private bool aggroedByWildWorker;
     private bool collected;
     private bool touchedFloor;
+    private bool enteredPayCurrencyUISlot;
 
     private bool movingForPayment;
     private float smoothTime = 5f;
@@ -81,7 +82,8 @@ public class Collectible : MonoBehaviour
             // Orb Collisions with OrbTemplateWorldUI
             PayCurrencyTemplateWorldUI orbTemplateWorldUI = collision.GetComponent<PayCurrencyTemplateWorldUI>();
 
-            if (orbTemplateWorldUI != null && orbTemplateWorldUI.transform == paymentDestination && !orbTemplateWorldUI.GetCurrencyPaid()) {
+            if (orbTemplateWorldUI != null && orbTemplateWorldUI.transform == paymentDestination && !enteredPayCurrencyUISlot) {
+                enteredPayCurrencyUISlot = true;
                 OnCollectibleEnteredSlot?.Invoke(this, EventArgs.Empty);
                 OnAnyCollectibleEnteredSlot?.Invoke(this, EventArgs.Empty);
                 orbTemplateWorldUI.SetCurrencyPaid(true);
@@ -209,11 +211,11 @@ public class Collectible : MonoBehaviour
         paymentDestination = destination;
         transform.SetParent(destination);
 
-
         if(moving) {
             rb.gravityScale = 0;
             rb.bodyType = RigidbodyType2D.Kinematic;
         } else {
+            solidCollider.enabled = true;
             rb.gravityScale = initialGravityScale;
             rb.angularVelocity = 0;
             rb.bodyType = RigidbodyType2D.Dynamic;

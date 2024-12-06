@@ -48,4 +48,8 @@ public class PlayerUI_TickTemplate : MonoBehaviour
         image.color = color;
     }
 
+    public void StopInFeedbacks() {
+        inMmfPlayer.StopFeedbacks();
+    }
+
 }

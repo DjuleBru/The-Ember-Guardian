@@ -9,28 +9,36 @@ public class Tutorial : MonoBehaviour
     public static Tutorial Instance;
 
     [SerializeField] private bool testing;
+    [SerializeField] private Transform beforeFireRespawnPoint;
     [SerializeField] private TutorialCollider firstCreatureCollider;
     [SerializeField] private TutorialCollider blockingWorkersCollider;
     [SerializeField] private TutorialCollider endLevelAreaCollider;
     [SerializeField] private StructureLocation startFireLocation;
     [SerializeField] private StructureLocation ammoCrafterLocation;
     [SerializeField] private StructureLocation hunterShrineLocation;
+    [SerializeField] private List<StructureLocation> defensiveStructureLocations;
     [SerializeField] private EndLevelArea endLevelArea;
     [SerializeField] private Light2D firstCreatureSpotLight;
+    [SerializeField] private MobSpawner firstWorkerSpawner;
+    [SerializeField] private Transform looseTutorialChest;
+    [SerializeField] private Dog dog;
 
+    private bool dogTipShown;
+    private bool dogStateChanged;
+    private bool dogInitialStateChanged;
     private bool moveTooltipShown;
     private bool moveTooltipHidden;
     private bool transferAmmoTooltipShown;
     private bool reloadTooltipShown;
     private bool reloadTooltipHidden;
     private bool saveAmmoTooltipShown;
+    private bool climbTowerTooltipShown;
 
     private bool shootTipShown;
     private bool shootTipHidden;
     private bool firstCreatureDied;
 
     private bool dropOrbShown;
-    private int workerNumberRecruited;
 
     private bool healTooltipShown;
     private bool huntingFlagTooltipShown;
@@ -49,6 +57,9 @@ public class Tutorial : MonoBehaviour
     private bool emberExtractionObjectiveEnded;
 
     private bool nightStarted;
+    private int workerNumberRecruited;
+    private int towerNumberBuilt;
+    private int workerNumberDied;
     private int barricadeNumberBuilt;
     private int hunterNumberRecruited;
     private int fireFuelledNumber;
@@ -66,6 +77,10 @@ public class Tutorial : MonoBehaviour
         PlayerShoot.Instance.SetCanShoot(false);
         StartCoroutine(SetGunAmmoAfterDelay());
 
+        dog.OnPlayerTriggeredIn += Dog_OnPlayerTriggeredIn;
+        dog.OnIdleStateChanged += Dog_OnIdleStateChanged;
+        Player.Instance.OnPlayerDied += Player_OnPlayerDied;
+        Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
         UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         PlayerShoot.Instance.OnPlayerAmmoRefilled += PlayerShoot_OnPlayerAmmoRefilled;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
@@ -88,7 +103,9 @@ public class Tutorial : MonoBehaviour
         Fire.Instance.OnPlayerTriggeredIn += Fire_OnPlayerTriggeredIn;
         Fire.Instance.OnFireEmberExtractionStarted += Fire_OnFireEmberExtractionStarted;
         Worker.OnAnyOrbDroppedByWorker += Worker_OnAnyOrbDroppedByWorker;
+        WorkerManager.Instance.OnRecruitedWorkerDied += WorkerManager_OnRecruitedWorkerDied;
         HuntingFlag_PlayerDefined.OnAnyPlayerTriggeredIn += HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn;
+        Tower.OnPlayerClimbedOnAnyTower += Tower_OnPlayerClimbedOnAnyTower;
         endLevelArea.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
         endLevelArea.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
 
@@ -118,14 +135,9 @@ public class Tutorial : MonoBehaviour
         if (dawnStarted && !emberExtracted) {
             HandleBlockingCollider(endLevelAreaCollider.transform.position, "I should extract an ember first");
         }
-
         if (Input.GetKeyDown(KeyCode.V)) {
             StartCoroutine(StartGuardingWorkersObjective(0f));
         }
-
-        //if (Input.GetKeyDown(KeyCode.B)) {
-        //    StartCoroutine(StartSurviveTheNightObjective());
-        //}
     }
 
     private void HandleBlockingCollider(Vector3 colliderPosition, string textToShow) {
@@ -142,12 +154,13 @@ public class Tutorial : MonoBehaviour
 
     private void Fire_OnFireFuelled(object sender, EventArgs e) {
         fireFuelledNumber++;
+        fireFuelled = true;
 
         if (fireFuelledNumber == 1) {
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FuelFire);
-            PlayerUI_World.Instance.GetTooltipRight().ShowTooltip("The fire's light seems to weaken the creatures... ", 4f);
+            PlayerUI_World.Instance.GetTooltipRight().ShowTooltip("The fire's warmth and light weakens the darklings... ", 4f);
 
-            if (barricadeNumberBuilt == 2) {
+            if (barricadeNumberBuilt == 2 && towerNumberBuilt == 2) {
                 StartCoroutine(StartSurviveTheNightObjective());
             }
             Fire.Instance.SetStructurePrimaryFunctionUnlocked(false);
@@ -170,7 +183,7 @@ public class Tutorial : MonoBehaviour
             if (testing) return;
             blockingWorkersCollider.SetColliderTrigger();
             StartCoroutine(HideTooltipAfterDelay(0f));
-            StartCoroutine(StartGuardingWorkersObjective(.5f));
+            StartCoroutine(StartGuardingWorkersObjective(1.5f));
         }
 
         if(workerNumberRecruited == 6) {
@@ -247,10 +260,27 @@ public class Tutorial : MonoBehaviour
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.Build2Barricades);
             }
 
-            if(fireFuelled) {
+            if(fireFuelled && towerNumberBuilt == 2) {
                 StartCoroutine(StartSurviveTheNightObjective());
             }
         }
+
+        if (structureSO.structureType == StructureSO.StructureType.tower) {
+            towerNumberBuilt++;
+
+            if(towerNumberBuilt == 1) {
+                StartCoroutine(ShowTooltipAfterDelay(.5f, "Press", "To climb on tower", InputControlIcons.Control.Interact));
+            }
+
+            if (towerNumberBuilt == 2) {
+                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.Build2Towers);
+            }
+
+            if (fireFuelled && barricadeNumberBuilt == 2) {
+                StartCoroutine(StartSurviveTheNightObjective());
+            }
+        }
+
 
     }
 
@@ -260,6 +290,44 @@ public class Tutorial : MonoBehaviour
 
         LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.WaitForHunt, LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbsFromHunters);
     }
+
+    #region TUTORIAL LOOSE CONDITIONS
+    private void WorkerManager_OnRecruitedWorkerDied(object sender, EventArgs e) {
+        if (!fireBuilt) {
+            workerNumberDied++;
+            if (workerNumberDied == 3) {
+                workerNumberDied = 0;
+                Player.Instance.Die();
+            }
+        }
+    }
+
+    private void Player_OnPlayerRespawned(object sender, EventArgs e) {
+
+    }
+
+    private void Player_OnPlayerDied(object sender, EventArgs e) {
+        if (!fireBuilt) {
+            RetryGuardWorkers();
+        }
+    }
+
+    private void RetryGuardWorkers() {
+        List<Worker> recruitedWorkers = WorkerManager.Instance.GetRecruitedWorkers();
+        List<Worker> recruitedWorkersCoppy = new List<Worker>();
+
+        foreach (Worker worker in recruitedWorkers) {
+            recruitedWorkersCoppy.Add(worker);
+        }
+        foreach (Worker worker in recruitedWorkersCoppy) {
+            worker.Die();
+        }
+        firstWorkerSpawner.SpawnMobs(4);
+        Transform chest = Instantiate(looseTutorialChest, looseTutorialChest.transform.position, Quaternion.identity);
+        chest.gameObject.SetActive(true);
+    }
+
+    #endregion
 
     #region OBJECTIVES
 
@@ -394,6 +462,19 @@ public class Tutorial : MonoBehaviour
     #endregion
 
     #region CONTROL TOOLTIPS
+    private void Dog_OnIdleStateChanged(object sender, EventArgs e) {
+        if (dogStateChanged) return;
+
+        dogStateChanged = true;
+        StartCoroutine(HideTooltipAfterDelay(0f));
+    }
+
+    private void Dog_OnPlayerTriggeredIn(object sender, EventArgs e) {
+        if (dogTipShown) return;
+
+        dogTipShown = true;
+        StartCoroutine(ShowTooltipAfterDelay(0f, "Press", "To whisper to doggo", InputControlIcons.Control.SwitchDog));
+    }
 
     private void Fire_OnFireEmberExtractionStarted(object sender, EventArgs e) {
         StartCoroutine(HideTooltipAfterDelay(1f));
@@ -501,6 +582,15 @@ public class Tutorial : MonoBehaviour
     #endregion
 
     #region OTHER TOOLTIPS
+
+    private void Tower_OnPlayerClimbedOnAnyTower(object sender, EventArgs e) {
+        if (climbTowerTooltipShown) return;
+
+        climbTowerTooltipShown = true;
+        StartCoroutine(HideTooltipAfterDelay(.2f));
+        PlayerUI_World.Instance.GetTooltipRight().ShowTooltip("From up here I can shoot over the barricades", 4f);
+    }
+
     private void HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn(object sender, EventArgs e) {
         if(huntingFlagTooltipShown) return;
         huntingFlagTooltipShown = true;
@@ -565,7 +655,7 @@ public class Tutorial : MonoBehaviour
     }
 
     public void ActivateCreatureSpotLight() {
-        StartCoroutine(ActivateCreatureSpotLightCoroutine(3f));
+        StartCoroutine(ActivateCreatureSpotLightCoroutine(1.5f));
     }
 
     public void TransitionToCombatCamera() {
@@ -583,10 +673,25 @@ public class Tutorial : MonoBehaviour
         OnAnySpotLightActivated?.Invoke(this, EventArgs.Empty);
     }
 
+    public Vector2 GetRespawnPosition() {
+        if(fireBuilt) {
+            return Tent.Instance.transform.position;
+        } else {
+            return beforeFireRespawnPoint.position;
+        }
+    }
+
+    public void UnlockDefensiveStructureLocations() {
+        foreach(StructureLocation structureLocation in defensiveStructureLocations) {
+            structureLocation.UnlockStructureLocation();
+        }
+    }
 
     private IEnumerator EndTutorialCorioutine() {
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
         yield return new WaitForSeconds(6f);
         SceneLoader.Instance.LoadHub();
     }
+
+
 }

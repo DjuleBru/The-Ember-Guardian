@@ -33,6 +33,7 @@ public class SubObjectiveUI : MonoBehaviour
     public void SetNext(LevelUI_ObjectiveUI.SubObjectiveType subObjectiveType) {
         completed = false;
         this.subObjectiveType = subObjectiveType;
+        gameObject.SetActive(true);
         StartCoroutine(SetNextSubObjective(LevelUI_ObjectiveUI.Instance.GetSubObjectiveTextFromType(subObjectiveType)));
     }
 

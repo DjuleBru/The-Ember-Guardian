@@ -77,7 +77,6 @@ public class Mob : MonoBehaviour, IDamageable
         } else {
             health -= damage;
         }
-        Debug.Log("take damage " + damage);
 
         OnMobDamageTaken?.Invoke(this, new OnMobDamageTakenEventArgs {
             damageOriginTransform = damageSource,

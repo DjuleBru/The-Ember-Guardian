@@ -14,6 +14,7 @@ public class WorkerManager : MonoBehaviour
     private List<Worker> rightSideAssignedWorkers = new List<Worker>();
 
     public event EventHandler OnJoblessWorkerAmountChanged;
+    public event EventHandler OnRecruitedWorkerDied;
 
     private void Awake() {
         Instance = this;
@@ -78,7 +79,12 @@ public class WorkerManager : MonoBehaviour
         if(recruitedWorkers.Contains(worker)) {
             recruitedWorkers.Remove(worker);
         }
+        OnRecruitedWorkerDied?.Invoke(this, EventArgs.Empty);
         OnJoblessWorkerAmountChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public List<Worker> GetRecruitedWorkers() {
+        return recruitedWorkers;
     }
 
 }

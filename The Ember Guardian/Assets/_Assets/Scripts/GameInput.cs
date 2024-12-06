@@ -42,6 +42,8 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnPlayerPrimaryGunSelected;
     public event EventHandler OnPlayerSecondaryGunSelected;
 
+    public event EventHandler OnPlayerBackPerformed;
+
     private bool interactPressed;
     private bool holdingInteract;
     private float interactHoldTimer;
@@ -81,11 +83,15 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.SwitchGunLight.performed += SwitchGunLight_performed;
         playerInputActions.Player.RightSkill.performed += RightSkill_performed;
         playerInputActions.Player.LeftSkill.performed += LeftSkill_performed;
+        playerInputActions.Player.Back.performed += Back_performed;
 
         playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
         playerInputActions.Player.Move.performed += Move_performed;
     }
 
+    private void Back_performed(InputAction.CallbackContext obj) {
+        OnPlayerBackPerformed?.Invoke(this, EventArgs.Empty);
+    }
 
     private void Update() {
         DetectControlScheme();

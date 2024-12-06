@@ -47,6 +47,7 @@ public class SoundManager : MonoBehaviour
         LevelUI_ObjectiveUI.Instance.OnSubObjectiveUICompleted += LevelUI_OnSubObjectiveUICompleted;
 
         ParticleCollision.OnAnyBulletHitEnemy += ParticleCollision_OnAnyBulletHitEnemy;
+        ParticleCollision.OnAnyBulletHitEnemyCrit += ParticleCollision_OnAnyBulletHitEnemyCrit;
         ParticleCollision.OnAnyBulletHitGround += ParticleCollision_OnAnyBulletHitGround;
 
         Collectible.OnAnyCollectibleTouchedFloor += Collectible_OnAnyCollectibleTouchedFloor;
@@ -72,6 +73,7 @@ public class SoundManager : MonoBehaviour
 
         Tutorial.OnAnySpotLightActivated += Tutorial_OnAnySpotLightActivated;
     }
+
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
@@ -136,7 +138,7 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(soundRefsSO.workerRecruited, .5f);
     }
     private void Worker_OnAnyWorkerAssignedHunter(object sender, System.EventArgs e) {
-        PlaySound2D(soundRefsSO.workerHunterJobAssigned);
+        //PlaySound2D(soundRefsSO.workerHunterJobAssigned);
     }
 
     private void Worker_OnAnyWorkerDied(object sender, System.EventArgs e) {
@@ -252,6 +254,11 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region SHOOTING
+
+    private void ParticleCollision_OnAnyBulletHitEnemyCrit(object sender, System.EventArgs e) {
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitEnemyCritSound;
+        PlaySound3D(audioClipArray, (sender as MonoBehaviour).transform.position, 1f);
+    }
     private void ParticleCollision_OnAnyBulletHitGround(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitGroundSound;
         PlaySound3D(audioClipArray, (sender as MonoBehaviour).transform.position, .5f);

@@ -5,6 +5,7 @@ using UnityEngine;
 public class TutorialCollider : MonoBehaviour
 {
     [SerializeField] private bool isFirstCreatureBlockingCollider;
+    [SerializeField] private bool isFirstSpotlightCollider;
     [SerializeField] private bool isStopMusicCollider;
     [SerializeField] private bool isLightTipCollider;
     [SerializeField] private bool isEndLevelAreaCollider;
@@ -22,7 +23,7 @@ public class TutorialCollider : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
-        if(isFirstCreatureBlockingCollider && !playerCollided) {
+        if(isFirstSpotlightCollider && !playerCollided) {
             playerCollided = true;
             tutorial.TransitionToCombatCamera();
             tutorial.ActivateCreatureSpotLight();

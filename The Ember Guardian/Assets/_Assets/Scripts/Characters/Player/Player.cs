@@ -170,9 +170,21 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     private IEnumerator RespawnCoroutine() {
-        playerHealth = PlayerStats.Instance.GetPlayerRespawnHealth();
 
-        Vector2 respawnPosition = new Vector2(Tent.Instance.transform.position.x, transform.position.y);
+        Vector2 respawnPosition = new Vector2();
+
+        if (Tutorial.Instance != null) {
+
+            respawnPosition = Tutorial.Instance.GetRespawnPosition();
+            playerHealth = PlayerStats.Instance.GetPlayerMaxHP();
+
+        } else {
+
+            respawnPosition = new Vector2(Tent.Instance.transform.position.x, transform.position.y);
+            playerHealth = PlayerStats.Instance.GetPlayerRespawnHealth();
+
+        }
+
         transform.position = respawnPosition;
 
         yield return new WaitForSeconds(1f);

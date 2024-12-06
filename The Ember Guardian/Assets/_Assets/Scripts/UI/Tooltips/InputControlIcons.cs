@@ -15,6 +15,7 @@ public class InputControlIcons : MonoBehaviour
         Move,
         Run,
         LightSwitch,
+        SwitchDog,
     }
 
     public Sprite gamepadYSprite;
@@ -32,6 +33,7 @@ public class InputControlIcons : MonoBehaviour
     public Sprite keyboardRSprite;
     public Sprite keyboardASprite;
     public Sprite keyboardFSprite;
+    public Sprite keyboardVSprite;
     public Sprite keyboardQSprite;
     public Sprite keyboardDSprite;
     public Sprite keyboardESprite;
@@ -76,6 +78,9 @@ public class InputControlIcons : MonoBehaviour
             if (control == Control.LightSwitch) {
                 spriteList.Add(gamepadL3Sprite);
             }
+            if (control == Control.SwitchDog) {
+                spriteList.Add(gamepadBSprite);
+            }
         } else {
             if (control == Control.Reload) {
                 spriteList.Add(keyboardRSprite);
@@ -85,6 +90,9 @@ public class InputControlIcons : MonoBehaviour
             }
             if (control == Control.Skill2) {
                 spriteList.Add(keyboardFSprite);
+            }
+            if (control == Control.SwitchDog) {
+                spriteList.Add(keyboardVSprite);
             }
             if (control == Control.SwapWeapon) {
                 spriteList.Add(keyboard2Sprite);

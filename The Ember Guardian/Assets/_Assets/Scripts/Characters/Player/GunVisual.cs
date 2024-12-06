@@ -102,7 +102,6 @@ public class GunVisual : MonoBehaviour
         
         // Reloading: on monte les index
         for (int i = initialSpriteIndex + 1; i <= finalSpriteIndex; i++) {
-            Debug.Log(i);
             gunLightsSpriteRenderer.sprite = gunReloadSprites[i];
             yield return new WaitForSeconds(delayBetweenSprites);
             gunLightSpriteIndex = i;

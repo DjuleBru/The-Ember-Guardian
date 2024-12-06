@@ -21,6 +21,7 @@ public class ParticleCollision : MonoBehaviour
 
     public static event EventHandler OnAnyBulletHitGround;
     public static event EventHandler OnAnyBulletHitEnemy;
+    public static event EventHandler OnAnyBulletHitEnemyCrit;
 
     void Start()
     {
@@ -93,10 +94,9 @@ public class ParticleCollision : MonoBehaviour
 
                             // Vérifie si le collider appartient à une zone critique
                             if (hit.collider.CompareTag("CritHitZone")) {
-                                Debug.Log("CritHitZone ");
                                 hit.collider.GetComponentInParent<Mob>().TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, true);
                                 Instantiate(critHitPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
-
+                                OnAnyBulletHitEnemyCrit?.Invoke(this, EventArgs.Empty);
                             } 
                         }
                     }

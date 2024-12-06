@@ -211,7 +211,6 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void StartTransferringAmmoFromBagInGun() {
-        Debug.Log("StartTransferringAmmoFromBagInGun");
         transferringAmmoFromBagTimer = 0;
         transferringAmmoFromBag = true;
         TransferNextAmmoFromBag();

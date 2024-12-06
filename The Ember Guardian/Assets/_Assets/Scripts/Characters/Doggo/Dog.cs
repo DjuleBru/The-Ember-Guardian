@@ -1,0 +1,61 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Dog : MonoBehaviour
+{
+    private bool playerInTriggerArea;
+
+    public event EventHandler OnPlayerTriggeredIn;
+    public event EventHandler OnPlayerTriggeredOut;
+
+    private DogAI dogAI;
+    public DogAI.State currentIdleState;
+
+    public event EventHandler OnIdleStateChanged;
+
+    private void Awake() {
+        dogAI = GetComponent<DogAI>();
+    }
+
+    private void Start() {
+        GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
+        currentIdleState = DogAI.State.idle;
+    }
+
+    private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
+        if (!playerInTriggerArea) return;
+
+        if(currentIdleState == DogAI.State.walkWithPlayer) {
+
+            currentIdleState = DogAI.State.stay;
+
+        } else if (currentIdleState == DogAI.State.stay || currentIdleState == DogAI.State.idle) {
+
+            currentIdleState = DogAI.State.walkWithPlayer;
+
+        }
+
+        dogAI.SetBaseState(currentIdleState);
+        OnIdleStateChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if(collision.gameObject.GetComponent<Player>() != null) {
+            playerInTriggerArea = true;
+            OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) {
+        if (collision.gameObject.GetComponent<Player>() != null) {
+            playerInTriggerArea = false;
+            OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public DogAI.State GetIdleState() {
+        return currentIdleState;
+    }
+}

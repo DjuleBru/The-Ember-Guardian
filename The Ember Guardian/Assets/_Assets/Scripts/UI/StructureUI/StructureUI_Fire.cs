@@ -53,7 +53,9 @@ public class StructureUI_Fire : StructureUI
     protected override void Start() {
         base.Start();
         tickFuelValue = fire.GetOrbFuelValue() / barAmountPerOrb;
+        fire.OnPlayerTriggeredOut += Fire_OnPlayerTriggeredOut;
     }
+
 
     protected void Update() {
         HandleUIDisplay();
@@ -194,6 +196,13 @@ public class StructureUI_Fire : StructureUI
 
         }
         isRefuelling = false;
+    }
+
+    private void Fire_OnPlayerTriggeredOut(object sender, EventArgs e) {
+        PlayerUI_TickTemplate[] fireTickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
+        foreach(PlayerUI_TickTemplate tick in fireTickArray) {
+            tick.StopInFeedbacks();
+        }
     }
 
     private IEnumerator RemoveProgressBars(int barAmount) {

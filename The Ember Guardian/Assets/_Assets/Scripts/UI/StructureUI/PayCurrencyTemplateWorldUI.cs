@@ -26,11 +26,13 @@ public class PayCurrencyTemplateWorldUI : MonoBehaviour
     public void SetCurrencyPaid(bool paid) {
         currencyPaid = paid;
 
+        SetHovered(paid);
+
         if (paid) {
-            OnCurrencyPaid?.Invoke(this, EventArgs.Empty);
             Color fullColor = initialImageOutlineColor;
             fullColor.a = 1f;
             orbImageOutline.color = fullColor;
+            OnCurrencyPaid?.Invoke(this, EventArgs.Empty);
         } else {
             orbImageOutline.color = initialImageOutlineColor;
         }

@@ -22,6 +22,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         Keep2WorkersAlive,
         LightMainFire,
         Build2Barricades,
+        Build2Towers,
         BuildAmmoCrafter,
         BuildHunterShrine,
         Recruit2Hunters,
@@ -78,15 +79,24 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     public void SetSubObjectivesUI(List<SubObjectiveType> subObjectiveTypeList) {
-        StartCoroutine(SetSubObjectivesUICoroutine(subObjectiveTypeList, 4f));
+        StartCoroutine(InstantiateSubObjectivesUICoroutine(subObjectiveTypeList, 4f));
     }
 
-    private IEnumerator SetSubObjectivesUICoroutine(List<SubObjectiveType> subObjectiveTypeList, float delay) {
+    private IEnumerator SetSubObjectivesUICoroutine(List<SubObjectiveUI> subObjectiveUIList, float delay) {
         yield return new WaitForSeconds(delay);
 
-        foreach (SubObjectiveType subObjectiveType in subObjectiveTypeList) {
+        foreach (SubObjectiveUI subObjective in subObjectiveUIList) {
+            subObjective.gameObject.SetActive(true);
+            yield return new WaitForSeconds(.3f);
+        }
+    }
+
+    private IEnumerator InstantiateSubObjectivesUICoroutine(List<SubObjectiveType> subObjectiveTypeList, float delay) {
+        yield return new WaitForSeconds(delay);
+
+        foreach (SubObjectiveType subObjective in subObjectiveTypeList) {
             SubObjectiveUI subObjectiveText = Instantiate(subObjectiveTemplate, subObjectiveContainer).GetComponent<SubObjectiveUI>();
-            subObjectiveText.SetSubObjective(subObjectiveType);
+            subObjectiveText.SetSubObjective(subObjective);
             subObjectiveText.gameObject.SetActive(true);
             yield return new WaitForSeconds(.3f);
         }
@@ -97,7 +107,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     public void SetNextSubObjective(SubObjectiveType subObjectiveType, SubObjectiveType nextSubObjective) {
-        foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>()) {
+        foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>(true)) {
 
             if (subObjectiveUI.GetSubObjectiveType() == subObjectiveType) {
                 subObjectiveUI.SetNext(nextSubObjective);
@@ -109,8 +119,10 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     public IEnumerator SetSubObjectiveCompleteCoroutine(SubObjectiveType subObjectiveTypeCompleted, List<SubObjectiveType> subObjectiveTypeUnlockedList = null) {
         bool allSubObjectivesCompleted = true;
 
-        foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>()) {
+        foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>(true)) {
             Debug.Log("current subObjectives " + subObjectiveUI.GetSubObjectiveType().ToString());
+
+            if (subObjectiveUI.GetSubObjectiveType() == SubObjectiveType.None) continue;
 
             if (subObjectiveUI.GetSubObjectiveType() == subObjectiveTypeCompleted) {
                 subObjectiveUI.SetCompleted();
@@ -124,12 +136,22 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         }
 
         Debug.Log("allSubObjectivesCompleted " + allSubObjectivesCompleted);
-
+        Debug.Log("subObjectiveTypeUnlockedList == null" + subObjectiveTypeUnlockedList == null);
         if(subObjectiveTypeUnlockedList != null) {
+
+            List<SubObjectiveUI> subObjectivesUIUnlocked = new List<SubObjectiveUI> ();
+            foreach (SubObjectiveType subObjectiveType in subObjectiveTypeUnlockedList) {
+                SubObjectiveUI subObjectiveText = Instantiate(subObjectiveTemplate, subObjectiveContainer).GetComponent<SubObjectiveUI>();
+                subObjectiveText.SetSubObjective(subObjectiveType);
+                subObjectivesUIUnlocked.Add(subObjectiveText);
+            }
+
             yield return new WaitForSeconds(1f);
-            StartCoroutine(SetSubObjectivesUICoroutine(subObjectiveTypeUnlockedList, 1f));
+
+            StartCoroutine(SetSubObjectivesUICoroutine(subObjectivesUIUnlocked, 1f));
             yield return null;
         } else {
+
             if (allSubObjectivesCompleted) {
                 StartCoroutine(SetObjectiveCompletedCoroutine(1f));
             }
@@ -165,6 +187,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
 
         List<SubObjectiveType> subObjectivesUnlocked = new List<SubObjectiveType> {
                 SubObjectiveType.Build2Barricades,
+                SubObjectiveType.Build2Towers,
                 SubObjectiveType.FuelFire,
         };
 
@@ -172,6 +195,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         SetSubObjectivesUI(subObjectivesUnlocked);
         Fire.Instance.ManualSetFireCurrentMaxFuelTreshold(Fire.State.mild);
         Fire.Instance.SetStructurePrimaryFunctionUnlocked(true);
+        Tutorial.Instance.UnlockDefensiveStructureLocations();
     }
 
     public string GetSubObjectiveTextFromType(SubObjectiveType subObjectiveType) {
@@ -187,6 +211,9 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         }
         if (subObjectiveType == SubObjectiveType.Build2Barricades) {
             return "Build 2 barricades";
+        }
+        if (subObjectiveType == SubObjectiveType.Build2Towers) {
+            return "Build 2 towers";
         }
         if (subObjectiveType == SubObjectiveType.BuildAmmoCrafter) {
             return "Build ammo crafter";

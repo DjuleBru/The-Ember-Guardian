@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WorkerVisual : MobVisual {
 
+    private Worker worker;
     private WorkerAI workerAI;
     private HunterJob hunterJob;
     private JoblessJob joblessJob;
@@ -16,6 +17,7 @@ public class WorkerVisual : MobVisual {
 
     protected override void Awake() {
         base.Awake();
+        worker = GetComponentInParent<Worker>();
         workerAI = GetComponentInParent<WorkerAI>();
         hunterJob = GetComponentInParent<HunterJob>();
         joblessJob = GetComponentInParent<JoblessJob>();
@@ -23,12 +25,17 @@ public class WorkerVisual : MobVisual {
     }
 
     private void Start() {
+        worker.OnMobDied += Worker_OnMobDied;
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
         hunterJob.OnHunterFindsNoAnimal += HunterJob_OnHunterFindsNoAnimal;
         hunterJob.OnHunterChangedState += HunterJob_OnHunterChangedState;
         hunterJob.OnHunterFoundAnimal += HunterJob_OnHunterFoundAnimal;
         joblessJob.OnJoblessBlockedByCreatures += JoblessJob_OnJoblessBlockedByCreatures;
         joblessJob.OnJoblessNotBlockedByCreatures += JoblessJob_OnJoblessNotBlockedByCreatures;
+    }
+
+    private void Worker_OnMobDied(object sender, System.EventArgs e) {
+        workerStatusSpriteRenderer.enabled = false;
     }
 
     private void JoblessJob_OnJoblessNotBlockedByCreatures(object sender, System.EventArgs e) {
