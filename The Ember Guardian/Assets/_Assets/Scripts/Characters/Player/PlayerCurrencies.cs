@@ -47,7 +47,7 @@ public class PlayerCurrencies : MonoBehaviour
         UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
         UICurrencyManager.Instance.OnCurrencyTryPay += UICurrencyManager_OnCurrencyTryPay;
 
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+        if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
             SetCarryingEmber(true);
         }
     }

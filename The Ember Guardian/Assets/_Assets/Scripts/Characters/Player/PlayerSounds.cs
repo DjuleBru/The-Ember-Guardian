@@ -20,7 +20,7 @@ public class PlayerSounds : MonoBehaviour
     [SerializeField] private ActiveMoveSpeedBoostVisual activeMoveSpeedBoostVisual;
 
     private float sfxVolume;
-    private bool isExhausted;
+    private bool exhaustedSFXPlaying;
 
     private void Start() {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
@@ -32,13 +32,8 @@ public class PlayerSounds : MonoBehaviour
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
 
         PlayerMovement.Instance.OnPlayerExhaustionStarted += PlayerMovement_OnPlayerExhaustionStarted;
-        PlayerMovement.Instance.OnPlayerExhaustionStopped += PlayerMovement_OnPlayerExhaustionStopped;
 
         activeMoveSpeedBoostVisual.OnMoveSpeedFootStepTriggered += ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered;
-    }
-
-    private void PlayerMovement_OnPlayerExhaustionStopped(object sender, System.EventArgs e) {
-        isExhausted = false;
     }
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
@@ -62,18 +57,27 @@ public class PlayerSounds : MonoBehaviour
     }
 
     private void PlayerMovement_OnPlayerExhaustionStarted(object sender, System.EventArgs e) {
-        isExhausted = true;
-        playerAudioSource.PlayOneShot(playerExhaustedAudioClips[Random.Range(0, playerExhaustedAudioClips.Length)], sfxVolume * .5f);
+        exhaustedSFXPlaying = true;
+        AudioClip audioclip = playerExhaustedAudioClips[Random.Range(0, playerExhaustedAudioClips.Length)];
+        playerAudioSource.PlayOneShot(audioclip, sfxVolume * .5f);
+
+        StartCoroutine(SetExhaustionSFXPlaying(audioclip.length));
     }
     private void PlayerAnimator_OnFootStepTriggered(object sender, System.EventArgs e) {
         playerAudioSource.PlayOneShot(footStepAudioClips[Random.Range(0, footStepAudioClips.Length)], sfxVolume);
     }
 
     private void PlayerAnimator_OnPantTriggered(object sender, System.EventArgs e) {
-        if (isExhausted) return;
+        if (exhaustedSFXPlaying) return;
+        Debug.Log("pant");
         playerAudioSource.PlayOneShot(playerPantAudioClips[Random.Range(0, playerPantAudioClips.Length)], sfxVolume * .5f);
     }
     private void ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered(object sender, System.EventArgs e) {
         playerAudioSource.PlayOneShot(activeMoveSpeedBoostFootstepAudioClip, sfxVolume / 8);
+    }
+
+    private IEnumerator SetExhaustionSFXPlaying(float sfxDuration) {
+        yield return new WaitForSeconds(sfxDuration);
+        exhaustedSFXPlaying = false;
     }
 }

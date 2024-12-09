@@ -18,25 +18,28 @@ public class SceneLoader : MonoBehaviour
 
     private void Awake() {
         Instance = this;
+
+        transitionAnimator.speed = .5f;
     }
 
     public SceneType GetSceneType() {
         return sceneType;
     }
 
-    public void LoadHub() {
-        StartCoroutine(LoadSceneAfterDelay("HUB"));
+    public void LoadHub(float crossfadeDuration) {
+        StartCoroutine(LoadSceneAfterCrossfade("HUB", crossfadeDuration));
     }
 
-    public void LoadTestLevel() {
-        StartCoroutine(LoadSceneAfterDelay("PrototypeLevel"));
+    public void LoadTestLevel(float crossfadeDuration) {
+        StartCoroutine(LoadSceneAfterCrossfade("PrototypeLevel", crossfadeDuration));
     }
 
 
-    private IEnumerator LoadSceneAfterDelay(string sceneName) {
+    private IEnumerator LoadSceneAfterCrossfade(string sceneName, float crossfadeDuration) {
         transitionAnimator.SetTrigger("Start");
+        transitionAnimator.speed = 1/crossfadeDuration;
 
-        yield return new WaitForSeconds(1.1f);
+        yield return new WaitForSeconds(crossfadeDuration + .2f);
 
 
         SceneManager.LoadScene(sceneName);

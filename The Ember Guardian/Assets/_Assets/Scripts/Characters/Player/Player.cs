@@ -47,7 +47,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     private void Start() {
-        isLevelScene = (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level);
+        isLevelScene = (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB);
 
         PlayerStats.Instance.OnPlayerMaxHPChanged += PlayerStats_OnPlayerMaxHPChanged;
         PlayerStats.Instance.OnPlayerHPRegenChanged += PlayerStats_OnPlayerHPRegenChanged;

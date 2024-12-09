@@ -15,11 +15,14 @@ public class Tent : Structure
 
     protected override void Start() {
         base.Start();
-        ActivateStructurePrimaryFunctionInteraction(false);
-        //ActivateStructureUpgradeInteraction(false);
+        if(Player.Instance.GetHP() != PlayerStats.Instance.GetInitialPlayerMaxHP()) {
+            ActivateStructurePrimaryFunctionInteraction(true);
+        }
+        else {
+            ActivateStructurePrimaryFunctionInteraction(false);
+        }
 
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
-    
     }
 
     protected void Player_OnPlayerDamaged(object sender, EventArgs e) {

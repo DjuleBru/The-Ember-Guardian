@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2421774444742000823}
   - component: {fileID: 8086812109764634119}
+  - component: {fileID: 188254441625279939}
   - component: {fileID: 6973183100487315266}
   - component: {fileID: 5778178377960364647}
   m_Layer: 17
@@ -61,6 +62,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &188254441625279939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168398352259089600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &6973183100487315266
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -144,6 +160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8298301200972812322}
   - component: {fileID: 2025347218967947396}
+  - component: {fileID: 216167247184323891}
   - component: {fileID: 2674717497518631525}
   - component: {fileID: 3725782081058532771}
   m_Layer: 17
@@ -195,6 +212,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &216167247184323891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 461657806830424932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &2674717497518631525
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -388,6 +420,7 @@ GameObject:
   m_Component:
   - component: {fileID: 379205098190267024}
   - component: {fileID: 6438731281823076450}
+  - component: {fileID: 3436582422424512696}
   - component: {fileID: 3870108583676716548}
   - component: {fileID: 2190303297633764315}
   m_Layer: 17
@@ -439,6 +472,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &3436582422424512696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957119510660844593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &3870108583676716548
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -522,6 +570,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6745296853008687465}
   - component: {fileID: 9172578692666357248}
+  - component: {fileID: 703142921458985351}
   - component: {fileID: 5137845258614965603}
   - component: {fileID: 1245611855773226012}
   m_Layer: 17
@@ -573,6 +622,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &703142921458985351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306109442434395484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &5137845258614965603
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -656,6 +720,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4125412063564471613}
   - component: {fileID: 3931571136065833869}
+  - component: {fileID: 9090276127575541694}
   - component: {fileID: 8309059620704615640}
   - component: {fileID: 9221871816677583084}
   m_Layer: 17
@@ -707,6 +772,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &9090276127575541694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438354265499989707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &8309059620704615640
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -930,6 +1010,7 @@ GameObject:
   m_Component:
   - component: {fileID: 451534622093475296}
   - component: {fileID: 7197279823037604312}
+  - component: {fileID: 3345110867072058650}
   - component: {fileID: 7367875018993522321}
   - component: {fileID: 7775264222295879761}
   m_Layer: 17
@@ -981,6 +1062,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &3345110867072058650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1907569266254032742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &7367875018993522321
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1064,6 +1160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7715221512723830000}
   - component: {fileID: 2657836236772814497}
+  - component: {fileID: 6820620071544966607}
   - component: {fileID: 6358143133605546525}
   - component: {fileID: 4372767906893629169}
   m_Layer: 17
@@ -1115,6 +1212,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &6820620071544966607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2125861780869301778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &6358143133605546525
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1338,6 +1450,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7163795202151285602}
   - component: {fileID: 8943516861898725828}
+  - component: {fileID: 1209369418322128214}
   - component: {fileID: 5233291980031693361}
   - component: {fileID: 7189397167266458435}
   m_Layer: 17
@@ -1389,6 +1502,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1209369418322128214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2649934730350103054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &5233291980031693361
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1506,6 +1634,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3353995172977851374}
   - component: {fileID: 8005221974704109053}
+  - component: {fileID: 4207225189407701478}
   - component: {fileID: 494866680134443745}
   - component: {fileID: 5211297239462134776}
   m_Layer: 17
@@ -1557,6 +1686,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &4207225189407701478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3118017776013666558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &494866680134443745
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1640,6 +1784,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4121079393797005592}
   - component: {fileID: 1243035514090753170}
+  - component: {fileID: 3902403994804166674}
   - component: {fileID: 7281689633277580476}
   - component: {fileID: 3000878996100264592}
   m_Layer: 17
@@ -1691,6 +1836,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &3902403994804166674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3350152910412955170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &7281689633277580476
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1774,6 +1934,7 @@ GameObject:
   m_Component:
   - component: {fileID: 162686794801336740}
   - component: {fileID: 2463338716651967627}
+  - component: {fileID: 7201095453619293430}
   - component: {fileID: 7105444904130194296}
   - component: {fileID: 8333752708407929657}
   m_Layer: 17
@@ -1825,6 +1986,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7201095453619293430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3546262744148773494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &7105444904130194296
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2181,6 +2357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2355207805707746797}
   - component: {fileID: 7495917464329010827}
+  - component: {fileID: 8569720575927801400}
   - component: {fileID: 2704076328489901776}
   - component: {fileID: 5860800814013182883}
   m_Layer: 17
@@ -2232,6 +2409,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &8569720575927801400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4310086471776170156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &2704076328489901776
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2315,6 +2507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3569158141898500003}
   - component: {fileID: 5485403135802636586}
+  - component: {fileID: 687727251432558002}
   - component: {fileID: 4557380871385614650}
   - component: {fileID: 1426879290514589597}
   m_Layer: 17
@@ -2366,6 +2559,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &687727251432558002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4593983295842608686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &4557380871385614650
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2484,6 +2692,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4115420873252909490}
   - component: {fileID: 1636302827489055844}
+  - component: {fileID: 943973219340814453}
   - component: {fileID: 6339567481583991397}
   - component: {fileID: 542146994427004661}
   m_Layer: 17
@@ -2535,6 +2744,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &943973219340814453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4819129643424855981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &6339567481583991397
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2868,6 +3092,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8067052206287779405}
   - component: {fileID: 4381645704708351222}
+  - component: {fileID: 4932529847068887115}
   - component: {fileID: 4623910211938060672}
   - component: {fileID: 848412488172138772}
   m_Layer: 17
@@ -2919,6 +3144,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &4932529847068887115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5998637628048409513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &4623910211938060672
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3107,6 +3347,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2145084844705162655}
   - component: {fileID: 3242140829174238969}
+  - component: {fileID: 4316824305917054717}
   - component: {fileID: 2971537189373008049}
   - component: {fileID: 2913671447205130984}
   m_Layer: 17
@@ -3158,6 +3399,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &4316824305917054717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6025073566230795800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &2971537189373008049
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3382,6 +3638,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2374315358604394879}
   - component: {fileID: 5125987269567565560}
+  - component: {fileID: 2637844162911688159}
   - component: {fileID: 8029783830730679346}
   - component: {fileID: 6150644269088793648}
   m_Layer: 17
@@ -3433,6 +3690,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &2637844162911688159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6883420312644323901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &8029783830730679346
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3552,6 +3824,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6052326565672374664}
   - component: {fileID: 8600613114805083966}
+  - component: {fileID: 2020613681161761921}
   - component: {fileID: 8407933228587972149}
   - component: {fileID: 8591041516892382443}
   m_Layer: 17
@@ -3603,6 +3876,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &2020613681161761921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7768693960841374320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &8407933228587972149
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3792,6 +4080,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5502823470534414926}
   - component: {fileID: 3368392493354739035}
+  - component: {fileID: 3166757327286349958}
   - component: {fileID: 7915133405710318770}
   - component: {fileID: 6428198036292307115}
   m_Layer: 17
@@ -3843,6 +4132,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &3166757327286349958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8825719235940526573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28ba99cbdefea834c929ed5465c976be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
 --- !u!212 &7915133405710318770
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4756,31 +5060,30 @@ MonoBehaviour:
   unhoveredMaterial: {fileID: 2100000, guid: f46cf4989354ad94b969d1ddae2b6aef, type: 2}
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
   structureHasFunctionIcon: 0
-  repairBarricadeMaterial: {fileID: 2100000, guid: 4f24015711e9c2040a2b95dfcfbdd64c, type: 2}
   barricadeSpotLight: {fileID: 5002505982994471546}
-  level1BarricadeSprites:
-  - {fileID: 1438354265499989707}
-  - {fileID: 8825719235940526573}
-  - {fileID: 4593983295842608686}
-  level2BarricadeSprites:
-  - {fileID: 6883420312644323901}
-  - {fileID: 7768693960841374320}
-  - {fileID: 4819129643424855981}
-  - {fileID: 1306109442434395484}
-  level3BarricadeSprites:
-  - {fileID: 6025073566230795800}
-  - {fileID: 3350152910412955170}
-  - {fileID: 2649934730350103054}
-  - {fileID: 3546262744148773494}
-  - {fileID: 1907569266254032742}
-  level4BarricadeSprites:
-  - {fileID: 2125861780869301778}
-  - {fileID: 957119510660844593}
-  - {fileID: 168398352259089600}
-  - {fileID: 4310086471776170156}
-  - {fileID: 5998637628048409513}
-  - {fileID: 3118017776013666558}
-  - {fileID: 461657806830424932}
+  level1BarricadePieceList:
+  - {fileID: 9090276127575541694}
+  - {fileID: 3166757327286349958}
+  - {fileID: 687727251432558002}
+  level2BarricadePieceList:
+  - {fileID: 2637844162911688159}
+  - {fileID: 2020613681161761921}
+  - {fileID: 943973219340814453}
+  - {fileID: 703142921458985351}
+  level3BarricadePieceList:
+  - {fileID: 4316824305917054717}
+  - {fileID: 3902403994804166674}
+  - {fileID: 1209369418322128214}
+  - {fileID: 7201095453619293430}
+  - {fileID: 3345110867072058650}
+  level4BarricadePieceList:
+  - {fileID: 6820620071544966607}
+  - {fileID: 3436582422424512696}
+  - {fileID: 188254441625279939}
+  - {fileID: 8569720575927801400}
+  - {fileID: 4932529847068887115}
+  - {fileID: 4207225189407701478}
+  - {fileID: 216167247184323891}
 --- !u!1001 &3697750602234176021
 PrefabInstance:
   m_ObjectHideFlags: 0

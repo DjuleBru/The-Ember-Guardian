@@ -12,6 +12,7 @@ public class DogAnimatorManager : MonoBehaviour
     private MobMovement dogMovement;
 
     private float moveDir;
+    private float watchDir;
     private float previousWatchDir = 1f;
     private bool moving;
 
@@ -106,7 +107,6 @@ public class DogAnimatorManager : MonoBehaviour
     }
 
     private void Update() {
-        moveDir = dogMovement.GetMoveDirFloat();
 
         HandleXScale();
         HandleAnimatorMovementBool();
@@ -244,11 +244,25 @@ public class DogAnimatorManager : MonoBehaviour
     }
 
     private void HandleXScale() {
+        moveDir = dogMovement.GetMoveDirFloat();
+
+        if (dogAI.GetClosestCreature() != null) {
+            float dirToCreature = dogAI.GetClosestCreature().transform.position.x - transform.position.x;
+            if (dirToCreature < 0) {
+                watchDir = -1f;
+            }
+            else {
+                watchDir = 1f;
+            }
+
+        }
 
         if (moving) {
             HandleScaleChange(moveDir);
-            return;
+        } else {
+            HandleScaleChange(watchDir);
         }
+
     }
 
     private void HandleScaleChange(float watchDir) {

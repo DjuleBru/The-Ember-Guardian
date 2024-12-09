@@ -150,8 +150,6 @@ public class DayNightManager : MonoBehaviour
     public void ChangeState(State newState) {
         state = newState;
 
-        Debug.Log(newState);
-
         if(newState == State.Day) {
             OnDayStart?.Invoke(this, EventArgs.Empty);
         }

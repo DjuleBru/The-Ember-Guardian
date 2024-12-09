@@ -75,6 +75,7 @@ public class PlayerShoot : MonoBehaviour
 
         UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
     }
+
     private void SetGun(GunSO gunSO) {
         Gun activeGun = null;
         foreach(Gun gun in allGunsList) {
@@ -97,6 +98,7 @@ public class PlayerShoot : MonoBehaviour
 
         OnPlayerSwappedGun?.Invoke(this, EventArgs.Empty);
     }
+
     public void SetGunAmmo(GunSO gunSO, int ammoCount) {
         foreach (Gun gun in allGunsList) {
             if (gun.GetGunSO() == gunSO) {

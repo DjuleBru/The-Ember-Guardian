@@ -21,6 +21,7 @@ public class DogAI : MonoBehaviour
     private State currentBehaviorIdleState;
     private MobMovement dogMovement;
     [SerializeField] private WorkerDetectionCollider creatureDetectionCollider;
+    private Creature closestCreature;
 
     private Vector3 stickWithPlayerMoveTarget;
     private Vector3 stayPointToRoamAround;
@@ -205,8 +206,6 @@ public class DogAI : MonoBehaviour
     private void PlayerMovement_OnPlayerRunStopped(object sender, EventArgs e) {
         playerRunning = false;
     }
-
-
     private IEnumerator StartRunningWithPlayerAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
 
@@ -282,10 +281,14 @@ public class DogAI : MonoBehaviour
     }
 
     private void CheckCreaturesInGrowlRange() {
-        if (creatureDetectionCollider.CreaturesInDetectionCollider() && state != State.growling) {
+        closestCreature = creatureDetectionCollider.GetClosestCreature();
+
+        if (closestCreature != null && state != State.growling && state != State.barking) {
+
             ChangeState(State.growling);
+
         } else {
-            if(state == State.growling && !creatureDetectionCollider.CreaturesInDetectionCollider()) {
+            if(state == State.growling && closestCreature == null) {
                 ChangeState(currentBehaviorIdleState);
             }
         }
@@ -297,6 +300,10 @@ public class DogAI : MonoBehaviour
         } else {
             ChangeState(State.growling);
         }
+    }
+
+    public Creature GetClosestCreature() {
+        return closestCreature;
     }
 
     public State GetState() {

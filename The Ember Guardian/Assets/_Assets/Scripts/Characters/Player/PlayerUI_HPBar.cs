@@ -34,7 +34,7 @@ public class PlayerUI_HPBar : MonoBehaviour
     }
 
     private void Start() {
-        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Level) {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             hpBarGameObject.SetActive(false);
             return;
         }
@@ -124,6 +124,7 @@ public class PlayerUI_HPBar : MonoBehaviour
     }
 
     private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
+        Debug.Log("HPBAr dmg");
         if (Player.Instance.GetHP() < 0) return;
 
         if(Player.Instance.GetHP() != 0) {
@@ -133,7 +134,6 @@ public class PlayerUI_HPBar : MonoBehaviour
         if (Player.Instance.GetHP() <= PlayerStats.Instance.GetPlayerMaxHP() / 3) {
             hpBarCritical = true;
         }
-
         PlayerUI_TickTemplate[] hpTickArray = hpTickContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
         hpTickArray[hpTickArray.Length - 1].GetComponent<RectTransform>().SetParent(transform);
         hpTickArray[hpTickArray.Length - 1].RemoveTick();

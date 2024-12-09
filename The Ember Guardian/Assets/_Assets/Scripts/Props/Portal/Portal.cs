@@ -130,9 +130,9 @@ public class Portal : MonoBehaviour
         yield return new WaitForSeconds(delayToStartCrossfade);
 
         if(isEndLevelTeleporter) {
-            SceneLoader.Instance.LoadHub();
+            SceneLoader.Instance.LoadHub(1.5f);
         } else {
-            SceneLoader.Instance.LoadTestLevel();
+            SceneLoader.Instance.LoadTestLevel(1.5f);
         }
     }
 

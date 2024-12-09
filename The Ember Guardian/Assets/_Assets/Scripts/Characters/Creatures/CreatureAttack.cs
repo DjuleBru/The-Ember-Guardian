@@ -40,7 +40,6 @@ public class CreatureAttack : MobAttack
     }
 
     public override void RemoveAttackTarget() {
-        Debug.Log("RemoveAttackTarget");
         attacking = false;
         attackTargetIDamageable = null;
     }

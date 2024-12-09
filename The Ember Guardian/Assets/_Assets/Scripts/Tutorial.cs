@@ -136,9 +136,9 @@ public class Tutorial : MonoBehaviour
             HandleBlockingCollider(endLevelAreaCollider.transform.position, "I should extract an ember first");
         }
 
-        //if (Input.GetKeyDown(KeyCode.V)) {
-        //    StartCoroutine(StartGuardingWorkersObjective(0f));
-        //}
+        if (Input.GetKeyDown(KeyCode.V)) {
+            StartCoroutine(StartGuardingWorkersObjective(0f));
+        }
     }
 
     private void HandleBlockingCollider(Vector3 colliderPosition, string textToShow) {
@@ -694,7 +694,7 @@ public class Tutorial : MonoBehaviour
         //SceneLoader.Instance.LoadHub();
 
         SceneLoader.Instance.StartFadeOut();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         Application.Quit();
     }
 

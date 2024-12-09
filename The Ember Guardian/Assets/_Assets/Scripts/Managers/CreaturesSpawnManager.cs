@@ -50,7 +50,9 @@ public class CreaturesSpawnManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.U)) {
             currentWaveNumber++;
             Debug.Log(currentWaveNumber);
-            SetWaveParameters(currentWaveNumber);
+            waveDifficultyLeftProportion = .5f;
+            waveDifficultyRightProportion = .5f;
+            SetWaveParameters(currentWaveNumber, false, false);
         }
         if (Input.GetKeyDown(KeyCode.T)) {
             Debug.Log("SpawnWave");
@@ -65,7 +67,7 @@ public class CreaturesSpawnManager : MonoBehaviour
  
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         currentWaveNumber++;
-        SetWaveParameters(currentWaveNumber);
+        SetWaveParameters(currentWaveNumber, true, true);
     }
 
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
@@ -74,15 +76,20 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     public void SetTutorialWave() {
         currentWaveNumber++;
-        SetWaveParameters(currentWaveNumber);
+        waveDifficultyLeftProportion = .5f;
+        waveDifficultyRightProportion = .5f;
+
+        SetWaveParameters(currentWaveNumber, false, false);
     }
 
-    public void SetWaveParameters(int waveNumber) {
+    public void SetWaveParameters(int waveNumber, bool wavesRandomSideProportion, bool subWaveRandomSideProportion) {
         waveDifficulty = baseDifficulty * Mathf.Pow(growthFactor, waveNumber);
         waveDuration = Mathf.Lerp(minWaveDuration, maxWaveDuration, (waveNumber-1) / 10f);
         subWaveNumber = (int)(waveDuration / delayBetweenSubWaves);
 
-        SetWaveSidesProportion(waveNumber);
+        if(wavesRandomSideProportion) {
+            SetWaveSidesProportion(waveNumber);
+        }
 
         Debug.Log("waveNumber " + waveNumber);
         Debug.Log("WaveDuration " + waveDuration);
@@ -99,7 +106,7 @@ public class CreaturesSpawnManager : MonoBehaviour
        for(int i=0 ; i < subWaveNumber; i++) {
             float subWaveDifficulty = subWaveDifficultyCurve.Evaluate((float)i / subWaveNumber) * waveDifficulty;
 
-            List<SpawnedCreatureInfo> subWaveCreatures = PrepareSubWaveCreatures(subWaveDifficulty, waveDifficultyLeftProportion, i);
+            List<SpawnedCreatureInfo> subWaveCreatures = PrepareSubWaveCreatures(subWaveDifficulty, waveDifficultyLeftProportion, i, subWaveRandomSideProportion);
             waveCreaturesDictionary.Add(i, subWaveCreatures);
             CountCreatureOccurrences(subWaveCreatures);
         }
@@ -203,7 +210,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         return creaturesThisWave;
     }
 
-    private List<SpawnedCreatureInfo> PrepareSubWaveCreatures(float subWaveDifficulty, float leftProportion, int subWaveIndex) {
+    private List<SpawnedCreatureInfo> PrepareSubWaveCreatures(float subWaveDifficulty, float leftProportion, int subWaveIndex, bool subWaveRandomSideProportion) {
 
         Debug.Log("Subwave " + subWaveIndex + " Difficulty " + subWaveDifficulty);
 
@@ -213,7 +220,11 @@ public class CreaturesSpawnManager : MonoBehaviour
         int totalCreaturesToSpawn = creaturesToSpawn.Count;
 
         // Décide d'un spawn à gauche, à droite, ou des deux côtés
-        float spawnDecision = Random.Range(0f, 1f);
+        float spawnDecision = .5f;
+
+        if (subWaveRandomSideProportion) {
+            spawnDecision = Random.Range(0f, 1f);
+        }
 
         if(leftProportion == 0) {
             spawnDecision = 1;
@@ -221,6 +232,8 @@ public class CreaturesSpawnManager : MonoBehaviour
         if(leftProportion == 1) {
             spawnDecision = 0;
         }
+
+        Debug.Log("spawnDecision " + spawnDecision);
 
         if (spawnDecision < 0.2f) // 20% de chance que les monstres viennent seulement de gauche
         {
@@ -243,6 +256,8 @@ public class CreaturesSpawnManager : MonoBehaviour
         else // 60% de chance de répartir entre gauche et droite
         {
             int leftMonstersCount = Mathf.FloorToInt(totalCreaturesToSpawn * leftProportion);
+
+            Debug.Log("leftMonstersCount " + leftMonstersCount);
 
             // Spawns des monstres à gauche
             for (int i = 0; i < leftMonstersCount; i++) {
@@ -292,8 +307,7 @@ public class CreaturesSpawnManager : MonoBehaviour
             if (spawnedCreature.creature != null) // Vérifie que la créature n'est pas nulle
             {
                 // Déterminer la position (left ou right)
-                string spawnPosition = spawnedCreature.spawnSide < 0 ? "left" : "right";
-
+                string spawnPosition = spawnedCreature.spawnSide == SpawnSide.Left ? "Left" : "Right";
                 // Créer une clé pour le dictionnaire
                 var key = (spawnedCreature.creature, spawnPosition);
 

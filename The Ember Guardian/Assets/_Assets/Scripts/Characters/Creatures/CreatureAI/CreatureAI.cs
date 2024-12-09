@@ -149,8 +149,9 @@ public class CreatureAI : MonoBehaviour {
     } 
 
     private void ChangeState(State newState) {
+        if (died) return;
 
-        if(newState == State.attacking) {
+        if (newState == State.attacking) {
             creatureMovement.SetMoveTarget(transform.position);
             mobAttack.SetAttackTarget(attackTarget);
 

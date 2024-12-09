@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     public static PlayerStats Instance;
+    [SerializeField] private PlayerStatsSO playerStatsSO;
 
     #region MOVEMENT
     [BoxGroup("Movement")]
@@ -79,16 +80,16 @@ public class PlayerStats : MonoBehaviour
     }
 
     private void InitializeParameters() {
-        moveSpeed = initialMoveSpeed;
-        runMaxTime = initialRunMaxTime;
-        exhaustionTime = initialExhaustionTime;
-        runAccelerationFactor = initialRunAccelerationFactor;
+        moveSpeed = playerStatsSO.initialMoveSpeed;
+        runMaxTime = playerStatsSO.initialRunMaxTime;
+        exhaustionTime = playerStatsSO.initialExhaustionTime;
+        runAccelerationFactor = playerStatsSO.initialRunAccelerationFactor;
 
-        maxPlayerHP = initialMaxPlayerHP;
-        damagedImmunityTime += initialDamagedImmunityTime;
-        respawnTime = initialRespawnTime;
-        playerRespawnHealth = initialPlayerRespawnHealth;
-        hpRegenTime += initialHpRegenTimer;
+        maxPlayerHP = playerStatsSO.initialMaxPlayerHP;
+        damagedImmunityTime += playerStatsSO.initialDamagedImmunityTime;
+        respawnTime = playerStatsSO.initialRespawnTime;
+        playerRespawnHealth = playerStatsSO.initialPlayerRespawnHealth;
+        hpRegenTime += playerStatsSO.initialHpRegenTimer;
     }
 
     #region GET PARAMETERS
@@ -227,7 +228,6 @@ public class PlayerStats : MonoBehaviour
 
         return skillStat;
     }
-
 
     #region BUFF PARAMETERS
 

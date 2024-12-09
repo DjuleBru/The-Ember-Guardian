@@ -7,6 +7,7 @@ public class ActiveShootSpeedBoostVisual : MonoBehaviour
     [SerializeField] private ParticleSystem skillActivePS;
 
     private void Start() {
+        skillActivePS.Stop();
         PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
         PlayerSkills.Instance.OnLeftActiveSkillDeactivated += PlayerSkills_OnLeftActiveSkillDeactivated;
         PlayerSkills.Instance.OnRightActiveSkillDeactivated += PlayerSkills_OnRightActiveSkillDeactivated;

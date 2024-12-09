@@ -6,15 +6,14 @@ using UnityEngine.Rendering.Universal;
 
 public class BarricadeVisual : StructureVisual {
 
-    [SerializeField] private Material repairBarricadeMaterial;
     [SerializeField] private Light2D barricadeSpotLight;
-    [SerializeField] private List<GameObject> level1BarricadeSprites;
-    [SerializeField] private List<GameObject> level2BarricadeSprites;
-    [SerializeField] private List<GameObject> level3BarricadeSprites;
-    [SerializeField] private List<GameObject> level4BarricadeSprites;
+    [SerializeField] private List<BarricadePiece> level1BarricadePieceList;
+    [SerializeField] private List<BarricadePiece> level2BarricadePieceList;
+    [SerializeField] private List<BarricadePiece> level3BarricadePieceList;
+    [SerializeField] private List<BarricadePiece> level4BarricadePieceList;
 
-    private List<GameObject> currentLevelBarricadeSprites;
-    private List<Vector3> currentLevelBarricadeSpritesPositions = new List<Vector3>();
+    private List<BarricadePiece> currentLevelBarricadePieceList;
+    private List<BarricadePiece> currentFallenBarricadePieceList = new List<BarricadePiece>();
 
     private Barricade barricade;
     private int spriteIndex = 1;
@@ -25,14 +24,15 @@ public class BarricadeVisual : StructureVisual {
         base.Awake();
         barricade = GetComponentInParent<Barricade>();
 
-        DeactivateAllSprites();
-        ActivateSprites(level1BarricadeSprites);
     }
 
     protected override void Start() {
         base.Start();
         barricade.OnBarricadeDamageTaken += Barricade_OnBarricadeDamageTaken;
         barricade.OnBarricadeRepaired += Barricade_OnBarricadeRepaired;
+
+        ActivatePieces(level1BarricadePieceList);
+        currentLevelBarricadePieceList = level1BarricadePieceList;
     }
 
     private void Barricade_OnBarricadeRepaired(object sender, System.EventArgs e) {
@@ -41,112 +41,94 @@ public class BarricadeVisual : StructureVisual {
     }
 
     private void Barricade_OnBarricadeDamageTaken(object sender, System.EventArgs e) {
+
         float barricadeHealthNormalized = barricade.GetBarricadeHealthNormalized();
-        float spriteIndexNormalized = 1 - ((float)spriteIndex / (float)currentLevelBarricadeSprites.Count);
+        float spriteIndexNormalized = 1 - ((float)spriteIndex / (float)currentLevelBarricadePieceList.Count);
 
-        Vector2 force = new Vector2(UnityEngine.Random.Range(0, 2), UnityEngine.Random.Range(2, 4));
-        float torque = UnityEngine.Random.Range(-2, 2);
-
-        if (spriteIndex == currentLevelBarricadeSprites.Count +1) return;
+        if (spriteIndex == currentLevelBarricadePieceList.Count +1) return;
 
         if(barricadeHealthNormalized <= spriteIndexNormalized) {
-            currentLevelBarricadeSprites[spriteIndex -1].GetComponent<Rigidbody2D>().gravityScale = 1.5f;
-            currentLevelBarricadeSprites[spriteIndex -1].GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
-            currentLevelBarricadeSprites[spriteIndex -1].GetComponent<Rigidbody2D>().AddTorque(torque, ForceMode2D.Impulse);
+            currentLevelBarricadePieceList[spriteIndex - 1].BarricadePieceFell();
+            currentFallenBarricadePieceList.Add(currentLevelBarricadePieceList[spriteIndex - 1]);
+
             OnBarricadeSpriteFell?.Invoke(this, EventArgs.Empty);
-
-            StartCoroutine(DeactivateBarricadeSpriteAfterDelay(currentLevelBarricadeSprites[spriteIndex - 1]));
-
             spriteIndex++;
-        } else {
-            currentLevelBarricadeSprites[spriteIndex - 1].GetComponent<Animator>().SetTrigger("Damaged");
-        }
-    }
 
-    private IEnumerator DeactivateBarricadeSpriteAfterDelay(GameObject gameObject) {
-        yield return new WaitForSeconds(2f);
-        gameObject.SetActive(false);
+        } else {
+            currentLevelBarricadePieceList[spriteIndex - 1].BarricadePieceDamaged();
+        }
+
     }
 
     protected override void Structure_OnStructureUpgraded(object sender, System.EventArgs e) {
-        DeactivateAllSprites();
+        DeactivateAllBarricadePieces();
+        currentFallenBarricadePieceList.Clear();
 
         int structureLevel = structure.GetStructureLevel();
 
         if(structureLevel == 2) {
-            ActivateSprites(level2BarricadeSprites);
+            ActivatePieces(level2BarricadePieceList);
         }
         if (structureLevel == 3) {
-            ActivateSprites(level3BarricadeSprites);
+            ActivatePieces(level3BarricadePieceList);
         }
         if (structureLevel == 4) {
-            ActivateSprites(level4BarricadeSprites);
+            ActivatePieces(level4BarricadePieceList);
         }
 
     }
 
-    private void ActivateSprites(List<GameObject> gameObjectList) {
-        foreach(GameObject gameObject in gameObjectList) {
-            gameObject.SetActive(true);
+    private void ActivatePieces(List<BarricadePiece> gameObjectList) {
+        Debug.Log("ActivatePieces");
+        foreach (BarricadePiece piece in gameObjectList) {
+            piece.EnableBarricadePiece();
         }
+    }
 
-        currentLevelBarricadeSprites = gameObjectList;
-        currentLevelBarricadeSpritesPositions.Clear();
-
-        foreach (GameObject gameObject in currentLevelBarricadeSprites) {
-            currentLevelBarricadeSpritesPositions.Add(gameObject.transform.position);
+    private void SetBuildAnimation(List<BarricadePiece> BarricadePieceList) {
+        foreach (BarricadePiece piece in BarricadePieceList) {
+            piece.BarricadePieceBuilt();
         }
 
     }
 
-    private void DeactivateAllSprites() {
-        foreach (GameObject gameObject in level1BarricadeSprites) {
-            gameObject.SetActive(false);
+    private void DeactivateAllBarricadePieces() {
+
+        foreach (BarricadePiece barricadePiece in level1BarricadePieceList) {
+            barricadePiece.DisableBarricadePiece();
         }
-        foreach (GameObject gameObject in level2BarricadeSprites) {
-            gameObject.SetActive(false);
+        foreach (BarricadePiece barricadePiece in level2BarricadePieceList) {
+            barricadePiece.DisableBarricadePiece();
         }
-        foreach (GameObject gameObject in level3BarricadeSprites) {
-            gameObject.SetActive(false);
+        foreach (BarricadePiece barricadePiece in level3BarricadePieceList) {
+            barricadePiece.DisableBarricadePiece();
         }
-        foreach (GameObject gameObject in level4BarricadeSprites) {
-            gameObject.SetActive(false);
+        foreach (BarricadePiece barricadePiece in level4BarricadePieceList) {
+            barricadePiece.DisableBarricadePiece();
         }
     }
 
     public void ShowRepairStructureVisual(bool show) {
 
-        if(show) {
-
-            for(int i = 0; i < spriteIndex-1; i++) {
-                GameObject barricadeSprite = currentLevelBarricadeSprites[i];
-                barricadeSprite.gameObject.SetActive(true);
-                barricadeSprite.gameObject.transform.position = currentLevelBarricadeSpritesPositions[i];
-                barricadeSprite.gameObject.transform.rotation = Quaternion.identity;
-                barricadeSprite.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
-                barricadeSprite.gameObject.GetComponent<SpriteRenderer>().material = repairBarricadeMaterial;
+        if (show) {
+            foreach(BarricadePiece piece in currentFallenBarricadePieceList) {
+                piece.ShowBarricadePieceRepairable();
             }
         }
         else {
-            for (int i = 0; i < spriteIndex-1; i++) {
-                GameObject barricadeSprite = currentLevelBarricadeSprites[i];
-                barricadeSprite.gameObject.SetActive(false);
+            foreach (BarricadePiece piece in currentFallenBarricadePieceList) {
+                piece.DisableBarricadePiece();
             }
+
         }
         
     }
 
     protected void RepairStructureVisual() {
-        int i = 0;
-
-        foreach(GameObject gameObject in currentLevelBarricadeSprites) {
-            gameObject.SetActive(true);
-            gameObject.transform.position = currentLevelBarricadeSpritesPositions[i];
-            gameObject.transform.rotation = Quaternion.identity;
-            gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
-            gameObject.GetComponent<SpriteRenderer>().material = unhoveredMaterial;
-            i++;
+        foreach (BarricadePiece piece in currentFallenBarricadePieceList) {
+            piece.BarricadePieceBuilt();
         }
+        currentFallenBarricadePieceList.Clear();
     }
 
     public void SetAsOuterBarricade(bool outerBarricade) {
@@ -154,14 +136,14 @@ public class BarricadeVisual : StructureVisual {
     }
 
     protected override void Structure_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
-        foreach(GameObject go in currentLevelBarricadeSprites) {
-            go.GetComponent<SpriteRenderer>().material = unhoveredMaterial;
+        foreach(BarricadePiece piece in currentLevelBarricadePieceList) {
+            piece.SetHovered(false);
         }
     }
 
     protected override void Structure_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
-        foreach (GameObject go in currentLevelBarricadeSprites) {
-            go.GetComponent<SpriteRenderer>().material = hoveredMaterial;
+        foreach (BarricadePiece piece in currentLevelBarricadePieceList) {
+            piece.SetHovered(true);
         }
     }
 
@@ -171,5 +153,9 @@ public class BarricadeVisual : StructureVisual {
         } else {
             return false;
         }
+    }
+
+    public void OnEnable() {
+        SetBuildAnimation(level1BarricadePieceList);
     }
 }

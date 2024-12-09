@@ -78,7 +78,7 @@ public class UICurrencyManager : MonoBehaviour
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyStructurePrimaryFunctionUsed += Structure_OnAnyStructureFunctionUsed;
 
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+        if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
             StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.bigBlueOrb, debugInitialBigOrbs));
             StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.smallBlueOrb, debugInitialSmallOrbs));
             StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.bigRedOrb, debugInitialBigRedOrbs));

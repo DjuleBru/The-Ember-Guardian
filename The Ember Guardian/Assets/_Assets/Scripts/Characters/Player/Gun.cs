@@ -30,6 +30,16 @@ public class Gun : MonoBehaviour
         currentAmmoClip = maxAmmo;
     }
 
+    public void InitializeTutorialGun() {
+        pelletsPerBullet = gunSO.pelletsPerBullet;
+
+        maxAmmo = gunSO.maxAmmo;
+        damagePerBullet = gunSO.damagePerBullet;
+        bulletsPerAmmoClip = gunSO.shotsPerClip;
+        currentBullet = 0;
+        currentAmmoClip = 0;
+    }
+
     public void SetGunAmmo(int ammoCount, int currentBuller) {
         currentAmmoClip = ammoCount;
         currentBullet = currentBuller;

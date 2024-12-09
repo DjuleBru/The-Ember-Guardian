@@ -49,7 +49,7 @@ public class Structure : MonoBehaviour {
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
         GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
 
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+        if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
             DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
             DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
             campSide = CampZoneManager.Instance.AssignCampSide(transform.position);
