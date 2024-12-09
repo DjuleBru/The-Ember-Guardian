@@ -162,7 +162,10 @@ public class Player : MonoBehaviour, IDamageable
         GetComponent<PlayerCurrencies>().enabled = false;
         PlayerShoot.Instance.SetCanShoot(false);
         SetCanDropOrbOnTheFloor(false);
-        PlayerCurrencies.Instance.DropEmber();
+
+        if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
+            PlayerCurrencies.Instance.DropEmber();
+        }
 
         OnPlayerDied?.Invoke(this, EventArgs.Empty);
 
@@ -173,7 +176,7 @@ public class Player : MonoBehaviour, IDamageable
 
         Vector2 respawnPosition = new Vector2();
 
-        if (Tutorial.Instance != null) {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
 
             respawnPosition = Tutorial.Instance.GetRespawnPosition();
             playerHealth = PlayerStats.Instance.GetPlayerMaxHP();

@@ -9,6 +9,7 @@ public class Mob : MonoBehaviour, IDamageable
     [SerializeField] protected Transform projectileParent;
     [SerializeField] protected Transform dropSpawnPoint;
 
+    protected bool critZoneUnlocked;
     protected MobSpawner mobSpawner;
 
     protected List<Collectible> collectiblesDropped = new List<Collectible>();
@@ -68,7 +69,7 @@ public class Mob : MonoBehaviour, IDamageable
     public void TakeDamage(int damage, Transform damageSource, bool critHit) {
         if (health <= 0) return;
         
-        if(critHit) {
+        if(critHit && critZoneUnlocked) {
             damage *= 2;
             health -= damage;
             OnMobCritDamageTaken?.Invoke(this, new OnMobDamageTakenEventArgs {
@@ -119,5 +120,9 @@ public class Mob : MonoBehaviour, IDamageable
         OnMobDroppedCollectibles?.Invoke(this, new OnMobDroppedCollectibleEventArgs {
             collectibleDroppedList = collectiblesDropped
         });
+    }
+
+    public bool GetCritUnlocked() {
+        return critZoneUnlocked;
     }
 }

@@ -76,28 +76,37 @@ public class ParticleCollision : MonoBehaviour
                     particles[j].remainingLifetime = 0; // Détruit seulement la particule proche de l'impact
                     ps.SetParticles(particles, particleCount); // Réinjecte les particules mises à jour dans le système
 
-                    if (other.GetComponent<Mob>() != null) {
-                        other.GetComponent<Mob>().TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, false);
-                        OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
-                    } else {
+                    // Try fetch mobHit if no crit zone hit
+                    Mob mobHit = other.GetComponent<Mob>();
+                    bool critHit = false;
 
-                        Instantiate(explosionPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
-                        OnAnyBulletHitGround?.Invoke(this, EventArgs.Empty);
-
-                    }
-
-                    // Effectue un CircleCast autour du point d'impact
+                    // Try fetch mobHit if crit zone hit
                     RaycastHit2D[] hits = Physics2D.CircleCastAll(collisionPosition, .15f, Vector2.zero);
 
                     foreach (var hit in hits) {
                         if (hit.collider != null) {
-
                             // Vérifie si le collider appartient à une zone critique
                             if (hit.collider.CompareTag("CritHitZone")) {
-                                hit.collider.GetComponentInParent<Mob>().TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, true);
-                                Instantiate(critHitPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
-                                OnAnyBulletHitEnemyCrit?.Invoke(this, EventArgs.Empty);
-                            } 
+                                mobHit = hit.collider.GetComponentInParent<Mob>();
+                                critHit = true;
+                            }
+                        }
+                    }
+
+                    if (mobHit == null) {
+
+                        Instantiate(explosionPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
+                        OnAnyBulletHitGround?.Invoke(this, EventArgs.Empty);
+
+                    } else {
+                        if (critHit && mobHit.GetCritUnlocked()) {
+                            mobHit.TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, true);
+                            Instantiate(critHitPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
+                            OnAnyBulletHitEnemyCrit?.Invoke(this, EventArgs.Empty);
+                        }
+                        else {
+                            other.GetComponent<Mob>().TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, false);
+                            OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
                         }
                     }
 

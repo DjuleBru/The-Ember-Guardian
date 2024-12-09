@@ -25,14 +25,14 @@ MonoBehaviour:
   attackRate: 2.04
   attackRange: 1.5
   attackRangeRandomizer: 0.5
-  attackRangeMaxDistanceMiss: 0
+  attackRangeMaxDistanceMiss: 0.1
   relativeDamageToFire: 1
   attackAnimationDelay: 0.2
   totalAttackAnimationTime: 0.6
   baseMovementAnimationSpeed: 0.85
   workerTargetingPriority: 1
-  playerTargetingPriority: 3
-  barricadeTargetingPriority: 2
+  playerTargetingPriority: 2
+  barricadeTargetingPriority: 3
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
   difficulty: 3

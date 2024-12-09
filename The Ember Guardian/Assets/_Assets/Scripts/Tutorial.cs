@@ -135,9 +135,10 @@ public class Tutorial : MonoBehaviour
         if (dawnStarted && !emberExtracted) {
             HandleBlockingCollider(endLevelAreaCollider.transform.position, "I should extract an ember first");
         }
-        if (Input.GetKeyDown(KeyCode.V)) {
-            StartCoroutine(StartGuardingWorkersObjective(0f));
-        }
+
+        //if (Input.GetKeyDown(KeyCode.V)) {
+        //    StartCoroutine(StartGuardingWorkersObjective(0f));
+        //}
     }
 
     private void HandleBlockingCollider(Vector3 colliderPosition, string textToShow) {
@@ -473,7 +474,7 @@ public class Tutorial : MonoBehaviour
         if (dogTipShown) return;
 
         dogTipShown = true;
-        StartCoroutine(ShowTooltipAfterDelay(0f, "Press", "To whisper to doggo", InputControlIcons.Control.SwitchDog));
+        StartCoroutine(ShowTooltipAfterDelay(0f, "Whistle", "Call doggo /stay ", InputControlIcons.Control.SwitchDog));
     }
 
     private void Fire_OnFireEmberExtractionStarted(object sender, EventArgs e) {
@@ -484,7 +485,7 @@ public class Tutorial : MonoBehaviour
         if(emberExtractionObjectiveStarted && !emberExtractionObjectiveEnded && Fire.Instance.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.primaryFunction) {
             emberExtractionObjectiveEnded = true;
 
-            StartCoroutine(ShowTooltipAfterDelay(0f, "Hold", "To add fuel", InputControlIcons.Control.Interact));
+            StartCoroutine(ShowTooltipAfterDelay(0f, "Hold", "Add fuel", InputControlIcons.Control.Interact));
         }
     }
 
@@ -499,7 +500,7 @@ public class Tutorial : MonoBehaviour
     private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {
         if (shootTipShown) return;
 
-        StartCoroutine(ShowTooltipAfterDelay(.2f, "Press", "To shoot", InputControlIcons.Control.Shoot));
+        StartCoroutine(ShowTooltipAfterDelay(.2f, "Press", "Shoot", InputControlIcons.Control.Shoot));
         shootTipShown = true;
     }
 
@@ -513,7 +514,7 @@ public class Tutorial : MonoBehaviour
     private void UICurrencyManager_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         if (!transferAmmoTooltipShown) {
             if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
-                StartCoroutine(ShowTooltipAfterDelay(1f, "Hold", "To transfer ammo to rifle", InputControlIcons.Control.Reload));
+                StartCoroutine(ShowTooltipAfterDelay(1f, "Hold", "Transfer ammo", InputControlIcons.Control.Reload));
                 transferAmmoTooltipShown = true;
                 return;
             }
@@ -521,7 +522,7 @@ public class Tutorial : MonoBehaviour
 
         if (!dropOrbShown) {
             if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigBlueOrb) {
-                StartCoroutine(ShowTooltipAfterDelay(1f, "Press", "To recruit an emberling", InputControlIcons.Control.Interact));
+                StartCoroutine(ShowTooltipAfterDelay(1f, "Press", "Recruit an emberling", InputControlIcons.Control.Interact));
                 dropOrbShown = true;
                 return;
             }
@@ -537,14 +538,14 @@ public class Tutorial : MonoBehaviour
 
     private void HunterShrineLocation_OnPlayerTriggeredIn(object sender, EventArgs e) {
         if (buildStructuresTooltipShown) return;
-        StartCoroutine(ShowTooltipAfterDelay(0f, "Hold", "To build structures", InputControlIcons.Control.Interact));
+        StartCoroutine(ShowTooltipAfterDelay(0f, "Hold", "Build structures", InputControlIcons.Control.Interact));
         buildStructuresTooltipShown = true;
 
     }
 
     private void AmmoCrafterLocation_OnPlayerTriggeredIn(object sender, EventArgs e) {
         if (buildStructuresTooltipShown) return;
-        StartCoroutine(ShowTooltipAfterDelay(0f, "Hold", "To build structures", InputControlIcons.Control.Interact));
+        StartCoroutine(ShowTooltipAfterDelay(0f, "Hold", "Build structures", InputControlIcons.Control.Interact));
         buildStructuresTooltipShown = true;
 
     }
@@ -553,11 +554,10 @@ public class Tutorial : MonoBehaviour
         Debug.Log(lightFireTooltipShown);
         if (lightFireTooltipShown) return;
         lightFireTooltipShown = true;
-        StartCoroutine(ShowTooltipAfterDelay(0f, "Hold", "To light fire", InputControlIcons.Control.Interact));
+        StartCoroutine(ShowTooltipAfterDelay(0f, "Hold", "Light fire", InputControlIcons.Control.Interact));
     }
 
     private IEnumerator SwapReloadInstructionsCoroutine(float delay) {
-        Debug.Log("SwapReloadInstructionsCoroutine");
         yield return new WaitForSeconds(delay);
 
         PlayerUI_World.Instance.GetTooltipLeft().HideTooltip();
@@ -565,7 +565,7 @@ public class Tutorial : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         if (PlayerShoot.Instance.GetCurrentBullets() == 0) {
-            StartCoroutine(ShowTooltipAfterDelay(0f, "Press", "To reload", InputControlIcons.Control.Reload));
+            StartCoroutine(ShowTooltipAfterDelay(0f, "Press", "Reload rifle", InputControlIcons.Control.Reload));
         }
         else {
             reloadTooltipHidden = true;
@@ -574,7 +574,7 @@ public class Tutorial : MonoBehaviour
     }
 
     private IEnumerator ShowMoveTooltipAfterDelay() {
-        StartCoroutine(ShowTooltipAfterDelay(2f, "Use", "To move", InputControlIcons.Control.Move));
+        StartCoroutine(ShowTooltipAfterDelay(2f, "Use", "Move", InputControlIcons.Control.Move));
         yield return new WaitForSeconds(2f);
         moveTooltipShown = true;
     }
@@ -690,7 +690,12 @@ public class Tutorial : MonoBehaviour
     private IEnumerator EndTutorialCorioutine() {
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
         yield return new WaitForSeconds(6f);
-        SceneLoader.Instance.LoadHub();
+
+        //SceneLoader.Instance.LoadHub();
+
+        SceneLoader.Instance.StartFadeOut();
+        yield return new WaitForSeconds(1f);
+        Application.Quit();
     }
 
 

@@ -33,6 +33,7 @@ public class InputControlIcons : MonoBehaviour
     public Sprite keyboardRSprite;
     public Sprite keyboardASprite;
     public Sprite keyboardFSprite;
+    public Sprite keyboardCSprite;
     public Sprite keyboardVSprite;
     public Sprite keyboardQSprite;
     public Sprite keyboardDSprite;
@@ -92,7 +93,7 @@ public class InputControlIcons : MonoBehaviour
                 spriteList.Add(keyboardFSprite);
             }
             if (control == Control.SwitchDog) {
-                spriteList.Add(keyboardVSprite);
+                spriteList.Add(keyboardCSprite);
             }
             if (control == Control.SwapWeapon) {
                 spriteList.Add(keyboard2Sprite);
@@ -107,7 +108,7 @@ public class InputControlIcons : MonoBehaviour
                 spriteList.Add(keyboardShiftSprite);
             }
             if (control == Control.LightSwitch) {
-                spriteList.Add(keyboardLSprite);
+                spriteList.Add(keyboardVSprite);
             }
             if (control == Control.Move) {
                 spriteList.Add(keyboardQSprite);

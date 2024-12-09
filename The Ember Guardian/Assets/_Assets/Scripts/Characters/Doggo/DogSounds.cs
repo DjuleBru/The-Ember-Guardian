@@ -66,7 +66,8 @@ public class DogSounds : MonoBehaviour
     }
 
     private void DogAnimator_OnDogBreathe(object sender, System.EventArgs e) {
-        dogAudioSource.PlayOneShot(breatheAudioClips[Random.Range(0, breatheAudioClips.Length)], sfxVolume * .7f);
+        AudioClip audioClip = breatheAudioClips[Random.Range(0, breatheAudioClips.Length)];
+        dogAudioSource.PlayOneShot(audioClip, sfxVolume * .7f);
     }
 
     private void PlayerAnimator_OnFootStepTriggered(object sender, System.EventArgs e) {

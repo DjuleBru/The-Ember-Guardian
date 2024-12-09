@@ -7,7 +7,6 @@ public class UICurrencyManagerVisual : MonoBehaviour
     [SerializeField] private bool debugAlwaysShow;
     [SerializeField] private UICurrencyManager uICurrencyManager;
     [SerializeField] private CanvasGroup canvasGroup;
-    [SerializeField] private BackpackFeedbacks backpackFeedbacks;
     [SerializeField] private List<CurrencyUI_AlmostFullColliders> almostFullColliders;
 
     public float backpackDisplayTime = 2f;   // Durée d'affichage de la barre

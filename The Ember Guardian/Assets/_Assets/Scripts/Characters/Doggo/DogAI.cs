@@ -7,9 +7,9 @@ public class DogAI : MonoBehaviour
 {
     public enum State {
         stay,
+        stayAtCamp,
+        runToCamp,
         idle,
-        runToPlayer,
-        walkToPlayer,
         followingPlayer,
         walkWithPlayer,
         runWithPlayer,
@@ -23,6 +23,7 @@ public class DogAI : MonoBehaviour
     [SerializeField] private WorkerDetectionCollider creatureDetectionCollider;
 
     private Vector3 stickWithPlayerMoveTarget;
+    private Vector3 stayPointToRoamAround;
     private bool hasSetSpeed;
     private bool readyToMove;
 
@@ -34,92 +35,96 @@ public class DogAI : MonoBehaviour
     private float runMoveSpeed = 5f;
 
     private float distanceToPlayer;
+    private float distanceToCamp;
     private float distanceToStickWithPlayerTarget;
-    private float distanceInFrontOfPlayer = 3f;
+    private float distanceInFrontOfPlayer = 4f;
     private float minDistanceToPlayer = 1f;
     private float maxDistanceToPlayer = 10f;
+    private float distanceToRunToCamp = 5f;
 
-    private float minDistanceToPlayerWhenStickingAround = 1f;
-    private float maxDistanceToPlayerWhenStickingAround = 5f;
+    private float distanceToPlayerToRoamWhenStickingAround = 1f;
+    private float distanceToRunToPlayerWhenStickingAround = 8f;
+    private float distanceToWalkToPlayerWhenStickingAround = 5f;
 
     private float creatureBarkDistance = 7f;
 
+    private bool playerRunning;
+    private float lastPlayerDirection;
     private float changeDirectionTimer;
-    private float changeDirectionRate = .5f;
+    private float requiredDirectionChangeDuration = .5f;
 
     public event EventHandler OnStateChanged;
 
     private void Awake() {
         dogMovement = GetComponent<MobMovement>();
-        state = State.idle;
-        roamTimer = roamChangeDestionationRate;
     }
 
     private void Start() {
         PlayerMovement.Instance.OnPlayerRunStarted += PlayerMovement_OnPlayerRunStarted;
-        currentBehaviorIdleState = State.idle;
+        PlayerMovement.Instance.OnPlayerRunStopped += PlayerMovement_OnPlayerRunStopped;
+
+        currentBehaviorIdleState = State.stay;
+        stayPointToRoamAround = transform.position;
+        roamTimer = roamChangeDestionationRate;
     }
 
     private void Update() {
-
-        if(Input.GetKeyDown(KeyCode.Y)) {
-            SetBaseState(State.walkWithPlayer);
-            currentBehaviorIdleState = State.walkWithPlayer;
-        }
 
         CheckCreaturesInGrowlRange();
 
         distanceToPlayer = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
 
-        float moveTargetX = Player.Instance.transform.position.x + distanceInFrontOfPlayer * PlayerMovement.Instance.GetLastMoveDir();
-        stickWithPlayerMoveTarget = new Vector3(moveTargetX, 0, 0);
         distanceToStickWithPlayerTarget = Mathf.Abs(stickWithPlayerMoveTarget.x - transform.position.x);
 
         switch (state) {
             case State.stay:
 
-                Roam(Player.Instance.transform.position);
+                Roam(stayPointToRoamAround);
 
                 break;
+
+            case State.stayAtCamp:
+
+                distanceToCamp = Mathf.Abs(transform.position.x) - Mathf.Abs(CampZoneManager.Instance.GetClosestExteriorZoneLimit(transform.position).x);
+
+                if(distanceToCamp > distanceToRunToCamp && CampZoneManager.Instance.IsWithinCampZoneLimits(transform.position)) {
+                    ChangeState(State.runToCamp);
+                    return;
+                }
+
+                RoamInCamp();
+
+            break;
+
+            case State.runToCamp:
+
+                distanceToCamp = Mathf.Abs(transform.position.x) - Mathf.Abs(CampZoneManager.Instance.GetClosestExteriorZoneLimit(transform.position).x);
+
+                if (distanceToCamp < distanceToRunToCamp && !CampZoneManager.Instance.IsWithinCampZoneLimits(transform.position)) {
+                    ChangeState(State.stayAtCamp);
+                    return;
+                }
+
+            break;
+
             case State.idle:
 
-                if (distanceToPlayer > maxDistanceToPlayer) {
-                    ChangeState(State.runToPlayer);
-                }
-                else {
-                    Roam(Player.Instance.transform.position);
+                Roam(Player.Instance.transform.position);
+                
+                if (distanceToPlayer > distanceToWalkToPlayerWhenStickingAround) {
+                    ChangeState(State.walkWithPlayer);
                 }
 
                 break;
-
-            case State.runToPlayer:
-
-                CatchUpWithPlayer();
-
-                if (distanceToPlayer < maxDistanceToPlayerWhenStickingAround) {
-                    ChangeState(State.walkToPlayer);
-                }
-
-            break;
-
-            case State.walkToPlayer:
-
-                CatchUpWithPlayer();
-
-                if (distanceToPlayer > maxDistanceToPlayer) {
-                    ChangeState(State.runToPlayer);
-                }
-
-                if (distanceToPlayer < minDistanceToPlayer) {
-                    ChangeState(State.idle);
-                }
-
-            break;
 
             case State.walkWithPlayer:
                 StickWithPlayer();
 
-                if (distanceToStickWithPlayerTarget > maxDistanceToPlayerWhenStickingAround) {
+                if (distanceToStickWithPlayerTarget < distanceToPlayerToRoamWhenStickingAround) {
+                    ChangeState(State.idle);
+                }
+
+                if (distanceToStickWithPlayerTarget > distanceToRunToPlayerWhenStickingAround) {
                     ChangeState(State.runWithPlayer);
                 }
 
@@ -128,11 +133,15 @@ public class DogAI : MonoBehaviour
             case State.runWithPlayer:
                 StickWithPlayer();
 
-                if (distanceToStickWithPlayerTarget < minDistanceToPlayerWhenStickingAround) {
+                if (distanceToStickWithPlayerTarget < distanceToWalkToPlayerWhenStickingAround && !playerRunning) {
                     ChangeState(State.walkWithPlayer);
                 }
 
-            break;
+                if (distanceToStickWithPlayerTarget < distanceToPlayerToRoamWhenStickingAround) {
+                    ChangeState(State.idle);
+                }
+
+                break;
 
             case State.growling:
 
@@ -157,29 +166,46 @@ public class DogAI : MonoBehaviour
     private void ChangeState(State newState) {
         if (state == newState) return;
 
+        Debug.Log(newState);
+
         dogMovement.SetMoveTarget(transform.position);
         hasSetSpeed = false;
 
-        if (newState == State.runToPlayer || newState == State.runWithPlayer) {
+        if (newState == State.runWithPlayer || newState == State.runToCamp) {
             dogMovement.SetMoveSpeed(runMoveSpeed);
             hasSetSpeed = true;
         }
 
-        if (newState == State.walkToPlayer || newState == State.walkWithPlayer) {
+        if (newState == State.walkWithPlayer || newState == State.stayAtCamp) {
+            // Ajustez la cible de mouvement du chien uniquement après confirmation
+            float moveTargetX = Player.Instance.transform.position.x + distanceInFrontOfPlayer * lastPlayerDirection;
+            stickWithPlayerMoveTarget = new Vector3(moveTargetX, 0, 0);
+
             dogMovement.SetMoveSpeed(walkMoveSpeed);
             hasSetSpeed = true;
         }
+
+        if (newState == State.stay) {
+            stayPointToRoamAround = transform.position;
+        }
+
+        roamTimer = roamChangeDestionationRate;
 
         state = newState;
         OnStateChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void PlayerMovement_OnPlayerRunStarted(object sender, EventArgs e) {
-        if(state == State.walkWithPlayer) {
+        playerRunning = true;
+        if (state == State.walkWithPlayer) {
             float randomTimer = UnityEngine.Random.Range(0, 2f);
             StartCoroutine(StartRunningWithPlayerAfterDelay(randomTimer));
         }
     }
+    private void PlayerMovement_OnPlayerRunStopped(object sender, EventArgs e) {
+        playerRunning = false;
+    }
+
 
     private IEnumerator StartRunningWithPlayerAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
@@ -202,6 +228,23 @@ public class DogAI : MonoBehaviour
         }
     }
 
+    private void RoamInCamp() {
+
+        if (!hasSetSpeed) {
+            dogMovement.SetMoveSpeed(walkMoveSpeed);
+            hasSetSpeed = true;
+        }
+
+        if (!readyToMove) return;
+        roamTimer -= Time.deltaTime;
+
+        if (roamTimer < 0) {
+            roamTimer = roamChangeDestionationRate;
+
+            RoamBehavior.RoamInCampCenter(dogMovement);
+        }
+    }
+
     private void CatchUpWithPlayer() {
         if (!readyToMove) return;
 
@@ -211,11 +254,27 @@ public class DogAI : MonoBehaviour
     private void StickWithPlayer() {
         if (!readyToMove) return;
 
-        dogMovement.SetMoveTarget(stickWithPlayerMoveTarget);
-        changeDirectionTimer -= Time.deltaTime;
-        if(changeDirectionTimer < 0) {
-            changeDirectionTimer = changeDirectionRate;
+        float currentPlayerDirection = PlayerMovement.Instance.GetLastMoveDir();
+
+        // Vérifiez si la direction a changé
+        if (currentPlayerDirection != lastPlayerDirection) {
+            changeDirectionTimer += Time.deltaTime;
+            if (changeDirectionTimer >= requiredDirectionChangeDuration) {
+                lastPlayerDirection = currentPlayerDirection;
+                changeDirectionTimer = 0; // Réinitialisez le timer
+                requiredDirectionChangeDuration = UnityEngine.Random.Range(.3f, 1f);
+            }
         }
+        else {
+            changeDirectionTimer = 0; // Pas de changement, réinitialisation
+        }
+
+
+        // Ajustez la cible de mouvement du chien uniquement après confirmation
+        float moveTargetX = Player.Instance.transform.position.x + distanceInFrontOfPlayer * lastPlayerDirection;
+        stickWithPlayerMoveTarget = new Vector3(moveTargetX, 0, 0);
+
+        dogMovement.SetMoveTarget(stickWithPlayerMoveTarget);
     }
 
     public void SetReadyToMove(bool readyToMove) {

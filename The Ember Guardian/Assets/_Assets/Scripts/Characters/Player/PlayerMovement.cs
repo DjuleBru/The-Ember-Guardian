@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private LayerMask platformLayerMask;
 
     private bool isRunning;
+    private bool isAlmostExhausted;
     private bool isExhausted;
     private bool isMovingBackwards;
     private bool isCrouching;
@@ -51,6 +52,8 @@ public class PlayerMovement : MonoBehaviour {
     public event EventHandler OnPlayerLanded;
     public event EventHandler OnPlayerRunStarted;
     public event EventHandler OnPlayerRunStopped;
+    public event EventHandler OnPlayerAlmostExhaustionStarted;
+    public event EventHandler OnPlayerAlmostExhaustionStopped;
     public event EventHandler OnPlayerExhaustionStarted;
     public event EventHandler OnPlayerExhaustionStopped;
 
@@ -244,10 +247,36 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
 
-        if(isRunning && (moveSpeed != 0)) {
+        if(isAlmostExhausted) {
+            if (runTimer < PlayerStats.Instance.GetRunMaxTime() * .75f) {
+                isAlmostExhausted = false;
+                OnPlayerAlmostExhaustionStopped?.Invoke(this, EventArgs.Empty);
+            }
+        }
+       
+
+        if (isRunning && (moveSpeed != 0)) {
             runTimer += Time.deltaTime;
 
-            if(runTimer > PlayerStats.Instance.GetRunMaxTime()) {
+            // Almost exhausted
+            if (runTimer > PlayerStats.Instance.GetRunMaxTime() * .75f) {
+
+                if (!isAlmostExhausted) {
+                    isAlmostExhausted = true;
+                    OnPlayerAlmostExhaustionStarted?.Invoke(this, EventArgs.Empty);
+                }
+
+            } else {
+
+                if(isAlmostExhausted) {
+                    isAlmostExhausted = false;
+                    OnPlayerAlmostExhaustionStopped?.Invoke(this, EventArgs.Empty);
+                }
+
+            }
+
+            // Exhausted
+            if (runTimer > PlayerStats.Instance.GetRunMaxTime()) {
                 StartExhausted();
                 StopRunning();
             }
@@ -258,6 +287,7 @@ public class PlayerMovement : MonoBehaviour {
                 runTimer -= Time.deltaTime * runRecoverFactor;
             }
         }
+
     }
 
     private void StartRunning() {
@@ -275,11 +305,13 @@ public class PlayerMovement : MonoBehaviour {
     private void StartExhausted() {
         isExhausted = true;
         DebuffMoveSpeed(exhaustedSpeedFactor);
+
         OnPlayerExhaustionStarted?.Invoke(this, EventArgs.Empty);
     }
 
     private void StopExhausted() {
         isExhausted = false;
+
         exhaustionTimer = 0;
         BuffMoveSpeed(exhaustedSpeedFactor);
         OnPlayerExhaustionStopped?.Invoke(this, EventArgs.Empty);

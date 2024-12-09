@@ -17,9 +17,6 @@ public class CreatureAttack : MobAttack
         attackAnimationDelay = creature.GetCreatureSO().attackAnimationDelay;
         totalAttackAnimationTime = creature.GetCreatureSO().totalAttackAnimationTime;
     }
-    protected override void Attack() {
-        base.Attack();
-    }
 
     protected void Start() {
         creature.OnCreatureEnteredLight += Creature_OnCreatureEnteredLight;
@@ -43,8 +40,8 @@ public class CreatureAttack : MobAttack
     }
 
     public override void RemoveAttackTarget() {
+        Debug.Log("RemoveAttackTarget");
         attacking = false;
         attackTargetIDamageable = null;
-        attackTimer = 0;
     }
 }

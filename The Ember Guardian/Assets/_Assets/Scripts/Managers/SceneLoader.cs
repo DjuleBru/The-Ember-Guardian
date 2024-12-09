@@ -13,6 +13,7 @@ public class SceneLoader : MonoBehaviour
         MainMenu,
         HUB,
         Level,
+        Tutorial,
     }
 
     private void Awake() {
@@ -39,6 +40,10 @@ public class SceneLoader : MonoBehaviour
 
 
         SceneManager.LoadScene(sceneName);
+    }
+
+    public void StartFadeOut() {
+        transitionAnimator.SetTrigger("Start");
     }
 
 }

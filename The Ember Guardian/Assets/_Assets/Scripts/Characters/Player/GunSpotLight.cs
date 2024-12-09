@@ -22,9 +22,9 @@ public class GunSpotLight : MonoBehaviour
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
             DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
             Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
-            GameInput.Instance.OnPlayerGunLightSwitch += GameInput_OnPlayerGunLightSwitch;
         }
 
+        GameInput.Instance.OnPlayerGunLightSwitch += GameInput_OnPlayerGunLightSwitch;
         lightActive = false;
         gunSpotLight.enabled = false;
         
@@ -36,12 +36,14 @@ public class GunSpotLight : MonoBehaviour
     }
 
     private void GameInput_OnPlayerGunLightSwitch(object sender, System.EventArgs e) {
+        Debug.Log("cac");
         SwitchLight();
     }
 
     private void SwitchLight() {
         lightActive = !lightActive;
 
+        Debug.Log(lightActive);
         if (lightActive) {
             gunSpotLight.enabled = true;
         }

@@ -106,7 +106,7 @@ public class DayNightManager : MonoBehaviour
     }
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
-        if (Tutorial.Instance != null) return;
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) return;
         SetCyclePaused(false);
     }
 

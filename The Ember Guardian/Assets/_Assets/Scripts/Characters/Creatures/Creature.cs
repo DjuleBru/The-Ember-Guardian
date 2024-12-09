@@ -11,6 +11,7 @@ public class Creature : Mob
     [SerializeField] private List<Collider2D> critZoneColliders;
 
     private Rigidbody2D rb;
+    private bool dropRedOrbsUnlocked;
     private bool dayCreature;
     private bool enteredLight;
 
@@ -69,8 +70,10 @@ public class Creature : Mob
 
         base.Die();
 
-        SpawnDroppedCurrencies(creatureSO.currencyTypeDroppedList, creatureSO.currencyDropAmountList);
-        InvokeOnMobDroppedCollectibles(collectiblesDropped);
+        if(dropRedOrbsUnlocked) {
+            SpawnDroppedCurrencies(creatureSO.currencyTypeDroppedList, creatureSO.currencyDropAmountList);
+            InvokeOnMobDroppedCollectibles(collectiblesDropped);
+        }
 
         OnCreatureDied?.Invoke(this, EventArgs.Empty);
         StartCoroutine(DisableGameObjectAfterDelay());

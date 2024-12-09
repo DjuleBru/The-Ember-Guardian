@@ -72,8 +72,8 @@ public class SoundManager : MonoBehaviour
         GunSpotLight.OnAnyLightSwitched += GunSpotLight_OnAnyLightSwitched;
 
         Tutorial.OnAnySpotLightActivated += Tutorial_OnAnySpotLightActivated;
+        Dog.Instance.OnPlayerCalledDog += Dog_OnPlayerCalledDog;
     }
-
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
@@ -376,6 +376,13 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(soundRefsSO.gunLightSwitch);
     }
 
+    #endregion
+
+    #region OTHER
+
+    private void Dog_OnPlayerCalledDog(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.playerCallDog, .6f);
+    }
     #endregion
 
     #region PLAY SOUNDS

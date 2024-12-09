@@ -67,13 +67,25 @@ public class DogAnimatorManager : MonoBehaviour
         ResetAllTriggers();
         //ResetAllBools();
 
-        if (newState == DogAI.State.runToPlayer || newState == DogAI.State.runWithPlayer) {
+        if (newState == DogAI.State.stay) {
+            animator.SetBool("Running", false);
+            animator.SetBool("Walking", false);
+            animator.ResetTrigger("Stand");
+            animator.SetTrigger("Sit");
+        }
+
+        if (newState == DogAI.State.idle || newState == DogAI.State.stayAtCamp) {
+            animator.SetBool("Running", false);
+            animator.SetBool("Walking", false);
+        }
+
+        if (newState == DogAI.State.runWithPlayer || newState == DogAI.State.runToCamp) {
             animator.SetTrigger("Wake");
             animator.SetTrigger("Stand");
             animator.SetBool("Running", true);
         }
 
-        if (newState == DogAI.State.walkToPlayer || newState == DogAI.State.walkWithPlayer) {
+        if (newState == DogAI.State.walkWithPlayer) {
             animator.SetTrigger("Wake");
             animator.SetTrigger("Stand");
             animator.SetBool("Running", false);

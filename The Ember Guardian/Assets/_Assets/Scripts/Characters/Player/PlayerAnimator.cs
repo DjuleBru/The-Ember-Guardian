@@ -8,6 +8,7 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private Animator bodyAnimator;
     [SerializeField] private Animator gunBodyAnimator;
+    [SerializeField] private GameObject breatheVisual;
 
     public event EventHandler OnFootStepTriggered;
 
@@ -34,13 +35,24 @@ public class PlayerAnimator : MonoBehaviour
         PlayerMovement.Instance.OnPlayerRunStopped += PlayerMovement_OnPlayerRunStopped;
         PlayerMovement.Instance.OnPlayerExhaustionStarted += PlayerMovement_OnPlayerExhaustionStarted;
         PlayerMovement.Instance.OnPlayerExhaustionStopped += PlayerMovement_OnPlayerExhaustionStopped;
+        PlayerMovement.Instance.OnPlayerAlmostExhaustionStarted += PlayerMovement_OnPlayerAlmostExhaustionStarted;
+        PlayerMovement.Instance.OnPlayerAlmostExhaustionStopped += PlayerMovement_OnPlayerAlmostExhaustionStopped;
 
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
         Player.Instance.OnPlayerDamagedRecentlyEnded += Player_OnPlayerDamagedRecentlyEnded;
+
+        breatheVisual.SetActive(false);
     }
 
+    private void PlayerMovement_OnPlayerAlmostExhaustionStopped(object sender, EventArgs e) {
+        breatheVisual.SetActive(false);
+    }
+
+    private void PlayerMovement_OnPlayerAlmostExhaustionStarted(object sender, EventArgs e) {
+        breatheVisual.SetActive(true);
+    }
 
     private void Player_OnPlayerDamagedRecentlyEnded(object sender, EventArgs e) {
         bodyAnimator.SetBool("DamagedRecently", false);
@@ -170,6 +182,7 @@ public class PlayerAnimator : MonoBehaviour
     public void FootStepEvent() {
         OnFootStepTriggered?.Invoke(this, EventArgs.Empty);
     }
+
 
     private void OnDestroy() {
         PlayerMovement.Instance.OnPlayerJumpUp -= PlayerMovement_OnPlayerJumpUp;

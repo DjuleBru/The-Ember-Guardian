@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Dog : MonoBehaviour
 {
-    private bool playerInTriggerArea;
+    public static Dog Instance;
 
     public event EventHandler OnPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
@@ -14,8 +14,10 @@ public class Dog : MonoBehaviour
     public DogAI.State currentIdleState;
 
     public event EventHandler OnIdleStateChanged;
+    public event EventHandler OnPlayerCalledDog;
 
     private void Awake() {
+        Instance = this;
         dogAI = GetComponent<DogAI>();
     }
 
@@ -25,15 +27,14 @@ public class Dog : MonoBehaviour
     }
 
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
-        if (!playerInTriggerArea) return;
-
-        if(currentIdleState == DogAI.State.walkWithPlayer) {
+        if (currentIdleState == DogAI.State.walkWithPlayer) {
 
             currentIdleState = DogAI.State.stay;
 
         } else if (currentIdleState == DogAI.State.stay || currentIdleState == DogAI.State.idle) {
 
             currentIdleState = DogAI.State.walkWithPlayer;
+            OnPlayerCalledDog?.Invoke(this, EventArgs.Empty);
 
         }
 
@@ -43,14 +44,12 @@ public class Dog : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if(collision.gameObject.GetComponent<Player>() != null) {
-            playerInTriggerArea = true;
             OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() != null) {
-            playerInTriggerArea = false;
             OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
         }
     }

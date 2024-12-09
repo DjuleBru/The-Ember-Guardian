@@ -47,7 +47,7 @@ public class EndLevelArea : MonoBehaviour
 
     public void SetEndLevelFireLit() {
         OnEndLevelFireLit?.Invoke(this, EventArgs.Empty);
-        if (Tutorial.Instance != null) return;
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) return;
 
         StartCoroutine(EnableEndLevelPortal());
     }

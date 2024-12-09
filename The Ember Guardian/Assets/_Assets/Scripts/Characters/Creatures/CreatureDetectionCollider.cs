@@ -169,8 +169,8 @@ public class CreatureDetectionCollider : MonoBehaviour
             if (iDamageable is Worker) {
 
                 Worker worker = (Worker)iDamageable;
-                // Check if worker is out of camp
-                if (!CampZoneManager.Instance.IsWithinCampZoneLimits(worker.transform.position)) {
+                // Check if worker is out of camp AND player is around too 
+                if (!CampZoneManager.Instance.IsWithinCampZoneLimits(worker.transform.position) && iDamageablesDetected.Contains(Player.Instance)) {
                     currentPriority = creature.GetCreatureSO().workerTargetingPriority;
                 }
 

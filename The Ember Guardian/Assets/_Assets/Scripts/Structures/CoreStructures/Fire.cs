@@ -85,7 +85,7 @@ public class Fire : Structure, IDamageable {
 
     protected override void Start() {
         base.Start();
-        isTutorial = Tutorial.Instance != null;
+        isTutorial = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial;
 
         fireOrbCollider.OnOrbFellInFire += FireOrbCollider_OnOrbFellInFire;
 
