@@ -13,6 +13,7 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private TutorialCollider firstCreatureCollider;
     [SerializeField] private TutorialCollider blockingWorkersCollider;
     [SerializeField] private TutorialCollider endLevelAreaCollider;
+    [SerializeField] private TutorialCollider extractEmberCollider;
     [SerializeField] private StructureLocation startFireLocation;
     [SerializeField] private StructureLocation ammoCrafterLocation;
     [SerializeField] private StructureLocation hunterShrineLocation;
@@ -23,11 +24,14 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private Transform looseTutorialChest;
     [SerializeField] private Dog dog;
 
+    private float aimDirTooltip;
+
     private bool dogTipShown;
     private bool dogStateChanged;
-    private bool dogInitialStateChanged;
     private bool moveTooltipShown;
+    private bool aimTooltipShown;
     private bool moveTooltipHidden;
+    private bool aimTooltipHidden;
     private bool transferAmmoTooltipShown;
     private bool reloadTooltipShown;
     private bool reloadTooltipHidden;
@@ -49,6 +53,7 @@ public class Tutorial : MonoBehaviour
     private bool ammoCrafted;
     private bool duskStarted;
     private bool dawnStarted;
+    private bool initialEmberGiven;
     private bool emberExtracted;
     private bool animalDied;
     private bool workerDroppedOrb;
@@ -74,14 +79,11 @@ public class Tutorial : MonoBehaviour
     }
 
     private void Start() {
-        PlayerShoot.Instance.SetCanShoot(false);
-        StartCoroutine(SetGunAmmoAfterDelay());
-
+        UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         dog.OnPlayerTriggeredIn += Dog_OnPlayerTriggeredIn;
         dog.OnIdleStateChanged += Dog_OnIdleStateChanged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
-        UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         PlayerShoot.Instance.OnPlayerAmmoRefilled += PlayerShoot_OnPlayerAmmoRefilled;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         CreatureAI.OnAnyCreatureAggro += CreatureAI_OnAnyCreatureAggro;
@@ -109,14 +111,37 @@ public class Tutorial : MonoBehaviour
         endLevelArea.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
         endLevelArea.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
 
+        PlayerShoot.Instance.SetCanShoot(false);
+        StartCoroutine(SetGunAmmoAfterDelay());
         StartCoroutine(ShowMoveTooltipAfterDelay());
+
+        if(testing) {
+            reloadTooltipHidden = true;
+            workerNumberRecruited = 4;
+        }
     }
 
     private void Update() {
         if(moveTooltipShown && !moveTooltipHidden) {
             if(GameInput.Instance.GetMovementFloatNormalized() != 0) {
                 moveTooltipHidden = true;
-                StartCoroutine(HideTooltipAfterDelay(1.5f));
+                StartCoroutine(HideTooltipAfterDelay(.5f));
+                StartCoroutine(ShowAimTooltipAfterDelay(1.5f));
+            }
+        }
+
+        if(aimTooltipShown && !aimTooltipHidden) {
+            float currentAimDir = PlayerAim.Instance.GetAimDir().x;
+            if (currentAimDir > 0) {
+                currentAimDir = 1;
+            }
+            else {
+                currentAimDir = -1;
+            }
+
+            if (aimDirTooltip != currentAimDir) {
+                StartCoroutine(HideTooltipAfterDelay(.5f));
+                aimTooltipHidden = true;
             }
         }
 
@@ -128,16 +153,12 @@ public class Tutorial : MonoBehaviour
             HandleBlockingCollider(blockingWorkersCollider.transform.position, "I should recruit the lost souls first");
         }
 
-        if (reloadTooltipHidden && !dawnStarted) {
+        if (reloadTooltipHidden && !dawnStarted && workerNumberRecruited >= 4) {
             HandleBlockingCollider(endLevelAreaCollider.transform.position, "This seems too dangerous for now");
         }
 
         if (dawnStarted && !emberExtracted) {
-            HandleBlockingCollider(endLevelAreaCollider.transform.position, "I should extract an ember first");
-        }
-
-        if (Input.GetKeyDown(KeyCode.V)) {
-            StartCoroutine(StartGuardingWorkersObjective(0f));
+            HandleBlockingCollider(extractEmberCollider.transform.position, "I should extract an ember first");
         }
     }
 
@@ -180,8 +201,9 @@ public class Tutorial : MonoBehaviour
     private void Worker_OnAnyWorkerRecruited(object sender, System.EventArgs e) {
         workerNumberRecruited++;
 
-        if(workerNumberRecruited == 4) {
-            if (testing) return;
+        Debug.Log("Worker_OnAnyWorkerRecruited " + workerNumberRecruited);
+
+        if (workerNumberRecruited == 4) {
             blockingWorkersCollider.SetColliderTrigger();
             StartCoroutine(HideTooltipAfterDelay(0f));
             StartCoroutine(StartGuardingWorkersObjective(1.5f));
@@ -323,6 +345,8 @@ public class Tutorial : MonoBehaviour
         foreach (Worker worker in recruitedWorkersCoppy) {
             worker.Die();
         }
+
+        workerNumberRecruited = 0;
         firstWorkerSpawner.SpawnMobs(4);
         Transform chest = Instantiate(looseTutorialChest, looseTutorialChest.transform.position, Quaternion.identity);
         chest.gameObject.SetActive(true);
@@ -368,7 +392,9 @@ public class Tutorial : MonoBehaviour
     private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         if (dawnStarted) return;
         dawnStarted = true;
+
         DayNightManager.Instance.SetCyclePaused(true);
+        extractEmberCollider.SetColliderSolid();
 
         StartCoroutine(StartDestroyNestObjective(1.5f));
     }
@@ -463,6 +489,20 @@ public class Tutorial : MonoBehaviour
     #endregion
 
     #region CONTROL TOOLTIPS
+    private IEnumerator ShowAimTooltipAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+
+        StartCoroutine(ShowTooltipAfterDelay(0, "Use", "To aim", InputControlIcons.Control.Aim));
+        aimTooltipShown = true;
+        aimDirTooltip = PlayerAim.Instance.GetAimDir().x;
+
+        if(aimDirTooltip > 0) {
+            aimDirTooltip = 1;
+        } else {
+            aimDirTooltip = -1;
+        }
+    }
+
     private void Dog_OnIdleStateChanged(object sender, EventArgs e) {
         if (dogStateChanged) return;
 
@@ -529,8 +569,16 @@ public class Tutorial : MonoBehaviour
         }
 
         if(e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember) {
+            if(!initialEmberGiven) {
+                initialEmberGiven = true;
+                return;
+            }
+
+            Debug.Log("ember Collected : endLevelAreaCollider.SetColliderTrigger()");
             emberExtracted = true;
             endLevelAreaCollider.SetColliderTrigger();
+            extractEmberCollider.SetColliderTrigger();
+
             LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.ExtractEmber, LevelUI_ObjectiveUI.SubObjectiveType.FindNest);
         }
 
@@ -689,13 +737,16 @@ public class Tutorial : MonoBehaviour
 
     private IEnumerator EndTutorialCorioutine() {
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
+        MetaProgressionManager.Instance.SetTutorialCompleted(); 
+        MetaProgressionManager.Instance.SetGreenGemAmountFromLevel(UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count);
+        MetaProgressionManager.Instance.SetRedGemAmountFromLevel(UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count);
+        
         yield return new WaitForSeconds(6f);
 
-        //SceneLoader.Instance.LoadHub();
+        SceneLoader.Instance.LoadHub(2f);
 
         SceneLoader.Instance.StartFadeOut();
         yield return new WaitForSeconds(2f);
-        Application.Quit();
     }
 
 

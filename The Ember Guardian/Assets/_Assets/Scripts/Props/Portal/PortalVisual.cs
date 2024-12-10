@@ -20,6 +20,7 @@ public class PortalVisual : MonoBehaviour
         portalFloorFrontGameObject.SetActive(false);
         portalMarkingsGameObject.SetActive(false);
 
+        portal.OnPortalUnlocked += Portal_OnPortalUnlocked;
         portal.OnPortalAppeared += Portal_OnPortalAppeared;
         portal.OnPortalDisappeared += Portal_OnPortalDisappeared;
         portal.OnPlayerEnteredTriggerArea += Portal_OnPlayerEnteredTriggerArea;
@@ -33,8 +34,6 @@ public class PortalVisual : MonoBehaviour
         TurnOnBeamLight(false);
         TurnOnSideLights(false);
     }
-
-
     private void Start() {
         portalFloorFrontGameObject.SetActive(false);
 
@@ -53,6 +52,10 @@ public class PortalVisual : MonoBehaviour
             portalBodyGameObject.SetActive(false);
             portalBeamLight.enabled = false;
         }
+    }
+
+    private void Portal_OnPortalUnlocked(object sender, System.EventArgs e) {
+        TurnOnSideLights(true);
     }
 
     private void Portal_OnPortalAppeared(object sender, System.EventArgs e) {

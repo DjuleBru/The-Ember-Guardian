@@ -28,6 +28,7 @@ public class BarricadePiece : MonoBehaviour {
     }
 
     public void EnableBarricadePiece() {
+        gameObject.SetActive(true);
         rb.bodyType = RigidbodyType2D.Static;
         spriteRenderer.enabled = true;
         animator.enabled = true;

@@ -124,7 +124,6 @@ public class PlayerUI_HPBar : MonoBehaviour
     }
 
     private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
-        Debug.Log("HPBAr dmg");
         if (Player.Instance.GetHP() < 0) return;
 
         if(Player.Instance.GetHP() != 0) {

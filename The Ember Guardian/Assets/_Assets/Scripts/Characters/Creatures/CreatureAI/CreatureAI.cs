@@ -42,9 +42,11 @@ public class CreatureAI : MonoBehaviour {
         creatureMovement = GetComponent<CreatureMovement>();
         mobAttack = GetComponent<MobAttack>();
         creature = GetComponent<Creature>();
+        
     }
 
     private void Start() {
+        creature.OnCreatureDied += Creature_OnCreatureDied;
         attackRange = creature.GetCreatureSO().attackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
         maxAttackRange = attackRange + attackRange/5;
 
@@ -62,6 +64,7 @@ public class CreatureAI : MonoBehaviour {
 
         }
     }
+
 
     private void Update() {
         if (died) return;
@@ -102,8 +105,10 @@ public class CreatureAI : MonoBehaviour {
                 if (!detectedAttackTarget) {
                     if(creature.IsDayCreature()) {
                         ChangeState(State.walkingToSpawner);
+                        return;
                     } else {
                         ChangeState(State.walkingToFire);
+                        return;
                     }
                 }
 
@@ -270,4 +275,7 @@ public class CreatureAI : MonoBehaviour {
         };
     }
 
+    private void Creature_OnCreatureDied(object sender, EventArgs e) {
+        died = true;
+    }
 }

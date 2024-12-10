@@ -16,6 +16,7 @@ public class InputControlIcons : MonoBehaviour
         Run,
         LightSwitch,
         SwitchDog,
+        Aim,
     }
 
     public Sprite gamepadYSprite;
@@ -28,7 +29,8 @@ public class InputControlIcons : MonoBehaviour
     public Sprite gamepadLtSprite;
     public Sprite gamepadR3Sprite;
     public Sprite gamepadL3Sprite;
-    public Sprite gamepadRLeftRightSprite;
+    public Sprite gamepadLLeftRightSprite;
+    public Sprite gamepadRJoystickSprite;
 
     public Sprite keyboardRSprite;
     public Sprite keyboardASprite;
@@ -43,6 +45,7 @@ public class InputControlIcons : MonoBehaviour
     public Sprite keyboard2Sprite;
     public Sprite keyboardShiftSprite;
     public Sprite keyboardMouseClickSprite;
+    public Sprite keyboardMouseSprite;
 
     private void Awake() {
         Instance = this;
@@ -56,31 +59,34 @@ public class InputControlIcons : MonoBehaviour
                 spriteList.Add(gamepadYSprite);
             }
             if (control == Control.Skill1) {
-                spriteList.Add(gamepadRtSprite);
+                spriteList.Add(gamepadRbSprite);
             }
             if (control == Control.Skill2) {
-                spriteList.Add(gamepadLtSprite);
+                spriteList.Add(gamepadLbSprite);
             }
             if (control == Control.SwapWeapon) {
                 spriteList.Add(gamepadR3Sprite);
             }
             if (control == Control.Shoot) {
-                spriteList.Add(gamepadLtSprite);
+                spriteList.Add(gamepadRtSprite);
             }
             if (control == Control.Interact) {
-                spriteList.Add(gamepadASprite);
+                spriteList.Add(gamepadXSprite);
             }
             if (control == Control.Move) {
-                spriteList.Add(gamepadRLeftRightSprite);
+                spriteList.Add(gamepadLLeftRightSprite);
             }
             if (control == Control.Run) {
-                spriteList.Add(gamepadLbSprite);
+                spriteList.Add(gamepadLtSprite);
             }
             if (control == Control.LightSwitch) {
                 spriteList.Add(gamepadL3Sprite);
             }
             if (control == Control.SwitchDog) {
                 spriteList.Add(gamepadBSprite);
+            }
+            if (control == Control.Aim) {
+                spriteList.Add(gamepadRJoystickSprite);
             }
         } else {
             if (control == Control.Reload) {
@@ -109,6 +115,9 @@ public class InputControlIcons : MonoBehaviour
             }
             if (control == Control.LightSwitch) {
                 spriteList.Add(keyboardVSprite);
+            }
+            if (control == Control.Aim) {
+                spriteList.Add(keyboardMouseSprite);
             }
             if (control == Control.Move) {
                 spriteList.Add(keyboardQSprite);

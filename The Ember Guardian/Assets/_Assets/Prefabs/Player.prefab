@@ -28900,7 +28900,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -35398,6 +35398,7 @@ GameObject:
   - component: {fileID: 7037577414899589081}
   - component: {fileID: 3884323692964899357}
   - component: {fileID: 2089533132175775193}
+  - component: {fileID: 7013846613347094574}
   m_Layer: 12
   m_Name: Player
   m_TagString: Untagged
@@ -35579,8 +35580,6 @@ MonoBehaviour:
   ammoSpawnPoint: {fileID: 6909711943450153630}
   projectilePrefab: {fileID: 5834909706332022908, guid: 536c1e5e297258a459e47d9ff303276b, type: 3}
   projectileInitialForce: 20
-  primaryGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
-  secondayGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
   allGunsList:
   - {fileID: 4957314061034393287}
   - {fileID: 4414568598253116254}
@@ -35620,6 +35619,19 @@ MonoBehaviour:
   initialRespawnTime: 5
   initialPlayerRespawnHealth: 3
   initialHpRegenTimer: 0
+--- !u!114 &7013846613347094574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4895566687938163436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d074a21f6502503499493a5eca56e6ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialActiveGun: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
 --- !u!1 &4921149707385370051
 GameObject:
   m_ObjectHideFlags: 0

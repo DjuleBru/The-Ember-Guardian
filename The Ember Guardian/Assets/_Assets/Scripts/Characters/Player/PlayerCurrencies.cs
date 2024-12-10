@@ -47,9 +47,14 @@ public class PlayerCurrencies : MonoBehaviour
         UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
         UICurrencyManager.Instance.OnCurrencyTryPay += UICurrencyManager_OnCurrencyTryPay;
 
-        if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
-            SetCarryingEmber(true);
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
+            StartCoroutine(SetCarryingEmberAfterDelay());
         }
+    }
+
+    private IEnumerator SetCarryingEmberAfterDelay() {
+        yield return new WaitForSeconds(.05f);
+        SetCarryingEmber(true);
     }
 
     public void SetCarryingEmber(bool carryingEmber) {

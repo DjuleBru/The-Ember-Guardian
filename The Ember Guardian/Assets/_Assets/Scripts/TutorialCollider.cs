@@ -10,11 +10,13 @@ public class TutorialCollider : MonoBehaviour
     [SerializeField] private bool isLightTipCollider;
     [SerializeField] private bool isEndLevelAreaCollider;
     [SerializeField] private bool isEndLevelAreaBlockingCollider;
+    [SerializeField] private bool isExtractEmberBlockingCollider;
 
     private Tutorial tutorial;
     private Collider2D tutorialCollider;
 
     private bool playerCollided;
+
     private void Awake() {
         tutorial = GetComponentInParent<Tutorial>();
         tutorialCollider = GetComponent<Collider2D>();
@@ -47,7 +49,13 @@ public class TutorialCollider : MonoBehaviour
     }
 
     public void SetColliderTrigger() {
+        Debug.Log(gameObject + " " + "SetColliderTrigger");
+
         tutorialCollider.isTrigger = true;
+    }
+
+    public void SetColliderSolid() {
+        tutorialCollider.isTrigger = false;
     }
 
     private IEnumerator FoundNestCoroutine() {

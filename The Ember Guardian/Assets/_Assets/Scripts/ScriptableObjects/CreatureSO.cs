@@ -38,6 +38,10 @@ public class CreatureSO : ScriptableObject
     public float moveSpeed;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
+    [Range(1, 3)]
+    public float enteredLightMoveSpeedDebuff;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
     [Range(0, 5)]
     public float moveSpeedRandomizerDelta;
     [VerticalGroup("Game Data/Stats")]
@@ -52,6 +56,10 @@ public class CreatureSO : ScriptableObject
     [LabelWidth(200)]
     [Range(1f, 5)]
     public float attackRate;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
+    [Range(1, 3)]
+    public float enteredLightattackRateDebuff;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
     [Range(.1f, 10)]

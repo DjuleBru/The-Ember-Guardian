@@ -42,16 +42,19 @@ public class SoundManager : MonoBehaviour
         StructureUI_Fire.OnFireTickRemoved += StructureUI_Fire_OnFireTickRemoved;
         PlayerWorldUITooltip.OnTooltipHidden += PlayerWorldUITooltip_OnTooltipHidden;
         PlayerWorldUITooltip.OnTooltipShown += PlayerWorldUITooltup_OnTooltipShown;
-        LevelUI_ObjectiveUI.Instance.OnObjectiveUIShown += LevelUI_ObjectiveUI_OnObjectiveUIShown;
-        LevelUI_ObjectiveUI.Instance.OnObjectiveUICompleted += LevelUI_OnObjectiveUICompleted;
-        LevelUI_ObjectiveUI.Instance.OnSubObjectiveUICompleted += LevelUI_OnSubObjectiveUICompleted;
+
+        if(LevelUI_ObjectiveUI.Instance != null ) {
+            LevelUI_ObjectiveUI.Instance.OnObjectiveUIShown += LevelUI_ObjectiveUI_OnObjectiveUIShown;
+            LevelUI_ObjectiveUI.Instance.OnObjectiveUICompleted += LevelUI_OnObjectiveUICompleted;
+            LevelUI_ObjectiveUI.Instance.OnSubObjectiveUICompleted += LevelUI_OnSubObjectiveUICompleted;
+        }
 
         ParticleCollision.OnAnyBulletHitEnemy += ParticleCollision_OnAnyBulletHitEnemy;
         ParticleCollision.OnAnyBulletHitEnemyCrit += ParticleCollision_OnAnyBulletHitEnemyCrit;
         ParticleCollision.OnAnyBulletHitGround += ParticleCollision_OnAnyBulletHitGround;
 
         Collectible.OnAnyCollectibleTouchedFloor += Collectible_OnAnyCollectibleTouchedFloor;
-        Collectible.OnAnyCollectiblePickedUpByPlayer += Collectible_OnAnyCollectiblePickedUpByPlayer;
+        UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         Collectible.OnAnyCollectiblePickedUpByWorker += Collectible_OnAnyCollectiblePickedUpByWorker;
         Collectible.OnAnyCollectiblePlouffed += Collectible_OnAnyCollectiblePlouffed; ;
         Chest.OnAnyChestSpawnedCollectible += Chest_OnAnyChestSpawnedCollectible;
@@ -174,34 +177,36 @@ public class SoundManager : MonoBehaviour
             PlaySound3D(soundRefsSO.ammoTouchedFloor, (sender as MonoBehaviour).transform.position, .7f);
         }
     }
-    private void Collectible_OnAnyCollectiblePickedUpByPlayer(object sender, System.EventArgs e) {
-        Collectible collectible = (Collectible)sender;
 
-        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigBlueOrb) {
-            PlaySound3D(soundRefsSO.bigBlueOrbPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+    private void UICurrencyManager_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        PlayerCurrencies.CurrencyType currencyTypeCollected = e.currencyUIDropped.GetCurrencyType();
+
+        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.bigBlueOrb) {
+            PlaySound2D(soundRefsSO.bigBlueOrbPickedUpByPlayer, .7f);
         }
-        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.smallBlueOrb) {
-            PlaySound3D(soundRefsSO.smallBlueOrbPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.smallBlueOrb) {
+            PlaySound2D(soundRefsSO.smallBlueOrbPickedUpByPlayer, .7f);
         }
-        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigRedOrb) {
-            PlaySound3D(soundRefsSO.bigRedOrbPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.bigRedOrb) {
+            PlaySound2D(soundRefsSO.bigRedOrbPickedUpByPlayer, .7f);
         }
-        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.smallRedOrb) {
-            PlaySound3D(soundRefsSO.smallRedOrbPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.smallRedOrb) {
+            PlaySound2D(soundRefsSO.smallRedOrbPickedUpByPlayer, .7f);
         }
-        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.greenGem) {
-            PlaySound3D(soundRefsSO.gemPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.greenGem) {
+            PlaySound2D(soundRefsSO.gemPickedUpByPlayer, .7f);
         }
-        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.redGem) {
-            PlaySound3D(soundRefsSO.gemPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.redGem) {
+            PlaySound2D(soundRefsSO.gemPickedUpByPlayer, .7f);
         }
-        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
-            PlaySound3D(soundRefsSO.ammoPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.ammo) {
+            PlaySound2D(soundRefsSO.ammoPickedUpByPlayer, .7f);
         }
-        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember) {
-            PlaySound3D(soundRefsSO.emberPickedUpByPlayer, (sender as MonoBehaviour).transform.position);
+        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.ember) {
+            PlaySound2D(soundRefsSO.emberPickedUpByPlayer, .7f);
         }
     }
+
     private void Chest_OnAnyChestSpawnedCollectible(object sender, Chest.OnAnyChestSpawnedCollectibleEventArgs e) {
         if (e.currencyType == PlayerCurrencies.CurrencyType.bigBlueOrb) {
             PlaySound3D(soundRefsSO.bigBlueOrbDropped, (sender as MonoBehaviour).transform.position);
@@ -432,8 +437,8 @@ public class SoundManager : MonoBehaviour
         ParticleCollision.OnAnyBulletHitEnemy -= ParticleCollision_OnAnyBulletHitEnemy;
         ParticleCollision.OnAnyBulletHitGround -= ParticleCollision_OnAnyBulletHitGround;
 
+        UICurrencyManager.Instance.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
         Collectible.OnAnyCollectibleTouchedFloor -= Collectible_OnAnyCollectibleTouchedFloor;
-        Collectible.OnAnyCollectiblePickedUpByPlayer -= Collectible_OnAnyCollectiblePickedUpByPlayer;
         Collectible.OnAnyCollectiblePickedUpByWorker -= Collectible_OnAnyCollectiblePickedUpByWorker;
         Chest.OnAnyChestSpawnedCollectible -= Chest_OnAnyChestSpawnedCollectible;
         PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor -= PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;

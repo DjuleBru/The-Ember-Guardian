@@ -80,6 +80,18 @@ public class PlayerStats : MonoBehaviour
     }
 
     private void InitializeParameters() {
+        // LATER ADD IF VALUE SAVED THEN LOAD VALUE instead of playerStatsSO
+        initialMoveSpeed = playerStatsSO.initialMoveSpeed;
+        initialRunMaxTime = playerStatsSO.initialRunMaxTime;
+        initialExhaustionTime = playerStatsSO.initialExhaustionTime;
+        initialRunAccelerationFactor = playerStatsSO.initialRunAccelerationFactor;
+
+        initialMaxPlayerHP = playerStatsSO.initialMaxPlayerHP;
+        initialDamagedImmunityTime += playerStatsSO.initialDamagedImmunityTime;
+        initialRespawnTime = playerStatsSO.initialRespawnTime;
+        initialPlayerRespawnHealth = playerStatsSO.initialPlayerRespawnHealth;
+        initialHpRegenTimer += playerStatsSO.initialHpRegenTimer;
+
         moveSpeed = playerStatsSO.initialMoveSpeed;
         runMaxTime = playerStatsSO.initialRunMaxTime;
         exhaustionTime = playerStatsSO.initialExhaustionTime;

@@ -135,8 +135,6 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
             }
         }
 
-        Debug.Log("allSubObjectivesCompleted " + allSubObjectivesCompleted);
-        Debug.Log("subObjectiveTypeUnlockedList == null" + subObjectiveTypeUnlockedList == null);
         if(subObjectiveTypeUnlockedList != null) {
 
             List<SubObjectiveUI> subObjectivesUIUnlocked = new List<SubObjectiveUI> ();

@@ -28,10 +28,12 @@ public class PortalSound : MonoBehaviour
     private void Start() {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
         SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+
         if(!portal.GetPortalUnlocked()) {
             teleporterIdleAudioSource.enabled = false;
         }
 
+        portal.OnPortalUnlocked += Portal_OnPortalUnlocked;
         portal.OnPlayerMovedOnTeleporter += Portal_OnPlayerMovedOnTeleporter;
         portal.OnPortalAppeared += Portal_OnPortalAppeared;
         portal.OnPortalDisappeared += Portal_OnPortalDisappeared;
@@ -39,6 +41,14 @@ public class PortalSound : MonoBehaviour
         portal.OnPlayerExitedTriggerArea += Portal_OnPlayerExitedTriggerArea;
         portal.OnTeleporterActivatedOut += Portal_OnTeleporterActivatedOut;
         teleporterIdleAudioSource.clip = idleAudioClip;
+
+        if(teleporterIdleAudioSource.enabled) {
+            teleporterIdleAudioSource.Play();
+        }
+    }
+
+    private void Portal_OnPortalUnlocked(object sender, System.EventArgs e) {
+        teleporterIdleAudioSource.enabled = true;
         teleporterIdleAudioSource.Play();
     }
 

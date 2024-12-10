@@ -547,13 +547,15 @@ MonoBehaviour:
   isEndLevelTeleporter: 0
   isStartLevelTeleporter: 0
   isHUBTeleporter: 0
-  portalUnlocked: 0
+  portalNumber: 0
+  DEBUGMODE: 0
   delayToAppearTeleporterIn: 1.5
   delayToActivateTeleporter: 2
   delayToActivateTeleportAnimation: 1.6
   delayToTeleportPlayerInAnimation: 2.1
   delayToTeleportPlayerAnimation: 6.4
   delayToReleasePlayerAnimation: 0.5
+  delayToRewardGems: 1
   delayToStartCrossfade: 0
 --- !u!61 &1932998338459136348
 BoxCollider2D:

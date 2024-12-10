@@ -167,8 +167,6 @@ public class DogAI : MonoBehaviour
     private void ChangeState(State newState) {
         if (state == newState) return;
 
-        Debug.Log(newState);
-
         dogMovement.SetMoveTarget(transform.position);
         hasSetSpeed = false;
 

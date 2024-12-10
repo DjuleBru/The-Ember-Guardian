@@ -10,7 +10,7 @@ public class Portal : MonoBehaviour
     [SerializeField] private bool isEndLevelTeleporter;
     [SerializeField] private bool isStartLevelTeleporter;
     [SerializeField] private bool isHUBTeleporter;
-    [SerializeField] private bool portalUnlocked;
+    [SerializeField] private int portalNumber;
     [SerializeField] private bool DEBUGMODE;
 
     [SerializeField] private float delayToAppearTeleporterIn;
@@ -19,11 +19,14 @@ public class Portal : MonoBehaviour
     [SerializeField] private float delayToTeleportPlayerInAnimation;
     [SerializeField] private float delayToTeleportPlayerAnimation;
     [SerializeField] private float delayToReleasePlayerAnimation;
+    [SerializeField] private float delayToRewardGems;
     [SerializeField] private float delayToStartCrossfade;
 
     private bool playerInTriggerArea;
     private bool playerIsSetOnTeleporter;
+    private bool portalUnlocked;
 
+    public  event EventHandler OnPortalUnlocked;
     public static event EventHandler OnAnyPortalSetToTeleportPlayer;
     public event EventHandler OnPortalSetToTeleportPlayer;
     public event EventHandler OnPortalAppeared;
@@ -41,15 +44,38 @@ public class Portal : MonoBehaviour
     public static event EventHandler OnAnyTeleporterTeleportedPlayerOut;
     public static event EventHandler OnAnyPlayerTeleported;
 
+    private void Awake() {
+        if (isEndLevelTeleporter) {
+            portalUnlocked = true;
+        }
+
+        if (isStartLevelTeleporter) {
+            portalUnlocked = true;
+        }
+    }
+
     private void Start() {
+
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
         floorCollider.enabled = false;
 
-        if (isHUBTeleporter) {
-            StartCoroutine(TeleportPlayerOutInHub());
+        if (HUBManager.Instance.DEBUGMODE) return;
+
+        if(isHUBTeleporter) {
+            portalUnlocked = MetaProgressionManager.Instance.GetPortalUnlocked(gameObject.name);
+
+            if (!portalUnlocked) {
+                gameObject.SetActive(false);
+                return;
+            }
+
+            if(MetaProgressionManager.Instance.hubLoadedOnce) {
+                if (MetaProgressionManager.Instance.lastHUBPortalUsedByPlayer == portalNumber) {
+                    StartCoroutine(TeleportPlayerOutInHub());
+                }
+            }
         }
 
-        if (DEBUGMODE) return;
         if (isEndLevelTeleporter) {
             MakePortalAppear();
         }
@@ -130,9 +156,17 @@ public class Portal : MonoBehaviour
         yield return new WaitForSeconds(delayToStartCrossfade);
 
         if(isEndLevelTeleporter) {
+
+            MetaProgressionManager.Instance.SetGreenGemAmountFromLevel(UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count);
+            MetaProgressionManager.Instance.SetRedGemAmountFromLevel(UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count);
             SceneLoader.Instance.LoadHub(1.5f);
+
         } else {
+            
+            MetaProgressionManager.Instance.SetAsLastPortalUsedByPlayer(portalNumber);
+            MetaProgressionManager.Instance.SaveHubGems();
             SceneLoader.Instance.LoadTestLevel(1.5f);
+        
         }
     }
 
@@ -181,11 +215,23 @@ public class Portal : MonoBehaviour
         yield return new WaitForSeconds(delayToReleasePlayerAnimation);
 
         Player.Instance.ReleasePlayerFromTeleporter();
+
+        yield return new WaitForSeconds(delayToRewardGems);
+
+        HUBManager.Instance.RewardLastLevelGems();
     }
 
     public void MakePortalAppear() {
         OnPortalAppeared?.Invoke(this, EventArgs.Empty);
         OnAnyPortalAppeared?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void UnlockPortal() {
+        portalUnlocked = true;
+        MetaProgressionManager.Instance.SetPortalUnlocked(gameObject.name);
+        gameObject.SetActive(true);
+
+        OnPortalUnlocked?.Invoke(this, EventArgs.Empty);
     }
 
     public bool GetPortalUnlocked() {
@@ -199,5 +245,8 @@ public class Portal : MonoBehaviour
     }
     public bool GetIsHUBTeleporter() {
         return isHUBTeleporter;
+    }
+    public int GetPortalNumber() {
+        return portalNumber;
     }
 }

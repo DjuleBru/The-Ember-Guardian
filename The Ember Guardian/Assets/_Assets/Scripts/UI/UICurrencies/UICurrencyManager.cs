@@ -26,7 +26,6 @@ public class UICurrencyManager : MonoBehaviour
     [SerializeField] private Transform emberUIPrefab;
 
     [SerializeField] private int smallOrbValue = 5;
-    [SerializeField] private float smallOrbSmoothTime = 5f;
 
     [SerializeField] int debugInitialBigOrbs = 10;
     [SerializeField] int debugInitialSmallOrbs = 0;
@@ -37,13 +36,6 @@ public class UICurrencyManager : MonoBehaviour
     List<Currency_UI> currenciesInBag = new List<Currency_UI>();
 
     private PayCurrencyUI currentPayCurrencyUI;
-
-    private float timeBetweenSmallOrbsPickup = .2f;
-    private float smallOrbsPickupTimer;
-    int smallOrbIndex;
-    int bigOrbIndex;
-    int smallOrbsNecessaryToFormBigOrb = 5;
-
     public event EventHandler<OnCurrencyDroppedEventArgs> OnCurrencyDropped;
     public event EventHandler<OnCurrencyTryPayEventArgs> OnCurrencyTryPay;
     public event EventHandler<OnCurrencyDroppedEventArgs> OnCurrencyCollected;
@@ -79,31 +71,32 @@ public class UICurrencyManager : MonoBehaviour
         Structure.OnAnyStructurePrimaryFunctionUsed += Structure_OnAnyStructureFunctionUsed;
 
         if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
-            StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.bigBlueOrb, debugInitialBigOrbs));
-            StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.smallBlueOrb, debugInitialSmallOrbs));
-            StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.bigRedOrb, debugInitialBigRedOrbs));
-            StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.smallRedOrb, debugInitialSmallRedOrbs));
-            StartCoroutine(DebugAddCurrency(PlayerCurrencies.CurrencyType.ammo, debugInitialAmmo));
+            List<PlayerCurrencies.CurrencyType> currencyTypes = new List<PlayerCurrencies.CurrencyType> {
+                PlayerCurrencies.CurrencyType.bigBlueOrb,
+                PlayerCurrencies.CurrencyType.smallBlueOrb,
+                PlayerCurrencies.CurrencyType.bigRedOrb,
+                PlayerCurrencies.CurrencyType.smallRedOrb,
+                PlayerCurrencies.CurrencyType.ammo,
+            };
+            List<int> currencyTypesAmount = new List<int> {
+                debugInitialBigOrbs,
+                debugInitialSmallOrbs,
+                debugInitialBigRedOrbs,
+                debugInitialSmallRedOrbs,
+                debugInitialAmmo,
+            };
 
+            AddMultipleCurrencies(currencyTypes, currencyTypesAmount);
         }
     }
 
-
     private void Update() {
-
-        if (tryingToDropOrb) {
-            tryingToDropOrbTimer += Time.deltaTime;
-
-            if (tryingToDropOrbTimer > tryingToDropOrbHoldTime && !formingBigOrb && !formingBigOrbCanceled) {
-                TryFormBigOrb(true);
-            }
-
+        if (Input.GetKeyDown(KeyCode.I)) {
+            AddCurrencyInBag(PlayerCurrencies.CurrencyType.greenGem);
         }
-
-        //if (formingBigOrb) {
-        //    FormBigOrbWithSmallOrb();
-        //}
-
+        if (Input.GetKeyDown(KeyCode.O)) {
+            AddCurrencyInBag(PlayerCurrencies.CurrencyType.redGem);
+        }
         if (Input.GetKeyDown(KeyCode.P)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.ammo);
         }
@@ -173,7 +166,31 @@ public class UICurrencyManager : MonoBehaviour
         currenciesInBag.Add(currencyUICollected);
     }
 
-    private IEnumerator DebugAddCurrency(PlayerCurrencies.CurrencyType currencyType, int currencyAmount) {
+    public void AddCurrencyAmount(PlayerCurrencies.CurrencyType currencyType, int currencyAmount) {
+        Debug.Log("Add " + currencyType + " " + currencyAmount);
+        StartCoroutine(AddCurrencyCoroutine(currencyType, currencyAmount));
+    }
+
+    public void AddMultipleCurrencies(List<PlayerCurrencies.CurrencyType> currencyTypeList, List<int> currencyAmountList) {
+        StartCoroutine(AddMultipleCurrenciesCoroutine(currencyTypeList, currencyAmountList));
+    }
+
+    private IEnumerator AddMultipleCurrenciesCoroutine(List<PlayerCurrencies.CurrencyType> currencyTypeList, List<int> currencyAmountList) {
+        int i = 0;
+        float delayBetweenEachCurrencyType = .75f;
+
+        foreach(PlayerCurrencies.CurrencyType currencyType in currencyTypeList) {
+            int currencyTypeAmount = currencyAmountList[i];
+            float delay = currencyTypeAmount * .15f;
+
+            StartCoroutine(AddCurrencyCoroutine(currencyType, currencyTypeAmount));
+
+            yield return new WaitForSeconds(delay + delayBetweenEachCurrencyType);
+            i++;
+        }
+    }
+
+    private IEnumerator AddCurrencyCoroutine(PlayerCurrencies.CurrencyType currencyType, int currencyAmount) {
         for (int i = 0; i < currencyAmount; i++) {
             AddCurrencyInBag(currencyType);
             yield return new WaitForSeconds(.2f);
@@ -323,6 +340,32 @@ public class UICurrencyManager : MonoBehaviour
 
     public bool GetHasBigOrb() {
         return GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.bigBlueOrb).Count > 0;
+    }
+
+    public List<Vector3> GetCurrencyPositions(PlayerCurrencies.CurrencyType currencyType) {
+        List<Vector3> currencyPosition = new List<Vector3>();
+
+        foreach (Currency_UI currency in GetCurrenciesInBagOfType(currencyType)) {
+            currencyPosition.Add(currency.transform.position);
+
+        }
+        return currencyPosition;
+    }
+
+    public void LoadCurrencies(PlayerCurrencies.CurrencyType currencyType, List<Vector3> currencyPositions) {
+        Transform prefab = null;
+        Debug.Log("LoadCurrencies");
+        if (currencyType == PlayerCurrencies.CurrencyType.greenGem) {
+            prefab = greenGemUIPrefab;
+        }
+
+        if (currencyType == PlayerCurrencies.CurrencyType.redGem) {
+            prefab = redGemUIPrefab;
+        }
+
+        foreach (Vector3 position in currencyPositions) {
+            Instantiate(prefab, position, Quaternion.identity, currencyContainer);
+        }
     }
 
     private void OnDestroy() {

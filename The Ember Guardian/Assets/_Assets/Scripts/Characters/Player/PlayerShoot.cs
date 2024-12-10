@@ -51,8 +51,10 @@ public class PlayerShoot : MonoBehaviour
 
     private Gun heldGun;
     private GunSO heldGunSO;
-    [SerializeField] private GunSO primaryGunSO;
-    [SerializeField] private GunSO secondayGunSO;
+
+    private GunSO primaryGunSO;
+    private GunSO secondayGunSO;
+
     [SerializeField] private List<Gun> allGunsList;
 
     private void Awake() {
@@ -61,7 +63,7 @@ public class PlayerShoot : MonoBehaviour
 
     private void Start() {
         InitializeGuns();
-        SetGun(primaryGunSO);
+        SetGun(PlayerSave.Instance.GetPrimaryActiveGun());
 
         GameInput.Instance.OnPlayerShootCanceled += GameInput_OnPlayerShootCanceled;
         GameInput.Instance.OnPlayerShootPerformed += GameInput_OnPlayerShootStarted;

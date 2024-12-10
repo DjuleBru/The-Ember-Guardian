@@ -83,7 +83,7 @@ public class Chest : MonoBehaviour
 
                 yield return new WaitForSeconds(.2f);
                 collectible.ApplyRandomUpwardsForce(5, 8);
-                collectible.SetCollectibleUnInteractable(1f);
+                collectible.SetCollectibleUnInteractable(.75f);
             }
             j++;
         }

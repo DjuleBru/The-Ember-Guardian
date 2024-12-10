@@ -36,7 +36,6 @@ public class GunSpotLight : MonoBehaviour
     }
 
     private void GameInput_OnPlayerGunLightSwitch(object sender, System.EventArgs e) {
-        Debug.Log("cac");
         SwitchLight();
     }
 

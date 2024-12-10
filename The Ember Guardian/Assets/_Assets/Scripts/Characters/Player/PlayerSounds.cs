@@ -69,7 +69,6 @@ public class PlayerSounds : MonoBehaviour
 
     private void PlayerAnimator_OnPantTriggered(object sender, System.EventArgs e) {
         if (exhaustedSFXPlaying) return;
-        Debug.Log("pant");
         playerAudioSource.PlayOneShot(playerPantAudioClips[Random.Range(0, playerPantAudioClips.Length)], sfxVolume * .5f);
     }
     private void ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered(object sender, System.EventArgs e) {

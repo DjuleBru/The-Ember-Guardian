@@ -86,5 +86,9 @@ public class MusicManager : MonoBehaviour {
         audioSource.clip = endLevelMusic;
     }
 
+    private void OnDestroy() {
+        Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
+    }
+
 
 }

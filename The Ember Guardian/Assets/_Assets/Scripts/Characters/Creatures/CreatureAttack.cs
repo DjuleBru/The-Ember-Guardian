@@ -16,6 +16,7 @@ public class CreatureAttack : MobAttack
         attackDamage = creature.GetCreatureSO().damage;
         attackAnimationDelay = creature.GetCreatureSO().attackAnimationDelay;
         totalAttackAnimationTime = creature.GetCreatureSO().totalAttackAnimationTime;
+        enteredLightAttackSpeedDebuff = creature.GetCreatureSO().enteredLightattackRateDebuff;
     }
 
     protected void Start() {
