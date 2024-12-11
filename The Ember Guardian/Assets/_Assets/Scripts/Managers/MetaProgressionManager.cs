@@ -46,7 +46,7 @@ public class MetaProgressionManager : MonoBehaviour
         }
     }
 
-    #region SAVE TUTORIAL
+    #region TUTORIAL
     public void SetTutorialCompleted() {
         ES3.Save("tutorialComplete", true);
     }
@@ -56,7 +56,7 @@ public class MetaProgressionManager : MonoBehaviour
     }
     #endregion
 
-    #region SAVE HUB
+    #region HUB
     public void SetAsLastPortalUsedByPlayer(int portalNumber) {
         ES3.Save("lastHUBPortalUsedByPlayer", portalNumber);
     }
@@ -72,7 +72,7 @@ public class MetaProgressionManager : MonoBehaviour
     }
     #endregion
 
-    #region SAVE/GET CURRENCIES
+    #region CURRENCIES
 
     public int GetGreenGemAmountFromLastLevel() {
         return ES3.Load("greenGemAmountFromLastLevel", 0);
@@ -119,5 +119,18 @@ public class MetaProgressionManager : MonoBehaviour
     }
     #endregion
 
+    #region HUB MERCHANTS
+
+    public bool GetMerchantUnlocked(string merchantName) {
+        string key = merchantName + "_Unlocked";
+        return ES3.Load(key, false);
+    }
+
+    public void SetMerchantUnlocked(string merchantName) {
+        string key = merchantName + "_Unlocked";
+        ES3.Save(key, true);
+    }
+
+    #endregion
 
 }

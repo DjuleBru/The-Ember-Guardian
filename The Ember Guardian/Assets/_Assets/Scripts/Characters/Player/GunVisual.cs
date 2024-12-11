@@ -22,6 +22,7 @@ public class GunVisual : MonoBehaviour
 
         PlayerShoot.Instance.OnBulletsChanged += PlayerShoot_OnClipsChanged;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
+        PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
 
         PlayerAim.Instance.OnXAimDirChanged += PlayerAim_OnXAimDirChanged;
 
@@ -30,6 +31,9 @@ public class GunVisual : MonoBehaviour
         gunLightSpriteIndex = gunSO.shotCountSprites.Count -1;
     }
 
+    private void PlayerShoot_OnPlayerTryShoot_OutOfAmmo(object sender, System.EventArgs e) {
+        gunLightsSpriteRenderer.sprite = gunReloadSprites[gunSO.shotCountSprites.Count - 1];
+    }
 
     private void PlayerAim_OnXAimDirChanged(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;

@@ -11,7 +11,15 @@ PrefabInstance:
     - target: {fileID: 1830935907253760471, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: 745413be939cd17468ee28ae6f2897f0, type: 2}
+      objectReference: {fileID: 22100000, guid: eafa29515b801844d8009d715f55879c, type: 2}
+    - target: {fileID: 3539063435249221414, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: hubMerchantName
+      value: The Trainer
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539063435249221414, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: hubMerchantType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4019432360029635251, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -54,12 +62,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4755131706490451534, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Name
-      value: Codex
+      value: HeroMerchant
       objectReference: {fileID: 0}
     - target: {fileID: 7580726008706340968, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1174619167, guid: 0c1f24c9734297e44935bdae0c655e70, type: 3}
+      objectReference: {fileID: -1960684579, guid: b40beeccc9bf62e4d9d38bc8938a0edf, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -18,6 +18,7 @@ public class Player : MonoBehaviour, IDamageable
     private bool canDropOrbOnTheFloor = true;
     private bool interactingWithOtherObject;
     private bool canMove = true;
+    private bool interactingWithMerchant;
 
     private float damagedTimer;
     private float deadTimer;
@@ -224,8 +225,11 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public void StartInteractingWithMerchant() {
+        interactingWithMerchant = true;
         canMove = false;
+
         GetComponent<PlayerMovement>().enabled = false;
+        GetComponent<PlayerAim>().enabled = false;
         PlayerShoot.Instance.SetCanShoot(false);
     }
     
@@ -233,7 +237,16 @@ public class Player : MonoBehaviour, IDamageable
         canMove = true;
 
         GetComponent<PlayerMovement>().enabled = true;
+        GetComponent<PlayerAim>().enabled = true;
         PlayerShoot.Instance.SetCanShoot(true);
+
+        // Set interactingWithMerchant false after frame or dog will react
+        StartCoroutine(SetStopInteractingWithMerchantCoroutine());
+    }
+
+    private IEnumerator SetStopInteractingWithMerchantCoroutine() {
+        yield return new WaitForEndOfFrame();
+        interactingWithMerchant = false;
     }
 
     #endregion
@@ -282,5 +295,9 @@ public class Player : MonoBehaviour, IDamageable
 
     public bool GetCanMove() {
         return canMove;
+    }
+
+    public bool GetInteractingWithMerchant() {
+        return interactingWithMerchant;
     }
 }

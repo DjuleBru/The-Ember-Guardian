@@ -11,7 +11,15 @@ PrefabInstance:
     - target: {fileID: 1830935907253760471, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: ef7630b4baca4cf439a2196c807784da, type: 2}
+      objectReference: {fileID: 22100000, guid: 518299fa81ca48f41a2dfea1de59e1d4, type: 2}
+    - target: {fileID: 3539063435249221414, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: hubMerchantName
+      value: The Sporemonger
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539063435249221414, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: hubMerchantType
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4019432360029635251, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -54,12 +62,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4755131706490451534, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Name
-      value: StructuresMerchant
+      value: MushroomMerchant
       objectReference: {fileID: 0}
     - target: {fileID: 7580726008706340968, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -793781552, guid: 01b56bdd8ee5b27488ff62bc349c2117, type: 3}
+      objectReference: {fileID: -2051114358, guid: c15b58d7c51dbd5479d2eba340820820, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

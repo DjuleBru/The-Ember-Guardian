@@ -42,7 +42,6 @@ public class GunSpotLight : MonoBehaviour
     private void SwitchLight() {
         lightActive = !lightActive;
 
-        Debug.Log(lightActive);
         if (lightActive) {
             gunSpotLight.enabled = true;
         }

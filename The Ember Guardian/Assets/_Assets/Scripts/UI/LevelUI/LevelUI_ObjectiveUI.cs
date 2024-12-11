@@ -247,7 +247,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
             return "Light the fire to destroy the nest";
         }
         if (subObjectiveType == SubObjectiveType.ExtractEmber) {
-            return "Extract an ember from the main fire";
+            return "Extract an ember from the main fire (the fire must be fully fuelled)";
         }
         if (subObjectiveType == SubObjectiveType.FindNest) {
             return "Find the darklings nest";

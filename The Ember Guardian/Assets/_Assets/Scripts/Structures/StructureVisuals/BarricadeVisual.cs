@@ -79,7 +79,6 @@ public class BarricadeVisual : StructureVisual {
     }
 
     private void ActivatePieces(List<BarricadePiece> gameObjectList) {
-        Debug.Log("ActivatePieces");
         foreach (BarricadePiece piece in gameObjectList) {
             piece.EnableBarricadePiece();
         }

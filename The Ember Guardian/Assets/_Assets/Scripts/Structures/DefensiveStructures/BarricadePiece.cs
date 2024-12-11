@@ -17,19 +17,21 @@ public class BarricadePiece : MonoBehaviour {
         DisableBarricadePiece();
     }
 
-
     public void DisableBarricadePiece() {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        rb.bodyType = RigidbodyType2D.Static;
+
+        rb.bodyType = RigidbodyType2D.Kinematic;
         spriteRenderer.enabled = false;
         animator.enabled = false;
     }
 
     public void EnableBarricadePiece() {
         gameObject.SetActive(true);
-        rb.bodyType = RigidbodyType2D.Static;
+        initialPosition = transform.position;
+
+        rb.bodyType = RigidbodyType2D.Kinematic;
         spriteRenderer.enabled = true;
         animator.enabled = true;
     }
@@ -59,6 +61,11 @@ public class BarricadePiece : MonoBehaviour {
     }
 
     public void BarricadePieceBuilt() {
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        initialPosition = transform.position;
+
         animator.ResetTrigger("Damaged");
         animator.ResetTrigger("ShowRepair");
         transform.position = initialPosition;
