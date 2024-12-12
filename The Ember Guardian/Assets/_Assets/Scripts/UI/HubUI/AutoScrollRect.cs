@@ -10,8 +10,9 @@ public class AutoScrollRect : MonoBehaviour {
     private RectTransform hoveredButtonUI;
     private RectTransform previousSelectedButtonUI;
     private float smoothSpeed = 2f;
-    private EventSystem eventSystem; // Référence au système d'événements
 
+    private EventSystem eventSystem; // Référence au système d'événements
+   
     void Start() {
         eventSystem = EventSystem.current; // Récupérer l'EventSystem actif
         scrollRect = GetComponent<ScrollRect>();
@@ -19,31 +20,14 @@ public class AutoScrollRect : MonoBehaviour {
 
     void Update() {
 
+        if (!GameInput.Instance.IsUsingGamepad()) return;
+
         // Vérifie le bouton sélectionné par la manette ou le clavier
         GameObject selected = eventSystem.currentSelectedGameObject;
         if (selected != null && selected.GetComponent<Button>() != null) {
             hoveredButtonUI = selected.GetComponent<RectTransform>();
             previousSelectedButtonUI = hoveredButtonUI;
         }
-
-        //// Vérifie si la souris survole un bouton
-        //PointerEventData pointerData = new PointerEventData(EventSystem.current) {
-        //    position = Input.mousePosition
-        //};
-
-        //var results = new System.Collections.Generic.List<RaycastResult>();
-        //EventSystem.current.RaycastAll(pointerData, results);
-
-        //foreach (var result in results) {
-        //    Button hoveredButton = result.gameObject.GetComponentInParent<Button>();
-
-        //    Debug.Log(hoveredButton);
-        //    if (hoveredButton != null) {
-        //        hoveredButtonUI = hoveredButton.GetComponent<RectTransform>();
-        //        previousSelectedButtonUI = hoveredButtonUI;
-        //        break;
-        //    }
-        //}
 
         // Ajuster la position du ScrollRect en fonction du bouton actuel
         if (previousSelectedButtonUI != null) {

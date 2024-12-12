@@ -54,12 +54,14 @@ public class Structure : MonoBehaviour {
             DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
             campSide = CampZoneManager.Instance.AssignCampSide(transform.position);
             StructuresManager.Instance.AddStructure(this);
+            Tent.Instance.OnStructureUpgraded += Tent_OnStructureUpgraded;
         }
 
         payCurrencyUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
 
         RefreshStructureUpgradeInteraction();
     }
+
 
     protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         payCurrencyUI.SetPlayerInteracting(false);
@@ -127,44 +129,29 @@ public class Structure : MonoBehaviour {
         ActivateStructureUpgradeInteraction(false);
     }
 
+    private void Tent_OnStructureUpgraded(object sender, EventArgs e) {
+        RefreshStructureUpgradeInteraction();
+    }
     protected virtual void RefreshStructureUpgradeInteraction() {
+        bool ungradeUnlocked = true;
+
+        // Unlock upgrades if unlocked at gem merchant
+        string saveString = structureSO.structureType.ToString() + (structureLevel+1);
+
+        if (!MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
+            Debug.Log(saveString + " has NOT been bought at merchant ");
+            ungradeUnlocked = false;
+        } else {
+            Debug.Log(saveString + " has been bought at merchant ");
+        }
+
         // Unlock upgrades if tent upgrade allows for new unlocks
-
-        if (structureLevel == structureSO.maxLevel) {
-            SetStructureUpgradableUnlocked(false);
-            return;
+        if(structureLevel >= Tent.Instance.GetStructureLevel()) {
+            Debug.Log(structureSO.structureType + " structure next uprade is blocked by tent level");
+            ungradeUnlocked = false;
         }
 
-        if(structureLevel == 1) {
-            if (Tent.Instance.GetStructureLevel() >= structureSO.level2UpgradeTentNecessaryLevel) {
-                SetStructureUpgradableUnlocked(true);
-            } else {
-                SetStructureUpgradableUnlocked(false);
-            }
-        }
-        
-        if(structureLevel == 2) {
-            if (Tent.Instance.GetStructureLevel() >= structureSO.level3UpgradeTentNecessaryLevel) {
-                SetStructureUpgradableUnlocked(true);
-            }
-            else {
-                SetStructureUpgradableUnlocked(false);
-            }
-        }
-       
-        if(structureLevel == 3) {
-            if (Tent.Instance.GetStructureLevel() >= structureSO.level4UpgradeTentNecessaryLevel) {
-                SetStructureUpgradableUnlocked(true);
-            }
-            else {
-                SetStructureUpgradableUnlocked(false);
-            }
-        }
-
-        if (structureLevel == 4) {
-            Debug.LogWarning("structure level 4 and less than max level ?");
-        }
-
+        SetStructureUpgradableUnlocked(ungradeUnlocked);
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision) {

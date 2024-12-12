@@ -59,7 +59,7 @@ public class Portal : MonoBehaviour
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
         floorCollider.enabled = false;
 
-        if (HUBManager.Instance.DEBUGMODE) return;
+        if (DEBUGMODE) return;
 
         if(isHUBTeleporter) {
             portalUnlocked = MetaProgressionManager.Instance.GetPortalUnlocked(gameObject.name);

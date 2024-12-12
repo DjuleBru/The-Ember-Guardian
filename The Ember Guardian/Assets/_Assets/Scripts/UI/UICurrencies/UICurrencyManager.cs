@@ -232,6 +232,13 @@ public class UICurrencyManager : MonoBehaviour
         });
     }
 
+    public void RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType currencyType, int currencyAmount) {
+        for(int i=0; i< currencyAmount; i++) {
+            List<Currency_UI> currenciesOfType = GetCurrenciesInBagOfType(currencyType);
+            DropCurrencyFromBag(currenciesOfType[currenciesOfType.Count - 1]);
+        }
+    }
+
     public void RemoveCurrencyUIFromInventoryList(Currency_UI currencyUI) {
         currenciesInBag.Remove(currencyUI);
     }
@@ -355,6 +362,7 @@ public class UICurrencyManager : MonoBehaviour
     public void LoadCurrencies(PlayerCurrencies.CurrencyType currencyType, List<Vector3> currencyPositions) {
         Transform prefab = null;
         Debug.Log("LoadCurrencies");
+
         if (currencyType == PlayerCurrencies.CurrencyType.greenGem) {
             prefab = greenGemUIPrefab;
         }
@@ -364,7 +372,8 @@ public class UICurrencyManager : MonoBehaviour
         }
 
         foreach (Vector3 position in currencyPositions) {
-            Instantiate(prefab, position, Quaternion.identity, currencyContainer);
+            Currency_UI currencyUI = Instantiate(prefab, position, Quaternion.identity, currencyContainer).GetComponent<Currency_UI>();
+            currenciesInBag.Add(currencyUI);
         }
     }
 

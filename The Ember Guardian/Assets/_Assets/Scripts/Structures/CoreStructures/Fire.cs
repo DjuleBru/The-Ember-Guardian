@@ -84,7 +84,14 @@ public class Fire : Structure, IDamageable {
     }
 
     protected override void Start() {
-        base.Start();
+        if(!isHubFire) {
+            base.Start();
+        } else {
+            GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
+            GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
+            GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
+        }
+
         isTutorial = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial;
 
         fireOrbCollider.OnOrbFellInFire += FireOrbCollider_OnOrbFellInFire;
@@ -219,8 +226,7 @@ public class Fire : Structure, IDamageable {
     }
 
     private void CheckFireStateUpgrade() {
-        State maxState = LevelManager.Instance.GetLevelSO().maxFireState;
-
+       
         if (state == State.calm && fuelLevel >= mildFuelTreshold) {
             ChangeState(State.mild);
         }
@@ -243,8 +249,6 @@ public class Fire : Structure, IDamageable {
         if (extractingEmber) return;
         if (isTutorial) return;
 
-        State maxState = LevelManager.Instance.GetLevelSO().maxFireState;
-
         if(fuelLevel > (maxFuelTreshold - orbFuelValue)) {
             SetStructureSecondaryFunctionUnlocked(true);
         } else {
@@ -265,14 +269,25 @@ public class Fire : Structure, IDamageable {
     }
 
     private void SetFireCurrentMaxFuelTreshold() {
-        State state = LevelManager.Instance.GetLevelSO().maxFireState;
-        if (state == State.calm) {
+        State maxState = State.calm;
+
+        if (Tent.Instance.GetStructureLevel() == 2) {
+            maxState = State.mild;
+        }
+        if (Tent.Instance.GetStructureLevel() == 3) {
+            maxState = State.wild;
+        }
+        if (Tent.Instance.GetStructureLevel() == 4) {
+            maxState = State.insane;
+        }
+
+        if (maxState == State.calm) {
             maxFuelTreshold = mildFuelTreshold;
         }
-        if (state == State.mild) {
+        if (maxState == State.mild) {
             maxFuelTreshold = wildFuelTreshold;
         }
-        if (state == State.wild) {
+        if (maxState == State.wild) {
             maxFuelTreshold = insaneFuelTreshold;
         }
     }

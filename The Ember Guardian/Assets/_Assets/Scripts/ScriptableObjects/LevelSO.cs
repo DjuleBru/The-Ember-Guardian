@@ -5,6 +5,5 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class LevelSO : ScriptableObject
 {
-    public Fire.State maxFireState;
-    public int maxTentLevel;
+
 }

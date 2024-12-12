@@ -17,7 +17,6 @@ public class CreatureSO : ScriptableObject
 
 
     [HorizontalGroup("Game Data", 75)]
-    [PreviewField(75)]
     public GameObject creaturePrefab;
 
     [VerticalGroup("Game Data/Stats")]

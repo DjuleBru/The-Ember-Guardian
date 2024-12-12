@@ -15,9 +15,6 @@ public class Tent : Structure
 
     protected override void Start() {
         base.Start();
-
-        Debug.Log(Player.Instance.GetHP());
-        Debug.Log(PlayerStats.Instance.GetInitialPlayerMaxHP());
         if(Player.Instance.GetHP() != PlayerStats.Instance.GetInitialPlayerMaxHP()) {
             ActivateStructurePrimaryFunctionInteraction(true);
         }
@@ -37,12 +34,18 @@ public class Tent : Structure
         Player.Instance.RefillPlayerHealth();
         ActivateStructurePrimaryFunctionInteraction(false);
     }
-    protected override void RefreshStructureUpgradeInteraction() {
-        // Unlock upgrades if tent upgrade allows for new unlocks
 
-        if (structureLevel >= LevelManager.Instance.GetLevelSO().maxTentLevel) {
+    protected override void RefreshStructureUpgradeInteraction() {
+
+        string saveString = structureSO.structureType.ToString() + (structureLevel+1);
+
+        if (!MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
+            Debug.Log("Tent has NOT been bought at merchant " + saveString);
             SetStructureUpgradableUnlocked(false);
-            return;
+        }
+        else {
+            Debug.Log("Tent has been bought at merchant " + saveString);
+            SetStructureUpgradableUnlocked(true);
         }
     }
 

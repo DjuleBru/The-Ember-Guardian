@@ -42,6 +42,11 @@ public class SoundManager : MonoBehaviour
         StructureUI_Fire.OnFireTickRemoved += StructureUI_Fire_OnFireTickRemoved;
         PlayerWorldUITooltip.OnTooltipHidden += PlayerWorldUITooltip_OnTooltipHidden;
         PlayerWorldUITooltip.OnTooltipShown += PlayerWorldUITooltup_OnTooltipShown;
+        ItemButtonUI.OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
+        ItemButtonUI.OnAnyButtonHovered += ItemButtonUI_OnAnyButtonHovered;
+        HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
+        HubMerchantItem.OnAnyHubMerchantItemFailedBuy += HubMerchantItem_OnAnyHubMerchantItemFailedBuy;
+        ItemButtonUI_Visual.OnAnyGemPSTriggered += ItemButtonUI_Visual_OnAnyGemPSTriggered;
 
         if(LevelUI_ObjectiveUI.Instance != null ) {
             LevelUI_ObjectiveUI.Instance.OnObjectiveUIShown += LevelUI_ObjectiveUI_OnObjectiveUIShown;
@@ -75,8 +80,11 @@ public class SoundManager : MonoBehaviour
         GunSpotLight.OnAnyLightSwitched += GunSpotLight_OnAnyLightSwitched;
 
         Tutorial.OnAnySpotLightActivated += Tutorial_OnAnySpotLightActivated;
+
         Dog.Instance.OnPlayerCalledDog += Dog_OnPlayerCalledDog;
+        HubMerchant.OnPlayerInteractedWithAnyHubMerchant += HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
     }
+
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
@@ -84,6 +92,25 @@ public class SoundManager : MonoBehaviour
 
 
     #region UI
+
+    private void ItemButtonUI_Visual_OnAnyGemPSTriggered(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.gemPSExplosion, .5f);
+    }
+    private void HubMerchantItem_OnAnyHubMerchantItemFailedBuy(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.failBuyHubMerchantItem);
+    }
+
+    private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.buyHubMerchantItem);
+    }
+
+    private void ItemButtonUI_OnAnyButtonHovered(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.hoverOrSelectHubMerchantItem, .3f);
+    }
+
+    private void ItemButtonUI_OnAnyButtonSelected(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.hoverOrSelectHubMerchantItem, .3f);
+    }
 
     private void LevelUI_ObjectiveUI_OnObjectiveUIShown(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.objectiveShown, .5f);
@@ -194,10 +221,10 @@ public class SoundManager : MonoBehaviour
             PlaySound2D(soundRefsSO.smallRedOrbPickedUpByPlayer, .7f);
         }
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.greenGem) {
-            PlaySound2D(soundRefsSO.gemPickedUpByPlayer, .7f);
+            PlaySound2D(soundRefsSO.greenGemPickedUpByPlayer, .7f);
         }
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.redGem) {
-            PlaySound2D(soundRefsSO.gemPickedUpByPlayer, .7f);
+            PlaySound2D(soundRefsSO.redGemPickedUpByPlayer, .7f);
         }
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.ammo) {
             PlaySound2D(soundRefsSO.ammoPickedUpByPlayer, .7f);
@@ -384,6 +411,37 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region OTHER
+
+
+    private void HubMerchant_OnPlayerInteractedWithAnyHubMerchant(object sender, System.EventArgs e) {
+        HubMerchant hubMerchant = (HubMerchant)sender;
+        HubMerchant.HubMerchantType merchantType = hubMerchant.GetHubMerchantType();
+
+        if(merchantType == HubMerchant.HubMerchantType.GemMerchant) {
+            PlaySound2D(soundRefsSO.gemMerchantVoiceLines, .75f);
+        }
+        if (merchantType == HubMerchant.HubMerchantType.GunMerchant) {
+            PlaySound2D(soundRefsSO.gunMerchantVoiceLines);
+        }
+        if (merchantType == HubMerchant.HubMerchantType.StructuresMerchant) {
+            PlaySound2D(soundRefsSO.structuresMerchantVoiceLines);
+        }
+        if (merchantType == HubMerchant.HubMerchantType.DogTamer) {
+            PlaySound2D(soundRefsSO.dogTamerVoiceLines);
+        }
+        if (merchantType == HubMerchant.HubMerchantType.WorkerMerchant) {
+            PlaySound2D(soundRefsSO.workerMerchantVoiceLines);
+        }
+        if (merchantType == HubMerchant.HubMerchantType.Codex) {
+            PlaySound2D(soundRefsSO.codexVoiceLines);
+        }
+        if (merchantType == HubMerchant.HubMerchantType.MushroomMerchant) {
+            PlaySound2D(soundRefsSO.muhsroomMerchantVoiceLines);
+        }
+        if (merchantType == HubMerchant.HubMerchantType.HeroMerchant) {
+            PlaySound2D(soundRefsSO.heroMerchantVoiceLines);
+        }
+    }
 
     private void Dog_OnPlayerCalledDog(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.playerCallDog, .6f);

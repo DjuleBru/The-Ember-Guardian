@@ -24,7 +24,8 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip[] smallRedOrbPickedUpByPlayer;
     public AudioClip[] ammoPickedUpByPlayer;
     public AudioClip[] emberPickedUpByPlayer;
-    public AudioClip[] gemPickedUpByPlayer;
+    public AudioClip[] redGemPickedUpByPlayer;
+    public AudioClip[] greenGemPickedUpByPlayer;
 
     public AudioClip[] bigCollectiblePlouf;
     public AudioClip[] smallCollectiblePlouf;
@@ -40,6 +41,21 @@ public class SoundRefsSO : ScriptableObject
 
     public AudioClip[] propBurned;
     public AudioClip[] playerCallDog;
+
+    public AudioClip[] gemMerchantVoiceLines;
+    public AudioClip[] dogTamerVoiceLines;
+    public AudioClip[] structuresMerchantVoiceLines;
+    public AudioClip[] muhsroomMerchantVoiceLines;
+    public AudioClip[] heroMerchantVoiceLines;
+    public AudioClip[] workerMerchantVoiceLines;
+    public AudioClip[] gunMerchantVoiceLines;
+    public AudioClip[] codexVoiceLines;
+
+    public AudioClip hoverOrSelectHubMerchantItem;
+    public AudioClip buyHubMerchantItem;
+    public AudioClip failBuyHubMerchantItem;
+    public AudioClip[] gemPSExplosion;
+
     public AudioClip huntingFlagPickedUp;
     public AudioClip huntingFlagDropped;
     public AudioClip huntingFlagReset;

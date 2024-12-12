@@ -38,6 +38,7 @@ public class HideMouse : MonoBehaviour
     }
 
     public void ShowMouse(bool show) {
+        Debug.Log("ShowMouse " + show);
         Cursor.visible = show;
     }
     

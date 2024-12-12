@@ -89,6 +89,10 @@ public class HubMerchant : MonoBehaviour
         }
     }
 
+    public HubMerchantType GetHubMerchantType() {
+        return hubMerchantType;
+    }
+
     public string GetHubMerchantName() {
         return hubMerchantName;
     }

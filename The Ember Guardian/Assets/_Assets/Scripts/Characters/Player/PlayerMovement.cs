@@ -126,6 +126,7 @@ public class PlayerMovement : MonoBehaviour {
     }
     private void GameInput_OnPlayerJumpStarted(object sender, System.EventArgs e) {
         if (isJumping) return;
+        if (!Player.Instance.GetCanMove()) return;
 
         if(GetPlatformStanding() != null) {
             if (GameInput.Instance.GetJumpDirNormalized() <= -.5) {

@@ -197,6 +197,7 @@ public class Collectible : MonoBehaviour
     }
 
     public void SetAsCarriedEmber() {
+        rb = GetComponent<Rigidbody2D>();
         transform.SetParent(PlayerCurrencies.Instance.GetEmberHoldPosition());
         transform.position = PlayerCurrencies.Instance.GetEmberHoldPosition().position;
         rb.bodyType = RigidbodyType2D.Kinematic;

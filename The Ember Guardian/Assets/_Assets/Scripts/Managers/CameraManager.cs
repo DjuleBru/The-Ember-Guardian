@@ -8,6 +8,7 @@ public class CameraManager : MonoBehaviour
 
     public static CameraManager Instance;
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private Camera UICamera;
     private float zoomDuration = .5f; // Durée du zoom
 
     private float initialCameraOrthographicSize;
@@ -64,5 +65,9 @@ public class CameraManager : MonoBehaviour
 
         // Assure que la taille finale est exactement celle attendue
         virtualCamera.m_Lens.OrthographicSize = targetSize;
+    }
+
+    public Camera GetUICamera() {
+        return UICamera;
     }
 }

@@ -30,6 +30,7 @@ public class StructureLocation : MonoBehaviour {
     }
 
     protected void Start() {
+        LoadStructureLocationBought();
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
 
@@ -103,6 +104,23 @@ public class StructureLocation : MonoBehaviour {
         foreach(PayCurrencyTemplateWorldUI orbTemplateWorldUI in orbTemplates) {
             buildStructureOrbTemplates.Add(orbTemplateWorldUI);
         }
+    }
+
+    private void LoadStructureLocationBought() {
+        if (structureSOToBuild.level1StructureInitiallyUnlocked) return;
+
+        // Unlock upgrades if unlocked at gem merchant
+        string saveString = structureSOToBuild.structureType.ToString() + (1);
+
+        if (!MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
+            gameObject.SetActive(false);
+            Debug.Log(saveString + " location has NOT been bought at merchant ");
+        }
+        else {
+            gameObject.SetActive(true);
+            Debug.Log(saveString + " location has been bought at merchant ");
+        }
+
     }
 
 }

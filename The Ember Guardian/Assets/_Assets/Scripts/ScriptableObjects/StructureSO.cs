@@ -19,16 +19,16 @@ public class StructureSO : ScriptableObject
         merchant_skills,
         merchant_guns,
         merchant_plants,
+        merchant_traps,
+        savingShrine,
+        observationTower,
     }
 
     public StructureType structureType;
 
     public Transform structurePrefab;
 
-    public int maxLevel = 1;
-    public int level2UpgradeTentNecessaryLevel;
-    public int level3UpgradeTentNecessaryLevel;
-    public int level4UpgradeTentNecessaryLevel;
+    public bool level1StructureInitiallyUnlocked;
     public bool buildableAtNight;
     public bool functionUsableAtNight;
 

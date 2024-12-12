@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class GameInput : MonoBehaviour
 {
     public static GameInput Instance;
+
     private PlayerInputActions playerInputActions;
 
     public event EventHandler OnPlayerInputChanged;
@@ -128,7 +130,6 @@ public class GameInput : MonoBehaviour
             }
         }
     }
-
     public Vector2 GetGamepadLookInput() {
         Vector2 input = playerInputActions.Player.Aim.ReadValue<Vector2>();
         return input.magnitude > gamepadDeadzone ? input : Vector2.zero;

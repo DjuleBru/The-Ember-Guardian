@@ -131,6 +131,40 @@ public class MetaProgressionManager : MonoBehaviour
         ES3.Save(key, true);
     }
 
+    public bool GetMerchantItemUnlocked(string merchantItemSaveString) {
+        string key = merchantItemSaveString + "_Unlocked";
+        return ES3.Load(key, false);
+    }
+
+    public bool GetMerchantItemBought(string merchantItemSaveString) {
+        string key = merchantItemSaveString + "_Bought";
+
+
+        return ES3.Load(key, false);
+    }
+
+    public int GetHubMerchantItemLevel(string merchantItemSaveString) {
+        string key = merchantItemSaveString + "_Level_";
+
+
+        return ES3.Load(key, 1);
+    }
+
+    public void SetHubMerchantItemUnlocked(string merchantItemSaveString) {
+        string key = merchantItemSaveString + "_Unlocked";
+        ES3.Save(key, true);
+    }
+
+    public void SetHubMerchantItemBought(string merchantItemSaveString) {
+        string key = merchantItemSaveString + "_Bought";
+        ES3.Save(key, true);
+    }
+
+    public void SetHubMerchantItemLevel(string merchantItemType, int level) {
+        string key = merchantItemType + "_Level";
+        ES3.Save(key, level);
+    }
+
     #endregion
 
 }
