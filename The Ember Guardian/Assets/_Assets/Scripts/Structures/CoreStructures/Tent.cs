@@ -40,11 +40,9 @@ public class Tent : Structure
         string saveString = structureSO.structureType.ToString() + (structureLevel+1);
 
         if (!MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
-            Debug.Log("Tent has NOT been bought at merchant " + saveString);
             SetStructureUpgradableUnlocked(false);
         }
         else {
-            Debug.Log("Tent has been bought at merchant " + saveString);
             SetStructureUpgradableUnlocked(true);
         }
     }

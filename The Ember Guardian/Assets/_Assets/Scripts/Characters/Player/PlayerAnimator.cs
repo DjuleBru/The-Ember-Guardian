@@ -12,6 +12,7 @@ public class PlayerAnimator : MonoBehaviour
 
     public event EventHandler OnFootStepTriggered;
 
+    private float walkAnimationSpeed = 1f;
     private float previousMoveDir = 1f;
     private float moveDir;
 
@@ -93,6 +94,11 @@ public class PlayerAnimator : MonoBehaviour
         moveDir = GameInput.Instance.GetMovementFloatNormalized();
 
         //HandleXScale();
+        if (PlayerMovement.Instance.IsMovingBackwards()) {
+            playerAnimator.SetFloat("WalkAnimationSpeed", -walkAnimationSpeed);
+        } else {
+            playerAnimator.SetFloat("WalkAnimationSpeed", walkAnimationSpeed);
+        }
         HandleAnimatorMovementBool();
     }
 
@@ -125,20 +131,21 @@ public class PlayerAnimator : MonoBehaviour
     }
 
     private void PlayerMovement_OnPlayerRunStopped(object sender, EventArgs e) {
-        playerAnimator.SetFloat("WalkAnimationSpeed", PlayerMovement.Instance.GetMoveSpeedNormalized());
+        walkAnimationSpeed = PlayerMovement.Instance.GetMoveSpeedNormalized();
     }
 
     private void PlayerMovement_OnPlayerRunStarted(object sender, EventArgs e) {
-        playerAnimator.SetFloat("WalkAnimationSpeed", PlayerMovement.Instance.GetMoveSpeedNormalized());
+        walkAnimationSpeed = PlayerMovement.Instance.GetMoveSpeedNormalized();
     }
 
     private void PlayerMovement_OnPlayerExhaustionStopped(object sender, EventArgs e) {
-        playerAnimator.SetFloat("WalkAnimationSpeed", PlayerMovement.Instance.GetMoveSpeedNormalized());
+        walkAnimationSpeed = PlayerMovement.Instance.GetMoveSpeedNormalized();
     }
 
     private void PlayerMovement_OnPlayerExhaustionStarted(object sender, EventArgs e) {
-        playerAnimator.SetFloat("WalkAnimationSpeed", PlayerMovement.Instance.GetMoveSpeedNormalized());
+        walkAnimationSpeed = PlayerMovement.Instance.GetMoveSpeedNormalized();
     }
+
     private void HandleAnimatorMovementBool() {
         if(!Player.Instance.GetCanMove()) {
             if(moving) {

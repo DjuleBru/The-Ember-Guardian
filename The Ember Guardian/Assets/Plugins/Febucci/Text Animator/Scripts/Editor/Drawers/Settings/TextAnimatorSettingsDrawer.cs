@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,11 +9,64 @@ namespace Febucci.UI
     {
         bool extraSettings = false;
 
+        SerializedProperty behaviors;
+        SerializedProperty appearances;
+        SerializedProperty styles;
+        SerializedProperty actions;
+        SerializedProperty controlTags;
+
+
+        void OnEnable()
+        {
+            behaviors = serializedObject.FindProperty(nameof(TextAnimatorSettings.behaviors));
+            appearances = serializedObject.FindProperty(nameof(TextAnimatorSettings.appearances));
+            styles = serializedObject.FindProperty(nameof(TextAnimatorSettings.defaultStyleSheet));
+            actions = serializedObject.FindProperty(nameof(TextAnimatorSettings.actions));
+            controlTags = serializedObject.FindProperty(nameof(TextAnimatorSettings.controlTags));
+        }
+
+        void DrawEffects()
+        {
+            EditorGUILayout.LabelField("Effects", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(behaviors);
+            EditorGUILayout.PropertyField(appearances);
+            EditorGUI.indentLevel--;
+        }
+        
+        void DrawActions()
+        {
+            EditorGUILayout.LabelField("Actions", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(actions);
+            EditorGUI.indentLevel--;
+        }
+
+        void DrawStyles()
+        {
+            EditorGUILayout.LabelField("Styles", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.PropertyField(styles);
+            EditorGUI.indentLevel--;
+        }
+        
         public override void OnInspectorGUI()
         {
-            base.OnInspectorGUI();
-
+            EditorGUILayout.HelpBox($"For this to work, make sure that it's named {TextAnimatorSettings.expectedName} and it's placed inside the Resources folder.", MessageType.Info);
             EditorGUILayout.Space();
+            
+            DrawEffects();
+            EditorGUILayout.Space();
+            
+            DrawActions();
+            EditorGUILayout.Space();
+            
+            DrawStyles();
+            EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(controlTags);
+            EditorGUILayout.Space();
+            
             extraSettings = EditorGUILayout.Foldout(extraSettings, "Extra Settings", EditorStyles.foldoutHeader);
             if (extraSettings)
             {
@@ -25,6 +79,9 @@ namespace Febucci.UI
                     }
                 }
             }
+
+            if (serializedObject.hasModifiedProperties)
+                serializedObject.ApplyModifiedProperties();
         }
     }
 }

@@ -189,10 +189,10 @@ MonoBehaviour:
 
     <wiggle>wiggle1</>        <wiggle a=2 f=2>wiggle2</>
 
-    
 
-    In
-    the previous example, the first tag is "<color=red><noparse><wiggle></noparse></color>".
+
+    In the
+    previous example, the first tag is "<color=red><noparse><wiggle></noparse></color>".
 
     The
     second tag is "<color=red><noparse><wiggle</noparse><color=blue> a=2 </color><color=#005500>f=2</color><noparse>></noparse></color>",
@@ -535,9 +535,12 @@ MonoBehaviour:
   useTypeWriter: 1
   startTypewriterMode: 3
   hideAppearancesOnSkip: 0
+  hideDisappearancesOnSkip: 0
   triggerEventsOnSkip: 0
   resetTypingSpeedAtStartup: 1
   disappearanceOrientation: 0
+  waitForFullAppearance: 0
+  waitForFullDisappearance: 0
   onTextShowed:
     m_PersistentCalls:
       m_Calls: []
@@ -556,7 +559,7 @@ MonoBehaviour:
   waitForNormalChars: 0.02
   waitLong: 0.6
   waitMiddle: 0.2
-  avoidMultiplePunctuactionWait: 0
+  avoidMultiplePunctuationWait: 0
   waitForNewLines: 1
   waitForLastCharacter: 1
   useTypewriterWaitForDisappearances: 1
@@ -585,6 +588,8 @@ MonoBehaviour:
   databaseBehaviors: {fileID: 11400000, guid: 143063c9d42da4bb3bdef3e969df1633, type: 2}
   databaseAppearances: {fileID: 11400000, guid: efcefe34ffbda4c5eb7e39d858738fbc,
     type: 2}
+  useDefaultStyleSheet: 1
+  styleSheet: {fileID: 0}
   databaseActions: {fileID: 11400000, guid: 59963a936d6fb4257a79cffca6bafcbb, type: 2}
   defaultAppearancesTags:
   - vertexp

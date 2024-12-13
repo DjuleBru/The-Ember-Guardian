@@ -1,7 +1,6 @@
 using Febucci.UI.Actions;
-using Febucci.UI.Core;
-using Febucci.UI.Core.Parsing;
 using Febucci.UI.Effects;
+using Febucci.UI.Styles;
 using UnityEngine;
 
 namespace Febucci.UI
@@ -97,9 +96,23 @@ namespace Febucci.UI
             }
         }
 
-        [Header("Default info")]
         public Category<AnimationsDatabase> behaviors = new Category<AnimationsDatabase>('<', '>');
         public Category<AnimationsDatabase> appearances = new Category<AnimationsDatabase>('{', '}');
         public Category<ActionDatabase> actions = new Category<ActionDatabase>('<', '>');
+        
+        public StyleSheetScriptable defaultStyleSheet;
+        
+        [System.Serializable]
+        public struct ControlTags
+        {
+            public string disableTypewriter;
+
+            public ControlTags(string disableTypewriter)
+            {
+                this.disableTypewriter = disableTypewriter;
+            }
+        }
+
+        public ControlTags controlTags = new ControlTags("notype");
     }
 }

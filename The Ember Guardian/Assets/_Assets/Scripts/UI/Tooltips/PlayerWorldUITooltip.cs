@@ -21,12 +21,22 @@ public class PlayerWorldUITooltip : MonoBehaviour
     public static event EventHandler OnTooltipShown;
     public static event EventHandler OnTooltipHidden;
 
+    private InputControlIcons.Control currentControl;
+
     private float tooltipDisplayTimer;
     private bool isActive;
     private bool hideTooltip;
 
     private void Awake() {
         tooltipVisualGameObject.SetActive(false);
+    }
+
+    private void Start() {
+        GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
+    }
+
+    private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
+        RefreshInputIcon();
     }
 
     private void Update() {
@@ -53,7 +63,39 @@ public class PlayerWorldUITooltip : MonoBehaviour
         OnTooltipShown?.Invoke(this, EventArgs.Empty);
     }
 
-    public void ShowTooltipInstruction(string text1ToShow, string text2ToShow, Sprite iconSprite, Sprite iconSprite2 = null, float displayTime = 0) {
+    private void RefreshInputIcon() {
+        List<Sprite> spriteList = InputControlIcons.Instance.GetControlIconSprite(currentControl);
+
+        Sprite iconSprite = spriteList[0];
+        Sprite iconSprite2 = null;
+
+        if (spriteList.Count == 2) {
+            iconSprite2 = spriteList[1];
+        }
+
+        constrolInstructionIconImage.sprite = iconSprite;
+
+        if (iconSprite2 != null) {
+            constrolInstructionIcon2Image.gameObject.SetActive(true);
+            constrolInstructionIcon2Image.sprite = iconSprite2;
+        }
+        else {
+            constrolInstructionIcon2Image.gameObject.SetActive(false);
+        }
+
+    }
+
+    public void ShowTooltipInstruction(string text1ToShow, string text2ToShow, InputControlIcons.Control controlType, float displayTime = 0) {
+        currentControl = controlType;
+        List<Sprite> spriteList = InputControlIcons.Instance.GetControlIconSprite(controlType);
+
+        Sprite iconSprite = spriteList[0];
+        Sprite iconSprite2 = null;
+
+        if (spriteList.Count == 2) {
+            iconSprite2 = spriteList[1];
+        }
+
         StartCoroutine(ShowTooltipInstructionCoroutine(text1ToShow, text2ToShow, iconSprite, iconSprite2, displayTime));
     }
 

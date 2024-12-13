@@ -7342,6 +7342,8 @@ MonoBehaviour:
   useDefaultDatabases: 1
   databaseBehaviors: {fileID: 11400000, guid: f171d8df3e295f8489bee81d97192d42, type: 2}
   databaseAppearances: {fileID: 11400000, guid: 4f37d9205b6d35141b93a855b99fff01, type: 2}
+  useDefaultStyleSheet: 1
+  styleSheet: {fileID: 0}
   databaseActions: {fileID: 11400000, guid: d980543140ea2f94a867f9fd462f11aa, type: 2}
   defaultAppearancesTags:
   - size
@@ -7364,9 +7366,12 @@ MonoBehaviour:
   useTypeWriter: 1
   startTypewriterMode: 3
   hideAppearancesOnSkip: 0
+  hideDisappearancesOnSkip: 0
   triggerEventsOnSkip: 0
   resetTypingSpeedAtStartup: 1
   disappearanceOrientation: 0
+  triggerShowedAfterEffectsEnd: 0
+  triggerDisappearedAfterEffectsEnd: 0
   onTextShowed:
     m_PersistentCalls:
       m_Calls: []
@@ -7385,7 +7390,7 @@ MonoBehaviour:
   waitForNormalChars: 0.03
   waitLong: 0.6
   waitMiddle: 0.2
-  avoidMultiplePunctuactionWait: 0
+  avoidMultiplePunctuationWait: 0
   waitForNewLines: 1
   waitForLastCharacter: 1
   useTypewriterWaitForDisappearances: 1
@@ -8517,6 +8522,8 @@ MonoBehaviour:
   useDefaultDatabases: 1
   databaseBehaviors: {fileID: 11400000, guid: f171d8df3e295f8489bee81d97192d42, type: 2}
   databaseAppearances: {fileID: 11400000, guid: 4f37d9205b6d35141b93a855b99fff01, type: 2}
+  useDefaultStyleSheet: 1
+  styleSheet: {fileID: 0}
   databaseActions: {fileID: 11400000, guid: d980543140ea2f94a867f9fd462f11aa, type: 2}
   defaultAppearancesTags:
   - size
@@ -8539,9 +8546,12 @@ MonoBehaviour:
   useTypeWriter: 1
   startTypewriterMode: 3
   hideAppearancesOnSkip: 0
+  hideDisappearancesOnSkip: 0
   triggerEventsOnSkip: 0
   resetTypingSpeedAtStartup: 1
   disappearanceOrientation: 0
+  triggerShowedAfterEffectsEnd: 0
+  triggerDisappearedAfterEffectsEnd: 0
   onTextShowed:
     m_PersistentCalls:
       m_Calls: []
@@ -8560,7 +8570,7 @@ MonoBehaviour:
   waitForNormalChars: 0.03
   waitLong: 0.6
   waitMiddle: 0.2
-  avoidMultiplePunctuactionWait: 0
+  avoidMultiplePunctuationWait: 0
   waitForNewLines: 1
   waitForLastCharacter: 1
   useTypewriterWaitForDisappearances: 1

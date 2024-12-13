@@ -16,7 +16,7 @@ public class BlurBackgroundUI : MonoBehaviour
     }
 
     private void Start() {
-        HubMerchant.OnPlayerInteractedWithAnyHubMerchant += HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
+        HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
     }
 

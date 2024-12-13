@@ -17,6 +17,7 @@ public class InputControlIcons : MonoBehaviour
         LightSwitch,
         SwitchDog,
         Aim,
+        Back,
     }
 
     public Sprite gamepadYSprite;
@@ -46,6 +47,7 @@ public class InputControlIcons : MonoBehaviour
     public Sprite keyboardShiftSprite;
     public Sprite keyboardMouseClickSprite;
     public Sprite keyboardMouseSprite;
+    public Sprite keyboardEscSprite;
 
     private void Awake() {
         Instance = this;
@@ -88,6 +90,9 @@ public class InputControlIcons : MonoBehaviour
             if (control == Control.Aim) {
                 spriteList.Add(gamepadRJoystickSprite);
             }
+            if (control == Control.Back) {
+                spriteList.Add(gamepadBSprite);
+            }
         } else {
             if (control == Control.Reload) {
                 spriteList.Add(keyboardRSprite);
@@ -118,6 +123,9 @@ public class InputControlIcons : MonoBehaviour
             }
             if (control == Control.Aim) {
                 spriteList.Add(keyboardMouseSprite);
+            }
+            if (control == Control.Back) {
+                spriteList.Add(keyboardEscSprite);
             }
             if (control == Control.Move) {
                 spriteList.Add(keyboardQSprite);

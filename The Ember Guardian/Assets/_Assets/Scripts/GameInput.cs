@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 using UnityEngine.UI;
 
 public class GameInput : MonoBehaviour
@@ -10,6 +11,7 @@ public class GameInput : MonoBehaviour
     public static GameInput Instance;
 
     private PlayerInputActions playerInputActions;
+    private PlayerInput playerInput;
 
     public event EventHandler OnPlayerInputChanged;
 
@@ -69,6 +71,9 @@ public class GameInput : MonoBehaviour
     }
 
     private void Start() {
+        playerInput = GetComponent<PlayerInput>();
+        InputUser.onChange += InputUser_onChange;
+
         playerInputActions.Player.Run.performed += Run_performed;
         playerInputActions.Player.Run.canceled += Run_canceled;
         playerInputActions.Player.Jump.performed += Jump_performed;
@@ -91,12 +96,19 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.Move.performed += Move_performed;
     }
 
+    private void InputUser_onChange(InputUser user, InputUserChange change, InputDevice arg3) {
+        if (change == InputUserChange.ControlSchemeChanged) {
+            currentControlScheme = user.controlScheme.Value.name;
+        }
+        OnPlayerInputChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     private void Back_performed(InputAction.CallbackContext obj) {
         OnPlayerBackPerformed?.Invoke(this, EventArgs.Empty);
     }
 
     private void Update() {
-        DetectControlScheme();
+        DetectControlSchemeMouse();
 
         if (interactPressed) {
             interactHoldTimer += Time.deltaTime;
@@ -107,7 +119,7 @@ public class GameInput : MonoBehaviour
             }
         }
     }
-    private void DetectControlScheme() {
+    private void DetectControlSchemeMouse() {
         Vector2 mousePosition = Input.mousePosition;
         Vector2 gamepadLookInput = playerInputActions.Player.Aim.ReadValue<Vector2>();
 

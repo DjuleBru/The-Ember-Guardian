@@ -44,6 +44,7 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     public static event EventHandler OnAnyOutputLinkUnlocked;
     public static event EventHandler OnAnyButtonSelected;
     public static event EventHandler OnAnyButtonHovered;
+    public static event EventHandler OnAnyLockedButtonTryPress;
 
     private void Awake() {
         button = GetComponent<Button>();
@@ -82,9 +83,10 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     private void InitializeDescriptionCard() {
         string itemName = hubMerchantItem.GetItemName();
         string itemDescription = hubMerchantItem.GetDescription();
+        string itemStatDescription = hubMerchantItem.GetStatDescription();
         int greenGemCost = hubMerchantItem.GetGreenGemCost();
         int redGemCost = hubMerchantItem.GetRedGemCost();
-        descriptionCard.SetDescriptionCardText(itemName, itemDescription, greenGemCost, redGemCost);
+        descriptionCard.SetDescriptionCardText(itemName, itemStatDescription, itemDescription, greenGemCost, redGemCost);
         descriptionCard.gameObject.SetActive(false);
     }
 
@@ -97,7 +99,11 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     }
 
     public void BuyItem() {
-        if (!itemUnlocked) return;
+        if (!itemUnlocked) {
+            OnAnyLockedButtonTryPress?.Invoke(this, EventArgs.Empty);
+            return;
+        }
+
         if (!itemBuyable) return;
         if (!hubMerchantItem.CanBuyItem()) return;
 
@@ -161,7 +167,6 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     }
 
     private void SetItemBoughtVisuals() {
-        Debug.Log("SetItemBoughtVisuals");
         outlineImage.sprite = outlineImageBoughtSprite;
         outlineImage.color = boughtOutlineColor;
         backgroundImage.color = boughtBackgroundColor;

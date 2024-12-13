@@ -54,6 +54,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip hoverOrSelectHubMerchantItem;
     public AudioClip buyHubMerchantItem;
     public AudioClip failBuyHubMerchantItem;
+    public AudioClip tryBuyLockedHubMerchantItem;
     public AudioClip[] gemPSExplosion;
 
     public AudioClip huntingFlagPickedUp;
@@ -83,4 +84,5 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip objectiveShown;
     public AudioClip objectiveCompleted;
     public AudioClip subObjectiveCompleted;
+    public AudioClip locationRevealed;
 }

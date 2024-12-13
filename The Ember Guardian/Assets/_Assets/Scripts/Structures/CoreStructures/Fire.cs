@@ -171,6 +171,8 @@ public class Fire : Structure, IDamageable {
     private void FireOrbCollider_OnOrbFellInFire(object sender, EventArgs e) {
         fuelLevel += orbFuelValue;
 
+        Debug.Log("fuelLevel " + fuelLevel);
+        Debug.Log("maxFuelTreshold " + maxFuelTreshold);
         if(fuelLevel >= maxFuelTreshold) {
             fuelLevel = maxFuelTreshold;
         }
@@ -293,7 +295,6 @@ public class Fire : Structure, IDamageable {
     }
 
     public void ManualSetFireCurrentMaxFuelTreshold(State state) {
-        Debug.Log("ManualSetFireCurrentMaxFuelTreshold");
         if (state == State.calm) {
             maxFuelTreshold = mildFuelTreshold;
         }

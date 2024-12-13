@@ -226,22 +226,30 @@ public class Player : MonoBehaviour, IDamageable
 
     public void StartInteractingWithMerchant() {
         interactingWithMerchant = true;
+        DisableControlInputs();
+    }
+    
+    public void StopInteractingWithMerchant() {
+        EnableControlInputs();
+        // Set interactingWithMerchant false after frame or dog will react
+        StartCoroutine(SetStopInteractingWithMerchantCoroutine());
+    }
+
+    public void DisableControlInputs() {
         canMove = false;
 
         GetComponent<PlayerMovement>().enabled = false;
         GetComponent<PlayerAim>().enabled = false;
         PlayerShoot.Instance.SetCanShoot(false);
     }
-    
-    public void StopInteractingWithMerchant() {
+
+    public void EnableControlInputs() {
         canMove = true;
 
         GetComponent<PlayerMovement>().enabled = true;
         GetComponent<PlayerAim>().enabled = true;
         PlayerShoot.Instance.SetCanShoot(true);
 
-        // Set interactingWithMerchant false after frame or dog will react
-        StartCoroutine(SetStopInteractingWithMerchantCoroutine());
     }
 
     private IEnumerator SetStopInteractingWithMerchantCoroutine() {

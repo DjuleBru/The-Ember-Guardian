@@ -122,7 +122,13 @@ public class Tutorial : MonoBehaviour
     }
 
     private void Update() {
-        if(moveTooltipShown && !moveTooltipHidden) {
+        if(testing) {
+            if (Input.GetKeyDown(KeyCode.V)) {
+                StartCoroutine(StartGuardingWorkersObjective(0f));
+            }
+        }
+
+        if (moveTooltipShown && !moveTooltipHidden) {
             if(GameInput.Instance.GetMovementFloatNormalized() != 0) {
                 moveTooltipHidden = true;
                 StartCoroutine(HideTooltipAfterDelay(.5f));
@@ -440,6 +446,7 @@ public class Tutorial : MonoBehaviour
     }
 
     private IEnumerator StartDestroyNestObjective(float delay) {
+        Debug.Log("StartDestroyNestObjective");
         emberExtractionObjectiveStarted = true;
         LevelUI_ObjectiveUI.Instance.SetObjectiveCompleted(2f);
 
@@ -685,16 +692,9 @@ public class Tutorial : MonoBehaviour
 
     private IEnumerator ShowTooltipAfterDelay(float delay, string text1, string text2, InputControlIcons.Control control) {
         yield return new WaitForSeconds(delay);
-        List<Sprite> spriteList = InputControlIcons.Instance.GetControlIconSprite(control);
 
-        if (spriteList.Count == 1) {
-            PlayerUI_World.Instance.GetTooltipLeft().ShowTooltipInstruction(text1, text2, spriteList[0]);
-        }
-
-        if (spriteList.Count == 2) {
-            PlayerUI_World.Instance.GetTooltipLeft().ShowTooltipInstruction(text1, text2, spriteList[0], spriteList[1]);
-        }
-
+        PlayerUI_World.Instance.GetTooltipLeft().ShowTooltipInstruction(text1, text2, control);
+     
     }
 
     private IEnumerator HideTooltipAfterDelay(float delay) {

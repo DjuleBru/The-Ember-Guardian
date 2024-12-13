@@ -33,7 +33,7 @@ namespace Febucci.UI.Core.Parsing
             new TMPTagInfo("<pos="),
             new TMPTagInfo("<rotate="), new TMPTagInfo("</rotate>"), 
             new TMPTagInfo("<s>"), new TMPTagInfo("</s>"), 
-            new TMPTagInfo("<size="),
+            new TMPTagInfo("<size="), new TMPTagInfo("</size>"),
             new TMPTagInfo("<smallcaps>"), new TMPTagInfo("</smallcaps>"),
             new TMPTagInfo("<space="), 
             new TMPTagInfo("<sprite", true), new TMPTagInfo("<sprite ", true), 
@@ -43,7 +43,8 @@ namespace Febucci.UI.Core.Parsing
             new TMPTagInfo("<u>"), new TMPTagInfo( "</u>"),
             new TMPTagInfo("<uppercase>"), new TMPTagInfo( "</uppercase>"),
             new TMPTagInfo("<voffset="), new TMPTagInfo( "</voffset>"),
-            new TMPTagInfo("<width="), new TMPTagInfo( "</width>")
+            new TMPTagInfo("<width="), new TMPTagInfo( "</width>"),
+            new TMPTagInfo("<br>", true)
         };
 
         struct TMPTagInfo

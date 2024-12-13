@@ -10,21 +10,23 @@ public class MusicManager : MonoBehaviour {
     [SerializeField] private AudioClip endLevelMusic;
 
 
-    private float hubDelayToStartPlayingMusic = 2f;
     private AudioSource audioSource;
 
     private void Awake() {
         Instance = this;
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start() {
-        audioSource = GetComponent<AudioSource>();
         SetAudioVolume(audioVolume);
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
-            audioSource.PlayDelayed(hubDelayToStartPlayingMusic);
         }
+    }
+
+    public void PlayMusicDelayed(float delay) {
+        audioSource.PlayDelayed(delay);
     }
 
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {

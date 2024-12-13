@@ -11,12 +11,40 @@ public class PlayerFeedbacks : MonoBehaviour
     [SerializeField] private MMF_Player activeMoveSpeedBuffFeedbacks;
     [SerializeField] private MMF_Player activeShootSpeedBuffFeedbacks;
     [SerializeField] private MMF_Player activeTeleportationFeedbacks;
+    [SerializeField] private MMF_Player exhaustedFeedbacks;
+
+    private bool playerExhausted;
 
     private void Start() {
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
+        PlayerMovement.Instance.OnPlayerExhaustionStarted += PlayerMovement_OnPlayerExhaustionStarted;
+        PlayerMovement.Instance.OnPlayerExhaustionStopped += PlayerMovement_OnPlayerExhaustionStopped;
+        PlayerMovement.Instance.OnPlayerAlmostExhaustionStarted += PlayerMovement_OnPlayerAlmostExhaustionStarted;
+        PlayerMovement.Instance.OnPlayerAlmostExhaustionStopped += PlayerMovement_OnPlayerAlmostExhaustionStopped;
         PassiveShield.OnAnyPassiveShieldDied += PassiveShield_OnAnyPassiveShieldDied;
         PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
         PlayerSkills.Instance.OnActiveSkillAdded += PlayerSkills_OnActiveSkillAdded;
+    }
+
+    private void PlayerMovement_OnPlayerExhaustionStopped(object sender, System.EventArgs e) {
+        Debug.Log("PlayerMovement_OnPlayerExhaustionStopped");
+        playerExhausted = false;
+    }
+
+    private void PlayerMovement_OnPlayerExhaustionStarted(object sender, System.EventArgs e) {
+        Debug.Log("PlayerMovement_OnPlayerExhaustionStarted");
+        playerExhausted = true;
+    }
+
+    private void PlayerMovement_OnPlayerAlmostExhaustionStopped(object sender, System.EventArgs e) {
+        Debug.Log("PlayerMovement_OnPlayerAlmostExhaustionStopped");
+        if (playerExhausted) return;
+        exhaustedFeedbacks.StopFeedbacks();
+    }
+
+    private void PlayerMovement_OnPlayerAlmostExhaustionStarted(object sender, System.EventArgs e) {
+        Debug.Log("PlayerMovement_OnPlayerAlmostExhaustionStarted");
+        exhaustedFeedbacks.PlayFeedbacks();
     }
 
     private void PlayerSkills_OnActiveSkillAdded(object sender, PlayerSkills.OnSkillAddedEventArgs e) {

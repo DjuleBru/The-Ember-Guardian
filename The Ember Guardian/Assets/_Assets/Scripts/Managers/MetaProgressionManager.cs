@@ -120,14 +120,31 @@ public class MetaProgressionManager : MonoBehaviour
     #endregion
 
     #region HUB MERCHANTS
+    public void SetMerchantHasTalkLinesToShow(HubMerchant.HubMerchantType merchantType, bool hasTalkLinesToShow) {
+        string key = merchantType.ToString() + "_TalkLinesToShow";
+        ES3.Save(key, hasTalkLinesToShow);
+    }
 
-    public bool GetMerchantUnlocked(string merchantName) {
-        string key = merchantName + "_Unlocked";
+    public bool GetMerchantHasTalkLinesToShow(HubMerchant.HubMerchantType merchantType) {
+        string key = merchantType.ToString() + "_TalkLinesToShow";
+        return ES3.Load(key, true);
+    }
+    public void SetMerchantJustArrivedInHub(HubMerchant.HubMerchantType merchantType, bool justArrived) {
+        string key = merchantType.ToString() + "_JustArrivedInHub";
+        ES3.Save(key, justArrived);
+    }
+
+    public bool GetMerchantJustArrivedInHub(HubMerchant.HubMerchantType merchantType) {
+        string key = merchantType.ToString() + "_JustArrivedInHub";
+        return ES3.Load(key, true);
+    }
+    public bool GetMerchantUnlocked(HubMerchant.HubMerchantType merchantType) {
+        string key = merchantType.ToString() + "_Unlocked";
         return ES3.Load(key, false);
     }
 
-    public void SetMerchantUnlocked(string merchantName) {
-        string key = merchantName + "_Unlocked";
+    public void SetMerchantUnlocked(HubMerchant.HubMerchantType merchantType) {
+        string key = merchantType.ToString() + "_Unlocked";
         ES3.Save(key, true);
     }
 
@@ -138,8 +155,6 @@ public class MetaProgressionManager : MonoBehaviour
 
     public bool GetMerchantItemBought(string merchantItemSaveString) {
         string key = merchantItemSaveString + "_Bought";
-
-
         return ES3.Load(key, false);
     }
 

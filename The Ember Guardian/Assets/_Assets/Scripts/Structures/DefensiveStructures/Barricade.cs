@@ -16,8 +16,8 @@ public class Barricade : Structure, IDamageable {
 
     private int level1Health = 12;
     private int level2Health = 24;
-    private int level3Health = 48;
-    private int level4Health = 60;
+    private int level3Health = 45;
+    private int level4Health = 64;
 
     private int barricadeMaxHealth;
     private int barricadeHealth;

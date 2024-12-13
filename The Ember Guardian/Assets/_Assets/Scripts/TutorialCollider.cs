@@ -11,6 +11,7 @@ public class TutorialCollider : MonoBehaviour
     [SerializeField] private bool isEndLevelAreaCollider;
     [SerializeField] private bool isEndLevelAreaBlockingCollider;
     [SerializeField] private bool isExtractEmberBlockingCollider;
+    [SerializeField] private bool isFirstEnterHubBlockingCollider;
 
     private Tutorial tutorial;
     private Collider2D tutorialCollider;
@@ -45,6 +46,11 @@ public class TutorialCollider : MonoBehaviour
         if (isEndLevelAreaCollider && !playerCollided) {
             playerCollided = true;
             StartCoroutine(FoundNestCoroutine());
+        }
+
+        if(isFirstEnterHubBlockingCollider && !playerCollided) {
+            playerCollided = true;
+            HUBManager.Instance.PlayerEnteredHubFirstTime();
         }
     }
 

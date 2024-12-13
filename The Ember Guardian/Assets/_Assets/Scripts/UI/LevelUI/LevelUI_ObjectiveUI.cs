@@ -15,6 +15,8 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         Survive,
         FindNest,
         DestroyNest,
+        HUB_HeadToFire,
+        HUB_HeadToNewLevel,
     }
 
     public enum SubObjectiveType {
@@ -37,6 +39,9 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         FindNest,
         ClearNest,
         LightFire,
+        HUB_TalkToTrader,
+        HUB_ExtractEmber,
+        HUB_HeadToTeleporter,
     }
 
     public static LevelUI_ObjectiveUI Instance;
@@ -252,6 +257,15 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         if (subObjectiveType == SubObjectiveType.FindNest) {
             return "Find the darklings nest";
         }
+        if (subObjectiveType == SubObjectiveType.HUB_TalkToTrader) {
+            return "Talk to the Gem Trader";
+        }
+        if (subObjectiveType == SubObjectiveType.HUB_ExtractEmber) {
+            return "Extract an ember from the eternal fire";
+        }
+        if (subObjectiveType == SubObjectiveType.HUB_HeadToTeleporter) {
+            return "Head to the teleporter";
+        }
         return "";
     }
 
@@ -277,6 +291,12 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         }
         if (objectiveType == ObjectiveType.DestroyNest) {
             return "Destroy the darklings nest";
+        }
+        if (objectiveType == ObjectiveType.HUB_HeadToFire) {
+            return "Head back to the main fire";
+        }
+        if (objectiveType == ObjectiveType.HUB_HeadToNewLevel) {
+            return "Explore new areas";
         }
         return "";
     }

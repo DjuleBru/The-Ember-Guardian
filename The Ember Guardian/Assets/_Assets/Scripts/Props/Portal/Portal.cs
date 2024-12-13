@@ -59,17 +59,18 @@ public class Portal : MonoBehaviour
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
         floorCollider.enabled = false;
 
-        if (DEBUGMODE) return;
-
         if(isHUBTeleporter) {
             portalUnlocked = MetaProgressionManager.Instance.GetPortalUnlocked(gameObject.name);
-
             if (!portalUnlocked) {
                 gameObject.SetActive(false);
                 return;
             }
 
-            if(MetaProgressionManager.Instance.hubLoadedOnce) {
+            // DEEEEEEEEEEEEEEEEEEEBUG
+            if (DEBUGMODE) return;
+
+
+            if (MetaProgressionManager.Instance.hubLoadedOnce) {
                 if (MetaProgressionManager.Instance.lastHUBPortalUsedByPlayer == portalNumber) {
                     StartCoroutine(TeleportPlayerOutInHub());
                 }
@@ -230,7 +231,7 @@ public class Portal : MonoBehaviour
         portalUnlocked = true;
         MetaProgressionManager.Instance.SetPortalUnlocked(gameObject.name);
         gameObject.SetActive(true);
-
+        MakePortalAppear();
         OnPortalUnlocked?.Invoke(this, EventArgs.Empty);
     }
 

@@ -52,7 +52,7 @@ public class HubMerchantItem : MonoBehaviour
         return description;
     }
 
-    public string GetUnlockDescription() {
+    public string GetStatDescription() {
         return unlockDescription;
     }
 

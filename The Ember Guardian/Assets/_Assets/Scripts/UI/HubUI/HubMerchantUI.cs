@@ -35,7 +35,7 @@ public class HubMerchantUI : MonoBehaviour
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
         UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         UICurrencyManager.Instance.OnCurrencyDropped += UICurrencymanager_OnCurrencyDropped;
-        hubMerchant.OnPlayerInteractedWithHubMerchant += HubMerchant_OnPlayerInteractedWithHubMerchant;
+        hubMerchant.OnPlayerOpenedHubMerchantShop += HubMerchant_OnPlayerInteractedWithHubMerchant;
         hubMerchant.OnPlayerStoppedInteractingWithHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithHubMerchant;
 
 

@@ -569,7 +569,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8385513270722688418}
   m_HandleRect: {fileID: 1424134487310206145}
   m_Direction: 0
-  m_Value: -0.00000021577192
+  m_Value: -0.00000007192397
   m_Size: 0.40576538
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -854,6 +854,81 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &7415329230756056467
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8028831606413548680}
+  - component: {fileID: 1669240317015259098}
+  - component: {fileID: 7063996936478923292}
+  m_Layer: 3
+  m_Name: Background (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8028831606413548680
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7415329230756056467}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5838971377995475264}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1669240317015259098
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7415329230756056467}
+  m_CullTransparentMesh: 1
+--- !u!114 &7063996936478923292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7415329230756056467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.15686275}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 47895b379fa7efa41be3a570bdc7c54f, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &7556234577073596079
 GameObject:
   m_ObjectHideFlags: 0
@@ -1082,6 +1157,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -9.8984375
       objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 559212063, guid: 175cfa9d756b5754aa0efe65d7ec62ef, type: 3}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Color.a
+      value: 0.49803922
+      objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1166,6 +1249,19 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1940264207724386425, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_text
+      value: "Barricade crates : <b>3</b> \nCrate health : <b>4</b> \nTotal Barricade
+        health : <b>12</b>"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1940264207724386425, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1940264207724386425, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 1980269779798664998, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 475
@@ -1190,6 +1286,10 @@ PrefabInstance:
       propertyPath: greenGemCost
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 138
+      objectReference: {fileID: 0}
     - target: {fileID: 3258212624454167245, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -9.3984375
@@ -1197,6 +1297,10 @@ PrefabInstance:
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
@@ -1334,6 +1438,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -22
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 113
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -1369,7 +1489,8 @@ MonoBehaviour:
   greenGemCost: 0
   redGemCost: 0
   description: A loose pile of crates, barely holding back the shadows.
-  unlockDescription: 
+  unlockDescription: "Barricade crates : <b>3</b> \nCrate health : <b>4</b> \nBarricade
+    health : <b>12</b>"
   structureType: 3
   structureLevel: 1
 --- !u!1001 &747028736713584804
@@ -1387,6 +1508,14 @@ PrefabInstance:
     - target: {fileID: 173946305575632415, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -9.8984375
+      objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1823990122, guid: 175cfa9d756b5754aa0efe65d7ec62ef, type: 3}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Color.a
+      value: 0.42745098
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
@@ -1499,6 +1628,10 @@ PrefabInstance:
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
@@ -1644,6 +1777,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -111
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 62
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -1679,7 +1820,12 @@ MonoBehaviour:
   greenGemCost: 3
   redGemCost: 1
   description: Stacked higher with sturdier crates, offering improved defense.
-  unlockDescription: 
+  unlockDescription: 'Barricade crates : <b>4</b> (+1)
+
+    Crate health : <b>6</b>
+    (+2)
+
+    Total Barricade health : <b>24</b> (+12)'
   structureType: 3
   structureLevel: 2
 --- !u!114 &7771111373995524599 stripped
@@ -1805,9 +1951,17 @@ PrefabInstance:
       propertyPath: greenGemCost
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 140
+      objectReference: {fileID: 0}
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4086796393318948438, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -1980,7 +2134,7 @@ MonoBehaviour:
   redGemCost: 0
   description: A modest shelter offering warmth and refuge. Essential for survival
     in the emberlit dark.
-  unlockDescription: 
+  unlockDescription: Your initial camp setup.
   structureType: 0
   structureLevel: 1
 --- !u!114 &7737935491302458219 stripped
@@ -2005,6 +2159,14 @@ PrefabInstance:
     - target: {fileID: 173946305575632415, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 9.700012
+      objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1043511637, guid: 0a25beb37a4a23f41922f28aad3895b4, type: 3}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Color.a
+      value: 0.39607844
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
@@ -2098,9 +2260,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 92
+      objectReference: {fileID: 0}
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
@@ -2214,6 +2384,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 134
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -2253,7 +2439,11 @@ MonoBehaviour:
   redGemCost: 6
   description: "A mystical vendor trading orbs for skills, shaping the player\u2019s
     destiny with active and passive powers."
-  unlockDescription: 
+  unlockDescription: 'Slain darklings will now drop Crimson Orbs.
+
+    Unlocks the
+    <b>Orb Alchemist</b>, a structure used to aquire skills within a level using
+    Crimson Orbs.'
   structureType: 9
   structureLevel: 1
 --- !u!114 &7498644544640629105 stripped
@@ -2290,6 +2480,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 9.700012
       objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1571059941, guid: b5a48406850a87d4f883690146f389d7, type: 3}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2382,9 +2576,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
@@ -2498,6 +2700,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 76
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -35
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -2534,7 +2752,10 @@ MonoBehaviour:
   redGemCost: 2
   description: "An elder vendor draped in moss, selling magical seeds to grow orb-yielding
     plants for the camp\u2019s survival."
-  unlockDescription: 
+  unlockDescription: 'Unlocks <b> plant growing </b>, yielding a new source of orbs.
+
+    Unlocks
+    the <b> Seedkeeper </b>, a shop where you can buy new plants within a level.'
   structureType: 11
   structureLevel: 1
 --- !u!1001 &2028529703793725710
@@ -2549,6 +2770,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 9.700012
       objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1650370519, guid: 78b613df896cc8341ab089cfa6c78fc2, type: 3}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2641,9 +2866,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 116.9
+      objectReference: {fileID: 0}
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4086796393318948438, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -2741,6 +2974,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -42.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 38.6
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -2777,7 +3026,8 @@ MonoBehaviour:
   redGemCost: 8
   description: A cozy setup with a canopy and cooking corner, offering both comfort
     and resilience.
-  unlockDescription: 
+  unlockDescription: Allows to upgrade your tent <b> Level 3 </b>, offering more
+    space to expand your camp.
   structureType: 0
   structureLevel: 3
 --- !u!114 &9053285517070049373 stripped
@@ -2803,6 +3053,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 9.700012
       objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1637576566, guid: 828f2ef489a933047ba508f5ef3a9f62, type: 3}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2895,9 +3149,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 79.9
+      objectReference: {fileID: 0}
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
@@ -3015,6 +3277,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -283
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 142
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -3076,7 +3346,10 @@ MonoBehaviour:
   redGemCost: 8
   description: Two cunning tricksters offering lethal traps to outsmart foes; surrounded
     by crates and flickering torches.
-  unlockDescription: 
+  unlockDescription: 'Unlocks <b>traps</b> that can be set to defend your camp.
+
+    Unlocks
+    the <b> Masked Dealers</b>, where you can buy traps within a level.'
   structureType: 12
   structureLevel: 1
 --- !u!1001 &2757451435210648028
@@ -3091,6 +3364,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 9.700012
       objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -260021784, guid: 0a6e380ae1c07234b8eff054bef81913, type: 3}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3183,9 +3460,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -141
+      objectReference: {fileID: 0}
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
@@ -3287,6 +3572,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 59
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -3318,12 +3619,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b9d93984a82d76478b0b5aae16b367f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: Saving Shrine
   greenGemCost: 5
   redGemCost: 3
   description: "A sacred altar that anchors the player\u2019s soul, allowing progress
     to endure through the encroaching darkness."
-  unlockDescription: 
+  unlockDescription: Unlocks the saving shrine, allowing you to save your progression
+    within a level.
   structureType: 13
   structureLevel: 1
 --- !u!1001 &3961317246035332561
@@ -3334,6 +3636,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 51322853746667882, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_text
+      value: The gem trader
+      objectReference: {fileID: 0}
+    - target: {fileID: 960804254988752022, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 960804254988752022, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 960804254988752022, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 960804254988752022, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.69
+      objectReference: {fileID: 0}
     - target: {fileID: 1144581588636584823, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -3358,6 +3680,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2823736090664261427, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3252948751544172595, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Size
       value: 1
@@ -3378,6 +3704,14 @@ PrefabInstance:
       propertyPath: hubMerchantUnlockedAtStart
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3781414349149900166, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781414349149900166, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3906374648137485506, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_text
       value: 30
@@ -3388,6 +3722,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3906374648137485506, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_enableAutoSizing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3943512335284744665, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4019432360029635251, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
@@ -3430,6 +3768,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4544125195362706500, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1682
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544125195362706500, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 879
+      objectReference: {fileID: 0}
     - target: {fileID: 4755131706490451534, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Name
       value: GemMerchant
@@ -3452,7 +3798,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 47895b379fa7efa41be3a570bdc7c54f, type: 3}
     - target: {fileID: 6085957364875221982, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Color.a
-      value: 0.40392157
+      value: 0.39215687
       objectReference: {fileID: 0}
     - target: {fileID: 6085957364875221982, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Color.b
@@ -3474,6 +3820,30 @@ PrefabInstance:
       propertyPath: m_RenderMode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6786197286744093847, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_fontSize
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6786197286744093847, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6945950813043867164, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -0.19999996
+      objectReference: {fileID: 0}
+    - target: {fileID: 6945950813043867164, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6945950813043867164, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6945950813043867164, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7056178715469635941, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: scrollBar
       value: 
@@ -3494,6 +3864,30 @@ PrefabInstance:
       propertyPath: firstButtonSelected
       value: 
       objectReference: {fileID: 5462294886288217402}
+    - target: {fileID: 7140624019602137332, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7140624019602137332, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7140624019602137332, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7140624019602137332, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7140624019602137332, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7140624019602137332, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.68
+      objectReference: {fileID: 0}
     - target: {fileID: 7379073761878516509, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -3518,13 +3912,133 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7548670055869428782, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: _text
+      value: Here, you can build, strengthen, shape... but it all comes at a cost.
+        Gems. Many gems.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7548670055869428782, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: databaseActions
+      value: 
+      objectReference: {fileID: 11400000, guid: d980543140ea2f94a867f9fd462f11aa, type: 2}
+    - target: {fileID: 7548670055869428782, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: databaseBehaviors
+      value: 
+      objectReference: {fileID: 11400000, guid: f171d8df3e295f8489bee81d97192d42, type: 2}
+    - target: {fileID: 7548670055869428782, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: databaseAppearances
+      value: 
+      objectReference: {fileID: 11400000, guid: 4f37d9205b6d35141b93a855b99fff01, type: 2}
+    - target: {fileID: 7548670055869428782, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: defaultAppearancesTags.Array.data[0]
+      value: size
+      objectReference: {fileID: 0}
     - target: {fileID: 7572071045421348707, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7694351458007811430, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_text
+      value: Here, you can build, strengthen, shape... but it all comes at a cost.
+        Gems. Many gems.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694351458007811430, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_fontSize
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694351458007811430, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694351458007811430, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694351458007811430, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694351458007811430, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694351458007811430, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_enableWordWrapping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694351458007811430, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_wordWrappingRatios
+      value: 0.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694351458007811430, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7844539095640739214, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: hubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7844539095640739214, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: merchantTalkLines.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7844539095640739214, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: merchantTalkLines.Array.data[0]
+      value: "Ah... so you made it. I wondered if you\u2019d survive the darklings."
+      objectReference: {fileID: 0}
+    - target: {fileID: 7844539095640739214, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: merchantTalkLines.Array.data[1]
+      value: "Do you see this fire? It\u2019s not just a flame. It\u2019s a bond.
+        A refuge. A<slide a=.2> promise.</slide>"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7844539095640739214, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: merchantTalkLines.Array.data[2]
+      value: <wiggle a=.05 f=2>The Eternal Flame</wiggle>... it ties you, me, and
+        all who will come.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7844539095640739214, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: merchantTalkLines.Array.data[3]
+      value: Here, you can build, strengthen, shape... but it all comes at a cost. 
+        <bounce a=.2 f=1.2>Gems</bounce>. Many gems.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7844539095640739214, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: merchantTalkLines.Array.data[4]
+      value: '"I can help, of course. Gems can create structures, tools... even uncover
+        secrets the shadows fear.'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7844539095640739214, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: merchantTalkLines.Array.data[5]
+      value: But remember this. Without this flame, there is <wave a=.2 f=1.5>nothing</wave>.
+        Let it weaken, and so will you.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7844539095640739214, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: merchantTalkLines.Array.data[6]
+      value: So, do you have something for me? Or will you return stronger... and
+        <wiggle a=.15> richer?
+      objectReference: {fileID: 0}
+    - target: {fileID: 8141325289795779354, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8141325289795779354, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.833
+      objectReference: {fileID: 0}
+    - target: {fileID: 8141325289795779354, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.193
+      objectReference: {fileID: 0}
+    - target: {fileID: 8370118348479682676, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1575746545, guid: 379c1b53a24c168429a6f1380044314f, type: 3}
     - target: {fileID: 8541172817734294006, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8716394757454438990, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9079761531545112512, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_SizeDelta.x
@@ -3539,6 +4053,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 8028831606413548680}
+    - targetCorrespondingSourceObject: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6182862714281802348}
     m_AddedComponents:
@@ -3546,6 +4063,11 @@ PrefabInstance:
       insertIndex: 1
       addedObject: {fileID: 4036192485864741668}
   m_SourcePrefab: {fileID: 100100000, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+--- !u!4 &1285355547250318050 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2823736090664261427, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+  m_PrefabInstance: {fileID: 3961317246035332561}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &5838971377995475264 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
@@ -3569,8 +4091,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hubMerchantType: 0
+  hubMerchantCameraFocusPosition: {fileID: 1285355547250318050}
   hubMerchantName: The Shard Trader
   hubMerchantUnlockedAtStart: 1
+  DEBUGMODE: 0
 --- !u!1001 &4021299493248843330
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3583,6 +4107,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 9.700012
       objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2004263150, guid: 175cfa9d756b5754aa0efe65d7ec62ef, type: 3}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3675,9 +4203,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 132.2
+      objectReference: {fileID: 0}
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
@@ -3795,6 +4331,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -48.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -7.2
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -3842,7 +4394,12 @@ MonoBehaviour:
   redGemCost: 2
   description: A solid barricade of tightly packed crates, standing firm against
     assaults.
-  unlockDescription: 
+  unlockDescription: 'Barricade crates : <b>5</b> (+1)
+
+    Crate health : <b>9</b>
+    (+2)
+
+    Total Barricade health : <b>45</b> (+21)'
   structureType: 3
   structureLevel: 3
 --- !u!1001 &4354308620163447448
@@ -3857,6 +4414,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 9.700012
       objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 428198014, guid: 78b613df896cc8341ab089cfa6c78fc2, type: 3}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3949,9 +4510,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 129
+      objectReference: {fileID: 0}
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4086796393318948438, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -4077,6 +4646,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -4127,7 +4712,8 @@ MonoBehaviour:
   redGemCost: 3
   description: Now equipped with a tarp, it shields the camp better and provides
     improved recovery.
-  unlockDescription: 
+  unlockDescription: Allows to upgrade your tent <b> Level 2 </b>, offering more
+    space to expand your camp.
   structureType: 0
   structureLevel: 2
 --- !u!1001 &4475269019595556246
@@ -4142,6 +4728,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 9.700012
       objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 602297912, guid: 175cfa9d756b5754aa0efe65d7ec62ef, type: 3}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4234,9 +4824,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 115.9
+      objectReference: {fileID: 0}
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
@@ -4354,6 +4952,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -170.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 76.8
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -4412,7 +5026,12 @@ MonoBehaviour:
   redGemCost: 3
   description: A towering blockade of reinforced crates, nearly impenetrable to any
     foe.
-  unlockDescription: 
+  unlockDescription: 'Barricade crates : <b>7</b> (+1)
+
+    Crate health : <b>9</b>
+    (+2)
+
+    Total Barricade health : <b>64</b> (+19)'
   structureType: 3
   structureLevel: 4
 --- !u!1001 &5016347908599283015
@@ -4426,6 +5045,14 @@ PrefabInstance:
     - target: {fileID: 173946305575632415, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 9.700012
+      objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1374893943, guid: 69899d8c78ea1e843ae3e31c442cf2a1, type: 3}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Color.a
+      value: 0.44705883
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
@@ -4527,6 +5154,10 @@ PrefabInstance:
       propertyPath: greenGemCost
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 114
+      objectReference: {fileID: 0}
     - target: {fileID: 3162550493512327587, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
       value: -40
@@ -4538,6 +5169,10 @@ PrefabInstance:
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
@@ -4675,6 +5310,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -59
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -53
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -4704,8 +5355,10 @@ MonoBehaviour:
   itemName: Tower 1
   greenGemCost: 0
   redGemCost: 0
-  description: A shaky perch for hunters, providing basic vantage over the battlefield.
-  unlockDescription: 
+  description: A shaky perch for trappers, providing basic vantage over the battlefield.
+  unlockDescription: 'Trapper slots : <b>1</b>
+
+    Range increase : <b>25%</b>'
   structureType: 7
   structureLevel: 1
 --- !u!224 &5897259808284768114 stripped
@@ -4725,6 +5378,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 9.700012
       objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1003993355, guid: 69899d8c78ea1e843ae3e31c442cf2a1, type: 3}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4817,6 +5474,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 3162550493512327587, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
       value: -40
@@ -4828,6 +5489,10 @@ PrefabInstance:
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
@@ -4933,6 +5598,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -73.1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -4964,7 +5645,10 @@ MonoBehaviour:
   redGemCost: 7
   description: A towering bastion of precision, enabling deadly shots and unmatched
     protection from above.
-  unlockDescription: 
+  unlockDescription: 'Trapper slots : <b>3</b> (+1)
+
+    Range increase : <b>100%</b>
+    (+25%)'
   structureType: 7
   structureLevel: 4
 --- !u!114 &3745897359924904408 stripped
@@ -5009,6 +5693,14 @@ PrefabInstance:
     - target: {fileID: 173946305575632415, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -9.900024
+      objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 769547836, guid: 78c74fc20ec74d948ba3760e297d4990, type: 3}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Color.a
+      value: 0.38431373
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
@@ -5110,6 +5802,14 @@ PrefabInstance:
       propertyPath: greenGemCost
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 112
+      objectReference: {fileID: 0}
     - target: {fileID: 3258212624454167245, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -9.400024
@@ -5117,6 +5817,10 @@ PrefabInstance:
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
@@ -5222,6 +5926,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -59
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -64
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -5253,7 +5965,8 @@ MonoBehaviour:
   redGemCost: 0
   description: Converts salvaged materials into ammunition, ensuring you never run
     dry in the face of danger.
-  unlockDescription: 
+  unlockDescription: Unlocks the ammmo crafter, a core device used to generate ammo
+    from orbs.
   structureType: 2
   structureLevel: 1
 --- !u!224 &8406802740140251359 stripped
@@ -5277,6 +5990,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -9.900024
       objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -645883829, guid: 34eba1fb9ce6a1544aa23a95c0972063, type: 3}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5377,6 +6094,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -5388,6 +6109,22 @@ PrefabInstance:
     - target: {fileID: 4113841704231550888, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
       value: 298.57
+      objectReference: {fileID: 0}
+    - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4170946630353999285, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -5412,6 +6149,10 @@ PrefabInstance:
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5637537729483281370, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -5469,6 +6210,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7799030538715262892, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7799030538715262892, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7799030538715262892, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7799030538715262892, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7888452877272146029, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -5476,6 +6233,14 @@ PrefabInstance:
     - target: {fileID: 8229954045237707446, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 39
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -5506,8 +6271,10 @@ MonoBehaviour:
   itemName: Orb Processor
   greenGemCost: 2
   redGemCost: 2
-  description: 
-  unlockDescription: 
+  description: A buzzing contraption that fuses minor orbs into greater orbs, unlocking
+    their full potential.
+  unlockDescription: Unlocks the orb processor, a device used to merge minor Orbs
+    into Orbs.
   structureType: 8
   structureLevel: 1
 --- !u!224 &8483119567123156064 stripped
@@ -5619,9 +6386,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 105
+      objectReference: {fileID: 0}
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
@@ -5760,7 +6535,8 @@ MonoBehaviour:
   greenGemCost: 10
   redGemCost: 10
   description: A thriving hub of the camp, fully equipped for restoration and morale.
-  unlockDescription: 
+  unlockDescription: Allows to upgrade your tent <b> Level 4 </b>, offering more
+    space to expand your camp.
   structureType: 0
   structureLevel: 4
 --- !u!224 &8618281853970876613 stripped
@@ -5780,6 +6556,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 9.700012
       objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1902018475, guid: 69899d8c78ea1e843ae3e31c442cf2a1, type: 3}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5872,6 +6652,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 121.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3162550493512327587, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
       value: -40
@@ -5883,6 +6667,10 @@ PrefabInstance:
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
@@ -5988,6 +6776,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -108.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -129.7
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -6030,7 +6834,10 @@ MonoBehaviour:
   redGemCost: 5
   description: Strong and steady, the tower empowers hunters with improved range
     and stability.
-  unlockDescription: 
+  unlockDescription: 'Trapper slots : <b>2</b> (+1)
+
+    Range increase : <b>75%</b> 
+    (+25%)'
   structureType: 7
   structureLevel: 3
 --- !u!224 &8329688969058666780 stripped
@@ -6049,6 +6856,14 @@ PrefabInstance:
     - target: {fileID: 173946305575632415, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 9.700012
+      objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -693508561, guid: 69899d8c78ea1e843ae3e31c442cf2a1, type: 3}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Color.a
+      value: 0.41960785
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
@@ -6154,6 +6969,10 @@ PrefabInstance:
       propertyPath: greenGemCost
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 112
+      objectReference: {fileID: 0}
     - target: {fileID: 3162550493512327587, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
       value: -40
@@ -6165,6 +6984,10 @@ PrefabInstance:
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
@@ -6294,6 +7117,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -29
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -118
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -6335,7 +7174,9 @@ MonoBehaviour:
   greenGemCost: 1
   redGemCost: 3
   description: Bolstered supports and height grant hunters better aim and coverage.
-  unlockDescription: 
+  unlockDescription: 'Trapper slots : <b>1</b>
+
+    Range increase : <b>50%</b> (+25%)'
   structureType: 7
   structureLevel: 2
 --- !u!224 &8837012230777341015 stripped
@@ -6355,6 +7196,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 9.700012
       objectReference: {fileID: 0}
+    - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1515975468, guid: c9258a484b67660408a0c243a69dea11, type: 3}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6447,6 +7292,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 117
+      objectReference: {fileID: 0}
     - target: {fileID: 3162550493512327587, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
       value: -40
@@ -6458,6 +7307,10 @@ PrefabInstance:
     - target: {fileID: 3276630096926686620, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
@@ -6563,6 +7416,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -56
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -13
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
     m_RemovedGameObjects: []
@@ -6594,7 +7463,8 @@ MonoBehaviour:
   redGemCost: 2
   description: 'This elevated radar provides vital intelligence on incoming waves:
     numbers, direction, and enemy types.'
-  unlockDescription: 
+  unlockDescription: Unlocks the <b> Observation Tower </b>, a device used to aquire
+    information on the darkling's night attacks.
   structureType: 14
   structureLevel: 1
 --- !u!224 &8928055904240815352 stripped

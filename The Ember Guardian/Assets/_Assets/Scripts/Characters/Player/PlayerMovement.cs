@@ -249,7 +249,7 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         if(isAlmostExhausted) {
-            if (runTimer < PlayerStats.Instance.GetRunMaxTime() * .75f) {
+            if (runTimer < PlayerStats.Instance.GetRunMaxTime() * .65f) {
                 isAlmostExhausted = false;
                 OnPlayerAlmostExhaustionStopped?.Invoke(this, EventArgs.Empty);
             }
@@ -260,7 +260,7 @@ public class PlayerMovement : MonoBehaviour {
             runTimer += Time.deltaTime;
 
             // Almost exhausted
-            if (runTimer > PlayerStats.Instance.GetRunMaxTime() * .75f) {
+            if (runTimer > PlayerStats.Instance.GetRunMaxTime() * .65f) {
 
                 if (!isAlmostExhausted) {
                     isAlmostExhausted = true;
@@ -326,6 +326,9 @@ public class PlayerMovement : MonoBehaviour {
         moveSpeed /= buffAmount;
     }
 
+    public bool IsMovingBackwards() {
+        return isMovingBackwards;
+    }
     public bool IsGrounded() {
         if(Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, groundLayerMask) || Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, platformLayerMask)) {
             return true;

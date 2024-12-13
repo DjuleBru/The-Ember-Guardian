@@ -10,18 +10,10 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private PlayerStatsSO playerStatsSO;
 
     #region MOVEMENT
-    [BoxGroup("Movement")]
-    [LabelWidth(125)]
-    [SerializeField] private float initialMoveSpeed;
-    [BoxGroup("Movement")]
-    [LabelWidth(125)]
-    [SerializeField] private float initialRunMaxTime;
-    [BoxGroup("Movement")]
-    [LabelWidth(125)]
-    [SerializeField] private float initialExhaustionTime;
-    [BoxGroup("Movement")]
-    [LabelWidth(125)]
-    [SerializeField] private float initialRunAccelerationFactor;
+     private float initialMoveSpeed;
+    private float initialRunMaxTime;
+    private float initialExhaustionTime;
+    private float initialRunAccelerationFactor;
 
     private float moveSpeed;
     private float runMaxTime;
@@ -31,21 +23,11 @@ public class PlayerStats : MonoBehaviour
     #endregion
 
     # region Health
-    [BoxGroup("Health")]
-    [LabelWidth(125)]
-    [SerializeField] private int initialMaxPlayerHP = 3;
-    [BoxGroup("Health")]
-    [LabelWidth(125)]
-    [SerializeField] private float initialDamagedImmunityTime = 1.5f;
-    [BoxGroup("Health")]
-    [LabelWidth(125)]
-    [SerializeField] private float initialRespawnTime = 5f;
-    [BoxGroup("Health")]
-    [LabelWidth(125)]
-    [SerializeField] private int initialPlayerRespawnHealth = 3;
-    [BoxGroup("Health")]
-    [LabelWidth(125)]
-    [SerializeField] private float initialHpRegenTimer = 0f;
+    private int initialMaxPlayerHP = 3;
+    private float initialDamagedImmunityTime = 1.5f;
+    private float initialRespawnTime = 5f;
+    private int initialPlayerRespawnHealth = 3;
+    private float initialHpRegenTimer = 0f;
 
     private int maxPlayerHP;
     private float damagedImmunityTime;

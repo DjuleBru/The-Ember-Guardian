@@ -44,13 +44,20 @@ public class CameraManager : MonoBehaviour
         StartZoom(targetOrthographicSize, zoomDuration);
     }
 
+    public void ChangeCameraTarget(Transform target) {
+        virtualCamera.m_Follow = target;
+    }
+    public void ResetCameraTargetToPlayer() {
+        virtualCamera.m_Follow = Player.Instance.transform;
+    }
+
     private void StartZoom(float targetSize, float zoomDuration) {
         // Arrête le zoom en cours s'il y en a un
         if (currentZoomCoroutine != null)
             StopCoroutine(currentZoomCoroutine);
 
         // Lancer une nouvelle transition
-        currentZoomCoroutine = StartCoroutine(ZoomCoroutine(targetSize, zoomDuration));
+        currentZoomCoroutine = StartCoroutine(SmoothZoomCoroutine(targetSize, zoomDuration));
     }
 
     private IEnumerator ZoomCoroutine(float targetSize, float zoomDuration) {
@@ -65,6 +72,26 @@ public class CameraManager : MonoBehaviour
 
         // Assure que la taille finale est exactement celle attendue
         virtualCamera.m_Lens.OrthographicSize = targetSize;
+    }
+
+    private IEnumerator SmoothZoomCoroutine(float targetSize, float zoomDuration) {
+        float startSize = virtualCamera.m_Lens.OrthographicSize;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < zoomDuration) {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / zoomDuration;
+            // Utilise SmoothStep pour un mouvement rapide au début et lent à la fin
+            virtualCamera.m_Lens.OrthographicSize = Mathf.Lerp(startSize, targetSize, Mathf.SmoothStep(0f, 1f, t));
+            yield return null;
+        }
+
+        // Assure que la taille finale est exactement celle attendue
+        virtualCamera.m_Lens.OrthographicSize = targetSize;
+    }
+
+    public void SetCameraOrthographicSize(float orthographicSize) {
+        virtualCamera.m_Lens.OrthographicSize = orthographicSize;
     }
 
     public Camera GetUICamera() {
