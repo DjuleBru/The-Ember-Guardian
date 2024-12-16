@@ -5444,7 +5444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 01cfd03adc6b09847b989abcce7fc27b, type: 2}
+  m_Material: {fileID: 2100000, guid: 6d5733fba9ae3cf49aa115c0e5b91cb0, type: 2}
   m_Color: {r: 0.7254902, g: 0.7254902, b: 0.7254902, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -6799,6 +6799,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lockingItemButtonUIList: []
   descriptionCard: {fileID: 7951833101944601258}
+  emptyUIMaterial: {fileID: 2100000, guid: 6d5733fba9ae3cf49aa115c0e5b91cb0, type: 2}
   iconImage: {fileID: 6631584754312160576}
   outlineImage: {fileID: 4198312412177153308}
   backgroundImage: {fileID: 6013559330784213198}
@@ -6948,7 +6949,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: a7d3f5ea278b74d4d80a9f7399da0e6a, type: 2}
+  m_Material: {fileID: 2100000, guid: 6d5733fba9ae3cf49aa115c0e5b91cb0, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -12841,4 +12842,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   propertyName: _GreyscaleBlend
-  propertyValue: 1
+  propertyValue: 0

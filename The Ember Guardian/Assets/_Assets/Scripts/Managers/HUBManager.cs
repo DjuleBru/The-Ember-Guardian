@@ -13,7 +13,7 @@ public class HUBManager : MonoBehaviour
     [SerializeField] private Portal firstPortalUnlocked;
     [SerializeField] private TutorialCollider enterHubCollider;
     [SerializeField] private HubMerchantTalkUI gemMerchantTalkUI;
-    [SerializeField] private List<string> gemMerchantOpenTeleporterLines;
+    [SerializeField] private MerchantTextLinesSO gemMerchantOutroTextLines;
 
     private float hubDelayToStartPlayingMusic = 3f;
 
@@ -26,6 +26,8 @@ public class HUBManager : MonoBehaviour
     }
 
     private void Start() {
+        Debug.Log("HUB LOADED ONCE " + MetaProgressionManager.Instance.hubLoadedOnce);
+
         if(!MetaProgressionManager.Instance.hubLoadedOnce) {
             // FIRST HUB ENCOUNTER
 
@@ -33,12 +35,14 @@ public class HUBManager : MonoBehaviour
             enterHubCollider.gameObject.SetActive(true);
             MetaProgressionManager.Instance.SetHubLoadedOnce();
             //Dog.Instance.transform.position = firstHubLoadDogSpawnPoint.transform.position;
+
             Player.Instance.transform.position = firstHubLoadPlayerSpawnPoint.transform.position;
             HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
             HubMerchantTalkUI.OnAnyMerchantEndTalk += HubMerchantTalkUI_OnAnyMerchantEndTalk;
             UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
             //firstPortalUnlocked.UnlockPortal();
         }
+
         else {
             // Player loads game OR is coming back from level
             enterHubCollider.gameObject.SetActive(false);
@@ -157,7 +161,7 @@ public class HUBManager : MonoBehaviour
     private IEnumerator StartGemMerchantOpenGrassyAreaLines() {
         yield return new WaitForSeconds(.5f);
         Player.Instance.DisableControlInputs();
-        gemMerchantTalkUI.SetTalkingWithMerchant(gemMerchantOpenTeleporterLines, false);
+        gemMerchantTalkUI.SetTalkingWithMerchant(gemMerchantOutroTextLines, false);
     }
 
     private IEnumerator ActivateTeleporterCoroutine() {

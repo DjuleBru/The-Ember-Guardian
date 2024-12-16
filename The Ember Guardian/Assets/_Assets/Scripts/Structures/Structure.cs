@@ -139,10 +139,10 @@ public class Structure : MonoBehaviour {
         string saveString = structureSO.structureType.ToString() + (structureLevel+1);
 
         if (!MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
-            Debug.Log(saveString + " has NOT been bought at merchant ");
+            //Debug.Log(saveString + " has NOT been bought at merchant ");
             ungradeUnlocked = false;
         } else {
-            Debug.Log(saveString + " has been bought at merchant ");
+            //Debug.Log(saveString + " has been bought at merchant ");
         }
 
         // Unlock upgrades if tent upgrade allows for new unlocks

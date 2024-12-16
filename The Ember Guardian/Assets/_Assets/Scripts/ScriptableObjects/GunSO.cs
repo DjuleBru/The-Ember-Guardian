@@ -9,7 +9,7 @@ public class GunSO : ScriptableObject
     public Sprite reticleSprite;
     public List<Sprite> shotCountSprites;
 
-    public Animator gunAnimator;
+    public RuntimeAnimatorController gunAnimator;
     public bool automaticWeapon;
     public int damagePerBullet;
     public int maxAmmo;

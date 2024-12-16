@@ -8,6 +8,7 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private Animator bodyAnimator;
     [SerializeField] private Animator gunBodyAnimator;
+    [SerializeField] private Animator emberBodyAnimator;
     [SerializeField] private GameObject breatheVisual;
 
     public event EventHandler OnFootStepTriggered;
@@ -23,6 +24,7 @@ public class PlayerAnimator : MonoBehaviour
     private void Awake() {
         Portal.OnAnyPlayerTeleported += Portal_OnPlayerTeleported;
         Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
+        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerSHoor_OnPlayerSwappedGun;
     }
 
     private void Start() {
@@ -47,6 +49,10 @@ public class PlayerAnimator : MonoBehaviour
         breatheVisual.SetActive(false);
     }
 
+    private void PlayerSHoor_OnPlayerSwappedGun(object sender, EventArgs e) {
+        gunBodyAnimator = PlayerShoot.Instance.GetHeldGun().GetGunBodyAnimator();
+    }
+
     private void PlayerMovement_OnPlayerAlmostExhaustionStopped(object sender, EventArgs e) {
         breatheVisual.SetActive(false);
     }
@@ -58,6 +64,7 @@ public class PlayerAnimator : MonoBehaviour
     private void Player_OnPlayerDamagedRecentlyEnded(object sender, EventArgs e) {
         bodyAnimator.SetBool("DamagedRecently", false);
         gunBodyAnimator.SetBool("DamagedRecently", false);
+        emberBodyAnimator.SetBool("DamagedRecently", false);
     }
 
     private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
@@ -77,16 +84,19 @@ public class PlayerAnimator : MonoBehaviour
         if (Player.Instance.GetDead()) return;
         bodyAnimator.SetBool("DamagedRecently", true);
         gunBodyAnimator.SetBool("DamagedRecently", true);
+        emberBodyAnimator.SetBool("DamagedRecently", true);
     }
 
     private void Portal_OnPlayerTeleported(object sender, EventArgs e) {
         bodyAnimator.SetTrigger("Teleport");
         gunBodyAnimator.SetTrigger("Teleport");
+        emberBodyAnimator.SetTrigger("Teleport");
     }
 
     private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {
         bodyAnimator.SetTrigger("Teleport_Out");
         gunBodyAnimator.SetTrigger("Teleport_Out");
+        emberBodyAnimator.SetTrigger("Teleport_Out");
     }
 
     private void Update() {

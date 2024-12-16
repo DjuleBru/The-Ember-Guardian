@@ -13,6 +13,8 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - GLOW_ON
+  - GREYSCALE_ON
+  - HITEFFECT_ON
   - SHINE_ON
   m_InvalidKeywords:
   - ETC1_EXTERNAL_ALPHA
@@ -65,7 +67,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 2095092c64f26694ea85fa64400dca9a, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OutlineDistortTex:
@@ -147,14 +149,14 @@ Material:
     - _GrassRadialBend: 0.1
     - _GrassSpeed: 2
     - _GrassWind: 20
-    - _GreyscaleBlend: 1
+    - _GreyscaleBlend: 0
     - _GreyscaleLuminosity: 0
     - _GreyscaleOutline: 0
     - _HandDrawnAmount: 10
     - _HandDrawnSpeed: 5
     - _HitEffectBlend: 0
     - _HitEffectGlow: 5
-    - _HologramBlend: 1
+    - _HologramBlend: 0.01
     - _HologramMaxAlpha: 0.75
     - _HologramMinAlpha: 0.1
     - _HologramStripesAmount: 0.1
@@ -167,7 +169,7 @@ Material:
     - _InnerOutlineGlow: 1
     - _InnerOutlineThickness: 1
     - _LightingMult: 1
-    - _LitAmount: 0
+    - _LitAmount: 1
     - _MaxXUV: 1
     - _MaxYUV: 1
     - _MinXUV: 0
@@ -220,7 +222,7 @@ Material:
     - _ShakeUvX: 1.5
     - _ShakeUvY: 1
     - _ShineGlow: 0
-    - _ShineLocation: 0.826
+    - _ShineLocation: 0.9
     - _ShineRotate: 0.25
     - _ShineWidth: 0.05
     - _Stencil: 0

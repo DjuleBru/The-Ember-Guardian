@@ -366,6 +366,10 @@ public class PlayerShoot : MonoBehaviour
         return heldGunSO;
     }
 
+    public Gun GetHeldGun() {
+        return heldGun;
+    }
+
     private void OnDestroy() {
         GameInput.Instance.OnPlayerShootCanceled -= GameInput_OnPlayerShootCanceled;
         GameInput.Instance.OnPlayerShootPerformed -= GameInput_OnPlayerShootStarted;

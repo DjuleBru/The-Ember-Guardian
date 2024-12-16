@@ -40,7 +40,7 @@ public class HubMerchantUI : MonoBehaviour
 
 
         canvas.worldCamera = CameraManager.Instance.GetUICamera();
-        canvas.sortingLayerName = "UI";
+        canvas.sortingLayerName = "UIWithPostProcess";
         merchantNameText.text = hubMerchant.GetHubMerchantName();
         RefreshPlayerGems();
     }
@@ -82,6 +82,7 @@ public class HubMerchantUI : MonoBehaviour
     }
 
     private void HubMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, System.EventArgs e) {
+        hubMerchantUInimator.ResetTrigger("Show");
         hubMerchantUInimator.SetTrigger("Hide");
 
         EventSystem.current.SetSelectedGameObject(null);
@@ -91,7 +92,15 @@ public class HubMerchantUI : MonoBehaviour
         RefreshGameInputView();
 
         hubMerchantUInimator.SetTrigger("Show");
+        hubMerchantUInimator.ResetTrigger("Hide");
         EventSystem.current.SetSelectedGameObject(firstButtonSelected);
+    }
+
+    private void OnDestroy() {
+
+        GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
+        UICurrencyManager.Instance.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
+        UICurrencyManager.Instance.OnCurrencyDropped -= UICurrencymanager_OnCurrencyDropped;
     }
 
 }

@@ -59,4 +59,8 @@ public class Dog : MonoBehaviour
     public DogAI.State GetIdleState() {
         return currentIdleState;
     }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
+    }
 }

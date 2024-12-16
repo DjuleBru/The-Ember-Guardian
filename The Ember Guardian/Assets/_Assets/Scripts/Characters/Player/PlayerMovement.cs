@@ -78,10 +78,12 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void FixedUpdate() {
+        if (!Player.Instance.GetCanMove()) return;
         HandleMovementForces();
     }
 
     private void Update() {
+        if (!Player.Instance.GetCanMove()) return;
         HandleCrouch();
         HandleMovingBackwards();
         HandleRunningAndExhaustion();
@@ -124,6 +126,7 @@ public class PlayerMovement : MonoBehaviour {
     private void PlayerState_OnMoveSpeedChanged(object sender, EventArgs e) {
         moveSpeed = PlayerStats.Instance.GetMoveSpeed();
     }
+
     private void GameInput_OnPlayerJumpStarted(object sender, System.EventArgs e) {
         if (isJumping) return;
         if (!Player.Instance.GetCanMove()) return;

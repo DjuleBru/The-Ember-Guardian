@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4512818604537213811
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7050613424298854827}
+  - component: {fileID: 284740985127853068}
+  m_Layer: 0
+  m_Name: CurrenciesManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7050613424298854827
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4512818604537213811}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &284740985127853068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4512818604537213811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e1cc18ce71c416448e10fc3585b88a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bigBlueOrbPrefab: {fileID: 4096008502524423227, guid: 7187c138d57b2dc43b18d3d2bd569bed, type: 3}
+  smallBlueOrbPrefab: {fileID: 4096008502524423227, guid: 1912d9423f8e34c45a3b55cb9cd3055e, type: 3}
+  bigRedOrbPrefab: {fileID: 4096008502524423227, guid: 9fc00f3d02d941a4a937f71a728688ed, type: 3}
+  smallRedOrbPrefab: {fileID: 4096008502524423227, guid: 10e729b9b28416042afe0ce188fe39f2, type: 3}
+  greenGemPrefab: {fileID: 4096008502524423227, guid: c665463086b3fa34dbe4955eb4676d6f, type: 3}
+  redGemPrefab: {fileID: 4096008502524423227, guid: 06394161b7a630f4cbdf3e6f686330dc, type: 3}
+  ammoPrefab: {fileID: 4096008502524423227, guid: d3762c2d25a89d34e9d4648dfc63cf1c, type: 3}
+  emberPrefab: {fileID: 2131561919523803593, guid: 39eb4871761016c48b6b33ca3be76bc7, type: 3}

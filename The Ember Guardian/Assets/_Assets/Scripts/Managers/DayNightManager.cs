@@ -55,6 +55,7 @@ public class DayNightManager : MonoBehaviour
             return;
         }
 
+        SetCyclePaused(true);
         state = State.Dawn;
         OnDawnStart?.Invoke(this, EventArgs.Empty);
     }
@@ -166,7 +167,6 @@ public class DayNightManager : MonoBehaviour
     }
 
     public void SetCyclePaused(bool paused) {
-        Debug.Log("SetCyclePaused " + paused);
         cyclePaused = paused;
     }
 

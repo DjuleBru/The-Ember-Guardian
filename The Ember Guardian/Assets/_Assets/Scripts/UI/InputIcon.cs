@@ -28,4 +28,8 @@ public class InputIcon : MonoBehaviour
             controllerInputSpriteRenderer.gameObject.SetActive(false);
         }
     }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
+    }
 }

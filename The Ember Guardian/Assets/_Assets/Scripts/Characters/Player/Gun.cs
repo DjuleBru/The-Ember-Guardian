@@ -6,6 +6,7 @@ public class Gun : MonoBehaviour
 {
     [SerializeField] private ParticleSystem shootPS;
     [SerializeField] private GunSO gunSO;
+    [SerializeField] private Animator gunBodyAnimator;
 
     private bool gunActive;
 
@@ -54,6 +55,11 @@ public class Gun : MonoBehaviour
     }
 
     #region GET PARAMETERS
+
+    public Animator GetGunBodyAnimator() {
+        return gunBodyAnimator;
+    }
+
     public bool GetGunActive() {
         return gunActive;
     }

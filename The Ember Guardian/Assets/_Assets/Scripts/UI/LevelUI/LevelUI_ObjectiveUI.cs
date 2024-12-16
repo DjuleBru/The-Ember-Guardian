@@ -17,6 +17,8 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         DestroyNest,
         HUB_HeadToFire,
         HUB_HeadToNewLevel,
+        FindAndDestroyNest,
+        FindArmorer,
     }
 
     public enum SubObjectiveType {
@@ -35,6 +37,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         WaitForHunt,
         CollectOrbsFromHunters,
         FuelFire,
+        ExtractEmberTutorial,
         ExtractEmber,
         FindNest,
         ClearNest,
@@ -42,6 +45,8 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         HUB_TalkToTrader,
         HUB_ExtractEmber,
         HUB_HeadToTeleporter,
+        KeepFireLit,
+        TalkToArmorer,
     }
 
     public static LevelUI_ObjectiveUI Instance;
@@ -64,6 +69,12 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         GetComponent<Animator>().enabled = false;
     }
 
+    private void Start() {
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
+        }
+    }
+
     public void ShowObjectiveUI(ObjectiveType objectiveType) {
         objectiveText.text = GetObjectiveTextFromType(objectiveType);
         GetComponent<Animator>().enabled = true;
@@ -84,6 +95,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     public void SetSubObjectivesUI(List<SubObjectiveType> subObjectiveTypeList) {
+        Debug.Log("SetSubObjectivesUI ");
         StartCoroutine(InstantiateSubObjectivesUICoroutine(subObjectiveTypeList, 4f));
     }
 
@@ -103,11 +115,21 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
             SubObjectiveUI subObjectiveText = Instantiate(subObjectiveTemplate, subObjectiveContainer).GetComponent<SubObjectiveUI>();
             subObjectiveText.SetSubObjective(subObjective);
             subObjectiveText.gameObject.SetActive(true);
+            Debug.Log(subObjective);
             yield return new WaitForSeconds(.3f);
         }
     }
 
     public void SetSubObjectiveCompleted(SubObjectiveType subObjectiveType, List<SubObjectiveType> subObjectiveTypeUnlockedList = null) {
+        bool subObjectiveIsListed = false;
+
+        foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>(true)) {
+            if (subObjectiveUI.GetSubObjectiveType() == subObjectiveType) {
+                subObjectiveIsListed = true;    
+            }
+        }
+
+        if (!subObjectiveIsListed) return;
         StartCoroutine(SetSubObjectiveCompleteCoroutine(subObjectiveType, subObjectiveTypeUnlockedList));
     }
 
@@ -125,8 +147,6 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         bool allSubObjectivesCompleted = true;
 
         foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>(true)) {
-            Debug.Log("current subObjectives " + subObjectiveUI.GetSubObjectiveType().ToString());
-
             if (subObjectiveUI.GetSubObjectiveType() == SubObjectiveType.None) continue;
 
             if (subObjectiveUI.GetSubObjectiveType() == subObjectiveTypeCompleted) {
@@ -162,12 +182,10 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     public void SetObjectiveCompleted(float delay) {
-        Debug.Log("SetObjectiveCompleted " + delay);
         StartCoroutine(SetObjectiveCompletedCoroutine(delay));
     }
 
     public IEnumerator SetObjectiveCompletedCoroutine(float delay) {
-        Debug.Log("SetObjectiveCompletedCoroutine " + delay);
         yield return new WaitForSeconds(delay);
         objectiveAnimator.SetTrigger("Completed");
         yield return new WaitForSeconds(.5f);
@@ -199,6 +217,18 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         Fire.Instance.ManualSetFireCurrentMaxFuelTreshold(Fire.State.mild);
         Fire.Instance.SetStructurePrimaryFunctionUnlocked(true);
         Tutorial.Instance.UnlockDefensiveStructureLocations();
+    }
+
+    private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
+        StartCoroutine(ShowLevelObjective());
+
+    }
+
+    private IEnumerator ShowLevelObjective() {
+        yield return new WaitForSeconds(3f);
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            ShowObjectiveUI(LevelManager.Instance.GetLevelSO().levelObjectiveType);
+        }
     }
 
     public string GetSubObjectiveTextFromType(SubObjectiveType subObjectiveType) {
@@ -251,8 +281,11 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         if (subObjectiveType == SubObjectiveType.LightFire) {
             return "Light the fire to destroy the nest";
         }
-        if (subObjectiveType == SubObjectiveType.ExtractEmber) {
+        if (subObjectiveType == SubObjectiveType.ExtractEmberTutorial) {
             return "Extract an ember from the main fire (the fire must be fully fuelled)";
+        }
+        if (subObjectiveType == SubObjectiveType.ExtractEmber) {
+            return "Extract an ember from the main fire";
         }
         if (subObjectiveType == SubObjectiveType.FindNest) {
             return "Find the darklings nest";
@@ -265,6 +298,9 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         }
         if (subObjectiveType == SubObjectiveType.HUB_HeadToTeleporter) {
             return "Head to the teleporter";
+        }
+        if (subObjectiveType == SubObjectiveType.KeepFireLit) {
+            return "Do not let the fire die";
         }
         return "";
     }
@@ -297,6 +333,12 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         }
         if (objectiveType == ObjectiveType.HUB_HeadToNewLevel) {
             return "Explore new areas";
+        }
+        if (objectiveType == ObjectiveType.FindAndDestroyNest) {
+            return "Find and destroy the darkling's nest";
+        }
+        if (objectiveType == ObjectiveType.FindArmorer) {
+            return "Find the Armorer's Workshop";
         }
         return "";
     }

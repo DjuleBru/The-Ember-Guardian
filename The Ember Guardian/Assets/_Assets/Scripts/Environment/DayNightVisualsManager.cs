@@ -64,6 +64,7 @@ public class DayNightVisualsManager : MonoBehaviour
         globalLight2D.color = dawnLightColor;
         skySpriteRenderer.color = dawnSkyColor;
         globalLight2D.intensity = dawnLightIntensity;
+        moonLight2D.intensity = 0;
     }
 
     private void Update() {
@@ -226,7 +227,6 @@ public class DayNightVisualsManager : MonoBehaviour
 
             moonLight2D.transform.position = new Vector3(moonPositionX, moonPositionY);
         }
-
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {

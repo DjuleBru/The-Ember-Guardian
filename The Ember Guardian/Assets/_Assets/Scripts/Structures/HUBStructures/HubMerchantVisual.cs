@@ -22,9 +22,10 @@ public class HubMerchantVisual : MonoBehaviour
         hubMerchant.OnPlayerOpenedHubMerchantShop += HubMerchant_OnPlayerInteractedWithHubMerchant;
         hubMerchant.OnPlayerStartedTalkingWithHubMerchant += HubMerchant_OnPlayerStartedTalkingWithHubMerchant;
 
-        if(hubMerchant.GetMerchantHasNewItems() || hubMerchant.GetMerchantJustArrivedInHub()) {
+        if(hubMerchant.GetMerchantHasNewItems() || hubMerchant.GetMerchantJustArrivedInHub() || hubMerchant.GetMerchantIsLevelNPC()) {
             newItemsForSaleGameObject.gameObject.SetActive(true);
         }
+
     }
 
     private void HubMerchant_OnPlayerStartedTalkingWithHubMerchant(object sender, System.EventArgs e) {

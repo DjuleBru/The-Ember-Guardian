@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
+    [SerializeField] private List<LevelSO> linkedLevelSOList;
     [SerializeField] private Transform playerPosition;
     [SerializeField] private Collider2D floorCollider;
     [SerializeField] private bool isEndLevelTeleporter;
@@ -22,6 +23,7 @@ public class Portal : MonoBehaviour
     [SerializeField] private float delayToRewardGems;
     [SerializeField] private float delayToStartCrossfade;
 
+    private LevelSO linkedLevelSO;
     private bool playerInTriggerArea;
     private bool playerIsSetOnTeleporter;
     private bool portalUnlocked;
@@ -52,10 +54,13 @@ public class Portal : MonoBehaviour
         if (isStartLevelTeleporter) {
             portalUnlocked = true;
         }
+
+        if(isHUBTeleporter && linkedLevelSOList.Count != 0) {
+            linkedLevelSO = linkedLevelSOList[0];
+        }
     }
 
     private void Start() {
-
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
         floorCollider.enabled = false;
 
@@ -71,7 +76,7 @@ public class Portal : MonoBehaviour
 
 
             if (MetaProgressionManager.Instance.hubLoadedOnce) {
-                if (MetaProgressionManager.Instance.lastHUBPortalUsedByPlayer == portalNumber) {
+                if (MetaProgressionManager.Instance.GetNextHubArrivalThroughPortal() && MetaProgressionManager.Instance.lastHUBPortalUsedByPlayer == portalNumber) {
                     StartCoroutine(TeleportPlayerOutInHub());
                 }
             }
@@ -82,6 +87,7 @@ public class Portal : MonoBehaviour
         }
 
         if(isStartLevelTeleporter) {
+            if (DEBUGMODE) return;
             StartCoroutine(TeleportPlayerOutInLevel());
         }
     }
@@ -138,6 +144,9 @@ public class Portal : MonoBehaviour
         OnAnyPortalDisappeared?.Invoke(this, EventArgs.Empty);
 
         yield return new WaitForSeconds(2f);
+        LevelManager.Instance.ShowNewLocationUI();
+        yield return new WaitForEndOfFrame();
+
         Destroy(gameObject);
     }
 
@@ -160,14 +169,14 @@ public class Portal : MonoBehaviour
 
             MetaProgressionManager.Instance.SetGreenGemAmountFromLevel(UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count);
             MetaProgressionManager.Instance.SetRedGemAmountFromLevel(UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count);
-            SceneLoader.Instance.LoadHub(1.5f);
+            SceneLoader.Instance.LoadHub(2f);
 
         } else {
             
+            MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
             MetaProgressionManager.Instance.SetAsLastPortalUsedByPlayer(portalNumber);
             MetaProgressionManager.Instance.SaveHubGems();
-            SceneLoader.Instance.LoadTestLevel(1.5f);
-        
+            SceneLoader.Instance.LoadLevel(linkedLevelSO, 2f);
         }
     }
 
@@ -203,6 +212,7 @@ public class Portal : MonoBehaviour
         floorCollider.enabled = true;
         OnAnyPortalSetToTeleportPlayer?.Invoke(this, EventArgs.Empty);
         OnPortalSetToTeleportPlayer?.Invoke(this, EventArgs.Empty);
+        MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(false);
 
         yield return new WaitForSeconds(delayToActivateTeleportAnimation);
 

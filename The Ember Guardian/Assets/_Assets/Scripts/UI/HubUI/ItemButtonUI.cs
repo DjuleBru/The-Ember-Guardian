@@ -13,6 +13,7 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     [SerializeField] private List<ItemButtonUI> lockingItemButtonUIList;
     [SerializeField] private ItemDescriptionCardUI descriptionCard;
 
+    [SerializeField] private Material emptyUIMaterial;
     [SerializeField] private Image iconImage;
     [SerializeField] private Image outlineImage;
     [SerializeField] private Image backgroundImage;
@@ -51,6 +52,8 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         hubMerchantItem = GetComponent<HubMerchantItem>();
 
         iconImage.material = new Material(iconImage.material);
+        outlineImage.material = new Material(outlineImage.material);
+
         backgroundImage.color = Color.black;
         InitializeDescriptionCard();
 
@@ -223,6 +226,13 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         yield return null;
     }
 
+    private void OnEnable() {
+        iconImage.material = emptyUIMaterial;
+        outlineImage.material = emptyUIMaterial;
+
+        iconImage.material = new Material(iconImage.material);
+        outlineImage.material = new Material(outlineImage.material);
+    }
 
     #region NAVIGATION
     private void ItemButtonUI_OnAnyButtonHovered(object sender, EventArgs e) {

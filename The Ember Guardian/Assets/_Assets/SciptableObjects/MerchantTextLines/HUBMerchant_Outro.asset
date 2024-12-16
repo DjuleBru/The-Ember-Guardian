@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
+  m_Name: HUBMerchant_Outro
+  m_EditorClassIdentifier: 
+  merchantTextLines:
+  - "Ah, you\u2019ve taken a spark from the flame. Good, It will guide you. If you
+    <slide a=.2>let it.<slide a=.2>"
+  - 'The path to The Verdant Graveyard is open. '
+  - "There, you\u2019ll find the Armorer. He once kept the light alive for many,
+    but those days are long gone"
+  - "Perhaps he\u2019ll aid you, if you can remind him of what he\u2019s lost."
+  - Go, and bring back what this place <bounce a=.2 f=1.2>needs</bounce> to grow.

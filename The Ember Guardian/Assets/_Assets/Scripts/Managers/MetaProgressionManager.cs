@@ -14,6 +14,7 @@ public class MetaProgressionManager : MonoBehaviour
     #region HUB
     [SerializeField] private Portal defaultLastHUBPortalUsedByPlayer;
     public int lastHUBPortalUsedByPlayer { get; private set; }
+    public bool nextHubArrivalThroughPortal { get; private set; }
     #endregion
 
     #region CURRENCIES
@@ -57,6 +58,15 @@ public class MetaProgressionManager : MonoBehaviour
     #endregion
 
     #region HUB
+    public void SetNextHubArrivalThroughPortal(bool arrivalThroughPortal) {
+        ES3.Save("nextHubArrivalThroughPortal", arrivalThroughPortal);
+    }
+
+    public bool GetNextHubArrivalThroughPortal() {
+        string key = "nextHubArrivalThroughPortal";
+        return ES3.Load(key, false);
+    }
+
     public void SetAsLastPortalUsedByPlayer(int portalNumber) {
         ES3.Save("lastHUBPortalUsedByPlayer", portalNumber);
     }
@@ -182,4 +192,15 @@ public class MetaProgressionManager : MonoBehaviour
 
     #endregion
 
+    #region LEVELS
+    public bool GetLevelRegionUnlocked(LevelSO.LevelEnvironment environmentType) {
+        string key = environmentType.ToString() + "_Unlocked";
+        return ES3.Load(key, false);
+    }
+
+    public void SetLevelRegionUnlocked(LevelSO.LevelEnvironment environmentType) {
+        string key = environmentType.ToString() + "_Unlocked";
+        ES3.Save(key, true);
+    }
+    #endregion
 }

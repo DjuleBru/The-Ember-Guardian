@@ -38,28 +38,47 @@ public class HubMerchant : MonoBehaviour
     public static event EventHandler OnPlayerOpenedAnyHubMerchantShop;
     public static event EventHandler OnPlayerStoppedInteractingWithAnyHubMerchant;
 
+    protected bool isHubMerchant;
+    protected bool isLevelNPC;
+
     protected void Start() {
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
 
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            isHubMerchant = true;
+            isLevelNPC = false;
+        }
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            isHubMerchant = false;
+            isLevelNPC = true;
+        }
+
+        if (isHubMerchant) {
             // HUB behavior
 
             if(!MetaProgressionManager.Instance.GetMerchantUnlocked(hubMerchantType) && !hubMerchantUnlockedAtStart) {
                 gameObject.SetActive(false);
             };
 
-            merchantJustArrivedInHub = MetaProgressionManager.Instance.GetMerchantJustArrivedInHub(hubMerchantType);
-            merchantHasTalkLinesToShow = MetaProgressionManager.Instance.GetMerchantHasTalkLinesToShow(hubMerchantType);
+            merchantJustArrivedInHub = MetaProgressionManager.Instance.GetMerchantJustArrivedInHub(hubMerchantType); 
+            if (merchantJustArrivedInHub) {
+                merchantHasTalkLinesToShow = true;
+            }
+            else {
+                merchantHasTalkLinesToShow = MetaProgressionManager.Instance.GetMerchantHasTalkLinesToShow(hubMerchantType);
+            }
         }
 
-        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+        if (isLevelNPC) {
             // Level behavior : idle, talk to player, disappear
+            merchantHasTalkLinesToShow = true;
         }
     }
 
     protected void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
+        if (merchantHasTalkLinesToShow) return;
 
         if (playerInteractingWithMerchant) {
             StopInteractingWithMerchant();
@@ -68,8 +87,13 @@ public class HubMerchant : MonoBehaviour
 
     protected void GameInput_OnPlayerInteractPerformed(object sender, System.EventArgs e) {
         if (!playerInTriggerArea) return;
+        if (playerInteractingWithMerchant) return;
 
-        if(!playerInteractingWithMerchant) {
+        if(isHubMerchant) {
+            StartInteractingWithMerchant();
+        }
+
+        if(isLevelNPC && merchantHasTalkLinesToShow) {
             StartInteractingWithMerchant();
         }
     }
@@ -80,6 +104,7 @@ public class HubMerchant : MonoBehaviour
         if (merchantHasTalkLinesToShow) {
             OnPlayerStartedTalkingWithHubMerchant?.Invoke(this, EventArgs.Empty);
         }
+
         else {
             OnPlayerOpenedHubMerchantShop?.Invoke(this, EventArgs.Empty);
             OnPlayerOpenedAnyHubMerchantShop?.Invoke(this, EventArgs.Empty);
@@ -110,6 +135,7 @@ public class HubMerchant : MonoBehaviour
     protected void OnTriggerEnter2D(Collider2D collision) {
         if(collision.GetComponent<Player>() != null) {
             playerInTriggerArea = true;
+            Player.Instance.SetCanDropOrbOnTheFloor(true);
             OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -117,6 +143,7 @@ public class HubMerchant : MonoBehaviour
     protected void OnTriggerExit2D(Collider2D collision) {
         if (collision.GetComponent<Player>() != null) {
             playerInTriggerArea = false;
+            Player.Instance.SetCanDropOrbOnTheFloor(false);
             OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -125,7 +152,7 @@ public class HubMerchant : MonoBehaviour
         merchantHasTalkLinesToShow = false;
         MetaProgressionManager.Instance.SetMerchantHasTalkLinesToShow(hubMerchantType, false);
 
-        if(openShopPanel) {
+        if(openShopPanel && isHubMerchant) {
             StartInteractingWithMerchant();
         } else {
             StopInteractingWithMerchant();
@@ -150,5 +177,8 @@ public class HubMerchant : MonoBehaviour
 
     public bool GetMerchantJustArrivedInHub() {
         return merchantJustArrivedInHub;
+    }
+    public bool GetMerchantIsLevelNPC() {
+        return isLevelNPC;
     }
 }

@@ -250,6 +250,7 @@ public class Fire : Structure, IDamageable {
 
         if (extractingEmber) return;
         if (isTutorial) return;
+        if (isEndLevelFire) return;
 
         if(fuelLevel > (maxFuelTreshold - orbFuelValue)) {
             SetStructureSecondaryFunctionUnlocked(true);
@@ -271,13 +272,13 @@ public class Fire : Structure, IDamageable {
     }
 
     private void SetFireCurrentMaxFuelTreshold() {
-        State maxState = State.calm;
+        State maxState = State.mild;
 
         if (Tent.Instance.GetStructureLevel() == 2) {
-            maxState = State.mild;
+            maxState = State.wild;
         }
         if (Tent.Instance.GetStructureLevel() == 3) {
-            maxState = State.wild;
+            maxState = State.insane;
         }
         if (Tent.Instance.GetStructureLevel() == 4) {
             maxState = State.insane;

@@ -24,6 +24,7 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     public event EventHandler<OnBlueOrbDroppedOnTheFloorEventArgs> OnBlueOrbDroppedOnTheFloor;
+    public event EventHandler OnEmberDropped;
 
     public class OnCurrencyChangedEventArgs : EventArgs {
         public int previousAmount;
@@ -50,6 +51,10 @@ public class PlayerCurrencies : MonoBehaviour
         if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
             StartCoroutine(SetCarryingEmberAfterDelay());
         }
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            SetCarryingEmber(false);
+        }
     }
 
     private IEnumerator SetCarryingEmberAfterDelay() {
@@ -58,20 +63,17 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     public void SetCarryingEmber(bool carryingEmber) {
-        if(!this.carryingEmber && carryingEmber) {
-            Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(CurrencyType.ember), emberHoldPosition).GetComponent<Collectible>();
-            collectible.SetAsCarriedEmber();
-            UICurrencyManager.Instance.AddCurrencyInBag(CurrencyType.ember);
-        }
-
         this.carryingEmber = carryingEmber;
-    }
+        if(carryingEmber) {
 
-    public void DropEmber() {
-        carryingEmber = false;
-        Collectible ember = emberHoldPosition.GetComponentInChildren<Collectible>();
-        if(ember != null) {
-            Destroy(emberHoldPosition.GetComponentInChildren<Collectible>().gameObject);
+            emberHoldPosition.gameObject.SetActive(true);
+            UICurrencyManager.Instance.AddCurrencyInBag(CurrencyType.ember);
+
+        } else {
+
+            emberHoldPosition.gameObject.SetActive(false);
+            OnEmberDropped?.Invoke(this, EventArgs.Empty);
+
         }
     }
 
@@ -126,11 +128,11 @@ public class PlayerCurrencies : MonoBehaviour
 
         } else {
 
-            Collectible emberCarriedByPlayer = emberHoldPosition.GetComponentInChildren<Collectible>();
+            Collectible emberCarriedByPlayer = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyType), emberHoldPosition.position, Quaternion.identity).GetComponent<Collectible>();
             emberCarriedByPlayer.SetMovingForPayment(true, 3f, destination.transform);
             collectiblesBeingPaid.Add(emberCarriedByPlayer);
 
-            carryingEmber = false;
+            SetCarryingEmber(false);
         }
 
     }

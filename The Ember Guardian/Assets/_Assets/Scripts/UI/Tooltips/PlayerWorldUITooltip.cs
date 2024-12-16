@@ -143,4 +143,8 @@ public class PlayerWorldUITooltip : MonoBehaviour
     public void HideTooltip() {
         StartCoroutine(HideTooltipCoroutine());
     }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
+    }
 }

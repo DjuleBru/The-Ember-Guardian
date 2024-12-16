@@ -113,7 +113,9 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public bool GetCanDropOrbOnTheFloor() {
-        return canDropOrbOnTheFloor && !interactingWithOtherObject;
+        if (interactingWithMerchant) return false;
+
+        return canDropOrbOnTheFloor;
     }
 
     public void AddKnockBack(Vector2 knockbackDir) {
@@ -158,14 +160,14 @@ public class Player : MonoBehaviour, IDamageable
 
     #region PLAYER CONTROLS RESTRICTIONS
     public void Die() {
-        GetComponent<PlayerMovement>().enabled = false;
+        canMove = false;
         GetComponent<PlayerAim>().enabled = false;
         GetComponent<PlayerCurrencies>().enabled = false;
         PlayerShoot.Instance.SetCanShoot(false);
         SetCanDropOrbOnTheFloor(false);
 
         if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
-            PlayerCurrencies.Instance.DropEmber();
+            PlayerCurrencies.Instance.SetCarryingEmber(false);
         }
 
         OnPlayerDied?.Invoke(this, EventArgs.Empty);
@@ -193,7 +195,7 @@ public class Player : MonoBehaviour, IDamageable
 
         yield return new WaitForSeconds(1f);
 
-        GetComponent<PlayerMovement>().enabled = true;
+        canMove = false;
         GetComponent<PlayerAim>().enabled = true;
         GetComponent<PlayerShoot>().enabled = true;
         PlayerShoot.Instance.SetCanShoot(true);
@@ -207,7 +209,6 @@ public class Player : MonoBehaviour, IDamageable
     public void MoveOnTeleporter(Transform teleporterPlayerPosition) {
         canMove = false;
 
-        GetComponent<PlayerMovement>().enabled = false;
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         GetComponent<PlayerCurrencies>().enabled = false;
         PlayerShoot.Instance.SetCanShoot(false);
@@ -218,7 +219,6 @@ public class Player : MonoBehaviour, IDamageable
     public void ReleasePlayerFromTeleporter() {
         canMove = true;
 
-        GetComponent<PlayerMovement>().enabled = true;
         GetComponent<PlayerCurrencies>().enabled = true;
         PlayerShoot.Instance.SetCanShoot(true);
         SetCanDropOrbOnTheFloor(true);
@@ -226,11 +226,13 @@ public class Player : MonoBehaviour, IDamageable
 
     public void StartInteractingWithMerchant() {
         interactingWithMerchant = true;
+        SetCanDropOrbOnTheFloor(false);
         DisableControlInputs();
     }
     
     public void StopInteractingWithMerchant() {
         EnableControlInputs();
+        SetCanDropOrbOnTheFloor(true);
         // Set interactingWithMerchant false after frame or dog will react
         StartCoroutine(SetStopInteractingWithMerchantCoroutine());
     }
@@ -238,7 +240,6 @@ public class Player : MonoBehaviour, IDamageable
     public void DisableControlInputs() {
         canMove = false;
 
-        GetComponent<PlayerMovement>().enabled = false;
         GetComponent<PlayerAim>().enabled = false;
         PlayerShoot.Instance.SetCanShoot(false);
     }
@@ -246,7 +247,6 @@ public class Player : MonoBehaviour, IDamageable
     public void EnableControlInputs() {
         canMove = true;
 
-        GetComponent<PlayerMovement>().enabled = true;
         GetComponent<PlayerAim>().enabled = true;
         PlayerShoot.Instance.SetCanShoot(true);
 

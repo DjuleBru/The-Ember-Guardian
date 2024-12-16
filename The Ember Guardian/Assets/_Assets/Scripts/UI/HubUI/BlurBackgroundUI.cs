@@ -27,4 +27,9 @@ public class BlurBackgroundUI : MonoBehaviour
     private void HubMerchant_OnPlayerInteractedWithAnyHubMerchant(object sender, System.EventArgs e) {
         blurVolumeAnimator.SetTrigger("Show");
     }
+
+    private void OnDestroy() {
+        HubMerchant.OnPlayerOpenedAnyHubMerchantShop -= HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
+        HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+    }
 }

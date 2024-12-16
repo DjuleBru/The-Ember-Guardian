@@ -34,6 +34,10 @@ public class SceneLoader : MonoBehaviour
         StartCoroutine(LoadSceneAfterCrossfade("PrototypeLevel", crossfadeDuration));
     }
 
+    public void LoadLevel(LevelSO levelSO, float crossfadeDuration) {
+        string sceneName = levelSO.linkedSceneName;
+        StartCoroutine(LoadSceneAfterCrossfade(sceneName, crossfadeDuration));
+    }
 
     private IEnumerator LoadSceneAfterCrossfade(string sceneName, float crossfadeDuration) {
         transitionAnimator.SetTrigger("Start");

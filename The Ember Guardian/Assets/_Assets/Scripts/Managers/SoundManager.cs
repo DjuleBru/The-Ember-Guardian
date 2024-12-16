@@ -499,7 +499,9 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlaySound2D(AudioClip[] audioClipArray, float volume = 1f) {
-        PlaySound2D(audioClipArray[Random.Range(0, audioClipArray.Length)], volume);
+        AudioClip audioClip = audioClipArray[Random.Range(0, audioClipArray.Length)];
+
+        PlaySound2D(audioClip, volume);
     }
 
     private void PlaySound2D(AudioClip audioClip, float volume = 1f) {
@@ -517,26 +519,53 @@ public class SoundManager : MonoBehaviour
     }
 
     private void OnDestroy() {
+        SettingsManager.Instance.OnSfxVolumeChanged -= SettingsManager_OnSfxVolumeChanged;
+
         StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyStructureUpgraded -= Structure_OnAnyStructureUpgraded;
+        Structure.OnAnyStructurePrimaryFunctionUsed -= Structure_OnAnyStructurePrimaryFunctionUsed;
 
         PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerReload -= PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerCooldownTrigger -= PlayerShoor_OnPlayerCooldownSFXTrigger;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo -= PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
+        PlayerShoot.Instance.OnPlayerSwappedGun -= PlayerShoot_OnPlayerSwappedGun;
+
+        PlayerSkills.Instance.OnActiveSkillReady -= PlayerSkills_OnActiveSkillReady;
+        PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;
+        PassiveShield.OnAnyPassiveShieldActivated -= PassiveShield_OnAnyPassiveShieldActivated;
+        PassiveShield.OnAnyPassiveShieldDied -= PassiveShield_OnAnyPassiveShieldDied;
+        ActiveTeleportation.Instance.OnPlayerTeleported -= ActiveTeleportation_OnPlayerTeleported;
 
         PlayerUI_AmmoBar.Instance.OnAmmoTickAdded -= PlayerUI_AmmoBar_OnAmmoTickAdded;
         PlayerUI_HPBar.Instance.OnHPTickAdded -= PlayerUI_HPBar_OnHPTickAdded;
         StructureUI_Fire.OnFireTickRemoved -= StructureUI_Fire_OnFireTickRemoved;
         PlayerWorldUITooltip.OnTooltipHidden -= PlayerWorldUITooltip_OnTooltipHidden;
         PlayerWorldUITooltip.OnTooltipShown -= PlayerWorldUITooltup_OnTooltipShown;
+        ItemButtonUI.OnAnyButtonSelected -= ItemButtonUI_OnAnyButtonSelected;
+        ItemButtonUI.OnAnyButtonHovered -= ItemButtonUI_OnAnyButtonHovered;
+        HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
+        HubMerchantItem.OnAnyHubMerchantItemFailedBuy -= HubMerchantItem_OnAnyHubMerchantItemFailedBuy;
+        ItemButtonUI_Visual.OnAnyGemPSTriggered -= ItemButtonUI_Visual_OnAnyGemPSTriggered;
+        ItemButtonUI.OnAnyLockedButtonTryPress -= ItemButtonUI_OnAnyLockedButtonTryPress;
+
+        if (LevelUI_ObjectiveUI.Instance != null) {
+            LevelUI_ObjectiveUI.Instance.OnObjectiveUIShown -= LevelUI_ObjectiveUI_OnObjectiveUIShown;
+            LevelUI_ObjectiveUI.Instance.OnObjectiveUICompleted -= LevelUI_OnObjectiveUICompleted;
+            LevelUI_ObjectiveUI.Instance.OnSubObjectiveUICompleted -= LevelUI_OnSubObjectiveUICompleted;
+        }
+        if (LevelUI_Locations.Instance != null) {
+            LevelUI_Locations.Instance.OnLocationTextShown -= LevelUI_OnLocationTextShown;
+        }
 
         ParticleCollision.OnAnyBulletHitEnemy -= ParticleCollision_OnAnyBulletHitEnemy;
+        ParticleCollision.OnAnyBulletHitEnemyCrit -= ParticleCollision_OnAnyBulletHitEnemyCrit;
         ParticleCollision.OnAnyBulletHitGround -= ParticleCollision_OnAnyBulletHitGround;
 
-        UICurrencyManager.Instance.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
         Collectible.OnAnyCollectibleTouchedFloor -= Collectible_OnAnyCollectibleTouchedFloor;
+        UICurrencyManager.Instance.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
         Collectible.OnAnyCollectiblePickedUpByWorker -= Collectible_OnAnyCollectiblePickedUpByWorker;
+        Collectible.OnAnyCollectiblePlouffed -= Collectible_OnAnyCollectiblePlouffed; ;
         Chest.OnAnyChestSpawnedCollectible -= Chest_OnAnyChestSpawnedCollectible;
         PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor -= PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;
 
@@ -549,7 +578,16 @@ public class SoundManager : MonoBehaviour
         Projectile.OnAnyProjectileInstantiated -= Projectile_OnAnyProjectileInstantiated;
 
         EndLevelAreaProp.OnAnyEndLevelAreaPropBurned -= EndLevelAreaProp_OnAnyEndLevelAreaPropBurned;
+        HuntingFlag.OnAnyHuntingFlagReset -= HuntingFlag_OnAnyHuntingFlagReset;
+        HuntingFlag_PlayerDefined.OnAnyHuntingFlagNewPositionSet -= HuntingFlag_PlayerDefined_OnAnyHuntingFlagNewPositionSet;
+        HuntingFlag_PlayerDefined.OnAnyHuntingFlagPickedUp -= HuntingFlag_PlayerDefined_OnAnyHuntingFlagPickedUp;
         GunSpotLight.OnAnyLightSwitched -= GunSpotLight_OnAnyLightSwitched;
+
+        Tutorial.OnAnySpotLightActivated -= Tutorial_OnAnySpotLightActivated;
+
+        Dog.Instance.OnPlayerCalledDog -= Dog_OnPlayerCalledDog;
+        HubMerchant.OnPlayerOpenedAnyHubMerchantShop -= HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
+        HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine -= HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
     }
 
 }

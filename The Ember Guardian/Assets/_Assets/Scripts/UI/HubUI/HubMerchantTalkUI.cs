@@ -15,6 +15,7 @@ public class HubMerchantTalkUI : MonoBehaviour
     [SerializeField] private GameObject continueGameObject;
     [SerializeField] private Image continueInputImage;
 
+    [SerializeField] private MerchantTextLinesSO textLinesSO;
     [SerializeField] private List<string> merchantTalkLines;
 
     public static event EventHandler OnAnyMerchantShowNewTalkLine;
@@ -28,8 +29,10 @@ public class HubMerchantTalkUI : MonoBehaviour
     private void Start() {
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
+
         hubMerchant.OnPlayerStartedTalkingWithHubMerchant += HubMerchant_OnPlayerStartedTalkingWithHubMerchant;
 
+        merchantTalkLines = textLinesSO.merchantTextLines;
         talkPanelUIGameObject.SetActive(false);
         continueGameObject.SetActive(false);
         continueInputImage.sprite = InputControlIcons.Instance.GetControlIconSprite(InputControlIcons.Control.Interact)[0];
@@ -45,7 +48,9 @@ public class HubMerchantTalkUI : MonoBehaviour
         if(currentDialogLineShown) {
 
             talkLinesIndex++;
+
             if (talkLinesIndex == merchantTalkLines.Count) {
+                talkText.text = "";
                 playerIsTalkingToMerchant = false;
                 hubMerchant.SetPlayerFinishedTalkingWithMerchant(showShopAfterDialog);
                 talkPanelUIGameObject.SetActive(false);
@@ -67,13 +72,12 @@ public class HubMerchantTalkUI : MonoBehaviour
     }
 
     private void HubMerchant_OnPlayerStartedTalkingWithHubMerchant(object sender, System.EventArgs e) {
-        talkText.text = "";
         StartCoroutine(StartTalkingToMerchantCoroutine());
     }
 
-    public void SetTalkingWithMerchant(List<string> merchantLines, bool showShopAfterDialog) {
+    public void SetTalkingWithMerchant(MerchantTextLinesSO textLinesSO, bool showShopAfterDialog) {
         this.showShopAfterDialog = showShopAfterDialog;
-        merchantTalkLines = merchantLines;
+        merchantTalkLines = textLinesSO.merchantTextLines;
         StartCoroutine(StartTalkingToMerchantCoroutine());
     }
 

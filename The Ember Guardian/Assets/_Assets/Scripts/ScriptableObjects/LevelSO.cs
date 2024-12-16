@@ -5,5 +5,25 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class LevelSO : ScriptableObject
 {
+    public enum LevelEnvironment {
+        TheLostGreens,
+        TheVerdantGraveyard,
+        Gloomspire,
+        EmberheartSanctum,
+    }
 
+    public LevelEnvironment environmentType;
+    public LevelUI_ObjectiveUI.ObjectiveType levelObjectiveType;
+    public string linkedSceneName;
+
+
+    public string GetLevelEnvironmentTypeString() {
+        if(environmentType == LevelEnvironment.TheLostGreens) {
+            return "The Lost Greens";
+        };
+        if (environmentType == LevelEnvironment.TheVerdantGraveyard) {
+            return "The Verdant Graveyard";
+        };
+        return "";
+    }
 }

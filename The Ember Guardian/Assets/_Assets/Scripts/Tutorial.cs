@@ -456,7 +456,7 @@ public class Tutorial : MonoBehaviour
         Fire.Instance.SetStructurePrimaryFunctionUnlocked(true);
 
         LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.FindNest);
-        List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.ExtractEmber };
+        List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.ExtractEmberTutorial };
 
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
     }
@@ -475,7 +475,7 @@ public class Tutorial : MonoBehaviour
         Fire.Instance.SetStructurePrimaryFunctionUnlocked(true);
 
         LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.FindNest);
-        List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.ExtractEmber };
+        List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.ExtractEmberTutorial };
 
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
     }
@@ -586,7 +586,7 @@ public class Tutorial : MonoBehaviour
             endLevelAreaCollider.SetColliderTrigger();
             extractEmberCollider.SetColliderTrigger();
 
-            LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.ExtractEmber, LevelUI_ObjectiveUI.SubObjectiveType.FindNest);
+            LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.ExtractEmberTutorial, LevelUI_ObjectiveUI.SubObjectiveType.FindNest);
         }
 
     }

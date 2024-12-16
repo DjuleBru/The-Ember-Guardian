@@ -72,4 +72,8 @@ public class GunSpotLight : MonoBehaviour
             OnAnyLightSwitched?.Invoke(this, EventArgs.Empty);
         }
     }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerGunLightSwitch -= GameInput_OnPlayerGunLightSwitch;
+    }
 }
