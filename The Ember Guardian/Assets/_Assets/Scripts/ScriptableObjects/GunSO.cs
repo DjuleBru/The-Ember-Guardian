@@ -5,6 +5,13 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class GunSO : ScriptableObject
 {
+    public enum GunType {
+        Rifle,
+        UZI,
+        Shotgun,
+        Sniper,
+    }
+    public GunType gunType;
     public Sprite gunSprite;
     public Sprite reticleSprite;
     public List<Sprite> shotCountSprites;

@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float moveSpeedBackwardsMultiplier = .7f;
     [SerializeField] private float exhaustedSpeedFactor = 1.3f;
     [SerializeField] private float runRecoverFactor = 1f;
+    [SerializeField] private float aimingSightDecelerationFactor = .7f;
     [SerializeField] private float crouchAccelerationFactor = .7f;
 
     [SerializeField] private float acceleration;
@@ -73,9 +74,12 @@ public class PlayerMovement : MonoBehaviour {
         GameInput.Instance.OnPlayerRunCanceled += GameInput_OnPlayerRunCanceled;
         GameInput.Instance.OnPlayerJumpCanceled += GameInput_OnPlayerJumpCanceled;
         GameInput.Instance.OnPlayerJumpPerformed += GameInput_OnPlayerJumpStarted;
+        PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAIm_OnPlayerAimSightStarted;
+        PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAim_OnPlayerAimSightEnded;
 
         PlayerStats.Instance.OnMoveSpeedChanged += PlayerState_OnMoveSpeedChanged;
     }
+
 
     private void FixedUpdate() {
         if (!Player.Instance.GetCanMove()) return;
@@ -150,6 +154,15 @@ public class PlayerMovement : MonoBehaviour {
 
         lastJumpTime = 0;
         jumpInputReleased = true;
+    }
+
+    private void PlayerAim_OnPlayerAimSightEnded(object sender, EventArgs e) {
+        BuffMoveSpeed(PlayerStats.Instance.GetAimingSightDecelerationFactor());
+
+    }
+
+    private void PlayerAIm_OnPlayerAimSightStarted(object sender, EventArgs e) {
+        DebuffMoveSpeed(PlayerStats.Instance.GetAimingSightDecelerationFactor());
     }
 
     private void GameInput_OnPlayerRunCanceled(object sender, System.EventArgs e) {

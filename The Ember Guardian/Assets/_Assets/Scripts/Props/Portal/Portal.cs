@@ -7,6 +7,7 @@ public class Portal : MonoBehaviour
 {
     [SerializeField] private List<LevelSO> linkedLevelSOList;
     [SerializeField] private Transform playerPosition;
+    [SerializeField] private Transform dogPosition;
     [SerializeField] private Collider2D floorCollider;
     [SerializeField] private bool isEndLevelTeleporter;
     [SerializeField] private bool isStartLevelTeleporter;
@@ -153,6 +154,8 @@ public class Portal : MonoBehaviour
     private IEnumerator TeleportPlayerIn() {
         floorCollider.enabled = true;
         Player.Instance.MoveOnTeleporter(playerPosition);
+        Dog.Instance.MoveOnTeleporter(dogPosition);
+
         OnPlayerMovedOnTeleporter?.Invoke(this, EventArgs.Empty);
         OnAnyPlayerMovedOnTeleporter?.Invoke(this, EventArgs.Empty);
 
@@ -183,6 +186,8 @@ public class Portal : MonoBehaviour
     private IEnumerator TeleportPlayerOutInLevel() {
         playerIsSetOnTeleporter = true;
         Player.Instance.MoveOnTeleporter(playerPosition);
+        Dog.Instance.MoveOnTeleporter(dogPosition);
+
         floorCollider.enabled = true;
         OnAnyPortalSetToTeleportPlayer?.Invoke(this, EventArgs.Empty);
         OnPortalSetToTeleportPlayer?.Invoke(this, EventArgs.Empty);
@@ -203,12 +208,13 @@ public class Portal : MonoBehaviour
         yield return new WaitForSeconds(delayToReleasePlayerAnimation);
 
         Player.Instance.ReleasePlayerFromTeleporter();
-
     }
 
     private IEnumerator TeleportPlayerOutInHub() {
         playerIsSetOnTeleporter = true;
         Player.Instance.MoveOnTeleporter(playerPosition);
+        Dog.Instance.MoveOnTeleporter(dogPosition);
+
         floorCollider.enabled = true;
         OnAnyPortalSetToTeleportPlayer?.Invoke(this, EventArgs.Empty);
         OnPortalSetToTeleportPlayer?.Invoke(this, EventArgs.Empty);
@@ -237,9 +243,12 @@ public class Portal : MonoBehaviour
         OnAnyPortalAppeared?.Invoke(this, EventArgs.Empty);
     }
 
-    public void UnlockPortal() {
+    public void SetPortalUnlockedInSave() {
         portalUnlocked = true;
         MetaProgressionManager.Instance.SetPortalUnlocked(gameObject.name);
+    }
+
+    public void UnlockPortal() {
         gameObject.SetActive(true);
         MakePortalAppear();
         OnPortalUnlocked?.Invoke(this, EventArgs.Empty);

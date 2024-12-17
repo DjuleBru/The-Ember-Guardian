@@ -45,7 +45,7 @@ public class SoundManager : MonoBehaviour
         ItemButtonUI.OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
         ItemButtonUI.OnAnyButtonHovered += ItemButtonUI_OnAnyButtonHovered;
         HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
-        HubMerchantItem.OnAnyHubMerchantItemFailedBuy += HubMerchantItem_OnAnyHubMerchantItemFailedBuy;
+        ItemButtonUI.OnAnyHubMerchantItemFailedBuy += ItemButtonUI_OnAnyHubMerchantItemFailedBuy;
         ItemButtonUI_Visual.OnAnyGemPSTriggered += ItemButtonUI_Visual_OnAnyGemPSTriggered;
         ItemButtonUI.OnAnyLockedButtonTryPress += ItemButtonUI_OnAnyLockedButtonTryPress;
 
@@ -106,7 +106,7 @@ public class SoundManager : MonoBehaviour
     private void ItemButtonUI_Visual_OnAnyGemPSTriggered(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.gemPSExplosion, .5f);
     }
-    private void HubMerchantItem_OnAnyHubMerchantItemFailedBuy(object sender, System.EventArgs e) {
+    private void ItemButtonUI_OnAnyHubMerchantItemFailedBuy(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.failBuyHubMerchantItem);
     }
 
@@ -545,7 +545,7 @@ public class SoundManager : MonoBehaviour
         ItemButtonUI.OnAnyButtonSelected -= ItemButtonUI_OnAnyButtonSelected;
         ItemButtonUI.OnAnyButtonHovered -= ItemButtonUI_OnAnyButtonHovered;
         HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
-        HubMerchantItem.OnAnyHubMerchantItemFailedBuy -= HubMerchantItem_OnAnyHubMerchantItemFailedBuy;
+        ItemButtonUI.OnAnyHubMerchantItemFailedBuy -= ItemButtonUI_OnAnyHubMerchantItemFailedBuy;
         ItemButtonUI_Visual.OnAnyGemPSTriggered -= ItemButtonUI_Visual_OnAnyGemPSTriggered;
         ItemButtonUI.OnAnyLockedButtonTryPress -= ItemButtonUI_OnAnyLockedButtonTryPress;
 

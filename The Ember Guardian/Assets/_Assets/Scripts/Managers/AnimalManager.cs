@@ -25,44 +25,45 @@ public class AnimalManager : MonoBehaviour
         return closestAnimal;
     }
 
-    public Animal GetClosestAnimalInRadius(Vector2 position, CampZoneManager.CampSide campSide) {
+    public Animal GetClosestAnimalInRadius(Vector2 position, CampZoneManager.CampSide campSide, float hunterRange) {
 
         float closestXDistance = Mathf.Infinity;
         Animal closestAnimalInRadius = null;
 
         foreach (Animal animal in spawnedAnimalList) {
 
-            if ((Mathf.Abs(animal.transform.position.x - position.x)) < closestXDistance) {
-                // Animal is the closest one
+            // Check if animal is on the same side as worker
+            if ((animal.transform.position.x < 0 && campSide == CampZoneManager.CampSide.left) || (animal.transform.position.x > 0 && campSide == CampZoneManager.CampSide.right)) {
 
-                if ((animal.transform.position.x < 0 && campSide == CampZoneManager.CampSide.left) || (animal.transform.position.x > 0 && campSide == CampZoneManager.CampSide.right)) {
-                    // Check if animal is on the same side as worker
+                // Check if animal is within hunting limits
+                if (animal.transform.position.x < 0) {
+                    if ((animal.transform.position.x + hunterRange) > CampZoneManager.Instance.GetHuntingMinZoneLimit()) {
 
-                    // Check if animal is within hunting limits
-
-                    if(animal.transform.position.x < 0) {
-                        if (animal.transform.position.x > CampZoneManager.Instance.GetHuntingMinZoneLimit()) {
-
+                        if ((Mathf.Abs(animal.transform.position.x - position.x)) < closestXDistance) {
+                            // Animal is the closest one
                             closestXDistance = Mathf.Abs(animal.transform.position.x - position.x);
                             closestAnimalInRadius = animal;
-
                         }
-                    } else {
-                        if (animal.transform.position.x < CampZoneManager.Instance.GetHuntingMaxZoneLimit()) {
 
-                            closestXDistance = Mathf.Abs(animal.transform.position.x - position.x);
-                            closestAnimalInRadius = animal;
-
-                        }
                     }
 
-                    
                 }
-                
+                else {
+
+                    if ((animal.transform.position.x - hunterRange) < CampZoneManager.Instance.GetHuntingMaxZoneLimit()) {
+
+                        if ((Mathf.Abs(animal.transform.position.x - position.x)) < closestXDistance) {
+                            // Animal is the closest one
+                            closestXDistance = Mathf.Abs(animal.transform.position.x - position.x);
+                            closestAnimalInRadius = animal;
+                        }
+
+                    }
+                }
+
+
             }
-
         }
-
         return closestAnimalInRadius;
     }
 

@@ -72,6 +72,7 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     public void SetPortalUnlocked(string portalName) {
+        Debug.Log("Set Portal Unlocked");
         string key = portalName + "_Unlocked";
         ES3.Save(key, true);
     }
@@ -79,6 +80,17 @@ public class MetaProgressionManager : MonoBehaviour
     public bool GetPortalUnlocked(string portalName) {
         string key = portalName + "_Unlocked";
         return ES3.Load(key, false);
+    }
+
+    public bool GetHubFireEmberExtractable() {
+        string key = "SetHubFireEmberExtractable";
+        return ES3.Load(key, false);
+    }
+
+    public void SetHubFireEmberExtractable() {
+        Debug.Log("SetHubFireEmberExtractable");
+        string key = "SetHubFireEmberExtractable";
+        ES3.Save(key, true);
     }
     #endregion
 
@@ -131,6 +143,7 @@ public class MetaProgressionManager : MonoBehaviour
 
     #region HUB MERCHANTS
     public void SetMerchantHasTalkLinesToShow(HubMerchant.HubMerchantType merchantType, bool hasTalkLinesToShow) {
+        Debug.Log("SetMerchantHasTalkLinesToShow");
         string key = merchantType.ToString() + "_TalkLinesToShow";
         ES3.Save(key, hasTalkLinesToShow);
     }
@@ -140,6 +153,7 @@ public class MetaProgressionManager : MonoBehaviour
         return ES3.Load(key, true);
     }
     public void SetMerchantJustArrivedInHub(HubMerchant.HubMerchantType merchantType, bool justArrived) {
+        Debug.Log("SetMerchantJustArrivedInHub");
         string key = merchantType.ToString() + "_JustArrivedInHub";
         ES3.Save(key, justArrived);
     }
@@ -154,6 +168,7 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     public void SetMerchantUnlocked(HubMerchant.HubMerchantType merchantType) {
+        Debug.Log("SetMerchantUnlocked");
         string key = merchantType.ToString() + "_Unlocked";
         ES3.Save(key, true);
     }
@@ -203,4 +218,20 @@ public class MetaProgressionManager : MonoBehaviour
         ES3.Save(key, true);
     }
     #endregion
+
+    #region GUNS
+    public void SetGunSecondaryAbilityUnlocked(GunSO gunSO) {
+        string key = gunSO.gunType + "_secondaryAbilityUnlocked";
+
+        ES3.Save(key, true);
+    }
+
+    public bool GetGunSecondaryAbilityUnlocked(GunSO gunSO) {
+        string key = gunSO.gunType + "_secondaryAbilityUnlocked";
+
+        return ES3.Load(key, false);
+    }
+
+    #endregion
+
 }

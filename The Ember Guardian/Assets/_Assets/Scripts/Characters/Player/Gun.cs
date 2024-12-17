@@ -17,8 +17,47 @@ public class Gun : MonoBehaviour
     private int currentBullet;
     private int bulletsPerAmmoClip;
 
+    public float defaultAngle; // Angle initial du cône (en degrés)
+    public float sightAngle; // Angle resserré du cône lorsqu'on vise
+    public float adjustmentSpeed = 5f; // Vitesse de transition (plus grand = plus rapide)
+
+    private float currentAngle; // L'angle actuel du cône
+    private float targetAngle; // L'angle cible vers lequel le cône doit se diriger
+
     private void Start() {
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
+        PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAim_OnPlayerAimSightStarted;
+        PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAim_OnPlayerAimSightEnded;
+
+        defaultAngle = shootPS.shape.angle;
+        currentAngle = defaultAngle;
+        targetAngle = defaultAngle;
+        sightAngle = defaultAngle / 2;
+
+        Debug.Log(defaultAngle);
+        Debug.Log(currentAngle);
+    }
+
+    private void Update() {
+
+        // Interpolation linéaire vers l'angle cible
+        currentAngle = Mathf.Lerp(currentAngle, targetAngle, Time.deltaTime * adjustmentSpeed);
+
+        // Appliquer l'angle au Particle System (conversion en radians)
+        ParticleSystem.ShapeModule shape = shootPS.shape;
+        shape.angle = currentAngle;
+
+        Debug.Log(shape.angle);
+    }
+
+    private void PlayerAim_OnPlayerAimSightEnded(object sender, System.EventArgs e) {
+        // Réduit l'angle pour resserrer le cône
+        targetAngle = defaultAngle;
+    }
+
+    private void PlayerAim_OnPlayerAimSightStarted(object sender, System.EventArgs e) {
+        // Rétablit l'angle par défaut pour desserrer le cône
+        targetAngle = sightAngle;
     }
 
     public void InitializeGun() {

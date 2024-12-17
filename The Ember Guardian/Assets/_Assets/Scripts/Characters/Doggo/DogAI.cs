@@ -70,7 +70,6 @@ public class DogAI : MonoBehaviour
     }
 
     private void Update() {
-
         CheckCreaturesInGrowlRange();
 
         distanceToPlayer = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
@@ -164,6 +163,10 @@ public class DogAI : MonoBehaviour
         currentBehaviorIdleState = state;
     }
 
+    public void SetState(State state) {
+        ChangeState(state);
+    }
+
     private void ChangeState(State newState) {
         if (state == newState) return;
 
@@ -216,8 +219,8 @@ public class DogAI : MonoBehaviour
             hasSetSpeed = true;
         }
 
-        if (!readyToMove) return;
         roamTimer -= Time.deltaTime;
+        if (!readyToMove) return;
 
         if (roamTimer < 0) {
             roamTimer = roamChangeDestionationRate;

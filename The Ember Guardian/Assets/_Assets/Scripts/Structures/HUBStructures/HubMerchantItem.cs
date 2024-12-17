@@ -14,7 +14,6 @@ public class HubMerchantItem : MonoBehaviour
     [SerializeField] protected string unlockDescription;
 
     public static event EventHandler OnAnyHubMerchantItemBought;
-    public static event EventHandler OnAnyHubMerchantItemFailedBuy;
 
     public bool CanBuyItem() {
         int playerGreenGems = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count;
@@ -25,8 +24,6 @@ public class HubMerchantItem : MonoBehaviour
             return true;
         }
         else {
-            // Fail buy
-            OnAnyHubMerchantItemFailedBuy?.Invoke(this, EventArgs.Empty);
             return false;
         }
     }

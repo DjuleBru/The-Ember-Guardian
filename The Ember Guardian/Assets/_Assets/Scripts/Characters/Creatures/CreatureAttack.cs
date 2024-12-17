@@ -33,7 +33,7 @@ public class CreatureAttack : MobAttack
     }
 
     protected override Vector3 GetEndPointRandomized() {
-        float distanceToTargetNormalized = Mathf.Abs(attackTargetGameObject.transform.position.x - transform.position.x)/ creature.GetCreatureSO().attackRange;
+        float distanceToTargetNormalized = Mathf.Abs(attackTargetGameObject.transform.position.x - transform.position.x)/ creature.GetCreatureSO().minAttackRange;
 
         Vector3 endPointRandomized = new Vector3(distanceToTargetNormalized * creature.GetCreatureSO().attackRangeMaxDistanceMiss, 0, 0);
         

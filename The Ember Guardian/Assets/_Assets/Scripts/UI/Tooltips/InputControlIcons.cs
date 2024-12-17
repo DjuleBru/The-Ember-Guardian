@@ -32,6 +32,10 @@ public class InputControlIcons : MonoBehaviour
     public Sprite gamepadL3Sprite;
     public Sprite gamepadLLeftRightSprite;
     public Sprite gamepadRJoystickSprite;
+    public Sprite gamepadDownArrowSprite;
+    public Sprite gamepadUpArrowSprite;
+    public Sprite gamepadLeftArrowSprite;
+    public Sprite gamepadRightArrowSprite;
 
     public Sprite keyboardRSprite;
     public Sprite keyboardASprite;
@@ -79,10 +83,10 @@ public class InputControlIcons : MonoBehaviour
                 spriteList.Add(gamepadLLeftRightSprite);
             }
             if (control == Control.Run) {
-                spriteList.Add(gamepadLtSprite);
+                spriteList.Add(gamepadL3Sprite);
             }
             if (control == Control.LightSwitch) {
-                spriteList.Add(gamepadL3Sprite);
+                spriteList.Add(gamepadDownArrowSprite);
             }
             if (control == Control.SwitchDog) {
                 spriteList.Add(gamepadBSprite);

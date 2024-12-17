@@ -9,9 +9,9 @@ public class CameraManager : MonoBehaviour
     public static CameraManager Instance;
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private Camera UICamera;
+    [SerializeField] private float initialCameraOrthographicSize = 10;
     private float zoomDuration = .5f; // Durée du zoom
 
-    private float initialCameraOrthographicSize;
     private Coroutine currentZoomCoroutine;
 
     private void Awake() {
@@ -19,7 +19,7 @@ public class CameraManager : MonoBehaviour
     }
 
     private void Start() {
-        initialCameraOrthographicSize = virtualCamera.m_Lens.OrthographicSize;
+        virtualCamera.m_Lens.OrthographicSize = initialCameraOrthographicSize;
     }
 
     public void ZoomIn(bool toInitialValue, float targetZoomInOrthographicSizeMultiplier = 1f, float zoomDuration = 1f) {

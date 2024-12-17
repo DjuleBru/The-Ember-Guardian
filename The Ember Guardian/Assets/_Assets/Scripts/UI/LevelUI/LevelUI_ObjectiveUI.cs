@@ -91,11 +91,9 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         OnObjectiveUIShown?.Invoke(this, EventArgs.Empty);
 
         currentObjectiveType = objectiveType;
-        Debug.Log("SetNewObjectiveUI " + currentObjectiveType);
     }
 
     public void SetSubObjectivesUI(List<SubObjectiveType> subObjectiveTypeList) {
-        Debug.Log("SetSubObjectivesUI ");
         StartCoroutine(InstantiateSubObjectivesUICoroutine(subObjectiveTypeList, 4f));
     }
 
@@ -115,7 +113,6 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
             SubObjectiveUI subObjectiveText = Instantiate(subObjectiveTemplate, subObjectiveContainer).GetComponent<SubObjectiveUI>();
             subObjectiveText.SetSubObjective(subObjective);
             subObjectiveText.gameObject.SetActive(true);
-            Debug.Log(subObjective);
             yield return new WaitForSeconds(.3f);
         }
     }

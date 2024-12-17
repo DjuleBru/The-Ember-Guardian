@@ -13,6 +13,8 @@ public class DoggoVisual : MonoBehaviour
 
     private void Awake() {
         dog = GetComponentInParent<Dog>();
+        Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
+        Portal.OnAnyPortalSetToTeleportPlayer += Portal_OnAnyPortalSetToTeleportPlayer;
     }
 
     private void Start() {
@@ -20,6 +22,17 @@ public class DoggoVisual : MonoBehaviour
         dog.OnPlayerTriggeredOut += Dog_OnPlayerTriggeredOut;
     }
 
+    private void Portal_OnAnyPortalSetToTeleportPlayer(object sender, System.EventArgs e) {
+        ShowVisuals(false);
+    }
+
+    private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, System.EventArgs e) {
+        ShowVisuals(true);
+    }
+
+    private void ShowVisuals(bool show) {
+        gameObject.SetActive(show);
+    }
     private void Dog_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
         //bodySpriteRenderer.material = cleanMaterial;
     }

@@ -39,6 +39,7 @@ public class MobMovement : MonoBehaviour
 
     protected void FixedUpdate() {
         Debug.DrawLine(transform.position, targetDestination, Color.yellow);
+
         if (Mathf.Abs(targetDestination.x - transform.position.x) < .1f) {
             moveDirFloat = 0;
 
@@ -141,7 +142,6 @@ public class MobMovement : MonoBehaviour
     }
 
     public void SetMoveTarget(Vector3 moveTarget) {
-        
         OnDestinationSet?.Invoke(this, EventArgs.Empty);
         this.targetDestination = moveTarget;
         destinationReached = false;

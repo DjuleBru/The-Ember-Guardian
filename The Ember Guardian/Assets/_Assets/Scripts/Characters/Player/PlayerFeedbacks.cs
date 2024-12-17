@@ -11,7 +11,10 @@ public class PlayerFeedbacks : MonoBehaviour
     [SerializeField] private MMF_Player activeMoveSpeedBuffFeedbacks;
     [SerializeField] private MMF_Player activeShootSpeedBuffFeedbacks;
     [SerializeField] private MMF_Player activeTeleportationFeedbacks;
-    [SerializeField] private MMF_Player exhaustedFeedbacks;
+    [SerializeField] private MMF_Player aimingSightsStartFeedbacks;
+    [SerializeField] private MMF_Player aimingSightsEndFeedbacks;
+    [SerializeField] private MMF_Player exhaustedStartFeedbacks;
+    [SerializeField] private MMF_Player exhaustedEndFeedbacks;
 
     private bool playerExhausted;
 
@@ -24,6 +27,18 @@ public class PlayerFeedbacks : MonoBehaviour
         PassiveShield.OnAnyPassiveShieldDied += PassiveShield_OnAnyPassiveShieldDied;
         PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
         PlayerSkills.Instance.OnActiveSkillAdded += PlayerSkills_OnActiveSkillAdded;
+
+        PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAIm_OnPlayerAimSightEnded;
+        PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAim_OnPlayerAimSightStarted;
+    }
+
+    private void PlayerAim_OnPlayerAimSightStarted(object sender, System.EventArgs e) {
+        aimingSightsStartFeedbacks.PlayFeedbacks();
+    }
+
+    private void PlayerAIm_OnPlayerAimSightEnded(object sender, System.EventArgs e) {
+        aimingSightsStartFeedbacks.StopFeedbacks();
+        aimingSightsEndFeedbacks.PlayFeedbacks();
     }
 
     private void PlayerMovement_OnPlayerExhaustionStopped(object sender, System.EventArgs e) {
@@ -39,12 +54,13 @@ public class PlayerFeedbacks : MonoBehaviour
     private void PlayerMovement_OnPlayerAlmostExhaustionStopped(object sender, System.EventArgs e) {
         Debug.Log("PlayerMovement_OnPlayerAlmostExhaustionStopped");
         if (playerExhausted) return;
-        exhaustedFeedbacks.StopFeedbacks();
+        exhaustedStartFeedbacks.StopFeedbacks();
+        exhaustedEndFeedbacks.PlayFeedbacks();
     }
 
     private void PlayerMovement_OnPlayerAlmostExhaustionStarted(object sender, System.EventArgs e) {
         Debug.Log("PlayerMovement_OnPlayerAlmostExhaustionStarted");
-        exhaustedFeedbacks.PlayFeedbacks();
+        exhaustedStartFeedbacks.PlayFeedbacks();
     }
 
     private void PlayerSkills_OnActiveSkillAdded(object sender, PlayerSkills.OnSkillAddedEventArgs e) {

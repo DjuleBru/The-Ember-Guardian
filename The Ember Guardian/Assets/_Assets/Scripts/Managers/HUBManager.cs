@@ -14,6 +14,7 @@ public class HUBManager : MonoBehaviour
     [SerializeField] private TutorialCollider enterHubCollider;
     [SerializeField] private HubMerchantTalkUI gemMerchantTalkUI;
     [SerializeField] private MerchantTextLinesSO gemMerchantOutroTextLines;
+    [SerializeField] private Fire hubFire;
 
     private float hubDelayToStartPlayingMusic = 3f;
 
@@ -26,21 +27,17 @@ public class HUBManager : MonoBehaviour
     }
 
     private void Start() {
-        Debug.Log("HUB LOADED ONCE " + MetaProgressionManager.Instance.hubLoadedOnce);
-
         if(!MetaProgressionManager.Instance.hubLoadedOnce) {
             // FIRST HUB ENCOUNTER
 
             StartCoroutine(FirstHUBSpawnCoroutine());
             enterHubCollider.gameObject.SetActive(true);
-            MetaProgressionManager.Instance.SetHubLoadedOnce();
-            //Dog.Instance.transform.position = firstHubLoadDogSpawnPoint.transform.position;
+            Dog.Instance.transform.position = firstHubLoadDogSpawnPoint.transform.position;
 
             Player.Instance.transform.position = firstHubLoadPlayerSpawnPoint.transform.position;
             HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
             HubMerchantTalkUI.OnAnyMerchantEndTalk += HubMerchantTalkUI_OnAnyMerchantEndTalk;
             UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
-            //firstPortalUnlocked.UnlockPortal();
         }
 
         else {
@@ -49,7 +46,7 @@ public class HUBManager : MonoBehaviour
             MusicManager.Instance.PlayMusicDelayed(hubDelayToStartPlayingMusic);
         }
 
-        if(MetaProgressionManager.Instance.hubLoadedOnce && DEBUGMODE) {
+        if(DEBUGMODE) {
             Player.Instance.transform.position = Vector3.zero;
         }
 
@@ -91,42 +88,26 @@ public class HUBManager : MonoBehaviour
 
         merchantEndedTalking = true;
         StartCoroutine(ActivateTeleporterCoroutine());
+        MetaProgressionManager.Instance.SetHubLoadedOnce();
     }
 
     private void UICurrencyManager_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
-        List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveTypes = new List<LevelUI_ObjectiveUI.SubObjectiveType> {
-            LevelUI_ObjectiveUI.SubObjectiveType.HUB_HeadToTeleporter,
-        };
-
         if ((e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember)) {
             playerExtractedEmber = true;
 
             if(playerInteractedWithMerchantOnce) {
-                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.HUB_ExtractEmber, subObjectiveTypes);
+                LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUB_ExtractEmber, LevelUI_ObjectiveUI.SubObjectiveType.HUB_HeadToTeleporter);
                 StartCoroutine(StartGemMerchantOpenGrassyAreaLines());
-            } else {
-                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.HUB_ExtractEmber);
             }
-
         }
     }
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, System.EventArgs e) {
-        List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveTypes = new List<LevelUI_ObjectiveUI.SubObjectiveType> {
-            LevelUI_ObjectiveUI.SubObjectiveType.HUB_HeadToTeleporter,
-        };
-
         if (playerInteractedWithMerchantOnce) return;
         playerInteractedWithMerchantOnce = true;
 
-        if (playerExtractedEmber) {
-            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.HUB_TalkToTrader, subObjectiveTypes);
-            StartCoroutine(StartGemMerchantOpenGrassyAreaLines());
-        }
-        else {
-            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.HUB_TalkToTrader);
-        }
-
+        hubFire.SetHubFireEmberExtractable();
+        LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUB_TalkToTrader, LevelUI_ObjectiveUI.SubObjectiveType.HUB_ExtractEmber);
     }
 
     private IEnumerator FirstHUBSpawnCoroutine() {
@@ -153,7 +134,6 @@ public class HUBManager : MonoBehaviour
         LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.HUB_HeadToNewLevel);
         List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveTypes = new List<LevelUI_ObjectiveUI.SubObjectiveType> {
             LevelUI_ObjectiveUI.SubObjectiveType.HUB_TalkToTrader,
-            LevelUI_ObjectiveUI.SubObjectiveType.HUB_ExtractEmber,
         };
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveTypes);
     }
@@ -167,6 +147,7 @@ public class HUBManager : MonoBehaviour
     private IEnumerator ActivateTeleporterCoroutine() {
         CameraManager.Instance.ChangeCameraTarget(firstPortalUnlocked.transform);
         Player.Instance.DisableControlInputs();
+        firstPortalUnlocked.SetPortalUnlockedInSave();
 
         yield return new WaitForSeconds(3.5f);
         firstPortalUnlocked.UnlockPortal();

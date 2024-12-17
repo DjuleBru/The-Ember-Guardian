@@ -56,6 +56,15 @@ public class Dog : MonoBehaviour
         }
     }
 
+    public void MoveOnTeleporter(Transform teleporterPlayerPosition) {
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        transform.position = teleporterPlayerPosition.position;
+
+        // To make the dog sit down
+        dogAI.SetState(DogAI.State.idle);
+        dogAI.SetState(DogAI.State.stay);
+    }
+
     public DogAI.State GetIdleState() {
         return currentIdleState;
     }

@@ -25,7 +25,9 @@ MonoBehaviour:
   damage: 1
   attackRate: 2.04
   enteredLightattackRateDebuff: 1.4
-  attackRange: 1.5
+  isRangedAttack: 0
+  minAttackRange: 1
+  maxAttackRange: 2
   attackRangeRandomizer: 0.5
   attackRangeMaxDistanceMiss: 0.1
   relativeDamageToFire: 1

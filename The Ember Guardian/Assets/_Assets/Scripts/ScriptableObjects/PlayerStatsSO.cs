@@ -17,6 +17,9 @@ public class PlayerStatsSO : ScriptableObject
     [BoxGroup("Movement")]
     [LabelWidth(125)]
     public float initialRunAccelerationFactor;
+    [BoxGroup("Movement")]
+    [LabelWidth(125)]
+    public float initialAimingSightDecelerationFactor;
 
     [BoxGroup("Health")]
     [LabelWidth(125)]

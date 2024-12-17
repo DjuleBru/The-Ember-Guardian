@@ -25,7 +25,6 @@ public class HubMerchantVisual : MonoBehaviour
         if(hubMerchant.GetMerchantHasNewItems() || hubMerchant.GetMerchantJustArrivedInHub() || hubMerchant.GetMerchantIsLevelNPC()) {
             newItemsForSaleGameObject.gameObject.SetActive(true);
         }
-
     }
 
     private void HubMerchant_OnPlayerStartedTalkingWithHubMerchant(object sender, System.EventArgs e) {

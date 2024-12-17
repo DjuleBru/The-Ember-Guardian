@@ -157,6 +157,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "WeaponSecondaryAbility",
+                    "type": "Button",
+                    "id": "bee05753-1249-48a5-a381-7d511af147a1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -240,7 +249,7 @@
                 {
                     "name": "",
                     "id": "7065b3ef-12a0-463c-981b-e417496b53c1",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/leftStickPress",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -482,7 +491,7 @@
                 {
                     "name": "",
                     "id": "1fc53d03-4ad8-4420-851b-6cb7a4d3624f",
-                    "path": "<Gamepad>/leftStickPress",
+                    "path": "<Gamepad>/dpad/down",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -630,6 +639,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "SelectSecondaryGun",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "89a9d89b-5d87-4f6b-bbfe-8355a9cf0881",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "WeaponSecondaryAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c262fe49-0f7c-481f-a758-472d330ed31d",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "WeaponSecondaryAbility",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

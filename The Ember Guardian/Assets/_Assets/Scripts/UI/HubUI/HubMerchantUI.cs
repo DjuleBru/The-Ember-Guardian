@@ -40,7 +40,7 @@ public class HubMerchantUI : MonoBehaviour
 
 
         canvas.worldCamera = CameraManager.Instance.GetUICamera();
-        canvas.sortingLayerName = "UIWithPostProcess";
+        canvas.sortingLayerName = "UI";
         merchantNameText.text = hubMerchant.GetHubMerchantName();
         RefreshPlayerGems();
     }

@@ -42,7 +42,8 @@ namespace Plugins.Animate_UI_Materials
 #endif
         _bufferedMaterial = modifiedMaterial;
       }
-      _bufferedMaterial.CopyPropertiesFromMaterial(baseMaterial);
+
+            _bufferedMaterial.CopyPropertiesFromMaterial(baseMaterial);
       ModifyMaterial(_bufferedMaterial);
       return _bufferedMaterial;
     }

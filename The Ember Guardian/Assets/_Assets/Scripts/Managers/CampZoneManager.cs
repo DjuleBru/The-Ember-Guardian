@@ -158,7 +158,18 @@ public class CampZoneManager : MonoBehaviour
 
         return closestExteriorZoneLimit;
     }
+    public Vector3 GetClosestHuntingLimit(Vector3 initialPosition, float distanceToSafety = 0f) {
+        Vector3 closestExteriorZoneLimit = new Vector3(0, 0, 0);
 
+        if (initialPosition.x < 0) {
+            closestExteriorZoneLimit.x = GetHuntingMinZoneLimit() + distanceToSafety;
+        }
+        else {
+            closestExteriorZoneLimit.x = GetHuntingMaxZoneLimit() - distanceToSafety;
+        }
+
+        return closestExteriorZoneLimit;
+    }
     public float GetCampCenterMinLimit() {
         return campCenterMinLimit;
     }

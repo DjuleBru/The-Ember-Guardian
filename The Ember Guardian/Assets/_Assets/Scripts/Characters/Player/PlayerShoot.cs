@@ -18,6 +18,9 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnBulletsChanged;
     public event EventHandler OnPlayerSwappedGun;
 
+    public event EventHandler OnPlayerAimedSightStarted;
+    public event EventHandler OnPlayerAimedSightEnded;
+
     public class OnAmmoRefilledEventArgs : EventArgs {
         public int ammoAmount;
     }
@@ -42,6 +45,7 @@ public class PlayerShoot : MonoBehaviour
     private bool coolDownSFXTriggered;
     private bool playerJustPressedReload;
     private bool transferringAmmoFromBag;
+    private bool secondaryAbilityActive;
 
     private bool automaticWeapon;
     private bool playerIsHoldingDownShoot;
@@ -56,6 +60,8 @@ public class PlayerShoot : MonoBehaviour
     private GunSO secondayGunSO;
 
     [SerializeField] private List<Gun> allGunsList;
+    [SerializeField] private GunSO debugGun;
+    [SerializeField] private bool useDebugGun;
 
     private void Awake() {
         Instance = this;
@@ -63,7 +69,12 @@ public class PlayerShoot : MonoBehaviour
 
     private void Start() {
         InitializeGuns();
-        SetGun(PlayerSave.Instance.GetPrimaryActiveGun());
+
+        if(useDebugGun) {
+            SetGun(debugGun);
+        } else {
+            SetGun(PlayerSave.Instance.GetPrimaryActiveGun());
+        }
 
         GameInput.Instance.OnPlayerShootCanceled += GameInput_OnPlayerShootCanceled;
         GameInput.Instance.OnPlayerShootPerformed += GameInput_OnPlayerShootStarted;
@@ -72,6 +83,9 @@ public class PlayerShoot : MonoBehaviour
         GameInput.Instance.OnPlayerPrimaryGunSelected += GameInput_OnPlayerPrimaryGunSelected;
         GameInput.Instance.OnPlayerSecondaryGunSelected += GameInput_OnPlayerSecondaryGunSelected;
         GameInput.Instance.OnPlayerSwapGunPerformed += GameInput_OnPlayerSwapGunPerformed;
+
+        GameInput.Instance.OnWeaponSecondaryAbilityCanceled += GameInput_OnWeaponSecondaryAbilityCanceled;
+        GameInput.Instance.OnWeaponSecondaryAbilityPerformed += GameInput_OnWeaponSecondaryAbilitytPerformed;
 
         PlayerStats.Instance.OnPlayerAmmoRegenTimeChanged += PlayerStats_OnPlayerAmmoRegenTimeChanged;
 
@@ -279,6 +293,29 @@ public class PlayerShoot : MonoBehaviour
 
         playerJustPressedReload = true;
         playerJustPressedReloadTimer = 0;
+    }
+
+    private void GameInput_OnWeaponSecondaryAbilitytPerformed(object sender, EventArgs e) {
+        bool secondaryAbilityUnlocked = MetaProgressionManager.Instance.GetGunSecondaryAbilityUnlocked(heldGun.GetGunSO());
+
+        if (!secondaryAbilityUnlocked) return;
+
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.Sniper) {
+            OnPlayerAimedSightStarted?.Invoke(this, EventArgs.Empty);
+        }
+
+        secondaryAbilityActive = true;
+    }
+
+    private void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {
+        if(secondaryAbilityActive) {
+            secondaryAbilityActive = false;
+
+            if (heldGun.GetGunSO().gunType == GunSO.GunType.Sniper) {
+                OnPlayerAimedSightEnded?.Invoke(this, EventArgs.Empty);
+            }
+
+        }
     }
 
     private void GameInput_OnPlayerReloadCanceled(object sender, EventArgs e) {

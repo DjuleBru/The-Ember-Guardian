@@ -14,11 +14,13 @@ public class PlayerStats : MonoBehaviour
     private float initialRunMaxTime;
     private float initialExhaustionTime;
     private float initialRunAccelerationFactor;
+    private float initialAimingSightDecelerationFactor;
 
     private float moveSpeed;
     private float runMaxTime;
     private float exhaustionTime;
     private float runAccelerationFactor;
+    private float aimingSightDecelerationFactor;
 
     #endregion
 
@@ -67,6 +69,7 @@ public class PlayerStats : MonoBehaviour
         initialRunMaxTime = playerStatsSO.initialRunMaxTime;
         initialExhaustionTime = playerStatsSO.initialExhaustionTime;
         initialRunAccelerationFactor = playerStatsSO.initialRunAccelerationFactor;
+        initialAimingSightDecelerationFactor = playerStatsSO.initialAimingSightDecelerationFactor;
 
         initialMaxPlayerHP = playerStatsSO.initialMaxPlayerHP;
         initialDamagedImmunityTime += playerStatsSO.initialDamagedImmunityTime;
@@ -78,6 +81,7 @@ public class PlayerStats : MonoBehaviour
         runMaxTime = playerStatsSO.initialRunMaxTime;
         exhaustionTime = playerStatsSO.initialExhaustionTime;
         runAccelerationFactor = playerStatsSO.initialRunAccelerationFactor;
+        aimingSightDecelerationFactor = playerStatsSO.initialAimingSightDecelerationFactor;
 
         maxPlayerHP = playerStatsSO.initialMaxPlayerHP;
         damagedImmunityTime += playerStatsSO.initialDamagedImmunityTime;
@@ -122,6 +126,10 @@ public class PlayerStats : MonoBehaviour
 
     public float GetRunAccelerationFactor() {
         return runAccelerationFactor;
+    }
+
+    public float GetAimingSightDecelerationFactor() {
+        return aimingSightDecelerationFactor;
     }
 
     public float GetAmmoRegenTime() {

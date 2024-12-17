@@ -116,10 +116,15 @@ public class Fire : Structure, IDamageable {
 
 
         if(isHubFire) {
-            SetStructureSecondaryFunctionUnlocked(true);
-            ActivateStructureSecondaryFunctionInteraction(true);
-            SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);
             SetStructurePrimaryFunctionUnlocked(false);
+
+            Debug.Log(MetaProgressionManager.Instance.GetHubFireEmberExtractable());
+            if (MetaProgressionManager.Instance.GetHubFireEmberExtractable()) {
+                SetStructureSecondaryFunctionUnlocked(true);
+                ActivateStructureSecondaryFunctionInteraction(true);
+                SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);
+            };
+
         } else {
             SetFireCurrentMaxFuelTreshold();
         }
@@ -188,6 +193,8 @@ public class Fire : Structure, IDamageable {
         collectible.ApplyRandomForce(-7,7,3, 5);
         collectible.SetCollectibleUnInteractable(1f);
         collectible.SetCanNeverBePickedUpByWorker();
+        ActivateStructureSecondaryFunctionInteraction(false);
+
         yield return new WaitForSeconds(2f);
         OnFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
         OnAnyFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
@@ -243,7 +250,6 @@ public class Fire : Structure, IDamageable {
     }
 
     private void CheckFireSecondaryFunctionInteractable() {
-
         if (PlayerCurrencies.Instance.GetCarryingEmber()) {
             SetStructureSecondaryFunctionUnlocked(false);
         };
@@ -441,6 +447,12 @@ public class Fire : Structure, IDamageable {
 
     }
 
+    public void SetHubFireEmberExtractable() {
+        MetaProgressionManager.Instance.SetHubFireEmberExtractable();
+        SetStructureSecondaryFunctionUnlocked(true);
+        ActivateStructureSecondaryFunctionInteraction(true);
+        SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);
+    }
     public Transform GetProjectileTarget() {
         return transform;
     }

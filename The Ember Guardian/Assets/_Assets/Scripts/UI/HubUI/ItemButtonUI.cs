@@ -1,4 +1,5 @@
 using BehaviorDesigner.Runtime.Tasks;
+using DG.Tweening;
 using Plugins.Animate_UI_Materials;
 using System;
 using System.Collections;
@@ -13,7 +14,7 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     [SerializeField] private List<ItemButtonUI> lockingItemButtonUIList;
     [SerializeField] private ItemDescriptionCardUI descriptionCard;
 
-    [SerializeField] private Material emptyUIMaterial;
+    [SerializeField] private Color outlineUnlockedBuyableColor;
     [SerializeField] private Image iconImage;
     [SerializeField] private Image outlineImage;
     [SerializeField] private Image backgroundImage;
@@ -46,6 +47,7 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     public static event EventHandler OnAnyButtonSelected;
     public static event EventHandler OnAnyButtonHovered;
     public static event EventHandler OnAnyLockedButtonTryPress;
+    public static event EventHandler OnAnyHubMerchantItemFailedBuy;
 
     private void Awake() {
         button = GetComponent<Button>();
@@ -99,6 +101,10 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         if (lockingItemButtonUIList.Contains(itemButtonUI)) {
             SetLockingItemBought(itemButtonUI);
         }
+
+        if(!itemBought) {
+            RefreshItemBuyableVisuals();
+        }
     }
 
     public void BuyItem() {
@@ -108,8 +114,12 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         }
 
         if (!itemBuyable) return;
-        if (!hubMerchantItem.CanBuyItem()) return;
+        if (!hubMerchantItem.CanBuyItem()) {
 
+            // Fail buy
+            OnAnyHubMerchantItemFailedBuy?.Invoke(this, EventArgs.Empty);
+            return;
+        }
         itemLevel++;
 
         if (!itemBought) {
@@ -166,6 +176,20 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         outlineImage.color = boughtOutlineColor;
         backgroundImage.color = boughtBackgroundColor;
 
+        DOTween.Init();
+
+        float iconGreyScaleBlend = 1f;
+        iconImage.material = new Material(iconImage.material);
+        iconImage.material.SetFloat("_GreyscaleBlend", 0);
+        //DOTween.To(
+        //    () => iconGreyScaleBlend,
+        //    x => {
+        //        iconGreyScaleBlend = x;
+        //        iconImage.material.SetFloat("_GreyscaleBlend", iconGreyScaleBlend);
+        //    },
+        //    0,
+        //    1
+        //);
         itemButtonUI_Visual.StartBuyAnimation(hubMerchantItem.GetRedGemCost(), hubMerchantItem.GetGreenGemCost());
     }
 
@@ -173,6 +197,9 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         outlineImage.sprite = outlineImageBoughtSprite;
         outlineImage.color = boughtOutlineColor;
         backgroundImage.color = boughtBackgroundColor;
+
+        iconImage.material = new Material(iconImage.material);
+        iconImage.material.SetFloat("_GreyscaleBlend", 0);
 
         itemButtonUI_Visual.SetItemLoadedBought();
     }
@@ -209,7 +236,22 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         itemUnlocked = true;
         itemBuyable = true;
 
-        outlineImage.color = Color.white;
+        RefreshItemBuyableVisuals();
+    }
+
+    private void RefreshItemBuyableVisuals() {
+        if(!itemUnlocked) {
+            outlineImage.color = Color.grey;
+            return;
+        }
+
+        if(!hubMerchantItem.CanBuyItem()) {
+            outlineImage.color = Color.white;
+        }
+        else {
+            outlineImage.color = outlineUnlockedBuyableColor;
+
+        }
     }
 
     private IEnumerator UnlockOutputLink(Image image) {
@@ -224,14 +266,6 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
 
         OnAnyOutputLinkUnlocked?.Invoke(this, EventArgs.Empty);
         yield return null;
-    }
-
-    private void OnEnable() {
-        iconImage.material = emptyUIMaterial;
-        outlineImage.material = emptyUIMaterial;
-
-        iconImage.material = new Material(iconImage.material);
-        outlineImage.material = new Material(outlineImage.material);
     }
 
     #region NAVIGATION

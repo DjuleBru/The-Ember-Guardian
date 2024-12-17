@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class DogAnimatorManager : MonoBehaviour
-{
+public class DogAnimatorManager : MonoBehaviour {
+
+    [SerializeField] private Animator dogBodyAnimator;
     private Animator animator;
     private Dog dog;
     private DogAI dogAI;
@@ -54,6 +55,9 @@ public class DogAnimatorManager : MonoBehaviour
         dogAI = GetComponentInParent<DogAI>();
         dogMovement = GetComponentInParent<MobMovement>();
 
+        Portal.OnAnyPlayerTeleported += Portal_OnAnyPlayerTeleported;
+        Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
+
         sniffTimer = sniffTrialRate;
         sitTimer = sitTrialRate;
         sleepTimer = sleepTrialRate;
@@ -61,6 +65,14 @@ public class DogAnimatorManager : MonoBehaviour
 
     private void Start() {
         dogAI.OnStateChanged += DogAI_OnStateChanged;
+    }
+
+    private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {
+        dogBodyAnimator.SetTrigger("Teleport_Out");
+    }
+
+    private void Portal_OnAnyPlayerTeleported(object sender, EventArgs e) {
+        dogBodyAnimator.SetTrigger("Teleport");
     }
 
     private void DogAI_OnStateChanged(object sender, System.EventArgs e) {

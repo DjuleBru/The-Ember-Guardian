@@ -9,8 +9,10 @@ public class PlayerAim : MonoBehaviour
 
     [SerializeField] private List<Transform> followAimDirTransformList;
     [SerializeField] private Transform gunTransform;
+    [SerializeField] private Transform aimSightTransform;
 
     private bool isUsingGamepad;
+    private bool isAimingSight;
 
     private float aimAngle;
     private float aimHeight;
@@ -26,6 +28,8 @@ public class PlayerAim : MonoBehaviour
     private Vector3 previousAimDir = new Vector3(1,0,0);
 
     public event EventHandler OnXAimDirChanged;
+    public event EventHandler OnPlayerAimSightStarted;
+    public event EventHandler OnPlayerAimSightEnded;
 
     private void Awake() {
         Instance = this;
@@ -39,23 +43,28 @@ public class PlayerAim : MonoBehaviour
         }
 
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
+
+        PlayerShoot.Instance.OnPlayerAimedSightStarted += PlayerShoot_OnPlayerAimedSightStarted;
+        PlayerShoot.Instance.OnPlayerAimedSightEnded += PlayerShoot_OnPlayerAimedSightEnded;
+
         isUsingGamepad = GameInput.Instance.IsUsingGamepad();
     }
 
-    private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
-        isUsingGamepad = GameInput.Instance.IsUsingGamepad();
-    }
 
     private void Update() {
-
-        if(isUsingGamepad) {
+        if (isUsingGamepad) {
             HandleAimGamepad(GameInput.Instance.GetAimInput());
-        } else {
+        }
+        else {
             HandleAimMouse();
         }
 
         HandleXScale();
         HandleRecoil();
+    }
+
+    private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
+        isUsingGamepad = GameInput.Instance.IsUsingGamepad();
     }
 
     private void HandleRecoil() {
@@ -81,6 +90,16 @@ public class PlayerAim : MonoBehaviour
 
         // Smooth recoil back to zero
         currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
+    }
+
+    private void PlayerShoot_OnPlayerAimedSightEnded(object sender, EventArgs e) {
+        CameraManager.Instance.ResetCameraTargetToPlayer();
+        OnPlayerAimSightEnded?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void PlayerShoot_OnPlayerAimedSightStarted(object sender, EventArgs e) {
+        CameraManager.Instance.ChangeCameraTarget(aimSightTransform);
+        OnPlayerAimSightStarted?.Invoke(this, EventArgs.Empty);
     }
 
     private void HandleAimMouse() {

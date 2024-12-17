@@ -41,6 +41,9 @@ public class PlayerAnimator : MonoBehaviour
         PlayerMovement.Instance.OnPlayerAlmostExhaustionStarted += PlayerMovement_OnPlayerAlmostExhaustionStarted;
         PlayerMovement.Instance.OnPlayerAlmostExhaustionStopped += PlayerMovement_OnPlayerAlmostExhaustionStopped;
 
+        PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAIm_OnPlayerAimSightEnded;
+        PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAim_OnPlayerAimSightStarted;
+
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
@@ -138,6 +141,16 @@ public class PlayerAnimator : MonoBehaviour
         playerAnimator.ResetTrigger("JumpDown");
         playerAnimator.ResetTrigger("JumpTop");
         playerAnimator.ResetTrigger("Land");
+    }
+
+    private void PlayerAim_OnPlayerAimSightStarted(object sender, EventArgs e) {
+        walkAnimationSpeed = PlayerMovement.Instance.GetMoveSpeedNormalized();
+
+    }
+
+    private void PlayerAIm_OnPlayerAimSightEnded(object sender, EventArgs e) {
+        walkAnimationSpeed = PlayerMovement.Instance.GetMoveSpeedNormalized();
+
     }
 
     private void PlayerMovement_OnPlayerRunStopped(object sender, EventArgs e) {

@@ -179,6 +179,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponSecondaryAbility"",
+                    ""type"": ""Button"",
+                    ""id"": ""bee05753-1249-48a5-a381-7d511af147a1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -262,7 +271,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""7065b3ef-12a0-463c-981b-e417496b53c1"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -504,7 +513,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""1fc53d03-4ad8-4420-851b-6cb7a4d3624f"",
-                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -654,6 +663,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""SelectSecondaryGun"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89a9d89b-5d87-4f6b-bbfe-8355a9cf0881"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""WeaponSecondaryAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c262fe49-0f7c-481f-a758-472d330ed31d"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""WeaponSecondaryAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -702,6 +733,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_SwapGun = m_Player.FindAction("SwapGun", throwIfNotFound: true);
         m_Player_SelectPrimaryGun = m_Player.FindAction("SelectPrimaryGun", throwIfNotFound: true);
         m_Player_SelectSecondaryGun = m_Player.FindAction("SelectSecondaryGun", throwIfNotFound: true);
+        m_Player_WeaponSecondaryAbility = m_Player.FindAction("WeaponSecondaryAbility", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -785,6 +817,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SwapGun;
     private readonly InputAction m_Player_SelectPrimaryGun;
     private readonly InputAction m_Player_SelectSecondaryGun;
+    private readonly InputAction m_Player_WeaponSecondaryAbility;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -806,6 +839,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @SwapGun => m_Wrapper.m_Player_SwapGun;
         public InputAction @SelectPrimaryGun => m_Wrapper.m_Player_SelectPrimaryGun;
         public InputAction @SelectSecondaryGun => m_Wrapper.m_Player_SelectSecondaryGun;
+        public InputAction @WeaponSecondaryAbility => m_Wrapper.m_Player_WeaponSecondaryAbility;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -866,6 +900,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @SelectSecondaryGun.started += instance.OnSelectSecondaryGun;
             @SelectSecondaryGun.performed += instance.OnSelectSecondaryGun;
             @SelectSecondaryGun.canceled += instance.OnSelectSecondaryGun;
+            @WeaponSecondaryAbility.started += instance.OnWeaponSecondaryAbility;
+            @WeaponSecondaryAbility.performed += instance.OnWeaponSecondaryAbility;
+            @WeaponSecondaryAbility.canceled += instance.OnWeaponSecondaryAbility;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -921,6 +958,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @SelectSecondaryGun.started -= instance.OnSelectSecondaryGun;
             @SelectSecondaryGun.performed -= instance.OnSelectSecondaryGun;
             @SelectSecondaryGun.canceled -= instance.OnSelectSecondaryGun;
+            @WeaponSecondaryAbility.started -= instance.OnWeaponSecondaryAbility;
+            @WeaponSecondaryAbility.performed -= instance.OnWeaponSecondaryAbility;
+            @WeaponSecondaryAbility.canceled -= instance.OnWeaponSecondaryAbility;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -975,5 +1015,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnSwapGun(InputAction.CallbackContext context);
         void OnSelectPrimaryGun(InputAction.CallbackContext context);
         void OnSelectSecondaryGun(InputAction.CallbackContext context);
+        void OnWeaponSecondaryAbility(InputAction.CallbackContext context);
     }
 }

@@ -46,6 +46,9 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnPlayerPrimaryGunSelected;
     public event EventHandler OnPlayerSecondaryGunSelected;
 
+    public event EventHandler OnWeaponSecondaryAbilityPerformed;
+    public event EventHandler OnWeaponSecondaryAbilityCanceled;
+
     public event EventHandler OnPlayerBackPerformed;
 
     private bool interactPressed;
@@ -91,6 +94,8 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.RightSkill.performed += RightSkill_performed;
         playerInputActions.Player.LeftSkill.performed += LeftSkill_performed;
         playerInputActions.Player.Back.performed += Back_performed;
+        playerInputActions.Player.WeaponSecondaryAbility.performed += WeaponSecondaryAbility_performed;
+        playerInputActions.Player.WeaponSecondaryAbility.canceled += WeaponSecondaryAbility_canceled;
 
         playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
         playerInputActions.Player.Move.performed += Move_performed;
@@ -101,6 +106,14 @@ public class GameInput : MonoBehaviour
             currentControlScheme = user.controlScheme.Value.name;
         }
         OnPlayerInputChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void WeaponSecondaryAbility_canceled(InputAction.CallbackContext obj) {
+        OnWeaponSecondaryAbilityCanceled?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void WeaponSecondaryAbility_performed(InputAction.CallbackContext obj) {
+        OnWeaponSecondaryAbilityPerformed?.Invoke(this, EventArgs.Empty);
     }
 
     private void Back_performed(InputAction.CallbackContext obj) {

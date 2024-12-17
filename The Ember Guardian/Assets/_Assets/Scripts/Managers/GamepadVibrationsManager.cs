@@ -31,7 +31,7 @@ public class GamepadVibrationsManager : MonoBehaviour
         UICurrencyManager.Instance.OnCurrencyDropped += UICurrencyManager_OnCurrencyDropped;
         ItemButtonUI.OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
         ItemButtonUI_Visual.OnAnyGemPSTriggered += ItemButtonUI_Visual_OnAnyGemPSTriggered;
-        HubMerchantItem.OnAnyHubMerchantItemFailedBuy += HubMerchantItem_OnAnyHubMerchantItemFailedBuy;
+        ItemButtonUI.OnAnyHubMerchantItemFailedBuy += ItemButtonUI_OnAnyHubMerchantItemFailedBuy;
         HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
 
         CreatureAI.OnAnyCreatureAggro += CreatureAI_OnAnyCreatureAggro;
@@ -160,7 +160,7 @@ public class GamepadVibrationsManager : MonoBehaviour
     #endregion
 
     #region UI
-    private void HubMerchantItem_OnAnyHubMerchantItemFailedBuy(object sender, System.EventArgs e) {
+    private void ItemButtonUI_OnAnyHubMerchantItemFailedBuy(object sender, System.EventArgs e) {
         //HapticPatterns.PlayPreset(HapticPatterns.PresetType.Failure);
     }
 

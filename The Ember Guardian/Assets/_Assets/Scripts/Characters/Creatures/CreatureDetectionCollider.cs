@@ -190,7 +190,7 @@ public class CreatureDetectionCollider : MonoBehaviour
             if (iDamageable is Player) {
 
                 // Check if player is in range in the y axis !
-                if ((Player.Instance.transform.position.y > creature.GetCreatureSO().attackRange) && !creatureAttack.GetIsRangedAttack()) {
+                if ((Player.Instance.transform.position.y > creature.GetCreatureSO().minAttackRange) && !creatureAttack.GetIsRangedAttack()) {
                     continue;
                 }
 

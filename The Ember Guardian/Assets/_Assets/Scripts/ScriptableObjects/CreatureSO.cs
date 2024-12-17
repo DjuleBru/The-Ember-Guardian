@@ -17,6 +17,7 @@ public class CreatureSO : ScriptableObject
 
 
     [HorizontalGroup("Game Data", 75)]
+    [PreviewField]
     public GameObject creaturePrefab;
 
     [VerticalGroup("Game Data/Stats")]
@@ -61,11 +62,19 @@ public class CreatureSO : ScriptableObject
     public float enteredLightattackRateDebuff;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
-    [Range(.1f, 10)]
-    public float attackRange;
+    public bool isRangedAttack;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
+    [Range(.1f, 20)]
+    public float minAttackRange;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
+    [Range(.1f, 20)]
+    public float maxAttackRange;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
     [Range(.1f, 10)]
+
     public float attackRangeRandomizer;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
