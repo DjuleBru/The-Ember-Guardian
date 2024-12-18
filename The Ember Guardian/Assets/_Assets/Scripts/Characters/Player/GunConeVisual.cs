@@ -69,8 +69,6 @@ public class GunConeVisual : MonoBehaviour
         var shape = bulletPS.shape;
         angle = shape.angle;
 
-        Debug.Log("angle " + angle);
-
         // Récupère la portée en fonction de la vitesse et de la durée de vie des particules
         var main = bulletPS.main;
         float startSpeed = main.startSpeed.constant;

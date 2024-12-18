@@ -22,6 +22,7 @@ public class GunSO : ScriptableObject
     public int maxAmmo;
     public int pelletsPerBullet;
     public int shotsPerClip;
+    public float critChance;
 
     public float shootCooldownTime;
     public float shootCooldownSFXTriggerTime;

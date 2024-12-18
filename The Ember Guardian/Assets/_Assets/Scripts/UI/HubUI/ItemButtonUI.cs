@@ -26,20 +26,13 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     [SerializeField] private GameObject itemLevelBackgroundGameObject;
     [SerializeField] private TextMeshProUGUI itemLevelText;
 
-    [SerializeField] private bool isBoughtAtStart;
     [SerializeField] private bool showItemLevel;
-    [SerializeField] private bool itemUpgradeable;
-    [SerializeField] private int itemLevel;
-    [SerializeField] private int itemMaxLevel = 1;
 
     private HubMerchantItem hubMerchantItem;
     private Button button;
 
     private bool itemSelected;
     private bool itemHovered;
-    private bool itemBought;
-    private bool itemBuyable;
-    private bool itemUnlocked;
 
     private bool buttonSelected;
 
@@ -57,7 +50,6 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         outlineImage.material = new Material(outlineImage.material);
 
         backgroundImage.color = Color.black;
-        InitializeDescriptionCard();
 
         if (!showItemLevel) {
             itemLevelBackgroundGameObject.SetActive(false);
@@ -66,33 +58,77 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         OnAnyOutputLinkUnlocked += ItemButtonUI_OnAnyItemButtonUIBought;
         OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
         OnAnyButtonHovered += ItemButtonUI_OnAnyButtonHovered;
+        hubMerchantItem.OnHubMerchantItemLoaded += HubMerchantItem_OnHubMerchantItemLoaded;
+        hubMerchantItem.OnHubMerchantItemUpgraded += HubMerchantItem_OnHubMerchantItemUpgraded;
+        hubMerchantItem.OnItemMustRefreshDescriptionCard += HubMerchantItem_OnItemMustRefreshDescriptionCard;
     }
 
-    private void Start() {
+    private void HubMerchantItem_OnItemMustRefreshDescriptionCard(object sender, EventArgs e) {
+        RefreshDescriptionCard();
+    }
 
-        if(!isBoughtAtStart) {
+    private void HubMerchantItem_OnHubMerchantItemUpgraded(object sender, EventArgs e) {
+        StartUpgradeItemAnimation();
+        RefreshItemLevelUI();
+        RefreshDescriptionCard();
+    }
 
-            LoadItemStatus();
+    private void HubMerchantItem_OnHubMerchantItemLoaded(object sender, EventArgs e) {
+        Debug.Log("HubMerchantItem_OnHubMerchantItemLoaded");
 
-        } else {
+        if (!hubMerchantItem.GetItemBoughtAtStart()) {
+            if (hubMerchantItem.GetItemUnlocked()) {
+                SetItemUnlocked();
+            }
 
-            itemBought = true;
-            itemBuyable = false;
+            if (hubMerchantItem.GetItemBought()) {
+                SetItemBoughtVisuals();
+                SetOutputLinksBought();
+            }
+
+            RefreshItemBuyableVisuals();
+        }
+
+        else {
+
             SetItemUnlocked();
             SetItemBoughtVisuals();
             SetOutputLinksBought();
 
         }
+
+        RefreshItemLevelUI();
+        RefreshDescriptionCard();
     }
 
-    private void InitializeDescriptionCard() {
+    private void RefreshDescriptionCard() {
+
         string itemName = hubMerchantItem.GetItemName();
         string itemDescription = hubMerchantItem.GetDescription();
-        string itemStatDescription = hubMerchantItem.GetStatDescription();
+
+        List<string> itemStatDescription = hubMerchantItem.GetStatDescription();
+        List<string> itemStatValues = hubMerchantItem.GetStatValues();
+        List<bool> itemStatModifierValues = hubMerchantItem.GetStatModifierBools();
+
         int greenGemCost = hubMerchantItem.GetGreenGemCost();
         int redGemCost = hubMerchantItem.GetRedGemCost();
-        descriptionCard.SetDescriptionCardText(itemName, itemStatDescription, itemDescription, greenGemCost, redGemCost);
-        descriptionCard.gameObject.SetActive(false);
+
+        descriptionCard.SetDescriptionCardText(itemName, itemStatDescription, itemDescription, greenGemCost, redGemCost, itemStatValues, itemStatModifierValues);
+
+        if(!hubMerchantItem.GetItemUpgradeable()) {
+            
+            if (hubMerchantItem.GetItemBought()) {
+                descriptionCard.SetDescriptionCardBought();
+                return;
+            }
+
+        } else {
+
+            if (hubMerchantItem.GetItemLevel() == hubMerchantItem.GetMaxItemLevel()) {
+                descriptionCard.SetDescriptionCardMaxlevel();
+            }
+        }
+
     }
 
     private void ItemButtonUI_OnAnyItemButtonUIBought(object sender, EventArgs e) {
@@ -102,46 +138,40 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
             SetLockingItemBought(itemButtonUI);
         }
 
-        if(!itemBought) {
+        if(!hubMerchantItem.GetItemBought()) {
             RefreshItemBuyableVisuals();
         }
     }
 
     public void BuyItem() {
-        if (!itemUnlocked) {
+
+        if (!hubMerchantItem.GetItemUnlocked()) {
             OnAnyLockedButtonTryPress?.Invoke(this, EventArgs.Empty);
             return;
         }
 
-        if (!itemBuyable) return;
+        if (!hubMerchantItem.GetItemBuyable()) return;
+
         if (!hubMerchantItem.CanBuyItem()) {
 
             // Fail buy
             OnAnyHubMerchantItemFailedBuy?.Invoke(this, EventArgs.Empty);
             return;
         }
-        itemLevel++;
 
-        if (!itemBought) {
+        if (!hubMerchantItem.GetItemBought()) {
 
-            itemBought = true;
             hubMerchantItem.BuyItem();
             StartBuyItemVisuals();
 
-            if (itemUpgradeable) {
-                if (itemLevel < itemMaxLevel) {
-                    itemLevelBackgroundGameObject.SetActive(true);
-                    UpgradeItemUI();
-                }
-            } else {
-                itemBuyable = false;
+            if (hubMerchantItem.GetItemUpgradeable()) {
+                RefreshItemLevelUI();
             }
 
             if (outputLinkUnlockedImageList.Count != 0) {
                 foreach(Image image in outputLinkUnlockedImageList) {
                     image.gameObject.SetActive(true);
                     StartCoroutine(UnlockOutputLink(image));
-
                 }
             }
 
@@ -149,26 +179,12 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         }
         else {
 
-            if (!itemUpgradeable) return;
+            if (!hubMerchantItem.GetItemUpgradeable()) return;
+
             // Upgrade
-            UpgradeItemUI();
-
+            hubMerchantItem.UpgradeItem();
         }
 
-    }
-
-    private void LoadItemStatus() {
-        itemBought = MetaProgressionManager.Instance.GetMerchantItemBought(hubMerchantItem.GetItemType());
-        itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(hubMerchantItem.GetItemType());
-
-        if (itemUnlocked) {
-            SetItemUnlocked();
-        }
-
-        if (itemBought) {
-            SetItemBoughtVisuals();
-            SetOutputLinksBought();
-        }
     }
 
     private void StartBuyItemVisuals() {
@@ -176,20 +192,8 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         outlineImage.color = boughtOutlineColor;
         backgroundImage.color = boughtBackgroundColor;
 
-        DOTween.Init();
-
-        float iconGreyScaleBlend = 1f;
         iconImage.material = new Material(iconImage.material);
         iconImage.material.SetFloat("_GreyscaleBlend", 0);
-        //DOTween.To(
-        //    () => iconGreyScaleBlend,
-        //    x => {
-        //        iconGreyScaleBlend = x;
-        //        iconImage.material.SetFloat("_GreyscaleBlend", iconGreyScaleBlend);
-        //    },
-        //    0,
-        //    1
-        //);
         itemButtonUI_Visual.StartBuyAnimation(hubMerchantItem.GetRedGemCost(), hubMerchantItem.GetGreenGemCost());
     }
 
@@ -214,11 +218,32 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         }
     }
 
-    public void UpgradeItemUI() {
-        itemLevelText.text = itemLevel.ToString();
-        if (itemLevel == itemMaxLevel) {
-            itemBuyable = false;
+    public void RefreshItemLevelUI() {
+        if(showItemLevel) {
+
+            itemLevelBackgroundGameObject.SetActive(true);
+
+        } else {
+            if(!hubMerchantItem.GetItemBought()) {
+
+                itemLevelBackgroundGameObject.SetActive(false);
+
+            } else {
+                // Item bought
+
+                if(hubMerchantItem.GetItemUpgradeable()) {
+                    itemLevelBackgroundGameObject.SetActive(true);
+                }
+
+            }
+
         }
+
+        itemLevelText.text = hubMerchantItem.GetItemLevel().ToString();
+    }
+
+    public void StartUpgradeItemAnimation() {
+        itemButtonUI_Visual.StartBuyAnimation(hubMerchantItem.GetRedGemCost(), hubMerchantItem.GetGreenGemCost());
     }
 
     public void SetLockingItemBought(ItemButtonUI itemButtonUI) {
@@ -230,17 +255,15 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     }
 
     public void SetItemUnlocked() {
-        if (itemBought) return;
+        Debug.Log("SetItemUnlocked " + hubMerchantItem.GetItemType());
+        if (hubMerchantItem.GetItemBought()) return;
 
         hubMerchantItem.UnlockItem();
-        itemUnlocked = true;
-        itemBuyable = true;
-
         RefreshItemBuyableVisuals();
     }
 
     private void RefreshItemBuyableVisuals() {
-        if(!itemUnlocked) {
+        if(!hubMerchantItem.GetItemUnlocked()) {
             outlineImage.color = Color.grey;
             return;
         }
@@ -250,7 +273,6 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         }
         else {
             outlineImage.color = outlineUnlockedBuyableColor;
-
         }
     }
 

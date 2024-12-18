@@ -30,7 +30,6 @@ public class ItemButtonUI_Visual : MonoBehaviour
         int greenParticlesToEmit = greenCost * 5;
         int redParticlesToEmit = redCost * 5;
 
-
         animator.enabled = true;
         animator.SetTrigger("Buy");
 

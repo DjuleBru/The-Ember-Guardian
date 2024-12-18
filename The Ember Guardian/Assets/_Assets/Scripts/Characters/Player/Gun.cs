@@ -9,6 +9,7 @@ public class Gun : MonoBehaviour
     [SerializeField] private Animator gunBodyAnimator;
 
     private bool gunActive;
+    private bool lerpingGunAngle;
 
     private int pelletsPerBullet = 1;
     private int damagePerBullet;
@@ -17,9 +18,10 @@ public class Gun : MonoBehaviour
     private int currentBullet;
     private int bulletsPerAmmoClip;
 
-    public float defaultAngle; // Angle initial du cône (en degrés)
-    public float sightAngle; // Angle resserré du cône lorsqu'on vise
-    public float adjustmentSpeed = 5f; // Vitesse de transition (plus grand = plus rapide)
+    private float defaultAngle; // Angle initial du cône (en degrés)
+    private float sightAngle; // Angle resserré du cône lorsqu'on vise
+    private float adjustmentSpeed = 5f; // Vitesse de transition (plus grand = plus rapide)
+    private float critChance = .15f;
 
     private float currentAngle; // L'angle actuel du cône
     private float targetAngle; // L'angle cible vers lequel le cône doit se diriger
@@ -34,20 +36,16 @@ public class Gun : MonoBehaviour
         targetAngle = defaultAngle;
         sightAngle = defaultAngle / 2;
 
-        Debug.Log(defaultAngle);
-        Debug.Log(currentAngle);
     }
 
     private void Update() {
-
+        if (!lerpingGunAngle) return;
         // Interpolation linéaire vers l'angle cible
         currentAngle = Mathf.Lerp(currentAngle, targetAngle, Time.deltaTime * adjustmentSpeed);
 
         // Appliquer l'angle au Particle System (conversion en radians)
         ParticleSystem.ShapeModule shape = shootPS.shape;
         shape.angle = currentAngle;
-
-        Debug.Log(shape.angle);
     }
 
     private void PlayerAim_OnPlayerAimSightEnded(object sender, System.EventArgs e) {
@@ -66,6 +64,7 @@ public class Gun : MonoBehaviour
         maxAmmo = gunSO.maxAmmo;
         damagePerBullet = gunSO.damagePerBullet;
         bulletsPerAmmoClip = gunSO.shotsPerClip;
+        critChance = gunSO.critChance;
         currentBullet = bulletsPerAmmoClip;
         currentAmmoClip = maxAmmo;
     }
@@ -119,6 +118,10 @@ public class Gun : MonoBehaviour
     }
     public int GetDamagePerBullet() {
         return damagePerBullet;
+    }
+
+    public float GetCritChance() {
+        return critChance;
     }
 
     #endregion

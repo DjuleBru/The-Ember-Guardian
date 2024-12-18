@@ -10,6 +10,7 @@ public class HUBManager : MonoBehaviour
 
     [SerializeField] private Transform firstHubLoadPlayerSpawnPoint;
     [SerializeField] private Transform firstHubLoadDogSpawnPoint;
+    [SerializeField] private Transform DEBUGPlayerSpawnPoint;
     [SerializeField] private Portal firstPortalUnlocked;
     [SerializeField] private TutorialCollider enterHubCollider;
     [SerializeField] private HubMerchantTalkUI gemMerchantTalkUI;
@@ -47,7 +48,7 @@ public class HUBManager : MonoBehaviour
         }
 
         if(DEBUGMODE) {
-            Player.Instance.transform.position = Vector3.zero;
+            Player.Instance.transform.position = DEBUGPlayerSpawnPoint.position;
         }
 
         List<Vector3> redGemPositions = MetaProgressionManager.Instance.GetRedGemPositions();

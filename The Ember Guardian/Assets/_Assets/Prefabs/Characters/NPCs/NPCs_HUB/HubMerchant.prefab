@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 4935573350319368007}
   - component: {fileID: 632167427891142193}
   - component: {fileID: 9501071802674082}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: GemIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 3010239381654076713}
   - component: {fileID: 5513433351788055467}
   - component: {fileID: 1685206664190108152}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: GemAmount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -354,7 +354,7 @@ GameObject:
   - component: {fileID: 1385368659259882112}
   - component: {fileID: 8576756303367471277}
   - component: {fileID: 5629589426995024511}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: GemIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -418,6 +418,41 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1547727666127543154
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3143328704096036613}
+  m_Layer: 0
+  m_Name: HubMerchant_Active
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3143328704096036613
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547727666127543154}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2823736090664261427}
+  - {fileID: 4442132684105498233}
+  - {fileID: 9086227087310177793}
+  - {fileID: 960804254988752022}
+  m_Father: {fileID: 4019432360029635251}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2233897265167930949
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,7 +464,7 @@ GameObject:
   - component: {fileID: 8571894753967615359}
   - component: {fileID: 8860737399768688541}
   - component: {fileID: 6085957364875221982}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -502,7 +537,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6652053007087386318}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: RedGems
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -541,7 +576,7 @@ GameObject:
   - component: {fileID: 5056807432962037749}
   - component: {fileID: 8983866354071801763}
   - component: {fileID: 1518912473713332720}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: BackInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -619,7 +654,7 @@ GameObject:
   - component: {fileID: 2345947745249408725}
   - component: {fileID: 1227246081789470437}
   - component: {fileID: 3685011144811306096}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: HubMerchantUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -639,7 +674,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7489869378029577361}
-  m_Father: {fileID: 4019432360029635251}
+  m_Father: {fileID: 3143328704096036613}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -675,7 +710,7 @@ Canvas:
   m_GameObject: {fileID: 3300551532608528691}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -761,7 +796,7 @@ GameObject:
   - component: {fileID: 544668719937860753}
   - component: {fileID: 116594453158868239}
   - component: {fileID: 51322853746667882}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: MerchantName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -910,14 +945,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3417933922792234606}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4181381414717653105}
   - {fileID: 4294160218366277042}
-  m_Father: {fileID: 4019432360029635251}
+  m_Father: {fileID: 3143328704096036613}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4275144111777293886
 MonoBehaviour:
@@ -1042,7 +1077,7 @@ GameObject:
   - component: {fileID: 9079761531545112512}
   - component: {fileID: 532973505233266954}
   - component: {fileID: 3906374648137485506}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: GemAmount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1165,6 +1200,90 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &3871428146972053218
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6566953160755685210}
+  - component: {fileID: 4589778556579652503}
+  m_Layer: 0
+  m_Name: HubMerchant_Inactive
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6566953160755685210
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3871428146972053218}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4019432360029635251}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &4589778556579652503
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3871428146972053218}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: f46cf4989354ad94b969d1ddae2b6aef, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: -1595801021
+  m_SortingLayer: -9
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &4755131706490451534
 GameObject:
   m_ObjectHideFlags: 0
@@ -1196,10 +1315,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2823736090664261427}
-  - {fileID: 4442132684105498233}
-  - {fileID: 9086227087310177793}
-  - {fileID: 960804254988752022}
+  - {fileID: 3143328704096036613}
+  - {fileID: 6566953160755685210}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3539063435249221414
@@ -1218,7 +1335,9 @@ MonoBehaviour:
   hubMerchantCameraFocusPosition: {fileID: 2823736090664261427}
   hubMerchantName: 
   hubMerchantUnlockedAtStart: 0
-  DEBUGMODE: 0
+  activeGameObject: {fileID: 1547727666127543154}
+  inactiveGameObject: {fileID: 3871428146972053218}
+  DEBUGActivateMerchant: 0
 --- !u!58 &2971541779210028289
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1265,7 +1384,7 @@ GameObject:
   - component: {fileID: 7919027670259531388}
   - component: {fileID: 4949374506275804428}
   - component: {fileID: 2812357531598927812}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: Outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1340,7 +1459,7 @@ GameObject:
   - component: {fileID: 4544125195362706500}
   - component: {fileID: 8228269197921206189}
   - component: {fileID: 6698372266912841106}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1575,7 +1694,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4019432360029635251}
+  m_Father: {fileID: 3143328704096036613}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6884327938733700312
 GameObject:
@@ -1610,7 +1729,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7140624019602137332}
-  m_Father: {fileID: 4019432360029635251}
+  m_Father: {fileID: 3143328704096036613}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1635,7 +1754,7 @@ MonoBehaviour:
   typeWriter: {fileID: 2610130641322001422}
   continueGameObject: {fileID: 7315849000355771581}
   continueInputImage: {fileID: 6694594568854224434}
-  textLinesSO: {fileID: 0}
+  textLinesSO: {fileID: 11400000, guid: 640d874f0f212a74d9a6b7d8805632c6, type: 2}
   merchantTalkLines: []
 --- !u!223 &1338203186163241995
 Canvas:
@@ -1709,7 +1828,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8770228293481018646}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: GreenGems
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1820,7 +1939,7 @@ GameObject:
   - component: {fileID: 4983697373870316791}
   - component: {fileID: 1725703998510998550}
   - component: {fileID: 3651106911840752930}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: MerchantName_Underline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2224,7 +2343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7489869378029577361}
   - component: {fileID: 2141357194002981119}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: MainPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2277,7 +2396,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2400777402286875030}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: PlayerGems
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2316,7 +2435,7 @@ GameObject:
   - component: {fileID: 7016385715153913671}
   - component: {fileID: 3193183991468947656}
   - component: {fileID: 1230237447525742314}
-  m_Layer: 24
+  m_Layer: 5
   m_Name: BackText
   m_TagString: Untagged
   m_Icon: {fileID: 0}

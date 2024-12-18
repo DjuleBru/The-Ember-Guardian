@@ -5,6 +5,7 @@ using UnityEngine;
 public class MetaProgressionManager : MonoBehaviour
 {
     public static MetaProgressionManager Instance;
+    [SerializeField] private bool destroySaveOnApplicationQuit;
 
     #region TUTORIAL
     public bool tutorialComplete { get; private set; }
@@ -185,9 +186,11 @@ public class MetaProgressionManager : MonoBehaviour
 
     public int GetHubMerchantItemLevel(string merchantItemSaveString) {
         string key = merchantItemSaveString + "_Level_";
+        int level = ES3.Load(key, 0);
 
+        Debug.Log("Key " + key + " " + level);
 
-        return ES3.Load(key, 1);
+        return level;
     }
 
     public void SetHubMerchantItemUnlocked(string merchantItemSaveString) {
@@ -201,7 +204,7 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     public void SetHubMerchantItemLevel(string merchantItemType, int level) {
-        string key = merchantItemType + "_Level";
+        string key = merchantItemType + "_Level_";
         ES3.Save(key, level);
     }
 
@@ -232,6 +235,84 @@ public class MetaProgressionManager : MonoBehaviour
         return ES3.Load(key, false);
     }
 
+    public void SetGunDamagePerBullet(GunSO gunSO, int damage) {
+        string key = gunSO.gunType + "_damagePerBullet";
+
+        Debug.Log(gunSO + " SetGunDamagePerBullet " + damage);
+        ES3.Save(key, damage);
+    }
+
+    public int GetGunDamagePerBullet(GunSO gunSO) {
+        string key = gunSO.gunType + "_damagePerBullet";
+
+        return ES3.Load(key, gunSO.damagePerBullet);
+    }
+
+    public void SetGunMaxAmmo(GunSO gunSO, int maxAmmo) {
+        string key = gunSO.gunType + "_maxAmmo";
+
+        ES3.Save(key, maxAmmo);
+    }
+
+    public int GetGunMaxAmmo(GunSO gunSO) {
+        string key = gunSO.gunType + "_maxAmmo";
+
+        return ES3.Load(key, gunSO.maxAmmo);
+    }
+    public void SetGunShotsPerClip(GunSO gunSO, int shotsPerClip) {
+        string key = gunSO.gunType + "_shotsPerClip";
+
+        ES3.Save(key, shotsPerClip);
+    }
+
+    public int GetGunShotsPerClip(GunSO gunSO) {
+        string key = gunSO.gunType + "_shotsPerClip";
+
+        return ES3.Load(key, gunSO.shotsPerClip);
+    }
+
+    public void SetGunCooldown(GunSO gunSO, float cooldown) {
+        string key = gunSO.gunType + "_cooldown";
+
+        ES3.Save(key, cooldown);
+    }
+
+    public float GetGunCooldown(GunSO gunSO) {
+        string key = gunSO.gunType + "_cooldown";
+
+        return ES3.Load(key, gunSO.shootCooldownTime);
+    }
+
+    public void SetGunCritChance(GunSO gunSO, float critChance) {
+        string key = gunSO.gunType + "_critChance";
+
+        ES3.Save(key, critChance);
+    }
+
+    public float GetGunCritChance(GunSO gunSO) {
+        string key = gunSO.gunType + "_critChance";
+
+        return ES3.Load(key, gunSO.critChance);
+    }
+
+    public void SetGunReloadTime(GunSO gunSO, float reloadTime) {
+        string key = gunSO.gunType + "_reloadTime";
+
+        ES3.Save(key, reloadTime);
+    }
+
+    public float GetGunReloadTime(GunSO gunSO) {
+        string key = gunSO.gunType + "_reloadTime";
+
+        return ES3.Load(key, gunSO.reloadTime);
+    }
+
     #endregion
 
+
+    private void OnApplicationQuit() {
+        if(destroySaveOnApplicationQuit) {
+            ES3.DeleteFile("SaveFile.es3");
+        }
+    }
 }

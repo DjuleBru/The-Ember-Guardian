@@ -22,7 +22,10 @@ public class HubMerchant : MonoBehaviour
     [SerializeField] protected string hubMerchantName;
     [SerializeField] protected bool hubMerchantUnlockedAtStart;
 
-    [SerializeField] protected bool DEBUGMODE;
+    [SerializeField] protected GameObject activeGameObject;
+    [SerializeField] protected GameObject inactiveGameObject;
+
+    [SerializeField] protected bool DEBUGActivateMerchant;
 
     protected bool playerInTriggerArea;
     protected bool playerInteractingWithMerchant;
@@ -57,9 +60,13 @@ public class HubMerchant : MonoBehaviour
         if (isHubMerchant) {
             // HUB behavior
 
-            if(!MetaProgressionManager.Instance.GetMerchantUnlocked(hubMerchantType) && !hubMerchantUnlockedAtStart) {
-                gameObject.SetActive(false);
-            };
+            if((!MetaProgressionManager.Instance.GetMerchantUnlocked(hubMerchantType) && !hubMerchantUnlockedAtStart) && !DEBUGActivateMerchant) {
+                activeGameObject.SetActive(false);
+                inactiveGameObject.SetActive(true);
+            } else {
+                activeGameObject.SetActive(true);
+                inactiveGameObject.SetActive(false);
+            }
 
             merchantJustArrivedInHub = MetaProgressionManager.Instance.GetMerchantJustArrivedInHub(hubMerchantType); 
             if (merchantJustArrivedInHub) {

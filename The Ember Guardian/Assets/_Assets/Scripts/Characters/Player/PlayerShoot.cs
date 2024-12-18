@@ -12,6 +12,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerTryShoot_OutOfAmmo;
     public event EventHandler OnPlayerShootStopped;
     public event EventHandler OnPlayerCooldownTrigger;
+    public event EventHandler OnPlayerCooldownAnimationTrigger;
     public event EventHandler OnPlayerReload;
     public event EventHandler OnPlayerReloadEnded;
     public event EventHandler<OnAmmoRefilledEventArgs> OnPlayerAmmoRefilled;
@@ -43,6 +44,7 @@ public class PlayerShoot : MonoBehaviour
     private bool coolingDown;
     private bool reloading;
     private bool coolDownSFXTriggered;
+    private bool coolDownAnimationTriggered;
     private bool playerJustPressedReload;
     private bool transferringAmmoFromBag;
     private bool secondaryAbilityActive;
@@ -152,6 +154,11 @@ public class PlayerShoot : MonoBehaviour
         if(coolingDown) {
             shootCooldownTimer -= Time.deltaTime;
 
+            if(!coolDownAnimationTriggered) {
+                OnPlayerCooldownAnimationTrigger?.Invoke(this, EventArgs.Empty);
+                coolDownAnimationTriggered = true;
+            }
+
             if(shootCooldownTimer <= (PlayerStats.Instance.GetShootCooldownTime() - shootCooldownSFXTriggerTime) && !coolDownSFXTriggered) {
                 OnPlayerCooldownTrigger?.Invoke(this, EventArgs.Empty);
                 coolDownSFXTriggered = true;
@@ -199,6 +206,7 @@ public class PlayerShoot : MonoBehaviour
         // Handle cooldown
         if (PlayerStats.Instance.GetShootCooldownTime() != 0) {
             coolDownSFXTriggered = false;
+            coolDownAnimationTriggered = false;
             coolingDown = true;
             shootCooldownTimer = PlayerStats.Instance.GetShootCooldownTime();
         };

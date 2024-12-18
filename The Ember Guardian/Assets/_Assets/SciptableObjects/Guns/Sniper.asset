@@ -16,44 +16,41 @@ MonoBehaviour:
   gunSprite: {fileID: 557911418, guid: a412631a79fa435459cf27cf3db82ef1, type: 3}
   reticleSprite: {fileID: 0}
   shotCountSprites:
-  - {fileID: -1347035189, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
-  - {fileID: 1616089201, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
-  - {fileID: 58984468, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
-  - {fileID: 1525623778, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
-  - {fileID: -71339969, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
-  - {fileID: -1424814689, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
-  - {fileID: 1784542045, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
-  - {fileID: -1384428936, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
-  - {fileID: -1075670662, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
-  - {fileID: -1722611206, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
-  - {fileID: -1792521764, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
-  - {fileID: 75169091, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
-  - {fileID: 1394241805, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
-  - {fileID: -778440856, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
-  gunAnimator: {fileID: 22100000, guid: 886fbe611245b664ebc9bd7921c1b6e8, type: 2}
+  - {fileID: 1392784183, guid: f90d2cca5e8d1504fa14c3ff87aa1d11, type: 3}
+  - {fileID: 700197652, guid: f90d2cca5e8d1504fa14c3ff87aa1d11, type: 3}
+  - {fileID: -1591506613, guid: f90d2cca5e8d1504fa14c3ff87aa1d11, type: 3}
+  - {fileID: -1884782297, guid: f90d2cca5e8d1504fa14c3ff87aa1d11, type: 3}
+  - {fileID: -818312180, guid: f90d2cca5e8d1504fa14c3ff87aa1d11, type: 3}
+  - {fileID: -517771441, guid: f90d2cca5e8d1504fa14c3ff87aa1d11, type: 3}
+  - {fileID: 1482434557, guid: f90d2cca5e8d1504fa14c3ff87aa1d11, type: 3}
+  - {fileID: 662734282, guid: f90d2cca5e8d1504fa14c3ff87aa1d11, type: 3}
+  - {fileID: 2049033373, guid: f90d2cca5e8d1504fa14c3ff87aa1d11, type: 3}
+  - {fileID: -464449635, guid: f90d2cca5e8d1504fa14c3ff87aa1d11, type: 3}
+  gunAnimator: {fileID: 22100000, guid: 09b6ea7bebcacf048b013a7bc573ba72, type: 2}
   automaticWeapon: 0
-  damagePerBullet: 10
+  damagePerBullet: 40
   maxAmmo: 6
   pelletsPerBullet: 1
-  shotsPerClip: 8
-  shootCooldownTime: 0.3
-  shootCooldownSFXTriggerTime: 0.2
+  shotsPerClip: 5
+  critChance: 0.15
+  shootCooldownTime: 1.5
+  shootCooldownSFXTriggerTime: 0.4
   reloadTime: 2
   animationReloadTime: 0.8
-  gunKnockback: 0.8
-  gunRecoil: 0.2
-  gunRecoilDamping: 4
+  gunKnockback: 1.5
+  gunRecoil: 0.5
+  gunRecoilDamping: 2
   shootGunSound:
-  - {fileID: 8300000, guid: 4e6a70b9a752bfe4baa989d422d548a7, type: 3}
-  - {fileID: 8300000, guid: 9224f2ae4167d824fad213110b1cb032, type: 3}
-  - {fileID: 8300000, guid: 042e753c3be9e7a4ba6caf3e522ea95e, type: 3}
-  - {fileID: 8300000, guid: 82082d9f03022b545bb13e43cf4c867e, type: 3}
-  - {fileID: 8300000, guid: 502fddbd75e0aca41973f6ac1a9f4094, type: 3}
-  - {fileID: 8300000, guid: cbec75c991d218c4b9b2fe1abe554495, type: 3}
+  - {fileID: 8300000, guid: 8aefaf4644bbdfa4fad6d383435db7b8, type: 3}
+  - {fileID: 8300000, guid: ccc17f4962ad1be43b0a1dd87d45adf9, type: 3}
+  - {fileID: 8300000, guid: 45976e750615c214580d7c60e72cff5c, type: 3}
+  - {fileID: 8300000, guid: dd002626b7dc4b448ab512af19ba52fd, type: 3}
+  - {fileID: 8300000, guid: d79c6f5044b8b72408767c9339912a57, type: 3}
+  - {fileID: 8300000, guid: ab3312e5b8e94994e825a4caac3e4f21, type: 3}
   reloadGunSound:
-  - {fileID: 8300000, guid: 424960b7103131841868fb50af25771b, type: 3}
+  - {fileID: 8300000, guid: 48bd718d5e2b6b24fa65163a2bae33de, type: 3}
   cooldownGunSound:
-  - {fileID: 8300000, guid: 44410cc1b7956fa48b296fe59bf65d00, type: 3}
+  - {fileID: 8300000, guid: 9b7104d7236f22c418376c4c0713648e, type: 3}
   bulletHitGroundSound:
   - {fileID: 8300000, guid: 59dcfb178b39c434495515f32be26dd4, type: 3}
   - {fileID: 8300000, guid: f1838753b53df84439313b212c62a244, type: 3}
@@ -69,7 +66,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 13abdb87b8bb56644b4b11f45e060f17, type: 3}
   - {fileID: 8300000, guid: ec7175d319a504c4d9ef90c5c6c4c01e, type: 3}
   - {fileID: 8300000, guid: c2070189463270345aabc335e37f16ba, type: 3}
-  - {fileID: 8300000, guid: 1359d19dccfc01c47a244b9de95dc78e, type: 3}
   - {fileID: 8300000, guid: 3f1b6b6732585874dafff4c87941b814, type: 3}
   - {fileID: 8300000, guid: d898e53e92e748a47a9002a8abeded3c, type: 3}
   - {fileID: 8300000, guid: b536e10424210ca4eab4190789d5880e, type: 3}

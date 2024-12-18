@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fcbc96e1564c4fd42a7ef7eee87d437f, type: 3}
-  m_Name: UZI
+  m_Name: SMG
   m_EditorClassIdentifier: 
   gunType: 1
   gunSprite: {fileID: 557911418, guid: a412631a79fa435459cf27cf3db82ef1, type: 3}
@@ -29,6 +29,7 @@ MonoBehaviour:
   maxAmmo: 6
   pelletsPerBullet: 1
   shotsPerClip: 18
+  critChance: 0.15
   shootCooldownTime: 0.13
   shootCooldownSFXTriggerTime: 0
   reloadTime: 2
@@ -62,7 +63,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 13abdb87b8bb56644b4b11f45e060f17, type: 3}
   - {fileID: 8300000, guid: ec7175d319a504c4d9ef90c5c6c4c01e, type: 3}
   - {fileID: 8300000, guid: c2070189463270345aabc335e37f16ba, type: 3}
-  - {fileID: 8300000, guid: 1359d19dccfc01c47a244b9de95dc78e, type: 3}
   - {fileID: 8300000, guid: 3f1b6b6732585874dafff4c87941b814, type: 3}
   - {fileID: 8300000, guid: d898e53e92e748a47a9002a8abeded3c, type: 3}
   - {fileID: 8300000, guid: b536e10424210ca4eab4190789d5880e, type: 3}

@@ -99,10 +99,14 @@ public class ParticleCollision : MonoBehaviour
                         OnAnyBulletHitGround?.Invoke(this, EventArgs.Empty);
 
                     } else {
-                        if (critHit && mobHit.GetCritUnlocked()) {
-                            mobHit.TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, true);
-                            Instantiate(critHitPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
-                            OnAnyBulletHitEnemyCrit?.Invoke(this, EventArgs.Empty);
+                        float randomNumber = UnityEngine.Random.Range(0f, 1f);
+
+                        if (critHit && randomNumber < PlayerShoot.Instance.GetHeldGun().GetCritChance()) {
+                           
+                                mobHit.TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, true);
+                                Instantiate(critHitPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
+                                OnAnyBulletHitEnemyCrit?.Invoke(this, EventArgs.Empty);
+                            
                         }
                         else {
                             other.GetComponent<Mob>().TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, false);
