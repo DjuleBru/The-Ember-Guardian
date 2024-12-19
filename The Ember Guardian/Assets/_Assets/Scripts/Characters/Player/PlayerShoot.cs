@@ -21,6 +21,11 @@ public class PlayerShoot : MonoBehaviour
 
     public event EventHandler OnPlayerAimedSightStarted;
     public event EventHandler OnPlayerAimedSightEnded;
+    public event EventHandler OnPlayerSwitchedFireMode;
+    public event EventHandler OnPlayerOverclockedSMGStarted;
+    public event EventHandler OnPlayerOverclockedSMGStopped;
+    public event EventHandler OnPlayerFocusBlastStarted;
+    public event EventHandler OnPlayerFocusBlastStopped;
 
     public class OnAmmoRefilledEventArgs : EventArgs {
         public int ammoAmount;
@@ -54,6 +59,11 @@ public class PlayerShoot : MonoBehaviour
     private bool hasAmmoRegen;
     private float ammoRegenTime;
     private float ammoRegenTimer;
+
+    protected bool loadingShot;
+    protected bool shotLoaded;
+    protected float loadingShotTimer;
+    protected float loadingShotTime;
 
     private Gun heldGun;
     private GunSO heldGunSO;
@@ -94,7 +104,7 @@ public class PlayerShoot : MonoBehaviour
         UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
     }
 
-    private void SetGun(GunSO gunSO) {
+    public void SetGun(GunSO gunSO) {
         Gun activeGun = null;
         foreach(Gun gun in allGunsList) {
             gun.gameObject.SetActive(false);
@@ -111,8 +121,9 @@ public class PlayerShoot : MonoBehaviour
 
         automaticWeapon = gunSO.automaticWeapon;
         shootCooldownSFXTriggerTime = heldGunSO.shootCooldownSFXTriggerTime;
-        PlayerStats.Instance.SetShootCooldownTime(heldGunSO.shootCooldownTime);
-        PlayerStats.Instance.SetReloadTime(heldGunSO.reloadTime);
+
+        PlayerStats.Instance.SetShootCooldownTime(heldGun.GetCooldownTime());
+        PlayerStats.Instance.SetReloadTime(heldGun.GetReloadTime());
 
         OnPlayerSwappedGun?.Invoke(this, EventArgs.Empty);
     }
@@ -128,12 +139,22 @@ public class PlayerShoot : MonoBehaviour
 
     private void InitializeGuns() {
         foreach (Gun gun in allGunsList) {
-            gun.InitializeGun();
+            gun.RefreshGunStats();
             gun.gameObject.SetActive(false);
         }
     }
 
     private void Update() {
+
+        if (loadingShot && !shotLoaded) {
+            loadingShotTimer += Time.deltaTime;
+            if (loadingShotTimer > loadingShotTime) {
+                shotLoaded = true; 
+                Shoot();
+                heldGun.SetCurrentBullet(0);
+                OnBulletsChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         if (playerJustPressedReload) {
             playerJustPressedReloadTimer += Time.deltaTime;
@@ -310,17 +331,68 @@ public class PlayerShoot : MonoBehaviour
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Sniper) {
             OnPlayerAimedSightStarted?.Invoke(this, EventArgs.Empty);
+            secondaryAbilityActive = true;
         }
 
-        secondaryAbilityActive = true;
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.Shotgun) {
+            if (coolingDown) return;
+            if (reloading) return;
+            if (!canShoot) return;
+            if (heldGun.GetCurrentAmmoClip() < 0 || heldGun.GetCurrentBullet() == 0) {
+                OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            loadingShot = true;
+            loadingShotTime = 3f;
+            loadingShotTimer = 0f;
+            shotLoaded = false;
+
+            OnPlayerFocusBlastStarted?.Invoke(this, EventArgs.Empty);
+            secondaryAbilityActive = true;
+        }
+
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.UZI) {
+            float shootCooldownBuffValue = 1.5f;
+            PlayerStats.Instance.BuffShootCooldown(shootCooldownBuffValue);
+
+            OnPlayerOverclockedSMGStarted?.Invoke(this, EventArgs.Empty);
+            secondaryAbilityActive = true;
+        }
+
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.Rifle) {
+            secondaryAbilityActive = !secondaryAbilityActive;
+
+            if (secondaryAbilityActive) {
+                automaticWeapon = true;
+            } else {
+                automaticWeapon = false;
+            }
+
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {
         if(secondaryAbilityActive) {
-            secondaryAbilityActive = false;
 
             if (heldGun.GetGunSO().gunType == GunSO.GunType.Sniper) {
                 OnPlayerAimedSightEnded?.Invoke(this, EventArgs.Empty);
+                secondaryAbilityActive = false;
+            }
+
+            if (heldGun.GetGunSO().gunType == GunSO.GunType.Shotgun) {
+                loadingShot = false;
+
+                OnPlayerFocusBlastStopped?.Invoke(this, EventArgs.Empty);
+                secondaryAbilityActive = false;
+            }
+
+            if (heldGun.GetGunSO().gunType == GunSO.GunType.UZI) {
+                float shootCooldownBuffValue = 1.5f;
+                PlayerStats.Instance.DebuffShootCooldown(shootCooldownBuffValue);
+                OnPlayerOverclockedSMGStopped?.Invoke(this, EventArgs.Empty);
+                secondaryAbilityActive = false;
             }
 
         }
@@ -389,6 +461,8 @@ public class PlayerShoot : MonoBehaviour
         if (coolingDown) return;
         if (reloading) return;
         if (!canShoot) return;
+        if (loadingShot && !shotLoaded) return;
+
         if (Player.Instance.GetHP() == 0) return;
 
         if(heldGun.GetCurrentAmmoClip() < 0 || heldGun.GetCurrentBullet() ==0) {

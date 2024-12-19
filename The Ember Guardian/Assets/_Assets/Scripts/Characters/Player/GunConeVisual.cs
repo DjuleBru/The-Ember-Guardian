@@ -29,6 +29,28 @@ public class GunConeVisual : MonoBehaviour
 
         PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAIm_OnPlayerAimSightEnded;
         PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAIm_OnPlayerAimSightStarted;
+        PlayerShoot.Instance.OnPlayerOverclockedSMGStarted += PlayerShoot_OnPlayerOverclockedSMGStarted;
+        PlayerShoot.Instance.OnPlayerOverclockedSMGStopped += PlayerShoot_OnPlayerOverclockedSMGStopped;
+        PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
+        PlayerShoot.Instance.OnPlayerFocusBlastStopped += PlayerShoot_OnPlayerFocusBlastStopped;
+    }
+
+    private void PlayerShoot_OnPlayerFocusBlastStopped(object sender, System.EventArgs e) {
+        coneVisualAnimator.SetTrigger("SkipHide");
+        coneVisualAnimator.SetBool("ShowThenHide", false);
+    }
+
+    private void PlayerShoot_OnPlayerFocusBlastStarted(object sender, System.EventArgs e) {
+        coneVisualAnimator.SetBool("ShowThenHide", true);
+    }
+
+    private void PlayerShoot_OnPlayerOverclockedSMGStopped(object sender, System.EventArgs e) {
+        coneVisualAnimator.SetBool("ShowThenHide", false);
+
+    }
+
+    private void PlayerShoot_OnPlayerOverclockedSMGStarted(object sender, System.EventArgs e) {
+        coneVisualAnimator.SetBool("ShowThenHide", true);
     }
 
     private void PlayerAIm_OnPlayerAimSightStarted(object sender, System.EventArgs e) {

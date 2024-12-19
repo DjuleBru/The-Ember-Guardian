@@ -62,6 +62,12 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip huntingFlagReset;
     public AudioClip gunLightSwitch;
     public AudioClip spotLightActivate;
+    public AudioClip switchGunFireMode;
+    public AudioClip aimSightStart;
+    public AudioClip aimSightEnd;
+    public AudioClip smgOverclockStart;
+    public AudioClip smgOverclockEnd;
+    public AudioClip shotgunFocusedBlast;
 
     public AudioClip activeSkillReady;
     public AudioClip passiveShieldActivate;

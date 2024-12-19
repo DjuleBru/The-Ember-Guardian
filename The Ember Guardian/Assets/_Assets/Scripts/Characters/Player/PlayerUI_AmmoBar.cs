@@ -49,13 +49,14 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn;
         Structure.OnAnyPlayerTriggeredOut += Structure_OnAnyPlayerTriggeredOut;
 
+        MetaProgressionManager.Instance.OnGunStatChanged += MetaProgression_OnGunStatChanged;
+
         RefreshAmmoBar();
         RefreshAmmoBarBackground();
         ammoBarGameObject.SetActive(false);
         ammoBarBackgroundGameObject.SetActive(false);
         ammoBarCanvasGroup = ammoBarGameObject.GetComponent<CanvasGroup>();
     }
-
 
     private void Update() {
         if (ammoBarCritical) return;
@@ -123,6 +124,10 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     private void PlayerShoot_OnPlayerAmmoRefilled(object sender, PlayerShoot.OnAmmoRefilledEventArgs e) {
         FadeInAmmoBar();
         StartCoroutine(RefillAmmoBar(e.ammoAmount));
+    }
+
+    private void MetaProgression_OnGunStatChanged(object sender, MetaProgressionManager.OnGunChangedEventArgs e) {
+        RefreshAmmoBar();
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {

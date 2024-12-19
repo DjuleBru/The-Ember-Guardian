@@ -4,68 +4,146 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem shootPS;
-    [SerializeField] private GunSO gunSO;
-    [SerializeField] private Animator gunBodyAnimator;
+    [SerializeField] protected ParticleSystem shootPS;
+    [SerializeField] protected GunSO gunSO;
+    [SerializeField] protected Animator gunBodyAnimator;
 
-    private bool gunActive;
-    private bool lerpingGunAngle;
+    protected bool gunActive;
+    protected bool secondaryAbilityUnlocked;
+    protected bool lerpingGunAngle;
 
-    private int pelletsPerBullet = 1;
-    private int damagePerBullet;
-    private int currentAmmoClip;
-    private int maxAmmo;
-    private int currentBullet;
-    private int bulletsPerAmmoClip;
+    protected int pelletsPerBullet = 1;
+    protected int damagePerBullet;
+    protected int currentAmmoClip;
+    protected int maxAmmo;
+    protected int currentBullet;
+    protected int shotsPerClip;
+    protected float cooldownTime;
+    protected float reloadTime;
 
-    private float defaultAngle; // Angle initial du cône (en degrés)
-    private float sightAngle; // Angle resserré du cône lorsqu'on vise
-    private float adjustmentSpeed = 5f; // Vitesse de transition (plus grand = plus rapide)
-    private float critChance = .15f;
+    protected float defaultAngle; // Angle initial du cône (en degrés)
+    protected float sightAngle; // Angle resserré du cône lorsqu'on vise
+    protected float overclockedAngle; // Angle resserré du cône lorsqu'on vise
+    protected float adjustmentSpeed = 5f; // Vitesse de transition (plus grand = plus rapide)
+    protected float critChance = .15f;
 
-    private float currentAngle; // L'angle actuel du cône
-    private float targetAngle; // L'angle cible vers lequel le cône doit se diriger
+    protected float currentAngle; // L'angle actuel du cône
+    protected float targetAngle; // L'angle cible vers lequel le cône doit se diriger
+    protected float focusedBlastAngle = 1f; // L'angle cible vers lequel le cône doit se diriger
 
-    private void Start() {
+
+    protected void Start() {
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
+        PlayerShoot.Instance.OnPlayerOverclockedSMGStarted += Playershoot_OnPlayerOverclockedSMGStarted;
+        PlayerShoot.Instance.OnPlayerOverclockedSMGStopped += PlayerShoot_OnPlayerOverclockedSMGStopped;
         PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAim_OnPlayerAimSightStarted;
         PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAim_OnPlayerAimSightEnded;
+        PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
+        PlayerShoot.Instance.OnPlayerFocusBlastStopped += PlayerShoot_OnPlayerFocusBlastStopped;
+        MetaProgressionManager.Instance.OnGunStatChanged += MetaProgressionManager_OnGunStatChanged;
+    }
 
-        defaultAngle = shootPS.shape.angle;
-        currentAngle = defaultAngle;
+    protected void MetaProgressionManager_OnGunStatChanged(object sender, MetaProgressionManager.OnGunChangedEventArgs e) {
+        if(e.gunTypeModified == gunSO.gunType) {
+            RefreshGunStats();
+        }
+    }
+
+    protected void Update() {
+        
+
+        if (lerpingGunAngle) {
+            // Interpolation linéaire vers l'angle cible
+            currentAngle = Mathf.Lerp(currentAngle, targetAngle, Time.deltaTime * adjustmentSpeed);
+
+            // Appliquer l'angle au Particle System (conversion en radians)
+            ParticleSystem.ShapeModule shape = shootPS.shape;
+            shape.angle = currentAngle;
+
+            if (Mathf.Abs(currentAngle - targetAngle) < 0.1f) {
+                lerpingGunAngle = false;
+            }
+        };
+    }
+
+
+    private void PlayerShoot_OnPlayerOverclockedSMGStopped(object sender, System.EventArgs e) {
+        // Rétablit l'angle par défaut pour desserrer le cône
+        lerpingGunAngle = true;
         targetAngle = defaultAngle;
-        sightAngle = defaultAngle / 2;
-
     }
 
-    private void Update() {
-        if (!lerpingGunAngle) return;
-        // Interpolation linéaire vers l'angle cible
-        currentAngle = Mathf.Lerp(currentAngle, targetAngle, Time.deltaTime * adjustmentSpeed);
-
-        // Appliquer l'angle au Particle System (conversion en radians)
-        ParticleSystem.ShapeModule shape = shootPS.shape;
-        shape.angle = currentAngle;
+    private void Playershoot_OnPlayerOverclockedSMGStarted(object sender, System.EventArgs e) {
+        // Augmente l'angle
+        targetAngle = overclockedAngle;
+        lerpingGunAngle = true;
     }
 
-    private void PlayerAim_OnPlayerAimSightEnded(object sender, System.EventArgs e) {
+    protected void PlayerAim_OnPlayerAimSightEnded(object sender, System.EventArgs e) {
         // Réduit l'angle pour resserrer le cône
+        lerpingGunAngle = true;
         targetAngle = defaultAngle;
     }
 
-    private void PlayerAim_OnPlayerAimSightStarted(object sender, System.EventArgs e) {
+    protected void PlayerAim_OnPlayerAimSightStarted(object sender, System.EventArgs e) {
         // Rétablit l'angle par défaut pour desserrer le cône
         targetAngle = sightAngle;
+        lerpingGunAngle = true;
     }
 
-    public void InitializeGun() {
-        pelletsPerBullet = gunSO.pelletsPerBullet;
+    private void PlayerShoot_OnPlayerFocusBlastStopped(object sender, System.EventArgs e) {
+        // Réduit l'angle pour resserrer le cône
+        lerpingGunAngle = true;
+        targetAngle = defaultAngle;
 
-        maxAmmo = gunSO.maxAmmo;
-        damagePerBullet = gunSO.damagePerBullet;
-        bulletsPerAmmoClip = gunSO.shotsPerClip;
-        critChance = gunSO.critChance;
-        currentBullet = bulletsPerAmmoClip;
+        pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
+        damagePerBullet = MetaProgressionManager.Instance.GetGunDamagePerBullet(gunSO);
+        ParticleSystem.MainModule shootPSMainModule = shootPS.main;
+        shootPSMainModule.startSize = .2f;
+    }
+
+    private void PlayerShoot_OnPlayerFocusBlastStarted(object sender, System.EventArgs e) {
+        // Rétablit l'angle par défaut pour desserrer le cône
+
+        targetAngle = focusedBlastAngle;
+        lerpingGunAngle = true;
+
+        float sizePerBullet = .04f;
+        float totalBullerSize = sizePerBullet * (pelletsPerBullet * (PlayerShoot.Instance.GetCurrentBullets()));
+
+        if(totalBullerSize < .4f) {
+            totalBullerSize = .4f;
+        }
+
+        damagePerBullet *= (pelletsPerBullet * (PlayerShoot.Instance.GetCurrentBullets()));
+        pelletsPerBullet = 1;
+        ParticleSystem.MainModule shootPSMainModule = shootPS.main;
+        shootPSMainModule.startSize = totalBullerSize;
+    }
+
+    public void RefreshGunStats() {
+        pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
+
+        maxAmmo = MetaProgressionManager.Instance.GetGunMaxAmmo(gunSO);
+        damagePerBullet = MetaProgressionManager.Instance.GetGunDamagePerBullet(gunSO);
+        shotsPerClip = MetaProgressionManager.Instance.GetGunShotsPerClip(gunSO);
+        critChance = MetaProgressionManager.Instance.GetGunCritChance(gunSO);
+        cooldownTime = MetaProgressionManager.Instance.GetGunCooldown(gunSO);
+        reloadTime = MetaProgressionManager.Instance.GetGunReloadTime(gunSO);
+        secondaryAbilityUnlocked = MetaProgressionManager.Instance.GetGunSecondaryAbilityUnlocked(gunSO);
+        pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
+
+        defaultAngle = MetaProgressionManager.Instance.GetGunShootConeAnle(gunSO);
+        defaultAngle = gunSO.shootConeAngle;
+        currentAngle = defaultAngle;
+        targetAngle = defaultAngle;
+        sightAngle = defaultAngle / 3;
+        overclockedAngle = defaultAngle * 2f;
+
+        ParticleSystem.ShapeModule shootPSShape = shootPS.shape;
+        shootPSShape.angle = defaultAngle;
+
+        currentBullet = shotsPerClip;
         currentAmmoClip = maxAmmo;
     }
 
@@ -74,7 +152,7 @@ public class Gun : MonoBehaviour
 
         maxAmmo = gunSO.maxAmmo;
         damagePerBullet = gunSO.damagePerBullet;
-        bulletsPerAmmoClip = gunSO.shotsPerClip;
+        shotsPerClip = gunSO.shotsPerClip;
         currentBullet = 0;
         currentAmmoClip = 0;
     }
@@ -84,7 +162,7 @@ public class Gun : MonoBehaviour
         currentBullet = currentBuller;
     }
 
-    private void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
         shootPS.Emit(pelletsPerBullet);
     }
 
@@ -111,7 +189,7 @@ public class Gun : MonoBehaviour
     }
 
     public int GetBulletsPerAmmoClip() {
-        return bulletsPerAmmoClip;
+        return shotsPerClip;
     }
     public int GetMaxAmmo() {
         return maxAmmo;
@@ -119,7 +197,12 @@ public class Gun : MonoBehaviour
     public int GetDamagePerBullet() {
         return damagePerBullet;
     }
-
+    public float GetReloadTime() {
+        return reloadTime;
+    }
+    public float GetCooldownTime() {
+        return cooldownTime;
+    }
     public float GetCritChance() {
         return critChance;
     }

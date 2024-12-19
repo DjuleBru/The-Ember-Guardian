@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 2132063259556091102}
   - component: {fileID: 2369298781008988307}
   - component: {fileID: 1842128116617235531}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: GunCone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.93, y: -0.022, z: 0}
-  m_LocalScale: {x: 0.71, y: 0.9, z: 1}
+  m_LocalScale: {x: 0.85, y: 1.03, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4712941642942225807}
@@ -16268,7 +16268,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4712941642942225807
 Transform:
   m_ObjectHideFlags: 0
@@ -16329,9 +16329,6 @@ MonoBehaviour:
   shootPS: {fileID: 3605755203328474537}
   gunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
   gunBodyAnimator: {fileID: 4266048437474884255}
-  defaultAngle: 0
-  sightAngle: 0
-  adjustmentSpeed: 5
 --- !u!114 &6755658352914285259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16558,8 +16555,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 25
-      minScalar: 20
+      scalar: 30
+      minScalar: 30
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -16676,8 +16673,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.4
-      minScalar: 0.3
+      scalar: 0.2
+      minScalar: 0.2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -17054,7 +17051,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 16.66
+    angle: 16
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
@@ -41444,9 +41441,6 @@ MonoBehaviour:
   shootPS: {fileID: 4821911438046629177}
   gunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
   gunBodyAnimator: {fileID: 2311608819362547431}
-  defaultAngle: 0
-  sightAngle: 0
-  adjustmentSpeed: 5
 --- !u!114 &6099842060979419583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52960,7 +52954,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3834550025022175392
 Transform:
   m_ObjectHideFlags: 0
@@ -53021,9 +53015,6 @@ MonoBehaviour:
   shootPS: {fileID: 1918585995434937215}
   gunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
   gunBodyAnimator: {fileID: 6608392219805920844}
-  defaultAngle: 0
-  sightAngle: 0
-  adjustmentSpeed: 5
 --- !u!114 &8395663370219113307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54824,9 +54815,6 @@ MonoBehaviour:
   shootPS: {fileID: 3397658637778327688}
   gunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
   gunBodyAnimator: {fileID: 8152158738978835922}
-  defaultAngle: 0
-  sightAngle: 0
-  adjustmentSpeed: 5
 --- !u!114 &6489673423445806300
 MonoBehaviour:
   m_ObjectHideFlags: 0

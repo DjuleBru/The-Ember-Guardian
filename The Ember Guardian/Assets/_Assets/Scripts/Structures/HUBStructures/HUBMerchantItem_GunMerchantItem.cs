@@ -18,6 +18,11 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         shotgun,
         sniper,
         smg,
+        shootConeAngle,
+        pelletsPerBullet,
+        aimSight,
+        overclock,
+        focusedBlast,
     }
 
     public enum GunItemCategory {
@@ -39,15 +44,29 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         RefreshStatValues();
 
         if(gunItemCategory == GunItemCategory.statIncrease) {
-            maxItemLevel = linkedStatModifierSO.maxStatModifierLevel;
+            maxItemLevel = linkedStatModifierSO.statModifierList.Count;
             greenGemCostList = linkedStatModifierSO.greenGemCostList;
             redGemCostList = linkedStatModifierSO.redGemCostList;
         }
 
-        OnAnyHubMerchantItemBought += HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemBought;
+        OnAnyHubMerchantItemBought += HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemBoughtOrUpgraded;
+        OnAnyHubMerchantItemUpgraded += HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemBoughtOrUpgraded;
+        OnAnyHubMerchantItemEquipped += HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemEquipped;
     }
 
-    private void HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemBought(object sender, EventArgs e) {
+    private void HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemEquipped(object sender, EventArgs e) {
+        HubMerchantItem merchantItem = (HubMerchantItem)sender;
+
+        if (merchantItem is HUBMerchantItem_GunMerchantItem) {
+            HUBMerchantItem_GunMerchantItem gunItem = (HUBMerchantItem_GunMerchantItem)merchantItem;
+
+            if(gunItem.GetGunItemCategory() == GunItemCategory.newGun && gunItemCategory == GunItemCategory.newGun && gunItem.GetLinkedGunSO() != linkedGunSO) {
+                UnequipItem();
+            }
+        }
+    }
+
+    private void HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemBoughtOrUpgraded(object sender, EventArgs e) {
         HubMerchantItem merchantItem = (HubMerchantItem)sender;
 
         if(merchantItem is HUBMerchantItem_GunMerchantItem) {
@@ -63,7 +82,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             if(gunItemCategory == GunItemCategory.newGun) {
 
                 if (gunItem.GetGunItemCategory() == GunItemCategory.statIncrease && gunItem.GetLinkedGunSO() == linkedGunSO) {
-                    Debug.Log(linkedGunSO + " " + gunItem + " RefreshStatValues");
+                    Debug.Log("new gun " + linkedGunSO + " " + gunItem + " RefreshStatValues");
                     RefreshStatValues();
                     InvokeItemMustRefreshDescriptionCard();
                 }
@@ -74,37 +93,75 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     }
 
     public override void BuyItem() {
+        if(gunItemCategory == GunItemCategory.statIncrease) {
+            SetNewGunStats();
+        }
+
+        if (gunItemCategory == GunItemCategory.newGun) {
+            EquipOrUnequipItem();
+        }
+
+        if (gunItemCategory == GunItemCategory.gunAbility) {
+            UnlockGunAbility();
+        }
+
+        if (gunItemCategory == GunItemCategory.gunModule) {
+            EquipOrUnequipItem();
+            UnlockGunModule();
+        }
+
+        base.BuyItem();
+
+    }
+
+    public override void UpgradeItem() {
+        if (gunItemCategory == GunItemCategory.statIncrease) {
+            SetNewGunStats();
+        }
+
+        base.UpgradeItem();
+    }
+
+    private void SetNewGunStats() {
         if (gunItem == GunItemType.bulletDamage) {
-            int modifiedDamage = linkedGunSO.damagePerBullet + linkedStatModifierSO.intStatModifierList[itemLevel];
+            float modifiedDamage = linkedGunSO.damagePerBullet + linkedStatModifierSO.statModifierList[itemLevel];
             MetaProgressionManager.Instance.SetGunDamagePerBullet(linkedGunSO, modifiedDamage);
         }
 
         if (gunItem == GunItemType.shotsPerClip) {
-            int modifiedShotsPerClip = linkedGunSO.shotsPerClip + linkedStatModifierSO.intStatModifierList[itemLevel];
+            float modifiedShotsPerClip = linkedGunSO.shotsPerClip + linkedStatModifierSO.statModifierList[itemLevel];
             MetaProgressionManager.Instance.SetGunShotsPerClip(linkedGunSO, modifiedShotsPerClip);
         }
 
         if (gunItem == GunItemType.maxAmmo) {
-            int modifiedMaxAmmo = linkedGunSO.maxAmmo + linkedStatModifierSO.intStatModifierList[itemLevel];
+            float modifiedMaxAmmo = linkedGunSO.maxAmmo + linkedStatModifierSO.statModifierList[itemLevel];
             MetaProgressionManager.Instance.SetGunMaxAmmo(linkedGunSO, modifiedMaxAmmo);
         }
 
         if (gunItem == GunItemType.cooldownTime) {
-            float modifiedCooldown = linkedGunSO.shootCooldownTime + linkedStatModifierSO.floatStatModifierList[itemLevel];
+            float modifiedCooldown = linkedGunSO.shootCooldownTime + linkedGunSO.shootCooldownTime * linkedStatModifierSO.statModifierList[itemLevel] * 0.01f;
             MetaProgressionManager.Instance.SetGunCooldown(linkedGunSO, modifiedCooldown);
         }
 
         if (gunItem == GunItemType.reloadTime) {
-            float modifiedReloadTime = linkedGunSO.reloadTime + linkedStatModifierSO.floatStatModifierList[itemLevel];
+            float modifiedReloadTime = linkedGunSO.reloadTime + linkedGunSO.reloadTime * linkedStatModifierSO.statModifierList[itemLevel] * 0.01f;
             MetaProgressionManager.Instance.SetGunReloadTime(linkedGunSO, modifiedReloadTime);
         }
 
         if (gunItem == GunItemType.critChance) {
-            float modifiedCritChange = linkedGunSO.critChance + linkedStatModifierSO.floatStatModifierList[itemLevel];
+            float modifiedCritChange = linkedGunSO.critChance + linkedStatModifierSO.statModifierList[itemLevel];
             MetaProgressionManager.Instance.SetGunCritChance(linkedGunSO, modifiedCritChange);
         }
 
-        base.BuyItem();
+        if (gunItem == GunItemType.shootConeAngle) {
+            float modifiedShootAngle = linkedGunSO.shootConeAngle + linkedStatModifierSO.statModifierList[itemLevel];
+            MetaProgressionManager.Instance.SetGunShootConeAnle(linkedGunSO, modifiedShootAngle);
+        }
+
+        if (gunItem == GunItemType.pelletsPerBullet) {
+            float modifiedPelletsPerBullet = linkedGunSO.pelletsPerBullet + linkedStatModifierSO.statModifierList[itemLevel];
+            MetaProgressionManager.Instance.SetGunPelletsPerBullet(linkedGunSO, modifiedPelletsPerBullet);
+        }
     }
 
     public override string GetItemType() {
@@ -112,14 +169,15 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     }
 
     private void RefreshStatValues() {
-        if (gunItem == GunItemType.rifle) {
+        itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
+        statModifiedBools.Clear();
+        statValues.Clear();
+
+        if (gunItemCategory == GunItemCategory.newGun) {
 
             // DAMAGE
             int initialDamagePerBullet = linkedGunSO.damagePerBullet;
             int modifiedDamagePerBuller = MetaProgressionManager.Instance.GetGunDamagePerBullet(linkedGunSO);
-
-            Debug.Log("initialDamagePerBullet " + initialDamagePerBullet);
-            Debug.Log("modifiedDamagePerBuller " + modifiedDamagePerBuller);
 
             if(initialDamagePerBullet != modifiedDamagePerBuller) {
                 statModifiedBools.Add(true);
@@ -128,6 +186,19 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             }
 
             statValues.Add(modifiedDamagePerBuller.ToString());
+
+            if (gunItem == GunItemType.shotgun) {
+                // PELLETS PER BULLET
+                float initialPelletsPerBullet = linkedGunSO.pelletsPerBullet;
+                float modifiedPelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(linkedGunSO);
+                if (initialPelletsPerBullet != modifiedPelletsPerBullet) {
+                    statModifiedBools.Add(true);
+                }
+                else {
+                    statModifiedBools.Add(false);
+                }
+                statValues.Add(modifiedPelletsPerBullet.ToString());
+            }
 
             // CRIT CHANCE
             float initialCritChance = linkedGunSO.critChance;
@@ -138,7 +209,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             else {
                 statModifiedBools.Add(false);
             }
-            statValues.Add(modifierCritChance * 100 + "%");
+            statValues.Add(modifierCritChance + "%");
 
             // SHOTS PER CLIP
             int initialShotsPerClip = linkedGunSO.shotsPerClip;
@@ -183,19 +254,192 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 statModifiedBools.Add(false);
             }
             statValues.Add(modifiedReloadTime + "s");
+
+            // SHOOT CONE
+            float initialShootCone = linkedGunSO.shootConeAngle;
+            float modifiedShootCone = MetaProgressionManager.Instance.GetGunShootConeAnle(linkedGunSO);
+            if (initialShootCone != modifiedShootCone) {
+                statModifiedBools.Add(true);
+            }
+            else {
+                statModifiedBools.Add(false);
+            }
+
+            statValues.Add(modifiedShootCone + "\u00B0");
         }
+
+        if(gunItemCategory == GunItemCategory.statIncrease) {
+            maxItemLevel = linkedStatModifierSO.statModifierList.Count;
+
+            string totalStatValue = "";
+            string totalStatWithModifierPostfix = "";
+            string totalStatWithModifierPrefix = "";
+            string relativeStatPostfix = "";
+            string relativeStatPrefix = "";
+
+            float initialStatValue = 0;
+            float statValueModifierMultiplier = 1;
+            float absoluteStatValueModifier = 0;
+            float totalStatWithModifier = 0;
+            float relativeDamageBulletModifier = 0;
+
+
+            if (gunItem == GunItemType.critChance) {
+                initialStatValue = linkedGunSO.critChance;
+                totalStatWithModifierPostfix = "%";
+                relativeStatPostfix = "%";
+                relativeStatPrefix = "+";
+            }
+
+            if (gunItem == GunItemType.reloadTime) {
+                initialStatValue = linkedGunSO.reloadTime;
+                relativeStatPostfix = "%";
+                totalStatWithModifierPostfix = "s";
+                statValueModifierMultiplier = 0.01f;
+            }
+
+            if (gunItem == GunItemType.cooldownTime) {
+                initialStatValue = linkedGunSO.shootCooldownTime;
+                relativeStatPostfix = "%";
+                totalStatWithModifierPostfix = "s";
+                statValueModifierMultiplier = 0.01f;
+            }
+
+            if (gunItem == GunItemType.maxAmmo) {
+                initialStatValue = linkedGunSO.maxAmmo;
+                relativeStatPrefix = "+";
+            }
+
+            if (gunItem == GunItemType.shotsPerClip) {
+                initialStatValue = linkedGunSO.shotsPerClip;
+                relativeStatPrefix = "+";
+            }
+
+            if (gunItem == GunItemType.bulletDamage) {
+                initialStatValue = linkedGunSO.damagePerBullet;
+                relativeStatPrefix = "+";
+            }
+
+            if (gunItem == GunItemType.pelletsPerBullet) {
+                initialStatValue = linkedGunSO.pelletsPerBullet;
+                relativeStatPrefix = "+";
+            }
+
+            if (gunItem == GunItemType.shootConeAngle) {
+                initialStatValue = linkedGunSO.shootConeAngle;
+                relativeStatPrefix = "";
+                totalStatWithModifierPostfix = "\u00B0";
+                relativeStatPostfix = "\u00B0";
+            }
+
+            if (itemLevel == maxItemLevel) {
+                absoluteStatValueModifier = linkedStatModifierSO.statModifierList[itemLevel - 1];
+                totalStatWithModifier = initialStatValue + absoluteStatValueModifier * statValueModifierMultiplier;
+            }
+            else {
+                absoluteStatValueModifier = linkedStatModifierSO.statModifierList[itemLevel];
+                totalStatWithModifier = initialStatValue + absoluteStatValueModifier * statValueModifierMultiplier;
+
+                totalStatValue = totalStatWithModifier.ToString();
+                relativeDamageBulletModifier = linkedStatModifierSO.statModifierList[itemLevel];
+
+                if (itemLevel > 0) {
+                    relativeDamageBulletModifier = linkedStatModifierSO.statModifierList[itemLevel] - linkedStatModifierSO.statModifierList[itemLevel - 1];
+                }
+            }
+
+
+            if (itemLevel == maxItemLevel) {
+                statValues.Add(totalStatWithModifierPrefix + totalStatWithModifier.ToString() + totalStatWithModifierPostfix);
+                statModifiedBools.Add(true);
+            }
+            else {
+                statValues.Add(relativeStatPrefix + relativeDamageBulletModifier.ToString() + relativeStatPostfix);
+                statModifiedBools.Add(false);
+
+                statValues.Add(totalStatWithModifierPrefix + totalStatValue + totalStatWithModifierPostfix);
+                statModifiedBools.Add(true);
+            }
+        }
+
     }
 
     public override List<string> GetStatDescription() {
         List<string> statDescriptionList = new List<string>();
 
-        if(gunItem == GunItemType.rifle) {
+        if(GetConstantUnlockDescription()) {
+            statDescriptionList.Add(unlockDescription);
+        }
+
+        if(gunItemCategory == GunItemCategory.newGun) {
             statDescriptionList.Add("Bullet damage ");
+
+            if (gunItem == GunItemType.shotgun) {
+                statDescriptionList.Add("Pellets per bullet ");
+            }
+
             statDescriptionList.Add("Crit chance ");
             statDescriptionList.Add("Shots per clip ");
             statDescriptionList.Add("Max ammo clips ");
             statDescriptionList.Add("Cooldown ");
             statDescriptionList.Add("Reload time ");
+            statDescriptionList.Add("Spread ");
+        }
+
+        if (gunItem == GunItemType.bulletDamage) {
+            if(itemLevel < maxItemLevel) {
+                statDescriptionList.Add("Bullet damage ");
+            }
+            statDescriptionList.Add("Total bullet damage ");
+        }
+
+        if (gunItem == GunItemType.pelletsPerBullet) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add("Pellets/shot ");
+            }
+            statDescriptionList.Add("Total pellets/shot ");
+        }
+
+        if (gunItem == GunItemType.critChance) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add("Crit shot chance ");
+            }
+            statDescriptionList.Add("Total crit chance ");
+        }
+
+        if (gunItem == GunItemType.reloadTime) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add("Reload time ");
+            }
+            statDescriptionList.Add("Total reload time ");
+        }
+
+        if (gunItem == GunItemType.cooldownTime) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add("Shoot cooldown ");
+            }
+            statDescriptionList.Add("Total cooldown ");
+        }
+
+        if (gunItem == GunItemType.shotsPerClip) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add("Shots per clip ");
+            }
+            statDescriptionList.Add("Total shots per clip ");
+        }
+
+        if (gunItem == GunItemType.maxAmmo) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add("Max clips ");
+            }
+            statDescriptionList.Add("Total ammo clips ");
+        }
+
+        if (gunItem == GunItemType.shootConeAngle) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add("Spread ");
+            }
+            statDescriptionList.Add("Final spread ");
         }
 
         return statDescriptionList;
@@ -207,6 +451,55 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
     public override List<bool> GetStatModifierBools() {
         return statModifiedBools;
+    }
+    public override bool GetConstantUnlockDescription() {
+        bool constantUnlockDescription = true;
+
+        if(gunItemCategory == GunItemCategory.statIncrease || gunItemCategory == GunItemCategory.newGun) {
+            constantUnlockDescription = false;
+        }
+
+        return constantUnlockDescription;
+    }
+
+    public override void EquipOrUnequipItem() {
+        if(gunItemCategory == GunItemCategory.newGun) {
+            if (!itemEquipped) {
+                itemEquipped = true;
+                EquipGun();
+                InvokeOnItemEquipped();
+            }
+        }
+
+        if (gunItemCategory == GunItemCategory.gunModule) {
+            if (!itemEquipped) {
+                itemEquipped = true;
+                InvokeOnItemEquipped();
+            } else {
+                itemEquipped = false;
+                InvokeOnItemUnequipped();
+            }
+        }
+    }
+
+    public override void UnequipItem() {
+        itemEquipped = false;
+        InvokeOnItemUnequipped();
+        MetaProgressionManager.Instance.SetHubMerchantItemEquipped(GetItemType(), false);
+    }
+
+    private void EquipGun() {
+        PlayerShoot.Instance.SetGun(linkedGunSO);
+        MetaProgressionManager.Instance.SetHubMerchantItemEquipped(GetItemType(), true);
+        PlayerSave.Instance.SetPrimaryActiveGunSO(linkedGunSO);
+    }
+
+    private void UnlockGunAbility() {
+        MetaProgressionManager.Instance.SetGunSecondaryAbilityUnlocked(linkedGunSO);
+    }
+
+    private void UnlockGunModule() {
+        MetaProgressionManager.Instance.SetGunModuleEquipped(linkedGunSO,gunItem);
     }
 
     public GunItemCategory GetGunItemCategory() {

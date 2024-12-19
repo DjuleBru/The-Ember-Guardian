@@ -7,6 +7,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance;
 
     [SerializeField] private SoundRefsSO soundRefsSO;
+    [SerializeField] private AudioSource gunPoweringUpAudioSource;
     
     private AudioSource audioSource2D;
     private float sfxVolume;
@@ -30,6 +31,13 @@ public class SoundManager : MonoBehaviour
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoor_OnPlayerCooldownSFXTrigger;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+        PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerShoot_OnPlayerSwitchedFireMode;
+        PlayerShoot.Instance.OnPlayerAimedSightStarted += PlayerShoot_OnPlayerAimedSightStarted;
+        PlayerShoot.Instance.OnPlayerAimedSightEnded += PlayerShoot_OnPlayerAimedSightEnded;
+        PlayerShoot.Instance.OnPlayerOverclockedSMGStopped += PlayerSHoot_OnPlayerOverclockedSMGStopped;
+        PlayerShoot.Instance.OnPlayerOverclockedSMGStarted += PlayerShoot_OnPlayerOverclockedSMGStarted;
+        PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
+        PlayerShoot.Instance.OnPlayerFocusBlastStopped += Player_OnPlayerFocusBlastStopped;
 
         PlayerSkills.Instance.OnActiveSkillReady += PlayerSkills_OnActiveSkillReady;
         PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
@@ -297,18 +305,19 @@ public class SoundManager : MonoBehaviour
 
     #region SHOOTING
 
+
     private void ParticleCollision_OnAnyBulletHitEnemyCrit(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitEnemyCritSound;
-        PlaySound3D(audioClipArray, (sender as MonoBehaviour).transform.position, 1f);
+        PlaySound2D(audioClipArray,  1f);
     }
     private void ParticleCollision_OnAnyBulletHitGround(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitGroundSound;
-        PlaySound3D(audioClipArray, (sender as MonoBehaviour).transform.position, .5f);
+        PlaySound2D(audioClipArray, .5f);
     }
 
     private void ParticleCollision_OnAnyBulletHitEnemy(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitEnemySound;
-        PlaySound3D(audioClipArray, (sender as MonoBehaviour).transform.position, .5f);
+        PlaySound2D(audioClipArray,  .5f);
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
@@ -334,6 +343,34 @@ public class SoundManager : MonoBehaviour
     private void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().shootGunSound;
         PlaySound2D(audioClipArray, .5f);
+    }
+
+    private void PlayerShoot_OnPlayerAimedSightEnded(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.aimSightEnd);
+    }
+
+    private void PlayerShoot_OnPlayerAimedSightStarted(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.aimSightStart);
+    }
+
+    private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.switchGunFireMode);
+    }
+
+    private void PlayerShoot_OnPlayerOverclockedSMGStarted(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.smgOverclockStart);
+    }
+
+    private void PlayerSHoot_OnPlayerOverclockedSMGStopped(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.smgOverclockEnd);
+    }
+
+    private void Player_OnPlayerFocusBlastStopped(object sender, System.EventArgs e) {
+        gunPoweringUpAudioSource.Stop();
+    }
+
+    private void PlayerShoot_OnPlayerFocusBlastStarted(object sender, System.EventArgs e) {
+        gunPoweringUpAudioSource.PlayOneShot(soundRefsSO.shotgunFocusedBlast, sfxVolume);
     }
 
     #endregion

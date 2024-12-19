@@ -36,8 +36,9 @@ MonoBehaviour:
   maxAmmo: 6
   pelletsPerBullet: 1
   shotsPerClip: 8
-  critChance: 0.15
-  shootCooldownTime: 0.3
+  critChance: 15
+  shootConeAngle: 3.5
+  shootCooldownTime: 0.33
   shootCooldownSFXTriggerTime: 0.2
   reloadTime: 2
   animationReloadTime: 0.8

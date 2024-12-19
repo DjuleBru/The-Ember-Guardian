@@ -15,29 +15,45 @@ public class HubMerchantItem : MonoBehaviour
     [SerializeField] protected int itemLevel;
     [SerializeField] protected int maxItemLevel;
     [SerializeField] private bool isBoughtAtStart;
+    [SerializeField] private bool isEquippedAtStart;
     [SerializeField] private bool itemUpgradeable;
 
     protected List<int> greenGemCostList;
     protected List<int> redGemCostList;
 
     public static event EventHandler OnAnyHubMerchantItemBought;
+    public static event EventHandler OnAnyHubMerchantItemUpgraded;
     public  event EventHandler OnItemMustRefreshDescriptionCard;
     public event EventHandler OnHubMerchantItemUpgraded;
     public event EventHandler OnHubMerchantItemLoaded;
+    public event EventHandler OnHubMerchantItemEquipped;
+    public static event EventHandler OnAnyHubMerchantItemEquipped;
+    public event EventHandler OnHubMerchantItemUnequipped;
 
     protected bool itemBought;
     protected bool itemUnlocked;
-    protected bool itemBuyable;
+    protected bool itemEquipped;
 
     protected virtual void Start() {
         LoadItemStatus();
     }
 
     protected void LoadItemStatus() {
-        itemBought = MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType());
-        itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType());
-        itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
-        RefreshItemBuyable();
+        if(!isBoughtAtStart) {
+
+            itemBought = MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType());
+            itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType());
+            itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
+            itemEquipped = MetaProgressionManager.Instance.GetMerchantItemEquipped(GetItemType());
+
+        } else {
+            itemBought = true;
+            itemUnlocked = true;
+
+            if(isEquippedAtStart) {
+                itemEquipped = true;
+            }
+        }
 
         OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
     }
@@ -72,15 +88,13 @@ public class HubMerchantItem : MonoBehaviour
 
         OnAnyHubMerchantItemBought?.Invoke(this, EventArgs.Empty);
 
-        if(greenGemCostList.Count >= itemLevel) {
+        if(greenGemCostList != null && greenGemCostList.Count >= itemLevel) {
             greenGemCost = greenGemCostList[itemLevel-1];
         }
 
-        if(redGemCostList.Count >= itemLevel) {
+        if(redGemCostList != null && redGemCostList.Count >= itemLevel) {
             redGemCost = redGemCostList[itemLevel-1];
         }
-
-        RefreshItemBuyable();
     }
 
     public virtual void UpgradeItem() {
@@ -99,33 +113,23 @@ public class HubMerchantItem : MonoBehaviour
             redGemCost = redGemCostList[itemLevel - 1];
         }
 
-        RefreshItemBuyable();
-
         OnHubMerchantItemUpgraded?.Invoke(this, EventArgs.Empty);
+        OnAnyHubMerchantItemUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
-    private void RefreshItemBuyable() {
+    public virtual void EquipOrUnequipItem() {
+    }
 
-        if(!itemUpgradeable) {
+    public virtual void UnequipItem() {
+    }
 
-            if(itemBought) {
-                itemBuyable = false;
-            } else {
-                itemBuyable = true;
-            }
+    public void InvokeOnItemEquipped() {
+        OnHubMerchantItemEquipped?.Invoke(this, EventArgs.Empty);
+        OnAnyHubMerchantItemEquipped?.Invoke(this, EventArgs.Empty);
+    }
 
-        } else {
-
-            if (itemLevel == maxItemLevel) {
-                itemBuyable = false;
-            }
-            else {
-                itemBuyable = true;
-            }
-        }
-
-        Debug.Log(gameObject + " " + itemBuyable);
-
+    public void InvokeOnItemUnequipped() {
+        OnHubMerchantItemUnequipped?.Invoke(this, EventArgs.Empty);
     }
 
     public void InvokeItemMustRefreshDescriptionCard() {
@@ -156,6 +160,9 @@ public class HubMerchantItem : MonoBehaviour
         return null;
     }
 
+    public virtual bool GetConstantUnlockDescription() {
+        return true;
+    }
     public int GetGreenGemCost() {
         return greenGemCost;
     }
@@ -179,9 +186,6 @@ public class HubMerchantItem : MonoBehaviour
     public bool GetItemBought() {
         return itemBought;
     }
-    public bool GetItemBuyable() {
-        return itemBuyable;
-    }
 
     public bool GetItemUnlocked() {
         return itemUnlocked;
@@ -193,5 +197,8 @@ public class HubMerchantItem : MonoBehaviour
 
     public virtual int GetMaxItemLevel() {
         return maxItemLevel;
+    }
+    public bool GetItemEquipped() {
+        return itemEquipped;
     }
 }

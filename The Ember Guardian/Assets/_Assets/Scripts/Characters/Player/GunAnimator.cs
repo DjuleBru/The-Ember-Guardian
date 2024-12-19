@@ -19,8 +19,13 @@ public class GunAnimator : MonoBehaviour
         PlayerShoot.Instance.OnPlayerCooldownAnimationTrigger += PlayerShoot_OnPlayerCooldownAnimationTrigger;
         PlayerShoot.Instance.OnPlayerReload += PlayerSHoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
+        PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerSHoot_OnPlayerSwitchedFireMode;
 
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
+    }
+
+    private void PlayerSHoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
+        animator.SetTrigger("SwitchFireMode");
     }
 
     private void PlayerShoot_OnPlayerCooldownAnimationTrigger(object sender, System.EventArgs e) {

@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Gun_Shop_Icons_0
+      name: Gun_Shop_Stat_Icons_0
       rect:
         serializedVersion: 2
         x: 0
@@ -124,14 +124,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 74b409350a9afb04d8990b49eb50c5f7
-      internalID: 1780169076
+      spriteID: 77b71668666753e4c9523e94eefcb431
+      internalID: 913271423
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gun_Shop_Icons_1
+      name: Gun_Shop_Stat_Icons_1
       rect:
         serializedVersion: 2
         x: 20
@@ -145,14 +145,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bdb301c5adbc7ef4ab657417e3ac0628
-      internalID: -25393727
+      spriteID: 87a026a94b1aa324c88919da3f7e52d3
+      internalID: 1597951619
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gun_Shop_Icons_2
+      name: Gun_Shop_Stat_Icons_2
       rect:
         serializedVersion: 2
         x: 40
@@ -166,14 +166,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a9e0fd583e7935847840af6a6a6bf3b0
-      internalID: -752722540
+      spriteID: dcd8092034df75143b7b1751c6b88402
+      internalID: -1928315855
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gun_Shop_Icons_3
+      name: Gun_Shop_Stat_Icons_3
       rect:
         serializedVersion: 2
         x: 60
@@ -187,14 +187,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 97851477af73cca4e96f1266f3710ab8
-      internalID: 1540500950
+      spriteID: 9241a405c4dc14e4292ec1ca6310fc25
+      internalID: -1488505187
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gun_Shop_Icons_4
+      name: Gun_Shop_Stat_Icons_4
       rect:
         serializedVersion: 2
         x: 80
@@ -208,14 +208,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f48a2362161402849a3058c3c25df907
-      internalID: 71106587
+      spriteID: 0ca16d632e0c06f43ba0a4799cf47258
+      internalID: 765738300
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gun_Shop_Icons_5
+      name: Gun_Shop_Stat_Icons_5
       rect:
         serializedVersion: 2
         x: 100
@@ -229,14 +229,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f0038306c32fb494a8e91816fd795c62
-      internalID: 2119073146
+      spriteID: 9f5c9457e734ae54a94ba5ee133143dc
+      internalID: 1166237808
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gun_Shop_Icons_6
+      name: Gun_Shop_Stat_Icons_6
       rect:
         serializedVersion: 2
         x: 120
@@ -250,14 +250,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 83ad1a7f7c9aa7b4d81796cdd4f17144
-      internalID: -2000449973
+      spriteID: 375f1f209332ea8479786d9f0a0268c6
+      internalID: -1167693267
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gun_Shop_Icons_7
+      name: Gun_Shop_Stat_Icons_7
       rect:
         serializedVersion: 2
         x: 140
@@ -271,8 +271,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c2ade3c560d223447812c0b0bb13cbf1
-      internalID: -1111610422
+      spriteID: 3eab90555c2423a4f9709556a03c6dd5
+      internalID: -23140085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gun_Shop_Stat_Icons_8
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ced5ed38e53587e46bf189be31bd1fc9
+      internalID: -2124059889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gun_Shop_Stat_Icons_9
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72aefaac1db1bfb4e87ff037217cf97d
+      internalID: -1082118098
       vertices: []
       indices: 
       edges: []
@@ -288,14 +330,16 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Gun_Shop_Icons_0: 1780169076
-      Gun_Shop_Icons_1: -25393727
-      Gun_Shop_Icons_2: -752722540
-      Gun_Shop_Icons_3: 1540500950
-      Gun_Shop_Icons_4: 71106587
-      Gun_Shop_Icons_5: 2119073146
-      Gun_Shop_Icons_6: -2000449973
-      Gun_Shop_Icons_7: -1111610422
+      Gun_Shop_Stat_Icons_0: 913271423
+      Gun_Shop_Stat_Icons_1: 1597951619
+      Gun_Shop_Stat_Icons_2: -1928315855
+      Gun_Shop_Stat_Icons_3: -1488505187
+      Gun_Shop_Stat_Icons_4: 765738300
+      Gun_Shop_Stat_Icons_5: 1166237808
+      Gun_Shop_Stat_Icons_6: -1167693267
+      Gun_Shop_Stat_Icons_7: -23140085
+      Gun_Shop_Stat_Icons_8: -2124059889
+      Gun_Shop_Stat_Icons_9: -1082118098
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

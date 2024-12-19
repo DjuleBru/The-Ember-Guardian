@@ -66,6 +66,7 @@ public class Mob : MonoBehaviour, IDamageable
     }
 
     public void TakeDamage(int damage, Transform damageSource, bool critHit) {
+        Debug.Log(damage);
         if (health <= 0) return;
         
         if(critHit) {

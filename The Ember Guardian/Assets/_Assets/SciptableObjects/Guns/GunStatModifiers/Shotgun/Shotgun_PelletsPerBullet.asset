@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddd5932e107b81b4baf4a96188aa40f2, type: 3}
-  m_Name: Rifle_ShotsPerClip
+  m_Name: Shotgun_PelletsPerBullet
   m_EditorClassIdentifier: 
-  statModifier: 3
-  maxStatModifierLevel: 4
-  intStatModifierList: 01000000020000000300000004000000
-  floatStatModifierList: []
+  statModifier: 6
+  maxStatModifierLevel: 3
+  statModifierList:
+  - 1
+  - 2
+  - 3
   greenGemCostList: 
-  redGemCostList: 01000000020000000300000004000000
+  redGemCostList: 010000000200000003000000

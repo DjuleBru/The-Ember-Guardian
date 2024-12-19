@@ -13,6 +13,8 @@ public class ItemDescriptionCardUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemStatTemplateText;
     [SerializeField] private TextMeshProUGUI itemStatTemplateValue;
     [SerializeField] private Material modifiedItemStatMaterial;
+    [SerializeField] private Material initialItemStatMaterial;
+    [SerializeField] private Color modifiedItemColor;
 
     [SerializeField] private TextMeshProUGUI itemStatDescriptionText;
     [SerializeField] private TextMeshProUGUI redGemAmountText;
@@ -22,9 +24,8 @@ public class ItemDescriptionCardUI : MonoBehaviour
     [SerializeField] private GameObject redGemCostGO;
     [SerializeField] private TextMeshProUGUI maxLevelText;
 
-    public void SetDescriptionCardText(string itemName, List<string> itemStatDescriptionList, string itemDescription, int greenGem, int redGem, List<string> itemStatList = null, List<bool> itemModifiersBools = null) {
+    public void SetDescriptionCardText(string itemName, bool constantUnlockDescription, List<string> itemStatDescriptionList, string itemDescription, int greenGem, int redGem, List<string> itemStatList = null, List<bool> itemModifiersBools = null) {
 
-        Debug.Log("RefreshItemStatDescriptionCard " + itemName);
         itemNameText.text = itemName;
         itemDescriptionText.text = itemDescription;
         redGemAmountText.text = redGem.ToString();
@@ -38,7 +39,7 @@ public class ItemDescriptionCardUI : MonoBehaviour
             redGemCostGO.SetActive(false);
         }
 
-        if(itemStatDescriptionList.Count == 1) {
+        if(constantUnlockDescription) {
 
             itemStatDescriptionTemplate.gameObject.SetActive(false);
             itemStatDescriptionText.gameObject.SetActive(true);
@@ -66,11 +67,12 @@ public class ItemDescriptionCardUI : MonoBehaviour
             itemStatTemplateText.text = itemStatName;
             itemStatTemplateValue.text = itemStatList[i];
 
-            Debug.Log("itemStatTemplateValue " + itemStatList[i]);
-            Debug.Log("itemStatModifiersBools " + itemStatModifiersBools[i]);
-
             if (itemStatModifiersBools[i] == true) {
-                itemStatTemplateValue.material = modifiedItemStatMaterial;
+                itemStatTemplateValue.fontMaterial = modifiedItemStatMaterial;
+                itemStatTemplateValue.color = modifiedItemColor;
+            } else {
+                itemStatTemplateValue.fontMaterial = initialItemStatMaterial;
+                itemStatTemplateValue.color = Color.white;
             }
 
             Instantiate(itemStatDescriptionTemplate, itemStatDescriptionContainer);

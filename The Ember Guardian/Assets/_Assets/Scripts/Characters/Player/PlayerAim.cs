@@ -50,7 +50,6 @@ public class PlayerAim : MonoBehaviour
         isUsingGamepad = GameInput.Instance.IsUsingGamepad();
     }
 
-
     private void Update() {
         if (isUsingGamepad) {
             HandleAimGamepad(GameInput.Instance.GetAimInput());

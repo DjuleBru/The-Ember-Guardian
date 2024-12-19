@@ -12,13 +12,13 @@ public class GunStatModifierSO : ScriptableObject
         shotsPerClip,
         maxAmmo,
         critChance,
+        pelletsPerBullet,
+        shootConeAngle,
    }
 
     public StatModifier statModifier;
-    public int maxStatModifierLevel;
 
-    public List<int> intStatModifierList;
-    public List<float> floatStatModifierList;
+    public List<float> statModifierList;
 
     public List<int> greenGemCostList;
     public List<int> redGemCostList;
