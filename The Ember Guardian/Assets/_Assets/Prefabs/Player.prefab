@@ -7279,7 +7279,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5440757532894419489}
   - component: {fileID: 3194564069316269236}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: PlayerLight 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9537,7 +9537,6 @@ GameObject:
   - component: {fileID: 2157084316927466674}
   - component: {fileID: 8236170804758533910}
   - component: {fileID: 6204588909954614336}
-  - component: {fileID: 5129743194655832687}
   - component: {fileID: 3142384569178540591}
   m_Layer: 0
   m_Name: Visual
@@ -9608,26 +9607,6 @@ MonoBehaviour:
   gunBodyAnimator: {fileID: 4266048437474884255}
   emberBodyAnimator: {fileID: 8429842073189086744}
   breatheVisual: {fileID: 7076199393991201708}
---- !u!114 &5129743194655832687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1419070060970722024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d0f3469dfd6c7944ad1e1d033da7ec3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  transformAffectedByXScalList:
-  - {fileID: 2157084316927466674}
-  - {fileID: 4652017232427645646}
-  gunTransform: {fileID: 4959335473103312796}
-  gunShellPSTransform: {fileID: 2541241187479884349}
-  ammoBarTransform: {fileID: 4736914871900288309}
-  ammoBarLeftPosition: {fileID: 7425993475763613498}
-  ammoBarRightPosition: {fileID: 3641024503741475026}
 --- !u!114 &3142384569178540591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16268,7 +16247,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4712941642942225807
 Transform:
   m_ObjectHideFlags: 0
@@ -41282,6 +41261,13 @@ MonoBehaviour:
   - {fileID: 8174820586838346802}
   gunTransform: {fileID: 4959335473103312796}
   aimSightTransform: {fileID: 4151974513232003852}
+  transformAffectedByXScalList:
+  - {fileID: 2157084316927466674}
+  - {fileID: 4652017232427645646}
+  gunShellPSTransform: {fileID: 2541241187479884349}
+  ammoBarTransform: {fileID: 4736914871900288309}
+  ammoBarLeftPosition: {fileID: 7425993475763613498}
+  ammoBarRightPosition: {fileID: 3641024503741475026}
 --- !u!114 &2056211537011623009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42519,8 +42505,8 @@ MonoBehaviour:
         Owner: {fileID: 1739307227123834726}
         DebugActive: 0
         Duration: 1
-        ResetShakerValuesAfterShake: 1
-        ResetTargetValuesAfterShake: 1
+        ResetShakerValuesAfterShake: 0
+        ResetTargetValuesAfterShake: 0
         Intensity:
           serializedVersion: 2
           m_Curve:
@@ -44887,6 +44873,7 @@ MonoBehaviour:
   DebugActive: 0
   FeedbacksList:
   - rid: 7866843611745222682
+  - rid: 4460312322852257793
   - rid: 4460312248828035076
   - rid: 4460312248828035077
   KeepPlayModeChanges: 0
@@ -44965,8 +44952,8 @@ MonoBehaviour:
         Owner: {fileID: 7202249398839981196}
         DebugActive: 0
         Duration: 1
-        ResetShakerValuesAfterShake: 1
-        ResetTargetValuesAfterShake: 1
+        ResetShakerValuesAfterShake: 0
+        ResetTargetValuesAfterShake: 0
         Intensity:
           serializedVersion: 2
           m_Curve:
@@ -45076,6 +45063,82 @@ MonoBehaviour:
         NumberOfLoops: 2
         NumberOfLoopsLeft: 1
         InInfiniteLoop: 0
+    - rid: 4460312322852257793
+      type: {class: MMF_Pause, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks}
+      data:
+        Active: 1
+        UniqueID: 1706634349
+        Label: Pause
+        ChannelMode: 0
+        Channel: 0
+        MMChannelDefinition: {fileID: 0}
+        Chance: 100
+        DisplayColor: {r: 0, g: 0, b: 0, a: 1}
+        Timing:
+          TimescaleMode: 0
+          ExcludeFromHoldingPauses: 0
+          ContributeToTotalDuration: 1
+          InitialDelay: 0
+          CooldownDuration: 0
+          InterruptsOnStop: 1
+          NumberOfRepeats: 0
+          RepeatForever: 0
+          DelayBetweenRepeats: 1
+          MMFeedbacksDirectionCondition: 0
+          PlayDirection: 0
+          ConstantIntensity: 0
+          UseIntensityInterval: 0
+          IntensityIntervalMin: 0
+          IntensityIntervalMax: 0
+          Sequence: {fileID: 0}
+          TrackID: 0
+          Quantized: 0
+          TargetBPM: 120
+        AutomatedTargetAcquisition:
+          Mode: 0
+          ChildIndex: 0
+        RandomizeOutput: 0
+        RandomMultiplier: {x: 0.8, y: 1}
+        RandomizeDuration: 0
+        RandomDurationMultiplier: {x: 0.5, y: 2}
+        UseRange: 0
+        RangeDistance: 5
+        UseRangeFalloff: 0
+        RangeFalloff:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        RemapRangeFalloff: {x: 0, y: 1}
+        Owner: {fileID: 7202249398839981196}
+        DebugActive: 0
+        PauseDuration: 1
+        RandomizePauseDuration: 0
+        MinPauseDuration: 1
+        MaxPauseDuration: 3
+        RandomizeOnEachPlay: 1
+        ScriptDriven: 0
+        AutoResume: 0
+        AutoResumeAfter: 0.25
     - rid: 7866843611745222682
       type: {class: MMF_Vignette_URP, ns: MoreMountains.FeedbacksForThirdParty, asm: MoreMountains.Feedbacks.URP}
       data:
@@ -45145,8 +45208,8 @@ MonoBehaviour:
         Owner: {fileID: 7202249398839981196}
         DebugActive: 0
         Duration: 1
-        ResetShakerValuesAfterShake: 1
-        ResetTargetValuesAfterShake: 1
+        ResetShakerValuesAfterShake: 0
+        ResetTargetValuesAfterShake: 0
         Intensity:
           serializedVersion: 2
           m_Curve:
@@ -46121,7 +46184,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.4
+      scalar: 0.3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -54754,7 +54817,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3452345584255350507
 Transform:
   m_ObjectHideFlags: 0

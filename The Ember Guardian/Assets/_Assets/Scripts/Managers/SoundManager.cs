@@ -53,9 +53,11 @@ public class SoundManager : MonoBehaviour
         ItemButtonUI.OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
         ItemButtonUI.OnAnyButtonHovered += ItemButtonUI_OnAnyButtonHovered;
         HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
+        HubMerchantItem.OnAnyHubMerchantItemUpgraded += HubMerchantItem_OnAnyHubMerchantItemUpgraded;
         ItemButtonUI.OnAnyHubMerchantItemFailedBuy += ItemButtonUI_OnAnyHubMerchantItemFailedBuy;
         ItemButtonUI_Visual.OnAnyGemPSTriggered += ItemButtonUI_Visual_OnAnyGemPSTriggered;
         ItemButtonUI.OnAnyLockedButtonTryPress += ItemButtonUI_OnAnyLockedButtonTryPress;
+        ItemButtonUI.OnAnyHubMerchantItemTryBuyMaxedItem += ItemButtonUI_OnAnyHubMerchantItemTryBuyMaxedItem;
 
         if(LevelUI_ObjectiveUI.Instance != null ) {
             LevelUI_ObjectiveUI.Instance.OnObjectiveUIShown += LevelUI_ObjectiveUI_OnObjectiveUIShown;
@@ -118,8 +120,16 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(soundRefsSO.failBuyHubMerchantItem);
     }
 
+    private void ItemButtonUI_OnAnyHubMerchantItemTryBuyMaxedItem(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.tryBuyMaxedHubMerchantItem);
+    }
+
     private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.buyHubMerchantItem);
+    }
+
+    private void HubMerchantItem_OnAnyHubMerchantItemUpgraded(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.upgradeHubMerchantItem, .5f);
     }
 
     private void ItemButtonUI_OnAnyButtonHovered(object sender, System.EventArgs e) {
@@ -458,7 +468,6 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region OTHER
-
 
     private void HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine(object sender, System.EventArgs e) {
         HubMerchantTalkUI hubMerchant = (HubMerchantTalkUI)sender;

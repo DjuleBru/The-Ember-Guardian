@@ -201,6 +201,16 @@ public class MetaProgressionManager : MonoBehaviour
         return ES3.Load(key, false);
     }
 
+    public void SetHubMerchantItemEquippedAtStart(string merchantItemSaveString, bool equipped) {
+        string key = merchantItemSaveString + "_EquippedAtStart";
+        ES3.Save(key, equipped);
+    }
+
+    public bool GetMerchantItemEquippedAtStart(string merchantItemSaveString) {
+        string key = merchantItemSaveString + "_EquippedAtStart";
+        return ES3.Load(key, true);
+    }
+
     public int GetHubMerchantItemLevel(string merchantItemSaveString) {
         string key = merchantItemSaveString + "_Level_";
         int level = ES3.Load(key, 0);
@@ -317,6 +327,21 @@ public class MetaProgressionManager : MonoBehaviour
         string key = gunSO.gunType + "_pelletsPerBullet";
 
         ES3.Save(key, pelletsPerBulletToSave);
+        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
+            gunTypeModified = gunSO.gunType,
+        });
+    }
+
+    public float GetGunBulletLifetime(GunSO gunSO) {
+        string key = gunSO.gunType + "_bulletLifetime";
+
+        return ES3.Load(key, gunSO.bulletLifetime);
+    }
+
+    public void SetGunBulletLifetime(GunSO gunSO, float bulletLitefime) {
+        string key = gunSO.gunType + "_bulletLifetime";
+
+        ES3.Save(key, bulletLitefime);
         OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
             gunTypeModified = gunSO.gunType,
         });

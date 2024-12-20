@@ -71,4 +71,16 @@ public class GunAnimator : MonoBehaviour
     private void PlayerShoot_OnPlayerShootStopped(object sender, System.EventArgs e) {
 
     }
+
+    private void OnDestroy() {
+        PlayerShoot.Instance.OnPlayerShootStopped -= PlayerShoot_OnPlayerShootStopped;
+        PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
+        PlayerShoot.Instance.OnPlayerCooldownTrigger -= PlayerShoot_OnPlayerCooldownSFXTrigger;
+        PlayerShoot.Instance.OnPlayerCooldownAnimationTrigger -= PlayerShoot_OnPlayerCooldownAnimationTrigger;
+        PlayerShoot.Instance.OnPlayerReload -= PlayerSHoot_OnPlayerReload;
+        PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo -= PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
+        PlayerShoot.Instance.OnPlayerSwitchedFireMode -= PlayerSHoot_OnPlayerSwitchedFireMode;
+
+        Player.Instance.OnPlayerRespawned -= Player_OnPlayerRespawned;
+    }
 }

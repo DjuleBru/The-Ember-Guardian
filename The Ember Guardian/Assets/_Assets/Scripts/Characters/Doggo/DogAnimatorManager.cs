@@ -334,4 +334,9 @@ public class DogAnimatorManager : MonoBehaviour {
     public void TriggerBark() {
         OnDogBark?.Invoke(this, EventArgs.Empty);
     }
+
+    private void OnDestroy() {
+        Portal.OnAnyPlayerTeleported -= Portal_OnAnyPlayerTeleported;
+        Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
+    }
 }

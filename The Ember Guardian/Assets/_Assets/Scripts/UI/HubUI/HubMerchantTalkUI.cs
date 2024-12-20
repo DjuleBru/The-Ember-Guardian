@@ -105,4 +105,11 @@ public class HubMerchantTalkUI : MonoBehaviour
         currentDialogLineShown = true;
         continueGameObject.SetActive(true);
     }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
+        GameInput.Instance.OnPlayerInteractPerformed -= GameInput_OnPlayerInteractPerformed;
+
+        hubMerchant.OnPlayerStartedTalkingWithHubMerchant -= HubMerchant_OnPlayerStartedTalkingWithHubMerchant;
+    }
 }

@@ -31,8 +31,6 @@ public class GunVisual : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
 
-        PlayerAim.Instance.OnXAimDirChanged += PlayerAim_OnXAimDirChanged;
-
         gunSO = gun.GetGunSO();
         gunReloadSprites = gunSO.shotCountSprites;
         gunLightSpriteIndex = gunSO.shotCountSprites.Count -1;
@@ -43,15 +41,6 @@ public class GunVisual : MonoBehaviour
         
     }
 
-    private void PlayerAim_OnXAimDirChanged(object sender, System.EventArgs e) {
-        if (!gun.GetGunActive()) return;
-
-        Vector3 scale = new Vector3(1, 1, 1);
-        if(PlayerAim.Instance.GetAimDir().x < 0) {
-            //scale = new Vector3(-1, -1, 1);
-        }
-        gunSportLightTransform.localScale = scale;
-    }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;

@@ -28,18 +28,20 @@ MonoBehaviour:
   gunAnimator: {fileID: 9100000, guid: 8723d16d7e19f0a42a1e5e224275d7b2, type: 2}
   automaticWeapon: 0
   damagePerBullet: 5
-  maxAmmo: 8
+  maxAmmo: 6
   pelletsPerBullet: 5
   shotsPerClip: 4
   critChance: 15
   shootConeAngle: 16
+  bulletLifetime: 0.3
+  bulletSpeed: 30
   shootCooldownTime: 0.8
   shootCooldownSFXTriggerTime: 0.3
   reloadTime: 1.5
   animationReloadTime: 0.8
-  gunKnockback: 1.5
-  gunRecoil: 0.4
-  gunRecoilDamping: 4
+  gunKnockback: 2.5
+  gunRecoil: 0.6
+  gunRecoilDamping: 3
   shootGunSound:
   - {fileID: 8300000, guid: 0a51e394b348d4d47b2d5038515dfd8e, type: 3}
   - {fileID: 8300000, guid: 88b958ba8b43fa8488261f52560b1265, type: 3}

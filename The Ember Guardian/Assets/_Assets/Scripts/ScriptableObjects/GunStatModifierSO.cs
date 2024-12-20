@@ -5,18 +5,6 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class GunStatModifierSO : ScriptableObject
 {
-   public enum StatModifier {
-        bulletDamage,
-        reloadTime,
-        cooldown,
-        shotsPerClip,
-        maxAmmo,
-        critChance,
-        pelletsPerBullet,
-        shootConeAngle,
-   }
-
-    public StatModifier statModifier;
 
     public List<float> statModifierList;
 

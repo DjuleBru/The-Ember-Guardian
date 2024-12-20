@@ -15,8 +15,9 @@ public class HubMerchantItem : MonoBehaviour
     [SerializeField] protected int itemLevel;
     [SerializeField] protected int maxItemLevel;
     [SerializeField] private bool isBoughtAtStart;
-    [SerializeField] private bool isEquippedAtStart;
     [SerializeField] private bool itemUpgradeable;
+    [SerializeField] private bool itemEquipable;
+    protected bool isEquippedAtStart;
 
     protected List<int> greenGemCostList;
     protected List<int> redGemCostList;
@@ -43,15 +44,30 @@ public class HubMerchantItem : MonoBehaviour
 
             itemBought = MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType());
             itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType());
-            itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
-            itemEquipped = MetaProgressionManager.Instance.GetMerchantItemEquipped(GetItemType());
+
+            if(itemLevel == 0) {
+                itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
+            }
+
+            if(itemEquipable) {
+                itemEquipped = MetaProgressionManager.Instance.GetMerchantItemEquipped(GetItemType());
+            }
 
         } else {
             itemBought = true;
             itemUnlocked = true;
+            itemLevel = maxItemLevel;
 
-            if(isEquippedAtStart) {
-                itemEquipped = true;
+            if(itemEquipable) {
+                itemEquipped = MetaProgressionManager.Instance.GetMerchantItemEquipped(GetItemType());
+                isEquippedAtStart = MetaProgressionManager.Instance.GetMerchantItemEquippedAtStart(GetItemType());
+
+                if (isEquippedAtStart || itemEquipped) {
+                    itemEquipped = true;
+                }
+                else {
+                    itemEquipped = false;
+                }
             }
         }
 
@@ -185,6 +201,13 @@ public class HubMerchantItem : MonoBehaviour
 
     public bool GetItemBought() {
         return itemBought;
+    }
+
+    public bool GetItemMaxed() {
+        return itemLevel == maxItemLevel;
+    }
+    public bool GetitemEquipable() {
+        return itemEquipable;
     }
 
     public bool GetItemUnlocked() {

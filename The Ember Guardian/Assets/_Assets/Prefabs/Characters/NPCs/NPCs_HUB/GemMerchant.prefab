@@ -111,7 +111,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 452.89987, y: -164.9}
-  m_SizeDelta: {x: 200, y: 17.5}
+  m_SizeDelta: {x: 200, y: 8}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &405319973979045617
 CanvasRenderer:
@@ -262,7 +262,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 79, y: 124.9}
-  m_SizeDelta: {x: 17.5, y: 100}
+  m_SizeDelta: {x: 8, y: 100}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &3650842893589833830
 CanvasRenderer:
@@ -374,7 +374,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 429, y: -151}
-  m_SizeDelta: {x: 200, y: 17.5}
+  m_SizeDelta: {x: 200, y: 8}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &4758481760661623369
 CanvasRenderer:
@@ -569,8 +569,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8385513270722688418}
   m_HandleRect: {fileID: 1424134487310206145}
   m_Direction: 0
-  m_Value: -0.00000011987326
-  m_Size: 0.40576535
+  m_Value: -0.0000001198733
+  m_Size: 0.40576544
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -965,7 +965,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 280.2, y: -83.8}
-  m_SizeDelta: {x: 150, y: 17.5}
+  m_SizeDelta: {x: 150, y: 8}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &2341541430812447416
 CanvasRenderer:
@@ -1484,15 +1484,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1981132
+      value: 0.09433961
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -1607,8 +1607,12 @@ MonoBehaviour:
   description: A loose pile of crates, barely holding back the shadows.
   unlockDescription: "Barricade crates : <b>3</b> \nCrate health : <b>4</b> \nBarricade
     health : <b>12</b>"
+  itemLevel: 1
+  maxItemLevel: 1
+  isBoughtAtStart: 1
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 3
-  structureLevel: 1
 --- !u!1001 &747028736713584804
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1939,15 +1943,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1981132
+      value: 0.09433961
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -2058,8 +2062,12 @@ MonoBehaviour:
     (+2)
 
     Total Barricade health : <b>24</b> (+12)'
+  itemLevel: 2
+  maxItemLevel: 1
+  isBoughtAtStart: 0
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 3
-  structureLevel: 2
 --- !u!114 &7771111373995524599 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -2373,15 +2381,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.12370949
+      value: 0.059229266
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.18867922
+      value: 0.103773594
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1381472
+      value: 0.065592736
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: descriptionCardFrontParent
@@ -2499,8 +2507,12 @@ MonoBehaviour:
   description: A modest shelter offering warmth and refuge. Essential for survival
     in the emberlit dark.
   unlockDescription: Your initial camp setup.
+  itemLevel: 1
+  maxItemLevel: 1
+  isBoughtAtStart: 1
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 0
-  structureLevel: 1
 --- !u!114 &7737935491302458219 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -2794,7 +2806,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: showItemLevel
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemUpgradeable
@@ -2802,15 +2814,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.10946955
+      value: 0.00756497
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.10946955
+      value: 0.00756497
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.18867922
+      value: 0.09433961
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -2940,8 +2952,12 @@ MonoBehaviour:
     Unlocks the
     <b>Orb Alchemist</b>, a structure used to aquire skills within a level using
     Crimson Orbs.'
+  itemLevel: 0
+  maxItemLevel: 1
+  isBoughtAtStart: 0
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 9
-  structureLevel: 1
 --- !u!114 &7498644544640629105 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7413315761527434944, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -3250,7 +3266,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: showItemLevel
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemUpgradeable
@@ -3258,15 +3274,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.10946955
+      value: 0.00756497
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.10946955
+      value: 0.00756497
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.18867922
+      value: 0.09433961
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -3384,8 +3400,12 @@ MonoBehaviour:
 
     Unlocks
     the <b> Seedkeeper </b>, a shop where you can buy new plants within a level.'
+  itemLevel: 0
+  maxItemLevel: 1
+  isBoughtAtStart: 0
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 11
-  structureLevel: 1
 --- !u!1001 &2028529703793725710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3663,16 +3683,20 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.12370949
+      value: 0.059229266
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.18867922
+      value: 0.103773594
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1381472
+      value: 0.065592736
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -3788,8 +3812,12 @@ MonoBehaviour:
     and resilience.
   unlockDescription: Allows to upgrade your tent <b> Level 3 </b>, offering more
     space to expand your camp.
+  itemLevel: 3
+  maxItemLevel: 1
+  isBoughtAtStart: 0
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 0
-  structureLevel: 3
 --- !u!114 &9053285517070049373 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -4083,7 +4111,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: showItemLevel
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemUpgradeable
@@ -4091,15 +4119,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.10946955
+      value: 0.00756497
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.10946955
+      value: 0.00756497
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.18867922
+      value: 0.09433961
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -4242,8 +4270,12 @@ MonoBehaviour:
 
     Unlocks
     the <b> Masked Dealers</b>, where you can buy traps within a level.'
+  itemLevel: 0
+  maxItemLevel: 1
+  isBoughtAtStart: 0
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 12
-  structureLevel: 1
 --- !u!1001 &2757451435210648028
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4518,7 +4550,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: showItemLevel
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemUpgradeable
@@ -4526,15 +4558,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.3018868
+      value: 0.13207549
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.19081523
+      value: 0.07031282
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1723033
+      value: 0.06043077
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -4650,8 +4682,12 @@ MonoBehaviour:
     to endure through the encroaching darkness."
   unlockDescription: Unlocks the saving shrine, allowing you to save your progression
     within a level.
+  itemLevel: 0
+  maxItemLevel: 1
+  isBoughtAtStart: 0
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 13
-  structureLevel: 1
 --- !u!1001 &3961317246035332561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5470,15 +5506,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1981132
+      value: 0.09433961
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -5609,8 +5645,12 @@ MonoBehaviour:
     (+2)
 
     Total Barricade health : <b>45</b> (+21)'
+  itemLevel: 3
+  maxItemLevel: 1
+  isBoughtAtStart: 0
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 3
-  structureLevel: 3
 --- !u!1001 &4354308620163447448
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5897,15 +5937,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.12370949
+      value: 0.059229266
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.18867922
+      value: 0.103773594
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1381472
+      value: 0.065592736
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: descriptionCardFrontParent
@@ -6055,8 +6095,12 @@ MonoBehaviour:
     improved recovery.
   unlockDescription: Allows to upgrade your tent <b> Level 2 </b>, offering more
     space to expand your camp.
+  itemLevel: 2
+  maxItemLevel: 1
+  isBoughtAtStart: 0
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 0
-  structureLevel: 2
 --- !u!1001 &4475269019595556246
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6339,15 +6383,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1981132
+      value: 0.09433961
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -6493,8 +6537,12 @@ MonoBehaviour:
     (+2)
 
     Total Barricade health : <b>64</b> (+19)'
+  itemLevel: 4
+  maxItemLevel: 1
+  isBoughtAtStart: 0
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 3
-  structureLevel: 4
 --- !u!1001 &5016347908599283015
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6829,15 +6877,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1981132
+      value: 0.09433961
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -6948,8 +6996,12 @@ MonoBehaviour:
   unlockDescription: 'Trapper slots : <b>1</b>
 
     Range increase : <b>25%</b>'
+  itemLevel: 1
+  maxItemLevel: 1
+  isBoughtAtStart: 1
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 7
-  structureLevel: 1
 --- !u!224 &5897259808284768114 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -7245,15 +7297,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1981132
+      value: 0.09433961
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -7370,8 +7422,12 @@ MonoBehaviour:
 
     Range increase : <b>100%</b>
     (+25%)'
+  itemLevel: 4
+  maxItemLevel: 1
+  isBoughtAtStart: 0
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 7
-  structureLevel: 4
 --- !u!114 &3745897359924904408 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -7697,7 +7753,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: showItemLevel
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: isBoughtAtStart
@@ -7709,15 +7765,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.3018868
+      value: 0.13207549
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.19081523
+      value: 0.07031282
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1723033
+      value: 0.06043077
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -7820,8 +7876,12 @@ MonoBehaviour:
     dry in the face of danger.
   unlockDescription: Unlocks the ammmo crafter, a core device used to generate ammo
     from orbs.
+  itemLevel: 0
+  maxItemLevel: 1
+  isBoughtAtStart: 1
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 2
-  structureLevel: 1
 --- !u!224 &8406802740140251359 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -7989,7 +8049,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -8002,6 +8062,22 @@ PrefabInstance:
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 119.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -12.5
       objectReference: {fileID: 0}
     - target: {fileID: 3898712313599857185, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -8017,19 +8093,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 132.5
       objectReference: {fileID: 0}
     - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 4170946630353999285, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -8125,7 +8201,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: showItemLevel
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemUpgradeable
@@ -8133,15 +8209,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.3018868
+      value: 0.13207549
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.19081523
+      value: 0.07031282
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1723033
+      value: 0.06043077
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -8181,19 +8257,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7799030538715262892, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7799030538715262892, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7799030538715262892, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 32.5
       objectReference: {fileID: 0}
     - target: {fileID: 7799030538715262892, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 7866138468331952735, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -8260,8 +8336,12 @@ MonoBehaviour:
     their full potential.
   unlockDescription: Unlocks the orb processor, a device used to merge minor Orbs
     into Orbs.
+  itemLevel: 0
+  maxItemLevel: 1
+  isBoughtAtStart: 0
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 8
-  structureLevel: 1
 --- !u!224 &8483119567123156064 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -8532,16 +8612,20 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.12370949
+      value: 0.059229266
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.18867922
+      value: 0.103773594
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1381472
+      value: 0.065592736
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -8654,8 +8738,12 @@ MonoBehaviour:
   description: A thriving hub of the camp, fully equipped for restoration and morale.
   unlockDescription: Allows to upgrade your tent <b> Level 4 </b>, offering more
     space to expand your camp.
+  itemLevel: 4
+  maxItemLevel: 1
+  isBoughtAtStart: 0
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 0
-  structureLevel: 4
 --- !u!224 &8618281853970876613 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -8955,15 +9043,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1981132
+      value: 0.09433961
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -9087,8 +9175,12 @@ MonoBehaviour:
 
     Range increase : <b>75%</b> 
     (+25%)'
+  itemLevel: 3
+  maxItemLevel: 1
+  isBoughtAtStart: 0
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 7
-  structureLevel: 3
 --- !u!224 &8329688969058666780 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -9424,15 +9516,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.10746707
+      value: 0.053844776
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1981132
+      value: 0.09433961
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -9554,8 +9646,12 @@ MonoBehaviour:
   unlockDescription: 'Trapper slots : <b>1</b>
 
     Range increase : <b>50%</b> (+25%)'
+  itemLevel: 2
+  maxItemLevel: 1
+  isBoughtAtStart: 0
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 7
-  structureLevel: 2
 --- !u!224 &8837012230777341015 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -9843,7 +9939,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: showItemLevel
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemUpgradeable
@@ -9851,15 +9947,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
-      value: 0.3018868
+      value: 0.13207549
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.g
-      value: 0.19081523
+      value: 0.07031282
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.r
-      value: 0.1723033
+      value: 0.06043077
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: inputLinkUnlockedSprite
@@ -9974,8 +10070,12 @@ MonoBehaviour:
     numbers, direction, and enemy types.'
   unlockDescription: Unlocks the <b> Observation Tower </b>, a device used to aquire
     information on the darkling's night attacks.
+  itemLevel: 0
+  maxItemLevel: 1
+  isBoughtAtStart: 0
+  itemUpgradeable: 0
+  itemEquipable: 0
   structureType: 14
-  structureLevel: 1
 --- !u!224 &8928055904240815352 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}

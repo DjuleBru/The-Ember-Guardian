@@ -385,4 +385,15 @@ public class PlayerMovement : MonoBehaviour {
     private void OnDrawGizmos() {
         Gizmos.DrawWireCube(transform.position-transform.up*castDistance, boxSize);
     }
+    private void OnDestroy() {
+
+        GameInput.Instance.OnPlayerRunPerformed -= GameInput_OnPlayerRunStarted;
+        GameInput.Instance.OnPlayerRunCanceled -= GameInput_OnPlayerRunCanceled;
+        GameInput.Instance.OnPlayerJumpCanceled -= GameInput_OnPlayerJumpCanceled;
+        GameInput.Instance.OnPlayerJumpPerformed -= GameInput_OnPlayerJumpStarted;
+        PlayerAim.Instance.OnPlayerAimSightStarted -= PlayerAIm_OnPlayerAimSightStarted;
+        PlayerAim.Instance.OnPlayerAimSightEnded -= PlayerAim_OnPlayerAimSightEnded;
+
+        PlayerStats.Instance.OnMoveSpeedChanged -= PlayerState_OnMoveSpeedChanged;
+    }
 }

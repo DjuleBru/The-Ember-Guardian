@@ -24,6 +24,8 @@ public class GunSO : ScriptableObject
     public int shotsPerClip;
     public float critChance;
     public float shootConeAngle;
+    public float bulletLifetime;
+    public float bulletSpeed;
 
     public float shootCooldownTime;
     public float shootCooldownSFXTriggerTime;

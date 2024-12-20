@@ -11,6 +11,12 @@ public class PlayerAim : MonoBehaviour
     [SerializeField] private Transform gunTransform;
     [SerializeField] private Transform aimSightTransform;
 
+    [SerializeField] private List<Transform> transformAffectedByXScalList;
+    [SerializeField] private Transform gunShellPSTransform;
+    [SerializeField] private RectTransform ammoBarTransform;
+    [SerializeField] private RectTransform ammoBarLeftPosition;
+    [SerializeField] private RectTransform ammoBarRightPosition;
+
     private bool isUsingGamepad;
     private bool isAimingSight;
 
@@ -22,6 +28,7 @@ public class PlayerAim : MonoBehaviour
 
     private float recoilDamping;
     private float currentRecoil;
+    private float returnToRestSpeed = 3f;
 
     private Vector3 aimDir;
     private Vector3 previousGamepadAim = new Vector3(1,0,0);
@@ -58,7 +65,6 @@ public class PlayerAim : MonoBehaviour
             HandleAimMouse();
         }
 
-        HandleXScale();
         HandleRecoil();
     }
 
@@ -76,10 +82,18 @@ public class PlayerAim : MonoBehaviour
             aimDir = new Vector3(lookInput.x, lookInput.y, 0).normalized;
             previousGamepadAim = aimDir;
         } else {
-            aimDir = previousGamepadAim;
+            // Retourne progressivement à la position de repos
+            float restingPosition = 1f;
+            if(previousGamepadAim.x <0) {
+                restingPosition = -1f;
+            }
+            aimDir = Vector3.Lerp(previousGamepadAim, new Vector3(restingPosition, 0f, 0f), Time.deltaTime * returnToRestSpeed);
+            previousGamepadAim = aimDir; // Met à jour pour éviter des sauts brusques
         }
 
         aimDir.y += currentRecoil;
+
+        HandleXScale();
 
         aimAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
 
@@ -107,6 +121,10 @@ public class PlayerAim : MonoBehaviour
         aimDir = (mousePosition - gunTransform.position).normalized;
 
         aimDir.y += currentRecoil;
+
+
+        HandleXScale();
+
 
         aimAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
 
@@ -139,16 +157,47 @@ public class PlayerAim : MonoBehaviour
     }
 
     private void HandleXScale() {
+        // Variables pour stocker les nouvelles échelles
+        Vector3 localScale = transform.localScale; // Échelle du joueur
+        Vector3 gunLocalScale = gunTransform.localScale; // Échelle de l'arme
 
-        if (aimDir.x < 0 && previousAimDir.x > 0) {
+        // Vérifie si le joueur change de direction
+        if (aimDir.x < 0 && previousAimDir.x >= 0) {
             previousAimDir = aimDir;
-            Vector3 newScale = new Vector3(-1, 1, 1);
+
+            // Inverse le personnage
+            localScale.x = -1;
+
+            // Inverse les éléments liés à l'arme
+            gunLocalScale = new Vector3(-1, -1, 1);
+            ammoBarTransform.position = ammoBarRightPosition.position;
+
+
+            // Applique les nouvelles échelles immédiatement
+            foreach (Transform t in transformAffectedByXScalList) {
+                t.localScale = localScale;
+            }
+            gunTransform.localScale = gunLocalScale;
+            gunShellPSTransform.localScale = gunLocalScale;
             OnXAimDirChanged?.Invoke(this, EventArgs.Empty);
         }
-
-        if (aimDir.x > 0 && previousAimDir.x < 0) {
+        else if (aimDir.x > 0 && previousAimDir.x <= 0) {
             previousAimDir = aimDir;
-            Vector3 newScale = new Vector3(1, 1, 1);
+
+            // Retourne le personnage à l'orientation droite
+            localScale.x = 1;
+
+            // Retourne les éléments liés à l'arme
+            gunLocalScale = new Vector3(1, 1, 1);
+            ammoBarTransform.position = ammoBarLeftPosition.position;
+
+
+            // Applique les nouvelles échelles immédiatement
+            foreach (Transform t in transformAffectedByXScalList) {
+                t.localScale = localScale;
+            }
+            gunTransform.localScale = gunLocalScale;
+            gunShellPSTransform.localScale = gunLocalScale;
             OnXAimDirChanged?.Invoke(this, EventArgs.Empty);
         }
     }

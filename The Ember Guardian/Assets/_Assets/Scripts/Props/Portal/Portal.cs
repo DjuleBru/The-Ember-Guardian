@@ -97,7 +97,7 @@ public class Portal : MonoBehaviour
         if (!playerInTriggerArea) return;
 
         if (isHUBTeleporter && !PlayerCurrencies.Instance.GetCarryingEmber() && !DEBUGMODE) {
-            PlayerUI_World.Instance.GetTooltipLeft().ShowTooltip("I must carry an ember ...", 2f);
+            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltip("I must carry an ember ...", 2f);
             return;
         }
 
@@ -116,6 +116,7 @@ public class Portal : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (!gameObject.activeSelf) return;
+        if (collision.GetComponent<Player>() == null) return;
 
         if(isStartLevelTeleporter) {
             StartCoroutine(RemoveTeleporter());

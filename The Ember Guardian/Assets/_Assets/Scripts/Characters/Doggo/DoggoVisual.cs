@@ -40,4 +40,9 @@ public class DoggoVisual : MonoBehaviour
     private void Dog_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
         //bodySpriteRenderer.material = hoveredMaterial;
     }
+
+    private void OnDestroy() {
+        dog.OnPlayerTriggeredIn -= Dog_OnPlayerTriggeredIn;
+        dog.OnPlayerTriggeredOut -= Dog_OnPlayerTriggeredOut;
+    }
 }

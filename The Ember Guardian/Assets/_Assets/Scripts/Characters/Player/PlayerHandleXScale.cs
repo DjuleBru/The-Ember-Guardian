@@ -19,7 +19,7 @@ public class PlayerHandleXScale : MonoBehaviour
     private void PlayerAim_OnXAimDirChanged(object sender, System.EventArgs e) {
         Vector3 localScale = new Vector3(1, 1, 1);
 
-        if(PlayerAim.Instance.GetAimDir().x <0) {
+        if (PlayerAim.Instance.GetAimDir().x < 0) {
             localScale.x = -1;
             ammoBarTransform.position = ammoBarRightPosition.position;
 
@@ -27,7 +27,8 @@ public class PlayerHandleXScale : MonoBehaviour
             gunTransform.localScale = gunLocalScale;
             gunShellPSTransform.localScale = gunLocalScale;
 
-        } else {
+        }
+        else {
             ammoBarTransform.position = ammoBarLeftPosition.position;
 
             Vector3 gunLocalScale = new Vector3(1, 1, 1);
@@ -36,7 +37,7 @@ public class PlayerHandleXScale : MonoBehaviour
 
         }
 
-        foreach(Transform t in transformAffectedByXScalList) {
+        foreach (Transform t in transformAffectedByXScalList) {
             t.localScale = localScale;
         }
     }

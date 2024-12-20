@@ -18,6 +18,7 @@ public class InputControlIcons : MonoBehaviour
         SwitchDog,
         Aim,
         Back,
+        SecondaryGunAbility,
     }
 
     public Sprite gamepadYSprite;
@@ -50,6 +51,7 @@ public class InputControlIcons : MonoBehaviour
     public Sprite keyboard2Sprite;
     public Sprite keyboardShiftSprite;
     public Sprite keyboardMouseClickSprite;
+    public Sprite keyboardMouseRightClickSprite;
     public Sprite keyboardMouseSprite;
     public Sprite keyboardEscSprite;
 
@@ -97,6 +99,9 @@ public class InputControlIcons : MonoBehaviour
             if (control == Control.Back) {
                 spriteList.Add(gamepadBSprite);
             }
+            if (control == Control.SecondaryGunAbility) {
+                spriteList.Add(gamepadLtSprite);
+            }
         } else {
             if (control == Control.Reload) {
                 spriteList.Add(keyboardRSprite);
@@ -130,6 +135,9 @@ public class InputControlIcons : MonoBehaviour
             }
             if (control == Control.Back) {
                 spriteList.Add(keyboardEscSprite);
+            }
+            if (control == Control.SecondaryGunAbility) {
+                spriteList.Add(keyboardMouseRightClickSprite);
             }
             if (control == Control.Move) {
                 spriteList.Add(keyboardQSprite);

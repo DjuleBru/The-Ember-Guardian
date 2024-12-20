@@ -131,7 +131,9 @@ public class PlayerWorldUITooltip : MonoBehaviour
 
     }
 
-    private IEnumerator HideTooltipCoroutine() {
+    private IEnumerator HideTooltipCoroutine(float delay = 0f) {
+        yield return new WaitForSeconds(delay);
+
         OnTooltipHidden?.Invoke(this, EventArgs.Empty);
         tooltipAnimator.SetTrigger("Hide");
         yield return new WaitForSeconds(.1f);
@@ -140,8 +142,8 @@ public class PlayerWorldUITooltip : MonoBehaviour
         tooltipVisualGameObject.SetActive(false);
     }
 
-    public void HideTooltip() {
-        StartCoroutine(HideTooltipCoroutine());
+    public void HideTooltip(float delay = 0f) {
+        StartCoroutine(HideTooltipCoroutine(delay));
     }
 
     private void OnDestroy() {

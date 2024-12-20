@@ -5246,7 +5246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.8627451}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.88235295}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5373,7 +5373,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 10}
+  m_SizeDelta: {x: 8, y: 8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5294497204627936910
 CanvasRenderer:
@@ -6559,7 +6559,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -22, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &959716851003303050
 CanvasRenderer:
@@ -6616,11 +6616,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
+  m_fontSize: 23.25
   m_fontSizeBase: 25
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 10
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -7030,6 +7030,7 @@ MonoBehaviour:
   itemLevelBackgroundGameObject: {fileID: 4752834290351430210}
   defaultOutlineSprite: {fileID: -1330145521, guid: 379c1b53a24c168429a6f1380044314f, type: 3}
   itemEquippedOutlineSprite: {fileID: 2064065581, guid: 379c1b53a24c168429a6f1380044314f, type: 3}
+  itemMaxedOutlineSprite: {fileID: 1575746545, guid: 379c1b53a24c168429a6f1380044314f, type: 3}
   itemLevelText: {fileID: 4801105834639249503}
   showItemLevel: 0
 --- !u!114 &2132069975152806687

@@ -171,12 +171,12 @@ public class Tutorial : MonoBehaviour
     private void HandleBlockingCollider(Vector3 colliderPosition, string textToShow) {
         if (Mathf.Abs(Player.Instance.transform.position.x - colliderPosition.x) < 1.5f && !showingGetReady) {
             showingGetReady = true;
-            PlayerUI_World.Instance.GetTooltipRight().ShowTooltip(textToShow, 3f);
+            PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip(textToShow, 3f);
         }
 
         if (Mathf.Abs(Player.Instance.transform.position.x - colliderPosition.x) > 1.5f && showingGetReady) {
             showingGetReady = false;
-            PlayerUI_World.Instance.GetTooltipRight().HideTooltip();
+            PlayerTooltipManager.Instance.GetTooltipRight().HideTooltip();
         }
     }
 
@@ -186,7 +186,7 @@ public class Tutorial : MonoBehaviour
 
         if (fireFuelledNumber == 1) {
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FuelFire);
-            PlayerUI_World.Instance.GetTooltipRight().ShowTooltip("The fire's warmth and light weakens the darklings... ", 4f);
+            PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip("The fire's warmth and light weakens the darklings... ", 4f);
 
             if (barricadeNumberBuilt == 2 && towerNumberBuilt == 2) {
                 StartCoroutine(StartSurviveTheNightObjective());
@@ -615,7 +615,7 @@ public class Tutorial : MonoBehaviour
     private IEnumerator SwapReloadInstructionsCoroutine(float delay) {
         yield return new WaitForSeconds(delay);
 
-        PlayerUI_World.Instance.GetTooltipLeft().HideTooltip();
+        PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
 
         yield return new WaitForSeconds(3f);
 
@@ -643,18 +643,18 @@ public class Tutorial : MonoBehaviour
 
         climbTowerTooltipShown = true;
         StartCoroutine(HideTooltipAfterDelay(.2f));
-        PlayerUI_World.Instance.GetTooltipRight().ShowTooltip("From up here I can shoot over the barricades", 4f);
+        PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip("From up here I can shoot over the barricades", 4f);
     }
 
     private void HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn(object sender, EventArgs e) {
         if(huntingFlagTooltipShown) return;
         huntingFlagTooltipShown = true;
-        PlayerUI_World.Instance.GetTooltipRight().ShowTooltip("Trappers won't venture past this flag", 4f);
+        PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip("Trappers won't venture past this flag", 4f);
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
         if (reloadTooltipShown && !reloadTooltipHidden) {
-            PlayerUI_World.Instance.GetTooltipLeft().HideTooltip();
+            PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
             reloadTooltipHidden = true;
             showingGetReady = false;
             firstCreatureCollider.SetColliderTrigger();
@@ -663,7 +663,7 @@ public class Tutorial : MonoBehaviour
 
         if (!saveAmmoTooltipShown) {
             if (PlayerShoot.Instance.GetCurrentBullets() != 0) {
-                PlayerUI_World.Instance.GetTooltipRight().ShowTooltip("I should save my ammo ... ", 3f);
+                PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip("I should save my ammo ... ", 3f);
                 saveAmmoTooltipShown = true;
             }
         }
@@ -672,7 +672,7 @@ public class Tutorial : MonoBehaviour
         if (!fireBuilt) return;
         if (healTooltipShown) return;
         healTooltipShown = true;
-        PlayerUI_World.Instance.GetTooltipRight().ShowTooltip("I can heal at my tent", 3f);
+        PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip("I can heal at my tent", 3f);
     }
     public void ShowLightTip() {
         StartCoroutine(ShowLightTipCoroutine());
@@ -681,7 +681,7 @@ public class Tutorial : MonoBehaviour
     public IEnumerator ShowLightTipCoroutine() {
         StartCoroutine(ShowTooltipAfterDelay(0f, "Press", "To toggle your flashlight", InputControlIcons.Control.LightSwitch));
         yield return new WaitForSeconds(4f);
-        PlayerUI_World.Instance.GetTooltipLeft().HideTooltip();
+        PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
     }
     #endregion
 
@@ -693,13 +693,13 @@ public class Tutorial : MonoBehaviour
     private IEnumerator ShowTooltipAfterDelay(float delay, string text1, string text2, InputControlIcons.Control control) {
         yield return new WaitForSeconds(delay);
 
-        PlayerUI_World.Instance.GetTooltipLeft().ShowTooltipInstruction(text1, text2, control);
+        PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction(text1, text2, control);
      
     }
 
     private IEnumerator HideTooltipAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
-        PlayerUI_World.Instance.GetTooltipLeft().HideTooltip();
+        PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
     }
 
     public void ActivateCreatureSpotLight() {
