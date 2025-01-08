@@ -10,26 +10,44 @@ public class Currency_UI : MonoBehaviour
     [SerializeField] private PlayerCurrencies.CurrencyType currencyType;
 
     private bool movingOrb;
-    private float initialGravityScale;
     private Transform destinationTransform;
     private float smoothTime;
     private Rigidbody2D rb;
     private Collider2D currencyCOllider2D;
+    private float bottomPositionY;
+    private float topPositionY;
 
-    private float initialTimer;
+    private float initialTimer = 1.5f;
     private float maxSpeed = 5f;
+    private float minMass = 5f;
+    private float maxMass = 5000f;
+    private float speedToDisableRb = 1f;
     private bool initialTimerOver;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
         currencyCOllider2D = GetComponent<Collider2D>();
-        initialGravityScale = rb.gravityScale;
     }
 
     private void Update() {
+        if (!initialTimerOver) {
+            initialTimer -= Time.deltaTime;
+            if (initialTimer < 0) {
+                initialTimerOver = true;
+            }
+        }
+
+        //float positionYNormalized = (topPositionY - transform.position.y) / (topPositionY - bottomPositionY);
+        //float mass = Mathf.Lerp(minMass, maxMass, positionYNormalized);
+        //rb.mass = mass;
+
         if (movingOrb) {
             // Lerp vers la destination pour un mouvement lissé
             transform.position = Vector3.Lerp(transform.position, destinationTransform.position, smoothTime * Time.deltaTime);
+        }
+
+        if(rb.velocity.magnitude < speedToDisableRb && initialTimerOver) {
+            rb.bodyType = RigidbodyType2D.Static;
         }
     }
 
@@ -56,8 +74,19 @@ public class Currency_UI : MonoBehaviour
         return movingOrb;
     }
 
+    public void SetCurrencyRbMovable() {
+        if (currencyType == PlayerCurrencies.CurrencyType.ember) return;
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        initialTimerOver = false;
+        initialTimer = 1.5f;
+    }
+
     public PlayerCurrencies.CurrencyType GetCurrencyType() {
         return currencyType;
     }
 
+    public void SetBackpackBottomPosition(Transform bottom) {
+        bottomPositionY = bottom.position.y;
+        topPositionY = transform.position.y;
+    } 
 }

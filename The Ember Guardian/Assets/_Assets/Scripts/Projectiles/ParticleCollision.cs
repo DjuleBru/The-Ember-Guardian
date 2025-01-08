@@ -11,6 +11,7 @@ public class ParticleCollision : MonoBehaviour
     public List<ParticleCollisionEvent> collisionEvents;
     public CinemachineVirtualCamera cam;
     public GameObject explosionPrefab;
+    public GameObject mobHitPrefab;
     public GameObject critHitPrefab;
 
     private Vector3 previousPosition;
@@ -33,11 +34,6 @@ public class ParticleCollision : MonoBehaviour
     void LateUpdate() {
         ParticleSystem.Particle[] particles = new ParticleSystem.Particle[ps.particleCount];
         int particleCount = ps.GetParticles(particles);
-
-        if(Mathf.Abs(Vector3.Distance(previousPosition, transform.position)) > .5f) {
-            particleMoveDir = transform.position - previousPosition;
-            previousPosition = transform.position;
-        };
 
         for (int i = 0; i < particleCount; i++) {
             Vector3 velocity = particles[i].velocity;
@@ -71,7 +67,14 @@ public class ParticleCollision : MonoBehaviour
                 if (!damagedParticles.Contains(j) && Vector3.Distance(particles[j].position, collisionPosition) < collisionDistanceThreshold) {
 
                     // Calcule l'angle pour orienter l'explosion prefab
-                    float angle = Mathf.Atan2(particleMoveDir.y, particleMoveDir.x) * Mathf.Rad2Deg;
+                    Vector3 moveDir = (collisionPosition - PlayerShoot.Instance.GetHeldGun().transform.position).normalized;
+                    float angle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
+
+                    //if (angle > 90) {
+                    //    angle = angle - 180;
+                    //}
+
+                    //Instantiate(mobHitPrefab, collisionPosition, Quaternion.Euler(0, 0, angle));
 
                     particles[j].remainingLifetime = 0; // Détruit seulement la particule proche de l'impact
                     ps.SetParticles(particles, particleCount); // Réinjecte les particules mises à jour dans le système
@@ -100,17 +103,20 @@ public class ParticleCollision : MonoBehaviour
 
                     } else {
                         float randomNumber = UnityEngine.Random.Range(0f, 1f);
-                        Debug.Log("randomNumber" + randomNumber);
-                        Debug.Log("crit chance" + PlayerShoot.Instance.GetHeldGun().GetCritChance()/100);
+
                         if (critHit && randomNumber < PlayerShoot.Instance.GetHeldGun().GetCritChance()/100) {
                            
-                                mobHit.TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, true);
-                                Instantiate(critHitPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
-                                OnAnyBulletHitEnemyCrit?.Invoke(this, EventArgs.Empty);
+                            mobHit.TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, true);
+                            other.GetComponent<Mob>().InstantiateHitPS(angle, collisionPosition.y, true);
+
+                            //Instantiate(critHitPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
+                            OnAnyBulletHitEnemyCrit?.Invoke(this, EventArgs.Empty);
                             
                         }
                         else {
                             other.GetComponent<Mob>().TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, false);
+                            other.GetComponent<Mob>().InstantiateHitPS(angle, collisionPosition.y, false);
+
                             OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
                         }
                     }

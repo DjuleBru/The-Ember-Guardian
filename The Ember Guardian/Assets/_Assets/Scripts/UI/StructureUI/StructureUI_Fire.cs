@@ -14,6 +14,7 @@ public class StructureUI_Fire : StructureUI
     [SerializeField] private RectTransform progressBarTemplate;
     [SerializeField] private RectTransform progressBarBackgroundContainer;
     [SerializeField] private RectTransform progressBarBackgroundTemplate;
+    [SerializeField] private Animator fireUIAnimator;
 
     private CanvasGroup progressBarCanvasGroup;
     [SerializeField] private float displayDuration = 2f; // Durée pendant laquelle le progressBar est visible avant le fade out
@@ -41,6 +42,7 @@ public class StructureUI_Fire : StructureUI
     private Fire fire;
 
     public static event EventHandler OnFireTickRemoved;
+    public static event EventHandler OnCricitalFireTickRemoved;
     public static event EventHandler OnFireMaxBarAmountChanged;
 
     protected override void Awake() {
@@ -195,6 +197,11 @@ public class StructureUI_Fire : StructureUI
             yield return new WaitForSeconds(.05f);
 
         }
+
+        if(Fire.Instance.GetCurrentFuelLevel() >= Fire.Instance.GetCriticalFuelTreshold()) {
+            fireUIAnimator.SetBool("FuelCritical", false);
+        }
+
         isRefuelling = false;
     }
 
@@ -214,6 +221,12 @@ public class StructureUI_Fire : StructureUI
             barsLeftToRemove -= 1;
 
             OnFireTickRemoved?.Invoke(this, EventArgs.Empty);
+
+            if(Fire.Instance.GetCurrentFuelLevel() <= Fire.Instance.GetCriticalFuelTreshold()) {
+                Debug.Log("CRITICAL");
+                OnCricitalFireTickRemoved?.Invoke(this, EventArgs.Empty);
+                fireUIAnimator.SetBool("FuelCritical", true);
+            }
 
             fireTickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
 

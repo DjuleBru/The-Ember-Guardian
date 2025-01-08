@@ -248,6 +248,18 @@ public class MetaProgressionManager : MonoBehaviour
     #endregion
 
     #region GUNS
+
+    public void SetInitialLevelAmmo(int initialLevelAmmo) {
+        string key = "initialLevelAmmo";
+
+        ES3.Save(key, initialLevelAmmo);
+    }
+
+    public int  GetInitialLevelAmmo() {
+        string key = "initialLevelAmmo";
+
+        return ES3.Load(key, 2);
+    }
     public void SetGunSecondaryAbilityUnlocked(GunSO gunSO) {
         string key = gunSO.gunType + "_secondaryAbilityUnlocked";
 

@@ -162,7 +162,7 @@ public class Collectible : MonoBehaviour
     }
 
     public void SetCollectibleFellFromBag() {
-        float delayToPlouf = UnityEngine.Random.Range(.5f, .6f);
+        float delayToPlouf = UnityEngine.Random.Range(.5f, .8f);
         StartCoroutine(CollectibleFallsInWater(delayToPlouf));
     }
 

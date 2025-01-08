@@ -9,6 +9,8 @@ public class CreatureSound : MonoBehaviour
 
     [SerializeField] private Creature creature;
     [SerializeField] private CreatureAI creatureAI;
+    [SerializeField] private CreatureAttack creatureAttack;
+    [SerializeField] private CreatureAnimatorManager creatureAnimator;
 
     [SerializeField] private AudioClip[] enteredLightAudioClips;
 
@@ -26,6 +28,16 @@ public class CreatureSound : MonoBehaviour
         creature.OnCreatureDied += Creature_OnAnyCreatureDied;
         creatureAI.OnCreatureAggro += CreatureAI_OnAnyCreatureAggro;
         creature.OnCreatureIdleSoundTriggered += Creature_OnAnyCreatureIdleSoundTriggered;
+        creatureAttack.OnMobAttackHit += CreatureAttack_OnMobAttackHit;
+        creatureAnimator.OnFootStepTriggered += CreatureAnimator_OnFootStepTriggered;
+    }
+
+    private void CreatureAttack_OnMobAttackHit(object sender, System.EventArgs e) {
+        creatureAudioSource.PlayOneShot(creature.GetCreatureSO().attackHitAudioClips[Random.Range(0, creature.GetCreatureSO().attackHitAudioClips.Length)], .5f * sfxVolume);
+    }
+
+    private void CreatureAnimator_OnFootStepTriggered(object sender, System.EventArgs e) {
+        creatureAudioSource.PlayOneShot(creature.GetCreatureSO().footStepAudioClips[Random.Range(0, creature.GetCreatureSO().footStepAudioClips.Length)], .2f * sfxVolume);
     }
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {

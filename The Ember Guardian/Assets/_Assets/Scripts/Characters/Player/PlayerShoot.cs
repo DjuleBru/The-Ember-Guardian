@@ -100,6 +100,8 @@ public class PlayerShoot : MonoBehaviour
         GameInput.Instance.OnWeaponSecondaryAbilityPerformed += GameInput_OnWeaponSecondaryAbilitytPerformed;
 
         PlayerStats.Instance.OnPlayerAmmoRegenTimeChanged += PlayerStats_OnPlayerAmmoRegenTimeChanged;
+        PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
+        PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
 
         UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
     }
@@ -455,6 +457,14 @@ public class PlayerShoot : MonoBehaviour
     private void PlayerStats_OnPlayerAmmoRegenTimeChanged(object sender, EventArgs e) {
         hasAmmoRegen = true;
         ammoRegenTime = PlayerStats.Instance.GetAmmoRegenTime();
+    }
+
+    private void PlayerMovement_OnPlayerRollEnded(object sender, EventArgs e) {
+        canShoot = true;
+    }
+
+    private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
+        canShoot = false;
     }
 
     private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {

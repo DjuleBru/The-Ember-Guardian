@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Claims;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -9,8 +10,11 @@ public class GunSpotLight : MonoBehaviour
     [SerializeField] private Transform gunSpotLightTransform;
     private Light2D gunSpotLight;
 
+    private float noFogVolumetricAmount = .2f;
+    private float fogVolumetricAmount = .1f;
     private bool autoSwitchWithDay;
     private bool lightActive = true;
+    private bool rolling;
     public static event EventHandler OnAnyLightSwitched;
 
     private void Awake() {
@@ -24,12 +28,25 @@ public class GunSpotLight : MonoBehaviour
             Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
         }
 
+        float fogAmount = LevelManager.Instance.GetLevelSO().fogAlpha;
+        float volumetricAmount = Mathf.Lerp(noFogVolumetricAmount, fogVolumetricAmount, fogAmount);
+        gunSpotLight.volumeIntensity = volumetricAmount;
+
         GameInput.Instance.OnPlayerGunLightSwitch += GameInput_OnPlayerGunLightSwitch;
         lightActive = false;
         gunSpotLight.enabled = false;
-        
+
+        PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
+        PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
     }
 
+    private void PlayerMovement_OnPlayerRollEnded(object sender, EventArgs e) {
+        rolling = false;
+    }
+
+    private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
+        rolling = true;
+    }
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
         lightActive = false;
         gunSpotLight.enabled = false;
@@ -52,7 +69,8 @@ public class GunSpotLight : MonoBehaviour
     }
 
     private void Update() {
-        gunSpotLightTransform.eulerAngles = new Vector3(0, 0, PlayerAim.Instance.GetAimAngle()-90); 
+        if (rolling) return;
+        gunSpotLightTransform.eulerAngles = new Vector3(0, 0, PlayerAim.Instance.GetAimAngle() - 90); 
     }
 
     private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {

@@ -114,7 +114,7 @@ PrefabInstance:
       objectReference: {fileID: 6200000, guid: fe712a0e85e641b4489f6bd0f8f7b455, type: 2}
     - target: {fileID: 4938592641832932186, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       propertyPath: m_LinearDrag
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4938592641832932186, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       propertyPath: m_AngularDrag
@@ -160,7 +160,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 222862552863732904, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1522482915170366502}
+      addedObject: {fileID: 5629723826423586526}
     - targetCorrespondingSourceObject: {fileID: 3097506622609963512, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6485945203662175846}
@@ -210,7 +210,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 222862552863732904, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
   m_PrefabInstance: {fileID: 2783727627305616000}
   m_PrefabAsset: {fileID: 0}
---- !u!70 &1522482915170366502
+--- !u!70 &5629723826423586526
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -242,6 +242,6 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.007337614, y: 0.0041096155}
-  m_Size: {x: 0.8148704, y: 0.2578339}
+  m_Offset: {x: -0.00000044488507, y: 0.0013673678}
+  m_Size: {x: 0.6556053, y: 0.16087247}
   m_Direction: 1

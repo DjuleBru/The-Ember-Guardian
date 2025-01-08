@@ -10,6 +10,7 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private Animator gunBodyAnimator;
     [SerializeField] private Animator emberBodyAnimator;
     [SerializeField] private GameObject breatheVisual;
+    [SerializeField] private ParticleSystem respawnPS;
 
     public event EventHandler OnFootStepTriggered;
 
@@ -28,6 +29,8 @@ public class PlayerAnimator : MonoBehaviour
     }
 
     private void Start() {
+        PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
+        PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
         PlayerMovement.Instance.OnPlayerJumpUp += PlayerMovement_OnPlayerJumpUp;
         PlayerMovement.Instance.OnPlayerJumpTop += PlayerMovement_OnPlayerJumpTop;
         PlayerMovement.Instance.OnPlayerJumpDown += PlayerMovement_OnPlayerJumpDown;
@@ -46,11 +49,12 @@ public class PlayerAnimator : MonoBehaviour
 
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
-        Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
         Player.Instance.OnPlayerDamagedRecentlyEnded += Player_OnPlayerDamagedRecentlyEnded;
+        Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
 
         breatheVisual.SetActive(false);
     }
+
 
     private void PlayerSHoor_OnPlayerSwappedGun(object sender, EventArgs e) {
         gunBodyAnimator = PlayerShoot.Instance.GetHeldGun().GetGunBodyAnimator();
@@ -72,11 +76,17 @@ public class PlayerAnimator : MonoBehaviour
 
     private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
         playerAnimator.Play("Idle");
+
+        bodyAnimator.SetTrigger("Respawn");
+        gunBodyAnimator.SetTrigger("Respawn");
+        respawnPS.Play();
         dead = false;
     }
 
     private void Player_OnPlayerDied(object sender, System.EventArgs e) {
         playerAnimator.SetTrigger("Die");
+        bodyAnimator.SetTrigger("Die");
+        gunBodyAnimator.SetTrigger("Die");
         dead = true;
     }
 
@@ -109,8 +119,10 @@ public class PlayerAnimator : MonoBehaviour
         //HandleXScale();
         if (PlayerMovement.Instance.IsMovingBackwards()) {
             playerAnimator.SetFloat("WalkAnimationSpeed", -walkAnimationSpeed);
+            playerAnimator.SetFloat("RollAnimationSpeed", -1f);
         } else {
             playerAnimator.SetFloat("WalkAnimationSpeed", walkAnimationSpeed);
+            playerAnimator.SetFloat("RollAnimationSpeed", 1f);
         }
         HandleAnimatorMovementBool();
     }
@@ -143,6 +155,14 @@ public class PlayerAnimator : MonoBehaviour
         playerAnimator.ResetTrigger("Land");
     }
 
+
+    private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
+        playerAnimator.SetTrigger("Roll");
+    }
+
+    private void PlayerMovement_OnPlayerRollEnded(object sender, EventArgs e) {
+        playerAnimator.SetTrigger("RollFinished");
+    }
     private void PlayerAim_OnPlayerAimSightStarted(object sender, EventArgs e) {
         walkAnimationSpeed = PlayerMovement.Instance.GetMoveSpeedNormalized();
 

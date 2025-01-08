@@ -21,12 +21,14 @@ public class Fire : Structure, IDamageable {
     [SerializeField] private float orbFuelValue;
     [SerializeField] private float fuelDepletionRate;
 
+    [SerializeField] private int criticalFuelTreshold;
     [SerializeField] private int calmFuelTreshold;
     [SerializeField] private int mildFuelTreshold;
     [SerializeField] private int wildFuelTreshold;
     [SerializeField] private int insaneFuelTreshold;
     [SerializeField] private int maxFuelTreshold;
     [SerializeField] private float extractingEmberFuelRateDepletion = 5f;
+    [SerializeField] private float respawningPlayerFuelRateDepletion = 2f;
     [SerializeField] private float debugFuelLevel;
 
     private FireOrbCollider fireOrbCollider;
@@ -62,7 +64,10 @@ public class Fire : Structure, IDamageable {
     private bool extractingEmber;
     private float extractingEmberTimer;
     private float extractingEmberTime = 5f;
-   
+    private bool respawningPlayer;
+    private float respawningPlayerTimer;
+    private float respawningPlayerTime = 5f;
+
     private float lerpTimer;
     private float lerpDuration = 2f;
     private float initialFireAOEValue;
@@ -99,6 +104,7 @@ public class Fire : Structure, IDamageable {
         if (isMainFire) {
 
             fuelLevel = mildFuelTreshold - 1;
+            Player.Instance.OnPlayerBackToTentToRespawn += Player_OnPlayerBackToTentToRespawn;
             ChangeState(State.calm);
 
         }
@@ -118,7 +124,6 @@ public class Fire : Structure, IDamageable {
         if(isHubFire) {
             SetStructurePrimaryFunctionUnlocked(false);
 
-            Debug.Log(MetaProgressionManager.Instance.GetHubFireEmberExtractable());
             if (MetaProgressionManager.Instance.GetHubFireEmberExtractable()) {
                 SetStructureSecondaryFunctionUnlocked(true);
                 ActivateStructureSecondaryFunctionInteraction(true);
@@ -130,6 +135,11 @@ public class Fire : Structure, IDamageable {
         }
     }
 
+    private void Player_OnPlayerBackToTentToRespawn(object sender, EventArgs e) {
+        respawningPlayer = true;
+        respawningPlayerTimer = 5f;
+    }
+
     private void Update() {
         if (extractingEmber) {
             extractingEmberTimer -= Time.deltaTime;
@@ -139,6 +149,12 @@ public class Fire : Structure, IDamageable {
                 StartCoroutine(ExtractEmber());
             }
 
+        } else if (respawningPlayer) {
+            respawningPlayerTimer -= Time.deltaTime;
+            fuelLevel -= Time.deltaTime * respawningPlayerFuelRateDepletion;
+            if (respawningPlayerTimer < 0) {
+                respawningPlayer = false;
+            }
         }
         else {
             if (fuelLevel > 0) {
@@ -275,6 +291,10 @@ public class Fire : Structure, IDamageable {
             previousState = previousState,
             newState = newState
         });
+
+        if(newState == State.extinguished && isMainFire) {
+            LevelManager.Instance.LooseLevel();
+        }
     }
 
     private void SetFireCurrentMaxFuelTreshold() {
@@ -402,10 +422,33 @@ public class Fire : Structure, IDamageable {
     public float GetWildFireRadius() {
         return wildFireRadius;
     }
+
+    public float GetCurrentFireRadius() {
+        if(state == State.calm) {
+            return calmFireRadius;
+        }
+
+        if(state == State.mild) {
+            return mildFireRadius;
+        }
+
+        if(state == State.wild) {
+            return wildFireRadius;
+        }
+
+        if(state == State.insane) {
+            return insaneFireRadius;
+        }
+
+        return 0f;
+    }
     public float GetInsaneFireRadius() {
         return insaneFireRadius;
     }
 
+    public float GetCriticalFuelTreshold() {
+        return criticalFuelTreshold;
+    }
     public float GetCalmFireTreshold() {
         return calmFuelTreshold;
     }

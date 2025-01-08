@@ -12,6 +12,7 @@ public class PlayerSounds : MonoBehaviour
     [SerializeField] private AudioClip[] playerDamagedElectricAudioClips;
     [SerializeField] private AudioClip[] playerPantAudioClips;
     [SerializeField] private AudioClip[] playerExhaustedAudioClips;
+    [SerializeField] private AudioClip[] playerRollAudioClips;
     [SerializeField] private AudioClip activeMoveSpeedBoostFootstepAudioClip;
 
     [SerializeField] private PlayerAnimator playerAnimator;
@@ -31,9 +32,14 @@ public class PlayerSounds : MonoBehaviour
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
 
+        PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerExhaustionStarted += PlayerMovement_OnPlayerExhaustionStarted;
 
         activeMoveSpeedBoostVisual.OnMoveSpeedFootStepTriggered += ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered;
+    }
+
+    private void PlayerMovement_OnPlayerRoll(object sender, System.EventArgs e) {
+        playerAudioSource.PlayOneShot(playerRollAudioClips[Random.Range(0, playerRollAudioClips.Length)], sfxVolume*.7f);
     }
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {

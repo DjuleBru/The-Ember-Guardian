@@ -5,10 +5,10 @@ using UnityEngine;
 public class LevelObjectives : MonoBehaviour
 {
 
-    [SerializeField] private EndLevelArea endLevelArea;
     [SerializeField] private HubMerchant levelMerchant;
     [SerializeField] private HubMerchantTalkUI levelMerchantTalkUI;
     [SerializeField] private MerchantTextLinesSO finalMerchantTextLines;
+    private EndLevelArea endLevelArea;
 
     private bool emberExtracted;
     private bool initialFireLit;
@@ -20,9 +20,12 @@ public class LevelObjectives : MonoBehaviour
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         PlayerCurrencies.Instance.OnEmberDropped += PlayerCurrencies_OnEmberDropped;
-        endLevelArea.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
-        endLevelArea.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
-        levelMerchant.OnPlayerStoppedInteractingWithHubMerchant += LevelMerchant_OnPlayerStoppedInteractingWithHubMerchant;
+        EndLevelArea.Instance.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
+        EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
+
+        if(levelMerchant != null) {
+            levelMerchant.OnPlayerStoppedInteractingWithHubMerchant += LevelMerchant_OnPlayerStoppedInteractingWithHubMerchant;
+        }
     }
 
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {

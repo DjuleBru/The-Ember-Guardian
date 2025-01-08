@@ -18,7 +18,13 @@ public class PlayerSave : MonoBehaviour
     }
 
     public GunSO GetPrimaryActiveGun() {
-        return ES3.Load("primaryActiveGunSO", initialActiveGun);
+        GunSO activeGun = ES3.Load("primaryActiveGunSO", initialActiveGun);
+        if(activeGun == null) {
+            return initialActiveGun;
+        }
+
+        Debug.Log(activeGun.ToString());
+        return activeGun;
     }
 
 }

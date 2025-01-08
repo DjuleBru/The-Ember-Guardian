@@ -141,5 +141,13 @@ public class CreatureSO : ScriptableObject
 
     [BoxGroup("SFX")]
     [LabelWidth(200)]
+    public AudioClip[] attackHitAudioClips;
+
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
     public AudioClip[] idleAudioClips;
+
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public AudioClip[] footStepAudioClips;
 }

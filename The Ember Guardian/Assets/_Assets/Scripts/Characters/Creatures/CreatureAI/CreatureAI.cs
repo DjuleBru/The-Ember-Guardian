@@ -125,7 +125,11 @@ public class CreatureAI : MonoBehaviour {
             case State.attacking:
 
                 if (!detectedAttackTarget) {
-                    ChangeState(State.walkingToFire);
+                    if(creature.IsDayCreature()) {
+                        ChangeState(State.walkingToSpawner);
+                    } else {
+                        ChangeState(State.walkingToFire);
+                    }
                     return;
                 }
 
@@ -243,6 +247,10 @@ public class CreatureAI : MonoBehaviour {
         Vector3 targetDestination = creature.GetMobSpawner().transform.position;
 
         creatureMovement.SetMoveTarget(targetDestination);
+
+        if (Mathf.Abs(transform.position.x - targetDestination.x) < minAttackRange) {
+            ChangeState(State.idle);
+        }
     }
 
     public void ResetAttackTargetInProximity() {
@@ -282,5 +290,9 @@ public class CreatureAI : MonoBehaviour {
 
     private void Creature_OnCreatureDied(object sender, EventArgs e) {
         died = true;
+    }
+
+    public State GetState() {
+        return state;
     }
 }

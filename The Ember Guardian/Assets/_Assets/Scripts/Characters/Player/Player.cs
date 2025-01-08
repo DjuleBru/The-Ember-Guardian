@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Claims;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IDamageable
@@ -20,10 +21,14 @@ public class Player : MonoBehaviour, IDamageable
     private bool canMove = true;
     private bool interactingWithMerchant;
 
+    private bool isInvincibleWhileRolling = false;
+    private float delayAfterRollStartForInvincibleStart = .1f;
+    private float delayAfterRollStartForInvincibleEnd = .3f;
+
     private float damagedTimer;
-    private float deadTimer;
     private float hpRegenTimer;
     private float hpRegenTime;
+    private float dieFuelExtraction = 10f;
 
     private int playerHealth;
 
@@ -34,6 +39,7 @@ public class Player : MonoBehaviour, IDamageable
     public event EventHandler<OnPlayerHealedEventArgs> OnPlayerHealed;
     public event EventHandler OnPlayerDied;
     public event EventHandler OnPlayerRespawned;
+    public event EventHandler OnPlayerBackToTentToRespawn;
 
     public class OnPlayerHealedEventArgs : EventArgs {
         public int healAmount;
@@ -52,9 +58,11 @@ public class Player : MonoBehaviour, IDamageable
 
         PlayerStats.Instance.OnPlayerMaxHPChanged += PlayerStats_OnPlayerMaxHPChanged;
         PlayerStats.Instance.OnPlayerHPRegenChanged += PlayerStats_OnPlayerHPRegenChanged;
+        PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
     }
 
     private void Update() {
+
         if (!isLevelScene) return;
         CheckExitingCamp();
 
@@ -74,15 +82,6 @@ public class Player : MonoBehaviour, IDamageable
             }
         }
 
-        if (dead) {
-            deadTimer += Time.deltaTime;
-
-            if(deadTimer > PlayerStats.Instance.GetRespawnTime()) {
-                StartCoroutine(RespawnCoroutine());
-                deadTimer = 0;
-            }
-
-        }
     }
 
     private void CheckExitingCamp() {
@@ -115,7 +114,7 @@ public class Player : MonoBehaviour, IDamageable
     public bool GetCanDropOrbOnTheFloor() {
         if (interactingWithMerchant) return false;
 
-        return canDropOrbOnTheFloor;
+        return canDropOrbOnTheFloor && !dead;
     }
 
     public void AddKnockBack(Vector2 knockbackDir) {
@@ -123,6 +122,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public void TakeDamage(int damage, Transform damageSource, bool critHit = false) {
+        if (isInvincibleWhileRolling) { Debug.Log("isInvincibleWhileRolling"); return; } 
         if (damagedRecently) return;
         if (dead) return;
 
@@ -158,24 +158,44 @@ public class Player : MonoBehaviour, IDamageable
         HealPlayer(1);
     }
 
+    private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
+        StartCoroutine(RollCoroutine());
+    }
+
+    private IEnumerator RollCoroutine() {
+        yield return new WaitForSeconds(delayAfterRollStartForInvincibleStart);
+        isInvincibleWhileRolling = true;
+        yield return new WaitForSeconds(delayAfterRollStartForInvincibleEnd);
+        isInvincibleWhileRolling = false;
+
+    }
+
     #region PLAYER CONTROLS RESTRICTIONS
     public void Die() {
-        canMove = false;
-        GetComponent<PlayerAim>().enabled = false;
-        GetComponent<PlayerCurrencies>().enabled = false;
-        PlayerShoot.Instance.SetCanShoot(false);
         SetCanDropOrbOnTheFloor(false);
+        DisableControlInputs();
 
-        if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
             PlayerCurrencies.Instance.SetCarryingEmber(false);
         }
 
         OnPlayerDied?.Invoke(this, EventArgs.Empty);
-
         dead = true;
+
+        if(Fire.Instance.GetCurrentFuelLevel() == 0) {
+            StartCoroutine(LevelFailedCoroutine());
+        } else {
+            StartCoroutine(RespawnCoroutine());
+        }
+    }
+
+    private IEnumerator LevelFailedCoroutine() {
+        yield return new WaitForSeconds(2f);
+        SceneLoader.Instance.LoadHub(3f);
     }
 
     private IEnumerator RespawnCoroutine() {
+        yield return new WaitForSeconds(PlayerStats.Instance.GetRespawnTime());
 
         Vector2 respawnPosition = new Vector2();
 
@@ -192,17 +212,16 @@ public class Player : MonoBehaviour, IDamageable
         }
 
         transform.position = respawnPosition;
+        OnPlayerBackToTentToRespawn?.Invoke(this, EventArgs.Empty);
 
-        yield return new WaitForSeconds(1f);
-
-        canMove = false;
-        GetComponent<PlayerAim>().enabled = true;
-        GetComponent<PlayerShoot>().enabled = true;
-        PlayerShoot.Instance.SetCanShoot(true);
-        SetCanDropOrbOnTheFloor(true);
+        yield return new WaitForSeconds(2f);
 
         OnPlayerRespawned?.Invoke(this, EventArgs.Empty);
 
+        yield return new WaitForSeconds(2f);
+
+        EnableControlInputs();
+        SetCanDropOrbOnTheFloor(true);
         dead = false;
     }
 

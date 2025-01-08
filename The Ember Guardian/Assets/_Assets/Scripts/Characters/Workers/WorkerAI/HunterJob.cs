@@ -584,6 +584,10 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
             }
         }
 
+        if(newState != HunterState.hunting && newState != HunterState.guarding) {
+            hunterAttack.RemoveAttackTarget();
+        }
+
         mobMovement.SetMoveTarget(targetDestination);
         state = newState;
         OnHunterChangedState?.Invoke(this, EventArgs.Empty);

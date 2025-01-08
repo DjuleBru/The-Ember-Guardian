@@ -6,6 +6,7 @@ public class EndLevelAreaCollider : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision) {
         if(collision.gameObject.GetComponent<Player>() != null) {
+            Debug.Log("trigge rin:");
             MusicManager.Instance.SetEndLevelMusic();
             MusicManager.Instance.SetAudioTargerVolume(.3f);
             MusicManager.Instance.FadeInMusic(3f);

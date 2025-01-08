@@ -24,4 +24,13 @@ public class LevelManager : MonoBehaviour
     public LevelSO GetLevelSO() {
         return levelSO;
     }
+
+    public void LooseLevel() {
+        StartCoroutine(LooseLevelCoroutine());
+    }
+
+    private IEnumerator LooseLevelCoroutine() {
+        yield return new WaitForSeconds(2f);
+        SceneLoader.Instance.LoadHub(3f);
+    }
 }

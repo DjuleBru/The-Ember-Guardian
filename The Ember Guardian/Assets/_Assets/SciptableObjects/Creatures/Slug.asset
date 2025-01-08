@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e57289136e0e1e6418ec81259b9649b2, type: 3}
+  m_Name: Slug
+  m_EditorClassIdentifier: 
+  enemyName: Slug
+  description: Basic, slightly tanky, slow creature.
+  creaturePrefab: {fileID: 2465624883499499618, guid: a7d7975db41abfd489cd11f7f596df5f, type: 3}
+  mass: 10
+  detectionRange_Day: 12
+  detectionRange_Night: 2
+  moveSpeed: 1.35
+  enteredLightMoveSpeedDebuff: 1.5
+  moveSpeedRandomizerDelta: 0.2
+  maxHealth: 50
+  damage: 1
+  attackRate: 2
+  enteredLightattackRateDebuff: 1.5
+  isRangedAttack: 0
+  minAttackRange: 2.3
+  maxAttackRange: 3
+  attackRangeRandomizer: 0.1
+  attackRangeMaxDistanceMiss: 0.1
+  relativeDamageToFire: 1
+  attackAnimationDelay: 0.3
+  totalAttackAnimationTime: 1.2
+  baseMovementAnimationSpeed: 0.5
+  workerTargetingPriority: 1
+  playerTargetingPriority: 2
+  barricadeTargetingPriority: 3
+  currencyTypeDroppedList: 03000000
+  currencyDropAmountList: 01000000
+  difficulty: 1
+  initialWaveSpawn: 1
+  spawnProbability: 0.503
+  dieAudioClips:
+  - {fileID: 8300000, guid: 52e684d65259c2d41ae7b4c7146d8c51, type: 3}
+  - {fileID: 8300000, guid: e88c8549c00d7a44aa981ca39aaebf2a, type: 3}
+  aggroAudioClips:
+  - {fileID: 8300000, guid: 43abb15c0f28ff54eb24358ac1de6815, type: 3}
+  - {fileID: 8300000, guid: 53448b7318d133e40a6b4cc290ed50fe, type: 3}
+  - {fileID: 8300000, guid: 4013e7d05ef23794abf297127c81fa72, type: 3}
+  - {fileID: 8300000, guid: 38cf1486263bd8d48b5fa282ff196775, type: 3}
+  - {fileID: 8300000, guid: ee747f428e6ad55488ee38af3144a2c6, type: 3}
+  attackHitAudioClips:
+  - {fileID: 8300000, guid: ed07ecc0cf11a5649b0bed809c1c2489, type: 3}
+  - {fileID: 8300000, guid: b6327cbb36b024c4e92697d91477b041, type: 3}
+  - {fileID: 8300000, guid: 21216f467a220f74e9b69835949785d1, type: 3}
+  - {fileID: 8300000, guid: 2b8781723ff61b5489b834c4acb4f13d, type: 3}
+  - {fileID: 8300000, guid: d81e1b82f5aea0e43aeeaba82643596a, type: 3}
+  idleAudioClips:
+  - {fileID: 8300000, guid: da9e25fd2aefae542ac329ac8758e86e, type: 3}
+  - {fileID: 8300000, guid: 147bad03bd5aed64aa27fb139104ae62, type: 3}
+  - {fileID: 8300000, guid: 58ae6616e6320ac438ed55dcdabe8b2e, type: 3}
+  - {fileID: 8300000, guid: 2b9cfe9a942c8044aac53687c668610f, type: 3}
+  - {fileID: 8300000, guid: e7cdb85cd45361f4ebbdb441913a609a, type: 3}
+  - {fileID: 8300000, guid: 351da722d37a47e41a56ad2dcae1787d, type: 3}
+  - {fileID: 8300000, guid: 149f4e798c029a74e95703722f31582e, type: 3}
+  - {fileID: 8300000, guid: 484b4d4dc3885b74b8dd6f74ab745a83, type: 3}
+  - {fileID: 8300000, guid: 400fd73989155ae4daaac07d6d316c33, type: 3}
+  - {fileID: 8300000, guid: fdb88e49f918dba4a82cd16992a80ace, type: 3}
+  - {fileID: 8300000, guid: 1adb54c5f2c898b4cbf55f90fa7f1825, type: 3}
+  footStepAudioClips:
+  - {fileID: 8300000, guid: aa99364f9f8fa36459cf5c83762ea7f8, type: 3}
+  - {fileID: 8300000, guid: 6c7e204337f8fe645a22a2dee4865e7b, type: 3}
+  - {fileID: 8300000, guid: 03e6da2d1d48ac942a787a3d470f7b9f, type: 3}
+  - {fileID: 8300000, guid: 1d9b9d02d3f75e44f8c559837bfa8d39, type: 3}
+  - {fileID: 8300000, guid: 124a682033cba0b43a44f1d96d8dbaef, type: 3}
+  - {fileID: 8300000, guid: b8fda12fb4c51124baa8b9b68778c18c, type: 3}
+  - {fileID: 8300000, guid: 10bc50b8ae82b1e4bbb305be47156caa, type: 3}
+  - {fileID: 8300000, guid: 8607806d20eadb844b4e554b28f7b4cd, type: 3}
+  - {fileID: 8300000, guid: a58d27aad95afdb4184e6e4ae99f212e, type: 3}
+  - {fileID: 8300000, guid: 29efdc12d117c6b4b80cc5a117a6da4b, type: 3}

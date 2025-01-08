@@ -17,6 +17,7 @@ public class FireVisual : StructureVisual
     [SerializeField] private ParticleSystem atmosphericPS;
     [SerializeField] private ParticleSystem continuousPS;
     [SerializeField] private ParticleSystem fuelledPS;
+    [SerializeField] private ParticleSystem playerRespawnPS;
 
     [SerializeField] private float calmLightIntensityValue;
     [SerializeField] private float mildLightIntensityValue;
@@ -73,6 +74,12 @@ public class FireVisual : StructureVisual
             DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
         }
+
+        Player.Instance.OnPlayerBackToTentToRespawn += Player_OnPlayerBackToTentToRespawn;
+    }
+
+    private void Player_OnPlayerBackToTentToRespawn(object sender, System.EventArgs e) {
+        playerRespawnPS.Play();
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {

@@ -14,8 +14,8 @@ public class Barricade : Structure, IDamageable {
     [SerializeField] private BarricadeVisual barricadeVisual;
     private Collider2D currentBarricadeCollider;
 
-    private int level1Health = 12;
-    private int level2Health = 24;
+    private int level1Health = 18;
+    private int level2Health = 28;
     private int level3Health = 45;
     private int level4Health = 64;
 

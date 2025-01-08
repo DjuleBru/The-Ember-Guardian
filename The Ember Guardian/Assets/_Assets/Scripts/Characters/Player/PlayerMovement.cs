@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float velPower;
 
     [SerializeField] private float jumpForce;
+    [SerializeField] private float rollForce;
     [SerializeField] private float jumpCutMultiplier;
     [SerializeField] private float gravityScale;
     [SerializeField] private float fallGravityMultiplier;
@@ -35,18 +36,24 @@ public class PlayerMovement : MonoBehaviour {
     private bool isMovingBackwards;
     private bool isCrouching;
     private bool isJumping;
+    private bool isRolling;
     private bool isJumpTop;
     private bool isJumpDown;
     private bool isLanded;
-    private bool jumpInputReleased;
 
     private float moveSpeed;
     private float lastMoveDir = 1;
     private float lastJumpTime;
-    private float runTimer;
+    private float lastRollTime;
+    private float staminaTimer;
+    private float rollExhaustionAmount = 2f;
+    private float rollAnimationDuration = .6f;
     private float exhaustionTimer;
+    private float runTimePercentageBeforeWarningExhaustion = .65f;
     private Rigidbody2D rb;
 
+    public event EventHandler OnPlayerRoll;
+    public event EventHandler OnPlayerRollEnded;
     public event EventHandler OnPlayerJumpUp;
     public event EventHandler OnPlayerJumpTop;
     public event EventHandler OnPlayerJumpDown;
@@ -88,6 +95,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private void Update() {
         if (!Player.Instance.GetCanMove()) return;
+
         HandleCrouch();
         HandleMovingBackwards();
         HandleRunningAndExhaustion();
@@ -133,16 +141,21 @@ public class PlayerMovement : MonoBehaviour {
 
     private void GameInput_OnPlayerJumpStarted(object sender, System.EventArgs e) {
         if (isJumping) return;
+        if (isRolling) return;
+        if (isExhausted) return;
         if (!Player.Instance.GetCanMove()) return;
 
-        if(GetPlatformStanding() != null) {
+        StartRolling();
+        return;
+
+        if (GetPlatformStanding() != null) {
             if (GameInput.Instance.GetJumpDirNormalized() <= -.5) {
                 PlatformJumpDown();
             } else {
-                StartJumping();
+                //StartJumping();
             }
         } else {
-            StartJumping();
+            //StartJumping();
         }
     }
 
@@ -153,7 +166,6 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         lastJumpTime = 0;
-        jumpInputReleased = true;
     }
 
     private void PlayerAim_OnPlayerAimSightEnded(object sender, EventArgs e) {
@@ -219,10 +231,37 @@ public class PlayerMovement : MonoBehaviour {
         isJumpDown = false;
         isLanded = false;
         isCrouching = false;
-        jumpInputReleased = false;
 
         OnPlayerCrouchedEnded?.Invoke(this, EventArgs.Empty);
         OnPlayerJumpUp?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void StartRolling() {
+        float rollDir = 1f;
+
+        if(GameInput.Instance.GetMovementFloatNormalized() != 0) {
+            rollDir = lastMoveDir;
+        } else {
+            rollDir = PlayerAim.Instance.GetAimDirFloat();
+        }
+
+        Vector2 force = new Vector2(rollDir * rollForce, 2f);
+        rb.AddForce(force, ForceMode2D.Impulse);
+        lastRollTime = 0;
+
+        isJumping = false;
+        isRolling = true;
+        isJumpTop = false;
+        isJumpDown = false;
+
+        staminaTimer += rollExhaustionAmount;
+        OnPlayerRoll?.Invoke(this, EventArgs.Empty);
+        Invoke("EndRoll", rollAnimationDuration);
+    }
+
+    private void EndRoll() {
+        OnPlayerRollEnded?.Invoke(this, EventArgs.Empty);
+        isRolling = false;
     }
 
     private void PlatformJumpDown() {
@@ -262,10 +301,21 @@ public class PlayerMovement : MonoBehaviour {
             if(exhaustionTimer >= PlayerStats.Instance.GetExhaustionTime()) {
                 StopExhausted();
             }
+
+            return;
         }
 
-        if(isAlmostExhausted) {
-            if (runTimer < PlayerStats.Instance.GetRunMaxTime() * .65f) {
+        // Recover only when not exhausted anymore
+        if (!isExhausted && staminaTimer > 0) {
+            if(staminaTimer > PlayerStats.Instance.GetRunMaxTime()) {
+                staminaTimer = PlayerStats.Instance.GetRunMaxTime();
+            }
+            staminaTimer -= Time.deltaTime * runRecoverFactor;
+        }
+
+
+        if (isAlmostExhausted) {
+            if (staminaTimer < PlayerStats.Instance.GetRunMaxTime() * runTimePercentageBeforeWarningExhaustion) {
                 isAlmostExhausted = false;
                 OnPlayerAlmostExhaustionStopped?.Invoke(this, EventArgs.Empty);
             }
@@ -273,35 +323,34 @@ public class PlayerMovement : MonoBehaviour {
        
 
         if (isRunning && (moveSpeed != 0)) {
-            runTimer += Time.deltaTime;
+            staminaTimer += Time.deltaTime;
 
-            // Almost exhausted
-            if (runTimer > PlayerStats.Instance.GetRunMaxTime() * .65f) {
+        }
 
-                if (!isAlmostExhausted) {
-                    isAlmostExhausted = true;
-                    OnPlayerAlmostExhaustionStarted?.Invoke(this, EventArgs.Empty);
-                }
+        // Almost exhausted
+        if (staminaTimer > PlayerStats.Instance.GetRunMaxTime() * runTimePercentageBeforeWarningExhaustion) {
 
-            } else {
-
-                if(isAlmostExhausted) {
-                    isAlmostExhausted = false;
-                    OnPlayerAlmostExhaustionStopped?.Invoke(this, EventArgs.Empty);
-                }
-
+            if (!isAlmostExhausted) {
+                isAlmostExhausted = true;
+                OnPlayerAlmostExhaustionStarted?.Invoke(this, EventArgs.Empty);
             }
 
-            // Exhausted
-            if (runTimer > PlayerStats.Instance.GetRunMaxTime()) {
-                StartExhausted();
+        }
+        else {
+
+            if (isAlmostExhausted) {
+                isAlmostExhausted = false;
+                OnPlayerAlmostExhaustionStopped?.Invoke(this, EventArgs.Empty);
+            }
+
+        }
+
+        // Exhausted
+        if (staminaTimer > PlayerStats.Instance.GetRunMaxTime() && !isExhausted) {
+            StartExhausted();
+
+            if(isRunning) {
                 StopRunning();
-            }
-
-        } else {
-            // Recover only when not exhausted anymore
-            if(!isExhausted && runTimer > 0) {
-                runTimer -= Time.deltaTime * runRecoverFactor;
             }
         }
 

@@ -58,6 +58,7 @@ public class PlayerUI_HPBar : MonoBehaviour
 
     private void Update() {
         if (hpBarCritical) return;
+        if (Player.Instance.GetDead()) return;
 
         if (isFadingIn) {
             HandleFadeIn();
@@ -114,7 +115,7 @@ public class PlayerUI_HPBar : MonoBehaviour
     }
 
     private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
-        hpBarGameObject.SetActive(true);
+        StartCoroutine(ShowHPBarAfterDelay(3f));
         hpBarCritical = false;
         RefreshHPBar();
     }
@@ -140,7 +141,6 @@ public class PlayerUI_HPBar : MonoBehaviour
         ShowHPBar();
         RefreshHPBar();
     }
-
 
     private void Player_OnPlayerHealed(object sender, Player.OnPlayerHealedEventArgs e) {
         isFadingIn = true;
@@ -224,5 +224,12 @@ public class PlayerUI_HPBar : MonoBehaviour
         hpBarCanvasGroup.alpha = 1;
         hpBarDiplayTimer = displayTime;
         isFadingOut = false;
+    }
+
+    private IEnumerator ShowHPBarAfterDelay(float delay) {
+        Debug.Log(delay);
+        yield return new WaitForSeconds(delay);
+        Debug.Log("ShowHPBar") ;
+        ShowHPBar(2f);
     }
 }

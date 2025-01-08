@@ -54,10 +54,10 @@ public class CreaturesSpawnManager : MonoBehaviour
             waveDifficultyRightProportion = .5f;
             SetWaveParameters(currentWaveNumber, false, false);
         }
-        //if (Input.GetKeyDown(KeyCode.T)) {
-        //    Debug.Log("SpawnWave");
-        //    StartCoroutine(SpawnWave());
-        //}
+        if (Input.GetKeyDown(KeyCode.T)) {
+            Debug.Log("SpawnWave");
+            StartCoroutine(SpawnWave());
+        }
     }
 
     private void Start() {

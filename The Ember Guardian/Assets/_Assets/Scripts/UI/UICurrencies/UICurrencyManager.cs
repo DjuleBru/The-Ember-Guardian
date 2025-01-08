@@ -12,6 +12,7 @@ public class UICurrencyManager : MonoBehaviour
     [SerializeField] private Transform redOrbsSpawnPosition;
     [SerializeField] private Transform gemsSpawnPosition;
     [SerializeField] private Transform ammoSpawnPosition;
+    [SerializeField] private Transform backpackBottomPosition;
 
     [SerializeField] private Transform currencyContainer;
     [SerializeField] private Transform emberContainer;
@@ -159,9 +160,14 @@ public class UICurrencyManager : MonoBehaviour
         }
 
         Currency_UI currencyUICollected = currencyTransform.GetComponent<Currency_UI>();
+        //currencyUICollected.SetBackpackBottomPosition(backpackBottomPosition);
         OnCurrencyCollected?.Invoke(this, new OnCurrencyDroppedEventArgs {
             currencyUIDropped = currencyUICollected
         });
+
+        foreach(Currency_UI currency in currenciesInBag) {
+            currency.SetCurrencyRbMovable();
+        }
 
         currenciesInBag.Add(currencyUICollected);
     }
@@ -230,12 +236,20 @@ public class UICurrencyManager : MonoBehaviour
         OnCurrencyDropped?.Invoke(this, new OnCurrencyDroppedEventArgs {
             currencyUIDropped = currencyUI
         });
+
+        foreach (Currency_UI currency in currenciesInBag) {
+            currency.SetCurrencyRbMovable();
+        }
     }
 
     public void RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType currencyType, int currencyAmount) {
         for(int i=0; i< currencyAmount; i++) {
             List<Currency_UI> currenciesOfType = GetCurrenciesInBagOfType(currencyType);
             DropCurrencyFromBag(currenciesOfType[currenciesOfType.Count - 1]);
+        }
+
+        foreach (Currency_UI currency in currenciesInBag) {
+            currency.SetCurrencyRbMovable();
         }
     }
 

@@ -48,6 +48,7 @@ public class SoundManager : MonoBehaviour
         PlayerUI_AmmoBar.Instance.OnAmmoTickAdded += PlayerUI_AmmoBar_OnAmmoTickAdded;
         PlayerUI_HPBar.Instance.OnHPTickAdded += PlayerUI_HPBar_OnHPTickAdded;
         StructureUI_Fire.OnFireTickRemoved += StructureUI_Fire_OnFireTickRemoved;
+        StructureUI_Fire.OnCricitalFireTickRemoved += StructureUI_Fire_OnCricitalFireTickRemoved;
         PlayerWorldUITooltip.OnTooltipHidden += PlayerWorldUITooltip_OnTooltipHidden;
         PlayerWorldUITooltip.OnTooltipShown += PlayerWorldUITooltup_OnTooltipShown;
         ItemButtonUI.OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
@@ -168,6 +169,10 @@ public class SoundManager : MonoBehaviour
 
     private void StructureUI_Fire_OnFireTickRemoved(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.fireTickRemoved, .7f);
+    }
+
+    private void StructureUI_Fire_OnCricitalFireTickRemoved(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.criticalFireTickRemoved);
     }
 
     #endregion
@@ -551,6 +556,11 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlaySound2D(AudioClip audioClip, float volume = 1f) {
+        audioSource2D.PlayOneShot(audioClip, volume * sfxVolume);
+    }
+
+    private IEnumerator PlaySound2DAfterDelay(float delay, AudioClip audioClip, float volume = 1f) {
+        yield return new WaitForSeconds(delay);
         audioSource2D.PlayOneShot(audioClip, volume * sfxVolume);
     }
 

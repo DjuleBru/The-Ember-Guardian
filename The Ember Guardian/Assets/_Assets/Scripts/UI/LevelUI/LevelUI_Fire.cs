@@ -127,8 +127,8 @@ public class LevelUI_Fire : MonoBehaviour
         }
 
         PlayerUI_TickTemplate[] tickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
-        tickArray[tickArray.Length-1].RemoveTick(50);
-        tickArray[tickArray.Length-1].GetComponent<Rigidbody2D>().gravityScale = 75f;
+        tickArray[tickArray.Length-1].RemoveTick(2);
+        tickArray[tickArray.Length-1].GetComponent<Rigidbody2D>().gravityScale = 3f;
         tickArray[tickArray.Length - 1].transform.SetParent(fireUIGameObject.transform, true);
 
         progressBarTemplate.gameObject.SetActive(false);

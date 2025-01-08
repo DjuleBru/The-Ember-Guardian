@@ -148,7 +148,7 @@ public class Gun : MonoBehaviour
         shootPSMain.startLifetime = bulletLifetime;
 
         currentBullet = shotsPerClip;
-        currentAmmoClip = maxAmmo;
+        currentAmmoClip = MetaProgressionManager.Instance.GetInitialLevelAmmo();
     }
 
     public void InitializeTutorialGun() {

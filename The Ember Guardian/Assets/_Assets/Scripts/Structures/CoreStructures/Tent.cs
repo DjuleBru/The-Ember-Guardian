@@ -15,6 +15,7 @@ public class Tent : Structure
 
     protected override void Start() {
         base.Start();
+
         if(Player.Instance.GetHP() != PlayerStats.Instance.GetInitialPlayerMaxHP()) {
             ActivateStructurePrimaryFunctionInteraction(true);
         }

@@ -19,7 +19,8 @@ public class CreatureMovement : MobMovement
         moveSpeed = initialMobSpeed;
     }
 
-    protected void Start() {
+    protected override void Start() {
+        base.Start();
         creature.OnCreatureExitedLight += Creature_OnCreatureExitedLight;
         creature.OnCreatureEnteredLight += Creature_OnCreatureEnteredLight;
     }

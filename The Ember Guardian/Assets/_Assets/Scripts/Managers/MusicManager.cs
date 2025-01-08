@@ -8,8 +8,15 @@ public class MusicManager : MonoBehaviour {
 
     [SerializeField] private float audioVolume = .2f;
     [SerializeField] private AudioClip endLevelMusic;
+    [SerializeField] private AudioClip[] levelRandomTracks;
 
+    private float peacefulTimer;
+    private float minPeacefulTimerDelay = 20f;
+    private float playMusicAttemptTimer;
+    private float playMusicAttemptRate = 5f;
 
+    private bool isLevelScene;
+    private bool isPlayingPeacefulMusic;
     private AudioSource audioSource;
 
     private void Awake() {
@@ -22,6 +29,54 @@ public class MusicManager : MonoBehaviour {
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
+        }
+
+        CreatureAI.OnAnyCreatureAggro += CreatureAI_OnAnyCreatureAggro;
+        DayNightManager.Instance.OnNightStart += LevelManager_OnNightStart;
+
+        isLevelScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level;
+    }
+
+    private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {
+        peacefulTimer = 0;
+        playMusicAttemptTimer = 0;
+        isPlayingPeacefulMusic = false;
+        FadeOutMusic(2f);
+    }
+
+    private void LevelManager_OnNightStart(object sender, System.EventArgs e) {
+        peacefulTimer = 0;
+        playMusicAttemptTimer = 0;
+        isPlayingPeacefulMusic = false;
+        FadeOutMusic(2f);
+    }
+
+    private void Update() {
+        if (isPlayingPeacefulMusic) return;
+
+        if(isLevelScene) {
+            peacefulTimer += Time.deltaTime;
+
+            if(peacefulTimer >= minPeacefulTimerDelay) {
+                playMusicAttemptTimer += Time.deltaTime;
+
+                if(playMusicAttemptTimer > playMusicAttemptRate) {
+                    playMusicAttemptTimer = 0;
+
+                    float randomNumber = UnityEngine.Random.Range(0, 1f);
+                    float chanceToPlayMusid = .25f;
+
+                    Debug.Log("Play music Attempt " + randomNumber);
+                    if (randomNumber < chanceToPlayMusid) {
+
+                        AudioClip randomMusic = levelRandomTracks[Random.Range(0, levelRandomTracks.Length)];
+                        audioSource.clip = randomMusic;
+                        isPlayingPeacefulMusic = true;
+                        FadeInMusic(5f);
+
+                    }
+                }
+            }
         }
     }
 

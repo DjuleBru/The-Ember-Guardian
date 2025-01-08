@@ -87,6 +87,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip ammoTickAdded;
     public AudioClip hpTickAdded;
     public AudioClip fireTickRemoved;
+    public AudioClip criticalFireTickRemoved;
     public AudioClip tooltipShown;
     public AudioClip tooltipHidden;
     public AudioClip objectiveShown;

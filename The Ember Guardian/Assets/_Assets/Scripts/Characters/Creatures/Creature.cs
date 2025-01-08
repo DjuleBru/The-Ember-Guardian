@@ -27,7 +27,7 @@ public class Creature : Mob
     private float detectionRangeIncreasedTimer;
     private float detectionRangeIncreasedTime = 2f;
     private bool detectionRangeIncreased;
-    private float playerShootDetectionRangeMultiplier = 1.3f;
+    private float playerShootDetectionRangeMultiplier = 1.75f;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();

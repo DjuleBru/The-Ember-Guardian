@@ -1,22 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CreatureAnimatorManager : MonoBehaviour
 {
-    private Creature creature;
-    private MobAttack mobAttack;
-    private MobMovement mobMovement;
-    private Animator animator;
+    protected Creature creature;
+    protected MobAttack mobAttack;
+    protected MobMovement mobMovement;
+    protected Animator animator;
 
-    private bool moving;
-    private float moveDir;
-    private float watchDir;
-    private float previousWatchDir = 1f;
-    private float animatorSpeedMultiplier = 1f;
-    private float baseMovementAnimationSpeed;
+    protected bool moving;
+    protected float moveDir;
+    protected float watchDir;
+    protected float previousWatchDir = 1f;
+    protected float animatorSpeedMultiplier = 1f;
+    protected float baseMovementAnimationSpeed;
 
-    private void Awake() {
+    public event EventHandler OnFootStepTriggered;
+
+    protected virtual void Awake() {
         creature = GetComponentInParent<Creature>();
         mobMovement = GetComponentInParent<MobMovement>();
         mobAttack = GetComponentInParent<MobAttack>();
@@ -27,18 +30,18 @@ public class CreatureAnimatorManager : MonoBehaviour
         mobMovement.OnMoveSpeedBuffChanged += MobMovement_OnMoveSpeedBuffChanged;
     }
 
-    private void Start() {
+    protected virtual void Start() {
         baseMovementAnimationSpeed = creature.GetCreatureSO().baseMovementAnimationSpeed;
         animatorSpeedMultiplier = baseMovementAnimationSpeed;
         animator.SetFloat("AnimationSpeedMultiplier", animatorSpeedMultiplier);
     }
 
-    private void MobMovement_OnMoveSpeedBuffChanged(object sender, MobMovement.OnMoveSpeedBuffedEventArgs e) {
+    protected void MobMovement_OnMoveSpeedBuffChanged(object sender, MobMovement.OnMoveSpeedBuffedEventArgs e) {
         animatorSpeedMultiplier = baseMovementAnimationSpeed * e.moveSpeedBuff;
         animator.SetFloat("AnimationSpeedMultiplier", animatorSpeedMultiplier);
     }
 
-    private void Update() {
+    protected void Update() {
         moveDir = mobMovement.GetMoveDirFloat();
 
         HandleXScale();
@@ -46,7 +49,7 @@ public class CreatureAnimatorManager : MonoBehaviour
 
     }
 
-    private void HandleAnimatorMovementBool() {
+    protected void HandleAnimatorMovementBool() {
 
         if (moveDir != 0) {
 
@@ -67,7 +70,7 @@ public class CreatureAnimatorManager : MonoBehaviour
         }
     }
 
-    private void HandleXScale() {
+    protected void HandleXScale() {
 
         if (moving) {
             HandleScaleChange(moveDir);
@@ -82,7 +85,7 @@ public class CreatureAnimatorManager : MonoBehaviour
         HandleScaleChange(watchDir);
     }
 
-    private void HandleScaleChange(float watchDir) {
+    protected void HandleScaleChange(float watchDir) {
         if (watchDir < 0 && previousWatchDir > 0) {
             previousWatchDir = watchDir;
             Vector3 newScale = new Vector3(-1, 1, 1);
@@ -96,12 +99,16 @@ public class CreatureAnimatorManager : MonoBehaviour
         }
     }
 
-    private void MobAttack_OnMobAttack(object sender, System.EventArgs e) {
+    protected void MobAttack_OnMobAttack(object sender, System.EventArgs e) {
         animator.SetTrigger("Attack");
     }
 
-    private void Creature_OnMobDied(object sender, System.EventArgs e) {
+    protected void Creature_OnMobDied(object sender, System.EventArgs e) {
         animator.SetTrigger("Die");
+    }
+
+    public void FootStepEvent() {
+        OnFootStepTriggered?.Invoke(this, EventArgs.Empty);
     }
 
 }

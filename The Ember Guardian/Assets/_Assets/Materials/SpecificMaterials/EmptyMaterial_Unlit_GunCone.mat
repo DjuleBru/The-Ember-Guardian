@@ -65,7 +65,6 @@ Material:
   - GRADIENT2COL_ON
   - GRADIENT_ON
   - OUTBASE8DIR_ON
-  - OUTBASE_ON
   m_InvalidKeywords:
   - ETC1_EXTERNAL_ALPHA
   - _GLOWAFFECTLIGHT_ON
@@ -137,7 +136,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 0.151
+    - _Alpha: 1
     - _AlphaCutoffValue: 0.153
     - _AlphaOutlineBlend: 0.33
     - _AlphaOutlineGlow: 5
@@ -184,7 +183,7 @@ Material:
     - _GhostTransparency: 0
     - _GlitchAmount: 3
     - _GlitchSize: 1
-    - _Glow: 0.5
+    - _Glow: 1
     - _GlowAffectLight: 1
     - _GlowGlobal: 1
     - _GlowTexUsed: 0

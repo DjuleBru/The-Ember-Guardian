@@ -6,7 +6,9 @@ using UnityEngine;
 public class MobAttack : MonoBehaviour
 {
     [SerializeField] protected bool isProjectileAttack;
+    [SerializeField] protected bool isStaticProjectileAttack;
     [SerializeField] protected ProjectileSO projectileSO;
+    [SerializeField] protected Transform staticProjectilePrefab;
 
     [SerializeField] protected Transform projectileSpawnPoint;
     [SerializeField] protected float attackCooldown;
@@ -23,6 +25,7 @@ public class MobAttack : MonoBehaviour
     protected IDamageable previousAttackTargetIDamageable;
 
     public event EventHandler OnMobAttack;
+    public event EventHandler OnMobAttackHit;
     public event EventHandler OnAttackTargetSet;
 
     protected bool attacking;
@@ -35,10 +38,10 @@ public class MobAttack : MonoBehaviour
 
     protected void Update() {
 
-        if((attackTargetIDamageable as MonoBehaviour)!= null) {
+        attackTimer -= Time.deltaTime;
 
+        if ((attackTargetIDamageable as MonoBehaviour)!= null) {
             attacking = true;
-            attackTimer -= Time.deltaTime;
 
             if(attackTimer <= 0 ) {
                 attackTimer = attackCooldown;
@@ -54,13 +57,16 @@ public class MobAttack : MonoBehaviour
         OnMobAttack?.Invoke(this, EventArgs.Empty);
 
         if(isProjectileAttack) {
-            StartCoroutine(SpawnProjectileAfterDelay(attackAnimationDelay));
+            StartCoroutine(SpawnProjectileAfterDelay(attackAnimationDelay, totalAttackAnimationTime));
+        } else if (isStaticProjectileAttack) {
+            StartCoroutine(SpawnStaticProjectileAfterDelay(attackAnimationDelay, totalAttackAnimationTime));
         } else {
             StartCoroutine(DealDamageAfterDelay(attackAnimationDelay, totalAttackAnimationTime));
         }
     }
 
-    protected IEnumerator SpawnProjectileAfterDelay(float delay) {
+    protected IEnumerator SpawnProjectileAfterDelay(float delay, float totalAttackAnimationTime) {
+        attackStarted = true;
         yield return new WaitForSeconds(delay);
 
         // Projectile can be instantiated AFTER attack target reset, so must keep track of previous attack target
@@ -76,14 +82,41 @@ public class MobAttack : MonoBehaviour
 
             projectile.ActivateAndInitialize(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, mob, attackDamage, endPointRandomized, homingProjectile);
         }
+
+        yield return new WaitForSeconds(totalAttackAnimationTime - delay);
+
+        attackStarted = false;
+    }
+
+    protected IEnumerator SpawnStaticProjectileAfterDelay(float delayToSpawnStaticProjectile, float totalAttackAnimationTime) {
+        attackStarted = true;
+        yield return new WaitForSeconds(delayToSpawnStaticProjectile);
+
+        OnMobAttackHit?.Invoke(this, EventArgs.Empty);
+
+        // Projectile can be instantiated AFTER attack target reset, so must keep track of previous attack target
+        if ((attackTargetIDamageable as MonoBehaviour) == null) {
+            previousAttackTargetIDamageable = null;
+        }
+
+        if (previousAttackTargetIDamageable != null) {
+            StaticProjectile projectile = Instantiate(staticProjectilePrefab, projectileSpawnPoint.position, Quaternion.identity).GetComponent<StaticProjectile>();
+            projectile.Initialize(GetAttackDir().x);
+        }
+
+        yield return new WaitForSeconds(totalAttackAnimationTime - delayToSpawnStaticProjectile);
+
+        attackStarted = false;
     }
 
     protected IEnumerator DealDamageAfterDelay(float delayToDealDamage, float totalAttackAnimationTime) {
         attackStarted = true;
         yield return new WaitForSeconds(delayToDealDamage);
 
-        if (previousAttackTargetIDamageable != null) {
-            previousAttackTargetIDamageable.TakeDamage(attackDamage, transform);
+        OnMobAttackHit?.Invoke(this, EventArgs.Empty);
+
+        if (attackTargetIDamageable != null) {
+            attackTargetIDamageable.TakeDamage(attackDamage, transform);
         }
 
         if ((attackTargetIDamageable as MonoBehaviour) == Fire.Instance) {

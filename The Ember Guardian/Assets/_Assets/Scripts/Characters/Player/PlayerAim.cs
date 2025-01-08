@@ -19,6 +19,7 @@ public class PlayerAim : MonoBehaviour
 
     private bool isUsingGamepad;
     private bool isAimingSight;
+    private bool canAim = true;
 
     private float aimAngle;
     private float aimHeight;
@@ -53,11 +54,15 @@ public class PlayerAim : MonoBehaviour
 
         PlayerShoot.Instance.OnPlayerAimedSightStarted += PlayerShoot_OnPlayerAimedSightStarted;
         PlayerShoot.Instance.OnPlayerAimedSightEnded += PlayerShoot_OnPlayerAimedSightEnded;
+        PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
+        PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
 
         isUsingGamepad = GameInput.Instance.IsUsingGamepad();
     }
 
     private void Update() {
+        if (!canAim) return;
+
         if (isUsingGamepad) {
             HandleAimGamepad(GameInput.Instance.GetAimInput());
         }
@@ -103,6 +108,14 @@ public class PlayerAim : MonoBehaviour
 
         // Smooth recoil back to zero
         currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
+    }
+
+    private void PlayerMovement_OnPlayerRollEnded(object sender, EventArgs e) {
+        canAim = true;
+    }
+
+    private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
+        canAim = false;
     }
 
     private void PlayerShoot_OnPlayerAimedSightEnded(object sender, EventArgs e) {
@@ -204,6 +217,13 @@ public class PlayerAim : MonoBehaviour
 
     public Vector3 GetAimDir() {
         return aimDir;
+    }
+    public float GetAimDirFloat() {
+        if(aimDir.x >= 0) {
+            return 1f;
+        } else {
+            return -1f;
+        }
     }
     public Vector3 GetPreviousAimDir() {
         return previousAimDir;

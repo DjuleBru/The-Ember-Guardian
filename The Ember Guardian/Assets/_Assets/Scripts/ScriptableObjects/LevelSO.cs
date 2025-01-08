@@ -15,7 +15,7 @@ public class LevelSO : ScriptableObject
     public LevelEnvironment environmentType;
     public LevelUI_ObjectiveUI.ObjectiveType levelObjectiveType;
     public string linkedSceneName;
-
+    public float fogAlpha;
 
     public string GetLevelEnvironmentTypeString() {
         if(environmentType == LevelEnvironment.TheLostGreens) {
