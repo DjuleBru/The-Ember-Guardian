@@ -49,6 +49,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5790070875298000509, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
+      propertyPath: m_SortingOrder
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5790070875298000509, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -62,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
       propertyPath: lengthInSec
-      value: 0.2
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
       propertyPath: TrailModule.mode
@@ -178,7 +182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
-      value: 50
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
       propertyPath: InitialModule.startLifetime.scalar

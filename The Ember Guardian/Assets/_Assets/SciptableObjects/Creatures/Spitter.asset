@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Spitter
   description: Ranged mob that fires arced projectiles
-  creaturePrefab: {fileID: 4997657120178985709, guid: 756e13c7ac7325942baa544ddb115872, type: 3}
+  creaturePrefab: {fileID: 0}
   mass: 20
   detectionRange_Day: 20
   detectionRange_Night: 12
+  flying: 0
+  flightMinAltitude: 0
+  flightMaxAltitude: 0
   moveSpeed: 2
   enteredLightMoveSpeedDebuff: 1
   moveSpeedRandomizerDelta: 0.25
@@ -28,15 +31,19 @@ MonoBehaviour:
   isRangedAttack: 1
   minAttackRange: 15
   maxAttackRange: 20
+  hasSpecialAbility: 0
+  specialAbilityCooldown: 0
   attackRangeRandomizer: 0.5
   attackRangeMaxDistanceMiss: 0.3
   relativeDamageToFire: 1
   attackAnimationDelay: 0.3
   totalAttackAnimationTime: 0.7
+  hasSpawnAnimation: 0
+  spawnAnimationDuration: 0
   baseMovementAnimationSpeed: 0.85
   workerTargetingPriority: 1
-  playerTargetingPriority: 3
-  barricadeTargetingPriority: 2
+  playerTargetingPriority: 2
+  barricadeTargetingPriority: 3
   currencyTypeDroppedList: 0200000003000000
   currencyDropAmountList: 0100000002000000
   difficulty: 3
@@ -48,6 +55,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0c782e1089d358841b8b36260aedb201, type: 3}
   - {fileID: 8300000, guid: 3bd5f14bf4d2cd046b2524db42bccbb8, type: 3}
   - {fileID: 8300000, guid: f5ca9ff7b423c124c8a9f55f22221ec6, type: 3}
+  attackHitAudioClips: []
   idleAudioClips:
   - {fileID: 8300000, guid: 3622f4da21b214c46a08f40c71ae4355, type: 3}
   - {fileID: 8300000, guid: 925425b4cf2d18e42be1520fdb37456b, type: 3}

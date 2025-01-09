@@ -64,7 +64,7 @@ public class MusicManager : MonoBehaviour {
                     playMusicAttemptTimer = 0;
 
                     float randomNumber = UnityEngine.Random.Range(0, 1f);
-                    float chanceToPlayMusid = .25f;
+                    float chanceToPlayMusid = .1f;
 
                     Debug.Log("Play music Attempt " + randomNumber);
                     if (randomNumber < chanceToPlayMusid) {

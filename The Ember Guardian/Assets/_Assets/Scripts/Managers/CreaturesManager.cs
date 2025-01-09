@@ -17,19 +17,26 @@ public class CreaturesManager : MonoBehaviour
         Instance = this;
     }
 
-    public Creature GetClosestCreatureInRadius(Vector2 position, float radius) {
+    public Creature GetClosestCreatureInRadiusSmart(Vector2 position, float radius, int damage) {
 
         float closestXDistance = Mathf.Infinity;
         Creature closestCreatureInRadius = null;
 
         foreach (Creature creature in creaturesSpawnedList) {
             float distanceToCreature = Mathf.Abs(creature.transform.position.x - position.x);
-            if ((distanceToCreature) < radius && (distanceToCreature < closestXDistance)) {
-                // Creature is the closest one
+            bool creatureIsOneHitAwayFromDeathAndAlreadyTargeted = creature.GetCreatureTargeted() && creature.GetCreatureHealth() <= damage;
 
-                closestXDistance = Mathf.Abs(creature.transform.position.x - position.x);
-                closestCreatureInRadius = creature;
-            }
+            if ((distanceToCreature) < radius) {
+                // Creature is within attack range
+
+                if (distanceToCreature < closestXDistance && !creatureIsOneHitAwayFromDeathAndAlreadyTargeted) {
+                    // Creature is the closest one
+
+                    closestXDistance = Mathf.Abs(creature.transform.position.x - position.x);
+                    closestCreatureInRadius = creature;
+                }
+
+            } 
 
         }
 
@@ -82,7 +89,7 @@ public class CreaturesManager : MonoBehaviour
 
         creaturesSpawnedAtNightList.Remove(creature);
 
-        if (creaturesSpawnedAtNightList.Count == 0) {
+        if (creaturesSpawnedAtNightList.Count == 0 && CreaturesSpawnManager.Instance.GetIsLastSubWave()) {
             OnAllCreaturesAtNightKilled?.Invoke(this, EventArgs.Empty);
         }
     }

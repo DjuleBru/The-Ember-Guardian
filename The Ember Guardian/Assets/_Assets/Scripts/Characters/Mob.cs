@@ -69,7 +69,7 @@ public class Mob : MonoBehaviour, IDamageable
         return mobSpawner;
     }
 
-    public void TakeDamage(int damage, Transform damageSource, bool critHit) {
+    public void TakeDamage(int damage, Transform damageSource, bool critHit = false) {
         if (health <= 0) return;
         
         if(critHit) {

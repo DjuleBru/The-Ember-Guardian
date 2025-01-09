@@ -62,7 +62,7 @@ public class WildJob : MonoBehaviour, IJobBehavior {
 
         if(roamTimer < 0 ) {
             roamTimer = roamChangeDestinationRate;
-            RoamBehavior.RoamAroundPoint(worker.GetComponent<MobMovement>(), roamRadius, worker.GetMobSpawner().transform.position);
+            RoamBehavior.RoamAroundPoint(worker.GetComponent<MobMovement>(), roamRadius, worker.GetMobSpawner().transform.position, false);
         }
     }
 

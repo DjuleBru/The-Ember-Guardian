@@ -92,8 +92,6 @@ public class MobAttack : MonoBehaviour
         attackStarted = true;
         yield return new WaitForSeconds(delayToSpawnStaticProjectile);
 
-        OnMobAttackHit?.Invoke(this, EventArgs.Empty);
-
         // Projectile can be instantiated AFTER attack target reset, so must keep track of previous attack target
         if ((attackTargetIDamageable as MonoBehaviour) == null) {
             previousAttackTargetIDamageable = null;
@@ -104,6 +102,8 @@ public class MobAttack : MonoBehaviour
             projectile.Initialize(GetAttackDir().x);
         }
 
+        OnMobAttackHit?.Invoke(this, EventArgs.Empty);
+
         yield return new WaitForSeconds(totalAttackAnimationTime - delayToSpawnStaticProjectile);
 
         attackStarted = false;
@@ -113,7 +113,6 @@ public class MobAttack : MonoBehaviour
         attackStarted = true;
         yield return new WaitForSeconds(delayToDealDamage);
 
-        OnMobAttackHit?.Invoke(this, EventArgs.Empty);
 
         if (attackTargetIDamageable != null) {
             attackTargetIDamageable.TakeDamage(attackDamage, transform);
@@ -123,6 +122,8 @@ public class MobAttack : MonoBehaviour
             mob.Die();
         }
 
+        OnMobAttackHit?.Invoke(this, EventArgs.Empty);
+
         yield return new WaitForSeconds(totalAttackAnimationTime - delayToDealDamage);
 
         attackStarted = false;
@@ -131,6 +132,7 @@ public class MobAttack : MonoBehaviour
     protected virtual Vector3 GetEndPointRandomized() {
         return Vector3.zero;
     }
+
     public void SetAttackTarget(IDamageable iDamageable) {
         this.attackTargetIDamageable = iDamageable;
         previousAttackTargetIDamageable = attackTargetIDamageable;
@@ -150,6 +152,9 @@ public class MobAttack : MonoBehaviour
     }
 
     public Vector3 GetAttackDir() {
+        if((attackTargetIDamageable as MonoBehaviour) == null) {
+            return Vector3.zero;
+        }
         return (attackTargetIDamageable as MonoBehaviour).transform.position - transform.position;
     }
 
@@ -159,6 +164,9 @@ public class MobAttack : MonoBehaviour
 
     public bool GetAttackStarted() {
         return attackStarted;
+    }
+    public int GetAttackDamage() {
+        return attackDamage;
     }
 
     public bool GetIsRangedAttack() {

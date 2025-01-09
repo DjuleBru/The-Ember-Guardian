@@ -20,7 +20,17 @@ public class StaticProjectile : MonoBehaviour
         if ((hasHit)) return;
 
         if (collision.GetComponent<Player>() != null) {
-            Player.Instance.TakeDamage(1, transform, false);
+            Player.Instance.TakeDamage(1, transform);
+            hasHit = true;
+        }
+
+        if (collision.GetComponent<Barricade>() != null) {
+            collision.GetComponent<Barricade>().TakeDamage(1, transform);
+            hasHit = true;
+        }
+
+        if (collision.GetComponent<Worker>() != null) {
+            collision.GetComponent<Worker>().TakeDamage(1, transform, false);
             hasHit = true;
         }
     }

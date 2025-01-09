@@ -23,7 +23,7 @@ public class Fog_Front : MonoBehaviour
     private void Start() {
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
 
-        initialAlpha = LevelManager.Instance.GetLevelSO().fogAlpha;
+        initialAlpha = LevelManager.Instance.GetLevelSO().fogFrontAlpha;
         fogRenderer.color = new Color(fogRenderer.color.r, fogRenderer.color.g, fogRenderer.color.b, initialAlpha);
     }
 

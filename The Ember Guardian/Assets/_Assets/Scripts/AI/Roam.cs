@@ -33,7 +33,7 @@ public class Roam : Action
             destinationPoint = GetRoamDestinationAroundPoint(mobMovement, roamRadius, positionToRoamAmound);
         }
 
-        mobMovement.HeadToDestination(destinationPoint);
+        //mobMovement.HeadToDestination(destinationPoint);
         return TaskStatus.Running;
     }
 

@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Ghoul
   description: Melee mob that can respawn after it's first death !
-  creaturePrefab: {fileID: 4997657120178985709, guid: a348dcd32c6420442bf13c1e8971f0de, type: 3}
+  creaturePrefab: {fileID: 0}
   mass: 20
   detectionRange_Day: 15
   detectionRange_Night: 2
+  flying: 0
+  flightMinAltitude: 0
+  flightMaxAltitude: 0
   moveSpeed: 1.75
   enteredLightMoveSpeedDebuff: 1.3
   moveSpeedRandomizerDelta: 0
@@ -28,15 +31,19 @@ MonoBehaviour:
   isRangedAttack: 0
   minAttackRange: 1
   maxAttackRange: 2
+  hasSpecialAbility: 0
+  specialAbilityCooldown: 0
   attackRangeRandomizer: 0.5
   attackRangeMaxDistanceMiss: 0.1
   relativeDamageToFire: 1
   attackAnimationDelay: 0.2
   totalAttackAnimationTime: 0.6
+  hasSpawnAnimation: 0
+  spawnAnimationDuration: 0
   baseMovementAnimationSpeed: 0.85
   workerTargetingPriority: 1
-  playerTargetingPriority: 2
-  barricadeTargetingPriority: 3
+  playerTargetingPriority: 3
+  barricadeTargetingPriority: 2
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
   difficulty: 3
@@ -51,6 +58,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 621fd224240f24f4da55ca60a08080ca, type: 3}
   - {fileID: 8300000, guid: 09714533c5bc0f645b482e3f1ed6e3e3, type: 3}
   - {fileID: 8300000, guid: a342ad29969dcc54eb2e92743940c990, type: 3}
+  attackHitAudioClips: []
   idleAudioClips:
   - {fileID: 8300000, guid: 0955a64cf2c91f441a67c383939107a9, type: 3}
   - {fileID: 8300000, guid: 5cf867f48b95cb84f9c42ae6f8bc4ccb, type: 3}

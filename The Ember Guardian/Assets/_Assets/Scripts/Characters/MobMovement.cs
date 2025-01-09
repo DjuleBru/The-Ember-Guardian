@@ -28,7 +28,7 @@ public class MobMovement : MonoBehaviour
     protected float movementForce;
 
     protected bool destinationReached;
-    protected bool canMove;
+    protected bool canMove = true;
     public event EventHandler OnDestinationReached;
     public event EventHandler OnDestinationSet;
 
@@ -72,8 +72,7 @@ public class MobMovement : MonoBehaviour
         }
     }
 
-    protected void HandleMovementForces() {
-
+    protected virtual void HandleMovementForces() {
         Vector3 moveDirection = targetDestination - transform.position;
 
         if(moveDirection.x <0) {
@@ -117,7 +116,7 @@ public class MobMovement : MonoBehaviour
         }
     }
 
-    public void HeadToDestination(Vector3 targetDestination) {
+    public virtual void HeadToDestination(Vector3 targetDestination) {
 
         // Check if destination reached;
         if (Mathf.Abs(targetDestination.x - transform.position.x) < .1f) {
@@ -195,6 +194,10 @@ public class MobMovement : MonoBehaviour
             rb.velocity = Vector2.zero;
         }
         this.canMove = canMove;
+    }
+
+    public void InvokeOnDestinationReached() {
+        OnDestinationReached?.Invoke(this, EventArgs.Empty);
     }
 
     public Vector3 GetTargetDestination() {

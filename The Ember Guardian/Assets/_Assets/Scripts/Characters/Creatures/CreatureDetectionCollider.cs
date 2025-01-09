@@ -161,12 +161,13 @@ public class CreatureDetectionCollider : MonoBehaviour
         if (iDamageablesDetected.Count == 0) return;
 
         IDamageable highestPriorityTarget = null;
-        int highestPriority = int.MaxValue; // Initialise à une valeur élevée
+        int highestPriority = 0; // Initialise à une valeur élevée
 
         foreach (IDamageable iDamageable in iDamageablesDetected) {
-            int currentPriority = int.MaxValue;
+            int currentPriority = 0;
 
             if (iDamageable is Worker) {
+                if (creature.GetCreatureSO().workerTargetingPriority == 0) continue;
 
                 Worker worker = (Worker)iDamageable;
                 // Check if worker is out of camp AND player is around too 
@@ -177,6 +178,8 @@ public class CreatureDetectionCollider : MonoBehaviour
             }
 
             if (iDamageable is Barricade) {
+                if (creature.GetCreatureSO().barricadeTargetingPriority == 0) continue;
+
                 Barricade barricade = (Barricade)iDamageable;
                 if(barricade.GetBarricadeHealthNormalized() > 0) {
                     currentPriority = creature.GetCreatureSO().barricadeTargetingPriority;
@@ -184,10 +187,11 @@ public class CreatureDetectionCollider : MonoBehaviour
             }
 
             if (iDamageable is Fire) {
-                currentPriority = 0;
+                currentPriority = int.MaxValue;
             }
 
             if (iDamageable is Player) {
+                if (creature.GetCreatureSO().playerTargetingPriority == 0) continue;
 
                 // Check if player is in range in the y axis !
                 if ((Player.Instance.transform.position.y > creature.GetCreatureSO().minAttackRange) && !creatureAttack.GetIsRangedAttack()) {
@@ -201,7 +205,7 @@ public class CreatureDetectionCollider : MonoBehaviour
             }
 
             // Si la priorité actuelle est plus haute, on la met à jour
-            if (currentPriority < highestPriority) {
+            if (currentPriority > highestPriority) {
                 highestPriorityTarget = iDamageable;
                 highestPriority = currentPriority;
             }

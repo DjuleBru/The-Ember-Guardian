@@ -51,7 +51,7 @@ public class PlayerSounds : MonoBehaviour
     }
 
     private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(playerDamagedElectricAudioClips[Random.Range(0, playerDamagedElectricAudioClips.Length)], sfxVolume);
+        playerAudioSource.PlayOneShot(playerDamagedElectricAudioClips[Random.Range(0, playerDamagedElectricAudioClips.Length)], sfxVolume * .4f);
 
         if (Player.Instance.GetHP() == 0) return;
         StartCoroutine(PlayHumanDamagedAudioClip());

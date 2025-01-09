@@ -41,6 +41,7 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     private int currentWaveNumber;
     private int subWaveNumber;
+    private int subWaveIndex;
 
     private void Awake() {
         Instance = this;
@@ -142,7 +143,7 @@ public class CreaturesSpawnManager : MonoBehaviour
     }
 
     private IEnumerator SpawnWave() {
-        int subWaveIndex = 0;
+        subWaveIndex = 0;
         int spawnedCount = 0;
 
         while (subWaveIndex < subWaveNumber) {
@@ -160,7 +161,7 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     private void SpawnCreatureAtSide(CreatureSO creatureToSpawn, SpawnSide spawnSide) {
 
-        Creature creature = Instantiate(creatureToSpawn.creaturePrefab, GetSpawnPosition(spawnSide), Quaternion.identity).GetComponent<Creature>();
+        Creature creature = Instantiate(creatureToSpawn.creaturePrefab, GetSpawnPosition(spawnSide, creatureToSpawn), Quaternion.identity).GetComponent<Creature>();
         creature.SetAsDayCreature(false);
         CreaturesManager.Instance.AddCreatureToNightWave(creature);
     }
@@ -275,17 +276,20 @@ public class CreaturesSpawnManager : MonoBehaviour
         return waveCreatures;
     }
 
-    Vector3 GetSpawnPosition(SpawnSide spawnSide) {
+    Vector3 GetSpawnPosition(SpawnSide spawnSide, CreatureSO creatureToSpawn) {
         // Logique pour choisir une position de spawn, par exemple autour d'une zone spécifique
         float xSpawnPosition = 0;
+
         if(spawnSide == SpawnSide.Left) {
+
             if(Player.Instance.transform.position.x < CampZoneManager.Instance.GetCampCenterMinLimit()) {
                 xSpawnPosition = Player.Instance.transform.position.x - spawnDistanceToPlayerOrCamp;
             } else {
                 xSpawnPosition = CampZoneManager.Instance.GetCampCenterMinLimit() - spawnDistanceToPlayerOrCamp;
             }
+
         } else {
-            if (Player.Instance.transform.position.x > CampZoneManager.Instance.GetCampCenterMinLimit()) {
+            if (Player.Instance.transform.position.x > CampZoneManager.Instance.GetCampCenterMaxLimit()) {
                 xSpawnPosition = Player.Instance.transform.position.x + spawnDistanceToPlayerOrCamp;
             }
             else {
@@ -293,8 +297,12 @@ public class CreaturesSpawnManager : MonoBehaviour
             }
         }
 
-        Debug.Log(xSpawnPosition);
-        return new Vector3(xSpawnPosition + Random.Range(-2, 2), 1, 0);
+        float yPosition = 1f;
+        if (creatureToSpawn.flying) {
+            yPosition = UnityEngine.Random.Range(creatureToSpawn.flightMinAltitude, creatureToSpawn.flightMaxAltitude);
+        }
+
+        return new Vector3(xSpawnPosition + Random.Range(-2, 2), yPosition, 0);
 
     }
 
@@ -331,5 +339,9 @@ public class CreaturesSpawnManager : MonoBehaviour
         }
     }
 
-
+    public bool GetIsLastSubWave() {
+        Debug.Log("subWaveIndex " + subWaveIndex);
+        Debug.Log("subWaveNumber " + subWaveNumber);
+        return subWaveIndex == subWaveNumber;
+    }
 }

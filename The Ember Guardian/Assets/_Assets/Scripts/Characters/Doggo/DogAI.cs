@@ -224,7 +224,7 @@ public class DogAI : MonoBehaviour
 
         if (roamTimer < 0) {
             roamTimer = roamChangeDestionationRate;
-            RoamBehavior.RoamAroundPoint(dogMovement, roamRadius, pointToRoamAround);
+            RoamBehavior.RoamAroundPoint(dogMovement, roamRadius, pointToRoamAround, false);
         }
     }
 

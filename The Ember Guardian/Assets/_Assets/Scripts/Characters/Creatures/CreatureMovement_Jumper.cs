@@ -6,7 +6,6 @@ using UnityEngine;
 public class CreatureMovement_Jumper : CreatureMovement
 {
     private CreatureAI creatureAI;
-    private Creature creature;
 
     [SerializeField] private float jumpForceY = 70f; // Force du saut
     [SerializeField] private float jumpForceX = 35f; // Force du saut
@@ -30,7 +29,6 @@ public class CreatureMovement_Jumper : CreatureMovement
     protected override void Start() {
         base.Start();
         creatureAI = GetComponent<CreatureAI>();
-        creature = GetComponent<Creature>();
 
         creature.OnCreatureDied += Creature_OnCreatureDied;
 
@@ -49,10 +47,19 @@ public class CreatureMovement_Jumper : CreatureMovement
 
             // Appliquer une force de saut
 
-            float distanceToPlayer = Mathf.Abs(transform.position.x - Player.Instance.transform.position.x);
 
-            if (creatureAI.GetState() == CreatureAI.State.moveToTarget  && IsGrounded() && distanceToPlayer > maxDistanceToPlayerToJump) {
-                StartCoroutine(Jump());
+            if (creatureAI.GetState() == CreatureAI.State.moveToTarget || creatureAI.GetState() == CreatureAI.State.walkingToFire && IsGrounded()) {
+
+                float distanceToTarget = 0;
+                if ((creatureAI.GetAttackTarget() as MonoBehaviour) != null) {
+                    distanceToTarget = Mathf.Abs(transform.position.x - (creatureAI.GetAttackTarget() as MonoBehaviour).transform.position.x);
+                } else {
+                    distanceToTarget = Mathf.Abs(transform.position.x - CampZoneManager.Instance.GetClosestExteriorZoneLimit(transform.position).x);
+                }
+
+                if (distanceToTarget > maxDistanceToPlayerToJump) {
+                    StartCoroutine(Jump());
+                }
             }
         }
     }
@@ -72,6 +79,7 @@ public class CreatureMovement_Jumper : CreatureMovement
             float jumpForceYRandomized = UnityEngine.Random.Range(jumpForceY - jumpForceY / 4, jumpForceY + jumpForceY / 4);
             float jumpForceXRandomized = UnityEngine.Random.Range(jumpForceX - jumpForceX / 4, jumpForceX + jumpForceX / 4) * moveDirFloat;
             Vector2 force = new Vector2(jumpForceXRandomized, jumpForceYRandomized);
+            rb.gravityScale = jumpGravityMultiplier;
 
             rb.AddForce(force, ForceMode2D.Impulse);
         }
@@ -90,16 +98,15 @@ public class CreatureMovement_Jumper : CreatureMovement
         base.FixedUpdate();
 
         // Augmenter la gravité lorsque la créature retombe
-        if (rb.velocity.y < 0) {
-            rb.gravityScale = fallGravityMultiplier;
+        if(isJumping) {
+            if (rb.velocity.y < 0) {
+                rb.gravityScale = fallGravityMultiplier;
+            }
         }
-        else if (rb.velocity.y > 0) {
-
-            rb.gravityScale = jumpGravityMultiplier;
-
-        } else {
+        else {
             rb.gravityScale = 1f;
         }
+
     }
 
 

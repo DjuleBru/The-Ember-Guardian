@@ -320,7 +320,6 @@ public class SoundManager : MonoBehaviour
 
     #region SHOOTING
 
-
     private void ParticleCollision_OnAnyBulletHitEnemyCrit(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitEnemyCritSound;
         PlaySound2D(audioClipArray,  1f);

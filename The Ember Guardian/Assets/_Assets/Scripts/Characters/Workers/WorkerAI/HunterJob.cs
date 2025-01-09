@@ -259,7 +259,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
                     if (targetCreature == null) {
 
-                        CheckClosestCreature();
+                        CheckClosestCreatureSmart();
 
                     }
                     else {
@@ -328,7 +328,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
         if (roamTimer < 0) {
             roamTimer = roamChangeDestinationRate;
-            RoamBehavior.RoamAroundPoint(mobMovement, 3f , CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned()));
+            RoamBehavior.RoamAroundPoint(mobMovement, 3f , CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned()), false);
         }
     }
 
@@ -388,13 +388,13 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
     }
 
-    private bool CheckClosestCreature() {
+    private bool CheckClosestCreatureSmart() {
         checkClosestTargetTimer -= Time.deltaTime;
 
         if (checkClosestTargetTimer < 0) {
             checkClosestTargetTimer = checkClosestTargetCooldown;
 
-            Creature newTargetCreature = CreaturesManager.Instance.GetClosestCreatureInRadius(mobMovement.transform.position, attackRange);
+            Creature newTargetCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(mobMovement.transform.position, attackRange, hunterAttack.GetAttackDamage());
 
             if (newTargetCreature == null) {
                 targetCreature = null;

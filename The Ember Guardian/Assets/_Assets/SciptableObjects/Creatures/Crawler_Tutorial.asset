@@ -18,6 +18,9 @@ MonoBehaviour:
   mass: 10
   detectionRange_Day: 12
   detectionRange_Night: 2
+  flying: 0
+  flightMinAltitude: 0
+  flightMaxAltitude: 0
   moveSpeed: 2.5
   enteredLightMoveSpeedDebuff: 2
   moveSpeedRandomizerDelta: 0
@@ -34,9 +37,9 @@ MonoBehaviour:
   attackAnimationDelay: 0.3
   totalAttackAnimationTime: 0.6
   baseMovementAnimationSpeed: 1.3
-  workerTargetingPriority: 1
+  workerTargetingPriority: 3
   playerTargetingPriority: 2
-  barricadeTargetingPriority: 3
+  barricadeTargetingPriority: 1
   currencyTypeDroppedList: 03000000
   currencyDropAmountList: 01000000
   difficulty: 2

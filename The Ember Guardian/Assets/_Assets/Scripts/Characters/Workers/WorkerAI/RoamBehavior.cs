@@ -20,16 +20,20 @@ public static class RoamBehavior
         }
     }
 
-    public static void RoamAroundPoint(MobMovement mobMovement, float roamRadius, Vector3 point) {
+    public static void RoamAroundPoint(MobMovement mobMovement, float roamRadius, Vector3 point, bool flying) {
 
         Vector3 targetDestination = mobMovement.GetTargetDestination();
 
         if (Mathf.Abs(mobMovement.transform.position.x - targetDestination.x) < .1f) {
 
+            float randomRoamPointX = Random.Range(point.x - roamRadius, point.x + roamRadius);
+            float randomRoamPointY = Random.Range(point.y - roamRadius, point.y + roamRadius);
 
-            float randomRoamPoint = Random.Range(point.x - roamRadius, point.x + roamRadius);
+            Vector3 randomMoveTarget = new Vector3(randomRoamPointX, 0, 0);
+            if (flying) {
+                randomMoveTarget.y = randomRoamPointY;
+            }
 
-            Vector3 randomMoveTarget = new Vector3(randomRoamPoint, 0, 0);
             mobMovement.SetMoveTarget(randomMoveTarget);
         }
     }

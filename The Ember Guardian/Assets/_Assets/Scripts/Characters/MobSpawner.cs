@@ -24,7 +24,10 @@ public class MobSpawner : MonoBehaviour
     }
 
     protected void Start() {
-        sceneViewSpawnerSpriteRenderer.enabled = false;
+        if(sceneViewSpawnerSpriteRenderer != null) {
+            sceneViewSpawnerSpriteRenderer.enabled = false;
+        }
+
         SpawnMobs(mobAmountToSpawn);
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
     }

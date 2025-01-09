@@ -83,6 +83,10 @@ public class Projectile : MonoBehaviour
         OnAnyProjectileInstantiated?.Invoke(this, EventArgs.Empty);
     }
 
+    private void Start() {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
     private void Update() {
         if (projectileHasHit) return;
         UpdateProjectilePosition();
@@ -91,8 +95,10 @@ public class Projectile : MonoBehaviour
     private void UpdateProjectilePosition() {
 
         if (homingProjectile) {
-            trajectoryEndPoint = projectileTarget.transform.position;
-            trajectoryRange = trajectoryEndPoint - trajectoryStartPoint;
+            if(projectileTarget != null) {
+                trajectoryEndPoint = projectileTarget.transform.position;
+                trajectoryRange = trajectoryEndPoint - trajectoryStartPoint;
+            }
         }
 
         if (trajectoryRange.x < 0) {
@@ -103,10 +109,11 @@ public class Projectile : MonoBehaviour
         if(transform.position.y < 0 && !projectileHasHit) {
 
             // Fire hit ?
-            if (Mathf.Abs(transform.position.x) < .5f) {
+            if (enemyProjectile && Mathf.Abs(transform.position.x) < .5f) {
                 Fire.Instance.TakeDamage(1, parentMob.transform);
             }
 
+            // Ground hit
             ProjectileHasHit(false);
             return;
         }
@@ -128,12 +135,14 @@ public class Projectile : MonoBehaviour
         CalculateNewProjectileMoveSpeed(nextPositionXNormalized);
         projectileMoveDir = nextPosition - transform.position;
 
-        if(nextPositionXNormalized > 1.1) {
-            // Projectile has reached the end of its animation curve
-            ProjectileHasHit(false);
-        }
-
+        // Guide projectile along animation curve
         transform.position = nextPosition;
+
+        if (nextPositionXNormalized > 1.1) {
+
+            // Projectile has reached the end of its animation curve
+
+        }
     }
 
     protected void CalculateNewProjectileMoveSpeed(float newPositionXNormalized) {
@@ -142,6 +151,8 @@ public class Projectile : MonoBehaviour
     }
 
     protected virtual void ProjectileHasHit(bool mobHit) {
+        Debug.Log("ProjectileHasHit");
+
         projectileHasHit = true;
         OnProjectileHit?.Invoke(this, EventArgs.Empty);
         OnAnyProjectileHit?.Invoke(this, EventArgs.Empty);
@@ -169,6 +180,7 @@ public class Projectile : MonoBehaviour
         // Hit mob
         mobHit = collision.GetComponentInParent<Mob>();
         if (mobHit != null && !enemyProjectile && mobHit != parentMob) {
+
             // Check if worker is shooting another worker
             if (mobHit is Worker && !enemyProjectile) return;
             HandleMobCollision(mobHit);

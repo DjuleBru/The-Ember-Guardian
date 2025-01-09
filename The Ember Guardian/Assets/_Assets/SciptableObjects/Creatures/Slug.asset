@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Slug
   description: Basic, slightly tanky, slow creature.
-  creaturePrefab: {fileID: 2465624883499499618, guid: a7d7975db41abfd489cd11f7f596df5f, type: 3}
+  creaturePrefab: {fileID: 0}
   mass: 10
   detectionRange_Day: 12
   detectionRange_Night: 2
+  flying: 0
+  flightMinAltitude: 0
+  flightMaxAltitude: 0
   moveSpeed: 1.35
   enteredLightMoveSpeedDebuff: 1.5
   moveSpeedRandomizerDelta: 0.2
@@ -26,31 +29,38 @@ MonoBehaviour:
   attackRate: 2
   enteredLightattackRateDebuff: 1.5
   isRangedAttack: 0
-  minAttackRange: 2.3
+  minAttackRange: 2.1
   maxAttackRange: 3
+  hasSpecialAbility: 0
+  specialAbilityCooldown: 0
   attackRangeRandomizer: 0.1
   attackRangeMaxDistanceMiss: 0.1
   relativeDamageToFire: 1
   attackAnimationDelay: 0.3
   totalAttackAnimationTime: 1.2
+  hasSpawnAnimation: 0
+  spawnAnimationDuration: 0
   baseMovementAnimationSpeed: 0.5
   workerTargetingPriority: 1
-  playerTargetingPriority: 2
-  barricadeTargetingPriority: 3
+  playerTargetingPriority: 3
+  barricadeTargetingPriority: 2
   currencyTypeDroppedList: 03000000
   currencyDropAmountList: 01000000
   difficulty: 1
   initialWaveSpawn: 1
   spawnProbability: 0.503
   dieAudioClips:
-  - {fileID: 8300000, guid: 52e684d65259c2d41ae7b4c7146d8c51, type: 3}
-  - {fileID: 8300000, guid: e88c8549c00d7a44aa981ca39aaebf2a, type: 3}
+  - {fileID: 8300000, guid: 2a3446bc08c9f6a4595d9866b94523bb, type: 3}
+  - {fileID: 8300000, guid: cdd869efb1b2e0c42b7745dc889baf63, type: 3}
+  - {fileID: 8300000, guid: 8da1f384e8bb1d14bb892c5479f906e5, type: 3}
+  - {fileID: 8300000, guid: 19fd99e0681d27a45882321d1040c18e, type: 3}
+  - {fileID: 8300000, guid: 891be6df791ce064990b3cbb90a21447, type: 3}
   aggroAudioClips:
-  - {fileID: 8300000, guid: 43abb15c0f28ff54eb24358ac1de6815, type: 3}
-  - {fileID: 8300000, guid: 53448b7318d133e40a6b4cc290ed50fe, type: 3}
-  - {fileID: 8300000, guid: 4013e7d05ef23794abf297127c81fa72, type: 3}
-  - {fileID: 8300000, guid: 38cf1486263bd8d48b5fa282ff196775, type: 3}
-  - {fileID: 8300000, guid: ee747f428e6ad55488ee38af3144a2c6, type: 3}
+  - {fileID: 8300000, guid: f9806935ce84d5448b45d1681abcfe70, type: 3}
+  - {fileID: 8300000, guid: 2f27418f225c51a43a3bf5c4f4366b11, type: 3}
+  - {fileID: 8300000, guid: b02d594d524fe8749b86809fee6fb13a, type: 3}
+  - {fileID: 8300000, guid: aa119a0d5d1e2024b986751eb83c5bcc, type: 3}
+  - {fileID: 8300000, guid: 809528988742ad64b8f99e042bd4b73c, type: 3}
   attackHitAudioClips:
   - {fileID: 8300000, guid: ed07ecc0cf11a5649b0bed809c1c2489, type: 3}
   - {fileID: 8300000, guid: b6327cbb36b024c4e92697d91477b041, type: 3}
@@ -58,17 +68,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2b8781723ff61b5489b834c4acb4f13d, type: 3}
   - {fileID: 8300000, guid: d81e1b82f5aea0e43aeeaba82643596a, type: 3}
   idleAudioClips:
-  - {fileID: 8300000, guid: da9e25fd2aefae542ac329ac8758e86e, type: 3}
-  - {fileID: 8300000, guid: 147bad03bd5aed64aa27fb139104ae62, type: 3}
-  - {fileID: 8300000, guid: 58ae6616e6320ac438ed55dcdabe8b2e, type: 3}
-  - {fileID: 8300000, guid: 2b9cfe9a942c8044aac53687c668610f, type: 3}
-  - {fileID: 8300000, guid: e7cdb85cd45361f4ebbdb441913a609a, type: 3}
-  - {fileID: 8300000, guid: 351da722d37a47e41a56ad2dcae1787d, type: 3}
-  - {fileID: 8300000, guid: 149f4e798c029a74e95703722f31582e, type: 3}
-  - {fileID: 8300000, guid: 484b4d4dc3885b74b8dd6f74ab745a83, type: 3}
-  - {fileID: 8300000, guid: 400fd73989155ae4daaac07d6d316c33, type: 3}
-  - {fileID: 8300000, guid: fdb88e49f918dba4a82cd16992a80ace, type: 3}
-  - {fileID: 8300000, guid: 1adb54c5f2c898b4cbf55f90fa7f1825, type: 3}
+  - {fileID: 8300000, guid: 73b7fa99320c9c44a969b00d9d3385e8, type: 3}
+  - {fileID: 8300000, guid: 3bf53ca8960505842a27c4a7c75070f7, type: 3}
+  - {fileID: 8300000, guid: 68cc028edf2ea834b9a192e9fe5b328a, type: 3}
+  - {fileID: 8300000, guid: 66e96778057466945b04644bb726dd8d, type: 3}
+  - {fileID: 8300000, guid: f3ef08d9e0796fd49855cb62721d1e1b, type: 3}
+  - {fileID: 8300000, guid: 7932b8053c7b4de4fbea3b6b636e5b8e, type: 3}
+  - {fileID: 8300000, guid: c28cc561c7bdfdd4f9002d6e1374179f, type: 3}
   footStepAudioClips:
   - {fileID: 8300000, guid: aa99364f9f8fa36459cf5c83762ea7f8, type: 3}
   - {fileID: 8300000, guid: 6c7e204337f8fe645a22a2dee4865e7b, type: 3}

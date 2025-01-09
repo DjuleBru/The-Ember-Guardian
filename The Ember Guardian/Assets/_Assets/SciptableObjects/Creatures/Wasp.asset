@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e57289136e0e1e6418ec81259b9649b2, type: 3}
+  m_Name: Wasp
+  m_EditorClassIdentifier: 
+  enemyName: Wasp
+  description: Melee mob that can respawn after it's first death !
+  creaturePrefab: {fileID: 0}
+  mass: 5
+  detectionRange_Day: 10
+  detectionRange_Night: 2
+  flying: 1
+  flightMinAltitude: 2
+  flightMaxAltitude: 7
+  moveSpeed: 3
+  enteredLightMoveSpeedDebuff: 1.3
+  moveSpeedRandomizerDelta: 0.25
+  maxHealth: 3
+  damage: 1
+  attackRate: 3
+  enteredLightattackRateDebuff: 1.4
+  isRangedAttack: 0
+  minAttackRange: 0.75
+  maxAttackRange: 1.5
+  hasSpecialAbility: 0
+  specialAbilityCooldown: 0
+  attackRangeRandomizer: 0.2
+  attackRangeMaxDistanceMiss: 0.1
+  relativeDamageToFire: 1
+  attackAnimationDelay: 0.3
+  totalAttackAnimationTime: 0.5
+  hasSpawnAnimation: 0
+  spawnAnimationDuration: 0
+  baseMovementAnimationSpeed: 1
+  workerTargetingPriority: 1
+  playerTargetingPriority: 3
+  barricadeTargetingPriority: 0
+  currencyTypeDroppedList: 02000000
+  currencyDropAmountList: 01000000
+  difficulty: 1
+  initialWaveSpawn: 1
+  spawnProbability: 0.508
+  dieAudioClips:
+  - {fileID: 8300000, guid: 66e5bfeffa8b36a4ca6717707b600ee6, type: 3}
+  - {fileID: 8300000, guid: 4f54ce541ec5a28429c5ddc9dc95fc8f, type: 3}
+  - {fileID: 8300000, guid: d0594038e770e64469dd169f7a0e0d4f, type: 3}
+  aggroAudioClips:
+  - {fileID: 8300000, guid: 492b6d2c1e1454245a87bd66eaa5d205, type: 3}
+  - {fileID: 8300000, guid: f182f14159f9c754287632ff803a8daf, type: 3}
+  - {fileID: 8300000, guid: a7680f2471babd64da22621a1120c1ca, type: 3}
+  - {fileID: 8300000, guid: f59fc5a9df78ce1438003044021eadcb, type: 3}
+  - {fileID: 8300000, guid: 2abbf14bc2a64a1458df71e1e9e0ef53, type: 3}
+  attackHitAudioClips:
+  - {fileID: 8300000, guid: 0cf1acdeceaff2547b4ad8abfe4d893e, type: 3}
+  - {fileID: 8300000, guid: ba5447ba12544e549ba9214c09d11829, type: 3}
+  - {fileID: 8300000, guid: 5c1d40756d9536741a09badcfdb0c976, type: 3}
+  - {fileID: 8300000, guid: cbd9d2b8bb2d6f74b947080c099fe69a, type: 3}
+  - {fileID: 8300000, guid: 4197fc59d80a1104cbe1b88312a401cc, type: 3}
+  idleAudioClips: []
+  footStepAudioClips:
+  - {fileID: 8300000, guid: edcf27146afc24c479bb6005aa3d78d7, type: 3}
+  - {fileID: 8300000, guid: 449b02c069f9f5a43b39c22b0aa5efe4, type: 3}
+  - {fileID: 8300000, guid: 6183f629bd98e9741a0dab0086b07aec, type: 3}
+  - {fileID: 8300000, guid: 3e45112e6549d3743b2b03c017533d6e, type: 3}
+  - {fileID: 8300000, guid: cc20a5dcd4739d34eaa9f8fb851aead6, type: 3}
+  - {fileID: 8300000, guid: 1d638800d6d5ae34aadb75b4286f871e, type: 3}
+  - {fileID: 8300000, guid: 78cecb04a58211d428969715243f0732, type: 3}
+  - {fileID: 8300000, guid: e865db8ddc64d3744abf183a4e96c48a, type: 3}
+  - {fileID: 8300000, guid: 2682ad98bccba0d439a006f5a8703a22, type: 3}
+  - {fileID: 8300000, guid: bcd0efc454cc01e45824ee348f05073a, type: 3}

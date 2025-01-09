@@ -28,7 +28,7 @@ public class GunSpotLight : MonoBehaviour
             Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
         }
 
-        float fogAmount = LevelManager.Instance.GetLevelSO().fogAlpha;
+        float fogAmount = LevelManager.Instance.GetLevelSO().fogFrontAlpha;
         float volumetricAmount = Mathf.Lerp(noFogVolumetricAmount, fogVolumetricAmount, fogAmount);
         gunSpotLight.volumeIntensity = volumetricAmount;
 

@@ -70,20 +70,15 @@ public class ParticleCollision : MonoBehaviour
                     Vector3 moveDir = (collisionPosition - PlayerShoot.Instance.GetHeldGun().transform.position).normalized;
                     float angle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
 
-                    //if (angle > 90) {
-                    //    angle = angle - 180;
-                    //}
-
-                    //Instantiate(mobHitPrefab, collisionPosition, Quaternion.Euler(0, 0, angle));
-
                     particles[j].remainingLifetime = 0; // Détruit seulement la particule proche de l'impact
                     ps.SetParticles(particles, particleCount); // Réinjecte les particules mises à jour dans le système
 
-                    // Try fetch mobHit if no crit zone hit
+                    // Try fetch mobHit or spawner Hit
                     Mob mobHit = other.GetComponent<Mob>();
+                    CreatureSpawnerContinuous spawnerHit = other.GetComponent<CreatureSpawnerContinuous>();
                     bool critHit = false;
 
-                    // Try fetch mobHit if crit zone hit
+                    // Try fetch crit zone hit
                     RaycastHit2D[] hits = Physics2D.CircleCastAll(collisionPosition, .15f, Vector2.zero);
 
                     foreach (var hit in hits) {
@@ -119,6 +114,14 @@ public class ParticleCollision : MonoBehaviour
 
                             OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
                         }
+                    }
+
+                    if(spawnerHit != null) {
+                        other.GetComponent<CreatureSpawnerContinuous>().TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, false);
+                        other.GetComponent<CreatureSpawnerContinuous>().InstantiateHitPS(angle, collisionPosition.y, false);
+
+
+                        OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
                     }
 
                     damagedParticles.Add(j); // Marque cette particule comme ayant déjà infligé des dégâts

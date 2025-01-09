@@ -5,27 +5,28 @@ using UnityEngine;
 
 public class CreatureAI : MonoBehaviour {
 
-    private Creature creature;
-    private CreatureMovement creatureMovement;
-    private MobAttack mobAttack;
+    protected Creature creature;
+    protected CreatureMovement creatureMovement;
+    protected MobAttack mobAttack;
 
-    private float minAttackRange;
-    private float maxAttackRange;
-    private bool followingTargetBuffedSpeed;
-    private bool detectedAttackTarget;
+    protected float minAttackRange;
+    protected float maxAttackRange;
+    protected bool followingTargetBuffedSpeed;
+    protected bool detectedAttackTarget;
 
-    private IDamageable attackTarget;
-    private IDamageable previousAttackTarget;
+    protected IDamageable attackTarget;
+    protected IDamageable previousAttackTarget;
 
-    private Vector3 positionToRoamAmound;
-    private float roamChangeDestinationRate;
-    private float roamRadius;
-    private float roamTimer;
+    protected Vector3 positionToRoamAmound;
+    [SerializeField] protected float roamChangeDestinationRate = 10f;
+    [SerializeField] protected float roamRadius = 3f;
+    protected float roamTimer;
 
-    private bool aggroedRecently;
-    private bool died;
-    private float aggroTimer;
-    private float aggroDelay = 3f;
+    protected bool aggroedRecently;
+    protected bool died;
+    protected bool spawned = true;
+    protected float aggroTimer;
+    protected float aggroDelay = 3f;
     public event EventHandler OnCreatureAggro;
     public static event EventHandler OnAnyCreatureAggro;
 
@@ -37,43 +38,66 @@ public class CreatureAI : MonoBehaviour {
         attacking,
     }
 
-    private State state;
+    protected State state;
 
-    private void Awake() {
+    protected void Awake() {
         creatureMovement = GetComponent<CreatureMovement>();
         mobAttack = GetComponent<MobAttack>();
         creature = GetComponent<Creature>();
-        
     }
 
-    private void Start() {
+    protected virtual void Start() {
         creature.OnCreatureDied += Creature_OnCreatureDied;
 
-        if(creature.GetCreatureSO().isRangedAttack) {
+        SetAttackRange();
+
+        if (creature.GetCreatureSO().hasSpawnAnimation) {
+            spawned = false;
+            StartCoroutine(SetSpawnedAfterDelay(creature.GetCreatureSO().spawnAnimationDuration));
+        } else {
+            SetInitialState();
+        }
+
+    }
+
+    private void SetAttackRange() {
+
+        if (creature.GetCreatureSO().isRangedAttack) {
             minAttackRange = creature.GetCreatureSO().minAttackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
             maxAttackRange = creature.GetCreatureSO().maxAttackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
-        } else {
+        }
+        else {
             minAttackRange = creature.GetCreatureSO().minAttackRange;
             maxAttackRange = creature.GetCreatureSO().maxAttackRange;
         }
+    }
+
+    private void SetInitialState() {
+
 
         if (creature.IsDayCreature()) {
 
             positionToRoamAmound = creature.GetMobSpawner().transform.position;
-            roamChangeDestinationRate = 10f;
-            roamRadius = 3f;
 
             ChangeState(State.idle);
 
-        } else {
+        }
+        else {
 
             ChangeState(State.walkingToFire);
 
         }
     }
 
-    private void Update() {
+    private IEnumerator SetSpawnedAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+        spawned = true;
+        SetInitialState();
+    }
+
+    protected virtual void Update() {
         if (died) return;
+        if (!spawned) return;
 
         HandleAggroRecently();
 
@@ -141,17 +165,18 @@ public class CreatureAI : MonoBehaviour {
                 break;
         }
     }
-    private void Roam() {
+
+    protected void Roam() {
 
         roamTimer -= Time.deltaTime;
 
         if (roamTimer < 0) {
             roamTimer = roamChangeDestinationRate;
-            RoamBehavior.RoamAroundPoint(creatureMovement, roamRadius, positionToRoamAmound);
+            RoamBehavior.RoamAroundPoint(creatureMovement, roamRadius, positionToRoamAmound, creature.GetCreatureSO().flying);
         }
     }
 
-    private void HandleAggroRecently() {
+    protected void HandleAggroRecently() {
         if (aggroedRecently) {
 
             aggroTimer -= Time.deltaTime;
@@ -163,7 +188,7 @@ public class CreatureAI : MonoBehaviour {
         }
     } 
 
-    private void ChangeState(State newState) {
+    protected void ChangeState(State newState) {
         if (died) return;
 
         if (newState == State.attacking) {
@@ -180,10 +205,8 @@ public class CreatureAI : MonoBehaviour {
             creatureMovement.SetMoveTarget(transform.position);
             mobAttack.RemoveAttackTarget();
 
-            if(followingTargetBuffedSpeed) {
-                creatureMovement.SetCreatureAggroMoveSpeed(false);
-                followingTargetBuffedSpeed = false;
-            }
+            creatureMovement.SetCreatureAggroMoveSpeed(true);
+            followingTargetBuffedSpeed = true;
         }
 
         if (newState == State.walkingToSpawner) {
@@ -205,7 +228,7 @@ public class CreatureAI : MonoBehaviour {
         state = newState;
     }
 
-    private bool CheckAttackTargetInRange() {
+    protected bool CheckAttackTargetInRange() {
         Vector3 targetPosition = attackTarget.GetMeleeAttackPosition().position;
 
         if (Mathf.Abs(transform.position.x - targetPosition.x) < maxAttackRange) {
@@ -215,8 +238,9 @@ public class CreatureAI : MonoBehaviour {
         }
     }
 
-    private void HeadToTarget() {
+    protected virtual void HeadToTarget() {
         if (attackTarget == null) return;
+        
         Vector3 targetDestination = attackTarget.GetMeleeAttackPosition().position;
 
         creatureMovement.SetMoveTarget(targetDestination);
@@ -224,7 +248,7 @@ public class CreatureAI : MonoBehaviour {
         if(attackTarget == Player.Instance.GetComponent<IDamageable>()) {
 
             // Take in account player Y position for when he jumps over creatures
-            if (Mathf.Abs(transform.position.x - targetDestination.x) < minAttackRange && ((Player.Instance.transform.position.y - 1.51f) < creature.GetCreatureSO().minAttackRange)) {
+            if (Mathf.Abs(transform.position.x - targetDestination.x) < minAttackRange) {
                 ChangeState(State.attacking);
                 return;
             }
@@ -237,13 +261,13 @@ public class CreatureAI : MonoBehaviour {
         }
     }
 
-    private void MoveTowardsFire() {
+    protected virtual void MoveTowardsFire() {
         Vector3 targetDestination = new Vector3(0, 0, 0);
 
         creatureMovement.SetMoveTarget(targetDestination);
     }
 
-    private void MoveTowardsSpawner() {
+    protected void MoveTowardsSpawner() {
         Vector3 targetDestination = creature.GetMobSpawner().transform.position;
 
         creatureMovement.SetMoveTarget(targetDestination);
@@ -281,14 +305,19 @@ public class CreatureAI : MonoBehaviour {
         }
     }
 
-    private void TriggerAggoFeedbacks() {
+    public IDamageable GetAttackTarget() {
+        return attackTarget;
+    }
+
+
+    protected void TriggerAggoFeedbacks() {
         if (attackTarget is Player) {
             OnCreatureAggro?.Invoke(this, EventArgs.Empty);
             OnAnyCreatureAggro?.Invoke(this, EventArgs.Empty);
         };
     }
 
-    private void Creature_OnCreatureDied(object sender, EventArgs e) {
+    protected void Creature_OnCreatureDied(object sender, EventArgs e) {
         died = true;
     }
 

@@ -21,6 +21,7 @@ public class WorkerDetectionCollider : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) {
         Creature creature = collision.gameObject.GetComponent<Creature>();
+
         if(creature != null) {
             if(!creaturesInDetectionColliderRange.Contains(creature)) {
                 creaturesInDetectionColliderRange.Add(creature);

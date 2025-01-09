@@ -34,6 +34,19 @@ public class CreatureSO : ScriptableObject
     public float detectionRange_Night;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
+    public bool flying;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
+    [Range(1, 20)]
+    [ShowIf("flying")]
+    public float flightMinAltitude;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
+    [Range(1, 20)]
+    [ShowIf("flying")]
+    public float flightMaxAltitude;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
     [Range(1,20)]
     public float moveSpeed;
     [VerticalGroup("Game Data/Stats")]
@@ -73,12 +86,21 @@ public class CreatureSO : ScriptableObject
     public float maxAttackRange;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
-    [Range(.1f, 10)]
+    public bool hasSpecialAbility;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
+    [ShowIf("hasSpecialAbility")]
+    [Range(.1f, 20)]
+    public float specialAbilityCooldown;
 
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
+    [Range(.1f, 10)]
     public float attackRangeRandomizer;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
     [Range(.1f, 10)]
+    [ShowIf("isRangedAttack")]
     public float attackRangeMaxDistanceMiss;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
@@ -92,21 +114,28 @@ public class CreatureSO : ScriptableObject
     public float totalAttackAnimationTime;
     [VerticalGroup("Game Data/Animation Parameters")]
     [LabelWidth(200)]
+    public bool hasSpawnAnimation;
+    [VerticalGroup("Game Data/Animation Parameters")]
+    [LabelWidth(200)]
+    [ShowIf("hasSpawnAnimation")]
+    public float spawnAnimationDuration;
+    [VerticalGroup("Game Data/Animation Parameters")]
+    [LabelWidth(200)]
     [Range(.5f, 2)]
     public float baseMovementAnimationSpeed;
 
 
     [BoxGroup("AI")]
     [LabelWidth(200)]
-    [Range(1, 5)]
+    [Range(0, 5)]
     public int workerTargetingPriority;
     [BoxGroup("AI")]
     [LabelWidth(200)]
-    [Range(1, 5)]
+    [Range(0, 5)]
     public int playerTargetingPriority;
     [BoxGroup("AI")]
     [LabelWidth(200)]
-    [Range(1, 5)]
+    [Range(0, 5)]
     public int barricadeTargetingPriority;
 
 

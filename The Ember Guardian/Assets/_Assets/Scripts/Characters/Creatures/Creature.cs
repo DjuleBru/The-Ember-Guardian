@@ -14,6 +14,7 @@ public class Creature : Mob
     private bool dropRedOrbsUnlocked;
     private bool dayCreature;
     private bool enteredLight;
+    private bool creatureTargeted;
 
     public event EventHandler OnCreatureEnteredLight;
     public event EventHandler OnCreatureExitedLight;
@@ -76,7 +77,7 @@ public class Creature : Mob
         }
 
         OnCreatureDied?.Invoke(this, EventArgs.Empty);
-        StartCoroutine(DisableGameObjectAfterDelay());
+        StartCoroutine(DestroyGameObjectAfterDelay());
         GetComponent<Collider2D>().enabled = false;
 
         foreach(Collider2D cd in critZoneColliders) {
@@ -89,6 +90,11 @@ public class Creature : Mob
     private IEnumerator DisableGameObjectAfterDelay() {
         yield return new WaitForSeconds(2f);
         gameObject.SetActive(false);
+    }
+
+    private IEnumerator DestroyGameObjectAfterDelay() {
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
     }
 
     public CreatureSO GetCreatureSO() {
@@ -145,4 +151,22 @@ public class Creature : Mob
     public bool IsDayCreature() { 
         return dayCreature;
     }
+
+    public void SetCreatureTargeted(bool creatureTargeted) {
+        this.creatureTargeted = creatureTargeted;
+    }
+
+    public bool GetCreatureTargeted() {
+        return creatureTargeted;
+    }
+
+    public int GetCreatureHealth() {
+        return health;
+    }
+
+    private void OnDestroy() {
+        PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
+    }
+
+
 }

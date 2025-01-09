@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CreatureMovement : MobMovement
 {
-    private Creature creature;
-    private float enteredLightSpeedDebuff = 2f;
-    private bool enteredLight;
-    private bool aggroMoveSpeedSet;
-    private float aggroMoveSpeedBuff = 1.5f;
+    protected Creature creature;
+    protected float enteredLightSpeedDebuff = 2f;
+    protected bool enteredLight;
+    protected bool aggroMoveSpeedSet;
+    protected float aggroMoveSpeedBuff = 1.5f;
 
     protected override void Awake() {
         base.Awake();
@@ -38,12 +38,12 @@ public class CreatureMovement : MobMovement
         aggroMoveSpeedSet = aggroMoveSpeed;
     }
 
-    private void Creature_OnCreatureEnteredLight(object sender, System.EventArgs e) {
+    protected void Creature_OnCreatureEnteredLight(object sender, System.EventArgs e) {
         enteredLight = true;
         DebuffMoveSpeed(enteredLightSpeedDebuff);
     }
 
-    private void Creature_OnCreatureExitedLight(object sender, System.EventArgs e) {
+    protected void Creature_OnCreatureExitedLight(object sender, System.EventArgs e) {
         enteredLight = false;
         BuffMoveSpeed(enteredLightSpeedDebuff);
     }

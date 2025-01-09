@@ -50,6 +50,10 @@ public class CreatureAnimatorManager : MonoBehaviour
     }
 
     protected void HandleAnimatorMovementBool() {
+        if (creature.GetCreatureSO().flying) {
+            moving = true;
+            return;
+        };
 
         if (moveDir != 0) {
 

@@ -78,7 +78,7 @@ public class AnimalAI : MonoBehaviour
 
         if (roamTimer < 0) {
             roamTimer = roamChangeDestinationRate;
-            RoamBehavior.RoamAroundPoint(animal.GetComponent<MobMovement>(), roamRadius, positionToRoamAmound);
+            RoamBehavior.RoamAroundPoint(animal.GetComponent<MobMovement>(), roamRadius, positionToRoamAmound, false);
         }
     }
 
