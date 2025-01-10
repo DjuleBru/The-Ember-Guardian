@@ -69,6 +69,7 @@ public class MusicManager : MonoBehaviour {
                     Debug.Log("Play music Attempt " + randomNumber);
                     if (randomNumber < chanceToPlayMusid) {
 
+                        if (levelRandomTracks.Length == 0) return;
                         AudioClip randomMusic = levelRandomTracks[Random.Range(0, levelRandomTracks.Length)];
                         audioSource.clip = randomMusic;
                         isPlayingPeacefulMusic = true;

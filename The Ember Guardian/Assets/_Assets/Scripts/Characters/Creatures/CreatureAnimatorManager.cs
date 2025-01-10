@@ -6,6 +6,7 @@ using UnityEngine;
 public class CreatureAnimatorManager : MonoBehaviour
 {
     protected Creature creature;
+    protected CreatureAI creatureAI;
     protected MobAttack mobAttack;
     protected MobMovement mobMovement;
     protected Animator animator;
@@ -21,6 +22,7 @@ public class CreatureAnimatorManager : MonoBehaviour
 
     protected virtual void Awake() {
         creature = GetComponentInParent<Creature>();
+        creatureAI = GetComponentInParent<CreatureAI>();
         mobMovement = GetComponentInParent<MobMovement>();
         mobAttack = GetComponentInParent<MobAttack>();
         animator = GetComponent<Animator>();
@@ -30,10 +32,15 @@ public class CreatureAnimatorManager : MonoBehaviour
         mobMovement.OnMoveSpeedBuffChanged += MobMovement_OnMoveSpeedBuffChanged;
     }
 
+
     protected virtual void Start() {
         baseMovementAnimationSpeed = creature.GetCreatureSO().baseMovementAnimationSpeed;
         animatorSpeedMultiplier = baseMovementAnimationSpeed;
         animator.SetFloat("AnimationSpeedMultiplier", animatorSpeedMultiplier);
+
+        if(creature.GetCreatureSO().hasSpawnAnimation) {
+            animator.SetTrigger("Spawn");
+        }
     }
 
     protected void MobMovement_OnMoveSpeedBuffChanged(object sender, MobMovement.OnMoveSpeedBuffedEventArgs e) {
@@ -114,5 +121,4 @@ public class CreatureAnimatorManager : MonoBehaviour
     public void FootStepEvent() {
         OnFootStepTriggered?.Invoke(this, EventArgs.Empty);
     }
-
 }

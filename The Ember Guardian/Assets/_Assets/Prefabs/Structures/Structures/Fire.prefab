@@ -5354,7 +5354,7 @@ MonoBehaviour:
         Duration: 0.5
         ResetShakerValuesAfterShake: 1
         ResetTargetValuesAfterShake: 1
-        RelativeOrthographicSize: 0
+        RelativeOrthographicSize: 1
         ShakeOrthographicSize:
           serializedVersion: 2
           m_Curve:
@@ -5379,8 +5379,8 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        RemapOrthographicSizeZero: 9.8
-        RemapOrthographicSizeOne: 10
+        RemapOrthographicSizeZero: 1
+        RemapOrthographicSizeOne: 0
     - rid: 7866843094948511785
       type: {class: MMF_ChromaticAberration_URP, ns: MoreMountains.FeedbacksForThirdParty, asm: MoreMountains.Feedbacks.URP}
       data:

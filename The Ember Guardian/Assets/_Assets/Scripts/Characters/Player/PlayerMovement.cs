@@ -83,6 +83,8 @@ public class PlayerMovement : MonoBehaviour {
         GameInput.Instance.OnPlayerJumpPerformed += GameInput_OnPlayerJumpStarted;
         PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAIm_OnPlayerAimSightStarted;
         PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAim_OnPlayerAimSightEnded;
+        PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
+        PlayerShoot.Instance.OnPlayerReloadHandEnded += PlayerShoot_OnPlayerReloadHandEnded;
 
         PlayerStats.Instance.OnMoveSpeedChanged += PlayerState_OnMoveSpeedChanged;
     }
@@ -133,6 +135,16 @@ public class PlayerMovement : MonoBehaviour {
         else {
             rb.gravityScale = gravityScale;
         }
+    }
+
+    private void PlayerShoot_OnPlayerReloadHandEnded(object sender, EventArgs e) {
+        float reloadAccelerationFactor = PlayerShoot.Instance.GetGunReloadAccelerationFactor();
+        DebuffMoveSpeed(reloadAccelerationFactor);
+    }
+
+    private void PlayerShoot_OnPlayerReload(object sender, EventArgs e) {
+        float reloadAccelerationFactor = PlayerShoot.Instance.GetGunReloadAccelerationFactor();
+        BuffMoveSpeed(reloadAccelerationFactor);
     }
 
     private void PlayerState_OnMoveSpeedChanged(object sender, EventArgs e) {

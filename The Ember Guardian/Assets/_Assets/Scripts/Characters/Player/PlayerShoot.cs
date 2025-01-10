@@ -14,6 +14,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerCooldownTrigger;
     public event EventHandler OnPlayerCooldownAnimationTrigger;
     public event EventHandler OnPlayerReload;
+    public event EventHandler OnPlayerReloadHandEnded;
     public event EventHandler OnPlayerReloadEnded;
     public event EventHandler<OnAmmoRefilledEventArgs> OnPlayerAmmoRefilled;
     public event EventHandler OnBulletsChanged;
@@ -43,6 +44,8 @@ public class PlayerShoot : MonoBehaviour
     private float transferringAmmoFromBagTimer;
     private float transferringAmmoFromBagCooldown = 1f;
     private float reloadTimer;
+    private float reloadTime;
+    private float handsReloadTime;
 
     private bool autoReload;
     private bool canShoot = true;
@@ -60,6 +63,7 @@ public class PlayerShoot : MonoBehaviour
     private float ammoRegenTime;
     private float ammoRegenTimer;
 
+    protected bool reloadingHands;
     protected bool loadingShot;
     protected bool shotLoaded;
     protected float loadingShotTimer;
@@ -126,6 +130,7 @@ public class PlayerShoot : MonoBehaviour
 
         PlayerStats.Instance.SetShootCooldownTime(heldGun.GetCooldownTime());
         PlayerStats.Instance.SetReloadTime(heldGun.GetReloadTime());
+        PlayerStats.Instance.SetHandsReloadTime(heldGun.GetHandsReloadTime());
 
         OnPlayerSwappedGun?.Invoke(this, EventArgs.Empty);
     }
@@ -194,9 +199,14 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if(reloading) {
-            reloadTimer -= Time.deltaTime;
+            reloadTimer += Time.deltaTime;
 
-            if (reloadTimer <= 0) {
+            if(reloadTimer >= handsReloadTime && reloadingHands) {
+                reloadingHands = false;
+                OnPlayerReloadHandEnded?.Invoke(this, EventArgs.Empty);
+            }
+
+            if (reloadTimer >= reloadTime) {
                 heldGun.SetCurrentBullet(heldGun.GetBulletsPerAmmoClip());
                 reloading = false;
                 OnPlayerReloadEnded?.Invoke(this, EventArgs.Empty);
@@ -244,7 +254,10 @@ public class PlayerShoot : MonoBehaviour
         if (heldGun.GetCurrentBullet() <= 0) {
             if(autoReload) {
                 reloading = true;
-                reloadTimer = PlayerStats.Instance.GetReloadTime();
+                reloadTimer = 0;
+                reloadTime = PlayerStats.Instance.GetReloadTime();
+                handsReloadTime = PlayerStats.Instance.GetHandsReloadTime();
+                reloadingHands = true;
 
                 heldGun.SetCurrentAmmoClip(heldGun.GetCurrentAmmoClip() - 1);
                 OnPlayerReload?.Invoke(this, EventArgs.Empty);
@@ -309,6 +322,10 @@ public class PlayerShoot : MonoBehaviour
 
     public int GetMaxBulletsPerClip() {
         return heldGun.GetBulletsPerAmmoClip();
+    }
+
+    public float GetGunReloadAccelerationFactor() {
+        return heldGun.GetReloadAccelerationFactor();
     }
 
     private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -441,8 +458,11 @@ public class PlayerShoot : MonoBehaviour
     private void ReloadGun() {
         heldGun.SetCurrentAmmoClip(heldGun.GetCurrentAmmoClip() - 1);
         reloading = true;
+        reloadingHands = true;
         playerJustPressedReload = false;
-        reloadTimer = PlayerStats.Instance.GetReloadTime();
+        reloadTimer = 0;
+        reloadTime = PlayerStats.Instance.GetReloadTime();
+        handsReloadTime = PlayerStats.Instance.GetHandsReloadTime();
         OnPlayerReload?.Invoke(this, EventArgs.Empty);
     }
 

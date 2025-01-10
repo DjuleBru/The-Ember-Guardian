@@ -67,6 +67,91 @@ CapsuleCollider2D:
   m_Offset: {x: 0.008370668, y: 0.056797087}
   m_Size: {x: 0.30747527, y: 0.42044103}
   m_Direction: 0
+--- !u!1 &1520871347006827084
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6184532136668816828}
+  - component: {fileID: 7578288738974065730}
+  m_Layer: 15
+  m_Name: CreatureSpawnerContinuous
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6184532136668816828
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520871347006827084}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2100628709117196716}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7578288738974065730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520871347006827084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cf824d5b6a98974ab21a5ec2643ace8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneViewSpawnerSpriteRenderer: {fileID: 0}
+  mobPrefab: {fileID: 2100628709117196716, guid: 61fc72d8cc17be84eb6679397d2fd53c, type: 3}
+  spawnPosition: {fileID: 590498446364819386}
+  mobAmountToSpawn: 3
+  maxMobsRespawningAtDawn: 0
+  isCreatureSpawner: 1
+  isAnimalSpawner: 0
+  spawnerHealth: 0
+  spawnRate: 15
+  spawnAnimationDelay: 0.5
+--- !u!1 &2836379815106326953
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 590498446364819386}
+  m_Layer: 15
+  m_Name: CreatureSpawnPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &590498446364819386
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2836379815106326953}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.46, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6325799707120231391}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7787686391736299989
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,6 +295,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.663
       objectReference: {fileID: 0}
+    - target: {fileID: 2165978147866165786, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: creatureAI
+      value: 
+      objectReference: {fileID: 6444008568150924580}
+    - target: {fileID: 2165978147866165786, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: creatureAnimator
+      value: 
+      objectReference: {fileID: 890632805542014312}
     - target: {fileID: 2533432998412958594, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: ShapeModule.m_Scale.x
       value: 0.6648677
@@ -314,13 +407,25 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.72
       objectReference: {fileID: 0}
+    - target: {fileID: 8571825916105848638, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: creatureAI
+      value: 
+      objectReference: {fileID: 6444008568150924580}
     - target: {fileID: 8642631730259358339, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -1871075408, guid: 70067688630b1554bbddd5f97e8ff58c, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6447040630869028713, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+    - {fileID: 7431457357262241407, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6409776439602011119, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6184532136668816828}
+    - targetCorrespondingSourceObject: {fileID: 1304696204632015260, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 590498446364819386}
     - targetCorrespondingSourceObject: {fileID: 812099978332910497, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3561158629075793131}
@@ -331,7 +436,44 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 38783848799533230, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       insertIndex: 5
       addedObject: {fileID: 6444008568150924580}
+    - targetCorrespondingSourceObject: {fileID: 3284089339212149748, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 890632805542014312}
+    - targetCorrespondingSourceObject: {fileID: 6041665148349852697, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 1695152774217778000}
   m_SourcePrefab: {fileID: 100100000, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+--- !u!1 &1588285680508702298 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6041665148349852697, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+  m_PrefabInstance: {fileID: 5031355418187637315}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1695152774217778000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1588285680508702298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69ec3a507367508498b7917a63659759, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creatureSpawner: {fileID: 7578288738974065730}
+  summonSFXVolumeMultiplier: 0.7
+  spawnerDiedAudioClips: []
+  spawnerSpawnerAudioClips:
+  - {fileID: 8300000, guid: 840fdb1346433ae4f91e83fd9254f2bf, type: 3}
+  - {fileID: 8300000, guid: 5bbefbdda4c1d67458ba2f1afbd736d4, type: 3}
+  - {fileID: 8300000, guid: 3870d8281154b984e949430aa1b3d6a1, type: 3}
+  - {fileID: 8300000, guid: 5a21a5a1924c3ec4ebaab504dbdeeeff, type: 3}
+  spawnerDamagedAudioClips: []
+--- !u!4 &2100628709117196716 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6409776439602011119, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+  m_PrefabInstance: {fileID: 5031355418187637315}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4997657120178985709 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 38783848799533230, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
@@ -349,8 +491,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a44251cee4862ec44ab0a5e9f1264d9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roamChangeDestinationRate: 10
+  roamRadius: 3
+  distanceToFleeFromPlayer: 0
+  minimumFleeTime: 2
+  creatureSpawnerContinuous: {fileID: 7578288738974065730}
 --- !u!4 &5663241041523577314 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 812099978332910497, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
   m_PrefabInstance: {fileID: 5031355418187637315}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &6325799707120231391 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1304696204632015260, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+  m_PrefabInstance: {fileID: 5031355418187637315}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7512455815164105143 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3284089339212149748, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+  m_PrefabInstance: {fileID: 5031355418187637315}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &890632805542014312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7512455815164105143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31073be067632fb4c9ef80b0047a8c49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawner: {fileID: 7578288738974065730}

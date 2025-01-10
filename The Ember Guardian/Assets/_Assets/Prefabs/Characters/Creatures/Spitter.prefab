@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.663
       objectReference: {fileID: 0}
+    - target: {fileID: 2165978147866165786, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: creatureAI
+      value: 
+      objectReference: {fileID: 467876554908381902}
     - target: {fileID: 2752781047295933904, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.107
@@ -136,12 +140,40 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 4d8419e128b80b042a95972e80c6ea06, type: 2}
+    - target: {fileID: 8571825916105848638, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: creatureAI
+      value: 
+      objectReference: {fileID: 467876554908381902}
     - target: {fileID: 8642631730259358339, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 1817446858, guid: 4cc6ce8ab2925b3438c194348815a24c, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6447040630869028713, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 38783848799533230, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 467876554908381902}
   m_SourcePrefab: {fileID: 100100000, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+--- !u!1 &4997657120178985709 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 38783848799533230, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+  m_PrefabInstance: {fileID: 5031355418187637315}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &467876554908381902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4997657120178985709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da5c29bedbe15e345b52bcdc97d1ad7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roamChangeDestinationRate: 10
+  roamRadius: 3
+  minAllowedDistanceFromPlayer: 8

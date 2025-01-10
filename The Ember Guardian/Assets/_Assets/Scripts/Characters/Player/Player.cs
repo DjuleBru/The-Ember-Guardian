@@ -62,7 +62,6 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     private void Update() {
-
         if (!isLevelScene) return;
         CheckExitingCamp();
 

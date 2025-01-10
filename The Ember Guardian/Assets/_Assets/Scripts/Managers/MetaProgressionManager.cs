@@ -358,6 +358,19 @@ public class MetaProgressionManager : MonoBehaviour
             gunTypeModified = gunSO.gunType,
         });
     }
+    public float GetGunReloadAccelerationFactor(GunSO gunSO) {
+        string key = gunSO.gunType + "_reloadAccelerationFactor";
+
+        return ES3.Load(key, gunSO.reloadAccelerationFactor);
+    }
+    public void SetGunReloadAccelerationFactor(GunSO gunSO, float reloadAccelerationFactor) {
+        string key = gunSO.gunType + "_reloadAccelerationFactor";
+
+        ES3.Save(key, reloadAccelerationFactor);
+        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
+            gunTypeModified = gunSO.gunType,
+        });
+    }
 
     public int GetGunShotsPerClip(GunSO gunSO) {
         string key = gunSO.gunType + "_shotsPerClip";
@@ -408,7 +421,11 @@ public class MetaProgressionManager : MonoBehaviour
 
         return ES3.Load(key, gunSO.reloadTime);
     }
+    public float GetHandsGunReloadTime(GunSO gunSO) {
+        string key = gunSO.gunType + "_handsReloadTime";
 
+        return ES3.Load(key, gunSO.handsReloadTime);
+    }
     public void SetGunShootConeAnle(GunSO gunSO, float shootConeAngle) {
         string key = gunSO.gunType + "_shootConeAngle";
 

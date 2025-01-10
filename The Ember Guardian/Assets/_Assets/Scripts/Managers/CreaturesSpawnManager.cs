@@ -64,6 +64,7 @@ public class CreaturesSpawnManager : MonoBehaviour
     private void Start() {
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
+        //SetWaveParameters(currentWaveNumber, false, false);
     }
  
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {

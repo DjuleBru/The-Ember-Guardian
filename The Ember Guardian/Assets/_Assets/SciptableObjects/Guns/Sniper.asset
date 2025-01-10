@@ -36,10 +36,12 @@ MonoBehaviour:
   shootConeAngle: 3.5
   bulletLifetime: 0.35
   bulletSpeed: 70
+  reloadAccelerationFactor: 0.65
   shootCooldownTime: 1.8
   shootCooldownSFXTriggerTime: 0.4
   reloadTime: 2.5
-  animationReloadTime: 0.8
+  handsReloadTime: 1.5
+  handsAnimationReloadTime: 1
   gunKnockback: 1.5
   gunRecoil: 0.5
   gunRecoilDamping: 2

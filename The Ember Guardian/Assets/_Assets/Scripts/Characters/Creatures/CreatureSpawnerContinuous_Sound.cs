@@ -5,6 +5,7 @@ using UnityEngine;
 public class CreatureSpawnerContinuous_Sound : MonoBehaviour {
 
     [SerializeField] private CreatureSpawnerContinuous creatureSpawner;
+    [SerializeField] private float summonSFXVolumeMultiplier = 1f;
 
     [SerializeField] private AudioClip[] spawnerDiedAudioClips;
     [SerializeField] private AudioClip[] spawnerSpawnerAudioClips;
@@ -36,7 +37,7 @@ public class CreatureSpawnerContinuous_Sound : MonoBehaviour {
     }
 
     private void CreatureSpawner_OnSpawnerSpawnStart(object sender, System.EventArgs e) {
-        spawnerAudioSource.PlayOneShot(spawnerSpawnerAudioClips[Random.Range(0, spawnerSpawnerAudioClips.Length)], sfxVolume);
+        spawnerAudioSource.PlayOneShot(spawnerSpawnerAudioClips[Random.Range(0, spawnerSpawnerAudioClips.Length)], summonSFXVolumeMultiplier * sfxVolume);
 
     }
 

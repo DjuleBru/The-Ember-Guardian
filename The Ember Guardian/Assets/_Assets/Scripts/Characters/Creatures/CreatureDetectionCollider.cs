@@ -45,7 +45,6 @@ public class CreatureDetectionCollider : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-
         // Player
         Player player = other.GetComponent<Player>(); 
 
@@ -154,7 +153,7 @@ public class CreatureDetectionCollider : MonoBehaviour
             iDamageablesDetected.Add(iDamageable);
         }
 
-        if (playerShotCreature && !iDamageablesInDetectionRange.Contains(Player.Instance)) {
+        if (playerShotCreature && !iDamageablesInDetectionRange.Contains(Player.Instance) && !CampZoneManager.Instance.IsWithinCampZoneLimits(Player.Instance.transform.position)) {
             iDamageablesDetected.Add(Player.Instance);
         }
 
@@ -167,41 +166,37 @@ public class CreatureDetectionCollider : MonoBehaviour
             int currentPriority = 0;
 
             if (iDamageable is Worker) {
-                if (creature.GetCreatureSO().workerTargetingPriority == 0) continue;
 
                 Worker worker = (Worker)iDamageable;
-                // Check if worker is out of camp AND player is around too 
-                if (!CampZoneManager.Instance.IsWithinCampZoneLimits(worker.transform.position) && iDamageablesDetected.Contains(Player.Instance)) {
+                if (CanAddWorkerToTargets(worker, iDamageablesDetected)) {
                     currentPriority = creature.GetCreatureSO().workerTargetingPriority;
                 }
+                else continue;
 
             }
 
             if (iDamageable is Barricade) {
-                if (creature.GetCreatureSO().barricadeTargetingPriority == 0) continue;
-
                 Barricade barricade = (Barricade)iDamageable;
-                if(barricade.GetBarricadeHealthNormalized() > 0) {
+
+                if (CanAddBarricadeToTargets(barricade)) {
                     currentPriority = creature.GetCreatureSO().barricadeTargetingPriority;
                 }
+                else continue;
             }
 
             if (iDamageable is Fire) {
-                currentPriority = int.MaxValue;
+                if (CanAddFireToTargets()) {
+                    currentPriority = int.MaxValue;
+                }
+                else continue;
             }
 
             if (iDamageable is Player) {
-                if (creature.GetCreatureSO().playerTargetingPriority == 0) continue;
-
-                // Check if player is in range in the y axis !
-                if ((Player.Instance.transform.position.y > creature.GetCreatureSO().minAttackRange) && !creatureAttack.GetIsRangedAttack()) {
-                    continue;
+                if (CanAddPlayerToTargets()) {
+                    currentPriority = creature.GetCreatureSO().playerTargetingPriority;
                 }
-
-                // Check if player is out of camp
-                if (!CampZoneManager.Instance.IsWithinCampZoneLimits(Player.Instance.transform.position)) {
-                     currentPriority = creature.GetCreatureSO().playerTargetingPriority;
-                }
+                else continue;
+                
             }
 
             // Si la priorité actuelle est plus haute, on la met à jour
@@ -215,4 +210,44 @@ public class CreatureDetectionCollider : MonoBehaviour
         creatureAI.SetAttackTarget(highestPriorityTarget, iDamageablesDetected);
     }
 
+    private bool CanAddFireToTargets() {
+        // Check if player is in range in the y axis !
+        if (!CampZoneManager.Instance.IsWithinCampZoneLimits(transform.position)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private bool CanAddPlayerToTargets() {
+        if (creature.GetCreatureSO().playerTargetingPriority == 0) return false;
+
+        // Check if player is in range in the y axis !
+        if ((Player.Instance.transform.position.y > creature.GetCreatureSO().minAttackRange) && !creatureAttack.GetIsRangedAttack()) {
+            return false;
+        }
+
+        // Check if player is out of camp
+        if (!CampZoneManager.Instance.IsWithinCampZoneLimits(Player.Instance.transform.position)) {
+            return true;
+        }
+
+        return false;
+    }
+    private bool CanAddBarricadeToTargets(Barricade barricade) {
+        if (creature.GetCreatureSO().barricadeTargetingPriority == 0) return false;
+        if (barricade.GetBarricadeHealthNormalized() > 0) {
+            return true;
+        }
+        return false;
+    }
+    private bool CanAddWorkerToTargets(Worker worker, List<IDamageable> iDamageablesDetected) {
+
+        // Check if worker is out of camp AND player is around too
+        if (creature.GetCreatureSO().workerTargetingPriority == 0) return false;
+        if (!CampZoneManager.Instance.IsWithinCampZoneLimits(worker.transform.position) && iDamageablesDetected.Contains(Player.Instance)) {
+            return true;
+        }
+        return false;
+    }
 }

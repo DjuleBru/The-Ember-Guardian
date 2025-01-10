@@ -8,8 +8,6 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
     [SerializeField] protected int spawnerHealth;
     [SerializeField] protected float spawnRate;
     [SerializeField] protected float spawnAnimationDelay;
-    [SerializeField] protected Transform mobHitPS_Splatter;
-    [SerializeField] protected Transform mobHitPS_Splatter_Continuous;
 
     protected float spawnTimer;
 
@@ -19,6 +17,15 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
     public event EventHandler OnSpawnerDied;
     public event EventHandler OnSpawnerSpawnStart;
     public event EventHandler OnSpawnerSpawned;
+    public event EventHandler<OnHitPSInstatiatedEventArgs> OnHitPSInstatiated;
+
+    public class OnHitPSInstatiatedEventArgs : EventArgs {
+        public float angle;
+        public float height;
+    }
+
+    protected override void Start() {
+    }
 
     protected void Update() {
         if (dead) return;
@@ -40,6 +47,37 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
         SpawnMobs(1);
     }
 
+    public override void SpawnMobs(int mobAmount) {
+        for (int i = 0; i < mobAmount; i++) {
+            Mob mob = Instantiate(mobPrefab, spawnPosition.position, Quaternion.identity).GetComponent<Mob>();
+            mobSpawnedList.Add(mob);
+            mob.SetMobSpawner(this);
+
+            if (isCreatureSpawner) {
+
+                if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+
+                    mob.GetComponent<Creature>().SetAsDayCreature(false);
+
+                } else {
+
+                    mob.GetComponent<Creature>().SetAsDayCreature(true);
+                }
+
+                mob.transform.parent = SpawnedObjects.Instance.creaturesContainer;
+            }
+
+            if (mob is Worker) {
+                mob.transform.parent = SpawnedObjects.Instance.workersContainer;
+            }
+
+            if (mob is Animal) {
+                mob.transform.parent = SpawnedObjects.Instance.AnimalsContainer;
+            }
+
+            InvokeOnMobSpawned(mob);
+        }
+    }
     public void Die() {
         dead = true;
         GetComponent<Collider2D>().enabled = false;
@@ -67,9 +105,14 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
 
     public void InstantiateHitPS(float angle, float height, bool critHit) {
         Vector3 localPosition = new Vector3(transform.position.x, height, 0);
+        OnHitPSInstatiated?.Invoke(this, new OnHitPSInstatiatedEventArgs {
+            angle = angle,
+            height = height,
+        });
+    }
 
-        Instantiate(mobHitPS_Splatter, localPosition, Quaternion.Euler(0, 0, angle), transform); // Particules pour impact normal
-        Instantiate(mobHitPS_Splatter_Continuous, localPosition, Quaternion.Euler(0, 0, angle), transform); // Particules pour impact normal
+    public void SetDead() {
+        dead = true;
     }
 
 }

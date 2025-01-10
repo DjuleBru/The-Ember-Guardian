@@ -8,6 +8,7 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private Animator bodyAnimator;
     [SerializeField] private Animator gunBodyAnimator;
+    [SerializeField] private Animator armBodyAnimator;
     [SerializeField] private Animator emberBodyAnimator;
     [SerializeField] private GameObject breatheVisual;
     [SerializeField] private ParticleSystem respawnPS;
@@ -43,6 +44,8 @@ public class PlayerAnimator : MonoBehaviour
         PlayerMovement.Instance.OnPlayerExhaustionStopped += PlayerMovement_OnPlayerExhaustionStopped;
         PlayerMovement.Instance.OnPlayerAlmostExhaustionStarted += PlayerMovement_OnPlayerAlmostExhaustionStarted;
         PlayerMovement.Instance.OnPlayerAlmostExhaustionStopped += PlayerMovement_OnPlayerAlmostExhaustionStopped;
+        PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
+        PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
 
         PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAIm_OnPlayerAimSightEnded;
         PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAim_OnPlayerAimSightStarted;
@@ -58,6 +61,7 @@ public class PlayerAnimator : MonoBehaviour
 
     private void PlayerSHoor_OnPlayerSwappedGun(object sender, EventArgs e) {
         gunBodyAnimator = PlayerShoot.Instance.GetHeldGun().GetGunBodyAnimator();
+        armBodyAnimator = PlayerShoot.Instance.GetHeldGun().GetArmBodyAnimator();
     }
 
     private void PlayerMovement_OnPlayerAlmostExhaustionStopped(object sender, EventArgs e) {
@@ -68,9 +72,17 @@ public class PlayerAnimator : MonoBehaviour
         breatheVisual.SetActive(true);
     }
 
+    private void PlayerShoot_OnPlayerReloadEnded(object sender, EventArgs e) {
+        walkAnimationSpeed = PlayerMovement.Instance.GetMoveSpeedNormalized();
+    }
+
+    private void PlayerShoot_OnPlayerReload(object sender, EventArgs e) {
+        walkAnimationSpeed = PlayerMovement.Instance.GetMoveSpeedNormalized();
+    }
     private void Player_OnPlayerDamagedRecentlyEnded(object sender, EventArgs e) {
         bodyAnimator.SetBool("DamagedRecently", false);
         gunBodyAnimator.SetBool("DamagedRecently", false);
+        armBodyAnimator.SetBool("DamagedRecently", false);
         emberBodyAnimator.SetBool("DamagedRecently", false);
     }
 
@@ -79,6 +91,7 @@ public class PlayerAnimator : MonoBehaviour
 
         bodyAnimator.SetTrigger("Respawn");
         gunBodyAnimator.SetTrigger("Respawn");
+        armBodyAnimator.SetTrigger("Respawn");
         respawnPS.Play();
         dead = false;
     }
@@ -87,28 +100,33 @@ public class PlayerAnimator : MonoBehaviour
         playerAnimator.SetTrigger("Die");
         bodyAnimator.SetTrigger("Die");
         gunBodyAnimator.SetTrigger("Die");
+        armBodyAnimator.SetTrigger("Die");
         dead = true;
     }
 
     private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
         bodyAnimator.SetTrigger("Hit");
         gunBodyAnimator.SetTrigger("Hit");
+        armBodyAnimator.SetTrigger("Hit");
 
         if (Player.Instance.GetDead()) return;
         bodyAnimator.SetBool("DamagedRecently", true);
         gunBodyAnimator.SetBool("DamagedRecently", true);
+        armBodyAnimator.SetBool("DamagedRecently", true);
         emberBodyAnimator.SetBool("DamagedRecently", true);
     }
 
     private void Portal_OnPlayerTeleported(object sender, EventArgs e) {
         bodyAnimator.SetTrigger("Teleport");
         gunBodyAnimator.SetTrigger("Teleport");
+        armBodyAnimator.SetTrigger("Teleport");
         emberBodyAnimator.SetTrigger("Teleport");
     }
 
     private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {
         bodyAnimator.SetTrigger("Teleport_Out");
         gunBodyAnimator.SetTrigger("Teleport_Out");
+        armBodyAnimator.SetTrigger("Teleport_Out");
         emberBodyAnimator.SetTrigger("Teleport_Out");
     }
 

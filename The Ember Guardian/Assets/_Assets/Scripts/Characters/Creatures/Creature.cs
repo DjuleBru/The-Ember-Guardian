@@ -132,6 +132,7 @@ public class Creature : Mob
 
     private void PlayerShoot_OnPlayerShotProjectile(object sender, EventArgs e) {
         if (detectionRangeIncreased) return;
+
         detectionRangeIncreased = true;
         detectionRangeIncreasedTimer = detectionRangeIncreasedTime;
         CreatureHeardPlayerShoot(true);

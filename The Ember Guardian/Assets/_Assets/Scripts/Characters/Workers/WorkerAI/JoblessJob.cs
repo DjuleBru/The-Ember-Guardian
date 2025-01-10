@@ -44,7 +44,18 @@ public class JoblessJob : MonoBehaviour, IJobBehavior {
     }
     private bool CheckBlockedByCreature() {
         if (workerDetectionCollider.CreaturesInDetectionCollider()) {
-            if(!blockedByCreatures) {
+            Vector3 creaturePosition = workerDetectionCollider.GetClosestCreature().transform.position;
+
+            if(Mathf.Abs(creaturePosition.x) > Mathf.Abs(transform.position.x)) {
+                // Creature is not in the way
+                if (blockedByCreatures) {
+                    blockedByCreatures = false;
+                    OnJoblessNotBlockedByCreatures?.Invoke(this, EventArgs.Empty);
+                }
+                return false;
+            }
+
+            if (!blockedByCreatures) {
                 blockedByCreatures = true;
                 OnJoblessBlockedByCreatures?.Invoke(this, EventArgs.Empty);
             }

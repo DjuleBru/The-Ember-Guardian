@@ -23,7 +23,7 @@ public class MobSpawner : MonoBehaviour
         public Mob mob;
     }
 
-    protected void Start() {
+    protected virtual void Start() {
         if(sceneViewSpawnerSpriteRenderer != null) {
             sceneViewSpawnerSpriteRenderer.enabled = false;
         }
@@ -54,7 +54,7 @@ public class MobSpawner : MonoBehaviour
         SpawnMobs(mobAmountToSpawnOnDawn);
     }
 
-    public void SpawnMobs(int mobAmount) {
+    public virtual void SpawnMobs(int mobAmount) {
         for (int i = 0; i < mobAmount; i++) {
             Mob mob = Instantiate(mobPrefab, spawnPosition.position, Quaternion.identity).GetComponent<Mob>();
             mobSpawnedList.Add(mob);
@@ -73,9 +73,14 @@ public class MobSpawner : MonoBehaviour
                 mob.transform.parent = SpawnedObjects.Instance.AnimalsContainer;
             }
 
-            OnMobSpawned?.Invoke(this, new OnMobSpawnedEventArgs {
-                mob = mob,
-            });
+            InvokeOnMobSpawned(mob);
         }
+    }
+
+    protected void InvokeOnMobSpawned(Mob mob) {
+
+        OnMobSpawned?.Invoke(this, new OnMobSpawnedEventArgs {
+            mob = mob,
+        });
     }
 }

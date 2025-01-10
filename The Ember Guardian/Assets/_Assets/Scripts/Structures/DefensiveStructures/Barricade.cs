@@ -61,6 +61,7 @@ public class Barricade : Structure, IDamageable {
         }
 
         OnBarricadeDamageTaken?.Invoke(this, EventArgs.Empty);
+        RefreshBarricadeRepair();
     }
 
     public Transform GetMeleeAttackPosition() {
@@ -112,7 +113,8 @@ public class Barricade : Structure, IDamageable {
     }
 
     private void RefreshBarricadeRepair() {
-        if(!barricadeVisual.GetBarricadeHasAllSprites()) {
+        Debug.Log("barricadeVisual.GetBarricadeHasAllSprites() " + barricadeVisual.GetBarricadeHasAllSprites());
+        if(!barricadeVisual.GetBarricadeHasAllSprites() && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
             // At least 1 sprite fell
             SetStructurePrimaryFunctionUnlocked(true);
             SetStructureUpgradableUnlocked(false);

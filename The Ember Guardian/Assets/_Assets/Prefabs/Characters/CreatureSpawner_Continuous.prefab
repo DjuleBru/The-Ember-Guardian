@@ -89,8 +89,6 @@ MonoBehaviour:
   spawnerHealth: 35
   spawnRate: 5
   spawnAnimationDelay: 0.5
-  mobHitPS_Splatter: {fileID: 1657823130492668103, guid: 6dadc4b322f84684e820ab4242ab9195, type: 3}
-  mobHitPS_Splatter_Continuous: {fileID: 1657823130492668103, guid: d8f1fa8f87ec49b43b547e4ae973b7f5, type: 3}
 --- !u!50 &6708015766833496878
 Rigidbody2D:
   serializedVersion: 4
@@ -164,6 +162,7 @@ GameObject:
   - component: {fileID: 5805287163470707974}
   - component: {fileID: 2698534721416469709}
   - component: {fileID: 9150696584525912897}
+  - component: {fileID: 477092482930255567}
   m_Layer: 15
   m_Name: Visual
   m_TagString: Untagged
@@ -223,6 +222,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnerAnimator: {fileID: 2698534721416469709}
   bodyAnimator: {fileID: 8644916428330888831}
+--- !u!114 &477092482930255567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4753816854012534287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bd9872444c7ff84984bed4b0d86aedd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mobHitPS_Splatter: {fileID: 1657823130492668103, guid: 6dadc4b322f84684e820ab4242ab9195, type: 3}
+  mobHitPS_Splatter_Continuous: {fileID: 1657823130492668103, guid: d8f1fa8f87ec49b43b547e4ae973b7f5, type: 3}
 --- !u!1 &5773735532010237216
 GameObject:
   m_ObjectHideFlags: 0

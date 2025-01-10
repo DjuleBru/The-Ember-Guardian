@@ -40,7 +40,7 @@ public class CreatureAI : MonoBehaviour {
 
     protected State state;
 
-    protected void Awake() {
+    protected virtual void Awake() {
         creatureMovement = GetComponent<CreatureMovement>();
         mobAttack = GetComponent<MobAttack>();
         creature = GetComponent<Creature>();
@@ -105,66 +105,86 @@ public class CreatureAI : MonoBehaviour {
 
             case State.idle:
 
-                if (detectedAttackTarget && !aggroedRecently) {
-                    ChangeState(State.moveToTarget);
-                }
-
-                Roam();
+                IdleStateUpdate();
 
                 break;
 
             case State.walkingToFire:
-
-                MoveTowardsFire();
-                if(detectedAttackTarget && !aggroedRecently) {
-                    ChangeState(State.moveToTarget);
-                }
+                WalkingToFireStateUpdate();
 
             break;
 
             case State.walkingToSpawner:
-
-                MoveTowardsSpawner();
-                if (detectedAttackTarget && !aggroedRecently) {
-                    ChangeState(State.moveToTarget);
-                }
-
+                WalkingToSpawnerStateUpdate();
+               
                 break;
 
             case State.moveToTarget:
-                if (!detectedAttackTarget) {
-                    if(creature.IsDayCreature()) {
-                        ChangeState(State.walkingToSpawner);
-                        return;
-                    } else {
-                        ChangeState(State.walkingToFire);
-                        return;
-                    }
-                }
-
-                HeadToTarget();
-
+                MoveToTargetStateUpdate();
+               
             break;
 
             case State.attacking:
-
-                if (!detectedAttackTarget) {
-                    if(creature.IsDayCreature()) {
-                        ChangeState(State.walkingToSpawner);
-                    } else {
-                        ChangeState(State.walkingToFire);
-                    }
-                    return;
-                }
-
-                if(!CheckAttackTargetInRange() && !mobAttack.GetAttackStarted()) {
-                    ChangeState(State.moveToTarget);
-                    return;
-                }
-
+                AttackingStateUpdate();
+                
                 break;
         }
     }
+
+    #region STATE UPDATES
+    protected virtual void IdleStateUpdate() {
+        if (detectedAttackTarget && !aggroedRecently) {
+            ChangeState(State.moveToTarget);
+        }
+
+        Roam();
+    }
+
+    protected virtual void WalkingToFireStateUpdate() {
+        MoveTowardsFire();
+        if (detectedAttackTarget && !aggroedRecently) {
+            ChangeState(State.moveToTarget);
+        }
+    }
+    protected virtual void WalkingToSpawnerStateUpdate() {
+        MoveTowardsSpawner();
+        if (detectedAttackTarget && !aggroedRecently) {
+            ChangeState(State.moveToTarget);
+        }
+    }
+    protected virtual void MoveToTargetStateUpdate() {
+        if (!detectedAttackTarget) {
+            if (creature.IsDayCreature()) {
+                ChangeState(State.walkingToSpawner);
+                return;
+            }
+            else {
+                ChangeState(State.walkingToFire);
+                return;
+            }
+        }
+
+        HeadToTarget();
+
+    }
+
+    protected virtual void AttackingStateUpdate() {
+        if (!detectedAttackTarget) {
+            if (creature.IsDayCreature()) {
+                ChangeState(State.walkingToSpawner);
+            }
+            else {
+                ChangeState(State.walkingToFire);
+            }
+            return;
+        }
+
+        if (!CheckAttackTargetInRange() && !mobAttack.GetAttackStarted()) {
+            ChangeState(State.moveToTarget);
+            return;
+        }
+    }
+    #endregion
 
     protected void Roam() {
 
@@ -188,7 +208,7 @@ public class CreatureAI : MonoBehaviour {
         }
     } 
 
-    protected void ChangeState(State newState) {
+    protected virtual void ChangeState(State newState) {
         if (died) return;
 
         if (newState == State.attacking) {
@@ -282,6 +302,8 @@ public class CreatureAI : MonoBehaviour {
     }
 
     public void SetAttackTarget(IDamageable iDamageable, List<IDamageable> iDamageablesInRange) {
+        if (!spawned) return;
+
         if(iDamageablesInRange.Count == 0) {
             detectedAttackTarget = false;
             attackTarget = null;
@@ -291,6 +313,7 @@ public class CreatureAI : MonoBehaviour {
         if(iDamageable != null) {
             detectedAttackTarget = true;
 
+            Debug.Log((iDamageable as MonoBehaviour).gameObject);
             if (attackTarget == iDamageable) return;
 
             attackTarget = iDamageable;
@@ -309,7 +332,6 @@ public class CreatureAI : MonoBehaviour {
         return attackTarget;
     }
 
-
     protected void TriggerAggoFeedbacks() {
         if (attackTarget is Player) {
             OnCreatureAggro?.Invoke(this, EventArgs.Empty);
@@ -317,7 +339,7 @@ public class CreatureAI : MonoBehaviour {
         };
     }
 
-    protected void Creature_OnCreatureDied(object sender, EventArgs e) {
+    protected virtual void Creature_OnCreatureDied(object sender, EventArgs e) {
         died = true;
     }
 

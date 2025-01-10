@@ -7,6 +7,7 @@ public class Gun : MonoBehaviour
     [SerializeField] protected ParticleSystem shootPS;
     [SerializeField] protected GunSO gunSO;
     [SerializeField] protected Animator gunBodyAnimator;
+    [SerializeField] protected Animator armBodyAnimator;
 
     protected bool gunActive;
     protected bool secondaryAbilityUnlocked;
@@ -20,6 +21,7 @@ public class Gun : MonoBehaviour
     protected int shotsPerClip;
     protected float cooldownTime;
     protected float reloadTime;
+    protected float handsReloadTime;
 
     protected float bulletLifetime;
     protected float defaultAngle; // Angle initial du cône (en degrés)
@@ -27,6 +29,7 @@ public class Gun : MonoBehaviour
     protected float overclockedAngle; // Angle resserré du cône lorsqu'on vise
     protected float adjustmentSpeed = 5f; // Vitesse de transition (plus grand = plus rapide)
     protected float critChance = .15f;
+    protected float reloadAccelerationFactor;
 
     protected float currentAngle; // L'angle actuel du cône
     protected float targetAngle; // L'angle cible vers lequel le cône doit se diriger
@@ -130,9 +133,11 @@ public class Gun : MonoBehaviour
         critChance = MetaProgressionManager.Instance.GetGunCritChance(gunSO);
         cooldownTime = MetaProgressionManager.Instance.GetGunCooldown(gunSO);
         reloadTime = MetaProgressionManager.Instance.GetGunReloadTime(gunSO);
+        handsReloadTime = MetaProgressionManager.Instance.GetHandsGunReloadTime(gunSO);
         secondaryAbilityUnlocked = MetaProgressionManager.Instance.GetGunSecondaryAbilityUnlocked(gunSO);
         pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
         bulletLifetime = MetaProgressionManager.Instance.GetGunBulletLifetime(gunSO);
+        reloadAccelerationFactor = MetaProgressionManager.Instance.GetGunReloadAccelerationFactor(gunSO);
 
         defaultAngle = MetaProgressionManager.Instance.GetGunShootConeAnle(gunSO);
         defaultAngle = gunSO.shootConeAngle;
@@ -179,7 +184,9 @@ public class Gun : MonoBehaviour
     public Animator GetGunBodyAnimator() {
         return gunBodyAnimator;
     }
-
+    public Animator GetArmBodyAnimator() {
+        return armBodyAnimator;
+    }
     public bool GetGunActive() {
         return gunActive;
     }
@@ -195,6 +202,8 @@ public class Gun : MonoBehaviour
     public int GetBulletsPerAmmoClip() {
         return shotsPerClip;
     }
+
+
     public int GetMaxAmmo() {
         return maxAmmo;
     }
@@ -204,11 +213,18 @@ public class Gun : MonoBehaviour
     public float GetReloadTime() {
         return reloadTime;
     }
+    public float GetHandsReloadTime() {
+        return handsReloadTime;
+    }
     public float GetCooldownTime() {
         return cooldownTime;
     }
     public float GetCritChance() {
         return critChance;
+    }
+
+    public float GetReloadAccelerationFactor() {
+        return reloadAccelerationFactor;
     }
 
     #endregion

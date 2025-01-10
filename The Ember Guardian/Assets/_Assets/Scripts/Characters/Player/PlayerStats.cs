@@ -46,6 +46,7 @@ public class PlayerStats : MonoBehaviour
     #region SHOOTING
     private float shootCooldownTime;
     private float reloadTime;
+    private float handsReloadTime;
     #endregion
 
     #region OTHER
@@ -144,6 +145,10 @@ public class PlayerStats : MonoBehaviour
         return reloadTime;
     }
 
+    public float GetHandsReloadTime() {
+        return handsReloadTime;
+    }
+
     public float GetShootCooldownTime() {
         return shootCooldownTime;
     }
@@ -197,6 +202,10 @@ public class PlayerStats : MonoBehaviour
 
     public void SetReloadTime(float reloadTime) {
         this.reloadTime = reloadTime;
+    }
+
+    public void SetHandsReloadTime(float handsReloadTime) {
+        this.handsReloadTime = handsReloadTime;
     }
     #endregion
 

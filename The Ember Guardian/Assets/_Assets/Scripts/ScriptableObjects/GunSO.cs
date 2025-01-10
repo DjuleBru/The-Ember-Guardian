@@ -26,11 +26,13 @@ public class GunSO : ScriptableObject
     public float shootConeAngle;
     public float bulletLifetime;
     public float bulletSpeed;
+    public float reloadAccelerationFactor;
 
     public float shootCooldownTime;
     public float shootCooldownSFXTriggerTime;
     public float reloadTime;
-    public float animationReloadTime;
+    public float handsReloadTime;
+    public float handsAnimationReloadTime;
 
     public float gunKnockback;
     public float gunRecoil;

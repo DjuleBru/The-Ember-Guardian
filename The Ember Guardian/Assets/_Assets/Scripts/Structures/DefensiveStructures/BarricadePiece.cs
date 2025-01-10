@@ -7,7 +7,7 @@ public class BarricadePiece : MonoBehaviour {
     [SerializeField] private Material unhoveredMaterial;
     [SerializeField] private Material hoveredMaterial;
     [SerializeField] private Material repairBarricadeMaterial;
-    private SpriteRenderer spriteRenderer;
+    [SerializeField] private SpriteRenderer spriteRenderer;
     private Animator animator;
     private Rigidbody2D rb;
     private Vector3 initialPosition;
@@ -20,37 +20,36 @@ public class BarricadePiece : MonoBehaviour {
     public void DisableBarricadePiece() {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
 
-        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.bodyType = RigidbodyType2D.Static;
         spriteRenderer.enabled = false;
         animator.enabled = false;
     }
 
     public void EnableBarricadePiece() {
         gameObject.SetActive(true);
-        initialPosition = transform.position;
+        transform.position = initialPosition;
 
-        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.bodyType = RigidbodyType2D.Static;
         spriteRenderer.enabled = true;
         animator.enabled = true;
     }
 
     public void BarricadePieceFell() {
-        Vector2 force = new Vector2(UnityEngine.Random.Range(0, 2), UnityEngine.Random.Range(2, 4));
-        float torque = UnityEngine.Random.Range(-2, 2);
+        Vector2 force = new Vector2(UnityEngine.Random.Range(-.5f, .5f), UnityEngine.Random.Range(2f, 4f));
+        float torque = UnityEngine.Random.Range(-100f, 100f);
 
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         rb.gravityScale = 1.5f;
         rb.AddForce(force, ForceMode2D.Impulse);
-        rb.AddTorque(torque, ForceMode2D.Impulse);
-        rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.AddTorque(torque, ForceMode2D.Force);
 
 
         StartCoroutine(DeactivateBarricadeSpriteAfterDelay());
     }
 
     public void ShowBarricadePieceRepairable() {
-        Debug.Log("ShowRepair");
         EnableBarricadePiece();
         spriteRenderer.material = repairBarricadeMaterial;
         animator.SetTrigger("ShowRepair");
@@ -63,7 +62,6 @@ public class BarricadePiece : MonoBehaviour {
     public void BarricadePieceBuilt() {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         initialPosition = transform.position;
 
         animator.ResetTrigger("Damaged");
@@ -71,6 +69,7 @@ public class BarricadePiece : MonoBehaviour {
         transform.position = initialPosition;
         animator.SetTrigger("Build");
     }
+
     private IEnumerator DeactivateBarricadeSpriteAfterDelay() {
         yield return new WaitForSeconds(2f);
         DisableBarricadePiece();

@@ -16,7 +16,7 @@ MonoBehaviour:
   description: Melee mob that can respawn after it's first death !
   creaturePrefab: {fileID: 0}
   mass: 20
-  detectionRange_Day: 10
+  detectionRange_Day: 6
   detectionRange_Night: 2
   flying: 0
   flightMinAltitude: 0
@@ -38,7 +38,7 @@ MonoBehaviour:
   relativeDamageToFire: 1
   attackAnimationDelay: 0.2
   totalAttackAnimationTime: 0.6
-  hasSpawnAnimation: 1
+  hasSpawnAnimation: 0
   spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 0.85
   workerTargetingPriority: 1
