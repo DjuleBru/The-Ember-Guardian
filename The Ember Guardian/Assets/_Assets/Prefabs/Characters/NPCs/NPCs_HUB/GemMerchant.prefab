@@ -569,8 +569,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8385513270722688418}
   m_HandleRect: {fileID: 1424134487310206145}
   m_Direction: 0
-  m_Value: -0.0000001198733
-  m_Size: 0.40576544
+  m_Value: -0.00000011987326
+  m_Size: 0.40576535
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2063,7 +2063,7 @@ MonoBehaviour:
 
     Total Barricade health : <b>24</b> (+12)'
   itemLevel: 2
-  maxItemLevel: 1
+  maxItemLevel: 2
   isBoughtAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
@@ -5220,6 +5220,7 @@ MonoBehaviour:
   activeGameObject: {fileID: 2559116683721774755}
   inactiveGameObject: {fileID: 235170622054286131}
   DEBUGActivateMerchant: 0
+  hubMerchantItemParent: {fileID: 6649104612643112754}
 --- !u!1001 &4021299493248843330
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6096,7 +6097,7 @@ MonoBehaviour:
   unlockDescription: Allows to upgrade your tent <b> Level 2 </b>, offering more
     space to expand your camp.
   itemLevel: 2
-  maxItemLevel: 1
+  maxItemLevel: 2
   isBoughtAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
@@ -9647,7 +9648,7 @@ MonoBehaviour:
 
     Range increase : <b>50%</b> (+25%)'
   itemLevel: 2
-  maxItemLevel: 1
+  maxItemLevel: 2
   isBoughtAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0

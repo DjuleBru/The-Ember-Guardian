@@ -144,10 +144,15 @@ public class PlayerCurrencies : MonoBehaviour
         collectiblesBeingPaid.Clear();
     }
 
-    public void CancelCurrencyPayment() {
+    public void CancelCurrencyPayment(bool collectiblesFallInWater) {
         foreach(Collectible collectible in collectiblesBeingPaid) {
             collectible.SetMovingForPayment(false);
             collectible.ApplyRandomUpwardsForce(1, 5);
+
+            if(collectiblesFallInWater) {
+                collectible.SetCollectibleFellFromBag();
+            }
+
         }
         collectiblesBeingPaid.Clear();
     }

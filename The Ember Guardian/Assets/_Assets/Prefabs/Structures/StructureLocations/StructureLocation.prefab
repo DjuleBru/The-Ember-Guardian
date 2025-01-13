@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureSOToBuild: {fileID: 0}
   orbTemplateWorldUIParent: {fileID: 8116224641355240844}
+  isAlwaysUnlocked: 0
 --- !u!114 &3091749738831476434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,10 +62,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d2d1cbe4cb17047b221f9b5bffc894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blueOrbPrefab: {fileID: 4096008502524423227, guid: 7187c138d57b2dc43b18d3d2bd569bed, type: 3}
-  fillPaymentOrbTime: 1
-  initialFillPaymentOrbRate: 1
-  fillPaymentOrbRateIncrease: 0.3
 --- !u!61 &7506368512435722411
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -509,7 +506,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 33554431
 --- !u!225 &9117933884419414489
 CanvasGroup:
   m_ObjectHideFlags: 0

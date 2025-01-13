@@ -683,6 +683,15 @@ public class Tutorial : MonoBehaviour
         yield return new WaitForSeconds(4f);
         PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
     }
+    public void ShowRollTip() {
+        StartCoroutine(ShowRollTipCoroutine());
+    }
+
+    public IEnumerator ShowRollTipCoroutine() {
+        StartCoroutine(ShowTooltipAfterDelay(0f, "Press", "To roll", InputControlIcons.Control.Roll));
+        yield return new WaitForSeconds(4f);
+        PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
+    }
     #endregion
 
     private IEnumerator TransitionToTutorialCameraCoroutine(float delay) {
@@ -707,11 +716,11 @@ public class Tutorial : MonoBehaviour
     }
 
     public void TransitionToCombatCamera() {
-        CameraManager.Instance.ZoomOut(false, .7f, 2f);
+        CameraManager.Instance.ZoomOut(false, .8f, 2f);
     }
 
     public void TransitionToTutorialCamera() {
-        CameraManager.Instance.ZoomOut(false, 1.3f, 2f);
+        CameraManager.Instance.ZoomOut(false, 1.2f, 2f);
     }
 
     private IEnumerator ActivateCreatureSpotLightCoroutine(float delay) {

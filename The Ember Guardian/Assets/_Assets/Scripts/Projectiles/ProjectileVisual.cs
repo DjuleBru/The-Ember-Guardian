@@ -21,7 +21,6 @@ public class ProjectileVisual : MonoBehaviour
     }
 
     private void Projectile_OnProjectileHit(object sender, System.EventArgs e) {
-        Debug.Log("Projectile_OnProjectileHit");
 
         projectileHasHit = true;
 

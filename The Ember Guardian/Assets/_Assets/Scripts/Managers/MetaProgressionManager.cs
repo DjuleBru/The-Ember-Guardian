@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class MetaProgressionManager : MonoBehaviour
 {
@@ -16,7 +17,6 @@ public class MetaProgressionManager : MonoBehaviour
 
     #region TUTORIAL
     public bool tutorialComplete { get; private set; }
-    public bool hubLoadedOnce { get; private set; }
     #endregion
 
     #region HUB
@@ -41,9 +41,8 @@ public class MetaProgressionManager : MonoBehaviour
         Instance = this;
 
         tutorialComplete = ES3.Load("tutorialComplete", false);
-        hubLoadedOnce = ES3.Load("hubLoadedOnce", false);
 
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB && hubLoadedOnce) {
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             int lastPortal = defaultLastHUBPortalUsedByPlayer.GetPortalNumber();
             lastHUBPortalUsedByPlayer = ES3.Load("lastHUBPortalUsedByPlayer", lastPortal);
         }
@@ -60,12 +59,18 @@ public class MetaProgressionManager : MonoBehaviour
         ES3.Save("tutorialComplete", true);
     }
 
-    public void SetHubLoadedOnce() {
-        ES3.Save("hubLoadedOnce", true);
+    public bool GetLevelUnlocked(LevelSO levelSO) {
+        return ES3.Load(levelSO.name, false);
     }
+
+    public void SetLevelUnlocked(LevelSO levelSO) {
+        ES3.Save(levelSO.name, true);
+    }
+
     #endregion
 
     #region HUB
+
     public void SetNextHubArrivalThroughPortal(bool arrivalThroughPortal) {
         ES3.Save("nextHubArrivalThroughPortal", arrivalThroughPortal);
     }
@@ -95,10 +100,17 @@ public class MetaProgressionManager : MonoBehaviour
         return ES3.Load(key, false);
     }
 
-    public void SetHubFireEmberExtractable() {
-        Debug.Log("SetHubFireEmberExtractable");
+    public void SetHubFireEmberExtractable(bool hubFireExtractable) {
         string key = "SetHubFireEmberExtractable";
-        ES3.Save(key, true);
+        ES3.Save(key, hubFireExtractable);
+    }
+
+    public void SavePlayerHubPosition(Vector3 position) {
+        ES3.Save("_playerHUBPosition", position);
+    }
+
+    public Vector3 GetPlayerHubPosition() {
+        return ES3.Load("_playerHUBPosition", Vector3.zero);
     }
     #endregion
 
@@ -122,8 +134,8 @@ public class MetaProgressionManager : MonoBehaviour
         ES3.Save("gemsRewardedFromlastLevel", false);
     }
 
-    public void SetGemsRewarded() {
-        ES3.Save("gemsRewardedFromlastLevel", true);
+    public void SetGemsRewarded(bool rewarded) {
+        ES3.Save("gemsRewardedFromlastLevel", rewarded);
     }
 
     public bool GetGemFromLastLevelRewarded() {
@@ -151,7 +163,6 @@ public class MetaProgressionManager : MonoBehaviour
 
     #region HUB MERCHANTS
     public void SetMerchantHasTalkLinesToShow(HubMerchant.HubMerchantType merchantType, bool hasTalkLinesToShow) {
-        Debug.Log("SetMerchantHasTalkLinesToShow");
         string key = merchantType.ToString() + "_TalkLinesToShow";
         ES3.Save(key, hasTalkLinesToShow);
     }
@@ -160,8 +171,8 @@ public class MetaProgressionManager : MonoBehaviour
         string key = merchantType.ToString() + "_TalkLinesToShow";
         return ES3.Load(key, true);
     }
+
     public void SetMerchantJustArrivedInHub(HubMerchant.HubMerchantType merchantType, bool justArrived) {
-        Debug.Log("SetMerchantJustArrivedInHub");
         string key = merchantType.ToString() + "_JustArrivedInHub";
         ES3.Save(key, justArrived);
     }
@@ -170,13 +181,13 @@ public class MetaProgressionManager : MonoBehaviour
         string key = merchantType.ToString() + "_JustArrivedInHub";
         return ES3.Load(key, true);
     }
+
     public bool GetMerchantUnlocked(HubMerchant.HubMerchantType merchantType) {
         string key = merchantType.ToString() + "_Unlocked";
         return ES3.Load(key, false);
     }
 
     public void SetMerchantUnlocked(HubMerchant.HubMerchantType merchantType) {
-        Debug.Log("SetMerchantUnlocked");
         string key = merchantType.ToString() + "_Unlocked";
         ES3.Save(key, true);
     }
@@ -191,10 +202,6 @@ public class MetaProgressionManager : MonoBehaviour
         return ES3.Load(key, false);
     }
 
-    public void SetHubMerchantItemEquipped(string merchantItemSaveString, bool equipped) {
-        string key = merchantItemSaveString + "_Equipped";
-        ES3.Save(key, equipped);
-    }
 
     public bool GetMerchantItemEquipped(string merchantItemSaveString) {
         string key = merchantItemSaveString + "_Equipped";
@@ -211,6 +218,11 @@ public class MetaProgressionManager : MonoBehaviour
         return ES3.Load(key, true);
     }
 
+    public void SetHubMerchantItemEquipped(string merchantItemSaveString, bool equipped) {
+        string key = merchantItemSaveString + "_Equipped";
+        ES3.Save(key, equipped);
+    }
+
     public int GetHubMerchantItemLevel(string merchantItemSaveString) {
         string key = merchantItemSaveString + "_Level_";
         int level = ES3.Load(key, 0);
@@ -218,12 +230,12 @@ public class MetaProgressionManager : MonoBehaviour
         return level;
     }
 
-    public void SetHubMerchantItemUnlocked(string merchantItemSaveString) {
+    public void SetHubMerchantItemUnlocked(string merchantItemSaveString, bool unlocked) {
         string key = merchantItemSaveString + "_Unlocked";
         ES3.Save(key, true);
     }
 
-    public void SetHubMerchantItemBought(string merchantItemSaveString) {
+    public void SetHubMerchantItemBought(string merchantItemSaveString, bool bought) {
         string key = merchantItemSaveString + "_Bought";
         ES3.Save(key, true);
     }
@@ -358,6 +370,21 @@ public class MetaProgressionManager : MonoBehaviour
             gunTypeModified = gunSO.gunType,
         });
     }
+
+    public float GetGunBulletSpeed(GunSO gunSO) {
+        string key = gunSO.gunType + "_bulletSpeed";
+
+        return ES3.Load(key, gunSO.bulletSpeed);
+    }
+
+    public void SetGunBulletSpeed(GunSO gunSO, float bulletSpeed) {
+        string key = gunSO.gunType + "_bulletSpeed";
+
+        ES3.Save(key, bulletSpeed);
+        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
+            gunTypeModified = gunSO.gunType,
+        });
+    }
     public float GetGunReloadAccelerationFactor(GunSO gunSO) {
         string key = gunSO.gunType + "_reloadAccelerationFactor";
 
@@ -441,7 +468,6 @@ public class MetaProgressionManager : MonoBehaviour
         return ES3.Load(key, gunSO.shootConeAngle);
     }
     #endregion
-
 
     private void OnApplicationQuit() {
         if(destroySaveOnApplicationQuit) {

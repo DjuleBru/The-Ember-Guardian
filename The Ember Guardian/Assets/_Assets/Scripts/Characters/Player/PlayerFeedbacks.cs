@@ -42,24 +42,20 @@ public class PlayerFeedbacks : MonoBehaviour
     }
 
     private void PlayerMovement_OnPlayerExhaustionStopped(object sender, System.EventArgs e) {
-        Debug.Log("PlayerMovement_OnPlayerExhaustionStopped");
         playerExhausted = false;
     }
 
     private void PlayerMovement_OnPlayerExhaustionStarted(object sender, System.EventArgs e) {
-        Debug.Log("PlayerMovement_OnPlayerExhaustionStarted");
         playerExhausted = true;
     }
 
     private void PlayerMovement_OnPlayerAlmostExhaustionStopped(object sender, System.EventArgs e) {
-        Debug.Log("PlayerMovement_OnPlayerAlmostExhaustionStopped");
         if (playerExhausted) return;
         exhaustedStartFeedbacks.StopFeedbacks();
         exhaustedEndFeedbacks.PlayFeedbacks();
     }
 
     private void PlayerMovement_OnPlayerAlmostExhaustionStarted(object sender, System.EventArgs e) {
-        Debug.Log("PlayerMovement_OnPlayerAlmostExhaustionStarted");
         exhaustedStartFeedbacks.PlayFeedbacks();
     }
 

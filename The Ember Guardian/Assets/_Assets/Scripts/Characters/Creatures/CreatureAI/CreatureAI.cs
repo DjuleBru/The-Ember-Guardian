@@ -313,7 +313,6 @@ public class CreatureAI : MonoBehaviour {
         if(iDamageable != null) {
             detectedAttackTarget = true;
 
-            Debug.Log((iDamageable as MonoBehaviour).gameObject);
             if (attackTarget == iDamageable) return;
 
             attackTarget = iDamageable;

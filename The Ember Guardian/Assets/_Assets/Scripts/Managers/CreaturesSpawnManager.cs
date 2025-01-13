@@ -25,7 +25,7 @@ public class CreaturesSpawnManager : MonoBehaviour
     public enum SpawnSide { Left, Right };
     private float spawnDistanceToPlayerOrCamp = 30f;
 
-    public List<CreatureSO> creatureTypes;
+    private List<CreatureSO> creatureTypes;
 
     public int baseDifficulty;
     public float growthFactor;
@@ -62,6 +62,7 @@ public class CreaturesSpawnManager : MonoBehaviour
     }
 
     private void Start() {
+        creatureTypes = LevelManager.Instance.GetLevelSO().nightCreatureTypes;
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
         //SetWaveParameters(currentWaveNumber, false, false);

@@ -50,6 +50,7 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnWeaponSecondaryAbilityCanceled;
 
     public event EventHandler OnPlayerBackPerformed;
+    public event EventHandler OnPlayerPausePerformed;
 
     private bool interactPressed;
     private bool holdingInteract;
@@ -96,10 +97,12 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.Back.performed += Back_performed;
         playerInputActions.Player.WeaponSecondaryAbility.performed += WeaponSecondaryAbility_performed;
         playerInputActions.Player.WeaponSecondaryAbility.canceled += WeaponSecondaryAbility_canceled;
+        playerInputActions.Player.Pause.performed += Pause_performed;
 
         playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
         playerInputActions.Player.Move.performed += Move_performed;
     }
+
 
     private void InputUser_onChange(InputUser user, InputUserChange change, InputDevice arg3) {
         if (change == InputUserChange.ControlSchemeChanged) {
@@ -162,6 +165,12 @@ public class GameInput : MonoBehaviour
 
     public bool IsUsingGamepad() {
         return currentControlScheme == "Gamepad";
+    }
+
+    #region INPUT MANAGEMENT
+
+    private void Pause_performed(InputAction.CallbackContext obj) {
+        OnPlayerPausePerformed?.Invoke(this, EventArgs.Empty);
     }
 
     private void Move_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
@@ -243,6 +252,9 @@ public class GameInput : MonoBehaviour
     private void Run_performed(InputAction.CallbackContext obj) {
         OnPlayerRunPerformed?.Invoke(this, EventArgs.Empty);
     }
+
+    #endregion
+
     public Vector2 GetAimInput() {
         return playerInputActions.Player.Aim.ReadValue<Vector2>();
     }

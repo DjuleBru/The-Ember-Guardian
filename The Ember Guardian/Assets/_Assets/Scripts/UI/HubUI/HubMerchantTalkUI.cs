@@ -78,6 +78,8 @@ public class HubMerchantTalkUI : MonoBehaviour
     public void SetTalkingWithMerchant(MerchantTextLinesSO textLinesSO, bool showShopAfterDialog) {
         this.showShopAfterDialog = showShopAfterDialog;
         merchantTalkLines = textLinesSO.merchantTextLines;
+        hubMerchant.StartTalkingWithMerchant();
+
         StartCoroutine(StartTalkingToMerchantCoroutine());
     }
 

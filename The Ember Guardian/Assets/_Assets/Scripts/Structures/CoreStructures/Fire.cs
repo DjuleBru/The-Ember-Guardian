@@ -491,7 +491,6 @@ public class Fire : Structure, IDamageable {
     }
 
     public void SetHubFireEmberExtractable() {
-        MetaProgressionManager.Instance.SetHubFireEmberExtractable();
         SetStructureSecondaryFunctionUnlocked(true);
         ActivateStructureSecondaryFunctionInteraction(true);
         SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);

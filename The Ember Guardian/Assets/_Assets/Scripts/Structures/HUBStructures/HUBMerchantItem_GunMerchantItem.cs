@@ -554,7 +554,6 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     public override void UnequipItem() {
         itemEquipped = false;
         InvokeOnItemUnequipped();
-        MetaProgressionManager.Instance.SetHubMerchantItemEquipped(GetItemType(), false);
         
         if(isEquippedAtStart) {
             MetaProgressionManager.Instance.SetHubMerchantItemEquippedAtStart(GetItemType(), false);
@@ -562,8 +561,8 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     }
 
     private void EquipGun() {
+        itemEquipped = true;
         PlayerShoot.Instance.SetGun(linkedGunSO);
-        MetaProgressionManager.Instance.SetHubMerchantItemEquipped(GetItemType(), true);
         PlayerSave.Instance.SetPrimaryActiveGunSO(linkedGunSO);
     }
 

@@ -14,6 +14,7 @@ public class LevelSO : ScriptableObject
 
     public LevelEnvironment environmentType;
     public LevelUI_ObjectiveUI.ObjectiveType levelObjectiveType;
+    public List<CreatureSO> nightCreatureTypes;
     public string linkedSceneName;
     public float fogFrontAlpha;
     public float fogBackAlpha;

@@ -151,7 +151,6 @@ public class Projectile : MonoBehaviour
     }
 
     protected virtual void ProjectileHasHit(bool mobHit) {
-        Debug.Log("ProjectileHasHit");
 
         projectileHasHit = true;
         OnProjectileHit?.Invoke(this, EventArgs.Empty);

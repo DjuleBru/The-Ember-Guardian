@@ -65,6 +65,7 @@ public class DogAnimatorManager : MonoBehaviour {
 
     private void Start() {
         dogAI.OnStateChanged += DogAI_OnStateChanged;
+        dogAI.SetReadyToMove(false);
     }
 
     private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {

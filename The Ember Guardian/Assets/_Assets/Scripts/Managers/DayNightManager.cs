@@ -112,10 +112,12 @@ public class DayNightManager : MonoBehaviour
     }
 
     private void Fire_OnFireEmberExtractionStopped(object sender, EventArgs e) {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) return;
         SetCyclePaused(false);
     }
 
     private void Fire_OnFireEmberExtractionStarted(object sender, EventArgs e) {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) return;
         SetCyclePaused(true);
     }
 

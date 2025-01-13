@@ -30,25 +30,25 @@ MonoBehaviour:
   critChance: 15
   shootConeAngle: 2
   bulletLifetime: 0.3
-  bulletSpeed: 50
+  bulletSpeed: 65
   reloadAccelerationFactor: 0.75
   shootCooldownTime: 0.5
-  shootCooldownSFXTriggerTime: 0.2
-  reloadTime: 3
-  handsReloadTime: 1.5
+  shootCooldownSFXTriggerTime: 0.5
+  reloadTime: 2.2
+  handsReloadTime: 2
   handsAnimationReloadTime: 1
   gunKnockback: 1.5
-  gunRecoil: 0.5
-  gunRecoilDamping: 2
+  gunRecoil: 1.2
+  gunRecoilDamping: 4
   shootGunSound:
-  - {fileID: 8300000, guid: 4e6a70b9a752bfe4baa989d422d548a7, type: 3}
-  - {fileID: 8300000, guid: 9224f2ae4167d824fad213110b1cb032, type: 3}
-  - {fileID: 8300000, guid: 042e753c3be9e7a4ba6caf3e522ea95e, type: 3}
-  - {fileID: 8300000, guid: 82082d9f03022b545bb13e43cf4c867e, type: 3}
-  - {fileID: 8300000, guid: 502fddbd75e0aca41973f6ac1a9f4094, type: 3}
-  - {fileID: 8300000, guid: cbec75c991d218c4b9b2fe1abe554495, type: 3}
+  - {fileID: 8300000, guid: 14207df6980591a4fa2dcb0a1cc45566, type: 3}
+  - {fileID: 8300000, guid: b1e01a9017a73e348a4d2512df1f2260, type: 3}
+  - {fileID: 8300000, guid: 4e8f017ef244ceb4b85ccb4cd94cdd91, type: 3}
+  - {fileID: 8300000, guid: 69229f8725cae404bbe385b346c63b0e, type: 3}
+  - {fileID: 8300000, guid: fe313ba0f91f40e47832b99f1df35019, type: 3}
+  - {fileID: 8300000, guid: 524b9d488513790428d105b58db6a6f7, type: 3}
   reloadGunSound:
-  - {fileID: 8300000, guid: 424960b7103131841868fb50af25771b, type: 3}
+  - {fileID: 8300000, guid: 497ca2561e0e6574c9811d612c98dec1, type: 3}
   cooldownGunSound:
   - {fileID: 8300000, guid: 44410cc1b7956fa48b296fe59bf65d00, type: 3}
   bulletHitGroundSound:
@@ -72,5 +72,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ca64eff00a5e6a741a94592aaa229a5d, type: 3}
   - {fileID: 8300000, guid: 2c707419f490654468a181cc7a85e8ec, type: 3}
   outOfAmmoSound:
-  - {fileID: 8300000, guid: b98aaa1d97aed8244b1576b894d0d598, type: 3}
+  - {fileID: 8300000, guid: 34b027e33db23f44891b7586138184a7, type: 3}
   swapToWeaponSound: {fileID: 8300000, guid: 44410cc1b7956fa48b296fe59bf65d00, type: 3}
+  reloadSFXVolumeMultiplier: 0.65

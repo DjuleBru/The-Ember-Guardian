@@ -26,25 +26,31 @@ public class MusicManager : MonoBehaviour {
 
     private void Start() {
         SetAudioVolume(audioVolume);
+        audioSource.ignoreListenerPause = true;
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
+        } else {
+            DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         }
 
         CreatureAI.OnAnyCreatureAggro += CreatureAI_OnAnyCreatureAggro;
-        DayNightManager.Instance.OnNightStart += LevelManager_OnNightStart;
 
         isLevelScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level;
     }
 
-    private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {
+    private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
+        if (!isLevelScene) return;
+
         peacefulTimer = 0;
         playMusicAttemptTimer = 0;
         isPlayingPeacefulMusic = false;
         FadeOutMusic(2f);
     }
 
-    private void LevelManager_OnNightStart(object sender, System.EventArgs e) {
+    private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {
+        if (!isLevelScene) return;
+
         peacefulTimer = 0;
         playMusicAttemptTimer = 0;
         isPlayingPeacefulMusic = false;

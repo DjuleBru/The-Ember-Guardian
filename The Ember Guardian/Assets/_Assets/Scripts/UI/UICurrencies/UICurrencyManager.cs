@@ -309,7 +309,7 @@ public class UICurrencyManager : MonoBehaviour
         } else {
             OnCurrencyFailedToDrop?.Invoke(this, EventArgs.Empty);
             currentPayCurrencyUI.ResetCurrencyPayment();
-            PlayerCurrencies.Instance.CancelCurrencyPayment();
+            PlayerCurrencies.Instance.CancelCurrencyPayment(currentPayCurrencyUI.GetCurrenciesFailedToPayFallInWater());
         }
     }
 

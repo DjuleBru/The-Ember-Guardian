@@ -318,7 +318,7 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         // Recover only when not exhausted anymore
-        if (!isExhausted && staminaTimer > 0) {
+        if (!isRunning && !isExhausted && staminaTimer > 0) {
             if(staminaTimer > PlayerStats.Instance.GetRunMaxTime()) {
                 staminaTimer = PlayerStats.Instance.GetRunMaxTime();
             }
@@ -332,11 +332,9 @@ public class PlayerMovement : MonoBehaviour {
                 OnPlayerAlmostExhaustionStopped?.Invoke(this, EventArgs.Empty);
             }
         }
-       
 
         if (isRunning && (moveSpeed != 0)) {
             staminaTimer += Time.deltaTime;
-
         }
 
         // Almost exhausted

@@ -75,11 +75,8 @@ public class Portal : MonoBehaviour
             // DEEEEEEEEEEEEEEEEEEEBUG
             if (DEBUGMODE) return;
 
-
-            if (MetaProgressionManager.Instance.hubLoadedOnce) {
-                if (MetaProgressionManager.Instance.GetNextHubArrivalThroughPortal() && MetaProgressionManager.Instance.lastHUBPortalUsedByPlayer == portalNumber) {
-                    StartCoroutine(TeleportPlayerOutInHub());
-                }
+            if (MetaProgressionManager.Instance.GetNextHubArrivalThroughPortal() && MetaProgressionManager.Instance.lastHUBPortalUsedByPlayer == portalNumber) {
+                StartCoroutine(TeleportPlayerOutInHub());
             }
         }
 

@@ -69,6 +69,11 @@ public class Dog : MonoBehaviour
         return currentIdleState;
     }
 
+    public void SetPosition(Vector3 position) {
+        transform.position = position;
+        GetComponent<MobMovement>().SetMoveTarget(position);
+    }
+
     private void OnDestroy() {
         GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
     }

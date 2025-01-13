@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PayCurrencyUI : MonoBehaviour
 {
+    [SerializeField] private bool currenciesFailedToPayFallInWater = false;
+
     protected List<PayCurrencyTemplateWorldUI> currencyTemplateWorldUIList = new List<PayCurrencyTemplateWorldUI>();
     protected int currencyIndex;
 
@@ -47,7 +49,7 @@ public class PayCurrencyUI : MonoBehaviour
                 orbTemplateWorldUI.SetCurrencyPaid(false);
             }
 
-            PlayerCurrencies.Instance.CancelCurrencyPayment();
+            PlayerCurrencies.Instance.CancelCurrencyPayment(currenciesFailedToPayFallInWater);
             UICurrencyManager.Instance.SetPayingCurrency(this, currencyTypeToPay, false);
 
         } else {
@@ -84,6 +86,10 @@ public class PayCurrencyUI : MonoBehaviour
                 currencyIndex = currencyIndex,
             });
         }
+    }
+
+    public bool GetCurrenciesFailedToPayFallInWater() {
+        return currenciesFailedToPayFallInWater;
     }
 
     public bool GetIsLastCurrencyPaid() {

@@ -277,6 +277,10 @@ public class Player : MonoBehaviour, IDamageable
 
     #endregion
 
+    public void SetPosition(Vector3 position) {
+        transform.position = position;
+    }
+
     public Transform GetProjectileTarget() {
         return projectileTarget;
     }

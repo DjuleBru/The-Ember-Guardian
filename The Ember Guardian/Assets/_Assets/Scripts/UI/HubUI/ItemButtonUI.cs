@@ -59,7 +59,7 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
             itemLevelBackgroundGameObject.SetActive(false);
         }
 
-        OnAnyOutputLinkUnlocked += ItemButtonUI_OnAnyItemButtonUIBought;
+        OnAnyOutputLinkUnlocked += ItemButtonUI_OnAnyOutputLinkUnlocked;
         OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
         OnAnyButtonHovered += ItemButtonUI_OnAnyButtonHovered;
         hubMerchantItem.OnHubMerchantItemLoaded += HubMerchantItem_OnHubMerchantItemLoaded;
@@ -142,7 +142,7 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
 
     }
 
-    private void ItemButtonUI_OnAnyItemButtonUIBought(object sender, EventArgs e) {
+    private void ItemButtonUI_OnAnyOutputLinkUnlocked(object sender, EventArgs e) {
         ItemButtonUI itemButtonUI = (ItemButtonUI)sender;
 
         if (lockingItemButtonUIList.Contains(itemButtonUI)) {
@@ -294,7 +294,7 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     public void SetLockingItemBought(ItemButtonUI itemButtonUI) {
         lockingItemButtonUIList.Remove(itemButtonUI);
 
-        if(lockingItemButtonUIList.Count == 0) {
+        if (lockingItemButtonUIList.Count == 0) {
             SetItemUnlocked();
         }
     }

@@ -23,7 +23,6 @@ public class PlayerSave : MonoBehaviour
             return initialActiveGun;
         }
 
-        Debug.Log(activeGun.ToString());
         return activeGun;
     }
 

@@ -113,7 +113,6 @@ public class Barricade : Structure, IDamageable {
     }
 
     private void RefreshBarricadeRepair() {
-        Debug.Log("barricadeVisual.GetBarricadeHasAllSprites() " + barricadeVisual.GetBarricadeHasAllSprites());
         if(!barricadeVisual.GetBarricadeHasAllSprites() && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
             // At least 1 sprite fell
             SetStructurePrimaryFunctionUnlocked(true);

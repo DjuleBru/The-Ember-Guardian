@@ -49,7 +49,6 @@ public class MobMovement : MonoBehaviour
     protected virtual void Start() {
         // Démarrer les variations de vitesse
         if(hadSpeedVariations) {
-
             StartCoroutine(AdjustSpeedOverTime());
         }
     }

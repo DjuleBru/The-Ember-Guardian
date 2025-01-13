@@ -73,7 +73,6 @@ public class DogAI : MonoBehaviour
         CheckCreaturesInGrowlRange();
 
         distanceToPlayer = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
-
         distanceToStickWithPlayerTarget = Mathf.Abs(stickWithPlayerMoveTarget.x - transform.position.x);
 
         switch (state) {

@@ -24,6 +24,7 @@ public class Gun : MonoBehaviour
     protected float handsReloadTime;
 
     protected float bulletLifetime;
+    protected float bulletSpeed;
     protected float defaultAngle; // Angle initial du cône (en degrés)
     protected float sightAngle; // Angle resserré du cône lorsqu'on vise
     protected float overclockedAngle; // Angle resserré du cône lorsqu'on vise
@@ -137,6 +138,7 @@ public class Gun : MonoBehaviour
         secondaryAbilityUnlocked = MetaProgressionManager.Instance.GetGunSecondaryAbilityUnlocked(gunSO);
         pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
         bulletLifetime = MetaProgressionManager.Instance.GetGunBulletLifetime(gunSO);
+        bulletSpeed = MetaProgressionManager.Instance.GetGunBulletSpeed(gunSO);
         reloadAccelerationFactor = MetaProgressionManager.Instance.GetGunReloadAccelerationFactor(gunSO);
 
         defaultAngle = MetaProgressionManager.Instance.GetGunShootConeAnle(gunSO);
@@ -151,6 +153,7 @@ public class Gun : MonoBehaviour
 
         ParticleSystem.MainModule shootPSMain = shootPS.main;
         shootPSMain.startLifetime = bulletLifetime;
+        shootPSMain.startSpeed = bulletSpeed;
 
         currentBullet = shotsPerClip;
         currentAmmoClip = MetaProgressionManager.Instance.GetInitialLevelAmmo();

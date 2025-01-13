@@ -47,4 +47,5 @@ public class GunSO : ScriptableObject
     public AudioClip[] bulletHitEnemyCritSound;
     public AudioClip[] outOfAmmoSound;
     public AudioClip swapToWeaponSound;
+    public float reloadSFXVolumeMultiplier;
 }

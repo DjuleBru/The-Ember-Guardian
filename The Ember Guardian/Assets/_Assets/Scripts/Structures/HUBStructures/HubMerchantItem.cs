@@ -43,7 +43,10 @@ public class HubMerchantItem : MonoBehaviour
         if(!isBoughtAtStart) {
 
             itemBought = MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType());
-            itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType());
+            
+            if(!itemUnlocked) {
+                itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType());
+            }
 
             if(itemLevel == 0) {
                 itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
@@ -89,18 +92,17 @@ public class HubMerchantItem : MonoBehaviour
 
     public virtual void UnlockItem() {
         itemUnlocked = true;
-        MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType());
     }
 
     public virtual void BuyItem() {
-        itemLevel++;
+        if(itemUpgradeable) {
+            itemLevel++;
+        }
+
         itemBought = true;
 
         UICurrencyManager.Instance.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.greenGem, greenGemCost);
         UICurrencyManager.Instance.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.redGem, redGemCost);
-
-        MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType());
-        MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), GetItemLevel());
 
         OnAnyHubMerchantItemBought?.Invoke(this, EventArgs.Empty);
 
@@ -118,8 +120,6 @@ public class HubMerchantItem : MonoBehaviour
 
         UICurrencyManager.Instance.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.greenGem, greenGemCost);
         UICurrencyManager.Instance.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.redGem, redGemCost);
-
-        MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), GetItemLevel());
 
         if (greenGemCostList.Count >= itemLevel) {
             greenGemCost = greenGemCostList[itemLevel - 1];
@@ -204,7 +204,11 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public bool GetItemMaxed() {
-        return itemLevel == maxItemLevel;
+        if(itemUpgradeable) {
+            return itemLevel == maxItemLevel;
+        } else {
+            return false;
+        }
     }
     public bool GetitemEquipable() {
         return itemEquipable;
@@ -221,7 +225,27 @@ public class HubMerchantItem : MonoBehaviour
     public virtual int GetMaxItemLevel() {
         return maxItemLevel;
     }
+
     public bool GetItemEquipped() {
         return itemEquipped;
+    }
+
+    public void SaveItemStatus() {
+        if(itemBought && !MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType())) {
+            MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), itemBought);
+
+            if (itemUpgradeable) {
+                MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), itemLevel);
+            }
+        }
+
+        if(itemUnlocked && !MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType())) {
+            MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType(), itemUnlocked);
+        }
+
+        if(itemEquipable) {
+            MetaProgressionManager.Instance.SetHubMerchantItemEquipped(GetItemType(), itemEquipped);
+        }
+
     }
 }

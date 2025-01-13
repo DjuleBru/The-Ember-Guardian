@@ -19,6 +19,7 @@ public class InputControlIcons : MonoBehaviour
         Aim,
         Back,
         SecondaryGunAbility,
+        Roll,
     }
 
     public Sprite gamepadYSprite;
@@ -54,6 +55,7 @@ public class InputControlIcons : MonoBehaviour
     public Sprite keyboardMouseRightClickSprite;
     public Sprite keyboardMouseSprite;
     public Sprite keyboardEscSprite;
+    public Sprite keyboardSpaceSprite;
 
     private void Awake() {
         Instance = this;
@@ -102,6 +104,9 @@ public class InputControlIcons : MonoBehaviour
             if (control == Control.SecondaryGunAbility) {
                 spriteList.Add(gamepadLtSprite);
             }
+            if (control == Control.Roll) {
+                spriteList.Add(gamepadLtSprite);
+            }
         } else {
             if (control == Control.Reload) {
                 spriteList.Add(keyboardRSprite);
@@ -138,6 +143,9 @@ public class InputControlIcons : MonoBehaviour
             }
             if (control == Control.SecondaryGunAbility) {
                 spriteList.Add(keyboardMouseRightClickSprite);
+            }
+            if (control == Control.Roll) {
+                spriteList.Add(keyboardSpaceSprite);
             }
             if (control == Control.Move) {
                 spriteList.Add(keyboardQSprite);

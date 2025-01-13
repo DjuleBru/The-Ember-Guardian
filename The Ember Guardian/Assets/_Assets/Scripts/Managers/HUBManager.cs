@@ -16,9 +16,15 @@ public class HUBManager : MonoBehaviour
     [SerializeField] private HubMerchantTalkUI gemMerchantTalkUI;
     [SerializeField] private MerchantTextLinesSO gemMerchantOutroTextLines;
     [SerializeField] private Fire hubFire;
+    [SerializeField] private List<HubMerchant> hubMerchantList;
+
+    [SerializeField] private LevelSO level1SO;
 
     private float hubDelayToStartPlayingMusic = 3f;
 
+    private bool lastLevelGemsRewarded;
+
+    private bool hubFireExtractable;
     private bool playerInteractedWithMerchantOnce;
     private bool playerExtractedEmber;
     private bool merchantEndedTalking;
@@ -28,14 +34,14 @@ public class HUBManager : MonoBehaviour
     }
 
     private void Start() {
-        if(!MetaProgressionManager.Instance.hubLoadedOnce) {
+        if(!MetaProgressionManager.Instance.GetLevelUnlocked(level1SO)) {
             // FIRST HUB ENCOUNTER
 
             StartCoroutine(FirstHUBSpawnCoroutine());
             enterHubCollider.gameObject.SetActive(true);
-            Dog.Instance.transform.position = firstHubLoadDogSpawnPoint.transform.position;
+            Dog.Instance.SetPosition(firstHubLoadDogSpawnPoint.transform.position);
+            Player.Instance.SetPosition(firstHubLoadPlayerSpawnPoint.transform.position);
 
-            Player.Instance.transform.position = firstHubLoadPlayerSpawnPoint.transform.position;
             HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
             HubMerchantTalkUI.OnAnyMerchantEndTalk += HubMerchantTalkUI_OnAnyMerchantEndTalk;
             UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
@@ -43,12 +49,19 @@ public class HUBManager : MonoBehaviour
 
         else {
             // Player loads game OR is coming back from level
+
+            if(!MetaProgressionManager.Instance.GetNextHubArrivalThroughPortal()) {
+                // Player is not coming back from a level (ex. loading game)
+                Vector3 playerPosition = MetaProgressionManager.Instance.GetPlayerHubPosition();
+                Player.Instance.SetPosition(playerPosition);
+            }
+
             enterHubCollider.gameObject.SetActive(false);
             MusicManager.Instance.PlayMusicDelayed(hubDelayToStartPlayingMusic);
         }
 
         if(DEBUGMODE) {
-            Player.Instance.transform.position = DEBUGPlayerSpawnPoint.position;
+            Player.Instance.SetPosition(DEBUGPlayerSpawnPoint.position);
         }
 
         List<Vector3> redGemPositions = MetaProgressionManager.Instance.GetRedGemPositions();
@@ -73,7 +86,8 @@ public class HUBManager : MonoBehaviour
 
 
             UICurrencyManager.Instance.AddMultipleCurrencies(currencyTypes, currencyTypesAmount);
-            MetaProgressionManager.Instance.SetGemsRewarded();
+
+            lastLevelGemsRewarded = true;
         }
     }
 
@@ -89,7 +103,6 @@ public class HUBManager : MonoBehaviour
 
         merchantEndedTalking = true;
         StartCoroutine(ActivateTeleporterCoroutine());
-        MetaProgressionManager.Instance.SetHubLoadedOnce();
     }
 
     private void UICurrencyManager_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -107,12 +120,15 @@ public class HUBManager : MonoBehaviour
         if (playerInteractedWithMerchantOnce) return;
         playerInteractedWithMerchantOnce = true;
 
+        hubFireExtractable = true;
         hubFire.SetHubFireEmberExtractable();
         LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUB_TalkToTrader, LevelUI_ObjectiveUI.SubObjectiveType.HUB_ExtractEmber);
     }
 
     private IEnumerator FirstHUBSpawnCoroutine() {
         CameraManager.Instance.SetCameraOrthographicSize(8f);
+        PauseMenuUI.Instance.SetCanSave(false);
+
         yield return new WaitForSeconds(2f);
 
         RewardLastLevelGems();
@@ -146,6 +162,10 @@ public class HUBManager : MonoBehaviour
     }
 
     private IEnumerator ActivateTeleporterCoroutine() {
+        MetaProgressionManager.Instance.SetLevelUnlocked(level1SO);
+        SaveHub();
+        PauseMenuUI.Instance.SetCanSave(true);
+
         CameraManager.Instance.ChangeCameraTarget(firstPortalUnlocked.transform);
         Player.Instance.DisableControlInputs();
         firstPortalUnlocked.SetPortalUnlockedInSave();
@@ -160,7 +180,15 @@ public class HUBManager : MonoBehaviour
 
     #endregion
 
-    private void OnApplicationQuit() {
+    public void SaveHub() {
+        MetaProgressionManager.Instance.SetHubFireEmberExtractable(hubFireExtractable);
         MetaProgressionManager.Instance.SaveHubGems();
+        MetaProgressionManager.Instance.SavePlayerHubPosition(Player.Instance.transform.position);
+        MetaProgressionManager.Instance.SetGemsRewarded(lastLevelGemsRewarded);
+
+        foreach (HubMerchant hubMerchant in hubMerchantList) {
+            hubMerchant.SaveMerchant();
+        }
     }
+
 }

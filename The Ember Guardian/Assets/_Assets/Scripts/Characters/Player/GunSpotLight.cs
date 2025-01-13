@@ -15,6 +15,7 @@ public class GunSpotLight : MonoBehaviour
     private bool autoSwitchWithDay;
     private bool lightActive = true;
     private bool rolling;
+    private bool reloading;
     public static event EventHandler OnAnyLightSwitched;
 
     private void Awake() {
@@ -26,11 +27,11 @@ public class GunSpotLight : MonoBehaviour
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
             DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
             Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
-        }
 
-        float fogAmount = LevelManager.Instance.GetLevelSO().fogFrontAlpha;
-        float volumetricAmount = Mathf.Lerp(noFogVolumetricAmount, fogVolumetricAmount, fogAmount);
-        gunSpotLight.volumeIntensity = volumetricAmount;
+            float fogAmount = LevelManager.Instance.GetLevelSO().fogFrontAlpha;
+            float volumetricAmount = Mathf.Lerp(noFogVolumetricAmount, fogVolumetricAmount, fogAmount);
+            gunSpotLight.volumeIntensity = volumetricAmount;
+        }
 
         GameInput.Instance.OnPlayerGunLightSwitch += GameInput_OnPlayerGunLightSwitch;
         lightActive = false;
@@ -38,6 +39,16 @@ public class GunSpotLight : MonoBehaviour
 
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
+        PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
+        PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
+    }
+
+    private void PlayerShoot_OnPlayerReloadEnded(object sender, EventArgs e) {
+        reloading = false;
+    }
+
+    private void PlayerShoot_OnPlayerReload(object sender, EventArgs e) {
+        reloading = true;
     }
 
     private void PlayerMovement_OnPlayerRollEnded(object sender, EventArgs e) {
@@ -70,6 +81,7 @@ public class GunSpotLight : MonoBehaviour
 
     private void Update() {
         if (rolling) return;
+        if (reloading) return;
         gunSpotLightTransform.eulerAngles = new Vector3(0, 0, PlayerAim.Instance.GetAimAngle() - 90); 
     }
 

@@ -25,6 +25,7 @@ public class SoundManager : MonoBehaviour
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyStructureUpgraded += Structure_OnAnyStructureUpgraded;
         Structure.OnAnyStructurePrimaryFunctionUsed += Structure_OnAnyStructurePrimaryFunctionUsed;
+        Obstacle.OnAnyObstacleBuilt += Obstacle_OnAnyObstacleBuilt;
 
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
@@ -351,7 +352,7 @@ public class SoundManager : MonoBehaviour
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().reloadGunSound;
-        PlaySound2D(audioClipArray, .5f);
+        PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().reloadSFXVolumeMultiplier);
     }
 
     private void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
@@ -420,6 +421,11 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region STRUCTURES
+
+    private void Obstacle_OnAnyObstacleBuilt(object sender, System.EventArgs e) {
+        AudioClip audioClip = (sender as Obstacle).GetObstacleBuiltAudioClip();
+        PlaySound2D(audioClip);
+    }
 
     private void Structure_OnAnyStructurePrimaryFunctionUsed(object sender, System.EventArgs e) {
         AudioClip audioClip = (sender as Structure).GetStructureSO().useFunctionAudioClip;

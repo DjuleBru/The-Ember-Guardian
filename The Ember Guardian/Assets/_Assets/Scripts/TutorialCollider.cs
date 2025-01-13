@@ -8,6 +8,7 @@ public class TutorialCollider : MonoBehaviour
     [SerializeField] private bool isFirstSpotlightCollider;
     [SerializeField] private bool isStopMusicCollider;
     [SerializeField] private bool isLightTipCollider;
+    [SerializeField] private bool isRollTipCollider;
     [SerializeField] private bool isEndLevelAreaCollider;
     [SerializeField] private bool isEndLevelAreaBlockingCollider;
     [SerializeField] private bool isExtractEmberBlockingCollider;
@@ -41,6 +42,11 @@ public class TutorialCollider : MonoBehaviour
         if(isLightTipCollider && !playerCollided) {
             playerCollided = true;
             tutorial.ShowLightTip();
+        }
+
+        if (isRollTipCollider && !playerCollided) {
+            playerCollided = true;
+            tutorial.ShowRollTip();
         }
 
         if (isEndLevelAreaCollider && !playerCollided) {
