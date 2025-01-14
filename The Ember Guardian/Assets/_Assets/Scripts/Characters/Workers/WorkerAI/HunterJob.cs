@@ -21,6 +21,9 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     [SerializeField] private float initialFiringRange = 10f;
 
     private float attackRange;
+    private float distanceToStaySafeFromCreature;
+    private float distanceToPlayerWhenCreatureIsAround = 4f;
+    private float minimumDistanceToStaySafeFromCreature = 6f;
 
     private float roamTimer;
     private float checkClosestTargetTimer;
@@ -43,6 +46,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         hunting,
         headingToGuard,
         guarding,
+        attackingDay,
     }
 
     private HunterState previousState;
@@ -77,6 +81,10 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
         attackRange = initialFiringRange;
         distanceToHuntingLimit = UnityEngine.Random.Range(distanceToHuntingLimit - distanceToHuntingLimit / 2, distanceToHuntingLimit + distanceToHuntingLimit/2);
+
+        float workerDetectionColliderRadius = workerDetectionCollider.GetComponent<CircleCollider2D>().radius;
+        distanceToStaySafeFromCreature = UnityEngine.Random.Range(workerDetectionColliderRadius - workerDetectionColliderRadius / 5, workerDetectionColliderRadius);
+        distanceToPlayerWhenCreatureIsAround = UnityEngine.Random.Range(distanceToPlayerWhenCreatureIsAround - distanceToPlayerWhenCreatureIsAround/3, distanceToPlayerWhenCreatureIsAround + distanceToPlayerWhenCreatureIsAround / 3);
     }
 
     private void Update() {
@@ -106,7 +114,12 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
                 Roam();
                 CheckClosestAnimal();
+                CheckClosestCreatureSmart();
 
+                if (IsInSafeZone() && targetCreature != null) {
+                    ChangeState(HunterState.attackingDay);
+                }
+                
                 if(targetAnimal != null && !CheckBlockedByCreature()) {
                     ChangeState(HunterState.headingToHunt);
                 };
@@ -275,6 +288,35 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
                 }
 
                 break;
+
+            case HunterState.attackingDay:
+
+                CheckClosestCreatureSmart();
+
+                Creature closestCreature = workerDetectionCollider.GetClosestCreature();
+                if(CreatureIsTooClose(closestCreature)) {
+                    StayAwayFromCreatures(closestCreature);
+                    return;
+                }
+
+                if (targetCreature == null) {
+                    ChangeState(HunterState.idle);
+                }
+
+                else {
+
+                    if (!TargetIsInHuntingRange(targetCreature)) {
+                        hunterAttack.RemoveAttackTarget();
+                        ChangeState(HunterState.blockedByCreatures);
+                    }
+                    else {
+                        hunterAttack.SetAttackTarget(targetCreature);
+                    }
+
+                }
+
+                break;
+                
         }
 
     }
@@ -339,11 +381,14 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
             hasSetSpeed = true;
         }
 
-        roamTimer -= Time.deltaTime;
-
         Creature closestCreature = workerDetectionCollider.GetClosestCreature();
 
         if(closestCreature != null) {
+            if(CreatureIsTooClose(closestCreature)) {
+                StayAwayFromCreatures(closestCreature);
+                return;
+            }
+
             float direction = closestCreature.transform.position.x - transform.position.x;
             if (direction > 0) {
                 direction = -1;
@@ -351,9 +396,80 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
             else {
                 direction = 1;
             }
-            Vector3 safePosition = new Vector3(closestCreature.transform.position.x + direction * 20, 0, 0);
 
+            Vector3 safePosition = new Vector3(closestCreature.transform.position.x + direction * distanceToStaySafeFromCreature, 0, 0);
+
+            bool playerIsInFrontOfHunter = Mathf.Abs(transform.position.x) - Mathf.Abs((Player.Instance.transform.position.x)) < 0;
+
+            if (playerIsInFrontOfHunter) {
+                // Player is in front of Hunter
+
+                bool playerIsBetweenHunterAndCreature = Mathf.Abs(Player.Instance.transform.position.x) - Mathf.Abs((closestCreature.transform.position.x)) < 0;
+                bool creatureIsMovingAway = (closestCreature.GetComponent<MobMovement>().GetLastMoveDirFloat() * direction) < 0;
+
+                if (playerIsBetweenHunterAndCreature || creatureIsMovingAway) {
+                    // Player is also in front of creature
+                    safePosition = new Vector3(Player.Instance.transform.position.x + direction * distanceToPlayerWhenCreatureIsAround, 0, 0);
+                }
+                
+            }
+
+            bool workerIsCloseToSafePosition = (Mathf.Abs(transform.position.x - safePosition.x)) < 1f;
+
+            if (workerIsCloseToSafePosition) {
+                // Worker is close to safe position
+                CheckClosestCreatureSmart();
+                if(targetCreature != null && TargetIsInHuntingRange(targetCreature)) {
+                    ChangeState(HunterState.attackingDay);
+                }
+            } else {
+                mobMovement.SetMoveTarget(safePosition);
+            }
+
+        }
+    }
+
+    public bool CreatureIsTooClose(Creature closestCreature) {
+        if (closestCreature != null) {
+
+            float direction = closestCreature.transform.position.x - transform.position.x;
+            if (direction > 0) {
+                direction = -1;
+            }
+            else {
+                direction = 1;
+            }
+
+            Vector3 safePosition = new Vector3(closestCreature.transform.position.x + direction * distanceToStaySafeFromCreature, 0, 0);
+            bool creatureIsTooClose = Mathf.Abs(closestCreature.transform.position.x) - Mathf.Abs(transform.position.x) < minimumDistanceToStaySafeFromCreature;
+            return creatureIsTooClose;
+        }
+        return false;
+    }
+
+    public void StayAwayFromCreatures(Creature closestCreature) {
+
+        if (!hasSetSpeed) {
+            mobMovement.SetMoveSpeed(headToCampMoveSpeed);
+            hasSetSpeed = true;
+        }
+
+        if (closestCreature != null) {
+
+            float direction = closestCreature.transform.position.x - transform.position.x;
+            if (direction > 0) {
+                direction = -1;
+            }
+            else {
+                direction = 1;
+            }
+
+            Vector3 safePosition = new Vector3(closestCreature.transform.position.x + direction * distanceToStaySafeFromCreature, 0, 0);
             mobMovement.SetMoveTarget(safePosition);
+            hunterAttack.RemoveAttackTarget();
+            ChangeState(HunterState.blockedByCreatures);
+
+            return;
         }
 
     }
@@ -569,6 +685,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     }
 
     private void ChangeState(HunterState newState) {
+        Debug.Log("ChangeState " + newState);
         if (newState == state) return;
 
         previousState = state;
@@ -629,6 +746,10 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
     public HunterState GetState() {
         return state;
+    }
+
+    public bool IsInSafeZone() {
+        return (transform.position.x > CampZoneManager.Instance.GetCampCenterMinLimit() && transform.position.x < CampZoneManager.Instance.GetCampCenterMaxLimit());
     }
 
     private void OnEnable() {

@@ -8,7 +8,6 @@ public class CreaturesSpawnManager : MonoBehaviour
     public static CreaturesSpawnManager Instance;
 
     [SerializeField] private AnimationCurve subWaveDifficultyCurve;
-    [SerializeField] private int startWaveToSpawnFromBothSides;
 
     public class SpawnedCreatureInfo {
         public CreatureSO creature; // Type de créature à spawner
@@ -27,14 +26,16 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     private List<CreatureSO> creatureTypes;
 
-    public int baseDifficulty;
-    public float growthFactor;
-    public float minWaveDuration;
-    public float maxWaveDuration;
-    public float waveIntensityFactor;
-    public float delayBetweenSubWaves;
+    private int startWaveToSpawnFromBothSides;
+    private int baseDifficulty;
+    private float growthFactor;
+    private float minWaveDuration;
+    private float maxWaveDuration;
+    private float waveIntensityFactor;
+    private float delayBetweenSubWaves;
 
     private float waveDifficulty;
+    private float maxSubwaveDifficulty;
     private float waveDifficultyLeftProportion;
     private float waveDifficultyRightProportion;
     private float waveDuration;
@@ -45,15 +46,25 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     private void Awake() {
         Instance = this;
+
+        DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+        DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
+        
+        creatureTypes = LevelManager.Instance.GetLevelSO().nightCreatureTypes;
+        baseDifficulty = LevelManager.Instance.GetLevelSO().baseDifficulty;
+        maxSubwaveDifficulty = LevelManager.Instance.GetLevelSO().maxSubwaveDifficulty;
+        growthFactor = LevelManager.Instance.GetLevelSO().growthFactor;
+        minWaveDuration = LevelManager.Instance.GetLevelSO().minWaveDuration;
+        maxWaveDuration = LevelManager.Instance.GetLevelSO().maxWaveDuration;
+        waveIntensityFactor = LevelManager.Instance.GetLevelSO().waveIntensityFactor;
+        delayBetweenSubWaves = LevelManager.Instance.GetLevelSO().delayBetweenSubWaves;
     }
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.U)) {
             currentWaveNumber++;
             Debug.Log(currentWaveNumber);
-            waveDifficultyLeftProportion = .5f;
-            waveDifficultyRightProportion = .5f;
-            SetWaveParameters(currentWaveNumber, false, false);
+            SetWaveParameters(currentWaveNumber, true, true);
         }
         if (Input.GetKeyDown(KeyCode.T)) {
             Debug.Log("SpawnWave");
@@ -61,13 +72,6 @@ public class CreaturesSpawnManager : MonoBehaviour
         }
     }
 
-    private void Start() {
-        creatureTypes = LevelManager.Instance.GetLevelSO().nightCreatureTypes;
-        DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
-        DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
-        //SetWaveParameters(currentWaveNumber, false, false);
-    }
- 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         currentWaveNumber++;
         SetWaveParameters(currentWaveNumber, true, true);
@@ -86,9 +90,10 @@ public class CreaturesSpawnManager : MonoBehaviour
     }
 
     public void SetWaveParameters(int waveNumber, bool wavesRandomSideProportion, bool subWaveRandomSideProportion) {
+
         waveDifficulty = baseDifficulty * Mathf.Pow(growthFactor, waveNumber);
         waveDuration = Mathf.Lerp(minWaveDuration, maxWaveDuration, (waveNumber-1) / 10f);
-        subWaveNumber = (int)(waveDuration / delayBetweenSubWaves);
+        subWaveNumber = (int)(waveDifficulty / maxSubwaveDifficulty)+1;
 
         if(wavesRandomSideProportion) {
             SetWaveSidesProportion(waveNumber);
@@ -96,18 +101,18 @@ public class CreaturesSpawnManager : MonoBehaviour
 
         Debug.Log("waveNumber " + waveNumber);
         Debug.Log("WaveDuration " + waveDuration);
-        Debug.Log("subWaveNumber " + subWaveNumber);
+        Debug.Log("Total subwaves " + subWaveNumber);
         Debug.Log("WaveDifficulty " + waveDifficulty);
-        Debug.Log("waveDifficultyLeftProportion " + waveDifficultyLeftProportion);
-        Debug.Log("waveDifficultyRightProportion " + waveDifficultyRightProportion);
+        Debug.Log("waveLeftProportion " + waveDifficultyLeftProportion);
+        Debug.Log("waveRightProportion " + waveDifficultyRightProportion);
 
         DayNightManager.Instance.SetNightDuration(waveDuration + waveDuration / 3);
 
         // Préparer la liste de toutes les créatures à spawner pour cette vague
         waveCreaturesDictionary.Clear();
 
-       for(int i=0 ; i < subWaveNumber; i++) {
-            float subWaveDifficulty = subWaveDifficultyCurve.Evaluate((float)i / subWaveNumber) * waveDifficulty;
+       for(int i=1 ; i <= subWaveNumber; i++) {
+            float subWaveDifficulty = subWaveDifficultyCurve.Evaluate((float)i / subWaveNumber) * (waveDifficulty/ subWaveNumber);
 
             List<SpawnedCreatureInfo> subWaveCreatures = PrepareSubWaveCreatures(subWaveDifficulty, waveDifficultyLeftProportion, i, subWaveRandomSideProportion);
             waveCreaturesDictionary.Add(i, subWaveCreatures);
@@ -170,32 +175,39 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     private List<CreatureSO> GetCreatureSOListToSpawn(float difficultyBudget) {
         List<CreatureSO> creaturesToSpawn = new List<CreatureSO>();
-
         List<CreatureSO> creaturesTypesToSpawn = SelectCreatureSOTypes();
 
         if (creaturesTypesToSpawn.Count == 0) {
             Debug.LogWarning("No monsters selected due to insufficient budget. Exiting loop.");
         }
 
+        // Normaliser les probabilités de spawn
+        float totalProbability = creaturesTypesToSpawn.Sum(creature => creature.spawnProbability);
+
         while (difficultyBudget > 0) {
 
+            // Sélectionner un type de créature aléatoirement selon la probabilité
+            float randomValue = Random.Range(0f, totalProbability);
+            CreatureSO selectedCreature = null;
+
+            float cumulativeProbability = 0;
             foreach (var creatureType in creaturesTypesToSpawn) {
-
-                int maxSpawnCount = Mathf.FloorToInt(difficultyBudget / creatureType.difficulty);
-                int spawnCount = Random.Range(1, maxSpawnCount + 1);
-
-
-                for (int i = 0; i < spawnCount; i++) {
-
-                    creaturesToSpawn.Add(creatureType);
-                    difficultyBudget -= creatureType.difficulty;
-
-                    if (difficultyBudget < creatureType.difficulty)
-                        break;
-
+                cumulativeProbability += creatureType.spawnProbability;
+                if (randomValue <= cumulativeProbability) {
+                    selectedCreature = creatureType;
+                    break;
                 }
+            }
 
-                if (difficultyBudget <= 0) break;
+            if (selectedCreature != null) {
+                // Vérifie si le budget permet de spawner cette créature
+                if (difficultyBudget >= selectedCreature.difficulty) {
+                    creaturesToSpawn.Add(selectedCreature);
+                    difficultyBudget -= selectedCreature.difficulty;
+                }
+                else {
+                    break; // Budget insuffisant pour ajouter d'autres créatures
+                }
             }
         }
         return creaturesToSpawn;
@@ -235,12 +247,12 @@ public class CreaturesSpawnManager : MonoBehaviour
         if(leftProportion == 1) {
             spawnDecision = 0;
         }
-
-        Debug.Log("spawnDecision " + spawnDecision);
+        int leftMonstersCount = 0;
+        int rightMonstersCount = 0;
 
         if (spawnDecision < 0.2f) // 20% de chance que les monstres viennent seulement de gauche
         {
-            int leftMonstersCount = totalCreaturesToSpawn;
+            leftMonstersCount = totalCreaturesToSpawn;
 
             for (int i = 0; i < leftMonstersCount; i++) {
                 CreatureSO creatureToSpawn = creaturesToSpawn[i];
@@ -249,7 +261,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         }
         else if (spawnDecision > 0.8f) // 20% de chance que les monstres viennent seulement de droite
         {
-            int rightMonstersCount = totalCreaturesToSpawn;
+            rightMonstersCount = totalCreaturesToSpawn;
 
             for (int i = 0; i < rightMonstersCount; i++) {
                 CreatureSO creatureToSpawn = creaturesToSpawn[i];
@@ -258,9 +270,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         }
         else // 60% de chance de répartir entre gauche et droite
         {
-            int leftMonstersCount = Mathf.FloorToInt(totalCreaturesToSpawn * leftProportion);
-
-            Debug.Log("leftMonstersCount " + leftMonstersCount);
+            leftMonstersCount = Mathf.FloorToInt(totalCreaturesToSpawn * leftProportion);
 
             // Spawns des monstres à gauche
             for (int i = 0; i < leftMonstersCount; i++) {
@@ -274,6 +284,10 @@ public class CreaturesSpawnManager : MonoBehaviour
                 waveCreatures.Add(new SpawnedCreatureInfo(creatureToSpawn, SpawnSide.Right));
             }
         }
+
+
+        Debug.Log("leftMonstersCount " + leftMonstersCount);
+        Debug.Log("rightMonstersCount " + rightMonstersCount);
 
         return waveCreatures;
     }

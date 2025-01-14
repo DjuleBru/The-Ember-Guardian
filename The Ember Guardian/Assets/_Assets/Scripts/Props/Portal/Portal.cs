@@ -216,7 +216,6 @@ public class Portal : MonoBehaviour
         floorCollider.enabled = true;
         OnAnyPortalSetToTeleportPlayer?.Invoke(this, EventArgs.Empty);
         OnPortalSetToTeleportPlayer?.Invoke(this, EventArgs.Empty);
-        MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(false);
 
         yield return new WaitForSeconds(delayToActivateTeleportAnimation);
 
@@ -233,6 +232,7 @@ public class Portal : MonoBehaviour
 
         yield return new WaitForSeconds(delayToRewardGems);
 
+        MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(false);
         HUBManager.Instance.RewardLastLevelGems();
     }
 

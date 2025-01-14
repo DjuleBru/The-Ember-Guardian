@@ -28,6 +28,7 @@ public class Dog : MonoBehaviour
 
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
         if (Player.Instance.GetInteractingWithMerchant()) return;
+        if (PauseMenuUI.Instance.isPaused) return;
 
         if (currentIdleState == DogAI.State.walkWithPlayer) {
 

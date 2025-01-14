@@ -8,6 +8,7 @@ using UnityEngine.Rendering.Universal;
 public class GunSpotLight : MonoBehaviour
 {
     [SerializeField] private Transform gunSpotLightTransform;
+    [SerializeField] private Transform gunVisualTransform;
     private Light2D gunSpotLight;
 
     private float noFogVolumetricAmount = .2f;
@@ -16,6 +17,7 @@ public class GunSpotLight : MonoBehaviour
     private bool lightActive = true;
     private bool rolling;
     private bool reloading;
+    private bool canSwitchLight = true;
     public static event EventHandler OnAnyLightSwitched;
 
     private void Awake() {
@@ -41,6 +43,16 @@ public class GunSpotLight : MonoBehaviour
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
+        PauseMenuUI.Instance.OnPauseMenuClosed += PauseMenuUI_OnPauseMenuClosed;
+        PauseMenuUI.Instance.OnPauseMenuOpened += PauseMenuUI_OnPauseMenuOpened;
+    }
+    
+    private void PauseMenuUI_OnPauseMenuOpened(object sender, EventArgs e) {
+        canSwitchLight = false;
+    }
+
+    private void PauseMenuUI_OnPauseMenuClosed(object sender, EventArgs e) {
+        canSwitchLight = true;
     }
 
     private void PlayerShoot_OnPlayerReloadEnded(object sender, EventArgs e) {
@@ -64,6 +76,7 @@ public class GunSpotLight : MonoBehaviour
     }
 
     private void GameInput_OnPlayerGunLightSwitch(object sender, System.EventArgs e) {
+        if (!canSwitchLight) return;
         SwitchLight();
     }
 
@@ -81,8 +94,11 @@ public class GunSpotLight : MonoBehaviour
 
     private void Update() {
         if (rolling) return;
-        if (reloading) return;
-        gunSpotLightTransform.eulerAngles = new Vector3(0, 0, PlayerAim.Instance.GetAimAngle() - 90); 
+
+
+        float angle = gunVisualTransform.rotation.eulerAngles.z;
+        gunSpotLightTransform.eulerAngles = new Vector3(0, 0, angle - 90);
+
     }
 
     private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {

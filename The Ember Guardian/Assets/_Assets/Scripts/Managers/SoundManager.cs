@@ -27,7 +27,7 @@ public class SoundManager : MonoBehaviour
         Structure.OnAnyStructurePrimaryFunctionUsed += Structure_OnAnyStructurePrimaryFunctionUsed;
         Obstacle.OnAnyObstacleBuilt += Obstacle_OnAnyObstacleBuilt;
 
-        PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
+        PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoor_OnPlayerCooldownSFXTrigger;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
@@ -355,9 +355,10 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().reloadSFXVolumeMultiplier);
     }
 
-    private void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
+    private void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().shootGunSound;
-        PlaySound2D(audioClipArray, .5f);
+        float volume = PlayerShoot.Instance.GetHeldGunSO().shootGunVolumeMultiplier;
+        PlaySound2D(audioClipArray, volume);
     }
 
     private void PlayerShoot_OnPlayerAimedSightEnded(object sender, System.EventArgs e) {
@@ -586,7 +587,7 @@ public class SoundManager : MonoBehaviour
         Structure.OnAnyStructureUpgraded -= Structure_OnAnyStructureUpgraded;
         Structure.OnAnyStructurePrimaryFunctionUsed -= Structure_OnAnyStructurePrimaryFunctionUsed;
 
-        PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
+        PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShot;
         PlayerShoot.Instance.OnPlayerReload -= PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerCooldownTrigger -= PlayerShoor_OnPlayerCooldownSFXTrigger;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo -= PlayerShoot_OnPlayerTryShoot_OutOfAmmo;

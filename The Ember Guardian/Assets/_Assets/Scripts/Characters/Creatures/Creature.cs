@@ -26,7 +26,7 @@ public class Creature : Mob
     private float triggerSoundTime = 5f;
 
     private float detectionRangeIncreasedTimer;
-    private float detectionRangeIncreasedTime = 2f;
+    private float detectionRangeIncreasedTime = 5f;
     private bool detectionRangeIncreased;
     private float playerShootDetectionRangeMultiplier = 1.75f;
 
@@ -132,6 +132,8 @@ public class Creature : Mob
 
     private void PlayerShoot_OnPlayerShotProjectile(object sender, EventArgs e) {
         if (detectionRangeIncreased) return;
+        if (Mathf.Abs(Player.Instance.transform.position.x - transform.position.x) > detectionCollider.radius * playerShootDetectionRangeMultiplier) return;
+        // Player is too far
 
         detectionRangeIncreased = true;
         detectionRangeIncreasedTimer = detectionRangeIncreasedTime;
@@ -139,14 +141,15 @@ public class Creature : Mob
     }
 
     private void CreatureHeardPlayerShoot(bool heard) {
-        // Player is too far
-        if (Mathf.Abs(Player.Instance.transform.position.x - transform.position.x) > detectionCollider.radius*2) return;
 
+        Debug.Log("CreatureHeardPlayerShoot " + heard);
+        Debug.Log(detectionCollider.radius);
         if (heard) {
             detectionCollider.radius *= playerShootDetectionRangeMultiplier;
         } else {
             detectionCollider.radius /= playerShootDetectionRangeMultiplier;
         }
+        Debug.Log(detectionCollider.radius);
     }
 
     public bool IsDayCreature() { 

@@ -19,6 +19,21 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a0c1321c3dbd0704c9f6bf0aec0e77b3, type: 2}
   - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
   - {fileID: 11400000, guid: 6ec8f56b2140a3249a41079473391352, type: 2}
+  isNewEnvironmentDiscoveryLevel: 1
+  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
   linkedSceneName: Level1_VerdantGraveyard
+  hasFog: 0
   fogFrontAlpha: 0
   fogBackAlpha: 0
+  baseDifficulty: 6
+  maxSubwaveDifficulty: 10
+  growthFactor: 1.6
+  minWaveDuration: 9
+  maxWaveDuration: 90
+  waveIntensityFactor: 0.6
+  delayBetweenSubWaves: 8
+  startWaveToSpawnFromBothSides: 2
+  levelAudioClips:
+  - {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
+  - {fileID: 8300000, guid: e3344c108087faa41a08dfc1f7d900b6, type: 3}
+  - {fileID: 8300000, guid: fb38d3f09a5d92645ac6e1ac20110e91, type: 3}

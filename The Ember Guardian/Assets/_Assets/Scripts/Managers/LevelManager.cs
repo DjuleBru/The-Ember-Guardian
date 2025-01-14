@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private LevelSO levelSO;
 
+    public event EventHandler OnNewLocationShown;
 
     private void Awake() {
         Instance = this;
@@ -18,6 +20,7 @@ public class LevelManager : MonoBehaviour
         if (!levelRegionUnlocked) {
             MetaProgressionManager.Instance.SetLevelRegionUnlocked(levelSO.environmentType);
             LevelUI_Locations.Instance.ShowLocationText(levelSO.GetLevelEnvironmentTypeString());
+            OnNewLocationShown?.Invoke(this, EventArgs.Empty);
         }
     }
 

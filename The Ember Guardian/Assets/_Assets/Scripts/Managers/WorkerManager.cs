@@ -79,6 +79,14 @@ public class WorkerManager : MonoBehaviour
         if(recruitedWorkers.Contains(worker)) {
             recruitedWorkers.Remove(worker);
         }
+
+        CampZoneManager.CampSide sideAssigned = worker.GetCampSideAddigned();
+        if(sideAssigned == CampZoneManager.CampSide.left) {
+            leftSideAssignedWorkers.Remove(worker);
+        } else {
+            rightSideAssignedWorkers.Remove(worker);
+        }
+
         OnRecruitedWorkerDied?.Invoke(this, EventArgs.Empty);
         OnJoblessWorkerAmountChanged?.Invoke(this, EventArgs.Empty);
     }

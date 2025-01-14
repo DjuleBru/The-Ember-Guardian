@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Cinemachine.DocumentationSortingAttribute;
 
 public class MusicManager : MonoBehaviour {
 
@@ -8,13 +9,16 @@ public class MusicManager : MonoBehaviour {
 
     [SerializeField] private float audioVolume = .2f;
     [SerializeField] private AudioClip endLevelMusic;
-    [SerializeField] private AudioClip[] levelRandomTracks;
+    [SerializeField] private AudioClip discoverNewLocationMusic;
+    private List<AudioClip> levelRandomTracks;
 
     private float peacefulTimer;
     private float minPeacefulTimerDelay = 20f;
     private float playMusicAttemptTimer;
     private float playMusicAttemptRate = 5f;
 
+    private bool waitingToDiscoverLocation;
+    private bool isDuskOrNight;
     private bool isLevelScene;
     private bool isPlayingPeacefulMusic;
     private AudioSource audioSource;
@@ -31,21 +35,47 @@ public class MusicManager : MonoBehaviour {
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
         } else {
+            levelRandomTracks = LevelManager.Instance.GetLevelSO().levelAudioClips;
+            DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
             DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         }
 
         CreatureAI.OnAnyCreatureAggro += CreatureAI_OnAnyCreatureAggro;
-
         isLevelScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level;
+
+        if(isLevelScene) {
+            bool levelRegionUnlocked = MetaProgressionManager.Instance.GetLevelRegionUnlocked(LevelManager.Instance.GetLevelSO().environmentType);
+
+            if (!levelRegionUnlocked) {
+                LevelManager.Instance.OnNewLocationShown += LevelManager_OnNewLocationShown;
+                waitingToDiscoverLocation = true;
+            }
+        }
+    }
+
+    private void LevelManager_OnNewLocationShown(object sender, System.EventArgs e) {
+        audioSource.clip = LevelManager.Instance.GetLevelSO().newEnvironmentDiscoveryAudioClip;
+        PlayMusicDelayed(4f);
+        waitingToDiscoverLocation = false;
+        isPlayingPeacefulMusic = true;
+    }
+
+    private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
+        if (!isLevelScene) return;
+
+        isDuskOrNight = true;
+        peacefulTimer = 0;
+        playMusicAttemptTimer = 0;
+        isPlayingPeacefulMusic = false;
+        FadeOutMusic(2f);
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         if (!isLevelScene) return;
 
+        isDuskOrNight = false;
         peacefulTimer = 0;
         playMusicAttemptTimer = 0;
-        isPlayingPeacefulMusic = false;
-        FadeOutMusic(2f);
     }
 
     private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {
@@ -58,7 +88,9 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void Update() {
+        if (waitingToDiscoverLocation) return;
         if (isPlayingPeacefulMusic) return;
+        if (isDuskOrNight) return;
 
         if(isLevelScene) {
             peacefulTimer += Time.deltaTime;
@@ -72,11 +104,10 @@ public class MusicManager : MonoBehaviour {
                     float randomNumber = UnityEngine.Random.Range(0, 1f);
                     float chanceToPlayMusid = .1f;
 
-                    Debug.Log("Play music Attempt " + randomNumber);
                     if (randomNumber < chanceToPlayMusid) {
 
-                        if (levelRandomTracks.Length == 0) return;
-                        AudioClip randomMusic = levelRandomTracks[Random.Range(0, levelRandomTracks.Length)];
+                        if (levelRandomTracks.Count == 0) return;
+                        AudioClip randomMusic = levelRandomTracks[Random.Range(0, levelRandomTracks.Count)];
                         audioSource.clip = randomMusic;
                         isPlayingPeacefulMusic = true;
                         FadeInMusic(5f);

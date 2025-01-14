@@ -44,5 +44,7 @@ public class DoggoVisual : MonoBehaviour
     private void OnDestroy() {
         dog.OnPlayerTriggeredIn -= Dog_OnPlayerTriggeredIn;
         dog.OnPlayerTriggeredOut -= Dog_OnPlayerTriggeredOut;
+        Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
+        Portal.OnAnyPortalSetToTeleportPlayer -= Portal_OnAnyPortalSetToTeleportPlayer;
     }
 }

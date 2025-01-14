@@ -249,25 +249,31 @@ public class Player : MonoBehaviour, IDamageable
     }
     
     public void StopInteractingWithMerchant() {
-        EnableControlInputs();
         SetCanDropOrbOnTheFloor(true);
         // Set interactingWithMerchant false after frame or dog will react
         StartCoroutine(SetStopInteractingWithMerchantCoroutine());
+        StartCoroutine(EnableControlInputCoroutine());
     }
 
     public void DisableControlInputs() {
         canMove = false;
 
         GetComponent<PlayerAim>().enabled = false;
+        GetComponent<PlayerMovement>().enabled = false;
         PlayerShoot.Instance.SetCanShoot(false);
     }
 
     public void EnableControlInputs() {
+        StartCoroutine(EnableControlInputCoroutine());
+    }
+
+    private IEnumerator EnableControlInputCoroutine() {
+        yield return new WaitForEndOfFrame();
         canMove = true;
 
         GetComponent<PlayerAim>().enabled = true;
+        GetComponent<PlayerMovement>().enabled = true;
         PlayerShoot.Instance.SetCanShoot(true);
-
     }
 
     private IEnumerator SetStopInteractingWithMerchantCoroutine() {
@@ -278,6 +284,7 @@ public class Player : MonoBehaviour, IDamageable
     #endregion
 
     public void SetPosition(Vector3 position) {
+        Debug.Log("SetPosition " + position);
         transform.position = position;
     }
 

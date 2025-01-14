@@ -8,9 +8,9 @@ public class GunVisual : MonoBehaviour
     private GunSO gunSO;
     [SerializeField] private SpriteRenderer gunLightsSpriteRenderer;
     [SerializeField] private SpriteRenderer gunCooldownLightsSpriteRenderer;
-    [SerializeField] private Transform gunSportLightTransform;
     [SerializeField] private Color outOfAmmoCooldownLightsColor;
 
+    private float tryShootOutOfAmmoAnimationDuration = .3f;
     private Color cooldownLightsColor;
     private List<Sprite> gunReloadSprites;
     private int gunLightSpriteIndex;
@@ -37,10 +37,17 @@ public class GunVisual : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerTryShoot_OutOfAmmo(object sender, System.EventArgs e) {
-        gunLightsSpriteRenderer.sprite = gunReloadSprites[gunSO.shotCountSprites.Count - 1];
-        
+        StartCoroutine(ResetGunAmmoSprite(gunLightsSpriteRenderer.sprite));
+
+        if(PlayerShoot.Instance.GetCurrentBullets() == 0) {
+            gunLightsSpriteRenderer.sprite = gunReloadSprites[gunSO.shotCountSprites.Count - 1];
+        }
     }
 
+    private IEnumerator ResetGunAmmoSprite(Sprite sprite) {
+        yield return new WaitForSeconds(tryShootOutOfAmmoAnimationDuration);
+        gunLightsSpriteRenderer.sprite = sprite;
+    }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
