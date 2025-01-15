@@ -267,4 +267,7 @@ public class Portal : MonoBehaviour
     public int GetPortalNumber() {
         return portalNumber;
     }
+    private void OnDisable() {
+        StopAllCoroutines();
+    }
 }

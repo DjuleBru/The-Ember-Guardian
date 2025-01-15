@@ -16,6 +16,7 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     #region TUTORIAL
+    public bool savedOnce { get; private set; }
     public bool tutorialComplete { get; private set; }
     #endregion
 
@@ -42,7 +43,7 @@ public class MetaProgressionManager : MonoBehaviour
 
         tutorialComplete = ES3.Load("tutorialComplete", false);
 
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             int lastPortal = defaultLastHUBPortalUsedByPlayer.GetPortalNumber();
             lastHUBPortalUsedByPlayer = ES3.Load("lastHUBPortalUsedByPlayer", lastPortal);
         }
@@ -53,6 +54,17 @@ public class MetaProgressionManager : MonoBehaviour
             //SaveHubGems();
         }
     }
+
+    #region GENERAL
+    public bool GetSavedOnce() {
+        return ES3.Load("savedOnce", false);
+    }
+
+    public void SetSavedOnce() {
+        ES3.Save("savedOnce", true);
+    }
+
+    #endregion
 
     #region TUTORIAL
     public void SetTutorialCompleted() {

@@ -19,36 +19,42 @@ public class GamepadVibrationsManager : MonoBehaviour
     private float currentLerpValue;
 
     private void Start() {
-        PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
-        PlayerShoot.Instance.OnPlayerAmmoRefilled += PlayerSHoot_OnPlayerAmmoRefilled;
-        PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
 
-        Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
-        Player.Instance.OnPlayerDied += Player_OnPlayerDied;
-        Player.Instance.OnPlayerHealed += Player_OnPlayerHealed;
+            PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
+            PlayerShoot.Instance.OnPlayerAmmoRefilled += PlayerSHoot_OnPlayerAmmoRefilled;
+            PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
 
-        UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
-        UICurrencyManager.Instance.OnCurrencyDropped += UICurrencyManager_OnCurrencyDropped;
-        ItemButtonUI.OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
-        ItemButtonUI_Visual.OnAnyGemPSTriggered += ItemButtonUI_Visual_OnAnyGemPSTriggered;
-        ItemButtonUI.OnAnyHubMerchantItemFailedBuy += ItemButtonUI_OnAnyHubMerchantItemFailedBuy;
-        HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
+            Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
+            Player.Instance.OnPlayerDied += Player_OnPlayerDied;
+            Player.Instance.OnPlayerHealed += Player_OnPlayerHealed;
 
-        CreatureAI.OnAnyCreatureAggro += CreatureAI_OnAnyCreatureAggro;
+            UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
+            UICurrencyManager.Instance.OnCurrencyDropped += UICurrencyManager_OnCurrencyDropped;
 
-        Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
-        Portal.OnAnyPlayerTeleported += Portal_OnAnyPlayerTeleported;
-        Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
-        Portal.OnAnyTeleporterActivatedOut += Portal_OnAnyTeleporterActivatedOut;
-        Portal.OnAnyTeleporterActivated += Portal_OnAnyTeleporterActivated;
-        Portal.OnAnyPortalAppeared += Portal_OnAnyPortalAppeared;
-        Portal.OnAnyPortalDisappeared += Portal_OnAnyPortalDisappeared;
+            HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
 
-        Fire.OnAnyFireEmberExtractionStarted += Fire_OnFireEmberExtractionStarted;
-        Fire.OnAnyFireEmberExtractionStopped += Fire_OnFireEmberExtractionStopped;
-        Fire.OnAnyFireFuelled += Fire_OnAnyFireFuelled;
+            CreatureAI.OnAnyCreatureAggro += CreatureAI_OnAnyCreatureAggro;
 
-        Collectible.OnAnyCollectibleEnteredSlot += Collectible_OnAnyCollectibleEnteredSlot;
+            Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
+            Portal.OnAnyPlayerTeleported += Portal_OnAnyPlayerTeleported;
+            Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
+            Portal.OnAnyTeleporterActivatedOut += Portal_OnAnyTeleporterActivatedOut;
+            Portal.OnAnyTeleporterActivated += Portal_OnAnyTeleporterActivated;
+            Portal.OnAnyPortalAppeared += Portal_OnAnyPortalAppeared;
+            Portal.OnAnyPortalDisappeared += Portal_OnAnyPortalDisappeared;
+
+            Fire.OnAnyFireEmberExtractionStarted += Fire_OnFireEmberExtractionStarted;
+            Fire.OnAnyFireEmberExtractionStopped += Fire_OnFireEmberExtractionStopped;
+            Fire.OnAnyFireFuelled += Fire_OnAnyFireFuelled;
+
+            Collectible.OnAnyCollectibleEnteredSlot += Collectible_OnAnyCollectibleEnteredSlot;
+            ItemButtonUI_Visual.OnAnyGemPSTriggered += ItemButtonUI_Visual_OnAnyGemPSTriggered;
+            ItemButtonUI.OnAnyHubMerchantItemFailedBuy += ItemButtonUI_OnAnyHubMerchantItemFailedBuy;
+            ItemButtonUI.OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
+        }
+
+
     }
 
     private void Update() {

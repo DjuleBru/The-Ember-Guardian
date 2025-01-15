@@ -106,12 +106,12 @@ public class CreaturesSpawnManager : MonoBehaviour
         Debug.Log("waveLeftProportion " + waveDifficultyLeftProportion);
         Debug.Log("waveRightProportion " + waveDifficultyRightProportion);
 
-        DayNightManager.Instance.SetNightDuration(waveDuration + waveDuration / 3);
+        DayNightManager.Instance.SetNightDuration(waveDuration*2);
 
         // Préparer la liste de toutes les créatures à spawner pour cette vague
         waveCreaturesDictionary.Clear();
 
-       for(int i=1 ; i <= subWaveNumber; i++) {
+       for(int i=1 ; i <= subWaveNumber+1; i++) {
             float subWaveDifficulty = subWaveDifficultyCurve.Evaluate((float)i / subWaveNumber) * (waveDifficulty/ subWaveNumber);
 
             List<SpawnedCreatureInfo> subWaveCreatures = PrepareSubWaveCreatures(subWaveDifficulty, waveDifficultyLeftProportion, i, subWaveRandomSideProportion);
@@ -150,10 +150,10 @@ public class CreaturesSpawnManager : MonoBehaviour
     }
 
     private IEnumerator SpawnWave() {
-        subWaveIndex = 0;
+        subWaveIndex = 1;
         int spawnedCount = 0;
 
-        while (subWaveIndex < subWaveNumber) {
+        while (subWaveIndex < subWaveNumber+1) {
             // Détermine combien de créatures spawn à chaque intervalle
 
             foreach(SpawnedCreatureInfo creatureInfo in waveCreaturesDictionary[subWaveIndex]) {
@@ -358,6 +358,6 @@ public class CreaturesSpawnManager : MonoBehaviour
     public bool GetIsLastSubWave() {
         Debug.Log("subWaveIndex " + subWaveIndex);
         Debug.Log("subWaveNumber " + subWaveNumber);
-        return subWaveIndex == subWaveNumber;
+        return subWaveIndex == (subWaveNumber+1);
     }
 }

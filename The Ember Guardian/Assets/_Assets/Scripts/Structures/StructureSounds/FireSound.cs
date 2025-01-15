@@ -5,7 +5,6 @@ using UnityEngine;
 public class FireSound : StructureSounds
 {
     private Fire fire;
-    private AudioSource audioSource;
     private SoundVolume2D volume2D;
 
     [SerializeField] private AudioSource extractingEmberAudioSource;
@@ -21,7 +20,8 @@ public class FireSound : StructureSounds
     [SerializeField] private AudioClip fireTickRemovedAudioClip;
     [SerializeField] private AudioClip extractingEmberAudioClip;
 
-    private void Awake() { 
+    protected override void Awake() { 
+        base.Awake();
         fire = GetComponentInParent<Fire>();
         audioSource = GetComponent<AudioSource>();
         volume2D = GetComponent<SoundVolume2D>();

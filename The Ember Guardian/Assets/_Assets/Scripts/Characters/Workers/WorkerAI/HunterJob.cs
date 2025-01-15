@@ -87,6 +87,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         distanceToPlayerWhenCreatureIsAround = UnityEngine.Random.Range(distanceToPlayerWhenCreatureIsAround - distanceToPlayerWhenCreatureIsAround/3, distanceToPlayerWhenCreatureIsAround + distanceToPlayerWhenCreatureIsAround / 3);
     }
 
+
     private void Update() {
 
         if (targetAnimal != null) {
@@ -136,7 +137,6 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
                 }
 
                 if (targetAnimal != null) {
-                    Debug.Log(" TargetIsInHuntingRange" + TargetIsInHuntingRange(targetAnimal));
                     if (TargetIsInHuntingRange(targetAnimal)) {
                         ChangeState(HunterState.hunting);
                     };
@@ -236,7 +236,11 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
             case HunterState.headingToGuard:
 
-                destinationTower = StructuresManager.Instance.GetClosestTower(worker.GetCampSideAddigned(), transform.position);
+                if(worker.GetStructureAssigned() != null) {
+                    destinationTower = worker.GetStructureAssigned() as Tower;
+                } else {
+                    destinationTower = StructuresManager.Instance.GetClosestTower(worker.GetCampSideAddigned(), transform.position);
+                }
 
                 if (destinationTower != null) {
                     HeadToClosestTower();
@@ -685,7 +689,6 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     }
 
     private void ChangeState(HunterState newState) {
-        Debug.Log("ChangeState " + newState);
         if (newState == state) return;
 
         previousState = state;
@@ -733,6 +736,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         checkClosestTargetTimer = 0;
 
         targetAnimal = null;
+        destinationTower = null;
         hasHitAnimal = false;
 
         hunterAttack.SetHomingProjectile(false);

@@ -9,6 +9,7 @@ public class Obstacle : MonoBehaviour {
     protected PayCurrencyUI payCurrencyUI;
     [SerializeField] protected List<Collider2D> blockingColliders;
     [SerializeField] protected TilemapCollider2D obstacleSolidCollider;
+    [SerializeField] protected Collider2D detectionCollicer;
     [SerializeField] protected AudioClip obstacleBuiltAudioClip;
 
     [SerializeField] protected Transform orbTemplateWorldUIParent;

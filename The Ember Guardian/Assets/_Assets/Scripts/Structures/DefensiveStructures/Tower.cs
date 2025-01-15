@@ -138,7 +138,6 @@ public class Tower : Structure
 
     private IEnumerator UnGarrisonWorkersCoroutine() {
 
-
         for (int i = assignedWorkersList.Count - 1; i >= 0; i--) {
             Worker worker = assignedWorkersList[i];
             Vector3 groundPosition = new Vector3(transform.position.x, 1, 0);

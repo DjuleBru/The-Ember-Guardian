@@ -142,14 +142,11 @@ public class Creature : Mob
 
     private void CreatureHeardPlayerShoot(bool heard) {
 
-        Debug.Log("CreatureHeardPlayerShoot " + heard);
-        Debug.Log(detectionCollider.radius);
         if (heard) {
             detectionCollider.radius *= playerShootDetectionRangeMultiplier;
         } else {
             detectionCollider.radius /= playerShootDetectionRangeMultiplier;
         }
-        Debug.Log(detectionCollider.radius);
     }
 
     public bool IsDayCreature() { 

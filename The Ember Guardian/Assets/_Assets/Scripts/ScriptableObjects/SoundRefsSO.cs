@@ -51,6 +51,8 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip[] gunMerchantVoiceLines;
     public AudioClip[] codexVoiceLines;
 
+    public AudioClip pressMenuButton;
+    public AudioClip hoverOrSelectMenuButton;
     public AudioClip hoverOrSelectHubMerchantItem;
     public AudioClip buyHubMerchantItem;
     public AudioClip[] upgradeHubMerchantItem;

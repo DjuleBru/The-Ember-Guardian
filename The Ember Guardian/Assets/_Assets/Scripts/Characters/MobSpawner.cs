@@ -19,6 +19,8 @@ public class MobSpawner : MonoBehaviour
     public event EventHandler<OnMobSpawnedEventArgs> OnMobSpawned;
     public event EventHandler<OnMobSpawnedEventArgs> OnMobRemoved;
 
+    protected bool mobsCanSpawnAtDawn = true;
+
     public class OnMobSpawnedEventArgs : EventArgs {
         public Mob mob;
     }
@@ -82,5 +84,9 @@ public class MobSpawner : MonoBehaviour
         OnMobSpawned?.Invoke(this, new OnMobSpawnedEventArgs {
             mob = mob,
         });
+    }
+
+    public void SetMobsCanSpawnAtDawn(bool canSpawn) {
+        mobsCanSpawnAtDawn = canSpawn;
     }
 }

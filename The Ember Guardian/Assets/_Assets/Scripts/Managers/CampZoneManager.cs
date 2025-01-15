@@ -100,8 +100,8 @@ public class CampZoneManager : MonoBehaviour
 
         }
 
-        huntingFlaxMin.SetCampHuntingLimit(new Vector3(minZoneLimit - maxAnimalTargetingDistanceToCampOuterPoint, 0, 0));
-        huntingFlagMax.SetCampHuntingLimit(new Vector3(maxZoneLimit + maxAnimalTargetingDistanceToCampOuterPoint, 0, 0));
+        huntingFlaxMin.TrySetCampHuntingLimit(new Vector3(minZoneLimit - maxAnimalTargetingDistanceToCampOuterPoint, 0, 0));
+        huntingFlagMax.TrySetCampHuntingLimit(new Vector3(maxZoneLimit + maxAnimalTargetingDistanceToCampOuterPoint, 0, 0));
 
         OnCampZoneLimitsChanged?.Invoke(this, EventArgs.Empty);
     }

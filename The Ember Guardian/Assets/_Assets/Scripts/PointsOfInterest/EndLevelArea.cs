@@ -17,6 +17,8 @@ public class EndLevelArea : MonoBehaviour
     public event EventHandler OnEndLevelAreaCleared;
     public event EventHandler OnEndLevelFireLit;
 
+    private bool playerDestroyedNest;
+
     private void Awake() {
         Instance = this;
 
@@ -47,6 +49,12 @@ public class EndLevelArea : MonoBehaviour
 
     public void SetEndLevelFireLit() {
         OnEndLevelFireLit?.Invoke(this, EventArgs.Empty);
+        foreach(MobSpawner spawner in endLevelAreaSpawnerList) {
+            spawner.SetMobsCanSpawnAtDawn(false);
+        }
+
+        playerDestroyedNest = true;
+
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) return;
 
         StartCoroutine(EnableEndLevelPortal());
@@ -57,5 +65,8 @@ public class EndLevelArea : MonoBehaviour
         endLevelPortal.gameObject.SetActive(true);
     }
 
+    public bool GetPlayerDestroyedNest() {
+        return playerDestroyedNest;
+    }
 
 }

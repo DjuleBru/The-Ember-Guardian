@@ -257,6 +257,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void StartRolling() {
+        Debug.Log("StartRolling");
         float rollDir = 1f;
 
         if(GameInput.Instance.GetMovementFloatNormalized() != 0) {

@@ -21,6 +21,7 @@ public class WorkerAI : MonoBehaviour
     }
 
     private JobTypes currentJob;
+    private bool debugSpawn;
 
     public event EventHandler OnJobChanged;
 
@@ -34,6 +35,7 @@ public class WorkerAI : MonoBehaviour
     }
 
     private void Start() {
+        if (debugSpawn) return;
         SetJob(JobTypes.wild);
     }
 
@@ -69,5 +71,9 @@ public class WorkerAI : MonoBehaviour
 
     public JobTypes GetJob() {
         return currentJob;
+    }
+
+    public void SetDebugSpawn() {
+        debugSpawn = true;
     }
 }

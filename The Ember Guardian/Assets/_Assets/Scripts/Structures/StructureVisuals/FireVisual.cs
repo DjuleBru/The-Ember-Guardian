@@ -70,12 +70,12 @@ public class FireVisual : StructureVisual
     
     protected override void Start() {
         base.Start();
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
             DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
-        }
 
-        Player.Instance.OnPlayerBackToTentToRespawn += Player_OnPlayerBackToTentToRespawn;
+            Player.Instance.OnPlayerBackToTentToRespawn += Player_OnPlayerBackToTentToRespawn;
+        }
     }
 
     private void Player_OnPlayerBackToTentToRespawn(object sender, System.EventArgs e) {

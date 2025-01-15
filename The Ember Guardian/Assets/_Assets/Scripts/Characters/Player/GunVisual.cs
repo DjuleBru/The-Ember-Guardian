@@ -37,7 +37,13 @@ public class GunVisual : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerTryShoot_OutOfAmmo(object sender, System.EventArgs e) {
-        StartCoroutine(ResetGunAmmoSprite(gunLightsSpriteRenderer.sprite));
+
+        float bulletsAmountNormalized = (float)PlayerShoot.Instance.GetCurrentBullets() / (float)PlayerShoot.Instance.GetMaxBulletsPerClip();
+        int reloadSpriteIndex = Mathf.RoundToInt(bulletsAmountNormalized * gunReloadSprites.Count);
+        Sprite currentSprite = gunReloadSprites[reloadSpriteIndex];
+
+        StopCoroutine(ResetGunAmmoSprite(currentSprite));
+        StartCoroutine(ResetGunAmmoSprite(currentSprite));
 
         if(PlayerShoot.Instance.GetCurrentBullets() == 0) {
             gunLightsSpriteRenderer.sprite = gunReloadSprites[gunSO.shotCountSprites.Count - 1];

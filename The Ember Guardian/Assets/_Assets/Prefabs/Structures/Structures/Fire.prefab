@@ -11226,6 +11226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistanceToHear: 20
   maxAudioSourceVolume: 1
+  active: 1
 --- !u!1 &1527675428145560766
 GameObject:
   m_ObjectHideFlags: 0
@@ -38020,7 +38021,7 @@ MonoBehaviour:
   wildFireRadius: 40
   insaneFireRadius: 55
   orbFuelValue: 10
-  fuelDepletionRate: 0.03
+  fuelDepletionRate: 0.05
   criticalFuelTreshold: 12
   calmFuelTreshold: 0
   mildFuelTreshold: 20
@@ -38042,6 +38043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeb486cf12e6b4948be3767e7bcfe50a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currenciesFailedToPayFallInWater: 0
 --- !u!1 &1534934469428122919 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1804490928981325453, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}

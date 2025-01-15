@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MerchantSounds : StructureSounds
 {
-    private AudioSource audioSource;
     [SerializeField] private AudioSource idleAudioSource;
     [SerializeField] private Merchant merchant;
     [SerializeField] private StructureUI_Merchant merchantUI;
@@ -17,7 +16,8 @@ public class MerchantSounds : StructureSounds
     private float merchantSFXVolume = .5f;
     private float buyMajorItemSFXVolume = 1f;
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         audioSource = GetComponent<AudioSource>();
     }
 

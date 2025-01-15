@@ -53,7 +53,6 @@ public class BarricadeVisual : StructureVisual {
 
             OnBarricadeSpriteFell?.Invoke(this, EventArgs.Empty);
             spriteIndex++;
-            Debug.Log("sprite index " + spriteIndex);
 
         } else {
             currentLevelBarricadePieceList[spriteIndex - 1].BarricadePieceDamaged();

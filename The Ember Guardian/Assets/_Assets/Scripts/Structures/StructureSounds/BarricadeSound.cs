@@ -14,7 +14,8 @@ public class BarricadeSound : StructureSounds
     [SerializeField] private AudioClip[] destroyedAudioClips;
     [SerializeField] private AudioClip[] repairedAudioClips;
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         barricadeAudioSource = GetComponent<AudioSource>(); 
     }
 

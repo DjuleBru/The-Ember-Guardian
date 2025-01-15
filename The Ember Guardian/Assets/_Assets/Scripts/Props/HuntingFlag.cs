@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class HuntingFlag : MonoBehaviour
 {
@@ -11,30 +12,62 @@ public class HuntingFlag : MonoBehaviour
 
     public static event EventHandler OnAnyHuntingFlagReset;
 
+    private Vector3 destinationPosition;
     private bool playerManuallySetFlagPosition;
     private bool playerIsCarryingFlag;
+
+
+    public event EventHandler OnPlayerResetManualHuntingLimit;
+
+    private void Start() {
+        Obstacle.OnAnyObstacleBuilt += Obstacle_OnAnyObstacleBuilt;
+    }
+
+    private void Obstacle_OnAnyObstacleBuilt(object sender, EventArgs e) {
+        if(destinationPosition != null && campDefinedHuntingFlag.position != destinationPosition) {
+            TrySetCampHuntingLimit(destinationPosition);
+        }
+    }
+
+    public void TrySetCampHuntingLimit(Vector3 position) {
+        destinationPosition = position;
+
+        // Vérifiez s'il y a un obstacle entre les positions
+        Vector3 direction = position - campDefinedHuntingFlag.position;
+        float distance = direction.magnitude;
+
+        // Raycast pour détecter les obstacles
+        RaycastHit2D hit = Physics2D.Raycast(campDefinedHuntingFlag.position, direction.normalized, distance, LayerMask.GetMask("Obstacles"));
+
+        if (hit.collider != null) {
+            Obstacle obstacle = hit.collider.gameObject.GetComponent<Obstacle>();
+            if (!obstacle.GetBuilt()) return;
+        };
+
+        SetCampHuntingLimit(position);
+    }
 
     public void SetCampHuntingLimit(Vector3 position) {
         campDefinedHuntingFlag.position = position;
 
-        if(playerManuallySetFlagPosition) {
+        if (playerManuallySetFlagPosition) {
 
-            if(isMaxHuntingLimit) {
-                if(position.x > playerDefinedHuntingFlag.position.x) {
+            if (isMaxHuntingLimit) {
+                if (position.x > playerDefinedHuntingFlag.position.x) {
                     playerDefinedHuntingFlag.position = position;
                 }
-            } else {
+            }
+            else {
                 if (position.x < playerDefinedHuntingFlag.position.x) {
                     playerDefinedHuntingFlag.position = position;
                 }
             }
 
-        } else {
+        }
+        else {
             playerDefinedHuntingFlag.position = position;
         }
     }
-
-    public event EventHandler OnPlayerResetManualHuntingLimit;
 
     public float GetCampHuntingLimit() {
         if(playerManuallySetFlagPosition) {
@@ -68,5 +101,9 @@ public class HuntingFlag : MonoBehaviour
 
     public void SetPlayerCarryingFlag(bool playerCarryingFlag) {
         playerIsCarryingFlag = playerCarryingFlag;
+    }
+
+    private void OnDestroy() {
+        Obstacle.OnAnyObstacleBuilt -= Obstacle_OnAnyObstacleBuilt;
     }
 } 

@@ -22,6 +22,7 @@ public class PauseMenuUI : MonoBehaviour
     public event EventHandler OnPauseMenuOpened;
     public event EventHandler OnPauseMenuClosed;
 
+    protected bool menuOpen;
     protected bool confirmExitGame;
     protected bool canOpenPauseMenu = true;
 
@@ -32,6 +33,7 @@ public class PauseMenuUI : MonoBehaviour
     protected virtual void Start() {
         GameInput.Instance.OnPlayerPausePerformed += GameInput_OnPlayerPausePerformed;
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
+        GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
 
         buttonConfirm_ExitGame.OnButtonDeselected += ButtonConfirm_ExitGame_OnButtonDeselected;
 
@@ -39,6 +41,12 @@ public class PauseMenuUI : MonoBehaviour
 
         if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
             SetCanSave(false);
+        }
+    }
+
+    private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
+        if(GameInput.Instance.IsUsingGamepad() && menuOpen) {
+            EventSystem.current.SetSelectedGameObject(firstSelectedButton);
         }
     }
 
@@ -51,6 +59,7 @@ public class PauseMenuUI : MonoBehaviour
     protected void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
         if (isPaused) {
             ShowPauseMenu(false);
+            StartCoroutine(ResumePause());
         }
     }
 
@@ -70,6 +79,7 @@ public class PauseMenuUI : MonoBehaviour
             Player.Instance.DisableControlInputs();
             Time.timeScale = 0f;
             AudioListener.pause = true;
+            menuOpen = true;
             OnPauseMenuOpened?.Invoke(this, EventArgs.Empty);
 
         } else {
@@ -77,6 +87,7 @@ public class PauseMenuUI : MonoBehaviour
             Player.Instance.EnableControlInputs();
             Time.timeScale = 1f;
             AudioListener.pause = false;
+            menuOpen = false;
             OnPauseMenuClosed?.Invoke(this, EventArgs.Empty);
 
         }
@@ -92,6 +103,12 @@ public class PauseMenuUI : MonoBehaviour
 
     public virtual void ResumeButton() {
         ShowPauseMenu(false);
+        StartCoroutine(ResumePause());
+    }
+
+    private IEnumerator ResumePause() {
+        yield return new WaitForSeconds(.1f);
+        isPaused = false;
     }
 
     public virtual void SettingsButton() {
@@ -107,6 +124,10 @@ public class PauseMenuUI : MonoBehaviour
             exitGameText.text = "Confirm ?";
             progressionSavedTextIndicator.SetTrigger("Show");
         }
+    }
+
+    public virtual void ResetProgression() {
+        ES3.DeleteFile();
     }
 
     #endregion

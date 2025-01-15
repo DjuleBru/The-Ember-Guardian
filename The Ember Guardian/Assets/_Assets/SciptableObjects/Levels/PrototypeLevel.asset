@@ -14,4 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   environmentType: 0
   levelObjectiveType: 10
+  nightCreatureTypes: []
+  isNewEnvironmentDiscoveryLevel: 0
+  newEnvironmentDiscoveryAudioClip: {fileID: 0}
   linkedSceneName: PrototypeLevel
+  hasFog: 0
+  fogFrontAlpha: 0
+  fogBackAlpha: 0
+  baseDifficulty: 6
+  maxSubwaveDifficulty: 10
+  growthFactor: 1.6
+  minWaveDuration: 9
+  maxWaveDuration: 90
+  waveIntensityFactor: 0.6
+  delayBetweenSubWaves: 8
+  startWaveToSpawnFromBothSides: 2
+  levelAudioClips: []

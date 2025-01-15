@@ -136,10 +136,11 @@ public class Barricade : Structure, IDamageable {
     }
 
     private void RepairBarricade() {
+
         barricadeHealth = barricadeMaxHealth;
         OnBarricadeRepaired?.Invoke(this, EventArgs.Empty);
         SetStructurePrimaryFunctionUnlocked(false);
-        SetStructureUpgradableUnlocked(true);
+        RefreshStructureUpgradeInteraction();
         barricadeRepairable = true;
     }
 

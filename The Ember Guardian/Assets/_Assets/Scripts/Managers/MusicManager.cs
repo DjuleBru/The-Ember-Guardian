@@ -7,11 +7,15 @@ public class MusicManager : MonoBehaviour {
 
     public static MusicManager Instance;
 
-    [SerializeField] private float audioVolume = .2f;
+    [SerializeField] private float mainTracksAudioVolume = .2f;
+    [SerializeField] private float backgroundTracksAudioVolume = .1f;
+
+    [SerializeField] private AudioClip mainMenuMusic;
     [SerializeField] private AudioClip endLevelMusic;
     [SerializeField] private AudioClip discoverNewLocationMusic;
-    private List<AudioClip> levelRandomTracks;
+    private List<AudioClip> levelRandomBackgroundTracks;
 
+    private float targetVolume;
     private float peacefulTimer;
     private float minPeacefulTimerDelay = 20f;
     private float playMusicAttemptTimer;
@@ -19,8 +23,10 @@ public class MusicManager : MonoBehaviour {
 
     private bool waitingToDiscoverLocation;
     private bool isDuskOrNight;
+    private bool isMainMenuScene;
     private bool isLevelScene;
     private bool isPlayingPeacefulMusic;
+    private bool isPlayingEndLevelAreaMusic;
     private AudioSource audioSource;
 
     private void Awake() {
@@ -29,27 +35,33 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void Start() {
-        SetAudioVolume(audioVolume);
+        SetAudioVolume(mainTracksAudioVolume);
         audioSource.ignoreListenerPause = true;
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
-        } else {
-            levelRandomTracks = LevelManager.Instance.GetLevelSO().levelAudioClips;
-            DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
-            DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         }
-
+        
         CreatureAI.OnAnyCreatureAggro += CreatureAI_OnAnyCreatureAggro;
         isLevelScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level;
+        isMainMenuScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu;
 
         if(isLevelScene) {
+            levelRandomBackgroundTracks = LevelManager.Instance.GetLevelSO().levelAudioClips;
+            DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+            DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+
             bool levelRegionUnlocked = MetaProgressionManager.Instance.GetLevelRegionUnlocked(LevelManager.Instance.GetLevelSO().environmentType);
 
             if (!levelRegionUnlocked) {
                 LevelManager.Instance.OnNewLocationShown += LevelManager_OnNewLocationShown;
                 waitingToDiscoverLocation = true;
             }
+        }
+
+        if(isMainMenuScene) {
+            audioSource.clip = mainMenuMusic;
+            PlayMusicDelayed(2f);
         }
     }
 
@@ -80,6 +92,7 @@ public class MusicManager : MonoBehaviour {
 
     private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {
         if (!isLevelScene) return;
+        if (isPlayingEndLevelAreaMusic) return;
 
         peacefulTimer = 0;
         playMusicAttemptTimer = 0;
@@ -91,6 +104,7 @@ public class MusicManager : MonoBehaviour {
         if (waitingToDiscoverLocation) return;
         if (isPlayingPeacefulMusic) return;
         if (isDuskOrNight) return;
+        if (isPlayingEndLevelAreaMusic) return;
 
         if(isLevelScene) {
             peacefulTimer += Time.deltaTime;
@@ -106,12 +120,12 @@ public class MusicManager : MonoBehaviour {
 
                     if (randomNumber < chanceToPlayMusid) {
 
-                        if (levelRandomTracks.Count == 0) return;
-                        AudioClip randomMusic = levelRandomTracks[Random.Range(0, levelRandomTracks.Count)];
+                        if (levelRandomBackgroundTracks.Count == 0) return;
+                        AudioClip randomMusic = levelRandomBackgroundTracks[Random.Range(0, levelRandomBackgroundTracks.Count)];
                         audioSource.clip = randomMusic;
                         isPlayingPeacefulMusic = true;
+                        targetVolume = backgroundTracksAudioVolume;
                         FadeInMusic(5f);
-
                     }
                 }
             }
@@ -129,6 +143,7 @@ public class MusicManager : MonoBehaviour {
     public void FadeOutMusic(float fadeDuration) {
         StartCoroutine(FadeOutCoroutine(fadeDuration));
     }
+
     private IEnumerator FadeOutCoroutine(float fadeDuration) {
         float startVolume = audioSource.volume;
 
@@ -147,7 +162,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     private IEnumerator FadeInCoroutine(float fadeDuration) {
-        float endVolume = audioVolume;
+        float endVolume = targetVolume;
         audioSource.volume = 0;
         audioSource.Play(); // Assure que la musique démarre
 
@@ -163,12 +178,17 @@ public class MusicManager : MonoBehaviour {
         // S'assurer que le volume atteint la valeur finale
         audioSource.volume = endVolume;
     }
+
     public void SetAudioVolume(float volume) {
         audioSource.volume = volume;
     }
 
     public void SetAudioTargerVolume(float volume) {
-        audioVolume = volume;
+        targetVolume = volume;
+    }
+
+    public void SetTargetVolumeToMainTrack() {
+        targetVolume = mainTracksAudioVolume;
     }
 
     public void FadeInMusic(float fadeDuration) {
@@ -178,7 +198,13 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void SetEndLevelMusic() {
+        targetVolume = mainTracksAudioVolume;
         audioSource.clip = endLevelMusic;
+        isPlayingEndLevelAreaMusic = true;
+    }
+    public void StopEndLevelMusic() {
+        isPlayingEndLevelAreaMusic = false;
+        FadeOutMusic(3f);
     }
 
     private void OnDestroy() {

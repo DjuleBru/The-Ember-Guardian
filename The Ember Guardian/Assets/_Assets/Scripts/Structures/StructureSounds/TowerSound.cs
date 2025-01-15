@@ -6,9 +6,9 @@ public class TowerSound : StructureSounds
 {
     [SerializeField] private Tower tower;
     [SerializeField] private AudioClip hunterAssignAudioClip;
-    private AudioSource audioSource;
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         audioSource = GetComponent<AudioSource>();
     }
 

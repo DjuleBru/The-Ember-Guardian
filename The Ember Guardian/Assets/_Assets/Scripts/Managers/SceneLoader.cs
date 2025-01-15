@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private Animator transitionAnimator;
     public static SceneLoader Instance;
 
+    public event EventHandler OnSceneFadeOut;
     public enum SceneType {
         MainMenu,
         HUB,
@@ -25,7 +27,9 @@ public class SceneLoader : MonoBehaviour
     public SceneType GetSceneType() {
         return sceneType;
     }
-
+    public void LoadTutorial(float crossfadeDuration) {
+        StartCoroutine(LoadSceneAfterCrossfade("Level0_Tutorial", crossfadeDuration));
+    }
     public void LoadHub(float crossfadeDuration) {
         StartCoroutine(LoadSceneAfterCrossfade("HUB", crossfadeDuration));
     }
@@ -42,6 +46,7 @@ public class SceneLoader : MonoBehaviour
     private IEnumerator LoadSceneAfterCrossfade(string sceneName, float crossfadeDuration) {
         transitionAnimator.SetTrigger("Start");
         transitionAnimator.speed = 1/crossfadeDuration;
+        OnSceneFadeOut?.Invoke(this, EventArgs.Empty);
 
         yield return new WaitForSeconds(crossfadeDuration + .2f);
 

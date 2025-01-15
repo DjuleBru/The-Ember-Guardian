@@ -58,6 +58,10 @@ MonoBehaviour:
   projectileTarget: {fileID: 860173671428369790}
   projectileParent: {fileID: 0}
   dropSpawnPoint: {fileID: 1538579956978529524}
+  mobHitPS_Splatter: {fileID: 0}
+  mobHitPS_Splatter_Continuous: {fileID: 0}
+  mobHitPS_Splatter_Crit: {fileID: 0}
+  mobHitPS_Front: {fileID: 0}
   blueOrbPrefab: {fileID: 4096008502524423227, guid: 7187c138d57b2dc43b18d3d2bd569bed, type: 3}
   collectibleLayerMask:
     serializedVersion: 2
@@ -151,6 +155,11 @@ MonoBehaviour:
   acceleration: 7
   deceleration: 7
   velPower: 0.9
+  hadSpeedVariations: 0
+  minSpeedMultiplier: 0.8
+  maxSpeedMultiplier: 1.2
+  speedLerpDuration: 2
+  speedChangeInterval: 5
 --- !u!70 &7815349781651484210
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -226,7 +235,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isProjectileAttack: 1
+  isStaticProjectileAttack: 0
   projectileSO: {fileID: 11400000, guid: fc5a371a9204ee043880c5cf26d510e9, type: 2}
+  staticProjectilePrefab: {fileID: 0}
   projectileSpawnPoint: {fileID: 2310341056989899468}
   attackCooldown: 3
   attackAnimationDelay: 0.6
@@ -427,7 +438,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2138060921
-  m_SortingLayer: -4
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: 1554863834, guid: 49f2e46cdbf228743b6a48ae488bf451, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -683,7 +694,7 @@ Transform:
   m_GameObject: {fileID: 8866039127884435325}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.412, z: 0}
+  m_LocalPosition: {x: 0, y: 0.554, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -760,7 +771,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2138060921
-  m_SortingLayer: -4
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: -307630437, guid: e8e923d63dddd104ab6b526b5d5d3046, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

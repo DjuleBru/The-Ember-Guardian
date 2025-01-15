@@ -16,42 +16,63 @@ public class SoundManager : MonoBehaviour
         Instance = this;
         audioSource2D = GetComponent<AudioSource>();
         audioSource2D.spatialBlend = 0;
+        audioSource2D.ignoreListenerPause = true;
     }
 
     private void Start() {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
         SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
 
+        if (Player.Instance != null) {
+            PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
+            PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
+            PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoor_OnPlayerCooldownSFXTrigger;
+            PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
+            PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+            PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerShoot_OnPlayerSwitchedFireMode;
+            PlayerShoot.Instance.OnPlayerAimedSightStarted += PlayerShoot_OnPlayerAimedSightStarted;
+            PlayerShoot.Instance.OnPlayerAimedSightEnded += PlayerShoot_OnPlayerAimedSightEnded;
+            PlayerShoot.Instance.OnPlayerOverclockedSMGStopped += PlayerSHoot_OnPlayerOverclockedSMGStopped;
+            PlayerShoot.Instance.OnPlayerOverclockedSMGStarted += PlayerShoot_OnPlayerOverclockedSMGStarted;
+            PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
+            PlayerShoot.Instance.OnPlayerFocusBlastStopped += Player_OnPlayerFocusBlastStopped;
+
+            PlayerSkills.Instance.OnActiveSkillReady += PlayerSkills_OnActiveSkillReady;
+            PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
+
+
+            PassiveShield.OnAnyPassiveShieldActivated += PassiveShield_OnAnyPassiveShieldActivated;
+            PassiveShield.OnAnyPassiveShieldDied += PassiveShield_OnAnyPassiveShieldDied;
+            ActiveTeleportation.Instance.OnPlayerTeleported += ActiveTeleportation_OnPlayerTeleported;
+            PlayerUI_AmmoBar.Instance.OnAmmoTickAdded += PlayerUI_AmmoBar_OnAmmoTickAdded;
+            PlayerUI_HPBar.Instance.OnHPTickAdded += PlayerUI_HPBar_OnHPTickAdded;
+            PlayerWorldUITooltip.OnTooltipHidden += PlayerWorldUITooltip_OnTooltipHidden;
+            PlayerWorldUITooltip.OnTooltipShown += PlayerWorldUITooltup_OnTooltipShown;
+
+            UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
+            PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor += PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;
+            Dog.Instance.OnPlayerCalledDog += Dog_OnPlayerCalledDog;
+        }
+
+        if (LevelUI_ObjectiveUI.Instance != null) {
+            LevelUI_ObjectiveUI.Instance.OnObjectiveUIShown += LevelUI_ObjectiveUI_OnObjectiveUIShown;
+            LevelUI_ObjectiveUI.Instance.OnObjectiveUICompleted += LevelUI_OnObjectiveUICompleted;
+            LevelUI_ObjectiveUI.Instance.OnSubObjectiveUICompleted += LevelUI_OnSubObjectiveUICompleted;
+        }
+        if (LevelUI_Locations.Instance != null) {
+            LevelUI_Locations.Instance.OnLocationTextShown += LevelUI_OnLocationTextShown;
+        }
+
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyStructureUpgraded += Structure_OnAnyStructureUpgraded;
         Structure.OnAnyStructurePrimaryFunctionUsed += Structure_OnAnyStructurePrimaryFunctionUsed;
         Obstacle.OnAnyObstacleBuilt += Obstacle_OnAnyObstacleBuilt;
 
-        PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
-        PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
-        PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoor_OnPlayerCooldownSFXTrigger;
-        PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
-        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
-        PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerShoot_OnPlayerSwitchedFireMode;
-        PlayerShoot.Instance.OnPlayerAimedSightStarted += PlayerShoot_OnPlayerAimedSightStarted;
-        PlayerShoot.Instance.OnPlayerAimedSightEnded += PlayerShoot_OnPlayerAimedSightEnded;
-        PlayerShoot.Instance.OnPlayerOverclockedSMGStopped += PlayerSHoot_OnPlayerOverclockedSMGStopped;
-        PlayerShoot.Instance.OnPlayerOverclockedSMGStarted += PlayerShoot_OnPlayerOverclockedSMGStarted;
-        PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
-        PlayerShoot.Instance.OnPlayerFocusBlastStopped += Player_OnPlayerFocusBlastStopped;
-
-        PlayerSkills.Instance.OnActiveSkillReady += PlayerSkills_OnActiveSkillReady;
-        PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
-        PassiveShield.OnAnyPassiveShieldActivated += PassiveShield_OnAnyPassiveShieldActivated;
-        PassiveShield.OnAnyPassiveShieldDied += PassiveShield_OnAnyPassiveShieldDied;
-        ActiveTeleportation.Instance.OnPlayerTeleported += ActiveTeleportation_OnPlayerTeleported;
-
-        PlayerUI_AmmoBar.Instance.OnAmmoTickAdded += PlayerUI_AmmoBar_OnAmmoTickAdded;
-        PlayerUI_HPBar.Instance.OnHPTickAdded += PlayerUI_HPBar_OnHPTickAdded;
         StructureUI_Fire.OnFireTickRemoved += StructureUI_Fire_OnFireTickRemoved;
         StructureUI_Fire.OnCricitalFireTickRemoved += StructureUI_Fire_OnCricitalFireTickRemoved;
-        PlayerWorldUITooltip.OnTooltipHidden += PlayerWorldUITooltip_OnTooltipHidden;
-        PlayerWorldUITooltip.OnTooltipShown += PlayerWorldUITooltup_OnTooltipShown;
+        MenuButton.OnAnyMenuButtonHovered += MenuButton_OnAnyMenuButtonHovered;
+        MenuButton.OnAnyMenuButtonPressed += MenuButton_OnAnyMenuButtonPressed;
+
         ItemButtonUI.OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
         ItemButtonUI.OnAnyButtonHovered += ItemButtonUI_OnAnyButtonHovered;
         HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
@@ -61,25 +82,14 @@ public class SoundManager : MonoBehaviour
         ItemButtonUI.OnAnyLockedButtonTryPress += ItemButtonUI_OnAnyLockedButtonTryPress;
         ItemButtonUI.OnAnyHubMerchantItemTryBuyMaxedItem += ItemButtonUI_OnAnyHubMerchantItemTryBuyMaxedItem;
 
-        if(LevelUI_ObjectiveUI.Instance != null ) {
-            LevelUI_ObjectiveUI.Instance.OnObjectiveUIShown += LevelUI_ObjectiveUI_OnObjectiveUIShown;
-            LevelUI_ObjectiveUI.Instance.OnObjectiveUICompleted += LevelUI_OnObjectiveUICompleted;
-            LevelUI_ObjectiveUI.Instance.OnSubObjectiveUICompleted += LevelUI_OnSubObjectiveUICompleted;
-        }
-        if(LevelUI_Locations.Instance != null) {
-            LevelUI_Locations.Instance.OnLocationTextShown += LevelUI_OnLocationTextShown;
-        }
-
         ParticleCollision.OnAnyBulletHitEnemy += ParticleCollision_OnAnyBulletHitEnemy;
         ParticleCollision.OnAnyBulletHitEnemyCrit += ParticleCollision_OnAnyBulletHitEnemyCrit;
         ParticleCollision.OnAnyBulletHitGround += ParticleCollision_OnAnyBulletHitGround;
 
         Collectible.OnAnyCollectibleTouchedFloor += Collectible_OnAnyCollectibleTouchedFloor;
-        UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         Collectible.OnAnyCollectiblePickedUpByWorker += Collectible_OnAnyCollectiblePickedUpByWorker;
         Collectible.OnAnyCollectiblePlouffed += Collectible_OnAnyCollectiblePlouffed; ;
         Chest.OnAnyChestSpawnedCollectible += Chest_OnAnyChestSpawnedCollectible;
-        PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor += PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;
 
         Worker.OnAnyOrbDroppedByWorker += Worker_OnAnyOrbDroppedByWorker;
         Worker.OnAnyWorkerRecruited += Worker_OnAnyWorkerRecruited;
@@ -97,7 +107,6 @@ public class SoundManager : MonoBehaviour
 
         Tutorial.OnAnySpotLightActivated += Tutorial_OnAnySpotLightActivated;
 
-        Dog.Instance.OnPlayerCalledDog += Dog_OnPlayerCalledDog;
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine += HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
     }
@@ -108,6 +117,14 @@ public class SoundManager : MonoBehaviour
 
 
     #region UI
+
+    private void MenuButton_OnAnyMenuButtonPressed(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.pressMenuButton, 1);
+    }
+
+    private void MenuButton_OnAnyMenuButtonHovered(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.hoverOrSelectMenuButton, 1);
+    }
 
     private void LevelUI_OnLocationTextShown(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.locationRevealed, .5f);
@@ -169,7 +186,7 @@ public class SoundManager : MonoBehaviour
     }
 
     private void StructureUI_Fire_OnFireTickRemoved(object sender, System.EventArgs e) {
-        PlaySound2D(soundRefsSO.fireTickRemoved, .7f);
+        PlaySound2D(soundRefsSO.fireTickRemoved, 1);
     }
 
     private void StructureUI_Fire_OnCricitalFireTickRemoved(object sender, System.EventArgs e) {
@@ -586,30 +603,27 @@ public class SoundManager : MonoBehaviour
         StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyStructureUpgraded -= Structure_OnAnyStructureUpgraded;
         Structure.OnAnyStructurePrimaryFunctionUsed -= Structure_OnAnyStructurePrimaryFunctionUsed;
+        Obstacle.OnAnyObstacleBuilt -= Obstacle_OnAnyObstacleBuilt;
 
-        PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShot;
-        PlayerShoot.Instance.OnPlayerReload -= PlayerShoot_OnPlayerReload;
-        PlayerShoot.Instance.OnPlayerCooldownTrigger -= PlayerShoor_OnPlayerCooldownSFXTrigger;
-        PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo -= PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
-        PlayerShoot.Instance.OnPlayerSwappedGun -= PlayerShoot_OnPlayerSwappedGun;
+        if (Player.Instance != null) {
+            PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShot;
+            PlayerShoot.Instance.OnPlayerReload -= PlayerShoot_OnPlayerReload;
+            PlayerShoot.Instance.OnPlayerCooldownTrigger -= PlayerShoor_OnPlayerCooldownSFXTrigger;
+            PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo -= PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
+            PlayerShoot.Instance.OnPlayerSwappedGun -= PlayerShoot_OnPlayerSwappedGun;
 
-        PlayerSkills.Instance.OnActiveSkillReady -= PlayerSkills_OnActiveSkillReady;
-        PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;
-        PassiveShield.OnAnyPassiveShieldActivated -= PassiveShield_OnAnyPassiveShieldActivated;
-        PassiveShield.OnAnyPassiveShieldDied -= PassiveShield_OnAnyPassiveShieldDied;
-        ActiveTeleportation.Instance.OnPlayerTeleported -= ActiveTeleportation_OnPlayerTeleported;
+            PlayerSkills.Instance.OnActiveSkillReady -= PlayerSkills_OnActiveSkillReady;
+            PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;
+            PassiveShield.OnAnyPassiveShieldActivated -= PassiveShield_OnAnyPassiveShieldActivated;
+            PassiveShield.OnAnyPassiveShieldDied -= PassiveShield_OnAnyPassiveShieldDied;
+            ActiveTeleportation.Instance.OnPlayerTeleported -= ActiveTeleportation_OnPlayerTeleported;
+            PlayerUI_AmmoBar.Instance.OnAmmoTickAdded -= PlayerUI_AmmoBar_OnAmmoTickAdded;
+            PlayerUI_HPBar.Instance.OnHPTickAdded -= PlayerUI_HPBar_OnHPTickAdded;
+            PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor -= PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;
 
-        PlayerUI_AmmoBar.Instance.OnAmmoTickAdded -= PlayerUI_AmmoBar_OnAmmoTickAdded;
-        PlayerUI_HPBar.Instance.OnHPTickAdded -= PlayerUI_HPBar_OnHPTickAdded;
-        StructureUI_Fire.OnFireTickRemoved -= StructureUI_Fire_OnFireTickRemoved;
-        PlayerWorldUITooltip.OnTooltipHidden -= PlayerWorldUITooltip_OnTooltipHidden;
-        PlayerWorldUITooltip.OnTooltipShown -= PlayerWorldUITooltup_OnTooltipShown;
-        ItemButtonUI.OnAnyButtonSelected -= ItemButtonUI_OnAnyButtonSelected;
-        ItemButtonUI.OnAnyButtonHovered -= ItemButtonUI_OnAnyButtonHovered;
-        HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
-        ItemButtonUI.OnAnyHubMerchantItemFailedBuy -= ItemButtonUI_OnAnyHubMerchantItemFailedBuy;
-        ItemButtonUI_Visual.OnAnyGemPSTriggered -= ItemButtonUI_Visual_OnAnyGemPSTriggered;
-        ItemButtonUI.OnAnyLockedButtonTryPress -= ItemButtonUI_OnAnyLockedButtonTryPress;
+            UICurrencyManager.Instance.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
+            Dog.Instance.OnPlayerCalledDog -= Dog_OnPlayerCalledDog;
+        }
 
         if (LevelUI_ObjectiveUI.Instance != null) {
             LevelUI_ObjectiveUI.Instance.OnObjectiveUIShown -= LevelUI_ObjectiveUI_OnObjectiveUIShown;
@@ -620,16 +634,27 @@ public class SoundManager : MonoBehaviour
             LevelUI_Locations.Instance.OnLocationTextShown -= LevelUI_OnLocationTextShown;
         }
 
+        StructureUI_Fire.OnFireTickRemoved -= StructureUI_Fire_OnFireTickRemoved;
+        PlayerWorldUITooltip.OnTooltipHidden -= PlayerWorldUITooltip_OnTooltipHidden;
+        PlayerWorldUITooltip.OnTooltipShown -= PlayerWorldUITooltup_OnTooltipShown;
+        ItemButtonUI.OnAnyButtonSelected -= ItemButtonUI_OnAnyButtonSelected;
+        ItemButtonUI.OnAnyButtonHovered -= ItemButtonUI_OnAnyButtonHovered;
+        HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
+        ItemButtonUI.OnAnyHubMerchantItemFailedBuy -= ItemButtonUI_OnAnyHubMerchantItemFailedBuy;
+        ItemButtonUI_Visual.OnAnyGemPSTriggered -= ItemButtonUI_Visual_OnAnyGemPSTriggered;
+        ItemButtonUI.OnAnyLockedButtonTryPress -= ItemButtonUI_OnAnyLockedButtonTryPress;
+        MenuButton.OnAnyMenuButtonHovered -= MenuButton_OnAnyMenuButtonHovered;
+        MenuButton.OnAnyMenuButtonPressed -= MenuButton_OnAnyMenuButtonPressed;
+
+
         ParticleCollision.OnAnyBulletHitEnemy -= ParticleCollision_OnAnyBulletHitEnemy;
         ParticleCollision.OnAnyBulletHitEnemyCrit -= ParticleCollision_OnAnyBulletHitEnemyCrit;
         ParticleCollision.OnAnyBulletHitGround -= ParticleCollision_OnAnyBulletHitGround;
 
         Collectible.OnAnyCollectibleTouchedFloor -= Collectible_OnAnyCollectibleTouchedFloor;
-        UICurrencyManager.Instance.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
         Collectible.OnAnyCollectiblePickedUpByWorker -= Collectible_OnAnyCollectiblePickedUpByWorker;
         Collectible.OnAnyCollectiblePlouffed -= Collectible_OnAnyCollectiblePlouffed; ;
         Chest.OnAnyChestSpawnedCollectible -= Chest_OnAnyChestSpawnedCollectible;
-        PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor -= PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;
 
         Worker.OnAnyOrbDroppedByWorker -= Worker_OnAnyOrbDroppedByWorker;
         Worker.OnAnyWorkerRecruited -= Worker_OnAnyWorkerRecruited;
@@ -647,7 +672,6 @@ public class SoundManager : MonoBehaviour
 
         Tutorial.OnAnySpotLightActivated -= Tutorial_OnAnySpotLightActivated;
 
-        Dog.Instance.OnPlayerCalledDog -= Dog_OnPlayerCalledDog;
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop -= HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine -= HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
     }

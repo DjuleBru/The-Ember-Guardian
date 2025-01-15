@@ -437,6 +437,7 @@ public class Tutorial : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
+        MusicManager.Instance.SetTargetVolumeToMainTrack();
         MusicManager.Instance.FadeInMusic(8f);
 
         yield return new WaitForSeconds(4f);

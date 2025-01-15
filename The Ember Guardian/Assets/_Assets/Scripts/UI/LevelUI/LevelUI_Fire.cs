@@ -29,6 +29,7 @@ public class LevelUI_Fire : MonoBehaviour
     private void Start() {
         StructureUI_Fire.OnFireMaxBarAmountChanged += StructureUI_Fire_OnFireMaxBarAmountChanged;
         StructureUI_Fire.OnFireTickRemoved += StructureUI_Fire_OnFireTickRemoved;
+        Fire.Instance.OnFireFuelled += Fire_OnFireFuelled;
         Fire.Instance.OnFireChangedState += Fire_OnFireChangedState;
 
         fireUIGameObject.SetActive(false);
@@ -58,6 +59,12 @@ public class LevelUI_Fire : MonoBehaviour
                 fireUIGameObject.SetActive(false); // Masquer l'objet après le fade-out
             }
         }
+    }
+
+    private void Fire_OnFireFuelled(object sender, System.EventArgs e) {
+        if (Mathf.Abs(Player.Instance.transform.position.x - Fire.Instance.transform.position.x) < minDistanceToFireToShowUI) return;
+
+        RefreshProgressBar();
     }
 
     private void Fire_OnFireChangedState(object sender, Fire.OnFireChangedStateEventArgs e) {
@@ -127,8 +134,8 @@ public class LevelUI_Fire : MonoBehaviour
         }
 
         PlayerUI_TickTemplate[] tickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
-        tickArray[tickArray.Length-1].RemoveTick(2);
-        tickArray[tickArray.Length-1].GetComponent<Rigidbody2D>().gravityScale = 3f;
+        tickArray[tickArray.Length-1].RemoveTick(1);
+        tickArray[tickArray.Length-1].GetComponent<Rigidbody2D>().gravityScale = 2f;
         tickArray[tickArray.Length - 1].transform.SetParent(fireUIGameObject.transform, true);
 
         progressBarTemplate.gameObject.SetActive(false);

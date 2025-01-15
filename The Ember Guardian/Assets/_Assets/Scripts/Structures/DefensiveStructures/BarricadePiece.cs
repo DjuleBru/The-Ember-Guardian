@@ -23,7 +23,7 @@ public class BarricadePiece : MonoBehaviour {
 
         rb.bodyType = RigidbodyType2D.Static;
         spriteRenderer.enabled = false;
-        animator.enabled = false;
+        animator.SetTrigger("Idle");
     }
 
     public void EnableBarricadePiece() {
@@ -32,7 +32,7 @@ public class BarricadePiece : MonoBehaviour {
 
         rb.bodyType = RigidbodyType2D.Static;
         spriteRenderer.enabled = true;
-        animator.enabled = true;
+        animator.ResetTrigger("Idle");
     }
 
     public void BarricadePieceFell() {
@@ -44,7 +44,6 @@ public class BarricadePiece : MonoBehaviour {
         rb.gravityScale = 1.5f;
         rb.AddForce(force, ForceMode2D.Impulse);
         rb.AddTorque(torque, ForceMode2D.Force);
-
 
         StartCoroutine(DeactivateBarricadeSpriteAfterDelay());
     }

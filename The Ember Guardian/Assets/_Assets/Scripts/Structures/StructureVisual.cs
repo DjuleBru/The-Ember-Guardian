@@ -33,7 +33,7 @@ public class StructureVisual : MonoBehaviour {
         structure.OnPlayerTriggeredIn += Structure_OnPlayerTriggeredIn;
         structure.OnPlayerTriggeredOut += Structure_OnPlayerTriggeredOut;
 
-        if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
             DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
         }

@@ -78,7 +78,7 @@ public class CreaturesManager : MonoBehaviour
 
 
     public void AddCreatureToNightWave(Creature creature) {
-        Debug.Log("AddCreatureToNightWave");
+        Debug.Log("AddCreatureToNightWave " + creature);
 
         if (creaturesSpawnedAtNightList.Contains(creature)) return;
         creaturesSpawnedAtNightList.Add(creature);

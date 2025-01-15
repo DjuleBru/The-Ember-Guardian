@@ -5,14 +5,13 @@ using UnityEngine;
 public class CurrencyCrafterSound : StructureSounds
 {
     private CurrencyCrafter currencyCrafter;
-    private AudioSource audioSource;
     [SerializeField] private AudioClip startCraftingAudioClip;
     [SerializeField] private AudioClip endCraftingAudioClip;
     [SerializeField] private AudioClip currencyInstantiatedAudioClip;
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         currencyCrafter = GetComponentInParent<CurrencyCrafter>();
-        audioSource = GetComponent<AudioSource>();
     }
 
     protected override void Start()
