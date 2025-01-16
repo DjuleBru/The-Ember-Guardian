@@ -151,7 +151,7 @@ public class HubMerchant : MonoBehaviour
     private void StopInteractingWithMerchant() {
         Player.Instance.StopInteractingWithMerchant();
         CameraManager.Instance.ResetCameraTargetToPlayer();
-        PauseMenuUI.Instance.SetCanOpenPauseMenu(true);
+        PauseMenuUI.Instance.SetCanOpenPauseMenuAfterFrame(true);
 
         OnPlayerStoppedInteractingWithHubMerchant?.Invoke(this, EventArgs.Empty);
         OnPlayerStoppedInteractingWithAnyHubMerchant?.Invoke(this, EventArgs.Empty);

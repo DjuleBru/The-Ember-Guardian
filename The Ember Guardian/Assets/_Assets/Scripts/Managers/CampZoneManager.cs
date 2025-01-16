@@ -194,4 +194,11 @@ public class CampZoneManager : MonoBehaviour
     public float GetHuntingMinZoneLimit() {
         return huntingFlaxMin.GetCampHuntingLimit();
     }
+
+    private void OnDestroy() {
+        Barricade.OnAnyBarricadeBuilt -= Barricade_OnAnyBarricadeBuilt;
+        Barricade.OnAnyBarricadeDestroyed -= Barricade_OnAnyBarricadeDestroyed;
+        Barricade.OnAnyBarricadeRepaired -= Barricade_OnAnyBarricadeRepaired;
+        StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
+    }
 }

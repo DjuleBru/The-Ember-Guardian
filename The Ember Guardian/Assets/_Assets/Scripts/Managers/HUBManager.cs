@@ -54,6 +54,9 @@ public class HUBManager : MonoBehaviour
                 // Player is not coming back from a level (ex. loading game)
                 Vector3 playerPosition = MetaProgressionManager.Instance.GetPlayerHubPosition();
                 Player.Instance.SetPosition(playerPosition);
+            } else {
+                // Player is coming back from a level
+                SaveHub();
             }
 
             enterHubCollider.gameObject.SetActive(false);
@@ -185,6 +188,8 @@ public class HUBManager : MonoBehaviour
         MetaProgressionManager.Instance.SaveHubGems();
         MetaProgressionManager.Instance.SavePlayerHubPosition(Player.Instance.transform.position);
         MetaProgressionManager.Instance.SetGemsRewarded(lastLevelGemsRewarded);
+
+        PlayerSave.Instance.SetPrimaryActiveGunSO(PlayerShoot.Instance.GetPrimaryGunSO());
 
         foreach (HubMerchant hubMerchant in hubMerchantList) {
             hubMerchant.SaveMerchant();

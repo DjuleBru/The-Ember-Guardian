@@ -96,7 +96,7 @@ public class LevelObjectives : MonoBehaviour
     }
 
     private IEnumerator EndLevelCoroutine() {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         levelMerchantTalkUI.SetTalkingWithMerchant(finalMerchantTextLines, false);
     }
 }

@@ -25,8 +25,8 @@ public class PauseMenuUI_Tutorial : PauseMenuUI
             ShowPauseMenu(false);
 
             MetaProgressionManager.Instance.SetTutorialCompleted();
-            MetaProgressionManager.Instance.SetGreenGemAmountFromLevel(5);
-            MetaProgressionManager.Instance.SetRedGemAmountFromLevel(5);
+            MetaProgressionManager.Instance.SetGreenGemAmountFromLevel(6);
+            MetaProgressionManager.Instance.SetRedGemAmountFromLevel(6);
 
             SceneLoader.Instance.LoadHub(1f);
         }

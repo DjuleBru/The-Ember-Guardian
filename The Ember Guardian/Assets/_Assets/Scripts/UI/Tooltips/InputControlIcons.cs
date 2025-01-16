@@ -105,7 +105,7 @@ public class InputControlIcons : MonoBehaviour
                 spriteList.Add(gamepadLtSprite);
             }
             if (control == Control.Roll) {
-                spriteList.Add(gamepadLtSprite);
+                spriteList.Add(gamepadASprite);
             }
         } else {
             if (control == Control.Reload) {

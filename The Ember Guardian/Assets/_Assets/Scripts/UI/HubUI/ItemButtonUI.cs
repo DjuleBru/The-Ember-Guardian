@@ -399,4 +399,10 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         buttonSelected = false;
     }
     #endregion
+
+    private void OnDestroy() {
+        OnAnyOutputLinkUnlocked -= ItemButtonUI_OnAnyOutputLinkUnlocked;
+        OnAnyButtonSelected -= ItemButtonUI_OnAnyButtonSelected;
+        OnAnyButtonHovered -= ItemButtonUI_OnAnyButtonHovered;
+    }
 }

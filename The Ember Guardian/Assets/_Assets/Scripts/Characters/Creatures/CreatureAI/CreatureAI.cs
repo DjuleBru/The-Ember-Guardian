@@ -28,6 +28,7 @@ public class CreatureAI : MonoBehaviour {
     protected float aggroTimer;
     protected float aggroDelay = 3f;
     public event EventHandler OnCreatureAggro;
+    public event EventHandler OnCreatureUnaggro;
     public static event EventHandler OnAnyCreatureAggro;
 
     public enum State {
@@ -236,6 +237,11 @@ public class CreatureAI : MonoBehaviour {
             if (followingTargetBuffedSpeed) {
                 creatureMovement.SetCreatureAggroMoveSpeed(false);
                 followingTargetBuffedSpeed = false;
+            }
+
+            if(state == State.moveToTarget) {
+                // Creature un aggro player
+                OnCreatureUnaggro?.Invoke(this, EventArgs.Empty);
             }
         }
 

@@ -13,6 +13,7 @@ public class EndLevelArea : MonoBehaviour
 
     private MobSpawner[] endLevelAreaSpawnerList;
     private List<Mob> mobsInArea = new List<Mob>();
+    private List<Mob> mobsAggroingPlayer = new List<Mob>();
 
     public event EventHandler OnEndLevelAreaCleared;
     public event EventHandler OnEndLevelFireLit;
@@ -34,16 +35,52 @@ public class EndLevelArea : MonoBehaviour
     }
 
     private void MobSpawner_OnMobSpawned(object sender, MobSpawner.OnMobSpawnedEventArgs e) {
-        mobsInArea.Add(e.mob);
+        AddMobToMobsInArea(e.mob);
     }
 
     private void MobSpawner_OnMobRemoved(object sender, MobSpawner.OnMobSpawnedEventArgs e) {
-        mobsInArea.Remove(e.mob);
+        RemoveMobFromMobsInArea(e.mob);
+       
+    }
 
-        if(mobsInArea.Count == 0) {
+    private void AddMobToMobsInArea(Mob mob) {
+        mobsInArea.Add(mob);
+        mob.GetComponent<CreatureAI>().OnCreatureAggro += CreatureAI_OnCreatureAggro;
+        mob.GetComponent<CreatureAI>().OnCreatureUnaggro += CreatureAI_OnCreatureUnaggro;
+
+    }
+
+    private void CreatureAI_OnCreatureUnaggro(object sender, EventArgs e) {
+        CreatureAI creatureAI = (CreatureAI)sender;
+        Mob mob = creatureAI.GetComponent<Mob>();
+        RemoveMobAggroingPlayer(mob);
+        
+    }
+
+    private void RemoveMobAggroingPlayer(Mob mob) {
+        mobsAggroingPlayer.Remove(mob);
+
+        if (mobsAggroingPlayer.Count == 0) {
+            MusicManager.Instance.FadeOutMusic(3f);
+        }
+    }
+
+    private void CreatureAI_OnCreatureAggro(object sender, EventArgs e) {
+        CreatureAI creatureAI = (CreatureAI)sender;
+        Mob mob = creatureAI.GetComponent<Mob>();
+        mobsAggroingPlayer.Add(mob);
+    }
+
+    private void RemoveMobFromMobsInArea(Mob mob) {
+        mobsInArea.Remove(mob);
+
+        if(mobsAggroingPlayer.Contains(mob)) {
+            RemoveMobAggroingPlayer(mob);
+        } 
+
+        if (mobsInArea.Count == 0) {
             endLevelAreaFire.SetActive(true);
             OnEndLevelAreaCleared?.Invoke(this, EventArgs.Empty);
-            MusicManager.Instance.FadeOutMusic(3f);
         }
     }
 

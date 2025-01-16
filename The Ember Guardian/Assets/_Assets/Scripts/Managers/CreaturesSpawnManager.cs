@@ -62,9 +62,7 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.U)) {
-            currentWaveNumber++;
-            Debug.Log(currentWaveNumber);
-            SetWaveParameters(currentWaveNumber, true, true);
+            SetTutorialWave();
         }
         if (Input.GetKeyDown(KeyCode.T)) {
             Debug.Log("SpawnWave");
@@ -111,7 +109,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         // Préparer la liste de toutes les créatures à spawner pour cette vague
         waveCreaturesDictionary.Clear();
 
-       for(int i=1 ; i <= subWaveNumber+1; i++) {
+        for (int i=1 ; i <= subWaveNumber+1; i++) {
             float subWaveDifficulty = subWaveDifficultyCurve.Evaluate((float)i / subWaveNumber) * (waveDifficulty/ subWaveNumber);
 
             List<SpawnedCreatureInfo> subWaveCreatures = PrepareSubWaveCreatures(subWaveDifficulty, waveDifficultyLeftProportion, i, subWaveRandomSideProportion);
@@ -284,11 +282,6 @@ public class CreaturesSpawnManager : MonoBehaviour
                 waveCreatures.Add(new SpawnedCreatureInfo(creatureToSpawn, SpawnSide.Right));
             }
         }
-
-
-        Debug.Log("leftMonstersCount " + leftMonstersCount);
-        Debug.Log("rightMonstersCount " + rightMonstersCount);
-
         return waveCreatures;
     }
 

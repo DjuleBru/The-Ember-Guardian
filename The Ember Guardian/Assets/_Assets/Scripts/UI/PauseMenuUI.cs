@@ -66,6 +66,10 @@ public class PauseMenuUI : MonoBehaviour
     protected void GameInput_OnPlayerPausePerformed(object sender, System.EventArgs e) {
         if (!canOpenPauseMenu) return;
 
+        OpenClosePauseMenu();
+    }
+
+    private void OpenClosePauseMenu() {
         isPaused = !isPaused;
         ShowPauseMenu(isPaused);
     }
@@ -132,6 +136,16 @@ public class PauseMenuUI : MonoBehaviour
 
     #endregion
     public void SetCanOpenPauseMenu(bool canOpen) {
+        canOpenPauseMenu = canOpen;
+    }
+
+    public void SetCanOpenPauseMenuAfterFrame(bool canOpen) {
+        StartCoroutine(SetCanOpenPauseMenuAfterFrameCoroutine(canOpen));
+    }
+
+    public IEnumerator SetCanOpenPauseMenuAfterFrameCoroutine(bool canOpen) {
+        yield return new WaitForEndOfFrame();
+
         canOpenPauseMenu = canOpen;
     }
 

@@ -89,6 +89,7 @@ public class PlayerShoot : MonoBehaviour
         if(useDebugGun) {
             SetGun(debugGun);
         } else {
+            Debug.Log(PlayerSave.Instance.GetPrimaryActiveGun());
             SetGun(PlayerSave.Instance.GetPrimaryActiveGun());
         }
 
@@ -513,6 +514,14 @@ public class PlayerShoot : MonoBehaviour
 
     public GunSO GetHeldGunSO() {
         return heldGunSO;
+    }
+
+    public GunSO GetPrimaryGunSO() {
+        return primaryGunSO;
+    }
+
+    public GunSO GetSecondaryGunSO() {
+        return secondayGunSO;
     }
 
     public Gun GetHeldGun() {

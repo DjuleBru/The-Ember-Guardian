@@ -95,8 +95,11 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public virtual void BuyItem() {
-        if(itemUpgradeable) {
+        int gemCostIndex = itemLevel;
+
+        if (itemUpgradeable) {
             itemLevel++;
+            gemCostIndex = itemLevel - 1;
         }
 
         itemBought = true;
@@ -107,11 +110,11 @@ public class HubMerchantItem : MonoBehaviour
         OnAnyHubMerchantItemBought?.Invoke(this, EventArgs.Empty);
 
         if(greenGemCostList != null && greenGemCostList.Count >= itemLevel) {
-            greenGemCost = greenGemCostList[itemLevel-1];
+            greenGemCost = greenGemCostList[gemCostIndex];
         }
 
         if(redGemCostList != null && redGemCostList.Count >= itemLevel) {
-            redGemCost = redGemCostList[itemLevel-1];
+            redGemCost = redGemCostList[gemCostIndex];
         }
     }
 
