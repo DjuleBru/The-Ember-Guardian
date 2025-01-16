@@ -44,22 +44,15 @@ public class HubMerchant : MonoBehaviour
     public static event EventHandler OnPlayerOpenedAnyHubMerchantShop;
     public static event EventHandler OnPlayerStoppedInteractingWithAnyHubMerchant;
 
-    protected bool isHubMerchant;
-    protected bool isLevelNPC;
+    [SerializeField] protected bool isHubMerchant;
+    [SerializeField] protected bool isLevelNPC;
+
+    protected bool hubMerchantLoaded;
 
     protected void Start() {
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         GameInput.Instance.OnPlayerPausePerformed += GameInput_OnPlayerPausePerformed;
-
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
-            isHubMerchant = true;
-            isLevelNPC = false;
-        }
-        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
-            isHubMerchant = false;
-            isLevelNPC = true;
-        }
 
         if (isHubMerchant) {
             // HUB behavior
@@ -73,9 +66,13 @@ public class HubMerchant : MonoBehaviour
     }
 
     protected void InitializeHubMerchantInHub() {
-        if ((!MetaProgressionManager.Instance.GetMerchantUnlocked(hubMerchantType) && !hubMerchantUnlockedAtStart) && !DEBUGActivateMerchant) {
+
+        bool merchantUnlocked = MetaProgressionManager.Instance.GetMerchantUnlocked(hubMerchantType) || hubMerchantUnlockedAtStart || DEBUGActivateMerchant;
+
+        if (!merchantUnlocked) {
             activeGameObject.SetActive(false);
             inactiveGameObject.SetActive(true);
+            return;
         }
         else {
             activeGameObject.SetActive(true);
@@ -91,6 +88,7 @@ public class HubMerchant : MonoBehaviour
             merchantHasTalkLinesToShow = MetaProgressionManager.Instance.GetMerchantHasTalkLinesToShow(hubMerchantType);
         }
 
+        hubMerchantLoaded = true;
     }
 
     protected void InitializeHubMerchantItems() {
@@ -117,7 +115,7 @@ public class HubMerchant : MonoBehaviour
         if (merchantHasTalkLinesToShow) return;
 
         if (playerInteractingWithMerchant) {
-            StopInteractingWithMerchant();
+            StartCoroutine(StopInteractingWithMerchant());
         }
     }
     private void TryStartInteractingWithMerchant() {
@@ -148,7 +146,8 @@ public class HubMerchant : MonoBehaviour
         playerInteractingWithMerchant = true;
     }
 
-    private void StopInteractingWithMerchant() {
+    private IEnumerator StopInteractingWithMerchant() {
+
         Player.Instance.StopInteractingWithMerchant();
         CameraManager.Instance.ResetCameraTargetToPlayer();
         PauseMenuUI.Instance.SetCanOpenPauseMenuAfterFrame(true);
@@ -164,6 +163,7 @@ public class HubMerchant : MonoBehaviour
             merchantJustArrivedInHub = false;
         }
 
+        yield return new WaitForEndOfFrame();
         playerInteractingWithMerchant = false;
     }
 
@@ -192,15 +192,26 @@ public class HubMerchant : MonoBehaviour
         }
     }
 
+    #region SET PARAMETERS
+
+    
     public void SetPlayerFinishedTalkingWithMerchant(bool openShopPanel) {
         merchantHasTalkLinesToShow = false;
 
-        if(openShopPanel && isHubMerchant) {
+        Debug.Log("SetPlayerFinishedTalkingWithMerchant " + openShopPanel);
+
+        if (openShopPanel && isHubMerchant) {
             StartInteractingWithMerchant();
-        } else {
-            StopInteractingWithMerchant();
+        }
+        else {
+            StartCoroutine(StopInteractingWithMerchant());
         }
     }
+
+
+    #endregion
+
+    #region GET PARAMETERS
 
     public HubMerchantType GetHubMerchantType() {
         return hubMerchantType;
@@ -221,12 +232,19 @@ public class HubMerchant : MonoBehaviour
     public bool GetMerchantJustArrivedInHub() {
         return merchantJustArrivedInHub;
     }
+    public bool GetMerchantHasNewTalkLinkes() {
+        return merchantHasTalkLinesToShow;
+    }
 
     public bool GetMerchantIsLevelNPC() {
         return isLevelNPC;
     }
+    #endregion
+
 
     public void SaveMerchant() {
+        if (!hubMerchantLoaded) return;
+
         MetaProgressionManager.Instance.SetMerchantHasTalkLinesToShow(hubMerchantType, merchantHasTalkLinesToShow);
         MetaProgressionManager.Instance.SetMerchantJustArrivedInHub(hubMerchantType, merchantJustArrivedInHub);
 

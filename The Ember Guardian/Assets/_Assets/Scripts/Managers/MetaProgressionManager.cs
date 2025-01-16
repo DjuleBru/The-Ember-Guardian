@@ -35,7 +35,7 @@ public class MetaProgressionManager : MonoBehaviour
     #endregion
 
     #region METAMERCHANTS
-
+    [SerializeField] private MerchantTextLinesSO defaultMerchantTextLinesSO;
     #endregion
 
     private void Awake() {
@@ -69,14 +69,6 @@ public class MetaProgressionManager : MonoBehaviour
     #region TUTORIAL
     public void SetTutorialCompleted() {
         ES3.Save("tutorialComplete", true);
-    }
-
-    public bool GetLevelUnlocked(LevelSO levelSO) {
-        return ES3.Load(levelSO.name, false);
-    }
-
-    public void SetLevelUnlocked(LevelSO levelSO) {
-        ES3.Save(levelSO.name, true);
     }
 
     #endregion
@@ -184,6 +176,28 @@ public class MetaProgressionManager : MonoBehaviour
         return ES3.Load(key, true);
     }
 
+    public void SetNextMerchantTalkLines(HubMerchant.HubMerchantType merchantType, MerchantTextLinesSO textLinesSO) {
+        SetNextMerchantTalkLinesShowShopAfterDialog(merchantType, textLinesSO);
+
+        string key = merchantType.ToString() + "_nextTextLinesSO";
+        ES3.Save(key, textLinesSO.merchantTextLines);
+    }
+
+    public List<string> GetNextMerchantTextLines(HubMerchant.HubMerchantType merchantType) {
+        string key = merchantType.ToString() + "_nextTextLinesSO";
+        return ES3.Load(key, defaultMerchantTextLinesSO.merchantTextLines);
+    }
+
+    public void SetNextMerchantTalkLinesShowShopAfterDialog(HubMerchant.HubMerchantType merchantType, MerchantTextLinesSO textLinesSO) {
+        string key = merchantType.ToString() + "_nextTextLinesSOShowShopAfterDialog";
+        ES3.Save(key, textLinesSO.showShopAfterDialog);
+    }
+
+    public bool GetNextMerchantTextLinesShowShopAfterDialog(HubMerchant.HubMerchantType merchantType) {
+        string key = merchantType.ToString() + "_nextTextLinesSOShowShopAfterDialog";
+        return ES3.Load(key, defaultMerchantTextLinesSO.showShopAfterDialog);
+    }
+
     public void SetMerchantJustArrivedInHub(HubMerchant.HubMerchantType merchantType, bool justArrived) {
         string key = merchantType.ToString() + "_JustArrivedInHub";
         ES3.Save(key, justArrived);
@@ -260,6 +274,34 @@ public class MetaProgressionManager : MonoBehaviour
     #endregion
 
     #region LEVELS
+    public bool GetLevelUnlocked(LevelSO levelSO) {
+        return ES3.Load(levelSO.name, false);
+    }
+
+    public void SetLevelUnlocked(LevelSO levelSO) {
+        ES3.Save(levelSO.name, true);
+    }
+
+    public List<LevelSO> GetPreviousLevelsUnlocked() {
+        string key = "_previousLevelsUnlocked";
+        return ES3.Load(key, new List<LevelSO>());
+    }
+
+    public void SetPreviousLevelsUnlocked(List<LevelSO> levelSOList) {
+        string key = "_previousLevelsUnlocked";
+        ES3.Save(key, levelSOList);
+    }
+
+    public bool GetLevelCompleted(LevelSO levelSO) {
+        string key = levelSO.ToString() + "_Completed";
+        return ES3.Load(key, false);
+    }
+
+    public void SetLevelCompleted(LevelSO levelSO) {
+        string key = levelSO.ToString() + "_Completed";
+        ES3.Save(key, true);
+    }
+
     public bool GetLevelRegionUnlocked(LevelSO.LevelEnvironment environmentType) {
         string key = environmentType.ToString() + "_Unlocked";
         return ES3.Load(key, false);

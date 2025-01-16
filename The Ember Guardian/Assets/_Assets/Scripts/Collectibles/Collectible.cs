@@ -109,7 +109,8 @@ public class Collectible : MonoBehaviour
                 if (aggroedByWildWorker && worker != aggroedWildWorker) return;
 
                 WorkerAI.JobTypes workerJob = worker.GetComponent<WorkerAI>().GetJob();
-                if (workerJob == WorkerAI.JobTypes.wild && !collected && currencyType == PlayerCurrencies.CurrencyType.bigBlueOrb) {
+
+                if (workerJob == WorkerAI.JobTypes.wild && !collected && currencyType == PlayerCurrencies.CurrencyType.bigBlueOrb && droppedByPlayer) {
                     collected = true;
                     worker.RecruitWorker();
                     Destroy(gameObject);

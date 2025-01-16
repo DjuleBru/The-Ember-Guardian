@@ -60,6 +60,7 @@ public class Fire : Structure, IDamageable {
     public static event EventHandler OnAnyFireEmberExtractionStopped;
 
     private bool isTutorial;
+    private bool justFuelledFire;
     private bool lerping;
     private bool extractingEmber;
     private float extractingEmberTimer;
@@ -157,6 +158,8 @@ public class Fire : Structure, IDamageable {
             }
         }
         else {
+            if (justFuelledFire) return;
+
             if (fuelLevel > 0) {
                 fuelLevel -= Time.deltaTime * fuelDepletionRate;
             }
@@ -200,8 +203,15 @@ public class Fire : Structure, IDamageable {
 
         CheckFireStateUpgrade();
 
+        StartCoroutine(SetJustFuelledFireFalseAfterDelay());
+        justFuelledFire = true;
         OnFireFuelled?.Invoke(this, EventArgs.Empty);
         OnAnyFireFuelled?.Invoke(this, EventArgs.Empty);
+    }
+
+    private IEnumerator SetJustFuelledFireFalseAfterDelay() {
+        yield return new WaitForSeconds(.5f);
+        justFuelledFire = false;
     }
 
     private IEnumerator ExtractEmber() {

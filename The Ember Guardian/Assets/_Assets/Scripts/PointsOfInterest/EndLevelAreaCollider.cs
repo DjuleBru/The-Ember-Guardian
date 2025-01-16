@@ -8,9 +8,16 @@ public class EndLevelAreaCollider : MonoBehaviour
         if (collision.gameObject.GetComponent<Player>() != null) {
             if (EndLevelArea.Instance.GetPlayerDestroyedNest()) return;
 
-            MusicManager.Instance.SetEndLevelMusic();
+            MusicManager.Instance.SetEndLevelMusic(2f);
             MusicManager.Instance.SetAudioTargerVolume(.3f);
-            MusicManager.Instance.FadeInMusic(3f);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) {
+        if (collision.gameObject.GetComponent<Player>() != null) {
+            if (EndLevelArea.Instance.GetPlayerDestroyedNest()) return;
+
+            EndLevelArea.Instance.TryFadeOutMusic();
         }
     }
 }

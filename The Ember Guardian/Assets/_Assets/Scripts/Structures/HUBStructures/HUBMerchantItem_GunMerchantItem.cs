@@ -42,6 +42,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     private List<bool> statModifiedBools = new List<bool>();
     
     protected void Awake() {
+        itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
         RefreshStatValues();
 
         if(gunItemCategory == GunItemCategory.statIncrease) {
@@ -173,7 +174,6 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     }
 
     private void RefreshStatValues() {
-        itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
         statModifiedBools.Clear();
         statValues.Clear();
 

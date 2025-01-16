@@ -251,6 +251,7 @@ public class Player : MonoBehaviour, IDamageable
     public void StopInteractingWithMerchant() {
         SetCanDropOrbOnTheFloor(true);
         // Set interactingWithMerchant false after frame or dog will react
+
         StartCoroutine(SetStopInteractingWithMerchantCoroutine());
         StartCoroutine(EnableControlInputCoroutine());
     }
@@ -277,14 +278,13 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     private IEnumerator SetStopInteractingWithMerchantCoroutine() {
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(.5f);
         interactingWithMerchant = false;
     }
 
     #endregion
 
     public void SetPosition(Vector3 position) {
-        Debug.Log("SetPosition " + position);
         transform.position = position;
     }
 

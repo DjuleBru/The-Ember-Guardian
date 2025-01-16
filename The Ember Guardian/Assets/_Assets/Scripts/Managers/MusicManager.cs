@@ -123,9 +123,10 @@ public class MusicManager : MonoBehaviour {
                         if (levelRandomBackgroundTracks.Count == 0) return;
                         AudioClip randomMusic = levelRandomBackgroundTracks[Random.Range(0, levelRandomBackgroundTracks.Count)];
                         audioSource.clip = randomMusic;
-                        isPlayingPeacefulMusic = true;
                         targetVolume = backgroundTracksAudioVolume;
                         FadeInMusic(5f);
+
+                        isPlayingPeacefulMusic = true;
                     }
                 }
             }
@@ -166,6 +167,7 @@ public class MusicManager : MonoBehaviour {
         audioSource.volume = 0;
         audioSource.Play(); // Assure que la musique démarre
 
+        Debug.Log(targetVolume);
         // Augmenter progressivement le volume
         for (float t = 0; t < fadeDuration; t += Time.deltaTime) {
             float progress = t / fadeDuration;
@@ -177,6 +179,16 @@ public class MusicManager : MonoBehaviour {
 
         // S'assurer que le volume atteint la valeur finale
         audioSource.volume = endVolume;
+    }
+
+    private IEnumerator FadeOutThenInCoroutine(float fadeOutDuration, float fadeInDuration, AudioClip audioClip) {
+        // Exécuter le fade-out
+        yield return StartCoroutine(FadeOutCoroutine(fadeOutDuration));
+
+        audioSource.clip = audioClip;
+
+        // Exécuter le fade-in
+        yield return StartCoroutine(FadeInCoroutine(fadeInDuration));
     }
 
     public void SetAudioVolume(float volume) {
@@ -197,11 +209,23 @@ public class MusicManager : MonoBehaviour {
         StartCoroutine(FadeInCoroutine(fadeDuration));
     }
 
-    public void SetEndLevelMusic() {
+    public void SetEndLevelMusic(float fadeInDuration) {
+        if (isPlayingEndLevelAreaMusic) return;
+
         targetVolume = mainTracksAudioVolume;
-        audioSource.clip = endLevelMusic;
-        isPlayingEndLevelAreaMusic = true;
+
+        if (audioSource.isPlaying) {
+
+            StartCoroutine(FadeOutThenInCoroutine(fadeInDuration, fadeInDuration, endLevelMusic));
+
+        } else {
+            FadeInMusic(fadeInDuration);
+            audioSource.clip = endLevelMusic;
+            isPlayingEndLevelAreaMusic = true;
+        }
+
     }
+
     public void StopEndLevelMusic() {
         isPlayingEndLevelAreaMusic = false;
         FadeOutMusic(3f);

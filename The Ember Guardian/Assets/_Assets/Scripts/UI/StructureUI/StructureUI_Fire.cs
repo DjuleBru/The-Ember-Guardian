@@ -214,6 +214,7 @@ public class StructureUI_Fire : StructureUI
 
     private IEnumerator RemoveProgressBars(int barAmount) {
         barsLeftToRemove = barAmount;
+
         for (int i = 0; i < barAmount; i++) {
             PlayerUI_TickTemplate[] fireTickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
             fireTickArray[1].RemoveTick();

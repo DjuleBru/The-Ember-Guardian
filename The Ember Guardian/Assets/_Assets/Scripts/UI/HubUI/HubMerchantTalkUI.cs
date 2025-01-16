@@ -18,13 +18,21 @@ public class HubMerchantTalkUI : MonoBehaviour
     [SerializeField] private MerchantTextLinesSO textLinesSO;
     [SerializeField] private List<string> merchantTalkLines;
 
+    [SerializeField] protected bool DEBUGShowTextLines;
+
     public static event EventHandler OnAnyMerchantShowNewTalkLine;
     public static event EventHandler OnAnyMerchantEndTalk;
 
+    private bool merchantHasTalkLinesToShow;
     private bool playerIsTalkingToMerchant;
     private bool currentDialogLineShown;
     private bool showShopAfterDialog = true;
     private int talkLinesIndex;
+
+    private void Awake() {
+        talkPanelUIGameObject.SetActive(false);
+        continueGameObject.SetActive(false);
+    }
 
     private void Start() {
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
@@ -32,10 +40,23 @@ public class HubMerchantTalkUI : MonoBehaviour
 
         hubMerchant.OnPlayerStartedTalkingWithHubMerchant += HubMerchant_OnPlayerStartedTalkingWithHubMerchant;
 
-        merchantTalkLines = textLinesSO.merchantTextLines;
-        talkPanelUIGameObject.SetActive(false);
-        continueGameObject.SetActive(false);
         continueInputImage.sprite = InputControlIcons.Instance.GetControlIconSprite(InputControlIcons.Control.Interact)[0];
+
+        LoadTalkData();
+    }
+
+    private void LoadTalkData() {
+        merchantHasTalkLinesToShow = MetaProgressionManager.Instance.GetMerchantHasTalkLinesToShow(hubMerchant.GetHubMerchantType());
+
+        if (merchantHasTalkLinesToShow && !hubMerchant.GetMerchantIsLevelNPC()) {
+            showShopAfterDialog = MetaProgressionManager.Instance.GetNextMerchantTextLinesShowShopAfterDialog(hubMerchant.GetHubMerchantType());
+            merchantTalkLines = MetaProgressionManager.Instance.GetNextMerchantTextLines(hubMerchant.GetHubMerchantType());
+        }
+
+        if(DEBUGShowTextLines || hubMerchant.GetMerchantIsLevelNPC()) {
+            merchantTalkLines = textLinesSO.merchantTextLines;
+            showShopAfterDialog = textLinesSO.showShopAfterDialog;
+        }
     }
 
     private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
@@ -55,6 +76,7 @@ public class HubMerchantTalkUI : MonoBehaviour
                 hubMerchant.SetPlayerFinishedTalkingWithMerchant(showShopAfterDialog);
                 talkPanelUIGameObject.SetActive(false);
                 CameraManager.Instance.ZoomOut(true, 1f);
+                Debug.Log("OnAnyMerchantEndTalk");
                 OnAnyMerchantEndTalk?.Invoke(this, EventArgs.Empty);
             }
             else {
@@ -75,8 +97,8 @@ public class HubMerchantTalkUI : MonoBehaviour
         StartCoroutine(StartTalkingToMerchantCoroutine());
     }
 
-    public void SetTalkingWithMerchant(MerchantTextLinesSO textLinesSO, bool showShopAfterDialog) {
-        this.showShopAfterDialog = showShopAfterDialog;
+    public void SetTalkingWithMerchant(MerchantTextLinesSO textLinesSO) {
+        showShopAfterDialog = textLinesSO.showShopAfterDialog;
         merchantTalkLines = textLinesSO.merchantTextLines;
         hubMerchant.StartTalkingWithMerchant();
 

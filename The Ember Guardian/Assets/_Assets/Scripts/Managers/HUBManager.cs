@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class HUBManager : MonoBehaviour
@@ -11,7 +12,7 @@ public class HUBManager : MonoBehaviour
     [SerializeField] private Transform firstHubLoadPlayerSpawnPoint;
     [SerializeField] private Transform firstHubLoadDogSpawnPoint;
     [SerializeField] private Transform DEBUGPlayerSpawnPoint;
-    [SerializeField] private Portal firstPortalUnlocked;
+    [SerializeField] private List<Portal> allPortalsInHub;
     [SerializeField] private TutorialCollider enterHubCollider;
     [SerializeField] private HubMerchantTalkUI gemMerchantTalkUI;
     [SerializeField] private MerchantTextLinesSO gemMerchantOutroTextLines;
@@ -34,7 +35,14 @@ public class HUBManager : MonoBehaviour
     }
 
     private void Start() {
-        if(!MetaProgressionManager.Instance.GetLevelUnlocked(level1SO)) {
+        List<Vector3> redGemPositions = MetaProgressionManager.Instance.GetRedGemPositions();
+        List<Vector3> greenGemPositions = MetaProgressionManager.Instance.GetGreenGemPositions();
+        UICurrencyManager.Instance.LoadCurrencies(PlayerCurrencies.CurrencyType.redGem, redGemPositions);
+        UICurrencyManager.Instance.LoadCurrencies(PlayerCurrencies.CurrencyType.greenGem, greenGemPositions);
+
+        HubMerchantTalkUI.OnAnyMerchantEndTalk += HubMerchantTalkUI_OnAnyMerchantEndTalk;
+
+        if (!MetaProgressionManager.Instance.GetLevelUnlocked(level1SO)) {
             // FIRST HUB ENCOUNTER
 
             StartCoroutine(FirstHUBSpawnCoroutine());
@@ -43,7 +51,6 @@ public class HUBManager : MonoBehaviour
             Player.Instance.SetPosition(firstHubLoadPlayerSpawnPoint.transform.position);
 
             HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
-            HubMerchantTalkUI.OnAnyMerchantEndTalk += HubMerchantTalkUI_OnAnyMerchantEndTalk;
             UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         }
 
@@ -54,9 +61,12 @@ public class HUBManager : MonoBehaviour
                 // Player is not coming back from a level (ex. loading game)
                 Vector3 playerPosition = MetaProgressionManager.Instance.GetPlayerHubPosition();
                 Player.Instance.SetPosition(playerPosition);
+
             } else {
+
                 // Player is coming back from a level
                 SaveHub();
+
             }
 
             enterHubCollider.gameObject.SetActive(false);
@@ -66,11 +76,6 @@ public class HUBManager : MonoBehaviour
         if(DEBUGMODE) {
             Player.Instance.SetPosition(DEBUGPlayerSpawnPoint.position);
         }
-
-        List<Vector3> redGemPositions = MetaProgressionManager.Instance.GetRedGemPositions();
-        List<Vector3> greenGemPositions = MetaProgressionManager.Instance.GetGreenGemPositions();
-        UICurrencyManager.Instance.LoadCurrencies(PlayerCurrencies.CurrencyType.redGem, redGemPositions);
-        UICurrencyManager.Instance.LoadCurrencies(PlayerCurrencies.CurrencyType.greenGem, greenGemPositions);
     }
 
     public void RewardLastLevelGems() {
@@ -101,14 +106,40 @@ public class HUBManager : MonoBehaviour
     #region FIRST HUB ENCOUNTER
 
     private void HubMerchantTalkUI_OnAnyMerchantEndTalk(object sender, System.EventArgs e) {
-        if (!playerExtractedEmber || !playerInteractedWithMerchantOnce) return;
-        if (merchantEndedTalking) return;
 
-        merchantEndedTalking = true;
-        StartCoroutine(ActivateTeleporterCoroutine());
+        if (MetaProgressionManager.Instance.GetLevelUnlocked(level1SO)) {
+            // Not first hub encounter
+
+            HubMerchantTalkUI hubMerchantTalkUI = (HubMerchantTalkUI)sender;
+            HubMerchant.HubMerchantType hubMerchantType = hubMerchantTalkUI.GetHubMerchantType();
+
+            if(hubMerchantType == HubMerchant.HubMerchantType.GemMerchant) {
+                // Player just finished talking to Gem Merchant : activate next level(s)
+
+                List<LevelSO> levelSOToUnlockList = MetaProgressionManager.Instance.GetPreviousLevelsUnlocked();
+                Debug.Log("levelSOToUnlockList " + levelSOToUnlockList.Count);
+                StartCoroutine(ActivateTeleportersCoroutine(levelSOToUnlockList));
+            }
+
+        } else {
+
+            // FIRST HUB ENCOUNTER
+            if (!playerExtractedEmber || !playerInteractedWithMerchantOnce) return;
+            if (merchantEndedTalking) return;
+
+            merchantEndedTalking = true;
+
+            List<LevelSO> level1SO_toList = new List<LevelSO> {
+                level1SO
+            };
+            StartCoroutine(ActivateTeleportersCoroutine(level1SO_toList));
+        }
+
     }
 
     private void UICurrencyManager_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        if (MetaProgressionManager.Instance.GetLevelUnlocked(level1SO)) return;
+
         if ((e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember)) {
             playerExtractedEmber = true;
 
@@ -120,11 +151,14 @@ public class HUBManager : MonoBehaviour
     }
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, System.EventArgs e) {
+        if (MetaProgressionManager.Instance.GetLevelUnlocked(level1SO)) return;
+
         if (playerInteractedWithMerchantOnce) return;
         playerInteractedWithMerchantOnce = true;
 
         hubFireExtractable = true;
         hubFire.SetHubFireEmberExtractable();
+        MetaProgressionManager.Instance.SetHubFireEmberExtractable(hubFireExtractable);
         LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUB_TalkToTrader, LevelUI_ObjectiveUI.SubObjectiveType.HUB_ExtractEmber);
     }
 
@@ -161,30 +195,47 @@ public class HUBManager : MonoBehaviour
     private IEnumerator StartGemMerchantOpenGrassyAreaLines() {
         yield return new WaitForSeconds(.5f);
         Player.Instance.DisableControlInputs();
-        gemMerchantTalkUI.SetTalkingWithMerchant(gemMerchantOutroTextLines, false);
+        gemMerchantTalkUI.SetTalkingWithMerchant(gemMerchantOutroTextLines);
     }
 
-    private IEnumerator ActivateTeleporterCoroutine() {
-        MetaProgressionManager.Instance.SetLevelUnlocked(level1SO);
-        SaveHub();
+    private IEnumerator ActivateTeleportersCoroutine(List<LevelSO> levelSOList) {
         PauseMenuUI.Instance.SetCanSave(true);
 
-        CameraManager.Instance.ChangeCameraTarget(firstPortalUnlocked.transform);
-        Player.Instance.DisableControlInputs();
-        firstPortalUnlocked.SetPortalUnlockedInSave();
+        foreach (LevelSO levelSO in levelSOList) {
+            MetaProgressionManager.Instance.SetLevelUnlocked(levelSO);
 
-        yield return new WaitForSeconds(3.5f);
-        firstPortalUnlocked.UnlockPortal();
-        yield return new WaitForSeconds(3.5f);
+            Portal linkedPortal = GetLevelLinkedPortal(levelSO);
+            CameraManager.Instance.ChangeCameraTarget(linkedPortal.transform);
+            Player.Instance.DisableControlInputs();
+
+            yield return new WaitForSeconds(3.5f);
+
+            linkedPortal.UnlockOrActivatePortal();
+            linkedPortal.SetPortalUnlockedInSave();
+            linkedPortal.SetLinkedLevelSO(levelSO);
+
+            yield return new WaitForSeconds(3f);
+        }
+
         CameraManager.Instance.ResetCameraTargetToPlayer();
         Player.Instance.EnableControlInputs();
 
+        SaveHub();
     }
 
     #endregion
 
+    public Portal GetLevelLinkedPortal(LevelSO levelSO) {
+        foreach (Portal portal in allPortalsInHub) {
+            if (portal.GetLevelSOIsInPortal(levelSO)) {
+                return portal;
+            }
+        }
+
+        return null;
+    }
+
     public void SaveHub() {
-        MetaProgressionManager.Instance.SetHubFireEmberExtractable(hubFireExtractable);
         MetaProgressionManager.Instance.SaveHubGems();
         MetaProgressionManager.Instance.SavePlayerHubPosition(Player.Instance.transform.position);
         MetaProgressionManager.Instance.SetGemsRewarded(lastLevelGemsRewarded);
@@ -194,6 +245,12 @@ public class HUBManager : MonoBehaviour
         foreach (HubMerchant hubMerchant in hubMerchantList) {
             hubMerchant.SaveMerchant();
         }
+    }
+
+    private void OnDestroy() {
+
+        HubMerchantTalkUI.OnAnyMerchantEndTalk -= HubMerchantTalkUI_OnAnyMerchantEndTalk;
+        HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
     }
 
 }

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
-  m_Name: Level1
+  m_Name: Level2
   m_EditorClassIdentifier: 
   levelsUnlockedByLevel:
-  - {fileID: 11400000, guid: 3ab5857536799d443b55dded6a554750, type: 2}
-  merchantsUnlockedInLevel: 05000000
-  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 0b1c8212e6e2efb46b62739006bb0c37, type: 2}
-  newMerchantTextLinesAfterLevel:
-  - {fileID: 11400000, guid: 92bcaa62b672a0840af078105088088f, type: 2}
+  - {fileID: 11400000, guid: 3a0673a7c12356241a8cba1c954bec69, type: 2}
+  - {fileID: 11400000, guid: 68380da7c9c0faf45be065d4a9cda5eb, type: 2}
+  merchantsUnlockedInLevel: 0200000006000000
+  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 285aab84b4a4ad648a8899052f346e6f, type: 2}
+  newMerchantTextLinesAfterLevel: []
   environmentType: 1
   levelObjectiveType: 10
   nightCreatureTypes:
@@ -27,7 +27,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
   isNewEnvironmentDiscoveryLevel: 1
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
-  linkedSceneName: Level1_VerdantGraveyard
+  linkedSceneName: Level2_VerdantGraveyard
   hasFog: 0
   fogFrontAlpha: 0
   fogBackAlpha: 0

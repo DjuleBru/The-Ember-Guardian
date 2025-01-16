@@ -46,7 +46,6 @@ public class LevelObjectives : MonoBehaviour
 
     private void EndLevelArea_OnEndLevelFireLit(object sender, System.EventArgs e) {
         StartCoroutine(EndLevelCoroutine());
-        MetaProgressionManager.Instance.SetMerchantUnlocked(HubMerchant.HubMerchantType.GunMerchant);
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
     }
 
@@ -69,7 +68,6 @@ public class LevelObjectives : MonoBehaviour
     private void LevelMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, System.EventArgs e) {
         NPCInteractionsIndex++;
 
-        Debug.Log("LevelMerchant_OnPlayerStoppedInteractingWithHubMerchant " + NPCInteractionsIndex);
         StartCoroutine(SetNextNPCObjective());
     }
 
@@ -96,7 +94,7 @@ public class LevelObjectives : MonoBehaviour
     }
 
     private IEnumerator EndLevelCoroutine() {
-        yield return new WaitForSeconds(2f);
-        levelMerchantTalkUI.SetTalkingWithMerchant(finalMerchantTextLines, false);
+        yield return new WaitForSeconds(1f);
+        levelMerchantTalkUI.SetTalkingWithMerchant(finalMerchantTextLines);
     }
 }

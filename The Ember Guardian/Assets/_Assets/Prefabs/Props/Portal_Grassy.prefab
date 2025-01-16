@@ -461,7 +461,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 314c5a774da28f640bde94732d840a46, type: 2}
+  - {fileID: 2100000, guid: 84daae7459c20664c9feb1d7e7c96f0f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10810,6 +10810,7 @@ MonoBehaviour:
   appearAudioClip: {fileID: 8300000, guid: a8f2ec34592344c439c76365e04542d3, type: 3}
   beamLightOnAudioClip: {fileID: 8300000, guid: af3ddb1b08e35f54aaa62991a34cd3d9, type: 3}
   beamLightOffAudioClip: {fileID: 8300000, guid: 842ee3ca3c343894db6f0ca46e46b973, type: 3}
+  sideLightsAudioClip: {fileID: 8300000, guid: 7e25cd864c5bbb844b7ad43fe4f2e9dd, type: 3}
   unlockPortalAudioClip: {fileID: 8300000, guid: 0d53138ef060e6447abed4ddfd691ab4, type: 3}
   teleporterIdleAudioSource: {fileID: 28211001256498972}
 --- !u!1 &6034944644642840849
@@ -10945,7 +10946,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 314c5a774da28f640bde94732d840a46, type: 2}
+  - {fileID: 2100000, guid: 84daae7459c20664c9feb1d7e7c96f0f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

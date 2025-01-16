@@ -21,6 +21,7 @@ public class PortalVisual : MonoBehaviour
         portalMarkingsGameObject.SetActive(false);
 
         portal.OnPortalUnlocked += Portal_OnPortalUnlocked;
+        portal.OnPortalActivated += Portal_OnPortalActivated;
         portal.OnPortalAppeared += Portal_OnPortalAppeared;
         portal.OnPortalDisappeared += Portal_OnPortalDisappeared;
         portal.OnPlayerEnteredTriggerArea += Portal_OnPlayerEnteredTriggerArea;
@@ -34,6 +35,8 @@ public class PortalVisual : MonoBehaviour
         TurnOnBeamLight(false);
         TurnOnSideLights(false);
     }
+
+
     private void Start() {
         portalFloorFrontGameObject.SetActive(false);
 
@@ -41,7 +44,8 @@ public class PortalVisual : MonoBehaviour
             if (!portal.GetPortalUnlocked()) {
                 portalFloorBackGameObject.SetActive(false);
             }
-            else {
+
+            if(portal.GetPortalHasUnlockedUnfinishedLevels()) {
                 TurnOnSideLights(true);
             }
         }
@@ -55,6 +59,9 @@ public class PortalVisual : MonoBehaviour
     }
 
     private void Portal_OnPortalUnlocked(object sender, System.EventArgs e) {
+        TurnOnSideLights(true);
+    }
+    private void Portal_OnPortalActivated(object sender, System.EventArgs e) {
         TurnOnSideLights(true);
     }
 
@@ -94,6 +101,7 @@ public class PortalVisual : MonoBehaviour
     private void Portal_OnPortalDisappeared(object sender, System.EventArgs e) {
         portalAnimator.SetTrigger("Disappear");
     }
+
     private void Portal_OnPlayerExitedTriggerArea(object sender, System.EventArgs e) {
         TurnOnBeamLight(false);
         portalFloorFrontGameObject.SetActive(false);

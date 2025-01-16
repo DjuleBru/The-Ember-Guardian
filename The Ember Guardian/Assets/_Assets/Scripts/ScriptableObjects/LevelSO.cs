@@ -13,6 +13,11 @@ public class LevelSO : ScriptableObject
         EmberheartSanctum,
     }
 
+    public List<LevelSO> levelsUnlockedByLevel;
+    public List<HubMerchant.HubMerchantType> merchantsUnlockedInLevel;
+    public MerchantTextLinesSO gemMerchantTextLinesAfterLevel;
+    public List<MerchantTextLinesSO> newMerchantTextLinesAfterLevel;
+
     public LevelEnvironment environmentType;
     public LevelUI_ObjectiveUI.ObjectiveType levelObjectiveType;
     public List<CreatureSO> nightCreatureTypes;

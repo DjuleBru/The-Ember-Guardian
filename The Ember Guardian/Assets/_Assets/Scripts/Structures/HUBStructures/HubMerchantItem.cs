@@ -95,13 +95,12 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public virtual void BuyItem() {
-        int gemCostIndex = itemLevel;
 
         if (itemUpgradeable) {
             itemLevel++;
-            gemCostIndex = itemLevel - 1;
         }
 
+        int gemCostIndex = itemLevel;
         itemBought = true;
 
         UICurrencyManager.Instance.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.greenGem, greenGemCost);
@@ -109,12 +108,12 @@ public class HubMerchantItem : MonoBehaviour
 
         OnAnyHubMerchantItemBought?.Invoke(this, EventArgs.Empty);
 
-        if(greenGemCostList != null && greenGemCostList.Count >= itemLevel) {
-            greenGemCost = greenGemCostList[gemCostIndex];
+        if (greenGemCostList != null && greenGemCostList.Count >= itemLevel) {
+            greenGemCost = greenGemCostList[itemLevel - 1];
         }
 
         if(redGemCostList != null && redGemCostList.Count >= itemLevel) {
-            redGemCost = redGemCostList[gemCostIndex];
+            redGemCost = redGemCostList[itemLevel - 1];
         }
     }
 

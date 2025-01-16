@@ -15,6 +15,26 @@ public class LevelManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Start() {
+        EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
+    }
+
+    private void EndLevelArea_OnEndLevelFireLit(object sender, EventArgs e) {
+        MetaProgressionManager.Instance.SetLevelCompleted(GetLevelSO());
+
+        for (int i = 0; i < levelSO.merchantsUnlockedInLevel.Count; i++) {
+
+            MetaProgressionManager.Instance.SetMerchantUnlocked(levelSO.merchantsUnlockedInLevel[i]);
+            MetaProgressionManager.Instance.SetNextMerchantTalkLines(levelSO.merchantsUnlockedInLevel[i], levelSO.newMerchantTextLinesAfterLevel[i]);
+
+        }
+
+        MetaProgressionManager.Instance.SetPreviousLevelsUnlocked(levelSO.levelsUnlockedByLevel);
+
+        MetaProgressionManager.Instance.SetMerchantHasTalkLinesToShow(HubMerchant.HubMerchantType.GemMerchant, true);
+        MetaProgressionManager.Instance.SetNextMerchantTalkLines(HubMerchant.HubMerchantType.GemMerchant, levelSO.gemMerchantTextLinesAfterLevel);
+    }
+
     public void ShowNewLocationUI() {
         bool levelRegionUnlocked = MetaProgressionManager.Instance.GetLevelRegionUnlocked(levelSO.environmentType);
         if (!levelRegionUnlocked) {

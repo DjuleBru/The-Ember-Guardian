@@ -148,6 +148,7 @@ public class SoundManager : MonoBehaviour
     }
 
     private void HubMerchantItem_OnAnyHubMerchantItemUpgraded(object sender, System.EventArgs e) {
+        Debug.Log(soundRefsSO.upgradeHubMerchantItem);
         PlaySound2D(soundRefsSO.upgradeHubMerchantItem, .5f);
     }
 
@@ -574,7 +575,6 @@ public class SoundManager : MonoBehaviour
 
     private void PlaySound2D(AudioClip[] audioClipArray, float volume = 1f) {
         AudioClip audioClip = audioClipArray[Random.Range(0, audioClipArray.Length)];
-
         PlaySound2D(audioClip, volume);
     }
 
@@ -635,11 +635,13 @@ public class SoundManager : MonoBehaviour
         }
 
         StructureUI_Fire.OnFireTickRemoved -= StructureUI_Fire_OnFireTickRemoved;
+        StructureUI_Fire.OnCricitalFireTickRemoved -= StructureUI_Fire_OnCricitalFireTickRemoved;
         PlayerWorldUITooltip.OnTooltipHidden -= PlayerWorldUITooltip_OnTooltipHidden;
         PlayerWorldUITooltip.OnTooltipShown -= PlayerWorldUITooltup_OnTooltipShown;
         ItemButtonUI.OnAnyButtonSelected -= ItemButtonUI_OnAnyButtonSelected;
         ItemButtonUI.OnAnyButtonHovered -= ItemButtonUI_OnAnyButtonHovered;
         HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
+        HubMerchantItem.OnAnyHubMerchantItemUpgraded -= HubMerchantItem_OnAnyHubMerchantItemUpgraded;
         ItemButtonUI.OnAnyHubMerchantItemFailedBuy -= ItemButtonUI_OnAnyHubMerchantItemFailedBuy;
         ItemButtonUI_Visual.OnAnyGemPSTriggered -= ItemButtonUI_Visual_OnAnyGemPSTriggered;
         ItemButtonUI.OnAnyLockedButtonTryPress -= ItemButtonUI_OnAnyLockedButtonTryPress;

@@ -356,7 +356,8 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         if (this == itemButtonUI) {
             itemHovered = true;
             descriptionCard.gameObject.SetActive(true);
-            transform.SetAsLastSibling(); // Amène la carte au-dessus
+            descriptionCard.transform.SetParent(transform.parent);
+            descriptionCard.transform.SetAsLastSibling(); // Amène la carte au-dessus
         }
 
         if (this != itemButtonUI && itemHovered) {

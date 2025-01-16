@@ -89,6 +89,8 @@ public class LevelUI_Fire : MonoBehaviour
         if (e.newState == Fire.State.calm) {
             fireAnimator.SetTrigger("Calm");
         }
+
+        RefreshBackgroundProgressBar();
     }
 
     private void StructureUI_Fire_OnFireTickRemoved(object sender, System.EventArgs e) {
@@ -128,14 +130,19 @@ public class LevelUI_Fire : MonoBehaviour
         }
 
         int currentBars = StructureUI_Fire.Instance.GetCurrentBarAmount();
+        int maxBars = StructureUI_Fire.Instance.GetMaxBarAmount();
 
         for (int i = 0; i < currentBars; i++) {
            Instantiate(progressBarTemplate, progressBarContainer);
         }
 
         PlayerUI_TickTemplate[] tickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
-        tickArray[tickArray.Length-1].RemoveTick(1);
-        tickArray[tickArray.Length-1].GetComponent<Rigidbody2D>().gravityScale = 2f;
+        Debug.Log("tickArray.Length " + tickArray.Length);
+        Debug.Log("currentBars " + currentBars);
+        Debug.Log("maxBars " + maxBars);
+
+        tickArray[tickArray.Length - 1].RemoveTick(1);
+        tickArray[tickArray.Length - 1].GetComponent<Rigidbody2D>().gravityScale = 2f;
         tickArray[tickArray.Length - 1].transform.SetParent(fireUIGameObject.transform, true);
 
         progressBarTemplate.gameObject.SetActive(false);

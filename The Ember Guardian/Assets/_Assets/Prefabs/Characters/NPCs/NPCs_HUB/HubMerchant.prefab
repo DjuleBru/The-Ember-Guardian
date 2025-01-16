@@ -1271,7 +1271,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1595801021
-  m_SortingLayer: -9
+  m_SortingLayer: -10
   m_SortingOrder: 1
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1338,6 +1338,9 @@ MonoBehaviour:
   activeGameObject: {fileID: 1547727666127543154}
   inactiveGameObject: {fileID: 3871428146972053218}
   DEBUGActivateMerchant: 0
+  hubMerchantItemParent: {fileID: 0}
+  isHubMerchant: 1
+  isLevelNPC: 0
 --- !u!58 &2971541779210028289
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1615,7 +1618,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1595801021
-  m_SortingLayer: -9
+  m_SortingLayer: -10
   m_SortingOrder: 1
   m_Sprite: {fileID: 25340332, guid: 9ad7929ac70d3744ba042b6436165543, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2299,7 +2302,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1595801021
-  m_SortingLayer: -9
+  m_SortingLayer: -10
   m_SortingOrder: 1
   m_Sprite: {fileID: 1766720799, guid: e8e923d63dddd104ab6b526b5d5d3046, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

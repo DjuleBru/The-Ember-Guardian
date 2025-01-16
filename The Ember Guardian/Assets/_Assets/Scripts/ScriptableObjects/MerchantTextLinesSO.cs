@@ -6,4 +6,5 @@ using UnityEngine;
 public class MerchantTextLinesSO : ScriptableObject
 {
     public List<string> merchantTextLines;
+    public bool showShopAfterDialog;
 }

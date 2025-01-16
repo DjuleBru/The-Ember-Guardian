@@ -59,9 +59,13 @@ public class EndLevelArea : MonoBehaviour
 
     private void RemoveMobAggroingPlayer(Mob mob) {
         mobsAggroingPlayer.Remove(mob);
+        TryFadeOutMusic();
+    }
+
+    public void TryFadeOutMusic() {
 
         if (mobsAggroingPlayer.Count == 0) {
-            MusicManager.Instance.FadeOutMusic(3f);
+            MusicManager.Instance.StopEndLevelMusic();
         }
     }
 

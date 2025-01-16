@@ -5,14 +5,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class AutoScrollRect : MonoBehaviour {
-    
+
     private ScrollRect scrollRect; // Référence au ScrollRect
     private RectTransform hoveredButtonUI;
     private RectTransform previousSelectedButtonUI;
     private float smoothSpeed = 2f;
 
     private EventSystem eventSystem; // Référence au système d'événements
-   
+
     void Start() {
         eventSystem = EventSystem.current; // Récupérer l'EventSystem actif
         scrollRect = GetComponent<ScrollRect>();
@@ -36,23 +36,32 @@ public class AutoScrollRect : MonoBehaviour {
     }
 
     private void AdjustScrollPosition() {
-        // Récupérer la largeur du Content et de la Vue
+        // Récupérer la taille du Content et de la Vue
         float contentWidth = scrollRect.content.rect.width;
+        float contentHeight = scrollRect.content.rect.height;
         float viewportWidth = scrollRect.viewport.rect.width;
+        float viewportHeight = scrollRect.viewport.rect.height;
 
-        // Récupérer la position globale du bouton dans le content
-        float buttonLocalPositionX = previousSelectedButtonUI.localPosition.x;
+        // Récupérer la position locale du bouton dans le Content
+        Vector2 buttonLocalPosition = previousSelectedButtonUI.localPosition;
 
-        // Ajuster cette position pour la recentrer dans le viewport
-        float centeredPositionX = buttonLocalPositionX - viewportWidth / 2f;
+        // Calculer les positions centrées pour les axes horizontal et vertical
+        float centeredPositionX = buttonLocalPosition.x - viewportWidth / 2f;
+        float centeredPositionY = buttonLocalPosition.y - viewportHeight / 2f;
 
-        // Calculer la position normalisée, ajustée pour les limites du scroll
-        float normalizedPosition = Mathf.Clamp01((centeredPositionX + contentWidth / 2f) / (contentWidth - viewportWidth));
+        // Calculer les positions normalisées pour chaque axe
+        float normalizedPositionX = Mathf.Clamp01((centeredPositionX + contentWidth / 2f) / (contentWidth - viewportWidth));
+        float normalizedPositionY = Mathf.Clamp01((centeredPositionY + contentHeight / 2f) / (contentHeight - viewportHeight));
 
-        // Appliquer la position au ScrollRect
+        // Appliquer les positions normalisées au ScrollRect
         scrollRect.horizontalNormalizedPosition = Mathf.Lerp(
             scrollRect.horizontalNormalizedPosition,
-            normalizedPosition,
+            normalizedPositionX,
+            Time.deltaTime * smoothSpeed);
+
+        scrollRect.verticalNormalizedPosition = Mathf.Lerp(
+            scrollRect.verticalNormalizedPosition,
+            normalizedPositionY,
             Time.deltaTime * smoothSpeed);
     }
 

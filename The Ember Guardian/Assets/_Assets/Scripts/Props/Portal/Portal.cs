@@ -30,6 +30,8 @@ public class Portal : MonoBehaviour
     private bool portalUnlocked;
 
     public  event EventHandler OnPortalUnlocked;
+    public  event EventHandler OnPortalActivated;
+
     public static event EventHandler OnAnyPortalSetToTeleportPlayer;
     public event EventHandler OnPortalSetToTeleportPlayer;
     public event EventHandler OnPortalAppeared;
@@ -104,8 +106,9 @@ public class Portal : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if (!portalUnlocked) return;
         if (playerIsSetOnTeleporter) return;
+        if (isHUBTeleporter && !GetPortalHasUnlockedUnfinishedLevels()) return;
 
-        if(collision.gameObject.GetComponent<Player>() != null) {
+        if (collision.gameObject.GetComponent<Player>() != null) {
             playerInTriggerArea = true;
             OnPlayerEnteredTriggerArea?.Invoke(this, EventArgs.Empty);
         }
@@ -170,11 +173,11 @@ public class Portal : MonoBehaviour
 
             MetaProgressionManager.Instance.SetGreenGemAmountFromLevel(UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count);
             MetaProgressionManager.Instance.SetRedGemAmountFromLevel(UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count);
+            MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
             SceneLoader.Instance.LoadHub(2f);
 
         } else {
             
-            MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
             MetaProgressionManager.Instance.SetAsLastPortalUsedByPlayer(portalNumber);
             MetaProgressionManager.Instance.SaveHubGems();
             SceneLoader.Instance.LoadLevel(linkedLevelSO, 2f);
@@ -246,15 +249,44 @@ public class Portal : MonoBehaviour
         MetaProgressionManager.Instance.SetPortalUnlocked(gameObject.name);
     }
 
-    public void UnlockPortal() {
-        gameObject.SetActive(true);
-        MakePortalAppear();
-        OnPortalUnlocked?.Invoke(this, EventArgs.Empty);
+    public void UnlockOrActivatePortal() {
+        if (!portalUnlocked) {
+            // UnlockPortal
+            gameObject.SetActive(true);
+            MakePortalAppear();
+            OnPortalUnlocked?.Invoke(this, EventArgs.Empty);
+
+        } else {
+            // Activate portal
+            OnPortalActivated?.Invoke(this, EventArgs.Empty);
+        };
+
     }
+
+    public bool GetLevelSOIsInPortal(LevelSO levelSO) {
+        return linkedLevelSOList.Contains(levelSO);
+    }
+
+    public void SetLinkedLevelSO(LevelSO levelSO) {
+        linkedLevelSO = levelSO;
+    } 
 
     public bool GetPortalUnlocked() {
         return portalUnlocked;
     }
+
+    public bool GetPortalHasUnlockedUnfinishedLevels() {
+        bool hasUnlockedAndUnfinishedLevels = false;
+
+        foreach(LevelSO levelSO in linkedLevelSOList) {
+            if(!MetaProgressionManager.Instance.GetLevelCompleted(levelSO) && MetaProgressionManager.Instance.GetLevelUnlocked(levelSO)) {
+                hasUnlockedAndUnfinishedLevels = true;
+            }
+        }
+
+        return hasUnlockedAndUnfinishedLevels;
+    }
+
     public bool GetIsEndLevelTeleporter() {
         return isEndLevelTeleporter;
     }

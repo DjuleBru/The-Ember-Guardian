@@ -175,6 +175,7 @@ public class PlayerAnimator : MonoBehaviour
 
 
     private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
+        playerAnimator.ResetTrigger("RollFinished");
         playerAnimator.SetTrigger("Roll");
     }
 

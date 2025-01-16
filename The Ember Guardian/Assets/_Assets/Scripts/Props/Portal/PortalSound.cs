@@ -12,6 +12,7 @@ public class PortalSound : MonoBehaviour
     [SerializeField] private AudioClip appearAudioClip;
     [SerializeField] private AudioClip beamLightOnAudioClip;
     [SerializeField] private AudioClip beamLightOffAudioClip;
+    [SerializeField] private AudioClip sideLightsAudioClip;
     [SerializeField] private AudioClip unlockPortalAudioClip;
 
     [SerializeField] private AudioSource teleporterIdleAudioSource;
@@ -34,6 +35,7 @@ public class PortalSound : MonoBehaviour
         }
 
         portal.OnPortalUnlocked += Portal_OnPortalUnlocked;
+        portal.OnPortalActivated += Portal_OnPortalActivated;
         portal.OnPlayerMovedOnTeleporter += Portal_OnPlayerMovedOnTeleporter;
         portal.OnPortalAppeared += Portal_OnPortalAppeared;
         portal.OnPortalDisappeared += Portal_OnPortalDisappeared;
@@ -45,6 +47,10 @@ public class PortalSound : MonoBehaviour
         if(teleporterIdleAudioSource.enabled) {
             teleporterIdleAudioSource.Play();
         }
+    }
+
+    private void Portal_OnPortalActivated(object sender, System.EventArgs e) {
+        teleporterAudioSource.PlayOneShot(sideLightsAudioClip, sfxVolume);
     }
 
     private void Portal_OnPortalUnlocked(object sender, System.EventArgs e) {

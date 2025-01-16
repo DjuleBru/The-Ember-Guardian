@@ -160,7 +160,7 @@ public class UICurrencyManager : MonoBehaviour
         }
 
         Currency_UI currencyUICollected = currencyTransform.GetComponent<Currency_UI>();
-        //currencyUICollected.SetBackpackBottomPosition(backpackBottomPosition);
+
         OnCurrencyCollected?.Invoke(this, new OnCurrencyDroppedEventArgs {
             currencyUIDropped = currencyUICollected
         });
@@ -336,6 +336,7 @@ public class UICurrencyManager : MonoBehaviour
             return;
         }
 
+        Debug.Log("Player.Instance.GetCanDropOrbOnTheFloor() " + Player.Instance.GetCanDropOrbOnTheFloor());
         if (Player.Instance.GetCanDropOrbOnTheFloor()) {
             if (GetHasBigOrb()) {
                 DropNextCurrencyInBag(PlayerCurrencies.CurrencyType.bigBlueOrb);
