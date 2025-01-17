@@ -299,6 +299,12 @@ public class Collectible : MonoBehaviour
         rb.AddForce(forceDir, ForceMode2D.Impulse);
     }
 
+    public void ApplyRandomTorque(float minForce, float maxForceX) {
+        float torque = UnityEngine.Random.Range(minForce, maxForceX);
+
+        rb.AddTorque(torque);
+    }
+
     public PlayerCurrencies.CurrencyType GetCurrencyType() {
         return currencyType;
     }

@@ -26,6 +26,7 @@ public class GunSO : ScriptableObject
     public float shootConeAngle;
     public float bulletLifetime;
     public float bulletSpeed;
+    public float weightAccelerationFactor;
     public float reloadAccelerationFactor;
 
     public float shootCooldownTime;
@@ -49,5 +50,7 @@ public class GunSO : ScriptableObject
     public AudioClip swapToWeaponSound;
 
     public float reloadSFXVolumeMultiplier;
+    public float cooldownSFXVolumeMultiplier;
     public float shootGunVolumeMultiplier;
+    public float outOfAmmoVolumeMultiplier;
 }

@@ -40,7 +40,6 @@ public class CreatureAI_Flying : CreatureAI
 
         HandleAggroRecently();
 
-
         if (isRepositioning) {
             repositionTimer -= Time.deltaTime;
             RoamAroundPlayer();

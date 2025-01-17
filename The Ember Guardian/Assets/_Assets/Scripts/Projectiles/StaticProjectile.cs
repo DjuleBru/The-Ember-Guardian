@@ -6,6 +6,7 @@ public class StaticProjectile : MonoBehaviour
 {
     [SerializeField] private float projectileLifetime;
 
+    private Mob parentMob;
     private float projectileLifetimer;
     private bool hasHit;
 
@@ -33,9 +34,18 @@ public class StaticProjectile : MonoBehaviour
             collision.GetComponent<Worker>().TakeDamage(1, transform, false);
             hasHit = true;
         }
+
+        // Hit Barricade
+        Fire fire = collision.gameObject.GetComponent<Fire>();
+        if (fire != null) {
+            collision.GetComponent<Fire>().TakeDamage(1, transform, false);
+            parentMob.Die();
+            hasHit = true;
+        }
     }
 
-    public void Initialize(float watchDir) {
+    public void Initialize(float watchDir, Mob parentMob) {
+        this.parentMob = parentMob;
         if(watchDir < 0) {
             Vector3 localScale = Vector3.one;
             localScale.x = -1f;

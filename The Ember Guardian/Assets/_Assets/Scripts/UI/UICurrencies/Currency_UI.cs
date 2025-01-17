@@ -24,6 +24,8 @@ public class Currency_UI : MonoBehaviour
     private float speedToDisableRb = 1f;
     private bool initialTimerOver;
 
+    private int ammoTriggerAmount;
+
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
         currencyCOllider2D = GetComponent<Collider2D>();
@@ -59,6 +61,12 @@ public class Currency_UI : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("DestroyCurrency")) {
+
+            if(currencyType == PlayerCurrencies.CurrencyType.ammo) {
+                ammoTriggerAmount++;
+                if (ammoTriggerAmount != 3) return;
+            }
+
             UICurrencyManager.Instance.CurrencyFellFromBag(this);
             dropCurrencyFeedback.PlayFeedbacks();
             StartCoroutine(DestroyAfterDelay(.2f));

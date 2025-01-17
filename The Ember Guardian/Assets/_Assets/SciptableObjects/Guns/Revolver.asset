@@ -21,7 +21,7 @@ MonoBehaviour:
   - {fileID: 1525678862, guid: 704f0c33e68961d4ba4cf34c667e7c1c, type: 3}
   - {fileID: 1684648854, guid: 704f0c33e68961d4ba4cf34c667e7c1c, type: 3}
   - {fileID: -1971777185, guid: 704f0c33e68961d4ba4cf34c667e7c1c, type: 3}
-  gunAnimator: {fileID: 22100000, guid: 886fbe611245b664ebc9bd7921c1b6e8, type: 2}
+  gunAnimator: {fileID: 22100000, guid: 0e71313245f460748a958769f3d62c30, type: 2}
   automaticWeapon: 0
   damagePerBullet: 25
   maxAmmo: 6
@@ -31,6 +31,7 @@ MonoBehaviour:
   shootConeAngle: 2
   bulletLifetime: 0.3
   bulletSpeed: 65
+  weightAccelerationFactor: 1.15
   reloadAccelerationFactor: 0.75
   shootCooldownTime: 0.5
   shootCooldownSFXTriggerTime: 0.5
@@ -50,7 +51,7 @@ MonoBehaviour:
   reloadGunSound:
   - {fileID: 8300000, guid: 497ca2561e0e6574c9811d612c98dec1, type: 3}
   cooldownGunSound:
-  - {fileID: 8300000, guid: 44410cc1b7956fa48b296fe59bf65d00, type: 3}
+  - {fileID: 8300000, guid: 79807144d7c7634419a5cd72bb9319ac, type: 3}
   bulletHitGroundSound:
   - {fileID: 8300000, guid: 59dcfb178b39c434495515f32be26dd4, type: 3}
   - {fileID: 8300000, guid: f1838753b53df84439313b212c62a244, type: 3}
@@ -75,4 +76,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 34b027e33db23f44891b7586138184a7, type: 3}
   swapToWeaponSound: {fileID: 8300000, guid: 44410cc1b7956fa48b296fe59bf65d00, type: 3}
   reloadSFXVolumeMultiplier: 0.65
+  cooldownSFXVolumeMultiplier: 0.5
   shootGunVolumeMultiplier: 0.5
+  outOfAmmoVolumeMultiplier: 0.75

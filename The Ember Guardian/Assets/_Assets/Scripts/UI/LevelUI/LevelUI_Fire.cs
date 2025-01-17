@@ -28,11 +28,15 @@ public class LevelUI_Fire : MonoBehaviour
 
     private void Start() {
         StructureUI_Fire.OnFireMaxBarAmountChanged += StructureUI_Fire_OnFireMaxBarAmountChanged;
-        StructureUI_Fire.OnFireTickRemoved += StructureUI_Fire_OnFireTickRemoved;
+        StructureUI_Fire.OnFireTickRemoved += StructureUI_Fire_OnFireTickRemoved1;
         Fire.Instance.OnFireFuelled += Fire_OnFireFuelled;
         Fire.Instance.OnFireChangedState += Fire_OnFireChangedState;
 
         fireUIGameObject.SetActive(false);
+    }
+
+    private void StructureUI_Fire_OnFireMaxBarAmountChanged(object sender, System.EventArgs e) {
+        RefreshBackgroundProgressBar();
     }
 
     private void Update() {
@@ -64,7 +68,8 @@ public class LevelUI_Fire : MonoBehaviour
     private void Fire_OnFireFuelled(object sender, System.EventArgs e) {
         if (Mathf.Abs(Player.Instance.transform.position.x - Fire.Instance.transform.position.x) < minDistanceToFireToShowUI) return;
 
-        RefreshProgressBar();
+        int currentBars = StructureUI_Fire.Instance.GetCurrentBarAmount();
+        RefreshProgressBar(currentBars);
     }
 
     private void Fire_OnFireChangedState(object sender, Fire.OnFireChangedStateEventArgs e) {
@@ -93,18 +98,17 @@ public class LevelUI_Fire : MonoBehaviour
         RefreshBackgroundProgressBar();
     }
 
-    private void StructureUI_Fire_OnFireTickRemoved(object sender, System.EventArgs e) {
+    private void StructureUI_Fire_OnFireTickRemoved1(object sender, StructureUI_Fire.OnFireTickRemovedEventArgs e) {
+
         if (Mathf.Abs(Player.Instance.transform.position.x - Fire.Instance.transform.position.x) < minDistanceToFireToShowUI) return;
 
         DisplayFireUI();
-        RefreshProgressBar();
+        RefreshProgressBar(e.currentBars);
     }
 
-    private void StructureUI_Fire_OnFireMaxBarAmountChanged(object sender, System.EventArgs e) {
-        RefreshBackgroundProgressBar();
-    }
 
     private void RefreshBackgroundProgressBar() {
+
         progressBarBackgroundTemplate.gameObject.SetActive(true);
         foreach (RectTransform child in progressBarBackgroundContainer) {
             if (child == progressBarBackgroundTemplate) continue;
@@ -120,8 +124,7 @@ public class LevelUI_Fire : MonoBehaviour
         progressBarBackgroundTemplate.gameObject.SetActive(false);
     }
 
-    private void RefreshProgressBar() {
-
+    private void RefreshProgressBar(int currentBarAmount) {
         progressBarTemplate.gameObject.SetActive(true);
 
         foreach (RectTransform child in progressBarContainer) {
@@ -129,21 +132,21 @@ public class LevelUI_Fire : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        int currentBars = StructureUI_Fire.Instance.GetCurrentBarAmount();
         int maxBars = StructureUI_Fire.Instance.GetMaxBarAmount();
 
-        for (int i = 0; i < currentBars; i++) {
+        for (int i = 0; i <= currentBarAmount; i++) {
            Instantiate(progressBarTemplate, progressBarContainer);
         }
 
         PlayerUI_TickTemplate[] tickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
-        Debug.Log("tickArray.Length " + tickArray.Length);
-        Debug.Log("currentBars " + currentBars);
-        Debug.Log("maxBars " + maxBars);
 
         tickArray[tickArray.Length - 1].RemoveTick(1);
         tickArray[tickArray.Length - 1].GetComponent<Rigidbody2D>().gravityScale = 2f;
         tickArray[tickArray.Length - 1].transform.SetParent(fireUIGameObject.transform, true);
+
+        if(currentBarAmount == maxBars) {
+            Instantiate(progressBarTemplate, progressBarContainer);
+        }
 
         progressBarTemplate.gameObject.SetActive(false);
     }

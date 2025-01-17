@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
   m_Name: Tutorial
   m_EditorClassIdentifier: 
+  levelsUnlockedByLevel: []
+  merchantsUnlockedInLevel: 00000000
+  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 640d874f0f212a74d9a6b7d8805632c6, type: 2}
+  newMerchantTextLinesAfterLevel:
+  - {fileID: 11400000, guid: 640d874f0f212a74d9a6b7d8805632c6, type: 2}
   environmentType: 0
   levelObjectiveType: 0
   nightCreatureTypes:

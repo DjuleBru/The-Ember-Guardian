@@ -31,6 +31,7 @@ public class Gun : MonoBehaviour
     protected float adjustmentSpeed = 5f; // Vitesse de transition (plus grand = plus rapide)
     protected float critChance = .15f;
     protected float reloadAccelerationFactor;
+    protected float weightAccelerationFactor;
 
     protected float currentAngle; // L'angle actuel du cône
     protected float targetAngle; // L'angle cible vers lequel le cône doit se diriger
@@ -140,6 +141,7 @@ public class Gun : MonoBehaviour
         bulletLifetime = MetaProgressionManager.Instance.GetGunBulletLifetime(gunSO);
         bulletSpeed = MetaProgressionManager.Instance.GetGunBulletSpeed(gunSO);
         reloadAccelerationFactor = MetaProgressionManager.Instance.GetGunReloadAccelerationFactor(gunSO);
+        weightAccelerationFactor = MetaProgressionManager.Instance.GetGunWeightAccelerationFactor(gunSO);
 
         defaultAngle = MetaProgressionManager.Instance.GetGunShootConeAnle(gunSO);
         defaultAngle = gunSO.shootConeAngle;
@@ -206,7 +208,6 @@ public class Gun : MonoBehaviour
         return shotsPerClip;
     }
 
-
     public int GetMaxAmmo() {
         return maxAmmo;
     }
@@ -229,7 +230,9 @@ public class Gun : MonoBehaviour
     public float GetReloadAccelerationFactor() {
         return reloadAccelerationFactor;
     }
-
+    public float GetWeightAccelerationFactor() {
+        return weightAccelerationFactor;
+    }
     #endregion
 
     #region SET PARAMETERS

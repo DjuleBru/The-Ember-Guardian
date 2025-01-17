@@ -24,6 +24,7 @@ public class BackgroundSoundsManager : MonoBehaviour
 
     private bool isTransitioning = false;
     private bool isInCavern = false;
+    private bool initialStateSet;
 
     private float sfxVolume;
 
@@ -53,6 +54,11 @@ public class BackgroundSoundsManager : MonoBehaviour
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
+        if(!initialStateSet) {
+            initialStateSet = true;
+            return;
+        }
+
         cycleTransitionWhoosh.PlayOneShot(soundRefs.duskStartWhoosh);
         cycleTransitionSounds.PlayOneShot(soundRefs.duskStart);
 
@@ -60,6 +66,10 @@ public class BackgroundSoundsManager : MonoBehaviour
     }
 
     private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
+        if (!initialStateSet) {
+            initialStateSet = true;
+            return;
+        }
         cycleTransitionWhoosh.PlayOneShot(soundRefs.dayStartWhoosh);
         cycleTransitionSounds.PlayOneShot(soundRefs.dayStart);
 
@@ -67,6 +77,11 @@ public class BackgroundSoundsManager : MonoBehaviour
     }
 
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
+        if (!initialStateSet) {
+            initialStateSet = true;
+            return;
+        }
+
         cycleTransitionWhoosh.PlayOneShot(soundRefs.nightStartWhoosh);
         //cycleTransitionSounds.PlayOneShot(soundRefs.dawnStart);
         StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, .3f, 1f));
@@ -77,6 +92,11 @@ public class BackgroundSoundsManager : MonoBehaviour
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
+        if (!initialStateSet) {
+            initialStateSet = true;
+            return;
+        }
+
         cycleTransitionWhoosh.PlayOneShot(soundRefs.dawnStartWhoosh);
         cycleTransitionSounds.PlayOneShot(soundRefs.dawnStart);
         StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, .3f, 1f));

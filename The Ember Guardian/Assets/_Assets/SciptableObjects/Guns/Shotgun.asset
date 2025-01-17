@@ -35,6 +35,7 @@ MonoBehaviour:
   shootConeAngle: 16
   bulletLifetime: 0.3
   bulletSpeed: 30
+  weightAccelerationFactor: 1
   reloadAccelerationFactor: 0.75
   shootCooldownTime: 0.8
   shootCooldownSFXTriggerTime: 0.3
@@ -79,4 +80,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e8e5aa23dc10e764bb3d3654d35014c5, type: 3}
   swapToWeaponSound: {fileID: 8300000, guid: 10385280c450953468ec7ea73a4a71ff, type: 3}
   reloadSFXVolumeMultiplier: 0.5
+  cooldownSFXVolumeMultiplier: 0.5
   shootGunVolumeMultiplier: 0.5
+  outOfAmmoVolumeMultiplier: 0.75

@@ -439,6 +439,7 @@ public class MetaProgressionManager : MonoBehaviour
             gunTypeModified = gunSO.gunType,
         });
     }
+
     public float GetGunReloadAccelerationFactor(GunSO gunSO) {
         string key = gunSO.gunType + "_reloadAccelerationFactor";
 
@@ -448,6 +449,20 @@ public class MetaProgressionManager : MonoBehaviour
         string key = gunSO.gunType + "_reloadAccelerationFactor";
 
         ES3.Save(key, reloadAccelerationFactor);
+        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
+            gunTypeModified = gunSO.gunType,
+        });
+    }
+
+    public float GetGunWeightAccelerationFactor(GunSO gunSO) {
+        string key = gunSO.gunType + "_weightAccelerationFactor";
+
+        return ES3.Load(key, gunSO.weightAccelerationFactor);
+    }
+    public void SetGunWeightAccelerationFactor(GunSO gunSO, float weightAccelerationFactor) {
+        string key = gunSO.gunType + "_weightAccelerationFactor";
+
+        ES3.Save(key, weightAccelerationFactor);
         OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
             gunTypeModified = gunSO.gunType,
         });

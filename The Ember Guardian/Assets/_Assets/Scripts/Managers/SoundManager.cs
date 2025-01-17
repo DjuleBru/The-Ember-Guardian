@@ -12,6 +12,9 @@ public class SoundManager : MonoBehaviour
     private AudioSource audioSource2D;
     private float sfxVolume;
 
+    private bool initialEmberGiven;
+    private bool initialGunEquipped;
+
     private void Awake() {
         Instance = this;
         audioSource2D = GetComponent<AudioSource>();
@@ -282,6 +285,10 @@ public class SoundManager : MonoBehaviour
             PlaySound2D(soundRefsSO.ammoPickedUpByPlayer, .7f);
         }
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.ember) {
+            if(!initialEmberGiven) {
+                initialEmberGiven = true;
+                return;
+            }
             PlaySound2D(soundRefsSO.emberPickedUpByPlayer, .7f);
         }
     }
@@ -354,18 +361,22 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
+        if(!initialGunEquipped) {
+            initialGunEquipped = true;
+            return;
+        }
         AudioClip audioClipArray = PlayerShoot.Instance.GetHeldGunSO().swapToWeaponSound;
         PlaySound2D(audioClipArray);
     }
 
     private void PlayerShoot_OnPlayerTryShoot_OutOfAmmo(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().outOfAmmoSound;
-        PlaySound2D(audioClipArray, .75f);
+        PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().outOfAmmoVolumeMultiplier);
     }
 
     private void PlayerShoor_OnPlayerCooldownSFXTrigger(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().cooldownGunSound;
-        PlaySound2D(audioClipArray, .5f);
+        PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().cooldownSFXVolumeMultiplier);
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
@@ -464,8 +475,6 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region PROPS
-
-
     private void HuntingFlag_PlayerDefined_OnAnyHuntingFlagPickedUp(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.huntingFlagPickedUp);
     }

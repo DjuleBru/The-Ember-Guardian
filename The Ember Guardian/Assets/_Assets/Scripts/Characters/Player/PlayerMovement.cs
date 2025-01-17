@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float runRecoverFactor = 1f;
     [SerializeField] private float aimingSightDecelerationFactor = .7f;
     [SerializeField] private float crouchAccelerationFactor = .7f;
+    private float gunWeightAccelerationFactor;
 
     [SerializeField] private float acceleration;
     [SerializeField] private float deceleration;
@@ -44,7 +45,6 @@ public class PlayerMovement : MonoBehaviour {
     private float moveSpeed;
     private float lastMoveDir = 1;
     private float lastJumpTime;
-    private float lastRollTime;
     private float staminaTimer;
     private float rollExhaustionAmount = 2f;
     private float rollAnimationDuration = .6f;
@@ -85,6 +85,7 @@ public class PlayerMovement : MonoBehaviour {
         PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAim_OnPlayerAimSightEnded;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerReloadHandEnded += PlayerShoot_OnPlayerReloadHandEnded;
+        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
 
         PlayerStats.Instance.OnMoveSpeedChanged += PlayerState_OnMoveSpeedChanged;
     }
@@ -137,6 +138,22 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
+    private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
+        if(gunWeightAccelerationFactor == 0) {
+            // Gun weight initialization
+
+            gunWeightAccelerationFactor = PlayerShoot.Instance.GetGunWeightAccelerationFactor();
+            BuffMoveSpeed(gunWeightAccelerationFactor);
+
+        } else {
+            // Changing gun
+
+            DebuffMoveSpeed(gunWeightAccelerationFactor);
+            gunWeightAccelerationFactor = PlayerShoot.Instance.GetGunWeightAccelerationFactor();
+            BuffMoveSpeed(gunWeightAccelerationFactor);
+        }
+    }
+
     private void PlayerShoot_OnPlayerReloadHandEnded(object sender, EventArgs e) {
         float reloadAccelerationFactor = PlayerShoot.Instance.GetGunReloadAccelerationFactor();
         DebuffMoveSpeed(reloadAccelerationFactor);
@@ -157,6 +174,7 @@ public class PlayerMovement : MonoBehaviour {
         if (isExhausted) return;
         if (PauseMenuUI.Instance.isPaused) return;
         if (!Player.Instance.GetCanMove()) return;
+        if (PlayerShoot.Instance.GetReloadingHands()) return;
 
         StartRolling();
         return;
@@ -267,7 +285,6 @@ public class PlayerMovement : MonoBehaviour {
 
         Vector2 force = new Vector2(rollDir * rollForce, 2f);
         rb.AddForce(force, ForceMode2D.Impulse);
-        lastRollTime = 0;
 
         isJumping = false;
         isRolling = true;

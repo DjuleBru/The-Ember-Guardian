@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class CreaturesSpawnManager : MonoBehaviour
 {
@@ -19,12 +20,22 @@ public class CreaturesSpawnManager : MonoBehaviour
         }
     }
 
+    public event EventHandler<OnRemainingNightCreaturesChangedEventArgs> OnRemainingNightCreaturesChanged;
+    public class OnRemainingNightCreaturesChangedEventArgs : EventArgs {
+        public float remainingNightCreaturesNormalized;
+    }
+
     private Dictionary<int, List<SpawnedCreatureInfo>> waveCreaturesDictionary = new Dictionary<int, List<SpawnedCreatureInfo>>();
 
     public enum SpawnSide { Left, Right };
     private float spawnDistanceToPlayerOrCamp = 30f;
 
     private List<CreatureSO> creatureTypes;
+
+    private int totalNightCreatures;
+    private int remainingNightCreatures;
+    private int totalNightCreatureHP;
+    private int remainingNightCreaturesHP;
 
     private int startWaveToSpawnFromBothSides;
     private int baseDifficulty;
@@ -60,19 +71,35 @@ public class CreaturesSpawnManager : MonoBehaviour
         delayBetweenSubWaves = LevelManager.Instance.GetLevelSO().delayBetweenSubWaves;
     }
 
+    private void Start() {
+        CreaturesManager.Instance.OnCreatureAtNightKilled += CreaturesManager_OnCreatureAtNightKilled;
+    }
+
+    private void CreaturesManager_OnCreatureAtNightKilled(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
+        remainingNightCreaturesHP -= e.creatureKilled.GetCreatureSO().maxHealth;
+        remainingNightCreatures--;
+
+        float remainingNightCreaturesHealthNormalized = (float)remainingNightCreaturesHP / (float)totalNightCreatureHP;
+        float remainingNightCreaturesNormalized = (float)remainingNightCreatures / (float)totalNightCreatures;
+        OnRemainingNightCreaturesChanged?.Invoke(this, new OnRemainingNightCreaturesChangedEventArgs {
+            remainingNightCreaturesNormalized = remainingNightCreaturesNormalized
+        });
+    }
+
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.U)) {
-            SetTutorialWave();
-        }
-        if (Input.GetKeyDown(KeyCode.T)) {
-            Debug.Log("SpawnWave");
-            StartCoroutine(SpawnWave());
-        }
+        //if (Input.GetKeyDown(KeyCode.U)) {
+        //    SetTutorialWave();
+        //}
+        //if (Input.GetKeyDown(KeyCode.T)) {
+        //    Debug.Log("SpawnWave");
+        //    StartCoroutine(SpawnWave());
+        //}
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         currentWaveNumber++;
         SetWaveParameters(currentWaveNumber, true, true);
+
     }
 
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
@@ -85,6 +112,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         waveDifficultyRightProportion = .5f;
 
         SetWaveParameters(currentWaveNumber, false, false);
+
     }
 
     public void SetWaveParameters(int waveNumber, bool wavesRandomSideProportion, bool subWaveRandomSideProportion) {
@@ -116,16 +144,29 @@ public class CreaturesSpawnManager : MonoBehaviour
             waveCreaturesDictionary.Add(i, subWaveCreatures);
             CountCreatureOccurrences(subWaveCreatures);
         }
+
+
+        totalNightCreatureHP = 0;
+        foreach (List<SpawnedCreatureInfo> spawnedCreatureInfoList in waveCreaturesDictionary.Values) {
+            totalNightCreatureHP += GetTotalPlannedCreaturesHPForNight(spawnedCreatureInfoList);
+            totalNightCreatures += GetTotalPlannedCreaturesForNight(spawnedCreatureInfoList);
+        }
+
+        Debug.Log("totalNightCreatureHP " + totalNightCreatureHP);
+        Debug.Log("totalNightCreatures " + totalNightCreatures);
+        remainingNightCreaturesHP = totalNightCreatureHP;
+        remainingNightCreatures = totalNightCreatures;
+
     }
 
     private void SetWaveSidesProportion(int waveNumber) {
 
-        waveDifficultyLeftProportion = Random.Range(0f, 1f);
+        waveDifficultyLeftProportion = UnityEngine.Random.Range(0f, 1f);
         float allFromOneSideTreshold = .2f;
 
         bool initialWaves = waveNumber < startWaveToSpawnFromBothSides;
         if (initialWaves) {
-            float leftOrRightSide = Random.Range(0f, 1f);
+            float leftOrRightSide = UnityEngine.Random.Range(0f, 1f);
             if (leftOrRightSide > .5f) {
                 waveDifficultyLeftProportion = 0;
             }
@@ -148,11 +189,15 @@ public class CreaturesSpawnManager : MonoBehaviour
     }
 
     private IEnumerator SpawnWave() {
-        subWaveIndex = 1;
+        subWaveIndex = 0;
         int spawnedCount = 0;
 
-        while (subWaveIndex < subWaveNumber+1) {
+        while (subWaveIndex != subWaveNumber + 1) {
             // Détermine combien de créatures spawn à chaque intervalle
+            subWaveIndex++;
+
+            Debug.Log("subWaveIndex " + subWaveIndex);
+            Debug.Log("subWaveNumber" + (subWaveNumber));
 
             foreach(SpawnedCreatureInfo creatureInfo in waveCreaturesDictionary[subWaveIndex]) {
                 SpawnCreatureAtSide(creatureInfo.creature, creatureInfo.spawnSide);
@@ -160,12 +205,10 @@ public class CreaturesSpawnManager : MonoBehaviour
             }
 
             yield return new WaitForSeconds(delayBetweenSubWaves); // Délai entre les sous-vagues
-            subWaveIndex++;
         }
     }
 
     private void SpawnCreatureAtSide(CreatureSO creatureToSpawn, SpawnSide spawnSide) {
-
         Creature creature = Instantiate(creatureToSpawn.creaturePrefab, GetSpawnPosition(spawnSide, creatureToSpawn), Quaternion.identity).GetComponent<Creature>();
         creature.SetAsDayCreature(false);
         CreaturesManager.Instance.AddCreatureToNightWave(creature);
@@ -185,7 +228,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         while (difficultyBudget > 0) {
 
             // Sélectionner un type de créature aléatoirement selon la probabilité
-            float randomValue = Random.Range(0f, totalProbability);
+            float randomValue = UnityEngine.Random.Range(0f, totalProbability);
             CreatureSO selectedCreature = null;
 
             float cumulativeProbability = 0;
@@ -236,7 +279,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         float spawnDecision = .5f;
 
         if (subWaveRandomSideProportion) {
-            spawnDecision = Random.Range(0f, 1f);
+            spawnDecision = UnityEngine.Random.Range(0f, 1f);
         }
 
         if(leftProportion == 0) {
@@ -311,7 +354,7 @@ public class CreaturesSpawnManager : MonoBehaviour
             yPosition = UnityEngine.Random.Range(creatureToSpawn.flightMinAltitude, creatureToSpawn.flightMaxAltitude);
         }
 
-        return new Vector3(xSpawnPosition + Random.Range(-2, 2), yPosition, 0);
+        return new Vector3(xSpawnPosition + UnityEngine.Random.Range(-2, 2), yPosition, 0);
 
     }
 
@@ -348,9 +391,40 @@ public class CreaturesSpawnManager : MonoBehaviour
         }
     }
 
-    public bool GetIsLastSubWave() {
-        Debug.Log("subWaveIndex " + subWaveIndex);
-        Debug.Log("subWaveNumber " + subWaveNumber);
-        return subWaveIndex == (subWaveNumber+1);
+    public bool GetAllNightCreaturesKilled() {
+        return remainingNightCreatures == 0;
     }
+
+    public int GetTotalPlannedCreaturesForNight(List<SpawnedCreatureInfo> spawnedCreatures) {
+        int totalCreatures = 0;
+
+        // Parcourir la liste des créatures spawnées
+        foreach (var spawnedCreature in spawnedCreatures) {
+            if (spawnedCreature.creature != null) { // Vérifie que la créature n'est pas nulle
+                totalCreatures++;
+            }
+            else {
+                Debug.LogWarning("SpawnedCreatureInfo contains a null creature.");
+            }
+        }
+
+        return totalCreatures;
+    }
+
+    public int GetTotalPlannedCreaturesHPForNight(List<SpawnedCreatureInfo> spawnedCreatures) {
+        int totalCreatureHP = 0;
+
+        // Parcourir la liste des créatures spawnées
+        foreach (var spawnedCreature in spawnedCreatures) {
+            if (spawnedCreature.creature != null) { // Vérifie que la créature n'est pas nulle
+                totalCreatureHP += spawnedCreature.creature.maxHealth;
+            }
+            else {
+                Debug.LogWarning("SpawnedCreatureInfo contains a null creature.");
+            }
+        }
+
+        return totalCreatureHP;
+    }
+
 }

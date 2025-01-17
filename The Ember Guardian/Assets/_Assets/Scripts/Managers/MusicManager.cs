@@ -204,8 +204,6 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void FadeInMusic(float fadeDuration) {
-        audioSource.volume = 0f;
-        audioSource.Play();
         StartCoroutine(FadeInCoroutine(fadeDuration));
     }
 
@@ -219,9 +217,10 @@ public class MusicManager : MonoBehaviour {
             StartCoroutine(FadeOutThenInCoroutine(fadeInDuration, fadeInDuration, endLevelMusic));
 
         } else {
-            FadeInMusic(fadeInDuration);
+            Debug.Log("SetEndLevelMusic FadeIn ");
             audioSource.clip = endLevelMusic;
             isPlayingEndLevelAreaMusic = true;
+            FadeInMusic(fadeInDuration);
         }
 
     }

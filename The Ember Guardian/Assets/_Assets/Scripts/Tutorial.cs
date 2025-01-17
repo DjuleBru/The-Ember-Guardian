@@ -186,7 +186,7 @@ public class Tutorial : MonoBehaviour
 
         if (fireFuelledNumber == 1) {
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FuelFire);
-            PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip("The fire's warmth and light weakens the darklings... ", 4f);
+            PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip("The fire's light weakens the darklings... ", 4f);
 
             if (barricadeNumberBuilt == 2 && towerNumberBuilt == 2) {
                 StartCoroutine(StartSurviveTheNightObjective());

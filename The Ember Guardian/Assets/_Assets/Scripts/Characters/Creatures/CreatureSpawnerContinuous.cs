@@ -8,6 +8,7 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
     [SerializeField] protected int spawnerHealth;
     [SerializeField] protected float spawnRate;
     [SerializeField] protected float spawnAnimationDelay;
+    [SerializeField] protected bool canSpawnMobsAtNight;
 
     protected float spawnTimer;
 
@@ -30,6 +31,7 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
     protected void Update() {
         if (dead) return;
         if (mobSpawnedList.Count >= mobAmountToSpawn) return;
+        if (!canSpawnMobsAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) return;
 
         spawnTimer -= Time.deltaTime;
         if (spawnTimer < 0) {

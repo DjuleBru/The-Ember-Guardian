@@ -37601,7 +37601,7 @@ MonoBehaviour:
         Duration: 5.1
         ResetShakerValuesAfterShake: 1
         ResetTargetValuesAfterShake: 1
-        RelativeOrthographicSize: 0
+        RelativeOrthographicSize: 1
         ShakeOrthographicSize:
           serializedVersion: 2
           m_Curve:
@@ -37626,8 +37626,8 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        RemapOrthographicSizeZero: 10
-        RemapOrthographicSizeOne: 8
+        RemapOrthographicSizeZero: 0
+        RemapOrthographicSizeOne: -2
     - rid: 7866843475510034442
       type: {class: MMF_Particles, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks}
       data:

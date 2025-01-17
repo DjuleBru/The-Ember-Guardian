@@ -112,7 +112,7 @@ public class Fire : Structure, IDamageable {
 
         if(isEndLevelFire) {
             fuelLevel = insaneFuelTreshold - 1;
-            lerpDuration = 5f;
+            lerpDuration = 8f;
             ChangeState(State.wild);
         }
 
@@ -195,8 +195,6 @@ public class Fire : Structure, IDamageable {
     private void FireOrbCollider_OnOrbFellInFire(object sender, EventArgs e) {
         fuelLevel += orbFuelValue;
 
-        Debug.Log("fuelLevel " + fuelLevel);
-        Debug.Log("maxFuelTreshold " + maxFuelTreshold);
         if(fuelLevel >= maxFuelTreshold) {
             fuelLevel = maxFuelTreshold;
         }

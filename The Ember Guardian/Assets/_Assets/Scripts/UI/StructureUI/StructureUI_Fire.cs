@@ -41,9 +41,13 @@ public class StructureUI_Fire : StructureUI
 
     private Fire fire;
 
-    public static event EventHandler OnFireTickRemoved;
+    public static event EventHandler<OnFireTickRemovedEventArgs> OnFireTickRemoved;
     public static event EventHandler OnCricitalFireTickRemoved;
     public static event EventHandler OnFireMaxBarAmountChanged;
+
+    public class OnFireTickRemovedEventArgs : EventArgs {
+        public int currentBars;
+    }
 
     protected override void Awake() {
         base.Awake();
@@ -64,6 +68,7 @@ public class StructureUI_Fire : StructureUI
         UpdateTargetBarAmount();
 
         if (currentBarAmount != targetBarAmount) {
+
             DisplayProgressBar();
 
             int barDifference = targetBarAmount - currentBarAmount;
@@ -76,6 +81,7 @@ public class StructureUI_Fire : StructureUI
                 if (isRefuelling) return;
                 RefreshProgressBar(targetBarAmount);
             }
+
             currentBarAmount = targetBarAmount;
         }
     }
@@ -177,9 +183,11 @@ public class StructureUI_Fire : StructureUI
 
         for (int i = 0; i < barAmount; i++) {
 
-            PlayerUI_TickTemplate[] fireTickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
-            if (fireTickArray.Length >= maxBarAmount) {
+            PlayerUI_TickTemplate[] fireTickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>(true);
+
+            if (fireTickArray.Length > maxBarAmount) {
                 RefreshBarState();
+
                 // Wait for the end of the next frame to avoid negative values on BarContainer up
                 yield return new WaitForEndOfFrame();
                 yield return new WaitForEndOfFrame();
@@ -216,20 +224,18 @@ public class StructureUI_Fire : StructureUI
         barsLeftToRemove = barAmount;
 
         for (int i = 0; i < barAmount; i++) {
-            PlayerUI_TickTemplate[] fireTickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
+            PlayerUI_TickTemplate[] fireTickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>(true);
+
             fireTickArray[1].RemoveTick();
             fireTickArray[1].transform.SetParent(this.transform);
             barsLeftToRemove -= 1;
 
-            OnFireTickRemoved?.Invoke(this, EventArgs.Empty);
-
             if(Fire.Instance.GetCurrentFuelLevel() <= Fire.Instance.GetCriticalFuelTreshold()) {
-                Debug.Log("CRITICAL");
                 OnCricitalFireTickRemoved?.Invoke(this, EventArgs.Empty);
                 fireUIAnimator.SetBool("FuelCritical", true);
             }
 
-            fireTickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
+            fireTickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>(true);
 
             if (fireTickArray.Length == 1) {
                 RefreshBarState();
@@ -239,11 +245,21 @@ public class StructureUI_Fire : StructureUI
                 yield return new WaitForEndOfFrame();
                 currentBarAmount = targetBarAmount;
 
-                for (int j = 0; j < maxBarAmount; j++) {
+                for (int j = 0; j == maxBarAmount; j++) {
                     Instantiate(progressBarTemplate, progressBarContainer);
                 }
 
+                OnFireTickRemoved?.Invoke(this, new OnFireTickRemovedEventArgs {
+                    currentBars = currentBarAmount
+                });
+
+            } else {
+
+                OnFireTickRemoved?.Invoke(this, new OnFireTickRemovedEventArgs {
+                    currentBars = currentBarAmount - 1
+                });
             }
+
 
             yield return new WaitForSeconds(.05f);
         }

@@ -54,11 +54,14 @@ public class FireSound : StructureSounds
     }
 
     private void Fire_OnFireFuelled(object sender, System.EventArgs e) {
+        Debug.Log("Fire_OnFireFuelled");
         audioSource.PlayOneShot(orbDroppedInFireAudioClipArray1[Random.Range(0, orbDroppedInFireAudioClipArray1.Length)], .7f * sfxVolume);
         audioSource.PlayOneShot(orbDroppedInFireAudioClipArray2[Random.Range(0, orbDroppedInFireAudioClipArray2.Length)], .7f * sfxVolume);
     }
 
     private void Fire_OnFireChangedState(object sender, Fire.OnFireChangedStateEventArgs e) {
+        Debug.Log("Fire_OnFireChangedState");
+
         if (fire.GetState() == Fire.State.calm) {
             audioSource.clip = calmFireAudioClip;
             volume2D.SetMaxDistanceToHear(fire.GetCalmFireRadius());

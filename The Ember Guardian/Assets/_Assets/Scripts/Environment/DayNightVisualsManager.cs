@@ -49,17 +49,24 @@ public class DayNightVisualsManager : MonoBehaviour
     private float totalAnimationCurveFractionProgress = 0f;
 
     private float transitionProgress;
+    private float moonPositionXNormalized;
+    private bool isMoonMoving;
+    private float moonTransitionSpeed = .15f;
+    private float currentMoonPositionXNormalized;
+    private float targetMoonPositionXNormalized;
+
     private bool dawnStarted;
     private bool dayStarted;
     private bool nightStarted;
     private bool duskStarted;
 
     private void Start() {
-
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
+
+        CreaturesSpawnManager.Instance.OnRemainingNightCreaturesChanged += CreaturesSpawnManager_OnRemainingNightCreaturesChanged;
 
         globalLight2D.color = dawnLightColor;
         skySpriteRenderer.color = dawnSkyColor;
@@ -73,7 +80,9 @@ public class DayNightVisualsManager : MonoBehaviour
 
     private void FixedUpdate() {
         HandleSunPosition();
+
         HandleMoonPosition();
+        SetMoonPosition(moonPositionXNormalized);
     }
 
     private void HandleCycleTransitions() {
@@ -86,6 +95,9 @@ public class DayNightVisualsManager : MonoBehaviour
                 globalLight2D.intensity = LightIntensityTransition(nightLightIntensity, dawnLightIntensity);
                 sunLight2D.intensity = LightIntensityTransition(0, sunLightIntensity);
                 moonLight2D.intensity = LightIntensityTransition(moonLightIntensity, 0);
+
+                moonPositionXNormalized = transitionProgress * nightDawnTransitionAnimationCurveFraction + nightAnimationCurveFraction + duskNightAnimationCurveFraction;
+                currentMoonPositionXNormalized = moonPositionXNormalized;
             }
             else {
                 transitionProgress = 0;
@@ -133,6 +145,9 @@ public class DayNightVisualsManager : MonoBehaviour
                 globalLight2D.intensity = LightIntensityTransition(duskLightIntensity, nightLightIntensity);
                 sunLight2D.intensity = LightIntensityTransition(sunLightIntensity, 0);
                 moonLight2D.intensity = LightIntensityTransition(0, moonLightIntensity);
+
+                moonPositionXNormalized = transitionProgress * duskNightAnimationCurveFraction;
+                currentMoonPositionXNormalized = moonPositionXNormalized;
             }
             else {
                 transitionProgress = 0;
@@ -193,37 +208,47 @@ public class DayNightVisualsManager : MonoBehaviour
         sunLight2D.transform.position = new Vector3(sunPositionX, sunPositionY);
     }
 
+    private void CreaturesSpawnManager_OnRemainingNightCreaturesChanged(object sender, CreaturesSpawnManager.OnRemainingNightCreaturesChangedEventArgs e) {
+        Debug.Log("CreaturesSpawnManager_OnRemainingNightCreaturesChanged");
+
+        targetMoonPositionXNormalized = (1 - e.remainingNightCreaturesNormalized) + nightDawnTransitionAnimationCurveFraction;
+        isMoonMoving = true; // Activer le mouvement
+    }
+
     private void HandleMoonPosition() {
-        float moonPositionXNormalized = 0;
+        if (isMoonMoving) {
+
+            currentMoonPositionXNormalized = Mathf.Lerp(currentMoonPositionXNormalized, targetMoonPositionXNormalized, Time.deltaTime * moonTransitionSpeed);
+            moonPositionXNormalized = currentMoonPositionXNormalized;
+
+            // Vérifier si la lune est proche de la position cible
+            if (Mathf.Abs(currentMoonPositionXNormalized - targetMoonPositionXNormalized) < .01f) {
+                isMoonMoving = false; // Arrêter le mouvement si proche de la cible
+            }
+            return;
+        }
 
         if (nightStarted || dawnStarted) {
             // Transitioning states
-
-            if (nightStarted) {
-                moonPositionXNormalized = transitionProgress * duskNightAnimationCurveFraction;
-            }
-
-            if (dawnStarted) {
-                moonPositionXNormalized = transitionProgress * nightDawnTransitionAnimationCurveFraction + nightAnimationCurveFraction + duskNightAnimationCurveFraction;
-            }
-
         }
         else {
             // Inside state
-            if (DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
-                moonPositionXNormalized = (DayNightManager.Instance.GetCycleTimer() - transitionDuration) / (DayNightManager.Instance.GetNightDuration() - transitionDuration) * nightAnimationCurveFraction + duskNightAnimationCurveFraction;
-            } else {
+            if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
                 //Day
                 moonPositionXNormalized = 0f;
             }
         }
 
-        if(moonPositionXNormalized <1f) {
+    }
+
+    private void SetMoonPosition(float moonPositionXNormalized) {
+
+        if (moonPositionXNormalized < 1f) {
             float moonPositionY = sunAnimationCurve.Evaluate(moonPositionXNormalized) * sunArcRadius;
             float moonPositionX = moonPositionXNormalized * sunArcRadius - sunArcRadius / 2;
 
-            moonPositionX = Camera.main.transform.position.x + moonPositionX;
-            moonPositionY = Camera.main.transform.position.y + moonPositionY;
+            moonPositionX += Camera.main.transform.position.x;
+            moonPositionY += Camera.main.transform.position.y ;
 
             moonLight2D.transform.position = new Vector3(moonPositionX, moonPositionY);
         }

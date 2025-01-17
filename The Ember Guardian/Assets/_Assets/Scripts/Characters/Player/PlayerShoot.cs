@@ -89,7 +89,6 @@ public class PlayerShoot : MonoBehaviour
         if(useDebugGun) {
             SetGun(debugGun);
         } else {
-            Debug.Log(PlayerSave.Instance.GetPrimaryActiveGun());
             SetGun(PlayerSave.Instance.GetPrimaryActiveGun());
         }
 
@@ -329,6 +328,11 @@ public class PlayerShoot : MonoBehaviour
         return heldGun.GetReloadAccelerationFactor();
     }
 
+    public float GetGunWeightAccelerationFactor() {
+        return heldGun.GetWeightAccelerationFactor();
+    }
+
+
     private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         if(e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
             Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
@@ -526,6 +530,10 @@ public class PlayerShoot : MonoBehaviour
 
     public Gun GetHeldGun() {
         return heldGun;
+    }
+
+    public bool GetReloadingHands() {
+        return reloadingHands;
     }
 
     private void OnDestroy() {
