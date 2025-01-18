@@ -27,6 +27,8 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerOverclockedSMGStopped;
     public event EventHandler OnPlayerFocusBlastStarted;
     public event EventHandler OnPlayerFocusBlastStopped;
+    public event EventHandler OnPlayerSetupLMGStarted;
+    public event EventHandler OnPlayerSetupLMGStopped;
 
     public class OnAmmoRefilledEventArgs : EventArgs {
         public int ammoAmount;
@@ -68,6 +70,8 @@ public class PlayerShoot : MonoBehaviour
     protected bool shotLoaded;
     protected float loadingShotTimer;
     protected float loadingShotTime;
+    protected float gunRecoil;
+    protected float gunKnockback;
 
     private Gun heldGun;
     private GunSO heldGunSO;
@@ -78,6 +82,7 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private List<Gun> allGunsList;
     [SerializeField] private GunSO debugGun;
     [SerializeField] private bool useDebugGun;
+    [SerializeField] private bool debugSecondaryAbilityUnlocked;
 
     private void Awake() {
         Instance = this;
@@ -127,6 +132,8 @@ public class PlayerShoot : MonoBehaviour
 
         automaticWeapon = gunSO.automaticWeapon;
         shootCooldownSFXTriggerTime = heldGunSO.shootCooldownSFXTriggerTime;
+        gunRecoil = heldGunSO.gunRecoil;
+        gunKnockback = heldGunSO.gunKnockback;
 
         PlayerStats.Instance.SetShootCooldownTime(heldGun.GetCooldownTime());
         PlayerStats.Instance.SetReloadTime(heldGun.GetReloadTime());
@@ -223,14 +230,14 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void Shoot() {
-        PlayerAim.Instance.AddRecoil(heldGunSO.gunRecoil, heldGunSO.gunRecoilDamping);
+        PlayerAim.Instance.AddRecoil(gunRecoil, heldGunSO.gunRecoilDamping);
 
         float aimDir = 1f;
         if(PlayerAim.Instance.GetAimDir().x <0) {
             aimDir = -1f;
         }
 
-        Vector2 gunKnockbackForce = new Vector2(aimDir * heldGunSO.gunKnockback * -1 , 0);
+        Vector2 gunKnockbackForce = new Vector2(aimDir * gunKnockback * -1 , 0);
         Player.Instance.AddKnockBack(gunKnockbackForce);
 
         heldGun.SetCurrentBullet(heldGun.GetCurrentBullet()-1);
@@ -349,7 +356,7 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnWeaponSecondaryAbilitytPerformed(object sender, EventArgs e) {
-        bool secondaryAbilityUnlocked = MetaProgressionManager.Instance.GetGunSecondaryAbilityUnlocked(heldGun.GetGunSO());
+        bool secondaryAbilityUnlocked = MetaProgressionManager.Instance.GetGunSecondaryAbilityUnlocked(heldGun.GetGunSO()) || debugSecondaryAbilityUnlocked;
 
         if (!secondaryAbilityUnlocked) return;
 
@@ -395,6 +402,36 @@ public class PlayerShoot : MonoBehaviour
 
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
         }
+
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.LMG)
+        {
+            if(!secondaryAbilityActive)
+            {
+                gunRecoil = 0f;
+                gunKnockback = 0f;
+
+                Player.Instance.SetCanMove(false);
+                PlayerAim.Instance.SetGunStraight();
+                PlayerAim.Instance.SetLimitAimAngle(true, 10);
+                OnPlayerSetupLMGStarted?.Invoke(this, EventArgs.Empty);
+
+                secondaryAbilityActive = true;
+
+            } else
+            {
+                gunRecoil = heldGunSO.gunRecoil;
+                gunKnockback = heldGunSO.gunKnockback;
+
+                Player.Instance.SetCanMove(true);
+                PlayerAim.Instance.SetLimitAimAngle(false);
+                OnPlayerSetupLMGStopped?.Invoke(this, EventArgs.Empty);
+
+                secondaryAbilityActive = false;
+
+            }
+
+        }
+
     }
 
     private void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {

@@ -35,6 +35,9 @@ public class PlayerAim : MonoBehaviour
     private Vector3 previousGamepadAim = new Vector3(1,0,0);
     private Vector3 previousAimDir = new Vector3(1,0,0);
 
+    private bool limitAimAngle = false;
+    private float maxAimAngle = 45f; // Maximum angle from the default aim direction (in degrees)
+
     public event EventHandler OnXAimDirChanged;
     public event EventHandler OnPlayerAimSightStarted;
     public event EventHandler OnPlayerAimSightEnded;
@@ -80,16 +83,20 @@ public class PlayerAim : MonoBehaviour
     private void HandleRecoil() {
 
     }
+    private void HandleAimGamepad(Vector2 lookInput)
+    {
 
-    private void HandleAimGamepad(Vector2 lookInput) {
-
-        if(lookInput.magnitude > GameInput.gamepadDeadzone) {
+        if (lookInput.magnitude > GameInput.gamepadDeadzone)
+        {
             aimDir = new Vector3(lookInput.x, lookInput.y, 0).normalized;
             previousGamepadAim = aimDir;
-        } else {
+        }
+        else
+        {
             // Retourne progressivement à la position de repos
             float restingPosition = 1f;
-            if(previousGamepadAim.x <0) {
+            if (previousGamepadAim.x < 0)
+            {
                 restingPosition = -1f;
             }
             aimDir = Vector3.Lerp(previousGamepadAim, new Vector3(restingPosition, 0f, 0f), Time.deltaTime * returnToRestSpeed);
@@ -98,17 +105,105 @@ public class PlayerAim : MonoBehaviour
 
         aimDir.y += currentRecoil;
 
+        if (limitAimAngle)
+        {
+            ApplyAimAngleLimit();
+        }
+
         HandleXScale();
 
         aimAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
 
-        foreach (Transform transform in followAimDirTransformList) {
+        foreach (Transform transform in followAimDirTransformList)
+        {
             transform.eulerAngles = new Vector3(0, 0, aimAngle);
         }
 
         // Smooth recoil back to zero
         currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
     }
+
+    private void HandleAimMouse()
+    {
+        Vector3 mousePosition = GetMouseWorldPosition();
+
+        aimDir = (mousePosition - gunTransform.position).normalized;
+
+        aimDir.y += currentRecoil;
+
+        if (limitAimAngle)
+        {
+            ApplyAimAngleLimit();
+        }
+
+        HandleXScale();
+
+        aimAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
+
+        foreach (Transform transform in followAimDirTransformList)
+        {
+            transform.eulerAngles = new Vector3(0, 0, aimAngle);
+        }
+
+        // Smooth recoil back to zero
+        currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
+    }
+
+    private void ApplyAimAngleLimit()
+    {
+        // Calculer l'angle actuel de la visée (déjà compris entre -180 et 180)
+        float currentAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
+
+        // Initialiser les bornes d'angle
+        float minAngle = 0;
+        float maxAngle = 0;
+
+        if (aimDir.x < 0)
+        {
+            // Bornes pour viser à gauche
+            minAngle = -180 + maxAimAngle;
+            maxAngle = 180 - maxAimAngle;
+
+            // Limiter l'angle dans les bornes définies
+            if (currentAngle > 0)
+            {
+                // Limiter l'angle dans les bornes définies
+                if (currentAngle < maxAngle)
+                {
+                    currentAngle = maxAngle;
+                }
+            }
+            if(currentAngle < 0)
+            {
+                // Limiter l'angle dans les bornes définies
+                if (currentAngle > minAngle)
+                {
+                    currentAngle = minAngle;
+                }
+            }
+        }
+        else
+        {
+            // Bornes pour viser à droite
+            minAngle = -maxAimAngle;
+            maxAngle = maxAimAngle;
+
+            // Limiter l'angle dans les bornes définies
+            if (currentAngle < minAngle)
+            {
+                currentAngle = minAngle;
+            }
+            else if (currentAngle > maxAngle)
+            {
+                currentAngle = maxAngle;
+            }
+        }
+
+
+        // Recalculer la direction de visée à partir de l'angle limité
+        aimDir = new Vector3(Mathf.Cos(currentAngle * Mathf.Deg2Rad), Mathf.Sin(currentAngle * Mathf.Deg2Rad), 0).normalized;
+    }
+
 
     private void PlayerMovement_OnPlayerRollEnded(object sender, EventArgs e) {
         canAim = true;
@@ -128,30 +223,43 @@ public class PlayerAim : MonoBehaviour
         OnPlayerAimSightStarted?.Invoke(this, EventArgs.Empty);
     }
 
-    private void HandleAimMouse() {
-        Vector3 mousePosition = GetMouseWorldPosition();
-
-        aimDir = (mousePosition - gunTransform.position).normalized;
-
-        aimDir.y += currentRecoil;
-
-
-        HandleXScale();
-
-
-        aimAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
-
-        foreach (Transform transform in followAimDirTransformList) {
-            transform.eulerAngles = new Vector3(0, 0, aimAngle);
-        }
-
-        // Smooth recoil back to zero
-        currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
-    }
-
     public void AddRecoil(float recoil, float recoilDamping) {
         currentRecoil = recoil;
         this.recoilDamping = recoilDamping;
+    }
+
+    public void SetCanAim(bool canAim)
+    {
+        this.canAim = canAim;
+
+    }
+
+    public void SetGunStraight()
+    {
+        Vector2 aimAngleCorrectedWithAimDir = new Vector2();
+        if (aimDir.x > 0)
+        {
+            aimAngleCorrectedWithAimDir = new Vector2(1, 0);
+
+        }
+        else
+        {
+            aimAngleCorrectedWithAimDir = new Vector2(-1, 0);
+
+        }
+        aimAngle = Mathf.Atan2(aimAngleCorrectedWithAimDir.y, aimAngleCorrectedWithAimDir.x) * Mathf.Rad2Deg;
+
+        foreach (Transform transform in followAimDirTransformList)
+        {
+            transform.eulerAngles = new Vector3(0, 0, aimAngle);
+        }
+
+    }
+
+    public void SetLimitAimAngle(bool limitAimAngle, float maxAimAngle = 0)
+    {
+        this.limitAimAngle = limitAimAngle;
+        this.maxAimAngle = maxAimAngle;
     }
 
     public Vector3 GetMouseWorldPosition() {

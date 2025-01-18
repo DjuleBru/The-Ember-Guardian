@@ -375,6 +375,7 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlayerShoor_OnPlayerCooldownSFXTrigger(object sender, System.EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGunSO().cooldownGunSound.Length == 0) return;
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().cooldownGunSound;
         PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().cooldownSFXVolumeMultiplier);
     }

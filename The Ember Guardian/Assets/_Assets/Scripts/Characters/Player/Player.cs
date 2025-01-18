@@ -268,6 +268,11 @@ public class Player : MonoBehaviour, IDamageable
         StartCoroutine(EnableControlInputCoroutine());
     }
 
+    public void SetCanMove(bool canMove)
+    {
+        this.canMove = canMove;
+    }
+
     private IEnumerator EnableControlInputCoroutine() {
         yield return new WaitForEndOfFrame();
         canMove = true;

@@ -10,6 +10,8 @@ public class GunSO : ScriptableObject
         UZI,
         Shotgun,
         Sniper,
+        Revolver,
+        LMG,
     }
     public GunType gunType;
     public Sprite gunSprite;

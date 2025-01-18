@@ -33,7 +33,10 @@ public class GunConeVisual : MonoBehaviour
         PlayerShoot.Instance.OnPlayerOverclockedSMGStopped += PlayerShoot_OnPlayerOverclockedSMGStopped;
         PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
         PlayerShoot.Instance.OnPlayerFocusBlastStopped += PlayerShoot_OnPlayerFocusBlastStopped;
+        PlayerShoot.Instance.OnPlayerSetupLMGStarted += PlayerShoot_OnPlayerSetupLMGStarted;
+        PlayerShoot.Instance.OnPlayerSetupLMGStopped += PlayerShoot_OnPlayerSetupLMGStopped;
     }
+
 
     private void PlayerShoot_OnPlayerFocusBlastStopped(object sender, System.EventArgs e) {
         coneVisualAnimator.SetTrigger("SkipHide");
@@ -52,7 +55,16 @@ public class GunConeVisual : MonoBehaviour
     private void PlayerShoot_OnPlayerOverclockedSMGStarted(object sender, System.EventArgs e) {
         coneVisualAnimator.SetBool("ShowThenHide", true);
     }
+    
+    private void PlayerShoot_OnPlayerSetupLMGStopped(object sender, System.EventArgs e)
+    {
+        coneVisualAnimator.SetBool("ShowThenHide", false);
+    }
 
+    private void PlayerShoot_OnPlayerSetupLMGStarted(object sender, System.EventArgs e)
+    {
+        coneVisualAnimator.SetBool("ShowThenHide", true);
+    }
     private void PlayerAIm_OnPlayerAimSightStarted(object sender, System.EventArgs e) {
         coneVisualAnimator.SetBool("Aiming", true);
     }

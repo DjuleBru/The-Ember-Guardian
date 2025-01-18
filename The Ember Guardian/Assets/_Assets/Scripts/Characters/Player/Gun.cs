@@ -28,6 +28,7 @@ public class Gun : MonoBehaviour
     protected float defaultAngle; // Angle initial du cône (en degrés)
     protected float sightAngle; // Angle resserré du cône lorsqu'on vise
     protected float overclockedAngle; // Angle resserré du cône lorsqu'on vise
+    protected float lmgSetupAngle; // Angle resserré du cône lorsqu'on vise
     protected float adjustmentSpeed = 5f; // Vitesse de transition (plus grand = plus rapide)
     protected float critChance = .15f;
     protected float reloadAccelerationFactor;
@@ -42,6 +43,8 @@ public class Gun : MonoBehaviour
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
         PlayerShoot.Instance.OnPlayerOverclockedSMGStarted += Playershoot_OnPlayerOverclockedSMGStarted;
         PlayerShoot.Instance.OnPlayerOverclockedSMGStopped += PlayerShoot_OnPlayerOverclockedSMGStopped;
+        PlayerShoot.Instance.OnPlayerSetupLMGStarted += PlayerShoot_OnPlayerSetupLMGStarted;
+        PlayerShoot.Instance.OnPlayerSetupLMGStopped += PlayerShoot_OnPlayerSetupLMGStopped;
         PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAim_OnPlayerAimSightStarted;
         PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAim_OnPlayerAimSightEnded;
         PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
@@ -83,6 +86,20 @@ public class Gun : MonoBehaviour
         targetAngle = overclockedAngle;
         lerpingGunAngle = true;
     }
+    private void PlayerShoot_OnPlayerSetupLMGStopped(object sender, System.EventArgs e)
+    {
+        // Rétablit l'angle par défaut pour desserrer le cône
+        lerpingGunAngle = true;
+        targetAngle = defaultAngle;
+    }
+
+    private void PlayerShoot_OnPlayerSetupLMGStarted(object sender, System.EventArgs e)
+    {
+        // Augmente l'angle
+        targetAngle = lmgSetupAngle;
+        lerpingGunAngle = true;
+    }
+
 
     protected void PlayerAim_OnPlayerAimSightEnded(object sender, System.EventArgs e) {
         // Réduit l'angle pour resserrer le cône
@@ -149,6 +166,7 @@ public class Gun : MonoBehaviour
         targetAngle = defaultAngle;
         sightAngle = defaultAngle / 3;
         overclockedAngle = defaultAngle * 2f;
+        lmgSetupAngle = defaultAngle / 5f;
 
         ParticleSystem.ShapeModule shootPSShape = shootPS.shape;
         shootPSShape.angle = defaultAngle;

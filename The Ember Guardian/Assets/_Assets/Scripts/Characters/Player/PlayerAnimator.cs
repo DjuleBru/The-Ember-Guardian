@@ -44,8 +44,11 @@ public class PlayerAnimator : MonoBehaviour
         PlayerMovement.Instance.OnPlayerExhaustionStopped += PlayerMovement_OnPlayerExhaustionStopped;
         PlayerMovement.Instance.OnPlayerAlmostExhaustionStarted += PlayerMovement_OnPlayerAlmostExhaustionStarted;
         PlayerMovement.Instance.OnPlayerAlmostExhaustionStopped += PlayerMovement_OnPlayerAlmostExhaustionStopped;
+
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
+        PlayerShoot.Instance.OnPlayerSetupLMGStarted += PlayerShoot_OnPlayerSetupLMGStarted;
+        PlayerShoot.Instance.OnPlayerSetupLMGStopped += PlayerShoot_OnPlayerSetupLMGStopped;
 
         PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAIm_OnPlayerAimSightEnded;
         PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAim_OnPlayerAimSightStarted;
@@ -58,6 +61,16 @@ public class PlayerAnimator : MonoBehaviour
         breatheVisual.SetActive(false);
     }
 
+    private void PlayerShoot_OnPlayerSetupLMGStopped(object sender, EventArgs e)
+    {
+        playerAnimator.SetBool("Crouching", false);
+    }
+
+    private void PlayerShoot_OnPlayerSetupLMGStarted(object sender, EventArgs e)
+    {
+        playerAnimator.SetBool("Crouching", true);
+
+    }
 
     private void PlayerSHoor_OnPlayerSwappedGun(object sender, EventArgs e) {
         gunBodyAnimator = PlayerShoot.Instance.GetHeldGun().GetGunBodyAnimator();
