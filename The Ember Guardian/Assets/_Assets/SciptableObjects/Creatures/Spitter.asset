@@ -38,8 +38,7 @@ MonoBehaviour:
   relativeDamageToFire: 1
   attackAnimationDelay: 0.3
   totalAttackAnimationTime: 0.7
-  hasSpawnAnimation: 0
-  spawnAnimationDuration: 0
+  spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 0.85
   workerTargetingPriority: 1
   playerTargetingPriority: 2
@@ -51,15 +50,19 @@ MonoBehaviour:
   spawnProbability: 0.654
   dieAudioClips:
   - {fileID: 8300000, guid: fc63e38ccfed0ef4bad0b3f9c2a5f363, type: 3}
+  dieVolumeMultiplier: 0.75
   aggroAudioClips:
   - {fileID: 8300000, guid: 0c782e1089d358841b8b36260aedb201, type: 3}
   - {fileID: 8300000, guid: 3bd5f14bf4d2cd046b2524db42bccbb8, type: 3}
   - {fileID: 8300000, guid: f5ca9ff7b423c124c8a9f55f22221ec6, type: 3}
+  aggroVolumeMultiplier: 0.5
   attackHitAudioClips: []
+  attackHitVolumeMultiplier: 0.5
   idleAudioClips:
   - {fileID: 8300000, guid: 3622f4da21b214c46a08f40c71ae4355, type: 3}
   - {fileID: 8300000, guid: 925425b4cf2d18e42be1520fdb37456b, type: 3}
   - {fileID: 8300000, guid: c17dd931a6f109246a5e211d1e729596, type: 3}
+  idleVolumeMultiplier: 0.5
   footStepAudioClips:
   - {fileID: 8300000, guid: b30fb6bd3f1616c4c9a10a0544025522, type: 3}
   - {fileID: 8300000, guid: 1340ea93619f7ce42b763fbcce586d0b, type: 3}
@@ -73,3 +76,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b2d225da6f19c5e46802352420d86e43, type: 3}
   - {fileID: 8300000, guid: 3275cfe9c27b2e94ea3c4fb7e31a6a3a, type: 3}
   - {fileID: 8300000, guid: f9486f641620faa4aa7d979d40bbdc80, type: 3}
+  footstepVolumeMultiplier: 0.2
+  spawnAudioClips:
+  - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
+  - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}
+  - {fileID: 8300000, guid: b6d953aeaa52e58499a331b756752ad1, type: 3}
+  spawnVolumeMultiplier: 0.75

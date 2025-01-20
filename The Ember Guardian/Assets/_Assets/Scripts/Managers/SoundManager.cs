@@ -59,7 +59,7 @@ public class SoundManager : MonoBehaviour
 
         if (LevelUI_ObjectiveUI.Instance != null) {
             LevelUI_ObjectiveUI.Instance.OnObjectiveUIShown += LevelUI_ObjectiveUI_OnObjectiveUIShown;
-            LevelUI_ObjectiveUI.Instance.OnObjectiveUICompleted += LevelUI_OnObjectiveUICompleted;
+            LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveUICompleted;
             LevelUI_ObjectiveUI.Instance.OnSubObjectiveUICompleted += LevelUI_OnSubObjectiveUICompleted;
         }
         if (LevelUI_Locations.Instance != null) {
@@ -249,10 +249,7 @@ public class SoundManager : MonoBehaviour
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.smallRedOrb) {
             PlaySound3D(soundRefsSO.smallRedOrbTouchedFloor, (sender as MonoBehaviour).transform.position);
         }
-        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.greenGem) {
-            PlaySound3D(soundRefsSO.gemTouchedFloor, (sender as MonoBehaviour).transform.position);
-        }
-        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.redGem) {
+        if (collectible.GetCurrencyCategory() == PlayerCurrencies.CurrencyCategory.gem) {
             PlaySound3D(soundRefsSO.gemTouchedFloor, (sender as MonoBehaviour).transform.position);
         }
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
@@ -275,10 +272,10 @@ public class SoundManager : MonoBehaviour
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.smallRedOrb) {
             PlaySound2D(soundRefsSO.smallRedOrbPickedUpByPlayer, .7f);
         }
-        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.greenGem) {
+        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.greenGem || currencyTypeCollected == PlayerCurrencies.CurrencyType.blueGem || currencyTypeCollected == PlayerCurrencies.CurrencyType.purpleGem) {
             PlaySound2D(soundRefsSO.greenGemPickedUpByPlayer, .7f);
         }
-        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.redGem) {
+        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.redGem || currencyTypeCollected == PlayerCurrencies.CurrencyType.yellowGem) {
             PlaySound2D(soundRefsSO.redGemPickedUpByPlayer, .7f);
         }
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.ammo) {
@@ -294,6 +291,12 @@ public class SoundManager : MonoBehaviour
     }
 
     private void Chest_OnAnyChestSpawnedCollectible(object sender, Chest.OnAnyChestSpawnedCollectibleEventArgs e) {
+        if(CurrenciesManager.Instance.GetCurrencyCategory(e.currencyType) == PlayerCurrencies.CurrencyCategory.gem) {
+            PlaySound3D(soundRefsSO.gemDropped, (sender as MonoBehaviour).transform.position);
+            return;
+
+        }
+
         if (e.currencyType == PlayerCurrencies.CurrencyType.bigBlueOrb) {
             PlaySound3D(soundRefsSO.bigBlueOrbDropped, (sender as MonoBehaviour).transform.position);
         }
@@ -306,15 +309,11 @@ public class SoundManager : MonoBehaviour
         if (e.currencyType == PlayerCurrencies.CurrencyType.smallRedOrb) {
             PlaySound3D(soundRefsSO.smallRedOrbDropped, (sender as MonoBehaviour).transform.position);
         }
-        if (e.currencyType == PlayerCurrencies.CurrencyType.greenGem) {
-            PlaySound3D(soundRefsSO.gemDropped, (sender as MonoBehaviour).transform.position);
-        }
-        if (e.currencyType == PlayerCurrencies.CurrencyType.redGem) {
-            PlaySound3D(soundRefsSO.gemDropped, (sender as MonoBehaviour).transform.position);
-        }
+
         if (e.currencyType == PlayerCurrencies.CurrencyType.ammo) {
             PlaySound3D(soundRefsSO.ammoDropped, (sender as MonoBehaviour).transform.position);
         }
+
     }
 
     private void Collectible_OnAnyCollectiblePickedUpByWorker(object sender, System.EventArgs e) {
@@ -637,7 +636,7 @@ public class SoundManager : MonoBehaviour
 
         if (LevelUI_ObjectiveUI.Instance != null) {
             LevelUI_ObjectiveUI.Instance.OnObjectiveUIShown -= LevelUI_ObjectiveUI_OnObjectiveUIShown;
-            LevelUI_ObjectiveUI.Instance.OnObjectiveUICompleted -= LevelUI_OnObjectiveUICompleted;
+            LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted -= LevelUI_OnObjectiveUICompleted;
             LevelUI_ObjectiveUI.Instance.OnSubObjectiveUICompleted -= LevelUI_OnSubObjectiveUICompleted;
         }
         if (LevelUI_Locations.Instance != null) {

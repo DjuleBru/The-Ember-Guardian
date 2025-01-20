@@ -414,6 +414,7 @@ public class PlayerShoot : MonoBehaviour
                 PlayerAim.Instance.SetGunStraight();
                 PlayerAim.Instance.SetLimitAimAngle(true, 10);
                 OnPlayerSetupLMGStarted?.Invoke(this, EventArgs.Empty);
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
 
                 secondaryAbilityActive = true;
 
@@ -425,6 +426,7 @@ public class PlayerShoot : MonoBehaviour
                 Player.Instance.SetCanMove(true);
                 PlayerAim.Instance.SetLimitAimAngle(false);
                 OnPlayerSetupLMGStopped?.Invoke(this, EventArgs.Empty);
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
 
                 secondaryAbilityActive = false;
 

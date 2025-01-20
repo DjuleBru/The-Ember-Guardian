@@ -20,7 +20,7 @@ public class DogAI : MonoBehaviour
     private State state;
     private State currentBehaviorIdleState;
     private MobMovement dogMovement;
-    [SerializeField] private WorkerDetectionCollider creatureDetectionCollider;
+    [SerializeField] private DogCreatureDetectionCollider creatureDetectionCollider;
     private Creature closestCreature;
 
     private Vector3 stickWithPlayerMoveTarget;
@@ -282,13 +282,16 @@ public class DogAI : MonoBehaviour
 
     private void CheckCreaturesInGrowlRange() {
         closestCreature = creatureDetectionCollider.GetClosestCreature();
+        bool ambushClose = creatureDetectionCollider.AmbushSpawnersInDetectionCollider();
 
-        if (closestCreature != null && state != State.growling && state != State.barking) {
+        bool ambushOrCreatureClose = closestCreature || ambushClose;
+
+        if (ambushOrCreatureClose && state != State.growling && state != State.barking) {
 
             ChangeState(State.growling);
 
         } else {
-            if(state == State.growling && closestCreature == null) {
+            if(state == State.growling && !ambushOrCreatureClose) {
                 ChangeState(currentBehaviorIdleState);
             }
         }

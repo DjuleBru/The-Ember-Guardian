@@ -5,9 +5,10 @@ using UnityEngine;
 public class LevelObjectives : MonoBehaviour
 {
 
-    [SerializeField] private HubMerchant levelMerchant;
+    [SerializeField] private List<HubMerchant> levelMerchantList;
     [SerializeField] private HubMerchantTalkUI levelMerchantTalkUI;
     [SerializeField] private MerchantTextLinesSO finalMerchantTextLines;
+
     private EndLevelArea endLevelArea;
 
     private bool emberExtracted;
@@ -18,19 +19,100 @@ public class LevelObjectives : MonoBehaviour
 
     private void Start() {
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
-        UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
-        PlayerCurrencies.Instance.OnEmberDropped += PlayerCurrencies_OnEmberDropped;
-        EndLevelArea.Instance.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
-        EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
 
-        if(levelMerchant != null) {
-            levelMerchant.OnPlayerStoppedInteractingWithHubMerchant += LevelMerchant_OnPlayerStoppedInteractingWithHubMerchant;
+        if (levelMerchantList.Count != 0) {
+            foreach (HubMerchant levelMerchant in levelMerchantList) {
+                levelMerchant.OnPlayerStoppedInteractingWithHubMerchant += LevelMerchant_OnPlayerStoppedInteractingWithHubMerchant;
+            }
+        }
+
+        if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest) {
+            UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
+            PlayerCurrencies.Instance.OnEmberDropped += PlayerCurrencies_OnEmberDropped;
+
+            if (EndLevelArea.Instance != null) {
+                EndLevelArea.Instance.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
+                EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
+            }
         }
     }
 
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
         initialFireLit = true;
+
+        StartCoroutine(ShowLevelObjective());
     }
+
+    private IEnumerator ShowLevelObjective() {
+        yield return new WaitForSeconds(3f);
+        LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelManager.Instance.GetLevelSO().levelObjectiveType);
+
+        if(LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
+
+            List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType> {
+                LevelUI_ObjectiveUI.SubObjectiveType.MeetTamer,
+                LevelUI_ObjectiveUI.SubObjectiveType.MeetTrainer};
+
+            LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
+
+        }
+
+    }
+
+    private void LevelMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, System.EventArgs e) {
+        NPCInteractionsIndex++;
+
+        HubMerchant levelMerchant = (HubMerchant)sender;
+        StartCoroutine(SetNextNPCObjective(levelMerchant));
+    }
+
+    private IEnumerator SetNextNPCObjective(HubMerchant levelMerchant) {
+
+        if(levelMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.HeroMerchant) {
+
+            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.MeetTrainer);
+
+            yield return new WaitForSeconds(1f);
+
+            if (NPCInteractionsIndex == 2) {
+                LevelUI_ObjectiveUI.Instance.SetObjectiveCompleted(.5f);
+            }
+
+        }
+
+        if (levelMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.DogTamer) {
+            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.MeetTamer);
+
+            yield return new WaitForSeconds(1f);
+
+            if (NPCInteractionsIndex == 2) {
+                LevelUI_ObjectiveUI.Instance.SetObjectiveCompleted(.5f);
+            }
+        }
+
+
+        if (levelMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.GunMerchant) {
+
+            LevelUI_ObjectiveUI.Instance.SetObjectiveCompleted(.5f);
+
+            yield return new WaitForSeconds(2f);
+
+            if (NPCInteractionsIndex == 1) {
+                LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.DestroyNest);
+
+                List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType>();
+                if (!PlayerCurrencies.Instance.GetCarryingEmber()) {
+                    subObjectives.Add(LevelUI_ObjectiveUI.SubObjectiveType.ExtractEmber);
+                }
+
+                subObjectives.Add(LevelUI_ObjectiveUI.SubObjectiveType.ClearNest);
+
+                LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
+            }
+        }
+    }
+
+    #region DESTROY NEST LEVEL
 
     private void PlayerCurrencies_OnEmberDropped(object sender, System.EventArgs e) {
         if (!initialFireLit) return;
@@ -65,36 +147,12 @@ public class LevelObjectives : MonoBehaviour
         }
     }
 
-    private void LevelMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, System.EventArgs e) {
-        NPCInteractionsIndex++;
-
-        StartCoroutine(SetNextNPCObjective());
-    }
-
-
-    private IEnumerator SetNextNPCObjective() {
-        LevelUI_ObjectiveUI.Instance.SetObjectiveCompleted(.5f);
-
-        yield return new WaitForSeconds(2f);
-
-        if (levelMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.GunMerchant) {
-            if(NPCInteractionsIndex == 1) {
-                LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.DestroyNest);
-
-                List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType>();
-                if (!PlayerCurrencies.Instance.GetCarryingEmber()) {
-                    subObjectives.Add(LevelUI_ObjectiveUI.SubObjectiveType.ExtractEmber);
-                }
-
-                subObjectives.Add(LevelUI_ObjectiveUI.SubObjectiveType.ClearNest);
-
-                LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
-            }
-        }
-    }
+    #endregion
 
     private IEnumerator EndLevelCoroutine() {
         yield return new WaitForSeconds(1f);
         levelMerchantTalkUI.SetTalkingWithMerchant(finalMerchantTextLines);
     }
+
+
 }

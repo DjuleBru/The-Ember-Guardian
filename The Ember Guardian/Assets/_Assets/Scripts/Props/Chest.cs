@@ -71,6 +71,7 @@ public class Chest : MonoBehaviour
         yield return new WaitForSeconds(delayToSpawnCollectibles - delayToChestUnlockAnimation);
 
         int j = 0;
+
         foreach(PlayerCurrencies.CurrencyType currencyType in currencyTypeToRewardList) {
             int rewardAmount = rewardAmountList[j];
 
@@ -78,7 +79,7 @@ public class Chest : MonoBehaviour
                 Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyType), orbSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
 
                 OnAnyChestSpawnedCollectible?.Invoke(this, new OnAnyChestSpawnedCollectibleEventArgs {
-                    currencyType = currencyType
+                    currencyType = currencyType,
                 });
 
                 yield return new WaitForSeconds(.2f);

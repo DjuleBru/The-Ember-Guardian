@@ -21,6 +21,14 @@ public class PlayerCurrencies : MonoBehaviour
         redGem,
         ember,
         ammo,
+        blueGem,
+        purpleGem,
+        yellowGem,
+    }
+    public enum CurrencyCategory {
+        orb,
+        ammo,
+        gem,
     }
 
     public event EventHandler<OnBlueOrbDroppedOnTheFloorEventArgs> OnBlueOrbDroppedOnTheFloor;

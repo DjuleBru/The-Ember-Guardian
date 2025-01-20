@@ -34,10 +34,17 @@ public class HUBManager : MonoBehaviour
     }
 
     private void Start() {
-        List<Vector3> redGemPositions = MetaProgressionManager.Instance.GetRedGemPositions();
-        List<Vector3> greenGemPositions = MetaProgressionManager.Instance.GetGreenGemPositions();
+        List<Vector3> redGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.redGem);
+        List<Vector3> greenGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.greenGem);
+        List<Vector3> yellowGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.yellowGem);
+        List<Vector3> purpleGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.purpleGem);
+        List<Vector3> blueGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.blueGem);
+
         UICurrencyManager.Instance.LoadCurrencies(PlayerCurrencies.CurrencyType.redGem, redGemPositions);
         UICurrencyManager.Instance.LoadCurrencies(PlayerCurrencies.CurrencyType.greenGem, greenGemPositions);
+        UICurrencyManager.Instance.LoadCurrencies(PlayerCurrencies.CurrencyType.yellowGem, yellowGemPositions);
+        UICurrencyManager.Instance.LoadCurrencies(PlayerCurrencies.CurrencyType.purpleGem, purpleGemPositions);
+        UICurrencyManager.Instance.LoadCurrencies(PlayerCurrencies.CurrencyType.blueGem, blueGemPositions);
 
         HubMerchantTalkUI.OnAnyMerchantEndTalk += HubMerchantTalkUI_OnAnyMerchantEndTalk;
 
@@ -79,16 +86,26 @@ public class HUBManager : MonoBehaviour
 
     public void RewardLastLevelGems() {
         if (!MetaProgressionManager.Instance.GetGemFromLastLevelRewarded()) {
-            int redGemAmount = MetaProgressionManager.Instance.GetRedGemAmountFromLastLevel();
-            int greenGemAmount = MetaProgressionManager.Instance.GetGreenGemAmountFromLastLevel();
+            int redGemAmount = MetaProgressionManager.Instance.GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType.redGem);
+            int greenGemAmount = MetaProgressionManager.Instance.GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType.greenGem);
+            int blueGemAmount = MetaProgressionManager.Instance.GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType.blueGem);
+            int yellowGemAmount = MetaProgressionManager.Instance.GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType.yellowGem);
+            int purpleGemAmount = MetaProgressionManager.Instance.GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType.purpleGem);
 
             List<PlayerCurrencies.CurrencyType> currencyTypes = new List<PlayerCurrencies.CurrencyType> {
                 PlayerCurrencies.CurrencyType.greenGem,
                 PlayerCurrencies.CurrencyType.redGem,
+                PlayerCurrencies.CurrencyType.blueGem,
+                PlayerCurrencies.CurrencyType.yellowGem,
+                PlayerCurrencies.CurrencyType.purpleGem,
             };
+
             List<int> currencyTypesAmount = new List<int> {
                 greenGemAmount,
                 redGemAmount,
+                blueGemAmount,
+                yellowGemAmount,
+                purpleGemAmount,
             };
 
 

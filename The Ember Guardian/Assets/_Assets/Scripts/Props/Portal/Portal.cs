@@ -170,9 +170,7 @@ public class Portal : MonoBehaviour
         yield return new WaitForSeconds(delayToStartCrossfade);
 
         if(isEndLevelTeleporter) {
-
-            MetaProgressionManager.Instance.SetGreenGemAmountFromLevel(UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count);
-            MetaProgressionManager.Instance.SetRedGemAmountFromLevel(UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count);
+            MetaProgressionManager.Instance.SaveLevelGems();
             MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
             SceneLoader.Instance.LoadHub(2f);
 

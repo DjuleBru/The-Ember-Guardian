@@ -827,7 +827,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1163108313
-  m_SortingLayer: -3
+  m_SortingLayer: -4
   m_SortingOrder: 0
   m_Sprite: {fileID: -391261257, guid: 0d3e62a6aacd3c0449634104231e7c68, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -956,7 +956,7 @@ Animator:
   m_GameObject: {fileID: 3284089339212149748}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f31b946fb75a7fa41a73ffac6e98e158, type: 2}
+  m_Controller: {fileID: 9100000, guid: cceea899eba30bd4f9f1867336191273, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1126,6 +1126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistanceToHear: 10
   maxAudioSourceVolume: 0.5
+  active: 1
 --- !u!1 &4153247095712251874
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,7 +1200,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1163108313
-  m_SortingLayer: -3
+  m_SortingLayer: -4
   m_SortingOrder: -1
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -6093,6 +6094,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistanceToHear: 20
   maxAudioSourceVolume: 1
+  active: 1
 --- !u!82 &478046112683351384
 AudioSource:
   m_ObjectHideFlags: 0

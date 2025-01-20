@@ -228,8 +228,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b52ebbea11cad48b0d93c2883134ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDistanceToHear: 12
+  maxDistanceToHear: 20
   maxAudioSourceVolume: 1
+  active: 1
 --- !u!114 &152887332268306418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,7 +325,7 @@ GameObject:
   - component: {fileID: 8905686247255708990}
   - component: {fileID: 3513825379530512003}
   - component: {fileID: 2561989628835970962}
-  - component: {fileID: 2637104257770839910}
+  - component: {fileID: 5507158826448228988}
   m_Layer: 0
   m_Name: CreatureDetectionCollider
   m_TagString: Untagged
@@ -409,7 +410,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &2637104257770839910
+--- !u!114 &5507158826448228988
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -418,7 +419,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3487052910668080143}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 925c6023f46224b43b0fbfac0e6ec0ce, type: 3}
+  m_Script: {fileID: 11500000, guid: ca2522637ff3bac47b078623f136260b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4852251173340365748
@@ -493,7 +494,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 701149539
-  m_SortingLayer: -5
+  m_SortingLayer: -6
   m_SortingOrder: 10
   m_Sprite: {fileID: -1214570002, guid: 514c4424a1a61be4ba8d9dc837f1aade, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -592,7 +593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6752c522c22dc93489cb303c433aec03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creatureDetectionCollider: {fileID: 2637104257770839910}
+  creatureDetectionCollider: {fileID: 5507158826448228988}
 --- !u!114 &8490795598111556466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -609,6 +610,11 @@ MonoBehaviour:
   acceleration: 7
   deceleration: 7
   velPower: 0.9
+  hadSpeedVariations: 0
+  minSpeedMultiplier: 0.8
+  maxSpeedMultiplier: 1.2
+  speedLerpDuration: 2
+  speedChangeInterval: 5
 --- !u!50 &5350223146181735034
 Rigidbody2D:
   serializedVersion: 4
@@ -963,3 +969,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistanceToHear: 12
   maxAudioSourceVolume: 1
+  active: 1

@@ -29,6 +29,7 @@ public class MobMovement : MonoBehaviour
 
     protected bool destinationReached;
     protected bool canMove = true;
+    protected bool readyToMoveAnimator = true;
     public event EventHandler OnDestinationReached;
     public event EventHandler OnDestinationSet;
 
@@ -72,6 +73,8 @@ public class MobMovement : MonoBehaviour
     }
 
     protected virtual void HandleMovementForces() {
+        if (!readyToMoveAnimator) return;
+
         Vector3 moveDirection = targetDestination - transform.position;
 
         if(moveDirection.x <0) {
@@ -186,6 +189,10 @@ public class MobMovement : MonoBehaviour
         OnDestinationSet?.Invoke(this, EventArgs.Empty);
         this.targetDestination = moveTarget;
         destinationReached = false;
+    }
+
+    public void SetReadyToMoveAnimator(bool ready) {
+        readyToMoveAnimator = ready;
     }
 
     public void SetCanMove(bool canMove) {

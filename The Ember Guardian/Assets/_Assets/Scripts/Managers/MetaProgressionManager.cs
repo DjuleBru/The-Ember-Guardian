@@ -120,22 +120,23 @@ public class MetaProgressionManager : MonoBehaviour
 
     #region CURRENCIES
 
-    public int GetGreenGemAmountFromLastLevel() {
-        return ES3.Load("greenGemAmountFromLastLevel", 0);
-    }
-    public int GetRedGemAmountFromLastLevel() {
-        return ES3.Load("redGemAmountFromLastLevel", 0);
+    public int GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType gemType) {
+        string key = gemType.ToString() + "_AmountFromLastLevel";
+        return ES3.Load(key, 0);
     }
 
-    public void SetGreenGemAmountFromLevel(int greenGemAmount) {
-        Debug.Log("SetGreenGemAmountFromLevel " + greenGemAmount);
-        ES3.Save("greenGemAmountFromLastLevel", greenGemAmount);
-        ES3.Save("gemsRewardedFromlastLevel", false);
+    public void SetGemAmountFromLevel(PlayerCurrencies.CurrencyType gemType, int gemAmount) {
+        string key = gemType.ToString() + "_AmountFromLastLevel";
+
+        ES3.Save(key, gemAmount);
     }
-    public void SetRedGemAmountFromLevel(int redGemAmount) {
-        Debug.Log("SetRedGemAmountFromLevel " + redGemAmount);
-        ES3.Save("redGemAmountFromLastLevel", redGemAmount);
-        ES3.Save("gemsRewardedFromlastLevel", false);
+
+    public void SaveLevelGems() {
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.greenGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.redGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.blueGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.yellowGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.purpleGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count);
     }
 
     public void SetGemsRewarded(bool rewarded) {
@@ -151,9 +152,25 @@ public class MetaProgressionManager : MonoBehaviour
 
         List<Vector3> greenGemPositions = UICurrencyManager.Instance.GetCurrencyPositions(PlayerCurrencies.CurrencyType.greenGem);
         List<Vector3> redGemPositions = UICurrencyManager.Instance.GetCurrencyPositions(PlayerCurrencies.CurrencyType.redGem);
+        List<Vector3> blueGemPositions = UICurrencyManager.Instance.GetCurrencyPositions(PlayerCurrencies.CurrencyType.blueGem);
+        List<Vector3> purpleGemPositions = UICurrencyManager.Instance.GetCurrencyPositions(PlayerCurrencies.CurrencyType.purpleGem);
+        List<Vector3> yellowGemPositions = UICurrencyManager.Instance.GetCurrencyPositions(PlayerCurrencies.CurrencyType.yellowGem);
 
-        ES3.Save("greenGemPositions", greenGemPositions);
-        ES3.Save("redGemPositions", redGemPositions);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.greenGem, greenGemPositions);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.redGem, redGemPositions);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.blueGem, blueGemPositions);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.purpleGem, purpleGemPositions);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.yellowGem, yellowGemPositions);
+    }
+
+    public void SaveGemPositions(PlayerCurrencies.CurrencyType gemType, List<Vector3> positions) {
+        string key = gemType.ToString() + "_positions";
+        ES3.Save(key, positions);
+    }
+
+    public List<Vector3> GetGemPositions(PlayerCurrencies.CurrencyType gemType) {
+        string key = gemType.ToString() + "_positions";
+        return ES3.Load(key, new List<Vector3>());
     }
 
     public List<Vector3> GetGreenGemPositions() {

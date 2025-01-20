@@ -21,6 +21,7 @@ public class WorkerDetectionCollider : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) {
         Creature creature = collision.gameObject.GetComponent<Creature>();
+        CreatureSpawner_Ambush ambushSpawner = collision.gameObject.GetComponent<CreatureSpawner_Ambush>();
 
         if(creature != null) {
             if(!creaturesInDetectionColliderRange.Contains(creature)) {
@@ -32,6 +33,8 @@ public class WorkerDetectionCollider : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision) {
         Creature creature = collision.gameObject.GetComponent<Creature>();
+        CreatureSpawner_Ambush ambushSpawner = collision.gameObject.GetComponent<CreatureSpawner_Ambush>();
+
         if (creature != null) {
             if (creaturesInDetectionColliderRange.Contains(creature)) {
                 creaturesInDetectionColliderRange.Remove(creature);

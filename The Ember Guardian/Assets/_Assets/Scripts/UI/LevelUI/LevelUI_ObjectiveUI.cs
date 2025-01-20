@@ -19,6 +19,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         HUB_HeadToNewLevel,
         FindAndDestroyNest,
         FindArmorer,
+        FindMoreCompanions,
     }
 
     public enum SubObjectiveType {
@@ -47,6 +48,8 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         HUB_HeadToTeleporter,
         KeepFireLit,
         TalkToArmorer,
+        MeetTrainer,
+        MeetTamer,
     }
 
     public static LevelUI_ObjectiveUI Instance;
@@ -59,7 +62,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     private ObjectiveType currentObjectiveType;
 
     public event EventHandler OnObjectiveUIShown;
-    public event EventHandler OnObjectiveUICompleted;
+    public event EventHandler OnObjectiveCompleted;
     public event EventHandler OnSubObjectiveUICompleted;
 
     private void Awake() {
@@ -67,12 +70,6 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         objectiveGameObject.SetActive(false); 
         subObjectiveTemplate.gameObject.SetActive(false);
         GetComponent<Animator>().enabled = false;
-    }
-
-    private void Start() {
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
-            Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
-        }
     }
 
     public void ShowObjectiveUI(ObjectiveType objectiveType) {
@@ -188,7 +185,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         yield return new WaitForSeconds(delay);
         objectiveAnimator.SetTrigger("Completed");
         yield return new WaitForSeconds(.5f);
-        OnObjectiveUICompleted?.Invoke(this, EventArgs.Empty);
+        OnObjectiveCompleted?.Invoke(this, EventArgs.Empty);
 
         if(currentObjectiveType == ObjectiveType.SetupCamp) {
             StartCoroutine(EndCampSetupObjective());
@@ -216,18 +213,6 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         Fire.Instance.ManualSetFireCurrentMaxFuelTreshold(Fire.State.mild);
         Fire.Instance.SetStructurePrimaryFunctionUnlocked(true);
         Tutorial.Instance.UnlockDefensiveStructureLocations();
-    }
-
-    private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
-        StartCoroutine(ShowLevelObjective());
-
-    }
-
-    private IEnumerator ShowLevelObjective() {
-        yield return new WaitForSeconds(3f);
-        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
-            ShowObjectiveUI(LevelManager.Instance.GetLevelSO().levelObjectiveType);
-        }
     }
 
     public string GetSubObjectiveTextFromType(SubObjectiveType subObjectiveType) {
@@ -301,6 +286,12 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         if (subObjectiveType == SubObjectiveType.KeepFireLit) {
             return "Do not let the fire die";
         }
+        if (subObjectiveType == SubObjectiveType.MeetTamer) {
+            return "Meet the Tamer";
+        }
+        if (subObjectiveType == SubObjectiveType.MeetTrainer) {
+            return "Meet the Trainer";
+        }
         return "";
     }
 
@@ -338,6 +329,9 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         }
         if (objectiveType == ObjectiveType.FindArmorer) {
             return "Find the Armorer's Workshop";
+        }
+        if (objectiveType == ObjectiveType.FindMoreCompanions) {
+            return "Find more companions";
         }
         return "";
     }

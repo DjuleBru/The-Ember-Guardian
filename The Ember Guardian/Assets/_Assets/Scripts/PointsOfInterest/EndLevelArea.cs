@@ -98,12 +98,6 @@ public class EndLevelArea : MonoBehaviour
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) return;
 
-        StartCoroutine(EnableEndLevelPortal());
-    }
-
-    private IEnumerator EnableEndLevelPortal() {
-        yield return new WaitForSeconds(4f);
-        endLevelPortal.gameObject.SetActive(true);
     }
 
     public bool GetPlayerDestroyedNest() {

@@ -8,6 +8,9 @@ public class HubMerchantItem : MonoBehaviour
     [SerializeField] protected string itemName;
     [SerializeField] protected int greenGemCost;
     [SerializeField] protected int redGemCost;
+    [SerializeField] protected int blueGemCost;
+    [SerializeField] protected int yellowGemCost;
+    [SerializeField] protected int purpleGemCost;
     [TextArea]
     [SerializeField] protected string description;
     [TextArea]
@@ -21,6 +24,9 @@ public class HubMerchantItem : MonoBehaviour
 
     protected List<int> greenGemCostList;
     protected List<int> redGemCostList;
+    protected List<int> blueGemCostList;
+    protected List<int> yellowGemCostList;
+    protected List<int> purpleGemCostList;
 
     public static event EventHandler OnAnyHubMerchantItemBought;
     public static event EventHandler OnAnyHubMerchantItemUpgraded;
@@ -80,8 +86,11 @@ public class HubMerchantItem : MonoBehaviour
     public bool CanBuyItem() {
         int playerGreenGems = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count;
         int playerRedGems = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count;
+        int playerBlueGems = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count;
+        int playerYellowGems = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count;
+        int playerPurpleGems = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count;
 
-        if (playerGreenGems >= greenGemCost && playerRedGems >= redGemCost) {
+        if (playerGreenGems >= greenGemCost && playerRedGems >= redGemCost && playerBlueGems >= blueGemCost && playerYellowGems >= redGemCost && playerPurpleGems >= purpleGemCost) {
 
             return true;
         }
@@ -100,40 +109,56 @@ public class HubMerchantItem : MonoBehaviour
             itemLevel++;
         }
 
-        int gemCostIndex = itemLevel;
         itemBought = true;
+
+        PayGemPrice();
+        UpdateItemCost();
+    }
+
+    public virtual void UpgradeItem() {
+        itemLevel++;
+        PayGemPrice();
+        UpdateItemCost();
+
+        OnHubMerchantItemUpgraded?.Invoke(this, EventArgs.Empty);
+        OnAnyHubMerchantItemUpgraded?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void PayGemPrice() {
 
         UICurrencyManager.Instance.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.greenGem, greenGemCost);
         UICurrencyManager.Instance.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.redGem, redGemCost);
+        UICurrencyManager.Instance.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.blueGem, blueGemCost);
+        UICurrencyManager.Instance.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.yellowGem, yellowGemCost);
+        UICurrencyManager.Instance.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.purpleGem, purpleGemCost);
 
         OnAnyHubMerchantItemBought?.Invoke(this, EventArgs.Empty);
+
+    }
+
+    private void UpdateItemCost() {
 
         if (greenGemCostList != null && greenGemCostList.Count >= itemLevel) {
             greenGemCost = greenGemCostList[itemLevel - 1];
         }
 
-        if(redGemCostList != null && redGemCostList.Count >= itemLevel) {
-            redGemCost = redGemCostList[itemLevel - 1];
-        }
-    }
-
-    public virtual void UpgradeItem() {
-        itemLevel++;
-
-        UICurrencyManager.Instance.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.greenGem, greenGemCost);
-        UICurrencyManager.Instance.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.redGem, redGemCost);
-
-        if (greenGemCostList.Count >= itemLevel) {
-            greenGemCost = greenGemCostList[itemLevel - 1];
-        }
-
-        if (redGemCostList.Count >= itemLevel) {
+        if (redGemCostList != null && redGemCostList.Count >= itemLevel) {
             redGemCost = redGemCostList[itemLevel - 1];
         }
 
-        OnHubMerchantItemUpgraded?.Invoke(this, EventArgs.Empty);
-        OnAnyHubMerchantItemUpgraded?.Invoke(this, EventArgs.Empty);
+        if (yellowGemCostList != null && yellowGemCostList.Count >= itemLevel) {
+            yellowGemCost = yellowGemCostList[itemLevel - 1];
+        }
+
+        if (blueGemCostList != null && blueGemCostList.Count >= itemLevel) {
+            blueGemCost = blueGemCostList[itemLevel - 1];
+        }
+
+        if (purpleGemCostList != null && purpleGemCostList.Count >= itemLevel) {
+            purpleGemCost = purpleGemCostList[itemLevel - 1];
+        }
     }
+
 
     public virtual void EquipOrUnequipItem() {
     }

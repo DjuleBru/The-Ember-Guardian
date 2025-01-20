@@ -46,4 +46,18 @@ public class CurrenciesManager : MonoBehaviour
         }
         return bigBlueOrbPrefab;
     }
+
+    public PlayerCurrencies.CurrencyCategory GetCurrencyCategory(PlayerCurrencies.CurrencyType currencyType) {
+        PlayerCurrencies.CurrencyCategory category = PlayerCurrencies.CurrencyCategory.orb;
+
+        if(currencyType == PlayerCurrencies.CurrencyType.ammo) {
+            category = PlayerCurrencies.CurrencyCategory.ammo;
+        }
+
+        if(currencyType == PlayerCurrencies.CurrencyType.greenGem || currencyType == PlayerCurrencies.CurrencyType.redGem || currencyType == PlayerCurrencies.CurrencyType.blueGem || currencyType == PlayerCurrencies.CurrencyType.yellowGem || currencyType == PlayerCurrencies.CurrencyType.purpleGem) {
+            category = PlayerCurrencies.CurrencyCategory.gem;
+        }
+
+        return category;
+    }
 }

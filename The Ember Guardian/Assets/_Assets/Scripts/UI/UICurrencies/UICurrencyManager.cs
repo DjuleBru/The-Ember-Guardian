@@ -23,6 +23,9 @@ public class UICurrencyManager : MonoBehaviour
     [SerializeField] private Transform smallRedOrbUIPrefab;
     [SerializeField] private Transform greenGemUIPrefab;
     [SerializeField] private Transform redGemUIPrefab;
+    [SerializeField] private Transform blueGemUIPrefab;
+    [SerializeField] private Transform yellowGemUIPrefab;
+    [SerializeField] private Transform purpleGemUIPrefab;
     [SerializeField] private Transform ammoUIPrefab;
     [SerializeField] private Transform emberUIPrefab;
 
@@ -146,6 +149,21 @@ public class UICurrencyManager : MonoBehaviour
 
         if (currencyType == PlayerCurrencies.CurrencyType.redGem) {
             currencyTransform = Instantiate(redGemUIPrefab, gemsSpawnPosition.position, Quaternion.identity, currencyContainer);
+            currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+        }
+
+        if (currencyType == PlayerCurrencies.CurrencyType.blueGem) {
+            currencyTransform = Instantiate(blueGemUIPrefab, gemsSpawnPosition.position, Quaternion.identity, currencyContainer);
+            currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+        }
+
+        if (currencyType == PlayerCurrencies.CurrencyType.yellowGem) {
+            currencyTransform = Instantiate(yellowGemUIPrefab, gemsSpawnPosition.position, Quaternion.identity, currencyContainer);
+            currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+        }
+
+        if (currencyType == PlayerCurrencies.CurrencyType.purpleGem) {
+            currencyTransform = Instantiate(purpleGemUIPrefab, gemsSpawnPosition.position, Quaternion.identity, currencyContainer);
             currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
         }
 
@@ -383,6 +401,18 @@ public class UICurrencyManager : MonoBehaviour
 
         if (currencyType == PlayerCurrencies.CurrencyType.redGem) {
             prefab = redGemUIPrefab;
+        }
+
+        if (currencyType == PlayerCurrencies.CurrencyType.blueGem) {
+            prefab = blueGemUIPrefab;
+        }
+
+        if (currencyType == PlayerCurrencies.CurrencyType.yellowGem) {
+            prefab = yellowGemUIPrefab;
+        }
+
+        if (currencyType == PlayerCurrencies.CurrencyType.purpleGem) {
+            prefab = purpleGemUIPrefab;
         }
 
         foreach (Vector3 position in currencyPositions) {

@@ -114,11 +114,7 @@ public class CreatureSO : ScriptableObject
     public float totalAttackAnimationTime;
     [VerticalGroup("Game Data/Animation Parameters")]
     [LabelWidth(200)]
-    public bool hasSpawnAnimation;
-    [VerticalGroup("Game Data/Animation Parameters")]
-    [LabelWidth(200)]
-    [ShowIf("hasSpawnAnimation")]
-    public float spawnAnimationDuration;
+    public float spawnAnimationDuration = 1f;
     [VerticalGroup("Game Data/Animation Parameters")]
     [LabelWidth(200)]
     [Range(.5f, 2)]
@@ -163,20 +159,43 @@ public class CreatureSO : ScriptableObject
     [BoxGroup("SFX")]
     [LabelWidth(200)]
     public AudioClip[] dieAudioClips;
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public float dieVolumeMultiplier = .75f;
 
     [BoxGroup("SFX")]
     [LabelWidth(200)]
     public AudioClip[] aggroAudioClips;
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public float aggroVolumeMultiplier = .5f;
 
     [BoxGroup("SFX")]
     [LabelWidth(200)]
     public AudioClip[] attackHitAudioClips;
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public float attackHitVolumeMultiplier = .5f;
 
     [BoxGroup("SFX")]
     [LabelWidth(200)]
     public AudioClip[] idleAudioClips;
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public float idleVolumeMultiplier = .5f;
 
     [BoxGroup("SFX")]
     [LabelWidth(200)]
     public AudioClip[] footStepAudioClips;
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public float footstepVolumeMultiplier = .2f;
+
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public AudioClip[] spawnAudioClips;
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public float spawnVolumeMultiplier = .75f;
+
 }

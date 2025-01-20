@@ -52,12 +52,8 @@ public class CreatureAI : MonoBehaviour {
 
         SetAttackRange();
 
-        if (creature.GetCreatureSO().hasSpawnAnimation) {
-            spawned = false;
-            StartCoroutine(SetSpawnedAfterDelay(creature.GetCreatureSO().spawnAnimationDuration));
-        } else {
-            SetInitialState();
-        }
+        spawned = false;
+        StartCoroutine(SetSpawnedAfterDelay(creature.GetCreatureSO().spawnAnimationDuration));
 
     }
 

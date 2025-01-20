@@ -68,7 +68,6 @@ public class AnimalAI : MonoBehaviour
 
 
     public void Roam() {
-
         if (!hasSetSpeed) {
             animalMovement.SetMoveSpeed(roamMoveSpeed);
             hasSetSpeed = true;

@@ -6,6 +6,7 @@ using UnityEngine;
 public class Collectible : MonoBehaviour
 {
     [SerializeField] private PlayerCurrencies.CurrencyType currencyType;
+    [SerializeField] private PlayerCurrencies.CurrencyCategory currencyCategory;
     [SerializeField] private int currencyAmount;
 
     [SerializeField] private Collider2D solidCollider;
@@ -104,8 +105,7 @@ public class Collectible : MonoBehaviour
 
             if (worker != null) {
                 if (currencyType == PlayerCurrencies.CurrencyType.ember) return;
-                if (currencyType == PlayerCurrencies.CurrencyType.redGem) return;
-                if (currencyType == PlayerCurrencies.CurrencyType.greenGem) return;
+                if (currencyCategory == PlayerCurrencies.CurrencyCategory.gem) return;
                 if (aggroedByWildWorker && worker != aggroedWildWorker) return;
 
                 WorkerAI.JobTypes workerJob = worker.GetComponent<WorkerAI>().GetJob();
@@ -307,6 +307,10 @@ public class Collectible : MonoBehaviour
 
     public PlayerCurrencies.CurrencyType GetCurrencyType() {
         return currencyType;
+    }
+
+    public PlayerCurrencies.CurrencyCategory GetCurrencyCategory() {
+        return currencyCategory;
     }
 
     public void SetAggroedByWildWorker(bool aggroed, Worker worker) {

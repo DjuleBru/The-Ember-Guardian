@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class GunVisual : MonoBehaviour
 {
-    private Gun gun;
-    private GunSO gunSO;
-    [SerializeField] private SpriteRenderer gunLightsSpriteRenderer;
-    [SerializeField] private SpriteRenderer gunCooldownLightsSpriteRenderer;
-    [SerializeField] private Color outOfAmmoCooldownLightsColor;
+    protected Gun gun;
+    protected GunSO gunSO;
+    [SerializeField] protected SpriteRenderer gunLightsSpriteRenderer;
+    [SerializeField] protected SpriteRenderer gunCooldownLightsSpriteRenderer;
+    [SerializeField] protected Color outOfAmmoCooldownLightsColor;
 
-    private float tryShootOutOfAmmoAnimationDuration = .3f;
-    private Color cooldownLightsColor;
-    private List<Sprite> gunReloadSprites;
-    private int gunLightSpriteIndex;
+    protected float tryShootOutOfAmmoAnimationDuration = .3f;
+    protected Color cooldownLightsColor;
+    protected List<Sprite> gunReloadSprites;
+    protected int gunLightSpriteIndex;
 
-    private void Awake() {
+    protected virtual void Awake() {
         gun = GetComponent<Gun>();
 
         if (gunCooldownLightsSpriteRenderer != null) {
@@ -23,7 +23,7 @@ public class GunVisual : MonoBehaviour
         }
     }
 
-    private void Start() {
+    protected virtual void Start() {
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
 
@@ -36,7 +36,8 @@ public class GunVisual : MonoBehaviour
         gunLightSpriteIndex = gunSO.shotCountSprites.Count -1;
     }
 
-    private void PlayerShoot_OnPlayerTryShoot_OutOfAmmo(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerTryShoot_OutOfAmmo(object sender, System.EventArgs e) {
+        if (!gameObject.activeInHierarchy) return;
 
         float bulletsAmountNormalized = (float)PlayerShoot.Instance.GetCurrentBullets() / (float)PlayerShoot.Instance.GetMaxBulletsPerClip();
         int reloadSpriteIndex = Mathf.RoundToInt(bulletsAmountNormalized * gunReloadSprites.Count);
@@ -50,12 +51,12 @@ public class GunVisual : MonoBehaviour
         }
     }
 
-    private IEnumerator ResetGunAmmoSprite(Sprite sprite) {
+    protected IEnumerator ResetGunAmmoSprite(Sprite sprite) {
         yield return new WaitForSeconds(tryShootOutOfAmmoAnimationDuration);
         gunLightsSpriteRenderer.sprite = sprite;
     }
 
-    private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
 
         int finalGunReloadSpriteIndex = gunReloadSprites.Count;
@@ -66,7 +67,7 @@ public class GunVisual : MonoBehaviour
 
     }
 
-    private void PlayerShoot_OnClipsChanged(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnClipsChanged(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
         float bulletsAmountNormalized = (float)PlayerShoot.Instance.GetCurrentBullets()/ (float)PlayerShoot.Instance.GetMaxBulletsPerClip();
 
@@ -77,7 +78,7 @@ public class GunVisual : MonoBehaviour
         StartCoroutine(ChangeRemainingBulletsVisuals(delayBetweenSprites, gunLightSpriteIndex, finalGunReloadSpriteIndex));
     }
 
-    private IEnumerator ChangeRemainingBulletsVisuals(float delayBetweenSprites, int initialSpriteIndex, int finalSpriteIndex) {
+    protected IEnumerator ChangeRemainingBulletsVisuals(float delayBetweenSprites, int initialSpriteIndex, int finalSpriteIndex) {
         if (!gun.GetGunActive()) yield return null;
         gunLightsSpriteRenderer.sprite = gunReloadSprites[initialSpriteIndex];
 
@@ -102,7 +103,7 @@ public class GunVisual : MonoBehaviour
         }
     }
 
-    private IEnumerator ReloadBulletsVisual(float reloadTime, float delayBetweenSprites, int initialSpriteIndex, int finalSpriteIndex) {
+    protected IEnumerator ReloadBulletsVisual(float reloadTime, float delayBetweenSprites, int initialSpriteIndex, int finalSpriteIndex) {
         if (!gun.GetGunActive()) yield return null;
         gunLightsSpriteRenderer.sprite = gunReloadSprites[initialSpriteIndex];
 
@@ -122,12 +123,12 @@ public class GunVisual : MonoBehaviour
         }
     }
 
-    private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
+    protected void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
         gameObject.SetActive(true);
     }
 
-    private void Player_OnPlayerDied(object sender, System.EventArgs e) {
+    protected void Player_OnPlayerDied(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
         gameObject.SetActive(false);
     }

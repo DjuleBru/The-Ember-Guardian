@@ -71,4 +71,12 @@ public class AnimalAnimatorManager : MonoBehaviour
         animator.speed = 1f;
     }
 
+    public void SetReadyToMove() {
+        animalMovement.SetReadyToMoveAnimator(true);
+    }
+
+    public void SetUnReadyToMove() {
+        animalMovement.SetReadyToMoveAnimator(false);
+    }
+
 }

@@ -34,7 +34,7 @@ public class MobSpawner : MonoBehaviour
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
     }
 
-    public void RemoveMobFromMobSpawnedList(Mob mob) {
+    public virtual void RemoveMobFromMobSpawnedList(Mob mob) {
         mobSpawnedList.Remove(mob);
         OnMobRemoved?.Invoke(this, new OnMobSpawnedEventArgs {
             mob = mob,
@@ -68,6 +68,30 @@ public class MobSpawner : MonoBehaviour
             }
 
             if(mob is Worker) {
+                mob.transform.parent = SpawnedObjects.Instance.workersContainer;
+            }
+
+            if (mob is Animal) {
+                mob.transform.parent = SpawnedObjects.Instance.AnimalsContainer;
+            }
+
+            InvokeOnMobSpawned(mob);
+        }
+    }
+
+
+    public void SpawnMobs(int mobAmount, Transform mobPrefabToSpawn, Vector3 position) {
+        for (int i = 0; i < mobAmount; i++) {
+            Mob mob = Instantiate(mobPrefabToSpawn, position, Quaternion.identity).GetComponent<Mob>();
+            mobSpawnedList.Add(mob);
+            mob.SetMobSpawner(this);
+
+            if (isCreatureSpawner) {
+                mob.GetComponent<Creature>().SetAsDayCreature(true);
+                mob.transform.parent = SpawnedObjects.Instance.creaturesContainer;
+            }
+
+            if (mob is Worker) {
                 mob.transform.parent = SpawnedObjects.Instance.workersContainer;
             }
 

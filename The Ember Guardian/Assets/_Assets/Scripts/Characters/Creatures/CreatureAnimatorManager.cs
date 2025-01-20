@@ -38,9 +38,7 @@ public class CreatureAnimatorManager : MonoBehaviour
         animatorSpeedMultiplier = baseMovementAnimationSpeed;
         animator.SetFloat("AnimationSpeedMultiplier", animatorSpeedMultiplier);
 
-        if(creature.GetCreatureSO().hasSpawnAnimation) {
-            animator.SetTrigger("Spawn");
-        }
+        animator.SetTrigger("Spawn");
     }
 
     protected void MobMovement_OnMoveSpeedBuffChanged(object sender, MobMovement.OnMoveSpeedBuffedEventArgs e) {

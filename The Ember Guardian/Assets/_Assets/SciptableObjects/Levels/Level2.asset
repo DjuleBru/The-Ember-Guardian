@@ -19,20 +19,23 @@ MonoBehaviour:
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 285aab84b4a4ad648a8899052f346e6f, type: 2}
   newMerchantTextLinesAfterLevel: []
   environmentType: 1
-  levelObjectiveType: 10
+  levelObjectiveType: 11
+  endLevelType: 11
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
   - {fileID: 11400000, guid: a0c1321c3dbd0704c9f6bf0aec0e77b3, type: 2}
   - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
   - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
-  isNewEnvironmentDiscoveryLevel: 1
+  - {fileID: 11400000, guid: f7b0d72c1be53c04b86e62b6d02243c8, type: 2}
+  - {fileID: 11400000, guid: 6ec8f56b2140a3249a41079473391352, type: 2}
+  isNewEnvironmentDiscoveryLevel: 0
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
   linkedSceneName: Level2_VerdantGraveyard
-  hasFog: 0
-  fogFrontAlpha: 0
-  fogBackAlpha: 0
-  baseDifficulty: 6
-  maxSubwaveDifficulty: 10
+  hasFog: 1
+  fogFrontAlpha: 0.3
+  fogBackAlpha: 0.3
+  baseDifficulty: 10
+  maxSubwaveDifficulty: 20
   growthFactor: 1.6
   minWaveDuration: 9
   maxWaveDuration: 90
