@@ -10,13 +10,19 @@ public class CreatureAI_Summoner : CreatureAI {
     [SerializeField] private CreatureSpawnerContinuous creatureSpawnerContinuous;
 
     private float fleeTimer;
+    private float distanceToTargetToStopWalking = 8f;
     private bool fleeing;
     private bool spawning;
 
     protected override void Start() {
         base.Start();
+
+        creatureSpawnerContinuous.SetCanSpawnAtNight(!creature.IsDayCreature());
+
         creatureSpawnerContinuous.OnSpawnerSpawnStart += CreatureSpawnerContinuous_OnSpawnerSpawnStart;
         creatureSpawnerContinuous.OnSpawnerSpawned += CreatureSpawnerContinuous_OnSpawnerSpawned;
+
+        distanceToTargetToStopWalking = UnityEngine.Random.Range(distanceToTargetToStopWalking - distanceToTargetToStopWalking / 3, distanceToTargetToStopWalking + distanceToTargetToStopWalking / 3);
     }
 
     protected override void Update() {
@@ -34,6 +40,7 @@ public class CreatureAI_Summoner : CreatureAI {
         spawning = true;
         creatureMovement.SetMoveTarget(transform.position);
     }
+
 
     protected override void HeadToTarget() {
         if (attackTarget == null) return;
@@ -53,9 +60,16 @@ public class CreatureAI_Summoner : CreatureAI {
             direction = -1;
         }
 
-        Vector3 targetDestination = new Vector3(transform.position.x + (distanceToFleeFromPlayer - distanceToTargetX) * direction, 0, 0);
+        if(distanceToTargetX > distanceToTargetToStopWalking) {
 
-        creatureMovement.SetMoveTarget(targetDestination);
+            Vector3 targetDestination = new Vector3(transform.position.x + (distanceToFleeFromPlayer - distanceToTargetX) * direction, 0, 0);
+            creatureMovement.SetMoveTarget(targetDestination);
+
+        } else {
+
+            ChangeState(State.idle);
+
+        }
     }
 
     protected override void MoveToTargetStateUpdate() {
@@ -75,7 +89,12 @@ public class CreatureAI_Summoner : CreatureAI {
                 return;
             }
             else {
-                ChangeState(State.walkingToFire);
+                if(Mathf.Abs(transform.position.x) > distanceToTargetToStopWalking) {
+                    ChangeState(State.walkingToFire);
+                } else {
+                    ChangeState(State.idle);
+                }
+                
                 return;
             }
         }
@@ -84,6 +103,20 @@ public class CreatureAI_Summoner : CreatureAI {
 
     }
 
+    protected override void WalkingToFireStateUpdate() {
+
+        if (Mathf.Abs(transform.position.x) > distanceToTargetToStopWalking) {
+            MoveTowardsFire();
+        }
+        else {
+            ChangeState(State.idle);
+        }
+
+        if (detectedAttackTarget && !aggroedRecently) {
+            ChangeState(State.moveToTarget);
+        }
+
+    }
     protected override void Creature_OnCreatureDied(object sender, EventArgs e) {
         died = true;
         creatureSpawnerContinuous.SetDead();

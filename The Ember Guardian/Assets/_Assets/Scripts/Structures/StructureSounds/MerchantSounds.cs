@@ -32,6 +32,7 @@ public class MerchantSounds : StructureSounds
         idleAudioSource.clip = merchantIdleAudioClip;
         idleAudioSource.Play();
     }
+
     protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
         idleAudioSource.volume = sfxVolume;

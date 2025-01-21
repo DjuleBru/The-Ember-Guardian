@@ -12,6 +12,7 @@ public class StructureLocation : MonoBehaviour {
 
     protected List<PayCurrencyTemplateWorldUI> buildStructureOrbTemplates = new List<PayCurrencyTemplateWorldUI>();
 
+    public event EventHandler OnStructureLocationLoaded_Locked;
     public event EventHandler OnPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
     public event EventHandler OnStructureLocationUnlocked;
@@ -43,11 +44,17 @@ public class StructureLocation : MonoBehaviour {
         BuildStructure();
     }
 
-    protected virtual void BuildStructure() {
+    public virtual Structure BuildStructure() {
 
-        Instantiate(structureSOToBuild.structurePrefab, transform.position, Quaternion.identity);
+        Structure structure = Instantiate(structureSOToBuild.structurePrefab, transform.position, Quaternion.identity).GetComponent<Structure>();
         OnAnyStructureBuilt?.Invoke(this, EventArgs.Empty);
 
+        StartCoroutine(DestroyGameObjectAfterFrame());
+        return structure;
+    }
+
+    protected IEnumerator DestroyGameObjectAfterFrame() {
+        yield return new WaitForEndOfFrame();
         Destroy(gameObject);
     }
 
@@ -113,7 +120,7 @@ public class StructureLocation : MonoBehaviour {
         string saveString = structureSOToBuild.structureType.ToString() + (1);
 
         if (!MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
-            gameObject.SetActive(false);
+            OnStructureLocationLoaded_Locked?.Invoke(this, EventArgs.Empty);
             Debug.Log(saveString + " location has NOT been bought at merchant ");
         }
         else {

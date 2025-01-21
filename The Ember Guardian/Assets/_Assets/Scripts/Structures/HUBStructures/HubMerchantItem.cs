@@ -90,7 +90,7 @@ public class HubMerchantItem : MonoBehaviour
         int playerYellowGems = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count;
         int playerPurpleGems = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count;
 
-        if (playerGreenGems >= greenGemCost && playerRedGems >= redGemCost && playerBlueGems >= blueGemCost && playerYellowGems >= redGemCost && playerPurpleGems >= purpleGemCost) {
+        if (playerGreenGems >= greenGemCost && playerRedGems >= redGemCost && playerBlueGems >= blueGemCost && playerYellowGems >= yellowGemCost && playerPurpleGems >= purpleGemCost) {
 
             return true;
         }

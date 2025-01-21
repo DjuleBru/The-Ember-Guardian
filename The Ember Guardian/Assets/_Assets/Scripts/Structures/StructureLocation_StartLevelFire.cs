@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class StructureLocation_StartLevelFire : StructureLocation
 {
-    protected override void BuildStructure() {
+    public override Structure BuildStructure() {
         InvokeOnAnyStructureBuilt();
         Fire.Instance.gameObject.SetActive(true);
         Fire.Instance.ActivateInitialFire();
-        Destroy(gameObject);
+
+        StartCoroutine(DestroyGameObjectAfterFrame());
+        return Fire.Instance;
     }
 }

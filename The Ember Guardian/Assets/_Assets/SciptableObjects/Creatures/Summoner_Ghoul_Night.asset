@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e57289136e0e1e6418ec81259b9649b2, type: 3}
-  m_Name: Summoner
+  m_Name: Summoner_Ghoul_Night
   m_EditorClassIdentifier: 
-  enemyName: Ghoul
+  enemyName: Summoner
   description: Melee mob that can respawn after it's first death !
-  creaturePrefab: {fileID: 4997657120178985709, guid: 37afd9dbef5fbb647976c3797ee4c379, type: 3}
+  creaturePrefab: {fileID: 4997657120178985709, guid: 3afa92358c2b7d44dbea84894aba0cfe, type: 3}
   mass: 20
-  detectionRange_Day: 6
-  detectionRange_Night: 2
+  detectionRange_Day: 8
+  detectionRange_Night: 8
   flying: 0
   flightMinAltitude: 0
   flightMaxAltitude: 0

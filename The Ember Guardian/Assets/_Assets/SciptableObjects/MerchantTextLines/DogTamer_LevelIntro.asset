@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: DogTamer_LevelIntro
   m_EditorClassIdentifier: 
   merchantTextLines:
-  - That dog of yours? Cute, but useless. I can fix that.
+  - That dog of yours? <slide a=.2>Cute</slide>, but <wave a=.2 f=1.5>useless</wave>.
+    I can fix that.
   - Take these gems. Consider it a down payment for the work ahead.
-  - "I\u2019ll head to your hub... if my lungs don\u2019t give out first."
+  - "I\u2019ll head to your hub... <slide a=.2>if my lungs don\u2019t give out first.</slide>"
   showShopAfterDialog: 0

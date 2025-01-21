@@ -43,7 +43,7 @@ public class MetaProgressionManager : MonoBehaviour
 
         tutorialComplete = ES3.Load("tutorialComplete", false);
 
-        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+        if (SceneLoader.Instance != null && SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             int lastPortal = defaultLastHUBPortalUsedByPlayer.GetPortalNumber();
             lastHUBPortalUsedByPlayer = ES3.Load("lastHUBPortalUsedByPlayer", lastPortal);
         }
@@ -74,6 +74,17 @@ public class MetaProgressionManager : MonoBehaviour
     #endregion
 
     #region HUB
+
+    public void SetPortalLinkedLevelSOIndex(int portalNumber, int levelSOIndex) {
+        string key = "portal_" + portalNumber.ToString() + "_linkedLevelSOIndex";
+        ES3.Save(key, levelSOIndex);
+    }
+
+    public int GetPortalLinkedLevelSOIndex(int portalNumber) {
+        string key = "portal_" + portalNumber.ToString() + "_linkedLevelSOIndex";
+        return ES3.Load(key, 0);
+
+    } 
 
     public void SetNextHubArrivalThroughPortal(bool arrivalThroughPortal) {
         ES3.Save("nextHubArrivalThroughPortal", arrivalThroughPortal);
@@ -172,14 +183,6 @@ public class MetaProgressionManager : MonoBehaviour
         string key = gemType.ToString() + "_positions";
         return ES3.Load(key, new List<Vector3>());
     }
-
-    public List<Vector3> GetGreenGemPositions() {
-        return ES3.Load("greenGemPositions", new List<Vector3>());
-    }
-
-    public List<Vector3> GetRedGemPositions() {
-        return ES3.Load("redGemPositions", new List<Vector3>());
-    }
     #endregion
 
     #region HUB MERCHANTS
@@ -227,10 +230,12 @@ public class MetaProgressionManager : MonoBehaviour
 
     public bool GetMerchantUnlocked(HubMerchant.HubMerchantType merchantType) {
         string key = merchantType.ToString() + "_Unlocked";
+        Debug.Log("GetMerchantUnlocked " + merchantType + ES3.Load(key, false));
         return ES3.Load(key, false);
     }
 
     public void SetMerchantUnlocked(HubMerchant.HubMerchantType merchantType) {
+        Debug.Log("SetMerchantUnlocked " + merchantType);
         string key = merchantType.ToString() + "_Unlocked";
         ES3.Save(key, true);
     }

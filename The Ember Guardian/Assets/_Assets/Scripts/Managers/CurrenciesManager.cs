@@ -12,6 +12,9 @@ public class CurrenciesManager : MonoBehaviour
     [SerializeField] private Transform smallRedOrbPrefab;
     [SerializeField] private Transform greenGemPrefab;
     [SerializeField] private Transform redGemPrefab;
+    [SerializeField] private Transform blueGemPrefab;
+    [SerializeField] private Transform yellowGemPrefab;
+    [SerializeField] private Transform purpleGemPrefab;
     [SerializeField] private Transform ammoPrefab;
     [SerializeField] private Transform emberPrefab;
 
@@ -37,6 +40,15 @@ public class CurrenciesManager : MonoBehaviour
         }
         if (currencyType == PlayerCurrencies.CurrencyType.greenGem) {
             return greenGemPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.blueGem) {
+            return blueGemPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.yellowGem) {
+            return yellowGemPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.purpleGem) {
+            return purpleGemPrefab;
         }
         if (currencyType == PlayerCurrencies.CurrencyType.ammo) {
             return ammoPrefab;

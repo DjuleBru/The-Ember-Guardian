@@ -2,18 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StructureSounds : MonoBehaviour
+public class StructureSounds : SoundObject
 {
-    protected float sfxVolume;
     protected AudioSource audioSource;
 
     protected virtual void Awake() {
         audioSource = GetComponent<AudioSource>();
     }
-
-    protected virtual void Start() {
-        sfxVolume = SettingsManager.Instance.GetSfxVolume();
-        SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+    protected override void Start() {
+        base.Start();
         SceneLoader.Instance.OnSceneFadeOut += SceneLoader_OnSceneFadeOut;
     }
 
@@ -21,7 +18,7 @@ public class StructureSounds : MonoBehaviour
         StartCoroutine(FadeOutCoroutine(1f));
     }
 
-    protected virtual void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
+    protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
     }
 

@@ -239,7 +239,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
                 if(worker.GetStructureAssigned() != null) {
                     destinationTower = worker.GetStructureAssigned() as Tower;
                 } else {
-                    destinationTower = StructuresManager.Instance.GetClosestTower(worker.GetCampSideAddigned(), transform.position);
+                    destinationTower = PlayerCamp.Instance.GetClosestTower(worker.GetCampSideAddigned(), transform.position);
                 }
 
                 if (destinationTower != null) {
@@ -266,7 +266,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
                     if (worker.GetStructureAssigned() != null) return;
 
-                    destinationTower = StructuresManager.Instance.GetClosestTower(worker.GetCampSideAddigned(), transform.position);
+                    destinationTower = PlayerCamp.Instance.GetClosestTower(worker.GetCampSideAddigned(), transform.position);
 
                     if (destinationTower != null) {
                         ChangeState(HunterState.headingToGuard);

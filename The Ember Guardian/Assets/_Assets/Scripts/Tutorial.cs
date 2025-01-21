@@ -9,6 +9,7 @@ public class Tutorial : MonoBehaviour
     public static Tutorial Instance;
 
     [SerializeField] private bool testing;
+    [SerializeField] private Transform initialSpawnPoint;
     [SerializeField] private Transform beforeFireRespawnPoint;
     [SerializeField] private TutorialCollider firstCreatureCollider;
     [SerializeField] private TutorialCollider blockingWorkersCollider;
@@ -118,6 +119,8 @@ public class Tutorial : MonoBehaviour
         if(testing) {
             reloadTooltipHidden = true;
             workerNumberRecruited = 4;
+        } else {
+            Player.Instance.SetPosition(initialSpawnPoint.position);
         }
     }
 
@@ -298,7 +301,7 @@ public class Tutorial : MonoBehaviour
             towerNumberBuilt++;
 
             if(towerNumberBuilt == 1) {
-                StartCoroutine(ShowTooltipAfterDelay(.5f, "Press", "To climb on tower", InputControlIcons.Control.Interact));
+                StartCoroutine(ShowTooltipAfterDelay(.5f, "Press", "When near a tower to climb it", InputControlIcons.Control.Interact));
             }
 
             if (towerNumberBuilt == 2) {

@@ -49,7 +49,10 @@ public class Gun : MonoBehaviour
         PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAim_OnPlayerAimSightEnded;
         PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
         PlayerShoot.Instance.OnPlayerFocusBlastStopped += PlayerShoot_OnPlayerFocusBlastStopped;
-        MetaProgressionManager.Instance.OnGunStatChanged += MetaProgressionManager_OnGunStatChanged;
+
+        if(MetaProgressionManager.Instance != null ) {
+            MetaProgressionManager.Instance.OnGunStatChanged += MetaProgressionManager_OnGunStatChanged;
+        }
     }
 
     protected void MetaProgressionManager_OnGunStatChanged(object sender, MetaProgressionManager.OnGunChangedEventArgs e) {

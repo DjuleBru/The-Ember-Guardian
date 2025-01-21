@@ -13,6 +13,7 @@ public class DogUI : MonoBehaviour
     }
 
     private void Start() {
+        if (Dog.Instance == null) return;
         Dog.Instance.OnIdleStateChanged += Instance_OnIdleStateChanged;
     }
 

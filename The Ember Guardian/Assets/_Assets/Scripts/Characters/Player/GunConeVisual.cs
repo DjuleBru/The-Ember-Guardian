@@ -120,4 +120,15 @@ public class GunConeVisual : MonoBehaviour
             1f
         );
     }
+
+    private void OnDestroy() {
+        PlayerAim.Instance.OnPlayerAimSightEnded -= PlayerAIm_OnPlayerAimSightEnded;
+        PlayerAim.Instance.OnPlayerAimSightStarted -= PlayerAIm_OnPlayerAimSightStarted;
+        PlayerShoot.Instance.OnPlayerOverclockedSMGStarted -= PlayerShoot_OnPlayerOverclockedSMGStarted;
+        PlayerShoot.Instance.OnPlayerOverclockedSMGStopped -= PlayerShoot_OnPlayerOverclockedSMGStopped;
+        PlayerShoot.Instance.OnPlayerFocusBlastStarted -= PlayerShoot_OnPlayerFocusBlastStarted;
+        PlayerShoot.Instance.OnPlayerFocusBlastStopped -= PlayerShoot_OnPlayerFocusBlastStopped;
+        PlayerShoot.Instance.OnPlayerSetupLMGStarted -= PlayerShoot_OnPlayerSetupLMGStarted;
+        PlayerShoot.Instance.OnPlayerSetupLMGStopped -= PlayerShoot_OnPlayerSetupLMGStopped;
+    }
 }

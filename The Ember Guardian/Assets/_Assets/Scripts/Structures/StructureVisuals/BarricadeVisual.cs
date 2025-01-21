@@ -7,6 +7,7 @@ using UnityEngine.Rendering.Universal;
 public class BarricadeVisual : StructureVisual {
 
     [SerializeField] private Light2D barricadeSpotLight;
+    [SerializeField] private Animator barricadeLightBodyAnimator;
     [SerializeField] private List<BarricadePiece> level1BarricadePieceList;
     [SerializeField] private List<BarricadePiece> level2BarricadePieceList;
     [SerializeField] private List<BarricadePiece> level3BarricadePieceList;
@@ -27,12 +28,24 @@ public class BarricadeVisual : StructureVisual {
     }
 
     protected override void Start() {
-        base.Start();
+        structure.OnStructureUpgraded += Structure_OnStructureUpgraded;
+        structure.OnStructureInteractionsUpdated += Structure_OnStructureInteractionsUpdated;
+        structure.OnPlayerTriggeredIn += Structure_OnPlayerTriggeredIn;
+        structure.OnPlayerTriggeredOut += Structure_OnPlayerTriggeredOut;
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
+            DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
+            DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+            PlayerCampVisual.Instance.OnCampBackgroundBuilt += PlayerCampVisual_OnCampBackgroundBuilt;
+        }
+
         barricade.OnBarricadeDamageTaken += Barricade_OnBarricadeDamageTaken;
         barricade.OnBarricadeRepaired += Barricade_OnBarricadeRepaired;
 
-        ActivatePieces(level1BarricadePieceList);
+        BuildPieces(level1BarricadePieceList);
+        barricadeLightBodyAnimator.SetTrigger("Build");
         currentLevelBarricadePieceList = level1BarricadePieceList;
+        built = true;
     }
 
     private void Barricade_OnBarricadeRepaired(object sender, System.EventArgs e) {
@@ -76,6 +89,12 @@ public class BarricadeVisual : StructureVisual {
             ActivatePieces(level4BarricadePieceList);
         }
 
+    }
+
+    private void BuildPieces(List<BarricadePiece> gameObjectList) {
+        foreach (BarricadePiece piece in gameObjectList) {
+            piece.BuildBarricadePiece();
+        }
     }
 
     private void ActivatePieces(List<BarricadePiece> gameObjectList) {

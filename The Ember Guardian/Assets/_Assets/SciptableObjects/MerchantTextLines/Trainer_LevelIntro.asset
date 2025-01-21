@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Trainer_LevelIntro
   m_EditorClassIdentifier: 
   merchantTextLines:
-  - "Strength isn\u2019t given, it\u2019s forged. You want to endure what\u2019s
-    out there? Prove it."
-  - "Here. These gems are a start\u2014but the real work begins at the flame."
-  - "I\u2019ll see you at the flame... if you\u2019re still standing."
+  - "Strength isn\u2019t <slide a=.2>given</slide>, it\u2019s <shake a=.4>forged</shake>.
+    You want to endure what\u2019s out there? <wave a=.2 f=1.5>Prove it.</wave>"
+  - Here. These gems are a start. But the <slide a=.2>real work</slide> begins at
+    the flame.
+  - "I\u2019ll see you at the flame... <slide a=.2>if you\u2019re still standing.</slide>"
   showShopAfterDialog: 0

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSounds : MonoBehaviour
+public class PlayerSounds : SoundObject
 {
     [SerializeField] private AudioSource playerAudioSource;
 
@@ -20,12 +20,9 @@ public class PlayerSounds : MonoBehaviour
     [SerializeField] private AnimationCurve pitchWithSpeedAnimationCurve;
     [SerializeField] private ActiveMoveSpeedBoostVisual activeMoveSpeedBoostVisual;
 
-    private float sfxVolume;
     private bool exhaustedSFXPlaying;
-
-    private void Start() {
-        sfxVolume = SettingsManager.Instance.GetSfxVolume();
-        SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+    protected override void Start() {
+        base.Start();
 
         playerAnimator.OnFootStepTriggered += PlayerAnimator_OnFootStepTriggered;
         playerBreathAnimator.OnPantTriggered += PlayerAnimator_OnPantTriggered;
@@ -40,10 +37,6 @@ public class PlayerSounds : MonoBehaviour
 
     private void PlayerMovement_OnPlayerRoll(object sender, System.EventArgs e) {
         playerAudioSource.PlayOneShot(playerRollAudioClips[Random.Range(0, playerRollAudioClips.Length)], sfxVolume*.7f);
-    }
-
-    private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
-        sfxVolume = SettingsManager.Instance.GetSfxVolume();
     }
 
     private void Player_OnPlayerDied(object sender, System.EventArgs e) {

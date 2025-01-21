@@ -200,26 +200,26 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void PlayerAim_OnPlayerAimSightEnded(object sender, EventArgs e) {
-        if (PauseMenuUI.Instance.isPaused) return;
+        if (PauseMenuUI.Instance != null && PauseMenuUI.Instance.isPaused) return;
 
         BuffMoveSpeed(PlayerStats.Instance.GetAimingSightDecelerationFactor());
     }
 
     private void PlayerAIm_OnPlayerAimSightStarted(object sender, EventArgs e) {
-        if (PauseMenuUI.Instance.isPaused) return;
+        if (PauseMenuUI.Instance != null && PauseMenuUI.Instance.isPaused) return;
 
         DebuffMoveSpeed(PlayerStats.Instance.GetAimingSightDecelerationFactor());
     }
 
     private void GameInput_OnPlayerRunCanceled(object sender, System.EventArgs e) {
-        if (PauseMenuUI.Instance.isPaused) return;
+        if (PauseMenuUI.Instance != null && PauseMenuUI.Instance.isPaused) return;
         if (!isRunning) return;
 
         StopRunning();
     }
 
     private void GameInput_OnPlayerRunStarted(object sender, System.EventArgs e) {
-        if (PauseMenuUI.Instance.isPaused) return;
+        if (PauseMenuUI.Instance != null && PauseMenuUI.Instance.isPaused) return;
         if (isExhausted) return;
 
         StartRunning();
@@ -240,7 +240,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private void HandleCrouch() {
         if (isJumping) return;
-        if (PauseMenuUI.Instance.isPaused) return;
+        if (PauseMenuUI.Instance != null && PauseMenuUI.Instance.isPaused) return;
 
         if (GameInput.Instance.GetJumpDirNormalized() <= -.5) {
             if (!isCrouching) {

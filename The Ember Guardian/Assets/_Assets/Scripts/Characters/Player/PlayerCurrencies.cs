@@ -53,8 +53,12 @@ public class PlayerCurrencies : MonoBehaviour
 
 
     private void Start() {
-        UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
-        UICurrencyManager.Instance.OnCurrencyTryPay += UICurrencyManager_OnCurrencyTryPay;
+        if(UICurrencyManager.Instance != null) {
+            UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
+            UICurrencyManager.Instance.OnCurrencyTryPay += UICurrencyManager_OnCurrencyTryPay;
+        }
+
+        if (SceneLoader.Instance == null) return;
 
         if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
             StartCoroutine(SetCarryingEmberAfterDelay());

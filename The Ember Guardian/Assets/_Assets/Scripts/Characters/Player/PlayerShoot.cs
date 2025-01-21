@@ -92,9 +92,9 @@ public class PlayerShoot : MonoBehaviour
         InitializeGuns();
 
         if(useDebugGun) {
-            SetGun(debugGun);
+            SetActiveGun(debugGun);
         } else {
-            SetGun(PlayerSave.Instance.GetPrimaryActiveGun());
+            SetActiveGun(PlayerSave.Instance.GetPrimaryActiveGun());
         }
 
         GameInput.Instance.OnPlayerShootCanceled += GameInput_OnPlayerShootCanceled;
@@ -112,11 +112,16 @@ public class PlayerShoot : MonoBehaviour
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
 
-        UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
+        if(UICurrencyManager.Instance != null) {
+            UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
+        }
     }
 
-    public void SetGun(GunSO gunSO) {
+    public void SetActiveGun(GunSO gunSO, bool primaryGun = true) {
         Gun activeGun = null;
+
+        Debug.Log("SetActiveGun " + gunSO);
+
         foreach(Gun gun in allGunsList) {
             gun.gameObject.SetActive(false);
             gun.SetGunActive(false);
@@ -138,6 +143,12 @@ public class PlayerShoot : MonoBehaviour
         PlayerStats.Instance.SetShootCooldownTime(heldGun.GetCooldownTime());
         PlayerStats.Instance.SetReloadTime(heldGun.GetReloadTime());
         PlayerStats.Instance.SetHandsReloadTime(heldGun.GetHandsReloadTime());
+
+        if(primaryGun) {
+            primaryGunSO = gunSO;
+        } else {
+            secondayGunSO = gunSO;
+        }
 
         OnPlayerSwappedGun?.Invoke(this, EventArgs.Empty);
     }
@@ -491,12 +502,12 @@ public class PlayerShoot : MonoBehaviour
 
     private void GameInput_OnPlayerSecondaryGunSelected(object sender, EventArgs e) {
         if(secondayGunSO != null) {
-            SetGun(secondayGunSO);
+            SetActiveGun(secondayGunSO);
         }
     }
 
     private void GameInput_OnPlayerPrimaryGunSelected(object sender, EventArgs e) {
-        SetGun(primaryGunSO);
+        SetActiveGun(primaryGunSO);
     }
 
     private void ReloadGun() {
@@ -512,9 +523,9 @@ public class PlayerShoot : MonoBehaviour
 
     private void SwapGun() {
         if(heldGunSO == secondayGunSO) {
-            SetGun(primaryGunSO);
+            SetActiveGun(primaryGunSO);
         } else {
-            SetGun(secondayGunSO);
+            SetActiveGun(secondayGunSO);
         }
     }
 
@@ -580,6 +591,20 @@ public class PlayerShoot : MonoBehaviour
         GameInput.Instance.OnPlayerShootPerformed -= GameInput_OnPlayerShootStarted;
         GameInput.Instance.OnPlayerReloadPerformed -= GameInput_OnPlayerReloadPerformed;
         GameInput.Instance.OnPlayerReloadCanceled -= GameInput_OnPlayerReloadCanceled;
+        GameInput.Instance.OnPlayerPrimaryGunSelected -= GameInput_OnPlayerPrimaryGunSelected;
+        GameInput.Instance.OnPlayerSecondaryGunSelected -= GameInput_OnPlayerSecondaryGunSelected;
+        GameInput.Instance.OnPlayerSwapGunPerformed -= GameInput_OnPlayerSwapGunPerformed;
+
+        GameInput.Instance.OnWeaponSecondaryAbilityCanceled -= GameInput_OnWeaponSecondaryAbilityCanceled;
+        GameInput.Instance.OnWeaponSecondaryAbilityPerformed -= GameInput_OnWeaponSecondaryAbilitytPerformed;
+
+        PlayerStats.Instance.OnPlayerAmmoRegenTimeChanged -= PlayerStats_OnPlayerAmmoRegenTimeChanged;
+        PlayerMovement.Instance.OnPlayerRoll -= PlayerMovement_OnPlayerRoll;
+        PlayerMovement.Instance.OnPlayerRollEnded -= PlayerMovement_OnPlayerRollEnded;
+
+        if (UICurrencyManager.Instance != null) {
+            UICurrencyManager.Instance.OnCurrencyDropped -= UIOrbManager_OnCurrencyDropped;
+        }
     }
 
 }

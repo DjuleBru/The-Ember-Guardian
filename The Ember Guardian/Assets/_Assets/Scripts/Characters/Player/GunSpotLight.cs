@@ -25,7 +25,7 @@ public class GunSpotLight : MonoBehaviour
     }
 
     private void Start() {
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+        if(SceneLoader.Instance != null && SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
             DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
             Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
@@ -43,8 +43,11 @@ public class GunSpotLight : MonoBehaviour
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
-        PauseMenuUI.Instance.OnPauseMenuClosed += PauseMenuUI_OnPauseMenuClosed;
-        PauseMenuUI.Instance.OnPauseMenuOpened += PauseMenuUI_OnPauseMenuOpened;
+
+        if(PauseMenuUI.Instance != null) {
+            PauseMenuUI.Instance.OnPauseMenuClosed += PauseMenuUI_OnPauseMenuClosed;
+            PauseMenuUI.Instance.OnPauseMenuOpened += PauseMenuUI_OnPauseMenuOpened;
+        }
     }
     
     private void PauseMenuUI_OnPauseMenuOpened(object sender, EventArgs e) {

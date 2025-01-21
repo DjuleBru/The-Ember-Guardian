@@ -393,7 +393,6 @@ public class UICurrencyManager : MonoBehaviour
 
     public void LoadCurrencies(PlayerCurrencies.CurrencyType currencyType, List<Vector3> currencyPositions) {
         Transform prefab = null;
-        Debug.Log("LoadCurrencies");
 
         if (currencyType == PlayerCurrencies.CurrencyType.greenGem) {
             prefab = greenGemUIPrefab;

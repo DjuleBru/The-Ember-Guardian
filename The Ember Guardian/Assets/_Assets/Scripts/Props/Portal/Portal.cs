@@ -21,7 +21,6 @@ public class Portal : MonoBehaviour
     [SerializeField] private float delayToTeleportPlayerInAnimation;
     [SerializeField] private float delayToTeleportPlayerAnimation;
     [SerializeField] private float delayToReleasePlayerAnimation;
-    [SerializeField] private float delayToRewardGems;
     [SerializeField] private float delayToStartCrossfade;
 
     private LevelSO linkedLevelSO;
@@ -57,18 +56,19 @@ public class Portal : MonoBehaviour
         if (isStartLevelTeleporter) {
             portalUnlocked = true;
         }
-
-        if(isHUBTeleporter && linkedLevelSOList.Count != 0) {
-            linkedLevelSO = linkedLevelSOList[0];
-        }
     }
 
     private void Start() {
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
         floorCollider.enabled = false;
 
-        if(isHUBTeleporter) {
+        if (isHUBTeleporter) {
+
             portalUnlocked = MetaProgressionManager.Instance.GetPortalUnlocked(gameObject.name);
+            if(linkedLevelSOList.Count != 0) {
+                linkedLevelSO = linkedLevelSOList[MetaProgressionManager.Instance.GetPortalLinkedLevelSOIndex(portalNumber)];
+            }
+
             if (!portalUnlocked) {
                 gameObject.SetActive(false);
                 return;
@@ -230,11 +230,6 @@ public class Portal : MonoBehaviour
         yield return new WaitForSeconds(delayToReleasePlayerAnimation);
 
         Player.Instance.ReleasePlayerFromTeleporter();
-
-        yield return new WaitForSeconds(delayToRewardGems);
-
-        MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(false);
-        HUBManager.Instance.RewardLastLevelGems();
     }
 
     public void MakePortalAppear() {
@@ -267,7 +262,12 @@ public class Portal : MonoBehaviour
 
     public void SetLinkedLevelSO(LevelSO levelSO) {
         linkedLevelSO = levelSO;
-    } 
+    }
+
+    public int GetLinkedLevelSOIndex() {
+        if (linkedLevelSO == null) return 0;
+        return linkedLevelSOList.IndexOf(linkedLevelSO);
+    }
 
     public bool GetPortalUnlocked() {
         return portalUnlocked;

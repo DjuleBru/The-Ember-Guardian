@@ -562,7 +562,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
     private void EquipGun() {
         itemEquipped = true;
-        PlayerShoot.Instance.SetGun(linkedGunSO);
+        PlayerShoot.Instance.SetActiveGun(linkedGunSO);
     }
 
     private void UnlockGunAbility() {

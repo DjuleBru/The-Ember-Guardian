@@ -34,6 +34,7 @@ public class PlayerUI_HPBar : MonoBehaviour
     }
 
     private void Start() {
+        if (SceneLoader.Instance == null) return;
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             hpBarGameObject.SetActive(false);
             return;

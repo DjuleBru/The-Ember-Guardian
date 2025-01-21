@@ -8,24 +8,28 @@ public class StructureLocationVisual : MonoBehaviour
 
     [SerializeField] private GameObject slotVisual;
     [SerializeField] private SpriteRenderer structureVisual_Build;
+    [SerializeField] private SpriteRenderer structureVisual_ProgressionLocked;
+    [SerializeField] private Sprite[] progressionLockedCampSprites;
 
     private StructureLocation structureLocation;
     private bool buildable;
+    private bool progression_locked;
 
     private void Awake() {
         structureLocation = GetComponentInParent<StructureLocation>();
         structureVisual_Build.gameObject.SetActive(false);
         slotVisual.SetActive(false);
 
+        structureLocation.OnStructureLocationLoaded_Locked += StructureLocation_OnStructureLocationLoaded_Locked;
         structureLocation.OnPlayerTriggeredIn += StructureLocation_OnPlayerTriggeredIn;
         structureLocation.OnPlayerTriggeredOut += StructureLocation_OnPlayerTriggeredOut;
         structureLocation.OnStructureLocationUnlocked += StructureLocation_OnStructureLocationUnlocked;
     }
 
+
     private void Start() {
         SetXAxisScale();
         HideVisuals();
-
 
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
@@ -45,16 +49,26 @@ public class StructureLocationVisual : MonoBehaviour
         }
     }
 
+    private void StructureLocation_OnStructureLocationLoaded_Locked(object sender, EventArgs e) {
+        progression_locked = true;
+        structureVisual_ProgressionLocked.sprite = progressionLockedCampSprites[UnityEngine.Random.Range(0, progressionLockedCampSprites.Length)];
+
+    }
+
     private void StructureLocation_OnStructureLocationUnlocked(object sender, System.EventArgs e) {
+        if (progression_locked) return;
+
         slotVisual.SetActive(true);
     }
 
     private void StructureLocation_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
+        if (progression_locked) return;
         if (!buildable) return;
         HideVisuals();
     }
 
     private void StructureLocation_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        if (progression_locked) return;
         if (!buildable) return;
         ShowAllVisuals();
     }
@@ -75,12 +89,16 @@ public class StructureLocationVisual : MonoBehaviour
     }
 
     private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
+        if (progression_locked) return;
+
         if (!structureLocation.GetStructureSOToBuild().buildableAtNight) {
             buildable = true;
         }
     }
 
     private void DayNightManager_OnNightStart(object sender, EventArgs e) {
+        if (progression_locked) return;
+
         if (!structureLocation.GetStructureSOToBuild().buildableAtNight) {
             HideVisuals();
             buildable = false;

@@ -12,6 +12,7 @@ public class SoundManager : MonoBehaviour
     private AudioSource audioSource2D;
     private float sfxVolume;
 
+    private bool initialCampBackgroundBuilt;
     private bool initialEmberGiven;
     private bool initialGunEquipped;
 
@@ -52,9 +53,15 @@ public class SoundManager : MonoBehaviour
             PlayerWorldUITooltip.OnTooltipHidden += PlayerWorldUITooltip_OnTooltipHidden;
             PlayerWorldUITooltip.OnTooltipShown += PlayerWorldUITooltup_OnTooltipShown;
 
-            UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
+            if(UICurrencyManager.Instance != null) {
+                UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
+            }
+
+            if(Dog.Instance != null) {
+                Dog.Instance.OnPlayerCalledDog += Dog_OnPlayerCalledDog;
+            }
+
             PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor += PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;
-            Dog.Instance.OnPlayerCalledDog += Dog_OnPlayerCalledDog;
         }
 
         if (LevelUI_ObjectiveUI.Instance != null) {
@@ -113,6 +120,7 @@ public class SoundManager : MonoBehaviour
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine += HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
     }
+
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
@@ -282,10 +290,11 @@ public class SoundManager : MonoBehaviour
             PlaySound2D(soundRefsSO.ammoPickedUpByPlayer, .7f);
         }
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.ember) {
-            if(!initialEmberGiven) {
+            if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB && !initialEmberGiven) {
                 initialEmberGiven = true;
                 return;
             }
+
             PlaySound2D(soundRefsSO.emberPickedUpByPlayer, .7f);
         }
     }

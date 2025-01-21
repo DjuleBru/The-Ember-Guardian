@@ -72,7 +72,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1365893121
-  m_SortingLayer: -7
+  m_SortingLayer: -8
   m_SortingOrder: -1
   m_Sprite: {fileID: 44988028, guid: d80d4e931d03e2b4f8756b3132ba437c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -276,6 +276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d2d1cbe4cb17047b221f9b5bffc894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currenciesFailedToPayFallInWater: 0
 --- !u!61 &7506368512435722411
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1198,7 +1199,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1365893121
-  m_SortingLayer: -7
+  m_SortingLayer: -8
   m_SortingOrder: -1
   m_Sprite: {fileID: 769547836, guid: 78c74fc20ec74d948ba3760e297d4990, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2176,6 +2177,8 @@ MonoBehaviour:
   greyedStructionIconColor: {r: 1, g: 1, b: 1, a: 0.3137255}
   unhoveredMaterial: {fileID: 2100000, guid: 2ba136974dfe4bc43b6cb9c770ec4fae, type: 2}
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  structureSpriteMaterialAnimator: {fileID: 7868727550266577229}
+  animateSpriteMaterialOnBuild: 1
   structureHasFunctionIcon: 0
 --- !u!95 &8124003534650656326
 Animator:
@@ -2341,7 +2344,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1365893121
-  m_SortingLayer: -7
+  m_SortingLayer: -8
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

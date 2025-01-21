@@ -11,16 +11,20 @@ public class StructureVisual : MonoBehaviour {
     [SerializeField] protected Color greyedStructionIconColor;
     [SerializeField] protected Material unhoveredMaterial;
     [SerializeField] protected Material hoveredMaterial;
+    [SerializeField] protected Animator structureSpriteMaterialAnimator;
+
+    [SerializeField] protected bool animateSpriteMaterialOnBuild;
     [SerializeField] protected bool structureHasFunctionIcon;
 
     protected Structure structure;
+    protected bool built;
 
     protected virtual void Awake() {
         structure = GetComponentInParent<Structure>();
         SetXAxisScale();
     }
 
-    private void SetXAxisScale() {
+    protected void SetXAxisScale() {
         if (structure.transform.position.x < 0) {
             Vector3 localScale = new Vector3(-1, 1, 1);
             transform.localScale = localScale;
@@ -36,22 +40,44 @@ public class StructureVisual : MonoBehaviour {
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
             DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+            PlayerCampVisual.Instance.OnCampBackgroundBuilt += PlayerCampVisual_OnCampBackgroundBuilt;
+
+        }
+
+        if (!animateSpriteMaterialOnBuild) {
+
+            built = true;
+            structureSpriteMaterialAnimator.SetTrigger("BuiltAtStart");
+
+        }
+        else {
+
+            structureSpriteMaterialAnimator.SetTrigger("Build");
+
         }
     }
 
-    private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
+    protected virtual void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
         foreach (GameObject gameObject in structureLights) {
             gameObject.SetActive(true);
         }
     }
 
-    private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
+    protected virtual void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
         foreach(GameObject gameObject in structureLights) {
             gameObject.SetActive(false);
         }
     }
 
-    private void Structure_OnStructureInteractionsUpdated(object sender, System.EventArgs e) {
+    protected void PlayerCampVisual_OnCampBackgroundBuilt(object sender, System.EventArgs e) {
+        if (!animateSpriteMaterialOnBuild) return;
+        if (built) return;
+
+        built = true;
+        structureSpriteMaterialAnimator.SetTrigger("Build");
+    }
+
+    protected void Structure_OnStructureInteractionsUpdated(object sender, System.EventArgs e) {
         if(structure.GetActiveStructureInteractionTypeList().Contains(Structure.StructureInteractionType.primaryFunction)) {
             HighlightStructureFunctionIcon(true);
         }

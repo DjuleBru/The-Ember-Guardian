@@ -167,7 +167,6 @@ public class MusicManager : MonoBehaviour {
         audioSource.volume = 0;
         audioSource.Play(); // Assure que la musique démarre
 
-        Debug.Log(targetVolume);
         // Augmenter progressivement le volume
         for (float t = 0; t < fadeDuration; t += Time.deltaTime) {
             float progress = t / fadeDuration;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DogSounds : MonoBehaviour
+public class DogSounds : SoundObject
 {
     [SerializeField] private AudioSource dogAudioSource;
     [SerializeField] private AudioSource dogOtherSFXAudioSource;
@@ -16,15 +16,12 @@ public class DogSounds : MonoBehaviour
 
     [SerializeField] private DogAnimatorManager dogAnimator; 
     [SerializeField] private DogAI dogAI; 
-    private float sfxVolume;
 
     private float growlTimer;
     private float growlRate = 2.5f;
 
-
-    private void Start() {
-        sfxVolume = SettingsManager.Instance.GetSfxVolume();
-        SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+    protected override void Start() {
+        base.Start();
 
         dogAnimator.OnFootstepTriggered += PlayerAnimator_OnFootStepTriggered;
         dogAnimator.OnDogSniffed += DogAnimator_OnDogSniffed;
@@ -82,10 +79,6 @@ public class DogSounds : MonoBehaviour
     private void DogAnimator_OnDogSniffed(object sender, System.EventArgs e) {
         dogAudioSource.PlayOneShot(sniffAudioClips[Random.Range(0, sniffAudioClips.Length)], sfxVolume * .15f);
 
-    }
-
-    private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
-        sfxVolume = SettingsManager.Instance.GetSfxVolume();
     }
 
 }

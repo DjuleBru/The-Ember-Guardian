@@ -187,7 +187,7 @@ public class CreatureAI : MonoBehaviour {
 
         roamTimer -= Time.deltaTime;
 
-        if (roamTimer < 0) {
+        if (roamTimer < 0 && positionToRoamAmound != Vector3.zero) {
             roamTimer = roamChangeDestinationRate;
             RoamBehavior.RoamAroundPoint(creatureMovement, roamRadius, positionToRoamAmound, creature.GetCreatureSO().flying);
         }
@@ -244,6 +244,13 @@ public class CreatureAI : MonoBehaviour {
         if (newState == State.moveToTarget) {
             creatureMovement.SetCreatureAggroMoveSpeed(true);
             followingTargetBuffedSpeed = true;
+            mobAttack.RemoveAttackTarget();
+        }
+
+        if (newState == State.idle) {
+            creatureMovement.SetMoveTarget(transform.position);
+            creatureMovement.SetCreatureAggroMoveSpeed(false);
+            followingTargetBuffedSpeed = false;
             mobAttack.RemoveAttackTarget();
         }
 

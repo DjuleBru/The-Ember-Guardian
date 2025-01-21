@@ -22,6 +22,7 @@ public class HubMerchantTalkUI : MonoBehaviour
 
     public static event EventHandler OnAnyMerchantShowNewTalkLine;
     public static event EventHandler OnAnyMerchantEndTalk;
+    public event EventHandler OnMerchantEndTalk;
 
     private bool merchantHasTalkLinesToShow;
     private bool playerIsTalkingToMerchant;
@@ -78,6 +79,7 @@ public class HubMerchantTalkUI : MonoBehaviour
                 CameraManager.Instance.ZoomOut(true, 1f);
                 Debug.Log("OnAnyMerchantEndTalk");
                 OnAnyMerchantEndTalk?.Invoke(this, EventArgs.Empty);
+                OnMerchantEndTalk?.Invoke(this, EventArgs.Empty);
             }
             else {
                 OnAnyMerchantShowNewTalkLine?.Invoke(this, EventArgs.Empty);

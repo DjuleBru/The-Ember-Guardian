@@ -38,7 +38,9 @@ public class LevelManager : MonoBehaviour
 
     private void EndLevelArea_OnEndLevelFireLit(object sender, EventArgs e) {
         StartCoroutine(EnableEndLevelPortal(4f));
+    }
 
+    private void SaveLevelCompletedProgression() {
         MetaProgressionManager.Instance.SetLevelCompleted(GetLevelSO());
         SaveMerchantsAndTalkLines();
     }
@@ -68,6 +70,8 @@ public class LevelManager : MonoBehaviour
     private IEnumerator EnableEndLevelPortal(float delayToEnable) {
         yield return new WaitForSeconds(delayToEnable);
         endLevelPortal.gameObject.SetActive(true);
+
+        SaveLevelCompletedProgression();
     }
 
     private void SaveMerchantsAndTalkLines() {

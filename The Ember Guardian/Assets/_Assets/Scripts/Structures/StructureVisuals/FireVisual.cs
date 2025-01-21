@@ -70,6 +70,7 @@ public class FireVisual : StructureVisual
     
     protected override void Start() {
         base.Start();
+
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
             DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
@@ -82,10 +83,10 @@ public class FireVisual : StructureVisual
         playerRespawnPS.Play();
     }
 
-    private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
+    protected override void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
         AOEFireLight.enabled = true;
     }
-    private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
+    protected override void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
         AOEFireLight.enabled = false;
     }
 

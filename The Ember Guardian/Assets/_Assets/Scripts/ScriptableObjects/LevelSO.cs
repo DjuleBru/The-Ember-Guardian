@@ -10,7 +10,7 @@ public class LevelSO : ScriptableObject
         TheLostGreens,
         TheVerdantGraveyard,
         Gloomspire,
-        EmberheartSanctum,
+        SacredTemple,
     }
 
     public List<LevelSO> levelsUnlockedByLevel;
@@ -34,6 +34,7 @@ public class LevelSO : ScriptableObject
     public float fogBackAlpha;
 
     public int baseDifficulty;
+    public int minSubwaveDifficulty;
     public int maxSubwaveDifficulty;
     public float growthFactor;
     public float minWaveDuration;

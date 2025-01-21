@@ -7,6 +7,7 @@ public class EndLevelAreaCollider : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() != null) {
             if (EndLevelArea.Instance.GetPlayerDestroyedNest()) return;
+            if (EndLevelArea.Instance.AllCreaturesKilled()) return;
 
             MusicManager.Instance.SetEndLevelMusic(2f);
             MusicManager.Instance.SetAudioTargerVolume(.3f);

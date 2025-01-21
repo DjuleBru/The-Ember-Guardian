@@ -13,13 +13,29 @@ public class PlayerSave : MonoBehaviour
         Instance = this;
     }
 
-    public void SetPrimaryActiveGunSO(GunSO gunSO) {
+    public void SavePrimaryActiveGunSO(GunSO gunSO) {
+        if (gunSO == null) return;
+        Debug.Log("SavePrimaryActiveGunSO " + gunSO);
         ES3.Save("primaryActiveGunSO", gunSO);
     }
 
     public GunSO GetPrimaryActiveGun() {
         GunSO activeGun = ES3.Load("primaryActiveGunSO", initialActiveGun);
+
         if(activeGun == null) {
+            return initialActiveGun;
+        }
+
+        return activeGun;
+    }
+
+    public void SetSecondaryActiveGunSO(GunSO gunSO) {
+        ES3.Save("secondaryActiveGunSO", gunSO);
+    }
+
+    public GunSO GetSecondaryActiveGun() {
+        GunSO activeGun = ES3.Load("secondaryActiveGunSO", initialActiveGun);
+        if (activeGun == null) {
             return initialActiveGun;
         }
 

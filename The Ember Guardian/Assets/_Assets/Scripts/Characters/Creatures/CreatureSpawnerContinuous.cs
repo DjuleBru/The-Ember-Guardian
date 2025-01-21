@@ -57,9 +57,11 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
 
             if (isCreatureSpawner) {
 
+                Creature creature = (Creature)mob;
                 if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
 
-                    mob.GetComponent<Creature>().SetAsDayCreature(false);
+                    creature.SetAsDayCreature(false);
+                    CreaturesManager.Instance.AddCreatureToNightWave(creature);
 
                 } else {
 
@@ -115,6 +117,10 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
 
     public void SetDead() {
         dead = true;
+    }
+
+    public void SetCanSpawnAtNight(bool canSpawn) {
+        canSpawnMobsAtNight = canSpawn;
     }
 
 }

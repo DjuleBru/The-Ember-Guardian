@@ -53,7 +53,7 @@ public class Structure : MonoBehaviour {
             DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
             DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
             campSide = CampZoneManager.Instance.AssignCampSide(transform.position);
-            StructuresManager.Instance.AddStructure(this);
+            PlayerCamp.Instance.AddStructure(this);
             Tent.Instance.OnStructureUpgraded += Tent_OnStructureUpgraded;
         }
 
@@ -61,7 +61,6 @@ public class Structure : MonoBehaviour {
 
         RefreshStructureUpgradeInteraction();
     }
-
 
     protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         payCurrencyUI.SetPlayerInteracting(false);

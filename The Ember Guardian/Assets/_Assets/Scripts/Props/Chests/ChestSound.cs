@@ -2,30 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChestSound : MonoBehaviour
+public class ChestSound : SoundObject
 {
     private Chest chest;
     private AudioSource audioSource;
     [SerializeField] private AudioClip startOpenChestAudioClip;
     [SerializeField] private AudioClip unlockChestAudioClip;
 
-    private float sfxVolume;
 
     private void Awake() {
         chest = GetComponentInParent<Chest>();
         audioSource = GetComponent<AudioSource>();
     }
-
-    private void Start() {
-        sfxVolume = SettingsManager.Instance.GetSfxVolume();
-        SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+    protected override void Start() {
+        base.Start();
         chest.OnChestOpened += Chest_OnChestOpened;
         chest.OnChestUnlocked += Chest_OnChestUnlocked;
     }
 
-    private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
-        sfxVolume = SettingsManager.Instance.GetSfxVolume();
-    }
 
     private void Chest_OnChestUnlocked(object sender, System.EventArgs e) {
         audioSource.PlayOneShot(unlockChestAudioClip, .75f * sfxVolume);

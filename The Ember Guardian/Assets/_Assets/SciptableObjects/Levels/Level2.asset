@@ -16,8 +16,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3a0673a7c12356241a8cba1c954bec69, type: 2}
   - {fileID: 11400000, guid: 68380da7c9c0faf45be065d4a9cda5eb, type: 2}
   merchantsUnlockedInLevel: 0200000006000000
-  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 285aab84b4a4ad648a8899052f346e6f, type: 2}
-  newMerchantTextLinesAfterLevel: []
+  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 9c7379f902ca4b74d9a3c101b87212b3, type: 2}
+  newMerchantTextLinesAfterLevel:
+  - {fileID: 11400000, guid: 748e490f4fe4f2d40bd244009d72c632, type: 2}
+  - {fileID: 11400000, guid: 5eb9be5c901d03349a40690831d066c5, type: 2}
   environmentType: 1
   levelObjectiveType: 11
   endLevelType: 11
@@ -35,6 +37,7 @@ MonoBehaviour:
   fogFrontAlpha: 0.3
   fogBackAlpha: 0.3
   baseDifficulty: 10
+  minSubwaveDifficulty: 0
   maxSubwaveDifficulty: 20
   growthFactor: 1.6
   minWaveDuration: 9

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
+  m_Name: GemMerchant_PostLevel2
+  m_EditorClassIdentifier: 
+  merchantTextLines:
+  - "Ah, the flame grows brighter, and so does the crowd. Just don\u2019t let them
+    drain <dangle a=.2>too many</dangle> of my gems."
+  - "But again, there are still others out there, waiting to be found. Don\u2019t
+    keep them waiting."
+  - 'You now have a <wiggle a=.05 f=2>choice</wiggle>. '
+  - "Continue <slide a=.2>deeper</slide> in suburbs to The Lost Greens , where you\u2019ll
+    find The Watcher. She\u2019ll help you strengthen your emberlings."
+  - Or step through the <slide a=.2>new portal</slide> to The Sacred Temple, where
+    The Burdened Architect will shape your future camps.
+  - "<wave a=.2 f=1.5>Now go</wave>. The flame doesn\u2019t wait for the hesitant."
+  showShopAfterDialog: 0

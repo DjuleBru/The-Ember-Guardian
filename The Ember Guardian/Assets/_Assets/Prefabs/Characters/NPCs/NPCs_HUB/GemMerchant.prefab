@@ -569,8 +569,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8385513270722688418}
   m_HandleRect: {fileID: 1424134487310206145}
   m_Direction: 0
-  m_Value: -0.00000011987326
-  m_Size: 0.40576535
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1604,6 +1604,9 @@ MonoBehaviour:
   itemName: Barricade 1
   greenGemCost: 0
   redGemCost: 0
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: A loose pile of crates, barely holding back the shadows.
   unlockDescription: "Barricade crates : <b>3</b> \nCrate health : <b>4</b> \nBarricade
     health : <b>12</b>"
@@ -2055,6 +2058,9 @@ MonoBehaviour:
   itemName: Barricade 2
   greenGemCost: 3
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Stacked higher with sturdier crates, offering improved defense.
   unlockDescription: 'Barricade crates : <b>4</b> (+1)
 
@@ -2504,6 +2510,9 @@ MonoBehaviour:
   itemName: Tent 1
   greenGemCost: 0
   redGemCost: 0
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: A modest shelter offering warmth and refuge. Essential for survival
     in the emberlit dark.
   unlockDescription: Your initial camp setup.
@@ -2945,6 +2954,9 @@ MonoBehaviour:
   itemName: The Orb Alchemist
   greenGemCost: 2
   redGemCost: 6
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: "A mystical vendor trading orbs for skills, shaping the player\u2019s
     destiny with active and passive powers."
   unlockDescription: 'Slain darklings will now drop Crimson Orbs.
@@ -3394,6 +3406,9 @@ MonoBehaviour:
   itemName: The Seedkeeper
   greenGemCost: 8
   redGemCost: 2
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: "An elder vendor draped in moss, selling magical seeds to grow orb-yielding
     plants for the camp\u2019s survival."
   unlockDescription: 'Unlocks <b> plant growing </b>, yielding a new source of orbs.
@@ -3808,6 +3823,9 @@ MonoBehaviour:
   itemName: Tent 3
   greenGemCost: 8
   redGemCost: 8
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: A cozy setup with a canopy and cooking corner, offering both comfort
     and resilience.
   unlockDescription: Allows to upgrade your tent <b> Level 3 </b>, offering more
@@ -4264,6 +4282,9 @@ MonoBehaviour:
   itemName: The Masked Dealers
   greenGemCost: 3
   redGemCost: 8
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Two cunning tricksters offering lethal traps to outsmart foes; surrounded
     by crates and flickering torches.
   unlockDescription: 'Unlocks <b>traps</b> that can be set to defend your camp.
@@ -4678,6 +4699,9 @@ MonoBehaviour:
   itemName: Saving Shrine
   greenGemCost: 5
   redGemCost: 3
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: "A sacred altar that anchors the player\u2019s soul, allowing progress
     to endure through the encroaching darkness."
   unlockDescription: Unlocks the saving shrine, allowing you to save your progression
@@ -4731,6 +4755,10 @@ PrefabInstance:
     - target: {fileID: 1144581588636584823, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1227246081789470437, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 67108863
       objectReference: {fileID: 0}
     - target: {fileID: 1362607122384666966, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Layer
@@ -5152,14 +5180,6 @@ PrefabInstance:
     - target: {fileID: 8741337654596259625, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Layer
       value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 9079761531545112512, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 9079761531545112512, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -29.1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3539063435249221414, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
@@ -5640,6 +5660,9 @@ MonoBehaviour:
   itemName: Barricade 3
   greenGemCost: 5
   redGemCost: 2
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: A solid barricade of tightly packed crates, standing firm against
     assaults.
   unlockDescription: 'Barricade crates : <b>5</b> (+1)
@@ -6094,6 +6117,9 @@ MonoBehaviour:
   itemName: Tent 2
   greenGemCost: 3
   redGemCost: 3
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Now equipped with a tarp, it shields the camp better and provides
     improved recovery.
   unlockDescription: Allows to upgrade your tent <b> Level 2 </b>, offering more
@@ -6532,6 +6558,9 @@ MonoBehaviour:
   itemName: Barricade 4
   greenGemCost: 7
   redGemCost: 3
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: A towering blockade of reinforced crates, nearly impenetrable to any
     foe.
   unlockDescription: 'Barricade crates : <b>7</b> (+1)
@@ -6995,6 +7024,9 @@ MonoBehaviour:
   itemName: Tower 1
   greenGemCost: 0
   redGemCost: 0
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: A shaky perch for trappers, providing basic vantage over the battlefield.
   unlockDescription: 'Trapper slots : <b>1</b>
 
@@ -7419,6 +7451,9 @@ MonoBehaviour:
   itemName: Tower 4
   greenGemCost: 3
   redGemCost: 7
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: A towering bastion of precision, enabling deadly shots and unmatched
     protection from above.
   unlockDescription: 'Trapper slots : <b>3</b> (+1)
@@ -7875,6 +7910,9 @@ MonoBehaviour:
   itemName: Ammo Crafter
   greenGemCost: 0
   redGemCost: 0
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Converts salvaged materials into ammunition, ensuring you never run
     dry in the face of danger.
   unlockDescription: Unlocks the ammmo crafter, a core device used to generate ammo
@@ -8335,6 +8373,9 @@ MonoBehaviour:
   itemName: Orb Processor
   greenGemCost: 2
   redGemCost: 2
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: A buzzing contraption that fuses minor orbs into greater orbs, unlocking
     their full potential.
   unlockDescription: Unlocks the orb processor, a device used to merge minor Orbs
@@ -8738,6 +8779,9 @@ MonoBehaviour:
   itemName: Tent 4
   greenGemCost: 10
   redGemCost: 10
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: A thriving hub of the camp, fully equipped for restoration and morale.
   unlockDescription: Allows to upgrade your tent <b> Level 4 </b>, offering more
     space to expand your camp.
@@ -9172,6 +9216,9 @@ MonoBehaviour:
   itemName: Tower 3
   greenGemCost: 2
   redGemCost: 5
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Strong and steady, the tower empowers hunters with improved range
     and stability.
   unlockDescription: 'Trapper slots : <b>2</b> (+1)
@@ -9645,6 +9692,9 @@ MonoBehaviour:
   itemName: Tower 2
   greenGemCost: 1
   redGemCost: 3
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Bolstered supports and height grant hunters better aim and coverage.
   unlockDescription: 'Trapper slots : <b>1</b>
 
@@ -10069,6 +10119,9 @@ MonoBehaviour:
   itemName: 
   greenGemCost: 7
   redGemCost: 2
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: 'This elevated radar provides vital intelligence on incoming waves:
     numbers, direction, and enemy types.'
   unlockDescription: Unlocks the <b> Observation Tower </b>, a device used to aquire

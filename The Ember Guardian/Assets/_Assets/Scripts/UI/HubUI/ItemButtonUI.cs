@@ -74,7 +74,6 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     }
 
     private void HubMerchantItem_OnHubMerchantItemEquipped(object sender, EventArgs e) {
-        Debug.Log("HubMerchantItem_OnHubMerchantItemEquipped");
         RefreshItemEquippedUI();
     }
 
@@ -155,6 +154,7 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     public void BuyItem() {
 
         if (!hubMerchantItem.GetItemUnlocked()) {
+            Debug.Log("OnAnyLockedButtonTryPress");
             OnAnyLockedButtonTryPress?.Invoke(this, EventArgs.Empty);
             return;
         }
@@ -165,14 +165,14 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
             return;
         }
 
-        if (!hubMerchantItem.CanBuyItem()) {
-            // Fail buy
-            OnAnyHubMerchantItemFailedBuy?.Invoke(this, EventArgs.Empty);
-            return;
-        }
-
         if (!hubMerchantItem.GetItemBought()) {
             // Item is not bought
+
+            if (!hubMerchantItem.CanBuyItem()) {
+                // Fail buy
+                OnAnyHubMerchantItemFailedBuy?.Invoke(this, EventArgs.Empty);
+                return;
+            }
 
             hubMerchantItem.BuyItem();
             StartBuyItemVisuals();
@@ -195,6 +195,13 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
 
             if (hubMerchantItem.GetItemUpgradeable()) {
                 // Upgrade
+
+                if (!hubMerchantItem.CanBuyItem()) {
+                    // Fail buy
+                    OnAnyHubMerchantItemFailedBuy?.Invoke(this, EventArgs.Empty);
+                    return;
+                }
+
                 hubMerchantItem.UpgradeItem();
 
             } else {

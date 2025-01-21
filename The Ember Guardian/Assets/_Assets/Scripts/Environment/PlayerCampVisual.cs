@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCampVisual : MonoBehaviour
 {
+    public static PlayerCampVisual Instance;
+
     [SerializeField] private Transform backgroundLeftFenceTransform;
     [SerializeField] private Transform backgroundRightFenceTransform;
     [SerializeField] private Animator backgroundRightFenceAnimator;
@@ -19,11 +22,21 @@ public class PlayerCampVisual : MonoBehaviour
     private bool lerpingRight;
     private float lerpTimer;
     private float lerpDuration = 4f;
+    private float lerpDurationDistanceToTimeFactor = 4f;
 
     private float left_fromScale;
     private float left_toScale;
     private float right_fromScale;
     private float right_toScale;
+
+    public event EventHandler OnCampBackgroundBuild_Start;
+    public event EventHandler OnCampBackgroundBuilt;
+
+    private bool campLimitsInitialized;
+
+    private void Awake() {
+        Instance = this;
+    }
 
     private void Start() {
         CampZoneManager.Instance.OnCampZoneLimitsChanged += CampZoneManager_OnCampZoneLimitsChanged;
@@ -33,7 +46,7 @@ public class PlayerCampVisual : MonoBehaviour
     }
 
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
-        StartCoroutine(StartLerpingAfterDelay(1f));
+        StartCoroutine(StartLerpingAfterDelay(.5f));
     }
 
     private void Update() {
@@ -50,7 +63,10 @@ public class PlayerCampVisual : MonoBehaviour
 
             if (timerNormalized >= 1) {
                 lerpingLeft = false;
+                backgroundLeftFenceAnimator.ResetTrigger("Build_Start");
                 backgroundLeftFenceAnimator.SetTrigger("Build");
+
+                OnCampBackgroundBuilt?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -66,33 +82,50 @@ public class PlayerCampVisual : MonoBehaviour
 
             if(timerNormalized >= 1) {
                 lerpingRight = false;
+                backgroundRightFenceAnimator.ResetTrigger("Build_Start");
                 backgroundRightFenceAnimator.SetTrigger("Build");
+
+                OnCampBackgroundBuilt?.Invoke(this, EventArgs.Empty);
             }
         }
     }
 
     private void CampZoneManager_OnCampZoneLimitsChanged(object sender, System.EventArgs e) {
+        if(!campLimitsInitialized) {
+            maxRightLimit = CampZoneManager.Instance.GetMaxZoneLimit();
+            maxLeftLimit = Mathf.Abs(CampZoneManager.Instance.GetMinZoneLimit());
+            campLimitsInitialized = true;
+        }
+
         float rightLimit = CampZoneManager.Instance.GetMaxZoneLimit();
         float leftLimit = Mathf.Abs(CampZoneManager.Instance.GetMinZoneLimit());
 
-        Debug.Log("rightLimit " + rightLimit);
-        Debug.Log("leftLimit " + leftLimit);
+        lerpTimer = 0;
 
-        if(rightLimit > maxRightLimit) {
+        if (rightLimit > maxRightLimit) {
+            lerpDuration =  (rightLimit - maxRightLimit)/ lerpDurationDistanceToTimeFactor;
+
             maxRightLimit = rightLimit;
             right_fromScale = backgroundRightFenceTransform.localScale.x;
             right_toScale = rightLimit / scaleToWorldUnits;
 
             lerpingRight = true;
+            OnCampBackgroundBuild_Start?.Invoke(this, EventArgs.Empty);
+            backgroundRightFenceAnimator.SetTrigger("Build_Start");
         }
 
         if(leftLimit > maxLeftLimit) {
+            lerpDuration = (leftLimit - maxLeftLimit)/ lerpDurationDistanceToTimeFactor;
+
             maxLeftLimit = leftLimit;
             left_fromScale = backgroundLeftFenceTransform.localScale.x;
             left_toScale = leftLimit / scaleToWorldUnits;
 
             lerpingLeft = true;
+            OnCampBackgroundBuild_Start?.Invoke(this, EventArgs.Empty);
+            backgroundLeftFenceAnimator.SetTrigger("Build_Start");
         }
+
     }
 
     private IEnumerator StartLerpingAfterDelay(float delay) {

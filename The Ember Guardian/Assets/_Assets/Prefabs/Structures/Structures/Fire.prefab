@@ -38132,6 +38132,8 @@ MonoBehaviour:
   greyedStructionIconColor: {r: 0, g: 0, b: 0, a: 0}
   unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  structureSpriteMaterialAnimator: {fileID: 7022429241474331367}
+  animateSpriteMaterialOnBuild: 0
   structureHasFunctionIcon: 0
   AOEFireLight: {fileID: 383687344151973833}
   fireLimitLight: {fileID: 5337861354308121070}
@@ -38198,6 +38200,11 @@ GameObject:
 --- !u!1 &6874708031155043613 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5989830058369998519, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+  m_PrefabInstance: {fileID: 884948754251948970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &7022429241474331367 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7868727550266577229, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
   m_PrefabInstance: {fileID: 884948754251948970}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8165524197477933600 stripped

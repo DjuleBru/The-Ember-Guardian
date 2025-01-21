@@ -142,28 +142,7 @@ public class Fire : Structure, IDamageable {
     }
 
     private void Update() {
-        if (extractingEmber) {
-            extractingEmberTimer -= Time.deltaTime;
-            fuelLevel -= Time.deltaTime * extractingEmberFuelRateDepletion;
-            if (extractingEmberTimer < 0) {
-                extractingEmber = false;
-                StartCoroutine(ExtractEmber());
-            }
-
-        } else if (respawningPlayer) {
-            respawningPlayerTimer -= Time.deltaTime;
-            fuelLevel -= Time.deltaTime * respawningPlayerFuelRateDepletion;
-            if (respawningPlayerTimer < 0) {
-                respawningPlayer = false;
-            }
-        }
-        else {
-            if (justFuelledFire) return;
-
-            if (fuelLevel > 0) {
-                fuelLevel -= Time.deltaTime * fuelDepletionRate;
-            }
-        }
+        HandleFuelDecrease();
 
         if (isHubFire) return;
 
@@ -188,6 +167,36 @@ public class Fire : Structure, IDamageable {
         debugFuelLevel = fuelLevel;
     }
     
+    private void HandleFuelDecrease() {
+        if (extractingEmber) {
+            extractingEmberTimer -= Time.deltaTime;
+            fuelLevel -= Time.deltaTime * extractingEmberFuelRateDepletion;
+            if (extractingEmberTimer < 0) {
+                extractingEmber = false;
+                StartCoroutine(ExtractEmber());
+            }
+
+        }
+        else if (respawningPlayer) {
+            if (isTutorial) return;
+
+            respawningPlayerTimer -= Time.deltaTime;
+            fuelLevel -= Time.deltaTime * respawningPlayerFuelRateDepletion;
+            if (respawningPlayerTimer < 0) {
+                respawningPlayer = false;
+            }
+        }
+        else {
+            if (justFuelledFire) return;
+            if (isTutorial) return;
+
+            if (fuelLevel > 0) {
+                fuelLevel -= Time.deltaTime * fuelDepletionRate;
+            }
+        }
+
+    }
+
     private void ChangeFireRadius(float fireRadius) {
         fireRadiusCollider.radius = fireRadius;
     }

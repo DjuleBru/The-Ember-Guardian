@@ -61,7 +61,7 @@ public class DayNightManager : MonoBehaviour
     }
 
     private void Update() {
-        //HandleDebugNextState();
+        HandleDebugNextState();
         if (cyclePaused) return;
 
         cycleTimer += Time.deltaTime;

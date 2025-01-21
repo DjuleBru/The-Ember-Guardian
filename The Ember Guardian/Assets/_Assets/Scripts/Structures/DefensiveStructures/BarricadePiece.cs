@@ -35,6 +35,15 @@ public class BarricadePiece : MonoBehaviour {
         animator.ResetTrigger("Idle");
     }
 
+    public void BuildBarricadePiece() {
+        gameObject.SetActive(true);
+        transform.position = initialPosition;
+
+        rb.bodyType = RigidbodyType2D.Static;
+        spriteRenderer.enabled = true;
+        animator.SetTrigger("Build");
+    }
+
     public void BarricadePieceFell() {
         Vector2 force = new Vector2(UnityEngine.Random.Range(-.5f, .5f), UnityEngine.Random.Range(2f, 4f));
         float torque = UnityEngine.Random.Range(-100f, 100f);

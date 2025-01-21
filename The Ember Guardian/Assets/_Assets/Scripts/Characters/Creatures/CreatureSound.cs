@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CreatureSound : MonoBehaviour
+public class CreatureSound : SoundObject
 {
     private AudioSource creatureAudioSource;
     private CreatureSO creatureSO;
@@ -23,15 +23,12 @@ public class CreatureSound : MonoBehaviour
     [SerializeField] private float spawnVolumeMultiplier = .75f;
 
     private bool diedRecently;
-    private float sfxVolume;
 
     private void Awake() {
         creatureAudioSource = GetComponent<AudioSource>();
     }
-
-    private void Start() {
-        sfxVolume = SettingsManager.Instance.GetSfxVolume();
-        SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+    protected override void Start() {
+        base.Start();
         creature.OnCreatureEnteredLight += Creature_OnCreatureEnteredLight;
         creature.OnCreatureDied += Creature_OnAnyCreatureDied;
         creatureAI.OnCreatureAggro += CreatureAI_OnAnyCreatureAggro;
@@ -52,10 +49,6 @@ public class CreatureSound : MonoBehaviour
 
     private void CreatureAnimator_OnFootStepTriggered(object sender, System.EventArgs e) {
         creatureAudioSource.PlayOneShot(creatureSO.footStepAudioClips[Random.Range(0, creatureSO.footStepAudioClips.Length)], creatureSO.footstepVolumeMultiplier * sfxVolume);
-    }
-
-    private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
-        sfxVolume = SettingsManager.Instance.GetSfxVolume();
     }
 
     private void Creature_OnCreatureEnteredLight(object sender, System.EventArgs e) {

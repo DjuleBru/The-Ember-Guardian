@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PortalSound : MonoBehaviour
-{
+public class PortalSound : SoundObject {
 
     [SerializeField] private float delayToPlayShortTeleportOut;
     [SerializeField] private AudioClip teleportAudioClip;
@@ -19,16 +18,13 @@ public class PortalSound : MonoBehaviour
     private AudioSource teleporterAudioSource;
     private Portal portal;
 
-    private float sfxVolume;
-
     private void Awake() {
         portal = GetComponentInParent<Portal>();
         teleporterAudioSource = GetComponent<AudioSource>();
     }
 
-    private void Start() {
-        sfxVolume = SettingsManager.Instance.GetSfxVolume();
-        SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+    protected override void Start() {
+        base.Start();
 
         if(!portal.GetPortalUnlocked()) {
             teleporterIdleAudioSource.enabled = false;
@@ -56,10 +52,6 @@ public class PortalSound : MonoBehaviour
     private void Portal_OnPortalUnlocked(object sender, System.EventArgs e) {
         teleporterIdleAudioSource.enabled = true;
         teleporterIdleAudioSource.Play();
-    }
-
-    private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
-        sfxVolume = SettingsManager.Instance.GetSfxVolume();
     }
 
     private void Portal_OnTeleporterActivatedOut(object sender, System.EventArgs e) {

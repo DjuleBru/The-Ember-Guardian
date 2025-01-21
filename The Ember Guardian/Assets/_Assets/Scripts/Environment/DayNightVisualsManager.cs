@@ -211,8 +211,13 @@ public class DayNightVisualsManager : MonoBehaviour
     private void CreaturesSpawnManager_OnRemainingNightCreaturesChanged(object sender, CreaturesSpawnManager.OnRemainingNightCreaturesChangedEventArgs e) {
         Debug.Log("CreaturesSpawnManager_OnRemainingNightCreaturesChanged");
 
-        targetMoonPositionXNormalized = (1 - e.remainingNightCreaturesNormalized) + nightDawnTransitionAnimationCurveFraction;
-        isMoonMoving = true; // Activer le mouvement
+        float newTargetMoonPositionXNormalized = (1 - e.remainingNightCreaturesNormalized) + nightDawnTransitionAnimationCurveFraction;
+
+        if(newTargetMoonPositionXNormalized > targetMoonPositionXNormalized) {
+            targetMoonPositionXNormalized = newTargetMoonPositionXNormalized;
+            isMoonMoving = true; // Activer le mouvement
+        }
+
     }
 
     private void HandleMoonPosition() {

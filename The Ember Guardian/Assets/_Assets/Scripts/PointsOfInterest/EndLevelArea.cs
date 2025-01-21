@@ -104,4 +104,8 @@ public class EndLevelArea : MonoBehaviour
         return playerDestroyedNest;
     }
 
+    public bool AllCreaturesKilled() {
+        return mobsInArea.Count == 0;
+    }
+
 }

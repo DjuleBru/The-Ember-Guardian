@@ -11,11 +11,12 @@ public class CreaturesManager : MonoBehaviour
     private List<Creature> creaturesSpawnedList = new List<Creature>();
     private List<Creature> creaturesSpawnedAtNightList = new List<Creature>();
 
+    public event EventHandler<OnCreatureAtNightKilledEventArgs> OnCreatureAtNightSpawned;
     public event EventHandler<OnCreatureAtNightKilledEventArgs> OnCreatureAtNightKilled;
     public event EventHandler OnAllCreaturesAtNightKilled;
 
     public class OnCreatureAtNightKilledEventArgs : EventArgs {
-        public Creature creatureKilled;
+        public Creature creature;
     }
 
     private void Awake() {
@@ -86,6 +87,9 @@ public class CreaturesManager : MonoBehaviour
         if (creaturesSpawnedAtNightList.Contains(creature)) return;
 
         creaturesSpawnedAtNightList.Add(creature);
+        OnCreatureAtNightSpawned?.Invoke(this, new OnCreatureAtNightKilledEventArgs {
+            creature = creature,
+        });
     }
 
     public void RemoveCreatureFromNightWave(Creature creature) {
@@ -93,10 +97,11 @@ public class CreaturesManager : MonoBehaviour
 
         creaturesSpawnedAtNightList.Remove(creature);
         OnCreatureAtNightKilled?.Invoke(this, new OnCreatureAtNightKilledEventArgs {
-            creatureKilled = creature,
+            creature = creature,
         });
 
         if (creaturesSpawnedAtNightList.Count == 0 && CreaturesSpawnManager.Instance.GetAllNightCreaturesKilled()) {
+            Debug.Log("OnAllCreaturesAtNightKilled");
             OnAllCreaturesAtNightKilled?.Invoke(this, EventArgs.Empty);
         }
     }

@@ -242,10 +242,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b67caa6784c9184d9433168c45ca0d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  structureLights: []
   structureSpriteRenderer: {fileID: 190870229499975902}
   structureFunctionIconSpriteRenderer: {fileID: 0}
   greyedStructionIconColor: {r: 0, g: 0, b: 0, a: 0}
   unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
+  structureSpriteMaterialAnimator: {fileID: 7024260119723970678}
+  animateSpriteMaterialOnBuild: 1
   structureHasFunctionIcon: 0
   shrineAnimator: {fileID: 7024260119723970678}
