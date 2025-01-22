@@ -10,4 +10,7 @@ public class GunStatModifierSO : ScriptableObject
 
     public List<int> greenGemCostList;
     public List<int> redGemCostList;
+    public List<int> blueGemCostList;
+    public List<int> yellowGemCostList;
+    public List<int> purleGemCostList;
 }

@@ -6047,7 +6047,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3111252049047024316
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6231,9 +6231,9 @@ RectTransform:
   - {fileID: 805716730524998030}
   m_Father: {fileID: 8262974258704009981}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 132.5, y: -25}
   m_SizeDelta: {x: 65, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3898712313599857185
@@ -7048,14 +7048,17 @@ MonoBehaviour:
   itemName: 
   greenGemCost: 5
   redGemCost: 5
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: 
   unlockDescription: A modest shelter offering warmth and refuge. Essential for survival
     in the emberlit dark.
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
-  isEquippedAtStart: 0
   itemUpgradeable: 0
+  itemEquipable: 0
 --- !u!222 &5960377883413854963
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7097,9 +7100,9 @@ RectTransform:
   - {fileID: 3873404736118124069}
   m_Father: {fileID: 9189556427759730414}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 119.53, y: -12.5}
   m_SizeDelta: {x: 239.06, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1154386486600588258
@@ -7293,9 +7296,9 @@ RectTransform:
   - {fileID: 7025816249132939588}
   m_Father: {fileID: 8262974258704009981}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 32.5, y: -25}
   m_SizeDelta: {x: 65, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6040753721456868065
