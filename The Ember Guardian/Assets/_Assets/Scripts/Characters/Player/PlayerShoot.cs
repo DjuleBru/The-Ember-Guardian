@@ -1,3 +1,4 @@
+using Mono.CSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -322,6 +323,17 @@ public class PlayerShoot : MonoBehaviour
         });
     }
 
+    public Gun GetGun(GunSO gunSO) {
+        Gun returnGun = null;
+        foreach (Gun gun in allGunsList) {
+            if (gun.GetGunSO() == gunSO) {
+                returnGun = gun;
+            }
+        }
+
+        return returnGun;
+    }
+
     public int GetDamagePerBullet() {
         return heldGun.GetDamagePerBullet();
     }
@@ -367,7 +379,7 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnWeaponSecondaryAbilitytPerformed(object sender, EventArgs e) {
-        bool secondaryAbilityUnlocked = MetaProgressionManager.Instance.GetGunSecondaryAbilityUnlocked(heldGun.GetGunSO()) || debugSecondaryAbilityUnlocked;
+        bool secondaryAbilityUnlocked = heldGun.GetSecondaryAbilityUnlocked() || debugSecondaryAbilityUnlocked;
 
         if (!secondaryAbilityUnlocked) return;
 
@@ -584,6 +596,12 @@ public class PlayerShoot : MonoBehaviour
 
     public bool GetReloadingHands() {
         return reloadingHands;
+    }
+
+    public void SaveAllGunStats() {
+        foreach(Gun gun in allGunsList) {
+            gun.SaveMetaParameters();
+        }
     }
 
     private void OnDestroy() {

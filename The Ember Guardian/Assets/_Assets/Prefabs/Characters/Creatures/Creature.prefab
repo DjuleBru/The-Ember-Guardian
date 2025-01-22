@@ -60,7 +60,7 @@ MonoBehaviour:
   mobHitPS_Splatter_Crit: {fileID: 1657823130492668103, guid: 51a7451741ce5eb43998d6c50bbe71b2, type: 3}
   mobHitPS_Front: {fileID: 6132586032842395638, guid: a4441990dc10e9a49b937b2828988ffb, type: 3}
   creatureSO: {fileID: 11400000, guid: 4677f0daccecce74488f30b387df3971, type: 2}
-  detectionCollider: {fileID: 4621125121055982351}
+  detectionCollider: {fileID: 9086489504018976004}
   critZoneColliders:
   - {fileID: 617523866817803319}
 --- !u!114 &2201482587927928448
@@ -6080,6 +6080,7 @@ MonoBehaviour:
   idleVolumeMultiplier: 0.5
   aggroVolumeMultiplier: 0.5
   dieVolumeMultiplier: 0.75
+  spawnVolumeMultiplier: 0.75
 --- !u!114 &1505661601195983796
 MonoBehaviour:
   m_ObjectHideFlags: 0

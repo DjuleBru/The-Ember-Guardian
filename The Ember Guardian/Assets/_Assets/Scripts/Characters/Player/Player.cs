@@ -59,6 +59,11 @@ public class Player : MonoBehaviour, IDamageable
         PlayerStats.Instance.OnPlayerMaxHPChanged += PlayerStats_OnPlayerMaxHPChanged;
         PlayerStats.Instance.OnPlayerHPRegenChanged += PlayerStats_OnPlayerHPRegenChanged;
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
+
+        hpRegenTime = PlayerStats.Instance.GetHpRegenTime();
+        if(hpRegenTime != 0) {
+            hasHPRegen = true;
+        }
     }
 
     private void Update() {

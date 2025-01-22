@@ -18,9 +18,11 @@ public class HubMerchantItem : MonoBehaviour
     [SerializeField] protected int itemLevel;
     [SerializeField] protected int maxItemLevel;
     [SerializeField] private bool isBoughtAtStart;
-    [SerializeField] private bool itemUpgradeable;
+    [SerializeField] private bool isUnlockedAtStart;
+    [SerializeField] protected bool itemUpgradeable;
     [SerializeField] private bool itemEquipable;
-    protected bool isEquippedAtStart;
+
+    [SerializeField] protected HubMerchantItemStatModifierSO linkedStatModifierSO;
 
     protected List<int> greenGemCostList;
     protected List<int> redGemCostList;
@@ -30,7 +32,8 @@ public class HubMerchantItem : MonoBehaviour
 
     public static event EventHandler OnAnyHubMerchantItemBought;
     public static event EventHandler OnAnyHubMerchantItemUpgraded;
-    public  event EventHandler OnItemMustRefreshDescriptionCard;
+    public event EventHandler OnItemMustRefreshDescriptionCard;
+    public event EventHandler OnHubMerchantItemBought;
     public event EventHandler OnHubMerchantItemUpgraded;
     public event EventHandler OnHubMerchantItemLoaded;
     public event EventHandler OnHubMerchantItemEquipped;
@@ -41,7 +44,27 @@ public class HubMerchantItem : MonoBehaviour
     protected bool itemUnlocked;
     protected bool itemEquipped;
 
+    protected List<string> statValues = new List<string>();
+    protected List<bool> statModifiedBools = new List<bool>();
+    
+    protected virtual void Awake() {
+        if (linkedStatModifierSO != null) {
+            maxItemLevel = linkedStatModifierSO.statModifierList.Count;
+
+            redGemCostList = linkedStatModifierSO.redGemCostList;
+            greenGemCostList = linkedStatModifierSO.greenGemCostList;
+            yellowGemCostList = linkedStatModifierSO.yellowGemCostList;
+            blueGemCostList = linkedStatModifierSO.blueGemCostList;
+            purpleGemCostList = linkedStatModifierSO.purleGemCostList;
+        }
+
+        itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
+        UpdateItemCost();
+    }
+
     protected virtual void Start() {
+        itemUnlocked = isUnlockedAtStart;
+
         LoadItemStatus();
     }
 
@@ -68,19 +91,15 @@ public class HubMerchantItem : MonoBehaviour
             itemLevel = maxItemLevel;
 
             if(itemEquipable) {
-                itemEquipped = MetaProgressionManager.Instance.GetMerchantItemEquipped(GetItemType());
-                isEquippedAtStart = MetaProgressionManager.Instance.GetMerchantItemEquippedAtStart(GetItemType());
-
-                if (isEquippedAtStart || itemEquipped) {
-                    itemEquipped = true;
-                }
-                else {
-                    itemEquipped = false;
-                }
+                LoadItemEquipped();
             }
         }
 
         OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected virtual void LoadItemEquipped() {
+        itemEquipped = MetaProgressionManager.Instance.GetMerchantItemEquipped(GetItemType());
     }
 
     public bool CanBuyItem() {
@@ -113,6 +132,8 @@ public class HubMerchantItem : MonoBehaviour
 
         PayGemPrice();
         UpdateItemCost();
+
+        OnHubMerchantItemBought?.Invoke(this, EventArgs.Empty);
     }
 
     public virtual void UpgradeItem() {
@@ -124,7 +145,7 @@ public class HubMerchantItem : MonoBehaviour
         OnAnyHubMerchantItemUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
-    private void PayGemPrice() {
+    protected void PayGemPrice() {
 
         UICurrencyManager.Instance.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.greenGem, greenGemCost);
         UICurrencyManager.Instance.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.redGem, redGemCost);
@@ -136,29 +157,28 @@ public class HubMerchantItem : MonoBehaviour
 
     }
 
-    private void UpdateItemCost() {
+    protected void UpdateItemCost() {
 
-        if (greenGemCostList != null && greenGemCostList.Count >= itemLevel) {
-            greenGemCost = greenGemCostList[itemLevel - 1];
+        if (greenGemCostList != null && greenGemCostList.Count > itemLevel) {
+            greenGemCost = greenGemCostList[itemLevel];
         }
 
-        if (redGemCostList != null && redGemCostList.Count >= itemLevel) {
-            redGemCost = redGemCostList[itemLevel - 1];
+        if (redGemCostList != null && redGemCostList.Count > itemLevel) {
+            redGemCost = redGemCostList[itemLevel];
         }
 
-        if (yellowGemCostList != null && yellowGemCostList.Count >= itemLevel) {
-            yellowGemCost = yellowGemCostList[itemLevel - 1];
+        if (yellowGemCostList != null && yellowGemCostList.Count > itemLevel) {
+            yellowGemCost = yellowGemCostList[itemLevel];
         }
 
-        if (blueGemCostList != null && blueGemCostList.Count >= itemLevel) {
-            blueGemCost = blueGemCostList[itemLevel - 1];
+        if (blueGemCostList != null && blueGemCostList.Count > itemLevel) {
+            blueGemCost = blueGemCostList[itemLevel];
         }
 
-        if (purpleGemCostList != null && purpleGemCostList.Count >= itemLevel) {
-            purpleGemCost = purpleGemCostList[itemLevel - 1];
+        if (purpleGemCostList != null && purpleGemCostList.Count > itemLevel) {
+            purpleGemCost = purpleGemCostList[itemLevel];
         }
     }
-
 
     public virtual void EquipOrUnequipItem() {
     }
@@ -196,11 +216,11 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public virtual List<string> GetStatValues() {
-        return null;
+        return statValues;
     }
 
     public virtual List<bool> GetStatModifierBools() {
-        return null;
+        return statModifiedBools;
     }
 
     public virtual bool GetConstantUnlockDescription() {
@@ -212,6 +232,18 @@ public class HubMerchantItem : MonoBehaviour
 
     public int GetRedGemCost() {
         return redGemCost;
+    }
+
+    public int GetBlueGemCost() {
+        return blueGemCost;
+    }
+
+    public int GetYellowGemCost() {
+        return yellowGemCost;
+    }
+
+    public int GetPurpleGemCost() {
+        return purpleGemCost;
     }
 
     public virtual string GetItemType() {

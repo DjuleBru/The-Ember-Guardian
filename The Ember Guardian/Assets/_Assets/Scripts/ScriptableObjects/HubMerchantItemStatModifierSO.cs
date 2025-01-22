@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu()]
-public class GunStatModifierSO : ScriptableObject
+public class HubMerchantItemStatModifierSO : ScriptableObject
 {
 
     public List<float> statModifierList;

@@ -10,7 +10,7 @@ public class PlayerStatsSO : ScriptableObject
     public float initialMoveSpeed;
     [BoxGroup("Movement")]
     [LabelWidth(125)]
-    public float initialRunMaxTime;
+    public float initialMaxStamina;
     [BoxGroup("Movement")]
     [LabelWidth(125)]
     public float initialExhaustionTime;
@@ -36,4 +36,9 @@ public class PlayerStatsSO : ScriptableObject
     [BoxGroup("Health")]
     [LabelWidth(125)]
     public float initialHpRegenTimer = 0f;
+
+    [BoxGroup("Other")]
+    [LabelWidth(125)]
+    public float flashlightRange = 10f;
+
 }

@@ -9,8 +9,6 @@ public class MetaProgressionManager : MonoBehaviour
     public static MetaProgressionManager Instance;
     [SerializeField] private bool destroySaveOnApplicationQuit;
 
-    public event EventHandler<OnGunChangedEventArgs> OnGunStatChanged;
-    public event EventHandler<OnGunChangedEventArgs> OnGunSecondaryAbilityUnlocked;
     public class OnGunChangedEventArgs : EventArgs {
         public GunSO.GunType gunTypeModified;
     }
@@ -256,16 +254,6 @@ public class MetaProgressionManager : MonoBehaviour
         return ES3.Load(key, false);
     }
 
-    public void SetHubMerchantItemEquippedAtStart(string merchantItemSaveString, bool equipped) {
-        string key = merchantItemSaveString + "_EquippedAtStart";
-        ES3.Save(key, equipped);
-    }
-
-    public bool GetMerchantItemEquippedAtStart(string merchantItemSaveString) {
-        string key = merchantItemSaveString + "_EquippedAtStart";
-        return ES3.Load(key, true);
-    }
-
     public void SetHubMerchantItemEquipped(string merchantItemSaveString, bool equipped) {
         string key = merchantItemSaveString + "_Equipped";
         ES3.Save(key, equipped);
@@ -352,9 +340,6 @@ public class MetaProgressionManager : MonoBehaviour
         string key = gunSO.gunType + "_secondaryAbilityUnlocked";
 
         ES3.Save(key, true);
-        OnGunSecondaryAbilityUnlocked?.Invoke(this, new OnGunChangedEventArgs {
-            gunTypeModified = gunSO.gunType,
-        });
     }
 
     public bool GetGunSecondaryAbilityUnlocked(GunSO gunSO) {
@@ -380,9 +365,6 @@ public class MetaProgressionManager : MonoBehaviour
         string key = gunSO.gunType + "_damagePerBullet";
 
         ES3.Save(key, damageToSave);
-        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
-            gunTypeModified = gunSO.gunType,
-        });
     }
 
     public int GetGunDamagePerBullet(GunSO gunSO) {
@@ -396,9 +378,6 @@ public class MetaProgressionManager : MonoBehaviour
         string key = gunSO.gunType + "_maxAmmo";
 
         ES3.Save(key, maxAmmoToSave);
-        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
-            gunTypeModified = gunSO.gunType,
-        });
     }
 
     public int GetGunMaxAmmo(GunSO gunSO) {
@@ -411,9 +390,6 @@ public class MetaProgressionManager : MonoBehaviour
         string key = gunSO.gunType + "_shotsPerClip";
 
         ES3.Save(key, shotsPerClipToSave);
-        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
-            gunTypeModified = gunSO.gunType,
-        });
     }
 
     public int GetGunPelletsPerBullet(GunSO gunSO) {
@@ -427,9 +403,6 @@ public class MetaProgressionManager : MonoBehaviour
         string key = gunSO.gunType + "_pelletsPerBullet";
 
         ES3.Save(key, pelletsPerBulletToSave);
-        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
-            gunTypeModified = gunSO.gunType,
-        });
     }
 
     public float GetGunBulletLifetime(GunSO gunSO) {
@@ -442,9 +415,6 @@ public class MetaProgressionManager : MonoBehaviour
         string key = gunSO.gunType + "_bulletLifetime";
 
         ES3.Save(key, bulletLitefime);
-        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
-            gunTypeModified = gunSO.gunType,
-        });
     }
 
     public float GetGunBulletSpeed(GunSO gunSO) {
@@ -457,9 +427,6 @@ public class MetaProgressionManager : MonoBehaviour
         string key = gunSO.gunType + "_bulletSpeed";
 
         ES3.Save(key, bulletSpeed);
-        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
-            gunTypeModified = gunSO.gunType,
-        });
     }
 
     public float GetGunReloadAccelerationFactor(GunSO gunSO) {
@@ -471,9 +438,6 @@ public class MetaProgressionManager : MonoBehaviour
         string key = gunSO.gunType + "_reloadAccelerationFactor";
 
         ES3.Save(key, reloadAccelerationFactor);
-        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
-            gunTypeModified = gunSO.gunType,
-        });
     }
 
     public float GetGunWeightAccelerationFactor(GunSO gunSO) {
@@ -485,9 +449,6 @@ public class MetaProgressionManager : MonoBehaviour
         string key = gunSO.gunType + "_weightAccelerationFactor";
 
         ES3.Save(key, weightAccelerationFactor);
-        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
-            gunTypeModified = gunSO.gunType,
-        });
     }
 
     public int GetGunShotsPerClip(GunSO gunSO) {
@@ -499,9 +460,6 @@ public class MetaProgressionManager : MonoBehaviour
     public void SetGunCooldown(GunSO gunSO, float cooldown) {
         string key = gunSO.gunType + "_cooldown";
         ES3.Save(key, cooldown);
-        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
-            gunTypeModified = gunSO.gunType,
-        });
     }
 
     public float GetGunCooldown(GunSO gunSO) {
@@ -514,9 +472,6 @@ public class MetaProgressionManager : MonoBehaviour
         string key = gunSO.gunType + "_critChance";
 
         ES3.Save(key, critChance);
-        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
-            gunTypeModified = gunSO.gunType,
-        });
     }
 
     public float GetGunCritChance(GunSO gunSO) {
@@ -529,9 +484,6 @@ public class MetaProgressionManager : MonoBehaviour
         string key = gunSO.gunType + "_reloadTime";
 
         ES3.Save(key, reloadTime);
-        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
-            gunTypeModified = gunSO.gunType,
-        });
     }
 
     public float GetGunReloadTime(GunSO gunSO) {
@@ -548,9 +500,6 @@ public class MetaProgressionManager : MonoBehaviour
         string key = gunSO.gunType + "_shootConeAngle";
 
         ES3.Save(key, shootConeAngle);
-        OnGunStatChanged?.Invoke(this, new OnGunChangedEventArgs {
-            gunTypeModified = gunSO.gunType,
-        });
     }
 
     public float GetGunShootConeAnle(GunSO gunSO) {

@@ -10,17 +10,27 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private PlayerStatsSO playerStatsSO;
 
     #region MOVEMENT
-     private float initialMoveSpeed;
-    private float initialRunMaxTime;
+    private float initialMoveSpeed;
+    private float initialMaxStamina;
     private float initialExhaustionTime;
     private float initialRunAccelerationFactor;
     private float initialAimingSightDecelerationFactor;
+    private float initialCrouchDetectionRangeReductionFactor;
 
     private float moveSpeed;
-    private float runMaxTime;
+    private float maxStamina;
     private float exhaustionTime;
     private float runAccelerationFactor;
+    private float runAccelerationFactorBuff;
     private float aimingSightDecelerationFactor;
+
+    private float runAccelerationFactorBuff_meta;
+    private float maxStaminaBuff_meta;
+    private float moveSpeedPercentBuff_meta;
+    private float runStaminaDepletionPercentBuff_meta;
+    private float crouchDetectionRangeReductionPercentBuff_meta;
+    private float rollForcePercentBuff_meta;
+    private float rollStaminaDepletionPercentBuff_meta;
 
     #endregion
 
@@ -30,6 +40,7 @@ public class PlayerStats : MonoBehaviour
     private float initialRespawnTime = 5f;
     private int initialPlayerRespawnHealth = 3;
     private float initialHpRegenTimer = 0f;
+    private float absoluteHpRegenTimer_meta = 0f;
 
     private int maxPlayerHP;
     private float damagedImmunityTime;
@@ -37,6 +48,8 @@ public class PlayerStats : MonoBehaviour
     private int playerRespawnHealth;
     private bool hasHpRegenPassive;
     private float hpRegenTime;
+
+    private int maxPlayerHPBuffAbsolute_meta;
 
     public event EventHandler OnPlayerMaxHPChanged;
     public event EventHandler OnPlayerHPRegenChanged;
@@ -47,6 +60,20 @@ public class PlayerStats : MonoBehaviour
     private float shootCooldownTime;
     private float reloadTime;
     private float handsReloadTime;
+
+    private float swapWeaponTimeReductionPercentBuff_meta;
+    private float flashlightRange;
+    private float initialSwapWeaponTimeReductionPercent = 0;
+    private float initialflashlightRange;
+    private float flashlightRangeBuff_meta;
+    #endregion
+
+    #region BACKPACK
+
+    public float backpackGemSizePercentBuff;
+    public float backpackOrbSizePercentBuff;
+    public float backpackAmmoSizePercentBuff;
+
     #endregion
 
     #region OTHER
@@ -59,37 +86,152 @@ public class PlayerStats : MonoBehaviour
     public event EventHandler OnMoveSpeedChanged;
     #endregion
 
+    public event EventHandler OnStatsLoaded;
+    public event EventHandler OnFlashlightRangeChanged;
+
     private void Awake() {
         Instance = this;
         InitializeParameters();
     }
 
     private void InitializeParameters() {
-        // LATER ADD IF VALUE SAVED THEN LOAD VALUE instead of playerStatsSO
+        LoadPlayerStatsSO();
+        LoadPlayerStatBuffs_Meta();
+        SetTempPlayerStatBuffs();
+        RefreshCurrentPlayerStats();
+    }
+
+    private void LoadPlayerStatsSO() {
+
         initialMoveSpeed = playerStatsSO.initialMoveSpeed;
-        initialRunMaxTime = playerStatsSO.initialRunMaxTime;
+        initialMaxStamina = playerStatsSO.initialMaxStamina;
         initialExhaustionTime = playerStatsSO.initialExhaustionTime;
         initialRunAccelerationFactor = playerStatsSO.initialRunAccelerationFactor;
         initialAimingSightDecelerationFactor = playerStatsSO.initialAimingSightDecelerationFactor;
+        initialflashlightRange = playerStatsSO.flashlightRange;
 
         initialMaxPlayerHP = playerStatsSO.initialMaxPlayerHP;
-        initialDamagedImmunityTime += playerStatsSO.initialDamagedImmunityTime;
+        initialDamagedImmunityTime = playerStatsSO.initialDamagedImmunityTime;
         initialRespawnTime = playerStatsSO.initialRespawnTime;
         initialPlayerRespawnHealth = playerStatsSO.initialPlayerRespawnHealth;
-        initialHpRegenTimer += playerStatsSO.initialHpRegenTimer;
+        initialHpRegenTimer = playerStatsSO.initialHpRegenTimer;
 
-        moveSpeed = playerStatsSO.initialMoveSpeed;
-        runMaxTime = playerStatsSO.initialRunMaxTime;
-        exhaustionTime = playerStatsSO.initialExhaustionTime;
-        runAccelerationFactor = playerStatsSO.initialRunAccelerationFactor;
-        aimingSightDecelerationFactor = playerStatsSO.initialAimingSightDecelerationFactor;
-
-        maxPlayerHP = playerStatsSO.initialMaxPlayerHP;
-        damagedImmunityTime += playerStatsSO.initialDamagedImmunityTime;
-        respawnTime = playerStatsSO.initialRespawnTime;
-        playerRespawnHealth = playerStatsSO.initialPlayerRespawnHealth;
-        hpRegenTime += playerStatsSO.initialHpRegenTimer;
     }
+
+    private void LoadPlayerStatBuffs_Meta() {
+        exhaustionTime = ES3.Load("exhaustionTime", 0);
+
+        maxStaminaBuff_meta = ES3.Load("maxStaminaBuff_meta", 0f);
+        moveSpeedPercentBuff_meta = ES3.Load("moveSpeedPercentBuff_meta", 0f);
+        swapWeaponTimeReductionPercentBuff_meta = ES3.Load("swapWeaponTimeReductionPercentBuff_meta", 0f);
+        crouchDetectionRangeReductionPercentBuff_meta = ES3.Load("crouchDetectionRangeReductionPercentBuff_meta", 0f);
+        runStaminaDepletionPercentBuff_meta = ES3.Load("runStaminaDepletionPercentBuff_meta", 0f);
+        rollForcePercentBuff_meta = ES3.Load("rollForcePercentBuff_meta", 0f);
+        rollStaminaDepletionPercentBuff_meta = ES3.Load("rollStaminaDepletionPercentBuff_meta", 0f);
+        flashlightRangeBuff_meta = ES3.Load("flashlightRangeBuff_meta", 0f);
+        absoluteHpRegenTimer_meta = ES3.Load("absoluteHpRegenTimer_meta", 0f);
+        maxPlayerHPBuffAbsolute_meta = ES3.Load("maxPlayerHPBuffAbsolute_meta", 0);
+
+        backpackGemSizePercentBuff = ES3.Load("backpackGemSizePercentBuff", 0f);
+        backpackAmmoSizePercentBuff = ES3.Load("backpackAmmoSizePercentBuff", 0f);
+        backpackOrbSizePercentBuff = ES3.Load("backpackOrbSizePercentBuff", 0f);
+    }
+
+    private void SetTempPlayerStatBuffs() {
+        runAccelerationFactorBuff = runAccelerationFactorBuff_meta;
+    }
+
+    private void RefreshCurrentPlayerStats() {
+        moveSpeed = initialMoveSpeed + initialMoveSpeed * moveSpeedPercentBuff_meta / 100;
+        maxStamina = initialMaxStamina + initialMaxStamina * maxStaminaBuff_meta / 100;
+        exhaustionTime = initialExhaustionTime - initialExhaustionTime * exhaustionTime / 100;
+        runAccelerationFactor = initialRunAccelerationFactor + initialRunAccelerationFactor * runAccelerationFactorBuff_meta / 100;
+        flashlightRange = initialflashlightRange + flashlightRangeBuff_meta;
+
+        maxPlayerHP = initialMaxPlayerHP + maxPlayerHPBuffAbsolute_meta;
+        hpRegenTime = initialHpRegenTimer + absoluteHpRegenTimer_meta;
+
+        damagedImmunityTime = initialDamagedImmunityTime;
+        playerRespawnHealth = initialPlayerRespawnHealth;
+        aimingSightDecelerationFactor = initialAimingSightDecelerationFactor;
+        respawnTime = initialRespawnTime;
+    }
+
+
+    #region SET PLAYER PERMANENT BUFFS
+
+    public void SetMoveSpeedBuff(float moveSpeedBuff) {
+        this.moveSpeedPercentBuff_meta = moveSpeedBuff;
+        RefreshCurrentPlayerStats();
+
+        OnMoveSpeedChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SetMaxStaminaBuff(float maxStaminaBuff) {
+        this.maxStaminaBuff_meta = maxStaminaBuff;
+        RefreshCurrentPlayerStats();
+    }
+
+    public void SetRunAccelerationFactorBuff(float runAccelerationFactorBuff) {
+        this.runAccelerationFactorBuff_meta = runAccelerationFactorBuff;
+        RefreshCurrentPlayerStats();
+    }
+    public void SetRunStaminaCostBuff(float runStaminaCost) {
+        this.runStaminaDepletionPercentBuff_meta = runStaminaCost;
+        RefreshCurrentPlayerStats();
+    }
+
+    public void SetCrouchDetectionRangeBuff(float crouchDetectionRangeBuff) {
+        this.crouchDetectionRangeReductionPercentBuff_meta = crouchDetectionRangeBuff;
+        RefreshCurrentPlayerStats();
+    }
+
+    public void SetRollForceBuff(float rollForcePercentBuff) {
+        this.rollForcePercentBuff_meta = rollForcePercentBuff;
+        RefreshCurrentPlayerStats();
+    }
+    public void SetRollStaminaCostBuff(float rollStaminaCostBuff) {
+        this.rollStaminaDepletionPercentBuff_meta = rollStaminaCostBuff;
+        RefreshCurrentPlayerStats();
+    }
+
+    public void SetMaxPlayerHPBuff(int maxPlayerHPBuffAbsolute) {
+        this.maxPlayerHPBuffAbsolute_meta = maxPlayerHPBuffAbsolute;
+        RefreshCurrentPlayerStats();
+    }
+
+    public void SetSwapWeaponTimeReductionPercent(float swapWeaponTimeReductionPercent) {
+        this.swapWeaponTimeReductionPercentBuff_meta = swapWeaponTimeReductionPercent;
+        RefreshCurrentPlayerStats();
+    }
+
+    public void SetFlashlightRangeBuff(int flashlightRangeBuff) {
+        this.flashlightRangeBuff_meta = flashlightRangeBuff;
+        RefreshCurrentPlayerStats();
+        OnFlashlightRangeChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SetBackpackOrbSizeBuff(float orbSizeBuff) {
+        this.backpackOrbSizePercentBuff = orbSizeBuff;
+        RefreshCurrentPlayerStats();
+    }
+    public void SetBackpackGemSizeBuff(float gemSizeBuff) {
+        this.backpackGemSizePercentBuff = gemSizeBuff;
+        RefreshCurrentPlayerStats();
+    }
+    public void SetBackpackAmmoSizeBuff(float ammoSizeBuff) {
+        this.backpackAmmoSizePercentBuff = ammoSizeBuff;
+        RefreshCurrentPlayerStats();
+    }
+
+    public void SetHpRegenTimeAbsolute(float hpRegenTime) {
+        absoluteHpRegenTimer_meta = hpRegenTime;
+        RefreshCurrentPlayerStats();
+
+        OnPlayerHPRegenChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    #endregion
 
     #region GET PARAMETERS
 
@@ -117,8 +259,8 @@ public class PlayerStats : MonoBehaviour
         return moveSpeed;
     }
 
-    public float GetRunMaxTime() {
-        return runMaxTime;
+    public float GetMaxStamina() {
+        return maxStamina;
     }
 
     public float GetExhaustionTime() {
@@ -153,6 +295,10 @@ public class PlayerStats : MonoBehaviour
         return shootCooldownTime;
     }
 
+    public float GetFlashlightRange() {
+        return flashlightRange;
+    }
+
     #endregion
 
     #region GET INITIAL PARAMETERS
@@ -181,8 +327,8 @@ public class PlayerStats : MonoBehaviour
         return initialMoveSpeed;
     }
 
-    public float GetInitialRunMaxTime() {
-        return initialRunMaxTime;
+    public float GetInitialMaxStamina() {
+        return initialMaxStamina;
     }
 
     public float GetInitialExhaustionTime() {
@@ -192,7 +338,53 @@ public class PlayerStats : MonoBehaviour
     public float GetInitialRunAccelerationFactor() {
         return initialRunAccelerationFactor;
     }
+    public float GetInitialSwapWeaponTimeReductionPercent() {
+        return initialSwapWeaponTimeReductionPercent;
+    }
+    public float GetInitialFlashlightRange() {
+        return initialflashlightRange;
+    }
+    public float GetInitialCrouchDetectionRangeReductionFactor() {
+        return initialCrouchDetectionRangeReductionFactor;
+    }
+    #endregion
 
+    #region GET PARAMETER BUFFS META
+
+    public float GetRunAccelerationFactorBuff_Meta() {
+        return runAccelerationFactorBuff_meta;
+    }
+
+    public float GetSwapWeaponTimeReductionPercentBuff_Meta() {
+        return swapWeaponTimeReductionPercentBuff_meta;
+    }
+
+    public float GetCrouchDetectionRangeReductionPercentBuff_Meta() {
+        return crouchDetectionRangeReductionPercentBuff_meta;
+    }
+
+    public float GetRunStaminaDepletionPercentBuff_Meta() {
+        return runStaminaDepletionPercentBuff_meta;
+    }
+
+    public float GetMoveSpeedPercentBuff_Meta() {
+        return moveSpeedPercentBuff_meta;
+    }
+    public float GetRollForcePercentBuff_Meta() {
+        return rollForcePercentBuff_meta;
+    }
+    public float GetRollStaminaDepletionPercentBuff_Meta() {
+        return rollStaminaDepletionPercentBuff_meta;
+    }
+    public float GetBackpackGemSizePercentBuff_Meta() {
+        return backpackGemSizePercentBuff;
+    }
+    public float GetBackpackAmmoSizePercentBuff_Meta() {
+        return backpackAmmoSizePercentBuff;
+    }
+    public float GetBackpackOrbSizePercentBuff_Meta() {
+        return backpackOrbSizePercentBuff;
+    }
     #endregion
 
     #region SET SHOOT PARAMETERS
@@ -209,38 +401,7 @@ public class PlayerStats : MonoBehaviour
     }
     #endregion
 
-    public float GetSkillStat(SkillItem skillItem) {
-        float skillStat = 0f;
-
-        switch (skillItem.skillType) {
-
-            case SkillItem.SkillType.passiveMaxHPIncrease:
-                skillStat = maxPlayerHP;
-            break;
-
-            case SkillItem.SkillType.passiveShieldGenerator:
-                skillStat = shieldRegenTime;
-            break;
-
-            case SkillItem.SkillType.passiveRunAccelerationFactorBuff:
-                skillStat = runAccelerationFactor;
-            break;
-
-            case SkillItem.SkillType.passiveHealthRegen:
-                skillStat = hpRegenTime;
-            break;
-            case SkillItem.SkillType.passiveAmmoGenerator:
-                skillStat = ammoRegenTime;
-            break;
-            case SkillItem.SkillType.passiveMoveSpeedBuff:
-                skillStat = moveSpeed;
-            break;
-        }
-
-        return skillStat;
-    }
-
-    #region BUFF PARAMETERS
+    #region BUFF TEMP PARAMETERS
 
     public void BuffMoveSpeed(float buffAmount) {
         Debug.Log("BuffMoveSpeed " + initialMoveSpeed * buffAmount);
@@ -254,23 +415,23 @@ public class PlayerStats : MonoBehaviour
     }
 
     public void BuffShootCooldown(float buffAmount) {
-        Debug.Log("BuffShootCooldown " + buffAmount);
+        //Debug.Log("BuffShootCooldown " + buffAmount);
         shootCooldownTime /= buffAmount;
     }
 
     public void DebuffShootCooldown(float buffAmount) {
-        Debug.Log("DebuffShootCooldown " +buffAmount);
+        //Debug.Log("DebuffShootCooldown " +buffAmount);
         shootCooldownTime *= buffAmount;
     }
 
     public void BuffRunAccelerationFactor(float buffAmount) {
         Debug.Log("BuffRunAccelerationFactor " + (initialRunAccelerationFactor-1) * buffAmount);
-        runAccelerationFactor += (initialRunAccelerationFactor - 1) *  buffAmount;
+        runAccelerationFactorBuff += (initialRunAccelerationFactor - 1) *  buffAmount;
     }
 
-    public void BuffRunMaxTime(float buffAmount) {
-        Debug.Log("BuffRunMaxTime " + buffAmount);
-        runMaxTime += buffAmount;
+    public void BuffStamina(float buffAmount) {
+        Debug.Log("BuffStamina " + buffAmount);
+        maxStamina += buffAmount;
     }
 
     public void BuffMaxHP(int buffAmount) {
@@ -296,4 +457,54 @@ public class PlayerStats : MonoBehaviour
         chanceToDropx2 += buffAmount;
     }
     #endregion
+
+    public void SaveMetaBuffValues() {
+        ES3.Save("moveSpeedPercentBuff_meta", maxStaminaBuff_meta);
+        ES3.Save("moveSpeedPercentBuff_meta", moveSpeedPercentBuff_meta);
+        ES3.Save("swapWeaponTimeReductionPercentBuff_meta", swapWeaponTimeReductionPercentBuff_meta);
+        ES3.Save("crouchDetectionRangeReductionPercentBuff_meta", crouchDetectionRangeReductionPercentBuff_meta);
+        ES3.Save("runStaminaDepletionPercentBuff_meta", runStaminaDepletionPercentBuff_meta);
+        ES3.Save("rollForcePercentBuff_meta", rollForcePercentBuff_meta);
+        ES3.Save("rollStaminaDepletionPercentBuff_meta", rollStaminaDepletionPercentBuff_meta);
+        ES3.Save("maxPlayerHPBuffAbsolute_meta", maxPlayerHPBuffAbsolute_meta);
+        ES3.Save("absoluteHpRegenTimer_meta", absoluteHpRegenTimer_meta);
+
+
+        ES3.Save("flashlightRangeBuff_meta", flashlightRangeBuff_meta);
+
+        ES3.Save("backpackGemSizePercentBuff", backpackGemSizePercentBuff);
+        ES3.Save("backpackAmmoSizePercentBuff", backpackAmmoSizePercentBuff);
+        ES3.Save("backpackOrbSizePercentBuff", backpackOrbSizePercentBuff);
+    }
+
+    public float GetSkillStat(SkillItem skillItem) {
+        float skillStat = 0f;
+
+        switch (skillItem.skillType) {
+
+            case SkillItem.SkillType.passiveMaxHPIncrease:
+                skillStat = maxPlayerHP;
+                break;
+
+            case SkillItem.SkillType.passiveShieldGenerator:
+                skillStat = shieldRegenTime;
+                break;
+
+            case SkillItem.SkillType.passiveRunAccelerationFactorBuff:
+                skillStat = runAccelerationFactorBuff_meta;
+                break;
+
+            case SkillItem.SkillType.passiveHealthRegen:
+                skillStat = hpRegenTime;
+                break;
+            case SkillItem.SkillType.passiveAmmoGenerator:
+                skillStat = ammoRegenTime;
+                break;
+            case SkillItem.SkillType.passiveMoveSpeedBuff:
+                skillStat = moveSpeed;
+                break;
+        }
+
+        return skillStat;
+    }
 }

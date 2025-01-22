@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +39,8 @@ public class Gun : MonoBehaviour
     protected float targetAngle; // L'angle cible vers lequel le cône doit se diriger
     protected float focusedBlastAngle = 1f; // L'angle cible vers lequel le cône doit se diriger
 
+    public static event EventHandler OnAnyGunMaxAmmoChanged;
+
 
     protected void Start() {
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
@@ -49,16 +52,6 @@ public class Gun : MonoBehaviour
         PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAim_OnPlayerAimSightEnded;
         PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
         PlayerShoot.Instance.OnPlayerFocusBlastStopped += PlayerShoot_OnPlayerFocusBlastStopped;
-
-        if(MetaProgressionManager.Instance != null ) {
-            MetaProgressionManager.Instance.OnGunStatChanged += MetaProgressionManager_OnGunStatChanged;
-        }
-    }
-
-    protected void MetaProgressionManager_OnGunStatChanged(object sender, MetaProgressionManager.OnGunChangedEventArgs e) {
-        if(e.gunTypeModified == gunSO.gunType) {
-            RefreshGunStats();
-        }
     }
 
     protected void Update() {
@@ -102,7 +95,6 @@ public class Gun : MonoBehaviour
         targetAngle = lmgSetupAngle;
         lerpingGunAngle = true;
     }
-
 
     protected void PlayerAim_OnPlayerAimSightEnded(object sender, System.EventArgs e) {
         // Réduit l'angle pour resserrer le cône
@@ -232,8 +224,20 @@ public class Gun : MonoBehaviour
     public int GetMaxAmmo() {
         return maxAmmo;
     }
+    public int GetShotsPerClip() {
+        return shotsPerClip;
+    }
     public int GetDamagePerBullet() {
         return damagePerBullet;
+    }
+    public int GetPelletsPerBullet() {
+        return pelletsPerBullet;
+    }
+    public float GetDefaultShootAngle() {
+        return defaultAngle;
+    }
+    public float GetBulletLifetime() {
+        return bulletLifetime;
     }
     public float GetReloadTime() {
         return reloadTime;
@@ -254,6 +258,10 @@ public class Gun : MonoBehaviour
     public float GetWeightAccelerationFactor() {
         return weightAccelerationFactor;
     }
+
+    public bool GetSecondaryAbilityUnlocked() {
+        return secondaryAbilityUnlocked;
+    }
     #endregion
 
     #region SET PARAMETERS
@@ -268,7 +276,57 @@ public class Gun : MonoBehaviour
 
     public void SetCurrentBullet(int currentBullet) {
         this.currentBullet = currentBullet;
-    } 
+    }
 
     #endregion
+
+    #region SET META PARAMETERS
+
+    public void SetSecondaryAbilityUnlocked() {
+        secondaryAbilityUnlocked = true;
+    }
+
+    public void SetBulletDamage_Meta(int bulletDamage) {
+        this.damagePerBullet = bulletDamage;
+    }
+    public void SetShotsPerClip_Meta(int shotsPerClip) {
+        this.shotsPerClip = shotsPerClip;
+    }
+    public void SetMaxAmmo_Meta(int maxAmmo) {
+        this.maxAmmo = maxAmmo;
+        OnAnyGunMaxAmmoChanged?.Invoke(this, EventArgs.Empty);
+    }
+    public void SetCooldownTime_Meta(float cooldownTime) {
+        this.cooldownTime = cooldownTime;
+    }
+    public void SetReloadTime_Meta(float reloadTime) {
+        this.reloadTime = reloadTime;
+    }
+    public void SetCritChange_Meta(float critChance) {
+        this.critChance = critChance;
+    }
+    public void SetShootConeAngle_Meta(float shootConeAngle) {
+        this.defaultAngle = shootConeAngle;
+    }
+    public void SetPelletsPerBullet_Meta(int pelletsPerBullet) {
+        this.pelletsPerBullet = pelletsPerBullet;
+    }
+
+    public void SetGunBulletLifetime_Meta(float bulletLifetime) {
+        this.bulletLifetime = bulletLifetime;
+    }
+
+    #endregion
+
+    public void SaveMetaParameters() {
+        MetaProgressionManager.Instance.SetGunDamagePerBullet(gunSO, damagePerBullet);
+        MetaProgressionManager.Instance.SetGunShotsPerClip(gunSO, shotsPerClip);
+        MetaProgressionManager.Instance.SetGunMaxAmmo(gunSO, maxAmmo);
+        MetaProgressionManager.Instance.SetGunCooldown(gunSO, cooldownTime);
+        MetaProgressionManager.Instance.SetGunReloadTime(gunSO, reloadTime);
+        MetaProgressionManager.Instance.SetGunCritChance(gunSO, critChance);
+        MetaProgressionManager.Instance.SetGunShootConeAnle(gunSO, defaultAngle);
+        MetaProgressionManager.Instance.SetGunPelletsPerBullet(gunSO, pelletsPerBullet);
+        MetaProgressionManager.Instance.SetGunBulletLifetime(gunSO, bulletLifetime);
+    }
 }

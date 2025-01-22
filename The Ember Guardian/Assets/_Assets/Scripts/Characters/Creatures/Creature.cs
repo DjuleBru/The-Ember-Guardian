@@ -7,7 +7,7 @@ public class Creature : Mob
 {
 
     [SerializeField] private CreatureSO creatureSO;
-    [SerializeField] private CircleCollider2D detectionCollider;
+    [SerializeField] private CreatureDetectionCollider detectionCollider;
     [SerializeField] private List<Collider2D> critZoneColliders;
 
     private Rigidbody2D rb;
@@ -28,6 +28,8 @@ public class Creature : Mob
     private float detectionRangeIncreasedTimer;
     private float detectionRangeIncreasedTime = 5f;
     private bool detectionRangeIncreased;
+
+    private bool playerCrouchRangeDecreased;
     private float playerShootDetectionRangeMultiplier = 1.75f;
 
     private void Awake() {
@@ -38,6 +40,8 @@ public class Creature : Mob
 
     private void Start() {
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
+        PlayerMovement.Instance.OnPlayerCrouched += PlayerMovement_OnPlayerCrouched;
+        PlayerMovement.Instance.OnPlayerCrouchedEnded += PlayerMovement_OnPlayerCrouchedEnded;
     }
 
     private void OnEnable() {
@@ -123,16 +127,28 @@ public class Creature : Mob
 
         if (dayCreature) {
             float radiusRandomizer = UnityEngine.Random.Range(-creatureSO.detectionRange_Day / 5, creatureSO.detectionRange_Day / 5);
-            detectionCollider.radius = creatureSO.detectionRange_Day + radiusRandomizer;
+            detectionCollider.SetRadius(creatureSO.detectionRange_Day + radiusRandomizer);
         }
         else {
-            detectionCollider.radius = creatureSO.detectionRange_Night;
+            detectionCollider.SetRadius(creatureSO.detectionRange_Night);
         }
+    }
+
+    private void PlayerMovement_OnPlayerCrouchedEnded(object sender, EventArgs e) {
+        float playerCrouchDetectionRangeDivider = PlayerStats.Instance.GetCrouchDetectionRangeReductionPercentBuff_Meta()/100f;
+        detectionCollider.DebuffRadius(playerCrouchDetectionRangeDivider);
+    }
+
+    private void PlayerMovement_OnPlayerCrouched(object sender, EventArgs e) {
+        float playerCrouchDetectionRangeDivider = PlayerStats.Instance.GetCrouchDetectionRangeReductionPercentBuff_Meta()/100f;
+        detectionCollider.BuffRadius(playerCrouchDetectionRangeDivider);
+
+        playerCrouchRangeDecreased = true;
     }
 
     private void PlayerShoot_OnPlayerShotProjectile(object sender, EventArgs e) {
         if (detectionRangeIncreased) return;
-        if (Mathf.Abs(Player.Instance.transform.position.x - transform.position.x) > detectionCollider.radius * playerShootDetectionRangeMultiplier) return;
+        if (Mathf.Abs(Player.Instance.transform.position.x - transform.position.x) > detectionCollider.GetRadius() * playerShootDetectionRangeMultiplier) return;
         // Player is too far
 
         detectionRangeIncreased = true;
@@ -143,9 +159,9 @@ public class Creature : Mob
     private void CreatureHeardPlayerShoot(bool heard) {
 
         if (heard) {
-            detectionCollider.radius *= playerShootDetectionRangeMultiplier;
+            detectionCollider.BuffRadius(playerShootDetectionRangeMultiplier);
         } else {
-            detectionCollider.radius /= playerShootDetectionRangeMultiplier;
+            detectionCollider.DebuffRadius(playerShootDetectionRangeMultiplier);
         }
     }
 
@@ -167,6 +183,8 @@ public class Creature : Mob
 
     private void OnDestroy() {
         PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
+        PlayerMovement.Instance.OnPlayerCrouched -= PlayerMovement_OnPlayerCrouched;
+        PlayerMovement.Instance.OnPlayerCrouchedEnded -= PlayerMovement_OnPlayerCrouchedEnded;
     }
 
 

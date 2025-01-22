@@ -283,7 +283,10 @@ public class PlayerMovement : MonoBehaviour {
             rollDir = PlayerAim.Instance.GetAimDirFloat();
         }
 
-        Vector2 force = new Vector2(rollDir * rollForce, 2f);
+        float rollForceMetaBuff = rollForce * PlayerStats.Instance.GetRollForcePercentBuff_Meta() / 100f;
+        Vector2 force = new Vector2(rollDir * (rollForce + rollForceMetaBuff), 2f);
+
+        Debug.Log(force);
         rb.AddForce(force, ForceMode2D.Impulse);
 
         isJumping = false;
@@ -291,7 +294,10 @@ public class PlayerMovement : MonoBehaviour {
         isJumpTop = false;
         isJumpDown = false;
 
-        staminaTimer += rollExhaustionAmount;
+        float rollExhaustionAmountBuff = rollExhaustionAmount * PlayerStats.Instance.GetRollStaminaDepletionPercentBuff_Meta()/100;
+        staminaTimer += rollExhaustionAmount - rollExhaustionAmountBuff;
+
+        Debug.Log(rollExhaustionAmount - rollExhaustionAmountBuff);
         OnPlayerRoll?.Invoke(this, EventArgs.Empty);
         Invoke("EndRoll", rollAnimationDuration);
     }
@@ -344,26 +350,26 @@ public class PlayerMovement : MonoBehaviour {
 
         // Recover only when not exhausted anymore
         if (!isRunning && !isExhausted && staminaTimer > 0) {
-            if(staminaTimer > PlayerStats.Instance.GetRunMaxTime()) {
-                staminaTimer = PlayerStats.Instance.GetRunMaxTime();
+            if(staminaTimer > PlayerStats.Instance.GetMaxStamina()) {
+                staminaTimer = PlayerStats.Instance.GetMaxStamina();
             }
             staminaTimer -= Time.deltaTime * runRecoverFactor;
         }
 
 
         if (isAlmostExhausted) {
-            if (staminaTimer < PlayerStats.Instance.GetRunMaxTime() * runTimePercentageBeforeWarningExhaustion) {
+            if (staminaTimer < PlayerStats.Instance.GetMaxStamina() * runTimePercentageBeforeWarningExhaustion) {
                 isAlmostExhausted = false;
                 OnPlayerAlmostExhaustionStopped?.Invoke(this, EventArgs.Empty);
             }
         }
 
         if (isRunning && (moveSpeed != 0)) {
-            staminaTimer += Time.deltaTime;
+            staminaTimer += Time.deltaTime * (1 - PlayerStats.Instance.GetRunStaminaDepletionPercentBuff_Meta()/100f);
         }
 
         // Almost exhausted
-        if (staminaTimer > PlayerStats.Instance.GetRunMaxTime() * runTimePercentageBeforeWarningExhaustion) {
+        if (staminaTimer > PlayerStats.Instance.GetMaxStamina() * runTimePercentageBeforeWarningExhaustion) {
 
             if (!isAlmostExhausted) {
                 isAlmostExhausted = true;
@@ -381,7 +387,7 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         // Exhausted
-        if (staminaTimer > PlayerStats.Instance.GetRunMaxTime() && !isExhausted) {
+        if (staminaTimer > PlayerStats.Instance.GetMaxStamina() && !isExhausted) {
             StartExhausted();
 
             if(isRunning) {

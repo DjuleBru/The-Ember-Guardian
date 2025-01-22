@@ -19,6 +19,11 @@ public class PlayerSave : MonoBehaviour
         ES3.Save("primaryActiveGunSO", gunSO);
     }
 
+    public void SavePlayerMetaStats() {
+        PlayerStats.Instance.SaveMetaBuffValues();
+        PlayerShoot.Instance.SaveAllGunStats();
+    } 
+
     public GunSO GetPrimaryActiveGun() {
         GunSO activeGun = ES3.Load("primaryActiveGunSO", initialActiveGun);
 

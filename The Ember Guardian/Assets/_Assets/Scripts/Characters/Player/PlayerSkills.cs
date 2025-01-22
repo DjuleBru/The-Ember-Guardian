@@ -262,7 +262,7 @@ public class PlayerSkills : MonoBehaviour
 
                 case SkillItem.SkillType.passiveRunMaxTimeBuff:
 
-                    PlayerStats.Instance.BuffRunMaxTime(relativeBuffEffectValue);
+                    PlayerStats.Instance.BuffStamina(relativeBuffEffectValue);
 
                     break;
 

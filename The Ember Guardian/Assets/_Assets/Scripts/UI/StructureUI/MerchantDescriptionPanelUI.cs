@@ -101,8 +101,8 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
                 break;
 
             case SkillItem.SkillType.passiveRunMaxTimeBuff:
-                previousStatText = "(" + (int)(PlayerStats.Instance.GetRunMaxTime()) + "s)";
-                currentStatText = ((int)(PlayerStats.Instance.GetRunMaxTime() + relativeStatValue)).ToString() + "s";
+                previousStatText = "(" + (int)(PlayerStats.Instance.GetMaxStamina()) + "s)";
+                currentStatText = ((int)(PlayerStats.Instance.GetMaxStamina() + relativeStatValue)).ToString() + "s";
                 break;
 
             case SkillItem.SkillType.passiveRunAccelerationFactorBuff:

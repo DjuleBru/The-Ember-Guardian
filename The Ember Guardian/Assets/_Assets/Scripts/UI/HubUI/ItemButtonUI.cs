@@ -62,12 +62,14 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         OnAnyOutputLinkUnlocked += ItemButtonUI_OnAnyOutputLinkUnlocked;
         OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
         OnAnyButtonHovered += ItemButtonUI_OnAnyButtonHovered;
+        hubMerchantItem.OnHubMerchantItemBought += HubMerchantItem_OnHubMerchantItemBought;
         hubMerchantItem.OnHubMerchantItemLoaded += HubMerchantItem_OnHubMerchantItemLoaded;
         hubMerchantItem.OnHubMerchantItemUpgraded += HubMerchantItem_OnHubMerchantItemUpgraded;
         hubMerchantItem.OnItemMustRefreshDescriptionCard += HubMerchantItem_OnItemMustRefreshDescriptionCard;
         hubMerchantItem.OnHubMerchantItemEquipped += HubMerchantItem_OnHubMerchantItemEquipped;
         hubMerchantItem.OnHubMerchantItemUnequipped += HubMerchantItem_OnHubMerchantItemUnequipped;
     }
+
 
     private void HubMerchantItem_OnHubMerchantItemUnequipped(object sender, EventArgs e) {
         RefreshItemEquippedUI();
@@ -79,6 +81,14 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
 
     private void HubMerchantItem_OnItemMustRefreshDescriptionCard(object sender, EventArgs e) {
         RefreshDescriptionCard();
+    }
+
+    private void HubMerchantItem_OnHubMerchantItemBought(object sender, EventArgs e) {
+        RefreshDescriptionCard(); 
+        
+        if (hubMerchantItem.GetItemUpgradeable()) {
+            RefreshItemLevelUI();
+        }
     }
 
     private void HubMerchantItem_OnHubMerchantItemUpgraded(object sender, EventArgs e) {
@@ -122,8 +132,12 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
 
         int greenGemCost = hubMerchantItem.GetGreenGemCost();
         int redGemCost = hubMerchantItem.GetRedGemCost();
+        int blueGemCost = hubMerchantItem.GetBlueGemCost();
+        int yellowGemCost = hubMerchantItem.GetYellowGemCost();
+        int purpleGemCost = hubMerchantItem.GetPurpleGemCost();
 
-        descriptionCard.SetDescriptionCardText(itemName, constantUnlockDescription, itemStatDescription, itemDescription, greenGemCost, redGemCost, itemStatValues, itemStatModifierValues);
+        descriptionCard.SetDescriptionCardText(itemName, constantUnlockDescription, itemStatDescription, itemDescription, itemStatValues, itemStatModifierValues);
+        descriptionCard.SetDescriptionCardCost(greenGemCost, redGemCost, blueGemCost, yellowGemCost, purpleGemCost);
 
         if(!hubMerchantItem.GetItemUpgradeable()) {
             

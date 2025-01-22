@@ -74,7 +74,7 @@ public class HUBManager : MonoBehaviour
             } else {
 
                 // Player is coming back from a level
-                SaveHub();
+                //SaveHub();
 
             }
 
@@ -266,6 +266,7 @@ public class HUBManager : MonoBehaviour
         MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(nextArrivalThroughPortal);
 
         PlayerSave.Instance.SavePrimaryActiveGunSO(PlayerShoot.Instance.GetPrimaryGunSO());
+        PlayerSave.Instance.SavePlayerMetaStats();
 
         foreach (HubMerchant hubMerchant in hubMerchantList) {
             hubMerchant.SaveMerchant();

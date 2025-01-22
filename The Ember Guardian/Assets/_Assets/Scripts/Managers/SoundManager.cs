@@ -159,7 +159,6 @@ public class SoundManager : MonoBehaviour
     }
 
     private void HubMerchantItem_OnAnyHubMerchantItemUpgraded(object sender, System.EventArgs e) {
-        Debug.Log(soundRefsSO.upgradeHubMerchantItem);
         PlaySound2D(soundRefsSO.upgradeHubMerchantItem, .5f);
     }
 

@@ -49,13 +49,18 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn;
         Structure.OnAnyPlayerTriggeredOut += Structure_OnAnyPlayerTriggeredOut;
 
-        MetaProgressionManager.Instance.OnGunStatChanged += MetaProgression_OnGunStatChanged;
+        Gun.OnAnyGunMaxAmmoChanged += Gun_OnAnyGunMaxAmmoChanged;
 
         RefreshAmmoBar();
         RefreshAmmoBarBackground();
         ammoBarGameObject.SetActive(false);
         ammoBarBackgroundGameObject.SetActive(false);
         ammoBarCanvasGroup = ammoBarGameObject.GetComponent<CanvasGroup>();
+    }
+
+    private void Gun_OnAnyGunMaxAmmoChanged(object sender, EventArgs e) {
+        RefreshAmmoBar();
+        RefreshAmmoBarBackground();
     }
 
     private void Update() {
@@ -126,9 +131,6 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         StartCoroutine(RefillAmmoBar(e.ammoAmount));
     }
 
-    private void MetaProgression_OnGunStatChanged(object sender, MetaProgressionManager.OnGunChangedEventArgs e) {
-        RefreshAmmoBar();
-    }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
         if (PlayerShoot.Instance.GetCurrentAmmoClip() < 0) return;
@@ -241,5 +243,6 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     private void OnDestroy() {
         Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn;
         Structure.OnAnyPlayerTriggeredOut -= Structure_OnAnyPlayerTriggeredOut;
+        Gun.OnAnyGunMaxAmmoChanged -= Gun_OnAnyGunMaxAmmoChanged;
     }
 }

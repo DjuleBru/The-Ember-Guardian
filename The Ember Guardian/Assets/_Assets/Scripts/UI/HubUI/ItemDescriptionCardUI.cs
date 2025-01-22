@@ -19,25 +19,21 @@ public class ItemDescriptionCardUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemStatDescriptionText;
     [SerializeField] private TextMeshProUGUI redGemAmountText;
     [SerializeField] private TextMeshProUGUI greenGemAmountText;
+    [SerializeField] private TextMeshProUGUI blueGemAmountText;
+    [SerializeField] private TextMeshProUGUI yellowGemAmountText;
+    [SerializeField] private TextMeshProUGUI purpleGemAmountText;
 
     [SerializeField] private GameObject greenGemCostGO;
     [SerializeField] private GameObject redGemCostGO;
+    [SerializeField] private GameObject blueGemCostGO;
+    [SerializeField] private GameObject yellowGemCostGO;
+    [SerializeField] private GameObject purpleGemCostGO;
     [SerializeField] private TextMeshProUGUI maxLevelText;
 
-    public void SetDescriptionCardText(string itemName, bool constantUnlockDescription, List<string> itemStatDescriptionList, string itemDescription, int greenGem, int redGem, List<string> itemStatList = null, List<bool> itemModifiersBools = null) {
+    public void SetDescriptionCardText(string itemName, bool constantUnlockDescription, List<string> itemStatDescriptionList, string itemDescription, List<string> itemStatList = null, List<bool> itemModifiersBools = null) {
 
         itemNameText.text = itemName;
         itemDescriptionText.text = itemDescription;
-        redGemAmountText.text = redGem.ToString();
-        greenGemAmountText.text = greenGem.ToString();
-
-        if(greenGem == 0) {
-            greenGemCostGO.SetActive(false);
-        }
-
-        if(redGem == 0) {
-            redGemCostGO.SetActive(false);
-        }
 
         if(constantUnlockDescription) {
 
@@ -52,6 +48,35 @@ public class ItemDescriptionCardUI : MonoBehaviour
         }
 
         maxLevelText.gameObject.SetActive(false);
+    }
+
+    public void SetDescriptionCardCost(int greenGem, int redGem, int blueGem, int yellowGem, int purpleGem) {
+
+        redGemAmountText.text = redGem.ToString();
+        greenGemAmountText.text = greenGem.ToString();
+        blueGemAmountText.text = blueGem.ToString();
+        yellowGemAmountText.text = yellowGem.ToString();
+        purpleGemAmountText.text = purpleGem.ToString();
+
+        if (greenGem == 0) {
+            greenGemCostGO.SetActive(false);
+        }
+
+        if (redGem == 0) {
+            redGemCostGO.SetActive(false);
+        }
+
+        if (blueGem == 0) {
+            blueGemCostGO.SetActive(false);
+        }
+
+        if (yellowGem == 0) {
+            yellowGemCostGO.SetActive(false);
+        }
+
+        if (purpleGem == 0) {
+            purpleGemCostGO.SetActive(false);
+        }
     }
 
     private void RefreshItemStatDescription(List<string> itemStatDescriptionList, List<string> itemStatList, List<bool> itemStatModifiersBools) {

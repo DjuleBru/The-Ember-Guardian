@@ -11,6 +11,7 @@ public class GunSpotLight : MonoBehaviour
     [SerializeField] private Transform gunVisualTransform;
     private Light2D gunSpotLight;
 
+    private float gunSpotLightRange;
     private float noFogVolumetricAmount = .2f;
     private float fogVolumetricAmount = .1f;
     private bool autoSwitchWithDay;
@@ -48,8 +49,19 @@ public class GunSpotLight : MonoBehaviour
             PauseMenuUI.Instance.OnPauseMenuClosed += PauseMenuUI_OnPauseMenuClosed;
             PauseMenuUI.Instance.OnPauseMenuOpened += PauseMenuUI_OnPauseMenuOpened;
         }
+
+        PlayerStats.Instance.OnFlashlightRangeChanged += PlayerStats_OnFlashlightRangeChanged;
     }
-    
+
+    private void PlayerStats_OnFlashlightRangeChanged(object sender, EventArgs e) {
+        RefreshFlashlightRange();
+    }
+
+    private void RefreshFlashlightRange() {
+        gunSpotLightRange = PlayerStats.Instance.GetFlashlightRange();
+        gunSpotLight.pointLightOuterRadius = gunSpotLightRange;
+    }
+
     private void PauseMenuUI_OnPauseMenuOpened(object sender, EventArgs e) {
         canSwitchLight = false;
     }

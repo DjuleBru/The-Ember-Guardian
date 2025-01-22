@@ -36,24 +36,23 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     [SerializeField] private GunItemType gunItem;
     [SerializeField] private GunItemCategory gunItemCategory;
     [SerializeField] private GunSO linkedGunSO;
-    [SerializeField] private GunStatModifierSO linkedStatModifierSO;
-
-    private List<string> statValues = new List<string>();
-    private List<bool> statModifiedBools = new List<bool>();
     
-    protected void Awake() {
-        itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
-        RefreshStatValues();
+    protected override void Awake() {
+        base.Awake();
 
-        if(gunItemCategory == GunItemCategory.statIncrease) {
-            maxItemLevel = linkedStatModifierSO.statModifierList.Count;
-            greenGemCostList = linkedStatModifierSO.greenGemCostList;
-            redGemCostList = linkedStatModifierSO.redGemCostList;
-        }
+        RefreshStatValues();
 
         OnAnyHubMerchantItemBought += HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemBoughtOrUpgraded;
         OnAnyHubMerchantItemUpgraded += HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemBoughtOrUpgraded;
         OnAnyHubMerchantItemEquipped += HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemEquipped;
+    }
+
+    protected override void LoadItemEquipped() {
+        itemEquipped = (PlayerShoot.Instance.GetHeldGunSO() == linkedGunSO);
+    }
+
+    public override string GetItemType() {
+        return gunItem.ToString() + " " + linkedGunSO.ToString();
     }
 
     private void HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemEquipped(object sender, EventArgs e) {
@@ -106,8 +105,8 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         }
 
         if (gunItemCategory == GunItemCategory.gunModule) {
-            EquipOrUnequipItem();
-            UnlockGunModule();
+            //EquipOrUnequipItem();
+            //UnlockGunModule();
         }
 
         base.BuyItem();
@@ -125,54 +124,50 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     private void SetNewStatIncreaseStats() {
         if (gunItem == GunItemType.bulletDamage) {
             float modifiedDamage = linkedGunSO.damagePerBullet + linkedStatModifierSO.statModifierList[itemLevel];
-            MetaProgressionManager.Instance.SetGunDamagePerBullet(linkedGunSO, modifiedDamage);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetBulletDamage_Meta((int)modifiedDamage);
         }
 
         if (gunItem == GunItemType.shotsPerClip) {
             float modifiedShotsPerClip = linkedGunSO.shotsPerClip + linkedStatModifierSO.statModifierList[itemLevel];
-            MetaProgressionManager.Instance.SetGunShotsPerClip(linkedGunSO, modifiedShotsPerClip);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetShotsPerClip_Meta((int)modifiedShotsPerClip);
         }
 
         if (gunItem == GunItemType.maxAmmo) {
             float modifiedMaxAmmo = linkedGunSO.maxAmmo + linkedStatModifierSO.statModifierList[itemLevel];
-            MetaProgressionManager.Instance.SetGunMaxAmmo(linkedGunSO, modifiedMaxAmmo);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetMaxAmmo_Meta((int)modifiedMaxAmmo);
         }
 
         if (gunItem == GunItemType.cooldownTime) {
             float modifiedCooldown = linkedGunSO.shootCooldownTime + linkedGunSO.shootCooldownTime * linkedStatModifierSO.statModifierList[itemLevel] * 0.01f;
-            MetaProgressionManager.Instance.SetGunCooldown(linkedGunSO, modifiedCooldown);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetCooldownTime_Meta(modifiedCooldown);
         }
 
         if (gunItem == GunItemType.reloadTime) {
             float modifiedReloadTime = linkedGunSO.reloadTime + linkedGunSO.reloadTime * linkedStatModifierSO.statModifierList[itemLevel] * 0.01f;
-            MetaProgressionManager.Instance.SetGunReloadTime(linkedGunSO, modifiedReloadTime);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetReloadTime_Meta(modifiedReloadTime);
         }
 
         if (gunItem == GunItemType.critChance) {
             float modifiedCritChange = linkedGunSO.critChance + linkedStatModifierSO.statModifierList[itemLevel];
-            MetaProgressionManager.Instance.SetGunCritChance(linkedGunSO, modifiedCritChange);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetCritChange_Meta((int)modifiedCritChange);
         }
 
         if (gunItem == GunItemType.shootConeAngle) {
             float modifiedShootAngle = linkedGunSO.shootConeAngle + linkedStatModifierSO.statModifierList[itemLevel];
-            MetaProgressionManager.Instance.SetGunShootConeAnle(linkedGunSO, modifiedShootAngle);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetShootConeAngle_Meta(modifiedShootAngle);
         }
 
         if (gunItem == GunItemType.pelletsPerBullet) {
             float modifiedPelletsPerBullet = linkedGunSO.pelletsPerBullet + linkedStatModifierSO.statModifierList[itemLevel];
-            MetaProgressionManager.Instance.SetGunPelletsPerBullet(linkedGunSO, modifiedPelletsPerBullet);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetPelletsPerBullet_Meta((int)modifiedPelletsPerBullet);
         }
 
         if (gunItem == GunItemType.range) {
             float modifiedBulletLifetime = linkedGunSO.bulletLifetime + linkedStatModifierSO.statModifierList[itemLevel];
-            MetaProgressionManager.Instance.SetGunBulletLifetime(linkedGunSO, modifiedBulletLifetime);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetGunBulletLifetime_Meta(modifiedBulletLifetime);
         }
     }
-
-    public override string GetItemType() {
-        return gunItem.ToString() + " " + linkedGunSO.ToString();
-    }
-
+   
     private void RefreshStatValues() {
         statModifiedBools.Clear();
         statValues.Clear();
@@ -181,7 +176,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             // DAMAGE
             int initialDamagePerBullet = linkedGunSO.damagePerBullet;
-            int modifiedDamagePerBuller = MetaProgressionManager.Instance.GetGunDamagePerBullet(linkedGunSO);
+            int modifiedDamagePerBuller = PlayerShoot.Instance.GetGun(linkedGunSO).GetDamagePerBullet();
 
             if(initialDamagePerBullet != modifiedDamagePerBuller) {
                 statModifiedBools.Add(true);
@@ -194,7 +189,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             if (gunItem == GunItemType.shotgun) {
                 // PELLETS PER BULLET
                 float initialPelletsPerBullet = linkedGunSO.pelletsPerBullet;
-                float modifiedPelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(linkedGunSO);
+                float modifiedPelletsPerBullet = PlayerShoot.Instance.GetGun(linkedGunSO).GetPelletsPerBullet();
                 if (initialPelletsPerBullet != modifiedPelletsPerBullet) {
                     statModifiedBools.Add(true);
                 }
@@ -206,7 +201,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             // SHOTS PER CLIP
             int initialShotsPerClip = linkedGunSO.shotsPerClip;
-            int modifiedShotsPerClip = MetaProgressionManager.Instance.GetGunShotsPerClip(linkedGunSO);
+            int modifiedShotsPerClip = PlayerShoot.Instance.GetGun(linkedGunSO).GetShotsPerClip();
             if (initialShotsPerClip != modifiedShotsPerClip) {
                 statModifiedBools.Add(true);
             }
@@ -217,7 +212,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             // MAX AMMO
             int initialMaxAmmo = linkedGunSO.maxAmmo;
-            int modifiedMaxAmmo = MetaProgressionManager.Instance.GetGunMaxAmmo(linkedGunSO);
+            int modifiedMaxAmmo = PlayerShoot.Instance.GetGun(linkedGunSO).GetMaxAmmo();
             if (initialMaxAmmo != modifiedMaxAmmo) {
                 statModifiedBools.Add(true);
             }
@@ -228,7 +223,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             // COOLDOWN
             float initialCooldown = linkedGunSO.shootCooldownTime;
-            float modifierCooldown = MetaProgressionManager.Instance.GetGunCooldown(linkedGunSO);
+            float modifierCooldown = PlayerShoot.Instance.GetGun(linkedGunSO).GetCooldownTime();
             if (initialCooldown != modifierCooldown) {
                 statModifiedBools.Add(true);
             }
@@ -239,7 +234,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             // RELOAD TIME
             float initialReloadTime = linkedGunSO.reloadTime;
-            float modifiedReloadTime = MetaProgressionManager.Instance.GetGunReloadTime(linkedGunSO);
+            float modifiedReloadTime = PlayerShoot.Instance.GetGun(linkedGunSO).GetReloadTime();
             if (initialReloadTime != modifiedReloadTime) {
                 statModifiedBools.Add(true);
             }
@@ -250,7 +245,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             // CRIT CHANCE
             float initialCritChance = linkedGunSO.critChance;
-            float modifierCritChance = MetaProgressionManager.Instance.GetGunCritChance(linkedGunSO);
+            float modifierCritChance = PlayerShoot.Instance.GetGun(linkedGunSO).GetCritChance();
             if (initialCritChance != modifierCritChance) {
                 statModifiedBools.Add(true);
             }
@@ -261,7 +256,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             // RANGE
             float initialRange = linkedGunSO.bulletLifetime * linkedGunSO.bulletSpeed;
-            float modifiedRange = MetaProgressionManager.Instance.GetGunBulletLifetime(linkedGunSO) * linkedGunSO.bulletSpeed;
+            float modifiedRange = PlayerShoot.Instance.GetGun(linkedGunSO).GetBulletLifetime() * linkedGunSO.bulletSpeed;
             if (initialRange != modifiedRange) {
                 statModifiedBools.Add(true);
             }
@@ -273,7 +268,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             // SHOOT CONE
             float initialShootCone = linkedGunSO.shootConeAngle;
-            float modifiedShootCone = MetaProgressionManager.Instance.GetGunShootConeAnle(linkedGunSO);
+            float modifiedShootCone = PlayerShoot.Instance.GetGun(linkedGunSO).GetDefaultShootAngle();
             if (initialShootCone != modifiedShootCone) {
                 statModifiedBools.Add(true);
             }
@@ -301,7 +296,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             if (gunItem == GunItemType.critChance) {
                 initialStatValue = linkedGunSO.critChance;
-                currentStatValue = MetaProgressionManager.Instance.GetGunCritChance(linkedGunSO).ToString();
+                currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetCritChance().ToString();
                 totalStatWithModifierPostfix = "%";
                 relativeStatPostfix = "%";
                 relativeStatPrefix = "+";
@@ -309,7 +304,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             if (gunItem == GunItemType.reloadTime) {
                 initialStatValue = linkedGunSO.reloadTime;
-                currentStatValue = MetaProgressionManager.Instance.GetGunReloadTime(linkedGunSO).ToString("F2");
+                currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetReloadTime().ToString("F2");
                 relativeStatPostfix = "%";
                 totalStatWithModifierPostfix = "s";
                 statValueModifierMultiplier = 0.01f;
@@ -317,7 +312,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             if (gunItem == GunItemType.cooldownTime) {
                 initialStatValue = linkedGunSO.shootCooldownTime;
-                currentStatValue = MetaProgressionManager.Instance.GetGunCooldown(linkedGunSO).ToString("F2");
+                currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetCooldownTime().ToString("F2");
                 relativeStatPostfix = "%";
                 totalStatWithModifierPostfix = "s";
                 statValueModifierMultiplier = 0.01f;
@@ -325,31 +320,31 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             if (gunItem == GunItemType.maxAmmo) {
                 initialStatValue = linkedGunSO.maxAmmo;
-                currentStatValue = MetaProgressionManager.Instance.GetGunMaxAmmo(linkedGunSO).ToString();
+                currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetMaxAmmo().ToString();
                 relativeStatPrefix = "+";
             }
 
             if (gunItem == GunItemType.shotsPerClip) {
                 initialStatValue = linkedGunSO.shotsPerClip;
-                currentStatValue = MetaProgressionManager.Instance.GetGunShotsPerClip(linkedGunSO).ToString();
+                currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetShotsPerClip().ToString();
                 relativeStatPrefix = "+";
             }
 
             if (gunItem == GunItemType.bulletDamage) {
                 initialStatValue = linkedGunSO.damagePerBullet;
-                currentStatValue = MetaProgressionManager.Instance.GetGunDamagePerBullet(linkedGunSO).ToString();
+                currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetDamagePerBullet().ToString();
                 relativeStatPrefix = "+";
             }
 
             if (gunItem == GunItemType.pelletsPerBullet) {
                 initialStatValue = linkedGunSO.pelletsPerBullet;
-                currentStatValue = MetaProgressionManager.Instance.GetGunPelletsPerBullet(linkedGunSO).ToString();
+                currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetPelletsPerBullet().ToString();
                 relativeStatPrefix = "+";
             }
 
             if (gunItem == GunItemType.shootConeAngle) {
                 initialStatValue = linkedGunSO.shootConeAngle;
-                currentStatValue = MetaProgressionManager.Instance.GetGunShootConeAnle(linkedGunSO).ToString();
+                currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetDefaultShootAngle().ToString();
                 relativeStatPrefix = "";
                 totalStatWithModifierPostfix = "\u00B0";
                 relativeStatPostfix = "\u00B0";
@@ -357,7 +352,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             if (gunItem == GunItemType.range) {
                 initialStatValue = linkedGunSO.bulletLifetime * linkedGunSO.bulletSpeed;
-                currentStatValue = (MetaProgressionManager.Instance.GetGunBulletLifetime(linkedGunSO) * linkedGunSO.bulletSpeed).ToString();
+                currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetBulletLifetime().ToString();
                 relativeStatPrefix = "+";
                 totalStatWithModifierPostfix = "m";
                 relativeStatPostfix = "m";
@@ -514,13 +509,6 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         return statDescriptionList;
     }
 
-    public override List<string> GetStatValues() {
-        return statValues;
-    }
-
-    public override List<bool> GetStatModifierBools() {
-        return statModifiedBools;
-    }
     public override bool GetConstantUnlockDescription() {
         bool constantUnlockDescription = true;
 
@@ -554,10 +542,6 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     public override void UnequipItem() {
         itemEquipped = false;
         InvokeOnItemUnequipped();
-        
-        if(isEquippedAtStart) {
-            MetaProgressionManager.Instance.SetHubMerchantItemEquippedAtStart(GetItemType(), false);
-        }
     }
 
     private void EquipGun() {
@@ -566,7 +550,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     }
 
     private void UnlockGunAbility() {
-        MetaProgressionManager.Instance.SetGunSecondaryAbilityUnlocked(linkedGunSO);
+        PlayerShoot.Instance.GetGun(linkedGunSO).SetSecondaryAbilityUnlocked();
 
         if(gunItem == GunItemType.overclock) {
             PlayerTooltipManager.Instance.PrepareGunSecondaryAbilityTooltipInstruction(linkedGunSO);

@@ -7,6 +7,7 @@ public class CreatureDetectionCollider : MonoBehaviour
     private Creature creature;
     private CreatureAI creatureAI;
     private CreatureAttack creatureAttack;
+    private CircleCollider2D circleCollider;
     private List<IDamageable> iDamageablesInDetectionRange = new List<IDamageable>();
 
     private bool playerShotCreature;
@@ -20,6 +21,7 @@ public class CreatureDetectionCollider : MonoBehaviour
         creature = GetComponentInParent<Creature>();
         creatureAI = GetComponentInParent<CreatureAI>();
         creatureAttack = GetComponentInParent<CreatureAttack>();
+        circleCollider = GetComponent<CircleCollider2D>();
     }
 
     private void Start() {
@@ -249,5 +251,19 @@ public class CreatureDetectionCollider : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void SetRadius(float radius) {
+        circleCollider.radius = radius;
+    }
+    public void BuffRadius(float radiusBuff) {
+        circleCollider.radius *= radiusBuff;
+    }
+    public void DebuffRadius(float radiusBuff) {
+        circleCollider.radius /= radiusBuff;
+    }
+
+    public float GetRadius() {
+        return circleCollider.radius;
     }
 }
