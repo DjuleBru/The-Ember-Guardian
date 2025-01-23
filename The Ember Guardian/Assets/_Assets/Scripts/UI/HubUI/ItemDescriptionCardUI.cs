@@ -108,17 +108,25 @@ public class ItemDescriptionCardUI : MonoBehaviour
     }
 
     public void SetDescriptionCardMaxlevel() {
-        maxLevelText.text = "MAX LEVEL";
-        greenGemCostGO.SetActive(false);
-        redGemCostGO.SetActive(false);
+        maxLevelText.text = "MAX LEVEL"; 
+        DisableGemCostGO();
+
         maxLevelText.gameObject.SetActive(true);
     }
 
     public void SetDescriptionCardBought() {
         maxLevelText.text = "UNLOCKED";
+        DisableGemCostGO();
+        maxLevelText.gameObject.SetActive(true);
+    }
+
+    private void DisableGemCostGO() {
         greenGemCostGO.SetActive(false);
         redGemCostGO.SetActive(false);
-        maxLevelText.gameObject.SetActive(true);
+        blueGemCostGO.SetActive(false);
+        yellowGemCostGO.SetActive(false);
+        purpleGemCostGO.SetActive(false);
+
     }
 
 }

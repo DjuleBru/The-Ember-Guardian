@@ -267,6 +267,7 @@ public class HUBManager : MonoBehaviour
 
         PlayerSave.Instance.SavePrimaryActiveGunSO(PlayerShoot.Instance.GetPrimaryGunSO());
         PlayerSave.Instance.SavePlayerMetaStats();
+        DogStats.Instance.SaveDogStats();
 
         foreach (HubMerchant hubMerchant in hubMerchantList) {
             hubMerchant.SaveMerchant();

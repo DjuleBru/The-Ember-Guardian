@@ -51,6 +51,7 @@ public class GameInput : MonoBehaviour
 
     public event EventHandler OnPlayerBackPerformed;
     public event EventHandler OnPlayerPausePerformed;
+    public event EventHandler OnPlayerOpenPlayerTabPerformed;
 
     private bool interactPressed;
     private bool holdingInteract;
@@ -98,11 +99,11 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.WeaponSecondaryAbility.performed += WeaponSecondaryAbility_performed;
         playerInputActions.Player.WeaponSecondaryAbility.canceled += WeaponSecondaryAbility_canceled;
         playerInputActions.Player.Pause.performed += Pause_performed;
+        playerInputActions.Player.OpenPlayerTab.performed += OpenPlayerTab_performed;
 
         playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
         playerInputActions.Player.Move.performed += Move_performed;
     }
-
 
     private void InputUser_onChange(InputUser user, InputUserChange change, InputDevice arg3) {
         if (change == InputUserChange.ControlSchemeChanged) {
@@ -168,6 +169,11 @@ public class GameInput : MonoBehaviour
     }
 
     #region INPUT MANAGEMENT
+
+
+    private void OpenPlayerTab_performed(InputAction.CallbackContext obj) {
+        OnPlayerOpenPlayerTabPerformed?.Invoke(this, EventArgs.Empty);
+    }
 
     private void Pause_performed(InputAction.CallbackContext obj) {
         OnPlayerPausePerformed?.Invoke(this, EventArgs.Empty);

@@ -19,6 +19,8 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
         BackpackAmmoSize,
         RollDistance,
         RollStaminaCost,
+        MaxStamina,
+        RespawnHP
     }
 
     [SerializeField] private TrainerItemType trainerItemType;
@@ -30,7 +32,7 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
 
     public override void BuyItem() {
         if(trainerItemType == TrainerItemType.Hold2Weapons) {
-
+            PlayerStats.Instance.UnlockCanHold2Weapons();
         } else {
             SetNewStatIncreaseStats();
         }
@@ -110,12 +112,30 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
                 relativeStatPrefix = "+";
             }
 
+            if (trainerItemType == TrainerItemType.RespawnHP) {
+                initialStatValue = PlayerStats.Instance.GetInitialPlayerRespawnHP();
+                currentStatValue = PlayerStats.Instance.GetPlayerRespawnHP().ToString();
+                totalStatWithModifierPostfix = "";
+                relativeStatPostfix = "";
+                relativeStatPrefix = "+";
+            }
+
             if (trainerItemType == TrainerItemType.Heal) {
                 initialStatValue = PlayerStats.Instance.GetInitialHpRegenTimer();
                 currentStatValue = PlayerStats.Instance.GetHpRegenTime().ToString();
                 totalStatWithModifierPostfix = "s";
                 relativeStatPostfix = "s";
                 relativeStatPrefix = "";
+            }
+
+            if (trainerItemType == TrainerItemType.MaxStamina) {
+                initialStatValue = 0f;
+                currentStatValue = PlayerStats.Instance.GetMaxStaminaPercentBuff_Meta().ToString();
+                totalStatWithModifierPostfix = "%";
+                relativeStatPostfix = "%";
+                relativeStatPrefix = "+";
+                initialStatPrefix = "+";
+                totalStatWithModifierPrefix = "+";
             }
 
             if (trainerItemType == TrainerItemType.MoveSpeed) {
@@ -254,8 +274,16 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             PlayerStats.Instance.SetMaxPlayerHPBuff((int)buff);
         }
 
+        if (trainerItemType == TrainerItemType.RespawnHP) {
+            PlayerStats.Instance.SetRespawnPlayerHPBuff((int)buff);
+        }
+
         if (trainerItemType == TrainerItemType.Heal) {
             PlayerStats.Instance.SetHpRegenTimeAbsolute(buff);
+        }
+
+        if (trainerItemType == TrainerItemType.MaxStamina) {
+            PlayerStats.Instance.SetMaxStaminaBuff(buff);
         }
 
         if (trainerItemType == TrainerItemType.MoveSpeed) {
@@ -345,6 +373,15 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             statDescriptionList.Add("New max HP ");
         }
 
+        if (trainerItemType == TrainerItemType.RespawnHP) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add("Current respawn HP ");
+                statDescriptionList.Add("Respawn HP ");
+                statDescriptionList.Add("+");
+            }
+            statDescriptionList.Add("New respawn HP ");
+        }
+
         if (trainerItemType == TrainerItemType.Heal) {
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current heal time ");
@@ -352,6 +389,15 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
                 statDescriptionList.Add("");
             }
             statDescriptionList.Add("Time to heal ");
+        }
+
+        if (trainerItemType == TrainerItemType.MaxStamina) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add("Current max stamina ");
+                statDescriptionList.Add("Max stamina ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add("New max stamina ");
         }
 
         if (trainerItemType == TrainerItemType.MoveSpeed) {

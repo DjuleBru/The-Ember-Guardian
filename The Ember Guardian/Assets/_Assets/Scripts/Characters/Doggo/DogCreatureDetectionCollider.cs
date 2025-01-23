@@ -10,8 +10,6 @@ public class DogCreatureDetectionCollider : MonoBehaviour
     private bool ambushSpawnersInDetectionCollider;
     private CircleCollider2D detectionCollider;
 
-    private float probabilityToDetectAmbush = .33f;
-
     private void Awake() {
         detectionCollider = GetComponent<CircleCollider2D>();
         RandomizeDetectionColliderRadius();
@@ -35,8 +33,12 @@ public class DogCreatureDetectionCollider : MonoBehaviour
         }
 
         if (ambushSpawner != null) {
+            if (!DogStats.Instance.GetDetectAmbushAbilityUnlocked()) return;
+
+            float probabilityToDetectAmbush = DogStats.Instance.GetDetectAmbushProbability()/100f;
             float randomFloat = Random.Range(0f, 1f);
-            Debug.Log("randomFloat " + randomFloat);
+            Debug.Log("randomFloat " + randomFloat + " probabilityToDetectAmbush " + probabilityToDetectAmbush);
+
             if(randomFloat <= probabilityToDetectAmbush) {
                 if (!creaturesAmbushSpawnersInDetectionColliderRange.Contains(ambushSpawner)) {
                     creaturesAmbushSpawnersInDetectionColliderRange.Add(ambushSpawner);

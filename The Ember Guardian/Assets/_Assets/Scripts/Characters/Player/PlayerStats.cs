@@ -38,18 +38,18 @@ public class PlayerStats : MonoBehaviour
     private int initialMaxPlayerHP = 3;
     private float initialDamagedImmunityTime = 1.5f;
     private float initialRespawnTime = 5f;
-    private int initialPlayerRespawnHealth = 3;
+    private int initialPlayerRespawnHP = 3;
     private float initialHpRegenTimer = 0f;
     private float absoluteHpRegenTimer_meta = 0f;
 
     private int maxPlayerHP;
+    private int respawnPlayerHP;
     private float damagedImmunityTime;
     private float respawnTime;
-    private int playerRespawnHealth;
-    private bool hasHpRegenPassive;
     private float hpRegenTime;
 
     private int maxPlayerHPBuffAbsolute_meta;
+    private int respawnPlayerHPBuffAbsolute_meta;
 
     public event EventHandler OnPlayerMaxHPChanged;
     public event EventHandler OnPlayerHPRegenChanged;
@@ -57,6 +57,8 @@ public class PlayerStats : MonoBehaviour
     #endregion
 
     #region SHOOTING
+    private bool hold2WeaponsUnlocked;
+
     private float shootCooldownTime;
     private float reloadTime;
     private float handsReloadTime;
@@ -111,9 +113,9 @@ public class PlayerStats : MonoBehaviour
         initialflashlightRange = playerStatsSO.flashlightRange;
 
         initialMaxPlayerHP = playerStatsSO.initialMaxPlayerHP;
+        initialPlayerRespawnHP = playerStatsSO.initialPlayerRespawnHP;
         initialDamagedImmunityTime = playerStatsSO.initialDamagedImmunityTime;
         initialRespawnTime = playerStatsSO.initialRespawnTime;
-        initialPlayerRespawnHealth = playerStatsSO.initialPlayerRespawnHealth;
         initialHpRegenTimer = playerStatsSO.initialHpRegenTimer;
 
     }
@@ -131,10 +133,13 @@ public class PlayerStats : MonoBehaviour
         flashlightRangeBuff_meta = ES3.Load("flashlightRangeBuff_meta", 0f);
         absoluteHpRegenTimer_meta = ES3.Load("absoluteHpRegenTimer_meta", 0f);
         maxPlayerHPBuffAbsolute_meta = ES3.Load("maxPlayerHPBuffAbsolute_meta", 0);
+        respawnPlayerHPBuffAbsolute_meta = ES3.Load("respawnPlayerHPBuffAbsolute_meta", 0);
 
         backpackGemSizePercentBuff = ES3.Load("backpackGemSizePercentBuff", 0f);
         backpackAmmoSizePercentBuff = ES3.Load("backpackAmmoSizePercentBuff", 0f);
         backpackOrbSizePercentBuff = ES3.Load("backpackOrbSizePercentBuff", 0f);
+
+        hold2WeaponsUnlocked = ES3.Load("hold2WeaponsUnlocked", false);
     }
 
     private void SetTempPlayerStatBuffs() {
@@ -149,16 +154,20 @@ public class PlayerStats : MonoBehaviour
         flashlightRange = initialflashlightRange + flashlightRangeBuff_meta;
 
         maxPlayerHP = initialMaxPlayerHP + maxPlayerHPBuffAbsolute_meta;
+        respawnPlayerHP = initialPlayerRespawnHP + respawnPlayerHPBuffAbsolute_meta;
         hpRegenTime = initialHpRegenTimer + absoluteHpRegenTimer_meta;
 
         damagedImmunityTime = initialDamagedImmunityTime;
-        playerRespawnHealth = initialPlayerRespawnHealth;
         aimingSightDecelerationFactor = initialAimingSightDecelerationFactor;
         respawnTime = initialRespawnTime;
     }
 
 
     #region SET PLAYER PERMANENT BUFFS
+
+    public void UnlockCanHold2Weapons() {
+        hold2WeaponsUnlocked = true;
+    }
 
     public void SetMoveSpeedBuff(float moveSpeedBuff) {
         this.moveSpeedPercentBuff_meta = moveSpeedBuff;
@@ -200,6 +209,11 @@ public class PlayerStats : MonoBehaviour
         RefreshCurrentPlayerStats();
     }
 
+    public void SetRespawnPlayerHPBuff(int respawnPlayerHPBuffAbsolute) {
+        this.respawnPlayerHPBuffAbsolute_meta = respawnPlayerHPBuffAbsolute;
+        RefreshCurrentPlayerStats();
+    }
+
     public void SetSwapWeaponTimeReductionPercent(float swapWeaponTimeReductionPercent) {
         this.swapWeaponTimeReductionPercentBuff_meta = swapWeaponTimeReductionPercent;
         RefreshCurrentPlayerStats();
@@ -235,8 +249,16 @@ public class PlayerStats : MonoBehaviour
 
     #region GET PARAMETERS
 
+    public bool GetHold2WeaponsUnlocked() {
+        return hold2WeaponsUnlocked;
+    }
+
     public int GetPlayerMaxHP() {
         return maxPlayerHP;
+    }
+
+    public int GetPlayerRespawnHP() {
+        return respawnPlayerHP;
     }
 
     public float GetDamagedImmunityTime() {
@@ -245,10 +267,6 @@ public class PlayerStats : MonoBehaviour
 
     public float GetRespawnTime() {
         return respawnTime;
-    }
-
-    public int GetPlayerRespawnHealth() {
-        return playerRespawnHealth;
     }
 
     public float GetHpRegenTime() {
@@ -306,6 +324,9 @@ public class PlayerStats : MonoBehaviour
     public int GetInitialPlayerMaxHP() {
         return initialMaxPlayerHP;
     }
+    public int GetInitialPlayerRespawnHP() {
+        return initialPlayerRespawnHP;
+    }
 
     public float GetInitialDamagedImmunityTime() {
         return initialDamagedImmunityTime;
@@ -313,10 +334,6 @@ public class PlayerStats : MonoBehaviour
 
     public float GetInitialRespawnTime() {
         return initialRespawnTime;
-    }
-
-    public int GetInitialPlayerRespawnHealth() {
-        return initialPlayerRespawnHealth;
     }
 
     public float GetInitialHpRegenTimer() {
@@ -366,10 +383,14 @@ public class PlayerStats : MonoBehaviour
     public float GetRunStaminaDepletionPercentBuff_Meta() {
         return runStaminaDepletionPercentBuff_meta;
     }
-
     public float GetMoveSpeedPercentBuff_Meta() {
         return moveSpeedPercentBuff_meta;
     }
+
+    public float GetMaxStaminaPercentBuff_Meta() {
+        return maxStaminaBuff_meta;
+    }
+
     public float GetRollForcePercentBuff_Meta() {
         return rollForcePercentBuff_meta;
     }
@@ -459,22 +480,27 @@ public class PlayerStats : MonoBehaviour
     #endregion
 
     public void SaveMetaBuffValues() {
-        ES3.Save("moveSpeedPercentBuff_meta", maxStaminaBuff_meta);
-        ES3.Save("moveSpeedPercentBuff_meta", moveSpeedPercentBuff_meta);
         ES3.Save("swapWeaponTimeReductionPercentBuff_meta", swapWeaponTimeReductionPercentBuff_meta);
+
+        ES3.Save("maxStaminaBuff_meta", maxStaminaBuff_meta);
+        ES3.Save("moveSpeedPercentBuff_meta", moveSpeedPercentBuff_meta);
+
         ES3.Save("crouchDetectionRangeReductionPercentBuff_meta", crouchDetectionRangeReductionPercentBuff_meta);
         ES3.Save("runStaminaDepletionPercentBuff_meta", runStaminaDepletionPercentBuff_meta);
         ES3.Save("rollForcePercentBuff_meta", rollForcePercentBuff_meta);
         ES3.Save("rollStaminaDepletionPercentBuff_meta", rollStaminaDepletionPercentBuff_meta);
-        ES3.Save("maxPlayerHPBuffAbsolute_meta", maxPlayerHPBuffAbsolute_meta);
-        ES3.Save("absoluteHpRegenTimer_meta", absoluteHpRegenTimer_meta);
 
+        ES3.Save("maxPlayerHPBuffAbsolute_meta", maxPlayerHPBuffAbsolute_meta);
+        ES3.Save("respawnPlayerHPBuffAbsolute_meta", respawnPlayerHPBuffAbsolute_meta);
+        ES3.Save("absoluteHpRegenTimer_meta", absoluteHpRegenTimer_meta);
 
         ES3.Save("flashlightRangeBuff_meta", flashlightRangeBuff_meta);
 
         ES3.Save("backpackGemSizePercentBuff", backpackGemSizePercentBuff);
         ES3.Save("backpackAmmoSizePercentBuff", backpackAmmoSizePercentBuff);
         ES3.Save("backpackOrbSizePercentBuff", backpackOrbSizePercentBuff);
+
+        ES3.Save("hold2WeaponsUnlocked", hold2WeaponsUnlocked);
     }
 
     public float GetSkillStat(SkillItem skillItem) {

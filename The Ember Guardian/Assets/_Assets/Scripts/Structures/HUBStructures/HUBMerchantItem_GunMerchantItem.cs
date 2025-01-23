@@ -61,9 +61,15 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         if (merchantItem is HUBMerchantItem_GunMerchantItem) {
             HUBMerchantItem_GunMerchantItem gunItem = (HUBMerchantItem_GunMerchantItem)merchantItem;
 
-            if(gunItem.GetGunItemCategory() == GunItemCategory.newGun && gunItemCategory == GunItemCategory.newGun && gunItem.GetLinkedGunSO() != linkedGunSO) {
+
+            if (gunItem.GetGunItemCategory() == GunItemCategory.newGun && gunItemCategory == GunItemCategory.newGun && gunItem.GetLinkedGunSO() != linkedGunSO) {
+                // Another gun has been equipped
+
                 UnequipItem();
+
             }
+            
+
         }
     }
 
@@ -520,11 +526,35 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     }
 
     public override void EquipOrUnequipItem() {
+        Debug.Log("Switching equip function to pause menu");
+        return;
+
         if(gunItemCategory == GunItemCategory.newGun) {
+
             if (!itemEquipped) {
+
                 itemEquipped = true;
-                EquipGun();
+
+                if (PlayerStats.Instance.GetHold2WeaponsUnlocked()) {
+                    // Player can hold 2 weapons
+
+                    if (PlayerShoot.Instance.GetSecondaryGunSO() == null) {
+                        // Player doesn't have a secondary gun yet
+
+                        EquipGun(false);
+
+                    } else {
+
+                    }
+
+                }
+
+                else {
+                    // Player can't hold 2 weapons
+                }
+
                 InvokeOnItemEquipped();
+
             }
         }
 
@@ -544,9 +574,14 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         InvokeOnItemUnequipped();
     }
 
-    private void EquipGun() {
+    private void EquipGun(bool primaryGun) {
         itemEquipped = true;
-        PlayerShoot.Instance.SetActiveGun(linkedGunSO);
+
+        if(primaryGun) {
+            PlayerShoot.Instance.SetActiveGun(linkedGunSO, true);
+        } else {
+            PlayerShoot.Instance.SetActiveGun(linkedGunSO, false);
+        }
     }
 
     private void UnlockGunAbility() {

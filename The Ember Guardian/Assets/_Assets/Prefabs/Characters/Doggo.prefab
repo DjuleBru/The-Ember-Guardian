@@ -34,6 +34,7 @@ Transform:
   m_Children:
   - {fileID: 2551638647824361741}
   - {fileID: 7823212582798604388}
+  - {fileID: 9160151177174294479}
   m_Father: {fileID: 9115560474486337379}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &663590935026529257
@@ -312,6 +313,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1fab8e5213cd3f244bfacbfc475be978, type: 3}
   - {fileID: 8300000, guid: 4d4adc297a69013489ed6cb62c913202, type: 3}
   - {fileID: 8300000, guid: 0dc2d0860452bf5429b227f016f27b14, type: 3}
+  biteAudioClips:
+  - {fileID: 8300000, guid: 8d9f66459ddc40c41a238d36a0d9aa47, type: 3}
   dogAnimator: {fileID: 4129023110296732134}
   dogAI: {fileID: 6784152704645662438}
 --- !u!1 &3487052910668080143
@@ -475,7 +478,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f46cf4989354ad94b969d1ddae2b6aef, type: 2}
+  - {fileID: 2100000, guid: 2ba136974dfe4bc43b6cb9c770ec4fae, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -493,8 +496,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 701149539
-  m_SortingLayer: -6
+  m_SortingLayerID: 1163108313
+  m_SortingLayer: -4
   m_SortingOrder: 10
   m_Sprite: {fileID: -1214570002, guid: 514c4424a1a61be4ba8d9dc837f1aade, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -539,6 +542,8 @@ GameObject:
   - component: {fileID: 9115560474486337379}
   - component: {fileID: 2438784743082093664}
   - component: {fileID: 6784152704645662438}
+  - component: {fileID: 6445080187049815477}
+  - component: {fileID: 1436243691899500231}
   - component: {fileID: 8490795598111556466}
   - component: {fileID: 5350223146181735034}
   - component: {fileID: 1949739958863630491}
@@ -594,6 +599,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creatureDetectionCollider: {fileID: 5507158826448228988}
+--- !u!114 &6445080187049815477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5832608994968075746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d521e2e95ac5b5f45be3eceb29a3aadb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialBiteDamage: 30
+  initialBiteCooldown: 60
+  initialDigResourceCooldown: 20
+  initialDigResourceProbability: 10
+  initialDigResourceDoubleProbability: 5
+  initialAmbushDetectionProbability: 15
+  debugUnlockBiteAbility: 0
+  debugUnlockDigResourceAbility: 0
+  debugUnlockDetectAmbushAbility: 0
+--- !u!114 &1436243691899500231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5832608994968075746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 877123916163a0a4b89219c0cc369ef7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dogAnimator: {fileID: 4129023110296732134}
+  spawnPosition: {fileID: 9160151177174294479}
 --- !u!114 &8490795598111556466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -970,3 +1010,34 @@ MonoBehaviour:
   maxDistanceToHear: 12
   maxAudioSourceVolume: 1
   active: 1
+--- !u!1 &9117500645490490409
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9160151177174294479}
+  m_Layer: 12
+  m_Name: DigOutStuffSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9160151177174294479
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9117500645490490409}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.7, y: 0.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8253955507400564337}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

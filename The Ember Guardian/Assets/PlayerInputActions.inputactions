@@ -166,6 +166,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenPlayerTab",
+                    "type": "Button",
+                    "id": "ce547d04-8533-47b9-ad2c-573036089326",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -650,6 +659,28 @@
                     "processors": "",
                     "groups": ";Keyboard",
                     "action": "WeaponSecondaryAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "595b7313-7a07-4df3-98f7-10ff11990558",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "OpenPlayerTab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "420c9d0b-21ba-48f7-b2fd-85d9afd4b9ce",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "OpenPlayerTab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

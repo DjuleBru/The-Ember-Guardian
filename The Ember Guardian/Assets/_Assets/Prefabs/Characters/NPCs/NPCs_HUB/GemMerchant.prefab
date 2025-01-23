@@ -569,8 +569,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8385513270722688418}
   m_HandleRect: {fileID: 1424134487310206145}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: -0.00000016782263
+  m_Size: 0.40576544
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1613,8 +1613,10 @@ MonoBehaviour:
   itemLevel: 1
   maxItemLevel: 1
   isBoughtAtStart: 1
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 3
 --- !u!1001 &747028736713584804
 PrefabInstance:
@@ -2071,8 +2073,10 @@ MonoBehaviour:
   itemLevel: 2
   maxItemLevel: 2
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 3
 --- !u!114 &7771111373995524599 stripped
 MonoBehaviour:
@@ -2519,8 +2523,10 @@ MonoBehaviour:
   itemLevel: 1
   maxItemLevel: 1
   isBoughtAtStart: 1
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 0
 --- !u!114 &7737935491302458219 stripped
 MonoBehaviour:
@@ -2967,8 +2973,10 @@ MonoBehaviour:
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 9
 --- !u!114 &7498644544640629105 stripped
 MonoBehaviour:
@@ -3418,8 +3426,10 @@ MonoBehaviour:
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 11
 --- !u!1001 &2028529703793725710
 PrefabInstance:
@@ -3833,8 +3843,10 @@ MonoBehaviour:
   itemLevel: 3
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 0
 --- !u!114 &9053285517070049373 stripped
 MonoBehaviour:
@@ -4294,8 +4306,10 @@ MonoBehaviour:
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 12
 --- !u!1001 &2757451435210648028
 PrefabInstance:
@@ -4709,8 +4723,10 @@ MonoBehaviour:
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 13
 --- !u!1001 &3961317246035332561
 PrefabInstance:
@@ -4763,6 +4779,22 @@ PrefabInstance:
     - target: {fileID: 1362607122384666966, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1378580407518007100, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1378580407518007100, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1378580407518007100, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1378580407518007100, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1758700498608624195, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4900,6 +4932,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5308384602616929793, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5308384602616929793, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5308384602616929793, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5308384602616929793, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5418332884289983850, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Size
       value: 0.3719577
@@ -4918,7 +4966,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 47895b379fa7efa41be3a570bdc7c54f, type: 3}
     - target: {fileID: 6085957364875221982, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Color.a
-      value: 0.39215687
+      value: 0.49411765
       objectReference: {fileID: 0}
     - target: {fileID: 6085957364875221982, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Color.b
@@ -4935,10 +4983,26 @@ PrefabInstance:
     - target: {fileID: 6085957364875221982, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 2100000, guid: 2f1de25736cee0a43b20332769ad925b, type: 2}
+      objectReference: {fileID: 2100000, guid: f0ef14c549ba1784aa0f5f7d76801c1b, type: 2}
     - target: {fileID: 6478205264818801766, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_BlockingMask.m_Bits
       value: 33554431
+      objectReference: {fileID: 0}
+    - target: {fileID: 6652053007087386318, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6652053007087386318, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6652053007087386318, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6652053007087386318, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6771649355737043075, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_RenderMode
@@ -5161,6 +5225,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.193
       objectReference: {fileID: 0}
+    - target: {fileID: 8205861449589058367, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8205861449589058367, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8205861449589058367, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8205861449589058367, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8370118348479682676, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -5180,6 +5260,22 @@ PrefabInstance:
     - target: {fileID: 8741337654596259625, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8770228293481018646, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8770228293481018646, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8770228293481018646, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8770228293481018646, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3539063435249221414, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
@@ -5674,8 +5770,10 @@ MonoBehaviour:
   itemLevel: 3
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 3
 --- !u!1001 &4354308620163447448
 PrefabInstance:
@@ -6127,8 +6225,10 @@ MonoBehaviour:
   itemLevel: 2
   maxItemLevel: 2
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 0
 --- !u!1001 &4475269019595556246
 PrefabInstance:
@@ -6572,8 +6672,10 @@ MonoBehaviour:
   itemLevel: 4
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 3
 --- !u!1001 &5016347908599283015
 PrefabInstance:
@@ -7034,8 +7136,10 @@ MonoBehaviour:
   itemLevel: 1
   maxItemLevel: 1
   isBoughtAtStart: 1
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 7
 --- !u!224 &5897259808284768114 stripped
 RectTransform:
@@ -7463,8 +7567,10 @@ MonoBehaviour:
   itemLevel: 4
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 7
 --- !u!114 &3745897359924904408 stripped
 MonoBehaviour:
@@ -7920,8 +8026,10 @@ MonoBehaviour:
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 1
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 2
 --- !u!224 &8406802740140251359 stripped
 RectTransform:
@@ -8383,8 +8491,10 @@ MonoBehaviour:
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 8
 --- !u!224 &8483119567123156064 stripped
 RectTransform:
@@ -8788,8 +8898,10 @@ MonoBehaviour:
   itemLevel: 4
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 0
 --- !u!224 &8618281853970876613 stripped
 RectTransform:
@@ -9228,8 +9340,10 @@ MonoBehaviour:
   itemLevel: 3
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 7
 --- !u!224 &8329688969058666780 stripped
 RectTransform:
@@ -9702,8 +9816,10 @@ MonoBehaviour:
   itemLevel: 2
   maxItemLevel: 2
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 7
 --- !u!224 &8837012230777341015 stripped
 RectTransform:
@@ -10129,8 +10245,10 @@ MonoBehaviour:
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   structureType: 14
 --- !u!224 &8928055904240815352 stripped
 RectTransform:

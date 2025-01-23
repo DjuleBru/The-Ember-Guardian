@@ -632,7 +632,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 767.64014, y: 0}
+  m_AnchoredPosition: {x: 767.64, y: 0}
   m_SizeDelta: {x: 1535.2798, y: 860}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1907198851531445361
@@ -747,7 +747,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 45.500023}
-  m_SizeDelta: {x: 1344.16, y: 20}
+  m_SizeDelta: {x: 1028.7, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3802572077739329384
 CanvasRenderer:
@@ -830,12 +830,87 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8779722511063828633}
   m_HandleRect: {fileID: 1577662561964050873}
   m_Direction: 0
-  m_Value: -0.0000001192652
-  m_Size: 0.48743355
+  m_Value: 0
+  m_Size: 0.4084338
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &2370897947225607377
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9183388930666378292}
+  - component: {fileID: 4474423122238531657}
+  - component: {fileID: 8633398609517927058}
+  m_Layer: 5
+  m_Name: Background (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &9183388930666378292
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2370897947225607377}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1036987479752244211}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4474423122238531657
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2370897947225607377}
+  m_CullTransparentMesh: 1
+--- !u!114 &8633398609517927058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2370897947225607377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 2f1de25736cee0a43b20332769ad925b, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.4627451}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &2569041347778548772
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,8 +1741,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -44.750004}
-  m_SizeDelta: {x: -40, y: -202.49998}
+  m_AnchoredPosition: {x: 0, y: -56.250004}
+  m_SizeDelta: {x: -40, y: -225.49998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3955895259085513240
 MonoBehaviour:
@@ -1745,7 +1820,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.050980393}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2175,8 +2250,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 571.2, y: 39}
-  m_SizeDelta: {x: 570, y: 8}
+  m_AnchoredPosition: {x: 459, y: 39}
+  m_SizeDelta: {x: 460, y: 8}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &1874094384055873135
 CanvasRenderer:
@@ -2377,7 +2452,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1739.2
+      value: 1484.2
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2824,18 +2899,22 @@ MonoBehaviour:
   itemName: Extended Mag
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Upgrade your magazine capacity, allowing for extended fire without
     constant reloading interruptions.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 9f67a19f345ec8b48a9d85d2bb0029ce, type: 2}
   gunItem: 3
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 9f67a19f345ec8b48a9d85d2bb0029ce, type: 2}
 --- !u!114 &7490192055436702989 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -2933,7 +3012,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 967
+      value: 855
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3364,18 +3443,22 @@ MonoBehaviour:
   itemName: Heat Sync
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Optimizes weapon mechanics, reducing the delay between shots for faster,
     more relentless firepower.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: a7305dc8c716dba4fad426b415d26c4b, type: 2}
   gunItem: 5
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: a7305dc8c716dba4fad426b415d26c4b, type: 2}
 --- !u!1001 &785722312802646839
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3462,7 +3545,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 726
+      value: 614
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3913,18 +3996,22 @@ MonoBehaviour:
   itemName: Tight Choke
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Optimizes weapon mechanics, reducing the delay between shots for faster,
     more relentless firepower.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: a1e5b8376aa1468498bd90179cfaecb5, type: 2}
   gunItem: 12
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: a1e5b8376aa1468498bd90179cfaecb5, type: 2}
 --- !u!1001 &934220422882991892
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4011,7 +4098,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 875.3
+      value: 763.2999
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4474,18 +4561,22 @@ MonoBehaviour:
   itemName: Rapid Chamber
   greenGemCost: 1
   redGemCost: 0
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Streamline reloading mechanics to reduce downtime and keep the fight
     flowing smoothly.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: d89a85d062560e848bd31db61d2f87cc, type: 2}
   gunItem: 4
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: d89a85d062560e848bd31db61d2f87cc, type: 2}
 --- !u!1001 &1089911297434927685
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4572,7 +4663,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1686.9998
+      value: 1431.9998
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5030,6 +5121,9 @@ MonoBehaviour:
   itemName: Aim sight
   greenGemCost: 3
   redGemCost: 3
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Focus your aim to land precise, deadly shots while steadying your
     rifle in intense combat.
   unlockDescription: Zooms out and steadies aim, improving accuracy and range for
@@ -5037,12 +5131,13 @@ MonoBehaviour:
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   gunItem: 14
   gunItemCategory: 1
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
-  linkedStatModifierSO: {fileID: 0}
 --- !u!114 &5572695541315229645 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -5587,18 +5682,22 @@ MonoBehaviour:
   itemName: Extended Mag
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Upgrade your magazine capacity, allowing for extended fire without
     constant reloading interruptions.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 96ea49ed590b2b9429a134cfc5121a03, type: 2}
   gunItem: 0
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 96ea49ed590b2b9429a134cfc5121a03, type: 2}
 --- !u!114 &5549580835717508418 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -5707,7 +5806,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1632
+      value: 1377
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -6143,18 +6242,22 @@ MonoBehaviour:
   itemName: Rapid Chamber
   greenGemCost: 1
   redGemCost: 0
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Streamline reloading mechanics to reduce downtime and keep the fight
     flowing smoothly.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 89927fa914a2e8247899ce9981718fc5, type: 2}
   gunItem: 4
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 89927fa914a2e8247899ce9981718fc5, type: 2}
 --- !u!114 &6857536149934106835 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -6252,7 +6355,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 913
+      value: 801
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -6709,6 +6812,9 @@ MonoBehaviour:
   itemName: Focused Blast
   greenGemCost: 3
   redGemCost: 3
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Engineered for those who believe one shot should be enough to end
     any fight.
   unlockDescription: Concentrates all pellets into a single round, delivering immense
@@ -6716,12 +6822,13 @@ MonoBehaviour:
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   gunItem: 16
   gunItemCategory: 1
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
-  linkedStatModifierSO: {fileID: 0}
 --- !u!114 &7178128498741552587 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -6819,7 +6926,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 853.5
+      value: 741.5
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -7281,18 +7388,22 @@ MonoBehaviour:
   itemName: Ammo Belt
   greenGemCost: 1
   redGemCost: 0
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Boosts your ammunition reserves, ensuring you're always ready for
     prolonged engagements.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 98ff7078318d90c4490d5355fd5d9020, type: 2}
   gunItem: 2
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 98ff7078318d90c4490d5355fd5d9020, type: 2}
 --- !u!1001 &3163949765726755782
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7379,7 +7490,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1111
+      value: 999
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -7819,18 +7930,22 @@ MonoBehaviour:
   itemName: Scatter Amplifier
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Upgrade your magazine capacity, allowing for extended fire without
     constant reloading interruptions.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 1579a6d0c7338a047b0bbf15f81ae130, type: 2}
   gunItem: 13
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 1579a6d0c7338a047b0bbf15f81ae130, type: 2}
 --- !u!114 &7610676625518546510 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -8348,18 +8463,22 @@ MonoBehaviour:
   itemName: Laser sight
   greenGemCost: 3
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Enhance accuracy with optical sights, giving you an edge in targeting
     distant enemies.
   unlockDescription: Adds a laser sight to your rifle.
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   gunItem: 0
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
-  linkedStatModifierSO: {fileID: 0}
 --- !u!1001 &3701424878179134554
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8446,7 +8565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1631.5
+      value: 1376.5
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -8901,18 +9020,22 @@ MonoBehaviour:
   itemName: Ammo Belt
   greenGemCost: 1
   redGemCost: 0
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Boosts your ammunition reserves, ensuring you're always ready for
     prolonged engagements.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 752e67977f022bc44a6328b6891c7aec, type: 2}
   gunItem: 2
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 752e67977f022bc44a6328b6891c7aec, type: 2}
 --- !u!114 &8153784502785489362 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -9010,7 +9133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 874.4
+      value: 762.4
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -9480,18 +9603,22 @@ MonoBehaviour:
   itemName: Ammo Belt
   greenGemCost: 1
   redGemCost: 0
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Boosts your ammunition reserves, ensuring you're always ready for
     prolonged engagements.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: c8cfe6d79ebd4424bb59a28aeff523ae, type: 2}
   gunItem: 2
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: c8cfe6d79ebd4424bb59a28aeff523ae, type: 2}
 --- !u!1001 &4734047436759247828
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9578,7 +9705,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1887
+      value: 1632
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -10017,18 +10144,22 @@ MonoBehaviour:
   itemName: Sharp Edge
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Fine-tune your weapon to exploit weaknesses, increasing your chance
     of dealing critical damage.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 3e083c0284ee94a4da70ee904ce873cf, type: 2}
   gunItem: 1
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 3e083c0284ee94a4da70ee904ce873cf, type: 2}
 --- !u!114 &271520629337243228 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -10131,7 +10262,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1109.2
+      value: 997.19995
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -10581,18 +10712,22 @@ MonoBehaviour:
   itemName: Sharp Edge
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Fine-tune your weapon to exploit weaknesses, increasing your chance
     of dealing critical damage.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 12bac8bf6b572c442a27cefa92f71367, type: 2}
   gunItem: 1
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 12bac8bf6b572c442a27cefa92f71367, type: 2}
 --- !u!224 &5781756302520988856 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -11110,18 +11245,22 @@ MonoBehaviour:
   itemName: Ammo Belt
   greenGemCost: 1
   redGemCost: 0
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Boosts your ammunition reserves, ensuring you're always ready for
     prolonged engagements.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 7e641310224827943beffd26b112e445, type: 2}
   gunItem: 0
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 7e641310224827943beffd26b112e445, type: 2}
 --- !u!114 &3549097077051306417 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -11224,7 +11363,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 707.9
+      value: 595.9
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -11659,18 +11798,22 @@ MonoBehaviour:
   itemName: Tight Choke
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Optimizes weapon mechanics, reducing the delay between shots for faster,
     more relentless firepower.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: a8bb85ddaaaa17940beefc4b46d56191, type: 2}
   gunItem: 12
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: a8bb85ddaaaa17940beefc4b46d56191, type: 2}
 --- !u!114 &1552800686491562620 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -11773,7 +11916,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 954
+      value: 842
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -12239,18 +12382,22 @@ MonoBehaviour:
   itemName: Heavy Rounds
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Increases projectile impact, ensuring each shot delivers maximum devastation
     to your enemies.
   unlockDescription: +1 bullet damage
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 3166a82600e8ddc4391953143d52902a, type: 2}
   gunItem: 0
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 3166a82600e8ddc4391953143d52902a, type: 2}
 --- !u!114 &4130877824114997080 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -12772,18 +12919,22 @@ MonoBehaviour:
   itemName: Heavy Rounds
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Increases projectile impact, ensuring each shot delivers maximum devastation
     to your enemies.
   unlockDescription: +1 bullet damage
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 2f6817d6482efdd4ea61bb0cfd3722b1, type: 2}
   gunItem: 0
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 2f6817d6482efdd4ea61bb0cfd3722b1, type: 2}
 --- !u!114 &1956176368788810838 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -13332,18 +13483,22 @@ MonoBehaviour:
   itemName: Sharp Edge
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Fine-tune your weapon to exploit weaknesses, increasing your chance
     of dealing critical damage.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 366b00c3747de8243a01ce00a9662507, type: 2}
   gunItem: 0
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 366b00c3747de8243a01ce00a9662507, type: 2}
 --- !u!224 &5723235798349205716 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -13877,18 +14032,22 @@ MonoBehaviour:
   itemName: Rapid Chamber
   greenGemCost: 1
   redGemCost: 0
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Streamline reloading mechanics to reduce downtime and keep the fight
     flowing smoothly.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 8aabc2d97ea03954ea5e477bd531fca4, type: 2}
   gunItem: 0
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 8aabc2d97ea03954ea5e477bd531fca4, type: 2}
 --- !u!224 &5342320757872940631 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -14395,18 +14554,22 @@ MonoBehaviour:
   itemName: Heat Sync
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Optimizes weapon mechanics, reducing the delay between shots for faster,
     more relentless firepower.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: f335d110aff39cc4b95faf0672089b0e, type: 2}
   gunItem: 0
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: f335d110aff39cc4b95faf0672089b0e, type: 2}
 --- !u!114 &2551578232768310631 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -14509,7 +14672,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 908
+      value: 796
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -14773,11 +14936,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6198610377162153616, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 600
+      value: 460
       objectReference: {fileID: 0}
     - target: {fileID: 6198610377162153616, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 603.1
+      value: 457
       objectReference: {fileID: 0}
     - target: {fileID: 6198610377162153616, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -14954,18 +15117,22 @@ MonoBehaviour:
   itemName: Shotgun
   greenGemCost: 4
   redGemCost: 4
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Devastating at close range, this shotgun unleashes bursts of energy
     to obliterate enemies in an instant.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 1
+  linkedStatModifierSO: {fileID: 0}
   gunItem: 0
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
-  linkedStatModifierSO: {fileID: 0}
 --- !u!114 &2444706408635714244 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -15068,7 +15235,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 981.40015
+      value: 869.40015
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -15503,18 +15670,22 @@ MonoBehaviour:
   itemName: Heat Sync
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Optimizes weapon mechanics, reducing the delay between shots for faster,
     more relentless firepower.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 9f3ac09ba2848a546ab14130315738ba, type: 2}
   gunItem: 5
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 9f3ac09ba2848a546ab14130315738ba, type: 2}
 --- !u!114 &2677263812129565771 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -15539,6 +15710,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 544668719937860753, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -125
+      objectReference: {fileID: 0}
     - target: {fileID: 960804254988752022, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_SizeDelta.x
       value: 5
@@ -15559,6 +15734,22 @@ PrefabInstance:
       propertyPath: m_BlockingMask.m_Bits
       value: 33554431
       objectReference: {fileID: 0}
+    - target: {fileID: 1378580407518007100, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1378580407518007100, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1378580407518007100, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1378580407518007100, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1830935907253760471, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Controller
       value: 
@@ -15566,6 +15757,14 @@ PrefabInstance:
     - target: {fileID: 2141357194002981119, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Alpha
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400777402286875030, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 129
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400777402286875030, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -59
       objectReference: {fileID: 0}
     - target: {fileID: 2634346637618870733, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -15623,6 +15822,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4544125195362706500, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544125195362706500, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544125195362706500, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544125195362706500, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544125195362706500, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -104
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544125195362706500, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -77
+      objectReference: {fileID: 0}
     - target: {fileID: 4589778556579652503, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Size.x
       value: 6.25
@@ -15643,9 +15866,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: GunMerchant
       objectReference: {fileID: 0}
+    - target: {fileID: 5308384602616929793, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5308384602616929793, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5308384602616929793, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5308384602616929793, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6478205264818801766, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_BlockingMask.m_Bits
       value: 33554431
+      objectReference: {fileID: 0}
+    - target: {fileID: 6652053007087386318, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6652053007087386318, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6652053007087386318, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6652053007087386318, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7056178715469635941, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: firstButtonSelected
@@ -15677,11 +15932,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1500
+      value: 1100
       objectReference: {fileID: 0}
     - target: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 1000
+      value: 1050
+      objectReference: {fileID: 0}
+    - target: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 389
       objectReference: {fileID: 0}
     - target: {fileID: 7580726008706340968, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Sprite
@@ -15703,9 +15962,44 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.18
       objectReference: {fileID: 0}
+    - target: {fileID: 8205861449589058367, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8205861449589058367, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8205861449589058367, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8205861449589058367, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8770228293481018646, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8770228293481018646, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8770228293481018646, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8770228293481018646, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 9183388930666378292}
     - targetCorrespondingSourceObject: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4973777417346273327}
@@ -16061,11 +16355,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6198610377162153616, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 570
+      value: 460
       objectReference: {fileID: 0}
     - target: {fileID: 6198610377162153616, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 571.2
+      value: 459
       objectReference: {fileID: 0}
     - target: {fileID: 6198610377162153616, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -16245,6 +16539,9 @@ MonoBehaviour:
   itemName: Rifle
   greenGemCost: 0
   redGemCost: 0
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: A precision weapon firing focused energy bolts, built for balance
     and versatility on any battlefield.
   unlockDescription: '
@@ -16253,12 +16550,13 @@ MonoBehaviour:
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 1
+  linkedStatModifierSO: {fileID: 0}
   gunItem: 8
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
-  linkedStatModifierSO: {fileID: 0}
 --- !u!114 &3161618199701665068 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -16361,7 +16659,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 854
+      value: 742
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -16807,18 +17105,22 @@ MonoBehaviour:
   itemName: Rapid Chamber
   greenGemCost: 1
   redGemCost: 0
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Streamline reloading mechanics to reduce downtime and keep the fight
     flowing smoothly.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: ee9f9c67aba7d324a9b0c21928081a71, type: 2}
   gunItem: 4
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: ee9f9c67aba7d324a9b0c21928081a71, type: 2}
 --- !u!224 &9108020044984844716 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -16910,7 +17212,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1106.9
+      value: 994.9
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -17360,18 +17662,22 @@ MonoBehaviour:
   itemName: Sharp Edge
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Fine-tune your weapon to exploit weaknesses, increasing your chance
     of dealing critical damage.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: be97329d0d840964ab818a08f143e9a5, type: 2}
   gunItem: 1
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: be97329d0d840964ab818a08f143e9a5, type: 2}
 --- !u!224 &9141887657081388596 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -17463,7 +17769,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 929
+      value: 817
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -17930,6 +18236,9 @@ MonoBehaviour:
   itemName: Overclock
   greenGemCost: 3
   redGemCost: 3
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Engineered for chaos, this system pushes the SMG to its limits in
     moments of desperation.
   unlockDescription: Boosts fire rate temporarily, trading precision for rapid suppression
@@ -17937,12 +18246,13 @@ MonoBehaviour:
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   gunItem: 15
   gunItemCategory: 1
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
-  linkedStatModifierSO: {fileID: 0}
 --- !u!224 &9145253764965240926 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -18034,7 +18344,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 908
+      value: 796
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -18318,11 +18628,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6198610377162153616, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 600
+      value: 460
       objectReference: {fileID: 0}
     - target: {fileID: 6198610377162153616, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 603
+      value: 456.89978
       objectReference: {fileID: 0}
     - target: {fileID: 6198610377162153616, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -18514,18 +18824,22 @@ MonoBehaviour:
   itemName: SMG
   greenGemCost: 4
   redGemCost: 4
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: A lightweight, rapid-fire energy weapon ideal for overwhelming foes
     with a storm of searing projectiles
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 1
+  linkedStatModifierSO: {fileID: 0}
   gunItem: 11
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
-  linkedStatModifierSO: {fileID: 0}
 --- !u!224 &8658475818637800385 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -18617,7 +18931,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 967
+      value: 855
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -19063,18 +19377,22 @@ MonoBehaviour:
   itemName: Extended Mag
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Upgrade your magazine capacity, allowing for extended fire without
     constant reloading interruptions.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 2696695148ec9fa4bae132bcd6f08566, type: 2}
   gunItem: 3
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 2696695148ec9fa4bae132bcd6f08566, type: 2}
 --- !u!114 &3247801462989266970 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -19177,7 +19495,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 981.0001
+      value: 869.0001
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -19639,18 +19957,22 @@ MonoBehaviour:
   itemName: Extended Mag
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Upgrade your magazine capacity, allowing for extended fire without
     constant reloading interruptions.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 7e26957e9082c994983417f601ac3cc8, type: 2}
   gunItem: 3
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 7e26957e9082c994983417f601ac3cc8, type: 2}
 --- !u!114 &3979499888996643096 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -19753,7 +20075,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1739.2002
+      value: 1484.2002
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -20168,18 +20490,22 @@ MonoBehaviour:
   itemName: Heat Sync
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Optimizes weapon mechanics, reducing the delay between shots for faster,
     more relentless firepower.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 61b1a871b4feb98478e78a240a89582c, type: 2}
   gunItem: 5
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 61b1a871b4feb98478e78a240a89582c, type: 2}
 --- !u!114 &3844080178905567529 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -20282,7 +20608,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 952
+      value: 840
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -20748,18 +21074,22 @@ MonoBehaviour:
   itemName: Heavy Rounds
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Increases projectile impact, ensuring each shot delivers maximum devastation
     to your enemies.
   unlockDescription: +1 bullet damage
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 692b3c66e131c464191e3e48c72843b7, type: 2}
   gunItem: 0
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 692b3c66e131c464191e3e48c72843b7, type: 2}
 --- !u!114 &3841467329365948641 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -21315,18 +21645,22 @@ MonoBehaviour:
   itemName: Adaptive Fire
   greenGemCost: 3
   redGemCost: 3
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Developed for versatility, this system adjusts firing patterns to
     match any battlefield challenge.
   unlockDescription: Switch between semi-automatic and automatic  fire modes.
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 0}
   gunItem: 7
   gunItemCategory: 1
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
-  linkedStatModifierSO: {fileID: 0}
 --- !u!114 &4279132200459969354 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -21429,7 +21763,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 719.2001
+      value: 607.2001
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -21884,18 +22218,22 @@ MonoBehaviour:
   itemName: Extended Barrel
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: A precision-engineered barrel extension, designed for those who prefer
     to keep their distance.
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: 80b9e6d07c0c7694aa8683ba0a626a95, type: 2}
   gunItem: 17
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: 80b9e6d07c0c7694aa8683ba0a626a95, type: 2}
 --- !u!114 &4128314800984570793 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -21998,7 +22336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1732.0002
+      value: 1477.0002
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -22475,18 +22813,22 @@ MonoBehaviour:
   itemName: Heavy Rounds
   greenGemCost: 0
   redGemCost: 1
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Increases projectile impact, ensuring each shot delivers maximum devastation
     to your enemies.
   unlockDescription: +1 bullet damage
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  linkedStatModifierSO: {fileID: 11400000, guid: a3f56cf30e8c9e94a8283e4e3dde7691, type: 2}
   gunItem: 0
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
-  linkedStatModifierSO: {fileID: 11400000, guid: a3f56cf30e8c9e94a8283e4e3dde7691, type: 2}
 --- !u!224 &7564426154509145202 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -22578,7 +22920,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1675
+      value: 1420
       objectReference: {fileID: 0}
     - target: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -23023,18 +23365,22 @@ MonoBehaviour:
   itemName: Sniper
   greenGemCost: 6
   redGemCost: 6
+  blueGemCost: 0
+  yellowGemCost: 0
+  purpleGemCost: 0
   description: Engineered for long-range lethality, this sniper channels energy into
     pinpoint, devastating strikes
   unlockDescription: 
   itemLevel: 0
   maxItemLevel: 1
   isBoughtAtStart: 0
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 1
+  linkedStatModifierSO: {fileID: 0}
   gunItem: 10
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
-  linkedStatModifierSO: {fileID: 0}
 --- !u!114 &4442296580556784040 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}

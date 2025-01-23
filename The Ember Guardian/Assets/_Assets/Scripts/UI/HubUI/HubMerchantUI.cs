@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -24,6 +25,9 @@ public class HubMerchantUI : MonoBehaviour
     private GraphicRaycaster raycaster;
     private Animator hubMerchantUInimator;
     private HubMerchant hubMerchant;
+
+    public static event EventHandler OnAnyHubMerchantOpenUIPanel;
+    public static event EventHandler OnAnyHubMerchantCloseUIPanel;
 
     private void Awake() {
         hubMerchant = GetComponentInParent<HubMerchant>();
@@ -92,6 +96,8 @@ public class HubMerchantUI : MonoBehaviour
         hubMerchantUInimator.SetTrigger("Hide");
 
         EventSystem.current.SetSelectedGameObject(null);
+
+        OnAnyHubMerchantCloseUIPanel?.Invoke(this, EventArgs.Empty);
     }
 
     private void HubMerchant_OnPlayerInteractedWithHubMerchant(object sender, System.EventArgs e) {
@@ -100,6 +106,8 @@ public class HubMerchantUI : MonoBehaviour
         hubMerchantUInimator.SetTrigger("Show");
         hubMerchantUInimator.ResetTrigger("Hide");
         EventSystem.current.SetSelectedGameObject(firstButtonSelected);
+
+        OnAnyHubMerchantOpenUIPanel?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnDestroy() {

@@ -211,7 +211,7 @@ public class Player : MonoBehaviour, IDamageable
         } else {
 
             respawnPosition = new Vector2(Tent.Instance.transform.position.x, transform.position.y);
-            playerHealth = PlayerStats.Instance.GetPlayerRespawnHealth();
+            playerHealth = PlayerStats.Instance.GetPlayerRespawnHP();
 
         }
 

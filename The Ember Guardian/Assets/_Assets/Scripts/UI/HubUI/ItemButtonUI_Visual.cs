@@ -7,6 +7,9 @@ public class ItemButtonUI_Visual : MonoBehaviour
 {
     [SerializeField] private ParticleSystem greenGemPS;
     [SerializeField] private ParticleSystem redGemPS;
+    [SerializeField] private ParticleSystem blueGemPS;
+    [SerializeField] private ParticleSystem yellowGemPS;
+    [SerializeField] private ParticleSystem purpleGemPS;
 
     private Animator animator;
 
@@ -22,13 +25,16 @@ public class ItemButtonUI_Visual : MonoBehaviour
         animator.enabled = true;
     }
 
-    public void StartBuyAnimation(int redCost, int greenCost) {
-        StartCoroutine(StartBuyAnimationCoroutine(redCost, greenCost));
+    public void StartBuyAnimation(int redCost, int greenCost, int blueCost, int yellowCost, int purpleCost) {
+        StartCoroutine(StartBuyAnimationCoroutine(redCost, greenCost, blueCost, yellowCost, purpleCost));
     }
 
-    private IEnumerator StartBuyAnimationCoroutine(int redCost, int greenCost) {
+    private IEnumerator StartBuyAnimationCoroutine(int redCost, int greenCost, int blueCost, int yellowCost, int purpleCost) {
         int greenParticlesToEmit = greenCost * 5;
         int redParticlesToEmit = redCost * 5;
+        int blueParticlesToEmit = blueCost * 5;
+        int yellowParticlesToEmit = yellowCost * 5;
+        int purpleParticlesToEmit = purpleCost * 5;
 
         animator.enabled = true;
         animator.SetTrigger("Buy");
@@ -44,5 +50,8 @@ public class ItemButtonUI_Visual : MonoBehaviour
 
         greenGemPS.Emit(greenParticlesToEmit);
         redGemPS.Emit(redParticlesToEmit);
+        blueGemPS.Emit(blueParticlesToEmit);
+        yellowGemPS.Emit(yellowParticlesToEmit);
+        purpleGemPS.Emit(purpleParticlesToEmit);
     }
 }

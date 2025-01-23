@@ -239,7 +239,7 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
 
         iconImage.material = new Material(iconImage.material);
         iconImage.material.SetFloat("_GreyscaleBlend", 0);
-        itemButtonUI_Visual.StartBuyAnimation(hubMerchantItem.GetRedGemCost(), hubMerchantItem.GetGreenGemCost());
+        itemButtonUI_Visual.StartBuyAnimation(hubMerchantItem.GetRedGemCost(), hubMerchantItem.GetGreenGemCost(), hubMerchantItem.GetBlueGemCost(), hubMerchantItem.GetYellowGemCost(), hubMerchantItem.GetPurpleGemCost());
     }
 
     private void SetItemBoughtVisuals() {
@@ -309,7 +309,7 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         }
     }
     public void StartUpgradeItemAnimation() {
-        itemButtonUI_Visual.StartBuyAnimation(hubMerchantItem.GetRedGemCost(), hubMerchantItem.GetGreenGemCost());
+        itemButtonUI_Visual.StartBuyAnimation(hubMerchantItem.GetRedGemCost(), hubMerchantItem.GetGreenGemCost(), hubMerchantItem.GetBlueGemCost(), hubMerchantItem.GetYellowGemCost(), hubMerchantItem.GetPurpleGemCost());
     }
 
     public void SetLockingItemBought(ItemButtonUI itemButtonUI) {

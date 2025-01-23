@@ -82,9 +82,9 @@ public class Chest : MonoBehaviour
                     currencyType = currencyType,
                 });
 
-                yield return new WaitForSeconds(.2f);
                 collectible.ApplyRandomUpwardsForce(5, 8);
                 collectible.SetCollectibleUnInteractable(.75f);
+                yield return new WaitForSeconds(.2f);
             }
             j++;
         }

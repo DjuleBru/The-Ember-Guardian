@@ -7,6 +7,7 @@ using UnityEngine;
 public class DogAnimatorManager : MonoBehaviour {
 
     [SerializeField] private Animator dogBodyAnimator;
+
     private Animator animator;
     private Dog dog;
     private DogAI dogAI;
@@ -16,6 +17,7 @@ public class DogAnimatorManager : MonoBehaviour {
     private float watchDir;
     private float previousWatchDir = 1f;
     private bool moving;
+    private bool digAbilityUnlocked;
 
     private float sniffTimer;
     private float sniffDuration;
@@ -40,12 +42,14 @@ public class DogAnimatorManager : MonoBehaviour {
 
     public event EventHandler OnFootstepTriggered;
     public event EventHandler OnDogSniffed;
+    public event EventHandler OnDogSniffedEnd;
     public event EventHandler OnDogPant;
     public event EventHandler OnDogBreathe;
     public event EventHandler OnDogSit;
     public event EventHandler OnDogGroan;
     public event EventHandler OnDogGrowl;
     public event EventHandler OnDogBark;
+    public event EventHandler OnDogBite;
 
     private bool running;
 
@@ -65,7 +69,15 @@ public class DogAnimatorManager : MonoBehaviour {
 
     private void Start() {
         dogAI.OnStateChanged += DogAI_OnStateChanged;
+        dogAI.OnDogBite += DogAI_OnDogBite;
         dogAI.SetReadyToMove(false);
+        DogDigAbility.Instance.OnSniffStart += DogDigAbility_OnSniffStart;
+
+        digAbilityUnlocked = DogStats.Instance.GetdigResourceAbilityUnlocked();
+    }
+
+    private void DogAI_OnDogBite(object sender, EventArgs e) {
+        animator.SetTrigger("Bite");
     }
 
     private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {
@@ -111,6 +123,14 @@ public class DogAnimatorManager : MonoBehaviour {
             animator.SetBool("Growling", false);
         }
 
+
+        if (newState == DogAI.State.attacking) {
+            animator.SetBool("Running", true);
+            animator.SetBool("Barking", true);
+            animator.SetBool("Growling", false);
+            return;
+        }
+
         if (newState == DogAI.State.barking) {
             animator.SetBool("Barking", true);
         }
@@ -128,8 +148,10 @@ public class DogAnimatorManager : MonoBehaviour {
         string stateName = animator.runtimeAnimatorController.animationClips
             .FirstOrDefault(clip => Animator.StringToHash(clip.name) == stateInfo.shortNameHash)?.name;
 
-        if (stateName == "Doggo_Walk") {
-            HandleSniffStart();
+        if(!digAbilityUnlocked) {
+            if (stateName == "Doggo_Walk") {
+                HandleSniffStart();
+            }
         }
 
         if (stateName == "Doggo_WalkSniff") {
@@ -148,6 +170,13 @@ public class DogAnimatorManager : MonoBehaviour {
         if (stateName == "Doggo_Sleep") {
             HandleSleepEnd();
         }
+    }
+
+    private void DogDigAbility_OnSniffStart(object sender, EventArgs e) {
+        sniffDuration = UnityEngine.Random.Range(sniffMinDuration, sniffMaxDuration);
+        sniffTimer = sniffDuration;
+
+        animator.SetBool("Sniffing", true);
     }
 
     private void HandleSniffStart() {
@@ -175,6 +204,7 @@ public class DogAnimatorManager : MonoBehaviour {
             sniffTimer = sniffTrialRate;
 
             animator.SetBool("Sniffing", false);
+            OnDogSniffedEnd?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -336,8 +366,13 @@ public class DogAnimatorManager : MonoBehaviour {
         OnDogBark?.Invoke(this, EventArgs.Empty);
     }
 
+    public void TriggerBite() {
+        OnDogBite?.Invoke(this, EventArgs.Empty);
+    }
+
     private void OnDestroy() {
         Portal.OnAnyPlayerTeleported -= Portal_OnAnyPlayerTeleported;
         Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
+        DogDigAbility.Instance.OnSniffStart -= DogDigAbility_OnSniffStart;
     }
 }

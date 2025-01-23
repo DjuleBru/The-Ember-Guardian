@@ -32,7 +32,7 @@ public class PlayerStatsSO : ScriptableObject
     public float initialRespawnTime = 5f;
     [BoxGroup("Health")]
     [LabelWidth(125)]
-    public int initialPlayerRespawnHealth = 3;
+    public int initialPlayerRespawnHP = 3;
     [BoxGroup("Health")]
     [LabelWidth(125)]
     public float initialHpRegenTimer = 0f;

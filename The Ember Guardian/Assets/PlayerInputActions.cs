@@ -188,6 +188,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenPlayerTab"",
+                    ""type"": ""Button"",
+                    ""id"": ""ce547d04-8533-47b9-ad2c-573036089326"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -674,6 +683,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""WeaponSecondaryAbility"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""595b7313-7a07-4df3-98f7-10ff11990558"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""OpenPlayerTab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""420c9d0b-21ba-48f7-b2fd-85d9afd4b9ce"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""OpenPlayerTab"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -723,6 +754,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_SelectPrimaryGun = m_Player.FindAction("SelectPrimaryGun", throwIfNotFound: true);
         m_Player_SelectSecondaryGun = m_Player.FindAction("SelectSecondaryGun", throwIfNotFound: true);
         m_Player_WeaponSecondaryAbility = m_Player.FindAction("WeaponSecondaryAbility", throwIfNotFound: true);
+        m_Player_OpenPlayerTab = m_Player.FindAction("OpenPlayerTab", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -807,6 +839,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SelectPrimaryGun;
     private readonly InputAction m_Player_SelectSecondaryGun;
     private readonly InputAction m_Player_WeaponSecondaryAbility;
+    private readonly InputAction m_Player_OpenPlayerTab;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -829,6 +862,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @SelectPrimaryGun => m_Wrapper.m_Player_SelectPrimaryGun;
         public InputAction @SelectSecondaryGun => m_Wrapper.m_Player_SelectSecondaryGun;
         public InputAction @WeaponSecondaryAbility => m_Wrapper.m_Player_WeaponSecondaryAbility;
+        public InputAction @OpenPlayerTab => m_Wrapper.m_Player_OpenPlayerTab;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -892,6 +926,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @WeaponSecondaryAbility.started += instance.OnWeaponSecondaryAbility;
             @WeaponSecondaryAbility.performed += instance.OnWeaponSecondaryAbility;
             @WeaponSecondaryAbility.canceled += instance.OnWeaponSecondaryAbility;
+            @OpenPlayerTab.started += instance.OnOpenPlayerTab;
+            @OpenPlayerTab.performed += instance.OnOpenPlayerTab;
+            @OpenPlayerTab.canceled += instance.OnOpenPlayerTab;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -950,6 +987,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @WeaponSecondaryAbility.started -= instance.OnWeaponSecondaryAbility;
             @WeaponSecondaryAbility.performed -= instance.OnWeaponSecondaryAbility;
             @WeaponSecondaryAbility.canceled -= instance.OnWeaponSecondaryAbility;
+            @OpenPlayerTab.started -= instance.OnOpenPlayerTab;
+            @OpenPlayerTab.performed -= instance.OnOpenPlayerTab;
+            @OpenPlayerTab.canceled -= instance.OnOpenPlayerTab;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1005,5 +1045,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnSelectPrimaryGun(InputAction.CallbackContext context);
         void OnSelectSecondaryGun(InputAction.CallbackContext context);
         void OnWeaponSecondaryAbility(InputAction.CallbackContext context);
+        void OnOpenPlayerTab(InputAction.CallbackContext context);
     }
 }
