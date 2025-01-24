@@ -11,6 +11,7 @@ public class Gun : MonoBehaviour
     [SerializeField] protected Animator armBodyAnimator;
 
     protected bool gunActive;
+    protected bool gunUnlocked;
     protected bool secondaryAbilityUnlocked;
     protected bool lerpingGunAngle;
 
@@ -29,6 +30,7 @@ public class Gun : MonoBehaviour
     protected float defaultAngle; // Angle initial du cône (en degrés)
     protected float sightAngle; // Angle resserré du cône lorsqu'on vise
     protected float overclockedAngle; // Angle resserré du cône lorsqu'on vise
+    protected float emptyRevolverAngle = 6f; // Angle resserré du cône lorsqu'on vise
     protected float lmgSetupAngle; // Angle resserré du cône lorsqu'on vise
     protected float adjustmentSpeed = 5f; // Vitesse de transition (plus grand = plus rapide)
     protected float critChance = .15f;
@@ -40,23 +42,25 @@ public class Gun : MonoBehaviour
     protected float focusedBlastAngle = 1f; // L'angle cible vers lequel le cône doit se diriger
 
     public static event EventHandler OnAnyGunMaxAmmoChanged;
+    public static event EventHandler OnAnyGunUnlocked;
 
 
     protected void Start() {
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
         PlayerShoot.Instance.OnPlayerOverclockedSMGStarted += Playershoot_OnPlayerOverclockedSMGStarted;
         PlayerShoot.Instance.OnPlayerOverclockedSMGStopped += PlayerShoot_OnPlayerOverclockedSMGStopped;
-        PlayerShoot.Instance.OnPlayerSetupLMGStarted += PlayerShoot_OnPlayerSetupLMGStarted;
+        PlayerShoot.Instance.OnPlayerSetupLMGBipod += PlayerShoot_OnPlayerSetupLMGStarted;
         PlayerShoot.Instance.OnPlayerSetupLMGStopped += PlayerShoot_OnPlayerSetupLMGStopped;
         PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAim_OnPlayerAimSightStarted;
         PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAim_OnPlayerAimSightEnded;
+        PlayerShoot.Instance.OnPlayerEmptyRevolverMagEnd += PlayerShoot_OnPlayerEmptyRevolverMagEnd;
+        PlayerShoot.Instance.OnPlayerEmptyRevolverMagStart += PlayerShoot_OnPlayerEmptyRevolverMagStart;
         PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
         PlayerShoot.Instance.OnPlayerFocusBlastStopped += PlayerShoot_OnPlayerFocusBlastStopped;
     }
 
     protected void Update() {
         
-
         if (lerpingGunAngle) {
             // Interpolation linéaire vers l'angle cible
             currentAngle = Mathf.Lerp(currentAngle, targetAngle, Time.deltaTime * adjustmentSpeed);
@@ -94,6 +98,18 @@ public class Gun : MonoBehaviour
         // Augmente l'angle
         targetAngle = lmgSetupAngle;
         lerpingGunAngle = true;
+    }
+
+    private void PlayerShoot_OnPlayerEmptyRevolverMagStart(object sender, EventArgs e) {
+        ParticleSystem.ShapeModule shape = shootPS.shape;
+        shape.angle = emptyRevolverAngle;
+        Debug.Log(shape.angle);
+    }
+
+    private void PlayerShoot_OnPlayerEmptyRevolverMagEnd(object sender, EventArgs e) {
+        ParticleSystem.ShapeModule shape = shootPS.shape;
+        shape.angle = defaultAngle;
+        Debug.Log(shape.angle);
     }
 
     protected void PlayerAim_OnPlayerAimSightEnded(object sender, System.EventArgs e) {
@@ -139,6 +155,8 @@ public class Gun : MonoBehaviour
     }
 
     public void RefreshGunStats() {
+        gunUnlocked = MetaProgressionManager.Instance.GetGunUnlocked(gunSO);
+
         pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
 
         maxAmmo = MetaProgressionManager.Instance.GetGunMaxAmmo(gunSO);
@@ -199,6 +217,9 @@ public class Gun : MonoBehaviour
 
     #region GET PARAMETERS
 
+    public bool GetGunUnlocked() {
+        return gunUnlocked;
+    }
     public Animator GetGunBodyAnimator() {
         return gunBodyAnimator;
     }
@@ -282,6 +303,11 @@ public class Gun : MonoBehaviour
 
     #region SET META PARAMETERS
 
+    public void SetGunUnlocked() {
+        gunUnlocked = true;
+        OnAnyGunUnlocked?.Invoke(this, EventArgs.Empty);
+    }
+
     public void SetSecondaryAbilityUnlocked() {
         secondaryAbilityUnlocked = true;
     }
@@ -319,6 +345,8 @@ public class Gun : MonoBehaviour
     #endregion
 
     public void SaveMetaParameters() {
+        if (!gunUnlocked) return;
+
         MetaProgressionManager.Instance.SetGunDamagePerBullet(gunSO, damagePerBullet);
         MetaProgressionManager.Instance.SetGunShotsPerClip(gunSO, shotsPerClip);
         MetaProgressionManager.Instance.SetGunMaxAmmo(gunSO, maxAmmo);
@@ -328,5 +356,7 @@ public class Gun : MonoBehaviour
         MetaProgressionManager.Instance.SetGunShootConeAnle(gunSO, defaultAngle);
         MetaProgressionManager.Instance.SetGunPelletsPerBullet(gunSO, pelletsPerBullet);
         MetaProgressionManager.Instance.SetGunBulletLifetime(gunSO, bulletLifetime);
+
+        MetaProgressionManager.Instance.SetGunUnlocked(gunSO, gunUnlocked);
     }
 }

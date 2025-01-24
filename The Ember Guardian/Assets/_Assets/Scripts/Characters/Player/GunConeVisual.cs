@@ -33,7 +33,7 @@ public class GunConeVisual : MonoBehaviour
         PlayerShoot.Instance.OnPlayerOverclockedSMGStopped += PlayerShoot_OnPlayerOverclockedSMGStopped;
         PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
         PlayerShoot.Instance.OnPlayerFocusBlastStopped += PlayerShoot_OnPlayerFocusBlastStopped;
-        PlayerShoot.Instance.OnPlayerSetupLMGStarted += PlayerShoot_OnPlayerSetupLMGStarted;
+        PlayerShoot.Instance.OnPlayerSetupLMGBipod += PlayerShoot_OnPlayerSetupLMGStarted;
         PlayerShoot.Instance.OnPlayerSetupLMGStopped += PlayerShoot_OnPlayerSetupLMGStopped;
     }
 
@@ -128,7 +128,7 @@ public class GunConeVisual : MonoBehaviour
         PlayerShoot.Instance.OnPlayerOverclockedSMGStopped -= PlayerShoot_OnPlayerOverclockedSMGStopped;
         PlayerShoot.Instance.OnPlayerFocusBlastStarted -= PlayerShoot_OnPlayerFocusBlastStarted;
         PlayerShoot.Instance.OnPlayerFocusBlastStopped -= PlayerShoot_OnPlayerFocusBlastStopped;
-        PlayerShoot.Instance.OnPlayerSetupLMGStarted -= PlayerShoot_OnPlayerSetupLMGStarted;
+        PlayerShoot.Instance.OnPlayerSetupLMGBipod -= PlayerShoot_OnPlayerSetupLMGStarted;
         PlayerShoot.Instance.OnPlayerSetupLMGStopped -= PlayerShoot_OnPlayerSetupLMGStopped;
     }
 }

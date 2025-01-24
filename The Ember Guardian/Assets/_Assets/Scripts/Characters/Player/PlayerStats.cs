@@ -88,8 +88,8 @@ public class PlayerStats : MonoBehaviour
     public event EventHandler OnMoveSpeedChanged;
     #endregion
 
-    public event EventHandler OnStatsLoaded;
     public event EventHandler OnFlashlightRangeChanged;
+    public event EventHandler OnCanHold2WeaponsUnlocked;
 
     private void Awake() {
         Instance = this;
@@ -167,6 +167,7 @@ public class PlayerStats : MonoBehaviour
 
     public void UnlockCanHold2Weapons() {
         hold2WeaponsUnlocked = true;
+        OnCanHold2WeaponsUnlocked?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetMoveSpeedBuff(float moveSpeedBuff) {
@@ -368,6 +369,9 @@ public class PlayerStats : MonoBehaviour
 
     #region GET PARAMETER BUFFS META
 
+    public bool GetCanHold2WeaponsUnlocked() {
+        return hold2WeaponsUnlocked;
+    }
     public float GetRunAccelerationFactorBuff_Meta() {
         return runAccelerationFactorBuff_meta;
     }

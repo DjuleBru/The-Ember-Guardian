@@ -91,7 +91,7 @@ public class DogAnimatorManager : MonoBehaviour {
     private void DogAI_OnStateChanged(object sender, System.EventArgs e) {
         DogAI.State newState = dogAI.GetState();
         ResetAllTriggers();
-        //ResetAllBools();
+        CheckStopSniffing();
 
         if (newState == DogAI.State.stay) {
             animator.SetBool("Running", false);
@@ -169,6 +169,13 @@ public class DogAnimatorManager : MonoBehaviour {
 
         if (stateName == "Doggo_Sleep") {
             HandleSleepEnd();
+        }
+    }
+
+    private void CheckStopSniffing() {
+        if (!digAbilityUnlocked) return;
+        if(animator.GetBool("Sniffing") == true) {
+            OnDogSniffedEnd?.Invoke(this, EventArgs.Empty);
         }
     }
 

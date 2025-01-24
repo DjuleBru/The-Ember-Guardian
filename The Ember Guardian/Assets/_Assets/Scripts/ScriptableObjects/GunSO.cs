@@ -13,6 +13,7 @@ public class GunSO : ScriptableObject
         Revolver,
         LMG,
     }
+
     public GunType gunType;
     public Sprite gunSprite;
     public Sprite reticleSprite;

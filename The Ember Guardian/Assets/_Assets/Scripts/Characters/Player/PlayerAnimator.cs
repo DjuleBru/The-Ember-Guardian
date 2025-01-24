@@ -48,7 +48,7 @@ public class PlayerAnimator : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
         PlayerShoot.Instance.OnPlayerSetupLMGStarted += PlayerShoot_OnPlayerSetupLMGStarted;
-        PlayerShoot.Instance.OnPlayerSetupLMGStopped += PlayerShoot_OnPlayerSetupLMGStopped;
+        PlayerShoot.Instance.OnPlayerResetLMGBipod += PlayerShoot_OnPlayerResetLMGBipod;
 
         PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAIm_OnPlayerAimSightEnded;
         PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAim_OnPlayerAimSightStarted;
@@ -61,10 +61,10 @@ public class PlayerAnimator : MonoBehaviour
         breatheVisual.SetActive(false);
     }
 
-    private void PlayerShoot_OnPlayerSetupLMGStopped(object sender, EventArgs e)
-    {
+    private void PlayerShoot_OnPlayerResetLMGBipod(object sender, EventArgs e) {
         playerAnimator.SetBool("Crouching", false);
     }
+
 
     private void PlayerShoot_OnPlayerSetupLMGStarted(object sender, EventArgs e)
     {
@@ -277,6 +277,11 @@ public class PlayerAnimator : MonoBehaviour
         PlayerMovement.Instance.OnPlayerRunStopped -= PlayerMovement_OnPlayerRunStopped;
         PlayerMovement.Instance.OnPlayerExhaustionStarted -= PlayerMovement_OnPlayerExhaustionStarted;
         PlayerMovement.Instance.OnPlayerExhaustionStopped -= PlayerMovement_OnPlayerExhaustionStopped;
+
+        PlayerShoot.Instance.OnPlayerReload -= PlayerShoot_OnPlayerReload;
+        PlayerShoot.Instance.OnPlayerReloadEnded -= PlayerShoot_OnPlayerReloadEnded;
+        PlayerShoot.Instance.OnPlayerSetupLMGStarted -= PlayerShoot_OnPlayerSetupLMGStarted;
+        PlayerShoot.Instance.OnPlayerResetLMGBipod -= PlayerShoot_OnPlayerResetLMGBipod;
 
         Player.Instance.OnPlayerDamaged -= Player_OnPlayerDamaged;
         Player.Instance.OnPlayerDied -= Player_OnPlayerDied;

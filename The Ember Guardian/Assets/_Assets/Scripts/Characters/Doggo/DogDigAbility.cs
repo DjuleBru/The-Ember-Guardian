@@ -80,8 +80,6 @@ public class DogDigAbility : MonoBehaviour
             // Dig successful ! 
 
             float randomNumber2 = UnityEngine.Random.Range(0f, 1f);
-            Debug.Log("randomNumber2 " + randomNumber2);
-            Debug.Log("digDoubleProbability " + digDoubleProbability);
 
             if (randomNumber2 < digDoubleProbability) {
                 // Double dig successful ! 
@@ -121,7 +119,7 @@ public class DogDigAbility : MonoBehaviour
                 Debug.Log("Instantiate " + currencyType);
                 Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyType), spawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
 
-                collectible.ApplyRandomUpwardsForce(8, 12);
+                collectible.ApplyRandomUpwardsForce(5, 8);
                 collectible.SetCollectibleUnInteractable(.75f);
 
                 yield return new WaitForSeconds(.2f);

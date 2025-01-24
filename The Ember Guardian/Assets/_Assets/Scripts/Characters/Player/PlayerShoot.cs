@@ -20,6 +20,10 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler<OnAmmoRefilledEventArgs> OnPlayerAmmoRefilled;
     public event EventHandler OnBulletsChanged;
     public event EventHandler OnPlayerSwappedGun;
+    public event EventHandler OnGunsLoaded;
+
+    public event EventHandler OnPrimaryWeaponChanged;
+    public event EventHandler OnSecondaryWeaponChanged;
 
     public event EventHandler OnPlayerAimedSightStarted;
     public event EventHandler OnPlayerAimedSightEnded;
@@ -29,7 +33,16 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerFocusBlastStarted;
     public event EventHandler OnPlayerFocusBlastStopped;
     public event EventHandler OnPlayerSetupLMGStarted;
+    public event EventHandler OnPlayerSetupLMGBipod;
+    public event EventHandler OnPlayerResetLMGBipod;
     public event EventHandler OnPlayerSetupLMGStopped;
+    public event EventHandler OnPlayerEmptyRevolverMagStart;
+    public event EventHandler OnPlayerEmptyRevolverMagEnd;
+
+    private float setupLMGTime = 2.5f;
+    private float setupLMGTimer;
+    private bool settingUpLMG;
+    private bool emptyingRevolverMag;
 
     public class OnAmmoRefilledEventArgs : EventArgs {
         public int ammoAmount;
@@ -81,6 +94,7 @@ public class PlayerShoot : MonoBehaviour
     private GunSO secondayGunSO;
 
     [SerializeField] private List<Gun> allGunsList;
+    [SerializeField] private List<GunSO> allGunSOList;
     [SerializeField] private GunSO debugGun;
     [SerializeField] private bool useDebugGun;
     [SerializeField] private bool debugSecondaryAbilityUnlocked;
@@ -118,10 +132,22 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
+    public void SetPrimaryWeaponSO(GunSO gunSO) {
+        primaryGunSO = gunSO;
+        SetActiveGun(gunSO, true);
+        OnPrimaryWeaponChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SetSecondaryWeaponSO(GunSO gunSO) {
+        secondayGunSO = gunSO;
+        SetActiveGun(gunSO, false);
+        OnSecondaryWeaponChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     public void SetActiveGun(GunSO gunSO, bool primaryGun = true) {
         Gun activeGun = null;
 
-        Debug.Log("SetActiveGun " + gunSO);
+        Debug.Log("SetActiveGun " + gunSO + " primaryGun " + primaryGun);
 
         foreach(Gun gun in allGunsList) {
             gun.gameObject.SetActive(false);
@@ -167,6 +193,8 @@ public class PlayerShoot : MonoBehaviour
         foreach (Gun gun in allGunsList) {
             gun.RefreshGunStats();
             gun.gameObject.SetActive(false);
+
+            allGunSOList.Add(gun.GetGunSO());
         }
     }
 
@@ -238,6 +266,24 @@ public class PlayerShoot : MonoBehaviour
                 ammoRegenTimer = ammoRegenTime;
                 AddAmmoClip(1);
             }
+        }
+
+        if(settingUpLMG) {
+            setupLMGTimer += Time.deltaTime;
+
+            if(setupLMGTimer > setupLMGTime) {
+                settingUpLMG = false;
+                canShoot = true;
+
+                if(secondaryAbilityActive) {
+                    OnPlayerSetupLMGBipod?.Invoke(this, EventArgs.Empty);
+                } else {
+                    Player.Instance.SetCanMove(true);
+                    PlayerAim.Instance.SetLimitAimAngle(false);
+                    OnPlayerResetLMGBipod?.Invoke(this, EventArgs.Empty);
+                }
+            }
+
         }
     }
 
@@ -428,6 +474,7 @@ public class PlayerShoot : MonoBehaviour
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.LMG)
         {
+            if (settingUpLMG) return;
             if(!secondaryAbilityActive)
             {
                 gunRecoil = 0f;
@@ -439,6 +486,10 @@ public class PlayerShoot : MonoBehaviour
                 OnPlayerSetupLMGStarted?.Invoke(this, EventArgs.Empty);
                 OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
 
+                settingUpLMG = true;
+                setupLMGTimer = 0f;
+                canShoot = false;
+
                 secondaryAbilityActive = true;
 
             } else
@@ -446,10 +497,12 @@ public class PlayerShoot : MonoBehaviour
                 gunRecoil = heldGunSO.gunRecoil;
                 gunKnockback = heldGunSO.gunKnockback;
 
-                Player.Instance.SetCanMove(true);
-                PlayerAim.Instance.SetLimitAimAngle(false);
                 OnPlayerSetupLMGStopped?.Invoke(this, EventArgs.Empty);
                 OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+
+                settingUpLMG = true;
+                setupLMGTimer = 0f;
+                canShoot = false;
 
                 secondaryAbilityActive = false;
 
@@ -457,6 +510,22 @@ public class PlayerShoot : MonoBehaviour
 
         }
 
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.Revolver) {
+            if (GetCurrentBullets() == 0) return;
+            if (!secondaryAbilityActive) {
+                gunRecoil = .25f;
+                gunKnockback = 1f;
+
+                Debug.Log("OnPlayerEmptyRevolverMagStart");
+                OnPlayerEmptyRevolverMagStart?.Invoke(this, EventArgs.Empty);
+
+                secondaryAbilityActive = true;
+                emptyingRevolverMag = true;
+
+                StartCoroutine(EmptyRevolverMag());
+            }
+
+        }
     }
 
     private void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {
@@ -514,7 +583,7 @@ public class PlayerShoot : MonoBehaviour
 
     private void GameInput_OnPlayerSecondaryGunSelected(object sender, EventArgs e) {
         if(secondayGunSO != null) {
-            SetActiveGun(secondayGunSO);
+            SetActiveGun(secondayGunSO, false);
         }
     }
 
@@ -537,8 +606,31 @@ public class PlayerShoot : MonoBehaviour
         if(heldGunSO == secondayGunSO) {
             SetActiveGun(primaryGunSO);
         } else {
-            SetActiveGun(secondayGunSO);
+            SetActiveGun(secondayGunSO, false);
         }
+    }
+
+    private IEnumerator EmptyRevolverMag() {
+        Debug.Log("GetCurrentBullets " + GetCurrentBullets());
+        int remainingBullets = GetCurrentBullets();
+
+        for (int i = 0; i < remainingBullets; i++) {
+            Shoot();
+            if(i < remainingBullets-1) {
+                yield return new WaitForSeconds(.15f);
+            }
+        }
+
+        OnPlayerEmptyRevolverMagEnd?.Invoke(this, EventArgs.Empty);
+        secondaryAbilityActive = false;
+
+        gunRecoil = heldGunSO.gunRecoil;
+        gunKnockback = heldGunSO.gunKnockback;
+
+        float cooldownDelay = 2f;
+        yield return new WaitForSeconds(cooldownDelay);
+
+        emptyingRevolverMag = false;
     }
 
     private void PlayerStats_OnPlayerAmmoRegenTimeChanged(object sender, EventArgs e) {
@@ -558,6 +650,7 @@ public class PlayerShoot : MonoBehaviour
         if (coolingDown) return;
         if (reloading) return;
         if (!canShoot) return;
+        if (emptyingRevolverMag) return;
         if (loadingShot && !shotLoaded) return;
 
         if (Player.Instance.GetHP() == 0) return;
@@ -592,6 +685,35 @@ public class PlayerShoot : MonoBehaviour
 
     public Gun GetHeldGun() {
         return heldGun;
+    }
+
+    public List<GunSO> GetAllGunSOList() {
+        return allGunSOList;
+    }
+
+    public List<GunSO> GetUnlockedGunSOList() {
+        List<GunSO> unlockedGunSOList = new List<GunSO>();
+
+        foreach(Gun gun in allGunsList) {
+            if(gun.GetGunUnlocked()) {
+                unlockedGunSOList.Add(gun.GetGunSO());
+            }
+        }
+
+        return unlockedGunSOList;
+    }
+    public List<GunSO> GetUnlockedAndUnequippedGunSOList() {
+        List<GunSO> unlockedGunSOList = GetUnlockedGunSOList();
+        List<GunSO> unlockedAndUnequippedGunSOList = new List<GunSO>();
+
+        foreach (GunSO gunSO in unlockedGunSOList) {
+
+            if(gunSO != primaryGunSO && gunSO != secondayGunSO) {
+                unlockedAndUnequippedGunSOList.Add(gunSO);
+            }
+        }
+
+        return unlockedAndUnequippedGunSOList;
     }
 
     public bool GetReloadingHands() {

@@ -32091,7 +32091,7 @@ GameObject:
   - component: {fileID: 5600287817303019930}
   - component: {fileID: 6136906736149450514}
   - component: {fileID: 7464516851526795374}
-  - component: {fileID: 2010765729041316855}
+  - component: {fileID: 5105873737674105579}
   - component: {fileID: 3681648454129651391}
   - component: {fileID: 5058665513644828020}
   - component: {fileID: 1736638518901546363}
@@ -32137,7 +32137,7 @@ Animator:
   m_GameObject: {fileID: 2633166597023567504}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 4e6dbb95110c3294f9c9d61b346eca29, type: 2}
+  m_Controller: {fileID: 9100000, guid: 429c9eebaded4324198c461af57afdbe, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -32164,7 +32164,7 @@ MonoBehaviour:
   gunSO: {fileID: 11400000, guid: 8ba27ff3cc8764645aafc77187ac989c, type: 2}
   gunBodyAnimator: {fileID: 2353195331536270279}
   armBodyAnimator: {fileID: 5991175528986722958}
---- !u!114 &2010765729041316855
+--- !u!114 &5105873737674105579
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -32173,7 +32173,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2633166597023567504}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b53ffc64be54c6647a3a5bdbd89d1461, type: 3}
+  m_Script: {fileID: 11500000, guid: 75b2ba7d39fc2594299485b46422d0a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &3681648454129651391
@@ -52842,6 +52842,7 @@ MonoBehaviour:
   - {fileID: 4414568598253116254}
   - {fileID: 923891791746236625}
   - {fileID: 17581904851837561}
+  allGunSOList: []
   debugGun: {fileID: 0}
   useDebugGun: 0
   debugSecondaryAbilityUnlocked: 0

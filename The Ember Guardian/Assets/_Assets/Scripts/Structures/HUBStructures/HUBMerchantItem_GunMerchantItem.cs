@@ -103,6 +103,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         }
 
         if (gunItemCategory == GunItemCategory.newGun) {
+            UnlockGun();
             EquipOrUnequipItem();
         }
 
@@ -582,6 +583,10 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         } else {
             PlayerShoot.Instance.SetActiveGun(linkedGunSO, false);
         }
+    }
+
+    private void UnlockGun() {
+        PlayerShoot.Instance.GetGun(linkedGunSO).SetGunUnlocked();
     }
 
     private void UnlockGunAbility() {

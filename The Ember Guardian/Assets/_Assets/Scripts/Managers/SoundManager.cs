@@ -40,6 +40,9 @@ public class SoundManager : MonoBehaviour
             PlayerShoot.Instance.OnPlayerOverclockedSMGStarted += PlayerShoot_OnPlayerOverclockedSMGStarted;
             PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
             PlayerShoot.Instance.OnPlayerFocusBlastStopped += Player_OnPlayerFocusBlastStopped;
+            PlayerShoot.Instance.OnPlayerSetupLMGStarted += PlayerSHoot_OnPlayerSetupLMGStarted;
+            PlayerShoot.Instance.OnPlayerSetupLMGStopped += PlayerSHoot_OnPlayerSetupLMGStopped;
+            PlayerShoot.Instance.OnPlayerEmptyRevolverMagEnd += PlayerSHoot_OnPlayerEmptyRevolverMagEnd;
 
             PlayerSkills.Instance.OnActiveSkillReady += PlayerSkills_OnActiveSkillReady;
             PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
@@ -120,7 +123,6 @@ public class SoundManager : MonoBehaviour
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine += HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
     }
-
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
@@ -422,6 +424,20 @@ public class SoundManager : MonoBehaviour
         gunPoweringUpAudioSource.Stop();
     }
 
+
+    private void PlayerSHoot_OnPlayerSetupLMGStopped(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.lmgReset);
+    }
+
+    private void PlayerSHoot_OnPlayerEmptyRevolverMagEnd(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.revolverCooldown);
+    }
+
+
+    private void PlayerSHoot_OnPlayerSetupLMGStarted(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.lmgSetup);
+    }
+
     private void PlayerShoot_OnPlayerFocusBlastStarted(object sender, System.EventArgs e) {
         gunPoweringUpAudioSource.PlayOneShot(soundRefsSO.shotgunFocusedBlast, sfxVolume);
     }
@@ -628,6 +644,19 @@ public class SoundManager : MonoBehaviour
             PlayerShoot.Instance.OnPlayerCooldownTrigger -= PlayerShoor_OnPlayerCooldownSFXTrigger;
             PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo -= PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
             PlayerShoot.Instance.OnPlayerSwappedGun -= PlayerShoot_OnPlayerSwappedGun;
+
+            PlayerShoot.Instance.OnPlayerSwitchedFireMode -= PlayerShoot_OnPlayerSwitchedFireMode;
+            PlayerShoot.Instance.OnPlayerAimedSightStarted -= PlayerShoot_OnPlayerAimedSightStarted;
+            PlayerShoot.Instance.OnPlayerAimedSightEnded -= PlayerShoot_OnPlayerAimedSightEnded;
+            PlayerShoot.Instance.OnPlayerOverclockedSMGStopped -= PlayerSHoot_OnPlayerOverclockedSMGStopped;
+            PlayerShoot.Instance.OnPlayerOverclockedSMGStarted -= PlayerShoot_OnPlayerOverclockedSMGStarted;
+            PlayerShoot.Instance.OnPlayerFocusBlastStarted -= PlayerShoot_OnPlayerFocusBlastStarted;
+            PlayerShoot.Instance.OnPlayerFocusBlastStopped -= Player_OnPlayerFocusBlastStopped;
+            PlayerShoot.Instance.OnPlayerEmptyRevolverMagEnd -= PlayerSHoot_OnPlayerEmptyRevolverMagEnd;
+
+
+            PlayerShoot.Instance.OnPlayerSetupLMGStarted -= PlayerSHoot_OnPlayerSetupLMGStarted;
+            PlayerShoot.Instance.OnPlayerSetupLMGStopped -= PlayerSHoot_OnPlayerSetupLMGStopped;
 
             PlayerSkills.Instance.OnActiveSkillReady -= PlayerSkills_OnActiveSkillReady;
             PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;

@@ -72,6 +72,9 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip smgOverclockStart;
     public AudioClip smgOverclockEnd;
     public AudioClip shotgunFocusedBlast;
+    public AudioClip lmgSetup;
+    public AudioClip lmgReset;
+    public AudioClip revolverCooldown;
 
     public AudioClip activeSkillReady;
     public AudioClip passiveShieldActivate;

@@ -34,18 +34,19 @@ public class DogAI : MonoBehaviour
     private float roamChangeDestionationRate = 10f;
 
     private float walkMoveSpeed = 1.5f;
-    private float runMoveSpeed = 5f;
+    private float runMoveSpeed = 6f;
 
     private float distanceToPlayer;
     private float distanceToCamp;
     private float distanceToStickWithPlayerTarget;
-    private float distanceInFrontOfPlayer = 4f;
+    private float distanceInFrontOfPlayer = 6f;
     private float minDistanceToPlayer = 1f;
     private float maxDistanceToPlayer = 10f;
     private float distanceToRunToCamp = 5f;
 
     private float distanceToPlayerToRoamWhenStickingAround = 1f;
     private float distanceToRunToPlayerWhenStickingAround = 12f;
+    private float distanceToWalkToPlayerWhenStickingAroundReference = 10f;
     private float distanceToWalkToPlayerWhenStickingAround = 6f;
 
     private float creatureBarkDistanceToDog = 7f;
@@ -149,7 +150,7 @@ public class DogAI : MonoBehaviour
                     ChangeState(State.idle);
                 }
 
-                if (distanceToStickWithPlayerTarget > distanceToRunToPlayerWhenStickingAround && !DogDigAbility.Instance.GetSniffing()) {
+                if (distanceToStickWithPlayerTarget > distanceToRunToPlayerWhenStickingAround) {
                     ChangeState(State.runWithPlayer);
                 }
 
@@ -221,6 +222,8 @@ public class DogAI : MonoBehaviour
     private void ChangeState(State newState) {
         if (state == newState) return;
 
+        RandomizeDistanceVariables();
+
         dogMovement.SetMoveTarget(transform.position);
         hasSetSpeed = false;
 
@@ -248,6 +251,11 @@ public class DogAI : MonoBehaviour
         OnStateChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    private void RandomizeDistanceVariables() {
+        distanceInFrontOfPlayer = UnityEngine.Random.Range(0, distanceToWalkToPlayerWhenStickingAroundReference);
+        distanceToWalkToPlayerWhenStickingAround = UnityEngine.Random.Range(0, distanceInFrontOfPlayer);
+    }
+
     private void HandleGrowling() {
         if (state == State.attacking) return;
 
@@ -267,6 +275,8 @@ public class DogAI : MonoBehaviour
 
     private void HandleBarkToAttack() {
         barkingTimer += Time.deltaTime;
+        if (closestCreature == null || closestCreature.transform.position.y > 2f) return;
+
         if (barkingTimer > barkTimeToAttack && biteReady) {
             barkingTimer = 0;
             ChangeState(State.attacking);

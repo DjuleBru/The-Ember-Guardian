@@ -248,7 +248,6 @@ public class MetaProgressionManager : MonoBehaviour
         return ES3.Load(key, false);
     }
 
-
     public bool GetMerchantItemEquipped(string merchantItemSaveString) {
         string key = merchantItemSaveString + "_Equipped";
         return ES3.Load(key, false);
@@ -325,6 +324,20 @@ public class MetaProgressionManager : MonoBehaviour
 
     #region GUNS
 
+    public void SetGunUnlocked(GunSO gunSO, bool unlocked) {
+        string key = gunSO.name;
+        ES3.Save(key, unlocked);
+
+    }
+
+    public bool GetGunUnlocked(GunSO gunSO) {
+        string key = gunSO.name;
+
+        if (gunSO.gunType == GunSO.GunType.Rifle) return true;
+
+        return ES3.Load(key, false);
+    }
+
     public void SetInitialLevelAmmo(int initialLevelAmmo) {
         string key = "initialLevelAmmo";
 
@@ -336,6 +349,7 @@ public class MetaProgressionManager : MonoBehaviour
 
         return ES3.Load(key, 2);
     }
+
     public void SetGunSecondaryAbilityUnlocked(GunSO gunSO) {
         string key = gunSO.gunType + "_secondaryAbilityUnlocked";
 

@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPointerExitHandler, IDeselectHandler
+public class ItemButtonUI : ButtonUI
 {
     [SerializeField] private List<ItemButtonUI> lockingItemButtonUIList;
     [SerializeField] private ItemDescriptionCardUI descriptionCard;
@@ -37,11 +37,7 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     private bool itemSelected;
     private bool itemHovered;
 
-    private bool buttonSelected;
-
     public static event EventHandler OnAnyOutputLinkUnlocked;
-    public static event EventHandler OnAnyButtonSelected;
-    public static event EventHandler OnAnyButtonHovered;
     public static event EventHandler OnAnyLockedButtonTryPress;
     public static event EventHandler OnAnyHubMerchantItemFailedBuy;
     public static event EventHandler OnAnyHubMerchantItemTryBuyMaxedItem;
@@ -60,8 +56,6 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         }
 
         OnAnyOutputLinkUnlocked += ItemButtonUI_OnAnyOutputLinkUnlocked;
-        OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
-        OnAnyButtonHovered += ItemButtonUI_OnAnyButtonHovered;
         hubMerchantItem.OnHubMerchantItemBought += HubMerchantItem_OnHubMerchantItemBought;
         hubMerchantItem.OnHubMerchantItemLoaded += HubMerchantItem_OnHubMerchantItemLoaded;
         hubMerchantItem.OnHubMerchantItemUpgraded += HubMerchantItem_OnHubMerchantItemUpgraded;
@@ -370,7 +364,7 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     }
 
     #region NAVIGATION
-    private void ItemButtonUI_OnAnyButtonHovered(object sender, EventArgs e) {
+    protected override void ButtonUI_OnAnyButtonHovered(object sender, EventArgs e) {
         //if(GameInput.Instance.IsUsingGamepad()) return;
         ItemButtonUI itemButtonUI = sender as ItemButtonUI;
 
@@ -387,7 +381,7 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         }
     }
 
-    private void ItemButtonUI_OnAnyButtonSelected(object sender, EventArgs e) {
+    protected override void ButtonUI_OnAnyButtonSelected(object sender, EventArgs e) {
         if (!GameInput.Instance.IsUsingGamepad()) return;
         ItemButtonUI itemButtonUI = sender as ItemButtonUI;
 
@@ -403,28 +397,14 @@ public class ItemButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         }
     }
 
-    public void OnSelect(BaseEventData eventData) {
-        buttonSelected = true;
-        OnAnyButtonSelected?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void OnPointerEnter(PointerEventData eventData) {
-        OnAnyButtonHovered?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void OnPointerExit(PointerEventData eventData) {
+    public override void OnPointerExit(PointerEventData eventData) {
         itemHovered = false;
         descriptionCard.gameObject.SetActive(false);
     }
 
-    public void OnDeselect(BaseEventData eventData) {
-        buttonSelected = false;
-    }
     #endregion
 
     private void OnDestroy() {
         OnAnyOutputLinkUnlocked -= ItemButtonUI_OnAnyOutputLinkUnlocked;
-        OnAnyButtonSelected -= ItemButtonUI_OnAnyButtonSelected;
-        OnAnyButtonHovered -= ItemButtonUI_OnAnyButtonHovered;
     }
 }

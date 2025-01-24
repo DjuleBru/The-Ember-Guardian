@@ -24,6 +24,7 @@ public class MobMovement : MonoBehaviour
     protected float lastMoveDir;
     protected float moveSpeed;
     protected float moveSpeedBuff = 1f;
+    protected float speedVariationMultiplier = 1f;
     protected float targetSpeed;
     protected float movementForce;
 
@@ -85,7 +86,7 @@ public class MobMovement : MonoBehaviour
             lastMoveDir = 1;
         }
 
-        targetSpeed = moveDirFloat * moveSpeed;
+        targetSpeed = moveDirFloat * moveSpeed * speedVariationMultiplier;
         float speedDif = targetSpeed - rb.velocity.x;
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
@@ -99,58 +100,20 @@ public class MobMovement : MonoBehaviour
         while (true) {
             // Calculer une nouvelle vitesse cible
             float newSpeedMultiplier = UnityEngine.Random.Range(minSpeedMultiplier, maxSpeedMultiplier);
-            float targetSpeed = initialMobSpeed * newSpeedMultiplier;
 
             float elapsedTime = UnityEngine.Random.Range(0f, speedLerpDuration);
-            float startSpeed = moveSpeed;
+            float startSpeedMultiplier = speedVariationMultiplier;
 
             // Interpolation vers la nouvelle vitesse
             while (elapsedTime < speedLerpDuration) {
-                moveSpeed = Mathf.Lerp(startSpeed, targetSpeed, elapsedTime / speedLerpDuration);
+                speedVariationMultiplier = Mathf.Lerp(startSpeedMultiplier, newSpeedMultiplier, elapsedTime / speedLerpDuration);
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
 
-            moveSpeed = targetSpeed;
-
             // Attendre avant de changer à nouveau la vitesse
             yield return new WaitForSeconds(speedChangeInterval);
         }
-    }
-
-    public virtual void HeadToDestination(Vector3 targetDestination) {
-
-        // Check if destination reached;
-        if (Mathf.Abs(targetDestination.x - transform.position.x) < .1f) {
-            moveDirFloat = 0;
-
-            if (!destinationReached) {
-                Debug.Log("destinationReached");
-                OnDestinationReached?.Invoke(this, EventArgs.Empty);
-                rb.velocity = Vector3.zero;
-                destinationReached = true;
-            }
-
-            return;
-        }
-
-        Vector3 moveDirection = targetDestination - transform.position;
-
-        if (moveDirection.x < 0) {
-            moveDirFloat = -1;
-        }
-        else {
-            moveDirFloat = 1;
-        }
-
-        float targetSpeed = moveDirFloat * moveSpeed;
-        float speedDif = targetSpeed - rb.velocity.x;
-
-        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
-
-        movementForce = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, velPower) * Mathf.Sign(speedDif);
-
-        rb.AddForce(movementForce * rb.mass * Vector2.right);
     }
 
     public void SetMoveSpeed(float moveSpeed) {

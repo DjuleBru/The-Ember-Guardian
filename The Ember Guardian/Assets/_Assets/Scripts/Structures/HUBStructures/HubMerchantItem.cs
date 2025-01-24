@@ -63,8 +63,6 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     protected virtual void Start() {
-        itemUnlocked = isUnlockedAtStart;
-
         LoadItemStatus();
     }
 
@@ -93,6 +91,10 @@ public class HubMerchantItem : MonoBehaviour
             if(itemEquipable) {
                 LoadItemEquipped();
             }
+        }
+
+        if (isUnlockedAtStart) {
+            itemUnlocked = true;
         }
 
         OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);

@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class GunAnimator : MonoBehaviour
 {
-    private Animator animator;
-    private Gun gun;
+    protected Animator animator;
+    protected Gun gun;
 
-    private void Awake() {
+    protected void Awake() {
         animator = GetComponent<Animator>();
         gun = GetComponent<Gun>();
     }
 
-    private void Start() {
+    protected void Start() {
         PlayerShoot.Instance.OnPlayerShootStopped += PlayerShoot_OnPlayerShootStopped;
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoot_OnPlayerCooldownSFXTrigger;
@@ -24,11 +24,11 @@ public class GunAnimator : MonoBehaviour
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
     }
 
-    private void PlayerSHoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
+    protected virtual void PlayerSHoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
         animator.SetTrigger("SwitchFireMode");
     }
 
-    private void PlayerShoot_OnPlayerCooldownAnimationTrigger(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerCooldownAnimationTrigger(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
 
         if (gun.GetCurrentBullet() != 0) {
@@ -41,11 +41,11 @@ public class GunAnimator : MonoBehaviour
 
     }
 
-    private void PlayerShoot_OnPlayerTryShoot_OutOfAmmo(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerTryShoot_OutOfAmmo(object sender, System.EventArgs e) {
         animator.SetTrigger("OutOfAmmo");
     }
 
-    private void PlayerSHoot_OnPlayerReload(object sender, System.EventArgs e) {
+    protected void PlayerSHoot_OnPlayerReload(object sender, System.EventArgs e) {
 
         float reloadAnimationSpeed = PlayerShoot.Instance.GetHeldGunSO().handsAnimationReloadTime / PlayerStats.Instance.GetHandsReloadTime();
         animator.speed = reloadAnimationSpeed;
@@ -53,26 +53,26 @@ public class GunAnimator : MonoBehaviour
     
     }
 
-    private void PlayerShoot_OnPlayerCooldownSFXTrigger(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerCooldownSFXTrigger(object sender, System.EventArgs e) {
         //animator.speed = 1;
         //animator.SetTrigger("Cooldown");
     }
 
-    private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
+    protected void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
         animator.speed = 1;
         animator.Play("Idle");
     }
 
-    private void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
         animator.speed = 1;
         animator.SetTrigger("Shoot");
     }
 
-    private void PlayerShoot_OnPlayerShootStopped(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerShootStopped(object sender, System.EventArgs e) {
 
     }
 
-    private void OnDestroy() {
+    protected void OnDestroy() {
         PlayerShoot.Instance.OnPlayerShootStopped -= PlayerShoot_OnPlayerShootStopped;
         PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerCooldownTrigger -= PlayerShoot_OnPlayerCooldownSFXTrigger;

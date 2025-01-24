@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,11 +8,14 @@ public class PlayerTabMenuUI : MonoBehaviour
     public static PlayerTabMenuUI Instance;
 
     [SerializeField] private GameObject tabMenuPanel;
+
     private bool canCloseTab = true;
     private bool tabMenuOpen;
 
     private CanvasGroup canvasGroup;
     private Animator panelAnimator;
+
+    public event EventHandler OnPlayerTabOpened;
 
     private void Awake() {
         Instance = this;
@@ -60,8 +64,11 @@ public class PlayerTabMenuUI : MonoBehaviour
 
         if(tabMenuOpen) {
             FadeInTab();
+            Player.Instance.DisableControlInputs();
+            OnPlayerTabOpened?.Invoke(this, EventArgs.Empty);
         } else {
             FadeOutTab();
+            Player.Instance.EnableControlInputs();
         }
     }
 

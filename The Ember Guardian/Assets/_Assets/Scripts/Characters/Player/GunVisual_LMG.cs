@@ -12,11 +12,18 @@ public class GunVisual_LMG : GunVisual
         base.Start();
         bipodRenderer.enabled = false;
 
-        PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerShoot_OnPlayerSwitchedFireMode;
+        PlayerShoot.Instance.OnPlayerSetupLMGBipod += PlayerShoot_OnPlayerSetupLMGBipod;
+        PlayerShoot.Instance.OnPlayerSetupLMGStopped += PlayerShoot_OnPlayerSetupLMGStopped;
     }
 
-    private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
-        bipodEnabled = !bipodEnabled;
+    private void PlayerShoot_OnPlayerSetupLMGStopped(object sender, System.EventArgs e) {
+        bipodEnabled = false;
         bipodRenderer.enabled = bipodEnabled;
     }
+
+    private void PlayerShoot_OnPlayerSetupLMGBipod(object sender, System.EventArgs e) {
+        bipodEnabled = true;
+        bipodRenderer.enabled = bipodEnabled;
+    }
+
 }
