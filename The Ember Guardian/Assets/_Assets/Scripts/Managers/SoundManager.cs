@@ -395,6 +395,8 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
+        if (!PlayerShoot.Instance.GetHeldGunSO().triggersShootSFXOnEachBuller) return;
+
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().shootGunSound;
         float volume = PlayerShoot.Instance.GetHeldGunSO().shootGunVolumeMultiplier;
         PlaySound2D(audioClipArray, volume);

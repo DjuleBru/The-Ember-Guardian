@@ -10,52 +10,53 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fcbc96e1564c4fd42a7ef7eee87d437f, type: 3}
-  m_Name: SMG
+  m_Name: Flamethrower
   m_EditorClassIdentifier: 
-  gunType: 1
-  gunSprite: {fileID: -1927796586, guid: 1b2523f4d3282e54db661b7f6ef7341c, type: 3}
+  gunType: 5
+  gunSprite: {fileID: -385952185, guid: b81429096f3a0ce4887bbcedaff2454f, type: 3}
   reticleSprite: {fileID: 0}
   shotCountSprites:
-  - {fileID: 292054900, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
-  - {fileID: -340342470, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
-  - {fileID: 1106805494, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
-  - {fileID: 1003959454, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
-  - {fileID: -2146848304, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
-  - {fileID: 1906003518, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
-  - {fileID: -1051984127, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
-  gunAnimator: {fileID: 22100000, guid: e730f9e110b5f3841b06e11e18aa15a3, type: 2}
+  - {fileID: -1531563590, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
+  - {fileID: 648843377, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
+  - {fileID: 346760949, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
+  - {fileID: 1570746237, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
+  - {fileID: 1282879509, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
+  - {fileID: -1709508536, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
+  - {fileID: -653879012, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
+  gunAnimator: {fileID: 9100000, guid: 429c9eebaded4324198c461af57afdbe, type: 2}
   automaticWeapon: 1
-  damagePerBullet: 3
-  maxAmmo: 8
+  damagePerBullet: 1
+  maxAmmo: 6
   pelletsPerBullet: 1
-  shotsPerClip: 18
-  critChance: 15
-  shootConeAngle: 6
-  bulletLifetime: 0.2
-  bulletSpeed: 40
-  weightAccelerationFactor: 1.1
-  reloadAccelerationFactor: 1.05
-  shootCooldownTime: 0.17
+  shotsPerClip: 200
+  critChance: 0
+  shootConeAngle: 5
+  bulletLifetime: 0.8
+  bulletSpeed: 10
+  weightAccelerationFactor: 0.8
+  reloadAccelerationFactor: 0.8
+  shootCooldownTime: 0.02
   shootCooldownSFXTriggerTime: 0
-  reloadTime: 2
-  handsReloadTime: 1.5
-  handsAnimationReloadTime: 1
-  gunKnockback: 0.3
-  gunRecoil: 0.2
-  gunRecoilDamping: 4
-  triggersShootFeedbackOnEachBuller: 1
-  triggersShootSFXOnEachBuller: 1
+  reloadTime: 4.5
+  handsReloadTime: 4.2
+  handsAnimationReloadTime: 2.8
+  gunKnockback: 0
+  gunRecoil: 0
+  gunRecoilDamping: 0
+  triggersShootFeedbackOnEachBuller: 0
+  triggersShootSFXOnEachBuller: 0
   shootGunSound:
-  - {fileID: 8300000, guid: a1fab048b9ef6784ea8325739a804936, type: 3}
-  - {fileID: 8300000, guid: f18f0ca163f1d164f8a232bf04867b9b, type: 3}
-  - {fileID: 8300000, guid: 805f0c787aecdb0439ccee0b59d4f917, type: 3}
-  - {fileID: 8300000, guid: 6c063825aae89184cbfe1d91d214d33d, type: 3}
-  - {fileID: 8300000, guid: f4353cc25da1b2543a6d5df3630ee730, type: 3}
-  - {fileID: 8300000, guid: 508a6154ce5b1cd47a1805628840e204, type: 3}
+  - {fileID: 8300000, guid: f6a3629e1f02bf243bb50a8fec86180b, type: 3}
+  - {fileID: 8300000, guid: 32d00ef9a9e7994419515fdd86426b92, type: 3}
+  - {fileID: 8300000, guid: 661318d0dfb14ae49b9343c0861fee3c, type: 3}
+  - {fileID: 8300000, guid: c3684b2a5ff983a469720a3bed7fbda4, type: 3}
+  - {fileID: 8300000, guid: 5fafdcf7b9a04af44bee6794e407d5bb, type: 3}
+  - {fileID: 8300000, guid: 78f8c2da9d356a34a911edb9ff4f8ba9, type: 3}
+  - {fileID: 8300000, guid: df9fcaa26c6465d45a40ff187ec317cb, type: 3}
+  - {fileID: 8300000, guid: cfbc9793bcbc9eb4ca0bc7e01de48937, type: 3}
   reloadGunSound:
-  - {fileID: 8300000, guid: 35f7aa319000ee04799ea28f253ad17e, type: 3}
-  cooldownGunSound:
-  - {fileID: 8300000, guid: 44410cc1b7956fa48b296fe59bf65d00, type: 3}
+  - {fileID: 8300000, guid: 2c538426d44795e4c8dc720fed375cc0, type: 3}
+  cooldownGunSound: []
   bulletHitGroundSound:
   - {fileID: 8300000, guid: 59dcfb178b39c434495515f32be26dd4, type: 3}
   - {fileID: 8300000, guid: f1838753b53df84439313b212c62a244, type: 3}
@@ -78,7 +79,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2c707419f490654468a181cc7a85e8ec, type: 3}
   outOfAmmoSound:
   - {fileID: 8300000, guid: 7d45048825d9b81489d648e1a12a269a, type: 3}
-  swapToWeaponSound: {fileID: 8300000, guid: f6bf9be22c59dd54498e9f46e487720d, type: 3}
+  swapToWeaponSound: {fileID: 8300000, guid: 49c33c7f788163642b7172f4a4d51bd8, type: 3}
   reloadSFXVolumeMultiplier: 1
   cooldownSFXVolumeMultiplier: 0.5
   shootGunVolumeMultiplier: 0.5

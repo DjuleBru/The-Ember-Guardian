@@ -42,7 +42,8 @@ public class GunSO : ScriptableObject
     public float gunRecoil;
     public float gunRecoilDamping;
 
-
+    public bool triggersShootFeedbackOnEachBuller;
+    public bool triggersShootSFXOnEachBuller;
     public AudioClip[] shootGunSound;
     public AudioClip[] reloadGunSound;
     public AudioClip[] cooldownGunSound;

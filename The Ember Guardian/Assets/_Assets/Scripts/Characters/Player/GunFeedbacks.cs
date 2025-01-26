@@ -27,6 +27,7 @@ public class GunFeedbacks : MonoBehaviour
 
     private void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
+        if (!gun.GetGunSO().triggersShootSFXOnEachBuller) return;
         mmfPlayer.PlayFeedbacks();
     }
 }
