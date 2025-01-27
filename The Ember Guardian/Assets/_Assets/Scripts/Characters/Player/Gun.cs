@@ -24,6 +24,7 @@ public class Gun : MonoBehaviour
     protected float cooldownTime;
     protected float reloadTime;
     protected float handsReloadTime;
+    protected float swapToWeaponTimeMultiplier;
 
     protected float bulletLifetime;
     protected float bulletSpeed;
@@ -103,13 +104,11 @@ public class Gun : MonoBehaviour
     private void PlayerShoot_OnPlayerEmptyRevolverMagStart(object sender, EventArgs e) {
         ParticleSystem.ShapeModule shape = shootPS.shape;
         shape.angle = emptyRevolverAngle;
-        Debug.Log(shape.angle);
     }
 
     private void PlayerShoot_OnPlayerEmptyRevolverMagEnd(object sender, EventArgs e) {
         ParticleSystem.ShapeModule shape = shootPS.shape;
         shape.angle = defaultAngle;
-        Debug.Log(shape.angle);
     }
 
     protected void PlayerAim_OnPlayerAimSightEnded(object sender, System.EventArgs e) {
@@ -166,6 +165,7 @@ public class Gun : MonoBehaviour
         cooldownTime = MetaProgressionManager.Instance.GetGunCooldown(gunSO);
         reloadTime = MetaProgressionManager.Instance.GetGunReloadTime(gunSO);
         handsReloadTime = MetaProgressionManager.Instance.GetHandsGunReloadTime(gunSO);
+        swapToWeaponTimeMultiplier = MetaProgressionManager.Instance.GetSwapToWeaponTimeMultiplier(gunSO);
         secondaryAbilityUnlocked = MetaProgressionManager.Instance.GetGunSecondaryAbilityUnlocked(gunSO);
         pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
         bulletLifetime = MetaProgressionManager.Instance.GetGunBulletLifetime(gunSO);
@@ -266,6 +266,9 @@ public class Gun : MonoBehaviour
     public float GetHandsReloadTime() {
         return handsReloadTime;
     }
+    public float GetSwapToWeaponTimeMultiplier() {
+        return swapToWeaponTimeMultiplier;
+    }
     public float GetCooldownTime() {
         return cooldownTime;
     }
@@ -356,6 +359,7 @@ public class Gun : MonoBehaviour
         MetaProgressionManager.Instance.SetGunShootConeAnle(gunSO, defaultAngle);
         MetaProgressionManager.Instance.SetGunPelletsPerBullet(gunSO, pelletsPerBullet);
         MetaProgressionManager.Instance.SetGunBulletLifetime(gunSO, bulletLifetime);
+        MetaProgressionManager.Instance.SetGunSwapToWeaponTimeMultiplier(gunSO, swapToWeaponTimeMultiplier);
 
         MetaProgressionManager.Instance.SetGunUnlocked(gunSO, gunUnlocked);
     }

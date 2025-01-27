@@ -41,7 +41,8 @@ public class LevelSO : ScriptableObject
     public float maxWaveDuration;
     public float waveIntensityFactor;
     public float delayBetweenSubWaves;
-    public float startWaveToSpawnFromBothSides;
+    public int startWaveToSpawnFromBothSides;
+    public bool canSpawnElite;
 
     public List<AudioClip> levelAudioClips;
 

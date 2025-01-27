@@ -294,7 +294,6 @@ public class PlayerMovement : MonoBehaviour {
         float rollExhaustionAmountBuff = rollExhaustionAmount * PlayerStats.Instance.GetRollStaminaDepletionPercentBuff_Meta()/100;
         staminaTimer += rollExhaustionAmount - rollExhaustionAmountBuff;
 
-        Debug.Log(rollExhaustionAmount - rollExhaustionAmountBuff);
         OnPlayerRoll?.Invoke(this, EventArgs.Empty);
         Invoke("EndRoll", rollAnimationDuration);
     }

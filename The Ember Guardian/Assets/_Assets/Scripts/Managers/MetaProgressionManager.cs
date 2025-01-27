@@ -510,6 +510,19 @@ public class MetaProgressionManager : MonoBehaviour
 
         return ES3.Load(key, gunSO.handsReloadTime);
     }
+
+    public void SetGunSwapToWeaponTimeMultiplier(GunSO gunSO, float swapToWeaponTimeMultiplier) {
+        string key = gunSO.gunType + "_swapToWeaponTimeMultiplier";
+
+        ES3.Save(key, swapToWeaponTimeMultiplier);
+    }
+
+    public float GetSwapToWeaponTimeMultiplier(GunSO gunSO) {
+        string key = gunSO.gunType + "_swapToWeaponTimeMultiplier";
+
+        return ES3.Load(key, gunSO.swapToWeaponTimeMultiplier);
+    }
+
     public void SetGunShootConeAnle(GunSO gunSO, float shootConeAngle) {
         string key = gunSO.gunType + "_shootConeAngle";
 

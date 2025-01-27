@@ -37,6 +37,7 @@ public class WeaponButtonContainer : MonoBehaviour
 
         if (secondaryWeaponUnlocked) {
             GunSO secondaryGunSO = PlayerShoot.Instance.GetSecondaryGunSO();
+            secondaryWeaponButton.gameObject.SetActive(true);
             secondaryWeaponButton.SetLinkedGunSO(secondaryGunSO);
         }
         else {

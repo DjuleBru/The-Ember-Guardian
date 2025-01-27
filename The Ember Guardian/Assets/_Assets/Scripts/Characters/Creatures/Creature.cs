@@ -16,6 +16,11 @@ public class Creature : Mob
     private bool enteredLight;
     private bool creatureTargeted;
 
+    private bool eliteCreature;
+    private bool eliteHPCreature;
+    private bool eliteSpeedCreature;
+    private bool eliteDamageCreature;
+
     public event EventHandler OnCreatureEnteredLight;
     public event EventHandler OnCreatureExitedLight;
 
@@ -80,6 +85,10 @@ public class Creature : Mob
             InvokeOnMobDroppedCollectibles(collectiblesDropped);
         }
 
+        if(eliteCreature) {
+            EliteDropGems();
+        }
+
         OnCreatureDied?.Invoke(this, EventArgs.Empty);
         StartCoroutine(DestroyGameObjectAfterDelay());
         GetComponent<Collider2D>().enabled = false;
@@ -89,6 +98,51 @@ public class Creature : Mob
         }
 
         GetComponent<Rigidbody2D>().gravityScale = 0;
+    }
+
+    private void EliteDropGems() {
+        List<PlayerCurrencies.CurrencyType> gemTypeDrop = new List<PlayerCurrencies.CurrencyType>();
+        List<int> gemTypeAmountDrop = new List<int>();
+
+        int gemTypeDropped = UnityEngine.Random.Range(0, 5);
+        if(gemTypeDropped == 0) {
+            gemTypeDrop.Add(PlayerCurrencies.CurrencyType.greenGem);
+        }
+        if (gemTypeDropped == 1) {
+            gemTypeDrop.Add(PlayerCurrencies.CurrencyType.redGem);
+        }
+        if (gemTypeDropped == 2) {
+            gemTypeDrop.Add(PlayerCurrencies.CurrencyType.yellowGem);
+        }
+        if (gemTypeDropped == 3) {
+            gemTypeDrop.Add(PlayerCurrencies.CurrencyType.blueGem);
+        }
+        if (gemTypeDropped == 4) {
+            gemTypeDrop.Add(PlayerCurrencies.CurrencyType.purpleGem);
+        }
+
+        int gemAmountDropped = UnityEngine.Random.Range(1, 3);
+        gemTypeAmountDrop.Add(gemAmountDropped);
+
+        SpawnDroppedCurrencies(gemTypeDrop, gemTypeAmountDrop);
+    }
+
+    public void SetAsEliteCreature() {
+        eliteCreature = true;
+
+        int randomStatBuffed = UnityEngine.Random.Range(0, 3);
+        if(randomStatBuffed == 0) {
+            eliteHPCreature = true;
+            health *= 2;
+        }
+        if (randomStatBuffed == 1) {
+            eliteSpeedCreature = true;
+
+        }
+        if (randomStatBuffed == 2) {
+            eliteDamageCreature = true;
+        }
+
     }
 
     private IEnumerator DisableGameObjectAfterDelay() {
@@ -136,11 +190,13 @@ public class Creature : Mob
 
     private void PlayerMovement_OnPlayerCrouchedEnded(object sender, EventArgs e) {
         float playerCrouchDetectionRangeDivider = PlayerStats.Instance.GetCrouchDetectionRangeReductionPercentBuff_Meta()/100f;
+        if (playerCrouchDetectionRangeDivider == 0) return;
         detectionCollider.DebuffRadius(playerCrouchDetectionRangeDivider);
     }
 
     private void PlayerMovement_OnPlayerCrouched(object sender, EventArgs e) {
         float playerCrouchDetectionRangeDivider = PlayerStats.Instance.GetCrouchDetectionRangeReductionPercentBuff_Meta()/100f;
+        if (playerCrouchDetectionRangeDivider == 0) return;
         detectionCollider.BuffRadius(playerCrouchDetectionRangeDivider);
 
         playerCrouchRangeDecreased = true;
@@ -179,6 +235,18 @@ public class Creature : Mob
 
     public int GetCreatureHealth() {
         return health;
+    }
+
+    public bool GetIsEliteCreature() {
+        return eliteCreature;
+    }
+
+    public bool GetIsEliteSpeedCreature() {
+        return eliteSpeedCreature;
+    }
+
+    public bool GetIsEliteDamageCreature() {
+        return eliteDamageCreature;
     }
 
     private void OnDestroy() {

@@ -19,6 +19,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerReloadEnded;
     public event EventHandler<OnAmmoRefilledEventArgs> OnPlayerAmmoRefilled;
     public event EventHandler OnBulletsChanged;
+    public event EventHandler OnPlayerSwappedGunStarted;
     public event EventHandler OnPlayerSwappedGun;
     public event EventHandler OnGunsLoaded;
 
@@ -54,6 +55,7 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private Transform projectilePrefab;
     [SerializeField] private float projectileInitialForce;
 
+
     private float shootCooldownTimer;
     private float shootCooldownSFXTriggerTime;
     private float playerJustPressedReloadTimer;
@@ -63,6 +65,7 @@ public class PlayerShoot : MonoBehaviour
     private float reloadTime;
     private float handsReloadTime;
 
+    private bool swappingGun;
     private bool autoReload;
     private bool canShoot = true;
     private bool coolingDown;
@@ -72,6 +75,7 @@ public class PlayerShoot : MonoBehaviour
     private bool playerJustPressedReload;
     private bool transferringAmmoFromBag;
     private bool secondaryAbilityActive;
+    private bool canHold2Guns;
 
     private bool automaticWeapon;
     private bool playerIsHoldingDownShoot;
@@ -96,6 +100,7 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private List<Gun> allGunsList;
     [SerializeField] private List<GunSO> allGunSOList;
     [SerializeField] private GunSO debugGun;
+    [SerializeField] private GunSO debugSecondaryGun;
     [SerializeField] private bool useDebugGun;
     [SerializeField] private bool debugSecondaryAbilityUnlocked;
 
@@ -108,8 +113,16 @@ public class PlayerShoot : MonoBehaviour
 
         if(useDebugGun) {
             SetActiveGun(debugGun);
+            if (debugSecondaryGun != null) {
+                canHold2Guns = true;
+                secondayGunSO = debugSecondaryGun;
+            }
         } else {
             SetActiveGun(PlayerSave.Instance.GetPrimaryActiveGun());
+            canHold2Guns = PlayerStats.Instance.GetCanHold2WeaponsUnlocked();
+            if (canHold2Guns) {
+                this.secondayGunSO = PlayerSave.Instance.GetSecondaryActiveGun();
+            }
         }
 
         GameInput.Instance.OnPlayerShootCanceled += GameInput_OnPlayerShootCanceled;
@@ -369,46 +382,6 @@ public class PlayerShoot : MonoBehaviour
         });
     }
 
-    public Gun GetGun(GunSO gunSO) {
-        Gun returnGun = null;
-        foreach (Gun gun in allGunsList) {
-            if (gun.GetGunSO() == gunSO) {
-                returnGun = gun;
-            }
-        }
-
-        return returnGun;
-    }
-
-    public int GetDamagePerBullet() {
-        return heldGun.GetDamagePerBullet();
-    }
-
-    public int GetCurrentAmmoClip() {
-        return heldGun.GetCurrentAmmoClip();
-    }
-
-    public int GetMaxAmmoClips() {
-        return heldGun.GetMaxAmmo();
-    }
-
-    public int GetCurrentBullets() {
-        return heldGun.GetCurrentBullet();
-    }
-
-    public int GetMaxBulletsPerClip() {
-        return heldGun.GetBulletsPerAmmoClip();
-    }
-
-    public float GetGunReloadAccelerationFactor() {
-        return heldGun.GetReloadAccelerationFactor();
-    }
-
-    public float GetGunWeightAccelerationFactor() {
-        return heldGun.GetWeightAccelerationFactor();
-    }
-
-
     private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         if(e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
             Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
@@ -419,6 +392,7 @@ public class PlayerShoot : MonoBehaviour
 
     private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
         if (!canShoot) return;
+        if (swappingGun) return;
 
         playerJustPressedReload = true;
         playerJustPressedReloadTimer = 0;
@@ -428,6 +402,7 @@ public class PlayerShoot : MonoBehaviour
         bool secondaryAbilityUnlocked = heldGun.GetSecondaryAbilityUnlocked() || debugSecondaryAbilityUnlocked;
 
         if (!secondaryAbilityUnlocked) return;
+        if (reloading) return;
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Sniper) {
             OnPlayerAimedSightStarted?.Invoke(this, EventArgs.Empty);
@@ -436,7 +411,6 @@ public class PlayerShoot : MonoBehaviour
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Shotgun) {
             if (coolingDown) return;
-            if (reloading) return;
             if (!canShoot) return;
             if (heldGun.GetCurrentAmmoClip() < 0 || heldGun.GetCurrentBullet() == 0) {
                 OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
@@ -516,7 +490,6 @@ public class PlayerShoot : MonoBehaviour
                 gunRecoil = .25f;
                 gunKnockback = 1f;
 
-                Debug.Log("OnPlayerEmptyRevolverMagStart");
                 OnPlayerEmptyRevolverMagStart?.Invoke(this, EventArgs.Empty);
 
                 secondaryAbilityActive = true;
@@ -582,13 +555,53 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnPlayerSecondaryGunSelected(object sender, EventArgs e) {
-        if(secondayGunSO != null) {
-            SetActiveGun(secondayGunSO, false);
+        if (!CanSwapGun()) return;
+
+        if (secondayGunSO != null) {
+            if (heldGunSO == secondayGunSO) return;
+            StartCoroutine(SetActiveGunAfterDelay(secondayGunSO, false));
         }
     }
 
     private void GameInput_OnPlayerPrimaryGunSelected(object sender, EventArgs e) {
-        SetActiveGun(primaryGunSO);
+        if (!CanSwapGun()) return;
+
+        if (secondayGunSO != null) {
+            if (heldGunSO == primaryGunSO) return;
+            StartCoroutine(SetActiveGunAfterDelay(primaryGunSO));
+        }
+    }
+
+    private void SwapGun() {
+        if (!CanSwapGun()) return;
+
+        if (heldGunSO == secondayGunSO) {
+            StartCoroutine(SetActiveGunAfterDelay(primaryGunSO));
+        }
+        else {
+            StartCoroutine(SetActiveGunAfterDelay(secondayGunSO, false));
+        }
+    }
+
+    private bool CanSwapGun() {
+        if (swappingGun) return false;
+        if (reloading) return false;
+        if (secondaryAbilityActive) return false;
+        return true;
+    }
+
+    private IEnumerator SetActiveGunAfterDelay(GunSO gunSO, bool primaryGunSO = true) {
+        OnPlayerSwappedGunStarted?.Invoke(this, EventArgs.Empty);
+        swappingGun = true;
+
+        float swapGunStartAnimationTime = .25f * heldGun.GetSwapToWeaponTimeMultiplier();
+
+        yield return new WaitForSeconds(swapGunStartAnimationTime);
+        SetActiveGun(gunSO, primaryGunSO);
+        float swapGunEndAnimationTime = .35f * heldGun.GetSwapToWeaponTimeMultiplier();
+
+        yield return new WaitForSeconds(swapGunEndAnimationTime);
+        swappingGun = false;
     }
 
     private void ReloadGun() {
@@ -602,22 +615,15 @@ public class PlayerShoot : MonoBehaviour
         OnPlayerReload?.Invoke(this, EventArgs.Empty);
     }
 
-    private void SwapGun() {
-        if(heldGunSO == secondayGunSO) {
-            SetActiveGun(primaryGunSO);
-        } else {
-            SetActiveGun(secondayGunSO, false);
-        }
-    }
 
     private IEnumerator EmptyRevolverMag() {
-        Debug.Log("GetCurrentBullets " + GetCurrentBullets());
         int remainingBullets = GetCurrentBullets();
+        float delayBetweenBullets = .175f;
 
         for (int i = 0; i < remainingBullets; i++) {
             Shoot();
             if(i < remainingBullets-1) {
-                yield return new WaitForSeconds(.15f);
+                yield return new WaitForSeconds(delayBetweenBullets);
             }
         }
 
@@ -651,6 +657,7 @@ public class PlayerShoot : MonoBehaviour
         if (reloading) return;
         if (!canShoot) return;
         if (emptyingRevolverMag) return;
+        if (swappingGun) return;
         if (loadingShot && !shotLoaded) return;
 
         if (Player.Instance.GetHP() == 0) return;
@@ -669,6 +676,46 @@ public class PlayerShoot : MonoBehaviour
 
     public void SetCanShoot(bool canShoot) {
         this.canShoot = canShoot;
+    }
+
+    #region GET PARAMETERS
+    public Gun GetGun(GunSO gunSO) {
+        Gun returnGun = null;
+        foreach (Gun gun in allGunsList) {
+            if (gun.GetGunSO() == gunSO) {
+                returnGun = gun;
+            }
+        }
+
+        return returnGun;
+    }
+
+    public int GetDamagePerBullet() {
+        return heldGun.GetDamagePerBullet();
+    }
+
+    public int GetCurrentAmmoClip() {
+        return heldGun.GetCurrentAmmoClip();
+    }
+
+    public int GetMaxAmmoClips() {
+        return heldGun.GetMaxAmmo();
+    }
+
+    public int GetCurrentBullets() {
+        return heldGun.GetCurrentBullet();
+    }
+
+    public int GetMaxBulletsPerClip() {
+        return heldGun.GetBulletsPerAmmoClip();
+    }
+
+    public float GetGunReloadAccelerationFactor() {
+        return heldGun.GetReloadAccelerationFactor();
+    }
+
+    public float GetGunWeightAccelerationFactor() {
+        return heldGun.GetWeightAccelerationFactor();
     }
 
     public GunSO GetHeldGunSO() {
@@ -719,6 +766,8 @@ public class PlayerShoot : MonoBehaviour
     public bool GetReloadingHands() {
         return reloadingHands;
     }
+
+    #endregion
 
     public void SaveAllGunStats() {
         foreach(Gun gun in allGunsList) {

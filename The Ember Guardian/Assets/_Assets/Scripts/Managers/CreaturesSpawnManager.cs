@@ -45,6 +45,9 @@ public class CreaturesSpawnManager : MonoBehaviour
     private float waveIntensityFactor;
     private float delayBetweenSubWaves;
 
+    private bool canSpawnElite;
+    private float eliteSpawnProbability = .05f;
+
     private float waveDifficulty;
     private float minSubwaveDifficulty;
     private float maxSubwaveDifficulty;
@@ -71,6 +74,9 @@ public class CreaturesSpawnManager : MonoBehaviour
         maxWaveDuration = LevelManager.Instance.GetLevelSO().maxWaveDuration;
         waveIntensityFactor = LevelManager.Instance.GetLevelSO().waveIntensityFactor;
         delayBetweenSubWaves = LevelManager.Instance.GetLevelSO().delayBetweenSubWaves;
+        startWaveToSpawnFromBothSides = LevelManager.Instance.GetLevelSO().startWaveToSpawnFromBothSides;
+
+        canSpawnElite = LevelManager.Instance.GetLevelSO().canSpawnElite;
     }
 
     private void Start() {
@@ -231,6 +237,12 @@ public class CreaturesSpawnManager : MonoBehaviour
         Creature creature = Instantiate(creatureToSpawn.creaturePrefab, GetSpawnPosition(spawnSide, creatureToSpawn), Quaternion.identity).GetComponent<Creature>();
         creature.SetAsDayCreature(false);
         CreaturesManager.Instance.AddCreatureToNightWave(creature);
+
+        if (!canSpawnElite) return;
+        float eliteRandomFloat = UnityEngine.Random.Range(0f, 1f);
+        if(eliteRandomFloat < eliteSpawnProbability) {
+            creature.SetAsEliteCreature();
+        }
     }
 
     private List<CreatureSO> GetCreatureSOListToSpawn(float difficultyBudget) {

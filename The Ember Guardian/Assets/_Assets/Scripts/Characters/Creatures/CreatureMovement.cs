@@ -23,6 +23,11 @@ public class CreatureMovement : MobMovement
         base.Start();
         creature.OnCreatureExitedLight += Creature_OnCreatureExitedLight;
         creature.OnCreatureEnteredLight += Creature_OnCreatureEnteredLight;
+
+        if(creature.GetIsEliteSpeedCreature()) {
+            initialMobSpeed *= 1.5f;
+            moveSpeed  = initialMobSpeed;
+        }
     }
 
     public void SetCreatureAggroMoveSpeed(bool aggroMoveSpeed) {

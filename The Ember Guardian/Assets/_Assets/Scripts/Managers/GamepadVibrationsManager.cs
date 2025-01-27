@@ -135,7 +135,7 @@ public class GamepadVibrationsManager : MonoBehaviour
     #endregion
 
     #region PLAYER
-    private void Player_OnPlayerHealed(object sender, Player.OnPlayerHealedEventArgs e) {
+    private void Player_OnPlayerHealed(object sender, Player.OnPlayerChangedHealthEventArgs e) {
         Debug.Log("healed");
         HapticPatterns.PlayPreset(HapticPatterns.PresetType.Success);
     }

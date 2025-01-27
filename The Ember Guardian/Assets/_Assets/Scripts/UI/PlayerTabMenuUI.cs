@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerTabMenuUI : MonoBehaviour
 {
     public static PlayerTabMenuUI Instance;
 
     [SerializeField] private GameObject tabMenuPanel;
+    [SerializeField] private GameObject firstButtonSelected;
 
     private bool canCloseTab = true;
     private bool tabMenuOpen;
@@ -42,6 +44,10 @@ public class PlayerTabMenuUI : MonoBehaviour
 
     private void GameInput_OnPlayerOpenPlayerTabPerformed(object sender, System.EventArgs e) {
         OpenCloseTab();
+
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            EventSystem.current.SetSelectedGameObject(firstButtonSelected);
+        }
     }
 
     private void FadeInTab() {

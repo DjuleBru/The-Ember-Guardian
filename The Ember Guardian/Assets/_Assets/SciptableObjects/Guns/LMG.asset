@@ -25,7 +25,7 @@ MonoBehaviour:
   - {fileID: -653879012, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
   gunAnimator: {fileID: 9100000, guid: 429c9eebaded4324198c461af57afdbe, type: 2}
   automaticWeapon: 1
-  damagePerBullet: 6
+  damagePerBullet: 10
   maxAmmo: 6
   pelletsPerBullet: 1
   shotsPerClip: 40
@@ -35,11 +35,12 @@ MonoBehaviour:
   bulletSpeed: 35
   weightAccelerationFactor: 0.8
   reloadAccelerationFactor: 0.8
-  shootCooldownTime: 0.15
+  shootCooldownTime: 0.18
   shootCooldownSFXTriggerTime: 0
   reloadTime: 4.5
   handsReloadTime: 4.2
   handsAnimationReloadTime: 2.8
+  swapToWeaponTimeMultiplier: 3.5
   gunKnockback: 0.8
   gunRecoil: 0.3
   gunRecoilDamping: 3

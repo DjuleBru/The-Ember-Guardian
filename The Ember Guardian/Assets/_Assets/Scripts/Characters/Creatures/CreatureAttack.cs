@@ -22,6 +22,10 @@ public class CreatureAttack : MobAttack
     protected void Start() {
         creature.OnCreatureEnteredLight += Creature_OnCreatureEnteredLight;
         creature.OnCreatureExitedLight += Creature_OnCreatureExitedLight;
+
+        if(creature.GetIsEliteDamageCreature()) {
+            attackDamage *= 2;
+        }
     }
 
     private void Creature_OnCreatureExitedLight(object sender, System.EventArgs e) {

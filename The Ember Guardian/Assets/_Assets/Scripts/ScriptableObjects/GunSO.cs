@@ -37,6 +37,7 @@ public class GunSO : ScriptableObject
     public float reloadTime;
     public float handsReloadTime;
     public float handsAnimationReloadTime;
+    public float swapToWeaponTimeMultiplier;
 
     public float gunKnockback;
     public float gunRecoil;

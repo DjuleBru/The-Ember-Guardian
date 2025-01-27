@@ -56,7 +56,9 @@ public class MobMovement : MonoBehaviour
     }
 
     protected virtual void FixedUpdate() {
-        Debug.DrawLine(transform.position, targetDestination, Color.yellow);
+        Vector3 debugLineOrigin = new Vector3(transform.position.x, transform.position.y + .5f, 0);
+        Vector3 debugLineDestination = new Vector3(targetDestination.x, targetDestination.y + .5f, 0);
+        Debug.DrawLine(debugLineOrigin, debugLineDestination, Color.yellow);
 
         if (Mathf.Abs(targetDestination.x - transform.position.x) < .1f) {
             moveDirFloat = 0;

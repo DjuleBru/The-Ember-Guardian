@@ -20,8 +20,22 @@ public class GunAnimator : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReload += PlayerSHoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
         PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerSHoot_OnPlayerSwitchedFireMode;
+        PlayerShoot.Instance.OnPlayerSwappedGunStarted += PlayerShoot_OnPlayerSwappedGunStarted;
+        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
 
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
+    }
+
+    private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
+        animator.SetTrigger("SwapGunEnd");
+        float animationMultiplier =  1/gun.GetSwapToWeaponTimeMultiplier();
+        animator.SetFloat("SwapGunMultiplier", animationMultiplier);
+    }
+
+    private void PlayerShoot_OnPlayerSwappedGunStarted(object sender, System.EventArgs e) {
+        animator.SetTrigger("SwapGunStart");
+        float animationMultiplier = 1/gun.GetSwapToWeaponTimeMultiplier();
+        animator.SetFloat("SwapGunMultiplier", animationMultiplier);
     }
 
     protected virtual void PlayerSHoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {

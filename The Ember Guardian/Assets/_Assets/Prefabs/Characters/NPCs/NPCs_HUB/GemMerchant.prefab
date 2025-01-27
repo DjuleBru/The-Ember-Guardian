@@ -243,7 +243,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3748281632492739441
 RectTransform:
   m_ObjectHideFlags: 0
@@ -569,8 +569,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8385513270722688418}
   m_HandleRect: {fileID: 1424134487310206145}
   m_Direction: 0
-  m_Value: -0.00000016782263
-  m_Size: 0.40576544
+  m_Value: -0.00000021577192
+  m_Size: 0.40576538
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2058,10 +2058,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Barricade 2
-  greenGemCost: 3
-  redGemCost: 1
+  greenGemCost: 1
+  redGemCost: 0
   blueGemCost: 0
-  yellowGemCost: 0
+  yellowGemCost: 3
   purpleGemCost: 0
   description: Stacked higher with sturdier crates, offering improved defense.
   unlockDescription: 'Barricade crates : <b>4</b> (+1)
@@ -3412,10 +3412,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: The Seedkeeper
-  greenGemCost: 8
-  redGemCost: 2
+  greenGemCost: 2
+  redGemCost: 0
   blueGemCost: 0
-  yellowGemCost: 0
+  yellowGemCost: 8
   purpleGemCost: 0
   description: "An elder vendor draped in moss, selling magical seeds to grow orb-yielding
     plants for the camp\u2019s survival."
@@ -3831,11 +3831,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Tent 3
-  greenGemCost: 8
-  redGemCost: 8
-  blueGemCost: 0
-  yellowGemCost: 0
-  purpleGemCost: 0
+  greenGemCost: 0
+  redGemCost: 0
+  blueGemCost: 5
+  yellowGemCost: 5
+  purpleGemCost: 5
   description: A cozy setup with a canopy and cooking corner, offering both comfort
     and resilience.
   unlockDescription: Allows to upgrade your tent <b> Level 3 </b>, offering more
@@ -4292,11 +4292,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: The Masked Dealers
-  greenGemCost: 3
-  redGemCost: 8
+  greenGemCost: 0
+  redGemCost: 0
   blueGemCost: 0
-  yellowGemCost: 0
-  purpleGemCost: 0
+  yellowGemCost: 2
+  purpleGemCost: 8
   description: Two cunning tricksters offering lethal traps to outsmart foes; surrounded
     by crates and flickering torches.
   unlockDescription: 'Unlocks <b>traps</b> that can be set to defend your camp.
@@ -4538,6 +4538,10 @@ PrefabInstance:
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5131686398981283283, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -5754,10 +5758,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Barricade 3
-  greenGemCost: 5
-  redGemCost: 2
+  greenGemCost: 2
+  redGemCost: 0
   blueGemCost: 0
-  yellowGemCost: 0
+  yellowGemCost: 5
   purpleGemCost: 0
   description: A solid barricade of tightly packed crates, standing firm against
     assaults.
@@ -6213,11 +6217,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Tent 2
-  greenGemCost: 3
-  redGemCost: 3
-  blueGemCost: 0
-  yellowGemCost: 0
-  purpleGemCost: 0
+  greenGemCost: 0
+  redGemCost: 0
+  blueGemCost: 2
+  yellowGemCost: 2
+  purpleGemCost: 2
   description: Now equipped with a tarp, it shields the camp better and provides
     improved recovery.
   unlockDescription: Allows to upgrade your tent <b> Level 2 </b>, offering more
@@ -6656,10 +6660,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Barricade 4
-  greenGemCost: 7
-  redGemCost: 3
+  greenGemCost: 3
+  redGemCost: 0
   blueGemCost: 0
-  yellowGemCost: 0
+  yellowGemCost: 7
   purpleGemCost: 0
   description: A towering blockade of reinforced crates, nearly impenetrable to any
     foe.
@@ -7553,10 +7557,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Tower 4
-  greenGemCost: 3
+  greenGemCost: 0
   redGemCost: 7
   blueGemCost: 0
-  yellowGemCost: 0
+  yellowGemCost: 7
   purpleGemCost: 0
   description: A towering bastion of precision, enabling deadly shots and unmatched
     protection from above.
@@ -8479,9 +8483,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Orb Processor
-  greenGemCost: 2
-  redGemCost: 2
-  blueGemCost: 0
+  greenGemCost: 0
+  redGemCost: 0
+  blueGemCost: 4
   yellowGemCost: 0
   purpleGemCost: 0
   description: A buzzing contraption that fuses minor orbs into greater orbs, unlocking
@@ -8887,11 +8891,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Tent 4
-  greenGemCost: 10
-  redGemCost: 10
-  blueGemCost: 0
-  yellowGemCost: 0
-  purpleGemCost: 0
+  greenGemCost: 0
+  redGemCost: 0
+  blueGemCost: 7
+  yellowGemCost: 7
+  purpleGemCost: 7
   description: A thriving hub of the camp, fully equipped for restoration and morale.
   unlockDescription: Allows to upgrade your tent <b> Level 4 </b>, offering more
     space to expand your camp.
@@ -9326,10 +9330,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Tower 3
-  greenGemCost: 2
-  redGemCost: 5
+  greenGemCost: 0
+  redGemCost: 2
   blueGemCost: 0
-  yellowGemCost: 0
+  yellowGemCost: 5
   purpleGemCost: 0
   description: Strong and steady, the tower empowers hunters with improved range
     and stability.
@@ -9804,10 +9808,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: Tower 2
-  greenGemCost: 1
-  redGemCost: 3
+  greenGemCost: 0
+  redGemCost: 1
   blueGemCost: 0
-  yellowGemCost: 0
+  yellowGemCost: 3
   purpleGemCost: 0
   description: Bolstered supports and height grant hunters better aim and coverage.
   unlockDescription: 'Trapper slots : <b>1</b>
@@ -10233,11 +10237,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: 
-  greenGemCost: 7
-  redGemCost: 2
+  greenGemCost: 0
+  redGemCost: 0
   blueGemCost: 0
-  yellowGemCost: 0
-  purpleGemCost: 0
+  yellowGemCost: 7
+  purpleGemCost: 2
   description: 'This elevated radar provides vital intelligence on incoming waves:
     numbers, direction, and enemy types.'
   unlockDescription: Unlocks the <b> Observation Tower </b>, a device used to aquire

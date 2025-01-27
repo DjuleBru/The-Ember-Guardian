@@ -14,6 +14,11 @@ public class MobSpawner : MonoBehaviour
     [SerializeField] protected bool isCreatureSpawner;
     [SerializeField] protected bool isAnimalSpawner;
 
+    [SerializeField] protected bool canSpawnEliteCreatures;
+    [SerializeField] protected float eliteSpawnProbability;
+    [SerializeField] protected int eliteSpawnAmount;
+    protected int eliteSpawnedAmount;
+
     protected List<Mob> mobSpawnedList = new List<Mob>();
 
     public event EventHandler<OnMobSpawnedEventArgs> OnMobSpawned;
@@ -65,6 +70,9 @@ public class MobSpawner : MonoBehaviour
             if(isCreatureSpawner) {
                 mob.GetComponent<Creature>().SetAsDayCreature(true);
                 mob.transform.parent = SpawnedObjects.Instance.creaturesContainer;
+                if(canSpawnEliteCreatures) {
+                    HandleEliteSpawn(mob.GetComponent<Creature>());
+                }
             }
 
             if(mob is Worker) {
@@ -101,6 +109,23 @@ public class MobSpawner : MonoBehaviour
 
             InvokeOnMobSpawned(mob);
         }
+    }
+
+    private void HandleEliteSpawn(Creature creature) {
+        if(eliteSpawnAmount != 0) {
+            eliteSpawnedAmount++;
+            if(eliteSpawnedAmount <= eliteSpawnAmount) {
+                creature.SetAsEliteCreature();
+            }
+        }
+
+        if(eliteSpawnProbability != 0) {
+            float randomFloat = UnityEngine.Random.Range(0f, 1f);
+            if (randomFloat < eliteSpawnProbability) {
+                creature.SetAsEliteCreature();
+            }
+        }
+
     }
 
     protected void InvokeOnMobSpawned(Mob mob) {

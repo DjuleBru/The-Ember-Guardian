@@ -34,8 +34,8 @@ MonoBehaviour:
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
   linkedSceneName: Level2_VerdantGraveyard
   hasFog: 1
-  fogFrontAlpha: 0.3
-  fogBackAlpha: 0.3
+  fogFrontAlpha: 0.7
+  fogBackAlpha: 0.6
   baseDifficulty: 10
   minSubwaveDifficulty: 0
   maxSubwaveDifficulty: 20
@@ -45,6 +45,7 @@ MonoBehaviour:
   waveIntensityFactor: 0.6
   delayBetweenSubWaves: 8
   startWaveToSpawnFromBothSides: 2
+  canSpawnElite: 1
   levelAudioClips:
   - {fileID: 8300000, guid: 09c5969007630694984b81ccd6618337, type: 3}
   - {fileID: 8300000, guid: d79c4b04637541d4fba193e4660d29a7, type: 3}

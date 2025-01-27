@@ -99,7 +99,7 @@ public class MobAttack : MonoBehaviour
 
         if (previousAttackTargetIDamageable != null) {
             StaticProjectile projectile = Instantiate(staticProjectilePrefab, projectileSpawnPoint.position, Quaternion.identity).GetComponent<StaticProjectile>();
-            projectile.Initialize(GetAttackDir().x, mob);
+            projectile.Initialize(GetAttackDir().x, mob, attackDamage);
         }
 
         OnMobAttackHit?.Invoke(this, EventArgs.Empty);

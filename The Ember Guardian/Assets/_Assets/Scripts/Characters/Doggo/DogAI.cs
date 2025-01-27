@@ -221,7 +221,6 @@ public class DogAI : MonoBehaviour
 
     private void ChangeState(State newState) {
         if (state == newState) return;
-
         RandomizeDistanceVariables();
 
         dogMovement.SetMoveTarget(transform.position);

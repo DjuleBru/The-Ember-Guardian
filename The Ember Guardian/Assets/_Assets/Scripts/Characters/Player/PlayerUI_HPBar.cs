@@ -47,15 +47,18 @@ public class PlayerUI_HPBar : MonoBehaviour
         Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
         PlayerStats.Instance.OnPlayerMaxHPChanged += PlayerStats_OnPlayerMaxHPChanged;
-
-        Tent.Instance.OnPlayerTriggeredIn += Tent_OnPlayerTriggeredIn;
-        Tent.Instance.OnPlayerTriggeredOut += Tent_OnPlayerTriggeredOut;
-
+        Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         RefreshHPBar();
 
         hpBarGameObject.SetActive(false);
     }
 
+    private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
+
+        Tent.Instance.OnPlayerTriggeredIn += Tent_OnPlayerTriggeredIn;
+        Tent.Instance.OnPlayerTriggeredOut += Tent_OnPlayerTriggeredOut;
+
+    }
 
     private void Update() {
         if (hpBarCritical) return;
@@ -125,7 +128,7 @@ public class PlayerUI_HPBar : MonoBehaviour
         hpBarGameObject.SetActive(false);
     }
 
-    private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
+    private void Player_OnPlayerDamaged(object sender, Player.OnPlayerChangedHealthEventArgs e) {
         if (Player.Instance.GetHP() < 0) return;
 
         if(Player.Instance.GetHP() != 0) {
@@ -135,18 +138,24 @@ public class PlayerUI_HPBar : MonoBehaviour
         if (Player.Instance.GetHP() <= PlayerStats.Instance.GetPlayerMaxHP() / 3) {
             hpBarCritical = true;
         }
+
         PlayerUI_TickTemplate[] hpTickArray = hpTickContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
-        hpTickArray[hpTickArray.Length - 1].GetComponent<RectTransform>().SetParent(transform);
-        hpTickArray[hpTickArray.Length - 1].RemoveTick();
+        
+        int damageTaken = e.hpChangeAmount;
+
+        for(int  i = 1; i <= damageTaken; i++) {
+            hpTickArray[hpTickArray.Length - i].GetComponent<RectTransform>().SetParent(transform);
+            hpTickArray[hpTickArray.Length - i].RemoveTick();
+        }
         
         ShowHPBar();
         RefreshHPBar();
     }
 
-    private void Player_OnPlayerHealed(object sender, Player.OnPlayerHealedEventArgs e) {
+    private void Player_OnPlayerHealed(object sender, Player.OnPlayerChangedHealthEventArgs e) {
         isFadingIn = true;
         //ShowHPBar(2f);
-        StartCoroutine(RefillHPBar(e.healAmount));
+        StartCoroutine(RefillHPBar(e.hpChangeAmount));
     }
 
     private void PlayerStats_OnPlayerMaxHPChanged(object sender, EventArgs e) {

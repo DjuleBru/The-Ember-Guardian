@@ -100,8 +100,9 @@ public class WeaponStatsPanelUI : MonoBehaviour
         float cooldown = PlayerShoot.Instance.GetGun(gunSO).GetCooldownTime();
         cooldownStat.text = HandleStringTrim(cooldown.ToString()) + "s";
 
-        float dps = bulletDmg * pelletsPerShot * cooldown;
-        dpsStatText.text = HandleStringTrim(dps.ToString());
+        float dps = bulletDmg * pelletsPerShot / cooldown;
+        int gunDPSRounded = Mathf.RoundToInt(dps);
+        dpsStatText.text = HandleStringTrim(gunDPSRounded.ToString());
 
         int shotsPerClip = PlayerShoot.Instance.GetGun(gunSO).GetShotsPerClip();
         shotsPerClipStat.text = HandleStringTrim(shotsPerClip.ToString());
@@ -156,10 +157,12 @@ public class WeaponStatsPanelUI : MonoBehaviour
         SetStatDiffColor(cooldownStat, cooldownDiffStat, cooldownDiff, false);
 
 
-        float gunDPS = bulletDmg * pelletsPerShot * cooldown;
-        dpsStatText.text = HandleStringTrim(gunDPS.ToString());
-        float currentGunDps = currentGunBulletDmg * currentGunPelletsPerShot * currentGunCooldown;
-        float dpsDiff = gunDPS - currentGunDps;
+        float gunDPS = bulletDmg * pelletsPerShot / cooldown;
+        int gunDPSRounded = Mathf.RoundToInt(gunDPS);
+        dpsStatText.text = HandleStringTrim(gunDPSRounded.ToString());
+        float currentGunDps = currentGunBulletDmg * currentGunPelletsPerShot / currentGunCooldown;
+        int currentGunDpsRounded = Mathf.RoundToInt(currentGunDps);
+        int dpsDiff = gunDPSRounded - currentGunDpsRounded;
         dpsDiffStatText.text = HandleStringTrim(dpsDiff.ToString());
         SetStatDiffColor(dpsStatText, dpsDiffStatText, dpsDiff, true);
 

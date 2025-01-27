@@ -118,6 +118,8 @@ public class DogAnimatorManager : MonoBehaviour {
         }
 
         if(newState == DogAI.State.growling) {
+            animator.SetBool("Running", false);
+            animator.SetBool("Walking", false);
             animator.SetBool("Growling", true);
         } else {
             animator.SetBool("Growling", false);

@@ -36,22 +36,33 @@ public class StructureVisual : MonoBehaviour {
         structure.OnStructureInteractionsUpdated += Structure_OnStructureInteractionsUpdated;
         structure.OnPlayerTriggeredIn += Structure_OnPlayerTriggeredIn;
         structure.OnPlayerTriggeredOut += Structure_OnPlayerTriggeredOut;
+        structure.OnInitialCampStructureBuilt += Structure_OnInitialCampStructureBuilt;
 
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
             DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
             PlayerCampVisual.Instance.OnCampBackgroundBuilt += PlayerCampVisual_OnCampBackgroundBuilt;
-
         }
+
+        HandleInitialBuildAnimation();
+    }
+
+    private void Structure_OnInitialCampStructureBuilt(object sender, System.EventArgs e) {
+        HandleInitialBuildAnimation();
+    }
+
+    private void HandleInitialBuildAnimation() {
 
         if (!animateSpriteMaterialOnBuild) {
 
             built = true;
+            Debug.Log("BuiltAtStart");
             structureSpriteMaterialAnimator.SetTrigger("BuiltAtStart");
 
         }
         else {
 
+            Debug.Log("Build");
             structureSpriteMaterialAnimator.SetTrigger("Build");
 
         }

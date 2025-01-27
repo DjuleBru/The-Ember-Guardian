@@ -49,6 +49,7 @@ public class PlayerCamp : MonoBehaviour
 
         foreach (Structure structure in initialStructures) {
             structure.gameObject.SetActive(true);
+            structure.BuildInitialCampStructure();
         }
 
         float delayBetweenBuildsRandomized = UnityEngine.Random.Range(delayBetweenBuilds - delayBetweenBuilds / 2, delayBetweenBuilds + delayBetweenBuilds / 2);

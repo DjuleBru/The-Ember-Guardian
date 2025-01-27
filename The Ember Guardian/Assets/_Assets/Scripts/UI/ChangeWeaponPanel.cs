@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ChangeWeaponPanel : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class ChangeWeaponPanel : MonoBehaviour
 
     [SerializeField] private Transform changeWeaponSlotContainer;
     [SerializeField] private Transform changeWeaponSlotTemplate;
+    private List<GameObject> changeWeaponButtons;
 
     private WeaponChangeButton lastChangeButtonThatOpenedThisPanel;
 
@@ -51,6 +53,7 @@ public class ChangeWeaponPanel : MonoBehaviour
 
     private void UpdateWeaponSlots(List<GunSO> gunSOList) {
         changeWeaponSlotTemplate.gameObject.SetActive(true);
+        changeWeaponButtons = new List<GameObject>();
 
         foreach (Transform child in changeWeaponSlotContainer) {
             if (child == changeWeaponSlotTemplate) continue;
@@ -61,6 +64,7 @@ public class ChangeWeaponPanel : MonoBehaviour
             WeaponReplaceButton weaponReplaceButton = Instantiate(changeWeaponSlotTemplate, changeWeaponSlotContainer).GetComponent<WeaponReplaceButton>();
 
             weaponReplaceButton.SetLinkedGunSO(gunSO);
+            changeWeaponButtons.Add(weaponReplaceButton.gameObject);
         }
 
         changeWeaponSlotTemplate.gameObject.SetActive(false);
@@ -79,6 +83,8 @@ public class ChangeWeaponPanel : MonoBehaviour
 
         if(!panelOpen) {
             lastChangeButtonThatOpenedThisPanel = null;
+        } else {
+            EventSystem.current.SetSelectedGameObject(changeWeaponButtons[0]);
         }
     }
 

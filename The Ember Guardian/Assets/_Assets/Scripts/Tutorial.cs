@@ -610,7 +610,6 @@ public class Tutorial : MonoBehaviour
     }
 
     private void StartFireLocation_OnPlayerTriggeredIn(object sender, EventArgs e) {
-        Debug.Log(lightFireTooltipShown);
         if (lightFireTooltipShown) return;
         lightFireTooltipShown = true;
         StartCoroutine(ShowTooltipAfterDelay(0f, "Hold", "Light fire", InputControlIcons.Control.Interact));

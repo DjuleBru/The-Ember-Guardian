@@ -22,26 +22,43 @@ public class WeaponChangeButton : ButtonUI
         PlayerShoot.Instance.OnPrimaryWeaponChanged += PlayerShoot_OnPrimaryWeaponChanged;
         PlayerShoot.Instance.OnSecondaryWeaponChanged += PlayerShoot_OnSecondaryWeaponChanged;
 
-        button.onClick.AddListener(() => {
-            OnAnyWeaponChangeButtonPressed?.Invoke(this, EventArgs.Empty);
 
-            if(linkedGunSO != null) {
-                PlayerShoot.Instance.SetActiveGun(linkedGunSO, isPrimaryWeaponButton);
-            }
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
+            button.onClick.AddListener(() => {
+                WeaponButtonPressLevel();
+            });
 
-            if (PlayerShoot.Instance.GetUnlockedGunSOList().Count <= 1) return;
+        } else {
 
-            ChangeWeaponPanel.Instance.SetPrimaryWeaponSwap(isPrimaryWeaponButton);
+            button.onClick.AddListener(() => {
+                WeaponButtonPressHub();
+            });
+        }
 
-            Debug.Log(ChangeWeaponPanel.Instance.GetJustPressedByOtherWeaponButton(this));
-            if (ChangeWeaponPanel.Instance.GetJustPressedByOtherWeaponButton(this)) {
-                ChangeWeaponPanel.Instance.SetLastWeaponChangeButton(this);
-                return;
-            };
+    }
 
+    private void WeaponButtonPressHub() {
+        OnAnyWeaponChangeButtonPressed?.Invoke(this, EventArgs.Empty);
+
+        if (linkedGunSO != null) {
+            PlayerShoot.Instance.SetActiveGun(linkedGunSO, isPrimaryWeaponButton);
+        }
+
+        if (PlayerShoot.Instance.GetUnlockedGunSOList().Count <= 1) return;
+
+        ChangeWeaponPanel.Instance.SetPrimaryWeaponSwap(isPrimaryWeaponButton);
+
+        if (ChangeWeaponPanel.Instance.GetJustPressedByOtherWeaponButton(this)) {
             ChangeWeaponPanel.Instance.SetLastWeaponChangeButton(this);
-            ChangeWeaponPanel.Instance.OpenClosePanel();
-        });
+            return;
+        };
+
+        ChangeWeaponPanel.Instance.SetLastWeaponChangeButton(this);
+        ChangeWeaponPanel.Instance.OpenClosePanel();
+        ;
+    }
+    private void WeaponButtonPressLevel() {
+        OnAnyWeaponChangeButtonPressed?.Invoke(this, EventArgs.Empty);
     }
 
     private void PlayerShoot_OnSecondaryWeaponChanged(object sender, System.EventArgs e) {
@@ -59,7 +76,6 @@ public class WeaponChangeButton : ButtonUI
             
             gunIconImage.sprite = gunSO.gunSprite;
             gunIconImage.color = Color.white;
-            Debug.Log(gunSO.gunSprite);
 
         } else {
             Color transparentColor = Color.white;

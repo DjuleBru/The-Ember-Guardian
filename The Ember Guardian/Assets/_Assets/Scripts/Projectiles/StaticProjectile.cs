@@ -9,6 +9,7 @@ public class StaticProjectile : MonoBehaviour
     private Mob parentMob;
     private float projectileLifetimer;
     private bool hasHit;
+    private int damage;
 
     private void Update() {
         projectileLifetimer += Time.deltaTime;
@@ -21,7 +22,7 @@ public class StaticProjectile : MonoBehaviour
         if ((hasHit)) return;
 
         if (collision.GetComponent<Player>() != null) {
-            Player.Instance.TakeDamage(1, transform);
+            Player.Instance.TakeDamage(damage, transform);
             hasHit = true;
         }
 
@@ -44,9 +45,10 @@ public class StaticProjectile : MonoBehaviour
         }
     }
 
-    public void Initialize(float watchDir, Mob parentMob) {
+    public void Initialize(float watchDir, Mob parentMob, int damage) {
         this.parentMob = parentMob;
-        if(watchDir < 0) {
+        this.damage = damage;
+        if (watchDir < 0) {
             Vector3 localScale = Vector3.one;
             localScale.x = -1f;
             transform.localScale = localScale;

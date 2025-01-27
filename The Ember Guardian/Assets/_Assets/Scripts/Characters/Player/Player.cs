@@ -34,15 +34,15 @@ public class Player : MonoBehaviour, IDamageable
 
     public event EventHandler OnPlayerEnteredCamp;
     public event EventHandler OnPlayerExitedCamp;
-    public event EventHandler OnPlayerDamaged;
+    public event EventHandler<OnPlayerChangedHealthEventArgs> OnPlayerDamaged;
     public event EventHandler OnPlayerDamagedRecentlyEnded;
-    public event EventHandler<OnPlayerHealedEventArgs> OnPlayerHealed;
+    public event EventHandler<OnPlayerChangedHealthEventArgs> OnPlayerHealed;
     public event EventHandler OnPlayerDied;
     public event EventHandler OnPlayerRespawned;
     public event EventHandler OnPlayerBackToTentToRespawn;
 
-    public class OnPlayerHealedEventArgs : EventArgs {
-        public int healAmount;
+    public class OnPlayerChangedHealthEventArgs : EventArgs {
+        public int hpChangeAmount;
     }
 
     private bool isLevelScene;
@@ -126,22 +126,26 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public void TakeDamage(int damage, Transform damageSource, bool critHit = false) {
-        if (isInvincibleWhileRolling) { Debug.Log("isInvincibleWhileRolling"); return; } 
         if (damagedRecently) return;
         if (dead) return;
 
         if (ShieldTanksDamage(damage, damageSource)) return;
 
-        playerHealth -= 1;
+        int healthLoss = damage;
+        playerHealth -= damage;
 
         if(playerHealth <= 0) {
+            healthLoss = playerHealth + damage;
+            playerHealth = 0;
             Die();
         }
 
         damagedTimer = PlayerStats.Instance.GetDamagedImmunityTime();
         damagedRecently = true;
 
-        OnPlayerDamaged?.Invoke(this, EventArgs.Empty);
+        OnPlayerDamaged?.Invoke(this, new OnPlayerChangedHealthEventArgs {
+            hpChangeAmount = healthLoss
+        });
     }
 
     private bool ShieldTanksDamage(int damage, Transform damageSource) {
@@ -318,8 +322,8 @@ public class Player : MonoBehaviour, IDamageable
         int healAmount = PlayerStats.Instance.GetPlayerMaxHP() - playerHealth;
 
         playerHealth = PlayerStats.Instance.GetPlayerMaxHP();
-        OnPlayerHealed?.Invoke(this, new OnPlayerHealedEventArgs {
-            healAmount = healAmount
+        OnPlayerHealed?.Invoke(this, new OnPlayerChangedHealthEventArgs {
+            hpChangeAmount = healAmount
         });
     }
 
@@ -331,8 +335,8 @@ public class Player : MonoBehaviour, IDamageable
         if (healAmount == 0) return;
 
         playerHealth += healAmount;
-        OnPlayerHealed?.Invoke(this, new OnPlayerHealedEventArgs {
-            healAmount = healAmount
+        OnPlayerHealed?.Invoke(this, new OnPlayerChangedHealthEventArgs {
+            hpChangeAmount = healAmount
         });
     }
 

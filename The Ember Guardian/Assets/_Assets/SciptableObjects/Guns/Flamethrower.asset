@@ -23,23 +23,24 @@ MonoBehaviour:
   - {fileID: 1282879509, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
   - {fileID: -1709508536, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
   - {fileID: -653879012, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
-  gunAnimator: {fileID: 9100000, guid: 429c9eebaded4324198c461af57afdbe, type: 2}
+  gunAnimator: {fileID: 9100000, guid: 0beb2d2999eb4f74abd437ff2b5f1e6e, type: 2}
   automaticWeapon: 1
   damagePerBullet: 1
   maxAmmo: 6
-  pelletsPerBullet: 1
+  pelletsPerBullet: 3
   shotsPerClip: 200
   critChance: 0
-  shootConeAngle: 5
+  shootConeAngle: 3
   bulletLifetime: 0.8
   bulletSpeed: 10
   weightAccelerationFactor: 0.8
   reloadAccelerationFactor: 0.8
-  shootCooldownTime: 0.02
+  shootCooldownTime: 0.01
   shootCooldownSFXTriggerTime: 0
   reloadTime: 4.5
   handsReloadTime: 4.2
   handsAnimationReloadTime: 2.8
+  swapToWeaponTimeMultiplier: 1
   gunKnockback: 0
   gunRecoil: 0
   gunRecoilDamping: 0

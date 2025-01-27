@@ -30,10 +30,19 @@ public class GunVisual : MonoBehaviour
         PlayerShoot.Instance.OnBulletsChanged += PlayerShoot_OnClipsChanged;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
+        PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
 
         gunSO = gun.GetGunSO();
         gunReloadSprites = gunSO.shotCountSprites;
         gunLightSpriteIndex = gunSO.shotCountSprites.Count -1;
+    }
+
+    private void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
+        if (gunCooldownLightsSpriteRenderer == null) return;
+        int bulletAmount = PlayerShoot.Instance.GetCurrentBullets();
+        if(bulletAmount == 0) {
+            gunCooldownLightsSpriteRenderer.color = outOfAmmoCooldownLightsColor;
+        }
     }
 
     protected void PlayerShoot_OnPlayerTryShoot_OutOfAmmo(object sender, System.EventArgs e) {
@@ -58,6 +67,10 @@ public class GunVisual : MonoBehaviour
 
     protected void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
+
+        if (gunCooldownLightsSpriteRenderer != null) {
+            gunCooldownLightsSpriteRenderer.color = cooldownLightsColor;
+        };
 
         int finalGunReloadSpriteIndex = gunReloadSprites.Count;
         float reloadTime = PlayerStats.Instance.GetReloadTime();

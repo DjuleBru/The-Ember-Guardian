@@ -38,6 +38,7 @@ MonoBehaviour:
   reloadTime: 2.2
   handsReloadTime: 2
   handsAnimationReloadTime: 1
+  swapToWeaponTimeMultiplier: 0.5
   gunKnockback: 1.5
   gunRecoil: 1.2
   gunRecoilDamping: 4
@@ -76,7 +77,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2c707419f490654468a181cc7a85e8ec, type: 3}
   outOfAmmoSound:
   - {fileID: 8300000, guid: 34b027e33db23f44891b7586138184a7, type: 3}
-  swapToWeaponSound: {fileID: 8300000, guid: 44410cc1b7956fa48b296fe59bf65d00, type: 3}
+  swapToWeaponSound: {fileID: 8300000, guid: 79807144d7c7634419a5cd72bb9319ac, type: 3}
   reloadSFXVolumeMultiplier: 0.65
   cooldownSFXVolumeMultiplier: 0.5
   shootGunVolumeMultiplier: 0.5

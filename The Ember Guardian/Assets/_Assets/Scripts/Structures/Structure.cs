@@ -22,6 +22,7 @@ public class Structure : MonoBehaviour {
     public event EventHandler OnStructurePrimaryFunctionUsed;
     public static event EventHandler OnAnyStructurePrimaryFunctionUsed;
     public event EventHandler OnStructureInteractionsUpdated;
+    public event EventHandler OnInitialCampStructureBuilt;
 
     protected bool playerInTriggerArea;
     protected bool playerCanInteract;
@@ -107,6 +108,10 @@ public class Structure : MonoBehaviour {
 
     public StructureSO GetStructureSO() {
         return structureSO;
+    }
+
+    public void BuildInitialCampStructure() {
+        OnInitialCampStructureBuilt?.Invoke(this, EventArgs.Empty);
     }
 
     protected virtual void DayNightManager_OnDawnStart(object sender, EventArgs e) {

@@ -24,6 +24,14 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 937668656028073623, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 669479481, guid: 571ccf1020f1f1a48880ad7bde20fecd, type: 3}
+    - target: {fileID: 1560014419514276318, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
+      propertyPath: sr
+      value: 
+      objectReference: {fileID: 2147332966296194161}
     - target: {fileID: 1640028811032779791, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -66,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3609096431873478918, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
       propertyPath: m_Name
-      value: RedGem
+      value: Gem_Red
       objectReference: {fileID: 0}
     - target: {fileID: 3736198231456185413, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
       propertyPath: m_Sprite
@@ -112,6 +120,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 02053c822600e18419e211416db1c853, type: 2}
+    - target: {fileID: 7720936750709318655, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 7e69a423c76cde442881f22b7e7693c5, type: 2}
     m_RemovedComponents:
     - {fileID: 8526087760916534363, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
     m_RemovedGameObjects: []
@@ -161,3 +173,8 @@ CapsuleCollider2D:
   m_Offset: {x: -0.0030262992, y: 0.001844123}
   m_Size: {x: 0.24780907, y: 0.38298342}
   m_Direction: 0
+--- !u!212 &2147332966296194161 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3736198231456185413, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
+  m_PrefabInstance: {fileID: 3320700537966522420}
+  m_PrefabAsset: {fileID: 0}

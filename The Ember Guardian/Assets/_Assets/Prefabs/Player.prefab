@@ -12865,7 +12865,7 @@ Transform:
   m_GameObject: {fileID: 791928386114633328}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.235, y: 0.117, z: 0}
+  m_LocalPosition: {x: 1.476, y: 0.044, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -21941,7 +21941,7 @@ Transform:
   m_GameObject: {fileID: 2110203454295653101}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.08200005, y: -0.003, z: 0}
+  m_LocalPosition: {x: 0.03, y: 0.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22428,7 +22428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunLightsSpriteRenderer: {fileID: 7318233327382682661}
   gunCooldownLightsSpriteRenderer: {fileID: 0}
-  outOfAmmoCooldownLightsColor: {r: 0, g: 0, b: 0, a: 0}
+  outOfAmmoCooldownLightsColor: {r: 1, g: 0, b: 0, a: 0.4392157}
 --- !u!114 &3099697191665467345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32589,7 +32589,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5600287817303019930
 Transform:
   m_ObjectHideFlags: 0
@@ -32706,7 +32706,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunLightsSpriteRenderer: {fileID: 2108785972422679548}
   gunCooldownLightsSpriteRenderer: {fileID: 0}
-  outOfAmmoCooldownLightsColor: {r: 0, g: 0, b: 0, a: 0}
+  outOfAmmoCooldownLightsColor: {r: 1, g: 0, b: 0, a: 0.4392157}
   bipodRenderer: {fileID: 6558461524564114776}
 --- !u!1 &2684823529538169887
 GameObject:
@@ -44288,7 +44288,7 @@ Transform:
   m_GameObject: {fileID: 3237320309064725914}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.061, y: 0.019, z: 0}
+  m_LocalPosition: {x: 0.06, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -53504,7 +53504,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.5
+      scalar: 0.3
       minScalar: 0.2
       maxCurve:
         serializedVersion: 2
@@ -56032,7 +56032,7 @@ ParticleSystem:
           inWeight: 0
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.3669274
+          time: 0.25
           value: 0
           inSlope: 1.6706438
           outSlope: 1.6706438
@@ -56041,7 +56041,7 @@ ParticleSystem:
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 0.5
+          time: 0.4
           value: 1
           inSlope: -0.2265994
           outSlope: -0.2265994
@@ -56052,8 +56052,8 @@ ParticleSystem:
         - serializedVersion: 3
           time: 1
           value: 0.2
-          inSlope: -1.6
-          outSlope: -1.6
+          inSlope: -1.3333333
+          outSlope: -1.3333333
           tangentMode: 34
           weightedMode: 0
           inWeight: 0.33333334
@@ -57104,7 +57104,7 @@ ParticleSystem:
     primitives: []
   SubModule:
     serializedVersion: 2
-    enabled: 0
+    enabled: 1
     subEmitters:
     - serializedVersion: 3
       emitter: {fileID: 6981508697801857197}
@@ -58498,6 +58498,7 @@ MonoBehaviour:
   - {fileID: 4363745003443774237}
   allGunSOList: []
   debugGun: {fileID: 0}
+  debugSecondaryGun: {fileID: 0}
   useDebugGun: 0
   debugSecondaryAbilityUnlocked: 0
 --- !u!114 &3884323692964899357
@@ -58666,7 +58667,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunLightsSpriteRenderer: {fileID: 4508626312907430968}
   gunCooldownLightsSpriteRenderer: {fileID: 0}
-  outOfAmmoCooldownLightsColor: {r: 0, g: 0, b: 0, a: 0}
+  outOfAmmoCooldownLightsColor: {r: 1, g: 0, b: 0, a: 0.4392157}
 --- !u!114 &6935648641840770240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60075,7 +60076,7 @@ Transform:
   m_GameObject: {fileID: 5416529346066082585}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.4, y: 0.022, z: 0}
+  m_LocalPosition: {x: 1.072, y: 0.022, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -65200,7 +65201,7 @@ MonoBehaviour:
     - rid: 4460312248828035111
       type: {class: MMF_Vignette_URP, ns: MoreMountains.FeedbacksForThirdParty, asm: MoreMountains.Feedbacks.URP}
       data:
-        Active: 1
+        Active: 0
         UniqueID: 1662827125
         Label: Vignette URP
         ChannelMode: 0
@@ -65472,7 +65473,7 @@ MonoBehaviour:
     - rid: 4460312248828035114
       type: {class: MMF_Vignette_URP, ns: MoreMountains.FeedbacksForThirdParty, asm: MoreMountains.Feedbacks.URP}
       data:
-        Active: 1
+        Active: 0
         UniqueID: -1266010953
         Label: Vignette URP
         ChannelMode: 0
@@ -67858,7 +67859,7 @@ MonoBehaviour:
     - rid: 7866843611745222682
       type: {class: MMF_Vignette_URP, ns: MoreMountains.FeedbacksForThirdParty, asm: MoreMountains.Feedbacks.URP}
       data:
-        Active: 1
+        Active: 0
         UniqueID: 182329276
         Label: Vignette URP
         ChannelMode: 0
@@ -68876,7 +68877,7 @@ Transform:
   m_GameObject: {fileID: 6352597898942234635}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.082, y: -0.009000007, z: 0}
+  m_LocalPosition: {x: 0.03, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -76146,7 +76147,7 @@ Animator:
   m_GameObject: {fileID: 7525961250113951809}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 429c9eebaded4324198c461af57afdbe, type: 2}
+  m_Controller: {fileID: 9100000, guid: 0beb2d2999eb4f74abd437ff2b5f1e6e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -76227,7 +76228,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunLightsSpriteRenderer: {fileID: 3294988883437955281}
   gunCooldownLightsSpriteRenderer: {fileID: 0}
-  outOfAmmoCooldownLightsColor: {r: 0, g: 0, b: 0, a: 0}
+  outOfAmmoCooldownLightsColor: {r: 1, g: 0, b: 0, a: 0.4392157}
   bipodRenderer: {fileID: 1867545216733834293}
 --- !u!1 &7679738925542895705
 GameObject:
@@ -89922,8 +89923,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunLightsSpriteRenderer: {fileID: 8400332584057868937}
-  gunCooldownLightsSpriteRenderer: {fileID: 0}
-  outOfAmmoCooldownLightsColor: {r: 0, g: 0, b: 0, a: 0}
+  gunCooldownLightsSpriteRenderer: {fileID: 3128293744840477696}
+  outOfAmmoCooldownLightsColor: {r: 1, g: 0, b: 0, a: 0.4392157}
 --- !u!114 &2406048311406426324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102097,6 +102098,10 @@ PrefabInstance:
       value: 5.75
       objectReference: {fileID: 0}
     - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
+      propertyPath: NoiseModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
       propertyPath: ShapeModule.m_Rotation.x
       value: -90
       objectReference: {fileID: 0}
@@ -102138,11 +102143,55 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: cc2f479dc842d78498f9540864372630, type: 3}
     - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
       propertyPath: EmissionModule.rateOverDistance.scalar
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
       propertyPath: EmissionModule.rateOverDistance.minMaxState
-      value: 3
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
+      propertyPath: EmissionModule.rateOverDistance.maxCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
+      propertyPath: EmissionModule.rateOverDistance.maxCurve.m_Curve.Array.data[0].inSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
+      propertyPath: EmissionModule.rateOverDistance.maxCurve.m_Curve.Array.data[1].inSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
+      propertyPath: EmissionModule.rateOverDistance.maxCurve.m_Curve.Array.data[0].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
+      propertyPath: EmissionModule.rateOverDistance.maxCurve.m_Curve.Array.data[0].outSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
+      propertyPath: EmissionModule.rateOverDistance.maxCurve.m_Curve.Array.data[1].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
+      propertyPath: EmissionModule.rateOverDistance.maxCurve.m_Curve.Array.data[1].outSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
+      propertyPath: EmissionModule.rateOverDistance.maxCurve.m_Curve.Array.data[0].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
+      propertyPath: EmissionModule.rateOverDistance.maxCurve.m_Curve.Array.data[1].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
+      propertyPath: EmissionModule.rateOverDistance.maxCurve.m_Curve.Array.data[0].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
+      propertyPath: EmissionModule.rateOverDistance.maxCurve.m_Curve.Array.data[1].tangentMode
+      value: 34
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
