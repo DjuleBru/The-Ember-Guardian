@@ -78,7 +78,8 @@ public class HUBManager : MonoBehaviour
 
             }
 
-            if(!MetaProgressionManager.Instance.GetGemFromLastLevelRewarded()) {
+            lastLevelGemsRewarded = MetaProgressionManager.Instance.GetGemFromLastLevelRewarded();
+            if (!lastLevelGemsRewarded) {
                 RewardLastLevelGems();
             }
 

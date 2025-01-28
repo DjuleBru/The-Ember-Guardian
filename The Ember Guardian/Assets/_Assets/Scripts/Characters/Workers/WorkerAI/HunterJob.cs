@@ -296,11 +296,14 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
             case HunterState.attackingDay:
 
                 CheckClosestCreatureSmart();
-
                 Creature closestCreature = workerDetectionCollider.GetClosestCreature();
-                if(CreatureIsTooClose(closestCreature)) {
+
+                bool playerIsInFrontOfHunter = Mathf.Abs(transform.position.x) - Mathf.Abs((Player.Instance.transform.position.x)) < 0;
+
+                if (CreatureIsTooClose(closestCreature) || !playerIsInFrontOfHunter) {
                     StayAwayFromCreatures(closestCreature);
                     return;
+
                 }
 
                 if (targetCreature == null) {
@@ -387,47 +390,43 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
         Creature closestCreature = workerDetectionCollider.GetClosestCreature();
 
-        if(closestCreature != null) {
-            if(CreatureIsTooClose(closestCreature)) {
-                StayAwayFromCreatures(closestCreature);
-                return;
-            }
-
-            float direction = closestCreature.transform.position.x - transform.position.x;
-            if (direction > 0) {
-                direction = -1;
-            }
-            else {
-                direction = 1;
-            }
-
-            Vector3 safePosition = new Vector3(closestCreature.transform.position.x + direction * distanceToStaySafeFromCreature, 0, 0);
-
+        if (closestCreature != null) {
             bool playerIsInFrontOfHunter = Mathf.Abs(transform.position.x) - Mathf.Abs((Player.Instance.transform.position.x)) < 0;
 
-            if (playerIsInFrontOfHunter) {
-                // Player is in front of Hunter
+            if (CreatureIsTooClose(closestCreature) || !playerIsInFrontOfHunter) {
+                StayAwayFromCreatures(closestCreature);
+                return;
 
-                bool playerIsBetweenHunterAndCreature = Mathf.Abs(Player.Instance.transform.position.x) - Mathf.Abs((closestCreature.transform.position.x)) < 0;
-                bool creatureIsMovingAway = (closestCreature.GetComponent<MobMovement>().GetLastMoveDirFloat() * direction) < 0;
+            } else {
+                
+                float direction = transform.position.x - closestCreature.transform.position.x;
+                if (direction < 0) {
+                    direction = -1;
+                } else {
+                    direction = 1;
+                }
+                Vector3 safePosition = Vector3.zero;
+                bool playerIsInFrontOfCreature = Mathf.Abs(Player.Instance.transform.position.x) - Mathf.Abs((closestCreature.transform.position.x)) < 0;
 
-                if (playerIsBetweenHunterAndCreature || creatureIsMovingAway) {
-                    // Player is also in front of creature
+                if(playerIsInFrontOfCreature) {
                     safePosition = new Vector3(Player.Instance.transform.position.x + direction * distanceToPlayerWhenCreatureIsAround, 0, 0);
+                } else {
+                    safePosition = new Vector3(closestCreature.transform.position.x + direction * minimumDistanceToStaySafeFromCreature, 0, 0);
+                }
+
+                bool workerIsCloseToSafePosition = (Mathf.Abs(transform.position.x - safePosition.x)) < 1f;
+
+                if (workerIsCloseToSafePosition) {
+                    // Worker is close to safe position
+                    CheckClosestCreatureSmart();
+                    if (targetCreature != null && TargetIsInHuntingRange(targetCreature)) {
+                        ChangeState(HunterState.attackingDay);
+                    }
+                }
+                else {
+                    mobMovement.SetMoveTarget(safePosition);
                 }
                 
-            }
-
-            bool workerIsCloseToSafePosition = (Mathf.Abs(transform.position.x - safePosition.x)) < 1f;
-
-            if (workerIsCloseToSafePosition) {
-                // Worker is close to safe position
-                CheckClosestCreatureSmart();
-                if(targetCreature != null && TargetIsInHuntingRange(targetCreature)) {
-                    ChangeState(HunterState.attackingDay);
-                }
-            } else {
-                mobMovement.SetMoveTarget(safePosition);
             }
 
         }

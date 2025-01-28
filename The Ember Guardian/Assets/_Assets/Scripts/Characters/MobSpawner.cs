@@ -63,6 +63,7 @@ public class MobSpawner : MonoBehaviour
 
     public virtual void SpawnMobs(int mobAmount) {
         for (int i = 0; i < mobAmount; i++) {
+
             Mob mob = Instantiate(mobPrefab, spawnPosition.position, Quaternion.identity).GetComponent<Mob>();
             mobSpawnedList.Add(mob);
             mob.SetMobSpawner(this);

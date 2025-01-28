@@ -402,6 +402,7 @@ public class PlayerShoot : MonoBehaviour
         bool secondaryAbilityUnlocked = heldGun.GetSecondaryAbilityUnlocked() || debugSecondaryAbilityUnlocked;
 
         if (!secondaryAbilityUnlocked) return;
+        if (!canShoot) return;
         if (reloading) return;
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Sniper) {

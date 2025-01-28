@@ -24,6 +24,7 @@ public class Tower : Structure
     private float level4RangeMultiplier = 2f;
 
     public event EventHandler OnHunterAssigned;
+    public event EventHandler OnPlayerClimbedOnTower;
     public static event EventHandler OnPlayerClimbedOnAnyTower;
 
     protected override void Start() {
@@ -173,6 +174,7 @@ public class Tower : Structure
 
         Player.Instance.transform.position = garrisonPosition;
         OnPlayerClimbedOnAnyTower?.Invoke(this, EventArgs.Empty);
+        OnPlayerClimbedOnTower?.Invoke(this, EventArgs.Empty);
     }
 
 }

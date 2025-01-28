@@ -16,6 +16,11 @@ public class TowerSound : StructureSounds
         base.Start();
 
         tower.OnHunterAssigned += Tower_OnHunterAssigned;
+        tower.OnPlayerClimbedOnTower += Tower_OnPlayerClimbedOnTower;
+    }
+
+    private void Tower_OnPlayerClimbedOnTower(object sender, System.EventArgs e) {
+        audioSource.PlayOneShot(hunterAssignAudioClip, sfxVolume);
     }
 
     private void Tower_OnHunterAssigned(object sender, System.EventArgs e) {

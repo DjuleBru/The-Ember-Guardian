@@ -136,5 +136,6 @@ public class GunSpotLight : MonoBehaviour
 
     private void OnDestroy() {
         GameInput.Instance.OnPlayerGunLightSwitch -= GameInput_OnPlayerGunLightSwitch;
+        Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
     }
 }

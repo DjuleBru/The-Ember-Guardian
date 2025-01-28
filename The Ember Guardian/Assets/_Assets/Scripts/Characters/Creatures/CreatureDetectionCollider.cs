@@ -224,9 +224,20 @@ public class CreatureDetectionCollider : MonoBehaviour
     private bool CanAddPlayerToTargets() {
         if (creature.GetCreatureSO().playerTargetingPriority == 0) return false;
 
-        // Check if player is in range in the y axis !
-        if ((Player.Instance.transform.position.y > creature.GetCreatureSO().minAttackRange) && !creatureAttack.GetIsRangedAttack()) {
-            return false;
+        // Check if player is in range in the y axis (tower) !
+        if(Player.Instance.transform.position.y > 0.1f) {
+
+            if (!creature.GetCreatureSO().canAttackPlayerOnTower) {
+                return false;
+            }
+
+            else {
+                // Creature can attack player on tower : is he in range ? (ex. ghouls on lvl 1 towers)
+                if (Player.Instance.transform.position.y > creature.GetCreatureSO().minAttackRange) {
+                    return false;
+                }
+            }
+
         }
 
         // Check if player is out of camp

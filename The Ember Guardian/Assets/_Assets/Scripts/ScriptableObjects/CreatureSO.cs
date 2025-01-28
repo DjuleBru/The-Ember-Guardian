@@ -78,6 +78,9 @@ public class CreatureSO : ScriptableObject
     public bool isRangedAttack;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
+    public bool canAttackPlayerOnTower;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
     [Range(.1f, 20)]
     public float minAttackRange;
     [VerticalGroup("Game Data/Stats")]

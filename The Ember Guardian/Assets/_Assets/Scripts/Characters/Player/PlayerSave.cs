@@ -9,8 +9,14 @@ public class PlayerSave : MonoBehaviour
 
     [SerializeField] private GunSO initialActiveGun;
 
+    private bool playerUnlockedFlagCarry;
+
     private void Awake() {
         Instance = this;
+    }
+
+    private void Start() {
+        playerUnlockedFlagCarry = MetaProgressionManager.Instance.GetPlayerUnlockedFlagCarry();
     }
 
     public void SavePrimaryActiveGunSO(GunSO gunSO) {
@@ -22,6 +28,8 @@ public class PlayerSave : MonoBehaviour
     public void SavePlayerMetaStats() {
         PlayerStats.Instance.SaveMetaBuffValues();
         PlayerShoot.Instance.SaveAllGunStats();
+
+        MetaProgressionManager.Instance.SetPlayerUnlockedFlagCarry(playerUnlockedFlagCarry);
     } 
 
     public GunSO GetPrimaryActiveGun() {
@@ -47,4 +55,7 @@ public class PlayerSave : MonoBehaviour
         return activeGun;
     }
 
+    public bool GetPlayerUnlockedFlagCarry() {
+        return playerUnlockedFlagCarry;
+    }
 }

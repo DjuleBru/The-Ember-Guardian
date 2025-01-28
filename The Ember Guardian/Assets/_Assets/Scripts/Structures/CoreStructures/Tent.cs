@@ -16,7 +16,7 @@ public class Tent : Structure
     protected override void Start() {
         base.Start();
 
-        if(Player.Instance.GetHP() != PlayerStats.Instance.GetInitialPlayerMaxHP()) {
+        if(Player.Instance.GetHP() != PlayerStats.Instance.GetMaxHP()) {
             ActivateStructurePrimaryFunctionInteraction(true);
         }
         else {
@@ -24,6 +24,11 @@ public class Tent : Structure
         }
 
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
+        Player.Instance.OnPlayerHealed += Player_OnPlayerHealed;
+    }
+
+    private void Player_OnPlayerHealed(object sender, Player.OnPlayerChangedHealthEventArgs e) {
+        RefreshPlayerStructurePrimaryInteraction();
     }
 
     protected void Player_OnPlayerDamaged(object sender, EventArgs e) {
@@ -32,8 +37,15 @@ public class Tent : Structure
 
     protected override void TriggerStructurePrimaryFunction() {
         base.TriggerStructurePrimaryFunction();
-        Player.Instance.RefillPlayerHealth();
-        ActivateStructurePrimaryFunctionInteraction(false);
+        Player.Instance.HealPlayer(1);
+    }
+
+    protected void RefreshPlayerStructurePrimaryInteraction() {
+        if(Player.Instance.GetHP() == PlayerStats.Instance.GetMaxHP()) {
+            ActivateStructurePrimaryFunctionInteraction(false);
+        } else {
+            ActivateStructurePrimaryFunctionInteraction(true);
+        }
     }
 
     protected override void RefreshStructureUpgradeInteraction() {

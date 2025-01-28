@@ -72,7 +72,7 @@ public class PortalSound : SoundObject {
     }
 
     private void Portal_OnPortalAppeared(object sender, System.EventArgs e) {
-        teleporterAudioSource.PlayOneShot(appearAudioClip, .15f * sfxVolume);
+        teleporterAudioSource.PlayOneShot(appearAudioClip, .3f * sfxVolume);
     }
 
     private void Portal_OnPlayerMovedOnTeleporter(object sender, System.EventArgs e) {

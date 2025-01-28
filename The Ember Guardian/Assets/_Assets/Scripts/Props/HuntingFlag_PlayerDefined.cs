@@ -75,6 +75,8 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
+        if (!PlayerSave.Instance.GetPlayerUnlockedFlagCarry()) return;
+
         if(collision.gameObject.GetComponent<Player>() != null) {
 
             playerInTriggerArea = true;
@@ -86,6 +88,8 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
+        if (!PlayerSave.Instance.GetPlayerUnlockedFlagCarry()) return;
+
         if (collision.gameObject.GetComponent<Player>() != null) {
             playerInTriggerArea = false;
             spriteRenderer.material.SetFloat("_Glow", 0f);

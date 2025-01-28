@@ -50,7 +50,7 @@ public class Player : MonoBehaviour, IDamageable
     private void Awake() {
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
-        playerHealth = PlayerStats.Instance.GetPlayerMaxHP();
+        playerHealth = PlayerStats.Instance.GetMaxHP();
     }
 
     private void Start() {
@@ -210,7 +210,7 @@ public class Player : MonoBehaviour, IDamageable
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
 
             respawnPosition = Tutorial.Instance.GetRespawnPosition();
-            playerHealth = PlayerStats.Instance.GetPlayerMaxHP();
+            playerHealth = PlayerStats.Instance.GetMaxHP();
 
         } else {
 
@@ -226,7 +226,7 @@ public class Player : MonoBehaviour, IDamageable
 
         OnPlayerRespawned?.Invoke(this, EventArgs.Empty);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
 
         EnableControlInputs();
         SetCanDropOrbOnTheFloor(true);
@@ -319,17 +319,17 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public void RefillPlayerHealth() {
-        int healAmount = PlayerStats.Instance.GetPlayerMaxHP() - playerHealth;
+        int healAmount = PlayerStats.Instance.GetMaxHP() - playerHealth;
 
-        playerHealth = PlayerStats.Instance.GetPlayerMaxHP();
+        playerHealth = PlayerStats.Instance.GetMaxHP();
         OnPlayerHealed?.Invoke(this, new OnPlayerChangedHealthEventArgs {
             hpChangeAmount = healAmount
         });
     }
 
     public void HealPlayer(int healAmount) {
-        if(playerHealth + healAmount > PlayerStats.Instance.GetPlayerMaxHP()) {
-            healAmount = PlayerStats.Instance.GetPlayerMaxHP() - playerHealth;
+        if(playerHealth + healAmount > PlayerStats.Instance.GetMaxHP()) {
+            healAmount = PlayerStats.Instance.GetMaxHP() - playerHealth;
         }
 
         if (healAmount == 0) return;

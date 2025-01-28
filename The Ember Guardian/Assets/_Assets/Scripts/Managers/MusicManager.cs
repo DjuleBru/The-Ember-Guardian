@@ -7,8 +7,9 @@ public class MusicManager : MonoBehaviour {
 
     public static MusicManager Instance;
 
-    [SerializeField] private float mainTracksAudioVolume = .2f;
-    [SerializeField] private float backgroundTracksAudioVolume = .1f;
+    [SerializeField] private float mainTracksAudioVolume = .4f;
+    [SerializeField] private float backgroundTracksAudioVolume = .2f;
+    private float musicSettingVolume;
 
     [SerializeField] private AudioClip mainMenuMusic;
     [SerializeField] private AudioClip endLevelMusic;
@@ -35,6 +36,9 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void Start() {
+        SettingsManager.Instance.OnMusicVolumeChanged += SettingsManager_OnMusicVolumeChanged;
+        musicSettingVolume = SettingsManager.Instance.GetMusicVolume();
+
         SetAudioVolume(mainTracksAudioVolume);
         audioSource.ignoreListenerPause = true;
 
@@ -63,6 +67,11 @@ public class MusicManager : MonoBehaviour {
             audioSource.clip = mainMenuMusic;
             PlayMusicDelayed(2f);
         }
+    }
+
+    private void SettingsManager_OnMusicVolumeChanged(object sender, System.EventArgs e) {
+        musicSettingVolume = SettingsManager.Instance.GetMusicVolume();
+        SetAudioVolume(musicSettingVolume);
     }
 
     private void LevelManager_OnNewLocationShown(object sender, System.EventArgs e) {
@@ -146,6 +155,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     private IEnumerator FadeOutCoroutine(float fadeDuration) {
+        Debug.Log("FadeOutCoroutine");
         float startVolume = audioSource.volume;
 
         // Réduire progressivement le volume
@@ -163,6 +173,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     private IEnumerator FadeInCoroutine(float fadeDuration) {
+        Debug.Log("FadeInCoroutine");
         float endVolume = targetVolume;
         audioSource.volume = 0;
         audioSource.Play(); // Assure que la musique démarre
@@ -191,15 +202,15 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void SetAudioVolume(float volume) {
-        audioSource.volume = volume;
+        audioSource.volume = volume * musicSettingVolume;
     }
 
     public void SetAudioTargerVolume(float volume) {
-        targetVolume = volume;
+        targetVolume = volume * musicSettingVolume;
     }
 
     public void SetTargetVolumeToMainTrack() {
-        targetVolume = mainTracksAudioVolume;
+        targetVolume = mainTracksAudioVolume * musicSettingVolume;
     }
 
     public void FadeInMusic(float fadeDuration) {

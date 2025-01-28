@@ -760,5 +760,38 @@ public class Tutorial : MonoBehaviour
         yield return new WaitForSeconds(2f);
     }
 
+    private void OnDestroy() {
+        UICurrencyManager.Instance.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
+        dog.OnPlayerTriggeredIn -= Dog_OnPlayerTriggeredIn;
+        dog.OnIdleStateChanged -= Dog_OnIdleStateChanged;
+        Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
+        Player.Instance.OnPlayerRespawned -= Player_OnPlayerRespawned;
+        PlayerShoot.Instance.OnPlayerAmmoRefilled -= PlayerShoot_OnPlayerAmmoRefilled;
+        PlayerShoot.Instance.OnPlayerReload -= PlayerShoot_OnPlayerReload;
+        CreatureAI.OnAnyCreatureAggro -= CreatureAI_OnAnyCreatureAggro;
+        Creature.OnAnyMobDied -= Creature_OnAnyMobDied;
+        Worker.OnAnyWorkerRecruited -= Worker_OnAnyWorkerRecruited;
+        PlayerShoot.Instance.OnPlayerShot -= PlayerSHoot_OnPlayerShot;
+        StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
+        Shrine.OnAnyShrineActivated -= Shrine_OnAnyShrineActivated;
+        CurrencyCrafter.OnPlayerCollectedAnyCurrency -= CurrencyCrafter_OnPlayerCollectedAnyCurrency;
+        CurrencyCrafter.OnAnyCurrencyCraftingEnded -= CurrencyCrafter_OnAnyCurrencyCraftingEnded;
+        CurrencyCrafter.OnAnyCurrencyCraftingStarted -= CurrencyCrafter_OnAnyCurrencyCraftingStarted;
+        startFireLocation.OnPlayerTriggeredIn -= StartFireLocation_OnPlayerTriggeredIn;
+        ammoCrafterLocation.OnPlayerTriggeredIn -= AmmoCrafterLocation_OnPlayerTriggeredIn;
+        hunterShrineLocation.OnPlayerTriggeredIn -= HunterShrineLocation_OnPlayerTriggeredIn;
+        Player.Instance.OnPlayerDamaged -= Player_OnPlayerDamaged;
+        DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
+        Animal.OnAnyMobDied -= Animal_OnAnyMobDied;
+        Fire.Instance.OnFireFuelled -= Fire_OnFireFuelled;
+        Fire.Instance.OnPlayerTriggeredIn -= Fire_OnPlayerTriggeredIn;
+        Fire.Instance.OnFireEmberExtractionStarted -= Fire_OnFireEmberExtractionStarted;
+        Worker.OnAnyOrbDroppedByWorker -= Worker_OnAnyOrbDroppedByWorker;
+        WorkerManager.Instance.OnRecruitedWorkerDied -= WorkerManager_OnRecruitedWorkerDied;
+        HuntingFlag_PlayerDefined.OnAnyPlayerTriggeredIn -= HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn;
+        Tower.OnPlayerClimbedOnAnyTower -= Tower_OnPlayerClimbedOnAnyTower;
+        endLevelArea.OnEndLevelAreaCleared -= EndLevelArea_OnEndLevelAreaCleared;
+        endLevelArea.OnEndLevelFireLit -= EndLevelArea_OnEndLevelFireLit;
+    }
 
 }

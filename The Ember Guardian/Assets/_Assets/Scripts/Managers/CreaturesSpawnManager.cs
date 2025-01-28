@@ -149,6 +149,11 @@ public class CreaturesSpawnManager : MonoBehaviour
 
         if(wavesRandomSideProportion) {
             SetWaveSidesProportion(waveNumber);
+
+            if(waveDifficultyLeftProportion == 0 || waveDifficultyRightProportion == 0) {
+                // All creatures from ONE side : reduce difficulty
+                waveDifficulty = waveDifficulty / 1.5f;
+            }
         }
 
         Debug.Log("waveNumber " + waveNumber);
@@ -227,6 +232,7 @@ public class CreaturesSpawnManager : MonoBehaviour
             foreach(SpawnedCreatureInfo creatureInfo in waveCreaturesDictionary[subWaveIndex]) {
                 SpawnCreatureAtSide(creatureInfo.creature, creatureInfo.spawnSide);
                 spawnedCount++;
+                yield return new WaitForSeconds(.05f); // Délai entre les sous-vagues
             }
 
             yield return new WaitForSeconds(delayBetweenSubWaves); // Délai entre les sous-vagues

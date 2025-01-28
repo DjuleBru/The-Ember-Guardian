@@ -135,7 +135,7 @@ public class PlayerUI_HPBar : MonoBehaviour
             hpBarGameObject.SetActive(true);
         }
 
-        if (Player.Instance.GetHP() <= PlayerStats.Instance.GetPlayerMaxHP() / 3) {
+        if (Player.Instance.GetHP() <= PlayerStats.Instance.GetMaxHP() / 3) {
             hpBarCritical = true;
         }
 
@@ -154,7 +154,7 @@ public class PlayerUI_HPBar : MonoBehaviour
 
     private void Player_OnPlayerHealed(object sender, Player.OnPlayerChangedHealthEventArgs e) {
         isFadingIn = true;
-        //ShowHPBar(2f);
+        hpBarDiplayTimer = 0;
         StartCoroutine(RefillHPBar(e.hpChangeAmount));
     }
 
@@ -189,7 +189,7 @@ public class PlayerUI_HPBar : MonoBehaviour
         }
 
         int playerHP = Player.Instance.GetHP();
-        int playerMaxHP = PlayerStats.Instance.GetPlayerMaxHP();
+        int playerMaxHP = PlayerStats.Instance.GetMaxHP();
 
         for(int i = 0; i < playerHP; i++) {
             Instantiate(hpTickTemplate, hpTickContainer);
@@ -200,7 +200,7 @@ public class PlayerUI_HPBar : MonoBehaviour
 
     private void RefreshHPBarSize() {
         RectTransform rt = GetComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(sidesWidth + tickWidth * PlayerStats.Instance.GetPlayerMaxHP(), .4f);
+        rt.sizeDelta = new Vector2(sidesWidth + tickWidth * PlayerStats.Instance.GetMaxHP(), .4f);
     }
 
     private void Player_OnPlayerExitedCamp(object sender, System.EventArgs e) {

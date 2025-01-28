@@ -38,6 +38,7 @@ public class DogDigAbility : MonoBehaviour
 
     private void DogAnimator_OnDogSniffedEnd(object sender, EventArgs e) {
         sniffing = false;
+        if (!digAbilityUnlocked) return;
         TryDiggingOutStuff();
     }
 

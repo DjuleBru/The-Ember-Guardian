@@ -536,6 +536,15 @@ public class MetaProgressionManager : MonoBehaviour
     }
     #endregion
 
+    #region OTHER
+    public bool GetPlayerUnlockedFlagCarry() {
+        return ES3.Load("playerUnlockedFlagCarry", false);
+    }
+    public void SetPlayerUnlockedFlagCarry(bool playerUnlockedFlagCarry) {
+        ES3.Save("playerUnlockedFlagCarry", playerUnlockedFlagCarry);
+    }
+    #endregion
+
     private void OnApplicationQuit() {
         if(destroySaveOnApplicationQuit) {
             ES3.DeleteFile("SaveFile.es3");

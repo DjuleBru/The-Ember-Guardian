@@ -18,6 +18,7 @@ public class EndLevelArea : MonoBehaviour
     public event EventHandler OnEndLevelAreaCleared;
     public event EventHandler OnEndLevelFireLit;
 
+    private bool playerInTriggerArea;
     private bool playerDestroyedNest;
 
     private void Awake() {
@@ -63,8 +64,8 @@ public class EndLevelArea : MonoBehaviour
     }
 
     public void TryFadeOutMusic() {
-
         if (mobsAggroingPlayer.Count == 0) {
+            if (playerInTriggerArea) return;
             MusicManager.Instance.StopEndLevelMusic();
         }
     }
@@ -85,6 +86,7 @@ public class EndLevelArea : MonoBehaviour
         if (mobsInArea.Count == 0) {
             endLevelAreaFire.SetActive(true);
             OnEndLevelAreaCleared?.Invoke(this, EventArgs.Empty);
+            MusicManager.Instance.StopEndLevelMusic();
         }
     }
 
@@ -106,6 +108,10 @@ public class EndLevelArea : MonoBehaviour
 
     public bool AllCreaturesKilled() {
         return mobsInArea.Count == 0;
+    }
+
+    public void SetPlayerInTriggerArea(bool playerInTriggerArea) {
+        this.playerInTriggerArea = playerInTriggerArea;
     }
 
 }

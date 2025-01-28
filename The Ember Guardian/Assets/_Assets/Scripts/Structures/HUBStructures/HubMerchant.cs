@@ -30,6 +30,7 @@ public class HubMerchant : MonoBehaviour
     [SerializeField] protected GameObject hubMerchantItemParent;
     protected List<HubMerchantItem> hubMerchantItems = new List<HubMerchantItem>();
 
+    protected bool merchantUnlocked;
     protected bool playerInTriggerArea;
     protected bool playerInteractingWithMerchant;
     protected bool merchantJustArrivedInHub;
@@ -67,7 +68,7 @@ public class HubMerchant : MonoBehaviour
 
     protected void InitializeHubMerchantInHub() {
 
-        bool merchantUnlocked = MetaProgressionManager.Instance.GetMerchantUnlocked(hubMerchantType) || hubMerchantUnlockedAtStart || DEBUGActivateMerchant;
+        merchantUnlocked = MetaProgressionManager.Instance.GetMerchantUnlocked(hubMerchantType) || hubMerchantUnlockedAtStart || DEBUGActivateMerchant;
 
         if (!merchantUnlocked) {
             activeGameObject.SetActive(false);
@@ -112,6 +113,7 @@ public class HubMerchant : MonoBehaviour
 
     private void TryStopInteractingWithMerchant() {
         if (!playerInTriggerArea) return;
+        if (isHubMerchant && !merchantUnlocked) return;
         if (merchantHasTalkLinesToShow) return;
 
         if (playerInteractingWithMerchant) {
@@ -120,6 +122,7 @@ public class HubMerchant : MonoBehaviour
     }
     private void TryStartInteractingWithMerchant() {
         if (!playerInTriggerArea) return;
+        if (isHubMerchant && !merchantUnlocked) return;
         if (playerInteractingWithMerchant) return;
 
         if (isHubMerchant) {

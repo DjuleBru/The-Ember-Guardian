@@ -137,7 +137,7 @@ public class Structure : MonoBehaviour {
         RefreshStructureUpgradeInteraction();
     }
     protected virtual void RefreshStructureUpgradeInteraction() {
-        bool ungradeUnlocked = true;
+        bool ungradeUnlocked = false;
 
         // Unlock upgrades if unlocked at gem merchant
         string saveString = structureSO.structureType.ToString() + (structureLevel+1);
@@ -146,13 +146,19 @@ public class Structure : MonoBehaviour {
             //Debug.Log(saveString + " has NOT been bought at merchant ");
             ungradeUnlocked = false;
         } else {
-            //Debug.Log(saveString + " has been bought at merchant ");
+            ungradeUnlocked = true;
         }
 
         // Unlock upgrades if tent upgrade allows for new unlocks
-        if(structureLevel >= Tent.Instance.GetStructureLevel()) {
-            Debug.Log(structureSO.structureType + " structure next uprade is blocked by tent level");
-            ungradeUnlocked = false;
+        if(structureLevel == 1 && Tent.Instance.GetStructureLevel() >= structureSO.tentLevelRequiredForLevel2) {
+            ungradeUnlocked = true;
+        }
+        if (structureLevel == 2 && Tent.Instance.GetStructureLevel() >= structureSO.tentLevelRequiredForLevel3) {
+            ungradeUnlocked = true;
+        }
+
+        if (structureLevel == 3 && Tent.Instance.GetStructureLevel() >= structureSO.tentLevelRequiredForLevel4) {
+            ungradeUnlocked = true;
         }
 
         SetStructureUpgradableUnlocked(ungradeUnlocked);

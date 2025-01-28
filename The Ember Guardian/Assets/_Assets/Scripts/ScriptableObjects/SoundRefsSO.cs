@@ -76,6 +76,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip lmgReset;
     public AudioClip revolverCooldown;
 
+    public AudioClip playerRespawnFireExtact;
     public AudioClip activeSkillReady;
     public AudioClip passiveShieldActivate;
     public AudioClip passiveShieldDie;

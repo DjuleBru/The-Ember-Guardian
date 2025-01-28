@@ -28,6 +28,7 @@ public class SoundManager : MonoBehaviour
         SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
 
         if (Player.Instance != null) {
+            Player.Instance.OnPlayerBackToTentToRespawn += Player_OnPlayerBackToTentToRespawn;
             PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
             PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
             PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoor_OnPlayerCooldownSFXTrigger;
@@ -446,7 +447,12 @@ public class SoundManager : MonoBehaviour
 
     #endregion
 
-    #region PLAYER SKILLS
+    #region PLAYER 
+
+    private void Player_OnPlayerBackToTentToRespawn(object sender, System.EventArgs e) {
+        AudioClip audioClip = soundRefsSO.playerRespawnFireExtact;
+        PlaySound2D(audioClip);
+    }
 
     private void ActiveTeleportation_OnPlayerTeleported(object sender, System.EventArgs e) {
         AudioClip audioClip = soundRefsSO.playerActiveTeleport;

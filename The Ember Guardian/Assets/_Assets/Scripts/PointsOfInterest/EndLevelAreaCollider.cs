@@ -9,6 +9,7 @@ public class EndLevelAreaCollider : MonoBehaviour
             if (EndLevelArea.Instance.GetPlayerDestroyedNest()) return;
             if (EndLevelArea.Instance.AllCreaturesKilled()) return;
 
+            EndLevelArea.Instance.SetPlayerInTriggerArea(true);
             MusicManager.Instance.SetEndLevelMusic(2f);
             MusicManager.Instance.SetAudioTargerVolume(.3f);
         }
@@ -18,6 +19,7 @@ public class EndLevelAreaCollider : MonoBehaviour
         if (collision.gameObject.GetComponent<Player>() != null) {
             if (EndLevelArea.Instance.GetPlayerDestroyedNest()) return;
 
+            EndLevelArea.Instance.SetPlayerInTriggerArea(false);
             EndLevelArea.Instance.TryFadeOutMusic();
         }
     }

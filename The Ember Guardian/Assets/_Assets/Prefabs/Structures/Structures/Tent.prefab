@@ -6522,12 +6522,20 @@ PrefabInstance:
       value: -1.53
       objectReference: {fileID: 0}
     - target: {fileID: 3549839082585346721, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3549839082585346721, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3549839082585346721, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.007
+      value: -0.03
       objectReference: {fileID: 0}
     - target: {fileID: 3549839082585346721, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.002
+      value: -1.026
       objectReference: {fileID: 0}
     - target: {fileID: 3644515315673796037, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -6597,6 +6605,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: currencyTypeToPay
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5670219007980291320, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.84
@@ -6641,6 +6653,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 1.81
       objectReference: {fileID: 0}
+    - target: {fileID: 6672449509668370278, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a95a904a24416d546a17c746eddf3c9e, type: 3}
     - target: {fileID: 6946290811585887962, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_PointLightInnerAngle
       value: 11.854977
@@ -6685,6 +6701,10 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 3.41
       objectReference: {fileID: 0}
+    - target: {fileID: 7687860166416340409, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6b2a177066c70324196fbfa38982ad40, type: 3}
     - target: {fileID: 8209206451638645461, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -1.518

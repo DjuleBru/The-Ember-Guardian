@@ -110,6 +110,10 @@ public class HubMerchantUI : MonoBehaviour
         OnAnyHubMerchantOpenUIPanel?.Invoke(this, EventArgs.Empty);
     }
 
+    public HubMerchant GetHubMerchant() {
+        return hubMerchant;
+    }
+
     private void OnDestroy() {
 
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;

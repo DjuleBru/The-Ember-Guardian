@@ -254,7 +254,7 @@ public class PlayerStats : MonoBehaviour
         return hold2WeaponsUnlocked;
     }
 
-    public int GetPlayerMaxHP() {
+    public int GetMaxHP() {
         return maxPlayerHP;
     }
 

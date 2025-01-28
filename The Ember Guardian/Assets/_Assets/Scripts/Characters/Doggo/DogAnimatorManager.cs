@@ -92,6 +92,8 @@ public class DogAnimatorManager : MonoBehaviour {
         DogAI.State newState = dogAI.GetState();
         ResetAllTriggers();
         CheckStopSniffing();
+        sitTimer = sitTrialRate;
+        sleepTimer = sleepTrialRate;
 
         if (newState == DogAI.State.stay) {
             animator.SetBool("Running", false);
@@ -114,6 +116,7 @@ public class DogAnimatorManager : MonoBehaviour {
         if (newState == DogAI.State.walkWithPlayer) {
             animator.SetTrigger("Wake");
             animator.SetTrigger("Stand");
+            animator.SetBool("Walking", true);
             animator.SetBool("Running", false);
         }
 

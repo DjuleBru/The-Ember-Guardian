@@ -56,13 +56,11 @@ public class StructureVisual : MonoBehaviour {
         if (!animateSpriteMaterialOnBuild) {
 
             built = true;
-            Debug.Log("BuiltAtStart");
             structureSpriteMaterialAnimator.SetTrigger("BuiltAtStart");
 
         }
         else {
 
-            Debug.Log("Build");
             structureSpriteMaterialAnimator.SetTrigger("Build");
 
         }

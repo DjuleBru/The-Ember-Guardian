@@ -58,7 +58,10 @@ public class HubMerchantItem : MonoBehaviour
             purpleGemCostList = linkedStatModifierSO.purleGemCostList;
         }
 
-        itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
+        if(itemLevel == 0) {
+            itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
+        }
+
         UpdateItemCost();
     }
 

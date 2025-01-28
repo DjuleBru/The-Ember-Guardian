@@ -106,7 +106,7 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
 
             if (trainerItemType == TrainerItemType.MaxHP) {
                 initialStatValue = PlayerStats.Instance.GetInitialPlayerMaxHP();
-                currentStatValue = PlayerStats.Instance.GetPlayerMaxHP().ToString();
+                currentStatValue = PlayerStats.Instance.GetMaxHP().ToString();
                 totalStatWithModifierPostfix = "";
                 relativeStatPostfix = "";
                 relativeStatPrefix = "+";

@@ -32,6 +32,10 @@ public class StructureSO : ScriptableObject
     public bool buildableAtNight;
     public bool functionUsableAtNight;
 
+    public int tentLevelRequiredForLevel2 = 2;
+    public int tentLevelRequiredForLevel3 = 3;
+    public int tentLevelRequiredForLevel4 = 4;
+
     public List<Sprite> buildingUpgradeSpriteList;
 
     public AudioClip buildAudioClip;

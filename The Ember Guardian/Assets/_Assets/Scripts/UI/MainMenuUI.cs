@@ -20,6 +20,9 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] protected TextMeshProUGUI continueGameText;
     [SerializeField] protected TextMeshProUGUI newGameText;
 
+    [SerializeField] protected GameObject settingsPanel;
+    [SerializeField] protected GameObject mainMenuPanelGameObject;
+
     public event EventHandler OnGameStart;
 
     private void Awake() {
@@ -27,6 +30,7 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     private void Start() {
+        settingsPanel.SetActive(false);
 
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
         buttonConfirm_ResetProgression.OnButtonDeselected += ButtonConfirm_ResetProgression_OnButtonDeselected;
@@ -76,6 +80,8 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     public virtual void SettingsButton() {
+        settingsPanel.SetActive(true);
+        //mainMenuPanelGameObject.SetActive(false);
     }
 
     public virtual void ExitGameButton() {
@@ -127,7 +133,6 @@ public class MainMenuUI : MonoBehaviour {
         confirmResetProgression = false;
         newGameText.text = "New Game";
     }
-
     private void OnDestroy() {
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
     }

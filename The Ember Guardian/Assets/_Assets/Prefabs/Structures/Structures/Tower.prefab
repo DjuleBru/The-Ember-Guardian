@@ -154,7 +154,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7060921934251159972}
-  - component: {fileID: 419901315134611201}
   - component: {fileID: 8313093928518452732}
   m_Layer: 7
   m_Name: Level2Collider
@@ -178,25 +177,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7214077140193901318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!251 &419901315134611201
-PlatformEffector2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 934103378498474821}
-  m_Enabled: 1
-  m_UseColliderMask: 1
-  m_ColliderMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RotationalOffset: 0
-  m_UseOneWay: 1
-  m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
-  m_UseSideFriction: 0
-  m_UseSideBounce: 0
-  m_SideArc: 1
 --- !u!61 &8313093928518452732
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -227,7 +207,7 @@ BoxCollider2D:
     serializedVersion: 2
     m_Bits: 4294967295
   m_IsTrigger: 0
-  m_UsedByEffector: 1
+  m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.022875994, y: 3.0012844}
   m_SpriteTilingProperty:
@@ -313,7 +293,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2138060921
-  m_SortingLayer: -4
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: -1161132188, guid: 7a81ed7022cf41d438b21b47fe202a99, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -367,7 +347,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7133802836217198833}
-  - component: {fileID: 4136008884106522069}
   - component: {fileID: 4952250798599152714}
   m_Layer: 7
   m_Name: Level4Collider
@@ -392,25 +371,6 @@ Transform:
   - {fileID: 5792622944014540711}
   m_Father: {fileID: 7214077140193901318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!251 &4136008884106522069
-PlatformEffector2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1798616679332694346}
-  m_Enabled: 1
-  m_UseColliderMask: 1
-  m_ColliderMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RotationalOffset: 0
-  m_UseOneWay: 1
-  m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
-  m_UseSideFriction: 0
-  m_UseSideBounce: 0
-  m_SideArc: 1
 --- !u!61 &4952250798599152714
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -441,7 +401,7 @@ BoxCollider2D:
     serializedVersion: 2
     m_Bits: 4294967295
   m_IsTrigger: 0
-  m_UsedByEffector: 1
+  m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.010336041, y: 2.940777}
   m_SpriteTilingProperty:
@@ -499,7 +459,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9160299190164072902}
-  - component: {fileID: 5717335815911262572}
   - component: {fileID: 90425570272416100}
   m_Layer: 7
   m_Name: Level3Collider
@@ -523,25 +482,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7214077140193901318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!251 &5717335815911262572
-PlatformEffector2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2052002066079134447}
-  m_Enabled: 1
-  m_UseColliderMask: 1
-  m_ColliderMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RotationalOffset: 0
-  m_UseOneWay: 1
-  m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
-  m_UseSideFriction: 0
-  m_UseSideBounce: 0
-  m_SideArc: 1
 --- !u!61 &90425570272416100
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -572,7 +512,7 @@ BoxCollider2D:
     serializedVersion: 2
     m_Bits: 4294967295
   m_IsTrigger: 0
-  m_UsedByEffector: 1
+  m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.016389132, y: 3.0678983}
   m_SpriteTilingProperty:
@@ -658,7 +598,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2138060921
-  m_SortingLayer: -4
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: -1161132188, guid: 7a81ed7022cf41d438b21b47fe202a99, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -874,7 +814,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2138060921
-  m_SortingLayer: -4
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: -1161132188, guid: 7a81ed7022cf41d438b21b47fe202a99, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -958,7 +898,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2138060921
-  m_SortingLayer: -4
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: -1161132188, guid: 7a81ed7022cf41d438b21b47fe202a99, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1042,7 +982,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2138060921
-  m_SortingLayer: -4
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: -1161132188, guid: 7a81ed7022cf41d438b21b47fe202a99, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1126,7 +1066,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2138060921
-  m_SortingLayer: -4
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: -1161132188, guid: 7a81ed7022cf41d438b21b47fe202a99, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1283,6 +1223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistanceToHear: 10
   maxAudioSourceVolume: 1
+  active: 1
 --- !u!114 &5157858432586823543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1368,7 +1309,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2138060921
-  m_SortingLayer: -4
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: -1161132188, guid: 7a81ed7022cf41d438b21b47fe202a99, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1390,7 +1331,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3740007852785747501}
-  - component: {fileID: 7737865929213255880}
   - component: {fileID: 8144298425399690282}
   m_Layer: 7
   m_Name: Level1Collider
@@ -1414,25 +1354,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7214077140193901318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!251 &7737865929213255880
-PlatformEffector2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9167047541157140508}
-  m_Enabled: 1
-  m_UseColliderMask: 1
-  m_ColliderMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RotationalOffset: 0
-  m_UseOneWay: 1
-  m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
-  m_UseSideFriction: 0
-  m_UseSideBounce: 0
-  m_SideArc: 1
 --- !u!61 &8144298425399690282
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1463,7 +1384,7 @@ BoxCollider2D:
     serializedVersion: 2
     m_Bits: 4294967295
   m_IsTrigger: 0
-  m_UsedByEffector: 1
+  m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.004282534, y: 1.3790029}
   m_SpriteTilingProperty:
