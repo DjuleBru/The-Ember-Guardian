@@ -170,7 +170,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         }
 
         if (gunItem == GunItemType.range) {
-            float modifiedBulletLifetime = linkedGunSO.bulletLifetime + linkedStatModifierSO.statModifierList[itemLevel];
+            float modifiedBulletLifetime = linkedGunSO.bulletLifetime + linkedStatModifierSO.statModifierList[itemLevel] / linkedGunSO.bulletSpeed;
             PlayerShoot.Instance.GetGun(linkedGunSO).SetGunBulletLifetime_Meta(modifiedBulletLifetime);
         }
     }
@@ -298,7 +298,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             float statValueModifierMultiplier = 1;
             float absoluteStatValueModifier = 0;
             float totalStatWithModifier = 0;
-            float relativeDamageBulletModifier = 0;
+            float relativeStatModifier = 0;
 
 
             if (gunItem == GunItemType.critChance) {
@@ -359,7 +359,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             if (gunItem == GunItemType.range) {
                 initialStatValue = linkedGunSO.bulletLifetime * linkedGunSO.bulletSpeed;
-                currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetBulletLifetime().ToString();
+                currentStatValue = (PlayerShoot.Instance.GetGun(linkedGunSO).GetBulletLifetime() * linkedGunSO.bulletSpeed).ToString();
                 relativeStatPrefix = "+";
                 totalStatWithModifierPostfix = "m";
                 relativeStatPostfix = "m";
@@ -375,10 +375,10 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 totalStatWithModifier = initialStatValue + absoluteStatValueModifier * statValueModifierMultiplier;
 
                 totalStatValue = totalStatWithModifier.ToString();
-                relativeDamageBulletModifier = linkedStatModifierSO.statModifierList[itemLevel];
+                relativeStatModifier = linkedStatModifierSO.statModifierList[itemLevel];
 
                 if (itemLevel > 0) {
-                    relativeDamageBulletModifier = linkedStatModifierSO.statModifierList[itemLevel] - linkedStatModifierSO.statModifierList[itemLevel - 1];
+                    relativeStatModifier = linkedStatModifierSO.statModifierList[itemLevel] - linkedStatModifierSO.statModifierList[itemLevel - 1];
                 }
             }
 
@@ -396,7 +396,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 statValues.Add(currentStatValue + totalStatWithModifierPostfix);
                 statModifiedBools.Add(false);
 
-                statValues.Add(relativeStatPrefix + relativeDamageBulletModifier.ToString() + relativeStatPostfix);
+                statValues.Add(relativeStatPrefix + relativeStatModifier.ToString() + relativeStatPostfix);
                 statModifiedBools.Add(true);
 
                 statValues.Add("");

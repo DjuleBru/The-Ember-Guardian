@@ -18,6 +18,7 @@ public class GunAnimator : MonoBehaviour
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoot_OnPlayerCooldownSFXTrigger;
         PlayerShoot.Instance.OnPlayerCooldownAnimationTrigger += PlayerShoot_OnPlayerCooldownAnimationTrigger;
         PlayerShoot.Instance.OnPlayerReload += PlayerSHoot_OnPlayerReload;
+        PlayerShoot.Instance.OnPlayerReloadInterrupted += PlayerShoot_OnPlayerReloadInterrupted;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
         PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerSHoot_OnPlayerSwitchedFireMode;
         PlayerShoot.Instance.OnPlayerSwappedGunStarted += PlayerShoot_OnPlayerSwappedGunStarted;
@@ -25,6 +26,7 @@ public class GunAnimator : MonoBehaviour
 
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
     }
+
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
         animator.SetTrigger("SwapGunEnd");
@@ -67,6 +69,11 @@ public class GunAnimator : MonoBehaviour
     
     }
 
+    private void PlayerShoot_OnPlayerReloadInterrupted(object sender, System.EventArgs e) {
+        animator.SetTrigger("InterruptReload");
+        animator.speed = 1;
+    }
+
     protected void PlayerShoot_OnPlayerCooldownSFXTrigger(object sender, System.EventArgs e) {
         //animator.speed = 1;
         //animator.SetTrigger("Cooldown");
@@ -92,6 +99,7 @@ public class GunAnimator : MonoBehaviour
         PlayerShoot.Instance.OnPlayerCooldownTrigger -= PlayerShoot_OnPlayerCooldownSFXTrigger;
         PlayerShoot.Instance.OnPlayerCooldownAnimationTrigger -= PlayerShoot_OnPlayerCooldownAnimationTrigger;
         PlayerShoot.Instance.OnPlayerReload -= PlayerSHoot_OnPlayerReload;
+        PlayerShoot.Instance.OnPlayerReloadInterrupted -= PlayerShoot_OnPlayerReloadInterrupted;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo -= PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
         PlayerShoot.Instance.OnPlayerSwitchedFireMode -= PlayerSHoot_OnPlayerSwitchedFireMode;
 

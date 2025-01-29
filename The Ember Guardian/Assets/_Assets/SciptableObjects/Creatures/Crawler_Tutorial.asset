@@ -29,6 +29,7 @@ MonoBehaviour:
   attackRate: 2
   enteredLightattackRateDebuff: 1.5
   isRangedAttack: 0
+  canAttackPlayerOnTower: 0
   minAttackRange: 0.1
   maxAttackRange: 0.4
   hasSpecialAbility: 0
@@ -90,7 +91,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d422ecb203aab024bbede8be998edf06, type: 3}
   - {fileID: 8300000, guid: 9a450c4338a0f1b419a7c704a6e94b55, type: 3}
   - {fileID: 8300000, guid: d6b2434db1e04c64f83e0d633e3d4b8e, type: 3}
-  footstepVolumeMultiplier: 0.2
+  footstepVolumeMultiplier: 0.5
   spawnAudioClips:
   - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
   - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}

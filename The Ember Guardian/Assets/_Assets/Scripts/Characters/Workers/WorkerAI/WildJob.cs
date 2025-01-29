@@ -21,6 +21,9 @@ public class WildJob : MonoBehaviour, IJobBehavior {
     private void OnEnable() {
         worker = GetComponent<Worker>();
         PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor += PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;
+    }
+
+    private void Awake() {
         roamTimer = roamChangeDestinationRate;
     }
 
@@ -63,6 +66,7 @@ public class WildJob : MonoBehaviour, IJobBehavior {
 
         if(roamTimer < 0 ) {
             roamTimer = roamChangeDestinationRate;
+
             RoamBehavior.RoamAroundPoint(worker.GetComponent<MobMovement>(), roamRadius, worker.GetMobSpawner().transform.position, false);
         }
     }

@@ -39,7 +39,6 @@ public class LevelSO : ScriptableObject
     public float growthFactor;
     public float minWaveDuration;
     public float maxWaveDuration;
-    public float waveIntensityFactor;
     public float delayBetweenSubWaves;
     public int startWaveToSpawnFromBothSides;
     public bool canSpawnElite;

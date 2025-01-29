@@ -44,6 +44,7 @@ public class GunSpotLight : MonoBehaviour
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
+        PlayerShoot.Instance.OnPlayerReloadInterrupted += PlayerShoot_OnPlayerReloadInterrupted;
 
         if(PauseMenuUI.Instance != null) {
             PauseMenuUI.Instance.OnPauseMenuClosed += PauseMenuUI_OnPauseMenuClosed;
@@ -71,6 +72,10 @@ public class GunSpotLight : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerReloadEnded(object sender, EventArgs e) {
+        reloading = false;
+    }
+
+    private void PlayerShoot_OnPlayerReloadInterrupted(object sender, EventArgs e) {
         reloading = false;
     }
 

@@ -7,6 +7,7 @@ public class LevelUI_Fire : MonoBehaviour
     [SerializeField] private GameObject fireUIGameObject;
 
     [SerializeField] private Animator fireAnimator;
+    [SerializeField] private Animator criticalFuelAnimator;
     [SerializeField] private RectTransform progressBarContainer;
     [SerializeField] private RectTransform progressBarTemplate;
     [SerializeField] private RectTransform progressBarBackgroundContainer;
@@ -70,6 +71,10 @@ public class LevelUI_Fire : MonoBehaviour
 
         int currentBars = StructureUI_Fire.Instance.GetCurrentBarAmount();
         RefreshProgressBar(currentBars);
+
+        if (Fire.Instance.GetCurrentFuelLevel() >= Fire.Instance.GetCriticalFuelTreshold()) {
+            criticalFuelAnimator.SetBool("FuelCritical", false);
+        }
     }
 
     private void Fire_OnFireChangedState(object sender, Fire.OnFireChangedStateEventArgs e) {
@@ -104,6 +109,10 @@ public class LevelUI_Fire : MonoBehaviour
 
         DisplayFireUI();
         RefreshProgressBar(e.currentBars);
+
+        if (Fire.Instance.GetCurrentFuelLevel() < Fire.Instance.GetCriticalFuelTreshold()) {
+            criticalFuelAnimator.SetBool("FuelCritical", true);
+        }
     }
 
 

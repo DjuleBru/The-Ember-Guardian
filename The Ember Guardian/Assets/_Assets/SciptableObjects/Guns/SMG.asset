@@ -25,10 +25,10 @@ MonoBehaviour:
   - {fileID: -1051984127, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
   gunAnimator: {fileID: 22100000, guid: e730f9e110b5f3841b06e11e18aa15a3, type: 2}
   automaticWeapon: 1
-  damagePerBullet: 3
+  damagePerBullet: 4
   maxAmmo: 8
   pelletsPerBullet: 1
-  shotsPerClip: 18
+  shotsPerClip: 20
   critChance: 15
   shootConeAngle: 6
   bulletLifetime: 0.2
@@ -82,5 +82,5 @@ MonoBehaviour:
   swapToWeaponSound: {fileID: 8300000, guid: f6bf9be22c59dd54498e9f46e487720d, type: 3}
   reloadSFXVolumeMultiplier: 1
   cooldownSFXVolumeMultiplier: 0.5
-  shootGunVolumeMultiplier: 0.5
+  shootGunVolumeMultiplier: 0.35
   outOfAmmoVolumeMultiplier: 0.75

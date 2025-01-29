@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -54,6 +55,7 @@ public class MusicManager : MonoBehaviour {
             levelRandomBackgroundTracks = LevelManager.Instance.GetLevelSO().levelAudioClips;
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
             DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+            Player.Instance.OnPlayerDied += Player_OnPlayerDied;
 
             bool levelRegionUnlocked = MetaProgressionManager.Instance.GetLevelRegionUnlocked(LevelManager.Instance.GetLevelSO().environmentType);
 
@@ -68,7 +70,9 @@ public class MusicManager : MonoBehaviour {
             PlayMusicDelayed(2f);
         }
     }
-
+    private void Player_OnPlayerDied(object sender, EventArgs e) {
+        FadeOutMusic(1f);
+    }
     private void SettingsManager_OnMusicVolumeChanged(object sender, System.EventArgs e) {
         musicSettingVolume = SettingsManager.Instance.GetMusicVolume();
         SetAudioVolume(musicSettingVolume);
@@ -130,9 +134,9 @@ public class MusicManager : MonoBehaviour {
                     if (randomNumber < chanceToPlayMusid) {
 
                         if (levelRandomBackgroundTracks.Count == 0) return;
-                        AudioClip randomMusic = levelRandomBackgroundTracks[Random.Range(0, levelRandomBackgroundTracks.Count)];
+                        AudioClip randomMusic = levelRandomBackgroundTracks[UnityEngine.Random.Range(0, levelRandomBackgroundTracks.Count)];
                         audioSource.clip = randomMusic;
-                        targetVolume = backgroundTracksAudioVolume;
+                        targetVolume = backgroundTracksAudioVolume * musicSettingVolume;
                         FadeInMusic(5f);
 
                         isPlayingPeacefulMusic = true;
@@ -155,7 +159,6 @@ public class MusicManager : MonoBehaviour {
     }
 
     private IEnumerator FadeOutCoroutine(float fadeDuration) {
-        Debug.Log("FadeOutCoroutine");
         float startVolume = audioSource.volume;
 
         // Réduire progressivement le volume
@@ -173,7 +176,6 @@ public class MusicManager : MonoBehaviour {
     }
 
     private IEnumerator FadeInCoroutine(float fadeDuration) {
-        Debug.Log("FadeInCoroutine");
         float endVolume = targetVolume;
         audioSource.volume = 0;
         audioSource.Play(); // Assure que la musique démarre
@@ -220,7 +222,7 @@ public class MusicManager : MonoBehaviour {
     public void SetEndLevelMusic(float fadeInDuration) {
         if (isPlayingEndLevelAreaMusic) return;
 
-        targetVolume = mainTracksAudioVolume;
+        targetVolume = mainTracksAudioVolume * musicSettingVolume;
 
         if (audioSource.isPlaying) {
 

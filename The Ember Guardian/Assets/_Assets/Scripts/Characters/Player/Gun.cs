@@ -336,6 +336,8 @@ public class Gun : MonoBehaviour
     }
     public void SetShootConeAngle_Meta(float shootConeAngle) {
         this.defaultAngle = shootConeAngle;
+        ParticleSystem.ShapeModule shootPSShape = shootPS.shape;
+        shootPSShape.angle = defaultAngle;
     }
     public void SetPelletsPerBullet_Meta(int pelletsPerBullet) {
         this.pelletsPerBullet = pelletsPerBullet;
@@ -343,6 +345,10 @@ public class Gun : MonoBehaviour
 
     public void SetGunBulletLifetime_Meta(float bulletLifetime) {
         this.bulletLifetime = bulletLifetime;
+
+        ParticleSystem.MainModule shootPSMain = shootPS.main;
+        shootPSMain.startLifetime = bulletLifetime;
+        shootPSMain.startSpeed = bulletSpeed;
     }
 
     #endregion
@@ -361,6 +367,7 @@ public class Gun : MonoBehaviour
         MetaProgressionManager.Instance.SetGunBulletLifetime(gunSO, bulletLifetime);
         MetaProgressionManager.Instance.SetGunSwapToWeaponTimeMultiplier(gunSO, swapToWeaponTimeMultiplier);
 
+        MetaProgressionManager.Instance.SetGunSecondaryAbilityUnlocked(gunSO, secondaryAbilityUnlocked);
         MetaProgressionManager.Instance.SetGunUnlocked(gunSO, gunUnlocked);
     }
 }

@@ -176,7 +176,7 @@ public class CreatureAI : MonoBehaviour {
             return;
         }
 
-        if (!CheckAttackTargetInRange() && !mobAttack.GetAttackStarted()) {
+        if (attackTarget == null || (!CheckAttackTargetInRange() && !mobAttack.GetAttackStarted())) {
             ChangeState(State.moveToTarget);
             return;
         }

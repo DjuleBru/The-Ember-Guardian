@@ -151,11 +151,6 @@ public class MobMovement : MonoBehaviour
     }
 
     public void SetMoveTarget(Vector3 moveTarget) {
-
-        if(GetComponent<Worker>() != null && moveTarget == Vector3.zero) {
-            Debug.Log("Set move target " + moveTarget);
-        }
-
         OnDestinationSet?.Invoke(this, EventArgs.Empty);
         this.targetDestination = moveTarget;
         destinationReached = false;

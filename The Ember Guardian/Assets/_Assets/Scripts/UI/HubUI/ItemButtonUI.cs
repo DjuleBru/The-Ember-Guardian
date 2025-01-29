@@ -99,6 +99,7 @@ public class ItemButtonUI : ButtonUI
     }
 
     private void HubMerchantItem_OnHubMerchantItemLoaded(object sender, EventArgs e) {
+        Debug.Log(hubMerchantItem.GetItemType() + "HubMerchantItem_OnHubMerchantItemLoaded");
 
         if (hubMerchantItem.GetItemUnlocked()) {
             SetItemUnlocked();
@@ -111,7 +112,7 @@ public class ItemButtonUI : ButtonUI
         RefreshItemStatusVisuals();
         RefreshItemLevelUI();
         RefreshDescriptionCard();
-        RefreshItemEquippedUI();
+        //RefreshItemEquippedUI();
     }
 
     private void RefreshDescriptionCard() {
@@ -154,9 +155,8 @@ public class ItemButtonUI : ButtonUI
 
         if (lockingItemButtonUIList.Contains(itemButtonUI)) {
             SetLockingItemBought(itemButtonUI);
+            RefreshItemStatusVisuals();
         }
-
-        RefreshItemStatusVisuals();
     }
 
     public void BuyItem() {
@@ -322,7 +322,10 @@ public class ItemButtonUI : ButtonUI
     }
 
     private void RefreshItemStatusVisuals() {
-        if(!hubMerchantItem.GetItemUnlocked()) {
+
+        Debug.Log(hubMerchantItem.GetItemType() + " GetItemUnlocked() " + hubMerchantItem.GetItemUnlocked());
+        Debug.Log(hubMerchantItem.GetItemType() + " GetItemBought() " + hubMerchantItem.GetItemUnlocked());
+        if (!hubMerchantItem.GetItemUnlocked()) {
             outlineImage.color = Color.grey;
             return;
         }
@@ -330,7 +333,7 @@ public class ItemButtonUI : ButtonUI
         if (hubMerchantItem.GetItemBought()) {
             SetItemBoughtVisuals();
 
-            if (hubMerchantItem.GetItemEquipped()) {
+            if (hubMerchantItem.GetitemEquipable() && hubMerchantItem.GetItemEquipped()) {
 
                 outlineImage.sprite = itemEquippedOutlineSprite;
                 outlineImage.color = Color.white;
@@ -404,7 +407,8 @@ public class ItemButtonUI : ButtonUI
 
     #endregion
 
-    private void OnDestroy() {
+    protected override void OnDestroy() {
+        base.OnDestroy();
         OnAnyOutputLinkUnlocked -= ItemButtonUI_OnAnyOutputLinkUnlocked;
     }
 }

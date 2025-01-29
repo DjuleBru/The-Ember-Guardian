@@ -48,7 +48,9 @@ public class Tower : Structure
 
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);
-        Player.Instance.SetCanDropOrbOnTheFloor(false);
+        if ((collision.gameObject.GetComponent<Player>() != null)) {
+            Player.Instance.SetCanDropOrbOnTheFloor(false);
+        }
     }
 
     private void DisableAllGarrisonColliders() {

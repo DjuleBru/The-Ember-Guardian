@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using Unity.VisualScripting;
 
 public class CreaturesSpawnManager : MonoBehaviour
 {
@@ -42,7 +43,6 @@ public class CreaturesSpawnManager : MonoBehaviour
     private float growthFactor;
     private float minWaveDuration;
     private float maxWaveDuration;
-    private float waveIntensityFactor;
     private float delayBetweenSubWaves;
 
     private bool canSpawnElite;
@@ -72,7 +72,6 @@ public class CreaturesSpawnManager : MonoBehaviour
         growthFactor = LevelManager.Instance.GetLevelSO().growthFactor;
         minWaveDuration = LevelManager.Instance.GetLevelSO().minWaveDuration;
         maxWaveDuration = LevelManager.Instance.GetLevelSO().maxWaveDuration;
-        waveIntensityFactor = LevelManager.Instance.GetLevelSO().waveIntensityFactor;
         delayBetweenSubWaves = LevelManager.Instance.GetLevelSO().delayBetweenSubWaves;
         startWaveToSpawnFromBothSides = LevelManager.Instance.GetLevelSO().startWaveToSpawnFromBothSides;
 
@@ -85,11 +84,6 @@ public class CreaturesSpawnManager : MonoBehaviour
     }
 
     private void CreaturesManager_OnCreatureAtNightSpawned(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
-        remainingNightCreaturesHP += e.creature.GetCreatureSO().maxHealth;
-        totalNightCreatureHP += e.creature.GetCreatureSO().maxHealth;
-        totalNightCreatures++;
-        remainingNightCreatures++;
-
         float remainingNightCreaturesHealthNormalized = (float)remainingNightCreaturesHP / (float)totalNightCreatureHP;
         float remainingNightCreaturesNormalized = (float)remainingNightCreatures / (float)totalNightCreatures;
 
@@ -141,6 +135,7 @@ public class CreaturesSpawnManager : MonoBehaviour
     }
 
     public void SetWaveParameters(int waveNumber, bool wavesRandomSideProportion, bool subWaveRandomSideProportion) {
+        totalNightCreatures = 0;
 
         waveDifficulty = baseDifficulty * Mathf.Pow(growthFactor, waveNumber);
         waveDuration = Mathf.Lerp(minWaveDuration, maxWaveDuration, (waveNumber-1) / 10f);
@@ -167,26 +162,39 @@ public class CreaturesSpawnManager : MonoBehaviour
 
         // Préparer la liste de toutes les créatures à spawner pour cette vague
         waveCreaturesDictionary.Clear();
+        List<float> subWaveDifficultiesRelative = new List<float>();
 
-        for (int i=1 ; i <= subWaveNumber+1; i++) {
+        for (int i=0 ; i < subWaveNumber; i++) {
             float subWaveDifficultyXNormalized = (float)i / (subWaveNumber + 1);
-            Debug.Log("subWaveDifficultyXNormalized " + subWaveDifficultyXNormalized);
-            float subWaveDifficulty = subWaveDifficultyCurve.Evaluate(subWaveDifficultyXNormalized) * (waveDifficulty);
+            Debug.Log("subWaveNumber " + i + " subWaveDifficultyXNormalized " + subWaveDifficultyXNormalized);
+            float subWaveDifficulty = subWaveDifficultyCurve.Evaluate(subWaveDifficultyXNormalized);
+            subWaveDifficultiesRelative.Add(subWaveDifficulty);
+        }
 
-            if(subWaveDifficulty < minSubwaveDifficulty) {
-                subWaveDifficulty = minSubwaveDifficulty;
+        float totalSubWaveDifficultiesAbsolute = subWaveDifficultiesRelative.Sum();
+        for (int i = 0; i < subWaveNumber; i++) {
+
+            float subWaveDifficultyAbsolute = (waveDifficulty / totalSubWaveDifficultiesAbsolute)* subWaveDifficultiesRelative[i];
+            if (subWaveDifficultyAbsolute < minSubwaveDifficulty) {
+                subWaveDifficultyAbsolute = minSubwaveDifficulty;
+            }
+            if (subWaveDifficultyAbsolute > maxSubwaveDifficulty) {
+                subWaveDifficultyAbsolute = maxSubwaveDifficulty;
             }
 
-            List<SpawnedCreatureInfo> subWaveCreatures = PrepareSubWaveCreatures(subWaveDifficulty, waveDifficultyLeftProportion, i, subWaveRandomSideProportion);
+            List<SpawnedCreatureInfo> subWaveCreatures = PrepareSubWaveCreatures(subWaveDifficultyAbsolute, waveDifficultyLeftProportion, i, subWaveRandomSideProportion);
             waveCreaturesDictionary.Add(i, subWaveCreatures);
             CountCreatureOccurrences(subWaveCreatures);
+
+            totalNightCreatures += GetTotalPlannedCreaturesForNight(subWaveCreatures);
         }
 
 
         totalNightCreatureHP = 0;
-        totalNightCreatures = 0;
         remainingNightCreaturesHP = 0;
-        remainingNightCreatures = 0;
+        remainingNightCreatures = totalNightCreatures;
+
+        Debug.Log("total night creatures = " + remainingNightCreatures);
     }
 
     private void SetWaveSidesProportion(int waveNumber) {
@@ -219,12 +227,12 @@ public class CreaturesSpawnManager : MonoBehaviour
     }
 
     private IEnumerator SpawnWave() {
+        Debug.Log("Spawn wave " + currentWaveNumber);
         subWaveIndex = 0;
         int spawnedCount = 0;
 
         while (subWaveIndex != subWaveNumber + 1) {
             // Détermine combien de créatures spawn à chaque intervalle
-            subWaveIndex++;
 
             Debug.Log("subWaveIndex " + subWaveIndex);
             Debug.Log("subWaveNumber" + (subWaveNumber));
@@ -232,10 +240,11 @@ public class CreaturesSpawnManager : MonoBehaviour
             foreach(SpawnedCreatureInfo creatureInfo in waveCreaturesDictionary[subWaveIndex]) {
                 SpawnCreatureAtSide(creatureInfo.creature, creatureInfo.spawnSide);
                 spawnedCount++;
-                yield return new WaitForSeconds(.05f); // Délai entre les sous-vagues
+                yield return new WaitForSeconds(.05f); // Délai entre les spawns
             }
 
             yield return new WaitForSeconds(delayBetweenSubWaves); // Délai entre les sous-vagues
+            subWaveIndex++;
         }
     }
 

@@ -101,6 +101,7 @@ public class BarricadeVisual : StructureVisual {
         foreach (BarricadePiece piece in gameObjectList) {
             piece.EnableBarricadePiece();
         }
+        currentLevelBarricadePieceList = gameObjectList;
     }
 
     private void SetBuildAnimation(List<BarricadePiece> BarricadePieceList) {

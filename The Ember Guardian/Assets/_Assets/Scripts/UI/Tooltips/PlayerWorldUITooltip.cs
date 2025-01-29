@@ -85,7 +85,7 @@ public class PlayerWorldUITooltip : MonoBehaviour
 
     }
 
-    public void ShowTooltipInstruction(string text1ToShow, string text2ToShow, InputControlIcons.Control controlType, float displayTime = 0) {
+    public void ShowTooltipInstruction(string text1ToShow, string text2ToShow, InputControlIcons.Control controlType, float displayTime = 10f) {
         currentControl = controlType;
         List<Sprite> spriteList = InputControlIcons.Instance.GetControlIconSprite(controlType);
 
@@ -99,7 +99,7 @@ public class PlayerWorldUITooltip : MonoBehaviour
         StartCoroutine(ShowTooltipInstructionCoroutine(text1ToShow, text2ToShow, iconSprite, iconSprite2, displayTime));
     }
 
-    private IEnumerator ShowTooltipInstructionCoroutine(string text1ToShow, string text2ToShow, Sprite iconSprite, Sprite iconSprite2 = null, float displayTime = 0) {
+    private IEnumerator ShowTooltipInstructionCoroutine(string text1ToShow, string text2ToShow, Sprite iconSprite, Sprite iconSprite2 = null, float displayTime = 10f) {
         if (isActive) {
             HideTooltip();
             yield return new WaitForSeconds(.5f);
@@ -127,6 +127,7 @@ public class PlayerWorldUITooltip : MonoBehaviour
 
         tooltipDisplayTimer = displayTime;
         isActive = true;
+        hideTooltip = true;
         OnTooltipShown?.Invoke(this, EventArgs.Empty);
 
     }

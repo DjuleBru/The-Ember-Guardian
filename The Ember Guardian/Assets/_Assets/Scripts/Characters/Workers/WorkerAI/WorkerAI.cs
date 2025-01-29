@@ -50,6 +50,7 @@ public class WorkerAI : MonoBehaviour
 
         if (currentJob == JobTypes.hunter) {
             WorkerManager.Instance.RemoveJoblessWorker(worker);
+            hunterJob.InitializeHunterJob();
             hunterJob.enabled = true;
         }
 

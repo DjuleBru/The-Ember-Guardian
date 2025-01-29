@@ -117,4 +117,8 @@ public class PlayerTooltipManager : MonoBehaviour
         secondaryWeaponAbilityShown = true;
     }
 
+    private void OnDestroy() {
+        GameInput.Instance.OnWeaponSecondaryAbilityPerformed -= GameInput_OnWeaponSecondaryAbilityPerformed;
+        HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+    }
 }

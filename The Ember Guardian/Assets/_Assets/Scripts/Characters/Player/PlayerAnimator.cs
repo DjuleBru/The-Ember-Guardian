@@ -47,6 +47,7 @@ public class PlayerAnimator : MonoBehaviour
 
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
+        PlayerShoot.Instance.OnPlayerReloadInterrupted += PlayerShoot_OnPlayerReloadInterrupted;
         PlayerShoot.Instance.OnPlayerSetupLMGStarted += PlayerShoot_OnPlayerSetupLMGStarted;
         PlayerShoot.Instance.OnPlayerResetLMGBipod += PlayerShoot_OnPlayerResetLMGBipod;
 
@@ -60,6 +61,7 @@ public class PlayerAnimator : MonoBehaviour
 
         breatheVisual.SetActive(false);
     }
+
 
     private void PlayerShoot_OnPlayerResetLMGBipod(object sender, EventArgs e) {
         playerAnimator.SetBool("Crouching", false);
@@ -89,6 +91,9 @@ public class PlayerAnimator : MonoBehaviour
         walkAnimationSpeed = PlayerMovement.Instance.GetMoveSpeedNormalized();
     }
 
+    private void PlayerShoot_OnPlayerReloadInterrupted(object sender, EventArgs e) {
+        walkAnimationSpeed = PlayerMovement.Instance.GetMoveSpeedNormalized();
+    }
     private void PlayerShoot_OnPlayerReload(object sender, EventArgs e) {
         walkAnimationSpeed = PlayerMovement.Instance.GetMoveSpeedNormalized();
     }
@@ -280,6 +285,7 @@ public class PlayerAnimator : MonoBehaviour
 
         PlayerShoot.Instance.OnPlayerReload -= PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerReloadEnded -= PlayerShoot_OnPlayerReloadEnded;
+        PlayerShoot.Instance.OnPlayerReloadInterrupted -= PlayerShoot_OnPlayerReloadInterrupted;
         PlayerShoot.Instance.OnPlayerSetupLMGStarted -= PlayerShoot_OnPlayerSetupLMGStarted;
         PlayerShoot.Instance.OnPlayerResetLMGBipod -= PlayerShoot_OnPlayerResetLMGBipod;
 

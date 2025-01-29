@@ -90,5 +90,6 @@ public class PlayerTabMenuUI : MonoBehaviour
 
     private void OnDestroy() {
         HubMerchantUI.OnAnyHubMerchantOpenUIPanel -= HubMerchantUI_OnAnyHubMerchantOpenUIPanel;
+        HubMerchantUI.OnAnyHubMerchantCloseUIPanel -= HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
     }
 }

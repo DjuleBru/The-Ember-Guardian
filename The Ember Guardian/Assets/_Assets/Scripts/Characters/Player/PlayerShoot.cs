@@ -16,6 +16,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerCooldownAnimationTrigger;
     public event EventHandler OnPlayerReload;
     public event EventHandler OnPlayerReloadHandEnded;
+    public event EventHandler OnPlayerReloadInterrupted;
     public event EventHandler OnPlayerReloadEnded;
     public event EventHandler<OnAmmoRefilledEventArgs> OnPlayerAmmoRefilled;
     public event EventHandler OnBulletsChanged;
@@ -70,6 +71,7 @@ public class PlayerShoot : MonoBehaviour
     private bool canShoot = true;
     private bool coolingDown;
     private bool reloading;
+    private bool reloadingInterruptedByRoll;
     private bool coolDownSFXTriggered;
     private bool coolDownAnimationTriggered;
     private bool playerJustPressedReload;
@@ -262,8 +264,7 @@ public class PlayerShoot : MonoBehaviour
             reloadTimer += Time.deltaTime;
 
             if(reloadTimer >= handsReloadTime && reloadingHands) {
-                reloadingHands = false;
-                OnPlayerReloadHandEnded?.Invoke(this, EventArgs.Empty);
+                EndHandReload();
             }
 
             if (reloadTimer >= reloadTime) {
@@ -606,7 +607,6 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void ReloadGun() {
-        heldGun.SetCurrentAmmoClip(heldGun.GetCurrentAmmoClip() - 1);
         reloading = true;
         reloadingHands = true;
         playerJustPressedReload = false;
@@ -616,6 +616,11 @@ public class PlayerShoot : MonoBehaviour
         OnPlayerReload?.Invoke(this, EventArgs.Empty);
     }
 
+    private void EndHandReload() {
+        reloadingHands = false;
+        heldGun.SetCurrentAmmoClip(heldGun.GetCurrentAmmoClip() - 1);
+        OnPlayerReloadHandEnded?.Invoke(this, EventArgs.Empty);
+    }
 
     private IEnumerator EmptyRevolverMag() {
         int remainingBullets = GetCurrentBullets();
@@ -650,6 +655,11 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
+        if(reloadingHands) {
+            reloading = false;
+            reloadingHands = false; 
+            OnPlayerReloadInterrupted?.Invoke(this, EventArgs.Empty);
+        }
         canShoot = false;
     }
 

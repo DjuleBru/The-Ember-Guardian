@@ -35,6 +35,7 @@ public class EndLevelArea : MonoBehaviour
         endLevelPortal.gameObject.SetActive(false);
     }
 
+
     private void MobSpawner_OnMobSpawned(object sender, MobSpawner.OnMobSpawnedEventArgs e) {
         AddMobToMobsInArea(e.mob);
     }
@@ -112,6 +113,12 @@ public class EndLevelArea : MonoBehaviour
 
     public void SetPlayerInTriggerArea(bool playerInTriggerArea) {
         this.playerInTriggerArea = playerInTriggerArea;
+
+        if(playerInTriggerArea) {
+            DayNightManager.Instance.SetCyclePaused(true);
+        } else {
+            DayNightManager.Instance.SetCyclePaused(false);
+        }
     }
 
 }

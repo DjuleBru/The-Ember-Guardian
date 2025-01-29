@@ -38,38 +38,51 @@ public class CreatureSound : SoundObject
 
         creatureSO = creature.GetCreatureSO();
 
-        if(Mathf.Abs(Player.Instance.transform.position.x - transform.position.x) < 15f) {
-            creatureAudioSource.PlayOneShot(creatureSO.spawnAudioClips[Random.Range(0, creatureSO.spawnAudioClips.Length)], creatureSO.spawnVolumeMultiplier * sfxVolume);
-        }
+        if (IsTooFarFromPlayer()) return;
+        creatureAudioSource.PlayOneShot(creatureSO.spawnAudioClips[Random.Range(0, creatureSO.spawnAudioClips.Length)], creatureSO.spawnVolumeMultiplier * sfxVolume);
+        
     }
 
     private void CreatureAttack_OnMobAttackHit(object sender, System.EventArgs e) {
+        if (IsTooFarFromPlayer()) return;
         creatureAudioSource.PlayOneShot(creatureSO.attackHitAudioClips[Random.Range(0, creatureSO.attackHitAudioClips.Length)], creatureSO.attackHitVolumeMultiplier * sfxVolume);
     }
 
     private void CreatureAnimator_OnFootStepTriggered(object sender, System.EventArgs e) {
+        if (IsTooFarFromPlayer()) return;
         creatureAudioSource.PlayOneShot(creatureSO.footStepAudioClips[Random.Range(0, creatureSO.footStepAudioClips.Length)], creatureSO.footstepVolumeMultiplier * sfxVolume);
     }
 
     private void Creature_OnCreatureEnteredLight(object sender, System.EventArgs e) {
+        if (IsTooFarFromPlayer()) return;
         creatureAudioSource.PlayOneShot(enteredLightAudioClips[Random.Range(0, enteredLightAudioClips.Length)], sfxVolume);
     }
 
     private void Creature_OnAnyCreatureIdleSoundTriggered(object sender, System.EventArgs e) {
         if (diedRecently) return;
         if (creatureSO.idleAudioClips.Length == 0) return;
+        if (IsTooFarFromPlayer()) return;
 
         creatureIdleAudioSource.PlayOneShot(creatureSO.idleAudioClips[Random.Range(0, creatureSO.idleAudioClips.Length)], creatureSO.idleVolumeMultiplier * sfxVolume);
     }
 
     private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {
         if (diedRecently) return;
+        if (IsTooFarFromPlayer()) return;
 
         creatureAudioSource.PlayOneShot(creatureSO.aggroAudioClips[Random.Range(0, creatureSO.aggroAudioClips.Length)], creatureSO.aggroVolumeMultiplier * sfxVolume);
     }
 
     private void Creature_OnAnyCreatureDied(object sender, System.EventArgs e) {
         diedRecently = true;
+        if (IsTooFarFromPlayer()) return;
+
         creatureAudioSource.PlayOneShot(creatureSO.dieAudioClips[Random.Range(0, creatureSO.dieAudioClips.Length)], creatureSO.dieVolumeMultiplier * sfxVolume);
+    }
+
+    private bool IsTooFarFromPlayer() {
+        float distanceToPlayer = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
+        if (distanceToPlayer > 15f) return true;
+        return false;
     }
 }

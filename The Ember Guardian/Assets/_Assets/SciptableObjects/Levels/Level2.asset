@@ -36,14 +36,13 @@ MonoBehaviour:
   hasFog: 1
   fogFrontAlpha: 0.7
   fogBackAlpha: 0.6
-  baseDifficulty: 10
-  minSubwaveDifficulty: 0
+  baseDifficulty: 24
+  minSubwaveDifficulty: 8
   maxSubwaveDifficulty: 20
-  growthFactor: 1.6
+  growthFactor: 1.35
   minWaveDuration: 9
   maxWaveDuration: 90
-  waveIntensityFactor: 0.6
-  delayBetweenSubWaves: 8
+  delayBetweenSubWaves: 12
   startWaveToSpawnFromBothSides: 2
   canSpawnElite: 1
   levelAudioClips:

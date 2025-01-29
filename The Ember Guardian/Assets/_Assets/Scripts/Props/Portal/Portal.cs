@@ -171,7 +171,9 @@ public class Portal : MonoBehaviour
 
         if(isEndLevelTeleporter) {
             MetaProgressionManager.Instance.SaveLevelGems();
+            MetaProgressionManager.Instance.SetGemsRewarded(false);
             MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
+            LevelManager.Instance.SaveLevelCompletedProgression();
             SceneLoader.Instance.LoadHub(2f);
 
         } else {

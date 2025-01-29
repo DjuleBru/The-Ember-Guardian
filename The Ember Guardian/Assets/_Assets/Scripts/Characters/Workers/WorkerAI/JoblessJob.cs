@@ -40,8 +40,8 @@ public class JoblessJob : MonoBehaviour, IJobBehavior {
         else {
             HeadToCampCenter();
         }
-
     }
+
     private bool CheckBlockedByCreature() {
         if (workerDetectionCollider.CreaturesInDetectionCollider()) {
             Vector3 creaturePosition = workerDetectionCollider.GetClosestCreature().transform.position;
@@ -80,7 +80,7 @@ public class JoblessJob : MonoBehaviour, IJobBehavior {
         }
 
         if (!hasSetCampDestination) {
-           HeadToCampBehavior.SetDestinationToCampCenter(mobMovement);
+            HeadToCampBehavior.SetDestinationToCampCenter(mobMovement);
             hasSetCampDestination = true;
             hasSetSpeed = false;
         }

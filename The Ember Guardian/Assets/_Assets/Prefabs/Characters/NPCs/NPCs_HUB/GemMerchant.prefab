@@ -569,7 +569,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8385513270722688418}
   m_HandleRect: {fileID: 1424134487310206145}
   m_Direction: 0
-  m_Value: -0.00000021577192
+  m_Value: -0.00000011987329
   m_Size: 0.40576538
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -2958,11 +2958,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: The Orb Alchemist
-  greenGemCost: 2
-  redGemCost: 6
-  blueGemCost: 0
+  greenGemCost: 0
+  redGemCost: 2
+  blueGemCost: 2
   yellowGemCost: 0
-  purpleGemCost: 0
+  purpleGemCost: 2
   description: "A mystical vendor trading orbs for skills, shaping the player\u2019s
     destiny with active and passive powers."
   unlockDescription: 'Slain darklings will now drop Crimson Orbs.
@@ -10236,7 +10236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b9d93984a82d76478b0b5aae16b367f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: Observation Tower
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
@@ -10244,7 +10244,7 @@ MonoBehaviour:
   purpleGemCost: 2
   description: 'This elevated radar provides vital intelligence on incoming waves:
     numbers, direction, and enemy types.'
-  unlockDescription: Unlocks the <b> Observation Tower </b>, a device used to aquire
+  unlockDescription: Unlocks the <b>Observation Tower </b>, a device used to aquire
     information on the darkling's night attacks.
   itemLevel: 0
   maxItemLevel: 1

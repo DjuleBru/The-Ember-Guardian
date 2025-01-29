@@ -52,6 +52,8 @@ public class DayNightVisualsManager : MonoBehaviour
     private float moonPositionXNormalized;
     private bool isMoonMoving;
     private float moonTransitionSpeed = .15f;
+    private float nightMoonTransitionSpeed = .15f;
+    private float cycleTransitionMoonTransitionSpeed = .5f;
     private float currentMoonPositionXNormalized;
     private float targetMoonPositionXNormalized;
 
@@ -96,10 +98,10 @@ public class DayNightVisualsManager : MonoBehaviour
                 sunLight2D.intensity = LightIntensityTransition(0, sunLightIntensity);
                 moonLight2D.intensity = LightIntensityTransition(moonLightIntensity, 0);
 
-                moonPositionXNormalized = transitionProgress * nightDawnTransitionAnimationCurveFraction + nightAnimationCurveFraction + duskNightAnimationCurveFraction;
-                currentMoonPositionXNormalized = moonPositionXNormalized;
+                moonTransitionSpeed = cycleTransitionMoonTransitionSpeed;
             }
             else {
+                moonTransitionSpeed = nightMoonTransitionSpeed;
                 transitionProgress = 0;
                 totalAnimationCurveFractionProgress += nightDawnTransitionAnimationCurveFraction;
                 dawnStarted = false;
@@ -209,8 +211,6 @@ public class DayNightVisualsManager : MonoBehaviour
     }
 
     private void CreaturesSpawnManager_OnRemainingNightCreaturesChanged(object sender, CreaturesSpawnManager.OnRemainingNightCreaturesChangedEventArgs e) {
-        Debug.Log("CreaturesSpawnManager_OnRemainingNightCreaturesChanged");
-
         float newTargetMoonPositionXNormalized = (1 - e.remainingNightCreaturesNormalized) + nightDawnTransitionAnimationCurveFraction;
 
         if(newTargetMoonPositionXNormalized > targetMoonPositionXNormalized) {
@@ -247,7 +247,6 @@ public class DayNightVisualsManager : MonoBehaviour
     }
 
     private void SetMoonPosition(float moonPositionXNormalized) {
-
         if (moonPositionXNormalized < 1f) {
             float moonPositionY = sunAnimationCurve.Evaluate(moonPositionXNormalized) * sunArcRadius;
             float moonPositionX = moonPositionXNormalized * sunArcRadius - sunArcRadius / 2;
@@ -274,6 +273,7 @@ public class DayNightVisualsManager : MonoBehaviour
     }
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
         totalAnimationCurveFractionProgress += duskAnimationCurveFraction;
+        targetMoonPositionXNormalized = 0f;
         nightStarted = true;
     }
 

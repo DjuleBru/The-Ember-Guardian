@@ -40,7 +40,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     }
 
     private void Start() {
-        PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
+        PlayerShoot.Instance.OnPlayerReloadHandEnded += PlayerSHoot_OnPlayerReloadHandEnded;
         PlayerShoot.Instance.OnPlayerAmmoRefilled += PlayerShoot_OnPlayerAmmoRefilled;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
         Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
@@ -132,7 +132,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     }
 
 
-    private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
+    private void PlayerSHoot_OnPlayerReloadHandEnded(object sender, EventArgs e) {
         if (PlayerShoot.Instance.GetCurrentAmmoClip() < 0) return;
 
         if (PlayerShoot.Instance.GetCurrentAmmoClip() != 0) {
@@ -145,7 +145,8 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 
         if (PlayerShoot.Instance.GetCurrentAmmoClip() <= PlayerShoot.Instance.GetMaxAmmoClips() / 3) {
             ammoBarCritical = true;
-        } else {
+        }
+        else {
             ammoBarCritical = false;
         }
 
@@ -155,6 +156,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 
         RefreshAmmoBar();
     }
+
 
     private IEnumerator RefillAmmoBar(int ammoCount) {
         for (int i = 0; i < ammoCount; i++) {

@@ -40,7 +40,7 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(EnableEndLevelPortal(4f));
     }
 
-    private void SaveLevelCompletedProgression() {
+    public void SaveLevelCompletedProgression() {
         MetaProgressionManager.Instance.SetLevelCompleted(GetLevelSO());
         SaveMerchantsAndTalkLines();
     }
@@ -70,8 +70,6 @@ public class LevelManager : MonoBehaviour
     private IEnumerator EnableEndLevelPortal(float delayToEnable) {
         yield return new WaitForSeconds(delayToEnable);
         endLevelPortal.gameObject.SetActive(true);
-
-        SaveLevelCompletedProgression();
     }
 
     private void SaveMerchantsAndTalkLines() {

@@ -64,7 +64,7 @@ public class ButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPo
     }
     #endregion
 
-    private void OnDestroy() {
+    protected virtual void OnDestroy() {
         OnAnyButtonHovered -= ButtonUI_OnAnyButtonHovered;
         OnAnyButtonSelected -= ButtonUI_OnAnyButtonSelected;
 

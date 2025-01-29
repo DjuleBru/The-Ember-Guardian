@@ -34,6 +34,7 @@ public class HuntingFlag_CampDefined : MonoBehaviour
         if (collision.gameObject.GetComponent<Player>() != null) {
             if ((!huntingFlag.GetPlayerDefinedHuntingLimit())) return;
             if (huntingFlag.GetPlayerCarryingFlag()) return;
+            if (!PlayerSave.Instance.GetPlayerUnlockedFlagCarry()) return;
 
             playerInTriggerArea = true;
             Player.Instance.SetInteractingWithOtherObject(true);
@@ -46,7 +47,8 @@ public class HuntingFlag_CampDefined : MonoBehaviour
         if (collision.gameObject.GetComponent<Player>() != null) {
 
             if (huntingFlag.GetPlayerCarryingFlag()) return;
-            
+            if (!PlayerSave.Instance.GetPlayerUnlockedFlagCarry()) return;
+
             Player.Instance.SetInteractingWithOtherObject(false);
             playerInTriggerArea = false;
             spriteRenderer.color = initialColor;

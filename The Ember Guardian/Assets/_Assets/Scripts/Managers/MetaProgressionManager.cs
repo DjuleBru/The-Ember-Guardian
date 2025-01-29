@@ -350,10 +350,10 @@ public class MetaProgressionManager : MonoBehaviour
         return ES3.Load(key, 2);
     }
 
-    public void SetGunSecondaryAbilityUnlocked(GunSO gunSO) {
+    public void SetGunSecondaryAbilityUnlocked(GunSO gunSO, bool secondaryAbilityUnlocked) {
         string key = gunSO.gunType + "_secondaryAbilityUnlocked";
 
-        ES3.Save(key, true);
+        ES3.Save(key, secondaryAbilityUnlocked);
     }
 
     public bool GetGunSecondaryAbilityUnlocked(GunSO gunSO) {

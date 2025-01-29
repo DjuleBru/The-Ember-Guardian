@@ -28,7 +28,7 @@ public class GunVisual : MonoBehaviour
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
 
         PlayerShoot.Instance.OnBulletsChanged += PlayerShoot_OnClipsChanged;
-        PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
+        PlayerShoot.Instance.OnPlayerReloadHandEnded += PlayerShoot_OnPlayerReloadHandEnded;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
 
@@ -36,6 +36,7 @@ public class GunVisual : MonoBehaviour
         gunReloadSprites = gunSO.shotCountSprites;
         gunLightSpriteIndex = gunSO.shotCountSprites.Count -1;
     }
+
 
     private void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
         if (gunCooldownLightsSpriteRenderer == null) return;
@@ -65,7 +66,7 @@ public class GunVisual : MonoBehaviour
         gunLightsSpriteRenderer.sprite = sprite;
     }
 
-    protected void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
+    private void PlayerShoot_OnPlayerReloadHandEnded(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
 
         if (gunCooldownLightsSpriteRenderer != null) {
@@ -74,10 +75,9 @@ public class GunVisual : MonoBehaviour
 
         int finalGunReloadSpriteIndex = gunReloadSprites.Count;
         float reloadTime = PlayerStats.Instance.GetReloadTime();
-        float delayBetweenSprites = (reloadTime / (float)Mathf.Abs(finalGunReloadSpriteIndex - gunLightSpriteIndex)/3);
+        float delayBetweenSprites = (reloadTime / (float)Mathf.Abs(finalGunReloadSpriteIndex - gunLightSpriteIndex) / 3);
 
-        StartCoroutine(ReloadBulletsVisual(reloadTime, delayBetweenSprites, gunLightSpriteIndex, finalGunReloadSpriteIndex));
-
+        StartCoroutine(ReloadBulletsVisual(delayBetweenSprites, gunLightSpriteIndex, finalGunReloadSpriteIndex));
     }
 
     protected void PlayerShoot_OnClipsChanged(object sender, System.EventArgs e) {
@@ -116,7 +116,7 @@ public class GunVisual : MonoBehaviour
         }
     }
 
-    protected IEnumerator ReloadBulletsVisual(float reloadTime, float delayBetweenSprites, int initialSpriteIndex, int finalSpriteIndex) {
+    protected IEnumerator ReloadBulletsVisual(float delayBetweenSprites, int initialSpriteIndex, int finalSpriteIndex) {
         if (!gun.GetGunActive()) yield return null;
         gunLightsSpriteRenderer.sprite = gunReloadSprites[initialSpriteIndex];
 
@@ -125,8 +125,6 @@ public class GunVisual : MonoBehaviour
         if (initialSpriteIndex >= gunReloadSprites.Count) initialSpriteIndex = gunReloadSprites.Count - 1;
         if (finalSpriteIndex < 0) finalSpriteIndex = 0;
         if (finalSpriteIndex >= gunReloadSprites.Count) finalSpriteIndex = gunReloadSprites.Count - 1;
-
-        yield return new WaitForSeconds(reloadTime/3*2);
         
         // Reloading: on monte les index
         for (int i = initialSpriteIndex + 1; i <= finalSpriteIndex; i++) {

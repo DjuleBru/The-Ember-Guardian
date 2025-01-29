@@ -75,15 +75,16 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (!PlayerSave.Instance.GetPlayerUnlockedFlagCarry()) return;
 
         if(collision.gameObject.GetComponent<Player>() != null) {
+            OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
+
+            if (!PlayerSave.Instance.GetPlayerUnlockedFlagCarry()) return;
 
             playerInTriggerArea = true;
             Player.Instance.SetInteractingWithOtherObject(true);
             spriteRenderer.material.SetFloat("_Glow", .2f);
 
-            OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -91,6 +92,7 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
         if (!PlayerSave.Instance.GetPlayerUnlockedFlagCarry()) return;
 
         if (collision.gameObject.GetComponent<Player>() != null) {
+
             playerInTriggerArea = false;
             spriteRenderer.material.SetFloat("_Glow", 0f);
 

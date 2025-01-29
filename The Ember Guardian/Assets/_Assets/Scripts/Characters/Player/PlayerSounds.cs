@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerSounds : SoundObject
 {
     [SerializeField] private AudioSource playerAudioSource;
+    [SerializeField] private AudioSource playerReloadAudioSource;
 
     [SerializeField] private AudioClip[] footStepAudioClips;
     [SerializeField] private AudioClip[] playerDamagedAudioClips;
@@ -29,11 +30,25 @@ public class PlayerSounds : SoundObject
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
 
+        PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
+        PlayerShoot.Instance.OnPlayerReloadInterrupted += PlayerShoot_OnPlayerReloadInterrupted;
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerExhaustionStarted += PlayerMovement_OnPlayerExhaustionStarted;
 
         activeMoveSpeedBoostVisual.OnMoveSpeedFootStepTriggered += ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered;
     }
+
+    private void PlayerShoot_OnPlayerReloadInterrupted(object sender, System.EventArgs e) {
+        playerReloadAudioSource.Stop();
+    }
+
+    private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().reloadGunSound;
+        playerReloadAudioSource.clip = audioClipArray[Random.Range(0, audioClipArray.Length)];
+        playerReloadAudioSource.volume = sfxVolume * PlayerShoot.Instance.GetHeldGunSO().reloadSFXVolumeMultiplier;
+        playerReloadAudioSource.Play();
+    }
+
 
     private void PlayerMovement_OnPlayerRoll(object sender, System.EventArgs e) {
         playerAudioSource.PlayOneShot(playerRollAudioClips[Random.Range(0, playerRollAudioClips.Length)], sfxVolume*.7f);
