@@ -27,7 +27,7 @@ MonoBehaviour:
   maxHealth: 100
   damage: 1
   attackRate: 2.04
-  enteredLightattackRateDebuff: 1.4
+  enteredLightattackRateDebuff: 2.5
   isRangedAttack: 0
   canAttackPlayerOnTower: 1
   minAttackRange: 1
@@ -39,7 +39,8 @@ MonoBehaviour:
   relativeDamageToFire: 1
   attackAnimationDelay: 0.2
   totalAttackAnimationTime: 0.6
-  spawnAnimationDuration: 1.5
+  hasCustomSpawnAnimation: 1
+  spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 0.85
   workerTargetingPriority: 1
   playerTargetingPriority: 3

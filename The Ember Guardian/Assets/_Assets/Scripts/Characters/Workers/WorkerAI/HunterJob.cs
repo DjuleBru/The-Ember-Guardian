@@ -74,6 +74,9 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         dayHunterStates.Add(HunterState.idle);
         dayHunterStates.Add(HunterState.headingToHunt);
         dayHunterStates.Add(HunterState.hunting);
+        dayHunterStates.Add(HunterState.attackingDay);
+        dayHunterStates.Add(HunterState.pickingUpOrbs);
+        dayHunterStates.Add(HunterState.workingWithPlayerToShootCreatures);
 
         duskAndNightHunterStates.Add(HunterState.headingToGuard);
         duskAndNightHunterStates.Add(HunterState.guarding);
@@ -563,7 +566,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     }
 
     private void CheckOrbsToCollect() {
-        if(orbsToCollect.Count > 0 && state != HunterState.hunting) {
+        if(orbsToCollect.Count > 0 && state != HunterState.hunting)  {
             ChangeState(HunterState.pickingUpOrbs);
         }
     }

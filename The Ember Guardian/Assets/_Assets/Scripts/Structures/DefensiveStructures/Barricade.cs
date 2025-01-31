@@ -54,6 +54,7 @@ public class Barricade : Structure, IDamageable {
     }
 
     public void TakeDamage(int damage, Transform damageSource, bool critHit = false) {
+        if (barricadeHealth <= 0) return;
         barricadeHealth -= damage;
 
         if(barricadeHealth <= 0) {
@@ -139,6 +140,7 @@ public class Barricade : Structure, IDamageable {
 
         barricadeHealth = barricadeMaxHealth;
         OnBarricadeRepaired?.Invoke(this, EventArgs.Empty);
+        OnAnyBarricadeRepaired?.Invoke(this, EventArgs.Empty);
         SetStructurePrimaryFunctionUnlocked(false);
         RefreshStructureUpgradeInteraction();
         barricadeRepairable = true;

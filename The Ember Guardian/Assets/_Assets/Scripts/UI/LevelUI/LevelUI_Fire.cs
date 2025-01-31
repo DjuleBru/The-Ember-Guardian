@@ -165,4 +165,11 @@ public class LevelUI_Fire : MonoBehaviour
         fireUICanvasGroup.alpha = 1.0f;
         displayTimer = 0;
     }
+
+    private void OnDestroy() {
+        StructureUI_Fire.OnFireMaxBarAmountChanged -= StructureUI_Fire_OnFireMaxBarAmountChanged;
+        StructureUI_Fire.OnFireTickRemoved -= StructureUI_Fire_OnFireTickRemoved1;
+        Fire.Instance.OnFireFuelled -= Fire_OnFireFuelled;
+        Fire.Instance.OnFireChangedState -= Fire_OnFireChangedState;
+    }
 }

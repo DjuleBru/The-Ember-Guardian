@@ -189,7 +189,12 @@ public class Gun : MonoBehaviour
         shootPSMain.startSpeed = bulletSpeed;
 
         currentBullet = shotsPerClip;
-        currentAmmoClip = MetaProgressionManager.Instance.GetInitialLevelAmmo();
+
+        int ammoClip = 0;
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            ammoClip = maxAmmo;
+        }
+        currentAmmoClip = ammoClip;
     }
 
     public void InitializeTutorialGun() {

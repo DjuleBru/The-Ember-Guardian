@@ -114,13 +114,17 @@ MonoBehaviour:
   sceneViewSpawnerSpriteRenderer: {fileID: 0}
   mobPrefab: {fileID: 2100628709117196716, guid: 61fc72d8cc17be84eb6679397d2fd53c, type: 3}
   spawnPosition: {fileID: 590498446364819386}
-  mobAmountToSpawn: 3
+  mobAmountToSpawn: 2
   maxMobsRespawningAtDawn: 0
   isCreatureSpawner: 1
   isAnimalSpawner: 0
+  canSpawnEliteCreatures: 0
+  eliteSpawnProbability: 0
+  eliteSpawnAmount: 0
   spawnerHealth: 0
   spawnRate: 15
   spawnAnimationDelay: 0.5
+  canSpawnMobsAtNight: 0
 --- !u!1 &2836379815106326953
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,7 +233,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 38783848799533230, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Name
-      value: Summoner
+      value: Summoner_Ghoul_Day
       objectReference: {fileID: 0}
     - target: {fileID: 62396730589590046, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: managedReferences[7866843137777336321].RemapCurveOne
@@ -493,9 +497,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roamChangeDestinationRate: 10
   roamRadius: 3
-  distanceToFleeFromPlayer: 0
+  distanceToFleeFromTarget: 10
   minimumFleeTime: 2
   creatureSpawnerContinuous: {fileID: 7578288738974065730}
+  distanceToTargetToStopWalking: 12
 --- !u!4 &5663241041523577314 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 812099978332910497, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}

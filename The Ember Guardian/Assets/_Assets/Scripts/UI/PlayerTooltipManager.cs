@@ -35,15 +35,30 @@ public class PlayerTooltipManager : MonoBehaviour
     private void Start() {
         GameInput.Instance.OnWeaponSecondaryAbilityPerformed += GameInput_OnWeaponSecondaryAbilityPerformed;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
 
         gunSOAbilityPreparedList = ES3.Load("gunSOAbilityPreparedList", new List<GunSO>());
     }
 
+    private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
+        Debug.Log("PlayerShoot_OnPlayerSwappedGun");
+        TryShowGunSecondaryAbilityTooltip();
+    }
+
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, System.EventArgs e) {
 
-        if(gunSOAbilityPreparedList.Contains(PlayerShoot.Instance.GetHeldGunSO())) {
+        if(!MetaProgressionManager.Instance.GetFirstGunBoughtTooltipShown()) {
+            StartCoroutine(ShowPreparedTooltipInstructionAfterDelay(1f));
+            MetaProgressionManager.Instance.SetFirstGunBoughtTooltipShown();
+        } else {
+            TryShowGunSecondaryAbilityTooltip();
+        }
+    }
 
-            if(PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Rifle) {
+    private void TryShowGunSecondaryAbilityTooltip() {
+        if (gunSOAbilityPreparedList.Contains(PlayerShoot.Instance.GetHeldGunSO())) {
+
+            if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Rifle) {
                 PrepareTooltipInstruction(rifleText1, rifleText2, InputControlIcons.Control.SecondaryGunAbility);
             }
             if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Shotgun) {
@@ -56,6 +71,7 @@ public class PlayerTooltipManager : MonoBehaviour
                 PrepareTooltipInstruction(sniperText1, sniperText2, InputControlIcons.Control.SecondaryGunAbility);
             }
 
+            preparedDisplayTime = 10f;
             StartCoroutine(ShowPreparedTooltipInstructionAfterDelay(1.5f));
             gunSOAbilityPreparedList.Remove(PlayerShoot.Instance.GetHeldGunSO());
             secondaryWeaponAbilityShown = true;
@@ -78,6 +94,7 @@ public class PlayerTooltipManager : MonoBehaviour
     }
 
     public void PrepareGunSecondaryAbilityTooltipInstruction(GunSO gunSO) {
+        Debug.Log("PrepareGunSecondaryAbilityTooltipInstruction" + gunSO);
         if (gunSO.gunType == GunSO.GunType.Rifle) {
             PrepareTooltipInstruction(rifleText1, rifleText2, InputControlIcons.Control.SecondaryGunAbility);
         }
@@ -90,7 +107,6 @@ public class PlayerTooltipManager : MonoBehaviour
         if (gunSO.gunType == GunSO.GunType.Sniper) {
             PrepareTooltipInstruction(sniperText1, sniperText2, InputControlIcons.Control.SecondaryGunAbility);
         }
-
     }
 
     public void PrepareTooltipInstruction(string text1ToShow, string text2ToShow, InputControlIcons.Control controlType, float displayTime = 0) {
@@ -120,5 +136,6 @@ public class PlayerTooltipManager : MonoBehaviour
     private void OnDestroy() {
         GameInput.Instance.OnWeaponSecondaryAbilityPerformed -= GameInput_OnWeaponSecondaryAbilityPerformed;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+        PlayerShoot.Instance.OnPlayerSwappedGun -= PlayerShoot_OnPlayerSwappedGun;
     }
 }

@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureType: 9
   structurePrefab: {fileID: 212847695420992534, guid: e0ef29e8e8a4dcf4b9c582678ed55bb4, type: 3}
-  maxLevel: 1
-  level2UpgradeTentNecessaryLevel: 3
-  level3UpgradeTentNecessaryLevel: 3
-  level4UpgradeTentNecessaryLevel: 3
+  level1StructureInitiallyUnlocked: 0
   buildableAtNight: 0
   functionUsableAtNight: 0
+  upgradeable: 0
+  tentLevelRequiredForLevel2: 2
+  tentLevelRequiredForLevel3: 3
+  tentLevelRequiredForLevel4: 4
   buildingUpgradeSpriteList: []
   buildAudioClip: {fileID: 8300000, guid: 89ac8ac080d4c5e41bfea80fe9dce7d7, type: 3}
   useFunctionAudioClip: {fileID: 8300000, guid: 6a29e3dd14044e74695d59a53d3cb83a, type: 3}

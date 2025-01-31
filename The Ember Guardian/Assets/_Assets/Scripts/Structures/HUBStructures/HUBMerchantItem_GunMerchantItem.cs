@@ -587,27 +587,13 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
     private void UnlockGun() {
         PlayerShoot.Instance.GetGun(linkedGunSO).SetGunUnlocked();
+        if(!MetaProgressionManager.Instance.GetFirstGunBoughtTooltipShown()) {
+            PlayerTooltipManager.Instance.PrepareTooltipInstruction("Press", "To swap weapon", InputControlIcons.Control.OpenPlayerMenu, 10f);
+        }
     }
 
     private void UnlockGunAbility() {
         PlayerShoot.Instance.GetGun(linkedGunSO).SetSecondaryAbilityUnlocked();
-
-        if(gunItem == GunItemType.overclock) {
-            PlayerTooltipManager.Instance.PrepareGunSecondaryAbilityTooltipInstruction(linkedGunSO);
-        }
-
-        if (gunItem == GunItemType.aimSight) {
-            PlayerTooltipManager.Instance.PrepareGunSecondaryAbilityTooltipInstruction(linkedGunSO);
-        }
-
-        if (gunItem == GunItemType.focusedBlast) {
-            PlayerTooltipManager.Instance.PrepareGunSecondaryAbilityTooltipInstruction(linkedGunSO);
-        }
-
-        if (gunItem == GunItemType.adaptiveFire) {
-            PlayerTooltipManager.Instance.PrepareGunSecondaryAbilityTooltipInstruction(linkedGunSO);
-        }
-
         PlayerTooltipManager.Instance.SetGunSOAbilityPrepared(linkedGunSO);
     }
 

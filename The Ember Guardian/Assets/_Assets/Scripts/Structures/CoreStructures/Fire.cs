@@ -106,6 +106,7 @@ public class Fire : Structure, IDamageable {
 
             fuelLevel = mildFuelTreshold - 1;
             Player.Instance.OnPlayerBackToTentToRespawn += Player_OnPlayerBackToTentToRespawn;
+            Tent.Instance.OnStructureUpgraded += Tent_OnStructureUpgraded;
             ChangeState(State.calm);
 
         }
@@ -134,6 +135,10 @@ public class Fire : Structure, IDamageable {
         } else {
             SetFireCurrentMaxFuelTreshold();
         }
+    }
+
+    private void Tent_OnStructureUpgraded(object sender, EventArgs e) {
+        SetFireCurrentMaxFuelTreshold();
     }
 
     private void Player_OnPlayerBackToTentToRespawn(object sender, EventArgs e) {

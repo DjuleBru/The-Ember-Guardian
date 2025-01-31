@@ -17,7 +17,8 @@ public class CreatureAI_RangedFlee : CreatureAI
         Vector3 targetPosition = attackTarget.GetMeleeAttackPosition().position; 
         float distanceToTargetX = Mathf.Abs(targetPosition.x - transform.position.x);
 
-        if (distanceToTargetX > minAllowedDistanceFromPlayer) {
+        bool isNight = DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night;
+        if (isNight || distanceToTargetX > minAllowedDistanceFromPlayer) {
             // Head to target, attack
             creatureMovement.SetMoveTarget(targetPosition);
 
@@ -38,7 +39,7 @@ public class CreatureAI_RangedFlee : CreatureAI
 
         } else {
 
-            // Flee
+            // Flee : only during day
             float direction = (transform.position.x - targetPosition.x);
 
             if (direction >= 0) {

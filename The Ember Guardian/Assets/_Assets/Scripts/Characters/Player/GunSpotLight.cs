@@ -9,6 +9,7 @@ public class GunSpotLight : MonoBehaviour
 {
     [SerializeField] private Transform gunSpotLightTransform;
     [SerializeField] private Transform gunVisualTransform;
+    [SerializeField] private Light2D gunShootLight;
     private Light2D gunSpotLight;
 
     private float gunSpotLightRange;
@@ -23,10 +24,12 @@ public class GunSpotLight : MonoBehaviour
 
     private void Awake() {
         gunSpotLight = gunSpotLightTransform.GetComponent<Light2D>();
+        gunShootLight.pointLightOuterAngle = 360;
+        gunShootLight.pointLightInnerAngle = 360;
     }
 
     private void Start() {
-        if(SceneLoader.Instance != null && SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+        if (SceneLoader.Instance != null && SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
             DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
             Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;

@@ -37,6 +37,13 @@ public class PlayerStatsSO : ScriptableObject
     [LabelWidth(125)]
     public float initialHpRegenTimer = 0f;
 
+    [BoxGroup("Backpack")]
+    [LabelWidth(125)]
+    public int initialStartLevelAmmo = 3;
+    [BoxGroup("Backpack")]
+    [LabelWidth(125)]
+    public int initialStartLevelOrbs = 0;
+
     [BoxGroup("Other")]
     [LabelWidth(125)]
     public float flashlightRange = 10f;

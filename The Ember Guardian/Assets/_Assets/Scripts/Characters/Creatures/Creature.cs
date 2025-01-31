@@ -74,7 +74,7 @@ public class Creature : Mob
     public override void Die() {
         CreaturesManager.Instance.RemoveCreatureSpawned(this);
 
-        if(IsDayCreature()) {
+        if(mobSpawner != null) {
             mobSpawner.RemoveMobFromMobSpawnedList(this);
         }
 

@@ -114,10 +114,13 @@ MonoBehaviour:
   sceneViewSpawnerSpriteRenderer: {fileID: 0}
   mobPrefab: {fileID: 2100628709117196716, guid: 61fc72d8cc17be84eb6679397d2fd53c, type: 3}
   spawnPosition: {fileID: 590498446364819386}
-  mobAmountToSpawn: 2
+  mobAmountToSpawn: 1
   maxMobsRespawningAtDawn: 0
   isCreatureSpawner: 1
   isAnimalSpawner: 0
+  canSpawnEliteCreatures: 0
+  eliteSpawnProbability: 0
+  eliteSpawnAmount: 0
   spawnerHealth: 0
   spawnRate: 15
   spawnAnimationDelay: 0.5
@@ -494,7 +497,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roamChangeDestinationRate: 10
   roamRadius: 3
-  distanceToFleeFromPlayer: 0
+  distanceToFleeFromTarget: 6
   minimumFleeTime: 2
   creatureSpawnerContinuous: {fileID: 7578288738974065730}
 --- !u!4 &5663241041523577314 stripped

@@ -20,7 +20,9 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
         RollDistance,
         RollStaminaCost,
         MaxStamina,
-        RespawnHP
+        RespawnHP,
+        InitialAmmo,
+        InitialOrbs,
     }
 
     [SerializeField] private TrainerItemType trainerItemType;
@@ -115,6 +117,21 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (trainerItemType == TrainerItemType.RespawnHP) {
                 initialStatValue = PlayerStats.Instance.GetInitialPlayerRespawnHP();
                 currentStatValue = PlayerStats.Instance.GetPlayerRespawnHP().ToString();
+                totalStatWithModifierPostfix = "";
+                relativeStatPostfix = "";
+                relativeStatPrefix = "+";
+            }
+            if (trainerItemType == TrainerItemType.InitialAmmo) {
+                initialStatValue = PlayerStats.Instance.GetInitialStartLevelAmmo();
+                currentStatValue = PlayerStats.Instance.GetStartLevelAmmo().ToString();
+                totalStatWithModifierPostfix = "";
+                relativeStatPostfix = "";
+                relativeStatPrefix = "+";
+            }
+
+            if (trainerItemType == TrainerItemType.InitialOrbs) {
+                initialStatValue = PlayerStats.Instance.GetInitialStartLevelOrbs();
+                currentStatValue = PlayerStats.Instance.GetStartLevelOrbs().ToString();
                 totalStatWithModifierPostfix = "";
                 relativeStatPostfix = "";
                 relativeStatPrefix = "+";
@@ -278,6 +295,14 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             PlayerStats.Instance.SetRespawnPlayerHPBuff((int)buff);
         }
 
+        if (trainerItemType == TrainerItemType.InitialAmmo) {
+            PlayerStats.Instance.SetInitialStartLevelAmmoBuff((int)buff);
+        }
+
+        if (trainerItemType == TrainerItemType.InitialOrbs) {
+            PlayerStats.Instance.SetInitialStartLevelOrbsBuff((int)buff);
+        }
+
         if (trainerItemType == TrainerItemType.Heal) {
             PlayerStats.Instance.SetHpRegenTimeAbsolute(buff);
         }
@@ -368,7 +393,7 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current max HP ");
                 statDescriptionList.Add("Max HP ");
-                statDescriptionList.Add("+");
+                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New max HP ");
         }
@@ -377,9 +402,25 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current respawn HP ");
                 statDescriptionList.Add("Respawn HP ");
-                statDescriptionList.Add("+");
+                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New respawn HP ");
+        }
+        if (trainerItemType == TrainerItemType.InitialAmmo) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add("Current initial ammo");
+                statDescriptionList.Add("Initial ammo ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add("New initial ammo ");
+        }
+        if (trainerItemType == TrainerItemType.InitialOrbs) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add("Current initial orbs ");
+                statDescriptionList.Add("Initial orbs ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add("New initial orbs ");
         }
 
         if (trainerItemType == TrainerItemType.Heal) {

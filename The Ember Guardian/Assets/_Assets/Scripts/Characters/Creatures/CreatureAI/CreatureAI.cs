@@ -207,7 +207,6 @@ public class CreatureAI : MonoBehaviour {
 
     protected virtual void ChangeState(State newState) {
         if (died) return;
-
         if (newState == State.attacking) {
             creatureMovement.SetMoveTarget(transform.position);
             mobAttack.SetAttackTarget(attackTarget);

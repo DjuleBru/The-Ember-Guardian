@@ -31,6 +31,7 @@ public class UICurrencyManager : MonoBehaviour
 
     [SerializeField] private int smallOrbValue = 5;
 
+    private int initialBigBlueOrbs;
     [SerializeField] int debugInitialBigOrbs = 10;
     [SerializeField] int debugInitialSmallOrbs = 0;
     [SerializeField] int debugInitialBigRedOrbs = 10;
@@ -74,23 +75,9 @@ public class UICurrencyManager : MonoBehaviour
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyStructurePrimaryFunctionUsed += Structure_OnAnyStructureFunctionUsed;
 
-        if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
-            List<PlayerCurrencies.CurrencyType> currencyTypes = new List<PlayerCurrencies.CurrencyType> {
-                PlayerCurrencies.CurrencyType.bigBlueOrb,
-                PlayerCurrencies.CurrencyType.smallBlueOrb,
-                PlayerCurrencies.CurrencyType.bigRedOrb,
-                PlayerCurrencies.CurrencyType.smallRedOrb,
-                PlayerCurrencies.CurrencyType.ammo,
-            };
-            List<int> currencyTypesAmount = new List<int> {
-                debugInitialBigOrbs,
-                debugInitialSmallOrbs,
-                debugInitialBigRedOrbs,
-                debugInitialSmallRedOrbs,
-                debugInitialAmmo,
-            };
-
-            AddMultipleCurrencies(currencyTypes, currencyTypesAmount);
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
+            AddDebugCurrency();
+            AddInitialCurrencies();
         }
     }
 
@@ -125,6 +112,37 @@ public class UICurrencyManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.M)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.smallRedOrb);
         }
+    }
+
+    private void AddDebugCurrency() {
+        List<PlayerCurrencies.CurrencyType> currencyTypes = new List<PlayerCurrencies.CurrencyType> {
+                PlayerCurrencies.CurrencyType.bigBlueOrb,
+                PlayerCurrencies.CurrencyType.smallBlueOrb,
+                PlayerCurrencies.CurrencyType.bigRedOrb,
+                PlayerCurrencies.CurrencyType.smallRedOrb,
+                PlayerCurrencies.CurrencyType.ammo,
+            };
+        List<int> currencyTypesAmount = new List<int> {
+                debugInitialBigOrbs,
+                debugInitialSmallOrbs,
+                debugInitialBigRedOrbs,
+                debugInitialSmallRedOrbs,
+                debugInitialAmmo,
+            };
+
+        AddMultipleCurrencies(currencyTypes, currencyTypesAmount);
+    }
+    private void AddInitialCurrencies() {
+        List<PlayerCurrencies.CurrencyType> currencyTypes = new List<PlayerCurrencies.CurrencyType> {
+                PlayerCurrencies.CurrencyType.bigBlueOrb,
+                PlayerCurrencies.CurrencyType.ammo,
+            };
+        List<int> currencyTypesAmount = new List<int> {
+            PlayerStats.Instance.GetStartLevelOrbs(),
+            PlayerStats.Instance.GetStartLevelAmmo(),
+            };
+
+        AddMultipleCurrencies(currencyTypes, currencyTypesAmount);
     }
 
     public void AddCurrencyInBag(PlayerCurrencies.CurrencyType currencyType) {

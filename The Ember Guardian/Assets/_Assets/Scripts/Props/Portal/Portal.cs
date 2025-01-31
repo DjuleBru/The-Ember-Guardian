@@ -179,7 +179,8 @@ public class Portal : MonoBehaviour
         } else {
             
             MetaProgressionManager.Instance.SetAsLastPortalUsedByPlayer(portalNumber);
-            MetaProgressionManager.Instance.SaveHubGems();
+            MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
+            HUBManager.Instance.SaveHub();
             SceneLoader.Instance.LoadLevel(linkedLevelSO, 2f);
         }
     }

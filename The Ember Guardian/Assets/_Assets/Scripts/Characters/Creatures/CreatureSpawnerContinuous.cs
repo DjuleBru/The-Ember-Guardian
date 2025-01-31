@@ -61,7 +61,7 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
                 if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
 
                     creature.SetAsDayCreature(false);
-                    CreaturesManager.Instance.AddCreatureToNightWave(creature);
+                    CreaturesManager.Instance.AddAdditionalCreatureToNightWave(creature);
 
                 } else {
 

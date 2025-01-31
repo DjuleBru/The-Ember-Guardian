@@ -162,8 +162,6 @@ public class PlayerShoot : MonoBehaviour
     public void SetActiveGun(GunSO gunSO, bool primaryGun = true) {
         Gun activeGun = null;
 
-        Debug.Log("SetActiveGun " + gunSO + " primaryGun " + primaryGun);
-
         foreach(Gun gun in allGunsList) {
             gun.gameObject.SetActive(false);
             gun.SetGunActive(false);

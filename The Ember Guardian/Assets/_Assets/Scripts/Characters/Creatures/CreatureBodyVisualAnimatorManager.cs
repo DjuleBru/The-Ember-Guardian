@@ -12,6 +12,11 @@ public class CreatureBodyVisualAnimatorManager : BodyVisualAnimatorManager
         creature = mob as Creature;
         creature.OnCreatureEnteredLight += Creature_OnCreatureEnteredLight;
         creature.OnCreatureExitedLight += Creature_OnCreatureExitedLight;
+
+
+        if (!creature.GetCreatureSO().hasCustomSpawnAnimation) {
+            animator.SetTrigger("Spawn");
+        }
     }
 
     private void Creature_OnCreatureExitedLight(object sender, System.EventArgs e) {

@@ -12,6 +12,7 @@ public class CreaturesManager : MonoBehaviour
     private List<Creature> creaturesSpawnedAtNightList = new List<Creature>();
 
     public event EventHandler<OnCreatureAtNightKilledEventArgs> OnCreatureAtNightSpawned;
+    public event EventHandler<OnCreatureAtNightKilledEventArgs> OnAdditionalCreatureAtNightSpawned;
     public event EventHandler<OnCreatureAtNightKilledEventArgs> OnCreatureAtNightKilled;
     public event EventHandler OnAllCreaturesAtNightKilled;
 
@@ -88,6 +89,15 @@ public class CreaturesManager : MonoBehaviour
 
         creaturesSpawnedAtNightList.Add(creature);
         OnCreatureAtNightSpawned?.Invoke(this, new OnCreatureAtNightKilledEventArgs {
+            creature = creature,
+        });
+    }
+
+    public void AddAdditionalCreatureToNightWave(Creature creature) {
+        if (creaturesSpawnedAtNightList.Contains(creature)) return;
+
+        creaturesSpawnedAtNightList.Add(creature);
+        OnAdditionalCreatureAtNightSpawned?.Invoke(this, new OnCreatureAtNightKilledEventArgs {
             creature = creature,
         });
     }

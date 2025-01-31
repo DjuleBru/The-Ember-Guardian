@@ -32,6 +32,7 @@ public class StructureSO : ScriptableObject
     public bool buildableAtNight;
     public bool functionUsableAtNight;
 
+    public bool upgradeable = true;
     public int tentLevelRequiredForLevel2 = 2;
     public int tentLevelRequiredForLevel3 = 3;
     public int tentLevelRequiredForLevel4 = 4;

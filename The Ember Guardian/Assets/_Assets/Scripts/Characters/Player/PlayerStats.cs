@@ -72,10 +72,16 @@ public class PlayerStats : MonoBehaviour
 
     #region BACKPACK
 
-    public float backpackGemSizePercentBuff;
-    public float backpackOrbSizePercentBuff;
-    public float backpackAmmoSizePercentBuff;
+    [SerializeField] private int initialStartLevelAmmo;
+    [SerializeField] private int initialStartLevelOrbs;
+    [SerializeField] private float backpackGemSizePercentBuff;
+    [SerializeField] private float backpackOrbSizePercentBuff;
+    [SerializeField] private float backpackAmmoSizePercentBuff;
 
+    private int startLevelAmmo;
+    private int startLevelOrbs;
+    private int startLevelAmmo_BuffAbsolute;
+    private int startLevelOrbs_BuffAbsolute;
     #endregion
 
     #region OTHER
@@ -112,6 +118,9 @@ public class PlayerStats : MonoBehaviour
         initialAimingSightDecelerationFactor = playerStatsSO.initialAimingSightDecelerationFactor;
         initialflashlightRange = playerStatsSO.flashlightRange;
 
+        initialStartLevelAmmo = playerStatsSO.initialStartLevelAmmo;
+        startLevelOrbs = playerStatsSO.initialStartLevelOrbs;
+
         initialMaxPlayerHP = playerStatsSO.initialMaxPlayerHP;
         initialPlayerRespawnHP = playerStatsSO.initialPlayerRespawnHP;
         initialDamagedImmunityTime = playerStatsSO.initialDamagedImmunityTime;
@@ -135,6 +144,9 @@ public class PlayerStats : MonoBehaviour
         maxPlayerHPBuffAbsolute_meta = ES3.Load("maxPlayerHPBuffAbsolute_meta", 0);
         respawnPlayerHPBuffAbsolute_meta = ES3.Load("respawnPlayerHPBuffAbsolute_meta", 0);
 
+        startLevelAmmo_BuffAbsolute = ES3.Load("startLevelAmmo_BuffAbsolute", 0);
+        startLevelOrbs_BuffAbsolute = ES3.Load("startLevelOrbs_BuffAbsolute", 0);
+
         backpackGemSizePercentBuff = ES3.Load("backpackGemSizePercentBuff", 0f);
         backpackAmmoSizePercentBuff = ES3.Load("backpackAmmoSizePercentBuff", 0f);
         backpackOrbSizePercentBuff = ES3.Load("backpackOrbSizePercentBuff", 0f);
@@ -152,6 +164,9 @@ public class PlayerStats : MonoBehaviour
         exhaustionTime = initialExhaustionTime - initialExhaustionTime * exhaustionTime / 100;
         runAccelerationFactor = initialRunAccelerationFactor + initialRunAccelerationFactor * runAccelerationFactorBuff_meta / 100;
         flashlightRange = initialflashlightRange + flashlightRangeBuff_meta;
+
+        startLevelAmmo = initialStartLevelAmmo + startLevelAmmo_BuffAbsolute;
+        startLevelOrbs = initialStartLevelOrbs + startLevelOrbs_BuffAbsolute;
 
         maxPlayerHP = initialMaxPlayerHP + maxPlayerHPBuffAbsolute_meta;
         respawnPlayerHP = initialPlayerRespawnHP + respawnPlayerHPBuffAbsolute_meta;
@@ -225,7 +240,14 @@ public class PlayerStats : MonoBehaviour
         RefreshCurrentPlayerStats();
         OnFlashlightRangeChanged?.Invoke(this, EventArgs.Empty);
     }
-
+    public void SetInitialStartLevelAmmoBuff(int initialStartLevelAmmoBuff) {
+        this.startLevelAmmo_BuffAbsolute = initialStartLevelAmmoBuff;
+        RefreshCurrentPlayerStats();
+    }
+    public void SetInitialStartLevelOrbsBuff(int initialStartLevelOrbsBuff) {
+        this.startLevelOrbs_BuffAbsolute = initialStartLevelOrbsBuff;
+        RefreshCurrentPlayerStats();
+    }
     public void SetBackpackOrbSizeBuff(float orbSizeBuff) {
         this.backpackOrbSizePercentBuff = orbSizeBuff;
         RefreshCurrentPlayerStats();
@@ -261,7 +283,12 @@ public class PlayerStats : MonoBehaviour
     public int GetPlayerRespawnHP() {
         return respawnPlayerHP;
     }
-
+    public int GetStartLevelAmmo() {
+        return startLevelAmmo;
+    }
+    public int GetStartLevelOrbs() {
+        return startLevelOrbs;
+    }
     public float GetDamagedImmunityTime() {
         return damagedImmunityTime;
     }
@@ -328,6 +355,12 @@ public class PlayerStats : MonoBehaviour
     public int GetInitialPlayerRespawnHP() {
         return initialPlayerRespawnHP;
     }
+    public int GetInitialStartLevelAmmo() {
+        return initialStartLevelAmmo;
+    }
+    public int GetInitialStartLevelOrbs() {
+        return initialStartLevelOrbs;
+    }
 
     public float GetInitialDamagedImmunityTime() {
         return initialDamagedImmunityTime;
@@ -393,6 +426,12 @@ public class PlayerStats : MonoBehaviour
 
     public float GetMaxStaminaPercentBuff_Meta() {
         return maxStaminaBuff_meta;
+    }
+    public int GetStartLevelAmmoBuff_Meta() {
+        return startLevelAmmo_BuffAbsolute;
+    }
+    public int GetStartLevelOrbsBuff_Meta() {
+        return startLevelOrbs_BuffAbsolute;
     }
 
     public float GetRollForcePercentBuff_Meta() {
@@ -498,6 +537,8 @@ public class PlayerStats : MonoBehaviour
         ES3.Save("respawnPlayerHPBuffAbsolute_meta", respawnPlayerHPBuffAbsolute_meta);
         ES3.Save("absoluteHpRegenTimer_meta", absoluteHpRegenTimer_meta);
 
+        ES3.Save("startLevelAmmo_BuffAbsolute", startLevelAmmo_BuffAbsolute);
+        ES3.Save("startLevelOrbs_BuffAbsolute", startLevelOrbs_BuffAbsolute);
         ES3.Save("flashlightRangeBuff_meta", flashlightRangeBuff_meta);
 
         ES3.Save("backpackGemSizePercentBuff", backpackGemSizePercentBuff);
@@ -505,6 +546,10 @@ public class PlayerStats : MonoBehaviour
         ES3.Save("backpackOrbSizePercentBuff", backpackOrbSizePercentBuff);
 
         ES3.Save("hold2WeaponsUnlocked", hold2WeaponsUnlocked);
+
+
+
+        Debug.Log("SaveMetaBuffValues flashlightRangeBuff_meta" + startLevelOrbs_BuffAbsolute);
     }
 
     public float GetSkillStat(SkillItem skillItem) {

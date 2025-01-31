@@ -16127,7 +16127,7 @@ Transform:
   m_GameObject: {fileID: 1819233528911315522}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.802, y: -0.10700005, z: 0}
+  m_LocalPosition: {x: 1.2, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -22443,6 +22443,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 5730413854482163264}
   gunVisualTransform: {fileID: 6796312713700034363}
+  gunShootLight: {fileID: 1170960659375871895}
 --- !u!1 &2365267068611054053
 GameObject:
   m_ObjectHideFlags: 0
@@ -32717,7 +32718,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5600287817303019930
 Transform:
   m_ObjectHideFlags: 0
@@ -32820,6 +32821,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 5809702841180457636}
   gunVisualTransform: {fileID: 8564061704340424980}
+  gunShootLight: {fileID: 3403375300662680104}
 --- !u!114 &1736638518901546363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51858,7 +51860,7 @@ Transform:
   m_GameObject: {fileID: 4278765334392525623}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.03000319, y: 0.072000265, z: 0}
+  m_LocalPosition: {x: 0.03, y: 0.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -52412,7 +52414,7 @@ Transform:
   m_GameObject: {fileID: 4374744408983440382}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.802, y: -0.10700005, z: 0}
+  m_LocalPosition: {x: 0.8, y: -0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -58297,7 +58299,7 @@ Transform:
   m_GameObject: {fileID: 4831605189778305307}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 1.083, y: -0.042, z: 0}
+  m_LocalPosition: {x: 0.847, y: -0.151, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -58657,6 +58659,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStatsSO: {fileID: 11400000, guid: 6d511e1fba2770643bcb282c5142e1bb, type: 2}
+  initialStartLevelAmmo: 0
+  initialStartLevelOrbs: 0
   backpackGemSizePercentBuff: 0
   backpackOrbSizePercentBuff: 0
   backpackAmmoSizePercentBuff: 0
@@ -58812,6 +58816,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 8500947976074543661}
   gunVisualTransform: {fileID: 2822234430507241355}
+  gunShootLight: {fileID: 8848354220431731542}
 --- !u!1 &4975682505801664034
 GameObject:
   m_ObjectHideFlags: 0
@@ -59539,7 +59544,7 @@ Transform:
   m_GameObject: {fileID: 5054163266634100829}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.802, y: -0.10700005, z: 0}
+  m_LocalPosition: {x: 0.348, y: -0.215, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -76241,7 +76246,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1586199564263311182
 Transform:
   m_ObjectHideFlags: 0
@@ -76344,6 +76349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 3542189886094820931}
   gunVisualTransform: {fileID: 9087013205538204572}
+  gunShootLight: {fileID: 7400103338334246543}
 --- !u!114 &6733557739028499959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76738,6 +76744,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 8949719813477746143}
   gunVisualTransform: {fileID: 3684639907533519759}
+  gunShootLight: {fileID: 6818120942766008867}
 --- !u!1 &7700401196638512832
 GameObject:
   m_ObjectHideFlags: 0
@@ -78728,6 +78735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 3184030084038397659}
   gunVisualTransform: {fileID: 4309091949621783138}
+  gunShootLight: {fileID: 4239879708297367954}
 --- !u!1 &7915249734270255090
 GameObject:
   m_ObjectHideFlags: 0
@@ -90069,6 +90077,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 7131794822164019350}
   gunVisualTransform: {fileID: 2420442902185994048}
+  gunShootLight: {fileID: 6898336410409134958}
 --- !u!1 &8409298268268584185
 GameObject:
   m_ObjectHideFlags: 0

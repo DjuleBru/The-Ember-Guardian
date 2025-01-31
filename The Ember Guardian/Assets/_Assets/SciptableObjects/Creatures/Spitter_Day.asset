@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e57289136e0e1e6418ec81259b9649b2, type: 3}
-  m_Name: Spitter
+  m_Name: Spitter_Day
   m_EditorClassIdentifier: 
   enemyName: Spitter
   description: Ranged mob that fires arced projectiles
@@ -27,7 +27,7 @@ MonoBehaviour:
   maxHealth: 60
   damage: 1
   attackRate: 2.5
-  enteredLightattackRateDebuff: 1.8
+  enteredLightattackRateDebuff: 2.5
   isRangedAttack: 1
   canAttackPlayerOnTower: 1
   minAttackRange: 15

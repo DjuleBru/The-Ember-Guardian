@@ -9,6 +9,7 @@ public class Structure : MonoBehaviour {
     [SerializeField] protected bool upgradeUnlocked;
     [SerializeField] protected bool primaryFunctionUnlocked;
     [SerializeField] protected bool secondaryFunctionUnlocked;
+    protected bool upgradable;
 
     private CampZoneManager.CampSide campSide;
     protected PayCurrencyUI payCurrencyUI;
@@ -56,6 +57,7 @@ public class Structure : MonoBehaviour {
             campSide = CampZoneManager.Instance.AssignCampSide(transform.position);
             PlayerCamp.Instance.AddStructure(this);
             Tent.Instance.OnStructureUpgraded += Tent_OnStructureUpgraded;
+            upgradable = structureSO.upgradeable;
         }
 
         payCurrencyUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
@@ -137,9 +139,10 @@ public class Structure : MonoBehaviour {
         RefreshStructureUpgradeInteraction();
     }
     protected virtual void RefreshStructureUpgradeInteraction() {
+        if (!upgradable) return;
         bool ungradeUnlocked = false;
 
-        // Unlock upgrades if unlocked at gem merchant
+        // Check if upgrade has been unlocked at gem merchant
         string saveString = structureSO.structureType.ToString() + (structureLevel+1);
 
         if (!MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
@@ -149,19 +152,24 @@ public class Structure : MonoBehaviour {
             ungradeUnlocked = true;
         }
 
-        // Unlock upgrades if tent upgrade allows for new unlocks
-        if(structureLevel == 1 && Tent.Instance.GetStructureLevel() >= structureSO.tentLevelRequiredForLevel2) {
-            ungradeUnlocked = true;
-        }
-        if (structureLevel == 2 && Tent.Instance.GetStructureLevel() >= structureSO.tentLevelRequiredForLevel3) {
-            ungradeUnlocked = true;
-        }
+        if (ungradeUnlocked)
+        {
+            // Check if tent is high level enough
+            if (structureLevel == 1 && Tent.Instance.GetStructureLevel() >= structureSO.tentLevelRequiredForLevel2) {
+                ungradeUnlocked = true;
+            }
+            if (structureLevel == 2 && Tent.Instance.GetStructureLevel() >= structureSO.tentLevelRequiredForLevel3) {
+                ungradeUnlocked = true;
+            }
 
-        if (structureLevel == 3 && Tent.Instance.GetStructureLevel() >= structureSO.tentLevelRequiredForLevel4) {
-            ungradeUnlocked = true;
+            if (structureLevel == 3 && Tent.Instance.GetStructureLevel() >= structureSO.tentLevelRequiredForLevel4) {
+                ungradeUnlocked = true;
+            }
         }
-
+        
+        Debug.Log("RefreshStructureUpgradeInteraction " + ungradeUnlocked);
         SetStructureUpgradableUnlocked(ungradeUnlocked);
+        OnStructureInteractionsUpdated?.Invoke(this, EventArgs.Empty);
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision) {
@@ -209,7 +217,7 @@ public class Structure : MonoBehaviour {
         payCurrencyUI.SetPlayerInteracting(true);
     }
 
-    public void SetStructureUpgradableUnlocked(bool upgradable) {
+    public virtual void SetStructureUpgradableUnlocked(bool upgradable) {
         upgradeUnlocked = upgradable;
         ActivateStructureUpgradeInteraction(upgradable);
     }
@@ -225,7 +233,6 @@ public class Structure : MonoBehaviour {
         secondaryFunctionUnlocked = unlocked;
         ActivateStructureSecondaryFunctionInteraction(unlocked);
     }
-
 
     protected void DebugInitializeActiveStructureUITypeList() {
 

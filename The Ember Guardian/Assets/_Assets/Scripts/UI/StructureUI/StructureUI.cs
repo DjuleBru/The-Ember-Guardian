@@ -142,7 +142,7 @@ public class StructureUI : MonoBehaviour
 
     protected void UpdateSwitchUIGameObjectActivation() {
 
-        if(structure.GetActiveStructureInteractionTypeList().Count > 1) {
+        if (structure.GetActiveStructureInteractionTypeList().Count > 1) {
             switchUIGameObjectList.SetActive(true);
         } else {
             switchUIGameObjectList.SetActive(false);

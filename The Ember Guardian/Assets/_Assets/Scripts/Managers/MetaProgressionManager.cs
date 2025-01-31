@@ -537,6 +537,13 @@ public class MetaProgressionManager : MonoBehaviour
     #endregion
 
     #region OTHER
+    public void SetFirstGunBoughtTooltipShown() {
+        ES3.Save("firstGunBoughtTooltipShown", true);
+    }
+
+    public bool GetFirstGunBoughtTooltipShown() {
+        return ES3.Load("firstGunBoughtTooltipShown", false);
+    }
     public bool GetPlayerUnlockedFlagCarry() {
         return ES3.Load("playerUnlockedFlagCarry", false);
     }

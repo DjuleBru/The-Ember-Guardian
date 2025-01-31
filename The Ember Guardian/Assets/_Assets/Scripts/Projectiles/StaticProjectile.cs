@@ -32,8 +32,11 @@ public class StaticProjectile : MonoBehaviour
         }
 
         if (collision.GetComponent<Worker>() != null) {
-            collision.GetComponent<Worker>().TakeDamage(1, transform, false);
-            hasHit = true;
+            Worker worker = collision.GetComponent<Worker>();
+            if(worker.GetRecruited()) {
+                collision.GetComponent<Worker>().TakeDamage(1, transform, false);
+                hasHit = true;
+            }
         }
 
         // Hit Barricade

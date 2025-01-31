@@ -117,6 +117,9 @@ public class CreatureSO : ScriptableObject
     public float totalAttackAnimationTime;
     [VerticalGroup("Game Data/Animation Parameters")]
     [LabelWidth(200)]
+    public bool hasCustomSpawnAnimation;
+    [VerticalGroup("Game Data/Animation Parameters")]
+    [LabelWidth(200)]
     public float spawnAnimationDuration = 1f;
     [VerticalGroup("Game Data/Animation Parameters")]
     [LabelWidth(200)]

@@ -49,7 +49,6 @@ public class Tent : Structure
     }
 
     protected override void RefreshStructureUpgradeInteraction() {
-
         string saveString = structureSO.structureType.ToString() + (structureLevel+1);
 
         if (!MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {

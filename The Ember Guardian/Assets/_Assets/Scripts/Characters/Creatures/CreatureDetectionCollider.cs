@@ -159,7 +159,10 @@ public class CreatureDetectionCollider : MonoBehaviour
             iDamageablesDetected.Add(Player.Instance);
         }
 
-        if (iDamageablesDetected.Count == 0) return;
+        if (iDamageablesDetected.Count == 0) {
+            creatureAI.ResetAttackTargetInProximity();
+            return;
+        }
 
         IDamageable highestPriorityTarget = null;
         int highestPriority = 0; // Initialise à une valeur élevée

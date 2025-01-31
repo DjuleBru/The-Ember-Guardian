@@ -20,6 +20,8 @@ public class InputControlIcons : MonoBehaviour
         Back,
         SecondaryGunAbility,
         Roll,
+        OpenPlayerMenu,
+        SwitchBuildingFunctions,
     }
 
     public Sprite gamepadYSprite;
@@ -38,6 +40,7 @@ public class InputControlIcons : MonoBehaviour
     public Sprite gamepadUpArrowSprite;
     public Sprite gamepadLeftArrowSprite;
     public Sprite gamepadRightArrowSprite;
+    public Sprite gamepadSelectSprite;
 
     public Sprite keyboardRSprite;
     public Sprite keyboardASprite;
@@ -47,6 +50,8 @@ public class InputControlIcons : MonoBehaviour
     public Sprite keyboardQSprite;
     public Sprite keyboardDSprite;
     public Sprite keyboardESprite;
+    public Sprite keyboardZSprite;
+    public Sprite keyboardXSprite;
     public Sprite keyboardLSprite;
     public Sprite keyboard1Sprite;
     public Sprite keyboard2Sprite;
@@ -56,6 +61,7 @@ public class InputControlIcons : MonoBehaviour
     public Sprite keyboardMouseSprite;
     public Sprite keyboardEscSprite;
     public Sprite keyboardSpaceSprite;
+    public Sprite keyboardTabSprite;
 
     private void Awake() {
         Instance = this;
@@ -107,6 +113,13 @@ public class InputControlIcons : MonoBehaviour
             if (control == Control.Roll) {
                 spriteList.Add(gamepadASprite);
             }
+            if (control == Control.OpenPlayerMenu) {
+                spriteList.Add(gamepadSelectSprite);
+            }
+            if (control == Control.SwitchBuildingFunctions) {
+                spriteList.Add(gamepadLeftArrowSprite);
+                spriteList.Add(gamepadRightArrowSprite);
+            }
         } else {
             if (control == Control.Reload) {
                 spriteList.Add(keyboardRSprite);
@@ -146,6 +159,13 @@ public class InputControlIcons : MonoBehaviour
             }
             if (control == Control.Roll) {
                 spriteList.Add(keyboardSpaceSprite);
+            }
+            if (control == Control.OpenPlayerMenu) {
+                spriteList.Add(keyboardTabSprite);
+            }
+            if (control == Control.SwitchBuildingFunctions) {
+                spriteList.Add(keyboardZSprite);
+                spriteList.Add(keyboardXSprite);
             }
             if (control == Control.Move) {
                 spriteList.Add(keyboardQSprite);

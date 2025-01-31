@@ -81,6 +81,18 @@ public class CreaturesSpawnManager : MonoBehaviour
     private void Start() {
         CreaturesManager.Instance.OnCreatureAtNightKilled += CreaturesManager_OnCreatureAtNightKilled;
         CreaturesManager.Instance.OnCreatureAtNightSpawned += CreaturesManager_OnCreatureAtNightSpawned;
+        CreaturesManager.Instance.OnAdditionalCreatureAtNightSpawned += CreaturesManager_OnAdditionalCreatureAtNightSpawned;
+    }
+
+    private void CreaturesManager_OnAdditionalCreatureAtNightSpawned(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
+        remainingNightCreatures++;
+        totalNightCreatures++;
+
+        float remainingNightCreaturesNormalized = (float)remainingNightCreatures / (float)totalNightCreatures;
+
+        OnRemainingNightCreaturesChanged?.Invoke(this, new OnRemainingNightCreaturesChangedEventArgs {
+            remainingNightCreaturesNormalized = remainingNightCreaturesNormalized
+        });
     }
 
     private void CreaturesManager_OnCreatureAtNightSpawned(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
@@ -231,7 +243,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         subWaveIndex = 0;
         int spawnedCount = 0;
 
-        while (subWaveIndex != subWaveNumber + 1) {
+        while (subWaveIndex != subWaveNumber) {
             // Détermine combien de créatures spawn à chaque intervalle
 
             Debug.Log("subWaveIndex " + subWaveIndex);

@@ -99,7 +99,6 @@ public class ItemButtonUI : ButtonUI
     }
 
     private void HubMerchantItem_OnHubMerchantItemLoaded(object sender, EventArgs e) {
-        Debug.Log(hubMerchantItem.GetItemType() + "HubMerchantItem_OnHubMerchantItemLoaded");
 
         if (hubMerchantItem.GetItemUnlocked()) {
             SetItemUnlocked();
@@ -322,9 +321,6 @@ public class ItemButtonUI : ButtonUI
     }
 
     private void RefreshItemStatusVisuals() {
-
-        Debug.Log(hubMerchantItem.GetItemType() + " GetItemUnlocked() " + hubMerchantItem.GetItemUnlocked());
-        Debug.Log(hubMerchantItem.GetItemType() + " GetItemBought() " + hubMerchantItem.GetItemUnlocked());
         if (!hubMerchantItem.GetItemUnlocked()) {
             outlineImage.color = Color.grey;
             return;

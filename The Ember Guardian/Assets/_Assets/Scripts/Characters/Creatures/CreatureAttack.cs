@@ -6,7 +6,8 @@ using UnityEngine;
 public class CreatureAttack : MobAttack
 {
     private Creature creature;
-    private float enteredLightAttackSpeedDebuff = 1.4f;
+    private float enteredLightAttackSpeedDebuff;
+    private float nightAttackSpeedBuff = 1.5f;
 
     protected override void Awake() {
         base.Awake();
@@ -25,6 +26,9 @@ public class CreatureAttack : MobAttack
 
         if(creature.GetIsEliteDamageCreature()) {
             attackDamage *= 2;
+        }
+        if(!creature.IsDayCreature()) {
+            attackCooldown /= nightAttackSpeedBuff;
         }
     }
 
