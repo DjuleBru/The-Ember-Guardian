@@ -191,16 +191,12 @@ public class Player : MonoBehaviour, IDamageable
         dead = true;
 
         if(Fire.Instance.GetCurrentFuelLevel() == 0) {
-            StartCoroutine(LevelFailedCoroutine());
+            LevelManager.Instance.LooseLevel();
         } else {
             StartCoroutine(RespawnCoroutine());
         }
     }
 
-    private IEnumerator LevelFailedCoroutine() {
-        yield return new WaitForSeconds(2f);
-        SceneLoader.Instance.LoadHub(3f);
-    }
 
     private IEnumerator RespawnCoroutine() {
         yield return new WaitForSeconds(PlayerStats.Instance.GetRespawnTime());

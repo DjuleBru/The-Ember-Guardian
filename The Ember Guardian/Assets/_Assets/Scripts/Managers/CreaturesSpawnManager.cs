@@ -59,6 +59,7 @@ public class CreaturesSpawnManager : MonoBehaviour
     private int subWaveNumber;
     private int subWaveIndex;
 
+    private bool debugInputs;
     private void Awake() {
         Instance = this;
 
@@ -82,6 +83,8 @@ public class CreaturesSpawnManager : MonoBehaviour
         CreaturesManager.Instance.OnCreatureAtNightKilled += CreaturesManager_OnCreatureAtNightKilled;
         CreaturesManager.Instance.OnCreatureAtNightSpawned += CreaturesManager_OnCreatureAtNightSpawned;
         CreaturesManager.Instance.OnAdditionalCreatureAtNightSpawned += CreaturesManager_OnAdditionalCreatureAtNightSpawned;
+
+        debugInputs = DebugManager.Instance.GetAllowDebugInputs_CreaturesSpawnManager();
     }
 
     private void CreaturesManager_OnAdditionalCreatureAtNightSpawned(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
@@ -117,6 +120,11 @@ public class CreaturesSpawnManager : MonoBehaviour
     }
 
     private void Update() {
+        if (!debugInputs) return;
+        HandleDebugInputs();
+    }
+
+    private void HandleDebugInputs() {
         if (Input.GetKeyDown(KeyCode.U)) {
             currentWaveNumber++;
             SetWaveParameters(currentWaveNumber, true, true);

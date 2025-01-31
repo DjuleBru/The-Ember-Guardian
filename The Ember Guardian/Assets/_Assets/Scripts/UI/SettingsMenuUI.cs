@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class SettingsMenuUI : MonoBehaviour
 {
+
+    public static SettingsMenuUI Instance;
+
+    [SerializeField] private GameObject settingsPanelGameObject;
     [SerializeField] private Slider musicVolumeSlider;
     [SerializeField] private Slider sfxVolumeSlider;
     [SerializeField] private GameObject firstSelectedButton;
@@ -13,6 +17,13 @@ public class SettingsMenuUI : MonoBehaviour
     // Valeurs actuelles de volume
     private float currentMusicVolume;
     private float currentSfxVolume;
+
+    private bool panelOpen;
+
+    private void Awake() {
+        Instance = this;
+        settingsPanelGameObject.gameObject.SetActive(false);
+    }
 
     private void Start() {
         currentMusicVolume = SettingsManager.Instance.GetMusicVolume();
@@ -25,10 +36,13 @@ public class SettingsMenuUI : MonoBehaviour
         // Ajouter des listeners pour détecter les changements de valeur
         musicVolumeSlider.onValueChanged.AddListener(UpdateMusicVolume);
         sfxVolumeSlider.onValueChanged.AddListener(UpdateSfxVolume);
+
+        GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
     }
 
-    private void OnEnable() {
-        EventSystem.current.SetSelectedGameObject(firstSelectedButton);
+    private void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
+        if (!panelOpen) return;
+        CloseSettingsPanel();
     }
 
     // Méthode pour mettre à jour le volume de la musique
@@ -45,8 +59,27 @@ public class SettingsMenuUI : MonoBehaviour
         SettingsManager.Instance.SetSfxVolume(currentSfxVolume);
     }
 
+    public void OpenSettingsPanel() {
+        panelOpen = true;
+        settingsPanelGameObject.gameObject.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(firstSelectedButton);
+    }
+
     public void CloseSettingsPanel() {
-        gameObject.SetActive(false);
+        panelOpen = false;
+        settingsPanelGameObject.gameObject.SetActive(false);
+
+        if(MainMenuUI.Instance != null) {
+            MainMenuUI.Instance.ShowMainMenuButtons();
+        }
+
+        if(PauseMenuUI.Instance != null) {
+            PauseMenuUI.Instance.ReturnToPauseMenu();
+        }
+    }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
     }
 }
 

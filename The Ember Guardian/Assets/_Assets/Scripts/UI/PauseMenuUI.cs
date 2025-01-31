@@ -13,7 +13,6 @@ public class PauseMenuUI : MonoBehaviour
 
     [SerializeField] protected GameObject firstSelectedButton;
     [SerializeField] protected GameObject pausePanel;
-    [SerializeField] protected GameObject settingsPanel;
     [SerializeField] protected Button_Confirm buttonConfirm_ExitGame;
     [SerializeField] protected TextMeshProUGUI exitGameText;
 
@@ -39,7 +38,6 @@ public class PauseMenuUI : MonoBehaviour
         buttonConfirm_ExitGame.OnButtonDeselected += ButtonConfirm_ExitGame_OnButtonDeselected;
 
         pausePanel.SetActive(false);
-        settingsPanel.SetActive(false);
 
         if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
             SetCanSave(false);
@@ -76,7 +74,7 @@ public class PauseMenuUI : MonoBehaviour
         ShowPauseMenu(isPaused);
     }
 
-    protected void ShowPauseMenu(bool show) {
+    public void ShowPauseMenu(bool show) {
         pausePanel.SetActive(show);
 
         if(show) {
@@ -97,7 +95,10 @@ public class PauseMenuUI : MonoBehaviour
             OnPauseMenuClosed?.Invoke(this, EventArgs.Empty);
 
         }
+    }
 
+    public void ReturnToPauseMenu() {
+        EventSystem.current.SetSelectedGameObject(firstSelectedButton);
     }
 
     #region PAUSE MENU BUTTONS
@@ -118,7 +119,7 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     public virtual void SettingsButton() {
-        settingsPanel.gameObject.SetActive(true);
+        SettingsMenuUI.Instance.OpenSettingsPanel();
     }
 
     public virtual void ExitGameButton() {

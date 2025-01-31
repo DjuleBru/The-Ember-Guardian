@@ -101,9 +101,10 @@ public class PlayerShoot : MonoBehaviour
 
     [SerializeField] private List<Gun> allGunsList;
     [SerializeField] private List<GunSO> allGunSOList;
+
+    private bool useDebugGun;
     [SerializeField] private GunSO debugGun;
     [SerializeField] private GunSO debugSecondaryGun;
-    [SerializeField] private bool useDebugGun;
     [SerializeField] private bool debugSecondaryAbilityUnlocked;
 
     private void Awake() {
@@ -113,7 +114,8 @@ public class PlayerShoot : MonoBehaviour
     private void Start() {
         InitializeGuns();
 
-        if(useDebugGun) {
+        useDebugGun = DebugManager.Instance.GetDebugMode_PlayerWeapons();
+        if (useDebugGun) {
             SetActiveGun(debugGun);
             if (debugSecondaryGun != null) {
                 canHold2Guns = true;

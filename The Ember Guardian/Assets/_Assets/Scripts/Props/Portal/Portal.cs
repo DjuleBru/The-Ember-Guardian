@@ -13,7 +13,7 @@ public class Portal : MonoBehaviour
     [SerializeField] private bool isStartLevelTeleporter;
     [SerializeField] private bool isHUBTeleporter;
     [SerializeField] private int portalNumber;
-    [SerializeField] private bool DEBUGMODE;
+    private bool DEBUGMODE;
 
     [SerializeField] private float delayToAppearTeleporterIn;
     [SerializeField] private float delayToActivateTeleporter;
@@ -59,6 +59,8 @@ public class Portal : MonoBehaviour
     }
 
     private void Start() {
+        DEBUGMODE = DebugManager.Instance.GetDebugMode_Portals();
+
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
         floorCollider.enabled = false;
 
@@ -170,7 +172,7 @@ public class Portal : MonoBehaviour
         yield return new WaitForSeconds(delayToStartCrossfade);
 
         if(isEndLevelTeleporter) {
-            MetaProgressionManager.Instance.SaveLevelGems();
+            MetaProgressionManager.Instance.SaveLevelSuccessGems();
             MetaProgressionManager.Instance.SetGemsRewarded(false);
             MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
             LevelManager.Instance.SaveLevelCompletedProgression();

@@ -10,6 +10,7 @@ public class MainMenuUI : MonoBehaviour {
 
     public static MainMenuUI Instance;
 
+    protected bool mainMenuPanelOpen;
     protected bool confirmExitGame;
     protected bool confirmResetProgression;
 
@@ -20,7 +21,6 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] protected TextMeshProUGUI continueGameText;
     [SerializeField] protected TextMeshProUGUI newGameText;
 
-    [SerializeField] protected GameObject settingsPanel;
     [SerializeField] protected GameObject mainMenuPanelGameObject;
 
     public event EventHandler OnGameStart;
@@ -30,16 +30,19 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     private void Start() {
-        settingsPanel.SetActive(false);
-
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
         buttonConfirm_ResetProgression.OnButtonDeselected += ButtonConfirm_ResetProgression_OnButtonDeselected;
 
-        SetFirstSelectedButton();
-
-        StartCoroutine(FadeInMainMenu());
+        if(!VersioningManager.Instance.CheckNewSaveFile() && !VersioningManager.Instance.CheckIncompatibleSaveFile()) {
+            StartCoroutine(FadeInMainMenu(1.5f));
+        } else {
+            continueButton.interactable = false;
+        }
     }
+
+  
     private void SetFirstSelectedButton() {
+        Debug.Log("SetFirstSelectedButton");
         if (!MetaProgressionManager.Instance.GetSavedOnce()) {
             continueButton.interactable = false;
             EventSystem.current.SetSelectedGameObject(newGameButton.gameObject);
@@ -80,8 +83,8 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     public virtual void SettingsButton() {
-        settingsPanel.SetActive(true);
-        //mainMenuPanelGameObject.SetActive(false);
+        SettingsMenuUI.Instance.OpenSettingsPanel();
+        HideMainMenuButtons();
     }
 
     public virtual void ExitGameButton() {
@@ -91,6 +94,7 @@ public class MainMenuUI : MonoBehaviour {
     #endregion
 
     private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
+        if (!mainMenuPanelOpen) return;
         if (GameInput.Instance.IsUsingGamepad()) {
             SetFirstSelectedButton();
         }
@@ -124,15 +128,29 @@ public class MainMenuUI : MonoBehaviour {
 
         MusicManager.Instance.FadeOutMusic(1f);
     }
-    private IEnumerator FadeInMainMenu() {
-        yield return new WaitForSeconds(1.5f);
+    private IEnumerator FadeInMainMenu(float delay) {
+        yield return new WaitForSeconds(delay);
         mainMenuPanelAnimator.SetTrigger("FadeIn");
+        yield return new WaitForSeconds(1.5f);
+        SetFirstSelectedButton();
     }
 
     private void ButtonConfirm_ResetProgression_OnButtonDeselected(object sender, EventArgs e) {
         confirmResetProgression = false;
         newGameText.text = "New Game";
     }
+    public void ShowMainMenuButtons() {
+        Debug.Log("ShowMainMenuButtons");
+        StartCoroutine(FadeInMainMenu(0f));
+        mainMenuPanelOpen = true;
+    }
+
+    public void HideMainMenuButtons() {
+        Debug.Log("HideMainMenuButtons");
+        mainMenuPanelAnimator.SetTrigger("FadeOut");
+        mainMenuPanelOpen = false;
+    }
+
     private void OnDestroy() {
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
     }

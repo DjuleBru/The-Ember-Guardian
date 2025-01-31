@@ -120,6 +120,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         bool subObjectiveIsListed = false;
 
         foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>(true)) {
+            Debug.Log("SetSubObjectiveCompleted " + subObjectiveType + " Checking subObjective " + subObjectiveUI.GetSubObjectiveType());
             if (subObjectiveUI.GetSubObjectiveType() == subObjectiveType) {
                 subObjectiveIsListed = true;    
             }

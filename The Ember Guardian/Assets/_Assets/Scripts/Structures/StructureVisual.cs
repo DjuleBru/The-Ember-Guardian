@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class StructureVisual : MonoBehaviour {
 
-    [SerializeField] protected List<GameObject> structureLights;
     [SerializeField] protected SpriteRenderer structureSpriteRenderer;
     [SerializeField] protected SpriteRenderer structureFunctionIconSpriteRenderer;
     [SerializeField] protected Color greyedStructionIconColor;
@@ -39,8 +38,6 @@ public class StructureVisual : MonoBehaviour {
         structure.OnInitialCampStructureBuilt += Structure_OnInitialCampStructureBuilt;
 
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
-            DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
-            DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
             PlayerCampVisual.Instance.OnCampBackgroundBuilt += PlayerCampVisual_OnCampBackgroundBuilt;
         }
 
@@ -66,17 +63,6 @@ public class StructureVisual : MonoBehaviour {
         }
     }
 
-    protected virtual void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
-        foreach (GameObject gameObject in structureLights) {
-            gameObject.SetActive(true);
-        }
-    }
-
-    protected virtual void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
-        foreach(GameObject gameObject in structureLights) {
-            gameObject.SetActive(false);
-        }
-    }
 
     protected void PlayerCampVisual_OnCampBackgroundBuilt(object sender, System.EventArgs e) {
         if (!animateSpriteMaterialOnBuild) return;

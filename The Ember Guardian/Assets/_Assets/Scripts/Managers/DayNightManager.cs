@@ -24,6 +24,8 @@ public class DayNightManager : MonoBehaviour
     private float totalDayTimer;
     private float totalNightTimer;
 
+    private bool allowDebugInputs;
+
     public enum State { 
     Dawn,
     Day,
@@ -50,6 +52,7 @@ public class DayNightManager : MonoBehaviour
         Fire.Instance.OnFireEmberExtractionStopped += Fire_OnFireEmberExtractionStopped;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
 
+        allowDebugInputs = DebugManager.Instance.GetAllowDebugInputs_DayNightManager();
         if (manualInitialCycleSet) {
             ChangeState(debugState);
             return;
@@ -61,7 +64,9 @@ public class DayNightManager : MonoBehaviour
     }
 
     private void Update() {
-        HandleDebugNextState();
+        if(allowDebugInputs) {
+            HandleDebugNextState();
+        }
         if (cyclePaused) return;
 
         cycleTimer += Time.deltaTime;

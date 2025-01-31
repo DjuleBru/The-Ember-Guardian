@@ -37,7 +37,7 @@ public class PlayerStats : MonoBehaviour
     # region Health
     private int initialMaxPlayerHP = 3;
     private float initialDamagedImmunityTime = 1.5f;
-    private float initialRespawnTime = 5f;
+    private float initialRespawnTime = 8f;
     private int initialPlayerRespawnHP = 3;
     private float initialHpRegenTimer = 0f;
     private float absoluteHpRegenTimer_meta = 0f;

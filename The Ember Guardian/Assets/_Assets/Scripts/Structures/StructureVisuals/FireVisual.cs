@@ -83,10 +83,10 @@ public class FireVisual : StructureVisual
         playerRespawnPS.Play();
     }
 
-    protected override void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
+    protected void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
         AOEFireLight.enabled = true;
     }
-    protected override void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
+    protected void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
         AOEFireLight.enabled = false;
     }
 

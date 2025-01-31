@@ -1,0 +1,47 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class DebugManager : MonoBehaviour
+{
+    public static DebugManager Instance;
+
+    [SerializeField] private bool allowDebugInputs_CreaturesSpawnManager;
+    [SerializeField] private bool allowDebugInputs_DayNightManager;
+    [SerializeField] private bool allowDebugInputs_CurrencyUIManager;
+    [SerializeField] private bool debugMode_PlayerWeapons;
+    [SerializeField] private bool debugMode_Portals;
+    [SerializeField] private bool debugMode_HUBManager;
+    [SerializeField] private bool debugMode_HUBMerchants;
+    [SerializeField] private bool debugMode_Tutorial;
+
+    private void Awake() {
+        Instance = this;
+    }
+
+    public bool GetAllowDebugInputs_CreaturesSpawnManager() {
+        return allowDebugInputs_CreaturesSpawnManager;
+    }
+    public bool GetAllowDebugInputs_DayNightManager() {
+        return allowDebugInputs_DayNightManager;
+    }
+    public bool GetAllowDebugInputs_CurrencyUIManager() {
+        return allowDebugInputs_CurrencyUIManager;
+    }
+    public bool GetDebugMode_PlayerWeapons() {
+        return debugMode_PlayerWeapons;
+    }
+    public bool GetDebugMode_Portals() {
+        return debugMode_Portals;
+    }
+    public bool GetDebugMode_HUBManager() {
+        return debugMode_HUBManager;
+    }
+    public bool GetDebugMode_HUBMerchants() {
+        return debugMode_HUBMerchants;
+    }
+    public bool GetDebugMode_Tutorial() {
+        return debugMode_Tutorial;
+    }
+
+}

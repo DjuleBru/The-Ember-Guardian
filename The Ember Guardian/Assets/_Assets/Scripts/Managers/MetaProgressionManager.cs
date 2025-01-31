@@ -140,12 +140,19 @@ public class MetaProgressionManager : MonoBehaviour
         ES3.Save(key, gemAmount);
     }
 
-    public void SaveLevelGems() {
+    public void SaveLevelSuccessGems() {
         SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.greenGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count);
         SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.redGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count);
         SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.blueGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count);
         SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.yellowGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count);
         SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.purpleGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count);
+    }
+    public void SaveLevelDefeatGems() {
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.greenGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count/3);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.redGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count/3);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.blueGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count/3);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.yellowGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count/3);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.purpleGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count/3);
     }
 
     public void SetGemsRewarded(bool rewarded) {

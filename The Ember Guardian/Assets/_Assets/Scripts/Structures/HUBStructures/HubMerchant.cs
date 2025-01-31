@@ -25,7 +25,7 @@ public class HubMerchant : MonoBehaviour
     [SerializeField] protected GameObject activeGameObject;
     [SerializeField] protected GameObject inactiveGameObject;
 
-    [SerializeField] protected bool DEBUGActivateMerchant;
+    protected bool DEBUGActivateMerchant;
 
     [SerializeField] protected GameObject hubMerchantItemParent;
     protected List<HubMerchantItem> hubMerchantItems = new List<HubMerchantItem>();
@@ -51,6 +51,8 @@ public class HubMerchant : MonoBehaviour
     protected bool hubMerchantLoaded;
 
     protected void Start() {
+        DEBUGActivateMerchant = DebugManager.Instance.GetDebugMode_HUBMerchants();
+
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         GameInput.Instance.OnPlayerPausePerformed += GameInput_OnPlayerPausePerformed;

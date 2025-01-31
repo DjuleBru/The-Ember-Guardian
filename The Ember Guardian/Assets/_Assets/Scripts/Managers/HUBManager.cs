@@ -6,7 +6,7 @@ public class HUBManager : MonoBehaviour
 {
     public static HUBManager Instance;
 
-    public bool DEBUGMODE;
+    private bool DEBUGMODE;
 
     [SerializeField] private Transform firstHubLoadPlayerSpawnPoint;
     [SerializeField] private Transform firstHubLoadDogSpawnPoint;
@@ -35,6 +35,8 @@ public class HUBManager : MonoBehaviour
     }
 
     private void Start() {
+        DEBUGMODE = DebugManager.Instance.GetDebugMode_HUBManager();
+
         List<Vector3> redGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.redGem);
         List<Vector3> greenGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.greenGem);
         List<Vector3> yellowGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.yellowGem);

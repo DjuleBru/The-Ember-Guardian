@@ -32,6 +32,7 @@ public class UICurrencyManager : MonoBehaviour
     [SerializeField] private int smallOrbValue = 5;
 
     private int initialBigBlueOrbs;
+    private bool allowDebugInputs;
     [SerializeField] int debugInitialBigOrbs = 10;
     [SerializeField] int debugInitialSmallOrbs = 0;
     [SerializeField] int debugInitialBigRedOrbs = 10;
@@ -75,14 +76,26 @@ public class UICurrencyManager : MonoBehaviour
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyStructurePrimaryFunctionUsed += Structure_OnAnyStructureFunctionUsed;
 
-        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
-            AddDebugCurrency();
+
+        allowDebugInputs = DebugManager.Instance.GetAllowDebugInputs_CurrencyUIManager();
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            if(allowDebugInputs) {
+                AddDebugCurrency();
+            }
+
             AddInitialCurrencies();
         }
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.T)) {
+        if(allowDebugInputs) {
+            HandleDebugInputs();
+        }
+        
+    }
+    private void HandleDebugInputs() {
+        if (Input.GetKeyDown(KeyCode.G)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.greenGem);
         }
         if (Input.GetKeyDown(KeyCode.Y)) {

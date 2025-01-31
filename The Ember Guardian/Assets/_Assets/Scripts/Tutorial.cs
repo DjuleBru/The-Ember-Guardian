@@ -8,7 +8,7 @@ public class Tutorial : MonoBehaviour
 {
     public static Tutorial Instance;
 
-    [SerializeField] private bool testing;
+    private bool testing;
     [SerializeField] private Transform initialSpawnPoint;
     [SerializeField] private Transform beforeFireRespawnPoint;
     [SerializeField] private TutorialCollider firstCreatureCollider;
@@ -80,6 +80,8 @@ public class Tutorial : MonoBehaviour
     }
 
     private void Start() {
+        testing = DebugManager.Instance.GetDebugMode_Tutorial();
+
         UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         dog.OnPlayerTriggeredIn += Dog_OnPlayerTriggeredIn;
         dog.OnIdleStateChanged += Dog_OnIdleStateChanged;
@@ -242,6 +244,7 @@ public class Tutorial : MonoBehaviour
         StructureSO structureSO = structureLocation.GetStructureSOToBuild();
 
         if (structureSO.structureType == StructureSO.StructureType.fire) {
+            Debug.Log("Initial fire built");
             if (fireBuilt) return;
 
             Fire.Instance.SetStructureSecondaryFunctionUnlocked(false);
@@ -487,7 +490,7 @@ public class Tutorial : MonoBehaviour
     private IEnumerator StartSetupCampObjectiveCoroutine() {
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.Keep2WorkersAlive);
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
 
         LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.SetupCamp);
         List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectivesTypesList = new List<LevelUI_ObjectiveUI.SubObjectiveType> {
@@ -750,7 +753,7 @@ public class Tutorial : MonoBehaviour
     private IEnumerator EndTutorialCorioutine() {
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
         MetaProgressionManager.Instance.SetTutorialCompleted(); 
-        MetaProgressionManager.Instance.SaveLevelGems();
+        MetaProgressionManager.Instance.SaveLevelSuccessGems();
         
         yield return new WaitForSeconds(6f);
 

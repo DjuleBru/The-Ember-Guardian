@@ -7,6 +7,7 @@ using UnityEngine.Rendering.Universal;
 public class BarricadeVisual : StructureVisual {
 
     [SerializeField] private Light2D barricadeSpotLight;
+    [SerializeField] private GameObject barricadeSpotLightGameObject;
     [SerializeField] private Animator barricadeLightBodyAnimator;
     [SerializeField] private List<BarricadePiece> level1BarricadePieceList;
     [SerializeField] private List<BarricadePiece> level2BarricadePieceList;
@@ -18,6 +19,8 @@ public class BarricadeVisual : StructureVisual {
 
     private Barricade barricade;
     private int spriteIndex = 1;
+    private bool spotLightUnlocked;
+    private bool outerBarricade;
 
     public event EventHandler OnBarricadeSpriteFell;
 
@@ -46,6 +49,12 @@ public class BarricadeVisual : StructureVisual {
         barricadeLightBodyAnimator.SetTrigger("Build");
         currentLevelBarricadePieceList = level1BarricadePieceList;
         built = true;
+
+        //spotLightUnlocked = ES3.Load("barricadeSpotLightUnlocked", false);
+        spotLightUnlocked = true;
+        if(!spotLightUnlocked) {
+            barricadeSpotLightGameObject.SetActive(false);
+        }
     }
 
     private void Barricade_OnBarricadeRepaired(object sender, System.EventArgs e) {
@@ -151,6 +160,8 @@ public class BarricadeVisual : StructureVisual {
     }
 
     public void SetAsOuterBarricade(bool outerBarricade) {
+        this.outerBarricade = outerBarricade;
+        if (!spotLightUnlocked) return;
         barricadeSpotLight.enabled = outerBarricade;
     }
 
@@ -166,6 +177,16 @@ public class BarricadeVisual : StructureVisual {
         }
     }
 
+    protected void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
+        if (!spotLightUnlocked) return;
+        barricadeSpotLight.enabled = outerBarricade;
+    }
+
+    protected void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
+        if (!spotLightUnlocked) return;
+        barricadeSpotLight.enabled = outerBarricade;
+        
+    }
     public bool GetBarricadeHasAllSprites() {
         if (spriteIndex == 1) {
             return true;

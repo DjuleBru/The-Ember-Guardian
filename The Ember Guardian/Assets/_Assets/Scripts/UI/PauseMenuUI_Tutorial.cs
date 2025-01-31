@@ -27,7 +27,9 @@ public class PauseMenuUI_Tutorial : PauseMenuUI
             MetaProgressionManager.Instance.SetTutorialCompleted();
 
             // Tutorial gems
-            MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.blueGem, 6);
+            MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.yellowGem, 9);
+            MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.redGem, 2);
+            MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.greenGem, 2);
 
             SceneLoader.Instance.LoadHub(1f);
         }
