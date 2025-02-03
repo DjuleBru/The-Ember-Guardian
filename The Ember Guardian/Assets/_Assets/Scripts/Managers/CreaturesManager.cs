@@ -24,7 +24,7 @@ public class CreaturesManager : MonoBehaviour
         Instance = this;
     }
 
-    public Creature GetClosestCreatureInRadiusSmart(Vector2 position, float radius, int damage) {
+    public Creature GetClosestCreatureInRadiusSmart(Vector2 position, float radius, int damage, bool canAttackFlying) {
 
         float closestXDistance = Mathf.Infinity;
         Creature closestCreatureInRadius = null;
@@ -32,6 +32,8 @@ public class CreaturesManager : MonoBehaviour
         foreach (Creature creature in creaturesSpawnedList) {
             float distanceToCreature = Mathf.Abs(creature.transform.position.x - position.x);
             bool creatureIsOneHitAwayFromDeathAndAlreadyTargeted = creature.GetCreatureTargeted() && creature.GetCreatureHealth() <= damage;
+
+            if (!canAttackFlying && creature.GetCreatureSO().flying) continue;
 
             if ((distanceToCreature) < radius) {
                 // Creature is within attack range

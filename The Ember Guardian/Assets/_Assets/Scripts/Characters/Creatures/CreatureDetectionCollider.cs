@@ -14,8 +14,18 @@ public class CreatureDetectionCollider : MonoBehaviour
     private float playerShotCreatureTimer;
     private float playerShotCreatureAggroTime = 5f;
 
+    private bool guardHitCreature;
+    private float guardHitCreatureAggroProbability = .25f;
+    private float guardHitCreatureTimer;
+    private float guardHitCreatureAggroTime = 5f;
+
     private float refreshTargetTimer;
     private float refreshTargetcooldown = .25f;
+
+    // Targeting priorities : higher value = higher priority  
+    private int workerTargetingPriority;
+    private int playerTargetingPriority;
+    private int barricadeTargetingPriority;
 
     private void Awake() {
         creature = GetComponentInParent<Creature>();
@@ -27,6 +37,10 @@ public class CreatureDetectionCollider : MonoBehaviour
     private void Start() {
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         creature.OnMobDamageTaken += Creature_OnMobDamageTaken;
+
+        workerTargetingPriority = creature.GetCreatureSO().workerTargetingPriority;
+        playerTargetingPriority = creature.GetCreatureSO().playerTargetingPriority;
+        barricadeTargetingPriority = creature.GetCreatureSO().barricadeTargetingPriority;
     }
 
     private void Player_OnPlayerDied(object sender, System.EventArgs e) {
@@ -44,6 +58,7 @@ public class CreatureDetectionCollider : MonoBehaviour
         }
 
         HandlePlayerShotCreature();
+        HandleGuardHitCreature();
     }
 
     void OnTriggerEnter2D(Collider2D other) {
@@ -119,10 +134,38 @@ public class CreatureDetectionCollider : MonoBehaviour
             }
         }
     }
+    private void HandleGuardHitCreature() {
+        if (guardHitCreature) {
+            guardHitCreatureTimer -= Time.deltaTime;
+            if (guardHitCreatureTimer <= 0) {
+                guardHitCreature = false;
+                workerTargetingPriority = creature.GetCreatureSO().workerTargetingPriority;
+                if (iDamageablesInDetectionRange.Count == 0) {
+                    creatureAI.ResetAttackTargetInProximity();
+                }
+            }
+        }
+    }
     private void Creature_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {
         if (e.damageOriginTransform.GetComponent<Player>() != null) {
             playerShotCreature = true;
             playerShotCreatureTimer = playerShotCreatureAggroTime;
+        }
+
+        Worker worker = e.damageOriginTransform.GetComponent<Worker>();
+        if (worker != null) {
+
+            if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.guard) {
+                if ((workerTargetingPriority == 0)) return;
+
+                guardHitCreatureTimer = guardHitCreatureAggroTime;
+                float randomNumber = UnityEngine.Random.Range(0f, 1f);
+
+                if(randomNumber < guardHitCreatureAggroProbability) {
+                    guardHitCreature = true;
+                    workerTargetingPriority = 10;
+                }
+            }
         }
     }
 
@@ -173,8 +216,8 @@ public class CreatureDetectionCollider : MonoBehaviour
             if (iDamageable is Worker) {
 
                 Worker worker = (Worker)iDamageable;
-                if (CanAddWorkerToTargets(worker, iDamageablesDetected)) {
-                    currentPriority = creature.GetCreatureSO().workerTargetingPriority;
+                if (CanAddWorkerToTargets(worker)) {
+                    currentPriority = workerTargetingPriority;
                 }
                 else continue;
 
@@ -184,7 +227,7 @@ public class CreatureDetectionCollider : MonoBehaviour
                 Barricade barricade = (Barricade)iDamageable;
 
                 if (CanAddBarricadeToTargets(barricade)) {
-                    currentPriority = creature.GetCreatureSO().barricadeTargetingPriority;
+                    currentPriority = barricadeTargetingPriority;
                 }
                 else continue;
             }
@@ -198,7 +241,7 @@ public class CreatureDetectionCollider : MonoBehaviour
 
             if (iDamageable is Player) {
                 if (CanAddPlayerToTargets()) {
-                    currentPriority = creature.GetCreatureSO().playerTargetingPriority;
+                    currentPriority = playerTargetingPriority;
                 }
                 else continue;
                 
@@ -225,7 +268,7 @@ public class CreatureDetectionCollider : MonoBehaviour
     }
 
     private bool CanAddPlayerToTargets() {
-        if (creature.GetCreatureSO().playerTargetingPriority == 0) return false;
+        if (playerTargetingPriority == 0) return false;
 
         // Check if player is in range in the y axis (tower) !
         if(Player.Instance.transform.position.y > 0.1f) {
@@ -251,17 +294,18 @@ public class CreatureDetectionCollider : MonoBehaviour
         return false;
     }
     private bool CanAddBarricadeToTargets(Barricade barricade) {
-        if (creature.GetCreatureSO().barricadeTargetingPriority == 0) return false;
+        if (barricadeTargetingPriority == 0) return false;
         if (barricade.GetBarricadeHealthNormalized() > 0) {
             return true;
         }
         return false;
     }
-    private bool CanAddWorkerToTargets(Worker worker, List<IDamageable> iDamageablesDetected) {
+
+    private bool CanAddWorkerToTargets(Worker worker) {
 
         // Check if worker is out of camp AND player is around too
-        if (creature.GetCreatureSO().workerTargetingPriority == 0) return false;
-        if (!CampZoneManager.Instance.IsWithinCampZoneLimits(worker.transform.position) && iDamageablesDetected.Contains(Player.Instance)) {
+        if (workerTargetingPriority == 0) return false;
+        if (!CampZoneManager.Instance.IsWithinCampZoneLimits(worker.transform.position)) {
             return true;
         }
         return false;

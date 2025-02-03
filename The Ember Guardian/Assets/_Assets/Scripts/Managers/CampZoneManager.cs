@@ -158,6 +158,18 @@ public class CampZoneManager : MonoBehaviour
 
         return closestExteriorZoneLimit;
     }
+    public Vector3 GetExteriorZoneCenterPoint(CampSide campSide) {
+        Vector3 exteriorZoneCenterPoint = new Vector3(0, 0, 0);
+
+        if (campSide == CampSide.left) {
+            exteriorZoneCenterPoint.x = minZoneLimit + (GetHuntingMinZoneLimit() - minZoneLimit) / 2;
+        }
+        else {
+            exteriorZoneCenterPoint.x = maxZoneLimit + (GetHuntingMaxZoneLimit() - maxZoneLimit)/2;
+        }
+
+        return exteriorZoneCenterPoint;
+    }
     public Vector3 GetClosestHuntingLimit(Vector3 initialPosition, float distanceToSafety = 0f) {
         Vector3 closestExteriorZoneLimit = new Vector3(0, 0, 0);
 

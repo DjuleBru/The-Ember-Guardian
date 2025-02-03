@@ -32,6 +32,14 @@ public class Shrine : Structure
             joblessWorker.transform.position = workerSpawnPosition.position;
             joblessWorker.GetComponent<WorkerAI>().SetJob(WorkerAI.JobTypes.hunter);
         }
+        if (shrineType == ShrineType.minerShrine) {
+            joblessWorker.transform.position = workerSpawnPosition.position;
+            joblessWorker.GetComponent<WorkerAI>().SetJob(WorkerAI.JobTypes.miner);
+        }
+        if (shrineType == ShrineType.guardShrine) {
+            joblessWorker.transform.position = workerSpawnPosition.position;
+            joblessWorker.GetComponent<WorkerAI>().SetJob(WorkerAI.JobTypes.guard);
+        }
 
         OnShrineActivated?.Invoke(this, EventArgs.Empty);
         OnAnyShrineActivated?.Invoke(this, EventArgs.Empty);

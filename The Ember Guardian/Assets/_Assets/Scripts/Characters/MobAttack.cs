@@ -151,6 +151,10 @@ public class MobAttack : MonoBehaviour
         homingProjectile = homing;
     }
 
+    public void SetProjectileAttack(bool projectileAttack) {
+        this.isProjectileAttack = projectileAttack;
+    }
+
     public Vector3 GetAttackDir() {
         if((attackTargetIDamageable as MonoBehaviour) == null) {
             return Vector3.zero;

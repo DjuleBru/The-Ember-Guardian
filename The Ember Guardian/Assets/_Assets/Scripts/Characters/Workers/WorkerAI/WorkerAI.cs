@@ -11,6 +11,10 @@ public class WorkerAI : MonoBehaviour
     private WildJob wildJob;
     private JoblessJob joblessJob;
     private HunterJob hunterJob;
+    private GuardJob guardJob;
+    private MinerJob minerJob;
+
+    private bool followingPlayer;
 
     public enum JobTypes {
         wild,
@@ -24,6 +28,7 @@ public class WorkerAI : MonoBehaviour
     private bool debugSpawn;
 
     public event EventHandler OnJobChanged;
+    public event EventHandler OnWorkerFollowPlayerChanged;
 
     protected virtual void Awake() {
         worker = GetComponent<Worker>();
@@ -32,6 +37,8 @@ public class WorkerAI : MonoBehaviour
         wildJob = GetComponent<WildJob>();
         joblessJob = GetComponent<JoblessJob>();
         hunterJob = GetComponent<HunterJob>();
+        guardJob = GetComponent<GuardJob>();
+        minerJob = GetComponent<MinerJob>();
     }
 
     private void Start() {
@@ -53,6 +60,16 @@ public class WorkerAI : MonoBehaviour
             hunterJob.InitializeHunterJob();
             hunterJob.enabled = true;
         }
+        if (currentJob == JobTypes.miner) {
+            WorkerManager.Instance.RemoveJoblessWorker(worker);
+            minerJob.InitializeMinerJob();
+            minerJob.enabled = true;
+        }
+        if (currentJob == JobTypes.guard) {
+            WorkerManager.Instance.RemoveJoblessWorker(worker);
+            guardJob.InitializeGuardJob();
+            guardJob.enabled = true;
+        }
 
         if (currentJob == JobTypes.jobless) {
             wildJob.UnAggroBlueOrb();
@@ -64,15 +81,29 @@ public class WorkerAI : MonoBehaviour
 
     private void SetAllJobTypesInactive() {
         wildJob.enabled = false;
-
         joblessJob.enabled = false;
-
         hunterJob.enabled = false;
+        minerJob.enabled = false;
+        guardJob.enabled = false;
     }
 
     public JobTypes GetJob() {
         return currentJob;
     }
+
+    public void SetFollowingPlayer(bool followingPlayer) {
+        this.followingPlayer = followingPlayer;
+        OnWorkerFollowPlayerChanged?.Invoke(this, EventArgs.Empty);
+
+        if (followingPlayer) {
+            WorkerFollowPlayerHandler.Instance.AddFollowingWorker(worker);
+        }
+    }
+
+
+    public bool GetFollowingPlayer() {
+        return followingPlayer;
+    } 
 
     public void SetDebugSpawn() {
         debugSpawn = true;

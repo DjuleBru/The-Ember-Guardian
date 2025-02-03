@@ -29,6 +29,8 @@ public class Worker : Mob {
     public static event EventHandler OnAnyWorkerRecruited;
     public static event EventHandler OnAnyWorkerAssignedHunter;
     public static event EventHandler OnAnyWorkerDied;
+    public event EventHandler OnWorkerHovered;
+    public event EventHandler OnWorkerUnhovered;
 
     private void Awake() {
         workerAI = GetComponent<WorkerAI>();    
@@ -37,7 +39,6 @@ public class Worker : Mob {
     private void Start() {
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
     }
-
 
     private void Update() {
         if(droppingCurrencies) {
@@ -182,9 +183,17 @@ public class Worker : Mob {
         StartCoroutine(DestroyGameObjectAfterDelay(1f));
     }
 
+    public void HoverWorker(bool hover) {
+        if(hover) {
+            OnWorkerHovered?.Invoke(this, EventArgs.Empty);
+        } else {
+            OnWorkerUnhovered?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
     private void WorkerAI_OnJobChanged(object sender, EventArgs e) {
         if(workerAI.GetJob() == WorkerAI.JobTypes.guard) {
-            health = 5;
+            health = 10;
         } else {
             health = 1;
         }

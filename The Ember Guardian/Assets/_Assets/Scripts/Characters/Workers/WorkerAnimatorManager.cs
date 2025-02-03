@@ -8,6 +8,7 @@ public class WorkerAnimatorManager : MonoBehaviour
     [SerializeField] private RuntimeAnimatorController hunterAnimator;
     [SerializeField] private RuntimeAnimatorController guardAnimator;
     [SerializeField] private RuntimeAnimatorController minerAnimator;
+    [SerializeField] private Animator workerBodyAnimator;
 
     private Worker worker;
     private WorkerAI workerAI;
@@ -30,8 +31,12 @@ public class WorkerAnimatorManager : MonoBehaviour
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
         mobAttack.OnMobAttack += MobAttack_OnMobAttack;
         worker.OnMobDied += Worker_OnMobDied;
+        worker.OnMobDamageTaken += Worker_OnMobDamageTaken;
     }
 
+    private void Worker_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {
+        workerBodyAnimator.SetTrigger("Hit");
+    }
 
     private void Start() {
         RefreshJobAnimator();

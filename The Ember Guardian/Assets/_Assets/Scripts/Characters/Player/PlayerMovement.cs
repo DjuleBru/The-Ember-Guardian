@@ -52,6 +52,7 @@ public class PlayerMovement : MonoBehaviour {
     private float runTimePercentageBeforeWarningExhaustion = .65f;
     private Rigidbody2D rb;
 
+    public event EventHandler OnPlayerMovespeedChanged;
     public event EventHandler OnPlayerRoll;
     public event EventHandler OnPlayerRollEnded;
     public event EventHandler OnPlayerJumpUp;
@@ -233,11 +234,18 @@ public class PlayerMovement : MonoBehaviour {
 
         if((lastMoveDir > 0 && PlayerAim.Instance.GetAimDir().x < 0) || (lastMoveDir < 0 && PlayerAim.Instance.GetAimDir().x > 0)) {
 
-            isMovingBackwards = true;
+            if(!isMovingBackwards) {
+
+                isMovingBackwards = true;
+                BuffMoveSpeed(moveSpeedBackwardsMultiplier);
+            }
 
         } else {
 
-            isMovingBackwards = false;
+            if(isMovingBackwards) {
+                isMovingBackwards = false;
+                DebuffMoveSpeed(moveSpeedBackwardsMultiplier);
+            }
 
         }
     }
@@ -325,9 +333,9 @@ public class PlayerMovement : MonoBehaviour {
     private void HandleMovementForces() {
         float targetSpeed = GameInput.Instance.GetMovementFloatNormalized() * moveSpeed;
 
-        if (isMovingBackwards) {
-            targetSpeed *= moveSpeedBackwardsMultiplier;
-        }
+        //if (isMovingBackwards) {
+        //    targetSpeed *= moveSpeedBackwardsMultiplier;
+        //}
 
         float speedDif = targetSpeed - rb.velocity.x;
 
@@ -428,10 +436,12 @@ public class PlayerMovement : MonoBehaviour {
 
     public void BuffMoveSpeed(float buffAmount) {
         moveSpeed *= buffAmount;
+        OnPlayerMovespeedChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void DebuffMoveSpeed(float buffAmount) {
         moveSpeed /= buffAmount;
+        OnPlayerMovespeedChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public bool IsMovingBackwards() {
@@ -469,7 +479,9 @@ public class PlayerMovement : MonoBehaviour {
     public float GetMoveSpeed() {
         return rb.velocity.x;
     }
-
+    public float GetTargetMoveSpeed() {
+        return moveSpeed;
+    }
     public float GetMoveSpeedNormalized() {
         return moveSpeed / PlayerStats.Instance.GetMoveSpeed();
     }

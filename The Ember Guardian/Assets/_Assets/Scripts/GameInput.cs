@@ -49,6 +49,8 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnWeaponSecondaryAbilityPerformed;
     public event EventHandler OnWeaponSecondaryAbilityCanceled;
 
+    public event EventHandler OnHoverWorkersPerformed;
+
     public event EventHandler OnPlayerBackPerformed;
     public event EventHandler OnPlayerPausePerformed;
     public event EventHandler OnPlayerOpenPlayerTabPerformed;
@@ -101,15 +103,21 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.Pause.performed += Pause_performed;
         playerInputActions.Player.OpenPlayerTab.performed += OpenPlayerTab_performed;
 
+        playerInputActions.Player.HoverWorkers.performed += HoverWorkers_performed;
         playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
         playerInputActions.Player.Move.performed += Move_performed;
     }
+
 
     private void InputUser_onChange(InputUser user, InputUserChange change, InputDevice arg3) {
         if (change == InputUserChange.ControlSchemeChanged) {
             currentControlScheme = user.controlScheme.Value.name;
         }
         OnPlayerInputChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void HoverWorkers_performed(InputAction.CallbackContext obj) {
+        OnHoverWorkersPerformed?.Invoke(this, EventArgs.Empty);
     }
 
     private void WeaponSecondaryAbility_canceled(InputAction.CallbackContext obj) {

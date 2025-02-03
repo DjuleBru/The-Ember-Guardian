@@ -722,7 +722,7 @@ public class Tutorial : MonoBehaviour
     }
 
     public void TransitionToCombatCamera() {
-        CameraManager.Instance.ZoomOut(false, .8f, 2f);
+        CameraManager.Instance.ZoomOut(false, .6f, 2f);
     }
 
     public void TransitionToTutorialCamera() {

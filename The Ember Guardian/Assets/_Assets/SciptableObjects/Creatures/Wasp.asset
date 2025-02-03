@@ -17,7 +17,7 @@ MonoBehaviour:
   creaturePrefab: {fileID: 4997657120178985709, guid: 1daa7a1cf491ad0428c8464c1aed981a, type: 3}
   mass: 5
   detectionRange_Day: 10
-  detectionRange_Night: 2
+  detectionRange_Night: 10
   flying: 1
   flightMinAltitude: 2
   flightMaxAltitude: 7
@@ -39,6 +39,7 @@ MonoBehaviour:
   relativeDamageToFire: 1
   attackAnimationDelay: 0.3
   totalAttackAnimationTime: 0.5
+  hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 1
   workerTargetingPriority: 4

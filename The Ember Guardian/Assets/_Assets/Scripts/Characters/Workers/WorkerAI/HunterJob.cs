@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class HunterJob : MonoBehaviour, IJobBehavior {
 
     private Worker worker;
+    private WorkerAI workerAI;
     private MobMovement mobMovement;
     private WorkerAnimatorManager workerAnimatorManager;
     private MobAttack hunterAttack;
@@ -15,7 +16,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     private WorkerDetectionCollider workerDetectionCollider;
 
     [SerializeField] private float roamMoveSpeed = 1.5f;
-    [SerializeField] private float headToCampMoveSpeed = 2.5f;
+    [SerializeField] private float headToCampMoveSpeed = 3f;
     [SerializeField] private float trackAnimalMoveSpeed = 2f;
     [SerializeField] private float roamChangeDestinationRate = 5f;
     [SerializeField] private float initialFiringRange = 10f;
@@ -33,6 +34,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
     private bool hasSetSpeed;
     private bool hasHitAnimal;
+    private bool followingPlayer;
 
     private List<Collectible> orbsToCollect = new List<Collectible>();
 
@@ -93,7 +95,6 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
     }
 
-
     private void Update() {
 
         if (targetAnimal != null) {
@@ -117,240 +118,254 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
             CheckDusk();
         }
 
-        switch (state) {
+        if (followingPlayer) {
+            switch (state) {
 
-            case HunterState.idle:
-
-                Roam();
-                CheckClosestAnimal();
-                CheckClosestCreatureSmart();
-
-                if (IsInSafeZone() && targetCreature != null) {
-                    ChangeState(HunterState.attackingDay);
-                }
-                
-                if(targetAnimal != null && !CheckBlockedByCreature()) {
-                    ChangeState(HunterState.headingToHunt);
-                };
-
+                case HunterState.idle:
+                    FollowPlayer();
                 break;
+            }
+        } else {
 
-            case HunterState.headingBackToHuntingLimit:
-                CheckClosestAnimal();
+            switch (state) {
 
-                HeadBackToHuntingLimits();
-                if(HunterIsBackInHuntingLimits()) {
-                    ChangeState(HunterState.idle);
-                    return;
-                }
+                case HunterState.idle:
 
-                if (targetAnimal != null) {
-                    if (TargetIsInHuntingRange(targetAnimal)) {
-                        ChangeState(HunterState.hunting);
+                    Roam();
+                    CheckClosestAnimal();
+                    CheckClosestCreatureSmart();
+
+                    if (IsInSafeZone() && targetCreature != null) {
+                        ChangeState(HunterState.attackingDay);
+                    }
+
+                    if (targetAnimal != null && !CheckBlockedByCreature()) {
+                        ChangeState(HunterState.headingToHunt);
                     };
-                };
 
-                break;
+                    break;
 
-            case HunterState.blockedByCreatures:
-
-                StayOutOfCreatureRange();
-
-                if(!CheckBlockedByCreature()) {
+                case HunterState.headingBackToHuntingLimit:
                     CheckClosestAnimal();
-                    if (targetAnimal != null) {
-                        ChangeState(HunterState.headingToHunt);
-                    } else {
+
+                    HeadBackToHuntingLimits();
+                    if (HunterIsBackInHuntingLimits()) {
                         ChangeState(HunterState.idle);
-                    }
-                }
-
-                break;
-
-            case HunterState.workingWithPlayerToShootCreatures:
-
-                if (!CheckBlockedByCreature()) {
-                    CheckClosestAnimal();
-                    if (targetAnimal != null) {
-                        ChangeState(HunterState.headingToHunt);
-                    }
-                    else {
-                        ChangeState(HunterState.idle);
-                    }
-                }
-
-                HeadToCreatureShootingPosition(closestCreature);
-
-                break;
-
-            case HunterState.headingToHunt:
-
-                CheckClosestAnimal();
-
-                if (!HunterIsWithinHuntingLimits()) {
-                    ChangeState(HunterState.headingBackToHuntingLimit);
-                    return;
-                }
-
-                if (targetAnimal == null) return;
-
-                if (CheckBlockedByCreature()) {
-                    ChangeState(HunterState.blockedByCreatures);
-                    return;
-                };
-
-                if (TargetIsInHuntingRange(targetAnimal)) {
-                    ChangeState(HunterState.hunting);
-                    return;
-                };
-
-                HeadToTargetAnimal();
-
-                break;
-
-
-            case HunterState.pickingUpOrbs:
-
-                if (CheckBlockedByCreature()) {
-                    ChangeState(HunterState.blockedByCreatures);
-                    return;
-                };
-
-                HeadToPickUpClosestOrb();
-                break;
-
-
-            case HunterState.hunting:
-
-                if (CheckBlockedByCreature()) {
-                    ChangeState(HunterState.blockedByCreatures);
-                    return;
-                };
-
-                if (!TargetIsStillInHuntingRange(targetAnimal)) {
-                    hunterAttack.RemoveAttackTarget();
-                    ChangeState(HunterState.headingToHunt);
-                    return;
-                };
-
-                hunterAttack.SetAttackTarget(targetAnimal);
-
-                break;
-
-
-            case HunterState.droppingOrbs:
-
-                if(worker.GetTotalCurrencyAmount() == 0) {
-                    ChangeState(previousState);
-                    return;
-                }
-
-                if (worker.PlayerIsCloseAndStayedAround()) {
-                    worker.DropCurrencies();
-                    return;
-                }
-
-                if(!worker.GetPlayerIsClose()) { 
-                    ChangeState(previousState);
-                    return;
-                }
-
-                break;
-
-
-            case HunterState.headingToGuard:
-
-                if(worker.GetStructureAssigned() != null) {
-                    destinationTower = worker.GetStructureAssigned() as Tower;
-                } else {
-                    destinationTower = PlayerCamp.Instance.GetClosestTower(worker.GetCampSideAddigned(), transform.position);
-                }
-
-                if (destinationTower != null) {
-                    HeadToClosestTower();
-                } else {
-                    HeadToMostExteriorBarricade();
-                }
-
-                break;
-
-
-            case HunterState.guarding:
-
-                // Keep checking if camp limits have changed for ungarrisoned hunters
-                if (worker.GetStructureAssigned() == null) {
-
-                    Vector3 targetDestination = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned(), 2f);
-
-                    if (Mathf.Abs(transform.position.x - targetDestination.x) > 2f) {
-                        ChangeState(HunterState.headingToGuard);
                         return;
                     }
-                }
+
+                    if (targetAnimal != null) {
+                        if (TargetIsInHuntingRange(targetAnimal)) {
+                            ChangeState(HunterState.hunting);
+                        };
+                    };
+
+                    break;
+
+                case HunterState.blockedByCreatures:
+
+                    StayOutOfCreatureRange();
+
+                    if (!CheckBlockedByCreature()) {
+                        CheckClosestAnimal();
+                        if (targetAnimal != null) {
+                            ChangeState(HunterState.headingToHunt);
+                        }
+                        else {
+                            ChangeState(HunterState.idle);
+                        }
+                    }
+
+                    break;
+
+                case HunterState.workingWithPlayerToShootCreatures:
+
+                    if (!CheckBlockedByCreature()) {
+                        CheckClosestAnimal();
+                        if (targetAnimal != null) {
+                            ChangeState(HunterState.headingToHunt);
+                        }
+                        else {
+                            ChangeState(HunterState.idle);
+                        }
+                    }
+
+                    HeadToCreatureShootingPosition(closestCreature);
+
+                    break;
+
+                case HunterState.headingToHunt:
+
+                    CheckClosestAnimal();
+
+                    if (!HunterIsWithinHuntingLimits()) {
+                        ChangeState(HunterState.headingBackToHuntingLimit);
+                        return;
+                    }
+
+                    if (targetAnimal == null) return;
+
+                    if (CheckBlockedByCreature()) {
+                        ChangeState(HunterState.blockedByCreatures);
+                        return;
+                    };
+
+                    if (TargetIsInHuntingRange(targetAnimal)) {
+                        ChangeState(HunterState.hunting);
+                        return;
+                    };
+
+                    HeadToTargetAnimal();
+
+                    break;
 
 
-                // DAWN : Keep checking if tower spots have been opened
-                if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
+                case HunterState.pickingUpOrbs:
 
-                    if (worker.GetStructureAssigned() != null) return;
+                    if (CheckBlockedByCreature()) {
+                        ChangeState(HunterState.blockedByCreatures);
+                        return;
+                    };
 
-                    destinationTower = PlayerCamp.Instance.GetClosestTower(worker.GetCampSideAddigned(), transform.position);
+                    HeadToPickUpClosestOrb();
+                    break;
+
+
+                case HunterState.hunting:
+
+                    if (CheckBlockedByCreature()) {
+                        ChangeState(HunterState.blockedByCreatures);
+                        return;
+                    };
+
+                    if (!TargetIsStillInHuntingRange(targetAnimal)) {
+                        hunterAttack.RemoveAttackTarget();
+                        ChangeState(HunterState.headingToHunt);
+                        return;
+                    };
+
+                    hunterAttack.SetAttackTarget(targetAnimal);
+
+                    break;
+
+
+                case HunterState.droppingOrbs:
+
+                    if (worker.GetTotalCurrencyAmount() == 0) {
+                        ChangeState(previousState);
+                        return;
+                    }
+
+                    if (worker.PlayerIsCloseAndStayedAround()) {
+                        worker.DropCurrencies();
+                        return;
+                    }
+
+                    if (!worker.GetPlayerIsClose()) {
+                        ChangeState(previousState);
+                        return;
+                    }
+
+                    break;
+
+
+                case HunterState.headingToGuard:
+
+                    if (worker.GetStructureAssigned() != null) {
+                        destinationTower = worker.GetStructureAssigned() as Tower;
+                    }
+                    else {
+                        destinationTower = PlayerCamp.Instance.GetClosestTower(worker.GetCampSideAddigned(), transform.position);
+                    }
 
                     if (destinationTower != null) {
-                        ChangeState(HunterState.headingToGuard);
+                        HeadToClosestTower();
+                    }
+                    else {
+                        HeadToMostExteriorBarricade();
                     }
 
-                } else {
+                    break;
+
+
+                case HunterState.guarding:
+
+                    // Keep checking if camp limits have changed for ungarrisoned hunters
+                    if (worker.GetStructureAssigned() == null) {
+
+                        Vector3 targetDestination = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned(), 2f);
+
+                        if (Mathf.Abs(transform.position.x - targetDestination.x) > 2f) {
+                            ChangeState(HunterState.headingToGuard);
+                            return;
+                        }
+                    }
+
+
+                    // DUSK : Keep checking if tower spots have been opened
+                    if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
+
+                        if (worker.GetStructureAssigned() != null) return;
+
+                        destinationTower = PlayerCamp.Instance.GetClosestTower(worker.GetCampSideAddigned(), transform.position);
+
+                        if (destinationTower != null) {
+                            ChangeState(HunterState.headingToGuard);
+                        }
+
+                    }
+                    else {
+
+                        if (targetCreature == null) {
+
+                            CheckClosestCreatureSmart();
+
+                        }
+                        else {
+
+                            if (!TargetIsInHuntingRange(targetCreature)) {
+                                hunterAttack.RemoveAttackTarget();
+                            }
+                            else {
+                                hunterAttack.SetAttackTarget(targetCreature);
+                            }
+
+                        }
+                    }
+
+                    break;
+
+                case HunterState.attackingDay:
+
+                    CheckClosestCreatureSmart();
+
+                    bool playerIsInFrontOfHunter = Mathf.Abs(transform.position.x) - Mathf.Abs((Player.Instance.transform.position.x)) < 0;
+
+                    if (CreatureIsTooClose(closestCreature) || !playerIsInFrontOfHunter) {
+                        StayAwayFromCreatures(closestCreature);
+                        return;
+
+                    }
 
                     if (targetCreature == null) {
-
-                        CheckClosestCreatureSmart();
-
+                        ChangeState(HunterState.idle);
                     }
+
                     else {
 
                         if (!TargetIsInHuntingRange(targetCreature)) {
                             hunterAttack.RemoveAttackTarget();
+                            ChangeState(HunterState.blockedByCreatures);
                         }
                         else {
                             hunterAttack.SetAttackTarget(targetCreature);
                         }
 
                     }
-                }
 
-                break;
+                    break;
 
-            case HunterState.attackingDay:
-
-                CheckClosestCreatureSmart();
-
-                bool playerIsInFrontOfHunter = Mathf.Abs(transform.position.x) - Mathf.Abs((Player.Instance.transform.position.x)) < 0;
-
-                if (CreatureIsTooClose(closestCreature) || !playerIsInFrontOfHunter) {
-                    StayAwayFromCreatures(closestCreature);
-                    return;
-
-                }
-
-                if (targetCreature == null) {
-                    ChangeState(HunterState.idle);
-                }
-
-                else {
-
-                    if (!TargetIsInHuntingRange(targetCreature)) {
-                        hunterAttack.RemoveAttackTarget();
-                        ChangeState(HunterState.blockedByCreatures);
-                    }
-                    else {
-                        hunterAttack.SetAttackTarget(targetCreature);
-                    }
-
-                }
-
-                break;
-                
+            }
         }
 
     }
@@ -392,7 +407,13 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
             return false;
         }
     }
+    private void FollowPlayer() {
+        Vector3 destination = WorkerFollowPlayerHandler.Instance.GetWorkerFollowPosition(worker);
 
+        if (Mathf.Abs(destination.x - transform.position.x) > .5f) {
+            mobMovement.SetMoveTarget(destination);
+        }
+    }
     public void Roam() {
 
         if (!hasSetSpeed) {
@@ -536,7 +557,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         if (checkClosestTargetTimer < 0) {
             checkClosestTargetTimer = checkClosestTargetCooldown;
 
-            Creature newTargetCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(mobMovement.transform.position, attackRange, hunterAttack.GetAttackDamage());
+            Creature newTargetCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(mobMovement.transform.position, attackRange, hunterAttack.GetAttackDamage(), true);
 
             if (newTargetCreature == null) {
                 targetCreature = null;
@@ -554,6 +575,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     }
 
     private void CheckDusk() {
+        if (followingPlayer) return;
         if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk) {
             ChangeState(HunterState.headingToGuard);
         }
@@ -746,14 +768,20 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
+        if (followingPlayer) return;
+
         ChangeState(HunterState.headingToGuard);
     }
 
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
+        if (followingPlayer) return;
+
         hunterAttack.SetHomingProjectile(true);
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
+        if (followingPlayer) return;
+
         checkClosestTargetTimer = 0;
 
         targetAnimal = null;
@@ -782,6 +810,9 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         workerAnimatorManager = GetComponentInChildren<WorkerAnimatorManager>();
         hunterAttack = GetComponent<MobAttack>();
         worker = GetComponent<Worker>();
+        workerAI = GetComponent<WorkerAI>();
+
+        workerAI.OnWorkerFollowPlayerChanged += WorkerAI_OnWorkerFollowPlayerChanged;
 
         mobMovement.OnDestinationReached += WorkerMovement_OnDestinationReached;
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
@@ -799,6 +830,10 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         }
     }
 
+    private void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
+        followingPlayer = workerAI.GetFollowingPlayer();
+        state = HunterState.idle;
+    }
 
     private void OnDisable() {
         hasSetSpeed = false;

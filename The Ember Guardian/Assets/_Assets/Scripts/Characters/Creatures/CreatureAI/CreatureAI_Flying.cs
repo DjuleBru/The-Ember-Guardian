@@ -148,7 +148,7 @@ public class CreatureAI_Flying : CreatureAI
     }
 
     protected override void HeadToTarget() {
-        if (attackTarget == null) return;
+        if ((attackTarget as MonoBehaviour) == null) return;
 
         Vector3 targetDestination = (attackTarget as MonoBehaviour).transform.position;
 

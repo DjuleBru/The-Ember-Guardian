@@ -175,6 +175,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "HoverWorkers",
+                    "type": "Button",
+                    "id": "f18ce8ed-293e-45f4-ab3c-34ee7238257e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -681,6 +690,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "OpenPlayerTab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0a8e97e6-796f-4ac6-9864-144e305a24fd",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "HoverWorkers",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b810fabd-ed6f-4325-817a-fa98904ddb74",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "HoverWorkers",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

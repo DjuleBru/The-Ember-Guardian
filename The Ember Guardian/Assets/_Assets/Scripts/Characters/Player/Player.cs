@@ -16,8 +16,11 @@ public class Player : MonoBehaviour, IDamageable
     private bool damagedRecently;
     private bool insideCamp;
     private bool hasHPRegen;
+
     private bool canDropOrbOnTheFloor = true;
     private bool interactingWithOtherObject;
+    private bool hoveringWorker;
+    private bool managingWorkers;
     private bool canMove = true;
     private bool interactingWithMerchant;
 
@@ -106,21 +109,6 @@ public class Player : MonoBehaviour, IDamageable
         }
     }
 
-    public void SetCanDropOrbOnTheFloor(bool canDrop) {
-        canDropOrbOnTheFloor = canDrop;
-    }
-
-    public void SetInteractingWithOtherObject(bool interactingWithOtherObject) {
-        this.interactingWithOtherObject = interactingWithOtherObject;
-        canDropOrbOnTheFloor = !interactingWithOtherObject;
-    }
-
-    public bool GetCanDropOrbOnTheFloor() {
-        if (interactingWithMerchant) return false;
-
-        return canDropOrbOnTheFloor && !dead;
-    }
-
     public void AddKnockBack(Vector2 knockbackDir) {
         rb.AddForce(knockbackDir, ForceMode2D.Impulse);
     }
@@ -179,6 +167,39 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     #region PLAYER CONTROLS RESTRICTIONS
+
+    public void SetCanDropOrbOnTheFloor(bool canDrop) {
+        canDropOrbOnTheFloor = canDrop;
+    }
+
+    public void SetInteractingWithOtherObject(bool interactingWithOtherObject) {
+        this.interactingWithOtherObject = interactingWithOtherObject;
+    }
+
+    public void SetHoveringWorker(bool hoveringWorker) {
+        this.hoveringWorker = hoveringWorker;
+    }
+
+    public void SetHoveringWorkerAfterFrame(bool hoveringWorker) {
+        StartCoroutine(SetHoveringWorkerAfterFrameCoroutine(hoveringWorker));
+    }
+
+    private IEnumerator SetHoveringWorkerAfterFrameCoroutine(bool hoveringWorker) {
+        yield return new WaitForEndOfFrame();
+        this.hoveringWorker = hoveringWorker;
+    }
+    public void SetManagingWorkers(bool managingWorkers) {
+        this.managingWorkers = managingWorkers;
+    }
+
+    public bool GetCanDropOrbOnTheFloor() {
+        return canDropOrbOnTheFloor && !interactingWithMerchant && !interactingWithOtherObject && !hoveringWorker && !managingWorkers && !dead;
+    }
+
+    public bool GetCanInteractWithStructureLocation() {
+        return !interactingWithOtherObject && !hoveringWorker && !managingWorkers;
+    }
+
     public void Die() {
         SetCanDropOrbOnTheFloor(false);
         DisableControlInputs();
@@ -196,7 +217,6 @@ public class Player : MonoBehaviour, IDamageable
             StartCoroutine(RespawnCoroutine());
         }
     }
-
 
     private IEnumerator RespawnCoroutine() {
         yield return new WaitForSeconds(PlayerStats.Instance.GetRespawnTime());

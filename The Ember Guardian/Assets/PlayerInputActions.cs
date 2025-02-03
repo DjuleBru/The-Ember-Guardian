@@ -197,6 +197,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HoverWorkers"",
+                    ""type"": ""Button"",
+                    ""id"": ""f18ce8ed-293e-45f4-ab3c-34ee7238257e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -705,6 +714,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""OpenPlayerTab"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0a8e97e6-796f-4ac6-9864-144e305a24fd"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""HoverWorkers"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b810fabd-ed6f-4325-817a-fa98904ddb74"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""HoverWorkers"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -755,6 +786,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_SelectSecondaryGun = m_Player.FindAction("SelectSecondaryGun", throwIfNotFound: true);
         m_Player_WeaponSecondaryAbility = m_Player.FindAction("WeaponSecondaryAbility", throwIfNotFound: true);
         m_Player_OpenPlayerTab = m_Player.FindAction("OpenPlayerTab", throwIfNotFound: true);
+        m_Player_HoverWorkers = m_Player.FindAction("HoverWorkers", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -840,6 +872,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SelectSecondaryGun;
     private readonly InputAction m_Player_WeaponSecondaryAbility;
     private readonly InputAction m_Player_OpenPlayerTab;
+    private readonly InputAction m_Player_HoverWorkers;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -863,6 +896,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @SelectSecondaryGun => m_Wrapper.m_Player_SelectSecondaryGun;
         public InputAction @WeaponSecondaryAbility => m_Wrapper.m_Player_WeaponSecondaryAbility;
         public InputAction @OpenPlayerTab => m_Wrapper.m_Player_OpenPlayerTab;
+        public InputAction @HoverWorkers => m_Wrapper.m_Player_HoverWorkers;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -929,6 +963,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @OpenPlayerTab.started += instance.OnOpenPlayerTab;
             @OpenPlayerTab.performed += instance.OnOpenPlayerTab;
             @OpenPlayerTab.canceled += instance.OnOpenPlayerTab;
+            @HoverWorkers.started += instance.OnHoverWorkers;
+            @HoverWorkers.performed += instance.OnHoverWorkers;
+            @HoverWorkers.canceled += instance.OnHoverWorkers;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -990,6 +1027,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @OpenPlayerTab.started -= instance.OnOpenPlayerTab;
             @OpenPlayerTab.performed -= instance.OnOpenPlayerTab;
             @OpenPlayerTab.canceled -= instance.OnOpenPlayerTab;
+            @HoverWorkers.started -= instance.OnHoverWorkers;
+            @HoverWorkers.performed -= instance.OnHoverWorkers;
+            @HoverWorkers.canceled -= instance.OnHoverWorkers;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1046,5 +1086,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnSelectSecondaryGun(InputAction.CallbackContext context);
         void OnWeaponSecondaryAbility(InputAction.CallbackContext context);
         void OnOpenPlayerTab(InputAction.CallbackContext context);
+        void OnHoverWorkers(InputAction.CallbackContext context);
     }
 }

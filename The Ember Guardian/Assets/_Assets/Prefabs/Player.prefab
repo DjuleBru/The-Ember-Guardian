@@ -58429,6 +58429,7 @@ GameObject:
   - component: {fileID: 3884323692964899357}
   - component: {fileID: 2089533132175775193}
   - component: {fileID: 7013846613347094574}
+  - component: {fileID: 1591334779029646628}
   m_Layer: 12
   m_Name: Player
   m_TagString: Untagged
@@ -58631,7 +58632,6 @@ MonoBehaviour:
   allGunSOList: []
   debugGun: {fileID: 0}
   debugSecondaryGun: {fileID: 0}
-  useDebugGun: 0
   debugSecondaryAbilityUnlocked: 0
 --- !u!114 &3884323692964899357
 MonoBehaviour:
@@ -58677,6 +58677,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialActiveGun: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
+--- !u!114 &1591334779029646628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4895566687938163436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67151ebeb4704c64fab7ec8ebb1a5ae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4921149707385370051
 GameObject:
   m_ObjectHideFlags: 0

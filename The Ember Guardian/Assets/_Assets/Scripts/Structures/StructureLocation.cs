@@ -61,6 +61,7 @@ public class StructureLocation : MonoBehaviour {
     protected void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (!structureLocationUnlocked) return;
+        if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
 
         payOrbsUI.SetPlayerInteracting(true);
     }
@@ -76,6 +77,7 @@ public class StructureLocation : MonoBehaviour {
     protected void OnTriggerEnter2D(Collider2D collision) {
         if (!structureLocationUnlocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
+        if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
 
         Player.Instance.SetCanDropOrbOnTheFloor(false);
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
