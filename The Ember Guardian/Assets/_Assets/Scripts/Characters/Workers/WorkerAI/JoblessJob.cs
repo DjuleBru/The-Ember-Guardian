@@ -3,22 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JoblessJob : MonoBehaviour, IJobBehavior {
-
-    private MobMovement mobMovement;
-    private WorkerDetectionCollider workerDetectionCollider;
-
-    [SerializeField] private float roamMoveSpeed = 1.5f;
-    [SerializeField]  private float headToCampMoveSpeed = 2f;
-    [SerializeField]  private float roamChangeDestinationRate = 5f;
-
-    private float roamTimer;
-
-    private bool hasSetSpeed;
-    private bool hasSetCampDestination;
-
-    private bool isInSafeZone;
-
+public class JoblessJob : WorkerJob, IJobBehavior {
     private bool blockedByCreatures;
     public event EventHandler OnJoblessBlockedByCreatures;
     public event EventHandler OnJoblessNotBlockedByCreatures;
@@ -35,7 +20,7 @@ public class JoblessJob : MonoBehaviour, IJobBehavior {
         }
 
         if (isInSafeZone) {
-            Roam();
+            RoamInCampCenter();
         }
         else {
             HeadToCampCenter();
@@ -72,38 +57,9 @@ public class JoblessJob : MonoBehaviour, IJobBehavior {
         return false;
     }
 
-    public void HeadToCampCenter() {
-
-        if (!hasSetSpeed) {
-            mobMovement.SetMoveSpeed(headToCampMoveSpeed);
-            hasSetSpeed = true;
-        }
-
-        if (!hasSetCampDestination) {
-            HeadToCampBehavior.SetDestinationToCampCenter(mobMovement);
-            hasSetCampDestination = true;
-            hasSetSpeed = false;
-        }
-    }
-
     private void WorkerMovement_OnDestinationReached(object sender, System.EventArgs e) {
         if(!isInSafeZone && hasSetCampDestination) {
             isInSafeZone = true;
-        }
-    }
-
-    public void Roam() {
-
-        if(!hasSetSpeed) {
-            mobMovement.SetMoveSpeed(roamMoveSpeed);
-            hasSetSpeed = true;
-        }
-
-        roamTimer -= Time.deltaTime;
-
-        if (roamTimer < 0) {
-            roamTimer = roamChangeDestinationRate;
-            RoamBehavior.RoamInCampCenter(mobMovement);
         }
     }
 

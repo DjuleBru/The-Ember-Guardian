@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,8 @@ public class WorkerAnimatorManager : MonoBehaviour
     private float moveDir;
     private float watchDir;
     private float previousWatchDir = 1f;
+
+    public event EventHandler OnFootstepTriggered;
 
     private void Awake() {
         worker = GetComponentInParent<Worker>();
@@ -105,6 +108,10 @@ public class WorkerAnimatorManager : MonoBehaviour
             Vector3 newScale = new Vector3(1, 1, 1);
             transform.localScale = newScale;
         }
+    }
+
+    public void TriggerFootStep() {
+        OnFootstepTriggered?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetWatchDir(float watchDir) {

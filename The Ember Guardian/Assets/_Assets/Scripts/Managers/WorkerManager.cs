@@ -10,14 +10,50 @@ public class WorkerManager : MonoBehaviour
     private List<Worker> recruitedWorkers = new List<Worker>();
     private List<Worker> joblessWorkers = new List<Worker>();
 
-    private List<Worker> leftSideAssignedWorkers = new List<Worker>();
-    private List<Worker> rightSideAssignedWorkers = new List<Worker>();
+    private List<Worker> leftSideAssignedHunters = new List<Worker>();
+    private List<Worker> rightSideAssignedHunters = new List<Worker>();
+
+    private List<Worker> leftSideAssignedGuards = new List<Worker>();
+    private List<Worker> rightSideAssignedGuards = new List<Worker>();
+
+    private List<Worker> leftSideAssignedMiners = new List<Worker>();
+    private List<Worker> rightSideAssignedMiners = new List<Worker>();
+
+    private List<Worker> workersInPlayerInteractionArea = new List<Worker>();
+    private Worker closestInteractableWorkerFromPlayer;
 
     public event EventHandler OnJoblessWorkerAmountChanged;
     public event EventHandler OnRecruitedWorkerDied;
+    public event EventHandler<OnClosestWorkerChangedEventArgs> OnClosestWorkerChanged;
+
+    public class OnClosestWorkerChangedEventArgs : EventArgs {
+        public Worker newClosestWorker;
+    }
 
     private void Awake() {
         Instance = this;
+    }
+
+    private void Update() {
+        RefreshClosestInteractableWorkerFromPlayer();
+    }
+
+    private void RefreshClosestInteractableWorkerFromPlayer() {
+        if (workersInPlayerInteractionArea.Count == 0) return;
+
+        Worker closestWorker = FindClosestWorkerInPlayerInteractionArea();
+
+        if (closestWorker != null) {
+
+            if (closestInteractableWorkerFromPlayer != closestWorker) {
+                OnClosestWorkerChanged?.Invoke(this, new OnClosestWorkerChangedEventArgs {
+                    newClosestWorker = closestWorker,
+                });
+            }
+            
+
+            closestInteractableWorkerFromPlayer = closestWorker;
+        }
     }
 
     public Worker GetFirstJoblessWorker() {
@@ -40,23 +76,58 @@ public class WorkerManager : MonoBehaviour
         recruitedWorkers.Add(worker);
         joblessWorkers.Add(worker);
 
-        AssignSideToWorker(worker);
         OnJoblessWorkerAmountChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public void AssignSideToWorker(Worker worker) {
+    public void AutoAssignSideToWorker(Worker worker) {
+        if(worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.hunter) {
 
-        if(leftSideAssignedWorkers.Count < rightSideAssignedWorkers.Count) {
+            if (leftSideAssignedHunters.Count < rightSideAssignedHunters.Count) {
 
-            leftSideAssignedWorkers.Add(worker);
-            worker.AssignSide(CampZoneManager.CampSide.left);
+                leftSideAssignedHunters.Add(worker);
+                worker.AssignSide(CampZoneManager.CampSide.left);
 
-        } else {
+            }
+            else {
 
-            rightSideAssignedWorkers.Add(worker);
-            worker.AssignSide(CampZoneManager.CampSide.right);
+                rightSideAssignedHunters.Add(worker);
+                worker.AssignSide(CampZoneManager.CampSide.right);
 
+            }
         }
+
+        if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.miner) {
+
+            if (leftSideAssignedMiners.Count < rightSideAssignedMiners.Count) {
+
+                leftSideAssignedMiners.Add(worker);
+                worker.AssignSide(CampZoneManager.CampSide.left);
+
+            }
+            else {
+
+                rightSideAssignedMiners.Add(worker);
+                worker.AssignSide(CampZoneManager.CampSide.right);
+
+            }
+        }
+
+        if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.guard) {
+
+            if (leftSideAssignedGuards.Count < rightSideAssignedGuards.Count) {
+
+                leftSideAssignedGuards.Add(worker);
+                worker.AssignSide(CampZoneManager.CampSide.left);
+
+            }
+            else {
+
+                rightSideAssignedGuards.Add(worker);
+                worker.AssignSide(CampZoneManager.CampSide.right);
+
+            }
+        }
+
 
     }
 
@@ -82,13 +153,56 @@ public class WorkerManager : MonoBehaviour
 
         CampZoneManager.CampSide sideAssigned = worker.GetCampSideAddigned();
         if(sideAssigned == CampZoneManager.CampSide.left) {
-            leftSideAssignedWorkers.Remove(worker);
+            leftSideAssignedHunters.Remove(worker);
         } else {
-            rightSideAssignedWorkers.Remove(worker);
+            rightSideAssignedHunters.Remove(worker);
         }
 
         OnRecruitedWorkerDied?.Invoke(this, EventArgs.Empty);
         OnJoblessWorkerAmountChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void AddWorkerToPlayerInteractionArea(Worker worker) {
+        workersInPlayerInteractionArea.Add(worker);
+
+        Player.Instance.SetHoveringWorker(true);
+    }
+
+    public void RemoveWorkerFromPlayerInteractionArea(Worker worker, bool triggeredOut) {
+        if (!workersInPlayerInteractionArea.Contains(worker)) return;
+        workersInPlayerInteractionArea.Remove(worker);
+
+        worker.HoverWorker(false);
+
+        if (workersInPlayerInteractionArea.Count == 0) {
+            closestInteractableWorkerFromPlayer = null;
+            if(triggeredOut) {
+                Player.Instance.SetHoveringWorker(false);
+            } else {
+                Player.Instance.ResetHoveringWorkerAfterInteractCanceled();
+            }
+        }
+    }
+
+    public Worker FindClosestWorkerInPlayerInteractionArea() {
+        List<Worker> workersCurrentlyInPlayerInteractionArea = workersInPlayerInteractionArea;
+
+        float closestDistance = Mathf.Infinity;
+        Worker closestWorker = null;
+
+        foreach(Worker worker in workersCurrentlyInPlayerInteractionArea) {
+            float distanceToPlayer = Mathf.Abs(worker.transform.position.x - Player.Instance.transform.position.x);
+                if(distanceToPlayer < closestDistance) {
+                    closestDistance = distanceToPlayer;
+                    closestWorker = worker;
+                }
+        }
+        
+        return closestWorker;
+    }
+    
+    public Worker GetClosestWorkerInPlayerInteractionArea() {
+        return closestInteractableWorkerFromPlayer;
     }
 
     public List<Worker> GetRecruitedWorkers() {

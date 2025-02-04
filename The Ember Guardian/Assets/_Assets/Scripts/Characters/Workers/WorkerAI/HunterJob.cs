@@ -4,42 +4,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class HunterJob : MonoBehaviour, IJobBehavior {
+public class HunterJob : WorkerJob {
 
-    private Worker worker;
-    private WorkerAI workerAI;
-    private MobMovement mobMovement;
-    private WorkerAnimatorManager workerAnimatorManager;
-    private MobAttack hunterAttack;
-    private Animal targetAnimal;
-    private Creature targetCreature;
-    private WorkerDetectionCollider workerDetectionCollider;
-
-    [SerializeField] private float roamMoveSpeed = 1.5f;
-    [SerializeField] private float headToCampMoveSpeed = 3f;
-    [SerializeField] private float trackAnimalMoveSpeed = 2f;
-    [SerializeField] private float roamChangeDestinationRate = 5f;
-    [SerializeField] private float initialFiringRange = 10f;
+    private float fleeMoveSpeed = 3.5f;
+    private float trackAnimalMoveSpeed = 2f;
+    private float initialFiringRange = 10f;
 
     private float attackRange;
     private float distanceToStaySafeFromCreature;
+    private float maxDistanceToPlayerWhenFollowing = 10f;
     private float distanceToPlayerWhenCreatureIsAround = 4f;
     private float minimumDistanceToStaySafeFromCreature = 6f;
 
-    private float roamTimer;
     private float checkClosestTargetTimer;
     private float checkBlockedByCreatureTimer;
     private float checkClosestTargetCooldown = .25f;
     private float distanceToHuntingLimit = 3f;
 
-    private bool hasSetSpeed;
     private bool hasHitAnimal;
     private bool followingPlayer;
 
-    private List<Collectible> orbsToCollect = new List<Collectible>();
-
     public enum HunterState {
-        idle,
+        idle, 
+        followPlayerIdle,
+        followPlayerAttackCreature,
         blockedByCreatures,
         workingWithPlayerToShootCreatures,
         headingToHunt,
@@ -109,8 +97,12 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         DebugExtention.DrawCircle(mobMovement.transform.position, attackRange, 20, Color.white);
 
         if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
-            CheckDropCurrenciesToPlayer();
-            CheckOrbsToCollect();
+            if(CheckDropCurrenciesToPlayer()) {
+                ChangeState(HunterState.droppingOrbs);
+            }
+            if(CheckOrbsToCollect() && state != HunterState.hunting) {
+                ChangeState(HunterState.pickingUpOrbs);
+            };
         }
 
         if(dayHunterStates.Contains(state)) {
@@ -121,9 +113,79 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         if (followingPlayer) {
             switch (state) {
 
-                case HunterState.idle:
+                case HunterState.followPlayerIdle:
                     FollowPlayer();
-                break;
+
+                    if (closestCreature != null) {
+
+                        CheckClosestCreatureSmart();
+
+                        if (targetCreature == null) {
+
+                            targetCreature = null;
+                            hunterAttack.RemoveAttackTarget();
+
+                        }
+                        else {
+                            if (!CreatureIsTooClose(closestCreature)) {
+                                ChangeState(HunterState.followPlayerAttackCreature);
+                            };
+
+                        }
+                    }
+
+                    break;
+
+                case HunterState.followPlayerAttackCreature:
+                    if (targetCreature == null) {
+                        hunterAttack.RemoveAttackTarget();
+                        ChangeState(HunterState.followPlayerIdle);
+                        return;
+                    }
+
+                    if (CreatureIsTooClose(closestCreature)) {
+                        hunterAttack.RemoveAttackTarget();
+                        StayAwayFromCreature(closestCreature);
+                        return;
+                    }
+
+                    if (PlayerIsTooFar()) {
+                        hunterAttack.RemoveAttackTarget();
+                        ChangeState(HunterState.followPlayerIdle);
+                        return;
+                    }
+
+                    if (!TargetIsInHuntingRange(targetCreature)) {
+                        hunterAttack.RemoveAttackTarget();
+                        ChangeState(HunterState.followPlayerIdle);
+                    }
+                    else {
+                        mobMovement.SetMoveTarget(transform.position);
+                        hunterAttack.SetAttackTarget(targetCreature);
+                    }
+
+                    CheckClosestCreatureSmart();
+
+                    break;
+
+                case HunterState.droppingOrbs:
+
+                    if (worker.GetTotalCurrencyAmount() == 0) {
+                        ChangeState(previousState);
+                        return;
+                    }
+
+                    if (worker.PlayerIsCloseAndStayedAround()) {
+                        worker.DropCurrencies();
+                        return;
+                    }
+
+                    if (!worker.GetPlayerIsClose()) {
+                        ChangeState(previousState);
+                        return;
+                    }
+
+                 break;
             }
         } else {
 
@@ -131,7 +193,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
                 case HunterState.idle:
 
-                    Roam();
+                    Roam(3f, CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned()));
                     CheckClosestAnimal();
                     CheckClosestCreatureSmart();
 
@@ -342,9 +404,8 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
                     bool playerIsInFrontOfHunter = Mathf.Abs(transform.position.x) - Mathf.Abs((Player.Instance.transform.position.x)) < 0;
 
                     if (CreatureIsTooClose(closestCreature) || !playerIsInFrontOfHunter) {
-                        StayAwayFromCreatures(closestCreature);
+                        ChangeState(HunterState.blockedByCreatures);
                         return;
-
                     }
 
                     if (targetCreature == null) {
@@ -386,6 +447,10 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
             return false;
         }
     }
+    private bool PlayerIsTooFar() {
+        float distanceFromPlayerToAggroedCreature = Mathf.Abs(Mathf.Abs(Player.Instance.transform.position.x) - Mathf.Abs(transform.position.x));
+        return distanceFromPlayerToAggroedCreature > maxDistanceToPlayerWhenFollowing;
+    }
 
     private bool HunterIsWithinHuntingLimits() {
         return CampZoneManager.Instance.IsWithinHuntingLimits(transform.position);
@@ -407,6 +472,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
             return false;
         }
     }
+
     private void FollowPlayer() {
         Vector3 destination = WorkerFollowPlayerHandler.Instance.GetWorkerFollowPosition(worker);
 
@@ -414,27 +480,10 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
             mobMovement.SetMoveTarget(destination);
         }
     }
-    public void Roam() {
-
-        if (!hasSetSpeed) {
-            mobMovement.SetMoveSpeed(roamMoveSpeed);
-            hasSetSpeed = true;
-        }
-
-        roamTimer -= Time.deltaTime;
-
-        if (roamTimer < 0) {
-            roamTimer = roamChangeDestinationRate;
-            RoamBehavior.RoamAroundPoint(mobMovement, 3f , CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned()), false);
-        }
-    }
 
     public void StayOutOfCreatureRange() {
 
-        if (!hasSetSpeed) {
-            mobMovement.SetMoveSpeed(headToCampMoveSpeed);
-            hasSetSpeed = true;
-        }
+        mobMovement.SetMoveSpeed(fleeMoveSpeed);
 
         Creature closestCreature = workerDetectionCollider.GetClosestCreature();
 
@@ -442,7 +491,7 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
             bool playerIsInFrontOfHunter = Mathf.Abs(transform.position.x) - Mathf.Abs((Player.Instance.transform.position.x)) < 0;
 
             if (CreatureIsTooClose(closestCreature) || !playerIsInFrontOfHunter) {
-                StayAwayFromCreatures(closestCreature);
+                StayAwayFromCreature(closestCreature);
                 return;
             }
 
@@ -494,12 +543,9 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         return false;
     }
 
-    public void StayAwayFromCreatures(Creature closestCreature) {
+    public void StayAwayFromCreature(Creature closestCreature) {
 
-        if (!hasSetSpeed) {
-            mobMovement.SetMoveSpeed(headToCampMoveSpeed);
-            hasSetSpeed = true;
-        }
+        mobMovement.SetMoveSpeed(fleeMoveSpeed);
 
         if (closestCreature != null) {
 
@@ -514,7 +560,6 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
             Vector3 safePosition = new Vector3(closestCreature.transform.position.x + direction * distanceToStaySafeFromCreature, 0, 0);
             mobMovement.SetMoveTarget(safePosition);
             hunterAttack.RemoveAttackTarget();
-            ChangeState(HunterState.blockedByCreatures);
 
             return;
         }
@@ -578,18 +623,6 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         if (followingPlayer) return;
         if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk) {
             ChangeState(HunterState.headingToGuard);
-        }
-    }
-
-    private void CheckDropCurrenciesToPlayer() {
-        if (worker.GetPlayerIsClose() && worker.GetTotalCurrencyAmount() > 0) {
-            ChangeState(HunterState.droppingOrbs);
-        }
-    }
-
-    private void CheckOrbsToCollect() {
-        if(orbsToCollect.Count > 0 && state != HunterState.hunting)  {
-            ChangeState(HunterState.pickingUpOrbs);
         }
     }
 
@@ -768,18 +801,30 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
-        if (followingPlayer) return;
-
-        ChangeState(HunterState.headingToGuard);
+        CheckNewDayCycleParameters();
     }
 
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
-        if (followingPlayer) return;
-
-        hunterAttack.SetHomingProjectile(true);
+        CheckNewDayCycleParameters();
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
+        CheckNewDayCycleParameters();
+    }
+
+    private void CheckNewDayCycleParameters() {
+        if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dawn) {
+            SetDawnStartParameters();
+        }
+        if (DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+            SetNightStartParameters();
+        }
+        if (DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk) {
+            SetDuskStartParameters();
+        }
+    }
+
+    private void SetDawnStartParameters() {
         if (followingPlayer) return;
 
         checkClosestTargetTimer = 0;
@@ -791,6 +836,18 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         hunterAttack.SetHomingProjectile(false);
 
         ChangeState(HunterState.idle);
+    }
+
+    private void SetNightStartParameters() {
+        if (followingPlayer) return;
+
+        hunterAttack.SetHomingProjectile(true);
+    }
+
+    private void SetDuskStartParameters() {
+        if (followingPlayer) return;
+
+        ChangeState(HunterState.headingToGuard);
     }
 
     private void WorkerMovement_OnDestinationReached(object sender, System.EventArgs e) {
@@ -805,12 +862,8 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         return (transform.position.x > CampZoneManager.Instance.GetCampCenterMinLimit() && transform.position.x < CampZoneManager.Instance.GetCampCenterMaxLimit());
     }
 
-    public void InitializeHunterJob() {
-        mobMovement = GetComponentInChildren<MobMovement>();
-        workerAnimatorManager = GetComponentInChildren<WorkerAnimatorManager>();
-        hunterAttack = GetComponent<MobAttack>();
-        worker = GetComponent<Worker>();
-        workerAI = GetComponent<WorkerAI>();
+    public override void InitializeJob() {
+        base.InitializeJob();
 
         workerAI.OnWorkerFollowPlayerChanged += WorkerAI_OnWorkerFollowPlayerChanged;
 
@@ -819,8 +872,6 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
 
-        mobMovement = GetComponent<MobMovement>();
-        mobMovement.SetMoveTarget(mobMovement.transform.position);
 
         if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
             ChangeState(HunterState.idle);
@@ -832,7 +883,18 @@ public class HunterJob : MonoBehaviour, IJobBehavior {
 
     private void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
         followingPlayer = workerAI.GetFollowingPlayer();
-        state = HunterState.idle;
+
+        if(followingPlayer) {
+            state = HunterState.followPlayerIdle;
+            hunterAttack.SetHomingProjectile(true);
+        } else {
+            state = HunterState.idle;
+            hunterAttack.SetHomingProjectile(false);
+            CheckNewDayCycleParameters();
+            hunterAttack.RemoveAttackTarget();
+        }
+
+        roamTimer = 0f;
     }
 
     private void OnDisable() {

@@ -40,5 +40,9 @@ public class HideMouse : MonoBehaviour
     public void ShowMouse(bool show) {
         Cursor.visible = show;
     }
-    
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
+    }
+
 }

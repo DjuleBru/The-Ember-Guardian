@@ -6,28 +6,45 @@ public class WorkerMovement : MobMovement
 {
 
     private WorkerAI workerAI;
+    private HunterJob hunterJob;
+    private GuardJob guardJob;
+    protected bool followingPlayer;
 
     protected override void Awake() {
         base.Awake();
-        workerAI = GetComponent<WorkerAI>();    
+        workerAI = GetComponent<WorkerAI>();
+        hunterJob = GetComponent<HunterJob>();
+        guardJob = GetComponent<GuardJob>();    
     }
 
     protected override void Start() {
         base.Start();
 
         workerAI.OnWorkerFollowPlayerChanged += WorkerAI_OnWorkerFollowPlayerChanged;
-        PlayerMovement.Instance.OnPlayerMovespeedChanged += PlayerMovement_OnPlayerMovespeedChanged;
+    }
+
+    protected void Update() {
+        if (!followingPlayer) return;
+
+        if(workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
+            if (hunterJob.GetState() == HunterJob.HunterState.followPlayerAttackCreature) return;
+        }
+        if (workerAI.GetJob() == WorkerAI.JobTypes.guard) {
+            if (guardJob.GetState() == GuardJob.GuardState.followPlayerAttackCreature) return;
+        }
+
+        float minSpeed = 2f;  // Vitesse minimale
+        float maxSpeed = PlayerMovement.Instance.GetTargetMoveSpeed()*1.25f; // Vitesse max = celle du joueur
+
+        float distance = Vector3.Distance(transform.position, targetDestination);
+        float speedFactor = Mathf.Clamp01(distance / 5f); // Distance max considérée pour le scaling
+
+        float newSpeed = Mathf.Lerp(minSpeed, maxSpeed, speedFactor);
+        SetMoveSpeed(newSpeed);
     }
 
     private void WorkerAI_OnWorkerFollowPlayerChanged(object sender, System.EventArgs e) {
-        if(workerAI.GetFollowingPlayer()) {
-            StartCoroutine(SetTargetMoveSpeedAfterDelay(.5f));
-        }
-    }
-
-    private void PlayerMovement_OnPlayerMovespeedChanged(object sender, System.EventArgs e) {
-        if (!GetComponent<WorkerAI>().GetFollowingPlayer()) return;
-        StartCoroutine(SetTargetMoveSpeedAfterDelay(.5f));
+        followingPlayer = workerAI.GetFollowingPlayer();
     }
 
     private IEnumerator SetTargetMoveSpeedAfterDelay(float delay) {
@@ -38,7 +55,7 @@ public class WorkerMovement : MobMovement
 
     }
 
-    private void OnDestroy() {
-        PlayerMovement.Instance.OnPlayerMovespeedChanged -= PlayerMovement_OnPlayerMovespeedChanged;
+    public override void SetMoveSpeed(float moveSpeed) {
+        this.moveSpeed = moveSpeed;
     }
 }

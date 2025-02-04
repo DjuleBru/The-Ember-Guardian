@@ -20,6 +20,7 @@ public class Player : MonoBehaviour, IDamageable
     private bool canDropOrbOnTheFloor = true;
     private bool interactingWithOtherObject;
     private bool hoveringWorker;
+    private bool cancellingHoveringWorker;
     private bool managingWorkers;
     private bool canMove = true;
     private bool interactingWithMerchant;
@@ -62,12 +63,14 @@ public class Player : MonoBehaviour, IDamageable
         PlayerStats.Instance.OnPlayerMaxHPChanged += PlayerStats_OnPlayerMaxHPChanged;
         PlayerStats.Instance.OnPlayerHPRegenChanged += PlayerStats_OnPlayerHPRegenChanged;
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
+        GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
 
         hpRegenTime = PlayerStats.Instance.GetHpRegenTime();
         if(hpRegenTime != 0) {
             hasHPRegen = true;
         }
     }
+
 
     private void Update() {
         if (!isLevelScene) return;
@@ -180,8 +183,15 @@ public class Player : MonoBehaviour, IDamageable
         this.hoveringWorker = hoveringWorker;
     }
 
-    public void SetHoveringWorkerAfterFrame(bool hoveringWorker) {
-        StartCoroutine(SetHoveringWorkerAfterFrameCoroutine(hoveringWorker));
+    public void ResetHoveringWorkerAfterInteractCanceled() {
+        cancellingHoveringWorker = true;
+    }
+
+    private void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+        if(cancellingHoveringWorker) {
+            StartCoroutine(SetHoveringWorkerAfterFrameCoroutine(false));
+            cancellingHoveringWorker = false;
+        }
     }
 
     private IEnumerator SetHoveringWorkerAfterFrameCoroutine(bool hoveringWorker) {

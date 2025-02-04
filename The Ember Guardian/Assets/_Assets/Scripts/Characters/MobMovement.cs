@@ -118,7 +118,7 @@ public class MobMovement : MonoBehaviour
         }
     }
 
-    public void SetMoveSpeed(float moveSpeed) {
+    public virtual void SetMoveSpeed(float moveSpeed) {
         this.moveSpeed = moveSpeed;
     }
 

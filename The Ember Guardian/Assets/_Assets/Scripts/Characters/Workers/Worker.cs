@@ -193,13 +193,15 @@ public class Worker : Mob {
 
     private void WorkerAI_OnJobChanged(object sender, EventArgs e) {
         if(workerAI.GetJob() == WorkerAI.JobTypes.guard) {
-            health = 10;
-        } else {
-            health = 1;
+            health = 5;
+        }
+        if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
+            health = 2;
+            OnAnyWorkerAssignedHunter?.Invoke(this, EventArgs.Empty);
         }
 
-        if(workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
-            OnAnyWorkerAssignedHunter?.Invoke(this, EventArgs.Empty);
+        if(workerAI.GetJob() != WorkerAI.JobTypes.wild && workerAI.GetJob() != WorkerAI.JobTypes.jobless) {
+            WorkerManager.Instance.AutoAssignSideToWorker(this);
         }
     }
 

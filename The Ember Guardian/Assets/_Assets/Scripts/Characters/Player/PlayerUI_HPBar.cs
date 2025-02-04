@@ -237,9 +237,7 @@ public class PlayerUI_HPBar : MonoBehaviour
     }
 
     private IEnumerator ShowHPBarAfterDelay(float delay) {
-        Debug.Log(delay);
         yield return new WaitForSeconds(delay);
-        Debug.Log("ShowHPBar") ;
         ShowHPBar(2f);
     }
 }

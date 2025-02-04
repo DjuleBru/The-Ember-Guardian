@@ -29,6 +29,8 @@ public class WorkerAI : MonoBehaviour
 
     public event EventHandler OnJobChanged;
     public event EventHandler OnWorkerFollowPlayerChanged;
+    public static event EventHandler OnAnyWorkerFollowPlayerStarted;
+    public static event EventHandler OnAnyWorkerFollowPlayerStopped;
 
     protected virtual void Awake() {
         worker = GetComponent<Worker>();
@@ -57,17 +59,17 @@ public class WorkerAI : MonoBehaviour
 
         if (currentJob == JobTypes.hunter) {
             WorkerManager.Instance.RemoveJoblessWorker(worker);
-            hunterJob.InitializeHunterJob();
+            hunterJob.InitializeJob();
             hunterJob.enabled = true;
         }
         if (currentJob == JobTypes.miner) {
             WorkerManager.Instance.RemoveJoblessWorker(worker);
-            minerJob.InitializeMinerJob();
+            minerJob.InitializeJob();
             minerJob.enabled = true;
         }
         if (currentJob == JobTypes.guard) {
             WorkerManager.Instance.RemoveJoblessWorker(worker);
-            guardJob.InitializeGuardJob();
+            guardJob.InitializeJob();
             guardJob.enabled = true;
         }
 
@@ -91,12 +93,20 @@ public class WorkerAI : MonoBehaviour
         return currentJob;
     }
 
-    public void SetFollowingPlayer(bool followingPlayer) {
+    public void SetFollowingPlayer(bool followingPlayer, bool triggerSFX) {
         this.followingPlayer = followingPlayer;
         OnWorkerFollowPlayerChanged?.Invoke(this, EventArgs.Empty);
 
         if (followingPlayer) {
             WorkerFollowPlayerHandler.Instance.AddFollowingWorker(worker);
+
+            if(triggerSFX) {
+                OnAnyWorkerFollowPlayerStarted?.Invoke(this, EventArgs.Empty);
+            }
+        } else {
+            if(triggerSFX) {
+                OnAnyWorkerFollowPlayerStopped?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 

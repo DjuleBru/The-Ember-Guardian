@@ -68,6 +68,7 @@ public class MobAttack : MonoBehaviour
     protected IEnumerator SpawnProjectileAfterDelay(float delay, float totalAttackAnimationTime) {
         attackStarted = true;
         yield return new WaitForSeconds(delay);
+        if (mob.GetDead()) yield return null;
 
         // Projectile can be instantiated AFTER attack target reset, so must keep track of previous attack target
         if ((attackTargetIDamageable as MonoBehaviour) == null) {
@@ -91,6 +92,7 @@ public class MobAttack : MonoBehaviour
     protected IEnumerator SpawnStaticProjectileAfterDelay(float delayToSpawnStaticProjectile, float totalAttackAnimationTime) {
         attackStarted = true;
         yield return new WaitForSeconds(delayToSpawnStaticProjectile);
+        if (mob.GetDead()) yield return null;
 
         // Projectile can be instantiated AFTER attack target reset, so must keep track of previous attack target
         if ((attackTargetIDamageable as MonoBehaviour) == null) {
@@ -112,7 +114,7 @@ public class MobAttack : MonoBehaviour
     protected IEnumerator DealDamageAfterDelay(float delayToDealDamage, float totalAttackAnimationTime) {
         attackStarted = true;
         yield return new WaitForSeconds(delayToDealDamage);
-
+        if (mob.GetDead()) yield return null;
 
         if (attackTargetIDamageable != null) {
             attackTargetIDamageable.TakeDamage(attackDamage, transform);

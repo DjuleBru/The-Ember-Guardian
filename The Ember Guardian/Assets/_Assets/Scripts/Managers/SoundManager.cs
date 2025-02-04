@@ -75,6 +75,9 @@ public class SoundManager : MonoBehaviour
         if (LevelUI_Locations.Instance != null) {
             LevelUI_Locations.Instance.OnLocationTextShown += LevelUI_OnLocationTextShown;
         }
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            WorkerFollowPlayerHandler.Instance.OnHoveredFollowingWorkerChanged += WorkerFollowPlayerHandler_OnHoveredFollowingWorkerChanged;
+        }
 
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyStructureUpgraded += Structure_OnAnyStructureUpgraded;
@@ -104,6 +107,8 @@ public class SoundManager : MonoBehaviour
         Collectible.OnAnyCollectiblePlouffed += Collectible_OnAnyCollectiblePlouffed; ;
         Chest.OnAnyChestSpawnedCollectible += Chest_OnAnyChestSpawnedCollectible;
 
+        WorkerAI.OnAnyWorkerFollowPlayerStarted += WorkerAI_OnAnyWorkerFollowPlayerStarted;
+        WorkerAI.OnAnyWorkerFollowPlayerStopped += WorkerAI_OnAnyWorkerFollowPlayerStopped;
         Worker.OnAnyOrbDroppedByWorker += Worker_OnAnyOrbDroppedByWorker;
         Worker.OnAnyWorkerRecruited += Worker_OnAnyWorkerRecruited;
         Worker.OnAnyWorkerAssignedHunter += Worker_OnAnyWorkerAssignedHunter;
@@ -123,6 +128,7 @@ public class SoundManager : MonoBehaviour
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine += HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
     }
+
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
@@ -224,6 +230,17 @@ public class SoundManager : MonoBehaviour
 
     #region WORKERS
 
+    private void WorkerFollowPlayerHandler_OnHoveredFollowingWorkerChanged(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.hoveredFollowingWorkerChanged, 1f);
+    }
+
+    private void WorkerAI_OnAnyWorkerFollowPlayerStopped(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.workerStoppedFollowing, 1f);
+    }
+
+    private void WorkerAI_OnAnyWorkerFollowPlayerStarted(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.workerStartedFollowing, 1f);
+    }
     private void Worker_OnAnyOrbDroppedByWorker(object sender, System.EventArgs e) {
         PlaySound3D(soundRefsSO.orbDroppedUpByWorker, (sender as MonoBehaviour).transform.position, .5f);
     }
@@ -679,6 +696,9 @@ public class SoundManager : MonoBehaviour
         if (LevelUI_Locations.Instance != null) {
             LevelUI_Locations.Instance.OnLocationTextShown -= LevelUI_OnLocationTextShown;
         }
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            WorkerFollowPlayerHandler.Instance.OnHoveredFollowingWorkerChanged -= WorkerFollowPlayerHandler_OnHoveredFollowingWorkerChanged;
+        }
 
         StructureUI_Fire.OnFireTickRemoved -= StructureUI_Fire_OnFireTickRemoved;
         StructureUI_Fire.OnCricitalFireTickRemoved -= StructureUI_Fire_OnCricitalFireTickRemoved;
@@ -704,6 +724,8 @@ public class SoundManager : MonoBehaviour
         Collectible.OnAnyCollectiblePlouffed -= Collectible_OnAnyCollectiblePlouffed; ;
         Chest.OnAnyChestSpawnedCollectible -= Chest_OnAnyChestSpawnedCollectible;
 
+        Worker.OnAnyWorkerAssignedHunter -= Worker_OnAnyWorkerAssignedHunter;
+        Worker.OnAnyWorkerDied -= Worker_OnAnyWorkerDied;
         Worker.OnAnyOrbDroppedByWorker -= Worker_OnAnyOrbDroppedByWorker;
         Worker.OnAnyWorkerRecruited -= Worker_OnAnyWorkerRecruited;
         Worker.OnAnyWorkerAssignedHunter -= Worker_OnAnyWorkerAssignedHunter;

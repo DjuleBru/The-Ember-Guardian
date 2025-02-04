@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class WorkerVisual : MobVisual {
 
@@ -14,12 +15,18 @@ public class WorkerVisual : MobVisual {
     [SerializeField] private WorkerInteractionCollider interactionCollider;
 
     [SerializeField] private Material emptyMaterial;
-    [SerializeField] private Material hoveredMaterial;
+    [SerializeField] private Light2D bodySpriteLight;
     [SerializeField] private SpriteRenderer workerBodySpriteRenderer;
+    [SerializeField] private SpriteRenderer workerWeaponSpriteRenderer;
+    [SerializeField] private SpriteRenderer workerWeaponGlowSpriteRenderer;
     [SerializeField] private SpriteRenderer workerStatusSpriteRenderer;
+    [SerializeField] private Animator workerStatusAnimator;
     [SerializeField] private Sprite questionMarkSprite;
     [SerializeField] private Sprite exclamationMarkSprite;
     [SerializeField] private Sprite hoveredSprite;
+
+    private float unHoveredBodySpriteLightIntensity = .9f;
+    private float hoveredBodySpriteLightIntensity = 1.1f;
 
     protected override void Awake() {
         base.Awake();
@@ -30,6 +37,10 @@ public class WorkerVisual : MobVisual {
         minerJob = GetComponentInParent<MinerJob>();
         joblessJob = GetComponentInParent<JoblessJob>();
         workerStatusSpriteRenderer.sprite = null;
+
+
+        workerWeaponSpriteRenderer.sortingOrder = currentMaxSortingOrder+1;
+        workerWeaponGlowSpriteRenderer.sortingOrder = currentMaxSortingOrder+2;
     }
 
     private void Start() {
@@ -42,41 +53,40 @@ public class WorkerVisual : MobVisual {
         hunterJob.OnHunterFindsNoAnimal += HunterJob_OnHunterFindsNoAnimal;
         hunterJob.OnHunterChangedState += HunterJob_OnHunterChangedState;
         hunterJob.OnHunterFoundAnimal += HunterJob_OnHunterFoundAnimal;
-
-        guardJob.OnGuardChangedState += GuardJob_OnGuardChangedState;
-
         minerJob.OnMinerChangedState += MinerJob_OnMinerChangedState;
 
         joblessJob.OnJoblessBlockedByCreatures += JoblessJob_OnJoblessBlockedByCreatures;
         joblessJob.OnJoblessNotBlockedByCreatures += JoblessJob_OnJoblessNotBlockedByCreatures;
 
-        interactionCollider.OnPlayerTriggeredIn += InteractionCollider_OnPlayerTriggeredIn;
-        interactionCollider.OnPlayerTriggeredOut += InteractionCollider_OnPlayerTriggeredOut;
+        WorkerManager.Instance.OnClosestWorkerChanged += WorkerManager_OnClosestWorkerChanged;
+    }
+
+    private void WorkerManager_OnClosestWorkerChanged(object sender, WorkerManager.OnClosestWorkerChangedEventArgs e) {
+        if(e.newClosestWorker == worker) {
+            ChangeStatusSprite(hoveredSprite);
+            bodySpriteLight.intensity = hoveredBodySpriteLightIntensity;
+        } else {
+            bodySpriteLight.intensity = unHoveredBodySpriteLightIntensity;
+            workerBodySpriteRenderer.material = emptyMaterial;
+            workerStatusSpriteRenderer.sprite = null;
+        }
     }
 
     private void Worker_OnWorkerUnhovered(object sender, System.EventArgs e) {
         workerBodySpriteRenderer.material = emptyMaterial;
         workerStatusSpriteRenderer.sprite = null;
+        bodySpriteLight.intensity = unHoveredBodySpriteLightIntensity;
     }
 
     private void Worker_OnWorkerHovered(object sender, System.EventArgs e) {
-        workerBodySpriteRenderer.material = hoveredMaterial;
-        workerStatusSpriteRenderer.sprite = hoveredSprite;
+        ChangeStatusSprite(hoveredSprite);
+        bodySpriteLight.intensity = hoveredBodySpriteLightIntensity;
     }
 
     private void WorkerAI_OnWorkerFollowPlayerChanged(object sender, System.EventArgs e) {
+        bodySpriteLight.intensity = unHoveredBodySpriteLightIntensity;
         workerBodySpriteRenderer.material = emptyMaterial;
         workerStatusSpriteRenderer.sprite = null;
-    }
-
-    private void InteractionCollider_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
-        workerBodySpriteRenderer.material = emptyMaterial;
-        workerStatusSpriteRenderer.sprite = null;
-    }
-
-    private void InteractionCollider_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
-        workerBodySpriteRenderer.material = hoveredMaterial;
-        workerStatusSpriteRenderer.sprite = hoveredSprite;
     }
 
     private void Worker_OnMobDied(object sender, System.EventArgs e) {
@@ -88,43 +98,33 @@ public class WorkerVisual : MobVisual {
     }
 
     private void JoblessJob_OnJoblessBlockedByCreatures(object sender, System.EventArgs e) {
-        workerStatusSpriteRenderer.sprite = exclamationMarkSprite;
+        ChangeStatusSprite(exclamationMarkSprite);
     }
 
     private void MinerJob_OnMinerChangedState(object sender, System.EventArgs e) {
         MinerJob.MinerState state = minerJob.GetState();
 
         if (state == MinerJob.MinerState.blockedByCreatures) {
-            workerStatusSpriteRenderer.sprite = exclamationMarkSprite;
+            ChangeStatusSprite(exclamationMarkSprite);
         }
         else {
             workerStatusSpriteRenderer.sprite = null;
         }
     }
 
-    private void GuardJob_OnGuardChangedState(object sender, System.EventArgs e) {
-        GuardJob.GuardState state = guardJob.GetState();
-
-        if (state == GuardJob.GuardState.blockedByCreatures) {
-            workerStatusSpriteRenderer.sprite = exclamationMarkSprite;
-        }
-        else {
-            workerStatusSpriteRenderer.sprite = null;
-        }
-    }
 
     private void HunterJob_OnHunterChangedState(object sender, System.EventArgs e) {
         HunterJob.HunterState state = hunterJob.GetState();
 
         if(state == HunterJob.HunterState.blockedByCreatures) {
-            workerStatusSpriteRenderer.sprite = exclamationMarkSprite;
+            ChangeStatusSprite(exclamationMarkSprite);
         } else {
             workerStatusSpriteRenderer.sprite = null;
         }
     }
 
     private void HunterJob_OnHunterFindsNoAnimal(object sender, System.EventArgs e) {
-        workerStatusSpriteRenderer.sprite = questionMarkSprite;
+        ChangeStatusSprite(questionMarkSprite);
     }
 
     private void HunterJob_OnHunterFoundAnimal(object sender, System.EventArgs e) {
@@ -136,5 +136,14 @@ public class WorkerVisual : MobVisual {
         if(workerAI.GetJob() != WorkerAI.JobTypes.wild) {
             workerBodySpriteRenderer.material = emptyMaterial;
         }
+    }
+
+    private void ChangeStatusSprite(Sprite sprite) {
+        workerStatusSpriteRenderer.sprite = sprite;
+        workerStatusAnimator.SetTrigger("Changed");
+    }
+
+    private void OnDestroy() {
+        WorkerManager.Instance.OnClosestWorkerChanged -= WorkerManager_OnClosestWorkerChanged;
     }
 }

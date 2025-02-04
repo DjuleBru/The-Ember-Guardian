@@ -295,9 +295,7 @@ public class PlayerMovement : MonoBehaviour {
             rollDir = PlayerAim.Instance.GetAimDirFloat();
         }
 
-        Debug.Log("rollForce " + rollForce);
         float rollForceMetaBuff = rollForce * PlayerStats.Instance.GetRollForcePercentBuff_Meta() / 100f;
-        Debug.Log("rollForceMetaBuff " + rollForceMetaBuff);
         Vector2 force = new Vector2(rollDir * (rollForce + rollForceMetaBuff), 2f);
         rb.AddForce(force, ForceMode2D.Impulse);
         isJumping = false;

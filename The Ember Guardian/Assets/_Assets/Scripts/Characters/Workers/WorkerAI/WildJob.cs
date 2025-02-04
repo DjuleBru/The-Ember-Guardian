@@ -32,7 +32,7 @@ public class WildJob : MonoBehaviour, IJobBehavior {
             HeadToAggroedBlueOrb();
         }
         else {
-            Roam();
+            RoamInCampCenter();
         }
     }
 
@@ -55,7 +55,7 @@ public class WildJob : MonoBehaviour, IJobBehavior {
         blueOrbAggroed.SetAggroedByWildWorker(false, null);
     }
 
-    public void Roam() {
+    public void RoamInCampCenter() {
 
         if (!hasSetSpeed) {
             worker.GetComponent<MobMovement>().SetMoveSpeed(roamMoveSpeed);

@@ -3,32 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GuardJob : MonoBehaviour
-{
-    private Worker worker;
-    private WorkerAI workerAI;
-    private MobMovement mobMovement;
-    private WorkerAnimatorManager workerAnimatorManager;
+public class GuardJob : WorkerJob {
+
     private MobAttack guardAttack;
-    private Creature targetCreature;
     private Creature aggroedCreature;
     private Creature closestCreature;
-    private WorkerDetectionCollider workerDetectionCollider;
 
     private GuardState state;
     private GuardState previousState;
 
     private bool followingPlayer; 
 
-    private bool hasSetSpeed; 
-    [SerializeField] private float roamMoveSpeed = 1.5f;
-    [SerializeField] private float headToCampMoveSpeed = 3f;
-    [SerializeField] private float roamChangeDestinationRate = 10f;
-
     private float attackRange = 1f;
-    private float targetingRange = 8f;
+    private float followPlayerTargetingRange = 10f;
     private float attackRangeRandomized;
-    private float roamTimer;
+    private float maxDistanceToPlayerWhenFollowing = 10f;
     private float distanceToOuterWallWhenGuarding = 3f;
     private float distanceToStaySafeFromCreature = 20f;
     private float distanceToOuterWallToTargetCreatureAtNight = 14f;
@@ -37,11 +26,12 @@ public class GuardJob : MonoBehaviour
     private float checkClosestTargetCooldown = .3f;
 
     public enum GuardState {
-        idle,
-        blockedByCreatures,
+        followPlayerIdle,
+        followPlayerAttackCreature,
+        guardingDay,
         droppingOrbs,
         headingToGuard,
-        guarding,
+        guardingNight,
     }
     public event EventHandler OnGuardChangedState;
 
@@ -66,28 +56,84 @@ public class GuardJob : MonoBehaviour
         if(followingPlayer) {
             switch (state) {
 
-                case GuardState.idle:
+                case GuardState.followPlayerIdle:
+
                     FollowPlayer();
+
+                    if (closestCreature != null) {
+
+                        CheckAggroClosestCreatureSmart(transform.position, followPlayerTargetingRange);
+
+                        if (aggroedCreature == null) {
+
+                            targetCreature = null;
+                            guardAttack.RemoveAttackTarget();
+
+                        }
+                        else {
+                            if (!PlayerIsTooFarFromWorker()) {
+                                ChangeState(GuardState.followPlayerAttackCreature);
+                            };
+
+                        }
+                    }
+
                 break;
+
+                case GuardState.followPlayerAttackCreature:
+
+                    CheckAggroClosestCreatureSmart(transform.position, followPlayerTargetingRange);
+                    if (aggroedCreature == null) {
+                        targetCreature = null;
+                        guardAttack.RemoveAttackTarget();
+                        ChangeState(GuardState.followPlayerIdle);
+                        return;
+                    }
+
+                    if (PlayerIsTooFarFromWorker()) {
+                        ChangeState(GuardState.followPlayerIdle);
+                        return;
+                    }
+
+                    if (!TargetIsInRange(aggroedCreature)) {
+                        targetCreature = null;
+                        guardAttack.RemoveAttackTarget();
+
+                        mobMovement.SetMoveTarget(aggroedCreature.transform.position);
+                        mobMovement.SetMoveSpeed(headToCampMoveSpeed);
+                    }
+                    else {
+                        TargetCreature(aggroedCreature);
+                    }
+
+                    break;
+
+                case GuardState.droppingOrbs:
+
+                    if (worker.GetTotalCurrencyAmount() == 0) {
+                        ChangeState(previousState);
+                        return;
+                    }
+
+                    if (worker.PlayerIsCloseAndStayedAround()) {
+                        worker.DropCurrencies();
+                        return;
+                    }
+
+                    if (!worker.GetPlayerIsClose()) {
+                        ChangeState(previousState);
+                        return;
+                    }
+
+                break;
+
             }
         } else {
             switch (state) {
 
-                case GuardState.idle:
-                    Roam();
+                case GuardState.guardingDay:
 
-                    if (CheckBlockedByCreature()) {
-                        ChangeState(GuardState.blockedByCreatures);
-                        return;
-                    };
-                    break;
-
-                case GuardState.blockedByCreatures:
-                    StayOutOfCreatureRange();
-
-                    if (!CheckBlockedByCreature()) {
-                        ChangeState(GuardState.idle);
-                    }
+                    GuardCamp(true, 5f);
 
                     break;
 
@@ -96,48 +142,9 @@ public class GuardJob : MonoBehaviour
                     HeadToMostExteriorBarricade();
                     break;
 
-                case GuardState.guarding:
+                case GuardState.guardingNight:
 
-                    Vector3 guardingPosition = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned(), -distanceToOuterWallWhenGuarding);
-
-                    if (closestCreature == null) {
-                        // Keep checking if camp limits changed
-
-                        if (Mathf.Abs(transform.position.x - guardingPosition.x) > 2f) {
-                            ChangeState(GuardState.headingToGuard);
-                            return;
-                        }
-
-                    }
-
-                    else {
-
-                        CheckAggroClosestCreatureFromOuterWallSmart();
-
-                        if (aggroedCreature == null) {
-                            targetCreature = null;
-                            guardAttack.RemoveAttackTarget();
-
-                        }
-                        else {
-                            if (!TargetIsInRange(aggroedCreature)) {
-                                targetCreature = null;
-                                guardAttack.RemoveAttackTarget();
-
-                                if (TargetIsCloseToOuterWall(aggroedCreature)) {
-                                    mobMovement.SetMoveTarget(aggroedCreature.transform.position);
-                                }
-                                else {
-                                    mobMovement.SetMoveTarget(guardingPosition);
-                                }
-
-                            }
-                            else {
-                                TargetCreature(aggroedCreature);
-                            }
-                        }
-
-                    }
+                    GuardCamp(false, 2f);
 
                     break;
 
@@ -165,65 +172,88 @@ public class GuardJob : MonoBehaviour
         }
     }
 
-    public void InitializeGuardJob() {
-        mobMovement = GetComponentInChildren<MobMovement>();
-        workerAnimatorManager = GetComponentInChildren<WorkerAnimatorManager>();
-        guardAttack = GetComponent<MobAttack>();
-        worker = GetComponent<Worker>();
-        workerAI = GetComponent<WorkerAI>();
+    private void GuardCamp(bool roamAroundGuardingPosition, float maxDistanceToGuardingPosition) {
+        Vector3 guardingPosition = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned(), -distanceToOuterWallWhenGuarding);
+
+        if (closestCreature == null) {
+            // Keep checking if camp limits changed
+
+            if (Mathf.Abs(transform.position.x - guardingPosition.x) > maxDistanceToGuardingPosition) {
+                ChangeState(GuardState.headingToGuard);
+                return;
+            }
+
+            if(roamAroundGuardingPosition) {
+                Roam(5f, guardingPosition);
+            }
+
+        }
+
+        else {
+
+            Vector2 outerWallPosition = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned());
+            CheckAggroClosestCreatureSmart(outerWallPosition, distanceToOuterWallToTargetCreatureAtNight);
+
+            if (aggroedCreature == null) {
+                targetCreature = null;
+                guardAttack.RemoveAttackTarget();
+            }
+
+            else {
+                if (!TargetIsInRange(aggroedCreature)) {
+                    targetCreature = null;
+                    guardAttack.RemoveAttackTarget();
+
+                    if (TargetIsCloseToOuterWall(aggroedCreature)) {
+                        mobMovement.SetMoveTarget(aggroedCreature.transform.position);
+                        mobMovement.SetMoveSpeed(headToCampMoveSpeed);
+                    }
+                    else {
+                        mobMovement.SetMoveTarget(guardingPosition);
+                        mobMovement.SetMoveSpeed(roamMoveSpeed);
+                    }
+
+                }
+                else {
+                    TargetCreature(aggroedCreature);
+                }
+            }
+
+        }
+    }
+
+    public override void InitializeJob() {
+        base.InitializeJob();
 
         workerAI.OnWorkerFollowPlayerChanged += WorkerAI_OnWorkerFollowPlayerChanged;
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
-
-        mobMovement = GetComponent<MobMovement>();
-        mobMovement.SetMoveTarget(mobMovement.transform.position);
-
-        if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
-            ChangeState(GuardState.idle);
-        }
-        else {
-            ChangeState(GuardState.headingToGuard);
-        }
+       
+        ChangeState(GuardState.headingToGuard);
     }
 
     private void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
         followingPlayer = workerAI.GetFollowingPlayer();
-        state = GuardState.idle;
+        if(followingPlayer) {
+            state = GuardState.followPlayerIdle;
+        } else {
+            state = GuardState.headingToGuard;
+        }
         roamTimer = 0;
     }
+    private bool PlayerIsTooFarFromWorker() {
 
+        float distanceFromPlayerToAggroedCreature = Mathf.Abs(Mathf.Abs(Player.Instance.transform.position.x) - Mathf.Abs(transform.position.x));
+        return distanceFromPlayerToAggroedCreature > maxDistanceToPlayerWhenFollowing;
+
+    }
     private void FollowPlayer() {
         Vector3 destination = WorkerFollowPlayerHandler.Instance.GetWorkerFollowPosition(worker);
 
         if(Mathf.Abs(destination.x - transform.position.x) > .5f) {
             mobMovement.SetMoveTarget(destination);
-        }
-    }
-
-    private bool CheckBlockedByCreature() {
-        if (closestCreature != null) {
-            return true;
-        }
-        else {
-            return false;
-        }
-
-    }
-    public void Roam() {
-
-        if (!hasSetSpeed) {
-            mobMovement.SetMoveSpeed(roamMoveSpeed);
-            hasSetSpeed = true;
-        }
-
-        roamTimer -= Time.deltaTime;
-
-        if (roamTimer < 0) {
-            roamTimer = roamChangeDestinationRate;
-            RoamBehavior.RoamAroundPoint(mobMovement, 10f, CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned()), false);
         }
     }
 
@@ -233,14 +263,6 @@ public class GuardJob : MonoBehaviour
         }
         else {
             return false;
-        }
-    }
-    private bool CreatureIsTargetable(Creature creature) {
-        if (creature.GetCreatureSO().flying) {
-            return false;
-        }
-        else {
-            return true;
         }
     }
 
@@ -253,36 +275,13 @@ public class GuardJob : MonoBehaviour
         }
     }
 
-    private bool CheckClosestCreatureSmart() {
+    private bool CheckAggroClosestCreatureSmart(Vector2 positionOrigin, float checkDistance) {
         checkClosestTargetTimer -= Time.deltaTime;
 
         if (checkClosestTargetTimer < 0) {
             checkClosestTargetTimer = checkClosestTargetCooldown;
 
-            Creature newTargetCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(mobMovement.transform.position, attackRangeRandomized, guardAttack.GetAttackDamage(), false);
-
-            if (newTargetCreature == null) {
-                targetCreature = null;
-                return false;
-
-            }
-
-            else {
-                TargetCreature(newTargetCreature);
-                return true;
-            }
-        }
-
-        return false;
-    }
-    private bool CheckAggroClosestCreatureFromOuterWallSmart() {
-        checkClosestTargetTimer -= Time.deltaTime;
-
-        if (checkClosestTargetTimer < 0) {
-            checkClosestTargetTimer = checkClosestTargetCooldown;
-
-            Vector2 outerWallPosition = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned());
-            Creature newTargetCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(outerWallPosition, distanceToOuterWallToTargetCreatureAtNight, guardAttack.GetAttackDamage(), false);
+            Creature newTargetCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(positionOrigin, checkDistance, guardAttack.GetAttackDamage(), false);
 
             if (newTargetCreature == null) {
                 aggroedCreature = null;
@@ -298,7 +297,7 @@ public class GuardJob : MonoBehaviour
 
         return false;
     }
-
+  
     private void TargetCreature(Creature newTargetCreature) {
         if (targetCreature == newTargetCreature) return;
 
@@ -355,7 +354,6 @@ public class GuardJob : MonoBehaviour
 
             Vector3 safePosition = new Vector3(closestCreature.transform.position.x + direction * distanceToStaySafeFromCreature, 0, 0);
             RoamBehavior.RoamAroundPoint(mobMovement, 3f, safePosition, false);
-            ChangeState(GuardState.blockedByCreatures);
 
             return;
         }
@@ -381,7 +379,12 @@ public class GuardJob : MonoBehaviour
         mobMovement.SetMoveTarget(targetDestinationRandomized);
 
         if (Mathf.Abs(transform.position.x - targetDestinationRandomized.x) < 0.1f) {
-            ChangeState(GuardState.guarding);
+            if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dawn || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Day) {
+                ChangeState(GuardState.guardingDay);
+            } else {
+                ChangeState(GuardState.guardingNight);
+            }
+        
         }
 
         hasSetSpeed = false;
@@ -397,12 +400,16 @@ public class GuardJob : MonoBehaviour
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         if (followingPlayer) return;
-        ChangeState(GuardState.idle);
+        ChangeState(GuardState.followPlayerIdle);
     }
 
     private void ChangeState(GuardState newState) {
         if (newState == state) return;
         previousState = state;
+
+        if(newState == GuardState.followPlayerIdle) {
+            guardAttack.RemoveAttackTarget();
+        }
 
         Vector3 targetDestination = mobMovement.transform.position;
 

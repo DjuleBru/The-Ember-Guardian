@@ -56,5 +56,6 @@ public class PlayerVisual : MonoBehaviour
     private void OnDestroy() {
         Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
         Portal.OnAnyPortalSetToTeleportPlayer -= Portal_OnAnyPortalSetToTeleportPlayer;
+        GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
     }
 }

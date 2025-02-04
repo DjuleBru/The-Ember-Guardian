@@ -372,11 +372,11 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     private void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
-        if (Player.Instance.GetCanDropOrbOnTheFloor()) {
-            tryingToDropOrb = true;
-            tryingToDropOrbTimer = 0;
-            formingBigOrbCanceled = false;
-        }
+        //if (Player.Instance.GetCanDropOrbOnTheFloor()) {
+        //    tryingToDropOrb = true;
+        //    tryingToDropOrbTimer = 0;
+        //    formingBigOrbCanceled = false;
+        //}
     }
 
     private void GameInput_OnPlayerInteractHeldDown(object sender, EventArgs e) {
@@ -401,8 +401,6 @@ public class UICurrencyManager : MonoBehaviour
                 OnCurrencyFailedToDrop?.Invoke(this, EventArgs.Empty);
             }
         }
-
-        tryingToDropOrb = false;
     }
 
     private void StructureLocation_OnAnyStructureBuilt(object sender, EventArgs e) {

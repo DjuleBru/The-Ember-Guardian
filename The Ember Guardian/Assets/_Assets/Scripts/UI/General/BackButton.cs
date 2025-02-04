@@ -14,4 +14,8 @@ public class BackButton : MonoBehaviour
     private void GameInput_OnPlayerInputChanged(object sender, System.EventArgs e) {
         backShortcut.sprite = InputControlIcons.Instance.GetControlIconSprite(InputControlIcons.Control.Back)[0];
     }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
+    }
 }

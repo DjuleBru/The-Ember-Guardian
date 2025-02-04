@@ -21,6 +21,7 @@ public class Mob : MonoBehaviour, IDamageable
     }
 
     protected int health;
+    protected bool dead;
 
     public event EventHandler OnMobDied;
     public static event EventHandler OnAnyMobDied;
@@ -105,6 +106,7 @@ public class Mob : MonoBehaviour, IDamageable
     }
 
     public virtual void Die() {
+        dead = true;
         OnMobDied?.Invoke(this, EventArgs.Empty);
         OnAnyMobDied?.Invoke(this, EventArgs.Empty);
         GetComponent<MobMovement>().enabled = false;
@@ -130,6 +132,10 @@ public class Mob : MonoBehaviour, IDamageable
 
     public Transform GetProjectileParent() {
         return projectileParent;
+    }
+
+    public bool GetDead() {
+        return dead;
     }
 
     public void InvokeOnMobDroppedCollectibles(List<Collectible> collectibleDroppedList) {

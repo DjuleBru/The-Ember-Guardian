@@ -160,5 +160,6 @@ public class PauseMenuUI : MonoBehaviour
     protected void OnDestroy() {
         GameInput.Instance.OnPlayerPausePerformed -= GameInput_OnPlayerPausePerformed;
         GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
+        GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
     }
 }

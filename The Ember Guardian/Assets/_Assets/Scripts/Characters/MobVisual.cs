@@ -11,7 +11,7 @@ public class MobVisual : MonoBehaviour
 
     protected virtual void Awake() {
         mob = GetComponentInParent<Mob>();
-        currentMaxSortingOrder++;
+        currentMaxSortingOrder += 10;
         bodySpriteRenderer.sortingOrder = currentMaxSortingOrder;
     }
 }

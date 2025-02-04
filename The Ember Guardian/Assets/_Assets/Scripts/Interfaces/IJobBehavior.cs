@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IJobBehavior
 {
-    void Roam();
+    void RoamInCampCenter();
 }

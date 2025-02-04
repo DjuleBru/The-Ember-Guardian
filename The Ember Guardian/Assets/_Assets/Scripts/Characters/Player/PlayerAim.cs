@@ -337,4 +337,8 @@ public class PlayerAim : MonoBehaviour
         return previousAimDir;
     }
 
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
+    }
+
 }
