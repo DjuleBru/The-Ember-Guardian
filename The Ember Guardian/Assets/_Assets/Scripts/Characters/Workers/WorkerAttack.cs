@@ -17,6 +17,11 @@ public class WorkerAttack : MobAttack
     private float guardAttackAnimationDelay = .3f;
     private float guardTotalAttackAnimationTime = .4f;
 
+    private int initialMinerDamage = 1;
+    private float initialMinerAttackCooldown = .5f;
+    private float minerAttackAnimationDelay = .2f;
+    private float minerTotalAttackAnimationTime = .5f;
+
     private void Start() {
         workerAI = GetComponent<WorkerAI>();
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
@@ -39,6 +44,15 @@ public class WorkerAttack : MobAttack
             attackCooldown = initialGuardAttackCooldown;
             attackAnimationDelay = guardAttackAnimationDelay;
             totalAttackAnimationTime = guardTotalAttackAnimationTime;
+        }
+
+        if (workerAI.GetJob() == WorkerAI.JobTypes.miner) {
+            isProjectileAttack = false;
+
+            attackDamage = initialMinerDamage;
+            attackCooldown = initialMinerAttackCooldown;
+            attackAnimationDelay = minerAttackAnimationDelay;
+            totalAttackAnimationTime = minerTotalAttackAnimationTime;
         }
     }
 }

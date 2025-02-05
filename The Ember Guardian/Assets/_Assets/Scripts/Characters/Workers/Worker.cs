@@ -48,7 +48,6 @@ public class Worker : Mob {
     }
 
     public void RecruitWorker() {
-        Debug.Log("RecruitWorker");
         WorkerManager.Instance.AddRecruitedWorker(this);
         mobSpawner.RemoveMobFromMobSpawnedList(this);
         workerAI.SetJob(WorkerAI.JobTypes.jobless);

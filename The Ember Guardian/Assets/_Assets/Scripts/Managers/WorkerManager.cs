@@ -76,7 +76,6 @@ public class WorkerManager : MonoBehaviour
         recruitedWorkers.Add(worker);
         joblessWorkers.Add(worker);
 
-        Debug.Log("AddRecruitedWorker total workers" + recruitedWorkers.Count);
         OnJoblessWorkerAmountChanged?.Invoke(this, EventArgs.Empty);
     }
 

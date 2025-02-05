@@ -24,12 +24,20 @@ public class Scavengable : MonoBehaviour, IDamageable {
     private int health;
     private int hitsTaken;
 
+    private bool scavengedUnlocked = true;
     private bool markedToScavenge;
-    private bool scavenged;
+    private bool depleted;
     private bool playerInTriggerArea;
 
     public event EventHandler OnPlayerTriggerIn;
     public event EventHandler OnPlayerTriggerOut;
+    public event EventHandler OnScavengableMarkedToScavenge;
+    public event EventHandler OnScavengableDepleted;
+    public event EventHandler<OnStavengableSpawnedCurrencyEventArgs> OnScavengableSpawnedCurrency;
+
+    public class OnStavengableSpawnedCurrencyEventArgs : EventArgs {
+        public Collectible collectibleSpawned;
+    }
 
     private void Awake() {
         payOrbsUI = GetComponent<PayCurrencyUI>();
@@ -47,10 +55,16 @@ public class Scavengable : MonoBehaviour, IDamageable {
 
     protected void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         markedToScavenge = true;
+        OnScavengableMarkedToScavenge?.Invoke(this, EventArgs.Empty);
     }
 
     public void Die() {
-        scavenged = true;
+        depleted = true;
+        OnScavengableDepleted?.Invoke(this, EventArgs.Empty);
+
+        foreach(MinerJob miner in minerAssignedList) {
+            miner.UnAssignScavengable();
+        }
     }
 
     public Transform GetMeleeAttackPosition() {
@@ -63,7 +77,7 @@ public class Scavengable : MonoBehaviour, IDamageable {
 
     public void TakeDamage(int damage, Transform damageSource, bool crit = false) {
         health -= damage;
-        hitsTaken *= damage;
+        hitsTaken += damage;
 
         if(hitsTaken >= hitsToCollectOneCurrency) {
             hitsTaken = 0;
@@ -79,6 +93,11 @@ public class Scavengable : MonoBehaviour, IDamageable {
         Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyTypeCollected), currencySpawnPoint.position, Quaternion.identity).GetComponent<Collectible>();
         collectible.ApplyRandomUpwardsForce(5, 8);
         collectible.SetCollectibleUnInteractable(.75f);
+        collectible.SetCanBePickedUpByWorker();
+
+        OnScavengableSpawnedCurrency?.Invoke(this, new OnStavengableSpawnedCurrencyEventArgs {
+            collectibleSpawned = collectible,
+        });
     }
 
     public void AssignMiner(MinerJob miner) {
@@ -95,8 +114,8 @@ public class Scavengable : MonoBehaviour, IDamageable {
         return minerAssignedList.Count > maxMinersAssigned;
     }
 
-    public bool GetScavenged() {
-        return scavenged;
+    public bool GetDepleted() {
+        return depleted;
     }
 
     public bool GetMarkedToScavenge() {
@@ -126,14 +145,20 @@ public class Scavengable : MonoBehaviour, IDamageable {
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
+        if (!scavengedUnlocked) return;
         if (collision.GetComponent<Player>() == null) return;
 
+        Player.Instance.SetCanDropOrbOnTheFloor(false);
         playerInTriggerArea = true;
         OnPlayerTriggerIn?.Invoke(this, EventArgs.Empty);
     }
+
     private void OnTriggerExit2D(Collider2D collision) {
+        if (!scavengedUnlocked) return;
         if (collision.GetComponent<Player>() == null) return;
 
+        Player.Instance.SetCanDropOrbOnTheFloor(true);
+        payOrbsUI.SetPlayerInteracting(false);
         playerInTriggerArea = false;
         OnPlayerTriggerOut?.Invoke(this, EventArgs.Empty);
     }

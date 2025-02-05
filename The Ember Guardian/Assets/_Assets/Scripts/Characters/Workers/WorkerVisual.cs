@@ -62,7 +62,9 @@ public class WorkerVisual : MobVisual {
     }
 
     private void WorkerManager_OnClosestWorkerChanged(object sender, WorkerManager.OnClosestWorkerChangedEventArgs e) {
-        if(e.newClosestWorker == worker) {
+        if (workerAI.GetJob() == WorkerAI.JobTypes.wild || workerAI.GetJob() == WorkerAI.JobTypes.jobless) return;
+
+        if (e.newClosestWorker == worker) {
             ChangeStatusSprite(hoveredSprite);
             bodySpriteLight.intensity = hoveredBodySpriteLightIntensity;
         } else {
@@ -73,17 +75,23 @@ public class WorkerVisual : MobVisual {
     }
 
     private void Worker_OnWorkerUnhovered(object sender, System.EventArgs e) {
+        if (workerAI.GetJob() == WorkerAI.JobTypes.wild || workerAI.GetJob() == WorkerAI.JobTypes.jobless) return;
+
         workerBodySpriteRenderer.material = emptyMaterial;
         workerStatusSpriteRenderer.sprite = null;
         bodySpriteLight.intensity = unHoveredBodySpriteLightIntensity;
     }
 
     private void Worker_OnWorkerHovered(object sender, System.EventArgs e) {
+        if (workerAI.GetJob() == WorkerAI.JobTypes.wild || workerAI.GetJob() == WorkerAI.JobTypes.jobless) return;
+
         ChangeStatusSprite(hoveredSprite);
         bodySpriteLight.intensity = hoveredBodySpriteLightIntensity;
     }
 
     private void WorkerAI_OnWorkerFollowPlayerChanged(object sender, System.EventArgs e) {
+        if (workerAI.GetJob() == WorkerAI.JobTypes.wild || workerAI.GetJob() == WorkerAI.JobTypes.jobless) return;
+
         bodySpriteLight.intensity = unHoveredBodySpriteLightIntensity;
         workerBodySpriteRenderer.material = emptyMaterial;
         workerStatusSpriteRenderer.sprite = null;

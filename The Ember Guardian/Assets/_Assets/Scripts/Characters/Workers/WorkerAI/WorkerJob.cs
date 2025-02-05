@@ -88,6 +88,8 @@ public class WorkerJob : MonoBehaviour
     }
 
     public virtual void InitializeJob() {
+        workerDetectionCollider = GetComponentInChildren<WorkerDetectionCollider>();
+
         mobMovement = GetComponentInChildren<MobMovement>();
         workerAnimatorManager = GetComponentInChildren<WorkerAnimatorManager>();
         workerAttack = GetComponent<MobAttack>();

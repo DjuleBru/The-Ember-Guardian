@@ -175,10 +175,12 @@ public class Projectile : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if (projectileHasHit) return;
         if (collision.gameObject.GetComponent<CreatureDetectionCollider>() != null) return;
+        if (collision.gameObject.GetComponent<WorkerDetectionCollider>() != null) return;
+        if (collision.gameObject.GetComponent<WorkerInteractionCollider>() != null) return;
 
         // Hit mob
         mobHit = collision.GetComponentInParent<Mob>();
-        if (mobHit != null && !enemyProjectile && mobHit != parentMob) {
+        if (mobHit != null  && mobHit != parentMob) {
 
             // Check if worker is shooting another worker
             if (mobHit is Worker && !enemyProjectile) return;
