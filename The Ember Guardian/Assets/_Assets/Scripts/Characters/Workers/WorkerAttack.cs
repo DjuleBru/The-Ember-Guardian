@@ -7,12 +7,12 @@ public class WorkerAttack : MobAttack
 
     private WorkerAI workerAI;
 
-    private int initialHunterDamage = 20;
+    private int initialHunterDamage = 10;
     private float initialHunterAttackCooldown = 3f;
     private float hunterAttackAnimationDelay = .6f;
 
 
-    private int initialGuardDamage = 10;
+    private int initialGuardDamage = 5;
     private float initialGuardAttackCooldown = 1f;
     private float guardAttackAnimationDelay = .3f;
     private float guardTotalAttackAnimationTime = .4f;

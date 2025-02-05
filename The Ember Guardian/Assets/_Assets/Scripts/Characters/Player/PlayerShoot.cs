@@ -400,7 +400,10 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnWeaponSecondaryAbilitytPerformed(object sender, EventArgs e) {
-        bool secondaryAbilityUnlocked = heldGun.GetSecondaryAbilityUnlocked() || debugSecondaryAbilityUnlocked;
+        bool secondaryAbilityUnlocked = heldGun.GetSecondaryAbilityUnlocked();
+        if (useDebugGun) {
+            secondaryAbilityUnlocked = true;
+        }
 
         if (!secondaryAbilityUnlocked) return;
         if (!canShoot) return;

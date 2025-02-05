@@ -96,10 +96,10 @@ public class HunterJob : WorkerJob {
 
         DebugExtention.DrawCircle(mobMovement.transform.position, attackRange, 20, Color.white);
 
+        if (CheckDropCurrenciesToPlayer()) {
+            ChangeState(HunterState.droppingOrbs);
+        }
         if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
-            if(CheckDropCurrenciesToPlayer()) {
-                ChangeState(HunterState.droppingOrbs);
-            }
             if(CheckOrbsToCollect() && state != HunterState.hunting) {
                 ChangeState(HunterState.pickingUpOrbs);
             };
@@ -123,7 +123,7 @@ public class HunterJob : WorkerJob {
                         if (targetCreature == null) {
 
                             targetCreature = null;
-                            hunterAttack.RemoveAttackTarget();
+                            workerAttack.RemoveAttackTarget();
 
                         }
                         else {
@@ -138,30 +138,30 @@ public class HunterJob : WorkerJob {
 
                 case HunterState.followPlayerAttackCreature:
                     if (targetCreature == null) {
-                        hunterAttack.RemoveAttackTarget();
+                        workerAttack.RemoveAttackTarget();
                         ChangeState(HunterState.followPlayerIdle);
                         return;
                     }
 
                     if (CreatureIsTooClose(closestCreature)) {
-                        hunterAttack.RemoveAttackTarget();
+                        workerAttack.RemoveAttackTarget();
                         StayAwayFromCreature(closestCreature);
                         return;
                     }
 
                     if (PlayerIsTooFar()) {
-                        hunterAttack.RemoveAttackTarget();
+                        workerAttack.RemoveAttackTarget();
                         ChangeState(HunterState.followPlayerIdle);
                         return;
                     }
 
                     if (!TargetIsInHuntingRange(targetCreature)) {
-                        hunterAttack.RemoveAttackTarget();
+                        workerAttack.RemoveAttackTarget();
                         ChangeState(HunterState.followPlayerIdle);
                     }
                     else {
                         mobMovement.SetMoveTarget(transform.position);
-                        hunterAttack.SetAttackTarget(targetCreature);
+                        workerAttack.SetAttackTarget(targetCreature);
                     }
 
                     CheckClosestCreatureSmart();
@@ -301,12 +301,12 @@ public class HunterJob : WorkerJob {
                     };
 
                     if (!TargetIsStillInHuntingRange(targetAnimal)) {
-                        hunterAttack.RemoveAttackTarget();
+                        workerAttack.RemoveAttackTarget();
                         ChangeState(HunterState.headingToHunt);
                         return;
                     };
 
-                    hunterAttack.SetAttackTarget(targetAnimal);
+                    workerAttack.SetAttackTarget(targetAnimal);
 
                     break;
 
@@ -386,10 +386,10 @@ public class HunterJob : WorkerJob {
                         else {
 
                             if (!TargetIsInHuntingRange(targetCreature)) {
-                                hunterAttack.RemoveAttackTarget();
+                                workerAttack.RemoveAttackTarget();
                             }
                             else {
-                                hunterAttack.SetAttackTarget(targetCreature);
+                                workerAttack.SetAttackTarget(targetCreature);
                             }
 
                         }
@@ -415,11 +415,11 @@ public class HunterJob : WorkerJob {
                     else {
 
                         if (!TargetIsInHuntingRange(targetCreature)) {
-                            hunterAttack.RemoveAttackTarget();
+                            workerAttack.RemoveAttackTarget();
                             ChangeState(HunterState.blockedByCreatures);
                         }
                         else {
-                            hunterAttack.SetAttackTarget(targetCreature);
+                            workerAttack.SetAttackTarget(targetCreature);
                         }
 
                     }
@@ -559,7 +559,7 @@ public class HunterJob : WorkerJob {
 
             Vector3 safePosition = new Vector3(closestCreature.transform.position.x + direction * distanceToStaySafeFromCreature, 0, 0);
             mobMovement.SetMoveTarget(safePosition);
-            hunterAttack.RemoveAttackTarget();
+            workerAttack.RemoveAttackTarget();
 
             return;
         }
@@ -602,7 +602,7 @@ public class HunterJob : WorkerJob {
         if (checkClosestTargetTimer < 0) {
             checkClosestTargetTimer = checkClosestTargetCooldown;
 
-            Creature newTargetCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(mobMovement.transform.position, attackRange, hunterAttack.GetAttackDamage(), true);
+            Creature newTargetCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(mobMovement.transform.position, attackRange, workerAttack.GetAttackDamage(), true);
 
             if (newTargetCreature == null) {
                 targetCreature = null;
@@ -651,7 +651,7 @@ public class HunterJob : WorkerJob {
 
     private void TargetCreature_OnMobDied(object sender, System.EventArgs e) {
         targetCreature = null;
-        hunterAttack.RemoveAttackTarget();
+        workerAttack.RemoveAttackTarget();
     }
 
     private void TargetAnimal_OnAnimalDroppedCollectibles(object sender, Animal.OnMobDroppedCollectibleEventArgs e) {
@@ -781,7 +781,7 @@ public class HunterJob : WorkerJob {
         }
 
         if(newState != HunterState.hunting && newState != HunterState.guarding) {
-            hunterAttack.RemoveAttackTarget();
+            workerAttack.RemoveAttackTarget();
         }
 
         mobMovement.SetMoveTarget(targetDestination);
@@ -833,7 +833,7 @@ public class HunterJob : WorkerJob {
         destinationTower = null;
         hasHitAnimal = false;
 
-        hunterAttack.SetHomingProjectile(false);
+        workerAttack.SetHomingProjectile(false);
 
         ChangeState(HunterState.idle);
     }
@@ -841,7 +841,7 @@ public class HunterJob : WorkerJob {
     private void SetNightStartParameters() {
         if (followingPlayer) return;
 
-        hunterAttack.SetHomingProjectile(true);
+        workerAttack.SetHomingProjectile(true);
     }
 
     private void SetDuskStartParameters() {
@@ -886,12 +886,12 @@ public class HunterJob : WorkerJob {
 
         if(followingPlayer) {
             state = HunterState.followPlayerIdle;
-            hunterAttack.SetHomingProjectile(true);
+            workerAttack.SetHomingProjectile(true);
         } else {
             state = HunterState.idle;
-            hunterAttack.SetHomingProjectile(false);
+            workerAttack.SetHomingProjectile(false);
             CheckNewDayCycleParameters();
-            hunterAttack.RemoveAttackTarget();
+            workerAttack.RemoveAttackTarget();
         }
 
         roamTimer = 0f;

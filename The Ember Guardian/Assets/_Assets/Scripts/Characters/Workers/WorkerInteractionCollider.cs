@@ -9,7 +9,12 @@ public class WorkerInteractionCollider : MonoBehaviour
     private WorkerAI workerAI;
     private bool workerCanBeOrdered;
 
+    private bool interactionWithWorkersUnlocked;
+
     private void Start() {
+        interactionWithWorkersUnlocked = MetaProgressionManager.Instance.GetInteractionWithWorkersUnlocked();
+        if (!interactionWithWorkersUnlocked) return;
+
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
 
         workerAI = GetComponentInParent<WorkerAI>();
@@ -38,6 +43,7 @@ public class WorkerInteractionCollider : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
+        if (!interactionWithWorkersUnlocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
         if (workerAI.GetJob() == WorkerAI.JobTypes.wild || workerAI.GetJob() == WorkerAI.JobTypes.jobless) return;
@@ -49,6 +55,7 @@ public class WorkerInteractionCollider : MonoBehaviour
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
+        if (!interactionWithWorkersUnlocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
         if (workerAI.GetJob() == WorkerAI.JobTypes.wild || workerAI.GetJob() == WorkerAI.JobTypes.jobless) return;

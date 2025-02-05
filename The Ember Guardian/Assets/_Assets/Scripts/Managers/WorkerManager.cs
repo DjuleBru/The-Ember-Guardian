@@ -76,11 +76,29 @@ public class WorkerManager : MonoBehaviour
         recruitedWorkers.Add(worker);
         joblessWorkers.Add(worker);
 
+        Debug.Log("AddRecruitedWorker total workers" + recruitedWorkers.Count);
         OnJoblessWorkerAmountChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void AutoAssignSideToWorker(Worker worker) {
+        float randomFloat = UnityEngine.Random.Range(0.0f, 1.0f);
+        bool equalGoesLeft = false;
+        if (randomFloat < 0.5f) {
+            equalGoesLeft = true;
+        }
+
         if(worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.hunter) {
+            if (leftSideAssignedHunters.Count == rightSideAssignedHunters.Count) {
+
+                if(equalGoesLeft) {
+                    leftSideAssignedHunters.Add(worker);
+                    worker.AssignSide(CampZoneManager.CampSide.left);
+                } else {
+                    rightSideAssignedHunters.Add(worker);
+                    worker.AssignSide(CampZoneManager.CampSide.right);
+                }
+                return;
+            }
 
             if (leftSideAssignedHunters.Count < rightSideAssignedHunters.Count) {
 
@@ -98,6 +116,20 @@ public class WorkerManager : MonoBehaviour
 
         if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.miner) {
 
+            if (leftSideAssignedMiners.Count == rightSideAssignedMiners.Count) {
+
+                if (equalGoesLeft) {
+                    leftSideAssignedMiners.Add(worker);
+                    worker.AssignSide(CampZoneManager.CampSide.left);
+                }
+                else {
+                    rightSideAssignedMiners.Add(worker);
+                    worker.AssignSide(CampZoneManager.CampSide.right);
+                }
+                return;
+            }
+
+
             if (leftSideAssignedMiners.Count < rightSideAssignedMiners.Count) {
 
                 leftSideAssignedMiners.Add(worker);
@@ -113,6 +145,19 @@ public class WorkerManager : MonoBehaviour
         }
 
         if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.guard) {
+
+            if (leftSideAssignedGuards.Count == rightSideAssignedGuards.Count) {
+
+                if (equalGoesLeft) {
+                    leftSideAssignedGuards.Add(worker);
+                    worker.AssignSide(CampZoneManager.CampSide.left);
+                }
+                else {
+                    rightSideAssignedGuards.Add(worker);
+                    worker.AssignSide(CampZoneManager.CampSide.right);
+                }
+                return;
+            }
 
             if (leftSideAssignedGuards.Count < rightSideAssignedGuards.Count) {
 

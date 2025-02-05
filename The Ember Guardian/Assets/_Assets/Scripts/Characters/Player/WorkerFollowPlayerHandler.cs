@@ -20,6 +20,8 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
     private bool hoveringFollowingWorkers;
     private bool hoveringReverseOrder;
 
+    private bool interactionWithWorkersUnlocked;
+
     public event EventHandler OnHoveredFollowingWorkerChanged;
 
     private void Awake() {
@@ -27,29 +29,14 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
     }
 
     private void Start() {
+        interactionWithWorkersUnlocked = MetaProgressionManager.Instance.GetInteractionWithWorkersUnlocked();
+        if (!interactionWithWorkersUnlocked) return;
+
         Mob.OnAnyMobDied += Worker_OnAnyMobDied;
         GameInput.Instance.OnHoverWorkersPerformed += GameInput_OnHoverWorkersPerformed;
         GameInput.Instance.OnPlayerLeftRightDirPerformed += GameInput_OnPlayerLeftRightDirPerformed;
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
-    }
-
-    private void Update() {
-        //float moveSpeed = PlayerMovement.Instance.GetMoveSpeed();
-        //if(Mathf.Abs(moveSpeed) < .2f) {
-        //    workersFollowDirection = PlayerMovement.Instance.GetLastMoveDir();
-        //}
-
-        //bool isMovingBackwards = PlayerMovement.Instance.IsMovingBackwards();
-        //hoveringReverseOrder = Mathf.Abs(moveSpeed) > .2f && isMovingBackwards;
-
-        //if (hoveringReverseOrder) {
-        //    workersFollowDirection = -1;
-        //}
-        //else {
-        //    workersFollowDirection = 1;
-        //}
-
     }
 
     private void Player_OnPlayerDied(object sender, EventArgs e) {

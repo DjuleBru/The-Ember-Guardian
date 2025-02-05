@@ -9,11 +9,14 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool allowDebugInputs_CreaturesSpawnManager;
     [SerializeField] private bool allowDebugInputs_DayNightManager;
     [SerializeField] private bool allowDebugInputs_CurrencyUIManager;
+    [SerializeField] private bool debugMode_DayNightManager;
     [SerializeField] private bool debugMode_PlayerWeapons;
     [SerializeField] private bool debugMode_Portals;
     [SerializeField] private bool debugMode_HUBManager;
     [SerializeField] private bool debugMode_HUBMerchants;
     [SerializeField] private bool debugMode_Tutorial;
+    [SerializeField] private bool debugMode_PlayerCamp;
+    [SerializeField] private bool debugMode_Progression;
 
     private void Awake() {
         Instance = this;
@@ -31,6 +34,9 @@ public class DebugManager : MonoBehaviour
     public bool GetDebugMode_PlayerWeapons() {
         return debugMode_PlayerWeapons;
     }
+    public bool GetDebugMode_DayNightManager() {
+        return debugMode_DayNightManager;
+    }
     public bool GetDebugMode_Portals() {
         return debugMode_Portals;
     }
@@ -44,4 +50,10 @@ public class DebugManager : MonoBehaviour
         return debugMode_Tutorial;
     }
 
+    public bool GetDebugMode_PlayerCamp() {
+        return debugMode_PlayerCamp;
+    }
+    public bool GetDebugMode_Progression() {
+        return debugMode_Progression;
+    }
 }

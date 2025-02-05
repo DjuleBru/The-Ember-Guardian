@@ -11,7 +11,8 @@ public class VersioningManager : MonoBehaviour
     private bool saveFileDeleted;
     [SerializeField] protected TextMeshProUGUI versioningText;
     [SerializeField] protected bool saveFileIncompatible;
-    [SerializeField] protected string buildVersion;
+    [SerializeField] protected float buildVersion;
+    [SerializeField] protected float latestCompatibleBuildVersion;
 
     private void Awake() {
         Instance = this;
@@ -22,7 +23,13 @@ public class VersioningManager : MonoBehaviour
     }
 
     public bool CheckIncompatibleSaveFile() {
+
         string key = "buildVersion_" + buildVersion + "_saveFileDeleted";
+        string latestBuildSavedKey = "latestBuildSaved";
+
+        float latestBuildSaved = ES3.Load(latestBuildSavedKey, buildVersion);
+        ES3.Save(latestBuildSavedKey, buildVersion);
+
         if (!saveFileIncompatible) return false;
 
         if (!MetaProgressionManager.Instance.GetSavedOnce()) {
@@ -30,7 +37,11 @@ public class VersioningManager : MonoBehaviour
         };
 
         saveFileDeleted = ES3.Load(key, false);
+
+        Debug.Log("latestBuildSaved " + latestBuildSaved);
         Debug.Log("saveFileDeleted " + saveFileDeleted);
+
+        if (latestBuildSaved > latestCompatibleBuildVersion) return false;
         if (saveFileDeleted) return false;
 
         MainMenuUI_StartupMessagePanel.Instance.OpenPanel();

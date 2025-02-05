@@ -111,9 +111,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 624535c942e67e543b9117dfff3f335b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roamMoveSpeed: 1.5
-  headToCampMoveSpeed: 2.5
-  roamChangeDestinationRate: 5
 --- !u!114 &8486478444676101179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,7 +130,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 477107457430138900}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6a2e22106c9f6d41a3a9d223fb9a299, type: 3}
   m_Name: 
@@ -145,14 +142,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 477107457430138900}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f4ee8e6375ffc341a12d033344ee5ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roamMoveSpeed: 2
-  headToCampMoveSpeed: 3
-  roamChangeDestinationRate: 10
 --- !u!114 &1648183774965061190
 MonoBehaviour:
   m_ObjectHideFlags: 0

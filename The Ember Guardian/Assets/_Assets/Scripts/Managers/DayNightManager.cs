@@ -14,9 +14,9 @@ public class DayNightManager : MonoBehaviour
     [SerializeField] private float duskDuration;
     [SerializeField] private float nightDuration;
 
-    [SerializeField] private bool manualInitialCycleSet;
     [SerializeField] private bool cyclePaused;
     [SerializeField] private State debugState;
+    private bool manualInitialCycleSet;
 
     private int currentDay;
 
@@ -53,6 +53,7 @@ public class DayNightManager : MonoBehaviour
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
 
         allowDebugInputs = DebugManager.Instance.GetAllowDebugInputs_DayNightManager();
+        manualInitialCycleSet = DebugManager.Instance.GetDebugMode_DayNightManager();
         if (manualInitialCycleSet) {
             ChangeState(debugState);
             return;
@@ -67,6 +68,7 @@ public class DayNightManager : MonoBehaviour
         if(allowDebugInputs) {
             HandleDebugNextState();
         }
+
         if (cyclePaused) return;
 
         cycleTimer += Time.deltaTime;

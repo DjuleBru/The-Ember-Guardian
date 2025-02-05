@@ -24,7 +24,7 @@ MonoBehaviour:
   moveSpeed: 2.5
   enteredLightMoveSpeedDebuff: 2
   moveSpeedRandomizerDelta: 0
-  maxHealth: 30
+  maxHealth: 20
   damage: 1
   attackRate: 2
   enteredLightattackRateDebuff: 2.5
@@ -39,6 +39,7 @@ MonoBehaviour:
   relativeDamageToFire: 0.5
   attackAnimationDelay: 0.3
   totalAttackAnimationTime: 0.6
+  hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 1.3
   workerTargetingPriority: 3

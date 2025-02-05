@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class WeaponChangeButton : ButtonUI
@@ -64,11 +65,13 @@ public class WeaponChangeButton : ButtonUI
     private void PlayerShoot_OnSecondaryWeaponChanged(object sender, System.EventArgs e) {
         if (isPrimaryWeaponButton) return;
         UpdateGunIconImage(PlayerShoot.Instance.GetSecondaryGunSO());
+        EventSystem.current.SetSelectedGameObject(gameObject);
     }
 
     private void PlayerShoot_OnPrimaryWeaponChanged(object sender, System.EventArgs e) {
         if (!isPrimaryWeaponButton) return;
         UpdateGunIconImage(PlayerShoot.Instance.GetPrimaryGunSO());
+        EventSystem.current.SetSelectedGameObject(gameObject);
     }
 
     private void UpdateGunIconImage(GunSO gunSO) {

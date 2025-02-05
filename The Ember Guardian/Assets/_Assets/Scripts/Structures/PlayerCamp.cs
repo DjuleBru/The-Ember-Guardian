@@ -15,6 +15,7 @@ public class PlayerCamp : MonoBehaviour
     [SerializeField] private List<StructureLocation> level1StructureLocationsUnlocked;
     [SerializeField] private List<StructureLocation> level2StructureLocationsUnlocked;
     [SerializeField] private List<StructureLocation> level3StructureLocationsUnlocked;
+    [SerializeField] private List<StructureLocation> debugStructureLocationsUnlockedLvl1;
 
     private List<Structure> builtStructures = new List<Structure>();
     private List<Structure> builtTowers = new List<Structure>();
@@ -39,6 +40,11 @@ public class PlayerCamp : MonoBehaviour
             location.UnlockStructureLocation();
         }
 
+        if(DebugManager.Instance.GetDebugMode_PlayerCamp()) {
+            foreach (StructureLocation location in debugStructureLocationsUnlockedLvl1) {
+                location.UnlockStructureLocation();
+            }
+        }
 
         StartCoroutine(BuildStructuresUnlockedCoroutine(.5f));
     }

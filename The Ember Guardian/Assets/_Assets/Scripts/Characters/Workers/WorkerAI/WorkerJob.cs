@@ -8,7 +8,7 @@ public class WorkerJob : MonoBehaviour
     protected WorkerAI workerAI;
     protected MobMovement mobMovement;
     protected WorkerAnimatorManager workerAnimatorManager;
-    protected MobAttack hunterAttack;
+    protected MobAttack workerAttack;
     protected Animal targetAnimal;
     protected Creature targetCreature;
     protected WorkerDetectionCollider workerDetectionCollider;
@@ -90,7 +90,7 @@ public class WorkerJob : MonoBehaviour
     public virtual void InitializeJob() {
         mobMovement = GetComponentInChildren<MobMovement>();
         workerAnimatorManager = GetComponentInChildren<WorkerAnimatorManager>();
-        hunterAttack = GetComponent<MobAttack>();
+        workerAttack = GetComponent<MobAttack>();
         worker = GetComponent<Worker>();
         workerAI = GetComponent<WorkerAI>();
 

@@ -26,16 +26,11 @@ public class MinerJob : WorkerJob {
     private void Update() {
         closestCreature = workerDetectionCollider.GetClosestCreature();
 
-        if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
-            if (CheckDropCurrenciesToPlayer()) {
-                ChangeState(MinerState.droppingOrbs);
-            }
-            if (CheckOrbsToCollect()) {
-                ChangeState(MinerState.Mining);
-            };
+        if (CheckDropCurrenciesToPlayer()) {
+            ChangeState(MinerState.droppingOrbs);
         }
 
-        if(followingPlayer) {
+        if (followingPlayer) {
 
         } else {
 

@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class GuardJob : WorkerJob {
 
-    private MobAttack guardAttack;
     private Creature aggroedCreature;
     private Creature closestCreature;
 
@@ -49,10 +48,9 @@ public class GuardJob : WorkerJob {
             Debug.DrawLine(mobMovement.transform.position, targetCreature.transform.position, Color.red);
         }
 
-        if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
-            CheckDropCurrenciesToPlayer();
+        if (CheckDropCurrenciesToPlayer()) {
+            ChangeState(GuardState.droppingOrbs);
         }
-
         if(followingPlayer) {
             switch (state) {
 
@@ -67,7 +65,7 @@ public class GuardJob : WorkerJob {
                         if (aggroedCreature == null) {
 
                             targetCreature = null;
-                            guardAttack.RemoveAttackTarget();
+                            workerAttack.RemoveAttackTarget();
 
                         }
                         else {
@@ -85,7 +83,7 @@ public class GuardJob : WorkerJob {
                     CheckAggroClosestCreatureSmart(transform.position, followPlayerTargetingRange);
                     if (aggroedCreature == null) {
                         targetCreature = null;
-                        guardAttack.RemoveAttackTarget();
+                        workerAttack.RemoveAttackTarget();
                         ChangeState(GuardState.followPlayerIdle);
                         return;
                     }
@@ -97,7 +95,7 @@ public class GuardJob : WorkerJob {
 
                     if (!TargetIsInRange(aggroedCreature)) {
                         targetCreature = null;
-                        guardAttack.RemoveAttackTarget();
+                        workerAttack.RemoveAttackTarget();
 
                         mobMovement.SetMoveTarget(aggroedCreature.transform.position);
                         mobMovement.SetMoveSpeed(headToCampMoveSpeed);
@@ -196,13 +194,13 @@ public class GuardJob : WorkerJob {
 
             if (aggroedCreature == null) {
                 targetCreature = null;
-                guardAttack.RemoveAttackTarget();
+                workerAttack.RemoveAttackTarget();
             }
 
             else {
                 if (!TargetIsInRange(aggroedCreature)) {
                     targetCreature = null;
-                    guardAttack.RemoveAttackTarget();
+                    workerAttack.RemoveAttackTarget();
 
                     if (TargetIsCloseToOuterWall(aggroedCreature)) {
                         mobMovement.SetMoveTarget(aggroedCreature.transform.position);
@@ -281,7 +279,7 @@ public class GuardJob : WorkerJob {
         if (checkClosestTargetTimer < 0) {
             checkClosestTargetTimer = checkClosestTargetCooldown;
 
-            Creature newTargetCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(positionOrigin, checkDistance, guardAttack.GetAttackDamage(), false);
+            Creature newTargetCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(positionOrigin, checkDistance, workerAttack.GetAttackDamage(), false);
 
             if (newTargetCreature == null) {
                 aggroedCreature = null;
@@ -306,14 +304,14 @@ public class GuardJob : WorkerJob {
         }
 
         mobMovement.SetMoveTarget(transform.position);
-        guardAttack.SetAttackTarget(newTargetCreature);
+        workerAttack.SetAttackTarget(newTargetCreature);
         targetCreature = newTargetCreature;
         targetCreature.OnMobDied += TargetCreature_OnMobDied;
     }
 
     private void TargetCreature_OnMobDied(object sender, System.EventArgs e) {
         targetCreature = null;
-        guardAttack.RemoveAttackTarget();
+        workerAttack.RemoveAttackTarget();
     }
 
     public void StayOutOfCreatureRange() {
@@ -360,12 +358,6 @@ public class GuardJob : WorkerJob {
 
     }
 
-    private void CheckDropCurrenciesToPlayer() {
-        if (worker.GetPlayerIsClose() && worker.GetTotalCurrencyAmount() > 0) {
-            ChangeState(GuardState.droppingOrbs);
-        }
-    }
-
     public void HeadToMostExteriorBarricade() {
 
         if (!hasSetSpeed) {
@@ -408,7 +400,7 @@ public class GuardJob : WorkerJob {
         previousState = state;
 
         if(newState == GuardState.followPlayerIdle) {
-            guardAttack.RemoveAttackTarget();
+            workerAttack.RemoveAttackTarget();
         }
 
         Vector3 targetDestination = mobMovement.transform.position;

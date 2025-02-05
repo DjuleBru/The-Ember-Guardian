@@ -41,6 +41,10 @@ public class CreatureDetectionCollider : MonoBehaviour
         workerTargetingPriority = creature.GetCreatureSO().workerTargetingPriority;
         playerTargetingPriority = creature.GetCreatureSO().playerTargetingPriority;
         barricadeTargetingPriority = creature.GetCreatureSO().barricadeTargetingPriority;
+
+        if(creature.IsDayCreature()) {
+            guardHitCreatureAggroProbability = .75f;
+        }
     }
 
     private void Player_OnPlayerDied(object sender, System.EventArgs e) {
