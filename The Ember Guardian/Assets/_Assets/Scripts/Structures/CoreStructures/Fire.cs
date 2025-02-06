@@ -32,6 +32,7 @@ public class Fire : Structure, IDamageable {
     [SerializeField] private float debugFuelLevel;
 
     private FireOrbCollider fireOrbCollider;
+    private bool initialFireLit;
     private float fuelLevel;
     private float damageToFuelConversionRate = 5f;
 
@@ -427,6 +428,7 @@ public class Fire : Structure, IDamageable {
     }
 
     public void ActivateInitialFire() {
+        initialFireLit = true;
         OnInitialFireActivated?.Invoke(this, EventArgs.Empty);
         PlayerCurrencies.Instance.SetCarryingEmber(false);
     }
@@ -500,6 +502,10 @@ public class Fire : Structure, IDamageable {
 
     public float GetCurrentFuelLevel() {
         return fuelLevel;
+    }
+
+    public bool GetInitialFireLit() {
+        return initialFireLit;
     }
 
     public void TakeDamage(int damage, Transform damageSource, bool critHit = false) {

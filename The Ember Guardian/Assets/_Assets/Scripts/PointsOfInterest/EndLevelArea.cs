@@ -115,9 +115,9 @@ public class EndLevelArea : MonoBehaviour
         this.playerInTriggerArea = playerInTriggerArea;
 
         if(playerInTriggerArea) {
-            DayNightManager.Instance.SetCyclePaused(true);
+            DayNightManager.Instance.SetCyclePaused(true, true);
         } else {
-            DayNightManager.Instance.SetCyclePaused(false);
+            DayNightManager.Instance.SetCyclePaused(false, true);
         }
     }
 

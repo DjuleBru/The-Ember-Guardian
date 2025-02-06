@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class VideoTipUI : MonoBehaviour
@@ -24,10 +25,11 @@ public class VideoTipUI : MonoBehaviour
     [SerializeField] private VideoTipSO testTipSO;
 
     private bool tipFinishedDisplaying;
-    private TextSO tipNameTextSO;
     private List<TextSO> tipDescriptionTextSOList;
     private List<TipDescriptionTextTemplate> tipDescriptionTextTemplateList = new List<TipDescriptionTextTemplate>();
     private List<float> tipTextDelayToShowList;
+
+    private Coroutine activeCoroutine;
 
     public event EventHandler OnVideoTipPanelOpened;
     public event EventHandler OnVideoTipPanelClosed;
@@ -38,7 +40,7 @@ public class VideoTipUI : MonoBehaviour
 
     private void Start() {
         videoTipUIMainPanel.SetActive(false);
-        replayTipButtonGO.SetActive(false);
+        replayTipButtonGO.GetComponent<Button>().interactable = false;
     }
 
     private void Update() {
@@ -53,7 +55,6 @@ public class VideoTipUI : MonoBehaviour
         videoPlayer.clip = videoTipSO.tipClip;
         tipName.text = videoTipSO.tipName.GetTextInLanguage(TextSO.Language.English);
 
-        tipNameTextSO = videoTipSO.tipName;
         tipDescriptionTextSOList = videoTipSO.tipTextList;
         tipTextDelayToShowList = videoTipSO.tipTextDelayToShowList;
 
@@ -71,14 +72,21 @@ public class VideoTipUI : MonoBehaviour
 
         foreach(TextSO textSO in tipDescriptionTextSOList) {
             TipDescriptionTextTemplate tipTemplateText = Instantiate(tipTextTemplate, tipTextContainer).GetComponent<TipDescriptionTextTemplate>();
-            tipTemplateText.SetTipDescription(textSO.GetTextInLanguage(TextSO.Language.English));
+            tipTemplateText.SetTipDescriptionAdvanced(textSO.GetTextInLanguage(TextSO.Language.English));
+
             tipDescriptionTextTemplateList.Add(tipTemplateText);
         }
     }
 
-    public void PlayTip() {
+    public void PlayTip(bool setReplayTipButtonInteractable = false) {
+        tipFinishedDisplaying = false;
+
         videoPlayer.Play();
-        StartCoroutine(ShowTipTextList());
+        if(activeCoroutine != null) {
+            StopCoroutine(activeCoroutine);
+        }
+        activeCoroutine = StartCoroutine(ShowTipTextList());
+        replayTipButtonGO.GetComponent<Button>().interactable = setReplayTipButtonInteractable;
     }
 
     private void OpenPanel() {
@@ -89,7 +97,7 @@ public class VideoTipUI : MonoBehaviour
         Player.Instance.DisableControlInputs();
 
         if(DayNightManager.Instance != null) {
-            DayNightManager.Instance.SetCyclePaused(true);
+            DayNightManager.Instance.SetCyclePaused(true, true);
         }
 
         OnVideoTipPanelOpened?.Invoke(this, EventArgs.Empty);
@@ -109,14 +117,16 @@ public class VideoTipUI : MonoBehaviour
 
             yield return new WaitForSeconds(delayToWait);
             textTemplate.ShowTipText();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(tipTextContainer.GetComponent<RectTransform>());
 
             i++;
         }
         yield return new WaitForSeconds(1f);
 
-        replayTipButtonGO.SetActive(true);
+        replayTipButtonGO.GetComponent<Button>().interactable = true;
         tipFinishedDisplaying = true;
         resumeButtonText.text = "Resume";
+        activeCoroutine = null;
     }
 
     private IEnumerator ActivatePanelAfterDelay(bool show, float delay) {
@@ -131,7 +141,7 @@ public class VideoTipUI : MonoBehaviour
         Player.Instance.EnableControlInputs();
 
         if (DayNightManager.Instance != null) {
-            DayNightManager.Instance.SetCyclePaused(false);
+            DayNightManager.Instance.SetCyclePaused(false, true);
         }
 
         OnVideoTipPanelClosed?.Invoke(this, EventArgs.Empty);
@@ -141,17 +151,29 @@ public class VideoTipUI : MonoBehaviour
 
     public void SkipTipOrResumeButton() {
         if(!tipFinishedDisplaying) {
-            StopCoroutine(ShowTipTextList());
+            StopCoroutine(activeCoroutine);
 
             foreach (TipDescriptionTextTemplate textTemplate in tipDescriptionTextTemplateList) {
                 textTemplate.ShowTipText();
             }
+            videoPlayer.Stop();
             videoPlayer.Play();
 
+            resumeButtonText.text = "Resume";
+            replayTipButtonGO.GetComponent<Button>().interactable = true;
             tipFinishedDisplaying = true;
         } else {
             ClosePanel();
         }
+    }
+
+    public void ReplayTip() {
+        StopCoroutine(activeCoroutine);
+        foreach (TipDescriptionTextTemplate textTemplate in tipDescriptionTextTemplateList) {
+            textTemplate.HideTipText();
+        }
+        videoPlayer.Stop();
+        PlayTip(true);
     }
 
     #endregion

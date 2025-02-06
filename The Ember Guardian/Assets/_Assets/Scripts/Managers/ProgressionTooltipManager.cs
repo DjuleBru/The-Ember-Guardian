@@ -22,6 +22,7 @@ public class ProgressionTooltipManager : MonoBehaviour
     private void LoadTooltipsShown() {
         multipleFunctionsTooltipShown = ES3.Load("multipleFunctionsTooltipShown", false);
     }
+
     private void Structure_OnAnyPlayerTriggeredIn(object sender, System.EventArgs e) {
         // MultipleFunctions tooltip
         Structure structure = (Structure)sender;

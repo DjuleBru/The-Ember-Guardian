@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &355131144365832079
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1847845855986773494}
+  - component: {fileID: 7831726937704158770}
+  - component: {fileID: 6018418507974385991}
+  m_Layer: 0
+  m_Name: IconsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1847845855986773494
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355131144365832079}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7831726937704158770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355131144365832079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7b7bea372e83ec4e83e8dd743471e96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gamepadYSprite: {fileID: 21300000, guid: 7e64ff242f2ea21488cb34ece5f63ae4, type: 3}
+  gamepadBSprite: {fileID: 21300000, guid: 4a28f16c497511f4f9ebd263bf819c5b, type: 3}
+  gamepadASprite: {fileID: 21300000, guid: affd740eab2c59d4fa256edc6a89229f, type: 3}
+  gamepadXSprite: {fileID: 21300000, guid: 9b2c5bf8f240046409ad201a9d8a5a61, type: 3}
+  gamepadRbSprite: {fileID: 21300000, guid: 9fd680cd19427bf479c39e863a8330fc, type: 3}
+  gamepadLbSprite: {fileID: 21300000, guid: ff70f9aa54c322043b78781ba23f6fe4, type: 3}
+  gamepadRtSprite: {fileID: 21300000, guid: 96d5cefe3e281fe4d87b510852e0157f, type: 3}
+  gamepadLtSprite: {fileID: 21300000, guid: 5a174bb1984d0c2439e122fc4c86bdeb, type: 3}
+  gamepadR3Sprite: {fileID: 21300000, guid: 794ac1d1c6b59b342bde7773dd5970d8, type: 3}
+  gamepadL3Sprite: {fileID: 21300000, guid: 062a6940ebd29044c9a5d18809eca2f3, type: 3}
+  gamepadLLeftRightSprite: {fileID: 21300000, guid: 448f9681389b03447ad7df9b229d8da7, type: 3}
+  gamepadRJoystickSprite: {fileID: 21300000, guid: 9bf57daae7516ca4eacdd3e83f7c3530, type: 3}
+  gamepadDownArrowSprite: {fileID: 21300000, guid: 7045458716ca1444e8725996e96a56af, type: 3}
+  gamepadUpArrowSprite: {fileID: 21300000, guid: 57cd43d19bbfb294ab585387100c71c5, type: 3}
+  gamepadLeftArrowSprite: {fileID: 21300000, guid: 2d4577c375183af4f9a9a3ca83a1fa99, type: 3}
+  gamepadRightArrowSprite: {fileID: 21300000, guid: 73b1b98692cc43140a2bd77e17906c16, type: 3}
+  gamepadSelectSprite: {fileID: 21300000, guid: e4cec35b70e267d4da8ed322d827bbc3, type: 3}
+  keyboardRSprite: {fileID: 21300000, guid: 1884bdc93b4d0fc478e0f03a37a19279, type: 3}
+  keyboardASprite: {fileID: 21300000, guid: 56d5e481452eb3b4fa9282dda81685cc, type: 3}
+  keyboardFSprite: {fileID: 21300000, guid: f239a8a77c9192c4e9c4e5eeafdba87d, type: 3}
+  keyboardCSprite: {fileID: 21300000, guid: 2fc4846ae6b8881488400ff3cd0d6331, type: 3}
+  keyboardVSprite: {fileID: 21300000, guid: fa6839dd60b22554ca7db7e782de2627, type: 3}
+  keyboardQSprite: {fileID: 21300000, guid: ad57b5c1bcf023149951f684e323e2d4, type: 3}
+  keyboardDSprite: {fileID: 21300000, guid: 9bb5ee1ee8298534f97bb7f2ba2b3c3c, type: 3}
+  keyboardESprite: {fileID: 21300000, guid: 1a4eb5e5d8af57b41ad463fc6f1903f0, type: 3}
+  keyboardZSprite: {fileID: 21300000, guid: 7f70b4d951d78764381c9ecf6a9fcd13, type: 3}
+  keyboardXSprite: {fileID: 21300000, guid: 181f7330727a5854fbc28a99956b586c, type: 3}
+  keyboardLSprite: {fileID: 21300000, guid: b1a7f098562be1246aa2e4c5fba3b703, type: 3}
+  keyboard1Sprite: {fileID: 21300000, guid: d692473e35d4489409846b3b3c994945, type: 3}
+  keyboard2Sprite: {fileID: 21300000, guid: 27c6d123238f1414e803ae1971fab1cb, type: 3}
+  keyboardShiftSprite: {fileID: 21300000, guid: e121ec149eca56247a974fff61cf9c7d, type: 3}
+  keyboardMouseClickSprite: {fileID: 21300000, guid: 90e12193c660ea744b6cf20c5b11e5a8, type: 3}
+  keyboardMouseRightClickSprite: {fileID: 21300000, guid: 1627b6a4741da454c8c9f425cad9b32b, type: 3}
+  keyboardMouseSprite: {fileID: 21300000, guid: afb349c9304fa9c4ea9480caf2bd8010, type: 3}
+  keyboardEscSprite: {fileID: 21300000, guid: b968e151539992146a9436139591208f, type: 3}
+  keyboardSpaceSprite: {fileID: 21300000, guid: cf50c7b93f84dee4ca051e7232bb6f3d, type: 3}
+  keyboardTabSprite: {fileID: 21300000, guid: 23ebe78354f57554cb9699af2d8d992e, type: 3}
+--- !u!114 &6018418507974385991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355131144365832079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c9acee27777864d8dbe214c298bd99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playIcon: {fileID: 396481696, guid: 5b786eafc5b2fff4ebc2273f977422cd, type: 3}
+  pauseIcon: {fileID: 623693475, guid: 5b786eafc5b2fff4ebc2273f977422cd, type: 3}
+  bigBlueOrbIcon: {fileID: -891586419, guid: 9b050b23ecab2be45b63b659c9306ab9, type: 3}
+  smallBlueOrbIcon: {fileID: -614163064, guid: 9b050b23ecab2be45b63b659c9306ab9, type: 3}

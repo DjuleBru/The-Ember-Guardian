@@ -41,6 +41,9 @@ public class DayNightManager : MonoBehaviour
     public event EventHandler OnDuskStart;
     public event EventHandler OnNightStart;
 
+    public event EventHandler OnCyclePaused;
+    public event EventHandler OnCycleUnpaused;
+
     private void Awake() {
         Instance = this;
     }
@@ -59,7 +62,7 @@ public class DayNightManager : MonoBehaviour
             return;
         }
 
-        SetCyclePaused(true);
+        SetCyclePaused(true, true);
         state = State.Dawn;
         OnDawnStart?.Invoke(this, EventArgs.Empty);
     }
@@ -115,7 +118,7 @@ public class DayNightManager : MonoBehaviour
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) return;
-        SetCyclePaused(false);
+        SetCyclePaused(false, true);
     }
 
     private void Fire_OnFireEmberExtractionStopped(object sender, EventArgs e) {
@@ -175,8 +178,19 @@ public class DayNightManager : MonoBehaviour
         }
     }
 
-    public void SetCyclePaused(bool paused) {
+    public void SetCyclePaused(bool paused, bool showCyclePauseUI = false) {
+        if (!Fire.Instance.GetInitialFireLit() && !paused) return;
+
         cyclePaused = paused;
+
+        // Send event to UI only if Level
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Level) return;
+        if (!showCyclePauseUI) return;
+        if(cyclePaused) {
+            OnCyclePaused?.Invoke(this, EventArgs.Empty);
+        } else {
+            OnCycleUnpaused?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public float GetCycleTimer() {
