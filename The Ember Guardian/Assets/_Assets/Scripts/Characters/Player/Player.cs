@@ -119,6 +119,7 @@ public class Player : MonoBehaviour, IDamageable
     public void TakeDamage(int damage, Transform damageSource, bool critHit = false) {
         if (damagedRecently) return;
         if (dead) return;
+        if (isInvincibleWhileRolling) return;
 
         if (ShieldTanksDamage(damage, damageSource)) return;
 

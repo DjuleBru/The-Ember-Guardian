@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -19,11 +20,12 @@ public class TipDescriptionTextTemplate : MonoBehaviour
     }
 
     public void SetTipDescriptionAdvanced(string text) {
-
         string[] parts = text.Split(new string[] { "[icon:" }, System.StringSplitOptions.None);
         Dictionary<string, Sprite> iconDictionary = GameIcons.Instance.GetIconDictionary();
 
         Debug.Log("parts length " + parts.Length);
+
+        // Nettoyage des anciennes icônes/textes sauf les templates
         foreach (Transform child in transform) {
             if (child == templateIcon.transform) continue;
             if (child == templateText.transform) continue;
@@ -35,15 +37,34 @@ public class TipDescriptionTextTemplate : MonoBehaviour
 
             if (part.Contains("]")) {
                 string[] split = part.Split(']');
-                string iconKey = split[0];
+                string iconKey = split[0]; // Clé de l'icône (ex: "Reload", "Shoot", "Fireball")
                 string remainingText = split.Length > 1 ? split[1] : "";
 
-                if (iconDictionary.TryGetValue(iconKey, out Sprite iconSprite)) {
-                    Image newIcon = Instantiate(templateIcon, transform);
-                    newIcon.sprite = iconSprite;
-                    newIcon.gameObject.SetActive(true);
+                bool iconAdded = false;
+
+                // 1. Vérifier si c'est une icône d'input (clavier/manette)
+                if (Enum.TryParse(iconKey, out InputControlIcons.Control control)) {
+                    List<Sprite> inputIcons = InputControlIcons.Instance.GetControlIconSprite(control);
+
+                    if (inputIcons.Count > 0) {
+                        foreach (Sprite iconSprite in inputIcons) {
+                            Image newIcon = Instantiate(templateIcon, transform);
+                            newIcon.sprite = iconSprite;
+                            newIcon.gameObject.SetActive(true);
+                        }
+                        iconAdded = true;
+                    }
                 }
 
+                // 2. Vérifier si c'est une icône standard (ex: icône d'arme, potion, etc.)
+                if (!iconAdded && iconDictionary.TryGetValue(iconKey, out Sprite standardIcon)) {
+                    Image newIcon = Instantiate(templateIcon, transform);
+                    newIcon.sprite = standardIcon;
+                    newIcon.gameObject.SetActive(true);
+                    iconAdded = true;
+                }
+
+                // 3. Ajouter le texte restant après l'icône
                 if (!string.IsNullOrEmpty(remainingText)) {
                     TextMeshProUGUI newText = Instantiate(templateText, transform);
                     newText.text = remainingText;
@@ -51,15 +72,18 @@ public class TipDescriptionTextTemplate : MonoBehaviour
                 }
             }
             else {
+                // 4. Ajouter du texte normal s'il n'y a pas d'icône
                 TextMeshProUGUI newText = Instantiate(templateText, transform);
                 newText.text = part;
                 newText.gameObject.SetActive(true);
             }
         }
 
+        // Désactiver les templates pour éviter qu'ils apparaissent
         templateText.gameObject.SetActive(false);
         templateIcon.gameObject.SetActive(false);
     }
+
 
     public void ShowTipText() {
         gameObject.SetActive(true);

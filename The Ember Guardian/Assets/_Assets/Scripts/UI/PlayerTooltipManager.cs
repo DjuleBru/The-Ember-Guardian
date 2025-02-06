@@ -41,7 +41,6 @@ public class PlayerTooltipManager : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
-        Debug.Log("PlayerShoot_OnPlayerSwappedGun");
         TryShowGunSecondaryAbilityTooltip();
     }
 

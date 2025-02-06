@@ -6,6 +6,23 @@ using UnityEngine.Video;
 [CreateAssetMenu()]
 public class VideoTipSO : ScriptableObject
 {
+
+    public enum VideoTipType {
+        Reloading,
+        CritHit,
+        Roll,
+        FireManagement,
+        Die,
+        HealTent,
+        SetupEconomy,
+        SetupDefenses,
+        EmberExtraction,
+        DayNightCycle,
+        WorkerCamps,
+        Hunters,
+    }
+
+    public VideoTipType tipType;
     public TextSO tipName;
     public VideoClip tipClip;
     public List<TextSO> tipTextList;

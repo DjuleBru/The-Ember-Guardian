@@ -16,7 +16,7 @@ public class DayNightManager : MonoBehaviour
 
     [SerializeField] private bool cyclePaused;
     [SerializeField] private State debugState;
-    private bool manualInitialCycleSet;
+    [SerializeField] private bool manualInitialCycleSet;
 
     private int currentDay;
 
@@ -56,7 +56,7 @@ public class DayNightManager : MonoBehaviour
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
 
         allowDebugInputs = DebugManager.Instance.GetAllowDebugInputs_DayNightManager();
-        manualInitialCycleSet = DebugManager.Instance.GetDebugMode_DayNightManager();
+
         if (manualInitialCycleSet) {
             ChangeState(debugState);
             return;
@@ -179,18 +179,26 @@ public class DayNightManager : MonoBehaviour
     }
 
     public void SetCyclePaused(bool paused, bool showCyclePauseUI = false) {
+
+        // Don't unpause when closing Video Tip and fire has not been lit
         if (!Fire.Instance.GetInitialFireLit() && !paused) return;
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) return;
 
         cyclePaused = paused;
 
         // Send event to UI only if Level
-        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Level) return;
         if (!showCyclePauseUI) return;
         if(cyclePaused) {
             OnCyclePaused?.Invoke(this, EventArgs.Empty);
         } else {
             OnCycleUnpaused?.Invoke(this, EventArgs.Empty);
         }
+    }
+
+    public void SetCyclePausedTutorial(bool paused) {
+
+        cyclePaused = paused;
+
     }
 
     public float GetCycleTimer() {

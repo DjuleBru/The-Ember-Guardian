@@ -129,8 +129,14 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     private void PlayerShoot_OnPlayerAmmoRefilled(object sender, PlayerShoot.OnAmmoRefilledEventArgs e) {
         FadeInAmmoBar();
         StartCoroutine(RefillAmmoBar(e.ammoAmount));
-    }
 
+        if (PlayerShoot.Instance.GetCurrentAmmoClip() <= PlayerShoot.Instance.GetMaxAmmoClips() / 3) {
+            ammoBarCritical = true;
+            ammoBarCanvasGroup.alpha = 1f;
+        } else {
+            ammoBarCritical = false;
+        }
+    }
 
     private void PlayerSHoot_OnPlayerReloadHandEnded(object sender, EventArgs e) {
         if (PlayerShoot.Instance.GetCurrentAmmoClip() < 0) return;
@@ -145,6 +151,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 
         if (PlayerShoot.Instance.GetCurrentAmmoClip() <= PlayerShoot.Instance.GetMaxAmmoClips() / 3) {
             ammoBarCritical = true;
+            ammoBarCanvasGroup.alpha = 1f;
         }
         else {
             ammoBarCritical = false;
@@ -232,14 +239,19 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 
     private void FadeInAmmoBar() {
 
+        ammoBarDisplayTime = ammoBarExitCampDisplayTime;
+
         if (ammoBarDisplayTimer <= 0) {
             isFadingIn = true;
+            ammoBarDisplayTimer = fadeInDuration;
+        } else {
+            ammoBarDisplayTimer = ammoBarDisplayTime;
         }
 
         ammoBarGameObject.SetActive(true);
+        ammoBarBackgroundGameObject.SetActive(true);
 
-        ammoBarDisplayTimer = fadeInDuration;
-        ammoBarDisplayTime = ammoBarExitCampDisplayTime;
+        Debug.Log(ammoBarDisplayTimer);
     }
 
     private void OnDestroy() {

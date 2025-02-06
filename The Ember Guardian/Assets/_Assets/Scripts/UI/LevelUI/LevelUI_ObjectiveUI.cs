@@ -246,16 +246,16 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
             return "Wait for ammo to be crafted";
         }
         if (subObjectiveType == SubObjectiveType.Recruit2Hunters) {
-            return "Recruit at least 2 trappers";
+            return "Recruit at least 2 Hunters";
         }
         if (subObjectiveType == SubObjectiveType.RecruitMoreEmberlings) {
             return "Explore to recruit more emberlings";
         }
         if (subObjectiveType == SubObjectiveType.WaitForHunt) {
-            return "Wait for trappers to hunt animals";
+            return "Wait for Hunters to hunt animals";
         }
         if (subObjectiveType == SubObjectiveType.CollectOrbsFromHunters) {
-            return "Collect orbs from the trappers";
+            return "Collect orbs from the Hunters";
         }
         if (subObjectiveType == SubObjectiveType.FuelFire) {
             return "Add fuel to the fire";

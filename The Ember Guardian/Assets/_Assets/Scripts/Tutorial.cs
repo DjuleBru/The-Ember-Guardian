@@ -34,6 +34,7 @@ public class Tutorial : MonoBehaviour
     private bool moveTooltipHidden;
     private bool aimTooltipHidden;
     private bool transferAmmoTooltipShown;
+    private bool rollTooltipShown;
     private bool reloadTooltipShown;
     private bool reloadTooltipHidden;
     private bool saveAmmoTooltipShown;
@@ -82,6 +83,7 @@ public class Tutorial : MonoBehaviour
     private void Start() {
         testing = DebugManager.Instance.GetDebugMode_Tutorial();
 
+        VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
         UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         dog.OnPlayerTriggeredIn += Dog_OnPlayerTriggeredIn;
         dog.OnIdleStateChanged += Dog_OnIdleStateChanged;
@@ -120,15 +122,15 @@ public class Tutorial : MonoBehaviour
 
         if(testing) {
             reloadTooltipHidden = true;
-            workerNumberRecruited = 4;
         } else {
             Player.Instance.SetPosition(initialSpawnPoint.position);
         }
     }
 
+
     private void Update() {
         if(testing) {
-            if (Input.GetKeyDown(KeyCode.V)) {
+            if (Input.GetKeyDown(KeyCode.M)) {
                 StartCoroutine(StartGuardingWorkersObjective(0f));
             }
         }
@@ -228,7 +230,7 @@ public class Tutorial : MonoBehaviour
     private void Creature_OnAnyMobDied(object sender, System.EventArgs e) {
         if (testing) return;
         if (firstCreatureDied) return;
-        StartCoroutine(TransitionToTutorialCameraCoroutine(3f));
+        StartCoroutine(TransitionToTutorialCameraCoroutine(1f));
         firstCreatureDied = true;
     }
 
@@ -271,7 +273,7 @@ public class Tutorial : MonoBehaviour
                 StartCoroutine(HideTooltipAfterDelay(0f));
             }
 
-            StartCoroutine(ShowTooltipAfterDelay(.5f, "Hold", "To recruit trappers", InputControlIcons.Control.Interact));
+            StartCoroutine(ShowTooltipAfterDelay(.5f, "Hold", "To recruit Hunters", InputControlIcons.Control.Interact));
             StartCoroutine(HideTooltipAfterDelay(3f));
         }
 
@@ -390,7 +392,7 @@ public class Tutorial : MonoBehaviour
         CreaturesSpawnManager.Instance.SetTutorialWave();
 
         yield return new WaitForSeconds(4f);
-        DayNightManager.Instance.SetCyclePaused(false);
+        DayNightManager.Instance.SetCyclePausedTutorial(false);
         DayNightManager.Instance.ChangeState(DayNightManager.State.Night);
     }
 
@@ -405,7 +407,7 @@ public class Tutorial : MonoBehaviour
         if (dawnStarted) return;
         dawnStarted = true;
 
-        DayNightManager.Instance.SetCyclePaused(true);
+        DayNightManager.Instance.SetCyclePausedTutorial(true);
         extractEmberCollider.SetColliderSolid();
 
         StartCoroutine(StartDestroyNestObjective(1.5f));
@@ -565,15 +567,21 @@ public class Tutorial : MonoBehaviour
         StartCoroutine(SwapReloadInstructionsCoroutine(1.5f));
     }
 
-    private void UICurrencyManager_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
-        if (!transferAmmoTooltipShown) {
-            if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
-                StartCoroutine(ShowTooltipAfterDelay(1f, "Hold", "Transfer ammo", InputControlIcons.Control.Reload));
-                transferAmmoTooltipShown = true;
-                return;
-            }
+    private void VideoTipUI_OnVideoTipPanelClosed(object sender, VideoTipUI.OnVideoTipPanelClosedEventArgs e) {
+        if (e.tipTypeShown == VideoTipSO.VideoTipType.Reloading && !transferAmmoTooltipShown) {
+            StartCoroutine(ShowTooltipAfterDelay(1f, "Hold", "Transfer ammo", InputControlIcons.Control.Reload));
+            transferAmmoTooltipShown = true;
+            return;
         };
 
+        if (e.tipTypeShown == VideoTipSO.VideoTipType.Roll && !rollTooltipShown) {
+            ShowRollTip();
+            rollTooltipShown = true;
+            return;
+        };
+    }
+    private void UICurrencyManager_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        
         if (!dropOrbShown) {
             if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigBlueOrb) {
                 StartCoroutine(ShowTooltipAfterDelay(1f, "Press", "Recruit an emberling", InputControlIcons.Control.Interact));
@@ -655,7 +663,7 @@ public class Tutorial : MonoBehaviour
     private void HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn(object sender, EventArgs e) {
         if(huntingFlagTooltipShown) return;
         huntingFlagTooltipShown = true;
-        PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip("Trappers won't venture past this flag", 4f);
+        PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip("Hunters won't venture past this flag", 4f);
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
@@ -689,12 +697,13 @@ public class Tutorial : MonoBehaviour
         yield return new WaitForSeconds(4f);
         PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
     }
+
     public void ShowRollTip() {
         StartCoroutine(ShowRollTipCoroutine());
     }
 
     public IEnumerator ShowRollTipCoroutine() {
-        StartCoroutine(ShowTooltipAfterDelay(0f, "Press", "To roll", InputControlIcons.Control.Roll));
+        StartCoroutine(ShowTooltipAfterDelay(1f, "Press", "To roll", InputControlIcons.Control.Roll));
         yield return new WaitForSeconds(4f);
         PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
     }
@@ -764,6 +773,7 @@ public class Tutorial : MonoBehaviour
     }
 
     private void OnDestroy() {
+        VideoTipUI.Instance.OnVideoTipPanelClosed -= VideoTipUI_OnVideoTipPanelClosed;
         UICurrencyManager.Instance.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
         dog.OnPlayerTriggeredIn -= Dog_OnPlayerTriggeredIn;
         dog.OnIdleStateChanged -= Dog_OnIdleStateChanged;

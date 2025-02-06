@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,8 @@ public class TutorialCollider : MonoBehaviour
     private Collider2D tutorialCollider;
 
     private bool playerCollided;
+
+    public static event EventHandler OnRollTipCollided;
 
     private void Awake() {
         tutorial = GetComponentInParent<Tutorial>();
@@ -46,7 +49,7 @@ public class TutorialCollider : MonoBehaviour
 
         if (isRollTipCollider && !playerCollided) {
             playerCollided = true;
-            tutorial.ShowRollTip();
+            OnRollTipCollided?.Invoke(this, EventArgs.Empty);
         }
 
         if (isEndLevelAreaCollider && !playerCollided) {

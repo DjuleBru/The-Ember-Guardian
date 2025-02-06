@@ -23,6 +23,7 @@ public class VideoTipUI : MonoBehaviour
     [SerializeField] private Animator videoTipUIMainPanelAnimator;
 
     [SerializeField] private VideoTipSO testTipSO;
+    private VideoTipSO shownVideoTipSO;
 
     private bool tipFinishedDisplaying;
     private List<TextSO> tipDescriptionTextSOList;
@@ -32,7 +33,11 @@ public class VideoTipUI : MonoBehaviour
     private Coroutine activeCoroutine;
 
     public event EventHandler OnVideoTipPanelOpened;
-    public event EventHandler OnVideoTipPanelClosed;
+    public event EventHandler<OnVideoTipPanelClosedEventArgs> OnVideoTipPanelClosed;
+
+    public class OnVideoTipPanelClosedEventArgs : EventArgs {
+        public VideoTipSO.VideoTipType tipTypeShown;
+    }
 
     private void Awake() {
         Instance = this;
@@ -44,14 +49,15 @@ public class VideoTipUI : MonoBehaviour
     }
 
     private void Update() {
-        if(Input.GetKeyDown(KeyCode.V)) {
-            SetTipSO(testTipSO);
-            OpenPanel();
-            PlayTip();
-        }
+        //if (Input.GetKeyDown(KeyCode.V)) {
+        //    SetTipSO(testTipSO);
+        //    OpenPanel();
+        //    PlayTip();
+        //}
     }
 
-    public void SetTipSO(VideoTipSO videoTipSO) {
+    public void PlayTipSO(VideoTipSO videoTipSO, float delayToPlayTip = 0f) {
+        shownVideoTipSO = videoTipSO;
         videoPlayer.clip = videoTipSO.tipClip;
         tipName.text = videoTipSO.tipName.GetTextInLanguage(TextSO.Language.English);
 
@@ -59,6 +65,20 @@ public class VideoTipUI : MonoBehaviour
         tipTextDelayToShowList = videoTipSO.tipTextDelayToShowList;
 
         RefreshTipDescription();
+
+        if (delayToPlayTip == 0) {
+            OpenPanel();
+            PlayTip(false);
+        } else {
+            StartCoroutine(PlayTipAfterDelay(delayToPlayTip));
+        }
+    }
+
+    private IEnumerator PlayTipAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+
+        OpenPanel();
+        PlayTip(false);
     }
 
     private void RefreshTipDescription() {
@@ -79,13 +99,16 @@ public class VideoTipUI : MonoBehaviour
     }
 
     public void PlayTip(bool setReplayTipButtonInteractable = false) {
+
         tipFinishedDisplaying = false;
 
         videoPlayer.Play();
         if(activeCoroutine != null) {
             StopCoroutine(activeCoroutine);
         }
+
         activeCoroutine = StartCoroutine(ShowTipTextList());
+        Debug.Log("active coroutine " + activeCoroutine);
         replayTipButtonGO.GetComponent<Button>().interactable = setReplayTipButtonInteractable;
     }
 
@@ -144,7 +167,9 @@ public class VideoTipUI : MonoBehaviour
             DayNightManager.Instance.SetCyclePaused(false, true);
         }
 
-        OnVideoTipPanelClosed?.Invoke(this, EventArgs.Empty);
+        OnVideoTipPanelClosed?.Invoke(this, new OnVideoTipPanelClosedEventArgs {
+            tipTypeShown = shownVideoTipSO.tipType
+        });
     }
 
     #region BUTTONS
@@ -168,7 +193,9 @@ public class VideoTipUI : MonoBehaviour
     }
 
     public void ReplayTip() {
-        StopCoroutine(activeCoroutine);
+        if(activeCoroutine != null) {
+            StopCoroutine(activeCoroutine);
+        }
         foreach (TipDescriptionTextTemplate textTemplate in tipDescriptionTextTemplateList) {
             textTemplate.HideTipText();
         }
