@@ -31,7 +31,9 @@ public class Scavengable : MonoBehaviour, IDamageable {
 
     public event EventHandler OnPlayerTriggerIn;
     public event EventHandler OnPlayerTriggerOut;
+    public event EventHandler OnDamageTaken;
     public event EventHandler OnScavengableMarkedToScavenge;
+    public static event EventHandler OnAnyScavengableMarkedToScavenge;
     public event EventHandler OnScavengableDepleted;
     public event EventHandler<OnStavengableSpawnedCurrencyEventArgs> OnScavengableSpawnedCurrency;
 
@@ -42,7 +44,7 @@ public class Scavengable : MonoBehaviour, IDamageable {
     private void Awake() {
         payOrbsUI = GetComponent<PayCurrencyUI>();
         InitializeOrbTemplateList();
-        health = hitsToCollectOneCurrency * currencyAmountCollected;
+        health = hitsToCollectOneCurrency * currencyAmountCollected +1;
     }
 
     private void Start() {
@@ -56,6 +58,7 @@ public class Scavengable : MonoBehaviour, IDamageable {
     protected void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         markedToScavenge = true;
         OnScavengableMarkedToScavenge?.Invoke(this, EventArgs.Empty);
+        OnAnyScavengableMarkedToScavenge?.Invoke(this, EventArgs.Empty);
     }
 
     public void Die() {
@@ -78,8 +81,8 @@ public class Scavengable : MonoBehaviour, IDamageable {
     public void TakeDamage(int damage, Transform damageSource, bool crit = false) {
         health -= damage;
         hitsTaken += damage;
-
-        if(hitsTaken >= hitsToCollectOneCurrency) {
+        OnDamageTaken?.Invoke(this, EventArgs.Empty);
+        if (hitsTaken >= hitsToCollectOneCurrency) {
             hitsTaken = 0;
             SpawnCurrency();
         }
@@ -91,13 +94,20 @@ public class Scavengable : MonoBehaviour, IDamageable {
 
     private void SpawnCurrency() {
         Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyTypeCollected), currencySpawnPoint.position, Quaternion.identity).GetComponent<Collectible>();
-        collectible.ApplyRandomUpwardsForce(5, 8);
-        collectible.SetCollectibleUnInteractable(.75f);
+        collectible.ApplyRandomSidewardsForce(5, 8);
+        collectible.SetCollectibleUnInteractable(.5f);
         collectible.SetCanBePickedUpByWorker();
+
+        AssignRandomMinerToCollect(collectible);
 
         OnScavengableSpawnedCurrency?.Invoke(this, new OnStavengableSpawnedCurrencyEventArgs {
             collectibleSpawned = collectible,
         });
+    }
+
+    private void AssignRandomMinerToCollect(Collectible collectible) {
+        MinerJob miner = minerAssignedList[UnityEngine.Random.Range(0, minerAssignedList.Count)];
+        miner.AssignCollectible(collectible);
     }
 
     public void AssignMiner(MinerJob miner) {
@@ -111,7 +121,7 @@ public class Scavengable : MonoBehaviour, IDamageable {
     }
 
     public bool GetMaxMinersAssigned() {
-        return minerAssignedList.Count > maxMinersAssigned;
+        return minerAssignedList.Count >= maxMinersAssigned;
     }
 
     public bool GetDepleted() {

@@ -7,8 +7,10 @@ public class WorkerSound : SoundObject
     [SerializeField] private AudioClip[] workerFootstepAudioClips;
     [SerializeField] private AudioClip[] guardFootstepAudioClips;
     [SerializeField] private AudioClip[] guardSpearHitAudioClips;
+    [SerializeField] private AudioClip[] pickaxeHitAudioClips;
     [SerializeField] private float footstepVolumeMultiplier;
     [SerializeField] private float spearHitVolumeMultiplier;
+    [SerializeField] private float pickaxeHitVolumeMultiplier;
 
     [SerializeField] private WorkerAI workerAI;
     [SerializeField] private MobAttack workerAttack;
@@ -35,6 +37,11 @@ public class WorkerSound : SoundObject
     }
 
     private void WorkerAttack_OnMobAttackHit(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(guardSpearHitAudioClips[Random.Range(0, guardSpearHitAudioClips.Length)], sfxVolume* spearHitVolumeMultiplier);
+        if(workerAI.GetJob() == WorkerAI.JobTypes.guard) {
+            audioSource.PlayOneShot(guardSpearHitAudioClips[Random.Range(0, guardSpearHitAudioClips.Length)], sfxVolume * spearHitVolumeMultiplier);
+        }
+        if (workerAI.GetJob() == WorkerAI.JobTypes.miner) {
+            audioSource.PlayOneShot(pickaxeHitAudioClips[Random.Range(0, pickaxeHitAudioClips.Length)], sfxVolume * pickaxeHitVolumeMultiplier);
+        }
     }
 }

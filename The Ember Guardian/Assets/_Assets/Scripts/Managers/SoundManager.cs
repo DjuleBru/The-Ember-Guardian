@@ -79,6 +79,9 @@ public class SoundManager : MonoBehaviour
             WorkerFollowPlayerHandler.Instance.OnHoveredFollowingWorkerChanged += WorkerFollowPlayerHandler_OnHoveredFollowingWorkerChanged;
         }
 
+        VideoTipUI.Instance.OnVideoTipPanelOpened += VideoTipUI_OnVideoTipPanelOpened;
+        VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
+
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyStructureUpgraded += Structure_OnAnyStructureUpgraded;
         Structure.OnAnyStructurePrimaryFunctionUsed += Structure_OnAnyStructurePrimaryFunctionUsed;
@@ -106,6 +109,7 @@ public class SoundManager : MonoBehaviour
         Collectible.OnAnyCollectiblePickedUpByWorker += Collectible_OnAnyCollectiblePickedUpByWorker;
         Collectible.OnAnyCollectiblePlouffed += Collectible_OnAnyCollectiblePlouffed; ;
         Chest.OnAnyChestSpawnedCollectible += Chest_OnAnyChestSpawnedCollectible;
+        Scavengable.OnAnyScavengableMarkedToScavenge += Scavengable_OnAnyScavengableMarkedToScavenge;
 
         WorkerAI.OnAnyWorkerFollowPlayerStarted += WorkerAI_OnAnyWorkerFollowPlayerStarted;
         WorkerAI.OnAnyWorkerFollowPlayerStopped += WorkerAI_OnAnyWorkerFollowPlayerStopped;
@@ -128,7 +132,6 @@ public class SoundManager : MonoBehaviour
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine += HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
     }
-
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
@@ -187,6 +190,14 @@ public class SoundManager : MonoBehaviour
 
     private void LevelUI_OnObjectiveUICompleted(object sender, System.EventArgs e) {
         //PlaySound2D(soundRefsSO.objectiveCompleted, .5f);
+    }
+
+    private void VideoTipUI_OnVideoTipPanelClosed(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.tooltipHidden, .7f);
+    }
+
+    private void VideoTipUI_OnVideoTipPanelOpened(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.tooltipShown, .7f);
     }
 
     private void PlayerWorldUITooltup_OnTooltipShown(object sender, System.EventArgs e) {
@@ -517,6 +528,10 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region PROPS
+    private void Scavengable_OnAnyScavengableMarkedToScavenge(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.scavengableMarkedToScavenge);
+    }
+
     private void HuntingFlag_PlayerDefined_OnAnyHuntingFlagPickedUp(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.huntingFlagPickedUp);
     }
@@ -700,6 +715,9 @@ public class SoundManager : MonoBehaviour
             WorkerFollowPlayerHandler.Instance.OnHoveredFollowingWorkerChanged -= WorkerFollowPlayerHandler_OnHoveredFollowingWorkerChanged;
         }
 
+        VideoTipUI.Instance.OnVideoTipPanelOpened -= VideoTipUI_OnVideoTipPanelOpened;
+        VideoTipUI.Instance.OnVideoTipPanelClosed -= VideoTipUI_OnVideoTipPanelClosed;
+
         StructureUI_Fire.OnFireTickRemoved -= StructureUI_Fire_OnFireTickRemoved;
         StructureUI_Fire.OnCricitalFireTickRemoved -= StructureUI_Fire_OnCricitalFireTickRemoved;
         PlayerWorldUITooltip.OnTooltipHidden -= PlayerWorldUITooltip_OnTooltipHidden;
@@ -721,8 +739,9 @@ public class SoundManager : MonoBehaviour
 
         Collectible.OnAnyCollectibleTouchedFloor -= Collectible_OnAnyCollectibleTouchedFloor;
         Collectible.OnAnyCollectiblePickedUpByWorker -= Collectible_OnAnyCollectiblePickedUpByWorker;
-        Collectible.OnAnyCollectiblePlouffed -= Collectible_OnAnyCollectiblePlouffed; ;
+        Collectible.OnAnyCollectiblePlouffed -= Collectible_OnAnyCollectiblePlouffed;
         Chest.OnAnyChestSpawnedCollectible -= Chest_OnAnyChestSpawnedCollectible;
+        Scavengable.OnAnyScavengableMarkedToScavenge -= Scavengable_OnAnyScavengableMarkedToScavenge;
 
         Worker.OnAnyWorkerAssignedHunter -= Worker_OnAnyWorkerAssignedHunter;
         Worker.OnAnyWorkerDied -= Worker_OnAnyWorkerDied;

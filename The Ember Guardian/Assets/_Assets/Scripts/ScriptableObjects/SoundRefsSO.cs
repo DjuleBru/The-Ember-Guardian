@@ -61,6 +61,8 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip tryBuyMaxedHubMerchantItem;
     public AudioClip[] gemPSExplosion;
 
+    public AudioClip scavengableMarkedToScavenge;
+
     public AudioClip workerStartedFollowing;
     public AudioClip workerStoppedFollowing;
     public AudioClip hoveredFollowingWorkerChanged;

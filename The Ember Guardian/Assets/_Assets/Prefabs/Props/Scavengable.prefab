@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1863520687541432107}
   - component: {fileID: 1741599186467249202}
   - component: {fileID: 5538243759322979324}
+  - component: {fileID: 1668834993096144557}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -35,6 +36,9 @@ Transform:
   - {fileID: 3236911237401712110}
   - {fileID: 4278691959858903465}
   - {fileID: 1563158708787008832}
+  - {fileID: 3314891237919667393}
+  - {fileID: 6594071040621518787}
+  - {fileID: 536007514470839111}
   - {fileID: 5702863134472045383}
   m_Father: {fileID: 1308917849245843991}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -107,7 +111,29 @@ MonoBehaviour:
   depletedSprite: {fileID: 242119855, guid: a986ae35601b01a4bb8a013f3b0b8288, type: 3}
   unhoveredMaterial: {fileID: 2100000, guid: f46cf4989354ad94b969d1ddae2b6aef, type: 2}
   hoveredMaterial: {fileID: 2100000, guid: 314c5a774da28f640bde94732d840a46, type: 2}
+  scavengableBodyAnimator: {fileID: 1668834993096144557}
   scavengableUIAnimator: {fileID: 3080166840949363541}
+--- !u!95 &1668834993096144557
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 142863839849580052}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6a45ff60c5a5de140a7348a94aed1c15, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1706631358260368281
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,7 +297,7 @@ Transform:
   m_GameObject: {fileID: 3480781680479853700}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.308, y: 1.608, z: 0}
+  m_LocalPosition: {x: 0.08, y: 3.44, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -329,6 +355,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &3595674845733903375
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6594071040621518787}
+  m_Layer: 0
+  m_Name: MinePoint2 (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6594071040621518787
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3595674845733903375}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.95, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1863520687541432107}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4446534020195893440
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,7 +411,7 @@ Transform:
   m_GameObject: {fileID: 4446534020195893440}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.05, y: 0.85, z: 0}
+  m_LocalPosition: {x: 0.1, y: 1.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -412,6 +469,9 @@ MonoBehaviour:
   minePoints:
   - {fileID: 4278691959858903465}
   - {fileID: 1563158708787008832}
+  - {fileID: 3314891237919667393}
+  - {fileID: 6594071040621518787}
+  - {fileID: 536007514470839111}
   currencyTypeCollected: 0
   currencyAmountCollected: 5
   hitsToCollectOneCurrency: 10
@@ -500,7 +560,7 @@ Transform:
   m_GameObject: {fileID: 5836080600684779501}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.07, y: 0, z: 0}
+  m_LocalPosition: {x: -1.76, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -531,7 +591,69 @@ Transform:
   m_GameObject: {fileID: 6305360089185189482}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.92, y: 0, z: 0}
+  m_LocalPosition: {x: -0.64, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1863520687541432107}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7523027607069512675
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 536007514470839111}
+  m_Layer: 0
+  m_Name: MinePoint2 (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &536007514470839111
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7523027607069512675}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.66, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1863520687541432107}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7601820203522684912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3314891237919667393}
+  m_Layer: 0
+  m_Name: MinePoint2 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3314891237919667393
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7601820203522684912}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.11, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

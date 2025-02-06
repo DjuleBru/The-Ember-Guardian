@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class GuardJob : WorkerJob {
 
-    private Creature aggroedCreature;
-    private Creature closestCreature;
-
     private GuardState state;
     private GuardState previousState;
 
@@ -16,13 +13,8 @@ public class GuardJob : WorkerJob {
     private float attackRange = 1f;
     private float followPlayerTargetingRange = 10f;
     private float attackRangeRandomized;
-    private float maxDistanceToPlayerWhenFollowing = 10f;
     private float distanceToOuterWallWhenGuarding = 3f;
-    private float distanceToStaySafeFromCreature = 20f;
     private float distanceToOuterWallToTargetCreatureAtNight = 14f;
-
-    private float checkClosestTargetTimer;
-    private float checkClosestTargetCooldown = .3f;
 
     public enum GuardState {
         followPlayerIdle,
@@ -39,6 +31,8 @@ public class GuardJob : WorkerJob {
         float workerDetectionColliderRadius = workerDetectionCollider.GetComponent<CircleCollider2D>().radius;
         distanceToStaySafeFromCreature = UnityEngine.Random.Range(workerDetectionColliderRadius - workerDetectionColliderRadius / 3, workerDetectionColliderRadius - workerDetectionColliderRadius / 4);
         attackRangeRandomized = UnityEngine.Random.Range(attackRange - attackRange / 4, attackRange + attackRange / 4);
+
+        maxDistanceToPlayerWhenFollowing = 10f;
     }
 
     private void Update() {
@@ -51,6 +45,7 @@ public class GuardJob : WorkerJob {
         if (CheckDropCurrenciesToPlayer()) {
             ChangeState(GuardState.droppingOrbs);
         }
+
         if(followingPlayer) {
             switch (state) {
 
@@ -93,7 +88,7 @@ public class GuardJob : WorkerJob {
                         return;
                     }
 
-                    if (!TargetIsInRange(aggroedCreature)) {
+                    if (!TargetIsInRange(aggroedCreature, attackRangeRandomized)) {
                         targetCreature = null;
                         workerAttack.RemoveAttackTarget();
 
@@ -198,7 +193,7 @@ public class GuardJob : WorkerJob {
             }
 
             else {
-                if (!TargetIsInRange(aggroedCreature)) {
+                if (!TargetIsInRange(aggroedCreature, attackRangeRandomized)) {
                     targetCreature = null;
                     workerAttack.RemoveAttackTarget();
 
@@ -241,26 +236,14 @@ public class GuardJob : WorkerJob {
         }
         roamTimer = 0;
     }
-    private bool PlayerIsTooFarFromWorker() {
 
-        float distanceFromPlayerToAggroedCreature = Mathf.Abs(Mathf.Abs(Player.Instance.transform.position.x) - Mathf.Abs(transform.position.x));
-        return distanceFromPlayerToAggroedCreature > maxDistanceToPlayerWhenFollowing;
+ 
 
-    }
     private void FollowPlayer() {
         Vector3 destination = WorkerFollowPlayerHandler.Instance.GetWorkerFollowPosition(worker);
 
         if(Mathf.Abs(destination.x - transform.position.x) > .5f) {
             mobMovement.SetMoveTarget(destination);
-        }
-    }
-
-    private bool TargetIsInRange(IDamageable iDamageable) {
-        if (Mathf.Abs((iDamageable as MonoBehaviour).transform.position.x - mobMovement.transform.position.x) < (attackRangeRandomized)) {
-            return true;
-        }
-        else {
-            return false;
         }
     }
 
@@ -271,47 +254,6 @@ public class GuardJob : WorkerJob {
         else {
             return false;
         }
-    }
-
-    private bool CheckAggroClosestCreatureSmart(Vector2 positionOrigin, float checkDistance) {
-        checkClosestTargetTimer -= Time.deltaTime;
-
-        if (checkClosestTargetTimer < 0) {
-            checkClosestTargetTimer = checkClosestTargetCooldown;
-
-            Creature newTargetCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(positionOrigin, checkDistance, workerAttack.GetAttackDamage(), false);
-
-            if (newTargetCreature == null) {
-                aggroedCreature = null;
-                return false;
-
-            }
-
-            else {
-                aggroedCreature = newTargetCreature;
-                return true;
-            }
-        }
-
-        return false;
-    }
-  
-    private void TargetCreature(Creature newTargetCreature) {
-        if (targetCreature == newTargetCreature) return;
-
-        if (targetCreature != null) {
-            targetCreature.OnMobDied -= TargetCreature_OnMobDied;
-        }
-
-        mobMovement.SetMoveTarget(transform.position);
-        workerAttack.SetAttackTarget(newTargetCreature);
-        targetCreature = newTargetCreature;
-        targetCreature.OnMobDied += TargetCreature_OnMobDied;
-    }
-
-    private void TargetCreature_OnMobDied(object sender, System.EventArgs e) {
-        targetCreature = null;
-        workerAttack.RemoveAttackTarget();
     }
 
     public void StayOutOfCreatureRange() {

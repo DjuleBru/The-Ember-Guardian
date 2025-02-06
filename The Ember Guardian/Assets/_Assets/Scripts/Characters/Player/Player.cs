@@ -201,7 +201,13 @@ public class Player : MonoBehaviour, IDamageable
     public void SetManagingWorkers(bool managingWorkers) {
         this.managingWorkers = managingWorkers;
     }
-
+    public void SetManagingWorkersAfterFrame(bool managingWorkers) {
+        StartCoroutine(SetManagingWorkersAfterFrameeCoroutine(managingWorkers));
+    }
+    private IEnumerator SetManagingWorkersAfterFrameeCoroutine(bool managingWorkers) {
+        yield return new WaitForEndOfFrame();
+        this.managingWorkers = managingWorkers;
+    }
     public bool GetCanDropOrbOnTheFloor() {
         return canDropOrbOnTheFloor && !interactingWithMerchant && !interactingWithOtherObject && !hoveringWorker && !managingWorkers && !dead;
     }

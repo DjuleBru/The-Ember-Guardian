@@ -34,7 +34,7 @@ public class Collectible : MonoBehaviour
     private bool droppedByPlayer;
     private bool droppedInFire;
     private bool playerInTriggerArea;
-    private bool aggroedByWildWorker;
+    private bool aggroedByWorker;
     private bool collected;
     private bool touchedFloor;
     private bool enteredPayCurrencyUISlot;
@@ -106,7 +106,7 @@ public class Collectible : MonoBehaviour
             if (worker != null) {
                 if (currencyType == PlayerCurrencies.CurrencyType.ember) return;
                 if (currencyCategory == PlayerCurrencies.CurrencyCategory.gem) return;
-                if (aggroedByWildWorker && worker != aggroedWildWorker) return;
+                if (aggroedByWorker && worker != aggroedWildWorker) return;
 
                 WorkerAI.JobTypes workerJob = worker.GetComponent<WorkerAI>().GetJob();
 
@@ -256,6 +256,15 @@ public class Collectible : MonoBehaviour
         canBePickedUpByWorker = true;
     }
 
+    public void SetCanBePickedUpByWorkerAfterDelay(float delay) {
+        StartCoroutine(SetCanBePickedUpByWorkerAfterDelayCoroutine(delay));
+    }
+
+    private IEnumerator SetCanBePickedUpByWorkerAfterDelayCoroutine(float delay) {
+        yield return new WaitForSeconds(delay);
+        canBePickedUpByWorker = true;
+    }
+
     public void SetCanNeverBePickedUpByWorker() {
         canNeverBePickedUpByWorker = true;
     }
@@ -313,13 +322,13 @@ public class Collectible : MonoBehaviour
         return currencyCategory;
     }
 
-    public void SetAggroedByWildWorker(bool aggroed, Worker worker) {
-        aggroedByWildWorker = aggroed;
+    public void SetAggroedByWorker(bool aggroed, Worker worker) {
+        aggroedByWorker = aggroed;
         aggroedWildWorker = worker;
     }
 
     public bool GetAggroedByWildWorker() {
-        return aggroedByWildWorker;
+        return aggroedByWorker;
     }
 
     public void SetCollected() {

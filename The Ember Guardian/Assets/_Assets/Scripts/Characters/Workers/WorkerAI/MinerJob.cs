@@ -8,11 +8,12 @@ public class MinerJob : WorkerJob {
     private MinerState state;
     private MinerState previousState;
 
-    private Creature closestCreature;
     private Scavengable assignedScavengable;
     private Transform assignedScavengableMiningPosition;
 
     private float headToMineMoveSpeed = 2.5f;
+    private float attackRange = 1f;
+    private float attackRangeRandomized;
 
     private bool isNightOrDusk;
     private bool followingPlayer;
@@ -31,6 +32,12 @@ public class MinerJob : WorkerJob {
 
     private void Awake() {
         workerDetectionCollider = GetComponentInChildren<WorkerDetectionCollider>();
+        float workerDetectionColliderRadius = workerDetectionCollider.GetComponent<CircleCollider2D>().radius;
+        distanceToStaySafeFromCreature = UnityEngine.Random.Range(workerDetectionColliderRadius - workerDetectionColliderRadius / 3, workerDetectionColliderRadius - workerDetectionColliderRadius / 4);
+        
+        maxDistanceToPlayerWhenFollowing = 5f;
+        minDistanceToPlayerWhenFollowing = 3f;
+        attackRangeRandomized = UnityEngine.Random.Range(attackRange - attackRange / 4, attackRange + attackRange / 4);
     }
 
     private void Update() {
@@ -41,15 +48,77 @@ public class MinerJob : WorkerJob {
         }
 
         if (followingPlayer) {
+            switch (state) {
 
+                case MinerState.followPlayerIdle:
+
+                    FollowPlayer();
+                    if (closestCreature != null) {
+
+                        CheckAggroClosestCreatureSmart(transform.position, minimumDistanceToStaySafeFromCreature);
+
+                        if (aggroedCreature == null) {
+
+                            targetCreature = null;
+                            workerAttack.RemoveAttackTarget();
+
+                        }
+                        else {
+                            if (PlayerIsCloseEnoughFromWorker()) {
+                                ChangeState(MinerState.followPlayerAttackCreature);
+                            };
+
+                        }
+                    }
+
+                break;
+
+                case MinerState.followPlayerAttackCreature:
+
+                    if (!CreatureIsTooClose(closestCreature)) {
+                        ChangeState(MinerState.followPlayerIdle);
+                    }
+
+                    CheckAggroClosestCreatureSmart(transform.position, minimumDistanceToStaySafeFromCreature);
+                    if (aggroedCreature == null) {
+                        targetCreature = null;
+                        workerAttack.RemoveAttackTarget();
+                        ChangeState(MinerState.followPlayerIdle);
+                        return;
+                    }
+
+                    if (PlayerIsTooFarFromWorker()) {
+                        ChangeState(MinerState.followPlayerIdle);
+                        workerAttack.RemoveAttackTarget();
+                        return;
+                    }
+
+                    if (!TargetIsInRange(aggroedCreature, attackRangeRandomized)) {
+                        targetCreature = null;
+                        workerAttack.RemoveAttackTarget();
+
+                        mobMovement.SetMoveTarget(aggroedCreature.transform.position);
+                        mobMovement.SetMoveSpeed(headToCampMoveSpeed);
+                    }
+                    else {
+                        TargetCreature(aggroedCreature);
+                    }
+                    break;
+            }
         } else {
 
+            if (CheckBlockedByCreature() && state != MinerState.blockedByCreatures) {
+                ChangeState(MinerState.blockedByCreatures);
+                return;
+            };
+
             switch (state) {
+
                 case MinerState.idle:
                     RoamInCampCenter();
                     CheckAvailableScavengables();
 
-                    if(assignedScavengable != null && !isNightOrDusk) {
+                    if (assignedScavengable != null && !isNightOrDusk) {
                         ChangeState(MinerState.headingToMine);
                     }
 
@@ -65,18 +134,24 @@ public class MinerJob : WorkerJob {
                 break;
 
                 case MinerState.headingToMine:
+
                     HeadToMine();
+
                 break;
 
                 case MinerState.Mining:
+
                     Mine();
                     if(CheckOrbsToCollect()) {
                         ChangeState(MinerState.pickingUpOrbs);
                     }
+
                 break;
 
                 case MinerState.pickingUpOrbs:
+
                     HeadToPickUpClosestOrb();
+
                 break;
 
                 case MinerState.droppingOrbs:
@@ -97,9 +172,47 @@ public class MinerJob : WorkerJob {
                     }
 
                 break;
+
+                case MinerState.blockedByCreatures:
+                    StayOutOfCreatureRange();
+
+                    if (!CheckBlockedByCreature()) {
+                        ChangeState(MinerState.idle);
+                    }
+                    break;
             }
         }
 
+    }
+    public void StayOutOfCreatureRange() {
+
+        mobMovement.SetMoveSpeed(fleeMoveSpeed);
+
+        Creature closestCreature = workerDetectionCollider.GetClosestCreature();
+
+        if (closestCreature != null) {
+            if (CreatureIsTooClose(closestCreature)) {
+                StayAwayFromCreature(closestCreature);
+                return;
+            }
+        }
+    }
+    private bool CheckBlockedByCreature() {
+        if (closestCreature != null) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    private void FollowPlayer() {
+        Vector3 destination = WorkerFollowPlayerHandler.Instance.GetWorkerFollowPosition(worker);
+
+        if (Mathf.Abs(destination.x - transform.position.x) > .5f) {
+            mobMovement.SetMoveTarget(destination);
+        }
     }
 
     public void HeadToPickUpClosestOrb() {
@@ -141,22 +254,26 @@ public class MinerJob : WorkerJob {
 
     public void AssignScavengable(Scavengable scavengable) {
         assignedScavengable = scavengable;
-        scavengable.OnScavengableSpawnedCurrency += AssignedScavengable_OnScavengableSpawnedCurrency;
         scavengable.AssignMiner(this);
         assignedScavengableMiningPosition = scavengable.GetMeleeAttackPosition();
     }
 
     public void UnAssignScavengable() {
-        assignedScavengable.OnScavengableSpawnedCurrency -= AssignedScavengable_OnScavengableSpawnedCurrency;
         assignedScavengable = null;
         workerAttack.RemoveAttackTarget();
-        ChangeState(MinerState.idle);
+
+        if (CheckOrbsToCollect()) {
+            ChangeState(MinerState.pickingUpOrbs);
+        } else {
+            ChangeState(MinerState.idle);
+        }
     }
 
-    private void AssignedScavengable_OnScavengableSpawnedCurrency(object sender, Scavengable.OnStavengableSpawnedCurrencyEventArgs e) {
-        orbsToCollect.Add(e.collectibleSpawned);
-        e.collectibleSpawned.OnCollectibleDestroyed += CollectibleSpawned_OnCollectibleDestroyed;
+    public void AssignCollectible(Collectible collectible) {
+        orbsToCollect.Add(collectible);
+        collectible.OnCollectibleDestroyed += CollectibleSpawned_OnCollectibleDestroyed;
     }
+
     private void CollectibleSpawned_OnCollectibleDestroyed(object sender, System.EventArgs e) {
         Collectible collectible = sender as Collectible;
         RemoveOrbToCollect(collectible);
@@ -188,6 +305,7 @@ public class MinerJob : WorkerJob {
 
     private void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
         followingPlayer = workerAI.GetFollowingPlayer();
+        ChangeState(MinerState.followPlayerIdle);
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
@@ -206,6 +324,8 @@ public class MinerJob : WorkerJob {
 
     private void ChangeState(MinerState newState) {
         if (newState == state) return;
+
+        Debug.Log(newState);
         previousState = state;
 
         Vector3 targetDestination = mobMovement.transform.position;

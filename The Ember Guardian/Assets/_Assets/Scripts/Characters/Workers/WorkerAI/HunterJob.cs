@@ -6,23 +6,19 @@ using UnityEngine.UIElements;
 
 public class HunterJob : WorkerJob {
 
-    private float fleeMoveSpeed = 3.5f;
     private float trackAnimalMoveSpeed = 2f;
     private float initialFiringRange = 10f;
 
     private float attackRange;
-    private float distanceToStaySafeFromCreature;
-    private float maxDistanceToPlayerWhenFollowing = 10f;
     private float distanceToPlayerWhenCreatureIsAround = 4f;
-    private float minimumDistanceToStaySafeFromCreature = 6f;
 
-    private float checkClosestTargetTimer;
     private float checkBlockedByCreatureTimer;
-    private float checkClosestTargetCooldown = .25f;
     private float distanceToHuntingLimit = 3f;
 
     private bool hasHitAnimal;
     private bool followingPlayer;
+
+    protected Animal targetAnimal;
 
     public enum HunterState {
         idle, 
@@ -48,7 +44,6 @@ public class HunterJob : WorkerJob {
     private List<HunterState> duskAndNightHunterStates;
 
     private Tower destinationTower;
-    private Creature closestCreature;
 
     public event EventHandler OnHunterChangedState;
     public event EventHandler OnHunterFindsNoAnimal;
@@ -280,7 +275,6 @@ public class HunterJob : WorkerJob {
                     HeadToTargetAnimal();
 
                     break;
-
 
                 case HunterState.pickingUpOrbs:
 
@@ -535,36 +529,9 @@ public class HunterJob : WorkerJob {
         }
     }
 
-    public bool CreatureIsTooClose(Creature closestCreature) {
-        if (closestCreature != null) {
-            bool creatureIsTooClose = Mathf.Abs(closestCreature.transform.position.x) - Mathf.Abs(transform.position.x) < minimumDistanceToStaySafeFromCreature;
-            return creatureIsTooClose;
-        }
-        return false;
-    }
+  
 
-    public void StayAwayFromCreature(Creature closestCreature) {
-
-        mobMovement.SetMoveSpeed(fleeMoveSpeed);
-
-        if (closestCreature != null) {
-
-            float direction = closestCreature.transform.position.x - transform.position.x;
-            if (direction > 0) {
-                direction = -1;
-            }
-            else {
-                direction = 1;
-            }
-
-            Vector3 safePosition = new Vector3(closestCreature.transform.position.x + direction * distanceToStaySafeFromCreature, 0, 0);
-            mobMovement.SetMoveTarget(safePosition);
-            workerAttack.RemoveAttackTarget();
-
-            return;
-        }
-
-    }
+    
 
     private bool CheckClosestAnimal() {
         checkClosestTargetTimer -= Time.deltaTime;

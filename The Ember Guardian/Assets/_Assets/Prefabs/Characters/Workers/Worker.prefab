@@ -45,6 +45,7 @@ Transform:
   - {fileID: 8333529539825983641}
   - {fileID: 2450709841195278507}
   - {fileID: 6188010308670270818}
+  - {fileID: 6612853135516903003}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7421188879430317132
@@ -340,7 +341,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.125, y: 2.125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -377,6 +378,57 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5853887981063593266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1871798137499140476
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6612853135516903003}
+  - component: {fileID: 1516688264024223322}
+  m_Layer: 13
+  m_Name: WorkerFeedbacks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6612853135516903003
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1871798137499140476}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7248589854247267353}
+  - {fileID: 1613104621229519566}
+  - {fileID: 3525987898012349513}
+  m_Father: {fileID: 860173671428369790}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1516688264024223322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1871798137499140476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3289493e8c525a24ba27e83fe744ddff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animatorManager: {fileID: 2534391042090512400}
+  minerHitPS: {fileID: 4291064318523585818}
+  minerHitPSLeftPosition: {fileID: 1613104621229519566}
+  minerHitPSRightPosition: {fileID: 3525987898012349513}
 --- !u!1 &2322691198232855453
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,6 +854,37 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &5329681812222717193
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1613104621229519566}
+  m_Layer: 0
+  m_Name: MinerHitPSLeftPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1613104621229519566
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5329681812222717193}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.527, y: 0.402, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6612853135516903003}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5656714560052232117
 GameObject:
   m_ObjectHideFlags: 0
@@ -880,7 +963,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.125, y: 2.125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -1070,8 +1153,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d4b8445bd8a370149b7db5e4952fe824, type: 3}
   - {fileID: 8300000, guid: a0649904657914c4caf4d1d3ef1a9c47, type: 3}
   - {fileID: 8300000, guid: 05ddae39fbcf88b43bcd006db5fca799, type: 3}
+  pickaxeHitAudioClips:
+  - {fileID: 8300000, guid: 4f820c64760376e4684ddcce96230a9a, type: 3}
+  - {fileID: 8300000, guid: 9d1d52bd68ffc0b4b878bb0695ab3cd8, type: 3}
+  - {fileID: 8300000, guid: f68870242438f884d8c32252d4291eb6, type: 3}
+  - {fileID: 8300000, guid: 74690098c4a70664fad47f65c9af4240, type: 3}
+  - {fileID: 8300000, guid: e2215b651a9f5814f8272e7ea264f65c, type: 3}
+  - {fileID: 8300000, guid: a2a0d073571b7604a9cd2602763a7739, type: 3}
+  - {fileID: 8300000, guid: eeda6824f57659a418a4a6af4ed72117, type: 3}
   footstepVolumeMultiplier: 1
   spearHitVolumeMultiplier: 1
+  pickaxeHitVolumeMultiplier: 1
   workerAI: {fileID: 6873851068007498257}
   workerAttack: {fileID: 178243791046534343}
   workerAnimator: {fileID: 2534391042090512400}
@@ -1186,6 +1278,37 @@ MonoBehaviour:
   maxDistanceToHear: 10
   maxAudioSourceVolume: 1
   active: 1
+--- !u!1 &8642694043388759658
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3525987898012349513}
+  m_Layer: 0
+  m_Name: MinerHitPSRightPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3525987898012349513
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8642694043388759658}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.661, y: 0.402, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6612853135516903003}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8866039127884435325
 GameObject:
   m_ObjectHideFlags: 0
@@ -1323,3 +1446,70 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1001 &6185632986440633957
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6612853135516903003}
+    m_Modifications:
+    - target: {fileID: 3553307657438962300, guid: df2d9f5da126169469425ba6c194fb50, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.507
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553307657438962300, guid: df2d9f5da126169469425ba6c194fb50, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.328
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553307657438962300, guid: df2d9f5da126169469425ba6c194fb50, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553307657438962300, guid: df2d9f5da126169469425ba6c194fb50, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553307657438962300, guid: df2d9f5da126169469425ba6c194fb50, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553307657438962300, guid: df2d9f5da126169469425ba6c194fb50, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553307657438962300, guid: df2d9f5da126169469425ba6c194fb50, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553307657438962300, guid: df2d9f5da126169469425ba6c194fb50, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553307657438962300, guid: df2d9f5da126169469425ba6c194fb50, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3553307657438962300, guid: df2d9f5da126169469425ba6c194fb50, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8231705165639236091, guid: df2d9f5da126169469425ba6c194fb50, type: 3}
+      propertyPath: m_Name
+      value: MinerHitPS
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: df2d9f5da126169469425ba6c194fb50, type: 3}
+--- !u!198 &4291064318523585818 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7951989349695372159, guid: df2d9f5da126169469425ba6c194fb50, type: 3}
+  m_PrefabInstance: {fileID: 6185632986440633957}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7248589854247267353 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3553307657438962300, guid: df2d9f5da126169469425ba6c194fb50, type: 3}
+  m_PrefabInstance: {fileID: 6185632986440633957}
+  m_PrefabAsset: {fileID: 0}

@@ -10,6 +10,7 @@ public class ScavengableVisual : MonoBehaviour
 
     [SerializeField] private Material unhoveredMaterial;
     [SerializeField] private Material hoveredMaterial;
+    [SerializeField] private Animator scavengableBodyAnimator;
     [SerializeField] private Animator scavengableUIAnimator;
 
     private Scavengable scavengable;
@@ -20,10 +21,15 @@ public class ScavengableVisual : MonoBehaviour
     }
 
     private void Start() {
+        scavengable.OnDamageTaken += Scavengable_OnDamageTaken;
         scavengable.OnPlayerTriggerIn += Scavengable_OnPlayerTriggerIn;
         scavengable.OnPlayerTriggerOut += Scavengable_OnPlayerTriggerOut;
         scavengable.OnScavengableDepleted += Scavengable_OnScavengableDepleted;
         scavengable.OnScavengableMarkedToScavenge += Scavengable_OnScavengableMarkedToScavenge;
+    }
+
+    private void Scavengable_OnDamageTaken(object sender, System.EventArgs e) {
+        scavengableBodyAnimator.SetTrigger("Hit");
     }
 
     private void Scavengable_OnScavengableMarkedToScavenge(object sender, System.EventArgs e) {

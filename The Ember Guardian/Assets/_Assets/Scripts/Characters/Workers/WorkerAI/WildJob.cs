@@ -52,7 +52,7 @@ public class WildJob : MonoBehaviour, IJobBehavior {
 
     public void UnAggroBlueOrb() {
         if (blueOrbAggroed == null) return;
-        blueOrbAggroed.SetAggroedByWildWorker(false, null);
+        blueOrbAggroed.SetAggroedByWorker(false, null);
     }
 
     public void RoamInCampCenter() {
@@ -80,7 +80,7 @@ public class WildJob : MonoBehaviour, IJobBehavior {
             if (!e.blueOrbDropped.GetAggroedByWildWorker() && blueOrbAggroed == null) {
                 // Blue orb has not been aggroed
 
-                e.blueOrbDropped.SetAggroedByWildWorker(true, worker);
+                e.blueOrbDropped.SetAggroedByWorker(true, worker);
                 blueOrbAggroed = e.blueOrbDropped;
                 
                 hasSetSpeed = false;
@@ -106,7 +106,7 @@ public class WildJob : MonoBehaviour, IJobBehavior {
     private void RefreshAggroedOrb() {
         foreach(Collectible collectible in blueOrbDroppedByPlayerNearby) {
             if(!collectible.GetAggroedByWildWorker()) {
-                collectible.SetAggroedByWildWorker(true, worker);
+                collectible.SetAggroedByWorker(true, worker);
                 blueOrbAggroed = collectible;
                 hasSetSpeed = false;
             }

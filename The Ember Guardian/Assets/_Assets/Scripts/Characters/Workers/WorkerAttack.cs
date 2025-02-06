@@ -18,8 +18,8 @@ public class WorkerAttack : MobAttack
     private float guardTotalAttackAnimationTime = .4f;
 
     private int initialMinerDamage = 1;
-    private float initialMinerAttackCooldown = .5f;
-    private float minerAttackAnimationDelay = .2f;
+    private float initialMinerAttackCooldown = 1.2f;
+    private float minerAttackAnimationDelay = .15f;
     private float minerTotalAttackAnimationTime = .5f;
 
     private void Start() {

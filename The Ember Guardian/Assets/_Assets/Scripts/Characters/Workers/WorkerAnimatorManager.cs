@@ -23,6 +23,7 @@ public class WorkerAnimatorManager : MonoBehaviour
     private float previousWatchDir = 1f;
 
     public event EventHandler OnFootstepTriggered;
+    public event EventHandler OnXScaleChanged;
 
     private void Awake() {
         worker = GetComponentInParent<Worker>();
@@ -101,12 +102,16 @@ public class WorkerAnimatorManager : MonoBehaviour
             previousWatchDir = watchDir;
             Vector3 newScale = new Vector3(-1, 1, 1);
             transform.localScale = newScale;
+
+            OnXScaleChanged?.Invoke(this, EventArgs.Empty);
         }
 
         if (watchDir > 0 && previousWatchDir < 0) {
             previousWatchDir = watchDir;
             Vector3 newScale = new Vector3(1, 1, 1);
             transform.localScale = newScale;
+
+            OnXScaleChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -116,6 +121,13 @@ public class WorkerAnimatorManager : MonoBehaviour
 
     public void SetWatchDir(float watchDir) {
         this.watchDir = watchDir;
+    }
+
+    public float GetWatchDir() {
+        return watchDir;
+    }
+    public float GetPreviousWatchDir() {
+        return previousWatchDir;
     }
 
     private void MobAttack_OnMobAttack(object sender, System.EventArgs e) {
