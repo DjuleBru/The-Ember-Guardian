@@ -6,7 +6,11 @@ using UnityEngine;
 public class UICurrencyManager : MonoBehaviour
 {
 
-    public static UICurrencyManager Instance;
+    public static UICurrencyManager PlayerInventoryUI;
+    public static UICurrencyManager HubInventoryUI;
+
+    [SerializeField] private bool isPlayerInventory;
+    [SerializeField] private bool isHubInventory;
 
     [SerializeField] private Transform blueOrbsSpawnPosition;
     [SerializeField] private Transform redOrbsSpawnPosition;
@@ -66,7 +70,12 @@ public class UICurrencyManager : MonoBehaviour
     private float tryingToDropOrbHoldTime = .2f;
 
     private void Awake() {
-        Instance = this;
+        if(isPlayerInventory) {
+            PlayerInventoryUI = this;
+        }
+        if (isHubInventory) {
+            HubInventoryUI = this;
+        }
     }
 
     private void Start() {
@@ -223,15 +232,14 @@ public class UICurrencyManager : MonoBehaviour
             currencyUIDropped = currencyUICollected
         });
 
-        foreach(Currency_UI currency in currenciesInBag) {
-            currency.SetCurrencyRbMovable();
-        }
+        //foreach(Currency_UI currency in currenciesInBag) {
+        //    currency.SetCurrencyRbMovable();
+        //}
 
         currenciesInBag.Add(currencyUICollected);
     }
 
     public void AddCurrencyAmount(PlayerCurrencies.CurrencyType currencyType, int currencyAmount) {
-        Debug.Log("Add " + currencyType + " " + currencyAmount);
         StartCoroutine(AddCurrencyCoroutine(currencyType, currencyAmount));
     }
 
@@ -257,6 +265,32 @@ public class UICurrencyManager : MonoBehaviour
     private IEnumerator AddCurrencyCoroutine(PlayerCurrencies.CurrencyType currencyType, int currencyAmount) {
         for (int i = 0; i < currencyAmount; i++) {
             AddCurrencyInBag(currencyType);
+            yield return new WaitForSeconds(.2f);
+        }
+    }
+    public void RemoveMultipleCurrencies(List<PlayerCurrencies.CurrencyType> currencyTypeList, List<int> currencyAmountList) {
+        StartCoroutine(RemoveMultipleCurrenciesCoroutine(currencyTypeList, currencyAmountList));
+    }
+
+    private IEnumerator RemoveMultipleCurrenciesCoroutine(List<PlayerCurrencies.CurrencyType> currencyTypeList, List<int> currencyAmountList) {
+        int i = 0;
+        float delayBetweenEachCurrencyType = .75f;
+
+        foreach (PlayerCurrencies.CurrencyType currencyType in currencyTypeList) {
+            int currencyTypeAmount = currencyAmountList[i];
+            float delay = currencyTypeAmount * .15f;
+
+            StartCoroutine(RemoveCurrencyCoroutine(currencyType, currencyTypeAmount));
+
+            yield return new WaitForSeconds(delay + delayBetweenEachCurrencyType);
+            i++;
+        }
+    }
+
+    private IEnumerator RemoveCurrencyCoroutine(PlayerCurrencies.CurrencyType currencyType, int currencyAmount) {
+        for (int i = 0; i < currencyAmount; i++) {
+            if (GetCurrenciesInBagOfType(currencyType).Count == 0) continue;
+            RemoveCurrencyFromBag(currencyType, 1);
             yield return new WaitForSeconds(.2f);
         }
     }
@@ -295,9 +329,9 @@ public class UICurrencyManager : MonoBehaviour
             currencyUIDropped = currencyUI
         });
 
-        foreach (Currency_UI currency in currenciesInBag) {
-            currency.SetCurrencyRbMovable();
-        }
+        //foreach (Currency_UI currency in currenciesInBag) {
+        //    currency.SetCurrencyRbMovable();
+        //}
     }
 
     public void RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType currencyType, int currencyAmount) {
@@ -306,9 +340,9 @@ public class UICurrencyManager : MonoBehaviour
             DropCurrencyFromBag(currenciesOfType[currenciesOfType.Count - 1]);
         }
 
-        foreach (Currency_UI currency in currenciesInBag) {
-            currency.SetCurrencyRbMovable();
-        }
+        //foreach (Currency_UI currency in currenciesInBag) {
+        //    currency.SetCurrencyRbMovable();
+        //}
     }
 
     public void RemoveCurrencyUIFromInventoryList(Currency_UI currencyUI) {
@@ -321,7 +355,6 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     public void SetPayingCurrency(PayCurrencyUI payOrbsUI, PlayerCurrencies.CurrencyType currencyTypeToPay, bool payingCurrency) {
-       
         if (currentPayCurrencyUI != null) {
             currentPayCurrencyUI.OnSingleCurrencyPaid -= CurrentPayOrbsUI_OnSingleOrbPaid;
             currentPayCurrencyUI.OnCurrencyPaymentSuccess -= CurrentPayOrbsUI_OnOrbPaymentSuccess;

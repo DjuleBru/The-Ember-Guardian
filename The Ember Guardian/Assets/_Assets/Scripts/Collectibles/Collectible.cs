@@ -148,7 +148,7 @@ public class Collectible : MonoBehaviour
         OnAnyCollectiblePickedUpByPlayer?.Invoke(this, EventArgs.Empty);
 
         if(currencyType != PlayerCurrencies.CurrencyType.ember) {
-            UICurrencyManager.Instance.AddCurrencyInBag(currencyType);
+            UICurrencyManager.PlayerInventoryUI.AddCurrencyInBag(currencyType);
             Destroy(gameObject);
 
         } else {

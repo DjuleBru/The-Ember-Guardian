@@ -48,13 +48,13 @@ public class Currency_UI : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, destinationTransform.position, smoothTime * Time.deltaTime);
         }
 
-        if(rb.velocity.magnitude < speedToDisableRb && initialTimerOver) {
-            rb.bodyType = RigidbodyType2D.Static;
-        }
+        //if(rb.velocity.magnitude < speedToDisableRb && initialTimerOver) {
+        //    rb.bodyType = RigidbodyType2D.Static;
+        //}
     }
 
     public void RemoveFromBag() {
-        UICurrencyManager.Instance.RemoveCurrencyUIFromInventoryList(this);
+        UICurrencyManager.PlayerInventoryUI.RemoveCurrencyUIFromInventoryList(this);
         dropCurrencyFeedback.PlayFeedbacks();
         StartCoroutine(DestroyAfterDelay(.2f));
     }
@@ -67,7 +67,7 @@ public class Currency_UI : MonoBehaviour
                 if (ammoTriggerAmount != 3) return;
             }
 
-            UICurrencyManager.Instance.CurrencyFellFromBag(this);
+            UICurrencyManager.PlayerInventoryUI.CurrencyFellFromBag(this);
             dropCurrencyFeedback.PlayFeedbacks();
             StartCoroutine(DestroyAfterDelay(.2f));
         }

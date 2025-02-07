@@ -17,6 +17,7 @@ public class PayCurrencyUI : MonoBehaviour
     public static event EventHandler<OnSingleOrbFilledEventArgs> OnAnySingleCurrencyPaid;
 
     public class OnSingleOrbFilledEventArgs : EventArgs {
+        public PlayerCurrencies.CurrencyType currencyType;
         public int currencyIndex;
     }
 
@@ -50,11 +51,17 @@ public class PayCurrencyUI : MonoBehaviour
             }
 
             PlayerCurrencies.Instance.CancelCurrencyPayment(currenciesFailedToPayFallInWater);
-            UICurrencyManager.Instance.SetPayingCurrency(this, currencyTypeToPay, false);
+            UICurrencyManager.PlayerInventoryUI.SetPayingCurrency(this, currencyTypeToPay, false);
 
         } else {
-            UICurrencyManager.Instance.SetPayingCurrency(this, currencyTypeToPay, true);
+            UICurrencyManager.PlayerInventoryUI.SetPayingCurrency(this, currencyTypeToPay, true);
         }
+    }
+
+    public void SetPlayerInteractingContinuous() {
+        PlayerCurrencies.CurrencyType currencyTypeToPay = currencyTemplateWorldUIList[0].GetCurrencyTypeToPay();
+        currencyIndex = 0;
+        UICurrencyManager.PlayerInventoryUI.SetPayingCurrency(this, currencyTypeToPay, true);
     }
 
     public void SetOrbTemplateUIList(List<PayCurrencyTemplateWorldUI> orbTemplateList) {
@@ -72,6 +79,7 @@ public class PayCurrencyUI : MonoBehaviour
     protected virtual void OrbTemplate_OnOrbPaid(object sender, EventArgs e) {
         // For sound
         OnAnySingleCurrencyPaid?.Invoke(this, new OnSingleOrbFilledEventArgs {
+            currencyType = GetCurrentCurrencyTemplateWorldUI().GetCurrencyTypeToPay(),
             currencyIndex = currencyIndex,
         });
 
@@ -83,6 +91,7 @@ public class PayCurrencyUI : MonoBehaviour
         }
         else {
             OnSingleCurrencyPaid?.Invoke(this, new OnSingleOrbFilledEventArgs {
+                currencyType = GetCurrentCurrencyTemplateWorldUI().GetCurrencyTypeToPay(),
                 currencyIndex = currencyIndex,
             });
         }

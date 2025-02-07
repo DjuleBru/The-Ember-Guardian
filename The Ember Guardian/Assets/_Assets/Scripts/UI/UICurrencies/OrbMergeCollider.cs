@@ -24,7 +24,7 @@ public class OrbMergeCollider : MonoBehaviour
                         }
                     }
 
-                    if (smallOrbs.Count == UICurrencyManager.Instance.GetSmallOrbValue()) {
+                    if (smallOrbs.Count == UICurrencyManager.PlayerInventoryUI.GetSmallOrbValue()) {
                         smallOrbs.Clear();
 
                         //UICurrencyManager.Instance.MergeSmallOrbs();

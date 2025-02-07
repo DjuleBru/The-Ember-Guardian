@@ -42,6 +42,7 @@ public class LevelManager : MonoBehaviour
 
     public void SaveLevelCompletedProgression() {
         MetaProgressionManager.Instance.SetLevelCompleted(GetLevelSO());
+        MetaProgressionManager.Instance.SaveLevelGems();
         SaveMerchantsAndTalkLines();
     }
 

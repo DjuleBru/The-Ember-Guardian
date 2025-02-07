@@ -75,7 +75,7 @@ public class VideoTipManager : MonoBehaviour
     }
 
     private void SubscribeToTutorialEvents() {
-        UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
+        UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         Mob.OnAnyMobDied += Creature_OnAnyMobDied;
         TutorialCollider.OnRollTipCollided += TutorialCollider_OnRollTipCollided;
         TutorialCollider.OnRecruitWorkerTipCollided += TutorialCollider_OnRecruitWorkerTipCollided;
@@ -237,7 +237,7 @@ public class VideoTipManager : MonoBehaviour
         }
 
         if(isTutorialScene) {
-            UICurrencyManager.Instance.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
             Mob.OnAnyMobDied -= Creature_OnAnyMobDied;
             TutorialCollider.OnRollTipCollided -= TutorialCollider_OnRollTipCollided;
             TutorialCollider.OnRecruitWorkerTipCollided -= TutorialCollider_OnRecruitWorkerTipCollided;

@@ -143,18 +143,19 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     public void SaveLevelSuccessGems() {
-        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.greenGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count);
-        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.redGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count);
-        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.blueGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count);
-        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.yellowGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count);
-        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.purpleGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.greenGem, UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.redGem, UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.blueGem, UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.yellowGem, UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.purpleGem, UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count);
     }
+
     public void SaveLevelDefeatGems() {
-        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.greenGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count/3);
-        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.redGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count/3);
-        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.blueGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count/3);
-        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.yellowGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count/3);
-        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.purpleGem, UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count/3);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.greenGem, UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count/3);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.redGem, UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count/3);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.blueGem, UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count/3);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.yellowGem, UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count/3);
+        SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.purpleGem, UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count/3);
     }
 
     public void SetGemsRewarded(bool rewarded) {
@@ -168,26 +169,42 @@ public class MetaProgressionManager : MonoBehaviour
     public void SaveHubGems() {
         Debug.Log("save hub gems");
 
-        List<Vector3> greenGemPositions = UICurrencyManager.Instance.GetCurrencyPositions(PlayerCurrencies.CurrencyType.greenGem);
-        List<Vector3> redGemPositions = UICurrencyManager.Instance.GetCurrencyPositions(PlayerCurrencies.CurrencyType.redGem);
-        List<Vector3> blueGemPositions = UICurrencyManager.Instance.GetCurrencyPositions(PlayerCurrencies.CurrencyType.blueGem);
-        List<Vector3> purpleGemPositions = UICurrencyManager.Instance.GetCurrencyPositions(PlayerCurrencies.CurrencyType.purpleGem);
-        List<Vector3> yellowGemPositions = UICurrencyManager.Instance.GetCurrencyPositions(PlayerCurrencies.CurrencyType.yellowGem);
+        List<Vector3> greenGemPositions = UICurrencyManager.HubInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.greenGem);
+        List<Vector3> redGemPositions = UICurrencyManager.HubInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.redGem);
+        List<Vector3> blueGemPositions = UICurrencyManager.HubInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.blueGem);
+        List<Vector3> purpleGemPositions = UICurrencyManager.HubInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.purpleGem);
+        List<Vector3> yellowGemPositions = UICurrencyManager.HubInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.yellowGem);
 
-        SaveGemPositions(PlayerCurrencies.CurrencyType.greenGem, greenGemPositions);
-        SaveGemPositions(PlayerCurrencies.CurrencyType.redGem, redGemPositions);
-        SaveGemPositions(PlayerCurrencies.CurrencyType.blueGem, blueGemPositions);
-        SaveGemPositions(PlayerCurrencies.CurrencyType.purpleGem, purpleGemPositions);
-        SaveGemPositions(PlayerCurrencies.CurrencyType.yellowGem, yellowGemPositions);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.greenGem, greenGemPositions, true);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.redGem, redGemPositions, true);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.blueGem, blueGemPositions, true);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.purpleGem, purpleGemPositions, true);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.yellowGem, yellowGemPositions, true);
     }
 
-    public void SaveGemPositions(PlayerCurrencies.CurrencyType gemType, List<Vector3> positions) {
-        string key = gemType.ToString() + "_positions";
+    public void SaveLevelGems() {
+        Debug.Log("save level gems");
+
+        List<Vector3> greenGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.greenGem);
+        List<Vector3> redGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.redGem);
+        List<Vector3> blueGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.blueGem);
+        List<Vector3> purpleGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.purpleGem);
+        List<Vector3> yellowGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.yellowGem);
+
+        SaveGemPositions(PlayerCurrencies.CurrencyType.greenGem, greenGemPositions, true);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.redGem, redGemPositions, true);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.blueGem, blueGemPositions, true);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.purpleGem, purpleGemPositions, true);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.yellowGem, yellowGemPositions, true);
+    }
+
+    public void SaveGemPositions(PlayerCurrencies.CurrencyType gemType, List<Vector3> positions, bool playerInventory) {
+        string key = gemType.ToString() + "_positions_playerInventory_" + playerInventory;
         ES3.Save(key, positions);
     }
 
-    public List<Vector3> GetGemPositions(PlayerCurrencies.CurrencyType gemType) {
-        string key = gemType.ToString() + "_positions";
+    public List<Vector3> GetGemPositions(PlayerCurrencies.CurrencyType gemType, bool playerInventory) {
+        string key = gemType.ToString() + "_positions_playerInventory_" + playerInventory;
         return ES3.Load(key, new List<Vector3>());
     }
     #endregion

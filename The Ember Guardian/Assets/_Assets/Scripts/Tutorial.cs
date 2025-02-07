@@ -84,7 +84,7 @@ public class Tutorial : MonoBehaviour
         testing = DebugManager.Instance.GetDebugMode_Tutorial();
 
         VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
-        UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
+        UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         dog.OnPlayerTriggeredIn += Dog_OnPlayerTriggeredIn;
         dog.OnIdleStateChanged += Dog_OnIdleStateChanged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
@@ -765,6 +765,7 @@ public class Tutorial : MonoBehaviour
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
         MetaProgressionManager.Instance.SetTutorialCompleted(); 
         MetaProgressionManager.Instance.SaveLevelSuccessGems();
+        MetaProgressionManager.Instance.SaveLevelGems();
         
         yield return new WaitForSeconds(6f);
 
@@ -776,7 +777,7 @@ public class Tutorial : MonoBehaviour
 
     private void OnDestroy() {
         VideoTipUI.Instance.OnVideoTipPanelClosed -= VideoTipUI_OnVideoTipPanelClosed;
-        UICurrencyManager.Instance.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
+        UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
         dog.OnPlayerTriggeredIn -= Dog_OnPlayerTriggeredIn;
         dog.OnIdleStateChanged -= Dog_OnIdleStateChanged;
         Player.Instance.OnPlayerDied -= Player_OnPlayerDied;

@@ -27,7 +27,7 @@ public class LevelObjectives : MonoBehaviour
         }
 
         if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest) {
-            UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
             PlayerCurrencies.Instance.OnEmberDropped += PlayerCurrencies_OnEmberDropped;
 
             if (EndLevelArea.Instance != null) {

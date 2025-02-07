@@ -144,8 +144,8 @@ public class PlayerShoot : MonoBehaviour
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
 
-        if(UICurrencyManager.Instance != null) {
-            UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
+        if(UICurrencyManager.PlayerInventoryUI != null) {
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
         }
     }
 
@@ -358,10 +358,10 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void TransferNextAmmoFromBag() {
-        int ammoAmountInBag = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count;
+        int ammoAmountInBag = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count;
 
         if (ammoAmountInBag > 0 && heldGun.GetCurrentAmmoClip() < heldGun.GetMaxAmmo()) {
-            UICurrencyManager.Instance.DropNextCurrencyInBag(PlayerCurrencies.CurrencyType.ammo);
+            UICurrencyManager.PlayerInventoryUI.DropNextCurrencyInBag(PlayerCurrencies.CurrencyType.ammo);
         } else {
             transferringAmmoFromBag = false;
         }
@@ -805,8 +805,8 @@ public class PlayerShoot : MonoBehaviour
         PlayerMovement.Instance.OnPlayerRoll -= PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded -= PlayerMovement_OnPlayerRollEnded;
 
-        if (UICurrencyManager.Instance != null) {
-            UICurrencyManager.Instance.OnCurrencyDropped -= UIOrbManager_OnCurrencyDropped;
+        if (UICurrencyManager.PlayerInventoryUI != null) {
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped -= UIOrbManager_OnCurrencyDropped;
         }
     }
 

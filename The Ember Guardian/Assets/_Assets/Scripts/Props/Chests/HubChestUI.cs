@@ -1,0 +1,34 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class HubChestUI : MonoBehaviour
+{
+    private HubChest hubChest;
+    [SerializeField] private GameObject payCurrencyUI;
+    private float openChestAnimationDelay = 3.3f;
+
+    private void Awake() {
+        hubChest = GetComponentInParent<HubChest>();
+        payCurrencyUI.SetActive(false);
+    }
+    private void Start() {
+        hubChest.OnChestOpened += HubChest_OnChestOpened;
+        hubChest.OnChestClosed += HubChest_OnChestClosed;
+    }
+
+    private void HubChest_OnChestClosed(object sender, System.EventArgs e) {
+        payCurrencyUI.SetActive(false);
+    }
+
+    private void HubChest_OnChestOpened(object sender, System.EventArgs e) {
+        StartCoroutine(SetUIActiveAfterDelay());
+    }
+
+    private IEnumerator SetUIActiveAfterDelay() {
+        yield return new WaitForSeconds(openChestAnimationDelay);
+        if(hubChest.GetPlayerInTriggerArea()) {
+            payCurrencyUI.SetActive(true);
+        }
+    }
+}

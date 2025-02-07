@@ -29,8 +29,8 @@ public class GamepadVibrationsManager : MonoBehaviour
             Player.Instance.OnPlayerDied += Player_OnPlayerDied;
             Player.Instance.OnPlayerHealed += Player_OnPlayerHealed;
 
-            UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
-            UICurrencyManager.Instance.OnCurrencyDropped += UICurrencyManager_OnCurrencyDropped;
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped += UICurrencyManager_OnCurrencyDropped;
 
             HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
 

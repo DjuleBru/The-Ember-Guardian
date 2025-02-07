@@ -53,9 +53,9 @@ public class PlayerCurrencies : MonoBehaviour
 
 
     private void Start() {
-        if(UICurrencyManager.Instance != null) {
-            UICurrencyManager.Instance.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
-            UICurrencyManager.Instance.OnCurrencyTryPay += UICurrencyManager_OnCurrencyTryPay;
+        if(UICurrencyManager.PlayerInventoryUI != null) {
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyTryPay += UICurrencyManager_OnCurrencyTryPay;
         }
 
         if (SceneLoader.Instance == null) return;
@@ -79,7 +79,7 @@ public class PlayerCurrencies : MonoBehaviour
         if(carryingEmber) {
 
             emberHoldPosition.gameObject.SetActive(true);
-            UICurrencyManager.Instance.AddCurrencyInBag(CurrencyType.ember);
+            UICurrencyManager.PlayerInventoryUI.AddCurrencyInBag(CurrencyType.ember);
 
         } else {
 

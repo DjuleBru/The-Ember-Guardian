@@ -8,6 +8,7 @@ public class HUBManager : MonoBehaviour
 
     private bool DEBUGMODE;
 
+    [SerializeField] private HubChest firstHubChest;
     [SerializeField] private Transform firstHubLoadPlayerSpawnPoint;
     [SerializeField] private Transform firstHubLoadDogSpawnPoint;
     [SerializeField] private Transform DEBUGPlayerSpawnPoint;
@@ -36,18 +37,8 @@ public class HUBManager : MonoBehaviour
 
     private void Start() {
         DEBUGMODE = DebugManager.Instance.GetDebugMode_HUBManager();
-
-        List<Vector3> redGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.redGem);
-        List<Vector3> greenGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.greenGem);
-        List<Vector3> yellowGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.yellowGem);
-        List<Vector3> purpleGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.purpleGem);
-        List<Vector3> blueGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.blueGem);
-
-        UICurrencyManager.Instance.LoadCurrencies(PlayerCurrencies.CurrencyType.redGem, redGemPositions);
-        UICurrencyManager.Instance.LoadCurrencies(PlayerCurrencies.CurrencyType.greenGem, greenGemPositions);
-        UICurrencyManager.Instance.LoadCurrencies(PlayerCurrencies.CurrencyType.yellowGem, yellowGemPositions);
-        UICurrencyManager.Instance.LoadCurrencies(PlayerCurrencies.CurrencyType.purpleGem, purpleGemPositions);
-        UICurrencyManager.Instance.LoadCurrencies(PlayerCurrencies.CurrencyType.blueGem, blueGemPositions);
+        LoadBackpackGems();
+        LoadHubChestGems();
 
         HubMerchantTalkUI.OnAnyMerchantEndTalk += HubMerchantTalkUI_OnAnyMerchantEndTalk;
 
@@ -60,12 +51,13 @@ public class HUBManager : MonoBehaviour
             Player.Instance.SetPosition(firstHubLoadPlayerSpawnPoint.transform.position);
 
             HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
-            UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         }
 
         else {
             // Player loads game OR is coming back from level
 
+            firstHubChest.gameObject.SetActive(false);
             nextArrivalThroughPortal = MetaProgressionManager.Instance.GetNextHubArrivalThroughPortal();
             if (!nextArrivalThroughPortal) {
                 // Player is not coming back from a level (ex. loading game)
@@ -81,10 +73,6 @@ public class HUBManager : MonoBehaviour
             }
 
             lastLevelGemsRewarded = MetaProgressionManager.Instance.GetGemFromLastLevelRewarded();
-            Debug.Log("lastLevelGemsRewarded " + lastLevelGemsRewarded);
-            if (!lastLevelGemsRewarded) {
-                RewardLastLevelGems();
-            }
 
             nextArrivalThroughPortal = false;
             enterHubCollider.gameObject.SetActive(false);
@@ -96,33 +84,33 @@ public class HUBManager : MonoBehaviour
         }
     }
 
-    public void RewardLastLevelGems() {
-        int redGemAmount = MetaProgressionManager.Instance.GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType.redGem);
-        int greenGemAmount = MetaProgressionManager.Instance.GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType.greenGem);
-        int blueGemAmount = MetaProgressionManager.Instance.GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType.blueGem);
-        int yellowGemAmount = MetaProgressionManager.Instance.GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType.yellowGem);
-        int purpleGemAmount = MetaProgressionManager.Instance.GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType.purpleGem);
+    private void LoadBackpackGems() {
+        List<Vector3> redGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.redGem, true);
+        List<Vector3> greenGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.greenGem, true);
+        List<Vector3> yellowGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.yellowGem, true);
+        List<Vector3> purpleGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.purpleGem, true);
+        List<Vector3> blueGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.blueGem, true);
 
-        List<PlayerCurrencies.CurrencyType> currencyTypes = new List<PlayerCurrencies.CurrencyType> {
-            PlayerCurrencies.CurrencyType.greenGem,
-            PlayerCurrencies.CurrencyType.redGem,
-            PlayerCurrencies.CurrencyType.blueGem,
-            PlayerCurrencies.CurrencyType.yellowGem,
-            PlayerCurrencies.CurrencyType.purpleGem,
-        };
+        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.redGem, redGemPositions);
+        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.greenGem, greenGemPositions);
+        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.yellowGem, yellowGemPositions);
+        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.purpleGem, purpleGemPositions);
+        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.blueGem, blueGemPositions);
+    }
 
-        List<int> currencyTypesAmount = new List<int> {
-            greenGemAmount,
-            redGemAmount,
-            blueGemAmount,
-            yellowGemAmount,
-            purpleGemAmount,
-        };
+    private void LoadHubChestGems() {
+        List<Vector3> redGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.redGem, false);
+        List<Vector3> greenGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.greenGem, false);
+        List<Vector3> yellowGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.yellowGem, false);
+        List<Vector3> purpleGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.purpleGem, false);
+        List<Vector3> blueGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.blueGem, false);
 
+        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.redGem, redGemPositions);
+        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.greenGem, greenGemPositions);
+        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.yellowGem, yellowGemPositions);
+        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.purpleGem, purpleGemPositions);
+        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.blueGem, blueGemPositions);
 
-        UICurrencyManager.Instance.AddMultipleCurrencies(currencyTypes, currencyTypesAmount);
-
-        lastLevelGemsRewarded = true;
     }
 
     public void PlayerEnteredHubFirstTime() {
@@ -192,11 +180,8 @@ public class HUBManager : MonoBehaviour
         CameraManager.Instance.SetCameraOrthographicSize(8f);
         PauseMenuUI.Instance.SetCanSave(false);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
 
-        RewardLastLevelGems();
-
-        yield return new WaitForSeconds(2f);
         LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.HUB_HeadToFire);
     }
 
@@ -250,6 +235,14 @@ public class HUBManager : MonoBehaviour
     }
 
     #endregion
+
+    public bool GetLastLevelGemsRewarded() {
+        return lastLevelGemsRewarded;
+    }
+
+    public void SetLastLevelGemsRewarded(bool lastLevelGemsRewarded) {
+        this.lastLevelGemsRewarded = lastLevelGemsRewarded;
+    }
 
     public Portal GetLevelLinkedPortal(LevelSO levelSO) {
         foreach (Portal portal in allPortalsInHub) {

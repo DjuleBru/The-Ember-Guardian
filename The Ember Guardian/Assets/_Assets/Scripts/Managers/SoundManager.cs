@@ -56,8 +56,8 @@ public class SoundManager : MonoBehaviour
             PlayerWorldUITooltip.OnTooltipHidden += PlayerWorldUITooltip_OnTooltipHidden;
             PlayerWorldUITooltip.OnTooltipShown += PlayerWorldUITooltup_OnTooltipShown;
 
-            if(UICurrencyManager.Instance != null) {
-                UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
+            if(UICurrencyManager.PlayerInventoryUI != null) {
+                UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
             }
 
             if(Dog.Instance != null) {
@@ -77,6 +77,11 @@ public class SoundManager : MonoBehaviour
         }
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             WorkerFollowPlayerHandler.Instance.OnHoveredFollowingWorkerChanged += WorkerFollowPlayerHandler_OnHoveredFollowingWorkerChanged;
+        }
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
+            HubChest.Instance.OnChestClosed += HubChest_OnChestClosed;
+            HubChest.Instance.OnChestOpened += HubChest_OnChestOpened;
         }
 
         VideoTipUI.Instance.OnVideoTipPanelOpened += VideoTipUI_OnVideoTipPanelOpened;
@@ -134,7 +139,7 @@ public class SoundManager : MonoBehaviour
     }
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
-        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+
     }
 
 
@@ -294,8 +299,17 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    private void HubInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        PlayerCurrencies.CurrencyType currencyTypeCollected = e.currencyUIDropped.GetCurrencyType();
+        SetCorrectCurrencySound(currencyTypeCollected);
+    }
+
     private void UICurrencyManager_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         PlayerCurrencies.CurrencyType currencyTypeCollected = e.currencyUIDropped.GetCurrencyType();
+        SetCorrectCurrencySound(currencyTypeCollected);
+    }
+
+    private void SetCorrectCurrencySound(PlayerCurrencies.CurrencyType currencyTypeCollected) {
 
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.bigBlueOrb) {
             PlaySound2D(soundRefsSO.bigBlueOrbPickedUpByPlayer, .7f);
@@ -319,7 +333,7 @@ public class SoundManager : MonoBehaviour
             PlaySound2D(soundRefsSO.ammoPickedUpByPlayer, .7f);
         }
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.ember) {
-            if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB && !initialEmberGiven) {
+            if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB && !initialEmberGiven) {
                 initialEmberGiven = true;
                 return;
             }
@@ -528,6 +542,14 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region PROPS
+    private void HubChest_OnChestOpened(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.hubChestOpen);
+    }
+
+    private void HubChest_OnChestClosed(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.hubChestClose);
+    }
+
     private void Scavengable_OnAnyScavengableMarkedToScavenge(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.scavengableMarkedToScavenge);
     }
@@ -699,7 +721,7 @@ public class SoundManager : MonoBehaviour
             PlayerUI_HPBar.Instance.OnHPTickAdded -= PlayerUI_HPBar_OnHPTickAdded;
             PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor -= PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;
 
-            UICurrencyManager.Instance.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
             Dog.Instance.OnPlayerCalledDog -= Dog_OnPlayerCalledDog;
         }
 
@@ -713,6 +735,9 @@ public class SoundManager : MonoBehaviour
         }
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             WorkerFollowPlayerHandler.Instance.OnHoveredFollowingWorkerChanged -= WorkerFollowPlayerHandler_OnHoveredFollowingWorkerChanged;
+        }
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            UICurrencyManager.HubInventoryUI.OnCurrencyCollected -= HubInventoryUI_OnCurrencyCollected;
         }
 
         VideoTipUI.Instance.OnVideoTipPanelOpened -= VideoTipUI_OnVideoTipPanelOpened;

@@ -40,8 +40,8 @@ public class HubMerchantUI : MonoBehaviour
 
     private void Start() {
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
-        UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
-        UICurrencyManager.Instance.OnCurrencyDropped += UICurrencymanager_OnCurrencyDropped;
+        UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
+        UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped += UICurrencymanager_OnCurrencyDropped;
         hubMerchant.OnPlayerOpenedHubMerchantShop += HubMerchant_OnPlayerInteractedWithHubMerchant;
         hubMerchant.OnPlayerStoppedInteractingWithHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithHubMerchant;
 
@@ -71,11 +71,11 @@ public class HubMerchantUI : MonoBehaviour
     }
 
     private void RefreshPlayerGems() {
-        greenGemAmount.text = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count.ToString();
-        redGemAmount.text = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count.ToString();
-        blueGemAmount.text = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count.ToString();
-        yellowGemAmount.text = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count.ToString();
-        purpleGemAmount.text = UICurrencyManager.Instance.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count.ToString();
+        greenGemAmount.text = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count.ToString();
+        redGemAmount.text = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count.ToString();
+        blueGemAmount.text = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count.ToString();
+        yellowGemAmount.text = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count.ToString();
+        purpleGemAmount.text = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count.ToString();
     }
 
     private void RefreshGameInputView() {
@@ -117,8 +117,8 @@ public class HubMerchantUI : MonoBehaviour
     private void OnDestroy() {
 
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
-        UICurrencyManager.Instance.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
-        UICurrencyManager.Instance.OnCurrencyDropped -= UICurrencymanager_OnCurrencyDropped;
+        UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
+        UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped -= UICurrencymanager_OnCurrencyDropped;
     }
 
 }

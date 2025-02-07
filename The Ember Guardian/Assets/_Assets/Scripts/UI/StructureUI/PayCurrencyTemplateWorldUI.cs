@@ -11,7 +11,7 @@ public class PayCurrencyTemplateWorldUI : MonoBehaviour
    [SerializeField] private PlayerCurrencies.CurrencyType currencyTypeToPay;
    [SerializeField] private Image orbImageOutline;
    [SerializeField] private Animator payCurrencyUIAnimator;
-   private float initialPayCurrencySmoothTime = 4f;
+    [SerializeField] private float initialPayCurrencySmoothTime = 4f;
 
     private Color initialImageOutlineColor;
 
@@ -59,5 +59,9 @@ public class PayCurrencyTemplateWorldUI : MonoBehaviour
             payCurrencyUIAnimator.SetTrigger("Unhover");
             payCurrencyUIAnimator.ResetTrigger("Hover");
         }
+    }
+
+    public void SetCurrencyTypeToPay(PlayerCurrencies.CurrencyType currencyTypeToPay) {
+        this.currencyTypeToPay = currencyTypeToPay;
     }
 }

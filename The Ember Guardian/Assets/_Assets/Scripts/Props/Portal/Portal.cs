@@ -81,6 +81,7 @@ public class Portal : MonoBehaviour
 
             if (MetaProgressionManager.Instance.GetNextHubArrivalThroughPortal() && MetaProgressionManager.Instance.lastHUBPortalUsedByPlayer == portalNumber) {
                 StartCoroutine(TeleportPlayerOutInHub());
+
             }
         }
 
