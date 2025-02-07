@@ -45,6 +45,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
         Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
+        Player.Instance.OnPlayerDied += Player_OnPlayerDied;
 
         Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn;
         Structure.OnAnyPlayerTriggeredOut += Structure_OnAnyPlayerTriggeredOut;
@@ -58,6 +59,10 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         ammoBarCanvasGroup = ammoBarGameObject.GetComponent<CanvasGroup>();
     }
 
+    private void Player_OnPlayerDied(object sender, EventArgs e) {
+        ammoBarCanvasGroup.alpha = 0;
+    }
+
     private void Gun_OnAnyGunMaxAmmoChanged(object sender, EventArgs e) {
         RefreshAmmoBar();
         RefreshAmmoBarBackground();
@@ -65,6 +70,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 
     private void Update() {
         if (ammoBarCritical) return;
+        if (Player.Instance.GetDead()) return;
 
         if (isFadingIn) {
             HandleFadeIn();
@@ -219,6 +225,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     }
 
     private void Player_OnPlayerEnteredCamp(object sender, System.EventArgs e) {
+        if (Player.Instance.GetDead()) return;
         FadeInAmmoBar();
     }
 
@@ -230,6 +237,8 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     }
 
     private void Structure_OnAnyPlayerTriggeredIn(object sender, System.EventArgs e) {
+        if (Player.Instance.GetDead()) return;
+
         if (sender is CurrencyCrafter) {
             if ((sender as CurrencyCrafter).GetCurrencyTypeCrafted() != PlayerCurrencies.CurrencyType.ammo) return;
             inAmmoCrafterArea = true;
@@ -255,8 +264,17 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     }
 
     private void OnDestroy() {
+        PlayerShoot.Instance.OnPlayerReloadHandEnded -= PlayerSHoot_OnPlayerReloadHandEnded;
+        PlayerShoot.Instance.OnPlayerAmmoRefilled -= PlayerShoot_OnPlayerAmmoRefilled;
+        PlayerShoot.Instance.OnPlayerSwappedGun -= PlayerShoot_OnPlayerSwappedGun;
+        Player.Instance.OnPlayerEnteredCamp -= Player_OnPlayerEnteredCamp;
+        Player.Instance.OnPlayerExitedCamp -= Player_OnPlayerExitedCamp;
+        Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
+
         Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn;
         Structure.OnAnyPlayerTriggeredOut -= Structure_OnAnyPlayerTriggeredOut;
+
         Gun.OnAnyGunMaxAmmoChanged -= Gun_OnAnyGunMaxAmmoChanged;
+
     }
 }

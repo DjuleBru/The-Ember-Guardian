@@ -73,7 +73,6 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     public void ShowObjectiveUI(ObjectiveType objectiveType) {
-        Debug.Log("ShowObjectiveUI " + objectiveType);
         objectiveText.text = GetObjectiveTextFromType(objectiveType);
         GetComponent<Animator>().enabled = true;
         objectiveGameObject.SetActive(true);
@@ -120,7 +119,6 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         bool subObjectiveIsListed = false;
 
         foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>(true)) {
-            Debug.Log("SetSubObjectiveCompleted " + subObjectiveType + " Checking subObjective " + subObjectiveUI.GetSubObjectiveType());
             if (subObjectiveUI.GetSubObjectiveType() == subObjectiveType) {
                 subObjectiveIsListed = true;    
             }

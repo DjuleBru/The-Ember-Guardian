@@ -33,7 +33,7 @@ public class MinerJob : WorkerJob {
     private void Awake() {
         workerDetectionCollider = GetComponentInChildren<WorkerDetectionCollider>();
         float workerDetectionColliderRadius = workerDetectionCollider.GetComponent<CircleCollider2D>().radius;
-        distanceToStaySafeFromCreature = UnityEngine.Random.Range(workerDetectionColliderRadius - workerDetectionColliderRadius / 3, workerDetectionColliderRadius - workerDetectionColliderRadius / 4);
+        distanceToFleeFromCreature = UnityEngine.Random.Range(workerDetectionColliderRadius - workerDetectionColliderRadius / 3, workerDetectionColliderRadius - workerDetectionColliderRadius / 4);
         
         maxDistanceToPlayerWhenFollowing = 5f;
         minDistanceToPlayerWhenFollowing = 3f;
@@ -75,7 +75,7 @@ public class MinerJob : WorkerJob {
 
                 case MinerState.followPlayerAttackCreature:
 
-                    if (!CreatureIsTooClose(closestCreature)) {
+                    if (!CreatureIsTooClose(closestCreature, minimumDistanceToStaySafeFromCreature)) {
                         ChangeState(MinerState.followPlayerIdle);
                     }
 
@@ -191,12 +191,13 @@ public class MinerJob : WorkerJob {
         Creature closestCreature = workerDetectionCollider.GetClosestCreature();
 
         if (closestCreature != null) {
-            if (CreatureIsTooClose(closestCreature)) {
+            if (CreatureIsTooClose(closestCreature, distanceToStartFleeingFromCreature)) {
                 StayAwayFromCreature(closestCreature);
                 return;
             }
         }
     }
+
     private bool CheckBlockedByCreature() {
         if (closestCreature != null) {
             return true;

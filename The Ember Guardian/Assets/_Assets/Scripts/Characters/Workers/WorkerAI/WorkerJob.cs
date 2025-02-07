@@ -29,7 +29,8 @@ public class WorkerJob : MonoBehaviour
     protected float roamTimer;
     protected float roamChangeDestinationRate = 6f;
     protected float minimumDistanceToStaySafeFromCreature = 6f;
-    protected float distanceToStaySafeFromCreature;
+    protected float distanceToFleeFromCreature;
+    protected float distanceToStartFleeingFromCreature = 15f;
     protected float maxDistanceToPlayerWhenFollowing = 10f;
     protected float minDistanceToPlayerWhenFollowing = 5f;
 
@@ -114,7 +115,7 @@ public class WorkerJob : MonoBehaviour
                 direction = 1;
             }
 
-            Vector3 safePosition = new Vector3(closestCreature.transform.position.x + direction * distanceToStaySafeFromCreature, 0, 0);
+            Vector3 safePosition = new Vector3(closestCreature.transform.position.x + direction * distanceToFleeFromCreature, 0, 0);
             mobMovement.SetMoveTarget(safePosition);
             workerAttack.RemoveAttackTarget();
 
@@ -123,9 +124,9 @@ public class WorkerJob : MonoBehaviour
 
     }
 
-    public bool CreatureIsTooClose(Creature closestCreature) {
+    public bool CreatureIsTooClose(Creature closestCreature, float distance) {
         if (closestCreature != null) {
-            bool creatureIsTooClose = Mathf.Abs(closestCreature.transform.position.x) - Mathf.Abs(transform.position.x) < minimumDistanceToStaySafeFromCreature;
+            bool creatureIsTooClose = Mathf.Abs(closestCreature.transform.position.x) - Mathf.Abs(transform.position.x) < distance ;
             return creatureIsTooClose;
         }
         return false;

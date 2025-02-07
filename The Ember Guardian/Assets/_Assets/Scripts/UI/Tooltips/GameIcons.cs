@@ -10,6 +10,8 @@ public class GameIcons : MonoBehaviour {
     public Sprite pauseIcon;
     public Sprite bigBlueOrbIcon;
     public Sprite smallBlueOrbIcon;
+    public Sprite fuelIcon;
+    public Sprite ammoIcon;
 
     private Dictionary<string, Sprite> iconDictionary;
 
@@ -22,6 +24,8 @@ public class GameIcons : MonoBehaviour {
             { "pause", pauseIcon },
             { "bigBlueOrb", bigBlueOrbIcon },
             { "smallBlueOrb", smallBlueOrbIcon },
+            { "fuel", fuelIcon },
+            { "ammo", ammoIcon },
         };
     }
 

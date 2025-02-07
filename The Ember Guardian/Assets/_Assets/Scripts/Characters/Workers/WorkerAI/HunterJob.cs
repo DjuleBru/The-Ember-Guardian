@@ -73,7 +73,7 @@ public class HunterJob : WorkerJob {
         distanceToHuntingLimit = UnityEngine.Random.Range(distanceToHuntingLimit - distanceToHuntingLimit / 2, distanceToHuntingLimit + distanceToHuntingLimit / 2);
 
         float workerDetectionColliderRadius = workerDetectionCollider.GetComponent<CircleCollider2D>().radius;
-        distanceToStaySafeFromCreature = UnityEngine.Random.Range(workerDetectionColliderRadius - workerDetectionColliderRadius / 3, workerDetectionColliderRadius - workerDetectionColliderRadius / 4);
+        distanceToFleeFromCreature = UnityEngine.Random.Range(workerDetectionColliderRadius - workerDetectionColliderRadius / 3, workerDetectionColliderRadius - workerDetectionColliderRadius / 4);
         distanceToPlayerWhenCreatureIsAround = UnityEngine.Random.Range(distanceToPlayerWhenCreatureIsAround - distanceToPlayerWhenCreatureIsAround / 3, distanceToPlayerWhenCreatureIsAround + distanceToPlayerWhenCreatureIsAround / 3);
 
     }
@@ -94,7 +94,7 @@ public class HunterJob : WorkerJob {
         if (CheckDropCurrenciesToPlayer()) {
             ChangeState(HunterState.droppingOrbs);
         }
-        if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
+        if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Dusk) {
             if(CheckOrbsToCollect() && state != HunterState.hunting) {
                 ChangeState(HunterState.pickingUpOrbs);
             };
@@ -122,7 +122,7 @@ public class HunterJob : WorkerJob {
 
                         }
                         else {
-                            if (!CreatureIsTooClose(closestCreature)) {
+                            if (!CreatureIsTooClose(closestCreature, minimumDistanceToStaySafeFromCreature)) {
                                 ChangeState(HunterState.followPlayerAttackCreature);
                             };
 
@@ -138,7 +138,7 @@ public class HunterJob : WorkerJob {
                         return;
                     }
 
-                    if (CreatureIsTooClose(closestCreature)) {
+                    if (CreatureIsTooClose(closestCreature, minimumDistanceToStaySafeFromCreature)) {
                         workerAttack.RemoveAttackTarget();
                         StayAwayFromCreature(closestCreature);
                         return;
@@ -397,7 +397,7 @@ public class HunterJob : WorkerJob {
 
                     bool playerIsInFrontOfHunter = Mathf.Abs(transform.position.x) - Mathf.Abs((Player.Instance.transform.position.x)) < 0;
 
-                    if (CreatureIsTooClose(closestCreature) || !playerIsInFrontOfHunter) {
+                    if (CreatureIsTooClose(closestCreature, minimumDistanceToStaySafeFromCreature) || !playerIsInFrontOfHunter) {
                         ChangeState(HunterState.blockedByCreatures);
                         return;
                     }
@@ -484,14 +484,24 @@ public class HunterJob : WorkerJob {
         if (closestCreature != null) {
             bool playerIsInFrontOfHunter = Mathf.Abs(transform.position.x) - Mathf.Abs((Player.Instance.transform.position.x)) < 0;
 
-            if (CreatureIsTooClose(closestCreature) || !playerIsInFrontOfHunter) {
-                StayAwayFromCreature(closestCreature);
-                return;
-            }
+            if(!playerIsInFrontOfHunter) {
 
-            else {
-                ChangeState(HunterState.workingWithPlayerToShootCreatures);
-            }
+                if (CreatureIsTooClose(closestCreature, distanceToStartFleeingFromCreature)) {
+                    StayAwayFromCreature(closestCreature);
+                    return;
+                }
+
+            } else {
+                if (CreatureIsTooClose(closestCreature, minimumDistanceToStaySafeFromCreature)) {
+                    StayAwayFromCreature(closestCreature);
+                    return;
+                }
+                else {
+                    ChangeState(HunterState.workingWithPlayerToShootCreatures);
+                }
+            };
+
+            
         }
     }
 

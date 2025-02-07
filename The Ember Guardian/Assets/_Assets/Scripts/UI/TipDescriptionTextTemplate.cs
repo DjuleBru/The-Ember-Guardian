@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,11 +16,17 @@ public class TipDescriptionTextTemplate : MonoBehaviour
         templateAnimator.enabled = false;
     }
 
-    public void SetTipDescription(string text) {
-        templateText.text = text;
-    }
+    public void SetTipDescriptionAdvanced(string text, bool isMainTitle = false) {
+        RectTransform rt = templateIcon.GetComponent<RectTransform>();
+        if (isMainTitle) {
+            templateText.fontSize = 35f;
+            rt.sizeDelta = new Vector2(45, 45);
+        } else {
+            templateText.fontSize = 30f;
+            rt.sizeDelta = new Vector2(35, 35);
 
-    public void SetTipDescriptionAdvanced(string text) {
+        }
+
         string[] parts = text.Split(new string[] { "[icon:" }, System.StringSplitOptions.None);
         Dictionary<string, Sprite> iconDictionary = GameIcons.Instance.GetIconDictionary();
 

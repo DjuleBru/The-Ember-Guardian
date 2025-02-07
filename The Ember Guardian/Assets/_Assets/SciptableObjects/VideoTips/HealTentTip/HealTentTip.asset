@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9fa10d62b4949b408320628dd0195ef, type: 3}
+  m_Name: HealTentTip
+  m_EditorClassIdentifier: 
+  tipType: 5
+  tipName: {fileID: 11400000, guid: 435e8148a24d26d4aba949bd3b355d44, type: 2}
+  tipClip: {fileID: 32900000, guid: 236bf08e834f62e4799b0bc60f412d58, type: 3}
+  tipTextList:
+  - {fileID: 11400000, guid: 06c58832d5fc0864180f480dcca51004, type: 2}
+  - {fileID: 11400000, guid: 40331a4898cfb534e884d7814d5bbc4f, type: 2}
+  - {fileID: 11400000, guid: cd7c09e0b2df0ec429c78dba9bec015b, type: 2}
+  tipTextDelayToShowList:
+  - 0
+  - 2
+  - 4

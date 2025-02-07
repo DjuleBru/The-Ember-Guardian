@@ -131,8 +131,9 @@ public class Tutorial : MonoBehaviour
     private void Update() {
         if(testing) {
             if (Input.GetKeyDown(KeyCode.M)) {
-                StartCoroutine(StartGuardingWorkersObjective(0f));
+                //LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbsFromHunters);
             }
+
         }
 
         if (moveTooltipShown && !moveTooltipHidden) {
@@ -214,8 +215,6 @@ public class Tutorial : MonoBehaviour
     private void Worker_OnAnyWorkerRecruited(object sender, System.EventArgs e) {
         workerNumberRecruited++;
 
-        Debug.Log("Worker_OnAnyWorkerRecruited " + workerNumberRecruited);
-
         if (workerNumberRecruited == 4) {
             blockingWorkersCollider.SetColliderTrigger();
             StartCoroutine(HideTooltipAfterDelay(0f));
@@ -273,8 +272,6 @@ public class Tutorial : MonoBehaviour
                 StartCoroutine(HideTooltipAfterDelay(0f));
             }
 
-            StartCoroutine(ShowTooltipAfterDelay(.5f, "Hold", "To recruit Hunters", InputControlIcons.Control.Interact));
-            StartCoroutine(HideTooltipAfterDelay(3f));
         }
 
         if (structureSO.structureType == StructureSO.StructureType.ammoCrafter) {
@@ -579,6 +576,11 @@ public class Tutorial : MonoBehaviour
             rollTooltipShown = true;
             return;
         };
+
+        if(e.tipTypeShown == VideoTipSO.VideoTipType.Hunters) {
+            StartCoroutine(ShowTooltipAfterDelay(.5f, "Hold", "To recruit Hunters", InputControlIcons.Control.Interact));
+            StartCoroutine(HideTooltipAfterDelay(3f));
+        }
     }
     private void UICurrencyManager_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         

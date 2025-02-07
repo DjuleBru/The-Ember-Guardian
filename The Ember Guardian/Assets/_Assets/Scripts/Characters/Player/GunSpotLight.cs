@@ -48,6 +48,7 @@ public class GunSpotLight : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
         PlayerShoot.Instance.OnPlayerReloadInterrupted += PlayerShoot_OnPlayerReloadInterrupted;
+        Player.Instance.OnPlayerDied += Player_OnPlayerDied;
 
         if(PauseMenuUI.Instance != null) {
             PauseMenuUI.Instance.OnPauseMenuClosed += PauseMenuUI_OnPauseMenuClosed;
@@ -55,6 +56,11 @@ public class GunSpotLight : MonoBehaviour
         }
 
         PlayerStats.Instance.OnFlashlightRangeChanged += PlayerStats_OnFlashlightRangeChanged;
+    }
+
+    private void Player_OnPlayerDied(object sender, EventArgs e) {
+        lightActive = false;
+        gunSpotLight.enabled = false;
     }
 
     private void PlayerStats_OnFlashlightRangeChanged(object sender, EventArgs e) {
@@ -145,5 +151,6 @@ public class GunSpotLight : MonoBehaviour
     private void OnDestroy() {
         GameInput.Instance.OnPlayerGunLightSwitch -= GameInput_OnPlayerGunLightSwitch;
         Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
+        Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
     }
 }

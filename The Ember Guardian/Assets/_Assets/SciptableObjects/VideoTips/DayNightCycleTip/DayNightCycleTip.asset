@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9fa10d62b4949b408320628dd0195ef, type: 3}
+  m_Name: DayNightCycleTip
+  m_EditorClassIdentifier: 
+  tipType: 9
+  tipName: {fileID: 11400000, guid: 94c13c0355f09d04bb3cc4062eeaac46, type: 2}
+  tipClip: {fileID: 32900000, guid: f2a17ab587f2ce44e847bf665bcf925a, type: 3}
+  tipTextList:
+  - {fileID: 11400000, guid: 9b070796a54e3a240bf11317ebfbe600, type: 2}
+  - {fileID: 11400000, guid: b39ebfbce2bf6e44283b37f3c614c06d, type: 2}
+  - {fileID: 11400000, guid: a97e9d9adc2b4fd4faefc137afcc3735, type: 2}
+  tipTextDelayToShowList:
+  - 0
+  - 2
+  - 5

@@ -38,6 +38,7 @@ public class HubMerchant : MonoBehaviour
     protected bool merchantHasNewItems;
 
     public event EventHandler OnPlayerTriggeredIn;
+    public static event EventHandler OnAnyPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
     public event EventHandler OnPlayerOpenedHubMerchantShop;
     public event EventHandler OnPlayerStoppedInteractingWithHubMerchant;
@@ -186,6 +187,7 @@ public class HubMerchant : MonoBehaviour
             playerInTriggerArea = true;
             Player.Instance.SetCanDropOrbOnTheFloor(true);
             OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
+            OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         }
     }
 

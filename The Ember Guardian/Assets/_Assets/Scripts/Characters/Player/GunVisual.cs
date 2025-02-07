@@ -6,18 +6,21 @@ public class GunVisual : MonoBehaviour
 {
     protected Gun gun;
     protected GunSO gunSO;
+    [SerializeField] protected GameObject gunVisualGameObject;
+    [SerializeField] protected GameObject armGameObject;
     [SerializeField] protected SpriteRenderer gunLightsSpriteRenderer;
     [SerializeField] protected SpriteRenderer gunCooldownLightsSpriteRenderer;
     [SerializeField] protected Color outOfAmmoCooldownLightsColor;
 
     protected float tryShootOutOfAmmoAnimationDuration = .3f;
+    protected Color initialLightsColor;
     protected Color cooldownLightsColor;
     protected List<Sprite> gunReloadSprites;
     protected int gunLightSpriteIndex;
 
     protected virtual void Awake() {
         gun = GetComponent<Gun>();
-
+        initialLightsColor = gunLightsSpriteRenderer.color;
         if (gunCooldownLightsSpriteRenderer != null) {
             cooldownLightsColor = gunCooldownLightsSpriteRenderer.color;
         }
@@ -72,6 +75,8 @@ public class GunVisual : MonoBehaviour
         if (gunCooldownLightsSpriteRenderer != null) {
             gunCooldownLightsSpriteRenderer.color = cooldownLightsColor;
         };
+
+        gunLightsSpriteRenderer.color = initialLightsColor;
 
         int finalGunReloadSpriteIndex = gunReloadSprites.Count;
         float reloadTime = PlayerStats.Instance.GetReloadTime();
@@ -136,11 +141,13 @@ public class GunVisual : MonoBehaviour
 
     protected void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
-        gameObject.SetActive(true);
+        gunVisualGameObject.SetActive(true);
+        armGameObject.SetActive(true);
     }
 
     protected void Player_OnPlayerDied(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
-        gameObject.SetActive(false);
+        gunVisualGameObject.SetActive(false);
+        armGameObject.SetActive(false);
     }
 }

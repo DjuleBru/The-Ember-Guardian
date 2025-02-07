@@ -20,6 +20,7 @@ public class VideoTipSO : ScriptableObject
         DayNightCycle,
         WorkerCamps,
         Hunters,
+        GunTip,
     }
 
     public VideoTipType tipType;

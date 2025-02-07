@@ -29,7 +29,7 @@ public class GuardJob : WorkerJob {
     private void Awake() {
         workerDetectionCollider = GetComponentInChildren<WorkerDetectionCollider>();
         float workerDetectionColliderRadius = workerDetectionCollider.GetComponent<CircleCollider2D>().radius;
-        distanceToStaySafeFromCreature = UnityEngine.Random.Range(workerDetectionColliderRadius - workerDetectionColliderRadius / 3, workerDetectionColliderRadius - workerDetectionColliderRadius / 4);
+        distanceToFleeFromCreature = UnityEngine.Random.Range(workerDetectionColliderRadius - workerDetectionColliderRadius / 3, workerDetectionColliderRadius - workerDetectionColliderRadius / 4);
         attackRangeRandomized = UnityEngine.Random.Range(attackRange - attackRange / 4, attackRange + attackRange / 4);
 
         maxDistanceToPlayerWhenFollowing = 10f;
@@ -292,7 +292,7 @@ public class GuardJob : WorkerJob {
                 direction = 1;
             }
 
-            Vector3 safePosition = new Vector3(closestCreature.transform.position.x + direction * distanceToStaySafeFromCreature, 0, 0);
+            Vector3 safePosition = new Vector3(closestCreature.transform.position.x + direction * distanceToFleeFromCreature, 0, 0);
             RoamBehavior.RoamAroundPoint(mobMovement, 3f, safePosition, false);
 
             return;

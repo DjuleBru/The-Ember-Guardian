@@ -19,6 +19,11 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO dayNightCycleTip;
     [SerializeField] private VideoTipSO hunterTip;
     [SerializeField] private VideoTipSO recruitEmberlingTip;
+    [SerializeField] private VideoTipSO gunTip;
+
+    private bool isLevelScene;
+    private bool isTutorialScene;
+    private bool isHubScene;
 
     private bool reloadingTipShown;
     private bool critHitsTipShown;
@@ -26,13 +31,14 @@ public class VideoTipManager : MonoBehaviour
     private bool fireManagementTipShown;
     private bool hunterTipShown;
     private bool recruitEmberlingTipShown;
+    private bool emberExtractionTipShown;
+    private bool healTentTipShown;
+    private bool setupDefensesTipShown;
 
     private bool dieTipShown;
-    private bool healTentTipShown;
     private bool setupEconomyTipShown;
-    private bool setupDefensesTipShown;
-    private bool emberExtractionTipShown;
     private bool dayNightCycleTipShown;
+    private bool gunTipShown;
 
     private void Awake() {
         Instance = this;
@@ -41,15 +47,20 @@ public class VideoTipManager : MonoBehaviour
     private void Start() {
         LoadTooltipsShown();
 
-        UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
-        Mob.OnAnyMobDied += Creature_OnAnyMobDied;
-
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            isLevelScene = true;
+            SubscribeToLevelEvents();
+        }
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            isHubScene = true;
+            SubscribeToHubEvents();
         }
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
-            TutorialCollider.OnRollTipCollided += TutorialCollider_OnRollTipCollided;
-            Fire.Instance.OnFireFuelled += Fire_OnFireFuelled;
+            isTutorialScene = true;
+            SubscribeToTutorialEvents();
+
         } else {
             reloadingTipShown = true;
             critHitsTipShown = true;
@@ -57,13 +68,128 @@ public class VideoTipManager : MonoBehaviour
             fireManagementTipShown = true;
             hunterTipShown = true;
             recruitEmberlingTipShown = true;
+            healTentTipShown = true;
+            setupDefensesTipShown = true;
+            emberExtractionTipShown = true;
         }
     }
 
-    private void Fire_OnFireFuelled(object sender, EventArgs e) {
-        if (fireManagementTipShown) return;
-        //VideoTipUI.Instance.PlayTipSO(fireManagementTip, 0.5f);
-        fireManagementTipShown = true;
+    private void SubscribeToTutorialEvents() {
+        UICurrencyManager.Instance.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
+        Mob.OnAnyMobDied += Creature_OnAnyMobDied;
+        TutorialCollider.OnRollTipCollided += TutorialCollider_OnRollTipCollided;
+        TutorialCollider.OnRecruitWorkerTipCollided += TutorialCollider_OnRecruitWorkerTipCollided;
+        StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
+        Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn_Tutorial;
+        DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+        DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+    }
+
+    private void SubscribeToLevelEvents() {
+        Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
+        Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn_Level;
+        Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
+        Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
+    }
+
+    private void SubscribeToHubEvents() {
+        HubMerchant.OnAnyPlayerTriggeredIn += HubMerchant_OnAnyPlayerTriggeredIn;
+    }
+
+    private void HubMerchant_OnAnyPlayerTriggeredIn(object sender, EventArgs e) {
+        HubMerchant hubMerchant = (HubMerchant)sender;
+        if(hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.GunMerchant) {
+            if (gunTipShown) return;
+
+            VideoTipUI.Instance.PlayTipSO(gunTip, 0f);
+
+            gunTipShown = true;
+            ES3.Save("gunTipShown", true);
+        }
+    }
+
+    #region LEVEL
+
+    private void Player_OnPlayerExitedCamp(object sender, EventArgs e) {
+        if (dieTipShown) return;
+
+        VideoTipUI.Instance.PlayTipSO(dieTip, 0f);
+
+        dieTipShown = true;
+        ES3.Save("dieTipShown", true);
+    }
+
+    private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
+        if (setupEconomyTipShown) return;
+
+        VideoTipUI.Instance.PlayTipSO(setupEconomyTip, 1f);
+
+        setupEconomyTipShown = true;
+        ES3.Save("setupEconomyTipShown", true);
+    }
+
+    private void Structure_OnAnyPlayerTriggeredIn_Level(object sender, EventArgs e) {
+
+    }
+
+    private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {
+        if (dayNightCycleTipShown) return;
+
+        VideoTipUI.Instance.PlayTipSO(dayNightCycleTip, 1f);
+
+        dayNightCycleTipShown = true;
+        ES3.Save("dayNightCycleTipShown", true);
+    }
+
+    #endregion
+
+    #region TUTORIAL
+
+    private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
+        if (emberExtractionTipShown) return;
+        VideoTipUI.Instance.PlayTipSO(emberExtractionTip, 7f);
+        emberExtractionTipShown = true;
+    }
+
+    private void Structure_OnAnyPlayerTriggeredIn_Tutorial(object sender, EventArgs e) {
+        Structure structure = (Structure)sender;
+
+        if (structure.GetStructureSO().structureType == StructureSO.StructureType.tent) {
+            if (healTentTipShown) return;
+
+            VideoTipUI.Instance.PlayTipSO(healTentTip, .3f);
+            healTentTipShown = true;
+        }
+        if (structure.GetStructureSO().structureType == StructureSO.StructureType.fire) {
+            if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Dusk) return;
+            if (fireManagementTipShown) return;
+
+            VideoTipUI.Instance.PlayTipSO(fireManagementTip, 0f);
+            fireManagementTipShown = true;
+        }
+    }
+
+    private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
+        if (setupDefensesTipShown) return;
+        VideoTipUI.Instance.PlayTipSO(setupDefensesTip, 7f);
+        setupDefensesTipShown = true;
+    }
+
+    private void StructureLocation_OnAnyStructureBuilt(object sender, EventArgs e) {
+        StructureLocation structureLocation = (StructureLocation)sender;
+        StructureSO structureSO = structureLocation.GetStructureSOToBuild();
+
+        if(structureSO.structureType == StructureSO.StructureType.hunterShrine) {
+            if (hunterTipShown) return;
+            VideoTipUI.Instance.PlayTipSO(hunterTip, 0f);
+            hunterTipShown = true;
+        }
+    }
+
+    private void TutorialCollider_OnRecruitWorkerTipCollided(object sender, EventArgs e) {
+        if (recruitEmberlingTipShown) return;
+        VideoTipUI.Instance.PlayTipSO(recruitEmberlingTip, 0f);
+        recruitEmberlingTipShown = true;
     }
 
     private void TutorialCollider_OnRollTipCollided(object sender, EventArgs e) {
@@ -87,18 +213,39 @@ public class VideoTipManager : MonoBehaviour
         }
     }
 
+    #endregion
+
     private void LoadTooltipsShown() {
         dieTipShown = ES3.Load("dieTipShown", false);
-        healTentTipShown = ES3.Load("healTentTipShown", false);
         setupEconomyTipShown = ES3.Load("setupEconomyTipShown", false);
-        setupDefensesTipShown = ES3.Load("setupDefensesTipShown", false);
-        emberExtractionTipShown = ES3.Load("emberExtractionTipShown", false);
         dayNightCycleTipShown = ES3.Load("dayNightCycleTipShown", false);
+        gunTipShown = ES3.Load("gunTipShown", false);
     }
 
 
     private void OnDestroy() {
-        Mob.OnAnyMobDied -= Creature_OnAnyMobDied;
-        TutorialCollider.OnRollTipCollided -= TutorialCollider_OnRollTipCollided;
+
+        if(isLevelScene) {
+            Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
+            Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn_Level;
+            Fire.Instance.OnInitialFireActivated -= Fire_OnInitialFireActivated;
+            Player.Instance.OnPlayerExitedCamp -= Player_OnPlayerExitedCamp;
+        }
+
+        if(isHubScene) {
+            HubMerchant.OnAnyPlayerTriggeredIn -= HubMerchant_OnAnyPlayerTriggeredIn;
+        }
+
+        if(isTutorialScene) {
+            UICurrencyManager.Instance.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
+            Mob.OnAnyMobDied -= Creature_OnAnyMobDied;
+            TutorialCollider.OnRollTipCollided -= TutorialCollider_OnRollTipCollided;
+            TutorialCollider.OnRecruitWorkerTipCollided -= TutorialCollider_OnRecruitWorkerTipCollided;
+            StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
+            Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn_Tutorial;
+            DayNightManager.Instance.OnDuskStart -= DayNightManager_OnDuskStart;
+            DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
+        }
+
     }
 }

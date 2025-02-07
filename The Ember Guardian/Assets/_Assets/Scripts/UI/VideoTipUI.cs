@@ -90,9 +90,11 @@ public class VideoTipUI : MonoBehaviour
             Destroy(child.gameObject);
         }
 
+        int i = 0;
         foreach(TextSO textSO in tipDescriptionTextSOList) {
             TipDescriptionTextTemplate tipTemplateText = Instantiate(tipTextTemplate, tipTextContainer).GetComponent<TipDescriptionTextTemplate>();
-            tipTemplateText.SetTipDescriptionAdvanced(textSO.GetTextInLanguage(TextSO.Language.English));
+            tipTemplateText.SetTipDescriptionAdvanced(textSO.GetTextInLanguage(TextSO.Language.English), i == 0);
+            i++;
 
             tipDescriptionTextTemplateList.Add(tipTemplateText);
         }
@@ -108,7 +110,6 @@ public class VideoTipUI : MonoBehaviour
         }
 
         activeCoroutine = StartCoroutine(ShowTipTextList());
-        Debug.Log("active coroutine " + activeCoroutine);
         replayTipButtonGO.GetComponent<Button>().interactable = setReplayTipButtonInteractable;
     }
 
@@ -181,6 +182,8 @@ public class VideoTipUI : MonoBehaviour
             foreach (TipDescriptionTextTemplate textTemplate in tipDescriptionTextTemplateList) {
                 textTemplate.ShowTipText();
             }
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(tipTextContainer.GetComponent<RectTransform>());
             videoPlayer.Stop();
             videoPlayer.Play();
 

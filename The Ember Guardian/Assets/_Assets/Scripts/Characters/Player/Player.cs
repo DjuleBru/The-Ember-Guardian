@@ -221,7 +221,8 @@ public class Player : MonoBehaviour, IDamageable
         SetCanDropOrbOnTheFloor(false);
         DisableControlInputs();
 
-        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
+        bool isTutorial = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial;
+        if (!isTutorial) {
             PlayerCurrencies.Instance.SetCarryingEmber(false);
         }
 
@@ -229,6 +230,7 @@ public class Player : MonoBehaviour, IDamageable
         dead = true;
 
         if(Fire.Instance.GetCurrentFuelLevel() == 0) {
+            // Fire hasn't been built yet
             LevelManager.Instance.LooseLevel();
         } else {
             StartCoroutine(RespawnCoroutine());
@@ -236,7 +238,9 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     private IEnumerator RespawnCoroutine() {
-        yield return new WaitForSeconds(PlayerStats.Instance.GetRespawnTime());
+
+        yield return new WaitForSeconds(PlayerStats.Instance.GetRespawnTime() - 2f);
+        // Move player = move camera
 
         Vector2 respawnPosition = new Vector2();
 
@@ -248,22 +252,36 @@ public class Player : MonoBehaviour, IDamageable
         } else {
 
             respawnPosition = new Vector2(Tent.Instance.transform.position.x, transform.position.y);
-            playerHealth = PlayerStats.Instance.GetPlayerRespawnHP();
 
         }
 
         transform.position = respawnPosition;
+
+        yield return new WaitForSeconds(2f);
+
         OnPlayerBackToTentToRespawn?.Invoke(this, EventArgs.Empty);
 
         yield return new WaitForSeconds(2f);
 
         OnPlayerRespawned?.Invoke(this, EventArgs.Empty);
 
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(2.5f);
+
+        float delayBetweenHeals = 1.5f / PlayerStats.Instance.GetPlayerRespawnHP();
+        StartCoroutine(HealPlayerCoroutine(PlayerStats.Instance.GetPlayerRespawnHP(), delayBetweenHeals));
+
+        yield return new WaitForSeconds(1.5f);
 
         EnableControlInputs();
         SetCanDropOrbOnTheFloor(true);
         dead = false;
+    }
+
+    private IEnumerator HealPlayerCoroutine(int healAmount, float delayBetweenHeals) {
+        for (int  i = 1; i <= healAmount; i++) {
+            HealPlayer(1);
+            yield return new WaitForSeconds(delayBetweenHeals);
+        }
     }
 
     public void MoveOnTeleporter(Transform teleporterPlayerPosition) {

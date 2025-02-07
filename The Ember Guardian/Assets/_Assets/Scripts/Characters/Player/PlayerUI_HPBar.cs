@@ -119,12 +119,11 @@ public class PlayerUI_HPBar : MonoBehaviour
     }
 
     private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
-        StartCoroutine(ShowHPBarAfterDelay(3f));
-        hpBarCritical = false;
-        RefreshHPBar();
+        //hpBarGameObject.SetActive(true);
     }
 
     private void Player_OnPlayerDied(object sender, System.EventArgs e) {
+        Debug.Log(" hpBarGameObject.SetActive(false)");
         hpBarGameObject.SetActive(false);
     }
 
@@ -132,6 +131,7 @@ public class PlayerUI_HPBar : MonoBehaviour
         if (Player.Instance.GetHP() < 0) return;
 
         if(Player.Instance.GetHP() != 0) {
+            Debug.Log("hpBarGameObject.SetActive(true)");
             hpBarGameObject.SetActive(true);
         }
 
@@ -153,6 +153,9 @@ public class PlayerUI_HPBar : MonoBehaviour
     }
 
     private void Player_OnPlayerHealed(object sender, Player.OnPlayerChangedHealthEventArgs e) {
+
+        Debug.Log("hpBarGameObject.SetActive(true)");
+        hpBarGameObject.SetActive(true);
         isFadingIn = true;
         hpBarDiplayTimer = 0;
         StartCoroutine(RefillHPBar(e.hpChangeAmount));
@@ -208,10 +211,12 @@ public class PlayerUI_HPBar : MonoBehaviour
     }
 
     private void Player_OnPlayerEnteredCamp(object sender, System.EventArgs e) {
+        if (Player.Instance.GetDead()) return;
         FadeInHPBar();
     }
 
     private void Tent_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        if (Player.Instance.GetDead()) return;
         inTentArea = true;
         FadeInHPBar();
     }
@@ -225,6 +230,7 @@ public class PlayerUI_HPBar : MonoBehaviour
             isFadingIn = true;
         }
 
+        Debug.Log("hpBarGameObject.SetActive(true)");
         hpBarGameObject.SetActive(true);
         hpBarDiplayTimer = fadeInDuration;
         hpBarDisplayTime = 3f;
@@ -239,5 +245,20 @@ public class PlayerUI_HPBar : MonoBehaviour
     private IEnumerator ShowHPBarAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
         ShowHPBar(2f);
+    }
+
+    private void OnDestroy() {
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
+            Player.Instance.OnPlayerDamaged -= Player_OnPlayerDamaged;
+            Player.Instance.OnPlayerHealed -= Player_OnPlayerHealed;
+            Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
+            Player.Instance.OnPlayerRespawned -= Player_OnPlayerRespawned;
+            Player.Instance.OnPlayerEnteredCamp -= Player_OnPlayerEnteredCamp;
+            Player.Instance.OnPlayerExitedCamp -= Player_OnPlayerExitedCamp;
+            PlayerStats.Instance.OnPlayerMaxHPChanged -= PlayerStats_OnPlayerMaxHPChanged;
+            Tent.Instance.OnPlayerTriggeredIn -= Tent_OnPlayerTriggeredIn;
+            Tent.Instance.OnPlayerTriggeredOut -= Tent_OnPlayerTriggeredOut;
+            Fire.Instance.OnInitialFireActivated -= Fire_OnInitialFireActivated;
+        }
     }
 }

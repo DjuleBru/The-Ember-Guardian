@@ -14,6 +14,7 @@ public class TutorialCollider : MonoBehaviour
     [SerializeField] private bool isEndLevelAreaBlockingCollider;
     [SerializeField] private bool isExtractEmberBlockingCollider;
     [SerializeField] private bool isFirstEnterHubBlockingCollider;
+    [SerializeField] private bool isWorkerCampCollider;
 
     private Tutorial tutorial;
     private Collider2D tutorialCollider;
@@ -21,6 +22,7 @@ public class TutorialCollider : MonoBehaviour
     private bool playerCollided;
 
     public static event EventHandler OnRollTipCollided;
+    public static event EventHandler OnRecruitWorkerTipCollided;
 
     private void Awake() {
         tutorial = GetComponentInParent<Tutorial>();
@@ -61,11 +63,14 @@ public class TutorialCollider : MonoBehaviour
             playerCollided = true;
             HUBManager.Instance.PlayerEnteredHubFirstTime();
         }
+
+        if (isWorkerCampCollider && !playerCollided) {
+            playerCollided = true;
+            OnRecruitWorkerTipCollided?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public void SetColliderTrigger() {
-        Debug.Log(gameObject + " " + "SetColliderTrigger");
-
         tutorialCollider.isTrigger = true;
     }
 
