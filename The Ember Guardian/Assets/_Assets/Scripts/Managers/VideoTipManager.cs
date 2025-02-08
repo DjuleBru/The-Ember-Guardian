@@ -20,6 +20,7 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO hunterTip;
     [SerializeField] private VideoTipSO recruitEmberlingTip;
     [SerializeField] private VideoTipSO gunTip;
+    [SerializeField] private VideoTipSO storeGemsTip;
 
     private bool isLevelScene;
     private bool isTutorialScene;
@@ -39,6 +40,7 @@ public class VideoTipManager : MonoBehaviour
     private bool setupEconomyTipShown;
     private bool dayNightCycleTipShown;
     private bool gunTipShown;
+    private bool storeGemsTipShown;
 
     private void Awake() {
         Instance = this;
@@ -94,6 +96,17 @@ public class VideoTipManager : MonoBehaviour
 
     private void SubscribeToHubEvents() {
         HubMerchant.OnAnyPlayerTriggeredIn += HubMerchant_OnAnyPlayerTriggeredIn;
+        HubChest.Instance.OnChestOpened += HubChest_OnChestOpened;
+    }
+
+    #region HUB
+    private void HubChest_OnChestOpened(object sender, EventArgs e) {
+        if (storeGemsTipShown) return;
+
+        VideoTipUI.Instance.PlayTipSO(storeGemsTip, 0f);
+
+        storeGemsTipShown = true;
+        ES3.Save("storeGemsTipShown", true);
     }
 
     private void HubMerchant_OnAnyPlayerTriggeredIn(object sender, EventArgs e) {
@@ -108,6 +121,7 @@ public class VideoTipManager : MonoBehaviour
         }
     }
 
+    #endregion
     #region LEVEL
 
     private void Player_OnPlayerExitedCamp(object sender, EventArgs e) {
@@ -220,6 +234,7 @@ public class VideoTipManager : MonoBehaviour
         setupEconomyTipShown = ES3.Load("setupEconomyTipShown", false);
         dayNightCycleTipShown = ES3.Load("dayNightCycleTipShown", false);
         gunTipShown = ES3.Load("gunTipShown", false);
+        storeGemsTipShown = ES3.Load("storeGemsTip", false);
     }
 
 

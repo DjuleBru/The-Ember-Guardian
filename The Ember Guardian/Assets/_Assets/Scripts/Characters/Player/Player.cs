@@ -229,7 +229,7 @@ public class Player : MonoBehaviour, IDamageable
         OnPlayerDied?.Invoke(this, EventArgs.Empty);
         dead = true;
 
-        if(Fire.Instance.GetCurrentFuelLevel() == 0) {
+        if(Fire.Instance.GetCurrentFuelLevel() == 0 && !isTutorial) {
             // Fire hasn't been built yet
             LevelManager.Instance.LooseLevel();
         } else {
@@ -247,7 +247,7 @@ public class Player : MonoBehaviour, IDamageable
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
 
             respawnPosition = Tutorial.Instance.GetRespawnPosition();
-            playerHealth = PlayerStats.Instance.GetMaxHP();
+            RefillPlayerHealth();
 
         } else {
 

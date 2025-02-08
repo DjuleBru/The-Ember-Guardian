@@ -61,7 +61,8 @@ public class LevelManager : MonoBehaviour
 
     public void LooseLevel() {
         StartCoroutine(LooseLevelCoroutine());
-        MetaProgressionManager.Instance.SaveLevelDefeatGems();
+        float defeatGemsProportionsRewarded = .33f;
+        MetaProgressionManager.Instance.SaveLevelGems(defeatGemsProportionsRewarded);
         MetaProgressionManager.Instance.SetGemsRewarded(false);
         MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
     }

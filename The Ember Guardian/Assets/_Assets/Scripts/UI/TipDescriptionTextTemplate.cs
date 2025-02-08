@@ -30,8 +30,6 @@ public class TipDescriptionTextTemplate : MonoBehaviour
         string[] parts = text.Split(new string[] { "[icon:" }, System.StringSplitOptions.None);
         Dictionary<string, Sprite> iconDictionary = GameIcons.Instance.GetIconDictionary();
 
-        Debug.Log("parts length " + parts.Length);
-
         // Nettoyage des anciennes icônes/textes sauf les templates
         foreach (Transform child in transform) {
             if (child == templateIcon.transform) continue;

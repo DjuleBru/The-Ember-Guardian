@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9fa10d62b4949b408320628dd0195ef, type: 3}
+  m_Name: StoringGemsTip
+  m_EditorClassIdentifier: 
+  tipType: 13
+  tipName: {fileID: 11400000, guid: 6d9db1423fc67d34c858a556ff6ab36c, type: 2}
+  tipClip: {fileID: 32900000, guid: a9c4386d033e9744d9ea17dae4755eb2, type: 3}
+  tipTextList:
+  - {fileID: 11400000, guid: 3c88394c08a77b14686769c69de6a1de, type: 2}
+  - {fileID: 11400000, guid: e5b4db1d5cbdf7c4997d2e3dc9855bd9, type: 2}
+  - {fileID: 11400000, guid: 1ec29045e3ea68543923d8f7507ff5f3, type: 2}
+  - {fileID: 11400000, guid: 15ed63674d0d44541a48ccb89c17dadc, type: 2}
+  tipTextDelayToShowList:
+  - 0
+  - 0
+  - 5
+  - 8

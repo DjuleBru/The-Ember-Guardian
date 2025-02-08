@@ -764,7 +764,6 @@ public class Tutorial : MonoBehaviour
     private IEnumerator EndTutorialCorioutine() {
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
         MetaProgressionManager.Instance.SetTutorialCompleted(); 
-        MetaProgressionManager.Instance.SaveLevelSuccessGems();
         MetaProgressionManager.Instance.SaveLevelGems();
         
         yield return new WaitForSeconds(6f);

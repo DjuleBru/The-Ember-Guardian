@@ -173,7 +173,6 @@ public class Portal : MonoBehaviour
         yield return new WaitForSeconds(delayToStartCrossfade);
 
         if(isEndLevelTeleporter) {
-            MetaProgressionManager.Instance.SaveLevelSuccessGems();
             MetaProgressionManager.Instance.SetGemsRewarded(false);
             MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
             LevelManager.Instance.SaveLevelCompletedProgression();

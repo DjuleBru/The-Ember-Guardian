@@ -323,7 +323,7 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     private void DropCurrencyFromBag(Currency_UI currencyUI) {
-        currencyUI.RemoveFromBag();
+        currencyUI.RemoveFromBag(this);
 
         OnCurrencyDropped?.Invoke(this, new OnCurrencyDroppedEventArgs {
             currencyUIDropped = currencyUI
@@ -389,7 +389,7 @@ public class UICurrencyManager : MonoBehaviour
         List<Currency_UI> currenciesInBagOfType = GetCurrenciesInBagOfType(currencyTypeToPay);
 
         if (currenciesInBagOfType.Count > 0 ) {
-            currenciesInBagOfType[currenciesInBagOfType.Count-1].RemoveFromBag();
+            currenciesInBagOfType[currenciesInBagOfType.Count-1].RemoveFromBag(this);
 
             OnCurrencyTryPay?.Invoke(this, new OnCurrencyTryPayEventArgs {
                 currencyType = currencyTypeToPay,

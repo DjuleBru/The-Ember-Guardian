@@ -70,9 +70,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -49363175
-  m_SortingLayer: -1
-  m_SortingOrder: 0
+  m_SortingLayerID: -1595801021
+  m_SortingLayer: -10
+  m_SortingOrder: 1000
   m_Sprite: {fileID: 440186281, guid: edbca2666c0433e42b7a7409c656d774, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -165,7 +165,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.06632233, y: 0.7234236}
+  m_Offset: {x: 0.030907154, y: 0.7234236}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -176,7 +176,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.436264, y: 2.4468472}
+  m_Size: {x: 3.4639673, y: 2.4468472}
   m_EdgeRadius: 0
 --- !u!114 &5862556206883186826
 MonoBehaviour:
@@ -557,7 +557,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: initialPayCurrencySmoothTime
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8891634777496794373, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Sprite

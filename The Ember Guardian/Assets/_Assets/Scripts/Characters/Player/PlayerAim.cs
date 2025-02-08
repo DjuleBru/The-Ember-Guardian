@@ -7,6 +7,7 @@ public class PlayerAim : MonoBehaviour
 {
     public static PlayerAim Instance;
 
+    [SerializeField] private bool autoAimOnMovement = true; // Option activable/désactivable
     [SerializeField] private List<Transform> followAimDirTransformList;
     [SerializeField] private Transform gunTransform;
     [SerializeField] private Transform aimSightTransform;
@@ -83,30 +84,23 @@ public class PlayerAim : MonoBehaviour
     private void HandleRecoil() {
 
     }
-    private void HandleAimGamepad(Vector2 lookInput)
-    {
-
-        if (lookInput.magnitude > GameInput.gamepadDeadzone)
-        {
+    private void HandleAimGamepad(Vector2 lookInput) {
+        if (lookInput.magnitude > GameInput.gamepadDeadzone) {
             aimDir = new Vector3(lookInput.x, lookInput.y, 0).normalized;
             previousGamepadAim = aimDir;
         }
-        else
-        {
-            // Retourne progressivement à la position de repos
-            float restingPosition = 1f;
-            if (previousGamepadAim.x < 0)
-            {
-                restingPosition = -1f;
+        else {
+            // Utiliser la direction du déplacement quand le stick est au repos *si l'option est activée*
+            if (autoAimOnMovement) {
+                float restingPosition = PlayerMovement.Instance.GetLastMoveDir();
+                aimDir = Vector3.Lerp(previousGamepadAim, new Vector3(restingPosition, 0f, 0f), Time.deltaTime * returnToRestSpeed);
+                previousGamepadAim = aimDir;
             }
-            aimDir = Vector3.Lerp(previousGamepadAim, new Vector3(restingPosition, 0f, 0f), Time.deltaTime * returnToRestSpeed);
-            previousGamepadAim = aimDir; // Met à jour pour éviter des sauts brusques
         }
 
         aimDir.y += currentRecoil;
 
-        if (limitAimAngle)
-        {
+        if (limitAimAngle) {
             ApplyAimAngleLimit();
         }
 
@@ -114,14 +108,14 @@ public class PlayerAim : MonoBehaviour
 
         aimAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
 
-        foreach (Transform transform in followAimDirTransformList)
-        {
+        foreach (Transform transform in followAimDirTransformList) {
             transform.eulerAngles = new Vector3(0, 0, aimAngle);
         }
 
         // Smooth recoil back to zero
         currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
     }
+
 
     private void HandleAimMouse()
     {

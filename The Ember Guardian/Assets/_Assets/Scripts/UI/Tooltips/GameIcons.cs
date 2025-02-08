@@ -12,6 +12,11 @@ public class GameIcons : MonoBehaviour {
     public Sprite smallBlueOrbIcon;
     public Sprite fuelIcon;
     public Sprite ammoIcon;
+    public Sprite blueGemIcon;
+    public Sprite redGemIcon;
+    public Sprite greenGemIcon;
+    public Sprite yellowGemIcon;
+    public Sprite purpleGemIcon;
 
     private Dictionary<string, Sprite> iconDictionary;
 
@@ -26,6 +31,11 @@ public class GameIcons : MonoBehaviour {
             { "smallBlueOrb", smallBlueOrbIcon },
             { "fuel", fuelIcon },
             { "ammo", ammoIcon },
+            { "blueGem", blueGemIcon },
+            { "redGem", redGemIcon },
+            { "yellowGem", yellowGemIcon },
+            { "greenGem", greenGemIcon },
+            { "purpleGem", purpleGemIcon },
         };
     }
 

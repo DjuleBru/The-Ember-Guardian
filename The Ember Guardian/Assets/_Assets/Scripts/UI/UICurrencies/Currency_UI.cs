@@ -53,8 +53,8 @@ public class Currency_UI : MonoBehaviour
         //}
     }
 
-    public void RemoveFromBag() {
-        UICurrencyManager.PlayerInventoryUI.RemoveCurrencyUIFromInventoryList(this);
+    public void RemoveFromBag(UICurrencyManager currencyManagerSender) {
+        currencyManagerSender.RemoveCurrencyUIFromInventoryList(this);
         dropCurrencyFeedback.PlayFeedbacks();
         StartCoroutine(DestroyAfterDelay(.2f));
     }

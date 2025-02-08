@@ -8,7 +8,6 @@ public class HUBManager : MonoBehaviour
 
     private bool DEBUGMODE;
 
-    [SerializeField] private HubChest firstHubChest;
     [SerializeField] private Transform firstHubLoadPlayerSpawnPoint;
     [SerializeField] private Transform firstHubLoadDogSpawnPoint;
     [SerializeField] private Transform DEBUGPlayerSpawnPoint;
@@ -57,7 +56,6 @@ public class HUBManager : MonoBehaviour
         else {
             // Player loads game OR is coming back from level
 
-            firstHubChest.gameObject.SetActive(false);
             nextArrivalThroughPortal = MetaProgressionManager.Instance.GetNextHubArrivalThroughPortal();
             if (!nextArrivalThroughPortal) {
                 // Player is not coming back from a level (ex. loading game)
@@ -180,7 +178,26 @@ public class HUBManager : MonoBehaviour
         CameraManager.Instance.SetCameraOrthographicSize(8f);
         PauseMenuUI.Instance.SetCanSave(false);
 
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(2f);
+
+        if(MetaProgressionManager.Instance.GetTutorialSkipped()) {
+            MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.yellowGem, 9);
+            MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.redGem, 2);
+            MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.greenGem, 2);
+
+            List<PlayerCurrencies.CurrencyType> tutorialSkippedGems = new List<PlayerCurrencies.CurrencyType> {
+                PlayerCurrencies.CurrencyType.yellowGem,
+                PlayerCurrencies.CurrencyType.redGem,
+                PlayerCurrencies.CurrencyType.greenGem
+            };
+            List<int> tutorialSkippedGemAmount = new List<int> {
+                9,2,2,
+            };
+            UICurrencyManager.PlayerInventoryUI.AddMultipleCurrencies(tutorialSkippedGems, tutorialSkippedGemAmount);
+        }
+
+        yield return new WaitForSeconds(2f);
+
 
         LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.HUB_HeadToFire);
     }

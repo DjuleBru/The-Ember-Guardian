@@ -131,35 +131,10 @@ public class HubChest : MonoBehaviour
         return playerInTriggerArea;
     }
 
-    public void RewardLastLevelGems() {
-        Debug.Log("RewardLastLevelGems");
-        int redGemAmount = MetaProgressionManager.Instance.GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType.redGem);
-        int greenGemAmount = MetaProgressionManager.Instance.GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType.greenGem);
-        int blueGemAmount = MetaProgressionManager.Instance.GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType.blueGem);
-        int yellowGemAmount = MetaProgressionManager.Instance.GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType.yellowGem);
-        int purpleGemAmount = MetaProgressionManager.Instance.GetGemAmountFromLastLevel(PlayerCurrencies.CurrencyType.purpleGem);
-
-        List<PlayerCurrencies.CurrencyType> currencyTypes = new List<PlayerCurrencies.CurrencyType> {
-            PlayerCurrencies.CurrencyType.greenGem,
-            PlayerCurrencies.CurrencyType.redGem,
-            PlayerCurrencies.CurrencyType.blueGem,
-            PlayerCurrencies.CurrencyType.yellowGem,
-            PlayerCurrencies.CurrencyType.purpleGem,
-        };
-
-        List<int> currencyTypesAmount = new List<int> {
-            greenGemAmount,
-            redGemAmount,
-            blueGemAmount,
-            yellowGemAmount,
-            purpleGemAmount,
-        };
-
-
-        UICurrencyManager.PlayerInventoryUI.RemoveMultipleCurrencies(currencyTypes, currencyTypesAmount);
-        UICurrencyManager.HubInventoryUI.AddMultipleCurrencies(currencyTypes, currencyTypesAmount);
-
-        HUBManager.Instance.SetLastLevelGemsRewarded(true);
+    private void OnDestroy() {
+        payCurrencyUI.OnCurrencyPaymentSuccess -= PayCurrencyUI_OnCurrencyPaymentSuccess;
+        GameInput.Instance.OnPlayerInteractPerformed -= GameInput_OnPlayerInteractPerformed;
+        GameInput.Instance.OnPlayerInteractCanceled -= GameInput_OnPlayerInteractCanceled;
     }
 
 }

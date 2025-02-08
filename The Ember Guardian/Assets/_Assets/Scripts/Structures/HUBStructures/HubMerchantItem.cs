@@ -108,11 +108,11 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public bool CanBuyItem() {
-        int playerGreenGems = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count;
-        int playerRedGems = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count;
-        int playerBlueGems = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count;
-        int playerYellowGems = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count;
-        int playerPurpleGems = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count;
+        int playerGreenGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count;
+        int playerRedGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count;
+        int playerBlueGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count;
+        int playerYellowGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count;
+        int playerPurpleGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count;
 
         if (playerGreenGems >= greenGemCost && playerRedGems >= redGemCost && playerBlueGems >= blueGemCost && playerYellowGems >= yellowGemCost && playerPurpleGems >= purpleGemCost) {
 
@@ -152,11 +152,11 @@ public class HubMerchantItem : MonoBehaviour
 
     protected void PayGemPrice() {
 
-        UICurrencyManager.PlayerInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.greenGem, greenGemCost);
-        UICurrencyManager.PlayerInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.redGem, redGemCost);
-        UICurrencyManager.PlayerInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.blueGem, blueGemCost);
-        UICurrencyManager.PlayerInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.yellowGem, yellowGemCost);
-        UICurrencyManager.PlayerInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.purpleGem, purpleGemCost);
+        UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.greenGem, greenGemCost);
+        UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.redGem, redGemCost);
+        UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.blueGem, blueGemCost);
+        UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.yellowGem, yellowGemCost);
+        UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.purpleGem, purpleGemCost);
 
         OnAnyHubMerchantItemBought?.Invoke(this, EventArgs.Empty);
 
