@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 public class HunterJob : WorkerJob {
 
     private float trackAnimalMoveSpeed = 2f;
-    private float initialFiringRange = 10f;
+    private float initialFiringRange = 12f;
 
     private float attackRange;
     private float distanceToPlayerWhenCreatureIsAround = 4f;
@@ -374,7 +374,11 @@ public class HunterJob : WorkerJob {
 
                         if (targetCreature == null) {
 
-                            CheckClosestCreatureSmart();
+                            if(destinationTower == null) {
+                                CheckClosestCreatureSmart();
+                            } else {
+                                CheckFurthestCreatureSmart();
+                            } 
 
                         }
                         else {
@@ -539,10 +543,6 @@ public class HunterJob : WorkerJob {
         }
     }
 
-  
-
-    
-
     private bool CheckClosestAnimal() {
         checkClosestTargetTimer -= Time.deltaTime;
 
@@ -595,6 +595,28 @@ public class HunterJob : WorkerJob {
 
         return false;
     }
+    private bool CheckFurthestCreatureSmart() {
+        checkClosestTargetTimer -= Time.deltaTime;
+
+        if (checkClosestTargetTimer < 0) {
+            checkClosestTargetTimer = checkClosestTargetCooldown;
+
+            Creature newTargetCreature = CreaturesManager.Instance.GetFurthestCreatureInRadiusSmart(mobMovement.transform.position, attackRange, workerAttack.GetAttackDamage(), true);
+
+            if (newTargetCreature == null) {
+                targetCreature = null;
+                return false;
+
+            }
+
+            else {
+                TargetCreature(newTargetCreature);
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     private void CheckDusk() {
         if (followingPlayer) return;
@@ -615,7 +637,7 @@ public class HunterJob : WorkerJob {
         newTargetAnimal.OnMobDamageTaken += TargetAnimal_OnMobDamageTaken;
     }
 
-    private void TargetCreature(Creature newTargetCreature) {
+    protected override void TargetCreature(Creature newTargetCreature) {
         if (targetCreature == newTargetCreature) return;
 
         if (targetCreature != null) {
@@ -624,11 +646,6 @@ public class HunterJob : WorkerJob {
 
         targetCreature = newTargetCreature;
         targetCreature.OnMobDied += TargetCreature_OnMobDied;
-    }
-
-    private void TargetCreature_OnMobDied(object sender, System.EventArgs e) {
-        targetCreature = null;
-        workerAttack.RemoveAttackTarget();
     }
 
     private void TargetAnimal_OnAnimalDroppedCollectibles(object sender, Animal.OnMobDroppedCollectibleEventArgs e) {
@@ -740,6 +757,13 @@ public class HunterJob : WorkerJob {
 
     public void ResetRangeBuff() {
         attackRange = initialFiringRange;
+    }
+    public void BuffDamage(float buff) {
+        workerAttack.BuffDamage(buff);
+    }
+
+    public void ResetDamageBuff() {
+        workerAttack.ResetDamageBuff();
     }
 
     private void ChangeState(HunterState newState) {

@@ -80,7 +80,6 @@ public class PauseMenuUI : MonoBehaviour
         if(show) {
 
             EventSystem.current.SetSelectedGameObject(firstSelectedButton);
-            Player.Instance.DisableControlInputs();
             Time.timeScale = 0f;
             AudioListener.pause = true;
             menuOpen = true;
@@ -88,7 +87,6 @@ public class PauseMenuUI : MonoBehaviour
 
         } else {
 
-            Player.Instance.EnableControlInputs();
             Time.timeScale = 1f;
             AudioListener.pause = false;
             menuOpen = false;

@@ -63,7 +63,7 @@ public class Merchant : Structure {
 
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);
-        Player.Instance.SetCanDropOrbOnTheFloor(false);
+        Player.Instance.SetInMerchantTriggerArea(false);
     }
 
     protected override void TriggerStructurePrimaryFunction() {

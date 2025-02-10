@@ -158,7 +158,7 @@ public class Scavengable : MonoBehaviour, IDamageable {
         if (!scavengedUnlocked) return;
         if (collision.GetComponent<Player>() == null) return;
 
-        Player.Instance.SetCanDropOrbOnTheFloor(false);
+        Player.Instance.SetInPayCurrencyArea(false);
         playerInTriggerArea = true;
         OnPlayerTriggerIn?.Invoke(this, EventArgs.Empty);
     }
@@ -167,7 +167,7 @@ public class Scavengable : MonoBehaviour, IDamageable {
         if (!scavengedUnlocked) return;
         if (collision.GetComponent<Player>() == null) return;
 
-        Player.Instance.SetCanDropOrbOnTheFloor(true);
+        Player.Instance.SetInPayCurrencyArea(true);
         payOrbsUI.SetPlayerInteracting(false);
         playerInTriggerArea = false;
         OnPlayerTriggerOut?.Invoke(this, EventArgs.Empty);

@@ -23,6 +23,11 @@ public class Tower : Structure
     private float level3RangeMultiplier = 1.5f;
     private float level4RangeMultiplier = 2f;
 
+    private float level1DamageMultiplier = 1.25f;
+    private float level2DamageMultiplier = 1.5f;
+    private float level3DamageMultiplier = 1.5f;
+    private float level4DamageMultiplier = 2f;
+
     public event EventHandler OnHunterAssigned;
     public event EventHandler OnPlayerClimbedOnTower;
     public static event EventHandler OnPlayerClimbedOnAnyTower;
@@ -49,7 +54,7 @@ public class Tower : Structure
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);
         if ((collision.gameObject.GetComponent<Player>() != null)) {
-            Player.Instance.SetCanDropOrbOnTheFloor(false);
+            Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
         }
     }
 
@@ -94,33 +99,40 @@ public class Tower : Structure
         int workerIndex = assignedWorkersList.IndexOf(worker);
         Vector3 garrisonPosition = new Vector3(0, 0, 0);
         float rangeBuff = 1f;
+        float damageBuff = 1f;
 
         if (structureLevel == 1) {
             garrisonPosition = level1GarrisonPositions[workerIndex].position;
             rangeBuff = level1RangeMultiplier;
+            damageBuff = level1DamageMultiplier;
         }
 
         if (structureLevel == 2) {
             garrisonPosition = level2GarrisonPositions[workerIndex].position;
             rangeBuff = level2RangeMultiplier;
+            damageBuff = level2DamageMultiplier;
         }
 
         if (structureLevel == 3) {
             garrisonPosition = level3GarrisonPositions[workerIndex].position;
             rangeBuff = level3RangeMultiplier;
+            damageBuff = level3DamageMultiplier;
         }
 
         if (structureLevel == 4) {
             garrisonPosition = level4GarrisonPositions[workerIndex].position;
             if(workerIndex == 1) {
                 rangeBuff = level4RangeMultiplier;
+                damageBuff = level4DamageMultiplier;
             } else {
                 rangeBuff = level3RangeMultiplier;
+                damageBuff = level3DamageMultiplier;
             }
         }
 
         worker.transform.position = garrisonPosition;
         worker.GetComponent<HunterJob>().SetGarrisoned(garrisonPosition, this);
+        worker.GetComponent<HunterJob>().BuffDamage(damageBuff);
         worker.GetComponent<HunterJob>().BuffRange(rangeBuff);
     }
 
@@ -147,6 +159,7 @@ public class Tower : Structure
             worker.transform.position = groundPosition;
             worker.AssignStructure(null);
             worker.GetComponent<HunterJob>().ResetRangeBuff();
+            worker.GetComponent<HunterJob>().ResetDamageBuff();
             yield return new WaitForSeconds(.2f);
         }
 

@@ -546,10 +546,6 @@ public class PlayerStats : MonoBehaviour
         ES3.Save("backpackOrbSizePercentBuff", backpackOrbSizePercentBuff);
 
         ES3.Save("hold2WeaponsUnlocked", hold2WeaponsUnlocked);
-
-
-
-        Debug.Log("SaveMetaBuffValues flashlightRangeBuff_meta" + startLevelOrbs_BuffAbsolute);
     }
 
     public float GetSkillStat(SkillItem skillItem) {

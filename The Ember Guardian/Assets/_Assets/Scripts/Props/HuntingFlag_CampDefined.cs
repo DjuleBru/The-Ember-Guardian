@@ -37,7 +37,7 @@ public class HuntingFlag_CampDefined : MonoBehaviour
             if (!PlayerSave.Instance.GetPlayerUnlockedFlagCarry()) return;
 
             playerInTriggerArea = true;
-            Player.Instance.SetInteractingWithOtherObject(true);
+            Player.Instance.SetCarryinhOtherObject(true);
             spriteRenderer.color = playerInteractColor;
 
         }
@@ -49,7 +49,7 @@ public class HuntingFlag_CampDefined : MonoBehaviour
             if (huntingFlag.GetPlayerCarryingFlag()) return;
             if (!PlayerSave.Instance.GetPlayerUnlockedFlagCarry()) return;
 
-            Player.Instance.SetInteractingWithOtherObject(false);
+            Player.Instance.SetCarryinhOtherObject(false);
             playerInTriggerArea = false;
             spriteRenderer.color = initialColor;
             

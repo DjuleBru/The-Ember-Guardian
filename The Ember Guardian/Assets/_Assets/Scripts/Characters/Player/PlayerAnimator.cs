@@ -227,7 +227,7 @@ public class PlayerAnimator : MonoBehaviour
     }
 
     private void HandleAnimatorMovementBool() {
-        if(!Player.Instance.GetCanMove()) {
+        if(!Player.Instance.GetPlayerControlInputsEnabled() || PlayerShoot.Instance.GetHoldingStationaryGun()) {
             if(moving) {
                 playerAnimator.SetBool("Walking", false);
                 moving = false;

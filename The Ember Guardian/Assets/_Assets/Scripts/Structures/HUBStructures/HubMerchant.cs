@@ -123,6 +123,7 @@ public class HubMerchant : MonoBehaviour
             StartCoroutine(StopInteractingWithMerchant());
         }
     }
+
     private void TryStartInteractingWithMerchant() {
         if (!playerInTriggerArea) return;
         if (isHubMerchant && !merchantUnlocked) return;
@@ -185,7 +186,7 @@ public class HubMerchant : MonoBehaviour
     protected void OnTriggerEnter2D(Collider2D collision) {
         if(collision.GetComponent<Player>() != null) {
             playerInTriggerArea = true;
-            Player.Instance.SetCanDropOrbOnTheFloor(true);
+            Player.Instance.SetInMerchantTriggerArea(true);
             OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
             OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         }
@@ -194,7 +195,7 @@ public class HubMerchant : MonoBehaviour
     protected void OnTriggerExit2D(Collider2D collision) {
         if (collision.GetComponent<Player>() != null) {
             playerInTriggerArea = false;
-            Player.Instance.SetCanDropOrbOnTheFloor(false);
+            Player.Instance.SetInMerchantTriggerArea(false);
             OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -204,8 +205,6 @@ public class HubMerchant : MonoBehaviour
     
     public void SetPlayerFinishedTalkingWithMerchant(bool openShopPanel) {
         merchantHasTalkLinesToShow = false;
-
-        Debug.Log("SetPlayerFinishedTalkingWithMerchant " + openShopPanel);
 
         if (openShopPanel && isHubMerchant) {
             StartInteractingWithMerchant();
@@ -246,6 +245,9 @@ public class HubMerchant : MonoBehaviour
     public bool GetMerchantIsLevelNPC() {
         return isLevelNPC;
     }
+    public bool GetMerchantUnlocked() {
+        return merchantUnlocked;
+    }
     #endregion
 
 
@@ -259,5 +261,7 @@ public class HubMerchant : MonoBehaviour
             merchantItem.SaveItemStatus();
         }
     }
+
+
 
 }

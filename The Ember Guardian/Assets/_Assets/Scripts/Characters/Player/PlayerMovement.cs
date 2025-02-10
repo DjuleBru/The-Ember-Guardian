@@ -93,22 +93,24 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        if (!Player.Instance.GetCanMove()) return;
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+        if (PlayerShoot.Instance.GetHoldingStationaryGun()) return;
         HandleMovementForces();
     }
 
     private void Update() {
-        if (!Player.Instance.GetCanMove()) return;
-
-        HandleCrouch();
         HandleMovingBackwards();
         HandleRunningAndExhaustion();
 
-        // LAST MOVE DIR
-        float lastMoveInput = GameInput.Instance.GetMovementFloatNormalized();
-        if (lastMoveInput != 0) {
-            lastMoveDir = lastMoveInput;
-        }
+        if (Player.Instance.GetPlayerControlInputsEnabled()) {
+            HandleCrouch();
+
+            // LAST MOVE DIR
+            float lastMoveInput = GameInput.Instance.GetMovementFloatNormalized();
+            if (lastMoveInput != 0) {
+                lastMoveDir = lastMoveInput;
+            }
+        };
 
         // GRAVITY FALL
         if (isJumping && !isJumpTop && rb.velocity.y < 1 && rb.velocity.y > 0) {
@@ -179,7 +181,8 @@ public class PlayerMovement : MonoBehaviour {
         if (isRolling) return;
         if (isExhausted) return;
         if (PauseMenuUI.Instance.isPaused) return;
-        if (!Player.Instance.GetCanMove()) return;
+        if (PlayerShoot.Instance.GetHoldingStationaryGun()) return;
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
 
         StartRolling();
         return;

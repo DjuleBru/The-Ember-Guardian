@@ -97,6 +97,7 @@ public class Portal : MonoBehaviour
 
     private void GameInput_OnPlayerInteractStarted(object sender, System.EventArgs e) {
         if (!playerInTriggerArea) return;
+        if (playerIsSetOnTeleporter) return;
 
         if (isHUBTeleporter && !PlayerCurrencies.Instance.GetCarryingEmber() && !DEBUGMODE) {
             PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltip("I must carry an ember ...", 2f);
@@ -112,6 +113,7 @@ public class Portal : MonoBehaviour
         if (isHUBTeleporter && !GetPortalHasUnlockedUnfinishedLevels()) return;
 
         if (collision.gameObject.GetComponent<Player>() != null) {
+            Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
             playerInTriggerArea = true;
             OnPlayerEnteredTriggerArea?.Invoke(this, EventArgs.Empty);
         }
@@ -128,6 +130,7 @@ public class Portal : MonoBehaviour
             if (!portalUnlocked) return;
 
             if (collision.gameObject.GetComponent<Player>() != null) {
+                Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
                 playerInTriggerArea = false;
                 OnPlayerExitedTriggerArea?.Invoke(this, EventArgs.Empty);
                 floorCollider.enabled = false;
@@ -156,12 +159,18 @@ public class Portal : MonoBehaviour
     }
 
     private IEnumerator TeleportPlayerIn() {
+        playerIsSetOnTeleporter = true;
+
         floorCollider.enabled = true;
         Player.Instance.MoveOnTeleporter(playerPosition);
         Dog.Instance.MoveOnTeleporter(dogPosition);
 
         OnPlayerMovedOnTeleporter?.Invoke(this, EventArgs.Empty);
         OnAnyPlayerMovedOnTeleporter?.Invoke(this, EventArgs.Empty);
+
+        if(isHUBTeleporter) {
+            HUBManager.Instance.SaveHub();
+        }
 
         yield return new WaitForSeconds(delayToActivateTeleporter);
         OnTeleporterActivated?.Invoke(this, EventArgs.Empty);
@@ -182,7 +191,6 @@ public class Portal : MonoBehaviour
             
             MetaProgressionManager.Instance.SetAsLastPortalUsedByPlayer(portalNumber);
             MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
-            HUBManager.Instance.SaveHub();
             SceneLoader.Instance.LoadLevel(linkedLevelSO, 2f);
         }
     }

@@ -82,7 +82,6 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
             HoverWorker(workersFollowingPlayer[workerHoverIndex]);
         } else {
             StartCoroutine(SetHoveringWorkerAfterFrame(false));
-            Player.Instance.EnableControlInputs();
             Player.Instance.SetManagingWorkersAfterFrame(false);
         }
     }
@@ -130,14 +129,12 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
             StartHoveringWorkers();
 
         } else {
-            Player.Instance.EnableControlInputs();
             UnhoverPreviousHoveredWorker(workersFollowingPlayer[workerHoverIndex]);
         }
     }
 
     private void StartHoveringWorkers() {
         workerHoverIndex = 0;
-        Player.Instance.DisableControlInputs();
         HoverWorker(workersFollowingPlayer[workerHoverIndex]);
 
     }

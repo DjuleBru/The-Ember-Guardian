@@ -131,7 +131,11 @@ public class Tutorial : MonoBehaviour
     private void Update() {
         if(testing) {
             if (Input.GetKeyDown(KeyCode.M)) {
+                Debug.Log("M");
                 //LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbsFromHunters);
+                //LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.RecruitMoreEmberlings);
+                //LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightMainFire);
+                //StartCoroutine(StartGuardingWorkersObjective(0f));
             }
 
         }
@@ -302,11 +306,8 @@ public class Tutorial : MonoBehaviour
         if (structureSO.structureType == StructureSO.StructureType.tower) {
             towerNumberBuilt++;
 
-            if(towerNumberBuilt == 1) {
-                StartCoroutine(ShowTooltipAfterDelay(.5f, "Press", "When near a tower to climb it", InputControlIcons.Control.Interact));
-            }
-
             if (towerNumberBuilt == 2) {
+                StartCoroutine(ShowTooltipAfterDelay(.5f, "Press", "When near a tower to climb it", InputControlIcons.Control.Interact));
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.Build2Towers);
             }
 

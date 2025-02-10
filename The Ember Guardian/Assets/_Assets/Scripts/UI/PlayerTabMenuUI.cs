@@ -18,6 +18,7 @@ public class PlayerTabMenuUI : MonoBehaviour
     private Animator panelAnimator;
 
     public event EventHandler OnPlayerTabOpened;
+    public event EventHandler OnPlayerTabClosed;
 
     private void Awake() {
         Instance = this;
@@ -76,11 +77,10 @@ public class PlayerTabMenuUI : MonoBehaviour
 
         if(tabMenuOpen) {
             FadeInTab();
-            Player.Instance.DisableControlInputs();
             OnPlayerTabOpened?.Invoke(this, EventArgs.Empty);
         } else {
             FadeOutTab();
-            Player.Instance.EnableControlInputs();
+            OnPlayerTabClosed?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -89,6 +89,7 @@ public class PlayerTabMenuUI : MonoBehaviour
     }
 
     private void OnDestroy() {
+        GameInput.Instance.OnPlayerOpenPlayerTabPerformed -= GameInput_OnPlayerOpenPlayerTabPerformed;
         HubMerchantUI.OnAnyHubMerchantOpenUIPanel -= HubMerchantUI_OnAnyHubMerchantOpenUIPanel;
         HubMerchantUI.OnAnyHubMerchantCloseUIPanel -= HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
     }

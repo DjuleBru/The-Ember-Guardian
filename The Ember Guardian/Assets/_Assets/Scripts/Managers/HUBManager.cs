@@ -222,7 +222,6 @@ public class HUBManager : MonoBehaviour
 
     private IEnumerator StartGemMerchantOpenGrassyAreaLines() {
         yield return new WaitForSeconds(.5f);
-        Player.Instance.DisableControlInputs();
         gemMerchantTalkUI.SetTalkingWithMerchant(gemMerchantOutroTextLines);
     }
 
@@ -234,7 +233,6 @@ public class HUBManager : MonoBehaviour
 
             Portal linkedPortal = GetLevelLinkedPortal(levelSO);
             CameraManager.Instance.ChangeCameraTarget(linkedPortal.transform);
-            Player.Instance.DisableControlInputs();
 
             yield return new WaitForSeconds(3.5f);
 
@@ -246,7 +244,8 @@ public class HUBManager : MonoBehaviour
         }
 
         CameraManager.Instance.ResetCameraTargetToPlayer();
-        Player.Instance.EnableControlInputs();
+
+        yield return new WaitForSeconds(1.5f);
 
         SaveHub();
     }
@@ -291,6 +290,7 @@ public class HUBManager : MonoBehaviour
             MetaProgressionManager.Instance.SetPortalLinkedLevelSOIndex(portal.GetPortalNumber(), portal.GetLinkedLevelSOIndex());
         }
     }
+
 
     private void OnDestroy() {
 

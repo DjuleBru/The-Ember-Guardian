@@ -33,6 +33,7 @@ public class Fire : Structure, IDamageable {
 
     private FireOrbCollider fireOrbCollider;
     private bool initialFireLit;
+    private bool emberExtracted;
     private float fuelLevel;
     private float damageToFuelConversionRate = 5f;
 
@@ -107,6 +108,7 @@ public class Fire : Structure, IDamageable {
 
             fuelLevel = mildFuelTreshold - 1;
             Player.Instance.OnPlayerBackToTentToRespawn += Player_OnPlayerBackToTentToRespawn;
+            PlayerCurrencies.Instance.OnEmberDropped += PlayerCurrencies_OnEmberDropped;
             Tent.Instance.OnStructureUpgraded += Tent_OnStructureUpgraded;
             ChangeState(State.calm);
 
@@ -136,6 +138,10 @@ public class Fire : Structure, IDamageable {
         } else {
             SetFireCurrentMaxFuelTreshold();
         }
+    }
+
+    private void PlayerCurrencies_OnEmberDropped(object sender, EventArgs e) {
+        emberExtracted = false;
     }
 
     private void Tent_OnStructureUpgraded(object sender, EventArgs e) {
@@ -233,6 +239,7 @@ public class Fire : Structure, IDamageable {
         collectible.SetCollectibleUnInteractable(1f);
         collectible.SetCanNeverBePickedUpByWorker();
         ActivateStructureSecondaryFunctionInteraction(false);
+        emberExtracted = true;
 
         yield return new WaitForSeconds(2f);
         OnFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
@@ -289,10 +296,7 @@ public class Fire : Structure, IDamageable {
     }
 
     private void CheckFireSecondaryFunctionInteractable() {
-        if (PlayerCurrencies.Instance.GetCarryingEmber()) {
-            SetStructureSecondaryFunctionUnlocked(false);
-        };
-
+        if (emberExtracted)return;
         if (extractingEmber) return;
         if (isTutorial) return;
         if (isEndLevelFire) return;
@@ -470,9 +474,10 @@ public class Fire : Structure, IDamageable {
         return insaneFireRadius;
     }
 
-    public float GetCriticalFuelTreshold() {
-        return criticalFuelTreshold;
+    public bool GetFireFuelLevelCritical() {
+        return GetCurrentFuelLevel() <= criticalFuelTreshold;
     }
+
     public float GetCalmFireTreshold() {
         return calmFuelTreshold;
     }
@@ -523,6 +528,7 @@ public class Fire : Structure, IDamageable {
         ActivateStructureSecondaryFunctionInteraction(true);
         SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);
     }
+
     public Transform GetProjectileTarget() {
         return transform;
     }

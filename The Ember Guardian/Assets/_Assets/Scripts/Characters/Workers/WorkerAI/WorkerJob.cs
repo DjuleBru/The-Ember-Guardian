@@ -37,7 +37,7 @@ public class WorkerJob : MonoBehaviour
     protected float checkClosestTargetTimer;
     protected float checkClosestTargetCooldown = .3f;
 
-    protected void TargetCreature(Creature newTargetCreature) {
+    protected virtual void TargetCreature(Creature newTargetCreature) {
         if (targetCreature == newTargetCreature) return;
 
         if (targetCreature != null) {

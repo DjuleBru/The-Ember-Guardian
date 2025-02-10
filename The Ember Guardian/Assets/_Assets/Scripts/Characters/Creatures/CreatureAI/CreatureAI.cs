@@ -28,7 +28,8 @@ public class CreatureAI : MonoBehaviour {
     protected float aggroTimer;
     protected float aggroDelay = 3f;
     public event EventHandler OnCreatureAggro;
-    public event EventHandler OnCreatureUnaggro;
+    public event EventHandler OnCreatureUntargetPlayer;
+    public event EventHandler OnCreatureTargetPlayer;
     public static event EventHandler OnAnyCreatureAggro;
 
     public enum State {
@@ -236,7 +237,7 @@ public class CreatureAI : MonoBehaviour {
 
             if(state == State.moveToTarget) {
                 // Creature un aggro player
-                OnCreatureUnaggro?.Invoke(this, EventArgs.Empty);
+                OnCreatureUntargetPlayer?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -257,6 +258,7 @@ public class CreatureAI : MonoBehaviour {
     }
 
     protected bool CheckAttackTargetInRange() {
+        if (attackTarget == null) return false;
         Vector3 targetPosition = attackTarget.GetMeleeAttackPosition().position;
 
         if (Mathf.Abs(transform.position.x - targetPosition.x) < maxAttackRange) {
@@ -307,6 +309,7 @@ public class CreatureAI : MonoBehaviour {
 
     public void ResetAttackTargetInProximity() {
         detectedAttackTarget = false;
+        attackTarget = null;
     }
 
     public void SetAttackTarget(IDamageable iDamageable, List<IDamageable> iDamageablesInRange) {
@@ -325,11 +328,7 @@ public class CreatureAI : MonoBehaviour {
 
             attackTarget = iDamageable;
 
-            if (!aggroedRecently) {
-                aggroedRecently = true;
-                aggroTimer = aggroDelay;
-                TriggerAggoFeedbacks();
-            }
+            CheckPlayerTargetAndAggroState();
 
             ChangeState(State.moveToTarget);
         }
@@ -339,10 +338,16 @@ public class CreatureAI : MonoBehaviour {
         return attackTarget;
     }
 
-    protected void TriggerAggoFeedbacks() {
+    protected void CheckPlayerTargetAndAggroState() {
+        if (!aggroedRecently) {
+            aggroedRecently = true;
+            aggroTimer = aggroDelay;
+        }
+
         if (attackTarget is Player) {
             OnCreatureAggro?.Invoke(this, EventArgs.Empty);
             OnAnyCreatureAggro?.Invoke(this, EventArgs.Empty);
+            OnCreatureTargetPlayer?.Invoke(this, EventArgs.Empty);
         };
     }
 

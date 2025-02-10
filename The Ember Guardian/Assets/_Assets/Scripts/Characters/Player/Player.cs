@@ -17,13 +17,23 @@ public class Player : MonoBehaviour, IDamageable
     private bool insideCamp;
     private bool hasHPRegen;
 
-    private bool canDropOrbOnTheFloor = true;
-    private bool interactingWithOtherObject;
-    private bool hoveringWorker;
-    private bool cancellingHoveringWorker;
-    private bool managingWorkers;
-    private bool canMove = true;
-    private bool interactingWithMerchant;
+
+    private bool inPayCurrencyTriggerArea = false;
+    private bool inMerchantTriggerArea = false;
+    private bool inOtherInteractableObjectTriggerArea = false;
+
+    private bool carryingOtherObject = false;
+    private bool hoveringWorker = false;
+    private bool cancellingHoveringWorker = false;
+    private bool managingWorkers = false;
+    private bool interactingWithMerchant = false;
+    private bool inTeleporter = false;
+    private bool cameraHasOtherTarget = false;
+
+    private bool tabMenuOpen = false;
+    private bool pauseMenuOpen = false;
+    private bool videoTipMenuOpen = false;
+
 
     private bool isInvincibleWhileRolling = false;
     private float delayAfterRollStartForInvincibleStart = .1f;
@@ -64,6 +74,17 @@ public class Player : MonoBehaviour, IDamageable
         PlayerStats.Instance.OnPlayerHPRegenChanged += PlayerStats_OnPlayerHPRegenChanged;
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
+
+        VideoTipUI.Instance.OnVideoTipPanelOpened += VideoTipUI_OnVideoTipPanelOpened;
+        VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
+        PauseMenuUI.Instance.OnPauseMenuClosed += PauseMenuUI_OnPauseMenuClosed;
+        PauseMenuUI.Instance.OnPauseMenuOpened += PauseMenuUI_OnPauseMenuOpened;
+
+
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
+            PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
+            PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
+        }
 
         hpRegenTime = PlayerStats.Instance.GetHpRegenTime();
         if(hpRegenTime != 0) {
@@ -170,14 +191,10 @@ public class Player : MonoBehaviour, IDamageable
 
     }
 
-    #region PLAYER CONTROLS RESTRICTIONS
+    #region PLAYER SET CONTROLS RESTRICTIONS
 
-    public void SetCanDropOrbOnTheFloor(bool canDrop) {
-        canDropOrbOnTheFloor = canDrop;
-    }
-
-    public void SetInteractingWithOtherObject(bool interactingWithOtherObject) {
-        this.interactingWithOtherObject = interactingWithOtherObject;
+    public void SetCarryinhOtherObject(bool carryingOtherObject) {
+        this.carryingOtherObject = carryingOtherObject;
     }
 
     public void SetHoveringWorker(bool hoveringWorker) {
@@ -209,18 +226,74 @@ public class Player : MonoBehaviour, IDamageable
         yield return new WaitForEndOfFrame();
         this.managingWorkers = managingWorkers;
     }
+
+    public void SetInPayCurrencyArea(bool inPayCurrencyArea) {
+        inPayCurrencyTriggerArea = inPayCurrencyArea;
+    }
+    public void SetInMerchantTriggerArea(bool inMerchantArea) {
+        inMerchantTriggerArea = inMerchantArea;
+    }
+
+    public void SetInOtherInteractableObjectTriggerArea(bool inOtherInteractableObjectArea) {
+        inOtherInteractableObjectTriggerArea = inOtherInteractableObjectArea;
+    }
+
+    public void SetCameraHasOtherTarget(bool cameraHasOtherTarget) {
+        this.cameraHasOtherTarget = cameraHasOtherTarget;
+    }
+
+    private void PauseMenuUI_OnPauseMenuOpened(object sender, EventArgs e) {
+        pauseMenuOpen = true;
+    }
+
+    private void PauseMenuUI_OnPauseMenuClosed(object sender, EventArgs e) {
+        pauseMenuOpen = false;
+    }
+
+    private void PlayerTabMenuUI_OnPlayerTabClosed(object sender, EventArgs e) {
+        tabMenuOpen = false;
+    }
+
+    private void PlayerTabMenuUI_OnPlayerTabOpened(object sender, EventArgs e) {
+        tabMenuOpen = true;
+    }
+
+    private void VideoTipUI_OnVideoTipPanelClosed(object sender, VideoTipUI.OnVideoTipPanelClosedEventArgs e) {
+        videoTipMenuOpen = false;
+    }
+
+    private void VideoTipUI_OnVideoTipPanelOpened(object sender, EventArgs e) {
+        videoTipMenuOpen = true;
+    }
+    #endregion
+
+    #region GET PLAYER CONTROLS RESTRICTIONS
+    public bool GetAllMenusClosed() {
+        return !pauseMenuOpen && !tabMenuOpen && !videoTipMenuOpen;
+    }
+
+    public bool GetInteractingWithNoOtherObject() {
+        return !interactingWithMerchant && !managingWorkers && !inTeleporter;
+    }
+
+    public bool GetInNoOtherObjectTriggerArea() {
+        return !inPayCurrencyTriggerArea && !inMerchantTriggerArea && !inOtherInteractableObjectTriggerArea && !hoveringWorker;
+    }
+
     public bool GetCanDropOrbOnTheFloor() {
-        return canDropOrbOnTheFloor && !interactingWithMerchant && !interactingWithOtherObject && !hoveringWorker && !managingWorkers && !dead;
+        return GetAllMenusClosed() && GetInteractingWithNoOtherObject() && GetInNoOtherObjectTriggerArea() && !dead && !cameraHasOtherTarget && !carryingOtherObject;
+    }
+
+    public bool GetPlayerControlInputsEnabled() {
+        // Move, aim, shoot
+        return GetAllMenusClosed() && GetInteractingWithNoOtherObject() && !dead && !cameraHasOtherTarget;
     }
 
     public bool GetCanInteractWithStructureLocation() {
-        return !interactingWithOtherObject && !hoveringWorker && !managingWorkers;
+        return GetAllMenusClosed() && GetPlayerControlInputsEnabled() && !carryingOtherObject && !hoveringWorker && !managingWorkers;
     }
 
     public void Die() {
-        SetCanDropOrbOnTheFloor(false);
-        DisableControlInputs();
-
         bool isTutorial = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial;
         if (!isTutorial) {
             PlayerCurrencies.Instance.SetCarryingEmber(false);
@@ -271,9 +344,6 @@ public class Player : MonoBehaviour, IDamageable
         StartCoroutine(HealPlayerCoroutine(PlayerStats.Instance.GetPlayerRespawnHP(), delayBetweenHeals));
 
         yield return new WaitForSeconds(1.5f);
-
-        EnableControlInputs();
-        SetCanDropOrbOnTheFloor(true);
         dead = false;
     }
 
@@ -285,61 +355,24 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public void MoveOnTeleporter(Transform teleporterPlayerPosition) {
-        canMove = false;
+        inTeleporter = true;
 
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        GetComponent<PlayerCurrencies>().enabled = false;
-        PlayerShoot.Instance.SetCanShoot(false);
-        SetCanDropOrbOnTheFloor(false);
         transform.position = teleporterPlayerPosition.position;
     }
 
     public void ReleasePlayerFromTeleporter() {
-        canMove = true;
-
-        GetComponent<PlayerCurrencies>().enabled = true;
-        PlayerShoot.Instance.SetCanShoot(true);
-        SetCanDropOrbOnTheFloor(true);
+        inTeleporter = false;
     }
 
     public void StartInteractingWithMerchant() {
         interactingWithMerchant = true;
-        SetCanDropOrbOnTheFloor(false);
-        DisableControlInputs();
     }
     
     public void StopInteractingWithMerchant() {
-        SetCanDropOrbOnTheFloor(true);
         // Set interactingWithMerchant false after frame or dog will react
 
         StartCoroutine(SetStopInteractingWithMerchantCoroutine());
-        StartCoroutine(EnableControlInputCoroutine());
-    }
-
-    public void DisableControlInputs() {
-        canMove = false;
-
-        GetComponent<PlayerAim>().enabled = false;
-        GetComponent<PlayerMovement>().enabled = false;
-        PlayerShoot.Instance.SetCanShoot(false);
-    }
-
-    public void EnableControlInputs() {
-        StartCoroutine(EnableControlInputCoroutine());
-    }
-
-    public void SetCanMove(bool canMove)
-    {
-        this.canMove = canMove;
-    }
-
-    private IEnumerator EnableControlInputCoroutine() {
-        yield return new WaitForEndOfFrame();
-        canMove = true;
-
-        GetComponent<PlayerAim>().enabled = true;
-        GetComponent<PlayerMovement>().enabled = true;
-        PlayerShoot.Instance.SetCanShoot(true);
     }
 
     private IEnumerator SetStopInteractingWithMerchantCoroutine() {
@@ -395,11 +428,22 @@ public class Player : MonoBehaviour, IDamageable
         return dead;
     }
 
-    public bool GetCanMove() {
-        return canMove;
-    }
-
     public bool GetInteractingWithMerchant() {
         return interactingWithMerchant;
+    }
+
+    public void OnDestroy() {
+        PlayerStats.Instance.OnPlayerMaxHPChanged -= PlayerStats_OnPlayerMaxHPChanged;
+        PlayerStats.Instance.OnPlayerHPRegenChanged -= PlayerStats_OnPlayerHPRegenChanged;
+        PlayerMovement.Instance.OnPlayerRoll -= PlayerMovement_OnPlayerRoll;
+        GameInput.Instance.OnPlayerInteractCanceled -= GameInput_OnPlayerInteractCanceled;
+        VideoTipUI.Instance.OnVideoTipPanelOpened -= VideoTipUI_OnVideoTipPanelOpened;
+        VideoTipUI.Instance.OnVideoTipPanelClosed -= VideoTipUI_OnVideoTipPanelClosed;
+
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
+            PlayerTabMenuUI.Instance.OnPlayerTabClosed -= PlayerTabMenuUI_OnPlayerTabClosed;
+            PlayerTabMenuUI.Instance.OnPlayerTabOpened -= PlayerTabMenuUI_OnPlayerTabOpened;
+        }
+
     }
 }

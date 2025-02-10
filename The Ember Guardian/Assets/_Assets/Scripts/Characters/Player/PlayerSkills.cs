@@ -121,6 +121,8 @@ public class PlayerSkills : MonoBehaviour
     }
 
     private void GameInput_OnPlayerRightSkillPerformed(object sender, EventArgs e) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+
         if (activeSkillRight == null) return;
         if (!rightSkillReady) return;
 
@@ -129,6 +131,8 @@ public class PlayerSkills : MonoBehaviour
     }
 
     private void GameInput_OnPlayerLeftSkillPerformed(object sender, EventArgs e) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+
         if (activeSkillLeft == null) return;
         if (!leftSkillReady) return;
 

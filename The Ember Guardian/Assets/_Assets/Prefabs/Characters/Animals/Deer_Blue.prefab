@@ -80,6 +80,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 1.038
       objectReference: {fileID: 0}
+    - target: {fileID: 2860449034367427962, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 2860449034367427962, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.39
+      objectReference: {fileID: 0}
     - target: {fileID: 6403854156431032292, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -120,6 +128,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6493855152838963032, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192251102821090760, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
+      propertyPath: m_Color.b
+      value: 0.9960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192251102821090760, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192251102821090760, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8980393
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192251102821090760, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192251102821090760, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[0]
+      value: -1396649723
+      objectReference: {fileID: 0}
     - target: {fileID: 7572017442506466054, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.424
@@ -132,7 +164,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Deer_Blue
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 9159335072942603338, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 563336912122222426, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

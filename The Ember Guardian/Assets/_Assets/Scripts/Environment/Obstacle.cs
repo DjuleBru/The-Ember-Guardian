@@ -70,7 +70,7 @@ public class Obstacle : MonoBehaviour {
     protected void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
-        Player.Instance.SetCanDropOrbOnTheFloor(false);
+        Player.Instance.SetInPayCurrencyArea(true);
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         playerInTriggerArea = true;
     }
@@ -78,7 +78,7 @@ public class Obstacle : MonoBehaviour {
     protected void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
-        Player.Instance.SetCanDropOrbOnTheFloor(true);
+        Player.Instance.SetInPayCurrencyArea(false);
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
         payCurrencyUI.SetPlayerInteracting(false);
         playerInTriggerArea = false;

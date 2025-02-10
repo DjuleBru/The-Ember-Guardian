@@ -20,7 +20,7 @@ public class PlayerAim : MonoBehaviour
 
     private bool isUsingGamepad;
     private bool isAimingSight;
-    private bool canAim = true;
+    private bool isRolling = false;
 
     private float aimAngle;
     private float aimHeight;
@@ -65,7 +65,8 @@ public class PlayerAim : MonoBehaviour
     }
 
     private void Update() {
-        if (!canAim) return;
+        if (isRolling) return;
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
 
         if (isUsingGamepad) {
             HandleAimGamepad(GameInput.Instance.GetAimInput());
@@ -200,11 +201,11 @@ public class PlayerAim : MonoBehaviour
 
 
     private void PlayerMovement_OnPlayerRollEnded(object sender, EventArgs e) {
-        canAim = true;
+        isRolling = false;
     }
 
     private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
-        canAim = false;
+        isRolling = true;
     }
 
     private void PlayerShoot_OnPlayerAimedSightEnded(object sender, EventArgs e) {
@@ -213,19 +214,13 @@ public class PlayerAim : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerAimedSightStarted(object sender, EventArgs e) {
-        CameraManager.Instance.ChangeCameraTarget(aimSightTransform);
+        CameraManager.Instance.ChangeCameraTarget(aimSightTransform, false);
         OnPlayerAimSightStarted?.Invoke(this, EventArgs.Empty);
     }
 
     public void AddRecoil(float recoil, float recoilDamping) {
         currentRecoil = recoil;
         this.recoilDamping = recoilDamping;
-    }
-
-    public void SetCanAim(bool canAim)
-    {
-        this.canAim = canAim;
-
     }
 
     public void SetGunStraight()

@@ -11,7 +11,9 @@ public class Dog : MonoBehaviour
     public event EventHandler OnPlayerTriggeredOut;
 
     private DogAI dogAI;
-    public DogAI.State currentIdleState;
+    [SerializeField] private DogAI.State initialIdleState;
+    [SerializeField] private DogAI.State initialState;
+    private DogAI.State currentIdleState;
 
     public event EventHandler OnIdleStateChanged;
     public event EventHandler OnPlayerCalledDog;
@@ -23,12 +25,11 @@ public class Dog : MonoBehaviour
 
     private void Start() {
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
-        currentIdleState = DogAI.State.idle;
+        currentIdleState = initialIdleState;
     }
 
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
-        if (Player.Instance.GetInteractingWithMerchant()) return;
-        if (PauseMenuUI.Instance.isPaused) return;
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
 
         if (currentIdleState == DogAI.State.walkWithPlayer) {
 
@@ -59,7 +60,7 @@ public class Dog : MonoBehaviour
 
     public void MoveOnTeleporter(Transform teleporterPlayerPosition) {
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        transform.position = teleporterPlayerPosition.position;
+        SetPosition(teleporterPlayerPosition.position);
 
         // To make the dog sit down
         dogAI.SetState(DogAI.State.idle);
@@ -70,9 +71,14 @@ public class Dog : MonoBehaviour
         return currentIdleState;
     }
 
+    public DogAI.State GetInitialState() {
+        return initialState;
+    }
+
     public void SetPosition(Vector3 position) {
         transform.position = position;
         GetComponent<MobMovement>().SetMoveTarget(position);
+        dogAI.SetInitialPosition(position);
     }
 
     private void OnDestroy() {

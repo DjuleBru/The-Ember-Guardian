@@ -18,6 +18,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
     private float backpackBarDiplayTimer = 0f;
     private bool isFadingOut = true;
     private bool isFadingIn = false;
+    private bool tabMenuOpen = false;
 
     private void Start() {
         uICurrencyManager.OnCurrencyDropped += UICurrencyManager_OnCurrencyDropped;
@@ -27,15 +28,34 @@ public class UICurrencyManagerVisual : MonoBehaviour
 
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
+
+        if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
+            PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
+            PlayerTabMenuUI.Instance.OnPlayerTabOpened += PLayerTabMenuUI_OnPlayerTabOpened;
+        }
+    }
+
+    private void PLayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
+        tabMenuOpen = true;
+        isFadingIn = true;
+    }
+
+    private void PlayerTabMenuUI_OnPlayerTabClosed(object sender, System.EventArgs e) {
+        tabMenuOpen = false; 
+        isFadingOut = true;
+        backpackDisplayTimer = fadeOutDuration; // Initialise le timer pour le fade
     }
 
     private void Update() {
         if (debugAlwaysShow) return;
 
+
         if (isFadingIn) {
             HandleFadeIn();
             return;
         }
+
+        if (tabMenuOpen) return;
 
         HandleFadeOut();
     }
@@ -127,6 +147,13 @@ public class UICurrencyManagerVisual : MonoBehaviour
     private void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
         if (backpackAlmostFull) {
             //ShowBackpack(2f);
+        }
+    }
+
+    private void OnDestroy() {
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
+            PlayerTabMenuUI.Instance.OnPlayerTabClosed -= PlayerTabMenuUI_OnPlayerTabClosed;
+            PlayerTabMenuUI.Instance.OnPlayerTabOpened -= PLayerTabMenuUI_OnPlayerTabOpened;
         }
     }
 

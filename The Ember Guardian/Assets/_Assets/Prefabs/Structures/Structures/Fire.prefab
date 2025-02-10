@@ -11279,7 +11279,7 @@ MonoBehaviour:
   m_Intensity: 0.32
   m_LightVolumeIntensity: 0.5
   m_LightVolumeIntensityEnabled: 1
-  m_ApplyToSortingLayers: 797e1f11b7e7406305d1c0ac4302e2a0159706bb01e06951c5f28fcad99f534563b1ca2987c78f8043b5ffae19c70efd000000004142e35635132510b73efa16
+  m_ApplyToSortingLayers: 797e1f11b7e7406305d1c0acb73efa16
   m_LightCookieSprite: {fileID: 21300000, guid: bb89a9673f1665d428aeabe73cc3bdf8, type: 3}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -38022,7 +38022,7 @@ MonoBehaviour:
   insaneFireRadius: 55
   orbFuelValue: 10
   fuelDepletionRate: 0.05
-  criticalFuelTreshold: 12
+  criticalFuelTreshold: 14
   calmFuelTreshold: 0
   mildFuelTreshold: 20
   wildFuelTreshold: 50
@@ -38126,7 +38126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4903c4891a8d8b844a4cabb2a414e68a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  structureLights: []
   structureSpriteRenderer: {fileID: 3164822574766202836}
   structureFunctionIconSpriteRenderer: {fileID: 3493313870643483912}
   greyedStructionIconColor: {r: 0, g: 0, b: 0, a: 0}

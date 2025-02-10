@@ -77,7 +77,6 @@ public class HubMerchantTalkUI : MonoBehaviour
                 hubMerchant.SetPlayerFinishedTalkingWithMerchant(showShopAfterDialog);
                 talkPanelUIGameObject.SetActive(false);
                 CameraManager.Instance.ZoomOut(true, 1f);
-                Debug.Log("OnAnyMerchantEndTalk");
                 OnAnyMerchantEndTalk?.Invoke(this, EventArgs.Empty);
                 OnMerchantEndTalk?.Invoke(this, EventArgs.Empty);
             }

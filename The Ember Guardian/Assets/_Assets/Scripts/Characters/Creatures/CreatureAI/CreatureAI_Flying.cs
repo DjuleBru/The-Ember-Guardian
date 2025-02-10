@@ -19,6 +19,8 @@ public class CreatureAI_Flying : CreatureAI
     private float distanceToDropOnTarget;
     private float yOffset;
 
+    private Vector3 lastPlayerHitPosition;
+
     protected override void Start() {
         base.Start();
         mobAttack.OnMobAttackHit += MobAttack_OnMobAttackHit;
@@ -33,6 +35,7 @@ public class CreatureAI_Flying : CreatureAI
         repositionTimer = repositionCooldown;
         roamTimer = 0;
         mobAttack.RemoveAttackTarget();
+        lastPlayerHitPosition = transform.position;
     }
 
     protected override void Update() {
@@ -42,7 +45,7 @@ public class CreatureAI_Flying : CreatureAI
 
         if (isRepositioning) {
             repositionTimer -= Time.deltaTime;
-            RoamAroundPlayer();
+            RoamAroundLastPlayerHitPosition();
             if (repositionTimer <= 0) {
                 ChangeState(State.moveToTarget);
                 isRepositioning = false; // Reprise du comportement normal
@@ -188,19 +191,18 @@ public class CreatureAI_Flying : CreatureAI
         creatureMovement.SetMoveTarget(targetDestination);
     }
 
-    protected void RoamAroundPlayer() {
+    protected void RoamAroundLastPlayerHitPosition() {
 
         roamTimer -= Time.deltaTime;
 
         if (roamTimer < 0) {
             roamTimer = roamChangeDestinationRate;
 
-            Vector3 positionToRoamAround = Player.Instance.transform.position;
             // Add y position randomized
             float yRandomized = UnityEngine.Random.Range(minAltitude, minAltitude*2);
-            positionToRoamAround.y += yRandomized;
+            lastPlayerHitPosition.y += yRandomized;
 
-            RoamBehavior.RoamAroundPoint(creatureMovement, roamRadius, positionToRoamAround, true);
+            RoamBehavior.RoamAroundPoint(creatureMovement, roamRadius, lastPlayerHitPosition, true);
         }
     }
 }

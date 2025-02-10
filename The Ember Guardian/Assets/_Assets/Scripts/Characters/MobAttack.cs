@@ -19,6 +19,7 @@ public class MobAttack : MonoBehaviour
 
     protected float attackTimer;
     protected int attackDamage;
+    protected int initialAttackDamage;
 
     protected GameObject attackTargetGameObject;
     protected IDamageable attackTargetIDamageable;
@@ -178,6 +179,12 @@ public class MobAttack : MonoBehaviour
     public bool GetIsRangedAttack() {
         return isProjectileAttack;
     }
+    public void BuffDamage(float buff) {
+        attackDamage = (int)(attackDamage*buff);
+    }
 
+    public void ResetDamageBuff() {
+        attackDamage = initialAttackDamage;
+    }
 
 }

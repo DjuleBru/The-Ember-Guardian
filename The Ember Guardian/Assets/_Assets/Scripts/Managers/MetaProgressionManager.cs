@@ -52,6 +52,7 @@ public class MetaProgressionManager : MonoBehaviour
     private void Update() {
         if(Input.GetKeyDown(KeyCode.H)) {
             //SaveHubGems();
+            //HUBManager.Instance.SaveHub();
         }
     }
 
@@ -252,12 +253,10 @@ public class MetaProgressionManager : MonoBehaviour
 
     public bool GetMerchantUnlocked(HubMerchant.HubMerchantType merchantType) {
         string key = merchantType.ToString() + "_Unlocked";
-        Debug.Log("GetMerchantUnlocked " + merchantType + ES3.Load(key, false));
         return ES3.Load(key, false);
     }
 
     public void SetMerchantUnlocked(HubMerchant.HubMerchantType merchantType) {
-        Debug.Log("SetMerchantUnlocked " + merchantType);
         string key = merchantType.ToString() + "_Unlocked";
         ES3.Save(key, true);
     }
@@ -569,13 +568,6 @@ public class MetaProgressionManager : MonoBehaviour
     #endregion
 
     #region OTHER
-    public void SetFirstGunBoughtTooltipShown() {
-        ES3.Save("firstGunBoughtTooltipShown", true);
-    }
-
-    public bool GetFirstGunBoughtTooltipShown() {
-        return ES3.Load("firstGunBoughtTooltipShown", false);
-    }
     public bool GetPlayerUnlockedFlagCarry() {
         return ES3.Load("playerUnlockedFlagCarry", false);
     }

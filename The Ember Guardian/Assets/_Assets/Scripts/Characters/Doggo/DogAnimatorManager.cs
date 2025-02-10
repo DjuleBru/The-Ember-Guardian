@@ -70,7 +70,7 @@ public class DogAnimatorManager : MonoBehaviour {
     private void Start() {
         dogAI.OnStateChanged += DogAI_OnStateChanged;
         dogAI.OnDogBite += DogAI_OnDogBite;
-        dogAI.SetReadyToMove(false);
+        dogMovement.SetReadyToMoveAnimator(false);
         DogDigAbility.Instance.OnSniffStart += DogDigAbility_OnSniffStart;
 
         digAbilityUnlocked = DogStats.Instance.GetdigResourceAbilityUnlocked();
@@ -335,11 +335,13 @@ public class DogAnimatorManager : MonoBehaviour {
     }
 
     public void SetReadyToMove() {
-        dogAI.SetReadyToMove(true);
+        //dogAI.SetReadyToMove(true);
+        dogMovement.SetReadyToMoveAnimator(true);
     }
 
     public void SetUnReadyToMove() {
-        dogAI.SetReadyToMove(false);
+        //dogAI.SetReadyToMove(false);
+        dogMovement.SetReadyToMoveAnimator(false);
     }
 
     private void ResetAllTriggers() {

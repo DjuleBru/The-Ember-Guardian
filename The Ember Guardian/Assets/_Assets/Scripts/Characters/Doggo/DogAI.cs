@@ -27,7 +27,6 @@ public class DogAI : MonoBehaviour
     private Vector3 stickWithPlayerMoveTarget;
     private Vector3 stayPointToRoamAround;
     private bool hasSetSpeed;
-    private bool readyToMove;
 
     private float roamRadius = 5f;
     private float roamTimer;
@@ -83,13 +82,16 @@ public class DogAI : MonoBehaviour
         PlayerMovement.Instance.OnPlayerRunStarted += PlayerMovement_OnPlayerRunStarted;
         PlayerMovement.Instance.OnPlayerRunStopped += PlayerMovement_OnPlayerRunStopped;
 
-        currentBehaviorIdleState = State.stay;
+        currentBehaviorIdleState = Dog.Instance.GetIdleState();
+        ChangeState(Dog.Instance.GetInitialState());
+        stickWithPlayerMoveTarget = transform.position;
         stayPointToRoamAround = transform.position;
         roamTimer = roamChangeDestionationRate;
 
         hasBiteUnlocked = DogStats.Instance.GetBiteAbilityUnlocked();
         biteCooldown = DogStats.Instance.GetBiteCooldown();
         biteDamage = DogStats.Instance.GetBiteDamage();
+
     }
 
     private void Update() {
@@ -314,7 +316,6 @@ public class DogAI : MonoBehaviour
         }
 
         roamTimer -= Time.deltaTime;
-        if (!readyToMove) return;
 
         if (roamTimer < 0) {
             roamTimer = roamChangeDestionationRate;
@@ -329,7 +330,6 @@ public class DogAI : MonoBehaviour
             hasSetSpeed = true;
         }
 
-        if (!readyToMove) return;
         roamTimer -= Time.deltaTime;
 
         if (roamTimer < 0) {
@@ -351,8 +351,6 @@ public class DogAI : MonoBehaviour
     }
 
     private void StickWithPlayer() {
-        if (!readyToMove) return;
-
         float currentPlayerDirection = PlayerMovement.Instance.GetLastMoveDir();
 
         // Vérifiez si la direction a changé
@@ -419,9 +417,6 @@ public class DogAI : MonoBehaviour
         ChangeState(State.walkWithPlayer);
     }
 
-    public void SetReadyToMove(bool readyToMove) {
-        this.readyToMove = readyToMove;
-    }
 
     private void CheckCreaturesInGrowlRange() {
         closestCreature = creatureDetectionCollider.GetClosestCreature();
@@ -432,7 +427,6 @@ public class DogAI : MonoBehaviour
         if (ambushOrCreatureClose && state != State.growling && state != State.barking) {
 
             ChangeState(State.growling);
-            SetReadyToMove(true);
 
         } else {
             if(state == State.growling && !ambushOrCreatureClose) {
@@ -455,6 +449,11 @@ public class DogAI : MonoBehaviour
         } else {
             ChangeState(State.growling);
         }
+    }
+
+    public void SetInitialPosition(Vector3 position) {
+        stickWithPlayerMoveTarget = position;
+
     }
 
     public Creature GetClosestCreature() {

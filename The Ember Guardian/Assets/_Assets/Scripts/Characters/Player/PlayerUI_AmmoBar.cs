@@ -32,6 +32,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     private bool isFadingIn = false;
     private bool ammoBarCritical = false;
     private bool inAmmoCrafterArea = false;
+    private bool tabMenuOpen = false;
 
     public event EventHandler OnAmmoTickAdded;
 
@@ -52,11 +53,28 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 
         Gun.OnAnyGunMaxAmmoChanged += Gun_OnAnyGunMaxAmmoChanged;
 
+
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
+            PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
+            PlayerTabMenuUI.Instance.OnPlayerTabOpened += PLayerTabMenuUI_OnPlayerTabOpened;
+        }
+
         RefreshAmmoBar();
         RefreshAmmoBarBackground();
         ammoBarGameObject.SetActive(false);
         ammoBarBackgroundGameObject.SetActive(false);
         ammoBarCanvasGroup = ammoBarGameObject.GetComponent<CanvasGroup>();
+    }
+
+    private void PLayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
+        tabMenuOpen = true;
+        isFadingIn = true;
+    }
+
+    private void PlayerTabMenuUI_OnPlayerTabClosed(object sender, System.EventArgs e) {
+        tabMenuOpen = false;
+        isFadingOut = true;
+        ammoBarDisplayTimer = fadeOutDuration; // Initialise le timer pour le fade
     }
 
     private void Player_OnPlayerDied(object sender, EventArgs e) {
@@ -69,7 +87,6 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     }
 
     private void Update() {
-        if (ammoBarCritical) return;
         if (Player.Instance.GetDead()) return;
 
         if (isFadingIn) {
@@ -77,6 +94,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
             return;
         }
 
+        if (ammoBarCritical) return;
         if (inAmmoCrafterArea) return;
 
         HandleFadeOut();
@@ -170,7 +188,6 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         RefreshAmmoBar();
     }
 
-
     private IEnumerator RefillAmmoBar(int ammoCount) {
         for (int i = 0; i < ammoCount; i++) {
 
@@ -259,8 +276,6 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 
         ammoBarGameObject.SetActive(true);
         ammoBarBackgroundGameObject.SetActive(true);
-
-        Debug.Log(ammoBarDisplayTimer);
     }
 
     private void OnDestroy() {
@@ -276,5 +291,10 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 
         Gun.OnAnyGunMaxAmmoChanged -= Gun_OnAnyGunMaxAmmoChanged;
 
+
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
+            PlayerTabMenuUI.Instance.OnPlayerTabClosed -= PlayerTabMenuUI_OnPlayerTabClosed;
+            PlayerTabMenuUI.Instance.OnPlayerTabOpened -= PLayerTabMenuUI_OnPlayerTabOpened;
+        }
     }
 }

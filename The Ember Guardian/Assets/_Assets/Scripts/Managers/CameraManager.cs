@@ -44,11 +44,14 @@ public class CameraManager : MonoBehaviour
         StartZoom(targetOrthographicSize, zoomDuration);
     }
 
-    public void ChangeCameraTarget(Transform target) {
+    public void ChangeCameraTarget(Transform target, bool disablePlayerInputs = true) {
         virtualCamera.m_Follow = target;
+        Player.Instance.SetCameraHasOtherTarget(disablePlayerInputs);
     }
+
     public void ResetCameraTargetToPlayer() {
         virtualCamera.m_Follow = Player.Instance.transform;
+        Player.Instance.SetCameraHasOtherTarget(false);
     }
 
     private void StartZoom(float targetSize, float zoomDuration) {

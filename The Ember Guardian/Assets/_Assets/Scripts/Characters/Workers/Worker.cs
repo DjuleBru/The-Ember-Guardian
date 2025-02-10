@@ -38,6 +38,7 @@ public class Worker : Mob {
 
     private void Start() {
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
+        health = 1;
     }
 
     private void Update() {

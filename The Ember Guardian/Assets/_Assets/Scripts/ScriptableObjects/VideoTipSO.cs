@@ -22,6 +22,8 @@ public class VideoTipSO : ScriptableObject
         Hunters,
         GunTip,
         StoringGems,
+        SwapWeapon,
+
     }
 
     public VideoTipType tipType;

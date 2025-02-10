@@ -587,9 +587,6 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
     private void UnlockGun() {
         PlayerShoot.Instance.GetGun(linkedGunSO).SetGunUnlocked();
-        if(!MetaProgressionManager.Instance.GetFirstGunBoughtTooltipShown()) {
-            PlayerTooltipManager.Instance.PrepareTooltipInstruction("Press", "To swap weapon", InputControlIcons.Control.OpenPlayerMenu, 10f);
-        }
     }
 
     private void UnlockGunAbility() {

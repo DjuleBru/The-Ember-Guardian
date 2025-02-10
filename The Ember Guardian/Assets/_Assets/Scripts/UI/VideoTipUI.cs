@@ -26,6 +26,7 @@ public class VideoTipUI : MonoBehaviour
     private VideoTipSO shownVideoTipSO;
 
     private bool tipFinishedDisplaying;
+    private bool panelOpen;
     private List<TextSO> tipDescriptionTextSOList;
     private List<TipDescriptionTextTemplate> tipDescriptionTextTemplateList = new List<TipDescriptionTextTemplate>();
     private List<float> tipTextDelayToShowList;
@@ -44,8 +45,14 @@ public class VideoTipUI : MonoBehaviour
     }
 
     private void Start() {
+        GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         videoTipUIMainPanel.SetActive(false);
         replayTipButtonGO.GetComponent<Button>().interactable = false;
+    }
+
+    private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
+        if (!panelOpen) return;
+        SkipTipOrResumeButton();
     }
 
     private void Update() {
@@ -114,11 +121,11 @@ public class VideoTipUI : MonoBehaviour
     }
 
     private void OpenPanel() {
+        panelOpen = true;
         videoTipUIMainPanel.SetActive(true);
+        videoTipUIMainPanelAnimator.ResetTrigger("Hide");
         videoTipUIMainPanelAnimator.SetTrigger("Show");
         EventSystem.current.SetSelectedGameObject(resumeButtonGO);
-
-        Player.Instance.DisableControlInputs();
 
         if(DayNightManager.Instance != null) {
             DayNightManager.Instance.SetCyclePaused(true, true);
@@ -159,10 +166,10 @@ public class VideoTipUI : MonoBehaviour
     }
 
     public void ClosePanel() {
+        panelOpen = false;
+        videoTipUIMainPanelAnimator.ResetTrigger("Show");
         videoTipUIMainPanelAnimator.SetTrigger("Hide");
         ActivatePanelAfterDelay(false, .5f);
-
-        Player.Instance.EnableControlInputs();
 
         if (DayNightManager.Instance != null) {
             DayNightManager.Instance.SetCyclePaused(false, true);
@@ -207,4 +214,8 @@ public class VideoTipUI : MonoBehaviour
     }
 
     #endregion
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
+    }
 }

@@ -21,6 +21,7 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO recruitEmberlingTip;
     [SerializeField] private VideoTipSO gunTip;
     [SerializeField] private VideoTipSO storeGemsTip;
+    [SerializeField] private VideoTipSO swapWeaponTip;
 
     private bool isLevelScene;
     private bool isTutorialScene;
@@ -41,6 +42,7 @@ public class VideoTipManager : MonoBehaviour
     private bool dayNightCycleTipShown;
     private bool gunTipShown;
     private bool storeGemsTipShown;
+    private bool swapWeaponTipShown;
 
     private void Awake() {
         Instance = this;
@@ -83,7 +85,6 @@ public class VideoTipManager : MonoBehaviour
         TutorialCollider.OnRecruitWorkerTipCollided += TutorialCollider_OnRecruitWorkerTipCollided;
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn_Tutorial;
-        DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
     }
 
@@ -97,9 +98,25 @@ public class VideoTipManager : MonoBehaviour
     private void SubscribeToHubEvents() {
         HubMerchant.OnAnyPlayerTriggeredIn += HubMerchant_OnAnyPlayerTriggeredIn;
         HubChest.Instance.OnChestOpened += HubChest_OnChestOpened;
+        HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
     }
 
     #region HUB
+    private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
+        HubMerchant hubMerchant = (HubMerchant)sender;
+        if (hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.HeroMerchant) {
+            if (swapWeaponTipShown) return;
+            if (!PlayerStats.Instance.GetCanHold2WeaponsUnlocked()) return;
+
+            VideoTipUI.Instance.PlayTipSO(swapWeaponTip, 1f);
+
+            swapWeaponTipShown = true;
+            ES3.Save("swapWeaponTipShown", true);
+
+        }
+    }
+
+
     private void HubChest_OnChestOpened(object sender, EventArgs e) {
         if (storeGemsTipShown) return;
 
@@ -111,6 +128,8 @@ public class VideoTipManager : MonoBehaviour
 
     private void HubMerchant_OnAnyPlayerTriggeredIn(object sender, EventArgs e) {
         HubMerchant hubMerchant = (HubMerchant)sender;
+        if (!hubMerchant.GetMerchantUnlocked()) return;
+
         if(hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.GunMerchant) {
             if (gunTipShown) return;
 
@@ -122,6 +141,7 @@ public class VideoTipManager : MonoBehaviour
     }
 
     #endregion
+
     #region LEVEL
 
     private void Player_OnPlayerExitedCamp(object sender, EventArgs e) {
@@ -174,6 +194,7 @@ public class VideoTipManager : MonoBehaviour
             VideoTipUI.Instance.PlayTipSO(healTentTip, .3f);
             healTentTipShown = true;
         }
+
         if (structure.GetStructureSO().structureType == StructureSO.StructureType.fire) {
             if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Dusk) return;
             if (fireManagementTipShown) return;
@@ -181,12 +202,6 @@ public class VideoTipManager : MonoBehaviour
             VideoTipUI.Instance.PlayTipSO(fireManagementTip, 0f);
             fireManagementTipShown = true;
         }
-    }
-
-    private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
-        if (setupDefensesTipShown) return;
-        VideoTipUI.Instance.PlayTipSO(setupDefensesTip, 7f);
-        setupDefensesTipShown = true;
     }
 
     private void StructureLocation_OnAnyStructureBuilt(object sender, EventArgs e) {
@@ -197,6 +212,12 @@ public class VideoTipManager : MonoBehaviour
             if (hunterTipShown) return;
             VideoTipUI.Instance.PlayTipSO(hunterTip, 0f);
             hunterTipShown = true;
+        }
+
+        if (structureSO.structureType == StructureSO.StructureType.tower) {
+            if (setupDefensesTipShown) return;
+            VideoTipUI.Instance.PlayTipSO(setupDefensesTip, 1f);
+            setupDefensesTipShown = true;
         }
     }
 
@@ -235,6 +256,7 @@ public class VideoTipManager : MonoBehaviour
         dayNightCycleTipShown = ES3.Load("dayNightCycleTipShown", false);
         gunTipShown = ES3.Load("gunTipShown", false);
         storeGemsTipShown = ES3.Load("storeGemsTip", false);
+        swapWeaponTipShown = ES3.Load("swapWeaponTipShown", false);
     }
 
 
@@ -258,7 +280,6 @@ public class VideoTipManager : MonoBehaviour
             TutorialCollider.OnRecruitWorkerTipCollided -= TutorialCollider_OnRecruitWorkerTipCollided;
             StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
             Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn_Tutorial;
-            DayNightManager.Instance.OnDuskStart -= DayNightManager_OnDuskStart;
             DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
         }
 

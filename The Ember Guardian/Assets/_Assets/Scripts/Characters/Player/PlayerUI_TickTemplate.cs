@@ -34,7 +34,11 @@ public class PlayerUI_TickTemplate : MonoBehaviour
 
         outMmfPlayer.PlayFeedbacks();
 
-        StartCoroutine(DestroyGameObjectAfterDelay(1f));
+        if(gameObject.activeInHierarchy) {
+            StartCoroutine(DestroyGameObjectAfterDelay(1f));
+        } else {
+            Destroy(gameObject);
+        }
     }
 
     private IEnumerator DestroyGameObjectAfterDelay(float delay) {

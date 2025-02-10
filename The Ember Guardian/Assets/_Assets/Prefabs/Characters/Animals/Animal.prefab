@@ -303,7 +303,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -896535867
-  m_SortingLayer: -6
+  m_SortingLayer: -7
   m_SortingOrder: 0
   m_Sprite: {fileID: 1122044462, guid: 58709a1114dd1bf4db45bbc1845a38fb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -483,6 +483,10 @@ MonoBehaviour:
   projectileTarget: {fileID: 2164090789109322166}
   projectileParent: {fileID: 7572017442506466054}
   dropSpawnPoint: {fileID: 2261491866871385124}
+  mobHitPS_Splatter: {fileID: 0}
+  mobHitPS_Splatter_Continuous: {fileID: 0}
+  mobHitPS_Splatter_Crit: {fileID: 0}
+  mobHitPS_Front: {fileID: 0}
   animalSO: {fileID: 0}
 --- !u!114 &2242113373876001478
 MonoBehaviour:
@@ -500,6 +504,11 @@ MonoBehaviour:
   acceleration: 7
   deceleration: 7
   velPower: 0.9
+  hadSpeedVariations: 0
+  minSpeedMultiplier: 0.8
+  maxSpeedMultiplier: 1.2
+  speedLerpDuration: 2
+  speedChangeInterval: 5
 --- !u!114 &6553101672226868008
 MonoBehaviour:
   m_ObjectHideFlags: 0

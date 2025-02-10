@@ -180,7 +180,7 @@ public class Structure : MonoBehaviour {
         playerInTriggerArea = true;
 
         if(playerCanInteract) {
-            Player.Instance.SetCanDropOrbOnTheFloor(false);
+            Player.Instance.SetInPayCurrencyArea(true);
         }
     }
 
@@ -192,7 +192,7 @@ public class Structure : MonoBehaviour {
         playerInTriggerArea = false;
         payCurrencyUI.SetPlayerInteracting(false);
 
-        Player.Instance.SetCanDropOrbOnTheFloor(true);
+        Player.Instance.SetInPayCurrencyArea(false);
     }
 
     #region InteractionTypes

@@ -79,7 +79,7 @@ public class StructureLocation : MonoBehaviour {
         if (collision.gameObject.GetComponent<Player>() == null) return;
         if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
 
-        Player.Instance.SetCanDropOrbOnTheFloor(false);
+        Player.Instance.SetInPayCurrencyArea(true);
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         playerInTriggerArea = true;
     }
@@ -88,7 +88,7 @@ public class StructureLocation : MonoBehaviour {
         if (!structureLocationUnlocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
-        Player.Instance.SetCanDropOrbOnTheFloor(true);
+        Player.Instance.SetInPayCurrencyArea(false);
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
         payOrbsUI.SetPlayerInteracting(false);
         playerInTriggerArea = false;

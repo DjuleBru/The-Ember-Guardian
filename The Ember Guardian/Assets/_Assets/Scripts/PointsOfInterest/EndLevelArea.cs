@@ -47,10 +47,18 @@ public class EndLevelArea : MonoBehaviour
 
     private void AddMobToMobsInArea(Mob mob) {
         mobsInArea.Add(mob);
-        mob.GetComponent<CreatureAI>().OnCreatureAggro += CreatureAI_OnCreatureAggro;
-        mob.GetComponent<CreatureAI>().OnCreatureUnaggro += CreatureAI_OnCreatureUnaggro;
+        mob.GetComponent<CreatureAI>().OnCreatureTargetPlayer += CreatureAI_OnCreatureTargetPlayer;
+        mob.GetComponent<CreatureAI>().OnCreatureUntargetPlayer += CreatureAI_OnCreatureUnaggro;
 
     }
+
+    private void CreatureAI_OnCreatureTargetPlayer(object sender, EventArgs e) {
+        CreatureAI creatureAI = (CreatureAI)sender;
+        Mob mob = creatureAI.GetComponent<Mob>();
+        mobsAggroingPlayer.Add(mob);
+
+    }
+
 
     private void CreatureAI_OnCreatureUnaggro(object sender, EventArgs e) {
         CreatureAI creatureAI = (CreatureAI)sender;
@@ -69,12 +77,6 @@ public class EndLevelArea : MonoBehaviour
             if (playerInTriggerArea) return;
             MusicManager.Instance.StopEndLevelMusic();
         }
-    }
-
-    private void CreatureAI_OnCreatureAggro(object sender, EventArgs e) {
-        CreatureAI creatureAI = (CreatureAI)sender;
-        Mob mob = creatureAI.GetComponent<Mob>();
-        mobsAggroingPlayer.Add(mob);
     }
 
     private void RemoveMobFromMobsInArea(Mob mob) {

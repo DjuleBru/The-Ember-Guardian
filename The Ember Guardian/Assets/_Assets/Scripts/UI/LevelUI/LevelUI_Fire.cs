@@ -20,6 +20,7 @@ public class LevelUI_Fire : MonoBehaviour
     private float displayTimer;
     private bool isDisplaying;
     private bool isFadingOut;
+    private bool fuelLevelCritical;
     private float fadeOutTimer;
     private float minDistanceToFireToShowUI = 18f;
 
@@ -53,6 +54,7 @@ public class LevelUI_Fire : MonoBehaviour
             }
         }
         else if (isFadingOut) {
+            if (fuelLevelCritical) return;
 
             fadeOutTimer += Time.deltaTime;
             float alpha = Mathf.Lerp(1f, 0f, fadeOutTimer / fadeOutDuration);
@@ -67,13 +69,13 @@ public class LevelUI_Fire : MonoBehaviour
     }
 
     private void Fire_OnFireFuelled(object sender, System.EventArgs e) {
-        if (Mathf.Abs(Player.Instance.transform.position.x - Fire.Instance.transform.position.x) < minDistanceToFireToShowUI) return;
 
         int currentBars = StructureUI_Fire.Instance.GetCurrentBarAmount();
         RefreshProgressBar(currentBars);
 
-        if (Fire.Instance.GetCurrentFuelLevel() >= Fire.Instance.GetCriticalFuelTreshold()) {
+        if (!Fire.Instance.GetFireFuelLevelCritical()) {
             criticalFuelAnimator.SetBool("FuelCritical", false);
+            fuelLevelCritical = false;
         }
     }
 
@@ -110,8 +112,9 @@ public class LevelUI_Fire : MonoBehaviour
         DisplayFireUI();
         RefreshProgressBar(e.currentBars);
 
-        if (Fire.Instance.GetCurrentFuelLevel() < Fire.Instance.GetCriticalFuelTreshold()) {
+        if (Fire.Instance.GetFireFuelLevelCritical()) {
             criticalFuelAnimator.SetBool("FuelCritical", true);
+            fuelLevelCritical = true;
         }
     }
 

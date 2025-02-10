@@ -24,6 +24,7 @@ public class PlayerUI_HPBar : MonoBehaviour
     private bool isFadingOut = false;
     private bool isFadingIn = false;
     private bool inTentArea = false;
+    private bool tabMenuOpen = false;
 
     public event EventHandler OnHPTickAdded;
 
@@ -48,9 +49,26 @@ public class PlayerUI_HPBar : MonoBehaviour
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
         PlayerStats.Instance.OnPlayerMaxHPChanged += PlayerStats_OnPlayerMaxHPChanged;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
+
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
+            PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
+            PlayerTabMenuUI.Instance.OnPlayerTabOpened += PLayerTabMenuUI_OnPlayerTabOpened;
+        }
+
         RefreshHPBar();
 
         hpBarGameObject.SetActive(false);
+    }
+
+    private void PLayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
+        tabMenuOpen = true;
+        isFadingIn = true;
+    }
+
+    private void PlayerTabMenuUI_OnPlayerTabClosed(object sender, System.EventArgs e) {
+        tabMenuOpen = false;
+        isFadingOut = true;
+        hpBarDiplayTimer = fadeOutDuration;
     }
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
@@ -123,7 +141,6 @@ public class PlayerUI_HPBar : MonoBehaviour
     }
 
     private void Player_OnPlayerDied(object sender, System.EventArgs e) {
-        Debug.Log(" hpBarGameObject.SetActive(false)");
         hpBarGameObject.SetActive(false);
     }
 
@@ -131,7 +148,6 @@ public class PlayerUI_HPBar : MonoBehaviour
         if (Player.Instance.GetHP() < 0) return;
 
         if(Player.Instance.GetHP() != 0) {
-            Debug.Log("hpBarGameObject.SetActive(true)");
             hpBarGameObject.SetActive(true);
         }
 
@@ -259,6 +275,12 @@ public class PlayerUI_HPBar : MonoBehaviour
             Tent.Instance.OnPlayerTriggeredIn -= Tent_OnPlayerTriggeredIn;
             Tent.Instance.OnPlayerTriggeredOut -= Tent_OnPlayerTriggeredOut;
             Fire.Instance.OnInitialFireActivated -= Fire_OnInitialFireActivated;
+
+            if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
+                PlayerTabMenuUI.Instance.OnPlayerTabClosed -= PlayerTabMenuUI_OnPlayerTabClosed;
+                PlayerTabMenuUI.Instance.OnPlayerTabOpened -= PLayerTabMenuUI_OnPlayerTabOpened;
+            }
         }
+
     }
 }

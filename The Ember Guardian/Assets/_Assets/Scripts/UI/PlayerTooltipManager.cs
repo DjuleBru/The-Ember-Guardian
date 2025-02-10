@@ -17,6 +17,8 @@ public class PlayerTooltipManager : MonoBehaviour
     private List<GunSO> gunSOAbilityPreparedList;
     private bool secondaryWeaponAbilityShown;
 
+    private int tryReloadAttemptAmount;
+
     #region GUN SECONDARY ABILITIES INSTRUCTIONS
     private string rifleText1 = "Press";
     private string rifleText2 = "Switch fire modes";
@@ -36,8 +38,22 @@ public class PlayerTooltipManager : MonoBehaviour
         GameInput.Instance.OnWeaponSecondaryAbilityPerformed += GameInput_OnWeaponSecondaryAbilityPerformed;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+        PlayerShoot.Instance.OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag += PlayerShoot_OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag;
+        PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
 
         gunSOAbilityPreparedList = ES3.Load("gunSOAbilityPreparedList", new List<GunSO>());
+    }
+
+    private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
+        tryReloadAttemptAmount = 0;
+    }
+
+    private void PlayerShoot_OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag(object sender, System.EventArgs e) {
+        tryReloadAttemptAmount++;
+
+        if(tryReloadAttemptAmount > 3) {
+            tooltipLeft.ShowTooltipInstruction("Hold", "Transfer ammo to belt", InputControlIcons.Control.Reload, 4f);
+        }
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
@@ -46,11 +62,11 @@ public class PlayerTooltipManager : MonoBehaviour
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, System.EventArgs e) {
 
-        if(!MetaProgressionManager.Instance.GetFirstGunBoughtTooltipShown()) {
-            StartCoroutine(ShowPreparedTooltipInstructionAfterDelay(1f));
-            MetaProgressionManager.Instance.SetFirstGunBoughtTooltipShown();
-        } else {
+        HubMerchant hubMerchant = (HubMerchant)sender;
+        if(hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.GunMerchant) {
+
             TryShowGunSecondaryAbilityTooltip();
+
         }
     }
 

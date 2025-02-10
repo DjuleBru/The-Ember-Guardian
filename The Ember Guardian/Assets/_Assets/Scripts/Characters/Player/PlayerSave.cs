@@ -21,7 +21,6 @@ public class PlayerSave : MonoBehaviour
 
     public void SavePrimaryActiveGunSO(GunSO gunSO) {
         if (gunSO == null) return;
-        Debug.Log("SavePrimaryActiveGunSO " + gunSO);
         ES3.Save("primaryActiveGunSO", gunSO);
     }
 
@@ -34,8 +33,7 @@ public class PlayerSave : MonoBehaviour
 
     public GunSO GetPrimaryActiveGun() {
         GunSO activeGun = ES3.Load("primaryActiveGunSO", initialActiveGun);
-
-        if(activeGun == null) {
+        if(activeGun == null || activeGun.name == "") {
             return initialActiveGun;
         }
 

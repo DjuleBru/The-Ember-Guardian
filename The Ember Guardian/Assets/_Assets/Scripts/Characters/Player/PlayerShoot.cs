@@ -14,6 +14,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerShootStopped;
     public event EventHandler OnPlayerCooldownTrigger;
     public event EventHandler OnPlayerCooldownAnimationTrigger;
+    public event EventHandler OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag;
     public event EventHandler OnPlayerReload;
     public event EventHandler OnPlayerReloadHandEnded;
     public event EventHandler OnPlayerReloadInterrupted;
@@ -44,6 +45,7 @@ public class PlayerShoot : MonoBehaviour
     private float setupLMGTime = 2.5f;
     private float setupLMGTimer;
     private bool settingUpLMG;
+    private bool holdingStationaryGun;
     private bool emptyingRevolverMag;
 
     public class OnAmmoRefilledEventArgs : EventArgs {
@@ -148,6 +150,95 @@ public class PlayerShoot : MonoBehaviour
             UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
         }
     }
+    private void Update() {
+
+        if (loadingShot && !shotLoaded) {
+            loadingShotTimer += Time.deltaTime;
+            if (loadingShotTimer > loadingShotTime) {
+                shotLoaded = true;
+                Shoot();
+                heldGun.SetCurrentBullet(0);
+                OnBulletsChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        if (playerJustPressedReload) {
+            playerJustPressedReloadTimer += Time.deltaTime;
+            if (playerJustPressedReloadTimer > .35f) {
+                playerJustPressedReload = false;
+                StartTransferringAmmoFromBagInGun();
+            }
+        }
+
+        if (transferringAmmoFromBag) {
+            transferringAmmoFromBagTimer += Time.deltaTime;
+            if (transferringAmmoFromBagTimer > transferringAmmoFromBagCooldown) {
+                transferringAmmoFromBagTimer = 0;
+                TransferNextAmmoFromBag();
+            }
+        }
+
+        if (coolingDown) {
+            shootCooldownTimer -= Time.deltaTime;
+
+            if (!coolDownAnimationTriggered) {
+                OnPlayerCooldownAnimationTrigger?.Invoke(this, EventArgs.Empty);
+                coolDownAnimationTriggered = true;
+            }
+
+            if (shootCooldownTimer <= (PlayerStats.Instance.GetShootCooldownTime() - shootCooldownSFXTriggerTime) && !coolDownSFXTriggered) {
+                OnPlayerCooldownTrigger?.Invoke(this, EventArgs.Empty);
+                coolDownSFXTriggered = true;
+            }
+
+            if (shootCooldownTimer <= 0) {
+                CooldownFinished();
+            }
+            return;
+        }
+
+        if (reloading) {
+            reloadTimer += Time.deltaTime;
+
+            if (reloadTimer >= handsReloadTime && reloadingHands) {
+                EndHandReload();
+            }
+
+            if (reloadTimer >= reloadTime) {
+                heldGun.SetCurrentBullet(heldGun.GetBulletsPerAmmoClip());
+                reloading = false;
+                OnPlayerReloadEnded?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        if (hasAmmoRegen) {
+            ammoRegenTimer -= Time.deltaTime;
+            if (ammoRegenTimer <= 0) {
+                ammoRegenTimer = ammoRegenTime;
+                AddAmmoClip(1);
+            }
+        }
+
+        if (settingUpLMG) {
+            setupLMGTimer += Time.deltaTime;
+
+            if (setupLMGTimer > setupLMGTime) {
+                settingUpLMG = false;
+                canShoot = true;
+
+                if (secondaryAbilityActive) {
+                    OnPlayerSetupLMGBipod?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    holdingStationaryGun = false;
+                    PlayerAim.Instance.SetLimitAimAngle(false);
+                    OnPlayerResetLMGBipod?.Invoke(this, EventArgs.Empty);
+                }
+            }
+
+        }
+    }
+
 
     public void SetPrimaryWeaponSO(GunSO gunSO) {
         primaryGunSO = gunSO;
@@ -210,94 +301,6 @@ public class PlayerShoot : MonoBehaviour
             gun.gameObject.SetActive(false);
 
             allGunSOList.Add(gun.GetGunSO());
-        }
-    }
-
-    private void Update() {
-
-        if (loadingShot && !shotLoaded) {
-            loadingShotTimer += Time.deltaTime;
-            if (loadingShotTimer > loadingShotTime) {
-                shotLoaded = true; 
-                Shoot();
-                heldGun.SetCurrentBullet(0);
-                OnBulletsChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
-
-        if (playerJustPressedReload) {
-            playerJustPressedReloadTimer += Time.deltaTime;
-            if(playerJustPressedReloadTimer > .35f) {
-                playerJustPressedReload = false;
-                StartTransferringAmmoFromBagInGun();
-            }
-        }
-
-        if(transferringAmmoFromBag) {
-            transferringAmmoFromBagTimer += Time.deltaTime;
-            if(transferringAmmoFromBagTimer > transferringAmmoFromBagCooldown) {
-                transferringAmmoFromBagTimer = 0;
-                TransferNextAmmoFromBag();
-            }
-        }
-
-        if(coolingDown) {
-            shootCooldownTimer -= Time.deltaTime;
-
-            if(!coolDownAnimationTriggered) {
-                OnPlayerCooldownAnimationTrigger?.Invoke(this, EventArgs.Empty);
-                coolDownAnimationTriggered = true;
-            }
-
-            if(shootCooldownTimer <= (PlayerStats.Instance.GetShootCooldownTime() - shootCooldownSFXTriggerTime) && !coolDownSFXTriggered) {
-                OnPlayerCooldownTrigger?.Invoke(this, EventArgs.Empty);
-                coolDownSFXTriggered = true;
-            }
-
-            if(shootCooldownTimer <= 0 ) {
-                CooldownFinished();
-            }
-            return;
-        }
-
-        if(reloading) {
-            reloadTimer += Time.deltaTime;
-
-            if(reloadTimer >= handsReloadTime && reloadingHands) {
-                EndHandReload();
-            }
-
-            if (reloadTimer >= reloadTime) {
-                heldGun.SetCurrentBullet(heldGun.GetBulletsPerAmmoClip());
-                reloading = false;
-                OnPlayerReloadEnded?.Invoke(this, EventArgs.Empty);
-            }
-        }
-
-        if (hasAmmoRegen) {
-            ammoRegenTimer -= Time.deltaTime;
-            if (ammoRegenTimer <= 0) {
-                ammoRegenTimer = ammoRegenTime;
-                AddAmmoClip(1);
-            }
-        }
-
-        if(settingUpLMG) {
-            setupLMGTimer += Time.deltaTime;
-
-            if(setupLMGTimer > setupLMGTime) {
-                settingUpLMG = false;
-                canShoot = true;
-
-                if(secondaryAbilityActive) {
-                    OnPlayerSetupLMGBipod?.Invoke(this, EventArgs.Empty);
-                } else {
-                    Player.Instance.SetCanMove(true);
-                    PlayerAim.Instance.SetLimitAimAngle(false);
-                    OnPlayerResetLMGBipod?.Invoke(this, EventArgs.Empty);
-                }
-            }
-
         }
     }
 
@@ -459,7 +462,6 @@ public class PlayerShoot : MonoBehaviour
                 gunRecoil = 0f;
                 gunKnockback = 0f;
 
-                Player.Instance.SetCanMove(false);
                 PlayerAim.Instance.SetGunStraight();
                 PlayerAim.Instance.SetLimitAimAngle(true, 10);
                 OnPlayerSetupLMGStarted?.Invoke(this, EventArgs.Empty);
@@ -470,6 +472,7 @@ public class PlayerShoot : MonoBehaviour
                 canShoot = false;
 
                 secondaryAbilityActive = true;
+                holdingStationaryGun = true;
 
             } else
             {
@@ -547,6 +550,11 @@ public class PlayerShoot : MonoBehaviour
 
         if (heldGun.GetCurrentAmmoClip() == 0) {
             OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+
+            if(UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count > 0) {
+                OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag?.Invoke(this, EventArgs.Empty);
+            }
+
             return;
         };
 
@@ -667,9 +675,10 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+        if (!canShoot) return;
         if (coolingDown) return;
         if (reloading) return;
-        if (!canShoot) return;
         if (emptyingRevolverMag) return;
         if (swappingGun) return;
         if (loadingShot && !shotLoaded) return;
@@ -779,6 +788,11 @@ public class PlayerShoot : MonoBehaviour
 
     public bool GetReloadingHands() {
         return reloadingHands;
+    }
+
+
+    public bool GetHoldingStationaryGun() {
+        return holdingStationaryGun;
     }
 
     #endregion

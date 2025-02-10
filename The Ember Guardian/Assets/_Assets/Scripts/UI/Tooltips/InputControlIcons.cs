@@ -134,6 +134,7 @@ public class InputControlIcons : MonoBehaviour
                 spriteList.Add(keyboardCSprite);
             }
             if (control == Control.SwapWeapon) {
+                spriteList.Add(keyboard1Sprite);
                 spriteList.Add(keyboard2Sprite);
             }
             if (control == Control.Shoot) {

@@ -206,7 +206,7 @@ public class StructureUI_Fire : StructureUI
 
         }
 
-        if(Fire.Instance.GetCurrentFuelLevel() >= Fire.Instance.GetCriticalFuelTreshold()) {
+        if(!Fire.Instance.GetFireFuelLevelCritical()) {
             fireUIAnimator.SetBool("FuelCritical", false);
         }
 
@@ -230,7 +230,7 @@ public class StructureUI_Fire : StructureUI
             fireTickArray[1].transform.SetParent(this.transform);
             barsLeftToRemove -= 1;
 
-            if(Fire.Instance.GetCurrentFuelLevel() <= Fire.Instance.GetCriticalFuelTreshold()) {
+            if(Fire.Instance.GetFireFuelLevelCritical()) {
                 OnCricitalFireTickRemoved?.Invoke(this, EventArgs.Empty);
                 fireUIAnimator.SetBool("FuelCritical", true);
             }

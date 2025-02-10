@@ -82,7 +82,7 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
             if (!PlayerSave.Instance.GetPlayerUnlockedFlagCarry()) return;
 
             playerInTriggerArea = true;
-            Player.Instance.SetInteractingWithOtherObject(true);
+            Player.Instance.SetCarryinhOtherObject(true);
             spriteRenderer.material.SetFloat("_Glow", .2f);
 
         }
@@ -97,7 +97,7 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
             spriteRenderer.material.SetFloat("_Glow", 0f);
 
             if (huntingFlag.GetPlayerCarryingFlag()) return;
-            Player.Instance.SetInteractingWithOtherObject(false);
+            Player.Instance.SetCarryinhOtherObject(false);
         }
     }
 }

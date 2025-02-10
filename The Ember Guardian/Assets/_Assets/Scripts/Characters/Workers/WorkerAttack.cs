@@ -11,7 +11,6 @@ public class WorkerAttack : MobAttack
     private float initialHunterAttackCooldown = 3f;
     private float hunterAttackAnimationDelay = .6f;
 
-
     private int initialGuardDamage = 5;
     private float initialGuardAttackCooldown = 1f;
     private float guardAttackAnimationDelay = .3f;
@@ -33,6 +32,7 @@ public class WorkerAttack : MobAttack
             isProjectileAttack = true;
 
             attackDamage = initialHunterDamage;
+            initialAttackDamage = initialHunterDamage;
             attackCooldown = initialHunterAttackCooldown;
             attackAnimationDelay = hunterAttackAnimationDelay;
         }
@@ -41,6 +41,7 @@ public class WorkerAttack : MobAttack
             isProjectileAttack = false;
 
             attackDamage = initialGuardDamage;
+            initialAttackDamage = initialGuardDamage;
             attackCooldown = initialGuardAttackCooldown;
             attackAnimationDelay = guardAttackAnimationDelay;
             totalAttackAnimationTime = guardTotalAttackAnimationTime;
@@ -50,6 +51,7 @@ public class WorkerAttack : MobAttack
             isProjectileAttack = false;
 
             attackDamage = initialMinerDamage;
+            initialAttackDamage = initialMinerDamage;
             attackCooldown = initialMinerAttackCooldown;
             attackAnimationDelay = minerAttackAnimationDelay;
             totalAttackAnimationTime = minerTotalAttackAnimationTime;
