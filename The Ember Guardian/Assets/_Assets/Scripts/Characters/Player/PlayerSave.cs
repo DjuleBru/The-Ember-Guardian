@@ -24,6 +24,10 @@ public class PlayerSave : MonoBehaviour
         ES3.Save("primaryActiveGunSO", gunSO);
     }
 
+    public void SaveSecondaryActiveGunSO(GunSO gunSO) {
+        if (gunSO == null) return;
+        ES3.Save("secondaryActiveGunSO", gunSO);
+    }
     public void SavePlayerMetaStats() {
         PlayerStats.Instance.SaveMetaBuffValues();
         PlayerShoot.Instance.SaveAllGunStats();
@@ -40,9 +44,6 @@ public class PlayerSave : MonoBehaviour
         return activeGun;
     }
 
-    public void SetSecondaryActiveGunSO(GunSO gunSO) {
-        ES3.Save("secondaryActiveGunSO", gunSO);
-    }
 
     public GunSO GetSecondaryActiveGun() {
         GunSO activeGun = ES3.Load("secondaryActiveGunSO", initialActiveGun);

@@ -152,8 +152,6 @@ public class Portal : MonoBehaviour
         OnAnyPortalDisappeared?.Invoke(this, EventArgs.Empty);
 
         yield return new WaitForSeconds(2f);
-        LevelManager.Instance.ShowNewLocationUI();
-        yield return new WaitForEndOfFrame();
 
         Destroy(gameObject);
     }
@@ -182,15 +180,13 @@ public class Portal : MonoBehaviour
         yield return new WaitForSeconds(delayToStartCrossfade);
 
         if(isEndLevelTeleporter) {
-            MetaProgressionManager.Instance.SetGemsRewarded(false);
-            MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
             LevelManager.Instance.SaveLevelCompletedProgression();
             SceneLoader.Instance.LoadHub(2f);
+            MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
 
         } else {
             
             MetaProgressionManager.Instance.SetAsLastPortalUsedByPlayer(portalNumber);
-            MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
             SceneLoader.Instance.LoadLevel(linkedLevelSO, 2f);
         }
     }

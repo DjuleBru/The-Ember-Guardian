@@ -43,6 +43,7 @@ public class HubMerchantItem : MonoBehaviour
     protected bool itemBought;
     protected bool itemUnlocked;
     protected bool itemEquipped;
+    protected bool itemStatusChanged;
 
     protected List<string> statValues = new List<string>();
     protected List<bool> statModifiedBools = new List<bool>();
@@ -125,6 +126,7 @@ public class HubMerchantItem : MonoBehaviour
 
     public virtual void UnlockItem() {
         itemUnlocked = true;
+        itemStatusChanged = true;
     }
 
     public virtual void BuyItem() {
@@ -134,6 +136,7 @@ public class HubMerchantItem : MonoBehaviour
         }
 
         itemBought = true;
+        itemStatusChanged = true;
 
         PayGemPrice();
         UpdateItemCost();
@@ -148,6 +151,7 @@ public class HubMerchantItem : MonoBehaviour
 
         OnHubMerchantItemUpgraded?.Invoke(this, EventArgs.Empty);
         OnAnyHubMerchantItemUpgraded?.Invoke(this, EventArgs.Empty);
+        itemStatusChanged = true;
     }
 
     protected void PayGemPrice() {
@@ -186,9 +190,11 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public virtual void EquipOrUnequipItem() {
+        itemStatusChanged = true;
     }
 
     public virtual void UnequipItem() {
+        itemStatusChanged = true;
     }
 
     public void InvokeOnItemEquipped() {
@@ -295,6 +301,8 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public void SaveItemStatus() {
+        if (!itemStatusChanged) return;
+
         if(itemBought && !MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType())) {
             MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), itemBought);
 

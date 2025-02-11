@@ -49,6 +49,7 @@ public class CreatureAnimatorManager : MonoBehaviour
     }
 
     protected void Update() {
+        if (creature.GetDead()) return;
         moveDir = mobMovement.GetMoveDirFloat();
 
         HandleXScale();

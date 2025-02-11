@@ -10,6 +10,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private LevelSO levelSO;
     [SerializeField] private Portal endLevelPortal;
 
+    private bool levelRegionUnlocked;
+
     public event EventHandler OnNewLocationShown;
 
     private void Awake() {
@@ -23,6 +25,8 @@ public class LevelManager : MonoBehaviour
         if(levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
             LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
         }
+
+        levelRegionUnlocked = MetaProgressionManager.Instance.GetLevelRegionUnlocked(levelSO.environmentType);
     }
 
     private void LevelUI_OnObjectiveCompleted(object sender, EventArgs e) {
@@ -47,7 +51,6 @@ public class LevelManager : MonoBehaviour
     }
 
     public void ShowNewLocationUI() {
-        bool levelRegionUnlocked = MetaProgressionManager.Instance.GetLevelRegionUnlocked(levelSO.environmentType);
         if (!levelRegionUnlocked) {
             MetaProgressionManager.Instance.SetLevelRegionUnlocked(levelSO.environmentType);
             LevelUI_Locations.Instance.ShowLocationText(levelSO.GetLevelEnvironmentTypeString());
@@ -63,7 +66,6 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(LooseLevelCoroutine());
         float defeatGemsProportionsRewarded = .33f;
         MetaProgressionManager.Instance.SaveLevelGems(defeatGemsProportionsRewarded);
-        MetaProgressionManager.Instance.SetGemsRewarded(false);
         MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
     }
 

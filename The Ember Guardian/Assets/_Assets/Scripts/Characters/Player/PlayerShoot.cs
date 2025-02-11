@@ -777,7 +777,6 @@ public class PlayerShoot : MonoBehaviour
         List<GunSO> unlockedAndUnequippedGunSOList = new List<GunSO>();
 
         foreach (GunSO gunSO in unlockedGunSOList) {
-
             if(gunSO != primaryGunSO && gunSO != secondayGunSO) {
                 unlockedAndUnequippedGunSOList.Add(gunSO);
             }

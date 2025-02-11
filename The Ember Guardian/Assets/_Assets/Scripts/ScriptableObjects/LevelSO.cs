@@ -51,7 +51,7 @@ public class LevelSO : ScriptableObject
         };
         if (environmentType == LevelEnvironment.TheVerdantGraveyard) {
             return "The Verdant Graveyard";
-        };
+        }; 
         return "";
     }
 }

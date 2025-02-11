@@ -19,15 +19,15 @@ public class WeaponChangeButton : ButtonUI
         button = GetComponent<Button>();
     }
 
-    private void Start() {
+    protected override void Start() {
         PlayerShoot.Instance.OnPrimaryWeaponChanged += PlayerShoot_OnPrimaryWeaponChanged;
         PlayerShoot.Instance.OnSecondaryWeaponChanged += PlayerShoot_OnSecondaryWeaponChanged;
 
-
-        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
-            button.onClick.AddListener(() => {
-                WeaponButtonPressLevel();
-            });
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            button.enabled = false;
+            //button.onClick.AddListener(() => {
+            //    WeaponButtonPressLevel();
+            //});
 
         } else {
 
@@ -58,6 +58,7 @@ public class WeaponChangeButton : ButtonUI
         ChangeWeaponPanel.Instance.OpenClosePanel();
         ;
     }
+
     private void WeaponButtonPressLevel() {
         OnAnyWeaponChangeButtonPressed?.Invoke(this, EventArgs.Empty);
     }

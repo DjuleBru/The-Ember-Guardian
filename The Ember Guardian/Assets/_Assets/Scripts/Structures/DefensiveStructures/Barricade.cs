@@ -28,6 +28,8 @@ public class Barricade : Structure, IDamageable {
     public event EventHandler OnBarricadeRepaired;
     public static event EventHandler OnAnyBarricadeRepaired;
     public static event EventHandler OnAnyBarricadeBuilt;
+    public event EventHandler OnFireLightTriggeredIn;
+    public event EventHandler OnFireLightTriggeredOut;
 
     private bool barricadeRepairable;
 
@@ -53,7 +55,7 @@ public class Barricade : Structure, IDamageable {
         return transform;
     }
 
-    public void TakeDamage(int damage, Transform damageSource, bool critHit = false) {
+    public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
         if (barricadeHealth <= 0) return;
         barricadeHealth -= damage;
 
@@ -153,6 +155,10 @@ public class Barricade : Structure, IDamageable {
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);
 
+        if (collision.gameObject.GetComponentInParent<Fire>()) {
+            OnFireLightTriggeredIn?.Invoke(this, EventArgs.Empty);
+        }
+
         if (collision.gameObject.GetComponent<Player>() != null && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
             if (barricadeRepairable) {
                 barricadeVisual.ShowRepairStructureVisual(true);
@@ -163,7 +169,11 @@ public class Barricade : Structure, IDamageable {
     protected override void OnTriggerExit2D(Collider2D collision) {
         base.OnTriggerExit2D(collision);
 
-        if(collision.gameObject.GetComponent<Player>()  != null && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
+        if (collision.gameObject.GetComponentInParent<Fire>()) {
+            OnFireLightTriggeredOut?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (collision.gameObject.GetComponent<Player>()  != null && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
             if (barricadeRepairable) {
                 barricadeVisual.ShowRepairStructureVisual(false);
             }

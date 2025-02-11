@@ -61,14 +61,26 @@ public class WeaponReplaceButton : ButtonUI {
     }
 
     public override void OnPointerEnter(PointerEventData eventData) {
+        if (GameInput.Instance.IsUsingGamepad()) return;
+
         base.OnPointerEnter(eventData);
         OnAnyWeaponReplaceButtonHovered?.Invoke(this, EventArgs.Empty);
     }
 
     public override void OnPointerExit(PointerEventData eventData) {
+        if (GameInput.Instance.IsUsingGamepad()) return;
+
         base.OnPointerExit(eventData);
         OnAnyWeaponReplaceButtonUnhovered?.Invoke(this, EventArgs.Empty);
-
     }
 
+    protected override void ButtonUI_OnAnyButtonSelected(object sender, EventArgs e) {
+        if (!GameInput.Instance.IsUsingGamepad()) return;
+
+        ButtonUI buttonUI = sender as ButtonUI;
+
+        if (this == buttonUI) {
+            OnAnyWeaponReplaceButtonHovered?.Invoke(this, EventArgs.Empty);
+        }
+    }
 }

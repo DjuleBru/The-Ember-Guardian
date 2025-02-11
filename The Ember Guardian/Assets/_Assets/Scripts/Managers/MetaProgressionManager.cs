@@ -145,14 +145,6 @@ public class MetaProgressionManager : MonoBehaviour
         ES3.Save(key, gemAmount);
     }
 
-    public void SetGemsRewarded(bool rewarded) {
-        ES3.Save("gemsRewardedFromlastLevel", rewarded);
-    }
-
-    public bool GetGemFromLastLevelRewarded() {
-        return ES3.Load("gemsRewardedFromlastLevel", false);
-    }
-
     public void SaveHubGems() {
         Debug.Log("save hub gems");
 

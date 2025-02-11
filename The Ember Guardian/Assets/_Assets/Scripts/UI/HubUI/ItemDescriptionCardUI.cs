@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ public class ItemDescriptionCardUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemDescriptionText;
     [SerializeField] private Transform itemStatDescriptionContainer;
     [SerializeField] private Transform itemStatDescriptionTemplate;
+    [SerializeField] private AdjustContentSizeFitterParentSize itemStatDescriptionAdjustSize;
     [SerializeField] private TextMeshProUGUI itemStatTemplateText;
     [SerializeField] private TextMeshProUGUI itemStatTemplateValue;
     [SerializeField] private Material modifiedItemStatMaterial;
@@ -80,6 +82,7 @@ public class ItemDescriptionCardUI : MonoBehaviour
     }
 
     private void RefreshItemStatDescription(List<string> itemStatDescriptionList, List<string> itemStatList, List<bool> itemStatModifiersBools) {
+
         foreach(Transform child in itemStatDescriptionContainer) {
             if (child == itemStatDescriptionTemplate) continue;
             Destroy(child.gameObject);

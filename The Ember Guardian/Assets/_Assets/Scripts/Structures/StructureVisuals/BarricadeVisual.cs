@@ -44,6 +44,8 @@ public class BarricadeVisual : StructureVisual {
 
         barricade.OnBarricadeDamageTaken += Barricade_OnBarricadeDamageTaken;
         barricade.OnBarricadeRepaired += Barricade_OnBarricadeRepaired;
+        barricade.OnFireLightTriggeredIn += Barricade_OnFireLightTriggeredIn;
+        barricade.OnFireLightTriggeredOut += Barricade_OnFireLightTriggeredOut;
 
         BuildPieces(level1BarricadePieceList);
         barricadeLightBodyAnimator.SetTrigger("Build");
@@ -175,6 +177,16 @@ public class BarricadeVisual : StructureVisual {
         foreach (BarricadePiece piece in currentLevelBarricadePieceList) {
             piece.SetHovered(true);
         }
+    }
+
+    private void Barricade_OnFireLightTriggeredOut(object sender, EventArgs e) {
+        if (!outerBarricade) return;
+        barricadeSpotLight.enabled = true;
+    }
+
+    private void Barricade_OnFireLightTriggeredIn(object sender, EventArgs e) {
+        if (!outerBarricade) return;
+        barricadeSpotLight.enabled = false;
     }
 
     protected void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {

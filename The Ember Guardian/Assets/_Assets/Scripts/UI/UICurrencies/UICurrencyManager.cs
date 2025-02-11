@@ -486,9 +486,11 @@ public class UICurrencyManager : MonoBehaviour
         }
 
         foreach (Vector3 position in currencyPositions) {
-            Currency_UI currencyUI = Instantiate(prefab, position, Quaternion.identity, currencyContainer).GetComponent<Currency_UI>();
+            Quaternion randomRotation = Quaternion.Euler(0f, 0f, UnityEngine.Random.Range(0f, 360f)); // Rotation aléatoire sur l'axe Z
+            Currency_UI currencyUI = Instantiate(prefab, position, randomRotation, currencyContainer).GetComponent<Currency_UI>();
             currenciesInBag.Add(currencyUI);
         }
+
     }
 
     private void OnDestroy() {

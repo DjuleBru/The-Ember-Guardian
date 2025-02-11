@@ -20,6 +20,8 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         FindAndDestroyNest,
         FindArmorer,
         FindMoreCompanions,
+        FindWatcher,
+        FindArchitect,
     }
 
     public enum SubObjectiveType {
@@ -331,6 +333,12 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         }
         if (objectiveType == ObjectiveType.FindMoreCompanions) {
             return "Find more companions";
+        }
+        if (objectiveType == ObjectiveType.FindWatcher) {
+            return "Find the Watcher";
+        }
+        if (objectiveType == ObjectiveType.FindArchitect) {
+            return "Find the Architect";
         }
         return "";
     }

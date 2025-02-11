@@ -59,8 +59,12 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
     private void RefreshStatValues() {
         statModifiedBools.Clear();
         statValues.Clear();
+        statModifiedBools.Add(false);
+        statValues.Add("");
+        statModifiedBools.Add(false);
+        statValues.Add("");
 
-        if(trainerItemType != TrainerItemType.Hold2Weapons) {
+        if (trainerItemType != TrainerItemType.Hold2Weapons) {
 
             maxItemLevel = linkedStatModifierSO.statModifierList.Count;
 
@@ -261,9 +265,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
                 statValues.Add(relativeStatPrefix + relativeDamageBulletModifier.ToString() + relativeStatPostfix);
                 statModifiedBools.Add(true);
 
-                statValues.Add("");
-                statModifiedBools.Add(false);
-
                 statValues.Add(totalStatWithModifierPrefix + totalStatValue + totalStatWithModifierPostfix);
                 statModifiedBools.Add(true);
             }
@@ -352,21 +353,19 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             constantUnlockDescription = true;
         }
 
-        return constantUnlockDescription;
+        return false;
     }
 
     public override List<string> GetStatDescription() {
         List<string> statDescriptionList = new List<string>();
 
-        if(trainerItemType == TrainerItemType.Hold2Weapons) {
-            statDescriptionList.Add(unlockDescription);
-        }
+        statDescriptionList.Add(unlockDescription);
+        statDescriptionList.Add("");
 
         if (trainerItemType == TrainerItemType.WeaponSwapTime) {
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current swap buff ");
                 statDescriptionList.Add("Swap buff ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New swap buff ");
         }
@@ -375,7 +374,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current Range ");
                 statDescriptionList.Add("Range increase ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("Flashlight range ");
         }
@@ -384,7 +382,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Detection factor ");
                 statDescriptionList.Add("Detection decrease ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New detection factor ");
         }
@@ -393,7 +390,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current max HP ");
                 statDescriptionList.Add("Max HP ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New max HP ");
         }
@@ -402,7 +398,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current respawn HP ");
                 statDescriptionList.Add("Respawn HP ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New respawn HP ");
         }
@@ -410,7 +405,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current initial ammo");
                 statDescriptionList.Add("Initial ammo ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New initial ammo ");
         }
@@ -418,7 +412,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current initial orbs ");
                 statDescriptionList.Add("Initial orbs ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New initial orbs ");
         }
@@ -427,7 +420,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current heal time ");
                 statDescriptionList.Add("Time to heal ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("Time to heal ");
         }
@@ -436,7 +428,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current max stamina ");
                 statDescriptionList.Add("Max stamina ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New max stamina ");
         }
@@ -445,7 +436,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current move speed ");
                 statDescriptionList.Add("Move speed ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New move speed ");
         }
@@ -454,7 +444,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current run speed ");
                 statDescriptionList.Add("Run speed ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New Run speed ");
         }
@@ -463,7 +452,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current run cost ");
                 statDescriptionList.Add("Run cost ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New run cost ");
         }
@@ -472,7 +460,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current roll distance ");
                 statDescriptionList.Add("Roll distance ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New Roll distance ");
         }
@@ -481,7 +468,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current roll cost ");
                 statDescriptionList.Add("Roll cost ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New roll stamina cost ");
         }
@@ -490,7 +476,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Gem pouch size ");
                 statDescriptionList.Add("Pouch size ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New pouch size ");
         }
@@ -499,7 +484,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Backpack size ");
                 statDescriptionList.Add("Backpack size ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New backpack size ");
         }
@@ -508,7 +492,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Ammo pouch size ");
                 statDescriptionList.Add("Pouch size ");
-                statDescriptionList.Add("");
             }
             statDescriptionList.Add("New ammo size ");
         }

@@ -24,6 +24,8 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         overclock,
         focusedBlast,
         range,
+        revolver,
+        lmg,
     }
 
     public enum GunItemCategory {

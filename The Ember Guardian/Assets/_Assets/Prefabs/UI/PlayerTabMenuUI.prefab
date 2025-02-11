@@ -12472,7 +12472,6 @@ GameObject:
   - component: {fileID: 5603967148231381202}
   - component: {fileID: 1052318306382359917}
   - component: {fileID: 9042685342054023637}
-  - component: {fileID: 6245595843285478185}
   - component: {fileID: 4345782491418079699}
   m_Layer: 5
   m_Name: WeaponSlotTemplate
@@ -12566,18 +12565,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &6245595843285478185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7229759096339448566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 322ee3145fab8b243ad77f26b27be5cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &4345782491418079699
 Animator:
   serializedVersion: 5

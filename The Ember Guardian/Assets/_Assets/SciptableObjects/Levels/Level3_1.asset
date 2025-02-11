@@ -18,26 +18,25 @@ MonoBehaviour:
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 285aab84b4a4ad648a8899052f346e6f, type: 2}
   newMerchantTextLinesAfterLevel: []
   environmentType: 0
-  levelObjectiveType: 10
-  endLevelType: 0
+  levelObjectiveType: 12
+  endLevelType: 6
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
   - {fileID: 11400000, guid: a0c1321c3dbd0704c9f6bf0aec0e77b3, type: 2}
   - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
   - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
   isNewEnvironmentDiscoveryLevel: 1
-  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
-  linkedSceneName: Level1_VerdantGraveyard
+  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: fe72f58b31466564f8f3f9e82a53595b, type: 3}
+  linkedSceneName: Level3.1_LostGreens
   hasFog: 0
   fogFrontAlpha: 0
   fogBackAlpha: 0
-  baseDifficulty: 6
+  baseDifficulty: 25
   minSubwaveDifficulty: 0
-  maxSubwaveDifficulty: 10
-  growthFactor: 1.6
+  maxSubwaveDifficulty: 25
+  growthFactor: 1.45
   minWaveDuration: 9
   maxWaveDuration: 90
-  waveIntensityFactor: 0.6
   delayBetweenSubWaves: 8
   startWaveToSpawnFromBothSides: 2
   canSpawnElite: 1

@@ -246,7 +246,6 @@ public class PlayerUI_HPBar : MonoBehaviour
             isFadingIn = true;
         }
 
-        Debug.Log("hpBarGameObject.SetActive(true)");
         hpBarGameObject.SetActive(true);
         hpBarDiplayTimer = fadeInDuration;
         hpBarDisplayTime = 3f;

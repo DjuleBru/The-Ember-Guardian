@@ -22,7 +22,6 @@ public class HUBManager : MonoBehaviour
 
     private float hubDelayToStartPlayingMusic = 3f;
 
-    private bool lastLevelGemsRewarded;
     private bool nextArrivalThroughPortal;
 
     private bool hubFireExtractable;
@@ -68,9 +67,7 @@ public class HUBManager : MonoBehaviour
                 // Player is coming back from a level
                 //SaveHub();
 
-            }
-
-            lastLevelGemsRewarded = MetaProgressionManager.Instance.GetGemFromLastLevelRewarded();
+            } 
 
             nextArrivalThroughPortal = false;
             enterHubCollider.gameObject.SetActive(false);
@@ -252,14 +249,6 @@ public class HUBManager : MonoBehaviour
 
     #endregion
 
-    public bool GetLastLevelGemsRewarded() {
-        return lastLevelGemsRewarded;
-    }
-
-    public void SetLastLevelGemsRewarded(bool lastLevelGemsRewarded) {
-        this.lastLevelGemsRewarded = lastLevelGemsRewarded;
-    }
-
     public Portal GetLevelLinkedPortal(LevelSO levelSO) {
         foreach (Portal portal in allPortalsInHub) {
             if (portal.GetLevelSOIsInPortal(levelSO)) {
@@ -271,14 +260,12 @@ public class HUBManager : MonoBehaviour
     }
 
     public void SaveHub() {
-        Debug.Log("SaveHub nextArrivalThroughPortal" + nextArrivalThroughPortal);
-
         MetaProgressionManager.Instance.SaveHubGems();
         MetaProgressionManager.Instance.SavePlayerHubPosition(Player.Instance.transform.position);
-        MetaProgressionManager.Instance.SetGemsRewarded(lastLevelGemsRewarded);
         MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(nextArrivalThroughPortal);
 
         PlayerSave.Instance.SavePrimaryActiveGunSO(PlayerShoot.Instance.GetPrimaryGunSO());
+        PlayerSave.Instance.SaveSecondaryActiveGunSO(PlayerShoot.Instance.GetSecondaryGunSO());
         PlayerSave.Instance.SavePlayerMetaStats();
         DogStats.Instance.SaveDogStats();
 

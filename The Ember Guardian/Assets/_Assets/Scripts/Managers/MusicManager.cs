@@ -8,6 +8,13 @@ public class MusicManager : MonoBehaviour {
 
     public static MusicManager Instance;
 
+    public enum NewLocationMusicInterruptionSource {
+        creatureAggro,
+        buildFire,
+    }
+
+    [SerializeField] private NewLocationMusicInterruptionSource discoveryMusicInterruptionSource;
+
     [SerializeField] private float mainTracksAudioVolume = .4f;
     [SerializeField] private float backgroundTracksAudioVolume = .2f;
     private float musicSettingVolume;
@@ -27,6 +34,7 @@ public class MusicManager : MonoBehaviour {
     private bool isDuskOrNight;
     private bool isMainMenuScene;
     private bool isLevelScene;
+    private bool isPlayingLevelDiscoveryMusic;
     private bool isPlayingPeacefulMusic;
     private bool isPlayingEndLevelAreaMusic;
     private AudioSource audioSource;
@@ -56,6 +64,7 @@ public class MusicManager : MonoBehaviour {
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
             DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
             Player.Instance.OnPlayerDied += Player_OnPlayerDied;
+            Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
 
             bool levelRegionUnlocked = MetaProgressionManager.Instance.GetLevelRegionUnlocked(LevelManager.Instance.GetLevelSO().environmentType);
 
@@ -70,17 +79,28 @@ public class MusicManager : MonoBehaviour {
             PlayMusicDelayed(2f);
         }
     }
-    private void Player_OnPlayerDied(object sender, EventArgs e) {
-        FadeOutMusic(1f);
-    }
+
     private void SettingsManager_OnMusicVolumeChanged(object sender, System.EventArgs e) {
         musicSettingVolume = SettingsManager.Instance.GetMusicVolume();
         SetAudioVolume(musicSettingVolume);
     }
 
+    private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
+        if (isPlayingLevelDiscoveryMusic && discoveryMusicInterruptionSource == NewLocationMusicInterruptionSource.buildFire) {
+            peacefulTimer = 0;
+            playMusicAttemptTimer = 0;
+            FadeOutMusic(2f);
+        }
+    }
+
+    private void Player_OnPlayerDied(object sender, EventArgs e) {
+        FadeOutMusic(1f);
+    }
+
     private void LevelManager_OnNewLocationShown(object sender, System.EventArgs e) {
         audioSource.clip = LevelManager.Instance.GetLevelSO().newEnvironmentDiscoveryAudioClip;
         PlayMusicDelayed(4f);
+        isPlayingLevelDiscoveryMusic = true;
         waitingToDiscoverLocation = false;
         isPlayingPeacefulMusic = true;
     }
@@ -91,7 +111,6 @@ public class MusicManager : MonoBehaviour {
         isDuskOrNight = true;
         peacefulTimer = 0;
         playMusicAttemptTimer = 0;
-        isPlayingPeacefulMusic = false;
         FadeOutMusic(2f);
     }
 
@@ -106,10 +125,10 @@ public class MusicManager : MonoBehaviour {
     private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {
         if (!isLevelScene) return;
         if (isPlayingEndLevelAreaMusic) return;
+        if (isPlayingLevelDiscoveryMusic && discoveryMusicInterruptionSource != NewLocationMusicInterruptionSource.creatureAggro) return;
 
         peacefulTimer = 0;
         playMusicAttemptTimer = 0;
-        isPlayingPeacefulMusic = false;
         FadeOutMusic(2f);
     }
 
@@ -150,11 +169,16 @@ public class MusicManager : MonoBehaviour {
         audioSource.PlayDelayed(delay);
     }
 
+
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
         FadeOutMusic(1f);
     }
 
     public void FadeOutMusic(float fadeDuration) {
+        isPlayingLevelDiscoveryMusic = false;
+        isPlayingPeacefulMusic = false;
+        isPlayingEndLevelAreaMusic = false;
+
         StartCoroutine(FadeOutCoroutine(fadeDuration));
     }
 
@@ -237,12 +261,20 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void StopEndLevelMusic() {
-        isPlayingEndLevelAreaMusic = false;
         FadeOutMusic(3f);
     }
 
     private void OnDestroy() {
         Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
+        CreatureAI.OnAnyCreatureAggro -= CreatureAI_OnAnyCreatureAggro;
+
+        if (isLevelScene) {
+            DayNightManager.Instance.OnDuskStart -= DayNightManager_OnDuskStart;
+            DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
+            Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
+            LevelManager.Instance.OnNewLocationShown -= LevelManager_OnNewLocationShown;
+            Fire.Instance.OnInitialFireActivated -= Fire_OnInitialFireActivated;
+        }
     }
 
 

@@ -1,0 +1,1931 @@
+fileFormatVersion: 2
+guid: 3fbeda1b92227f84095c01b3676e1171
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 784
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 085f0277acfa1bd4f97aad253f9479b2
+      internalID: -1078988598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_1
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 784
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ff3cff34e33d354a9015e2274d56a4c
+      internalID: -1795389163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_2
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 784
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64cf5816aee56ee43861c97d1de9ad24
+      internalID: -227007494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_3
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 784
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 001037acc36fbab49946af2538da81ca
+      internalID: 573461138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_4
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 784
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11146bbf93849574ea2c73b9731d57c5
+      internalID: -1149829819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_5
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 784
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 524a9dbe8dbffdd48afadc26d03b5186
+      internalID: -247546524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_6
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 784
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d81ab5517e8371b42ac24edf5806f28d
+      internalID: -1913864767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_7
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 784
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab12e8db7ffbc994bbaf998c014802bd
+      internalID: 1554151842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a38c111e211e84d4f811adadd89353e9
+      internalID: -1412387538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_9
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 867f46075dce7bc4293c1a29b90db70c
+      internalID: 1354845428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_10
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26dff463bd3f73d47b99e5e4011afb68
+      internalID: 1642165442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_11
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: edf623f63a14b3049bfab9154e88566a
+      internalID: -916122276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_12
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ee32bb2aaba2b141b81a715fe9452c5
+      internalID: 1933970997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_13
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 744f0f7c5fb0e324eb91129b098a75e8
+      internalID: 511708952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_14
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cbebb3bcfd824e4bb9c637f890d8a6a
+      internalID: -2076588138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_15
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1596aa3c3ad09d4c8ab35bbc32805f5
+      internalID: -2145751019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_16
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4eea4e777503474a91023dd943d9add
+      internalID: 420021541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_17
+      rect:
+        serializedVersion: 2
+        x: 765
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 246a0df5737921542b8be9dddd7d594e
+      internalID: 151649826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_18
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86080991a9c5da9468879c59c1cd6dce
+      internalID: -2084786656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_19
+      rect:
+        serializedVersion: 2
+        x: 935
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4c273a0c6f4c2045b6f0f8ac6dcb9cc
+      internalID: -493665678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_20
+      rect:
+        serializedVersion: 2
+        x: 1020
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 965becb2013b9b64e8a44326acf1ddc7
+      internalID: -864769655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_21
+      rect:
+        serializedVersion: 2
+        x: 1105
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b4db8219b147884d99a52cebe8c733e
+      internalID: 767241833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_22
+      rect:
+        serializedVersion: 2
+        x: 1190
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3adc236ec0318d45affccdd7081b83d
+      internalID: -1674748684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_23
+      rect:
+        serializedVersion: 2
+        x: 1275
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22d60656115a1314a871417348bed0b0
+      internalID: -2007943579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_24
+      rect:
+        serializedVersion: 2
+        x: 1360
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f6abe5f3e15cdc4a8d488c0b12788be
+      internalID: 1725459970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_25
+      rect:
+        serializedVersion: 2
+        x: 1445
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0da983e6d42d6d4d8a8eabfd471f128
+      internalID: -1764496213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_26
+      rect:
+        serializedVersion: 2
+        x: 1530
+        y: 672
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ff01ee834993fc43b25dd4845f050a5
+      internalID: -981335960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_27
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 560
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2cdde96f769af84aba3526d2638128e
+      internalID: -1363304132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_28
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 560
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c088b1e4ac3860439ad1a46e9b15429
+      internalID: 962563560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_29
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 560
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 079c5c25133180945a33dc9830ed3d88
+      internalID: -1402528629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_30
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 560
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7350f48e9b8ac3c4f94c2006896d206f
+      internalID: 1997281737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_31
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 560
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f57c01ae17a49e46a9cea639bccf64f
+      internalID: 1373335689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_32
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 560
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c392bb428042c3c44a478d7ad22be04a
+      internalID: -419979907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_33
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 560
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9cc9fdcbac8fa64fbc879887d956dc3
+      internalID: 496289864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_34
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 560
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 550b14170b45e8449862c7f738836a4f
+      internalID: -369781737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_35
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 448
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b96ed817174acc34b892047a599d5ce4
+      internalID: -1522794708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_36
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 336
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b158b69bd9829d459029fbb8405cb17
+      internalID: 1963707465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_37
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 224
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b31e49ac4fce044f903405a40c56493
+      internalID: 248840307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_38
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 224
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27717960233dd274aa986cae70f42a86
+      internalID: 308770189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_39
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 224
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b019494823043d4697adc37542ded2b
+      internalID: -1067129930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_40
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 224
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a079647dfb6862140b86c2f2c694e443
+      internalID: -33255175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_41
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 224
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0274d4be450cb124da4d59fd877232bc
+      internalID: 940422861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_42
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 224
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3daeb62dadb7ba544bb239776a8a4647
+      internalID: 239059007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_43
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 224
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e85f5a501b1ede24cb7660bd1723848e
+      internalID: -101385654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_44
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 224
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9a8e09377faa294bbf9b01af14bf456
+      internalID: -823145476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_45
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 224
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22eecd95a25f5284da31ca0f4cc3dfd8
+      internalID: 1798384029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_46
+      rect:
+        serializedVersion: 2
+        x: 765
+        y: 224
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6dcfb26947bd7fe4cbcd5a61c87553d9
+      internalID: 613758474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_47
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 224
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa06ca35d283ebd43a0a2cb9df068c7b
+      internalID: 557451820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_48
+      rect:
+        serializedVersion: 2
+        x: 935
+        y: 224
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6157de07a6ab13140bdfa5088669e89d
+      internalID: 1544594732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_49
+      rect:
+        serializedVersion: 2
+        x: 1020
+        y: 224
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ac0191db4fcff548aee36c72ad98a30
+      internalID: 2130683014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_50
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b76bf54dba8ae8e4d94a64776a7b34c5
+      internalID: 1803239395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_51
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bcb70dccbabbd804b8cb8c1b2b2ac976
+      internalID: 935758113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_52
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4a0c022638dc7949ade372382095aa8
+      internalID: 1038306996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_53
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 558f8923c2595c149b7f91cb7a837faf
+      internalID: -862607161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_54
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ad73c80ef63cf34aa20e0d1225c058e
+      internalID: -412381221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_55
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4d8dc34d67881a459f7d3cbb6ae2bcc
+      internalID: 1360836038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_56
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bad8e831e379de0428a57f101dff69c7
+      internalID: 99121410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_57
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c161e84312b0b548bafb65c12c0dce2
+      internalID: -179278612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_58
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfe75000d45476042ace5f5a5dab06d3
+      internalID: -1054951011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_59
+      rect:
+        serializedVersion: 2
+        x: 765
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 138d7af234ec1b146ad17ed8fb04246e
+      internalID: -925046081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_60
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00f96b42f2e84b04b9065ec564561ca9
+      internalID: 2048557662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_61
+      rect:
+        serializedVersion: 2
+        x: 935
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b762b4728dfb1b4c860d0c1e505c2ff
+      internalID: 765982296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_62
+      rect:
+        serializedVersion: 2
+        x: 1020
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ccd9df39c75570478f7e11214d76d0b
+      internalID: 702478961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_63
+      rect:
+        serializedVersion: 2
+        x: 1105
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42f6b38061d1e8e4ea64bd0021edeb81
+      internalID: -382755082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_64
+      rect:
+        serializedVersion: 2
+        x: 1190
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 348884279425a6848840c6325764a598
+      internalID: -2006651469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_65
+      rect:
+        serializedVersion: 2
+        x: 1275
+        y: 112
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78c8158a1a2c87e4bb8cad0cd7faef2e
+      internalID: 1541491848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_66
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07ebf7741409086428a12fdf69efe7ca
+      internalID: 880054565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_67
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6264cf65023f734881365e8c8eeca52
+      internalID: -1971793682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_68
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 44c7cb3f01e955d4c9726dba519f0017
+      internalID: -1074846979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_69
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53fa10d551f756e4ca3a8be9a9a9aba9
+      internalID: 1387943554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_70
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1945aad0ee81dce489ba4b3d9afffa85
+      internalID: -1828851094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_71
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5646a9742cb335e43be05a13af66508a
+      internalID: 106911838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_72
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a276b8b8d6481243a5c71f115fa87fd
+      internalID: -2057551916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_73
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e7815bb2355f734ab08bd423c249587
+      internalID: 2086919500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_74
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd6caecd8dfbd9f409ad176be2c141fe
+      internalID: 944888394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_75
+      rect:
+        serializedVersion: 2
+        x: 765
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29aca426ffbaaf545ba2a38a59f0d1bd
+      internalID: 1341682113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_76
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 686e0992ee3df614885c4b6b25c2164e
+      internalID: 1473262682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_77
+      rect:
+        serializedVersion: 2
+        x: 935
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82d7c7cd7184ea84bb66726b61104014
+      internalID: 1223435422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_78
+      rect:
+        serializedVersion: 2
+        x: 1020
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9852d6efbb427c5438ddb7c733ab998b
+      internalID: 1494479554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_79
+      rect:
+        serializedVersion: 2
+        x: 1105
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a023ab6f74156442b2cb0ce9fca7ca3
+      internalID: 481757661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_80
+      rect:
+        serializedVersion: 2
+        x: 1190
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c4cd46e426f5f74d9925f0d9e840d8f
+      internalID: 418609692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Archer Bandit Sprite Sheet 85x112_81
+      rect:
+        serializedVersion: 2
+        x: 1275
+        y: 0
+        width: 85
+        height: 112
+      alignment: 9
+      pivot: {x: 0.41, y: 0.01}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 760b3046e4b72314f82243ec17540c82
+      internalID: 1467898135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Archer Bandit Sprite Sheet 85x112_0: -1078988598
+      Archer Bandit Sprite Sheet 85x112_1: -1795389163
+      Archer Bandit Sprite Sheet 85x112_10: 1642165442
+      Archer Bandit Sprite Sheet 85x112_11: -916122276
+      Archer Bandit Sprite Sheet 85x112_12: 1933970997
+      Archer Bandit Sprite Sheet 85x112_13: 511708952
+      Archer Bandit Sprite Sheet 85x112_14: -2076588138
+      Archer Bandit Sprite Sheet 85x112_15: -2145751019
+      Archer Bandit Sprite Sheet 85x112_16: 420021541
+      Archer Bandit Sprite Sheet 85x112_17: 151649826
+      Archer Bandit Sprite Sheet 85x112_18: -2084786656
+      Archer Bandit Sprite Sheet 85x112_19: -493665678
+      Archer Bandit Sprite Sheet 85x112_2: -227007494
+      Archer Bandit Sprite Sheet 85x112_20: -864769655
+      Archer Bandit Sprite Sheet 85x112_21: 767241833
+      Archer Bandit Sprite Sheet 85x112_22: -1674748684
+      Archer Bandit Sprite Sheet 85x112_23: -2007943579
+      Archer Bandit Sprite Sheet 85x112_24: 1725459970
+      Archer Bandit Sprite Sheet 85x112_25: -1764496213
+      Archer Bandit Sprite Sheet 85x112_26: -981335960
+      Archer Bandit Sprite Sheet 85x112_27: -1363304132
+      Archer Bandit Sprite Sheet 85x112_28: 962563560
+      Archer Bandit Sprite Sheet 85x112_29: -1402528629
+      Archer Bandit Sprite Sheet 85x112_3: 573461138
+      Archer Bandit Sprite Sheet 85x112_30: 1997281737
+      Archer Bandit Sprite Sheet 85x112_31: 1373335689
+      Archer Bandit Sprite Sheet 85x112_32: -419979907
+      Archer Bandit Sprite Sheet 85x112_33: 496289864
+      Archer Bandit Sprite Sheet 85x112_34: -369781737
+      Archer Bandit Sprite Sheet 85x112_35: -1522794708
+      Archer Bandit Sprite Sheet 85x112_36: 1963707465
+      Archer Bandit Sprite Sheet 85x112_37: 248840307
+      Archer Bandit Sprite Sheet 85x112_38: 308770189
+      Archer Bandit Sprite Sheet 85x112_39: -1067129930
+      Archer Bandit Sprite Sheet 85x112_4: -1149829819
+      Archer Bandit Sprite Sheet 85x112_40: -33255175
+      Archer Bandit Sprite Sheet 85x112_41: 940422861
+      Archer Bandit Sprite Sheet 85x112_42: 239059007
+      Archer Bandit Sprite Sheet 85x112_43: -101385654
+      Archer Bandit Sprite Sheet 85x112_44: -823145476
+      Archer Bandit Sprite Sheet 85x112_45: 1798384029
+      Archer Bandit Sprite Sheet 85x112_46: 613758474
+      Archer Bandit Sprite Sheet 85x112_47: 557451820
+      Archer Bandit Sprite Sheet 85x112_48: 1544594732
+      Archer Bandit Sprite Sheet 85x112_49: 2130683014
+      Archer Bandit Sprite Sheet 85x112_5: -247546524
+      Archer Bandit Sprite Sheet 85x112_50: 1803239395
+      Archer Bandit Sprite Sheet 85x112_51: 935758113
+      Archer Bandit Sprite Sheet 85x112_52: 1038306996
+      Archer Bandit Sprite Sheet 85x112_53: -862607161
+      Archer Bandit Sprite Sheet 85x112_54: -412381221
+      Archer Bandit Sprite Sheet 85x112_55: 1360836038
+      Archer Bandit Sprite Sheet 85x112_56: 99121410
+      Archer Bandit Sprite Sheet 85x112_57: -179278612
+      Archer Bandit Sprite Sheet 85x112_58: -1054951011
+      Archer Bandit Sprite Sheet 85x112_59: -925046081
+      Archer Bandit Sprite Sheet 85x112_6: -1913864767
+      Archer Bandit Sprite Sheet 85x112_60: 2048557662
+      Archer Bandit Sprite Sheet 85x112_61: 765982296
+      Archer Bandit Sprite Sheet 85x112_62: 702478961
+      Archer Bandit Sprite Sheet 85x112_63: -382755082
+      Archer Bandit Sprite Sheet 85x112_64: -2006651469
+      Archer Bandit Sprite Sheet 85x112_65: 1541491848
+      Archer Bandit Sprite Sheet 85x112_66: 880054565
+      Archer Bandit Sprite Sheet 85x112_67: -1971793682
+      Archer Bandit Sprite Sheet 85x112_68: -1074846979
+      Archer Bandit Sprite Sheet 85x112_69: 1387943554
+      Archer Bandit Sprite Sheet 85x112_7: 1554151842
+      Archer Bandit Sprite Sheet 85x112_70: -1828851094
+      Archer Bandit Sprite Sheet 85x112_71: 106911838
+      Archer Bandit Sprite Sheet 85x112_72: -2057551916
+      Archer Bandit Sprite Sheet 85x112_73: 2086919500
+      Archer Bandit Sprite Sheet 85x112_74: 944888394
+      Archer Bandit Sprite Sheet 85x112_75: 1341682113
+      Archer Bandit Sprite Sheet 85x112_76: 1473262682
+      Archer Bandit Sprite Sheet 85x112_77: 1223435422
+      Archer Bandit Sprite Sheet 85x112_78: 1494479554
+      Archer Bandit Sprite Sheet 85x112_79: 481757661
+      Archer Bandit Sprite Sheet 85x112_8: -1412387538
+      Archer Bandit Sprite Sheet 85x112_80: 418609692
+      Archer Bandit Sprite Sheet 85x112_81: 1467898135
+      Archer Bandit Sprite Sheet 85x112_9: 1354845428
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

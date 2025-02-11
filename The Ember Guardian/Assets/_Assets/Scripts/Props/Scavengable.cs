@@ -78,7 +78,7 @@ public class Scavengable : MonoBehaviour, IDamageable {
         return transform;
     }
 
-    public void TakeDamage(int damage, Transform damageSource, bool crit = false) {
+    public void TakeDamage(int damage, Transform damageSource, bool crit = false, bool ignoreTemporaryInvincibility = false) {
         health -= damage;
         hitsTaken += damage;
         OnDamageTaken?.Invoke(this, EventArgs.Empty);

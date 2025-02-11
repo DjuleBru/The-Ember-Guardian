@@ -116,7 +116,6 @@ public class VideoTipManager : MonoBehaviour
         }
     }
 
-
     private void HubChest_OnChestOpened(object sender, EventArgs e) {
         if (storeGemsTipShown) return;
 
@@ -255,7 +254,7 @@ public class VideoTipManager : MonoBehaviour
         setupEconomyTipShown = ES3.Load("setupEconomyTipShown", false);
         dayNightCycleTipShown = ES3.Load("dayNightCycleTipShown", false);
         gunTipShown = ES3.Load("gunTipShown", false);
-        storeGemsTipShown = ES3.Load("storeGemsTip", false);
+        storeGemsTipShown = ES3.Load("storeGemsTipShown", false);
         swapWeaponTipShown = ES3.Load("swapWeaponTipShown", false);
     }
 

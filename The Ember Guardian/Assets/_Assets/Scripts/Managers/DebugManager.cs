@@ -21,6 +21,11 @@ public class DebugManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Update() {
+        if(Input.GetKeyDown(KeyCode.T)) {
+            HUBManager.Instance.SaveHub();
+        }
+    }
     public bool GetAllowDebugInputs_CreaturesSpawnManager() {
         return allowDebugInputs_CreaturesSpawnManager;
     }

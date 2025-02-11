@@ -513,7 +513,7 @@ public class Fire : Structure, IDamageable {
         return initialFireLit;
     }
 
-    public void TakeDamage(int damage, Transform damageSource, bool critHit = false) {
+    public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
         fuelLevel -= (damage * damageToFuelConversionRate);
         CheckFireStateDowngrade();
         OnFireDamageTaken?.Invoke(this, EventArgs.Empty);

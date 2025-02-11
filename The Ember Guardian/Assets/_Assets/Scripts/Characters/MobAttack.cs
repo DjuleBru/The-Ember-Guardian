@@ -7,6 +7,7 @@ public class MobAttack : MonoBehaviour
 {
     [SerializeField] protected bool isProjectileAttack;
     [SerializeField] protected bool isStaticProjectileAttack;
+    [SerializeField] protected bool isAnimatedAttack;
     [SerializeField] protected ProjectileSO projectileSO;
     [SerializeField] protected Transform staticProjectilePrefab;
 
@@ -56,6 +57,11 @@ public class MobAttack : MonoBehaviour
 
     protected virtual void Attack() {
         OnMobAttack?.Invoke(this, EventArgs.Empty);
+
+        if(isAnimatedAttack) {
+            StartCoroutine(AnimatedAttackCoroutine(totalAttackAnimationTime));
+            return;
+        }
 
         if(isProjectileAttack) {
             StartCoroutine(SpawnProjectileAfterDelay(attackAnimationDelay, totalAttackAnimationTime));
@@ -116,20 +122,28 @@ public class MobAttack : MonoBehaviour
         attackStarted = true;
         yield return new WaitForSeconds(delayToDealDamage);
         if (mob.GetDead()) yield return null;
+        
+        DealDamage(false);
+
+        yield return new WaitForSeconds(totalAttackAnimationTime - delayToDealDamage);
+
+        attackStarted = false;
+    }
+    protected IEnumerator AnimatedAttackCoroutine(float totalAttackAnimationTime) {
+        attackStarted = true;
+        yield return new WaitForSeconds(totalAttackAnimationTime);
+        attackStarted = false;
+    }
+    public void DealDamage(bool ignoreTemporaryInvincibility) {
 
         if (attackTargetIDamageable != null) {
-            attackTargetIDamageable.TakeDamage(attackDamage, transform);
+            attackTargetIDamageable.TakeDamage(attackDamage, transform, false, ignoreTemporaryInvincibility);
         }
-
         if ((attackTargetIDamageable as MonoBehaviour) == Fire.Instance) {
             mob.Die();
         }
 
         OnMobAttackHit?.Invoke(this, EventArgs.Empty);
-
-        yield return new WaitForSeconds(totalAttackAnimationTime - delayToDealDamage);
-
-        attackStarted = false;
     }
 
     protected virtual Vector3 GetEndPointRandomized() {
@@ -172,6 +186,7 @@ public class MobAttack : MonoBehaviour
     public bool GetAttackStarted() {
         return attackStarted;
     }
+
     public int GetAttackDamage() {
         return attackDamage;
     }
@@ -179,12 +194,17 @@ public class MobAttack : MonoBehaviour
     public bool GetIsRangedAttack() {
         return isProjectileAttack;
     }
+
     public void BuffDamage(float buff) {
         attackDamage = (int)(attackDamage*buff);
     }
 
     public void ResetDamageBuff() {
         attackDamage = initialAttackDamage;
+    }
+
+    public void InvokeAttackHit() {
+        OnMobAttackHit?.Invoke(this, EventArgs.Empty);
     }
 
 }

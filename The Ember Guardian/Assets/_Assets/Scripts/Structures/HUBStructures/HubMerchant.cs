@@ -253,6 +253,7 @@ public class HubMerchant : MonoBehaviour
 
     public void SaveMerchant() {
         if (!hubMerchantLoaded) return;
+        if (!merchantUnlocked) return;
 
         MetaProgressionManager.Instance.SetMerchantHasTalkLinesToShow(hubMerchantType, merchantHasTalkLinesToShow);
         MetaProgressionManager.Instance.SetMerchantJustArrivedInHub(hubMerchantType, merchantJustArrivedInHub);

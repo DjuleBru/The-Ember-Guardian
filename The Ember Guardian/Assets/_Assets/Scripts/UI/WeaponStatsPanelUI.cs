@@ -42,9 +42,23 @@ public class WeaponStatsPanelUI : MonoBehaviour
         WeaponReplaceButton.OnWeaponReplaceButtonPressed += WeaponReplaceButton_OnWeaponReplaceButtonPressed;
         WeaponReplaceButton.OnAnyWeaponReplaceButtonHovered += WeaponReplaceButton_OnAnyButtonHovered;
         WeaponReplaceButton.OnAnyWeaponReplaceButtonUnhovered += WeaponReplaceButton_OnAnyButtonUnhovered;
+        ChangeWeaponPanel.Instance.OnChangeWeaponPanelClosed += ChangeWeaponPanel_OnChangeWeaponPanelClosed;
+        ChangeWeaponPanel.Instance.OnChangeWeaponPanelOpened += ChangeWeaponPanel_OnChangeWeaponPanelOpened;
 
         DisplayGunStats(PlayerShoot.Instance.GetPrimaryGunSO());
         ShowDiffText(false);
+    }
+
+    private void ChangeWeaponPanel_OnChangeWeaponPanelOpened(object sender, EventArgs e) {
+        GunSO gunSOToDiplay = PlayerShoot.Instance.GetUnlockedAndUnequippedGunSOList()[0];
+
+        if (gunSOToDiplay != null) {
+            DisplayGunStatsComparison(gunSOToDiplay);
+        }
+    }
+
+    private void ChangeWeaponPanel_OnChangeWeaponPanelClosed(object sender, EventArgs e) {
+        HideGunStatsComparison();
     }
 
     private void WeaponReplaceButton_OnAnyButtonUnhovered(object sender, System.EventArgs e) {
@@ -287,5 +301,7 @@ public class WeaponStatsPanelUI : MonoBehaviour
         WeaponReplaceButton.OnWeaponReplaceButtonPressed -= WeaponReplaceButton_OnWeaponReplaceButtonPressed;
         WeaponReplaceButton.OnAnyWeaponReplaceButtonHovered -= WeaponReplaceButton_OnAnyButtonHovered;
         WeaponReplaceButton.OnAnyWeaponReplaceButtonUnhovered -= WeaponReplaceButton_OnAnyButtonUnhovered;
+        ChangeWeaponPanel.Instance.OnChangeWeaponPanelClosed -= ChangeWeaponPanel_OnChangeWeaponPanelClosed;
+        ChangeWeaponPanel.Instance.OnChangeWeaponPanelOpened -= ChangeWeaponPanel_OnChangeWeaponPanelOpened;
     }
 }

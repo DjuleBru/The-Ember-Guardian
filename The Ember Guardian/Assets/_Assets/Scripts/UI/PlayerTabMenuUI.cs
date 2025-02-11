@@ -13,6 +13,7 @@ public class PlayerTabMenuUI : MonoBehaviour
 
     private bool canCloseTab = true;
     private bool tabMenuOpen;
+    private bool changeWeaponPanelOpen;
 
     private CanvasGroup canvasGroup;
     private Animator panelAnimator;
@@ -29,8 +30,31 @@ public class PlayerTabMenuUI : MonoBehaviour
 
     private void Start() {
         GameInput.Instance.OnPlayerOpenPlayerTabPerformed += GameInput_OnPlayerOpenPlayerTabPerformed;
+        GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         HubMerchantUI.OnAnyHubMerchantOpenUIPanel += HubMerchantUI_OnAnyHubMerchantOpenUIPanel;
         HubMerchantUI.OnAnyHubMerchantCloseUIPanel += HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
+        ChangeWeaponPanel.Instance.OnChangeWeaponPanelOpened += ChangeWeaponPanel_OnChangeWeaponPanelOpened;
+        ChangeWeaponPanel.Instance.OnChangeWeaponPanelClosed += ChangeWeaponPanel_OnChangeWeaponPanelClosed;
+    }
+
+    private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
+        if (!tabMenuOpen) return;
+        if (!canCloseTab) return;
+        if (changeWeaponPanelOpen) return;
+
+        OpenCloseTab();
+    }
+
+    private void ChangeWeaponPanel_OnChangeWeaponPanelOpened(object sender, EventArgs e) {
+        changeWeaponPanelOpen = true;
+    }
+
+    private void ChangeWeaponPanel_OnChangeWeaponPanelClosed(object sender, EventArgs e) {
+        changeWeaponPanelOpen = false; 
+        
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            EventSystem.current.SetSelectedGameObject(firstButtonSelected);
+        }
     }
 
     private void HubMerchantUI_OnAnyHubMerchantCloseUIPanel(object sender, System.EventArgs e) {
@@ -92,5 +116,8 @@ public class PlayerTabMenuUI : MonoBehaviour
         GameInput.Instance.OnPlayerOpenPlayerTabPerformed -= GameInput_OnPlayerOpenPlayerTabPerformed;
         HubMerchantUI.OnAnyHubMerchantOpenUIPanel -= HubMerchantUI_OnAnyHubMerchantOpenUIPanel;
         HubMerchantUI.OnAnyHubMerchantCloseUIPanel -= HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
+        GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
+        ChangeWeaponPanel.Instance.OnChangeWeaponPanelOpened -= ChangeWeaponPanel_OnChangeWeaponPanelOpened;
+        ChangeWeaponPanel.Instance.OnChangeWeaponPanelClosed -= ChangeWeaponPanel_OnChangeWeaponPanelClosed;
     }
 }

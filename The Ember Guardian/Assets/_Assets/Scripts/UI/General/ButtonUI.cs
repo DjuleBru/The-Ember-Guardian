@@ -13,7 +13,7 @@ public class ButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPo
     protected bool buttonSelected;
     protected bool buttonHovered;
 
-    private void Start() {
+    protected virtual void Start() {
         OnAnyButtonHovered += ButtonUI_OnAnyButtonHovered;
         OnAnyButtonSelected += ButtonUI_OnAnyButtonSelected;
     }

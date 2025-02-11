@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,12 +18,16 @@ public class ChangeWeaponPanel : MonoBehaviour
 
     private WeaponChangeButton lastChangeButtonThatOpenedThisPanel;
 
+    public event EventHandler OnChangeWeaponPanelClosed;
+    public event EventHandler OnChangeWeaponPanelOpened;
+
     private void Awake() {
         Instance = this;
     }
 
     private void Start() {
         PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
+        GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
 
         Gun.OnAnyGunUnlocked += Gun_OnAnyGunUnlocked;
         PlayerShoot.Instance.OnPrimaryWeaponChanged += PlayerShoot_OnPrimaryWeaponChanged;
@@ -33,10 +38,17 @@ public class ChangeWeaponPanel : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
+        if(panelOpen) {
+            OpenClosePanel();
+        }
+    }
+
     private void PlayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
         panelOpen = false;
         gameObject.SetActive(false);
         lastChangeButtonThatOpenedThisPanel = null;
+        OnChangeWeaponPanelClosed?.Invoke(this, EventArgs.Empty);
     }
 
     private void PlayerShoot_OnSecondaryWeaponChanged(object sender, System.EventArgs e) {
@@ -83,8 +95,12 @@ public class ChangeWeaponPanel : MonoBehaviour
 
         if(!panelOpen) {
             lastChangeButtonThatOpenedThisPanel = null;
+            OnChangeWeaponPanelClosed?.Invoke(this, EventArgs.Empty);
         } else {
-            EventSystem.current.SetSelectedGameObject(changeWeaponButtons[0]);
+            if(changeWeaponButtons.Count > 0) {
+                EventSystem.current.SetSelectedGameObject(changeWeaponButtons[0]);
+                OnChangeWeaponPanelOpened?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 
@@ -103,5 +119,6 @@ public class ChangeWeaponPanel : MonoBehaviour
         PlayerShoot.Instance.OnPrimaryWeaponChanged -= PlayerShoot_OnPrimaryWeaponChanged;
         PlayerShoot.Instance.OnSecondaryWeaponChanged -= PlayerShoot_OnSecondaryWeaponChanged;
         PlayerTabMenuUI.Instance.OnPlayerTabOpened -= PlayerTabMenuUI_OnPlayerTabOpened;
+        GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
     }
 }

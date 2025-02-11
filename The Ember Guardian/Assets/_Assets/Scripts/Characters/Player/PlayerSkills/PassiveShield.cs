@@ -48,7 +48,7 @@ public class PassiveShield : MonoBehaviour, IDamageable
         return transform;
     }
 
-    public void TakeDamage(int damage, Transform damageSource, bool critHit) {
+    public void TakeDamage(int damage, Transform damageSource, bool critHit, bool ignoreTemporaryInvincibility = false) {
         shieldActive = false;
         OnShieldDied?.Invoke(this, EventArgs.Empty);
         OnAnyPassiveShieldDied?.Invoke(this, EventArgs.Empty);
