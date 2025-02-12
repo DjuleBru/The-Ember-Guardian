@@ -22,6 +22,7 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO gunTip;
     [SerializeField] private VideoTipSO storeGemsTip;
     [SerializeField] private VideoTipSO swapWeaponTip;
+    [SerializeField] private VideoTipSO huntingFlagTip;
 
     private bool isLevelScene;
     private bool isTutorialScene;
@@ -43,6 +44,7 @@ public class VideoTipManager : MonoBehaviour
     private bool gunTipShown;
     private bool storeGemsTipShown;
     private bool swapWeaponTipShown;
+    private bool huntingFlagTipShown;
 
     private void Awake() {
         Instance = this;
@@ -93,6 +95,7 @@ public class VideoTipManager : MonoBehaviour
         Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn_Level;
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
+        HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
     }
 
     private void SubscribeToHubEvents() {
@@ -101,7 +104,7 @@ public class VideoTipManager : MonoBehaviour
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
     }
 
-    #region HUB
+
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
         HubMerchant hubMerchant = (HubMerchant)sender;
         if (hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.HeroMerchant) {
@@ -114,7 +117,19 @@ public class VideoTipManager : MonoBehaviour
             ES3.Save("swapWeaponTipShown", true);
 
         }
+
+        if (hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.WorkerMerchant) {
+            if (huntingFlagTipShown) return;
+
+            VideoTipUI.Instance.PlayTipSO(huntingFlagTip, 1f);
+
+            huntingFlagTipShown = true;
+            ES3.Save("huntingFlagTipShown", true);
+
+        }
     }
+
+    #region HUB ONLY
 
     private void HubChest_OnChestOpened(object sender, EventArgs e) {
         if (storeGemsTipShown) return;
@@ -141,7 +156,7 @@ public class VideoTipManager : MonoBehaviour
 
     #endregion
 
-    #region LEVEL
+    #region LEVEL ONLY
 
     private void Player_OnPlayerExitedCamp(object sender, EventArgs e) {
         if (dieTipShown) return;
@@ -176,7 +191,7 @@ public class VideoTipManager : MonoBehaviour
 
     #endregion
 
-    #region TUTORIAL
+    #region TUTORIAL ONLY
 
     private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         if (emberExtractionTipShown) return;
@@ -256,8 +271,8 @@ public class VideoTipManager : MonoBehaviour
         gunTipShown = ES3.Load("gunTipShown", false);
         storeGemsTipShown = ES3.Load("storeGemsTipShown", false);
         swapWeaponTipShown = ES3.Load("swapWeaponTipShown", false);
+        huntingFlagTipShown = ES3.Load("huntingFlagTipShown", false);
     }
-
 
     private void OnDestroy() {
 
@@ -266,6 +281,7 @@ public class VideoTipManager : MonoBehaviour
             Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn_Level;
             Fire.Instance.OnInitialFireActivated -= Fire_OnInitialFireActivated;
             Player.Instance.OnPlayerExitedCamp -= Player_OnPlayerExitedCamp;
+            HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         }
 
         if(isHubScene) {

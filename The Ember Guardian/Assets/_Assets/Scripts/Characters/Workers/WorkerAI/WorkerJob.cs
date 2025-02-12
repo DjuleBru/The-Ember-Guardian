@@ -23,7 +23,7 @@ public class WorkerJob : MonoBehaviour
     protected bool isInSafeZone;
     protected bool hasSetCampDestination;
 
-    protected float headToCampMoveSpeed = 3f;
+    protected float headToCampMoveSpeed = 2.5f;
     protected float roamMoveSpeed = 1.5f;
     protected float fleeMoveSpeed = 3.5f;
     protected float roamTimer;

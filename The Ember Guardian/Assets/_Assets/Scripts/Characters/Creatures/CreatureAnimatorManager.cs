@@ -11,8 +11,10 @@ public class CreatureAnimatorManager : MonoBehaviour
     protected MobMovement mobMovement;
     protected Animator animator;
 
+    protected bool spawned;
     protected bool moving;
     protected float moveDir;
+    protected float lastMoveDir;
     protected float watchDir;
     protected float previousWatchDir = 1f;
     protected float animatorSpeedMultiplier = 1f;
@@ -38,7 +40,11 @@ public class CreatureAnimatorManager : MonoBehaviour
         animatorSpeedMultiplier = baseMovementAnimationSpeed;
         animator.SetFloat("AnimationSpeedMultiplier", animatorSpeedMultiplier);
 
-        if(creature.GetCreatureSO().hasCustomSpawnAnimation) {
+
+        spawned = false;
+        StartCoroutine(SetSpawnedAfterDelay(creature.GetCreatureSO().spawnAnimationDuration));
+
+        if (creature.GetCreatureSO().hasCustomSpawnAnimation) {
             animator.SetTrigger("Spawn");
         }
     }
@@ -50,7 +56,10 @@ public class CreatureAnimatorManager : MonoBehaviour
 
     protected void Update() {
         if (creature.GetDead()) return;
+        if (!spawned) return;
+
         moveDir = mobMovement.GetMoveDirFloat();
+        lastMoveDir = mobMovement.GetLastMoveDirFloat();
 
         HandleXScale();
         HandleAnimatorMovementBool();
@@ -94,7 +103,7 @@ public class CreatureAnimatorManager : MonoBehaviour
             return;
         }
 
-        HandleScaleChange(watchDir);
+        HandleScaleChange(lastMoveDir);
     }
 
     protected void HandleScaleChange(float watchDir) {
@@ -111,15 +120,32 @@ public class CreatureAnimatorManager : MonoBehaviour
         }
     }
 
+    private IEnumerator SetSpawnedAfterDelay(float delay) {
+        float randomDir = UnityEngine.Random.Range(-1f, 1f);
+        HandleScaleChange(randomDir);
+        yield return new WaitForSeconds(delay);
+        spawned = true;
+    }
+
     protected void MobAttack_OnMobAttack(object sender, System.EventArgs e) {
         animator.SetTrigger("Attack");
     }
 
     protected void Creature_OnMobDied(object sender, System.EventArgs e) {
         animator.SetTrigger("Die");
+        float playerDir = Player.Instance.transform.position.x - transform.position.x;
+        HandleScaleChange(playerDir);
     }
 
     public void FootStepEvent() {
         OnFootStepTriggered?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SetReadyToMove() {
+        mobMovement.SetReadyToMoveAnimator(true);
+    }
+
+    public void SetUnReadyToMove() {
+        mobMovement.SetReadyToMoveAnimator(false);
     }
 }

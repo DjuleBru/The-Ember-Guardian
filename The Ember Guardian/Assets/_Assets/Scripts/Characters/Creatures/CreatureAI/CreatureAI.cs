@@ -46,16 +46,15 @@ public class CreatureAI : MonoBehaviour {
         creatureMovement = GetComponent<CreatureMovement>();
         mobAttack = GetComponent<MobAttack>();
         creature = GetComponent<Creature>();
+
+        spawned = false;
+        StartCoroutine(SetSpawnedAfterDelay(creature.GetCreatureSO().spawnAnimationDuration));
     }
 
     protected virtual void Start() {
         creature.OnCreatureDied += Creature_OnCreatureDied;
 
         SetAttackRange();
-
-        spawned = false;
-        StartCoroutine(SetSpawnedAfterDelay(creature.GetCreatureSO().spawnAnimationDuration));
-
     }
 
     private void SetAttackRange() {
@@ -90,6 +89,7 @@ public class CreatureAI : MonoBehaviour {
     private IEnumerator SetSpawnedAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
         spawned = true;
+        creatureMovement.SetSpawned();
         SetInitialState();
     }
 

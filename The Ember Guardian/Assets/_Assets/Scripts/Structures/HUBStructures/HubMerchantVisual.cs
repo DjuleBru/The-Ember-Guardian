@@ -21,10 +21,15 @@ public class HubMerchantVisual : MonoBehaviour
         hubMerchant.OnPlayerTriggeredOut += HubMerchant_OnPlayerTriggeredOut;
         hubMerchant.OnPlayerOpenedHubMerchantShop += HubMerchant_OnPlayerInteractedWithHubMerchant;
         hubMerchant.OnPlayerStartedTalkingWithHubMerchant += HubMerchant_OnPlayerStartedTalkingWithHubMerchant;
+        hubMerchant.OnMerchantHasNewTalkLines += HubMerchant_OnMerchantHasNewTalkLines;
 
         if(hubMerchant.GetMerchantHasNewItems() || hubMerchant.GetMerchantJustArrivedInHub() || hubMerchant.GetMerchantIsLevelNPC() || hubMerchant.GetMerchantHasNewTalkLinkes()) {
             newItemsForSaleGameObject.gameObject.SetActive(true);
         }
+    }
+
+    private void HubMerchant_OnMerchantHasNewTalkLines(object sender, System.EventArgs e) {
+        newItemsForSaleGameObject.gameObject.SetActive(true);
     }
 
     private void HubMerchant_OnPlayerStartedTalkingWithHubMerchant(object sender, System.EventArgs e) {

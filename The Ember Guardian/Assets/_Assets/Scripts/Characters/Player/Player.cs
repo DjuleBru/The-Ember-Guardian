@@ -138,6 +138,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
+
         if (damagedRecently && !ignoreTemporaryInvincibility) return;
         if (dead) return;
         if (isInvincibleWhileRolling) return;

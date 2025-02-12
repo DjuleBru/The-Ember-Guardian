@@ -120,13 +120,17 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5478679135054183592, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: maxImpactAmountInSingleAnimation
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5757064800425388701, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: creatureSO
       value: 
       objectReference: {fileID: 11400000, guid: 30c45ff74017778438c5c78eed18975c, type: 2}
     - target: {fileID: 6065107878212410819, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6104643636267432083, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -184,6 +188,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 0287785bf1c6f3e43a36443517053edc, type: 2}
+    - target: {fileID: 7271068100687097386, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: maxImpactAmountInSingleAnimation
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7484656603021351616, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Layer
       value: 15
@@ -194,11 +202,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7624359409499782810, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7624359409499782810, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.46
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7742607065347499399, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.y

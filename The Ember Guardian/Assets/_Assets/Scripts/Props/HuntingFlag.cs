@@ -23,6 +23,7 @@ public class HuntingFlag : MonoBehaviour
         Obstacle.OnAnyObstacleBuilt += Obstacle_OnAnyObstacleBuilt;
     }
 
+
     private void Obstacle_OnAnyObstacleBuilt(object sender, EventArgs e) {
         if(destinationPosition != null && campDefinedHuntingFlag.position != destinationPosition) {
             TrySetCampHuntingLimit(destinationPosition);

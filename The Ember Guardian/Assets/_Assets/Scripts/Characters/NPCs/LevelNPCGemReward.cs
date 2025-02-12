@@ -9,12 +9,16 @@ public class LevelNPCGemReward : MonoBehaviour
     [SerializeField] private List<PlayerCurrencies.CurrencyType> currencyTypeToRewardList;
     [SerializeField] private List<int> rewardAmountList;
 
+    private bool rewarded;
+
     private void Start() {
         talkUI.OnMerchantEndTalk += TalkUI_OnMerchantEndTalk;
     }
 
     private void TalkUI_OnMerchantEndTalk(object sender, System.EventArgs e) {
+        if (rewarded) return;
         StartCoroutine(GiveReward());
+        rewarded = true;
     }
 
     private IEnumerator GiveReward() {

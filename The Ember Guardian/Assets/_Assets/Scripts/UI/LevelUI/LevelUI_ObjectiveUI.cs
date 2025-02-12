@@ -22,6 +22,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         FindMoreCompanions,
         FindWatcher,
         FindArchitect,
+        SurviveNights,
     }
 
     public enum SubObjectiveType {
@@ -52,6 +53,8 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         TalkToArmorer,
         MeetTrainer,
         MeetTamer,
+        SurviveNights,
+        TalkToWatcher,
     }
 
     public static LevelUI_ObjectiveUI Instance;
@@ -72,6 +75,12 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         objectiveGameObject.SetActive(false); 
         subObjectiveTemplate.gameObject.SetActive(false);
         GetComponent<Animator>().enabled = false;
+    }
+
+    private void Start() {
+        if(LevelObjectives.Instance != null) {
+            LevelObjectives.Instance.OnNightSurvived += LevelObjectives_OnNightSurvived;
+        }
     }
 
     public void ShowObjectiveUI(ObjectiveType objectiveType) {
@@ -216,6 +225,17 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         Tutorial.Instance.UnlockDefensiveStructureLocations();
     }
 
+    private void LevelObjectives_OnNightSurvived(object sender, EventArgs e) {
+        foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>(true)) {
+            if (subObjectiveUI.GetSubObjectiveType() == SubObjectiveType.None) continue;
+
+            if (subObjectiveUI.GetSubObjectiveType() == SubObjectiveType.SurviveNights) {
+                subObjectiveUI.SetSubObjective(SubObjectiveType.SurviveNights);
+            }
+
+        }
+    }
+
     public string GetSubObjectiveTextFromType(SubObjectiveType subObjectiveType) {
 
         if(subObjectiveType == SubObjectiveType.Keep2WorkersAlive) {
@@ -293,6 +313,12 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         if (subObjectiveType == SubObjectiveType.MeetTrainer) {
             return "Meet the Trainer";
         }
+        if (subObjectiveType == SubObjectiveType.SurviveNights) {
+            return "Survive " + LevelObjectives.Instance.GetNightsToSurvive() + " Nights " + "(" + LevelObjectives.Instance.GetNightsSurvived() + "/" + LevelObjectives.Instance.GetNightsToSurvive() + ")";
+        }
+        if (subObjectiveType == SubObjectiveType.TalkToWatcher) {
+            return "Talk to the Watcher";
+        }
         return "";
     }
 
@@ -340,7 +366,16 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         if (objectiveType == ObjectiveType.FindArchitect) {
             return "Find the Architect";
         }
+        if (objectiveType == ObjectiveType.SurviveNights) {
+            return "Survive the darkness";
+        }
         return "";
+    }
+
+    private void OnDestroy() {
+        if (LevelObjectives.Instance != null) {
+            LevelObjectives.Instance.OnNightSurvived -= LevelObjectives_OnNightSurvived;
+        }
     }
 
 }

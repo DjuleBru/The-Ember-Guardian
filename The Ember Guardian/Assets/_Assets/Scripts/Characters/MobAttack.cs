@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,8 @@ public class MobAttack : MonoBehaviour
 {
     [SerializeField] protected bool isProjectileAttack;
     [SerializeField] protected bool isStaticProjectileAttack;
+    [ShowIf("isStaticProjectileAttack")]
+    [SerializeField] protected bool staticProjectileAutoTargetsPlayer;
     [SerializeField] protected bool isAnimatedAttack;
     [SerializeField] protected ProjectileSO projectileSO;
     [SerializeField] protected Transform staticProjectilePrefab;
@@ -39,7 +42,6 @@ public class MobAttack : MonoBehaviour
     }
 
     protected void Update() {
-
         attackTimer -= Time.deltaTime;
 
         if ((attackTargetIDamageable as MonoBehaviour)!= null) {
@@ -53,6 +55,7 @@ public class MobAttack : MonoBehaviour
         } else {
             attacking = false;
         }
+
     }
 
     protected virtual void Attack() {
@@ -75,12 +78,10 @@ public class MobAttack : MonoBehaviour
     protected IEnumerator SpawnProjectileAfterDelay(float delay, float totalAttackAnimationTime) {
         attackStarted = true;
         yield return new WaitForSeconds(delay);
-        if (mob.GetDead()) yield return null;
+
+        if (mob.GetDead()) yield break;
 
         // Projectile can be instantiated AFTER attack target reset, so must keep track of previous attack target
-        if ((attackTargetIDamageable as MonoBehaviour) == null) {
-            previousAttackTargetIDamageable = null;
-        }
 
         if (previousAttackTargetIDamageable != null) {
 
@@ -99,15 +100,22 @@ public class MobAttack : MonoBehaviour
     protected IEnumerator SpawnStaticProjectileAfterDelay(float delayToSpawnStaticProjectile, float totalAttackAnimationTime) {
         attackStarted = true;
         yield return new WaitForSeconds(delayToSpawnStaticProjectile);
-        if (mob.GetDead()) yield return null;
+
+        Debug.Log("mob.GetDead() " + mob.GetDead());
+        if (mob.GetDead()) yield break;
 
         // Projectile can be instantiated AFTER attack target reset, so must keep track of previous attack target
-        if ((attackTargetIDamageable as MonoBehaviour) == null) {
-            previousAttackTargetIDamageable = null;
-        }
 
         if (previousAttackTargetIDamageable != null) {
-            StaticProjectile projectile = Instantiate(staticProjectilePrefab, projectileSpawnPoint.position, Quaternion.identity).GetComponent<StaticProjectile>();
+            Vector3 spawnPosition = projectileSpawnPoint.position;
+
+            if(staticProjectileAutoTargetsPlayer) {
+                float xRandomizer = UnityEngine.Random.Range(-1.5f, 1.5f);
+                spawnPosition = attackTargetGameObject.transform.position;
+                spawnPosition.x += xRandomizer;
+            }
+
+            StaticProjectile projectile = Instantiate(staticProjectilePrefab, spawnPosition, Quaternion.identity).GetComponent<StaticProjectile>();
             projectile.Initialize(GetAttackDir().x, mob, attackDamage);
         }
 
@@ -121,8 +129,8 @@ public class MobAttack : MonoBehaviour
     protected IEnumerator DealDamageAfterDelay(float delayToDealDamage, float totalAttackAnimationTime) {
         attackStarted = true;
         yield return new WaitForSeconds(delayToDealDamage);
-        if (mob.GetDead()) yield return null;
-        
+        if (mob.GetDead()) yield break;
+
         DealDamage(false);
 
         yield return new WaitForSeconds(totalAttackAnimationTime - delayToDealDamage);
@@ -151,6 +159,8 @@ public class MobAttack : MonoBehaviour
     }
 
     public void SetAttackTarget(IDamageable iDamageable) {
+        attackTimer = UnityEngine.Random.Range(0, attackCooldown/3);
+
         this.attackTargetIDamageable = iDamageable;
         previousAttackTargetIDamageable = attackTargetIDamageable;
         attackTargetGameObject = (attackTargetIDamageable as MonoBehaviour).gameObject;

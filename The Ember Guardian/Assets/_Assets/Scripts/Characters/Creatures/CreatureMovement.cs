@@ -8,6 +8,7 @@ public class CreatureMovement : MobMovement
     protected float enteredLightSpeedDebuff = 2f;
     protected bool enteredLight;
     protected bool aggroMoveSpeedSet;
+    protected bool spawned;
     protected float aggroMoveSpeedBuff = 1.5f;
 
     protected override void Awake() {
@@ -28,6 +29,11 @@ public class CreatureMovement : MobMovement
             initialMobSpeed *= 1.5f;
             moveSpeed  = initialMobSpeed;
         }
+    }
+
+    protected override void FixedUpdate() {
+        if (!spawned) return;
+        base.FixedUpdate();
     }
 
     public void SetCreatureAggroMoveSpeed(bool aggroMoveSpeed) {
@@ -51,5 +57,9 @@ public class CreatureMovement : MobMovement
     protected void Creature_OnCreatureExitedLight(object sender, System.EventArgs e) {
         enteredLight = false;
         BuffMoveSpeed(enteredLightSpeedDebuff);
+    }
+
+    public void SetSpawned() {
+        spawned = true;
     }
 }

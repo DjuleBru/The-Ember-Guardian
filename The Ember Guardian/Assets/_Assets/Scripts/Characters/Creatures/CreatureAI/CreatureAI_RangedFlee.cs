@@ -57,6 +57,7 @@ public class CreatureAI_RangedFlee : CreatureAI
 
     protected override void AttackingStateUpdate() {
         base.AttackingStateUpdate();
+        if((attackTarget as MonoBehaviour) == null) return;
 
         Vector3 targetPosition = attackTarget.GetMeleeAttackPosition().position;
         float distanceToTargetX = Mathf.Abs(targetPosition.x - transform.position.x);

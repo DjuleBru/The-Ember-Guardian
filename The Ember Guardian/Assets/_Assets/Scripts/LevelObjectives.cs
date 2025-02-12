@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Cinemachine.DocumentationSortingAttribute;
 
 public class LevelObjectives : MonoBehaviour
 {
+    public static LevelObjectives Instance;
 
     [SerializeField] private List<HubMerchant> levelMerchantList;
     [SerializeField] private HubMerchantTalkUI levelMerchantTalkUI;
@@ -16,6 +19,15 @@ public class LevelObjectives : MonoBehaviour
     private bool darklingNestCleared;
     private bool playerStoppedInteractingWithMerchant;
     private int NPCInteractionsIndex;
+
+    private int nightsSurvived = -1;
+    private int nightsToSurvive;
+
+    public event EventHandler OnNightSurvived;
+
+    private void Awake() {
+        Instance = this;
+    }
 
     private void Start() {
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
@@ -34,6 +46,24 @@ public class LevelObjectives : MonoBehaviour
                 EndLevelArea.Instance.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
                 EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
             }
+        }
+
+        if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
+
+            DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+            nightsToSurvive = LevelManager.Instance.GetLevelSO().nightsToSurviveAmount;
+        }
+    }
+
+    private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
+        nightsSurvived++;
+        OnNightSurvived?.Invoke(this, EventArgs.Empty);
+
+        if (nightsSurvived == nightsToSurvive) {
+
+            LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.SurviveNights, LevelUI_ObjectiveUI.SubObjectiveType.TalkToWatcher);
+            levelMerchantTalkUI.SetTextLinesSO(finalMerchantTextLines);
+
         }
     }
 
@@ -56,6 +86,18 @@ public class LevelObjectives : MonoBehaviour
             LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
 
         }
+
+        if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
+
+            LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.SurviveNights);
+            List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
+                    LevelUI_ObjectiveUI.SubObjectiveType.SurviveNights
+                };
+
+            LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
+
+        }
+
 
     }
 
@@ -90,7 +132,6 @@ public class LevelObjectives : MonoBehaviour
             }
         }
 
-
         if (levelMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.GunMerchant) {
 
             LevelUI_ObjectiveUI.Instance.SetObjectiveCompleted(.5f);
@@ -108,6 +149,15 @@ public class LevelObjectives : MonoBehaviour
                 subObjectives.Add(LevelUI_ObjectiveUI.SubObjectiveType.ClearNest);
 
                 LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
+            }
+        }
+
+        if(levelMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.WorkerMerchant) {
+
+            yield return new WaitForSeconds(1f);
+
+            if(NPCInteractionsIndex == 2) {
+                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.TalkToWatcher);
             }
         }
     }
@@ -154,5 +204,12 @@ public class LevelObjectives : MonoBehaviour
         levelMerchantTalkUI.SetTalkingWithMerchant(finalMerchantTextLines);
     }
 
+    public int GetNightsSurvived() {
+        return nightsSurvived;
+    }
+
+    public int GetNightsToSurvive() {
+        return nightsToSurvive;
+    }
 
 }

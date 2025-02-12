@@ -98,6 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isProjectileAttack: 0
   isStaticProjectileAttack: 0
+  staticProjectileAutoTargetsPlayer: 0
   isAnimatedAttack: 0
   projectileSO: {fileID: 0}
   staticProjectilePrefab: {fileID: 0}
@@ -742,6 +743,99 @@ MonoBehaviour:
   enteredLightFeedbacks: {fileID: 1868321048775084425}
   creatureAI: {fileID: 6447040630869028713}
   creature: {fileID: 5757064800425388701}
+--- !u!1 &2119332448195329208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2087714320067125260}
+  - component: {fileID: 4515677608398901837}
+  - component: {fileID: 5478679135054183592}
+  m_Layer: 15
+  m_Name: CreatureDamageCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2087714320067125260
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119332448195329208}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7624359409499782810}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &4515677608398901837
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119332448195329208}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 667648
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!114 &5478679135054183592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119332448195329208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f371aa3ffd1f8c41b21a1c717479228, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mobAttack: {fileID: 6184710609068459157}
+  creatureDamageColliderParent: {fileID: 2465198453920117791}
+  maxImpactAmountInSingleAnimation: 0
 --- !u!1 &2166404257115817191
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,6 +997,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1304696204632015260}
   - component: {fileID: 7431457357262241407}
+  - component: {fileID: 8239286758325615115}
   - component: {fileID: 6488341752098011330}
   - component: {fileID: 7582748658384806886}
   m_Layer: 15
@@ -946,6 +1041,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 998065d18ba44c441be503b5c4f6e299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8239286758325615115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3284089339212149748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1368c46a87158fd488d5731add5184e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!95 &6488341752098011330
@@ -1126,8 +1233,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b52ebbea11cad48b0d93c2883134ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDistanceToHear: 10
-  maxAudioSourceVolume: 0.5
+  maxDistanceToHear: 20
+  maxAudioSourceVolume: 1
   active: 1
 --- !u!1 &4153247095712251874
 GameObject:
@@ -6074,6 +6181,7 @@ MonoBehaviour:
   creatureAI: {fileID: 6447040630869028713}
   creatureAttack: {fileID: 6184710609068459157}
   creatureAnimator: {fileID: 7431457357262241407}
+  creatureAnimatorSounds: {fileID: 8239286758325615115}
   enteredLightAudioClips:
   - {fileID: 8300000, guid: fb9173e716fec7d4aaa0d43a401e67ab, type: 3}
   - {fileID: 8300000, guid: c7cff591dcc14a94fa5613ca0e4015c7, type: 3}
@@ -6203,15 +6311,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7624359409499782810}
-  - component: {fileID: 3905941720949174934}
-  - component: {fileID: 7271068100687097386}
+  - component: {fileID: 2465198453920117791}
   m_Layer: 15
   m_Name: CreatureDamageCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7624359409499782810
 Transform:
   m_ObjectHideFlags: 0
@@ -6224,55 +6331,11 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2087714320067125260}
   m_Father: {fileID: 1304696204632015260}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &3905941720949174934
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6065107878212410819}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
---- !u!114 &7271068100687097386
+--- !u!114 &2465198453920117791
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6281,10 +6344,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6065107878212410819}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f371aa3ffd1f8c41b21a1c717479228, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d9bba526a94121439b4bd6844edcf42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mobAttack: {fileID: 6184710609068459157}
 --- !u!1 &6355303796101193538
 GameObject:
   m_ObjectHideFlags: 0

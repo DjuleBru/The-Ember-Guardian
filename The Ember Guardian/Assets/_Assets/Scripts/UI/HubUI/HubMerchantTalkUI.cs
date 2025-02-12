@@ -106,6 +106,13 @@ public class HubMerchantTalkUI : MonoBehaviour
         StartCoroutine(StartTalkingToMerchantCoroutine());
     }
 
+    public void SetTextLinesSO(MerchantTextLinesSO textLinesSO) {
+        showShopAfterDialog = textLinesSO.showShopAfterDialog;
+        merchantTalkLines = textLinesSO.merchantTextLines;
+        merchantHasTalkLinesToShow = true;
+        hubMerchant.SetHasTalkLinesToShow();
+    }
+
     private IEnumerator StartTalkingToMerchantCoroutine() {
         CameraManager.Instance.ZoomIn(false, 1.5f, 2f);
         CameraManager.Instance.ChangeCameraTarget(hubMerchant.GetCameraFocusTransform());

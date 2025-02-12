@@ -17,6 +17,7 @@ public class GameIcons : MonoBehaviour {
     public Sprite greenGemIcon;
     public Sprite yellowGemIcon;
     public Sprite purpleGemIcon;
+    public Sprite huntingFlagIcon;
 
     private Dictionary<string, Sprite> iconDictionary;
 
@@ -36,6 +37,7 @@ public class GameIcons : MonoBehaviour {
             { "yellowGem", yellowGemIcon },
             { "greenGem", greenGemIcon },
             { "purpleGem", purpleGemIcon },
+            { "huntingFlag", huntingFlagIcon },
         };
     }
 

@@ -176,9 +176,26 @@ public class CreatureSO : ScriptableObject
     [LabelWidth(200)]
     public float aggroVolumeMultiplier = .5f;
 
+
+    public bool attackSFXHandledByAnimation;
+    [ShowIf("attackSFXHandledByAnimation")]
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public AudioClip[] attackStartedChargingAudioClips;
+    [ShowIf("attackSFXHandledByAnimation")]
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public AudioClip[] attackReleasedAudioClips;
+
     [BoxGroup("SFX")]
     [LabelWidth(200)]
     public AudioClip[] attackHitAudioClips;
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public float attackVolumeMultiplier = .5f;
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public AudioClip[] attackAudioClips;
     [BoxGroup("SFX")]
     [LabelWidth(200)]
     public float attackHitVolumeMultiplier = .5f;

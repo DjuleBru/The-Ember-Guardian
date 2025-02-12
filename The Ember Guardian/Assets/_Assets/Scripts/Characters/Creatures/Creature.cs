@@ -72,6 +72,8 @@ public class Creature : Mob
     }
 
     public override void Die() {
+        dead = true;
+
         CreaturesManager.Instance.RemoveCreatureSpawned(this);
 
         if(mobSpawner != null) {
@@ -80,7 +82,7 @@ public class Creature : Mob
 
         base.Die();
 
-        if(dropRedOrbsUnlocked) {
+        if (dropRedOrbsUnlocked) {
             SpawnDroppedCurrencies(creatureSO.currencyTypeDroppedList, creatureSO.currencyDropAmountList);
             InvokeOnMobDroppedCollectibles(collectiblesDropped);
         }

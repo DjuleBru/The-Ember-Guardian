@@ -6,13 +6,17 @@ using UnityEngine;
 public class CreatureDamageCollider : MonoBehaviour
 {
     [SerializeField] private MobAttack mobAttack;
-    [SerializeField] private Mob mob;
+    [SerializeField] private CreatureDamageColliderParent creatureDamageColliderParent;
 
+    [SerializeField] private int maxImpactAmountInSingleAnimation;
     private int impactAmountOnPlayerInSingleAnimation;
+
 
     private void Start() {
         mobAttack.OnMobAttack += MobAttack_OnMobAttack;
     }
+
+    
 
     private void MobAttack_OnMobAttack(object sender, System.EventArgs e) {
         impactAmountOnPlayerInSingleAnimation = 0;
@@ -20,7 +24,6 @@ public class CreatureDamageCollider : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) {
         IDamageable iDamageable = collision.GetComponent<IDamageable>();
-
         if (iDamageable != null) {
             Creature creature = (iDamageable as MonoBehaviour).GetComponent<Creature>();
 
@@ -30,7 +33,10 @@ public class CreatureDamageCollider : MonoBehaviour
             Player player = (iDamageable as MonoBehaviour).GetComponent<Player>();
 
             if(player != null) {
+                Debug.Log(creatureDamageColliderParent.PlayerJustExitedCollider());
+                if (creatureDamageColliderParent.PlayerJustExitedCollider()) return;
                 // Attack hit player
+                if (impactAmountOnPlayerInSingleAnimation >= maxImpactAmountInSingleAnimation) return;
 
                 if (impactAmountOnPlayerInSingleAnimation != 0) {
                     DealDamageToUntargetedIDamageable(iDamageable, true);
@@ -46,6 +52,12 @@ public class CreatureDamageCollider : MonoBehaviour
                 mobAttack.DealDamage(false);
             }
 
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) {
+        if(collision.GetComponent<Player>() != null) {
+            creatureDamageColliderParent.SetPlayerJustExitedCollider();
         }
     }
 

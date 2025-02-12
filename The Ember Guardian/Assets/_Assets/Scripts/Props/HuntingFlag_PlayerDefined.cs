@@ -6,7 +6,8 @@ using UnityEngine;
 public class HuntingFlag_PlayerDefined : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
-    
+    [SerializeField] private SpriteRenderer pickUpSpriteRenderer;
+
     private HuntingFlag huntingFlag;
     private bool playerInTriggerArea;
     private bool playerCarryingFlag;
@@ -18,6 +19,7 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
     private void Awake() {
         huntingFlag = GetComponentInParent<HuntingFlag>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        pickUpSpriteRenderer.enabled = false;
     }
 
     private void Start() {
@@ -51,6 +53,7 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
 
         huntingFlag.SetPlayerCarryingFlag(true);
         OnAnyHuntingFlagPickedUp?.Invoke(this, EventArgs.Empty);
+        pickUpSpriteRenderer.enabled = false;
     }
 
     private void HuntingFlag_OnPlayerResetManualHuntingLimit(object sender, System.EventArgs e) {
@@ -79,11 +82,14 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
         if(collision.gameObject.GetComponent<Player>() != null) {
             OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
 
+            Debug.Log(PlayerSave.Instance.GetPlayerUnlockedFlagCarry());
+
             if (!PlayerSave.Instance.GetPlayerUnlockedFlagCarry()) return;
 
             playerInTriggerArea = true;
             Player.Instance.SetCarryinhOtherObject(true);
             spriteRenderer.material.SetFloat("_Glow", .2f);
+            pickUpSpriteRenderer.enabled = true;
 
         }
     }
@@ -98,6 +104,7 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
 
             if (huntingFlag.GetPlayerCarryingFlag()) return;
             Player.Instance.SetCarryinhOtherObject(false);
+            pickUpSpriteRenderer.enabled = false;
         }
     }
 }

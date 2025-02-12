@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private LevelSO levelSO;
     [SerializeField] private Portal endLevelPortal;
+    [SerializeField] private HubMerchant levelHubMerchant;
 
     private bool levelRegionUnlocked;
 
@@ -26,13 +27,26 @@ public class LevelManager : MonoBehaviour
             LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
         }
 
+        if(levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
+            LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
+        }
+
         levelRegionUnlocked = MetaProgressionManager.Instance.GetLevelRegionUnlocked(levelSO.environmentType);
     }
+
 
     private void LevelUI_OnObjectiveCompleted(object sender, EventArgs e) {
         if(levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
 
             Vector3 endLevelPortalPosition = new Vector3(Player.Instance.transform.position.x + 10f, 0, 0);
+            endLevelPortal.transform.position = endLevelPortalPosition;
+
+            StartCoroutine(EnableEndLevelPortal(2f));
+        }
+
+        if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
+
+            Vector3 endLevelPortalPosition = new Vector3(levelHubMerchant.transform.position.x + 10f, 0, 0);
             endLevelPortal.transform.position = endLevelPortalPosition;
 
             StartCoroutine(EnableEndLevelPortal(2f));
@@ -92,5 +106,10 @@ public class LevelManager : MonoBehaviour
 
         MetaProgressionManager.Instance.SetMerchantHasTalkLinesToShow(HubMerchant.HubMerchantType.GemMerchant, true);
         MetaProgressionManager.Instance.SetNextMerchantTalkLines(HubMerchant.HubMerchantType.GemMerchant, levelSO.gemMerchantTextLinesAfterLevel);
+    }
+
+    private void OnDestroy() {
+        LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted -= LevelUI_OnObjectiveCompleted;
+        EndLevelArea.Instance.OnEndLevelFireLit -= EndLevelArea_OnEndLevelFireLit;
     }
 }

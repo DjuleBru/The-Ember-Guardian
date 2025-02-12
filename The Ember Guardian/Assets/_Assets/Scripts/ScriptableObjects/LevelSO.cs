@@ -21,6 +21,7 @@ public class LevelSO : ScriptableObject
     public LevelEnvironment environmentType;
     public LevelUI_ObjectiveUI.ObjectiveType levelObjectiveType;
     public LevelUI_ObjectiveUI.ObjectiveType endLevelType;
+    public int nightsToSurviveAmount = 0;
     public List<CreatureSO> nightCreatureTypes;
     public bool isNewEnvironmentDiscoveryLevel;
     [ShowIf("isNewEnvironmentDiscoveryLevel")]
