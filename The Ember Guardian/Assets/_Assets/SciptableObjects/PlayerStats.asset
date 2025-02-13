@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec68cd4ba73fe7440919ee8acf9b7de8, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
-  initialMoveSpeed: 4
-  initialMaxStamina: 10
+  initialMoveSpeed: 3.5
+  initialMaxStamina: 12
   initialExhaustionTime: 6
-  initialRunAccelerationFactor: 1.2
+  initialRunAccelerationFactor: 1.3
   initialAimingSightDecelerationFactor: 1.5
   initialMaxPlayerHP: 6
   initialDamagedImmunityTime: 1.5
   initialRespawnTime: 5
   initialPlayerRespawnHP: 3
   initialHpRegenTimer: 0
+  initialStartLevelAmmo: 3
+  initialStartLevelOrbs: 0
   flashlightRange: 10

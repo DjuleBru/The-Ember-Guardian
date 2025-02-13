@@ -242,7 +242,6 @@ public class Portal : MonoBehaviour
     }
 
     public void MakePortalAppear() {
-        Debug.Log("MakePortalAppear");
         OnPortalAppeared?.Invoke(this, EventArgs.Empty);
         OnAnyPortalAppeared?.Invoke(this, EventArgs.Empty);
     }

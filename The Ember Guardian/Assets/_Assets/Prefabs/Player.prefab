@@ -11443,7 +11443,7 @@ Transform:
   m_GameObject: {fileID: 451216457191346974}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3, y: 1.055, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15986,7 +15986,7 @@ SpriteRenderer:
   m_SortingLayerID: 701149539
   m_SortingLayer: -6
   m_SortingOrder: 0
-  m_Sprite: {fileID: 709793656, guid: 9e6cd249ea602c24ba5a70d46f3bc962, type: 3}
+  m_Sprite: {fileID: -1194167273, guid: 5d22d6283741ff04dbbd211d1f44e4f0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -60123,7 +60123,7 @@ Transform:
   m_GameObject: {fileID: 5414031347844933230}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.075, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -60170,7 +60170,7 @@ SpriteRenderer:
   m_SortingLayerID: 701149539
   m_SortingLayer: -6
   m_SortingOrder: 1
-  m_Sprite: {fileID: 168283212, guid: d0af007943e4dc249900c24a9b0644db, type: 3}
+  m_Sprite: {fileID: -1794840505, guid: 9362eb4baf0004f4e8363f6bde7c8067, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -68165,7 +68165,7 @@ GameObject:
   - component: {fileID: 4546515513159374385}
   - component: {fileID: 2247387200085630433}
   m_Layer: 12
-  m_Name: Light 2D
+  m_Name: EmberLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68202,7 +68202,7 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.774
-  m_Color: {r: 1, g: 0.5282045, b: 0.042452812, a: 1}
+  m_Color: {r: 1, g: 0.33303517, b: 0.043137252, a: 1}
   m_Intensity: 0.49
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0

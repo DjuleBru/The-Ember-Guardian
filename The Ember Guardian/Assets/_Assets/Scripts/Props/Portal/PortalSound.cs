@@ -29,7 +29,6 @@ public class PortalSound : SoundObject {
         portal.OnPlayerEnteredTriggerArea += Portal_OnPlayerEnteredTriggerArea;
         portal.OnPlayerExitedTriggerArea += Portal_OnPlayerExitedTriggerArea;
         portal.OnTeleporterActivatedOut += Portal_OnTeleporterActivatedOut;
-        Debug.Log("subbed");
     }
 
     protected override void Start() {
@@ -72,7 +71,6 @@ public class PortalSound : SoundObject {
     }
 
     private void Portal_OnPortalAppeared(object sender, System.EventArgs e) {
-        Debug.Log("Portal_OnPortalAppeared");
         StartCoroutine(PlayDelayed(.1f, appearAudioClip, .3f));
     }
 

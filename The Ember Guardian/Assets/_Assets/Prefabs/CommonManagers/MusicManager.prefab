@@ -141,8 +141,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eec40644e935aa242acf8486cae1d1a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  discoveryMusicInterruptionSource: 0
   mainTracksAudioVolume: 0.4
   backgroundTracksAudioVolume: 0.2
+  nightMusicAudioVolume: 0.4
   mainMenuMusic: {fileID: 0}
+  nightMusic: {fileID: 8300000, guid: 1b964a9bf7ac9cf4bb1b034a5c8a5efa, type: 3}
   endLevelMusic: {fileID: 8300000, guid: a235baf8c3b9c68498cb5ddebacab0a9, type: 3}
   discoverNewLocationMusic: {fileID: 0}

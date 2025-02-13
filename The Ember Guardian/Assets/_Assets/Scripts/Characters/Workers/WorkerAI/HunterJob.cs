@@ -8,6 +8,7 @@ public class HunterJob : WorkerJob {
 
     private float trackAnimalMoveSpeed = 2f;
     private float initialFiringRange = 12f;
+    private float initialFiringRangeRandomizer = 1f;
 
     private float attackRange;
     private float distanceToPlayerWhenCreatureIsAround = 4f;
@@ -69,7 +70,7 @@ public class HunterJob : WorkerJob {
         dayAndNightHunterStates.Add(HunterState.pickingUpOrbs);
         dayAndNightHunterStates.Add(HunterState.droppingOrbs);
 
-        attackRange = initialFiringRange;
+        attackRange = initialFiringRange + UnityEngine.Random.Range(-initialFiringRangeRandomizer, initialFiringRangeRandomizer);
         distanceToHuntingLimit = UnityEngine.Random.Range(distanceToHuntingLimit - distanceToHuntingLimit / 2, distanceToHuntingLimit + distanceToHuntingLimit / 2);
 
         float workerDetectionColliderRadius = workerDetectionCollider.GetComponent<CircleCollider2D>().radius;

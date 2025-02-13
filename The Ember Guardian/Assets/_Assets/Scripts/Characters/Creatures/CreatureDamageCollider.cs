@@ -24,6 +24,7 @@ public class CreatureDamageCollider : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) {
         IDamageable iDamageable = collision.GetComponent<IDamageable>();
+
         if (iDamageable != null) {
             Creature creature = (iDamageable as MonoBehaviour).GetComponent<Creature>();
 

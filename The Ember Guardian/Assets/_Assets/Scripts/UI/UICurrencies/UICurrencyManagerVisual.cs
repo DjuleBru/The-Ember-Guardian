@@ -7,15 +7,19 @@ public class UICurrencyManagerVisual : MonoBehaviour
     [SerializeField] private bool debugAlwaysShow;
     [SerializeField] private UICurrencyManager uICurrencyManager;
     [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private CanvasGroup currencyCanvasGroup;
+    [SerializeField] private Animator backpackFrontAnimator;
     [SerializeField] private List<CurrencyUI_AlmostFullColliders> almostFullColliders;
 
     public float backpackDisplayTime = 2f;   // Durée d'affichage de la barre
     public float backpackDisplayTimer;   // Durée d'affichage de la barre
+    public float frontDisplayTime = 1f;  // Durée du fade-out
     public float fadeOutDuration = .2f;  // Durée du fade-out
     public float fadeInDuration = .2f;  // Durée du fade-in
 
     private bool backpackAlmostFull;
     private float backpackBarDiplayTimer = 0f;
+    private bool isShowingBackpackFront = true;
     private bool isFadingOut = true;
     private bool isFadingIn = false;
     private bool tabMenuOpen = false;
@@ -38,12 +42,17 @@ public class UICurrencyManagerVisual : MonoBehaviour
     private void PLayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
         tabMenuOpen = true;
         isFadingIn = true;
+        isShowingBackpackFront = true;
+        backpackFrontAnimator.SetTrigger("HideFront");
+        backpackFrontAnimator.ResetTrigger("ShowFront");
+        currencyCanvasGroup.alpha = 1;
     }
 
     private void PlayerTabMenuUI_OnPlayerTabClosed(object sender, System.EventArgs e) {
         tabMenuOpen = false; 
-        isFadingOut = true;
-        backpackDisplayTimer = fadeOutDuration; // Initialise le timer pour le fade
+        backpackDisplayTimer = frontDisplayTime; // Initialise le timer pour le fade
+        backpackFrontAnimator.SetTrigger("ShowFront");
+        backpackFrontAnimator.ResetTrigger("HideFront");
     }
 
     private void Update() {
@@ -78,9 +87,13 @@ public class UICurrencyManagerVisual : MonoBehaviour
 
     private void ShowBackpack(float displayTime = 1f) {
         canvasGroup.alpha = 1;
+        currencyCanvasGroup.alpha = 1;
         backpackDisplayTimer = displayTime;
         isFadingOut = false;
+        isShowingBackpackFront = false;
         CheckBagIsAlmostFull();
+        backpackFrontAnimator.ResetTrigger("ShowFront");
+        backpackFrontAnimator.SetTrigger("HideFront");
     }
 
     private void HandleFadeIn() {
@@ -105,10 +118,19 @@ public class UICurrencyManagerVisual : MonoBehaviour
             backpackDisplayTimer -= Time.deltaTime;
 
             // Démarre le fade-out lorsque le timer atteint 0
-            if (backpackDisplayTimer <= 0f) {
+            if (backpackDisplayTimer <= 0f && !isShowingBackpackFront) {
+                isShowingBackpackFront = true;
+                backpackDisplayTimer = frontDisplayTime; // Initialise le timer pour le fade
+                backpackFrontAnimator.ResetTrigger("HideFront");
+                backpackFrontAnimator.SetTrigger("ShowFront");
+            }
+
+            if (backpackDisplayTimer <= 0f && isShowingBackpackFront) {
                 isFadingOut = true;
+                currencyCanvasGroup.alpha = 0;
                 backpackDisplayTimer = fadeOutDuration; // Initialise le timer pour le fade
             }
+
         }
 
         // Gestion du fade-out

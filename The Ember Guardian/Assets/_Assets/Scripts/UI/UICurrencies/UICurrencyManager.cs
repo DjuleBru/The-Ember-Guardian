@@ -119,7 +119,7 @@ public class UICurrencyManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.O)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.purpleGem);
         }
-        if (Input.GetKeyDown(KeyCode.P)) {
+        if (Input.GetKeyDown(KeyCode.H)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.ammo);
         }
         if (Input.GetKeyDown(KeyCode.J)) {

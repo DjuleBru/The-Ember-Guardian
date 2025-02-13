@@ -15,11 +15,13 @@ public class MusicManager : MonoBehaviour {
 
     [SerializeField] private NewLocationMusicInterruptionSource discoveryMusicInterruptionSource;
 
-    [SerializeField] private float mainTracksAudioVolume = .4f;
+    [SerializeField] private float discoverNewLocationAudioVolume = .4f;
     [SerializeField] private float backgroundTracksAudioVolume = .2f;
+    [SerializeField] private float nightMusicAudioVolume = .4f;
     private float musicSettingVolume;
 
     [SerializeField] private AudioClip mainMenuMusic;
+    [SerializeField] private AudioClip nightMusic;
     [SerializeField] private AudioClip endLevelMusic;
     [SerializeField] private AudioClip discoverNewLocationMusic;
     private List<AudioClip> levelRandomBackgroundTracks;
@@ -48,7 +50,7 @@ public class MusicManager : MonoBehaviour {
         SettingsManager.Instance.OnMusicVolumeChanged += SettingsManager_OnMusicVolumeChanged;
         musicSettingVolume = SettingsManager.Instance.GetMusicVolume();
 
-        SetAudioVolume(mainTracksAudioVolume);
+        SetAudioVolume(discoverNewLocationAudioVolume);
         audioSource.ignoreListenerPause = true;
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
@@ -63,6 +65,7 @@ public class MusicManager : MonoBehaviour {
             levelRandomBackgroundTracks = LevelManager.Instance.GetLevelSO().levelAudioClips;
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
             DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+            DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
             Player.Instance.OnPlayerDied += Player_OnPlayerDied;
             Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
 
@@ -99,10 +102,19 @@ public class MusicManager : MonoBehaviour {
 
     private void LevelManager_OnNewLocationShown(object sender, System.EventArgs e) {
         audioSource.clip = LevelManager.Instance.GetLevelSO().newEnvironmentDiscoveryAudioClip;
+        audioSource.volume = discoverNewLocationAudioVolume;
         PlayMusicDelayed(4f);
         isPlayingLevelDiscoveryMusic = true;
         waitingToDiscoverLocation = false;
         isPlayingPeacefulMusic = true;
+    }
+
+    private void DayNightManager_OnNightStart(object sender, EventArgs e) {
+        if (!isLevelScene) return;
+
+        audioSource.clip = nightMusic;
+        SetAudioTargerVolume(nightMusicAudioVolume);
+        FadeInMusic(2f);
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
@@ -117,9 +129,12 @@ public class MusicManager : MonoBehaviour {
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         if (!isLevelScene) return;
 
+        FadeOutMusic(2f);
         isDuskOrNight = false;
         peacefulTimer = 0;
         playMusicAttemptTimer = 0;
+
+
     }
 
     private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {
@@ -236,7 +251,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void SetTargetVolumeToMainTrack() {
-        targetVolume = mainTracksAudioVolume * musicSettingVolume;
+        targetVolume = discoverNewLocationAudioVolume * musicSettingVolume;
     }
 
     public void FadeInMusic(float fadeDuration) {
@@ -247,7 +262,7 @@ public class MusicManager : MonoBehaviour {
         if (isPlayingEndLevelAreaMusic) return;
         isPlayingEndLevelAreaMusic = true;
 
-        targetVolume = mainTracksAudioVolume * musicSettingVolume;
+        targetVolume = discoverNewLocationAudioVolume * musicSettingVolume;
 
         if (audioSource.isPlaying) {
 
@@ -271,6 +286,7 @@ public class MusicManager : MonoBehaviour {
         if (isLevelScene) {
             DayNightManager.Instance.OnDuskStart -= DayNightManager_OnDuskStart;
             DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
+            DayNightManager.Instance.OnNightStart -= DayNightManager_OnNightStart;
             Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
             LevelManager.Instance.OnNewLocationShown -= LevelManager_OnNewLocationShown;
             Fire.Instance.OnInitialFireActivated -= Fire_OnInitialFireActivated;

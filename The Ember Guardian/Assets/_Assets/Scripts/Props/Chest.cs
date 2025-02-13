@@ -21,6 +21,7 @@ public class Chest : MonoBehaviour
     private float delayToChestUnlockAnimation;
     private float delayToSpawnCollectibles;
 
+    private bool chestLocked = false;
     private bool chestOpened;
     public event EventHandler OnChestUnlocked;
     public event EventHandler OnChestOpened;
@@ -55,6 +56,7 @@ public class Chest : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (chestOpened) return;
+        if (chestLocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
         chestOpened = true;
@@ -100,5 +102,9 @@ public class Chest : MonoBehaviour
 
     public ChestType GetChestType() {
         return chestType;
+    }
+
+    public void SetChestLocked(bool locked) {
+        chestLocked = locked;
     }
 }

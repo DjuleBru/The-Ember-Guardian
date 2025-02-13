@@ -8,11 +8,13 @@ public class MobSpawner : MonoBehaviour
     [SerializeField] protected SpriteRenderer sceneViewSpawnerSpriteRenderer;
     [SerializeField] protected Transform mobPrefab;
     [SerializeField] protected Transform spawnPosition;
+    [SerializeField] protected float spawnPositionRandomizer;
     [SerializeField] protected int mobAmountToSpawn;
     [SerializeField] protected int maxMobsRespawningAtDawn;
 
     [SerializeField] protected bool isCreatureSpawner;
     [SerializeField] protected bool isAnimalSpawner;
+    [SerializeField] protected bool blockSpawningOnStart;
 
     [SerializeField] protected bool canSpawnEliteCreatures;
     [SerializeField] protected float eliteSpawnProbability;
@@ -35,8 +37,9 @@ public class MobSpawner : MonoBehaviour
             sceneViewSpawnerSpriteRenderer.enabled = false;
         }
 
-        SpawnMobs(mobAmountToSpawn);
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+        if (blockSpawningOnStart) return;
+        SpawnMobs(mobAmountToSpawn);
     }
 
     public virtual void RemoveMobFromMobSpawnedList(Mob mob) {
@@ -63,8 +66,11 @@ public class MobSpawner : MonoBehaviour
 
     public virtual void SpawnMobs(int mobAmount) {
         for (int i = 0; i < mobAmount; i++) {
+            float positionRandomizer = UnityEngine.Random.Range(-spawnPositionRandomizer, spawnPositionRandomizer);
+            Vector3 spawnPositionRandomized = spawnPosition.position;
+            spawnPositionRandomized.x += positionRandomizer;
 
-            Mob mob = Instantiate(mobPrefab, spawnPosition.position, Quaternion.identity).GetComponent<Mob>();
+            Mob mob = Instantiate(mobPrefab, spawnPositionRandomized, Quaternion.identity).GetComponent<Mob>();
             mobSpawnedList.Add(mob);
             mob.SetMobSpawner(this);
 
@@ -87,7 +93,38 @@ public class MobSpawner : MonoBehaviour
             InvokeOnMobSpawned(mob);
         }
     }
+    
+    public IEnumerator SpawnMobsCoroutine(float delayBetweenMobs) {
+        for (int i = 0; i < mobAmountToSpawn; i++) {
+            float positionRandomizer = UnityEngine.Random.Range(-spawnPositionRandomizer, spawnPositionRandomizer);
+            Vector3 spawnPositionRandomized = spawnPosition.position;
+            spawnPositionRandomized.x += positionRandomizer;
 
+            Mob mob = Instantiate(mobPrefab, spawnPositionRandomized, Quaternion.identity).GetComponent<Mob>();
+            mobSpawnedList.Add(mob);
+            mob.SetMobSpawner(this);
+
+            if (isCreatureSpawner) {
+                mob.GetComponent<Creature>().SetAsDayCreature(true);
+                mob.transform.parent = SpawnedObjects.Instance.creaturesContainer;
+                if (canSpawnEliteCreatures) {
+                    HandleEliteSpawn(mob.GetComponent<Creature>());
+                }
+            }
+
+            if (mob is Worker) {
+                mob.transform.parent = SpawnedObjects.Instance.workersContainer;
+            }
+
+            if (mob is Animal) {
+                mob.transform.parent = SpawnedObjects.Instance.AnimalsContainer;
+            }
+
+            InvokeOnMobSpawned(mob);
+
+            yield return new WaitForSeconds(delayBetweenMobs);
+        }
+    }
 
     public void SpawnMobs(int mobAmount, Transform mobPrefabToSpawn, Vector3 position) {
         for (int i = 0; i < mobAmount; i++) {

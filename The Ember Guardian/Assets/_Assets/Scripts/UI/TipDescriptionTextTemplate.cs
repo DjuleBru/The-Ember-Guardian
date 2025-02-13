@@ -38,7 +38,6 @@ public class TipDescriptionTextTemplate : MonoBehaviour
         }
 
         foreach (string part in parts) {
-            Debug.Log("part " + part);
 
             if (part.Contains("]")) {
                 string[] split = part.Split(']');

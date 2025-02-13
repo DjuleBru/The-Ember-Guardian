@@ -60,7 +60,7 @@ public class MobAttack : MonoBehaviour
 
     protected virtual void Attack() {
         OnMobAttack?.Invoke(this, EventArgs.Empty);
-
+        Debug.Log(gameObject + " attack");
         if(isAnimatedAttack) {
             StartCoroutine(AnimatedAttackCoroutine(totalAttackAnimationTime));
             return;
@@ -101,7 +101,6 @@ public class MobAttack : MonoBehaviour
         attackStarted = true;
         yield return new WaitForSeconds(delayToSpawnStaticProjectile);
 
-        Debug.Log("mob.GetDead() " + mob.GetDead());
         if (mob.GetDead()) yield break;
 
         // Projectile can be instantiated AFTER attack target reset, so must keep track of previous attack target
@@ -159,7 +158,10 @@ public class MobAttack : MonoBehaviour
     }
 
     public void SetAttackTarget(IDamageable iDamageable) {
-        attackTimer = UnityEngine.Random.Range(0, attackCooldown/3);
+
+        if(GetIsRangedAttack() && attackTimer == 0) {
+            attackTimer = UnityEngine.Random.Range(0, attackCooldown / 3);
+        }
 
         this.attackTargetIDamageable = iDamageable;
         previousAttackTargetIDamageable = attackTargetIDamageable;
@@ -202,7 +204,7 @@ public class MobAttack : MonoBehaviour
     }
 
     public bool GetIsRangedAttack() {
-        return isProjectileAttack;
+        return isProjectileAttack || isStaticProjectileAttack;
     }
 
     public void BuffDamage(float buff) {

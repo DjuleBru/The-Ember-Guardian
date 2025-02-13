@@ -21,6 +21,7 @@ public class PlayerAnimator : MonoBehaviour
 
     private bool dead;
     private bool moving;
+    private bool running;
 
 
     private void Awake() {
@@ -156,9 +157,19 @@ public class PlayerAnimator : MonoBehaviour
         if (PlayerMovement.Instance.IsMovingBackwards()) {
             playerAnimator.SetFloat("WalkAnimationSpeed", -walkAnimationSpeed);
             playerAnimator.SetFloat("RollAnimationSpeed", -1f);
+
+            if(running && playerAnimator.GetBool("Running")) {
+                playerAnimator.SetBool("Running", false);
+            }
+
         } else {
             playerAnimator.SetFloat("WalkAnimationSpeed", walkAnimationSpeed);
             playerAnimator.SetFloat("RollAnimationSpeed", 1f);
+
+            if (running && !playerAnimator.GetBool("Running")) {
+                playerAnimator.SetBool("Running", true);
+            }
+
         }
         HandleAnimatorMovementBool();
     }
@@ -212,10 +223,14 @@ public class PlayerAnimator : MonoBehaviour
 
     private void PlayerMovement_OnPlayerRunStopped(object sender, EventArgs e) {
         walkAnimationSpeed = PlayerMovement.Instance.GetMoveSpeedNormalized();
+        playerAnimator.SetBool("Running", false);
+        running = false;
     }
 
     private void PlayerMovement_OnPlayerRunStarted(object sender, EventArgs e) {
         walkAnimationSpeed = PlayerMovement.Instance.GetMoveSpeedNormalized();
+        playerAnimator.SetBool("Running", true);
+        running = true;
     }
 
     private void PlayerMovement_OnPlayerExhaustionStopped(object sender, EventArgs e) {

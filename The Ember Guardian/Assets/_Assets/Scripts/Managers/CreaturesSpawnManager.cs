@@ -97,7 +97,7 @@ public class CreaturesSpawnManager : MonoBehaviour
             remainingNightCreaturesNormalized = remainingNightCreaturesNormalized
         });
     }
-
+    
     private void CreaturesManager_OnCreatureAtNightSpawned(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
         float remainingNightCreaturesHealthNormalized = (float)remainingNightCreaturesHP / (float)totalNightCreatureHP;
         float remainingNightCreaturesNormalized = (float)remainingNightCreatures / (float)totalNightCreatures;
@@ -127,8 +127,8 @@ public class CreaturesSpawnManager : MonoBehaviour
     private void HandleDebugInputs() {
         if (Input.GetKeyDown(KeyCode.U)) {
             currentWaveNumber++;
-            //SetWaveParameters(currentWaveNumber, true, true);
-            SetTutorialWave();
+            SetWaveParameters(currentWaveNumber, true, true);
+            //SetTutorialWave();
         }
         if (Input.GetKeyDown(KeyCode.T)) {
             Debug.Log("SpawnWave");
