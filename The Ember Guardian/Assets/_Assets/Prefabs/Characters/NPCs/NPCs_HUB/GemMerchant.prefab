@@ -569,8 +569,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8385513270722688418}
   m_HandleRect: {fileID: 1424134487310206145}
   m_Direction: 0
-  m_Value: -0.00000011987329
-  m_Size: 0.40576538
+  m_Value: -0.000000023974653
+  m_Size: 0.40576535
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2959,10 +2959,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: The Orb Alchemist
   greenGemCost: 0
-  redGemCost: 2
-  blueGemCost: 2
+  redGemCost: 3
+  blueGemCost: 3
   yellowGemCost: 0
-  purpleGemCost: 2
+  purpleGemCost: 3
   description: "A mystical vendor trading orbs for skills, shaping the player\u2019s
     destiny with active and passive powers."
   unlockDescription: 'Slain darklings will now drop Crimson Orbs.
@@ -5339,7 +5339,6 @@ MonoBehaviour:
   hubMerchantUnlockedAtStart: 1
   activeGameObject: {fileID: 2559116683721774755}
   inactiveGameObject: {fileID: 235170622054286131}
-  DEBUGActivateMerchant: 0
   hubMerchantItemParent: {fileID: 6649104612643112754}
   isHubMerchant: 1
   isLevelNPC: 0

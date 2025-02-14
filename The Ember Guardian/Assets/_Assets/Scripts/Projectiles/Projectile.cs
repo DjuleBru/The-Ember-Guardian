@@ -49,6 +49,12 @@ public class Projectile : MonoBehaviour
     private int damage;
 
     public void ActivateAndInitialize(Transform targetTransform, ProjectileSO projectileSO, Mob parentMob, int damage, Vector3 endPointRandomOffsetValue,  bool homingProjectile) {
+
+        if(targetTransform == null) {
+            Destroy(gameObject);
+            return;
+        }
+
         this.parentMob = parentMob;
         this.projectileSO = projectileSO;
         this.damage = damage;
@@ -178,12 +184,14 @@ public class Projectile : MonoBehaviour
         if (collision.gameObject.GetComponent<WorkerDetectionCollider>() != null) return;
         if (collision.gameObject.GetComponent<WorkerInteractionCollider>() != null) return;
 
+
         // Hit mob
         mobHit = collision.GetComponentInParent<Mob>();
         if (mobHit != null  && mobHit != parentMob) {
-
             // Check if worker is shooting another worker
             if (mobHit is Worker && !enemyProjectile) return;
+            if (enemyProjectile && mobHit is Creature) return;
+
             HandleMobCollision(mobHit);
             return;
         }
@@ -197,6 +205,7 @@ public class Projectile : MonoBehaviour
         // Hit Barricade
         Barricade barricade = collision.gameObject.GetComponentInParent<Barricade>();
         if (barricade != null && enemyProjectile && barricade.GetBarricadeHealthNormalized() > 0) {
+            Debug.Log("BarricadeHit " + collision.gameObject);
             ProjectileHasHit(false);
             barricade.TakeDamage(damage, parentMob.transform);
         }

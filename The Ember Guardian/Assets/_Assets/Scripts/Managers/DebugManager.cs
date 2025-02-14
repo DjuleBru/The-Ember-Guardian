@@ -16,6 +16,7 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool debugMode_Tutorial;
     [SerializeField] private bool debugMode_PlayerCamp;
     [SerializeField] private bool debugMode_Progression;
+    [SerializeField] private bool debugMode_DontShowVideoTip;
 
     private void Awake() {
         Instance = this;
@@ -23,7 +24,7 @@ public class DebugManager : MonoBehaviour
 
     private void Update() {
         if(Input.GetKeyDown(KeyCode.T)) {
-            HUBManager.Instance.SaveHub();
+            //HUBManager.Instance.SaveHub();
         }
     }
     public bool GetAllowDebugInputs_CreaturesSpawnManager() {
@@ -56,5 +57,8 @@ public class DebugManager : MonoBehaviour
     }
     public bool GetDebugMode_Progression() {
         return debugMode_Progression;
+    }
+    public bool GetDebugMode_DontShowVideoTips() {
+        return debugMode_DontShowVideoTip;
     }
 }

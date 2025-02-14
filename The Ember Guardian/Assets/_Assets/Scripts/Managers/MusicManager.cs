@@ -39,6 +39,8 @@ public class MusicManager : MonoBehaviour {
     private bool isPlayingLevelDiscoveryMusic;
     private bool isPlayingPeacefulMusic;
     private bool isPlayingEndLevelAreaMusic;
+    private bool isPlayingNightMusic;
+    private bool musicAudioLevelReducedWithPause;
     private AudioSource audioSource;
 
     private void Awake() {
@@ -49,6 +51,11 @@ public class MusicManager : MonoBehaviour {
     private void Start() {
         SettingsManager.Instance.OnMusicVolumeChanged += SettingsManager_OnMusicVolumeChanged;
         musicSettingVolume = SettingsManager.Instance.GetMusicVolume();
+
+        if(PauseMenuUI.Instance != null) {
+            PauseMenuUI.Instance.OnPauseMenuClosed += PauseMenuUI_OnPauseMenuClosed;
+            PauseMenuUI.Instance.OnPauseMenuOpened += PauseMenuUI_OnPauseMenuOpened;
+        }
 
         SetAudioVolume(discoverNewLocationAudioVolume);
         audioSource.ignoreListenerPause = true;
@@ -69,17 +76,34 @@ public class MusicManager : MonoBehaviour {
             Player.Instance.OnPlayerDied += Player_OnPlayerDied;
             Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
 
-            bool levelRegionUnlocked = MetaProgressionManager.Instance.GetLevelRegionUnlocked(LevelManager.Instance.GetLevelSO().environmentType);
+            //bool levelRegionUnlocked = MetaProgressionManager.Instance.GetLevelRegionUnlocked(LevelManager.Instance.GetLevelSO().environmentType);
 
-            if (!levelRegionUnlocked) {
-                LevelManager.Instance.OnNewLocationShown += LevelManager_OnNewLocationShown;
-                waitingToDiscoverLocation = true;
-            }
+            //if (!levelRegionUnlocked) {
+            //    LevelManager.Instance.OnNewLocationShown += LevelManager_OnNewLocationShown;
+            //    waitingToDiscoverLocation = true;
+            //}
+
+            LevelManager.Instance.OnNewLocationShown += LevelManager_OnNewLocationShown;
+            waitingToDiscoverLocation = true;
         }
 
-        if(isMainMenuScene) {
+        if (isMainMenuScene) {
             audioSource.clip = mainMenuMusic;
             PlayMusicDelayed(2f);
+        }
+    }
+
+    private void PauseMenuUI_OnPauseMenuOpened(object sender, EventArgs e) {
+        if(isPlayingEndLevelAreaMusic || isPlayingLevelDiscoveryMusic || isPlayingNightMusic || isPlayingPeacefulMusic) {
+
+            musicAudioLevelReducedWithPause = true;
+            audioSource.volume /= 2.5f;
+        }
+    }
+
+    private void PauseMenuUI_OnPauseMenuClosed(object sender, EventArgs e) {
+        if(musicAudioLevelReducedWithPause) {
+            audioSource.volume *= 2.5f;
         }
     }
 
@@ -113,8 +137,9 @@ public class MusicManager : MonoBehaviour {
         if (!isLevelScene) return;
 
         audioSource.clip = nightMusic;
+        isPlayingNightMusic = true;
         SetAudioTargerVolume(nightMusicAudioVolume);
-        FadeInMusic(2f);
+        StartCoroutine(FadeInDelayedCoroutine(3f, 4f));
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
@@ -133,13 +158,14 @@ public class MusicManager : MonoBehaviour {
         isDuskOrNight = false;
         peacefulTimer = 0;
         playMusicAttemptTimer = 0;
-
+        isPlayingNightMusic = false;
 
     }
 
     private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {
         if (!isLevelScene) return;
         if (isPlayingEndLevelAreaMusic) return;
+        if (isPlayingNightMusic) return;
         if (isPlayingLevelDiscoveryMusic && discoveryMusicInterruptionSource != NewLocationMusicInterruptionSource.creatureAggro) return;
 
         peacefulTimer = 0;
@@ -183,7 +209,10 @@ public class MusicManager : MonoBehaviour {
     public void PlayMusicDelayed(float delay) {
         audioSource.PlayDelayed(delay);
     }
-
+    public IEnumerator FadeInDelayedCoroutine(float delayToFadeIn, float fadeInDuration) {
+        yield return new WaitForSeconds(delayToFadeIn);
+        StartCoroutine(FadeInCoroutine(fadeInDuration));
+    }
 
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
         FadeOutMusic(1f);
@@ -291,6 +320,12 @@ public class MusicManager : MonoBehaviour {
             LevelManager.Instance.OnNewLocationShown -= LevelManager_OnNewLocationShown;
             Fire.Instance.OnInitialFireActivated -= Fire_OnInitialFireActivated;
         }
+
+        if (PauseMenuUI.Instance != null) {
+            PauseMenuUI.Instance.OnPauseMenuClosed -= PauseMenuUI_OnPauseMenuClosed;
+            PauseMenuUI.Instance.OnPauseMenuOpened -= PauseMenuUI_OnPauseMenuOpened;
+        }
+
     }
 
 

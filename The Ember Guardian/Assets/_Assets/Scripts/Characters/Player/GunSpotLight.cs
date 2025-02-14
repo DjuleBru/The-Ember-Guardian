@@ -11,18 +11,21 @@ public class GunSpotLight : MonoBehaviour
     [SerializeField] private Transform gunVisualTransform;
     [SerializeField] private Light2D gunShootLight;
     private Light2D gunSpotLight;
+    private Gun gun;
 
     private float gunSpotLightRange;
     private float noFogVolumetricAmount = .2f;
     private float fogVolumetricAmount = .1f;
     private bool autoSwitchWithDay;
-    private bool lightActive = true;
+    public static bool lightActive = true;
     private bool rolling;
     private bool reloading;
     private bool canSwitchLight = true;
     public static event EventHandler OnAnyLightSwitched;
 
     private void Awake() {
+        gun = GetComponent<Gun>();
+
         gunSpotLight = gunSpotLightTransform.GetComponent<Light2D>();
         gunShootLight.pointLightOuterAngle = 360;
         gunShootLight.pointLightInnerAngle = 360;
@@ -48,6 +51,7 @@ public class GunSpotLight : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
         PlayerShoot.Instance.OnPlayerReloadInterrupted += PlayerShoot_OnPlayerReloadInterrupted;
+        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
 
         if(PauseMenuUI.Instance != null) {
@@ -58,7 +62,19 @@ public class GunSpotLight : MonoBehaviour
         PlayerStats.Instance.OnFlashlightRangeChanged += PlayerStats_OnFlashlightRangeChanged;
     }
 
+    private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
+        if(lightActive) {
+            gunSpotLight.enabled = true;
+        } else {
+            gunSpotLight.enabled = false;
+        }
+    }
+
     private void Player_OnPlayerDied(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
         lightActive = false;
         gunSpotLight.enabled = false;
     }
@@ -73,38 +89,57 @@ public class GunSpotLight : MonoBehaviour
     }
 
     private void PauseMenuUI_OnPauseMenuOpened(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
         canSwitchLight = false;
     }
 
     private void PauseMenuUI_OnPauseMenuClosed(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
         canSwitchLight = true;
     }
 
     private void PlayerShoot_OnPlayerReloadEnded(object sender, EventArgs e) {
+
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
         reloading = false;
     }
 
     private void PlayerShoot_OnPlayerReloadInterrupted(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
         reloading = false;
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
         reloading = true;
     }
 
     private void PlayerMovement_OnPlayerRollEnded(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
         rolling = false;
     }
 
     private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
         rolling = true;
     }
+
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
         lightActive = false;
         gunSpotLight.enabled = false;
     }
 
     private void GameInput_OnPlayerGunLightSwitch(object sender, System.EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
         if (!canSwitchLight) return;
         SwitchLight();
     }
@@ -124,13 +159,14 @@ public class GunSpotLight : MonoBehaviour
     private void Update() {
         if (rolling) return;
 
-
         float angle = gunVisualTransform.rotation.eulerAngles.z;
         gunSpotLightTransform.eulerAngles = new Vector3(0, 0, angle - 90);
 
     }
 
     private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
         if (!autoSwitchWithDay) return;
         if (lightActive) {
             lightActive = false;
@@ -140,6 +176,8 @@ public class GunSpotLight : MonoBehaviour
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
         if (!autoSwitchWithDay) return;
         if (!lightActive) {
             lightActive = true;

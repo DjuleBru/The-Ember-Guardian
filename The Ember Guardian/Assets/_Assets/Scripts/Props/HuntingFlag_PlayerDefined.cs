@@ -82,8 +82,6 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
         if(collision.gameObject.GetComponent<Player>() != null) {
             OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
 
-            Debug.Log(PlayerSave.Instance.GetPlayerUnlockedFlagCarry());
-
             if (!PlayerSave.Instance.GetPlayerUnlockedFlagCarry()) return;
 
             playerInTriggerArea = true;

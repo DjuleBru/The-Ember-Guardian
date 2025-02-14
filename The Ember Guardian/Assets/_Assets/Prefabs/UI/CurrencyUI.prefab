@@ -135,6 +135,7 @@ MonoBehaviour:
   almostFullColliders:
   - {fileID: 1944217968288566177}
   - {fileID: 2649361218182728477}
+  emberLight: {fileID: 6371625990006698423}
   backpackDisplayTime: 3
   backpackDisplayTimer: 0
   frontDisplayTime: 2
@@ -1227,7 +1228,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3585021599330301777}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
   m_Name: 
@@ -1894,7 +1895,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2973140659587044456
 RectTransform:
   m_ObjectHideFlags: 0

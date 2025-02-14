@@ -257,6 +257,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isProjectileAttack: 1
   isStaticProjectileAttack: 0
+  staticProjectileAutoTargetsPlayer: 0
+  isAnimatedAttack: 0
   projectileSO: {fileID: 11400000, guid: fc5a371a9204ee043880c5cf26d510e9, type: 2}
   staticProjectilePrefab: {fileID: 0}
   projectileSpawnPoint: {fileID: 2310341056989899468}
@@ -521,7 +523,7 @@ Animator:
   m_GameObject: {fileID: 2322691198232855453}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 3670e3cf6d9e39c44b847359c4ade90d, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5a4f5d7520252de4fac02dc6d8cf79c8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

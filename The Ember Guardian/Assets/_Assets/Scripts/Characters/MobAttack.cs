@@ -60,7 +60,6 @@ public class MobAttack : MonoBehaviour
 
     protected virtual void Attack() {
         OnMobAttack?.Invoke(this, EventArgs.Empty);
-        Debug.Log(gameObject + " attack");
         if(isAnimatedAttack) {
             StartCoroutine(AnimatedAttackCoroutine(totalAttackAnimationTime));
             return;

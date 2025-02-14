@@ -40,7 +40,7 @@ public class MainMenuUI : MonoBehaviour {
         }
     }
 
-  
+ 
     private void SetFirstSelectedButton() {
         Debug.Log("SetFirstSelectedButton");
         if (!MetaProgressionManager.Instance.GetSavedOnce()) {

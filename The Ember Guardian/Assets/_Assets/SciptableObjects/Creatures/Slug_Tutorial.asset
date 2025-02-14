@@ -34,7 +34,7 @@ MonoBehaviour:
   maxAttackRange: 3
   hasSpecialAbility: 0
   specialAbilityCooldown: 0
-  attackRangeRandomizer: 0.1
+  attackRangeRandomizer: 0.3
   attackRangeMaxDistanceMiss: 0.1
   relativeDamageToFire: 1
   attackAnimationDelay: 0.3
@@ -64,12 +64,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: aa119a0d5d1e2024b986751eb83c5bcc, type: 3}
   - {fileID: 8300000, guid: 809528988742ad64b8f99e042bd4b73c, type: 3}
   aggroVolumeMultiplier: 0.8
+  attackSFXHandledByAnimation: 0
+  attackStartedChargingAudioClips: []
+  attackReleasedAudioClips: []
   attackHitAudioClips:
   - {fileID: 8300000, guid: ed07ecc0cf11a5649b0bed809c1c2489, type: 3}
   - {fileID: 8300000, guid: b6327cbb36b024c4e92697d91477b041, type: 3}
   - {fileID: 8300000, guid: 21216f467a220f74e9b69835949785d1, type: 3}
   - {fileID: 8300000, guid: 2b8781723ff61b5489b834c4acb4f13d, type: 3}
   - {fileID: 8300000, guid: d81e1b82f5aea0e43aeeaba82643596a, type: 3}
+  attackVolumeMultiplier: 0.5
+  attackAudioClips: []
   attackHitVolumeMultiplier: 0.5
   idleAudioClips:
   - {fileID: 8300000, guid: 73b7fa99320c9c44a969b00d9d3385e8, type: 3}

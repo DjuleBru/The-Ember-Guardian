@@ -27,6 +27,7 @@ public class VideoTipUI : MonoBehaviour
 
     private bool tipFinishedDisplaying;
     private bool panelOpen;
+    private bool dontShowDebugMode;
     private List<TextSO> tipDescriptionTextSOList;
     private List<TipDescriptionTextTemplate> tipDescriptionTextTemplateList = new List<TipDescriptionTextTemplate>();
     private List<float> tipTextDelayToShowList;
@@ -45,6 +46,8 @@ public class VideoTipUI : MonoBehaviour
     }
 
     private void Start() {
+        dontShowDebugMode = DebugManager.Instance.GetDebugMode_DontShowVideoTips();
+
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         videoTipUIMainPanel.SetActive(false);
         replayTipButtonGO.GetComponent<Button>().interactable = false;
@@ -66,7 +69,7 @@ public class VideoTipUI : MonoBehaviour
     public void PlayTipSO(VideoTipSO videoTipSO, float delayToPlayTip = 0f) {
         shownVideoTipSO = videoTipSO;
         videoPlayer.clip = videoTipSO.tipClip;
-        tipName.text = videoTipSO.tipName.GetTextInLanguage(TextSO.Language.English);
+        tipName.text = videoTipSO.tipName.GetTextInLanguage(SettingsManager.Language.English);
 
         tipDescriptionTextSOList = videoTipSO.tipTextList;
         tipTextDelayToShowList = videoTipSO.tipTextDelayToShowList;
@@ -100,7 +103,7 @@ public class VideoTipUI : MonoBehaviour
         int i = 0;
         foreach(TextSO textSO in tipDescriptionTextSOList) {
             TipDescriptionTextTemplate tipTemplateText = Instantiate(tipTextTemplate, tipTextContainer).GetComponent<TipDescriptionTextTemplate>();
-            tipTemplateText.SetTipDescriptionAdvanced(textSO.GetTextInLanguage(TextSO.Language.English), i == 0);
+            tipTemplateText.SetTipDescriptionAdvanced(textSO.GetTextInLanguage(SettingsManager.Language.English), i == 0);
             i++;
 
             tipDescriptionTextTemplateList.Add(tipTemplateText);
@@ -121,6 +124,8 @@ public class VideoTipUI : MonoBehaviour
     }
 
     private void OpenPanel() {
+        if (dontShowDebugMode) return;
+
         panelOpen = true;
         videoTipUIMainPanel.SetActive(true);
         videoTipUIMainPanelAnimator.ResetTrigger("Hide");

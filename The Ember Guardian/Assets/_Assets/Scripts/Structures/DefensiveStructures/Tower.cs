@@ -54,6 +54,12 @@ public class Tower : Structure
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);
         if ((collision.gameObject.GetComponent<Player>() != null)) {
+            Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
+        }
+    }
+    protected override void OnTriggerExit2D(Collider2D collision) {
+        base.OnTriggerExit2D(collision);
+        if ((collision.gameObject.GetComponent<Player>() != null)) {
             Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
         }
     }

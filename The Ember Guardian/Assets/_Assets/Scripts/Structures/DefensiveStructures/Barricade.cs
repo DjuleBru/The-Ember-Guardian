@@ -154,7 +154,7 @@ public class Barricade : Structure, IDamageable {
 
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);
-
+        
         if (collision.gameObject.GetComponentInParent<Fire>()) {
             OnFireLightTriggeredIn?.Invoke(this, EventArgs.Empty);
         }

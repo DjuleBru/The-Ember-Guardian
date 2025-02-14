@@ -169,4 +169,10 @@ public class WorkerAnimatorManager : MonoBehaviour
         moving = false;
     }
 
+    public void SetReadyToMoveAnimator() {
+        mobMovement.SetReadyToMoveAnimator(true);
+    }
+    public void SetUnreadyToMoveAnimator() {
+        mobMovement.SetReadyToMoveAnimator(false);
+    }
 }

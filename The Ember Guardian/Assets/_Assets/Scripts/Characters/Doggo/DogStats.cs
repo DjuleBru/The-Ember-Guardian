@@ -39,7 +39,7 @@ public class DogStats : MonoBehaviour {
     private void LoadSavedDogStats() {
         biteAbilityUnlocked = ES3.Load("biteAbilityUnlocked", false);
         digResourceAbilityUnlocked = ES3.Load("digResourceAbilityUnlocked", false);
-        biteAbilityUnlocked = ES3.Load("detectAmbushAbilityUnlocked", false);
+        detectAmbushAbilityUnlocked = ES3.Load("detectAmbushAbilityUnlocked", false);
 
         biteDamage = ES3.Load("biteDamage", initialBiteDamage);
         biteCooldown = ES3.Load("biteCooldown", initialBiteCooldown);

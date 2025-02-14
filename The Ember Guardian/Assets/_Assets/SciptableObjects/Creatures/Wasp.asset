@@ -49,7 +49,7 @@ MonoBehaviour:
   currencyDropAmountList: 01000000
   difficulty: 1
   initialWaveSpawn: 1
-  spawnProbability: 0.201
+  spawnProbability: 0.3
   dieAudioClips:
   - {fileID: 8300000, guid: 66e5bfeffa8b36a4ca6717707b600ee6, type: 3}
   - {fileID: 8300000, guid: 4f54ce541ec5a28429c5ddc9dc95fc8f, type: 3}
@@ -62,12 +62,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f59fc5a9df78ce1438003044021eadcb, type: 3}
   - {fileID: 8300000, guid: 2abbf14bc2a64a1458df71e1e9e0ef53, type: 3}
   aggroVolumeMultiplier: 1
+  attackSFXHandledByAnimation: 0
+  attackStartedChargingAudioClips: []
+  attackReleasedAudioClips: []
   attackHitAudioClips:
   - {fileID: 8300000, guid: 0cf1acdeceaff2547b4ad8abfe4d893e, type: 3}
   - {fileID: 8300000, guid: ba5447ba12544e549ba9214c09d11829, type: 3}
   - {fileID: 8300000, guid: 5c1d40756d9536741a09badcfdb0c976, type: 3}
   - {fileID: 8300000, guid: cbd9d2b8bb2d6f74b947080c099fe69a, type: 3}
   - {fileID: 8300000, guid: 4197fc59d80a1104cbe1b88312a401cc, type: 3}
+  attackVolumeMultiplier: 0.5
+  attackAudioClips: []
   attackHitVolumeMultiplier: 0.7
   idleAudioClips: []
   idleVolumeMultiplier: 0.5

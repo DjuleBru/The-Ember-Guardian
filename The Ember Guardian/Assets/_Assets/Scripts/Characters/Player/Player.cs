@@ -274,14 +274,17 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public bool GetInteractingWithNoOtherObject() {
+
         return !interactingWithMerchant && !managingWorkers && !inTeleporter;
     }
 
     public bool GetInNoOtherObjectTriggerArea() {
+
         return !inPayCurrencyTriggerArea && !inMerchantTriggerArea && !inOtherInteractableObjectTriggerArea && !hoveringWorker;
     }
 
     public bool GetCanDropOrbOnTheFloor() {
+
         return GetAllMenusClosed() && GetInteractingWithNoOtherObject() && GetInNoOtherObjectTriggerArea() && !dead && !cameraHasOtherTarget && !carryingOtherObject;
     }
 

@@ -31,7 +31,7 @@ public class LevelManager : MonoBehaviour
             LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
         }
 
-        levelRegionUnlocked = MetaProgressionManager.Instance.GetLevelRegionUnlocked(levelSO.environmentType);
+        //levelRegionUnlocked = MetaProgressionManager.Instance.GetLevelRegionUnlocked(levelSO.environmentType);
     }
 
 
@@ -65,11 +65,14 @@ public class LevelManager : MonoBehaviour
     }
 
     public void ShowNewLocationUI() {
-        if (!levelRegionUnlocked) {
-            MetaProgressionManager.Instance.SetLevelRegionUnlocked(levelSO.environmentType);
-            LevelUI_Locations.Instance.ShowLocationText(levelSO.GetLevelEnvironmentTypeString());
-            OnNewLocationShown?.Invoke(this, EventArgs.Empty);
-        }
+        //if (!levelRegionUnlocked) {
+        //    MetaProgressionManager.Instance.SetLevelRegionUnlocked(levelSO.environmentType);
+        //    LevelUI_Locations.Instance.ShowLocationText(levelSO.GetLevelEnvironmentTypeString());
+        //    OnNewLocationShown?.Invoke(this, EventArgs.Empty);
+        //}
+
+        LevelUI_Locations.Instance.ShowLocationText(levelSO.GetLevelEnvironmentTypeString());
+        OnNewLocationShown?.Invoke(this, EventArgs.Empty);
     }
 
     public LevelSO GetLevelSO() {

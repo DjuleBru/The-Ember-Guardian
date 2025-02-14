@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class UICurrencyManagerVisual : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
     [SerializeField] private CanvasGroup currencyCanvasGroup;
     [SerializeField] private Animator backpackFrontAnimator;
     [SerializeField] private List<CurrencyUI_AlmostFullColliders> almostFullColliders;
+    [SerializeField] private Light2D emberLight;
 
     public float backpackDisplayTime = 2f;   // Durée d'affichage de la barre
     public float backpackDisplayTimer;   // Durée d'affichage de la barre
@@ -23,6 +25,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
     private bool isFadingOut = true;
     private bool isFadingIn = false;
     private bool tabMenuOpen = false;
+    private bool isPlayerInventory;
 
     private void Start() {
         uICurrencyManager.OnCurrencyDropped += UICurrencyManager_OnCurrencyDropped;
@@ -33,7 +36,9 @@ public class UICurrencyManagerVisual : MonoBehaviour
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
 
-        if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
+        isPlayerInventory = (uICurrencyManager == UICurrencyManager.PlayerInventoryUI);
+
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
             PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
             PlayerTabMenuUI.Instance.OnPlayerTabOpened += PLayerTabMenuUI_OnPlayerTabOpened;
         }
@@ -43,6 +48,9 @@ public class UICurrencyManagerVisual : MonoBehaviour
         tabMenuOpen = true;
         isFadingIn = true;
         isShowingBackpackFront = true;
+
+        if (!isPlayerInventory) return;
+
         backpackFrontAnimator.SetTrigger("HideFront");
         backpackFrontAnimator.ResetTrigger("ShowFront");
         currencyCanvasGroup.alpha = 1;
@@ -51,13 +59,15 @@ public class UICurrencyManagerVisual : MonoBehaviour
     private void PlayerTabMenuUI_OnPlayerTabClosed(object sender, System.EventArgs e) {
         tabMenuOpen = false; 
         backpackDisplayTimer = frontDisplayTime; // Initialise le timer pour le fade
+
+        if (!isPlayerInventory) return;
+
         backpackFrontAnimator.SetTrigger("ShowFront");
         backpackFrontAnimator.ResetTrigger("HideFront");
     }
 
     private void Update() {
         if (debugAlwaysShow) return;
-
 
         if (isFadingIn) {
             HandleFadeIn();
@@ -75,10 +85,18 @@ public class UICurrencyManagerVisual : MonoBehaviour
 
     private void UICurrencyManager_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         ShowBackpack(2f);
+
+        if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember) {
+            emberLight.enabled = true;
+        }
     }
 
     private void UICurrencyManager_OnCurrencyTryPay(object sender, UICurrencyManager.OnCurrencyTryPayEventArgs e) {
         ShowBackpack(2f);
+
+        if (e.currencyType == PlayerCurrencies.CurrencyType.ember) {
+            emberLight.enabled = false;
+        }
     }
 
     private void UICurrencyManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -87,11 +105,14 @@ public class UICurrencyManagerVisual : MonoBehaviour
 
     private void ShowBackpack(float displayTime = 1f) {
         canvasGroup.alpha = 1;
-        currencyCanvasGroup.alpha = 1;
         backpackDisplayTimer = displayTime;
         isFadingOut = false;
         isShowingBackpackFront = false;
         CheckBagIsAlmostFull();
+
+        if (!isPlayerInventory) return;
+
+        currencyCanvasGroup.alpha = 1;
         backpackFrontAnimator.ResetTrigger("ShowFront");
         backpackFrontAnimator.SetTrigger("HideFront");
     }
@@ -121,14 +142,20 @@ public class UICurrencyManagerVisual : MonoBehaviour
             if (backpackDisplayTimer <= 0f && !isShowingBackpackFront) {
                 isShowingBackpackFront = true;
                 backpackDisplayTimer = frontDisplayTime; // Initialise le timer pour le fade
-                backpackFrontAnimator.ResetTrigger("HideFront");
-                backpackFrontAnimator.SetTrigger("ShowFront");
+
+                if (isPlayerInventory) {
+                    backpackFrontAnimator.ResetTrigger("HideFront");
+                    backpackFrontAnimator.SetTrigger("ShowFront");
+                };
             }
 
             if (backpackDisplayTimer <= 0f && isShowingBackpackFront) {
                 isFadingOut = true;
-                currencyCanvasGroup.alpha = 0;
                 backpackDisplayTimer = fadeOutDuration; // Initialise le timer pour le fade
+
+                if(isPlayerInventory) {
+                    currencyCanvasGroup.alpha = 0;
+                }
             }
 
         }

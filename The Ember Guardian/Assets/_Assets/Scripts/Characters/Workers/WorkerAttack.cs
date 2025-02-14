@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,5 +57,15 @@ public class WorkerAttack : MobAttack
             attackAnimationDelay = minerAttackAnimationDelay;
             totalAttackAnimationTime = minerTotalAttackAnimationTime;
         }
+    }
+
+    protected override void Attack() {
+        if(attackTargetIDamageable is Creature) {
+            homingProjectile = true;
+        } else {
+            homingProjectile = false;
+        }
+
+        base.Attack();
     }
 }

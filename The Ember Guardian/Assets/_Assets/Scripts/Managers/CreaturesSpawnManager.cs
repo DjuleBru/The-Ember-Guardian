@@ -400,18 +400,18 @@ public class CreaturesSpawnManager : MonoBehaviour
 
         if(spawnSide == SpawnSide.Left) {
 
-            if(Player.Instance.transform.position.x < CampZoneManager.Instance.GetCampCenterMinLimit()) {
-                xSpawnPosition = Player.Instance.transform.position.x - spawnDistanceToPlayerOrCamp;
+            if(Player.Instance.transform.position.x < CampZoneManager.Instance.GetMinZoneLimit()) {
+                xSpawnPosition = Player.Instance.transform.position.x - spawnDistanceToPlayerOrCamp * .66f;
             } else {
-                xSpawnPosition = CampZoneManager.Instance.GetCampCenterMinLimit() - spawnDistanceToPlayerOrCamp;
+                xSpawnPosition = CampZoneManager.Instance.GetMinZoneLimit() - spawnDistanceToPlayerOrCamp;
             }
 
         } else {
-            if (Player.Instance.transform.position.x > CampZoneManager.Instance.GetCampCenterMaxLimit()) {
-                xSpawnPosition = Player.Instance.transform.position.x + spawnDistanceToPlayerOrCamp;
+            if (Player.Instance.transform.position.x > CampZoneManager.Instance.GetMaxZoneLimit()) {
+                xSpawnPosition = Player.Instance.transform.position.x + spawnDistanceToPlayerOrCamp * .66f;
             }
             else {
-                xSpawnPosition = CampZoneManager.Instance.GetCampCenterMaxLimit() + spawnDistanceToPlayerOrCamp;
+                xSpawnPosition = CampZoneManager.Instance.GetMaxZoneLimit() + spawnDistanceToPlayerOrCamp;
             }
         }
 
@@ -420,7 +420,7 @@ public class CreaturesSpawnManager : MonoBehaviour
             yPosition = UnityEngine.Random.Range(creatureToSpawn.flightMinAltitude, creatureToSpawn.flightMaxAltitude);
         }
 
-        return new Vector3(xSpawnPosition + UnityEngine.Random.Range(-2, 2), yPosition, 0);
+        return new Vector3(xSpawnPosition + UnityEngine.Random.Range(-4, 4), yPosition, 0);
 
     }
 

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d0af007943e4dc249900c24a9b0644db
+guid: d3481a502fdd98b4a87b84c23e90b31d
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -21,7 +21,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -110,253 +110,337 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Ember_0
+      name: Cage_Idle_Wiggle_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 7
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6e15bdd84f21a684d851ab7ef571c7db
-      internalID: 168283212
+      spriteID: 7fd1d140d23c78a409ab35704594f0f9
+      internalID: -517496014
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ember_1
+      name: Cage_Idle_Wiggle_1
       rect:
         serializedVersion: 2
-        x: 7
+        x: 48
         y: 0
-        width: 7
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 322239803125e5a40884eab39e50054f
-      internalID: 352687645
+      spriteID: 9770a16259cb08047a15c5319304484b
+      internalID: 1212786258
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ember_2
+      name: Cage_Idle_Wiggle_2
       rect:
         serializedVersion: 2
-        x: 14
+        x: 96
         y: 0
-        width: 7
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 17e04fd6b3b71134597c4d023a9063ce
-      internalID: 705950268
+      spriteID: d17c0ee84f9be3541878177f6ca47300
+      internalID: -726001842
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ember_3
+      name: Cage_Idle_Wiggle_3
       rect:
         serializedVersion: 2
-        x: 21
+        x: 144
         y: 0
-        width: 7
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7e0dcb5542ad3ec4ca1b8d3915af69d8
-      internalID: 1985551202
+      spriteID: 31c9ddff68d78e34ba19734b6d5ef38d
+      internalID: 123383752
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ember_4
+      name: Cage_Idle_Wiggle_4
       rect:
         serializedVersion: 2
-        x: 28
+        x: 192
         y: 0
-        width: 7
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d4bf5fa5d5c16b43ae3e80ed41ac5c7
-      internalID: 165351898
+      spriteID: fff732253f80c5844982b71724ca8909
+      internalID: -724977850
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ember_5
+      name: Cage_Idle_Wiggle_5
       rect:
         serializedVersion: 2
-        x: 35
+        x: 240
         y: 0
-        width: 7
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 49c582f50c398b244b11980bb437074c
-      internalID: 1953947787
+      spriteID: f3ce8fe4de20534479794acd85038b8b
+      internalID: -909056827
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ember_6
+      name: Cage_Idle_Wiggle_6
       rect:
         serializedVersion: 2
-        x: 42
+        x: 288
         y: 0
-        width: 7
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4f6b398e060bd6b478fb3e429e0b0060
-      internalID: -1934523778
+      spriteID: 0a360ac3f03167c4abc1764bc165cbba
+      internalID: -1830824935
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ember_7
+      name: Cage_Idle_Wiggle_7
       rect:
         serializedVersion: 2
-        x: 49
+        x: 336
         y: 0
-        width: 7
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 798887e938a347c459bb7d67f2df528c
-      internalID: 768690902
+      spriteID: 7a63ba1ddd2f02e4bba9c8c3ad123592
+      internalID: -1206294517
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ember_8
+      name: Cage_Idle_Wiggle_8
       rect:
         serializedVersion: 2
-        x: 56
+        x: 384
         y: 0
-        width: 7
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6a261efc3d5146e4081b6f1d486f9c35
-      internalID: -199091775
+      spriteID: 98cb12c773d295449b3c6d9a6ab511ff
+      internalID: -602298463
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ember_9
+      name: Cage_Idle_Wiggle_9
       rect:
         serializedVersion: 2
-        x: 63
+        x: 432
         y: 0
-        width: 7
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 85f789ac7d64d934b98f55bbcdb3f136
-      internalID: 1564519236
+      spriteID: cf59d4263cd168a4aaf06435f312322a
+      internalID: -639785366
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ember_10
+      name: Cage_Idle_Wiggle_10
       rect:
         serializedVersion: 2
-        x: 70
+        x: 480
         y: 0
-        width: 7
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5620cbeb07591f7478f3bc119a9cf1b8
-      internalID: -982918277
+      spriteID: 569083176710a9d48a710f21f13f508c
+      internalID: 788972408
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ember_11
+      name: Cage_Idle_Wiggle_11
       rect:
         serializedVersion: 2
-        x: 77
+        x: 528
         y: 0
-        width: 7
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5aaeaa022c0907e40af689571e1e34a4
-      internalID: 1254044634
+      spriteID: f2639b251131399429a054801cba6cf0
+      internalID: 81249081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cage_Idle_Wiggle_12
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 0
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f312d0eddcf464f4986fc686e852de06
+      internalID: -1480784595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cage_Idle_Wiggle_13
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 0
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 748ea12f465765949bff0cca118bf0e0
+      internalID: 1423511251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cage_Idle_Wiggle_14
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 0
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea69095d9c2cb4a48839f78d249cae0e
+      internalID: 1144604445
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cage_Idle_Wiggle_15
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 0
+        width: 48
+        height: 48
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79bb68de3eb6d9948b87454d8641edea
+      internalID: -1245809864
       vertices: []
       indices: 
       edges: []
@@ -372,18 +456,22 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Ember_0: 168283212
-      Ember_1: 352687645
-      Ember_10: -982918277
-      Ember_11: 1254044634
-      Ember_2: 705950268
-      Ember_3: 1985551202
-      Ember_4: 165351898
-      Ember_5: 1953947787
-      Ember_6: -1934523778
-      Ember_7: 768690902
-      Ember_8: -199091775
-      Ember_9: 1564519236
+      Cage_Idle_Wiggle_0: -517496014
+      Cage_Idle_Wiggle_1: 1212786258
+      Cage_Idle_Wiggle_10: 788972408
+      Cage_Idle_Wiggle_11: 81249081
+      Cage_Idle_Wiggle_12: -1480784595
+      Cage_Idle_Wiggle_13: 1423511251
+      Cage_Idle_Wiggle_14: 1144604445
+      Cage_Idle_Wiggle_15: -1245809864
+      Cage_Idle_Wiggle_2: -726001842
+      Cage_Idle_Wiggle_3: 123383752
+      Cage_Idle_Wiggle_4: -724977850
+      Cage_Idle_Wiggle_5: -909056827
+      Cage_Idle_Wiggle_6: -1830824935
+      Cage_Idle_Wiggle_7: -1206294517
+      Cage_Idle_Wiggle_8: -602298463
+      Cage_Idle_Wiggle_9: -639785366
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

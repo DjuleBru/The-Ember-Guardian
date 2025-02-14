@@ -193,6 +193,11 @@ public class HunterJob : WorkerJob {
                     CheckClosestAnimal();
                     CheckClosestCreatureSmart();
 
+                    if (CheckBlockedByCreature()) {
+                        ChangeState(HunterState.blockedByCreatures);
+                        return;
+                    };
+
                     if (IsInSafeZone() && targetCreature != null) {
                         ChangeState(HunterState.attackingDay);
                     }
@@ -384,7 +389,7 @@ public class HunterJob : WorkerJob {
                         }
                         else {
 
-                            if (!TargetIsInHuntingRange(targetCreature)) {
+                            if (!TargetIsInGuardingRange(targetCreature)) {
                                 workerAttack.RemoveAttackTarget();
                             }
                             else {
@@ -437,7 +442,14 @@ public class HunterJob : WorkerJob {
             return false;
         }
     }
-
+    private bool TargetIsInGuardingRange(IDamageable iDamageable) {
+        if (Mathf.Abs((iDamageable as MonoBehaviour).transform.position.x - mobMovement.transform.position.x) < (attackRange)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     private bool TargetIsStillInHuntingRange(IDamageable iDamageable) {
         if (Mathf.Abs((iDamageable as MonoBehaviour).transform.position.x - mobMovement.transform.position.x) < attackRange) {
             return true;
@@ -481,7 +493,6 @@ public class HunterJob : WorkerJob {
     }
 
     public void StayOutOfCreatureRange() {
-
         mobMovement.SetMoveSpeed(fleeMoveSpeed);
 
         Creature closestCreature = workerDetectionCollider.GetClosestCreature();
@@ -835,15 +846,11 @@ public class HunterJob : WorkerJob {
         destinationTower = null;
         hasHitAnimal = false;
 
-        workerAttack.SetHomingProjectile(false);
-
         ChangeState(HunterState.idle);
     }
 
     private void SetNightStartParameters() {
         if (followingPlayer) return;
-
-        workerAttack.SetHomingProjectile(true);
     }
 
     private void SetDuskStartParameters() {
@@ -888,10 +895,8 @@ public class HunterJob : WorkerJob {
 
         if(followingPlayer) {
             state = HunterState.followPlayerIdle;
-            workerAttack.SetHomingProjectile(true);
         } else {
             state = HunterState.idle;
-            workerAttack.SetHomingProjectile(false);
             CheckNewDayCycleParameters();
             workerAttack.RemoveAttackTarget();
         }

@@ -5,20 +5,16 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class TextSO : ScriptableObject
 {
-    public enum Language {
-        English,
-        French,
-    }
 
     public string englishText;
     public string frenchText;
 
 
-    public string GetTextInLanguage(Language language) {
-        if(language == Language.English) {
+    public string GetTextInLanguage(SettingsManager.Language language) {
+        if(language == SettingsManager.Language.English) {
             return englishText;
         }
-        if (language == Language.French) {
+        if (language == SettingsManager.Language.French) {
             return frenchText;
         }
 

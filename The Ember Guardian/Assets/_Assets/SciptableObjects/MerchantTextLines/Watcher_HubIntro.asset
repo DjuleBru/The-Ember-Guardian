@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
+  m_Name: Watcher_HubIntro
+  m_EditorClassIdentifier: 
+  merchantTextLines:
+  - "The emberlings follow instinct, but with the right guidance\u2026 <slide a=.2>they
+    could do more</slide>."
+  - I can teach them<bounce a=.2 f=1.2> new roles</bounce>, <shake a=.4>sharpen</shake>
+    their senses, make them <wiggle a=.05 f=2>follow your lead</wiggle>.
+  - "With time, they\u2019ll be more than just <dangle a=.2>flickering sparks</dangle>."
+  showShopAfterDialog: 1

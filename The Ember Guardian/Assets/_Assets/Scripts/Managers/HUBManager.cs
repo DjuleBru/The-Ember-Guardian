@@ -173,7 +173,9 @@ public class HUBManager : MonoBehaviour
 
     private IEnumerator FirstHUBSpawnCoroutine() {
         CameraManager.Instance.SetCameraOrthographicSize(8f);
-        PauseMenuUI.Instance.SetCanSave(false);
+        if(!DEBUGMODE) {
+            PauseMenuUI.Instance.SetCanSave(false);
+        }
 
         yield return new WaitForSeconds(2f);
 

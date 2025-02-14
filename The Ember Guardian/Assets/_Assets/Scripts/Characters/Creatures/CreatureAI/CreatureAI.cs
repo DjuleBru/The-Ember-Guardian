@@ -59,14 +59,9 @@ public class CreatureAI : MonoBehaviour {
 
     private void SetAttackRange() {
 
-        if (creature.GetCreatureSO().isRangedAttack) {
-            minAttackRange = creature.GetCreatureSO().minAttackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
-            maxAttackRange = creature.GetCreatureSO().maxAttackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
-        }
-        else {
-            minAttackRange = creature.GetCreatureSO().minAttackRange;
-            maxAttackRange = creature.GetCreatureSO().maxAttackRange;
-        }
+        minAttackRange = creature.GetCreatureSO().minAttackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
+        maxAttackRange = creature.GetCreatureSO().maxAttackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
+    
     }
 
     private void SetInitialState() {
