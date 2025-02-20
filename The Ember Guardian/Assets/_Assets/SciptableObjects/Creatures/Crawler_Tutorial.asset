@@ -21,10 +21,11 @@ MonoBehaviour:
   flying: 0
   flightMinAltitude: 0
   flightMaxAltitude: 0
-  moveSpeed: 2.5
+  dayMoveSpeed: 2.5
+  nightMoveSpeed: 2.5
   enteredLightMoveSpeedDebuff: 2
   moveSpeedRandomizerDelta: 0
-  maxHealth: 20
+  maxHealth: 15
   damage: 1
   attackRate: 2
   enteredLightattackRateDebuff: 2.5
@@ -61,12 +62,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 38cf1486263bd8d48b5fa282ff196775, type: 3}
   - {fileID: 8300000, guid: ee747f428e6ad55488ee38af3144a2c6, type: 3}
   aggroVolumeMultiplier: 0.5
+  attackSFXHandledByAnimation: 0
+  attackStartedChargingAudioClips: []
+  attackReleasedAudioClips: []
   attackHitAudioClips:
   - {fileID: 8300000, guid: 240bd358628162b4bb6261b9ddcc28aa, type: 3}
   - {fileID: 8300000, guid: d5e60a888feddd14ea24eb78163f90e8, type: 3}
   - {fileID: 8300000, guid: 9371dd072a28bd24783f79e92adaeff0, type: 3}
   - {fileID: 8300000, guid: 8646592f13bfba84f81361b4237b4b02, type: 3}
   - {fileID: 8300000, guid: f1f01ed90f31d6441a13b0ca03219eaa, type: 3}
+  attackVolumeMultiplier: 0.5
+  attackAudioClips: []
   attackHitVolumeMultiplier: 0.5
   idleAudioClips:
   - {fileID: 8300000, guid: da9e25fd2aefae542ac329ac8758e86e, type: 3}

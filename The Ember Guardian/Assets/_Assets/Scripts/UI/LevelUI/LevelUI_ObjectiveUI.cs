@@ -116,13 +116,20 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     private IEnumerator InstantiateSubObjectivesUICoroutine(List<SubObjectiveType> subObjectiveTypeList, float delay) {
-        yield return new WaitForSeconds(delay);
-
+        List<SubObjectiveUI> subObjectivesUIList = new List<SubObjectiveUI>();
         foreach (SubObjectiveType subObjective in subObjectiveTypeList) {
             SubObjectiveUI subObjectiveText = Instantiate(subObjectiveTemplate, subObjectiveContainer).GetComponent<SubObjectiveUI>();
             subObjectiveText.SetSubObjective(subObjective);
-            subObjectiveText.gameObject.SetActive(true);
-            yield return new WaitForSeconds(.3f);
+            subObjectivesUIList.Add(subObjectiveText);
+        }
+
+        yield return new WaitForSeconds(delay);
+
+        foreach (SubObjectiveUI subObjectiveUI in subObjectivesUIList) {
+            if(!subObjectiveUI.GetCompleted()) {
+                subObjectiveUI.gameObject.SetActive(true);
+                yield return new WaitForSeconds(.3f);
+            }
         }
     }
 
@@ -290,7 +297,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
             return "Extract an ember from the main fire (the fire must be fully fuelled)";
         }
         if (subObjectiveType == SubObjectiveType.ExtractEmber) {
-            return "Extract an ember from the main fire";
+            return "Extract an ember from the main fire (the fire must be fully fuelled)";
         }
         if (subObjectiveType == SubObjectiveType.FindNest) {
             return "Find the darklings nest";

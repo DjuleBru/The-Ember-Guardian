@@ -607,4 +607,10 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         return linkedGunSO;
     }
 
+    private void OnDestroy() {
+        OnAnyHubMerchantItemBought -= HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemBoughtOrUpgraded;
+        OnAnyHubMerchantItemUpgraded -= HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemBoughtOrUpgraded;
+        OnAnyHubMerchantItemEquipped -= HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemEquipped;
+    }
+
 }

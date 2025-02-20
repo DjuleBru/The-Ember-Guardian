@@ -27,6 +27,7 @@ public class SubObjectiveUI : MonoBehaviour
     public void SetCompleted() {
         if (completed) return;
         completed = true;
+        gameObject.SetActive(true);
         StartCoroutine(SetCompletedObjective());
     }
 

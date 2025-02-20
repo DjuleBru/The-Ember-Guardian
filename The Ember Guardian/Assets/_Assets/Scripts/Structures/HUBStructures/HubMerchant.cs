@@ -44,6 +44,7 @@ public class HubMerchant : MonoBehaviour
     public event EventHandler OnPlayerStoppedInteractingWithHubMerchant;
     public event EventHandler OnPlayerStartedTalkingWithHubMerchant;
     public event EventHandler OnMerchantHasNewTalkLines;
+    public static event EventHandler OnPlayerStartedTalkingWithAnyHubMerchant;
     public static event EventHandler OnPlayerOpenedAnyHubMerchantShop;
     public static event EventHandler OnPlayerStoppedInteractingWithAnyHubMerchant;
 
@@ -145,6 +146,7 @@ public class HubMerchant : MonoBehaviour
 
         if (merchantHasTalkLinesToShow) {
             OnPlayerStartedTalkingWithHubMerchant?.Invoke(this, EventArgs.Empty);
+            OnPlayerStartedTalkingWithAnyHubMerchant?.Invoke(this, EventArgs.Empty);
         }
         else {
             OnPlayerOpenedHubMerchantShop?.Invoke(this, EventArgs.Empty);

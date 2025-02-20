@@ -253,7 +253,7 @@ public class CreatureAI : MonoBehaviour {
     }
 
     protected bool CheckAttackTargetInRange() {
-        if (attackTarget == null) return false;
+        if ((attackTarget as MonoBehaviour) == null) return false;
         Vector3 targetPosition = attackTarget.GetMeleeAttackPosition().position;
 
         if (Mathf.Abs(transform.position.x - targetPosition.x) < maxAttackRange) {
@@ -264,7 +264,7 @@ public class CreatureAI : MonoBehaviour {
     }
 
     protected virtual void HeadToTarget() {
-        if (attackTarget == null) return;
+        if ((attackTarget as MonoBehaviour) == null) return;
         
         Vector3 targetDestination = attackTarget.GetMeleeAttackPosition().position;
 
@@ -310,7 +310,7 @@ public class CreatureAI : MonoBehaviour {
     public void SetAttackTarget(IDamageable iDamageable, List<IDamageable> iDamageablesInRange) {
         if (!spawned) return;
 
-        if(iDamageablesInRange.Count == 0) {
+        if (iDamageablesInRange.Count == 0) {
             detectedAttackTarget = false;
             attackTarget = null;
             return;

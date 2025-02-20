@@ -15,6 +15,7 @@ public class TutorialCollider : MonoBehaviour
     [SerializeField] private bool isExtractEmberBlockingCollider;
     [SerializeField] private bool isFirstEnterHubBlockingCollider;
     [SerializeField] private bool isWorkerCampCollider;
+    [SerializeField] private bool isDogTipCollider;
 
     private Tutorial tutorial;
     private Collider2D tutorialCollider;
@@ -32,7 +33,12 @@ public class TutorialCollider : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
-        if(isFirstSpotlightCollider && !playerCollided) {
+        if (isDogTipCollider && !playerCollided) {
+            playerCollided = true;
+            tutorial.ShowDogTip();
+        }
+
+        if (isFirstSpotlightCollider && !playerCollided) {
             playerCollided = true;
             tutorial.TransitionToCombatCamera();
             tutorial.ActivateCreatureSpotLight();

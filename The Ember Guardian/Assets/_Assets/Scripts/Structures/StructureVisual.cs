@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StructureVisual : MonoBehaviour {
 
     [SerializeField] protected SpriteRenderer structureSpriteRenderer;
     [SerializeField] protected SpriteRenderer structureFunctionIconSpriteRenderer;
+    [SerializeField] protected Image structureInteractionIconImage;
     [SerializeField] protected Color greyedStructionIconColor;
     [SerializeField] protected Material unhoveredMaterial;
     [SerializeField] protected Material hoveredMaterial;
@@ -21,6 +23,10 @@ public class StructureVisual : MonoBehaviour {
     protected virtual void Awake() {
         structure = GetComponentInParent<Structure>();
         SetXAxisScale();
+
+        if (structureInteractionIconImage != null) {
+            structureInteractionIconImage.enabled = false;
+        }
     }
 
     protected void SetXAxisScale() {
@@ -97,10 +103,18 @@ public class StructureVisual : MonoBehaviour {
 
     protected virtual void Structure_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
         structureSpriteRenderer.material = unhoveredMaterial;
+
+        if(structureInteractionIconImage != null) {
+            structureInteractionIconImage.enabled = false;
+        }
     }
 
     protected virtual void Structure_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
         structureSpriteRenderer.material = hoveredMaterial;
+
+        if (structureInteractionIconImage != null) {
+            structureInteractionIconImage.enabled = true;
+        }
     }
 
 }

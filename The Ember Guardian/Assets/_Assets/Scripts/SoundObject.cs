@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class SoundObject : MonoBehaviour
 {
-   protected float sfxVolume;
+    protected float sfxVolume;
+    protected AudioSource audioSource2D;
 
     protected virtual void Start() {
+        audioSource2D = GetComponent<AudioSource>();    
+
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
         SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
     }
@@ -22,6 +25,16 @@ public class SoundObject : MonoBehaviour
 
     public void FadeIn(AudioSource audioSource, float fadeDuration, float targetVolume) {
         StartCoroutine(FadeInCoroutine(audioSource, fadeDuration, targetVolume));
+    }
+
+
+    protected void PlaySound2D(AudioClip[] audioClipArray, float volume = 1f) {
+        AudioClip audioClip = audioClipArray[Random.Range(0, audioClipArray.Length)];
+        PlaySound2D(audioClip, volume);
+    }
+
+    protected void PlaySound2D(AudioClip audioClip, float volume = 1f) {
+        audioSource2D.PlayOneShot(audioClip, volume * sfxVolume);
     }
 
     private IEnumerator FadeOutCoroutine(AudioSource audioSource, float fadeDuration) {

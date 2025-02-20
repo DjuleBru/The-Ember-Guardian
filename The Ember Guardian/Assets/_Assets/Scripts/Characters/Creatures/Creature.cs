@@ -35,7 +35,7 @@ public class Creature : Mob
     private bool detectionRangeIncreased;
 
     private bool playerCrouchRangeDecreased;
-    private float playerShootDetectionRangeMultiplier = 1.75f;
+    private float playerShootDetectionRangeMultiplier;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -206,6 +206,8 @@ public class Creature : Mob
 
     private void PlayerShoot_OnPlayerShotProjectile(object sender, EventArgs e) {
         if (detectionRangeIncreased) return;
+
+        playerShootDetectionRangeMultiplier = PlayerShoot.Instance.GetHeldGunSO().shootCreatureHearMultiplier;
         if (Mathf.Abs(Player.Instance.transform.position.x - transform.position.x) > detectionCollider.GetRadius() * playerShootDetectionRangeMultiplier) return;
         // Player is too far
 
@@ -215,7 +217,6 @@ public class Creature : Mob
     }
 
     private void CreatureHeardPlayerShoot(bool heard) {
-
         if (heard) {
             detectionCollider.BuffRadius(playerShootDetectionRangeMultiplier);
         } else {

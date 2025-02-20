@@ -12,6 +12,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private HubMerchant levelHubMerchant;
 
     private bool levelRegionUnlocked;
+    private int levelHubMerchantInteractionIndex;
 
     public event EventHandler OnNewLocationShown;
 
@@ -23,6 +24,7 @@ public class LevelManager : MonoBehaviour
         if(levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest) {
             EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
         }
+
         if(levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
             LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
         }
@@ -31,9 +33,18 @@ public class LevelManager : MonoBehaviour
             LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
         }
 
-        //levelRegionUnlocked = MetaProgressionManager.Instance.GetLevelRegionUnlocked(levelSO.environmentType);
+        if(levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArmorer) {
+            levelHubMerchant.OnPlayerStoppedInteractingWithHubMerchant += LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant;
+        }
+
     }
 
+    private void LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, EventArgs e) {
+        levelHubMerchantInteractionIndex++;
+        if(levelHubMerchantInteractionIndex == 2) {
+            StartCoroutine(EnableEndLevelPortal(2f));
+        }
+    }
 
     private void LevelUI_OnObjectiveCompleted(object sender, EventArgs e) {
         if(levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
@@ -55,6 +66,8 @@ public class LevelManager : MonoBehaviour
     }
 
     private void EndLevelArea_OnEndLevelFireLit(object sender, EventArgs e) {
+        if (levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArmorer) return;
+
         StartCoroutine(EnableEndLevelPortal(4f));
     }
 
@@ -92,6 +105,7 @@ public class LevelManager : MonoBehaviour
     }
 
     private IEnumerator EnableEndLevelPortal(float delayToEnable) {
+        Debug.Log("enableEndLevelPortal");
         yield return new WaitForSeconds(delayToEnable);
         endLevelPortal.gameObject.SetActive(true);
     }

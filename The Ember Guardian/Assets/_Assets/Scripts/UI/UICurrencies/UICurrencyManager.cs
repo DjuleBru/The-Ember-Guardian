@@ -107,16 +107,16 @@ public class UICurrencyManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.G)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.greenGem);
         }
-        if (Input.GetKeyDown(KeyCode.Y)) {
+        if (Input.GetKeyDown(KeyCode.R)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.redGem);
         }
-        if (Input.GetKeyDown(KeyCode.U)) {
+        if (Input.GetKeyDown(KeyCode.B)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.blueGem);
         }
-        if (Input.GetKeyDown(KeyCode.I)) {
+        if (Input.GetKeyDown(KeyCode.Y)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.yellowGem);
         }
-        if (Input.GetKeyDown(KeyCode.O)) {
+        if (Input.GetKeyDown(KeyCode.P)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.purpleGem);
         }
         if (Input.GetKeyDown(KeyCode.H)) {

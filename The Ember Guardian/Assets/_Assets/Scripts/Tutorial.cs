@@ -85,7 +85,6 @@ public class Tutorial : MonoBehaviour
 
         VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
         UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
-        dog.OnPlayerTriggeredIn += Dog_OnPlayerTriggeredIn;
         dog.OnIdleStateChanged += Dog_OnIdleStateChanged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
@@ -135,7 +134,7 @@ public class Tutorial : MonoBehaviour
                 //LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbsFromHunters);
                 //LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.RecruitMoreEmberlings);
                 //LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightMainFire);
-                //StartCoroutine(StartGuardingWorkersObjective(0f));
+                StartCoroutine(StartGuardingWorkersObjective(0f));
             }
 
         }
@@ -395,6 +394,7 @@ public class Tutorial : MonoBehaviour
     }
 
     private void Worker_OnAnyOrbDroppedByWorker(object sender, EventArgs e) {
+        if (!animalDied) return;
         if (workerDroppedOrb) return;
         workerDroppedOrb = true;
 
@@ -522,13 +522,6 @@ public class Tutorial : MonoBehaviour
 
         dogStateChanged = true;
         StartCoroutine(HideTooltipAfterDelay(0f));
-    }
-
-    private void Dog_OnPlayerTriggeredIn(object sender, EventArgs e) {
-        if (dogTipShown) return;
-
-        dogTipShown = true;
-        StartCoroutine(ShowTooltipAfterDelay(0f, "Whistle", "Call doggo /stay ", InputControlIcons.Control.SwitchDog));
     }
 
     private void Fire_OnFireEmberExtractionStarted(object sender, EventArgs e) {
@@ -695,6 +688,11 @@ public class Tutorial : MonoBehaviour
         StartCoroutine(ShowLightTipCoroutine());
     }
 
+    public void ShowDogTip() {
+        dogTipShown = true;
+        StartCoroutine(ShowTooltipAfterDelay(0f, "Whistle", "Call doggo /stay ", InputControlIcons.Control.SwitchDog));
+    }
+
     public IEnumerator ShowLightTipCoroutine() {
         StartCoroutine(ShowTooltipAfterDelay(0f, "Press", "To toggle your flashlight", InputControlIcons.Control.LightSwitch));
         yield return new WaitForSeconds(4f);
@@ -778,7 +776,6 @@ public class Tutorial : MonoBehaviour
     private void OnDestroy() {
         VideoTipUI.Instance.OnVideoTipPanelClosed -= VideoTipUI_OnVideoTipPanelClosed;
         UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
-        dog.OnPlayerTriggeredIn -= Dog_OnPlayerTriggeredIn;
         dog.OnIdleStateChanged -= Dog_OnIdleStateChanged;
         Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
         Player.Instance.OnPlayerRespawned -= Player_OnPlayerRespawned;

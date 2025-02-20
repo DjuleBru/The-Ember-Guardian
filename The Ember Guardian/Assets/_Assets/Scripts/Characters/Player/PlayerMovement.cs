@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour {
 
     [SerializeField] private float moveSpeedBackwardsMultiplier = .7f;
     [SerializeField] private float exhaustedSpeedFactor = 1.3f;
-    [SerializeField] private float runRecoverFactor = 1f;
+    [SerializeField] private float runRecoverFactor = 1.3f;
     [SerializeField] private float aimingSightDecelerationFactor = .7f;
     [SerializeField] private float crouchAccelerationFactor = .7f;
     private float gunWeightAccelerationFactor;

@@ -617,6 +617,10 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: initialPayCurrencySmoothTime
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5701359116775254949, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -748,7 +752,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d89fafabbc0b84bbe8ef126a386e55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  structureLights: []
   structureSpriteRenderer: {fileID: 190870229499975902}
   structureFunctionIconSpriteRenderer: {fileID: 1816938978050232834}
   greyedStructionIconColor: {r: 1, g: 1, b: 1, a: 0.3137255}

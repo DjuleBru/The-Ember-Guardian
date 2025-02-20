@@ -15,25 +15,37 @@ public class CreatureMovement : MobMovement
         base.Awake();
         creature = GetComponent<Creature>();
         enteredLightSpeedDebuff = creature.GetCreatureSO().enteredLightMoveSpeedDebuff;
-
-        initialMobSpeed = creature.GetCreatureSO().moveSpeed + Random.Range(-creature.GetCreatureSO().moveSpeedRandomizerDelta, creature.GetCreatureSO().moveSpeedRandomizerDelta);
-        moveSpeed = initialMobSpeed;
     }
 
     protected override void Start() {
         base.Start();
         creature.OnCreatureExitedLight += Creature_OnCreatureExitedLight;
         creature.OnCreatureEnteredLight += Creature_OnCreatureEnteredLight;
+        InitializeCreatureMoveSpeed();
 
-        if(creature.GetIsEliteSpeedCreature()) {
-            initialMobSpeed *= 1.5f;
-            moveSpeed  = initialMobSpeed;
-        }
     }
 
     protected override void FixedUpdate() {
         if (!spawned) return;
         base.FixedUpdate();
+    }
+
+    private void InitializeCreatureMoveSpeed() {
+
+        if (creature.IsDayCreature()) {
+            initialMobSpeed = creature.GetCreatureSO().dayMoveSpeed;
+        }
+        else {
+            initialMobSpeed = creature.GetCreatureSO().nightMoveSpeed;
+        }
+
+        if (creature.GetIsEliteSpeedCreature()) {
+            initialMobSpeed *= 1.5f;
+        }
+
+        initialMobSpeed = initialMobSpeed + Random.Range(-creature.GetCreatureSO().moveSpeedRandomizerDelta, creature.GetCreatureSO().moveSpeedRandomizerDelta);
+
+        moveSpeed = initialMobSpeed;
     }
 
     public void SetCreatureAggroMoveSpeed(bool aggroMoveSpeed) {

@@ -287,6 +287,7 @@ public class MetaProgressionManager : MonoBehaviour
 
     public void SetHubMerchantItemBought(string merchantItemSaveString, bool bought) {
         string key = merchantItemSaveString + "_Bought";
+        Debug.Log("SetHubMerchantItemBought " + key);
         ES3.Save(key, true);
     }
 

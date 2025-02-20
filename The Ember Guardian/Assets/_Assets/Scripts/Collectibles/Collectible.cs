@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
-    [SerializeField] private PlayerCurrencies.CurrencyType currencyType;
-    [SerializeField] private PlayerCurrencies.CurrencyCategory currencyCategory;
-    [SerializeField] private int currencyAmount;
+    [SerializeField] protected PlayerCurrencies.CurrencyType currencyType;
+    [SerializeField] protected PlayerCurrencies.CurrencyCategory currencyCategory;
+    [SerializeField] protected int currencyAmount;
 
-    [SerializeField] private Collider2D solidCollider;
+    [SerializeField] protected Collider2D solidCollider;
 
     public event EventHandler OnCollectibleDestroyed;
     public event EventHandler OnCollectibleEnteredSlot;
@@ -26,34 +26,34 @@ public class Collectible : MonoBehaviour
         public PlayerCurrencies.CurrencyType currencyType;
     }
 
-    private float initialGravityScale;
+    protected float initialGravityScale;
 
-    private bool interactable;
-    private bool canNeverBePickedUpByWorker;
-    private bool canBePickedUpByWorker;
-    private bool droppedByPlayer;
-    private bool droppedInFire;
-    private bool playerInTriggerArea;
-    private bool aggroedByWorker;
-    private bool collected;
-    private bool touchedFloor;
-    private bool enteredPayCurrencyUISlot;
+    protected bool interactable;
+    protected bool canNeverBePickedUpByWorker;
+    protected bool canBePickedUpByWorker;
+    protected bool droppedByPlayer;
+    protected bool droppedInFire;
+    protected bool playerInTriggerArea;
+    protected bool aggroedByWorker;
+    protected bool collected;
+    protected bool touchedFloor;
+    protected bool enteredPayCurrencyUISlot;
 
-    private bool movingForPayment;
-    private float smoothTime = 5f;
-    private Transform paymentDestination;
+    protected bool movingForPayment;
+    protected float smoothTime = 5f;
+    protected Transform paymentDestination;
 
-    private Worker aggroedWildWorker;
-    private Collider2D triggerCollider;
-    private Rigidbody2D rb;
+    protected Worker aggroedWildWorker;
+    protected Collider2D triggerCollider;
+    protected Rigidbody2D rb;
 
-    private void Awake() {
+    protected virtual void Awake() {
         triggerCollider = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         initialGravityScale = rb.gravityScale;
     }
 
-    private void Start() {
+    protected void Start() {
         if(!canNeverBePickedUpByWorker) {
             // Set Can be picked up by worker after 3 seconds 
             Invoke("SetCanBePickedUpByWorker", 3f);
@@ -61,7 +61,7 @@ public class Collectible : MonoBehaviour
 
     }
 
-    private void Update() {
+    protected void Update() {
         if (movingForPayment && paymentDestination != null) {
             // Lerp vers la position locale de la destination
             transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, smoothTime * Time.deltaTime);
@@ -73,7 +73,7 @@ public class Collectible : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
+    protected void OnTriggerEnter2D(Collider2D collision) {
         if (!touchedFloor && collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
             touchedFloor = true;
             OnAnyCollectibleTouchedFloor?.Invoke(this, EventArgs.Empty);
@@ -133,7 +133,7 @@ public class Collectible : MonoBehaviour
 
     }
 
-    private void OnTriggerExit2D(Collider2D collision) {
+    protected void OnTriggerExit2D(Collider2D collision) {
         Player player = collision.gameObject.GetComponent<Player>();
 
         if (player != null) {
@@ -167,7 +167,7 @@ public class Collectible : MonoBehaviour
         StartCoroutine(CollectibleFallsInWater(delayToPlouf));
     }
 
-    private IEnumerator CollectibleFallsInWater(float delayToPlouf) {
+    protected IEnumerator CollectibleFallsInWater(float delayToPlouf) {
         yield return new WaitForSeconds(.1f);
 
         OnCollectibleFellFromBag?.Invoke(this, EventArgs.Empty);
@@ -182,7 +182,7 @@ public class Collectible : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private IEnumerator SetCollectibleInteractableAfterDelay(float delay) {
+    protected IEnumerator SetCollectibleInteractableAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
         interactable = true;
 
@@ -191,7 +191,7 @@ public class Collectible : MonoBehaviour
         }
     }
 
-    private IEnumerator SetDroppedByPlayerAfterDelay(bool droppedByPlayer, float delay) {
+    protected IEnumerator SetDroppedByPlayerAfterDelay(bool droppedByPlayer, float delay) {
         this.droppedByPlayer = droppedByPlayer;
         yield return new WaitForSeconds(delay);
         this.droppedByPlayer = !droppedByPlayer;
@@ -260,7 +260,7 @@ public class Collectible : MonoBehaviour
         StartCoroutine(SetCanBePickedUpByWorkerAfterDelayCoroutine(delay));
     }
 
-    private IEnumerator SetCanBePickedUpByWorkerAfterDelayCoroutine(float delay) {
+    protected IEnumerator SetCanBePickedUpByWorkerAfterDelayCoroutine(float delay) {
         yield return new WaitForSeconds(delay);
         canBePickedUpByWorker = true;
     }
@@ -307,6 +307,26 @@ public class Collectible : MonoBehaviour
         Vector2 forceDir = new Vector2(forceX, forceY);
         rb.AddForce(forceDir, ForceMode2D.Impulse);
     }
+    public void ApplyRandomForceRandomDir(float minForceX, float maxForceX, bool randomDirX, float minForceY, float maxForceY, bool randomDirY) {
+        float forceX = UnityEngine.Random.Range(minForceX, maxForceX);
+        float forceY = UnityEngine.Random.Range(minForceY, maxForceY);
+
+        if(randomDirX) {
+            float randomDirXFloat = UnityEngine.Random.Range(-1f, 1f);
+            if(randomDirXFloat < 0) {
+                forceX *= -1;
+            }
+        }
+        if (randomDirY) {
+            float randomDirYFloat = UnityEngine.Random.Range(-1f, 1f);
+            if (randomDirYFloat < 0) {
+                forceY *= -1;
+            }
+        }
+
+        Vector2 forceDir = new Vector2(forceX, forceY);
+        rb.AddForce(forceDir, ForceMode2D.Impulse);
+    }
 
     public void ApplyRandomTorque(float minForce, float maxForceX) {
         float torque = UnityEngine.Random.Range(minForce, maxForceX);
@@ -341,7 +361,7 @@ public class Collectible : MonoBehaviour
     }
 
 
-    private void OnDestroy() {
+    protected void OnDestroy() {
         OnCollectibleDestroyed?.Invoke(this, EventArgs.Empty);
     }
 

@@ -19,7 +19,8 @@ public class VersioningManager : MonoBehaviour
     }
 
     private void Start() {
-        versioningText.text = "Pre-alpha version " + buildVersion;
+        string versionString = buildVersion.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        versioningText.text = "Pre-alpha version " + versionString;
     }
 
     public bool CheckIncompatibleSaveFile() {

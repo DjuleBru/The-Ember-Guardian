@@ -234,10 +234,12 @@ public class Fire : Structure, IDamageable {
     }
 
     private IEnumerator ExtractEmber() {
-        Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ember), transform.position, Quaternion.identity).GetComponent<Collectible>();
-        collectible.ApplyRandomForce(-7,7,3, 5);
-        collectible.SetCollectibleUnInteractable(1f);
-        collectible.SetCanNeverBePickedUpByWorker();
+
+        Ember ember = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ember), transform.position, Quaternion.identity).GetComponent<Ember>();
+        ember.ApplyRandomForceRandomDir(4,8, true,4, 8, false);
+        ember.SetCollectibleUnInteractable(1f);
+        ember.SetCanNeverBePickedUpByWorker();
+        ember.EmphasizePosition();
         ActivateStructureSecondaryFunctionInteraction(false);
         emberExtracted = true;
 

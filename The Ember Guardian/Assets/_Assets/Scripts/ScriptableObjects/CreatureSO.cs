@@ -47,8 +47,12 @@ public class CreatureSO : ScriptableObject
     public float flightMaxAltitude;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
-    [Range(1,20)]
-    public float moveSpeed;
+    [Range(1, 20)]
+    public float dayMoveSpeed;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
+    [Range(1, 20)]
+    public float nightMoveSpeed;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
     [Range(1, 3)]

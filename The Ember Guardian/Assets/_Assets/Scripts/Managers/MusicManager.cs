@@ -31,6 +31,7 @@ public class MusicManager : MonoBehaviour {
     private float minPeacefulTimerDelay = 20f;
     private float playMusicAttemptTimer;
     private float playMusicAttemptRate = 5f;
+    private float volumeBeforeTalkingToNPC;
 
     private bool waitingToDiscoverLocation;
     private bool isDuskOrNight;
@@ -58,6 +59,7 @@ public class MusicManager : MonoBehaviour {
         }
 
         SetAudioVolume(discoverNewLocationAudioVolume);
+        targetVolume = discoverNewLocationAudioVolume;
         audioSource.ignoreListenerPause = true;
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
@@ -75,13 +77,8 @@ public class MusicManager : MonoBehaviour {
             DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
             Player.Instance.OnPlayerDied += Player_OnPlayerDied;
             Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
-
-            //bool levelRegionUnlocked = MetaProgressionManager.Instance.GetLevelRegionUnlocked(LevelManager.Instance.GetLevelSO().environmentType);
-
-            //if (!levelRegionUnlocked) {
-            //    LevelManager.Instance.OnNewLocationShown += LevelManager_OnNewLocationShown;
-            //    waitingToDiscoverLocation = true;
-            //}
+            HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant += HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
+            HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
 
             LevelManager.Instance.OnNewLocationShown += LevelManager_OnNewLocationShown;
             waitingToDiscoverLocation = true;
@@ -91,6 +88,22 @@ public class MusicManager : MonoBehaviour {
             audioSource.clip = mainMenuMusic;
             PlayMusicDelayed(2f);
         }
+    }
+
+    private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
+
+        if (isPlayingLevelDiscoveryMusic || isPlayingPeacefulMusic) {
+            StartCoroutine(FadeInCoroutine(1f, volumeBeforeTalkingToNPC / 1.5f));
+        }
+    }
+
+    private void HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant(object sender, EventArgs e) {
+
+        if (isPlayingLevelDiscoveryMusic || isPlayingPeacefulMusic) {
+            volumeBeforeTalkingToNPC = audioSource.volume;
+            StartCoroutine(FadeOutCoroutine(1f, volumeBeforeTalkingToNPC / 1.5f));
+        }
+
     }
 
     private void PauseMenuUI_OnPauseMenuOpened(object sender, EventArgs e) {
@@ -211,7 +224,7 @@ public class MusicManager : MonoBehaviour {
     }
     public IEnumerator FadeInDelayedCoroutine(float delayToFadeIn, float fadeInDuration) {
         yield return new WaitForSeconds(delayToFadeIn);
-        StartCoroutine(FadeInCoroutine(fadeInDuration));
+        StartCoroutine(FadeInCoroutine(fadeInDuration, 0));
     }
 
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
@@ -223,10 +236,10 @@ public class MusicManager : MonoBehaviour {
         isPlayingPeacefulMusic = false;
         isPlayingEndLevelAreaMusic = false;
 
-        StartCoroutine(FadeOutCoroutine(fadeDuration));
+        StartCoroutine(FadeOutCoroutine(fadeDuration, 0));
     }
 
-    private IEnumerator FadeOutCoroutine(float fadeDuration) {
+    private IEnumerator FadeOutCoroutine(float fadeDuration, float targetFadeVolume) {
         float startVolume = audioSource.volume;
 
         // Réduire progressivement le volume
@@ -234,41 +247,46 @@ public class MusicManager : MonoBehaviour {
             float progress = t / fadeDuration;
 
             // Appliquer une courbe logarithmique pour le ressenti
-            audioSource.volume = Mathf.Lerp(startVolume, 0, Mathf.Sqrt(progress));
+            audioSource.volume = Mathf.Lerp(startVolume, targetFadeVolume, Mathf.Sqrt(progress));
             yield return null;
         }
 
         // S'assurer que le volume est bien à 0 à la fin
-        audioSource.volume = 0;
-        audioSource.Stop(); // Arrêter la musique
+        audioSource.volume = targetFadeVolume;
+
+        if(targetFadeVolume == 0) {
+            audioSource.Stop(); // Arrêter la musique
+        }
     }
 
-    private IEnumerator FadeInCoroutine(float fadeDuration) {
-        float endVolume = targetVolume;
-        audioSource.volume = 0;
-        audioSource.Play(); // Assure que la musique démarre
+    private IEnumerator FadeInCoroutine(float fadeDuration, float initialVolume) {
+        audioSource.volume = initialVolume;
+
+        if(initialVolume == 0) {
+            audioSource.Play(); // Assure que la musique démarre
+        }
 
         // Augmenter progressivement le volume
         for (float t = 0; t < fadeDuration; t += Time.deltaTime) {
             float progress = t / fadeDuration;
 
             // Appliquer une courbe logarithmique inverse pour le ressenti
-            audioSource.volume = Mathf.Lerp(0, endVolume, progress * progress);
+            audioSource.volume = Mathf.Lerp(initialVolume, targetVolume, progress * progress);
             yield return null; // Attendre le prochain frame
         }
 
         // S'assurer que le volume atteint la valeur finale
-        audioSource.volume = endVolume;
+        audioSource.volume = targetVolume;
     }
 
     private IEnumerator FadeOutThenInCoroutine(float fadeOutDuration, float fadeInDuration, AudioClip audioClip) {
         // Exécuter le fade-out
-        yield return StartCoroutine(FadeOutCoroutine(fadeOutDuration));
+        yield return StartCoroutine(FadeOutCoroutine(fadeOutDuration, 0));
 
         audioSource.clip = audioClip;
 
         // Exécuter le fade-in
-        yield return StartCoroutine(FadeInCoroutine(fadeInDuration));
+        yield return StartCoroutine(FadeInCoroutine(fadeInDuration, 0));
     }
 
     public void SetAudioVolume(float volume) {
@@ -284,7 +302,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void FadeInMusic(float fadeDuration) {
-        StartCoroutine(FadeInCoroutine(fadeDuration));
+        StartCoroutine(FadeInCoroutine(fadeDuration, 0));
     }
 
     public void SetEndLevelMusic(float fadeInDuration) {
@@ -319,6 +337,8 @@ public class MusicManager : MonoBehaviour {
             Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
             LevelManager.Instance.OnNewLocationShown -= LevelManager_OnNewLocationShown;
             Fire.Instance.OnInitialFireActivated -= Fire_OnInitialFireActivated;
+            HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant -= HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
+            HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         }
 
         if (PauseMenuUI.Instance != null) {

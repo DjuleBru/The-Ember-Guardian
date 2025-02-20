@@ -88,7 +88,7 @@ public class CreatureSound : SoundObject
 
     private void Creature_OnCreatureEnteredLight(object sender, System.EventArgs e) {
         if (IsTooFarFromPlayer()) return;
-        creatureAudioSource.PlayOneShot(enteredLightAudioClips[Random.Range(0, enteredLightAudioClips.Length)], sfxVolume);
+        creatureAudioSource.PlayOneShot(enteredLightAudioClips[Random.Range(0, enteredLightAudioClips.Length)], sfxVolume*2.5f);
     }
 
     private void Creature_OnAnyCreatureIdleSoundTriggered(object sender, System.EventArgs e) {
