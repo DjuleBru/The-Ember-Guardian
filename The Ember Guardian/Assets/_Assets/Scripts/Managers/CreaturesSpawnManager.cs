@@ -142,7 +142,7 @@ public class CreaturesSpawnManager : MonoBehaviour
     }
 
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
-        StartCoroutine(SpawnWave());
+        //StartCoroutine(SpawnWave());
     }
 
     public void SetTutorialWave() {

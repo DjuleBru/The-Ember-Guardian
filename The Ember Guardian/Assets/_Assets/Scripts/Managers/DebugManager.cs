@@ -15,8 +15,9 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool debugMode_HUBMerchants;
     [SerializeField] private bool debugMode_Tutorial;
     [SerializeField] private bool debugMode_PlayerCamp;
-    [SerializeField] private bool debugMode_Progression;
+    [SerializeField] private bool debugMode_WorkerInteractions;
     [SerializeField] private bool debugMode_DontShowVideoTip;
+    [SerializeField] private bool debugMode_WindManaged;
 
     private void Awake() {
         Instance = this;
@@ -55,10 +56,13 @@ public class DebugManager : MonoBehaviour
     public bool GetDebugMode_PlayerCamp() {
         return debugMode_PlayerCamp;
     }
-    public bool GetDebugMode_Progression() {
-        return debugMode_Progression;
+    public bool GetDebugMode_WorkerInteractions() {
+        return debugMode_WorkerInteractions;
     }
     public bool GetDebugMode_DontShowVideoTips() {
         return debugMode_DontShowVideoTip;
+    }
+    public bool GetDebugMode_WindManager() {
+        return debugMode_WindManaged;
     }
 }

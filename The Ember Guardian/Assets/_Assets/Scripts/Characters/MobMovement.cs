@@ -89,6 +89,17 @@ public class MobMovement : MonoBehaviour
         }
 
         targetSpeed = moveDirFloat * moveSpeed * speedVariationMultiplier;
+
+        if (moveDirFloat * WindManager.Instance.GetWindDir() > 0) {
+            // Mob is moving in the same dir as wind
+            targetSpeed *= WindManager.Instance.GetWindStrengthImpactOnSpeed();
+        }
+        else {
+            // Mob is moving in the opposite dir as wind
+            targetSpeed /= WindManager.Instance.GetWindStrengthImpactOnSpeed();
+        }
+
+
         float speedDif = targetSpeed - rb.velocity.x;
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;

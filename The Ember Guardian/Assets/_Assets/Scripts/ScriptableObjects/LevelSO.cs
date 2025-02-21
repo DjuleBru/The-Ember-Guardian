@@ -33,6 +33,11 @@ public class LevelSO : ScriptableObject
     public float fogFrontAlpha;
     [ShowIf("hasFog")]
     public float fogBackAlpha;
+    public bool hasWind;
+    [ShowIf("hasWind")]
+    public WindManager.WindStrength initialWindStrength;
+    [ShowIf("hasWind")]
+    public List<WindManager.WindStrength> windStrengthsAllowedInLevel;
 
     public int baseDifficulty;
     public int minSubwaveDifficulty;

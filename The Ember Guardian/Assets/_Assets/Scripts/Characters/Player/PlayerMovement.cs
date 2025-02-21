@@ -334,6 +334,14 @@ public class PlayerMovement : MonoBehaviour {
     private void HandleMovementForces() {
         float targetSpeed = GameInput.Instance.GetMovementFloatNormalized() * moveSpeed;
 
+        if(GameInput.Instance.GetMovementFloatNormalized() * WindManager.Instance.GetWindDir() > 0) {
+            // Player is moving in the same dir as wind
+            targetSpeed *= WindManager.Instance.GetWindStrengthImpactOnSpeed();
+        } else {
+            // Player is moving in the opposite dir as wind
+            targetSpeed /= WindManager.Instance.GetWindStrengthImpactOnSpeed();
+        }
+
         //if (isMovingBackwards) {
         //    targetSpeed *= moveSpeedBackwardsMultiplier;
         //}

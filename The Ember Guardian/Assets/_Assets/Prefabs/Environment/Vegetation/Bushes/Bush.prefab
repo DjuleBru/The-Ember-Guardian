@@ -92,5 +92,35 @@ PrefabInstance:
     - {fileID: 702020273386169764, guid: 30e313f0a72ad8f408c7c969bf61c58c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6408008697641833412, guid: 30e313f0a72ad8f408c7c969bf61c58c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4121973940122553328}
   m_SourcePrefab: {fileID: 100100000, guid: 30e313f0a72ad8f408c7c969bf61c58c, type: 3}
+--- !u!212 &3979909317590581060 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 924332471761213770, guid: 30e313f0a72ad8f408c7c969bf61c58c, type: 3}
+  m_PrefabInstance: {fileID: 4316868520742708750}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7135189422619850186 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6408008697641833412, guid: 30e313f0a72ad8f408c7c969bf61c58c, type: 3}
+  m_PrefabInstance: {fileID: 4316868520742708750}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4121973940122553328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7135189422619850186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 106e04a9935d7ba47a19a5319f2254c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foliageSprite: {fileID: 3979909317590581060}
+  softWindVelocityValue: 0.2
+  mediumWindVelocityValue: 0.5
+  strongWindVelocityValue: 1
+  extremeWindVelocityValue: 2

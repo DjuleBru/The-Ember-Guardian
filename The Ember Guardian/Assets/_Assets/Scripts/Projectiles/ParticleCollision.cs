@@ -11,8 +11,6 @@ public class ParticleCollision : MonoBehaviour
     public List<ParticleCollisionEvent> collisionEvents;
     public CinemachineVirtualCamera cam;
     public GameObject explosionPrefab;
-    public GameObject mobHitPrefab;
-    public GameObject critHitPrefab;
 
     private Vector3 previousPosition;
     private Vector3 particleMoveDir;
@@ -102,15 +100,14 @@ public class ParticleCollision : MonoBehaviour
                         if (critHit && randomNumber < PlayerShoot.Instance.GetHeldGun().GetCritChance()/100) {
                            
                             mobHit.TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, true);
-                            other.GetComponent<Mob>().InstantiateHitPS(angle, collisionPosition.y, true);
+                            other.GetComponent<Mob>().InstantiateHitPS(angle, collisionPosition.y, true, PlayerShoot.Instance.GetDamagePerBullet());
 
-                            //Instantiate(critHitPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
                             OnAnyBulletHitEnemyCrit?.Invoke(this, EventArgs.Empty);
                             
                         }
                         else {
                             other.GetComponent<Mob>().TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, false);
-                            other.GetComponent<Mob>().InstantiateHitPS(angle, collisionPosition.y, false);
+                            other.GetComponent<Mob>().InstantiateHitPS(angle, collisionPosition.y, false, PlayerShoot.Instance.GetDamagePerBullet());
 
                             OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
                         }

@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class HuntingFlag_CampDefined : MonoBehaviour
 {
-    private SpriteRenderer spriteRenderer;
+    private SpriteRenderer poleSpriteRenderer;
+    [SerializeField] private SpriteRenderer flagSpriteRenderer;
     [SerializeField] private SpriteRenderer resetSpriteRenderer;
 
     private HuntingFlag huntingFlag;
@@ -16,8 +17,8 @@ public class HuntingFlag_CampDefined : MonoBehaviour
 
     private void Awake() {
         huntingFlag = GetComponentInParent<HuntingFlag>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        initialColor = spriteRenderer.color;
+        poleSpriteRenderer = GetComponent<SpriteRenderer>();
+        initialColor = poleSpriteRenderer.color;
         resetSpriteRenderer.enabled = false;
     }
 
@@ -35,13 +36,14 @@ public class HuntingFlag_CampDefined : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() != null) {
+            if (!PlayerSave.Instance.GetPlayerUnlockedFlagCarry()) return;
             if ((!huntingFlag.GetPlayerDefinedHuntingLimit())) return;
             if (huntingFlag.GetPlayerCarryingFlag()) return;
-            if (!PlayerSave.Instance.GetPlayerUnlockedFlagCarry()) return;
 
             playerInTriggerArea = true;
             Player.Instance.SetCarryinhOtherObject(true);
-            spriteRenderer.color = playerInteractColor;
+            poleSpriteRenderer.color = playerInteractColor;
+            flagSpriteRenderer.color = playerInteractColor;
             resetSpriteRenderer.enabled = true;
 
         }
@@ -56,7 +58,8 @@ public class HuntingFlag_CampDefined : MonoBehaviour
             if (!PlayerSave.Instance.GetPlayerUnlockedFlagCarry()) return;
 
             Player.Instance.SetCarryinhOtherObject(false);
-            spriteRenderer.color = initialColor;
+            poleSpriteRenderer.color = initialColor;
+            flagSpriteRenderer.color = initialColor;
             resetSpriteRenderer.enabled = false;
 
         }

@@ -11,7 +11,6 @@ public class Mob : MonoBehaviour, IDamageable
     [SerializeField] protected Transform mobHitPS_Splatter;
     [SerializeField] protected Transform mobHitPS_Splatter_Continuous;
     [SerializeField] protected Transform mobHitPS_Splatter_Crit;
-    [SerializeField] protected Transform mobHitPS_Front;
 
     protected MobSpawner mobSpawner;
 
@@ -92,7 +91,7 @@ public class Mob : MonoBehaviour, IDamageable
         }
     }
 
-    public void InstantiateHitPS(float angle, float height, bool critHit) {
+    public void InstantiateHitPS(float angle, float height, bool critHit, int damage) {
         Vector3 localPosition = new Vector3(transform.position.x,height,0);
 
         if(!critHit) {
@@ -101,7 +100,6 @@ public class Mob : MonoBehaviour, IDamageable
             Instantiate(mobHitPS_Splatter_Crit, localPosition, Quaternion.Euler(0, 0, angle), transform); // Particules pour impact normal
         }
 
-        //Instantiate(mobHitPS_Front, localPosition, Quaternion.identity, transform); // Particules pour impact normal
         Instantiate(mobHitPS_Splatter_Continuous, localPosition, Quaternion.Euler(0, 0, angle), transform); // Particules pour impact normal
     }
 
