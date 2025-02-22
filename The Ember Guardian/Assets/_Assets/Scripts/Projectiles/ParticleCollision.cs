@@ -17,6 +17,7 @@ public class ParticleCollision : MonoBehaviour
 
     [SerializeField] private float collisionDistanceThreshold = .25f;
     [SerializeField] private float hitKnockbackForce = 15f;
+    [SerializeField] private bool groundDestroysBullet = true;
 
     public static event EventHandler OnAnyBulletHitGround;
     public static event EventHandler OnAnyBulletHitEnemy;
@@ -68,8 +69,10 @@ public class ParticleCollision : MonoBehaviour
                     Vector3 moveDir = (collisionPosition - PlayerShoot.Instance.GetHeldGun().transform.position).normalized;
                     float angle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
 
-                    particles[j].remainingLifetime = 0; // Détruit seulement la particule proche de l'impact
-                    ps.SetParticles(particles, particleCount); // Réinjecte les particules mises à jour dans le système
+                    if(groundDestroysBullet) {
+                        particles[j].remainingLifetime = 0; // Détruit seulement la particule proche de l'impact
+                        ps.SetParticles(particles, particleCount); // Réinjecte les particules mises à jour dans le système
+                    }
 
                     // Try fetch mobHit or spawner Hit
                     Mob mobHit = other.GetComponent<Mob>();
@@ -91,8 +94,11 @@ public class ParticleCollision : MonoBehaviour
 
                     if (mobHit == null) {
 
-                        Instantiate(explosionPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
-                        OnAnyBulletHitGround?.Invoke(this, EventArgs.Empty);
+                        if (groundDestroysBullet) {
+                            Instantiate(explosionPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
+                            OnAnyBulletHitGround?.Invoke(this, EventArgs.Empty);
+                        };
+
 
                     } else {
                         float randomNumber = UnityEngine.Random.Range(0f, 1f);
@@ -127,10 +133,13 @@ public class ParticleCollision : MonoBehaviour
 
                 if (Vector3.Distance(particles[j].position, collisionPosition) < collisionDistanceThreshold) {
 
-                    particles[j].remainingLifetime = 0; // Détruit seulement la particule proche de l'impact
+                    if(groundDestroysBullet) {
+                        particles[j].remainingLifetime = 0; // Détruit seulement la particule proche de l'impact
 
-                    // Réinjecte les particules mises à jour dans le système
-                    ps.SetParticles(particles, particleCount);
+                        // Réinjecte les particules mises à jour dans le système
+                        ps.SetParticles(particles, particleCount);
+                    }
+
                 }
 
             }

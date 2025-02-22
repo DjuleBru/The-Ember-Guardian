@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,10 @@ public class AnimalAnimatorManager : MonoBehaviour
 
     private float moveDir;
     private float previousMoveDir = 1f;
+
+    [SerializeField] private float probabilityToTriggerIdleSound;
+    public event EventHandler OnFootstepTriggered;
+    public event EventHandler OnIdleSoundTriggered;
 
     private void Awake() {
         animator = GetComponent<Animator>();
@@ -77,6 +82,18 @@ public class AnimalAnimatorManager : MonoBehaviour
 
     public void SetUnReadyToMove() {
         animalMovement.SetReadyToMoveAnimator(false);
+    }
+
+    public void TriggerFootStep() {
+        OnFootstepTriggered?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void TryTriggerIdleAudio() {
+        float randomFloat = UnityEngine.Random.Range(0f, 1f);
+
+        if (randomFloat < probabilityToTriggerIdleSound) {
+            OnIdleSoundTriggered?.Invoke(this, EventArgs.Empty);
+        }
     }
 
 }

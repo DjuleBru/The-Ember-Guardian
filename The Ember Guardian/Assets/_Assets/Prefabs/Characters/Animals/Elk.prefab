@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[5].y
       value: 1.0885334
       objectReference: {fileID: 0}
+    - target: {fileID: 644999808924345169, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1447254379, guid: 1d210c37550e9a04fbfef98d43d6e9c6, type: 3}
     - target: {fileID: 1420941586403054799, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
       propertyPath: animalSO
       value: 
@@ -63,7 +67,7 @@ PrefabInstance:
     - target: {fileID: 1694784159719430684, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -811966830, guid: cb99a2771a8f33a439b28df8bbda2014, type: 3}
+      objectReference: {fileID: -1447254379, guid: fa923eb263453d24c883400cda692a9e, type: 3}
     - target: {fileID: 2164090789109322166, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.085
@@ -79,6 +83,10 @@ PrefabInstance:
     - target: {fileID: 2261491866871385124, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.702
+      objectReference: {fileID: 0}
+    - target: {fileID: 2651699538797743912, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
+      propertyPath: probabilityToTriggerIdleSound
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6403854156431032292, guid: 46003bc2f07a063479ceda444c7989d9, type: 3}
       propertyPath: m_LocalPosition.x

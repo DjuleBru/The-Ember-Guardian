@@ -18,4 +18,8 @@ public class AnimalSO : ScriptableObject
     public float roamChangeDestinationRate;
 
     public float dieAnimationTime;
+
+    public AudioClip[] footstepAudioClips;
+    public AudioClip[] damagedAudioClips;
+    public AudioClip[] idleAudioClips;
 }

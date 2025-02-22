@@ -64,6 +64,22 @@ PrefabInstance:
       propertyPath: creatureAI
       value: 
       objectReference: {fileID: 467876554908381902}
+    - target: {fileID: 2727446539190329158, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2727446539190329158, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2727446539190329158, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_Intensity
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2727446539190329158, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_PointLightOuterRadius
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2752781047295933904, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.107
@@ -140,6 +156,18 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 4d8419e128b80b042a95972e80c6ea06, type: 2}
+    - target: {fileID: 8015795179870916566, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.199
+      objectReference: {fileID: 0}
+    - target: {fileID: 8015795179870916566, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8367168638235416511, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8571825916105848638, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: creatureAI
       value: 

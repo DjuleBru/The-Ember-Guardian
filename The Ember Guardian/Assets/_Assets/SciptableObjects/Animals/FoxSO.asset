@@ -19,5 +19,21 @@ MonoBehaviour:
   fleeMoveSpeed: 6
   fleeDistance: 8
   roamRadius: 10
-  roamChangeDestinationRate: 12
+  roamChangeDestinationRate: 8
   dieAnimationTime: 0.5
+  footstepAudioClips:
+  - {fileID: 8300000, guid: fa9eca73d3f0ad845a1f7dd1fa808566, type: 3}
+  - {fileID: 8300000, guid: f84e47475471f1f46842cdf25cf24df1, type: 3}
+  - {fileID: 8300000, guid: b6e1d946010a67546a603304712756d9, type: 3}
+  - {fileID: 8300000, guid: d0af247304092ed46b24c34586caf962, type: 3}
+  - {fileID: 8300000, guid: 9b8f1926dbee8af43a5730d2fb9b891f, type: 3}
+  - {fileID: 8300000, guid: 67a69df4c3c543e438bbff10bbdaf413, type: 3}
+  - {fileID: 8300000, guid: 146754762d4e2f44dac622af39393cbe, type: 3}
+  - {fileID: 8300000, guid: 3599be26f5d72e44798a2a7c8a0f959d, type: 3}
+  damagedAudioClips:
+  - {fileID: 8300000, guid: 68bd0089c47efa6479fd8b3f434131ce, type: 3}
+  - {fileID: 8300000, guid: 688e5c0ea458304418d333c5ce5272f0, type: 3}
+  - {fileID: 8300000, guid: ba9e9fa7c7bdf2e4db5067d87ea04ada, type: 3}
+  - {fileID: 8300000, guid: f14a359aea646334fa14cc62abbfeca8, type: 3}
+  - {fileID: 8300000, guid: b9054a7d319c49144aab320e798c8c5a, type: 3}
+  idleAudioClips: []

@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbc96e1564c4fd42a7ef7eee87d437f, type: 3}
+  m_Name: GrenadeLauncher
+  m_EditorClassIdentifier: 
+  gunType: 0
+  gunSprite: {fileID: -1902726784, guid: 2b92b23389a877c4bb52f0c3fdcd7554, type: 3}
+  reticleSprite: {fileID: 0}
+  shotCountSprites:
+  - {fileID: -1347035189, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
+  - {fileID: 1616089201, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
+  - {fileID: 58984468, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
+  - {fileID: 1525623778, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
+  - {fileID: -71339969, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
+  - {fileID: -1424814689, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
+  - {fileID: 1784542045, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
+  - {fileID: -1384428936, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
+  - {fileID: -1075670662, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
+  - {fileID: -1722611206, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
+  - {fileID: -1792521764, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
+  - {fileID: 75169091, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
+  - {fileID: 1394241805, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
+  - {fileID: -778440856, guid: 0376942763b196a4fa38f161b56c9d43, type: 3}
+  gunAnimator: {fileID: 22100000, guid: 886fbe611245b664ebc9bd7921c1b6e8, type: 2}
+  automaticWeapon: 0
+  damagePerBullet: 10
+  maxAmmo: 6
+  pelletsPerBullet: 1
+  shotsPerClip: 8
+  critChance: 15
+  shootConeAngle: 3.5
+  shootCreatureHearMultiplier: 1.75
+  bulletLifetime: 1.5
+  bulletSpeed: 25
+  weightAccelerationFactor: 1
+  reloadAccelerationFactor: 0.75
+  shootCooldownTime: 0.33
+  shootCooldownSFXTriggerTime: 0.2
+  reloadTime: 2
+  handsReloadTime: 1.5
+  handsAnimationReloadTime: 1
+  swapToWeaponTimeMultiplier: 1.5
+  gunKnockback: 0.8
+  gunRecoil: 0.2
+  gunRecoilDamping: 4
+  triggersShootFeedbackOnEachBuller: 1
+  triggersShootSFXOnEachBuller: 1
+  shootGunSound:
+  - {fileID: 8300000, guid: 4e6a70b9a752bfe4baa989d422d548a7, type: 3}
+  - {fileID: 8300000, guid: 9224f2ae4167d824fad213110b1cb032, type: 3}
+  - {fileID: 8300000, guid: 042e753c3be9e7a4ba6caf3e522ea95e, type: 3}
+  - {fileID: 8300000, guid: 82082d9f03022b545bb13e43cf4c867e, type: 3}
+  - {fileID: 8300000, guid: 502fddbd75e0aca41973f6ac1a9f4094, type: 3}
+  - {fileID: 8300000, guid: cbec75c991d218c4b9b2fe1abe554495, type: 3}
+  reloadGunSound:
+  - {fileID: 8300000, guid: 424960b7103131841868fb50af25771b, type: 3}
+  cooldownGunSound:
+  - {fileID: 8300000, guid: 44410cc1b7956fa48b296fe59bf65d00, type: 3}
+  bulletHitGroundSound:
+  - {fileID: 8300000, guid: 59dcfb178b39c434495515f32be26dd4, type: 3}
+  - {fileID: 8300000, guid: f1838753b53df84439313b212c62a244, type: 3}
+  - {fileID: 8300000, guid: c0353d6efb03226488a061199578493c, type: 3}
+  bulletHitEnemySound:
+  - {fileID: 8300000, guid: 5f188511e9287924ab0bc56282bb5bb1, type: 3}
+  - {fileID: 8300000, guid: 370af63962d422e42a9ddc6c19243081, type: 3}
+  - {fileID: 8300000, guid: 32433cb07860c854f8514231e93f3813, type: 3}
+  - {fileID: 8300000, guid: 7c4ef5419b0a7a24b9c549ea14b1e263, type: 3}
+  - {fileID: 8300000, guid: 3aa5ce64a65a5a2489835833a2a763a5, type: 3}
+  bulletHitEnemyCritSound:
+  - {fileID: 8300000, guid: 9584f9bef1f0bde42a29b1ea508db349, type: 3}
+  - {fileID: 8300000, guid: 13abdb87b8bb56644b4b11f45e060f17, type: 3}
+  - {fileID: 8300000, guid: ec7175d319a504c4d9ef90c5c6c4c01e, type: 3}
+  - {fileID: 8300000, guid: c2070189463270345aabc335e37f16ba, type: 3}
+  - {fileID: 8300000, guid: 3f1b6b6732585874dafff4c87941b814, type: 3}
+  - {fileID: 8300000, guid: d898e53e92e748a47a9002a8abeded3c, type: 3}
+  - {fileID: 8300000, guid: b536e10424210ca4eab4190789d5880e, type: 3}
+  - {fileID: 8300000, guid: ca64eff00a5e6a741a94592aaa229a5d, type: 3}
+  - {fileID: 8300000, guid: 2c707419f490654468a181cc7a85e8ec, type: 3}
+  outOfAmmoSound:
+  - {fileID: 8300000, guid: b98aaa1d97aed8244b1576b894d0d598, type: 3}
+  swapToWeaponSound: {fileID: 8300000, guid: 44410cc1b7956fa48b296fe59bf65d00, type: 3}
+  reloadSFXVolumeMultiplier: 0.5
+  cooldownSFXVolumeMultiplier: 0.5
+  shootGunVolumeMultiplier: 0.4
+  outOfAmmoVolumeMultiplier: 0.75
