@@ -10,6 +10,7 @@ public class PlayerShoot : MonoBehaviour
     public static PlayerShoot Instance;
 
     public event EventHandler OnPlayerShot;
+    public event EventHandler OnPlayerStartedShot;
     public event EventHandler OnPlayerTryShoot_OutOfAmmo;
     public event EventHandler OnPlayerShootStopped;
     public event EventHandler OnPlayerCooldownTrigger;
@@ -305,26 +306,34 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void Shoot() {
-        PlayerAim.Instance.AddRecoil(gunRecoil, heldGunSO.gunRecoilDamping);
+        StartCoroutine(ShootAfterDelay(heldGunSO.delayBetweenClickAndShot));
+    }
 
-        float aimDir = 1f;
-        if(PlayerAim.Instance.GetAimDir().x <0) {
-            aimDir = -1f;
-        }
+    private IEnumerator ShootAfterDelay(float delay) {
 
-        Vector2 gunKnockbackForce = new Vector2(aimDir * gunKnockback * -1 , 0);
-        Player.Instance.AddKnockBack(gunKnockbackForce);
-
-        heldGun.SetCurrentBullet(heldGun.GetCurrentBullet()-1);
-        OnBulletsChanged?.Invoke(this, EventArgs.Empty);
+        heldGun.SetCurrentBullet(heldGun.GetCurrentBullet() - 1);
+        OnPlayerStartedShot?.Invoke(this, EventArgs.Empty);
 
         // Handle cooldown
         if (PlayerStats.Instance.GetShootCooldownTime() != 0) {
             coolDownSFXTriggered = false;
             coolDownAnimationTriggered = false;
             coolingDown = true;
-            shootCooldownTimer = PlayerStats.Instance.GetShootCooldownTime();
+            shootCooldownTimer = PlayerStats.Instance.GetShootCooldownTime() + delay;
         };
+
+        yield return new WaitForSeconds(delay);
+
+        PlayerAim.Instance.AddRecoil(gunRecoil, heldGunSO.gunRecoilDamping);
+
+        float aimDir = 1f;
+        if (PlayerAim.Instance.GetAimDir().x < 0) {
+            aimDir = -1f;
+        }
+
+        Vector2 gunKnockbackForce = new Vector2(aimDir * gunKnockback * -1, 0);
+        Player.Instance.AddKnockBack(gunKnockbackForce);
+        OnBulletsChanged?.Invoke(this, EventArgs.Empty);
 
         OnPlayerShot?.Invoke(this, EventArgs.Empty);
     }
@@ -717,6 +726,10 @@ public class PlayerShoot : MonoBehaviour
         return heldGun.GetDamagePerBullet();
     }
 
+    public float GetBulletKnockback() {
+        return heldGun.GetBulletKnockback();
+    }
+    
     public int GetCurrentAmmoClip() {
         return heldGun.GetCurrentAmmoClip();
     }

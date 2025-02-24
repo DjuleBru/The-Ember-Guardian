@@ -8,9 +8,9 @@ public class Creature : Mob
 
     [SerializeField] private CreatureSO creatureSO;
     [SerializeField] private CreatureDetectionCollider detectionCollider;
+    [SerializeField] private CreatureMovement creatureMovement;
     [SerializeField] private List<Collider2D> critZoneColliders;
 
-    private Rigidbody2D rb;
     private bool dropRedOrbsUnlocked;
     private bool dayCreature;
     private bool enteredLight;
@@ -63,6 +63,13 @@ public class Creature : Mob
         }
 
         if(detectionRangeIncreased) {
+
+            bool playerIsFacingCreature = PlayerAim.Instance.GetAimDirFloat() * creatureMovement.GetLastMoveDirFloat() <= 0;
+            if (playerIsFacingCreature) {
+                detectionRangeIncreasedTimer = detectionRangeIncreasedTime;
+                return;
+            };
+
             detectionRangeIncreasedTimer -= Time.deltaTime;
             if(detectionRangeIncreasedTimer < 0) {
                 CreatureHeardPlayerShoot(false);

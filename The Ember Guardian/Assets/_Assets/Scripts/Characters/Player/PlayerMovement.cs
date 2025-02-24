@@ -256,6 +256,7 @@ public class PlayerMovement : MonoBehaviour {
     private void HandleCrouch() {
         if (isJumping) return;
         if (PauseMenuUI.Instance != null && PauseMenuUI.Instance.isPaused) return;
+        if (PlayerShoot.Instance.GetHoldingStationaryGun()) return;
 
         if (GameInput.Instance.GetJumpDirNormalized() <= -.5) {
             if (!isCrouching) {

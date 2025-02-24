@@ -27,6 +27,9 @@ MonoBehaviour:
   - {fileID: 2049033373, guid: f90d2cca5e8d1504fa14c3ff87aa1d11, type: 3}
   - {fileID: -464449635, guid: f90d2cca5e8d1504fa14c3ff87aa1d11, type: 3}
   gunAnimator: {fileID: 22100000, guid: 09b6ea7bebcacf048b013a7bc573ba72, type: 2}
+  bulletIsParticle: 1
+  bulletIsProjectile: 0
+  bulletIsSprite: 0
   automaticWeapon: 0
   damagePerBullet: 40
   maxAmmo: 5
@@ -37,6 +40,7 @@ MonoBehaviour:
   shootCreatureHearMultiplier: 2.25
   bulletLifetime: 0.35
   bulletSpeed: 70
+  bulletKnockback: 60
   weightAccelerationFactor: 0.9
   reloadAccelerationFactor: 0.55
   shootCooldownTime: 1.8

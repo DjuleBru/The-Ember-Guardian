@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class Mob : MonoBehaviour, IDamageable
@@ -19,6 +20,7 @@ public class Mob : MonoBehaviour, IDamageable
         public List<Collectible> collectibleDroppedList;
     }
 
+    protected Rigidbody2D rb;
     protected int health;
     protected bool dead;
 
@@ -89,6 +91,13 @@ public class Mob : MonoBehaviour, IDamageable
         if (health <= 0) {
             Die();
         }
+    }
+
+    public void TakeKnockback(float knockback, Vector2 knockBackDirNormalized) {
+        if (dead) return;
+
+        Vector2 knockBackForce = knockBackDirNormalized * knockback;
+        rb.AddForce(knockBackForce, ForceMode2D.Impulse);
     }
 
     public void InstantiateHitPS(float angle, float height, bool critHit, int damage) {

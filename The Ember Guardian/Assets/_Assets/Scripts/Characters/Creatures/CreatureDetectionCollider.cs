@@ -6,13 +6,15 @@ public class CreatureDetectionCollider : MonoBehaviour
 {
     private Creature creature;
     private CreatureAI creatureAI;
-    private CreatureAttack creatureAttack;
+    private CreatureMovement creatureMovement;
     private CircleCollider2D circleCollider;
     private List<IDamageable> iDamageablesInDetectionRange = new List<IDamageable>();
 
     private bool playerShotCreature;
     private float playerShotCreatureTimer;
     private float playerShotCreatureAggroTime = 5f;
+    private float playerUnaggroTimer;
+    private float playerUnaggroTime = 5f;
 
     private bool guardHitCreature;
     private float guardHitCreatureAggroProbability = .25f;
@@ -30,7 +32,7 @@ public class CreatureDetectionCollider : MonoBehaviour
     private void Awake() {
         creature = GetComponentInParent<Creature>();
         creatureAI = GetComponentInParent<CreatureAI>();
-        creatureAttack = GetComponentInParent<CreatureAttack>();
+        creatureMovement = GetComponentInParent<CreatureMovement>();
         circleCollider = GetComponent<CircleCollider2D>();
     }
 
@@ -61,7 +63,7 @@ public class CreatureDetectionCollider : MonoBehaviour
             RefreshHighestPriorityTarget();
         }
 
-        HandlePlayerShotCreature();
+        HandlePlayerUnAggro();
         HandleGuardHitCreature();
     }
 
@@ -71,6 +73,7 @@ public class CreatureDetectionCollider : MonoBehaviour
 
         if (player != null) {
             AddIDamageableInDetectionRange(player);
+            playerUnaggroTimer = playerUnaggroTime;
         }
 
         // Barricade
@@ -127,17 +130,31 @@ public class CreatureDetectionCollider : MonoBehaviour
 
     }
 
-    private void HandlePlayerShotCreature() {
+    private void HandlePlayerUnAggro() {
         if (playerShotCreature) {
             playerShotCreatureTimer -= Time.deltaTime;
             if (playerShotCreatureTimer <= 0) {
                 playerShotCreature = false;
-                if(iDamageablesInDetectionRange.Count == 0) {
-                    creatureAI.ResetAttackTargetInProximity();
-                }
             }
         }
+
+        if(iDamageablesInDetectionRange.Contains(Player.Instance)) {
+
+            bool playerIsFacingCreature = PlayerAim.Instance.GetAimDirFloat() * creatureMovement.GetLastMoveDirFloat() <= 0;
+            Debug.Log(playerUnaggroTimer);
+            if (playerIsFacingCreature) {
+                playerUnaggroTimer = playerUnaggroTime;
+                return;
+            };
+
+            playerUnaggroTimer -= Time.deltaTime;
+            if(playerUnaggroTimer < 0) {
+                RemoveIDamageableInDetectionRange(Player.Instance);
+            }
+        }
+
     }
+
     private void HandleGuardHitCreature() {
         if (guardHitCreature) {
             guardHitCreatureTimer -= Time.deltaTime;

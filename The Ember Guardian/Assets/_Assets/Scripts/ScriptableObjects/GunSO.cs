@@ -20,7 +20,11 @@ public class GunSO : ScriptableObject
     public List<Sprite> shotCountSprites;
 
     public RuntimeAnimatorController gunAnimator;
+    public bool bulletIsParticle;
+    public bool bulletIsProjectile;
+    public bool bulletIsSprite;
     public bool automaticWeapon;
+    public float delayBetweenClickAndShot;
     public int damagePerBullet;
     public int maxAmmo;
     public int pelletsPerBullet;
@@ -30,6 +34,7 @@ public class GunSO : ScriptableObject
     public float shootCreatureHearMultiplier = 1.75f;
     public float bulletLifetime;
     public float bulletSpeed;
+    public float bulletKnockback;
     public float weightAccelerationFactor;
     public float reloadAccelerationFactor;
 

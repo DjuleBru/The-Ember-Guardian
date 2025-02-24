@@ -16,7 +16,6 @@ public class ParticleCollision : MonoBehaviour
     private Vector3 particleMoveDir;
 
     [SerializeField] private float collisionDistanceThreshold = .25f;
-    [SerializeField] private float hitKnockbackForce = 15f;
     [SerializeField] private bool groundDestroysBullet = true;
 
     public static event EventHandler OnAnyBulletHitGround;
@@ -106,17 +105,20 @@ public class ParticleCollision : MonoBehaviour
                         if (critHit && randomNumber < PlayerShoot.Instance.GetHeldGun().GetCritChance()/100) {
                            
                             mobHit.TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, true);
-                            other.GetComponent<Mob>().InstantiateHitPS(angle, collisionPosition.y, true, PlayerShoot.Instance.GetDamagePerBullet());
+                            mobHit.InstantiateHitPS(angle, collisionPosition.y, true, PlayerShoot.Instance.GetDamagePerBullet());
 
                             OnAnyBulletHitEnemyCrit?.Invoke(this, EventArgs.Empty);
                             
                         }
                         else {
-                            other.GetComponent<Mob>().TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, false);
-                            other.GetComponent<Mob>().InstantiateHitPS(angle, collisionPosition.y, false, PlayerShoot.Instance.GetDamagePerBullet());
+                            mobHit.TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, false);
+                            mobHit.InstantiateHitPS(angle, collisionPosition.y, false, PlayerShoot.Instance.GetDamagePerBullet());
 
                             OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
                         }
+
+                        Vector2 bulletDirNormalized = new Vector2(moveDir.x, moveDir.y).normalized;
+                        mobHit.TakeKnockback(PlayerShoot.Instance.GetBulletKnockback(), bulletDirNormalized);
                     }
 
                     if(spawnerHit != null) {

@@ -404,6 +404,12 @@ public class MetaProgressionManager : MonoBehaviour
         return damagePerBullet;
     }
 
+    public float GetGunBulletKnockback(GunSO gunSO) {
+        string key = gunSO.gunType + "_bulletKnockback";
+        float bulletKnockback = ES3.Load(key, gunSO.bulletKnockback);
+        return bulletKnockback;
+    }
+
     public void SetGunMaxAmmo(GunSO gunSO, float maxAmmo) {
         int maxAmmoToSave = (int)maxAmmo;
         string key = gunSO.gunType + "_maxAmmo";

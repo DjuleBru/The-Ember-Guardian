@@ -9,6 +9,9 @@ public class GunFeedbacks : MonoBehaviour
     [SerializeField] private MMF_Player mmfPlayer;
     [SerializeField] private ParticleSystem shellOutPS;
 
+    [SerializeField] private ParticleSystem loadGunPS1;
+    [SerializeField] private ParticleSystem loadGunPS2;
+
     private Gun gun;
 
     private void Awake() {
@@ -17,7 +20,17 @@ public class GunFeedbacks : MonoBehaviour
 
     private void Start() {
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
+        PlayerShoot.Instance.OnPlayerStartedShot += PlayerShoot_OnPlayerStartedShot;
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoot_OnPlayerCooldownTrigger;
+    }
+
+    private void PlayerShoot_OnPlayerStartedShot(object sender, System.EventArgs e) {
+        if(loadGunPS1 != null) {
+            loadGunPS1.Play();
+        }
+        if (loadGunPS2 != null) {
+            loadGunPS2.Play();
+        }
     }
 
     private void PlayerShoot_OnPlayerCooldownTrigger(object sender, System.EventArgs e) {

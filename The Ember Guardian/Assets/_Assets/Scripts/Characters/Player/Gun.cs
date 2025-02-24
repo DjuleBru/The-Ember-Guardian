@@ -6,6 +6,8 @@ using UnityEngine;
 public class Gun : MonoBehaviour
 {
     [SerializeField] protected ParticleSystem shootPS;
+    [SerializeField] protected GameObject projectilePrefab;
+    [SerializeField] protected Transform projectileSpawnPosition;
     [SerializeField] protected GunSO gunSO;
     [SerializeField] protected Animator gunBodyAnimator;
     [SerializeField] protected Animator armBodyAnimator;
@@ -17,6 +19,7 @@ public class Gun : MonoBehaviour
 
     protected int pelletsPerBullet = 1;
     protected int damagePerBullet;
+    protected float bulletKnockback;
     protected int currentAmmoClip;
     protected int maxAmmo;
     protected int currentBullet;
@@ -160,6 +163,7 @@ public class Gun : MonoBehaviour
 
         maxAmmo = MetaProgressionManager.Instance.GetGunMaxAmmo(gunSO);
         damagePerBullet = MetaProgressionManager.Instance.GetGunDamagePerBullet(gunSO);
+        bulletKnockback = MetaProgressionManager.Instance.GetGunBulletKnockback(gunSO);
         shotsPerClip = MetaProgressionManager.Instance.GetGunShotsPerClip(gunSO);
         critChance = MetaProgressionManager.Instance.GetGunCritChance(gunSO);
         cooldownTime = MetaProgressionManager.Instance.GetGunCooldown(gunSO);
@@ -181,12 +185,14 @@ public class Gun : MonoBehaviour
         overclockedAngle = defaultAngle * 2f;
         lmgSetupAngle = defaultAngle / 5f;
 
-        ParticleSystem.ShapeModule shootPSShape = shootPS.shape;
-        shootPSShape.angle = defaultAngle;
+        if(gunSO.bulletIsParticle) {
+            ParticleSystem.ShapeModule shootPSShape = shootPS.shape;
+            shootPSShape.angle = defaultAngle;
 
-        ParticleSystem.MainModule shootPSMain = shootPS.main;
-        shootPSMain.startLifetime = bulletLifetime;
-        shootPSMain.startSpeed = bulletSpeed;
+            ParticleSystem.MainModule shootPSMain = shootPS.main;
+            shootPSMain.startLifetime = bulletLifetime;
+            shootPSMain.startSpeed = bulletSpeed;
+        }
 
         currentBullet = shotsPerClip;
 
@@ -213,7 +219,17 @@ public class Gun : MonoBehaviour
     }
 
     protected void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
-        shootPS.Emit(pelletsPerBullet);
+        if (!gunActive) return;
+        if(gunSO.bulletIsParticle) {
+            shootPS.Emit(pelletsPerBullet);
+        }
+
+        if(gunSO.bulletIsProjectile) {
+            GunProjectile gunProjectile = Instantiate(projectilePrefab, projectileSpawnPosition.position, Quaternion.identity).GetComponent<GunProjectile>();
+
+            Vector2 initialForce = PlayerAim.Instance.GetAimDir().normalized * bulletSpeed;
+            gunProjectile.InitializeProjectile(bulletLifetime, damagePerBullet, bulletKnockback, initialForce);
+        }
     }
 
     public GunSO GetGunSO() {
@@ -256,6 +272,11 @@ public class Gun : MonoBehaviour
     public int GetDamagePerBullet() {
         return damagePerBullet;
     }
+
+    public float GetBulletKnockback() {
+        return bulletKnockback;
+    }
+
     public int GetPelletsPerBullet() {
         return pelletsPerBullet;
     }

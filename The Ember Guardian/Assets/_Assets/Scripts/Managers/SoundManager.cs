@@ -29,7 +29,7 @@ public class SoundManager : MonoBehaviour
 
         if (Player.Instance != null) {
             Player.Instance.OnPlayerBackToTentToRespawn += Player_OnPlayerBackToTentToRespawn;
-            PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
+            PlayerShoot.Instance.OnPlayerStartedShot += PlayerShoot_OnPlayerStartedShot;
             PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoor_OnPlayerCooldownSFXTrigger;
             PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
             PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
@@ -432,7 +432,7 @@ public class SoundManager : MonoBehaviour
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().cooldownGunSound;
         PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().cooldownSFXVolumeMultiplier);
     }
-    private void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
+    private void PlayerShoot_OnPlayerStartedShot(object sender, System.EventArgs e) {
         if (!PlayerShoot.Instance.GetHeldGunSO().triggersShootSFXOnEachBuller) return;
 
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().shootGunSound;
@@ -696,7 +696,7 @@ public class SoundManager : MonoBehaviour
         Obstacle.OnAnyObstacleBuilt -= Obstacle_OnAnyObstacleBuilt;
 
         if (Player.Instance != null) {
-            PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShot;
+            PlayerShoot.Instance.OnPlayerStartedShot -= PlayerShoot_OnPlayerStartedShot;
             PlayerShoot.Instance.OnPlayerCooldownTrigger -= PlayerShoor_OnPlayerCooldownSFXTrigger;
             PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo -= PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
             PlayerShoot.Instance.OnPlayerSwappedGun -= PlayerShoot_OnPlayerSwappedGun;
