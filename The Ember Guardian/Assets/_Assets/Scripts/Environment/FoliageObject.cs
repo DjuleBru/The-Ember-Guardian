@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class FoliageObject : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer foliageSprite;
+    [SerializeField] private TilemapRenderer foliageTilemap;
     [SerializeField] private float softWindVelocityValue;
     [SerializeField] private float mediumWindVelocityValue;
     [SerializeField] private float strongWindVelocityValue;
@@ -14,7 +16,12 @@ public class FoliageObject : MonoBehaviour
     private Vector2 currentWindSpeed;
 
     private void Start() {
-        foliageMaterial = foliageSprite.material;
+        if(foliageSprite != null) {
+            foliageMaterial = foliageSprite.material;
+        }
+        if(foliageTilemap != null) {
+            foliageMaterial = foliageTilemap.material;
+        }
 
         WindManager.Instance.OnWindStrengthChanged += WindManager_OnWindStrengthChanged;
         SetMaterialVariables();

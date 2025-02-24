@@ -732,11 +732,11 @@ public class Tutorial : MonoBehaviour
     }
 
     public void TransitionToCombatCamera() {
-        CameraManager.Instance.ZoomOut(false, .6f, 2f);
+        CameraManager.Instance.ZoomOut(false, .7f, 2f);
     }
 
     public void TransitionToTutorialCamera() {
-        CameraManager.Instance.ZoomOut(false, 1.2f, 2f);
+        CameraManager.Instance.ZoomOut(false, 1f, 2f);
     }
 
     private IEnumerator ActivateCreatureSpotLightCoroutine(float delay) {

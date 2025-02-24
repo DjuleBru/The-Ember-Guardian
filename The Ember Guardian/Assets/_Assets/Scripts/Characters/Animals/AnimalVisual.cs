@@ -26,4 +26,9 @@ public class AnimalVisual : MobVisual
     private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
         glowSpriteRenderer.material.SetFloat("_Glow", dayGlowAmount);
     }
+
+    private void OnDestroy() {
+        DayNightManager.Instance.OnDayStart -= DayNightManager_OnDayStart;
+        DayNightManager.Instance.OnDuskStart -= DayNightManager_OnDuskStart;
+    }
 }

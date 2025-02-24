@@ -141,7 +141,6 @@ public class CreatureDetectionCollider : MonoBehaviour
         if(iDamageablesInDetectionRange.Contains(Player.Instance)) {
 
             bool playerIsFacingCreature = PlayerAim.Instance.GetAimDirFloat() * creatureMovement.GetLastMoveDirFloat() <= 0;
-            Debug.Log(playerUnaggroTimer);
             if (playerIsFacingCreature) {
                 playerUnaggroTimer = playerUnaggroTime;
                 return;
