@@ -24,11 +24,17 @@ public class PlayerCurrencies : MonoBehaviour
         blueGem,
         purpleGem,
         yellowGem,
+        bearTrap,
+        bladeTrap,
+        smokeEjector,
+        shockerEjector,
+        spikeEjector,
     }
     public enum CurrencyCategory {
         orb,
         ammo,
         gem,
+        trap,
     }
 
     public event EventHandler<OnBlueOrbDroppedOnTheFloorEventArgs> OnBlueOrbDroppedOnTheFloor;

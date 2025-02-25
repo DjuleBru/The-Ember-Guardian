@@ -40,6 +40,9 @@ public class StructureSO : ScriptableObject
     public List<Sprite> buildingUpgradeSpriteList;
 
     public AudioClip buildAudioClip;
+    public float buildVolumeMultiplier = 1f;
     public AudioClip useFunctionAudioClip;
+    public float useFunctionVolumeMultiplier = 1f;
     public AudioClip upgradeAudioClip;
+    public float upgradeVolumeMultiplier = 1f;
 }

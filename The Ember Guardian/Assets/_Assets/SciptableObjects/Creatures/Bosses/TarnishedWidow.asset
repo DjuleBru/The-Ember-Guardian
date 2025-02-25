@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e57289136e0e1e6418ec81259b9649b2, type: 3}
+  m_Name: TarnishedWidow
+  m_EditorClassIdentifier: 
+  enemyName: Slug
+  description: Basic, slightly tanky, slow creature.
+  creaturePrefab: {fileID: 2465624883499499618, guid: 3549a71fbc78c51489a16767ea29cc18, type: 3}
+  mass: 100
+  detectionRange_Day: 12
+  detectionRange_Night: 10
+  flying: 0
+  flightMinAltitude: 0
+  flightMaxAltitude: 0
+  dayMoveSpeed: 1
+  nightMoveSpeed: 1
+  enteredLightMoveSpeedDebuff: 1.5
+  moveSpeedRandomizerDelta: 0
+  maxHealth: 400
+  damage: 1
+  attackRate: 3
+  enteredLightattackRateDebuff: 2.5
+  isRangedAttack: 0
+  canAttackPlayerOnTower: 0
+  minAttackRange: 3
+  maxAttackRange: 4
+  hasSpecialAbility: 0
+  specialAbilityCooldown: 0
+  attackRangeRandomizer: 0.1
+  attackRangeMaxDistanceMiss: 0.1
+  relativeDamageToFire: 1
+  attackAnimationDelay: 0.4
+  totalAttackAnimationTime: 1.7
+  hasCustomSpawnAnimation: 0
+  spawnAnimationDuration: 1
+  baseMovementAnimationSpeed: 0.5
+  workerTargetingPriority: 1
+  playerTargetingPriority: 3
+  barricadeTargetingPriority: 2
+  currencyTypeDroppedList: 03000000
+  currencyDropAmountList: 01000000
+  difficulty: 2
+  initialWaveSpawn: 1
+  spawnProbability: 0.4
+  dieAudioClips:
+  - {fileID: 8300000, guid: 2a3446bc08c9f6a4595d9866b94523bb, type: 3}
+  - {fileID: 8300000, guid: cdd869efb1b2e0c42b7745dc889baf63, type: 3}
+  - {fileID: 8300000, guid: 8da1f384e8bb1d14bb892c5479f906e5, type: 3}
+  - {fileID: 8300000, guid: 19fd99e0681d27a45882321d1040c18e, type: 3}
+  - {fileID: 8300000, guid: 891be6df791ce064990b3cbb90a21447, type: 3}
+  dieVolumeMultiplier: 0.75
+  aggroAudioClips:
+  - {fileID: 8300000, guid: f9806935ce84d5448b45d1681abcfe70, type: 3}
+  - {fileID: 8300000, guid: 2f27418f225c51a43a3bf5c4f4366b11, type: 3}
+  - {fileID: 8300000, guid: b02d594d524fe8749b86809fee6fb13a, type: 3}
+  - {fileID: 8300000, guid: aa119a0d5d1e2024b986751eb83c5bcc, type: 3}
+  - {fileID: 8300000, guid: 809528988742ad64b8f99e042bd4b73c, type: 3}
+  aggroVolumeMultiplier: 0.8
+  attackSFXHandledByAnimation: 0
+  attackStartedChargingAudioClips: []
+  attackReleasedAudioClips: []
+  attackHitAudioClips:
+  - {fileID: 8300000, guid: ed07ecc0cf11a5649b0bed809c1c2489, type: 3}
+  - {fileID: 8300000, guid: b6327cbb36b024c4e92697d91477b041, type: 3}
+  - {fileID: 8300000, guid: 21216f467a220f74e9b69835949785d1, type: 3}
+  - {fileID: 8300000, guid: 2b8781723ff61b5489b834c4acb4f13d, type: 3}
+  - {fileID: 8300000, guid: d81e1b82f5aea0e43aeeaba82643596a, type: 3}
+  attackVolumeMultiplier: 0.5
+  attackAudioClips: []
+  attackHitVolumeMultiplier: 0.5
+  idleAudioClips:
+  - {fileID: 8300000, guid: 73b7fa99320c9c44a969b00d9d3385e8, type: 3}
+  - {fileID: 8300000, guid: 3bf53ca8960505842a27c4a7c75070f7, type: 3}
+  - {fileID: 8300000, guid: 68cc028edf2ea834b9a192e9fe5b328a, type: 3}
+  - {fileID: 8300000, guid: 66e96778057466945b04644bb726dd8d, type: 3}
+  - {fileID: 8300000, guid: f3ef08d9e0796fd49855cb62721d1e1b, type: 3}
+  - {fileID: 8300000, guid: 7932b8053c7b4de4fbea3b6b636e5b8e, type: 3}
+  - {fileID: 8300000, guid: c28cc561c7bdfdd4f9002d6e1374179f, type: 3}
+  idleVolumeMultiplier: 0.5
+  footStepAudioClips:
+  - {fileID: 8300000, guid: aa99364f9f8fa36459cf5c83762ea7f8, type: 3}
+  - {fileID: 8300000, guid: 6c7e204337f8fe645a22a2dee4865e7b, type: 3}
+  - {fileID: 8300000, guid: 03e6da2d1d48ac942a787a3d470f7b9f, type: 3}
+  - {fileID: 8300000, guid: 1d9b9d02d3f75e44f8c559837bfa8d39, type: 3}
+  - {fileID: 8300000, guid: 124a682033cba0b43a44f1d96d8dbaef, type: 3}
+  - {fileID: 8300000, guid: b8fda12fb4c51124baa8b9b68778c18c, type: 3}
+  - {fileID: 8300000, guid: 10bc50b8ae82b1e4bbb305be47156caa, type: 3}
+  - {fileID: 8300000, guid: 8607806d20eadb844b4e554b28f7b4cd, type: 3}
+  - {fileID: 8300000, guid: a58d27aad95afdb4184e6e4ae99f212e, type: 3}
+  - {fileID: 8300000, guid: 29efdc12d117c6b4b80cc5a117a6da4b, type: 3}
+  footstepVolumeMultiplier: 0.5
+  spawnAudioClips:
+  - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
+  - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}
+  - {fileID: 8300000, guid: b6d953aeaa52e58499a331b756752ad1, type: 3}
+  spawnVolumeMultiplier: 0.75

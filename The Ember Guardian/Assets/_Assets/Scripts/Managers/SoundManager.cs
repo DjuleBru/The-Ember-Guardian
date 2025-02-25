@@ -296,6 +296,9 @@ public class SoundManager : MonoBehaviour
         if (collectible.GetCurrencyCategory() == PlayerCurrencies.CurrencyCategory.gem) {
             PlaySound3D(soundRefsSO.gemTouchedFloor, (sender as MonoBehaviour).transform.position);
         }
+        if (collectible.GetCurrencyCategory() == PlayerCurrencies.CurrencyCategory.trap) {
+            PlaySound3D(soundRefsSO.trapTouchedFloor, (sender as MonoBehaviour).transform.position);
+        }
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
             PlaySound3D(soundRefsSO.ammoTouchedFloor, (sender as MonoBehaviour).transform.position, .7f);
         }
@@ -330,6 +333,9 @@ public class SoundManager : MonoBehaviour
         }
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.redGem || currencyTypeCollected == PlayerCurrencies.CurrencyType.yellowGem) {
             PlaySound2D(soundRefsSO.redGemPickedUpByPlayer, .7f);
+        }
+        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.bearTrap || currencyTypeCollected == PlayerCurrencies.CurrencyType.bladeTrap || currencyTypeCollected == PlayerCurrencies.CurrencyType.shockerEjector || currencyTypeCollected == PlayerCurrencies.CurrencyType.smokeEjector || currencyTypeCollected == PlayerCurrencies.CurrencyType.spikeEjector) {
+            PlaySound2D(soundRefsSO.trapPickedUpByPlayer, .7f);
         }
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.ammo) {
             PlaySound2D(soundRefsSO.ammoPickedUpByPlayer, .7f);
@@ -419,7 +425,7 @@ public class SoundManager : MonoBehaviour
             return;
         }
         AudioClip audioClipArray = PlayerShoot.Instance.GetHeldGunSO().swapToWeaponSound;
-        PlaySound2D(audioClipArray);
+        PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().swapToWeaponVolumeMultiplier);
     }
 
     private void PlayerShoot_OnPlayerTryShoot_OutOfAmmo(object sender, System.EventArgs e) {
@@ -527,18 +533,21 @@ public class SoundManager : MonoBehaviour
     }
 
     private void Structure_OnAnyStructurePrimaryFunctionUsed(object sender, System.EventArgs e) {
-        AudioClip audioClip = (sender as Structure).GetStructureSO().useFunctionAudioClip;
-        PlaySound2D(audioClip);
+        StructureSO structureSO = (sender as Structure).GetStructureSO();
+        AudioClip audioClip = structureSO.useFunctionAudioClip;
+        PlaySound2D(audioClip, structureSO.useFunctionVolumeMultiplier);
     }
 
     private void Structure_OnAnyStructureUpgraded(object sender, System.EventArgs e) {
-        AudioClip audioClip = (sender as Structure).GetStructureSO().upgradeAudioClip;
-        PlaySound2D(audioClip);
+        StructureSO structureSO = (sender as Structure).GetStructureSO();
+        AudioClip audioClip = structureSO.upgradeAudioClip;
+        PlaySound2D(audioClip, structureSO.upgradeVolumeMultiplier);
     }
 
     private void StructureLocation_OnAnyStructureBuilt(object sender, System.EventArgs e) {
-        AudioClip audioClip = (sender as StructureLocation).GetStructureSOToBuild().buildAudioClip;
-        PlaySound2D(audioClip);
+        StructureSO structureSO = (sender as StructureLocation).GetStructureSOToBuild();
+        AudioClip audioClip = structureSO.buildAudioClip;
+        PlaySound2D(audioClip, structureSO.buildVolumeMultiplier);
     }
 
     #endregion

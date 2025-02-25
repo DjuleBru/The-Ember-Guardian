@@ -64,4 +64,5 @@ public class GunSO : ScriptableObject
     public float cooldownSFXVolumeMultiplier;
     public float shootGunVolumeMultiplier;
     public float outOfAmmoVolumeMultiplier;
+    public float swapToWeaponVolumeMultiplier = 1f;
 }

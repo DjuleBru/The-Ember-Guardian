@@ -7,25 +7,25 @@ using UnityEngine.UI;
 
 public class MerchantItemUI : MonoBehaviour
 {
-    [SerializeField] private Animator itemVisualAnimator;
-    [SerializeField] private Animator itemCurrencyContainerUIAnimator;
+    [SerializeField] protected Animator itemVisualAnimator;
+    [SerializeField] protected Animator itemCurrencyContainerUIAnimator;
 
-    [SerializeField] private Image merchantItemImage;
-    [SerializeField] private GameObject merchantItemTextGameObject;
-    [SerializeField] private TextMeshProUGUI merchantItemLevelText;
+    [SerializeField] protected Image merchantItemImage;
+    [SerializeField] protected GameObject merchantItemTextGameObject;
+    [SerializeField] protected TextMeshProUGUI merchantItemLevelText;
 
-    [SerializeField] private RectTransform currencyUIParent;
-    [SerializeField] private RectTransform currencyUITemplate;
-    [SerializeField] private List<PayCurrencyTemplateWorldUI> payCurrencyUIList = new List<PayCurrencyTemplateWorldUI>();
+    [SerializeField] protected RectTransform currencyUIParent;
+    [SerializeField] protected RectTransform currencyUITemplate;
+    [SerializeField] protected List<PayCurrencyTemplateWorldUI> payCurrencyUIList = new List<PayCurrencyTemplateWorldUI>();
 
-    private MerchantItem linkedItem;
-    private bool itemPurchased;
+    protected MerchantItem linkedItem;
+    protected bool itemPurchased;
 
-    private void Awake() {
+    protected void Awake() {
         InitializeVisuals();
     }
 
-    public void SetLinkedItem(MerchantItem item) {
+    public virtual void SetLinkedItem(MerchantItem item) {
         Debug.Log("SetLinkedItem " + item.itemName + " " + gameObject.GetInstanceID());
         merchantItemImage.material.SetFloat("_GreyscaleBlend", 0f);
         currencyUIParent.gameObject.SetActive(true);
@@ -43,7 +43,7 @@ public class MerchantItemUI : MonoBehaviour
         HighlightItem(false);
     }
 
-    private void InitializeVisuals() {
+    protected void InitializeVisuals() {
         merchantItemImage.material = new Material(merchantItemImage.material);
         merchantItemTextGameObject.SetActive(false);
     }
@@ -52,24 +52,29 @@ public class MerchantItemUI : MonoBehaviour
         linkedItem.Purchase();
         itemPurchased = true;
 
-        currencyUIParent.gameObject.SetActive(false);
-        merchantItemImage.material.SetFloat("_GreyscaleBlend", 1f);
+        if(linkedItem.buyingLocksPurchasesUntilRefresh) {
+            currencyUIParent.gameObject.SetActive(false);
+            merchantItemImage.material.SetFloat("_GreyscaleBlend", 1f);
+        } else {
+            itemCurrencyContainerUIAnimator.SetTrigger("Unhover");
+            itemCurrencyContainerUIAnimator.SetTrigger("Hover");
+        }
     }
 
-    private void RefreshItemPriceCurrencyUI() {
+    protected void RefreshItemPriceCurrencyUI() {
         payCurrencyUIList.Clear();
+        currencyUITemplate.gameObject.SetActive(true);
 
-        foreach(RectTransform child in currencyUIParent) {
+        foreach (RectTransform child in currencyUIParent) {
             if (child == currencyUITemplate) continue;
             Destroy(child.gameObject);
         }
-
-        payCurrencyUIList.Add(currencyUITemplate.GetComponent<PayCurrencyTemplateWorldUI>());
 
         for (int i = 0; i < linkedItem.price; i++) {
             PayCurrencyTemplateWorldUI payCurrencyUITemplate = Instantiate(currencyUITemplate, currencyUIParent).GetComponent<PayCurrencyTemplateWorldUI>();
             payCurrencyUIList.Add(payCurrencyUITemplate);
         }
+        currencyUITemplate.gameObject.SetActive(false);
     }
 
     public void HighlightItem(bool highlighted) {
@@ -98,12 +103,7 @@ public class MerchantItemUI : MonoBehaviour
         return payCurrencyUIList;
     }
 
-    public bool GetItemPurchased() {
-        return itemPurchased;
-    }
-
     public MerchantItem GetMerchantItemLinked() {
-        Debug.Log("GetMerchantItemLinked " + linkedItem.itemName + " " + gameObject.GetInstanceID());
         return linkedItem;
     }
 }

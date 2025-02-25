@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,9 +9,8 @@ public class MerchantItem
         ActiveSkill,
         PassiveSkill,
         SkillUpgrade,
-        NewGun,
-        GunUpgrade,
-        Plant
+        Trap,
+        TrapUpgrade,
     }
 
     public string itemName;
@@ -18,10 +18,14 @@ public class MerchantItem
     public string itemStatChanges;
     public int price;
     public int currentLevel = 1;
+    public bool buyingLocksPurchasesUntilRefresh;
     public Sprite icon;
     public PlayerCurrencies.CurrencyType currencyTypeToPay;
     public MerchantItemType itemType;
     public bool isPurchased { get; private set; }
+
+
+    public static event EventHandler OnAnyMerchantItemBought;
 
 
     // Méthode d'initialisation
@@ -33,7 +37,7 @@ public class MerchantItem
         // Logique générique pour l'achat (soustraction d'or, ajout à l'inventaire, etc.)
 
         isPurchased = true;
-        Debug.Log(isPurchased);
+        OnAnyMerchantItemBought?.Invoke(this, EventArgs.Empty); 
     }
 
     public virtual void Unpurchase() {

@@ -93,8 +93,8 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 4
   fDistance: 1.3
-  MinAngle: 0
-  MaxAngle: 50
+  MinAngle: 360
+  MaxAngle: 0
   StartAngle: 182
 --- !u!95 &211049994683819340
 Animator:
@@ -187,8 +187,8 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 4
   fDistance: 0.65
-  MinAngle: 0
-  MaxAngle: 50
+  MinAngle: 360
+  MaxAngle: 0
   StartAngle: 182
 --- !u!95 &6869785902486126768
 Animator:
@@ -8074,8 +8074,10 @@ MonoBehaviour:
   panelAppearAudioClip: {fileID: 8300000, guid: 66fe63c19e2febb4aa46ab2daa46872c, type: 3}
   hoverItemAudioClip: {fileID: 8300000, guid: 9609307cf969a1142a0cf4a474d1a2ed, type: 3}
   merchantIdleAudioClip: {fileID: 8300000, guid: 7121369723ed1694497532726d0cec8e, type: 3}
-  buyMajorItemAudioClip: {fileID: 8300000, guid: 6506bcf4fba82ab48bdb33bdedd81f3f, type: 3}
-  buyMinorItemAudioClip: {fileID: 8300000, guid: 00e9446e91ec69d468624792b70eab6c, type: 3}
+  buyMajorItemAudioClip:
+  - {fileID: 8300000, guid: 6506bcf4fba82ab48bdb33bdedd81f3f, type: 3}
+  buyMinorItemAudioClip:
+  - {fileID: 8300000, guid: 00e9446e91ec69d468624792b70eab6c, type: 3}
 --- !u!82 &4896151507192750173
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9034,6 +9036,8 @@ MonoBehaviour:
   primaryFunctionUnlocked: 1
   secondaryFunctionUnlocked: 0
   merchantType: 0
+  smallItemsToDisplayAmount: 2
+  bigItemsToDisplayAmount: 1
   merchantSkillSOList:
   - {fileID: 11400000, guid: 1a9c587c265ed66408c335427c041af8, type: 2}
   - {fileID: 11400000, guid: bef3187e59a62004b96469e0026ce9ad, type: 2}
@@ -9112,6 +9116,7 @@ MonoBehaviour:
   descriptionPanelLeftPosition: {fileID: 1320900974195749200}
   descriptionPanelRightPosition: {fileID: 2810320691255211234}
   useMajorMinorDistinction: 1
+  itemsBoughtAreLocked: 1
 --- !u!1 &6399663101081892598 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8798209634761237626, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}

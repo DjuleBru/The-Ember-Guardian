@@ -32,6 +32,11 @@ public class UICurrencyManager : MonoBehaviour
     [SerializeField] private Transform purpleGemUIPrefab;
     [SerializeField] private Transform ammoUIPrefab;
     [SerializeField] private Transform emberUIPrefab;
+    [SerializeField] private Transform bearTrapUIPrefab;
+    [SerializeField] private Transform bladeTrapUIPrefab;
+    [SerializeField] private Transform shockerEjectorUIPrefab;
+    [SerializeField] private Transform smokeEjectorUIPrefab;
+    [SerializeField] private Transform spikeEjectorUIPrefab;
 
     [SerializeField] private int smallOrbValue = 5;
 
@@ -170,7 +175,6 @@ public class UICurrencyManager : MonoBehaviour
     public void AddCurrencyInBag(PlayerCurrencies.CurrencyType currencyType) {
         Vector2 force = new Vector2(UnityEngine.Random.Range(0, 0), 0);
         Transform currencyTransform = null;
-
         if (currencyType == PlayerCurrencies.CurrencyType.bigBlueOrb) {
             currencyTransform = Instantiate(blueOrbUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, currencyContainer);
             currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
@@ -224,6 +228,27 @@ public class UICurrencyManager : MonoBehaviour
         if (currencyType == PlayerCurrencies.CurrencyType.ember) {
             currencyTransform = Instantiate(emberUIPrefab, emberContainer.position, Quaternion.identity, emberContainer);
             currencyTransform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        if (currencyType == PlayerCurrencies.CurrencyType.bearTrap) {
+            currencyTransform = Instantiate(bearTrapUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, emberContainer);
+            currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.bladeTrap) {
+            currencyTransform = Instantiate(bladeTrapUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, emberContainer);
+            currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.smokeEjector) {
+            currencyTransform = Instantiate(smokeEjectorUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, emberContainer);
+            currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.spikeEjector) {
+            currencyTransform = Instantiate(spikeEjectorUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, emberContainer);
+            currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.shockerEjector) {
+            currencyTransform = Instantiate(shockerEjectorUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, emberContainer);
+            currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
         }
 
         Currency_UI currencyUICollected = currencyTransform.GetComponent<Currency_UI>();

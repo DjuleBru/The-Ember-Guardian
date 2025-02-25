@@ -10,8 +10,8 @@ public class MerchantSounds : StructureSounds
     [SerializeField] private AudioClip panelAppearAudioClip;
     [SerializeField] private AudioClip hoverItemAudioClip;
     [SerializeField] private AudioClip merchantIdleAudioClip;
-    [SerializeField] private AudioClip buyMajorItemAudioClip;
-    [SerializeField] private AudioClip buyMinorItemAudioClip;
+    [SerializeField] private AudioClip[] buyMajorItemAudioClip;
+    [SerializeField] private AudioClip[] buyMinorItemAudioClip;
 
     private float merchantSFXVolume = .5f;
     private float buyMajorItemSFXVolume = 1f;
@@ -39,18 +39,18 @@ public class MerchantSounds : StructureSounds
     }
 
     private void MerchantUI_OnPlayerBoughtMinorItem(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(buyMinorItemAudioClip, merchantSFXVolume * sfxVolume);
+        PlaySound2D(buyMinorItemAudioClip, merchantSFXVolume * sfxVolume);
     }
 
     private void MerchantUI_OnPlayerBoughtMajorItem(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(buyMajorItemAudioClip, buyMajorItemSFXVolume * sfxVolume);
+        PlaySound2D(buyMajorItemAudioClip, buyMajorItemSFXVolume * sfxVolume);
     }
 
     private void MerchantUI_OnDescriptionPanelOpened(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(panelAppearAudioClip, merchantSFXVolume * sfxVolume);
+        PlaySound2D(panelAppearAudioClip, merchantSFXVolume * sfxVolume);
     }
 
     private void MerchantUI_OnNewItemHovered(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(hoverItemAudioClip, merchantSFXVolume * sfxVolume);
+        PlaySound2D(hoverItemAudioClip, merchantSFXVolume * sfxVolume);
     }
 }

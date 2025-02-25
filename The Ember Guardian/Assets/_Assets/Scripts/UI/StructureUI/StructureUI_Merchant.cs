@@ -22,6 +22,7 @@ public class StructureUI_Merchant : StructureUI {
     [SerializeField] protected RectTransform descriptionPanelRightPosition;
 
     [SerializeField] protected bool useMajorMinorDistinction = true;
+    [SerializeField] protected bool itemsBoughtAreLocked = true;
 
     public event EventHandler OnNewItemHovered;
     public event EventHandler OnDescriptionPanelOpened;
@@ -100,7 +101,7 @@ public class StructureUI_Merchant : StructureUI {
                     return;
                 }
 
-            } while (allItems[selectedItemIndex].isPurchased);
+            } while (allItems[selectedItemIndex].isPurchased && allItems[selectedItemIndex].buyingLocksPurchasesUntilRefresh);
 
             OnNewItemHovered?.Invoke(this, EventArgs.Empty);
 
@@ -176,7 +177,6 @@ public class StructureUI_Merchant : StructureUI {
                 merchantItemUI.HighlightItem(true);
                 payCurrencyUI.SetOrbTemplateUIList(merchantItemUI.GetPayCurrencyTemplateWorldUIList());
                 selectedMerchantItem = merchantItemUI.GetMerchantItemLinked();
-                Debug.Log("UpdateSelectedItemUI (Major) " + selectedMerchantItem.itemName);
             }
             else {
                 merchantItemUI.HighlightItem(false);
@@ -192,7 +192,6 @@ public class StructureUI_Merchant : StructureUI {
                 merchantItemUI.HighlightItem(true);
                 payCurrencyUI.SetOrbTemplateUIList(merchantItemUI.GetPayCurrencyTemplateWorldUIList());
                 selectedMerchantItem = merchantItemUI.GetMerchantItemLinked();
-                Debug.Log("UpdateSelectedItemUI (Minor) " + selectedMerchantItem.itemName);
             }
             else {
                 merchantItemUI.HighlightItem(false);
@@ -258,11 +257,11 @@ public class StructureUI_Merchant : StructureUI {
 
     private void Merchant_OnPlayerBoughtItem1(object sender, Merchant.OnPlayerBoughtItemEventArgs e) {
 
-        if(e.boughtItem.itemType == MerchantItem.MerchantItemType.ActiveSkill) {
+        if(e.boughtItem.itemType == MerchantItem.MerchantItemType.ActiveSkill || e.boughtItem.itemType == MerchantItem.MerchantItemType.Trap) {
             OnPlayerBoughtMajorItem?.Invoke(this, EventArgs.Empty);
         }
 
-        if (e.boughtItem.itemType == MerchantItem.MerchantItemType.PassiveSkill) {
+        if (e.boughtItem.itemType == MerchantItem.MerchantItemType.PassiveSkill || e.boughtItem.itemType == MerchantItem.MerchantItemType.TrapUpgrade) {
             OnPlayerBoughtMinorItem?.Invoke(this, EventArgs.Empty);
         }
 
@@ -270,7 +269,9 @@ public class StructureUI_Merchant : StructureUI {
         merchantItemUI.PurchaseItem();
         merchant.SetItemSold(merchantItemUI.GetMerchantItemLinked());
 
-        SelectNextAvailableItem();
+        if(e.boughtItem.itemType != MerchantItem.MerchantItemType.Trap) {
+            SelectNextAvailableItem();
+        }
     }
 
     private MerchantItemUI FindMerchantItemUI(MerchantItem merchantItem) {

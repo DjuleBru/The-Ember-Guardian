@@ -119,7 +119,7 @@ public class Collectible : MonoBehaviour
                     return;
                 }
 
-                if (workerJob != WorkerAI.JobTypes.jobless && workerJob != WorkerAI.JobTypes.wild && canBePickedUpByWorker && !collected) {
+                if (workerJob != WorkerAI.JobTypes.jobless && workerJob != WorkerAI.JobTypes.wild && canBePickedUpByWorker && !collected && currencyCategory != PlayerCurrencies.CurrencyCategory.trap) {
                     collected = true;
                     worker.GetComponent<Worker>().CollectCurrency(currencyType);
                     Destroy(gameObject);

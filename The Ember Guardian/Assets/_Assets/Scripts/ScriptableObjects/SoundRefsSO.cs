@@ -17,6 +17,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip[] smallRedOrbTouchedFloor;
     public AudioClip[] ammoTouchedFloor;
     public AudioClip[] gemTouchedFloor;
+    public AudioClip[] trapTouchedFloor;
 
     public AudioClip[] bigBlueOrbPickedUpByPlayer;
     public AudioClip[] smallBlueOrbPickedUpByPlayer;
@@ -26,6 +27,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip[] emberPickedUpByPlayer;
     public AudioClip[] redGemPickedUpByPlayer;
     public AudioClip[] greenGemPickedUpByPlayer;
+    public AudioClip[] trapPickedUpByPlayer;
 
     public AudioClip[] bigCollectiblePlouf;
     public AudioClip[] smallCollectiblePlouf;

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c7961ad1e3c5044a946b393c459b3b, type: 3}
+  m_Name: BladeTrap_Cooldown
+  m_EditorClassIdentifier: 
+  itemType: 3
+  trapType: 0
+  trapUpgradeSO: {fileID: 11400000, guid: 4b4b0b563320fd44e904a5ecfb23beae, type: 2}
+  linkedTrapSO: {fileID: 11400000, guid: 35891f62972ae5a48af548fc187eab95, type: 2}
+  buyTrapPrice: 3
+  reloadTrapPrice: 1
+  TrapName: Blade Trap
+  TrapStats: 
+  Icon: {fileID: -720945697, guid: 131d4d4cb09addc43b80369788938af7, type: 3}
+  currencyTypeToPay: 0
+  triggerTrapAudioClip: {fileID: 0}
+  reloadTrapAudioClip: {fileID: 0}
+  Description: 

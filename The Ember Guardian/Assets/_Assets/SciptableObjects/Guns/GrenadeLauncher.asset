@@ -60,9 +60,10 @@ MonoBehaviour:
   bulletHitEnemySound: []
   bulletHitEnemyCritSound: []
   outOfAmmoSound:
-  - {fileID: 8300000, guid: b98aaa1d97aed8244b1576b894d0d598, type: 3}
-  swapToWeaponSound: {fileID: 8300000, guid: 44410cc1b7956fa48b296fe59bf65d00, type: 3}
+  - {fileID: 8300000, guid: 19598cc33796bff49bbff2dd6517cfa1, type: 3}
+  swapToWeaponSound: {fileID: 8300000, guid: 72d8ae05444397d4286992565b81b2a7, type: 3}
   reloadSFXVolumeMultiplier: 0.5
   cooldownSFXVolumeMultiplier: 0.4
-  shootGunVolumeMultiplier: 1
+  shootGunVolumeMultiplier: 0.5
   outOfAmmoVolumeMultiplier: 0.75
+  swapToWeaponVolumeMultiplier: 0.4

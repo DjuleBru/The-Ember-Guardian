@@ -17,6 +17,11 @@ public class CurrenciesManager : MonoBehaviour
     [SerializeField] private Transform purpleGemPrefab;
     [SerializeField] private Transform ammoPrefab;
     [SerializeField] private Transform emberPrefab;
+    [SerializeField] private Transform bearTrapPrefab;
+    [SerializeField] private Transform bladeTrapPrefab;
+    [SerializeField] private Transform smokeEjectorTrapPrefab;
+    [SerializeField] private Transform spikeEjectorTrapPrefab;
+    [SerializeField] private Transform shockEjectorTrapPrefab;
 
     private void Awake() {
         Instance = this;
@@ -56,7 +61,29 @@ public class CurrenciesManager : MonoBehaviour
         if (currencyType == PlayerCurrencies.CurrencyType.ember) {
             return emberPrefab;
         }
+        if (currencyType == PlayerCurrencies.CurrencyType.bearTrap) {
+            return bearTrapPrefab;
+        }
         return bigBlueOrbPrefab;
+    }
+
+    public Transform GetCurrencyPrefab(TrapItem.TrapType trapType) {
+        if (trapType == TrapItem.TrapType.bearTrap) {
+            return bearTrapPrefab;
+        }
+        if (trapType == TrapItem.TrapType.bladeTrap) {
+            return bladeTrapPrefab;
+        }
+        if (trapType == TrapItem.TrapType.smokeEjector) {
+            return smokeEjectorTrapPrefab;
+        }
+        if (trapType == TrapItem.TrapType.spikeEjector) {
+            return spikeEjectorTrapPrefab;
+        }
+        if (trapType == TrapItem.TrapType.shockerEjector) {
+            return shockEjectorTrapPrefab;
+        }
+        return bearTrapPrefab;
     }
 
     public PlayerCurrencies.CurrencyCategory GetCurrencyCategory(PlayerCurrencies.CurrencyType currencyType) {

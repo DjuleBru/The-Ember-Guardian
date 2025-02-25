@@ -22,7 +22,7 @@ public class CreatureSO : ScriptableObject
 
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
-    [Range(1, 20)]
+    [Range(1, 100)]
     public float mass;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]

@@ -20,7 +20,6 @@ public class SkillItem : MerchantItem {
 
     public SkillSO skillSO { get; private set; }
     public SkillType skillType { get; private set; }
-    public int CustomPrice { get; private set; } // Prix modifié selon le marchand
     public int maxLevel;
     public string effectDescription;
 
@@ -44,6 +43,8 @@ public class SkillItem : MerchantItem {
             icon = skillSO.Icon;
             maxLevel = skillSO.maxLevel;
             currencyTypeToPay = skillSO.currencyTypeToPay;
+
+            buyingLocksPurchasesUntilRefresh = true;
         }
     }
 

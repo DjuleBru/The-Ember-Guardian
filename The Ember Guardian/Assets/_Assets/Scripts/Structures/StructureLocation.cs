@@ -117,6 +117,10 @@ public class StructureLocation : MonoBehaviour {
 
     private void LoadStructureLocationBought() {
         if (structureSOToBuild.level1StructureInitiallyUnlocked) return;
+        if (DebugManager.Instance.GetAllStructuresUnlocked()) {
+            gameObject.SetActive(true);
+            return;
+        }
 
         // Unlock upgrades if unlocked at gem merchant
         string saveString = structureSOToBuild.structureType.ToString() + (1);

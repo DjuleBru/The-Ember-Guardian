@@ -45,8 +45,8 @@ public class Merchant_Skills : Merchant
             }
         }
 
-        foreach (SkillItem majorSkillItem in minorSkillList) {
-            if (skillItem.itemName == majorSkillItem.itemName) {
+        foreach (SkillItem minorSkillItem in minorSkillList) {
+            if (skillItem.itemName == minorSkillItem.itemName) {
                 skillItem.currentLevel++;
                 skillItem.price = CalculateCost(skillItem);
             }

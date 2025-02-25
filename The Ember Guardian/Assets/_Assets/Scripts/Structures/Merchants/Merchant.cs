@@ -8,7 +8,8 @@ public class Merchant : Structure {
     public enum MerchantType {
         Skills,
         Guns,
-        Seeds
+        Seeds,
+        Traps,
     }
 
     [SerializeField] protected MerchantType merchantType;
@@ -35,8 +36,8 @@ public class Merchant : Structure {
     protected bool currentSelectedItemAlreadyPurchased;
     protected bool playerJustTriggeredInteraction;
     protected bool playerPayedToRefreshShop;
-    protected int smallItemsToDisplayAmount = 2;
-    protected int bigItemsToDisplayAmount = 1;
+    [SerializeField] protected int smallItemsToDisplayAmount = 2;
+    [SerializeField] protected int bigItemsToDisplayAmount = 1;
 
     protected override void Start() {
         base.Start();
@@ -63,6 +64,10 @@ public class Merchant : Structure {
 
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);
+        Player.Instance.SetInMerchantTriggerArea(true);
+    }
+    protected override void OnTriggerExit2D(Collider2D collision) {
+        base.OnTriggerExit2D (collision);
         Player.Instance.SetInMerchantTriggerArea(false);
     }
 
