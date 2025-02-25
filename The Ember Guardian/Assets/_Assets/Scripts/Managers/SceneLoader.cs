@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneLoader : MonoBehaviour
 {
     [SerializeField] private SceneType sceneType;
     [SerializeField] private Animator transitionAnimator;
+    [SerializeField] private GameObject blackBackground;
+
     public static SceneLoader Instance;
 
     public event EventHandler OnSceneFadeOut;
@@ -18,10 +21,12 @@ public class SceneLoader : MonoBehaviour
         Tutorial,
     }
 
+
     private void Awake() {
         Instance = this;
-
         transitionAnimator.speed = .5f;
+
+        StartCoroutine(RemoveBlackBackgroundAfterDelay(.1f));
     }
 
     public SceneType GetSceneType() {
@@ -52,6 +57,11 @@ public class SceneLoader : MonoBehaviour
 
 
         SceneManager.LoadScene(sceneName);
+    }
+
+    private IEnumerator RemoveBlackBackgroundAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+        blackBackground.SetActive(false);
     }
 
     public void StartFadeOut() {

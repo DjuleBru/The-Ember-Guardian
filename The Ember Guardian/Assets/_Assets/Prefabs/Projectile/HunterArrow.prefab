@@ -13,6 +13,38 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: lengthInSec
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: SizeModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: ColorModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: NoiseModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: SizeBySpeedModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: NoiseModule.strength.scalar
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: InitialModule.startSpeed.scalar
       value: 10
       objectReference: {fileID: 0}
@@ -23,6 +55,38 @@ PrefabInstance:
     - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: InitialModule.gravityModifier.scalar
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: InitialModule.startSpeed.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime1
+      value: 42598
+      objectReference: {fileID: 0}
+    - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime2
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.m_ColorSpace
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.m_NumAlphaKeys
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1587645197521107499, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2520302452764269856, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: looping
@@ -56,6 +120,10 @@ PrefabInstance:
       propertyPath: EmissionModule.rateOverDistance.minMaxState
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3623102021638978224, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e69f7fb107b07be4d9549812bfdd3658, type: 2}
     - target: {fileID: 7811116705413329226, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.48
@@ -108,6 +176,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8081538258593089863, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: projectileHitPS
+      value: 
+      objectReference: {fileID: 1371068626831014123}
     - target: {fileID: 8132320804815214056, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_Name
       value: HunterArrow
@@ -117,3 +189,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+--- !u!198 &1371068626831014123 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+  m_PrefabInstance: {fileID: 167773680537722600}
+  m_PrefabAsset: {fileID: 0}

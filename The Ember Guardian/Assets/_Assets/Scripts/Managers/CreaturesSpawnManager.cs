@@ -60,6 +60,7 @@ public class CreaturesSpawnManager : MonoBehaviour
     private int subWaveIndex;
 
     private bool debugInputs;
+    private bool debugDontSpawnAtNight;
     private void Awake() {
         Instance = this;
 
@@ -85,6 +86,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         CreaturesManager.Instance.OnAdditionalCreatureAtNightSpawned += CreaturesManager_OnAdditionalCreatureAtNightSpawned;
 
         debugInputs = DebugManager.Instance.GetAllowDebugInputs_CreaturesSpawnManager();
+        debugDontSpawnAtNight = DebugManager.Instance.GetDebugDontSpawnAtNight();
     }
 
     private void CreaturesManager_OnAdditionalCreatureAtNightSpawned(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
@@ -142,7 +144,8 @@ public class CreaturesSpawnManager : MonoBehaviour
     }
 
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
-        //StartCoroutine(SpawnWave());
+        if (debugDontSpawnAtNight) return;
+        StartCoroutine(SpawnWave());
     }
 
     public void SetTutorialWave() {

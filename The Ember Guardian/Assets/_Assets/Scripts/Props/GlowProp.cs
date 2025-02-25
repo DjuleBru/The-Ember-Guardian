@@ -20,7 +20,6 @@ public class GlowProp : MonoBehaviour
         glowAnimator = GetComponent<Animator>();
         if (isAnimatedGlow) {
             glowAnimator.enabled = true;
-            Debug.Log(animationType.ToString());
             glowAnimator.SetBool(animationType.ToString(), true);
         } else {
             glowAnimator.enabled = false;

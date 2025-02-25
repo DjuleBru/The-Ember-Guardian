@@ -100,7 +100,7 @@ public class Worker : Mob {
 
     public bool PlayerIsCloseAndStayedAround() {
         float distance = 2f;
-        float timeToStayClose = 1.5f;
+        float timeToStayClose = 1.2f;
 
         playerIsCloseTimer += Time.deltaTime;
 

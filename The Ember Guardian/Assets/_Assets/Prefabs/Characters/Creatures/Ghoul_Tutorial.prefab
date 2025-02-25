@@ -84,6 +84,14 @@ PrefabInstance:
       propertyPath: m_PointLightOuterRadius
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2727446539190329158, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LightVolumeIntensityEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2727446539190329158, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.size
+      value: 19
+      objectReference: {fileID: 0}
     - target: {fileID: 2752781047295933904, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.092
@@ -155,6 +163,10 @@ PrefabInstance:
     - target: {fileID: 7484656603021351616, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Layer
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8015795179870916566, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.212
       objectReference: {fileID: 0}
     - target: {fileID: 8367168638235416511, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_IsActive

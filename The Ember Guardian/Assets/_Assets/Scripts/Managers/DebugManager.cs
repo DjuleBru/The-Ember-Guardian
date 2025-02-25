@@ -7,6 +7,7 @@ public class DebugManager : MonoBehaviour
     public static DebugManager Instance;
 
     [SerializeField] private bool allowDebugInputs_CreaturesSpawnManager;
+    [SerializeField] private bool debugMode_DontSpawnWavesAtNight;
     [SerializeField] private bool allowDebugInputs_DayNightManager;
     [SerializeField] private bool allowDebugInputs_CurrencyUIManager;
     [SerializeField] private bool debugMode_PlayerWeapons;
@@ -30,6 +31,9 @@ public class DebugManager : MonoBehaviour
     }
     public bool GetAllowDebugInputs_CreaturesSpawnManager() {
         return allowDebugInputs_CreaturesSpawnManager;
+    }
+    public bool GetDebugDontSpawnAtNight() {
+        return debugMode_DontSpawnWavesAtNight;
     }
     public bool GetAllowDebugInputs_DayNightManager() {
         return allowDebugInputs_DayNightManager;
