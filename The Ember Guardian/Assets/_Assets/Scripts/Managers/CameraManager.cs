@@ -42,8 +42,6 @@ public class CameraManager : MonoBehaviour
         }
 
         StartZoom(targetOrthographicSize, zoomDuration);
-
-        Debug.Log("targetOrthographicSize " + targetOrthographicSize);
     }
 
     public void ChangeCameraTarget(Transform target, bool disablePlayerInputs = true) {

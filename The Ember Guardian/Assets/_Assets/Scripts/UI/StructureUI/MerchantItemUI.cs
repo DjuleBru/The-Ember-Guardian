@@ -26,7 +26,6 @@ public class MerchantItemUI : MonoBehaviour
     }
 
     public virtual void SetLinkedItem(MerchantItem item) {
-        Debug.Log("SetLinkedItem " + item.itemName + " " + gameObject.GetInstanceID());
         merchantItemImage.material.SetFloat("_GreyscaleBlend", 0f);
         currencyUIParent.gameObject.SetActive(true);
 

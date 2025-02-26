@@ -180,7 +180,7 @@ public class Merchant : Structure {
         return allItemsForSale;
     }
 
-    public void SetCurrentSelectedItemPurchased(bool bought) {
+    public void SetCurrentSelectedItemCanBeBought(bool bought) {
         currentSelectedItemAlreadyPurchased = bought;
     }
 

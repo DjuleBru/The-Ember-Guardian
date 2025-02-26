@@ -52,6 +52,7 @@ public class UICurrencyManager : MonoBehaviour
 
     private PayCurrencyUI currentPayCurrencyUI;
     public event EventHandler<OnCurrencyDroppedEventArgs> OnCurrencyDropped;
+    public event EventHandler<OnCurrencyDroppedEventArgs> OnCurrencyRemovedFromBag;
     public event EventHandler<OnCurrencyTryPayEventArgs> OnCurrencyTryPay;
     public event EventHandler<OnCurrencyDroppedEventArgs> OnCurrencyCollected;
     public event EventHandler OnCurrencyFailedToDrop;
@@ -231,23 +232,23 @@ public class UICurrencyManager : MonoBehaviour
         }
 
         if (currencyType == PlayerCurrencies.CurrencyType.bearTrap) {
-            currencyTransform = Instantiate(bearTrapUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, emberContainer);
+            currencyTransform = Instantiate(bearTrapUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, currencyContainer);
             currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
         }
         if (currencyType == PlayerCurrencies.CurrencyType.bladeTrap) {
-            currencyTransform = Instantiate(bladeTrapUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, emberContainer);
+            currencyTransform = Instantiate(bladeTrapUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, currencyContainer);
             currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
         }
         if (currencyType == PlayerCurrencies.CurrencyType.smokeEjector) {
-            currencyTransform = Instantiate(smokeEjectorUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, emberContainer);
+            currencyTransform = Instantiate(smokeEjectorUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, currencyContainer);
             currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
         }
         if (currencyType == PlayerCurrencies.CurrencyType.spikeEjector) {
-            currencyTransform = Instantiate(spikeEjectorUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, emberContainer);
+            currencyTransform = Instantiate(spikeEjectorUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, currencyContainer);
             currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
         }
         if (currencyType == PlayerCurrencies.CurrencyType.shockerEjector) {
-            currencyTransform = Instantiate(shockerEjectorUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, emberContainer);
+            currencyTransform = Instantiate(shockerEjectorUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, currencyContainer);
             currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
         }
 
@@ -350,6 +351,7 @@ public class UICurrencyManager : MonoBehaviour
     private void DropCurrencyFromBag(Currency_UI currencyUI) {
         currencyUI.RemoveFromBag(this);
 
+        Debug.Log("DropCurrencyFromBag");
         OnCurrencyDropped?.Invoke(this, new OnCurrencyDroppedEventArgs {
             currencyUIDropped = currencyUI
         });
@@ -372,11 +374,18 @@ public class UICurrencyManager : MonoBehaviour
 
     public void RemoveCurrencyUIFromInventoryList(Currency_UI currencyUI) {
         currenciesInBag.Remove(currencyUI);
+        OnCurrencyRemovedFromBag?.Invoke(this, new OnCurrencyDroppedEventArgs {
+            currencyUIDropped = currencyUI
+        });
     }
 
     public void CurrencyFellFromBag(Currency_UI currencyUI) {
         PlayerCurrencies.Instance.CurrencyFellFromBag(currencyUI.GetCurrencyType());
         currenciesInBag.Remove(currencyUI);
+
+        OnCurrencyRemovedFromBag?.Invoke(this, new OnCurrencyDroppedEventArgs {
+            currencyUIDropped = currencyUI
+        });
     }
 
     public void SetPayingCurrency(PayCurrencyUI payOrbsUI, PlayerCurrencies.CurrencyType currencyTypeToPay, bool payingCurrency) {

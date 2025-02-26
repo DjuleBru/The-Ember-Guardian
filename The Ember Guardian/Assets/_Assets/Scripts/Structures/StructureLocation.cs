@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class StructureLocation : MonoBehaviour {
 
-    protected PayCurrencyUI payOrbsUI;
+    protected PayCurrencyUI payCurrencyUI;
     [SerializeField] protected StructureSO structureSOToBuild;
     [SerializeField] protected Transform orbTemplateWorldUIParent;
     [SerializeField] protected bool isAlwaysUnlocked;
@@ -22,7 +22,7 @@ public class StructureLocation : MonoBehaviour {
     protected bool playerInTriggerArea;
 
     protected void Awake() {
-        payOrbsUI = GetComponent<PayCurrencyUI>();
+        payCurrencyUI = GetComponent<PayCurrencyUI>();
         InitializeOrbTemplateList();
 
         if(isAlwaysUnlocked) {
@@ -30,13 +30,13 @@ public class StructureLocation : MonoBehaviour {
         }
     }
 
-    protected void Start() {
+    protected virtual void Start() {
         LoadStructureLocationBought();
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
 
-        payOrbsUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
-        payOrbsUI.SetOrbTemplateUIList(buildStructureOrbTemplates);
+        payCurrencyUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
+        payCurrencyUI.SetOrbTemplateUIList(buildStructureOrbTemplates);
     }
 
 
@@ -63,18 +63,18 @@ public class StructureLocation : MonoBehaviour {
         if (!structureLocationUnlocked) return;
         if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
 
-        payOrbsUI.SetPlayerInteracting(true);
+        payCurrencyUI.SetPlayerInteracting(true);
     }
 
     protected void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (!structureLocationUnlocked) return;
 
-        payOrbsUI.SetPlayerInteracting(false);
-        payOrbsUI.ResetCurrencyPayment();
+        payCurrencyUI.SetPlayerInteracting(false);
+        payCurrencyUI.ResetCurrencyPayment();
     }
 
-    protected void OnTriggerEnter2D(Collider2D collision) {
+    protected virtual void OnTriggerEnter2D(Collider2D collision) {
         if (!structureLocationUnlocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
         if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
@@ -84,13 +84,13 @@ public class StructureLocation : MonoBehaviour {
         playerInTriggerArea = true;
     }
 
-    protected void OnTriggerExit2D(Collider2D collision) {
+    protected virtual void OnTriggerExit2D(Collider2D collision) {
         if (!structureLocationUnlocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
         Player.Instance.SetInPayCurrencyArea(false);
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
-        payOrbsUI.SetPlayerInteracting(false);
+        payCurrencyUI.SetPlayerInteracting(false);
         playerInTriggerArea = false;
     }
 
@@ -115,12 +115,13 @@ public class StructureLocation : MonoBehaviour {
         }
     }
 
-    private void LoadStructureLocationBought() {
-        if (structureSOToBuild.level1StructureInitiallyUnlocked) return;
+    protected void LoadStructureLocationBought() {
         if (DebugManager.Instance.GetAllStructuresUnlocked()) {
             gameObject.SetActive(true);
             return;
         }
+
+        if (structureSOToBuild.level1StructureInitiallyUnlocked) return;
 
         // Unlock upgrades if unlocked at gem merchant
         string saveString = structureSOToBuild.structureType.ToString() + (1);

@@ -104,6 +104,10 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: -49363175
       objectReference: {fileID: 0}
+    - target: {fileID: 3736198231456185413, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c16247c32826b3346b42df677850efe6, type: 2}
     - target: {fileID: 5239504941983742720, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
       propertyPath: m_PointLightOuterRadius
       value: 0.2
@@ -115,7 +119,7 @@ PrefabInstance:
     - target: {fileID: 5296414915106779829, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
       propertyPath: solidCollider
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3546068921219594349}
     - target: {fileID: 5296414915106779829, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
       propertyPath: currencyCategory
       value: 3

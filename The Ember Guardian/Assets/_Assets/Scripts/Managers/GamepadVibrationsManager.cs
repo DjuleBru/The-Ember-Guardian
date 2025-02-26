@@ -201,4 +201,41 @@ public class GamepadVibrationsManager : MonoBehaviour
         timeElapsed = 0f;
         isLerping = true;
     }
+
+    private void OnDestroy() {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
+
+            PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
+            PlayerShoot.Instance.OnPlayerAmmoRefilled -= PlayerSHoot_OnPlayerAmmoRefilled;
+            PlayerShoot.Instance.OnPlayerReload -= PlayerShoot_OnPlayerReload;
+
+            Player.Instance.OnPlayerDamaged -= Player_OnPlayerDamaged;
+            Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
+            Player.Instance.OnPlayerHealed -= Player_OnPlayerHealed;
+
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped -= UICurrencyManager_OnCurrencyDropped;
+
+            HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
+
+            CreatureAI.OnAnyCreatureAggro -= CreatureAI_OnAnyCreatureAggro;
+
+            Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
+            Portal.OnAnyPlayerTeleported -= Portal_OnAnyPlayerTeleported;
+            Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
+            Portal.OnAnyTeleporterActivatedOut -= Portal_OnAnyTeleporterActivatedOut;
+            Portal.OnAnyTeleporterActivated -= Portal_OnAnyTeleporterActivated;
+            Portal.OnAnyPortalAppeared -= Portal_OnAnyPortalAppeared;
+            Portal.OnAnyPortalDisappeared -= Portal_OnAnyPortalDisappeared;
+
+            Fire.OnAnyFireEmberExtractionStarted -= Fire_OnFireEmberExtractionStarted;
+            Fire.OnAnyFireEmberExtractionStopped -= Fire_OnFireEmberExtractionStopped;
+            Fire.OnAnyFireFuelled -= Fire_OnAnyFireFuelled;
+
+            Collectible.OnAnyCollectibleEnteredSlot -= Collectible_OnAnyCollectibleEnteredSlot;
+            ItemButtonUI_Visual.OnAnyGemPSTriggered -= ItemButtonUI_Visual_OnAnyGemPSTriggered;
+            ItemButtonUI.OnAnyHubMerchantItemFailedBuy -= ItemButtonUI_OnAnyHubMerchantItemFailedBuy;
+            ItemButtonUI.OnAnyButtonSelected -= ItemButtonUI_OnAnyButtonSelected;
+        }
+    }
 }

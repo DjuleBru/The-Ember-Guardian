@@ -25,7 +25,6 @@ public class TrapItem : MerchantItem
             price = trapSO.buyTrapPrice;
 
             itemName = trapSO.TrapName;
-            itemStatChanges = trapSO.TrapStats;
             itemDescription = trapSO.Description;
             itemType = trapSO.itemType;
             trapType = trapSO.trapType;
@@ -43,6 +42,13 @@ public class TrapItem : MerchantItem
     public override void Purchase() {
         base.Purchase();
 
+        if (trapSO.itemType == MerchantItemType.TrapUpgrade) {
+            TrapManager.Instance.SetTrapUpgradeLevel(trapType, trapSO.trapUpgradeSO.trapUpgradeType, currentLevel);
+        }
+
+        if (trapSO.itemType == MerchantItemType.Trap) {
+            TrapManager.Instance.AddTrapTypeBought(trapType);
+        }
     }
 
     public TrapSO GetTrapSO() {

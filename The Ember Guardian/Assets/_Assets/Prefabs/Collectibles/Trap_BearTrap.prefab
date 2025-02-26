@@ -27,7 +27,7 @@ PrefabInstance:
     - target: {fileID: 937668656028073623, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -1870522980, guid: acdfaf23437c65d488a22e27b3e20f9b, type: 3}
+      objectReference: {fileID: -1870522980, guid: 0f2eb772bfa29f643a5a91279299db07, type: 3}
     - target: {fileID: 1560014419514276318, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
       propertyPath: sr
       value: 
@@ -95,7 +95,7 @@ PrefabInstance:
     - target: {fileID: 3736198231456185413, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -1870522980, guid: acdfaf23437c65d488a22e27b3e20f9b, type: 3}
+      objectReference: {fileID: -1870522980, guid: 0f2eb772bfa29f643a5a91279299db07, type: 3}
     - target: {fileID: 3736198231456185413, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
       propertyPath: m_SortingLayer
       value: -1
@@ -104,6 +104,10 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: -49363175
       objectReference: {fileID: 0}
+    - target: {fileID: 3736198231456185413, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c16247c32826b3346b42df677850efe6, type: 2}
     - target: {fileID: 5239504941983742720, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
       propertyPath: m_PointLightOuterRadius
       value: 0.2
@@ -115,7 +119,7 @@ PrefabInstance:
     - target: {fileID: 5296414915106779829, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
       propertyPath: solidCollider
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3546068921219594349}
     - target: {fileID: 5296414915106779829, guid: 746b625518d73e14d9be08daf3cfa1c4, type: 3}
       propertyPath: currencyCategory
       value: 3
@@ -195,7 +199,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.0022728816, y: -0.33865547}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -206,7 +210,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.40451175, y: 0.32268906}
   m_EdgeRadius: 0
 --- !u!1 &2018573187985678642 stripped
 GameObject:
@@ -245,8 +249,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0038713205, y: 0.015776245}
-  m_Size: {x: 1.2902482, y: 1.1791222}
+  m_Offset: {x: 0.011026656, y: -0.28651592}
+  m_Size: {x: 0.7472882, y: 0.574556}
   m_Direction: 1
 --- !u!212 &2147332966296194161 stripped
 SpriteRenderer:

@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c7961ad1e3c5044a946b393c459b3b, type: 3}
+  m_Name: BladeTrap
+  m_EditorClassIdentifier: 
+  itemType: 3
+  trapType: 0
+  trapUpgradeSO: {fileID: 0}
+  trapStructureSO: {fileID: 11400000, guid: 7c6f13dd4f63a8a4998bf87a48e5eb1c, type: 2}
+  linkedTrapSO: {fileID: 0}
+  TrapName: Blade Trap
+  buyTrapPrice: 3
+  trapDamage: 10
+  trapSpecialStat: 0
+  trapCooldown: 7
+  trapUsesPerNight: 5
+  trapReloadsBeforeBreaking: 3
+  trapPriceToReload: 1
+  trapActiveDuration: 1.5
+  trapHasAOEAttack: 1
+  Icon: {fileID: -376515127, guid: acdfaf23437c65d488a22e27b3e20f9b, type: 3}
+  currencyTypeToPay: 0
+  triggerTrapAudioClip:
+  - {fileID: 8300000, guid: 40b591ed0ec74d142912b0131b453214, type: 3}
+  - {fileID: 8300000, guid: 895a3dbd49deb274ba08ac58547b0c62, type: 3}
+  - {fileID: 8300000, guid: 4e0ed7ef0caf31143835d636a11daf7a, type: 3}
+  - {fileID: 8300000, guid: 457876742c68f2d4cbd4170ca543ecd2, type: 3}
+  reloadTrapAudioClip:
+  - {fileID: 8300000, guid: f644e47f4fec2c544adac8753a14b594, type: 3}
+  Description: Deals damage to creatures in it's AOE.

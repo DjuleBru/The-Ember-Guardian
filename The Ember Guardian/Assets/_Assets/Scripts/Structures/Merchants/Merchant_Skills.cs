@@ -79,8 +79,6 @@ public class Merchant_Skills : Merchant
         List<SkillItem> weightedList = new List<SkillItem>();
 
         // Le joueur a moins de 2 skills actifs : on propose encore de nouveaux skills avec + de poids pour l'amélioration du skill actif
-        Debug.Log(majorSkillList.Count);
-        Debug.Log(PlayerSkills.Instance.GetActiveSkillList().Count);
         if (PlayerSkills.Instance.GetActiveSkillList().Count < 2) {
             foreach (SkillItem skillItem in majorSkillList) {
                 if (PlayerSkills.Instance.GetCurrentSkillLevel(skillItem) > 0) {

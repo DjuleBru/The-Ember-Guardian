@@ -120,7 +120,7 @@ public class StructureUI_Merchant : StructureUI {
         do {
             selectedItemIndex = (selectedItemIndex + 1) % itemCount;
 
-            if (!allItems[selectedItemIndex].isPurchased) {
+            if (!allItems[selectedItemIndex].isPurchased && allItems[selectedItemIndex].buyingLocksPurchasesUntilRefresh) {
                 UpdateSelectedItemUI(); // Met à jour l'UI avec le prochain item valide
                 UpdateDescriptionPanelVisuals();
                 previousSelectedItemIndex = selectedItemIndex;
@@ -145,7 +145,7 @@ public class StructureUI_Merchant : StructureUI {
         selectedItemIndex = 0;
 
         do {
-            if (!allItems[selectedItemIndex].isPurchased) {
+            if (!allItems[selectedItemIndex].isPurchased && allItems[selectedItemIndex].buyingLocksPurchasesUntilRefresh) {
                 UpdateSelectedItemUI(); // Met à jour l'UI avec le premier item valide
                 UpdateDescriptionPanelVisuals();
                 previousSelectedItemIndex = selectedItemIndex;
@@ -201,7 +201,7 @@ public class StructureUI_Merchant : StructureUI {
         // Vérifie si un item valide est trouvé
         if (selectedMerchantItem != null) {
             merchant.SetCurrentHoveredItem(selectedMerchantItem);
-            merchant.SetCurrentSelectedItemPurchased(selectedMerchantItem.isPurchased);
+            merchant.SetCurrentSelectedItemCanBeBought(selectedMerchantItem.isPurchased && selectedMerchantItem.buyingLocksPurchasesUntilRefresh);
         }
         else {
             Debug.LogWarning("UpdateSelectedItemUI: No valid item found for selection!");

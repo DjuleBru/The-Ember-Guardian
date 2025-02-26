@@ -37,6 +37,24 @@ public class Creature : Mob
     private bool playerCrouchRangeDecreased;
     private float playerShootDetectionRangeMultiplier;
 
+    public event EventHandler OnCreatureImmobilizedStarted;
+    public event EventHandler OnCreatureImmobilizedStopped;
+    private bool immobilized;
+    private float immobilizedDuration;
+    private float immobilizedTimer;
+
+    public event EventHandler OnCreaturePoisonedStarted;
+    public event EventHandler OnCreaturePoisoneStopped;
+    private bool poisoned;
+    private float poisonedDuration;
+    private float poisonedTimer;
+
+    public event EventHandler OnCreatureShockedStarted;
+    public event EventHandler OnCreatureShockedStopped;
+    private bool shocked;
+    private float shockedDuration;
+    private float shockedTimer;
+
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
         rb.mass = creatureSO.mass;
@@ -76,6 +94,8 @@ public class Creature : Mob
                 detectionRangeIncreased = false;
             }
         }
+
+        HandleStatusEffects();
     }
 
     public override void Die() {
@@ -239,6 +259,41 @@ public class Creature : Mob
         this.creatureTargeted = creatureTargeted;
     }
 
+    #region STATUS EFFECTS
+    private void HandleStatusEffects() {
+        if(immobilized) {
+
+        }
+        if(poisoned) { 
+
+        }
+        if(shocked) {
+
+        }
+    }
+
+    public void ApplyBearTrapEffect(float immobilizeDuration) {
+        immobilized = true;
+        immobilizedDuration = immobilizeDuration;
+
+        OnCreatureImmobilizedStarted?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void ApplySmokeTrapEffect(float poisonDuration, int poisonAmount) {
+        poisoned = true;
+        poisonedDuration = poisonDuration;
+
+        OnCreaturePoisonedStarted?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void ApplyShockTrapEffect(float slowDuration, float slowAmount) {
+        shocked = true;
+        shockedDuration = slowDuration;
+
+        OnCreatureShockedStarted?.Invoke(this, EventArgs.Empty);
+    }
+
+    #endregion
     public bool GetCreatureTargeted() {
         return creatureTargeted;
     }

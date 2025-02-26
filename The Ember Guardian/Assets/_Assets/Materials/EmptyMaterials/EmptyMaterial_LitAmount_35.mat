@@ -16,6 +16,7 @@ Material:
   - GLOWLIGHT_ON
   - HITEFFECT_ON
   - HOLOGRAM_ON
+  - SHINE_ON
   m_InvalidKeywords:
   - ETC1_EXTERNAL_ALPHA
   - _GLOWAFFECTLIGHT_ON
@@ -219,10 +220,10 @@ Material:
     - _ShakeUvSpeed: 2.5
     - _ShakeUvX: 1.5
     - _ShakeUvY: 1
-    - _ShineGlow: 1
-    - _ShineLocation: 0.56
-    - _ShineRotate: 2.84
-    - _ShineWidth: 0.1
+    - _ShineGlow: 0
+    - _ShineLocation: 1
+    - _ShineRotate: 3.58
+    - _ShineWidth: 0.05
     - _TextureScrollXSpeed: 1
     - _TextureScrollYSpeed: 0
     - _TwistUvAmount: 1

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df36671b0790e8341a67078a96cfcbc5, type: 3}
+  m_Name: ShockerEjector
+  m_EditorClassIdentifier: 
+  structureType: 17
+  structurePrefab: {fileID: 6830574097356007786, guid: 89b1149598cb9664b856e7a4de5a9c33, type: 3}
+  structureSprite: {fileID: -659633295, guid: c1a540771a16a814a91fe1eafbf8a712, type: 3}
+  level1StructureInitiallyUnlocked: 0
+  buildableAtNight: 0
+  functionUsableAtNight: 0
+  upgradeable: 0
+  tentLevelRequiredForLevel2: 2
+  tentLevelRequiredForLevel3: 3
+  tentLevelRequiredForLevel4: 4
+  buildingUpgradeSpriteList:
+  - {fileID: -906094691, guid: 6c459338a67ff19428126734e96e25c0, type: 3}
+  buildAudioClip: {fileID: 8300000, guid: f7b0f8c9041141b42858fd3599ce72bd, type: 3}
+  buildVolumeMultiplier: 1
+  useFunctionAudioClip: {fileID: 8300000, guid: 08fcf8340fc1f6341aab80151bc29595, type: 3}
+  useFunctionVolumeMultiplier: 1
+  upgradeAudioClip: {fileID: 8300000, guid: cc9af60211e5e3d4489327c93469c6d7, type: 3}
+  upgradeVolumeMultiplier: 1

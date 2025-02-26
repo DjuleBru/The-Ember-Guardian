@@ -32,7 +32,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.44, y: -0.3}
+  m_AnchoredPosition: {x: 5.44, y: 0.5}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &151549147501105835
@@ -5722,7 +5722,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -5.74, y: -2.8209991}
+  m_AnchoredPosition: {x: -5.74, y: -1.68}
   m_SizeDelta: {x: 4, y: 0.5299988}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4354122103446873081
@@ -5793,7 +5793,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -2.14, y: -0.3}
+  m_AnchoredPosition: {x: -2.14, y: 0.5}
   m_SizeDelta: {x: 4.5, y: 4.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &5748369262236898013
@@ -5844,6 +5844,7 @@ MonoBehaviour:
   descriptionPanelRectTransform: {fileID: 1716475391413844639}
   activeSkillItemStatChanges: {fileID: 2716224820624101299}
   passiveSkillItemStatChanges: {fileID: 4987878014300276578}
+  trapStatValues: {fileID: 0}
   descriptionPanelAnimator: {fileID: 5748369262236898013}
   descriptionPanelItemIcon: {fileID: 327497865068004371}
   descriptionPanelItemName: {fileID: 8216061722737025497}
@@ -5854,6 +5855,14 @@ MonoBehaviour:
   activeItemStatChangesDescription: {fileID: 7453728179584345823}
   activeItemCooldownValue: {fileID: 359617834898418050}
   activeItemCooldownChangesText: {fileID: 2144904403117848039}
+  trapDamageStatValue: {fileID: 0}
+  trapCooldownStatValue: {fileID: 0}
+  trapUsesPerNightStatValue: {fileID: 0}
+  trapMaxReloadsStatValue: {fileID: 0}
+  trapReloadPriceStatValue: {fileID: 0}
+  trapSpecialStatValueGameObject: {fileID: 0}
+  trapSpecialStatValue: {fileID: 0}
+  trapSpecialStatDescription: {fileID: 0}
   cleanFontMaterial: {fileID: 6846190248783435760, guid: 936e06df7aac60142948329aab0cde98, type: 2}
   UpgradeFontMaterial: {fileID: 2100000, guid: c4e657bc35c3a5e429e030da2dfbbee7, type: 2}
 --- !u!1 &2716224820624101299
@@ -6490,7 +6499,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -5, y: -0.3}
+  m_AnchoredPosition: {x: -5, y: 0.5}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4492603092273239711
@@ -7897,7 +7906,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 5.83, y: -1.36}
+  m_AnchoredPosition: {x: 5.83, y: -0.7}
   m_SizeDelta: {x: 3.7999992, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2468887844130596082

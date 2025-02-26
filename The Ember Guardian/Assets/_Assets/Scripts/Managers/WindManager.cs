@@ -90,6 +90,8 @@ public class WindManager : MonoBehaviour
     }
 
     private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
+        if (!hasWind) return;
+        if (windStrengthAllowedInLevel.Count == 0) return;
         currentWindStrength = windStrengthAllowedInLevel[UnityEngine.Random.Range(0, windStrengthAllowedInLevel.Count)];
         RandomizeWindDir();
 
@@ -130,8 +132,10 @@ public class WindManager : MonoBehaviour
     }
 
     private void OnDestroy() {
-        DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
-        DayNightManager.Instance.OnDuskStart -= DayNightManager_OnDuskStart;
+        if(DayNightManager.Instance != null) {
+            DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
+            DayNightManager.Instance.OnDuskStart -= DayNightManager_OnDuskStart;
+        }
     }
 
 }

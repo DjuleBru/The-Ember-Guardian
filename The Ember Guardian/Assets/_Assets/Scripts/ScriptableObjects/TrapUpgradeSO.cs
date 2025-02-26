@@ -11,6 +11,7 @@ public class TrapUpgradeSO : ScriptableObject
         usesPerNight,
         totalUses,
         priceToReload,
+        special,
     }
 
     public TrapItem.TrapType linkedTrapType; // Le type de skill

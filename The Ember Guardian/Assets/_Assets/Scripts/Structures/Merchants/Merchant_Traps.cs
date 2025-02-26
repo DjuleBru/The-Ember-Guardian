@@ -1,10 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Merchant_Traps : Merchant
 {
-    [SerializeField] private List<TrapSO> trapSOList;
     [SerializeField] private Transform trapCollectibleSpawnPosition;
 
     private List<TrapItem> trapList;
@@ -22,9 +22,11 @@ public class Merchant_Traps : Merchant
         if (!(sender is TrapItem)) return;
         TrapItem trapItem = (TrapItem)sender;
 
-        Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(trapItem.trapType), trapCollectibleSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
-        collectible.SetCollectibleUnInteractable(.5f);
-        collectible.ApplyRandomSidewardsForce(3, 15);
+        if(trapItem.itemType == MerchantItem.MerchantItemType.Trap) {
+            Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(trapItem.trapType), trapCollectibleSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
+            collectible.SetCollectibleUnInteractable(.5f);
+            collectible.ApplyRandomSidewardsForce(3, 15);
+        }
     }
 
     protected void InitializeTrapItems() {
@@ -32,7 +34,7 @@ public class Merchant_Traps : Merchant
         trapUpgradeList = new List<TrapItem>();
         trapListForSale = new List<TrapItem>();
 
-        foreach (TrapSO trapSO in trapSOList) {
+        foreach (TrapSO trapSO in TrapManager.Instance.GetAllTrapSOList()) {
             var trapItem = new TrapItem();
             trapItem.Initialize(trapSO);
 
@@ -93,15 +95,52 @@ public class Merchant_Traps : Merchant
     }
 
     protected void RefreshCurrentMinorItemListForSale() {
-        // Pondération pour augmenter la chance des améliorations
+        // Récupérer uniquement les traps upgrades pour des traps déjà achetées par le joueur ou pour la trap proposée
+        List<TrapItem> trapUpgradesToPropose = GetEligibleTrapUpgradeItems();
 
         // Effectuer le tirage à partir de la liste pondérée
-        trapUpgradeListForSale = DrawTrapsWithoutReplacement(trapUpgradeList, smallItemsToDisplayAmount);
+        trapUpgradeListForSale = DrawTrapsWithoutReplacement(trapUpgradesToPropose, smallItemsToDisplayAmount);
         minorItemListForSale = ConvertTrapListInMerchantItemList(trapUpgradeListForSale);
 
         foreach (TrapItem trapItem in minorItemListForSale) {
             allItemsForSale.Add(trapItem);
         }
+    }
+
+    public List<TrapItem> GetEligibleTrapUpgradeItems() {
+        List<TrapItem> trapListCopy = new List<TrapItem>();
+        List<TrapItem> eligibleTrapUpgradeItems = new List<TrapItem>();
+
+        foreach (TrapItem trapItem in trapUpgradeList) {
+            trapListCopy.Add(trapItem);
+        }
+
+        // Liste des TrapTypes déjà achetés ou proposés en "major items"
+        List<TrapItem.TrapType> eligibleTrapTypes = new List<TrapItem.TrapType>();
+
+        // Ajouter les pièges en vente dans les major items
+        foreach (TrapItem majorItem in majorItemListForSale) {
+            if (!eligibleTrapTypes.Contains(majorItem.trapType)) {
+                eligibleTrapTypes.Add(majorItem.trapType);
+            }
+        }
+
+        // Ajouter les pièges déjà achetés par le joueur
+        foreach (TrapItem.TrapType trapType in Enum.GetValues(typeof(TrapItem.TrapType))) {
+            if (TrapManager.Instance.TrapTypeBoughtByPlayer(trapType) && !eligibleTrapTypes.Contains(trapType)) {
+                eligibleTrapTypes.Add(trapType);
+            }
+        }
+
+        // Récupérer toutes les upgrades correspondant aux pièges éligibles
+        foreach (TrapItem trapItem in trapListCopy) {
+            if(eligibleTrapTypes.Contains(trapItem.trapType)) {
+                eligibleTrapUpgradeItems.Add(trapItem);
+            }
+        }
+
+
+        return eligibleTrapUpgradeItems;
     }
 
     public List<TrapItem> DrawTrapsWithoutReplacement(List<TrapItem> trapList, int numberOfDraws) {
@@ -121,7 +160,7 @@ public class Merchant_Traps : Merchant
 
         // Effectue le tirage
         for (int i = 0; i < numberOfDraws; i++) {
-            int randomIndex = Random.Range(0, trapListCopy.Count); // Sélectionne un index aléatoire
+            int randomIndex = UnityEngine.Random.Range(0, trapListCopy.Count); // Sélectionne un index aléatoire
             TrapItem selectedTrap = trapListCopy[randomIndex]; // Récupère le skill correspondant
             drawnTraps.Add(selectedTrap); // Ajoute le skill à la liste des tirages
             trapListCopy.RemoveAt(randomIndex); // Supprime le skill tiré de la liste originale

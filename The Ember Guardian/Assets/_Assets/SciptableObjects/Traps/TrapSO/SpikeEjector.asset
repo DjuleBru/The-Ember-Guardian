@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c7961ad1e3c5044a946b393c459b3b, type: 3}
+  m_Name: SpikeEjector
+  m_EditorClassIdentifier: 
+  itemType: 3
+  trapType: 3
+  trapUpgradeSO: {fileID: 0}
+  trapStructureSO: {fileID: 11400000, guid: f9558421caa25b04db238d9490b93e79, type: 2}
+  linkedTrapSO: {fileID: 0}
+  TrapName: Spike Ejector
+  buyTrapPrice: 3
+  trapDamage: 20
+  trapSpecialStat: 0
+  trapCooldown: 5
+  trapUsesPerNight: 3
+  trapReloadsBeforeBreaking: 3
+  trapPriceToReload: 1
+  trapActiveDuration: 1.7
+  Icon: {fileID: 1380098823, guid: acdfaf23437c65d488a22e27b3e20f9b, type: 3}
+  currencyTypeToPay: 0
+  triggerTrapAudioClip:
+  - {fileID: 8300000, guid: b33c45315defcb844a29fc7887b6339e, type: 3}
+  - {fileID: 8300000, guid: 699b58f9e17d2ce4fbd7af0a7895d36c, type: 3}
+  - {fileID: 8300000, guid: 053c818b1de331f44b60fa117e95e1f1, type: 3}
+  - {fileID: 8300000, guid: cf3d089a104c984419074fa47ec51128, type: 3}
+  reloadTrapAudioClip:
+  - {fileID: 8300000, guid: f644e47f4fec2c544adac8753a14b594, type: 3}
+  Description: Deals high damage to the creatures that walk over it. Short cooldown.
