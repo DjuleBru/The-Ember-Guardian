@@ -21,11 +21,17 @@ public class StructureVisual_Trap : StructureVisual
 
         trap.OnTrapTriggered += Trap_OnTrapTriggered;
         trap.OnTrapActiveEnded += Trap_OnTrapActiveEnded;
+        trap.OnTrapTriggeredEnded += Trap_OnTrapTriggeredEnded;
+    }
+
+    private void Trap_OnTrapTriggeredEnded(object sender, EventArgs e) {
+        if (trap.GetHasUsesLeft()) {
+            trapAnimator.SetTrigger("TriggeredEnd");
+        }
     }
 
     private void Trap_OnTrapActiveEnded(object sender, System.EventArgs e) {
-        if (!trap.GetHasUsesLeft()) {
-
+        if (trap.GetHasUsesLeft()) {
         }
     }
 

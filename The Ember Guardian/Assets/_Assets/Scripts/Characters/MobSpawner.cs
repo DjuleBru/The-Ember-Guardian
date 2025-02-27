@@ -50,6 +50,7 @@ public class MobSpawner : MonoBehaviour
     }
 
     protected void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
+        if (!mobsCanSpawnAtDawn) return;
         int mobAmountToSpawnOnDawn = mobAmountToSpawn - mobSpawnedList.Count;
 
         if(mobAmountToSpawnOnDawn > maxMobsRespawningAtDawn) {

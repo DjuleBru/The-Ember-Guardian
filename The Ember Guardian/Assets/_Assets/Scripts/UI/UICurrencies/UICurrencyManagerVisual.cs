@@ -10,6 +10,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private CanvasGroup currencyCanvasGroup;
     [SerializeField] private Animator backpackFrontAnimator;
+    [SerializeField] private Animator chestAnimator;
     [SerializeField] private List<CurrencyUI_AlmostFullColliders> almostFullColliders;
     [SerializeField] private Light2D emberLight;
 
@@ -26,7 +27,9 @@ public class UICurrencyManagerVisual : MonoBehaviour
     private bool isFadingIn = false;
     private bool tabMenuOpen = false;
     private bool isPlayerInventory;
+    private bool hubMerchantShopOpen;
 
+    private Coroutine chestCoroutine;
     private void Start() {
         uICurrencyManager.OnCurrencyDropped += UICurrencyManager_OnCurrencyDropped;
         uICurrencyManager.OnCurrencyTryPay += UICurrencyManager_OnCurrencyTryPay;
@@ -42,25 +45,88 @@ public class UICurrencyManagerVisual : MonoBehaviour
             PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
             PlayerTabMenuUI.Instance.OnPlayerTabOpened += PLayerTabMenuUI_OnPlayerTabOpened;
         }
+
+        if(uICurrencyManager == UICurrencyManager.HubInventoryUI) {
+            HubChest.Instance.OnChestOpened += HubChest_OnChestOpened;
+            HubChest.Instance.OnChestClosed += HubChest_OnChestClosed;
+            HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerOpenedAnyHubMerchantShop;
+            HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+        }
+    }
+
+    private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, System.EventArgs e) {
+        if (!hubMerchantShopOpen) return;
+
+        ShowIntenvoryFront();
+        hubMerchantShopOpen = false;
+    }
+
+    private void HubMerchant_OnPlayerOpenedAnyHubMerchantShop(object sender, System.EventArgs e) {
+        HideInventoryFront();
+        hubMerchantShopOpen = true;
+    }
+
+    private void HubChest_OnChestClosed(object sender, System.EventArgs e) {
+        debugAlwaysShow = false;
+        if (chestAnimator != null) {
+            StopCoroutine(chestCoroutine);
+            chestAnimator.SetTrigger("Close");
+            chestAnimator.ResetTrigger("Open");
+        }
+    }
+
+    private void HubChest_OnChestOpened(object sender, System.EventArgs e) {
+        ShowBackpack(2f);
+        debugAlwaysShow = true;
+        if (chestAnimator != null) {
+            chestCoroutine = StartCoroutine(OpenChestUIAfterDelay(0f));
+        }
+    }
+
+    private IEnumerator OpenChestUIAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+
+        chestAnimator.SetTrigger("Open");
+        chestAnimator.ResetTrigger("Close");
     }
 
     private void PLayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
+        HideInventoryFront();
+    }
+
+    private void PlayerTabMenuUI_OnPlayerTabClosed(object sender, System.EventArgs e) {
+        ShowIntenvoryFront();
+    }
+
+    private void HideInventoryFront() {
         tabMenuOpen = true;
-        isFadingIn = true;
+
+        if (canvasGroup.alpha == 0) {
+            isFadingIn = true;
+        }
+
         isShowingBackpackFront = true;
 
-        if (!isPlayerInventory) return;
+        if (!isPlayerInventory) {
+            chestAnimator.SetTrigger("HideFront");
+            chestAnimator.ResetTrigger("ShowFront");
+            return;
+        };
 
         backpackFrontAnimator.SetTrigger("HideFront");
         backpackFrontAnimator.ResetTrigger("ShowFront");
         currencyCanvasGroup.alpha = 1;
     }
-
-    private void PlayerTabMenuUI_OnPlayerTabClosed(object sender, System.EventArgs e) {
-        tabMenuOpen = false; 
+    private void ShowIntenvoryFront() {
+        tabMenuOpen = false;
         backpackDisplayTimer = frontDisplayTime; // Initialise le timer pour le fade
+        isFadingIn = false;
 
-        if (!isPlayerInventory) return;
+        if (!isPlayerInventory) {
+            chestAnimator.SetTrigger("ShowFront");
+            chestAnimator.ResetTrigger("HideFront");
+            return;
+        };
 
         backpackFrontAnimator.SetTrigger("ShowFront");
         backpackFrontAnimator.ResetTrigger("HideFront");
@@ -203,6 +269,14 @@ public class UICurrencyManagerVisual : MonoBehaviour
         if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
             PlayerTabMenuUI.Instance.OnPlayerTabClosed -= PlayerTabMenuUI_OnPlayerTabClosed;
             PlayerTabMenuUI.Instance.OnPlayerTabOpened -= PLayerTabMenuUI_OnPlayerTabOpened;
+        }
+
+
+        if (uICurrencyManager == UICurrencyManager.HubInventoryUI) {
+            HubChest.Instance.OnChestOpened -= HubChest_OnChestOpened;
+            HubChest.Instance.OnChestClosed -= HubChest_OnChestClosed;
+            HubMerchant.OnPlayerOpenedAnyHubMerchantShop -= HubMerchant_OnPlayerOpenedAnyHubMerchantShop;
+            HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         }
     }
 

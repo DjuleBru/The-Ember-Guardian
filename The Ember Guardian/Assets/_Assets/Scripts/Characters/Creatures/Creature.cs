@@ -46,14 +46,18 @@ public class Creature : Mob
     public event EventHandler OnCreaturePoisonedStarted;
     public event EventHandler OnCreaturePoisoneStopped;
     private bool poisoned;
-    private float poisonedDuration;
+    private int poisonAmount;
     private float poisonedTimer;
+    private float poisonRate = 1.5f;
+    private float poisonRateTimer;
+    private float poisonedDuration = 10f;
 
     public event EventHandler OnCreatureShockedStarted;
     public event EventHandler OnCreatureShockedStopped;
     private bool shocked;
-    private float shockedDuration;
+    private float shockedDuration = 10f;
     private float shockedTimer;
+    private float shockedSlowAmount;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -262,33 +266,54 @@ public class Creature : Mob
     #region STATUS EFFECTS
     private void HandleStatusEffects() {
         if(immobilized) {
-
+            immobilizedTimer -= Time.deltaTime;
+            if(immobilizedTimer < 0) {
+                immobilized = false;
+                OnCreatureImmobilizedStopped?.Invoke(this, EventArgs.Empty);
+            }
         }
-        if(poisoned) { 
+        if(poisoned) {
+            poisonedTimer -= Time.deltaTime;
+            poisonRateTimer += Time.deltaTime;
+            if(poisonRateTimer >= poisonRate) {
+                TakeDamage(poisonAmount, transform);
+                poisonRateTimer = 0;
+            }
 
+            if (poisonedTimer < 0) {
+                poisoned = false;
+                OnCreaturePoisoneStopped?.Invoke(this, EventArgs.Empty);
+            }
         }
         if(shocked) {
-
+            shockedTimer -= Time.deltaTime;
+            if (shockedTimer < 0) {
+                shocked = false;
+                OnCreatureShockedStopped?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 
     public void ApplyBearTrapEffect(float immobilizeDuration) {
         immobilized = true;
         immobilizedDuration = immobilizeDuration;
+        immobilizedTimer = immobilizedDuration;
 
         OnCreatureImmobilizedStarted?.Invoke(this, EventArgs.Empty);
     }
 
-    public void ApplySmokeTrapEffect(float poisonDuration, int poisonAmount) {
+    public void ApplySmokeTrapEffect(int poisonAmount) {
         poisoned = true;
-        poisonedDuration = poisonDuration;
+        this.poisonAmount = poisonAmount;
+        poisonedTimer = poisonedDuration;
 
         OnCreaturePoisonedStarted?.Invoke(this, EventArgs.Empty);
     }
 
-    public void ApplyShockTrapEffect(float slowDuration, float slowAmount) {
+    public void ApplyShockTrapEffect(float slowAmount) {
         shocked = true;
-        shockedDuration = slowDuration;
+        this.shockedSlowAmount = slowAmount;
+        shockedTimer = shockedDuration;
 
         OnCreatureShockedStarted?.Invoke(this, EventArgs.Empty);
     }
@@ -314,6 +339,9 @@ public class Creature : Mob
         return eliteDamageCreature;
     }
 
+    public float GetShockSlowAmount() {
+        return shockedSlowAmount;
+    }
     private void OnDestroy() {
         PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
         PlayerMovement.Instance.OnPlayerCrouched -= PlayerMovement_OnPlayerCrouched;

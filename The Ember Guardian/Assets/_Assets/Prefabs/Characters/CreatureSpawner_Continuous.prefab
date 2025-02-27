@@ -82,15 +82,17 @@ MonoBehaviour:
   sceneViewSpawnerSpriteRenderer: {fileID: 0}
   mobPrefab: {fileID: 2100628709117196716, guid: 1daa7a1cf491ad0428c8464c1aed981a, type: 3}
   spawnPosition: {fileID: 5435968000822787108}
+  spawnPositionRandomizer: 0
   mobAmountToSpawn: 5
   maxMobsRespawningAtDawn: 0
   isCreatureSpawner: 1
   isAnimalSpawner: 0
+  blockSpawningOnStart: 0
   canSpawnEliteCreatures: 0
   eliteSpawnProbability: 0
   eliteSpawnAmount: 0
   spawnerHealth: 35
-  spawnRate: 7.5
+  spawnRate: 10
   spawnAnimationDelay: 0.5
   canSpawnMobsAtNight: 0
 --- !u!50 &6708015766833496878

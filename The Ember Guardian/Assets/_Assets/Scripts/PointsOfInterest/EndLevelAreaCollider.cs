@@ -17,7 +17,6 @@ public class EndLevelAreaCollider : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() != null) {
-            if (EndLevelArea.Instance.GetPlayerDestroyedNest()) return;
 
             EndLevelArea.Instance.SetPlayerInTriggerArea(false);
             EndLevelArea.Instance.TryFadeOutMusic();

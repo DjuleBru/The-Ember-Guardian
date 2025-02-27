@@ -20,9 +20,11 @@ public class Structure_Trap : Structure
     protected float trapCooldownTimer;
 
     protected bool trapIsActive;
+    protected bool triggeredEnded;
     protected bool trapCoolingDown;
 
     public event EventHandler OnTrapTriggered;
+    public event EventHandler OnTrapTriggeredEnded;
     public event EventHandler OnTrapActiveEnded;
     public event EventHandler OnTrapRearmed;
     public event EventHandler OnTrapMaxRearmsReached;
@@ -50,7 +52,13 @@ public class Structure_Trap : Structure
 
         if(trapCoolingDown) {
             trapCooldownTimer -= Time.deltaTime;
-            if(trapCooldownTimer < 0) {
+
+            if (trapCooldownTimer < .2f && !triggeredEnded) {
+                triggeredEnded = true;
+                OnTrapTriggeredEnded?.Invoke(this, EventArgs.Empty);
+            }
+
+            if (trapCooldownTimer < 0) {
                 trapCoolingDown = false;
             }
         }
@@ -60,7 +68,6 @@ public class Structure_Trap : Structure
         if (trapIsActive) return;
         if (trapCoolingDown) return;
 
-        Debug.Log("TryTriggerTrap currentUseIndex" + currentUseIndex);
         if (currentUseIndex < usesPerNight) {
             currentUseIndex++;
             OnTrapTriggered?.Invoke(this, EventArgs.Empty);
@@ -69,6 +76,7 @@ public class Structure_Trap : Structure
             trapCooldownTimer = trapCooldown;
 
             trapIsActive = true;
+            triggeredEnded = false;
         }
     }
 

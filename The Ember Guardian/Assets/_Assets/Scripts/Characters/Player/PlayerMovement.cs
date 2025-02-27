@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private bool isRunning;
     private bool isAlmostExhausted;
+    private bool isAlmostExhaustedFeedbacksActive;
     private bool isExhausted;
     private bool isMovingBackwards;
     private bool isCrouching;
@@ -63,6 +64,7 @@ public class PlayerMovement : MonoBehaviour {
     public event EventHandler OnPlayerRunStopped;
     public event EventHandler OnPlayerAlmostExhaustionStarted;
     public event EventHandler OnPlayerAlmostExhaustionStopped;
+    public event EventHandler OnPlayerAlmostExhaustionDeactivateFeedbacks;
     public event EventHandler OnPlayerExhaustionStarted;
     public event EventHandler OnPlayerExhaustionStopped;
 
@@ -378,9 +380,14 @@ public class PlayerMovement : MonoBehaviour {
 
 
         if (isAlmostExhausted) {
-            if (staminaTimer < PlayerStats.Instance.GetMaxStamina() * runTimePercentageBeforeWarningExhaustion) {
+            if (staminaTimer <= 0) {
                 isAlmostExhausted = false;
                 OnPlayerAlmostExhaustionStopped?.Invoke(this, EventArgs.Empty);
+            }
+
+            if (isAlmostExhaustedFeedbacksActive && staminaTimer < PlayerStats.Instance.GetMaxStamina() * runTimePercentageBeforeWarningExhaustion) {
+                isAlmostExhaustedFeedbacksActive = false;
+                OnPlayerAlmostExhaustionDeactivateFeedbacks?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -393,18 +400,12 @@ public class PlayerMovement : MonoBehaviour {
 
             if (!isAlmostExhausted) {
                 isAlmostExhausted = true;
+                isAlmostExhaustedFeedbacksActive = true;
                 OnPlayerAlmostExhaustionStarted?.Invoke(this, EventArgs.Empty);
             }
 
         }
-        else {
-
-            if (isAlmostExhausted) {
-                isAlmostExhausted = false;
-                OnPlayerAlmostExhaustionStopped?.Invoke(this, EventArgs.Empty);
-            }
-
-        }
+        
 
         // Exhausted
         if (staminaTimer > PlayerStats.Instance.GetMaxStamina() && !isExhausted) {
@@ -439,9 +440,11 @@ public class PlayerMovement : MonoBehaviour {
     private void StopExhausted() {
         isExhausted = false;
 
+        staminaTimer = 0;
         exhaustionTimer = 0;
         BuffMoveSpeed(exhaustedSpeedFactor);
         OnPlayerExhaustionStopped?.Invoke(this, EventArgs.Empty);
+        OnPlayerAlmostExhaustionStopped?.Invoke(this, EventArgs.Empty);
     }
 
     public void BuffMoveSpeed(float buffAmount) {

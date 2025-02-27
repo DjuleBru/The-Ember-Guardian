@@ -282,7 +282,7 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
                 break;
 
             case TrapItem.TrapType.smokeEjector:
-                trapSpecialStatDescription.text = "Poison damage";
+                trapSpecialStatDescription.text = "Poison duration";
 
                 trapSpecialStatValue.text += "/s";
 

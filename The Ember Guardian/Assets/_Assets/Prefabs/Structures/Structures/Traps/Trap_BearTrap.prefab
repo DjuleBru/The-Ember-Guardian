@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1346750322112802540, guid: 052f3260d03be8d49a727836d3ee2652, type: 3}
+      propertyPath: hasActiveEndedTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346750322112802540, guid: 052f3260d03be8d49a727836d3ee2652, type: 3}
       propertyPath: showTrapFullSpriteOnHover
       value: 0
       objectReference: {fileID: 0}
@@ -76,6 +80,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Trap_BearTrap
       objectReference: {fileID: 0}
+    - target: {fileID: 5243482612673012921, guid: 052f3260d03be8d49a727836d3ee2652, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 0559692e44cd04f4489469aea1378f6e, type: 2}
+    - target: {fileID: 6145587820844626866, guid: 052f3260d03be8d49a727836d3ee2652, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 0559692e44cd04f4489469aea1378f6e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

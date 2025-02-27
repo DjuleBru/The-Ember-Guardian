@@ -62,8 +62,6 @@ public class StructureLocation_Trap : StructureLocation {
     }
 
     private void PlayerInventoryUI_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
-        Debug.Log(e.currencyUIDropped.GetCurrencyType());
-
         if (!trapCurrencyTypes.Contains(e.currencyUIDropped.GetCurrencyType())) return;
         StartCoroutine(RefreshTrapTypesInPlayerInventoryAfterFrame());
     }

@@ -258,6 +258,10 @@ public class UICurrencyManager : MonoBehaviour
             currencyUIDropped = currencyUICollected
         });
 
+        if(this == HubInventoryUI) {
+            currencyTransform.localScale *= 1.5f;
+        }
+
         //foreach(Currency_UI currency in currenciesInBag) {
         //    currency.SetCurrencyRbMovable();
         //}

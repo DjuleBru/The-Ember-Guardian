@@ -8,6 +8,7 @@ public class GunVisual : MonoBehaviour
     protected GunSO gunSO;
     [SerializeField] protected GameObject gunVisualGameObject;
     [SerializeField] protected GameObject armGameObject;
+    [SerializeField] protected SpriteRenderer gunSecondaryAbilityActiveSpriteRenderer;
     [SerializeField] protected SpriteRenderer gunLightsSpriteRenderer;
     [SerializeField] protected SpriteRenderer gunCooldownLightsSpriteRenderer;
     [SerializeField] protected Color outOfAmmoCooldownLightsColor;
@@ -17,12 +18,18 @@ public class GunVisual : MonoBehaviour
     protected Color cooldownLightsColor;
     protected List<Sprite> gunReloadSprites;
     protected int gunLightSpriteIndex;
+    protected bool gunSecondaryFireModeActive;
 
     protected virtual void Awake() {
         gun = GetComponent<Gun>();
         initialLightsColor = gunLightsSpriteRenderer.color;
+
         if (gunCooldownLightsSpriteRenderer != null) {
             cooldownLightsColor = gunCooldownLightsSpriteRenderer.color;
+        }
+
+        if (gunSecondaryAbilityActiveSpriteRenderer != null) {
+            gunSecondaryAbilityActiveSpriteRenderer.enabled = false;
         }
     }
 
@@ -34,12 +41,20 @@ public class GunVisual : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReloadHandEnded += PlayerShoot_OnPlayerReloadHandEnded;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
+        PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerShoot_OnPlayerSwitchedFireMode;
 
         gunSO = gun.GetGunSO();
         gunReloadSprites = gunSO.shotCountSprites;
         gunLightSpriteIndex = gunSO.shotCountSprites.Count -1;
+
     }
 
+    private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
+        if(gunSecondaryAbilityActiveSpriteRenderer != null) {
+            gunSecondaryFireModeActive = !gunSecondaryFireModeActive;
+            gunSecondaryAbilityActiveSpriteRenderer.enabled = gunSecondaryFireModeActive;
+        }
+    }
 
     private void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
         if (gunCooldownLightsSpriteRenderer == null) return;

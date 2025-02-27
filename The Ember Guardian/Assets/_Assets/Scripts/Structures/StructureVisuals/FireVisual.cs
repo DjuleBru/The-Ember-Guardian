@@ -34,6 +34,7 @@ public class FireVisual : StructureVisual
     [SerializeField] private int continuousPSInsaneEmissionRate;
 
     [SerializeField] private Light2D fireLimitLightSpriteRenderer;
+    [SerializeField] private Light2D fireAmbienLightSpriteRenderer;
     [SerializeField] private Sprite fireLimitLightSprite1;
     [SerializeField] private Sprite fireLimitLightSprite2;
     [SerializeField] private Sprite fireLimitLightSprite3;
@@ -43,6 +44,8 @@ public class FireVisual : StructureVisual
     private float mildLightRadius = 5.16f;
     private float wildLightRadius = 8.23f;
     private float insaneLightRadius = 11.17f;
+
+    private float AOEFireLightIntensity = 1f;
 
     private float initialFireAOEValue;
     private float finalFireAOEValue;
@@ -54,6 +57,7 @@ public class FireVisual : StructureVisual
     private float finalFirePSEmissionRateValue;
 
     private bool lerping;
+    private bool AOEFireLightsEnabled;
     private float lerpDuration = 1f;
     private float lerpTimer = 0;
 
@@ -84,10 +88,10 @@ public class FireVisual : StructureVisual
     }
 
     protected void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
-        AOEFireLight.enabled = true;
+        StartCoroutine(LerpFireLightIntensity(0, AOEFireLightIntensity, 1.5f));
     }
     protected void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
-        AOEFireLight.enabled = false;
+        StartCoroutine(LerpFireLightIntensity(AOEFireLightIntensity, 0,1.5f));
     }
 
     private void Fire_OnFireFuelled(object sender, System.EventArgs e) {
@@ -222,22 +226,28 @@ public class FireVisual : StructureVisual
 
             ChangeFireLightScale(lightLimitValue);
             ChangeFireVisualsRadius(currentFireAOEValue);
-            ChangeFireVisualsLightIntensity(currentLightValue);
+            //ChangeFireVisualsLightIntensity(currentLightValue * 3);
             ChangeFirePSEmissionRate(currentPSEmissionRateValue);
         }
     }
 
     private void ChangeFireLightScale(float fireRadius) {
         fireLimitLight.transform.localScale = new Vector3(fireRadius, fireRadius, 1);
+        fireAmbienLightSpriteRenderer.transform.localScale = new Vector3(fireRadius/3, fireRadius/3, 1);
+        AOEFireLight.transform.localScale = new Vector3(fireRadius, fireRadius, 1);
     }
 
     private void ChangeFireVisualsRadius(float fireRadius) {
         if(fireRadius > 0) {
-            AOEFireLight.enabled = true;
+            if(AOEFireLightsEnabled) {
+                AOEFireLight.enabled = true;
+            }
+
             fireAtmosphericLight1.enabled = true;
             fireAtmosphericLight2.enabled = true;
             AOEFirePS.gameObject.SetActive(true);
         } else {
+
             AOEFireLight.enabled = false;
             fireAtmosphericLight1.enabled = false;
             fireAtmosphericLight2.enabled = false;
@@ -277,5 +287,19 @@ public class FireVisual : StructureVisual
         var emission = continuousPS.emission;
         emission.rateOverTime = rate;
     }
+
+    private IEnumerator LerpFireLightIntensity(float initialIntensity, float destinationIntensity, float lerpDuration) {
+        AOEFireLight.intensity = initialIntensity;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < lerpDuration) {
+            elapsedTime += Time.deltaTime;
+            AOEFireLight.intensity = Mathf.Lerp(initialIntensity, destinationIntensity, elapsedTime / lerpDuration);
+            yield return null;
+        }
+
+        AOEFireLight.intensity = destinationIntensity; // S'assurer que la valeur finale est bien atteinte
+    }
+
 
 }

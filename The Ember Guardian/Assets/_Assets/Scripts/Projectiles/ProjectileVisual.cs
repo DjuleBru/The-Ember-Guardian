@@ -30,6 +30,7 @@ public class ProjectileVisual : MonoBehaviour
 
         if (projectileHitPS != null) {
             projectileHitPS.Play();
+            Debug.Log("ps PLay");
         }
 
         if(projectileAnimator != null) {

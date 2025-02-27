@@ -9,6 +9,7 @@ public class CreatureMovement : MobMovement
     protected bool enteredLight;
     protected bool aggroMoveSpeedSet;
     protected bool spawned;
+    protected bool immobilized;
     protected float aggroMoveSpeedBuff = 1.5f;
 
     protected override void Awake() {
@@ -21,12 +22,18 @@ public class CreatureMovement : MobMovement
         base.Start();
         creature.OnCreatureExitedLight += Creature_OnCreatureExitedLight;
         creature.OnCreatureEnteredLight += Creature_OnCreatureEnteredLight;
+        creature.OnCreatureImmobilizedStarted += Creature_OnCreatureImmobilizedStarted;
+        creature.OnCreatureImmobilizedStopped += Creature_OnCreatureImmobilizedStopped;
+        creature.OnCreatureShockedStarted += Creature_OnCreatureShockedStarted;
+        creature.OnCreatureShockedStopped += Creature_OnCreatureShockedStopped;
         InitializeCreatureMoveSpeed();
 
     }
 
+
     protected override void FixedUpdate() {
         if (!spawned) return;
+        if (immobilized) return;
         base.FixedUpdate();
     }
 
@@ -69,6 +76,25 @@ public class CreatureMovement : MobMovement
     protected void Creature_OnCreatureExitedLight(object sender, System.EventArgs e) {
         enteredLight = false;
         BuffMoveSpeed(enteredLightSpeedDebuff);
+    }
+
+    private void Creature_OnCreatureImmobilizedStopped(object sender, System.EventArgs e) {
+        immobilized = false;
+    }
+
+    private void Creature_OnCreatureImmobilizedStarted(object sender, System.EventArgs e) {
+        immobilized = true;
+    }
+
+    private void Creature_OnCreatureShockedStopped(object sender, System.EventArgs e) {
+        float debuff = 1 + creature.GetShockSlowAmount() / 100;
+        BuffMoveSpeed(debuff);
+
+    }
+
+    private void Creature_OnCreatureShockedStarted(object sender, System.EventArgs e) {
+        float debuff = 1 + creature.GetShockSlowAmount() / 100;
+        DebuffMoveSpeed(debuff);
     }
 
     public void SetSpawned() {

@@ -12,6 +12,7 @@ public class GunSO : ScriptableObject
         Sniper,
         Revolver,
         LMG,
+        GrenadeLauncher,
     }
 
     public GunType gunType;

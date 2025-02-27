@@ -44,6 +44,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.56676424
       objectReference: {fileID: 0}
+    - target: {fileID: 468903629825577967, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: SubModule.subEmitters.Array.data[0].emitter
+      value: 
+      objectReference: {fileID: 5741363806220606695}
     - target: {fileID: 617523866817803319, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Size.x
       value: 0.30747527
@@ -67,6 +71,10 @@ PrefabInstance:
     - target: {fileID: 795836368442943769, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Offset.y
       value: 0.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 895871724663474953, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_Name
+      value: CreaturePoisonedPS
       objectReference: {fileID: 0}
     - target: {fileID: 1135229764465057109, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Sprite
@@ -123,6 +131,14 @@ PrefabInstance:
     - target: {fileID: 2752781047295933904, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.942
+      objectReference: {fileID: 0}
+    - target: {fileID: 2902299950378971529, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.008
+      objectReference: {fileID: 0}
+    - target: {fileID: 2902299950378971529, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.561
       objectReference: {fileID: 0}
     - target: {fileID: 3798161515241024080, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Mass
@@ -188,6 +204,14 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 342d935c41f811148b8bb3d8e2506dd6, type: 2}
+    - target: {fileID: 6531451696384706676, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6531451696384706676, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.05
+      objectReference: {fileID: 0}
     - target: {fileID: 6862038437786210642, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.29
@@ -216,12 +240,25 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8570049977919893551, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_Name
+      value: CreatureImmobilizedPS
+      objectReference: {fileID: 0}
     - target: {fileID: 8642631730259358339, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 2037442311, guid: 2a6402d34e852cf46a6ad17a175fcbc7, type: 3}
+    - target: {fileID: 8817387759861109601, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_Name
+      value: CreatureShockedFX
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+--- !u!198 &5741363806220606695 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 756495808502693540, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+  m_PrefabInstance: {fileID: 5031355418187637315}
+  m_PrefabAsset: {fileID: 0}

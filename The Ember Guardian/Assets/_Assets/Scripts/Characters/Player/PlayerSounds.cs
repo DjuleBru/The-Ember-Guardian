@@ -83,7 +83,7 @@ public class PlayerSounds : SoundObject
 
     private void PlayerAnimator_OnPantTriggered(object sender, System.EventArgs e) {
         if (exhaustedSFXPlaying) return;
-        playerAudioSource.PlayOneShot(playerPantAudioClips[Random.Range(0, playerPantAudioClips.Length)], sfxVolume * .5f);
+        playerAudioSource.PlayOneShot(playerPantAudioClips[Random.Range(0, playerPantAudioClips.Length)], sfxVolume * .35f);
     }
     private void ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered(object sender, System.EventArgs e) {
         playerAudioSource.PlayOneShot(activeMoveSpeedBoostFootstepAudioClip, sfxVolume / 8);

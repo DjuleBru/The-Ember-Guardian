@@ -86,7 +86,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1587645197521107499, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2520302452764269856, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: looping
@@ -179,18 +179,92 @@ PrefabInstance:
     - target: {fileID: 8081538258593089863, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: projectileHitPS
       value: 
-      objectReference: {fileID: 1371068626831014123}
+      objectReference: {fileID: 5180308156851652623}
     - target: {fileID: 8132320804815214056, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_Name
       value: HunterArrow
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7284273568497472285, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4948547384652674663}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
---- !u!198 &1371068626831014123 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 1248357880838333955, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+--- !u!4 &7440788198392024565 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7284273568497472285, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
   m_PrefabInstance: {fileID: 167773680537722600}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6938867945866011760
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7440788198392024565}
+    m_Modifications:
+    - target: {fileID: 2659105111524577815, guid: 3d3f3fe7ee0c4854995a38a4d51744f7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2659105111524577815, guid: 3d3f3fe7ee0c4854995a38a4d51744f7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2659105111524577815, guid: 3d3f3fe7ee0c4854995a38a4d51744f7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2659105111524577815, guid: 3d3f3fe7ee0c4854995a38a4d51744f7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2659105111524577815, guid: 3d3f3fe7ee0c4854995a38a4d51744f7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2659105111524577815, guid: 3d3f3fe7ee0c4854995a38a4d51744f7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2659105111524577815, guid: 3d3f3fe7ee0c4854995a38a4d51744f7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2659105111524577815, guid: 3d3f3fe7ee0c4854995a38a4d51744f7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2659105111524577815, guid: 3d3f3fe7ee0c4854995a38a4d51744f7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2659105111524577815, guid: 3d3f3fe7ee0c4854995a38a4d51744f7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2859760957469731967, guid: 3d3f3fe7ee0c4854995a38a4d51744f7, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6589803501864398065, guid: 3d3f3fe7ee0c4854995a38a4d51744f7, type: 3}
+      propertyPath: m_Name
+      value: BlueCollisionPS
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3d3f3fe7ee0c4854995a38a4d51744f7, type: 3}
+--- !u!4 &4948547384652674663 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2659105111524577815, guid: 3d3f3fe7ee0c4854995a38a4d51744f7, type: 3}
+  m_PrefabInstance: {fileID: 6938867945866011760}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5180308156851652623 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2859760957469731967, guid: 3d3f3fe7ee0c4854995a38a4d51744f7, type: 3}
+  m_PrefabInstance: {fileID: 6938867945866011760}
   m_PrefabAsset: {fileID: 0}
