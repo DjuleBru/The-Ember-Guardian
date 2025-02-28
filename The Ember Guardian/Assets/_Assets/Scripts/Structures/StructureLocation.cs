@@ -98,11 +98,13 @@ public class StructureLocation : MonoBehaviour {
         return structureSOToBuild;
     }
 
-    public void UnlockStructureLocation() {
+    public virtual void UnlockStructureLocation() {
         structureLocationUnlocked = true;
         OnStructureLocationUnlocked?.Invoke(this, EventArgs.Empty);
     }
-
+    public bool GetStructureLocationUnlocked() {
+        return structureLocationUnlocked;
+    }
     public void InvokeOnAnyStructureBuilt() {
         OnAnyStructureBuilt?.Invoke(this, EventArgs.Empty);
     }

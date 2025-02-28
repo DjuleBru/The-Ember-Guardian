@@ -17,6 +17,7 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool debugMode_Tutorial;
     [SerializeField] private bool debugMode_PlayerCamp;
     [SerializeField] private bool debugMode_AllStructuresUnlocked;
+    [SerializeField] private bool debugMode_AllStructureUpgradeUnlocked;
     [SerializeField] private bool debugMode_WorkerInteractions;
     [SerializeField] private bool debugMode_DontShowVideoTip;
     [SerializeField] private bool debugMode_WindManaged;
@@ -35,6 +36,9 @@ public class DebugManager : MonoBehaviour
     }
     public bool GetAllStructuresUnlocked() {
         return debugMode_AllStructuresUnlocked;
+    }
+    public bool GetAllStructureUpgradesUnlocked() {
+        return debugMode_AllStructureUpgradeUnlocked;
     }
     public bool GetDebugDontSpawnAtNight() {
         return debugMode_DontSpawnWavesAtNight;

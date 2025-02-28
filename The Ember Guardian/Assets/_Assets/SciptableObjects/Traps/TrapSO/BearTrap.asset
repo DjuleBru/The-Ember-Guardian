@@ -23,9 +23,10 @@ MonoBehaviour:
   trapSpecialStat: 5
   trapCooldown: 15
   trapUsesPerNight: 2
-  trapReloadsBeforeBreaking: 3
-  trapPriceToReload: 1
+  maxRearmsBeforeBreaking: 1
+  rearmPrice: 2
   trapActiveDuration: 5
+  trapHasAOEAttack: 0
   Icon: {fileID: -1870522980, guid: acdfaf23437c65d488a22e27b3e20f9b, type: 3}
   currencyTypeToPay: 0
   triggerTrapAudioClip:

@@ -7,21 +7,39 @@ public class PlayerCamp : MonoBehaviour
 {
     public static PlayerCamp Instance;
 
-    private int structureLocationsUnlockedLevel = 1;
-
     [SerializeField] private StructureLocation initialFireStructureLocation;
     [SerializeField] private List<Structure> initialStructures;
+
+    [SerializeField] private List<StructureLocation> structureLocationsLockedBeforeBuildingBarricade;
+    [SerializeField] private List<StructureLocation> trapLocations;
+    [SerializeField] private List<StructureLocation> initialStructureLocations;
     [SerializeField] private List<StructureLocation> initialStructureLocationsBuilt;
-    [SerializeField] private List<StructureLocation> level1StructureLocationsUnlocked;
-    [SerializeField] private List<StructureLocation> level2StructureLocationsUnlocked;
-    [SerializeField] private List<StructureLocation> level3StructureLocationsUnlocked;
-    [SerializeField] private List<StructureLocation> debugStructureLocationsUnlockedLvl1;
+    [SerializeField] private List<StructureLocation> level1DefensiveStructureLocationsUnlocked;
+    [SerializeField] private List<StructureLocation> level2DefensiveStructureLocationsUnlocked;
+    [SerializeField] private List<StructureLocation> level3DefensiveStructureLocationsUnlocked;
+
+    [SerializeField] private StructureLocation leftBarricade1;
+    [SerializeField] private StructureLocation rightBarricade1;
+    [SerializeField] private StructureLocation leftBarricade2;
+    [SerializeField] private StructureLocation rightBarricade2;
+    [SerializeField] private StructureLocation leftBarricade3;
+    [SerializeField] private StructureLocation rightBarricade3;
+
+    private Vector3 leftBarricade1Position;
+    private Vector3 rightBarricade1Position;
+    private Vector3 leftBarricade2Position;
+    private Vector3 rightBarricade2Position;
+    private Vector3 leftBarricade3Position;
+    private Vector3 rightBarricade3Position;
+
 
     private List<Structure> builtStructures = new List<Structure>();
     private List<Structure> builtTowers = new List<Structure>();
 
+    private bool initialFireLit;
     private void Awake() {
         Instance = this;
+        InitializeBarricadePositions();
     }
 
     private void Start() {
@@ -29,21 +47,94 @@ public class PlayerCamp : MonoBehaviour
 
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         Tent.Instance.OnStructureUpgraded += Tent_OnStructureUpgraded;
+        //CampZoneManager.Instance.OnCampZoneLimitsChanged += CampZoneManager_OnCampZoneLimitsChanged;
+        StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
 
         foreach (Structure structure in initialStructures) {
             structure.gameObject.SetActive(false);
         }
     }
+    private void InitializeBarricadePositions() {
+        leftBarricade1Position = leftBarricade1.transform.position;
+        rightBarricade1Position = rightBarricade1.transform.position;
+        leftBarricade2Position = leftBarricade2.transform.position;
+        rightBarricade2Position = rightBarricade2.transform.position;
+        leftBarricade3Position = leftBarricade3.transform.position;
+        rightBarricade3Position = rightBarricade3.transform.position;
+    }
+
+    private void StructureLocation_OnAnyStructureBuilt(object sender, EventArgs e) {
+        StructureLocation structureLocation = (StructureLocation)sender;
+
+        if (!(structureLocation.GetStructureSOToBuild().structureType == StructureSO.StructureType.barricade)) return;
+
+        if(structureLocation == leftBarricade1) {
+            TryUnlockStructureLocationsBetweenBarricades(structureLocationsLockedBeforeBuildingBarricade, leftBarricade1Position, Vector3.zero);
+            TryUnlockStructureLocationsBetweenBarricades(trapLocations, leftBarricade2Position, leftBarricade1Position);
+        }
+        if (structureLocation == leftBarricade2) {
+            TryUnlockStructureLocationsBetweenBarricades(structureLocationsLockedBeforeBuildingBarricade, leftBarricade2Position, leftBarricade1Position);
+            TryUnlockStructureLocationsBetweenBarricades(trapLocations, leftBarricade3Position, leftBarricade2Position);
+        }
+
+        if (structureLocation == rightBarricade1) {
+            TryUnlockStructureLocationsBetweenBarricades(structureLocationsLockedBeforeBuildingBarricade, Vector3.zero, rightBarricade1Position);
+            TryUnlockStructureLocationsBetweenBarricades(trapLocations, rightBarricade1Position, rightBarricade2Position);
+        }
+        if (structureLocation == rightBarricade2) {
+            TryUnlockStructureLocationsBetweenBarricades(structureLocationsLockedBeforeBuildingBarricade, rightBarricade1Position, rightBarricade2Position);
+            TryUnlockStructureLocationsBetweenBarricades(trapLocations, rightBarricade2Position, rightBarricade3Position);
+        }
+    }
+
+    private void CampZoneManager_OnCampZoneLimitsChanged(object sender, EventArgs e) {
+        if (!initialFireLit) return;
+
+        foreach (StructureLocation structureLocation in structureLocationsLockedBeforeBuildingBarricade) {
+
+            if(structureLocation ==  null) continue;
+            if (CampZoneManager.Instance.IsWithinCampZoneLimits(structureLocation.transform.position)) {
+                if (!structureLocation.GetStructureLocationUnlocked()) {
+                    structureLocation.UnlockStructureLocation();
+                }
+            }
+
+        }
+
+    }
+
+    private void TryUnlockStructureLocationsBetweenBarricades(List<StructureLocation> structureLocations, Vector3 minBarricadePosition, Vector3 maxBarricadePosition) {
+        if (!initialFireLit) return;
+
+        foreach (StructureLocation structureLocation in structureLocations) {
+
+            if (structureLocation == null) continue;
+            if (IsWithinBarricadePosition(structureLocation.transform.position, minBarricadePosition, maxBarricadePosition)) {
+                if (!structureLocation.GetStructureLocationUnlocked()) {
+                    structureLocation.UnlockStructureLocation();
+                }
+            }
+
+        }
+    }
+
+    private bool IsWithinBarricadePosition(Vector3 position, Vector3 minBarricadePosition, Vector3 maxBarricadePosition) {
+        if (position.x >= minBarricadePosition.x && position.x <= maxBarricadePosition.x) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
-        foreach (StructureLocation location in level1StructureLocationsUnlocked) {
+        initialFireLit = true;
+        foreach (StructureLocation location in initialStructureLocations) {
             location.UnlockStructureLocation();
         }
 
-        if(DebugManager.Instance.GetDebugMode_PlayerCamp()) {
-            foreach (StructureLocation location in debugStructureLocationsUnlockedLvl1) {
-                location.UnlockStructureLocation();
-            }
+        foreach (StructureLocation location in level1DefensiveStructureLocationsUnlocked) {
+            location.UnlockStructureLocation();
         }
 
         StartCoroutine(BuildStructuresUnlockedCoroutine(.5f));
@@ -74,13 +165,13 @@ public class PlayerCamp : MonoBehaviour
 
     private void Tent_OnStructureUpgraded(object sender, EventArgs e) {
         if (Tent.Instance.GetStructureLevel() == 2) {
-            foreach (StructureLocation location in level2StructureLocationsUnlocked) {
+            foreach (StructureLocation location in level2DefensiveStructureLocationsUnlocked) {
                 location.UnlockStructureLocation();
             }
         }
 
         if (Tent.Instance.GetStructureLevel() == 3) {
-            foreach (StructureLocation location in level3StructureLocationsUnlocked) {
+            foreach (StructureLocation location in level3DefensiveStructureLocationsUnlocked) {
                 location.UnlockStructureLocation();
             }
         }
@@ -91,22 +182,6 @@ public class PlayerCamp : MonoBehaviour
 
         if (structure is Tower) {
             builtTowers.Add(structure);
-        }
-    }
-
-    public void UnlockNextStructureLocations() {
-        structureLocationsUnlockedLevel++;
-
-        if (structureLocationsUnlockedLevel == 2) {
-            foreach (StructureLocation location in level2StructureLocationsUnlocked) {
-                location.UnlockStructureLocation();
-            }
-        }
-
-        if (structureLocationsUnlockedLevel == 3) {
-            foreach (StructureLocation location in level3StructureLocationsUnlocked) {
-                location.UnlockStructureLocation();
-            }
         }
     }
 
@@ -133,5 +208,9 @@ public class PlayerCamp : MonoBehaviour
 
     public bool GetStructureBuiltAtStart(Structure structure) {
         return initialStructures.Contains(structure);
+    }
+
+    private void OnDestroy() {
+        StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
     }
 }

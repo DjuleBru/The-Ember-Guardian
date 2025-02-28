@@ -45,6 +45,7 @@ public class Merchant_Traps : Merchant
 
             if (trapSO.itemType == MerchantItem.MerchantItemType.TrapUpgrade) {
                 allMinorMerchantItems.Add(trapItem);
+                Debug.Log("added " + trapItem);
                 trapUpgradeList.Add(trapItem);
             }
         }
@@ -122,6 +123,7 @@ public class Merchant_Traps : Merchant
         foreach (TrapItem majorItem in majorItemListForSale) {
             if (!eligibleTrapTypes.Contains(majorItem.trapType)) {
                 eligibleTrapTypes.Add(majorItem.trapType);
+                Debug.Log("added trap type" + majorItem.trapType);
             }
         }
 

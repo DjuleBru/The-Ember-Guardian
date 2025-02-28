@@ -7,7 +7,10 @@ public class StructureVisual_Trap : StructureVisual
 {
     private Structure_Trap trap;
     [SerializeField] private bool showTrapFullSpriteOnHover;
+    [SerializeField] private SpriteRenderer trapSpriteRenderer;
     [SerializeField] private SpriteRenderer fullTrapSpriteRenderer;
+    [SerializeField] private Sprite trapDepletedSprite;
+    [SerializeField] private SpriteRenderer depletedUsesGlowSpriteRenderer;
     [SerializeField] private Animator trapAnimator;
     [SerializeField] private Animator fullTrapAnimator;
 
@@ -22,6 +25,24 @@ public class StructureVisual_Trap : StructureVisual
         trap.OnTrapTriggered += Trap_OnTrapTriggered;
         trap.OnTrapActiveEnded += Trap_OnTrapActiveEnded;
         trap.OnTrapTriggeredEnded += Trap_OnTrapTriggeredEnded;
+        trap.OnTrapDepletedUses += Trap_OnTrapDepletedUses;
+        trap.OnTrapRearmed += Trap_OnTrapRearmed;
+        trap.OnTrapBroken += Trap_OnTrapBroken;
+
+        SetActiveVisuals();
+    }
+
+    private void Trap_OnTrapBroken(object sender, EventArgs e) {
+        trapAnimator.SetTrigger("Break");
+    }
+
+    private void Trap_OnTrapRearmed(object sender, EventArgs e) {
+        SetActiveVisuals();
+        trapAnimator.SetTrigger("Rearm");
+    }
+
+    private void Trap_OnTrapDepletedUses(object sender, EventArgs e) {
+        SetDepletedVisuals();
     }
 
     private void Trap_OnTrapTriggeredEnded(object sender, EventArgs e) {
@@ -31,8 +52,18 @@ public class StructureVisual_Trap : StructureVisual
     }
 
     private void Trap_OnTrapActiveEnded(object sender, System.EventArgs e) {
-        if (trap.GetHasUsesLeft()) {
-        }
+
+    }
+
+    private void SetDepletedVisuals() {
+        trapAnimator.enabled = false;
+        trapSpriteRenderer.sprite = trapDepletedSprite;
+        depletedUsesGlowSpriteRenderer.enabled = true;
+    }
+
+    private void SetActiveVisuals() {
+        trapAnimator.enabled = true;
+        depletedUsesGlowSpriteRenderer.enabled = false;
     }
 
     private void Trap_OnTrapTriggered(object sender, System.EventArgs e) {
@@ -44,6 +75,7 @@ public class StructureVisual_Trap : StructureVisual
 
         if(showTrapFullSpriteOnHover) {
             fullTrapAnimator.SetTrigger("Hide");
+            fullTrapAnimator.ResetTrigger("Show");
         }
     }
 
@@ -52,6 +84,7 @@ public class StructureVisual_Trap : StructureVisual
 
         if (showTrapFullSpriteOnHover) {
             fullTrapAnimator.SetTrigger("Show");
+            fullTrapAnimator.ResetTrigger("Hide");
         }
     }
 }

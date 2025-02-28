@@ -6,6 +6,9 @@ using UnityEngine;
 public class Structure_Trap : Structure
 {
     [SerializeField] protected TrapSO trapSO;
+    [SerializeField] protected GameObject creatureTriggerCollider;
+    protected StructureLocation_Trap trapStructureLocation;
+
     protected int trapDamage;
     protected int usesPerNight;
     protected int rearmPrice;
@@ -23,19 +26,24 @@ public class Structure_Trap : Structure
     protected bool triggeredEnded;
     protected bool trapCoolingDown;
 
+    public event EventHandler OnTrapBroken;
     public event EventHandler OnTrapTriggered;
     public event EventHandler OnTrapTriggeredEnded;
     public event EventHandler OnTrapActiveEnded;
+    public event EventHandler OnTrapDepletedUses;
     public event EventHandler OnTrapRearmed;
     public event EventHandler OnTrapMaxRearmsReached;
+    public event EventHandler OnTrapRearmPriceChanged;
 
     protected override void Start() {
         base.Start();
         MerchantItem.OnAnyMerchantItemBought += MerchantItem_OnAnyMerchantItemBought;
 
         RefreshTrapStats();
+        maxRearms = trapSO.maxRearmsBeforeBreaking;
+        currentRearmIndex = maxRearms;
+        creatureTriggerCollider.SetActive(false);
     }
-
 
     protected void Update() {
 
@@ -43,9 +51,14 @@ public class Structure_Trap : Structure
             trapActiveTimer -= Time.deltaTime;
             if(trapActiveTimer < 0) {
                 trapIsActive = false;
-                trapCoolingDown = true;
 
-                OnTrapActiveEnded?.Invoke(this, EventArgs.Empty);
+                if(!GetHasUsesLeft()) {
+                    OnTrapDepletedUses?.Invoke(this, EventArgs.Empty);
+                } else {
+                    trapCoolingDown = true;
+                    OnTrapActiveEnded?.Invoke(this, EventArgs.Empty);
+
+                }
             }
             return;
         };    
@@ -95,7 +108,35 @@ public class Structure_Trap : Structure
     }
 
     protected override void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
+        creatureTriggerCollider.SetActive(false);
+
         base.DayNightManager_OnDawnStart(sender, e);
+
+        if(currentRearmIndex == 0) {
+            StartCoroutine(BreakTrapAfterRandomDelay());
+            return;
+        }
+
+        if (currentUseIndex != 0) {
+            OnTrapDepletedUses?.Invoke(this, EventArgs.Empty);
+            ActivateStructurePrimaryFunctionInteraction(true);
+        }
+    }
+
+    protected override void DayNightManager_OnNightStart(object sender, EventArgs e) {
+        creatureTriggerCollider.SetActive(true);
+
+        base.DayNightManager_OnNightStart(sender, e);
+    }
+
+    protected override void TriggerStructurePrimaryFunction() {
+        currentUseIndex = 0;
+        currentRearmIndex--;
+
+        ActivateStructurePrimaryFunctionInteraction(false);
+
+        OnTrapRearmed?.Invoke(this, EventArgs.Empty);
+        base.TriggerStructurePrimaryFunction();
     }
 
     protected void RefreshTrapStats() {
@@ -106,10 +147,13 @@ public class Structure_Trap : Structure
         usesPerNight = trapSO.trapUsesPerNight + usesPerNightUpgrade;
 
         int rearmPriceUpgrade = (int)TrapManager.Instance.GetCurrentUpgradeValue(trapSO.trapType, TrapUpgradeSO.TrapUpgradeType.priceToReload);
-        rearmPrice = trapSO.trapPriceToReload - rearmPriceUpgrade;
+        rearmPrice = trapSO.rearmPrice - rearmPriceUpgrade;
+        if(rearmPriceUpgrade != 0) {
+            OnTrapRearmPriceChanged?.Invoke(this, EventArgs.Empty);
+        }
 
         int maxRearmsUpgrade = (int)TrapManager.Instance.GetCurrentUpgradeValue(trapSO.trapType, TrapUpgradeSO.TrapUpgradeType.totalUses);
-        rearmPrice = trapSO.trapReloadsBeforeBreaking - maxRearmsUpgrade;
+        maxRearms = trapSO.maxRearmsBeforeBreaking - maxRearmsUpgrade;
 
         float trapCooldownUpgrade = TrapManager.Instance.GetCurrentUpgradeValue(trapSO.trapType, TrapUpgradeSO.TrapUpgradeType.cooldown);
         trapCooldown = trapSO.trapCooldown - trapCooldownUpgrade;
@@ -121,9 +165,29 @@ public class Structure_Trap : Structure
         return currentUseIndex < usesPerNight;
     }
 
+    public int GetRearmPrice() {
+        return rearmPrice;
+    }
+
     public TrapSO GetTrapSO() {
         return trapSO;
     }
+
+    private IEnumerator BreakTrapAfterRandomDelay() {
+        float randomDelay = UnityEngine.Random.Range(1f, 2f);
+        yield return new WaitForSeconds(randomDelay);
+
+        trapStructureLocation.ReActivateTrapStructureLocation();
+        OnTrapBroken?.Invoke(this, EventArgs.Empty);
+
+        yield return new WaitForSeconds(1f);
+        Destroy(gameObject);
+    }
+
+    public void SetTrapStructureLocation(StructureLocation_Trap trapStructureLocation) {
+        this.trapStructureLocation = trapStructureLocation;
+    }
+
     protected void OnDestroy() {
         MerchantItem.OnAnyMerchantItemBought -= MerchantItem_OnAnyMerchantItemBought;
     }

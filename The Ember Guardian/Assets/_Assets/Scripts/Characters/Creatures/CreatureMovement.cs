@@ -84,6 +84,7 @@ public class CreatureMovement : MobMovement
 
     private void Creature_OnCreatureImmobilizedStarted(object sender, System.EventArgs e) {
         immobilized = true;
+        rb.velocity = Vector2.zero;
     }
 
     private void Creature_OnCreatureShockedStopped(object sender, System.EventArgs e) {

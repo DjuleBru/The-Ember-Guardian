@@ -355,7 +355,6 @@ public class UICurrencyManager : MonoBehaviour
     private void DropCurrencyFromBag(Currency_UI currencyUI) {
         currencyUI.RemoveFromBag(this);
 
-        Debug.Log("DropCurrencyFromBag");
         OnCurrencyDropped?.Invoke(this, new OnCurrencyDroppedEventArgs {
             currencyUIDropped = currencyUI
         });

@@ -45,7 +45,7 @@ public class FireVisual : StructureVisual
     private float wildLightRadius = 8.23f;
     private float insaneLightRadius = 11.17f;
 
-    private float AOEFireLightIntensity = 1f;
+    private float AOEFireLightIntensity = .65f;
 
     private float initialFireAOEValue;
     private float finalFireAOEValue;
@@ -81,6 +81,8 @@ public class FireVisual : StructureVisual
 
             Player.Instance.OnPlayerBackToTentToRespawn += Player_OnPlayerBackToTentToRespawn;
         }
+
+        StartCoroutine(LerpFireLightIntensity(0, AOEFireLightIntensity, 1f));
     }
 
     private void Player_OnPlayerBackToTentToRespawn(object sender, System.EventArgs e) {
@@ -88,10 +90,10 @@ public class FireVisual : StructureVisual
     }
 
     protected void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
-        StartCoroutine(LerpFireLightIntensity(0, AOEFireLightIntensity, 1.5f));
+        StartCoroutine(LerpFireLightIntensity(0, AOEFireLightIntensity, 1f));
     }
     protected void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
-        StartCoroutine(LerpFireLightIntensity(AOEFireLightIntensity, 0,1.5f));
+        StartCoroutine(LerpFireLightIntensity(AOEFireLightIntensity, 0,1f));
     }
 
     private void Fire_OnFireFuelled(object sender, System.EventArgs e) {

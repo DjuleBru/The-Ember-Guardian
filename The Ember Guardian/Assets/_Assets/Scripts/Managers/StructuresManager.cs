@@ -7,8 +7,6 @@ public class StructuresManager : MonoBehaviour
 {
     public static StructuresManager Instance;
 
-    private int structureLocationsUnlockedLevel = 1;
-
     [SerializeField] private StructureLocation initialFireStructureLocation;
     [SerializeField] private List<Structure> initialStructures;
     [SerializeField] private List<StructureLocation> level1StructureLocationsUnlocked;
@@ -23,6 +21,7 @@ public class StructuresManager : MonoBehaviour
     }
 
     private void Start() {
+        Debug.Log("StructuresManager start");
         initialFireStructureLocation.UnlockStructureLocation();
 
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
@@ -32,6 +31,7 @@ public class StructuresManager : MonoBehaviour
             structure.gameObject.SetActive(false);
         }
     }
+
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
         foreach(StructureLocation location in level1StructureLocationsUnlocked) {
@@ -62,22 +62,6 @@ public class StructuresManager : MonoBehaviour
 
         if(structure is Tower) {
             builtTowers.Add(structure);
-        }
-    }
-
-    public void UnlockNextStructureLocations() {
-        structureLocationsUnlockedLevel++;
-
-        if(structureLocationsUnlockedLevel == 2) {
-            foreach (StructureLocation location in level2StructureLocationsUnlocked) {
-                location.UnlockStructureLocation();
-            }
-        }
-
-        if (structureLocationsUnlockedLevel == 3) {
-            foreach (StructureLocation location in level3StructureLocationsUnlocked) {
-                location.UnlockStructureLocation();
-            }
         }
     }
 

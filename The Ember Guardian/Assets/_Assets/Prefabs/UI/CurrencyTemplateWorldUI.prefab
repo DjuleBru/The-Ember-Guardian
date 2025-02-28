@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 6693436485697052919}
   - component: {fileID: 3851806060443087481}
   - component: {fileID: 88882188609159008}
+  - component: {fileID: 7321695005334010417}
   m_Layer: 0
   m_Name: CurrencyTemplateWorldUI
   m_TagString: Untagged
@@ -139,6 +140,7 @@ MonoBehaviour:
   currencyTypeToPay: 0
   orbImageOutline: {fileID: 5570081739732719578}
   payCurrencyUIAnimator: {fileID: 88882188609159008}
+  initialPayCurrencySmoothTime: 4
 --- !u!58 &3851806060443087481
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -195,6 +197,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!50 &7321695005334010417
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151666123000681640}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &5890131613221981005
 GameObject:
   m_ObjectHideFlags: 0

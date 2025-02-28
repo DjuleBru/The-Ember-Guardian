@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c7961ad1e3c5044a946b393c459b3b, type: 3}
+  m_Name: SpikeEjector_Cooldown
+  m_EditorClassIdentifier: 
+  itemType: 4
+  trapType: 3
+  trapUpgradeSO: {fileID: 11400000, guid: 7eab14f1f4c01c442803ad193a533065, type: 2}
+  trapStructureSO: {fileID: 0}
+  linkedTrapSO: {fileID: 11400000, guid: cdb411afab793dd43be6a76135d6ac81, type: 2}
+  TrapName: Bear Trap cooldown
+  buyTrapPrice: 3
+  trapDamage: 0
+  trapSpecialStat: 0
+  trapCooldown: 0
+  trapUsesPerNight: 0
+  maxRearmsBeforeBreaking: 0
+  rearmPrice: 0
+  trapActiveDuration: 0
+  trapHasAOEAttack: 0
+  Icon: {fileID: -720945697, guid: 131d4d4cb09addc43b80369788938af7, type: 3}
+  currencyTypeToPay: 0
+  triggerTrapAudioClip:
+  - {fileID: 0}
+  reloadTrapAudioClip:
+  - {fileID: 0}
+  Description: Reduces the bear trap's cooldown.

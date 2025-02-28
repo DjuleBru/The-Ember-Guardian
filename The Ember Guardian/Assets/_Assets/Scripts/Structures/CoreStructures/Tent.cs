@@ -50,8 +50,13 @@ public class Tent : Structure
 
     protected override void RefreshStructureUpgradeInteraction() {
         string saveString = structureSO.structureType.ToString() + (structureLevel+1);
+        bool upgradeUnlocked = MetaProgressionManager.Instance.GetMerchantItemBought(saveString);
 
-        if (!MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
+        if (DebugManager.Instance.GetAllStructureUpgradesUnlocked()) {
+            upgradeUnlocked = true;
+        }
+
+        if (!upgradeUnlocked) {
             SetStructureUpgradableUnlocked(false);
         }
         else {

@@ -106,7 +106,6 @@ public class CampZoneManager : MonoBehaviour
         OnCampZoneLimitsChanged?.Invoke(this, EventArgs.Empty);
     }
 
-
     public float GetMinZoneLimit() {
         return minZoneLimit;
     }

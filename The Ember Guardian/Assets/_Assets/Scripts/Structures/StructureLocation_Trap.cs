@@ -10,6 +10,7 @@ public class StructureLocation_Trap : StructureLocation {
     private List<PlayerCurrencies.CurrencyType> trapCurrencyTypes = new List<PlayerCurrencies.CurrencyType>();
 
     private int currentCurrencyIndex = 0;
+    private bool trapLocationActive = true;
 
     public event EventHandler OnStructureSOToBuildChanged;
     public event EventHandler OnTrapTypesAmountInInventoryChanged;
@@ -25,8 +26,20 @@ public class StructureLocation_Trap : StructureLocation {
         UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped += PlayerInventoryUI_OnCurrencyDropped;
         UICurrencyManager.PlayerInventoryUI.OnCurrencyRemovedFromBag += PlayerInventoryUI_OnCurrencyRemovedFromBag;
     }
+    public override Structure BuildStructure() {
+
+        Structure_Trap trap = Instantiate(structureSOToBuild.structurePrefab, transform.position, Quaternion.identity).GetComponent<Structure_Trap>();
+        trap.SetTrapStructureLocation(this);
+        InvokeOnAnyStructureBuilt();
+
+        trapLocationActive = false;
+        gameObject.SetActive(false);
+        return trap;
+    }
 
     private void GameInput_OnPlayerRightSwitchPerformed(object sender, EventArgs e) {
+        if (!structureLocationUnlocked) return;
+        if (!trapLocationActive) return;
         if (!playerInTriggerArea) return;
         if (trapCurrencyTypesInPlayerInventory.Count <= 1) return;
 
@@ -35,6 +48,8 @@ public class StructureLocation_Trap : StructureLocation {
     }
 
     private void GameInput_OnPlayerLeftSwitchPerformed(object sender, EventArgs e) {
+        if (!structureLocationUnlocked) return;
+        if (!trapLocationActive) return;
         if (!playerInTriggerArea) return;
         if (trapCurrencyTypesInPlayerInventory.Count <= 1) return;
 
@@ -56,16 +71,25 @@ public class StructureLocation_Trap : StructureLocation {
 
 
     private void PlayerInventoryUI_OnCurrencyRemovedFromBag(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        if (!trapLocationActive) return;
+        if (!structureLocationUnlocked) return;
 
         if (!trapCurrencyTypes.Contains(e.currencyUIDropped.GetCurrencyType())) return;
         StartCoroutine(RefreshTrapTypesInPlayerInventoryAfterFrame());
     }
 
     private void PlayerInventoryUI_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        if (!trapLocationActive) return;
+        if (!structureLocationUnlocked) return;
+
         if (!trapCurrencyTypes.Contains(e.currencyUIDropped.GetCurrencyType())) return;
         StartCoroutine(RefreshTrapTypesInPlayerInventoryAfterFrame());
     }
+
     private void PlayerInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        if (!trapLocationActive) return;
+        if (!structureLocationUnlocked) return;
+
         if (!trapCurrencyTypes.Contains(e.currencyUIDropped.GetCurrencyType())) return;
         StartCoroutine(RefreshTrapTypesInPlayerInventoryAfterFrame());
     }
@@ -84,6 +108,11 @@ public class StructureLocation_Trap : StructureLocation {
         RefreshTrapTypesInPlayerInventory();
     }
 
+    public override void UnlockStructureLocation() {
+        base.UnlockStructureLocation();
+        RefreshTrapTypesInPlayerInventory();
+    }
+
     private void RefreshTrapTypesInPlayerInventory() {
         trapCurrencyTypesInPlayerInventory.Clear();
 
@@ -95,11 +124,17 @@ public class StructureLocation_Trap : StructureLocation {
                 trapCurrencyTypesInPlayerInventory.Add(currencyType);
             }
         }
+
         OnTrapTypesAmountInInventoryChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public int GetTrapTypeAmountInInventory() {
         return trapCurrencyTypesInPlayerInventory.Count;
+    }
+
+    public void ReActivateTrapStructureLocation() {
+        trapLocationActive = true;
+        gameObject.SetActive(true);
     }
 
     private void OnDestroy() {

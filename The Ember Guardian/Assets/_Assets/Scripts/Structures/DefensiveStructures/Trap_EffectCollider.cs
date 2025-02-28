@@ -36,8 +36,7 @@ public class Trap_EffectCollider : MonoBehaviour
         creature.TakeDamage(trap.GetTrapSO().trapDamage, transform);
 
         if(trap.GetTrapSO().trapType == TrapItem.TrapType.bearTrap) {
-            creature.ApplyBearTrapEffect(trap.GetTrapSO().trapSpecialStat);
-            Debug.Log("bear trap " + trap.GetTrapSO().trapSpecialStat);
+            creature.ApplyBearTrapEffect(trap.GetTrapSO().trapSpecialStat, transform.position);
         }
 
         if (trap.GetTrapSO().trapType == TrapItem.TrapType.smokeEjector) {

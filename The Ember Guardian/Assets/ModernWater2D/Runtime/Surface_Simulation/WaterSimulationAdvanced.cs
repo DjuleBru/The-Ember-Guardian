@@ -246,6 +246,15 @@ namespace Water2D
         {
             Setup(value);
         }
+        public void EnableRain(bool enabled) {
+            enableRain = enabled;
+        }
+        public void SetRainSpeed(float rainSpeed) {
+            this.rainSpeed = rainSpeed;
+        }
+        public void SetRainWaveH(float rainWaveH) {
+            this.rainWaveH = rainWaveH;
+        }
 
     }
 }

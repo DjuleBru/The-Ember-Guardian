@@ -330,7 +330,7 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
         }
 
         int trapReloadPriceUpgrade = (int)TrapManager.Instance.GetCurrentUpgradeValue(trapItem.trapType, TrapUpgradeSO.TrapUpgradeType.priceToReload);
-        int totalReloadPrice = trapSO.trapPriceToReload - trapReloadPriceUpgrade;
+        int totalReloadPrice = trapSO.rearmPrice - trapReloadPriceUpgrade;
         trapReloadPriceStatValue.text = totalReloadPrice.ToString();
         if (trapReloadPriceUpgrade != 0) {
             trapReloadPriceStatValue.fontMaterial = UpgradeFontMaterial;

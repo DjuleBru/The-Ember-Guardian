@@ -17,8 +17,8 @@ public class TrapSO : ScriptableObject
     public int trapSpecialStat;
     public int trapCooldown;
     public int trapUsesPerNight;
-    public int trapReloadsBeforeBreaking;
-    public int trapPriceToReload;
+    public int maxRearmsBeforeBreaking;
+    public int rearmPrice;
     public float trapActiveDuration;
     public bool trapHasAOEAttack;
     public Sprite Icon;

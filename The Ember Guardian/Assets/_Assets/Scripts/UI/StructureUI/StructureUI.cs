@@ -101,12 +101,14 @@ public class StructureUI : MonoBehaviour
     }
 
     protected virtual void Structure_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
+        if (!playerInTriggerArea) return;
         playerInTriggerArea = false;
         ShowStructurePrimaryFunctionUI();
         SetUIActive(false);
     }
 
     protected virtual void Structure_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        if (playerInTriggerArea) return;
         playerInTriggerArea = true;
         SetUIActive(true);
         RefreshShownUI();

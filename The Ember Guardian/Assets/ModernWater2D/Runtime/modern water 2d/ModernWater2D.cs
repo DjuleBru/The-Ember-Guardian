@@ -781,7 +781,7 @@ namespace Water2D
                 wavesSimulation.Collision(collision,Mathf.Lerp(0f,1f,t));
             }
         }
-
+ 
     }
 }
 

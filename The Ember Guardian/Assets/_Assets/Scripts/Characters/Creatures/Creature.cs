@@ -294,10 +294,13 @@ public class Creature : Mob
         }
     }
 
-    public void ApplyBearTrapEffect(float immobilizeDuration) {
+    public void ApplyBearTrapEffect(float immobilizeDuration, Vector3 trapPosition) {
         immobilized = true;
         immobilizedDuration = immobilizeDuration;
         immobilizedTimer = immobilizedDuration;
+
+        Vector3 position = new Vector3(trapPosition.x, transform.position.y, 0);
+        transform.position = position;
 
         OnCreatureImmobilizedStarted?.Invoke(this, EventArgs.Empty);
     }

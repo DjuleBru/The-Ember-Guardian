@@ -166,8 +166,11 @@ public class Structure : MonoBehaviour {
                 ungradeUnlocked = true;
             }
         }
+
+        if(DebugManager.Instance.GetAllStructureUpgradesUnlocked()) {
+            ungradeUnlocked = true;
+        }
         
-        Debug.Log("RefreshStructureUpgradeInteraction " + ungradeUnlocked);
         SetStructureUpgradableUnlocked(ungradeUnlocked);
         OnStructureInteractionsUpdated?.Invoke(this, EventArgs.Empty);
     }
