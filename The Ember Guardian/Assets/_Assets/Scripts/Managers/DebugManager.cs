@@ -20,7 +20,8 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool debugMode_AllStructureUpgradeUnlocked;
     [SerializeField] private bool debugMode_WorkerInteractions;
     [SerializeField] private bool debugMode_DontShowVideoTip;
-    [SerializeField] private bool debugMode_WindManaged;
+    [SerializeField] private bool debugMode_WindManager;
+    [SerializeField] private bool debugMode_RainManager;
 
     private void Awake() {
         Instance = this;
@@ -75,6 +76,10 @@ public class DebugManager : MonoBehaviour
         return debugMode_DontShowVideoTip;
     }
     public bool GetDebugMode_WindManager() {
-        return debugMode_WindManaged;
+        return debugMode_WindManager;
+    }
+    public bool GetDebugMode_RainManager()
+    {
+        return debugMode_RainManager;
     }
 }

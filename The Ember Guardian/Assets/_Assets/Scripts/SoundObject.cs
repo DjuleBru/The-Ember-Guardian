@@ -38,7 +38,7 @@ public class SoundObject : MonoBehaviour
         audioSource2D.PlayOneShot(audioClip, volume * sfxVolume);
     }
 
-    private IEnumerator FadeOutCoroutine(AudioSource audioSource, float fadeDuration) {
+    protected IEnumerator FadeOutCoroutine(AudioSource audioSource, float fadeDuration) {
         float startVolume = audioSource.volume;
 
         // Réduire progressivement le volume
@@ -55,7 +55,7 @@ public class SoundObject : MonoBehaviour
         audioSource.Stop(); // Arrêter la musique
     }
 
-    private IEnumerator FadeInCoroutine(AudioSource audioSource, float fadeDuration, float targetVolume) {
+    protected IEnumerator FadeInCoroutine(AudioSource audioSource, float fadeDuration, float targetVolume) {
         audioSource.volume = 0;
         audioSource.Play(); // Assure que la musique démarre
 
@@ -70,5 +70,30 @@ public class SoundObject : MonoBehaviour
 
         // S'assurer que le volume atteint la valeur finale
         audioSource.volume = targetVolume;
+    }
+
+    protected IEnumerator ChangeVolumeGradually(float targetVolume, bool stopAfter = false)
+    {
+        float duration = 1.0f; // Temps de transition
+        float elapsed = 0f;
+        float startVolume = audioSource2D.volume;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            audioSource2D.volume = Mathf.Lerp(startVolume, targetVolume, elapsed / duration);
+            yield return null;
+        }
+
+        audioSource2D.volume = targetVolume;
+        
+        if(targetVolume == 0)
+        {
+            stopAfter = true;   
+        }
+        if (stopAfter)
+        {
+            audioSource2D.Stop();
+        }
     }
 }

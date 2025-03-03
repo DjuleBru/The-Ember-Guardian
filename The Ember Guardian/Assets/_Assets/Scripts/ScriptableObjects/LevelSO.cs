@@ -38,6 +38,11 @@ public class LevelSO : ScriptableObject
     public WindManager.WindStrength initialWindStrength;
     [ShowIf("hasWind")]
     public List<WindManager.WindStrength> windStrengthsAllowedInLevel;
+    public bool hasRain;
+    [ShowIf("hasRain")]
+    public RainManager.RainIntensity initialRainIntensity;
+    [ShowIf("hasRain")]
+    public List<RainManager.RainIntensity> rainIntensitiesAllowedInLevel;
 
     public int baseDifficulty;
     public int minSubwaveDifficulty;

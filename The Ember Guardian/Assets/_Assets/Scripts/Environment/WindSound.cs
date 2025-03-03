@@ -46,23 +46,7 @@ public class WindSound : SoundObject
         yield return StartCoroutine(ChangeVolumeGradually(sfxVolume * audioSourceVolume));
     }
 
-    private IEnumerator ChangeVolumeGradually(float targetVolume, bool stopAfter = false) {
-        float duration = 1.0f; // Temps de transition
-        float elapsed = 0f;
-        float startVolume = audioSource2D.volume;
-
-        while (elapsed < duration) {
-            elapsed += Time.deltaTime;
-            audioSource2D.volume = Mathf.Lerp(startVolume, targetVolume, elapsed / duration);
-            yield return null;
-        }
-
-        audioSource2D.volume = targetVolume;
-
-        if (stopAfter) {
-            audioSource2D.Stop();
-        }
-    }
+    
 
     protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         base.SettingsManager_OnSfxVolumeChanged(sender, e);

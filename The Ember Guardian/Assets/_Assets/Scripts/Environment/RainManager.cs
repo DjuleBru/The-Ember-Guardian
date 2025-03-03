@@ -1,36 +1,54 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using QFSW.QC.Utilities;
 using UnityEngine;
 using Water2D;
+using static WindManager;
 
 public class RainManager : MonoBehaviour
 {
-    public enum RainLevel {
-        none,
-        sparse,
-        medium,
-        high,
-        extreme,
-    }
+    public static RainManager Instance;
 
-    private List<RainLevel> allRainLevels = new List<RainLevel>();
-    private RainLevel currentRainLevel;
 
     [SerializeField] private ModernWater2D modernWater2D;
 
     [SerializeField] private ParticleSystem rainPS_GroundCollisions;
     [SerializeField] private ParticleSystem rainPS_NoCollisions;
+    [SerializeField] private SpriteRenderer rainFrontFogSpriteRenderer;
 
     [SerializeField] private ParticleSystem rainPS_SubEmitter;
+    private Transform cameraTransform;
+
+    public enum RainIntensity {
+        none,
+        sparse,
+        medium,
+        strong,
+        extreme,
+    }
+
+    private List<RainIntensity> allRainLevels = new List<RainIntensity>();
+    private List<RainIntensity> rainIntensitiesAllowedInLevel;
+    private RainIntensity currentRainIntensity;
+    private bool hasRain;
+    private bool debugMode;
+
+    public event EventHandler OnRainIntensityChanged;
+
+    private float sparseRainFrontFogAlpha = .15f;
+    private float mediumRainFrontFogAlpha = .23f;
+    private float highRainFrontFogAlpha = .4f;
+    private float extremeRainFrontFogAlpha = .4f;
 
     private int sparseRainPSEmission = 15;
     private int mediumRainPSEmission = 40;
     private int highRainPSEmission = 75;
     private int extremeRainPSEmission = 150;
 
-    private float sparseRainPSSize = .05f;
-    private float mediumRainPSSize = .06f;
-    private float highRainPSSize = .07f;
+    private float sparseRainPSSize = .03f;
+    private float mediumRainPSSize = .04f;
+    private float highRainPSSize = .06f;
     private float extremeRainPSSize = .08f;
 
     private float sparseRainSubEmitterPSSize = .03f;
@@ -48,45 +66,121 @@ public class RainManager : MonoBehaviour
     private float highRainStrength = .7f;
     private float extremeRainStrength = .8f;
 
-    [SerializeField] private bool enableRain;
 
-    private int rainLevelIndex;
-
-    private void Awake() {
+    private void Awake()
+    {
+        Instance = this;
         InitializeRainLevels();
     }
 
-    private void Start() {
-        SetRainLevel(allRainLevels[rainLevelIndex]);
+    private void Start()
+    {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) return;
+
+        debugMode = DebugManager.Instance.GetDebugMode_RainManager();
+
+        cameraTransform = Camera.main.transform;
+
+        hasRain = LevelManager.Instance.GetLevelSO().hasRain;
+
+        if (hasRain)
+        {
+            rainIntensitiesAllowedInLevel = LevelManager.Instance.GetLevelSO().rainIntensitiesAllowedInLevel;
+        }
+        else
+        {
+            rainIntensitiesAllowedInLevel = new List<RainIntensity> { RainIntensity.none };
+        }
+
+        if(debugMode) {
+            rainIntensitiesAllowedInLevel = allRainLevels;
+        }
+
+        DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+        DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+
+        currentRainIntensity = LevelManager.Instance.GetLevelSO().initialRainIntensity;
+        RandomizeRainDir();
+
+        SetRainLevel(currentRainIntensity);
     }
 
     private void Update() {
-        FollowPlayer();
-        if(Input.GetKeyDown(KeyCode.T)) {
-            rainLevelIndex++;
-            currentRainLevel = allRainLevels[rainLevelIndex];
-            SetRainLevel(currentRainLevel);
+        RainFollowCamera();
+
+        if (!debugMode) return;
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            RandomizeRainDir();
+            currentRainIntensity = RainIntensity.none;
+            SetRainLevel(currentRainIntensity);
+        }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            RandomizeRainDir();
+            currentRainIntensity = RainIntensity.sparse;
+            SetRainLevel(currentRainIntensity);
+        }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            RandomizeRainDir();
+            currentRainIntensity = RainIntensity.medium;
+            SetRainLevel(currentRainIntensity);
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            RandomizeRainDir();
+            currentRainIntensity = RainIntensity.strong;
+            SetRainLevel(currentRainIntensity);
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            RandomizeRainDir();
+            currentRainIntensity = RainIntensity.extreme;
+            SetRainLevel(currentRainIntensity);
+        }
+    }
+    private void RainFollowCamera()
+    {
+        cameraTransform = Camera.main.transform;
+        Vector3 newPosition = new Vector3(cameraTransform.position.x, 0, 0);
+
+        rainPS_GroundCollisions.transform.position = newPosition;
+        rainPS_NoCollisions.transform.position = newPosition;
+    }
+
+    private void DayNightManager_OnDawnStart(object sender, EventArgs e)
+    {
+        if (!hasRain) return;
+        if (rainIntensitiesAllowedInLevel.Count == 0) return;
+
+        currentRainIntensity = rainIntensitiesAllowedInLevel[UnityEngine.Random.Range(0, rainIntensitiesAllowedInLevel.Count)];
+        RandomizeRainDir();
+        SetRainLevel(currentRainIntensity);
+    }
+
+    private void DayNightManager_OnDuskStart(object sender, EventArgs e)
+    {
+        if (currentRainIntensity != RainIntensity.none)
+        {
+            currentRainIntensity = RainIntensity.none;
+            SetRainLevel(currentRainIntensity);
         }
     }
 
-    private void FollowPlayer() {
-        Vector3 newRainPSPosition = new Vector3(Player.Instance.transform.position.x, rainPS_GroundCollisions.transform.position.y, 0);
-        rainPS_GroundCollisions.transform.position = newRainPSPosition;
-        rainPS_NoCollisions.transform.position = newRainPSPosition;
-    }
-
     private void InitializeRainLevels() {
-        allRainLevels.Add(RainLevel.none);
-        allRainLevels.Add(RainLevel.sparse);
-        allRainLevels.Add(RainLevel.medium);
-        allRainLevels.Add(RainLevel.high);
-        allRainLevels.Add(RainLevel.extreme);
+        allRainLevels.Add(RainIntensity.none);
+        allRainLevels.Add(RainIntensity.sparse);
+        allRainLevels.Add(RainIntensity.medium);
+        allRainLevels.Add(RainIntensity.strong);
+        allRainLevels.Add(RainIntensity.extreme);
     }
 
-    private void SetRainLevel(RainLevel rainLevel) {
+    private void SetRainLevel(RainIntensity rainLevel) {
         WaterSimulationAdvanced waterSim = modernWater2D.waterSimulation as WaterSimulationAdvanced;
+        bool enableRain;
 
-        if (rainLevel != RainLevel.none) {
+        if (rainLevel != RainIntensity.none) {
             enableRain = true;
         } else {
             enableRain = false;
@@ -100,65 +194,86 @@ public class RainManager : MonoBehaviour
         ParticleSystem.MainModule main_NoCollisions = rainPS_NoCollisions.main;
         ParticleSystem.MainModule main_SubEmitter = rainPS_SubEmitter.main;
 
-        if (currentRainLevel == RainLevel.none) {
+        if (currentRainIntensity == RainIntensity.none) {
             emission_Collisions.rateOverTime = 0;
             emission_NoCollisions.rateOverTime = 0;
-            return;
+
+            rainFrontFogSpriteRenderer.material.SetFloat("_Alpha", 0);
         }
 
-        if (currentRainLevel == RainLevel.sparse) {
+        if (currentRainIntensity == RainIntensity.sparse) {
             emission_Collisions.rateOverTime = sparseRainPSEmission;
             emission_NoCollisions.rateOverTime = sparseRainPSEmission;
             main_Collisions.startSize = sparseRainPSSize;
             main_NoCollisions.startSize = sparseRainPSSize;
             main_SubEmitter.startSize = sparseRainSubEmitterPSSize;
 
+            rainFrontFogSpriteRenderer.material.SetFloat("_Alpha", sparseRainFrontFogAlpha);
+
             waterSim.SetRainSpeed(sparseRainSpeed);
             waterSim.SetRainWaveH(sparseRainStrength);
-            return;
         }
 
-        if (currentRainLevel == RainLevel.medium) {
+        if (currentRainIntensity == RainIntensity.medium) {
             emission_Collisions.rateOverTime = mediumRainPSEmission;
             emission_NoCollisions.rateOverTime = mediumRainPSEmission;
             main_Collisions.startSize = mediumRainPSSize;
             main_NoCollisions.startSize = mediumRainPSSize;
             main_SubEmitter.startSize = mediumRainSubEmitterPSSize;
 
+            rainFrontFogSpriteRenderer.material.SetFloat("_Alpha", mediumRainFrontFogAlpha);
+
             waterSim.SetRainSpeed(mediumRainSpeed);
             waterSim.SetRainWaveH(mediumRainStrength);
-            return;
         }
 
-        if (currentRainLevel == RainLevel.high) {
+        if (currentRainIntensity == RainIntensity.strong) {
             emission_Collisions.rateOverTime = highRainPSEmission;
             emission_NoCollisions.rateOverTime = highRainPSEmission;
             main_Collisions.startSize = highRainPSSize;
             main_NoCollisions.startSize = highRainPSSize;
             main_SubEmitter.startSize = highRainSubEmitterPSSize;
 
+            rainFrontFogSpriteRenderer.material.SetFloat("_Alpha", highRainFrontFogAlpha);
+
             waterSim.SetRainSpeed(highRainSpeed);
             waterSim.SetRainWaveH(highRainStrength);
-            return;
         }
 
-        if (currentRainLevel == RainLevel.extreme) {
+        if (currentRainIntensity == RainIntensity.extreme) {
             emission_Collisions.rateOverTime = extremeRainPSEmission;
             emission_NoCollisions.rateOverTime = extremeRainPSEmission;
             main_Collisions.startSize = extremeRainPSSize;
             main_NoCollisions.startSize = extremeRainPSSize;
             main_SubEmitter.startSize = extremeRainSubEmitterPSSize;
 
+            rainFrontFogSpriteRenderer.material.SetFloat("_Alpha", extremeRainFrontFogAlpha);
+
             waterSim.SetRainSpeed(extremeRainSpeed);
             waterSim.SetRainWaveH(extremeRainStrength);
-            return;
         }
 
+        OnRainIntensityChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    private void EnableRainInWaterSimulation(bool enableRain) {
-        WaterSimulationAdvanced waterSim = modernWater2D.waterSimulation as WaterSimulationAdvanced;
+    private void RandomizeRainDir()
+    {
+        float rainDir = UnityEngine.Random.Range(-1f, 1f);
+        ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime_GroundCollision = rainPS_GroundCollisions.velocityOverLifetime;
+        ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime_NoCollision = rainPS_NoCollisions.velocityOverLifetime;
+
+        if (rainDir < 0) {
+            velocityOverLifetime_GroundCollision.x = new ParticleSystem.MinMaxCurve(-12f, -10f);
+            velocityOverLifetime_NoCollision.x = new ParticleSystem.MinMaxCurve(-12f, -10f);
+        } else {
+            velocityOverLifetime_GroundCollision.x = new ParticleSystem.MinMaxCurve(10f, 12f);
+            velocityOverLifetime_NoCollision.x = new ParticleSystem.MinMaxCurve(10f, 12f);
+        }
     }
 
+    public RainIntensity GetRainIntensity()
+    {
+        return currentRainIntensity;
+    }
 
 }
