@@ -182,6 +182,7 @@ public class BarricadeVisual : StructureVisual {
     private void Barricade_OnFireLightTriggeredOut(object sender, EventArgs e) {
         if (!outerBarricade) return;
         barricadeSpotLight.enabled = true;
+        Debug.Log("Barricade_OnFireLightTriggeredOut");
     }
 
     private void Barricade_OnFireLightTriggeredIn(object sender, EventArgs e) {
@@ -196,8 +197,9 @@ public class BarricadeVisual : StructureVisual {
 
     protected void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
         if (!spotLightUnlocked) return;
-        barricadeSpotLight.enabled = outerBarricade;
-        
+        barricadeSpotLight.enabled = false;
+        Debug.Log("DayNightManager_OnDayStart");
+
     }
     public bool GetBarricadeHasAllSprites() {
         if (spriteIndex == 1) {

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 891391418164042450}
   - component: {fileID: 1034756387110975043}
-  - component: {fileID: 6353049857654942130}
   m_Layer: 0
   m_Name: Layer7_RainFront
   m_TagString: Untagged
@@ -85,19 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6353049857654942130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3585861182492249629}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db889a4b2f434aa429916aa14de96356, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  distanceFromFireToFullyShowFog: 20
 --- !u!1 &8493843431191974965
 GameObject:
   m_ObjectHideFlags: 0

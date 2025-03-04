@@ -205,7 +205,6 @@ public class Projectile : MonoBehaviour
         // Hit Barricade
         Barricade barricade = collision.gameObject.GetComponentInParent<Barricade>();
         if (barricade != null && enemyProjectile && barricade.GetBarricadeHealthNormalized() > 0) {
-            Debug.Log("BarricadeHit " + collision.gameObject);
             ProjectileHasHit(false);
             barricade.TakeDamage(damage, parentMob.transform);
         }

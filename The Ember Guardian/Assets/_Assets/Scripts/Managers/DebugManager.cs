@@ -22,16 +22,34 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool debugMode_DontShowVideoTip;
     [SerializeField] private bool debugMode_WindManager;
     [SerializeField] private bool debugMode_RainManager;
+    [SerializeField] private bool takeScreenshots;
+
+    int i = 0;
+    private float screenshotTakeTimer;
+    private float screenshotTakeCooldown = 3f;
 
     private void Awake() {
         Instance = this;
+        screenshotTakeTimer = screenshotTakeCooldown;
     }
 
     private void Update() {
         if(Input.GetKeyDown(KeyCode.T)) {
             //HUBManager.Instance.SaveHub();
         }
+
+        if (takeScreenshots) {
+            screenshotTakeTimer -= Time.deltaTime;
+            if (screenshotTakeTimer < 0) {
+                screenshotTakeTimer = screenshotTakeCooldown;
+                i++;
+
+                ScreenCapture.CaptureScreenshot("screenshot_" + i + ".png");
+                Debug.Log("A screenshot was taken!");
+            }
+        }
     }
+
     public bool GetAllowDebugInputs_CreaturesSpawnManager() {
         return allowDebugInputs_CreaturesSpawnManager;
     }

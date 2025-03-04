@@ -21,6 +21,12 @@ public class Fog_Front : MonoBehaviour
 
 
     private void Start() {
+        if (!LevelManager.Instance.GetLevelSO().hasFog) {
+
+            fogRenderer.material.SetFloat("_Alpha", 0);
+            return;
+        }
+
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
 
         initialAlpha = LevelManager.Instance.GetLevelSO().fogFrontAlpha;
