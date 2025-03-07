@@ -1284,7 +1284,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5738346740003807192
 Transform:
   m_ObjectHideFlags: 0
@@ -1867,6 +1867,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureSpriteRenderer: {fileID: 2858744977638243454}
   structureFunctionIconSpriteRenderer: {fileID: 4340702860594050722}
+  structureInteractionIconImage: {fileID: 0}
   greyedStructionIconColor: {r: 1, g: 1, b: 1, a: 0.3137255}
   unhoveredMaterial: {fileID: 2100000, guid: 2ba136974dfe4bc43b6cb9c770ec4fae, type: 2}
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
