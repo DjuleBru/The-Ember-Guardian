@@ -8,6 +8,8 @@ public class HUBManager : MonoBehaviour
 
     private bool DEBUGMODE;
 
+    [SerializeField] private bool demoHUB;
+
     [SerializeField] private Transform firstHubLoadPlayerSpawnPoint;
     [SerializeField] private Transform firstHubLoadDogSpawnPoint;
     [SerializeField] private Transform DEBUGPlayerSpawnPoint;
@@ -40,7 +42,7 @@ public class HUBManager : MonoBehaviour
 
         HubMerchantTalkUI.OnAnyMerchantEndTalk += HubMerchantTalkUI_OnAnyMerchantEndTalk;
 
-        if (!MetaProgressionManager.Instance.GetLevelUnlocked(level1SO)) {
+        if (!demoHUB && !MetaProgressionManager.Instance.GetLevelUnlocked(level1SO)) {
             // FIRST HUB ENCOUNTER
 
             StartCoroutine(FirstHUBSpawnCoroutine());
@@ -56,18 +58,14 @@ public class HUBManager : MonoBehaviour
             // Player loads game OR is coming back from level
 
             nextArrivalThroughPortal = MetaProgressionManager.Instance.GetNextHubArrivalThroughPortal();
+            Debug.Log("nextArrivalThroughPortal " + nextArrivalThroughPortal);
             if (!nextArrivalThroughPortal) {
                 // Player is not coming back from a level (ex. loading game)
 
                 Vector3 playerPosition = MetaProgressionManager.Instance.GetPlayerHubPosition();
                 Player.Instance.SetPosition(playerPosition);
 
-            } else {
-
-                // Player is coming back from a level
-                //SaveHub();
-
-            } 
+            }
 
             nextArrivalThroughPortal = false;
             enterHubCollider.gameObject.SetActive(false);

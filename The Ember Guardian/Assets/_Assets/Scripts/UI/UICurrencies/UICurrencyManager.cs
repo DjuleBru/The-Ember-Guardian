@@ -95,6 +95,7 @@ public class UICurrencyManager : MonoBehaviour
         allowDebugInputs = DebugManager.Instance.GetAllowDebugInputs_CurrencyUIManager();
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+
             if(allowDebugInputs) {
                 AddDebugCurrency();
             }
@@ -113,7 +114,7 @@ public class UICurrencyManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.G)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.greenGem);
         }
-        if (Input.GetKeyDown(KeyCode.R)) {
+        if (Input.GetKeyDown(KeyCode.T)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.redGem);
         }
         if (Input.GetKeyDown(KeyCode.B)) {

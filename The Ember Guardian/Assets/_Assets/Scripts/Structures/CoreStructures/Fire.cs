@@ -61,7 +61,7 @@ public class Fire : Structure, IDamageable {
     public event EventHandler OnFireEmberExtractionStopped;
     public static event EventHandler OnAnyFireEmberExtractionStopped;
 
-    private bool isTutorial;
+    private bool lockFireInteractionFunctionsUpdate;
     private bool justFuelledFire;
     private bool lerping;
     private bool extractingEmber;
@@ -99,8 +99,6 @@ public class Fire : Structure, IDamageable {
             GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
             GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
         }
-
-        isTutorial = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial;
 
         fireOrbCollider.OnOrbFellInFire += FireOrbCollider_OnOrbFellInFire;
 
@@ -190,7 +188,7 @@ public class Fire : Structure, IDamageable {
 
         }
         else if (respawningPlayer) {
-            if (isTutorial) return;
+            if (lockFireInteractionFunctionsUpdate) return;
 
             respawningPlayerTimer -= Time.deltaTime;
             fuelLevel -= Time.deltaTime * respawningPlayerFuelRateDepletion;
@@ -200,7 +198,7 @@ public class Fire : Structure, IDamageable {
         }
         else {
             if (justFuelledFire) return;
-            if (isTutorial) return;
+            if (lockFireInteractionFunctionsUpdate) return;
 
             if (fuelLevel > 0) {
                 fuelLevel -= Time.deltaTime * fuelDepletionRate;
@@ -249,7 +247,7 @@ public class Fire : Structure, IDamageable {
     }
 
     private void CheckFireFeedable() {
-        if (isTutorial) return;
+        if (lockFireInteractionFunctionsUpdate) return;
 
         if(fuelLevel + orbFuelValue <= maxFuelTreshold) {
             SetStructurePrimaryFunctionUnlocked(true);
@@ -300,7 +298,7 @@ public class Fire : Structure, IDamageable {
     private void CheckFireSecondaryFunctionInteractable() {
         if (emberExtracted)return;
         if (extractingEmber) return;
-        if (isTutorial) return;
+        if (lockFireInteractionFunctionsUpdate) return;
         if (isEndLevelFire) return;
 
         if(fuelLevel > (maxFuelTreshold - orbFuelValue)) {
@@ -513,6 +511,13 @@ public class Fire : Structure, IDamageable {
 
     public bool GetInitialFireLit() {
         return initialFireLit;
+    }
+
+    public void LockFireInteractionsUpdate() {
+
+        SetStructurePrimaryFunctionUnlocked(false);
+        SetStructureSecondaryFunctionUnlocked(false);
+        lockFireInteractionFunctionsUpdate = true;
     }
 
     public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {

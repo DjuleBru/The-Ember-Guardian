@@ -16,6 +16,7 @@ public class Obstacle : MonoBehaviour {
 
     protected List<PayCurrencyTemplateWorldUI> buildStructureOrbTemplates = new List<PayCurrencyTemplateWorldUI>();
 
+    private bool hubScene;
     private bool playerInTriggerArea;
     private bool obstacleBuilt;
 
@@ -32,6 +33,7 @@ public class Obstacle : MonoBehaviour {
     }
 
     protected void Start() {
+        hubScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB;
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
 
@@ -61,6 +63,7 @@ public class Obstacle : MonoBehaviour {
     }
 
     protected void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+        if (hubScene) return;
         if (!playerInTriggerArea) return;
 
         payCurrencyUI.SetPlayerInteracting(false);

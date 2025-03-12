@@ -167,6 +167,10 @@ public class UICurrencyManagerVisual : MonoBehaviour
 
     private void UICurrencyManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         ShowBackpack(2f);
+
+        if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember) {
+            emberLight.enabled = false;
+        }
     }
 
     private void ShowBackpack(float displayTime = 1f) {

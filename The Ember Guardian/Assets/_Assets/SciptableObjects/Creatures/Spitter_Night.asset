@@ -35,7 +35,7 @@ MonoBehaviour:
   maxAttackRange: 15
   hasSpecialAbility: 0
   specialAbilityCooldown: 0
-  attackRangeRandomizer: 0.5
+  attackRangeRandomizer: 2
   attackRangeMaxDistanceMiss: 0.3
   relativeDamageToFire: 1
   attackAnimationDelay: 0.3
@@ -50,7 +50,7 @@ MonoBehaviour:
   currencyDropAmountList: 0100000002000000
   difficulty: 4
   initialWaveSpawn: 2
-  spawnProbability: 0.654
+  spawnProbability: 0.5
   dieAudioClips:
   - {fileID: 8300000, guid: fc63e38ccfed0ef4bad0b3f9c2a5f363, type: 3}
   dieVolumeMultiplier: 0.75

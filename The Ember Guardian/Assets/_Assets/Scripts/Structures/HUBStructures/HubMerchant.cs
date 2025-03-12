@@ -51,6 +51,9 @@ public class HubMerchant : MonoBehaviour
     [SerializeField] protected bool isHubMerchant;
     [SerializeField] protected bool isLevelNPC;
 
+    [SerializeField] protected bool isFunctionalDemoHubMerchant;
+    [SerializeField] protected bool isDecorationalDemoHubMerchant;
+
     protected bool hubMerchantLoaded;
 
     protected void Start() {
@@ -62,7 +65,13 @@ public class HubMerchant : MonoBehaviour
 
         if (isHubMerchant) {
             // HUB behavior
-            InitializeHubMerchantInHub();
+
+            if(isFunctionalDemoHubMerchant || isDecorationalDemoHubMerchant) {
+                // Demo merchant
+                InitializeDemoHubMerchant();
+            } else {
+                InitializeHubMerchantInHub();
+            }
         }
 
         if (isLevelNPC) {
@@ -92,6 +101,21 @@ public class HubMerchant : MonoBehaviour
         }
         else {
             merchantHasTalkLinesToShow = MetaProgressionManager.Instance.GetMerchantHasTalkLinesToShow(hubMerchantType);
+        }
+
+        hubMerchantLoaded = true;
+    }
+    protected void InitializeDemoHubMerchant() {
+
+        activeGameObject.SetActive(true);
+        inactiveGameObject.SetActive(false);
+        InitializeHubMerchantItems();
+
+        if(hubMerchantType == HubMerchantType.GemMerchant) {
+            merchantHasTalkLinesToShow = true;
+            merchantUnlocked = true;
+        } else {
+            merchantHasTalkLinesToShow = false;
         }
 
         hubMerchantLoaded = true;
@@ -129,6 +153,7 @@ public class HubMerchant : MonoBehaviour
     private void TryStartInteractingWithMerchant() {
         if (!playerInTriggerArea) return;
         if (isHubMerchant && !merchantUnlocked) return;
+        if (isDecorationalDemoHubMerchant) return;
         if (playerInteractingWithMerchant) return;
 
         if (isHubMerchant) {
@@ -187,6 +212,8 @@ public class HubMerchant : MonoBehaviour
     }
 
     protected void OnTriggerEnter2D(Collider2D collision) {
+        if (isHubMerchant && !merchantUnlocked) return;
+
         if(collision.GetComponent<Player>() != null) {
             playerInTriggerArea = true;
             Player.Instance.SetInMerchantTriggerArea(true);
@@ -196,6 +223,8 @@ public class HubMerchant : MonoBehaviour
     }
 
     protected void OnTriggerExit2D(Collider2D collision) {
+        if (isHubMerchant && !merchantUnlocked) return;
+
         if (collision.GetComponent<Player>() != null) {
             playerInTriggerArea = false;
             Player.Instance.SetInMerchantTriggerArea(false);
@@ -216,11 +245,17 @@ public class HubMerchant : MonoBehaviour
             StartCoroutine(StopInteractingWithMerchant());
         }
     }
-    public void SetHasTalkLinesToShow() {
+    public void SetHasTalkLinesToShow(bool showExclamationMark = true) {
         merchantHasTalkLinesToShow = true;
-        OnMerchantHasNewTalkLines?.Invoke(this, EventArgs.Empty);
+
+        if(showExclamationMark) {
+            OnMerchantHasNewTalkLines?.Invoke(this, EventArgs.Empty);
+        }
     }
 
+    public void SetDemoMerchantUnlocked() {
+        merchantUnlocked = true;
+    }
 
     #endregion
 
@@ -255,8 +290,14 @@ public class HubMerchant : MonoBehaviour
     public bool GetMerchantUnlocked() {
         return merchantUnlocked;
     }
-    #endregion
 
+    public bool GetMerchantIsFunctionalDemoMerchant() {
+        return isFunctionalDemoHubMerchant;
+    }
+    public bool GetMerchantIsDecorationalDemoMerchant() {
+        return isDecorationalDemoHubMerchant;
+    }
+    #endregion
 
     public void SaveMerchant() {
         if (!hubMerchantLoaded) return;

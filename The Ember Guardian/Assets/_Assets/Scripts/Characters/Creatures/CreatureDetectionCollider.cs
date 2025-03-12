@@ -78,7 +78,7 @@ public class CreatureDetectionCollider : MonoBehaviour
 
         // Barricade
         Barricade barricade = other.GetComponent<Barricade>();
-        if (barricade != null) {
+        if (barricade != null && !iDamageablesInDetectionRange.Contains(barricade)) {
             barricade.OnBarricadeDestroyed += Barricade_OnBarricadeDestroyed;
             AddIDamageableInDetectionRange(barricade);
         }
@@ -91,7 +91,7 @@ public class CreatureDetectionCollider : MonoBehaviour
 
         // Worker
         Worker worker = other.GetComponent<Worker>();
-        if (worker != null) {
+        if (worker != null && !iDamageablesInDetectionRange.Contains(worker)) {
             if(worker.GetRecruited() && !(worker.GetStructureAssigned() is Tower)) {
                 worker.OnMobDied += Worker_OnMobDied;
                 AddIDamageableInDetectionRange(worker);
@@ -221,7 +221,7 @@ public class CreatureDetectionCollider : MonoBehaviour
         if (playerShotCreature && !iDamageablesInDetectionRange.Contains(Player.Instance) && !CampZoneManager.Instance.IsWithinCampZoneLimits(Player.Instance.transform.position)) {
             iDamageablesDetected.Add(Player.Instance);
         }
-
+;
         if (iDamageablesDetected.Count == 0) {
             creatureAI.ResetAttackTargetInProximity();
             return;

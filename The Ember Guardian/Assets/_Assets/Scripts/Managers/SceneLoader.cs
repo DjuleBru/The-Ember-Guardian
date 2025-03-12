@@ -10,6 +10,7 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private SceneType sceneType;
     [SerializeField] private Animator transitionAnimator;
     [SerializeField] private GameObject blackBackground;
+    [SerializeField] private bool isDemoIntro;
 
     public static SceneLoader Instance;
 
@@ -20,7 +21,6 @@ public class SceneLoader : MonoBehaviour
         Level,
         Tutorial,
     }
-
 
     private void Awake() {
         Instance = this;
@@ -36,7 +36,11 @@ public class SceneLoader : MonoBehaviour
         StartCoroutine(LoadSceneAfterCrossfade("Level0_Tutorial", crossfadeDuration));
     }
     public void LoadHub(float crossfadeDuration) {
-        StartCoroutine(LoadSceneAfterCrossfade("HUB", crossfadeDuration));
+        if(isDemoIntro) {
+            StartCoroutine(LoadSceneAfterCrossfade("HUB_Demo", crossfadeDuration));
+        } else {
+            StartCoroutine(LoadSceneAfterCrossfade("HUB", crossfadeDuration));
+        }
     }
 
     public void LoadTestLevel(float crossfadeDuration) {

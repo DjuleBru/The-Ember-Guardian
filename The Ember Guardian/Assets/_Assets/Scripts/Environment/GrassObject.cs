@@ -48,7 +48,7 @@ public class GrassObject : MonoBehaviour
         float randomFloat = UnityEngine.Random.Range(0f, 1f);
 
         if (randomFloat < probabilityToTriggerFireFlies) {
-            if (DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Day) return;
+            if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Dawn) return;
             fireflies.SpawnFireflies();
         }
 

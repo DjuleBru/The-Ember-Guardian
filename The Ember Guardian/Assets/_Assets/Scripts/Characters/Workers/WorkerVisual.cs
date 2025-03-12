@@ -38,12 +38,6 @@ public class WorkerVisual : MobVisual {
         joblessJob = GetComponentInParent<JoblessJob>();
         workerStatusSpriteRenderer.sprite = null;
 
-
-        workerWeaponSpriteRenderer.sortingOrder = currentMaxSortingOrder+1;
-        workerWeaponGlowSpriteRenderer.sortingOrder = currentMaxSortingOrder+2;
-    }
-
-    private void Start() {
         worker.OnMobDied += Worker_OnMobDied;
         worker.OnWorkerHovered += Worker_OnWorkerHovered;
         worker.OnWorkerUnhovered += Worker_OnWorkerUnhovered;
@@ -58,6 +52,13 @@ public class WorkerVisual : MobVisual {
         joblessJob.OnJoblessBlockedByCreatures += JoblessJob_OnJoblessBlockedByCreatures;
         joblessJob.OnJoblessNotBlockedByCreatures += JoblessJob_OnJoblessNotBlockedByCreatures;
 
+
+        workerWeaponSpriteRenderer.sortingOrder = currentMaxSortingOrder+1;
+        workerWeaponGlowSpriteRenderer.sortingOrder = currentMaxSortingOrder+2;
+    }
+
+    private void Start() {
+        
         WorkerManager.Instance.OnClosestWorkerChanged += WorkerManager_OnClosestWorkerChanged;
     }
 

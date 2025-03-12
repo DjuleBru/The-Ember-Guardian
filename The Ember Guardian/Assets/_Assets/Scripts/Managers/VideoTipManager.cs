@@ -27,6 +27,7 @@ public class VideoTipManager : MonoBehaviour
     private bool isLevelScene;
     private bool isTutorialScene;
     private bool isHubScene;
+    [SerializeField] private bool isDemoTutorial;
 
     private bool reloadingTipShown;
     private bool critHitsTipShown;
@@ -53,6 +54,11 @@ public class VideoTipManager : MonoBehaviour
     private void Start() {
         LoadTooltipsShown();
 
+        if(isDemoTutorial) {
+            SubscribeToDemoTutorialEvents();
+            return;
+        }
+
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             isLevelScene = true;
             SubscribeToLevelEvents();
@@ -78,6 +84,9 @@ public class VideoTipManager : MonoBehaviour
             setupDefensesTipShown = true;
             emberExtractionTipShown = true;
         }
+    }
+    private void SubscribeToDemoTutorialEvents() {
+        UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
     }
 
     private void SubscribeToTutorialEvents() {

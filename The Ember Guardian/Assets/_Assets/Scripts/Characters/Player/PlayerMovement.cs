@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour {
     public static PlayerMovement Instance;
 
     [SerializeField] private float moveSpeedBackwardsMultiplier = .7f;
-    [SerializeField] private float exhaustedSpeedFactor = 1.3f;
+    [SerializeField] private float exhaustedSpeedFactor = 1.4f;
     [SerializeField] private float runRecoverFactor = 1.3f;
     [SerializeField] private float aimingSightDecelerationFactor = .7f;
     [SerializeField] private float crouchAccelerationFactor = .7f;
@@ -50,7 +50,7 @@ public class PlayerMovement : MonoBehaviour {
     private float rollExhaustionAmount = 2f;
     private float rollAnimationDuration = .6f;
     private float exhaustionTimer;
-    private float runTimePercentageBeforeWarningExhaustion = .65f;
+    private float runTimePercentageBeforeWarningExhaustion = .75f;
     private Rigidbody2D rb;
 
     public event EventHandler OnPlayerMovespeedChanged;
@@ -382,13 +382,15 @@ public class PlayerMovement : MonoBehaviour {
         if (isAlmostExhausted) {
             if (staminaTimer <= 0) {
                 isAlmostExhausted = false;
+                // Remove breathing animation
                 OnPlayerAlmostExhaustionStopped?.Invoke(this, EventArgs.Empty);
             }
+        }
 
-            if (isAlmostExhaustedFeedbacksActive && staminaTimer < PlayerStats.Instance.GetMaxStamina() * runTimePercentageBeforeWarningExhaustion) {
-                isAlmostExhaustedFeedbacksActive = false;
-                OnPlayerAlmostExhaustionDeactivateFeedbacks?.Invoke(this, EventArgs.Empty);
-            }
+        if (isAlmostExhaustedFeedbacksActive && staminaTimer < PlayerStats.Instance.GetMaxStamina() * runTimePercentageBeforeWarningExhaustion) {
+            isAlmostExhaustedFeedbacksActive = false;
+            // Remove almost exhausted feedbacks & sound
+            OnPlayerAlmostExhaustionDeactivateFeedbacks?.Invoke(this, EventArgs.Empty);
         }
 
         if (isRunning && (moveSpeed != 0)) {
@@ -400,6 +402,10 @@ public class PlayerMovement : MonoBehaviour {
 
             if (!isAlmostExhausted) {
                 isAlmostExhausted = true;
+            }
+
+            if(!isAlmostExhaustedFeedbacksActive) {
+                // Activate almost exhausted feedbacks & sound
                 isAlmostExhaustedFeedbacksActive = true;
                 OnPlayerAlmostExhaustionStarted?.Invoke(this, EventArgs.Empty);
             }

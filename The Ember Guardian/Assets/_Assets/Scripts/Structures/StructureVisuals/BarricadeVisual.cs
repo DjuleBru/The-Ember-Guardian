@@ -198,7 +198,6 @@ public class BarricadeVisual : StructureVisual {
     protected void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
         if (!spotLightUnlocked) return;
         barricadeSpotLight.enabled = false;
-        Debug.Log("DayNightManager_OnDayStart");
 
     }
     public bool GetBarricadeHasAllSprites() {

@@ -42,7 +42,7 @@ public class Dog : MonoBehaviour
 
         }
 
-        dogAI.SetBaseState(currentIdleState);
+        dogAI.SetIdleBehaviorState(currentIdleState);
         OnIdleStateChanged?.Invoke(this, EventArgs.Empty);
     }
 

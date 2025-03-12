@@ -118,4 +118,7 @@ public class WorkerAI : MonoBehaviour
     public void SetDebugSpawn() {
         debugSpawn = true;
     }
+    public bool GetDebugSpawn() {
+        return debugSpawn;
+    }
 }

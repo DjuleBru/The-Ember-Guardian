@@ -21,7 +21,6 @@ public class Projectile : MonoBehaviour
 
     private Rigidbody2D rb;
 
-    private Transform sourceTransform;
     private Vector3 trajectoryRange;
     private Vector3 trajectoryStartPoint;
     private Vector3 trajectoryEndPoint;
@@ -101,10 +100,12 @@ public class Projectile : MonoBehaviour
     private void UpdateProjectilePosition() {
 
         if (homingProjectile) {
+
             if(projectileTarget != null) {
                 trajectoryEndPoint = projectileTarget.transform.position;
-                trajectoryRange = trajectoryEndPoint - trajectoryStartPoint;
             }
+
+            trajectoryRange = trajectoryEndPoint - trajectoryStartPoint;
         }
 
         if (trajectoryRange.x < 0) {
@@ -145,9 +146,8 @@ public class Projectile : MonoBehaviour
         transform.position = nextPosition;
 
         if (nextPositionXNormalized > 1.1) {
-
             // Projectile has reached the end of its animation curve
-
+            ProjectileHasHit(false);
         }
     }
 

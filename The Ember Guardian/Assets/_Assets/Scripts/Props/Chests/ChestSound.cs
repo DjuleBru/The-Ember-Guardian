@@ -6,7 +6,9 @@ public class ChestSound : SoundObject
 {
     private Chest chest;
     private AudioSource audioSource;
+
     [SerializeField] private AudioClip startOpenChestAudioClip;
+    [SerializeField] private AudioClip startOpenChestAudioClip_AmmoChest;
     [SerializeField] private AudioClip unlockChestAudioClip;
 
 
@@ -26,7 +28,12 @@ public class ChestSound : SoundObject
     }
 
     private void Chest_OnChestOpened(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(startOpenChestAudioClip, .75f * sfxVolume);
+        AudioClip audioClip = startOpenChestAudioClip;
+
+        if(chest.GetChestType() == Chest.ChestType.ammoChest) {
+            audioClip = startOpenChestAudioClip_AmmoChest;
+        }
+        audioSource.PlayOneShot(audioClip, .75f * sfxVolume);
 
     }
 }

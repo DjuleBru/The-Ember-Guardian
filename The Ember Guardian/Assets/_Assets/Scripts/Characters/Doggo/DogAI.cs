@@ -10,6 +10,9 @@ public class DogAI : MonoBehaviour
         stayAtCamp,
         runToCamp,
         idle,
+        nightInCampIdle,
+        nightInCampRunToClosestCreature,
+        nightInCampGrowlAtIncomingCreature,
         followingPlayer,
         walkWithPlayer,
         runWithPlayer,
@@ -23,6 +26,7 @@ public class DogAI : MonoBehaviour
     private MobMovement dogMovement;
     [SerializeField] private DogCreatureDetectionCollider creatureDetectionCollider;
     private Creature closestCreature;
+    private Creature closestIncomingCreature;
 
     private Vector3 stickWithPlayerMoveTarget;
     private Vector3 stayPointToRoamAround;
@@ -66,6 +70,7 @@ public class DogAI : MonoBehaviour
     private bool hasBiteUnlocked;
     private bool biteStarted;
     private bool biteReady;
+    private bool isHubScene;
     private float biteTimer;
     private float biteAnimationDelay = .5f;
     private float biteCooldown;
@@ -92,6 +97,15 @@ public class DogAI : MonoBehaviour
         biteCooldown = DogStats.Instance.GetBiteCooldown();
         biteDamage = DogStats.Instance.GetBiteDamage();
 
+        isHubScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB;
+
+        if(DayNightManager.Instance != null) {
+            DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+        }
+    }
+
+    private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
+        SetIdleBehaviorState(State.idle);
     }
 
     private void Update() {
@@ -99,6 +113,14 @@ public class DogAI : MonoBehaviour
 
         if (hasBiteUnlocked) {
             HandleBiteTimer();
+        }
+
+        if(!IsNightState() && state != State.attacking && state != State.growling && state != State.barking) {
+            CheckNightInCamp();
+        }
+
+        if(IsNightState()) {
+            CheckClosestIncomingCreature();
         }
 
         distanceToPlayer = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
@@ -142,6 +164,25 @@ public class DogAI : MonoBehaviour
                 if (distanceToPlayer > distanceToWalkToPlayerWhenStickingAround) {
                     ChangeState(State.walkWithPlayer);
                 }
+
+                break;
+
+            case State.nightInCampIdle:
+
+                if(closestIncomingCreature != null) {
+                    ChangeState(State.nightInCampRunToClosestCreature);
+                }
+
+                break;
+
+            case State.nightInCampRunToClosestCreature:
+
+                if (closestIncomingCreature == null) {
+                    ChangeState(State.nightInCampIdle);
+                    return;
+                }
+
+                HeadToBarkAtCampZoneLimit();
 
                 break;
 
@@ -199,6 +240,25 @@ public class DogAI : MonoBehaviour
 
             break;
 
+            case State.nightInCampGrowlAtIncomingCreature:
+
+                if (closestIncomingCreature == null) {
+                    ChangeState(State.nightInCampIdle);
+                    return;
+                }
+
+                Creature newClosestIncomingCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(transform.position, 50f, 0, true); ;
+                if(newClosestIncomingCreature != closestIncomingCreature) {
+                    ChangeState(State.nightInCampIdle);
+                    return;
+                }
+
+                if (hasBiteUnlocked) {
+                    HandleBarkToAttack();
+                }
+
+                break;
+
             case State.attacking:
 
                 if (PlayerIsTooFar() || closestCreature == null) {
@@ -212,9 +272,13 @@ public class DogAI : MonoBehaviour
         }
     }
 
-    public void SetBaseState(State state) {
-        ChangeState(state);
+    public bool IsNightState() {
+        return state == State.nightInCampIdle || state == State.nightInCampGrowlAtIncomingCreature || state == State.nightInCampRunToClosestCreature || state == State.attacking || state == State.growling || state == State.barking;
+    }
+
+    public void SetIdleBehaviorState(State state) {
         currentBehaviorIdleState = state;
+        ChangeState(state);
     }
 
     public void SetState(State state) {
@@ -228,12 +292,12 @@ public class DogAI : MonoBehaviour
         dogMovement.SetMoveTarget(transform.position);
         hasSetSpeed = false;
 
-        if (newState == State.runWithPlayer || newState == State.runToCamp || newState == State.attacking) {
+        if (newState == State.runWithPlayer || newState == State.runToCamp || newState == State.attacking || newState == State.nightInCampRunToClosestCreature) {
             dogMovement.SetMoveSpeed(runMoveSpeed);
             hasSetSpeed = true;
         }
 
-        if (newState == State.walkWithPlayer || newState == State.stayAtCamp) {
+        if (newState == State.walkWithPlayer || newState == State.stayAtCamp || newState == State.nightInCampIdle) {
             // Ajustez la cible de mouvement du chien uniquement après confirmation
             float moveTargetX = Player.Instance.transform.position.x + distanceInFrontOfPlayer * lastPlayerDirection;
             stickWithPlayerMoveTarget = new Vector3(moveTargetX, 0, 0);
@@ -250,6 +314,34 @@ public class DogAI : MonoBehaviour
 
         state = newState;
         OnStateChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void HeadToBarkAtCampZoneLimit() {
+        float destinationPositionX = CampZoneManager.Instance.GetMaxZoneLimit();
+
+        if(closestIncomingCreature.transform.position.x < 0) {
+            destinationPositionX = CampZoneManager.Instance.GetMinZoneLimit();
+        }
+
+        Vector3 destinationPosition = new Vector3(destinationPositionX, 0, 0);
+        dogMovement.SetMoveTarget(destinationPosition);
+
+        if((Mathf.Abs(transform.position.x - destinationPosition.x)) < 1f) {
+            ChangeState(State.nightInCampGrowlAtIncomingCreature);
+        }
+    }
+
+    private void CheckClosestIncomingCreature() {
+        closestIncomingCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(transform.position, 40f, 0, true);
+    }
+
+    private void CheckNightInCamp() {
+        if (isHubScene) return;
+        if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) return;
+
+        if(CampZoneManager.Instance.IsWithinCampZoneLimits(transform.position)) {
+            SetIdleBehaviorState(State.nightInCampIdle);
+        }
     }
 
     private void RandomizeDistanceVariables() {
@@ -417,7 +509,6 @@ public class DogAI : MonoBehaviour
         ChangeState(State.walkWithPlayer);
     }
 
-
     private void CheckCreaturesInGrowlRange() {
         closestCreature = creatureDetectionCollider.GetClosestCreature();
         bool ambushClose = creatureDetectionCollider.AmbushSpawnersInDetectionCollider();
@@ -426,7 +517,9 @@ public class DogAI : MonoBehaviour
 
         if (ambushOrCreatureClose && state != State.growling && state != State.barking) {
 
+
             ChangeState(State.growling);
+
 
         } else {
             if(state == State.growling && !ambushOrCreatureClose) {
@@ -459,7 +552,9 @@ public class DogAI : MonoBehaviour
     public Creature GetClosestCreature() {
         return closestCreature;
     }
-
+    public Creature GetClosestIncomingCreature() {
+        return closestIncomingCreature;
+    }
     public State GetState() {
         return state;
     }

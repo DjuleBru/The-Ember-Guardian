@@ -71,6 +71,7 @@ public class SoundManager : MonoBehaviour
             LevelUI_ObjectiveUI.Instance.OnObjectiveUIShown += LevelUI_ObjectiveUI_OnObjectiveUIShown;
             LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveUICompleted;
             LevelUI_ObjectiveUI.Instance.OnSubObjectiveUICompleted += LevelUI_OnSubObjectiveUICompleted;
+            LevelUI_ObjectiveUI.Instance.OnSubObjectiveUIProgressed += LevelUI_OnSubObjectiveUIProgressed;
         }
         if (LevelUI_Locations.Instance != null) {
             LevelUI_Locations.Instance.OnLocationTextShown += LevelUI_OnLocationTextShown;
@@ -193,6 +194,10 @@ public class SoundManager : MonoBehaviour
     }
     private void LevelUI_OnSubObjectiveUICompleted(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.subObjectiveCompleted, .35f);
+    }
+
+    private void LevelUI_OnSubObjectiveUIProgressed(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.subObjectiveProgressed, .35f);
     }
 
     private void LevelUI_OnObjectiveUICompleted(object sender, System.EventArgs e) {
@@ -740,6 +745,7 @@ public class SoundManager : MonoBehaviour
             LevelUI_ObjectiveUI.Instance.OnObjectiveUIShown -= LevelUI_ObjectiveUI_OnObjectiveUIShown;
             LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted -= LevelUI_OnObjectiveUICompleted;
             LevelUI_ObjectiveUI.Instance.OnSubObjectiveUICompleted -= LevelUI_OnSubObjectiveUICompleted;
+            LevelUI_ObjectiveUI.Instance.OnSubObjectiveUIProgressed -= LevelUI_OnSubObjectiveUIProgressed;
         }
         if (LevelUI_Locations.Instance != null) {
             LevelUI_Locations.Instance.OnLocationTextShown -= LevelUI_OnLocationTextShown;

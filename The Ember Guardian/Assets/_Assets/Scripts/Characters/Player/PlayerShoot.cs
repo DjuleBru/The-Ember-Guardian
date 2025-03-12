@@ -579,6 +579,10 @@ public class PlayerShoot : MonoBehaviour
     private void GameInput_OnPlayerSecondaryGunSelected(object sender, EventArgs e) {
         if (!CanSwapGun()) return;
 
+        if(useDebugGun) {
+            secondayGunSO = debugSecondaryGun;
+        }
+
         if (secondayGunSO != null) {
             if (heldGunSO == secondayGunSO) return;
             StartCoroutine(SetActiveGunAfterDelay(secondayGunSO, false));
@@ -587,6 +591,10 @@ public class PlayerShoot : MonoBehaviour
 
     private void GameInput_OnPlayerPrimaryGunSelected(object sender, EventArgs e) {
         if (!CanSwapGun()) return;
+
+        if (useDebugGun) {
+            primaryGunSO = debugGun;
+        }
 
         if (secondayGunSO != null) {
             if (heldGunSO == primaryGunSO) return;

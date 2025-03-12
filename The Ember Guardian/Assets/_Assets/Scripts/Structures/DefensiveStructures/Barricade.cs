@@ -14,10 +14,10 @@ public class Barricade : Structure, IDamageable {
     [SerializeField] private BarricadeVisual barricadeVisual;
     private Collider2D currentBarricadeCollider;
 
-    private int level1Health = 18;
-    private int level2Health = 28;
-    private int level3Health = 45;
-    private int level4Health = 64;
+    private int level1Health = 24;
+    private int level2Health = 32;
+    private int level3Health = 40;
+    private int level4Health = 56;
 
     private int barricadeMaxHealth;
     private int barricadeHealth;
@@ -46,6 +46,7 @@ public class Barricade : Structure, IDamageable {
     }
 
     public void Die() {
+        Debug.Log("barricade destroyed !");
         OnBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
         OnAnyBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
         currentBarricadeCollider.enabled = false;

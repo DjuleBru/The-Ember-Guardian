@@ -41,7 +41,7 @@ public class SettingsManager : MonoBehaviour
 
         currentLanguage = ES3.Load("currentLanguage", Language.English);
         holdToRun = ES3.Load("holdToRun", true);
-        autoSwitchLightGun = ES3.Load("autoSwitchLightGun", false);
+        autoSwitchLightGun = ES3.Load("autoSwitchLightGun", true);
         controllerVibrations = ES3.Load("controllerVibrations", true);
     }
 

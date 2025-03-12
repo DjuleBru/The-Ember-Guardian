@@ -109,5 +109,6 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip objectiveShown;
     public AudioClip objectiveCompleted;
     public AudioClip subObjectiveCompleted;
+    public AudioClip subObjectiveProgressed;
     public AudioClip locationRevealed;
 }

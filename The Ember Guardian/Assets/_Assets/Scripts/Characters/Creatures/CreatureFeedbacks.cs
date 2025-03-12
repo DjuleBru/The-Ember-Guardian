@@ -14,6 +14,7 @@ public class CreatureFeedbacks : MonoBehaviour
     private float minAggroYForce = 4f;
     private float maxAggroYForce = 6f;
 
+    private bool died;
     private bool enteredLight;
     private float enteredLightFeedbacksRate = .7f;
     private float enteredLightFeedbacksTimer;
@@ -22,6 +23,11 @@ public class CreatureFeedbacks : MonoBehaviour
         creatureAI.OnCreatureAggro += CreatureAI_OnCreatureAggro;
         creature.OnCreatureEnteredLight += Creature_OnCreatureEnteredLight;
         creature.OnCreatureExitedLight += Creature_OnCreatureExitedLight;
+        creature.OnCreatureDied += Creature_OnCreatureDied;
+    }
+
+    private void Creature_OnCreatureDied(object sender, System.EventArgs e) {
+        died = true;
     }
 
     private void Update() {
@@ -44,6 +50,7 @@ public class CreatureFeedbacks : MonoBehaviour
 
 
     private void CreatureAI_OnCreatureAggro(object sender, System.EventArgs e) {
+        if (died) return;
         aggroFeedbacks.PlayFeedbacks();
     }
 

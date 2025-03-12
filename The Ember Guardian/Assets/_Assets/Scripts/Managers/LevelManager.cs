@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ public class LevelManager : MonoBehaviour
     private int levelHubMerchantInteractionIndex;
 
     public event EventHandler OnNewLocationShown;
+    public event EventHandler OnLevelFailed;
 
     private void Awake() {
         Instance = this;
@@ -93,6 +95,7 @@ public class LevelManager : MonoBehaviour
     }
 
     public void LooseLevel() {
+        OnLevelFailed?.Invoke(this, EventArgs.Empty);
         StartCoroutine(LooseLevelCoroutine());
         float defeatGemsProportionsRewarded = .33f;
         MetaProgressionManager.Instance.SaveLevelGems(defeatGemsProportionsRewarded);
@@ -100,7 +103,7 @@ public class LevelManager : MonoBehaviour
     }
 
     private IEnumerator LooseLevelCoroutine() {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
         SceneLoader.Instance.LoadHub(3f);
     }
 
@@ -110,6 +113,10 @@ public class LevelManager : MonoBehaviour
         endLevelPortal.gameObject.SetActive(true);
     }
 
+    [Button]
+    public void LooseLevelManual() {
+        LooseLevel();
+    }
     private void SaveMerchantsAndTalkLines() {
 
         for (int i = 0; i < levelSO.merchantsUnlockedInLevel.Count; i++) {

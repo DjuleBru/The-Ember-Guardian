@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -84,6 +85,10 @@ public class Player : MonoBehaviour, IDamageable
         if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
             PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
             PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
+        }
+
+        if(isLevelScene) {
+            LevelManager.Instance.OnLevelFailed += LevelManager_OnLevelFailed;
         }
 
         hpRegenTime = PlayerStats.Instance.GetHpRegenTime();
@@ -306,12 +311,21 @@ public class Player : MonoBehaviour, IDamageable
         OnPlayerDied?.Invoke(this, EventArgs.Empty);
         dead = true;
 
-        if(Fire.Instance.GetCurrentFuelLevel() == 0 && !isTutorial) {
+        if(!Fire.Instance.GetInitialFireLit() && !isTutorial) {
             // Fire hasn't been built yet
             LevelManager.Instance.LooseLevel();
         } else {
             StartCoroutine(RespawnCoroutine());
         }
+    }
+
+    private void LevelManager_OnLevelFailed(object sender, EventArgs e) {
+        DieWithMainFireExtinguished();
+    }
+
+    public void DieWithMainFireExtinguished() {
+        OnPlayerDied?.Invoke(this, EventArgs.Empty);
+        dead = true;
     }
 
     private IEnumerator RespawnCoroutine() {
@@ -436,6 +450,10 @@ public class Player : MonoBehaviour, IDamageable
         return interactingWithMerchant;
     }
 
+    [Button] 
+    public void KillPlayer() {
+        Die();
+    }
     public void OnDestroy() {
         PlayerStats.Instance.OnPlayerMaxHPChanged -= PlayerStats_OnPlayerMaxHPChanged;
         PlayerStats.Instance.OnPlayerHPRegenChanged -= PlayerStats_OnPlayerHPRegenChanged;

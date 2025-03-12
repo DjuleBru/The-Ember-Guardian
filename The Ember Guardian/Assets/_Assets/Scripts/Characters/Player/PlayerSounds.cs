@@ -21,6 +21,7 @@ public class PlayerSounds : SoundObject
     [SerializeField] private AnimationCurve pitchWithSpeedAnimationCurve;
     [SerializeField] private ActiveMoveSpeedBoostVisual activeMoveSpeedBoostVisual;
 
+    private bool almostExhausted;
     private bool exhaustedSFXPlaying;
     protected override void Start() {
         base.Start();
@@ -34,8 +35,18 @@ public class PlayerSounds : SoundObject
         PlayerShoot.Instance.OnPlayerReloadInterrupted += PlayerShoot_OnPlayerReloadInterrupted;
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerExhaustionStarted += PlayerMovement_OnPlayerExhaustionStarted;
+        PlayerMovement.Instance.OnPlayerAlmostExhaustionStarted += PlayerMovement_OnPlayerAlmostExhaustionStarted;
+        PlayerMovement.Instance.OnPlayerAlmostExhaustionDeactivateFeedbacks += PlayerMovement_OnPlayerAlmostExhaustionDeactivateFeedbacks;
 
         activeMoveSpeedBoostVisual.OnMoveSpeedFootStepTriggered += ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered;
+    }
+
+    private void PlayerMovement_OnPlayerAlmostExhaustionDeactivateFeedbacks(object sender, System.EventArgs e) {
+        almostExhausted = false;
+    }
+
+    private void PlayerMovement_OnPlayerAlmostExhaustionStarted(object sender, System.EventArgs e) {
+        almostExhausted = true;
     }
 
     private void PlayerShoot_OnPlayerReloadInterrupted(object sender, System.EventArgs e) {
@@ -83,7 +94,15 @@ public class PlayerSounds : SoundObject
 
     private void PlayerAnimator_OnPantTriggered(object sender, System.EventArgs e) {
         if (exhaustedSFXPlaying) return;
-        playerAudioSource.PlayOneShot(playerPantAudioClips[Random.Range(0, playerPantAudioClips.Length)], sfxVolume * .35f);
+
+        float volumeMultiplier = 1f;
+        if (almostExhausted) {
+            volumeMultiplier = .45f;
+        } else {
+            volumeMultiplier = .15f;
+        }
+
+        playerAudioSource.PlayOneShot(playerPantAudioClips[Random.Range(0, playerPantAudioClips.Length)], sfxVolume * volumeMultiplier);
     }
     private void ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered(object sender, System.EventArgs e) {
         playerAudioSource.PlayOneShot(activeMoveSpeedBoostFootstepAudioClip, sfxVolume / 8);

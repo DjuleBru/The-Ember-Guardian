@@ -22,7 +22,6 @@ public class AnimalSounds : SoundObject
     }
 
     private void Animal_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {
-        Debug.Log("Animal_OnMobDamageTaken");
         PlaySound2D(animal.GetAnimalSO().damagedAudioClips, damagedSFXVolume * sfxVolume);
     }
 

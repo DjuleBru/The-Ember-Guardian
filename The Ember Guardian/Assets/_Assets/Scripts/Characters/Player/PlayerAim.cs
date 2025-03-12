@@ -48,9 +48,10 @@ public class PlayerAim : MonoBehaviour
     }
 
     private void Start() {
-        float angle = Mathf.Atan2(1, 0) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(0, 1) * Mathf.Rad2Deg;
 
-        foreach(Transform transform in followAimDirTransformList) {
+
+        foreach (Transform transform in followAimDirTransformList) {
             transform.eulerAngles = new Vector3(0, 0, angle);
         }
 

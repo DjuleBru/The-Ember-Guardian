@@ -19,7 +19,7 @@ public class GamepadVibrationsManager : MonoBehaviour
     private float currentLerpValue;
 
     private void Start() {
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
+        if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
 
             PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
             PlayerShoot.Instance.OnPlayerAmmoRefilled += PlayerSHoot_OnPlayerAmmoRefilled;

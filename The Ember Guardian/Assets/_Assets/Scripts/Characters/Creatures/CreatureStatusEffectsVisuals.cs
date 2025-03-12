@@ -18,6 +18,7 @@ public class CreatureStatusEffectsVisuals : MonoBehaviour
         immobilizedGameObject.SetActive(false);
 
         creature = GetComponentInParent<Creature>();
+        creature.OnCreatureDied += Creature_OnCreatureDied;
         creature.OnCreatureEnteredLight += Creature_OnCreatureEnteredLight;
         creature.OnCreatureExitedLight += Creature_OnCreatureExitedLight;
         creature.OnCreatureImmobilizedStarted += Creature_OnCreatureImmobilizedStarted;
@@ -26,6 +27,13 @@ public class CreatureStatusEffectsVisuals : MonoBehaviour
         creature.OnCreaturePoisoneStopped += Creature_OnCreaturePoisoneStopped;
         creature.OnCreatureShockedStarted += Creature_OnCreatureShockedStarted;
         creature.OnCreatureShockedStopped += Creature_OnCreatureShockedStopped;
+    }
+
+    private void Creature_OnCreatureDied(object sender, System.EventArgs e) {
+        shockedGameObject.SetActive(false);
+        poisonedGameObject.SetActive(false);
+        immobilizedGameObject.SetActive(false);
+        fireLightDebuffedGameObject.SetActive(false);
     }
 
     private void Creature_OnCreatureShockedStopped(object sender, System.EventArgs e) {

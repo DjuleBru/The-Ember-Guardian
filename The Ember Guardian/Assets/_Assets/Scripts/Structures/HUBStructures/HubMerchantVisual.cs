@@ -46,6 +46,5 @@ public class HubMerchantVisual : MonoBehaviour
 
     private void HubMerchant_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
         bodySpriteRenderer.material = hoveredMaterial;
-
     }
 }

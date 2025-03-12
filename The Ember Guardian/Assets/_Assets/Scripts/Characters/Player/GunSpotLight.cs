@@ -43,6 +43,8 @@ public class GunSpotLight : MonoBehaviour
         }
 
         GameInput.Instance.OnPlayerGunLightSwitch += GameInput_OnPlayerGunLightSwitch;
+        SettingsManager.Instance.OnAutoSwitchLightGunChanged += SettingsManager_OnAutoSwitchLightGunChanged;
+        autoSwitchWithDay = SettingsManager.Instance.GetAutoSwitchLight();
         lightActive = false;
         gunSpotLight.enabled = false;
 
@@ -60,6 +62,10 @@ public class GunSpotLight : MonoBehaviour
         }
 
         PlayerStats.Instance.OnFlashlightRangeChanged += PlayerStats_OnFlashlightRangeChanged;
+    }
+
+    private void SettingsManager_OnAutoSwitchLightGunChanged(object sender, EventArgs e) {
+        autoSwitchWithDay = SettingsManager.Instance.GetAutoSwitchLight();
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {

@@ -189,7 +189,6 @@ public class HunterJob : WorkerJob {
 
                 case HunterState.idle:
 
-                    Roam(3f, CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned()));
                     CheckClosestAnimal();
                     CheckClosestCreatureSmart();
 
@@ -200,12 +199,15 @@ public class HunterJob : WorkerJob {
 
                     if (IsInSafeZone() && targetCreature != null) {
                         ChangeState(HunterState.attackingDay);
+                        return;
                     }
 
                     if (targetAnimal != null && !CheckBlockedByCreature()) {
                         ChangeState(HunterState.headingToHunt);
+                        return;
                     };
 
+                    Roam(3f, CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned()));
                     break;
 
                 case HunterState.headingBackToHuntingLimit:

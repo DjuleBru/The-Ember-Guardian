@@ -33,6 +33,7 @@ public class DayNightVisualsManager : MonoBehaviour
 
     [SerializeField] private AnimationCurve sunAnimationCurve;
     [SerializeField] private float sunArcRadius = 5f;
+    [SerializeField] private bool dontHandleMoonMovement;
 
     private float nightDawnTransitionAnimationCurveFraction = .05f;
     private float dawnAnimationCurveFraction = .1f;
@@ -83,6 +84,7 @@ public class DayNightVisualsManager : MonoBehaviour
     private void FixedUpdate() {
         HandleSunPosition();
 
+        if (dontHandleMoonMovement) return;
         HandleMoonPosition();
         SetMoonPosition(moonPositionXNormalized);
     }
@@ -260,21 +262,51 @@ public class DayNightVisualsManager : MonoBehaviour
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         totalAnimationCurveFractionProgress = 0;
+
+        if (DayNightManager.Instance.GetManualInitialCycleSet()) {
+            transitionProgress = 1;
+            globalLight2D.color = ColorTransition(nightLightColor, dawnLightColor);
+            skySpriteRenderer.color = ColorTransition(nightSkyColor, dawnSkyColor);
+            globalLight2D.intensity = LightIntensityTransition(nightLightIntensity, dawnLightIntensity);
+            sunLight2D.intensity = LightIntensityTransition(0, sunLightIntensity);
+            moonLight2D.intensity = LightIntensityTransition(moonLightIntensity, 0);
+            return;
+        }
+
         dawnStarted = true;
+        transitionProgress = 0;
+
     }
 
     private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
+
         totalAnimationCurveFractionProgress += dawnAnimationCurveFraction;
+
+        if (DayNightManager.Instance.GetManualInitialCycleSet()) {
+            transitionProgress = 1; 
+            globalLight2D.color = ColorTransition(dawnLightColor, dayLightColor);
+            skySpriteRenderer.color = ColorTransition(dawnSkyColor, daySkytColor);
+            globalLight2D.intensity = LightIntensityTransition(dawnLightIntensity, dayLightIntensity);
+
+            DayNightManager.Instance.SetManualInitialCycleSet(false);
+            return;
+        }
+
         dayStarted = true;
+        transitionProgress = 0;
     }
+
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
         totalAnimationCurveFractionProgress += dayAnimationCurveFraction;
         duskStarted = true;
+        transitionProgress = 0;
     }
+
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
         totalAnimationCurveFractionProgress += duskAnimationCurveFraction;
         targetMoonPositionXNormalized = 0f;
         nightStarted = true;
+        transitionProgress = 0;
     }
 
     private Color ColorTransition(Color initialColor, Color finalColor) {

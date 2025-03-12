@@ -178,6 +178,8 @@ public class Structure : MonoBehaviour {
     protected virtual void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
+        //return;
+
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         playerInTriggerArea = true;

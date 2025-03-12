@@ -95,7 +95,6 @@ public class Tower : Structure
     }
 
     public void AssignWorker(Worker worker) {
-        Debug.Log("assign worker " + worker);
         assignedWorkersList.Add(worker);
         SetWorkerGarrisonPosition(worker);
         OnHunterAssigned?.Invoke(this, EventArgs.Empty);

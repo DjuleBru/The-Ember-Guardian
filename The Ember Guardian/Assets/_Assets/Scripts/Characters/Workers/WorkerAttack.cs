@@ -22,7 +22,9 @@ public class WorkerAttack : MobAttack
     private float minerAttackAnimationDelay = .15f;
     private float minerTotalAttackAnimationTime = .5f;
 
-    private void Start() {
+
+    protected override void Awake() {
+        base.Awake();
         workerAI = GetComponent<WorkerAI>();
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
     }

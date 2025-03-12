@@ -248,9 +248,9 @@ public class Tutorial : MonoBehaviour
         StructureSO structureSO = structureLocation.GetStructureSOToBuild();
 
         if (structureSO.structureType == StructureSO.StructureType.fire) {
-            Debug.Log("Initial fire built");
             if (fireBuilt) return;
 
+            Fire.Instance.LockFireInteractionsUpdate();
             Fire.Instance.SetStructureSecondaryFunctionUnlocked(false);
 
             fireBuilt = true;

@@ -55,6 +55,10 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         MeetTamer,
         SurviveNights,
         TalkToWatcher,
+        LoadBelt,
+        ReloadGun,
+        HeadBackToCamp,
+        OpenChest,
     }
 
     public static LevelUI_ObjectiveUI Instance;
@@ -69,6 +73,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     public event EventHandler OnObjectiveUIShown;
     public event EventHandler OnObjectiveCompleted;
     public event EventHandler OnSubObjectiveUICompleted;
+    public event EventHandler OnSubObjectiveUIProgressed;
 
     private void Awake() {
         Instance = this;
@@ -151,6 +156,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
 
             if (subObjectiveUI.GetSubObjectiveType() == subObjectiveType) {
                 subObjectiveUI.SetNext(nextSubObjective);
+                OnSubObjectiveUIProgressed?.Invoke(this, EventArgs.Empty);
             }
 
         }
@@ -210,7 +216,6 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     private IEnumerator EndCampSetupObjective() {
-        Debug.Log("EndCampSetupObjective");
         SetObjectiveCompletedCoroutine(0f);
 
         yield return new WaitForSeconds(5f);
@@ -325,6 +330,18 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         }
         if (subObjectiveType == SubObjectiveType.TalkToWatcher) {
             return "Talk to the Watcher";
+        }
+        if (subObjectiveType == SubObjectiveType.LoadBelt) {
+            return "Load ammo belt";
+        }
+        if (subObjectiveType == SubObjectiveType.ReloadGun) {
+            return "Reload Gun";
+        }
+        if (subObjectiveType == SubObjectiveType.HeadBackToCamp) {
+            return "Head back to camp";
+        }
+        if (subObjectiveType == SubObjectiveType.OpenChest) {
+            return "Open ammo chest";
         }
         return "";
     }

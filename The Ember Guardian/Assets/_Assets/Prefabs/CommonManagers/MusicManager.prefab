@@ -144,8 +144,14 @@ MonoBehaviour:
   discoveryMusicInterruptionSource: 0
   discoverNewLocationAudioVolume: 0.3
   backgroundTracksAudioVolume: 0.2
-  nightMusicAudioVolume: 0.4
+  nightMusicAudioVolume: 0.2
   mainMenuMusic: {fileID: 0}
-  nightMusic: {fileID: 8300000, guid: f5b9152fff1bac546918e7db33750cf2, type: 3}
+  nightMusicIntro: {fileID: 8300000, guid: d933b9a7148432045be84fcbb49d6e35, type: 3}
+  nightMusicOutro: {fileID: 8300000, guid: 77b4c1b9df9fdb0499022ad8b9b823cc, type: 3}
+  nightMusicTensionLoops:
+  - {fileID: 8300000, guid: a2a87c40d7c18a248a96b02fd99b33c7, type: 3}
+  - {fileID: 8300000, guid: f5d80e7b6a9d2bf48b88c29a4fed3446, type: 3}
+  - {fileID: 8300000, guid: 429f94c97e7ee25479b87e771126851b, type: 3}
+  - {fileID: 8300000, guid: 3051949649a9ab54999a956e663b30bf, type: 3}
   endLevelMusic: {fileID: 8300000, guid: a235baf8c3b9c68498cb5ddebacab0a9, type: 3}
   discoverNewLocationMusic: {fileID: 0}

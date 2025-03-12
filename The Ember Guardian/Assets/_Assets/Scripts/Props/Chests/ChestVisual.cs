@@ -7,6 +7,14 @@ public class ChestVisual : MonoBehaviour
     private Chest chest;
     private Animator animator;
 
+    [SerializeField] private bool showHoveringIndicator;
+    [SerializeField] private GameObject hoveringIndicatorGO;
+
+    [SerializeField] private SpriteRenderer chestSpriteRenderer;
+    [SerializeField] private Animator inputIconAnimator;
+    [SerializeField] private Material unhoveredMaterial;
+    [SerializeField] private Material hoveredMaterial;
+
     [SerializeField] private RuntimeAnimatorController initialChestAnimator;
     [SerializeField] private RuntimeAnimatorController ammoChestAnimator;
     [SerializeField] private RuntimeAnimatorController gemChestAnimator;
@@ -16,6 +24,29 @@ public class ChestVisual : MonoBehaviour
     private void Awake() {
         chest = GetComponentInParent<Chest>();
         animator = GetComponent<Animator>();
+
+        chest.OnPlayerTriggeredIn += Chest_OnPlayerTriggeredIn;
+        chest.OnPlayerTriggeredOut += Chest_OnPlayerTriggeredOut;
+    }
+
+    private void Chest_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
+        inputIconAnimator.ResetTrigger("Show");
+        inputIconAnimator.SetTrigger("Hide");
+        chestSpriteRenderer.material = unhoveredMaterial; 
+
+        if(showHoveringIndicator) {
+            hoveringIndicatorGO.SetActive(true);
+        }
+    }
+
+    private void Chest_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        inputIconAnimator.ResetTrigger("Hide");
+        inputIconAnimator.SetTrigger("Show");
+        chestSpriteRenderer.material = hoveredMaterial;
+
+        if (showHoveringIndicator) {
+            hoveringIndicatorGO.SetActive(false);
+        }
     }
 
     private void Start() {
@@ -45,5 +76,7 @@ public class ChestVisual : MonoBehaviour
 
     private void Chest_OnChestOpened(object sender, System.EventArgs e) {
         animator.SetTrigger("Opened");
+        inputIconAnimator.gameObject.SetActive(false);
+        chestSpriteRenderer.material = unhoveredMaterial;
     }
 }

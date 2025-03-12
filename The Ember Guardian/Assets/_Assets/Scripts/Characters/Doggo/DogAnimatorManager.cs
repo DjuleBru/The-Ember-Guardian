@@ -102,12 +102,12 @@ public class DogAnimatorManager : MonoBehaviour {
             animator.SetTrigger("Sit");
         }
 
-        if (newState == DogAI.State.idle || newState == DogAI.State.stayAtCamp) {
+        if (newState == DogAI.State.idle || newState == DogAI.State.stayAtCamp || newState == DogAI.State.nightInCampIdle) {
             animator.SetBool("Running", false);
             animator.SetBool("Walking", false);
         }
 
-        if (newState == DogAI.State.runWithPlayer || newState == DogAI.State.runToCamp) {
+        if (newState == DogAI.State.runWithPlayer || newState == DogAI.State.runToCamp || newState == DogAI.State.nightInCampRunToClosestCreature) {
             animator.SetTrigger("Wake");
             animator.SetTrigger("Stand");
             animator.SetBool("Running", true);
@@ -120,7 +120,7 @@ public class DogAnimatorManager : MonoBehaviour {
             animator.SetBool("Running", false);
         }
 
-        if(newState == DogAI.State.growling) {
+        if(newState == DogAI.State.growling || newState == DogAI.State.nightInCampGrowlAtIncomingCreature) {
             animator.SetBool("Running", false);
             animator.SetBool("Walking", false);
             animator.SetBool("Growling", true);
@@ -309,7 +309,16 @@ public class DogAnimatorManager : MonoBehaviour {
             else {
                 watchDir = 1f;
             }
+        }
 
+        if (dogAI.GetClosestIncomingCreature() != null) {
+            float dirToCreature = dogAI.GetClosestIncomingCreature().transform.position.x - transform.position.x;
+            if (dirToCreature < 0) {
+                watchDir = -1f;
+            }
+            else {
+                watchDir = 1f;
+            }
         }
 
         if (moving) {

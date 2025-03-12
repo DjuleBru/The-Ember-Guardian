@@ -31,11 +31,11 @@ MonoBehaviour:
   enteredLightattackRateDebuff: 2.5
   isRangedAttack: 0
   canAttackPlayerOnTower: 0
-  minAttackRange: 0.1
-  maxAttackRange: 0.4
+  minAttackRange: 0.5
+  maxAttackRange: 1
   hasSpecialAbility: 0
   specialAbilityCooldown: 0
-  attackRangeRandomizer: 0.1
+  attackRangeRandomizer: 0.2
   attackRangeMaxDistanceMiss: 0.1
   relativeDamageToFire: 0.5
   attackAnimationDelay: 0.2
@@ -50,7 +50,7 @@ MonoBehaviour:
   currencyDropAmountList: 01000000
   difficulty: 2
   initialWaveSpawn: 1
-  spawnProbability: 0.503
+  spawnProbability: 0.4
   dieAudioClips:
   - {fileID: 8300000, guid: 52e684d65259c2d41ae7b4c7146d8c51, type: 3}
   - {fileID: 8300000, guid: e88c8549c00d7a44aa981ca39aaebf2a, type: 3}

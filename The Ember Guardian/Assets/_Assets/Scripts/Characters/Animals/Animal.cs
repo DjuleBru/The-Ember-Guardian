@@ -7,6 +7,8 @@ public class Animal : Mob
 {
     [SerializeField] private AnimalSO animalSO;
 
+    public event EventHandler OnAnimalHitObstacle;
+
     private void Start() {
         health = animalSO.maxHP;
         AnimalManager.Instance.AddAnimalSpawned(this);
@@ -27,6 +29,12 @@ public class Animal : Mob
    
     public AnimalSO GetAnimalSO() {
         return animalSO;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if(collision.gameObject.GetComponent<Obstacle>() != null) {
+            OnAnimalHitObstacle?.Invoke(this, EventArgs.Empty); 
+        }
     }
 
 }

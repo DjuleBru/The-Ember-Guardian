@@ -42,15 +42,14 @@ MonoBehaviour:
   hasRain: 0
   initialRainIntensity: 0
   rainIntensitiesAllowedInLevel: 
-  baseDifficulty: 100
-  minSubwaveDifficulty: 0
-  maxSubwaveDifficulty: 100
+  baseDifficulty: 20
+  minSubwaveDifficulty: 5
+  maxSubwaveDifficulty: 50
   growthFactor: 1.6
   minWaveDuration: 9
   maxWaveDuration: 90
-  delayBetweenSubWaves: 8
-  startWaveToSpawnFromBothSides: 2
-  canSpawnElite: 1
+  startWaveToSpawnFromBothSides: 0
+  canSpawnElite: 0
   levelAudioClips:
   - {fileID: 8300000, guid: 09c5969007630694984b81ccd6618337, type: 3}
   - {fileID: 8300000, guid: d79c4b04637541d4fba193e4660d29a7, type: 3}

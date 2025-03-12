@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
+    [SerializeField] private bool isHubDemoPortal;
     [SerializeField] private List<LevelSO> linkedLevelSOList;
     [SerializeField] private Transform playerPosition;
     [SerializeField] private Transform dogPosition;
@@ -71,7 +72,7 @@ public class Portal : MonoBehaviour
                 linkedLevelSO = linkedLevelSOList[MetaProgressionManager.Instance.GetPortalLinkedLevelSOIndex(portalNumber)];
             }
 
-            if (!portalUnlocked) {
+            if (!portalUnlocked && !isHubDemoPortal) {
                 gameObject.SetActive(false);
                 return;
             }
@@ -81,7 +82,6 @@ public class Portal : MonoBehaviour
 
             if (MetaProgressionManager.Instance.GetNextHubArrivalThroughPortal() && MetaProgressionManager.Instance.lastHUBPortalUsedByPlayer == portalNumber) {
                 StartCoroutine(TeleportPlayerOutInHub());
-
             }
         }
 

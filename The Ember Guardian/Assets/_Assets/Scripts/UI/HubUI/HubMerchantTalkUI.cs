@@ -40,6 +40,8 @@ public class HubMerchantTalkUI : MonoBehaviour
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
 
         hubMerchant.OnPlayerStartedTalkingWithHubMerchant += HubMerchant_OnPlayerStartedTalkingWithHubMerchant;
+        hubMerchant.OnPlayerTriggeredIn += HubMerchant_OnPlayerTriggeredIn;
+        hubMerchant.OnPlayerTriggeredOut += HubMerchant_OnPlayerTriggeredOut;
 
         continueInputImage.sprite = InputControlIcons.Instance.GetControlIconSprite(InputControlIcons.Control.Interact)[0];
 
@@ -54,7 +56,7 @@ public class HubMerchantTalkUI : MonoBehaviour
             merchantTalkLines = MetaProgressionManager.Instance.GetNextMerchantTextLines(hubMerchant.GetHubMerchantType());
         }
 
-        if(DEBUGShowTextLines || hubMerchant.GetMerchantIsLevelNPC()) {
+        if (hubMerchant.GetMerchantIsDecorationalDemoMerchant() || hubMerchant.GetMerchantIsFunctionalDemoMerchant() || DEBUGShowTextLines || hubMerchant.GetMerchantIsLevelNPC()) {
             merchantTalkLines = textLinesSO.merchantTextLines;
             showShopAfterDialog = textLinesSO.showShopAfterDialog;
         }
@@ -98,6 +100,22 @@ public class HubMerchantTalkUI : MonoBehaviour
         StartCoroutine(StartTalkingToMerchantCoroutine());
     }
 
+    private void HubMerchant_OnPlayerTriggeredOut(object sender, EventArgs e) {
+        if (hubMerchant.GetMerchantIsDecorationalDemoMerchant()) {
+            talkPanelUIGameObject.SetActive(false);
+            talkText.text = "";
+        }
+    }
+
+    private void HubMerchant_OnPlayerTriggeredIn(object sender, EventArgs e) {
+        if (hubMerchant.GetMerchantIsDecorationalDemoMerchant()) {
+            talkPanelUIGameObject.SetActive(true);
+            talkText.text = merchantTalkLines[0];
+            OnAnyMerchantShowNewTalkLine?.Invoke(this, EventArgs.Empty);
+            continueGameObject.SetActive(false);
+        }
+    }
+
     public void SetTalkingWithMerchant(MerchantTextLinesSO textLinesSO) {
         showShopAfterDialog = textLinesSO.showShopAfterDialog;
         merchantTalkLines = textLinesSO.merchantTextLines;
@@ -134,10 +152,15 @@ public class HubMerchantTalkUI : MonoBehaviour
     }
 
     public void SetCurrentDialogLineShown() {
+        if (hubMerchant.GetMerchantIsDecorationalDemoMerchant()) return;
+
         currentDialogLineShown = true;
         continueGameObject.SetActive(true);
     }
 
+    public HubMerchant GetHubMerchant() {
+        return hubMerchant;
+    }
     private void OnDestroy() {
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
         GameInput.Instance.OnPlayerInteractPerformed -= GameInput_OnPlayerInteractPerformed;

@@ -16,6 +16,7 @@ public class DayNightManager : MonoBehaviour
 
     [SerializeField] private bool cyclePaused;
     [SerializeField] private State debugState;
+    [SerializeField] private float debugDayTimer;
     [SerializeField] private bool manualInitialCycleSet;
 
     private int currentDay;
@@ -59,6 +60,7 @@ public class DayNightManager : MonoBehaviour
 
         if (manualInitialCycleSet) {
             ChangeState(debugState);
+            cycleTimer = debugDayTimer;
             return;
         }
 
@@ -205,6 +207,10 @@ public class DayNightManager : MonoBehaviour
         return cycleTimer;
     }
 
+    public bool GetCyclePaused() {
+        return cyclePaused;
+    }
+
     public float GetDuskDuration() {
         return duskDuration;
     }
@@ -253,5 +259,11 @@ public class DayNightManager : MonoBehaviour
 
     public int GetCurrentDay() {
         return currentDay;
+    }
+    public void SetManualInitialCycleSet(bool manualInitialCycleSet) {
+        this.manualInitialCycleSet = manualInitialCycleSet;
+    }
+    public bool GetManualInitialCycleSet() {
+        return manualInitialCycleSet;
     }
 }

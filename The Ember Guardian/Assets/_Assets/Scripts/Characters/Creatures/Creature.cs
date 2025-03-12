@@ -77,6 +77,8 @@ public class Creature : Mob
     }
 
     private void Update() {
+        if (dead) return;
+
         triggerSoundTimer -= Time.deltaTime;
 
         if(triggerSoundTimer < 0) {
@@ -86,6 +88,14 @@ public class Creature : Mob
 
         if(detectionRangeIncreased) {
 
+            if(creatureMovement == null) {
+                Debug.Log("creatureMovement is null");
+                return;
+            }
+            if (PlayerAim.Instance == null) {
+                Debug.Log("PlayerAim.Instance is null");
+                return;
+            }
             bool playerIsFacingCreature = PlayerAim.Instance.GetAimDirFloat() * creatureMovement.GetLastMoveDirFloat() <= 0;
             if (playerIsFacingCreature) {
                 detectionRangeIncreasedTimer = detectionRangeIncreasedTime;

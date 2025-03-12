@@ -23,9 +23,15 @@ public class Chest : MonoBehaviour
 
     private bool chestLocked = false;
     private bool chestOpened;
+    private bool playerInTriggerArea;
+
+    public event EventHandler OnPlayerTriggeredIn;
+    public event EventHandler OnPlayerTriggeredOut;
     public event EventHandler OnChestUnlocked;
     public event EventHandler OnChestOpened;
     public event EventHandler OnChestDisappear;
+
+
     public static event EventHandler<OnAnyChestSpawnedCollectibleEventArgs> OnAnyChestSpawnedCollectible;
     public class OnAnyChestSpawnedCollectibleEventArgs : EventArgs {
         public PlayerCurrencies.CurrencyType currencyType;
@@ -41,7 +47,7 @@ public class Chest : MonoBehaviour
             delayToSpawnCollectibles = 2.8f;
         }
         if (chestType == ChestType.ammoChest) {
-            delayToChestUnlockAnimation = 2.3f;
+            delayToChestUnlockAnimation = 3.8f;
             delayToSpawnCollectibles = 4.8f;
         }
         if (chestType == ChestType.initialChest) {
@@ -54,14 +60,35 @@ public class Chest : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
+    private void Start() {
+        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
+    }
+
+    private void GameInput_OnPlayerInteractPerformed(object sender, EventArgs e) {
+        if (!playerInTriggerArea) return;
         if (chestOpened) return;
-        if (chestLocked) return;
-        if (collision.gameObject.GetComponent<Player>() == null) return;
 
         chestOpened = true;
         StartCoroutine(OpenChest());
         OnChestOpened?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (chestOpened) return;
+        if (chestLocked) return;
+        if (collision.gameObject.GetComponent<Player>() == null) return;
+        playerInTriggerArea = true;
+        OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
+
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) {
+        if (chestOpened) return;
+        if (chestLocked) return;
+        if (collision.gameObject.GetComponent<Player>() == null) return;
+        playerInTriggerArea = false;
+
+        OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
     }
 
     private IEnumerator OpenChest() {

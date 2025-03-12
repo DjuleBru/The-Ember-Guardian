@@ -171,8 +171,24 @@ public class WorkerManager : MonoBehaviour
 
             }
         }
+    }
 
+    public void AssignSideToHunter(Worker worker, CampZoneManager.CampSide campSide) {
+        if(leftSideAssignedHunters.Contains(worker)) {
+            leftSideAssignedHunters.Remove(worker);
+        }
+        if (rightSideAssignedHunters.Contains(worker)) {
+            rightSideAssignedHunters.Remove(worker);
+        }
 
+        if(campSide == CampZoneManager.CampSide.left) {
+            rightSideAssignedHunters.Add(worker);
+            worker.AssignSide(CampZoneManager.CampSide.left);
+        }
+        if (campSide == CampZoneManager.CampSide.right) {
+            rightSideAssignedHunters.Add(worker);
+            worker.AssignSide(CampZoneManager.CampSide.right);
+        }
     }
 
     public void RemoveJoblessWorker(Worker worker) {

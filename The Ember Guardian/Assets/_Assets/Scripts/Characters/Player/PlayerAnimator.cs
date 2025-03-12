@@ -12,6 +12,7 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private Animator emberBodyAnimator;
     [SerializeField] private GameObject breatheVisual;
     [SerializeField] private ParticleSystem respawnPS;
+    [SerializeField] private ParticleSystem diePS;
 
     public event EventHandler OnFootStepTriggered;
 
@@ -120,6 +121,7 @@ public class PlayerAnimator : MonoBehaviour
         bodyAnimator.SetTrigger("Die");
         gunBodyAnimator.SetTrigger("Die");
         armBodyAnimator.SetTrigger("Die");
+        diePS.Play();
         dead = true;
     }
 

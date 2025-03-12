@@ -12,7 +12,6 @@ public class CreatureDamageColliderParent : MonoBehaviour {
     private void Update() {
         if (!playerJustExitedCollider) return;
         playerJustExitedColliderTimer -= Time.deltaTime;
-        Debug.Log(playerJustExitedColliderTimer);
         if (playerJustExitedColliderTimer < 0) {
             playerJustExitedCollider = false;
         }

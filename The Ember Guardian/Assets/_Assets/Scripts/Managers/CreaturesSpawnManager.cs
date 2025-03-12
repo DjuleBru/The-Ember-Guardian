@@ -29,7 +29,7 @@ public class CreaturesSpawnManager : MonoBehaviour
     private Dictionary<int, List<SpawnedCreatureInfo>> waveCreaturesDictionary = new Dictionary<int, List<SpawnedCreatureInfo>>();
 
     public enum SpawnSide { Left, Right };
-    private float spawnDistanceToPlayerOrCamp = 30f;
+    private float spawnDistanceToPlayerOrCamp = 40f;
 
     private List<CreatureSO> creatureTypes;
 
@@ -37,13 +37,13 @@ public class CreaturesSpawnManager : MonoBehaviour
     private int remainingNightCreatures;
     private int totalNightCreatureHP;
     private int remainingNightCreaturesHP;
+    private int remainingSubWaveCreatures;
 
     private int startWaveToSpawnFromBothSides;
     private int baseDifficulty;
     private float growthFactor;
     private float minWaveDuration;
     private float maxWaveDuration;
-    private float delayBetweenSubWaves;
 
     private bool canSpawnElite;
     private float eliteSpawnProbability = .05f;
@@ -55,6 +55,7 @@ public class CreaturesSpawnManager : MonoBehaviour
     private float waveDifficultyRightProportion;
     private float waveDuration;
 
+    [SerializeField] private int debugInitialWaveNumber;
     private int currentWaveNumber;
     private int subWaveNumber;
     private int subWaveIndex;
@@ -74,7 +75,6 @@ public class CreaturesSpawnManager : MonoBehaviour
         growthFactor = LevelManager.Instance.GetLevelSO().growthFactor;
         minWaveDuration = LevelManager.Instance.GetLevelSO().minWaveDuration;
         maxWaveDuration = LevelManager.Instance.GetLevelSO().maxWaveDuration;
-        delayBetweenSubWaves = LevelManager.Instance.GetLevelSO().delayBetweenSubWaves;
         startWaveToSpawnFromBothSides = LevelManager.Instance.GetLevelSO().startWaveToSpawnFromBothSides;
 
         canSpawnElite = LevelManager.Instance.GetLevelSO().canSpawnElite;
@@ -87,6 +87,10 @@ public class CreaturesSpawnManager : MonoBehaviour
 
         debugInputs = DebugManager.Instance.GetAllowDebugInputs_CreaturesSpawnManager();
         debugDontSpawnAtNight = DebugManager.Instance.GetDebugDontSpawnAtNight();
+
+        if(debugInitialWaveNumber != 0) {
+            currentWaveNumber = debugInitialWaveNumber;
+        }
     }
 
     private void CreaturesManager_OnAdditionalCreatureAtNightSpawned(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
@@ -115,6 +119,10 @@ public class CreaturesSpawnManager : MonoBehaviour
 
         float remainingNightCreaturesHealthNormalized = (float)remainingNightCreaturesHP / (float)totalNightCreatureHP;
         float remainingNightCreaturesNormalized = (float)remainingNightCreatures / (float)totalNightCreatures;
+
+        if (remainingSubWaveCreatures > 0) {
+            remainingSubWaveCreatures--;
+        }
 
         OnRemainingNightCreaturesChanged?.Invoke(this, new OnRemainingNightCreaturesChangedEventArgs {
             remainingNightCreaturesNormalized = remainingNightCreaturesNormalized
@@ -155,6 +163,12 @@ public class CreaturesSpawnManager : MonoBehaviour
 
         SetWaveParameters(currentWaveNumber, false, false);
 
+    }
+
+    public void SetDemoWave() {
+        currentWaveNumber = debugInitialWaveNumber;
+
+        SetWaveParameters(currentWaveNumber, true, true);
     }
 
     public void SetWaveParameters(int waveNumber, bool wavesRandomSideProportion, bool subWaveRandomSideProportion) {
@@ -216,8 +230,6 @@ public class CreaturesSpawnManager : MonoBehaviour
         totalNightCreatureHP = 0;
         remainingNightCreaturesHP = 0;
         remainingNightCreatures = totalNightCreatures;
-
-        Debug.Log("total night creatures = " + remainingNightCreatures);
     }
 
     private void SetWaveSidesProportion(int waveNumber) {
@@ -252,21 +264,19 @@ public class CreaturesSpawnManager : MonoBehaviour
     private IEnumerator SpawnWave() {
         Debug.Log("Spawn wave " + currentWaveNumber);
         subWaveIndex = 0;
-        int spawnedCount = 0;
 
-        while (subWaveIndex != subWaveNumber) {
-            // Détermine combien de créatures spawn à chaque intervalle
+        while (subWaveIndex < subWaveNumber) {
+            Debug.Log("Spawning subwave " + subWaveIndex);
+            remainingSubWaveCreatures = waveCreaturesDictionary[subWaveIndex].Count;
 
-            Debug.Log("subWaveIndex " + subWaveIndex);
-            Debug.Log("subWaveNumber" + (subWaveNumber));
-
-            foreach(SpawnedCreatureInfo creatureInfo in waveCreaturesDictionary[subWaveIndex]) {
+            foreach (SpawnedCreatureInfo creatureInfo in waveCreaturesDictionary[subWaveIndex]) {
                 SpawnCreatureAtSide(creatureInfo.creature, creatureInfo.spawnSide);
-                spawnedCount++;
-                yield return new WaitForSeconds(.05f); // Délai entre les spawns
+                yield return new WaitForSeconds(0.33f); // Délai entre les spawns
             }
 
-            yield return new WaitForSeconds(delayBetweenSubWaves); // Délai entre les sous-vagues
+            // Attendre que toutes les créatures de cette subwave soient éliminées
+            yield return new WaitUntil(() => remainingSubWaveCreatures < 1);
+
             subWaveIndex++;
         }
     }
@@ -462,6 +472,10 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     public bool GetAllNightCreaturesKilled() {
         return remainingNightCreatures == 0;
+    }
+
+    public int GetRemainingSubWavesCreatures() {
+        return remainingSubWaveCreatures;
     }
 
     public int GetTotalPlannedCreaturesForNight(List<SpawnedCreatureInfo> spawnedCreatures) {

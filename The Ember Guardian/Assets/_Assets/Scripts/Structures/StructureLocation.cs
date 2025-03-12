@@ -79,6 +79,8 @@ public class StructureLocation : MonoBehaviour {
         if (collision.gameObject.GetComponent<Player>() == null) return;
         if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
 
+        //return;
+
         Player.Instance.SetInPayCurrencyArea(true);
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         playerInTriggerArea = true;
@@ -131,7 +133,7 @@ public class StructureLocation : MonoBehaviour {
         if (!MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
             OnStructureLocationLoaded_Locked?.Invoke(this, EventArgs.Empty);
             gameObject.SetActive(false);
-            Debug.Log(saveString + " location has NOT been bought at merchant ");
+            //Debug.Log(saveString + " location has NOT been bought at merchant ");
         }
         else {
             gameObject.SetActive(true);

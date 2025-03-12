@@ -269,18 +269,6 @@ public class CreatureAI : MonoBehaviour {
         Vector3 targetDestination = attackTarget.GetMeleeAttackPosition().position;
 
         creatureMovement.SetMoveTarget(targetDestination);
-
-        if(attackTarget == Player.Instance.GetComponent<IDamageable>()) {
-
-            // Take in account player Y position for when he jumps over creatures
-            if (Mathf.Abs(transform.position.x - targetDestination.x) < minAttackRange) {
-                ChangeState(State.attacking);
-                return;
-            }
-
-            return;
-        }
-
         if (Mathf.Abs(transform.position.x - targetDestination.x) < minAttackRange) {
             ChangeState(State.attacking);
         }
@@ -326,6 +314,9 @@ public class CreatureAI : MonoBehaviour {
             CheckPlayerTargetAndAggroState();
 
             ChangeState(State.moveToTarget);
+        } else {
+            detectedAttackTarget = false;
+            attackTarget = null;
         }
     }
 

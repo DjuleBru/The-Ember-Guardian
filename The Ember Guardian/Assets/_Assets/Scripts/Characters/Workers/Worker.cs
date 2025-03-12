@@ -48,12 +48,13 @@ public class Worker : Mob {
         CheckPlayerIsClose();
     }
 
-    public void RecruitWorker() {
+    public void RecruitWorker(bool playSound = true) {
         WorkerManager.Instance.AddRecruitedWorker(this);
         mobSpawner.RemoveMobFromMobSpawnedList(this);
         workerAI.SetJob(WorkerAI.JobTypes.jobless);
         recruited = true;
 
+        if (!playSound) return;
         OnAnyWorkerRecruited?.Invoke(this, EventArgs.Empty);
     }
 
@@ -201,6 +202,7 @@ public class Worker : Mob {
             OnAnyWorkerAssignedHunter?.Invoke(this, EventArgs.Empty);
         }
 
+        if (workerAI.GetDebugSpawn()) return;
         if(workerAI.GetJob() != WorkerAI.JobTypes.wild && workerAI.GetJob() != WorkerAI.JobTypes.jobless) {
             WorkerManager.Instance.AutoAssignSideToWorker(this);
         }

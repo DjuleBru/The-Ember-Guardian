@@ -76,12 +76,13 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     private IEnumerator SetCarryingEmberAfterDelay() {
-        yield return new WaitForSeconds(.05f);
+        yield return new WaitForSeconds(.025f);
         SetCarryingEmber(true);
     }
 
     public void SetCarryingEmber(bool carryingEmber) {
         this.carryingEmber = carryingEmber;
+
         if(carryingEmber) {
 
             emberHoldPosition.gameObject.SetActive(true);

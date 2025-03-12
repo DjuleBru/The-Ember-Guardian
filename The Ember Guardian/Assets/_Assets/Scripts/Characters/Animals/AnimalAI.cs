@@ -28,10 +28,12 @@ public class AnimalAI : MonoBehaviour
 
     private void Awake() {
         animal = GetComponent<Animal>();
+        animal.OnMobDamageTaken += Animal_OnMobDamageTaken;
+        animal.OnAnimalHitObstacle += Animal_OnAnimalHitObstacle;
+
     }
 
     private void Start() {
-        animal.OnMobDamageTaken += Animal_OnMobDamageTaken;
 
         roamMoveSpeed = animal.GetAnimalSO().roamMoveSpeed;
         fleeMoveSpeed = animal.GetAnimalSO().fleeMoveSpeed;
@@ -50,6 +52,17 @@ public class AnimalAI : MonoBehaviour
             Roam();
         }
 
+    }
+
+    private void Animal_OnAnimalHitObstacle(object sender, EventArgs e) {
+        Debug.Log("animal hit obstacle");
+
+        isSafe = true;
+        animalMovement.SetMoveSpeed(roamMoveSpeed);
+        OnAnimalReachedSafeZone?.Invoke(this, EventArgs.Empty);
+        positionToRoamAmound = animal.GetMobSpawner().transform.position;
+
+        animalMovement.SetMoveTarget(positionToRoamAmound);
     }
 
     private void AnimalMovement_OnDestinationReached(object sender, System.EventArgs e) {
