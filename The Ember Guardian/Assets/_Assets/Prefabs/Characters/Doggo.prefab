@@ -209,8 +209,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c82bd64592b454148a3f438c299ef0b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cleanMaterial: {fileID: 2100000, guid: f46cf4989354ad94b969d1ddae2b6aef, type: 2}
-  hoveredMaterial: {fileID: 2100000, guid: 314c5a774da28f640bde94732d840a46, type: 2}
   bodySpriteRenderer: {fileID: 5604417518571040091}
 --- !u!1 &2747362311128476507
 GameObject:
@@ -355,7 +353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b52ebbea11cad48b0d93c2883134ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDistanceToHear: 20
+  maxDistanceToHear: 60
   maxAudioSourceVolume: 1
   active: 1
 --- !u!114 &152887332268306418

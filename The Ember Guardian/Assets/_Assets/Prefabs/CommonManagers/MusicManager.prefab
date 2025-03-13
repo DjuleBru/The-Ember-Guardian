@@ -146,12 +146,19 @@ MonoBehaviour:
   backgroundTracksAudioVolume: 0.2
   nightMusicAudioVolume: 0.2
   mainMenuMusic: {fileID: 0}
-  nightMusicIntro: {fileID: 8300000, guid: d933b9a7148432045be84fcbb49d6e35, type: 3}
-  nightMusicOutro: {fileID: 8300000, guid: 77b4c1b9df9fdb0499022ad8b9b823cc, type: 3}
-  nightMusicTensionLoops:
-  - {fileID: 8300000, guid: a2a87c40d7c18a248a96b02fd99b33c7, type: 3}
-  - {fileID: 8300000, guid: f5d80e7b6a9d2bf48b88c29a4fed3446, type: 3}
-  - {fileID: 8300000, guid: 429f94c97e7ee25479b87e771126851b, type: 3}
-  - {fileID: 8300000, guid: 3051949649a9ab54999a956e663b30bf, type: 3}
+  nightMusicIntro: {fileID: 8300000, guid: 1e81e21f23207bd4aa9cccb17a0529cf, type: 3}
+  nightMusicIntroLoop: {fileID: 8300000, guid: bcc4f5b7c93a94043b4e1ee05e3090d7, type: 3}
+  nightMusicOutro: {fileID: 8300000, guid: a51e99431cc79db49afe94f10ec3399c, type: 3}
+  nightMusicTension1Loops:
+  - {fileID: 8300000, guid: d5fd983014f3a5a42bc51f6d942b4ede, type: 3}
+  - {fileID: 8300000, guid: 4c9d6d1d7a621ac4b8732d25875008cc, type: 3}
+  nightMusicTension2Loops:
+  - {fileID: 8300000, guid: 7a99f2c20561652478cd195467b62a3c, type: 3}
+  - {fileID: 8300000, guid: f64904f7e8aade74eb7e061bdc39c127, type: 3}
+  nightMusicTension3Loops:
+  - {fileID: 8300000, guid: 32229f301ca09bf43b16503e06e094c0, type: 3}
+  - {fileID: 8300000, guid: dbb9c3b642384494c841bcbbceebe985, type: 3}
+  nightMusicTension4Loops:
+  - {fileID: 8300000, guid: 5e6d8d53c3b979b479170c5bb509dacd, type: 3}
   endLevelMusic: {fileID: 8300000, guid: a235baf8c3b9c68498cb5ddebacab0a9, type: 3}
   discoverNewLocationMusic: {fileID: 0}

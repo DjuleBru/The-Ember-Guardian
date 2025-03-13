@@ -22,8 +22,12 @@ public class MusicManager : MonoBehaviour {
 
     [SerializeField] private AudioClip mainMenuMusic; 
     [SerializeField] private AudioClip nightMusicIntro;
+    [SerializeField] private AudioClip nightMusicIntroLoop;
     [SerializeField] private AudioClip nightMusicOutro;
-    [SerializeField] private List<AudioClip> nightMusicTensionLoops;
+    [SerializeField] private List<AudioClip> nightMusicTension1Loops;
+    [SerializeField] private List<AudioClip> nightMusicTension2Loops;
+    [SerializeField] private List<AudioClip> nightMusicTension3Loops;
+    [SerializeField] private List<AudioClip> nightMusicTension4Loops;
     private Queue<AudioClip> nightMusicQueue = new Queue<AudioClip>();
 
     [SerializeField] private AudioClip endLevelMusic;
@@ -50,6 +54,12 @@ public class MusicManager : MonoBehaviour {
     private AudioSource audioSourceB;
     private bool isUsingAudioSourceA = true;
     private bool isPlayingNightIntroMusic;
+
+    private int tensionLevelMusicPlaying;
+    private int fireDamageTakenRecently;
+    private float fireDamageTakenTimer;
+    private float fireDamageTakenRemoveRate = 1f;
+
 
     private void Awake() {
         Instance = this; 
@@ -91,6 +101,7 @@ public class MusicManager : MonoBehaviour {
             Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
             HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant += HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
             HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+            Fire.Instance.OnFireDamageTaken += Fire_OnFireDamageTaken;
 
             LevelManager.Instance.OnNewLocationShown += LevelManager_OnNewLocationShown;
             LevelManager.Instance.OnLevelFailed += LevelManager_OnLevelFailed;
@@ -103,6 +114,11 @@ public class MusicManager : MonoBehaviour {
         }
     }
 
+
+    private void Fire_OnFireDamageTaken(object sender, EventArgs e) {
+        fireDamageTakenRecently ++;
+        fireDamageTakenTimer = fireDamageTakenRemoveRate;
+    }
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
 
@@ -167,9 +183,6 @@ public class MusicManager : MonoBehaviour {
     private void DayNightManager_OnNightStart(object sender, EventArgs e) {
         if (!isLevelScene) return;
 
-        nightMusicQueue.Clear(); // Réinitialiser la queue
-        nightMusicQueue.Enqueue(nightMusicIntro);
-
         StartCoroutine(PlayIntroNighMusicDelayed(2f));
 
         isPlayingNightMusic = true;
@@ -190,8 +203,6 @@ public class MusicManager : MonoBehaviour {
         if (!isLevelScene) return;
         audioSourceA.loop = false;
 
-        nightMusicQueue.Clear();
-        nightMusicQueue.Enqueue(nightMusicOutro);
         PlayNextNightMusicSegment(); // Jouer directement l'outro
 
         StartCoroutine(FadeOutDelayedCoroutine(1f, 2f));
@@ -213,6 +224,15 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void Update() {
+
+        if(fireDamageTakenRecently != 0) {
+            fireDamageTakenTimer -= Time.deltaTime;
+            if(fireDamageTakenTimer < 0) {
+                fireDamageTakenTimer = fireDamageTakenRemoveRate;
+                fireDamageTakenRecently--;
+            }
+        }
+
         if (waitingToDiscoverLocation) return;
         if (isPlayingPeacefulMusic) return;
         if (isDuskOrNight) return;
@@ -256,52 +276,146 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void PlayNextNightMusicSegment() {
-        if (nightMusicQueue.Count == 0) return;
-
         AudioClip nextClip = GetNightClipBasedOnRemainingCreatures();
+        AudioSource activeSource = isUsingAudioSourceA ? audioSourceA : audioSourceB;
+        AudioClip currentAudioClipPlaying = activeSource.clip;
 
-        if (isPlayingNightIntroMusic) {
+        if (nextClip != currentAudioClipPlaying) {
+            if (isPlayingNightIntroMusic) {
 
-            nextClip = nightMusicTensionLoops[0];
-            isPlayingNightIntroMusic = false;
-            audioSourceA.clip = nextClip;
-            audioSourceA.Play();
+                nextClip = nightMusicIntroLoop;
+                isPlayingNightIntroMusic = false;
+                audioSourceA.clip = nextClip;
+                audioSourceA.Play();
+                StartCoroutine(WaitForClipToEnd(nextClip.length));
 
-        } else {
+            }
+            else {
 
-            CrossfadeToNextNightClip(nextClip);
+                CrossfadeToNextNightClip(nextClip);
+                StartCoroutine(WaitForClipToEnd(nextClip.length / 2));
 
+            }
+           
+        }
+        else
+        {
+            Debug.Log("nextClip == currentAudioClipPlaying");
+            StartCoroutine(WaitForClipToEnd(nextClip.length / 2));
         }
 
-
-        StartCoroutine(WaitForClipToEnd(nextClip.length));
     }
 
     private IEnumerator WaitForClipToEnd(float duration) {
         yield return new WaitForSeconds(duration);
 
-
-        if (nightMusicQueue.Count > 0) {
-            PlayNextNightMusicSegment();
-        }
+        PlayNextNightMusicSegment();
     }
 
     public AudioClip GetNightClipBasedOnRemainingCreatures() {
-        int remainingSubWaveCreatures = CreaturesSpawnManager.Instance.GetRemainingSubWavesCreatures();
+        AudioSource activeSource = isUsingAudioSourceA ? audioSourceA : audioSourceB;
+        AudioClip currentAudioClipPlaying = activeSource.clip;
+        int creaturesCloseToPlayerCamp = CreaturesManager.Instance.GetNightCreaturesCloseToPlayerCamp(15f);
+        int creaturesInsidePlayerCamp = CreaturesManager.Instance.GetNightCreaturesCloseToPlayerCamp(0);
 
-        Debug.Log("GetNightClipBasedOnRemainingCreatures " + remainingSubWaveCreatures);
 
-        if(remainingSubWaveCreatures < 8) {
-            return nightMusicTensionLoops[1];
-        }
-        if (remainingSubWaveCreatures >= 8 && remainingSubWaveCreatures < 15) {
-            return nightMusicTensionLoops[2];
-        }
-        if (remainingSubWaveCreatures > 15 && remainingSubWaveCreatures < 20) {
-            return nightMusicTensionLoops[3];
+        AudioClip selectedAudioClip = activeSource.clip;
+
+        if(fireDamageTakenRecently >= 3) {
+            Debug.Log("fireDamageTakenRecently " + creaturesInsidePlayerCamp);
+            // fire just took a bunch of damage : player in deep ****
+            if (tensionLevelMusicPlaying == 4) {
+                selectedAudioClip = currentAudioClipPlaying;
+            }
+            else {
+                selectedAudioClip = nightMusicTension4Loops[UnityEngine.Random.Range(0, nightMusicTension4Loops.Count)];
+            }
+            tensionLevelMusicPlaying = 4;
+        }else if(creaturesInsidePlayerCamp != 0) {
+            Debug.Log("creaturesInsidePlayerCamp " + creaturesInsidePlayerCamp);
+
+            if (creaturesInsidePlayerCamp < 5) {
+                // small amount of creatures inside player camp
+                if(creaturesCloseToPlayerCamp < 5) {
+                    // small amount of creatures outside player camp : probably end of subwave
+                    if (tensionLevelMusicPlaying == 3) {
+                        selectedAudioClip = currentAudioClipPlaying;
+                    }
+                    else {
+                        selectedAudioClip = nightMusicTension3Loops[UnityEngine.Random.Range(0, nightMusicTension3Loops.Count)];
+                    }
+                    tensionLevelMusicPlaying = 3;
+                } else {
+                    // big amount of creatures outside player camp : player in deep ****
+                    if (tensionLevelMusicPlaying == 4) {
+                        selectedAudioClip = currentAudioClipPlaying;
+                    }
+                    else {
+                        selectedAudioClip = nightMusicTension4Loops[UnityEngine.Random.Range(0, nightMusicTension4Loops.Count)];
+                    }
+                    tensionLevelMusicPlaying = 4;
+                }
+
+            }
+            if (creaturesInsidePlayerCamp >= 5) {
+                // big amount of creatures outside player camp : player in deep ****
+                if (tensionLevelMusicPlaying == 4) {
+                    selectedAudioClip = currentAudioClipPlaying;
+                }
+                else {
+                    selectedAudioClip = nightMusicTension4Loops[UnityEngine.Random.Range(0, nightMusicTension4Loops.Count)];
+                }
+                tensionLevelMusicPlaying = 4;
+
+            }
+
+        } else {
+            Debug.Log("GetNightClipBasedOnCreaturesCloseToCamp " + creaturesCloseToPlayerCamp);
+
+            if (creaturesCloseToPlayerCamp < 5) {
+                if (tensionLevelMusicPlaying == 1) {
+                    selectedAudioClip = currentAudioClipPlaying;
+                }
+                else {
+                    selectedAudioClip = nightMusicTension1Loops[UnityEngine.Random.Range(0, nightMusicTension1Loops.Count)];
+                }
+                tensionLevelMusicPlaying = 1;
+            }
+
+            if (creaturesCloseToPlayerCamp >= 5 && creaturesCloseToPlayerCamp < 12) {
+                if (tensionLevelMusicPlaying == 2) {
+                    selectedAudioClip = currentAudioClipPlaying;
+                }
+                else {
+                    selectedAudioClip = nightMusicTension2Loops[UnityEngine.Random.Range(0, nightMusicTension2Loops.Count)];
+                }
+                tensionLevelMusicPlaying = 2;
+            }
+
+            if (creaturesCloseToPlayerCamp >= 12 && creaturesCloseToPlayerCamp < 20) {
+                if (tensionLevelMusicPlaying == 3) {
+                    selectedAudioClip = currentAudioClipPlaying;
+                }
+                else {
+                    selectedAudioClip = nightMusicTension3Loops[UnityEngine.Random.Range(0, nightMusicTension3Loops.Count)];
+                }
+                tensionLevelMusicPlaying = 3;
+            }
+
+            if (creaturesCloseToPlayerCamp >= 20) {
+                if (tensionLevelMusicPlaying == 4) {
+                    selectedAudioClip = currentAudioClipPlaying;
+                }
+                else {
+                    selectedAudioClip = nightMusicTension4Loops[UnityEngine.Random.Range(0, nightMusicTension4Loops.Count)];
+                }
+                tensionLevelMusicPlaying = 4;
+            }
         }
 
-        return nightMusicTensionLoops[0];
+        Debug.Log("tensionLevelMusicPlaying " + tensionLevelMusicPlaying);
+        Debug.Log("selectedAudioClip " + selectedAudioClip);
+        return selectedAudioClip;
     }
 
     private void CrossfadeToNextNightClip(AudioClip newClip) {
@@ -312,26 +426,41 @@ public class MusicManager : MonoBehaviour {
         nextSource.volume = 0f;
         nextSource.Play();
 
-        StartCoroutine(CrossfadeCoroutine(activeSource, nextSource, 1f));
+        StartCoroutine(CrossfadeCoroutine(activeSource, nextSource, 2f));
 
         isUsingAudioSourceA = !isUsingAudioSourceA;
     }
 
     private IEnumerator CrossfadeCoroutine(AudioSource fromSource, AudioSource toSource, float duration) {
         float elapsedTime = 0f;
+        float maxVolume = nightMusicAudioVolume;
+
+        float clipTime = fromSource.time; // Récupère le temps de lecture actuel
+        if (clipTime > fromSource.clip.length - 1f) {
+            clipTime = 0;
+        }
+        toSource.time = clipTime;
 
         while (elapsedTime < duration) {
             float t = elapsedTime / duration;
-            fromSource.volume = Mathf.Lerp(nightMusicAudioVolume, 0f, t);
-            toSource.volume = Mathf.Lerp(0f, nightMusicAudioVolume, t);
+
+            // Courbe exponentielle pour une transition plus naturelle
+            float fadeOutFactor = Mathf.SmoothStep(1f, 0f, t);
+            float fadeInFactor = Mathf.SmoothStep(0f, 1f, t);
+
+            fromSource.volume = fadeOutFactor * maxVolume;
+            toSource.volume = fadeInFactor * maxVolume;
+
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         fromSource.volume = 0f;
         fromSource.Stop();
-        toSource.volume = nightMusicAudioVolume;
+        toSource.volume = maxVolume; // Assure un retour au volume normal
     }
+
+
 
     public void PlayMusicDelayed(float delay) {
         audioSourceA.PlayDelayed(delay);

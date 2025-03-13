@@ -35,6 +35,7 @@ MonoBehaviour:
   bulletIsProjectile: 0
   bulletIsSprite: 0
   automaticWeapon: 0
+  delayBetweenClickAndShot: 0
   damagePerBullet: 10
   maxAmmo: 6
   pelletsPerBullet: 1
@@ -94,5 +95,6 @@ MonoBehaviour:
   swapToWeaponSound: {fileID: 8300000, guid: 44410cc1b7956fa48b296fe59bf65d00, type: 3}
   reloadSFXVolumeMultiplier: 0.5
   cooldownSFXVolumeMultiplier: 0.5
-  shootGunVolumeMultiplier: 0.4
+  shootGunVolumeMultiplier: 0.3
   outOfAmmoVolumeMultiplier: 0.75
+  swapToWeaponVolumeMultiplier: 1

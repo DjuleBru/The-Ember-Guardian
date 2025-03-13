@@ -144,4 +144,20 @@ public class CreaturesManager : MonoBehaviour
         }
     }
 
+    public int GetNightCreaturesCloseToPlayerCamp(float distanceToCamp) {
+        int creaturesCloseToCamp = 0;
+
+        foreach(Creature creature in creaturesSpawnedAtNightList) {
+            if(creature.transform.position.x > 0 && creature.transform.position.x < CampZoneManager.Instance.GetCampCenterMaxLimit() + distanceToCamp) {
+                creaturesCloseToCamp++;
+            }
+
+            if(creature.transform.position.x < 0 && creature.transform.position.x > CampZoneManager.Instance.GetCampCenterMinLimit() - distanceToCamp) {
+                creaturesCloseToCamp++;
+            }
+        }
+
+        return creaturesCloseToCamp;
+    }
+
 }

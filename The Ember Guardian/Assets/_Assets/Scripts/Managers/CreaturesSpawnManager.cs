@@ -271,7 +271,8 @@ public class CreaturesSpawnManager : MonoBehaviour
 
             foreach (SpawnedCreatureInfo creatureInfo in waveCreaturesDictionary[subWaveIndex]) {
                 SpawnCreatureAtSide(creatureInfo.creature, creatureInfo.spawnSide);
-                yield return new WaitForSeconds(0.33f); // Délai entre les spawns
+                Debug.Log("Spawning " + creatureInfo.creature);
+                yield return new WaitForSeconds(0.5f); // Délai entre les spawns
             }
 
             // Attendre que toutes les créatures de cette subwave soient éliminées
