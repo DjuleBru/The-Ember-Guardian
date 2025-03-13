@@ -164,6 +164,10 @@ public class CreatureSO : ScriptableObject
     [LabelWidth(200)]
     [Range(0, 1)]
     public float spawnProbability; // between 0 and 1
+    [BoxGroup("Wave Stats")]
+    [LabelWidth(200)]
+    [Range(0, 15)]
+    public int maxCreaturesPerPacket;
 
 
     [BoxGroup("SFX")]

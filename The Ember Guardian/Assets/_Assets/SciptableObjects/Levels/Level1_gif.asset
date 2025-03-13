@@ -45,9 +45,10 @@ MonoBehaviour:
   growthFactor: 1.3
   minWaveDuration: 9
   maxWaveDuration: 90
-  delayBetweenSubWaves: 15
   startWaveToSpawnFromBothSides: 10
   canSpawnElite: 0
+  minLevelXPosition: -200
+  maxLevelXPosition: 200
   levelAudioClips:
   - {fileID: 8300000, guid: 09c5969007630694984b81ccd6618337, type: 3}
   - {fileID: 8300000, guid: d79c4b04637541d4fba193e4660d29a7, type: 3}

@@ -112,6 +112,7 @@ public class CreatureAI_Summoner : CreatureAI {
     }
 
     protected override void WalkingToFireStateUpdate() {
+        CheckDistanceToPlayerOrCampForMoveSpeed();
 
         if (Mathf.Abs(transform.position.x) > distanceToTargetToStopWalking) {
             MoveTowardsFire();

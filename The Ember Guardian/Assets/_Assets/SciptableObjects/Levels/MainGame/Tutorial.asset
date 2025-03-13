@@ -20,6 +20,7 @@ MonoBehaviour:
   environmentType: 0
   levelObjectiveType: 0
   endLevelType: 0
+  nightsToSurviveAmount: 0
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
   - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
@@ -29,13 +30,20 @@ MonoBehaviour:
   hasFog: 0
   fogFrontAlpha: 0
   fogBackAlpha: 0
+  hasWind: 0
+  initialWindStrength: 0
+  windStrengthsAllowedInLevel: 
+  hasRain: 0
+  initialRainIntensity: 0
+  rainIntensitiesAllowedInLevel: 
   baseDifficulty: 18
   minSubwaveDifficulty: 0
   maxSubwaveDifficulty: 20
   growthFactor: 1.2
   minWaveDuration: 25
   maxWaveDuration: 90
-  delayBetweenSubWaves: 10
   startWaveToSpawnFromBothSides: 1
   canSpawnElite: 0
+  minLevelXPosition: -200
+  maxLevelXPosition: 200
   levelAudioClips: []

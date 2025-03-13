@@ -8,6 +8,8 @@ public class HubChestUI : MonoBehaviour
     [SerializeField] private GameObject payCurrencyUI;
     private float openChestAnimationDelay = 3.3f;
 
+    private Coroutine showUICoroutine;
+
     private void Awake() {
         hubChest = GetComponentInParent<HubChest>();
         payCurrencyUI.SetActive(false);
@@ -18,11 +20,12 @@ public class HubChestUI : MonoBehaviour
     }
 
     private void HubChest_OnChestClosed(object sender, System.EventArgs e) {
+        StopCoroutine(showUICoroutine);
         payCurrencyUI.SetActive(false);
     }
 
     private void HubChest_OnChestOpened(object sender, System.EventArgs e) {
-        StartCoroutine(SetUIActiveAfterDelay());
+        showUICoroutine = StartCoroutine(SetUIActiveAfterDelay());
     }
 
     private IEnumerator SetUIActiveAfterDelay() {

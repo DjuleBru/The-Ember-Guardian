@@ -72,6 +72,10 @@ public class Portal : MonoBehaviour
                 linkedLevelSO = linkedLevelSOList[MetaProgressionManager.Instance.GetPortalLinkedLevelSOIndex(portalNumber)];
             }
 
+            if(isHubDemoPortal) {
+                portalUnlocked = true;
+            }
+
             if (!portalUnlocked && !isHubDemoPortal) {
                 gameObject.SetActive(false);
                 return;

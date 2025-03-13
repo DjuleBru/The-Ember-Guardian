@@ -63,10 +63,54 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7526209351080445915, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4398358682168850030}
+    - targetCorrespondingSourceObject: {fileID: 7526209351080445915, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 121082607926170886}
   m_SourcePrefab: {fileID: 100100000, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
 --- !u!212 &2135839067699540585 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 5032015013220033746, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
   m_PrefabInstance: {fileID: 6372954862967609019}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3459678387375165792 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7526209351080445915, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
+  m_PrefabInstance: {fileID: 6372954862967609019}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4398358682168850030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3459678387375165792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c91b83b2cc6893b47b99ebced7a2a63a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &121082607926170886
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3459678387375165792}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6b6d84aa1d27ce94ba8e8b04eda873cc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

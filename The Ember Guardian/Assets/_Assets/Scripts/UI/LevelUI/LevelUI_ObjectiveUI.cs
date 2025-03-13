@@ -17,6 +17,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         DestroyNest,
         HUB_HeadToFire,
         HUB_HeadToNewLevel,
+        HUBDemo_PrepareToReturn,
         FindAndDestroyNest,
         FindArmorer,
         FindMoreCompanions,
@@ -34,6 +35,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         BuildAmmoCrafter,
         BuildHunterShrine,
         Recruit2Hunters,
+        RecruitEmberlings,
         RecruitMoreEmberlings,
         CollectCrafterAmmo,
         WaitCraftingAmmo,
@@ -49,6 +51,8 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         HUB_TalkToTrader,
         HUB_ExtractEmber,
         HUB_HeadToTeleporter,
+        HUBDemo_DropGems,
+        HUBDemo_BuyUpgrade,
         KeepFireLit,
         TalkToArmorer,
         MeetTrainer,
@@ -210,12 +214,13 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         OnObjectiveCompleted?.Invoke(this, EventArgs.Empty);
 
-        if(currentObjectiveType == ObjectiveType.SetupCamp) {
+        if(currentObjectiveType == ObjectiveType.SetupCamp && DemoMainLevelManager.Instance == null) {
             StartCoroutine(EndCampSetupObjective());
         }
     }
 
     private IEnumerator EndCampSetupObjective() {
+
         SetObjectiveCompletedCoroutine(0f);
 
         yield return new WaitForSeconds(5f);
@@ -278,10 +283,13 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
             return "Wait for ammo to be crafted";
         }
         if (subObjectiveType == SubObjectiveType.Recruit2Hunters) {
-            return "Recruit at least 2 Hunters";
+            return "Assign at least 2 Hunters";
         }
         if (subObjectiveType == SubObjectiveType.RecruitMoreEmberlings) {
             return "Explore to recruit more emberlings";
+        }
+        if (subObjectiveType == SubObjectiveType.RecruitEmberlings) {
+            return "Explore to recruit at least 2 emberlings";
         }
         if (subObjectiveType == SubObjectiveType.WaitForHunt) {
             return "Wait for Hunters to hunt animals";
@@ -315,6 +323,12 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         }
         if (subObjectiveType == SubObjectiveType.HUB_HeadToTeleporter) {
             return "Head to the teleporter";
+        }
+        if (subObjectiveType == SubObjectiveType.HUBDemo_DropGems) {
+            return "Drop gems in the hub chest";
+        }
+        if (subObjectiveType == SubObjectiveType.HUBDemo_BuyUpgrade) {
+            return "Buy an item to the gem trader";
         }
         if (subObjectiveType == SubObjectiveType.KeepFireLit) {
             return "Do not let the fire die";
@@ -374,6 +388,9 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         }
         if (objectiveType == ObjectiveType.HUB_HeadToNewLevel) {
             return "Explore new areas";
+        }
+        if (objectiveType == ObjectiveType.HUBDemo_PrepareToReturn) {
+            return "Prepare to teleport";
         }
         if (objectiveType == ObjectiveType.FindAndDestroyNest) {
             return "Find and destroy the darkling's nest";

@@ -69,7 +69,10 @@ public class HUBManager : MonoBehaviour
 
             nextArrivalThroughPortal = false;
             enterHubCollider.gameObject.SetActive(false);
-            MusicManager.Instance.PlayMusicDelayed(hubDelayToStartPlayingMusic);
+
+            if(!demoHUB) {
+                MusicManager.Instance.PlayMusicDelayed(hubDelayToStartPlayingMusic);
+            }
         }
 
         if(DEBUGMODE) {

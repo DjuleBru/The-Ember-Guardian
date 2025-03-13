@@ -10,40 +10,50 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
-  m_Name: Level5
+  m_Name: Level4
   m_EditorClassIdentifier: 
   levelsUnlockedByLevel:
+  - {fileID: 11400000, guid: 68380da7c9c0faf45be065d4a9cda5eb, type: 2}
   - {fileID: 11400000, guid: 36a376877af4fca44b531d5dd7dff0fb, type: 2}
-  merchantsUnlockedInLevel: 01000000
-  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 285aab84b4a4ad648a8899052f346e6f, type: 2}
-  newMerchantTextLinesAfterLevel: []
-  environmentType: 3
-  levelObjectiveType: 10
-  endLevelType: 0
-  nightsToSurviveAmount: 0
+  merchantsUnlockedInLevel: 03000000
+  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 26f1ade022c3b804ab219a65abfc68f4, type: 2}
+  newMerchantTextLinesAfterLevel:
+  - {fileID: 11400000, guid: 1aa7febfc957ce947998288f0f8837a1, type: 2}
+  environmentType: 0
+  levelObjectiveType: 12
+  endLevelType: 14
+  nightsToSurviveAmount: 5
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
-  - {fileID: 11400000, guid: a0c1321c3dbd0704c9f6bf0aec0e77b3, type: 2}
   - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
   - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
+  - {fileID: 11400000, guid: 30c45ff74017778438c5c78eed18975c, type: 2}
+  - {fileID: 11400000, guid: ab8dd169f91741b48848a62dab906029, type: 2}
   isNewEnvironmentDiscoveryLevel: 1
-  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
-  linkedSceneName: Level1_VerdantGraveyard
+  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: fe72f58b31466564f8f3f9e82a53595b, type: 3}
+  linkedSceneName: Level3_LostGreens
   hasFog: 0
   fogFrontAlpha: 0
   fogBackAlpha: 0
-  baseDifficulty: 6
-  minSubwaveDifficulty: 0
-  maxSubwaveDifficulty: 10
-  growthFactor: 1.6
+  hasWind: 0
+  initialWindStrength: 0
+  windStrengthsAllowedInLevel: 000000000100000002000000
+  hasRain: 0
+  initialRainIntensity: 0
+  rainIntensitiesAllowedInLevel: 
+  baseDifficulty: 22
+  minSubwaveDifficulty: 5
+  maxSubwaveDifficulty: 30
+  growthFactor: 1.5
   minWaveDuration: 9
   maxWaveDuration: 90
-  delayBetweenSubWaves: 8
   startWaveToSpawnFromBothSides: 2
   canSpawnElite: 1
+  minLevelXPosition: -200
+  maxLevelXPosition: 200
   levelAudioClips:
   - {fileID: 8300000, guid: 09c5969007630694984b81ccd6618337, type: 3}
   - {fileID: 8300000, guid: d79c4b04637541d4fba193e4660d29a7, type: 3}
   - {fileID: 8300000, guid: 67182c7decc49484f9b9722ed4fe9b37, type: 3}
-  - {fileID: 8300000, guid: 37cae04edadc4714894e86e8468774cf, type: 3}
-  - {fileID: 8300000, guid: 11f91fa2df76eb347ad58de41dc01c8f, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}

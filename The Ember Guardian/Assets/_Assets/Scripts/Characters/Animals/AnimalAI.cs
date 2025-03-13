@@ -55,8 +55,6 @@ public class AnimalAI : MonoBehaviour
     }
 
     private void Animal_OnAnimalHitObstacle(object sender, EventArgs e) {
-        Debug.Log("animal hit obstacle");
-
         isSafe = true;
         animalMovement.SetMoveSpeed(roamMoveSpeed);
         OnAnimalReachedSafeZone?.Invoke(this, EventArgs.Empty);

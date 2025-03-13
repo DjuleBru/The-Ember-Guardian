@@ -56,6 +56,7 @@ public class Fire : Structure, IDamageable {
     public event EventHandler OnFireFuelled;
     public static event EventHandler OnAnyFireFuelled;
     public event EventHandler OnFireDamageTaken;
+    public event EventHandler OnFireEmberExtracted;
     public event EventHandler OnFireEmberExtractionStarted;
     public static event EventHandler OnAnyFireEmberExtractionStarted;
     public event EventHandler OnFireEmberExtractionStopped;
@@ -240,6 +241,7 @@ public class Fire : Structure, IDamageable {
         ember.EmphasizePosition();
         ActivateStructureSecondaryFunctionInteraction(false);
         emberExtracted = true;
+        OnFireEmberExtracted?.Invoke(this, EventArgs.Empty);
 
         yield return new WaitForSeconds(2f);
         OnFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
@@ -513,13 +515,16 @@ public class Fire : Structure, IDamageable {
         return initialFireLit;
     }
 
-    public void LockFireInteractionsUpdate() {
+    public void SetFireInteractionsUpdateLocked(bool locked) {
 
-        SetStructurePrimaryFunctionUnlocked(false);
-        SetStructureSecondaryFunctionUnlocked(false);
-        lockFireInteractionFunctionsUpdate = true;
+        SetStructurePrimaryFunctionUnlocked(!locked);
+        SetStructureSecondaryFunctionUnlocked(!locked);
+        lockFireInteractionFunctionsUpdate = locked;
     }
 
+    public bool GetEmberExtracted() {
+        return emberExtracted;
+    }
     public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
         fuelLevel -= (damage * damageToFuelConversionRate);
         CheckFireStateDowngrade();

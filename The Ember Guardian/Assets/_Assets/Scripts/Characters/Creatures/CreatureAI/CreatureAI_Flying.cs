@@ -121,6 +121,8 @@ public class CreatureAI_Flying : CreatureAI
     }
 
     protected override void MoveTowardsFire() {
+
+        CheckDistanceToPlayerOrCampForMoveSpeed();
         Vector3 targetDestination = new Vector3(0, 0, 0);
 
         float distanceToFireX = Mathf.Abs(transform.position.x - targetDestination.x);

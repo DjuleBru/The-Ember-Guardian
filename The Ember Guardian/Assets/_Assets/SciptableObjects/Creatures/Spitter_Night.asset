@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Spitter
   description: Ranged mob that fires arced projectiles
-  creaturePrefab: {fileID: 4997657120178985709, guid: 756e13c7ac7325942baa544ddb115872, type: 3}
+  creaturePrefab: {fileID: 4997657120178985709, guid: 87600494769c28d489b71fb94a5003c6, type: 3}
   mass: 20
   detectionRange_Day: 15
   detectionRange_Night: 12
@@ -51,6 +51,7 @@ MonoBehaviour:
   difficulty: 4
   initialWaveSpawn: 2
   spawnProbability: 0.5
+  maxCreaturesPerPacket: 3
   dieAudioClips:
   - {fileID: 8300000, guid: fc63e38ccfed0ef4bad0b3f9c2a5f363, type: 3}
   dieVolumeMultiplier: 0.75

@@ -25,6 +25,7 @@ public class MobSpawner : MonoBehaviour
 
     public event EventHandler<OnMobSpawnedEventArgs> OnMobSpawned;
     public event EventHandler<OnMobSpawnedEventArgs> OnMobRemoved;
+    public event EventHandler OnAllMobRemoved;
 
     protected bool mobsCanSpawnAtDawn = true;
 
@@ -47,6 +48,10 @@ public class MobSpawner : MonoBehaviour
         OnMobRemoved?.Invoke(this, new OnMobSpawnedEventArgs {
             mob = mob,
         });
+
+        if (mobSpawnedList.Count == 0) {
+            OnAllMobRemoved?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     protected void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
@@ -176,5 +181,9 @@ public class MobSpawner : MonoBehaviour
 
     public void SetMobsCanSpawnAtDawn(bool canSpawn) {
         mobsCanSpawnAtDawn = canSpawn;
+    }
+
+    public int GetMaxMobAmountSpawnedAtDawn() {
+        return maxMobsRespawningAtDawn;
     }
 }

@@ -101,14 +101,14 @@ public class HubMerchantTalkUI : MonoBehaviour
     }
 
     private void HubMerchant_OnPlayerTriggeredOut(object sender, EventArgs e) {
-        if (hubMerchant.GetMerchantIsDecorationalDemoMerchant()) {
+        if (hubMerchant.GetMerchantIsDecorationalDemoMerchant() && !hubMerchant.GetMerchantIsFunctionalDemoMerchant()) {
             talkPanelUIGameObject.SetActive(false);
             talkText.text = "";
         }
     }
 
     private void HubMerchant_OnPlayerTriggeredIn(object sender, EventArgs e) {
-        if (hubMerchant.GetMerchantIsDecorationalDemoMerchant()) {
+        if (hubMerchant.GetMerchantIsDecorationalDemoMerchant() && !hubMerchant.GetMerchantIsFunctionalDemoMerchant()) {
             talkPanelUIGameObject.SetActive(true);
             talkText.text = merchantTalkLines[0];
             OnAnyMerchantShowNewTalkLine?.Invoke(this, EventArgs.Empty);

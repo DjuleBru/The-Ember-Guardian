@@ -332,7 +332,7 @@ public class DogAI : MonoBehaviour
     }
 
     private void CheckClosestIncomingCreature() {
-        closestIncomingCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(transform.position, 40f, 0, true);
+        closestIncomingCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(transform.position, 100f, 0, true);
     }
 
     private void CheckNightInCamp() {

@@ -188,8 +188,10 @@ public class DayNightManager : MonoBehaviour
 
         cyclePaused = paused;
 
+        Debug.Log("SetCyclePaused" + paused);
         // Send event to UI only if Level
         if (!showCyclePauseUI) return;
+
         if(cyclePaused) {
             OnCyclePaused?.Invoke(this, EventArgs.Empty);
         } else {

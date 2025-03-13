@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
+  m_Name: Level5
+  m_EditorClassIdentifier: 
+  levelsUnlockedByLevel:
+  - {fileID: 11400000, guid: 36a376877af4fca44b531d5dd7dff0fb, type: 2}
+  merchantsUnlockedInLevel: 01000000
+  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 285aab84b4a4ad648a8899052f346e6f, type: 2}
+  newMerchantTextLinesAfterLevel: []
+  environmentType: 3
+  levelObjectiveType: 10
+  endLevelType: 0
+  nightsToSurviveAmount: 0
+  nightCreatureTypes:
+  - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
+  - {fileID: 11400000, guid: a0c1321c3dbd0704c9f6bf0aec0e77b3, type: 2}
+  - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
+  - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
+  isNewEnvironmentDiscoveryLevel: 1
+  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
+  linkedSceneName: Level1_VerdantGraveyard
+  hasFog: 0
+  fogFrontAlpha: 0
+  fogBackAlpha: 0
+  hasWind: 0
+  initialWindStrength: 0
+  windStrengthsAllowedInLevel: 
+  hasRain: 0
+  initialRainIntensity: 0
+  rainIntensitiesAllowedInLevel: 
+  baseDifficulty: 6
+  minSubwaveDifficulty: 0
+  maxSubwaveDifficulty: 10
+  growthFactor: 1.6
+  minWaveDuration: 9
+  maxWaveDuration: 90
+  startWaveToSpawnFromBothSides: 2
+  canSpawnElite: 1
+  minLevelXPosition: -200
+  maxLevelXPosition: 200
+  levelAudioClips:
+  - {fileID: 8300000, guid: 09c5969007630694984b81ccd6618337, type: 3}
+  - {fileID: 8300000, guid: d79c4b04637541d4fba193e4660d29a7, type: 3}
+  - {fileID: 8300000, guid: 67182c7decc49484f9b9722ed4fe9b37, type: 3}
+  - {fileID: 8300000, guid: 37cae04edadc4714894e86e8468774cf, type: 3}
+  - {fileID: 8300000, guid: 11f91fa2df76eb347ad58de41dc01c8f, type: 3}

@@ -125,6 +125,6 @@ public class DemoLevelIntroManager : MonoBehaviour {
         UICurrencyManager.PlayerInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.ember, 1);
 
         Fire.Instance.ManualSetFireCurrentMaxFuelTreshold(Fire.State.calm);
-        Fire.Instance.LockFireInteractionsUpdate();
+        Fire.Instance.SetFireInteractionsUpdateLocked(true);
     }
 }

@@ -12,14 +12,36 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Portal endLevelPortal;
     [SerializeField] private HubMerchant levelHubMerchant;
 
+    [SerializeField] private Transform leftLevelEndCollider;
+    [SerializeField] private Transform rightLevelEndCollider;
+    [SerializeField] private List<Obstacle> obstaclesInLevel = new List<Obstacle>();
+    [SerializeField] private List<Obstacle> builtObstacles;
+    private float minLevelLimit;
+    private float maxLevelLimit;
+
+
     private bool levelRegionUnlocked;
     private int levelHubMerchantInteractionIndex;
 
     public event EventHandler OnNewLocationShown;
     public event EventHandler OnLevelFailed;
+    public event EventHandler OnLevelLimitsChanged;
 
     private void Awake() {
         Instance = this;
+
+        foreach(Obstacle obstacle in obstaclesInLevel) {
+            builtObstacles.Add(obstacle);
+            obstacle.OnObstacleBuilt += Obstacle_OnObstacleBuilt;
+        }
+
+        RefreshLevelLimits();
+    }
+
+    private void Obstacle_OnObstacleBuilt(object sender, EventArgs e) {
+        Obstacle obstacle = (Obstacle)sender;
+        builtObstacles.Remove(obstacle);
+        RefreshLevelLimits();
     }
 
     private void Start() {
@@ -41,6 +63,36 @@ public class LevelManager : MonoBehaviour
 
     }
 
+    private void RefreshLevelLimits() {
+        float maxLevelLimitTemp = rightLevelEndCollider.transform.position.x;
+        float minLevelLimitTemp = leftLevelEndCollider.transform.position.x;
+
+        foreach(Obstacle obstacle in builtObstacles) {
+
+            if(obstacle.transform.position.x < 0 && obstacle.transform.position.x > minLevelLimitTemp) {
+                minLevelLimitTemp = obstacle.transform.position.x;
+            }
+
+            if (obstacle.transform.position.x > 0 && obstacle.transform.position.x < maxLevelLimitTemp) {
+                maxLevelLimitTemp = obstacle.transform.position.x;
+            }
+
+        }
+
+        minLevelLimit = minLevelLimitTemp;
+        maxLevelLimit = maxLevelLimitTemp;
+
+        OnLevelLimitsChanged?.Invoke(this, EventArgs.Empty);    
+    }
+
+    public float GetMaxLevelLimit() {
+        return maxLevelLimit;
+    }
+
+    public float GetMinLevelLimit() {
+        return minLevelLimit;
+    }
+
     private void LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, EventArgs e) {
         levelHubMerchantInteractionIndex++;
         if(levelHubMerchantInteractionIndex == 2) {
@@ -49,22 +101,31 @@ public class LevelManager : MonoBehaviour
     }
 
     private void LevelUI_OnObjectiveCompleted(object sender, EventArgs e) {
-        if(levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
+        Vector3 endLevelPortalPosition = new Vector3(Player.Instance.transform.position.x + 10f, 0, 0);
 
-            Vector3 endLevelPortalPosition = new Vector3(Player.Instance.transform.position.x + 10f, 0, 0);
-            endLevelPortal.transform.position = endLevelPortalPosition;
+        if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
+
 
             StartCoroutine(EnableEndLevelPortal(2f));
         }
 
         if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
 
-            Vector3 endLevelPortalPosition = new Vector3(levelHubMerchant.transform.position.x + 10f, 0, 0);
-            endLevelPortal.transform.position = endLevelPortalPosition;
+            if (DemoMainLevelManager.Instance != null) {
+                // Demo level
+                if (DemoMainLevelManager.Instance.GetDemoLevelLostOnce()) {
+                    endLevelPortal.transform.position = endLevelPortalPosition;
+                    StartCoroutine(EnableEndLevelPortal(2f));
+                }
+                return;
+            }
+
+            endLevelPortalPosition = new Vector3(levelHubMerchant.transform.position.x + 10f, 0, 0);
 
             StartCoroutine(EnableEndLevelPortal(2f));
         }
 
+        endLevelPortal.transform.position = endLevelPortalPosition;
     }
 
     private void EndLevelArea_OnEndLevelFireLit(object sender, EventArgs e) {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,11 @@ public class LevelNPCGemReward : MonoBehaviour
     [SerializeField] private List<int> rewardAmountList;
 
     private bool rewarded;
+
+    public static event EventHandler<OnAnyCurrencyDroppedEventArgs> OnAnyCurrencyDropped;
+    public class OnAnyCurrencyDroppedEventArgs : EventArgs {
+        public PlayerCurrencies.CurrencyType currencyType;
+    }
 
     private void Start() {
         talkUI.OnMerchantEndTalk += TalkUI_OnMerchantEndTalk;
@@ -29,6 +35,9 @@ public class LevelNPCGemReward : MonoBehaviour
 
             for (int i = 0; i < rewardAmount; i++) {
                 Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyType), orbSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
+                OnAnyCurrencyDropped?.Invoke(this, new OnAnyCurrencyDroppedEventArgs {
+                    currencyType = currencyType,
+                });
 
                 yield return new WaitForSeconds(.2f);
                 collectible.ApplyRandomUpwardsForce(5, 8);

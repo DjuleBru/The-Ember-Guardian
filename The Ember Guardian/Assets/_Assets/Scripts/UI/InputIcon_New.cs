@@ -8,6 +8,8 @@ public class InputIcon_New : MonoBehaviour
 
     [SerializeField] private Image inputImage1;
     [SerializeField] private Image inputImage2;
+    [SerializeField] private SpriteRenderer inputSpriteRenderer1;
+    [SerializeField] private SpriteRenderer inputSpriteRenderer2;
 
     [SerializeField] private InputControlIcons.Control control;
 
@@ -21,12 +23,25 @@ public class InputIcon_New : MonoBehaviour
     }
 
     private void RefreshInput() {
-        if(inputImage2 == null) {
-            inputImage1.sprite = InputControlIcons.Instance.GetControlIconSprite(control)[0];
-        } else {
-            inputImage1.sprite = InputControlIcons.Instance.GetControlIconSprite(control)[0];
-            inputImage2.sprite = InputControlIcons.Instance.GetControlIconSprite(control)[1];
-
+        if(inputImage1 != null) {
+            // Image UI
+            if (inputImage2 == null) {
+                inputImage1.sprite = InputControlIcons.Instance.GetControlIconSprite(control)[0];
+            }
+            else {
+                inputImage1.sprite = InputControlIcons.Instance.GetControlIconSprite(control)[0];
+                inputImage2.sprite = InputControlIcons.Instance.GetControlIconSprite(control)[1];
+            }
+        }
+        if (inputSpriteRenderer1 != null) {
+            // SpriteRenderer
+            if (inputSpriteRenderer2 == null) {
+                inputSpriteRenderer1.sprite = InputControlIcons.Instance.GetControlIconSprite(control)[0];
+            }
+            else {
+                inputSpriteRenderer1.sprite = InputControlIcons.Instance.GetControlIconSprite(control)[0];
+                inputSpriteRenderer2.sprite = InputControlIcons.Instance.GetControlIconSprite(control)[1];
+            }
         }
     }
 

@@ -37,7 +37,7 @@ public class CreatureMovement : MobMovement
         base.FixedUpdate();
     }
 
-    private void InitializeCreatureMoveSpeed() {
+    public void InitializeCreatureMoveSpeed() {
 
         if (creature.IsDayCreature()) {
             initialMobSpeed = creature.GetCreatureSO().dayMoveSpeed;

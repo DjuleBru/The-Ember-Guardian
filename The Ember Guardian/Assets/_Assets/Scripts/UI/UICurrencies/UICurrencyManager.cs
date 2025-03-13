@@ -255,10 +255,6 @@ public class UICurrencyManager : MonoBehaviour
 
         Currency_UI currencyUICollected = currencyTransform.GetComponent<Currency_UI>();
 
-        OnCurrencyCollected?.Invoke(this, new OnCurrencyDroppedEventArgs {
-            currencyUIDropped = currencyUICollected
-        });
-
         if(this == HubInventoryUI) {
             currencyTransform.localScale *= 1.5f;
         }
@@ -268,6 +264,10 @@ public class UICurrencyManager : MonoBehaviour
         //}
 
         currenciesInBag.Add(currencyUICollected);
+
+        OnCurrencyCollected?.Invoke(this, new OnCurrencyDroppedEventArgs {
+            currencyUIDropped = currencyUICollected
+        });
     }
 
     public void AddCurrencyAmount(PlayerCurrencies.CurrencyType currencyType, int currencyAmount) {

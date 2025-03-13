@@ -55,6 +55,9 @@ public class CreaturesSpawnManager : MonoBehaviour
     private float waveDifficultyRightProportion;
     private float waveDuration;
 
+    private float minLevelXPosition;
+    private float maxLevelXPosition;
+
     [SerializeField] private int debugInitialWaveNumber;
     private int currentWaveNumber;
     private int subWaveNumber;
@@ -64,6 +67,10 @@ public class CreaturesSpawnManager : MonoBehaviour
     private bool debugDontSpawnAtNight;
     private void Awake() {
         Instance = this;
+
+        if (debugInitialWaveNumber != 0) {
+            currentWaveNumber = debugInitialWaveNumber;
+        }
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
@@ -81,16 +88,22 @@ public class CreaturesSpawnManager : MonoBehaviour
     }
 
     private void Start() {
+        minLevelXPosition = LevelManager.Instance.GetMinLevelLimit();
+        maxLevelXPosition = LevelManager.Instance.GetMaxLevelLimit();
+
         CreaturesManager.Instance.OnCreatureAtNightKilled += CreaturesManager_OnCreatureAtNightKilled;
         CreaturesManager.Instance.OnCreatureAtNightSpawned += CreaturesManager_OnCreatureAtNightSpawned;
         CreaturesManager.Instance.OnAdditionalCreatureAtNightSpawned += CreaturesManager_OnAdditionalCreatureAtNightSpawned;
+        LevelManager.Instance.OnLevelLimitsChanged += LevelManager_OnLevelLimitsChanged;
 
         debugInputs = DebugManager.Instance.GetAllowDebugInputs_CreaturesSpawnManager();
         debugDontSpawnAtNight = DebugManager.Instance.GetDebugDontSpawnAtNight();
 
-        if(debugInitialWaveNumber != 0) {
-            currentWaveNumber = debugInitialWaveNumber;
-        }
+    }
+
+    private void LevelManager_OnLevelLimitsChanged(object sender, EventArgs e) {
+        minLevelXPosition = LevelManager.Instance.GetMinLevelLimit();
+        maxLevelXPosition = LevelManager.Instance.GetMaxLevelLimit();
     }
 
     private void CreaturesManager_OnAdditionalCreatureAtNightSpawned(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
@@ -269,10 +282,40 @@ public class CreaturesSpawnManager : MonoBehaviour
             Debug.Log("Spawning subwave " + subWaveIndex);
             remainingSubWaveCreatures = waveCreaturesDictionary[subWaveIndex].Count;
 
-            foreach (SpawnedCreatureInfo creatureInfo in waveCreaturesDictionary[subWaveIndex]) {
-                SpawnCreatureAtSide(creatureInfo.creature, creatureInfo.spawnSide);
-                Debug.Log("Spawning " + creatureInfo.creature);
-                yield return new WaitForSeconds(0.5f); // Délai entre les spawns
+            // Grouper les créatures par type
+            var groupedCreatures = waveCreaturesDictionary[subWaveIndex]
+                .GroupBy(c => c.creature)
+                .Select(group => group.ToList()) // Convertit chaque groupe en liste homogène
+                .ToList();
+
+            // Mélanger les groupes pour éviter qu'ils ne soient toujours spawnés dans le même ordre
+            groupedCreatures = groupedCreatures.OrderBy(g => UnityEngine.Random.value).ToList();
+
+            // File d'attente des groupes pour alterner leur apparition
+            Queue<List<SpawnedCreatureInfo>> groupQueue = new Queue<List<SpawnedCreatureInfo>>(groupedCreatures);
+
+            while (groupQueue.Count > 0) {
+                List<SpawnedCreatureInfo> currentGroup = groupQueue.Dequeue(); // Prendre un groupe
+
+                // Vérifier la taille max du paquet
+                int maxPacketSize = currentGroup[0].creature.maxCreaturesPerPacket;
+                int chunkSize = currentGroup.Count > maxPacketSize ? maxPacketSize : currentGroup.Count;
+
+                for (int i = 0; i < chunkSize; i++) {
+                    SpawnedCreatureInfo creatureInfo = currentGroup[0];
+                    currentGroup.RemoveAt(0);
+
+                    SpawnCreatureAtSide(creatureInfo.creature, creatureInfo.spawnSide);
+                    yield return new WaitForSeconds(0.2f); // Délai entre les créatures d'un même paquet
+                }
+
+                // Si le groupe n'est pas totalement vidé, on le remet dans la file pour plus tard
+                if (currentGroup.Count > 0) {
+                    groupQueue.Enqueue(currentGroup);
+                }
+
+                // Pause plus longue avant de spawn le prochain paquet
+                yield return new WaitForSeconds(2f);
             }
 
             // Attendre que toutes les créatures de cette subwave soient éliminées
@@ -281,6 +324,9 @@ public class CreaturesSpawnManager : MonoBehaviour
             subWaveIndex++;
         }
     }
+
+
+
 
     private void SpawnCreatureAtSide(CreatureSO creatureToSpawn, SpawnSide spawnSide) {
         Creature creature = Instantiate(creatureToSpawn.creaturePrefab, GetSpawnPosition(spawnSide, creatureToSpawn), Quaternion.identity).GetComponent<Creature>();
@@ -432,6 +478,13 @@ public class CreaturesSpawnManager : MonoBehaviour
         float yPosition = 1f;
         if (creatureToSpawn.flying) {
             yPosition = UnityEngine.Random.Range(creatureToSpawn.flightMinAltitude, creatureToSpawn.flightMaxAltitude);
+        }
+
+        if(xSpawnPosition > maxLevelXPosition) {
+            xSpawnPosition = maxLevelXPosition - 10f;
+        }
+        if (xSpawnPosition < minLevelXPosition) {
+            xSpawnPosition = minLevelXPosition + 10f;
         }
 
         return new Vector3(xSpawnPosition + UnityEngine.Random.Range(-4, 4), yPosition, 0);

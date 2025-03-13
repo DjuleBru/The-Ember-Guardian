@@ -115,7 +115,8 @@ public class SoundManager : MonoBehaviour
 
         Collectible.OnAnyCollectibleTouchedFloor += Collectible_OnAnyCollectibleTouchedFloor;
         Collectible.OnAnyCollectiblePickedUpByWorker += Collectible_OnAnyCollectiblePickedUpByWorker;
-        Collectible.OnAnyCollectiblePlouffed += Collectible_OnAnyCollectiblePlouffed; ;
+        Collectible.OnAnyCollectiblePlouffed += Collectible_OnAnyCollectiblePlouffed;
+        LevelNPCGemReward.OnAnyCurrencyDropped += LevelNPCGemReward_OnAnyCurrencyDropped;
         Chest.OnAnyChestSpawnedCollectible += Chest_OnAnyChestSpawnedCollectible;
         Scavengable.OnAnyScavengableMarkedToScavenge += Scavengable_OnAnyScavengableMarkedToScavenge;
 
@@ -353,6 +354,11 @@ public class SoundManager : MonoBehaviour
 
             PlaySound2D(soundRefsSO.emberPickedUpByPlayer, .7f);
         }
+    }
+
+    private void LevelNPCGemReward_OnAnyCurrencyDropped(object sender, LevelNPCGemReward.OnAnyCurrencyDroppedEventArgs e) {
+        PlayerCurrencies.CurrencyType currencyTypeCollected = e.currencyType;
+        SetCorrectCurrencySound(currencyTypeCollected);
     }
 
     private void Chest_OnAnyChestSpawnedCollectible(object sender, Chest.OnAnyChestSpawnedCollectibleEventArgs e) {
@@ -784,6 +790,7 @@ public class SoundManager : MonoBehaviour
         Collectible.OnAnyCollectiblePickedUpByWorker -= Collectible_OnAnyCollectiblePickedUpByWorker;
         Collectible.OnAnyCollectiblePlouffed -= Collectible_OnAnyCollectiblePlouffed;
         Chest.OnAnyChestSpawnedCollectible -= Chest_OnAnyChestSpawnedCollectible;
+        LevelNPCGemReward.OnAnyCurrencyDropped -= LevelNPCGemReward_OnAnyCurrencyDropped;
         Scavengable.OnAnyScavengableMarkedToScavenge -= Scavengable_OnAnyScavengableMarkedToScavenge;
 
         Worker.OnAnyWorkerAssignedHunter -= Worker_OnAnyWorkerAssignedHunter;

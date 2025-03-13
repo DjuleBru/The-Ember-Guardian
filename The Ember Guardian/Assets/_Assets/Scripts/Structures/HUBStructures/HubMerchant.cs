@@ -245,6 +245,7 @@ public class HubMerchant : MonoBehaviour
             StartCoroutine(StopInteractingWithMerchant());
         }
     }
+
     public void SetHasTalkLinesToShow(bool showExclamationMark = true) {
         merchantHasTalkLinesToShow = true;
 
@@ -255,6 +256,11 @@ public class HubMerchant : MonoBehaviour
 
     public void SetDemoMerchantUnlocked() {
         merchantUnlocked = true;
+    }
+
+    public void SetDemoMerchantFunctional() {
+        isFunctionalDemoHubMerchant = true;
+        isDecorationalDemoHubMerchant = false;
     }
 
     #endregion

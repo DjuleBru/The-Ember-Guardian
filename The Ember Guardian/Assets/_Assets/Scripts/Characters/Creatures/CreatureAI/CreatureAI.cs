@@ -25,8 +25,13 @@ public class CreatureAI : MonoBehaviour {
     protected bool aggroedRecently;
     protected bool died;
     protected bool spawned = true;
-    protected float aggroTimer;
+    protected bool nightMoveSpeedReset;
     protected float aggroDelay = 3f;
+    protected float aggroTimer;
+
+    protected float walkingToFireMoveSpeed = 3.5f;
+    protected float distanceToCampOrPlayerToSetStandardSpeed = 20f;
+
     public event EventHandler OnCreatureAggro;
     public event EventHandler OnCreatureUntargetPlayer;
     public event EventHandler OnCreatureTargetPlayer;
@@ -135,10 +140,26 @@ public class CreatureAI : MonoBehaviour {
 
     protected virtual void WalkingToFireStateUpdate() {
         MoveTowardsFire();
+        CheckDistanceToPlayerOrCampForMoveSpeed();
+
         if (detectedAttackTarget && !aggroedRecently) {
             ChangeState(State.moveToTarget);
         }
     }
+
+    protected void CheckDistanceToPlayerOrCampForMoveSpeed() {
+        if(!nightMoveSpeedReset) {
+
+            float distanceToCampZoneLimit = Mathf.Abs(CampZoneManager.Instance.GetClosestExteriorZoneLimit(transform.position).x - transform.position.x);
+            float distanceToPlayer = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
+
+            if (distanceToCampZoneLimit < distanceToCampOrPlayerToSetStandardSpeed || distanceToPlayer < distanceToCampOrPlayerToSetStandardSpeed) {
+                creatureMovement.InitializeCreatureMoveSpeed();
+                nightMoveSpeedReset = true;
+            }
+        }
+    }
+
     protected virtual void WalkingToSpawnerStateUpdate() {
         MoveTowardsSpawner();
         if (detectedAttackTarget && !aggroedRecently) {
@@ -217,7 +238,7 @@ public class CreatureAI : MonoBehaviour {
             creatureMovement.SetMoveTarget(transform.position);
             mobAttack.RemoveAttackTarget();
 
-            creatureMovement.SetCreatureAggroMoveSpeed(true);
+            creatureMovement.SetMoveSpeed(walkingToFireMoveSpeed);
             followingTargetBuffedSpeed = true;
         }
 

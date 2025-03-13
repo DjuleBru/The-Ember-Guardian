@@ -250,7 +250,7 @@ public class Tutorial : MonoBehaviour
         if (structureSO.structureType == StructureSO.StructureType.fire) {
             if (fireBuilt) return;
 
-            Fire.Instance.LockFireInteractionsUpdate();
+            Fire.Instance.SetFireInteractionsUpdateLocked(true);
             Fire.Instance.SetStructureSecondaryFunctionUnlocked(false);
 
             fireBuilt = true;
