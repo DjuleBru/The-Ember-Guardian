@@ -48,18 +48,14 @@ public class AutoScrollRect : MonoBehaviour {
         if (itemButtonUI != null) {
             buttonLocalPosition.x = itemButtonUI.GetLocalPosition().x;
         }
-        Debug.Log(buttonLocalPosition);
         // Calculer les positions centrées pour les axes horizontal et vertical
         float centeredPositionX = buttonLocalPosition.x - viewportWidth / 2f;
         float centeredPositionY = buttonLocalPosition.y - viewportHeight / 2f;
 
-        Debug.Log("viewportWidth " + viewportWidth);
-        Debug.Log("contentWidth " + contentWidth);
         // Calculer les positions normalisées pour chaque axe
         float normalizedPositionX = Mathf.Clamp01((centeredPositionX + contentWidth / 2f) / (contentWidth - viewportWidth));
         float normalizedPositionY = Mathf.Clamp01((centeredPositionY + contentHeight / 2f) / (contentHeight - viewportHeight));
 
-        Debug.Log(normalizedPositionX);
         // Appliquer les positions normalisées au ScrollRect
         scrollRect.horizontalNormalizedPosition = Mathf.Lerp(
             scrollRect.horizontalNormalizedPosition,
