@@ -16,6 +16,7 @@ public class ItemDescriptionCardUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemStatTemplateValue;
     [SerializeField] private Material modifiedItemStatMaterial;
     [SerializeField] private Material initialItemStatMaterial;
+    [SerializeField] private Material redFontMaterial;
     [SerializeField] private Color modifiedItemColor;
 
     [SerializeField] private TextMeshProUGUI itemStatDescriptionText;
@@ -31,6 +32,7 @@ public class ItemDescriptionCardUI : MonoBehaviour
     [SerializeField] private GameObject yellowGemCostGO;
     [SerializeField] private GameObject purpleGemCostGO;
     [SerializeField] private TextMeshProUGUI maxLevelText;
+    [SerializeField] private GameObject foreGround;
 
     public void SetDescriptionCardText(string itemName, bool constantUnlockDescription, List<string> itemStatDescriptionList, string itemDescription, List<string> itemStatList = null, List<bool> itemModifiersBools = null) {
 
@@ -115,6 +117,16 @@ public class ItemDescriptionCardUI : MonoBehaviour
         DisableGemCostGO();
 
         maxLevelText.gameObject.SetActive(true);
+    }
+    public void SetDescriptionCardItemLockedInDemo() {
+        maxLevelText.text = "LOCKED IN DEMO";
+        maxLevelText.fontMaterial = redFontMaterial;
+        maxLevelText.fontSize = 40;
+
+        DisableGemCostGO();
+
+        maxLevelText.gameObject.SetActive(true);
+        foreGround.SetActive(true);
     }
 
     public void SetDescriptionCardBought() {

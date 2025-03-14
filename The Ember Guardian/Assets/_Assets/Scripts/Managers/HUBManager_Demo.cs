@@ -33,6 +33,9 @@ public class HUBManager_Demo : MonoBehaviour
     private bool playerBoughtItem;
     private bool emberExtractionTalkLineShown;
     private bool emberExtracted;
+    private bool playerHasGemsInInventory;
+    private bool fireIndicatorActive;
+    private bool chestIndicatorActive;
 
     private void Awake() {
         // First demo hub encounter becomes true when player moves on teleporter
@@ -54,6 +57,12 @@ public class HUBManager_Demo : MonoBehaviour
             if(demoLevelLostAmount == 1) {
                 StartCoroutine(HandleFirstLevelDefeatHubEvolution());
             }
+
+            if(demoLevelLostAmount >= 1) {
+                StartCoroutine(HandleAnyLevelDefeatHubEvolution());
+            }
+            
+            RefreshPlayerHasGemsIndicators();
         }
 
         UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
@@ -81,17 +90,29 @@ public class HUBManager_Demo : MonoBehaviour
         gemMerchantTalkUI.SetTextLinesSO(gemMerchantLevelLostOnceTextLinesSO);
 
         foreach(HubMerchant hubMerchant in functionalDemoHubMerchantList) {
-            hubMerchant.SetHasTalkLinesToShow(true);
-            hubMerchant.SetDemoMerchantUnlocked();
-            hubMerchant.SetDemoMerchantFunctional();
+            hubMerchant.SetHasTalkLinesToShow(true, true);
         }
 
         armorerTalkUI.SetTextLinesSO(armorerIntroTextLinesSO);
         trainerTalkUI.SetTextLinesSO(trainerIntroTextLinesSO);
+    }
 
-        fireIndicator.gameObject.SetActive(true);
-        gemMerchantReward.enabled = false;
-        hubFire.SetHubFireEmberExtractable();
+    private IEnumerator HandleAnyLevelDefeatHubEvolution() {
+        yield return new WaitForSeconds(.5f);
+        Debug.Log("HandleAnyLevelDefeatHubEvolution");
+
+        foreach (HubMerchant hubMerchant in functionalDemoHubMerchantList) {
+            hubMerchant.SetDemoMerchantUnlocked();
+            hubMerchant.SetDemoMerchantFunctional();
+        }
+
+        foreach (HubMerchant decorationalHubMerchant in decorationalDemoHubMerchantList) {
+            decorationalHubMerchant.SetHasTalkLinesToShow(true, false);
+            decorationalHubMerchant.SetDemoMerchantUnlocked();
+        }
+
+        gemMerchant.SetHasTalkLinesToShow(false, false);
+        gemMerchantReward.DisableReward();
     }
 
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
@@ -99,12 +120,16 @@ public class HUBManager_Demo : MonoBehaviour
     }
 
     private void UICurrencyManager_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
-        if (!firstDemoHubEncounter) return;
 
         if ((e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember)) {
-            LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUB_ExtractEmber, LevelUI_ObjectiveUI.SubObjectiveType.HUB_HeadToTeleporter);
 
-            StartCoroutine(ActivateTeleporterCoroutine());
+            if (firstDemoHubEncounter) {
+
+                LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUB_ExtractEmber, LevelUI_ObjectiveUI.SubObjectiveType.HUB_HeadToTeleporter);
+
+                StartCoroutine(ActivateTeleporterCoroutine());
+
+            }
         }
        
     }
@@ -148,6 +173,7 @@ public class HUBManager_Demo : MonoBehaviour
             LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUBDemo_DropGems, LevelUI_ObjectiveUI.SubObjectiveType.HUBDemo_BuyUpgrade);
             StartCoroutine(StartGemMerchantLines(gemMerchantComeBuyTextLines));
             chestIndicator.gameObject.SetActive(false);
+            chestIndicatorActive = false;
         }
 
     }
@@ -167,14 +193,15 @@ public class HUBManager_Demo : MonoBehaviour
             if(gemMerchantStoppedInteractingCount == 1) {
                 LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUB_TalkToTrader, LevelUI_ObjectiveUI.SubObjectiveType.HUBDemo_DropGems);
                 chestIndicator.gameObject.SetActive(true);
+                chestIndicatorActive = true;
 
                 foreach (HubMerchant functionalHubMerchant in functionalDemoHubMerchantList) {
-                    functionalHubMerchant.SetHasTalkLinesToShow(false);
+                    functionalHubMerchant.SetHasTalkLinesToShow(true, false);
                     functionalHubMerchant.SetDemoMerchantUnlocked();
                 }
 
                 foreach (HubMerchant decorationalHubMerchant in decorationalDemoHubMerchantList) {
-                    decorationalHubMerchant.SetHasTalkLinesToShow(false);
+                    decorationalHubMerchant.SetHasTalkLinesToShow(true, false);
                     decorationalHubMerchant.SetDemoMerchantUnlocked();
                 }
             }
@@ -184,6 +211,7 @@ public class HUBManager_Demo : MonoBehaviour
             }
             if (gemMerchantStoppedInteractingCount == 3) {
                 fireIndicator.gameObject.SetActive(true);
+                fireIndicatorActive = true;
             }
         }
 
@@ -218,18 +246,22 @@ public class HUBManager_Demo : MonoBehaviour
         if (hubFire.GetEmberExtracted()) {
             emberExtracted = true;
             fireIndicator.gameObject.SetActive(false);
+            fireIndicatorActive = false;
         }
     }
 
     private void HubChest_OnChestClosed(object sender, System.EventArgs e) {
-        if (!firstDemoHubEncounter) return;
+
+        RefreshPlayerHasGemsIndicators();
+
+        if (!chestIndicatorActive) return;
         if (gemsToDropInChest == gemAmountDroppedInChest) return;
 
         chestIndicator.gameObject.SetActive(true);
     }
 
     private void HubChest_OnChestOpened(object sender, System.EventArgs e) {
-        if (!firstDemoHubEncounter) return;
+        if (!chestIndicatorActive) return;
 
         chestIndicator.gameObject.SetActive(false);
     }
@@ -249,16 +281,25 @@ public class HUBManager_Demo : MonoBehaviour
     }
 
     private void HubFire_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
-        if (!firstDemoHubEncounter) return;
-        if (!emberExtractionTalkLineShown) return;
-        if (emberExtracted) return;
+        if(firstDemoHubEncounter) {
+            if (!emberExtractionTalkLineShown) return;
+            if (emberExtracted) return;
+        } else {
+            if (!fireIndicatorActive) return;
+        }
+
 
         fireIndicator.gameObject.SetActive(true);
     }
 
     private void HubFire_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
-        if (!firstDemoHubEncounter) return;
-        if (!emberExtractionTalkLineShown) return;
+        if (firstDemoHubEncounter) {
+            if (!emberExtractionTalkLineShown) return;
+            if (emberExtracted) return;
+        }
+        else {
+            if (!fireIndicatorActive) return;
+        }
 
         fireIndicator.gameObject.SetActive(false);
     }
@@ -267,6 +308,27 @@ public class HUBManager_Demo : MonoBehaviour
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.HUB_HeadToTeleporter);
     }
 
+    private void RefreshPlayerHasGemsIndicators() {
+        playerHasGemsInInventory = (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfCategory(PlayerCurrencies.CurrencyCategory.gem).Count != 0);
+
+        if (playerHasGemsInInventory) {
+
+            chestIndicatorActive = true;
+            chestIndicator.gameObject.SetActive(true);
+
+            fireIndicatorActive = false;
+            fireIndicator.gameObject.SetActive(false);
+
+        } else {
+
+            chestIndicatorActive = false;
+            chestIndicator.gameObject.SetActive(false);
+
+            hubFire.SetHubFireEmberExtractable();
+            fireIndicatorActive = true;
+            fireIndicator.gameObject.SetActive(true);
+        }
+    }
 
     private void OnDestroy() {
         HubMerchantTalkUI.OnAnyMerchantEndTalk -= HubMerchantTalkUI_OnAnyMerchantEndTalk;

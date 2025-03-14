@@ -337,7 +337,17 @@ public class UICurrencyManager : MonoBehaviour
 
         return currencyList;
     }
+    public List<Currency_UI> GetCurrenciesInBagOfCategory(PlayerCurrencies.CurrencyCategory category) {
+        List<Currency_UI> currencyList = new List<Currency_UI>();
 
+        foreach (Currency_UI currency in currenciesInBag) {
+            if (CurrenciesManager.Instance.GetCurrencyCategory(currency.GetCurrencyType()) == category) {
+                currencyList.Add(currency);
+            }
+        }
+
+        return currencyList;
+    }
     public void TryFormBigOrb(bool droppingOrb) {
         //if (formingBigOrb) return;
 

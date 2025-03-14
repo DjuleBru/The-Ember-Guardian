@@ -44,6 +44,7 @@ public class HubMerchant : MonoBehaviour
     public event EventHandler OnPlayerStoppedInteractingWithHubMerchant;
     public event EventHandler OnPlayerStartedTalkingWithHubMerchant;
     public event EventHandler OnMerchantHasNewTalkLines;
+    public event EventHandler OnMerchantHideExclamationMark;
     public static event EventHandler OnPlayerStartedTalkingWithAnyHubMerchant;
     public static event EventHandler OnPlayerOpenedAnyHubMerchantShop;
     public static event EventHandler OnPlayerStoppedInteractingWithAnyHubMerchant;
@@ -246,11 +247,16 @@ public class HubMerchant : MonoBehaviour
         }
     }
 
-    public void SetHasTalkLinesToShow(bool showExclamationMark = true) {
-        merchantHasTalkLinesToShow = true;
+    public void SetHasTalkLinesToShow(bool hasTalkLinesToShow, bool showExclamationMark = true) {
+        merchantHasTalkLinesToShow = hasTalkLinesToShow;
 
-        if(showExclamationMark) {
+        Debug.Log(hubMerchantType + " SetHasTalkLinesToShow");
+        Debug.Log("showExclamationMark " + showExclamationMark);
+
+        if (hasTalkLinesToShow && showExclamationMark) {
             OnMerchantHasNewTalkLines?.Invoke(this, EventArgs.Empty);
+        } else {
+            OnMerchantHideExclamationMark?.Invoke(this, EventArgs.Empty);
         }
     }
 

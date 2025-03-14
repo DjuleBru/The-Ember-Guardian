@@ -128,7 +128,7 @@ public class HubMerchantTalkUI : MonoBehaviour
         showShopAfterDialog = textLinesSO.showShopAfterDialog;
         merchantTalkLines = textLinesSO.merchantTextLines;
         merchantHasTalkLinesToShow = true;
-        hubMerchant.SetHasTalkLinesToShow();
+        hubMerchant.SetHasTalkLinesToShow(true);
     }
 
     private IEnumerator StartTalkingToMerchantCoroutine() {

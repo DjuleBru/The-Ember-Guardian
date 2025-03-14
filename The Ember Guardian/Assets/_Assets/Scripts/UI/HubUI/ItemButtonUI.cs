@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -29,7 +30,14 @@ public class ItemButtonUI : ButtonUI
     [SerializeField] private Sprite itemMaxedOutlineSprite;
     [SerializeField] private TextMeshProUGUI itemLevelText;
 
+
     [SerializeField] private bool showItemLevel;
+    [SerializeField] private bool lockHoverInteractions;
+    [SerializeField] private bool itemLockedInDemo;
+
+    [SerializeField] private ItemButtonUI_ChildTreeShowHide treeShowHide;
+    [SerializeField] private bool isTreeParent;
+    [SerializeField] private bool isTreeChild;
 
     private HubMerchantItem hubMerchantItem;
     private Button button;
@@ -132,6 +140,11 @@ public class ItemButtonUI : ButtonUI
 
         descriptionCard.SetDescriptionCardText(itemName, constantUnlockDescription, itemStatDescription, itemDescription, itemStatValues, itemStatModifierValues);
         descriptionCard.SetDescriptionCardCost(greenGemCost, redGemCost, blueGemCost, yellowGemCost, purpleGemCost);
+
+        if(itemLockedInDemo) {
+            descriptionCard.SetDescriptionCardItemLockedInDemo();
+            return;
+        }
 
         if(!hubMerchantItem.GetItemUpgradeable()) {
             
@@ -301,6 +314,7 @@ public class ItemButtonUI : ButtonUI
             RefreshItemStatusVisuals();
         }
     }
+
     public void StartUpgradeItemAnimation() {
         itemButtonUI_Visual.StartBuyAnimation(hubMerchantItem.GetRedGemCost(), hubMerchantItem.GetGreenGemCost(), hubMerchantItem.GetBlueGemCost(), hubMerchantItem.GetYellowGemCost(), hubMerchantItem.GetPurpleGemCost());
     }
@@ -314,6 +328,7 @@ public class ItemButtonUI : ButtonUI
     }
 
     public void SetItemUnlocked() {
+        if (itemLockedInDemo) return;
         if (hubMerchantItem.GetItemBought()) return;
 
         hubMerchantItem.UnlockItem();
@@ -321,7 +336,7 @@ public class ItemButtonUI : ButtonUI
     }
 
     private void RefreshItemStatusVisuals() {
-        if (!hubMerchantItem.GetItemUnlocked()) {
+        if (!hubMerchantItem.GetItemUnlocked() || itemLockedInDemo) {
             outlineImage.color = Color.grey;
             return;
         }
@@ -364,45 +379,106 @@ public class ItemButtonUI : ButtonUI
 
     #region NAVIGATION
     protected override void ButtonUI_OnAnyButtonHovered(object sender, EventArgs e) {
+        if (lockHoverInteractions) return;
         //if(GameInput.Instance.IsUsingGamepad()) return;
         ItemButtonUI itemButtonUI = sender as ItemButtonUI;
 
         if (this == itemButtonUI) {
             itemHovered = true;
             descriptionCard.gameObject.SetActive(true);
-            descriptionCard.transform.SetParent(transform.parent);
+
+            if(treeShowHide != null) {
+                descriptionCard.transform.SetParent(treeShowHide.transform.parent);
+            } else {
+                descriptionCard.transform.SetParent(transform.parent);
+            }
+
+
             descriptionCard.transform.SetAsLastSibling(); // Amène la carte au-dessus
+
+            if(isTreeParent) {
+                treeShowHide.ShowTree();
+            }
+            return;
         }
 
         if (this != itemButtonUI && itemHovered) {
             itemHovered = false;
             descriptionCard.gameObject.SetActive(false);
         }
+
+        if(treeShowHide != null && this != itemButtonUI) {
+            if (!itemButtonUI.GetIsTreeChild() && isTreeParent) {
+                treeShowHide.HideTree();
+            }
+
+            if (itemButtonUI.GetIsTreeParent() && isTreeParent) {
+                treeShowHide.HideTree();
+            }
+        }
     }
 
     protected override void ButtonUI_OnAnyButtonSelected(object sender, EventArgs e) {
+        if (lockHoverInteractions) return;
         if (!GameInput.Instance.IsUsingGamepad()) return;
         ItemButtonUI itemButtonUI = sender as ItemButtonUI;
 
         if (this == itemButtonUI) {
             itemSelected = true;
             descriptionCard.gameObject.SetActive(true);
-            transform.SetAsLastSibling(); // Amène la carte au-dessus
+
+            if (treeShowHide != null) {
+                descriptionCard.transform.SetParent(treeShowHide.transform.parent);
+            }
+            else {
+                descriptionCard.transform.SetParent(transform.parent);
+            }
+
+            if (isTreeParent) {
+                treeShowHide.ShowTree();
+            }
+            return;
         }
 
         if (this != itemButtonUI && itemSelected) {
             itemSelected = false;
             descriptionCard.gameObject.SetActive(false);
         }
+
+        if (treeShowHide != null && this != itemButtonUI) {
+            if (!itemButtonUI.GetIsTreeChild() && isTreeParent) {
+                treeShowHide.HideTree();
+            }
+
+            if (itemButtonUI.GetIsTreeParent() && isTreeParent) {
+                treeShowHide.HideTree();
+            }
+        }
     }
 
     public override void OnPointerExit(PointerEventData eventData) {
+        if (lockHoverInteractions) return;
+
         itemHovered = false;
         descriptionCard.gameObject.SetActive(false);
     }
 
     #endregion
 
+    public bool GetIsTreeChild() {
+        return isTreeChild;
+    }
+    public bool GetIsTreeParent() {
+        return isTreeParent;
+    }
+
+    public Vector2 GetLocalPosition() {
+        if(isTreeChild) {
+            return treeShowHide.GetComponent<RectTransform>().localPosition;
+        } else {
+            return GetComponent<RectTransform>().localPosition;
+        }
+    }
     protected override void OnDestroy() {
         base.OnDestroy();
         OnAnyOutputLinkUnlocked -= ItemButtonUI_OnAnyOutputLinkUnlocked;

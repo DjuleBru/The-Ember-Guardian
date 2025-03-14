@@ -10,6 +10,7 @@ public class LevelNPCGemReward : MonoBehaviour
     [SerializeField] private List<PlayerCurrencies.CurrencyType> currencyTypeToRewardList;
     [SerializeField] private List<int> rewardAmountList;
 
+    private bool disableReward;
     private bool rewarded;
 
     public static event EventHandler<OnAnyCurrencyDroppedEventArgs> OnAnyCurrencyDropped;
@@ -23,6 +24,7 @@ public class LevelNPCGemReward : MonoBehaviour
 
     private void TalkUI_OnMerchantEndTalk(object sender, System.EventArgs e) {
         if (rewarded) return;
+        if (disableReward) return;
         StartCoroutine(GiveReward());
         rewarded = true;
     }
@@ -46,5 +48,9 @@ public class LevelNPCGemReward : MonoBehaviour
             j++;
         }
 
+    }
+
+    public void DisableReward() {
+        disableReward = true;
     }
 }

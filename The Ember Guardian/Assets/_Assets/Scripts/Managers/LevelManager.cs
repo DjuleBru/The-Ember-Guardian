@@ -158,7 +158,12 @@ public class LevelManager : MonoBehaviour
     public void LooseLevel() {
         OnLevelFailed?.Invoke(this, EventArgs.Empty);
         StartCoroutine(LooseLevelCoroutine());
+
         float defeatGemsProportionsRewarded = .33f;
+        if (DemoMainLevelManager.Instance != null) {
+            defeatGemsProportionsRewarded = 1f;
+        }
+
         MetaProgressionManager.Instance.SaveLevelGems(defeatGemsProportionsRewarded);
         MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
     }
