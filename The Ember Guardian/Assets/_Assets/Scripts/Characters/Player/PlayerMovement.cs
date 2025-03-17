@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private LayerMask platformLayerMask;
 
+    private bool holdToRun;
     private bool isRunning;
     private bool isAlmostExhausted;
     private bool isAlmostExhaustedFeedbacksActive;
@@ -92,7 +93,11 @@ public class PlayerMovement : MonoBehaviour {
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
 
         PlayerStats.Instance.OnMoveSpeedChanged += PlayerState_OnMoveSpeedChanged;
+
+        SettingsManager.Instance.OnHoldToggleRunChanged += SettingsManager_OnHoldToggleRunChanged;
+        holdToRun = SettingsManager.Instance.GetHoldToRun();
     }
+
 
     private void FixedUpdate() {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
@@ -141,6 +146,10 @@ public class PlayerMovement : MonoBehaviour {
         else {
             rb.gravityScale = gravityScale;
         }
+    }
+
+    private void SettingsManager_OnHoldToggleRunChanged(object sender, EventArgs e) {
+        holdToRun = SettingsManager.Instance.GetHoldToRun();
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
@@ -223,6 +232,8 @@ public class PlayerMovement : MonoBehaviour {
 
     private void GameInput_OnPlayerRunCanceled(object sender, System.EventArgs e) {
         if (PauseMenuUI.Instance != null && PauseMenuUI.Instance.isPaused) return;
+
+        if (!holdToRun) return;
         if (!isRunning) return;
 
         StopRunning();
@@ -230,9 +241,17 @@ public class PlayerMovement : MonoBehaviour {
 
     private void GameInput_OnPlayerRunStarted(object sender, System.EventArgs e) {
         if (PauseMenuUI.Instance != null && PauseMenuUI.Instance.isPaused) return;
-        if (isExhausted) return;
 
-        StartRunning();
+        if(holdToRun) {
+            if (isExhausted) return;
+            StartRunning();
+        } else {
+            if(!isRunning) {
+                StartRunning();
+            } else {
+                StopRunning();
+            }
+        }
     }
 
     private void HandleMovingBackwards() {
@@ -480,6 +499,19 @@ public class PlayerMovement : MonoBehaviour {
 
     public float GetLastMoveDir() {
         return lastMoveDir;
+    }
+
+    public float GetCurrentMoveDir() {
+
+        if(GameInput.Instance.GetMovementFloatNormalized() > 0.01) {
+            return 1f;
+        }
+
+        if (GameInput.Instance.GetMovementFloatNormalized() < -0.01) {
+            return -1f;
+        }
+
+        return 0;
     }
 
     public Platform GetPlatformStanding() {

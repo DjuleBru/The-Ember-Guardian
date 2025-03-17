@@ -100,11 +100,11 @@ public class DogAI : MonoBehaviour
         isHubScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB;
 
         if(DayNightManager.Instance != null) {
-            DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+            DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         }
     }
 
-    private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
+    private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         SetIdleBehaviorState(State.idle);
     }
 

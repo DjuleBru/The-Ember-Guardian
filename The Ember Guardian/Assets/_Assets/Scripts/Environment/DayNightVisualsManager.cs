@@ -34,6 +34,7 @@ public class DayNightVisualsManager : MonoBehaviour
     [SerializeField] private AnimationCurve sunAnimationCurve;
     [SerializeField] private float sunArcRadius = 5f;
     [SerializeField] private bool dontHandleMoonMovement;
+    [SerializeField] private bool dontHandleSunMovement;
 
     private float nightDawnTransitionAnimationCurveFraction = .05f;
     private float dawnAnimationCurveFraction = .1f;
@@ -82,11 +83,14 @@ public class DayNightVisualsManager : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        HandleSunPosition();
+        if(!dontHandleSunMovement) {
+            HandleSunPosition();
+        }
 
-        if (dontHandleMoonMovement) return;
-        HandleMoonPosition();
-        SetMoonPosition(moonPositionXNormalized);
+        if (!dontHandleMoonMovement) {
+            HandleMoonPosition();
+            SetMoonPosition(moonPositionXNormalized);
+        };
     }
 
     private void HandleCycleTransitions() {

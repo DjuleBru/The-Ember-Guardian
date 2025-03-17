@@ -55,6 +55,7 @@ public class SoundRefsSO : ScriptableObject
 
     public AudioClip pressMenuButton;
     public AudioClip hoverOrSelectMenuButton;
+    public AudioClip clickMenuButton;
     public AudioClip hoverOrSelectHubMerchantItem;
     public AudioClip buyHubMerchantItem;
     public AudioClip[] upgradeHubMerchantItem;

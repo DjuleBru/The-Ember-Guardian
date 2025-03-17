@@ -18,6 +18,8 @@ public class GamepadVibrationsManager : MonoBehaviour
 
     private float currentLerpValue;
 
+    private bool vibrationsEnabled;
+
     private void Start() {
         if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
 
@@ -54,7 +56,25 @@ public class GamepadVibrationsManager : MonoBehaviour
             ItemButtonUI.OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
         }
 
+        SettingsManager.Instance.OnControllerVibrationsChanged += SettingsManager_OnControllerVibrationsChanged;
+        vibrationsEnabled = SettingsManager.Instance.GetControllerVibrations();
 
+        RefreshVibrationsEnabled();
+    }
+
+    private void SettingsManager_OnControllerVibrationsChanged(object sender, System.EventArgs e) {
+        RefreshVibrationsEnabled();
+    }
+
+    private void RefreshVibrationsEnabled() {
+        vibrationsEnabled = SettingsManager.Instance.GetControllerVibrations();
+
+        if (vibrationsEnabled) {
+            HapticController.hapticsEnabled = true;
+        }
+        else {
+            HapticController.hapticsEnabled = false;
+        }
     }
 
     private void Update() {

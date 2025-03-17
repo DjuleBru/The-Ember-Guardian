@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPointerExitHandler, IDeselectHandler {
 
     public static event EventHandler OnAnyButtonSelected;
     public static event EventHandler OnAnyButtonHovered;
+    public static event EventHandler OnAnyButtonPressed;
     public static event EventHandler OnAnyButtonUnhovered;
 
     protected bool buttonSelected;
@@ -48,7 +50,9 @@ public class ButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPo
 
     public void OnSelect(BaseEventData eventData) {
         buttonSelected = true;
+
         OnAnyButtonSelected?.Invoke(this, EventArgs.Empty);
+       
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData) {
@@ -63,6 +67,15 @@ public class ButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPo
         buttonSelected = false;
     }
     #endregion
+
+    public void InvokeOnAnyButtonPressed() {
+        Debug.Log(buttonSelected);
+        if(buttonSelected == this) {
+            OnAnyButtonPressed?.Invoke(this, EventArgs.Empty);
+        } else {
+            OnAnyButtonSelected?.Invoke(this, EventArgs.Empty);
+        }
+    }
 
     protected virtual void OnDestroy() {
         OnAnyButtonHovered -= ButtonUI_OnAnyButtonHovered;

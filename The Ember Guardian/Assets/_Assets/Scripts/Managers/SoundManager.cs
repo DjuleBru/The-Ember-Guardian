@@ -100,6 +100,7 @@ public class SoundManager : MonoBehaviour
         MenuButton.OnAnyMenuButtonHovered += MenuButton_OnAnyMenuButtonHovered;
         MenuButton.OnAnyMenuButtonPressed += MenuButton_OnAnyMenuButtonPressed;
 
+        ButtonUI.OnAnyButtonPressed += ButtonUI_OnAnyButtonPressed;
         ItemButtonUI.OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
         ItemButtonUI.OnAnyButtonHovered += ItemButtonUI_OnAnyButtonHovered;
         HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
@@ -142,6 +143,7 @@ public class SoundManager : MonoBehaviour
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine += HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
     }
 
+
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
 
     }
@@ -149,6 +151,9 @@ public class SoundManager : MonoBehaviour
 
     #region UI
 
+    private void ButtonUI_OnAnyButtonPressed(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.pressMenuButton, .3f);
+    }
     private void MenuButton_OnAnyMenuButtonPressed(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.pressMenuButton, 1);
     }
@@ -771,6 +776,7 @@ public class SoundManager : MonoBehaviour
         StructureUI_Fire.OnCricitalFireTickRemoved -= StructureUI_Fire_OnCricitalFireTickRemoved;
         PlayerWorldUITooltip.OnTooltipHidden -= PlayerWorldUITooltip_OnTooltipHidden;
         PlayerWorldUITooltip.OnTooltipShown -= PlayerWorldUITooltup_OnTooltipShown;
+        ButtonUI.OnAnyButtonPressed -= ButtonUI_OnAnyButtonPressed;
         ItemButtonUI.OnAnyButtonSelected -= ItemButtonUI_OnAnyButtonSelected;
         ItemButtonUI.OnAnyButtonHovered -= ItemButtonUI_OnAnyButtonHovered;
         HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;

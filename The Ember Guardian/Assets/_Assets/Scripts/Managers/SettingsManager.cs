@@ -20,12 +20,16 @@ public class SettingsManager : MonoBehaviour
 
     public event EventHandler OnHoldToggleRunChanged;
     public event EventHandler OnAutoSwitchLightGunChanged;
+    public event EventHandler OnAutoAlignAimWithMovementChanged;
     public event EventHandler OnControllerVibrationsChanged;
+    public event EventHandler OnAimAssistChanged;
     public event EventHandler OnLanguageChanged;
 
 
     private Language currentLanguage = Language.English;
     private bool holdToRun;
+    private bool aimAssist;
+    private bool autoAlignAimWithMovement;
     private bool autoSwitchLightGun;
     private bool controllerVibrations;
 
@@ -41,6 +45,8 @@ public class SettingsManager : MonoBehaviour
 
         currentLanguage = ES3.Load("currentLanguage", Language.English);
         holdToRun = ES3.Load("holdToRun", true);
+        aimAssist = ES3.Load("aimAssist", true);
+        autoAlignAimWithMovement = ES3.Load("autoAlignAimWithMovement", true);
         autoSwitchLightGun = ES3.Load("autoSwitchLightGun", true);
         controllerVibrations = ES3.Load("controllerVibrations", true);
     }
@@ -65,7 +71,7 @@ public class SettingsManager : MonoBehaviour
         OnMusicVolumeChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public bool GetHoldToggleRun() {
+    public bool GetHoldToRun() {
         return holdToRun;
     }
 
@@ -76,6 +82,15 @@ public class SettingsManager : MonoBehaviour
     public bool GetControllerVibrations() {
         return controllerVibrations;
     }
+
+    public bool GetAlignAimWithMovement() {
+        return autoAlignAimWithMovement;
+    }
+
+    public bool GetAimAssist() {
+        return aimAssist;
+    }
+
     public Language GetLanguage() {
         return currentLanguage;
     }
@@ -88,25 +103,35 @@ public class SettingsManager : MonoBehaviour
         ES3.Save("currentLanguage", currentLanguage);
     }
 
-    public void SetHoldToggleRun(bool newHoldToggleRun) {
-        holdToRun = newHoldToggleRun;
+    public void ChangeHoldToggleRun() {
+        holdToRun = !holdToRun;
         OnHoldToggleRunChanged?.Invoke(this, EventArgs.Empty);
 
         ES3.Save("holdToRun", holdToRun);
     }
-
-    public void SetAutoSwitchLight(bool newAutoSwitghLightGun) {
-        autoSwitchLightGun = newAutoSwitghLightGun;
+    public void ChangeAutoSwitchGunLight() {
+        autoSwitchLightGun = !autoSwitchLightGun;
         OnAutoSwitchLightGunChanged?.Invoke(this, EventArgs.Empty);
 
         ES3.Save("autoSwitchLightGun", autoSwitchLightGun);
     }
+    public void ChangeAutoAlignAimWithMovement() {
+        autoAlignAimWithMovement = !autoAlignAimWithMovement;
+        OnAutoAlignAimWithMovementChanged?.Invoke(this, EventArgs.Empty);
 
-    public void SetControllerVibrations(bool newControllerVibrations) {
-        controllerVibrations = newControllerVibrations;
+        ES3.Save("autoAlignAimWithMovement", autoAlignAimWithMovement);
+    }
+    public void ChangeControllerVibrations() {
+        controllerVibrations = !controllerVibrations;
         OnControllerVibrationsChanged?.Invoke(this, EventArgs.Empty);
 
         ES3.Save("controllerVibrations", controllerVibrations);
+    }
+    public void ChangeAimAssist() {
+        aimAssist = !aimAssist;
+        OnAimAssistChanged?.Invoke(this, EventArgs.Empty);
+
+        ES3.Save("aimAssist", aimAssist);
     }
 
 }

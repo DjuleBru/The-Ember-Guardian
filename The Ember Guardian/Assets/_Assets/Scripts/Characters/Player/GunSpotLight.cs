@@ -45,8 +45,9 @@ public class GunSpotLight : MonoBehaviour
         GameInput.Instance.OnPlayerGunLightSwitch += GameInput_OnPlayerGunLightSwitch;
         SettingsManager.Instance.OnAutoSwitchLightGunChanged += SettingsManager_OnAutoSwitchLightGunChanged;
         autoSwitchWithDay = SettingsManager.Instance.GetAutoSwitchLight();
-        lightActive = false;
-        gunSpotLight.enabled = false;
+
+        lightActive = DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Day;
+        gunSpotLight.enabled = lightActive;
 
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;

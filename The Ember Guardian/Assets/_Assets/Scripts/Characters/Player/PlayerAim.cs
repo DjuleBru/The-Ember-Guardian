@@ -7,7 +7,7 @@ public class PlayerAim : MonoBehaviour
 {
     public static PlayerAim Instance;
 
-    [SerializeField] private bool autoAimOnMovement = true; // Option activable/désactivable
+    private bool autoAimOnMovement;
     [SerializeField] private List<Transform> followAimDirTransformList;
     [SerializeField] private Transform gunTransform;
     [SerializeField] private Transform aimSightTransform;
@@ -18,9 +18,14 @@ public class PlayerAim : MonoBehaviour
     [SerializeField] private RectTransform ammoBarLeftPosition;
     [SerializeField] private RectTransform ammoBarRightPosition;
 
+    [SerializeField] private LayerMask enemyLayer; // Masque de couche pour les ennemis
+    private float autoAimConeAngle = 15f; // Angle du cône de visée autour de la direction de visée
+    private float detectionRange = 15f; // Portée de détection des ennemis
+
     private bool isUsingGamepad;
     private bool isAimingSight;
     private bool isRolling = false;
+    private bool autoAimActive;
 
     private float aimAngle;
     private float aimHeight;
@@ -61,8 +66,21 @@ public class PlayerAim : MonoBehaviour
         PlayerShoot.Instance.OnPlayerAimedSightEnded += PlayerShoot_OnPlayerAimedSightEnded;
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
+        SettingsManager.Instance.OnAimAssistChanged += SettingsManager_OnAimAssistChanged;
+        SettingsManager.Instance.OnAutoAlignAimWithMovementChanged += SettingsManager_OnAutoAlignAimWithMovementChanged;
 
+
+        autoAimOnMovement = SettingsManager.Instance.GetAlignAimWithMovement();
+        autoAimActive = SettingsManager.Instance.GetAimAssist();
         isUsingGamepad = GameInput.Instance.IsUsingGamepad();
+    }
+
+    private void SettingsManager_OnAutoAlignAimWithMovementChanged(object sender, EventArgs e) {
+        autoAimOnMovement = SettingsManager.Instance.GetAlignAimWithMovement();
+    }
+
+    private void SettingsManager_OnAimAssistChanged(object sender, EventArgs e) {
+        autoAimActive = SettingsManager.Instance.GetAimAssist();
     }
 
     private void Update() {
@@ -94,10 +112,17 @@ public class PlayerAim : MonoBehaviour
         else {
             // Utiliser la direction du déplacement quand le stick est au repos *si l'option est activée*
             if (autoAimOnMovement) {
-                float restingPosition = PlayerMovement.Instance.GetLastMoveDir();
-                aimDir = Vector3.Lerp(previousGamepadAim, new Vector3(restingPosition, 0f, 0f), Time.deltaTime * returnToRestSpeed);
-                previousGamepadAim = aimDir;
+                float restingPosition = PlayerMovement.Instance.GetCurrentMoveDir();
+                if(restingPosition != 0) {
+                    aimDir = Vector3.Lerp(previousGamepadAim, new Vector3(restingPosition, 0f, 0f), Time.deltaTime * returnToRestSpeed);
+                    previousGamepadAim = aimDir;
+                } 
             }
+        }
+
+        // Auto-aim logic
+        if(autoAimActive) {
+            HandleAutoAim();
         }
 
         aimDir.y += currentRecoil;
@@ -116,8 +141,47 @@ public class PlayerAim : MonoBehaviour
 
         // Smooth recoil back to zero
         currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
+
     }
 
+    private void HandleAutoAim() {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, detectionRange, enemyLayer);
+
+        Transform target = null;
+        float closestAngle = float.MaxValue;
+
+        Vector2 directionToEnemy = Vector2.zero;
+        Vector2 closestEnemyAutoAimColliderPosition = Vector2.zero;
+
+        foreach (var enemy in hitEnemies) {
+            CreatureAutoAimCollider autoAimCollider = enemy.gameObject.GetComponent<CreatureAutoAimCollider>();
+            if (autoAimCollider == null) continue;
+
+            directionToEnemy = (autoAimCollider.GetAutoAimPosition() - transform.position).normalized;
+
+            // Calculer l'angle entre la direction de la visée et l'ennemi
+            float angleToEnemy = Vector2.Angle(aimDir, directionToEnemy);
+
+            // Vérifier si l'ennemi se trouve dans le cône de visée
+            if (angleToEnemy <= autoAimConeAngle) {
+                // Sélectionner l'ennemi le plus proche dans le cône
+                if (angleToEnemy < closestAngle) {
+                    closestAngle = angleToEnemy;
+                    target = enemy.transform;
+                    closestEnemyAutoAimColliderPosition = autoAimCollider.GetAutoAimPosition();
+                }
+            }
+        }
+
+        // Si un ennemi a été trouvé, ajuster la visée vers cet ennemi
+        if (target != null) {
+            Vector2 playerPosition = gunTransform.position;
+            Vector2 directionToTarget = (closestEnemyAutoAimColliderPosition - playerPosition).normalized;
+
+            // Lissage de la direction de la visée avec Lerp
+            aimDir = directionToTarget;
+        }
+    }
 
     private void HandleAimMouse()
     {

@@ -9,23 +9,31 @@ public class SettingsMenuUI : MonoBehaviour
 
     public static SettingsMenuUI Instance;
 
-    [SerializeField] private GameObject settingsPanelGameObject;
-    [SerializeField] private Slider musicVolumeSlider;
-    [SerializeField] private Slider sfxVolumeSlider;
-    [SerializeField] private GameObject firstSelectedButton;
+    [SerializeField] protected GameObject settingsPanelGameObject;
+    [SerializeField] protected GameObject keyboardMappingPanelGameObject;
+    [SerializeField] protected GameObject keyboardMappingPanelBackButton;
+    [SerializeField] protected GameObject keyboardMappingButton;
+    [SerializeField] protected GameObject controllerMappingPanelGameObject;
+    [SerializeField] protected GameObject controllerMappingBackButton;
+    [SerializeField] protected GameObject controllerMappingButton;
+    [SerializeField] protected Slider musicVolumeSlider;
+    [SerializeField] protected Slider sfxVolumeSlider;
+    [SerializeField] protected GameObject firstSelectedButton;
 
     // Valeurs actuelles de volume
-    private float currentMusicVolume;
-    private float currentSfxVolume;
+    protected float currentMusicVolume;
+    protected float currentSfxVolume;
 
-    private bool panelOpen;
+    protected bool panelOpen;
 
-    private void Awake() {
+    protected void Awake() {
         Instance = this;
         settingsPanelGameObject.gameObject.SetActive(false);
+        keyboardMappingPanelGameObject.gameObject.SetActive(false);
+        controllerMappingPanelGameObject.gameObject.SetActive(false);
     }
 
-    private void Start() {
+    protected void Start() {
         currentMusicVolume = SettingsManager.Instance.GetMusicVolume();
         currentSfxVolume = SettingsManager.Instance.GetSfxVolume();
 
@@ -40,20 +48,20 @@ public class SettingsMenuUI : MonoBehaviour
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
     }
 
-    private void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
+    protected void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
         if (!panelOpen) return;
         CloseSettingsPanel();
     }
 
     // Méthode pour mettre à jour le volume de la musique
-    private void UpdateMusicVolume(float value) {
+    protected void UpdateMusicVolume(float value) {
         currentMusicVolume = value;
         // Implémenter ici l'ajustement du volume de la musique (ex: AudioManager)
         SettingsManager.Instance.SetMusicVolume(currentMusicVolume);
     }
 
     // Méthode pour mettre à jour le volume des effets sonores
-    private void UpdateSfxVolume(float value) {
+    protected void UpdateSfxVolume(float value) {
         currentSfxVolume = value;
         // Implémenter ici l'ajustement du volume des effets sonores (ex: AudioManager)
         SettingsManager.Instance.SetSfxVolume(currentSfxVolume);
@@ -68,8 +76,10 @@ public class SettingsMenuUI : MonoBehaviour
     public void CloseSettingsPanel() {
         panelOpen = false;
         settingsPanelGameObject.gameObject.SetActive(false);
+        controllerMappingPanelGameObject.gameObject.SetActive(false);
+        keyboardMappingPanelGameObject.gameObject.SetActive(false);
 
-        if(MainMenuUI.Instance != null) {
+        if (MainMenuUI.Instance != null) {
             MainMenuUI.Instance.ShowMainMenuButtons();
         }
 
@@ -78,7 +88,30 @@ public class SettingsMenuUI : MonoBehaviour
         }
     }
 
-    private void OnDestroy() {
+
+    public void OpenKeyboardMappingGameObject() {
+        keyboardMappingPanelGameObject.gameObject.SetActive(true);
+        KeyRebindingUI.Instance.UpdateVisual();
+        EventSystem.current.SetSelectedGameObject(keyboardMappingPanelBackButton.gameObject);
+    }
+
+    public void CloseKeyboardMappingGameObject() {
+        keyboardMappingPanelGameObject.gameObject.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(keyboardMappingButton);
+    }
+
+    public void OpenControllerMappingGameObject() {
+        controllerMappingPanelGameObject.gameObject.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(controllerMappingBackButton);
+    }
+
+    public void CloseControllerMappingGameObject() {
+        controllerMappingPanelGameObject.gameObject.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(controllerMappingButton);
+    }
+
+
+    protected void OnDestroy() {
         GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
     }
 }

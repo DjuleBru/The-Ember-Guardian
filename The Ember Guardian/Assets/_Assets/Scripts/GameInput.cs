@@ -10,6 +10,28 @@ public class GameInput : MonoBehaviour
 {
     public static GameInput Instance;
 
+    public enum Binding {
+        moveLeft,
+        moveRight,
+        interact,
+        run,
+        roll,
+        shoot,
+        reload,
+        secondary,
+        selectPrimaryGun,
+        selectSecondaryGun,
+        ability1,
+        ability2,
+        callDoggo,
+        torchOnOff,
+        buildingFunctionLeft,
+        buildingFunctionRight,
+        pause,
+        characterMenu,
+        hoverWorkers,
+    }
+
     private PlayerInputActions playerInputActions;
     private PlayerInput playerInput;
 
@@ -287,5 +309,71 @@ public class GameInput : MonoBehaviour
     }
     public bool GetWasHoldingInteract() {
         return holdingInteract;
+    }
+
+    public string GetBindingText(Binding binding) {
+        switch(binding) {
+
+            case Binding.moveLeft:
+                return playerInputActions.Player.Move.bindings[1].ToDisplayString();
+
+            case Binding.moveRight:
+                return playerInputActions.Player.Move.bindings[2].ToDisplayString();
+
+            case Binding.buildingFunctionLeft:
+                return playerInputActions.Player.LeftRightSwitch.bindings[1].ToDisplayString();
+
+            case Binding.buildingFunctionRight:
+                return playerInputActions.Player.LeftRightSwitch.bindings[2].ToDisplayString();
+
+            case Binding.interact:
+                return playerInputActions.Player.Interact.bindings[0].ToDisplayString();
+
+            case Binding.run:
+                return playerInputActions.Player.Run.bindings[0].ToDisplayString();
+
+            case Binding.roll:
+                return playerInputActions.Player.Jump.bindings[0].ToDisplayString();
+
+            case Binding.shoot:
+                return playerInputActions.Player.Shoot.bindings[0].ToDisplayString();
+
+            case Binding.reload:
+                return playerInputActions.Player.Reload.bindings[0].ToDisplayString();
+
+            case Binding.secondary:
+                return playerInputActions.Player.WeaponSecondaryAbility.bindings[0].ToDisplayString();
+
+            case Binding.selectPrimaryGun:
+                return playerInputActions.Player.SelectPrimaryGun.bindings[0].ToDisplayString();
+
+            case Binding.selectSecondaryGun:
+                return playerInputActions.Player.SelectSecondaryGun.bindings[0].ToDisplayString();
+
+            case Binding.ability1:
+                return playerInputActions.Player.LeftSkill.bindings[0].ToDisplayString();
+
+            case Binding.ability2:
+                return playerInputActions.Player.RightSkill.bindings[0].ToDisplayString();
+
+            case Binding.pause:
+                return playerInputActions.Player.Pause.bindings[0].ToDisplayString();
+
+            case Binding.characterMenu:
+                return playerInputActions.Player.OpenPlayerTab.bindings[0].ToDisplayString();
+
+            case Binding.hoverWorkers:
+                return playerInputActions.Player.HoverWorkers.bindings[0].ToDisplayString();
+
+            case Binding.torchOnOff:
+                return playerInputActions.Player.SwitchGunLight.bindings[0].ToDisplayString();
+
+        }
+
+        return playerInputActions.Player.Interact.bindings[0].ToDisplayString();
+    }
+
+    public void RebindBinding(Binding binding) {
+
     }
 }
