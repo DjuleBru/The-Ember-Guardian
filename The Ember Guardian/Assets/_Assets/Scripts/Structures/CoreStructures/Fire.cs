@@ -536,6 +536,7 @@ public class Fire : Structure, IDamageable {
     }
 
     public void SetHubFireEmberExtractable() {
+        Debug.Log("SetHubFireEmberExtractable");
         SetStructureSecondaryFunctionUnlocked(true);
         ActivateStructureSecondaryFunctionInteraction(true);
         SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);

@@ -250,9 +250,6 @@ public class HubMerchant : MonoBehaviour
     public void SetHasTalkLinesToShow(bool hasTalkLinesToShow, bool showExclamationMark = true) {
         merchantHasTalkLinesToShow = hasTalkLinesToShow;
 
-        Debug.Log(hubMerchantType + " SetHasTalkLinesToShow");
-        Debug.Log("showExclamationMark " + showExclamationMark);
-
         if (hasTalkLinesToShow && showExclamationMark) {
             OnMerchantHasNewTalkLines?.Invoke(this, EventArgs.Empty);
         } else {

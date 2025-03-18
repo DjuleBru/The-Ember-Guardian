@@ -61,8 +61,14 @@ public class LevelObjectives : MonoBehaviour
 
         if (nightsSurvived == nightsToSurvive) {
 
-            LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.SurviveNights, LevelUI_ObjectiveUI.SubObjectiveType.TalkToWatcher);
-            levelMerchantTalkUI.SetTextLinesSO(finalMerchantTextLines);
+            if(LevelManager.Instance.GetLevelSO().talkToNpcAFterObjective) {
+
+                LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.SurviveNights, LevelUI_ObjectiveUI.SubObjectiveType.TalkToWatcher);
+                levelMerchantTalkUI.SetTextLinesSO(finalMerchantTextLines);
+
+            } else {
+                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.SurviveNights);
+            }
 
         }
     }
@@ -214,7 +220,13 @@ public class LevelObjectives : MonoBehaviour
     }
 
     public int GetNightsToSurvive() {
+        Debug.Log("GetNightsToSurvive");
         return nightsToSurvive;
+    }
+
+    public void SetNightsToSurvive(int nightsToSurvive) {
+        Debug.Log("SetNightsToSurvive");
+        this.nightsToSurvive = nightsToSurvive;
     }
 
 }

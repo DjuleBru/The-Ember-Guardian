@@ -21,7 +21,7 @@ public class GamepadVibrationsManager : MonoBehaviour
     private bool vibrationsEnabled;
 
     private void Start() {
-        if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
 
             PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
             PlayerShoot.Instance.OnPlayerAmmoRefilled += PlayerSHoot_OnPlayerAmmoRefilled;
@@ -53,8 +53,8 @@ public class GamepadVibrationsManager : MonoBehaviour
             Collectible.OnAnyCollectibleEnteredSlot += Collectible_OnAnyCollectibleEnteredSlot;
             ItemButtonUI_Visual.OnAnyGemPSTriggered += ItemButtonUI_Visual_OnAnyGemPSTriggered;
             ItemButtonUI.OnAnyHubMerchantItemFailedBuy += ItemButtonUI_OnAnyHubMerchantItemFailedBuy;
-            ItemButtonUI.OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
         }
+        ItemButtonUI.OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
 
         SettingsManager.Instance.OnControllerVibrationsChanged += SettingsManager_OnControllerVibrationsChanged;
         vibrationsEnabled = SettingsManager.Instance.GetControllerVibrations();

@@ -9,6 +9,7 @@ public class MobSpawner : MonoBehaviour
     [SerializeField] protected Transform mobPrefab;
     [SerializeField] protected Transform spawnPosition;
     [SerializeField] protected float spawnPositionRandomizer;
+    [SerializeField] protected float radiusToRoamAround;
     [SerializeField] protected int mobAmountToSpawn;
     [SerializeField] protected int maxMobsRespawningAtDawn;
 
@@ -72,6 +73,7 @@ public class MobSpawner : MonoBehaviour
 
     public virtual void SpawnMobs(int mobAmount) {
         for (int i = 0; i < mobAmount; i++) {
+
             float positionRandomizer = UnityEngine.Random.Range(-spawnPositionRandomizer, spawnPositionRandomizer);
             Vector3 spawnPositionRandomized = spawnPosition.position;
             spawnPositionRandomized.x += positionRandomizer;
@@ -81,7 +83,15 @@ public class MobSpawner : MonoBehaviour
             mob.SetMobSpawner(this);
 
             if(isCreatureSpawner) {
+                CreatureSO creatureSO = mob.GetComponent<Creature>().GetCreatureSO();
                 mob.GetComponent<Creature>().SetAsDayCreature(true);
+
+                if(creatureSO.flying) {
+                    float yPositionRandomized = UnityEngine.Random.Range(creatureSO.flightMaxAltitude, creatureSO.flightMaxAltitude);
+                    spawnPositionRandomized.y += yPositionRandomized;
+                    mob.transform.position = spawnPositionRandomized;
+                }
+
                 mob.transform.parent = SpawnedObjects.Instance.creaturesContainer;
                 if(canSpawnEliteCreatures) {
                     HandleEliteSpawn(mob.GetComponent<Creature>());
@@ -99,7 +109,33 @@ public class MobSpawner : MonoBehaviour
             InvokeOnMobSpawned(mob);
         }
     }
-    
+
+    public virtual void SpawnCreatures(CreatureSO creatureSO, int mobAmount) {
+        for (int i = 0; i < mobAmount; i++) {
+
+            float positionRandomizer = UnityEngine.Random.Range(-spawnPositionRandomizer, spawnPositionRandomizer);
+            Vector3 spawnPositionRandomized = spawnPosition.position;
+            spawnPositionRandomized.x += positionRandomizer;
+
+            if (creatureSO.flying) {
+                float yPositionRandomized = UnityEngine.Random.Range(creatureSO.flightMinAltitude, creatureSO.flightMaxAltitude);
+                spawnPositionRandomized.y += yPositionRandomized;
+            }
+
+            Mob mob = Instantiate(mobPrefab, spawnPositionRandomized, Quaternion.identity).GetComponent<Mob>();
+            mobSpawnedList.Add(mob);
+            mob.SetMobSpawner(this);
+            mob.GetComponent<Creature>().SetAsDayCreature(true);
+
+            mob.transform.parent = SpawnedObjects.Instance.creaturesContainer;
+            if (canSpawnEliteCreatures) {
+                HandleEliteSpawn(mob.GetComponent<Creature>());
+            }
+            
+
+            InvokeOnMobSpawned(mob);
+        }
+    }
     public IEnumerator SpawnMobsCoroutine(float delayBetweenMobs) {
         for (int i = 0; i < mobAmountToSpawn; i++) {
             float positionRandomizer = UnityEngine.Random.Range(-spawnPositionRandomizer, spawnPositionRandomizer);
@@ -185,5 +221,9 @@ public class MobSpawner : MonoBehaviour
 
     public int GetMaxMobAmountSpawnedAtDawn() {
         return maxMobsRespawningAtDawn;
+    }
+
+    public float GetRadiusToRoamAround() {
+        return radiusToRoamAround;
     }
 }

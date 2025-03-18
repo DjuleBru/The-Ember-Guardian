@@ -8,7 +8,7 @@ public class BarricadeVisual : StructureVisual {
 
     [SerializeField] private Light2D barricadeSpotLight;
     [SerializeField] private GameObject barricadeSpotLightGameObject;
-    [SerializeField] private Animator barricadeLightBodyAnimator;
+    [SerializeField] private List<Animator> barricadeLightBodyAnimatorList;
     [SerializeField] private List<BarricadePiece> level1BarricadePieceList;
     [SerializeField] private List<BarricadePiece> level2BarricadePieceList;
     [SerializeField] private List<BarricadePiece> level3BarricadePieceList;
@@ -21,6 +21,8 @@ public class BarricadeVisual : StructureVisual {
     private int spriteIndex = 1;
     private bool spotLightUnlocked;
     private bool outerBarricade;
+    private bool playerOverrideSpotLightControl;
+    private bool lightEnabled;
 
     public event EventHandler OnBarricadeSpriteFell;
 
@@ -46,9 +48,12 @@ public class BarricadeVisual : StructureVisual {
         barricade.OnBarricadeRepaired += Barricade_OnBarricadeRepaired;
         barricade.OnFireLightTriggeredIn += Barricade_OnFireLightTriggeredIn;
         barricade.OnFireLightTriggeredOut += Barricade_OnFireLightTriggeredOut;
+        barricade.OnBarricadeLightSwitched += Barricade_OnBarricadeLightSwitched;
 
         BuildPieces(level1BarricadePieceList);
-        barricadeLightBodyAnimator.SetTrigger("Build");
+        foreach(Animator animator in barricadeLightBodyAnimatorList) {
+            animator.SetTrigger("Build");
+        }
         currentLevelBarricadePieceList = level1BarricadePieceList;
         built = true;
 
@@ -57,6 +62,13 @@ public class BarricadeVisual : StructureVisual {
         if(!spotLightUnlocked) {
             barricadeSpotLightGameObject.SetActive(false);
         }
+    }
+
+    private void Barricade_OnBarricadeLightSwitched(object sender, EventArgs e) {
+        playerOverrideSpotLightControl = true;
+
+        lightEnabled = !lightEnabled;
+        barricadeSpotLight.enabled = lightEnabled;
     }
 
     private void Barricade_OnBarricadeRepaired(object sender, System.EventArgs e) {
@@ -162,9 +174,13 @@ public class BarricadeVisual : StructureVisual {
     }
 
     public void SetAsOuterBarricade(bool outerBarricade) {
+        Debug.Log("SetAsOuterBarricade " + outerBarricade);
         this.outerBarricade = outerBarricade;
         if (!spotLightUnlocked) return;
+        if (playerOverrideSpotLightControl) return;
+
         barricadeSpotLight.enabled = outerBarricade;
+        lightEnabled = outerBarricade;
     }
 
     protected override void Structure_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
@@ -181,23 +197,31 @@ public class BarricadeVisual : StructureVisual {
 
     private void Barricade_OnFireLightTriggeredOut(object sender, EventArgs e) {
         if (!outerBarricade) return;
+        if (playerOverrideSpotLightControl) return;
         barricadeSpotLight.enabled = true;
+        lightEnabled = true;
         Debug.Log("Barricade_OnFireLightTriggeredOut");
     }
 
     private void Barricade_OnFireLightTriggeredIn(object sender, EventArgs e) {
         if (!outerBarricade) return;
+        if (playerOverrideSpotLightControl) return;
         barricadeSpotLight.enabled = false;
+        lightEnabled = false;
     }
 
     protected void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
         if (!spotLightUnlocked) return;
+        if (playerOverrideSpotLightControl) return;
         barricadeSpotLight.enabled = outerBarricade;
+        lightEnabled = outerBarricade;
     }
 
     protected void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
         if (!spotLightUnlocked) return;
+        if (playerOverrideSpotLightControl) return;
         barricadeSpotLight.enabled = false;
+        lightEnabled = false;
 
     }
     public bool GetBarricadeHasAllSprites() {

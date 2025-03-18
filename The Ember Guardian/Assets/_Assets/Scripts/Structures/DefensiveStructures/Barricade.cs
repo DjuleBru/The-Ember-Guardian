@@ -30,6 +30,7 @@ public class Barricade : Structure, IDamageable {
     public static event EventHandler OnAnyBarricadeBuilt;
     public event EventHandler OnFireLightTriggeredIn;
     public event EventHandler OnFireLightTriggeredOut;
+    public event EventHandler OnBarricadeLightSwitched;
 
     private bool barricadeRepairable;
 
@@ -151,6 +152,21 @@ public class Barricade : Structure, IDamageable {
 
     public void SetAsOuterBarricade(bool outerBarricade) {
         barricadeVisual.SetAsOuterBarricade(outerBarricade);
+    }
+
+    protected override void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+        base.GameInput_OnPlayerInteractCanceled(sender, e);
+
+        bool playerWasHoldingInteract = GameInput.Instance.GetWasHoldingInteract();
+
+        if (!playerWasHoldingInteract && playerInTriggerArea) {
+            TurnOnOrOffLights();
+        }
+
+    }
+
+    private void TurnOnOrOffLights() {
+        OnBarricadeLightSwitched?.Invoke(this, EventArgs.Empty);
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {

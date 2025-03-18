@@ -87,6 +87,7 @@ public class PauseMenuUI : MonoBehaviour
 
         } else {
 
+            SettingsMenuUI.Instance.CloseSettingsPanel();
             Time.timeScale = 1f;
             AudioListener.pause = false;
             menuOpen = false;
@@ -153,6 +154,11 @@ public class PauseMenuUI : MonoBehaviour
 
     public void SetCanSave(bool canSave) {
         saveButton.interactable = canSave;
+    }
+
+    public void LoadMainMenu() {
+        SceneLoader.Instance.LoadMainMenu(2f);
+        OpenClosePauseMenu();
     }
 
     protected void OnDestroy() {

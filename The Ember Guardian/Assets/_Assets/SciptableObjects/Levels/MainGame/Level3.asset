@@ -20,8 +20,9 @@ MonoBehaviour:
   newMerchantTextLinesAfterLevel:
   - {fileID: 11400000, guid: 1aa7febfc957ce947998288f0f8837a1, type: 2}
   environmentType: 0
-  levelObjectiveType: 12
-  endLevelType: 14
+  levelObjectiveType: 13
+  endLevelType: 15
+  talkToNpcAFterObjective: 1
   nightsToSurviveAmount: 5
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
@@ -49,8 +50,6 @@ MonoBehaviour:
   maxWaveDuration: 90
   startWaveToSpawnFromBothSides: 2
   canSpawnElite: 1
-  minLevelXPosition: -200
-  maxLevelXPosition: 200
   levelAudioClips:
   - {fileID: 8300000, guid: 09c5969007630694984b81ccd6618337, type: 3}
   - {fileID: 8300000, guid: d79c4b04637541d4fba193e4660d29a7, type: 3}

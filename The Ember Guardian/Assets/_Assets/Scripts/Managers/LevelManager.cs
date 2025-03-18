@@ -24,6 +24,7 @@ public class LevelManager : MonoBehaviour
     private int levelHubMerchantInteractionIndex;
 
     public event EventHandler OnNewLocationShown;
+    public event EventHandler OnLevelSuccess;
     public event EventHandler OnLevelFailed;
     public event EventHandler OnLevelLimitsChanged;
 
@@ -93,6 +94,14 @@ public class LevelManager : MonoBehaviour
         return minLevelLimit;
     }
 
+    public float GetMaxLevelLimitAbsolute() {
+        return rightLevelEndCollider.transform.position.x;
+    }
+
+    public float GetMinLevelLimitAbsolute() {
+        return leftLevelEndCollider.transform.position.x;
+    }
+
     private void LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, EventArgs e) {
         levelHubMerchantInteractionIndex++;
         if(levelHubMerchantInteractionIndex == 2) {
@@ -112,19 +121,20 @@ public class LevelManager : MonoBehaviour
         if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
 
             if (DemoMainLevelManager.Instance != null) {
+
                 // Demo level
-                if (DemoMainLevelManager.Instance.GetDemoLevelLostOnce()) {
-                    endLevelPortal.transform.position = endLevelPortalPosition;
-                    StartCoroutine(EnableEndLevelPortal(2f));
-                }
-                return;
+                endLevelPortal.transform.position = endLevelPortalPosition;
+                StartCoroutine(EnableEndLevelPortal(2f));
+
+            } else {
+
+                endLevelPortalPosition = new Vector3(levelHubMerchant.transform.position.x + 10f, 0, 0);
+                StartCoroutine(EnableEndLevelPortal(2f));
             }
 
-            endLevelPortalPosition = new Vector3(levelHubMerchant.transform.position.x + 10f, 0, 0);
-
-            StartCoroutine(EnableEndLevelPortal(2f));
         }
 
+        OnLevelSuccess?.Invoke(this, EventArgs.Empty);
         endLevelPortal.transform.position = endLevelPortalPosition;
     }
 

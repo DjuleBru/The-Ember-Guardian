@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Creature : Mob
@@ -128,6 +129,10 @@ public class Creature : Mob
             InvokeOnMobDroppedCollectibles(collectiblesDropped);
         }
 
+        if(DemoMainLevelManager.Instance != null) {
+            DemoDropGems();
+        }
+
         if(eliteCreature) {
             EliteDropGems();
         }
@@ -141,6 +146,27 @@ public class Creature : Mob
         }
 
         GetComponent<Rigidbody2D>().gravityScale = 0;
+    }
+
+    private void DemoDropGems() {
+        List<PlayerCurrencies.CurrencyType> gemTypeDrop = new List<PlayerCurrencies.CurrencyType>();
+        List<int> gemTypeAmountDrop = new List<int>();
+
+        int gemTypeDropped = UnityEngine.Random.Range(0, 2);
+
+        if (gemTypeDropped == 0) {
+            gemTypeDrop.Add(PlayerCurrencies.CurrencyType.greenGem);
+        }
+
+        if (gemTypeDropped == 1) {
+            gemTypeDrop.Add(PlayerCurrencies.CurrencyType.redGem);
+        }
+
+
+        int gemAmountDropped = GetDroppedGems(.1f,5);
+        gemTypeAmountDrop.Add(gemAmountDropped);
+
+        SpawnDroppedCurrencies(gemTypeDrop, gemTypeAmountDrop);
     }
 
     private void EliteDropGems() {
@@ -164,10 +190,25 @@ public class Creature : Mob
             gemTypeDrop.Add(PlayerCurrencies.CurrencyType.purpleGem);
         }
 
-        int gemAmountDropped = UnityEngine.Random.Range(1, 3);
+        int gemAmountDropped = GetDroppedGems(.5f, 5);
         gemTypeAmountDrop.Add(gemAmountDropped);
 
         SpawnDroppedCurrencies(gemTypeDrop, gemTypeAmountDrop);
+    }
+
+    public int GetDroppedGems(float baseProbability, int maxGems) {
+        int gemsDropped = 0;
+        float probability = baseProbability;
+
+        // Tant que la probabilité permet de dropper plus de gemmes et que le nombre de gemmes n'a pas atteint le max
+        float randomValue = UnityEngine.Random.value;
+        while (gemsDropped < maxGems && randomValue < probability) {
+            gemsDropped++;
+            // La probabilité de dropper une gemme supplémentaire est divisée par 2 à chaque fois
+            probability *= 0.5f;
+        }
+
+        return gemsDropped;
     }
 
     public void SetAsEliteCreature() {

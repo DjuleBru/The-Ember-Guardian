@@ -75,6 +75,7 @@ public class CreatureAI : MonoBehaviour {
         if (creature.IsDayCreature()) {
 
             positionToRoamAmound = creature.GetMobSpawner().transform.position;
+            roamRadius = creature.GetMobSpawner().GetRadiusToRoamAround();
 
             ChangeState(State.idle);
 

@@ -9,6 +9,7 @@ public class BarricadeSound : StructureSounds
     [SerializeField] private Barricade barricade;
     [SerializeField] private BarricadeVisual barricadeVisual;
 
+    [SerializeField] private AudioClip turnOnOffLight;
     [SerializeField] private AudioClip[] damagedAudioClips;
     [SerializeField] private AudioClip[] spriteFellAudioClips;
     [SerializeField] private AudioClip[] destroyedAudioClips;
@@ -25,8 +26,12 @@ public class BarricadeSound : StructureSounds
         barricade.OnBarricadeDestroyed += Barricade_OnBarricadeDestroyed;
         barricade.OnBarricadeRepaired += Barricade_OnBarricadeRepaired;
         barricadeVisual.OnBarricadeSpriteFell += BarricadeVisual_OnBarricadeSpriteFell;
+        barricade.OnBarricadeLightSwitched += Barricade_OnBarricadeLightSwitched;
     }
 
+    private void Barricade_OnBarricadeLightSwitched(object sender, System.EventArgs e) {
+        barricadeAudioSource.PlayOneShot(turnOnOffLight, .75f * sfxVolume);
+    }
 
     private void BarricadeVisual_OnBarricadeSpriteFell(object sender, System.EventArgs e) {
         barricadeAudioSource.PlayOneShot(spriteFellAudioClips[Random.Range(0, spriteFellAudioClips.Length)], .75f * sfxVolume);

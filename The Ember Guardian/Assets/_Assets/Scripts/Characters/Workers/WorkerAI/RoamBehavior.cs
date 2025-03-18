@@ -16,7 +16,7 @@ public static class RoamBehavior
 
             Vector3 randomMoveTarget = new Vector3(randomRoamPointX, 0, 0);
             if (flying) {
-                randomMoveTarget.y = randomRoamPointY;
+                randomMoveTarget.y = Mathf.Abs(randomRoamPointY);
             }
 
             mobMovement.SetMoveTarget(randomMoveTarget);

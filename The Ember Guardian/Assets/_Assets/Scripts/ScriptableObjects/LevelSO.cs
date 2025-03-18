@@ -11,6 +11,8 @@ public class LevelSO : ScriptableObject
         TheVerdantGraveyard,
         Gloomspire,
         SacredTemple,
+        City,
+        CorruptedCity,
     }
 
     public List<LevelSO> levelsUnlockedByLevel;
@@ -21,8 +23,16 @@ public class LevelSO : ScriptableObject
     public LevelEnvironment environmentType;
     public LevelUI_ObjectiveUI.ObjectiveType levelObjectiveType;
     public LevelUI_ObjectiveUI.ObjectiveType endLevelType;
+    public bool talkToNpcAFterObjective;
     public int nightsToSurviveAmount = 0;
     public List<CreatureSO> nightCreatureTypes;
+
+    public bool isReplayableLevel;
+    [ShowIf("isReplayableLevel")]
+    public List<CreatureSO> dayCreatureTypes;
+    [ShowIf("isReplayableLevel")]
+    public int totalDayCreatureDifficulty;
+
     public bool isNewEnvironmentDiscoveryLevel;
     [ShowIf("isNewEnvironmentDiscoveryLevel")]
     public AudioClip newEnvironmentDiscoveryAudioClip;

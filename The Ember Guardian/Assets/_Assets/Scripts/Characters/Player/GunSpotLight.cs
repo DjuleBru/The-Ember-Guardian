@@ -40,14 +40,19 @@ public class GunSpotLight : MonoBehaviour
             float fogAmount = LevelManager.Instance.GetLevelSO().fogFrontAlpha;
             float volumetricAmount = Mathf.Lerp(noFogVolumetricAmount, fogVolumetricAmount, fogAmount);
             gunSpotLight.volumeIntensity = volumetricAmount;
+
+            lightActive = DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Day;
+            gunSpotLight.enabled = lightActive;
+        } else {
+
+            lightActive = false;
+            gunSpotLight.enabled = false;
         }
 
         GameInput.Instance.OnPlayerGunLightSwitch += GameInput_OnPlayerGunLightSwitch;
         SettingsManager.Instance.OnAutoSwitchLightGunChanged += SettingsManager_OnAutoSwitchLightGunChanged;
         autoSwitchWithDay = SettingsManager.Instance.GetAutoSwitchLight();
 
-        lightActive = DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Day;
-        gunSpotLight.enabled = lightActive;
 
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;

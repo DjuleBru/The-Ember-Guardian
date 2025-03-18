@@ -8,6 +8,9 @@ public class KeyRebindingUI : MonoBehaviour
 {
     public static KeyRebindingUI Instance;
 
+    [SerializeField] private GameObject waitingForRebindGameObject;
+
+    [SerializeField] private Button resetBindingsButton;
     [SerializeField] private Button moveLeftButton;
     [SerializeField] private Button moveRightButton;
     [SerializeField] private Button interactButton;
@@ -56,6 +59,70 @@ public class KeyRebindingUI : MonoBehaviour
 
     private void Awake() {
         Instance = this;
+        waitingForRebindGameObject.gameObject.SetActive(false);
+
+        resetBindingsButton.onClick.AddListener(() => {
+            ResetBindingsToDefault();
+            UpdateVisual();
+        });
+
+        moveLeftButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.moveLeft);
+        });
+        moveRightButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.moveRight);
+        });
+        interactButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.interact);
+        });
+        runButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.run);
+        });
+        rollButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.roll);
+        });
+        shootButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.shoot);
+        });
+        reloadButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.reload);
+        });
+        secondaryButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.secondary);
+        });
+        ability1Button.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.ability1);
+        });
+        ability2Button.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.ability2);
+        });
+        selectPrimaryGunButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.selectPrimaryGun);
+        });
+        selectSecondaryGunButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.selectSecondaryGun);
+        });
+        hoverWorkersButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.hoverWorkers);
+        });
+        callDoggoButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.callDoggo);
+        });
+        torchButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.torchOnOff);
+        });
+        buildingFunctionLeftButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.buildingFunctionLeft);
+        });
+        buildingFunctionRightButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.buildingFunctionRight);
+        });
+        pauseButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.pause);
+        });
+        characterMenuButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.characterMenu);
+        });
     }
 
     public void UpdateVisual() {
@@ -81,5 +148,26 @@ public class KeyRebindingUI : MonoBehaviour
 
         pauseText.text = GameInput.Instance.GetBindingText(GameInput.Binding.pause);
         characterMenuText.text = GameInput.Instance.GetBindingText(GameInput.Binding.characterMenu);
+    }
+
+    private void RebindBinding(GameInput.Binding binding) {
+        ShowWaitingToRebind();
+        GameInput.Instance.RebindBinding(binding, () => {
+            HideWaitingToRebind();
+            UpdateVisual();
+            });
+        
+    }
+
+    public void ResetBindingsToDefault() {
+        GameInput.Instance.ResetBindingsToDefault();
+    }
+
+    public void ShowWaitingToRebind() {
+        waitingForRebindGameObject.SetActive(true);
+    }
+
+    public void HideWaitingToRebind() {
+        waitingForRebindGameObject.SetActive(false);
     }
 }

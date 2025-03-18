@@ -17,6 +17,8 @@ public class HUBManager_Demo : MonoBehaviour
     [SerializeField] private MerchantTextLinesSO gemMerchantOpenTeleporterTextLines;
     [SerializeField] private MerchantTextLinesSO gemMerchantComeBuyTextLines;
     [SerializeField] private MerchantTextLinesSO gemMerchantLevelLostOnceTextLinesSO;
+    [SerializeField] private MerchantTextLinesSO gemMerchantLevelLostAgainTextLinesSO;
+    [SerializeField] private MerchantTextLinesSO gemMerchantLevelCompletedTextLinesSO;
     [SerializeField] private MerchantTextLinesSO armorerIntroTextLinesSO;
     [SerializeField] private MerchantTextLinesSO trainerIntroTextLinesSO;
     [SerializeField] private Fire hubFire;
@@ -31,17 +33,23 @@ public class HUBManager_Demo : MonoBehaviour
     private int gemsToDropInChest = 5;
     private int gemAmountDroppedInChest;
     private bool playerBoughtItem;
+    private bool hubFireEmberExtractable;
     private bool emberExtractionTalkLineShown;
     private bool emberExtracted;
     private bool playerHasGemsInInventory;
     private bool fireIndicatorActive;
     private bool chestIndicatorActive;
+    private bool demoLevelCompleted;
+    private bool firstHubEnterWithDemoLevelCompleted;
+    private bool functionalMerchantsShopsUnlocked;
 
     private void Awake() {
         // First demo hub encounter becomes true when player moves on teleporter
         firstDemoHubEncounter = ES3.Load("firstDemoHubEncounter", true);
         Debug.Log("firstDemoHubEncounter " + firstDemoHubEncounter);
         demoLevelLostAmount = ES3.Load("demoLevelLostAmount", 0);
+        demoLevelCompleted = ES3.Load("demoLevelCompleted", false);
+        firstHubEnterWithDemoLevelCompleted = ES3.Load("firstHubEnterWithDemoLevelCompleted", true);
 
         chestIndicator.gameObject.SetActive(false);
         fireIndicator.gameObject.SetActive(false);
@@ -58,10 +66,14 @@ public class HUBManager_Demo : MonoBehaviour
                 StartCoroutine(HandleFirstLevelDefeatHubEvolution());
             }
 
-            if(demoLevelLostAmount >= 1) {
+            if(demoLevelLostAmount > 1) {
                 StartCoroutine(HandleAnyLevelDefeatHubEvolution());
             }
-            
+
+            if (demoLevelCompleted && firstHubEnterWithDemoLevelCompleted) {
+                StartCoroutine(HandleLevelSuccessHubEvolution());
+            }
+
             RefreshPlayerHasGemsIndicators();
         }
 
@@ -85,21 +97,32 @@ public class HUBManager_Demo : MonoBehaviour
     }
 
     private IEnumerator HandleFirstLevelDefeatHubEvolution() {
+        hubFireEmberExtractable = true;
+
         yield return new WaitForSeconds(.5f);
         Debug.Log("HandleFirstLevelDefeatHubEvolution");
         gemMerchantTalkUI.SetTextLinesSO(gemMerchantLevelLostOnceTextLinesSO);
 
-        foreach(HubMerchant hubMerchant in functionalDemoHubMerchantList) {
-            hubMerchant.SetHasTalkLinesToShow(true, true);
+        foreach (HubMerchant hubMerchant in functionalDemoHubMerchantList) {
+            hubMerchant.SetHasTalkLinesToShow(false, false);
+            hubMerchant.SetDemoMerchantUnlocked();
         }
 
-        armorerTalkUI.SetTextLinesSO(armorerIntroTextLinesSO);
-        trainerTalkUI.SetTextLinesSO(trainerIntroTextLinesSO);
+        foreach (HubMerchant decorationalHubMerchant in decorationalDemoHubMerchantList) {
+            decorationalHubMerchant.SetHasTalkLinesToShow(true, false);
+            decorationalHubMerchant.SetDemoMerchantUnlocked();
+        }
+
+        gemMerchant.SetHasTalkLinesToShow(true, true);
+        gemMerchantReward.DisableReward();
     }
 
     private IEnumerator HandleAnyLevelDefeatHubEvolution() {
+        hubFireEmberExtractable = true;
+
         yield return new WaitForSeconds(.5f);
         Debug.Log("HandleAnyLevelDefeatHubEvolution");
+        gemMerchantTalkUI.SetTextLinesSO(gemMerchantLevelLostAgainTextLinesSO);
 
         foreach (HubMerchant hubMerchant in functionalDemoHubMerchantList) {
             hubMerchant.SetDemoMerchantUnlocked();
@@ -111,8 +134,23 @@ public class HUBManager_Demo : MonoBehaviour
             decorationalHubMerchant.SetDemoMerchantUnlocked();
         }
 
-        gemMerchant.SetHasTalkLinesToShow(false, false);
+        gemMerchant.SetHasTalkLinesToShow(true, false);
         gemMerchantReward.DisableReward();
+    }
+
+    private IEnumerator HandleLevelSuccessHubEvolution() {
+        yield return new WaitForSeconds(.5f);
+        Debug.Log("HandleLevelSuccessHubEvolution");
+
+        gemMerchantTalkUI.SetTextLinesSO(gemMerchantLevelCompletedTextLinesSO);
+        gemMerchant.SetHasTalkLinesToShow(true, true);
+        gemMerchantReward.DisableReward();
+
+        hubFire.SetStructureSecondaryFunctionUnlocked(false);
+        fireIndicator.gameObject.SetActive(false);
+        fireIndicatorActive = false;
+
+        hubFireEmberExtractable = false; 
     }
 
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
@@ -187,7 +225,6 @@ public class HUBManager_Demo : MonoBehaviour
 
         if (hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.GemMerchant) {
 
-            ES3.Save("firstDemoHubEncounter", false);
             gemMerchantStoppedInteractingCount++;
 
             if(gemMerchantStoppedInteractingCount == 1) {
@@ -218,12 +255,40 @@ public class HUBManager_Demo : MonoBehaviour
     }
 
     private void GemMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, System.EventArgs e) {
-        if (!playerBoughtItem) return;
-        if (emberExtractionTalkLineShown) return;
+        if (playerBoughtItem) {
+            if (!emberExtractionTalkLineShown) {
+                StartCoroutine(StartGemMerchantLines(gemMerchantOpenTeleporterTextLines));
+                emberExtractionTalkLineShown = true;
+                hubFireEmberExtractable = true;
+                hubFire.SetHubFireEmberExtractable();
+            };
+        };
 
-        StartCoroutine(StartGemMerchantLines(gemMerchantOpenTeleporterTextLines));
-        emberExtractionTalkLineShown = true;
-        hubFire.SetHubFireEmberExtractable();
+        if(demoLevelLostAmount == 1 && !functionalMerchantsShopsUnlocked) {
+            functionalMerchantsShopsUnlocked = true;
+
+            foreach (HubMerchant hubMerchant in functionalDemoHubMerchantList) {
+                hubMerchant.SetDemoMerchantFunctional();
+                hubMerchant.SetHasTalkLinesToShow(true, true);
+            }
+
+            armorerTalkUI.SetTextLinesSO(armorerIntroTextLinesSO);
+            trainerTalkUI.SetTextLinesSO(trainerIntroTextLinesSO);
+        }
+
+
+        if(demoLevelCompleted && firstHubEnterWithDemoLevelCompleted) {
+
+            firstHubEnterWithDemoLevelCompleted = false;
+            ES3.Save("firstHubEnterWithDemoLevelCompleted", false);
+
+            fireIndicator.gameObject.SetActive(true);
+            fireIndicatorActive = true;
+            hubFireEmberExtractable = true;
+            hubFire.SetHubFireEmberExtractable();
+
+            Debug.Log("firstHubEnterWithDemoLevelCompleted false");
+        }
     }
 
     private IEnumerator ActivateTeleporterCoroutine() {
@@ -251,7 +316,7 @@ public class HUBManager_Demo : MonoBehaviour
     }
 
     private void HubChest_OnChestClosed(object sender, System.EventArgs e) {
-
+        if (firstDemoHubEncounter) return;
         RefreshPlayerHasGemsIndicators();
 
         if (!chestIndicatorActive) return;
@@ -281,7 +346,8 @@ public class HUBManager_Demo : MonoBehaviour
     }
 
     private void HubFire_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
-        if(firstDemoHubEncounter) {
+        if (!hubFireEmberExtractable) return;
+        if (firstDemoHubEncounter) {
             if (!emberExtractionTalkLineShown) return;
             if (emberExtracted) return;
         } else {
@@ -293,6 +359,7 @@ public class HUBManager_Demo : MonoBehaviour
     }
 
     private void HubFire_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        if (!hubFireEmberExtractable) return;
         if (firstDemoHubEncounter) {
             if (!emberExtractionTalkLineShown) return;
             if (emberExtracted) return;

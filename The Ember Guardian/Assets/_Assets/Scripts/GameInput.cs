@@ -96,6 +96,20 @@ public class GameInput : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         playerInputActions = new PlayerInputActions();
+
+        bool hasSavedDefaultBindings = ES3.Load("SavedDefaultBindings", false);
+        bool hasCustomBindings = ES3.Load("SavedCustomBindings", false);
+        if(!hasSavedDefaultBindings) {
+            ES3.Save("DefaultInputBindings", playerInputActions.SaveBindingOverridesAsJson());
+        }
+        if(hasCustomBindings) {
+            string defaultBindings = playerInputActions.SaveBindingOverridesAsJson();
+            string playerBindings = ES3.Load("PlayerInputBindings", defaultValue:defaultBindings);
+
+            playerInputActions.LoadBindingOverridesFromJson(playerBindings);
+        }
+
+
         playerInputActions.Player.Enable();
     }
 
@@ -129,7 +143,6 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
         playerInputActions.Player.Move.performed += Move_performed;
     }
-
 
     private void InputUser_onChange(InputUser user, InputUserChange change, InputDevice arg3) {
         if (change == InputUserChange.ControlSchemeChanged) {
@@ -365,6 +378,9 @@ public class GameInput : MonoBehaviour
             case Binding.hoverWorkers:
                 return playerInputActions.Player.HoverWorkers.bindings[0].ToDisplayString();
 
+            case Binding.callDoggo:
+                return playerInputActions.Player.Back.bindings[0].ToDisplayString();
+
             case Binding.torchOnOff:
                 return playerInputActions.Player.SwitchGunLight.bindings[0].ToDisplayString();
 
@@ -373,7 +389,110 @@ public class GameInput : MonoBehaviour
         return playerInputActions.Player.Interact.bindings[0].ToDisplayString();
     }
 
-    public void RebindBinding(Binding binding) {
+    public void RebindBinding(Binding binding, Action onActionRebound) {
+        playerInputActions.Player.Disable();
 
+        InputAction inputAction;
+        int bindingIndex;
+
+        switch(binding) {
+            default:
+            case Binding.moveLeft:
+                inputAction = playerInputActions.Player.Move;
+                bindingIndex = 1;
+                break;
+            case Binding.moveRight:
+                inputAction = playerInputActions.Player.Move;
+                bindingIndex = 2;
+                break;
+            case Binding.interact:
+                inputAction = playerInputActions.Player.Interact;
+                bindingIndex = 0;
+                break;
+            case Binding.run:
+                inputAction = playerInputActions.Player.Run;
+                bindingIndex = 0;
+                break;
+            case Binding.roll:
+                inputAction = playerInputActions.Player.Jump;
+                bindingIndex = 0;
+                break;
+            case Binding.shoot:
+                inputAction = playerInputActions.Player.Shoot;
+                bindingIndex = 0;
+                break;
+            case Binding.reload:
+                inputAction = playerInputActions.Player.Reload;
+                bindingIndex = 0;
+                break;
+            case Binding.secondary:
+                inputAction = playerInputActions.Player.SelectSecondaryGun;
+                bindingIndex = 0;
+                break;
+            case Binding.ability1:
+                inputAction = playerInputActions.Player.LeftSkill;
+                bindingIndex = 0;
+                break;
+            case Binding.ability2:
+                inputAction = playerInputActions.Player.RightSkill;
+                bindingIndex = 0;
+                break;
+            case Binding.selectPrimaryGun:
+                inputAction = playerInputActions.Player.SelectPrimaryGun;
+                bindingIndex = 0;
+                break;
+            case Binding.selectSecondaryGun:
+                inputAction = playerInputActions.Player.SelectSecondaryGun;
+                bindingIndex = 0;
+                break;
+            case Binding.hoverWorkers:
+                inputAction = playerInputActions.Player.HoverWorkers;
+                bindingIndex = 0;
+                break;
+            case Binding.callDoggo:
+                inputAction = playerInputActions.Player.Back;
+                bindingIndex = 0;
+                break;
+            case Binding.torchOnOff:
+                inputAction = playerInputActions.Player.SwitchGunLight;
+                bindingIndex = 0;
+                break;
+            case Binding.buildingFunctionLeft:
+                inputAction = playerInputActions.Player.LeftRightSwitch;
+                bindingIndex = 1;
+                break;
+            case Binding.buildingFunctionRight:
+                inputAction = playerInputActions.Player.LeftRightSwitch;
+                bindingIndex = 2;
+                break;
+            case Binding.characterMenu:
+                inputAction = playerInputActions.Player.OpenPlayerTab;
+                bindingIndex = 0;
+                break;
+        }
+
+        inputAction.PerformInteractiveRebinding(bindingIndex).OnComplete(callback => {
+            Debug.Log(callback.action.bindings[1].path);
+
+            playerInputActions.Player.Enable();
+            onActionRebound();
+
+            ES3.Save("PlayerInputBindings", playerInputActions.SaveBindingOverridesAsJson());
+            ES3.Save("SavedCustomBindings", true);
+
+        }).Start();
+    }
+
+    public void ResetBindingsToDefault() {
+        playerInputActions.Player.Disable();
+
+
+        string defaultBindingsForFunction = playerInputActions.SaveBindingOverridesAsJson();
+        string defaultBindings = ES3.Load("DefaultInputBindings", defaultValue: defaultBindingsForFunction);
+
+        playerInputActions.LoadBindingOverridesFromJson(defaultBindings);
+
+        ES3.Save("SavedCustomBindings", false);
+        playerInputActions.Player.Enable();
     }
 }

@@ -23,8 +23,10 @@ public class FoliageObject : MonoBehaviour
             foliageMaterial = foliageTilemap.material;
         }
 
-        WindManager.Instance.OnWindStrengthChanged += WindManager_OnWindStrengthChanged;
-        SetMaterialVariables();
+        if(WindManager.Instance != null) {
+            WindManager.Instance.OnWindStrengthChanged += WindManager_OnWindStrengthChanged;
+            SetMaterialVariables();
+        }
     }
 
     private void WindManager_OnWindStrengthChanged(object sender, System.EventArgs e) {

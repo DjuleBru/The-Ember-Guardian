@@ -25,6 +25,7 @@ public class DemoMainLevelManager : MonoBehaviour
 
     private int demoLevelLostAmount;
     private bool demoMainLevelTutorialCompleted;
+    private bool demoLevelCompleted;
 
     private int emberlingAmountRecruited;
     private int hunterAmountRecruited;
@@ -37,12 +38,14 @@ public class DemoMainLevelManager : MonoBehaviour
         ammoCrafterIndicator.gameObject.SetActive(false);
 
         demoMainLevelTutorialCompleted = ES3.Load("demoMainLevelTutorialCompleted", false);
+        demoLevelCompleted = ES3.Load("demoLevelCompleted", false);
         demoLevelLostAmount = ES3.Load("demoLevelLostAmount", 0);
 
     }
 
     private void Start() {
         LevelManager.Instance.OnLevelFailed += LevelManager_OnLevelFailed;
+        LevelManager.Instance.OnLevelSuccess += LevelManager_OnLevelSuccess;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
         Animal.OnAnyMobDied += Animal_OnAnyMobDied;
@@ -72,6 +75,20 @@ public class DemoMainLevelManager : MonoBehaviour
                 structureLocation.gameObject.SetActive(false);
             }
         }
+
+        if(demoLevelCompleted) {
+            StartCoroutine(SetNightsToSurviveAfterDelay());
+        }
+    }
+
+    private IEnumerator SetNightsToSurviveAfterDelay() {
+        yield return new WaitForSeconds(.1f);
+        LevelObjectives.Instance.SetNightsToSurvive(99);
+    }
+
+    private void LevelManager_OnLevelSuccess(object sender, EventArgs e) {
+        Debug.Log("LevelManager_OnLevelSuccess");
+        ES3.Save("demoLevelCompleted", true);
     }
 
     private void LevelManager_OnLevelFailed(object sender, EventArgs e) {

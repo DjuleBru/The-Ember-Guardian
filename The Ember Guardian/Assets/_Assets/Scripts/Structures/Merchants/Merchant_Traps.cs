@@ -45,7 +45,6 @@ public class Merchant_Traps : Merchant
 
             if (trapSO.itemType == MerchantItem.MerchantItemType.TrapUpgrade) {
                 allMinorMerchantItems.Add(trapItem);
-                Debug.Log("added " + trapItem);
                 trapUpgradeList.Add(trapItem);
             }
         }

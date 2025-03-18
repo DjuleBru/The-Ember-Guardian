@@ -36,6 +36,10 @@ public class SceneLoader : MonoBehaviour
         StartCoroutine(LoadSceneAfterCrossfade("Level0_Tutorial", crossfadeDuration));
     }
 
+    public void LoadMainMenu(float crossfadeDuration) {
+        StartCoroutine(LoadSceneAfterCrossfade("MainMenu", crossfadeDuration));
+    }
+
     public void LoadHub(float crossfadeDuration) {
         if(isDemoIntro || DemoMainLevelManager.Instance != null) {
             StartCoroutine(LoadSceneAfterCrossfade("HUB_Demo", crossfadeDuration));

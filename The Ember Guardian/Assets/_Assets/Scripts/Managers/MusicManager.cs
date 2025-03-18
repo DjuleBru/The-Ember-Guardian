@@ -300,7 +300,6 @@ public class MusicManager : MonoBehaviour {
         }
         else
         {
-            Debug.Log("nextClip == currentAudioClipPlaying");
             StartCoroutine(WaitForClipToEnd(nextClip.length / 2));
         }
 
@@ -322,7 +321,6 @@ public class MusicManager : MonoBehaviour {
         AudioClip selectedAudioClip = activeSource.clip;
 
         if(fireDamageTakenRecently >= 3) {
-            Debug.Log("fireDamageTakenRecently " + creaturesInsidePlayerCamp);
             // fire just took a bunch of damage : player in deep ****
             if (tensionLevelMusicPlaying == 4) {
                 selectedAudioClip = currentAudioClipPlaying;
@@ -332,7 +330,6 @@ public class MusicManager : MonoBehaviour {
             }
             tensionLevelMusicPlaying = 4;
         }else if(creaturesInsidePlayerCamp != 0) {
-            Debug.Log("creaturesInsidePlayerCamp " + creaturesInsidePlayerCamp);
 
             if (creaturesInsidePlayerCamp < 5) {
                 // small amount of creatures inside player camp
@@ -370,7 +367,6 @@ public class MusicManager : MonoBehaviour {
             }
 
         } else {
-            Debug.Log("GetNightClipBasedOnCreaturesCloseToCamp " + creaturesCloseToPlayerCamp);
 
             if (creaturesCloseToPlayerCamp < 5) {
                 if (tensionLevelMusicPlaying == 1) {
@@ -413,8 +409,6 @@ public class MusicManager : MonoBehaviour {
             }
         }
 
-        Debug.Log("tensionLevelMusicPlaying " + tensionLevelMusicPlaying);
-        Debug.Log("selectedAudioClip " + selectedAudioClip);
         return selectedAudioClip;
     }
 

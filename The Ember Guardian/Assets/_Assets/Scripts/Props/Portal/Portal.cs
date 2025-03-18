@@ -290,7 +290,7 @@ public class Portal : MonoBehaviour
         bool hasUnlockedAndUnfinishedLevels = false;
 
         foreach(LevelSO levelSO in linkedLevelSOList) {
-            if(!MetaProgressionManager.Instance.GetLevelCompleted(levelSO) && MetaProgressionManager.Instance.GetLevelUnlocked(levelSO)) {
+            if(levelSO.isReplayableLevel || (!MetaProgressionManager.Instance.GetLevelCompleted(levelSO) && MetaProgressionManager.Instance.GetLevelUnlocked(levelSO))) {
                 hasUnlockedAndUnfinishedLevels = true;
             }
         }
