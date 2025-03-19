@@ -20,11 +20,15 @@ public class SceneLoader : MonoBehaviour
         HUB,
         Level,
         Tutorial,
+        WarmupScene,
     }
 
     private void Awake() {
         Instance = this;
         transitionAnimator.speed = .5f;
+        if(sceneType == SceneType.WarmupScene) {
+            SceneManager.LoadScene("MainMenu");
+        }
 
         StartCoroutine(RemoveBlackBackgroundAfterDelay(.1f));
     }
@@ -34,6 +38,9 @@ public class SceneLoader : MonoBehaviour
     }
     public void LoadTutorial(float crossfadeDuration) {
         StartCoroutine(LoadSceneAfterCrossfade("Level0_Tutorial", crossfadeDuration));
+    }
+    public void LoadDemoIntro(float crossfadeDuration) {
+        StartCoroutine(LoadSceneAfterCrossfade("DemoLevel_Intro", crossfadeDuration));
     }
 
     public void LoadMainMenu(float crossfadeDuration) {

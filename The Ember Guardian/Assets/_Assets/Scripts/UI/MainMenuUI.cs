@@ -36,13 +36,14 @@ public class MainMenuUI : MonoBehaviour {
         if(!VersioningManager.Instance.CheckNewSaveFile() && !VersioningManager.Instance.CheckIncompatibleSaveFile()) {
             StartCoroutine(FadeInMainMenu(1.5f));
         } else {
+
+            Debug.Log("Set interactable false");
             continueButton.interactable = false;
         }
     }
 
  
     private void SetFirstSelectedButton() {
-        Debug.Log("SetFirstSelectedButton");
         if (!MetaProgressionManager.Instance.GetSavedOnce()) {
             continueButton.interactable = false;
             EventSystem.current.SetSelectedGameObject(newGameButton.gameObject);
@@ -109,9 +110,16 @@ public class MainMenuUI : MonoBehaviour {
 
         yield return new WaitForSeconds(1f);
 
-        SceneLoader.Instance.LoadTutorial(2f);
         MusicManager.Instance.FadeOutMusic(1f);
         MetaProgressionManager.Instance.SetSavedOnce();
+
+        if(VersioningManager.Instance.GetIsDemo()) {
+            SceneLoader.Instance.LoadDemoIntro(2f);
+
+        } else {
+            SceneLoader.Instance.LoadTutorial(2f);
+        }
+
     }
     private IEnumerator ResumeCurrentSaveCoroutine() {
         mainMenuPanelAnimator.SetTrigger("FadeOut");
@@ -119,16 +127,34 @@ public class MainMenuUI : MonoBehaviour {
 
         yield return new WaitForSeconds(1f);
 
-        if (MetaProgressionManager.Instance.tutorialComplete) {
-            SceneLoader.Instance.LoadHub(1f);
+        if (VersioningManager.Instance.GetIsDemo()) {
+            if (MetaProgressionManager.Instance.tutorialComplete) {
+                SceneLoader.Instance.LoadHub(1f);
+            }
+            else {
+                SceneLoader.Instance.LoadDemoIntro(2f);
+            }
+
         }
         else {
-            SceneLoader.Instance.LoadTutorial(1f);
+            if (MetaProgressionManager.Instance.tutorialComplete) {
+                SceneLoader.Instance.LoadHub(1f);
+            }
+            else {
+                SceneLoader.Instance.LoadTutorial(1f);
+            }
         }
+
+        
 
         MusicManager.Instance.FadeOutMusic(1f);
     }
     private IEnumerator FadeInMainMenu(float delay) {
+
+        if (!MetaProgressionManager.Instance.GetSavedOnce()) {
+            continueButton.interactable = false;
+        }
+
         yield return new WaitForSeconds(delay);
         mainMenuPanelAnimator.SetTrigger("FadeIn");
         yield return new WaitForSeconds(1.5f);

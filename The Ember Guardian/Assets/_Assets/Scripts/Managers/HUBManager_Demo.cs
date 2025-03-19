@@ -24,6 +24,7 @@ public class HUBManager_Demo : MonoBehaviour
     [SerializeField] private Fire hubFire;
     [SerializeField] private Portal grassyAreaPortal;
     [SerializeField] private LevelSO demoMainLevelSO;
+    [SerializeField] private VideoTipSO endDemoTipSO;
 
     [SerializeField] private GameObject chestIndicator;
     [SerializeField] private GameObject fireIndicator;
@@ -286,6 +287,9 @@ public class HUBManager_Demo : MonoBehaviour
             fireIndicatorActive = true;
             hubFireEmberExtractable = true;
             hubFire.SetHubFireEmberExtractable();
+
+            VideoTipUI.Instance.PlayTipSO(endDemoTipSO);
+            VideoTipUI.Instance.SetEndDemoTip();
 
             Debug.Log("firstHubEnterWithDemoLevelCompleted false");
         }

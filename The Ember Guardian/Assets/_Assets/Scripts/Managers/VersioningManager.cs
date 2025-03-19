@@ -11,6 +11,8 @@ public class VersioningManager : MonoBehaviour
     private bool saveFileDeleted;
     [SerializeField] protected TextMeshProUGUI versioningText;
     [SerializeField] protected bool saveFileIncompatible;
+    [SerializeField] protected bool isDemo;
+    [SerializeField] protected float demoBuildVersion;
     [SerializeField] protected float buildVersion;
     [SerializeField] protected float latestCompatibleBuildVersion;
 
@@ -20,7 +22,13 @@ public class VersioningManager : MonoBehaviour
 
     private void Start() {
         string versionString = buildVersion.ToString(System.Globalization.CultureInfo.InvariantCulture);
-        versioningText.text = "Pre-alpha version " + versionString;
+
+        if(isDemo) {
+            versionString = demoBuildVersion.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            versioningText.text = "Demo version " + versionString;
+        } else {
+            versioningText.text = "Pre-alpha version " + versionString;
+        }
     }
 
     public bool CheckIncompatibleSaveFile() {
@@ -67,6 +75,10 @@ public class VersioningManager : MonoBehaviour
             return false;
         }
 
+    }
+
+    public bool GetIsDemo() {
+        return isDemo;
     }
 
 }

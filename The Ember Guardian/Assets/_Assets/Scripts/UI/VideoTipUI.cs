@@ -11,7 +11,9 @@ public class VideoTipUI : MonoBehaviour
 {
     public static VideoTipUI Instance;
 
+
     [SerializeField] private VideoPlayer videoPlayer;
+
     [SerializeField] private GameObject videoTipUIMainPanel;
     [SerializeField] private GameObject replayTipButtonGO;
     [SerializeField] private GameObject resumeButtonGO;
@@ -20,6 +22,7 @@ public class VideoTipUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI tipName;
     [SerializeField] private Transform tipTextContainer;
     [SerializeField] private Transform tipTextTemplate;
+    [SerializeField] private Transform wishlistButton;
     [SerializeField] private Animator videoTipUIMainPanelAnimator;
 
     [SerializeField] private VideoTipSO testTipSO;
@@ -43,6 +46,7 @@ public class VideoTipUI : MonoBehaviour
 
     private void Awake() {
         Instance = this;
+        wishlistButton.gameObject.SetActive(false);
     }
 
     private void Start() {
@@ -64,6 +68,26 @@ public class VideoTipUI : MonoBehaviour
         //    OpenPanel();
         //    PlayTip();
         //}
+    }
+
+    public void SetEndDemoTip() {
+       StartCoroutine(SetEndDemoTipCoroutine());
+    }
+
+    private IEnumerator SetEndDemoTipCoroutine() {
+        RectTransform rt = videoTipUIMainPanel.GetComponent<RectTransform>();
+        rt.anchorMin = new Vector2(0.5f, 0.5f); // Centre en X, bas en Y
+        rt.anchorMax = new Vector2(0.5f, 0.5f);
+
+        // Modifier la position X en prenant en compte les anchors
+        Vector2 newAnchoredPos = rt.anchoredPosition;
+        newAnchoredPos.x = 0; // Nouvelle position X
+        rt.anchoredPosition = newAnchoredPos;
+
+        yield return new WaitForSeconds(5f);
+
+        EventSystem.current.SetSelectedGameObject(wishlistButton.gameObject);
+        wishlistButton.gameObject.SetActive(true);
     }
 
     public void PlayTipSO(VideoTipSO videoTipSO, float delayToPlayTip = 0f) {
@@ -183,6 +207,11 @@ public class VideoTipUI : MonoBehaviour
         OnVideoTipPanelClosed?.Invoke(this, new OnVideoTipPanelClosedEventArgs {
             tipTypeShown = shownVideoTipSO.tipType
         });
+    }
+    
+    public void OpenSteamPage() {
+        string url = "https://ratbitgames.com/";
+        Application.OpenURL(url);
     }
 
     #region BUTTONS

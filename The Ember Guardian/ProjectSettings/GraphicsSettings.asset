@@ -33,8 +33,14 @@ GraphicsSettings:
   - {fileID: 15106, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 10783, guid: 0000000000000000f000000000000000, type: 0}
-  m_PreloadedShaders: []
+  - {fileID: -6465566751694194690, guid: dab8e900d1e249438553a0a987afee8d, type: 3}
+  - {fileID: -6465566751694194690, guid: 0238d759a0684af4c90c51a61b5cf022, type: 3}
+  - {fileID: -6465566751694194690, guid: dde43568382e4e8e9c1ee3bccaf44e6e, type: 3}
+  - {fileID: -6465566751694194690, guid: dce1582f293a1ee41a560f85a0a3d2ff, type: 3}
+  - {fileID: 4800000, guid: f34315e2ae49499e9bad3c7cee74f676, type: 3}
+  - {fileID: 4800000, guid: e86f705a051c4580a7e5a01073829185, type: 3}
+  m_PreloadedShaders:
+  - {fileID: 20000000, guid: 732f9a635553f744abbb33afb7b04356, type: 2}
   m_PreloadShadersBatchTimeLimit: -1
   m_SpritesDefaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_CustomRenderPipeline: {fileID: 11400000, guid: 1b62cf18bd8effd449e667f64e0c8cc4, type: 2}
@@ -60,7 +66,7 @@ GraphicsSettings:
   m_LightsUseLinearIntensity: 0
   m_LightsUseColorTemperature: 1
   m_DefaultRenderingLayerMask: 1
-  m_LogWhenShaderIsCompiled: 0
+  m_LogWhenShaderIsCompiled: 1
   m_SRPDefaultSettings:
     UnityEngine.Rendering.Universal.UniversalRenderPipeline: {fileID: 11400000, guid: 93b439a37f63240aca3dd4e01d978a9f, type: 2}
   m_LightProbeOutsideHullStrategy: 0

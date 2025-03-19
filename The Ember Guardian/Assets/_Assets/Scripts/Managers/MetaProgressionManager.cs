@@ -9,6 +9,7 @@ public class MetaProgressionManager : MonoBehaviour
     public static MetaProgressionManager Instance;
     [SerializeField] private bool destroySaveOnApplicationQuit;
     private bool workerInteractions_Debug;
+    private bool flagCarry_Debug;
 
     public class OnGunChangedEventArgs : EventArgs {
         public GunSO.GunType gunTypeModified;
@@ -48,6 +49,7 @@ public class MetaProgressionManager : MonoBehaviour
         }
 
         workerInteractions_Debug = DebugManager.Instance.GetDebugMode_WorkerInteractions();
+        flagCarry_Debug = DebugManager.Instance.GetDebugMode_FlagCarry();
     }
 
     private void Update() {
@@ -569,7 +571,7 @@ public class MetaProgressionManager : MonoBehaviour
 
     #region OTHER
     public bool GetPlayerUnlockedFlagCarry() {
-        return ES3.Load("playerUnlockedFlagCarry", workerInteractions_Debug);
+        return ES3.Load("playerUnlockedFlagCarry", flagCarry_Debug);
     }
     public void SetPlayerUnlockedFlagCarry(bool playerUnlockedFlagCarry) {
         ES3.Save("playerUnlockedFlagCarry", playerUnlockedFlagCarry);

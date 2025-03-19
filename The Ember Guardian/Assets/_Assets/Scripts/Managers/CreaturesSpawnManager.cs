@@ -42,8 +42,6 @@ public class CreaturesSpawnManager : MonoBehaviour
     private int startWaveToSpawnFromBothSides;
     private int baseDifficulty;
     private float growthFactor;
-    private float minWaveDuration;
-    private float maxWaveDuration;
 
     private bool canSpawnElite;
     private float eliteSpawnProbability = .05f;
@@ -53,7 +51,6 @@ public class CreaturesSpawnManager : MonoBehaviour
     private float maxSubwaveDifficulty;
     private float waveDifficultyLeftProportion;
     private float waveDifficultyRightProportion;
-    private float waveDuration;
 
     private float minLevelXPosition;
     private float maxLevelXPosition;
@@ -80,8 +77,6 @@ public class CreaturesSpawnManager : MonoBehaviour
         minSubwaveDifficulty = LevelManager.Instance.GetLevelSO().minSubwaveDifficulty;
         maxSubwaveDifficulty = LevelManager.Instance.GetLevelSO().maxSubwaveDifficulty;
         growthFactor = LevelManager.Instance.GetLevelSO().growthFactor;
-        minWaveDuration = LevelManager.Instance.GetLevelSO().minWaveDuration;
-        maxWaveDuration = LevelManager.Instance.GetLevelSO().maxWaveDuration;
         startWaveToSpawnFromBothSides = LevelManager.Instance.GetLevelSO().startWaveToSpawnFromBothSides;
 
         canSpawnElite = LevelManager.Instance.GetLevelSO().canSpawnElite;
@@ -188,7 +183,6 @@ public class CreaturesSpawnManager : MonoBehaviour
         totalNightCreatures = 0;
 
         waveDifficulty = baseDifficulty * Mathf.Pow(growthFactor, waveNumber);
-        waveDuration = Mathf.Lerp(minWaveDuration, maxWaveDuration, (waveNumber-1) / 10f);
         subWaveNumber = (int)(waveDifficulty / maxSubwaveDifficulty)+1;
         AnimationCurve subWaveDifficultyCurve = subWaveDifficultyCurveList[UnityEngine.Random.Range(0, subWaveDifficultyCurveList.Count)];
 
@@ -202,13 +196,10 @@ public class CreaturesSpawnManager : MonoBehaviour
         }
 
         Debug.Log("waveNumber " + waveNumber);
-        Debug.Log("WaveDuration " + waveDuration);
         Debug.Log("Total subwaves " + subWaveNumber);
         Debug.Log("WaveDifficulty " + waveDifficulty);
         Debug.Log("waveLeftProportion " + waveDifficultyLeftProportion);
         Debug.Log("waveRightProportion " + waveDifficultyRightProportion);
-
-        DayNightManager.Instance.SetNightDuration(waveDuration*2);
 
         // Préparer la liste de toutes les créatures à spawner pour cette vague
         waveCreaturesDictionary.Clear();

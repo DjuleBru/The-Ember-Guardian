@@ -12,6 +12,9 @@ public class FoliageObject : MonoBehaviour
     [SerializeField] private float strongWindVelocityValue;
     [SerializeField] private float extremeWindVelocityValue;
 
+    [SerializeField] private bool overrideLevelWind;
+    [SerializeField] private float overridenWindVelocityValue;
+
     private Material foliageMaterial;
     private Vector2 currentWindSpeed;
 
@@ -27,7 +30,12 @@ public class FoliageObject : MonoBehaviour
             WindManager.Instance.OnWindStrengthChanged += WindManager_OnWindStrengthChanged;
             SetMaterialVariables();
         }
+
+        if(overrideLevelWind) {
+            SetOverriddenMaterialVariables();
+        }
     }
+
 
     private void WindManager_OnWindStrengthChanged(object sender, System.EventArgs e) {
         SetMaterialVariables();
@@ -46,6 +54,13 @@ public class FoliageObject : MonoBehaviour
             float windStrengthRandomized = UnityEngine.Random.Range(windStrength - windStrength / 2, windStrength + windStrength / 2);
             foliageMaterial.SetFloat("Vector1_2d61041f8dfd46289cb8aafd27290417", windStrengthRandomized);
         }
+    }
+    private void SetOverriddenMaterialVariables() {
+
+       
+            float windStrengthRandomized = UnityEngine.Random.Range(overridenWindVelocityValue - overridenWindVelocityValue / 2, overridenWindVelocityValue + overridenWindVelocityValue / 2);
+            foliageMaterial.SetFloat("Vector1_2d61041f8dfd46289cb8aafd27290417", windStrengthRandomized);
+        
     }
 
     private void SetWindVelocityValue(WindManager.WindStrength windStrength) {

@@ -22,6 +22,7 @@ public class DemoMainLevelManager : MonoBehaviour
     private bool orbDroppedByWorker;
     private bool ammoCraftEnded;
     private bool ammoCraftCollected;
+    private bool recruitWorkerTooltipShown;
 
     private int demoLevelLostAmount;
     private bool demoMainLevelTutorialCompleted;
@@ -40,6 +41,7 @@ public class DemoMainLevelManager : MonoBehaviour
         demoMainLevelTutorialCompleted = ES3.Load("demoMainLevelTutorialCompleted", false);
         demoLevelCompleted = ES3.Load("demoLevelCompleted", false);
         demoLevelLostAmount = ES3.Load("demoLevelLostAmount", 0);
+        recruitWorkerTooltipShown = ES3.Load("recruitWorkerTooltipShown", false);
 
     }
 
@@ -285,6 +287,15 @@ public class DemoMainLevelManager : MonoBehaviour
 
     public bool GetDemoLevelLostOnce() {
         return demoLevelLostAmount == 1;
+    }
+
+    public void TryShowRecruitWorkerTooltip() {
+        if(!recruitWorkerTooltipShown) {
+            if (!UICurrencyManager.PlayerInventoryUI.GetHasBigOrb()) return;
+            recruitWorkerTooltipShown = true;
+            ES3.Save("recruitWorkerTooltipShown", true);
+            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction("Press", "Recruit Emberling", InputControlIcons.Control.Interact, 5f);
+        }
     }
 
     private void OnDestroy() {

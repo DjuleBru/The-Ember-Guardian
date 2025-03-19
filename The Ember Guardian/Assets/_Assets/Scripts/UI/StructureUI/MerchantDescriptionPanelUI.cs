@@ -66,7 +66,6 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
             if(skillItem.itemType == MerchantItem.MerchantItemType.PassiveSkill) {
                 activeSkillItemStatChanges.SetActive(false);
                 passiveSkillItemStatChanges.SetActive(true);
-                trapStatValues.SetActive(false);
 
                 SetPassiveSkillStatsDescription(skillItem);
             } 
@@ -74,7 +73,6 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
             if(skillItem.itemType == MerchantItem.MerchantItemType.ActiveSkill) {
                 activeSkillItemStatChanges.SetActive(true);
                 passiveSkillItemStatChanges.SetActive(false);
-                trapStatValues.SetActive(false);
 
                 SetActiveSkillStatsDescription(skillItem);
             }

@@ -67,6 +67,7 @@ public class Chest : MonoBehaviour
     private void GameInput_OnPlayerInteractPerformed(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (chestOpened) return;
+        Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
 
         chestOpened = true;
         StartCoroutine(OpenChest());
@@ -78,6 +79,8 @@ public class Chest : MonoBehaviour
         if (chestLocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
         playerInTriggerArea = true;
+        Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
+
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
 
     }
@@ -92,6 +95,9 @@ public class Chest : MonoBehaviour
     }
 
     private IEnumerator OpenChest() {
+        yield return new WaitForEndOfFrame();
+
+        Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
 
         yield return new WaitForSeconds(delayToChestUnlockAnimation);
 

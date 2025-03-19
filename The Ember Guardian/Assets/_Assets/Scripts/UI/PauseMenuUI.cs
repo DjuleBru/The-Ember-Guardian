@@ -14,16 +14,22 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] protected GameObject firstSelectedButton;
     [SerializeField] protected GameObject pausePanel;
     [SerializeField] protected Button_Confirm buttonConfirm_ExitGame;
+    [SerializeField] protected Button_Confirm buttonConfirm_MainMenu;
     [SerializeField] protected TextMeshProUGUI exitGameText;
+    [SerializeField] protected TextMeshProUGUI backToMenuText;
 
     [SerializeField] protected Animator progressionSavedTextIndicator;
+    [SerializeField] protected Color savedTextColor;
+    [SerializeField] protected Color unsavedTextColor;
     [SerializeField] protected Button saveButton;
+    protected bool progressionSaved;
 
     public event EventHandler OnPauseMenuOpened;
     public event EventHandler OnPauseMenuClosed;
 
     protected bool menuOpen;
     protected bool confirmExitGame;
+    protected bool confirmBackToMenu;
     protected bool canOpenPauseMenu = true;
 
     protected void Awake() {
@@ -35,12 +41,21 @@ public class PauseMenuUI : MonoBehaviour
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
 
+
         buttonConfirm_ExitGame.OnButtonDeselected += ButtonConfirm_ExitGame_OnButtonDeselected;
+        buttonConfirm_MainMenu.OnButtonDeselected += ButtonConfirm_MainMenu_OnButtonDeselected;
 
         pausePanel.SetActive(false);
 
         if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
+
             SetCanSave(false);
+
+        } else {
+
+            UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
+            UICurrencyManager.HubInventoryUI.OnCurrencyRemovedFromBag += HubInventoryUI_OnCurrencyRemovedFromBag;
+
         }
     }
 
@@ -48,6 +63,21 @@ public class PauseMenuUI : MonoBehaviour
         if(GameInput.Instance.IsUsingGamepad() && menuOpen) {
             EventSystem.current.SetSelectedGameObject(firstSelectedButton);
         }
+    }
+
+
+    private void HubInventoryUI_OnCurrencyRemovedFromBag(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        SetProgressionSaved(false);
+    }
+
+    private void HubInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        SetProgressionSaved(false);
+    }
+
+    private void ButtonConfirm_MainMenu_OnButtonDeselected(object sender, EventArgs e) {
+        confirmBackToMenu = false;
+        backToMenuText.text = "Main Menu";
+        progressionSavedTextIndicator.SetTrigger("Hide");
     }
 
     private void ButtonConfirm_ExitGame_OnButtonDeselected(object sender, EventArgs e) {
@@ -103,6 +133,8 @@ public class PauseMenuUI : MonoBehaviour
     #region PAUSE MENU BUTTONS
     public virtual void SaveGameButton() {
         HUBManager.Instance.SaveHub();
+        SetProgressionSaved(true);
+
         progressionSavedTextIndicator.SetTrigger("Show");
         progressionSavedTextIndicator.SetTrigger("Hide");
     }
@@ -122,13 +154,26 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     public virtual void ExitGameButton() {
-        if (confirmExitGame) {
+        if (confirmExitGame || progressionSaved) {
             Application.Quit();
         }
+
         else {
-            HUBManager.Instance.SaveHub();
             confirmExitGame = true;
             exitGameText.text = "Confirm ?";
+            progressionSavedTextIndicator.SetTrigger("Show");
+        }
+    }
+
+    public void LoadMainMenu() {
+        if (confirmBackToMenu || progressionSaved) {
+            SceneLoader.Instance.LoadMainMenu(2f);
+            OpenClosePauseMenu();
+        }
+
+        else {
+            confirmBackToMenu = true;
+            backToMenuText.text = "Confirm ?";
             progressionSavedTextIndicator.SetTrigger("Show");
         }
     }
@@ -156,9 +201,20 @@ public class PauseMenuUI : MonoBehaviour
         saveButton.interactable = canSave;
     }
 
-    public void LoadMainMenu() {
-        SceneLoader.Instance.LoadMainMenu(2f);
-        OpenClosePauseMenu();
+    public void SetProgressionSaved(bool saved) {
+        if(saved) {
+
+            progressionSaved = true;
+            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = "Progression saved";
+            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = savedTextColor;
+
+        } else {
+
+            progressionSaved = false;
+            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = "Your progress has not been saved !";
+            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = unsavedTextColor;
+
+        }
     }
 
     protected void OnDestroy() {

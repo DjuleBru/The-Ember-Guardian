@@ -23,14 +23,21 @@ public class PauseMenuUI_Level : PauseMenuUI {
     }
 
     public void BackToHubButton() {
+
         if (confirmBackToHub) {
+        
             ShowPauseMenu(false);
             SceneLoader.Instance.LoadHub(1f);
+
         }
         else {
+
             confirmBackToHub = true;
             backToHubText.text = "Confirm ?";
             progressionSavedTextIndicator.SetTrigger("Show");
+            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = "Your progress is not saved in a level !";
+            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = unsavedTextColor;
+        
         }
     }
 

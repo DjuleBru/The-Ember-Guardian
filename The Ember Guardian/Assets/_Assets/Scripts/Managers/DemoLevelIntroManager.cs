@@ -22,6 +22,7 @@ public class DemoLevelIntroManager : MonoBehaviour {
         Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
         initialChest.OnChestOpened += InitialChest_OnChestOpened;
         CreaturesSpawnManager.Instance.SetDemoWave();
+        LevelManager.Instance.OnLevelFailed += LevelManager_OnLevelFailed;
 
         StartCoroutine(SetInitialObjective());
         StartCoroutine(SetPlayerCurrenciesAfterDelay());
@@ -36,6 +37,10 @@ public class DemoLevelIntroManager : MonoBehaviour {
         foreach (StructureLocation location in structureLocationsUnlocked) {
             location.UnlockStructureLocation();
         }
+    }
+
+    private void LevelManager_OnLevelFailed(object sender, System.EventArgs e) {
+        MetaProgressionManager.Instance.SetTutorialCompleted();
     }
 
     private void InitialChest_OnChestOpened(object sender, System.EventArgs e) {

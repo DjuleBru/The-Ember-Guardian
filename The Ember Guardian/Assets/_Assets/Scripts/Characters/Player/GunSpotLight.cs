@@ -21,10 +21,13 @@ public class GunSpotLight : MonoBehaviour
     private bool rolling;
     private bool reloading;
     private bool canSwitchLight = true;
+    private bool playerJustTeleported;
+    private float playerJustTeleportedTimer;
     public static event EventHandler OnAnyLightSwitched;
 
     private void Awake() {
         gun = GetComponent<Gun>();
+        Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
 
         gunSpotLight = gunSpotLightTransform.GetComponent<Light2D>();
         gunShootLight.pointLightOuterAngle = 360;
@@ -41,13 +44,11 @@ public class GunSpotLight : MonoBehaviour
             float volumetricAmount = Mathf.Lerp(noFogVolumetricAmount, fogVolumetricAmount, fogAmount);
             gunSpotLight.volumeIntensity = volumetricAmount;
 
-            lightActive = DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Day;
-            gunSpotLight.enabled = lightActive;
-        } else {
+        } 
 
-            lightActive = false;
-            gunSpotLight.enabled = false;
-        }
+        lightActive = false;
+        gunSpotLight.enabled = false;
+        
 
         GameInput.Instance.OnPlayerGunLightSwitch += GameInput_OnPlayerGunLightSwitch;
         SettingsManager.Instance.OnAutoSwitchLightGunChanged += SettingsManager_OnAutoSwitchLightGunChanged;
@@ -68,6 +69,27 @@ public class GunSpotLight : MonoBehaviour
         }
 
         PlayerStats.Instance.OnFlashlightRangeChanged += PlayerStats_OnFlashlightRangeChanged;
+    }
+
+    private void Update() {
+        if (playerJustTeleported) {
+            playerJustTeleportedTimer += Time.deltaTime;
+            if (playerJustTeleportedTimer > .5f) {
+                playerJustTeleported = false;
+                SwitchLight();
+            }
+        }
+
+        if (rolling) return;
+
+        float angle = gunVisualTransform.rotation.eulerAngles.z;
+        gunSpotLightTransform.eulerAngles = new Vector3(0, 0, angle - 90);
+
+    }
+
+    private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Level) return;
+        playerJustTeleported = true;
     }
 
     private void SettingsManager_OnAutoSwitchLightGunChanged(object sender, EventArgs e) {
@@ -168,14 +190,6 @@ public class GunSpotLight : MonoBehaviour
         OnAnyLightSwitched?.Invoke(this, EventArgs.Empty);
     }
 
-    private void Update() {
-        if (rolling) return;
-
-        float angle = gunVisualTransform.rotation.eulerAngles.z;
-        gunSpotLightTransform.eulerAngles = new Vector3(0, 0, angle - 90);
-
-    }
-
     private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
 
@@ -202,5 +216,6 @@ public class GunSpotLight : MonoBehaviour
         GameInput.Instance.OnPlayerGunLightSwitch -= GameInput_OnPlayerGunLightSwitch;
         Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
         Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
+        Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
     }
 }

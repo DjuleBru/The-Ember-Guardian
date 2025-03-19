@@ -58,8 +58,6 @@ public class LevelSO : ScriptableObject
     public int minSubwaveDifficulty;
     public int maxSubwaveDifficulty;
     public float growthFactor;
-    public float minWaveDuration;
-    public float maxWaveDuration;
     public int startWaveToSpawnFromBothSides;
     public bool canSpawnElite;
 
