@@ -5,7 +5,7 @@ using UnityEngine;
 public class WarmupShaders : MonoBehaviour
 {
     private void Awake() {
-        Shader myShader = Shader.Find("Packages/Pixel Graphics/Foliage/foliage_pixelart_shader");
+        Shader myShader = Shader.Find("PixelGraphics/Foliage/foliage_pixelart_shader");
         if (myShader != null) {
             Debug.Log("material found");
             Material mat = new Material(myShader);
@@ -14,5 +14,9 @@ public class WarmupShaders : MonoBehaviour
             Debug.Log("material not found");
         }
         //Shader.WarmupAllShaders();
+    }
+
+    private void Start() {
+        Camera.main.Render();
     }
 }

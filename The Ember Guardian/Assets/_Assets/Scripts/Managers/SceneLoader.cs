@@ -27,11 +27,13 @@ public class SceneLoader : MonoBehaviour
         Instance = this;
         transitionAnimator.speed = .5f;
         if(sceneType == SceneType.WarmupScene) {
-            SceneManager.LoadScene("MainMenu");
+            LoadMainMenu(0f);
+            Debug.Log("Load Main Menu Start");
         }
 
         StartCoroutine(RemoveBlackBackgroundAfterDelay(.1f));
     }
+
 
     public SceneType GetSceneType() {
         return sceneType;
@@ -71,7 +73,7 @@ public class SceneLoader : MonoBehaviour
 
         yield return new WaitForSeconds(crossfadeDuration + .2f);
 
-
+        Debug.Log("Load Main Menu");
         SceneManager.LoadScene(sceneName);
     }
 

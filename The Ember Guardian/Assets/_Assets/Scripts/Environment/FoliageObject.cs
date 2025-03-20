@@ -17,26 +17,26 @@ public class FoliageObject : MonoBehaviour
 
     private Material foliageMaterial;
     private Vector2 currentWindSpeed;
-
-    private void Start() {
-        if(foliageSprite != null) {
+    private void Awake() {
+        if (foliageSprite != null) {
             foliageMaterial = foliageSprite.material;
+
         }
-        if(foliageTilemap != null) {
+        if (foliageTilemap != null) {
             foliageMaterial = foliageTilemap.material;
         }
+    }
 
+    private void Start() {
         if(WindManager.Instance != null) {
             WindManager.Instance.OnWindStrengthChanged += WindManager_OnWindStrengthChanged;
             SetMaterialVariables();
         }
 
         if(overrideLevelWind) {
-            SetOverriddenMaterialVariables();
+            //SetOverriddenMaterialVariables();
         }
     }
-
-
     private void WindManager_OnWindStrengthChanged(object sender, System.EventArgs e) {
         SetMaterialVariables();
     }
@@ -57,7 +57,7 @@ public class FoliageObject : MonoBehaviour
     }
     private void SetOverriddenMaterialVariables() {
 
-       
+        Debug.Log("SetOverriddenMaterialVariables");
             float windStrengthRandomized = UnityEngine.Random.Range(overridenWindVelocityValue - overridenWindVelocityValue / 2, overridenWindVelocityValue + overridenWindVelocityValue / 2);
             foliageMaterial.SetFloat("Vector1_2d61041f8dfd46289cb8aafd27290417", windStrengthRandomized);
         

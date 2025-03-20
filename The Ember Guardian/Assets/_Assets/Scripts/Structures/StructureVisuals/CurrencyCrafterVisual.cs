@@ -11,6 +11,8 @@ public class CurrencyCrafterVisual : StructureVisual
     [SerializeField] private RectTransform currencyBarContainer;
     [SerializeField] private RectTransform currencyBarTemplate;
 
+    private Animator crafterAnimator;
+
     private bool craftingAmmo;
     private CurrencyCrafter ammoCrafter;
     private List<CurrencyCrafterVisual_CurrencyBarTemplate> currencyBarTemplateList = new List<CurrencyCrafterVisual_CurrencyBarTemplate>();
@@ -18,6 +20,7 @@ public class CurrencyCrafterVisual : StructureVisual
     protected override void Awake() {
         base.Awake();
         ammoCrafter = GetComponentInParent<CurrencyCrafter>();
+        crafterAnimator = GetComponent<Animator>();
     }
 
     protected override void Start() {
@@ -53,6 +56,10 @@ public class CurrencyCrafterVisual : StructureVisual
         RefreshCurrencyBarVisuals();
         HighlightStructureFunctionIcon(false);
 
+        if(crafterAnimator != null) {
+            crafterAnimator.ResetTrigger("Idle");
+            crafterAnimator.SetTrigger("Crafting");
+        }
         craftingAmmo = true;
     }
 
@@ -65,6 +72,10 @@ public class CurrencyCrafterVisual : StructureVisual
 
         HighlightStructureFunctionIcon(true);
 
+        if (crafterAnimator != null) {
+            crafterAnimator.ResetTrigger("Crafting");
+            crafterAnimator.SetTrigger("Idle");
+        }
     }
 
 
