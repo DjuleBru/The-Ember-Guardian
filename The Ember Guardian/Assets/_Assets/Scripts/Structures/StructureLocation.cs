@@ -16,7 +16,11 @@ public class StructureLocation : MonoBehaviour {
     public event EventHandler OnPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
     public event EventHandler OnStructureLocationUnlocked;
-    public static event EventHandler OnAnyStructureBuilt;
+    public static event EventHandler<OnAnyStructureBuiltEventArgs> OnAnyStructureBuilt;
+
+    public class OnAnyStructureBuiltEventArgs : EventArgs {
+        public Structure structureBuilt;
+    }
 
     protected bool structureLocationUnlocked;
     protected bool playerInTriggerArea;
@@ -47,7 +51,9 @@ public class StructureLocation : MonoBehaviour {
     public virtual Structure BuildStructure() {
 
         Structure structure = Instantiate(structureSOToBuild.structurePrefab, transform.position, Quaternion.identity).GetComponent<Structure>();
-        OnAnyStructureBuilt?.Invoke(this, EventArgs.Empty);
+        OnAnyStructureBuilt?.Invoke(this, new OnAnyStructureBuiltEventArgs {
+            structureBuilt = structure
+        });
 
         StartCoroutine(DestroyGameObjectAfterFrame());
         return structure;
@@ -107,8 +113,11 @@ public class StructureLocation : MonoBehaviour {
     public bool GetStructureLocationUnlocked() {
         return structureLocationUnlocked;
     }
-    public void InvokeOnAnyStructureBuilt() {
-        OnAnyStructureBuilt?.Invoke(this, EventArgs.Empty);
+
+    public void InvokeOnAnyStructureBuilt(Structure structure) {
+        OnAnyStructureBuilt?.Invoke(this, new OnAnyStructureBuiltEventArgs {
+            structureBuilt = structure
+        });
     }
 
     protected void InitializeOrbTemplateList() {

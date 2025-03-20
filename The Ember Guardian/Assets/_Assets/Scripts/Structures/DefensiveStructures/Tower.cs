@@ -38,6 +38,15 @@ public class Tower : Structure
         level1TowerCollider.SetActive(true);
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+        Worker.OnAnyWorkerDied += Worker_OnAnyWorkerDied;
+    }
+
+    private void Worker_OnAnyWorkerDied(object sender, EventArgs e) {
+        Worker worker = (Worker)sender;
+
+        if(assignedWorkersList.Contains(worker)) {
+            assignedWorkersList.Remove(worker);
+        }
     }
 
     protected override void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
@@ -57,6 +66,7 @@ public class Tower : Structure
             Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
         }
     }
+
     protected override void OnTriggerExit2D(Collider2D collision) {
         base.OnTriggerExit2D(collision);
         if ((collision.gameObject.GetComponent<Player>() != null)) {
@@ -195,6 +205,10 @@ public class Tower : Structure
         Player.Instance.transform.position = garrisonPosition;
         OnPlayerClimbedOnAnyTower?.Invoke(this, EventArgs.Empty);
         OnPlayerClimbedOnTower?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void OnDestroy() {
+        Worker.OnAnyWorkerDied -= Worker_OnAnyWorkerDied;
     }
 
 }

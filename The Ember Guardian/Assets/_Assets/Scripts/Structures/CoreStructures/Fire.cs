@@ -34,6 +34,7 @@ public class Fire : Structure, IDamageable {
     private FireOrbCollider fireOrbCollider;
     private bool initialFireLit;
     private bool emberExtracted;
+    private bool emberExtractionDisabled;
     private float fuelLevel;
     private float damageToFuelConversionRate = 5f;
 
@@ -298,6 +299,7 @@ public class Fire : Structure, IDamageable {
     }
 
     private void CheckFireSecondaryFunctionInteractable() {
+        if (emberExtractionDisabled) return;
         if (emberExtracted)return;
         if (extractingEmber) return;
         if (lockFireInteractionFunctionsUpdate) return;
@@ -536,10 +538,13 @@ public class Fire : Structure, IDamageable {
     }
 
     public void SetHubFireEmberExtractable() {
-        Debug.Log("SetHubFireEmberExtractable");
         SetStructureSecondaryFunctionUnlocked(true);
         ActivateStructureSecondaryFunctionInteraction(true);
         SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);
+    }
+
+    public void DisableEmberExtraction() {
+        emberExtractionDisabled = true;
     }
 
     public Transform GetProjectileTarget() {

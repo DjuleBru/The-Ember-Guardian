@@ -47,9 +47,6 @@ public class VersioningManager : MonoBehaviour
 
         saveFileDeleted = ES3.Load(key, false);
 
-        Debug.Log("latestBuildSaved " + latestBuildSaved);
-        Debug.Log("saveFileDeleted " + saveFileDeleted);
-
         if (latestBuildSaved > latestCompatibleBuildVersion) return false;
         if (saveFileDeleted) return false;
 

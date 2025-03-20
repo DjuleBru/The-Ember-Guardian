@@ -119,8 +119,7 @@ public class LevelManager : MonoBehaviour
         }
 
         if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
-
-            if (DemoMainLevelManager.Instance != null) {
+            if (DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetDemoMainLevelTutorialCompleted()) {
 
                 // Demo level
                 endLevelPortal.transform.position = endLevelPortalPosition;

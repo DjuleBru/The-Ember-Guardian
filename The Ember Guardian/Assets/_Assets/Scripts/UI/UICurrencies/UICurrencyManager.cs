@@ -385,6 +385,18 @@ public class UICurrencyManager : MonoBehaviour
         //    currency.SetCurrencyRbMovable();
         //}
     }
+    public void RemoveAllCurrenciesFromBag() {
+        List<Currency_UI> currenciesInBagCopy = new List<Currency_UI>();
+
+        foreach (Currency_UI currency in currenciesInBag) {
+            currenciesInBagCopy.Add(currency);
+        }
+
+        foreach (Currency_UI currency in currenciesInBagCopy) {
+            RemoveCurrencyUIFromInventoryList(currency);
+            currency.DestroyCurrency();
+        }
+    }
 
     public void RemoveCurrencyUIFromInventoryList(Currency_UI currencyUI) {
         currenciesInBag.Remove(currencyUI);

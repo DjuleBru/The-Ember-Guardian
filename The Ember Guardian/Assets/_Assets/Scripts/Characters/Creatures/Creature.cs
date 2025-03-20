@@ -134,7 +134,11 @@ public class Creature : Mob
         }
 
         if(eliteCreature) {
-            EliteDropGems();
+            if(DemoMainLevelManager.Instance != null) {
+                DemoDropGems();
+            } else {
+                EliteDropGems();
+            }
         }
 
         OnCreatureDied?.Invoke(this, EventArgs.Empty);

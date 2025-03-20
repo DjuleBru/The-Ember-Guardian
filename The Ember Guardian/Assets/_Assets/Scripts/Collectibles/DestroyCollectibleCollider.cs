@@ -6,8 +6,14 @@ public class DestroyCollectibleCollider : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision) {
         Collectible collectible = collision.GetComponent<Collectible>();
+        Creature creature = collision.GetComponent<Creature>();
         if (collectible !=  null) {
             Destroy(collectible.gameObject);
+        }
+
+        if(creature != null) {
+            Destroy(creature.gameObject);
+            Debug.Log("Creature collided with destroy creature collider");
         }
     }
 }

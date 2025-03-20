@@ -25,12 +25,14 @@ public class BackgroundSoundsManager : MonoBehaviour
     private bool isTransitioning = false;
     private bool isInCavern = false;
     private bool initialStateSet;
+    private AudioSource currentAudioSourcePlaying;
 
     private float sfxVolume;
 
     private void Awake() {
         Instance = this;
     }
+
 
     private void Start() {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
@@ -42,15 +44,22 @@ public class BackgroundSoundsManager : MonoBehaviour
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
 
         // Assure-toi que les deux sources sont au volume initial
-        audioSource1.volume = audioClipVolume_Day;
+        audioSource1.volume = audioClipVolume_Day * sfxVolume;
         audioSource2.volume = 0.0f;
 
         audioSource1.clip = dayAudioClip;
         audioSource1.Play();
+        currentAudioSourcePlaying = audioSource1;
     }
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
+
+        float newVolume = sfxVolume * audioClipVolume_Day;
+        if (DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+            newVolume = sfxVolume * audioClipVolume_Night;
+        }
+        currentAudioSourcePlaying.volume = newVolume;
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
@@ -114,6 +123,8 @@ public class BackgroundSoundsManager : MonoBehaviour
         // Configure le nouveau clip sur la source inactive
         nextSource.clip = newClip;
         nextSource.Play();
+
+        currentAudioSourcePlaying = nextSource;
 
         // Démarre la transition
         StartCoroutine(Crossfade(activeSource, nextSource, volumeToReach));

@@ -6,7 +6,7 @@ using UnityEngine;
 public class StructureLocation_StartLevelFire : StructureLocation
 {
     public override Structure BuildStructure() {
-        InvokeOnAnyStructureBuilt();
+        InvokeOnAnyStructureBuilt(Fire.Instance);
         Fire.Instance.gameObject.SetActive(true);
         Fire.Instance.ActivateInitialFire();
 

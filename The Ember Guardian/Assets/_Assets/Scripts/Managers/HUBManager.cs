@@ -58,7 +58,6 @@ public class HUBManager : MonoBehaviour
             // Player loads game OR is coming back from level
 
             nextArrivalThroughPortal = MetaProgressionManager.Instance.GetNextHubArrivalThroughPortal();
-            Debug.Log("nextArrivalThroughPortal " + nextArrivalThroughPortal);
             if (!nextArrivalThroughPortal) {
                 // Player is not coming back from a level (ex. loading game)
 

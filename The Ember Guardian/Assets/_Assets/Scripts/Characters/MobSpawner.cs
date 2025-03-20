@@ -122,6 +122,13 @@ public class MobSpawner : MonoBehaviour
                 spawnPositionRandomized.y += yPositionRandomized;
             }
 
+            if(spawnPositionRandomized.x > LevelManager.Instance.GetMaxLevelLimitAbsolute()) {
+                spawnPositionRandomized.x = LevelManager.Instance.GetMaxLevelLimitAbsolute() - 10f;
+            }
+            if (spawnPositionRandomized.x < LevelManager.Instance.GetMinLevelLimitAbsolute()) {
+                spawnPositionRandomized.x = LevelManager.Instance.GetMinLevelLimitAbsolute() + 10f;
+            }
+
             Mob mob = Instantiate(mobPrefab, spawnPositionRandomized, Quaternion.identity).GetComponent<Mob>();
             mobSpawnedList.Add(mob);
             mob.SetMobSpawner(this);

@@ -285,13 +285,12 @@ public class MetaProgressionManager : MonoBehaviour
 
     public void SetHubMerchantItemUnlocked(string merchantItemSaveString, bool unlocked) {
         string key = merchantItemSaveString + "_Unlocked";
-        ES3.Save(key, true);
+        ES3.Save(key, unlocked);
     }
 
     public void SetHubMerchantItemBought(string merchantItemSaveString, bool bought) {
         string key = merchantItemSaveString + "_Bought";
-        Debug.Log("SetHubMerchantItemBought " + key);
-        ES3.Save(key, true);
+        ES3.Save(key, bought);
     }
 
     public void SetHubMerchantItemLevel(string merchantItemType, int level) {

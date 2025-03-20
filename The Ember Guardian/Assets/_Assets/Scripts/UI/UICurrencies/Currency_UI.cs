@@ -78,6 +78,10 @@ public class Currency_UI : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void DestroyCurrency() {
+        Destroy(gameObject);
+    }
+
     public bool GetMoving() {
         return movingOrb;
     }

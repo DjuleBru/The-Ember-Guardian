@@ -128,11 +128,19 @@ public class MainMenuUI : MonoBehaviour {
         yield return new WaitForSeconds(1f);
 
         if (VersioningManager.Instance.GetIsDemo()) {
-            if (MetaProgressionManager.Instance.tutorialComplete) {
-                SceneLoader.Instance.LoadHub(1f);
+            bool demoTutorialCompleted = MetaProgressionManager.Instance.tutorialComplete;
+            if (!demoTutorialCompleted) {
+                SceneLoader.Instance.LoadDemoIntro(2f);
             }
             else {
-                SceneLoader.Instance.LoadDemoIntro(2f);
+                bool playerLeftDemoInLevel = ES3.Load("playerLeftInLevel", false);
+
+                if(playerLeftDemoInLevel) {
+                    SceneLoader.Instance.LoadLastLevel(1f);
+                } else {
+                    SceneLoader.Instance.LoadHub(1f);
+                }
+
             }
 
         }

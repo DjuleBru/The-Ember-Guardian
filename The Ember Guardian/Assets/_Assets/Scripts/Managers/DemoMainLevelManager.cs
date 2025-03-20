@@ -8,13 +8,11 @@ public class DemoMainLevelManager : MonoBehaviour
     public static DemoMainLevelManager Instance;
 
     [SerializeField] private GameObject fireLocationIndicator;
-    [SerializeField] private GameObject hunterShrineIndicator;
-    [SerializeField] private GameObject ammoCrafterIndicator;
+    private GameObject hunterShrineIndicator;
+    private GameObject ammoCrafterIndicator;
 
     [SerializeField] private StructureLocation mainFireLocation;
     [SerializeField] private List<StructureLocation> defensiveStructureLocations;
-    [SerializeField] private Structure hunterShrine;
-    [SerializeField] private CurrencyCrafter ammoCrafter;
 
     private bool ammoCraftStarted;
     private bool animalDied;
@@ -35,8 +33,6 @@ public class DemoMainLevelManager : MonoBehaviour
         Instance = this;
 
         fireLocationIndicator.gameObject.SetActive(false);
-        hunterShrineIndicator.gameObject.SetActive(false);
-        ammoCrafterIndicator.gameObject.SetActive(false);
 
         demoMainLevelTutorialCompleted = ES3.Load("demoMainLevelTutorialCompleted", false);
         demoLevelCompleted = ES3.Load("demoLevelCompleted", false);
@@ -52,17 +48,9 @@ public class DemoMainLevelManager : MonoBehaviour
         VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
         Animal.OnAnyMobDied += Animal_OnAnyMobDied;
         Collectible.OnAnyCollectiblePickedUpByWorker += Collectible_OnAnyCollectiblePickedUpByWorker;
+        StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         mainFireLocation.OnPlayerTriggeredIn += MainFireLocation_OnPlayerTriggeredIn;
         mainFireLocation.OnPlayerTriggeredOut += MainFireLocation_OnPlayerTriggeredOut;
-
-        hunterShrine.OnPlayerTriggeredIn += HunterShrine_OnPlayerTriggeredIn;
-        hunterShrine.OnPlayerTriggeredOut += HunterShrine_OnPlayerTriggeredOut;
-
-        ammoCrafter.OnPlayerTriggeredIn += AmmoCrafter_OnPlayerTriggeredIn;
-        ammoCrafter.OnPlayerTriggeredOut += AmmoCrafter_OnPlayerTriggeredOut;
-        ammoCrafter.OnCurrencyCraftingStarted += AmmoCrafter_OnCurrencyCraftingStarted;
-        ammoCrafter.OnCurrencyCraftingEnded += AmmoCrafter_OnCurrencyCraftingEnded;
-        ammoCrafter.OnCurrencyInstantiated += AmmoCrafter_OnCurrencyInstantiated;
 
         Worker.OnAnyWorkerRecruited += Worker_OnAnyWorkerRecruited;
         Worker.OnAnyWorkerAssignedHunter += Worker_OnAnyWorkerAssignedHunter;
@@ -80,6 +68,36 @@ public class DemoMainLevelManager : MonoBehaviour
 
         if(demoLevelCompleted) {
             StartCoroutine(SetNightsToSurviveAfterDelay());
+        }
+    }
+
+    private void StructureLocation_OnAnyStructureBuilt(object sender, StructureLocation.OnAnyStructureBuiltEventArgs e) {
+        if (demoMainLevelTutorialCompleted) return;
+
+        if (e.structureBuilt.GetStructureSO().structureType == StructureSO.StructureType.ammoCrafter) {
+            CurrencyCrafter ammoCrafter = e.structureBuilt as CurrencyCrafter;
+
+            Debug.Log("ammoCrafter " + ammoCrafter);
+
+            ammoCrafter.OnPlayerTriggeredIn += AmmoCrafter_OnPlayerTriggeredIn;
+            ammoCrafter.OnPlayerTriggeredOut += AmmoCrafter_OnPlayerTriggeredOut;
+            ammoCrafter.OnCurrencyCraftingStarted += AmmoCrafter_OnCurrencyCraftingStarted;
+            ammoCrafter.OnCurrencyCraftingEnded += AmmoCrafter_OnCurrencyCraftingEnded;
+            ammoCrafter.OnCurrencyInstantiated += AmmoCrafter_OnCurrencyInstantiated;
+
+            ammoCrafterIndicator = ammoCrafter.GetVisualIndicator();
+            StartCoroutine(ActivateIndicatorAfterDelay(ammoCrafterIndicator, 4f));
+            Debug.Log("ammoCrafterIndicator " + ammoCrafterIndicator);
+        }
+        if (e.structureBuilt.GetStructureSO().structureType == StructureSO.StructureType.hunterShrine) {
+            Structure hunterShrine = e.structureBuilt;
+
+            Debug.Log("hunterShrine " + hunterShrine);
+            hunterShrine.OnPlayerTriggeredIn += HunterShrine_OnPlayerTriggeredIn;
+            hunterShrine.OnPlayerTriggeredOut += HunterShrine_OnPlayerTriggeredOut;
+
+            hunterShrineIndicator = hunterShrine.GetVisualIndicator();
+            Debug.Log("hunterShrineIndicator " + hunterShrineIndicator);
         }
     }
 
@@ -105,9 +123,6 @@ public class DemoMainLevelManager : MonoBehaviour
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FuelFire);
 
             StartCoroutine(StartSurviveNightsObjectiveAfterDelay());
-
-            demoMainLevelTutorialCompleted = true;
-            ES3.Save("demoMainLevelTutorialCompleted", true);
         };
 
         if (e.tipTypeShown == VideoTipSO.VideoTipType.Hunters) {
@@ -116,6 +131,8 @@ public class DemoMainLevelManager : MonoBehaviour
     }
 
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
+        Fire.Instance.DisableEmberExtraction();
+        Debug.Log("demoMainLevelTutorialCompleted " + demoMainLevelTutorialCompleted);
         if (demoMainLevelTutorialCompleted) return;
 
         List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveUIList = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
@@ -125,7 +142,11 @@ public class DemoMainLevelManager : MonoBehaviour
 
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveUIList);
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightMainFire);
-        StartCoroutine(ActivateIndicatorAfterDelay(ammoCrafterIndicator, 4f));
+        StartCoroutine(PauseDayNightCycleAfterDelay());
+    }
+    private IEnumerator PauseDayNightCycleAfterDelay() {
+        yield return new WaitForSeconds(.1f);
+        DayNightManager.Instance.SetCyclePaused(true);
     }
 
     private IEnumerator ActivateIndicatorAfterDelay(GameObject indicator, float delay) {
@@ -220,6 +241,8 @@ public class DemoMainLevelManager : MonoBehaviour
     }
 
     private void AmmoCrafter_OnCurrencyCraftingStarted(object sender, System.EventArgs e) {
+        Debug.Log("AmmoCrafter_OnCurrencyCraftingStarted " + demoMainLevelTutorialCompleted);
+        Debug.Log("AmmoCrafter_OnCurrencyCraftingStarted " + ammoCraftStarted);
         if (demoMainLevelTutorialCompleted) return;
         if (ammoCraftStarted) return;
 
@@ -276,9 +299,12 @@ public class DemoMainLevelManager : MonoBehaviour
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
         
         foreach (StructureLocation structureLocation in defensiveStructureLocations) {
-            structureLocation.gameObject.SetActive(false);
+            structureLocation.gameObject.SetActive(true);
         }
 
+
+        demoMainLevelTutorialCompleted = true;
+        ES3.Save("demoMainLevelTutorialCompleted", true);
     }
 
     public bool GetDemoMainLevelTutorialCompleted() {
@@ -305,5 +331,6 @@ public class DemoMainLevelManager : MonoBehaviour
         Worker.OnAnyWorkerAssignedHunter -= Worker_OnAnyWorkerAssignedHunter;
         Worker.OnAnyOrbDroppedByWorker -= Worker_OnAnyOrbDroppedByWorker;
         Animal.OnAnyMobDied -= Animal_OnAnyMobDied;
+        StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
     }
 }

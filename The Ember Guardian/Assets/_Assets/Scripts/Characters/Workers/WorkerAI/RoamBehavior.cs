@@ -12,10 +12,16 @@ public static class RoamBehavior
         if (Mathf.Abs(mobMovement.transform.position.x - targetDestination.x) < .1f) {
 
             float randomRoamPointX = Random.Range(point.x - roamRadius, point.x + roamRadius);
-            float randomRoamPointY = Random.Range(point.y - roamRadius, point.y + roamRadius);
 
             Vector3 randomMoveTarget = new Vector3(randomRoamPointX, 0, 0);
+
             if (flying) {
+                Creature creature = mobMovement.GetComponent<Creature>();
+                float minFlightAltitude = creature.GetCreatureSO().flightMinAltitude;
+                float maxFlightAltitude = creature.GetCreatureSO().flightMaxAltitude;
+
+                float randomRoamPointY = Random.Range(minFlightAltitude, maxFlightAltitude);
+
                 randomMoveTarget.y = Mathf.Abs(randomRoamPointY);
             }
 

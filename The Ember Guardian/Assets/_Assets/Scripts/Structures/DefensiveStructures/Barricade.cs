@@ -12,6 +12,17 @@ public class Barricade : Structure, IDamageable {
     [SerializeField] private Collider2D barricadeColliderLevel3;
     [SerializeField] private Collider2D barricadeColliderLevel4;
     [SerializeField] private BarricadeVisual barricadeVisual;
+
+    private BoxCollider2D triggerCollider;
+    [SerializeField] private float triggerColliderLevel1SizeY;
+    [SerializeField] private float triggerColliderLevel1OffsetY;
+    [SerializeField] private float triggerColliderLevel2SizeY;
+    [SerializeField] private float triggerColliderLevel2OffsetY;
+    [SerializeField] private float triggerColliderLevel3SizeY;
+    [SerializeField] private float triggerColliderLevel3OffsetY;
+    [SerializeField] private float triggerColliderLevel4SizeY;
+    [SerializeField] private float triggerColliderLevel4OffsetY;
+
     private Collider2D currentBarricadeCollider;
 
     private int level1Health = 24;
@@ -36,6 +47,7 @@ public class Barricade : Structure, IDamageable {
 
     protected override void Start() {
         base.Start();
+        triggerCollider = GetComponent<BoxCollider2D>();
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
 
@@ -80,9 +92,15 @@ public class Barricade : Structure, IDamageable {
     protected override void UpgradeStructure() {
         base.UpgradeStructure();
 
-        if(structureLevel == 2) {
+        Vector2 triggerColliderOffset = new Vector2(0, 0);
+        Vector2 triggerColliderSize = new Vector2(1.7f, 0);
+
+        if (structureLevel == 2) {
             barricadeMaxHealth = level2Health;
             barricadeHealth = level2Health;
+
+            triggerColliderOffset.y = triggerColliderLevel2OffsetY;
+            triggerColliderSize.y = triggerColliderLevel2SizeY;
 
             ActivateCollider(barricadeColliderLevel2);
         }
@@ -90,14 +108,24 @@ public class Barricade : Structure, IDamageable {
             barricadeMaxHealth = level3Health;
             barricadeHealth = level3Health;
 
+            triggerColliderOffset.y = triggerColliderLevel3OffsetY;
+            triggerColliderSize.y = triggerColliderLevel3SizeY;
+
             ActivateCollider(barricadeColliderLevel3);
 
         }
         if (structureLevel == 4) {
             barricadeMaxHealth = level4Health;
             barricadeHealth = level4Health;
+
+            triggerColliderOffset.y = triggerColliderLevel4OffsetY;
+            triggerColliderSize.y = triggerColliderLevel4SizeY;
+
             ActivateCollider(barricadeColliderLevel4);
         }
+
+        triggerCollider.offset = triggerColliderOffset;
+        triggerCollider.size = triggerColliderSize;
     }
 
     private void ActivateCollider(Collider2D collider) {

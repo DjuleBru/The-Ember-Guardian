@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -21,11 +22,14 @@ public class SoundManager : MonoBehaviour
         audioSource2D = GetComponent<AudioSource>();
         audioSource2D.spatialBlend = 0;
         audioSource2D.ignoreListenerPause = true;
+        AudioListener.volume = 1;
     }
 
     private void Start() {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
         SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+        SceneLoader.Instance.OnSceneFadeOut += SceneLoader_OnSceneFadeOut;
+        SceneLoader.Instance.OnSceneFadeIn += SceneLoader_OnSceneFadeIn;
 
         if (Player.Instance != null) {
             Player.Instance.OnPlayerBackToTentToRespawn += Player_OnPlayerBackToTentToRespawn;
@@ -143,9 +147,41 @@ public class SoundManager : MonoBehaviour
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine += HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
     }
 
+    private void SceneLoader_OnSceneFadeIn(object sender, System.EventArgs e) {
+        StartCoroutine(FadeInVolume(1f));
+    }
+
+    private void SceneLoader_OnSceneFadeOut(object sender, SceneLoader.OnSceneFadeOutEventArgs e) {
+        StartCoroutine(FadeOutAllSounds(e.fadeOutTime));
+    }
+
+    private IEnumerator FadeOutAllSounds(float fadeDuration) {
+        float timer = 0f;
+        float initialVolume = AudioListener.volume;
+
+        while (timer < fadeDuration) {
+            timer += Time.deltaTime;
+            float alpha = timer / fadeDuration;
+            AudioListener.volume = Mathf.Lerp(initialVolume, 0f, alpha); // Diminue le volume
+            yield return null;
+        }
+    }
+
+    private IEnumerator FadeInVolume(float duration) {
+        float timer = 0f;
+        AudioListener.volume = 0f; // Assure que le volume commence à 0
+
+        while (timer < duration) {
+            timer += Time.deltaTime;
+            AudioListener.volume = Mathf.Lerp(0f, 1, timer / duration);
+            yield return null;
+        }
+
+        AudioListener.volume = 1; // S'assure que le volume est bien à 1
+    }
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
-
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
     }
 
 

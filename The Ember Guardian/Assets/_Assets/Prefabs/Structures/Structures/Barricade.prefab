@@ -6325,8 +6325,16 @@ PrefabInstance:
       value: 1.6953881
       objectReference: {fileID: 0}
     - target: {fileID: 7506368512435722411, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_Size.y
+      value: 1.6576502
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506368512435722411, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_Offset.x
-      value: 0.0021241605
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506368512435722411, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.06382668
       objectReference: {fileID: 0}
     - target: {fileID: 7568772629749081072, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_Layer
@@ -6513,6 +6521,14 @@ MonoBehaviour:
   barricadeColliderLevel3: {fileID: 968139435826465069}
   barricadeColliderLevel4: {fileID: 2769509388412155974}
   barricadeVisual: {fileID: 3266655211316952943}
+  triggerColliderLevel1SizeY: 1.7
+  triggerColliderLevel1OffsetY: 0.1
+  triggerColliderLevel2SizeY: 2.4
+  triggerColliderLevel2OffsetY: 0.4
+  triggerColliderLevel3SizeY: 2.86
+  triggerColliderLevel3OffsetY: 0.6
+  triggerColliderLevel4SizeY: 3.25
+  triggerColliderLevel4OffsetY: 0.86
 --- !u!4 &4039759338917417633 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2097073961957946881, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}

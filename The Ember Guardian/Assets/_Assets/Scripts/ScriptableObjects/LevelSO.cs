@@ -55,9 +55,12 @@ public class LevelSO : ScriptableObject
     public List<RainManager.RainIntensity> rainIntensitiesAllowedInLevel;
 
     public int baseDifficulty;
+    public int intialMinSubwaveDifficulty;
     public int minSubwaveDifficulty;
+    public int intialMaxSubwaveDifficulty;
     public int maxSubwaveDifficulty;
     public float growthFactor;
+    public float minMaxSubwaveDifficultyGrowthFactor;
     public int startWaveToSpawnFromBothSides;
     public bool canSpawnElite;
 

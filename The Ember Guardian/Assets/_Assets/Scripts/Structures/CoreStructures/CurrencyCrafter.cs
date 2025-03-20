@@ -44,7 +44,7 @@ public class CurrencyCrafter : Structure
 
     protected override void TriggerStructurePrimaryFunction() {
         if(!craftedCurrency) {
-
+            Debug.Log("TriggerStructurePrimaryFunction");
             craftingCurrency = true;
             currencyCraftTimer = currencyCraftTime;
             OnCurrencyCraftingStarted?.Invoke(this, EventArgs.Empty);

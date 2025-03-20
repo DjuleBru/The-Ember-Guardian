@@ -320,4 +320,15 @@ public class HubMerchantItem : MonoBehaviour
         }
 
     }
+
+    public void ResetItemStatus() {
+        MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), false);
+        if (itemUpgradeable) {
+            MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), 0);
+        }
+        MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType(), false);
+        if (itemEquipable) {
+            MetaProgressionManager.Instance.SetHubMerchantItemEquipped(GetItemType(), false);
+        }
+    }
 }

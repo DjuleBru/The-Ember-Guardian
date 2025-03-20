@@ -36,7 +36,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6ec8f56b2140a3249a41079473391352, type: 2}
   - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
   - {fileID: 11400000, guid: 29297a3282fe9054f9962e82d701d013, type: 2}
-  totalDayCreatureDifficulty: 400
+  totalDayCreatureDifficulty: 500
   isNewEnvironmentDiscoveryLevel: 0
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
   linkedSceneName: DemoLevel_Main
@@ -50,9 +50,12 @@ MonoBehaviour:
   initialRainIntensity: 0
   rainIntensitiesAllowedInLevel: 
   baseDifficulty: 20
+  intialMinSubwaveDifficulty: 10
   minSubwaveDifficulty: 10
+  intialMaxSubwaveDifficulty: 20
   maxSubwaveDifficulty: 50
   growthFactor: 1.6
+  minMaxSubwaveDifficultyGrowthFactor: 1.3
   startWaveToSpawnFromBothSides: 2
   canSpawnElite: 1
   levelAudioClips:

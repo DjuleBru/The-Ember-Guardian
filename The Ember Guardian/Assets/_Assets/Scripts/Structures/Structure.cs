@@ -9,6 +9,7 @@ public class Structure : MonoBehaviour {
     [SerializeField] protected bool upgradeUnlocked;
     [SerializeField] protected bool primaryFunctionUnlocked;
     [SerializeField] protected bool secondaryFunctionUnlocked;
+    [SerializeField] protected GameObject visualIndicator;
     protected bool upgradable;
 
     private CampZoneManager.CampSide campSide;
@@ -337,6 +338,10 @@ public class Structure : MonoBehaviour {
 
     public void InvokeOnStructureUpgraded() {
         OnStructureUpgraded?.Invoke(this, EventArgs.Empty);
+    }
+
+    public GameObject GetVisualIndicator() {
+        return visualIndicator;
     }
 
     #endregion

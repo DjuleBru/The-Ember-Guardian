@@ -30,7 +30,7 @@ public class StructureLocation_Trap : StructureLocation {
 
         Structure_Trap trap = Instantiate(structureSOToBuild.structurePrefab, transform.position, Quaternion.identity).GetComponent<Structure_Trap>();
         trap.SetTrapStructureLocation(this);
-        InvokeOnAnyStructureBuilt();
+        InvokeOnAnyStructureBuilt(trap);
 
         trapLocationActive = false;
         gameObject.SetActive(false);

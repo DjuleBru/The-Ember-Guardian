@@ -14,6 +14,12 @@ public class DemoLevelIntroManager : MonoBehaviour {
     private bool ammoCollected;
     private bool playerReloaded;
 
+    public static DemoLevelIntroManager Instance;
+
+    private void Awake() {
+        Instance = this;
+    }
+
     private void Start() {
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
@@ -88,8 +94,8 @@ public class DemoLevelIntroManager : MonoBehaviour {
         LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.PrepareForNight);
 
         List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveTypes = new List<LevelUI_ObjectiveUI.SubObjectiveType> {
-            LevelUI_ObjectiveUI.SubObjectiveType.OpenChest,
             LevelUI_ObjectiveUI.SubObjectiveType.HeadBackToCamp,
+            LevelUI_ObjectiveUI.SubObjectiveType.OpenChest,
         };
 
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveTypes);

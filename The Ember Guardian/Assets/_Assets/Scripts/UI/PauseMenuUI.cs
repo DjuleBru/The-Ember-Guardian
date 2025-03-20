@@ -222,4 +222,16 @@ public class PauseMenuUI : MonoBehaviour
         GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
     }
+
+    private void OnApplicationQuit() {
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            ES3.Save("lastLevel", LevelManager.Instance.GetLevelSO().linkedSceneName);
+            ES3.Save("playerLeftInLevel", true);
+        }
+        else {
+            ES3.Save("playerLeftInLevel", false);
+        }
+
+        Debug.Log("OnApplicationQuit");
+    }
 }

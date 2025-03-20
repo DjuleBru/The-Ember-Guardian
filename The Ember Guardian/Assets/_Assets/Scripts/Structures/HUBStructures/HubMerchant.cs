@@ -320,6 +320,12 @@ public class HubMerchant : MonoBehaviour
         }
     }
 
-
+    public void ResetAllItemStatuses() {
+        foreach (HubMerchantItem merchantItem in hubMerchantItems) {
+            if(merchantItem.GetItemBought()) {
+                merchantItem.ResetItemStatus();
+            }
+        }
+    }
 
 }

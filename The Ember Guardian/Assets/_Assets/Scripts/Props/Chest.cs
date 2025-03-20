@@ -67,7 +67,6 @@ public class Chest : MonoBehaviour
     private void GameInput_OnPlayerInteractPerformed(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (chestOpened) return;
-        Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
 
         chestOpened = true;
         StartCoroutine(OpenChest());

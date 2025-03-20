@@ -6,7 +6,8 @@ public class WindParallaxTexture : MonoBehaviour
 {
 
     [SerializeField] private SpriteRenderer windTextureSprite;
-    private Material windTextureMaterial;
+    private Material windTextureMaterial; 
+    private float fadeDuration = 2f; // Durée totale du fade-in
 
     private void Start() {
         windTextureMaterial = windTextureSprite.material;
@@ -26,10 +27,34 @@ public class WindParallaxTexture : MonoBehaviour
 
         windTextureMaterial.SetFloat("_TextureScrollXSpeed", windStrength);
 
-        Color textureColor = Color.white;
-        textureColor.a = GetAlphaForWindTexture(currentWindStrength);
-        windTextureMaterial.SetColor("_Color", textureColor);
+
+        float targetAlpha = GetAlphaForWindTexture(currentWindStrength);
+
+        // Démarre une nouvelle coroutine pour le fade-in
+        StartCoroutine(FadeAlpha(targetAlpha));
     }
+
+    private IEnumerator FadeAlpha(float targetAlpha) {
+        Color textureColor = Color.white;
+        float startAlpha = windTextureMaterial.GetColor("_Color").a;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < fadeDuration) {
+            elapsedTime += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
+
+            textureColor.a = newAlpha;
+            windTextureMaterial.SetColor("_Color", textureColor);
+
+            yield return null; // Attendre la prochaine frame
+        }
+
+        // S'assure que l'alpha final est bien atteint
+        Color finalColor = windTextureMaterial.GetColor("_Color");
+        finalColor.a = targetAlpha;
+        windTextureMaterial.SetColor("_Color", finalColor);
+    }
+
 
     public float GetWindStrengthForWindTexture(WindManager.WindStrength windStrength) {
 

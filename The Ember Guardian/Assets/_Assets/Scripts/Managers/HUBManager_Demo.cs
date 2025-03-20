@@ -47,7 +47,6 @@ public class HUBManager_Demo : MonoBehaviour
     private void Awake() {
         // First demo hub encounter becomes true when player moves on teleporter
         firstDemoHubEncounter = ES3.Load("firstDemoHubEncounter", true);
-        Debug.Log("firstDemoHubEncounter " + firstDemoHubEncounter);
         demoLevelLostAmount = ES3.Load("demoLevelLostAmount", 0);
         demoLevelCompleted = ES3.Load("demoLevelCompleted", false);
         firstHubEnterWithDemoLevelCompleted = ES3.Load("firstHubEnterWithDemoLevelCompleted", true);
@@ -59,11 +58,14 @@ public class HUBManager_Demo : MonoBehaviour
 
     void Start() {
         if(firstDemoHubEncounter) {
+
             StartCoroutine(FirstHUBEnterCoroutine());
+
         } else {
             MusicManager.Instance.PlayMusicDelayed(3f);
 
-            if(demoLevelLostAmount == 1) {
+            if (demoLevelLostAmount == 1) {
+                // Player lost level once 
                 StartCoroutine(HandleFirstLevelDefeatHubEvolution());
             }
 
@@ -188,8 +190,10 @@ public class HUBManager_Demo : MonoBehaviour
     }
 
     private IEnumerator FirstHUBEnterCoroutine() {
+        UICurrencyManager.HubInventoryUI.RemoveAllCurrenciesFromBag();
 
         yield return new WaitForSeconds(5f);
+        gemMerchant.ResetAllItemStatuses();
 
         LevelUI_Locations.Instance.ShowLocationText("The Eternal Flame");
         MusicManager.Instance.PlayMusicDelayed(2f);

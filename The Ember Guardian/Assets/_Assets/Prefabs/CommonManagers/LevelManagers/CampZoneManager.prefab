@@ -136,7 +136,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3867eba9cc57b8d42be0fe5bf451a0a5, type: 2}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -264,7 +264,6 @@ GameObject:
   - component: {fileID: 5220997809497608557}
   - component: {fileID: 5312941949014842739}
   - component: {fileID: 4826353808942039036}
-  - component: {fileID: 7303817394409795629}
   m_Layer: 0
   m_Name: HuntingFlagCampDefined
   m_TagString: Untagged
@@ -401,23 +400,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.25, y: 3.125}
   m_EdgeRadius: 0
---- !u!114 &7303817394409795629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1614493663542539144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 106e04a9935d7ba47a19a5319f2254c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  foliageSprite: {fileID: 7737130088672569769}
-  softWindVelocityValue: 0.2
-  mediumWindVelocityValue: 0.5
-  strongWindVelocityValue: 1
-  extremeWindVelocityValue: 2
 --- !u!1 &3465302175469654895
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,7 +462,6 @@ GameObject:
   - component: {fileID: 8048096971733188098}
   - component: {fileID: 2491861184287317460}
   - component: {fileID: 355900231457319533}
-  - component: {fileID: 6779761752404923450}
   m_Layer: 0
   m_Name: HuntingFlagPlayerDefined
   m_TagString: Untagged
@@ -615,23 +596,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.25, y: 4.1424723}
   m_EdgeRadius: 0
---- !u!114 &6779761752404923450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4036762446505470608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 106e04a9935d7ba47a19a5319f2254c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  foliageSprite: {fileID: 3507587475674917156}
-  softWindVelocityValue: 0.2
-  mediumWindVelocityValue: 0.5
-  strongWindVelocityValue: 1
-  extremeWindVelocityValue: 2
 --- !u!1 &4488023270899843277
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,7 +608,6 @@ GameObject:
   - component: {fileID: 2479780810174375274}
   - component: {fileID: 5017604095216950418}
   - component: {fileID: 8929380417032720207}
-  - component: {fileID: 4476833556932225641}
   m_Layer: 0
   m_Name: HuntingFlagCampDefined
   m_TagString: Untagged
@@ -781,23 +744,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.25, y: 3.125}
   m_EdgeRadius: 0
---- !u!114 &4476833556932225641
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4488023270899843277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 106e04a9935d7ba47a19a5319f2254c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  foliageSprite: {fileID: 8021435433676642948}
-  softWindVelocityValue: 0.2
-  mediumWindVelocityValue: 0.5
-  strongWindVelocityValue: 1
-  extremeWindVelocityValue: 2
 --- !u!1 &4590692509574829906
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,7 +796,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3867eba9cc57b8d42be0fe5bf451a0a5, type: 2}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -894,7 +840,6 @@ GameObject:
   - component: {fileID: 7284935372241041155}
   - component: {fileID: 6097736992673863040}
   - component: {fileID: 8787495868249159229}
-  - component: {fileID: 6087645449797226371}
   m_Layer: 0
   m_Name: HuntingFlagPlayerDefined
   m_TagString: Untagged
@@ -1029,23 +974,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.25, y: 4.087675}
   m_EdgeRadius: 0
---- !u!114 &6087645449797226371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4979730557861279194}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 106e04a9935d7ba47a19a5319f2254c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  foliageSprite: {fileID: 1519455997103918938}
-  softWindVelocityValue: 0.2
-  mediumWindVelocityValue: 0.5
-  strongWindVelocityValue: 1
-  extremeWindVelocityValue: 2
 --- !u!1 &5151637022630529674
 GameObject:
   m_ObjectHideFlags: 0
@@ -1098,7 +1026,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3867eba9cc57b8d42be0fe5bf451a0a5, type: 2}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1412,7 +1340,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3867eba9cc57b8d42be0fe5bf451a0a5, type: 2}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
