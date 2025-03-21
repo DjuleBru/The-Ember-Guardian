@@ -28,6 +28,7 @@ public class Projectile : MonoBehaviour
     private Vector3 projectileStartPoint;
     private Vector3 projectileMoveDir;
 
+    private Vector3 nextPosition;
     private Vector3 trajectoryEndPointRandomized;
 
     private float trajectoryMaxRelativeHeight;
@@ -38,6 +39,7 @@ public class Projectile : MonoBehaviour
 
     private bool projectileHasHit;
     public event EventHandler OnProjectileHit;
+    public event EventHandler OnProjectileReset;
     public static event EventHandler OnAnyProjectileInstantiated;
     public static event EventHandler OnAnyProjectileHit;
 
@@ -50,7 +52,7 @@ public class Projectile : MonoBehaviour
     public void ActivateAndInitialize(Transform targetTransform, ProjectileSO projectileSO, Mob parentMob, int damage, Vector3 endPointRandomOffsetValue,  bool homingProjectile) {
 
         if(targetTransform == null) {
-            Destroy(gameObject);
+            ResetInObjectPool();
             return;
         }
 
@@ -137,7 +139,8 @@ public class Projectile : MonoBehaviour
 
         float nextPositionY = trajectoryStartPoint.y + nextYTrajectoryPosition + nextPositionYCorrectionAbsolute;
 
-        Vector3 nextPosition = new Vector3(nextPositionX, nextPositionY, 0);
+        nextPosition.x = nextPositionX;
+        nextPosition.y = nextPositionY;
 
         CalculateNewProjectileMoveSpeed(nextPositionXNormalized);
         projectileMoveDir = nextPosition - transform.position;
@@ -162,12 +165,12 @@ public class Projectile : MonoBehaviour
         OnProjectileHit?.Invoke(this, EventArgs.Empty);
         OnAnyProjectileHit?.Invoke(this, EventArgs.Empty);
 
-        StartCoroutine(DestroySelf(2f));
+        StartCoroutine(ResetInObjectPoolAfterDelay(2f));
     }
 
-    private IEnumerator DestroySelf(float delay) {
+    private IEnumerator ResetInObjectPoolAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
-        Destroy(gameObject);
+        ResetInObjectPool();
     }
 
     public Vector2 GetTrajectoryEndPoint() {
@@ -218,7 +221,6 @@ public class Projectile : MonoBehaviour
 
             ProjectileHasHit(true);
             mobHit.TakeDamage(damage, parentMob.transform, false);
-            transform.parent = mobHit.GetProjectileParent();
             return;
         }
     }
@@ -229,12 +231,25 @@ public class Projectile : MonoBehaviour
 
     private void MobHit_OnMobDied(object sender, EventArgs e) {
 
-        mobHit.OnMobDied -= MobHit_OnMobDied;
-        Destroy(gameObject);
+        if(mobHit != null) {
+            mobHit.OnMobDied -= MobHit_OnMobDied;
+        }
+
+        ResetInObjectPool();
 
     }
 
+    private void ResetInObjectPool() {
+        OnProjectileReset?.Invoke(this, EventArgs.Empty);
+        projectileHasHit = false;
+        gameObject.SetActive(false);
+        parentMob.GetComponent<MobAttack>().ResetProjectileInObjectPool(this);
+    }
+
+
     private void OnDestroy() {
+
+        Debug.Log("projectile destroyed " + this + " parentMob " + parentMob);
         if(mobHit != null) {
             mobHit.OnMobDied -= MobHit_OnMobDied;
         }

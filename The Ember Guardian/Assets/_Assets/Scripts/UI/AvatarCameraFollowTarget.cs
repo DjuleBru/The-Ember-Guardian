@@ -14,4 +14,5 @@ public class AvatarCameraFollowTarget : MonoBehaviour
         Vector3 newPosition = new Vector3(xDelta + followTargetTransform.position.x, yPosition, - 10f);
         transform.position = newPosition;
     }
+
 }

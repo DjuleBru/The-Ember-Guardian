@@ -50,6 +50,7 @@ public class VideoTipManager_Demo : MonoBehaviour
 
         if (structure.GetStructureSO().structureType == StructureSO.StructureType.tent) {
             if (healTentTipShown) return;
+            if (Player.Instance.GetHP() == PlayerStats.Instance.GetMaxHP()) return;
             if (!DemoMainLevelManager.Instance.GetDemoMainLevelTutorialCompleted()) return;
 
             VideoTipUI.Instance.PlayTipSO(healTentTip, .3f);

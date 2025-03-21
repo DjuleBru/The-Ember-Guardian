@@ -12,7 +12,7 @@ public class DestroyCollectibleCollider : MonoBehaviour
         }
 
         if(creature != null) {
-            Destroy(creature.gameObject);
+            creature.Die();
             Debug.Log("Creature collided with destroy creature collider");
         }
     }

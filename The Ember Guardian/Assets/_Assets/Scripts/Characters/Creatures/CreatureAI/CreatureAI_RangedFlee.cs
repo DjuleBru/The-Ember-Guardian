@@ -9,6 +9,19 @@ public class CreatureAI_RangedFlee : CreatureAI
     protected override void Awake() {
         base.Awake();
         minAllowedDistanceFromPlayer = UnityEngine.Random.Range(minAllowedDistanceFromPlayer - minAllowedDistanceFromPlayer / 5, minAllowedDistanceFromPlayer + minAllowedDistanceFromPlayer / 5);
+
+        if(minAllowedDistanceFromPlayer >= minAttackRange) {
+            minAllowedDistanceFromPlayer -= minAttackRange/4f;
+        }
+    }
+
+    protected override void SetAttackRange() {
+
+        minAttackRange = creature.GetCreatureSO().minAttackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
+        maxAttackRange = creature.GetCreatureSO().maxAttackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
+        if (minAllowedDistanceFromPlayer >= minAttackRange) {
+            minAllowedDistanceFromPlayer -= minAttackRange / 4f;
+        }
     }
 
     protected override void HeadToTarget() {
@@ -18,14 +31,14 @@ public class CreatureAI_RangedFlee : CreatureAI
         float distanceToTargetX = Mathf.Abs(targetPosition.x - transform.position.x);
 
         bool isNight = DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night;
+
         if (isNight || distanceToTargetX > minAllowedDistanceFromPlayer) {
             // Head to target, attack
             creatureMovement.SetMoveTarget(targetPosition);
 
             if (attackTarget == Player.Instance.GetComponent<IDamageable>()) {
 
-                // Take in account player Y position for when he jumps over creatures
-                if (Mathf.Abs(transform.position.x - targetPosition.x) < minAttackRange) {
+                if (Mathf.Abs(distanceToTargetX) < minAttackRange) {
                     ChangeState(State.attacking);
                     return;
                 }

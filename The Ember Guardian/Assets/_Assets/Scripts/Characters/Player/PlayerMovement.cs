@@ -378,6 +378,12 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void HandleRunningAndExhaustion() {
+        // Handle run toggle : if move input = 0, stop running
+        if(!holdToRun) {
+            if(isRunning && GameInput.Instance.GetMovementFloatNormalized() == 0) {
+                StopRunning();
+            }
+        }
 
         if(isExhausted) {
             exhaustionTimer += Time.deltaTime;

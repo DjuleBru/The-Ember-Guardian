@@ -197,6 +197,7 @@ MonoBehaviour:
   mobPrefab: {fileID: 2100628709117196716, guid: 61fc72d8cc17be84eb6679397d2fd53c, type: 3}
   spawnPosition: {fileID: 590498446364819386}
   spawnPositionRandomizer: 0
+  radiusToRoamAround: 0
   mobAmountToSpawn: 1
   maxMobsRespawningAtDawn: 0
   isCreatureSpawner: 1
@@ -205,6 +206,7 @@ MonoBehaviour:
   canSpawnEliteCreatures: 0
   eliteSpawnProbability: 0
   eliteSpawnAmount: 0
+  linkedMobSpawner: {fileID: 0}
   spawnerHealth: 0
   spawnRate: 15
   spawnAnimationDelay: 0.5
@@ -449,6 +451,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.056797087
       objectReference: {fileID: 0}
+    - target: {fileID: 778059539140725066, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 795836368442943769, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Offset.x
       value: -0.09
@@ -520,6 +526,26 @@ PrefabInstance:
     - target: {fileID: 4244841716830965666, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.786
+      objectReference: {fileID: 0}
+    - target: {fileID: 5348768613547079162, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5348768613547079162, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5348768613547079162, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5348768613547079162, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 5348768613547079162, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.07
       objectReference: {fileID: 0}
     - target: {fileID: 5757064800425388701, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: creatureSO

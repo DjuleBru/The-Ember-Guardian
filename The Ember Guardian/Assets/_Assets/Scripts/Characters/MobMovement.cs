@@ -20,6 +20,7 @@ public class MobMovement : MonoBehaviour
 
     protected Rigidbody2D rb;
     protected Vector3 targetDestination;
+    protected Vector3 moveDirection;
     protected float moveDirFloat;
     protected float lastMoveDir;
     protected float moveSpeed;
@@ -33,6 +34,8 @@ public class MobMovement : MonoBehaviour
     protected bool readyToMoveAnimator = true;
     public event EventHandler OnDestinationReached;
     public event EventHandler OnDestinationSet;
+
+    protected bool showDestinationGyzmos;
 
     public event EventHandler<OnMoveSpeedBuffedEventArgs> OnMoveSpeedBuffChanged;
 
@@ -53,12 +56,17 @@ public class MobMovement : MonoBehaviour
         if(hadSpeedVariations) {
             StartCoroutine(AdjustSpeedOverTime());
         }
+
+        showDestinationGyzmos = DebugManager.Instance.GetShowMobDestinationGyzmos();
     }
 
     protected virtual void FixedUpdate() {
-        Vector3 debugLineOrigin = new Vector3(transform.position.x, transform.position.y + .5f, 0);
-        Vector3 debugLineDestination = new Vector3(targetDestination.x, targetDestination.y + .5f, 0);
-        Debug.DrawLine(debugLineOrigin, debugLineDestination, Color.yellow);
+
+        if(showDestinationGyzmos) {
+            Vector3 debugLineOrigin = new Vector3(transform.position.x, transform.position.y + .5f, 0);
+            Vector3 debugLineDestination = new Vector3(targetDestination.x, targetDestination.y + .5f, 0);
+            Debug.DrawLine(debugLineOrigin, debugLineDestination, Color.yellow);
+        }
 
         if (Mathf.Abs(targetDestination.x - transform.position.x) < .1f) {
             moveDirFloat = 0;
@@ -78,7 +86,7 @@ public class MobMovement : MonoBehaviour
     protected virtual void HandleMovementForces() {
         if (!readyToMoveAnimator) return;
 
-        Vector3 moveDirection = targetDestination - transform.position;
+        moveDirection = targetDestination - transform.position;
 
         if(moveDirection.x <0) {
             moveDirFloat = -1;

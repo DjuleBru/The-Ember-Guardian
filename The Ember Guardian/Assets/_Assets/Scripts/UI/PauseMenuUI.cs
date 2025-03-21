@@ -231,7 +231,5 @@ public class PauseMenuUI : MonoBehaviour
         else {
             ES3.Save("playerLeftInLevel", false);
         }
-
-        Debug.Log("OnApplicationQuit");
     }
 }

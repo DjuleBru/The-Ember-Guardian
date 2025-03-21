@@ -277,6 +277,9 @@ public class MusicManager : MonoBehaviour {
 
     private void PlayNextNightMusicSegment() {
         AudioClip nextClip = GetNightClipBasedOnRemainingCreatures();
+
+        Debug.Log("Night selected audio clip " + nextClip);
+
         AudioSource activeSource = isUsingAudioSourceA ? audioSourceA : audioSourceB;
         AudioClip currentAudioClipPlaying = activeSource.clip;
 
@@ -300,6 +303,7 @@ public class MusicManager : MonoBehaviour {
         }
         else
         {
+            Debug.Log("Next clip == current Audio Clip");
             StartCoroutine(WaitForClipToEnd(nextClip.length / 2));
         }
 
@@ -317,11 +321,11 @@ public class MusicManager : MonoBehaviour {
         int creaturesCloseToPlayerCamp = CreaturesManager.Instance.GetNightCreaturesCloseToPlayerCamp(15f);
         int creaturesInsidePlayerCamp = CreaturesManager.Instance.GetNightCreaturesCloseToPlayerCamp(0);
 
-
         AudioClip selectedAudioClip = activeSource.clip;
 
         if(fireDamageTakenRecently >= 3) {
             // fire just took a bunch of damage : player in deep ****
+            Debug.Log("fireDamageTakenRecently " + fireDamageTakenRecently);
             if (tensionLevelMusicPlaying == 4) {
                 selectedAudioClip = currentAudioClipPlaying;
             }

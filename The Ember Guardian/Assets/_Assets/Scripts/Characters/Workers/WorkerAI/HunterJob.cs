@@ -231,12 +231,9 @@ public class HunterJob : WorkerJob {
 
                     StayOutOfCreatureRange();
 
-                    if (!CheckBlockedByCreature()) {
-                        CheckClosestAnimal();
-                        if (targetAnimal != null) {
-                            ChangeState(HunterState.headingToHunt);
-                        }
-                        else {
+                    blockedByCreaturesTimer -= Time.deltaTime;
+                    if(blockedByCreaturesTimer < 0) {
+                        if (!CheckBlockedByCreature()) {
                             ChangeState(HunterState.idle);
                         }
                     }
@@ -797,6 +794,10 @@ public class HunterJob : WorkerJob {
 
         if(newState != HunterState.hunting && newState != HunterState.guarding) {
             workerAttack.RemoveAttackTarget();
+        }
+
+        if(newState == HunterState.blockedByCreatures) {
+            blockedByCreaturesTimer = blockedByCreaturesCooldown;
         }
 
         mobMovement.SetMoveTarget(targetDestination);

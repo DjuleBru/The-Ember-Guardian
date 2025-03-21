@@ -174,7 +174,6 @@ public class BarricadeVisual : StructureVisual {
     }
 
     public void SetAsOuterBarricade(bool outerBarricade) {
-        Debug.Log("SetAsOuterBarricade " + outerBarricade);
         this.outerBarricade = outerBarricade;
         if (!spotLightUnlocked) return;
         if (playerOverrideSpotLightControl) return;

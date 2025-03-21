@@ -9,6 +9,7 @@ public class CreatureVisual : MobVisual
 
     [SerializeField] private Material cleanMaterial;
     [SerializeField] private GameObject debuffedGameObject;
+    [SerializeField] private SpriteRenderer glowSpriteRenderer;
     [SerializeField] private ParticleSystem creatureElitePS;
 
     protected override void Awake() {
@@ -16,6 +17,7 @@ public class CreatureVisual : MobVisual
         creature = GetComponentInParent<Creature>();
         creature.OnMobDamageTaken += Creature_OnMobDamageTaken;
         creature.OnMobDied += Creature_OnMobDied;
+        glowSpriteRenderer.sortingOrder = currentMaxSortingOrder + 1;
     }
 
     private void Creature_OnMobDied(object sender, System.EventArgs e) {

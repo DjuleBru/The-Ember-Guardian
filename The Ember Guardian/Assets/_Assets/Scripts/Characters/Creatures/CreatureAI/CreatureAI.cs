@@ -62,7 +62,7 @@ public class CreatureAI : MonoBehaviour {
         SetAttackRange();
     }
 
-    private void SetAttackRange() {
+    protected virtual void SetAttackRange() {
 
         minAttackRange = creature.GetCreatureSO().minAttackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
         maxAttackRange = creature.GetCreatureSO().maxAttackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
@@ -297,9 +297,7 @@ public class CreatureAI : MonoBehaviour {
     }
 
     protected virtual void MoveTowardsFire() {
-        Vector3 targetDestination = new Vector3(0, 0, 0);
-
-        creatureMovement.SetMoveTarget(targetDestination);
+        creatureMovement.SetMoveTarget(Vector3.zero);
     }
 
     protected void MoveTowardsSpawner() {

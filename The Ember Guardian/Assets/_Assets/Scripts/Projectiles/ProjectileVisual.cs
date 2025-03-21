@@ -18,6 +18,27 @@ public class ProjectileVisual : MonoBehaviour
 
     private void Start() {
         projectile.OnProjectileHit += Projectile_OnProjectileHit;
+        projectile.OnProjectileReset += Projectile_OnProjectileReset;
+    }
+
+    private void Projectile_OnProjectileReset(object sender, System.EventArgs e) {
+        projectileHasHit = false;
+
+        if (projectileTrailPS != null) {
+            projectileTrailPS.Play();
+        }
+
+        if (projectileHitPS != null) {
+            projectileHitPS.Stop();
+        }
+
+        if (projectileAnimator != null) {
+            projectileAnimator.SetTrigger("Reset");
+            spriteRenderer.enabled = true;
+        }
+        else {
+            spriteRenderer.enabled = true;
+        }
     }
 
     private void Projectile_OnProjectileHit(object sender, System.EventArgs e) {
@@ -49,6 +70,7 @@ public class ProjectileVisual : MonoBehaviour
 
         transform.rotation = LookAtTarget(projectileDir);
     }
+
     private Quaternion LookAtTarget(Vector2 moveDir) {
         return Quaternion.Euler(0, 0, Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg);
     }

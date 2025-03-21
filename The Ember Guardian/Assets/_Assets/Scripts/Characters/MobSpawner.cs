@@ -20,6 +20,8 @@ public class MobSpawner : MonoBehaviour
     [SerializeField] protected bool canSpawnEliteCreatures;
     [SerializeField] protected float eliteSpawnProbability;
     [SerializeField] protected int eliteSpawnAmount;
+
+    [SerializeField] protected MobSpawner linkedMobSpawner;
     protected int eliteSpawnedAmount;
 
     protected List<Mob> mobSpawnedList = new List<Mob>();
@@ -39,9 +41,25 @@ public class MobSpawner : MonoBehaviour
             sceneViewSpawnerSpriteRenderer.enabled = false;
         }
 
+        if(linkedMobSpawner != null) {
+            linkedMobSpawner.OnAllMobRemoved += LinkedMobSpawner_OnAllMobRemoved;
+        }
+
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         if (blockSpawningOnStart) return;
         SpawnMobs(mobAmountToSpawn);
+    }
+
+    private void LinkedMobSpawner_OnAllMobRemoved(object sender, EventArgs e) {
+        List<Mob> mobListCopy = new List<Mob>();
+        foreach(Mob mob in mobSpawnedList) {
+            mobListCopy.Add(mob);
+        }
+
+        foreach (Mob mob in mobListCopy) {
+            RemoveMobFromMobSpawnedList(mob);
+            mob.Die();
+        }
     }
 
     public virtual void RemoveMobFromMobSpawnedList(Mob mob) {

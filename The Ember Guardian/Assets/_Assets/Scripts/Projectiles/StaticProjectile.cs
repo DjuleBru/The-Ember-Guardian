@@ -8,14 +8,18 @@ public class StaticProjectile : MonoBehaviour
     [SerializeField] private float projectileLifetime;
 
     private Mob parentMob;
+    private Animator staticProjectileAnimator;
     private float projectileLifetimer;
     private bool hasHit;
+    private bool projectileIsActive;
     private int damage;
+
 
     private void Update() {
         projectileLifetimer += Time.deltaTime;
-        if (projectileLifetimer > projectileLifetime) {
-            Destroy(gameObject);
+        if (projectileLifetimer > projectileLifetime && projectileIsActive) {
+            projectileIsActive = false;
+            ResetInProjectilePool();
         }
     }
 
@@ -57,5 +61,16 @@ public class StaticProjectile : MonoBehaviour
             localScale.x = -1f;
             transform.localScale = localScale;
         }
+
+        staticProjectileAnimator = GetComponent<Animator>();
+        staticProjectileAnimator.Play(staticProjectileAnimator.GetCurrentAnimatorStateInfo(0).fullPathHash, 0, 0f);
+        staticProjectileAnimator.Update(0); // Force une mise à jour immédiate
+    }
+
+    private void ResetInProjectilePool() {
+        parentMob.GetComponent<MobAttack>().ResetStaticProjectileInObjectPool(this);
+        gameObject.SetActive(false);
+        hasHit = false;
+        projectileIsActive = true;
     }
 }

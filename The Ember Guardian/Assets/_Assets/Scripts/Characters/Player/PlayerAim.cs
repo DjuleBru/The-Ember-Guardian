@@ -157,6 +157,9 @@ public class PlayerAim : MonoBehaviour
             CreatureAutoAimCollider autoAimCollider = enemy.gameObject.GetComponent<CreatureAutoAimCollider>();
             if (autoAimCollider == null) continue;
 
+            Creature creature = enemy.GetComponentInParent<Creature>();
+            if(creature.GetDead()) continue;
+
             directionToEnemy = (autoAimCollider.GetAutoAimPosition() - transform.position).normalized;
 
             // Calculer l'angle entre la direction de la visée et l'ennemi

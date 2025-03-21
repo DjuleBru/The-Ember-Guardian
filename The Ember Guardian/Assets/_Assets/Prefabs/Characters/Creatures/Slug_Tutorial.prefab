@@ -49,6 +49,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: f2b0625a0466a14478373c035d65f776, type: 2}
     - target: {fileID: 6184710609068459157, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: projectileAmountInPool
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184710609068459157, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: staticProjectilePrefab
       value: 
       objectReference: {fileID: 7991158393713654780, guid: a5ea1941e0688aa4fb8f9502aeee8c9d, type: 3}
@@ -100,6 +104,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 78e7cc4e4c29e2b4fb1862127415528d, type: 2}
+    - target: {fileID: 7409206551375934071, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7484656603021351616, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_IsActive
       value: 0

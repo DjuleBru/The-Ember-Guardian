@@ -127,6 +127,10 @@ public class DemoLevelIntroManager : MonoBehaviour {
         }
     }
 
+    public void ShowRunTooltip() {
+        PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltipInstruction("Hold", "To Run", InputControlIcons.Control.Run, 5f);
+    }
+
     private IEnumerator SetPlayerCurrenciesAfterDelay() {
         yield return new WaitForSeconds(.05f);
         PlayerShoot.Instance.SetGunAmmo(PlayerShoot.Instance.GetHeldGunSO(), 0);

@@ -23,7 +23,10 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool debugMode_DontShowVideoTip;
     [SerializeField] private bool debugMode_WindManager;
     [SerializeField] private bool debugMode_RainManager;
-    [SerializeField] private bool takeScreenshots;
+    [SerializeField] private bool disableCreatureDetection;
+    [SerializeField] private bool showMobDestinationGizmos;
+    [SerializeField] private bool takeScreenshotsContinuous;
+    [SerializeField] private bool takeScreenshotsOnKeyPressed;
 
     int i = 0;
     private float screenshotTakeTimer;
@@ -39,7 +42,7 @@ public class DebugManager : MonoBehaviour
             //HUBManager.Instance.SaveHub();
         }
 
-        if (takeScreenshots) {
+        if (takeScreenshotsContinuous) {
             screenshotTakeTimer -= Time.deltaTime;
             if (screenshotTakeTimer < 0) {
                 screenshotTakeTimer = screenshotTakeCooldown;
@@ -48,6 +51,16 @@ public class DebugManager : MonoBehaviour
                 ScreenCapture.CaptureScreenshot("screenshot_" + i + ".png");
                 Debug.Log("A screenshot was taken!");
             }
+        }
+
+        if (takeScreenshotsOnKeyPressed) {
+            if (Input.GetKeyDown(KeyCode.T)) {
+                i++;
+
+                ScreenCapture.CaptureScreenshot("screenshot_" + i + ".png") ;
+                Debug.Log("A screenshot was taken!");
+            }
+
         }
     }
 
@@ -114,5 +127,11 @@ public class DebugManager : MonoBehaviour
     public bool GetDebugMode_RainManager()
     {
         return debugMode_RainManager;
+    }
+    public bool GetDisableCreatureDetection() {
+        return disableCreatureDetection;
+    }
+    public bool GetShowMobDestinationGyzmos() {
+        return disableCreatureDetection;
     }
 }

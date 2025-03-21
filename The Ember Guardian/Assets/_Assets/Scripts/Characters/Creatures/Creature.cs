@@ -156,13 +156,13 @@ public class Creature : Mob
         List<PlayerCurrencies.CurrencyType> gemTypeDrop = new List<PlayerCurrencies.CurrencyType>();
         List<int> gemTypeAmountDrop = new List<int>();
 
-        int gemTypeDropped = UnityEngine.Random.Range(0, 2);
+        int gemTypeDropped = UnityEngine.Random.Range(0, 10);
 
-        if (gemTypeDropped == 0) {
+        if (gemTypeDropped <= 3) {
             gemTypeDrop.Add(PlayerCurrencies.CurrencyType.greenGem);
         }
 
-        if (gemTypeDropped == 1) {
+        if (gemTypeDropped > 3) {
             gemTypeDrop.Add(PlayerCurrencies.CurrencyType.redGem);
         }
 
@@ -400,6 +400,7 @@ public class Creature : Mob
     public float GetShockSlowAmount() {
         return shockedSlowAmount;
     }
+
     private void OnDestroy() {
         PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
         PlayerMovement.Instance.OnPlayerCrouched -= PlayerMovement_OnPlayerCrouched;

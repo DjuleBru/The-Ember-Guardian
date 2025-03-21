@@ -230,6 +230,7 @@ public class DemoMainLevelManager : MonoBehaviour
     private void UnlockFireInteractions() {
         Fire.Instance.SetFireInteractionsUpdateLocked(false);
         Fire.Instance.SetStructurePrimaryFunctionUnlocked(true);
+        Fire.Instance.DisableEmberExtraction();
     }
 
     private void AmmoCrafter_OnCurrencyCraftingEnded(object sender, System.EventArgs e) {

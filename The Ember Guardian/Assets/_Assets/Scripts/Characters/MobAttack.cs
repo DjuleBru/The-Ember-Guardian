@@ -19,6 +19,10 @@ public class MobAttack : MonoBehaviour
     [SerializeField] protected float attackAnimationDelay;
     [SerializeField] protected float totalAttackAnimationTime;
 
+    [SerializeField] protected int projectileAmountInPool;
+    protected Queue<Projectile> availableProjectiles = new Queue<Projectile>();
+    protected Queue<StaticProjectile> availableStaticProjectiles = new Queue<StaticProjectile>();
+
     protected Mob mob;
 
     protected float attackTimer;
@@ -39,6 +43,12 @@ public class MobAttack : MonoBehaviour
 
     protected virtual void Awake() {
         mob = GetComponent<Mob>();
+        if(isProjectileAttack) {
+            InitializeProjectilePool();
+        }
+        if (isStaticProjectileAttack) {
+            InitializeStaticProjectilePool();
+        }
     }
 
     protected void Update() {
@@ -84,10 +94,17 @@ public class MobAttack : MonoBehaviour
 
         if (previousAttackTargetIDamageable != null) {
 
-            Projectile projectile = Instantiate(projectileSO.projectilePrefab, projectileSpawnPoint.position, Quaternion.identity).GetComponent<Projectile>();
+            Projectile projectile = null;
+            if (availableProjectiles.Count > 0) {
+                projectile = availableProjectiles.Dequeue(); // Prendre un projectile disponible
+            } else {
+                projectile = AddNewProjectileInProjectilePool();
+            }
+
 
             Vector3 endPointRandomized = GetEndPointRandomized();
-
+            projectile.gameObject.SetActive(true);
+            projectile.transform.SetParent(null);
             projectile.ActivateAndInitialize(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, mob, attackDamage, endPointRandomized, homingProjectile);
         }
 
@@ -113,7 +130,16 @@ public class MobAttack : MonoBehaviour
                 spawnPosition.x += xRandomizer;
             }
 
-            StaticProjectile projectile = Instantiate(staticProjectilePrefab, spawnPosition, Quaternion.identity).GetComponent<StaticProjectile>();
+            StaticProjectile projectile = null;
+            if(availableStaticProjectiles.Count > 1) {
+                projectile = availableStaticProjectiles.Dequeue(); // Prendre un projectile disponible
+            } else {
+                projectile = AddNewStaticProjectileInProjectilePool();
+            }
+
+            projectile.gameObject.SetActive(true);
+            projectile.transform.SetParent(null);
+            projectile.transform.position = spawnPosition;
             projectile.Initialize(GetAttackDir().x, mob, attackDamage);
         }
 
@@ -140,6 +166,43 @@ public class MobAttack : MonoBehaviour
         yield return new WaitForSeconds(totalAttackAnimationTime);
         attackStarted = false;
     }
+
+    protected void InitializeProjectilePool() {
+        Transform projectilePrefab = projectileSO.projectilePrefab;
+
+        for (int i = 0; i < projectileAmountInPool; ++i) {
+            Projectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity, projectileSpawnPoint).GetComponent<Projectile>();
+            projectile.gameObject.SetActive(false);
+            availableProjectiles.Enqueue(projectile);
+        }
+    }
+    protected void InitializeStaticProjectilePool() {
+        Transform projectilePrefab = staticProjectilePrefab;
+
+        for (int i = 0; i < projectileAmountInPool; ++i) {
+            StaticProjectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity, projectileSpawnPoint).GetComponent<StaticProjectile>();
+            projectile.gameObject.SetActive(false);
+            availableStaticProjectiles.Enqueue(projectile);
+        }
+
+    }
+
+    protected Projectile AddNewProjectileInProjectilePool() {
+        Transform projectilePrefab = projectileSO.projectilePrefab;
+
+        Projectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity, projectileSpawnPoint).GetComponent<Projectile>();
+        projectile.gameObject.SetActive(false);
+        return projectile;
+    }
+
+    protected StaticProjectile AddNewStaticProjectileInProjectilePool() {
+        Transform projectilePrefab = staticProjectilePrefab;
+
+        StaticProjectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity, projectileSpawnPoint).GetComponent<StaticProjectile>();
+        projectile.gameObject.SetActive(false);
+        return projectile;
+    }
+
     public void DealDamage(bool ignoreTemporaryInvincibility) {
 
         if (attackTargetIDamageable != null) {
@@ -212,6 +275,19 @@ public class MobAttack : MonoBehaviour
 
     public void ResetDamageBuff() {
         attackDamage = initialAttackDamage;
+    }
+
+    public void ResetProjectileInObjectPool(Projectile projectile) {
+        projectile.transform.position = projectileSpawnPoint.position;
+        projectile.transform.SetParent(projectileSpawnPoint);
+        availableProjectiles.Enqueue(projectile); // Remettre le projectile dans la queue
+    }
+
+    public void ResetStaticProjectileInObjectPool(StaticProjectile projectile) {
+        Debug.Log("ResetStaticProjectileInObjectPool");
+        projectile.transform.position = projectileSpawnPoint.position;
+        projectile.transform.SetParent(projectileSpawnPoint);
+        availableStaticProjectiles.Enqueue(projectile); // Remettre le projectile dans la queue
     }
 
     public void InvokeAttackHit() {

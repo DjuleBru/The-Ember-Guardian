@@ -35,6 +35,7 @@ public class DayNightVisualsManager : MonoBehaviour
     [SerializeField] private float sunArcRadius = 5f;
     [SerializeField] private bool dontHandleMoonMovement;
     [SerializeField] private bool dontHandleSunMovement;
+    [SerializeField] private bool dontHandleMoonLight;
 
     private float nightDawnTransitionAnimationCurveFraction = .05f;
     private float dawnAnimationCurveFraction = .1f;
@@ -273,7 +274,10 @@ public class DayNightVisualsManager : MonoBehaviour
             skySpriteRenderer.color = ColorTransition(nightSkyColor, dawnSkyColor);
             globalLight2D.intensity = LightIntensityTransition(nightLightIntensity, dawnLightIntensity);
             sunLight2D.intensity = LightIntensityTransition(0, sunLightIntensity);
-            moonLight2D.intensity = LightIntensityTransition(moonLightIntensity, 0);
+
+            if(!dontHandleMoonLight) {
+                moonLight2D.intensity = LightIntensityTransition(moonLightIntensity, 0);
+            }
             return;
         }
 

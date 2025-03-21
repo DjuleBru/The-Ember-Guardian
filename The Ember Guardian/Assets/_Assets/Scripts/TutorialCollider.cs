@@ -17,6 +17,7 @@ public class TutorialCollider : MonoBehaviour
     [SerializeField] private bool isWorkerCampCollider;
     [SerializeField] private bool isWorkerCampCollider_Demo;
     [SerializeField] private bool isDogTipCollider;
+    [SerializeField] private bool isRunTipCollider;
 
     private Tutorial tutorial;
     private Collider2D tutorialCollider;
@@ -79,6 +80,11 @@ public class TutorialCollider : MonoBehaviour
         if (isWorkerCampCollider_Demo && !playerCollided) {
             playerCollided = true;
             DemoMainLevelManager.Instance.TryShowRecruitWorkerTooltip();
+        }
+
+        if (isRunTipCollider && !playerCollided) {
+            playerCollided = true;
+            DemoLevelIntroManager.Instance.ShowRunTooltip();
         }
     }
 
