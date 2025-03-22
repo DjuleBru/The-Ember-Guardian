@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e5e9af7df1aa1b41812c1ecb36dcace, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowDebugInputs_CreaturesSpawnManager: 0
+  allowDebugInputs_CreaturesSpawnManager: 1
   debugMode_DontSpawnWavesAtNight: 0
   allowDebugInputs_DayNightManager: 0
   allowDebugInputs_CurrencyUIManager: 0
@@ -62,5 +62,6 @@ MonoBehaviour:
   debugMode_WindManager: 0
   debugMode_RainManager: 0
   disableCreatureDetection: 0
+  showMobDestinationGizmos: 0
   takeScreenshotsContinuous: 0
   takeScreenshotsOnKeyPressed: 0

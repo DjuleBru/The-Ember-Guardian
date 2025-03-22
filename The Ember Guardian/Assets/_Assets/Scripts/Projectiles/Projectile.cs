@@ -170,7 +170,9 @@ public class Projectile : MonoBehaviour
 
     private IEnumerator ResetInObjectPoolAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
-        ResetInObjectPool();
+        if (parentMob != null) {
+            ResetInObjectPool();
+        }
     }
 
     public Vector2 GetTrajectoryEndPoint() {
@@ -248,8 +250,6 @@ public class Projectile : MonoBehaviour
 
 
     private void OnDestroy() {
-
-        Debug.Log("projectile destroyed " + this + " parentMob " + parentMob);
         if(mobHit != null) {
             mobHit.OnMobDied -= MobHit_OnMobDied;
         }

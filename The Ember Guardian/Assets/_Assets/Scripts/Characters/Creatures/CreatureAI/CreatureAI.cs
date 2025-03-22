@@ -30,7 +30,7 @@ public class CreatureAI : MonoBehaviour {
     protected float aggroTimer;
 
     protected float walkingToFireMoveSpeed = 3.5f;
-    protected float distanceToCampOrPlayerToSetStandardSpeed = 20f;
+    protected float distanceToCampOrPlayerToSetStandardSpeed = 25f;
 
     public event EventHandler OnCreatureAggro;
     public event EventHandler OnCreatureUntargetPlayer;

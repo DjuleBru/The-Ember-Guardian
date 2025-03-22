@@ -323,7 +323,7 @@ public class CreaturesSpawnManager : MonoBehaviour
             }
 
             // Attendre que toutes les créatures de cette subwave soient éliminées
-            yield return new WaitUntil(() => remainingSubWaveCreatures < 1);
+            yield return new WaitUntil(() => remainingSubWaveCreatures <= 3);
 
             subWaveIndex++;
         }

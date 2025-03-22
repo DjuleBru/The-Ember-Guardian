@@ -69,7 +69,6 @@ public class ButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPo
     #endregion
 
     public void InvokeOnAnyButtonPressed() {
-        Debug.Log(buttonSelected);
         if(buttonSelected == this) {
             OnAnyButtonPressed?.Invoke(this, EventArgs.Empty);
         } else {

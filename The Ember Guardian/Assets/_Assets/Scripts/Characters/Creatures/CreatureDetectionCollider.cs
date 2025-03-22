@@ -13,8 +13,8 @@ public class CreatureDetectionCollider : MonoBehaviour
     private bool playerShotCreature;
     private float playerShotCreatureTimer;
     private float playerShotCreatureAggroTime = 5f;
-    private float playerUnaggroTimer;
-    private float playerUnaggroTime = 5f;
+    private float unaggroTimer;
+    private float unaggroTime = 5f;
 
     private bool guardHitCreature;
     private float guardHitCreatureAggroProbability = .25f;
@@ -63,7 +63,7 @@ public class CreatureDetectionCollider : MonoBehaviour
             RefreshHighestPriorityTarget();
         }
 
-        HandlePlayerUnAggro();
+        HandleUnAggro();
         HandleGuardHitCreature();
     }
 
@@ -73,7 +73,7 @@ public class CreatureDetectionCollider : MonoBehaviour
 
         if (player != null) {
             AddIDamageableInDetectionRange(player);
-            playerUnaggroTimer = playerUnaggroTime;
+            unaggroTimer = unaggroTime;
         }
 
         // Barricade
@@ -95,6 +95,7 @@ public class CreatureDetectionCollider : MonoBehaviour
             if(worker.GetRecruited() && !(worker.GetStructureAssigned() is Tower)) {
                 worker.OnMobDied += Worker_OnMobDied;
                 AddIDamageableInDetectionRange(worker);
+                unaggroTimer = unaggroTime;
             }
         }
 
@@ -130,7 +131,7 @@ public class CreatureDetectionCollider : MonoBehaviour
 
     }
 
-    private void HandlePlayerUnAggro() {
+    private void HandleUnAggro() {
         if (playerShotCreature) {
             playerShotCreatureTimer -= Time.deltaTime;
             if (playerShotCreatureTimer <= 0) {
@@ -138,20 +139,32 @@ public class CreatureDetectionCollider : MonoBehaviour
             }
         }
 
-        if(iDamageablesInDetectionRange.Contains(Player.Instance)) {
+        if(creatureAI.GetAttackTarget() == Player.Instance as IDamageable) {
 
             bool playerIsFacingCreature = PlayerAim.Instance.GetAimDirFloat() * creatureMovement.GetLastMoveDirFloat() <= 0;
             if (playerIsFacingCreature) {
-                playerUnaggroTimer = playerUnaggroTime;
+                unaggroTimer = unaggroTime;
                 return;
             };
 
-            playerUnaggroTimer -= Time.deltaTime;
-            if(playerUnaggroTimer < 0) {
+            unaggroTimer -= Time.deltaTime;
+            if(unaggroTimer < 0) {
                 RemoveIDamageableInDetectionRange(Player.Instance);
             }
         }
+        if (creatureAI.GetAttackTarget() is Worker) {
+            Worker worker = creatureAI.GetAttackTarget() as Worker;
+            bool playerIsFacingWorker = worker.GetComponent<MobMovement>().GetMoveDirFloat() * creatureMovement.GetLastMoveDirFloat() <= 0;
+            if (playerIsFacingWorker) {
+                unaggroTimer = unaggroTime;
+                return;
+            };
 
+            unaggroTimer -= Time.deltaTime;
+            if (unaggroTimer < 0) {
+                RemoveIDamageableInDetectionRange(worker);
+            }
+        }
     }
 
     private void HandleGuardHitCreature() {

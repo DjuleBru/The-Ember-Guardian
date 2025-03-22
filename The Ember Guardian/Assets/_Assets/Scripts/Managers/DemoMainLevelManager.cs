@@ -177,12 +177,15 @@ public class DemoMainLevelManager : MonoBehaviour
     }
 
     private void Animal_OnAnyMobDied(object sender, EventArgs e) {
+        Mob mob = (Mob)sender;
+        if (!(mob is Animal)) return;
         animalDied = true;
     }
 
     private void Worker_OnAnyOrbDroppedByWorker(object sender, System.EventArgs e) {
         if (demoMainLevelTutorialCompleted) return;
         if (orbDroppedByWorker) return;
+        if (!animalDied) return;
 
         orbDroppedByWorker = true;
 
@@ -230,6 +233,7 @@ public class DemoMainLevelManager : MonoBehaviour
     private void UnlockFireInteractions() {
         Fire.Instance.SetFireInteractionsUpdateLocked(false);
         Fire.Instance.SetStructurePrimaryFunctionUnlocked(true);
+        Fire.Instance.SetStructureSecondaryFunctionUnlocked(false);
         Fire.Instance.DisableEmberExtraction();
     }
 
