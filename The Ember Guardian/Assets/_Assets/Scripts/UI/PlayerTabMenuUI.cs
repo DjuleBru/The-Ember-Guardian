@@ -35,6 +35,8 @@ public class PlayerTabMenuUI : MonoBehaviour
         HubMerchantUI.OnAnyHubMerchantCloseUIPanel += HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
         ChangeWeaponPanel.Instance.OnChangeWeaponPanelOpened += ChangeWeaponPanel_OnChangeWeaponPanelOpened;
         ChangeWeaponPanel.Instance.OnChangeWeaponPanelClosed += ChangeWeaponPanel_OnChangeWeaponPanelClosed;
+
+
     }
 
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {

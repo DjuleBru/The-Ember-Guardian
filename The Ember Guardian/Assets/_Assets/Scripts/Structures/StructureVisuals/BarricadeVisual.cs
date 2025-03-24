@@ -199,7 +199,6 @@ public class BarricadeVisual : StructureVisual {
         if (playerOverrideSpotLightControl) return;
         barricadeSpotLight.enabled = true;
         lightEnabled = true;
-        Debug.Log("Barricade_OnFireLightTriggeredOut");
     }
 
     private void Barricade_OnFireLightTriggeredIn(object sender, EventArgs e) {

@@ -29,6 +29,7 @@ public class MusicManager : MonoBehaviour {
     [SerializeField] private List<AudioClip> nightMusicTension3Loops;
     [SerializeField] private List<AudioClip> nightMusicTension4Loops;
     private Queue<AudioClip> nightMusicQueue = new Queue<AudioClip>();
+    private Coroutine nightCoroutine;
 
     [SerializeField] private AudioClip endLevelMusic;
     [SerializeField] private AudioClip discoverNewLocationMusic;
@@ -183,9 +184,12 @@ public class MusicManager : MonoBehaviour {
     private void DayNightManager_OnNightStart(object sender, EventArgs e) {
         if (!isLevelScene) return;
 
+        audioSourceA.loop = true;
+        audioSourceB.loop = true;
+        isPlayingNightMusic = true;
+
         StartCoroutine(PlayIntroNighMusicDelayed(2f));
 
-        isPlayingNightMusic = true;
         SetAudioTargerVolume(nightMusicAudioVolume);
         //StartCoroutine(FadeInDelayedCoroutine(3f, 4f));
     }
@@ -197,19 +201,6 @@ public class MusicManager : MonoBehaviour {
         peacefulTimer = 0;
         playMusicAttemptTimer = 0;
         FadeOutMusic(2f);
-    }
-
-    private void CreaturesManager_OnAllCreaturesAtNightKilled(object sender, EventArgs e) {
-        if (!isLevelScene) return;
-        audioSourceA.loop = false;
-
-        PlayNextNightMusicSegment(); // Jouer directement l'outro
-
-        StartCoroutine(FadeOutDelayedCoroutine(1f, 2f));
-        isDuskOrNight = false;
-        peacefulTimer = 0;
-        playMusicAttemptTimer = 0;
-        isPlayingNightMusic = false;
     }
 
     private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {
@@ -265,17 +256,49 @@ public class MusicManager : MonoBehaviour {
         }
     }
 
+    private void CreaturesManager_OnAllCreaturesAtNightKilled(object sender, EventArgs e) {
+        if (!isLevelScene) return;
+
+        audioSourceA.loop = false;
+        audioSourceB.loop = false;
+        StopCoroutine(nightCoroutine);
+
+        CrossfadeToNextNightClip(nightMusicOutro);
+
+        StartCoroutine(FadeOutDelayedCoroutine(5f, 2f));
+        isDuskOrNight = false;
+        peacefulTimer = 0;
+        playMusicAttemptTimer = 0;
+        isPlayingNightMusic = false;
+    }
+
     private IEnumerator PlayIntroNighMusicDelayed(float delay) {
         yield return new WaitForSeconds(delay);
         audioSourceA.clip = nightMusicIntro;
         isPlayingNightIntroMusic = true;
         audioSourceA.volume = nightMusicAudioVolume;
         audioSourceA.Play();
+        isUsingAudioSourceA = true;
 
         StartCoroutine(WaitForClipToEnd(nightMusicIntro.length));
     }
 
+    private void PlayFirstNightClip() {
+        AudioClip nextClip = nightMusicIntroLoop;
+        isPlayingNightIntroMusic = false;
+        audioSourceA.clip = nextClip;
+        audioSourceA.Play();
+        StartCoroutine(WaitForClipToEnd(nextClip.length));
+        return;
+    }
+
     private void PlayNextNightMusicSegment() {
+
+        if (isPlayingNightIntroMusic) {
+            PlayFirstNightClip();
+            return;
+        }
+
         AudioClip nextClip = GetNightClipBasedOnRemainingCreatures();
 
         Debug.Log("Night selected audio clip " + nextClip);
@@ -283,28 +306,18 @@ public class MusicManager : MonoBehaviour {
         AudioSource activeSource = isUsingAudioSourceA ? audioSourceA : audioSourceB;
         AudioClip currentAudioClipPlaying = activeSource.clip;
 
+
         if (nextClip != currentAudioClipPlaying) {
-            if (isPlayingNightIntroMusic) {
+            
+            CrossfadeToNextNightClip(nextClip);
+            nightCoroutine = StartCoroutine(WaitForClipToEnd(nextClip.length / 2));
 
-                nextClip = nightMusicIntroLoop;
-                isPlayingNightIntroMusic = false;
-                audioSourceA.clip = nextClip;
-                audioSourceA.Play();
-                StartCoroutine(WaitForClipToEnd(nextClip.length));
-
-            }
-            else {
-
-                CrossfadeToNextNightClip(nextClip);
-                StartCoroutine(WaitForClipToEnd(nextClip.length / 2));
-
-            }
            
         }
         else
         {
             Debug.Log("Next clip == current Audio Clip");
-            StartCoroutine(WaitForClipToEnd(nextClip.length / 2));
+            nightCoroutine = StartCoroutine(WaitForClipToEnd(nextClip.length / 2));
         }
 
     }
@@ -317,13 +330,15 @@ public class MusicManager : MonoBehaviour {
 
     public AudioClip GetNightClipBasedOnRemainingCreatures() {
         AudioSource activeSource = isUsingAudioSourceA ? audioSourceA : audioSourceB;
+
         AudioClip currentAudioClipPlaying = activeSource.clip;
         int creaturesCloseToPlayerCamp = CreaturesManager.Instance.GetNightCreaturesCloseToPlayerCamp(15f);
         int creaturesInsidePlayerCamp = CreaturesManager.Instance.GetNightCreaturesCloseToPlayerCamp(0);
 
         AudioClip selectedAudioClip = activeSource.clip;
 
-        if(fireDamageTakenRecently >= 3) {
+
+        if (fireDamageTakenRecently >= 3) {
             // fire just took a bunch of damage : player in deep ****
             Debug.Log("fireDamageTakenRecently " + fireDamageTakenRecently);
             if (tensionLevelMusicPlaying == 4) {
@@ -333,11 +348,12 @@ public class MusicManager : MonoBehaviour {
                 selectedAudioClip = nightMusicTension4Loops[UnityEngine.Random.Range(0, nightMusicTension4Loops.Count)];
             }
             tensionLevelMusicPlaying = 4;
-        }else if(creaturesInsidePlayerCamp != 0) {
+        }
+        else if (creaturesInsidePlayerCamp != 0) {
 
             if (creaturesInsidePlayerCamp < 5) {
                 // small amount of creatures inside player camp
-                if(creaturesCloseToPlayerCamp < 5) {
+                if (creaturesCloseToPlayerCamp < 5) {
                     // small amount of creatures outside player camp : probably end of subwave
                     if (tensionLevelMusicPlaying == 3) {
                         selectedAudioClip = currentAudioClipPlaying;
@@ -346,7 +362,8 @@ public class MusicManager : MonoBehaviour {
                         selectedAudioClip = nightMusicTension3Loops[UnityEngine.Random.Range(0, nightMusicTension3Loops.Count)];
                     }
                     tensionLevelMusicPlaying = 3;
-                } else {
+                }
+                else {
                     // big amount of creatures outside player camp : player in deep ****
                     if (tensionLevelMusicPlaying == 4) {
                         selectedAudioClip = currentAudioClipPlaying;
@@ -370,7 +387,8 @@ public class MusicManager : MonoBehaviour {
 
             }
 
-        } else {
+        }
+        else {
 
             if (creaturesCloseToPlayerCamp < 5) {
                 if (tensionLevelMusicPlaying == 1) {
@@ -412,6 +430,7 @@ public class MusicManager : MonoBehaviour {
                 tensionLevelMusicPlaying = 4;
             }
         }
+
 
         return selectedAudioClip;
     }
@@ -505,6 +524,8 @@ public class MusicManager : MonoBehaviour {
             audioSourceA.Stop(); // Arrêter la musique
             audioSourceB.Stop(); // Arrêter la musique
         }
+
+        isUsingAudioSourceA = !isUsingAudioSourceA;
     }
 
     private IEnumerator FadeInCoroutine(float fadeDuration, float initialVolume) {

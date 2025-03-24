@@ -644,8 +644,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8385513270722688418}
   m_HandleRect: {fileID: 1424134487310206145}
   m_Direction: 0
-  m_Value: -0.00000017101708
-  m_Size: 0.70891494
+  m_Value: -0.00000017101715
+  m_Size: 0.708915
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1684,8 +1684,7 @@ MonoBehaviour:
   yellowGemCost: 0
   purpleGemCost: 0
   description: A loose pile of crates, barely holding back the shadows.
-  unlockDescription: "Barricade crates : <b>3</b> \nCrate health : <b>4</b> \nBarricade
-    health : <b>12</b>"
+  unlockDescription: "Barricade crates : <b>3</b> \nBarricade health : <b>24</b>"
   itemLevel: 1
   maxItemLevel: 1
   isBoughtAtStart: 1
@@ -2142,10 +2141,8 @@ MonoBehaviour:
   description: Stacked higher with sturdier crates, offering improved defense.
   unlockDescription: 'Barricade crates : <b>4</b> (+1)
 
-    Crate health : <b>6</b>
-    (+2)
-
-    Total Barricade health : <b>24</b> (+12)'
+    Total Barricade health
+    : <b>32</b> (+8)'
   itemLevel: 2
   maxItemLevel: 2
   isBoughtAtStart: 0
@@ -3941,8 +3938,10 @@ MonoBehaviour:
   purpleGemCost: 5
   description: A cozy setup with a canopy and cooking corner, offering both comfort
     and resilience.
-  unlockDescription: Allows to upgrade your tent <b> Level 3 </b>, offering more
+  unlockDescription: 'Allows to upgrade your tent <b> Level 3 </b>, offering more
     space to expand your camp.
+
+    Unlocks a third defensive wall layer.'
   itemLevel: 3
   maxItemLevel: 1
   isBoughtAtStart: 0
@@ -5899,10 +5898,8 @@ MonoBehaviour:
     assaults.
   unlockDescription: 'Barricade crates : <b>5</b> (+1)
 
-    Crate health : <b>9</b>
-    (+2)
-
-    Total Barricade health : <b>45</b> (+21)'
+    Total Barricade health
+    : <b>40</b> (+8)'
   itemLevel: 3
   maxItemLevel: 1
   isBoughtAtStart: 0
@@ -6360,8 +6357,10 @@ MonoBehaviour:
   purpleGemCost: 2
   description: Now equipped with a tarp, it shields the camp better and provides
     improved recovery.
-  unlockDescription: Allows to upgrade your tent <b> Level 2 </b>, offering more
+  unlockDescription: 'Allows to upgrade your tent <b> Level 2 </b>, offering more
     space to expand your camp.
+
+    Unlocks a second defensive wall layer.'
   itemLevel: 2
   maxItemLevel: 2
   isBoughtAtStart: 0
@@ -6826,12 +6825,10 @@ MonoBehaviour:
   purpleGemCost: 0
   description: A towering blockade of reinforced crates, nearly impenetrable to any
     foe.
-  unlockDescription: 'Barricade crates : <b>7</b> (+1)
+  unlockDescription: 'Barricade crates : <b>7</b> (+2)
 
-    Crate health : <b>9</b>
-    (+2)
-
-    Total Barricade health : <b>64</b> (+19)'
+    Total Barricade health
+    : <b>56</b> (+16)'
   itemLevel: 4
   maxItemLevel: 1
   isBoughtAtStart: 0
@@ -7295,7 +7292,10 @@ MonoBehaviour:
   description: A shaky perch for trappers, providing basic vantage over the battlefield.
   unlockDescription: 'Trapper slots : <b>1</b>
 
-    Range increase : <b>25%</b>'
+    Range increase : <b>25%</b>
+
+    Damage
+    increase : <b>25%</b>'
   itemLevel: 1
   maxItemLevel: 1
   isBoughtAtStart: 1
@@ -7742,7 +7742,9 @@ MonoBehaviour:
   unlockDescription: 'Trapper slots : <b>3</b> (+1)
 
     Range increase : <b>100%</b>
-    (+25%)'
+    (+25%)
+
+    Damage increase : <b>100%</b> (+25%)'
   itemLevel: 4
   maxItemLevel: 1
   isBoughtAtStart: 0
@@ -9088,8 +9090,10 @@ MonoBehaviour:
   yellowGemCost: 7
   purpleGemCost: 7
   description: A thriving hub of the camp, fully equipped for restoration and morale.
-  unlockDescription: Allows to upgrade your tent <b> Level 4 </b>, offering more
+  unlockDescription: 'Allows to upgrade your tent <b> Level 4 </b>, offering more
     space to expand your camp.
+
+    Unlocks a fourth defensive wall layer.'
   itemLevel: 4
   maxItemLevel: 1
   isBoughtAtStart: 0
@@ -9534,8 +9538,10 @@ MonoBehaviour:
     and stability.
   unlockDescription: 'Trapper slots : <b>2</b> (+1)
 
-    Range increase : <b>75%</b> 
-    (+25%)'
+    Range increase : <b>50%</b>
+
+    Damage
+    increase : <b>50%</b>'
   itemLevel: 3
   maxItemLevel: 1
   isBoughtAtStart: 0
@@ -10011,7 +10017,10 @@ MonoBehaviour:
   description: Bolstered supports and height grant hunters better aim and coverage.
   unlockDescription: 'Trapper slots : <b>1</b>
 
-    Range increase : <b>50%</b> (+25%)'
+    Range increase : <b>50%</b> (+25%)
+
+    Damage
+    increase : <b>50%</b> (+25%)'
   itemLevel: 2
   maxItemLevel: 2
   isBoughtAtStart: 0

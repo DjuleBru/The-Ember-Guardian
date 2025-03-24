@@ -28,7 +28,7 @@ public class Tower : Structure
     private float level3DamageMultiplier = 1.5f;
     private float level4DamageMultiplier = 2f;
 
-    public event EventHandler OnHunterAssigned;
+    public event EventHandler OnHunterGarrisoned;
     public event EventHandler OnPlayerClimbedOnTower;
     public static event EventHandler OnPlayerClimbedOnAnyTower;
 
@@ -106,8 +106,11 @@ public class Tower : Structure
 
     public void AssignWorker(Worker worker) {
         assignedWorkersList.Add(worker);
+    }
+
+    public void GarrisonWorker(Worker worker) {
         SetWorkerGarrisonPosition(worker);
-        OnHunterAssigned?.Invoke(this, EventArgs.Empty);
+        OnHunterGarrisoned?.Invoke(this, EventArgs.Empty);
     }
 
     private void SetWorkerGarrisonPosition(Worker worker) {

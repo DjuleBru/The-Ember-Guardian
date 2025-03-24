@@ -23,6 +23,7 @@ MonoBehaviour:
   environmentType: 1
   levelObjectiveType: 11
   endLevelType: 11
+  talkToNpcAFterObjective: 0
   nightsToSurviveAmount: 0
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
@@ -30,6 +31,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b27e7bc56456c4540924d93c318c5c13, type: 2}
   - {fileID: 11400000, guid: 244beef41937f8c4aba25e62ec680226, type: 2}
   - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
+  isReplayableLevel: 0
+  dayCreatureTypes: []
+  totalDayCreatureDifficulty: 0
   isNewEnvironmentDiscoveryLevel: 0
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
   linkedSceneName: Level2_VerdantGraveyard
@@ -42,16 +46,15 @@ MonoBehaviour:
   hasRain: 0
   initialRainIntensity: 0
   rainIntensitiesAllowedInLevel: 
-  baseDifficulty: 150
+  baseDifficulty: 8
+  intialMinSubwaveDifficulty: 5
   minSubwaveDifficulty: 5
+  intialMaxSubwaveDifficulty: 10
   maxSubwaveDifficulty: 80
-  growthFactor: 1.6
-  minWaveDuration: 9
-  maxWaveDuration: 90
+  growthFactor: 1.2
+  minMaxSubwaveDifficultyGrowthFactor: 1
   startWaveToSpawnFromBothSides: 0
   canSpawnElite: 0
-  minLevelXPosition: -200
-  maxLevelXPosition: 200
   levelAudioClips:
   - {fileID: 8300000, guid: 09c5969007630694984b81ccd6618337, type: 3}
   - {fileID: 8300000, guid: d79c4b04637541d4fba193e4660d29a7, type: 3}

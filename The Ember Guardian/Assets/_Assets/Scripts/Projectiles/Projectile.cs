@@ -165,14 +165,16 @@ public class Projectile : MonoBehaviour
         OnProjectileHit?.Invoke(this, EventArgs.Empty);
         OnAnyProjectileHit?.Invoke(this, EventArgs.Empty);
 
+        if(!gameObject.activeInHierarchy) {
+            Debug.Log(this + " projectile is not active in hierarchy !");
+        }
+
         StartCoroutine(ResetInObjectPoolAfterDelay(2f));
     }
 
     private IEnumerator ResetInObjectPoolAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
-        if (parentMob != null) {
-            ResetInObjectPool();
-        }
+        ResetInObjectPool();
     }
 
     public Vector2 GetTrajectoryEndPoint() {
@@ -203,8 +205,10 @@ public class Projectile : MonoBehaviour
 
         // Hit Player
         if(collision.GetComponentInParent<Player>() != null && enemyProjectile) {
+            if (collision.GetComponent<HuntingFlag>() != null) return;
             ProjectileHasHit(false);
             Player.Instance.TakeDamage(damage, parentMob.transform);
+            return;
         }
 
         // Hit Barricade
@@ -219,8 +223,6 @@ public class Projectile : MonoBehaviour
     private void HandleMobCollision(Mob mob) {
 
         if (mobHit != null) {
-            mobHit.OnMobDied += MobHit_OnMobDied;
-
             ProjectileHasHit(true);
             mobHit.TakeDamage(damage, parentMob.transform, false);
             return;
@@ -231,27 +233,15 @@ public class Projectile : MonoBehaviour
         return projectileSO;
     }
 
-    private void MobHit_OnMobDied(object sender, EventArgs e) {
-
-        if(mobHit != null) {
-            mobHit.OnMobDied -= MobHit_OnMobDied;
-        }
-
-        ResetInObjectPool();
-
-    }
-
     private void ResetInObjectPool() {
         OnProjectileReset?.Invoke(this, EventArgs.Empty);
         projectileHasHit = false;
         gameObject.SetActive(false);
-        parentMob.GetComponent<MobAttack>().ResetProjectileInObjectPool(this);
-    }
 
-
-    private void OnDestroy() {
-        if(mobHit != null) {
-            mobHit.OnMobDied -= MobHit_OnMobDied;
+        if(parentMob != null) {
+            parentMob.GetComponent<MobAttack>().ResetProjectileInObjectPool(this);
+        } else {
+            Destroy(gameObject);
         }
     }
 }

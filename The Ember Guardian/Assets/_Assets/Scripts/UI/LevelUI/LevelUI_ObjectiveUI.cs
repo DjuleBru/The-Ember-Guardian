@@ -102,7 +102,6 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     public void SetNewObjectiveUI(ObjectiveType objectiveType) {
-        Debug.Log("SetNewObjectiveUI " + objectiveType);
         objectiveText.text = GetObjectiveTextFromType(objectiveType);
         objectiveGameObject.SetActive(true);
         objectiveAnimator.SetTrigger("NewObjective");
@@ -292,7 +291,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
             return "Explore to recruit at least 2 emberlings";
         }
         if (subObjectiveType == SubObjectiveType.WaitForHunt) {
-            return "Wait for Hunters to hunt animals";
+            return "Wait for Hunters to collect orbs";
         }
         if (subObjectiveType == SubObjectiveType.CollectOrbsFromHunters) {
             return "Collect orbs from the Hunters";

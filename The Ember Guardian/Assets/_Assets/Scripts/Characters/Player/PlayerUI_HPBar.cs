@@ -170,7 +170,6 @@ public class PlayerUI_HPBar : MonoBehaviour
 
     private void Player_OnPlayerHealed(object sender, Player.OnPlayerChangedHealthEventArgs e) {
 
-        Debug.Log("hpBarGameObject.SetActive(true)");
         hpBarGameObject.SetActive(true);
         isFadingIn = true;
         hpBarDiplayTimer = 0;

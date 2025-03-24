@@ -48,9 +48,10 @@ public class Currency_UI : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, destinationTransform.position, smoothTime * Time.deltaTime);
         }
 
-        //if(rb.velocity.magnitude < speedToDisableRb && initialTimerOver) {
-        //    rb.bodyType = RigidbodyType2D.Static;
-        //}
+        if (rb.velocity.magnitude < speedToDisableRb && initialTimerOver) {
+            rb.bodyType = RigidbodyType2D.Static;
+            //rb.Sleep();
+        }
     }
 
     public void RemoveFromBag(UICurrencyManager currencyManagerSender) {
@@ -71,8 +72,19 @@ public class Currency_UI : MonoBehaviour
             dropCurrencyFeedback.PlayFeedbacks();
             StartCoroutine(DestroyAfterDelay(.2f));
         }
+
+        Currency_UI currencyUIHit = collision.gameObject.GetComponentInParent<Currency_UI>();
+        if (currencyUIHit != null) {
+            currencyUIHit.SetCurrencyRbMovable();
+        }
     }
 
+    private void OnTriggerExit2D(Collider2D collision) {
+        Currency_UI currencyUIHit = collision.gameObject.GetComponentInParent<Currency_UI>();
+        if (currencyUIHit != null) {
+            SetCurrencyRbMovable();
+        }
+    }
     private IEnumerator DestroyAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
         Destroy(gameObject);
@@ -88,6 +100,7 @@ public class Currency_UI : MonoBehaviour
 
     public void SetCurrencyRbMovable() {
         if (currencyType == PlayerCurrencies.CurrencyType.ember) return;
+        //rb.WakeUp();
         rb.bodyType = RigidbodyType2D.Dynamic;
         initialTimerOver = false;
         initialTimer = 1.5f;

@@ -37356,6 +37356,37 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!1 &8435692403629376920
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3486698585892022868}
+  m_Layer: 0
+  m_Name: EmberSpawnPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3486698585892022868
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8435692403629376920}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8165524197477933600}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8523967122300291761
 GameObject:
   m_ObjectHideFlags: 0
@@ -38080,6 +38111,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9013458545296523658, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4996459726391090862}
+    - targetCorrespondingSourceObject: {fileID: 9013458545296523658, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3486698585892022868}
     - targetCorrespondingSourceObject: {fileID: 8209206451638645461, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       insertIndex: -1
       addedObject: {fileID: 612635853085971541}
@@ -38127,6 +38161,7 @@ MonoBehaviour:
   upgradeUnlocked: 0
   primaryFunctionUnlocked: 0
   secondaryFunctionUnlocked: 0
+  visualIndicator: {fileID: 0}
   fireRadiusCollider: {fileID: 7294656095997144733}
   isMainFire: 1
   isEndLevelFire: 0
@@ -38146,6 +38181,7 @@ MonoBehaviour:
   extractingEmberFuelRateDepletion: 5
   respawningPlayerFuelRateDepletion: 2
   debugFuelLevel: 0
+  emberSpawnPosition: {fileID: 3486698585892022868}
 --- !u!114 &8507923579151022277
 MonoBehaviour:
   m_ObjectHideFlags: 0

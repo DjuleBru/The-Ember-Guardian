@@ -12,6 +12,8 @@ public class DayCreatureSpawnerGroup : MonoBehaviour
     }
 
     public void InitializeSpawnerGroup(List<CreatureSO> creatureSOList, List<int> creatureAmountList, List<int> creatureEliteAmountList) {
+        if (!gameObject.activeInHierarchy) return;
+
         int i = 0;
 
         float radiusToRoamAroundRandomized = UnityEngine.Random.Range(radiusToRoamAround - radiusToRoamAround/1.5f, radiusToRoamAround + radiusToRoamAround/1.5f);

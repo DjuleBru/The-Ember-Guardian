@@ -149,16 +149,16 @@ public class CreatureAI : MonoBehaviour {
     }
 
     protected void CheckDistanceToPlayerOrCampForMoveSpeed() {
-        if(!nightMoveSpeedReset) {
+        //if(!nightMoveSpeedReset) {
 
-            float distanceToCampZoneLimit = Mathf.Abs(CampZoneManager.Instance.GetClosestExteriorZoneLimit(transform.position).x - transform.position.x);
-            float distanceToPlayer = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
+        //    float distanceToCampZoneLimit = Mathf.Abs(CampZoneManager.Instance.GetClosestExteriorZoneLimit(transform.position).x - transform.position.x);
+        //    float distanceToPlayer = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
 
-            if (distanceToCampZoneLimit < distanceToCampOrPlayerToSetStandardSpeed || distanceToPlayer < distanceToCampOrPlayerToSetStandardSpeed) {
-                creatureMovement.InitializeCreatureMoveSpeed();
-                nightMoveSpeedReset = true;
-            }
-        }
+        //    if (distanceToCampZoneLimit < distanceToCampOrPlayerToSetStandardSpeed || distanceToPlayer < distanceToCampOrPlayerToSetStandardSpeed) {
+        //        creatureMovement.InitializeCreatureMoveSpeed();
+        //        nightMoveSpeedReset = true;
+        //    }
+        //}
     }
 
     protected virtual void WalkingToSpawnerStateUpdate() {
@@ -239,7 +239,7 @@ public class CreatureAI : MonoBehaviour {
             creatureMovement.SetMoveTarget(transform.position);
             mobAttack.RemoveAttackTarget();
 
-            creatureMovement.SetMoveSpeed(walkingToFireMoveSpeed);
+            //creatureMovement.SetMoveSpeed(walkingToFireMoveSpeed);
             followingTargetBuffedSpeed = true;
         }
 
@@ -259,15 +259,21 @@ public class CreatureAI : MonoBehaviour {
         }
 
         if (newState == State.moveToTarget) {
-            creatureMovement.SetCreatureAggroMoveSpeed(true);
-            followingTargetBuffedSpeed = true;
+            if(creature.IsDayCreature()) {
+                creatureMovement.SetCreatureAggroMoveSpeed(true);
+                followingTargetBuffedSpeed = true;
+            }
+
             mobAttack.RemoveAttackTarget();
         }
 
         if (newState == State.idle) {
+            if (creature.IsDayCreature()) {
+                creatureMovement.SetCreatureAggroMoveSpeed(false);
+                followingTargetBuffedSpeed = false;
+            }
+
             creatureMovement.SetMoveTarget(transform.position);
-            creatureMovement.SetCreatureAggroMoveSpeed(false);
-            followingTargetBuffedSpeed = false;
             mobAttack.RemoveAttackTarget();
         }
 
@@ -345,6 +351,8 @@ public class CreatureAI : MonoBehaviour {
     }
 
     protected void CheckPlayerTargetAndAggroState() {
+        if (!creature.IsDayCreature()) return;
+
         if (!aggroedRecently) {
             aggroedRecently = true;
             aggroTimer = aggroDelay;

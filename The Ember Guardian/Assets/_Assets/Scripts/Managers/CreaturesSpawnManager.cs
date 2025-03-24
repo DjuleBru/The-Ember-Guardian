@@ -38,12 +38,14 @@ public class CreaturesSpawnManager : MonoBehaviour
     private int totalNightCreatureHP;
     private int remainingNightCreaturesHP;
     private int remainingSubWaveCreatures;
+    private int maxRemainingSubWaveCreaturesForNextSubwave;
 
     private int startWaveToSpawnFromBothSides;
     private int baseDifficulty;
     private float growthFactor;
     private float minMaxSubwaveDifficultyGrowthFactor;
 
+    private bool spawnEquallyFromBothSides;
     private bool canSpawnElite;
     private float eliteSpawnProbability = .05f;
 
@@ -164,7 +166,16 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         currentWaveNumber++;
-        SetWaveParameters(currentWaveNumber, true, true);
+
+        if(spawnEquallyFromBothSides) {
+
+            waveDifficultyLeftProportion = .5f;
+            waveDifficultyRightProportion = .5f;
+            SetWaveParameters(currentWaveNumber, false, false);
+
+        } else {
+            SetWaveParameters(currentWaveNumber, true, true);
+        }
     }
 
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
@@ -202,7 +213,7 @@ public class CreaturesSpawnManager : MonoBehaviour
 
             if(waveDifficultyLeftProportion == 0 || waveDifficultyRightProportion == 0) {
                 // All creatures from ONE side : reduce difficulty
-                waveDifficulty = waveDifficulty / 1.5f;
+                waveDifficulty = waveDifficulty / 1.25f;
             }
         }
 
@@ -323,7 +334,7 @@ public class CreaturesSpawnManager : MonoBehaviour
             }
 
             // Attendre que toutes les créatures de cette subwave soient éliminées
-            yield return new WaitUntil(() => remainingSubWaveCreatures <= 3);
+            yield return new WaitUntil(() => remainingSubWaveCreatures <= maxRemainingSubWaveCreaturesForNextSubwave);
 
             subWaveIndex++;
         }
@@ -567,5 +578,25 @@ public class CreaturesSpawnManager : MonoBehaviour
 
         return totalCreatureHP;
     }
+    public void SetBaseDifficulty(int baseDifficulty) {
+        this.baseDifficulty = baseDifficulty;
+    }
 
+    public void SetGrowthFactor(float growthFactor) {
+        this.growthFactor = growthFactor;
+    }
+    public void SetMinMaxDifficultyGrowthFactor(float growthFactor) {
+        this.minMaxSubwaveDifficultyGrowthFactor = growthFactor;
+    }
+
+    public void SetCanSpawnElite(bool canSpawnElite) {
+        this.canSpawnElite = canSpawnElite;
+    }
+
+    public void SetSpawnEquallyFromBothSides(bool spawnEquallyFromBothSides) {
+        this.spawnEquallyFromBothSides = spawnEquallyFromBothSides;
+    }
+    public void SetMaxRemainingSubwaveCreaturesForNextSubwave(int maxCreatures) {
+        maxRemainingSubWaveCreaturesForNextSubwave = maxCreatures;
+    }
 }

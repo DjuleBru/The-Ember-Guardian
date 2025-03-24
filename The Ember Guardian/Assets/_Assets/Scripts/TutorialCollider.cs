@@ -79,12 +79,21 @@ public class TutorialCollider : MonoBehaviour
 
         if (isWorkerCampCollider_Demo && !playerCollided) {
             playerCollided = true;
-            DemoMainLevelManager.Instance.TryShowRecruitWorkerTooltip();
+            DemoMainLevelManager.Instance.TryShowRecruitWorkerTooltip(true);
         }
 
         if (isRunTipCollider && !playerCollided) {
             playerCollided = true;
             DemoLevelIntroManager.Instance.ShowRunTooltip();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) {
+        if (collision.gameObject.GetComponent<Player>() == null) return;
+
+        if (isWorkerCampCollider_Demo && playerCollided) {
+            playerCollided = false;
+            DemoMainLevelManager.Instance.TryShowRecruitWorkerTooltip(false);
         }
     }
 

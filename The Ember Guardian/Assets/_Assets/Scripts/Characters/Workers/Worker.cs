@@ -25,6 +25,10 @@ public class Worker : Mob {
     private float dropDelay = 0.15f; // Délai entre chaque drop
     private float dropTimer = 0f; // Compteur pour suivre le temps écoulé
 
+    private int initialHealth;
+    private float refillHealthTime = 10f;
+    private float refillHealthTimer;
+
     public static event EventHandler OnAnyOrbDroppedByWorker;
     public static event EventHandler OnAnyWorkerRecruited;
     public static event EventHandler OnAnyWorkerAssignedHunter;
@@ -39,6 +43,7 @@ public class Worker : Mob {
     private void Start() {
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
         health = 1;
+        initialHealth = health;
     }
 
     private void Update() {
@@ -46,6 +51,13 @@ public class Worker : Mob {
             HandleDroppingCurrencies();
         }
         CheckPlayerIsClose();
+
+        if(health != initialHealth) {
+            refillHealthTimer += Time.deltaTime;
+            if(refillHealthTimer >= refillHealthTime) {
+                health = initialHealth;
+            }
+        }
     }
 
     public void RecruitWorker(bool playSound = true) {
@@ -78,6 +90,11 @@ public class Worker : Mob {
             totalAmount += amount;
         }
         return totalAmount;
+    }
+
+    public override void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
+        base.TakeDamage(damage, damageSource, critHit, ignoreTemporaryInvincibility);
+        refillHealthTimer = 0;
     }
 
     public int GetCurrencyAmount(PlayerCurrencies.CurrencyType currencyType) {
@@ -202,6 +219,7 @@ public class Worker : Mob {
             OnAnyWorkerAssignedHunter?.Invoke(this, EventArgs.Empty);
         }
 
+        initialHealth = health;
         if (workerAI.GetDebugSpawn()) return;
         if(workerAI.GetJob() != WorkerAI.JobTypes.wild && workerAI.GetJob() != WorkerAI.JobTypes.jobless) {
             WorkerManager.Instance.AutoAssignSideToWorker(this);

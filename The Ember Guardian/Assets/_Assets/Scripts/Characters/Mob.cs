@@ -70,7 +70,7 @@ public class Mob : MonoBehaviour, IDamageable
         return mobSpawner;
     }
 
-    public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
+    public virtual void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
         if (health <= 0) return;
         
         if(critHit) {

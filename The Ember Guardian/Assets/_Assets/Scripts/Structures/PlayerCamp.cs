@@ -184,8 +184,19 @@ public class PlayerCamp : MonoBehaviour
             builtTowers.Add(structure);
         }
     }
+    public int GetAvailableTowers(CampZoneManager.CampSide workerCampSide) {
+        int availableTowers = 0;
 
-    public Tower GetClosestTower(CampZoneManager.CampSide workerCampSide, Vector3 position) {
+        foreach (Tower tower in builtTowers) {
+
+            if (tower.GetCampSide() != workerCampSide) continue;
+            if (tower.GetTowerFull()) continue;
+            availableTowers++;
+        }
+
+        return availableTowers;
+    }
+    public Tower GetClosestAvailableTower(CampZoneManager.CampSide workerCampSide, Vector3 position) {
 
         float closestDistanceToTower = Mathf.Infinity;
         Tower closestTower = null;

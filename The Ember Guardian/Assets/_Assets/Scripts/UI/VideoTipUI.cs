@@ -192,13 +192,14 @@ public class VideoTipUI : MonoBehaviour
     private IEnumerator ActivatePanelAfterDelay(bool show, float delay) {
         yield return new WaitForSeconds(delay);
         videoTipUIMainPanel.SetActive(show);
+
     }
 
     public void ClosePanel() {
         panelOpen = false;
         videoTipUIMainPanelAnimator.ResetTrigger("Show");
         videoTipUIMainPanelAnimator.SetTrigger("Hide");
-        ActivatePanelAfterDelay(false, .5f);
+        StartCoroutine(ActivatePanelAfterDelay(false, .5f));
 
         if (DayNightManager.Instance != null) {
             DayNightManager.Instance.SetCyclePaused(false, true);

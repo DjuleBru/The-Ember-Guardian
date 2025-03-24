@@ -60,6 +60,8 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
+
+
     public void LoadLevel(LevelSO levelSO, float crossfadeDuration) {
         string sceneName = levelSO.linkedSceneName;
         StartCoroutine(LoadSceneAfterCrossfade(sceneName, crossfadeDuration));

@@ -167,12 +167,15 @@ public class Portal : MonoBehaviour
         Player.Instance.MoveOnTeleporter(playerPosition);
         Dog.Instance.MoveOnTeleporter(dogPosition);
 
-        OnPlayerMovedOnTeleporter?.Invoke(this, EventArgs.Empty);
-        OnAnyPlayerMovedOnTeleporter?.Invoke(this, EventArgs.Empty);
-
         if(isHUBTeleporter) {
             HUBManager.Instance.SaveHub();
         }
+
+        yield return new WaitForEndOfFrame();
+
+        OnPlayerMovedOnTeleporter?.Invoke(this, EventArgs.Empty);
+        OnAnyPlayerMovedOnTeleporter?.Invoke(this, EventArgs.Empty);
+
 
         yield return new WaitForSeconds(delayToActivateTeleporter);
         OnTeleporterActivated?.Invoke(this, EventArgs.Empty);

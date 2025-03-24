@@ -17,6 +17,10 @@ public class SoundManager : MonoBehaviour
     private bool initialEmberGiven;
     private bool initialGunEquipped;
 
+    private bool criticalFireTickJustRemoved;
+    private float criticalFireTickRemovedTimer;
+    private float criticalFireTickRemovedMinDelay = .3f;
+
     private void Awake() {
         Instance = this;
         audioSource2D = GetComponent<AudioSource>();
@@ -147,6 +151,15 @@ public class SoundManager : MonoBehaviour
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine += HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
     }
 
+    private void Update() {
+        if(criticalFireTickJustRemoved) {
+            criticalFireTickRemovedTimer -= Time.deltaTime;
+            if(criticalFireTickRemovedTimer < 0) {
+                criticalFireTickJustRemoved = false;
+            }
+        }
+    }
+
     private void SceneLoader_OnSceneFadeIn(object sender, System.EventArgs e) {
         StartCoroutine(FadeInVolume(1f));
     }
@@ -274,6 +287,11 @@ public class SoundManager : MonoBehaviour
     }
 
     private void StructureUI_Fire_OnCricitalFireTickRemoved(object sender, System.EventArgs e) {
+        if (criticalFireTickJustRemoved) return;
+
+        criticalFireTickRemovedTimer = criticalFireTickRemovedMinDelay;
+        criticalFireTickJustRemoved = true;
+
         PlaySound2D(soundRefsSO.criticalFireTickRemoved);
     }
 
@@ -348,6 +366,10 @@ public class SoundManager : MonoBehaviour
         }
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
             PlaySound3D(soundRefsSO.ammoTouchedFloor, (sender as MonoBehaviour).transform.position, .7f);
+        }
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember) {
+            PlaySound3D(soundRefsSO.emberTouchedFloor, (sender as MonoBehaviour).transform.position, 1f);
+            Debug.Log("ember bounced");
         }
     }
 

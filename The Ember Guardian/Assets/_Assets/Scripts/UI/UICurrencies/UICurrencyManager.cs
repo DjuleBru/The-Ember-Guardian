@@ -259,7 +259,7 @@ public class UICurrencyManager : MonoBehaviour
             currencyTransform.localScale *= 1.5f;
         }
 
-        //foreach(Currency_UI currency in currenciesInBag) {
+        //foreach (Currency_UI currency in currenciesInBag) {
         //    currency.SetCurrencyRbMovable();
         //}
 
@@ -370,8 +370,8 @@ public class UICurrencyManager : MonoBehaviour
             currencyUIDropped = currencyUI
         });
 
-        //foreach (Currency_UI currency in currenciesInBag) {
-        //    currency.SetCurrencyRbMovable();
+        //for(int i = 0; i <= 10; i++) {
+        //    currenciesInBag[i].SetCurrencyRbMovable();
         //}
     }
 

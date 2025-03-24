@@ -30,6 +30,7 @@ public class Fire : Structure, IDamageable {
     [SerializeField] private float extractingEmberFuelRateDepletion = 5f;
     [SerializeField] private float respawningPlayerFuelRateDepletion = 2f;
     [SerializeField] private float debugFuelLevel;
+    [SerializeField] private Transform emberSpawnPosition;
 
     private FireOrbCollider fireOrbCollider;
     private bool initialFireLit;
@@ -235,7 +236,7 @@ public class Fire : Structure, IDamageable {
 
     private IEnumerator ExtractEmber() {
 
-        Ember ember = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ember), transform.position, Quaternion.identity).GetComponent<Ember>();
+        Ember ember = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ember), emberSpawnPosition.position, Quaternion.identity).GetComponent<Ember>();
         ember.ApplyRandomForceRandomDir(4,8, true,4, 8, false);
         ember.SetCollectibleUnInteractable(1f);
         ember.SetCanNeverBePickedUpByWorker();

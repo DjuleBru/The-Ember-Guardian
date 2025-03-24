@@ -168,59 +168,19 @@ PrefabInstance:
       propertyPath: currencyType
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 9218558148015598609, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
+      propertyPath: m_Radius
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2248992798773173307, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
-    - {fileID: 9218558148015598609, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 222862552863732904, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7261571982689650782}
-    - targetCorrespondingSourceObject: {fileID: 3097506622609963512, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6485945203662175846}
   m_SourcePrefab: {fileID: 100100000, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
---- !u!1 &890943461386632056 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3097506622609963512, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}
-  m_PrefabInstance: {fileID: 2783727627305616000}
-  m_PrefabAsset: {fileID: 0}
---- !u!70 &6485945203662175846
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 890943461386632056}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.0017760703, y: -0.19777298}
-  m_Size: {x: 0.33670098, y: 0.3090811}
-  m_Direction: 1
 --- !u!1 &2717374580390098472 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 222862552863732904, guid: c6565abc71706b441a7e949bec0b76cf, type: 3}

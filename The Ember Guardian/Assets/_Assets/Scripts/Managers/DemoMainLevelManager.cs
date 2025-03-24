@@ -13,6 +13,10 @@ public class DemoMainLevelManager : MonoBehaviour
 
     [SerializeField] private StructureLocation mainFireLocation;
     [SerializeField] private List<StructureLocation> defensiveStructureLocations;
+    [SerializeField] private GameObject firstLevelLeftSpawners;
+    [SerializeField] private GameObject levelLeftSpawnerGroups;
+    [SerializeField] private GameObject firstLevelRightSpawners;
+    [SerializeField] private GameObject levelRightSpawnerGroups;
 
     private bool ammoCraftStarted;
     private bool animalDied;
@@ -39,6 +43,7 @@ public class DemoMainLevelManager : MonoBehaviour
         demoLevelLostAmount = ES3.Load("demoLevelLostAmount", 0);
         recruitWorkerTooltipShown = ES3.Load("recruitWorkerTooltipShown", false);
 
+        InitializeSpawners(demoMainLevelTutorialCompleted);
     }
 
     private void Start() {
@@ -56,10 +61,14 @@ public class DemoMainLevelManager : MonoBehaviour
         Worker.OnAnyWorkerAssignedHunter += Worker_OnAnyWorkerAssignedHunter;
         Worker.OnAnyOrbDroppedByWorker += Worker_OnAnyOrbDroppedByWorker;
 
-
         if (!demoMainLevelTutorialCompleted) {
             StartCoroutine(SetDemoTutorialObjective());
             Fire.Instance.SetFireInteractionsUpdateLocked(true);
+            CreaturesSpawnManager.Instance.SetGrowthFactor(2.2f);
+            CreaturesSpawnManager.Instance.SetMinMaxDifficultyGrowthFactor(1.8f);
+            CreaturesSpawnManager.Instance.SetMaxRemainingSubwaveCreaturesForNextSubwave(2);
+            CreaturesSpawnManager.Instance.SetCanSpawnElite(false);
+            CreaturesSpawnManager.Instance.SetSpawnEquallyFromBothSides(true);
 
             foreach(StructureLocation structureLocation in defensiveStructureLocations) {
                 structureLocation.gameObject.SetActive(false);
@@ -71,13 +80,28 @@ public class DemoMainLevelManager : MonoBehaviour
         }
     }
 
+    private void InitializeSpawners(bool demoMainLevelTutorialCompleted) {
+        foreach (MobSpawner daySpawner in firstLevelLeftSpawners.GetComponentsInChildren<MobSpawner>()) {
+            daySpawner.gameObject.SetActive(!demoMainLevelTutorialCompleted);
+        }
+        foreach (MobSpawner daySpawner in firstLevelRightSpawners.GetComponentsInChildren<MobSpawner>()) {
+            daySpawner.gameObject.SetActive(!demoMainLevelTutorialCompleted);
+        }
+        foreach (DayCreatureSpawnerGroup daySpawnerGroup in levelRightSpawnerGroups.GetComponentsInChildren<DayCreatureSpawnerGroup>()) {
+            Debug.Log(daySpawnerGroup);
+            daySpawnerGroup.gameObject.SetActive(demoMainLevelTutorialCompleted);
+        }
+        foreach (DayCreatureSpawnerGroup daySpawnerGroup in levelLeftSpawnerGroups.GetComponentsInChildren<DayCreatureSpawnerGroup>()) {
+            daySpawnerGroup.gameObject.SetActive(demoMainLevelTutorialCompleted);
+        }
+
+    }
+
     private void StructureLocation_OnAnyStructureBuilt(object sender, StructureLocation.OnAnyStructureBuiltEventArgs e) {
         if (demoMainLevelTutorialCompleted) return;
 
         if (e.structureBuilt.GetStructureSO().structureType == StructureSO.StructureType.ammoCrafter) {
             CurrencyCrafter ammoCrafter = e.structureBuilt as CurrencyCrafter;
-
-            Debug.Log("ammoCrafter " + ammoCrafter);
 
             ammoCrafter.OnPlayerTriggeredIn += AmmoCrafter_OnPlayerTriggeredIn;
             ammoCrafter.OnPlayerTriggeredOut += AmmoCrafter_OnPlayerTriggeredOut;
@@ -87,17 +111,14 @@ public class DemoMainLevelManager : MonoBehaviour
 
             ammoCrafterIndicator = ammoCrafter.GetVisualIndicator();
             StartCoroutine(ActivateIndicatorAfterDelay(ammoCrafterIndicator, 4f));
-            Debug.Log("ammoCrafterIndicator " + ammoCrafterIndicator);
         }
         if (e.structureBuilt.GetStructureSO().structureType == StructureSO.StructureType.hunterShrine) {
             Structure hunterShrine = e.structureBuilt;
 
-            Debug.Log("hunterShrine " + hunterShrine);
             hunterShrine.OnPlayerTriggeredIn += HunterShrine_OnPlayerTriggeredIn;
             hunterShrine.OnPlayerTriggeredOut += HunterShrine_OnPlayerTriggeredOut;
 
             hunterShrineIndicator = hunterShrine.GetVisualIndicator();
-            Debug.Log("hunterShrineIndicator " + hunterShrineIndicator);
         }
     }
 
@@ -107,11 +128,17 @@ public class DemoMainLevelManager : MonoBehaviour
     }
 
     private void LevelManager_OnLevelSuccess(object sender, EventArgs e) {
-        Debug.Log("LevelManager_OnLevelSuccess");
         ES3.Save("demoLevelCompleted", true);
     }
 
     private void LevelManager_OnLevelFailed(object sender, EventArgs e) {
+        AddLevelLostAmount();
+    }
+
+    public void AddLevelLostAmount() {
+        Debug.Log("AddLevelLostAmount");
+        if (demoLevelLostAmount == 0) return;
+
         demoLevelLostAmount++;
         ES3.Save("demoLevelLostAmount", demoLevelLostAmount);
     }
@@ -132,7 +159,6 @@ public class DemoMainLevelManager : MonoBehaviour
 
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
         Fire.Instance.DisableEmberExtraction();
-        Debug.Log("demoMainLevelTutorialCompleted " + demoMainLevelTutorialCompleted);
         if (demoMainLevelTutorialCompleted) return;
 
         List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveUIList = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
@@ -213,6 +239,8 @@ public class DemoMainLevelManager : MonoBehaviour
         if(emberlingAmountRecruited == 2) {
             LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.RecruitEmberlings, LevelUI_ObjectiveUI.SubObjectiveType.Recruit2Hunters);
             hunterShrineIndicator.gameObject.SetActive(true);
+            TryShowRecruitWorkerTooltip(false);
+            recruitWorkerTooltipShown = true;
         }
     }
 
@@ -246,8 +274,6 @@ public class DemoMainLevelManager : MonoBehaviour
     }
 
     private void AmmoCrafter_OnCurrencyCraftingStarted(object sender, System.EventArgs e) {
-        Debug.Log("AmmoCrafter_OnCurrencyCraftingStarted " + demoMainLevelTutorialCompleted);
-        Debug.Log("AmmoCrafter_OnCurrencyCraftingStarted " + ammoCraftStarted);
         if (demoMainLevelTutorialCompleted) return;
         if (ammoCraftStarted) return;
 
@@ -310,6 +336,7 @@ public class DemoMainLevelManager : MonoBehaviour
 
         demoMainLevelTutorialCompleted = true;
         ES3.Save("demoMainLevelTutorialCompleted", true);
+        ES3.Save("recruitWorkerTooltipShown", true);
     }
 
     public bool GetDemoMainLevelTutorialCompleted() {
@@ -320,14 +347,19 @@ public class DemoMainLevelManager : MonoBehaviour
         return demoLevelLostAmount == 1;
     }
 
-    public void TryShowRecruitWorkerTooltip() {
-        if(!recruitWorkerTooltipShown) {
+    public void TryShowRecruitWorkerTooltip(bool show) {
+        if (recruitWorkerTooltipShown) return;
+
+        if (show) {
+
             if (!UICurrencyManager.PlayerInventoryUI.GetHasBigOrb()) return;
-            recruitWorkerTooltipShown = true;
-            ES3.Save("recruitWorkerTooltipShown", true);
-            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction("Press", "Recruit Emberling", InputControlIcons.Control.Interact, 5f);
+            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction("Press", "Recruit Emberling", InputControlIcons.Control.Interact, 999);
+
+        } else {
+            PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
         }
     }
+
 
     private void OnDestroy() {
 

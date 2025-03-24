@@ -44,7 +44,7 @@ public class HunterJob : WorkerJob {
     private List<HunterState> dayAndNightHunterStates;
     private List<HunterState> duskAndNightHunterStates;
 
-    private Tower destinationTower;
+    private Tower assignedTower;
 
     public event EventHandler OnHunterChangedState;
     public event EventHandler OnHunterFindsNoAnimal;
@@ -93,13 +93,19 @@ public class HunterJob : WorkerJob {
         DebugExtention.DrawCircle(mobMovement.transform.position, attackRange, 20, Color.white);
 
         if (CheckDropCurrenciesToPlayer()) {
+
             ChangeState(HunterState.droppingOrbs);
+
+        } else {
+
+            if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Dusk) {
+                if (CheckOrbsToCollect() && state != HunterState.hunting) {
+                    ChangeState(HunterState.pickingUpOrbs);
+                };
+            }
+
         }
-        if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Dusk) {
-            if(CheckOrbsToCollect() && state != HunterState.hunting) {
-                ChangeState(HunterState.pickingUpOrbs);
-            };
-        }
+
 
         if(dayHunterStates.Contains(state)) {
             // The current state is a "Day" state
@@ -311,7 +317,6 @@ public class HunterJob : WorkerJob {
 
 
                 case HunterState.droppingOrbs:
-
                     if (worker.GetTotalCurrencyAmount() == 0) {
                         ChangeState(previousState);
                         return;
@@ -333,14 +338,14 @@ public class HunterJob : WorkerJob {
                 case HunterState.headingToGuard:
 
                     if (worker.GetStructureAssigned() != null) {
-                        destinationTower = worker.GetStructureAssigned() as Tower;
+                        assignedTower = worker.GetStructureAssigned() as Tower;
                     }
                     else {
-                        destinationTower = PlayerCamp.Instance.GetClosestTower(worker.GetCampSideAddigned(), transform.position);
+                        TryAssignTower();
                     }
 
-                    if (destinationTower != null) {
-                        HeadToClosestTower();
+                    if (assignedTower != null) {
+                        HeadToAssignedTower();
                     }
                     else {
                         HeadToMostExteriorBarricade();
@@ -368,9 +373,9 @@ public class HunterJob : WorkerJob {
 
                         if (worker.GetStructureAssigned() != null) return;
 
-                        destinationTower = PlayerCamp.Instance.GetClosestTower(worker.GetCampSideAddigned(), transform.position);
+                        TryAssignTower();
 
-                        if (destinationTower != null) {
+                        if (assignedTower != null) {
                             ChangeState(HunterState.headingToGuard);
                         }
 
@@ -379,7 +384,7 @@ public class HunterJob : WorkerJob {
 
                         if (targetCreature == null) {
 
-                            if(destinationTower == null) {
+                            if(assignedTower == null) {
                                 CheckClosestCreatureSmart();
                             } else {
                                 CheckFurthestCreatureSmart();
@@ -498,6 +503,7 @@ public class HunterJob : WorkerJob {
 
         if (closestCreature != null) {
             bool playerIsInFrontOfHunter = Mathf.Abs(transform.position.x) - Mathf.Abs((Player.Instance.transform.position.x)) < 0;
+            bool playerIsCloseToCreature = Mathf.Abs(Player.Instance.transform.position.x - closestCreature.transform.position.x) < 15f;
 
             if(!playerIsInFrontOfHunter) {
 
@@ -512,7 +518,9 @@ public class HunterJob : WorkerJob {
                     return;
                 }
                 else {
-                    ChangeState(HunterState.workingWithPlayerToShootCreatures);
+                    if(playerIsCloseToCreature) {
+                        ChangeState(HunterState.workingWithPlayerToShootCreatures);
+                    }
                 }
             };
 
@@ -733,21 +741,29 @@ public class HunterJob : WorkerJob {
         hasSetSpeed = false;
     }
 
-    public void HeadToClosestTower() {
+    public void TryAssignTower() {
+        if (assignedTower != null) return;
+
+        if(PlayerCamp.Instance.GetAvailableTowers(worker.GetCampSideAddigned()) != 0) {
+            assignedTower = PlayerCamp.Instance.GetClosestAvailableTower(worker.GetCampSideAddigned(), transform.position);
+            assignedTower.AssignWorker(worker);
+        }
+        
+    }
+
+    public void HeadToAssignedTower() {
 
         if (!hasSetSpeed) {
             mobMovement.SetMoveSpeed(headToCampMoveSpeed);
             hasSetSpeed = true;
         }
 
-        Vector3 targetDestination = destinationTower.transform.position;
+        Vector3 targetDestination = assignedTower.transform.position;
         mobMovement.SetMoveTarget(targetDestination);
 
         if (Mathf.Abs(transform.position.x - targetDestination.x) < 0.1f) {
             
-            if(!destinationTower.GetTowerFull() && !destinationTower.GetWorkerAssigned(worker)) {
-                destinationTower.AssignWorker(worker);
-            }
+            assignedTower.GarrisonWorker(worker);
 
             ChangeState(HunterState.guarding);
         }
@@ -846,7 +862,7 @@ public class HunterJob : WorkerJob {
         checkClosestTargetTimer = 0;
 
         targetAnimal = null;
-        destinationTower = null;
+        assignedTower = null;
         hasHitAnimal = false;
 
         ChangeState(HunterState.idle);

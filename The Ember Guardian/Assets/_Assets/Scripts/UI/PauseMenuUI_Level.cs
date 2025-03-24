@@ -23,11 +23,16 @@ public class PauseMenuUI_Level : PauseMenuUI {
     }
 
     public void BackToHubButton() {
+        Debug.Log("BackToHubButton");
 
         if (confirmBackToHub) {
         
             ShowPauseMenu(false);
             SceneLoader.Instance.LoadHub(1f);
+
+            if (DemoMainLevelManager.Instance != null) {
+                DemoMainLevelManager.Instance.AddLevelLostAmount();
+            }
 
         }
         else {

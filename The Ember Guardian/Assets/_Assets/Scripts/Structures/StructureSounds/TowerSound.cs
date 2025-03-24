@@ -15,7 +15,7 @@ public class TowerSound : StructureSounds
     protected override void Start() {
         base.Start();
 
-        tower.OnHunterAssigned += Tower_OnHunterAssigned;
+        tower.OnHunterGarrisoned += Tower_OnHunterAssigned;
         tower.OnPlayerClimbedOnTower += Tower_OnPlayerClimbedOnTower;
     }
 

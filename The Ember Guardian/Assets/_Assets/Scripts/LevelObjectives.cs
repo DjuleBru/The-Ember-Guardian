@@ -220,12 +220,10 @@ public class LevelObjectives : MonoBehaviour
     }
 
     public int GetNightsToSurvive() {
-        Debug.Log("GetNightsToSurvive");
         return nightsToSurvive;
     }
 
     public void SetNightsToSurvive(int nightsToSurvive) {
-        Debug.Log("SetNightsToSurvive");
         this.nightsToSurvive = nightsToSurvive;
     }
 

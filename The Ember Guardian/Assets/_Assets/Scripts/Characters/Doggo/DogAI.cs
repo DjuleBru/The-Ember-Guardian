@@ -317,16 +317,16 @@ public class DogAI : MonoBehaviour
     }
 
     private void HeadToBarkAtCampZoneLimit() {
-        float destinationPositionX = CampZoneManager.Instance.GetMaxZoneLimit();
+        float destinationPositionX = CampZoneManager.Instance.GetMaxZoneLimit() - 4.5f;
 
         if(closestIncomingCreature.transform.position.x < 0) {
-            destinationPositionX = CampZoneManager.Instance.GetMinZoneLimit();
+            destinationPositionX = CampZoneManager.Instance.GetMinZoneLimit() + 4.5f;
         }
 
         Vector3 destinationPosition = new Vector3(destinationPositionX, 0, 0);
         dogMovement.SetMoveTarget(destinationPosition);
 
-        if((Mathf.Abs(transform.position.x - destinationPosition.x)) < 1f) {
+        if((Mathf.Abs(transform.position.x - destinationPosition.x)) < .2f) {
             ChangeState(State.nightInCampGrowlAtIncomingCreature);
         }
     }
