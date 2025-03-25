@@ -49,7 +49,7 @@ public class Structure : MonoBehaviour {
 
     protected virtual void Start() {
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
-        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
+        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
         GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
 
         if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
@@ -203,7 +203,7 @@ public class Structure : MonoBehaviour {
 
     #region InteractionTypes
 
-    protected virtual void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
+    protected virtual void GameInput_OnPlayerInteractPerformed(object sender, EventArgs e) {
     }
 
     protected virtual void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
@@ -316,7 +316,7 @@ public class Structure : MonoBehaviour {
         RefreshPlayerCanInteract();
     }
 
-    protected void RefreshPlayerCanInteract() {
+    protected virtual void RefreshPlayerCanInteract() {
         if (activeStructureInteractionsTypeList.Count == 0) {
             playerCanInteract = false;
         } else {

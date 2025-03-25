@@ -8,9 +8,12 @@ public class BarricadePiece : MonoBehaviour {
     [SerializeField] private Material hoveredMaterial;
     [SerializeField] private Material repairBarricadeMaterial;
     [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Collider2D pieceCollider;
     private Animator animator;
     private Rigidbody2D rb;
     private Vector3 initialPosition;
+
+    private Coroutine deactivateCoroutine;
 
     private void Awake() {
         initialPosition = transform.position;
@@ -23,16 +26,24 @@ public class BarricadePiece : MonoBehaviour {
 
         rb.bodyType = RigidbodyType2D.Static;
         spriteRenderer.enabled = false;
+        pieceCollider.enabled = false;
         animator.SetTrigger("Idle");
     }
 
     public void EnableBarricadePiece() {
         gameObject.SetActive(true);
         transform.position = initialPosition;
+        transform.rotation = Quaternion.identity;
+        pieceCollider.enabled = true;
 
         rb.bodyType = RigidbodyType2D.Static;
         spriteRenderer.enabled = true;
         animator.ResetTrigger("Idle");
+
+
+        if(deactivateCoroutine != null) {
+            StopCoroutine(deactivateCoroutine);
+        }
     }
 
     public void BuildBarricadePiece() {
@@ -41,12 +52,13 @@ public class BarricadePiece : MonoBehaviour {
 
         rb.bodyType = RigidbodyType2D.Static;
         spriteRenderer.enabled = true;
+        pieceCollider.enabled = true;
         animator.SetTrigger("Build");
     }
 
     public void BarricadePieceFell() {
         Vector2 force = new Vector2(UnityEngine.Random.Range(-.5f, .5f), UnityEngine.Random.Range(2f, 4f));
-        float torque = UnityEngine.Random.Range(-100f, 100f);
+        float torque = UnityEngine.Random.Range(-50f, 50f);
 
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
@@ -54,7 +66,7 @@ public class BarricadePiece : MonoBehaviour {
         rb.AddForce(force, ForceMode2D.Impulse);
         rb.AddTorque(torque, ForceMode2D.Force);
 
-        StartCoroutine(DeactivateBarricadeSpriteAfterDelay());
+        deactivateCoroutine = StartCoroutine(DeactivateBarricadeSpriteAfterDelay());
     }
 
     public void ShowBarricadePieceRepairable() {

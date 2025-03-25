@@ -5,6 +5,7 @@ using UnityEngine;
 public class StructureUI : MonoBehaviour
 {
     [SerializeField] protected GameObject UIGameObject;
+    [SerializeField] protected List<GameObject> otherUIGameObjectList;
 
     [SerializeField] protected GameObject functionUIGameObject;
     [SerializeField] protected GameObject secondaryFunctionUIGameObject;
@@ -116,6 +117,10 @@ public class StructureUI : MonoBehaviour
 
     protected virtual void SetUIActive(bool active) {
         UIGameObject.SetActive(active);
+
+        foreach(GameObject go in otherUIGameObjectList) {
+            go.SetActive(active);
+        }
         //UpdateSwitchUIGameObjectActivation();
     }
 

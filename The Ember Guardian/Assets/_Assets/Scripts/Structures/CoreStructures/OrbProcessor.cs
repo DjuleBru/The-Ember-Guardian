@@ -52,7 +52,7 @@ public class OrbProcessor : Structure
         }
     }
 
-    protected override void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
+    protected override void GameInput_OnPlayerInteractPerformed(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (!playerCanInteract) return;
 

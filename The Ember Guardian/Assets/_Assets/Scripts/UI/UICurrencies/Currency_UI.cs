@@ -23,6 +23,7 @@ public class Currency_UI : MonoBehaviour
     private float maxMass = 5000f;
     private float speedToDisableRb = 1f;
     private bool initialTimerOver;
+    private bool fellFromBag;
 
     private int ammoTriggerAmount;
 
@@ -73,6 +74,8 @@ public class Currency_UI : MonoBehaviour
             StartCoroutine(DestroyAfterDelay(.2f));
         }
 
+
+        if (fellFromBag) return;
         Currency_UI currencyUIHit = collision.gameObject.GetComponentInParent<Currency_UI>();
         if (currencyUIHit != null) {
             currencyUIHit.SetCurrencyRbMovable();
@@ -82,9 +85,11 @@ public class Currency_UI : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision) {
         Currency_UI currencyUIHit = collision.gameObject.GetComponentInParent<Currency_UI>();
         if (currencyUIHit != null) {
+            if (currencyUIHit.GetFellFromBag()) return;
             SetCurrencyRbMovable();
         }
     }
+
     private IEnumerator DestroyAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
         Destroy(gameObject);
@@ -108,6 +113,13 @@ public class Currency_UI : MonoBehaviour
 
     public PlayerCurrencies.CurrencyType GetCurrencyType() {
         return currencyType;
+    }
+
+    public void SetFellFromBag() {
+        fellFromBag = true;
+    }
+    public bool GetFellFromBag() {
+        return fellFromBag;
     }
 
     public void SetBackpackBottomPosition(Transform bottom) {

@@ -60,6 +60,17 @@ public class LevelSO : ScriptableObject
     public int intialMaxSubwaveDifficulty;
     public int maxSubwaveDifficulty;
     public float growthFactor;
+    public bool setDifficultyAnimationCurve;
+    [ShowIf("setDifficultyAnimationCurve")]
+    public AnimationCurve difficultyAnimationCurve;
+    [ShowIf("setDifficultyAnimationCurve")]
+    public int maxWaveInAnimationCurve;
+    [ShowIf("setDifficultyAnimationCurve")]
+    public int difficultyAtMaxWave;
+    [ShowIf("setDifficultyAnimationCurve")]
+    public int minDifficultyAtMaxWave;
+    [ShowIf("setDifficultyAnimationCurve")]
+    public int maxDifficultyAtMaxWave;
     public float minMaxSubwaveDifficultyGrowthFactor;
     public int startWaveToSpawnFromBothSides;
     public bool canSpawnElite;

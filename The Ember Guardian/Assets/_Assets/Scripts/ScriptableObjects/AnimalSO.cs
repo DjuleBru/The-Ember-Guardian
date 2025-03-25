@@ -9,6 +9,7 @@ public class AnimalSO : ScriptableObject
     public List<int> currencyDropAmountList;
 
     public int maxHP;
+    public int maxHuntersAssigned;
 
     public float roamMoveSpeed;
     public float fleeMoveSpeed;

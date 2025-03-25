@@ -25,19 +25,23 @@ public class AnimalManager : MonoBehaviour
         return closestAnimal;
     }
 
-    public Animal GetClosestAnimalInRadius(Vector2 position, CampZoneManager.CampSide campSide, float hunterRange) {
+    public Animal GetClosestAvailableAnimalInRadius(Vector2 position, CampZoneManager.CampSide campSide, Worker worker) {
 
         float closestXDistance = Mathf.Infinity;
         Animal closestAnimalInRadius = null;
 
         foreach (Animal animal in spawnedAnimalList) {
 
+            // Check if animal can have workers assigned
+            if (animal.GetMaxHuntersAssigned() && !animal.GetHunterIsAlreadyAssigned(worker)) continue;
+
             // Check if animal is on the same side as worker
             if ((animal.transform.position.x < 0 && campSide == CampZoneManager.CampSide.left) || (animal.transform.position.x > 0 && campSide == CampZoneManager.CampSide.right)) {
 
+
                 // Check if animal is within hunting limits
                 if (animal.transform.position.x < 0) {
-                    if ((animal.transform.position.x + hunterRange) > CampZoneManager.Instance.GetHuntingMinZoneLimit()) {
+                    if ((animal.transform.position.x) > CampZoneManager.Instance.GetHuntingMinZoneLimit()) {
 
                         if ((Mathf.Abs(animal.transform.position.x - position.x)) < closestXDistance) {
                             // Animal is the closest one
@@ -50,7 +54,7 @@ public class AnimalManager : MonoBehaviour
                 }
                 else {
 
-                    if ((animal.transform.position.x - hunterRange) < CampZoneManager.Instance.GetHuntingMaxZoneLimit()) {
+                    if ((animal.transform.position.x) < CampZoneManager.Instance.GetHuntingMaxZoneLimit()) {
 
                         if ((Mathf.Abs(animal.transform.position.x - position.x)) < closestXDistance) {
                             // Animal is the closest one

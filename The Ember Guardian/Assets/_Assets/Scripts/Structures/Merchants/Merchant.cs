@@ -96,7 +96,7 @@ public class Merchant : Structure {
     protected virtual void InitializeMerchantItems() {
     }
 
-    protected override void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
+    protected override void GameInput_OnPlayerInteractPerformed(object sender, EventArgs e) {
         playerJustTriggeredInteraction = false;
     }
 

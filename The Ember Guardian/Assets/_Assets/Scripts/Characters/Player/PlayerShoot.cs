@@ -404,6 +404,7 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (!canShoot) return;
         if (swappingGun) return;
 
@@ -412,6 +413,7 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnWeaponSecondaryAbilitytPerformed(object sender, EventArgs e) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         bool secondaryAbilityUnlocked = heldGun.GetSecondaryAbilityUnlocked();
         if (useDebugGun) {
             secondaryAbilityUnlocked = true;
@@ -519,7 +521,8 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {
-        if(secondaryAbilityActive) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+        if (secondaryAbilityActive) {
 
             if (heldGun.GetGunSO().gunType == GunSO.GunType.Sniper) {
                 OnPlayerAimedSightEnded?.Invoke(this, EventArgs.Empty);
@@ -571,12 +574,14 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnPlayerSwapGunPerformed(object sender, EventArgs e) {
-        if(secondayGunSO != null) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+        if (secondayGunSO != null) {
             SwapGun();
         }
     }
 
     private void GameInput_OnPlayerSecondaryGunSelected(object sender, EventArgs e) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (!CanSwapGun()) return;
 
         if(useDebugGun) {
@@ -590,6 +595,7 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnPlayerPrimaryGunSelected(object sender, EventArgs e) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (!CanSwapGun()) return;
 
         if (useDebugGun) {
@@ -683,7 +689,8 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
-        if(reloadingHands) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+        if (reloadingHands) {
             reloading = false;
             reloadingHands = false; 
             OnPlayerReloadInterrupted?.Invoke(this, EventArgs.Empty);

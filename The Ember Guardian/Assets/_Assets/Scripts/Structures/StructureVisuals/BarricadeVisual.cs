@@ -19,7 +19,7 @@ public class BarricadeVisual : StructureVisual {
 
     private Barricade barricade;
     private int spriteIndex = 1;
-    private bool spotLightUnlocked;
+    private bool spotLightUnlocked = true;
     private bool outerBarricade;
     private bool playerOverrideSpotLightControl;
     private bool lightEnabled;

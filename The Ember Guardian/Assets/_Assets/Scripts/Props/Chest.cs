@@ -61,10 +61,12 @@ public class Chest : MonoBehaviour
     }
 
     private void Start() {
-        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
+        GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
     }
 
-    private void GameInput_OnPlayerInteractPerformed(object sender, EventArgs e) {
+
+    private void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+
         if (!playerInTriggerArea) return;
         if (chestOpened) return;
 
@@ -72,11 +74,11 @@ public class Chest : MonoBehaviour
         StartCoroutine(OpenChest());
         OnChestOpened?.Invoke(this, EventArgs.Empty);
     }
-
     private void OnTriggerEnter2D(Collider2D collision) {
         if (chestOpened) return;
         if (chestLocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
+
         playerInTriggerArea = true;
         Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
 

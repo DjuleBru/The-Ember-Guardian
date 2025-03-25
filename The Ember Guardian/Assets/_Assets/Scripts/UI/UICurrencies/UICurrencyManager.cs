@@ -408,6 +408,7 @@ public class UICurrencyManager : MonoBehaviour
     public void CurrencyFellFromBag(Currency_UI currencyUI) {
         PlayerCurrencies.Instance.CurrencyFellFromBag(currencyUI.GetCurrencyType());
         currenciesInBag.Remove(currencyUI);
+        currencyUI.SetFellFromBag();
 
         OnCurrencyRemovedFromBag?.Invoke(this, new OnCurrencyDroppedEventArgs {
             currencyUIDropped = currencyUI

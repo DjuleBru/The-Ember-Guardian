@@ -9,8 +9,12 @@ public class Animal : Mob
 
     public event EventHandler OnAnimalHitObstacle;
 
+    private int maxHuntersAssigned;
+    private List<Worker> workersAssigned = new List<Worker>();
+
     private void Start() {
         health = animalSO.maxHP;
+        maxHuntersAssigned = animalSO.maxHuntersAssigned;
         AnimalManager.Instance.AddAnimalSpawned(this);
     }
 
@@ -29,6 +33,21 @@ public class Animal : Mob
    
     public AnimalSO GetAnimalSO() {
         return animalSO;
+    }
+
+    public void AssignHunter(Worker worker) {
+        workersAssigned.Add(worker);
+    }
+    public void UnAssignHunter(Worker worker) {
+        workersAssigned.Remove(worker);
+    }
+
+    public bool GetHunterIsAlreadyAssigned(Worker worker) {
+        return workersAssigned.Contains(worker);
+    }
+
+    public bool GetMaxHuntersAssigned() {
+        return workersAssigned.Count == maxHuntersAssigned;
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StructureUI_Fire : StructureUI
 {
@@ -15,6 +16,9 @@ public class StructureUI_Fire : StructureUI
     [SerializeField] private RectTransform progressBarBackgroundContainer;
     [SerializeField] private RectTransform progressBarBackgroundTemplate;
     [SerializeField] private Animator fireUIAnimator;
+
+    [SerializeField] private Image fuelFireOrbBackground;
+    [SerializeField] private Image fuelFireOrbOutline;
 
     private CanvasGroup progressBarCanvasGroup;
     [SerializeField] private float displayDuration = 2f; // Durée pendant laquelle le progressBar est visible avant le fade out
@@ -65,6 +69,7 @@ public class StructureUI_Fire : StructureUI
 
     protected void Update() {
         HandleUIDisplay();
+        HandleFuelFireCooldownVisuals();
         UpdateTargetBarAmount();
 
         if (currentBarAmount != targetBarAmount) {
@@ -119,6 +124,14 @@ public class StructureUI_Fire : StructureUI
                 fireProgressBarGameObject.SetActive(false); // Masquer l'objet après le fade-out
             }
         }
+    }
+
+    private void HandleFuelFireCooldownVisuals() {
+        if (!fire.GetFuelFireOnCooldown()) return;
+
+        float fuelFireCooldownNormalized = fire.GetFuelFireCooldownTimerNormalized();
+        fuelFireOrbBackground.fillAmount = fuelFireCooldownNormalized;
+        fuelFireOrbOutline.fillAmount = fuelFireCooldownNormalized;
     }
 
     private void UpdateTargetBarAmount() {

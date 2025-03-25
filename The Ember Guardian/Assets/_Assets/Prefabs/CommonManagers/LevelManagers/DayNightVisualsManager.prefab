@@ -58,7 +58,7 @@ MonoBehaviour:
   nightLightIntensity: 0.25
   sunLightIntensity: 0.7
   moonLightIntensity: 1
-  transitionDuration: 1
+  transitionDuration: 2
   skySpriteRenderer: {fileID: 0}
   globalLight2D: {fileID: 0}
   sunLight2D: {fileID: 0}
@@ -115,3 +115,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   sunArcRadius: 30
+  dontHandleMoonMovement: 0
+  dontHandleSunMovement: 0
+  dontHandleMoonLight: 0

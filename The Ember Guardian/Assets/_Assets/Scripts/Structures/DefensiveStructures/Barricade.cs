@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,23 +8,9 @@ public class Barricade : Structure, IDamageable {
 
     [SerializeField] private Transform projectileTarget;
     [SerializeField] private Transform meleeAttackPosition;
-    [SerializeField] private Collider2D barricadeColliderLevel1;
-    [SerializeField] private Collider2D barricadeColliderLevel2;
-    [SerializeField] private Collider2D barricadeColliderLevel3;
-    [SerializeField] private Collider2D barricadeColliderLevel4;
     [SerializeField] private BarricadeVisual barricadeVisual;
 
     private BoxCollider2D triggerCollider;
-    [SerializeField] private float triggerColliderLevel1SizeY;
-    [SerializeField] private float triggerColliderLevel1OffsetY;
-    [SerializeField] private float triggerColliderLevel2SizeY;
-    [SerializeField] private float triggerColliderLevel2OffsetY;
-    [SerializeField] private float triggerColliderLevel3SizeY;
-    [SerializeField] private float triggerColliderLevel3OffsetY;
-    [SerializeField] private float triggerColliderLevel4SizeY;
-    [SerializeField] private float triggerColliderLevel4OffsetY;
-
-    private Collider2D currentBarricadeCollider;
 
     private int level1Health = 24;
     private int level2Health = 32;
@@ -53,7 +40,6 @@ public class Barricade : Structure, IDamageable {
 
         barricadeMaxHealth = level1Health;
         barricadeHealth = level1Health;
-        currentBarricadeCollider = barricadeColliderLevel1;
 
         OnAnyBarricadeBuilt?.Invoke(this, EventArgs.Empty);
     }
@@ -62,13 +48,13 @@ public class Barricade : Structure, IDamageable {
         Debug.Log("barricade destroyed !");
         OnBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
         OnAnyBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
-        currentBarricadeCollider.enabled = false;
     }
 
     public Transform GetProjectileTarget() {
         return transform;
     }
 
+    [Button]
     public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
         if (barricadeHealth <= 0) return;
         barricadeHealth -= damage;
@@ -98,42 +84,19 @@ public class Barricade : Structure, IDamageable {
         if (structureLevel == 2) {
             barricadeMaxHealth = level2Health;
             barricadeHealth = level2Health;
-
-            triggerColliderOffset.y = triggerColliderLevel2OffsetY;
-            triggerColliderSize.y = triggerColliderLevel2SizeY;
-
-            ActivateCollider(barricadeColliderLevel2);
         }
         if (structureLevel == 3) {
             barricadeMaxHealth = level3Health;
             barricadeHealth = level3Health;
 
-            triggerColliderOffset.y = triggerColliderLevel3OffsetY;
-            triggerColliderSize.y = triggerColliderLevel3SizeY;
-
-            ActivateCollider(barricadeColliderLevel3);
-
         }
         if (structureLevel == 4) {
             barricadeMaxHealth = level4Health;
             barricadeHealth = level4Health;
-
-            triggerColliderOffset.y = triggerColliderLevel4OffsetY;
-            triggerColliderSize.y = triggerColliderLevel4SizeY;
-
-            ActivateCollider(barricadeColliderLevel4);
         }
 
         triggerCollider.offset = triggerColliderOffset;
         triggerCollider.size = triggerColliderSize;
-    }
-
-    private void ActivateCollider(Collider2D collider) {
-
-        currentBarricadeCollider.gameObject.SetActive(false);
-        currentBarricadeCollider = collider;
-        currentBarricadeCollider.gameObject.SetActive(true);
-
     }
 
     protected override void DayNightManager_OnDawnStart(object sender, EventArgs e) {
@@ -204,6 +167,10 @@ public class Barricade : Structure, IDamageable {
             OnFireLightTriggeredIn?.Invoke(this, EventArgs.Empty);
         }
 
+        if ((collision.gameObject.GetComponent<Player>() != null)) {
+            Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
+        }
+
         if (collision.gameObject.GetComponent<Player>() != null && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
             if (barricadeRepairable) {
                 barricadeVisual.ShowRepairStructureVisual(true);
@@ -216,6 +183,10 @@ public class Barricade : Structure, IDamageable {
 
         if (collision.gameObject.GetComponentInParent<Fire>()) {
             OnFireLightTriggeredOut?.Invoke(this, EventArgs.Empty);
+        }
+
+        if ((collision.gameObject.GetComponent<Player>() != null)) {
+            Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
         }
 
         if (collision.gameObject.GetComponent<Player>()  != null && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {

@@ -291,7 +291,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
             return "Explore to recruit at least 2 emberlings";
         }
         if (subObjectiveType == SubObjectiveType.WaitForHunt) {
-            return "Wait for Hunters to collect orbs";
+            return "Wait for Hunters to hunt an animal";
         }
         if (subObjectiveType == SubObjectiveType.CollectOrbsFromHunters) {
             return "Collect orbs from the Hunters";

@@ -20,8 +20,7 @@ public class DemoMainLevelManager : MonoBehaviour
 
     private bool ammoCraftStarted;
     private bool animalDied;
-    private bool orbPickedUpByWorker;
-    private bool orbDroppedByWorker;
+    private bool orbCollectedByPlayer;
     private bool ammoCraftEnded;
     private bool ammoCraftCollected;
     private bool recruitWorkerTooltipShown;
@@ -50,9 +49,10 @@ public class DemoMainLevelManager : MonoBehaviour
         LevelManager.Instance.OnLevelFailed += LevelManager_OnLevelFailed;
         LevelManager.Instance.OnLevelSuccess += LevelManager_OnLevelSuccess;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
+        DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
         VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
         Animal.OnAnyMobDied += Animal_OnAnyMobDied;
-        Collectible.OnAnyCollectiblePickedUpByWorker += Collectible_OnAnyCollectiblePickedUpByWorker;
+        Collectible.OnAnyCollectiblePickedUpByPlayer += Collectible_OnAnyCollectiblePickedUpByPlayer;
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         mainFireLocation.OnPlayerTriggeredIn += MainFireLocation_OnPlayerTriggeredIn;
         mainFireLocation.OnPlayerTriggeredOut += MainFireLocation_OnPlayerTriggeredOut;
@@ -64,6 +64,7 @@ public class DemoMainLevelManager : MonoBehaviour
         if (!demoMainLevelTutorialCompleted) {
             StartCoroutine(SetDemoTutorialObjective());
             Fire.Instance.SetFireInteractionsUpdateLocked(true);
+            WindManager.Instance.DisableWind();
             CreaturesSpawnManager.Instance.SetGrowthFactor(2.2f);
             CreaturesSpawnManager.Instance.SetMinMaxDifficultyGrowthFactor(1.8f);
             CreaturesSpawnManager.Instance.SetMaxRemainingSubwaveCreaturesForNextSubwave(2);
@@ -80,6 +81,16 @@ public class DemoMainLevelManager : MonoBehaviour
         }
     }
 
+    private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
+        int dayNumber = DayNightManager.Instance.GetCurrentDay();
+
+        Debug.Log(dayNumber);
+
+        if (dayNumber == 4) {
+            CreaturesSpawnManager.Instance.SetSetDifficultyAnimationCurve();
+        }
+    }
+
     private void InitializeSpawners(bool demoMainLevelTutorialCompleted) {
         foreach (MobSpawner daySpawner in firstLevelLeftSpawners.GetComponentsInChildren<MobSpawner>()) {
             daySpawner.gameObject.SetActive(!demoMainLevelTutorialCompleted);
@@ -88,7 +99,6 @@ public class DemoMainLevelManager : MonoBehaviour
             daySpawner.gameObject.SetActive(!demoMainLevelTutorialCompleted);
         }
         foreach (DayCreatureSpawnerGroup daySpawnerGroup in levelRightSpawnerGroups.GetComponentsInChildren<DayCreatureSpawnerGroup>()) {
-            Debug.Log(daySpawnerGroup);
             daySpawnerGroup.gameObject.SetActive(demoMainLevelTutorialCompleted);
         }
         foreach (DayCreatureSpawnerGroup daySpawnerGroup in levelLeftSpawnerGroups.GetComponentsInChildren<DayCreatureSpawnerGroup>()) {
@@ -132,11 +142,11 @@ public class DemoMainLevelManager : MonoBehaviour
     }
 
     private void LevelManager_OnLevelFailed(object sender, EventArgs e) {
-        AddLevelLostAmount();
+        demoLevelLostAmount++;
+        ES3.Save("demoLevelLostAmount", demoLevelLostAmount);
     }
 
     public void AddLevelLostAmount() {
-        Debug.Log("AddLevelLostAmount");
         if (demoLevelLostAmount == 0) return;
 
         demoLevelLostAmount++;
@@ -192,28 +202,37 @@ public class DemoMainLevelManager : MonoBehaviour
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveUIList);
     }
 
-    private void Collectible_OnAnyCollectiblePickedUpByWorker(object sender, EventArgs e) {
+    private void Collectible_OnAnyCollectiblePickedUpByPlayer(object sender, EventArgs e) {
         if (demoMainLevelTutorialCompleted) return;
+        if (orbCollectedByPlayer) return;
         if (hunterAmountRecruited < 2) return;
-        if (orbPickedUpByWorker) return;
         if (!animalDied) return;
 
-        orbPickedUpByWorker = true;
-        LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.WaitForHunt, LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbsFromHunters);
+        orbCollectedByPlayer = true;
+
+        if (ammoCraftCollected) {
+            LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbsFromHunters, LevelUI_ObjectiveUI.SubObjectiveType.FuelFire);
+            UnlockFireInteractions();
+        }
+        else {
+            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbsFromHunters);
+        }
     }
 
     private void Animal_OnAnyMobDied(object sender, EventArgs e) {
         Mob mob = (Mob)sender;
         if (!(mob is Animal)) return;
         animalDied = true;
+
+        LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.WaitForHunt, LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbsFromHunters);
     }
 
     private void Worker_OnAnyOrbDroppedByWorker(object sender, System.EventArgs e) {
         if (demoMainLevelTutorialCompleted) return;
-        if (orbDroppedByWorker) return;
+        if (orbCollectedByPlayer) return;
         if (!animalDied) return;
 
-        orbDroppedByWorker = true;
+        orbCollectedByPlayer = true;
 
         if(ammoCraftCollected) {
             LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbsFromHunters, LevelUI_ObjectiveUI.SubObjectiveType.FuelFire);
@@ -249,7 +268,7 @@ public class DemoMainLevelManager : MonoBehaviour
         if (ammoCraftCollected) return;
 
         ammoCraftCollected = true;
-        if (orbDroppedByWorker) {
+        if (orbCollectedByPlayer) {
             LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.CollectCrafterAmmo, LevelUI_ObjectiveUI.SubObjectiveType.FuelFire);
             UnlockFireInteractions();
         }
@@ -363,7 +382,7 @@ public class DemoMainLevelManager : MonoBehaviour
 
     private void OnDestroy() {
 
-        Collectible.OnAnyCollectiblePickedUpByWorker -= Collectible_OnAnyCollectiblePickedUpByWorker;
+        Collectible.OnAnyCollectiblePickedUpByPlayer -= Collectible_OnAnyCollectiblePickedUpByPlayer;
         Worker.OnAnyWorkerRecruited -= Worker_OnAnyWorkerRecruited;
         Worker.OnAnyWorkerAssignedHunter -= Worker_OnAnyWorkerAssignedHunter;
         Worker.OnAnyOrbDroppedByWorker -= Worker_OnAnyOrbDroppedByWorker;

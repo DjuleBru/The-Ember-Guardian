@@ -31,7 +31,7 @@ public class HUBManager_Demo : MonoBehaviour
     [SerializeField] private GameObject gemMerchantIndicator;
 
     private int gemMerchantStoppedInteractingCount;
-    private int gemsToDropInChest = 5;
+    private int gemsToDropInChest = 7;
     private int gemAmountDroppedInChest;
     private bool playerBoughtItem;
     private bool hubFireEmberExtractable;
@@ -63,6 +63,10 @@ public class HUBManager_Demo : MonoBehaviour
 
         } else {
             MusicManager.Instance.PlayMusicDelayed(3f);
+
+            if(demoLevelLostAmount == 0) {
+                StartCoroutine(HandleBackFromFirstRun());
+            }
 
             if (demoLevelLostAmount == 1) {
                 // Player lost level once 
@@ -120,11 +124,29 @@ public class HUBManager_Demo : MonoBehaviour
         gemMerchantReward.DisableReward();
     }
 
+    private IEnumerator HandleBackFromFirstRun() {
+        hubFireEmberExtractable = true;
+
+        yield return new WaitForSeconds(.5f);
+        Debug.Log("HandleBackFromFirstRun");
+        gemMerchant.SetHasTalkLinesToShow(false, false);
+
+        foreach (HubMerchant hubMerchant in functionalDemoHubMerchantList) {
+            hubMerchant.SetHasTalkLinesToShow(false, false);
+            hubMerchant.SetDemoMerchantUnlocked();
+        }
+
+        foreach (HubMerchant decorationalHubMerchant in decorationalDemoHubMerchantList) {
+            decorationalHubMerchant.SetHasTalkLinesToShow(true, false);
+            decorationalHubMerchant.SetDemoMerchantUnlocked();
+        }
+
+        gemMerchantReward.DisableReward();
+    }
     private IEnumerator HandleAnyLevelDefeatHubEvolution() {
         hubFireEmberExtractable = true;
 
         yield return new WaitForSeconds(.5f);
-        Debug.Log("HandleAnyLevelDefeatHubEvolution");
         gemMerchantTalkUI.SetTextLinesSO(gemMerchantLevelLostAgainTextLinesSO);
 
         foreach (HubMerchant hubMerchant in functionalDemoHubMerchantList) {

@@ -188,7 +188,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void GameInput_OnPlayerJumpStarted(object sender, System.EventArgs e) {
-        if (isJumping) return;
+
         if (isRolling) return;
         if (isExhausted) return;
         if (PauseMenuUI.Instance.isPaused) return;
@@ -332,7 +332,6 @@ public class PlayerMovement : MonoBehaviour {
         staminaTimer += rollExhaustionAmount - rollExhaustionAmountBuff;
 
         OnPlayerRoll?.Invoke(this, EventArgs.Empty);
-        Invoke("EndRoll", rollAnimationDuration);
     }
 
     private void EndRoll() {
@@ -396,13 +395,12 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         // Recover only when not exhausted anymore
-        if (!isRunning && !isExhausted && staminaTimer > 0) {
+        if (!isRunning && !isExhausted && !isRolling && staminaTimer > 0) {
             if(staminaTimer > PlayerStats.Instance.GetMaxStamina()) {
                 staminaTimer = PlayerStats.Instance.GetMaxStamina();
             }
             staminaTimer -= Time.deltaTime * runRecoverFactor;
         }
-
 
         if (isAlmostExhausted) {
             if (staminaTimer <= 0) {
@@ -436,7 +434,7 @@ public class PlayerMovement : MonoBehaviour {
             }
 
         }
-        
+
 
         // Exhausted
         if (staminaTimer > PlayerStats.Instance.GetMaxStamina() && !isExhausted) {

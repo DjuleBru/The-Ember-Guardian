@@ -32,7 +32,15 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
         if (!huntingFlag.GetPlayerCarryingFlag()) return;
 
         if(CampZoneManager.Instance.IsWithinCampZoneLimits(transform.position)) {
-            huntingFlag.ResetPlayerManuallySetHuntingLimit();
+            Vector3 currentPosition = new Vector3(Player.Instance.transform.position.x, 0f, 0f);
+
+            if(currentPosition.x > 0) {
+                currentPosition.x += 3f;
+            } else {
+                currentPosition.x -= 3f;
+            }
+
+            SetNewFlagPosition(currentPosition);
         }
     }
 
@@ -104,5 +112,9 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
             Player.Instance.SetCarryinhOtherObject(false);
             pickUpSpriteRenderer.enabled = false;
         }
+    }
+
+    public bool GetPlayerIsCarryingFlag() {
+        return playerCarryingFlag;
     }
 }

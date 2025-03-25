@@ -111,6 +111,10 @@ public class WindManager : MonoBehaviour
         return currentWindStrength;
     }
 
+    public void DisableWind() {
+        hasWind = false;
+    }
+
     public float GetWindDir() {
         return currentWindDir;
     }

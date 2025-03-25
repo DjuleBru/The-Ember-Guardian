@@ -369,7 +369,6 @@ public class SoundManager : MonoBehaviour
         }
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember) {
             PlaySound3D(soundRefsSO.emberTouchedFloor, (sender as MonoBehaviour).transform.position, 1f);
-            Debug.Log("ember bounced");
         }
     }
 

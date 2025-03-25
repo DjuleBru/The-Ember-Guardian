@@ -23,16 +23,20 @@ public class PauseMenuUI_Level : PauseMenuUI {
     }
 
     public void BackToHubButton() {
-        Debug.Log("BackToHubButton");
 
         if (confirmBackToHub) {
         
             ShowPauseMenu(false);
             SceneLoader.Instance.LoadHub(1f);
 
+            if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+                ReturnToHubFromGame();
+            }
+
             if (DemoMainLevelManager.Instance != null) {
                 DemoMainLevelManager.Instance.AddLevelLostAmount();
             }
+
 
         }
         else {
@@ -44,6 +48,11 @@ public class PauseMenuUI_Level : PauseMenuUI {
             progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = unsavedTextColor;
         
         }
+    }
+
+    public void ReturnToHubFromGame() {
+        MetaProgressionManager.Instance.SaveLevelGems(0f);
+        MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
     }
 
     public override void ExitGameButton() {

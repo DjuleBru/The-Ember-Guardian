@@ -1,3 +1,4 @@
+using QFSW.QC;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
@@ -142,6 +143,7 @@ public class Player : MonoBehaviour, IDamageable
         rb.AddForce(knockbackDir, ForceMode2D.Impulse);
     }
 
+    
     public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
 
         if (damagedRecently && !ignoreTemporaryInvincibility) return;
@@ -154,6 +156,25 @@ public class Player : MonoBehaviour, IDamageable
         playerHealth -= damage;
 
         if(playerHealth <= 0) {
+            healthLoss = playerHealth + damage;
+            playerHealth = 0;
+            Die();
+        }
+
+        damagedTimer = PlayerStats.Instance.GetDamagedImmunityTime();
+        damagedRecently = true;
+
+        OnPlayerDamaged?.Invoke(this, new OnPlayerChangedHealthEventArgs {
+            hpChangeAmount = healthLoss
+        });
+    }
+
+    [Button]
+    public void TakeDamageButton(int damage) {
+        int healthLoss = damage;
+        playerHealth -= damage;
+
+        if (playerHealth <= 0) {
             healthLoss = playerHealth + damage;
             playerHealth = 0;
             Die();
@@ -284,7 +305,6 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public bool GetInNoOtherObjectTriggerArea() {
-
         return !inPayCurrencyTriggerArea && !inMerchantTriggerArea && !inOtherInteractableObjectTriggerArea && !hoveringWorker;
     }
 

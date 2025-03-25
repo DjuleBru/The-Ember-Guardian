@@ -28,6 +28,9 @@ public class WorkerVisual : MobVisual {
     private float unHoveredBodySpriteLightIntensity = .9f;
     private float hoveredBodySpriteLightIntensity = 1.1f;
 
+    private bool workerBlockedByCreatures;
+    private bool hunterFoundAnimal;
+
     protected override void Awake() {
         base.Awake();
         worker = GetComponentInParent<Worker>();
@@ -57,8 +60,7 @@ public class WorkerVisual : MobVisual {
         workerWeaponGlowSpriteRenderer.sortingOrder = currentMaxSortingOrder+2;
     }
 
-    private void Start() {
-        
+    private void Start() {     
         WorkerManager.Instance.OnClosestWorkerChanged += WorkerManager_OnClosestWorkerChanged;
     }
 
@@ -114,10 +116,16 @@ public class WorkerVisual : MobVisual {
         MinerJob.MinerState state = minerJob.GetState();
 
         if (state == MinerJob.MinerState.blockedByCreatures) {
-            ChangeStatusSprite(exclamationMarkSprite);
+            if (!workerBlockedByCreatures) {
+                workerBlockedByCreatures = true;
+                ChangeStatusSprite(exclamationMarkSprite);
+            }
         }
         else {
-            workerStatusSpriteRenderer.sprite = null;
+            if(workerBlockedByCreatures) {
+                workerStatusSpriteRenderer.sprite = null;
+                workerBlockedByCreatures = false;
+            }
         }
     }
 
@@ -126,18 +134,30 @@ public class WorkerVisual : MobVisual {
         HunterJob.HunterState state = hunterJob.GetState();
 
         if(state == HunterJob.HunterState.blockedByCreatures) {
-            ChangeStatusSprite(exclamationMarkSprite);
+            if(!workerBlockedByCreatures) {
+                workerBlockedByCreatures = true;
+                ChangeStatusSprite(exclamationMarkSprite);
+            }
         } else {
-            workerStatusSpriteRenderer.sprite = null;
+            if (workerBlockedByCreatures) {
+                workerStatusSpriteRenderer.sprite = null;
+                workerBlockedByCreatures = false;
+            }
         }
     }
 
     private void HunterJob_OnHunterFindsNoAnimal(object sender, System.EventArgs e) {
-        ChangeStatusSprite(questionMarkSprite);
+        if(hunterFoundAnimal) {
+            ChangeStatusSprite(questionMarkSprite);
+            hunterFoundAnimal = false;
+        }
     }
 
     private void HunterJob_OnHunterFoundAnimal(object sender, System.EventArgs e) {
-        workerStatusSpriteRenderer.sprite = null;
+        if(!hunterFoundAnimal) {
+            hunterFoundAnimal = true;
+            workerStatusSpriteRenderer.sprite = null;
+        }
     }
 
 

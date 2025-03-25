@@ -317,10 +317,10 @@ public class DogAI : MonoBehaviour
     }
 
     private void HeadToBarkAtCampZoneLimit() {
-        float destinationPositionX = CampZoneManager.Instance.GetMaxZoneLimit() - 4.5f;
+        float destinationPositionX = CampZoneManager.Instance.GetMaxZoneLimit() - 4f;
 
         if(closestIncomingCreature.transform.position.x < 0) {
-            destinationPositionX = CampZoneManager.Instance.GetMinZoneLimit() + 4.5f;
+            destinationPositionX = CampZoneManager.Instance.GetMinZoneLimit() + 4f;
         }
 
         Vector3 destinationPosition = new Vector3(destinationPositionX, 0, 0);

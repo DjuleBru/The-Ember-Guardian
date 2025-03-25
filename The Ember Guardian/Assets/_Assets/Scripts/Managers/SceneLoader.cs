@@ -83,7 +83,6 @@ public class SceneLoader : MonoBehaviour
 
         yield return new WaitForSeconds(crossfadeDuration + .2f);
 
-        Debug.Log("Load Main Menu");
         SceneManager.LoadScene(sceneName);
     }
 

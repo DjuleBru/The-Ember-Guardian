@@ -271,7 +271,10 @@ public class HunterJob : WorkerJob {
                         return;
                     }
 
-                    if (targetAnimal == null) return;
+                    if (targetAnimal == null) {
+                        Roam(5f, transform.position);
+                        return;
+                    }
 
                     if (CheckBlockedByCreature()) {
                         ChangeState(HunterState.blockedByCreatures);
@@ -406,6 +409,11 @@ public class HunterJob : WorkerJob {
                     break;
 
                 case HunterState.attackingDay:
+
+                    if (!HunterIsWithinHuntingLimits()) {
+                        ChangeState(HunterState.headingBackToHuntingLimit);
+                        return;
+                    }
 
                     CheckClosestCreatureSmart();
 
@@ -568,13 +576,21 @@ public class HunterJob : WorkerJob {
         if (checkClosestTargetTimer < 0 ) {
             checkClosestTargetTimer = checkClosestTargetCooldown;
 
-            Animal newTargetAnimal = AnimalManager.Instance.GetClosestAnimalInRadius(mobMovement.transform.position, worker.GetCampSideAddigned(), attackRange);
-            if (newTargetAnimal == null && targetAnimal != null) {
-                targetAnimal = null;
+            Animal newTargetAnimal = AnimalManager.Instance.GetClosestAvailableAnimalInRadius(mobMovement.transform.position, worker.GetCampSideAddigned(), worker);
+
+            if (newTargetAnimal == null) {
+                // Hunter had a target animal but finds non anymore
+
+                if(targetAnimal != null) {
+                    targetAnimal.UnAssignHunter(worker);
+                    targetAnimal = null;
+                }
+
                 OnHunterFindsNoAnimal?.Invoke(this, EventArgs.Empty);
+
             }
 
-            if (newTargetAnimal != null && (targetAnimal == null || targetAnimal != newTargetAnimal)) {
+            if (newTargetAnimal != null && targetAnimal != newTargetAnimal) {
                 OnHunterFoundAnimal?.Invoke(this, EventArgs.Empty);
                 TargetAnimal(newTargetAnimal);
             }
@@ -645,15 +661,18 @@ public class HunterJob : WorkerJob {
     }
 
     private void TargetAnimal(Animal newTargetAnimal) {
-        if (targetAnimal == newTargetAnimal) return;
-
         if (targetAnimal != null) {
+            // Hunter already had an animal assigned
+
             targetAnimal.OnMobDroppedCollectibles -= TargetAnimal_OnAnimalDroppedCollectibles;
             targetAnimal.OnMobDamageTaken -= TargetAnimal_OnMobDamageTaken;
+            targetAnimal.UnAssignHunter(worker);
         }
+
         targetAnimal = newTargetAnimal;
         newTargetAnimal.OnMobDroppedCollectibles += TargetAnimal_OnAnimalDroppedCollectibles;
         newTargetAnimal.OnMobDamageTaken += TargetAnimal_OnMobDamageTaken;
+        targetAnimal.AssignHunter(worker);
     }
 
     protected override void TargetCreature(Creature newTargetCreature) {
@@ -676,6 +695,7 @@ public class HunterJob : WorkerJob {
             collectible.OnCollectibleDestroyed += Collectible_OnCollectibleDestroyed;
         }
 
+        CheckClosestAnimal();
         targetAnimal = null;
         hasHitAnimal = false;
 

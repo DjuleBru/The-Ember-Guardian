@@ -79,6 +79,10 @@ public class Fire : Structure, IDamageable {
     private float initialFireAOEValue;
     private float finalFireAOEValue;
 
+    private float fuelFireNightCooldown = 3f;
+    private float fuelFireNightTimer;
+    private bool fuelFireOnCooldown;
+
     protected override void Awake() {
         if(isMainFire) {
             Instance = this;
@@ -99,7 +103,7 @@ public class Fire : Structure, IDamageable {
             base.Start();
         } else {
             GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
-            GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
+            GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
             GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
         }
 
@@ -156,6 +160,7 @@ public class Fire : Structure, IDamageable {
 
     private void Update() {
         HandleFuelDecrease();
+        HandleFuelFireCooldown();
 
         if (isHubFire) return;
 
@@ -179,7 +184,17 @@ public class Fire : Structure, IDamageable {
         CheckFireSecondaryFunctionInteractable();
         debugFuelLevel = fuelLevel;
     }
-    
+
+    private void HandleFuelFireCooldown() {
+        if (!fuelFireOnCooldown) return;
+
+        fuelFireNightTimer += Time.deltaTime;
+        if (fuelFireNightTimer >= fuelFireNightCooldown) {
+            fuelFireOnCooldown = false;
+            fuelFireNightTimer = 0;
+        }
+    }
+
     private void HandleFuelDecrease() {
         if (extractingEmber) {
             extractingEmberTimer -= Time.deltaTime;
@@ -219,6 +234,11 @@ public class Fire : Structure, IDamageable {
 
         if(fuelLevel >= maxFuelTreshold) {
             fuelLevel = maxFuelTreshold;
+        }
+
+        if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+            fuelFireOnCooldown = true;
+            fuelFireNightTimer = 0;
         }
 
         CheckFireStateUpgrade();
@@ -410,13 +430,18 @@ public class Fire : Structure, IDamageable {
         playerInteracting = true;
 
         if (currentStructureInteractionType == StructureInteractionType.secondaryFunction) {
+
             // Player is trying to extract ember
             OnFireEmberExtractionStarted?.Invoke(this, EventArgs.Empty);
             OnAnyFireEmberExtractionStarted?.Invoke(this, EventArgs.Empty);
             extractingEmber = true;
             extractingEmberTimer = extractingEmberTime;
+
         } else {
+
+            if (fuelFireOnCooldown) return;
             payCurrencyUI.SetPlayerInteracting(true);
+
         }
 
     }
@@ -516,6 +541,14 @@ public class Fire : Structure, IDamageable {
 
     public bool GetInitialFireLit() {
         return initialFireLit;
+    }
+
+    public bool GetFuelFireOnCooldown() {
+        return fuelFireOnCooldown;
+    }
+
+    public float GetFuelFireCooldownTimerNormalized() {
+        return fuelFireNightTimer / fuelFireNightCooldown;
     }
 
     public void SetFireInteractionsUpdateLocked(bool locked) {

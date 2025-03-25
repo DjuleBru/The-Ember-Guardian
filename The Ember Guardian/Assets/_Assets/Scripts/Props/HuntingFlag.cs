@@ -7,8 +7,8 @@ using UnityEngine.UIElements;
 public class HuntingFlag : MonoBehaviour
 {
     [SerializeField] private bool isMaxHuntingLimit;
-    [SerializeField] private Transform campDefinedHuntingFlag;
-    [SerializeField] private Transform playerDefinedHuntingFlag;
+    [SerializeField] private HuntingFlag_CampDefined campDefinedHuntingFlag;
+    [SerializeField] private HuntingFlag_PlayerDefined playerDefinedHuntingFlag;
 
     public static event EventHandler OnAnyHuntingFlagReset;
 
@@ -25,7 +25,7 @@ public class HuntingFlag : MonoBehaviour
 
 
     private void Obstacle_OnAnyObstacleBuilt(object sender, EventArgs e) {
-        if(destinationPosition != null && campDefinedHuntingFlag.position != destinationPosition) {
+        if(destinationPosition != null && campDefinedHuntingFlag.transform.position != destinationPosition) {
             TrySetCampHuntingLimit(destinationPosition);
         }
     }
@@ -34,11 +34,11 @@ public class HuntingFlag : MonoBehaviour
         destinationPosition = position;
 
         // Vérifiez s'il y a un obstacle entre les positions
-        Vector3 direction = position - campDefinedHuntingFlag.position;
+        Vector3 direction = position - campDefinedHuntingFlag.transform.position;
         float distance = direction.magnitude;
 
         // Raycast pour détecter les obstacles
-        RaycastHit2D hit = Physics2D.Raycast(campDefinedHuntingFlag.position, direction.normalized, distance, LayerMask.GetMask("Obstacles"));
+        RaycastHit2D hit = Physics2D.Raycast(campDefinedHuntingFlag.transform.position, direction.normalized, distance, LayerMask.GetMask("Obstacles"));
 
         if (hit.collider != null) {
             Obstacle obstacle = hit.collider.gameObject.GetComponent<Obstacle>();
@@ -49,32 +49,32 @@ public class HuntingFlag : MonoBehaviour
     }
 
     public void SetCampHuntingLimit(Vector3 position) {
-        campDefinedHuntingFlag.position = position;
+        campDefinedHuntingFlag.transform.position = position;
 
         if (playerManuallySetFlagPosition) {
 
             if (isMaxHuntingLimit) {
-                if (position.x > playerDefinedHuntingFlag.position.x) {
-                    playerDefinedHuntingFlag.position = position;
+                if (position.x > playerDefinedHuntingFlag.transform.position.x) {
+                    playerDefinedHuntingFlag.transform.position = position;
                 }
             }
             else {
-                if (position.x < playerDefinedHuntingFlag.position.x) {
-                    playerDefinedHuntingFlag.position = position;
+                if (position.x < playerDefinedHuntingFlag.transform.position.x) {
+                    playerDefinedHuntingFlag.transform.position = position;
                 }
             }
 
         }
         else {
-            playerDefinedHuntingFlag.position = position;
+            playerDefinedHuntingFlag.transform.position = position;
         }
     }
 
     public float GetCampHuntingLimit() {
-        if(playerManuallySetFlagPosition) {
-            return playerDefinedHuntingFlag.position.x;
+        if(playerManuallySetFlagPosition || playerDefinedHuntingFlag.GetPlayerIsCarryingFlag()) {
+            return playerDefinedHuntingFlag.transform.position.x;
         } else {
-            return campDefinedHuntingFlag.position.x;
+            return campDefinedHuntingFlag.transform.position.x;
         }
     }
 
@@ -89,7 +89,7 @@ public class HuntingFlag : MonoBehaviour
     }
 
     public Vector3 GetCampDefinedHuntingFlagPosition() {
-        return campDefinedHuntingFlag.position;
+        return campDefinedHuntingFlag.transform.position;
     }
 
     public bool SetPlayerDefinedHuntingLimit(bool defined) {

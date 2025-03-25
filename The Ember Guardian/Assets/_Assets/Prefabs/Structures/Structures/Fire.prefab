@@ -38032,21 +38032,41 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: initialPayCurrencySmoothTime
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5738346740003807192, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.185
       objectReference: {fileID: 0}
     - target: {fileID: 5937401065631940523, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6468682074147149086, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6672449509668370278, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6672449509668370278, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6819761507502285850, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: currencyTypeToPay
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7687860166416340409, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7687860166416340409, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8209206451638645461, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -38245,6 +38265,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4623366244068626115, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
   m_PrefabInstance: {fileID: 884948754251948970}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5827294314880799948 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6672449509668370278, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+  m_PrefabInstance: {fileID: 884948754251948970}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6147802896860545034 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6419487770454074272, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
@@ -38359,6 +38390,17 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 7868727550266577229, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
   m_PrefabInstance: {fileID: 884948754251948970}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7419465031391360531 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7687860166416340409, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+  m_PrefabInstance: {fileID: 884948754251948970}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8165524197477933600 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9013458545296523658, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
@@ -38387,6 +38429,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UIGameObject: {fileID: 1789648050097970014}
+  otherUIGameObjectList: []
   functionUIGameObject: {fileID: 6783013657125641217}
   secondaryFunctionUIGameObject: {fileID: 6161654533063112372}
   upgradeGameObject: {fileID: 4181146338195577452}
@@ -38411,6 +38454,8 @@ MonoBehaviour:
   progressBarBackgroundContainer: {fileID: 1353746080882326139}
   progressBarBackgroundTemplate: {fileID: 6197698081081107766}
   fireUIAnimator: {fileID: 5482826395063388266}
+  fuelFireOrbBackground: {fileID: 7419465031391360531}
+  fuelFireOrbOutline: {fileID: 5827294314880799948}
   displayDuration: 2
   fadeOutDuration: 0.5
 --- !u!224 &9055346808931783039 stripped

@@ -301,8 +301,6 @@ public class MusicManager : MonoBehaviour {
 
         AudioClip nextClip = GetNightClipBasedOnRemainingCreatures();
 
-        Debug.Log("Night selected audio clip " + nextClip);
-
         AudioSource activeSource = isUsingAudioSourceA ? audioSourceA : audioSourceB;
         AudioClip currentAudioClipPlaying = activeSource.clip;
 
@@ -316,7 +314,6 @@ public class MusicManager : MonoBehaviour {
         }
         else
         {
-            Debug.Log("Next clip == current Audio Clip");
             nightCoroutine = StartCoroutine(WaitForClipToEnd(nextClip.length / 2));
         }
 

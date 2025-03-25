@@ -165,8 +165,6 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     public void SaveLevelGems(float proportionToSave = 1) {
-        Debug.Log("save level gems");
-
         List<Vector3> greenGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.greenGem);
         List<Vector3> redGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.redGem);
         List<Vector3> blueGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.blueGem);
