@@ -8,10 +8,21 @@ public class Chest_Special : Chest
 
 
     [SerializeField] private GunSO gunSOInChest;
+    [SerializeField] private List<SkillSO> skillSOListInChest;
+
     private bool rewardOfferedToPlayerStarted;
 
     protected override void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
+
+        if (playerPayingCurrencies) {
+            payCurrencyUI.SetPlayerInteracting(false);
+            return;
+        }
+
+        if (payToOpenChest) {
+            if (!chestPricePaid) return;
+        };
 
         if(!chestOpenedAnimationOver) {
             Debug.Log("OpenChest");
@@ -35,6 +46,19 @@ public class Chest_Special : Chest
 
         if (chestType == ChestType.weaponChest) {
             PlayerShoot.Instance.SetActiveGun(gunSOInChest);
+        }
+
+        if (chestType == ChestType.skillChest) {
+            SkillItem skillItem = new SkillItem();
+            SkillSO skillSORandomized = skillSOListInChest[UnityEngine.Random.Range(0, skillSOListInChest.Count)];
+            skillItem.Initialize(skillSORandomized);
+
+            if(skillSORandomized.itemType == MerchantItem.MerchantItemType.ActiveSkill) {
+                PlayerSkills.Instance.AddActiveSkill(skillItem);
+            }
+            if (skillSORandomized.itemType == MerchantItem.MerchantItemType.PassiveSkill) {
+                PlayerSkills.Instance.AddPassiveSkill(skillItem);
+            }
         }
 
         yield return new WaitForSeconds(.5f);

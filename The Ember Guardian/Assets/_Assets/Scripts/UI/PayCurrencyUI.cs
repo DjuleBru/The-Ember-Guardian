@@ -40,7 +40,6 @@ public class PayCurrencyUI : MonoBehaviour
 
     public void SetPlayerInteracting(bool isInteracting) {
         if (playerInteracting == isInteracting) return;
-
         PlayerCurrencies.CurrencyType currencyTypeToPay = currencyTemplateWorldUIList[0].GetCurrencyTypeToPay();
         playerInteracting = isInteracting;
         currencyIndex = 0;

@@ -21,6 +21,7 @@ public class ChestVisual : MonoBehaviour
     [SerializeField] private RuntimeAnimatorController orbChestAnimator;
     [SerializeField] private RuntimeAnimatorController hugeChestAnimator;
     [SerializeField] private RuntimeAnimatorController weaponChestAnimator;
+    [SerializeField] private RuntimeAnimatorController skillChestAnimator;
 
     private void Awake() {
         chest = GetComponentInParent<Chest>();
@@ -32,9 +33,12 @@ public class ChestVisual : MonoBehaviour
     }
 
     private void Chest_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
-        inputIconAnimator.ResetTrigger("Show");
-        inputIconAnimator.SetTrigger("Hide");
-        chestSpriteRenderer.material = unhoveredMaterial; 
+        chestSpriteRenderer.material = unhoveredMaterial;
+
+        if (!chest.GetPayToOpenChest()) {
+            inputIconAnimator.ResetTrigger("Hide");
+            inputIconAnimator.SetTrigger("Show");
+        }
 
         if(showHoveringIndicator) {
             hoveringIndicatorGO.SetActive(true);
@@ -42,9 +46,12 @@ public class ChestVisual : MonoBehaviour
     }
 
     private void Chest_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
-        inputIconAnimator.ResetTrigger("Hide");
-        inputIconAnimator.SetTrigger("Show");
         chestSpriteRenderer.material = hoveredMaterial;
+
+        if(!chest.GetPayToOpenChest()) {
+            inputIconAnimator.ResetTrigger("Hide");
+            inputIconAnimator.SetTrigger("Show");
+        }
 
         if (showHoveringIndicator) {
             hoveringIndicatorGO.SetActive(false);
@@ -72,6 +79,9 @@ public class ChestVisual : MonoBehaviour
         }
         if (chest.GetChestType() == Chest.ChestType.weaponChest) {
             animator.runtimeAnimatorController = weaponChestAnimator;
+        }
+        if (chest.GetChestType() == Chest.ChestType.skillChest) {
+            animator.runtimeAnimatorController = skillChestAnimator;
         }
     }
 

@@ -12,6 +12,7 @@ public class Chest : MonoBehaviour
         initialChest,
         hugeChest,
         weaponChest,
+        skillChest,
     }
 
     [SerializeField] protected ChestType chestType;
@@ -19,6 +20,9 @@ public class Chest : MonoBehaviour
     [SerializeField] protected List<PlayerCurrencies.CurrencyType> currencyTypeToRewardList;
     [SerializeField] protected List<int> rewardAmountList;
     [SerializeField] protected bool chestDisappearsAutomaticallyAfterOpened;
+    [SerializeField] protected bool payToOpenChest;
+    [SerializeField] protected PayCurrencyUI payCurrencyUI;
+    [SerializeField] protected List<PayCurrencyTemplateWorldUI> payCurrencyTemplates;
 
     protected float delayToChestUnlockAnimation;
     protected float delayToSpawnCollectibles;
@@ -27,6 +31,8 @@ public class Chest : MonoBehaviour
     protected bool chestOpened;
     protected bool chestOpenedAnimationOver;
     protected bool playerInTriggerArea;
+    protected bool playerPayingCurrencies;
+    protected bool chestPricePaid;
 
     public event EventHandler OnPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
@@ -34,6 +40,7 @@ public class Chest : MonoBehaviour
     public event EventHandler OnChestOpened;
     public event EventHandler OnChestOpenedAnimationOver;
     public event EventHandler OnChestDisappear;
+    public event EventHandler OnChestPricePaid;
 
 
     public static event EventHandler<OnAnyChestSpawnedCollectibleEventArgs> OnAnyChestSpawnedCollectible;
@@ -66,17 +73,53 @@ public class Chest : MonoBehaviour
             delayToChestUnlockAnimation = 3.8f;
             delayToSpawnCollectibles = 4.8f;
         }
+        if (chestType == ChestType.skillChest) {
+            delayToChestUnlockAnimation = 2f;
+            delayToSpawnCollectibles = 2;
+        }
     }
 
     protected void Start() {
+        if(payToOpenChest) {
+            payCurrencyUI.OnCurrencyPaymentSuccess += PayCurrencyUI_OnCurrencyPaymentSuccess;
+            payCurrencyUI.SetOrbTemplateUIList(payCurrencyTemplates);
+        }
+
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
+        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
     }
 
+    protected void GameInput_OnPlayerInteractPerformed(object sender, EventArgs e) {
+        if (!playerInTriggerArea) return;
+        payCurrencyUI.SetPlayerInteracting(true);
+        playerPayingCurrencies = true;
+    }
+
+    protected void PayCurrencyUI_OnCurrencyPaymentSuccess(object sender, EventArgs e) {
+        if (chestOpened) return;
+        if (!playerInTriggerArea) return;
+        OnChestPricePaid?.Invoke(this, EventArgs.Empty);
+        chestPricePaid = true;
+        OpenChest();
+    }
 
     protected virtual void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (chestOpened) return;
 
+        if(playerPayingCurrencies) {
+            payCurrencyUI.SetPlayerInteracting(false);
+            return;
+        }
+
+        if (payToOpenChest) {
+            if (!chestPricePaid) return;
+        };
+
+        OpenChest();
+    }
+
+    protected void OpenChest() {
         chestOpened = true;
         StartCoroutine(OpenChest(true));
         OnChestOpened?.Invoke(this, EventArgs.Empty);
@@ -173,6 +216,15 @@ public class Chest : MonoBehaviour
         return chestDisappearsAutomaticallyAfterOpened;
     } 
 
+    public bool GetPayToOpenChest() {
+        return payToOpenChest;
+    }
+    public bool GetChestOpened() {
+        return chestOpened;
+    }
+    public bool GetChestPricePaid() {
+        return chestPricePaid;
+    }
     public void SetChestLocked(bool locked) {
         chestLocked = locked;
     }
