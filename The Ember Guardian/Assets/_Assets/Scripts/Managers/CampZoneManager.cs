@@ -117,7 +117,6 @@ public class CampZoneManager : MonoBehaviour
 
         foreach (Barricade barricade in functionalBarricades) {
             float position = barricade.transform.position.x;
-            Debug.Log(barricade + " position " + position);
 
             if (position > 0) {
                 if (Mathf.Abs(position) < minXPositionLeft) {

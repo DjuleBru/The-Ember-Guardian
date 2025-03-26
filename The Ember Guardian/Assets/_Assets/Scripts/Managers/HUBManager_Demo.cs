@@ -5,6 +5,8 @@ using UnityEngine;
 public class HUBManager_Demo : MonoBehaviour
 {
     private bool firstDemoHubEncounter;
+    private bool demoFirstLevelCompleted;
+    private bool demoMainLevelEncountered;
     private int demoLevelLostAmount;
 
     [SerializeField] private List<HubMerchant> functionalDemoHubMerchantList;
@@ -24,6 +26,7 @@ public class HUBManager_Demo : MonoBehaviour
     [SerializeField] private Fire hubFire;
     [SerializeField] private Portal grassyAreaPortal;
     [SerializeField] private LevelSO demoMainLevelSO;
+    [SerializeField] private LevelSO demoFirstLevelSO;
     [SerializeField] private VideoTipSO endDemoTipSO;
     [SerializeField] private VideoTipSO gunMerchantTip;
 
@@ -49,6 +52,8 @@ public class HUBManager_Demo : MonoBehaviour
     private void Awake() {
         // First demo hub encounter becomes true when player moves on teleporter
         firstDemoHubEncounter = ES3.Load("firstDemoHubEncounter", true);
+        demoFirstLevelCompleted = ES3.Load("demoFirstLevelCompleted", false);
+        demoMainLevelEncountered = ES3.Load("demoMainLevelEncountered", false);
         demoLevelLostAmount = ES3.Load("demoLevelLostAmount", 0);
         demoLevelCompleted = ES3.Load("demoLevelCompleted", false);
         firstHubEnterWithDemoLevelCompleted = ES3.Load("firstHubEnterWithDemoLevelCompleted", true);
@@ -67,21 +72,29 @@ public class HUBManager_Demo : MonoBehaviour
         } else {
             MusicManager.Instance.PlayMusicDelayed(3f);
 
-            if(demoLevelLostAmount == 0) {
+            if(demoLevelLostAmount == 0 && !demoFirstLevelCompleted) {
+                Debug.Log("HandleBackFromFirstRun");
                 StartCoroutine(HandleBackFromFirstRun());
+                grassyAreaPortal.SetLinkedLevelSO(demoFirstLevelSO);
             }
 
-            if (demoLevelLostAmount == 1) {
+            if (demoFirstLevelCompleted && !demoMainLevelEncountered) {
                 // Player lost level once 
-                StartCoroutine(HandleFirstLevelDefeatHubEvolution());
+                Debug.Log("HandleFirstLevelCompletedHubEvolution");
+                StartCoroutine(HandleFirstLevelCompletedHubEvolution());
+                grassyAreaPortal.SetLinkedLevelSO(demoMainLevelSO);
             }
 
-            if(demoLevelLostAmount > 1) {
+            if(demoLevelLostAmount >= 1) {
+                Debug.Log("HandleAnyLevelDefeatHubEvolution");
                 StartCoroutine(HandleAnyLevelDefeatHubEvolution());
+                grassyAreaPortal.SetLinkedLevelSO(demoMainLevelSO);
             }
 
             if (demoLevelCompleted && firstHubEnterWithDemoLevelCompleted) {
+                Debug.Log("HandleLevelSuccessHubEvolution");
                 StartCoroutine(HandleLevelSuccessHubEvolution());
+                grassyAreaPortal.SetLinkedLevelSO(demoMainLevelSO);
             }
 
             RefreshPlayerHasGemsIndicators();
@@ -107,11 +120,11 @@ public class HUBManager_Demo : MonoBehaviour
 
     }
 
-    private IEnumerator HandleFirstLevelDefeatHubEvolution() {
+    private IEnumerator HandleFirstLevelCompletedHubEvolution() {
         hubFireEmberExtractable = true;
 
         yield return new WaitForSeconds(.5f);
-        Debug.Log("HandleFirstLevelDefeatHubEvolution");
+        Debug.Log("HandleFirstLevelCompletedHubEvolution");
         gemMerchantTalkUI.SetTextLinesSO(gemMerchantLevelLostOnceTextLinesSO);
 
         foreach (HubMerchant hubMerchant in functionalDemoHubMerchantList) {
@@ -147,6 +160,7 @@ public class HUBManager_Demo : MonoBehaviour
 
         gemMerchantReward.DisableReward();
     }
+
     private IEnumerator HandleAnyLevelDefeatHubEvolution() {
         hubFireEmberExtractable = true;
 
@@ -311,8 +325,9 @@ public class HUBManager_Demo : MonoBehaviour
             };
         };
 
-        if(demoLevelLostAmount == 1 && !functionalMerchantsShopsUnlocked) {
+        if(demoFirstLevelCompleted && !functionalMerchantsShopsUnlocked) {
             functionalMerchantsShopsUnlocked = true;
+            MetaProgressionManager.Instance.SetLevelUnlocked(demoMainLevelSO);
 
             foreach (HubMerchant hubMerchant in functionalDemoHubMerchantList) {
                 hubMerchant.SetDemoMerchantFunctional();
@@ -350,7 +365,8 @@ public class HUBManager_Demo : MonoBehaviour
 
         grassyAreaPortal.UnlockOrActivatePortal();
         grassyAreaPortal.SetPortalUnlockedInSave();
-        MetaProgressionManager.Instance.SetLevelUnlocked(demoMainLevelSO);
+        grassyAreaPortal.SetLinkedLevelSO(demoFirstLevelSO);
+        MetaProgressionManager.Instance.SetLevelUnlocked(demoFirstLevelSO);
 
         yield return new WaitForSeconds(3f);
         CameraManager.Instance.ResetCameraTargetToPlayer();

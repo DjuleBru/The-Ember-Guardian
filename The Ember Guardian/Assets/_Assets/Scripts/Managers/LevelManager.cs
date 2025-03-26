@@ -209,6 +209,7 @@ public class LevelManager : MonoBehaviour
         MetaProgressionManager.Instance.SetNextMerchantTalkLines(HubMerchant.HubMerchantType.GemMerchant, levelSO.gemMerchantTextLinesAfterLevel);
     }
 
+
     private void OnDestroy() {
         LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted -= LevelUI_OnObjectiveCompleted;
 

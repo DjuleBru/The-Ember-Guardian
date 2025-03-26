@@ -98,7 +98,9 @@ public class Chest : MonoBehaviour
         if (chestDisappearsAutomaticallyAfterOpened && chestOpened) return;
         if (chestLocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
+
         playerInTriggerArea = false;
+        Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
 
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
     }

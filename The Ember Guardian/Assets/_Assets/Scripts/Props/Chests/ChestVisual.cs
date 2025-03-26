@@ -76,7 +76,6 @@ public class ChestVisual : MonoBehaviour
     }
 
     private void Chest_OnChestDisappear(object sender, System.EventArgs e) {
-        Debug.Log("Chest_OnChestDisappear");
         animator.SetTrigger("Disappear");
         inputIconAnimator.gameObject.SetActive(false);
     }
@@ -88,7 +87,6 @@ public class ChestVisual : MonoBehaviour
 
     }
     private void Chest_OnChestOpenedAnimationOver(object sender, System.EventArgs e) {
-        Debug.Log("Chest_OnChestOpenedAnimationOver");
 
         if (!chest.GetChestDisappearsAutomatically()) {
             inputIconAnimator.gameObject.SetActive(true);

@@ -78,7 +78,7 @@ public class LevelObjectives : MonoBehaviour
 
         if(DemoMainLevelManager.Instance != null) {
             // Demo level
-            if (!DemoMainLevelManager.Instance.GetDemoMainLevelTutorialCompleted()) return;
+            if (!DemoMainLevelManager.Instance.GetDemoMainLevelTutorialCompleted() || !DemoMainLevelManager.Instance.GetDemoFirstLevelCompleted()) return;
         }
 
         StartCoroutine(ShowLevelObjective());

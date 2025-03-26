@@ -24,6 +24,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         FindWatcher,
         FindArchitect,
         SurviveNights,
+        FindStockpiles,
     }
 
     public enum SubObjectiveType {
@@ -63,6 +64,8 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         ReloadGun,
         HeadBackToCamp,
         OpenChest,
+        FindArmorerStockpile,
+        FindTrainerStockpile,
     }
 
     public static LevelUI_ObjectiveUI Instance;
@@ -356,6 +359,12 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         if (subObjectiveType == SubObjectiveType.OpenChest) {
             return "Open ammo chest";
         }
+        if (subObjectiveType == SubObjectiveType.FindArmorerStockpile) {
+            return "Find the Armorer's stock";
+        }
+        if (subObjectiveType == SubObjectiveType.FindTrainerStockpile) {
+            return "Find the Trainer's stock";
+        }
         return "";
     }
 
@@ -408,6 +417,9 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         }
         if (objectiveType == ObjectiveType.SurviveNights) {
             return "Survive the darkness";
+        }
+        if (objectiveType == ObjectiveType.FindStockpiles) {
+            return "Find the merchant's stockpiles";
         }
         return "";
     }

@@ -110,7 +110,6 @@ public class DemoLevelIntroManager : MonoBehaviour {
         if (!playerReloaded) return;
 
         StartCoroutine(StartNightAfterDelay());
-        Debug.Log("StartNightAfterDelay");
     }
 
     private IEnumerator StartNightAfterDelay() {

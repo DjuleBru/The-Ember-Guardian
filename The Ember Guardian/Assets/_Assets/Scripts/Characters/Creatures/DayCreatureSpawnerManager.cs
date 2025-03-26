@@ -30,7 +30,7 @@ public class DayCreatureSpawnerManager : MonoBehaviour
         int totalGroups = spawnerGroupsInLevel.Count;
 
         // Définir un nombre maximum de créatures par groupe
-        int minCreatureTypesPerGroup = 2;
+        int minCreatureTypesPerGroup = 1;
         int maxCreatureTypesPerGroup = 3;
 
         // Calculer les limites du niveau

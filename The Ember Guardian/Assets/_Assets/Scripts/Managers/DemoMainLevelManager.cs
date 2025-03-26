@@ -8,6 +8,7 @@ public class DemoMainLevelManager : MonoBehaviour
     public static DemoMainLevelManager Instance;
 
     [SerializeField] private GameObject fireLocationIndicator;
+    [SerializeField] private Portal endLevelPortal;
     private GameObject hunterShrineIndicator;
     private GameObject ammoCrafterIndicator;
 
@@ -17,6 +18,15 @@ public class DemoMainLevelManager : MonoBehaviour
     [SerializeField] private GameObject levelLeftSpawnerGroups;
     [SerializeField] private GameObject firstLevelRightSpawners;
     [SerializeField] private GameObject levelRightSpawnerGroups;
+    [SerializeField] private Transform levelRightTeleporterPosition;
+    [SerializeField] private Transform levelLeftTeleporterPosition;
+
+    [SerializeField] private PropFadeOut leftPropFadeOut;
+    [SerializeField] private PropFadeOut rightPropFadeOut;
+    [SerializeField] private Chest leftChest;
+    [SerializeField] private Chest rightChest;
+    private bool leftPropCollected;
+    private bool rightPropCollected;
 
     private bool ammoCraftStarted;
     private bool animalDied;
@@ -27,7 +37,9 @@ public class DemoMainLevelManager : MonoBehaviour
 
     private int demoLevelLostAmount;
     private bool demoMainLevelTutorialCompleted;
-    private bool demoLevelCompleted;
+    private bool demoMainLevelEncountered;
+    private bool demoMainLevelCompleted;
+    private bool demoFirstLevelCompleted;
 
     private int emberlingAmountRecruited;
     private int hunterAmountRecruited;
@@ -38,7 +50,9 @@ public class DemoMainLevelManager : MonoBehaviour
         fireLocationIndicator.gameObject.SetActive(false);
 
         demoMainLevelTutorialCompleted = ES3.Load("demoMainLevelTutorialCompleted", false);
-        demoLevelCompleted = ES3.Load("demoLevelCompleted", false);
+        demoMainLevelCompleted = ES3.Load("demoLevelCompleted", false);
+        demoMainLevelEncountered = ES3.Load("demoMainLevelEncountered", false);
+        demoFirstLevelCompleted = ES3.Load("demoFirstLevelCompleted", false);
         demoLevelLostAmount = ES3.Load("demoLevelLostAmount", 0);
         recruitWorkerTooltipShown = ES3.Load("recruitWorkerTooltipShown", false);
 
@@ -54,12 +68,20 @@ public class DemoMainLevelManager : MonoBehaviour
         Animal.OnAnyMobDied += Animal_OnAnyMobDied;
         Collectible.OnAnyCollectiblePickedUpByPlayer += Collectible_OnAnyCollectiblePickedUpByPlayer;
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
+        Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
         mainFireLocation.OnPlayerTriggeredIn += MainFireLocation_OnPlayerTriggeredIn;
         mainFireLocation.OnPlayerTriggeredOut += MainFireLocation_OnPlayerTriggeredOut;
 
         Worker.OnAnyWorkerRecruited += Worker_OnAnyWorkerRecruited;
         Worker.OnAnyWorkerAssignedHunter += Worker_OnAnyWorkerAssignedHunter;
         Worker.OnAnyOrbDroppedByWorker += Worker_OnAnyOrbDroppedByWorker;
+
+        if(rightChest != null) {
+            rightChest.OnChestOpened += RightChest_OnChestOpened;
+        }
+        if(leftChest != null) {
+            leftChest.OnChestOpened += LeftChest_OnChestOpened;
+        }
 
         if (!demoMainLevelTutorialCompleted) {
             StartCoroutine(SetDemoTutorialObjective());
@@ -74,10 +96,51 @@ public class DemoMainLevelManager : MonoBehaviour
             foreach(StructureLocation structureLocation in defensiveStructureLocations) {
                 structureLocation.gameObject.SetActive(false);
             }
+
         }
 
-        if(demoLevelCompleted) {
+        if(!demoMainLevelEncountered && demoFirstLevelCompleted) {
+            demoMainLevelEncountered = true;
+            ES3.Save("demoMainLevelEncountered", true);
+        }
+
+        if(demoMainLevelCompleted) {
             StartCoroutine(SetNightsToSurviveAfterDelay());
+        }
+    }
+
+    private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, EventArgs e) {
+        if(!demoFirstLevelCompleted) {
+            ES3.Save("demoFirstLevelCompleted", true);
+        }
+    }
+
+    private IEnumerator EnableEndLevelPortal(float delayToEnable) {
+        yield return new WaitForSeconds(delayToEnable);
+        endLevelPortal.gameObject.SetActive(true);
+    }
+
+    private void RightChest_OnChestOpened(object sender, EventArgs e) {
+        rightPropFadeOut.FadeOut();
+        rightPropCollected = true;
+        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FindTrainerStockpile);
+
+        if (leftPropCollected) {
+            endLevelPortal.transform.position = levelRightTeleporterPosition.position;
+            StartCoroutine(EnableEndLevelPortal(1f));
+            Debug.Log("game finished");
+        }
+    }
+
+    private void LeftChest_OnChestOpened(object sender, EventArgs e) {
+        leftPropFadeOut.FadeOut();
+        leftPropCollected = true;
+        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FindArmorerStockpile);
+
+        if (rightPropCollected) {
+            endLevelPortal.transform.position = levelLeftTeleporterPosition.position;
+            StartCoroutine(EnableEndLevelPortal(1f));
+            Debug.Log("game finished");
         }
     }
 
@@ -138,6 +201,7 @@ public class DemoMainLevelManager : MonoBehaviour
     }
 
     private void LevelManager_OnLevelSuccess(object sender, EventArgs e) {
+        if (!demoFirstLevelCompleted) return;
         ES3.Save("demoLevelCompleted", true);
     }
 
@@ -159,7 +223,7 @@ public class DemoMainLevelManager : MonoBehaviour
 
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FuelFire);
 
-            StartCoroutine(StartSurviveNightsObjectiveAfterDelay());
+            StartCoroutine(StartFindStockpilesObjectiveAfterDelay(false, 4f));
         };
 
         if (e.tipTypeShown == VideoTipSO.VideoTipType.Hunters) {
@@ -169,16 +233,23 @@ public class DemoMainLevelManager : MonoBehaviour
 
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
         Fire.Instance.DisableEmberExtraction();
-        if (demoMainLevelTutorialCompleted) return;
 
-        List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveUIList = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
+        if (!demoMainLevelTutorialCompleted) {
+            List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveUIList = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
                 LevelUI_ObjectiveUI.SubObjectiveType.TurnOnAmmoCrafter,
                 LevelUI_ObjectiveUI.SubObjectiveType.RecruitEmberlings,
             };
 
-        LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveUIList);
-        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightMainFire);
-        StartCoroutine(PauseDayNightCycleAfterDelay());
+            LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveUIList);
+            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightMainFire);
+            StartCoroutine(PauseDayNightCycleAfterDelay());
+
+            return;
+        };
+
+        if(!demoFirstLevelCompleted) {
+            StartCoroutine(StartFindStockpilesObjectiveAfterDelay(true, 2f));
+        }
     }
     private IEnumerator PauseDayNightCycleAfterDelay() {
         yield return new WaitForSeconds(.1f);
@@ -334,16 +405,20 @@ public class DemoMainLevelManager : MonoBehaviour
     private void MainFireLocation_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
         if (demoMainLevelTutorialCompleted) return;
         fireLocationIndicator.SetActive(false);
-
-
     }
 
-    private IEnumerator StartSurviveNightsObjectiveAfterDelay() {
-        yield return new WaitForSeconds(4f);
+    private IEnumerator StartFindStockpilesObjectiveAfterDelay(bool firestObjective, float delay) {
+        yield return new WaitForSeconds(delay);
 
-        LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.SurviveNights);
+        if(firestObjective) {
+            LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.FindStockpiles);
+        } else {
+            LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.FindStockpiles);
+        }
+        
         List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
-                    LevelUI_ObjectiveUI.SubObjectiveType.SurviveNights
+                    LevelUI_ObjectiveUI.SubObjectiveType.FindArmorerStockpile,
+                    LevelUI_ObjectiveUI.SubObjectiveType.FindTrainerStockpile,
                 };
 
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
@@ -360,6 +435,9 @@ public class DemoMainLevelManager : MonoBehaviour
 
     public bool GetDemoMainLevelTutorialCompleted() {
         return demoMainLevelTutorialCompleted;
+    }
+    public bool GetDemoFirstLevelCompleted() {
+        return demoFirstLevelCompleted;
     }
 
     public bool GetDemoLevelLostOnce() {
@@ -381,7 +459,7 @@ public class DemoMainLevelManager : MonoBehaviour
 
 
     private void OnDestroy() {
-
+        Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
         Collectible.OnAnyCollectiblePickedUpByPlayer -= Collectible_OnAnyCollectiblePickedUpByPlayer;
         Worker.OnAnyWorkerRecruited -= Worker_OnAnyWorkerRecruited;
         Worker.OnAnyWorkerAssignedHunter -= Worker_OnAnyWorkerAssignedHunter;

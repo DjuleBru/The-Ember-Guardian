@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: GemMerchant_OpenedLevel
   m_EditorClassIdentifier: 
   merchantTextLines:
-  - "You\u2019ve got what you need for now. Other merchants will have<wiggle a=.05
-    f=2> new stock</wiggle> soon."
-  - "In the meantime,  you\u2019ll find more <bounce a=.2 f=1.2>gems</bounce> scattered
-    about in <dangle a=.2>Verdant Graveyard</dangle>."
-  - "But you\u2019ll need something <shake a=.4>special</shake> to light the fire
-    there\u2014a pure ember from the <dangle a=.2>Eternal Fire</dangle>."
+  - Merchants are running dry. <wiggle a=.05 f=2>Time to restock.</wiggle>
+  - "You'll find what we need in <dangle a=.2>Verdant Graveyard</dangle>\u2014along
+    with more <bounce a=.2 f=1.2>gems</bounce>"
+  - "But to light a fire there, you'll need something <shake a=.4>rare</shake>\u2014a
+    pure ember from the <dangle a=.2>Eternal Fire</dangle>."
   showShopAfterDialog: 0
