@@ -29,7 +29,9 @@ public class Barricade : Structure, IDamageable {
     public event EventHandler OnFireLightTriggeredIn;
     public event EventHandler OnFireLightTriggeredOut;
     public event EventHandler OnBarricadeLightSwitched;
+    public event EventHandler OnBarricadeBreached;
 
+    private bool isInnerBarricade;
     private bool barricadeRepairable;
 
     protected override void Start() {
@@ -48,6 +50,10 @@ public class Barricade : Structure, IDamageable {
         Debug.Log("barricade destroyed !");
         OnBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
         OnAnyBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
+
+        if(isInnerBarricade) {
+            OnBarricadeBreached?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public Transform GetProjectileTarget() {
@@ -143,6 +149,14 @@ public class Barricade : Structure, IDamageable {
 
     public void SetAsOuterBarricade(bool outerBarricade) {
         barricadeVisual.SetAsOuterBarricade(outerBarricade);
+    }
+
+    public void SetAsInnerBarricade(bool innerBarricade) {
+        isInnerBarricade = innerBarricade;
+    }
+
+    public bool GetIsInnerBarricade() {
+        return isInnerBarricade;
     }
 
     protected override void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {

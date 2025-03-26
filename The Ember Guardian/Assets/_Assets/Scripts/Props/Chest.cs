@@ -10,25 +10,29 @@ public class Chest : MonoBehaviour
         gemChest,
         ammoChest,
         initialChest,
-        hugeChest
+        hugeChest,
+        weaponChest,
     }
 
-    [SerializeField] private ChestType chestType;
-    [SerializeField] private Transform orbSpawnPosition;
-    [SerializeField] private List<PlayerCurrencies.CurrencyType> currencyTypeToRewardList;
-    [SerializeField] private List<int> rewardAmountList;
+    [SerializeField] protected ChestType chestType;
+    [SerializeField] protected Transform orbSpawnPosition;
+    [SerializeField] protected List<PlayerCurrencies.CurrencyType> currencyTypeToRewardList;
+    [SerializeField] protected List<int> rewardAmountList;
+    [SerializeField] protected bool chestDisappearsAutomaticallyAfterOpened;
 
-    private float delayToChestUnlockAnimation;
-    private float delayToSpawnCollectibles;
+    protected float delayToChestUnlockAnimation;
+    protected float delayToSpawnCollectibles;
 
-    private bool chestLocked = false;
-    private bool chestOpened;
-    private bool playerInTriggerArea;
+    protected bool chestLocked = false;
+    protected bool chestOpened;
+    protected bool chestOpenedAnimationOver;
+    protected bool playerInTriggerArea;
 
     public event EventHandler OnPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
     public event EventHandler OnChestUnlocked;
     public event EventHandler OnChestOpened;
+    public event EventHandler OnChestOpenedAnimationOver;
     public event EventHandler OnChestDisappear;
 
 
@@ -37,7 +41,7 @@ public class Chest : MonoBehaviour
         public PlayerCurrencies.CurrencyType currencyType;
     }
 
-    private void Awake() {
+    protected void Awake() {
         if(chestType == ChestType.orbChest) {
             delayToChestUnlockAnimation = 2.5f;
             delayToSpawnCollectibles = 3.4f;
@@ -58,24 +62,28 @@ public class Chest : MonoBehaviour
             delayToChestUnlockAnimation = 2.2f;
             delayToSpawnCollectibles = 3.2f;
         }
+        if (chestType == ChestType.weaponChest) {
+            delayToChestUnlockAnimation = 3.8f;
+            delayToSpawnCollectibles = 4.8f;
+        }
     }
 
-    private void Start() {
+    protected void Start() {
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
     }
 
 
-    private void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
-
+    protected virtual void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (chestOpened) return;
 
         chestOpened = true;
-        StartCoroutine(OpenChest());
+        StartCoroutine(OpenChest(true));
         OnChestOpened?.Invoke(this, EventArgs.Empty);
     }
-    private void OnTriggerEnter2D(Collider2D collision) {
-        if (chestOpened) return;
+
+    protected virtual void OnTriggerEnter2D(Collider2D collision) {
+        if (chestDisappearsAutomaticallyAfterOpened && chestOpened) return;
         if (chestLocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
@@ -86,8 +94,8 @@ public class Chest : MonoBehaviour
 
     }
 
-    private void OnTriggerExit2D(Collider2D collision) {
-        if (chestOpened) return;
+    protected virtual void OnTriggerExit2D(Collider2D collision) {
+        if (chestDisappearsAutomaticallyAfterOpened && chestOpened) return;
         if (chestLocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
         playerInTriggerArea = false;
@@ -95,7 +103,7 @@ public class Chest : MonoBehaviour
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
     }
 
-    private IEnumerator OpenChest() {
+    protected IEnumerator OpenChest(bool spawnCollectibles) {
         yield return new WaitForEndOfFrame();
 
         Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
@@ -106,37 +114,62 @@ public class Chest : MonoBehaviour
 
         yield return new WaitForSeconds(delayToSpawnCollectibles - delayToChestUnlockAnimation);
 
-        int j = 0;
+        if(spawnCollectibles) {
+            int j = 0;
 
-        foreach(PlayerCurrencies.CurrencyType currencyType in currencyTypeToRewardList) {
-            int rewardAmount = rewardAmountList[j];
+            foreach (PlayerCurrencies.CurrencyType currencyType in currencyTypeToRewardList) {
+                int rewardAmount = rewardAmountList[j];
 
-            for (int i = 0; i < rewardAmount; i++) {
-                Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyType), orbSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
+                for (int i = 0; i < rewardAmount; i++) {
+                    Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyType), orbSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
 
-                OnAnyChestSpawnedCollectible?.Invoke(this, new OnAnyChestSpawnedCollectibleEventArgs {
-                    currencyType = currencyType,
-                });
+                    OnAnyChestSpawnedCollectible?.Invoke(this, new OnAnyChestSpawnedCollectibleEventArgs {
+                        currencyType = currencyType,
+                    });
 
-                collectible.ApplyRandomUpwardsForce(5, 8);
-                collectible.SetCollectibleUnInteractable(.75f);
-                yield return new WaitForSeconds(.2f);
+                    collectible.ApplyRandomUpwardsForce(5, 8);
+                    collectible.SetCollectibleUnInteractable(.75f);
+                    yield return new WaitForSeconds(.2f);
+                }
+                j++;
             }
-            j++;
         }
+
+        chestOpenedAnimationOver = true;
+        OnChestOpenedAnimationOver?.Invoke(this, EventArgs.Empty);
+
+        if (!chestDisappearsAutomaticallyAfterOpened) yield break;
 
         yield return new WaitForSeconds(2f);
 
+        StartCoroutine(MakeChestDisappear(3f));
+    }
+
+    protected IEnumerator MakeChestDisappear(float delayToDisappear) {
+
         OnChestDisappear?.Invoke(this, EventArgs.Empty);
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(delayToDisappear);
         Destroy(gameObject);
-
     }
 
     public ChestType GetChestType() {
         return chestType;
     }
+
+    public void InvokeOnChestOpened() {
+        OnChestOpened?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void InvokeOnAnyChestSpawnedCollectibles(PlayerCurrencies.CurrencyType currencyType) {
+        OnAnyChestSpawnedCollectible?.Invoke(this, new OnAnyChestSpawnedCollectibleEventArgs {
+            currencyType = currencyType,
+        });
+    }
+
+    public bool GetChestDisappearsAutomatically() {
+        return chestDisappearsAutomaticallyAfterOpened;
+    } 
 
     public void SetChestLocked(bool locked) {
         chestLocked = locked;

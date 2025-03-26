@@ -110,10 +110,15 @@ public class StructureVisual : MonoBehaviour {
     }
 
     protected virtual void Structure_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
-        structureSpriteRenderer.material = hoveredMaterial;
 
-        if (structureInteractionIconImage != null) {
-            structureInteractionIconImage.enabled = true;
+        if(structure.GetStructureSO().playerCanAlwaysInteract || structure.GetPlayerCanInteract()) {
+
+            structureSpriteRenderer.material = hoveredMaterial;
+
+            if (structureInteractionIconImage != null) {
+                structureInteractionIconImage.enabled = true;
+            }
+
         }
     }
 

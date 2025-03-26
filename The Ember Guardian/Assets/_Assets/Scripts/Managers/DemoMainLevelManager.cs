@@ -42,7 +42,7 @@ public class DemoMainLevelManager : MonoBehaviour
         demoLevelLostAmount = ES3.Load("demoLevelLostAmount", 0);
         recruitWorkerTooltipShown = ES3.Load("recruitWorkerTooltipShown", false);
 
-        InitializeSpawners(demoMainLevelTutorialCompleted);
+        //InitializeSpawners(demoMainLevelTutorialCompleted);
     }
 
     private void Start() {

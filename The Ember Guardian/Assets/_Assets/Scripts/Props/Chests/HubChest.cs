@@ -9,6 +9,7 @@ public class HubChest : MonoBehaviour
 
     private bool playerInTriggerArea;
     private bool chestOpen;
+    private bool hubChestInteractionTooltipShown;
 
     private PayCurrencyUI payCurrencyUI;
     private PlayerCurrencies.CurrencyType currentGemType;
@@ -21,9 +22,13 @@ public class HubChest : MonoBehaviour
     [SerializeField] protected PayCurrencyTemplateWorldUI payGemTemplate;
     protected List<PayCurrencyTemplateWorldUI> payCurrencyTemplates = new List<PayCurrencyTemplateWorldUI>();
 
+    private Coroutine tooltipCoroutine;
+
     private void Awake() {
         Instance = this;
         payCurrencyUI = GetComponent<PayCurrencyUI>();
+
+        hubChestInteractionTooltipShown = ES3.Load("hubChestInteractionTooltipShown", false);
     }
 
     private void Start() {
@@ -105,6 +110,15 @@ public class HubChest : MonoBehaviour
         playerInTriggerArea = true;
         chestOpen = true;
         OpenChest();
+
+        if(!hubChestInteractionTooltipShown) {
+            tooltipCoroutine = StartCoroutine(ShowInteractionTooltipAfterDelay());
+        }
+    }
+
+    private IEnumerator ShowInteractionTooltipAfterDelay() {
+        yield return new WaitForSeconds(3f);
+        PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction("Hold", "To drop gems", InputControlIcons.Control.Interact, 999);
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
@@ -113,6 +127,14 @@ public class HubChest : MonoBehaviour
 
         playerInTriggerArea = false;
         CloseChest();
+
+        if (!hubChestInteractionTooltipShown) {
+            if(tooltipCoroutine != null) {
+                StopCoroutine(tooltipCoroutine);
+            }
+            PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
+            
+        }
     }
 
     private void OpenChest() {
@@ -129,6 +151,15 @@ public class HubChest : MonoBehaviour
 
     public bool GetPlayerInTriggerArea() {
         return playerInTriggerArea;
+    }
+
+    public void SetInteractionTooltipShown() {
+        hubChestInteractionTooltipShown = true;
+        if (tooltipCoroutine != null) {
+            StopCoroutine(tooltipCoroutine);
+        }
+        PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
+        ES3.Save("hubChestInteractionTooltipShown", true);
     }
 
     private void OnDestroy() {

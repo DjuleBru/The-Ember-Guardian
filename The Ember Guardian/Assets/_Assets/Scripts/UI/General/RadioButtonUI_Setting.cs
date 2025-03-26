@@ -9,6 +9,8 @@ public class RadioButtonUI_Setting : RadioButtonUI
     public enum SettingType {
         HoldToRun,
         AutoToggleLight,
+        ScreenMode,
+        Language,
 
         AimAssist,
         AutoAlignPlayerWithMoveDir,
@@ -37,6 +39,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         SettingsManager.Instance.OnControllerVibrationsChanged += SettingsManager_OnControllerVibrationsChanged;
         SettingsManager.Instance.OnAutoAlignAimWithMovementChanged += SettingsManager_OnAutoAlignAimWithMovementChanged;
         SettingsManager.Instance.OnAimAssistChanged += SettingsManagerOnAimAssistChanged;
+        SettingsManager.Instance.OnFullScreenChanged += SettingsManager_OnFullScreenChanged;
 
         RefreshVisual();
     }
@@ -57,6 +60,9 @@ public class RadioButtonUI_Setting : RadioButtonUI
         if (settingType == SettingType.GamepadVibrations) {
             SettingsManager.Instance.ChangeControllerVibrations();
         }
+        if (settingType == SettingType.ScreenMode) {
+            SettingsManager.Instance.ChangeScreenMode();
+        }
     }
 
     private void RefreshVisual() {
@@ -65,6 +71,15 @@ public class RadioButtonUI_Setting : RadioButtonUI
                 toggledText.text = "Hold";
             } else {
                 toggledText.text = "Toggle";
+            }
+        }
+
+        if (settingType == SettingType.ScreenMode) {
+            if (SettingsManager.Instance.GetFullScreen()) {
+                toggledText.text = "Full Screen";
+            }
+            else {
+                toggledText.text = "Windowed";
             }
         }
 
@@ -83,6 +98,10 @@ public class RadioButtonUI_Setting : RadioButtonUI
     }
 
     private void SettingsManagerOnAimAssistChanged(object sender, System.EventArgs e) {
+        RefreshVisual();
+    }
+
+    private void SettingsManager_OnFullScreenChanged(object sender, System.EventArgs e) {
         RefreshVisual();
     }
 

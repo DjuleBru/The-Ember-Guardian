@@ -172,8 +172,7 @@ public class ItemButtonUI : ButtonUI
     }
 
     public void BuyItem() {
-
-        if (!hubMerchantItem.GetItemUnlocked()) {
+        if (!hubMerchantItem.GetItemUnlocked() || itemLockedInDemo) {
             Debug.Log("OnAnyLockedButtonTryPress");
             OnAnyLockedButtonTryPress?.Invoke(this, EventArgs.Empty);
             return;

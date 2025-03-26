@@ -25,7 +25,7 @@ public class StructureLocation : MonoBehaviour {
     protected bool structureLocationUnlocked;
     protected bool playerInTriggerArea;
 
-    protected void Awake() {
+    protected virtual void Awake() {
         payCurrencyUI = GetComponent<PayCurrencyUI>();
         InitializeOrbTemplateList();
 

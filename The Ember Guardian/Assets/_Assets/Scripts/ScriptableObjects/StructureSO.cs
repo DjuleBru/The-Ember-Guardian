@@ -38,6 +38,7 @@ public class StructureSO : ScriptableObject
     public bool level1StructureInitiallyUnlocked;
     public bool buildableAtNight;
     public bool functionUsableAtNight;
+    public bool playerCanAlwaysInteract;
 
     public bool upgradeable = true;
     [ShowIf("upgradeable")]

@@ -344,5 +344,9 @@ public class Structure : MonoBehaviour {
         return visualIndicator;
     }
 
+    public bool GetPlayerCanInteract() {
+        return playerCanInteract;
+    }
+
     #endregion
 }

@@ -25,6 +25,7 @@ public class HUBManager_Demo : MonoBehaviour
     [SerializeField] private Portal grassyAreaPortal;
     [SerializeField] private LevelSO demoMainLevelSO;
     [SerializeField] private VideoTipSO endDemoTipSO;
+    [SerializeField] private VideoTipSO gunMerchantTip;
 
     [SerializeField] private GameObject chestIndicator;
     [SerializeField] private GameObject fireIndicator;
@@ -43,6 +44,7 @@ public class HUBManager_Demo : MonoBehaviour
     private bool demoLevelCompleted;
     private bool firstHubEnterWithDemoLevelCompleted;
     private bool functionalMerchantsShopsUnlocked;
+    private bool gunTipShown;
 
     private void Awake() {
         // First demo hub encounter becomes true when player moves on teleporter
@@ -50,6 +52,7 @@ public class HUBManager_Demo : MonoBehaviour
         demoLevelLostAmount = ES3.Load("demoLevelLostAmount", 0);
         demoLevelCompleted = ES3.Load("demoLevelCompleted", false);
         firstHubEnterWithDemoLevelCompleted = ES3.Load("firstHubEnterWithDemoLevelCompleted", true);
+        gunTipShown = ES3.Load("gunTipShown", false);
 
         chestIndicator.gameObject.SetActive(false);
         fireIndicator.gameObject.SetActive(false);
@@ -89,6 +92,7 @@ public class HUBManager_Demo : MonoBehaviour
         
         HubMerchantItem_GemMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_GemMerchantItem_OnAnyHubMerchantItemBought;
         UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
+        HubMerchant.OnAnyPlayerTriggeredIn += HubMerchant_OnAnyPlayerTriggeredIn;
         Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
         gemMerchant.OnPlayerStoppedInteractingWithHubMerchant += GemMerchant_OnPlayerStoppedInteractingWithHubMerchant;
         grassyAreaPortal.OnPlayerMovedOnTeleporter += GrassyAreaPortal_OnPlayerMovedOnTeleporter;
@@ -182,6 +186,21 @@ public class HUBManager_Demo : MonoBehaviour
         ES3.Save("firstDemoHubEncounter", false);
     }
 
+    private void HubMerchant_OnAnyPlayerTriggeredIn(object sender, System.EventArgs e) {
+        HubMerchant hubMerchant = (HubMerchant)sender;
+        if (!hubMerchant.GetMerchantUnlocked()) return;
+        if (!hubMerchant.GetMerchantIsFunctionalDemoMerchant()) return;
+
+        if (hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.GunMerchant) {
+            if (gunTipShown) return;
+
+            VideoTipUI.Instance.PlayTipSO(gunMerchantTip, 0f);
+
+            gunTipShown = true;
+            ES3.Save("gunTipShown", true);
+        }
+    }
+
     private void UICurrencyManager_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
 
         if ((e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember)) {
@@ -239,6 +258,7 @@ public class HUBManager_Demo : MonoBehaviour
             StartCoroutine(StartGemMerchantLines(gemMerchantComeBuyTextLines));
             chestIndicator.gameObject.SetActive(false);
             chestIndicatorActive = false;
+            HubChest.Instance.SetInteractionTooltipShown();
         }
 
     }
@@ -431,6 +451,7 @@ public class HUBManager_Demo : MonoBehaviour
         HubMerchantTalkUI.OnAnyMerchantEndTalk -= HubMerchantTalkUI_OnAnyMerchantEndTalk;
         HubMerchantItem_GemMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_GemMerchantItem_OnAnyHubMerchantItemBought;
         Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
+        HubMerchant.OnAnyPlayerTriggeredIn -= HubMerchant_OnAnyPlayerTriggeredIn;
     }
 
 }

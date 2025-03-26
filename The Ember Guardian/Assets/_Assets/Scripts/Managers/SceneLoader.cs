@@ -32,6 +32,7 @@ public class SceneLoader : MonoBehaviour
     private void Awake() {
         Instance = this;
         transitionAnimator.speed = .5f;
+        Application.targetFrameRate = 60;
        
         StartCoroutine(RemoveBlackBackgroundAfterDelay(.1f));
     }

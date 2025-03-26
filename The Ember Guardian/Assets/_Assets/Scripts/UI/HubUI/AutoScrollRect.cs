@@ -16,6 +16,8 @@ public class AutoScrollRect : MonoBehaviour {
     void Start() {
         eventSystem = EventSystem.current; // Récupérer l'EventSystem actif
         scrollRect = GetComponent<ScrollRect>();
+
+        scrollRect.enabled = true;
     }
 
     void Update() {

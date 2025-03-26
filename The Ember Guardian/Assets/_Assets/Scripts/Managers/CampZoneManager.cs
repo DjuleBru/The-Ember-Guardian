@@ -73,6 +73,8 @@ public class CampZoneManager : MonoBehaviour
     }
 
     private void RefreshCampZoneLimits() {
+        RefreshInnerBarricades();
+
         float minZoneLimit = campCenterMinLimit;
         float maxZoneLimit = campCenterMaxLimit;
 
@@ -87,23 +89,63 @@ public class CampZoneManager : MonoBehaviour
             }
         }
 
+
         this.minZoneLimit = minZoneLimit;
         this.maxZoneLimit = maxZoneLimit;
 
-        foreach(Barricade barricade in functionalBarricades) {
+        foreach (Barricade barricade in functionalBarricades) {
             if (barricade.transform.position.x == this.minZoneLimit || barricade.transform.position.x == this.maxZoneLimit) {
                 barricade.SetAsOuterBarricade(true);
             }
             else {
                 barricade.SetAsOuterBarricade(false);
             }
-
         }
 
         huntingFlaxMin.TrySetCampHuntingLimit(new Vector3(minZoneLimit - maxAnimalTargetingDistanceToCampOuterPoint, 0, 0));
         huntingFlagMax.TrySetCampHuntingLimit(new Vector3(maxZoneLimit + maxAnimalTargetingDistanceToCampOuterPoint, 0, 0));
 
         OnCampZoneLimitsChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void RefreshInnerBarricades() {
+
+        float minXPositionLeft = Mathf.Infinity;
+        float minXPositionRight = Mathf.Infinity;
+        Barricade innerBarricadeLeft = null;
+        Barricade innerBarricadeRight = null;
+
+        foreach (Barricade barricade in functionalBarricades) {
+            float position = barricade.transform.position.x;
+            Debug.Log(barricade + " position " + position);
+
+            if (position > 0) {
+                if (Mathf.Abs(position) < minXPositionLeft) {
+                    minXPositionLeft = position;
+                    innerBarricadeLeft = barricade;
+                }
+            }
+            if (position < 0) {
+                if (Mathf.Abs(position) < minXPositionRight) {
+                    minXPositionRight = position;
+                    innerBarricadeRight = barricade;
+                }
+            }
+        }
+
+        if(innerBarricadeLeft != null) {
+            innerBarricadeLeft.SetAsInnerBarricade(true);
+
+        }
+        if(innerBarricadeRight != null) {
+            innerBarricadeRight.SetAsInnerBarricade(true);
+        }
+
+        foreach (Barricade barricade1 in functionalBarricades) {
+            if (barricade1 != innerBarricadeLeft && barricade1 != innerBarricadeRight) {
+                barricade1.SetAsInnerBarricade(false);
+            }
+        }
     }
 
     public float GetMinZoneLimit() {
@@ -205,6 +247,21 @@ public class CampZoneManager : MonoBehaviour
     public float GetHuntingMinZoneLimit() {
         return huntingFlaxMin.GetCampHuntingLimit();
     }
+
+    public bool GetLeftBreach() {
+        foreach(Barricade barricade in functionalBarricades) {
+            if (barricade.transform.position.x < 0) return false; 
+        }
+        return true;
+    }
+
+    public bool GetRightBreach() {
+        foreach (Barricade barricade in functionalBarricades) {
+            if (barricade.transform.position.x > 0) return false;
+        }
+        return true;
+    }
+
 
     private void OnDestroy() {
         Barricade.OnAnyBarricadeBuilt -= Barricade_OnAnyBarricadeBuilt;

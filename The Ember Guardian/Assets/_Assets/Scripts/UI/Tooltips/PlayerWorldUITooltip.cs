@@ -27,6 +27,9 @@ public class PlayerWorldUITooltip : MonoBehaviour
     private bool isActive;
     private bool hideTooltip;
 
+    private Coroutine hideTooltipCoroutine;
+    private Coroutine showTooltipCoroutine;
+
     private void Awake() {
         tooltipVisualGameObject.SetActive(false);
     }
@@ -43,7 +46,7 @@ public class PlayerWorldUITooltip : MonoBehaviour
         if (isActive && hideTooltip) {
             tooltipDisplayTimer -= Time.deltaTime;
             if(tooltipDisplayTimer <= 0) {
-                StartCoroutine(HideTooltipCoroutine());
+                hideTooltipCoroutine = StartCoroutine(HideTooltipCoroutine());
                 isActive = false;
             }
         }
@@ -96,7 +99,14 @@ public class PlayerWorldUITooltip : MonoBehaviour
             iconSprite2 = spriteList[1];
         }
 
-        StartCoroutine(ShowTooltipInstructionCoroutine(text1ToShow, text2ToShow, iconSprite, iconSprite2, displayTime));
+        if(showTooltipCoroutine != null) {
+            StopCoroutine(showTooltipCoroutine);
+        }
+        if (hideTooltipCoroutine != null) {
+            StopCoroutine(hideTooltipCoroutine);
+        }
+
+        showTooltipCoroutine = StartCoroutine(ShowTooltipInstructionCoroutine(text1ToShow, text2ToShow, iconSprite, iconSprite2, displayTime));
     }
 
     private IEnumerator ShowTooltipInstructionCoroutine(string text1ToShow, string text2ToShow, Sprite iconSprite, Sprite iconSprite2 = null, float displayTime = 10f) {
@@ -144,7 +154,15 @@ public class PlayerWorldUITooltip : MonoBehaviour
     }
 
     public void HideTooltip(float delay = 0f) {
-        StartCoroutine(HideTooltipCoroutine(delay));
+        
+        if (showTooltipCoroutine != null) {
+            StopCoroutine(showTooltipCoroutine);
+        }
+
+        if (hideTooltipCoroutine != null) {
+            StopCoroutine(hideTooltipCoroutine);
+        }
+        hideTooltipCoroutine = StartCoroutine(HideTooltipCoroutine(delay));
     }
 
     private void OnDestroy() {

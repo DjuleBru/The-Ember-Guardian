@@ -14,9 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureType: 7
   structurePrefab: {fileID: 376005918902835770, guid: fc0a8a8db0a0e8f4a8e689e94fd9b2ef, type: 3}
+  structureSprite: {fileID: 0}
   level1StructureInitiallyUnlocked: 1
   buildableAtNight: 0
   functionUsableAtNight: 0
+  playerCanAlwaysInteract: 1
+  upgradeable: 1
   tentLevelRequiredForLevel2: 1
   tentLevelRequiredForLevel3: 2
   tentLevelRequiredForLevel4: 3
@@ -26,5 +29,8 @@ MonoBehaviour:
   - {fileID: -1902018475, guid: 69899d8c78ea1e843ae3e31c442cf2a1, type: 3}
   - {fileID: 1003993355, guid: 69899d8c78ea1e843ae3e31c442cf2a1, type: 3}
   buildAudioClip: {fileID: 8300000, guid: cd5f14a0e207b164aa9bfb0a157d19d3, type: 3}
+  buildVolumeMultiplier: 1
   useFunctionAudioClip: {fileID: 0}
+  useFunctionVolumeMultiplier: 1
   upgradeAudioClip: {fileID: 8300000, guid: 0827bff78f45e4b4db8276150669a27d, type: 3}
+  upgradeVolumeMultiplier: 1

@@ -329,6 +329,7 @@ MonoBehaviour:
   gemChestAnimator: {fileID: 22100000, guid: c48b5548148104949b0c8b1cd11ef274, type: 2}
   orbChestAnimator: {fileID: 9100000, guid: d8eb54724320f0e42866cebdd5d2823b, type: 2}
   hugeChestAnimator: {fileID: 22100000, guid: 01840261963901c408e21c90b42cd3ac, type: 2}
+  weaponChestAnimator: {fileID: 22100000, guid: a932329454047504c9a7f72deb7e2c67, type: 2}
 --- !u!1 &7533033605761610429
 GameObject:
   m_ObjectHideFlags: 0
@@ -564,10 +565,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af3f2696dca26043a68a81b7ef978d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chestType: 0
+  chestType: 5
   orbSpawnPosition: {fileID: 5709709022671916459}
   currencyTypeToRewardList: 00000000
   rewardAmountList: 03000000
+  chestDisappearsAutomaticallyAfterOpened: 1
 --- !u!50 &2181923871841356642
 Rigidbody2D:
   serializedVersion: 4
@@ -704,6 +706,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputImage1: {fileID: 2231057753637734520}
   inputImage2: {fileID: 0}
+  inputSpriteRenderer1: {fileID: 0}
+  inputSpriteRenderer2: {fileID: 0}
   control: 5
 --- !u!95 &5040779407505495605
 Animator:

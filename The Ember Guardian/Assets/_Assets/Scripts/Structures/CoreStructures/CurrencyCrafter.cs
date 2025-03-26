@@ -39,6 +39,7 @@ public class CurrencyCrafter : Structure
             OnAnyCurrencyCraftingEnded?.Invoke(this, EventArgs.Empty);
             craftingCurrency = false;
             craftedCurrency = true;
+            playerCanInteract = true;
         }
     }
 
@@ -48,7 +49,7 @@ public class CurrencyCrafter : Structure
             currencyCraftTimer = currencyCraftTime;
             OnCurrencyCraftingStarted?.Invoke(this, EventArgs.Empty);
             OnAnyCurrencyCraftingStarted?.Invoke(this, EventArgs.Empty);
-
+            playerCanInteract = false;
         }
     }
 

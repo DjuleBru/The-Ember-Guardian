@@ -20,6 +20,7 @@ public class ChestVisual : MonoBehaviour
     [SerializeField] private RuntimeAnimatorController gemChestAnimator;
     [SerializeField] private RuntimeAnimatorController orbChestAnimator;
     [SerializeField] private RuntimeAnimatorController hugeChestAnimator;
+    [SerializeField] private RuntimeAnimatorController weaponChestAnimator;
 
     private void Awake() {
         chest = GetComponentInParent<Chest>();
@@ -27,6 +28,7 @@ public class ChestVisual : MonoBehaviour
 
         chest.OnPlayerTriggeredIn += Chest_OnPlayerTriggeredIn;
         chest.OnPlayerTriggeredOut += Chest_OnPlayerTriggeredOut;
+        chest.OnChestOpenedAnimationOver += Chest_OnChestOpenedAnimationOver;
     }
 
     private void Chest_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
@@ -68,15 +70,33 @@ public class ChestVisual : MonoBehaviour
         if (chest.GetChestType() == Chest.ChestType.gemChest) {
             animator.runtimeAnimatorController = gemChestAnimator;
         }
+        if (chest.GetChestType() == Chest.ChestType.weaponChest) {
+            animator.runtimeAnimatorController = weaponChestAnimator;
+        }
     }
 
     private void Chest_OnChestDisappear(object sender, System.EventArgs e) {
+        Debug.Log("Chest_OnChestDisappear");
         animator.SetTrigger("Disappear");
+        inputIconAnimator.gameObject.SetActive(false);
     }
 
     private void Chest_OnChestOpened(object sender, System.EventArgs e) {
         animator.SetTrigger("Opened");
         inputIconAnimator.gameObject.SetActive(false);
         chestSpriteRenderer.material = unhoveredMaterial;
+
     }
+    private void Chest_OnChestOpenedAnimationOver(object sender, System.EventArgs e) {
+        Debug.Log("Chest_OnChestOpenedAnimationOver");
+
+        if (!chest.GetChestDisappearsAutomatically()) {
+            inputIconAnimator.gameObject.SetActive(true);
+            animator.SetTrigger("Opened_Idle");
+            inputIconAnimator.ResetTrigger("Hide");
+            inputIconAnimator.SetTrigger("Show");
+        }
+
+    }
+
 }

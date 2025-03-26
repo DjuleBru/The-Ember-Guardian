@@ -22,6 +22,7 @@ public class SettingsManager : MonoBehaviour
     public event EventHandler OnAutoSwitchLightGunChanged;
     public event EventHandler OnAutoAlignAimWithMovementChanged;
     public event EventHandler OnControllerVibrationsChanged;
+    public event EventHandler OnFullScreenChanged;
     public event EventHandler OnAimAssistChanged;
     public event EventHandler OnLanguageChanged;
 
@@ -32,6 +33,7 @@ public class SettingsManager : MonoBehaviour
     private bool autoAlignAimWithMovement;
     private bool autoSwitchLightGun;
     private bool controllerVibrations;
+    private bool fullScreen;
 
     private void Awake() {
         Instance = this;
@@ -49,6 +51,7 @@ public class SettingsManager : MonoBehaviour
         autoAlignAimWithMovement = ES3.Load("autoAlignAimWithMovement", true);
         autoSwitchLightGun = ES3.Load("autoSwitchLightGun", true);
         controllerVibrations = ES3.Load("controllerVibrations", true);
+        fullScreen = ES3.Load("fullScreen", true);
     }
 
     public float GetSfxVolume() {
@@ -73,6 +76,9 @@ public class SettingsManager : MonoBehaviour
 
     public bool GetHoldToRun() {
         return holdToRun;
+    }
+    public bool GetFullScreen() {
+        return fullScreen;
     }
 
     public bool GetAutoSwitchLight() {
@@ -127,6 +133,16 @@ public class SettingsManager : MonoBehaviour
 
         ES3.Save("controllerVibrations", controllerVibrations);
     }
+
+    public void ChangeScreenMode() {
+        fullScreen = !fullScreen;
+        OnFullScreenChanged?.Invoke(this, EventArgs.Empty);
+
+        Screen.fullScreen = fullScreen;
+
+        ES3.Save("fullScreen", fullScreen);
+    }
+
     public void ChangeAimAssist() {
         aimAssist = !aimAssist;
         OnAimAssistChanged?.Invoke(this, EventArgs.Empty);
