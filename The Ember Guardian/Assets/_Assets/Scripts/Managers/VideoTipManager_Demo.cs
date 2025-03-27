@@ -64,7 +64,7 @@ public class VideoTipManager_Demo : MonoBehaviour
         if (DemoMainLevelManager.Instance.GetDemoMainLevelTutorialCompleted()) return;
 
         fireManagementTipShown = true;
-        VideoTipUI.Instance.PlayTipSO(fireManagementTip, 1.5f);
+        VideoTipUI.Instance.PlayTipSO(fireManagementTip, .5f);
         ES3.Save("fireManagementTipShown", true);
     }
 

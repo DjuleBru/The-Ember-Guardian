@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Summoner_Ghoul_Day
   m_EditorClassIdentifier: 
   enemyName: Summoner
+  isBoss: 0
   description: Melee mob that can respawn after it's first death !
   creaturePrefab: {fileID: 4997657120178985709, guid: 37afd9dbef5fbb647976c3797ee4c379, type: 3}
   mass: 20
@@ -30,7 +31,6 @@ MonoBehaviour:
   attackRate: 2.04
   enteredLightattackRateDebuff: 2.5
   isRangedAttack: 0
-  canAttackPlayerOnTower: 0
   minAttackRange: 1
   maxAttackRange: 2
   hasSpecialAbility: 1
@@ -38,7 +38,11 @@ MonoBehaviour:
   attackRangeRandomizer: 0.5
   attackRangeMaxDistanceMiss: 0.1
   relativeDamageToFire: 1
+  immuneToPoison: 0
+  immuneToShock: 0
+  immuneToImmobilize: 0
   attackAnimationDelay: 0.2
+  attackSFXDelayAfterAnimationStart: 0
   totalAttackAnimationTime: 0.6
   hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
@@ -46,9 +50,11 @@ MonoBehaviour:
   workerTargetingPriority: 1
   playerTargetingPriority: 3
   barricadeTargetingPriority: 2
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 0
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
-  difficulty: 6
+  difficulty: 8
   initialWaveSpawn: 3
   spawnProbability: 0.25
   maxCreaturesPerPacket: 2

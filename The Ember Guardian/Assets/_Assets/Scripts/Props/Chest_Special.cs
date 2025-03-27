@@ -9,8 +9,19 @@ public class Chest_Special : Chest
 
     [SerializeField] private GunSO gunSOInChest;
     [SerializeField] private List<SkillSO> skillSOListInChest;
+    private SkillSO skillSOSelected;
 
     private bool rewardOfferedToPlayerStarted;
+
+    protected override void Start() {
+        base.Start();
+        if (chestType == ChestType.skillChest) {
+            SelectRandomSkill();
+        }
+    }
+    private void SelectRandomSkill() {
+        skillSOSelected = skillSOListInChest[UnityEngine.Random.Range(0, skillSOListInChest.Count)];
+    }
 
     protected override void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
@@ -25,15 +36,13 @@ public class Chest_Special : Chest
         };
 
         if(!chestOpenedAnimationOver) {
-            Debug.Log("OpenChest");
             chestOpened = true;
-            StartCoroutine(OpenChest(false));
+            StartCoroutine(OpenChestCoroutine(false));
             InvokeOnChestOpened();
 
         } else {
             if (rewardOfferedToPlayerStarted) return;
             rewardOfferedToPlayerStarted = true;
-            Debug.Log("OfferRewardToPlayer");
             StartCoroutine(OfferRewardToPlayer());
 
         }
@@ -47,19 +56,18 @@ public class Chest_Special : Chest
         if (chestType == ChestType.weaponChest) {
             PlayerShoot.Instance.SetActiveGun(gunSOInChest);
         }
-
         if (chestType == ChestType.skillChest) {
             SkillItem skillItem = new SkillItem();
-            SkillSO skillSORandomized = skillSOListInChest[UnityEngine.Random.Range(0, skillSOListInChest.Count)];
-            skillItem.Initialize(skillSORandomized);
+            skillItem.Initialize(skillSOSelected);
 
-            if(skillSORandomized.itemType == MerchantItem.MerchantItemType.ActiveSkill) {
+            if (skillSOSelected.itemType == MerchantItem.MerchantItemType.ActiveSkill) {
                 PlayerSkills.Instance.AddActiveSkill(skillItem);
             }
-            if (skillSORandomized.itemType == MerchantItem.MerchantItemType.PassiveSkill) {
+            if (skillSOSelected.itemType == MerchantItem.MerchantItemType.PassiveSkill) {
                 PlayerSkills.Instance.AddPassiveSkill(skillItem);
             }
         }
+
 
         yield return new WaitForSeconds(.5f);
 
@@ -79,6 +87,11 @@ public class Chest_Special : Chest
             j++;
         }
     }
+
+    public SkillSO GetSkillSO() {
+        return skillSOSelected;
+    }
+
     protected override void OnTriggerEnter2D(Collider2D collision) {
         if (rewardOfferedToPlayerStarted) return;
 

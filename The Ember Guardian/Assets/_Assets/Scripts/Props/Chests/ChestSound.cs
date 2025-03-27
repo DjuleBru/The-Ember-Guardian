@@ -9,7 +9,9 @@ public class ChestSound : SoundObject
 
     [SerializeField] private AudioClip startOpenChestAudioClip;
     [SerializeField] private AudioClip startOpenChestAudioClip_AmmoChest;
+    [SerializeField] private AudioClip startOpenChestAudioClip_SkillChest;
     [SerializeField] private AudioClip unlockChestAudioClip;
+    [SerializeField] private AudioClip unlockChestAudioClip_SkillChest;
 
 
     private void Awake() {
@@ -24,7 +26,13 @@ public class ChestSound : SoundObject
 
 
     private void Chest_OnChestUnlocked(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(unlockChestAudioClip, .75f * sfxVolume);
+        AudioClip audioClip = unlockChestAudioClip;
+
+        if (chest.GetChestType() == Chest.ChestType.skillChest) {
+            audioClip = unlockChestAudioClip_SkillChest;
+        }
+
+        audioSource.PlayOneShot(audioClip, .75f * sfxVolume);
     }
 
     private void Chest_OnChestOpened(object sender, System.EventArgs e) {
@@ -32,6 +40,9 @@ public class ChestSound : SoundObject
 
         if(chest.GetChestType() == Chest.ChestType.ammoChest) {
             audioClip = startOpenChestAudioClip_AmmoChest;
+        }
+        if (chest.GetChestType() == Chest.ChestType.skillChest) {
+            audioClip = startOpenChestAudioClip_SkillChest;
         }
         audioSource.PlayOneShot(audioClip, .75f * sfxVolume);
 

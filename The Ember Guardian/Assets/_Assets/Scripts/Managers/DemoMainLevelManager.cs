@@ -56,7 +56,9 @@ public class DemoMainLevelManager : MonoBehaviour
         demoLevelLostAmount = ES3.Load("demoLevelLostAmount", 0);
         recruitWorkerTooltipShown = ES3.Load("recruitWorkerTooltipShown", false);
 
-        //InitializeSpawners(demoMainLevelTutorialCompleted);
+        Debug.Log("demoFirstLevelCompleted " + demoFirstLevelCompleted);
+
+        InitializeSpawners(demoMainLevelEncountered);
     }
 
     private void Start() {
@@ -154,18 +156,18 @@ public class DemoMainLevelManager : MonoBehaviour
         }
     }
 
-    private void InitializeSpawners(bool demoMainLevelTutorialCompleted) {
+    private void InitializeSpawners(bool demoMainLevelEncountered) {
         foreach (MobSpawner daySpawner in firstLevelLeftSpawners.GetComponentsInChildren<MobSpawner>()) {
-            daySpawner.gameObject.SetActive(!demoMainLevelTutorialCompleted);
+            daySpawner.gameObject.SetActive(!demoMainLevelEncountered);
         }
         foreach (MobSpawner daySpawner in firstLevelRightSpawners.GetComponentsInChildren<MobSpawner>()) {
-            daySpawner.gameObject.SetActive(!demoMainLevelTutorialCompleted);
+            daySpawner.gameObject.SetActive(!demoMainLevelEncountered);
         }
         foreach (DayCreatureSpawnerGroup daySpawnerGroup in levelRightSpawnerGroups.GetComponentsInChildren<DayCreatureSpawnerGroup>()) {
-            daySpawnerGroup.gameObject.SetActive(demoMainLevelTutorialCompleted);
+            daySpawnerGroup.gameObject.SetActive(demoMainLevelEncountered);
         }
         foreach (DayCreatureSpawnerGroup daySpawnerGroup in levelLeftSpawnerGroups.GetComponentsInChildren<DayCreatureSpawnerGroup>()) {
-            daySpawnerGroup.gameObject.SetActive(demoMainLevelTutorialCompleted);
+            daySpawnerGroup.gameObject.SetActive(demoMainLevelEncountered);
         }
 
     }
@@ -233,6 +235,7 @@ public class DemoMainLevelManager : MonoBehaviour
 
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
         Fire.Instance.DisableEmberExtraction();
+        Debug.Log("demoFirstLevelCompleted " + demoFirstLevelCompleted);
 
         if (!demoMainLevelTutorialCompleted) {
             List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveUIList = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {

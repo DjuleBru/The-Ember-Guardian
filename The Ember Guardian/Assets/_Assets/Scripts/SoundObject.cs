@@ -38,6 +38,15 @@ public class SoundObject : MonoBehaviour
         audioSource2D.PlayOneShot(audioClip, volume * sfxVolume);
     }
 
+    protected void PlaySFXAfterDelay(AudioClip audioClip, float delay, float volume = 1f) {
+        StartCoroutine(PlaySFXAfterDelayCoroutine(audioClip, delay, volume));
+    }
+
+    private IEnumerator PlaySFXAfterDelayCoroutine(AudioClip audioClip,float delay, float volume = 1f) {
+        yield return new WaitForSeconds(delay);
+        PlaySound2D(audioClip, volume);
+    }
+
     protected IEnumerator FadeOutCoroutine(AudioSource audioSource, float fadeDuration) {
         float startVolume = audioSource.volume;
 

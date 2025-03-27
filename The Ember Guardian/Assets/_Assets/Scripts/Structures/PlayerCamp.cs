@@ -107,10 +107,10 @@ public class PlayerCamp : MonoBehaviour
         if (!initialFireLit) return;
 
         foreach (StructureLocation structureLocation in structureLocations) {
-
             if (structureLocation == null) continue;
             if (IsWithinBarricadePosition(structureLocation.transform.position, minBarricadePosition, maxBarricadePosition)) {
                 if (!structureLocation.GetStructureLocationUnlocked()) {
+                    Debug.Log("UnlockStructureLocationsBetweenBarricades " + structureLocation);
                     structureLocation.UnlockStructureLocation();
                 }
             }

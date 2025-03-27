@@ -32,6 +32,20 @@ public class CreatureAttack : MobAttack
         }
     }
 
+    public override void DealDamage(bool ignoreTemporaryInvincibility) {
+
+        if (attackTargetIDamageable != null) {
+            attackTargetIDamageable.TakeDamage(attackDamage, transform, false, ignoreTemporaryInvincibility);
+        }
+
+        if ((attackTargetIDamageable as MonoBehaviour) == Fire.Instance) {
+            if (creature.GetCreatureSO().isBoss) return;
+            mob.Die();
+        }
+
+        InvokeAttackHit();
+    }
+
     private void Creature_OnCreatureExitedLight(object sender, System.EventArgs e) {
         attackCooldown /= enteredLightAttackSpeedDebuff;
     }

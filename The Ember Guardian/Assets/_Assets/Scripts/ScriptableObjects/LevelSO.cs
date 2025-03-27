@@ -26,6 +26,11 @@ public class LevelSO : ScriptableObject
     public bool talkToNpcAFterObjective;
     public int nightsToSurviveAmount = 0;
     public List<CreatureSO> nightCreatureTypes;
+    public bool hasBoss;
+    [ShowIf("hasBoss")]
+    public CreatureSO bossCreatureType;
+    [ShowIf("hasBoss")]
+    public List<int> bossNightSpawns;
 
     public bool isReplayableLevel;
     [ShowIf("isReplayableLevel")]

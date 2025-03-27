@@ -2408,6 +2408,7 @@ GameObject:
   m_Component:
   - component: {fileID: 245174916904698367}
   - component: {fileID: 4676331818038884438}
+  - component: {fileID: 7082790433444008224}
   m_Layer: 17
   m_Name: WorldAudioSource
   m_TagString: Untagged
@@ -2526,6 +2527,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7082790433444008224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3367490885079558467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8b52ebbea11cad48b0d93c2883134ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistanceToHear: 100
+  maxAudioSourceVolume: 1
+  active: 1
 --- !u!1 &3484933673856495487
 GameObject:
   m_ObjectHideFlags: 0
@@ -2720,7 +2736,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5193497263790770618}
   - component: {fileID: 2844216895924520767}
-  - component: {fileID: 7187882380379211475}
   - component: {fileID: 4228537794691026541}
   m_Layer: 17
   m_Name: BarricadeSound
@@ -2773,21 +2788,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fba6881ca8fe53443a65dabb93be4e51, type: 3}
   repairedAudioClips:
   - {fileID: 8300000, guid: 1c814f208436afc4e9b1b9c6c129aa40, type: 3}
---- !u!114 &7187882380379211475
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3627566579755712707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8b52ebbea11cad48b0d93c2883134ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxDistanceToHear: 60
-  maxAudioSourceVolume: 1
-  active: 1
 --- !u!82 &4228537794691026541
 AudioSource:
   m_ObjectHideFlags: 0

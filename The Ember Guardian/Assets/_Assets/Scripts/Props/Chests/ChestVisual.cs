@@ -4,26 +4,27 @@ using UnityEngine;
 
 public class ChestVisual : MonoBehaviour
 {
-    private Chest chest;
-    private Animator animator;
+    protected Chest chest;
+    protected Animator animator;
 
-    [SerializeField] private bool showHoveringIndicator;
-    [SerializeField] private GameObject hoveringIndicatorGO;
+    [SerializeField] protected bool showHoveringIndicator;
+    [SerializeField] protected GameObject hoveringIndicatorGO;
 
-    [SerializeField] private SpriteRenderer chestSpriteRenderer;
-    [SerializeField] private Animator inputIconAnimator;
-    [SerializeField] private Material unhoveredMaterial;
-    [SerializeField] private Material hoveredMaterial;
+    [SerializeField] protected SpriteRenderer chestSpriteRenderer;
+    [SerializeField] protected Animator inputIconAnimator;
+    [SerializeField] protected Material unhoveredMaterial;
+    [SerializeField] protected Material hoveredMaterial;
 
-    [SerializeField] private RuntimeAnimatorController initialChestAnimator;
-    [SerializeField] private RuntimeAnimatorController ammoChestAnimator;
-    [SerializeField] private RuntimeAnimatorController gemChestAnimator;
-    [SerializeField] private RuntimeAnimatorController orbChestAnimator;
-    [SerializeField] private RuntimeAnimatorController hugeChestAnimator;
-    [SerializeField] private RuntimeAnimatorController weaponChestAnimator;
-    [SerializeField] private RuntimeAnimatorController skillChestAnimator;
+    [SerializeField] protected RuntimeAnimatorController initialChestAnimator;
+    [SerializeField] protected RuntimeAnimatorController ammoChestAnimator;
+    [SerializeField] protected RuntimeAnimatorController gemChestAnimator;
+    [SerializeField] protected RuntimeAnimatorController orbChestAnimator;
+    [SerializeField] protected RuntimeAnimatorController hugeChestAnimator;
+    [SerializeField] protected RuntimeAnimatorController weaponChestAnimator;
+    [SerializeField] protected RuntimeAnimatorController skillChestAnimator;
+    [SerializeField] protected RuntimeAnimatorController trapChestAnimator;
 
-    private void Awake() {
+    protected void Awake() {
         chest = GetComponentInParent<Chest>();
         animator = GetComponent<Animator>();
 
@@ -32,37 +33,11 @@ public class ChestVisual : MonoBehaviour
         chest.OnChestOpenedAnimationOver += Chest_OnChestOpenedAnimationOver;
     }
 
-    private void Chest_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
-        chestSpriteRenderer.material = unhoveredMaterial;
-
-        if (!chest.GetPayToOpenChest()) {
-            inputIconAnimator.ResetTrigger("Hide");
-            inputIconAnimator.SetTrigger("Show");
-        }
-
-        if(showHoveringIndicator) {
-            hoveringIndicatorGO.SetActive(true);
-        }
-    }
-
-    private void Chest_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
-        chestSpriteRenderer.material = hoveredMaterial;
-
-        if(!chest.GetPayToOpenChest()) {
-            inputIconAnimator.ResetTrigger("Hide");
-            inputIconAnimator.SetTrigger("Show");
-        }
-
-        if (showHoveringIndicator) {
-            hoveringIndicatorGO.SetActive(false);
-        }
-    }
-
-    private void Start() {
+    protected virtual void Start() {
         chest.OnChestOpened += Chest_OnChestOpened;
         chest.OnChestDisappear += Chest_OnChestDisappear;
 
-        if(chest.GetChestType() == Chest.ChestType.orbChest) {
+        if (chest.GetChestType() == Chest.ChestType.orbChest) {
             animator.runtimeAnimatorController = orbChestAnimator;
         }
         if (chest.GetChestType() == Chest.ChestType.ammoChest) {
@@ -83,20 +58,49 @@ public class ChestVisual : MonoBehaviour
         if (chest.GetChestType() == Chest.ChestType.skillChest) {
             animator.runtimeAnimatorController = skillChestAnimator;
         }
+        if (chest.GetChestType() == Chest.ChestType.trapChest) {
+            animator.runtimeAnimatorController = trapChestAnimator;
+        }
+    }
+    protected void Chest_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
+        chestSpriteRenderer.material = unhoveredMaterial;
+
+        if (!chest.GetPayToOpenChest() || (chest.GetPayToOpenChest() && chest.GetChestOpened())) {
+            inputIconAnimator.ResetTrigger("Show");
+            inputIconAnimator.SetTrigger("Hide");
+        }
+
+        if(showHoveringIndicator) {
+            hoveringIndicatorGO.SetActive(true);
+        }
     }
 
-    private void Chest_OnChestDisappear(object sender, System.EventArgs e) {
+    protected void Chest_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        chestSpriteRenderer.material = hoveredMaterial;
+
+        if(!chest.GetPayToOpenChest() || (chest.GetPayToOpenChest() && chest.GetChestOpened())) {
+            inputIconAnimator.ResetTrigger("Hide");
+            inputIconAnimator.SetTrigger("Show");
+        }
+
+        if (showHoveringIndicator) {
+            hoveringIndicatorGO.SetActive(false);
+        }
+    }
+
+
+    protected void Chest_OnChestDisappear(object sender, System.EventArgs e) {
         animator.SetTrigger("Disappear");
         inputIconAnimator.gameObject.SetActive(false);
     }
 
-    private void Chest_OnChestOpened(object sender, System.EventArgs e) {
+    protected void Chest_OnChestOpened(object sender, System.EventArgs e) {
         animator.SetTrigger("Opened");
         inputIconAnimator.gameObject.SetActive(false);
         chestSpriteRenderer.material = unhoveredMaterial;
 
     }
-    private void Chest_OnChestOpenedAnimationOver(object sender, System.EventArgs e) {
+    protected void Chest_OnChestOpenedAnimationOver(object sender, System.EventArgs e) {
 
         if (!chest.GetChestDisappearsAutomatically()) {
             inputIconAnimator.gameObject.SetActive(true);

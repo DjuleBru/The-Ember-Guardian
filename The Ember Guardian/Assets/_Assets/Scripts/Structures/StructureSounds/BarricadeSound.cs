@@ -42,7 +42,7 @@ public class BarricadeSound : StructureSounds
     }
 
     private void BarricadeVisual_OnBarricadeSpriteFell(object sender, System.EventArgs e) {
-        barricadeAudioSource.PlayOneShot(spriteFellAudioClips[Random.Range(0, spriteFellAudioClips.Length)], .75f * sfxVolume);
+        worldAudioSource.PlayOneShot(spriteFellAudioClips[Random.Range(0, spriteFellAudioClips.Length)], .5f * sfxVolume);
     }
 
     private void Barricade_OnBarricadeRepaired(object sender, System.EventArgs e) {
@@ -50,12 +50,12 @@ public class BarricadeSound : StructureSounds
     }
 
     private void Barricade_OnBarricadeDestroyed(object sender, System.EventArgs e) {
-        barricadeAudioSource.PlayOneShot(destroyedAudioClips[Random.Range(0, destroyedAudioClips.Length)], .75f * sfxVolume);
+        worldAudioSource.PlayOneShot(destroyedAudioClips[Random.Range(0, destroyedAudioClips.Length)], .5f * sfxVolume);
     }
 
     private void Barricade_OnBarricadeDamageTaken(object sender, System.EventArgs e) {
         if (barricade.GetBarricadeHealthNormalized() <= 0) return;
-        worldAudioSource.PlayOneShot(damagedAudioClips[Random.Range(0, damagedAudioClips.Length)], .5f * sfxVolume);
+        worldAudioSource.PlayOneShot(damagedAudioClips[Random.Range(0, damagedAudioClips.Length)], .25f * sfxVolume);
     }
 
     public void TriggerBarricadeBreachedWarningDing() {

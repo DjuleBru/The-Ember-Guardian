@@ -21,8 +21,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 748e490f4fe4f2d40bd244009d72c632, type: 2}
   - {fileID: 11400000, guid: 5eb9be5c901d03349a40690831d066c5, type: 2}
   environmentType: 1
-  levelObjectiveType: 11
-  endLevelType: 11
+  levelObjectiveType: 15
+  endLevelType: 15
   talkToNpcAFterObjective: 0
   nightsToSurviveAmount: 0
   nightCreatureTypes:
@@ -31,6 +31,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b27e7bc56456c4540924d93c318c5c13, type: 2}
   - {fileID: 11400000, guid: 244beef41937f8c4aba25e62ec680226, type: 2}
   - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
+  hasBoss: 1
+  bossCreatureType: {fileID: 11400000, guid: 99d459fd6a02c044d90152bcc6de9ffb, type: 2}
+  bossNightSpawns: 0100000002000000
   isReplayableLevel: 0
   dayCreatureTypes: []
   totalDayCreatureDifficulty: 0
@@ -52,6 +55,17 @@ MonoBehaviour:
   intialMaxSubwaveDifficulty: 10
   maxSubwaveDifficulty: 80
   growthFactor: 1.2
+  setDifficultyAnimationCurve: 0
+  difficultyAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxWaveInAnimationCurve: 0
+  difficultyAtMaxWave: 0
+  minDifficultyAtMaxWave: 0
+  maxDifficultyAtMaxWave: 0
   minMaxSubwaveDifficultyGrowthFactor: 1
   startWaveToSpawnFromBothSides: 0
   canSpawnElite: 0

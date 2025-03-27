@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7056934370328119951}
   - component: {fileID: 6591958508749596582}
   m_Layer: 0
-  m_Name: Glitch
+  m_Name: SecondaryVisualSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -96,6 +96,10 @@ PrefabInstance:
       propertyPath: chest
       value: 
       objectReference: {fileID: 4198319909933008613}
+    - target: {fileID: 3746230923594573508, guid: 21af2d3ad65ac204985c4428e384b3fd, type: 3}
+      propertyPath: trapChestAnimator
+      value: 
+      objectReference: {fileID: 22100000, guid: bcc30e9fbecb4794092af96641288040, type: 2}
     - target: {fileID: 5640971908440725504, guid: 21af2d3ad65ac204985c4428e384b3fd, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
@@ -146,7 +150,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7988529067400222306, guid: 21af2d3ad65ac204985c4428e384b3fd, type: 3}
       propertyPath: m_Name
-      value: Chest_Special
+      value: Chest_Special_Weapon
       objectReference: {fileID: 0}
     - target: {fileID: 8855414138609563987, guid: 21af2d3ad65ac204985c4428e384b3fd, type: 3}
       propertyPath: m_Controller

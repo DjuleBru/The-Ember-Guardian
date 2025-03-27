@@ -321,7 +321,7 @@ public class CreatureAI : MonoBehaviour {
         attackTarget = null;
     }
 
-    public void SetAttackTarget(IDamageable iDamageable, List<IDamageable> iDamageablesInRange) {
+    public virtual void SetAttackTarget(IDamageable iDamageable, List<IDamageable> iDamageablesInRange) {
         if (!spawned) return;
 
         if (iDamageablesInRange.Count == 0) {

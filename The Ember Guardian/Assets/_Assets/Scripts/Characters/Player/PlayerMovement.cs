@@ -332,6 +332,7 @@ public class PlayerMovement : MonoBehaviour {
         staminaTimer += rollExhaustionAmount - rollExhaustionAmountBuff;
 
         OnPlayerRoll?.Invoke(this, EventArgs.Empty);
+        Invoke("EndRoll", .6f);
     }
 
     private void EndRoll() {

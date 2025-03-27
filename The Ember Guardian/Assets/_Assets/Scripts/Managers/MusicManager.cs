@@ -39,7 +39,7 @@ public class MusicManager : MonoBehaviour {
     private float peacefulTimer;
     private float minPeacefulTimerDelay = 20f;
     private float playMusicAttemptTimer;
-    private float playMusicAttemptRate = 5f;
+    private float playMusicAttemptRate = 10f;
     private float volumeBeforeTalkingToNPC;
 
     private bool waitingToDiscoverLocation;
@@ -106,7 +106,10 @@ public class MusicManager : MonoBehaviour {
 
             LevelManager.Instance.OnNewLocationShown += LevelManager_OnNewLocationShown;
             LevelManager.Instance.OnLevelFailed += LevelManager_OnLevelFailed;
-            waitingToDiscoverLocation = true;
+
+            if(LevelManager.Instance.GetLevelSO().isNewEnvironmentDiscoveryLevel) {
+                waitingToDiscoverLocation = true;
+            }
         }
 
         if (isMainMenuScene) {
@@ -473,8 +476,6 @@ public class MusicManager : MonoBehaviour {
         fromSource.Stop();
         toSource.volume = maxVolume; // Assure un retour au volume normal
     }
-
-
 
     public void PlayMusicDelayed(float delay) {
         audioSourceA.PlayDelayed(delay);

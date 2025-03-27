@@ -40,6 +40,7 @@ public class Creature : Mob
 
     public event EventHandler OnCreatureImmobilizedStarted;
     public event EventHandler OnCreatureImmobilizedStopped;
+    private bool immobilizeImmune;
     private bool immobilized;
     private float immobilizedDuration;
     private float immobilizedTimer;
@@ -47,6 +48,7 @@ public class Creature : Mob
     public event EventHandler OnCreaturePoisonedStarted;
     public event EventHandler OnCreaturePoisoneStopped;
     private bool poisoned;
+    private bool poisonImmune;
     private int poisonAmount;
     private float poisonedTimer;
     private float poisonRate = 1.5f;
@@ -56,6 +58,7 @@ public class Creature : Mob
     public event EventHandler OnCreatureShockedStarted;
     public event EventHandler OnCreatureShockedStopped;
     private bool shocked;
+    private bool shockedImmune;
     private float shockedDuration = 10f;
     private float shockedTimer;
     private float shockedSlowAmount;
@@ -250,6 +253,7 @@ public class Creature : Mob
     private void OnTriggerEnter2D(Collider2D collision) {
         if(collision.gameObject.GetComponentInParent<Fire>() != null) {
             if (enteredLight) return;
+            if (creatureSO.isBoss) return;
             OnCreatureEnteredLight?.Invoke(this, EventArgs.Empty);
             enteredLight = true;
         }
@@ -258,6 +262,7 @@ public class Creature : Mob
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponentInParent<Fire>() != null) {
             if (!enteredLight) return;
+            if (creatureSO.isBoss) return;
 
             OnCreatureExitedLight?.Invoke(this, EventArgs.Empty);
             enteredLight = false;
@@ -350,6 +355,7 @@ public class Creature : Mob
     }
 
     public void ApplyBearTrapEffect(float immobilizeDuration, Vector3 trapPosition) {
+        if (immobilizeImmune) return;
         immobilized = true;
         immobilizedDuration = immobilizeDuration;
         immobilizedTimer = immobilizedDuration;
@@ -361,6 +367,7 @@ public class Creature : Mob
     }
 
     public void ApplySmokeTrapEffect(int poisonAmount) {
+        if (poisonImmune) return;
         poisoned = true;
         this.poisonAmount = poisonAmount;
         poisonedTimer = poisonedDuration;
@@ -369,6 +376,7 @@ public class Creature : Mob
     }
 
     public void ApplyShockTrapEffect(float slowAmount) {
+        if (shockedImmune) return;
         shocked = true;
         this.shockedSlowAmount = slowAmount;
         shockedTimer = shockedDuration;

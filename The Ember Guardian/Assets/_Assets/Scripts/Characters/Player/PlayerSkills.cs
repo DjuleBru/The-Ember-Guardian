@@ -185,7 +185,6 @@ public class PlayerSkills : MonoBehaviour
     }
 
     public void AddActiveSkill(SkillItem skillItem) {
-        Debug.Log("Adding " + skillItem.skillType + " " + skillItem.currentLevel);
 
         if (activeSkillLeft != null && activeSkillRight != null) return;
 

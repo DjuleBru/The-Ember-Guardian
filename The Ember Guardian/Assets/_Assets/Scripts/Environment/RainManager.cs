@@ -177,7 +177,6 @@ public class RainManager : MonoBehaviour
     }
 
     private void SetRainLevel(RainIntensity rainLevel) {
-        Debug.Log("SetRainLevel " + rainLevel);
         WaterSimulationAdvanced waterSim = modernWater2D.waterSimulation as WaterSimulationAdvanced;
         bool enableRain;
 

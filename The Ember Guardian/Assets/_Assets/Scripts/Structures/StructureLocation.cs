@@ -8,6 +8,7 @@ public class StructureLocation : MonoBehaviour {
     protected PayCurrencyUI payCurrencyUI;
     [SerializeField] protected StructureSO structureSOToBuild;
     [SerializeField] protected Transform orbTemplateWorldUIParent;
+    [SerializeField] protected bool debugStructureTypeBought;
     [SerializeField] protected bool isAlwaysUnlocked;
 
     protected List<PayCurrencyTemplateWorldUI> buildStructureOrbTemplates = new List<PayCurrencyTemplateWorldUI>();
@@ -134,6 +135,7 @@ public class StructureLocation : MonoBehaviour {
             return;
         }
 
+        if (debugStructureTypeBought) return;
         if (structureSOToBuild.level1StructureInitiallyUnlocked) return;
 
         // Unlock upgrades if unlocked at gem merchant

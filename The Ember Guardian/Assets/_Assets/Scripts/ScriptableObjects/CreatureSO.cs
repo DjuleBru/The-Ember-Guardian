@@ -12,6 +12,9 @@ public class CreatureSO : ScriptableObject
     public string enemyName;
     [BoxGroup("Basic Info")]
     [LabelWidth(100)]
+    public bool isBoss;
+    [BoxGroup("Basic Info")]
+    [LabelWidth(100)]
     [TextArea]
     public string description;
 
@@ -82,9 +85,6 @@ public class CreatureSO : ScriptableObject
     public bool isRangedAttack;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
-    public bool canAttackPlayerOnTower;
-    [VerticalGroup("Game Data/Stats")]
-    [LabelWidth(200)]
     [Range(.1f, 20)]
     public float minAttackRange;
     [VerticalGroup("Game Data/Stats")]
@@ -113,19 +113,34 @@ public class CreatureSO : ScriptableObject
     [LabelWidth(200)]
     [Range(0, 2)]
     public float relativeDamageToFire;
-    [VerticalGroup("Game Data/Animation Parameters")]
+
+
+    [BoxGroup("Game Data/Status Effects")]
+    [LabelWidth(200)]
+    public bool immuneToPoison; 
+    [BoxGroup("Game Data/Status Effects")]
+    [LabelWidth(200)]
+    public bool immuneToShock;
+    [BoxGroup("Game Data/Status Effects")]
+    [LabelWidth(200)]
+    public bool immuneToImmobilize;
+
+    [BoxGroup("Game Data/Animation Parameters")]
     [LabelWidth(200)]
     public float attackAnimationDelay;
-    [VerticalGroup("Game Data/Animation Parameters")]
+    [BoxGroup("Game Data/Animation Parameters")]
+    [LabelWidth(200)]
+    public float attackSFXDelayAfterAnimationStart;
+    [BoxGroup("Game Data/Animation Parameters")]
     [LabelWidth(200)]
     public float totalAttackAnimationTime;
-    [VerticalGroup("Game Data/Animation Parameters")]
+    [BoxGroup("Game Data/Animation Parameters")]
     [LabelWidth(200)]
     public bool hasCustomSpawnAnimation;
-    [VerticalGroup("Game Data/Animation Parameters")]
+    [BoxGroup("Game Data/Animation Parameters")]
     [LabelWidth(200)]
     public float spawnAnimationDuration = 1f;
-    [VerticalGroup("Game Data/Animation Parameters")]
+    [BoxGroup("Game Data/Animation Parameters")]
     [LabelWidth(200)]
     [Range(.5f, 2)]
     public float baseMovementAnimationSpeed;
@@ -143,6 +158,12 @@ public class CreatureSO : ScriptableObject
     [LabelWidth(200)]
     [Range(0, 5)]
     public int barricadeTargetingPriority;
+    [BoxGroup("AI")]
+    [LabelWidth(200)]
+    public bool canAttackPlayerBehindBarricades;
+    [BoxGroup("AI")]
+    [LabelWidth(200)]
+    public bool canAttackPlayerOnTower;
 
 
     [BoxGroup("Drop Stats")]
@@ -154,8 +175,8 @@ public class CreatureSO : ScriptableObject
 
     [BoxGroup("Wave Stats")]
     [LabelWidth(200)]
-    [Range(1, 10)]
-    public int difficulty; // between 1 and 10
+    [Range(1, 100)]
+    public int difficulty; // between 1 and 100
     [BoxGroup("Wave Stats")]
     [LabelWidth(200)]
     [Range(1, 10)]

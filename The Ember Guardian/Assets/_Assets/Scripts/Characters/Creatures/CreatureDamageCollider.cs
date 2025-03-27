@@ -8,7 +8,7 @@ public class CreatureDamageCollider : MonoBehaviour
     [SerializeField] private MobAttack mobAttack;
     [SerializeField] private CreatureDamageColliderParent creatureDamageColliderParent;
 
-    [SerializeField] private int maxImpactAmountInSingleAnimation;
+    [SerializeField] private int maxImpactAmountInSingleAnimation = 1;
     private int impactAmountOnPlayerInSingleAnimation;
 
 

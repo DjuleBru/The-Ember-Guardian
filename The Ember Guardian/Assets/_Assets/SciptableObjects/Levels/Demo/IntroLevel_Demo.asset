@@ -29,10 +29,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a0c1321c3dbd0704c9f6bf0aec0e77b3, type: 2}
   - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
   - {fileID: 11400000, guid: b27e7bc56456c4540924d93c318c5c13, type: 2}
+  hasBoss: 0
+  bossCreatureType: {fileID: 0}
+  bossNightSpawns: 
   isReplayableLevel: 0
   dayCreatureTypes: []
   totalDayCreatureDifficulty: 0
-  isNewEnvironmentDiscoveryLevel: 0
+  isNewEnvironmentDiscoveryLevel: 1
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
   linkedSceneName: DemoLevel_Intro
   hasFog: 0
@@ -50,6 +53,17 @@ MonoBehaviour:
   intialMaxSubwaveDifficulty: 60
   maxSubwaveDifficulty: 60
   growthFactor: 1.35
+  setDifficultyAnimationCurve: 0
+  difficultyAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxWaveInAnimationCurve: 0
+  difficultyAtMaxWave: 0
+  minDifficultyAtMaxWave: 0
+  maxDifficultyAtMaxWave: 0
   minMaxSubwaveDifficultyGrowthFactor: 1.2
   startWaveToSpawnFromBothSides: 1
   canSpawnElite: 0

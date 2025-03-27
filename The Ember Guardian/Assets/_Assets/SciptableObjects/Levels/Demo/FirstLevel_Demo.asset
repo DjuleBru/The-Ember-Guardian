@@ -29,6 +29,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b27e7bc56456c4540924d93c318c5c13, type: 2}
   - {fileID: 11400000, guid: fe01ec26caacb0d48a10782d748855d9, type: 2}
   - {fileID: 11400000, guid: 8689a507d627c5541b6ca48f47a3bf35, type: 2}
+  hasBoss: 0
+  bossCreatureType: {fileID: 0}
+  bossNightSpawns: 
   isReplayableLevel: 1
   dayCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
@@ -88,8 +91,9 @@ MonoBehaviour:
   startWaveToSpawnFromBothSides: 2
   canSpawnElite: 1
   levelAudioClips:
-  - {fileID: 8300000, guid: 09c5969007630694984b81ccd6618337, type: 3}
-  - {fileID: 8300000, guid: d79c4b04637541d4fba193e4660d29a7, type: 3}
-  - {fileID: 8300000, guid: 67182c7decc49484f9b9722ed4fe9b37, type: 3}
   - {fileID: 8300000, guid: 37cae04edadc4714894e86e8468774cf, type: 3}
   - {fileID: 8300000, guid: 11f91fa2df76eb347ad58de41dc01c8f, type: 3}
+  - {fileID: 8300000, guid: 6be0e396dd03dd54e83c4b1bd9269e22, type: 3}
+  - {fileID: 8300000, guid: 6aff3c3b53839b84999b8acaf10537cd, type: 3}
+  - {fileID: 8300000, guid: fb38d3f09a5d92645ac6e1ac20110e91, type: 3}
+  - {fileID: 8300000, guid: da679ddcf110a004aa68e7770839a596, type: 3}

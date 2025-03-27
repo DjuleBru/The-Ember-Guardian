@@ -150,7 +150,9 @@ public class Gun : MonoBehaviour
             totalBullerSize = .4f;
         }
 
+        float focusBlastShotNerfer = 1.5f;
         damagePerBullet *= (pelletsPerBullet * (PlayerShoot.Instance.GetCurrentBullets()));
+        damagePerBullet = Mathf.RoundToInt(damagePerBullet/focusBlastShotNerfer);
         pelletsPerBullet = 1;
         ParticleSystem.MainModule shootPSMainModule = shootPS.main;
         shootPSMainModule.startSize = totalBullerSize;

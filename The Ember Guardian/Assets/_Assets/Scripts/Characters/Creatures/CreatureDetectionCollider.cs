@@ -9,6 +9,7 @@ public class CreatureDetectionCollider : MonoBehaviour
     private CreatureMovement creatureMovement;
     private CircleCollider2D circleCollider;
     private List<IDamageable> iDamageablesInDetectionRange = new List<IDamageable>();
+    private List<IDamageable> iDamageablesExcludedFromDetection = new List<IDamageable>();
 
     private bool playerShotCreature;
     private float playerShotCreatureTimer;
@@ -224,10 +225,17 @@ public class CreatureDetectionCollider : MonoBehaviour
         }
     }
 
+    public void ExcludeIDamageableFromDetectableTargets(IDamageable iDamageable) {
+        Debug.Log("ExcludeIDamageableFromDetectableTargets " + (iDamageable as MonoBehaviour).gameObject);
+        iDamageablesExcludedFromDetection.Add(iDamageable);
+        RemoveIDamageableInDetectionRange(iDamageable);
+    }
+
     private void RefreshHighestPriorityTarget() {
         List<IDamageable> iDamageablesDetected = new List<IDamageable>();
 
         foreach(IDamageable iDamageable in iDamageablesInDetectionRange) {
+            if (iDamageablesExcludedFromDetection.Contains(iDamageable)) continue;
             iDamageablesDetected.Add(iDamageable);
         }
 
@@ -321,7 +329,18 @@ public class CreatureDetectionCollider : MonoBehaviour
 
         // Check if player is out of camp
         if (!CampZoneManager.Instance.IsWithinCampZoneLimits(Player.Instance.transform.position)) {
+
+            // Player is out of camp
             return true;
+
+        } else {
+
+            // Player is within camp zone
+
+            if (creature.GetCreatureSO().canAttackPlayerBehindBarricades) {
+                return true;
+            }
+
         }
 
         return false;

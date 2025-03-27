@@ -203,7 +203,7 @@ public class MobAttack : MonoBehaviour
         return projectile;
     }
 
-    public void DealDamage(bool ignoreTemporaryInvincibility) {
+    public virtual void DealDamage(bool ignoreTemporaryInvincibility) {
 
         if (attackTargetIDamageable != null) {
             attackTargetIDamageable.TakeDamage(attackDamage, transform, false, ignoreTemporaryInvincibility);
