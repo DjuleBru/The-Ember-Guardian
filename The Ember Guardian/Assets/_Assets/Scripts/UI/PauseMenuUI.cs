@@ -41,7 +41,6 @@ public class PauseMenuUI : MonoBehaviour
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
 
-
         buttonConfirm_ExitGame.OnButtonDeselected += ButtonConfirm_ExitGame_OnButtonDeselected;
         buttonConfirm_MainMenu.OnButtonDeselected += ButtonConfirm_MainMenu_OnButtonDeselected;
 
@@ -95,6 +94,7 @@ public class PauseMenuUI : MonoBehaviour
 
     protected void GameInput_OnPlayerPausePerformed(object sender, System.EventArgs e) {
         if (!canOpenPauseMenu) return;
+        if (SceneLoader.Instance.GetIsCrossfading()) return;
 
         OpenClosePauseMenu();
     }

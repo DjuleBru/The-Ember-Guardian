@@ -161,7 +161,7 @@ public class CreaturesSpawnManager : MonoBehaviour
     private void CreaturesManager_OnCreatureAtNightKilled(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
         remainingNightCreaturesHP -= e.creature.GetCreatureSO().maxHealth;
         remainingNightCreatures--;
-        Debug.Log("remainingNightCreatures 1 died" + remainingNightCreatures);
+        Debug.Log("creature killed : remainingNightCreatures " + remainingNightCreatures);
 
         float remainingNightCreaturesHealthNormalized = (float)remainingNightCreaturesHP / (float)totalNightCreatureHP;
         float remainingNightCreaturesNormalized = (float)remainingNightCreatures / (float)totalNightCreatures;
@@ -188,7 +188,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.T)) {
             Debug.Log("SpawnWave");
-            StartCoroutine(SpawnWave());
+            StartCoroutine(SpawnWave(currentWaveNumber));
         }
     }
 
@@ -208,7 +208,7 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
         if (debugDontSpawnAtNight) return;
-        StartCoroutine(SpawnWave());
+        StartCoroutine(SpawnWave(currentWaveNumber));
     }
 
     public void SetTutorialWave() {
@@ -408,11 +408,11 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     }
 
-    private IEnumerator SpawnWave() {
-        Debug.Log("Spawn wave " + currentWaveNumber);
+    private IEnumerator SpawnWave(int waveNumber) {
+        Debug.Log("Spawn wave " + waveNumber);
         subWaveIndex = 0;
 
-        while (subWaveIndex < subWaveNumber) {
+        while (subWaveIndex < subWaveNumber && waveNumber == currentWaveNumber) {
             Debug.Log("Spawning subwave " + subWaveIndex);
             remainingSubWaveCreatures = waveCreaturesDictionary[subWaveIndex].Count;
 
@@ -465,7 +465,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         creature.SetAsDayCreature(false);
         CreaturesManager.Instance.AddCreatureToNightWave(creature);
 
-        if (!canSpawnElite) return;
+        if (!canSpawnElite || creatureToSpawn.isBoss) return;
         float eliteRandomFloat = UnityEngine.Random.Range(0f, 1f);
         if(eliteRandomFloat < eliteSpawnProbability) {
             creature.SetAsEliteCreature();

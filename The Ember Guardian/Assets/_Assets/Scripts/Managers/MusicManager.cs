@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,12 +35,19 @@ public class MusicManager : MonoBehaviour {
     [SerializeField] private AudioClip endLevelMusic;
     [SerializeField] private AudioClip discoverNewLocationMusic;
     private List<AudioClip> levelRandomBackgroundTracks;
+    private List<AudioClip> levelRandomBackgroundTracksPooled;
+    private List<AudioClip> levelExplorationTracks;
+    private List<AudioClip> levelExplorationTracksPooled;
 
     private float targetVolume;
     private float peacefulTimer;
     private float minPeacefulTimerDelay = 20f;
     private float playMusicAttemptTimer;
     private float playMusicAttemptRate = 10f;
+    private float playMusicAttemptProbability = .05f;
+    private int playExplorationMusicTick;
+    private int explorationMusicTickAmountToPlay = 3;
+
     private float volumeBeforeTalkingToNPC;
 
     private bool waitingToDiscoverLocation;
@@ -48,6 +56,7 @@ public class MusicManager : MonoBehaviour {
     private bool isLevelScene;
     private bool isPlayingLevelDiscoveryMusic;
     private bool isPlayingPeacefulMusic;
+    private bool isPlayingExplorationMusic;
     private bool isPlayingEndLevelAreaMusic;
     private bool isPlayingNightMusic;
     private bool musicAudioLevelReducedWithPause;
@@ -61,12 +70,12 @@ public class MusicManager : MonoBehaviour {
     private float fireDamageTakenTimer;
     private float fireDamageTakenRemoveRate = 1f;
 
-
     private void Awake() {
         Instance = this; 
         
         audioSourceA = GetComponent<AudioSource>(); 
         audioSourceB = gameObject.AddComponent<AudioSource>();
+
 
         audioSourceA.loop = true;
         audioSourceB.loop = true;
@@ -84,6 +93,7 @@ public class MusicManager : MonoBehaviour {
         SetAudioVolume(discoverNewLocationAudioVolume);
         targetVolume = discoverNewLocationAudioVolume;
         audioSourceA.ignoreListenerPause = true;
+        audioSourceB.ignoreListenerPause = true;
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
@@ -94,7 +104,8 @@ public class MusicManager : MonoBehaviour {
         isMainMenuScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu;
 
         if(isLevelScene) {
-            levelRandomBackgroundTracks = LevelManager.Instance.GetLevelSO().levelAudioClips;
+            levelRandomBackgroundTracks = LevelManager.Instance.GetLevelSO().levelRandomBackgroundTracks;
+            levelExplorationTracks = LevelManager.Instance.GetLevelSO().levelExplorationTracks;
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
             DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
             CreaturesManager.Instance.OnAllCreaturesAtNightKilled += CreaturesManager_OnAllCreaturesAtNightKilled;
@@ -103,6 +114,8 @@ public class MusicManager : MonoBehaviour {
             HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant += HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
             HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
             Fire.Instance.OnFireDamageTaken += Fire_OnFireDamageTaken;
+            Player.Instance.OnPlayerStartedExploring += Player_OnPlayerStartedExploring;
+            Player.Instance.OnPlayerStoppedExploring += Player_OnPlayerStoppedExploring;
 
             LevelManager.Instance.OnNewLocationShown += LevelManager_OnNewLocationShown;
             LevelManager.Instance.OnLevelFailed += LevelManager_OnLevelFailed;
@@ -110,14 +123,73 @@ public class MusicManager : MonoBehaviour {
             if(LevelManager.Instance.GetLevelSO().isNewEnvironmentDiscoveryLevel) {
                 waitingToDiscoverLocation = true;
             }
+
+            ResetLevelBackgroundTracksPooled();
+            ResetLevelExplorationTracksPooled();
+
+            audioSourceA.loop = false;
+            audioSourceB.loop = false;
         }
 
         if (isMainMenuScene) {
             audioSourceA.clip = mainMenuMusic;
             PlayMusicDelayed(2f);
         }
+
     }
 
+    private void ResetLevelBackgroundTracksPooled() {
+        levelRandomBackgroundTracksPooled = new List<AudioClip>();
+
+        foreach (AudioClip audioClip in levelRandomBackgroundTracks) {
+            levelRandomBackgroundTracksPooled.Add(audioClip);
+        }
+    }
+    private void ResetLevelExplorationTracksPooled() {
+        levelExplorationTracksPooled = new List<AudioClip>();
+
+        foreach (AudioClip audioClip in levelExplorationTracks) {
+            levelExplorationTracksPooled.Add(audioClip);
+        }
+    }
+
+    private void Player_OnPlayerStoppedExploring(object sender, EventArgs e) {
+        if(isPlayingExplorationMusic) {
+            StopCurrentMusic(2f);
+        }
+    }
+
+    private void Player_OnPlayerStartedExploring(object sender, EventArgs e) {
+        TryPlayExplorationMusic();
+    }
+
+    private void TryPlayExplorationMusic() {
+        if (!CanPlayDayTrack()) return;
+        if (isPlayingPeacefulMusic) return;
+
+        int ammoInHeldGun = PlayerShoot.Instance.GetHeldGun().GetCurrentAmmoClip();
+        int ammoInInventory = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count;
+        int ammoInSecondaryGun = 0;
+
+        if (PlayerShoot.Instance.GetSecondaryGunSO() != null) {
+            ammoInSecondaryGun = PlayerShoot.Instance.GetGun(PlayerShoot.Instance.GetSecondaryGunSO()).GetCurrentAmmoClip();
+        }
+        int totalAmmo = ammoInHeldGun + ammoInInventory + ammoInSecondaryGun;
+        int totalHealth = Player.Instance.GetHP();
+        float dayTimerNormalized = DayNightManager.Instance.GetDayDurationNormalized();
+
+        if (totalAmmo >= 6 && totalHealth >= 5 && dayTimerNormalized <= .3f) {
+            // All conditions met : tick for music
+            playExplorationMusicTick++;
+
+            if(playExplorationMusicTick == explorationMusicTickAmountToPlay) {
+                playExplorationMusicTick = 0;
+                isPlayingExplorationMusic = true;
+                PlayRandomExplorationMusic();
+
+            }
+        }
+    }
 
     private void Fire_OnFireDamageTaken(object sender, EventArgs e) {
         fireDamageTakenRecently ++;
@@ -126,14 +198,14 @@ public class MusicManager : MonoBehaviour {
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
 
-        if (isPlayingLevelDiscoveryMusic || isPlayingPeacefulMusic) {
+        if (isPlayingLevelDiscoveryMusic || isPlayingPeacefulMusic || isPlayingExplorationMusic) {
             StartCoroutine(FadeInCoroutine(1f, volumeBeforeTalkingToNPC / 1.5f));
         }
     }
 
     private void HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant(object sender, EventArgs e) {
 
-        if (isPlayingLevelDiscoveryMusic || isPlayingPeacefulMusic) {
+        if (isPlayingLevelDiscoveryMusic || isPlayingPeacefulMusic || isPlayingExplorationMusic) {
             volumeBeforeTalkingToNPC = audioSourceA.volume;
             StartCoroutine(FadeOutCoroutine(1f, volumeBeforeTalkingToNPC / 1.5f));
         }
@@ -141,7 +213,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void PauseMenuUI_OnPauseMenuOpened(object sender, EventArgs e) {
-        if(isPlayingEndLevelAreaMusic || isPlayingLevelDiscoveryMusic || isPlayingNightMusic || isPlayingPeacefulMusic) {
+        if(isPlayingEndLevelAreaMusic || isPlayingLevelDiscoveryMusic || isPlayingNightMusic || isPlayingPeacefulMusic || isPlayingExplorationMusic) {
 
             musicAudioLevelReducedWithPause = true;
             audioSourceA.volume /= 2.5f;
@@ -161,14 +233,12 @@ public class MusicManager : MonoBehaviour {
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
         if (isPlayingLevelDiscoveryMusic && discoveryMusicInterruptionSource == NewLocationMusicInterruptionSource.buildFire) {
-            peacefulTimer = 0;
-            playMusicAttemptTimer = 0;
-            FadeOutMusic(2f);
+            StopCurrentMusic(1f);
         }
     }
 
     private void Player_OnPlayerDied(object sender, EventArgs e) {
-        FadeOutMusic(1f);
+        StopCurrentMusic(1f);
     }
 
     private void LevelManager_OnNewLocationShown(object sender, System.EventArgs e) {
@@ -177,11 +247,10 @@ public class MusicManager : MonoBehaviour {
         PlayMusicDelayed(4f);
         isPlayingLevelDiscoveryMusic = true;
         waitingToDiscoverLocation = false;
-        isPlayingPeacefulMusic = true;
     }
 
     private void LevelManager_OnLevelFailed(object sender, EventArgs e) {
-        FadeOutMusic(5f);
+        StopCurrentMusic(5f);
     }
 
     private void DayNightManager_OnNightStart(object sender, EventArgs e) {
@@ -201,9 +270,7 @@ public class MusicManager : MonoBehaviour {
         if (!isLevelScene) return;
 
         isDuskOrNight = true;
-        peacefulTimer = 0;
-        playMusicAttemptTimer = 0;
-        FadeOutMusic(2f);
+        StopCurrentMusic(2f);
     }
 
     private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {
@@ -211,14 +278,22 @@ public class MusicManager : MonoBehaviour {
         if (isPlayingEndLevelAreaMusic) return;
         if (isPlayingNightMusic) return;
         if (isPlayingLevelDiscoveryMusic && discoveryMusicInterruptionSource != NewLocationMusicInterruptionSource.creatureAggro) return;
+        if (isPlayingExplorationMusic) return;
 
         peacefulTimer = 0;
         playMusicAttemptTimer = 0;
         FadeOutMusic(2f);
     }
 
-    private void Update() {
+    private bool CanPlayDayTrack() {
+        if (waitingToDiscoverLocation) return false;
+        if (isDuskOrNight) return false;
+        if (isPlayingEndLevelAreaMusic) return false;
 
+        return true;
+    }
+
+    private void Update() {
         if(fireDamageTakenRecently != 0) {
             fireDamageTakenTimer -= Time.deltaTime;
             if(fireDamageTakenTimer < 0) {
@@ -227,10 +302,10 @@ public class MusicManager : MonoBehaviour {
             }
         }
 
-        if (waitingToDiscoverLocation) return;
+        if (!CanPlayDayTrack()) return;
+        if (isPlayingLevelDiscoveryMusic) return;
         if (isPlayingPeacefulMusic) return;
-        if (isDuskOrNight) return;
-        if (isPlayingEndLevelAreaMusic) return;
+        if (isPlayingExplorationMusic) return;
 
         if(isLevelScene) {
             peacefulTimer += Time.deltaTime;
@@ -242,21 +317,47 @@ public class MusicManager : MonoBehaviour {
                     playMusicAttemptTimer = 0;
 
                     float randomNumber = UnityEngine.Random.Range(0, 1f);
-                    float chanceToPlayMusid = .1f;
 
-                    if (randomNumber < chanceToPlayMusid) {
-
-                        if (levelRandomBackgroundTracks.Count == 0) return;
-                        AudioClip randomMusic = levelRandomBackgroundTracks[UnityEngine.Random.Range(0, levelRandomBackgroundTracks.Count)];
-                        audioSourceA.clip = randomMusic;
-                        targetVolume = backgroundTracksAudioVolume * musicSettingVolume;
-                        FadeInMusic(5f);
-
-                        isPlayingPeacefulMusic = true;
+                    if (randomNumber < playMusicAttemptProbability) {
+                        PlayRandomPeacefulMusic();
                     }
                 }
             }
         }
+    }
+
+    [Button]
+    private void PlayRandomPeacefulMusic() {
+
+        if (levelRandomBackgroundTracks.Count == 0) return;
+        AudioClip randomMusic = levelRandomBackgroundTracksPooled[UnityEngine.Random.Range(0, levelRandomBackgroundTracksPooled.Count)];
+        audioSourceA.clip = randomMusic;
+        targetVolume = backgroundTracksAudioVolume * musicSettingVolume;
+        FadeInMusic(5f);
+
+        levelRandomBackgroundTracksPooled.Remove(randomMusic);
+        if(levelRandomBackgroundTracksPooled.Count == 0) {
+            ResetLevelBackgroundTracksPooled();
+        }
+
+        isPlayingPeacefulMusic = true;
+    }
+
+    [Button]
+    private void PlayRandomExplorationMusic() {
+
+        if (levelExplorationTracks.Count == 0) return;
+        AudioClip randomMusic = levelExplorationTracksPooled[UnityEngine.Random.Range(0, levelExplorationTracksPooled.Count)];
+        audioSourceA.clip = randomMusic;
+        targetVolume = backgroundTracksAudioVolume * musicSettingVolume;
+        FadeInMusic(5f);
+
+        levelExplorationTracksPooled.Remove(randomMusic);
+        if (levelExplorationTracksPooled.Count == 0) {
+            ResetLevelExplorationTracksPooled();
+        }
+
+        isPlayingExplorationMusic = true;
     }
 
     private void CreaturesManager_OnAllCreaturesAtNightKilled(object sender, EventArgs e) {
@@ -492,10 +593,17 @@ public class MusicManager : MonoBehaviour {
         FadeOutMusic(1f);
     }
 
+    private void StopCurrentMusic(float delay) {
+        peacefulTimer = 0;
+        playMusicAttemptTimer = 0;
+        FadeOutMusic(delay);
+    }
+
     public void FadeOutMusic(float fadeDuration) {
         isPlayingLevelDiscoveryMusic = false;
         isPlayingPeacefulMusic = false;
         isPlayingEndLevelAreaMusic = false;
+        isPlayingExplorationMusic = false;
 
         StartCoroutine(FadeOutCoroutine(fadeDuration, 0));
     }
@@ -590,7 +698,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void StopEndLevelMusic() {
-        FadeOutMusic(3f);
+        StopCurrentMusic(3f);
     }
 
     private void OnDestroy() {

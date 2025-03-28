@@ -72,6 +72,19 @@ public class ItemButtonUI : ButtonUI
         hubMerchantItem.OnHubMerchantItemUnequipped += HubMerchantItem_OnHubMerchantItemUnequipped;
     }
 
+    protected override void Start() {
+        base.Start();
+        HubChest.Instance.OnChestClosed += HubChest_OnChestClosed;
+        UICurrencyManager.HubInventoryUI.OnCurrencyRemovedFromBag += HubInventoryUI_OnCurrencyRemovedFromBag;
+    }
+
+    private void HubChest_OnChestClosed(object sender, EventArgs e) {
+        RefreshItemStatusVisuals();
+    }
+
+    private void HubInventoryUI_OnCurrencyRemovedFromBag(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        RefreshItemStatusVisuals();
+    }
 
     private void HubMerchantItem_OnHubMerchantItemUnequipped(object sender, EventArgs e) {
         RefreshItemEquippedUI();
@@ -381,6 +394,7 @@ public class ItemButtonUI : ButtonUI
         if (lockHoverInteractions) return;
         //if(GameInput.Instance.IsUsingGamepad()) return;
         ItemButtonUI itemButtonUI = sender as ItemButtonUI;
+        if (itemButtonUI == null) return;
 
         if (this == itemButtonUI) {
             itemHovered = true;
@@ -481,5 +495,7 @@ public class ItemButtonUI : ButtonUI
     protected override void OnDestroy() {
         base.OnDestroy();
         OnAnyOutputLinkUnlocked -= ItemButtonUI_OnAnyOutputLinkUnlocked;
+        OnAnyButtonHovered -= ButtonUI_OnAnyButtonHovered;
+        OnAnyButtonSelected -= ButtonUI_OnAnyButtonSelected;
     }
 }

@@ -22,7 +22,7 @@ public class Worker : Mob {
     private bool recruited;
     private float playerIsCloseTimer;
 
-    private float dropDelay = 0.15f; // Délai entre chaque drop
+    private float dropDelay = 0.125f; // Délai entre chaque drop
     private float dropTimer = 0f; // Compteur pour suivre le temps écoulé
 
     private int initialHealth;

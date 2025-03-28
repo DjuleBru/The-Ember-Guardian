@@ -80,7 +80,8 @@ public class LevelSO : ScriptableObject
     public int startWaveToSpawnFromBothSides;
     public bool canSpawnElite;
 
-    public List<AudioClip> levelAudioClips;
+    public List<AudioClip> levelRandomBackgroundTracks;
+    public List<AudioClip> levelExplorationTracks;
 
     public string GetLevelEnvironmentTypeString() {
         if(environmentType == LevelEnvironment.TheLostGreens) {

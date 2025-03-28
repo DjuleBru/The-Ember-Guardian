@@ -15,7 +15,9 @@ public class Creature : Mob
     private bool dropRedOrbsUnlocked;
     private bool dayCreature;
     private bool enteredLight;
+
     private bool creatureTargeted;
+    private bool creatureCanBeTargeted = true;
 
     private bool eliteCreature;
     private bool eliteHPCreature;
@@ -26,6 +28,8 @@ public class Creature : Mob
     public event EventHandler OnCreatureExitedLight;
 
     public event EventHandler OnCreatureDied;
+    public event EventHandler OnCreatureUntargetable;
+    public event EventHandler OnCreatureTargetable;
     public event EventHandler OnCreatureIdleSoundTriggered;
 
     private float triggerSoundTimer;
@@ -132,12 +136,12 @@ public class Creature : Mob
             InvokeOnMobDroppedCollectibles(collectiblesDropped);
         }
 
-        if(DemoMainLevelManager.Instance != null) {
+        if(DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetIsMainDemoLevel()) {
             DemoDropGems();
         }
 
         if(eliteCreature) {
-            if(DemoMainLevelManager.Instance != null) {
+            if(DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetIsMainDemoLevel()) {
                 DemoDropGems();
             } else {
                 EliteDropGems();
@@ -323,6 +327,19 @@ public class Creature : Mob
         this.creatureTargeted = creatureTargeted;
     }
 
+    public void SetCreatureCanBeTargeted(bool canBeTargeted) {
+        this.creatureCanBeTargeted = canBeTargeted;
+
+        if(canBeTargeted) {
+            OnCreatureTargetable?.Invoke(this, EventArgs.Empty);
+        } else {
+            OnCreatureUntargetable?.Invoke(this, EventArgs.Empty);
+        }
+    }
+    public void SetCreatureHealth(int health) {
+        this.health = health;
+    }
+
     #region STATUS EFFECTS
     private void HandleStatusEffects() {
         if(immobilized) {
@@ -407,6 +424,10 @@ public class Creature : Mob
 
     public float GetShockSlowAmount() {
         return shockedSlowAmount;
+    }
+
+    public bool GetCreatureCanBeTargeted() {
+        return creatureCanBeTargeted;
     }
 
     private void OnDestroy() {

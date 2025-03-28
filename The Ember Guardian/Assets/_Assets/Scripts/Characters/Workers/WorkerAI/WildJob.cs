@@ -9,7 +9,7 @@ public class WildJob : MonoBehaviour, IJobBehavior {
 
     private Worker worker;  
 
-    [SerializeField] private float distanceToAggroOrb = 7.5f;
+    [SerializeField] private float distanceToAggroOrb = 10f;
     [SerializeField] private float roamMoveSpeed = 1.5f;
     [SerializeField] private float blueOrbAggroMoveSpeed = 2.5f;
     [SerializeField] private float roamRadius = 3f;

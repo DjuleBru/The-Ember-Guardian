@@ -7,6 +7,12 @@ public class DemoMainLevelManager : MonoBehaviour
 {
     public static DemoMainLevelManager Instance;
 
+    public enum DemoLevelType {
+        FirstLevel,
+        MainLevel
+    }
+
+    [SerializeField] private DemoLevelType demoLevelType;
     [SerializeField] private GameObject fireLocationIndicator;
     [SerializeField] private Portal endLevelPortal;
     private GameObject hunterShrineIndicator;
@@ -56,9 +62,16 @@ public class DemoMainLevelManager : MonoBehaviour
         demoLevelLostAmount = ES3.Load("demoLevelLostAmount", 0);
         recruitWorkerTooltipShown = ES3.Load("recruitWorkerTooltipShown", false);
 
+        Debug.Log("demoMainLevelTutorialCompleted " + demoMainLevelTutorialCompleted);
         Debug.Log("demoFirstLevelCompleted " + demoFirstLevelCompleted);
+        Debug.Log("demoMainLevelEncountered " + demoMainLevelEncountered);
+        Debug.Log("demoFirstLevelCompleted " + demoFirstLevelCompleted);
+        Debug.Log("demoLevelLostAmount " + demoLevelLostAmount);
+        Debug.Log("recruitWorkerTooltipShown " + recruitWorkerTooltipShown);
 
-        InitializeSpawners(demoMainLevelEncountered);
+        if(GetIsMainDemoLevel()) {
+            InitializeSpawners(demoMainLevelEncountered);
+        }
     }
 
     private void Start() {
@@ -83,6 +96,10 @@ public class DemoMainLevelManager : MonoBehaviour
         }
         if(leftChest != null) {
             leftChest.OnChestOpened += LeftChest_OnChestOpened;
+        }
+
+        if(endLevelPortal != null) {
+            endLevelPortal.OnPlayerMovedOnTeleporter += EndLevelPortal_OnPlayerMovedOnTeleporter;
         }
 
         if (!demoMainLevelTutorialCompleted) {
@@ -111,6 +128,10 @@ public class DemoMainLevelManager : MonoBehaviour
         }
     }
 
+    private void EndLevelPortal_OnPlayerMovedOnTeleporter(object sender, EventArgs e) {
+        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.TeleportBackToHub);
+    }
+
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, EventArgs e) {
         if(!demoFirstLevelCompleted) {
             ES3.Save("demoFirstLevelCompleted", true);
@@ -120,6 +141,15 @@ public class DemoMainLevelManager : MonoBehaviour
     private IEnumerator EnableEndLevelPortal(float delayToEnable) {
         yield return new WaitForSeconds(delayToEnable);
         endLevelPortal.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(2f);
+
+        LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.ReturnToHub);
+        List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveUIList = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
+                LevelUI_ObjectiveUI.SubObjectiveType.TeleportBackToHub,
+            };
+
+        LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveUIList);
     }
 
     private void RightChest_OnChestOpened(object sender, EventArgs e) {
@@ -129,8 +159,7 @@ public class DemoMainLevelManager : MonoBehaviour
 
         if (leftPropCollected) {
             endLevelPortal.transform.position = levelRightTeleporterPosition.position;
-            StartCoroutine(EnableEndLevelPortal(1f));
-            Debug.Log("game finished");
+            StartCoroutine(EnableEndLevelPortal(4f));
         }
     }
 
@@ -141,15 +170,12 @@ public class DemoMainLevelManager : MonoBehaviour
 
         if (rightPropCollected) {
             endLevelPortal.transform.position = levelLeftTeleporterPosition.position;
-            StartCoroutine(EnableEndLevelPortal(1f));
-            Debug.Log("game finished");
+            StartCoroutine(EnableEndLevelPortal(4f));
         }
     }
 
     private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
         int dayNumber = DayNightManager.Instance.GetCurrentDay();
-
-        Debug.Log(dayNumber);
 
         if (dayNumber == 4) {
             CreaturesSpawnManager.Instance.SetSetDifficultyAnimationCurve();
@@ -157,6 +183,13 @@ public class DemoMainLevelManager : MonoBehaviour
     }
 
     private void InitializeSpawners(bool demoMainLevelEncountered) {
+        Debug.Log("Initialize Spawners " + demoMainLevelEncountered);
+        Debug.Log("firstLevelLeftSpawners " + firstLevelLeftSpawners);
+        Debug.Log("firstLevelRightSpawners " + firstLevelRightSpawners);
+        Debug.Log("levelRightSpawnerGroups " + levelRightSpawnerGroups);
+        Debug.Log("levelLeftSpawnerGroups " + levelLeftSpawnerGroups);
+
+        if (firstLevelLeftSpawners == null || firstLevelRightSpawners == null || levelRightSpawnerGroups == null || levelLeftSpawnerGroups == null) return;
         foreach (MobSpawner daySpawner in firstLevelLeftSpawners.GetComponentsInChildren<MobSpawner>()) {
             daySpawner.gameObject.SetActive(!demoMainLevelEncountered);
         }
@@ -281,6 +314,9 @@ public class DemoMainLevelManager : MonoBehaviour
         if (orbCollectedByPlayer) return;
         if (hunterAmountRecruited < 2) return;
         if (!animalDied) return;
+
+        Collectible collectible = sender as Collectible;
+        if (collectible.GetCurrencyType() != PlayerCurrencies.CurrencyType.bigBlueOrb) return;
 
         orbCollectedByPlayer = true;
 
@@ -446,6 +482,9 @@ public class DemoMainLevelManager : MonoBehaviour
     public bool GetDemoLevelLostOnce() {
         return demoLevelLostAmount == 1;
     }
+    public int GetDemoLevelLostAmount() {
+        return demoLevelLostAmount;
+    }
 
     public void TryShowRecruitWorkerTooltip(bool show) {
         if (recruitWorkerTooltipShown) return;
@@ -460,6 +499,9 @@ public class DemoMainLevelManager : MonoBehaviour
         }
     }
 
+    public bool GetIsMainDemoLevel() {
+        return demoLevelType == DemoLevelType.MainLevel;
+    }
 
     private void OnDestroy() {
         Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;

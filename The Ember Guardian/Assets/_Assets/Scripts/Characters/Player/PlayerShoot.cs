@@ -446,7 +446,7 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.UZI) {
-            float shootCooldownBuffValue = 1.5f;
+            float shootCooldownBuffValue = 1.4f;
             PlayerStats.Instance.BuffShootCooldown(shootCooldownBuffValue);
 
             OnPlayerOverclockedSMGStarted?.Invoke(this, EventArgs.Empty);
@@ -537,7 +537,7 @@ public class PlayerShoot : MonoBehaviour
             }
 
             if (heldGun.GetGunSO().gunType == GunSO.GunType.UZI) {
-                float shootCooldownBuffValue = 1.5f;
+                float shootCooldownBuffValue = 1.4f;
                 PlayerStats.Instance.DebuffShootCooldown(shootCooldownBuffValue);
                 OnPlayerOverclockedSMGStopped?.Invoke(this, EventArgs.Empty);
                 secondaryAbilityActive = false;

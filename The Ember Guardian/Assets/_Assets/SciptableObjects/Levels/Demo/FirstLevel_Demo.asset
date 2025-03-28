@@ -89,11 +89,15 @@ MonoBehaviour:
   maxDifficultyAtMaxWave: 1000
   minMaxSubwaveDifficultyGrowthFactor: 1.4
   startWaveToSpawnFromBothSides: 2
-  canSpawnElite: 1
-  levelAudioClips:
-  - {fileID: 8300000, guid: 37cae04edadc4714894e86e8468774cf, type: 3}
+  canSpawnElite: 0
+  levelRandomBackgroundTracks:
   - {fileID: 8300000, guid: 11f91fa2df76eb347ad58de41dc01c8f, type: 3}
-  - {fileID: 8300000, guid: 6be0e396dd03dd54e83c4b1bd9269e22, type: 3}
+  - {fileID: 8300000, guid: 37cae04edadc4714894e86e8468774cf, type: 3}
+  - {fileID: 8300000, guid: fc0ba74126aab75498cbb8191e184f33, type: 3}
+  levelExplorationTracks:
   - {fileID: 8300000, guid: 6aff3c3b53839b84999b8acaf10537cd, type: 3}
-  - {fileID: 8300000, guid: fb38d3f09a5d92645ac6e1ac20110e91, type: 3}
+  - {fileID: 8300000, guid: 6be0e396dd03dd54e83c4b1bd9269e22, type: 3}
   - {fileID: 8300000, guid: da679ddcf110a004aa68e7770839a596, type: 3}
+  - {fileID: 8300000, guid: 225988420223d59428ac58bc41ac618a, type: 3}
+  - {fileID: 8300000, guid: cfe595955de0ac64d8b321b39f2e80b8, type: 3}
+  - {fileID: 8300000, guid: e171f8572f6e9d946b0d387b4695b610, type: 3}

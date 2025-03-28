@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,15 +45,22 @@ public class WorkerJob : MonoBehaviour
 
         if (targetCreature != null) {
             targetCreature.OnMobDied -= TargetCreature_OnMobDied;
+            targetCreature.OnCreatureUntargetable -= TargetCreature_OnCreatureUntargetable;
         }
 
         mobMovement.SetMoveTarget(transform.position);
         workerAttack.SetAttackTarget(newTargetCreature);
         targetCreature = newTargetCreature;
         targetCreature.OnMobDied += TargetCreature_OnMobDied;
+        targetCreature.OnCreatureUntargetable += TargetCreature_OnCreatureUntargetable;
     }
 
     protected void TargetCreature_OnMobDied(object sender, System.EventArgs e) {
+        targetCreature = null;
+        workerAttack.RemoveAttackTarget();
+    }
+
+    protected void TargetCreature_OnCreatureUntargetable(object sender, EventArgs e) {
         targetCreature = null;
         workerAttack.RemoveAttackTarget();
     }

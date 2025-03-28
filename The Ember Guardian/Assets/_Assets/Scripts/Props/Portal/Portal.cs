@@ -68,7 +68,7 @@ public class Portal : MonoBehaviour
         if (isHUBTeleporter) {
 
             portalUnlocked = MetaProgressionManager.Instance.GetPortalUnlocked(gameObject.name);
-            if(linkedLevelSOList.Count != 0) {
+            if(linkedLevelSOList.Count != 0 && !isHubDemoPortal) {
                 linkedLevelSO = linkedLevelSOList[MetaProgressionManager.Instance.GetPortalLinkedLevelSOIndex(portalNumber)];
             }
 
@@ -277,6 +277,7 @@ public class Portal : MonoBehaviour
     }
 
     public void SetLinkedLevelSO(LevelSO levelSO) {
+        Debug.Log("SetLinkedLevelSO " + levelSO);
         linkedLevelSO = levelSO;
     }
 

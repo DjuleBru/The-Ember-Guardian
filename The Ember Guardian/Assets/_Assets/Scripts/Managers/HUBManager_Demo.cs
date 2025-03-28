@@ -59,6 +59,13 @@ public class HUBManager_Demo : MonoBehaviour
         firstHubEnterWithDemoLevelCompleted = ES3.Load("firstHubEnterWithDemoLevelCompleted", true);
         gunTipShown = ES3.Load("gunTipShown", false);
 
+        Debug.Log("firstDemoHubEncounter " + firstDemoHubEncounter);
+        Debug.Log("demoFirstLevelCompleted " + demoFirstLevelCompleted);
+        Debug.Log("demoMainLevelEncountered " + demoMainLevelEncountered);
+        Debug.Log("demoLevelLostAmount " + demoLevelLostAmount);
+        Debug.Log("demoLevelCompleted " + demoLevelCompleted);
+        Debug.Log("firstHubEnterWithDemoLevelCompleted " + firstHubEnterWithDemoLevelCompleted);
+
         chestIndicator.gameObject.SetActive(false);
         fireIndicator.gameObject.SetActive(false);
         gemMerchantIndicator.gameObject.SetActive(false);
@@ -78,11 +85,20 @@ public class HUBManager_Demo : MonoBehaviour
                 grassyAreaPortal.SetLinkedLevelSO(demoFirstLevelSO);
             }
 
-            if (demoFirstLevelCompleted && !demoMainLevelEncountered) {
-                // Player lost level once 
-                Debug.Log("HandleFirstLevelCompletedHubEvolution");
-                StartCoroutine(HandleFirstLevelCompletedHubEvolution());
-                grassyAreaPortal.SetLinkedLevelSO(demoMainLevelSO);
+            if (demoFirstLevelCompleted) {
+                if(!demoMainLevelEncountered) {
+                    // Player lost level once 
+                    Debug.Log("HandleFirstLevelCompletedHubEvolution");
+                    StartCoroutine(HandleFirstLevelCompletedHubEvolution());
+                    grassyAreaPortal.SetLinkedLevelSO(demoMainLevelSO);
+
+                }
+                else {
+                    // Player returned to hub without loosing the level
+                    Debug.Log("HandleAnyLevelDefeatHubEvolution");
+                    StartCoroutine(HandleAnyLevelDefeatHubEvolution());
+                    grassyAreaPortal.SetLinkedLevelSO(demoMainLevelSO);
+                }
             }
 
             if(demoLevelLostAmount >= 1) {

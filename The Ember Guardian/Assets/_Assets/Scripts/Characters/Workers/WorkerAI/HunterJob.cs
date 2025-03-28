@@ -582,8 +582,7 @@ public class HunterJob : WorkerJob {
                 // Hunter had a target animal but finds non anymore
 
                 if(targetAnimal != null) {
-                    targetAnimal.UnAssignHunter(worker);
-                    targetAnimal = null;
+                    RemoveCurrentTargetAnimal();
                 }
 
                 OnHunterFindsNoAnimal?.Invoke(this, EventArgs.Empty);
@@ -663,10 +662,7 @@ public class HunterJob : WorkerJob {
     private void TargetAnimal(Animal newTargetAnimal) {
         if (targetAnimal != null) {
             // Hunter already had an animal assigned
-
-            targetAnimal.OnMobDroppedCollectibles -= TargetAnimal_OnAnimalDroppedCollectibles;
-            targetAnimal.OnMobDamageTaken -= TargetAnimal_OnMobDamageTaken;
-            targetAnimal.UnAssignHunter(worker);
+            RemoveCurrentTargetAnimal();
         }
 
         targetAnimal = newTargetAnimal;
@@ -675,16 +671,27 @@ public class HunterJob : WorkerJob {
         targetAnimal.AssignHunter(worker);
     }
 
+    private void RemoveCurrentTargetAnimal() {
+        targetAnimal.OnMobDroppedCollectibles -= TargetAnimal_OnAnimalDroppedCollectibles;
+        targetAnimal.OnMobDamageTaken -= TargetAnimal_OnMobDamageTaken;
+        targetAnimal.UnAssignHunter(worker);
+        hasHitAnimal = false;
+        targetAnimal = null;
+    }
+
     protected override void TargetCreature(Creature newTargetCreature) {
         if (targetCreature == newTargetCreature) return;
 
         if (targetCreature != null) {
             targetCreature.OnMobDied -= TargetCreature_OnMobDied;
+            targetCreature.OnCreatureUntargetable -= TargetCreature_OnCreatureUntargetable;
         }
 
         targetCreature = newTargetCreature;
         targetCreature.OnMobDied += TargetCreature_OnMobDied;
+        targetCreature.OnCreatureUntargetable += TargetCreature_OnCreatureUntargetable;
     }
+
 
     private void TargetAnimal_OnAnimalDroppedCollectibles(object sender, Animal.OnMobDroppedCollectibleEventArgs e) {
         foreach(Collectible collectible1 in e.collectibleDroppedList) {
@@ -695,9 +702,8 @@ public class HunterJob : WorkerJob {
             collectible.OnCollectibleDestroyed += Collectible_OnCollectibleDestroyed;
         }
 
+        RemoveCurrentTargetAnimal();
         CheckClosestAnimal();
-        targetAnimal = null;
-        hasHitAnimal = false;
 
         ChangeState(HunterState.idle);
     }
@@ -881,9 +887,8 @@ public class HunterJob : WorkerJob {
 
         checkClosestTargetTimer = 0;
 
-        targetAnimal = null;
+        RemoveCurrentTargetAnimal();
         assignedTower = null;
-        hasHitAnimal = false;
 
         ChangeState(HunterState.idle);
     }

@@ -43,6 +43,7 @@ public class PlayerMovement : MonoBehaviour {
     private bool isJumpTop;
     private bool isJumpDown;
     private bool isLanded;
+    private bool isHubScene;
 
     private float moveSpeed;
     private float lastMoveDir = 1;
@@ -96,6 +97,8 @@ public class PlayerMovement : MonoBehaviour {
 
         SettingsManager.Instance.OnHoldToggleRunChanged += SettingsManager_OnHoldToggleRunChanged;
         holdToRun = SettingsManager.Instance.GetHoldToRun();
+
+        isHubScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB;
     }
 
 
@@ -328,8 +331,11 @@ public class PlayerMovement : MonoBehaviour {
         isJumpTop = false;
         isJumpDown = false;
 
-        float rollExhaustionAmountBuff = rollExhaustionAmount * PlayerStats.Instance.GetRollStaminaDepletionPercentBuff_Meta()/100;
-        staminaTimer += rollExhaustionAmount - rollExhaustionAmountBuff;
+        if(!isHubScene) {
+            float rollExhaustionAmountBuff = rollExhaustionAmount * PlayerStats.Instance.GetRollStaminaDepletionPercentBuff_Meta() / 100;
+            staminaTimer += rollExhaustionAmount - rollExhaustionAmountBuff;
+            Debug.Log(isHubScene);
+        }
 
         OnPlayerRoll?.Invoke(this, EventArgs.Empty);
         Invoke("EndRoll", .6f);
@@ -417,7 +423,7 @@ public class PlayerMovement : MonoBehaviour {
             OnPlayerAlmostExhaustionDeactivateFeedbacks?.Invoke(this, EventArgs.Empty);
         }
 
-        if (isRunning && (moveSpeed != 0)) {
+        if (isRunning && (moveSpeed != 0) && !isHubScene) {
             staminaTimer += Time.deltaTime * (1 - PlayerStats.Instance.GetRunStaminaDepletionPercentBuff_Meta()/100f);
         }
 

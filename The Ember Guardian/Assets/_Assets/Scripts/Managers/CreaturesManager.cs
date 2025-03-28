@@ -33,10 +33,12 @@ public class CreaturesManager : MonoBehaviour
             float distanceToCreature = Mathf.Abs(creature.transform.position.x - position.x);
             bool creatureIsOneHitAwayFromDeathAndAlreadyTargeted = creature.GetCreatureTargeted() && creature.GetCreatureHealth() <= damage;
 
+            if (!creature.GetCreatureCanBeTargeted()) continue;
             if (!canAttackFlying && creature.GetCreatureSO().flying) continue;
 
             if ((distanceToCreature) < radius) {
                 // Creature is within attack range
+
 
                 if (distanceToCreature < closestXDistance && !creatureIsOneHitAwayFromDeathAndAlreadyTargeted) {
                     // Creature is the closest one
@@ -60,6 +62,7 @@ public class CreaturesManager : MonoBehaviour
             float distanceToCreature = Mathf.Abs(creature.transform.position.x - position.x);
             bool creatureIsOneHitAwayFromDeathAndAlreadyTargeted = creature.GetCreatureTargeted() && creature.GetCreatureHealth() <= damage;
 
+            if (!creature.GetCreatureCanBeTargeted()) continue;
             if (!canAttackFlying && creature.GetCreatureSO().flying) continue;
 
             if ((distanceToCreature) < radius) {

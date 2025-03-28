@@ -13,6 +13,8 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private LevelSO defaultLevelSO;
     [SerializeField] private bool isDemoIntro;
 
+    private bool isCrossfading;
+
     public static SceneLoader Instance;
 
     public event EventHandler<OnSceneFadeOutEventArgs> OnSceneFadeOut;
@@ -31,10 +33,12 @@ public class SceneLoader : MonoBehaviour
 
     private void Awake() {
         Instance = this;
+        isCrossfading = true;
         transitionAnimator.speed = .5f;
         Application.targetFrameRate = 60;
        
         StartCoroutine(RemoveBlackBackgroundAfterDelay(.1f));
+        StartCoroutine(SetCrossadeEndedAfterDelay(1.5f));
     }
 
 
@@ -61,15 +65,17 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
-
     public void LoadLevel(LevelSO levelSO, float crossfadeDuration) {
+        Debug.Log("LoadLevel " + levelSO);
         string sceneName = levelSO.linkedSceneName;
         StartCoroutine(LoadSceneAfterCrossfade(sceneName, crossfadeDuration));
     }
+
     public void LoadLastLevel(float crossfadeDuration) {
         string defaultLevelSOName = defaultLevelSO.linkedSceneName;
         string lastLevelSOName = ES3.Load("lastLevel", defaultValue:defaultLevelSOName);
 
+        Debug.Log("LoadLastLevel " + lastLevelSOName);
         StartCoroutine(LoadSceneAfterCrossfade(lastLevelSOName, crossfadeDuration));
     }
 
@@ -81,6 +87,8 @@ public class SceneLoader : MonoBehaviour
             fadeOutTime = crossfadeDuration
         });
 
+        isCrossfading = true;
+
         yield return new WaitForSeconds(crossfadeDuration + .2f);
 
         SceneManager.LoadScene(sceneName);
@@ -90,10 +98,17 @@ public class SceneLoader : MonoBehaviour
         yield return new WaitForSeconds(delay);
         blackBackground.SetActive(false);
     }
-
+    private IEnumerator SetCrossadeEndedAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+        isCrossfading = false;
+    }
     public void StartFadeOut() {
         OnSceneFadeIn?.Invoke(this, EventArgs.Empty);
         transitionAnimator.SetTrigger("Start");
+    }
+
+    public bool GetIsCrossfading() {
+        return isCrossfading;
     }
 
 }

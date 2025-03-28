@@ -17,6 +17,7 @@ public class Player : MonoBehaviour, IDamageable
     private bool dead;
     private bool damagedRecently;
     private bool insideCamp;
+    private bool exploring;
     private bool hasHPRegen;
 
 
@@ -50,6 +51,8 @@ public class Player : MonoBehaviour, IDamageable
 
     public event EventHandler OnPlayerEnteredCamp;
     public event EventHandler OnPlayerExitedCamp;
+    public event EventHandler OnPlayerStartedExploring;
+    public event EventHandler OnPlayerStoppedExploring;
     public event EventHandler<OnPlayerChangedHealthEventArgs> OnPlayerDamaged;
     public event EventHandler OnPlayerDamagedRecentlyEnded;
     public event EventHandler<OnPlayerChangedHealthEventArgs> OnPlayerHealed;
@@ -102,6 +105,7 @@ public class Player : MonoBehaviour, IDamageable
     private void Update() {
         if (!isLevelScene) return;
         CheckExitingCamp();
+        CheckLeavingForExploration();
 
         if(hasHPRegen) {
             hpRegenTimer -= Time.deltaTime;
@@ -134,6 +138,24 @@ public class Player : MonoBehaviour, IDamageable
             if (transform.position.x > CampZoneManager.Instance.GetCampCenterMinLimit() && transform.position.x < CampZoneManager.Instance.GetCampCenterMaxLimit()) {
                 insideCamp = true;
                 OnPlayerEnteredCamp?.Invoke(this, EventArgs.Empty);
+            }
+
+        }
+    }
+    private void CheckLeavingForExploration() {
+        if (!exploring) {
+
+            if (transform.position.x < (CampZoneManager.Instance.GetCampCenterMinLimit() - 20f) || (transform.position.x > CampZoneManager.Instance.GetCampCenterMaxLimit()+15f)) {
+                exploring = true;
+                OnPlayerStartedExploring?.Invoke(this, EventArgs.Empty);
+            }
+
+        }
+        else {
+
+            if (transform.position.x > (CampZoneManager.Instance.GetCampCenterMinLimit() - 20f) && transform.position.x < (CampZoneManager.Instance.GetCampCenterMaxLimit() + 15f)) {
+                exploring = false;
+                OnPlayerStoppedExploring?.Invoke(this, EventArgs.Empty);
             }
 
         }

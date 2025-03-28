@@ -144,6 +144,10 @@ public class WorkerVisual : MobVisual {
                 workerBlockedByCreatures = false;
             }
         }
+        if(state == HunterJob.HunterState.headingToGuard) {
+            hunterFoundAnimal = true;
+            workerStatusSpriteRenderer.sprite = null;
+        }
     }
 
     private void HunterJob_OnHunterFindsNoAnimal(object sender, System.EventArgs e) {

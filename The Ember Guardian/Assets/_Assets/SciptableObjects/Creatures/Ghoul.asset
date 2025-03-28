@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Ghoul
   m_EditorClassIdentifier: 
   enemyName: Ghoul
+  isBoss: 0
   description: Melee mob that can respawn after it's first death !
   creaturePrefab: {fileID: 4997657120178985709, guid: 61fc72d8cc17be84eb6679397d2fd53c, type: 3}
   mass: 20
@@ -30,7 +31,6 @@ MonoBehaviour:
   attackRate: 2.04
   enteredLightattackRateDebuff: 2.5
   isRangedAttack: 0
-  canAttackPlayerOnTower: 1
   minAttackRange: 1
   maxAttackRange: 2
   hasSpecialAbility: 0
@@ -38,7 +38,11 @@ MonoBehaviour:
   attackRangeRandomizer: 0.3
   attackRangeMaxDistanceMiss: 0.1
   relativeDamageToFire: 1
+  immuneToPoison: 0
+  immuneToShock: 0
+  immuneToImmobilize: 0
   attackAnimationDelay: 0.2
+  attackSFXDelayAfterAnimationStart: 0
   totalAttackAnimationTime: 0.6
   hasCustomSpawnAnimation: 1
   spawnAnimationDuration: 1
@@ -46,6 +50,8 @@ MonoBehaviour:
   workerTargetingPriority: 1
   playerTargetingPriority: 3
   barricadeTargetingPriority: 2
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 0
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
   difficulty: 3

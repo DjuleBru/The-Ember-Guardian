@@ -88,6 +88,7 @@ public class PlayerTabMenuUI : MonoBehaviour
 
         panelAnimator.ResetTrigger("Hide");
         panelAnimator.SetTrigger("Show");
+        OnPlayerTabOpened?.Invoke(this, EventArgs.Empty);
     }
 
     private void FadeOutTab() {
@@ -95,6 +96,7 @@ public class PlayerTabMenuUI : MonoBehaviour
 
         panelAnimator.ResetTrigger("Show");
         panelAnimator.SetTrigger("Hide");
+        OnPlayerTabClosed?.Invoke(this, EventArgs.Empty);
     }
 
     private void OpenCloseTab() {

@@ -12,7 +12,7 @@ public class CreatureAI_TarnishedWidow : CreatureAI
     public event EventHandler OnWidowJumpStarted;
     public event EventHandler OnWidowLanded;
     private float jumpTimer;
-    private float jumpCooldown = 60f;
+    private float jumpCooldown = 75f;
     private float jumpDuration = 3.8f;
     private bool canJump;
     private bool jumping;
@@ -38,12 +38,18 @@ public class CreatureAI_TarnishedWidow : CreatureAI
         Debug.Log(CreaturesSpawnManager.Instance.GetCurrentWaveNumber());
         isFirstAppearance = LevelManager.Instance.GetLevelSO().bossNightSpawns[0] == CreaturesSpawnManager.Instance.GetCurrentWaveNumber();
         Debug.Log("isFirstAppearance " + isFirstAppearance);
+        Debug.Log("DemoMainLevelManager.Instance.GetDemoLevelLostAmount() " + DemoMainLevelManager.Instance.GetDemoLevelLostAmount());
+
+        if(DemoMainLevelManager.Instance.GetDemoLevelLostAmount() == 0) {
+            Debug.Log("demo Lost amount = 0, doubling widow health ");
+            creature.SetCreatureHealth(creature.GetCreatureSO().maxHealth*2);
+        }
     }
 
     private void Creature_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {
         float mobHPNormalized = (float)creature.GetCreatureHealth() / (float)creature.GetCreatureSO().maxHealth;
-
-        if(isFirstAppearance && mobHPNormalized < .66f && !exitedWave) {
+        Debug.Log("Widow - OnMobDamageTaken remainingHealth" + creature.GetCreatureHealth());
+        if(isFirstAppearance && mobHPNormalized < .5f && !exitedWave) {
             exitedWave = true;
             StartCoroutine(ExitWave());
         }
@@ -149,6 +155,7 @@ public class CreatureAI_TarnishedWidow : CreatureAI
         behindBarricadeJumpPosition = barricadeJumpedOverPosition;
         mobAttack.RemoveAttackTarget();
         detectionCollider.ExcludeIDamageableFromDetectableTargets(attackTarget);
+        creature.SetCreatureCanBeTargeted(false);
 
         if (barricadeJumpedOverPosition.x > 0) {
             behindBarricadeJumpPosition.x -= distanceToLandBehindBarricade;
@@ -172,6 +179,7 @@ public class CreatureAI_TarnishedWidow : CreatureAI
 
         yield return new WaitForSeconds(landAnimationDuration);
 
+        creature.SetCreatureCanBeTargeted(true);
         jumping = false;
         jumpTimer = jumpCooldown;
         creatureMovement.SetMoveSpeed(initialMoveSpeed);
@@ -182,6 +190,7 @@ public class CreatureAI_TarnishedWidow : CreatureAI
         canJump = false;
         jumping = true;
         jumpTimer = jumpDuration;
+        creature.SetCreatureCanBeTargeted(false);
         mobAttack.RemoveAttackTarget();
 
         if (barricadeJumpedOverPosition.x > 0) {

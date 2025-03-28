@@ -66,7 +66,7 @@ public class CreatureSO : ScriptableObject
     public float moveSpeedRandomizerDelta;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
-    [Range(1, 1000)]
+    [Range(1, 3000)]
     public int maxHealth;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]

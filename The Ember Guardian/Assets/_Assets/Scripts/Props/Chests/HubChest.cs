@@ -32,6 +32,7 @@ public class HubChest : MonoBehaviour
     }
 
     private void Start() {
+        UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
         payCurrencyUI.OnCurrencyPaymentSuccess += PayCurrencyUI_OnCurrencyPaymentSuccess;
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
@@ -46,6 +47,12 @@ public class HubChest : MonoBehaviour
         allGemTypesList.Add(PlayerCurrencies.CurrencyType.yellowGem);
         allGemTypesList.Add(PlayerCurrencies.CurrencyType.purpleGem);
         currentGemType = allGemTypesList[0];
+    }
+
+    private void PlayerInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        if (!playerInTriggerArea) return;
+        if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember) return;
+        OpenChest();
     }
 
     private void PayCurrencyUI_OnCurrencyPaymentSuccess(object sender, EventArgs e) {
@@ -108,7 +115,6 @@ public class HubChest : MonoBehaviour
         if (!HasGemsToPay()) return;
 
         playerInTriggerArea = true;
-        chestOpen = true;
         OpenChest();
 
         if(!hubChestInteractionTooltipShown) {
@@ -138,6 +144,7 @@ public class HubChest : MonoBehaviour
     }
 
     private void OpenChest() {
+        chestOpen = true;
         OnChestOpened?.Invoke(this, EventArgs.Empty);
     }
 
