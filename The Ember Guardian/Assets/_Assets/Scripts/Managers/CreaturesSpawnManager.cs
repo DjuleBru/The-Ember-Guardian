@@ -415,6 +415,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         while (subWaveIndex < subWaveNumber && waveNumber == currentWaveNumber) {
             Debug.Log("Spawning subwave " + subWaveIndex);
             remainingSubWaveCreatures = waveCreaturesDictionary[subWaveIndex].Count;
+            Debug.Log("TotalSubWaveCreatures " + remainingSubWaveCreatures);
 
             // Grouper les créatures par type
             var groupedCreatures = waveCreaturesDictionary[subWaveIndex]

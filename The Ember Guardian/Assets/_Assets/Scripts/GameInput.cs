@@ -391,7 +391,7 @@ public class GameInput : MonoBehaviour
 
     public void RebindBinding(Binding binding, Action onActionRebound) {
         playerInputActions.Player.Disable();
-
+        Debug.Log("RebindBinding " + binding);
         InputAction inputAction;
         int bindingIndex;
 
@@ -426,7 +426,7 @@ public class GameInput : MonoBehaviour
                 bindingIndex = 0;
                 break;
             case Binding.secondary:
-                inputAction = playerInputActions.Player.SelectSecondaryGun;
+                inputAction = playerInputActions.Player.WeaponSecondaryAbility;
                 bindingIndex = 0;
                 break;
             case Binding.ability1:
@@ -442,6 +442,7 @@ public class GameInput : MonoBehaviour
                 bindingIndex = 0;
                 break;
             case Binding.selectSecondaryGun:
+                Debug.Log("case Binding.selectSecondaryGun: " + binding);
                 inputAction = playerInputActions.Player.SelectSecondaryGun;
                 bindingIndex = 0;
                 break;
@@ -469,10 +470,16 @@ public class GameInput : MonoBehaviour
                 inputAction = playerInputActions.Player.OpenPlayerTab;
                 bindingIndex = 0;
                 break;
+            case Binding.pause:
+                inputAction = playerInputActions.Player.Pause;
+                bindingIndex = 0;
+                break;
         }
 
+        Debug.Log("RebindBinding " + inputAction + " bindingIndex " + bindingIndex);
         inputAction.PerformInteractiveRebinding(bindingIndex).OnComplete(callback => {
-            Debug.Log(callback.action.bindings[1].path);
+            //Debug.Log(callback.action.bindings[1].path);
+            Debug.Log(callback.action.bindings[0].path);
 
             playerInputActions.Player.Enable();
             onActionRebound();

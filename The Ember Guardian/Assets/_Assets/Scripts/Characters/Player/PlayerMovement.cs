@@ -334,7 +334,6 @@ public class PlayerMovement : MonoBehaviour {
         if(!isHubScene) {
             float rollExhaustionAmountBuff = rollExhaustionAmount * PlayerStats.Instance.GetRollStaminaDepletionPercentBuff_Meta() / 100;
             staminaTimer += rollExhaustionAmount - rollExhaustionAmountBuff;
-            Debug.Log(isHubScene);
         }
 
         OnPlayerRoll?.Invoke(this, EventArgs.Empty);

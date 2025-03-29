@@ -211,7 +211,7 @@ public class VideoTipUI : MonoBehaviour
     }
     
     public void OpenSteamPage() {
-        string url = "https://ratbitgames.com/";
+        string url = "https://store.steampowered.com/app/3570060/The_Ember_Guardian/";
         Application.OpenURL(url);
     }
 

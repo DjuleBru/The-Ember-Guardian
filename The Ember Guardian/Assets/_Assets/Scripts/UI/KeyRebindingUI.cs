@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static GameInput;
 
 public class KeyRebindingUI : MonoBehaviour
 {
@@ -100,6 +101,7 @@ public class KeyRebindingUI : MonoBehaviour
             RebindBinding(GameInput.Binding.selectPrimaryGun);
         });
         selectSecondaryGunButton.onClick.AddListener(() => {
+            Debug.Log("RebindBinding selectSecondaryGunButton");
             RebindBinding(GameInput.Binding.selectSecondaryGun);
         });
         hoverWorkersButton.onClick.AddListener(() => {
