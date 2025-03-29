@@ -52,6 +52,7 @@ public class HubChest : MonoBehaviour
     private void PlayerInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         if (!playerInTriggerArea) return;
         if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember) return;
+        if (chestOpen) return;
         OpenChest();
     }
 
