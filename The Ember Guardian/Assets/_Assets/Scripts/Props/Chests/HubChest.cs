@@ -113,9 +113,9 @@ public class HubChest : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.GetComponent<Player>() == null) return;
+        playerInTriggerArea = true;
         if (!HasGemsToPay()) return;
 
-        playerInTriggerArea = true;
         OpenChest();
 
         if(!hubChestInteractionTooltipShown) {
@@ -130,9 +130,9 @@ public class HubChest : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.GetComponent<Player>() == null) return;
+        playerInTriggerArea = false;
         if (!chestOpen) return;
 
-        playerInTriggerArea = false;
         CloseChest();
 
         if (!hubChestInteractionTooltipShown) {

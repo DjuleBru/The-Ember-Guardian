@@ -14,6 +14,8 @@ public class DemoMainLevelManager : MonoBehaviour
 
     [SerializeField] private DemoLevelType demoLevelType;
     [SerializeField] private GameObject fireLocationIndicator;
+    [SerializeField] private TutorialCollider fireBlockingCollider1;
+    [SerializeField] private TutorialCollider fireBlockingCollider2;
     [SerializeField] private Portal endLevelPortal;
     private GameObject hunterShrineIndicator;
     private GameObject ammoCrafterIndicator;
@@ -31,6 +33,8 @@ public class DemoMainLevelManager : MonoBehaviour
     [SerializeField] private PropFadeOut rightPropFadeOut;
     [SerializeField] private Chest leftChest;
     [SerializeField] private Chest rightChest;
+    private bool showingGetReady;
+    private bool mainFireLit;
     private bool leftPropCollected;
     private bool rightPropCollected;
 
@@ -56,7 +60,7 @@ public class DemoMainLevelManager : MonoBehaviour
         fireLocationIndicator.gameObject.SetActive(false);
 
         demoMainLevelTutorialCompleted = ES3.Load("demoMainLevelTutorialCompleted", false);
-        demoMainLevelCompleted = ES3.Load("demoLevelCompleted", false);
+        demoMainLevelCompleted = ES3.Load("demoMainLevelCompleted", false);
         demoMainLevelEncountered = ES3.Load("demoMainLevelEncountered", false);
         demoFirstLevelCompleted = ES3.Load("demoFirstLevelCompleted", false);
         demoLevelLostAmount = ES3.Load("demoLevelLostAmount", 0);
@@ -65,7 +69,7 @@ public class DemoMainLevelManager : MonoBehaviour
         Debug.Log("demoMainLevelTutorialCompleted " + demoMainLevelTutorialCompleted);
         Debug.Log("demoFirstLevelCompleted " + demoFirstLevelCompleted);
         Debug.Log("demoMainLevelEncountered " + demoMainLevelEncountered);
-        Debug.Log("demoFirstLevelCompleted " + demoFirstLevelCompleted);
+        Debug.Log("demoMainLevelCompleted " + demoMainLevelCompleted);
         Debug.Log("demoLevelLostAmount " + demoLevelLostAmount);
         Debug.Log("recruitWorkerTooltipShown " + recruitWorkerTooltipShown);
 
@@ -104,6 +108,8 @@ public class DemoMainLevelManager : MonoBehaviour
 
         if (!demoMainLevelTutorialCompleted) {
             StartCoroutine(SetDemoTutorialObjective());
+            fireBlockingCollider1.SetColliderSolid();
+            fireBlockingCollider2.SetColliderSolid();
             Fire.Instance.SetFireInteractionsUpdateLocked(true);
             WindManager.Instance.DisableWind();
             CreaturesSpawnManager.Instance.SetGrowthFactor(2.2f);
@@ -125,6 +131,14 @@ public class DemoMainLevelManager : MonoBehaviour
 
         if(demoMainLevelCompleted) {
             StartCoroutine(SetNightsToSurviveAfterDelay());
+        }
+    }
+
+    private void Update() {
+        if(!demoMainLevelTutorialCompleted) {
+            if (mainFireLit) return;
+            HandleBlockingCollider(fireBlockingCollider1.transform.position, "I should light the fire first");
+            HandleBlockingCollider(fireBlockingCollider2.transform.position, "I should light the fire first");
         }
     }
 
@@ -237,12 +251,19 @@ public class DemoMainLevelManager : MonoBehaviour
 
     private void LevelManager_OnLevelSuccess(object sender, EventArgs e) {
         if (!demoFirstLevelCompleted) return;
-        ES3.Save("demoLevelCompleted", true);
+        ES3.Save("demoMainLevelCompleted", true);
     }
 
     private void LevelManager_OnLevelFailed(object sender, EventArgs e) {
         demoLevelLostAmount++;
         ES3.Save("demoLevelLostAmount", demoLevelLostAmount);
+
+        if(CreaturesSpawnManager.Instance.GetCurrentWaveNumber() == 2 || CreaturesSpawnManager.Instance.GetCurrentWaveNumber() == 5) {
+            // Died because of widow
+            ES3.Save("playerDiedWithWidow", true);
+        } else {
+            ES3.Save("playerDiedWithWidow", false);
+        }
     }
 
     public void AddLevelLostAmount() {
@@ -267,6 +288,7 @@ public class DemoMainLevelManager : MonoBehaviour
     }
 
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
+        mainFireLit = true;
         Fire.Instance.DisableEmberExtraction();
         Debug.Log("demoFirstLevelCompleted " + demoFirstLevelCompleted);
 
@@ -278,6 +300,8 @@ public class DemoMainLevelManager : MonoBehaviour
 
             LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveUIList);
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightMainFire);
+            fireBlockingCollider1.SetColliderTrigger();
+            fireBlockingCollider2.SetColliderTrigger();
             StartCoroutine(PauseDayNightCycleAfterDelay());
 
             return;
@@ -496,6 +520,18 @@ public class DemoMainLevelManager : MonoBehaviour
 
         } else {
             PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
+        }
+    }
+
+    private void HandleBlockingCollider(Vector3 colliderPosition, string textToShow) {
+        if (Mathf.Abs(Player.Instance.transform.position.x - colliderPosition.x) < 1.5f && !showingGetReady) {
+            showingGetReady = true;
+            PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip(textToShow, 3f);
+        }
+
+        if (Mathf.Abs(Player.Instance.transform.position.x - colliderPosition.x) > 1.5f && showingGetReady) {
+            showingGetReady = false;
+            PlayerTooltipManager.Instance.GetTooltipRight().HideTooltip();
         }
     }
 

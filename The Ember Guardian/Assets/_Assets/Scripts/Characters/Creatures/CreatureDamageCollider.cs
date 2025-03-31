@@ -50,7 +50,7 @@ public class CreatureDamageCollider : MonoBehaviour
             } else {
                 // Attack hit worker, barricade or fire
 
-                mobAttack.DealDamage(false);
+                mobAttack.DealDamage();
             }
 
         }

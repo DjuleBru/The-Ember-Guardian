@@ -7,6 +7,8 @@ public class CreaturesManager : MonoBehaviour
 {
     public static CreaturesManager Instance;
 
+    private List<Mob> mobsAggroingPlayer = new List<Mob>();
+
     private List<Creature> creaturePoolList = new List<Creature>();
     private List<Creature> creaturesSpawnedList = new List<Creature>();
     private List<Creature> creaturesSpawnedAtNightList = new List<Creature>();
@@ -22,6 +24,29 @@ public class CreaturesManager : MonoBehaviour
 
     private void Awake() {
         Instance = this;
+    }
+
+    private void Start() {
+        CreatureAI.OnAnyCreatureAggro += CreatureAI_OnAnyCreatureAggro;
+        CreatureAI.OnAnyCreatureUntargetPlayer += CreatureAI_OnAnyCreatureUntargetPlayer;
+    }
+
+    private void CreatureAI_OnAnyCreatureUntargetPlayer(object sender, EventArgs e) {
+        CreatureAI creatureAI = (CreatureAI)sender;
+        Mob mob = creatureAI.GetComponent<Mob>();
+        TryRemoveCreatureAggroingPlayer(mob);
+    }
+     
+    private void TryRemoveCreatureAggroingPlayer(Mob mob) {
+        if(mobsAggroingPlayer.Contains(mob)) {
+            mobsAggroingPlayer.Remove(mob);
+        }
+    }
+
+    private void CreatureAI_OnAnyCreatureAggro(object sender, EventArgs e) {
+        CreatureAI creatureAI = (CreatureAI)sender;
+        Mob mob = creatureAI.GetComponent<Mob>();
+        mobsAggroingPlayer.Add(mob);
     }
 
     public Creature GetClosestCreatureInRadiusSmart(Vector2 position, float radius, int damage, bool canAttackFlying) {
@@ -88,6 +113,7 @@ public class CreaturesManager : MonoBehaviour
     public void RemoveCreatureSpawned(Creature creature) {
         creaturesSpawnedList.Remove(creature);
         RemoveCreatureFromNightWave(creature);
+        TryRemoveCreatureAggroingPlayer(creature);
     }
 
     public int GetSpawnedCreatureCount() {
@@ -145,6 +171,8 @@ public class CreaturesManager : MonoBehaviour
             Debug.Log("OnAllCreaturesAtNightKilled");
             OnAllCreaturesAtNightKilled?.Invoke(this, EventArgs.Empty);
         }
+
+        TryRemoveCreatureAggroingPlayer(creature);
     }
 
     public int GetNightCreaturesCloseToPlayerCamp(float distanceToCamp) {
@@ -161,6 +189,16 @@ public class CreaturesManager : MonoBehaviour
         }
 
         return creaturesCloseToCamp;
+    }
+
+    public bool GetCreatureAggroingPlayer() {
+        Debug.Log("GetCreatureAggroingPlayer " + (mobsAggroingPlayer.Count != 0));
+        return mobsAggroingPlayer.Count != 0;
+    }
+
+    private void OnDestroy() {
+        CreatureAI.OnAnyCreatureAggro -= CreatureAI_OnAnyCreatureAggro;
+        CreatureAI.OnAnyCreatureUntargetPlayer -= CreatureAI_OnAnyCreatureUntargetPlayer;
     }
 
 }

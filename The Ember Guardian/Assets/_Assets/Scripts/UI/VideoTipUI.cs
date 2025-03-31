@@ -93,7 +93,7 @@ public class VideoTipUI : MonoBehaviour
     public void PlayTipSO(VideoTipSO videoTipSO, float delayToPlayTip = 0f) {
         shownVideoTipSO = videoTipSO;
         videoPlayer.clip = videoTipSO.tipClip;
-        tipName.text = videoTipSO.tipName.GetTextInLanguage(SettingsManager.Language.English);
+        tipName.text = videoTipSO.tipName.GetTextInLanguage(LocalizationManager.Language.english);
 
         tipDescriptionTextSOList = videoTipSO.tipTextList;
         tipTextDelayToShowList = videoTipSO.tipTextDelayToShowList;
@@ -127,7 +127,7 @@ public class VideoTipUI : MonoBehaviour
         int i = 0;
         foreach(TextSO textSO in tipDescriptionTextSOList) {
             TipDescriptionTextTemplate tipTemplateText = Instantiate(tipTextTemplate, tipTextContainer).GetComponent<TipDescriptionTextTemplate>();
-            tipTemplateText.SetTipDescriptionAdvanced(textSO.GetTextInLanguage(SettingsManager.Language.English), i == 0);
+            tipTemplateText.SetTipDescriptionAdvanced(textSO.GetTextInLanguage(LocalizationManager.Language.english), i == 0);
             i++;
 
             tipDescriptionTextTemplateList.Add(tipTemplateText);

@@ -148,6 +148,10 @@ public class Creature : Mob
             }
         }
 
+        if(creatureSO.isBoss) {
+            BossUI.Instance.Hide();
+        }
+
         OnCreatureDied?.Invoke(this, EventArgs.Empty);
         StartCoroutine(DestroyGameObjectAfterDelay());
         GetComponent<Collider2D>().enabled = false;

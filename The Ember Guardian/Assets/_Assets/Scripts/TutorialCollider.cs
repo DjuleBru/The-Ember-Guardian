@@ -6,6 +6,7 @@ using UnityEngine;
 public class TutorialCollider : MonoBehaviour
 {
     [SerializeField] private bool isFirstCreatureBlockingCollider;
+    [SerializeField] private bool isLightFireBlockingCollider;
     [SerializeField] private bool isFirstSpotlightCollider;
     [SerializeField] private bool isStopMusicCollider;
     [SerializeField] private bool isLightTipCollider;
@@ -86,6 +87,7 @@ public class TutorialCollider : MonoBehaviour
             playerCollided = true;
             DemoLevelIntroManager.Instance.ShowRunTooltip();
         }
+
     }
 
     private void OnTriggerExit2D(Collider2D collision) {

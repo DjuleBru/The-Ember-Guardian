@@ -41,6 +41,12 @@ public class MetaProgressionManager : MonoBehaviour
     private void Awake() {
         Instance = this;
 
+        // Create a new ES3Settings to enable encryption.
+        //string saveFilePassword = "es3SavePass59463";
+        //var settings = new ES3Settings(ES3.EncryptionType.AES, saveFilePassword);
+        //var settingsDefault = new ES3Settings("SaveFile.es3", settings);
+        //ES3.Save<Transform>("myTransform", this.transform, settingsDefault);
+
         tutorialComplete = ES3.Load("tutorialComplete", false);
 
         if (SceneLoader.Instance != null && SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {

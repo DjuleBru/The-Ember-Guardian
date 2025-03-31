@@ -12,6 +12,16 @@ public class StructureUI_Trap : StructureUI
         base.Awake();
         trap.OnTrapDepletedUses += Trap_OnTrapDepletedUses;
         trap.OnTrapRearmPriceChanged += Trap_OnTrapRearmPriceChanged;
+    }
+
+    protected override void Start() {
+        base.Start();
+
+        //Demo : set refresh currencies to small blue orbs
+        if(DemoMainLevelManager.Instance != null) {
+            PayCurrencyTemplateWorldUI template = rearmTrapPayCurrencyTemplate.GetComponent<PayCurrencyTemplateWorldUI>();
+            template.SetCurrencyTypeToPay(PlayerCurrencies.CurrencyType.smallBlueOrb);
+        }
 
         RefreshTrapRearmUI();
     }

@@ -10,8 +10,6 @@ public class Barricade : Structure, IDamageable {
     [SerializeField] private Transform meleeAttackPosition;
     [SerializeField] private BarricadeVisual barricadeVisual;
 
-    private BoxCollider2D triggerCollider;
-
     private int level1Health = 24;
     private int level2Health = 32;
     private int level3Health = 40;
@@ -36,7 +34,6 @@ public class Barricade : Structure, IDamageable {
 
     protected override void Start() {
         base.Start();
-        triggerCollider = GetComponent<BoxCollider2D>();
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
 
@@ -84,9 +81,6 @@ public class Barricade : Structure, IDamageable {
     protected override void UpgradeStructure() {
         base.UpgradeStructure();
 
-        Vector2 triggerColliderOffset = new Vector2(0, 0);
-        Vector2 triggerColliderSize = new Vector2(1.7f, 0);
-
         if (structureLevel == 2) {
             barricadeMaxHealth = level2Health;
             barricadeHealth = level2Health;
@@ -100,9 +94,6 @@ public class Barricade : Structure, IDamageable {
             barricadeMaxHealth = level4Health;
             barricadeHealth = level4Health;
         }
-
-        triggerCollider.offset = triggerColliderOffset;
-        triggerCollider.size = triggerColliderSize;
     }
 
     protected override void DayNightManager_OnDawnStart(object sender, EventArgs e) {

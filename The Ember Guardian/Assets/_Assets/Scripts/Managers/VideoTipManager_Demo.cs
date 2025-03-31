@@ -9,11 +9,15 @@ public class VideoTipManager_Demo : MonoBehaviour
     [SerializeField] private VideoTipSO fireManagementTip;
     [SerializeField] private VideoTipSO healTentTip;
     [SerializeField] private VideoTipSO hunterTip;
+    [SerializeField] private VideoTipSO hunterFlagTip;
+    [SerializeField] private VideoTipSO trapTip;
 
     private bool workerRecruited;
     private bool healTentTipShown;
     private bool hunterTipShown;
     private bool fireManagementTipShown;
+    private bool hunterFlagTipShown;
+    private bool trapTipShown;
 
     private int hunterNumberRecruited;
 
@@ -22,9 +26,31 @@ public class VideoTipManager_Demo : MonoBehaviour
 
         Fire.Instance.OnFireFuelled += Fire_OnFireFuelled;
 
+        HuntingFlag_PlayerDefined.OnAnyPlayerTriggeredIn += HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn;
         Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn_Level;
         Worker.OnAnyWorkerRecruited += Worker_OnAnyWorkerRecruited;
         Worker.OnAnyWorkerAssignedHunter += Worker_OnAnyWorkerAssignedHunter;
+        UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
+    }
+
+    private void PlayerInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        if (trapTipShown) return;
+
+        if (e.currencyUIDropped.GetCurrencyCategory() == PlayerCurrencies.CurrencyCategory.trap) {
+            trapTipShown = true;
+            VideoTipUI.Instance.PlayTipSO(trapTip, .2f);
+            ES3.Save("trapTipShown", true);
+        }
+    }
+
+    private void HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn(object sender, EventArgs e) {
+        bool creaturesAggroingPlayer = CreaturesManager.Instance.GetCreatureAggroingPlayer();
+
+        if (!hunterFlagTipShown && !creaturesAggroingPlayer) {
+            VideoTipUI.Instance.PlayTipSO(hunterFlagTip, .2f);
+            ES3.Save("hunterFlagTipShown", true);
+            hunterFlagTipShown = true;
+        }
     }
 
     private void Worker_OnAnyWorkerAssignedHunter(object sender, EventArgs e) {
@@ -71,9 +97,12 @@ public class VideoTipManager_Demo : MonoBehaviour
     private void LoadTooltipsShown() {
         healTentTipShown = ES3.Load("healTentTipShown", false);
         hunterTipShown = ES3.Load("hunterTipShown", false);
+        hunterFlagTipShown = ES3.Load("hunterFlagTipShown", false);
+        trapTipShown = ES3.Load("trapTipShown", false);
     }
 
     private void OnDestroy() {
+        HuntingFlag_PlayerDefined.OnAnyPlayerTriggeredIn -= HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn;
         Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn_Level;
         Worker.OnAnyWorkerRecruited -= Worker_OnAnyWorkerRecruited;
         Worker.OnAnyWorkerAssignedHunter -= Worker_OnAnyWorkerAssignedHunter;

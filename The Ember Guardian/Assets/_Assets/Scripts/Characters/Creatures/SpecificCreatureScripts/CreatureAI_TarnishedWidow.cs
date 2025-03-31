@@ -31,19 +31,20 @@ public class CreatureAI_TarnishedWidow : CreatureAI
 
     protected override void Start() {
         base.Start();
+        GetComponent<CreatureAttack>().SetAttackIgnoresTemporaryInvincibility();
         initialMoveSpeed = creature.GetCreatureSO().nightMoveSpeed;
         creature.OnMobDamageTaken += Creature_OnMobDamageTaken;
 
-        Debug.Log(LevelManager.Instance.GetLevelSO().bossNightSpawns[0]);
-        Debug.Log(CreaturesSpawnManager.Instance.GetCurrentWaveNumber());
         isFirstAppearance = LevelManager.Instance.GetLevelSO().bossNightSpawns[0] == CreaturesSpawnManager.Instance.GetCurrentWaveNumber();
         Debug.Log("isFirstAppearance " + isFirstAppearance);
-        Debug.Log("DemoMainLevelManager.Instance.GetDemoLevelLostAmount() " + DemoMainLevelManager.Instance.GetDemoLevelLostAmount());
 
-        if(DemoMainLevelManager.Instance.GetDemoLevelLostAmount() == 0) {
+        if(DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetDemoLevelLostAmount() == 0) {
+            Debug.Log("DemoMainLevelManager.Instance.GetDemoLevelLostAmount() " + DemoMainLevelManager.Instance.GetDemoLevelLostAmount());
             Debug.Log("demo Lost amount = 0, doubling widow health ");
             creature.SetCreatureHealth(creature.GetCreatureSO().maxHealth*2);
         }
+
+        BossUI.Instance.LinkBoss(creature);
     }
 
     private void Creature_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {
@@ -203,6 +204,7 @@ public class CreatureAI_TarnishedWidow : CreatureAI
         creatureMovement.SetMoveSpeed(jumpMoveSpeed);
         OnWidowJumpStarted?.Invoke(this, EventArgs.Empty);
 
+        BossUI.Instance.Hide();
         yield return new WaitForSeconds(3f);
 
         CreaturesManager.Instance.RemoveCreatureFromNightWave(creature);

@@ -19,6 +19,7 @@ public class HUBManager_Demo : MonoBehaviour
     [SerializeField] private MerchantTextLinesSO gemMerchantOpenTeleporterTextLines;
     [SerializeField] private MerchantTextLinesSO gemMerchantComeBuyTextLines;
     [SerializeField] private MerchantTextLinesSO gemMerchantLevelLostOnceTextLinesSO;
+    [SerializeField] private MerchantTextLinesSO gemMerchantLevelLostWithWidowTextLinesSO;
     [SerializeField] private MerchantTextLinesSO gemMerchantLevelLostAgainTextLinesSO;
     [SerializeField] private MerchantTextLinesSO gemMerchantLevelCompletedTextLinesSO;
     [SerializeField] private MerchantTextLinesSO armorerIntroTextLinesSO;
@@ -44,10 +45,12 @@ public class HUBManager_Demo : MonoBehaviour
     private bool playerHasGemsInInventory;
     private bool fireIndicatorActive;
     private bool chestIndicatorActive;
-    private bool demoLevelCompleted;
+    private bool demoMainLevelCompleted;
     private bool firstHubEnterWithDemoLevelCompleted;
     private bool functionalMerchantsShopsUnlocked;
     private bool gunTipShown;
+    private bool handleAnyLevelDefeatHubEvolutionDone;
+    private bool playerDiedWithWidowTextShown;
 
     private void Awake() {
         // First demo hub encounter becomes true when player moves on teleporter
@@ -55,7 +58,7 @@ public class HUBManager_Demo : MonoBehaviour
         demoFirstLevelCompleted = ES3.Load("demoFirstLevelCompleted", false);
         demoMainLevelEncountered = ES3.Load("demoMainLevelEncountered", false);
         demoLevelLostAmount = ES3.Load("demoLevelLostAmount", 0);
-        demoLevelCompleted = ES3.Load("demoLevelCompleted", false);
+        demoMainLevelCompleted = ES3.Load("demoMainLevelCompleted", false);
         firstHubEnterWithDemoLevelCompleted = ES3.Load("firstHubEnterWithDemoLevelCompleted", true);
         gunTipShown = ES3.Load("gunTipShown", false);
 
@@ -63,7 +66,7 @@ public class HUBManager_Demo : MonoBehaviour
         Debug.Log("demoFirstLevelCompleted " + demoFirstLevelCompleted);
         Debug.Log("demoMainLevelEncountered " + demoMainLevelEncountered);
         Debug.Log("demoLevelLostAmount " + demoLevelLostAmount);
-        Debug.Log("demoLevelCompleted " + demoLevelCompleted);
+        Debug.Log("demoMainLevelCompleted " + demoMainLevelCompleted);
         Debug.Log("firstHubEnterWithDemoLevelCompleted " + firstHubEnterWithDemoLevelCompleted);
 
         chestIndicator.gameObject.SetActive(false);
@@ -80,7 +83,6 @@ public class HUBManager_Demo : MonoBehaviour
             MusicManager.Instance.PlayMusicDelayed(3f);
 
             if(demoLevelLostAmount == 0 && !demoFirstLevelCompleted) {
-                Debug.Log("HandleBackFromFirstRun");
                 StartCoroutine(HandleBackFromFirstRun());
                 grassyAreaPortal.SetLinkedLevelSO(demoFirstLevelSO);
             }
@@ -88,27 +90,24 @@ public class HUBManager_Demo : MonoBehaviour
             if (demoFirstLevelCompleted) {
                 if(!demoMainLevelEncountered) {
                     // Player lost level once 
-                    Debug.Log("HandleFirstLevelCompletedHubEvolution");
                     StartCoroutine(HandleFirstLevelCompletedHubEvolution());
                     grassyAreaPortal.SetLinkedLevelSO(demoMainLevelSO);
 
                 }
                 else {
                     // Player returned to hub without loosing the level
-                    Debug.Log("HandleAnyLevelDefeatHubEvolution");
                     StartCoroutine(HandleAnyLevelDefeatHubEvolution());
                     grassyAreaPortal.SetLinkedLevelSO(demoMainLevelSO);
+                    RefreshPlayerHasGemsIndicators();
                 }
             }
 
             if(demoLevelLostAmount >= 1) {
-                Debug.Log("HandleAnyLevelDefeatHubEvolution");
                 StartCoroutine(HandleAnyLevelDefeatHubEvolution());
                 grassyAreaPortal.SetLinkedLevelSO(demoMainLevelSO);
             }
 
-            if (demoLevelCompleted && firstHubEnterWithDemoLevelCompleted) {
-                Debug.Log("HandleLevelSuccessHubEvolution");
+            if (demoMainLevelCompleted && firstHubEnterWithDemoLevelCompleted) {
                 StartCoroutine(HandleLevelSuccessHubEvolution());
                 grassyAreaPortal.SetLinkedLevelSO(demoMainLevelSO);
             }
@@ -178,14 +177,17 @@ public class HUBManager_Demo : MonoBehaviour
     }
 
     private IEnumerator HandleAnyLevelDefeatHubEvolution() {
+        if (handleAnyLevelDefeatHubEvolutionDone) yield break;
+        Debug.Log("HandleAnyLevelDefeatHubEvolution");
+        handleAnyLevelDefeatHubEvolutionDone = true;
         hubFireEmberExtractable = true;
 
         yield return new WaitForSeconds(.5f);
-        gemMerchantTalkUI.SetTextLinesSO(gemMerchantLevelLostAgainTextLinesSO);
-
+        
         foreach (HubMerchant hubMerchant in functionalDemoHubMerchantList) {
             hubMerchant.SetDemoMerchantUnlocked();
             hubMerchant.SetDemoMerchantFunctional();
+            hubMerchant.SetHasTalkLinesToShow(false, false);
         }
 
         foreach (HubMerchant decorationalHubMerchant in decorationalDemoHubMerchantList) {
@@ -193,8 +195,64 @@ public class HUBManager_Demo : MonoBehaviour
             decorationalHubMerchant.SetDemoMerchantUnlocked();
         }
 
-        gemMerchant.SetHasTalkLinesToShow(true, false);
-        gemMerchantReward.DisableReward();
+        bool playerDiedWithWidow = ES3.Load("playerDiedWithWidow", false);
+        bool playerDiedWithWidowTextShown = ES3.Load("playerDiedWithWidowTextShown", false);
+        Debug.Log("playerDiedWithWidow " + playerDiedWithWidow);
+        Debug.Log("playerDiedWithWidowTextShown " + playerDiedWithWidowTextShown);
+
+        if (playerDiedWithWidow && !playerDiedWithWidowTextShown) {
+            playerDiedWithWidowTextShown = true;
+            gemMerchantTalkUI.SetTextLinesSO(gemMerchantLevelLostWithWidowTextLinesSO);
+            gemMerchant.SetHasTalkLinesToShow(true, true);
+            SetWidowGemMerchantReward();
+        }
+        else {
+
+            gemMerchantTalkUI.SetTextLinesSO(gemMerchantLevelLostAgainTextLinesSO);
+            gemMerchant.SetHasTalkLinesToShow(true, false);
+            gemMerchantReward.DisableReward();
+
+        }
+        functionalMerchantsShopsUnlocked = true;
+
+    }
+
+    private void SetWidowGemMerchantReward() {
+        List<PlayerCurrencies.CurrencyType> currencyTypesList = new List<PlayerCurrencies.CurrencyType>() {
+                PlayerCurrencies.CurrencyType.greenGem,
+                PlayerCurrencies.CurrencyType.redGem,
+            };
+        int greenGemAmountInBag = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count;
+        int greenGemAmountInChest = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count;
+        int totalGreenGemAmount = greenGemAmountInBag + greenGemAmountInChest;
+        int redGemAmountInBag = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count;
+        int redGemAmountInChest = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count;
+        int totalRedGemAmount = redGemAmountInBag + redGemAmountInChest;
+
+        int greenGemsToReward = 3 - totalGreenGemAmount;
+        int redGemsToReward = 3 - totalRedGemAmount;
+        bool enableReward = false;
+
+        if (greenGemsToReward < 0) {
+            greenGemsToReward = 0;
+        } else {
+            enableReward = true;
+        }
+        if (redGemsToReward < 0) {
+            redGemsToReward = 0;
+        } else {
+            enableReward = true;
+        }
+
+        List<int> gemsToReward = new List<int>() {
+                greenGemsToReward,
+                redGemsToReward,
+            };
+        gemMerchantReward.SetReward(currencyTypesList, gemsToReward);
+
+        if (!enableReward) {
+            gemMerchantReward.DisableReward();
+        }
     }
 
     private IEnumerator HandleLevelSuccessHubEvolution() {
@@ -214,6 +272,7 @@ public class HUBManager_Demo : MonoBehaviour
 
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
         ES3.Save("firstDemoHubEncounter", false);
+        ES3.Save("playerDiedWithWidowTextShown", playerDiedWithWidowTextShown);
     }
 
     private void HubMerchant_OnAnyPlayerTriggeredIn(object sender, System.EventArgs e) {
@@ -355,7 +414,7 @@ public class HUBManager_Demo : MonoBehaviour
         }
 
 
-        if(demoLevelCompleted && firstHubEnterWithDemoLevelCompleted) {
+        if(demoMainLevelCompleted && firstHubEnterWithDemoLevelCompleted) {
 
             firstHubEnterWithDemoLevelCompleted = false;
             ES3.Save("firstHubEnterWithDemoLevelCompleted", false);

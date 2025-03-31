@@ -7,11 +7,6 @@ public class SettingsManager : MonoBehaviour
 {
     public static SettingsManager Instance;
 
-    public enum Language {
-        English,
-        French,
-    }
-
     [SerializeField] private float sfxVolume = .5f;
     [SerializeField] private float musicVolume = .5f;
 
@@ -27,7 +22,7 @@ public class SettingsManager : MonoBehaviour
     public event EventHandler OnLanguageChanged;
 
 
-    private Language currentLanguage = Language.English;
+    private LocalizationManager.Language currentLanguage = LocalizationManager.Language.english;
     private bool holdToRun;
     private bool aimAssist;
     private bool autoAlignAimWithMovement;
@@ -35,45 +30,94 @@ public class SettingsManager : MonoBehaviour
     private bool controllerVibrations;
     private bool fullScreen;
 
+    private ES3Settings settingsSaveFileSettings;
+
     private void Awake() {
         Instance = this;
-
+        settingsSaveFileSettings = new ES3Settings("Settings.es3");
         LoadSettings();
     }
 
     private void LoadSettings() {
-        sfxVolume = ES3.Load("sfxVolume", .5f);
-        musicVolume = ES3.Load("musicVolume", .5f);
+        // Create a new ES3Settings to enable encryption.
 
-        currentLanguage = ES3.Load("currentLanguage", Language.English);
-        holdToRun = ES3.Load("holdToRun", true);
-        aimAssist = ES3.Load("aimAssist", true);
-        autoAlignAimWithMovement = ES3.Load("autoAlignAimWithMovement", true);
-        autoSwitchLightGun = ES3.Load("autoSwitchLightGun", true);
-        controllerVibrations = ES3.Load("controllerVibrations", true);
-        fullScreen = ES3.Load("fullScreen", true);
+        sfxVolume = ES3.Load("sfxVolume", .5f, settingsSaveFileSettings);
+
+        musicVolume = ES3.Load("musicVolume", .5f, settingsSaveFileSettings);
+
+        currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.english, settingsSaveFileSettings);
+        holdToRun = ES3.Load("holdToRun", true, settingsSaveFileSettings);
+        aimAssist = ES3.Load("aimAssist", true, settingsSaveFileSettings);
+        autoAlignAimWithMovement = ES3.Load("autoAlignAimWithMovement", true, settingsSaveFileSettings);
+        autoSwitchLightGun = ES3.Load("autoSwitchLightGun", true, settingsSaveFileSettings);
+        controllerVibrations = ES3.Load("controllerVibrations", true, settingsSaveFileSettings);
+        fullScreen = ES3.Load("fullScreen", true, settingsSaveFileSettings);
     }
 
-    public float GetSfxVolume() {
-        return sfxVolume;
-    }
-
-    public float GetMusicVolume() {
-        return musicVolume;
-    }
-
+    #region SET SETTINGS
     public void SetSfxVolume(float newSfxVolume) {
         sfxVolume = newSfxVolume;
-        ES3.Save("sfxVolume", newSfxVolume);
+        ES3.Save("sfxVolume", newSfxVolume, settingsSaveFileSettings);
         OnSfxVolumeChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetMusicVolume(float newMusicVolume) {
         musicVolume = newMusicVolume;
-        ES3.Save("musicVolume", newMusicVolume);
+        ES3.Save("musicVolume", newMusicVolume, settingsSaveFileSettings);
         OnMusicVolumeChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    public void SetLanguage(LocalizationManager.Language language) {
+        currentLanguage = language;
+        OnLanguageChanged?.Invoke(this, EventArgs.Empty);
+
+        ES3.Save("currentLanguage", currentLanguage, settingsSaveFileSettings);
+    }
+
+    public void ChangeHoldToggleRun() {
+        holdToRun = !holdToRun;
+        OnHoldToggleRunChanged?.Invoke(this, EventArgs.Empty);
+
+        ES3.Save("holdToRun", holdToRun, settingsSaveFileSettings);
+    }
+    public void ChangeAutoSwitchGunLight() {
+        autoSwitchLightGun = !autoSwitchLightGun;
+        OnAutoSwitchLightGunChanged?.Invoke(this, EventArgs.Empty);
+
+        ES3.Save("autoSwitchLightGun", autoSwitchLightGun, settingsSaveFileSettings);
+    }
+    public void ChangeAutoAlignAimWithMovement() {
+        autoAlignAimWithMovement = !autoAlignAimWithMovement;
+        OnAutoAlignAimWithMovementChanged?.Invoke(this, EventArgs.Empty);
+
+        ES3.Save("autoAlignAimWithMovement", autoAlignAimWithMovement, settingsSaveFileSettings);
+    }
+    public void ChangeControllerVibrations() {
+        controllerVibrations = !controllerVibrations;
+        OnControllerVibrationsChanged?.Invoke(this, EventArgs.Empty);
+
+        ES3.Save("controllerVibrations", controllerVibrations, settingsSaveFileSettings);
+    }
+
+    public void ChangeScreenMode() {
+        fullScreen = !fullScreen;
+        OnFullScreenChanged?.Invoke(this, EventArgs.Empty);
+
+        Screen.fullScreen = fullScreen;
+
+        ES3.Save("fullScreen", fullScreen, settingsSaveFileSettings);
+    }
+
+    public void ChangeAimAssist() {
+        aimAssist = !aimAssist;
+        OnAimAssistChanged?.Invoke(this, EventArgs.Empty);
+
+        ES3.Save("aimAssist", aimAssist, settingsSaveFileSettings);
+    }
+
+
+    #endregion
+    #region GET SETTINGS
     public bool GetHoldToRun() {
         return holdToRun;
     }
@@ -97,57 +141,15 @@ public class SettingsManager : MonoBehaviour
         return aimAssist;
     }
 
-    public Language GetLanguage() {
+    public LocalizationManager.Language GetLanguage() {
         return currentLanguage;
     }
-
-
-    public void SetLanguage(Language language) {
-        currentLanguage = language;
-        OnLanguageChanged?.Invoke(this, EventArgs.Empty);
-
-        ES3.Save("currentLanguage", currentLanguage);
+    public float GetSfxVolume() {
+        return sfxVolume;
     }
 
-    public void ChangeHoldToggleRun() {
-        holdToRun = !holdToRun;
-        OnHoldToggleRunChanged?.Invoke(this, EventArgs.Empty);
-
-        ES3.Save("holdToRun", holdToRun);
+    public float GetMusicVolume() {
+        return musicVolume;
     }
-    public void ChangeAutoSwitchGunLight() {
-        autoSwitchLightGun = !autoSwitchLightGun;
-        OnAutoSwitchLightGunChanged?.Invoke(this, EventArgs.Empty);
-
-        ES3.Save("autoSwitchLightGun", autoSwitchLightGun);
-    }
-    public void ChangeAutoAlignAimWithMovement() {
-        autoAlignAimWithMovement = !autoAlignAimWithMovement;
-        OnAutoAlignAimWithMovementChanged?.Invoke(this, EventArgs.Empty);
-
-        ES3.Save("autoAlignAimWithMovement", autoAlignAimWithMovement);
-    }
-    public void ChangeControllerVibrations() {
-        controllerVibrations = !controllerVibrations;
-        OnControllerVibrationsChanged?.Invoke(this, EventArgs.Empty);
-
-        ES3.Save("controllerVibrations", controllerVibrations);
-    }
-
-    public void ChangeScreenMode() {
-        fullScreen = !fullScreen;
-        OnFullScreenChanged?.Invoke(this, EventArgs.Empty);
-
-        Screen.fullScreen = fullScreen;
-
-        ES3.Save("fullScreen", fullScreen);
-    }
-
-    public void ChangeAimAssist() {
-        aimAssist = !aimAssist;
-        OnAimAssistChanged?.Invoke(this, EventArgs.Empty);
-
-        ES3.Save("aimAssist", aimAssist);
-    }
-
+    #endregion
 }

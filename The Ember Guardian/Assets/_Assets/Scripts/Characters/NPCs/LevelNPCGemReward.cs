@@ -53,4 +53,9 @@ public class LevelNPCGemReward : MonoBehaviour
     public void DisableReward() {
         disableReward = true;
     }
+
+    public void SetReward(List<PlayerCurrencies.CurrencyType> currencyTypeToRewardList, List<int> rewardAmountList) {
+        this.currencyTypeToRewardList = currencyTypeToRewardList;
+        this.rewardAmountList = rewardAmountList;
+    }
 }

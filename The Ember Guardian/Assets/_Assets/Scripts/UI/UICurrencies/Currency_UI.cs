@@ -8,6 +8,7 @@ public class Currency_UI : MonoBehaviour
     [SerializeField] private MMF_Player dropCurrencyFeedback;
 
     [SerializeField] private PlayerCurrencies.CurrencyType currencyType;
+    [SerializeField] private PlayerCurrencies.CurrencyCategory currencyCategory;
 
     private bool movingOrb;
     private Transform destinationTransform;
@@ -114,7 +115,9 @@ public class Currency_UI : MonoBehaviour
     public PlayerCurrencies.CurrencyType GetCurrencyType() {
         return currencyType;
     }
-
+    public PlayerCurrencies.CurrencyCategory GetCurrencyCategory() {
+        return currencyCategory;
+    }
     public void SetFellFromBag() {
         fellFromBag = true;
     }

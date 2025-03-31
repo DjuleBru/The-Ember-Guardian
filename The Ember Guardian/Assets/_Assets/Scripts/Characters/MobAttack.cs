@@ -40,6 +40,7 @@ public class MobAttack : MonoBehaviour
     protected bool attacking;
     protected bool attackStarted;
     protected bool homingProjectile;
+    protected bool attackIgnoresTemporaryInvincibility;
 
     protected virtual void Awake() {
         mob = GetComponent<Mob>();
@@ -155,7 +156,7 @@ public class MobAttack : MonoBehaviour
         yield return new WaitForSeconds(delayToDealDamage);
         if (mob.GetDead()) yield break;
 
-        DealDamage(false);
+        DealDamage();
 
         yield return new WaitForSeconds(totalAttackAnimationTime - delayToDealDamage);
 
@@ -203,10 +204,10 @@ public class MobAttack : MonoBehaviour
         return projectile;
     }
 
-    public virtual void DealDamage(bool ignoreTemporaryInvincibility) {
+    public virtual void DealDamage() {
 
         if (attackTargetIDamageable != null) {
-            attackTargetIDamageable.TakeDamage(attackDamage, transform, false, ignoreTemporaryInvincibility);
+            attackTargetIDamageable.TakeDamage(attackDamage, transform, false, attackIgnoresTemporaryInvincibility);
         }
         if ((attackTargetIDamageable as MonoBehaviour) == Fire.Instance) {
             mob.Die();
@@ -292,6 +293,10 @@ public class MobAttack : MonoBehaviour
 
     public void InvokeAttackHit() {
         OnMobAttackHit?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SetAttackIgnoresTemporaryInvincibility() {
+        attackIgnoresTemporaryInvincibility = true;
     }
 
 }

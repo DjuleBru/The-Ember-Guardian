@@ -174,7 +174,6 @@ public class MainMenuUI : MonoBehaviour {
         newGameText.text = "New Game";
     }
     public void ShowMainMenuButtons() {
-        Debug.Log("ShowMainMenuButtons");
         StartCoroutine(FadeInMainMenu(0f));
         mainMenuPanelOpen = true;
     }

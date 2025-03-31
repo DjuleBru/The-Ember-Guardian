@@ -43,7 +43,7 @@ public class CreaturesSpawnManager : MonoBehaviour
     private int totalNightCreatureHP;
     private int remainingNightCreaturesHP;
     private int remainingSubWaveCreatures;
-    private int maxRemainingSubWaveCreaturesForNextSubwave;
+    private int maxRemainingSubWaveCreaturesForNextSubwave = 2;
 
     private int startWaveToSpawnFromBothSides;
     private int baseDifficulty;
@@ -454,6 +454,8 @@ public class CreaturesSpawnManager : MonoBehaviour
             }
 
             // Attendre que toutes les créatures de cette subwave soient éliminées
+            Debug.Log("remainingSubWaveCreatures " + (remainingSubWaveCreatures));
+            Debug.Log("maxRemainingSubWaveCreaturesForNextSubwave " + maxRemainingSubWaveCreaturesForNextSubwave);
             yield return new WaitUntil(() => remainingSubWaveCreatures <= maxRemainingSubWaveCreaturesForNextSubwave);
 
             subWaveIndex++;

@@ -19,7 +19,7 @@ public class PlayerSkills : MonoBehaviour
     private float leftSkillCooldown;
 
     private bool moveSpeedBuffActive;
-    private float moveSpeedBuffAmount;
+    private float moveSpeedBuffAmount = 1.4f;
     private float moveSpeedBuffTimer;
 
     private bool shootCooldownBuffActive;
@@ -85,7 +85,7 @@ public class PlayerSkills : MonoBehaviour
         moveSpeedBuffTimer -= Time.deltaTime;
 
         if(moveSpeedBuffTimer <= 0) {
-            PlayerStats.Instance.DebuffMoveSpeed(moveSpeedBuffAmount);
+            PlayerMovement.Instance.DebuffMoveSpeed(moveSpeedBuffAmount);
             moveSpeedBuffActive = false;
 
             HandleActiveSkillDeactivation(SkillItem.SkillType.activeMoveSpeedBuff);
@@ -154,8 +154,7 @@ public class PlayerSkills : MonoBehaviour
 
             case SkillItem.SkillType.activeMoveSpeedBuff:
 
-                moveSpeedBuffAmount = .4f;
-                PlayerStats.Instance.BuffMoveSpeed(moveSpeedBuffAmount);
+                PlayerMovement.Instance.BuffMoveSpeed(moveSpeedBuffAmount);
 
                 moveSpeedBuffTimer = skillBuffValue;
                 moveSpeedBuffActive = true;

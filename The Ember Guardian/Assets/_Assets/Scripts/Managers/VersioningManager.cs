@@ -61,8 +61,10 @@ public class VersioningManager : MonoBehaviour
     public bool CheckNewSaveFile() {
 
         if (!ES3.FileExists()) {
-            MainMenuUI_StartupMessagePanel.Instance.OpenPanel();
-            MainMenuUI_StartupMessagePanel.Instance.SetNewTesterPanel();
+            if(MainMenuUI_StartupMessagePanel.Instance != null) {
+                MainMenuUI_StartupMessagePanel.Instance.OpenPanel();
+                MainMenuUI_StartupMessagePanel.Instance.SetNewTesterPanel();
+            } 
 
             string key = "buildVersion_" + buildVersion + "_saveFileDeleted";
             ES3.Save(key, true);

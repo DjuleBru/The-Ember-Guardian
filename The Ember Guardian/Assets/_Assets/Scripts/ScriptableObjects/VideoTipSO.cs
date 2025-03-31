@@ -25,6 +25,7 @@ public class VideoTipSO : ScriptableObject
         SwapWeapon,
         HuntersFlag,
         DemoEnded,
+        Trap,
     }
 
     public VideoTipType tipType;

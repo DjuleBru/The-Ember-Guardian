@@ -33,9 +33,10 @@ public class CreatureAI : MonoBehaviour {
     protected float distanceToCampOrPlayerToSetStandardSpeed = 25f;
 
     public event EventHandler OnCreatureAggro;
-    public event EventHandler OnCreatureUntargetPlayer;
-    public event EventHandler OnCreatureTargetPlayer;
     public static event EventHandler OnAnyCreatureAggro;
+    public event EventHandler OnCreatureUntargetPlayer;
+    public static event EventHandler OnAnyCreatureUntargetPlayer;
+    public event EventHandler OnCreatureTargetPlayer;
 
     public enum State {
         idle,
@@ -255,6 +256,7 @@ public class CreatureAI : MonoBehaviour {
             if(state == State.moveToTarget) {
                 // Creature un aggro player
                 OnCreatureUntargetPlayer?.Invoke(this, EventArgs.Empty);
+                OnAnyCreatureUntargetPlayer?.Invoke(this, EventArgs.Empty);
             }
         }
 

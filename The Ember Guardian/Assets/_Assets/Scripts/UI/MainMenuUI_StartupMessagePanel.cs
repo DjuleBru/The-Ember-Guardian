@@ -48,7 +48,7 @@ public class MainMenuUI_StartupMessagePanel : MonoBehaviour
     }
     public void SetNewTesterPanel() {
         panelName.text = "Hello, Emberling !";
-        panelText.text = "Welcome to The Ember Guardian! Please note that the game is still in early development, so you may come across some bugs. I hope you still enjoy the experience!\n\nThank you so much for being part of this journey!";
+        panelText.text = "Welcome to The Ember Guardian! Please note that the game is still in early development, so you may come across some bugs. I hope you enjoy the experience!\n\nThank you for keeping the flame alive!";
         panelNameImageAnimator.SetTrigger("NewPlayer");
     }
 

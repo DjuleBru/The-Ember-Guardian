@@ -34,6 +34,7 @@ public class GameInput : MonoBehaviour
 
     private PlayerInputActions playerInputActions;
     private PlayerInput playerInput;
+    private ES3Settings settingsSaveFileSettings;
 
     public event EventHandler OnPlayerInputChanged;
 
@@ -96,15 +97,16 @@ public class GameInput : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         playerInputActions = new PlayerInputActions();
+        settingsSaveFileSettings = new ES3Settings("Settings.es3");
 
-        bool hasSavedDefaultBindings = ES3.Load("SavedDefaultBindings", false);
-        bool hasCustomBindings = ES3.Load("SavedCustomBindings", false);
+        bool hasSavedDefaultBindings = ES3.Load("SavedDefaultBindings", false, settingsSaveFileSettings);
+        bool hasCustomBindings = ES3.Load("SavedCustomBindings", false, settingsSaveFileSettings);
         if(!hasSavedDefaultBindings) {
-            ES3.Save("DefaultInputBindings", playerInputActions.SaveBindingOverridesAsJson());
+            ES3.Save("DefaultInputBindings", playerInputActions.SaveBindingOverridesAsJson(), settingsSaveFileSettings);
         }
         if(hasCustomBindings) {
             string defaultBindings = playerInputActions.SaveBindingOverridesAsJson();
-            string playerBindings = ES3.Load("PlayerInputBindings", defaultValue:defaultBindings);
+            string playerBindings = ES3.Load("PlayerInputBindings", defaultValue:defaultBindings, settingsSaveFileSettings);
 
             playerInputActions.LoadBindingOverridesFromJson(playerBindings);
         }
@@ -391,7 +393,6 @@ public class GameInput : MonoBehaviour
 
     public void RebindBinding(Binding binding, Action onActionRebound) {
         playerInputActions.Player.Disable();
-        Debug.Log("RebindBinding " + binding);
         InputAction inputAction;
         int bindingIndex;
 
@@ -476,16 +477,14 @@ public class GameInput : MonoBehaviour
                 break;
         }
 
-        Debug.Log("RebindBinding " + inputAction + " bindingIndex " + bindingIndex);
         inputAction.PerformInteractiveRebinding(bindingIndex).OnComplete(callback => {
             //Debug.Log(callback.action.bindings[1].path);
-            Debug.Log(callback.action.bindings[0].path);
 
             playerInputActions.Player.Enable();
             onActionRebound();
 
-            ES3.Save("PlayerInputBindings", playerInputActions.SaveBindingOverridesAsJson());
-            ES3.Save("SavedCustomBindings", true);
+            ES3.Save("PlayerInputBindings", playerInputActions.SaveBindingOverridesAsJson(), settingsSaveFileSettings);
+            ES3.Save("SavedCustomBindings", true, settingsSaveFileSettings);
 
         }).Start();
     }
@@ -493,13 +492,12 @@ public class GameInput : MonoBehaviour
     public void ResetBindingsToDefault() {
         playerInputActions.Player.Disable();
 
-
         string defaultBindingsForFunction = playerInputActions.SaveBindingOverridesAsJson();
-        string defaultBindings = ES3.Load("DefaultInputBindings", defaultValue: defaultBindingsForFunction);
+        string defaultBindings = ES3.Load("DefaultInputBindings", defaultValue: defaultBindingsForFunction, settingsSaveFileSettings);
 
         playerInputActions.LoadBindingOverridesFromJson(defaultBindings);
 
-        ES3.Save("SavedCustomBindings", false);
+        ES3.Save("SavedCustomBindings", false, settingsSaveFileSettings);
         playerInputActions.Player.Enable();
     }
 }

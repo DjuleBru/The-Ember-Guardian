@@ -143,7 +143,10 @@ public class CreatureDetectionCollider : MonoBehaviour
         if(creatureAI.GetAttackTarget() == Player.Instance as IDamageable) {
 
             bool playerIsFacingCreature = PlayerAim.Instance.GetAimDirFloat() * creatureMovement.GetLastMoveDirFloat() <= 0;
-            if (playerIsFacingCreature) {
+            bool creatureIsFleeingRight = creatureMovement.GetLastMoveDirFloat() > 0 && transform.position.x > 0;
+            bool creatureIsFleeingLeft = creatureMovement.GetLastMoveDirFloat() < 0 && transform.position.x < 0;
+
+            if (playerIsFacingCreature || creatureIsFleeingLeft || creatureIsFleeingRight) {
                 unaggroTimer = unaggroTime;
                 return;
             };

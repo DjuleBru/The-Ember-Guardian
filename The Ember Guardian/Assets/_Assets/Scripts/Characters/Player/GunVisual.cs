@@ -49,6 +49,7 @@ public class GunVisual : MonoBehaviour
 
     }
 
+
     private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
         if(gunSecondaryAbilityActiveSpriteRenderer != null) {
             gunSecondaryFireModeActive = !gunSecondaryFireModeActive;

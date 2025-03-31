@@ -32,10 +32,10 @@ public class CreatureAttack : MobAttack
         }
     }
 
-    public override void DealDamage(bool ignoreTemporaryInvincibility) {
+    public override void DealDamage() {
 
         if (attackTargetIDamageable != null) {
-            attackTargetIDamageable.TakeDamage(attackDamage, transform, false, ignoreTemporaryInvincibility);
+            attackTargetIDamageable.TakeDamage(attackDamage, transform, false, attackIgnoresTemporaryInvincibility);
         }
 
         if ((attackTargetIDamageable as MonoBehaviour) == Fire.Instance) {

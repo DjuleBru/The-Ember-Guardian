@@ -60,6 +60,14 @@ public class Chest_Special : Chest
             SkillItem skillItem = new SkillItem();
             skillItem.Initialize(skillSOSelected);
 
+            if(PlayerSkills.Instance.GetActiveSkillLeft() != null && PlayerSkills.Instance.GetActiveSkillLeft().skillType == skillSOSelected.skillType) {
+                skillItem.currentLevel = PlayerSkills.Instance.GetActiveSkillLeft().currentLevel + 1;
+            }
+
+            if (PlayerSkills.Instance.GetActiveSkillRight() != null && PlayerSkills.Instance.GetActiveSkillRight().skillType == skillSOSelected.skillType) {
+                skillItem.currentLevel = PlayerSkills.Instance.GetActiveSkillRight().currentLevel + 1;
+            }
+
             if (skillSOSelected.itemType == MerchantItem.MerchantItemType.ActiveSkill) {
                 PlayerSkills.Instance.AddActiveSkill(skillItem);
             }

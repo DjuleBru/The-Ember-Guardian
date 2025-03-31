@@ -79,6 +79,7 @@ public class PlayerShoot : MonoBehaviour
     private bool coolDownAnimationTriggered;
     private bool playerJustPressedReload;
     private bool transferringAmmoFromBag;
+    private bool rifleSemiAutoModeActive;
     private bool secondaryAbilityActive;
     private bool canHold2Guns;
 
@@ -269,10 +270,13 @@ public class PlayerShoot : MonoBehaviour
         heldGun = activeGun;
         heldGun.SetGunActive(true);
 
-        automaticWeapon = gunSO.automaticWeapon;
         shootCooldownSFXTriggerTime = heldGunSO.shootCooldownSFXTriggerTime;
         gunRecoil = heldGunSO.gunRecoil;
-        gunKnockback = heldGunSO.gunKnockback;
+        gunKnockback = heldGunSO.gunKnockback; 
+        automaticWeapon = gunSO.automaticWeapon;
+        if (rifleSemiAutoModeActive) {
+            automaticWeapon = true;
+        }
 
         PlayerStats.Instance.SetShootCooldownTime(heldGun.GetCooldownTime());
         PlayerStats.Instance.SetReloadTime(heldGun.GetReloadTime());
@@ -454,9 +458,9 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Rifle) {
-            secondaryAbilityActive = !secondaryAbilityActive;
+            rifleSemiAutoModeActive = !rifleSemiAutoModeActive;
 
-            if (secondaryAbilityActive) {
+            if (rifleSemiAutoModeActive) {
                 automaticWeapon = true;
             } else {
                 automaticWeapon = false;
@@ -620,10 +624,8 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private bool CanSwapGun() {
-        if (swappingGun) return false;
-        if (reloading) return false;
-        if (secondaryAbilityActive) return false;
-        return true;
+        bool canSwapGun = !swappingGun && !reloading && !secondaryAbilityActive;
+        return canSwapGun;
     }
 
     private IEnumerator SetActiveGunAfterDelay(GunSO gunSO, bool primaryGunSO = true) {

@@ -46,7 +46,7 @@ public class MusicManager : MonoBehaviour {
     private float playMusicAttemptRate = 10f;
     private float playMusicAttemptProbability = .05f;
     private int playExplorationMusicTick;
-    private int explorationMusicTickAmountToPlay = 3;
+    private int explorationMusicTickAmountToPlay = 2;
 
     private float volumeBeforeTalkingToNPC;
 
@@ -165,7 +165,6 @@ public class MusicManager : MonoBehaviour {
 
     private void TryPlayExplorationMusic() {
         if (!CanPlayDayTrack()) return;
-        if (isPlayingPeacefulMusic) return;
 
         int ammoInHeldGun = PlayerShoot.Instance.GetHeldGun().GetCurrentAmmoClip();
         int ammoInInventory = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count;
@@ -182,7 +181,9 @@ public class MusicManager : MonoBehaviour {
             // All conditions met : tick for music
             playExplorationMusicTick++;
 
-            if(playExplorationMusicTick == explorationMusicTickAmountToPlay) {
+            if (isPlayingPeacefulMusic) return;
+
+            if (playExplorationMusicTick >= explorationMusicTickAmountToPlay) {
                 playExplorationMusicTick = 0;
                 isPlayingExplorationMusic = true;
                 PlayRandomExplorationMusic();
@@ -666,6 +667,7 @@ public class MusicManager : MonoBehaviour {
 
     public void SetAudioVolume(float volume) {
         audioSourceA.volume = volume * musicSettingVolume;
+        audioSourceB.volume = volume * musicSettingVolume;
     }
 
     public void SetAudioTargerVolume(float volume) {

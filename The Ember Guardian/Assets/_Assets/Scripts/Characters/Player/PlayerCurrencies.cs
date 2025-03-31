@@ -35,6 +35,7 @@ public class PlayerCurrencies : MonoBehaviour
         ammo,
         gem,
         trap,
+        ember,
     }
 
     public event EventHandler<OnBlueOrbDroppedOnTheFloorEventArgs> OnBlueOrbDroppedOnTheFloor;

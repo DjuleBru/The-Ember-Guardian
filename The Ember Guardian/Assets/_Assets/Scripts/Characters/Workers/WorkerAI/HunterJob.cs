@@ -672,6 +672,7 @@ public class HunterJob : WorkerJob {
     }
 
     private void RemoveCurrentTargetAnimal() {
+        if (targetAnimal == null) return;
         targetAnimal.OnMobDroppedCollectibles -= TargetAnimal_OnAnimalDroppedCollectibles;
         targetAnimal.OnMobDamageTaken -= TargetAnimal_OnMobDamageTaken;
         targetAnimal.UnAssignHunter(worker);
