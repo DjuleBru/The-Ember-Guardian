@@ -22,7 +22,7 @@ public class SettingsManager : MonoBehaviour
     public event EventHandler OnLanguageChanged;
 
 
-    private LocalizationManager.Language currentLanguage = LocalizationManager.Language.english;
+    private LocalizationManager.Language currentLanguage = LocalizationManager.Language.English;
     private bool holdToRun;
     private bool aimAssist;
     private bool autoAlignAimWithMovement;
@@ -45,13 +45,14 @@ public class SettingsManager : MonoBehaviour
 
         musicVolume = ES3.Load("musicVolume", .5f, settingsSaveFileSettings);
 
-        currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.english, settingsSaveFileSettings);
+        currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
         holdToRun = ES3.Load("holdToRun", true, settingsSaveFileSettings);
         aimAssist = ES3.Load("aimAssist", true, settingsSaveFileSettings);
         autoAlignAimWithMovement = ES3.Load("autoAlignAimWithMovement", true, settingsSaveFileSettings);
         autoSwitchLightGun = ES3.Load("autoSwitchLightGun", true, settingsSaveFileSettings);
         controllerVibrations = ES3.Load("controllerVibrations", true, settingsSaveFileSettings);
         fullScreen = ES3.Load("fullScreen", true, settingsSaveFileSettings);
+        currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
     }
 
     #region SET SETTINGS
@@ -113,6 +114,16 @@ public class SettingsManager : MonoBehaviour
         OnAimAssistChanged?.Invoke(this, EventArgs.Empty);
 
         ES3.Save("aimAssist", aimAssist, settingsSaveFileSettings);
+    }
+
+    public void ChangeLanguage() {
+        int nextIndex = ((int)currentLanguage + 1) % System.Enum.GetValues(typeof(LocalizationManager.Language)).Length;
+        currentLanguage = (LocalizationManager.Language)nextIndex;
+
+        LocalizationManager.Instance.SetLanguage(currentLanguage);
+        OnLanguageChanged?.Invoke(this, EventArgs.Empty);
+
+        ES3.Save("currentLanguage", currentLanguage, settingsSaveFileSettings);
     }
 
 

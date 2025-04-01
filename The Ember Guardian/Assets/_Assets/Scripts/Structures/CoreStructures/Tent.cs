@@ -47,14 +47,17 @@ public class Tent : Structure
         base.TriggerStructurePrimaryFunction();
         Player.Instance.HealPlayer(1);
 
-        if (GetHasCurrenciesToPay()) {
+        if (GetHasCurrenciesToPay() && playerInteracting && Player.Instance.GetHP() < PlayerStats.Instance.GetMaxHP()) {
             payCurrencyUI.SetPlayerInteractingContinuous(); // Continue l'interaction
+        } else {
+            payCurrencyUI.SetPlayerInteracting(false);
         }
     }
 
     protected void RefreshPlayerStructurePrimaryInteraction() {
         if(Player.Instance.GetHP() == PlayerStats.Instance.GetMaxHP()) {
             ActivateStructurePrimaryFunctionInteraction(false);
+            payCurrencyUI.SetPlayerInteracting(false);
         } else {
             ActivateStructurePrimaryFunctionInteraction(true);
         }

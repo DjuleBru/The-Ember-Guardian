@@ -63,23 +63,26 @@ public class RadioButtonUI_Setting : RadioButtonUI
         if (settingType == SettingType.ScreenMode) {
             SettingsManager.Instance.ChangeScreenMode();
         }
+        if (settingType == SettingType.Language) {
+            SettingsManager.Instance.ChangeLanguage();
+        }
     }
 
     private void RefreshVisual() {
         if (settingType == SettingType.HoldToRun) {
             if(SettingsManager.Instance.GetHoldToRun()) {
-                toggledText.text = "Hold";
+                toggledText.text = LocalizationManager.Instance.GetLocalizedText("menu_hold");
             } else {
-                toggledText.text = "Toggle";
+                toggledText.text = LocalizationManager.Instance.GetLocalizedText("menu_toggle");
             }
         }
 
         if (settingType == SettingType.ScreenMode) {
             if (SettingsManager.Instance.GetFullScreen()) {
-                toggledText.text = "Full Screen";
+                toggledText.text = LocalizationManager.Instance.GetLocalizedText("menu_fullScreen");
             }
             else {
-                toggledText.text = "Windowed";
+                toggledText.text = LocalizationManager.Instance.GetLocalizedText("menu_windowed");
             }
         }
 
@@ -94,6 +97,9 @@ public class RadioButtonUI_Setting : RadioButtonUI
         }
         if (settingType == SettingType.GamepadVibrations) {
             toggledImageGameObject.SetActive(SettingsManager.Instance.GetControllerVibrations());
+        }
+        if (settingType == SettingType.Language) {
+            toggledText.text = SettingsManager.Instance.GetLanguage().ToString();
         }
     }
 

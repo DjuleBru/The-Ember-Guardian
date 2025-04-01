@@ -73,11 +73,11 @@ public class MainMenuUI : MonoBehaviour {
                 ES3.DeleteFile();
                 continueButton.interactable = false;
                 EventSystem.current.SetSelectedGameObject(newGameButton.gameObject);
-                newGameText.text = "New Game";
+                newGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_newGame");
             }
             else {
                 confirmResetProgression = true;
-                newGameText.text = "Reset progression ?";
+                newGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_resetProgression");
             }
 
         }
@@ -171,7 +171,7 @@ public class MainMenuUI : MonoBehaviour {
 
     private void ButtonConfirm_ResetProgression_OnButtonDeselected(object sender, EventArgs e) {
         confirmResetProgression = false;
-        newGameText.text = "New Game";
+        newGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_newGame");
     }
     public void ShowMainMenuButtons() {
         StartCoroutine(FadeInMainMenu(0f));

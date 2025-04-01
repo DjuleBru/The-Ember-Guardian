@@ -105,14 +105,14 @@ public class ParticleCollision : MonoBehaviour
                         if (critHit && randomNumber < PlayerShoot.Instance.GetHeldGun().GetCritChance()/100) {
                            
                             mobHit.TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, true);
-                            mobHit.InstantiateHitPS(angle, collisionPosition.y, true, PlayerShoot.Instance.GetDamagePerBullet());
+                            mobHit.InstantiateHitPS(angle, collisionPosition.y, true, PlayerShoot.Instance.GetDamagePerBullet(), collisionPosition.x);
 
                             OnAnyBulletHitEnemyCrit?.Invoke(this, EventArgs.Empty);
                             
                         }
                         else {
                             mobHit.TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, false);
-                            mobHit.InstantiateHitPS(angle, collisionPosition.y, false, PlayerShoot.Instance.GetDamagePerBullet());
+                            mobHit.InstantiateHitPS(angle, collisionPosition.y, false, PlayerShoot.Instance.GetDamagePerBullet(), collisionPosition.x);
 
                             OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
                         }

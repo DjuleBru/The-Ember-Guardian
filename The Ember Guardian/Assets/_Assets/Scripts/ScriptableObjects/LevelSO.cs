@@ -84,12 +84,6 @@ public class LevelSO : ScriptableObject
     public List<AudioClip> levelExplorationTracks;
 
     public string GetLevelEnvironmentTypeString() {
-        if(environmentType == LevelEnvironment.TheLostGreens) {
-            return "The Lost Greens";
-        };
-        if (environmentType == LevelEnvironment.TheVerdantGraveyard) {
-            return "The Verdant Graveyard";
-        }; 
-        return "";
+        return LocalizationManager.Instance.GetLocalizedText(environmentType.ToString());
     }
 }

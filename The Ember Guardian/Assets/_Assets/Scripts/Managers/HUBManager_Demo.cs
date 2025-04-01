@@ -325,7 +325,7 @@ public class HUBManager_Demo : MonoBehaviour
         yield return new WaitForSeconds(5f);
         gemMerchant.ResetAllItemStatuses();
 
-        LevelUI_Locations.Instance.ShowLocationText("The Eternal Flame");
+        LevelUI_Locations.Instance.ShowLocationText(LocalizationManager.Instance.GetLocalizedText("TheEternalFlame"));
         MusicManager.Instance.PlayMusicDelayed(2f);
 
         yield return new WaitForSeconds(6.5f);

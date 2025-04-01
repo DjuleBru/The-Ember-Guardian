@@ -1688,6 +1688,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 99d459fd6a02c044d90152bcc6de9ffb, type: 2}
     - target: {fileID: 5757064800425388701, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: useHitXPosition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5757064800425388701, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: mobHitPS_Splatter
+      value: 
+      objectReference: {fileID: 1657823130492668103, guid: 96bb6ef6e836d4c40a1fb6afba53508c, type: 3}
+    - target: {fileID: 5757064800425388701, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: critZoneColliders.Array.size
       value: 8
       objectReference: {fileID: 0}

@@ -75,13 +75,13 @@ public class PauseMenuUI : MonoBehaviour
 
     private void ButtonConfirm_MainMenu_OnButtonDeselected(object sender, EventArgs e) {
         confirmBackToMenu = false;
-        backToMenuText.text = "Main Menu";
+        backToMenuText.text = LocalizationManager.Instance.GetLocalizedText("menu_mainMenu");
         progressionSavedTextIndicator.SetTrigger("Hide");
     }
 
     private void ButtonConfirm_ExitGame_OnButtonDeselected(object sender, EventArgs e) {
         confirmExitGame = false;
-        exitGameText.text = "Exit Game";
+        exitGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_exitGame");
         progressionSavedTextIndicator.SetTrigger("Hide");
     }
 
@@ -160,7 +160,7 @@ public class PauseMenuUI : MonoBehaviour
 
         else {
             confirmExitGame = true;
-            exitGameText.text = "Confirm ?";
+            exitGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_confirm");
             progressionSavedTextIndicator.SetTrigger("Show");
         }
     }
@@ -173,7 +173,7 @@ public class PauseMenuUI : MonoBehaviour
 
         else {
             confirmBackToMenu = true;
-            backToMenuText.text = "Confirm ?";
+            backToMenuText.text = LocalizationManager.Instance.GetLocalizedText("menu_confirm");
             progressionSavedTextIndicator.SetTrigger("Show");
         }
     }
@@ -205,13 +205,13 @@ public class PauseMenuUI : MonoBehaviour
         if(saved) {
 
             progressionSaved = true;
-            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = "Progression saved";
+            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedText("menu_progressionSaved");
             progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = savedTextColor;
 
         } else {
 
             progressionSaved = false;
-            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = "Your progress has not been saved !";
+            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedText("menu_progressionNotSaved");
             progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = unsavedTextColor;
 
         }

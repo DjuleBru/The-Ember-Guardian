@@ -16,7 +16,7 @@ public class HubMerchantTalkUI : MonoBehaviour
     [SerializeField] private Image continueInputImage;
 
     [SerializeField] private MerchantTextLinesSO textLinesSO;
-    [SerializeField] private List<string> merchantTalkLines;
+    [SerializeField] private List<string> merchantTalkLinesLocalizationKeys;
 
     [SerializeField] protected bool DEBUGShowTextLines;
 
@@ -53,13 +53,15 @@ public class HubMerchantTalkUI : MonoBehaviour
 
         if (merchantHasTalkLinesToShow && !hubMerchant.GetMerchantIsLevelNPC()) {
             showShopAfterDialog = MetaProgressionManager.Instance.GetNextMerchantTextLinesShowShopAfterDialog(hubMerchant.GetHubMerchantType());
-            merchantTalkLines = MetaProgressionManager.Instance.GetNextMerchantTextLines(hubMerchant.GetHubMerchantType());
+            merchantTalkLinesLocalizationKeys = MetaProgressionManager.Instance.GetNextMerchantTextLines(hubMerchant.GetHubMerchantType());
         }
 
         if (hubMerchant.GetMerchantIsDecorationalDemoMerchant() || hubMerchant.GetMerchantIsFunctionalDemoMerchant() || DEBUGShowTextLines || hubMerchant.GetMerchantIsLevelNPC()) {
-            merchantTalkLines = textLinesSO.merchantTextLines;
+            merchantTalkLinesLocalizationKeys = textLinesSO.merchantTextLinesLocalizationKeys;
             showShopAfterDialog = textLinesSO.showShopAfterDialog;
         }
+
+        Debug.Log("merchantTalkLinesLocalizationKeys " + merchantTalkLinesLocalizationKeys);
     }
 
     private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
@@ -73,7 +75,7 @@ public class HubMerchantTalkUI : MonoBehaviour
 
             talkLinesIndex++;
 
-            if (talkLinesIndex == merchantTalkLines.Count) {
+            if (talkLinesIndex == merchantTalkLinesLocalizationKeys.Count) {
                 talkText.text = "";
                 playerIsTalkingToMerchant = false;
                 hubMerchant.SetPlayerFinishedTalkingWithMerchant(showShopAfterDialog);
@@ -84,7 +86,7 @@ public class HubMerchantTalkUI : MonoBehaviour
             }
             else {
                 OnAnyMerchantShowNewTalkLine?.Invoke(this, EventArgs.Empty);
-                talkText.text = merchantTalkLines[talkLinesIndex];
+                talkText.text = LocalizationManager.Instance.GetLocalizedText(merchantTalkLinesLocalizationKeys[talkLinesIndex]);
                 continueGameObject.SetActive(false);
                 currentDialogLineShown = false;
             }
@@ -110,7 +112,7 @@ public class HubMerchantTalkUI : MonoBehaviour
     private void HubMerchant_OnPlayerTriggeredIn(object sender, EventArgs e) {
         if (hubMerchant.GetMerchantIsDecorationalDemoMerchant() && !hubMerchant.GetMerchantIsFunctionalDemoMerchant()) {
             talkPanelUIGameObject.SetActive(true);
-            talkText.text = merchantTalkLines[0];
+            talkText.text = LocalizationManager.Instance.GetLocalizedText(merchantTalkLinesLocalizationKeys[0]);
             OnAnyMerchantShowNewTalkLine?.Invoke(this, EventArgs.Empty);
             continueGameObject.SetActive(false);
         }
@@ -118,7 +120,7 @@ public class HubMerchantTalkUI : MonoBehaviour
 
     public void SetTalkingWithMerchant(MerchantTextLinesSO textLinesSO) {
         showShopAfterDialog = textLinesSO.showShopAfterDialog;
-        merchantTalkLines = textLinesSO.merchantTextLines;
+        merchantTalkLinesLocalizationKeys = textLinesSO.merchantTextLinesLocalizationKeys;
         hubMerchant.StartTalkingWithMerchant();
 
         StartCoroutine(StartTalkingToMerchantCoroutine());
@@ -126,7 +128,7 @@ public class HubMerchantTalkUI : MonoBehaviour
 
     public void SetTextLinesSO(MerchantTextLinesSO textLinesSO) {
         showShopAfterDialog = textLinesSO.showShopAfterDialog;
-        merchantTalkLines = textLinesSO.merchantTextLines;
+        merchantTalkLinesLocalizationKeys = textLinesSO.merchantTextLinesLocalizationKeys;
         merchantHasTalkLinesToShow = true;
         hubMerchant.SetHasTalkLinesToShow(true);
     }
@@ -142,7 +144,7 @@ public class HubMerchantTalkUI : MonoBehaviour
         currentDialogLineShown = false;
 
         talkLinesIndex = 0;
-        talkText.text = merchantTalkLines[talkLinesIndex];
+        talkText.text = LocalizationManager.Instance.GetLocalizedText(merchantTalkLinesLocalizationKeys[talkLinesIndex]);
 
         OnAnyMerchantShowNewTalkLine?.Invoke(this, EventArgs.Empty);
     }

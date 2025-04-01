@@ -56,7 +56,6 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         HUBDemo_DropGems,
         HUBDemo_BuyUpgrade,
         KeepFireLit,
-        TalkToArmorer,
         MeetTrainer,
         MeetTamer,
         SurviveNights,
@@ -258,178 +257,18 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     public string GetSubObjectiveTextFromType(SubObjectiveType subObjectiveType) {
+        string subObjectiveKey = "SubObj_" + subObjectiveType.ToString();
 
-        if(subObjectiveType == SubObjectiveType.Keep2WorkersAlive) {
-            return "Keep at least 2 workers alive";
-        }
-        if (subObjectiveType == SubObjectiveType.BuildHunterShrine) {
-            return "Build trapper shrine";
-        }
-        if (subObjectiveType == SubObjectiveType.LightMainFire) {
-            return "Light main fire";
-        }
-        if (subObjectiveType == SubObjectiveType.Build2Barricades) {
-            return "Build 2 barricades";
-        }
-        if (subObjectiveType == SubObjectiveType.Build2Towers) {
-            return "Build 2 towers";
-        }
-        if (subObjectiveType == SubObjectiveType.BuildAmmoCrafter) {
-            return "Build ammo crafter";
-        }
-        if (subObjectiveType == SubObjectiveType.TurnOnAmmoCrafter) {
-            return "Turn on ammo crafter";
-        }
-        if (subObjectiveType == SubObjectiveType.CollectCrafterAmmo) {
-            return "Collect ammo from crafter";
-        }
-        if (subObjectiveType == SubObjectiveType.WaitCraftingAmmo) {
-            return "Wait for ammo to be crafted";
-        }
-        if (subObjectiveType == SubObjectiveType.Recruit2Hunters) {
-            return "Assign at least 2 Hunters";
-        }
-        if (subObjectiveType == SubObjectiveType.RecruitMoreEmberlings) {
-            return "Explore to recruit more emberlings";
-        }
-        if (subObjectiveType == SubObjectiveType.RecruitEmberlings) {
-            return "Explore to recruit at least 2 emberlings";
-        }
-        if (subObjectiveType == SubObjectiveType.WaitForHunt) {
-            return "Wait for Hunters to hunt an animal";
-        }
-        if (subObjectiveType == SubObjectiveType.CollectOrbsFromHunters) {
-            return "Collect orbs from the Hunters";
-        }
-        if (subObjectiveType == SubObjectiveType.FuelFire) {
-            return "Add fuel to the fire";
-        }
-        if (subObjectiveType == SubObjectiveType.ClearNest) {
-            return "Clear the nest from the darklings";
-        }
-        if (subObjectiveType == SubObjectiveType.LightFire) {
-            return "Light the fire to destroy the nest";
-        }
-        if (subObjectiveType == SubObjectiveType.ExtractEmberTutorial) {
-            return "Extract an ember from the main fire (the fire must be fully fuelled)";
-        }
-        if (subObjectiveType == SubObjectiveType.ExtractEmber) {
-            return "Extract an ember from the main fire (the fire must be fully fuelled)";
-        }
-        if (subObjectiveType == SubObjectiveType.FindNest) {
-            return "Find the darklings nest";
-        }
-        if (subObjectiveType == SubObjectiveType.HUB_TalkToTrader) {
-            return "Talk to the Gem Trader";
-        }
-        if (subObjectiveType == SubObjectiveType.HUB_ExtractEmber) {
-            return "Extract an ember from the eternal fire";
-        }
-        if (subObjectiveType == SubObjectiveType.HUB_HeadToTeleporter) {
-            return "Head to the teleporter";
-        }
-        if (subObjectiveType == SubObjectiveType.HUBDemo_DropGems) {
-            return "Drop gems in the hub chest";
-        }
-        if (subObjectiveType == SubObjectiveType.HUBDemo_BuyUpgrade) {
-            return "Buy an item to the gem trader";
-        }
-        if (subObjectiveType == SubObjectiveType.KeepFireLit) {
-            return "Do not let the fire die";
-        }
-        if (subObjectiveType == SubObjectiveType.MeetTamer) {
-            return "Meet the Tamer";
-        }
-        if (subObjectiveType == SubObjectiveType.MeetTrainer) {
-            return "Meet the Trainer";
-        }
         if (subObjectiveType == SubObjectiveType.SurviveNights) {
-            return "Survive " + LevelObjectives.Instance.GetNightsToSurvive() + " Nights " + "(" + LevelObjectives.Instance.GetNightsSurvived() + "/" + LevelObjectives.Instance.GetNightsToSurvive() + ")";
+            return LocalizationManager.Instance.GetLocalizedText("SubObj_Survive") + " " + LevelObjectives.Instance.GetNightsToSurvive() + " " + LocalizationManager.Instance.GetLocalizedText("SubObj_Nights") + " " + "(" + LevelObjectives.Instance.GetNightsSurvived() + "/" + LevelObjectives.Instance.GetNightsToSurvive() + ")";
+        } else {
+            return LocalizationManager.Instance.GetLocalizedText(subObjectiveKey);
         }
-        if (subObjectiveType == SubObjectiveType.TalkToWatcher) {
-            return "Talk to the Watcher";
-        }
-        if (subObjectiveType == SubObjectiveType.LoadBelt) {
-            return "Load ammo belt";
-        }
-        if (subObjectiveType == SubObjectiveType.ReloadGun) {
-            return "Reload Gun";
-        }
-        if (subObjectiveType == SubObjectiveType.HeadBackToCamp) {
-            return "Head back to camp";
-        }
-        if (subObjectiveType == SubObjectiveType.OpenChest) {
-            return "Open ammo chest";
-        }
-        if (subObjectiveType == SubObjectiveType.FindArmorerStockpile) {
-            return "Find the Armorer's stock";
-        }
-        if (subObjectiveType == SubObjectiveType.FindTrainerStockpile) {
-            return "Find the Trainer's stock";
-        }
-        if (subObjectiveType == SubObjectiveType.TeleportBackToHub) {
-            return "Head to the teleporter";
-        }
-        return "";
     }
 
     private string GetObjectiveTextFromType(ObjectiveType objectiveType) {
-
-        if (objectiveType == ObjectiveType.KeepWorkersAlive) {
-            return "Protect your emberlings";
-        }
-        if (objectiveType == ObjectiveType.SetupCamp) {
-            return "Setup camp";
-        }
-        if (objectiveType == ObjectiveType.Explore) {
-            return "Explore to the right of camp";
-        }
-        if (objectiveType == ObjectiveType.PrepareForNight) {
-            return "Prepare for the night";
-        }
-        if (objectiveType == ObjectiveType.Survive) {
-            return "Survive the night";
-        }
-        if (objectiveType == ObjectiveType.FindNest) {
-            return "Find the darklings nest";
-        }
-        if (objectiveType == ObjectiveType.DestroyNest) {
-            return "Destroy the darklings nest";
-        }
-        if (objectiveType == ObjectiveType.HUB_HeadToFire) {
-            return "Head back to the main fire";
-        }
-        if (objectiveType == ObjectiveType.HUB_HeadToNewLevel) {
-            return "Explore new areas";
-        }
-        if (objectiveType == ObjectiveType.HUBDemo_PrepareToReturn) {
-            return "Prepare to teleport";
-        }
-        if (objectiveType == ObjectiveType.FindAndDestroyNest) {
-            return "Find and destroy the darkling's nest";
-        }
-        if (objectiveType == ObjectiveType.FindArmorer) {
-            return "Find the Armorer's Workshop";
-        }
-        if (objectiveType == ObjectiveType.FindMoreCompanions) {
-            return "Find more companions";
-        }
-        if (objectiveType == ObjectiveType.FindWatcher) {
-            return "Find the Watcher";
-        }
-        if (objectiveType == ObjectiveType.FindArchitect) {
-            return "Find the Architect";
-        }
-        if (objectiveType == ObjectiveType.SurviveNights) {
-            return "Survive the darkness";
-        }
-        if (objectiveType == ObjectiveType.FindStockpiles) {
-            return "Find the merchant's stockpiles";
-        }
-        if (objectiveType == ObjectiveType.ReturnToHub) {
-            return "Return to the Eternal Flame";
-        }
-        return "";
+        string objectiveKey = "Obj_" + objectiveType.ToString();
+        return LocalizationManager.Instance.GetLocalizedText(objectiveKey);
     }
 
     private void OnDestroy() {

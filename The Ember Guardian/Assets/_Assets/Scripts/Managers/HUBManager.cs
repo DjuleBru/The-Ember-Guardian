@@ -208,7 +208,7 @@ public class HUBManager : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        LevelUI_Locations.Instance.ShowLocationText("The Eternal Flame");
+        LevelUI_Locations.Instance.ShowLocationText(LocalizationManager.Instance.GetLocalizedText("TheEternalFlame"));
 
         yield return new WaitForSeconds(7f);
 

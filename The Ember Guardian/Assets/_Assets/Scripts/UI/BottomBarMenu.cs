@@ -5,12 +5,12 @@ using UnityEngine;
 public class BottomBarMenu : MonoBehaviour
 {
     public void OpenSteamPage() {
-        string url = "https://ratbitgames.com/";
+        string url = "https://store.steampowered.com/app/3570060/The_Ember_Guardian/";
         Application.OpenURL(url);
     }
 
     public void OpenDiscord() {
-        string url = "https://discord.gg/6ueGFHvrxd";
+        string url = "https://discord.gg/DWyznGpwR5";
         Application.OpenURL(url);
     }
 

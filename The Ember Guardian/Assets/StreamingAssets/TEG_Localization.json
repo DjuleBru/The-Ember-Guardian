@@ -1,1099 +1,1028 @@
-[
-   {
-      "form": 0,
-      "name": "",
-      "type": "textarea",
-      "id": "txt1",
-      "elementPos": 0,
-      "namePos": 0,
-      "value": "key;english;french;german;spanish;italian\nmenu_continue;Continue;Continuer;;;\nmenu_newGame;New Game;Nouvelle Partie;;;\nmenu_resetProgression;Reset Progression ?;R�initialiser la Progression ?;;;\nmenu_settings;Settings;Param�tres;;;\nmenu_exitGame;Exit Game;Quitter;;;\n"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "select-one",
-      "id": "txtEncoding",
-      "elementPos": 2,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "url",
-      "type": "text",
-      "id": "url",
-      "elementPos": 3,
-      "checked": false,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "chkHeader",
-      "type": "checkbox",
-      "id": "chkHeader",
-      "elementPos": 9,
-      "checked": true,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "txtRowLimit",
-      "elementPos": 10,
-      "checked": false,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "txtSkipLimit",
-      "elementPos": 11,
-      "checked": false,
-      "namePos": 0,
-      "value": "0"
-   },
-   {
-      "form": 0,
-      "name": "sep",
-      "type": "radio",
-      "id": "sepAuto",
-      "elementPos": 12,
-      "checked": true,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "sep",
-      "type": "radio",
-      "id": "sepComma",
-      "elementPos": 13,
-      "checked": false,
-      "namePos": 1,
-      "value": ","
-   },
-   {
-      "form": 0,
-      "name": "sep",
-      "type": "radio",
-      "id": "sepSemicolon",
-      "elementPos": 14,
-      "checked": false,
-      "namePos": 2,
-      "value": ";"
-   },
-   {
-      "form": 0,
-      "name": "sep",
-      "type": "radio",
-      "id": "sepColon",
-      "elementPos": 15,
-      "checked": false,
-      "namePos": 3,
-      "value": ":"
-   },
-   {
-      "form": 0,
-      "name": "sep",
-      "type": "radio",
-      "id": "sepPipe",
-      "elementPos": 16,
-      "checked": false,
-      "namePos": 4,
-      "value": "|"
-   },
-   {
-      "form": 0,
-      "name": "sep",
-      "type": "radio",
-      "id": "sepTab",
-      "elementPos": 17,
-      "checked": false,
-      "namePos": 5,
-      "value": "\\t"
-   },
-   {
-      "form": 0,
-      "name": "sep",
-      "type": "radio",
-      "id": "sepCaret",
-      "elementPos": 18,
-      "checked": false,
-      "namePos": 6,
-      "value": "^"
-   },
-   {
-      "form": 0,
-      "name": "sep",
-      "type": "radio",
-      "id": "sepSpace",
-      "elementPos": 19,
-      "checked": false,
-      "namePos": 7,
-      "value": " "
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkReplaceAccents",
-      "elementPos": 20,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkIgnoreDoubleQuote",
-      "elementPos": 21,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkInputQuote",
-      "elementPos": 22,
-      "checked": false,
-      "namePos": 0,
-      "value": "'"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkDecodeLiterals",
-      "elementPos": 23,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "txtCols",
-      "elementPos": 25,
-      "checked": false,
-      "namePos": 0,
-      "value": "1,2,3,4,5,6"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkIgnoreCase",
-      "elementPos": 28,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "select-one",
-      "id": "selSortFld1",
-      "elementPos": 29,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "select-one",
-      "id": "selSortType1",
-      "elementPos": 30,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "select-one",
-      "id": "selSortAsc1",
-      "elementPos": 31,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "select-one",
-      "id": "selSortFld2",
-      "elementPos": 32,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "select-one",
-      "id": "selSortType2",
-      "elementPos": 33,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "select-one",
-      "id": "selSortAsc2",
-      "elementPos": 34,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "select-one",
-      "id": "selSortFld3",
-      "elementPos": 35,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "select-one",
-      "id": "selSortType3",
-      "elementPos": 36,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "select-one",
-      "id": "selSortAsc3",
-      "elementPos": 37,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "",
-      "elementPos": 38,
-      "checked": false,
-      "namePos": 0,
-      "value": "on"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "",
-      "elementPos": 39,
-      "checked": false,
-      "namePos": 0,
-      "value": "on"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "",
-      "elementPos": 40,
-      "checked": false,
-      "namePos": 0,
-      "value": "on"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "",
-      "elementPos": 41,
-      "checked": false,
-      "namePos": 0,
-      "value": "on"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "",
-      "elementPos": 42,
-      "checked": false,
-      "namePos": 0,
-      "value": "on"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "",
-      "elementPos": 43,
-      "checked": false,
-      "namePos": 0,
-      "value": "on"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "",
-      "elementPos": 44,
-      "checked": false,
-      "namePos": 0,
-      "value": "on"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "",
-      "elementPos": 45,
-      "checked": false,
-      "namePos": 0,
-      "value": "on"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "ftriml1",
-      "elementPos": 46,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "ftrimr1",
-      "elementPos": 47,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkupper1",
-      "elementPos": 48,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chklower1",
-      "elementPos": 49,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkProper1",
-      "elementPos": 50,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkpunct1",
-      "elementPos": 51,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkcrunch1",
-      "elementPos": 52,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chknull1",
-      "elementPos": 53,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "fdecimals1",
-      "elementPos": 54,
-      "checked": false,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "ftriml2",
-      "elementPos": 55,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "ftrimr2",
-      "elementPos": 56,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkupper2",
-      "elementPos": 57,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chklower2",
-      "elementPos": 58,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkProper2",
-      "elementPos": 59,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkpunct2",
-      "elementPos": 60,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkcrunch2",
-      "elementPos": 61,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chknull2",
-      "elementPos": 62,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "fdecimals2",
-      "elementPos": 63,
-      "checked": false,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "ftriml3",
-      "elementPos": 64,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "ftrimr3",
-      "elementPos": 65,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkupper3",
-      "elementPos": 66,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chklower3",
-      "elementPos": 67,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkProper3",
-      "elementPos": 68,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkpunct3",
-      "elementPos": 69,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkcrunch3",
-      "elementPos": 70,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chknull3",
-      "elementPos": 71,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "fdecimals3",
-      "elementPos": 72,
-      "checked": false,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "ftriml4",
-      "elementPos": 73,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "ftrimr4",
-      "elementPos": 74,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkupper4",
-      "elementPos": 75,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chklower4",
-      "elementPos": 76,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkProper4",
-      "elementPos": 77,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkpunct4",
-      "elementPos": 78,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkcrunch4",
-      "elementPos": 79,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chknull4",
-      "elementPos": 80,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "fdecimals4",
-      "elementPos": 81,
-      "checked": false,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "ftriml5",
-      "elementPos": 82,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "ftrimr5",
-      "elementPos": 83,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkupper5",
-      "elementPos": 84,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chklower5",
-      "elementPos": 85,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkProper5",
-      "elementPos": 86,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkpunct5",
-      "elementPos": 87,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkcrunch5",
-      "elementPos": 88,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chknull5",
-      "elementPos": 89,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "fdecimals5",
-      "elementPos": 90,
-      "checked": false,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "ftriml6",
-      "elementPos": 91,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "ftrimr6",
-      "elementPos": 92,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkupper6",
-      "elementPos": 93,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chklower6",
-      "elementPos": 94,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkProper6",
-      "elementPos": 95,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkpunct6",
-      "elementPos": 96,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkcrunch6",
-      "elementPos": 97,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chknull6",
-      "elementPos": 98,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "fdecimals6",
-      "elementPos": 99,
-      "checked": false,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkCsvQuotes",
-      "elementPos": 100,
-      "checked": false,
-      "namePos": 0,
-      "value": "on"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "txtCsvQuotes",
-      "elementPos": 101,
-      "checked": false,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "txtTopName",
-      "elementPos": 102,
-      "checked": false,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "txtKeyNum",
-      "elementPos": 103,
-      "checked": false,
-      "namePos": 0,
-      "value": "1"
-   },
-   {
-      "form": 0,
-      "name": "chkFldData",
-      "type": "checkbox",
-      "id": "chkFldData",
-      "elementPos": 104,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "txtFieldName",
-      "elementPos": 105,
-      "checked": false,
-      "namePos": 0,
-      "value": "fields"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "txtDataName",
-      "elementPos": 106,
-      "checked": false,
-      "namePos": 0,
-      "value": "data"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "checkbox",
-      "id": "chkOverwrite",
-      "elementPos": 107,
-      "checked": true,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "chkNullJson",
-      "type": "checkbox",
-      "id": "chkNullJson",
-      "elementPos": 108,
-      "checked": true,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "chkSkipEmpty",
-      "type": "checkbox",
-      "id": "chkSkipEmpty",
-      "elementPos": 109,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "chkTryToObject",
-      "type": "checkbox",
-      "id": "chkTryToObject",
-      "elementPos": 110,
-      "checked": true,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "chkLineMode",
-      "type": "checkbox",
-      "id": "chkLineMode",
-      "elementPos": 111,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "chkMongoDbMode",
-      "type": "checkbox",
-      "id": "chkMongoDbMode",
-      "elementPos": 112,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "chkAutoNum",
-      "type": "checkbox",
-      "id": "chkAutoNum",
-      "elementPos": 113,
-      "checked": false,
-      "namePos": 0,
-      "value": "Y"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "txtAutoNumFields",
-      "elementPos": 114,
-      "checked": false,
-      "namePos": 0,
-      "value": ""
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "txtHeader",
-      "elementPos": 116,
-      "checked": false,
-      "namePos": 0,
-      "value": "[{br}"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "textarea",
-      "id": "txtTemplate",
-      "elementPos": 117,
-      "namePos": 0,
-      "value": "  {lb}\n     \"{h1}\":\"{f1}\",\"{h2}\":\"{f2}\",\"{h3}\":\"{f3}\",\"{h4}\":\"{f4}\",\"{h5}\":\"{f5}\",\"{h6}\":\"{f6}\"\n  {rb}"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "txtFooter",
-      "elementPos": 118,
-      "checked": false,
-      "namePos": 0,
-      "value": "{br}]"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "text",
-      "id": "fn",
-      "elementPos": 126,
-      "checked": false,
-      "namePos": 0,
-      "value": "TEG_Localization"
-   },
-   {
-      "form": 0,
-      "name": "",
-      "type": "select-one",
-      "id": "eol",
-      "elementPos": 128,
-      "namePos": 0,
-      "value": ""
-   }
+{
+    "entries": [
+ {
+   "key": "menu_continue",
+   "English": "Continue",
+   "French": "Continuer",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_newGame",
+   "English": "New Game",
+   "French": "Nouvelle Partie",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_resetProgression",
+   "English": "Reset Progression ?",
+   "French": "Réinitialiser la Progression ?",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_settings",
+   "English": "Settings",
+   "French": "Paramètres",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_exitGame",
+   "English": "Exit Game",
+   "French": "Quitter",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_resume",
+   "English": "Resume",
+   "French": "Reprendre",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_save",
+   "English": "Save",
+   "French": "Sauvegarder",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_backToHub",
+   "English": "Back To Hub",
+   "French": "Retour au Hub",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_confirm",
+   "English": "Confirm ?",
+   "French": "Confirmer ?",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_progressionSaved",
+   "English": "Progression saved",
+   "French": "Progression sauvegardée",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_progressionNotSaved",
+   "English": "Your progress has not been saved !",
+   "French": "Votre progression n'est pas sauvegardée !",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_back",
+   "English": "Back",
+   "French": "Retour",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_controllerMapping",
+   "English": "Controller Mapping",
+   "French": "Touches Manette",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_moveLeftRight",
+   "English": "Move Left/Right",
+   "French": "Déplacement Droite/Gauche",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_interact",
+   "English": "Interact",
+   "French": "Intéragir",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_run",
+   "English": "Run",
+   "French": "Courir",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_roll",
+   "English": "Roll",
+   "French": "Rouler",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_shoot",
+   "English": "Shoot",
+   "French": "Tirer",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_reload",
+   "English": "Reload",
+   "French": "Recharger",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_secondary",
+   "English": "Secondary shot",
+   "French": "Tir secondaire",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_ability12",
+   "English": "Ability 1/2",
+   "French": "Capacité 1/2",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_switchWeapon",
+   "English": "Switch Weapon",
+   "French": "Changer d'arme",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_manageFollowers",
+   "English": "Manage Followers",
+   "French": "Gestion Suiveurs",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_callDoggo",
+   "English": "Call Doggo",
+   "French": "Siffler Chien",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_torchOnOff",
+   "English": "Torch On/Off",
+   "French": "Lampe On/Off",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_browseCoices",
+   "English": "Browse Choices",
+   "French": "Parcourir choix",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_pause",
+   "English": "Pause",
+   "French": "Pause",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_characterMenu",
+   "English": "Character Menu",
+   "French": "Menu joueur",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_resetToDefault",
+   "English": "Reset To Default",
+   "French": "Valeurs par défaut",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_layout",
+   "English": "Layout",
+   "French": "Disposition",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_language",
+   "English": "Language",
+   "French": "Langue",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_runMode",
+   "English": "Run Mode",
+   "French": "Mode de course",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_autoLightSwitch",
+   "English": "Auto Light Switch",
+   "French": "Gestion Lampe Auto",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_sound",
+   "English": "Sound",
+   "French": "Son",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_music",
+   "English": "Music",
+   "French": "Musique",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_sfx",
+   "English": "SFX",
+   "French": "SFX",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_controller",
+   "English": "Controller",
+   "French": "Manette",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_aimAssist",
+   "English": "Aim Assist",
+   "French": "Assistance Visée",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_alignAimToMove",
+   "English": "Align Aim To Move",
+   "French": "Aligner Visée au Déplacement",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_controllerVibrations",
+   "English": "Controller Vibrations",
+   "French": "VIbrations Manette",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_fullScreen",
+   "English": "Full Screen",
+   "French": "Plein écran",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_windowed",
+   "English": "Windowed",
+   "French": "Fenêtré",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_gameplay",
+   "English": "Gameplay",
+   "French": "Gameplay",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "menu_keyBindings",
+   "English": "Key Bindings",
+   "French": "Assignation des Touches",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "TheLostGreens",
+   "English": "The Lost Greens",
+   "French": "Les Bois Déchus",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "TheVerdantGraveyard",
+   "English": "The Verdant Graveyard",
+   "French": "Le Cimetière Verdoyant",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "CorruptedCity",
+   "English": "The Corrupted City",
+   "French": "La Cité Corrompue",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "TheEternalFlame",
+   "English": "The Eternal Flame",
+   "French": "La Flamme Éternelle",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_KeepWorkersAlive",
+   "English": "Protect your emberlings",
+   "French": "Protéger les Emberlings",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_SetupCamp",
+   "English": "Setup camp",
+   "French": "Installer le camp",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_PrepareForNight",
+   "English": "Explore to the right of camp",
+   "French": "Explorer à droite du camp",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_Explore",
+   "English": "Prepare for the night",
+   "French": "Se préparer à la nuit",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_Survive",
+   "English": "Survive the night",
+   "French": "Survivre à la nuit",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_FindNest",
+   "English": "Find the darklings nest",
+   "French": "Trouver le nid de Darklings",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_DestroyNest",
+   "English": "Destroy the darklings nest",
+   "French": "Détruire le nid de Darklings",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_HUB_HeadToFire",
+   "English": "Head back to the main fire",
+   "French": "Retourner au foyer principal",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_HUB_HeadToNewLevel",
+   "English": "Explore new areas",
+   "French": "Exporer de nouvelles zones",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_HUBDemo_PrepareToReturn",
+   "English": "Prepare to teleport",
+   "French": "Se préparer à la téléportation",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_FindAndDestroyNest",
+   "English": "Find and destroy the darkling's nest",
+   "French": "Trouver et détruisez le nid de Darklings",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_FindArmorer",
+   "English": "Find the Armorer's Workshop",
+   "French": "Trouver l'atelier de l'Armurier",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_FindMoreCompanions",
+   "English": "Find more companions",
+   "French": "Trouver plus de compagnons",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_FindWatcher",
+   "English": "Find the Watcher",
+   "French": "Trouver la Sentinelle",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_FindArchitect",
+   "English": "Find the Architect",
+   "French": "Trouver l'Architecte",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_SurviveNights",
+   "English": "Survive the darkness",
+   "French": "Survivre à l'obscurité",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_FindStockpiles",
+   "English": "Find the merchant's stockpiles",
+   "French": "Trouver les stocks des marchands",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Obj_ReturnToHub",
+   "English": "Return to the Eternal Flame",
+   "French": "Retourner à la flamme éternelle",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_Keep2WorkersAlive",
+   "English": "Keep at least 2 workers alive",
+   "French": "Maintenir au moins 2 travailleurs vivants",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_LightMainFire",
+   "English": "Light main fire",
+   "French": "Allumer le feu principal",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_Build2Barricades",
+   "English": "Build 2 barricades",
+   "French": "Construire 2 barricades",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_Build2Towers",
+   "English": "Build 2 towers",
+   "French": "Construire 2 tours",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_BuildAmmoCrafter",
+   "English": "Build the ammo crafter",
+   "French": "Construire la fabrique de munitions",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_BuildHunterShrine",
+   "English": "Build the hunter shrine",
+   "French": "Construire l'autel des chasseurs",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_Recruit2Hunters",
+   "English": "Assign at least 2 Hunters",
+   "French": "Assigner au moins 2 chasseurs",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_RecruitEmberlings",
+   "English": "Explore to recruit at least 2 emberlings",
+   "French": "Explorer pour recruter au moins 2 Emberlings",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_RecruitMoreEmberlings",
+   "English": "Explore to recruit more emberlings",
+   "French": "Explorer pour recruter plus d'Emberlings",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_CollectCrafterAmmo",
+   "English": "Collect ammo from crafter",
+   "French": "Ramasser les munitions de la fabrique",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_WaitCraftingAmmo",
+   "English": "Wait for ammo to be crafted",
+   "French": "Attendre la fabrication de munitions",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_TurnOnAmmoCrafter",
+   "English": "Turn on ammo crafter",
+   "French": "Activer la fabrique de munitions",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_WaitForHunt",
+   "English": "Wait for Hunters to hunt an animal",
+   "French": "Attendre qu'un animal soit chassé",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_CollectOrbsFromHunters",
+   "English": "Collect orbs from the Hunters",
+   "French": "Récolter les orbes des chasseurs",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_FuelFire",
+   "English": "Add fuel to the fire",
+   "French": "Ajouter du carburant au feu",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_ExtractEmberTutorial",
+   "English": "Extract an ember from the main fire (the fire must be fully fuelled)",
+   "French": "Extraire une braise du feu (le feu doit-être chargé au max)",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_ExtractEmber",
+   "English": "Extract an ember from the main fire (the fire must be fully fuelled)",
+   "French": "Extraire une braise du feu (le feu doit-être chargé au max)",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_FindNest",
+   "English": "Find the darklings nest",
+   "French": "Trouver le nid de Darklings",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_ClearNest",
+   "English": "Clear the nest from the darklings",
+   "French": "Eliminer les Darklings du nid",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_LightFire",
+   "English": "Light the fire to destroy the nest",
+   "French": "Allumer le feu pour détruire le nid",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_HUB_TalkToTrader",
+   "English": "Talk to the Gem Trader",
+   "French": "Parler au Marchand de Gemmes",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_HUB_ExtractEmber",
+   "English": "Extract an ember from the eternal fire",
+   "French": "Extraire une braise du feu éternel",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_HUB_HeadToTeleporter",
+   "English": "Head to the teleporter",
+   "French": "Utiliser le téléporteur",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_HUBDemo_DropGems",
+   "English": "Drop gems in the hub chest",
+   "French": "Déposer les gemmes dans le coffre du HUB",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_HUBDemo_BuyUpgrade",
+   "English": "Buy an item to the gem trader",
+   "French": "Acheter un objet au Marchand de Gemmes",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_KeepFireLit",
+   "English": "Do not let the fire die",
+   "French": "Maintenir le feu allumé",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_MeetTrainer",
+   "English": "Meet the Trainer",
+   "French": "Rencontrer l'Entraîneur",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_MeetTamer",
+   "English": "Meet the Tamer",
+   "French": "Rencontrer le Dresseur",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_TalkToWatcher",
+   "English": "Talk to the Watcher",
+   "French": "Parler à la Sentinelle",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_LoadBelt",
+   "English": "Load ammo belt",
+   "French": "Charger la ceinture de munitions",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_ReloadGun",
+   "English": "Reload Gun",
+   "French": "Recharger le fusil",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_HeadBackToCamp",
+   "English": "Head back to camp",
+   "French": "Retourner au camp",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_OpenChest",
+   "English": "Open ammo chest",
+   "French": "Ouvrir le coffre de munitions",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_FindArmorerStockpile",
+   "English": "Find the Armorer's stock",
+   "French": "Trouver l'approvisionnement de l'Armurier",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_FindTrainerStockpile",
+   "English": "Find the Trainer's stock",
+   "French": "Trouver l'approvisionnement de l'Entraîneur",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_TeleportBackToHub",
+   "English": "Head to the teleporter",
+   "French": "Utiliser le téléporteur",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_Survive",
+   "English": "Survive",
+   "French": "Survivre",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_Nights",
+   "English": "Nights",
+   "French": "Nuits",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_DemoIntro1",
+   "English": "<wave a=.2 f=1.5>Hah… Stumbled, did you?</wave> No shame in that. This place exists so you can rise again.",
+   "French": "<wave a=.2 f=1.5>Ah… Tu as trébuché, hein ?</wave> Il n'y a aucune honte à ça. Cet endroit existe pour que tu puisses te relever.",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_DemoIntro2",
+   "English": "Here, take these. A small <wiggle a=.05 f=2>investment</wiggle> in your survival.",
+   "French": "Tiens, prends ça. Un petit <wiggle a=.05 f=2>investissement</wiggle> pour ta survie.",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_DemoIntro3",
+   "English": "Drop them in the chest… <bounce a=.2 f=1.2>Only then</bounce> can you make use of them.",
+   "French": "Dépose-les dans le coffre… <bounce a=.2 f=1.2>Ce n'est qu'alors</bounce> que tu pourras t'en servir,",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_DemoLevelLostAgain",
+   "English": "Another ember, another try. <wiggle a=.05 f=2>How many before the fire holds?</wiggle>",
+   "French": "Une autre braise, un autre essai,,. <wiggle a=.05 f=2>Encore combien pour que le feu tienne?</wiggle>",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_DemoLevelLostOnce1",
+   "English": "Every ember fades… <wiggle a=.05 f=2>but this one still burns.</wiggle>",
+   "French": "Chaque braise s'éteint… <wiggle a=.05 f=2>mais celle-ci tient toujours.</wiggle>",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_DemoLevelLostOnce2",
+   "English": "Merchants are stocked up. Ready to trade. <bounce a=.2 f=1.2>Including me.</bounce>",
+   "French": "Les marchands sont réapprovisionnés. Prêts à commercer <bounce a=.2 f=1.2>Moi inclus.</bounce>",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_DemoLevelSuccess1",
+   "English": "Hah! You held the line. <wave a=.2 f=1.5>The dark recoils… for now.</wave>",
+   "French": "Ah! Tu as tenu bon, <wave a=.2 f=1.5>L'obscurité se rétracte,,, pour l'instant.</wave>",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_DemoLevelSuccess2",
+   "English": "But if you crave the fight, step back in. See how long your ember lasts.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_DroppedGems",
+   "English": "Good. Of course, you could share with the others, but… <shake a=.4>I'd make it worth your while.</shake>",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_MainDemoLevelLostWithWidow1",
+   "English": "<dangle a=.2>That thing</dangle>… the Tarnished Widow. Nasty piece of work",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_MainDemoLevelLostWithWidow2",
+   "English": "Might want to take a closer look at what I’m selling.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_MainDemoLevelLostWithWidow3",
+   "English": "An additional barricade layer could make <wave a=.2 f=1.5>all the difference</wave>.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_OpenedLevel1",
+   "English": "Merchants are running dry. <wiggle a=.05 f=2>Time to restock.</wiggle>",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_OpenedLevel2",
+   "English": "You'll find what we need in the <dangle a=.2>Verdant Graveyard</dangle>—along with more <bounce a=.2 f=1.2>gems</bounce>",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_OpenedLevel3",
+   "English": "But to light a fire there, you'll need something — a pure ember from the <dangle a=.2>Eternal Fire</dangle>.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Armorer_DemoDecorational",
+   "English": "Stock’s low. <wiggle a=.05 f=2>Next shipment better be soon…</wiggle>",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Armorer_DemoIntro1",
+   "English": "Finally got my shipment. <wiggle a=.05 f=2>That thing you call a weapon?</wiggle> We can do better.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Armorer_DemoIntro2",
+   "English": "Those weapons you found? Borrowed goods. If you want them back, you'll have to pay.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Trainer_DemoDecorational",
+   "English": "Skills ain't just bought. <shake a=.4>Prove yourself.</shake>",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Trainer_DemoIntro",
+   "English": "Stock’s in, and so are you. <shake a=.4>Time to toughen up.</shake>",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Tamer_DemoDecorational",
+   "English": "A good dog’s worth <wiggle a=.05 f=2>ten men.</wiggle> Train ‘em right, and they’ll never let you down.",
+   "French": "Un bon chien vaut bien <wiggle a=.05 f=2>dix hommes.</wiggle> Entraîne le bien et il ne te décevra jamais.",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Watcher_DemoDecorational",
+   "English": "<wave a=.2 f=1.5>Emberlings</wave> need guidance… and strength. I offer both.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Structures_DemoDecorational",
+   "English": "<shake a=.4>Hrrm…</shake> Foundations, walls, towers—keep ‘em standing, and they’ll keep <wave a=.2 f=1.5>you</wave> standing.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Mushroom_DemoDecorational",
+   "English": "<wiggle a=.05 f=2>Heehee… Unlocks, upgrades, oddities…</wiggle>For those who seek more.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ }
 ]
+}

@@ -11,6 +11,7 @@ public class Mob : MonoBehaviour, IDamageable
     [SerializeField] protected Transform mobHitPS_Splatter;
     [SerializeField] protected Transform mobHitPS_Splatter_Continuous;
     [SerializeField] protected Transform mobHitPS_Splatter_Crit;
+    [SerializeField] protected bool useHitXPosition;
 
     protected MobSpawner mobSpawner;
 
@@ -99,8 +100,11 @@ public class Mob : MonoBehaviour, IDamageable
         rb.AddForce(knockBackForce, ForceMode2D.Impulse);
     }
 
-    public void InstantiateHitPS(float angle, float height, bool critHit, int damage) {
+    public void InstantiateHitPS(float angle, float height, bool critHit, int damage, float xPosition) {
         Vector3 localPosition = new Vector3(transform.position.x,height,0);
+        if(useHitXPosition) {
+            localPosition.x = xPosition;
+        }
 
         if(!critHit) {
             Instantiate(mobHitPS_Splatter, localPosition, Quaternion.Euler(0, 0, angle), transform); // Particules pour impact normal

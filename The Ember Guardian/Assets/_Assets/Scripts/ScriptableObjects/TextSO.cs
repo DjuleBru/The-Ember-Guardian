@@ -11,10 +11,10 @@ public class TextSO : ScriptableObject
 
 
     public string GetTextInLanguage(LocalizationManager.Language language) {
-        if(language == LocalizationManager.Language.english) {
+        if(language == LocalizationManager.Language.English) {
             return englishText;
         }
-        if (language == LocalizationManager.Language.french) {
+        if (language == LocalizationManager.Language.Français) {
             return frenchText;
         }
 
