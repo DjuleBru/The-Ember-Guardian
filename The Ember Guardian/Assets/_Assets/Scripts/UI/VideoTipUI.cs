@@ -31,7 +31,7 @@ public class VideoTipUI : MonoBehaviour
     private bool tipFinishedDisplaying;
     private bool panelOpen;
     private bool dontShowDebugMode;
-    private List<TextSO> tipDescriptionTextSOList;
+    private List<string> tipDescriptionKeyList;
     private List<TipDescriptionTextTemplate> tipDescriptionTextTemplateList = new List<TipDescriptionTextTemplate>();
     private List<float> tipTextDelayToShowList;
 
@@ -63,11 +63,11 @@ public class VideoTipUI : MonoBehaviour
     }
 
     private void Update() {
-        //if (Input.GetKeyDown(KeyCode.V)) {
-        //    SetTipSO(testTipSO);
-        //    OpenPanel();
-        //    PlayTip();
-        //}
+        if (Input.GetKeyDown(KeyCode.V)) {
+            PlayTipSO(testTipSO);
+            OpenPanel();
+            PlayTip();
+        }
     }
 
     public void SetEndDemoTip() {
@@ -84,7 +84,7 @@ public class VideoTipUI : MonoBehaviour
         newAnchoredPos.x = 0; // Nouvelle position X
         rt.anchoredPosition = newAnchoredPos;
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSecondsRealtime(5f);
 
         EventSystem.current.SetSelectedGameObject(wishlistButton.gameObject);
         wishlistButton.gameObject.SetActive(true);
@@ -93,9 +93,9 @@ public class VideoTipUI : MonoBehaviour
     public void PlayTipSO(VideoTipSO videoTipSO, float delayToPlayTip = 0f) {
         shownVideoTipSO = videoTipSO;
         videoPlayer.clip = videoTipSO.tipClip;
-        tipName.text = videoTipSO.tipName.GetTextInLanguage(LocalizationManager.Language.English);
+        tipName.text = LocalizationManager.Instance.GetLocalizedText(videoTipSO.tipNameLocalizationKey);
 
-        tipDescriptionTextSOList = videoTipSO.tipTextList;
+        tipDescriptionKeyList = videoTipSO.tipTextLocalizationKeys;
         tipTextDelayToShowList = videoTipSO.tipTextDelayToShowList;
 
         RefreshTipDescription();
@@ -109,7 +109,7 @@ public class VideoTipUI : MonoBehaviour
     }
 
     private IEnumerator PlayTipAfterDelay(float delay) {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSecondsRealtime(delay);
 
         OpenPanel();
         PlayTip(false);
@@ -125,9 +125,9 @@ public class VideoTipUI : MonoBehaviour
         }
 
         int i = 0;
-        foreach(TextSO textSO in tipDescriptionTextSOList) {
+        foreach(string key in tipDescriptionKeyList) {
             TipDescriptionTextTemplate tipTemplateText = Instantiate(tipTextTemplate, tipTextContainer).GetComponent<TipDescriptionTextTemplate>();
-            tipTemplateText.SetTipDescriptionAdvanced(textSO.GetTextInLanguage(LocalizationManager.Language.English), i == 0);
+            tipTemplateText.SetTipDescriptionAdvanced(LocalizationManager.Instance.GetLocalizedText(key), i == 0);
             i++;
 
             tipDescriptionTextTemplateList.Add(tipTemplateText);
@@ -149,16 +149,12 @@ public class VideoTipUI : MonoBehaviour
 
     private void OpenPanel() {
         if (dontShowDebugMode) return;
-
+        Time.timeScale = 0f;
         panelOpen = true;
         videoTipUIMainPanel.SetActive(true);
         videoTipUIMainPanelAnimator.ResetTrigger("Hide");
         videoTipUIMainPanelAnimator.SetTrigger("Show");
         EventSystem.current.SetSelectedGameObject(resumeButtonGO);
-
-        if(DayNightManager.Instance != null) {
-            DayNightManager.Instance.SetCyclePaused(true, true);
-        }
 
         OnVideoTipPanelOpened?.Invoke(this, EventArgs.Empty);
     }
@@ -175,35 +171,31 @@ public class VideoTipUI : MonoBehaviour
                 delayToWait -= tipTextDelayToShowList[i - 1];
             }
 
-            yield return new WaitForSeconds(delayToWait);
+            yield return new WaitForSecondsRealtime(delayToWait);
             textTemplate.ShowTipText();
             LayoutRebuilder.ForceRebuildLayoutImmediate(tipTextContainer.GetComponent<RectTransform>());
 
             i++;
         }
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSecondsRealtime(1f);
 
         replayTipButtonGO.GetComponent<Button>().interactable = true;
         tipFinishedDisplaying = true;
-        resumeButtonText.text = "Resume";
+        resumeButtonText.text = LocalizationManager.Instance.GetLocalizedText("menu_resume");
         activeCoroutine = null;
     }
 
     private IEnumerator ActivatePanelAfterDelay(bool show, float delay) {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSecondsRealtime(delay);
         videoTipUIMainPanel.SetActive(show);
-
     }
 
     public void ClosePanel() {
+        Time.timeScale = 1f;
         panelOpen = false;
         videoTipUIMainPanelAnimator.ResetTrigger("Show");
         videoTipUIMainPanelAnimator.SetTrigger("Hide");
         StartCoroutine(ActivatePanelAfterDelay(false, .5f));
-
-        if (DayNightManager.Instance != null) {
-            DayNightManager.Instance.SetCyclePaused(false, true);
-        }
 
         OnVideoTipPanelClosed?.Invoke(this, new OnVideoTipPanelClosedEventArgs {
             tipTypeShown = shownVideoTipSO.tipType
@@ -229,7 +221,7 @@ public class VideoTipUI : MonoBehaviour
             videoPlayer.Stop();
             videoPlayer.Play();
 
-            resumeButtonText.text = "Resume";
+            resumeButtonText.text = LocalizationManager.Instance.GetLocalizedText("menu_resume");
             replayTipButtonGO.GetComponent<Button>().interactable = true;
             tipFinishedDisplaying = true;
         } else {

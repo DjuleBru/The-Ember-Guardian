@@ -7102,6 +7102,10 @@ PrefabInstance:
       propertyPath: hubMerchantItemParent
       value: 
       objectReference: {fileID: 3003919451031237722}
+    - target: {fileID: 3693388833246835377, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: localizationKey
+      value: npc_trainer
+      objectReference: {fileID: 0}
     - target: {fileID: 4019432360029635251, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_LocalPosition.x
       value: -17.37
@@ -7228,11 +7232,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_SizeDelta.x
@@ -7240,11 +7244,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 1050
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 395.78998
+      value: -550.275
       objectReference: {fileID: 0}
     - target: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchoredPosition.y

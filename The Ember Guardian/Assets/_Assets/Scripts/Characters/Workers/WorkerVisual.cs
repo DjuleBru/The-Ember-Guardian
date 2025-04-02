@@ -24,6 +24,7 @@ public class WorkerVisual : MobVisual {
     [SerializeField] private Sprite questionMarkSprite;
     [SerializeField] private Sprite exclamationMarkSprite;
     [SerializeField] private Sprite hoveredSprite;
+    [SerializeField] private GameObject holdingCurrencyGO;
 
     private float unHoveredBodySpriteLightIntensity = .9f;
     private float hoveredBodySpriteLightIntensity = 1.1f;
@@ -46,6 +47,9 @@ public class WorkerVisual : MobVisual {
         worker.OnWorkerUnhovered += Worker_OnWorkerUnhovered;
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
         workerAI.OnWorkerFollowPlayerChanged += WorkerAI_OnWorkerFollowPlayerChanged;
+        worker.OnWorkerCollectedCurrency += Worker_OnWorkerCollectedCurrency;
+        worker.OnWorkerDroppedAllCurrencied += Worker_OnWorkerDroppedAllCurrencied;
+
 
         hunterJob.OnHunterFindsNoAnimal += HunterJob_OnHunterFindsNoAnimal;
         hunterJob.OnHunterChangedState += HunterJob_OnHunterChangedState;
@@ -58,6 +62,15 @@ public class WorkerVisual : MobVisual {
 
         workerWeaponSpriteRenderer.sortingOrder = currentMaxSortingOrder+1;
         workerWeaponGlowSpriteRenderer.sortingOrder = currentMaxSortingOrder+2;
+        holdingCurrencyGO.SetActive(false);
+    }
+
+    private void Worker_OnWorkerDroppedAllCurrencied(object sender, System.EventArgs e) {
+        holdingCurrencyGO.SetActive(false);
+    }
+
+    private void Worker_OnWorkerCollectedCurrency(object sender, System.EventArgs e) {
+        holdingCurrencyGO.SetActive(true);
     }
 
     private void Start() {     

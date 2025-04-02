@@ -1179,6 +1179,7 @@ GameObject:
   - component: {fileID: 544668719937860753}
   - component: {fileID: 116594453158868239}
   - component: {fileID: 51322853746667882}
+  - component: {fileID: 3693388833246835377}
   m_Layer: 5
   m_Name: MerchantName
   m_TagString: Untagged
@@ -1302,6 +1303,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3693388833246835377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3319439346613514299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizationKey: 
 --- !u!1 &3417933922792234606
 GameObject:
   m_ObjectHideFlags: 0
@@ -1882,6 +1896,8 @@ MonoBehaviour:
   hubMerchantItemParent: {fileID: 0}
   isHubMerchant: 1
   isLevelNPC: 0
+  isFunctionalDemoHubMerchant: 0
+  isDecorationalDemoHubMerchant: 0
 --- !u!58 &2971541779210028289
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2374,7 +2390,7 @@ MonoBehaviour:
   continueGameObject: {fileID: 7315849000355771581}
   continueInputImage: {fileID: 6694594568854224434}
   textLinesSO: {fileID: 11400000, guid: 640d874f0f212a74d9a6b7d8805632c6, type: 2}
-  merchantTalkLines: []
+  merchantTalkLinesLocalizationKeys: []
   DEBUGShowTextLines: 0
 --- !u!223 &1338203186163241995
 Canvas:
@@ -3068,10 +3084,10 @@ RectTransform:
   - {fileID: 4544125195362706500}
   m_Father: {fileID: 9086227087310177793}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -5}
-  m_SizeDelta: {x: 2019, y: 1167}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -1009.5, y: 0}
+  m_SizeDelta: {x: 2019, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &2141357194002981119
 CanvasGroup:

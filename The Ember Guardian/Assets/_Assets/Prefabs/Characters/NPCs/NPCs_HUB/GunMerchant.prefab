@@ -3710,7 +3710,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00036621094, y: -12.864807}
+  m_AnchoredPosition: {x: -0.00036621094, y: -12.864868}
   m_SizeDelta: {x: 0, y: 974.26953}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8959265716378490855
@@ -9095,7 +9095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66d26174f0c40814195d34f12e97101f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Aim sight
+  itemName: Aim Sight
   greenGemCost: 0
   redGemCost: 4
   blueGemCost: 0
@@ -26365,6 +26365,10 @@ PrefabInstance:
       propertyPath: hubMerchantItemParent
       value: 
       objectReference: {fileID: 1759086925616712829}
+    - target: {fileID: 3693388833246835377, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: localizationKey
+      value: npc_armorer
+      objectReference: {fileID: 0}
     - target: {fileID: 4019432360029635251, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -26519,11 +26523,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 1050
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 389
+      value: -550
       objectReference: {fileID: 0}
     - target: {fileID: 7580726008706340968, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Sprite

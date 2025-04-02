@@ -415,104 +415,104 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         List<string> statDescriptionList = new List<string>();
 
         if(GetConstantUnlockDescription()) {
-            statDescriptionList.Add(unlockDescription);
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText(itemName + "_UnlockDescription"));
         }
 
         if(gunItemCategory == GunItemCategory.newGun) {
-            statDescriptionList.Add("Bullet damage ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_bulletDamage") + " ");
 
             if (gunItem == GunItemType.shotgun) {
-                statDescriptionList.Add("Pellets per bullet ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_pelletsPerBullet") + " ");
             }
 
-            statDescriptionList.Add("Shots per clip ");
-            statDescriptionList.Add("Max ammo clips ");
-            statDescriptionList.Add("Cooldown ");
-            statDescriptionList.Add("Reload time ");
-            statDescriptionList.Add("Crit chance ");
-            statDescriptionList.Add("Range ");
-            statDescriptionList.Add("Spread ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_shotsPerClip") + " ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_maxAmmoClips") + " ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_cooldown") + " ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_reloadTime") + " ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_critChance") + " ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_range") + " ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_spread") + " ");
         }
 
         if (gunItem == GunItemType.bulletDamage) {
             if(itemLevel < maxItemLevel) {
-                statDescriptionList.Add("Current damage ");
-                statDescriptionList.Add("Bullet damage ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentDamage") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_bulletDamage") + " ");
                 statDescriptionList.Add("");
             }
-            statDescriptionList.Add("New bullet damage ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newBulletDamage") + " ");
         }
 
         if (gunItem == GunItemType.pelletsPerBullet) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add("Current Pellets/shot ");
-                statDescriptionList.Add("Pellets/shot ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentPelletsPerShot") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_pelletsPerBullet") + " ");
                 statDescriptionList.Add("");
             }
-            statDescriptionList.Add("New pellets/shot ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newPelletsPerShot") + " ");
         }
 
         if (gunItem == GunItemType.range) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add("Current range ");
-                statDescriptionList.Add("Range ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentRange") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_range") + " ");
                 statDescriptionList.Add("");
             }
-            statDescriptionList.Add("New range ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newRange") + " ");
         }
 
         if (gunItem == GunItemType.critChance) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add("Current crit chance ");
-                statDescriptionList.Add("Crit chance ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentCritChance") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_critChance") + " ");
                 statDescriptionList.Add("");
             }
-            statDescriptionList.Add("New crit chance ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newCritChance") + " ");
         }
 
         if (gunItem == GunItemType.reloadTime) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add("Current reload time ");
-                statDescriptionList.Add("Reload time ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentReloadTime") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_reloadTime") + " ");
                 statDescriptionList.Add("");
             }
-            statDescriptionList.Add("New reload time ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newReloadTime") + " ");
         }
 
         if (gunItem == GunItemType.cooldownTime) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add("Current cooldown ");
-                statDescriptionList.Add("Shot cooldown ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentCooldown") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_shotCooldown") + " ");
                 statDescriptionList.Add("");
             }
-            statDescriptionList.Add("New cooldown ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newCooldown") + " ");
         }
 
         if (gunItem == GunItemType.shotsPerClip) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add("Current bullets/clip ");
-                statDescriptionList.Add("Bullets/clip ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentBulletsPerClip") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_shotsPerClip") + " ");
                 statDescriptionList.Add("");
             }
-            statDescriptionList.Add("New bullets/clip ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newBulletsPerClip") + " ");
         }
 
         if (gunItem == GunItemType.maxAmmo) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add("Current max clips ");
-                statDescriptionList.Add("Max clips ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentMaxClips") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_maxClips") + " ");
                 statDescriptionList.Add("");
             }
-            statDescriptionList.Add("New ammo clips ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newAmmoClips") + " ");
         }
 
         if (gunItem == GunItemType.shootConeAngle) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add("Current spread ");
-                statDescriptionList.Add("Spread ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentSpread") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_spread") + " ");
                 statDescriptionList.Add("");
             }
-            statDescriptionList.Add("New spread ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newSpread") + " ");
         }
 
         return statDescriptionList;

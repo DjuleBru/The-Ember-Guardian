@@ -23,6 +23,7 @@ public class PlayerAnimator : MonoBehaviour
     private bool dead;
     private bool moving;
     private bool running;
+    private bool isAlmostExhausted;
 
 
     private void Awake() {
@@ -82,10 +83,12 @@ public class PlayerAnimator : MonoBehaviour
     }
 
     private void PlayerMovement_OnPlayerAlmostExhaustionStopped(object sender, EventArgs e) {
+        isAlmostExhausted = false;
         breatheVisual.SetActive(false);
     }
 
     private void PlayerMovement_OnPlayerAlmostExhaustionStarted(object sender, EventArgs e) {
+        isAlmostExhausted = true;
         breatheVisual.SetActive(true);
     }
 
@@ -208,10 +211,12 @@ public class PlayerAnimator : MonoBehaviour
     private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
         playerAnimator.ResetTrigger("RollFinished");
         playerAnimator.SetTrigger("Roll");
+        breatheVisual.SetActive(false);
     }
 
     private void PlayerMovement_OnPlayerRollEnded(object sender, EventArgs e) {
         playerAnimator.SetTrigger("RollFinished");
+        breatheVisual.SetActive(isAlmostExhausted);
     }
     private void PlayerAim_OnPlayerAimSightStarted(object sender, EventArgs e) {
         walkAnimationSpeed = PlayerMovement.Instance.GetMoveSpeedNormalized();

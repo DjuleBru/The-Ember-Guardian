@@ -72,6 +72,7 @@ public class TipDescriptionTextTemplate : MonoBehaviour
                 if (!string.IsNullOrEmpty(remainingText)) {
                     TextMeshProUGUI newText = Instantiate(templateText, transform);
                     newText.text = remainingText;
+                    newText.GetComponent<ContentSizeFitterEx>().sizeMax.x = 450f;
                     newText.gameObject.SetActive(true);
                 }
             }

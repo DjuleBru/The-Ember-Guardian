@@ -42,6 +42,7 @@ public class HuntingFlag : MonoBehaviour
 
         if (hit.collider != null) {
             Obstacle obstacle = hit.collider.gameObject.GetComponent<Obstacle>();
+            if (obstacle == null) return;
             if (!obstacle.GetBuilt()) return;
         };
 

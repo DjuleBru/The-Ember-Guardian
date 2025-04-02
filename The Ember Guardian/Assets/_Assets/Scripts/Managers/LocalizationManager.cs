@@ -15,10 +15,10 @@ public class LocalizationManager : MonoBehaviour
     private Dictionary<string, Dictionary<string, string>> localizedTexts;
     public enum Language {
         English,
-        Français,
-        Deutsch,
-        Español,
-        Italiano
+        French,
+        German,
+        Spanish,
+        Italian
     }
     [Serializable]
     public class LocalizationEntry {
@@ -55,25 +55,8 @@ public class LocalizationManager : MonoBehaviour
 
         if (File.Exists(filePath)) {
             string jsonContent = File.ReadAllText(filePath, Encoding.UTF8);
-            Debug.Log("JSON Content loaded.");
-
-            try {
-                // Désérialisation du JSON avec JsonUtility
-                localizationData = JsonUtility.FromJson<LocalizationData>(jsonContent);
-
-                if (localizationData != null && localizationData.entries != null) {
-                    Debug.Log($"Found {localizationData.entries.Count} entries.");
-                    foreach (var entry in localizationData.entries) {
-                        Debug.Log($"Key: {entry.key}, French: {entry.French}, English: {entry.English}");
-                    }
-                }
-                else {
-                    Debug.LogError("Error: localizationData or entries is null!");
-                }
-            }
-            catch (System.Exception ex) {
-                Debug.LogError($"Deserialization error: {ex.Message}");
-            }
+            localizationData = JsonUtility.FromJson<LocalizationData>(jsonContent);
+           
         }
         else {
             Debug.LogError("Localization file not found in StreamingAssets!");
@@ -83,9 +66,10 @@ public class LocalizationManager : MonoBehaviour
 
     public string GetLocalizedText(string key) {
         string translatedText = "";
-
+        LocalizationEntry localizationEntry = null;
         foreach (var entry in localizationData.entries) {
             if (entry.key == key) {
+                localizationEntry = entry;
                 switch (currentLanguage.ToString()) {
                     case "French": translatedText = entry.French;
                         break;
@@ -101,6 +85,16 @@ public class LocalizationManager : MonoBehaviour
                         break;
                 }
             }
+        }
+        if(translatedText == "") {
+
+            if(localizationEntry == null) {
+                Debug.LogError("No localization entry for key " + key);
+                translatedText = key;
+            } else {
+                translatedText = localizationEntry.English;
+            }
+
         }
         return translatedText;  // Return the key if no translation is found
     }

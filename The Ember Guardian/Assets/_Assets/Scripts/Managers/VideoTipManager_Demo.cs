@@ -44,9 +44,7 @@ public class VideoTipManager_Demo : MonoBehaviour
     }
 
     private void HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn(object sender, EventArgs e) {
-        bool creaturesAggroingPlayer = CreaturesManager.Instance.GetCreatureAggroingPlayer();
-
-        if (!hunterFlagTipShown && !creaturesAggroingPlayer) {
+        if (!hunterFlagTipShown) {
             VideoTipUI.Instance.PlayTipSO(hunterFlagTip, .2f);
             ES3.Save("hunterFlagTipShown", true);
             hunterFlagTipShown = true;

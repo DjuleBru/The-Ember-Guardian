@@ -35,6 +35,8 @@ public class Worker : Mob {
     public static event EventHandler OnAnyWorkerDied;
     public event EventHandler OnWorkerHovered;
     public event EventHandler OnWorkerUnhovered;
+    public event EventHandler OnWorkerCollectedCurrency;
+    public event EventHandler OnWorkerDroppedAllCurrencied;
 
     private void Awake() {
         workerAI = GetComponent<WorkerAI>();    
@@ -75,6 +77,7 @@ public class Worker : Mob {
             collectedCurrencies[currencyType] = 0;
         }
         collectedCurrencies[currencyType]++;
+        OnWorkerCollectedCurrency?.Invoke(this, EventArgs.Empty);
     }
 
     public void DropCurrencies() {
@@ -174,6 +177,7 @@ public class Worker : Mob {
                 // Si plus rien à dropper, arrêter le processus
                 if (collectedCurrencies.Count == 0) {
                     droppingCurrencies = false;
+                    OnWorkerDroppedAllCurrencied?.Invoke(this, EventArgs.Empty);
                 }
             }
         }

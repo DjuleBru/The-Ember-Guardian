@@ -14,11 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tipType: 5
   tipName: {fileID: 11400000, guid: 435e8148a24d26d4aba949bd3b355d44, type: 2}
+  tipNameLocalizationKey: VideoTip_Heal0
   tipClip: {fileID: 32900000, guid: 6967a7ade0516e444934106712e55347, type: 3}
   tipTextList:
   - {fileID: 11400000, guid: 06c58832d5fc0864180f480dcca51004, type: 2}
   - {fileID: 11400000, guid: 40331a4898cfb534e884d7814d5bbc4f, type: 2}
   - {fileID: 11400000, guid: cd7c09e0b2df0ec429c78dba9bec015b, type: 2}
+  tipTextLocalizationKeys:
+  - VideoTip_Heal1
+  - VideoTip_Heal2
+  - VideoTip_Heal3
   tipTextDelayToShowList:
   - 0
   - 1.5

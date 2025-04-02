@@ -99,7 +99,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
             toggledImageGameObject.SetActive(SettingsManager.Instance.GetControllerVibrations());
         }
         if (settingType == SettingType.Language) {
-            toggledText.text = SettingsManager.Instance.GetLanguage().ToString();
+            toggledText.text = LocalizationManager.Instance.GetLocalizedText(SettingsManager.Instance.GetLanguage().ToString());
         }
     }
 

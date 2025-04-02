@@ -60,8 +60,6 @@ public class HubMerchantTalkUI : MonoBehaviour
             merchantTalkLinesLocalizationKeys = textLinesSO.merchantTextLinesLocalizationKeys;
             showShopAfterDialog = textLinesSO.showShopAfterDialog;
         }
-
-        Debug.Log("merchantTalkLinesLocalizationKeys " + merchantTalkLinesLocalizationKeys);
     }
 
     private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {

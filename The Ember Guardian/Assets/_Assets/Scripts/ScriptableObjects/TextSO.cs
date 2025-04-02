@@ -14,7 +14,7 @@ public class TextSO : ScriptableObject
         if(language == LocalizationManager.Language.English) {
             return englishText;
         }
-        if (language == LocalizationManager.Language.Français) {
+        if (language == LocalizationManager.Language.French) {
             return frenchText;
         }
 

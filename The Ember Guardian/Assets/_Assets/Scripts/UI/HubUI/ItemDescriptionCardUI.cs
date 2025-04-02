@@ -36,14 +36,14 @@ public class ItemDescriptionCardUI : MonoBehaviour
 
     public void SetDescriptionCardText(string itemName, bool constantUnlockDescription, List<string> itemStatDescriptionList, string itemDescription, List<string> itemStatList = null, List<bool> itemModifiersBools = null) {
 
-        itemNameText.text = itemName;
-        itemDescriptionText.text = itemDescription;
+        itemNameText.text = LocalizationManager.Instance.GetLocalizedText(itemName);
+        itemDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(itemName + "_Description");
 
-        if(constantUnlockDescription) {
+        if (constantUnlockDescription) {
 
             itemStatDescriptionTemplate.gameObject.SetActive(false);
             itemStatDescriptionText.gameObject.SetActive(true);
-            itemStatDescriptionText.text = itemStatDescriptionList[0];
+            itemStatDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(itemName + "_UnlockDescription");
 
         } else {
             itemStatDescriptionTemplate.gameObject.SetActive(true);
@@ -113,13 +113,13 @@ public class ItemDescriptionCardUI : MonoBehaviour
     }
 
     public void SetDescriptionCardMaxlevel() {
-        maxLevelText.text = "MAX LEVEL"; 
+        maxLevelText.text = LocalizationManager.Instance.GetLocalizedText("card_maxLevel"); 
         DisableGemCostGO();
 
         maxLevelText.gameObject.SetActive(true);
     }
     public void SetDescriptionCardItemLockedInDemo() {
-        maxLevelText.text = "LOCKED IN DEMO";
+        maxLevelText.text = LocalizationManager.Instance.GetLocalizedText("card_lockedInDemo");
         maxLevelText.fontMaterial = redFontMaterial;
         maxLevelText.fontSize = 40;
 
@@ -130,7 +130,7 @@ public class ItemDescriptionCardUI : MonoBehaviour
     }
 
     public void SetDescriptionCardBought() {
-        maxLevelText.text = "UNLOCKED";
+        maxLevelText.text = LocalizationManager.Instance.GetLocalizedText("card_unlocked");
         DisableGemCostGO();
         maxLevelText.gameObject.SetActive(true);
     }
