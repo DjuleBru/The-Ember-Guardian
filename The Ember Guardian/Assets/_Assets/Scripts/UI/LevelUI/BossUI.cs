@@ -55,8 +55,9 @@ public class BossUI : MonoBehaviour
     }
 
     private void Creature_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {
-        float healthNormalized = (float)linkedBoss.GetCreatureHealth() / (float)linkedBoss.GetCreatureSO().maxHealth;
+        float healthNormalized = (float)linkedBoss.GetCreatureHealth() / (float)linkedBoss.GetCreatureMaxHealth();
 
         bossHealthBarFill.fillAmount = healthNormalized;
+        Debug.Log("healthNormalized" + healthNormalized);
     }
 }

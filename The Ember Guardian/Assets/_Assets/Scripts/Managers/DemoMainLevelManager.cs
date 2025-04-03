@@ -14,8 +14,11 @@ public class DemoMainLevelManager : MonoBehaviour
 
     [SerializeField] private DemoLevelType demoLevelType;
     [SerializeField] private GameObject fireLocationIndicator;
+    [SerializeField] private GameObject endLevelPortalIndicator;
     [SerializeField] private TutorialCollider fireBlockingCollider1;
     [SerializeField] private TutorialCollider fireBlockingCollider2;
+    [SerializeField] private TutorialCollider fireFuelledBlockingCollider1;
+    [SerializeField] private TutorialCollider fireFuelledBlockingCollider2;
     [SerializeField] private Portal endLevelPortal;
     private GameObject hunterShrineIndicator;
     private GameObject ammoCrafterIndicator;
@@ -44,6 +47,7 @@ public class DemoMainLevelManager : MonoBehaviour
     private bool ammoCraftEnded;
     private bool ammoCraftCollected;
     private bool recruitWorkerTooltipShown;
+    private bool tabMenuTooltipShown;
 
     private int demoLevelLostAmount;
     private bool demoMainLevelTutorialCompleted;
@@ -65,6 +69,7 @@ public class DemoMainLevelManager : MonoBehaviour
         demoFirstLevelCompleted = ES3.Load("demoFirstLevelCompleted", false);
         demoLevelLostAmount = ES3.Load("demoLevelLostAmount", 0);
         recruitWorkerTooltipShown = ES3.Load("recruitWorkerTooltipShown", false);
+        tabMenuTooltipShown = ES3.Load("tabMenuTooltipShown", false);
 
         Debug.Log("demoMainLevelTutorialCompleted " + demoMainLevelTutorialCompleted);
         Debug.Log("demoFirstLevelCompleted " + demoFirstLevelCompleted);
@@ -88,6 +93,9 @@ public class DemoMainLevelManager : MonoBehaviour
         Collectible.OnAnyCollectiblePickedUpByPlayer += Collectible_OnAnyCollectiblePickedUpByPlayer;
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
+        Obstacle.OnAnyPlayerTriggeredIn += Obstacle_OnAnyPlayerTriggeredIn;
+        Obstacle.OnAnyPlayerTriggeredOut += Obstacle_OnAnyPlayerTriggeredOut;
+        PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
         mainFireLocation.OnPlayerTriggeredIn += MainFireLocation_OnPlayerTriggeredIn;
         mainFireLocation.OnPlayerTriggeredOut += MainFireLocation_OnPlayerTriggeredOut;
 
@@ -134,11 +142,37 @@ public class DemoMainLevelManager : MonoBehaviour
         }
     }
 
+    private void PlayerTabMenuUI_OnPlayerTabOpened(object sender, EventArgs e) {
+        if (!tabMenuTooltipShown) {
+            tabMenuTooltipShown = true;
+            ES3.Save("tabMenuTooltipShown", true);
+            PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
+        }
+    }
+
+    private void Obstacle_OnAnyPlayerTriggeredOut(object sender, EventArgs e) {
+        if(!tabMenuTooltipShown) {
+            PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
+        }
+    }
+
+    private void Obstacle_OnAnyPlayerTriggeredIn(object sender, EventArgs e) {
+        if(!tabMenuTooltipShown) {
+            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("tooltip_openBackpackTip"), InputControlIcons.Control.OpenPlayerMenu, 99f);
+        }
+    }
+
     private void Update() {
         if(!demoMainLevelTutorialCompleted) {
-            if (mainFireLit) return;
-            HandleBlockingCollider(fireBlockingCollider1.transform.position, "I should light the fire first");
-            HandleBlockingCollider(fireBlockingCollider2.transform.position, "I should light the fire first");
+            
+            HandleBlockingCollider(fireFuelledBlockingCollider1.transform.position, LocalizationManager.Instance.GetLocalizedText("tooltip_fuelFireBlocking"));
+            HandleBlockingCollider(fireFuelledBlockingCollider2.transform.position, LocalizationManager.Instance.GetLocalizedText("tooltip_fuelFireBlocking"));
+           
+            if (!mainFireLit) {
+                HandleBlockingCollider(fireBlockingCollider1.transform.position, LocalizationManager.Instance.GetLocalizedText("tooltip_lightFireBlocking"));
+                HandleBlockingCollider(fireBlockingCollider2.transform.position, LocalizationManager.Instance.GetLocalizedText("tooltip_lightFireBlocking"));
+            };
+           
         }
     }
 
@@ -150,6 +184,7 @@ public class DemoMainLevelManager : MonoBehaviour
         if(!demoFirstLevelCompleted) {
             ES3.Save("demoFirstLevelCompleted", true);
         }
+        endLevelPortalIndicator.gameObject.SetActive(false);
     }
 
     private IEnumerator EnableEndLevelPortal(float delayToEnable) {
@@ -279,6 +314,9 @@ public class DemoMainLevelManager : MonoBehaviour
 
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FuelFire);
 
+            fireFuelledBlockingCollider1.gameObject.SetActive(false);
+            fireFuelledBlockingCollider2.gameObject.SetActive(false);
+
             StartCoroutine(StartFindStockpilesObjectiveAfterDelay(false, 4f));
         };
 
@@ -306,10 +344,6 @@ public class DemoMainLevelManager : MonoBehaviour
 
             return;
         };
-
-        if(!demoFirstLevelCompleted) {
-            StartCoroutine(StartFindStockpilesObjectiveAfterDelay(true, 2f));
-        }
     }
     private IEnumerator PauseDayNightCycleAfterDelay() {
         yield return new WaitForSeconds(.1f);
@@ -490,7 +524,6 @@ public class DemoMainLevelManager : MonoBehaviour
             structureLocation.gameObject.SetActive(true);
         }
 
-
         demoMainLevelTutorialCompleted = true;
         ES3.Save("demoMainLevelTutorialCompleted", true);
         ES3.Save("recruitWorkerTooltipShown", true);
@@ -516,7 +549,7 @@ public class DemoMainLevelManager : MonoBehaviour
         if (show) {
 
             if (!UICurrencyManager.PlayerInventoryUI.GetHasBigOrb()) return;
-            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction("Press", "Recruit Emberling", InputControlIcons.Control.Interact, 999);
+            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("tooltip_recruitEmberling"), InputControlIcons.Control.Interact, 999);
 
         } else {
             PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
@@ -546,6 +579,8 @@ public class DemoMainLevelManager : MonoBehaviour
         Worker.OnAnyWorkerAssignedHunter -= Worker_OnAnyWorkerAssignedHunter;
         Worker.OnAnyOrbDroppedByWorker -= Worker_OnAnyOrbDroppedByWorker;
         Animal.OnAnyMobDied -= Animal_OnAnyMobDied;
+        Obstacle.OnAnyPlayerTriggeredIn -= Obstacle_OnAnyPlayerTriggeredIn;
+        Obstacle.OnAnyPlayerTriggeredOut -= Obstacle_OnAnyPlayerTriggeredOut;
         StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
     }
 }

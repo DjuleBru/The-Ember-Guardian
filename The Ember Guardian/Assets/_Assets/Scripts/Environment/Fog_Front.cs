@@ -23,7 +23,7 @@ public class Fog_Front : MonoBehaviour
     private void Start() {
         if (!LevelManager.Instance.GetLevelSO().hasFog) {
 
-            fogRenderer.material.SetFloat("_Alpha", 0);
+            gameObject.SetActive(false);
             return;
         }
 

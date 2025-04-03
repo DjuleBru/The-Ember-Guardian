@@ -187,7 +187,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             int initialDamagePerBullet = linkedGunSO.damagePerBullet;
             int modifiedDamagePerBuller = PlayerShoot.Instance.GetGun(linkedGunSO).GetDamagePerBullet();
 
-            if(initialDamagePerBullet != modifiedDamagePerBuller) {
+            if (initialDamagePerBullet != modifiedDamagePerBuller) {
                 statModifiedBools.Add(true);
             } else {
                 statModifiedBools.Add(false);
@@ -268,6 +268,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             float modifiedRange = PlayerShoot.Instance.GetGun(linkedGunSO).GetBulletLifetime() * linkedGunSO.bulletSpeed;
             if (initialRange != modifiedRange) {
                 statModifiedBools.Add(true);
+                Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH initialRange != modifiedRange" + " initialRange " + initialRange + " modifiedRange " + modifiedRange);
             }
             else {
                 statModifiedBools.Add(false);
@@ -305,7 +306,9 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             if (gunItem == GunItemType.critChance) {
                 initialStatValue = linkedGunSO.critChance;
+                Debug.Log(linkedGunSO + " initialCritChance " + initialStatValue);
                 currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetCritChance().ToString();
+                Debug.Log(linkedGunSO + " currentCritChance " + currentStatValue);
                 totalStatWithModifierPostfix = "%";
                 relativeStatPostfix = "%";
                 relativeStatPrefix = "+";
@@ -313,7 +316,9 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             if (gunItem == GunItemType.reloadTime) {
                 initialStatValue = linkedGunSO.reloadTime;
+                Debug.Log(linkedGunSO + " initialreloadTime " + initialStatValue);
                 currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetReloadTime().ToString("F2");
+                Debug.Log(linkedGunSO + " currentreloadTime " + currentStatValue);
                 relativeStatPostfix = "%";
                 totalStatWithModifierPostfix = "s";
                 statValueModifierMultiplier = 0.01f;
@@ -321,7 +326,9 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             if (gunItem == GunItemType.cooldownTime) {
                 initialStatValue = linkedGunSO.shootCooldownTime;
+                Debug.Log(linkedGunSO + " initialcooldownTime " + initialStatValue);
                 currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetCooldownTime().ToString("F2");
+                Debug.Log(linkedGunSO + " currentcooldownTime " + currentStatValue);
                 relativeStatPostfix = "%";
                 totalStatWithModifierPostfix = "s";
                 statValueModifierMultiplier = 0.01f;
@@ -329,31 +336,41 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             if (gunItem == GunItemType.maxAmmo) {
                 initialStatValue = linkedGunSO.maxAmmo;
+                Debug.Log(linkedGunSO + " initialmaxAmmo " + initialStatValue);
                 currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetMaxAmmo().ToString();
+                Debug.Log(linkedGunSO + " currentmaxAmmo " + currentStatValue);
                 relativeStatPrefix = "+";
             }
 
             if (gunItem == GunItemType.shotsPerClip) {
                 initialStatValue = linkedGunSO.shotsPerClip;
+                Debug.Log(linkedGunSO + " initialshotsPerClip " + initialStatValue);
                 currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetShotsPerClip().ToString();
+                Debug.Log(linkedGunSO + " currentshotsPerClip " + currentStatValue);
                 relativeStatPrefix = "+";
             }
 
             if (gunItem == GunItemType.bulletDamage) {
                 initialStatValue = linkedGunSO.damagePerBullet;
+                Debug.Log(linkedGunSO + " initialbulletDamage " + initialStatValue);
                 currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetDamagePerBullet().ToString();
+                Debug.Log(linkedGunSO + " currentbulletDamage " + currentStatValue);
                 relativeStatPrefix = "+";
             }
 
             if (gunItem == GunItemType.pelletsPerBullet) {
                 initialStatValue = linkedGunSO.pelletsPerBullet;
+                Debug.Log(linkedGunSO + " initialpelletsPerBullet " + initialStatValue);
                 currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetPelletsPerBullet().ToString();
+                Debug.Log(linkedGunSO + " currentpelletsPerBullet " + currentStatValue);
                 relativeStatPrefix = "+";
             }
 
             if (gunItem == GunItemType.shootConeAngle) {
                 initialStatValue = linkedGunSO.shootConeAngle;
+                Debug.Log(linkedGunSO + " initialshootConeAngle " + initialStatValue);
                 currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetDefaultShootAngle().ToString();
+                Debug.Log(linkedGunSO + " currentshootConeAngle " + currentStatValue);
                 relativeStatPrefix = "";
                 totalStatWithModifierPostfix = "\u00B0";
                 relativeStatPostfix = "\u00B0";
@@ -361,7 +378,9 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             if (gunItem == GunItemType.range) {
                 initialStatValue = linkedGunSO.bulletLifetime * linkedGunSO.bulletSpeed;
+                Debug.Log(linkedGunSO + " initialrange " + initialStatValue);
                 currentStatValue = (PlayerShoot.Instance.GetGun(linkedGunSO).GetBulletLifetime() * linkedGunSO.bulletSpeed).ToString();
+                Debug.Log(linkedGunSO + " currentrange " + currentStatValue);
                 relativeStatPrefix = "+";
                 totalStatWithModifierPostfix = "m";
                 relativeStatPostfix = "m";
@@ -382,6 +401,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 if (itemLevel > 0) {
                     relativeStatModifier = linkedStatModifierSO.statModifierList[itemLevel] - linkedStatModifierSO.statModifierList[itemLevel - 1];
                 }
+                Debug.Log(linkedStatModifierSO + " relativeStatModifier " + relativeStatModifier);
             }
 
             if(gunItem == GunItemType.cooldownTime || gunItem == GunItemType.reloadTime) {
@@ -389,6 +409,8 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 totalStatValue = totalStatWithModifier.ToString("F2");
             }
 
+            Debug.Log(linkedStatModifierSO + " absoluteStatValueModifier " + absoluteStatValueModifier);
+            Debug.Log(linkedStatModifierSO + " totalStatWithModifier " + totalStatWithModifier);
 
             if (itemLevel == maxItemLevel) {
                 statValues.Add(totalStatValue + totalStatWithModifierPostfix);

@@ -127,7 +127,7 @@ public class DemoLevelIntroManager : MonoBehaviour {
     }
 
     public void ShowRunTooltip() {
-        PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltipInstruction("Hold", "To Run", InputControlIcons.Control.Run, 5f);
+        PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_toRun"), InputControlIcons.Control.Run, 5f);
     }
 
     private IEnumerator SetPlayerCurrenciesAfterDelay() {

@@ -82,9 +82,11 @@ public class Creature : Mob
     private void OnEnable() {
         CreaturesManager.Instance.AddCreatureSpawned(this);
         health = creatureSO.maxHealth;
+        maxHealth = creatureSO.maxHealth;
     }
 
-    private void Update() {
+    protected override void Update() {
+        base.Update();
         if (dead) return;
 
         triggerSoundTimer -= Time.deltaTime;
@@ -258,7 +260,8 @@ public class Creature : Mob
         return creatureSO;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
+    protected override void OnTriggerEnter2D(Collider2D collision) {
+        base.OnTriggerEnter2D(collision);
         if(collision.gameObject.GetComponentInParent<Fire>() != null) {
             if (enteredLight) return;
             if (creatureSO.isBoss) return;
@@ -267,7 +270,9 @@ public class Creature : Mob
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision) {
+    protected override void OnTriggerExit2D(Collider2D collision) {
+        base.OnTriggerExit2D(collision);
+
         if (collision.gameObject.GetComponentInParent<Fire>() != null) {
             if (!enteredLight) return;
             if (creatureSO.isBoss) return;
@@ -342,6 +347,7 @@ public class Creature : Mob
     }
     public void SetCreatureHealth(int health) {
         this.health = health;
+        this.maxHealth = health;
     }
 
     #region STATUS EFFECTS
@@ -413,7 +419,9 @@ public class Creature : Mob
     public int GetCreatureHealth() {
         return health;
     }
-
+    public int GetCreatureMaxHealth() {
+        return maxHealth;
+    }
     public bool GetIsEliteCreature() {
         return eliteCreature;
     }

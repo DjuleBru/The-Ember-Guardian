@@ -59,9 +59,11 @@ public class CreatureAI : MonoBehaviour {
 
     protected virtual void Start() {
         creature.OnCreatureDied += Creature_OnCreatureDied;
+        creature.OnMobHitObstacle += Creature_OnMobHitObstacle;
 
         SetAttackRange();
     }
+
 
     protected virtual void SetAttackRange() {
 
@@ -367,6 +369,10 @@ public class CreatureAI : MonoBehaviour {
         };
     }
 
+    private void Creature_OnMobHitObstacle(object sender, EventArgs e) {
+        roamTimer = 0;
+        ChangeState(State.idle);
+    }
     protected virtual void Creature_OnCreatureDied(object sender, EventArgs e) {
         died = true;
     }

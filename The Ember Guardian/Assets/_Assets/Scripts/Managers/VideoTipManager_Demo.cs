@@ -44,7 +44,7 @@ public class VideoTipManager_Demo : MonoBehaviour
     }
 
     private void HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn(object sender, EventArgs e) {
-        if (!hunterFlagTipShown) {
+        if (!hunterFlagTipShown && DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetDemoFirstLevelCompleted()) {
             VideoTipUI.Instance.PlayTipSO(hunterFlagTip, .2f);
             ES3.Save("hunterFlagTipShown", true);
             hunterFlagTipShown = true;

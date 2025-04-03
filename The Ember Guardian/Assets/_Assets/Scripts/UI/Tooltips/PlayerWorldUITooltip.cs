@@ -14,8 +14,10 @@ public class PlayerWorldUITooltip : MonoBehaviour
 
     [SerializeField] private GameObject constrolInstructionGameObject;
     [SerializeField] private TextMeshProUGUI constrolInstructionText1;
+    [SerializeField] private TextMeshProUGUI constrolInstructionText1With2Icons;
     [SerializeField] private TextMeshProUGUI constrolInstructionText2;
     [SerializeField] private Image constrolInstructionIconImage;
+    [SerializeField] private Image constrolInstructionIcon1Image;
     [SerializeField] private Image constrolInstructionIcon2Image;
 
     public static event EventHandler OnTooltipShown;
@@ -79,10 +81,13 @@ public class PlayerWorldUITooltip : MonoBehaviour
         constrolInstructionIconImage.sprite = iconSprite;
 
         if (iconSprite2 != null) {
+            constrolInstructionIcon1Image.sprite = iconSprite;
+            constrolInstructionIcon1Image.gameObject.SetActive(true);
             constrolInstructionIcon2Image.gameObject.SetActive(true);
             constrolInstructionIcon2Image.sprite = iconSprite2;
         }
         else {
+            constrolInstructionIcon1Image.gameObject.SetActive(false);
             constrolInstructionIcon2Image.gameObject.SetActive(false);
         }
 
@@ -95,8 +100,13 @@ public class PlayerWorldUITooltip : MonoBehaviour
         Sprite iconSprite = spriteList[0];
         Sprite iconSprite2 = null;
 
+        constrolInstructionText1With2Icons.gameObject.SetActive(false);
+        constrolInstructionText1.gameObject.SetActive(true);
+
         if (spriteList.Count == 2) {
             iconSprite2 = spriteList[1];
+            constrolInstructionText1With2Icons.gameObject.SetActive(true);
+            constrolInstructionText1.gameObject.SetActive(false);
         }
 
         if(showTooltipCoroutine != null) {
@@ -119,17 +129,23 @@ public class PlayerWorldUITooltip : MonoBehaviour
             hideTooltip = true;
         }
 
+        constrolInstructionText1With2Icons.gameObject.SetActive(false);
+        constrolInstructionText1.gameObject.SetActive(true);
+
         constrolInstructionGameObject.SetActive(true);
         tooltipText.gameObject.SetActive(false);
 
         tooltipVisualGameObject.SetActive(true);
         constrolInstructionText1.text = text1ToShow;
+        constrolInstructionText1With2Icons.text = text1ToShow;
         constrolInstructionText2.text = text2ToShow;
         constrolInstructionIconImage.sprite = iconSprite;
 
         if (iconSprite2 != null) {
             constrolInstructionIcon2Image.gameObject.SetActive(true);
             constrolInstructionIcon2Image.sprite = iconSprite2;
+            constrolInstructionText1With2Icons.gameObject.SetActive(true);
+            constrolInstructionText1.gameObject.SetActive(false);
         }
         else {
             constrolInstructionIcon2Image.gameObject.SetActive(false);

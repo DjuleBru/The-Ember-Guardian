@@ -37,7 +37,7 @@ public class DogAI : MonoBehaviour
     private float roamChangeDestionationRate = 10f;
 
     private float walkMoveSpeed = 1.5f;
-    private float runMoveSpeed = 6f;
+    private float runMoveSpeed = 7f;
 
     private float distanceToPlayer;
     private float distanceToCamp;

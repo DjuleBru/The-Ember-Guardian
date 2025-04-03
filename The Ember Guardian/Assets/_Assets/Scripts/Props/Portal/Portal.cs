@@ -104,7 +104,7 @@ public class Portal : MonoBehaviour
         if (playerIsSetOnTeleporter) return;
 
         if (isHUBTeleporter && !PlayerCurrencies.Instance.GetCarryingEmber() && !DEBUGMODE) {
-            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltip("I must carry an ember ...", 2f);
+            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_carryEmber"), 2f);
             return;
         }
 
@@ -277,7 +277,6 @@ public class Portal : MonoBehaviour
     }
 
     public void SetLinkedLevelSO(LevelSO levelSO) {
-        Debug.Log("SetLinkedLevelSO " + levelSO);
         linkedLevelSO = levelSO;
     }
 

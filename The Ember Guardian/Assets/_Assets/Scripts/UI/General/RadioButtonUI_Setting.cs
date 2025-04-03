@@ -40,9 +40,11 @@ public class RadioButtonUI_Setting : RadioButtonUI
         SettingsManager.Instance.OnAutoAlignAimWithMovementChanged += SettingsManager_OnAutoAlignAimWithMovementChanged;
         SettingsManager.Instance.OnAimAssistChanged += SettingsManagerOnAimAssistChanged;
         SettingsManager.Instance.OnFullScreenChanged += SettingsManager_OnFullScreenChanged;
+        SettingsManager.Instance.OnLanguageChanged += SettingsManager_OnLanguageChanged;
 
         RefreshVisual();
     }
+
 
     private void ChangeLinkedSetting() {
         if (settingType == SettingType.HoldToRun) {
@@ -66,6 +68,10 @@ public class RadioButtonUI_Setting : RadioButtonUI
         if (settingType == SettingType.Language) {
             SettingsManager.Instance.ChangeLanguage();
         }
+    }
+
+    private void SettingsManager_OnLanguageChanged(object sender, System.EventArgs e) {
+        RefreshVisual();
     }
 
     private void RefreshVisual() {

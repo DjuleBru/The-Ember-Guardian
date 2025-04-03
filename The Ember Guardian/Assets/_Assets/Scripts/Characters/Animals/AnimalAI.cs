@@ -29,7 +29,7 @@ public class AnimalAI : MonoBehaviour
     private void Awake() {
         animal = GetComponent<Animal>();
         animal.OnMobDamageTaken += Animal_OnMobDamageTaken;
-        animal.OnAnimalHitObstacle += Animal_OnAnimalHitObstacle;
+        animal.OnMobHitObstacle += Animal_OnMobHitObstacle;
 
     }
 
@@ -54,7 +54,7 @@ public class AnimalAI : MonoBehaviour
 
     }
 
-    private void Animal_OnAnimalHitObstacle(object sender, EventArgs e) {
+    private void Animal_OnMobHitObstacle(object sender, EventArgs e) {
         isSafe = true;
         animalMovement.SetMoveSpeed(roamMoveSpeed);
         OnAnimalReachedSafeZone?.Invoke(this, EventArgs.Empty);

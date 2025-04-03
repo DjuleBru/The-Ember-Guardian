@@ -22,7 +22,9 @@ public class Obstacle : MonoBehaviour {
 
     public event EventHandler OnObstacleBuilt;
     public static event EventHandler OnAnyObstacleBuilt;
+    public static event EventHandler OnAnyPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredIn;
+    public static event EventHandler OnAnyPlayerTriggeredOut;
     public event EventHandler OnPlayerTriggeredOut;
 
     protected void Awake() {
@@ -75,6 +77,7 @@ public class Obstacle : MonoBehaviour {
 
         Player.Instance.SetInPayCurrencyArea(true);
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
+        OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         playerInTriggerArea = true;
     }
 
@@ -83,6 +86,7 @@ public class Obstacle : MonoBehaviour {
 
         Player.Instance.SetInPayCurrencyArea(false);
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+        OnAnyPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
         payCurrencyUI.SetPlayerInteracting(false);
         playerInTriggerArea = false;
     }

@@ -20,14 +20,14 @@ public class PlayerTooltipManager : MonoBehaviour
     private int tryReloadAttemptAmount;
 
     #region GUN SECONDARY ABILITIES INSTRUCTIONS
-    private string rifleText1 = "Press";
-    private string rifleText2 = "Switch fire modes";
-    private string shotgunText1 = "Hold";
-    private string shotgunText2 = "Load focused shot";
-    private string smgText1 = "Hold";
-    private string smgText2 = "Activate overclock";
-    private string sniperText1 = "Hold";
-    private string sniperText2 = "Aim sight";
+    private string rifleText1;
+    private string rifleText2;
+    private string shotgunText1;
+    private string shotgunText2;
+    private string smgText1;
+    private string smgText2;
+    private string sniperText1;
+    private string sniperText2;
     #endregion
 
     private void Awake() {
@@ -42,6 +42,17 @@ public class PlayerTooltipManager : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
 
         gunSOAbilityPreparedList = ES3.Load("gunSOAbilityPreparedList", new List<GunSO>());
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            rifleText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
+            rifleText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_rifleText2");
+            shotgunText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
+            shotgunText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_shotgunText2");
+            smgText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
+            smgText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_smgText2");
+            sniperText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
+            sniperText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_sniperText2");
+        }
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
@@ -52,7 +63,7 @@ public class PlayerTooltipManager : MonoBehaviour
         tryReloadAttemptAmount++;
 
         if(tryReloadAttemptAmount > 3) {
-            tooltipLeft.ShowTooltipInstruction("Hold", "Transfer ammo to belt", InputControlIcons.Control.Reload, 4f);
+            tooltipLeft.ShowTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("Hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_ammoTip"), InputControlIcons.Control.Reload, 4f);
         }
     }
 
@@ -109,7 +120,6 @@ public class PlayerTooltipManager : MonoBehaviour
     }
 
     public void PrepareGunSecondaryAbilityTooltipInstruction(GunSO gunSO) {
-        Debug.Log("PrepareGunSecondaryAbilityTooltipInstruction" + gunSO);
         if (gunSO.gunType == GunSO.GunType.Rifle) {
             PrepareTooltipInstruction(rifleText1, rifleText2, InputControlIcons.Control.SecondaryGunAbility);
         }

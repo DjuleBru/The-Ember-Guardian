@@ -47,10 +47,7 @@ public class Barricade : Structure, IDamageable {
         Debug.Log("barricade destroyed !");
         OnBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
         OnAnyBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
-
-        if(isInnerBarricade) {
-            OnBarricadeBreached?.Invoke(this, EventArgs.Empty);
-        }
+        OnBarricadeBreached?.Invoke(this, EventArgs.Empty);
     }
 
     public Transform GetProjectileTarget() {

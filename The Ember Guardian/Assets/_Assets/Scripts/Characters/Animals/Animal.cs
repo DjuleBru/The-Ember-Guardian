@@ -7,8 +7,6 @@ public class Animal : Mob
 {
     [SerializeField] private AnimalSO animalSO;
 
-    public event EventHandler OnAnimalHitObstacle;
-
     private int maxHuntersAssigned;
     private List<Worker> workersAssigned = new List<Worker>();
 
@@ -48,12 +46,6 @@ public class Animal : Mob
 
     public bool GetMaxHuntersAssigned() {
         return workersAssigned.Count == maxHuntersAssigned;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision) {
-        if(collision.gameObject.GetComponent<Obstacle>() != null) {
-            OnAnimalHitObstacle?.Invoke(this, EventArgs.Empty); 
-        }
     }
 
 }

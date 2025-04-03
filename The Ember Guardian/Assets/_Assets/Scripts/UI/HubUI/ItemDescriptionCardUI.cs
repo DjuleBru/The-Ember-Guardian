@@ -34,7 +34,7 @@ public class ItemDescriptionCardUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI maxLevelText;
     [SerializeField] private GameObject foreGround;
 
-    public void SetDescriptionCardText(string itemName, bool constantUnlockDescription, List<string> itemStatDescriptionList, string itemDescription, List<string> itemStatList = null, List<bool> itemModifiersBools = null) {
+    public void SetDescriptionCardText(string itemName, bool constantUnlockDescription, List<string> itemStatDescriptionList, string itemDescription,List<string> itemStatList = null, List<bool> itemModifiersBools = null) {
 
         itemNameText.text = LocalizationManager.Instance.GetLocalizedText(itemName);
         itemDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(itemName + "_Description");
@@ -94,8 +94,11 @@ public class ItemDescriptionCardUI : MonoBehaviour
 
         int i = 0;
         foreach(string itemStatName in itemStatDescriptionList) {
+
+
             itemStatTemplateText.text = itemStatName;
             itemStatTemplateValue.text = itemStatList[i];
+
 
             if (itemStatModifiersBools[i] == true) {
                 itemStatTemplateValue.fontMaterial = modifiedItemStatMaterial;
@@ -105,7 +108,15 @@ public class ItemDescriptionCardUI : MonoBehaviour
                 itemStatTemplateValue.color = Color.white;
             }
 
-            Instantiate(itemStatDescriptionTemplate, itemStatDescriptionContainer);
+            RectTransform template = Instantiate(itemStatDescriptionTemplate, itemStatDescriptionContainer).GetComponent<RectTransform>();
+
+            if (itemStatList[i] == "") {
+                template.Find("StatText").GetComponent<ContentSizeFitter>().enabled = true;
+                template.Find("StatText").GetComponent<RectTransform>().sizeDelta = new Vector2(250f, itemStatTemplateText.GetComponent<RectTransform>().sizeDelta.y);
+            }
+            else {
+                template.Find("StatText").GetComponent<ContentSizeFitter>().enabled = false;
+            }
             i++;
         }
 

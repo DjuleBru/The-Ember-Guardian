@@ -41,7 +41,7 @@ public class CreatureAI_TarnishedWidow : CreatureAI
         if(DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetDemoLevelLostAmount() == 0) {
             Debug.Log("DemoMainLevelManager.Instance.GetDemoLevelLostAmount() " + DemoMainLevelManager.Instance.GetDemoLevelLostAmount());
             Debug.Log("demo Lost amount = 0, doubling widow health ");
-            creature.SetCreatureHealth(creature.GetCreatureSO().maxHealth*2);
+            creature.SetCreatureHealth(Mathf.RoundToInt(creature.GetCreatureSO().maxHealth*1.5f));
         }
 
         BossUI.Instance.LinkBoss(creature);

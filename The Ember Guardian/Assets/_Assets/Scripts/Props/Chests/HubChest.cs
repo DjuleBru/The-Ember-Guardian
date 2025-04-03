@@ -125,7 +125,7 @@ public class HubChest : MonoBehaviour
 
     private IEnumerator ShowInteractionTooltipAfterDelay() {
         yield return new WaitForSeconds(3f);
-        PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction("Hold", "To drop gems", InputControlIcons.Control.Interact, 999);
+        PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_dropGems"), InputControlIcons.Control.Interact, 999);
     }
 
     private void OnTriggerExit2D(Collider2D collision) {

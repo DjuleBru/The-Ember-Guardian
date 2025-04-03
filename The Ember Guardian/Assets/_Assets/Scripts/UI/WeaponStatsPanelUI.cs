@@ -45,8 +45,19 @@ public class WeaponStatsPanelUI : MonoBehaviour
         ChangeWeaponPanel.Instance.OnChangeWeaponPanelClosed += ChangeWeaponPanel_OnChangeWeaponPanelClosed;
         ChangeWeaponPanel.Instance.OnChangeWeaponPanelOpened += ChangeWeaponPanel_OnChangeWeaponPanelOpened;
 
-        DisplayGunStats(PlayerShoot.Instance.GetPrimaryGunSO());
+        HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
+        HubMerchantItem.OnAnyHubMerchantItemUpgraded += HubMerchantItem_OnAnyHubMerchantItemUpgraded;
+
+        RefreshGunStats(PlayerShoot.Instance.GetPrimaryGunSO());
         ShowDiffText(false);
+    }
+
+    private void HubMerchantItem_OnAnyHubMerchantItemUpgraded(object sender, EventArgs e) {
+        RefreshGunStats(PlayerShoot.Instance.GetPrimaryGunSO());
+    }
+
+    private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, EventArgs e) {
+        RefreshGunStats(PlayerShoot.Instance.GetPrimaryGunSO());
     }
 
     private void ChangeWeaponPanel_OnChangeWeaponPanelOpened(object sender, EventArgs e) {
@@ -82,7 +93,7 @@ public class WeaponStatsPanelUI : MonoBehaviour
 
         if (gunSOToDiplay != null) {
             ShowDiffText(false);
-            DisplayGunStats(replaceButton.GetLinkedGunSO());
+            RefreshGunStats(replaceButton.GetLinkedGunSO());
         }
     }
 
@@ -92,11 +103,11 @@ public class WeaponStatsPanelUI : MonoBehaviour
         GunSO gunSOToDiplay = changeButton.GetLinkedGunSO();
 
         if(gunSOToDiplay != null) {
-            DisplayGunStats(changeButton.GetLinkedGunSO());
+            RefreshGunStats(changeButton.GetLinkedGunSO());
         }
     }
 
-    private void DisplayGunStats(GunSO gunSO) {
+    private void RefreshGunStats(GunSO gunSO) {
         ResetTextMaterials();
 
         int bulletDmg = PlayerShoot.Instance.GetGun(gunSO).GetDamagePerBullet();
@@ -233,7 +244,7 @@ public class WeaponStatsPanelUI : MonoBehaviour
 
     private void HideGunStatsComparison() {
         ShowDiffText(false);
-        DisplayGunStats(currentGunSODisplayed);
+        RefreshGunStats(currentGunSODisplayed);
     }
 
     private void ShowDiffText(bool show) {
@@ -303,5 +314,7 @@ public class WeaponStatsPanelUI : MonoBehaviour
         WeaponReplaceButton.OnAnyWeaponReplaceButtonUnhovered -= WeaponReplaceButton_OnAnyButtonUnhovered;
         ChangeWeaponPanel.Instance.OnChangeWeaponPanelClosed -= ChangeWeaponPanel_OnChangeWeaponPanelClosed;
         ChangeWeaponPanel.Instance.OnChangeWeaponPanelOpened -= ChangeWeaponPanel_OnChangeWeaponPanelOpened;
+        HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
+        HubMerchantItem.OnAnyHubMerchantItemUpgraded -= HubMerchantItem_OnAnyHubMerchantItemUpgraded;
     }
 }

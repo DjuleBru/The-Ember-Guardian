@@ -366,7 +366,10 @@ public class MusicManager : MonoBehaviour {
 
         audioSourceA.loop = false;
         audioSourceB.loop = false;
-        StopCoroutine(nightCoroutine);
+
+        if(nightCoroutine != null) {
+            StopCoroutine(nightCoroutine);
+        }
 
         CrossfadeToNextNightClip(nightMusicOutro);
 

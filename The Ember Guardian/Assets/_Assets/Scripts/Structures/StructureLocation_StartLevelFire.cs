@@ -21,7 +21,7 @@ public class StructureLocation_StartLevelFire : StructureLocation {
 
         if(!lightFireTooltipShown && !lightFireTooltipBeingShown) {
             lightFireTooltipBeingShown = true;
-            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction("Hold", "To light fire", InputControlIcons.Control.Interact, 999f);
+            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_lightFire"), InputControlIcons.Control.Interact, 999f);
         }
     }
 

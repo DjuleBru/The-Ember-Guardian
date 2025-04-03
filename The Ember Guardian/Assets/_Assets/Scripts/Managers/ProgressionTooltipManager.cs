@@ -30,7 +30,7 @@ public class ProgressionTooltipManager : MonoBehaviour
         if(structure.GetActiveStructureInteractionTypeList().Count > 1) {
 
             if (multipleFunctionsTooltipShown) return;
-            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction("Press", "To switch structure function", InputControlIcons.Control.SwitchBuildingFunctions, 10f);
+            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("tooltip_switchStructureFunction"), InputControlIcons.Control.SwitchBuildingFunctions, 10f);
             multipleFunctionsTooltipShown = true;
             ES3.Save("multipleFunctionsTooltipShown", true);
         }

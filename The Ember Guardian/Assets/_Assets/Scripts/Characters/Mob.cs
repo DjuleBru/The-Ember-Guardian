@@ -22,14 +22,30 @@ public class Mob : MonoBehaviour, IDamageable
 
     protected Rigidbody2D rb;
     protected int health;
+    protected int maxHealth;
     protected bool dead;
+    protected bool inObstacleTriggerArea;
 
     public event EventHandler OnMobDied;
     public static event EventHandler OnAnyMobDied;
+    public event EventHandler OnMobHitObstacle;
     public event EventHandler<OnMobDamageTakenEventArgs> OnMobDamageTaken;
     public event EventHandler<OnMobDamageTakenEventArgs> OnMobCritDamageTaken;
     public event EventHandler OnAnyMobCritDamageTaken;
     public event EventHandler<OnMobDroppedCollectibleEventArgs> OnMobDroppedCollectibles;
+
+    protected float inObstacleTriggerAreaSendEventRate = 1f;
+    protected float inObstacleTriggerAreaSendEventTimer;
+
+    protected virtual void Update() {
+        if(inObstacleTriggerArea) {
+            inObstacleTriggerAreaSendEventTimer -= Time.deltaTime;
+            if(inObstacleTriggerAreaSendEventTimer < 0) {
+                inObstacleTriggerAreaSendEventTimer = inObstacleTriggerAreaSendEventRate;
+                OnMobHitObstacle?.Invoke(this, EventArgs.Empty);
+            }
+        }
+    }
 
     protected void SpawnDroppedCurrencies(List<PlayerCurrencies.CurrencyType> currencyTypeList, List<int> dropAmountList) {
 
@@ -152,5 +168,23 @@ public class Mob : MonoBehaviour, IDamageable
         OnMobDroppedCollectibles?.Invoke(this, new OnMobDroppedCollectibleEventArgs {
             collectibleDroppedList = collectiblesDropped
         });
+    }
+    protected virtual void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.gameObject.GetComponent<Obstacle>() != null) {
+            OnMobHitObstacle?.Invoke(this, EventArgs.Empty);
+            inObstacleTriggerArea = true;
+        }
+        if (collision.gameObject.GetComponent<EndLevelCollider>() != null) {
+            OnMobHitObstacle?.Invoke(this, EventArgs.Empty);
+            inObstacleTriggerArea = true;
+        }
+    }
+    protected virtual void OnTriggerExit2D(Collider2D collision) {
+        if (collision.gameObject.GetComponent<Obstacle>() != null) {
+            inObstacleTriggerArea = false;
+        }
+        if (collision.gameObject.GetComponent<EndLevelCollider>() != null) {
+            inObstacleTriggerArea = false;
+        }
     }
 }
