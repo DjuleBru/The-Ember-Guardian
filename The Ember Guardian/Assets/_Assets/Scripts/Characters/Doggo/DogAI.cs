@@ -46,6 +46,7 @@ public class DogAI : MonoBehaviour
     private float minDistanceToPlayer = 1f;
     private float maxDistanceToPlayer = 10f;
     private float distanceToRunToCamp = 5f;
+    private float playerStickedAroundTimer;
 
     private float distanceToPlayerToRoamWhenStickingAround = 1f;
     private float distanceToRunToPlayerWhenStickingAround = 12f;
@@ -105,6 +106,7 @@ public class DogAI : MonoBehaviour
     }
 
     private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
+
         SetIdleBehaviorState(State.idle);
     }
 
@@ -120,7 +122,7 @@ public class DogAI : MonoBehaviour
         }
 
         if(IsNightState()) {
-            CheckClosestIncomingCreature();
+            closestIncomingCreature = CheckClosestIncomingCreature();
         }
 
         distanceToPlayer = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
@@ -214,13 +216,14 @@ public class DogAI : MonoBehaviour
 
             case State.growling:
 
-                if(PlayerIsTooFar()) {
+                if(PlayerIsTooFar() && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
                     ChangeState(State.runWithPlayer);
                     dogJustStoppedGrowling = true;
                     return;
                 }
 
                 CheckCreaturesInBarkRange();
+
 
                 break;
 
@@ -232,7 +235,7 @@ public class DogAI : MonoBehaviour
                     HandleBarkToAttack();
                 }
 
-                if (PlayerIsTooFar()) {
+                if (PlayerIsTooFar() && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
                     ChangeState(State.runWithPlayer);
                     dogJustStoppedGrowling = true;
                     return;
@@ -328,11 +331,30 @@ public class DogAI : MonoBehaviour
 
         if((Mathf.Abs(transform.position.x - destinationPosition.x)) < .2f) {
             ChangeState(State.nightInCampGrowlAtIncomingCreature);
+            playerStickedAroundTimer = 0;
         }
     }
 
-    private void CheckClosestIncomingCreature() {
-        closestIncomingCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(transform.position, 100f, 0, true);
+    private Creature CheckClosestIncomingCreature() {
+        float xPositionToCheckFrom = transform.position.x;
+        float minCampCenterLimit = CampZoneManager.Instance.GetCampCenterMinLimit();
+        float maxCampCenterLimit = CampZoneManager.Instance.GetCampCenterMaxLimit();
+
+        if (Mathf.Abs(Player.Instance.transform.position.x - maxCampCenterLimit) < 4f) {
+            playerStickedAroundTimer += Time.deltaTime;
+            if(playerStickedAroundTimer > 3f) {
+                xPositionToCheckFrom = minCampCenterLimit;
+            }
+        }
+        if (Mathf.Abs(Player.Instance.transform.position.x - minCampCenterLimit) < 4f) {
+            playerStickedAroundTimer += Time.deltaTime;
+            if (playerStickedAroundTimer > 3f) {
+                xPositionToCheckFrom = maxCampCenterLimit;
+            }
+        }
+
+        Vector3 positionToCheckFrom = new Vector3(xPositionToCheckFrom, 0, 0);
+        return CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(positionToCheckFrom, 100f, 0, true);
     }
 
     private void CheckNightInCamp() {
@@ -539,9 +561,11 @@ public class DogAI : MonoBehaviour
 
         if ((closestCreatureDistanceToDog < creatureBarkDistanceToDog) || closestCreatureDistanceToPlayer < creatureBarkDistanceToPlayer) {
             ChangeState(State.barking);
-        } else {
+        }
+        else {
             ChangeState(State.growling);
         }
+       
     }
 
     public void SetInitialPosition(Vector3 position) {

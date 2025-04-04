@@ -13,6 +13,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         PrepareForNight,
         Explore,
         Survive,
+        TrySurvive,
         FindNest,
         DestroyNest,
         HUB_HeadToFire,

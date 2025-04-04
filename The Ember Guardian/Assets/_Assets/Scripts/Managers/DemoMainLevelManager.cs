@@ -375,6 +375,7 @@ public class DemoMainLevelManager : MonoBehaviour
 
         Collectible collectible = sender as Collectible;
         if (collectible.GetCurrencyType() != PlayerCurrencies.CurrencyType.bigBlueOrb) return;
+        if (collectible.GetDroppedByPlayer()) return;
 
         orbCollectedByPlayer = true;
 

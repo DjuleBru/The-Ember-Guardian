@@ -86,7 +86,9 @@ public class LevelObjectives : MonoBehaviour
 
     private IEnumerator ShowLevelObjective() {
         yield return new WaitForSeconds(3f);
-        LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelManager.Instance.GetLevelSO().levelObjectiveType);
+        LevelUI_ObjectiveUI.ObjectiveType objectiveTypeToShow = LevelManager.Instance.GetLevelSO().levelObjectiveType;
+
+        LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(objectiveTypeToShow);
 
         if(LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
 
@@ -224,6 +226,7 @@ public class LevelObjectives : MonoBehaviour
     }
 
     public void SetNightsToSurvive(int nightsToSurvive) {
+        Debug.Log("SetNightsToSurvive " + nightsToSurvive);
         this.nightsToSurvive = nightsToSurvive;
     }
 

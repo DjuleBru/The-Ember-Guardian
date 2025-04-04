@@ -545,20 +545,21 @@ public class CreaturesSpawnManager : MonoBehaviour
         }
 
         if (spawnSide == SpawnSide.Left) {
-
-            if(Player.Instance.transform.position.x < CampZoneManager.Instance.GetMinZoneLimit()) {
-                xSpawnPosition = Player.Instance.transform.position.x - spawnDistance * .66f;
-            } else {
-                xSpawnPosition = CampZoneManager.Instance.GetMinZoneLimit() - spawnDistance;
-            }
+            xSpawnPosition = CampZoneManager.Instance.GetMinZoneLimit() - spawnDistance;
+            //if (Player.Instance.transform.position.x < CampZoneManager.Instance.GetMinZoneLimit()) {
+            //    xSpawnPosition = Player.Instance.transform.position.x - spawnDistance * .66f;
+            //} else {
+            //    xSpawnPosition = CampZoneManager.Instance.GetMinZoneLimit() - spawnDistance;
+            //}
 
         } else {
-            if (Player.Instance.transform.position.x > CampZoneManager.Instance.GetMaxZoneLimit()) {
-                xSpawnPosition = Player.Instance.transform.position.x + spawnDistance * .66f;
-            }
-            else {
-                xSpawnPosition = CampZoneManager.Instance.GetMaxZoneLimit() + spawnDistance;
-            }
+            xSpawnPosition = CampZoneManager.Instance.GetMaxZoneLimit() + spawnDistance;
+            //if (Player.Instance.transform.position.x > CampZoneManager.Instance.GetMaxZoneLimit()) {
+            //    xSpawnPosition = Player.Instance.transform.position.x + spawnDistance * .66f;
+            //}
+            //else {
+            //    xSpawnPosition = CampZoneManager.Instance.GetMaxZoneLimit() + spawnDistance;
+            //}
         }
 
         float yPosition = 2f;
@@ -573,7 +574,7 @@ public class CreaturesSpawnManager : MonoBehaviour
             xSpawnPosition = minLevelXPosition + 10f;
         }
 
-        return new Vector3(xSpawnPosition + UnityEngine.Random.Range(-4, 4), yPosition, 0);
+        return new Vector3(xSpawnPosition + UnityEngine.Random.Range(-4f, 4f), yPosition, 0);
 
     }
 

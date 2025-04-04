@@ -106,6 +106,7 @@ public class CreaturesManager : MonoBehaviour
 
         return closestCreatureInRadius;
     }
+
     public void AddCreatureSpawned(Creature creature) {
         creaturesSpawnedList.Add(creature);
     }

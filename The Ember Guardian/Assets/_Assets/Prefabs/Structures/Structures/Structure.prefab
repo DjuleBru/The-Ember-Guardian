@@ -2107,6 +2107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UIGameObject: {fileID: 1482215751263975668}
+  otherUIGameObjectList: []
   functionUIGameObject: {fileID: 5937401065631940523}
   secondaryFunctionUIGameObject: {fileID: 6468682074147149086}
   upgradeGameObject: {fileID: 3909566777382549958}
@@ -2144,7 +2145,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 385498807
+  m_SortingLayerID: -1057574577
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &7578917674279468050
@@ -2349,9 +2350,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5670219007980291320}
     m_Modifications:
+    - target: {fileID: 1054921438695944797, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1151666123000681640, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Name
       value: OrbTemplateWorldUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151666123000681640, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2348105456408850973, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Pivot.x
@@ -2431,6 +2440,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2348105456408850973, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5890131613221981005, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2522,9 +2535,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 569035577446299523}
     m_Modifications:
+    - target: {fileID: 1054921438695944797, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1151666123000681640, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Name
       value: OrbTemplateWorldUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151666123000681640, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2348105456408850973, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Pivot.x
@@ -2604,6 +2625,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2348105456408850973, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5890131613221981005, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2624,9 +2649,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6067243271262904690}
     m_Modifications:
+    - target: {fileID: 1054921438695944797, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1151666123000681640, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Name
       value: OrbTemplateWorldUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151666123000681640, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2348105456408850973, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Pivot.x
@@ -2706,6 +2739,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2348105456408850973, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5890131613221981005, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

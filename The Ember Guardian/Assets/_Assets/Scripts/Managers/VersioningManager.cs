@@ -32,7 +32,7 @@ public class VersioningManager : MonoBehaviour
     }
 
     public bool CheckIncompatibleSaveFile() {
-
+        return false;
         string key = "buildVersion_" + buildVersion + "_saveFileDeleted";
         string latestBuildSavedKey = "latestBuildSaved";
 

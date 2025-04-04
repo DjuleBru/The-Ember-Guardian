@@ -51,6 +51,7 @@ public class HUBManager_Demo : MonoBehaviour
     private bool gunTipShown;
     private bool handleAnyLevelDefeatHubEvolutionDone;
     private bool playerDiedWithWidowTextShown;
+    private bool merchantsUnlocked;
 
     private void Awake() {
         // First demo hub encounter becomes true when player moves on teleporter
@@ -61,6 +62,7 @@ public class HUBManager_Demo : MonoBehaviour
         demoMainLevelCompleted = ES3.Load("demoMainLevelCompleted", false);
         firstHubEnterWithDemoLevelCompleted = ES3.Load("firstHubEnterWithDemoLevelCompleted", true);
         gunTipShown = ES3.Load("gunTipShown", false);
+        merchantsUnlocked = ES3.Load("merchantsUnlocked", false);
 
         Debug.Log("firstDemoHubEncounter " + firstDemoHubEncounter);
         Debug.Log("demoFirstLevelCompleted " + demoFirstLevelCompleted);
@@ -68,6 +70,7 @@ public class HUBManager_Demo : MonoBehaviour
         Debug.Log("demoLevelLostAmount " + demoLevelLostAmount);
         Debug.Log("demoMainLevelCompleted " + demoMainLevelCompleted);
         Debug.Log("firstHubEnterWithDemoLevelCompleted " + firstHubEnterWithDemoLevelCompleted);
+        Debug.Log("merchantsUnlocked " + merchantsUnlocked);
 
         chestIndicator.gameObject.SetActive(false);
         fireIndicator.gameObject.SetActive(false);
@@ -88,7 +91,7 @@ public class HUBManager_Demo : MonoBehaviour
             }
 
             if (demoFirstLevelCompleted) {
-                if(!demoMainLevelEncountered) {
+                if(!demoMainLevelEncountered && !merchantsUnlocked) {
                     // Player lost level once 
                     StartCoroutine(HandleFirstLevelCompletedHubEvolution());
                     grassyAreaPortal.SetLinkedLevelSO(demoMainLevelSO);
@@ -377,6 +380,7 @@ public class HUBManager_Demo : MonoBehaviour
                     decorationalHubMerchant.SetHasTalkLinesToShow(true, false);
                     decorationalHubMerchant.SetDemoMerchantUnlocked();
                 }
+
             }
 
             if(gemMerchantStoppedInteractingCount == 2) {
@@ -411,6 +415,9 @@ public class HUBManager_Demo : MonoBehaviour
 
             armorerTalkUI.SetTextLinesSO(armorerIntroTextLinesSO);
             trainerTalkUI.SetTextLinesSO(trainerIntroTextLinesSO);
+
+            merchantsUnlocked = true;
+            ES3.Save("merchantsUnlocked", true);
         }
 
 

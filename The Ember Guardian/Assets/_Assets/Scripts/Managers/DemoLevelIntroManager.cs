@@ -115,7 +115,7 @@ public class DemoLevelIntroManager : MonoBehaviour {
     private IEnumerator StartNightAfterDelay() {
         yield return new WaitForSeconds(6f);
 
-        LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.Survive);
+        LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.TrySurvive);
 
         if (dayNightCyclePaused) {
             DayNightManager.Instance.SetCyclePaused(false);

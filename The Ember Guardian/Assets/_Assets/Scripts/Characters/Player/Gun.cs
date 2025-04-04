@@ -46,6 +46,7 @@ public class Gun : MonoBehaviour
     protected float focusedBlastAngle = 1f; // L'angle cible vers lequel le cône doit se diriger
 
     public static event EventHandler OnAnyGunMaxAmmoChanged;
+    public static event EventHandler OnAnyGunStatsUpgraded;
     public static event EventHandler OnAnyGunUnlocked;
 
 
@@ -338,6 +339,7 @@ public class Gun : MonoBehaviour
     }
     public void SetShotsPerClip_Meta(int shotsPerClip) {
         this.shotsPerClip = shotsPerClip;
+        OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void SetMaxAmmo_Meta(int maxAmmo) {
         this.maxAmmo = maxAmmo;
@@ -345,20 +347,27 @@ public class Gun : MonoBehaviour
     }
     public void SetCooldownTime_Meta(float cooldownTime) {
         this.cooldownTime = cooldownTime;
+        OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
-    public void SetReloadTime_Meta(float reloadTime) {
-        this.reloadTime = reloadTime;
+    public void SetReloadTime_Meta(float newReloadTime) {
+        float reloadTimeRecuctionFactor = newReloadTime / reloadTime;
+        reloadTime = newReloadTime;
+        handsReloadTime *= reloadTimeRecuctionFactor;
+        OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void SetCritChange_Meta(float critChance) {
         this.critChance = critChance;
+        OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void SetShootConeAngle_Meta(float shootConeAngle) {
         this.defaultAngle = shootConeAngle;
         ParticleSystem.ShapeModule shootPSShape = shootPS.shape;
         shootPSShape.angle = defaultAngle;
+        OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void SetPelletsPerBullet_Meta(int pelletsPerBullet) {
         this.pelletsPerBullet = pelletsPerBullet;
+        OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetGunBulletLifetime_Meta(float bulletLifetime) {
@@ -367,6 +376,8 @@ public class Gun : MonoBehaviour
         ParticleSystem.MainModule shootPSMain = shootPS.main;
         shootPSMain.startLifetime = bulletLifetime;
         shootPSMain.startSpeed = bulletSpeed;
+
+        OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
     #endregion
@@ -379,6 +390,7 @@ public class Gun : MonoBehaviour
         MetaProgressionManager.Instance.SetGunMaxAmmo(gunSO, maxAmmo);
         MetaProgressionManager.Instance.SetGunCooldown(gunSO, cooldownTime);
         MetaProgressionManager.Instance.SetGunReloadTime(gunSO, reloadTime);
+        MetaProgressionManager.Instance.SetGunHandsReloadTime(gunSO, handsReloadTime);
         MetaProgressionManager.Instance.SetGunCritChance(gunSO, critChance);
         MetaProgressionManager.Instance.SetGunShootConeAnle(gunSO, defaultAngle);
         MetaProgressionManager.Instance.SetGunPelletsPerBullet(gunSO, pelletsPerBullet);

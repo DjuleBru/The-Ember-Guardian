@@ -10,15 +10,23 @@ public class DogCreatureDetectionCollider : MonoBehaviour
     private bool ambushSpawnersInDetectionCollider;
     private CircleCollider2D detectionCollider;
 
+    private float detectionColliderRadius_Day = 14f;
+    private float detectionColliderRadius_Night = 7f;
+
     private void Awake() {
         detectionCollider = GetComponent<CircleCollider2D>();
-        RandomizeDetectionColliderRadius();
+    }
+    private void Start() {
+        DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
+        DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
     }
 
-    private void RandomizeDetectionColliderRadius() {
-        float radius = detectionCollider.radius;
-        float radiusRandomized = radius + UnityEngine.Random.Range(-radius / 10, radius / 10);
-        detectionCollider.radius = radiusRandomized;
+    private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
+        detectionCollider.radius = detectionColliderRadius_Day;
+    }
+
+    private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
+        detectionCollider.radius = detectionColliderRadius_Night;
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

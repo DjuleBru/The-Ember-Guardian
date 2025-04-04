@@ -171,6 +171,7 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     public void SaveLevelGems(float proportionToSave = 1) {
+        Debug.Log("SaveLevelGems");
         List<Vector3> greenGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.greenGem);
         List<Vector3> redGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.redGem);
         List<Vector3> blueGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.blueGem);
@@ -527,7 +528,11 @@ public class MetaProgressionManager : MonoBehaviour
 
         ES3.Save(key, reloadTime);
     }
+    public void SetGunHandsReloadTime(GunSO gunSO, float handsReloadTime) {
+        string key = gunSO.gunType + "_handsReloadTime";
 
+        ES3.Save(key, handsReloadTime);
+    }
     public float GetGunReloadTime(GunSO gunSO) {
         string key = gunSO.gunType + "_reloadTime";
 

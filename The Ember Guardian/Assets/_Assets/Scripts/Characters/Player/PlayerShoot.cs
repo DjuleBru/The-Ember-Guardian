@@ -147,11 +147,13 @@ public class PlayerShoot : MonoBehaviour
         PlayerStats.Instance.OnPlayerAmmoRegenTimeChanged += PlayerStats_OnPlayerAmmoRegenTimeChanged;
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
+        Gun.OnAnyGunStatsUpgraded += Gun_OnAnyGunStatsUpgraded;
 
         if(UICurrencyManager.PlayerInventoryUI != null) {
             UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
         }
     }
+
     private void Update() {
 
         if (loadingShot && !shotLoaded) {
@@ -722,6 +724,12 @@ public class PlayerShoot : MonoBehaviour
     private void GameInput_OnPlayerShootCanceled(object sender, System.EventArgs e) {
         playerIsHoldingDownShoot = false;
     }
+    private void Gun_OnAnyGunStatsUpgraded(object sender, EventArgs e) {
+        PlayerStats.Instance.SetShootCooldownTime(heldGun.GetCooldownTime());
+        PlayerStats.Instance.SetReloadTime(heldGun.GetReloadTime());
+        PlayerStats.Instance.SetHandsReloadTime(heldGun.GetHandsReloadTime());
+    }
+
 
     public void SetCanShoot(bool canShoot) {
         this.canShoot = canShoot;
@@ -847,6 +855,8 @@ public class PlayerShoot : MonoBehaviour
         PlayerStats.Instance.OnPlayerAmmoRegenTimeChanged -= PlayerStats_OnPlayerAmmoRegenTimeChanged;
         PlayerMovement.Instance.OnPlayerRoll -= PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded -= PlayerMovement_OnPlayerRollEnded;
+
+        Gun.OnAnyGunStatsUpgraded -= Gun_OnAnyGunStatsUpgraded;
 
         if (UICurrencyManager.PlayerInventoryUI != null) {
             UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped -= UIOrbManager_OnCurrencyDropped;

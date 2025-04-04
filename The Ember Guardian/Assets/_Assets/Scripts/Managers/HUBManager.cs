@@ -263,6 +263,8 @@ public class HUBManager : MonoBehaviour
 
     public void SaveHub() {
         MetaProgressionManager.Instance.SaveHubGems();
+        Debug.Log("cac");
+        MetaProgressionManager.Instance.SaveLevelGems();
         MetaProgressionManager.Instance.SavePlayerHubPosition(Player.Instance.transform.position);
         MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(nextArrivalThroughPortal);
 

@@ -63,7 +63,7 @@ public class PlayerTooltipManager : MonoBehaviour
         tryReloadAttemptAmount++;
 
         if(tryReloadAttemptAmount > 3) {
-            tooltipLeft.ShowTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("Hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_ammoTip"), InputControlIcons.Control.Reload, 4f);
+            tooltipLeft.ShowTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_ammoTip"), InputControlIcons.Control.Reload, 4f);
         }
     }
 

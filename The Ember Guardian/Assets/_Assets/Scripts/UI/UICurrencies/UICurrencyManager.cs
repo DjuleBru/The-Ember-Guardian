@@ -517,6 +517,7 @@ public class UICurrencyManager : MonoBehaviour
         List<Vector3> currencyPosition = new List<Vector3>();
 
         foreach (Currency_UI currency in GetCurrenciesInBagOfType(currencyType)) {
+            if (currency == null) continue;
             currencyPosition.Add(currency.transform.position);
 
         }

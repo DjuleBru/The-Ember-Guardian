@@ -372,6 +372,7 @@ MonoBehaviour:
   hugeChestAnimator: {fileID: 22100000, guid: 01840261963901c408e21c90b42cd3ac, type: 2}
   weaponChestAnimator: {fileID: 22100000, guid: a932329454047504c9a7f72deb7e2c67, type: 2}
   skillChestAnimator: {fileID: 22100000, guid: 7062f826669f4dd439dd69932f517abb, type: 2}
+  trapChestAnimator: {fileID: 0}
 --- !u!1 &5620205297416123787
 GameObject:
   m_ObjectHideFlags: 0
@@ -808,9 +809,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.04371357, y: 0}
   serializedVersion: 2
-  m_Radius: 1.13
+  m_Radius: 2
 --- !u!114 &3404031314025506151
 MonoBehaviour:
   m_ObjectHideFlags: 0
