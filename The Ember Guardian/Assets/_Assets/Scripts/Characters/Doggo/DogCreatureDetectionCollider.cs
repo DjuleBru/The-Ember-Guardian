@@ -17,8 +17,10 @@ public class DogCreatureDetectionCollider : MonoBehaviour
         detectionCollider = GetComponent<CircleCollider2D>();
     }
     private void Start() {
-        DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
-        DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
+        if(DayNightManager.Instance != null) {
+            DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
+            DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
+        }
     }
 
     private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {

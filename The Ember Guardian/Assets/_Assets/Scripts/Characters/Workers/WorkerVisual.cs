@@ -59,11 +59,14 @@ public class WorkerVisual : MobVisual {
         joblessJob.OnJoblessBlockedByCreatures += JoblessJob_OnJoblessBlockedByCreatures;
         joblessJob.OnJoblessNotBlockedByCreatures += JoblessJob_OnJoblessNotBlockedByCreatures;
 
+        interactionCollider.OnPlayerTriggeredOut += InteractionCollider_OnPlayerTriggeredOut;
+        interactionCollider.OnPlayerTriggeredIn += InteractionCollider_OnPlayerTriggeredIn;
 
         workerWeaponSpriteRenderer.sortingOrder = currentMaxSortingOrder+1;
         workerWeaponGlowSpriteRenderer.sortingOrder = currentMaxSortingOrder+2;
         holdingCurrencyGO.SetActive(false);
     }
+
 
     private void Worker_OnWorkerDroppedAllCurrencied(object sender, System.EventArgs e) {
         holdingCurrencyGO.SetActive(false);
@@ -146,7 +149,8 @@ public class WorkerVisual : MobVisual {
     private void HunterJob_OnHunterChangedState(object sender, System.EventArgs e) {
         HunterJob.HunterState state = hunterJob.GetState();
 
-        if(state == HunterJob.HunterState.blockedByCreatures) {
+        Debug.Log(state);
+        if (state == HunterJob.HunterState.blockedByCreatures) {
             if(!workerBlockedByCreatures) {
                 workerBlockedByCreatures = true;
                 ChangeStatusSprite(exclamationMarkSprite);
@@ -177,6 +181,25 @@ public class WorkerVisual : MobVisual {
         }
     }
 
+    private void InteractionCollider_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        if (workerBlockedByCreatures) {
+            workerStatusSpriteRenderer.sprite = null;
+        }
+
+        if (!hunterFoundAnimal) {
+            workerStatusSpriteRenderer.sprite = null;
+        }
+    }
+
+    private void InteractionCollider_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
+        if (workerBlockedByCreatures) {
+            ChangeStatusSprite(exclamationMarkSprite);
+        }
+
+        if (!hunterFoundAnimal) {
+            ChangeStatusSprite(questionMarkSprite);
+        }
+    }
 
     private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
         if(workerAI.GetJob() != WorkerAI.JobTypes.wild) {

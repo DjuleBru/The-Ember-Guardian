@@ -15,6 +15,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         AimAssist,
         AutoAlignPlayerWithMoveDir,
         GamepadVibrations,
+        AutoReload,
     }
 
     [SerializeField] private SettingType settingType;
@@ -41,6 +42,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         SettingsManager.Instance.OnAimAssistChanged += SettingsManagerOnAimAssistChanged;
         SettingsManager.Instance.OnFullScreenChanged += SettingsManager_OnFullScreenChanged;
         SettingsManager.Instance.OnLanguageChanged += SettingsManager_OnLanguageChanged;
+        SettingsManager.Instance.OnAutoReloadChanged += SettingsManager_OnAutoReloadChanged;
 
         RefreshVisual();
     }
@@ -68,9 +70,15 @@ public class RadioButtonUI_Setting : RadioButtonUI
         if (settingType == SettingType.Language) {
             SettingsManager.Instance.ChangeLanguage();
         }
+        if (settingType == SettingType.AutoReload) {
+            SettingsManager.Instance.ChangeAutoReload();
+        }
     }
 
     private void SettingsManager_OnLanguageChanged(object sender, System.EventArgs e) {
+        RefreshVisual();
+    }
+    private void SettingsManager_OnAutoReloadChanged(object sender, System.EventArgs e) {
         RefreshVisual();
     }
 
@@ -100,6 +108,9 @@ public class RadioButtonUI_Setting : RadioButtonUI
         }
         if (settingType == SettingType.AutoAlignPlayerWithMoveDir) {
             toggledImageGameObject.SetActive(SettingsManager.Instance.GetAlignAimWithMovement());
+        }
+        if (settingType == SettingType.AutoReload) {
+            toggledImageGameObject.SetActive(SettingsManager.Instance.GetAutoReload());
         }
         if (settingType == SettingType.GamepadVibrations) {
             toggledImageGameObject.SetActive(SettingsManager.Instance.GetControllerVibrations());

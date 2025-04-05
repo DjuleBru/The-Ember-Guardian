@@ -296,6 +296,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 8f275e8618ebf20489c5ed7d8b40c964, type: 2}
+    - target: {fileID: 4893194195039516114, guid: 37c2d2b4d6f311d4f82446b8c4de03b5, type: 3}
+      propertyPath: showLeftTooltip
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4990367985121065285, guid: 37c2d2b4d6f311d4f82446b8c4de03b5, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -346,6 +350,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4213647a266adb1409bb42cb7e93183e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3208234834579968847 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4893194195039516114, guid: 37c2d2b4d6f311d4f82446b8c4de03b5, type: 3}
+  m_PrefabInstance: {fileID: 8029336100750829213}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7125449579537361299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8e3dde57216024fb62f8f60fe63c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4296319671391974425 stripped
@@ -405,5 +420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureSOToBuild: {fileID: 11400000, guid: c13f5c95bde7d5944b33dd0fa98ad6ca, type: 2}
   orbTemplateWorldUIParent: {fileID: 2292175990462968593}
+  debugStructureTypeBought: 0
   isAlwaysUnlocked: 0
+  showTooltipOnTrigger: {fileID: 3208234834579968847}
   payCurrencyTemplate: {fileID: 2842503510600184930}

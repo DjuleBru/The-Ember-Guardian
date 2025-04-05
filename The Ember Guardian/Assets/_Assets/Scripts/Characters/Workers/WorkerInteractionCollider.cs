@@ -9,6 +9,8 @@ public class WorkerInteractionCollider : MonoBehaviour
     private WorkerAI workerAI;
     private bool workerCanBeOrdered;
 
+    public event EventHandler OnPlayerTriggeredIn;
+    public event EventHandler OnPlayerTriggeredOut;
     private bool interactionWithWorkersUnlocked;
 
     private void Start() {
@@ -43,8 +45,11 @@ public class WorkerInteractionCollider : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (!interactionWithWorkersUnlocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
+
+        OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
+
+        if (!interactionWithWorkersUnlocked) return;
 
         if (workerAI.GetJob() == WorkerAI.JobTypes.wild || workerAI.GetJob() == WorkerAI.JobTypes.jobless) return;
         if (workerAI.GetFollowingPlayer()) return;
@@ -55,8 +60,11 @@ public class WorkerInteractionCollider : MonoBehaviour
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
-        if (!interactionWithWorkersUnlocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
+
+        OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+
+        if (!interactionWithWorkersUnlocked) return;
 
         if (workerAI.GetJob() == WorkerAI.JobTypes.wild || workerAI.GetJob() == WorkerAI.JobTypes.jobless) return;
         if (workerAI.GetFollowingPlayer()) return;

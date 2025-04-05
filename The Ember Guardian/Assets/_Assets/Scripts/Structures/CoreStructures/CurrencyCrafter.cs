@@ -12,6 +12,7 @@ public class CurrencyCrafter : Structure
     [SerializeField] private PlayerCurrencies.CurrencyType currencyTypeCrafted;
 
     [SerializeField] private int currencyCraftAmount = 3;
+    [SerializeField] private ShowTooltipOnTrigger showTooltipOnTrigger;
 
     private bool craftingCurrency;
     private bool craftedCurrency;
@@ -50,6 +51,8 @@ public class CurrencyCrafter : Structure
             OnCurrencyCraftingStarted?.Invoke(this, EventArgs.Empty);
             OnAnyCurrencyCraftingStarted?.Invoke(this, EventArgs.Empty);
             playerCanInteract = false;
+            showTooltipOnTrigger.HideTooltipShown();
+            showTooltipOnTrigger.SetShowTooltips(false);
         }
     }
 
@@ -69,6 +72,7 @@ public class CurrencyCrafter : Structure
             // Ammo has not finished crafting
 
             StartCoroutine(CollectCurrencyFromCrafter(.2f));
+            showTooltipOnTrigger.SetShowTooltips(true);
 
         }
     }

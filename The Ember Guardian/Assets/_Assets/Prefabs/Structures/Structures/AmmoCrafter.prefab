@@ -774,6 +774,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 977070045626552078, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7176835767419699810}
+    - targetCorrespondingSourceObject: {fileID: 977070045626552078, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6997359004773197039}
     - targetCorrespondingSourceObject: {fileID: 6121088288681775748, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2108989480793335406}
@@ -819,6 +822,29 @@ MonoBehaviour:
   currencySpawnPoint: {fileID: 7441869313988092870}
   currencyTypeCrafted: 7
   currencyCraftAmount: 3
+  showTooltipOnTrigger: {fileID: 6997359004773197039}
+--- !u!114 &6997359004773197039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2919764229281737646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8e3dde57216024fb62f8f60fe63c9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showLeftTooltip: 1
+  showRightTooltip: 0
+  text1ToShowLocalizationKey: menu_hold
+  text2ToShowLocalizationKey: tooltip_ammoCrafterTip
+  amountShownSaveKey: ammoTipShownAmount
+  isControlTooltip: 1
+  control: 5
+  tooltipShowDuration: 999
+  numberOfTimesToShowTooltip: 1
+  hideTooltipOnTriggerExit: 1
 --- !u!4 &4039759338917417633 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2097073961957946881, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}

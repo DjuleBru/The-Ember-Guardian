@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3189735279812403238}
   - component: {fileID: 3091749738831476434}
   - component: {fileID: 7506368512435722411}
+  - component: {fileID: 4893194195039516114}
   m_Layer: 0
   m_Name: StructureLocation
   m_TagString: Untagged
@@ -51,6 +52,7 @@ MonoBehaviour:
   orbTemplateWorldUIParent: {fileID: 8116224641355240844}
   debugStructureTypeBought: 0
   isAlwaysUnlocked: 0
+  showTooltipOnTrigger: {fileID: 4893194195039516114}
 --- !u!114 &3091749738831476434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,6 +111,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.0362334, y: 6.87}
   m_EdgeRadius: 0
+--- !u!114 &4893194195039516114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977070045626552078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8e3dde57216024fb62f8f60fe63c9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showLeftTooltip: 1
+  showRightTooltip: 0
+  text1ToShowLocalizationKey: menu_hold
+  text2ToShowLocalizationKey: tooltip_buildStructureTip
+  amountShownSaveKey: structureLocationTooltipShownAmount
+  isControlTooltip: 1
+  control: 5
+  tooltipShowDuration: 999
+  numberOfTimesToShowTooltip: 2
+  hideTooltipOnTriggerExit: 1
 --- !u!1 &3623742424300580298
 GameObject:
   m_ObjectHideFlags: 0

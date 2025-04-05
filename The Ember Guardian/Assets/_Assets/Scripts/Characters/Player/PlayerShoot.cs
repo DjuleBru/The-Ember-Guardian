@@ -118,6 +118,7 @@ public class PlayerShoot : MonoBehaviour
     private void Start() {
         InitializeGuns();
 
+        autoReload = SettingsManager.Instance.GetAutoReload();
         useDebugGun = DebugManager.Instance.GetDebugMode_PlayerWeapons();
         if (useDebugGun) {
             SetActiveGun(debugGun);
@@ -133,6 +134,7 @@ public class PlayerShoot : MonoBehaviour
             }
         }
 
+        SettingsManager.Instance.OnAutoReloadChanged += SettingsManager_OnAutoReloadChanged;
         GameInput.Instance.OnPlayerShootCanceled += GameInput_OnPlayerShootCanceled;
         GameInput.Instance.OnPlayerShootPerformed += GameInput_OnPlayerShootStarted;
         GameInput.Instance.OnPlayerReloadPerformed += GameInput_OnPlayerReloadPerformed;
@@ -152,6 +154,10 @@ public class PlayerShoot : MonoBehaviour
         if(UICurrencyManager.PlayerInventoryUI != null) {
             UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
         }
+    }
+
+    private void SettingsManager_OnAutoReloadChanged(object sender, EventArgs e) {
+        autoReload = SettingsManager.Instance.GetAutoReload();
     }
 
     private void Update() {
@@ -350,14 +356,21 @@ public class PlayerShoot : MonoBehaviour
         // Handle reload
         if (heldGun.GetCurrentBullet() <= 0) {
             if(autoReload) {
-                reloading = true;
-                reloadTimer = 0;
-                reloadTime = PlayerStats.Instance.GetReloadTime();
-                handsReloadTime = PlayerStats.Instance.GetHandsReloadTime();
-                reloadingHands = true;
+                if (heldGun.GetCurrentBullet() == heldGun.GetBulletsPerAmmoClip()) return;
+                if (reloading) return;
+                if (coolingDown) return;
 
-                heldGun.SetCurrentAmmoClip(heldGun.GetCurrentAmmoClip() - 1);
-                OnPlayerReload?.Invoke(this, EventArgs.Empty);
+                if (heldGun.GetCurrentAmmoClip() == 0) {
+                    OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+
+                    if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count > 0) {
+                        OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag?.Invoke(this, EventArgs.Empty);
+                    }
+
+                    return;
+                };
+
+                ReloadGun();
             } else {
                 return;
             }

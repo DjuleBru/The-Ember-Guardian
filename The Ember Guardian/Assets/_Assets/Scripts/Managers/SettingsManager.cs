@@ -20,6 +20,7 @@ public class SettingsManager : MonoBehaviour
     public event EventHandler OnFullScreenChanged;
     public event EventHandler OnAimAssistChanged;
     public event EventHandler OnLanguageChanged;
+    public event EventHandler OnAutoReloadChanged;
 
 
     private LocalizationManager.Language currentLanguage = LocalizationManager.Language.English;
@@ -29,6 +30,7 @@ public class SettingsManager : MonoBehaviour
     private bool autoSwitchLightGun;
     private bool controllerVibrations;
     private bool fullScreen;
+    private bool autoReload;
 
     private ES3Settings settingsSaveFileSettings;
 
@@ -52,6 +54,7 @@ public class SettingsManager : MonoBehaviour
         autoSwitchLightGun = ES3.Load("autoSwitchLightGun", true, settingsSaveFileSettings);
         controllerVibrations = ES3.Load("controllerVibrations", true, settingsSaveFileSettings);
         fullScreen = ES3.Load("fullScreen", true, settingsSaveFileSettings);
+        autoReload = ES3.Load("autoReload", false, settingsSaveFileSettings);
         currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
     }
 
@@ -115,6 +118,12 @@ public class SettingsManager : MonoBehaviour
 
         ES3.Save("aimAssist", aimAssist, settingsSaveFileSettings);
     }
+    public void ChangeAutoReload() {
+        autoReload = !autoReload;
+        OnAutoReloadChanged?.Invoke(this, EventArgs.Empty);
+
+        ES3.Save("autoReload", autoReload, settingsSaveFileSettings);
+    }
 
     public void ChangeLanguage() {
         int nextIndex = ((int)currentLanguage + 1) % System.Enum.GetValues(typeof(LocalizationManager.Language)).Length;
@@ -150,6 +159,9 @@ public class SettingsManager : MonoBehaviour
 
     public bool GetAimAssist() {
         return aimAssist;
+    }
+    public bool GetAutoReload() {
+        return autoReload;
     }
 
     public LocalizationManager.Language GetLanguage() {

@@ -10,6 +10,7 @@ public class StructureLocation : MonoBehaviour {
     [SerializeField] protected Transform orbTemplateWorldUIParent;
     [SerializeField] protected bool debugStructureTypeBought;
     [SerializeField] protected bool isAlwaysUnlocked;
+    [SerializeField] protected ShowTooltipOnTrigger showTooltipOnTrigger;
 
     protected List<PayCurrencyTemplateWorldUI> buildStructureOrbTemplates = new List<PayCurrencyTemplateWorldUI>();
 
@@ -32,6 +33,9 @@ public class StructureLocation : MonoBehaviour {
 
         if(isAlwaysUnlocked) {
             structureLocationUnlocked = true;
+            showTooltipOnTrigger.SetShowTooltips(true);
+        } else {
+            showTooltipOnTrigger.SetShowTooltips(false);
         }
     }
 
@@ -46,6 +50,7 @@ public class StructureLocation : MonoBehaviour {
 
 
     protected void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
+        showTooltipOnTrigger.HideTooltipShown();
         BuildStructure();
     }
 
@@ -56,6 +61,7 @@ public class StructureLocation : MonoBehaviour {
             structureBuilt = structure
         });
 
+        
         StartCoroutine(DestroyGameObjectAfterFrame());
         return structure;
     }
@@ -110,6 +116,7 @@ public class StructureLocation : MonoBehaviour {
     public virtual void UnlockStructureLocation() {
         structureLocationUnlocked = true;
         OnStructureLocationUnlocked?.Invoke(this, EventArgs.Empty);
+        showTooltipOnTrigger.SetShowTooltips(true);
     }
     public bool GetStructureLocationUnlocked() {
         return structureLocationUnlocked;

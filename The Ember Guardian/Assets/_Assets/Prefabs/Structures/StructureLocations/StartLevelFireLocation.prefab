@@ -104,6 +104,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4893194195039516114, guid: 37c2d2b4d6f311d4f82446b8c4de03b5, type: 3}
+      propertyPath: amountShownSaveKey
+      value: fireLocationTooltipShownAmount
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893194195039516114, guid: 37c2d2b4d6f311d4f82446b8c4de03b5, type: 3}
+      propertyPath: text2ToShowLocalizationKey
+      value: tooltip_lightFire
+      objectReference: {fileID: 0}
     - target: {fileID: 5197003635483398911, guid: 37c2d2b4d6f311d4f82446b8c4de03b5, type: 3}
       propertyPath: currencyTypeToPay
       value: 6
@@ -232,12 +240,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureSOToBuild: {fileID: 11400000, guid: 9829931b3277cd94f913e96ff2756212, type: 2}
   orbTemplateWorldUIParent: {fileID: 5205043198468625557}
+  debugStructureTypeBought: 0
   isAlwaysUnlocked: 0
+  showTooltipOnTrigger: {fileID: 8896445760268940491}
 --- !u!224 &5205043198468625557 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8116224641355240844, guid: 37c2d2b4d6f311d4f82446b8c4de03b5, type: 3}
   m_PrefabInstance: {fileID: 4079865959715258649}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8896445760268940491 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4893194195039516114, guid: 37c2d2b4d6f311d4f82446b8c4de03b5, type: 3}
+  m_PrefabInstance: {fileID: 4079865959715258649}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3824075598355467799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8e3dde57216024fb62f8f60fe63c9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9070180686972205148 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4990367985121065285, guid: 37c2d2b4d6f311d4f82446b8c4de03b5, type: 3}

@@ -99,7 +99,7 @@ public class HunterJob : WorkerJob {
         } else {
 
             if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Dusk) {
-                if (CheckOrbsToCollect() && state != HunterState.hunting) {
+                if (CheckOrbsToCollect() && state != HunterState.hunting && state != HunterState.blockedByCreatures) {
                     ChangeState(HunterState.pickingUpOrbs);
                 };
             }

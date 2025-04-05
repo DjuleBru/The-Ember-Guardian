@@ -7,7 +7,7 @@ public class Shrine : Structure
 {
     public event EventHandler OnShrineActivated;
     public static event EventHandler OnAnyShrineActivated;
-
+    [SerializeField] private ShowTooltipOnTrigger showTooltipOnTrigger;
     public enum ShrineType {
         hunterShrine,
         minerShrine,
@@ -25,7 +25,8 @@ public class Shrine : Structure
 
     protected override void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         base.PayOrbsUI_OnOrbPaymentSuccess(sender, e);
-        
+
+        showTooltipOnTrigger.HideTooltipShown();
         Worker joblessWorker = WorkerManager.Instance.GetFirstJoblessWorker();
 
         if(shrineType == ShrineType.hunterShrine) {
@@ -51,9 +52,11 @@ public class Shrine : Structure
 
     private void RefreshShrineActivation() {
         if (WorkerManager.Instance.GetJoblessWorkerAmount() == 0) {
+            showTooltipOnTrigger.SetShowTooltips(false);
             SetStructurePrimaryFunctionUnlocked(false);
         }
         else {
+            showTooltipOnTrigger.SetShowTooltips(true);
             SetStructurePrimaryFunctionUnlocked(true);
         }
     }
