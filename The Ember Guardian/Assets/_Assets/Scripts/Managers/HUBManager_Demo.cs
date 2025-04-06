@@ -78,7 +78,9 @@ public class HUBManager_Demo : MonoBehaviour
     }
 
     void Start() {
-        if(firstDemoHubEncounter) {
+        ES3.Save("lastLevelEnvironment", LevelSO.LevelEnvironment.City);
+
+        if (firstDemoHubEncounter) {
 
             StartCoroutine(FirstHUBEnterCoroutine());
 
@@ -116,6 +118,7 @@ public class HUBManager_Demo : MonoBehaviour
             }
 
             RefreshPlayerHasGemsIndicators();
+
         }
 
         UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;

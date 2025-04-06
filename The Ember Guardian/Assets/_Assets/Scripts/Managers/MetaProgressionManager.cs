@@ -586,6 +586,7 @@ public class MetaProgressionManager : MonoBehaviour
     }
     #endregion
 
+
     private void OnApplicationQuit() {
         if(destroySaveOnApplicationQuit) {
             ES3.DeleteFile("SaveFile.es3");

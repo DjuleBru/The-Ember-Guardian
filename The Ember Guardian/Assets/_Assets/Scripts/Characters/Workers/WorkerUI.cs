@@ -37,6 +37,7 @@ public class WorkerUI : MonoBehaviour
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
+        if (!worker.GetRecruited()) return;
         int randomized = Random.Range(0, 10);
         if(randomized <= 4) {
             StartCoroutine(ShowDuskStarTextAfterDelay(1f));

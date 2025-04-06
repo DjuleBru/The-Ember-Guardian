@@ -62,6 +62,8 @@ public class LevelManager : MonoBehaviour
             levelHubMerchant.OnPlayerStoppedInteractingWithHubMerchant += LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant;
         }
 
+        ES3.Save("lastLevelEnvironment", levelSO.environmentType);
+
     }
 
     private void RefreshLevelLimits() {

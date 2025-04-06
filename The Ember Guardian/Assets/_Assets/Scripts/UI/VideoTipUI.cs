@@ -63,11 +63,11 @@ public class VideoTipUI : MonoBehaviour
     }
 
     private void Update() {
-        //if (Input.GetKeyDown(KeyCode.V)) {
-        //    PlayTipSO(testTipSO);
-        //    OpenPanel();
-        //    PlayTip();
-        //}
+        if (Input.GetKeyDown(KeyCode.V)) {
+            PlayTipSO(testTipSO);
+            OpenPanel();
+            PlayTip();
+        }
     }
 
     public void SetEndDemoTip() {

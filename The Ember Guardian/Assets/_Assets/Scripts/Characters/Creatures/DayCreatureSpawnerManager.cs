@@ -49,15 +49,12 @@ public class DayCreatureSpawnerManager : MonoBehaviour
             float distanceToCenter = Vector2.Distance(spawnerGroup.transform.position, Vector2.zero);
 
             // Courbe d'ajustement pour éviter une chute trop brutale
-            float difficultyFactor = Mathf.Pow(distanceToCenter / levelMaxSizeXWidth, 0.6f); // Exponent < 1 pour lisser la montée
-
-            // Normaliser la distance par rapport à la largeur du niveau pour obtenir un facteur de difficulté
-            float normalizedDistance = Mathf.InverseLerp(0, levelMaxSizeXWidth, Mathf.Abs(spawnerGroup.transform.position.x));
+            float difficultyFactor = Mathf.Pow(distanceToCenter / levelMaxSizeXWidth, .7f); // plus c'est proche de 0, plus la difficulté est uniformément répartie
 
             // Ajuster la difficulté de base par un facteur lié à la distance du centre
             int groupDifficulty =  Mathf.FloorToInt(difficultyFactor * baseDifficultyPerGroup);
 
-            //Debug.Log("distanceToCenter " + distanceToCenter + " groupDifficulty " + groupDifficulty);
+            Debug.Log("distanceToCenter " + distanceToCenter + " groupDifficulty " + groupDifficulty);
 
             // Sélectionner les créatures à spawner pour ce groupe (maximum 3 types)
             List<CreatureSO> selectedCreatures = new List<CreatureSO>();  // Liste des créatures à spawner

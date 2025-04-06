@@ -65,7 +65,9 @@ public class MainMenuVisual : MonoBehaviour
     private LevelSO.LevelEnvironment levelEnvironment;
 
     private void Start() {
+        // This is saved in LevelManager Start and HubManager Start
         levelEnvironment = ES3.Load("lastLevelEnvironment", LevelSO.LevelEnvironment.City);
+        Debug.Log(levelEnvironment);
 
         if(isDemo) {
             mainGameLogo.SetActive(false);
@@ -75,7 +77,7 @@ public class MainMenuVisual : MonoBehaviour
             demoLogo.SetActive(false);
         }
 
-        if(showDebugEnvironment || isDemo) {
+        if(showDebugEnvironment || VersioningManager.Instance.CheckNewSaveFile()) {
             levelEnvironment = debugEnvironment;
         }
 

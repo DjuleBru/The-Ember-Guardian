@@ -38,13 +38,13 @@ public class DayNightVisualsManager : MonoBehaviour
     [SerializeField] private bool dontHandleMoonLight;
 
     private float nightDawnTransitionAnimationCurveFraction = .05f;
-    private float dawnAnimationCurveFraction = .1f;
+    [SerializeField] private float dawnAnimationCurveFraction = .1f;
 
     private float dawnDayAnimationCurveFraction = .05f;
-    private float dayAnimationCurveFraction = .6f;
+    [SerializeField] private float dayAnimationCurveFraction = .6f;
 
     private float dayDuskAnimationCurveFraction = .05f;
-    private float duskAnimationCurveFraction = .1f;
+    [SerializeField] private float duskAnimationCurveFraction = .1f;
     private float duskNightAnimationCurveFraction = .05f;
 
     private float nightAnimationCurveFraction = .9f;

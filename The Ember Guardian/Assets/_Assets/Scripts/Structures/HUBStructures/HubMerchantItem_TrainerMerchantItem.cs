@@ -397,7 +397,7 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
         if (trainerItemType == TrainerItemType.RespawnHP) {
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentRespawnHP") + " ");
-                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentRespawnHP") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_respawnHP") + " ");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newRespawnHP") + " ");
         }
@@ -418,80 +418,80 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
 
         if (trainerItemType == TrainerItemType.Heal) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_healTime") + " ");
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentHealTime") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_healTime") + " ");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newHealTime") + " ");
         }
 
         if (trainerItemType == TrainerItemType.MaxStamina) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_maxStamina") + " ");
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentMaxStamina") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_maxStamina") + " ");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newMaxStamina") + " ");
         }
 
         if (trainerItemType == TrainerItemType.MoveSpeed) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_moveSpeed") + " ");
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentMoveSpeed") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_moveSpeed") + " ");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newMoveSpeed") + " ");
         }
 
         if (trainerItemType == TrainerItemType.RunSpeed) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_runSpeed") + " ");
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentRunSpeed") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_runSpeed") + " ");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newRunSpeed") + " ");
         }
 
         if (trainerItemType == TrainerItemType.RunStaminaCost) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_runCost") + " ");
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentRunCost") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_runCost") + " ");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newRunCost") + " ");
         }
 
         if (trainerItemType == TrainerItemType.RollDistance) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_rollDistance") + " ");
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentRollDistance") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_rollDistance") + " ");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newRollDistance") + " ");
         }
 
         if (trainerItemType == TrainerItemType.RollStaminaCost) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_rollCost") + " ");
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentRollCost") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_rollCost") + " ");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newRollCost") + " ");
         }
 
         if (trainerItemType == TrainerItemType.BackpackGemSize) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_gemPouchSize") + " ");
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentGemPouchSize") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_gemPouchSize") + " ");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newGemPouchSize") + " ");
         }
 
         if (trainerItemType == TrainerItemType.BackpackOrbSize) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_backpackSize") + " ");
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentBackpackSize") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_backpackSize") + " ");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newBackpackSize") + " ");
         }
 
         if (trainerItemType == TrainerItemType.BackpackAmmoSize) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_ammoPouchSize") + " ");
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentAmmoPouchSize") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_ammoPouchSize") + " ");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newAmmoPouchSize") + " ");
         }

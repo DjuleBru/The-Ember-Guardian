@@ -26,7 +26,6 @@ public class ShowTooltipOnTrigger : MonoBehaviour
         if(amountShown >= numberOfTimesToShowTooltip) {
             tooltipShown = true;
         }
-        Debug.Log(amountShownSaveKey + " " + amountShown);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
