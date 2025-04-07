@@ -16,6 +16,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         AutoAlignPlayerWithMoveDir,
         GamepadVibrations,
         AutoReload,
+        AdjustGamma,
     }
 
     [SerializeField] private SettingType settingType;
@@ -73,6 +74,10 @@ public class RadioButtonUI_Setting : RadioButtonUI
         if (settingType == SettingType.AutoReload) {
             SettingsManager.Instance.ChangeAutoReload();
         }
+        if (settingType == SettingType.AdjustGamma) {
+            AdjustGammaUI.Instance.OpenPanel(false);
+            SettingsMenuUI.Instance.HideSettingsPanel();
+        }
     }
 
     private void SettingsManager_OnLanguageChanged(object sender, System.EventArgs e) {
@@ -117,6 +122,9 @@ public class RadioButtonUI_Setting : RadioButtonUI
         }
         if (settingType == SettingType.Language) {
             toggledText.text = LocalizationManager.Instance.GetLocalizedText(SettingsManager.Instance.GetLanguage().ToString());
+        }
+        if (settingType == SettingType.AdjustGamma) {
+            toggledText.text = LocalizationManager.Instance.GetLocalizedText("menu_adjust");
         }
     }
 

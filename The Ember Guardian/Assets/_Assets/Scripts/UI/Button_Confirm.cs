@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Button_Confirm : MonoBehaviour, IPointerExitHandler {
+public class Button_Confirm : MonoBehaviour {
 
     private bool buttonPressedOnce;
     private Button button;
@@ -16,24 +16,18 @@ public class Button_Confirm : MonoBehaviour, IPointerExitHandler {
             PressButton();
         });
     }
-    public void OnPointerExit(PointerEventData eventData) {
-        if (!buttonPressedOnce) return;
-
-        buttonPressedOnce = false;
-        YourFunction();
-    }
 
     void Update() {
         GameObject currentSelected = EventSystem.current.currentSelectedGameObject;
 
-        if (currentSelected != gameObject && buttonPressedOnce) // Vérifie si ce bouton est sélectionné
+        if (currentSelected != null && currentSelected != gameObject && buttonPressedOnce) // Vérifie si ce bouton est sélectionné
         {
             buttonPressedOnce = false;
-            YourFunction();
+            DeselectButton();
         }
     }
 
-    private void YourFunction() {
+    private void DeselectButton() {
         OnButtonDeselected?.Invoke(this, EventArgs.Empty);
         // Ton action spécifique
     }

@@ -15,6 +15,8 @@ public class PlayerFeedbacks : MonoBehaviour
     [SerializeField] private MMF_Player aimingSightsEndFeedbacks;
     [SerializeField] private MMF_Player exhaustedStartFeedbacks;
     [SerializeField] private MMF_Player exhaustedEndFeedbacks;
+    [SerializeField] private MMF_Player petDogStartFeedbacks;
+    [SerializeField] private MMF_Player petDogEndFeedbacks;
 
     private bool playerExhausted;
 
@@ -28,8 +30,19 @@ public class PlayerFeedbacks : MonoBehaviour
         PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
         PlayerSkills.Instance.OnActiveSkillAdded += PlayerSkills_OnActiveSkillAdded;
 
+        PetDog.Instance.OnPlayerStartedPettingDog += PetDog_OnPlayerStartedPettingDog;
+        PetDog.Instance.OnPlayerEndedPettingDog += PetDog_OnPlayerEndedPettingDog;
+
         PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAIm_OnPlayerAimSightEnded;
         PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAim_OnPlayerAimSightStarted;
+    }
+
+    private void PetDog_OnPlayerEndedPettingDog(object sender, System.EventArgs e) {
+        petDogEndFeedbacks.PlayFeedbacks();
+    }
+
+    private void PetDog_OnPlayerStartedPettingDog(object sender, System.EventArgs e) {
+        petDogStartFeedbacks.PlayFeedbacks();
     }
 
     private void PlayerAim_OnPlayerAimSightStarted(object sender, System.EventArgs e) {

@@ -9,6 +9,7 @@ public class SettingsManager : MonoBehaviour
 
     [SerializeField] private float sfxVolume = .5f;
     [SerializeField] private float musicVolume = .5f;
+    private float gammaLevel = 0f;
 
     public event EventHandler OnSfxVolumeChanged;
     public event EventHandler OnMusicVolumeChanged;
@@ -46,6 +47,7 @@ public class SettingsManager : MonoBehaviour
         sfxVolume = ES3.Load("sfxVolume", .5f, settingsSaveFileSettings);
 
         musicVolume = ES3.Load("musicVolume", .5f, settingsSaveFileSettings);
+        gammaLevel = ES3.Load("gammaLevel", 0f, settingsSaveFileSettings);
 
         currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
         holdToRun = ES3.Load("holdToRun", true, settingsSaveFileSettings);
@@ -69,6 +71,10 @@ public class SettingsManager : MonoBehaviour
         musicVolume = newMusicVolume;
         ES3.Save("musicVolume", newMusicVolume, settingsSaveFileSettings);
         OnMusicVolumeChanged?.Invoke(this, EventArgs.Empty);
+    }
+    public void SetGammaLevel(float newGammaLevel) {
+        gammaLevel = newGammaLevel;
+        ES3.Save("gammaLevel", newGammaLevel, settingsSaveFileSettings);
     }
 
     public void SetLanguage(LocalizationManager.Language language) {
@@ -173,6 +179,9 @@ public class SettingsManager : MonoBehaviour
 
     public float GetMusicVolume() {
         return musicVolume;
+    }
+    public float GetGammaLevel() {
+        return gammaLevel;
     }
     #endregion
 }

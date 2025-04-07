@@ -38,7 +38,7 @@ public class WorkerUI : MonoBehaviour
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
         if (!worker.GetRecruited()) return;
-        int randomized = Random.Range(0, 10);
+        int randomized = Random.Range(1, 11);
         if(randomized <= 4) {
             StartCoroutine(ShowDuskStarTextAfterDelay(1f));
         }
@@ -46,7 +46,7 @@ public class WorkerUI : MonoBehaviour
 
     private IEnumerator ShowDuskStarTextAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
-        int randomized = Random.Range(0, 16);
+        int randomized = Random.Range(1, 16);
         string localizationKey = "worker_duskStart" + randomized;
 
         talkText.text = LocalizationManager.Instance.GetLocalizedText(localizationKey);

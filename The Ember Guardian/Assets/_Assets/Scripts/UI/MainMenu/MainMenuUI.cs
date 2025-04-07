@@ -14,6 +14,7 @@ public class MainMenuUI : MonoBehaviour {
     protected bool confirmExitGame;
     protected bool confirmResetProgression;
 
+    [SerializeField] protected GameObject mainMenuPanel;
     [SerializeField] protected Animator mainMenuPanelAnimator;
     [SerializeField] protected Button continueButton;
     [SerializeField] protected Button newGameButton;
@@ -34,9 +35,10 @@ public class MainMenuUI : MonoBehaviour {
         buttonConfirm_ResetProgression.OnButtonDeselected += ButtonConfirm_ResetProgression_OnButtonDeselected;
 
         if(!VersioningManager.Instance.CheckNewSaveFile() && !VersioningManager.Instance.CheckIncompatibleSaveFile()) {
-            StartCoroutine(FadeInMainMenu(1.5f));
-        } else {
 
+            StartCoroutine(FadeInMainMenu(1.5f));
+
+        } else {
             Debug.Log("Set interactable false");
             continueButton.interactable = false;
         }
@@ -173,15 +175,23 @@ public class MainMenuUI : MonoBehaviour {
         confirmResetProgression = false;
         newGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_newGame");
     }
+
     public void ShowMainMenuButtons() {
         StartCoroutine(FadeInMainMenu(0f));
         mainMenuPanelOpen = true;
     }
 
     public void HideMainMenuButtons() {
-        Debug.Log("HideMainMenuButtons");
         mainMenuPanelAnimator.SetTrigger("FadeOut");
         mainMenuPanelOpen = false;
+    }
+
+    public void HideAllMenuUI() {
+        mainMenuPanel.gameObject.SetActive(false);
+    }
+
+    public void ShowAllMenuUI() {
+        mainMenuPanel.gameObject.SetActive(true);
     }
 
     private void OnDestroy() {

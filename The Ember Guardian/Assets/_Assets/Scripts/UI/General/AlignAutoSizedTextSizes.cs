@@ -14,6 +14,7 @@ public class AlignAutoSizedTextSizes : MonoBehaviour
     }
 
     public void RefreshTextSizes() {
+        if (!gameObject.activeInHierarchy) return;
         StartCoroutine(RefreshTextSizesCoroutine());
     }
 

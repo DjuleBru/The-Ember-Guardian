@@ -7,6 +7,7 @@ using UnityEngine;
 public class DogAnimatorManager : MonoBehaviour {
 
     [SerializeField] private Animator dogBodyAnimator;
+    [SerializeField] private PetDog petDog;
 
     private Animator animator;
     private Dog dog;
@@ -59,6 +60,9 @@ public class DogAnimatorManager : MonoBehaviour {
         dogAI = GetComponentInParent<DogAI>();
         dogMovement = GetComponentInParent<MobMovement>();
 
+        petDog.OnPlayerStartedPettingDog += PetDog_OnPlayerStartedPettingDog;
+        petDog.OnPlayerRefreshedPettingDog += PetDog_OnPlayerRefreshedPettingDog;
+        petDog.OnPlayerStoppedPettingDog += PetDog_OnPlayerStoppedPettingDog;
         Portal.OnAnyPlayerTeleported += Portal_OnAnyPlayerTeleported;
         Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
 
@@ -66,6 +70,7 @@ public class DogAnimatorManager : MonoBehaviour {
         sitTimer = sitTrialRate;
         sleepTimer = sleepTrialRate;
     }
+
 
     private void Start() {
         dogAI.OnStateChanged += DogAI_OnStateChanged;
@@ -78,6 +83,23 @@ public class DogAnimatorManager : MonoBehaviour {
 
     private void DogAI_OnDogBite(object sender, EventArgs e) {
         animator.SetTrigger("Bite");
+    }
+
+    private void PetDog_OnPlayerStartedPettingDog(object sender, EventArgs e) {
+        animator.ResetTrigger("Pet_Loop");
+        animator.ResetTrigger("Pet_End");
+        animator.SetTrigger("Pet");
+    }
+
+    private void PetDog_OnPlayerRefreshedPettingDog(object sender, EventArgs e) {
+        animator.ResetTrigger("Pet");
+        animator.ResetTrigger("Pet_End");
+        animator.SetTrigger("Pet_Loop");
+    }
+    private void PetDog_OnPlayerStoppedPettingDog(object sender, EventArgs e) {
+        animator.ResetTrigger("Pet");
+        animator.ResetTrigger("Pet_Loop");
+        animator.SetTrigger("Pet_End");
     }
 
     private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {
@@ -329,7 +351,7 @@ public class DogAnimatorManager : MonoBehaviour {
 
     }
 
-    private void HandleScaleChange(float watchDir) {
+    public void HandleScaleChange(float watchDir) {
         if (watchDir < 0 && previousWatchDir > 0) {
             previousWatchDir = watchDir;
             Vector3 newScale = new Vector3(-1, 1, 1);

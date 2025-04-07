@@ -24,6 +24,7 @@ public class Player : MonoBehaviour, IDamageable
     private bool inPayCurrencyTriggerArea = false;
     private bool inMerchantTriggerArea = false;
     private bool inOtherInteractableObjectTriggerArea = false;
+    private bool inPetDogTriggerArea = false;
 
     private bool carryingOtherObject = false;
     private bool hoveringWorker = false;
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour, IDamageable
     private bool interactingWithMerchant = false;
     private bool inTeleporter = false;
     private bool cameraHasOtherTarget = false;
+    private bool pettingDog = false;
 
     private bool tabMenuOpen = false;
     private bool pauseMenuOpen = false;
@@ -286,6 +288,12 @@ public class Player : MonoBehaviour, IDamageable
     public void SetInOtherInteractableObjectTriggerArea(bool inOtherInteractableObjectArea) {
         inOtherInteractableObjectTriggerArea = inOtherInteractableObjectArea;
     }
+    public void SetInPetDogTriggerArea(bool inPetDogTriggerArea) {
+        this.inPetDogTriggerArea = inPetDogTriggerArea;
+    }
+    public void SetPettingDog(bool pettingDog) {
+        this.pettingDog = pettingDog;
+    }
 
     public void SetCameraHasOtherTarget(bool cameraHasOtherTarget) {
         this.cameraHasOtherTarget = cameraHasOtherTarget;
@@ -327,21 +335,20 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public bool GetInNoOtherObjectTriggerArea() {
-        return !inPayCurrencyTriggerArea && !inMerchantTriggerArea && !inOtherInteractableObjectTriggerArea && !hoveringWorker;
+        return !inPayCurrencyTriggerArea && !inMerchantTriggerArea && !inOtherInteractableObjectTriggerArea && !hoveringWorker && !inPetDogTriggerArea;
     }
 
     public bool GetCanDropOrbOnTheFloor() {
-
-        return GetAllMenusClosed() && GetInteractingWithNoOtherObject() && GetInNoOtherObjectTriggerArea() && !dead && !cameraHasOtherTarget && !carryingOtherObject;
+        return GetAllMenusClosed() && GetInteractingWithNoOtherObject() && GetInNoOtherObjectTriggerArea() && !dead && !cameraHasOtherTarget && !carryingOtherObject && !inPetDogTriggerArea;
     }
 
     public bool GetPlayerControlInputsEnabled() {
         // Move, aim, shoot
-        return GetAllMenusClosed() && GetInteractingWithNoOtherObject() && !dead && !cameraHasOtherTarget;
+        return GetAllMenusClosed() && GetInteractingWithNoOtherObject() && !dead && !cameraHasOtherTarget && !cameraHasOtherTarget && !pettingDog;
     }
 
     public bool GetCanInteractWithStructureLocation() {
-        return GetAllMenusClosed() && GetPlayerControlInputsEnabled() && !carryingOtherObject && !hoveringWorker && !managingWorkers;
+        return GetAllMenusClosed() && GetPlayerControlInputsEnabled() && !carryingOtherObject && !hoveringWorker && !managingWorkers && !inPetDogTriggerArea;
     }
 
     public void Die() {

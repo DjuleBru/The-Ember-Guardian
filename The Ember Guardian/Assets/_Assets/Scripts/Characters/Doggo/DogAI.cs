@@ -13,7 +13,6 @@ public class DogAI : MonoBehaviour
         nightInCampIdle,
         nightInCampRunToClosestCreature,
         nightInCampGrowlAtIncomingCreature,
-        followingPlayer,
         walkWithPlayer,
         runWithPlayer,
         growling,

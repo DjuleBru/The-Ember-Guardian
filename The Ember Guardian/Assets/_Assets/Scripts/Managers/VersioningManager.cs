@@ -61,11 +61,18 @@ public class VersioningManager : MonoBehaviour
     public bool CheckNewSaveFile() {
 
         if (!ES3.FileExists()) {
+
             if(MainMenuUI_StartupMessagePanel.Instance != null) {
                 MainMenuUI_StartupMessagePanel.Instance.OpenPanel();
                 MainMenuUI_StartupMessagePanel.Instance.SetNewTesterPanel();
             } 
 
+            if(AdjustGammaUI.Instance != null) {
+                AdjustGammaUI.Instance.OpenPanel(true);
+            }
+
+            MusicManager.Instance.PauseMusic();
+            MainMenuUI.Instance.HideAllMenuUI();
             string key = "buildVersion_" + buildVersion + "_saveFileDeleted";
             ES3.Save(key, true);
 
@@ -74,6 +81,15 @@ public class VersioningManager : MonoBehaviour
             return false;
         }
 
+    }
+
+    public bool GetNewSaveFile() {
+        if (!ES3.FileExists()) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public bool GetIsDemo() {

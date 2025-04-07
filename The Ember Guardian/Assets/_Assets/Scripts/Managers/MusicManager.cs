@@ -133,7 +133,9 @@ public class MusicManager : MonoBehaviour {
 
         if (isMainMenuScene) {
             audioSourceA.clip = mainMenuMusic;
-            PlayMusicDelayed(2f);
+            if(!VersioningManager.Instance.GetNewSaveFile()) {
+                PlayMusicDelayed(2f);
+            }
         }
 
     }
@@ -704,6 +706,17 @@ public class MusicManager : MonoBehaviour {
 
     public void StopEndLevelMusic() {
         StopCurrentMusic(3f);
+    }
+
+    public void PauseMusic() {
+        audioSourceA.Pause();
+    }
+
+    public void PlayMusic() {
+        audioSourceA.Play();
+    }
+    public bool GetPlayingMusic() {
+        return audioSourceA.isPlaying;
     }
 
     private void OnDestroy() {

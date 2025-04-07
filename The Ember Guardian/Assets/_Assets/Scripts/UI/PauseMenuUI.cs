@@ -104,6 +104,11 @@ public class PauseMenuUI : MonoBehaviour
         ShowPauseMenu(isPaused);
     }
 
+    public void HidePauseMenu() {
+        pausePanel.SetActive(false);
+    }
+
+
     public void ShowPauseMenu(bool show) {
         pausePanel.SetActive(show);
 
@@ -161,6 +166,7 @@ public class PauseMenuUI : MonoBehaviour
         else {
             confirmExitGame = true;
             exitGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_confirm");
+            SetProgressionSaved(false);
             progressionSavedTextIndicator.SetTrigger("Show");
         }
     }
@@ -174,6 +180,7 @@ public class PauseMenuUI : MonoBehaviour
         else {
             confirmBackToMenu = true;
             backToMenuText.text = LocalizationManager.Instance.GetLocalizedText("menu_confirm");
+            SetProgressionSaved(false);
             progressionSavedTextIndicator.SetTrigger("Show");
         }
     }

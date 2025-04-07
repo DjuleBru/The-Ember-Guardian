@@ -88,6 +88,12 @@ public class SettingsMenuUI : MonoBehaviour
         }
     }
 
+    public void HideSettingsPanel() {
+        panelOpen = false;
+        settingsPanelGameObject.gameObject.SetActive(false);
+        controllerMappingPanelGameObject.gameObject.SetActive(false);
+        keyboardMappingPanelGameObject.gameObject.SetActive(false);
+    }
 
     public void OpenKeyboardMappingGameObject() {
         keyboardMappingPanelGameObject.gameObject.SetActive(true);

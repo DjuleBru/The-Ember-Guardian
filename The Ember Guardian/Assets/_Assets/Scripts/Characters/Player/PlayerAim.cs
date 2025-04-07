@@ -19,7 +19,7 @@ public class PlayerAim : MonoBehaviour
     [SerializeField] private RectTransform ammoBarRightPosition;
 
     [SerializeField] private LayerMask enemyLayer; // Masque de couche pour les ennemis
-    private float autoAimConeAngle = 15f; // Angle du cône de visée autour de la direction de visée
+    private float autoAimConeAngle = 7.5f; // Angle du cône de visée autour de la direction de visée
     private float detectionRange = 15f; // Portée de détection des ennemis
 
     private bool isUsingGamepad;
@@ -55,7 +55,6 @@ public class PlayerAim : MonoBehaviour
     private void Start() {
         float angle = Mathf.Atan2(0, 1) * Mathf.Rad2Deg;
 
-
         foreach (Transform transform in followAimDirTransformList) {
             transform.eulerAngles = new Vector3(0, 0, angle);
         }
@@ -74,15 +73,6 @@ public class PlayerAim : MonoBehaviour
         autoAimActive = SettingsManager.Instance.GetAimAssist();
         isUsingGamepad = GameInput.Instance.IsUsingGamepad();
     }
-
-    private void SettingsManager_OnAutoAlignAimWithMovementChanged(object sender, EventArgs e) {
-        autoAimOnMovement = SettingsManager.Instance.GetAlignAimWithMovement();
-    }
-
-    private void SettingsManager_OnAimAssistChanged(object sender, EventArgs e) {
-        autoAimActive = SettingsManager.Instance.GetAimAssist();
-    }
-
     private void Update() {
         if (isRolling) return;
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
@@ -95,6 +85,14 @@ public class PlayerAim : MonoBehaviour
         }
 
         HandleRecoil();
+    }
+
+    private void SettingsManager_OnAutoAlignAimWithMovementChanged(object sender, EventArgs e) {
+        autoAimOnMovement = SettingsManager.Instance.GetAlignAimWithMovement();
+    }
+
+    private void SettingsManager_OnAimAssistChanged(object sender, EventArgs e) {
+        autoAimActive = SettingsManager.Instance.GetAimAssist();
     }
 
     private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
@@ -379,9 +377,54 @@ public class PlayerAim : MonoBehaviour
         }
     }
 
+    public void SetXScale(float watchDir) {
+        Vector3 localScale = transform.localScale; // Échelle du joueur
+        Vector3 gunLocalScale = gunTransform.localScale; // Échelle de l'arme
+
+        Vector3 imposedWatchDir = new Vector3(watchDir, 0, 0);
+        if (watchDir >= 0) {
+            previousAimDir = -imposedWatchDir;
+
+            // Inverse le personnage
+            localScale.x = -1;
+
+            // Inverse les éléments liés à l'arme
+            gunLocalScale = new Vector3(-1, -1, 1);
+            ammoBarTransform.position = ammoBarRightPosition.position;
+
+            // Applique les nouvelles échelles immédiatement
+            foreach (Transform t in transformAffectedByXScalList) {
+                t.localScale = localScale;
+            }
+            gunTransform.localScale = gunLocalScale;
+            gunShellPSTransform.localScale = gunLocalScale;
+            OnXAimDirChanged?.Invoke(this, EventArgs.Empty);
+        }
+        else if (watchDir <= 0) {
+            previousAimDir = -imposedWatchDir;
+
+            // Retourne le personnage à l'orientation droite
+            localScale.x = 1;
+
+            // Retourne les éléments liés à l'arme
+            gunLocalScale = new Vector3(1, 1, 1);
+            ammoBarTransform.position = ammoBarLeftPosition.position;
+
+
+            // Applique les nouvelles échelles immédiatement
+            foreach (Transform t in transformAffectedByXScalList) {
+                t.localScale = localScale;
+            }
+            gunTransform.localScale = gunLocalScale;
+            gunShellPSTransform.localScale = gunLocalScale;
+            OnXAimDirChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
     public Vector3 GetAimDir() {
         return aimDir;
     }
+
     public float GetAimDirFloat() {
         if(aimDir.x >= 0) {
             return 1f;
@@ -389,6 +432,7 @@ public class PlayerAim : MonoBehaviour
             return -1f;
         }
     }
+
     public Vector3 GetPreviousAimDir() {
         return previousAimDir;
     }

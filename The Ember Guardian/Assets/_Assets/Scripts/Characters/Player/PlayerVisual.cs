@@ -6,6 +6,7 @@ public class PlayerVisual : MonoBehaviour
 {
     [SerializeField] private ParticleSystem exhaustedPS;
     [SerializeField] private Transform aimReticleGamepad;
+    [SerializeField] private GameObject gunGameObject;
 
     private void Awake() {
         Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
@@ -15,9 +16,19 @@ public class PlayerVisual : MonoBehaviour
     private void Start() {
         PlayerMovement.Instance.OnPlayerExhaustionStarted += PlayerMovement_OnPlayerExhaustionStarted;
         PlayerMovement.Instance.OnPlayerExhaustionStopped += PlayerMovement_OnPlayerExhaustionStopped;
+        PetDog.Instance.OnPlayerStartedPettingDog += PetDog_OnPlayerStartedPettingDog;
+        PetDog.Instance.OnPlayerEndedPettingDog += PetDog_OnPlayerEndedPettingDog;
 
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
         //RefreshGamepadReticle();
+    }
+
+    private void PetDog_OnPlayerEndedPettingDog(object sender, System.EventArgs e) {
+        gunGameObject.SetActive(true);
+    }
+
+    private void PetDog_OnPlayerStartedPettingDog(object sender, System.EventArgs e) {
+        gunGameObject.SetActive(false);
     }
 
     private void GameInput_OnPlayerInputChanged(object sender, System.EventArgs e) {

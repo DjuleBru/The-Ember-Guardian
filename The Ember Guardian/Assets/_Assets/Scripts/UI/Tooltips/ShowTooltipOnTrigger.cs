@@ -32,7 +32,6 @@ public class ShowTooltipOnTrigger : MonoBehaviour
         if (collision.gameObject.GetComponent<Player>() == null) return;
         if (!showTooltips) return;
         playerInTriggerArea = true;
-        Debug.Log("amountShown " + amountShown);
         if (tooltipShown) return;
 
         if(isControlTooltip) {

@@ -65,6 +65,32 @@ public class PlayerAnimator : MonoBehaviour
         breatheVisual.SetActive(false);
     }
 
+    private void Update() {
+        if (dead) return;
+        moveDir = GameInput.Instance.GetMovementFloatNormalized();
+
+        //HandleXScale();
+        if (PlayerMovement.Instance.IsMovingBackwards()) {
+            playerAnimator.SetFloat("WalkAnimationSpeed", -walkAnimationSpeed);
+            playerAnimator.SetFloat("RollAnimationSpeed", -1f);
+
+            if (running && playerAnimator.GetBool("Running")) {
+                playerAnimator.SetBool("Running", false);
+            }
+
+        }
+        else {
+            playerAnimator.SetFloat("WalkAnimationSpeed", walkAnimationSpeed);
+            playerAnimator.SetFloat("RollAnimationSpeed", 1f);
+
+            if (running && !playerAnimator.GetBool("Running")) {
+                playerAnimator.SetBool("Running", true);
+            }
+
+        }
+        HandleAnimatorMovementBool();
+    }
+
 
     private void PlayerShoot_OnPlayerResetLMGBipod(object sender, EventArgs e) {
         playerAnimator.SetBool("Crouching", false);
@@ -152,31 +178,6 @@ public class PlayerAnimator : MonoBehaviour
         gunBodyAnimator.SetTrigger("Teleport_Out");
         armBodyAnimator.SetTrigger("Teleport_Out");
         emberBodyAnimator.SetTrigger("Teleport_Out");
-    }
-
-    private void Update() {
-        if (dead) return;
-        moveDir = GameInput.Instance.GetMovementFloatNormalized();
-
-        //HandleXScale();
-        if (PlayerMovement.Instance.IsMovingBackwards()) {
-            playerAnimator.SetFloat("WalkAnimationSpeed", -walkAnimationSpeed);
-            playerAnimator.SetFloat("RollAnimationSpeed", -1f);
-
-            if(running && playerAnimator.GetBool("Running")) {
-                playerAnimator.SetBool("Running", false);
-            }
-
-        } else {
-            playerAnimator.SetFloat("WalkAnimationSpeed", walkAnimationSpeed);
-            playerAnimator.SetFloat("RollAnimationSpeed", 1f);
-
-            if (running && !playerAnimator.GetBool("Running")) {
-                playerAnimator.SetBool("Running", true);
-            }
-
-        }
-        HandleAnimatorMovementBool();
     }
 
     private void PlayerMovement_OnPlayerCrouchedEnded(object sender, System.EventArgs e) {

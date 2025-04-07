@@ -29,6 +29,7 @@ public class SceneLoader : MonoBehaviour
         HUB,
         Level,
         Tutorial,
+        AdjustGamma,
     }
 
     private void Awake() {
