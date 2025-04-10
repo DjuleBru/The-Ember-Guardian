@@ -57,7 +57,7 @@ public class PauseMenuUI_Level : PauseMenuUI {
 
     public override void ExitGameButton() {
         if (confirmExitGame) {
-            Application.Quit();
+            OpenFullGameDescriptionPanel();
         }
         else {
             confirmExitGame = true;

@@ -393,7 +393,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public bool GetCanInteractWithStructureLocation() {
-        return GetAllMenusClosed() && GetPlayerControlInputsEnabled() && !carryingOtherObject && !hoveringWorker && !managingWorkers && !inPetDogTriggerArea;
+        return GetAllMenusClosed() && GetPlayerControlInputsEnabled() && !hoveringWorker && !managingWorkers && !inPetDogTriggerArea;
     }
 
     public void Die() {

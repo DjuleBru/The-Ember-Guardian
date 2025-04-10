@@ -18,6 +18,9 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] protected Animator mainMenuPanelAnimator;
     [SerializeField] protected Button continueButton;
     [SerializeField] protected Button newGameButton;
+    [SerializeField] protected Button discordButton;
+    [SerializeField] protected Button wishlistButton_Menu;
+    [SerializeField] protected Button wishlistButton_FullGamePanel;
     [SerializeField] protected Button_Confirm buttonConfirm_ResetProgression;
     [SerializeField] protected TextMeshProUGUI continueGameText;
     [SerializeField] protected TextMeshProUGUI newGameText;
@@ -34,7 +37,8 @@ public class MainMenuUI : MonoBehaviour {
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
         buttonConfirm_ResetProgression.OnButtonDeselected += ButtonConfirm_ResetProgression_OnButtonDeselected;
 
-        if(!VersioningManager.Instance.CheckNewSaveFile() && !VersioningManager.Instance.CheckIncompatibleSaveFile()) {
+        InitializeButtonNavigation();
+        if (!VersioningManager.Instance.CheckNewSaveFile() && !VersioningManager.Instance.CheckIncompatibleSaveFile()) {
 
             StartCoroutine(FadeInMainMenu(1.5f));
 
@@ -60,7 +64,6 @@ public class MainMenuUI : MonoBehaviour {
 
     public virtual void ResumeCurrentSaveButton() {
         StartCoroutine(ResumeCurrentSaveCoroutine());
-       
     }
 
     public virtual void NewGameButton() {
@@ -174,6 +177,44 @@ public class MainMenuUI : MonoBehaviour {
     private void ButtonConfirm_ResetProgression_OnButtonDeselected(object sender, EventArgs e) {
         confirmResetProgression = false;
         newGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_newGame");
+    }
+
+    private void InitializeButtonNavigation() {
+        Navigation wishlishButtonNav = wishlistButton_Menu.navigation;
+        Navigation wishlishButtonFullGamePanelNav = wishlistButton_FullGamePanel.navigation;
+        Navigation newGameButtonNav = newGameButton.navigation;
+        Navigation discordButtonNav = discordButton.navigation;
+
+        if (!MetaProgressionManager.Instance.GetSavedOnce()) {
+
+            wishlishButtonNav.selectOnDown = newGameButton;
+            wishlistButton_Menu.navigation = wishlishButtonNav;
+
+            wishlishButtonFullGamePanelNav.selectOnLeft = newGameButton;
+            wishlistButton_FullGamePanel.navigation = wishlishButtonFullGamePanelNav;
+
+            discordButtonNav.selectOnLeft = newGameButton;
+            discordButton.navigation = discordButtonNav;
+
+            newGameButtonNav.selectOnUp = wishlistButton_Menu;
+            newGameButton.navigation = newGameButtonNav;
+
+        }
+        else {
+
+            wishlishButtonNav.selectOnDown = continueButton;
+            wishlistButton_Menu.navigation = wishlishButtonNav;
+
+            wishlishButtonFullGamePanelNav.selectOnLeft = continueButton;
+            wishlistButton_FullGamePanel.navigation = wishlishButtonFullGamePanelNav;
+
+            discordButtonNav.selectOnLeft = continueButton;
+            discordButton.navigation = discordButtonNav;
+
+            newGameButtonNav.selectOnUp = continueButton;
+            newGameButton.navigation = newGameButtonNav;
+
+        }
     }
 
     public void ShowMainMenuButtons() {

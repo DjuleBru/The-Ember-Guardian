@@ -13,6 +13,9 @@ public class PauseMenuUI : MonoBehaviour
 
     [SerializeField] protected GameObject firstSelectedButton;
     [SerializeField] protected GameObject pausePanel;
+    [SerializeField] protected GameObject fullGameDescriptionPanel;
+    [SerializeField] protected GameObject fullGameDescriptionPanel_WishlistButton;
+    [SerializeField] protected GameObject fullGameDescriptionPanel_ExitGameButton;
     [SerializeField] protected Button_Confirm buttonConfirm_ExitGame;
     [SerializeField] protected Button_Confirm buttonConfirm_MainMenu;
     [SerializeField] protected TextMeshProUGUI exitGameText;
@@ -45,8 +48,9 @@ public class PauseMenuUI : MonoBehaviour
         buttonConfirm_MainMenu.OnButtonDeselected += ButtonConfirm_MainMenu_OnButtonDeselected;
 
         pausePanel.SetActive(false);
+        fullGameDescriptionPanel.SetActive(false);
 
-        if(SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
 
             SetCanSave(false);
 
@@ -122,6 +126,7 @@ public class PauseMenuUI : MonoBehaviour
 
         } else {
 
+            fullGameDescriptionPanel.SetActive(false);
             SettingsMenuUI.Instance.CloseSettingsPanel();
             Time.timeScale = 1f;
             AudioListener.pause = false;
@@ -159,8 +164,9 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     public virtual void ExitGameButton() {
+        Debug.Log("cac");
         if (confirmExitGame || progressionSaved) {
-            Application.Quit();
+            OpenFullGameDescriptionPanel();
         }
 
         else {
@@ -169,6 +175,10 @@ public class PauseMenuUI : MonoBehaviour
             SetProgressionSaved(false);
             progressionSavedTextIndicator.SetTrigger("Show");
         }
+    }
+
+    public virtual void ExitGameWithNoConfirmation() {
+        Application.Quit();
     }
 
     public void LoadMainMenu() {
@@ -190,6 +200,13 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     #endregion
+
+    protected void OpenFullGameDescriptionPanel() {
+        fullGameDescriptionPanel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(fullGameDescriptionPanel_WishlistButton);
+
+    }
+
     public void SetCanOpenPauseMenu(bool canOpen) {
         canOpenPauseMenu = canOpen;
     }

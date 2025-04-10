@@ -557,6 +557,7 @@ MonoBehaviour:
   - {fileID: 4544320094906451099}
   - {fileID: 484025103827018907}
   obstacleSolidCollider: {fileID: 8693223644010638694}
+  detectionCollicer: {fileID: 3655930304094496441}
   obstacleBuiltAudioClip: {fileID: 8300000, guid: cc9af60211e5e3d4489327c93469c6d7, type: 3}
   orbTemplateWorldUIParent: {fileID: 830177067737035228}
 --- !u!61 &3655930304094496441
@@ -681,6 +682,7 @@ MonoBehaviour:
   currencyTypeToPay: 0
   orbImageOutline: {fileID: 2417488607516134995}
   payCurrencyUIAnimator: {fileID: 2899916506533799793}
+  initialPayCurrencySmoothTime: 4
 --- !u!58 &3258630055826654497
 CircleCollider2D:
   m_ObjectHideFlags: 0

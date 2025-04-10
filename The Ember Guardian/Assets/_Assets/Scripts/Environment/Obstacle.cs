@@ -48,18 +48,20 @@ public class Obstacle : MonoBehaviour {
     }
 
     private void BuildObstacle() {
-      foreach(Collider2D collider in blockingColliders) {
-            collider.enabled = false;
-      }
+        foreach(Collider2D collider in blockingColliders) {
+              collider.enabled = false;
+        }
 
-      obstacleSolidCollider.enabled = true;
-      obstacleBuilt = true;
-      OnObstacleBuilt?.Invoke(this, EventArgs.Empty);
-      OnAnyObstacleBuilt?.Invoke(this, EventArgs.Empty);
+        obstacleSolidCollider.enabled = true;
+        obstacleBuilt = true;
+        OnObstacleBuilt?.Invoke(this, EventArgs.Empty);
+        OnAnyObstacleBuilt?.Invoke(this, EventArgs.Empty);
+        SetTriggerExit();
     }
 
     protected void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
+        //if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
 
         payCurrencyUI.SetPlayerInteracting(true);
     }
@@ -74,6 +76,7 @@ public class Obstacle : MonoBehaviour {
 
     protected void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
+        if (obstacleBuilt) return;
 
         Player.Instance.SetInPayCurrencyArea(true);
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
@@ -83,6 +86,10 @@ public class Obstacle : MonoBehaviour {
 
     protected void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
+        SetTriggerExit();
+    }
+
+    private void SetTriggerExit() {
 
         Player.Instance.SetInPayCurrencyArea(false);
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);

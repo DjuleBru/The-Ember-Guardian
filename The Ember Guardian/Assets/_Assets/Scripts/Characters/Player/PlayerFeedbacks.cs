@@ -8,8 +8,10 @@ public class PlayerFeedbacks : MonoBehaviour
 {
     [SerializeField] private MMF_Player damagedFeedbacks;
     [SerializeField] private MMF_Player passiveShieldDamagedFeedbacks;
-    [SerializeField] private MMF_Player activeMoveSpeedBuffFeedbacks;
-    [SerializeField] private MMF_Player activeShootSpeedBuffFeedbacks;
+    [SerializeField] private MMF_Player activeMoveSpeedBuffStartFeedbacks;
+    [SerializeField] private MMF_Player activeMoveSpeedBuffEndFeedbacks;
+    [SerializeField] private MMF_Player activeShootSpeedBuffStartFeedbacks;
+    [SerializeField] private MMF_Player activeShootSpeedBuffEndFeedbacks;
     [SerializeField] private MMF_Player activeTeleportationFeedbacks;
     [SerializeField] private MMF_Player aimingSightsStartFeedbacks;
     [SerializeField] private MMF_Player aimingSightsEndFeedbacks;
@@ -27,8 +29,9 @@ public class PlayerFeedbacks : MonoBehaviour
         PlayerMovement.Instance.OnPlayerAlmostExhaustionStarted += PlayerMovement_OnPlayerAlmostExhaustionStarted;
         PlayerMovement.Instance.OnPlayerAlmostExhaustionDeactivateFeedbacks += PlayerMovement_OnPlayerAlmostExhaustionDeactivateFeedbacks;
         PassiveShield.OnAnyPassiveShieldDied += PassiveShield_OnAnyPassiveShieldDied;
+
         PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
-        PlayerSkills.Instance.OnActiveSkillAdded += PlayerSkills_OnActiveSkillAdded;
+        PlayerSkills.Instance.OnActiveSkillDeactivated += PlayerSKills_OnActiveSkillDeactivated;
 
         PetDog.Instance.OnPlayerStartedPettingDog += PetDog_OnPlayerStartedPettingDog;
         PetDog.Instance.OnPlayerEndedPettingDog += PetDog_OnPlayerEndedPettingDog;
@@ -36,6 +39,7 @@ public class PlayerFeedbacks : MonoBehaviour
         PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAIm_OnPlayerAimSightEnded;
         PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAim_OnPlayerAimSightStarted;
     }
+
 
     private void PetDog_OnPlayerEndedPettingDog(object sender, System.EventArgs e) {
         petDogEndFeedbacks.PlayFeedbacks();
@@ -72,31 +76,36 @@ public class PlayerFeedbacks : MonoBehaviour
         exhaustedStartFeedbacks.PlayFeedbacks();
     }
 
-    private void PlayerSkills_OnActiveSkillAdded(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
-        if (e.skillItemAdded.skillType == SkillItem.SkillType.activeMoveSpeedBuff) {
-            activeMoveSpeedBuffFeedbacks.GetFeedbackOfType<MMF_LensDistortion_URP>().Duration = e.skillItemAdded.skillSO.activeSkillEffect.GetValueAtLevel(e.skillItemAdded.currentLevel);
-        }
-
-        if (e.skillItemAdded.skillType == SkillItem.SkillType.activeShootSpeedBuff) {
-            activeShootSpeedBuffFeedbacks.GetFeedbackOfType<MMF_Vignette_URP>().Duration = PlayerSkills.Instance.GetShootSpeedBuffDuration();
-            activeShootSpeedBuffFeedbacks.GetFeedbackOfType<MMF_CameraOrthographicSize>().Duration = PlayerSkills.Instance.GetShootSpeedBuffDuration();
-        }
-    }
-
     private void PlayerSkills_OnActiveSkillActivated(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
 
         if(e.skillItemAdded.skillType == SkillItem.SkillType.activeMoveSpeedBuff) {
-            activeMoveSpeedBuffFeedbacks.PlayFeedbacks();
+            activeMoveSpeedBuffStartFeedbacks.PlayFeedbacks();
         }
 
         if (e.skillItemAdded.skillType == SkillItem.SkillType.activeShootSpeedBuff) {
-            activeShootSpeedBuffFeedbacks.PlayFeedbacks();
+            activeShootSpeedBuffStartFeedbacks.PlayFeedbacks();
         }
 
         if (e.skillItemAdded.skillType == SkillItem.SkillType.activeTeleportation) {
             activeTeleportationFeedbacks.PlayFeedbacks();
         }
     }
+
+    private void PlayerSKills_OnActiveSkillDeactivated(object sender, PlayerSkills.OnSkillDeactivatedArgs e) {
+
+        if (e.skillTypeDeactivated == SkillItem.SkillType.activeMoveSpeedBuff) {
+            activeMoveSpeedBuffEndFeedbacks.PlayFeedbacks();
+
+        }
+
+        if (e.skillTypeDeactivated == SkillItem.SkillType.activeShootSpeedBuff) {
+            activeShootSpeedBuffEndFeedbacks.PlayFeedbacks();
+        }
+
+        if (e.skillTypeDeactivated == SkillItem.SkillType.activeTeleportation) {
+        }
+    }
+
 
     private void PassiveShield_OnAnyPassiveShieldDied(object sender, System.EventArgs e) {
         passiveShieldDamagedFeedbacks.PlayFeedbacks();

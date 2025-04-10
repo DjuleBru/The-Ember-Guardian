@@ -45,12 +45,17 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
     }
 
     private void GameInput_OnPlayerInteractPerformed(object sender, System.EventArgs e) {
+
         if(playerCarryingFlag) {
+            if (!Player.Instance.GetInNoOtherObjectTriggerArea()) return;
             Vector3 currentPosition = new Vector3(Player.Instance.transform.position.x, 0f, 0f);
             SetNewFlagPosition(currentPosition);
+
         } else {
+
             if (!playerInTriggerArea) return;
             StartCarryingFlag();
+
         }
     }
 

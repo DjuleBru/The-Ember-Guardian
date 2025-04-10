@@ -34,7 +34,7 @@ public class PlayerSkills : MonoBehaviour
     private bool rightSkillRunning;
 
     public event EventHandler<OnSkillAddedEventArgs> OnActiveSkillActivated;
-    public event EventHandler<OnSkillAddedEventArgs> OnActiveSkillDeactivated;
+    public event EventHandler<OnSkillDeactivatedArgs> OnActiveSkillDeactivated;
     public event EventHandler<OnSkillAddedEventArgs> OnActiveSkillAdded;
     public event EventHandler<OnSkillAddedEventArgs> OnPassiveSkillAdded;
     public event EventHandler OnActiveSkillReady;
@@ -45,6 +45,9 @@ public class PlayerSkills : MonoBehaviour
 
     public class OnSkillAddedEventArgs : EventArgs {
         public SkillItem skillItemAdded;
+    }
+    public class OnSkillDeactivatedArgs : EventArgs {
+        public SkillItem.SkillType skillTypeDeactivated;
     }
 
     private void Awake() {
@@ -124,9 +127,15 @@ public class PlayerSkills : MonoBehaviour
             PlayerStats.Instance.DebuffShootCooldown(shootCooldownBuffValue);
             shootCooldownBuffActive = false;
         }
+
         if (skillType == SkillItem.SkillType.activeTeleportation) {
 
         }
+
+
+        OnActiveSkillDeactivated?.Invoke(this, new OnSkillDeactivatedArgs {
+            skillTypeDeactivated = skillType,
+        });
     }
 
     private void GameInput_OnPlayerRightSkillPerformed(object sender, EventArgs e) {

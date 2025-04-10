@@ -187,7 +187,14 @@ public class PlayerAim : MonoBehaviour
     private void HandleAimMouse()
     {
         Vector3 mousePosition = GetMouseWorldPosition();
-        aimDir = (mousePosition - gunTransform.position).normalized;
+        Vector3 dirToMouse = mousePosition - gunTransform.position;
+
+        if (dirToMouse.magnitude < .4f) {
+            // Trop proche, ne change pas la visée
+            return;
+        }
+
+        aimDir = dirToMouse.normalized;
 
         aimDir.y += currentRecoil;
 

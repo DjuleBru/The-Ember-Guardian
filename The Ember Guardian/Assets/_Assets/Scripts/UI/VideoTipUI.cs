@@ -63,11 +63,11 @@ public class VideoTipUI : MonoBehaviour
     }
 
     private void Update() {
-        //if (Input.GetKeyDown(KeyCode.V)) {
-        //    PlayTipSO(testTipSO);
-        //    OpenPanel();
-        //    PlayTip();
-        //}
+        if (Input.GetKeyDown(KeyCode.V)) {
+            PlayTipSO(testTipSO);
+            OpenPanel();
+            PlayTip();
+        }
     }
 
     public void SetEndDemoTip() {
@@ -200,11 +200,6 @@ public class VideoTipUI : MonoBehaviour
         OnVideoTipPanelClosed?.Invoke(this, new OnVideoTipPanelClosedEventArgs {
             tipTypeShown = shownVideoTipSO.tipType
         });
-    }
-    
-    public void OpenSteamPage() {
-        string url = "https://store.steampowered.com/app/3570060/The_Ember_Guardian/";
-        Application.OpenURL(url);
     }
 
     #region BUTTONS

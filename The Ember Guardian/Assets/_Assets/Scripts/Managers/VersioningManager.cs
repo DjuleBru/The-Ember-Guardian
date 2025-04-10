@@ -24,7 +24,21 @@ public class VersioningManager : MonoBehaviour
         string versionString = buildVersion.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
         if(isDemo) {
-            versionString = demoBuildVersion.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            int major = (int)demoBuildVersion;
+            int minorAndPatch = (int)((demoBuildVersion - major) * 100); // 61
+            int minor = minorAndPatch / 10;  // 6
+            int patch = minorAndPatch % 10;  // 1
+
+            if (minor == 0 && patch == 0) {
+                versionString = $"{major}";
+            }
+            else if (patch == 0) {
+                versionString = $"{major}.{minor}";
+            }
+            else {
+                versionString = $"{major}.{minor}.{patch}";
+            }
+
             versioningText.text = "Demo version " + versionString;
         } else {
             versioningText.text = "Pre-alpha version " + versionString;
