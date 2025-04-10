@@ -47,6 +47,8 @@ public class PlayerUI_HPBar : MonoBehaviour
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
         Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
+        Portal.OnAnyPlayerTeleported += Portal_OnAnyPlayerTeleported;
+        Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
         PlayerStats.Instance.OnPlayerMaxHPChanged += PlayerStats_OnPlayerMaxHPChanged;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
 
@@ -59,6 +61,7 @@ public class PlayerUI_HPBar : MonoBehaviour
 
         hpBarGameObject.SetActive(false);
     }
+
 
     private void PLayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
         tabMenuOpen = true;
@@ -260,6 +263,13 @@ public class PlayerUI_HPBar : MonoBehaviour
         yield return new WaitForSeconds(delay);
         ShowHPBar(2f);
     }
+    private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, EventArgs e) {
+        hpBarGameObject.SetActive(false);
+    }
+
+    private void Portal_OnAnyPlayerTeleported(object sender, EventArgs e) {
+        hpBarGameObject.SetActive(false);
+    }
 
     private void OnDestroy() {
         if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
@@ -280,5 +290,7 @@ public class PlayerUI_HPBar : MonoBehaviour
             }
         }
 
+        Portal.OnAnyPlayerTeleported -= Portal_OnAnyPlayerTeleported;
+        Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
     }
 }

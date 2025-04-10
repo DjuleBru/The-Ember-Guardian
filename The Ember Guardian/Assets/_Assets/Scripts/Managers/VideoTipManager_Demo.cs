@@ -86,6 +86,7 @@ public class VideoTipManager_Demo : MonoBehaviour
 
     private void Fire_OnFireFuelled(object sender, EventArgs e) {
         if (DemoMainLevelManager.Instance.GetDemoMainLevelTutorialCompleted()) return;
+        if (fireManagementTipShown) return;
 
         fireManagementTipShown = true;
         VideoTipUI.Instance.PlayTipSO(fireManagementTip, .5f);

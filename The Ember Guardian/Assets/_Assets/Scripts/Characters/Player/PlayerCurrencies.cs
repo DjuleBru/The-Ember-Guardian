@@ -166,6 +166,8 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     public void CancelCurrencyPayment(bool collectiblesFallInWater) {
+        int collectibleAmount = collectiblesBeingPaid.Count;
+
         foreach(Collectible collectible in collectiblesBeingPaid) {
             collectible.SetMovingForPayment(false);
             collectible.ApplyRandomUpwardsForce(1, 5);
@@ -175,7 +177,21 @@ public class PlayerCurrencies : MonoBehaviour
             }
 
         }
+
+        if(collectiblesFallInWater) {
+            StartCoroutine(MakeCurrenciesRespawnInBag(collectibleAmount, 2f));
+
+        }
+
         collectiblesBeingPaid.Clear();
+    }
+
+    private IEnumerator MakeCurrenciesRespawnInBag(int collectibleAmount, float delay) {
+        yield return new WaitForSeconds(delay);
+        for (int i = 0; i < collectibleAmount; i++) {
+            UICurrencyManager.PlayerInventoryUI.AddCurrencyInBag(CurrencyType.bigBlueOrb);
+            yield return new WaitForSeconds(.25f);
+        }
     }
 
     public bool GetCarryingEmber() {

@@ -241,6 +241,12 @@
    "French": "Siffler Chien/Retour"
  },
  {
+   "key": "menu_pressSwitchWeapon",
+   "English": "Press: Switch Weapon",
+   "German": "Drücken: Waffen wechseln",
+   "French": "Appuyer: Changer d'arme"
+ },
+ {
    "key": "menu_pressManageFollowers",
    "English": "Press: Manage Followers",
    "German": "Drücken: Anhänger verwalten",
@@ -399,7 +405,7 @@
  {
    "key": "menu_adjust",
    "English": "Adjust",
-   "German": "Einstellen",
+   "German": "Anpassen",
    "French": "Ajuster"
  },
  {
@@ -484,7 +490,7 @@
    "key": "Obj_KeepWorkersAlive",
    "English": "Protect your emberlings",
    "German": "Beschütze deine Glutlinge",
-   "French": "Protéger les Emberlings"
+   "French": "Protéger les Braiselins"
  },
  {
    "key": "Obj_SetupCamp",
@@ -514,13 +520,13 @@
    "key": "Obj_FindNest",
    "English": "Find the darklings nest",
    "German": "Finde das Nest der Dunkellinge",
-   "French": "Trouver le nid de Darklings"
+   "French": "Trouver le nid de Sombrelins"
  },
  {
    "key": "Obj_DestroyNest",
    "English": "Destroy the darklings nest",
    "German": "Zerstöre das Nest der Dunkellinge",
-   "French": "Détruire le nid de Darklings"
+   "French": "Détruire le nid de Sombrelins"
  },
  {
    "key": "Obj_HUB_HeadToFire",
@@ -544,7 +550,7 @@
    "key": "Obj_FindAndDestroyNest",
    "English": "Find and destroy the darkling's nest",
    "German": "Finde und zerstöre das Nest der Dunkellinge",
-   "French": "Trouver et détruisez le nid de Darklings"
+   "French": "Trouver et détruisez le nid de Sombrelins"
  },
  {
    "key": "Obj_FindArmorer",
@@ -592,7 +598,7 @@
    "key": "Obj_TrySurvive",
    "English": "Delay the Inevitable",
    "German": "Zögere das Unausweichliche hinaus",
-   "French": "Retarde l'inévitable"
+   "French": "Retarder l'inévitable"
  },
  {
    "key": "SubObj_Keep2WorkersAlive",
@@ -640,13 +646,13 @@
    "key": "SubObj_RecruitEmberlings",
    "English": "Explore to recruit at least 2 emberlings",
    "German": "Erkunde um mindestens 2 Glutlinge zu rekrutieren",
-   "French": "Explorer pour recruter au moins 2 Emberlings"
+   "French": "Explorer pour recruter au moins 2 Braiselins"
  },
  {
    "key": "SubObj_RecruitMoreEmberlings",
    "English": "Explore to recruit more emberlings",
    "German": "Erkunde um weitere Glutlinge zu rekrutieren",
-   "French": "Explorer pour recruter plus d'Emberlings"
+   "French": "Explorer pour recruter plus de Braiselins"
  },
  {
    "key": "SubObj_CollectCrafterAmmo",
@@ -700,13 +706,13 @@
    "key": "SubObj_FindNest",
    "English": "Find the darklings nest",
    "German": "Finde das Dunkelling Nest",
-   "French": "Trouver le nid de Darklings"
+   "French": "Trouver le nid de Sombrelins"
  },
  {
    "key": "SubObj_ClearNest",
    "English": "Clear the nest from the darklings",
    "German": "Befreie das Nest von den Dunkellingen",
-   "French": "Eliminer les Darklings du nid"
+   "French": "Eliminer les Sombrelins du nid"
  },
  {
    "key": "SubObj_LightFire",
@@ -856,7 +862,7 @@
    "key": "VideoTip_Hunters1",
    "English": "Turn emberlings into hunters at the Hunter Shrine",
    "German": "Mache Glutlinge zu Jägern am Jägerschrein",
-   "French": "Transformez vos emberlings en chasseurs a l'Autel des Chasseurs"
+   "French": "Transformez vos braiselins en chasseurs a l'Autel des Chasseurs"
  },
  {
    "key": "VideoTip_Hunters2",
@@ -902,9 +908,9 @@
  },
  {
    "key": "VideoTip_Fire1",
-   "English": "Hold[icon:Interact] to fuel the fire with orbs [icon:bigBlueOrb]",
-   "German": "Halte[icon:Interact] um das Feuer mit Orbs zu schüren [icon:bigBlueOrb]",
-   "French": "Maintenez[icon:Interact] pour alimenter le feu avec des orbes [icon:bigBlueOrb]"
+   "English": "Fuel the fire with orbs [icon:bigBlueOrb]",
+   "German": "Schüre das Feuer mit Orbs [icon:bigBlueOrb]",
+   "French": "Alimentez le feu avec des orbes [icon:bigBlueOrb]"
  },
  {
    "key": "VideoTip_Fire2",
@@ -1028,13 +1034,13 @@
  },
  {
    "key": "VideoTip_GunTip3",
-   "English": "• Press[icon:OpenPlayerMenu] to swap gun.",
+   "English": "• Press[icon:OpenPlayerMenu] to swap guns.",
    "German": "• Drücke[icon:OpenPlayerMenu] um deine Waffe zu wechseln.",
    "French": "• Appuyez sur[icon:OpenPlayerMenu] pour changer d'arme."
  },
  {
    "key": "VideoTip_GunTip4",
-   "English": "• Press[icon:SecondaryGunAbility] to use your secondary fire.",
+   "English": "• Press[icon:SecondaryGunAbility] to use your weapon secondary ability.",
    "German": "• Drücke[icon:SecondaryGunAbility] um das Sekundarfeuer zu verwenden.",
    "French": "• Appuyez sur[icon:SecondaryGunAbility] pour activer votre tir secondaire."
  },
@@ -2002,7 +2008,7 @@
    "key": "The Orb Alchemist_UnlockDescription",
    "English": "Slain darklings will now drop Crimson Orbs.<br>Unlocks the <b>Orb Alchemist</b>, a structure used to aquire skills within a level using Crimson Orbs.",
    "German": "Getötete Dunkellinge lassen jetzt Purpurorbs fallen.<br>Schaltet den <b>Orb Alchemist</b> frei, eine Struktur, die dazu dient, innerhalb eines Levels mithilfe von Purpurorbs Fertigkeiten zu erwerben.",
-   "French": "Les Darklings tués laisseront maintenant tomber des Orbes Rouges.<br>Déverrouille l'<b>Alchimiste d'Orbes</b>, une structure permettant d’acquérir des compétences au sein d’un niveau en utilisant des Orbes Rouges,"
+   "French": "Les sombrelins tués laisseront maintenant tomber des Orbes Rouges.<br>Déverrouille l'<b>Alchimiste d'Orbes</b>, une structure permettant d’acquérir des compétences au sein d’un niveau en utilisant des Orbes Rouges,"
  },
  {
    "key": "The Masked Dealers",
@@ -2038,7 +2044,7 @@
    "key": "Observation Tower_UnlockDescription",
    "English": "Unlocks the <b>Observation Tower </b>, a device used to aquire information on the darkling's night attacks.",
    "German": "Schaltet den <b>Beobachtungsturm</b> frei, ein Gerät, mit dem Informationen über die nächtlichen Angriffe der Dunkellinge gesammelt werden können.",
-   "French": "Déverrouille la <b>Tour d'Observation</b>, un dispositif permettant d’acquérir des informations sur les attaques nocturnes des Darklings."
+   "French": "Déverrouille la <b>Tour d'Observation</b>, un dispositif permettant d’acquérir des informations sur les attaques nocturnes des sombrelins."
  },
  {
    "key": "Dual Arsenal Mastery",
@@ -2416,7 +2422,7 @@
    "key": "tooltip_recruitEmberling",
    "English": "Recruit Emberling",
    "German": "Glutling rekrutieren",
-   "French": "Recruter un Emberling"
+   "French": "Recruter un Braiselin"
  },
  {
    "key": "tooltip_switchStructureFunction",
@@ -2428,7 +2434,7 @@
    "key": "tooltip_dropGems",
    "English": "To drop gems",
    "German": "Um Edelsteine abzulegen",
-   "French": "Lâcher des gemmes"
+   "French": "Déposer les gemmes"
  },
  {
    "key": "tooltip_carryEmber",
@@ -2452,7 +2458,7 @@
    "key": "tooltip_fireLightTip",
    "English": "The fire's light weakens the darklings",
    "German": "Das Licht des Feuers schwächt die Dunkellinge",
-   "French": "La lumière du feu affaiblit les darklings"
+   "French": "La lumière du feu affaiblit les créatures"
  },
  {
    "key": "tooltip_extractEmber",
@@ -2501,6 +2507,18 @@
    "English": "I should finish setting up camp ...",
    "German": "Ich sollte mich zuerst um das Lager kümmern...",
    "French": "Je devrais d'abord installer le camp..."
+ },
+ {
+   "key": "tooltip_selectOtherWeapon",
+   "English": "Change active weapon",
+   "German": "Changer l'arme active",
+   "French": "Aktive Waffe wechseln"
+ },
+ {
+   "key": "tooltip_cannotSwapWeapon",
+   "English": "My weapon was replaced",
+   "German": "Mon arme a été remplacée",
+   "French": "Deine Waffe wurde ersetzt"
  },
  {
    "key": "gemTrader_DemoIntro1",
@@ -2566,7 +2584,7 @@
    "key": "gemTrader_MainDemoLevelLostWithWidow2",
    "English": "Might want to take a closer look at what I’m selling.",
    "German": "Du solltest dir vielleicht genauer ansehen, was ich verkaufe.",
-   "French": "Tu devrais jeter un œil à ce que je vends."
+   "French": "Tu devrais jeter un oeil à ce que je vends."
  },
  {
    "key": "gemTrader_MainDemoLevelLostWithWidow3",
@@ -2632,7 +2650,7 @@
    "key": "watcher_DemoDecorational",
    "English": "<wave a=.2 f=1.5>Emberlings</wave> need guidance… and strength. I offer both.",
    "German": "<wave a=.2 f=1.5>Glutlinge</wave> brauchen Führung … und Kraft. Ich biete ihnen beides.",
-   "French": "<wave a=.2 f=1.5>Les Emberlings</wave> ont besoin de conseils... et de force. Je peux leur offrir les deux."
+   "French": "<wave a=.2 f=1.5>Les Braiselins</wave> ont besoin de conseils... et de force. Je peux leur offrir les deux."
  },
  {
    "key": "structures_DemoDecorational",
@@ -2764,7 +2782,7 @@
    "key": "worker_assignedHunter4",
    "English": "I got this.",
    "German": "Ich schaff' das",
-   "French": "Je gère,"
+   "French": "Je gère."
  },
  {
    "key": "worker_assignedHunter5",
@@ -2902,7 +2920,7 @@
    "key": "worker_duskStart15",
    "English": "Light, please?",
    "German": "Bitte...? Licht?",
-   "French": "Lumière svp ?"
+   "French": "La lumière ... ?"
  }
 ]
 }

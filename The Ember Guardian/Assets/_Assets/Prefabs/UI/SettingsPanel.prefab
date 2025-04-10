@@ -4502,7 +4502,7 @@ GameObject:
   - component: {fileID: 2342460205432882753}
   - component: {fileID: 1912225544264833134}
   m_Layer: 5
-  m_Name: BrowseChoices
+  m_Name: TorchOnOff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4555,7 +4555,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Browse Choices
+  m_text: Torch On/Off
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 936e06df7aac60142948329aab0cde98, type: 2}
   m_sharedMaterial: {fileID: 6846190248783435760, guid: 936e06df7aac60142948329aab0cde98, type: 2}
@@ -4636,7 +4636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizationKey: menu_browseChoices
+  localizationKey: menu_torchOnOff
 --- !u!1 &1162678965568421051
 GameObject:
   m_ObjectHideFlags: 0
@@ -11939,7 +11939,7 @@ GameObject:
   - component: {fileID: 3711130263203957622}
   - component: {fileID: 5398948338795996022}
   m_Layer: 5
-  m_Name: Torch On/Off
+  m_Name: BrowseOptions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11992,7 +11992,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Torch On/Off
+  m_text: Browse Choices
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 936e06df7aac60142948329aab0cde98, type: 2}
   m_sharedMaterial: {fileID: 6846190248783435760, guid: 936e06df7aac60142948329aab0cde98, type: 2}
@@ -12073,7 +12073,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizationKey: menu_torchOnOff
+  localizationKey: menu_browseChoices
 --- !u!1 &3342514121393285510
 GameObject:
   m_ObjectHideFlags: 0
@@ -33359,7 +33359,7 @@ GameObject:
   - component: {fileID: 3003609679081297377}
   - component: {fileID: 7105760192285605861}
   m_Layer: 5
-  m_Name: PressManageFollowers
+  m_Name: PressSwapWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33412,7 +33412,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Press: Manage Followers'
+  m_text: 'Press: Swap Weapon'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 936e06df7aac60142948329aab0cde98, type: 2}
   m_sharedMaterial: {fileID: 6846190248783435760, guid: 936e06df7aac60142948329aab0cde98, type: 2}
@@ -33493,7 +33493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizationKey: menu_pressManageFollowers
+  localizationKey: menu_pressSwitchWeapon
 --- !u!1 &9124699112734688148
 GameObject:
   m_ObjectHideFlags: 0

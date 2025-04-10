@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +31,8 @@ public class HUBManager : MonoBehaviour
     private bool playerInteractedWithMerchantOnce;
     private bool playerExtractedEmber;
     private bool merchantEndedTalking;
+
+    public event EventHandler OnHubSaved;
 
     private void Awake() {
         Instance = this;
@@ -263,7 +266,6 @@ public class HUBManager : MonoBehaviour
 
     public void SaveHub() {
         MetaProgressionManager.Instance.SaveHubGems();
-        Debug.Log("cac");
         MetaProgressionManager.Instance.SaveLevelGems();
         MetaProgressionManager.Instance.SavePlayerHubPosition(Player.Instance.transform.position);
         MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(nextArrivalThroughPortal);
@@ -280,8 +282,9 @@ public class HUBManager : MonoBehaviour
         foreach (Portal portal in allPortalsInHub) {
             MetaProgressionManager.Instance.SetPortalLinkedLevelSOIndex(portal.GetPortalNumber(), portal.GetLinkedLevelSOIndex());
         }
-    }
 
+        OnHubSaved?.Invoke(this, EventArgs.Empty);
+    }
 
     private void OnDestroy() {
 

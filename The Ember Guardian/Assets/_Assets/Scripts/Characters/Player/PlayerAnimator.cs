@@ -13,6 +13,7 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private GameObject breatheVisual;
     [SerializeField] private ParticleSystem respawnPS;
     [SerializeField] private ParticleSystem diePS;
+    [SerializeField] private ParticleSystem runDustPS;
 
     public event EventHandler OnFootStepTriggered;
 
@@ -62,8 +63,12 @@ public class PlayerAnimator : MonoBehaviour
         Player.Instance.OnPlayerDamagedRecentlyEnded += Player_OnPlayerDamagedRecentlyEnded;
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
 
+        PetDog.Instance.OnPlayerStartedPettingDog += PetDog_OnPlayerStartedPettingDog;
+        PetDog.Instance.OnPlayerStoppedPettingDog += PetDogf_OnPlayerStoppedPettingDog;
+
         breatheVisual.SetActive(false);
     }
+
 
     private void Update() {
         if (dead) return;
@@ -91,6 +96,12 @@ public class PlayerAnimator : MonoBehaviour
         HandleAnimatorMovementBool();
     }
 
+    private void PetDogf_OnPlayerStoppedPettingDog(object sender, EventArgs e) {
+        playerAnimator.SetTrigger("PetDogEnd");
+    }
+    private void PetDog_OnPlayerStartedPettingDog(object sender, EventArgs e) {
+        playerAnimator.SetTrigger("PetDogStart");
+    }
 
     private void PlayerShoot_OnPlayerResetLMGBipod(object sender, EventArgs e) {
         playerAnimator.SetBool("Crouching", false);
@@ -291,6 +302,11 @@ public class PlayerAnimator : MonoBehaviour
 
     public void FootStepEvent() {
         OnFootStepTriggered?.Invoke(this, EventArgs.Empty);
+
+        if(PlayerMovement.Instance.GetRunning()) {
+            int randomParticles = UnityEngine.Random.Range(0, 5);
+            runDustPS.Emit(randomParticles);
+        }
     }
 
 

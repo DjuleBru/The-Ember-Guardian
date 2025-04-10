@@ -102,6 +102,8 @@ public class DemoMainLevelManager : MonoBehaviour
         Worker.OnAnyWorkerRecruited += Worker_OnAnyWorkerRecruited;
         Worker.OnAnyWorkerAssignedHunter += Worker_OnAnyWorkerAssignedHunter;
         Worker.OnAnyOrbDroppedByWorker += Worker_OnAnyOrbDroppedByWorker;
+        GameInput.Instance.OnPlayerSwapGunPerformed += GameInput_OnPlayerSwapGunPerformed;
+        GameInput.Instance.OnPlayerSecondaryGunSelected += GameInput_OnPlayerSecondaryGunSelected;
 
         if(rightChest != null) {
             rightChest.OnChestOpened += RightChest_OnChestOpened;
@@ -114,11 +116,7 @@ public class DemoMainLevelManager : MonoBehaviour
             endLevelPortal.OnPlayerMovedOnTeleporter += EndLevelPortal_OnPlayerMovedOnTeleporter;
         }
 
-        if (!demoMainLevelTutorialCompleted) {
-            StartCoroutine(SetDemoTutorialObjective());
-            fireBlockingCollider1.SetColliderSolid();
-            fireBlockingCollider2.SetColliderSolid();
-            Fire.Instance.SetFireInteractionsUpdateLocked(true);
+        if (demoLevelType == DemoLevelType.FirstLevel) {
             WindManager.Instance.DisableWind();
             CreaturesSpawnManager.Instance.SetGrowthFactor(2.2f);
             CreaturesSpawnManager.Instance.SetMinMaxDifficultyGrowthFactor(1.8f);
@@ -126,10 +124,22 @@ public class DemoMainLevelManager : MonoBehaviour
             CreaturesSpawnManager.Instance.SetCanSpawnElite(false);
             CreaturesSpawnManager.Instance.SetSpawnEquallyFromBothSides(true);
 
-            foreach(StructureLocation structureLocation in defensiveStructureLocations) {
-                structureLocation.gameObject.SetActive(false);
-            }
+            if (!demoMainLevelTutorialCompleted) {
+                StartCoroutine(SetDemoTutorialObjective());
+                fireBlockingCollider1.SetColliderSolid();
+                fireBlockingCollider2.SetColliderSolid();
+                Fire.Instance.SetFireInteractionsUpdateLocked(true);
 
+                foreach (StructureLocation structureLocation in defensiveStructureLocations) {
+                    structureLocation.gameObject.SetActive(false);
+                }
+            } else {
+
+                fireBlockingCollider1.SetColliderTrigger();
+                fireBlockingCollider2.SetColliderTrigger();
+                fireFuelledBlockingCollider1.SetColliderTrigger();
+                fireFuelledBlockingCollider2.SetColliderTrigger();
+            }
         }
 
         if(!demoMainLevelEncountered && demoFirstLevelCompleted) {
@@ -139,6 +149,18 @@ public class DemoMainLevelManager : MonoBehaviour
 
         if(demoMainLevelCompleted) {
             StartCoroutine(SetNightsToSurviveAfterDelay());
+        }
+    }
+
+    private void GameInput_OnPlayerSecondaryGunSelected(object sender, EventArgs e) {
+        if(leftPropCollected || rightPropCollected) {
+            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_cannotSwapWeapon"), 3f);
+        }
+    }
+
+    private void GameInput_OnPlayerSwapGunPerformed(object sender, EventArgs e) {
+        if (leftPropCollected || rightPropCollected) {
+            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_cannotSwapWeapon"), 3f);
         }
     }
 
@@ -318,6 +340,7 @@ public class DemoMainLevelManager : MonoBehaviour
             fireFuelledBlockingCollider2.gameObject.SetActive(false);
 
             StartCoroutine(StartFindStockpilesObjectiveAfterDelay(false, 4f));
+            DayNightManager.Instance.SetCyclePaused(false, true);
         };
 
         if (e.tipTypeShown == VideoTipSO.VideoTipType.Hunters) {
@@ -330,20 +353,25 @@ public class DemoMainLevelManager : MonoBehaviour
         Fire.Instance.DisableEmberExtraction();
         Debug.Log("demoFirstLevelCompleted " + demoFirstLevelCompleted);
 
-        if (!demoMainLevelTutorialCompleted) {
-            List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveUIList = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
+        if(demoLevelType == DemoLevelType.FirstLevel) {
+            if (!demoMainLevelTutorialCompleted) {
+                List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveUIList = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
                 LevelUI_ObjectiveUI.SubObjectiveType.TurnOnAmmoCrafter,
                 LevelUI_ObjectiveUI.SubObjectiveType.RecruitEmberlings,
             };
 
-            LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveUIList);
-            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightMainFire);
-            fireBlockingCollider1.SetColliderTrigger();
-            fireBlockingCollider2.SetColliderTrigger();
-            StartCoroutine(PauseDayNightCycleAfterDelay());
+                LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveUIList);
+                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightMainFire);
+                fireBlockingCollider1.SetColliderTrigger();
+                fireBlockingCollider2.SetColliderTrigger();
+                StartCoroutine(PauseDayNightCycleAfterDelay());
 
-            return;
-        };
+                return;
+            }
+            else {
+                StartCoroutine(StartFindStockpilesObjectiveAfterDelay(true, 2f));
+            }
+        }
     }
     private IEnumerator PauseDayNightCycleAfterDelay() {
         yield return new WaitForSeconds(.1f);
@@ -583,5 +611,7 @@ public class DemoMainLevelManager : MonoBehaviour
         Obstacle.OnAnyPlayerTriggeredIn -= Obstacle_OnAnyPlayerTriggeredIn;
         Obstacle.OnAnyPlayerTriggeredOut -= Obstacle_OnAnyPlayerTriggeredOut;
         StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
+        GameInput.Instance.OnPlayerSwapGunPerformed -= GameInput_OnPlayerSwapGunPerformed;
+        GameInput.Instance.OnPlayerSecondaryGunSelected -= GameInput_OnPlayerSecondaryGunSelected;
     }
 }

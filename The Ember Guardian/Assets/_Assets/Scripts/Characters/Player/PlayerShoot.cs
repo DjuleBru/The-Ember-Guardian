@@ -376,7 +376,7 @@ public class PlayerShoot : MonoBehaviour
             }
 
         } else {
-            if(automaticWeapon && playerIsHoldingDownShoot) {
+            if(automaticWeapon && playerIsHoldingDownShoot && !Player.Instance.GetDead()) {
                 Shoot();
             }
         }
@@ -726,7 +726,7 @@ public class PlayerShoot : MonoBehaviour
 
         if (Player.Instance.GetHP() == 0) return;
 
-        if(heldGun.GetCurrentAmmoClip() < 0 || heldGun.GetCurrentBullet() ==0) {
+        if(heldGun.GetCurrentAmmoClip() < 0 || heldGun.GetCurrentBullet() == 0) {
             OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
         } else {
             Shoot();

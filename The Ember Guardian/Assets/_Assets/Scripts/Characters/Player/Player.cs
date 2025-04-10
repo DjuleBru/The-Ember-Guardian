@@ -61,6 +61,10 @@ public class Player : MonoBehaviour, IDamageable
     public event EventHandler OnPlayerDied;
     public event EventHandler OnPlayerRespawned;
     public event EventHandler OnPlayerBackToTentToRespawn;
+    public event EventHandler OnPlayerEnteredAnyInteractableTriggerArea;
+    public event EventHandler OnPlayerExitedAnyInteractableTriggerArea;
+    public event EventHandler OnPlayerStartedInteractingWithAnyInteractable;
+    public event EventHandler OnPlayerStoppedInteractingWithAnyInteractable;
 
     public class OnPlayerChangedHealthEventArgs : EventArgs {
         public int hpChangeAmount;
@@ -173,6 +177,7 @@ public class Player : MonoBehaviour, IDamageable
         if (damagedRecently && !ignoreTemporaryInvincibility) return;
         if (dead) return;
         if (isInvincibleWhileRolling) return;
+        if (inTeleporter) return;
 
         if (ShieldTanksDamage(damage, damageSource)) return;
 
@@ -269,6 +274,12 @@ public class Player : MonoBehaviour, IDamageable
     }
     public void SetManagingWorkers(bool managingWorkers) {
         this.managingWorkers = managingWorkers;
+
+        if(managingWorkers) {
+            OnPlayerStartedInteractingWithAnyInteractable?.Invoke(this, EventArgs.Empty);
+        } else {
+            OnPlayerStoppedInteractingWithAnyInteractable?.Invoke(this, EventArgs.Empty);
+        }
     }
     public void SetManagingWorkersAfterFrame(bool managingWorkers) {
         StartCoroutine(SetManagingWorkersAfterFrameeCoroutine(managingWorkers));
@@ -280,17 +291,47 @@ public class Player : MonoBehaviour, IDamageable
 
     public void SetInPayCurrencyArea(bool inPayCurrencyArea) {
         inPayCurrencyTriggerArea = inPayCurrencyArea;
+
+        if(inPayCurrencyArea) {
+            OnPlayerEnteredAnyInteractableTriggerArea?.Invoke(this, EventArgs.Empty);
+        } else {
+            OnPlayerExitedAnyInteractableTriggerArea?.Invoke(this, EventArgs.Empty);
+        }
     }
+
     public void SetInMerchantTriggerArea(bool inMerchantArea) {
         inMerchantTriggerArea = inMerchantArea;
+
+        if (inMerchantArea) {
+            OnPlayerEnteredAnyInteractableTriggerArea?.Invoke(this, EventArgs.Empty);
+        }
+        else {
+            OnPlayerExitedAnyInteractableTriggerArea?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public void SetInOtherInteractableObjectTriggerArea(bool inOtherInteractableObjectArea) {
         inOtherInteractableObjectTriggerArea = inOtherInteractableObjectArea;
+
+        if (inOtherInteractableObjectArea) {
+            OnPlayerEnteredAnyInteractableTriggerArea?.Invoke(this, EventArgs.Empty);
+        }
+        else {
+            OnPlayerExitedAnyInteractableTriggerArea?.Invoke(this, EventArgs.Empty);
+        }
     }
+
     public void SetInPetDogTriggerArea(bool inPetDogTriggerArea) {
         this.inPetDogTriggerArea = inPetDogTriggerArea;
+
+        if (inPetDogTriggerArea) {
+            OnPlayerEnteredAnyInteractableTriggerArea?.Invoke(this, EventArgs.Empty);
+        }
+        else {
+            OnPlayerExitedAnyInteractableTriggerArea?.Invoke(this, EventArgs.Empty);
+        }
     }
+
     public void SetPettingDog(bool pettingDog) {
         this.pettingDog = pettingDog;
     }
@@ -336,6 +377,10 @@ public class Player : MonoBehaviour, IDamageable
 
     public bool GetInNoOtherObjectTriggerArea() {
         return !inPayCurrencyTriggerArea && !inMerchantTriggerArea && !inOtherInteractableObjectTriggerArea && !hoveringWorker && !inPetDogTriggerArea;
+    }
+
+    public bool GetCanPetDog() {
+        return GetAllMenusClosed() && GetInteractingWithNoOtherObject() && !dead && !cameraHasOtherTarget && !carryingOtherObject && !inPayCurrencyTriggerArea && !inMerchantTriggerArea && !inOtherInteractableObjectTriggerArea && !hoveringWorker;
     }
 
     public bool GetCanDropOrbOnTheFloor() {
@@ -426,14 +471,19 @@ public class Player : MonoBehaviour, IDamageable
 
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         transform.position = teleporterPlayerPosition.position;
+
+        OnPlayerStartedInteractingWithAnyInteractable?.Invoke(this, EventArgs.Empty);
     }
 
     public void ReleasePlayerFromTeleporter() {
         inTeleporter = false;
+
+        OnPlayerStoppedInteractingWithAnyInteractable?.Invoke(this, EventArgs.Empty);
     }
 
     public void StartInteractingWithMerchant() {
         interactingWithMerchant = true;
+        OnPlayerStartedInteractingWithAnyInteractable?.Invoke(this, EventArgs.Empty);
     }
     
     public void StopInteractingWithMerchant() {
@@ -445,6 +495,7 @@ public class Player : MonoBehaviour, IDamageable
     private IEnumerator SetStopInteractingWithMerchantCoroutine() {
         yield return new WaitForSeconds(.5f);
         interactingWithMerchant = false;
+        OnPlayerStoppedInteractingWithAnyInteractable?.Invoke(this, EventArgs.Empty);
     }
 
     #endregion

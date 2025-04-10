@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -173,6 +174,11 @@ public class Structure_Trap : Structure
         return trapSO;
     }
 
+    [Button]
+    private void BreakTrap() {
+        StartCoroutine(BreakTrapAfterRandomDelay());
+    }
+
     private IEnumerator BreakTrapAfterRandomDelay() {
         float randomDelay = UnityEngine.Random.Range(1f, 2f);
         yield return new WaitForSeconds(randomDelay);
@@ -190,5 +196,8 @@ public class Structure_Trap : Structure
 
     protected void OnDestroy() {
         MerchantItem.OnAnyMerchantItemBought -= MerchantItem_OnAnyMerchantItemBought;
+        DayNightManager.Instance.OnNightStart -= DayNightManager_OnNightStart;
+        DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
+        Tent.Instance.OnStructureUpgraded -= Tent_OnStructureUpgraded;
     }
 }

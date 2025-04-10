@@ -206,7 +206,7 @@ public class Collectible : MonoBehaviour
         solidCollider.enabled = false;
     }
 
-    public void SetMovingForPayment(bool moving, float smoothTime = 1f, Transform destination = null) {
+    public virtual void SetMovingForPayment(bool moving, float smoothTime = 1f, Transform destination = null) {
 
         this.movingForPayment = moving;
         this.smoothTime = smoothTime;

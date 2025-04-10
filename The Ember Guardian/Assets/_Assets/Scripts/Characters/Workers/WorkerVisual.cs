@@ -149,7 +149,6 @@ public class WorkerVisual : MobVisual {
     private void HunterJob_OnHunterChangedState(object sender, System.EventArgs e) {
         HunterJob.HunterState state = hunterJob.GetState();
 
-        Debug.Log(state);
         if (state == HunterJob.HunterState.blockedByCreatures) {
             if(!workerBlockedByCreatures) {
                 workerBlockedByCreatures = true;

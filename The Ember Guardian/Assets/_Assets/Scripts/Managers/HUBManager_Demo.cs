@@ -50,6 +50,7 @@ public class HUBManager_Demo : MonoBehaviour
     private bool functionalMerchantsShopsUnlocked;
     private bool gunTipShown;
     private bool handleAnyLevelDefeatHubEvolutionDone;
+    private bool playerDiedWithWidow;
     private bool playerDiedWithWidowTextShown;
     private bool merchantsUnlocked;
 
@@ -121,6 +122,7 @@ public class HUBManager_Demo : MonoBehaviour
 
         }
 
+        HUBManager.Instance.OnHubSaved += HubManager_OnHubSaved;
         UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
         HubMerchantTalkUI.OnAnyMerchantEndTalk += HubMerchantTalkUI_OnAnyMerchantEndTalk;
         
@@ -140,6 +142,7 @@ public class HUBManager_Demo : MonoBehaviour
         HubChest.Instance.OnChestClosed += HubChest_OnChestClosed;
 
     }
+
 
     private IEnumerator HandleFirstLevelCompletedHubEvolution() {
         hubFireEmberExtractable = true;
@@ -201,13 +204,10 @@ public class HUBManager_Demo : MonoBehaviour
             decorationalHubMerchant.SetDemoMerchantUnlocked();
         }
 
-        bool playerDiedWithWidow = ES3.Load("playerDiedWithWidow", false);
-        bool playerDiedWithWidowTextShown = ES3.Load("playerDiedWithWidowTextShown", false);
-        Debug.Log("playerDiedWithWidow " + playerDiedWithWidow);
-        Debug.Log("playerDiedWithWidowTextShown " + playerDiedWithWidowTextShown);
+        playerDiedWithWidow = ES3.Load("playerDiedWithWidow", false);
+        playerDiedWithWidowTextShown = ES3.Load("playerDiedWithWidowTextShown", false);
 
         if (playerDiedWithWidow && !playerDiedWithWidowTextShown) {
-            playerDiedWithWidowTextShown = true;
             gemMerchantTalkUI.SetTextLinesSO(gemMerchantLevelLostWithWidowTextLinesSO);
             gemMerchant.SetHasTalkLinesToShow(true, true);
             SetWidowGemMerchantReward();
@@ -235,8 +235,8 @@ public class HUBManager_Demo : MonoBehaviour
         int redGemAmountInChest = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count;
         int totalRedGemAmount = redGemAmountInBag + redGemAmountInChest;
 
-        int greenGemsToReward = 3 - totalGreenGemAmount;
-        int redGemsToReward = 3 - totalRedGemAmount;
+        int greenGemsToReward = 6 - totalGreenGemAmount;
+        int redGemsToReward = 6 - totalRedGemAmount;
         bool enableReward = false;
 
         if (greenGemsToReward < 0) {
@@ -278,7 +278,6 @@ public class HUBManager_Demo : MonoBehaviour
 
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
         ES3.Save("firstDemoHubEncounter", false);
-        ES3.Save("playerDiedWithWidowTextShown", playerDiedWithWidowTextShown);
     }
 
     private void HubMerchant_OnAnyPlayerTriggeredIn(object sender, System.EventArgs e) {
@@ -343,6 +342,9 @@ public class HUBManager_Demo : MonoBehaviour
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveTypes);
     }
 
+    private void HubManager_OnHubSaved(object sender, System.EventArgs e) {
+        SaveDemoHub();
+    }
     private void HubInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         if (!firstDemoHubEncounter) return;
 
@@ -359,7 +361,6 @@ public class HUBManager_Demo : MonoBehaviour
     }
 
     private void HubMerchantTalkUI_OnAnyMerchantEndTalk(object sender, System.EventArgs e) {
-        if (!firstDemoHubEncounter) return;
 
         HubMerchantTalkUI hubMerchantTalkUI = sender as HubMerchantTalkUI;
         HubMerchant hubMerchant = hubMerchantTalkUI.GetHubMerchant();
@@ -367,32 +368,40 @@ public class HUBManager_Demo : MonoBehaviour
 
         if (hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.GemMerchant) {
 
-            gemMerchantStoppedInteractingCount++;
+            if (firstDemoHubEncounter) {
+                gemMerchantStoppedInteractingCount++;
 
-            if(gemMerchantStoppedInteractingCount == 1) {
-                LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUB_TalkToTrader, LevelUI_ObjectiveUI.SubObjectiveType.HUBDemo_DropGems);
-                chestIndicator.gameObject.SetActive(true);
-                chestIndicatorActive = true;
+                if (gemMerchantStoppedInteractingCount == 1) {
+                    LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUB_TalkToTrader, LevelUI_ObjectiveUI.SubObjectiveType.HUBDemo_DropGems);
+                    chestIndicator.gameObject.SetActive(true);
+                    chestIndicatorActive = true;
 
-                foreach (HubMerchant functionalHubMerchant in functionalDemoHubMerchantList) {
-                    functionalHubMerchant.SetHasTalkLinesToShow(true, false);
-                    functionalHubMerchant.SetDemoMerchantUnlocked();
+                    foreach (HubMerchant functionalHubMerchant in functionalDemoHubMerchantList) {
+                        functionalHubMerchant.SetHasTalkLinesToShow(true, false);
+                        functionalHubMerchant.SetDemoMerchantUnlocked();
+                    }
+
+                    foreach (HubMerchant decorationalHubMerchant in decorationalDemoHubMerchantList) {
+                        decorationalHubMerchant.SetHasTalkLinesToShow(true, false);
+                        decorationalHubMerchant.SetDemoMerchantUnlocked();
+                    }
+
                 }
 
-                foreach (HubMerchant decorationalHubMerchant in decorationalDemoHubMerchantList) {
-                    decorationalHubMerchant.SetHasTalkLinesToShow(true, false);
-                    decorationalHubMerchant.SetDemoMerchantUnlocked();
+                if (gemMerchantStoppedInteractingCount == 2) {
+                    gemMerchantIndicator.gameObject.SetActive(true);
+                }
+                if (gemMerchantStoppedInteractingCount == 3) {
+                    fireIndicator.gameObject.SetActive(true);
+                    fireIndicatorActive = true;
                 }
 
+            } else {
+                if (playerDiedWithWidow && !playerDiedWithWidowTextShown) {
+                    playerDiedWithWidowTextShown = true;
+                }
             }
 
-            if(gemMerchantStoppedInteractingCount == 2) {
-                gemMerchantIndicator.gameObject.SetActive(true);
-            }
-            if (gemMerchantStoppedInteractingCount == 3) {
-                fireIndicator.gameObject.SetActive(true);
-                fireIndicatorActive = true;
-            }
         }
 
     }
@@ -546,6 +555,11 @@ public class HUBManager_Demo : MonoBehaviour
             fireIndicatorActive = true;
             fireIndicator.gameObject.SetActive(true);
         }
+    }
+
+    private void SaveDemoHub() {
+        Debug.Log("SaveDemoHub " + playerDiedWithWidowTextShown);
+        ES3.Save("playerDiedWithWidowTextShown", playerDiedWithWidowTextShown);
     }
 
     private void OnDestroy() {

@@ -65,7 +65,7 @@ public class DogSounds : SoundObject
 
             AudioClip tapAudioClip = petTapAudioClips[Random.Range(0, petTapAudioClips.Length)];
             dogAudioSource.PlayOneShot(tapAudioClip, sfxVolume / 2);
-            StartCoroutine(SetTappingDogSFXAfterSFXEnd(tapAudioClip.length));
+            StartCoroutine(SetTappingDogSFXAfterSFXEnd(tapAudioClip.length * 5f));
         }
 
         if (!pettingDogSFXPlaying) {
@@ -87,9 +87,7 @@ public class DogSounds : SoundObject
     }
 
     private void PetDot_OnPlayerStartedPettingDog(object sender, System.EventArgs e) {
-        AudioClip audioClip = petStartAudioClips[Random.Range(0, petStartAudioClips.Length)];
-        dogAudioSource.PlayOneShot(audioClip, sfxVolume);
-        StartCoroutine(SetPettingDogSFXAfterSFXEnd(audioClip.length));
+        StartCoroutine(PlayPetDogSFXAfterAnimationStart(.6f));
     }
 
     private void PetDog_OnPlayerStoppedPettingDog(object sender, System.EventArgs e) {
@@ -97,8 +95,15 @@ public class DogSounds : SoundObject
     }
     private IEnumerator SetTappingDogSFXAfterSFXEnd(float sfxDuration) {
         pettingDogTapPlaying = true;
-        yield return new WaitForSeconds(sfxDuration * 5);
+        yield return new WaitForSeconds(sfxDuration);
         pettingDogTapPlaying = false;
+    }
+
+    private IEnumerator PlayPetDogSFXAfterAnimationStart(float animationStartDuration) {
+        yield return new WaitForSeconds(animationStartDuration);    
+        AudioClip audioClip = petStartAudioClips[Random.Range(0, petStartAudioClips.Length)];
+        dogAudioSource.PlayOneShot(audioClip, sfxVolume);
+        StartCoroutine(SetPettingDogSFXAfterSFXEnd(audioClip.length));
     }
 
     private IEnumerator SetPettingDogSFXAfterSFXEnd(float sfxDuration) {

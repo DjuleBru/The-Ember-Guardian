@@ -26,7 +26,6 @@ public class ParallaxBackground : MonoBehaviour {
     }
 
     private void Update() {
-        cameraTransform = Camera.main.transform;
     }
 
     private void FixedUpdate() {
@@ -34,6 +33,7 @@ public class ParallaxBackground : MonoBehaviour {
     }
 
     private void HandleParallaxOriginal() {
+        cameraTransform = Camera.main.transform;
         Vector3 deltaMovement = cameraTransform.position - previousCamPos;
         transform.position += new Vector3(deltaMovement.x * parallaxEffectMultiplier.x, deltaMovement.y * parallaxEffectMultiplier.y, 0);
 

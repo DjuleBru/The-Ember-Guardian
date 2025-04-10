@@ -255,7 +255,7 @@ public class GamepadVibrationsManager : MonoBehaviour
             Collectible.OnAnyCollectibleEnteredSlot -= Collectible_OnAnyCollectibleEnteredSlot;
             ItemButtonUI_Visual.OnAnyGemPSTriggered -= ItemButtonUI_Visual_OnAnyGemPSTriggered;
             ItemButtonUI.OnAnyHubMerchantItemFailedBuy -= ItemButtonUI_OnAnyHubMerchantItemFailedBuy;
-            ItemButtonUI.OnAnyButtonSelected -= ItemButtonUI_OnAnyButtonSelected;
         }
+        ItemButtonUI.OnAnyButtonSelected -= ItemButtonUI_OnAnyButtonSelected;
     }
 }

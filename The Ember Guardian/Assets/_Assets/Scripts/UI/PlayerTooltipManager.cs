@@ -15,6 +15,9 @@ public class PlayerTooltipManager : MonoBehaviour
     private float preparedDisplayTime;
 
     private List<GunSO> gunSOAbilityPreparedList;
+    private bool prepareSwapGunTooltip;
+    private bool selectOtherGunTooltipShown;
+    private bool selectOtherGunTooltipBeingShown;
     private bool secondaryWeaponAbilityShown;
 
     private int tryReloadAttemptAmount;
@@ -37,13 +40,17 @@ public class PlayerTooltipManager : MonoBehaviour
     private void Start() {
         GameInput.Instance.OnWeaponSecondaryAbilityPerformed += GameInput_OnWeaponSecondaryAbilityPerformed;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+        HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
         PlayerShoot.Instance.OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag += PlayerShoot_OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
+        PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
 
         gunSOAbilityPreparedList = ES3.Load("gunSOAbilityPreparedList", new List<GunSO>());
+        selectOtherGunTooltipShown = ES3.Load("selectOtherGunTooltipShown", false);
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+
             rifleText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
             rifleText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_rifleText2");
             shotgunText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
@@ -55,6 +62,26 @@ public class PlayerTooltipManager : MonoBehaviour
         }
     }
 
+    private void PlayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
+        if(selectOtherGunTooltipBeingShown) {
+            tooltipLeft.HideTooltip();
+        }
+    }
+
+    private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, System.EventArgs e) {
+        HubMerchantItem merchantItem = (HubMerchantItem)sender;
+        if (merchantItem != null) {
+            if (merchantItem is HUBMerchantItem_GunMerchantItem) {
+                HUBMerchantItem_GunMerchantItem gunItem = merchantItem as HUBMerchantItem_GunMerchantItem;
+
+                if (gunItem.GetGunItemCategory() == HUBMerchantItem_GunMerchantItem.GunItemCategory.newGun) {
+                    if (selectOtherGunTooltipShown) return;
+
+                    prepareSwapGunTooltip = true;
+                }
+            }
+        }
+    }
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
         tryReloadAttemptAmount = 0;
     }
@@ -77,6 +104,7 @@ public class PlayerTooltipManager : MonoBehaviour
         if(hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.GunMerchant) {
 
             TryShowGunSecondaryAbilityTooltip();
+            TryShowChangeGunTooltip();
 
         }
     }
@@ -105,6 +133,18 @@ public class PlayerTooltipManager : MonoBehaviour
             ES3.Save("gunSOAbilityPreparedList", gunSOAbilityPreparedList);
         }
 
+    }
+
+    private void TryShowChangeGunTooltip() {
+        if (!prepareSwapGunTooltip) return;
+        if (selectOtherGunTooltipShown) return;
+
+        PrepareTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("tooltip_selectOtherWeapon"), InputControlIcons.Control.OpenPlayerMenu, 99f);
+        StartCoroutine(ShowPreparedTooltipInstructionAfterDelay(1.5f));
+
+        selectOtherGunTooltipShown = true;
+        selectOtherGunTooltipBeingShown = true;
+        ES3.Save("selectOtherGunTooltipShown", true);
     }
 
     private void GameInput_OnWeaponSecondaryAbilityPerformed(object sender, System.EventArgs e) {
@@ -162,5 +202,6 @@ public class PlayerTooltipManager : MonoBehaviour
         GameInput.Instance.OnWeaponSecondaryAbilityPerformed -= GameInput_OnWeaponSecondaryAbilityPerformed;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         PlayerShoot.Instance.OnPlayerSwappedGun -= PlayerShoot_OnPlayerSwappedGun;
+        HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
     }
 }

@@ -79,7 +79,7 @@ public class Fire : Structure, IDamageable {
     private float initialFireAOEValue;
     private float finalFireAOEValue;
 
-    private float fuelFireNightCooldown = 3f;
+    private float fuelFireNightCooldown = 5f;
     private float fuelFireNightTimer;
     private bool fuelFireOnCooldown;
 
@@ -260,7 +260,6 @@ public class Fire : Structure, IDamageable {
         ember.ApplyRandomForceRandomDir(4,8, true,4, 8, false);
         ember.SetCollectibleUnInteractable(1f);
         ember.SetCanNeverBePickedUpByWorker();
-        ember.EmphasizePosition();
         ActivateStructureSecondaryFunctionInteraction(false);
         emberExtracted = true;
         OnFireEmberExtracted?.Invoke(this, EventArgs.Empty);
@@ -545,6 +544,10 @@ public class Fire : Structure, IDamageable {
 
     public bool GetFuelFireOnCooldown() {
         return fuelFireOnCooldown;
+    }
+
+    public bool GetIsHubFire() {
+        return isHubFire;
     }
 
     public float GetFuelFireCooldownTimerNormalized() {

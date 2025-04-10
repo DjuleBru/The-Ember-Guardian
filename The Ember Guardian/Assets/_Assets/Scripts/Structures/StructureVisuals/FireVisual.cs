@@ -198,6 +198,11 @@ public class FireVisual : StructureVisual
 
         lerping = true;
         lerpTimer = 0;
+
+        if (fire.GetIsHubFire()) {
+            fireAnimator.ResetTrigger("Calm");
+            fireAnimator.SetTrigger("Mild");
+        }
     }
 
     private void Fire_OnFireEmberExtractionStopped(object sender, System.EventArgs e) {

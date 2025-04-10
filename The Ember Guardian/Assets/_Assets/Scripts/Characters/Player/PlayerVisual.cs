@@ -20,11 +20,11 @@ public class PlayerVisual : MonoBehaviour
         PetDog.Instance.OnPlayerEndedPettingDog += PetDog_OnPlayerEndedPettingDog;
 
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
-        //RefreshGamepadReticle();
     }
 
     private void PetDog_OnPlayerEndedPettingDog(object sender, System.EventArgs e) {
         gunGameObject.SetActive(true);
+
     }
 
     private void PetDog_OnPlayerStartedPettingDog(object sender, System.EventArgs e) {

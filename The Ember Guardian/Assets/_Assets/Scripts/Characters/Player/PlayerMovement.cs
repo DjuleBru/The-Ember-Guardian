@@ -537,6 +537,10 @@ public class PlayerMovement : MonoBehaviour {
         return null; // Pas de plateforme touchée
     }
 
+    public bool GetRunning() {
+        return isRunning;
+    }
+
     public float GetMoveSpeed() {
         return rb.velocity.x;
     }
@@ -545,6 +549,11 @@ public class PlayerMovement : MonoBehaviour {
     }
     public float GetMoveSpeedNormalized() {
         return moveSpeed / PlayerStats.Instance.GetMoveSpeed();
+    }
+
+    public void StopMovement() {
+        rb.velocity = Vector2.zero;
+       
     }
 
     private void OnDrawGizmos() {

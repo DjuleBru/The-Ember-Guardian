@@ -193,7 +193,6 @@ public class CreaturesManager : MonoBehaviour
     }
 
     public bool GetCreatureAggroingPlayer() {
-        Debug.Log("GetCreatureAggroingPlayer " + (mobsAggroingPlayer.Count != 0));
         return mobsAggroingPlayer.Count != 0;
     }
 

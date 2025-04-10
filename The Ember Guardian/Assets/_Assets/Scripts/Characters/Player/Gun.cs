@@ -185,7 +185,7 @@ public class Gun : MonoBehaviour
         currentAngle = defaultAngle;
         targetAngle = defaultAngle;
         sightAngle = defaultAngle / 3;
-        overclockedAngle = defaultAngle * 2f;
+        overclockedAngle = defaultAngle * 3f;
         lmgSetupAngle = defaultAngle / 5f;
 
         if(gunSO.bulletIsParticle) {

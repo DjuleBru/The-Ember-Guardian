@@ -241,6 +241,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void Player_OnPlayerDied(object sender, EventArgs e) {
+        if (isPlayingNightMusic || isPlayingNightIntroMusic) return;
         StopCurrentMusic(1f);
     }
 
@@ -265,7 +266,7 @@ public class MusicManager : MonoBehaviour {
 
         StartCoroutine(PlayIntroNighMusicDelayed(2f));
 
-        SetAudioTargerVolume(nightMusicAudioVolume);
+        SetAudioTargerVolume(nightMusicAudioVolume * musicSettingVolume);
         //StartCoroutine(FadeInDelayedCoroutine(3f, 4f));
     }
 
@@ -386,7 +387,7 @@ public class MusicManager : MonoBehaviour {
         yield return new WaitForSeconds(delay);
         audioSourceA.clip = nightMusicIntro;
         isPlayingNightIntroMusic = true;
-        audioSourceA.volume = nightMusicAudioVolume;
+        audioSourceA.volume = nightMusicAudioVolume * musicSettingVolume;
         audioSourceA.Play();
         isUsingAudioSourceA = true;
 
@@ -557,7 +558,7 @@ public class MusicManager : MonoBehaviour {
 
     private IEnumerator CrossfadeCoroutine(AudioSource fromSource, AudioSource toSource, float duration) {
         float elapsedTime = 0f;
-        float maxVolume = nightMusicAudioVolume;
+        float maxVolume = nightMusicAudioVolume * musicSettingVolume;
 
         float clipTime = fromSource.time; // Récupère le temps de lecture actuel
         if (clipTime > fromSource.clip.length - 1f) {

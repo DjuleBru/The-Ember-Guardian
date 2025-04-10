@@ -55,6 +55,8 @@ public class Chest_Special : Chest
 
         if (chestType == ChestType.weaponChest) {
             PlayerShoot.Instance.SetActiveGun(gunSOInChest);
+            //PlayerShoot.Instance.GetHeldGun().SetCurrentBullet();
+
         }
         if (chestType == ChestType.skillChest) {
             SkillItem skillItem = new SkillItem();

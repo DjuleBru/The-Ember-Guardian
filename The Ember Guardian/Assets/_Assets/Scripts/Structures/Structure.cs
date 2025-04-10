@@ -136,7 +136,7 @@ public class Structure : MonoBehaviour {
         ActivateStructureUpgradeInteraction(false);
     }
 
-    private void Tent_OnStructureUpgraded(object sender, EventArgs e) {
+    protected void Tent_OnStructureUpgraded(object sender, EventArgs e) {
         RefreshStructureUpgradeInteraction();
     }
     protected virtual void RefreshStructureUpgradeInteraction() {

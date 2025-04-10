@@ -171,8 +171,11 @@ public class Mob : MonoBehaviour, IDamageable
     }
     protected virtual void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Obstacle>() != null) {
+            Obstacle obstacle = collision.gameObject.GetComponent<Obstacle>();
+            if (obstacle.GetBuilt()) return;
             OnMobHitObstacle?.Invoke(this, EventArgs.Empty);
             inObstacleTriggerArea = true;
+        
         }
         if (collision.gameObject.GetComponent<EndLevelCollider>() != null) {
             OnMobHitObstacle?.Invoke(this, EventArgs.Empty);

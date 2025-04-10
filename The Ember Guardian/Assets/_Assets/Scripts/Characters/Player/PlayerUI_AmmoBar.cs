@@ -47,6 +47,8 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
+        Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
+        Portal.OnAnyPlayerTeleported += Portal_OnAnyPlayerTeleported;
 
         Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn;
         Structure.OnAnyPlayerTriggeredOut += Structure_OnAnyPlayerTriggeredOut;
@@ -66,6 +68,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         ammoBarCanvasGroup = ammoBarGameObject.GetComponent<CanvasGroup>();
     }
 
+
     private void PLayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
         tabMenuOpen = true;
         isFadingIn = true;
@@ -81,6 +84,13 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         ammoBarCanvasGroup.alpha = 0;
     }
 
+    private void Portal_OnAnyPlayerTeleported(object sender, EventArgs e) {
+        ammoBarCanvasGroup.alpha = 0;
+    }
+
+    private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, EventArgs e) {
+        ammoBarCanvasGroup.alpha = 0;
+    }
     private void Gun_OnAnyGunMaxAmmoChanged(object sender, EventArgs e) {
         RefreshAmmoBar();
         RefreshAmmoBarBackground();
@@ -285,6 +295,9 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         Player.Instance.OnPlayerEnteredCamp -= Player_OnPlayerEnteredCamp;
         Player.Instance.OnPlayerExitedCamp -= Player_OnPlayerExitedCamp;
         Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
+
+        Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
+        Portal.OnAnyPlayerTeleported -= Portal_OnAnyPlayerTeleported;
 
         Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn;
         Structure.OnAnyPlayerTriggeredOut -= Structure_OnAnyPlayerTriggeredOut;

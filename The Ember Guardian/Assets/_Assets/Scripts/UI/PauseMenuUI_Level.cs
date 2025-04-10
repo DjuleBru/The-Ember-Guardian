@@ -43,8 +43,8 @@ public class PauseMenuUI_Level : PauseMenuUI {
 
             confirmBackToHub = true;
             backToHubText.text = "Confirm ?";
-            progressionSavedTextIndicator.SetTrigger("Show");
-            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = "Your progress is not saved in a level !";
+            progressionSavedTextIndicator.SetTrigger("Show"); 
+            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedText("menu_progressionNotSaved");
             progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = unsavedTextColor;
         
         }
@@ -63,6 +63,8 @@ public class PauseMenuUI_Level : PauseMenuUI {
             confirmExitGame = true;
             exitGameText.text = "Confirm ?";
             progressionSavedTextIndicator.SetTrigger("Show");
+            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedText("menu_progressionNotSaved");
+            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = unsavedTextColor;
         }
     }
 

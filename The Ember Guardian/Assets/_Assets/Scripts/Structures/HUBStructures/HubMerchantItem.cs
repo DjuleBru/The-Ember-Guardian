@@ -301,17 +301,19 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public void SaveItemStatus() {
+        Debug.Log(itemStatusChanged + " " + GetItemType()); 
+
         if (!itemStatusChanged) return;
 
         if(itemBought && !MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType())) {
             MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), itemBought);
-
-            if (itemUpgradeable) {
-                MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), itemLevel);
-            }
         }
 
-        if(itemUnlocked && !MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType())) {
+        if (itemUpgradeable && MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType()) != itemLevel) {
+            MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), itemLevel);
+        }
+
+        if (itemUnlocked && !MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType())) {
             MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType(), itemUnlocked);
         }
 

@@ -115,15 +115,13 @@ public class LevelManager : MonoBehaviour
         Vector3 endLevelPortalPosition = new Vector3(Player.Instance.transform.position.x + 10f, 0, 0);
 
         if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
-
-
             StartCoroutine(EnableEndLevelPortal(2f));
         }
 
         if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
             if (DemoMainLevelManager.Instance != null) {
 
-                if(!DemoMainLevelManager.Instance.GetDemoMainLevelTutorialCompleted()) return;
+                if (!DemoMainLevelManager.Instance.GetIsMainDemoLevel()) return;
 
                 // Demo level
                 endLevelPortal.transform.position = endLevelPortalPosition;

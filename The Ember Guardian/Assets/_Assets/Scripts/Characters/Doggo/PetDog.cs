@@ -12,20 +12,22 @@ public class PetDog : MonoBehaviour
     private MobMovement dogMovement;
 
     private bool playerInTriggerArea;
+    private bool playerCanPetDog;
     private bool playerCanRefreshPettingDog;
     private bool playerPettingDog;
     private bool playerPettingDogOnCooldown;
 
     public event EventHandler OnPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
+    public event EventHandler OnPlayerCantPetDog;
     public event EventHandler OnPlayerStartedPettingDog;
     public event EventHandler OnPlayerRefreshedPettingDog;
     public event EventHandler OnPlayerStoppedPettingDog;
     public event EventHandler OnPlayerEndedPettingDog;
 
-    private float petStartAnimationDuration = .3f;
-    private float petLoopAnimationDuration = .5f;
-    private float petEndAnimationDuration = .5f;
+    private float petStartAnimationDuration = .6f;
+    private float petLoopAnimationDuration = 1.6f;
+    private float petEndAnimationDuration = .8f;
     private float playerPettingDogCooldown = 1f;
 
     private Coroutine currentCoroutine;
@@ -36,12 +38,33 @@ public class PetDog : MonoBehaviour
 
     private void Start() {
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
+        Player.Instance.OnPlayerEnteredAnyInteractableTriggerArea += Player_OnPlayerEnteredAnyInteractableTriggerArea;
+        Player.Instance.OnPlayerExitedAnyInteractableTriggerArea += Player_OnPlayerExitedAnyInteractableTriggerArea;
+        Player.Instance.OnPlayerStartedInteractingWithAnyInteractable += Player_OnPlayerStartedInteractingWithAnyInteractable;
+        Player.Instance.OnPlayerStoppedInteractingWithAnyInteractable += Player_OnPlayerStoppedInteractingWithAnyInteractable;
         dogMovement = dogAI.GetComponent<MobMovement>();
+    }
+
+    private void Player_OnPlayerStoppedInteractingWithAnyInteractable(object sender, EventArgs e) {
+        RefreshCanPetDog();
+    }
+
+    private void Player_OnPlayerStartedInteractingWithAnyInteractable(object sender, EventArgs e) {
+        RefreshCanPetDog();
+    }
+
+    private void Player_OnPlayerExitedAnyInteractableTriggerArea(object sender, EventArgs e) {
+        RefreshCanPetDog();
+    }
+
+    private void Player_OnPlayerEnteredAnyInteractableTriggerArea(object sender, EventArgs e) {
+        RefreshCanPetDog();
     }
 
     private void GameInput_OnPlayerInteractPerformed(object sender, System.EventArgs e) {
         if (!playerInTriggerArea) return;
         if (playerPettingDogOnCooldown) return;
+        if (!playerCanPetDog) return;
 
         if(!playerPettingDog) {
             StartPetDog();
@@ -68,11 +91,11 @@ public class PetDog : MonoBehaviour
         yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfFrame();
 
+        Player.Instance.transform.position = playerPetDogPosition.position;
         float playerWatchDir = Player.Instance.transform.position.x - transform.position.x;
         PlayerAim.Instance.SetXScale(playerWatchDir);
-        Player.Instance.transform.position = playerPetDogPosition.position;
         OnPlayerStartedPettingDog?.Invoke(this, EventArgs.Empty);
-
+        PlayerMovement.Instance.StopMovement();
 
         yield return new WaitForSeconds(petStartAnimationDuration);
         playerCanRefreshPettingDog = true;
@@ -125,23 +148,60 @@ public class PetDog : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
-        if (!Player.Instance.GetCanDropOrbOnTheFloor()) return;
+        playerInTriggerArea = true;
 
-        if (dogAI.GetState() == DogAI.State.stay || dogAI.GetState() == DogAI.State.stayAtCamp || dogAI.GetState() == DogAI.State.idle || dogAI.GetState() == DogAI.State.stayAtCamp || dogAI.GetState() == DogAI.State.stayAtCamp || dogAI.GetState() == DogAI.State.walkWithPlayer) {
+        RefreshCanPetDog();
+
+        if(playerCanPetDog) {
+            Player.Instance.SetInPetDogTriggerArea(true);
             OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
             playerInTriggerArea = true;
-            Player.Instance.SetInPetDogTriggerArea(true);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
+
         Player.Instance.SetInPetDogTriggerArea(false);
-
-        if (!Player.Instance.GetCanDropOrbOnTheFloor()) return;
-
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
         playerInTriggerArea = false;
+        playerCanPetDog = false;
+    }
+
+    private void RefreshCanPetDog() {
+        if (playerPettingDogOnCooldown) {
+            playerCanPetDog = false;
+            return;
+        }
+
+        if (!playerInTriggerArea) {
+            playerCanPetDog = false;
+            return; 
+        }
+
+        if (!Player.Instance.GetCanPetDog()) {
+            playerCanPetDog = false;
+            OnPlayerCantPetDog?.Invoke(this, EventArgs.Empty);
+            return;
+        }
+
+        if (PlayerMovement.Instance.GetRunning()) {
+            playerCanPetDog = false;
+            OnPlayerCantPetDog?.Invoke(this, EventArgs.Empty);
+            return;
+        }
+
+        if (CreaturesManager.Instance != null) {
+            if (CreaturesManager.Instance.GetCreatureAggroingPlayer()) {
+                playerCanPetDog = false;
+                OnPlayerCantPetDog?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+        }
+
+        if (dogAI.GetState() == DogAI.State.stay || dogAI.GetState() == DogAI.State.stayAtCamp || dogAI.GetState() == DogAI.State.idle || dogAI.GetState() == DogAI.State.stayAtCamp || dogAI.GetState() == DogAI.State.stayAtCamp || dogAI.GetState() == DogAI.State.walkWithPlayer) {
+            playerCanPetDog = true;
+        }
     }
 
 }

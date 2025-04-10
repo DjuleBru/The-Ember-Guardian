@@ -30,7 +30,8 @@ public class DebugManager : MonoBehaviour
 
     int i = 0;
     private float screenshotTakeTimer;
-    private float screenshotTakeCooldown = .5f;
+    private float screenshotTakeCooldown = .1f;
+    private bool takingScreenshots;
 
     private void Awake() {
         Instance = this;
@@ -38,14 +39,15 @@ public class DebugManager : MonoBehaviour
     }
 
     private void Update() {
-        if(Input.GetKeyDown(KeyCode.T)) {
-            //HUBManager.Instance.SaveHub();
+        if(Input.GetKeyDown(KeyCode.S)) {
+            takingScreenshots = !takingScreenshots;
         }
 
         if (takeScreenshotsContinuous) {
+            if (!takingScreenshots) return;
             screenshotTakeTimer -= Time.deltaTime;
             if (screenshotTakeTimer < 0) {
-                screenshotTakeTimer = screenshotTakeCooldown;
+                screenshotTakeTimer = screenshotTakeCooldown*3;
                 i++;
 
                 ScreenCapture.CaptureScreenshot("screenshot_" + i + ".png");

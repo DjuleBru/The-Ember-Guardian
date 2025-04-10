@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,6 +33,12 @@ public class ActiveTeleportation : MonoBehaviour
         }
     }
 
+    [Button]
+    public void TeleportPlayerDebug() {
+        teleportDistance = 7f;
+        StartCoroutine(TeleportPlayer());
+    }
+
     private IEnumerator TeleportPlayer() {
         OnPlayerTeleportStarted?.Invoke(this, EventArgs.Empty);
 
@@ -43,7 +50,9 @@ public class ActiveTeleportation : MonoBehaviour
 
         // Affiche un rayon ou une traînée entre le point de départ et d’arrivée
         Vector2 teleportRayTarget = new Vector2(teleportTarget.x, teleportRayPrefab.transform.position.y);
-        ShowTeleportRay(teleportRayPrefab.transform.position, teleportRayTarget);
+        Debug.Log("teleportRayTarget " + teleportRayTarget);
+        Vector2 teleportStartPosition = new Vector2(Player.Instance.transform.position.x, teleportRayPrefab.transform.position.y);
+        ShowTeleportRay(teleportStartPosition, teleportRayTarget);
 
         Player.Instance.transform.position = teleportTarget;
         // Interpole la position du joueur vers la cible
@@ -88,9 +97,11 @@ public class ActiveTeleportation : MonoBehaviour
         Player.Instance.transform.position = targetPosition;
     }
     private void ShowTeleportRay(Vector2 startPoint, Vector2 endPoint) {
-        GameObject teleportRay = Instantiate(teleportRayPrefab, teleportRayPrefab.transform.position, Quaternion.identity);
+        GameObject teleportRay = Instantiate(teleportRayPrefab, Vector3.zero, Quaternion.identity);
         LineRenderer lineRenderer = teleportRay.GetComponent<LineRenderer>();
 
+        Debug.Log("startPoint " + startPoint);
+        Debug.Log("endPoint " + endPoint);
         if (lineRenderer != null) {
             lineRenderer.SetPosition(0, startPoint); // Définir le point de départ
             lineRenderer.SetPosition(1, endPoint);   // Définir le point d'arrivée

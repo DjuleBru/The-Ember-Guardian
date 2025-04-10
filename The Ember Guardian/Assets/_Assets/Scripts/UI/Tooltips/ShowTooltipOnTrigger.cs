@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,10 +22,24 @@ public class ShowTooltipOnTrigger : MonoBehaviour
     private bool showTooltips = true;
     private bool playerInTriggerArea;
 
+    public static event EventHandler OnAnyTooltipAmountShownIncreased;
+
     private void Awake() {
         amountShown = ES3.Load(amountShownSaveKey, 0);
-        if(amountShown >= numberOfTimesToShowTooltip) {
-            tooltipShown = true;
+
+        RefreshTooltipShown();
+
+        OnAnyTooltipAmountShownIncreased += ShowTooltipOnTrigger_OnAnyTooltipAmountShownIncreased;
+    }
+
+    private void ShowTooltipOnTrigger_OnAnyTooltipAmountShownIncreased(object sender, EventArgs e) {
+        ShowTooltipOnTrigger showTooltipOnTrigger = sender as ShowTooltipOnTrigger;
+
+        if(showTooltipOnTrigger != null && showTooltipOnTrigger != this) {
+            if(amountShownSaveKey == showTooltipOnTrigger.GetAmountShownSaveKey()) {
+                amountShown++;
+                RefreshTooltipShown();
+            }
         }
     }
 
@@ -33,8 +48,9 @@ public class ShowTooltipOnTrigger : MonoBehaviour
         if (!showTooltips) return;
         playerInTriggerArea = true;
         if (tooltipShown) return;
+        if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
 
-        if(isControlTooltip) {
+        if (isControlTooltip) {
             tooltipBeingShown = true;
             string text1 = LocalizationManager.Instance.GetLocalizedText(text1ToShowLocalizationKey);
             string text2 = LocalizationManager.Instance.GetLocalizedText(text2ToShowLocalizationKey);
@@ -52,6 +68,7 @@ public class ShowTooltipOnTrigger : MonoBehaviour
         if (!showTooltips) return;
         playerInTriggerArea = false;
         if (!tooltipBeingShown) return;
+        if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
 
         if (isControlTooltip) {
             tooltipBeingShown = false;
@@ -79,11 +96,26 @@ public class ShowTooltipOnTrigger : MonoBehaviour
             }
         }
         amountShown++;
-        Debug.Log(amountShownSaveKey + " " + amountShown);
+        OnAnyTooltipAmountShownIncreased?.Invoke(this, EventArgs.Empty);
         ES3.Save(amountShownSaveKey, amountShown);
+        RefreshTooltipShown();
+    }
+
+    private void RefreshTooltipShown() {
+        if (amountShown >= numberOfTimesToShowTooltip) {
+            tooltipShown = true;
+        }
     }
 
     public void SetShowTooltips(bool showTooltips) {
         this.showTooltips = showTooltips;
+    }
+
+    public string GetAmountShownSaveKey() {
+        return amountShownSaveKey;
+    }
+
+    private void OnDestroy() {
+        OnAnyTooltipAmountShownIncreased -= ShowTooltipOnTrigger_OnAnyTooltipAmountShownIncreased;
     }
 }

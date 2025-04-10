@@ -49,7 +49,6 @@ public class CreatureAI_TarnishedWidow : CreatureAI
 
     private void Creature_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {
         float mobHPNormalized = (float)creature.GetCreatureHealth() / (float)creature.GetCreatureSO().maxHealth;
-        Debug.Log("Widow - OnMobDamageTaken remainingHealth" + creature.GetCreatureHealth());
         if(isFirstAppearance && mobHPNormalized < .5f && !exitedWave) {
             exitedWave = true;
             StartCoroutine(ExitWave());

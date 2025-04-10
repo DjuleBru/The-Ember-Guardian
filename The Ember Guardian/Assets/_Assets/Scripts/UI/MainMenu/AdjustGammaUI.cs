@@ -76,4 +76,8 @@ public class AdjustGammaUI : MonoBehaviour
             }
         }
     }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerBackPerformed -= Gameinput_OnPlayerBackPerformed;
+    }
 }

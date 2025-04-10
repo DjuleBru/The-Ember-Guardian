@@ -146,6 +146,7 @@ public class HubChest : MonoBehaviour
 
     private void OpenChest() {
         chestOpen = true;
+        Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
         OnChestOpened?.Invoke(this, EventArgs.Empty);
     }
 
@@ -154,6 +155,7 @@ public class HubChest : MonoBehaviour
         gemTypeIndex = 0;
         currentGemType = allGemTypesList[0];
         OnChestClosed?.Invoke(this, EventArgs.Empty);
+        Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
     }
 
 
