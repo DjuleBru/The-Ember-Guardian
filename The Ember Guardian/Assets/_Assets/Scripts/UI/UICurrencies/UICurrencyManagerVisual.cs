@@ -37,6 +37,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
         uICurrencyManager.OnCurrencyFailedToDrop += UICurrencyManager_OnCurrencyFailedToDrop;
 
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
+        PlayerShoot.Instance.OnPlayerTryReloadAmmoBelt_NoAmmoInBag += PlayerShoot_OnPlayerTryReloadAmmoBelt_NoAmmoInBag;
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
 
         isPlayerInventory = (uICurrencyManager == UICurrencyManager.PlayerInventoryUI);
@@ -171,6 +172,10 @@ public class UICurrencyManagerVisual : MonoBehaviour
         if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember) {
             emberLight.enabled = false;
         }
+    }
+
+    private void PlayerShoot_OnPlayerTryReloadAmmoBelt_NoAmmoInBag(object sender, System.EventArgs e) {
+        ShowBackpack(2f);
     }
 
     private void ShowBackpack(float displayTime = 1f) {

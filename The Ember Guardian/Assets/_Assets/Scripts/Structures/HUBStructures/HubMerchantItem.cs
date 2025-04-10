@@ -301,7 +301,6 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public void SaveItemStatus() {
-        Debug.Log(itemStatusChanged + " " + GetItemType()); 
 
         if (!itemStatusChanged) return;
 

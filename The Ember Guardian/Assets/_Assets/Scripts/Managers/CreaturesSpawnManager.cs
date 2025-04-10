@@ -544,6 +544,7 @@ public class CreaturesSpawnManager : MonoBehaviour
             spawnDistance /= 2f;
         }
 
+
         if (spawnSide == SpawnSide.Left) {
             xSpawnPosition = CampZoneManager.Instance.GetMinZoneLimit() - spawnDistance;
             //if (Player.Instance.transform.position.x < CampZoneManager.Instance.GetMinZoneLimit()) {
@@ -573,6 +574,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         if (xSpawnPosition < minLevelXPosition) {
             xSpawnPosition = minLevelXPosition + 10f;
         }
+        Debug.Log(creatureToSpawn + " xSpawnPosition " + xSpawnPosition);
 
         return new Vector3(xSpawnPosition + UnityEngine.Random.Range(-4f, 4f), yPosition, 0);
 

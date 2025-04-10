@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,6 +42,7 @@ public class PlayerSkills : MonoBehaviour
     public event EventHandler OnLeftActiveSkillDeactivated;
     public event EventHandler OnRightActiveSkillActivated;
     public event EventHandler OnRightActiveSkillDeactivated;
+
     public class OnSkillAddedEventArgs : EventArgs {
         public SkillItem skillItemAdded;
     }
@@ -85,9 +87,6 @@ public class PlayerSkills : MonoBehaviour
         moveSpeedBuffTimer -= Time.deltaTime;
 
         if(moveSpeedBuffTimer <= 0) {
-            PlayerMovement.Instance.DebuffMoveSpeed(moveSpeedBuffAmount);
-            moveSpeedBuffActive = false;
-
             HandleActiveSkillDeactivation(SkillItem.SkillType.activeMoveSpeedBuff);
         }
     }
@@ -98,9 +97,6 @@ public class PlayerSkills : MonoBehaviour
         shootCooldownBuffTimer -= Time.deltaTime;
 
         if (shootCooldownBuffTimer <= 0) {
-            PlayerStats.Instance.DebuffShootCooldown(shootCooldownBuffValue);
-            shootCooldownBuffActive = false;
-
             HandleActiveSkillDeactivation(SkillItem.SkillType.activeShootSpeedBuff);
         }
     }
@@ -118,12 +114,32 @@ public class PlayerSkills : MonoBehaviour
             rightSkillCooldownTimer = rightSkillCooldown;
             OnRightActiveSkillDeactivated?.Invoke(this, EventArgs.Empty);
         }
+
+        if(skillType == SkillItem.SkillType.activeMoveSpeedBuff) {
+            PlayerMovement.Instance.DebuffMoveSpeed(moveSpeedBuffAmount);
+            moveSpeedBuffActive = false;
+        }
+
+        if (skillType == SkillItem.SkillType.activeShootSpeedBuff) {
+            PlayerStats.Instance.DebuffShootCooldown(shootCooldownBuffValue);
+            shootCooldownBuffActive = false;
+        }
+        if (skillType == SkillItem.SkillType.activeTeleportation) {
+
+        }
     }
 
     private void GameInput_OnPlayerRightSkillPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
 
         if (activeSkillRight == null) return;
+
+        if(rightSkillRunning) {
+            SkillItem.SkillType skillType = activeSkillRight.skillType;
+            HandleActiveSkillDeactivation(skillType);
+            return;
+        }
+
         if (!rightSkillReady) return;
 
         ActivateActiveSkill(activeSkillRight, false);
@@ -134,6 +150,13 @@ public class PlayerSkills : MonoBehaviour
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
 
         if (activeSkillLeft == null) return;
+
+        if (leftSkillRunning) {
+            SkillItem.SkillType skillType = activeSkillLeft.skillType;
+            HandleActiveSkillDeactivation(skillType);
+            return;
+        }
+
         if (!leftSkillReady) return;
 
         ActivateActiveSkill(activeSkillLeft, true);
@@ -359,4 +382,10 @@ public class PlayerSkills : MonoBehaviour
         return (1 - rightSkillCooldownTimer / rightSkillCooldown);
     }
 
+    [Button] 
+    private void AddActiveSkillDebug(SkillSO skillSO) {
+        SkillItem skillItem = new SkillItem();
+        skillItem.Initialize(skillSO);
+        AddActiveSkill(skillItem);
+    }
 }

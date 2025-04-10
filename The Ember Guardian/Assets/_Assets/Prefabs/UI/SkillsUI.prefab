@@ -478,81 +478,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   propertyName: _ShineLocation
   propertyValue: 0.412
---- !u!1 &1784176640064722961
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 913373297714890570}
-  - component: {fileID: 4650308537127368169}
-  - component: {fileID: 619227628116870064}
-  m_Layer: 24
-  m_Name: Keyboard
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &913373297714890570
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1784176640064722961}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1113840049348341117}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 16, y: -19.3}
-  m_SizeDelta: {x: 44, y: 44}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &4650308537127368169
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1784176640064722961}
-  m_CullTransparentMesh: 1
---- !u!114 &619227628116870064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1784176640064722961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: -938254102, guid: f412755bd222d8948b5bb34808bac723, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &2113900532278074445
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,81 +1039,6 @@ RectTransform:
   m_AnchoredPosition: {x: -13.799999, y: 17.599998}
   m_SizeDelta: {x: 34, y: 34}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &4840681422503335314
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8709834795323515568}
-  - component: {fileID: 3236532936653644228}
-  - component: {fileID: 6748720163960730076}
-  m_Layer: 24
-  m_Name: Controller
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &8709834795323515568
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4840681422503335314}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5447406805432549912}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -17.900002, y: -16.8}
-  m_SizeDelta: {x: 44, y: 44}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &3236532936653644228
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4840681422503335314}
-  m_CullTransparentMesh: 1
---- !u!114 &6748720163960730076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4840681422503335314}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 1242164507, guid: f412755bd222d8948b5bb34808bac723, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &5033060671911040282
 GameObject:
   m_ObjectHideFlags: 0
@@ -1335,7 +1185,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1113840049348341117}
   - component: {fileID: 8310105713509022783}
-  - component: {fileID: 4416246775206761178}
   m_Layer: 24
   m_Name: SkillInputIcon
   m_TagString: Untagged
@@ -1356,7 +1205,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 461060963884542356}
-  - {fileID: 913373297714890570}
   m_Father: {fileID: 9076443265207466681}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1372,20 +1220,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5423687503935543833}
   m_CullTransparentMesh: 1
---- !u!114 &4416246775206761178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5423687503935543833}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1af0b44cf0e08f488838cd7500785c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controllerInputSpriteRenderer: {fileID: 918716087170042083}
-  keyboardInputSpriteRenderer: {fileID: 619227628116870064}
 --- !u!1 &6625872804532454899
 GameObject:
   m_ObjectHideFlags: 0
@@ -1531,6 +1365,7 @@ GameObject:
   - component: {fileID: 461060963884542356}
   - component: {fileID: 8340746562616147620}
   - component: {fileID: 918716087170042083}
+  - component: {fileID: 2259929849597514392}
   m_Layer: 24
   m_Name: Controller
   m_TagString: Untagged
@@ -1595,6 +1430,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2259929849597514392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6699793618155600552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb242a7b04a3384db32562b4315d79a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputImage1: {fileID: 918716087170042083}
+  inputImage2: {fileID: 0}
+  inputSpriteRenderer1: {fileID: 0}
+  inputSpriteRenderer2: {fileID: 0}
+  control: 1
 --- !u!1 &6706773289297325902
 GameObject:
   m_ObjectHideFlags: 0
@@ -1884,6 +1736,7 @@ GameObject:
   - component: {fileID: 1864355672284507309}
   - component: {fileID: 3445763199626208753}
   - component: {fileID: 4630790642452063980}
+  - component: {fileID: 3969665670321472447}
   m_Layer: 24
   m_Name: Keyboard
   m_TagString: Untagged
@@ -1948,6 +1801,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3969665670321472447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114576865959975397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb242a7b04a3384db32562b4315d79a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputImage1: {fileID: 4630790642452063980}
+  inputImage2: {fileID: 0}
+  inputSpriteRenderer1: {fileID: 0}
+  inputSpriteRenderer2: {fileID: 0}
+  control: 2
 --- !u!1 &7218387476442300952
 GameObject:
   m_ObjectHideFlags: 0
@@ -2048,7 +1918,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5447406805432549912}
   - component: {fileID: 6872431520788544166}
-  - component: {fileID: 8091670474810144255}
   m_Layer: 24
   m_Name: SkillInputIcon
   m_TagString: Untagged
@@ -2068,7 +1937,6 @@ RectTransform:
   m_LocalScale: {x: 1.00008, y: 1.00008, z: 1.00008}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8709834795323515568}
   - {fileID: 1864355672284507309}
   m_Father: {fileID: 8008442898785285173}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2085,20 +1953,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7646725711583850053}
   m_CullTransparentMesh: 1
---- !u!114 &8091670474810144255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7646725711583850053}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1af0b44cf0e08f488838cd7500785c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controllerInputSpriteRenderer: {fileID: 6748720163960730076}
-  keyboardInputSpriteRenderer: {fileID: 4630790642452063980}
 --- !u!1 &7796380825355965364
 GameObject:
   m_ObjectHideFlags: 0
