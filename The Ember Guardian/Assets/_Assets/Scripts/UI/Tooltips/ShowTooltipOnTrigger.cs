@@ -15,6 +15,7 @@ public class ShowTooltipOnTrigger : MonoBehaviour
     [SerializeField] private float tooltipShowDuration = 999f;
     [SerializeField] private int numberOfTimesToShowTooltip = 2;
     [SerializeField] private bool hideTooltipOnTriggerExit;
+    [SerializeField] private bool hideTooltipAtNight;
 
     private int amountShown;
     private bool tooltipShown;
@@ -49,6 +50,7 @@ public class ShowTooltipOnTrigger : MonoBehaviour
         playerInTriggerArea = true;
         if (tooltipShown) return;
         if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
+        if (hideTooltipAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) return;
 
         if (isControlTooltip) {
             tooltipBeingShown = true;
@@ -69,6 +71,7 @@ public class ShowTooltipOnTrigger : MonoBehaviour
         playerInTriggerArea = false;
         if (!tooltipBeingShown) return;
         if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
+        if (hideTooltipAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night)
 
         if (isControlTooltip) {
             tooltipBeingShown = false;

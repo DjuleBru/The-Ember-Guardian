@@ -14,7 +14,6 @@ public class BarricadeBreached : MonoBehaviour
     private Camera mainCamera;
     private bool isNight;
     private bool barricadeBreached;
-    private bool isInnerBarricade;
     private bool isInPlayerScreen;
 
     private Vector3 initialLocalPosition;
@@ -27,11 +26,8 @@ public class BarricadeBreached : MonoBehaviour
         mainCamera = Camera.main;
         initialLocalPosition = transform.localPosition;
 
-        isInnerBarricade = barricade.GetIsInnerBarricade();
         breachedVisual.gameObject.SetActive(false);
         animator.enabled = false;
-
-        CampZoneManager.Instance.OnCampZoneLimitsChanged += CampZoneManager_OnCampZoneLimitsChanged;
 
         barricade.OnBarricadeDestroyed += Barricade_OnBarricadeDestroyed;
         barricade.OnBarricadeRepaired += Barricade_OnBarricadeRepaired;
@@ -39,9 +35,6 @@ public class BarricadeBreached : MonoBehaviour
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
     }
 
-    private void CampZoneManager_OnCampZoneLimitsChanged(object sender, System.EventArgs e) {
-        isInnerBarricade = barricade.GetIsInnerBarricade();
-    }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
         isNight = true;
@@ -52,7 +45,6 @@ public class BarricadeBreached : MonoBehaviour
     }
 
     private void Barricade_OnBarricadeRepaired(object sender, System.EventArgs e) {
-        if (!isInnerBarricade) return;
         barricadeBreached = false;
         breachedVisual.gameObject.SetActive(false);
         animator.enabled = false;
@@ -65,14 +57,12 @@ public class BarricadeBreached : MonoBehaviour
     }
 
     private void Barricade_OnBarricadeDestroyed(object sender, System.EventArgs e) {
-        if (!isInnerBarricade) return;
         barricadeBreached = true;
         breachedVisual.gameObject.SetActive(true);
         animator.enabled = true;
     }
 
     private void Update() {
-        if (!isInnerBarricade) return;
         if (!isNight) return;
         if (!barricadeBreached) return;
 

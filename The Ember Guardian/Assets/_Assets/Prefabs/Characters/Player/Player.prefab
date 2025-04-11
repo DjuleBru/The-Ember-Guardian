@@ -23854,7 +23854,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4712941642942225807
 Transform:
   m_ObjectHideFlags: 0
@@ -24111,7 +24111,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2334969835642432071}
   serializedVersion: 8
-  lengthInSec: 2.2
+  lengthInSec: 1.8
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -24884,7 +24884,7 @@ ParticleSystem:
       speed:
         serializedVersion: 2
         minMaxState: 1
-        scalar: 1
+        scalar: 1.3
         minScalar: 1
         maxCurve:
           serializedVersion: 2
@@ -85186,7 +85186,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3452345584255350507
 Transform:
   m_ObjectHideFlags: 0
@@ -119575,7 +119575,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7575579593069304138, guid: 689f66e88c663a84d8350eb9a1028950, type: 3}
       propertyPath: lengthInSec
-      value: 2.2
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 7575579593069304138, guid: 689f66e88c663a84d8350eb9a1028950, type: 3}
       propertyPath: ShapeModule.arc.value
@@ -119603,7 +119603,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7575579593069304138, guid: 689f66e88c663a84d8350eb9a1028950, type: 3}
       propertyPath: ShapeModule.arc.speed.scalar
-      value: 1
+      value: 1.3
       objectReference: {fileID: 0}
     - target: {fileID: 7575579593069304138, guid: 689f66e88c663a84d8350eb9a1028950, type: 3}
       propertyPath: VelocityModule.radial.scalar
@@ -120593,7 +120593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5261251560359775264, guid: 914dab0e0af7d7547aa674ab2df03e48, type: 3}
       propertyPath: managedReferences[6524424540001402881].Duration
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5261251560359775264, guid: 914dab0e0af7d7547aa674ab2df03e48, type: 3}
       propertyPath: managedReferences[6524424540001402881].UniqueID
@@ -121185,7 +121185,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5261251560359775264, guid: 914dab0e0af7d7547aa674ab2df03e48, type: 3}
       propertyPath: managedReferences[6524424540001402880].m_ImpulseDefinition.m_TimeEnvelope.m_AttackTime
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5261251560359775264, guid: 914dab0e0af7d7547aa674ab2df03e48, type: 3}
       propertyPath: managedReferences[6524424540001402881].RangeFalloff.m_Curve.Array.data[0].weightedMode

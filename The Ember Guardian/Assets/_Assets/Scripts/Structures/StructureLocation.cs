@@ -91,6 +91,7 @@ public class StructureLocation : MonoBehaviour {
         if (!structureLocationUnlocked) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
         if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
+        if (!structureSOToBuild.buildableAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) return;
 
         //return;
 
@@ -100,10 +101,12 @@ public class StructureLocation : MonoBehaviour {
     }
 
     protected virtual void OnTriggerExit2D(Collider2D collision) {
-        if (!structureLocationUnlocked) return;
-        if (collision.gameObject.GetComponent<Player>() == null) return;
-
+        if (!playerInTriggerArea) return;
         Player.Instance.SetInPayCurrencyArea(false);
+
+        if (collision.gameObject.GetComponent<Player>() == null) return;
+        if (!structureSOToBuild.buildableAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) return;
+
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
         payCurrencyUI.SetPlayerInteracting(false);
         playerInTriggerArea = false;

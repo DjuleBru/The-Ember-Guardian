@@ -83,7 +83,7 @@ public class DayNightVisualsManager : MonoBehaviour
         HandleCycleTransitions();
     }
 
-    private void FixedUpdate() {
+    private void LateUpdate() {
         if(!dontHandleSunMovement) {
             HandleSunPosition();
         }

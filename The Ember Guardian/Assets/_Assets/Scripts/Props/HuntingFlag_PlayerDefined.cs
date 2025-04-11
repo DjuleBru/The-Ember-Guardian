@@ -66,6 +66,15 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
 
         huntingFlag.SetPlayerCarryingFlag(true);
         OnAnyHuntingFlagPickedUp?.Invoke(this, EventArgs.Empty);
+
+        //Vector3 newScale = Vector3.one;
+
+        //if(PlayerAim.Instance.GetAimDirFloat() < 0 && transform.position.x > 0) {
+        //    newScale.x = -1f;
+        //}
+
+        //transform.localScale = newScale;
+
         pickUpSpriteRenderer.enabled = false;
     }
 
@@ -79,6 +88,11 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
         huntingFlag.SetPlayerCarryingFlag(false);
         transform.SetParent(huntingFlag.transform);
         transform.position = position;
+
+        //Vector3 originalScale = transform.localScale;
+        //Vector3 scaleReversed = originalScale;
+        //scaleReversed.x = -scaleReversed.x;
+        //transform.localScale = scaleReversed;
 
         OnAnyHuntingFlagNewPositionSet?.Invoke(this, EventArgs.Empty);
     }

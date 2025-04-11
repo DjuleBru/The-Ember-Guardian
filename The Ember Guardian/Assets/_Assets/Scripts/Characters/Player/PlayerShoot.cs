@@ -458,7 +458,7 @@ public class PlayerShoot : MonoBehaviour
             }
 
             loadingShot = true;
-            loadingShotTime = 3f;
+            loadingShotTime = 2f;
             loadingShotTimer = 0f;
             shotLoaded = false;
 

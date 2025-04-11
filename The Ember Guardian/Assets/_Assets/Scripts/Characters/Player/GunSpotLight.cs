@@ -14,6 +14,7 @@ public class GunSpotLight : MonoBehaviour
     private Gun gun;
 
     private float gunSpotLightRange;
+    private float gunSpotLightIntensity = 1.5f;
     private float noFogVolumetricAmount = .2f;
     private float fogVolumetricAmount = .1f;
     private bool autoSwitchWithDay;
@@ -47,6 +48,7 @@ public class GunSpotLight : MonoBehaviour
         } 
 
         lightActive = false;
+        gunSpotLight.intensity = gunSpotLightIntensity;
         gunSpotLight.enabled = false;
         
 

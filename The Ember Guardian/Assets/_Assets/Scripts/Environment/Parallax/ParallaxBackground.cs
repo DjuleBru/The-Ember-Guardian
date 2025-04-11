@@ -25,10 +25,7 @@ public class ParallaxBackground : MonoBehaviour {
 
     }
 
-    private void Update() {
-    }
-
-    private void FixedUpdate() {
+    private void LateUpdate() {
         HandleParallaxOriginal();
     }
 
