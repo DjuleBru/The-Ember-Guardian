@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -195,6 +196,7 @@ public class Worker : Mob {
         return recruited;
     }
 
+    [Button]
     public override void Die() {
         base.Die();
 

@@ -140,4 +140,8 @@ public class WorkerUI : MonoBehaviour
 
         talkText.text = "";
     }
+
+    private void OnDestroy() {
+        DayNightManager.Instance.OnDuskStart -= DayNightManager_OnDuskStart;
+    }
 }

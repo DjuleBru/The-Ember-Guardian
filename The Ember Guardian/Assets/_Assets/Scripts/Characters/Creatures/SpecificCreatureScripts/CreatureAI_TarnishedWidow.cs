@@ -38,13 +38,13 @@ public class CreatureAI_TarnishedWidow : CreatureAI
         isFirstAppearance = LevelManager.Instance.GetLevelSO().bossNightSpawns[0] == CreaturesSpawnManager.Instance.GetCurrentWaveNumber();
         Debug.Log("isFirstAppearance " + isFirstAppearance);
 
-        if(DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetDemoLevelLostAmount() == 0) {
-            Debug.Log("DemoMainLevelManager.Instance.GetDemoLevelLostAmount() " + DemoMainLevelManager.Instance.GetDemoLevelLostAmount());
-            Debug.Log("demo Lost amount = 0, doubling widow health ");
-            creature.SetCreatureHealth(Mathf.RoundToInt(creature.GetCreatureSO().maxHealth*1.5f));
-        }
+        //if(DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetDemoLevelLostAmount() == 0) {
+        //    Debug.Log("DemoMainLevelManager.Instance.GetDemoLevelLostAmount() " + DemoMainLevelManager.Instance.GetDemoLevelLostAmount());
+        //    Debug.Log("demo Lost amount = 0, doubling widow health ");
+        //    creature.SetCreatureHealth(Mathf.RoundToInt(creature.GetCreatureSO().maxHealth*1.5f));
+        //}
 
-        BossUI.Instance.LinkBoss(creature);
+        BossUI.Instance.LinkBoss(creature, isFirstAppearance);
     }
 
     private void Creature_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {

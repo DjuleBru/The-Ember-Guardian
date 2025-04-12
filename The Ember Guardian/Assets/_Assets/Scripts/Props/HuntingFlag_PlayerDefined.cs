@@ -61,19 +61,17 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
 
     private void StartCarryingFlag() {
         playerCarryingFlag = true;
+
+        Vector3 newScale = Vector3.one;
+        newScale.x = -1f;
+
         transform.position = Player.Instance.GetCarryingFlagPosition().position;
         transform.SetParent(Player.Instance.GetCarryingFlagPosition());
 
         huntingFlag.SetPlayerCarryingFlag(true);
         OnAnyHuntingFlagPickedUp?.Invoke(this, EventArgs.Empty);
 
-        //Vector3 newScale = Vector3.one;
-
-        //if(PlayerAim.Instance.GetAimDirFloat() < 0 && transform.position.x > 0) {
-        //    newScale.x = -1f;
-        //}
-
-        //transform.localScale = newScale;
+        spriteRenderer.transform.localScale = newScale;
 
         pickUpSpriteRenderer.enabled = false;
     }

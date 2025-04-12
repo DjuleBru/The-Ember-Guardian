@@ -12,7 +12,7 @@ public class ShowTooltipOnTrigger : MonoBehaviour
     [SerializeField] private string amountShownSaveKey;
     [SerializeField] private bool isControlTooltip;
     [SerializeField] private InputControlIcons.Control control;
-    [SerializeField] private float tooltipShowDuration = 999f;
+    [SerializeField] private float tooltipShowDuration = 5f;
     [SerializeField] private int numberOfTimesToShowTooltip = 2;
     [SerializeField] private bool hideTooltipOnTriggerExit;
     [SerializeField] private bool hideTooltipAtNight;

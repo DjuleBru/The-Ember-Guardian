@@ -76,7 +76,16 @@ public class ActiveTeleportation : MonoBehaviour
 
         if (hit.collider != null) {
             // Ajuste la position cible pour éviter l'obstacle
-            targetPosition = hit.point;
+
+            Obstacle obstacle = hit.collider.GetComponent<Obstacle>();
+            if(obstacle != null) {
+                if(!obstacle.GetBuilt()) {
+                    targetPosition = hit.point;
+                }
+            } else {
+                targetPosition = hit.point;
+            }
+
         }
 
         return targetPosition;

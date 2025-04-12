@@ -9,14 +9,23 @@ public class BossUI : MonoBehaviour
     public static BossUI Instance;
     [SerializeField] private GameObject bossUIPanel;
     [SerializeField] private Animator bossUIPanelAnimator;
+
+    [SerializeField] private GameObject bossHealthBarFull;
+    [SerializeField] private GameObject bossHealthBarFirstHalf;
+    [SerializeField] private GameObject bossHealthBarSecondHalf;
+    
+    [SerializeField] private Image bossHealthBarPhase1;
+    [SerializeField] private Image bossHealthBarPhase2;
     [SerializeField] private Image bossHealthBarFill;
     private Creature linkedBoss;
 
+    private bool bossHasMultiplePhases;
     private bool tryingToShowPanel;
 
     private void Awake() {
         Instance = this;
         bossUIPanel.SetActive(false);
+
     }
 
     private void Update() {
@@ -29,10 +38,22 @@ public class BossUI : MonoBehaviour
         }
     }
 
-    public void LinkBoss(Creature creature) {
+    public void LinkBoss(Creature creature, bool hasMultiplePhases) {
         linkedBoss = creature;
         creature.OnMobDamageTaken += Creature_OnMobDamageTaken;
         tryingToShowPanel = true;
+
+        bossHasMultiplePhases = hasMultiplePhases;
+        if (bossHasMultiplePhases) {
+            bossHealthBarFull.SetActive(false);
+            bossHealthBarFirstHalf.SetActive(true);
+            bossHealthBarFirstHalf.SetActive(true);
+        }
+        else {
+            bossHealthBarFull.SetActive(true);
+            bossHealthBarFirstHalf.SetActive(false);
+            bossHealthBarSecondHalf.SetActive(false);
+        }
     }
 
     public void Show() {
@@ -55,8 +76,24 @@ public class BossUI : MonoBehaviour
     }
 
     private void Creature_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {
-        float healthNormalized = (float)linkedBoss.GetCreatureHealth() / (float)linkedBoss.GetCreatureMaxHealth();
+        float maxHealth = linkedBoss.GetCreatureMaxHealth();
+        float currentHealth = linkedBoss.GetCreatureHealth();
+        float healthNormalized = currentHealth / maxHealth;
 
-        bossHealthBarFill.fillAmount = healthNormalized;
+        if(bossHasMultiplePhases) {
+            if (healthNormalized > 0.5f) {
+                // Phase 1 encore en cours
+                bossHealthBarPhase1.fillAmount = (healthNormalized - 0.5f) / 0.5f; // 100% à 50%
+                bossHealthBarPhase2.fillAmount = 1f;
+            }
+            else {
+                // Phase 2 entamée
+                bossHealthBarPhase1.fillAmount = 0f;
+                bossHealthBarPhase2.fillAmount = healthNormalized / 0.5f; // 50% à 0%
+            }
+        } else {
+            bossHealthBarFill.fillAmount = healthNormalized;
+        }
+        
     }
 }

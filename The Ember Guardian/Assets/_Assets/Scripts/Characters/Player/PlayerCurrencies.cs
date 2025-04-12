@@ -137,7 +137,6 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     private void StartPayingCurrency(CurrencyType currencyType, PayCurrencyTemplateWorldUI destination, float currencyIndexNormalized) {
-        Debug.Log("StartPayingCurrency");
         float smoothTime = destination.GetInitialPayCurrencySmoothTime() * (currencyIndexNormalized) + destination.GetInitialPayCurrencySmoothTime();
 
         if(currencyType != PlayerCurrencies.CurrencyType.ember) {
@@ -159,7 +158,6 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     public void FinalizeCurrencyPayment() {
-        Debug.Log("FinalizeCurrencyPayment");
         foreach (Collectible collectible in collectiblesBeingPaid) {
             Destroy(collectible.gameObject);
         }
@@ -167,7 +165,6 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     public void CancelCurrencyPayment(bool collectiblesFallInWater) {
-        Debug.Log("CancelCurrencyPayment");
         int collectibleAmount = collectiblesBeingPaid.Count;
 
         foreach(Collectible collectible in collectiblesBeingPaid) {

@@ -25,9 +25,12 @@ public class VersioningManager : MonoBehaviour
 
         if(isDemo) {
             int major = (int)demoBuildVersion;
-            int minorAndPatch = (int)((demoBuildVersion - major) * 100); // 61
-            int minor = minorAndPatch / 10;  // 6
-            int patch = minorAndPatch % 10;  // 1
+
+            // On arrondit à 2 décimales pour éviter les imprécisions binaires
+            int minorAndPatch = (int)Mathf.Round((demoBuildVersion - major) * 100);
+
+            int minor = minorAndPatch / 10;
+            int patch = minorAndPatch % 10;
 
             if (minor == 0 && patch == 0) {
                 versionString = $"{major}";
@@ -38,7 +41,6 @@ public class VersioningManager : MonoBehaviour
             else {
                 versionString = $"{major}.{minor}.{patch}";
             }
-
             versioningText.text = "Demo version " + versionString;
         } else {
             versioningText.text = "Pre-alpha version " + versionString;
