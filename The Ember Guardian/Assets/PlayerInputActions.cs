@@ -206,6 +206,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MeleeAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""9d28c7d8-1018-4543-81ba-06012ff4d14e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -736,6 +745,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""HoverWorkers"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9ad151be-6143-4026-a84f-fcaa1ba4d165"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MeleeAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -787,6 +807,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_WeaponSecondaryAbility = m_Player.FindAction("WeaponSecondaryAbility", throwIfNotFound: true);
         m_Player_OpenPlayerTab = m_Player.FindAction("OpenPlayerTab", throwIfNotFound: true);
         m_Player_HoverWorkers = m_Player.FindAction("HoverWorkers", throwIfNotFound: true);
+        m_Player_MeleeAttack = m_Player.FindAction("MeleeAttack", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -873,6 +894,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_WeaponSecondaryAbility;
     private readonly InputAction m_Player_OpenPlayerTab;
     private readonly InputAction m_Player_HoverWorkers;
+    private readonly InputAction m_Player_MeleeAttack;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -897,6 +919,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @WeaponSecondaryAbility => m_Wrapper.m_Player_WeaponSecondaryAbility;
         public InputAction @OpenPlayerTab => m_Wrapper.m_Player_OpenPlayerTab;
         public InputAction @HoverWorkers => m_Wrapper.m_Player_HoverWorkers;
+        public InputAction @MeleeAttack => m_Wrapper.m_Player_MeleeAttack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -966,6 +989,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @HoverWorkers.started += instance.OnHoverWorkers;
             @HoverWorkers.performed += instance.OnHoverWorkers;
             @HoverWorkers.canceled += instance.OnHoverWorkers;
+            @MeleeAttack.started += instance.OnMeleeAttack;
+            @MeleeAttack.performed += instance.OnMeleeAttack;
+            @MeleeAttack.canceled += instance.OnMeleeAttack;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1030,6 +1056,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @HoverWorkers.started -= instance.OnHoverWorkers;
             @HoverWorkers.performed -= instance.OnHoverWorkers;
             @HoverWorkers.canceled -= instance.OnHoverWorkers;
+            @MeleeAttack.started -= instance.OnMeleeAttack;
+            @MeleeAttack.performed -= instance.OnMeleeAttack;
+            @MeleeAttack.canceled -= instance.OnMeleeAttack;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1087,5 +1116,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnWeaponSecondaryAbility(InputAction.CallbackContext context);
         void OnOpenPlayerTab(InputAction.CallbackContext context);
         void OnHoverWorkers(InputAction.CallbackContext context);
+        void OnMeleeAttack(InputAction.CallbackContext context);
     }
 }

@@ -24,9 +24,14 @@ public class GunAnimator : MonoBehaviour
         PlayerShoot.Instance.OnPlayerSwappedGunStarted += PlayerShoot_OnPlayerSwappedGunStarted;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
 
+        PlayerMeleeAttack.Instance.OnMeleeAttackStarted += PlayerMeleeAttack_OnMeleeAttackStarted;
+
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
     }
 
+    private void PlayerMeleeAttack_OnMeleeAttackStarted(object sender, System.EventArgs e) {
+        animator.SetTrigger("MeleeAttack");
+    }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
         animator.SetTrigger("SwapGunEnd");
@@ -102,6 +107,8 @@ public class GunAnimator : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReloadInterrupted -= PlayerShoot_OnPlayerReloadInterrupted;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo -= PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
         PlayerShoot.Instance.OnPlayerSwitchedFireMode -= PlayerSHoot_OnPlayerSwitchedFireMode;
+
+        PlayerMeleeAttack.Instance.OnMeleeAttackStarted -= PlayerMeleeAttack_OnMeleeAttackStarted;
 
         Player.Instance.OnPlayerRespawned -= Player_OnPlayerRespawned;
     }

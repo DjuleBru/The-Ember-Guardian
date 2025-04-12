@@ -23,6 +23,7 @@ public class InputControlIcons : MonoBehaviour
         Roll,
         OpenPlayerMenu,
         SwitchBuildingFunctions,
+        MeleeAttack,
     }
 
 
@@ -95,6 +96,7 @@ public class InputControlIcons : MonoBehaviour
     public Sprite keyboardShiftSprite;
     public Sprite keyboardRightShiftSprite;
     public Sprite keyboardMouseClickSprite;
+    public Sprite keyboardMouseMiddleClickSprite;
     public Sprite keyboardMouseRightClickSprite;
     public Sprite keyboardMouseSprite;
     public Sprite keyboardEscSprite;

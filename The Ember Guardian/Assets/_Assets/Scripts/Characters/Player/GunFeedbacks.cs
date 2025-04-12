@@ -6,7 +6,9 @@ using UnityEngine;
 
 public class GunFeedbacks : MonoBehaviour
 {
+    [SerializeField] private GunMeleeAttackCollider meleeAttackCollider;
     [SerializeField] private MMF_Player mmfPlayer;
+    [SerializeField] private MMF_Player meleeAttackFeedbacks;
     [SerializeField] private ParticleSystem shellOutPS;
 
     [SerializeField] private ParticleSystem loadGunPS1;
@@ -22,6 +24,12 @@ public class GunFeedbacks : MonoBehaviour
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerStartedShot += PlayerShoot_OnPlayerStartedShot;
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoot_OnPlayerCooldownTrigger;
+
+        meleeAttackCollider.OnGunMeleeAttackHit += MeleeAttackCollider_OnGunMeleeAttackHit;
+    }
+
+    private void MeleeAttackCollider_OnGunMeleeAttackHit(object sender, System.EventArgs e) {
+        meleeAttackFeedbacks.PlayFeedbacks();
     }
 
     private void PlayerShoot_OnPlayerStartedShot(object sender, System.EventArgs e) {

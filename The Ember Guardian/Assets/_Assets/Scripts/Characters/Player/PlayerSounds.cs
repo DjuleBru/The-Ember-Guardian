@@ -14,6 +14,8 @@ public class PlayerSounds : SoundObject
     [SerializeField] private AudioClip[] playerPantAudioClips;
     [SerializeField] private AudioClip[] playerExhaustedAudioClips;
     [SerializeField] private AudioClip[] playerRollAudioClips;
+    [SerializeField] private AudioClip[] playerMeleeAttackStartedAudioClips;
+    [SerializeField] private AudioClip[] playerMeleeAttackHitAudioClips;
     [SerializeField] private AudioClip activeMoveSpeedBoostFootstepAudioClip;
 
     [SerializeField] private PlayerAnimator playerAnimator;
@@ -38,7 +40,18 @@ public class PlayerSounds : SoundObject
         PlayerMovement.Instance.OnPlayerAlmostExhaustionStarted += PlayerMovement_OnPlayerAlmostExhaustionStarted;
         PlayerMovement.Instance.OnPlayerAlmostExhaustionDeactivateFeedbacks += PlayerMovement_OnPlayerAlmostExhaustionDeactivateFeedbacks;
 
+        PlayerMeleeAttack.Instance.OnMeleeAttackStarted += PlayerMeleeAttack_OnMeleeAttackStarted;
+        GunMeleeAttackCollider.OnAnyGunMeleeAttackHit += GunMeleeAttackCollider_OnAnyGunMeleeAttackHit;
+
         activeMoveSpeedBoostVisual.OnMoveSpeedFootStepTriggered += ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered;
+    }
+
+    private void GunMeleeAttackCollider_OnAnyGunMeleeAttackHit(object sender, System.EventArgs e) {
+        playerAudioSource.PlayOneShot(playerMeleeAttackHitAudioClips[Random.Range(0, playerMeleeAttackHitAudioClips.Length)], sfxVolume*.7f);
+    }
+
+    private void PlayerMeleeAttack_OnMeleeAttackStarted(object sender, System.EventArgs e) {
+        playerAudioSource.PlayOneShot(playerMeleeAttackStartedAudioClips[Random.Range(0, playerMeleeAttackStartedAudioClips.Length)], sfxVolume);
     }
 
     private void PlayerMovement_OnPlayerAlmostExhaustionDeactivateFeedbacks(object sender, System.EventArgs e) {
@@ -111,5 +124,9 @@ public class PlayerSounds : SoundObject
     private IEnumerator SetExhaustionSFXPlaying(float sfxDuration) {
         yield return new WaitForSeconds(sfxDuration);
         exhaustedSFXPlaying = false;
+    }
+
+    private void OnDestroy() {
+        GunMeleeAttackCollider.OnAnyGunMeleeAttackHit -= GunMeleeAttackCollider_OnAnyGunMeleeAttackHit;
     }
 }

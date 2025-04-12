@@ -30,6 +30,7 @@ public class GameInput : MonoBehaviour
         pause,
         characterMenu,
         hoverWorkers,
+        meleeAttack,
     }
 
     private PlayerInputActions playerInputActions;
@@ -73,6 +74,7 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnWeaponSecondaryAbilityCanceled;
 
     public event EventHandler OnHoverWorkersPerformed;
+    public event EventHandler OnMeleeAttackPerformed;
 
     public event EventHandler OnPlayerBackPerformed;
     public event EventHandler OnPlayerPausePerformed;
@@ -140,11 +142,13 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.WeaponSecondaryAbility.canceled += WeaponSecondaryAbility_canceled;
         playerInputActions.Player.Pause.performed += Pause_performed;
         playerInputActions.Player.OpenPlayerTab.performed += OpenPlayerTab_performed;
+        playerInputActions.Player.MeleeAttack.performed += MeleeAttack_performed;
 
         playerInputActions.Player.HoverWorkers.performed += HoverWorkers_performed;
         playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
         playerInputActions.Player.Move.performed += Move_performed;
     }
+
 
     private void InputUser_onChange(InputUser user, InputUserChange change, InputDevice arg3) {
         if (change == InputUserChange.ControlSchemeChanged) {
@@ -157,6 +161,9 @@ public class GameInput : MonoBehaviour
         OnHoverWorkersPerformed?.Invoke(this, EventArgs.Empty);
     }
 
+    private void MeleeAttack_performed(InputAction.CallbackContext obj) {
+        OnMeleeAttackPerformed?.Invoke(this, EventArgs.Empty);
+    }
     private void WeaponSecondaryAbility_canceled(InputAction.CallbackContext obj) {
         OnWeaponSecondaryAbilityCanceled?.Invoke(this, EventArgs.Empty);
     }
