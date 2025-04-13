@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Users;
 using UnityEngine.UI;
 
@@ -148,7 +149,6 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
         playerInputActions.Player.Move.performed += Move_performed;
     }
-
 
     private void InputUser_onChange(InputUser user, InputUserChange change, InputDevice arg3) {
         if (change == InputUserChange.ControlSchemeChanged) {
@@ -357,6 +357,9 @@ public class GameInput : MonoBehaviour
             case Binding.roll:
                 return playerInputActions.Player.Jump.bindings[0].ToDisplayString();
 
+            case Binding.meleeAttack:
+                return playerInputActions.Player.MeleeAttack.bindings[0].ToDisplayString();
+
             case Binding.shoot:
                 return playerInputActions.Player.Shoot.bindings[0].ToDisplayString();
 
@@ -425,6 +428,10 @@ public class GameInput : MonoBehaviour
                 inputAction = playerInputActions.Player.Jump;
                 bindingIndex = 0;
                 break;
+            case Binding.meleeAttack:
+                inputAction = playerInputActions.Player.MeleeAttack;
+                bindingIndex = 0;
+                break;
             case Binding.shoot:
                 inputAction = playerInputActions.Player.Shoot;
                 bindingIndex = 0;
@@ -450,7 +457,6 @@ public class GameInput : MonoBehaviour
                 bindingIndex = 0;
                 break;
             case Binding.selectSecondaryGun:
-                Debug.Log("case Binding.selectSecondaryGun: " + binding);
                 inputAction = playerInputActions.Player.SelectSecondaryGun;
                 bindingIndex = 0;
                 break;
@@ -484,16 +490,19 @@ public class GameInput : MonoBehaviour
                 break;
         }
 
-        inputAction.PerformInteractiveRebinding(bindingIndex).OnComplete(callback => {
-            //Debug.Log(callback.action.bindings[1].path);
+        // Effectuer le rebinding
+        inputAction.PerformInteractiveRebinding(bindingIndex)
+            .WithControlsHavingToMatchPath("<Mouse>")
 
-            playerInputActions.Player.Enable();
-            onActionRebound();
+            .OnComplete(callback => {
+                playerInputActions.Player.Enable();
+                onActionRebound();
 
-            ES3.Save("PlayerInputBindings", playerInputActions.SaveBindingOverridesAsJson(), settingsSaveFileSettings);
-            ES3.Save("SavedCustomBindings", true, settingsSaveFileSettings);
 
-        }).Start();
+                ES3.Save("PlayerInputBindings", playerInputActions.SaveBindingOverridesAsJson(), settingsSaveFileSettings);
+                ES3.Save("SavedCustomBindings", true, settingsSaveFileSettings);
+            })
+            .Start();
     }
 
     public void ResetBindingsToDefault() {

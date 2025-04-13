@@ -33,6 +33,7 @@ public class PlayerMeleeAttack : MonoBehaviour
 
     private void GameInput_OnMeleeAttackPerformed(object sender, System.EventArgs e) {
         if (isMeleeAttacking) return;
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
 
         isMeleeAttacking = true;
         OnMeleeAttackStarted?.Invoke(this, EventArgs.Empty);

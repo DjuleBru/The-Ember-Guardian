@@ -182,6 +182,7 @@ public class InputControlIcons : MonoBehaviour
             { "Space", keyboardSpaceSprite },
             { "LMB", keyboardMouseClickSprite },
             { "RMB", keyboardMouseRightClickSprite },
+            { "MMB", keyboardMouseMiddleClickSprite },
             { "Tab", keyboardTabSprite },
             { "Escape", keyboardEscSprite },
             { "Left Alt", keyboardAltSprite },
@@ -231,6 +232,9 @@ public class InputControlIcons : MonoBehaviour
             }
             if (control == Control.Run) {
                 spriteList.Add(gamepadL3Sprite);
+            }
+            if (control == Control.MeleeAttack) {
+                spriteList.Add(gamepadR3Sprite);
             }
             if (control == Control.LightSwitch) {
                 spriteList.Add(gamepadDownArrowSprite);

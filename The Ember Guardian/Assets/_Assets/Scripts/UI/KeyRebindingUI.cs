@@ -17,6 +17,7 @@ public class KeyRebindingUI : MonoBehaviour
     [SerializeField] private Button interactButton;
     [SerializeField] private Button runButton;
     [SerializeField] private Button rollButton;
+    [SerializeField] private Button meleeAttackButton;
 
     [SerializeField] private Button shootButton;
     [SerializeField] private Button reloadButton;
@@ -40,6 +41,7 @@ public class KeyRebindingUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI interactText;
     [SerializeField] private TextMeshProUGUI runText;
     [SerializeField] private TextMeshProUGUI rollText;
+    [SerializeField] private TextMeshProUGUI meleeAttackText;
 
     [SerializeField] private TextMeshProUGUI shootText;
     [SerializeField] private TextMeshProUGUI reloadText;
@@ -81,6 +83,9 @@ public class KeyRebindingUI : MonoBehaviour
         });
         rollButton.onClick.AddListener(() => {
             RebindBinding(GameInput.Binding.roll);
+        }); 
+        meleeAttackButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.meleeAttack);
         });
         shootButton.onClick.AddListener(() => {
             RebindBinding(GameInput.Binding.shoot);
@@ -101,7 +106,6 @@ public class KeyRebindingUI : MonoBehaviour
             RebindBinding(GameInput.Binding.selectPrimaryGun);
         });
         selectSecondaryGunButton.onClick.AddListener(() => {
-            Debug.Log("RebindBinding selectSecondaryGunButton");
             RebindBinding(GameInput.Binding.selectSecondaryGun);
         });
         hoverWorkersButton.onClick.AddListener(() => {
@@ -133,6 +137,7 @@ public class KeyRebindingUI : MonoBehaviour
         interactText.text = GameInput.Instance.GetBindingText(GameInput.Binding.interact);
         runText.text = GameInput.Instance.GetBindingText(GameInput.Binding.run);
         rollText.text = GameInput.Instance.GetBindingText(GameInput.Binding.roll);
+        meleeAttackText.text = GameInput.Instance.GetBindingText(GameInput.Binding.meleeAttack);
 
         shootText.text = GameInput.Instance.GetBindingText(GameInput.Binding.shoot);
         reloadText.text = GameInput.Instance.GetBindingText(GameInput.Binding.reload);

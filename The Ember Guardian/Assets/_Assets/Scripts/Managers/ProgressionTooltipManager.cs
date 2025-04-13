@@ -7,6 +7,7 @@ public class ProgressionTooltipManager : MonoBehaviour
     public static ProgressionTooltipManager Instance;
 
     private bool multipleFunctionsTooltipShown;
+    private bool meleeAttackTooltipShown;
 
     private void Awake() {
         Instance = this;
@@ -16,14 +17,25 @@ public class ProgressionTooltipManager : MonoBehaviour
         LoadTooltipsShown();
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn;
+            Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         }
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
         }
     }
 
+    private void Player_OnPlayerDamaged(object sender, Player.OnPlayerChangedHealthEventArgs e) {
+        if (meleeAttackTooltipShown) return;
+
+        if(PlayerShoot.Instance.GetCurrentBullets() == 0) {
+            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("menu_meleeAttack"), InputControlIcons.Control.MeleeAttack, 5f);
+            ES3.Save("meleeAttackTooltipShown", true);
+            meleeAttackTooltipShown = true;
+        }
+    }
 
     private void LoadTooltipsShown() {
         multipleFunctionsTooltipShown = ES3.Load("multipleFunctionsTooltipShown", false);
+        meleeAttackTooltipShown = ES3.Load("meleeAttackTooltipShown", false);
     }
 
     private void Structure_OnAnyPlayerTriggeredIn(object sender, System.EventArgs e) {
