@@ -16,6 +16,7 @@ public class ItemButtonUI : ButtonUI
     [SerializeField] private ItemDescriptionCardUI descriptionCard;
 
     [SerializeField] private Color outlineUnlockedBuyableColor;
+    [SerializeField] private Color outlineUnlockedButNotBuyableColor;
     [SerializeField] private Image iconImage;
     [SerializeField] private Image outlineImage;
     [SerializeField] private Image backgroundImage;
@@ -365,7 +366,7 @@ public class ItemButtonUI : ButtonUI
         }
 
         if (!hubMerchantItem.CanBuyItem()) {
-            outlineImage.color = Color.white;
+            outlineImage.color = outlineUnlockedButNotBuyableColor;
             return;
         }
         else {

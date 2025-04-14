@@ -51,6 +51,10 @@ public class PayCurrencyTemplateWorldUI : MonoBehaviour
     }
 
     public void SetHovered(bool hovered) {
+        if(payCurrencyUIAnimator == null) {
+            Debug.Log("payCurrencyUIAnimator is null !");
+        }
+
         if (hovered) {
             payCurrencyUIAnimator.SetTrigger("Hover");
             payCurrencyUIAnimator.ResetTrigger("Unhover");
@@ -64,4 +68,5 @@ public class PayCurrencyTemplateWorldUI : MonoBehaviour
     public void SetCurrencyTypeToPay(PlayerCurrencies.CurrencyType currencyTypeToPay) {
         this.currencyTypeToPay = currencyTypeToPay;
     }
+
 }

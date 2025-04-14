@@ -43,6 +43,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerSetupLMGStopped;
     public event EventHandler OnPlayerEmptyRevolverMagStart;
     public event EventHandler OnPlayerEmptyRevolverMagEnd;
+    public event EventHandler OnPlayerTriggersProjectileExplosion;
 
     private float setupLMGTime = 2.5f;
     private float setupLMGTimer;
@@ -80,8 +81,13 @@ public class PlayerShoot : MonoBehaviour
     private bool coolDownAnimationTriggered;
     private bool playerJustPressedReload;
     private bool transferringAmmoFromBag;
-    private bool rifleSemiAutoModeActive;
+
     private bool secondaryAbilityActive;
+    private bool rifleSemiAutoModeActive;
+    private bool projectileExplodesOnPlayerClickModeActive;
+    private bool projectileExplodesOnPlayerClick;
+    private bool ammoClipInfusedWithOrb;
+
     private bool canHold2Guns;
 
     private bool automaticWeapon;
@@ -539,6 +545,13 @@ public class PlayerShoot : MonoBehaviour
             }
 
         }
+
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.GrenadeLauncher) {
+            projectileExplodesOnPlayerClickModeActive = !projectileExplodesOnPlayerClickModeActive;
+            projectileExplodesOnPlayerClick = true;
+
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {
@@ -719,6 +732,14 @@ public class PlayerShoot : MonoBehaviour
 
     private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+
+        // Grenade Launcher Secondary
+        if(projectileExplodesOnPlayerClickModeActive && projectileExplodesOnPlayerClick) {
+            OnPlayerTriggersProjectileExplosion?.Invoke(this, EventArgs.Empty);
+            projectileExplodesOnPlayerClick = false;
+            return;
+        }
+
         if (!canShoot) return;
         if (coolingDown) return;
         if (reloading) return;
@@ -729,10 +750,18 @@ public class PlayerShoot : MonoBehaviour
         if (Player.Instance.GetHP() == 0) return;
 
         if(heldGun.GetCurrentAmmoClip() < 0 || heldGun.GetCurrentBullet() == 0) {
+
             OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+
         } else {
+
             Shoot();
             playerIsHoldingDownShoot = true;
+
+            if (projectileExplodesOnPlayerClickModeActive && !projectileExplodesOnPlayerClick) {
+                projectileExplodesOnPlayerClick = true;
+                return;
+            }
         }
     }
 
@@ -846,7 +875,19 @@ public class PlayerShoot : MonoBehaviour
     public bool GetHoldingStationaryGun() {
         return holdingStationaryGun;
     }
+    public bool GetProjectileExplodesOnPlayerClickModeActive() {
+        return projectileExplodesOnPlayerClickModeActive;
+    }
 
+    public bool GetDebugSecondaryAbilityUnlocked() {
+        return debugSecondaryAbilityUnlocked;
+    }
+    public bool GetCanShoot() {
+        return canShoot;
+    }
+    public bool GetReloading() {
+        return reloading;
+    }
     #endregion
 
     public void SaveAllGunStats() {

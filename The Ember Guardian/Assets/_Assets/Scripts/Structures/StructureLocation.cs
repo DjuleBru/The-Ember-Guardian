@@ -26,6 +26,7 @@ public class StructureLocation : MonoBehaviour {
 
     protected bool structureLocationUnlocked;
     protected bool playerInTriggerArea;
+    protected bool isBeingDestroyed;
 
     protected virtual void Awake() {
         payCurrencyUI = GetComponent<PayCurrencyUI>();
@@ -43,11 +44,20 @@ public class StructureLocation : MonoBehaviour {
         LoadStructureLocationBought();
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
+        DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
 
         payCurrencyUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
         payCurrencyUI.SetOrbTemplateUIList(buildStructureOrbTemplates);
     }
 
+    private void DayNightManager_OnNightStart(object sender, EventArgs e) {
+        if (!playerInTriggerArea) return;
+        if (!structureLocationUnlocked) return;
+
+        Player.Instance.SetInPayCurrencyArea(false);
+        playerInTriggerArea = false;
+        OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+    }
 
     protected void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         showTooltipOnTrigger.HideTooltipShown();
@@ -67,11 +77,13 @@ public class StructureLocation : MonoBehaviour {
     }
 
     protected IEnumerator DestroyGameObjectAfterFrame() {
+        isBeingDestroyed = true;
         yield return new WaitForEndOfFrame();
         Destroy(gameObject);
     }
 
     protected void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
+        if (isBeingDestroyed) return;
         if (!playerInTriggerArea) return;
         if (!structureLocationUnlocked) return;
         if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
@@ -80,6 +92,7 @@ public class StructureLocation : MonoBehaviour {
     }
 
     protected void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+        if (isBeingDestroyed) return;
         if (!playerInTriggerArea) return;
         if (!structureLocationUnlocked) return;
 
@@ -102,14 +115,15 @@ public class StructureLocation : MonoBehaviour {
 
     protected virtual void OnTriggerExit2D(Collider2D collision) {
         if (!playerInTriggerArea) return;
-        Player.Instance.SetInPayCurrencyArea(false);
-
         if (collision.gameObject.GetComponent<Player>() == null) return;
+
+        Player.Instance.SetInPayCurrencyArea(false);
+        playerInTriggerArea = false;
+        OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+
         if (!structureSOToBuild.buildableAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) return;
 
-        OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
         payCurrencyUI.SetPlayerInteracting(false);
-        playerInTriggerArea = false;
     }
 
     public StructureSO GetStructureSOToBuild() {
@@ -161,6 +175,21 @@ public class StructureLocation : MonoBehaviour {
             Debug.Log(saveString + " location has been bought at merchant ");
         }
 
+    }
+
+    protected virtual void OnDestroy() {
+        if (GameInput.Instance != null) {
+            GameInput.Instance.OnPlayerInteractCanceled -= GameInput_OnPlayerInteractCanceled;
+            GameInput.Instance.OnPlayerInteractPerformed -= GameInput_OnPlayerInteractStarted;
+        }
+
+        if (DayNightManager.Instance != null) {
+            DayNightManager.Instance.OnNightStart -= DayNightManager_OnNightStart;
+        }
+
+        if (payCurrencyUI != null) {
+            payCurrencyUI.OnCurrencyPaymentSuccess -= PayOrbsUI_OnOrbPaymentSuccess;
+        }
     }
 
 }

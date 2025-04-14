@@ -22,7 +22,14 @@ public class GunMeleeAttackCollider : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if (meleeAttackHasHit) return;
 
-        Creature creatureHit = collision.GetComponent<Creature>();
+        Creature creatureHit = collision.GetComponent<Creature>(); 
+        CreatureSpawnerContinuous spawnerHit = collision.GetComponent<CreatureSpawnerContinuous>();
+        Collider2D colliderHit = collision.GetComponent<Collider2D>();
+
+        if (colliderHit.CompareTag("CritHitZone")) {
+            creatureHit = colliderHit.GetComponentInParent<Creature>();
+        }
+
         if (creatureHit != null) {
             creatureHit.TakeDamage(meleeAttackDamage, Player.Instance.transform, false);
 
@@ -34,6 +41,13 @@ public class GunMeleeAttackCollider : MonoBehaviour
             creatureHit.InstantiateHitPS(angle, hitPosition.y, false, meleeAttackDamage, hitPosition.x);
             meleeAttackHasHit = true;
 
+            OnGunMeleeAttackHit?.Invoke(this, EventArgs.Empty);
+            OnAnyGunMeleeAttackHit?.Invoke(this, EventArgs.Empty);
+            return;
+        }
+
+        if(spawnerHit != null) {
+            spawnerHit.TakeDamage(meleeAttackDamage, Player.Instance.transform, false);
             OnGunMeleeAttackHit?.Invoke(this, EventArgs.Empty);
             OnAnyGunMeleeAttackHit?.Invoke(this, EventArgs.Empty);
         }

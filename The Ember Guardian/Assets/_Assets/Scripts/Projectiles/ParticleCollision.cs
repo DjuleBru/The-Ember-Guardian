@@ -101,7 +101,6 @@ public class ParticleCollision : MonoBehaviour
 
                     } else {
                         float randomNumber = UnityEngine.Random.Range(0f, 1f);
-
                         if (critHit && randomNumber < PlayerShoot.Instance.GetHeldGun().GetCritChance()/100) {
                            
                             mobHit.TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, true);

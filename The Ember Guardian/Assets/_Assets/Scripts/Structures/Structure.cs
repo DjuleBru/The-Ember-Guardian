@@ -130,7 +130,17 @@ public class Structure : MonoBehaviour {
     protected virtual void DayNightManager_OnNightStart(object sender, EventArgs e) {
 
         if (!structureSO.functionUsableAtNight) {
+
             ActivateStructurePrimaryFunctionInteraction(false);
+            if (playerInTriggerArea) {
+                OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+                OnAnyPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+                playerInTriggerArea = false;
+                payCurrencyUI.SetPlayerInteracting(false);
+
+                Player.Instance.SetInPayCurrencyArea(false);
+            }
+
         }
 
         ActivateStructureUpgradeInteraction(false);

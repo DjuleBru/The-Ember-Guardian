@@ -46,7 +46,9 @@ public class GunVisual : MonoBehaviour
         gunSO = gun.GetGunSO();
         gunReloadSprites = gunSO.shotCountSprites;
         gunLightSpriteIndex = gunSO.shotCountSprites.Count -1;
-
+        if(gunSecondaryAbilityActiveSpriteRenderer != null) {
+            gunSecondaryAbilityActiveSpriteRenderer.enabled = false;
+        }
     }
 
 

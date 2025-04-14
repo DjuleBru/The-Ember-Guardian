@@ -162,7 +162,7 @@ public class VideoTipUI : MonoBehaviour
     private IEnumerator ShowTipTextList() {
         int i = 0;
 
-        resumeButtonText.text = "Skip";
+        resumeButtonText.text = LocalizationManager.Instance.GetLocalizedText("menu_skip");
 
         foreach (TipDescriptionTextTemplate textTemplate in tipDescriptionTextTemplateList) {
 

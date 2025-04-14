@@ -25,6 +25,7 @@ public class Collectible : MonoBehaviour
     public class OnAnyCollectiblePouffedEventArgs : EventArgs {
         public PlayerCurrencies.CurrencyType currencyType;
     }
+    public Action onDestinationReached;
 
     protected float initialGravityScale;
 
@@ -40,6 +41,7 @@ public class Collectible : MonoBehaviour
     protected bool enteredPayCurrencyUISlot;
 
     protected bool movingForPayment;
+    protected bool destroyOnDestinationReached;
     protected float smoothTime = 5f;
     protected Transform paymentDestination;
 
@@ -68,6 +70,11 @@ public class Collectible : MonoBehaviour
 
             if (currencyType == PlayerCurrencies.CurrencyType.ammo && Vector3.Distance(transform.localPosition, Vector3.zero) < .1f) {
                 PlayerShoot.Instance.AddAmmoClip(1);
+                Destroy(gameObject);
+            }
+
+            if(destroyOnDestinationReached && Vector3.Distance(transform.localPosition, Vector3.zero) < .1f) {
+                onDestinationReached?.Invoke();
                 Destroy(gameObject);
             }
         }
@@ -254,6 +261,11 @@ public class Collectible : MonoBehaviour
 
     public void SetCanBePickedUpByWorker() {
         canBePickedUpByWorker = true;
+    }
+
+    public void SetDestroyOnDestinationReached(Action callback = null) {
+        destroyOnDestinationReached = true;
+        onDestinationReached = callback;
     }
 
     public void SetCanBePickedUpByWorkerAfterDelay(float delay) {

@@ -17,10 +17,22 @@ public class GunProjectile : MonoBehaviour
     protected bool projectileHitCreature;
     protected bool projectileBouncedOnGround;
 
+    protected bool projectileExplodesOnContact;
+    protected bool projectileExplodesOnClick;
+
+    private Gun parentGun;
     public event EventHandler OnProjectileExploded;
 
     private void Awake() {
         gunProjectile_BounceHandler.OnProjectileBouncedOnGround += GunProjectile_BounceHandler_OnProjectileBouncedOnGround;
+    }
+
+    private void Start() {
+        PlayerShoot.Instance.OnPlayerTriggersProjectileExplosion += PlayerShoot_OnPlayerTriggersProjectileExplosion;
+    }
+
+    private void PlayerShoot_OnPlayerTriggersProjectileExplosion(object sender, EventArgs e) {
+        Explode();
     }
 
     private void GunProjectile_BounceHandler_OnProjectileBouncedOnGround(object sender, EventArgs e) {
@@ -32,21 +44,25 @@ public class GunProjectile : MonoBehaviour
 
         lifetimeTimer -= Time.deltaTime;
 
+        if (PlayerShoot.Instance.GetProjectileExplodesOnPlayerClickModeActive()) return;
+
         if(lifetimeTimer < 0) {
             Explode();
-            StartCoroutine(DestroyGameObjectAfterDelay());
         }
     }
 
     private void Explode() {
         rb.bodyType = RigidbodyType2D.Static;
         OnProjectileExploded?.Invoke(this, EventArgs.Empty);
+        PlayerShoot.Instance.OnPlayerTriggersProjectileExplosion -= PlayerShoot_OnPlayerTriggersProjectileExplosion;
 
         projectileExploded = true;
+        StartCoroutine(DestroyGameObjectAfterDelay());
     }
 
     private IEnumerator DestroyGameObjectAfterDelay() {
         yield return new WaitForSeconds(1f);
+
         Destroy(gameObject);
     }
 
@@ -72,7 +88,8 @@ public class GunProjectile : MonoBehaviour
         }
     }
      
-    public void InitializeProjectile(float projectileLifetime, int projectileDamage, float knockbackForce, Vector2 initialForce) {
+    public void InitializeProjectile(Gun parentGun, float projectileLifetime, int projectileDamage, float knockbackForce, Vector2 initialForce) {
+        this.parentGun = parentGun;
         this.projectileLifetime = projectileLifetime;
         this.projectileExplosionDamage = projectileDamage;
         this.knockBackForce = knockbackForce;
@@ -84,4 +101,6 @@ public class GunProjectile : MonoBehaviour
         rb.AddTorque(torque);
     }
 
+    private void OnDestroy() {
+    }
 }

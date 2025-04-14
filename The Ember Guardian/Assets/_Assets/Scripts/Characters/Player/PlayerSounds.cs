@@ -128,5 +128,6 @@ public class PlayerSounds : SoundObject
 
     private void OnDestroy() {
         GunMeleeAttackCollider.OnAnyGunMeleeAttackHit -= GunMeleeAttackCollider_OnAnyGunMeleeAttackHit;
+        PlayerMeleeAttack.Instance.OnMeleeAttackStarted -= PlayerMeleeAttack_OnMeleeAttackStarted;
     }
 }

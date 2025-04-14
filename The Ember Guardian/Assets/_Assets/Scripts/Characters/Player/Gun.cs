@@ -64,6 +64,7 @@ public class Gun : MonoBehaviour
         PlayerShoot.Instance.OnPlayerFocusBlastStopped += PlayerShoot_OnPlayerFocusBlastStopped;
     }
 
+
     protected void Update() {
         
         if (lerpingGunAngle) {
@@ -217,12 +218,14 @@ public class Gun : MonoBehaviour
             shootPS.Emit(pelletsPerBullet);
         }
 
-        if(gunSO.bulletIsProjectile) {
+        if (gunSO.bulletIsProjectile) {
             GunProjectile gunProjectile = Instantiate(projectilePrefab, projectileSpawnPosition.position, Quaternion.identity).GetComponent<GunProjectile>();
 
             Vector2 initialForce = PlayerAim.Instance.GetAimDir().normalized * bulletSpeed;
-            gunProjectile.InitializeProjectile(bulletLifetime, damagePerBullet, bulletKnockback, initialForce);
+            gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce);
+
         }
+
     }
 
     public GunSO GetGunSO() {

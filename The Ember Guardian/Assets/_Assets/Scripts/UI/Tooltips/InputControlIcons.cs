@@ -213,10 +213,10 @@ public class InputControlIcons : MonoBehaviour
                 spriteList.Add(gamepadYSprite);
             }
             if (control == Control.Skill1) {
-                spriteList.Add(gamepadRbSprite);
+                spriteList.Add(gamepadLbSprite);
             }
             if (control == Control.Skill2) {
-                spriteList.Add(gamepadLbSprite);
+                spriteList.Add(gamepadRbSprite);
             }
             if (control == Control.SwapWeapon) {
                 spriteList.Add(gamepadR3Sprite);
@@ -262,6 +262,17 @@ public class InputControlIcons : MonoBehaviour
                 spriteList.Add(gamepadRightArrowSprite);
             }
         } else {
+
+            if (control == Control.MeleeAttack) {
+                string meleeAttack = GameInput.Instance.GetBindingText(GameInput.Binding.meleeAttack);
+
+                if (keyboardIconLookup.TryGetValue(meleeAttack, out Sprite icon1)) {
+                    spriteList.Add(icon1);
+                }
+                else {
+                    spriteList.Add(keyboardQuestionMarkSprite);
+                }
+            }
 
             if (control == Control.Reload) {
                 string reload = GameInput.Instance.GetBindingText(GameInput.Binding.reload);
