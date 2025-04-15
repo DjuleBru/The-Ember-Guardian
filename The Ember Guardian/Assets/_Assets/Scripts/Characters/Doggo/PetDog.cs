@@ -37,12 +37,28 @@ public class PetDog : MonoBehaviour
     }
 
     private void Start() {
-        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
+        GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         Player.Instance.OnPlayerEnteredAnyInteractableTriggerArea += Player_OnPlayerEnteredAnyInteractableTriggerArea;
         Player.Instance.OnPlayerExitedAnyInteractableTriggerArea += Player_OnPlayerExitedAnyInteractableTriggerArea;
         Player.Instance.OnPlayerStartedInteractingWithAnyInteractable += Player_OnPlayerStartedInteractingWithAnyInteractable;
         Player.Instance.OnPlayerStoppedInteractingWithAnyInteractable += Player_OnPlayerStoppedInteractingWithAnyInteractable;
         dogMovement = dogAI.GetComponent<MobMovement>();
+    }
+
+    private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
+        if (!playerInTriggerArea) return;
+        if (playerPettingDogOnCooldown) return;
+        if (!playerCanPetDog) return;
+
+        if (!playerPettingDog) {
+            StartPetDog();
+        }
+        else {
+            if (playerCanRefreshPettingDog) {
+                StopCoroutine(currentCoroutine);
+                currentCoroutine = StartCoroutine(RefreshPetDogCoroutine());
+            }
+        }
     }
 
     private void Player_OnPlayerStoppedInteractingWithAnyInteractable(object sender, EventArgs e) {
@@ -59,21 +75,6 @@ public class PetDog : MonoBehaviour
 
     private void Player_OnPlayerEnteredAnyInteractableTriggerArea(object sender, EventArgs e) {
         RefreshCanPetDog();
-    }
-
-    private void GameInput_OnPlayerInteractPerformed(object sender, System.EventArgs e) {
-        if (!playerInTriggerArea) return;
-        if (playerPettingDogOnCooldown) return;
-        if (!playerCanPetDog) return;
-
-        if(!playerPettingDog) {
-            StartPetDog();
-        } else {
-            if(playerCanRefreshPettingDog) {
-                StopCoroutine(currentCoroutine);
-                currentCoroutine = StartCoroutine(RefreshPetDogCoroutine());
-            }
-        }
     }
 
     private void StartPetDog() {

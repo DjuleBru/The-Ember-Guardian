@@ -82,6 +82,7 @@ public class LevelSO : ScriptableObject
 
     public List<AudioClip> levelRandomBackgroundTracks;
     public List<AudioClip> levelExplorationTracks;
+    public List<AudioClip> levelExplorationTracksStreamerMode;
 
     public string GetLevelEnvironmentTypeString() {
         return LocalizationManager.Instance.GetLocalizedText(environmentType.ToString());

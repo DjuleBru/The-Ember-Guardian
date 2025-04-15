@@ -22,6 +22,7 @@ public class SettingsManager : MonoBehaviour
     public event EventHandler OnAimAssistChanged;
     public event EventHandler OnLanguageChanged;
     public event EventHandler OnAutoReloadChanged;
+    public event EventHandler OnSteamerModeChanged;
 
 
     private LocalizationManager.Language currentLanguage = LocalizationManager.Language.English;
@@ -32,6 +33,7 @@ public class SettingsManager : MonoBehaviour
     private bool controllerVibrations;
     private bool fullScreen;
     private bool autoReload;
+    private bool streamerMode;
 
     private ES3Settings settingsSaveFileSettings;
 
@@ -58,6 +60,7 @@ public class SettingsManager : MonoBehaviour
         fullScreen = ES3.Load("fullScreen", true, settingsSaveFileSettings);
         autoReload = ES3.Load("autoReload", false, settingsSaveFileSettings);
         currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
+        streamerMode = ES3.Load("steamerMode", false, settingsSaveFileSettings);
     }
 
     #region SET SETTINGS
@@ -130,7 +133,12 @@ public class SettingsManager : MonoBehaviour
 
         ES3.Save("autoReload", autoReload, settingsSaveFileSettings);
     }
+    public void ChangeStreamerMode() {
+        streamerMode = !streamerMode;
+        OnSteamerModeChanged?.Invoke(this, EventArgs.Empty);
 
+        ES3.Save("steamerMode", streamerMode, settingsSaveFileSettings);
+    }
     public void ChangeLanguage() {
         int nextIndex = ((int)currentLanguage + 1) % System.Enum.GetValues(typeof(LocalizationManager.Language)).Length;
         currentLanguage = (LocalizationManager.Language)nextIndex;
@@ -157,6 +165,9 @@ public class SettingsManager : MonoBehaviour
 
     public bool GetControllerVibrations() {
         return controllerVibrations;
+    }
+    public bool GetStreamerMode() {
+        return streamerMode;
     }
 
     public bool GetAlignAimWithMovement() {

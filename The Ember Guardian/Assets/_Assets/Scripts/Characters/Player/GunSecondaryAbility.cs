@@ -30,7 +30,7 @@ public class GunSecondaryAbility : MonoBehaviour
         PerformSecondaryAbility();
     }
 
-    protected void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {
+    protected virtual void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
 
         if (secondaryAbilityActive) {

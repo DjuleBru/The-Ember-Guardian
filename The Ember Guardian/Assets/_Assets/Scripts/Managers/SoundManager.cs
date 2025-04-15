@@ -55,7 +55,6 @@ public class SoundManager : MonoBehaviour
             PlayerSkills.Instance.OnActiveSkillReady += PlayerSkills_OnActiveSkillReady;
             PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
 
-
             PassiveShield.OnAnyPassiveShieldActivated += PassiveShield_OnAnyPassiveShieldActivated;
             PassiveShield.OnAnyPassiveShieldDied += PassiveShield_OnAnyPassiveShieldDied;
             ActiveTeleportation.Instance.OnPlayerTeleported += ActiveTeleportation_OnPlayerTeleported;

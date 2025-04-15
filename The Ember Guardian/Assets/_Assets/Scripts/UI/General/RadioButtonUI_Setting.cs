@@ -17,6 +17,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         GamepadVibrations,
         AutoReload,
         AdjustGamma,
+        StreamerMode,
     }
 
     [SerializeField] private SettingType settingType;
@@ -44,6 +45,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         SettingsManager.Instance.OnFullScreenChanged += SettingsManager_OnFullScreenChanged;
         SettingsManager.Instance.OnLanguageChanged += SettingsManager_OnLanguageChanged;
         SettingsManager.Instance.OnAutoReloadChanged += SettingsManager_OnAutoReloadChanged;
+        SettingsManager.Instance.OnSteamerModeChanged += SettingsManager_OnSteamerModeChanged;
 
         RefreshVisual();
     }
@@ -74,6 +76,9 @@ public class RadioButtonUI_Setting : RadioButtonUI
         if (settingType == SettingType.AutoReload) {
             SettingsManager.Instance.ChangeAutoReload();
         }
+        if (settingType == SettingType.StreamerMode) {
+            SettingsManager.Instance.ChangeStreamerMode();
+        }
         if (settingType == SettingType.AdjustGamma) {
             AdjustGammaUI.Instance.OpenPanel(false);
             SettingsMenuUI.Instance.HideSettingsPanel();
@@ -84,6 +89,10 @@ public class RadioButtonUI_Setting : RadioButtonUI
         RefreshVisual();
     }
     private void SettingsManager_OnAutoReloadChanged(object sender, System.EventArgs e) {
+        RefreshVisual();
+    }
+
+    private void SettingsManager_OnSteamerModeChanged(object sender, System.EventArgs e) {
         RefreshVisual();
     }
 
@@ -125,6 +134,9 @@ public class RadioButtonUI_Setting : RadioButtonUI
         }
         if (settingType == SettingType.AdjustGamma) {
             toggledText.text = LocalizationManager.Instance.GetLocalizedText("menu_adjust");
+        }
+        if (settingType == SettingType.StreamerMode) {
+            toggledImageGameObject.SetActive(SettingsManager.Instance.GetStreamerMode());
         }
     }
 

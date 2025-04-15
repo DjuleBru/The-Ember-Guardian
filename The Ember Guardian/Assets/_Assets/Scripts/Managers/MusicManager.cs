@@ -22,13 +22,28 @@ public class MusicManager : MonoBehaviour {
     private float musicSettingVolume;
 
     [SerializeField] private AudioClip mainMenuMusic; 
+    [SerializeField] private AudioClip mainMenuMusicStreamerMode;
+
+    [SerializeField] private AudioClip hubMusic;
+    [SerializeField] private AudioClip hubMusicStreamerMode;
+
     [SerializeField] private AudioClip nightMusicIntro;
     [SerializeField] private AudioClip nightMusicIntroLoop;
     [SerializeField] private AudioClip nightMusicOutro;
+
     [SerializeField] private List<AudioClip> nightMusicTension1Loops;
     [SerializeField] private List<AudioClip> nightMusicTension2Loops;
     [SerializeField] private List<AudioClip> nightMusicTension3Loops;
     [SerializeField] private List<AudioClip> nightMusicTension4Loops;
+
+    [SerializeField] private AudioClip nightMusicIntroStreamer;
+    [SerializeField] private AudioClip nightMusicIntroLoopStreamer;
+    [SerializeField] private AudioClip nightMusicOutroStreamer;
+
+    [SerializeField] private List<AudioClip> nightMusicTension1LoopsStreamer;
+    [SerializeField] private List<AudioClip> nightMusicTension2LoopsStreamer;
+    [SerializeField] private List<AudioClip> nightMusicTension3LoopsStreamer;
+    [SerializeField] private List<AudioClip> nightMusicTension4LoopsStreamer;
     private Queue<AudioClip> nightMusicQueue = new Queue<AudioClip>();
     private Coroutine nightCoroutine;
 
@@ -37,6 +52,7 @@ public class MusicManager : MonoBehaviour {
     private List<AudioClip> levelRandomBackgroundTracks;
     private List<AudioClip> levelRandomBackgroundTracksPooled;
     private List<AudioClip> levelExplorationTracks;
+    private List<AudioClip> levelExplorationTracksStreamerMode;
     private List<AudioClip> levelExplorationTracksPooled;
 
     private float targetVolume;
@@ -44,7 +60,7 @@ public class MusicManager : MonoBehaviour {
     private float minPeacefulTimerDelay = 20f;
     private float playMusicAttemptTimer;
     private float playMusicAttemptRate = 10f;
-    private float playMusicAttemptProbability = .05f;
+    private float playMusicAttemptProbability = 0f;
     private int playExplorationMusicTick;
     private int explorationMusicTickAmountToPlay = 2;
 
@@ -53,6 +69,7 @@ public class MusicManager : MonoBehaviour {
     private bool waitingToDiscoverLocation;
     private bool isDuskOrNight;
     private bool isMainMenuScene;
+    private bool isHUBScene;
     private bool isLevelScene;
     private bool isPlayingLevelDiscoveryMusic;
     private bool isPlayingPeacefulMusic;
@@ -64,6 +81,8 @@ public class MusicManager : MonoBehaviour {
     private AudioSource audioSourceB;
     private bool isUsingAudioSourceA = true;
     private bool isPlayingNightIntroMusic;
+
+    private bool streamerMode;
 
     private int tensionLevelMusicPlaying;
     private int fireDamageTakenRecently;
@@ -83,9 +102,11 @@ public class MusicManager : MonoBehaviour {
 
     private void Start() {
         SettingsManager.Instance.OnMusicVolumeChanged += SettingsManager_OnMusicVolumeChanged;
+        SettingsManager.Instance.OnSteamerModeChanged += SettingsManager_OnSteamerModeChanged;
         musicSettingVolume = SettingsManager.Instance.GetMusicVolume();
+        streamerMode = SettingsManager.Instance.GetStreamerMode();
 
-        if(PauseMenuUI.Instance != null) {
+        if (PauseMenuUI.Instance != null) {
             PauseMenuUI.Instance.OnPauseMenuClosed += PauseMenuUI_OnPauseMenuClosed;
             PauseMenuUI.Instance.OnPauseMenuOpened += PauseMenuUI_OnPauseMenuOpened;
         }
@@ -102,10 +123,12 @@ public class MusicManager : MonoBehaviour {
         CreatureAI.OnAnyCreatureAggro += CreatureAI_OnAnyCreatureAggro;
         isLevelScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level;
         isMainMenuScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu;
+        isHUBScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB;
 
         if(isLevelScene) {
             levelRandomBackgroundTracks = LevelManager.Instance.GetLevelSO().levelRandomBackgroundTracks;
             levelExplorationTracks = LevelManager.Instance.GetLevelSO().levelExplorationTracks;
+            levelExplorationTracks = LevelManager.Instance.GetLevelSO().levelExplorationTracksStreamerMode;
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
             DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
             CreaturesManager.Instance.OnAllCreaturesAtNightKilled += CreaturesManager_OnAllCreaturesAtNightKilled;
@@ -132,14 +155,26 @@ public class MusicManager : MonoBehaviour {
         }
 
         if (isMainMenuScene) {
-            audioSourceA.clip = mainMenuMusic;
+            if(streamerMode) {
+                audioSourceA.clip = mainMenuMusicStreamerMode;
+            } else {
+                audioSourceA.clip = mainMenuMusic;
+            }
             if(!VersioningManager.Instance.GetNewSaveFile()) {
                 PlayMusicDelayed(2f);
             }
         }
 
-    }
+        if (isHUBScene) {
+            if (streamerMode) {
+                audioSourceA.clip = hubMusicStreamerMode;
+            }
+            else {
+                audioSourceA.clip = hubMusic;
+            }
+        }
 
+    }
     private void ResetLevelBackgroundTracksPooled() {
         levelRandomBackgroundTracksPooled = new List<AudioClip>();
 
@@ -150,7 +185,14 @@ public class MusicManager : MonoBehaviour {
     private void ResetLevelExplorationTracksPooled() {
         levelExplorationTracksPooled = new List<AudioClip>();
 
-        foreach (AudioClip audioClip in levelExplorationTracks) {
+        List<AudioClip> levelExplorationTracksToPool = new List<AudioClip>();
+        if(streamerMode) {
+            levelExplorationTracksToPool = levelExplorationTracks;
+        } else {
+            levelExplorationTracksToPool = levelExplorationTracksStreamerMode;
+        }
+
+        foreach (AudioClip audioClip in levelExplorationTracksToPool) {
             levelExplorationTracksPooled.Add(audioClip);
         }
     }
@@ -226,6 +268,27 @@ public class MusicManager : MonoBehaviour {
     private void PauseMenuUI_OnPauseMenuClosed(object sender, EventArgs e) {
         if(musicAudioLevelReducedWithPause) {
             audioSourceA.volume *= 2.5f;
+        }
+    }
+
+
+    private void SettingsManager_OnSteamerModeChanged(object sender, EventArgs e) {
+        streamerMode = SettingsManager.Instance.GetStreamerMode();
+        Debug.Log(audioSourceA.clip);
+        if(isMainMenuScene) {
+            if(streamerMode) {
+                StartCoroutine(FadeOutThenInCoroutine(1f, 1f, mainMenuMusicStreamerMode));
+            } else {
+                StartCoroutine(FadeOutThenInCoroutine(1f, 1f, mainMenuMusic));
+            }
+        }
+        if (isHUBScene) {
+            if (streamerMode) {
+                StartCoroutine(FadeOutThenInCoroutine(1f, 1f, hubMusicStreamerMode));
+            }
+            else {
+                StartCoroutine(FadeOutThenInCoroutine(1f, 1f, hubMusic));
+            }
         }
     }
 
@@ -351,6 +414,7 @@ public class MusicManager : MonoBehaviour {
     private void PlayRandomExplorationMusic() {
 
         if (levelExplorationTracks.Count == 0) return;
+
         AudioClip randomMusic = levelExplorationTracksPooled[UnityEngine.Random.Range(0, levelExplorationTracksPooled.Count)];
         audioSourceA.clip = randomMusic;
         targetVolume = backgroundTracksAudioVolume * musicSettingVolume;
@@ -373,8 +437,11 @@ public class MusicManager : MonoBehaviour {
         if(nightCoroutine != null) {
             StopCoroutine(nightCoroutine);
         }
-
-        CrossfadeToNextNightClip(nightMusicOutro);
+        AudioClip outroAudioClip = nightMusicOutro;
+        if(streamerMode) {
+            outroAudioClip = nightMusicOutroStreamer;
+        }
+        CrossfadeToNextNightClip(outroAudioClip);
 
         StartCoroutine(FadeOutDelayedCoroutine(5f, 2f));
         isDuskOrNight = false;
@@ -385,17 +452,31 @@ public class MusicManager : MonoBehaviour {
 
     private IEnumerator PlayIntroNighMusicDelayed(float delay) {
         yield return new WaitForSeconds(delay);
-        audioSourceA.clip = nightMusicIntro;
+        float length = 0f;
+        if(streamerMode) {
+            audioSourceA.clip = nightMusicIntroStreamer;
+            length = nightMusicIntroStreamer.length;
+
+        } else {
+            audioSourceA.clip = nightMusicIntro;
+            length = nightMusicIntro.length;
+        }
+        
         isPlayingNightIntroMusic = true;
         audioSourceA.volume = nightMusicAudioVolume * musicSettingVolume;
         audioSourceA.Play();
         isUsingAudioSourceA = true;
 
-        StartCoroutine(WaitForClipToEnd(nightMusicIntro.length));
+        StartCoroutine(WaitForClipToEnd(length));
     }
 
     private void PlayFirstNightClip() {
+
         AudioClip nextClip = nightMusicIntroLoop;
+        if(streamerMode) {
+            nextClip = nightMusicIntroLoopStreamer;
+        }
+
         isPlayingNightIntroMusic = false;
         audioSourceA.clip = nextClip;
         audioSourceA.Play();
@@ -445,15 +526,25 @@ public class MusicManager : MonoBehaviour {
 
         AudioClip selectedAudioClip = activeSource.clip;
 
+        List<AudioClip> selectedNightMusicTension1Loops = nightMusicTension1Loops;
+        List<AudioClip> selectedNightMusicTension2Loops = nightMusicTension2Loops;
+        List<AudioClip> selectedNightMusicTension3Loops = nightMusicTension3Loops;
+        List<AudioClip> selectedNightMusicTension4Loops = nightMusicTension4Loops;
+
+        if(streamerMode) {
+            selectedNightMusicTension1Loops = nightMusicTension1LoopsStreamer;
+            selectedNightMusicTension2Loops = nightMusicTension2LoopsStreamer;
+            selectedNightMusicTension3Loops = nightMusicTension3LoopsStreamer;
+            selectedNightMusicTension4Loops = nightMusicTension4LoopsStreamer;
+        }
 
         if (fireDamageTakenRecently >= 3) {
             // fire just took a bunch of damage : player in deep ****
-            Debug.Log("fireDamageTakenRecently " + fireDamageTakenRecently);
             if (tensionLevelMusicPlaying == 4) {
                 selectedAudioClip = currentAudioClipPlaying;
             }
             else {
-                selectedAudioClip = nightMusicTension4Loops[UnityEngine.Random.Range(0, nightMusicTension4Loops.Count)];
+                selectedAudioClip = selectedNightMusicTension4Loops[UnityEngine.Random.Range(0, selectedNightMusicTension4Loops.Count)];
             }
             tensionLevelMusicPlaying = 4;
         }
@@ -467,7 +558,7 @@ public class MusicManager : MonoBehaviour {
                         selectedAudioClip = currentAudioClipPlaying;
                     }
                     else {
-                        selectedAudioClip = nightMusicTension3Loops[UnityEngine.Random.Range(0, nightMusicTension3Loops.Count)];
+                        selectedAudioClip = selectedNightMusicTension3Loops[UnityEngine.Random.Range(0, selectedNightMusicTension3Loops.Count)];
                     }
                     tensionLevelMusicPlaying = 3;
                 }
@@ -477,7 +568,7 @@ public class MusicManager : MonoBehaviour {
                         selectedAudioClip = currentAudioClipPlaying;
                     }
                     else {
-                        selectedAudioClip = nightMusicTension4Loops[UnityEngine.Random.Range(0, nightMusicTension4Loops.Count)];
+                        selectedAudioClip = selectedNightMusicTension4Loops[UnityEngine.Random.Range(0, selectedNightMusicTension4Loops.Count)];
                     }
                     tensionLevelMusicPlaying = 4;
                 }
@@ -489,7 +580,7 @@ public class MusicManager : MonoBehaviour {
                     selectedAudioClip = currentAudioClipPlaying;
                 }
                 else {
-                    selectedAudioClip = nightMusicTension4Loops[UnityEngine.Random.Range(0, nightMusicTension4Loops.Count)];
+                    selectedAudioClip = selectedNightMusicTension4Loops[UnityEngine.Random.Range(0, selectedNightMusicTension4Loops.Count)];
                 }
                 tensionLevelMusicPlaying = 4;
 
@@ -503,7 +594,7 @@ public class MusicManager : MonoBehaviour {
                     selectedAudioClip = currentAudioClipPlaying;
                 }
                 else {
-                    selectedAudioClip = nightMusicTension1Loops[UnityEngine.Random.Range(0, nightMusicTension1Loops.Count)];
+                    selectedAudioClip = selectedNightMusicTension1Loops[UnityEngine.Random.Range(0, selectedNightMusicTension1Loops.Count)];
                 }
                 tensionLevelMusicPlaying = 1;
             }
@@ -513,7 +604,7 @@ public class MusicManager : MonoBehaviour {
                     selectedAudioClip = currentAudioClipPlaying;
                 }
                 else {
-                    selectedAudioClip = nightMusicTension2Loops[UnityEngine.Random.Range(0, nightMusicTension2Loops.Count)];
+                    selectedAudioClip = selectedNightMusicTension2Loops[UnityEngine.Random.Range(0, selectedNightMusicTension2Loops.Count)];
                 }
                 tensionLevelMusicPlaying = 2;
             }
@@ -523,7 +614,7 @@ public class MusicManager : MonoBehaviour {
                     selectedAudioClip = currentAudioClipPlaying;
                 }
                 else {
-                    selectedAudioClip = nightMusicTension3Loops[UnityEngine.Random.Range(0, nightMusicTension3Loops.Count)];
+                    selectedAudioClip = selectedNightMusicTension3Loops[UnityEngine.Random.Range(0, selectedNightMusicTension3Loops.Count)];
                 }
                 tensionLevelMusicPlaying = 3;
             }
@@ -533,7 +624,7 @@ public class MusicManager : MonoBehaviour {
                     selectedAudioClip = currentAudioClipPlaying;
                 }
                 else {
-                    selectedAudioClip = nightMusicTension4Loops[UnityEngine.Random.Range(0, nightMusicTension4Loops.Count)];
+                    selectedAudioClip = selectedNightMusicTension4Loops[UnityEngine.Random.Range(0, selectedNightMusicTension4Loops.Count)];
                 }
                 tensionLevelMusicPlaying = 4;
             }
@@ -586,7 +677,11 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void PlayMusicDelayed(float delay) {
-        audioSourceA.PlayDelayed(delay);
+        StartCoroutine(PlayMusicDelayedCoroutine(delay));
+    }
+    public IEnumerator PlayMusicDelayedCoroutine(float delay) {
+        yield return new WaitForSeconds(delay);
+        audioSourceA.Play();
     }
     public IEnumerator FadeInDelayedCoroutine(float delayToFadeIn, float fadeInDuration) {
         yield return new WaitForSeconds(delayToFadeIn);
@@ -596,6 +691,7 @@ public class MusicManager : MonoBehaviour {
         yield return new WaitForSeconds(delayToFadeOut);
         StartCoroutine(FadeOutCoroutine(fadeOutDuration, 0));
     }
+
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
         FadeOutMusic(1f);
     }

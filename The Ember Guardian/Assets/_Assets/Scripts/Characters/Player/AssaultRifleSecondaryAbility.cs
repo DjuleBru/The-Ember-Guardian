@@ -18,6 +18,9 @@ public class AssaultRifleSecondaryAbility : GunSecondaryAbility {
     private bool transferringAmmoFromBag;
     private float transferringAmmoFromBagTimer;
 
+    private Collectible smallOrbBeingTransferred;
+    private bool smallOrbIsBeingTransferred;
+
     public event EventHandler OnPlayerInfusedOrbInAmmoClip;
     public event EventHandler OnInfusedOrbAmmoClipEmpty;
 
@@ -68,9 +71,10 @@ public class AssaultRifleSecondaryAbility : GunSecondaryAbility {
 
     private void PlayerInventoryUI_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.smallBlueOrb) {
-            Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.smallBlueOrb), smallOrbSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
-            collectible.SetMovingForPayment(true, 5f, smallOrbDestinationPosition);
-            collectible.SetDestroyOnDestinationReached(OnBlueOrbInsertedInGun);
+            smallOrbBeingTransferred = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.smallBlueOrb), smallOrbSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
+            smallOrbBeingTransferred.SetMovingForPayment(true, 5f, smallOrbDestinationPosition);
+            smallOrbBeingTransferred.SetDestroyOnDestinationReached(OnBlueOrbInsertedInGun);
+            smallOrbIsBeingTransferred = true;
         }
     }
 
@@ -78,6 +82,7 @@ public class AssaultRifleSecondaryAbility : GunSecondaryAbility {
 
         OnPlayerInfusedOrbInAmmoClip?.Invoke(this, EventArgs.Empty);
         ammoClipInfusedWithOrb = true;
+        smallOrbIsBeingTransferred = false;
     }
 
     private void StartTransferringOrbFromBagInGun() {
@@ -95,7 +100,6 @@ public class AssaultRifleSecondaryAbility : GunSecondaryAbility {
 
     }
 
-
     protected override void PerformSecondaryAbility() {
 
         playerJustActivatedSecondary = true;
@@ -105,6 +109,22 @@ public class AssaultRifleSecondaryAbility : GunSecondaryAbility {
         if (ammoClipInfusedWithOrb) return;
         if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.smallBlueOrb).Count > 0) {
             UICurrencyManager.PlayerInventoryUI.DropNextCurrencyInBag(PlayerCurrencies.CurrencyType.smallBlueOrb);
+        }
+
+    }
+
+    protected override void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+
+        if(smallOrbIsBeingTransferred) {
+            smallOrbIsBeingTransferred = false;
+            smallOrbBeingTransferred.SetMovingForPayment(false);
+        }
+
+        if (secondaryAbilityActive) {
+
+            CancelSecondaryAbility();
+
         }
 
     }
