@@ -44,7 +44,7 @@ public class CreatureAI_TarnishedWidow : CreatureAI
         //    creature.SetCreatureHealth(Mathf.RoundToInt(creature.GetCreatureSO().maxHealth*1.5f));
         //}
 
-        BossUI.Instance.LinkBoss(creature, isFirstAppearance);
+        BossUI.Instance.LinkBoss(creature, !isFirstAppearance);
     }
 
     private void Creature_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {

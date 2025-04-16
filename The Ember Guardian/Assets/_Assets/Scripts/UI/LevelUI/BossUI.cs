@@ -47,7 +47,7 @@ public class BossUI : MonoBehaviour
         if (bossHasMultiplePhases) {
             bossHealthBarFull.SetActive(false);
             bossHealthBarFirstHalf.SetActive(true);
-            bossHealthBarFirstHalf.SetActive(true);
+            bossHealthBarSecondHalf.SetActive(true);
         }
         else {
             bossHealthBarFull.SetActive(true);
@@ -79,6 +79,8 @@ public class BossUI : MonoBehaviour
         float maxHealth = linkedBoss.GetCreatureMaxHealth();
         float currentHealth = linkedBoss.GetCreatureHealth();
         float healthNormalized = currentHealth / maxHealth;
+        Debug.Log(healthNormalized);
+        Debug.Log(bossHasMultiplePhases);
 
         if(bossHasMultiplePhases) {
             if (healthNormalized > 0.5f) {
@@ -92,7 +94,7 @@ public class BossUI : MonoBehaviour
                 bossHealthBarPhase2.fillAmount = healthNormalized / 0.5f; // 50% à 0%
             }
         } else {
-            bossHealthBarFill.fillAmount = healthNormalized;
+            bossHealthBarFill.fillAmount = (healthNormalized - 0.5f) / 0.5f; // 100% à 50%
         }
         
     }

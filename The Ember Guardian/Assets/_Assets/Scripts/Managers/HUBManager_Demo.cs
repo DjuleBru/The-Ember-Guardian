@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HUBManager_Demo : MonoBehaviour
@@ -12,6 +13,7 @@ public class HUBManager_Demo : MonoBehaviour
     [SerializeField] private List<HubMerchant> functionalDemoHubMerchantList;
     [SerializeField] private List<HubMerchant> decorationalDemoHubMerchantList;
     [SerializeField] private HubMerchant gemMerchant;
+    [SerializeField] private HubMerchant dogTamer;
     [SerializeField] private LevelNPCGemReward gemMerchantReward;
     [SerializeField] private HubMerchantTalkUI armorerTalkUI;
     [SerializeField] private HubMerchantTalkUI trainerTalkUI;
@@ -147,7 +149,7 @@ public class HUBManager_Demo : MonoBehaviour
     private IEnumerator HandleFirstLevelCompletedHubEvolution() {
         hubFireEmberExtractable = true;
 
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.2f);
         Debug.Log("HandleFirstLevelCompletedHubEvolution");
         gemMerchantTalkUI.SetTextLinesSO(gemMerchantLevelLostOnceTextLinesSO);
 
@@ -161,6 +163,7 @@ public class HUBManager_Demo : MonoBehaviour
             decorationalHubMerchant.SetDemoMerchantUnlocked();
         }
 
+        dogTamer.gameObject.SetActive(false);
         gemMerchant.SetHasTalkLinesToShow(true, true);
         gemMerchantReward.DisableReward();
     }
@@ -326,6 +329,7 @@ public class HUBManager_Demo : MonoBehaviour
 
     private IEnumerator FirstHUBEnterCoroutine() {
         UICurrencyManager.HubInventoryUI.RemoveAllCurrenciesFromBag();
+        dogTamer.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(5f);
         gemMerchant.ResetAllItemStatuses();
@@ -425,6 +429,7 @@ public class HUBManager_Demo : MonoBehaviour
                 hubMerchant.SetHasTalkLinesToShow(true, true);
             }
 
+            dogTamer.gameObject.SetActive(true);
             armorerTalkUI.SetTextLinesSO(armorerIntroTextLinesSO);
             trainerTalkUI.SetTextLinesSO(trainerIntroTextLinesSO);
 
