@@ -69,6 +69,7 @@ public class HubChest : MonoBehaviour
 
     protected void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
+        if (!chestOpen) return;
 
         payCurrencyUI.SetPlayerInteracting(false);
         payCurrencyUI.ResetCurrencyPayment();
@@ -145,9 +146,16 @@ public class HubChest : MonoBehaviour
     }
 
     private void OpenChest() {
+        StartCoroutine(OpenChestCoroutine());
+    }
+
+    private IEnumerator OpenChestCoroutine() {
+        OnChestOpened?.Invoke(this, EventArgs.Empty);
+        yield return new WaitForSeconds(3f);
+
         chestOpen = true;
         Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
-        OnChestOpened?.Invoke(this, EventArgs.Empty);
+
     }
 
     private void CloseChest() {

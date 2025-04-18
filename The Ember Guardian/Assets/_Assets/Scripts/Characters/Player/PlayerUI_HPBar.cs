@@ -11,6 +11,7 @@ public class PlayerUI_HPBar : MonoBehaviour
     [SerializeField] private GameObject hpBarGameObject;
     [SerializeField] private Transform hpTickTemplate;
     [SerializeField] private Transform hpTickContainer;
+    [SerializeField] private bool debugAlwaysShow;
     private float tickWidth = .15f;
     private float sidesWidth = .5f;
 
@@ -91,6 +92,7 @@ public class PlayerUI_HPBar : MonoBehaviour
         }
 
         if (inTentArea) return;
+        if (debugAlwaysShow) return;
         HandleFadeOut();
 
     }

@@ -111,8 +111,8 @@ public class CreatureSO : ScriptableObject
     public float attackRangeMaxDistanceMiss;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
-    [Range(0, 2)]
-    public float relativeDamageToFire;
+    [Range(0, 3)]
+    public int damageToFire;
 
 
     [BoxGroup("Game Data/Status Effects")]

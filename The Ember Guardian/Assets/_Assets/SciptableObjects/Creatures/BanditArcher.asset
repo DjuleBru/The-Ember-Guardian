@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BanditArcher
   m_EditorClassIdentifier: 
   enemyName: Bandit
+  isBoss: 0
   description: Melee mob that can respawn after it's first death !
   creaturePrefab: {fileID: 4997657120178985709, guid: abf730c6dc8029c4699d0cccb912fa15, type: 3}
   mass: 20
@@ -30,15 +31,18 @@ MonoBehaviour:
   attackRate: 5
   enteredLightattackRateDebuff: 2.5
   isRangedAttack: 1
-  canAttackPlayerOnTower: 0
   minAttackRange: 10
   maxAttackRange: 15
   hasSpecialAbility: 0
   specialAbilityCooldown: 0
   attackRangeRandomizer: 1
   attackRangeMaxDistanceMiss: 1
-  relativeDamageToFire: 1
+  damageToFire: 1
+  immuneToPoison: 0
+  immuneToShock: 0
+  immuneToImmobilize: 0
   attackAnimationDelay: 1.2
+  attackSFXDelayAfterAnimationStart: 0
   totalAttackAnimationTime: 2.5
   hasCustomSpawnAnimation: 1
   spawnAnimationDuration: 1.5
@@ -46,6 +50,8 @@ MonoBehaviour:
   workerTargetingPriority: 1
   playerTargetingPriority: 3
   barricadeTargetingPriority: 2
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 0
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
   difficulty: 5

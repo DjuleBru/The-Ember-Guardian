@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Spitter_Day
   m_EditorClassIdentifier: 
   enemyName: Spitter
+  isBoss: 0
   description: Ranged mob that fires arced projectiles
   creaturePrefab: {fileID: 4997657120178985709, guid: 756e13c7ac7325942baa544ddb115872, type: 3}
   mass: 20
@@ -30,15 +31,18 @@ MonoBehaviour:
   attackRate: 2.5
   enteredLightattackRateDebuff: 2.5
   isRangedAttack: 1
-  canAttackPlayerOnTower: 1
   minAttackRange: 15
   maxAttackRange: 20
   hasSpecialAbility: 0
   specialAbilityCooldown: 0
   attackRangeRandomizer: 0.5
   attackRangeMaxDistanceMiss: 0.3
-  relativeDamageToFire: 1
+  damageToFire: 1
+  immuneToPoison: 0
+  immuneToShock: 0
+  immuneToImmobilize: 0
   attackAnimationDelay: 0.3
+  attackSFXDelayAfterAnimationStart: 0
   totalAttackAnimationTime: 0.7
   hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
@@ -46,6 +50,8 @@ MonoBehaviour:
   workerTargetingPriority: 1
   playerTargetingPriority: 2
   barricadeTargetingPriority: 3
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 1
   currencyTypeDroppedList: 0200000003000000
   currencyDropAmountList: 0100000002000000
   difficulty: 4

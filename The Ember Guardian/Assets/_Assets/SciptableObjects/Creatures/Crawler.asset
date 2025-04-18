@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Crawler
   m_EditorClassIdentifier: 
   enemyName: Crawler
+  isBoss: 0
   description: Basic monster, a bit swarmy.
   creaturePrefab: {fileID: 2465624883499499618, guid: a7d7975db41abfd489cd11f7f596df5f, type: 3}
   mass: 10
@@ -30,15 +31,18 @@ MonoBehaviour:
   attackRate: 2
   enteredLightattackRateDebuff: 2.5
   isRangedAttack: 0
-  canAttackPlayerOnTower: 0
   minAttackRange: 0.5
   maxAttackRange: 1
   hasSpecialAbility: 0
   specialAbilityCooldown: 0
   attackRangeRandomizer: 0.2
   attackRangeMaxDistanceMiss: 0.1
-  relativeDamageToFire: 0.5
+  damageToFire: 1
+  immuneToPoison: 0
+  immuneToShock: 0
+  immuneToImmobilize: 0
   attackAnimationDelay: 0.2
+  attackSFXDelayAfterAnimationStart: 0
   totalAttackAnimationTime: 0.5
   hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
@@ -46,6 +50,8 @@ MonoBehaviour:
   workerTargetingPriority: 3
   playerTargetingPriority: 2
   barricadeTargetingPriority: 1
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 0
   currencyTypeDroppedList: 03000000
   currencyDropAmountList: 01000000
   difficulty: 1

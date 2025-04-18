@@ -18,7 +18,7 @@ MonoBehaviour:
   creaturePrefab: {fileID: 2465624883499499618, guid: 3549a71fbc78c51489a16767ea29cc18, type: 3}
   mass: 100
   detectionRange_Day: 12
-  detectionRange_Night: 5
+  detectionRange_Night: 6
   flying: 0
   flightMinAltitude: 0
   flightMaxAltitude: 0
@@ -26,8 +26,8 @@ MonoBehaviour:
   nightMoveSpeed: 2.2
   enteredLightMoveSpeedDebuff: 1.5
   moveSpeedRandomizerDelta: 0
-  maxHealth: 2250
-  damage: 1
+  maxHealth: 2150
+  damage: 2
   attackRate: 3
   enteredLightattackRateDebuff: 2.5
   isRangedAttack: 0
@@ -37,7 +37,7 @@ MonoBehaviour:
   specialAbilityCooldown: 0
   attackRangeRandomizer: 0.1
   attackRangeMaxDistanceMiss: 0.1
-  relativeDamageToFire: 2
+  damageToFire: 2
   immuneToPoison: 1
   immuneToShock: 1
   immuneToImmobilize: 1
@@ -54,7 +54,7 @@ MonoBehaviour:
   canAttackPlayerOnTower: 0
   currencyTypeDroppedList: 03000000
   currencyDropAmountList: 01000000
-  difficulty: 75
+  difficulty: 50
   initialWaveSpawn: 1
   spawnProbability: 0.4
   maxCreaturesPerPacket: 1

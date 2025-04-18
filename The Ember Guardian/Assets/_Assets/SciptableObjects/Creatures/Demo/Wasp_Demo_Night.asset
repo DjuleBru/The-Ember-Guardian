@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Wasp_Demo_Night
   m_EditorClassIdentifier: 
   enemyName: Wasp
+  isBoss: 0
   description: Melee mob that can respawn after it's first death !
   creaturePrefab: {fileID: 4997657120178985709, guid: 1daa7a1cf491ad0428c8464c1aed981a, type: 3}
   mass: 5
@@ -30,15 +31,18 @@ MonoBehaviour:
   attackRate: 3
   enteredLightattackRateDebuff: 2.5
   isRangedAttack: 0
-  canAttackPlayerOnTower: 1
   minAttackRange: 0.75
   maxAttackRange: 1.5
   hasSpecialAbility: 0
   specialAbilityCooldown: 0
   attackRangeRandomizer: 0.2
   attackRangeMaxDistanceMiss: 0.1
-  relativeDamageToFire: 1
+  damageToFire: 1
+  immuneToPoison: 0
+  immuneToShock: 0
+  immuneToImmobilize: 0
   attackAnimationDelay: 0.3
+  attackSFXDelayAfterAnimationStart: 0
   totalAttackAnimationTime: 0.5
   hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
@@ -46,6 +50,8 @@ MonoBehaviour:
   workerTargetingPriority: 2
   playerTargetingPriority: 3
   barricadeTargetingPriority: 0
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 1
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
   difficulty: 1

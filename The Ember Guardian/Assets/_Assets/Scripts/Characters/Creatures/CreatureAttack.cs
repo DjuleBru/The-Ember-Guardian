@@ -35,13 +35,17 @@ public class CreatureAttack : MobAttack
     public override void DealDamage() {
 
         if (attackTargetIDamageable != null) {
-            attackTargetIDamageable.TakeDamage(attackDamage, transform, false, attackIgnoresTemporaryInvincibility);
+
+            if ((attackTargetIDamageable as MonoBehaviour) == Fire.Instance) {
+                if (creature.GetCreatureSO().isBoss) return;
+                attackTargetIDamageable.TakeDamage(creature.GetCreatureSO().damageToFire, transform, false, attackIgnoresTemporaryInvincibility);
+                mob.Die();
+            } else {
+                attackTargetIDamageable.TakeDamage(attackDamage, transform, false, attackIgnoresTemporaryInvincibility);
+            }
+
         }
 
-        if ((attackTargetIDamageable as MonoBehaviour) == Fire.Instance) {
-            if (creature.GetCreatureSO().isBoss) return;
-            mob.Die();
-        }
 
         InvokeAttackHit();
     }

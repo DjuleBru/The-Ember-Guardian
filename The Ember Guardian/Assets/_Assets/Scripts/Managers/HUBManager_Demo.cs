@@ -55,6 +55,7 @@ public class HUBManager_Demo : MonoBehaviour
     private bool playerDiedWithWidow;
     private bool playerDiedWithWidowTextShown;
     private bool merchantsUnlocked;
+    private bool extractEmberTooltipShown;
 
     private void Awake() {
         // First demo hub encounter becomes true when player moves on teleporter
@@ -138,6 +139,7 @@ public class HUBManager_Demo : MonoBehaviour
         hubFire.OnPlayerTriggeredIn += HubFire_OnPlayerTriggeredIn;
         hubFire.OnPlayerTriggeredOut += HubFire_OnPlayerTriggeredOut;
         hubFire.OnFireEmberExtracted += HubFire_OnFireEmberExtracted;
+        hubFire.OnFireEmberExtractionStarted += HubFire_OnFireEmberExtractionStarted;
         gemMerchant.OnPlayerTriggeredIn += GemMerchant_OnPlayerTriggeredIn;
         gemMerchant.OnPlayerTriggeredOut += GemMerchant_OnPlayerTriggeredOut;
         HubChest.Instance.OnChestOpened += HubChest_OnChestOpened;
@@ -525,9 +527,12 @@ public class HUBManager_Demo : MonoBehaviour
 
     private void HubFire_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
         if (!hubFireEmberExtractable) return;
+
         if (firstDemoHubEncounter) {
             if (!emberExtractionTalkLineShown) return;
             if (emberExtracted) return;
+            extractEmberTooltipShown = true;
+            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_extractEmber"), InputControlIcons.Control.Interact, 5f);
         }
         else {
             if (!fireIndicatorActive) return;
@@ -536,6 +541,12 @@ public class HUBManager_Demo : MonoBehaviour
         fireIndicator.gameObject.SetActive(false);
     }
 
+    private void HubFire_OnFireEmberExtractionStarted(object sender, System.EventArgs e) {
+        if(extractEmberTooltipShown) {
+            PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
+            extractEmberTooltipShown = false;
+        }
+    }
     private void GrassyAreaPortal_OnPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.HUB_HeadToTeleporter);
     }

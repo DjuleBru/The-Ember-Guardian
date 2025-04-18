@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Slug_Tutorial
   m_EditorClassIdentifier: 
   enemyName: Slug
+  isBoss: 0
   description: Basic, slightly tanky, slow creature.
   creaturePrefab: {fileID: 2465624883499499618, guid: a1c69d248cb28af438808c4ee0d9106a, type: 3}
   mass: 10
@@ -30,15 +31,18 @@ MonoBehaviour:
   attackRate: 2
   enteredLightattackRateDebuff: 2.5
   isRangedAttack: 0
-  canAttackPlayerOnTower: 0
   minAttackRange: 2.1
   maxAttackRange: 3
   hasSpecialAbility: 0
   specialAbilityCooldown: 0
   attackRangeRandomizer: 0.3
   attackRangeMaxDistanceMiss: 0.1
-  relativeDamageToFire: 1
+  damageToFire: 1
+  immuneToPoison: 0
+  immuneToShock: 0
+  immuneToImmobilize: 0
   attackAnimationDelay: 0.3
+  attackSFXDelayAfterAnimationStart: 0
   totalAttackAnimationTime: 1.2
   hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
@@ -46,6 +50,8 @@ MonoBehaviour:
   workerTargetingPriority: 1
   playerTargetingPriority: 3
   barricadeTargetingPriority: 2
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 0
   currencyTypeDroppedList: 03000000
   currencyDropAmountList: 01000000
   difficulty: 1

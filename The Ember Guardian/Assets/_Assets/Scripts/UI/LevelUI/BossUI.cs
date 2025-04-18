@@ -79,8 +79,6 @@ public class BossUI : MonoBehaviour
         float maxHealth = linkedBoss.GetCreatureMaxHealth();
         float currentHealth = linkedBoss.GetCreatureHealth();
         float healthNormalized = currentHealth / maxHealth;
-        Debug.Log(healthNormalized);
-        Debug.Log(bossHasMultiplePhases);
 
         if(bossHasMultiplePhases) {
             if (healthNormalized > 0.5f) {
