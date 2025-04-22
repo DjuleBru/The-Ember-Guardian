@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
   m_Name: Watcher_LevelIntro
   m_EditorClassIdentifier: 
-  merchantTextLines:
-  - "<wiggle a=.05 f=2>The Lost Greens </wiggle>.... they are dangerous, but without
-    someone to hold the line, they\u2019ll only get worse."
-  - Survive the nights, push them back. Show this land the fire <shake a=.4>still
-    burns</shake>.
-  - "Prey is plentiful, though the easiest hunts won\u2019t sustain you forever. "
-  - "Sooner or later, you\u2019ll need to venture<slide a=.2> further</slide>, into<wiggle
-    a=.05 f=2> wilder</wiggle> grounds."
+  merchantTextLines: []
+  merchantTextLinesLocalizationKeys:
+  - watcher_LevelIntro1
+  - watcher_LevelIntro2
+  - watcher_LevelIntro3
+  - watcher_LevelIntro4
   showShopAfterDialog: 0

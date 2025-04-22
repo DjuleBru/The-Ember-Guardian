@@ -7,6 +7,7 @@ public class HubChest : MonoBehaviour
 {
     public static HubChest Instance;
 
+    private bool lockChestOpening;
     private bool playerInTriggerArea;
     private bool chestOpen;
     private bool hubChestInteractionTooltipShown;
@@ -18,6 +19,7 @@ public class HubChest : MonoBehaviour
 
     public event EventHandler OnChestOpened;
     public event EventHandler OnChestClosed;
+    public event EventHandler OnChestSetCanOpen;
 
     [SerializeField] protected PayCurrencyTemplateWorldUI payGemTemplate;
     protected List<PayCurrencyTemplateWorldUI> payCurrencyTemplates = new List<PayCurrencyTemplateWorldUI>();
@@ -113,6 +115,7 @@ public class HubChest : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
+        if (lockChestOpening) return;
         if (collision.GetComponent<Player>() == null) return;
         playerInTriggerArea = true;
         if (!HasGemsToPay()) return;
@@ -130,6 +133,7 @@ public class HubChest : MonoBehaviour
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
+        if (lockChestOpening) return;
         if (collision.GetComponent<Player>() == null) return;
         playerInTriggerArea = false;
         if (!chestOpen) return;
@@ -166,6 +170,16 @@ public class HubChest : MonoBehaviour
         Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
     }
 
+    public void SetCanOpenChest(bool canOpenChest) {
+        this.lockChestOpening = !canOpenChest;
+        if(canOpenChest) {
+            OnChestSetCanOpen?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public bool GetCanOpenChest() {
+        return !lockChestOpening;
+    }
 
     public bool GetPlayerInTriggerArea() {
         return playerInTriggerArea;

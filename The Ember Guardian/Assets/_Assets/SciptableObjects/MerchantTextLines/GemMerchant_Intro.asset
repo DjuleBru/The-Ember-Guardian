@@ -12,18 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
   m_Name: GemMerchant_Intro
   m_EditorClassIdentifier: 
-  merchantTextLines:
-  - "Ah... so you made it. I wondered if you\u2019d survive the darklings."
-  - "Do you see this fire? It\u2019s not just a flame. It\u2019s a bond. A refuge.
-    A<slide a=.2> promise.</slide>"
-  - <wiggle a=.05 f=2>The Eternal Flame</wiggle>... it ties you, me, and all who
-    will come.
-  - Here, you can build, strengthen, shape... but it all comes at a cost.  <bounce
-    a=.2 f=1.2>Gems</bounce>. Many gems.
-  - I can help, of course. Gems can create structures, tools... even uncover secrets
-    the shadows fear.
-  - But remember this. Without this flame, there is <wave a=.2 f=1.5>nothing</wave>.
-    Let it weaken, and so will you.
-  - So, do you have something for me? Or will you return stronger... and <wiggle
-    a=.15> richer?
-  showShopAfterDialog: 1
+  merchantTextLines: []
+  merchantTextLinesLocalizationKeys:
+  - gemTrader_Intro1
+  - gemTrader_Intro2
+  - gemTrader_Intro3
+  - gemTrader_Intro4
+  - gemTrader_Intro5
+  - gemTrader_Intro6
+  showShopAfterDialog: 0

@@ -72,7 +72,10 @@ public class PlayerCurrencies : MonoBehaviour
         }
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
-            SetCarryingEmber(false);
+            bool holdingEmber = ES3.Load("holdingEmber", false);
+            if (holdingEmber) {
+                StartCoroutine(SetCarryingEmberAfterDelay());
+            }
         }
     }
 

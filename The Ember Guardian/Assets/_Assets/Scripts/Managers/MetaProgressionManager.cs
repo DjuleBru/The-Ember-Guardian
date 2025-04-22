@@ -81,6 +81,10 @@ public class MetaProgressionManager : MonoBehaviour
         ES3.Save("tutorialComplete", true);
     }
 
+    public bool GetTutorialCompleted() {
+        return ES3.Load("tutorialComplete", false);
+    }
+
     #endregion
 
     #region HUB
@@ -120,16 +124,6 @@ public class MetaProgressionManager : MonoBehaviour
         return ES3.Load(key, false);
     }
 
-    public bool GetHubFireEmberExtractable() {
-        string key = "SetHubFireEmberExtractable";
-        return ES3.Load(key, false);
-    }
-
-    public void SetHubFireEmberExtractable(bool hubFireExtractable) {
-        string key = "SetHubFireEmberExtractable";
-        ES3.Save(key, hubFireExtractable);
-    }
-
     public void SavePlayerHubPosition(Vector3 position) {
         ES3.Save("_playerHUBPosition", position);
     }
@@ -140,14 +134,6 @@ public class MetaProgressionManager : MonoBehaviour
     #endregion
 
     #region CURRENCIES
-    public void SetTutorialSkipped() {
-        string key = "_TutorialSkipped";
-
-        ES3.Save(key, true);
-    }
-    public bool GetTutorialSkipped() {
-        return ES3.Load("_TutorialSkipped", false);
-    }
     public void SetGemAmountFromLevel(PlayerCurrencies.CurrencyType gemType, int gemAmount) {
         string key = gemType.ToString() + "_AmountFromLastLevel";
 

@@ -14,6 +14,7 @@ public class HubChestUI : MonoBehaviour
         hubChest = GetComponentInParent<HubChest>();
         payCurrencyUI.SetActive(false);
     }
+
     private void Start() {
         hubChest.OnChestOpened += HubChest_OnChestOpened;
         hubChest.OnChestClosed += HubChest_OnChestClosed;
@@ -22,6 +23,8 @@ public class HubChestUI : MonoBehaviour
     private void HubChest_OnChestClosed(object sender, System.EventArgs e) {
         StopCoroutine(showUICoroutine);
         payCurrencyUI.SetActive(false);
+
+        if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfCategory(PlayerCurrencies.CurrencyCategory.gem).Count != 0) return;
     }
 
     private void HubChest_OnChestOpened(object sender, System.EventArgs e) {

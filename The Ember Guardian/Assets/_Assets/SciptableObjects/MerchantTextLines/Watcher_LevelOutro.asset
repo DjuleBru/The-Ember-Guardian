@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
   m_Name: Watcher_LevelOutro
   m_EditorClassIdentifier: 
-  merchantTextLines:
-  - "Hah\u2026 You held your ground. The dark <wave a=.2 f=1.5>hates</wave> persistence."
-  - "You\u2019ve earned your place here. <wiggle a=.05 f=2>The Lost Greens</wiggle>
-    will remember you."
-  - "The emberlings are yours to shape. <slide a=.2>Bring them to me</slide>, and
-    I\u2019ll make them last."
-  - "Heh\u2026 Even the little one knows. <wave a=.2 f=1.5>The nights only get darker</wave>."
+  merchantTextLines: []
+  merchantTextLinesLocalizationKeys:
+  - watcher_LevelOutro1
+  - watcher_LevelOutro2
+  - watcher_LevelOutro3
+  - watcher_LevelOutro4
   showShopAfterDialog: 0

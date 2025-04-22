@@ -12,16 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
   m_Name: GemMerchant_PostLevel3
   m_EditorClassIdentifier: 
-  merchantTextLines:
-  - "Heh. You\u2019re tougher than you look... but you\u2019re still blind to what
-    really matters."
-  - <wave a=.2 f=1.5>Artifacts</wave>. Relics of the old flame, power forged before
-    the dark swallowed everything.
-  - "Gather them all, and <slide a=.2>maybe</slide> you\u2019ll turn the tide. Wipe
-    out the things that creep beyond the fire."
-  - One lies ahead, past <shake a=.4>The Lost Greens</shake>.
-  - "But I\u2019ve cracked open a path to <slide a=.2>The Sacred Temple</slide>.
-    Choices, choices\u2026"
-  - "<wave a=.2 f=1.5>Pick your road.</wave> But don\u2019t come crying if it eats
-    you alive."
+  merchantTextLines: []
+  merchantTextLinesLocalizationKeys:
+  - gemTrader_PostLevel3_1
+  - gemTrader_PostLevel3_2
+  - gemTrader_PostLevel3_3
+  - gemTrader_PostLevel3_4
+  - gemTrader_PostLevel3_5
+  - gemTrader_PostLevel3_6
   showShopAfterDialog: 0

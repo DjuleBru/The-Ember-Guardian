@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
   m_Name: DogTamer_LevelIntro
   m_EditorClassIdentifier: 
-  merchantTextLines:
-  - That dog of yours? <slide a=.2>Cute</slide>, but <wave a=.2 f=1.5>useless</wave>.
-    I can fix that.
-  - Take these gems. Consider it a down payment for the work ahead.
-  - "I\u2019ll head to your hub... <slide a=.2>if my lungs don\u2019t give out first.</slide>"
+  merchantTextLines: []
+  merchantTextLinesLocalizationKeys:
+  - tamer_LevelIntro1
+  - tamer_LevelIntro2
+  - tamer_LevelIntro3
   showShopAfterDialog: 0

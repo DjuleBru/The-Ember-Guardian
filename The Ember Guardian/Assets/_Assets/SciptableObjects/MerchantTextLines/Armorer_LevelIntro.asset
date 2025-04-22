@@ -12,11 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
   m_Name: Armorer_LevelIntro
   m_EditorClassIdentifier: 
-  merchantTextLines:
-  - "<dangle a=.2>Well</dangle>, you took your time getting here. I\u2019ve been
-    stuck guarding this <shake a=.4>cursed</shake> nest, waiting for someone reckless
-    enough to take it on"
-  - "These Darklings won\u2019t stop spreading unless you destroy it. I can\u2019t
-    leave while it\u2019s still standing."
-  - "Clear it out, and I\u2019ll join you at your hub. <dangle a=.2>Someone\u2019s
-    </dangle>got to make sure your weapons are worth a damn."
+  merchantTextLines: []
+  merchantTextLinesLocalizationKeys:
+  - armorer_LevelIntro1
+  - armorer_LevelIntro2
+  - armorer_LevelIntro3
+  showShopAfterDialog: 0

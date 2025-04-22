@@ -26,9 +26,6 @@ public class PauseMenuUI_Tutorial : PauseMenuUI
 
             MetaProgressionManager.Instance.SetTutorialCompleted();
 
-            // Tutorial gems
-            MetaProgressionManager.Instance.SetTutorialSkipped();
-
             SceneLoader.Instance.LoadHub(1f);
         }
         else {

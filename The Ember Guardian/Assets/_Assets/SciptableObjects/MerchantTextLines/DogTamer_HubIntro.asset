@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
   m_Name: DogTamer_HubIntro
   m_EditorClassIdentifier: 
-  merchantTextLines:
-  - "That pup of yours has some fight in it, but it\u2019s <wiggle a=.05 f=2>wasted</wiggle>
-    without proper training. "
-  - "With the right skills, that dog won\u2019t just <slide a=.2>follow</slide> you.
-    It\u2019ll <slide a=.2>save your life</slide>. "
+  merchantTextLines: []
+  merchantTextLinesLocalizationKeys:
+  - tamer_HubIntro1
+  - tamer_HubIntro2
   showShopAfterDialog: 1

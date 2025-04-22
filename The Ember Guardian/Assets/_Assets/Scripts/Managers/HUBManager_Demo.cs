@@ -351,6 +351,7 @@ public class HUBManager_Demo : MonoBehaviour
     private void HubManager_OnHubSaved(object sender, System.EventArgs e) {
         SaveDemoHub();
     }
+
     private void HubInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         if (!firstDemoHubEncounter) return;
 
@@ -418,7 +419,7 @@ public class HUBManager_Demo : MonoBehaviour
                 StartCoroutine(StartGemMerchantLines(gemMerchantOpenTeleporterTextLines));
                 emberExtractionTalkLineShown = true;
                 hubFireEmberExtractable = true;
-                hubFire.SetHubFireEmberExtractable();
+                hubFire.SetHubFireEmberExtractable(true);
             };
         };
 
@@ -448,7 +449,7 @@ public class HUBManager_Demo : MonoBehaviour
             fireIndicator.gameObject.SetActive(true);
             fireIndicatorActive = true;
             hubFireEmberExtractable = true;
-            hubFire.SetHubFireEmberExtractable();
+            hubFire.SetHubFireEmberExtractable(true);
 
             VideoTipUI.Instance.PlayTipSO(endDemoTipSO);
             VideoTipUI.Instance.SetEndDemoTip();
@@ -547,6 +548,7 @@ public class HUBManager_Demo : MonoBehaviour
             extractEmberTooltipShown = false;
         }
     }
+
     private void GrassyAreaPortal_OnPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.HUB_HeadToTeleporter);
     }
@@ -567,7 +569,7 @@ public class HUBManager_Demo : MonoBehaviour
             chestIndicatorActive = false;
             chestIndicator.gameObject.SetActive(false);
 
-            hubFire.SetHubFireEmberExtractable();
+            hubFire.SetHubFireEmberExtractable(true);
             fireIndicatorActive = true;
             fireIndicator.gameObject.SetActive(true);
         }

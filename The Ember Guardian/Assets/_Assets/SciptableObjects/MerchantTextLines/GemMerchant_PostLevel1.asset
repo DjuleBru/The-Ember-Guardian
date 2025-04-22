@@ -12,16 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
   m_Name: GemMerchant_PostLevel1
   m_EditorClassIdentifier: 
-  merchantTextLines:
-  - "So, you brought back the Armorer. Good, I <slide a=.2>suppose </slide>... though
-    I see you\u2019re already <wiggle a=.05 f=2>throwing</wiggle> your gems at him."
-  - There are <slide a=.2>others</slide> in The Verdant Graveyard who might actually
-    be useful.
-  - "You\u2019ll meet the Trainer, a <wave a=.2 f=1.5>fool</wave> who believes in
-    strength through...<slide a=.2> odd</slide> means."
-  - And the Tamer? He might turn that <wiggle a=.05 f=2>barking</wiggle> mutt of
-    yours into <slide a=.2>something</slide> worth keeping around.
-  - "Let me guess - they\u2019ll want <bounce a=.2 f=1.2>gems</bounce> too?"
-  - "Don\u2019t forget <slide a=.2>who</slide> keeps this flame alive. Just make
-    sure you bring back <bounce a=.2 f=1.2>enough</bounce> for me next time."
+  merchantTextLines: []
+  merchantTextLinesLocalizationKeys:
+  - gemTrader_PostLevel1_1
+  - gemTrader_PostLevel1_2
+  - gemTrader_PostLevel1_3
+  - gemTrader_PostLevel1_4
+  - gemTrader_PostLevel1_5
+  - gemTrader_PostLevel1_6
   showShopAfterDialog: 0

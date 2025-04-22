@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
   m_Name: Trainer_LevelIntro
   m_EditorClassIdentifier: 
-  merchantTextLines:
-  - "Strength isn\u2019t <slide a=.2>given</slide>, it\u2019s <shake a=.4>forged</shake>.
-    You want to endure what\u2019s out there? <wave a=.2 f=1.5>Prove it.</wave>"
-  - Here. These gems are a start. But the <slide a=.2>real work</slide> begins at
-    the flame.
-  - "I\u2019ll see you at the flame... <slide a=.2>if you\u2019re still standing.</slide>"
+  merchantTextLines: []
+  merchantTextLinesLocalizationKeys:
+  - trainer_LevelIntro1
+  - trainer_LevelIntro2
+  - trainer_LevelIntro3
   showShopAfterDialog: 0

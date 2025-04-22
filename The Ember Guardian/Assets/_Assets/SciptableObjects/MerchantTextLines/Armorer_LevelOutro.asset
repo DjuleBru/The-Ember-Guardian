@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
   m_Name: Armorer_LevelOutro
   m_EditorClassIdentifier: 
-  merchantTextLines:
-  - "Not bad. Maybe you\u2019re not as <dangle a=.2>useless</dangle> as you look.
-    I\u2019ll see you back at the flame."
+  merchantTextLines: []
+  merchantTextLinesLocalizationKeys:
+  - armorer_LevelOutro1
+  showShopAfterDialog: 0

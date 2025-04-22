@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
   m_Name: GemMerchant_PostLevel2
   m_EditorClassIdentifier: 
-  merchantTextLines:
-  - "Ah, the flame grows brighter, and so does the crowd. Just don\u2019t let them
-    drain <dangle a=.2>too many</dangle> of my gems."
-  - "You\u2019re not done yet. The only path forward is deeper into <shake a=.4>The
-    Lost Greens</shake>."
-  - "There, you\u2019ll find <wave a=.2 f=1.5>The Watcher</wave>. She sees what others
-    miss\u2026 and she\u2019ll <wiggle a=.05 f=2>strengthen</wiggle> your emberlings."
-  - Go. And <slide a=.2>keep that fire of yours burning</slide>.
+  merchantTextLines: []
+  merchantTextLinesLocalizationKeys:
+  - gemTrader_PostLevel2_1
+  - gemTrader_PostLevel2_2
+  - gemTrader_PostLevel2_3
+  - gemTrader_PostLevel2_4
   showShopAfterDialog: 0

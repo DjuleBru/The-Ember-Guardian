@@ -13,6 +13,7 @@ public class Portal : MonoBehaviour
     [SerializeField] private bool isEndLevelTeleporter;
     [SerializeField] private bool isStartLevelTeleporter;
     [SerializeField] private bool isHUBTeleporter;
+    [SerializeField] private bool isUnlockedAtStart;
     [SerializeField] private int portalNumber;
     private bool DEBUGMODE;
 
@@ -72,7 +73,7 @@ public class Portal : MonoBehaviour
                 linkedLevelSO = linkedLevelSOList[MetaProgressionManager.Instance.GetPortalLinkedLevelSOIndex(portalNumber)];
             }
 
-            if(isHubDemoPortal) {
+            if(isHubDemoPortal || isUnlockedAtStart) {
                 portalUnlocked = true;
             }
 
@@ -223,6 +224,10 @@ public class Portal : MonoBehaviour
         yield return new WaitForSeconds(delayToReleasePlayerAnimation);
 
         Player.Instance.ReleasePlayerFromTeleporter();
+    }
+
+    public void TeleportPlayerOutInHubManually() {
+        StartCoroutine(TeleportPlayerOutInHub());
     }
 
     private IEnumerator TeleportPlayerOutInHub() {

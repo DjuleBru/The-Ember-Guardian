@@ -105,6 +105,8 @@ public class Fire : Structure, IDamageable {
             GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
             GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
             GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyRemovedFromBag += PlayerInventoryUI_OnCurrencyRemovedFromBag;
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
         }
 
         fireOrbCollider.OnOrbFellInFire += FireOrbCollider_OnOrbFellInFire;
@@ -133,16 +135,32 @@ public class Fire : Structure, IDamageable {
 
         if(isHubFire) {
             SetStructurePrimaryFunctionUnlocked(false);
-
-            if (MetaProgressionManager.Instance.GetHubFireEmberExtractable()) {
-                SetStructureSecondaryFunctionUnlocked(true);
-                ActivateStructureSecondaryFunctionInteraction(true);
-                SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);
-            };
-
+            RefreshHubFireEmberExtractable();
         } else {
             SetFireCurrentMaxFuelTreshold();
         }
+    }
+
+    private void PlayerInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        if (emberExtracted) return;
+        RefreshHubFireEmberExtractable();
+    }
+
+    private void PlayerInventoryUI_OnCurrencyRemovedFromBag(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        if (emberExtracted) return;
+        RefreshHubFireEmberExtractable();
+    }
+
+    private void RefreshHubFireEmberExtractable() {
+
+        if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfCategory(PlayerCurrencies.CurrencyCategory.gem).Count == 0) {
+            SetStructureSecondaryFunctionUnlocked(true);
+            ActivateStructureSecondaryFunctionInteraction(true);
+            SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);
+        } else {
+            SetStructureSecondaryFunctionUnlocked(false);
+            ActivateStructureSecondaryFunctionInteraction(false);
+        };
     }
 
     private void PlayerCurrencies_OnEmberDropped(object sender, EventArgs e) {
@@ -261,6 +279,9 @@ public class Fire : Structure, IDamageable {
         ember.SetCollectibleUnInteractable(1f);
         ember.SetCanNeverBePickedUpByWorker();
         ActivateStructureSecondaryFunctionInteraction(false);
+        if(isHubFire) {
+            SetHubFireEmberExtractable(false);
+        }
         emberExtracted = true;
         OnFireEmberExtracted?.Invoke(this, EventArgs.Empty);
 
@@ -574,10 +595,12 @@ public class Fire : Structure, IDamageable {
 
     }
 
-    public void SetHubFireEmberExtractable() {
-        SetStructureSecondaryFunctionUnlocked(true);
-        ActivateStructureSecondaryFunctionInteraction(true);
-        SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);
+    public void SetHubFireEmberExtractable(bool extractable) {
+        SetStructureSecondaryFunctionUnlocked(extractable);
+        ActivateStructureSecondaryFunctionInteraction(extractable);
+        if(extractable) {
+            SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);
+        }
     }
 
     public void DisableEmberExtraction() {
