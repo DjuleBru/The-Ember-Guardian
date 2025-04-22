@@ -11,6 +11,8 @@ public class CreatureVisual : MobVisual
     [SerializeField] private GameObject debuffedGameObject;
     [SerializeField] private SpriteRenderer glowSpriteRenderer;
     [SerializeField] private ParticleSystem creatureElitePS;
+    [SerializeField] private Color damageEliteOutlineColor;
+    [SerializeField] private Color speedEliteOutlineColor;
 
     protected override void Awake() {
         base.Awake();
@@ -34,6 +36,13 @@ public class CreatureVisual : MobVisual
             bodySpriteRenderer.material.SetFloat("_OutlinePixelWidth", 1f);
             bodySpriteRenderer.material.SetFloat("_OutlineAlpha", 1f);
             creatureElitePS.Play();
+
+            if(creature.GetIsEliteDamageCreature()) {
+                bodySpriteRenderer.material.SetColor("_OutlineColor", damageEliteOutlineColor);
+            }
+            if (creature.GetIsEliteSpeedCreature()) {
+                bodySpriteRenderer.material.SetColor("_OutlineColor", speedEliteOutlineColor);
+            }
         }
     }
 

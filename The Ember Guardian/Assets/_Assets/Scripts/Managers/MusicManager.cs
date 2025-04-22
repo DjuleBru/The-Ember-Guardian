@@ -128,7 +128,7 @@ public class MusicManager : MonoBehaviour {
         if(isLevelScene) {
             levelRandomBackgroundTracks = LevelManager.Instance.GetLevelSO().levelRandomBackgroundTracks;
             levelExplorationTracks = LevelManager.Instance.GetLevelSO().levelExplorationTracks;
-            levelExplorationTracks = LevelManager.Instance.GetLevelSO().levelExplorationTracksStreamerMode;
+            levelExplorationTracksStreamerMode = LevelManager.Instance.GetLevelSO().levelExplorationTracksStreamerMode;
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
             DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
             CreaturesManager.Instance.OnAllCreaturesAtNightKilled += CreaturesManager_OnAllCreaturesAtNightKilled;
@@ -187,9 +187,9 @@ public class MusicManager : MonoBehaviour {
 
         List<AudioClip> levelExplorationTracksToPool = new List<AudioClip>();
         if(streamerMode) {
-            levelExplorationTracksToPool = levelExplorationTracks;
-        } else {
             levelExplorationTracksToPool = levelExplorationTracksStreamerMode;
+        } else {
+            levelExplorationTracksToPool = levelExplorationTracks;
         }
 
         foreach (AudioClip audioClip in levelExplorationTracksToPool) {
@@ -204,6 +204,8 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void Player_OnPlayerStartedExploring(object sender, EventArgs e) {
+
+        Debug.Log("Player_OnPlayerStartedExploring");
         TryPlayExplorationMusic();
     }
 

@@ -58,6 +58,7 @@ MonoBehaviour:
   mobHitPS_Splatter: {fileID: 1657823130492668103, guid: 6dadc4b322f84684e820ab4242ab9195, type: 3}
   mobHitPS_Splatter_Continuous: {fileID: 1657823130492668103, guid: d8f1fa8f87ec49b43b547e4ae973b7f5, type: 3}
   mobHitPS_Splatter_Crit: {fileID: 1657823130492668103, guid: 51a7451741ce5eb43998d6c50bbe71b2, type: 3}
+  useHitXPosition: 0
   creatureSO: {fileID: 11400000, guid: 4677f0daccecce74488f30b387df3971, type: 2}
   detectionCollider: {fileID: 9086489504018976004}
   creatureMovement: {fileID: 2201482587927928448}
@@ -1258,6 +1259,8 @@ MonoBehaviour:
   debuffedGameObject: {fileID: 6355303796101193538}
   glowSpriteRenderer: {fileID: 628358577469823449}
   creatureElitePS: {fileID: 2533432998412958594}
+  damageEliteOutlineColor: {r: 0.735849, g: 0.03818085, b: 0.03818085, a: 1}
+  speedEliteOutlineColor: {r: 0.6579144, g: 0.9339623, b: 0, a: 1}
 --- !u!1 &4028292893792921011
 GameObject:
   m_ObjectHideFlags: 0
@@ -6394,6 +6397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce7ec275ea019e349931593740d2ac34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canHearCreatureOutsideScreen: 0
   creatureIdleAudioSource: {fileID: 67990355953189852}
   creature: {fileID: 5757064800425388701}
   creatureAI: {fileID: 6447040630869028713}
@@ -6403,12 +6407,6 @@ MonoBehaviour:
   enteredLightAudioClips:
   - {fileID: 8300000, guid: fb9173e716fec7d4aaa0d43a401e67ab, type: 3}
   - {fileID: 8300000, guid: c7cff591dcc14a94fa5613ca0e4015c7, type: 3}
-  footstepVolumeMultiplier: 0.2
-  attackHitVolumeMultiplier: 0.5
-  idleVolumeMultiplier: 0.5
-  aggroVolumeMultiplier: 0.5
-  dieVolumeMultiplier: 0.75
-  spawnVolumeMultiplier: 0.75
 --- !u!114 &1505661601195983796
 MonoBehaviour:
   m_ObjectHideFlags: 0

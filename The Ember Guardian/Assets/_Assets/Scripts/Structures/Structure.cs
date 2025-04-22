@@ -64,6 +64,12 @@ public class Structure : MonoBehaviour {
         payCurrencyUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
 
         RefreshStructureUpgradeInteraction();
+
+        // Check if its night
+        Debug.Log("structureSO.upgradeableAtNight " + structureSO.upgradeableAtNight);
+        if (!structureSO.upgradeableAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+            ActivateStructureUpgradeInteraction(false);
+        }
     }
 
     protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
@@ -122,7 +128,8 @@ public class Structure : MonoBehaviour {
             ActivateStructurePrimaryFunctionInteraction(true);
         }
 
-        if(upgradeUnlocked) {
+        Debug.Log(structureSO + " upgradeUnlocked " + upgradeUnlocked);
+        if(!structureSO.upgradeableAtNight && upgradeUnlocked) {
             ActivateStructureUpgradeInteraction(true);
         }
     }
@@ -143,7 +150,9 @@ public class Structure : MonoBehaviour {
 
         }
 
-        ActivateStructureUpgradeInteraction(false);
+        if(!structureSO.upgradeableAtNight) {
+            ActivateStructureUpgradeInteraction(false);
+        }
     }
 
     protected void Tent_OnStructureUpgraded(object sender, EventArgs e) {
@@ -178,7 +187,7 @@ public class Structure : MonoBehaviour {
             }
         }
 
-        if(DebugManager.Instance.GetAllStructureUpgradesUnlocked()) {
+        if (DebugManager.Instance.GetAllStructureUpgradesUnlocked()) {
             ungradeUnlocked = true;
         }
         

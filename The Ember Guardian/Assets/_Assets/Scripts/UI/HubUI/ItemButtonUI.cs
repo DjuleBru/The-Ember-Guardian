@@ -29,10 +29,13 @@ public class ItemButtonUI : ButtonUI
     [SerializeField] private Sprite defaultOutlineSprite;
     [SerializeField] private Sprite itemEquippedOutlineSprite;
     [SerializeField] private Sprite itemMaxedOutlineSprite;
+    [SerializeField] private TextMeshProUGUI itemMaxedLevelText;
     [SerializeField] private TextMeshProUGUI itemLevelText;
+    [SerializeField] private TextMeshProUGUI itemMaxLevelText;
 
 
     [SerializeField] private bool showItemLevel;
+    [SerializeField] private bool hideItemMaxLevel;
     [SerializeField] private bool lockHoverInteractions;
     [SerializeField] private bool itemLockedInDemo;
 
@@ -307,9 +310,19 @@ public class ItemButtonUI : ButtonUI
         }
 
         if (hubMerchantItem.GetItemUpgradeable() && hubMerchantItem.GetItemMaxed()) {
-            itemLevelText.text = "MAX";
+            itemMaxedLevelText.text = "MAX";
+            itemLevelText.text = "";
+            itemMaxLevelText.text = "";
         } else {
-            itemLevelText.text = hubMerchantItem.GetItemLevel().ToString();
+            if(hideItemMaxLevel) {
+                itemMaxedLevelText.text = hubMerchantItem.GetItemLevel().ToString(); 
+                itemLevelText.text = "";
+                itemMaxLevelText.text = "";
+            } else {
+                itemMaxedLevelText.text = "";
+                itemLevelText.text = hubMerchantItem.GetItemLevel().ToString();
+                itemMaxLevelText.text = "/" + hubMerchantItem.GetMaxItemLevel().ToString();
+            }
         }
     }
 
