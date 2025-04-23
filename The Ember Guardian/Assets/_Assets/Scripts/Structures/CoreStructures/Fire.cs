@@ -105,8 +105,10 @@ public class Fire : Structure, IDamageable {
             GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
             GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
             GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
-            UICurrencyManager.PlayerInventoryUI.OnCurrencyRemovedFromBag += PlayerInventoryUI_OnCurrencyRemovedFromBag;
-            UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
+            if(UICurrencyManager.PlayerInventoryUI != null) {
+                UICurrencyManager.PlayerInventoryUI.OnCurrencyRemovedFromBag += PlayerInventoryUI_OnCurrencyRemovedFromBag;
+                UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
+            }
         }
 
         fireOrbCollider.OnOrbFellInFire += FireOrbCollider_OnOrbFellInFire;
@@ -152,7 +154,7 @@ public class Fire : Structure, IDamageable {
     }
 
     private void RefreshHubFireEmberExtractable() {
-
+        if (UICurrencyManager.PlayerInventoryUI == null) return;
         if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfCategory(PlayerCurrencies.CurrencyCategory.gem).Count == 0) {
             SetStructureSecondaryFunctionUnlocked(true);
             ActivateStructureSecondaryFunctionInteraction(true);

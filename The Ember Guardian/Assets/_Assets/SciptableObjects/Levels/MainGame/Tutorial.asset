@@ -20,10 +20,17 @@ MonoBehaviour:
   environmentType: 0
   levelObjectiveType: 0
   endLevelType: 0
+  talkToNpcAFterObjective: 0
   nightsToSurviveAmount: 0
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
   - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
+  hasBoss: 0
+  bossCreatureType: {fileID: 0}
+  bossNightSpawns: 
+  isReplayableLevel: 0
+  dayCreatureTypes: []
+  totalDayCreatureDifficulty: 0
   isNewEnvironmentDiscoveryLevel: 0
   newEnvironmentDiscoveryAudioClip: {fileID: 0}
   linkedSceneName: 
@@ -36,14 +43,26 @@ MonoBehaviour:
   hasRain: 0
   initialRainIntensity: 0
   rainIntensitiesAllowedInLevel: 
-  baseDifficulty: 18
-  minSubwaveDifficulty: 0
-  maxSubwaveDifficulty: 20
+  baseDifficulty: 20
+  intialMinSubwaveDifficulty: 5
+  minSubwaveDifficulty: 25
+  intialMaxSubwaveDifficulty: 10
+  maxSubwaveDifficulty: 60
   growthFactor: 1.2
-  minWaveDuration: 25
-  maxWaveDuration: 90
+  setDifficultyAnimationCurve: 0
+  difficultyAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxWaveInAnimationCurve: 0
+  difficultyAtMaxWave: 0
+  minDifficultyAtMaxWave: 0
+  maxDifficultyAtMaxWave: 0
+  minMaxSubwaveDifficultyGrowthFactor: 1.4
   startWaveToSpawnFromBothSides: 1
   canSpawnElite: 0
-  minLevelXPosition: -200
-  maxLevelXPosition: 200
-  levelAudioClips: []
+  levelRandomBackgroundTracks: []
+  levelExplorationTracks: []
+  levelExplorationTracksStreamerMode: []

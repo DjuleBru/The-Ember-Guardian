@@ -10,6 +10,7 @@ public class Tutorial : MonoBehaviour
 
     private bool testing;
     [SerializeField] private Transform initialSpawnPoint;
+    [SerializeField] private Transform debugSpawnPoint;
     [SerializeField] private Transform beforeFireRespawnPoint;
     [SerializeField] private TutorialCollider firstCreatureCollider;
     [SerializeField] private TutorialCollider blockingWorkersCollider;
@@ -23,7 +24,13 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private Light2D firstCreatureSpotLight;
     [SerializeField] private MobSpawner firstWorkerSpawner;
     [SerializeField] private Transform looseTutorialChest;
+    [SerializeField] private Portal endTutorialPortal;
     [SerializeField] private Dog dog;
+
+    [SerializeField] private GameObject fireLocationIndicator;
+    [SerializeField] private GameObject ammoCrafterLocationIndicator;
+    [SerializeField] private GameObject hunterShrineLocationIndicator;
+    [SerializeField] private GameObject endLevelPortalIndicator;
 
     private float aimDirTooltip;
 
@@ -53,7 +60,6 @@ public class Tutorial : MonoBehaviour
     private bool buildStructuresTooltipShown;
     private bool buildStructuresTooltipHidden;
     private bool ammoCrafted;
-    private bool duskStarted;
     private bool dawnStarted;
     private bool initialEmberGiven;
     private bool emberExtracted;
@@ -62,6 +68,7 @@ public class Tutorial : MonoBehaviour
     private bool fireFuelled;
     private bool emberExtractionObjectiveStarted;
     private bool emberExtractionObjectiveEnded;
+    private bool setupDefensesObjectiveStarted;
 
     private bool nightStarted;
     private int workerNumberRecruited;
@@ -84,6 +91,7 @@ public class Tutorial : MonoBehaviour
         testing = DebugManager.Instance.GetDebugMode_Tutorial();
 
         VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
+        LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
         UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         dog.OnIdleStateChanged += Dog_OnIdleStateChanged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
@@ -99,9 +107,14 @@ public class Tutorial : MonoBehaviour
         CurrencyCrafter.OnPlayerCollectedAnyCurrency += CurrencyCrafter_OnPlayerCollectedAnyCurrency;
         CurrencyCrafter.OnAnyCurrencyCraftingEnded += CurrencyCrafter_OnAnyCurrencyCraftingEnded;
         CurrencyCrafter.OnAnyCurrencyCraftingStarted += CurrencyCrafter_OnAnyCurrencyCraftingStarted;
+        Collectible.OnAnyCollectiblePickedUpByPlayer += Collectible_OnAnyCollectiblePickedUpByPlayer;
         startFireLocation.OnPlayerTriggeredIn += StartFireLocation_OnPlayerTriggeredIn;
+        startFireLocation.OnPlayerTriggeredOut += StartFireLocation_OnPlayerTriggeredOut;
         ammoCrafterLocation.OnPlayerTriggeredIn += AmmoCrafterLocation_OnPlayerTriggeredIn;
+        ammoCrafterLocation.OnPlayerTriggeredOut += AmmoCrafterLocation_OnPlayerTriggeredOut;
         hunterShrineLocation.OnPlayerTriggeredIn += HunterShrineLocation_OnPlayerTriggeredIn;
+        hunterShrineLocation.OnPlayerTriggeredOut += HunterShrineLocation_OnPlayerTriggeredOut;
+
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         Animal.OnAnyMobDied += Animal_OnAnyMobDied;
@@ -115,17 +128,50 @@ public class Tutorial : MonoBehaviour
         endLevelArea.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
         endLevelArea.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
 
+        if (endTutorialPortal != null) {
+            endTutorialPortal.OnPlayerMovedOnTeleporter += EndLevelPortal_OnPlayerMovedOnTeleporter;
+        }
+
         PlayerShoot.Instance.SetCanShoot(false);
         StartCoroutine(SetGunAmmoAfterDelay());
         StartCoroutine(ShowMoveTooltipAfterDelay());
 
         if(testing) {
             reloadTooltipHidden = true;
+            Player.Instance.SetPosition(debugSpawnPoint.position);
         } else {
             Player.Instance.SetPosition(initialSpawnPoint.position);
         }
     }
 
+    private void LevelUI_OnObjectiveCompleted(object sender, EventArgs e) {
+        Debug.Log("LevelUI_OnObjectiveCompleted " + LevelUI_ObjectiveUI.Instance.GetCurrentObjectiveType());
+        if(LevelUI_ObjectiveUI.Instance.GetCurrentObjectiveType() == LevelUI_ObjectiveUI.ObjectiveType.SetupCamp && !setupDefensesObjectiveStarted) {
+            StartCoroutine(EndCampSetupObjective());
+            setupDefensesObjectiveStarted = true;
+        }
+    }
+
+    private IEnumerator EndCampSetupObjective() {
+
+        yield return new WaitForSeconds(3f);
+
+        DayNightManager.Instance.ChangeState(DayNightManager.State.Dusk);
+
+        yield return new WaitForSeconds(2f);
+
+        List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectivesUnlocked = new List<LevelUI_ObjectiveUI.SubObjectiveType> {
+                LevelUI_ObjectiveUI.SubObjectiveType.Build2Barricades,
+                LevelUI_ObjectiveUI.SubObjectiveType.Build2Towers,
+                LevelUI_ObjectiveUI.SubObjectiveType.FuelFire,
+        };
+
+        LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.PrepareForNight);
+        LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectivesUnlocked);
+        Fire.Instance.ManualSetFireCurrentMaxFuelTreshold(Fire.State.mild);
+        Fire.Instance.SetStructurePrimaryFunctionUnlocked(true);
+        UnlockDefensiveStructureLocations();
+    }
 
     private void Update() {
         if(testing) {
@@ -134,7 +180,8 @@ public class Tutorial : MonoBehaviour
                 //LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbsFromHunters);
                 //LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.RecruitMoreEmberlings);
                 //LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightMainFire);
-                StartCoroutine(StartGuardingWorkersObjective(0f));
+                //StartCoroutine(StartGuardingWorkersObjective(0f));
+                StartSetupCampObjective();
             }
 
         }
@@ -143,7 +190,6 @@ public class Tutorial : MonoBehaviour
             if(GameInput.Instance.GetMovementFloatNormalized() != 0) {
                 moveTooltipHidden = true;
                 StartCoroutine(HideTooltipAfterDelay(.5f));
-                StartCoroutine(ShowAimTooltipAfterDelay(1.5f));
             }
         }
 
@@ -163,19 +209,19 @@ public class Tutorial : MonoBehaviour
         }
 
         if(!reloadTooltipHidden) {
-            HandleBlockingCollider(firstCreatureCollider.transform.position, "I should get my gun ready first");
+            HandleBlockingCollider(firstCreatureCollider.transform.position, LocalizationManager.Instance.GetLocalizedText("tooltip_getGunReady"));
         }
 
         if(reloadTooltipHidden && workerNumberRecruited < 4) {
-            HandleBlockingCollider(blockingWorkersCollider.transform.position, "I should recruit the lost souls first");
+            HandleBlockingCollider(blockingWorkersCollider.transform.position, LocalizationManager.Instance.GetLocalizedText("tooltip_recruitFirst"));
         }
 
         if (reloadTooltipHidden && !dawnStarted && workerNumberRecruited >= 4) {
-            HandleBlockingCollider(endLevelAreaCollider.transform.position, "This seems too dangerous for now");
+            HandleBlockingCollider(endLevelAreaCollider.transform.position, LocalizationManager.Instance.GetLocalizedText("tooltip_tooDangerous"));
         }
 
         if (dawnStarted && !emberExtracted) {
-            HandleBlockingCollider(extractEmberCollider.transform.position, "I should extract an ember first");
+            HandleBlockingCollider(extractEmberCollider.transform.position, LocalizationManager.Instance.GetLocalizedText("tooltip_ectractEmberFirst"));
         }
     }
 
@@ -191,6 +237,24 @@ public class Tutorial : MonoBehaviour
         }
     }
 
+    private void EndLevelPortal_OnPlayerMovedOnTeleporter(object sender, EventArgs e) {
+        endLevelPortalIndicator.SetActive(false);
+        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.TeleportBackToHub);
+    }
+
+    private void Collectible_OnAnyCollectiblePickedUpByPlayer(object sender, EventArgs e) {
+        if (workerDroppedOrb) return;
+        if (hunterNumberRecruited < 2) return;
+        if (!animalDied) return;
+
+        Collectible collectible = sender as Collectible;
+        if (collectible.GetCurrencyType() != PlayerCurrencies.CurrencyType.bigBlueOrb) return;
+        if (collectible.GetDroppedByPlayer()) return;
+
+        workerDroppedOrb = true;
+
+        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbsFromHunters);
+    }
     private void Fire_OnFireFuelled(object sender, EventArgs e) {
         fireFuelledNumber++;
         fireFuelled = true;
@@ -210,7 +274,7 @@ public class Tutorial : MonoBehaviour
             Fire.Instance.SetStructurePrimaryFunctionUnlocked(false);
             Fire.Instance.SetStructureSecondaryFunctionUnlocked(true);
             HideTooltipAfterDelay(0f);
-            StartCoroutine(ShowTooltipAfterDelay(1f, LocalizationManager.Instance.GetLocalizedText("Hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_extractEmber"), InputControlIcons.Control.Interact));
+            StartCoroutine(ShowTooltipAfterDelay(1f, LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_extractEmber"), InputControlIcons.Control.Interact));
         }
 
     }
@@ -252,7 +316,8 @@ public class Tutorial : MonoBehaviour
 
             Fire.Instance.SetFireInteractionsUpdateLocked(true);
             Fire.Instance.SetStructureSecondaryFunctionUnlocked(false);
-
+            ammoCrafterLocationIndicator.SetActive(true);
+            hunterShrineLocationIndicator.SetActive(true);
             fireBuilt = true;
             Fire.Instance.ManualSetFireCurrentMaxFuelTreshold(Fire.State.calm);
 
@@ -286,7 +351,7 @@ public class Tutorial : MonoBehaviour
                 StartCoroutine(HideTooltipAfterDelay(0f));
             }
 
-            StartCoroutine(ShowTooltipAfterDelay(.5f, "Hold", "To turn on crafter", InputControlIcons.Control.Interact));
+            StartCoroutine(ShowTooltipAfterDelay(.5f, LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("SubObj_TurnOnAmmoCrafter"), InputControlIcons.Control.Interact));
             StartCoroutine(HideTooltipAfterDelay(3f));
         }
 
@@ -306,7 +371,7 @@ public class Tutorial : MonoBehaviour
             towerNumberBuilt++;
 
             if (towerNumberBuilt == 2) {
-                StartCoroutine(ShowTooltipAfterDelay(.5f, "Press", "When near a tower to climb it", InputControlIcons.Control.Interact));
+                //StartCoroutine(ShowTooltipAfterDelay(.5f, LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("menu_hold"), InputControlIcons.Control.Interact));
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.Build2Towers);
             }
 
@@ -498,24 +563,12 @@ public class Tutorial : MonoBehaviour
         };
 
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectivesTypesList);
+        fireLocationIndicator.SetActive(true);
     }
 
     #endregion
 
     #region CONTROL TOOLTIPS
-    private IEnumerator ShowAimTooltipAfterDelay(float delay) {
-        yield return new WaitForSeconds(delay);
-
-        StartCoroutine(ShowTooltipAfterDelay(0, "Use", "To aim", InputControlIcons.Control.Aim));
-        aimTooltipShown = true;
-        aimDirTooltip = PlayerAim.Instance.GetAimDir().x;
-
-        if(aimDirTooltip > 0) {
-            aimDirTooltip = 1;
-        } else {
-            aimDirTooltip = -1;
-        }
-    }
 
     private void Dog_OnIdleStateChanged(object sender, EventArgs e) {
         if (dogStateChanged) return;
@@ -532,7 +585,7 @@ public class Tutorial : MonoBehaviour
         if(emberExtractionObjectiveStarted && !emberExtractionObjectiveEnded && Fire.Instance.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.primaryFunction) {
             emberExtractionObjectiveEnded = true;
 
-            StartCoroutine(ShowTooltipAfterDelay(0f, "Hold", "Add fuel", InputControlIcons.Control.Interact));
+            StartCoroutine(ShowTooltipAfterDelay(0f, LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("SubObj_FuelFire"), InputControlIcons.Control.Interact));
         }
     }
 
@@ -547,7 +600,7 @@ public class Tutorial : MonoBehaviour
     private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {
         if (shootTipShown) return;
 
-        StartCoroutine(ShowTooltipAfterDelay(.2f, "Press", "Shoot", InputControlIcons.Control.Shoot));
+        StartCoroutine(ShowTooltipAfterDelay(.2f, LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("menu_shoot"), InputControlIcons.Control.Shoot));
         shootTipShown = true;
     }
 
@@ -560,7 +613,7 @@ public class Tutorial : MonoBehaviour
 
     private void VideoTipUI_OnVideoTipPanelClosed(object sender, VideoTipUI.OnVideoTipPanelClosedEventArgs e) {
         if (e.tipTypeShown == VideoTipSO.VideoTipType.Reloading && !transferAmmoTooltipShown) {
-            StartCoroutine(ShowTooltipAfterDelay(1f, "Hold", "Transfer ammo", InputControlIcons.Control.Reload));
+            StartCoroutine(ShowTooltipAfterDelay(1f, LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_ammoTip"), InputControlIcons.Control.Reload));
             transferAmmoTooltipShown = true;
             return;
         };
@@ -572,7 +625,7 @@ public class Tutorial : MonoBehaviour
         };
 
         if(e.tipTypeShown == VideoTipSO.VideoTipType.Hunters) {
-            StartCoroutine(ShowTooltipAfterDelay(.5f, "Hold", "To recruit Hunters", InputControlIcons.Control.Interact));
+            StartCoroutine(ShowTooltipAfterDelay(.5f, LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_hunterShrineTip"), InputControlIcons.Control.Interact));
             StartCoroutine(HideTooltipAfterDelay(3f));
         }
     }
@@ -580,7 +633,7 @@ public class Tutorial : MonoBehaviour
         
         if (!dropOrbShown) {
             if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigBlueOrb) {
-                StartCoroutine(ShowTooltipAfterDelay(1f, "Press", "Recruit an emberling", InputControlIcons.Control.Interact));
+                StartCoroutine(ShowTooltipAfterDelay(1f, LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("tooltip_recruitEmberling"), InputControlIcons.Control.Interact));
                 dropOrbShown = true;
                 return;
             }
@@ -603,23 +656,36 @@ public class Tutorial : MonoBehaviour
     }
 
     private void HunterShrineLocation_OnPlayerTriggeredIn(object sender, EventArgs e) {
+        hunterShrineLocationIndicator.gameObject.SetActive(false);
         if (buildStructuresTooltipShown) return;
-        StartCoroutine(ShowTooltipAfterDelay(0f, "Hold", "Build structures", InputControlIcons.Control.Interact));
+        StartCoroutine(ShowTooltipAfterDelay(0f, LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_buildStructureTip"), InputControlIcons.Control.Interact));
         buildStructuresTooltipShown = true;
-
     }
 
     private void AmmoCrafterLocation_OnPlayerTriggeredIn(object sender, EventArgs e) {
+        ammoCrafterLocationIndicator.gameObject.SetActive(false);
         if (buildStructuresTooltipShown) return;
-        StartCoroutine(ShowTooltipAfterDelay(0f, "Hold", "Build structures", InputControlIcons.Control.Interact));
+        StartCoroutine(ShowTooltipAfterDelay(0f, LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_buildStructureTip"), InputControlIcons.Control.Interact));
         buildStructuresTooltipShown = true;
-
     }
 
     private void StartFireLocation_OnPlayerTriggeredIn(object sender, EventArgs e) {
+        fireLocationIndicator.gameObject.SetActive(false);
         if (lightFireTooltipShown) return;
         lightFireTooltipShown = true;
-        StartCoroutine(ShowTooltipAfterDelay(0f, "Hold", "Light fire", InputControlIcons.Control.Interact));
+        StartCoroutine(ShowTooltipAfterDelay(0f, LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_lightFire"), InputControlIcons.Control.Interact));
+    }
+
+    private void HunterShrineLocation_OnPlayerTriggeredOut(object sender, EventArgs e) {
+        hunterShrineLocation.gameObject.SetActive(true);
+    }
+
+    private void AmmoCrafterLocation_OnPlayerTriggeredOut(object sender, EventArgs e) {
+        ammoCrafterLocationIndicator.gameObject.SetActive(true);
+    }
+
+    private void StartFireLocation_OnPlayerTriggeredOut(object sender, EventArgs e) {
+        fireLocationIndicator.gameObject.SetActive(true);
     }
 
     private IEnumerator SwapReloadInstructionsCoroutine(float delay) {
@@ -630,7 +696,7 @@ public class Tutorial : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         if (PlayerShoot.Instance.GetCurrentBullets() == 0) {
-            StartCoroutine(ShowTooltipAfterDelay(0f, "Press", "Reload rifle", InputControlIcons.Control.Reload));
+            StartCoroutine(ShowTooltipAfterDelay(0f, LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("menu_reload"), InputControlIcons.Control.Reload));
         }
         else {
             reloadTooltipHidden = true;
@@ -639,7 +705,7 @@ public class Tutorial : MonoBehaviour
     }
 
     private IEnumerator ShowMoveTooltipAfterDelay() {
-        StartCoroutine(ShowTooltipAfterDelay(2f, "Use", "Move", InputControlIcons.Control.Move));
+        StartCoroutine(ShowTooltipAfterDelay(2f, LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("menu_moveLeftRight"), InputControlIcons.Control.Move));
         yield return new WaitForSeconds(2f);
         moveTooltipShown = true;
     }
@@ -690,11 +756,11 @@ public class Tutorial : MonoBehaviour
 
     public void ShowDogTip() {
         dogTipShown = true;
-        StartCoroutine(ShowTooltipAfterDelay(0f, "Whistle", "Call doggo /stay ", InputControlIcons.Control.SwitchDog));
+        StartCoroutine(ShowTooltipAfterDelay(0f, LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("menu_callDoggo"), InputControlIcons.Control.SwitchDog));
     }
 
     public IEnumerator ShowLightTipCoroutine() {
-        StartCoroutine(ShowTooltipAfterDelay(0f, "Press", "To toggle your flashlight", InputControlIcons.Control.LightSwitch));
+        StartCoroutine(ShowTooltipAfterDelay(0f, LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("menu_torchOnOff"), InputControlIcons.Control.LightSwitch));
         yield return new WaitForSeconds(4f);
         PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
     }
@@ -704,7 +770,7 @@ public class Tutorial : MonoBehaviour
     }
 
     public IEnumerator ShowRollTipCoroutine() {
-        StartCoroutine(ShowTooltipAfterDelay(1f, "Press", "To roll", InputControlIcons.Control.Roll));
+        StartCoroutine(ShowTooltipAfterDelay(1f, LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("menu_roll"), InputControlIcons.Control.Roll));
         yield return new WaitForSeconds(4f);
         PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
     }
@@ -763,14 +829,19 @@ public class Tutorial : MonoBehaviour
     private IEnumerator EndTutorialCorioutine() {
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
         MetaProgressionManager.Instance.SetTutorialCompleted(); 
-        MetaProgressionManager.Instance.SaveLevelGems();
+        MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber();
         
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(4f); 
+        endTutorialPortal.gameObject.SetActive(true);
+        endLevelPortalIndicator.SetActive(true);
+        yield return new WaitForSeconds(1f);
 
-        SceneLoader.Instance.LoadHub(2f);
+        LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.ReturnToHub);
+        List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveUIList = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
+                LevelUI_ObjectiveUI.SubObjectiveType.TeleportBackToHub,
+            };
 
-        SceneLoader.Instance.StartFadeOut();
-        yield return new WaitForSeconds(2f);
+        LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveUIList);
     }
 
     private void OnDestroy() {
@@ -790,6 +861,7 @@ public class Tutorial : MonoBehaviour
         CurrencyCrafter.OnPlayerCollectedAnyCurrency -= CurrencyCrafter_OnPlayerCollectedAnyCurrency;
         CurrencyCrafter.OnAnyCurrencyCraftingEnded -= CurrencyCrafter_OnAnyCurrencyCraftingEnded;
         CurrencyCrafter.OnAnyCurrencyCraftingStarted -= CurrencyCrafter_OnAnyCurrencyCraftingStarted;
+        Collectible.OnAnyCollectiblePickedUpByPlayer -= Collectible_OnAnyCollectiblePickedUpByPlayer;
         startFireLocation.OnPlayerTriggeredIn -= StartFireLocation_OnPlayerTriggeredIn;
         ammoCrafterLocation.OnPlayerTriggeredIn -= AmmoCrafterLocation_OnPlayerTriggeredIn;
         hunterShrineLocation.OnPlayerTriggeredIn -= HunterShrineLocation_OnPlayerTriggeredIn;

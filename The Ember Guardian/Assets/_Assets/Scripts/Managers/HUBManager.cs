@@ -31,9 +31,9 @@ public class HUBManager : MonoBehaviour
     private float hubDelayToStartPlayingMusic = 3f;
 
     private int gemAmountDroppedInChest;
-    private int initialRedGemsAfterTutorial = 4;
-    private int initialGreenGemsAfterTutorial = 4;
-    private int initialYellowGemsAfterTutorial = 4;
+    private int initialRedGemsAfterTutorial = 3;
+    private int initialGreenGemsAfterTutorial = 3;
+    private int initialYellowGemsAfterTutorial = 3;
     private int totalGemsAfterTutorial;
 
     private bool firstHubEncounterRoutineOver;
@@ -117,7 +117,6 @@ public class HUBManager : MonoBehaviour
     }
 
     private void LoadPlayerInventory() {
-        Debug.Log("LoadPlayerInventory");
         List<Vector3> redGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.redGem, true);
         List<Vector3> greenGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.greenGem, true);
         List<Vector3> yellowGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.yellowGem, true);
@@ -130,11 +129,6 @@ public class HUBManager : MonoBehaviour
         UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.purpleGem, purpleGemPositions);
         UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.blueGem, blueGemPositions);
 
-        bool holdingEmber = ES3.Load("holdingEmber", false);
-        Debug.Log("holdingEmber " + holdingEmber);
-        if(holdingEmber) {
-            PlayerCurrencies.Instance.SetCarryingEmber(true);
-        }
     }
 
     private void LoadHubChestGems() {
@@ -350,7 +344,7 @@ public class HUBManager : MonoBehaviour
 
     public void SaveHub() {
         MetaProgressionManager.Instance.SaveHubGems();
-        MetaProgressionManager.Instance.SaveLevelGems();
+        MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber();
         MetaProgressionManager.Instance.SavePlayerHubPosition(Player.Instance.transform.position);
         MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(nextArrivalThroughPortal);
 

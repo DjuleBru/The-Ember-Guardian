@@ -156,8 +156,8 @@ public class MetaProgressionManager : MonoBehaviour
         SaveGemPositions(PlayerCurrencies.CurrencyType.yellowGem, yellowGemPositions, false);
     }
 
-    public void SaveLevelGems(float proportionToSave = 1) {
-        Debug.Log("SaveLevelGems");
+    public void SaveLevelGemsAndHoldingEmber(float proportionToSave = 1) {
+        Debug.Log("SaveLevelGemsAndHoldingEmber");
         List<Vector3> greenGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.greenGem);
         List<Vector3> redGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.redGem);
         List<Vector3> blueGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.blueGem);
@@ -181,6 +181,8 @@ public class MetaProgressionManager : MonoBehaviour
         SaveGemPositions(PlayerCurrencies.CurrencyType.blueGem, truncatedBlueGemPositions, true);
         SaveGemPositions(PlayerCurrencies.CurrencyType.purpleGem, truncatedPurpleGemPositions, true);
         SaveGemPositions(PlayerCurrencies.CurrencyType.yellowGem, truncatedYellowGemPositions, true);
+
+        ES3.Save("holdingEmber", false);
     }
 
     public void SaveGemPositions(PlayerCurrencies.CurrencyType gemType, List<Vector3> positions, bool playerInventory) {

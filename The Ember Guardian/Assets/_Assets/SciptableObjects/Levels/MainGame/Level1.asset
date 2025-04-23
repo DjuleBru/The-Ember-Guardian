@@ -19,13 +19,20 @@ MonoBehaviour:
   newMerchantTextLinesAfterLevel:
   - {fileID: 11400000, guid: 92bcaa62b672a0840af078105088088f, type: 2}
   environmentType: 1
-  levelObjectiveType: 10
-  endLevelType: 6
+  levelObjectiveType: 12
+  endLevelType: 7
+  talkToNpcAFterObjective: 0
   nightsToSurviveAmount: 0
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
   - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
   - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
+  hasBoss: 0
+  bossCreatureType: {fileID: 0}
+  bossNightSpawns: 
+  isReplayableLevel: 0
+  dayCreatureTypes: []
+  totalDayCreatureDifficulty: 0
   isNewEnvironmentDiscoveryLevel: 1
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
   linkedSceneName: Level1_VerdantGraveyard
@@ -39,18 +46,25 @@ MonoBehaviour:
   initialRainIntensity: 0
   rainIntensitiesAllowedInLevel: 
   baseDifficulty: 18
+  intialMinSubwaveDifficulty: 0
   minSubwaveDifficulty: 8
+  intialMaxSubwaveDifficulty: 0
   maxSubwaveDifficulty: 20
   growthFactor: 1.3
-  minWaveDuration: 9
-  maxWaveDuration: 90
+  setDifficultyAnimationCurve: 0
+  difficultyAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxWaveInAnimationCurve: 0
+  difficultyAtMaxWave: 0
+  minDifficultyAtMaxWave: 0
+  maxDifficultyAtMaxWave: 0
+  minMaxSubwaveDifficultyGrowthFactor: 0
   startWaveToSpawnFromBothSides: 2
   canSpawnElite: 0
-  minLevelXPosition: -200
-  maxLevelXPosition: 200
-  levelAudioClips:
-  - {fileID: 8300000, guid: 09c5969007630694984b81ccd6618337, type: 3}
-  - {fileID: 8300000, guid: d79c4b04637541d4fba193e4660d29a7, type: 3}
-  - {fileID: 8300000, guid: 67182c7decc49484f9b9722ed4fe9b37, type: 3}
-  - {fileID: 8300000, guid: 37cae04edadc4714894e86e8468774cf, type: 3}
-  - {fileID: 8300000, guid: 11f91fa2df76eb347ad58de41dc01c8f, type: 3}
+  levelRandomBackgroundTracks: []
+  levelExplorationTracks: []
+  levelExplorationTracksStreamerMode: []

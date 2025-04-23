@@ -204,8 +204,6 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void Player_OnPlayerStartedExploring(object sender, EventArgs e) {
-
-        Debug.Log("Player_OnPlayerStartedExploring");
         TryPlayExplorationMusic();
     }
 
@@ -323,7 +321,6 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void DayNightManager_OnNightStart(object sender, EventArgs e) {
-        if (!isLevelScene) return;
 
         audioSourceA.loop = true;
         audioSourceB.loop = true;

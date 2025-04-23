@@ -56,7 +56,6 @@ public class PlayerWorldUITooltip : MonoBehaviour
 
     public void ShowTooltip(string textToShow, float displayTime) {
         if (isActive) return;
-
         constrolInstructionGameObject.SetActive(false);
         tooltipText.gameObject.SetActive(true);
 
@@ -144,11 +143,14 @@ public class PlayerWorldUITooltip : MonoBehaviour
         if (iconSprite2 != null) {
             constrolInstructionIcon2Image.gameObject.SetActive(true);
             constrolInstructionIcon2Image.sprite = iconSprite2;
+            constrolInstructionIcon1Image.sprite = iconSprite;
             constrolInstructionText1With2Icons.gameObject.SetActive(true);
             constrolInstructionText1.gameObject.SetActive(false);
         }
         else {
             constrolInstructionIcon2Image.gameObject.SetActive(false);
+            constrolInstructionIcon1Image.gameObject.SetActive(false);
+            constrolInstructionIconImage.gameObject.SetActive(true);
         }
 
         tooltipDisplayTimer = displayTime;

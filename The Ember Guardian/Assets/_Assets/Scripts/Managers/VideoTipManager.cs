@@ -110,9 +110,18 @@ public class VideoTipManager : MonoBehaviour
     private void SubscribeToHubEvents() {
         HubMerchant.OnAnyPlayerTriggeredIn += HubMerchant_OnAnyPlayerTriggeredIn;
         HubChest.Instance.OnChestOpened += HubChest_OnChestOpened;
+        HubChest.Instance.OnChestSetCanOpen += HubChest_OnChestSetCanOpen;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
     }
 
+    private void HubChest_OnChestSetCanOpen(object sender, EventArgs e) {
+        if (storeGemsTipShown) return;
+
+        VideoTipUI.Instance.PlayTipSO(storeGemsTip, 0f);
+
+        storeGemsTipShown = true;
+        ES3.Save("storeGemsTipShown", true);
+    }
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
         HubMerchant hubMerchant = (HubMerchant)sender;
@@ -141,12 +150,7 @@ public class VideoTipManager : MonoBehaviour
     #region HUB ONLY
 
     private void HubChest_OnChestOpened(object sender, EventArgs e) {
-        if (storeGemsTipShown) return;
-
-        VideoTipUI.Instance.PlayTipSO(storeGemsTip, 0f);
-
-        storeGemsTipShown = true;
-        ES3.Save("storeGemsTipShown", true);
+       
     }
 
     private void HubMerchant_OnAnyPlayerTriggeredIn(object sender, EventArgs e) {

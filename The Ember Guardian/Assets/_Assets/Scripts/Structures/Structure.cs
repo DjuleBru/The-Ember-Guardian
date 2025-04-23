@@ -66,7 +66,6 @@ public class Structure : MonoBehaviour {
         RefreshStructureUpgradeInteraction();
 
         // Check if its night
-        Debug.Log("structureSO.upgradeableAtNight " + structureSO.upgradeableAtNight);
         if (!structureSO.upgradeableAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
             ActivateStructureUpgradeInteraction(false);
         }

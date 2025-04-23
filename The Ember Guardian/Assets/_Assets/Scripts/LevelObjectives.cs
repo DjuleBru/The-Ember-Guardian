@@ -76,6 +76,8 @@ public class LevelObjectives : MonoBehaviour
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
         initialFireLit = true;
 
+        if (Tutorial.Instance != null) return;
+
         if(DemoMainLevelManager.Instance != null) {
             // Demo level
             if (!DemoMainLevelManager.Instance.GetDemoMainLevelTutorialCompleted() || !DemoMainLevelManager.Instance.GetDemoFirstLevelCompleted()) return;

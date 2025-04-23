@@ -15,7 +15,7 @@ public class ProgressionTooltipManager : MonoBehaviour
 
     private void Start() {
         LoadTooltipsShown();
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
             Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn;
             Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         }

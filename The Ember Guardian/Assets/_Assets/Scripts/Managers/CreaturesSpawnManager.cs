@@ -183,8 +183,8 @@ public class CreaturesSpawnManager : MonoBehaviour
     private void HandleDebugInputs() {
         if (Input.GetKeyDown(KeyCode.U)) {
             currentWaveNumber++;
-            SetWaveParameters(currentWaveNumber, true, true);
-            //SetTutorialWave();
+            //SetWaveParameters(currentWaveNumber, true, true);
+            SetTutorialWave();
         }
         if (Input.GetKeyDown(KeyCode.T)) {
             Debug.Log("SpawnWave");

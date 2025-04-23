@@ -51,7 +51,7 @@ public class PauseMenuUI_Level : PauseMenuUI {
     }
 
     public void ReturnToHubFromGame() {
-        MetaProgressionManager.Instance.SaveLevelGems(0f);
+        MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber(0f);
         MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
     }
 

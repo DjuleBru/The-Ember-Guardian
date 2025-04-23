@@ -22,7 +22,7 @@ public class GunSpotLight : MonoBehaviour
     private bool rolling;
     private bool reloading;
     private bool canSwitchLight = true;
-    private bool playerJustTeleported;
+    private static bool playerJustTeleported;
     private float playerJustTeleportedTimer;
     public static event EventHandler OnAnyLightSwitched;
 
@@ -36,6 +36,7 @@ public class GunSpotLight : MonoBehaviour
     }
 
     private void Start() {
+
         if (SceneLoader.Instance != null && SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
             DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
@@ -44,18 +45,15 @@ public class GunSpotLight : MonoBehaviour
             float fogAmount = LevelManager.Instance.GetLevelSO().fogFrontAlpha;
             float volumetricAmount = Mathf.Lerp(noFogVolumetricAmount, fogVolumetricAmount, fogAmount);
             gunSpotLight.volumeIntensity = volumetricAmount;
-
         } 
 
         lightActive = false;
         gunSpotLight.intensity = gunSpotLightIntensity;
         gunSpotLight.enabled = false;
-        
 
         GameInput.Instance.OnPlayerGunLightSwitch += GameInput_OnPlayerGunLightSwitch;
         SettingsManager.Instance.OnAutoSwitchLightGunChanged += SettingsManager_OnAutoSwitchLightGunChanged;
         autoSwitchWithDay = SettingsManager.Instance.GetAutoSwitchLight();
-
 
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;

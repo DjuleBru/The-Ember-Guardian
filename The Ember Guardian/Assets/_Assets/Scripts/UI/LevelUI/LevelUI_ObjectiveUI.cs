@@ -217,34 +217,8 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         objectiveAnimator.SetTrigger("Completed");
         yield return new WaitForSeconds(.5f);
         OnObjectiveCompleted?.Invoke(this, EventArgs.Empty);
-
-        if(currentObjectiveType == ObjectiveType.SetupCamp && DemoMainLevelManager.Instance == null) {
-            StartCoroutine(EndCampSetupObjective());
-        }
     }
 
-    private IEnumerator EndCampSetupObjective() {
-
-        SetObjectiveCompletedCoroutine(0f);
-
-        yield return new WaitForSeconds(5f);
-
-        DayNightManager.Instance.ChangeState(DayNightManager.State.Dusk);
-
-        yield return new WaitForSeconds(2f);
-
-        List<SubObjectiveType> subObjectivesUnlocked = new List<SubObjectiveType> {
-                SubObjectiveType.Build2Barricades,
-                SubObjectiveType.Build2Towers,
-                SubObjectiveType.FuelFire,
-        };
-
-        SetNewObjectiveUI(ObjectiveType.PrepareForNight);
-        SetSubObjectivesUI(subObjectivesUnlocked);
-        Fire.Instance.ManualSetFireCurrentMaxFuelTreshold(Fire.State.mild);
-        Fire.Instance.SetStructurePrimaryFunctionUnlocked(true);
-        Tutorial.Instance.UnlockDefensiveStructureLocations();
-    }
 
     private void LevelObjectives_OnNightSurvived(object sender, EventArgs e) {
         foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>(true)) {
@@ -270,6 +244,10 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     private string GetObjectiveTextFromType(ObjectiveType objectiveType) {
         string objectiveKey = "Obj_" + objectiveType.ToString();
         return LocalizationManager.Instance.GetLocalizedText(objectiveKey);
+    }
+
+    public ObjectiveType GetCurrentObjectiveType() {
+        return currentObjectiveType;
     }
 
     private void OnDestroy() {

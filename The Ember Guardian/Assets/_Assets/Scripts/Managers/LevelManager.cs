@@ -147,7 +147,7 @@ public class LevelManager : MonoBehaviour
 
     public void SaveLevelCompletedProgression() {
         MetaProgressionManager.Instance.SetLevelCompleted(GetLevelSO());
-        MetaProgressionManager.Instance.SaveLevelGems();
+        MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber();
         SaveMerchantsAndTalkLines();
     }
 
@@ -175,7 +175,7 @@ public class LevelManager : MonoBehaviour
             defeatGemsProportionsRewarded = 1f;
         }
 
-        MetaProgressionManager.Instance.SaveLevelGems(defeatGemsProportionsRewarded);
+        MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber(defeatGemsProportionsRewarded);
         MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
     }
 
