@@ -97,15 +97,18 @@ public class HubMerchant : MonoBehaviour
         }
 
         merchantJustArrivedInHub = MetaProgressionManager.Instance.GetMerchantJustArrivedInHub(hubMerchantType);
-        if (merchantJustArrivedInHub) {
+        if (merchantJustArrivedInHub && !DEBUGActivateMerchant) {
             merchantHasTalkLinesToShow = true;
         }
         else {
-            merchantHasTalkLinesToShow = MetaProgressionManager.Instance.GetMerchantHasTalkLinesToShow(hubMerchantType);
+            if(!DEBUGActivateMerchant) {
+                merchantHasTalkLinesToShow = MetaProgressionManager.Instance.GetMerchantHasTalkLinesToShow(hubMerchantType);
+            }
         }
 
         hubMerchantLoaded = true;
     }
+
     protected void InitializeDemoHubMerchant() {
 
         activeGameObject.SetActive(true);

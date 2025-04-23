@@ -62,7 +62,6 @@ public class PlayerSave : MonoBehaviour
         HubMerchant hubMerchant = (HubMerchant)sender;
         if (hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.WorkerMerchant) {
             playerUnlockedFlagCarry = true;
-            Debug.Log("Unlock glaf");
             MetaProgressionManager.Instance.SetPlayerUnlockedFlagCarry(true);
         }
     }

@@ -92,10 +92,12 @@ public class UICurrencyManagerVisual : MonoBehaviour
     }
 
     private void PLayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
+        //if (uICurrencyManager == UICurrencyManager.PlayerInventoryUI && SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) return;
         HideInventoryFront();
     }
 
     private void PlayerTabMenuUI_OnPlayerTabClosed(object sender, System.EventArgs e) {
+        //if (uICurrencyManager == UICurrencyManager.PlayerInventoryUI && SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) return;
         ShowIntenvoryFront();
     }
 
