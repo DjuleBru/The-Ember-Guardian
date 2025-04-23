@@ -922,8 +922,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 210.35, y: -61.25}
-  m_SizeDelta: {x: 420.7, y: 860}
+  m_AnchoredPosition: {x: 714.7, y: -60}
+  m_SizeDelta: {x: 1429.4, y: 860}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1907198851531445361
 GameObject:
@@ -1120,8 +1120,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8779722511063828633}
   m_HandleRect: {fileID: 1577662561964050873}
   m_Direction: 0
-  m_Value: -0.00000014508002
-  m_Size: 0.71587765
+  m_Value: 0.00000014532172
+  m_Size: 0.7162161
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2966,7 +2966,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5482052251869582041}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
@@ -3693,7 +3693,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8435519124867042857
 RectTransform:
   m_ObjectHideFlags: 0
@@ -27014,9 +27014,29 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7056178715469635941, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: gadientGO
+      value: 
+      objectReference: {fileID: 7322726139307800417}
+    - target: {fileID: 7056178715469635941, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: unlockTree
+      value: 
+      objectReference: {fileID: 2776343159852642383}
+    - target: {fileID: 7056178715469635941, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: firstButtonSelected
       value: 
       objectReference: {fileID: 3051668967036612106}
+    - target: {fileID: 7056178715469635941, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: unlockTreeDimensionsDemo_rightTop.x
+      value: -420
+      objectReference: {fileID: 0}
+    - target: {fileID: 7056178715469635941, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: unlockTreeDimensionsDemo_rightTop.y
+      value: -370
+      objectReference: {fileID: 0}
+    - target: {fileID: 7056178715469635941, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: unlockTreeDimensionsDemo_leftBottom.y
+      value: -490
+      objectReference: {fileID: 0}
     - target: {fileID: 7140624019602137332, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

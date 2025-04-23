@@ -51,7 +51,9 @@ public class HUBManager : MonoBehaviour
     private void Awake() {
         Instance = this;
 
-        gemMerchantIndicator.gameObject.SetActive(false);
+        if(!demoHUB) {
+            gemMerchantIndicator.gameObject.SetActive(false);
+        }
         totalGemsAfterTutorial = initialGreenGemsAfterTutorial + initialYellowGemsAfterTutorial + initialRedGemsAfterTutorial;
     }
 

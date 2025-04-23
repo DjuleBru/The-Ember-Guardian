@@ -2992,7 +2992,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7485946577607892855
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7254,6 +7254,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7056178715469635941, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: gadientGO
+      value: 
+      objectReference: {fileID: 8503012593268842903}
+    - target: {fileID: 7056178715469635941, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: unlockTree
+      value: 
+      objectReference: {fileID: 6249987824185132287}
+    - target: {fileID: 7056178715469635941, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: hasScrollView
       value: 1
       objectReference: {fileID: 0}
@@ -7261,6 +7269,18 @@ PrefabInstance:
       propertyPath: firstButtonSelected
       value: 
       objectReference: {fileID: 3872028255439639489}
+    - target: {fileID: 7056178715469635941, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: unlockTreeDimensionsDemo_rightTop.x
+      value: -660
+      objectReference: {fileID: 0}
+    - target: {fileID: 7056178715469635941, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: unlockTreeDimensionsDemo_rightTop.y
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7056178715469635941, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: unlockTreeDimensionsDemo_leftBottom.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7140624019602137332, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_SizeDelta.x
       value: 5

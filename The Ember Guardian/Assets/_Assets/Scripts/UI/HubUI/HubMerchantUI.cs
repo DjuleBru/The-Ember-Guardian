@@ -45,7 +45,6 @@ public class HubMerchantUI : MonoBehaviour
         hubMerchant.OnPlayerOpenedHubMerchantShop += HubMerchant_OnPlayerInteractedWithHubMerchant;
         hubMerchant.OnPlayerStoppedInteractingWithHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithHubMerchant;
 
-
         canvas.worldCamera = CameraManager.Instance.GetUICamera();
         canvas.sortingLayerName = "UI";
         merchantNameText.text = hubMerchant.GetHubMerchantName();
