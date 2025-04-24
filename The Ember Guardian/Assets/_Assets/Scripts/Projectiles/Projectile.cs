@@ -17,7 +17,6 @@ public class Projectile : MonoBehaviour
 
     private float projectileMaxMoveSpeed;
     protected float projectileTrajectoryYCurve = .2f;
-    private float trajectoryEndPointRandomOffsetValue;
 
     private Rigidbody2D rb;
 
@@ -50,7 +49,6 @@ public class Projectile : MonoBehaviour
     private int damage;
 
     public void ActivateAndInitialize(Transform targetTransform, ProjectileSO projectileSO, Mob parentMob, int damage, Vector3 endPointRandomOffsetValue,  bool homingProjectile) {
-
         if(targetTransform == null) {
             ResetInObjectPool();
             return;
@@ -71,7 +69,6 @@ public class Projectile : MonoBehaviour
         projectileSpeedAnimationCurve = projectileSO.projectileSpeedAnimationCurve;
         projectileMaxMoveSpeed = projectileSO.projectileMaxMoveSpeed;
         projectileTrajectoryYCurve = projectileSO.projectileTrajectoryYCurve;
-        trajectoryEndPointRandomOffsetValue = projectileSO.trajectoryEndPointRandomOffsetValue;
 
         trajectoryStartPoint = transform.position;
 

@@ -321,7 +321,6 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
         }
 
         if (trainerItemType == TrainerItemType.RunStaminaCost) {
-            Debug.Log("RunStaminaCost " + buff);
             PlayerStats.Instance.SetRunStaminaCostBuff(buff);
         }
 

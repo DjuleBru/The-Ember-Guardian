@@ -22,6 +22,7 @@ public class WorkerManager : MonoBehaviour
     private List<Worker> workersInPlayerInteractionArea = new List<Worker>();
     private Worker closestInteractableWorkerFromPlayer;
 
+
     public event EventHandler OnJoblessWorkerAmountChanged;
     public event EventHandler OnRecruitedWorkerDied;
     public event EventHandler<OnClosestWorkerChangedEventArgs> OnClosestWorkerChanged;

@@ -28,6 +28,11 @@ public class StructureSO : ScriptableObject
         shockerEjector,
         spikeEjector,
         smokeEjector,
+        sniperTower,
+        machineGunTower,
+        mortarTower,
+        secondaryFire,
+        fastTravelTeleporter,
     }
 
     public StructureType structureType;

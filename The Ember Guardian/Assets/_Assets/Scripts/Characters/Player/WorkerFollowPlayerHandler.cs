@@ -29,7 +29,7 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
     }
 
     private void Start() {
-        interactionWithWorkersUnlocked = MetaProgressionManager.Instance.GetInteractionWithWorkersUnlocked();
+        interactionWithWorkersUnlocked = WorkerStats.Instance.GetInteractionWithWorkersUnlocked();
         if (!interactionWithWorkersUnlocked) return;
 
         Mob.OnAnyMobDied += Worker_OnAnyMobDied;

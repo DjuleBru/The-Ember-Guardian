@@ -164,7 +164,6 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     public virtual void ExitGameButton() {
-        Debug.Log("cac");
         if (confirmExitGame || progressionSaved) {
             OpenFullGameDescriptionPanel();
         }

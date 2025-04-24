@@ -8,7 +8,6 @@ public class MetaProgressionManager : MonoBehaviour
 {
     public static MetaProgressionManager Instance;
     [SerializeField] private bool destroySaveOnApplicationQuit;
-    private bool workerInteractions_Debug;
     private bool flagCarry_Debug;
 
     public class OnGunChangedEventArgs : EventArgs {
@@ -54,7 +53,6 @@ public class MetaProgressionManager : MonoBehaviour
             lastHUBPortalUsedByPlayer = ES3.Load("lastHUBPortalUsedByPlayer", lastPortal);
         }
 
-        workerInteractions_Debug = DebugManager.Instance.GetDebugMode_WorkerInteractions();
         flagCarry_Debug = DebugManager.Instance.GetDebugMode_FlagCarry();
     }
 
@@ -338,7 +336,6 @@ public class MetaProgressionManager : MonoBehaviour
     public void SetGunUnlocked(GunSO gunSO, bool unlocked) {
         string key = gunSO.name;
         ES3.Save(key, unlocked);
-
     }
 
     public bool GetGunUnlocked(GunSO gunSO) {
@@ -555,14 +552,6 @@ public class MetaProgressionManager : MonoBehaviour
 
         return ES3.Load(key, gunSO.shootConeAngle);
     }
-    #endregion
-
-    #region WORKERS
-
-    public bool GetInteractionWithWorkersUnlocked() {
-        return ES3.Load("interactionWithWorkersUnlocked", workerInteractions_Debug);
-    }
-
     #endregion
 
     #region OTHER

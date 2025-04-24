@@ -903,6 +903,81 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &2200801477804355057
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 58407711688698492}
+  - component: {fileID: 5985768576886642232}
+  - component: {fileID: 8735097136504472321}
+  m_Layer: 5
+  m_Name: Background (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &58407711688698492
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2200801477804355057}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1036987479752244211}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.000061035156, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &5985768576886642232
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2200801477804355057}
+  m_CullTransparentMesh: 1
+--- !u!114 &8735097136504472321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2200801477804355057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 61ce843133c194940869353bb52ab677, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.4627451}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &2489757499859785723
 GameObject:
   m_ObjectHideFlags: 0
@@ -3497,7 +3572,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: a96b885b64e08e04ca93484d6b2a2085, type: 3}
+      objectReference: {fileID: 21300000, guid: 9e8769b1eb402c946b41d60aec7aeef5, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.16862746
@@ -3788,11 +3863,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -56
+      value: 6.651409
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -55
+      value: 17.122782
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -3803,8 +3878,8 @@ PrefabInstance:
       addedObject: {fileID: 5733049308589329655}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 6325748915235388928}
+      insertIndex: -1
+      addedObject: {fileID: 7389509914427778200}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!224 &1440155716595116453 stripped
 RectTransform:
@@ -3816,7 +3891,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 555797264542688144}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6325748915235388928
+--- !u!114 &7389509914427778200
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3825,25 +3900,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 4934085875725970750}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Enduring Vitality
+  itemName: Guard Shrine Activation
   greenGemCost: 0
   redGemCost: 0
-  blueGemCost: 0
+  blueGemCost: 10
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Hardship has toughened your body.
-  unlockDescription: Increases your maximum health.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 5
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 3a064256afcb11b4b993e98a5c045acd, type: 2}
-  trainerItemType: 4
+  linkedStatModifierSO: {fileID: 0}
+  watcherItemType: 14
+  watcherItemCategory: 0
+  structureType: 6
 --- !u!114 &5026161460502820376 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -3892,7 +3969,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: 1c845788d8fdc164a91a6b40d2317a56, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -4134,6 +4211,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 786201751, guid: 3cc5a1e618882d448a3db4415f598f9c, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
@@ -4147,12 +4228,12 @@ PrefabInstance:
       objectReference: {fileID: 4389140184039743047}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.data[0]
       value: 
-      objectReference: {fileID: 4481692573737813471}
+      objectReference: {fileID: 7640600921980031077}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.data[1]
       value: 
@@ -4191,19 +4272,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -16.000046
+      value: 54.514015
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.000004
+      value: -24.334751
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -4214,8 +4295,8 @@ PrefabInstance:
       addedObject: {fileID: 4123167300193605270}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 8740629851069667377}
+      insertIndex: -1
+      addedObject: {fileID: 5059020774236933674}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!224 &1775366248571663504 stripped
 RectTransform:
@@ -4238,7 +4319,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 930483047244103333}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8740629851069667377
+--- !u!114 &5059020774236933674
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4247,25 +4328,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 5703333090204168203}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Battle-Ready Reflexes
+  itemName: Reflex Enhancer
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Speed comes from practice, and practice comes from survival.
-  unlockDescription: Reduces the time it takes to swap weapons.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 3
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 05dda34dcaa4d4747b954c6604794cec, type: 2}
-  trainerItemType: 1
+  linkedStatModifierSO: {fileID: 11400000, guid: 27b135397c8fb614f95fbcc806309203, type: 2}
+  watcherItemType: 5
+  watcherItemCategory: 2
+  structureType: 0
+--- !u!114 &7640600921980031077 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7413315761527434944, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 930483047244103333}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7884905008533327862 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -4292,7 +4386,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: 9d65340372c366c44ae7783d32a56c8b, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -4538,6 +4632,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -1223675296, guid: 3cc5a1e618882d448a3db4415f598f9c, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
@@ -4595,19 +4693,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -16.000046
+      value: -86.23421
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.000004
+      value: -43.76461
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -4618,8 +4716,8 @@ PrefabInstance:
       addedObject: {fileID: 3636106865570480125}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 8955898920269643424}
+      insertIndex: -1
+      addedObject: {fileID: 5888337441552549870}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!224 &234529206260034034 stripped
 RectTransform:
@@ -4631,7 +4729,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 1660654287417533383}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8955898920269643424
+--- !u!114 &5888337441552549870
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4640,25 +4738,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 6108048888564297065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Battle-Ready Reflexes
+  itemName: Lucky Pick Matrix
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Speed comes from practice, and practice comes from survival.
-  unlockDescription: Reduces the time it takes to swap weapons.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 3
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 05dda34dcaa4d4747b954c6604794cec, type: 2}
-  trainerItemType: 1
+  linkedStatModifierSO: {fileID: 11400000, guid: f0ef2bb56fe672c42a49b478bee574a3, type: 2}
+  watcherItemType: 13
+  watcherItemCategory: 2
+  structureType: 0
 --- !u!114 &6160293014027925071 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -4685,7 +4785,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: 9d65340372c366c44ae7783d32a56c8b, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -4780,7 +4880,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2434902764092720141, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 292.5
+      value: 332.5
       objectReference: {fileID: 0}
     - target: {fileID: 2434902764092720141, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4824,11 +4924,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 119.53
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -12.5
+      value: -15
       objectReference: {fileID: 0}
     - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4840,7 +4940,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 97.5
+      value: 107.5
       objectReference: {fileID: 0}
     - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4896,7 +4996,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5452612030923789394, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 227.5
+      value: 257.5
       objectReference: {fileID: 0}
     - target: {fileID: 5452612030923789394, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4927,6 +5027,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1367878262, guid: 3cc5a1e618882d448a3db4415f598f9c, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
@@ -4940,12 +5044,12 @@ PrefabInstance:
       objectReference: {fileID: 3505948868780905428}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.data[0]
       value: 
-      objectReference: {fileID: 7130457037624359997}
+      objectReference: {fileID: 8988966024145537331}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.data[1]
       value: 
@@ -4976,7 +5080,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8593430214250753205, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 162.5
+      value: 182.5
       objectReference: {fileID: 0}
     - target: {fileID: 8593430214250753205, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4984,19 +5088,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -16.000046
+      value: -86.23421
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.000004
+      value: -43.76463
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -5007,8 +5111,8 @@ PrefabInstance:
       addedObject: {fileID: 8996425521653106204}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 4450719556781136676}
+      insertIndex: -1
+      addedObject: {fileID: 896050823545895582}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!224 &1014638976041004486 stripped
 RectTransform:
@@ -5031,7 +5135,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 1900056773052966899}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4450719556781136676
+--- !u!114 &896050823545895582
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5040,25 +5144,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 6454126442744506717}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Battle-Ready Reflexes
+  itemName: Pickaxe Drive
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Speed comes from practice, and practice comes from survival.
-  unlockDescription: Reduces the time it takes to swap weapons.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 3
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 05dda34dcaa4d4747b954c6604794cec, type: 2}
-  trainerItemType: 1
+  linkedStatModifierSO: {fileID: 11400000, guid: f6c8f237527614d4180478dfe3b2c27a, type: 2}
+  watcherItemType: 12
+  watcherItemCategory: 2
+  structureType: 0
 --- !u!114 &8924772870768793248 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -5068,6 +5174,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3aaae745621c53a49a0d2b8e64a8ca73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8988966024145537331 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7413315761527434944, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 1900056773052966899}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2133566706610515695
@@ -5085,7 +5202,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: 88f19f8d94c723b48919d0654786f8ae, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -5315,6 +5432,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 214225712, guid: 3cc5a1e618882d448a3db4415f598f9c, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
@@ -5372,19 +5493,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -16.000046
+      value: -48.68023
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.000004
+      value: -43.405426
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -5395,8 +5516,8 @@ PrefabInstance:
       addedObject: {fileID: 838035154457558617}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 6146370570766790781}
+      insertIndex: -1
+      addedObject: {fileID: 3454690499124929270}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!224 &707365072901219546 stripped
 RectTransform:
@@ -5408,7 +5529,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 2133566706610515695}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6146370570766790781
+--- !u!114 &3454690499124929270
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5417,25 +5538,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 6797059666146156609}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Battle-Ready Reflexes
+  itemName: Bone-Fused Plating
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Speed comes from practice, and practice comes from survival.
-  unlockDescription: Reduces the time it takes to swap weapons.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 3
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 05dda34dcaa4d4747b954c6604794cec, type: 2}
-  trainerItemType: 1
+  linkedStatModifierSO: {fileID: 11400000, guid: 08be46129030fc14b984a25f73e7de5e, type: 2}
+  watcherItemType: 16
+  watcherItemCategory: 2
+  structureType: 0
 --- !u!114 &6912433893864553319 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -5462,7 +5585,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: fb09a3dfe415b4e4badb93334abe855d, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -5684,6 +5807,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: c24055b6949a7d54a9f97fe044f34897, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
@@ -5753,7 +5880,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28
+      value: 73.38243
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -5764,8 +5891,8 @@ PrefabInstance:
       addedObject: {fileID: 8135445334865056295}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 1716082227877309859}
+      insertIndex: -1
+      addedObject: {fileID: 1002955791587304487}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!224 &3853373337150946271 stripped
 RectTransform:
@@ -5777,7 +5904,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 2392271181555364330}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1716082227877309859
+--- !u!114 &1002955791587304487
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5786,25 +5913,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 7132857017317375812}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Refined Lens Module
+  itemName: Signal Beacon
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: A specialized lens salvaged from old technology.
-  unlockDescription: Increases your flashlight's range.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 2
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: b21cbcba5eadd8e44989b42fc50ad450, type: 2}
-  trainerItemType: 2
+  linkedStatModifierSO: {fileID: 11400000, guid: 76074614e0cd36642b99517fb42dbac2, type: 2}
+  watcherItemType: 3
+  watcherItemCategory: 1
+  structureType: 0
 --- !u!114 &7153150434515280994 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -5831,7 +5960,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: 88f19f8d94c723b48919d0654786f8ae, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -6073,6 +6202,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -19593051, guid: 3cc5a1e618882d448a3db4415f598f9c, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
@@ -6086,12 +6219,12 @@ PrefabInstance:
       objectReference: {fileID: 7364481158742102723}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.data[0]
       value: 
-      objectReference: {fileID: 5993857105552282513}
+      objectReference: {fileID: 4676639601713652897}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.data[1]
       value: 
@@ -6130,19 +6263,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -16.000046
+      value: -48.68023
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.000004
+      value: -43.405388
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -6153,14 +6286,25 @@ PrefabInstance:
       addedObject: {fileID: 2353918415438943070}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 946468464705829618}
+      insertIndex: -1
+      addedObject: {fileID: 4969414504593860462}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!224 &3624626720853327956 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 2740336575824988769}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4676639601713652897 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7413315761527434944, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 2740336575824988769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5152913651884964658 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -6188,7 +6332,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 2740336575824988769}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &946468464705829618
+--- !u!114 &4969414504593860462
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6197,25 +6341,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 7334204095908496591}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Battle-Ready Reflexes
+  itemName: Sprint Conditioning
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Speed comes from practice, and practice comes from survival.
-  unlockDescription: Reduces the time it takes to swap weapons.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 3
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 05dda34dcaa4d4747b954c6604794cec, type: 2}
-  trainerItemType: 1
+  linkedStatModifierSO: {fileID: 11400000, guid: 1bb9dd949689cc94297fa2f39ba1ff5d, type: 2}
+  watcherItemType: 15
+  watcherItemCategory: 2
+  structureType: 0
 --- !u!1001 &2823327061144412566
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6231,7 +6377,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: 88f19f8d94c723b48919d0654786f8ae, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -6477,6 +6623,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -351057379, guid: 3cc5a1e618882d448a3db4415f598f9c, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
@@ -6534,19 +6684,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -16.000046
+      value: -48.68023
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.000004
+      value: -43.405426
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -6557,8 +6707,8 @@ PrefabInstance:
       addedObject: {fileID: 394555566472444954}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 7914884904943677224}
+      insertIndex: -1
+      addedObject: {fileID: 2010258188815305524}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!224 &3703254480391220131 stripped
 RectTransform:
@@ -6570,7 +6720,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 2823327061144412566}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7914884904943677224
+--- !u!114 &2010258188815305524
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6579,25 +6729,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 7269244502779031352}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Battle-Ready Reflexes
+  itemName: War Rhythm
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Speed comes from practice, and practice comes from survival.
-  unlockDescription: Reduces the time it takes to swap weapons.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 3
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 05dda34dcaa4d4747b954c6604794cec, type: 2}
-  trainerItemType: 1
+  linkedStatModifierSO: {fileID: 11400000, guid: fab1d309c8930ee4ea1c498fa4f067cb, type: 2}
+  watcherItemType: 18
+  watcherItemCategory: 2
+  structureType: 0
 --- !u!114 &7302706220726924318 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -6624,7 +6776,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: 88f19f8d94c723b48919d0654786f8ae, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -6866,6 +7018,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -1104116147, guid: 3cc5a1e618882d448a3db4415f598f9c, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
@@ -6879,12 +7035,12 @@ PrefabInstance:
       objectReference: {fileID: 7364481158742102723}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.data[0]
       value: 
-      objectReference: {fileID: 2800958551740221260}
+      objectReference: {fileID: 6016647498435228867}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.data[1]
       value: 
@@ -6923,19 +7079,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -16.000046
+      value: -48.68023
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.000004
+      value: -43.405426
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -6946,14 +7102,25 @@ PrefabInstance:
       addedObject: {fileID: 6528954147995876384}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 8529216874553446081}
+      insertIndex: -1
+      addedObject: {fileID: 8828784078674340542}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!224 &2437834128516304950 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 3863541395660528131}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6016647498435228867 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7413315761527434944, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 3863541395660528131}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6060574472808622928 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -6970,7 +7137,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 3863541395660528131}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8529216874553446081
+--- !u!114 &8828784078674340542
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6979,25 +7146,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 8525872859095274669}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Battle-Ready Reflexes
+  itemName: Heavy Hands
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Speed comes from practice, and practice comes from survival.
-  unlockDescription: Reduces the time it takes to swap weapons.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 3
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 05dda34dcaa4d4747b954c6604794cec, type: 2}
-  trainerItemType: 1
+  linkedStatModifierSO: {fileID: 11400000, guid: 25eca128225d6d84bb3aaf770283bd94, type: 2}
+  watcherItemType: 17
+  watcherItemCategory: 2
+  structureType: 0
 --- !u!114 &8640186605978046347 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -7024,7 +7193,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: fb09a3dfe415b4e4badb93334abe855d, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -7234,6 +7403,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: f51ebb70064dcdc40bdb6f0a3f630557, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
@@ -7303,7 +7476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28
+      value: 73.38243
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -7314,8 +7487,8 @@ PrefabInstance:
       addedObject: {fileID: 4727399469049961240}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 8511072659756279368}
+      insertIndex: -1
+      addedObject: {fileID: 6046835986420985787}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!224 &2974377111916658016 stripped
 RectTransform:
@@ -7327,7 +7500,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 4399453257899784021}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8511072659756279368
+--- !u!114 &6046835986420985787
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7336,25 +7509,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 9133877499755067899}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Refined Lens Module
+  itemName: Initial Emberlings
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: A specialized lens salvaged from old technology.
-  unlockDescription: Increases your flashlight's range.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 2
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: b21cbcba5eadd8e44989b42fc50ad450, type: 2}
-  trainerItemType: 2
+  linkedStatModifierSO: {fileID: 11400000, guid: 9a6052fb8b0ae32439872ed56a3123b1, type: 2}
+  watcherItemType: 2
+  watcherItemCategory: 1
+  structureType: 0
 --- !u!114 &9186194185462031069 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -7381,7 +7556,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: 1c845788d8fdc164a91a6b40d2317a56, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -7627,6 +7802,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -1357724927, guid: 3cc5a1e618882d448a3db4415f598f9c, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
@@ -7684,19 +7863,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -16.000046
+      value: 54.514015
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.000004
+      value: -24.334751
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -7707,8 +7886,8 @@ PrefabInstance:
       addedObject: {fileID: 2826688372194065984}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 425155311506889778}
+      insertIndex: -1
+      addedObject: {fileID: 8139688486723466978}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!114 &612971972723373820 stripped
 MonoBehaviour:
@@ -7726,7 +7905,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 5401965910200574836}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &425155311506889778
+--- !u!114 &8139688486723466978
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7735,25 +7914,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 664370019699666394}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Battle-Ready Reflexes
+  itemName: Quickdraw Wiring
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Speed comes from practice, and practice comes from survival.
-  unlockDescription: Reduces the time it takes to swap weapons.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 3
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 05dda34dcaa4d4747b954c6604794cec, type: 2}
-  trainerItemType: 1
+  linkedStatModifierSO: {fileID: 11400000, guid: 42b5185bc5307f843844cc1761e917be, type: 2}
+  watcherItemType: 8
+  watcherItemCategory: 2
+  structureType: 0
 --- !u!224 &6826683028074621249 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -7774,7 +7955,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: a96b885b64e08e04ca93484d6b2a2085, type: 3}
+      objectReference: {fileID: 21300000, guid: e3562acc032cfdd46b4ab55d413a2f61, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.16862746
@@ -8085,11 +8266,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -56
+      value: 0.35907745
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -55
+      value: 36.33323
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -8100,15 +8281,15 @@ PrefabInstance:
       addedObject: {fileID: 9131633003776784137}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 6963277067933103964}
+      insertIndex: -1
+      addedObject: {fileID: 8281897434513648695}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!1 &1363783120101583913 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 5846468196207190663}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6963277067933103964
+--- !u!114 &8281897434513648695
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8117,25 +8298,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 1363783120101583913}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Enduring Vitality
+  itemName: Scavenger Shrine Activation
   greenGemCost: 0
   redGemCost: 0
-  blueGemCost: 0
+  blueGemCost: 5
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Hardship has toughened your body.
-  unlockDescription: Increases your maximum health.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 5
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 3a064256afcb11b4b993e98a5c045acd, type: 2}
-  trainerItemType: 4
+  linkedStatModifierSO: {fileID: 0}
+  watcherItemType: 9
+  watcherItemCategory: 0
+  structureType: 5
 --- !u!114 &1392956180472035087 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -8200,7 +8383,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: 9d65340372c366c44ae7783d32a56c8b, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -8442,6 +8625,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -1517116658, guid: 3cc5a1e618882d448a3db4415f598f9c, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
@@ -8455,12 +8642,12 @@ PrefabInstance:
       objectReference: {fileID: 3505948868780905428}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.data[0]
       value: 
-      objectReference: {fileID: 4938772798825192838}
+      objectReference: {fileID: 3583636753347509079}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.data[1]
       value: 
@@ -8499,19 +8686,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -16.000046
+      value: -86.23421
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.000004
+      value: -43.76463
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -8522,15 +8709,15 @@ PrefabInstance:
       addedObject: {fileID: 3930929792693250417}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 5040355303357373107}
+      insertIndex: -1
+      addedObject: {fileID: 401134165421187347}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!1 &1483148376646228793 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 6294556509962130839}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5040355303357373107
+--- !u!114 &401134165421187347
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8539,25 +8726,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 1483148376646228793}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Battle-Ready Reflexes
+  itemName: Sturdy Legs
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Speed comes from practice, and practice comes from survival.
-  unlockDescription: Reduces the time it takes to swap weapons.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 3
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 05dda34dcaa4d4747b954c6604794cec, type: 2}
-  trainerItemType: 1
+  linkedStatModifierSO: {fileID: 11400000, guid: d7cdb3ce394f7df46abea4c1befe2217, type: 2}
+  watcherItemType: 10
+  watcherItemCategory: 2
+  structureType: 0
 --- !u!114 &1525827842151956511 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -8567,6 +8756,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3583636753347509079 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7413315761527434944, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 6294556509962130839}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &3954076880943473860 stripped
@@ -8600,7 +8800,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: 1c845788d8fdc164a91a6b40d2317a56, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -8695,7 +8895,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2434902764092720141, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 292.5
+      value: 332.5
       objectReference: {fileID: 0}
     - target: {fileID: 2434902764092720141, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -8739,11 +8939,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 119.53
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -12.5
+      value: -15
       objectReference: {fileID: 0}
     - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -8755,7 +8955,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 97.5
+      value: 107.5
       objectReference: {fileID: 0}
     - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -8811,7 +9011,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5452612030923789394, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 227.5
+      value: 257.5
       objectReference: {fileID: 0}
     - target: {fileID: 5452612030923789394, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -8842,6 +9042,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 781390707, guid: 3cc5a1e618882d448a3db4415f598f9c, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
@@ -8855,12 +9059,12 @@ PrefabInstance:
       objectReference: {fileID: 4389140184039743047}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.data[0]
       value: 
-      objectReference: {fileID: 1404438050579325670}
+      objectReference: {fileID: 4225462468426641385}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.data[1]
       value: 
@@ -8891,7 +9095,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8593430214250753205, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 162.5
+      value: 182.5
       objectReference: {fileID: 0}
     - target: {fileID: 8593430214250753205, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -8899,19 +9103,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -16.000046
+      value: 54.514015
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.000004
+      value: -24.334751
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -8922,8 +9126,8 @@ PrefabInstance:
       addedObject: {fileID: 7268312956948369548}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 2885685480241366960}
+      insertIndex: -1
+      addedObject: {fileID: 7111810987637632907}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!114 &2176555075592328353 stripped
 MonoBehaviour:
@@ -8941,7 +9145,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 6648079212571066665}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2885685480241366960
+--- !u!114 &7111810987637632907
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8950,25 +9154,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 2273555363023114119}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Battle-Ready Reflexes
+  itemName: Bolt Charge
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Speed comes from practice, and practice comes from survival.
-  unlockDescription: Reduces the time it takes to swap weapons.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 3
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 05dda34dcaa4d4747b954c6604794cec, type: 2}
-  trainerItemType: 1
+  linkedStatModifierSO: {fileID: 11400000, guid: e3ae546b95227ef498d5c22f535c2ea1, type: 2}
+  watcherItemType: 7
+  watcherItemCategory: 2
+  structureType: 0
+--- !u!114 &4225462468426641385 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7413315761527434944, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 6648079212571066665}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4451749822686769274 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -9000,7 +9217,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: a96b885b64e08e04ca93484d6b2a2085, type: 3}
+      objectReference: {fileID: 21300000, guid: d2c6171254225c84e89536e1c16da5cb, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.16862746
@@ -9303,11 +9520,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -56
+      value: -4.6747894
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -55
+      value: 30.201225
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -9318,15 +9535,15 @@ PrefabInstance:
       addedObject: {fileID: 4950335183996767755}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 2905712433455461132}
+      insertIndex: -1
+      addedObject: {fileID: 359454332384307420}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!1 &2207849929666109882 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 6731801227082264340}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2905712433455461132
+--- !u!114 &359454332384307420
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9335,25 +9552,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 2207849929666109882}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Enduring Vitality
+  itemName: Hunter Shrine Activation
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Hardship has toughened your body.
-  unlockDescription: Increases your maximum health.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 5
-  isBoughtAtStart: 0
+  maxItemLevel: 0
+  isBoughtAtStart: 1
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 3a064256afcb11b4b993e98a5c045acd, type: 2}
-  trainerItemType: 4
+  linkedStatModifierSO: {fileID: 0}
+  watcherItemType: 4
+  watcherItemCategory: 0
+  structureType: 4
 --- !u!114 &2241169810630310556 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -9603,6 +9822,10 @@ PrefabInstance:
       propertyPath: scrollRect
       value: 
       objectReference: {fileID: 3423027232964982774}
+    - target: {fileID: 7056178715469635941, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: firstButtonSelected
+      value: 
+      objectReference: {fileID: 3175224616523570853}
     - target: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_SizeDelta.x
       value: 1100
@@ -9671,6 +9894,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 58407711688698492}
+    - targetCorrespondingSourceObject: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5103945931112518505}
     m_AddedComponents: []
@@ -9695,7 +9921,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: fb09a3dfe415b4e4badb93334abe855d, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -9790,7 +10016,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2434902764092720141, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 292.5
+      value: 332.5
       objectReference: {fileID: 0}
     - target: {fileID: 2434902764092720141, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -9830,11 +10056,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 119.53
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -12.5
+      value: -15
       objectReference: {fileID: 0}
     - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -9846,7 +10072,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 97.5
+      value: 107.5
       objectReference: {fileID: 0}
     - target: {fileID: 4139029592959043023, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -9898,7 +10124,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5452612030923789394, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 227.5
+      value: 257.5
       objectReference: {fileID: 0}
     - target: {fileID: 5452612030923789394, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -9958,7 +10184,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8593430214250753205, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 162.5
+      value: 182.5
       objectReference: {fileID: 0}
     - target: {fileID: 8593430214250753205, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -9978,7 +10204,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.000004
+      value: 73.38243
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -9992,8 +10218,8 @@ PrefabInstance:
       addedObject: {fileID: 6515396900999516908}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 2200135615345738488}
+      insertIndex: -1
+      addedObject: {fileID: 443009839737043855}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!114 &1034184802111906136 stripped
 MonoBehaviour:
@@ -10011,7 +10237,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 8061262650768543755}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2200135615345738488
+--- !u!114 &443009839737043855
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10020,18 +10246,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 3175224616523570853}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Dual Arsenal Mastery
-  greenGemCost: 5
+  itemName: Mind Link Protocol
+  greenGemCost: 0
   redGemCost: 0
-  blueGemCost: 0
+  blueGemCost: 5
   yellowGemCost: 0
   purpleGemCost: 0
-  description: A skill honed by survivors who faced the darkness unarmed too many
-    times.
-  unlockDescription: Allows you to carry a second weapon.
+  description: 
+  unlockDescription: 
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
@@ -10039,7 +10264,9 @@ MonoBehaviour:
   itemUpgradeable: 0
   itemEquipable: 0
   linkedStatModifierSO: {fileID: 0}
-  trainerItemType: 0
+  watcherItemType: 0
+  watcherItemCategory: 1
+  structureType: 0
 --- !u!114 &3290246998906291587 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -10071,7 +10298,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: fb09a3dfe415b4e4badb93334abe855d, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -10293,6 +10520,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: d5796644b61440e4293fc6a30aee9e65, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
@@ -10362,7 +10593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.000004
+      value: 73.38243
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -10373,15 +10604,15 @@ PrefabInstance:
       addedObject: {fileID: 284835941553232260}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 2164945824439331188}
+      insertIndex: -1
+      addedObject: {fileID: 5629856536105761852}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!1 &3610027618651110408 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 8202909396495512230}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2164945824439331188
+--- !u!114 &5629856536105761852
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10390,25 +10621,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 3610027618651110408}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Battle-Ready Reflexes
+  itemName: Expanded Link Capacity
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Speed comes from practice, and practice comes from survival.
-  unlockDescription: Reduces the time it takes to swap weapons.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 3
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 05dda34dcaa4d4747b954c6604794cec, type: 2}
-  trainerItemType: 1
+  linkedStatModifierSO: {fileID: 11400000, guid: c340ce8665209404eae5499c9871aa40, type: 2}
+  watcherItemType: 1
+  watcherItemCategory: 1
+  structureType: 0
 --- !u!114 &3720117601832019758 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -10440,7 +10673,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: 9d65340372c366c44ae7783d32a56c8b, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -10670,6 +10903,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -1746256342, guid: 3cc5a1e618882d448a3db4415f598f9c, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
@@ -10727,19 +10964,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -16.000046
+      value: -86.23421
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.000004
+      value: -43.76463
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -10750,15 +10987,15 @@ PrefabInstance:
       addedObject: {fileID: 7435120888220154796}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 6435665509935348572}
+      insertIndex: -1
+      addedObject: {fileID: 7383995626710119946}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!1 &3514493487253772859 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 8289455004838204565}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6435665509935348572
+--- !u!114 &7383995626710119946
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10767,25 +11004,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 3514493487253772859}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Battle-Ready Reflexes
+  itemName: Reinforced Helmets
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Speed comes from practice, and practice comes from survival.
-  unlockDescription: Reduces the time it takes to swap weapons.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 3
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 05dda34dcaa4d4747b954c6604794cec, type: 2}
-  trainerItemType: 1
+  linkedStatModifierSO: {fileID: 11400000, guid: d92e094adf3434e4ab1692bb24df0058, type: 2}
+  watcherItemType: 11
+  watcherItemCategory: 2
+  structureType: 0
 --- !u!114 &3565754646649831709 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -10817,7 +11056,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 36dccd7e029f92443b31e7801367834e, type: 3}
+      objectReference: {fileID: 21300000, guid: 1c845788d8fdc164a91a6b40d2317a56, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.31764707
@@ -11051,6 +11290,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -420899664, guid: 3cc5a1e618882d448a3db4415f598f9c, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: showItemLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
@@ -11108,19 +11351,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 400
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -16.000046
+      value: 54.514015
       objectReference: {fileID: 0}
     - target: {fileID: 8826350838756100940, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.000004
+      value: -24.334751
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2132069975152806687, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -11131,15 +11374,15 @@ PrefabInstance:
       addedObject: {fileID: 522190925073761121}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 2554839664431652728}
+      insertIndex: -1
+      addedObject: {fileID: 8352223899906204363}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
 --- !u!1 &3939510726147271223 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 8458893140978377881}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2554839664431652728
+--- !u!114 &8352223899906204363
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11148,25 +11391,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 3939510726147271223}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2611d0324ad5224bb9456d9c5b9f6f2, type: 3}
+  m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Battle-Ready Reflexes
+  itemName: Targeting Glyphs
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
-  description: Speed comes from practice, and practice comes from survival.
-  unlockDescription: Reduces the time it takes to swap weapons.
+  description: 
+  unlockDescription: 
   itemLevel: 0
-  maxItemLevel: 3
+  maxItemLevel: 0
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 05dda34dcaa4d4747b954c6604794cec, type: 2}
-  trainerItemType: 1
+  linkedStatModifierSO: {fileID: 11400000, guid: dc6df0bd663d9ca4fab8733372a21f46, type: 2}
+  watcherItemType: 6
+  watcherItemCategory: 2
+  structureType: 0
 --- !u!114 &3968256090301608209 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}

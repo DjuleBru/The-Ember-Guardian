@@ -8,19 +8,14 @@ public class WorkerAttack : MobAttack
 
     private WorkerAI workerAI;
 
-    private int initialHunterDamage = 10;
-    private float initialHunterAttackCooldown = 3f;
     private float hunterAttackAnimationDelay = .6f;
 
-    private int initialGuardDamage = 5;
-    private float initialGuardAttackCooldown = 1f;
     private float guardAttackAnimationDelay = .3f;
     private float guardTotalAttackAnimationTime = .4f;
 
-    private int initialMinerDamage = 1;
-    private float initialMinerAttackCooldown = 1.2f;
     private float minerAttackAnimationDelay = .15f;
     private float minerTotalAttackAnimationTime = .5f;
+    private float hunterAnimalAttackPointRandomizer;
 
 
     protected override void Awake() {
@@ -29,23 +24,26 @@ public class WorkerAttack : MobAttack
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
     }
 
-    private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
+    protected void Start() {
+        hunterAnimalAttackPointRandomizer = WorkerStats.Instance.GetHunterAccuracy();
+    }
 
-        if(workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
+    private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
+        if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
             isProjectileAttack = true;
 
-            attackDamage = initialHunterDamage;
-            initialAttackDamage = initialHunterDamage;
-            attackCooldown = initialHunterAttackCooldown;
+            attackDamage = WorkerStats.Instance.GetHunterDamage();
+            initialAttackDamage = WorkerStats.Instance.GetHunterDamage();
+            attackCooldown = WorkerStats.Instance.GetHunterAttackCooldown();
             attackAnimationDelay = hunterAttackAnimationDelay;
         }
 
         if (workerAI.GetJob() == WorkerAI.JobTypes.guard) {
             isProjectileAttack = false;
 
-            attackDamage = initialGuardDamage;
-            initialAttackDamage = initialGuardDamage;
-            attackCooldown = initialGuardAttackCooldown;
+            attackDamage = WorkerStats.Instance.GetGuardDamage();
+            initialAttackDamage = WorkerStats.Instance.GetGuardDamage();
+            attackCooldown = WorkerStats.Instance.GetGuardAttackCooldown();
             attackAnimationDelay = guardAttackAnimationDelay;
             totalAttackAnimationTime = guardTotalAttackAnimationTime;
         }
@@ -53,9 +51,9 @@ public class WorkerAttack : MobAttack
         if (workerAI.GetJob() == WorkerAI.JobTypes.miner) {
             isProjectileAttack = false;
 
-            attackDamage = initialMinerDamage;
-            initialAttackDamage = initialMinerDamage;
-            attackCooldown = initialMinerAttackCooldown;
+            attackDamage = WorkerStats.Instance.GetMinerDamage();
+            initialAttackDamage = WorkerStats.Instance.GetMinerDamage();
+            attackCooldown = WorkerStats.Instance.GetMinerAttackCooldown();
             attackAnimationDelay = minerAttackAnimationDelay;
             totalAttackAnimationTime = minerTotalAttackAnimationTime;
         }
@@ -69,5 +67,9 @@ public class WorkerAttack : MobAttack
         }
 
         base.Attack();
+    }
+    protected override Vector3 GetEndPointRandomOffstetValue() {
+        float randomized = UnityEngine.Random.Range(-hunterAnimalAttackPointRandomizer, hunterAnimalAttackPointRandomizer);
+        return new Vector3(randomized, 0,0);
     }
 }

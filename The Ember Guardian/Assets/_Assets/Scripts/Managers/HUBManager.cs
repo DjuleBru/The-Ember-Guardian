@@ -65,7 +65,7 @@ public class HUBManager : MonoBehaviour
 
         HubMerchantTalkUI.OnAnyMerchantEndTalk += HubMerchantTalkUI_OnAnyMerchantEndTalk;
 
-        if (!demoHUB && !firstHubEncounterRoutineOver) {
+        if (!demoHUB && !firstHubEncounterRoutineOver && !DEBUGMODE) {
             // FIRST HUB ENCOUNTER
 
             StartCoroutine(FirstHUBSpawnCoroutine());
@@ -354,6 +354,7 @@ public class HUBManager : MonoBehaviour
         PlayerSave.Instance.SaveSecondaryActiveGunSO(PlayerShoot.Instance.GetSecondaryGunSO());
         PlayerSave.Instance.SavePlayerMetaStats();
         DogStats.Instance.SaveDogStats();
+        WorkerStats.Instance.SaveWorkerValues();
 
         bool holdingEmber = false;
         if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ember).Count != 0) {
@@ -370,6 +371,10 @@ public class HUBManager : MonoBehaviour
         }
 
         OnHubSaved?.Invoke(this, EventArgs.Empty);
+    }
+
+    public bool GetIsDemo() {
+        return demoHUB;
     }
 
     private void OnDestroy() {

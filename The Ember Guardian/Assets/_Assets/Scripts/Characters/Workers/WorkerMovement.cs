@@ -56,6 +56,18 @@ public class WorkerMovement : MobMovement
     }
 
     public override void SetMoveSpeed(float moveSpeed) {
-        this.moveSpeed = moveSpeed;
+
+        float moveSpeedBuff = 0f;
+        if(workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
+            moveSpeedBuff = WorkerStats.Instance.GetHunterMoveSpeedBuff();
+        }
+        if (workerAI.GetJob() == WorkerAI.JobTypes.guard) {
+            moveSpeedBuff = WorkerStats.Instance.GetGuardMoveSpeedBuff();
+        }
+        if (workerAI.GetJob() == WorkerAI.JobTypes.miner) {
+            moveSpeedBuff = WorkerStats.Instance.GetMinerMoveSpeedBuff();
+        }
+
+        this.moveSpeed = moveSpeed * (1+moveSpeedBuff);
     }
 }

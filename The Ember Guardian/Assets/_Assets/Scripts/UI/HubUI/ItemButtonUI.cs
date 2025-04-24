@@ -158,7 +158,7 @@ public class ItemButtonUI : ButtonUI
         descriptionCard.SetDescriptionCardText(itemName, constantUnlockDescription, itemStatDescription, itemDescription, itemStatValues, itemStatModifierValues);
         descriptionCard.SetDescriptionCardCost(greenGemCost, redGemCost, blueGemCost, yellowGemCost, purpleGemCost);
 
-        if(itemLockedInDemo) {
+        if(itemLockedInDemo && HUBManager.Instance.GetIsDemo()) {
             descriptionCard.SetDescriptionCardItemLockedInDemo();
             return;
         }
@@ -189,7 +189,7 @@ public class ItemButtonUI : ButtonUI
     }
 
     public void BuyItem() {
-        if (!hubMerchantItem.GetItemUnlocked() || itemLockedInDemo) {
+        if (!hubMerchantItem.GetItemUnlocked() || (itemLockedInDemo && HUBManager.Instance.GetIsDemo())) {
             OnAnyLockedButtonTryPress?.Invoke(this, EventArgs.Empty);
             return;
         }
@@ -353,7 +353,7 @@ public class ItemButtonUI : ButtonUI
     }
 
     public void SetItemUnlocked() {
-        if (itemLockedInDemo) return;
+        if (itemLockedInDemo && HUBManager.Instance.GetIsDemo()) return;
         if (hubMerchantItem.GetItemBought()) return;
 
         hubMerchantItem.UnlockItem();
@@ -361,7 +361,7 @@ public class ItemButtonUI : ButtonUI
     }
 
     private void RefreshItemStatusVisuals() {
-        if (!hubMerchantItem.GetItemUnlocked() || itemLockedInDemo) {
+        if (!hubMerchantItem.GetItemUnlocked() || (itemLockedInDemo && HUBManager.Instance.GetIsDemo())) {
             outlineImage.color = Color.grey;
             return;
         }

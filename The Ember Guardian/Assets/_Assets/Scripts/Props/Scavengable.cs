@@ -12,6 +12,7 @@ public class Scavengable : MonoBehaviour, IDamageable {
     [SerializeField] private Transform currencySpawnPoint;
     [SerializeField] private List<Transform> minePoints;
     [SerializeField] private PlayerCurrencies.CurrencyType currencyTypeCollected;
+    [SerializeField] private PlayerCurrencies.CurrencyType luckyPickaxeCurrencyTypeCollected;
     [SerializeField] private int currencyAmountCollected;
 
     [SerializeField] private int hitsToCollectOneCurrency;
@@ -94,6 +95,23 @@ public class Scavengable : MonoBehaviour, IDamageable {
 
     private void SpawnCurrency() {
         Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyTypeCollected), currencySpawnPoint.position, Quaternion.identity).GetComponent<Collectible>();
+        collectible.ApplyRandomSidewardsForce(5, 8);
+        collectible.SetCollectibleUnInteractable(.5f);
+        collectible.SetCanBePickedUpByWorker();
+
+        AssignRandomMinerToCollect(collectible);
+
+        OnScavengableSpawnedCurrency?.Invoke(this, new OnStavengableSpawnedCurrencyEventArgs {
+            collectibleSpawned = collectible,
+        });
+
+        float luckyPickaxeChance = UnityEngine.Random.Range(0f, 1f);
+        if(luckyPickaxeChance < WorkerStats.Instance.GetMinerLuckyPickaxeProb()) {
+            SpawnLuckyCurrency();
+        }
+    }
+    private void SpawnLuckyCurrency() {
+        Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(luckyPickaxeCurrencyTypeCollected), currencySpawnPoint.position, Quaternion.identity).GetComponent<Collectible>();
         collectible.ApplyRandomSidewardsForce(5, 8);
         collectible.SetCollectibleUnInteractable(.5f);
         collectible.SetCanBePickedUpByWorker();

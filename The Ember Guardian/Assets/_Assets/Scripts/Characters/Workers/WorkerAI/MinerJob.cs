@@ -326,7 +326,6 @@ public class MinerJob : WorkerJob {
     private void ChangeState(MinerState newState) {
         if (newState == state) return;
 
-        Debug.Log(newState);
         previousState = state;
 
         Vector3 targetDestination = mobMovement.transform.position;

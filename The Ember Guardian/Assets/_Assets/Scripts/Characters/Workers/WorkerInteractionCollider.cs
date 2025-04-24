@@ -14,7 +14,7 @@ public class WorkerInteractionCollider : MonoBehaviour
     private bool interactionWithWorkersUnlocked;
 
     private void Start() {
-        interactionWithWorkersUnlocked = MetaProgressionManager.Instance.GetInteractionWithWorkersUnlocked();
+        interactionWithWorkersUnlocked = WorkerStats.Instance.GetInteractionWithWorkersUnlocked();
         if (!interactionWithWorkersUnlocked) return;
 
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;

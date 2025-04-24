@@ -103,10 +103,10 @@ public class MobAttack : MonoBehaviour
             }
 
 
-            Vector3 endPointRandomized = GetEndPointRandomized();
+            Vector3 endPointRandomOffsetValue = GetEndPointRandomOffstetValue();
             projectile.gameObject.SetActive(true);
             projectile.transform.SetParent(null);
-            projectile.ActivateAndInitialize(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, mob, attackDamage, endPointRandomized, homingProjectile);
+            projectile.ActivateAndInitialize(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, mob, attackDamage, endPointRandomOffsetValue, homingProjectile);
         }
 
         yield return new WaitForSeconds(totalAttackAnimationTime - delay);
@@ -216,7 +216,7 @@ public class MobAttack : MonoBehaviour
         OnMobAttackHit?.Invoke(this, EventArgs.Empty);
     }
 
-    protected virtual Vector3 GetEndPointRandomized() {
+    protected virtual Vector3 GetEndPointRandomOffstetValue() {
         return Vector3.zero;
     }
 
