@@ -9,17 +9,20 @@ public class DebugWokerSpawner : MobSpawner
     [SerializeField] protected CampZoneManager.CampSide campSide;
 
     protected override void Start() {
-        StartCoroutine(SpawnWorkersCoroutine(mobAmountToSpawn));
+        StartCoroutine(SpawnWorkersCoroutine(mobAmountToSpawn, transform.position));
     }
 
-    public IEnumerator SpawnWorkersCoroutine(int mobAmount) {
+    public void SpawnWorker(Vector3 position) {
+        StartCoroutine(SpawnWorkersCoroutine(1, position));
+    }
+
+    public IEnumerator SpawnWorkersCoroutine(int mobAmount, Vector3 position) {
         for (int i = 0; i < mobAmount; i++) {
 
-            float xPositionRandomized = transform.position.x + UnityEngine.Random.Range(-spawnPositionRandomizer, spawnPositionRandomizer);
+            float xPositionRandomized = position.x + UnityEngine.Random.Range(-spawnPositionRandomizer, spawnPositionRandomizer);
             Vector3 positionRandomized = new Vector3(xPositionRandomized, transform.position.y, 0);
 
             Worker worker = Instantiate(mobPrefab, positionRandomized, Quaternion.identity).GetComponent<Worker>();
-
 
             worker.SetMobSpawner(this);
 
@@ -27,6 +30,7 @@ public class DebugWokerSpawner : MobSpawner
             worker.RecruitWorker(false);
             worker.GetComponent<WorkerAI>().SetDebugSpawn();
             WorkerManager.Instance.AssignSideToHunter(worker, campSide);
+            yield return new WaitForEndOfFrame();
             worker.GetComponent<WorkerAI>().SetJob(jobType);
 
             yield return new WaitForSeconds(.5f);

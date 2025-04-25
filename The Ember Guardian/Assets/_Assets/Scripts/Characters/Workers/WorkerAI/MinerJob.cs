@@ -306,7 +306,11 @@ public class MinerJob : WorkerJob {
 
     private void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
         followingPlayer = workerAI.GetFollowingPlayer();
-        ChangeState(MinerState.followPlayerIdle);
+        if(followingPlayer) {
+            ChangeState(MinerState.followPlayerIdle);
+        } else {
+            ChangeState(MinerState.idle);
+        }
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {

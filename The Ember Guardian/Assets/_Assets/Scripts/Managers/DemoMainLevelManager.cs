@@ -284,7 +284,7 @@ public class DemoMainLevelManager : MonoBehaviour
 
             ammoCrafter.OnPlayerTriggeredIn += AmmoCrafter_OnPlayerTriggeredIn;
             ammoCrafter.OnPlayerTriggeredOut += AmmoCrafter_OnPlayerTriggeredOut;
-            ammoCrafter.OnCurrencyCraftingStarted += AmmoCrafter_OnCurrencyCraftingStarted;
+            ammoCrafter.OnNewCurrencyBatchCraftingStarted += AmmoCrafter_OnCurrencyCraftingStarted;
             ammoCrafter.OnCurrencyCraftingEnded += AmmoCrafter_OnCurrencyCraftingEnded;
             ammoCrafter.OnCurrencyInstantiated += AmmoCrafter_OnCurrencyInstantiated;
 

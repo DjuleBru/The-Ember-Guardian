@@ -21,6 +21,7 @@ public class HubMerchantItem : MonoBehaviour
     [SerializeField] private bool isUnlockedAtStart;
     [SerializeField] protected bool itemUpgradeable;
     [SerializeField] private bool itemEquipable;
+    [SerializeField] protected bool unlockRequiresAllPrerequisited;
 
     [SerializeField] protected HubMerchantItemStatModifierSO linkedStatModifierSO;
 
@@ -70,7 +71,7 @@ public class HubMerchantItem : MonoBehaviour
         LoadItemStatus();
     }
 
-    protected void LoadItemStatus() {
+    protected virtual void LoadItemStatus() {
         if(!isBoughtAtStart) {
 
             itemBought = MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType());
@@ -202,6 +203,10 @@ public class HubMerchantItem : MonoBehaviour
         OnAnyHubMerchantItemEquipped?.Invoke(this, EventArgs.Empty);
     }
 
+    public void InvokeOnItemLoaded() {
+        OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
+    }
+
     public void InvokeOnItemUnequipped() {
         OnHubMerchantItemUnequipped?.Invoke(this, EventArgs.Empty);
     }
@@ -272,7 +277,9 @@ public class HubMerchantItem : MonoBehaviour
     public bool GetItemBought() {
         return itemBought;
     }
-
+    public bool GetUnlockRequiresAllPrerequisites() {
+        return unlockRequiresAllPrerequisited;
+    }
     public bool GetItemMaxed() {
         if(itemUpgradeable) {
             return itemLevel == maxItemLevel;
@@ -303,7 +310,7 @@ public class HubMerchantItem : MonoBehaviour
     public void SaveItemStatus() {
 
         if (!itemStatusChanged) return;
-
+        Debug.Log(GetItemType() + " itemBought " + itemBought);
         if(itemBought && !MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType())) {
             MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), itemBought);
         }

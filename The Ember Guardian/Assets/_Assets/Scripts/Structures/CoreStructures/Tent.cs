@@ -6,6 +6,7 @@ using UnityEngine;
 public class Tent : Structure
 {
     public static Tent Instance;
+    private int healAmountPerOrb = 1;
     [SerializeField] private int maxLevel;
 
     protected override void Awake() {
@@ -15,8 +16,9 @@ public class Tent : Structure
 
     protected override void Start() {
         base.Start();
+        healAmountPerOrb = StructureStats.Instance.GetTentHealAmountPerSmallOrb();
 
-        if(Player.Instance.GetHP() != PlayerStats.Instance.GetMaxHP()) {
+        if (Player.Instance.GetHP() != PlayerStats.Instance.GetMaxHP()) {
             ActivateStructurePrimaryFunctionInteraction(true);
         }
         else {
@@ -45,7 +47,7 @@ public class Tent : Structure
 
     protected override void TriggerStructurePrimaryFunction() {
         base.TriggerStructurePrimaryFunction();
-        Player.Instance.HealPlayer(1);
+        Player.Instance.HealPlayer(healAmountPerOrb);
 
         if (GetHasCurrenciesToPay() && playerInteracting && Player.Instance.GetHP() < PlayerStats.Instance.GetMaxHP()) {
             payCurrencyUI.SetPlayerInteractingContinuous(); // Continue l'interaction

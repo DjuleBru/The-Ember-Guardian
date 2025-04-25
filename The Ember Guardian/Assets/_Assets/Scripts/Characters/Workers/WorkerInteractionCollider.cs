@@ -36,6 +36,7 @@ public class WorkerInteractionCollider : MonoBehaviour
 
     private void GameInput_OnPlayerInteractPerformed(object sender, EventArgs e) {
         if (!workerCanBeOrdered) return;
+        if (WorkerFollowPlayerHandler.Instance.GetMaxFollowedWorkersReached()) return;
         if (workerAI.GetFollowingPlayer()) return;
         if (WorkerFollowPlayerHandler.Instance.GetHoveringWorkers()) return;
         if (WorkerManager.Instance.GetClosestWorkerInPlayerInteractionArea() == null || WorkerManager.Instance.GetClosestWorkerInPlayerInteractionArea() != worker) return;
@@ -50,6 +51,7 @@ public class WorkerInteractionCollider : MonoBehaviour
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
 
         if (!interactionWithWorkersUnlocked) return;
+        if (WorkerFollowPlayerHandler.Instance.GetMaxFollowedWorkersReached()) return;
 
         if (workerAI.GetJob() == WorkerAI.JobTypes.wild || workerAI.GetJob() == WorkerAI.JobTypes.jobless) return;
         if (workerAI.GetFollowingPlayer()) return;
@@ -63,6 +65,7 @@ public class WorkerInteractionCollider : MonoBehaviour
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+        if (WorkerFollowPlayerHandler.Instance.GetMaxFollowedWorkersReached()) return;
 
         if (!interactionWithWorkersUnlocked) return;
 

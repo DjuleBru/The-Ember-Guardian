@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df36671b0790e8341a67078a96cfcbc5, type: 3}
+  m_Name: ResearchTower
+  m_EditorClassIdentifier: 
+  structureType: 14
+  structurePrefab: {fileID: 376005918902835770, guid: ac577a56f10718947ab1e3c3742324cd, type: 3}
+  structureSprite: {fileID: 0}
+  level1StructureInitiallyUnlocked: 1
+  buildableAtNight: 1
+  upgradeableAtNight: 0
+  functionUsableAtNight: 1
+  playerCanAlwaysInteract: 0
+  upgradeable: 0
+  tentLevelRequiredForLevel2: 2
+  tentLevelRequiredForLevel3: 3
+  tentLevelRequiredForLevel4: 4
+  buildingUpgradeSpriteList:
+  - {fileID: 769547836, guid: 78c74fc20ec74d948ba3760e297d4990, type: 3}
+  buildAudioClip: {fileID: 8300000, guid: 7966cde6e9dc51c449d19bb1005ce6d8, type: 3}
+  buildVolumeMultiplier: 1
+  useFunctionAudioClip: {fileID: 0}
+  useFunctionVolumeMultiplier: 1
+  upgradeAudioClip: {fileID: 8300000, guid: cc9af60211e5e3d4489327c93469c6d7, type: 3}
+  upgradeVolumeMultiplier: 1

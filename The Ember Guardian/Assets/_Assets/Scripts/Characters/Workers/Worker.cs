@@ -218,11 +218,14 @@ public class Worker : Mob {
 
     private void WorkerAI_OnJobChanged(object sender, EventArgs e) {
         if(workerAI.GetJob() == WorkerAI.JobTypes.guard) {
-            health = 5;
+            health = (int)WorkerStats.Instance.GetGuardHealth();
         }
         if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
-            health = 2;
+            health = (int)WorkerStats.Instance.GetHunterHealth();
             OnAnyWorkerAssignedHunter?.Invoke(this, EventArgs.Empty);
+        }
+        if (workerAI.GetJob() == WorkerAI.JobTypes.guard) {
+            health = (int)WorkerStats.Instance.GetGuardHealth();
         }
 
         initialHealth = health;

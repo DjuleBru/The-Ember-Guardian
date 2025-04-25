@@ -18,15 +18,16 @@ public class Fire : Structure, IDamageable {
     [SerializeField] private float wildFireRadius;
     [SerializeField] private float insaneFireRadius;
 
-    [SerializeField] private float orbFuelValue;
-    [SerializeField] private float fuelDepletionRate;
+    private float orbFuelValue = 10;
+    private float fuelDepletionRate = 0.05f;
+    private int maxFuelTreshold = 140;
 
-    [SerializeField] private int criticalFuelTreshold;
-    [SerializeField] private int calmFuelTreshold;
-    [SerializeField] private int mildFuelTreshold;
-    [SerializeField] private int wildFuelTreshold;
-    [SerializeField] private int insaneFuelTreshold;
-    [SerializeField] private int maxFuelTreshold;
+    private int criticalFuelTreshold = 14;
+    private int calmFuelTreshold = 0;
+    private int mildFuelTreshold = 20;
+    private int wildFuelTreshold = 50;
+    private int insaneFuelTreshold = 90;
+
     [SerializeField] private float extractingEmberFuelRateDepletion = 5f;
     [SerializeField] private float respawningPlayerFuelRateDepletion = 2f;
     [SerializeField] private float debugFuelLevel;
@@ -99,6 +100,7 @@ public class Fire : Structure, IDamageable {
     }
 
     protected override void Start() {
+        LoadStats();
         if(!isHubFire) {
             base.Start();
         } else {
@@ -141,6 +143,12 @@ public class Fire : Structure, IDamageable {
         } else {
             SetFireCurrentMaxFuelTreshold();
         }
+    }
+
+    private void LoadStats() {
+        orbFuelValue = StructureStats.Instance.GetOrbFuelValue();
+        fuelDepletionRate = StructureStats.Instance.GetFuelDepletionRate();
+        maxFuelTreshold = StructureStats.Instance.GetMaxFuelTreshold();
     }
 
     private void PlayerInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -488,7 +496,17 @@ public class Fire : Structure, IDamageable {
         OnInitialFireActivated?.Invoke(this, EventArgs.Empty);
         PlayerCurrencies.Instance.SetCarryingEmber(false);
     }
+    public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
+        fuelLevel -= (damage * damageToFuelConversionRate);
+        CheckFireStateDowngrade();
+        OnFireDamageTaken?.Invoke(this, EventArgs.Empty);
+    }
 
+    public void Die() {
+
+    }
+
+    #region GET PARAMETERS
     public State GetState() {
         return state;
     }
@@ -553,9 +571,6 @@ public class Fire : Structure, IDamageable {
     public float GetLerpDuration() {
         return lerpDuration;
     }
-    public float GetOrbFuelValue() {
-        return orbFuelValue;
-    }
 
     public float GetCurrentFuelLevel() {
         return fuelLevel;
@@ -576,39 +591,9 @@ public class Fire : Structure, IDamageable {
     public float GetFuelFireCooldownTimerNormalized() {
         return fuelFireNightTimer / fuelFireNightCooldown;
     }
-
-    public void SetFireInteractionsUpdateLocked(bool locked) {
-
-        SetStructurePrimaryFunctionUnlocked(!locked);
-        SetStructureSecondaryFunctionUnlocked(!locked);
-        lockFireInteractionFunctionsUpdate = locked;
-    }
-
     public bool GetEmberExtracted() {
         return emberExtracted;
     }
-    public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
-        fuelLevel -= (damage * damageToFuelConversionRate);
-        CheckFireStateDowngrade();
-        OnFireDamageTaken?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void Die() {
-
-    }
-
-    public void SetHubFireEmberExtractable(bool extractable) {
-        SetStructureSecondaryFunctionUnlocked(extractable);
-        ActivateStructureSecondaryFunctionInteraction(extractable);
-        if(extractable) {
-            SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);
-        }
-    }
-
-    public void DisableEmberExtraction() {
-        emberExtractionDisabled = true;
-    }
-
     public Transform GetProjectileTarget() {
         return transform;
     }
@@ -616,4 +601,29 @@ public class Fire : Structure, IDamageable {
     public Transform GetMeleeAttackPosition() {
         return transform;
     }
+    #endregion
+
+    #region SET PARAMETERS
+
+    public void SetFireInteractionsUpdateLocked(bool locked) {
+
+        SetStructurePrimaryFunctionUnlocked(!locked);
+        SetStructureSecondaryFunctionUnlocked(!locked);
+        lockFireInteractionFunctionsUpdate = locked;
+    }
+    public void SetHubFireEmberExtractable(bool extractable) {
+        SetStructureSecondaryFunctionUnlocked(extractable);
+        ActivateStructureSecondaryFunctionInteraction(extractable);
+        if (extractable) {
+            SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);
+        }
+    }
+    public void DisableEmberExtraction() {
+        emberExtractionDisabled = true;
+    }
+
+
+    #endregion
+
+
 }

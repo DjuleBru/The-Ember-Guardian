@@ -347,9 +347,8 @@ public class ItemButtonUI : ButtonUI
     public void SetLockingItemBought(ItemButtonUI itemButtonUI) {
         lockingItemButtonUIList.Remove(itemButtonUI);
 
-        if (lockingItemButtonUIList.Count == 0) {
-            SetItemUnlocked();
-        }
+        if (lockingItemButtonUIList.Count != 0 && hubMerchantItem.GetUnlockRequiresAllPrerequisites()) return;
+        SetItemUnlocked();
     }
 
     public void SetItemUnlocked() {

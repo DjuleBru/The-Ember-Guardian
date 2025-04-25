@@ -14,20 +14,29 @@ public class CurrencyCrafter : Structure
     [SerializeField] private int currencyCraftAmount = 3;
     [SerializeField] private ShowTooltipOnTrigger showTooltipOnTrigger;
 
+    private int batchCapacity = 1;
+    private int currentBatches;
     private bool craftingCurrency;
     private bool craftedCurrency;
 
-    public event EventHandler OnCurrencyCraftingStarted;
-    public static event EventHandler OnAnyCurrencyCraftingStarted;
+    public event EventHandler OnNewCurrencyBatchCraftingStarted;
+    public static event EventHandler OnAnyNewCurrencyBatchCraftingStarted;
     public event EventHandler OnCurrencyCraftingEnded;
     public static event EventHandler OnAnyCurrencyCraftingEnded;
     public event EventHandler OnPlayerCollectedCurrency;
     public static event EventHandler OnPlayerCollectedAnyCurrency;
+    public event EventHandler OnMaxCurrencyBatchCraftingStarted;
     public event EventHandler OnCurrencyInstantiated;
 
     protected override void Start() {
         base.Start();
         ActivateStructurePrimaryFunctionInteraction(true);
+
+        if(currencyTypeCrafted == PlayerCurrencies.CurrencyType.ammo) {
+            currencyCraftAmount = StructureStats.Instance.GetAmmoCrafterMaxAmmoPerBatch();
+            currencyCraftTime = StructureStats.Instance.GetAmmoCrafterSingleAmmoCraftDuration() * currencyCraftAmount;
+            batchCapacity = StructureStats.Instance.GetAmmoCrafterBatchCapacity();
+        }
     }
 
     private void Update() {
@@ -46,13 +55,22 @@ public class CurrencyCrafter : Structure
 
     protected override void TriggerStructurePrimaryFunction() {
         if(!craftedCurrency) {
+            // No batch is being crafted
+
             craftingCurrency = true;
-            currencyCraftTimer = currencyCraftTime;
-            OnCurrencyCraftingStarted?.Invoke(this, EventArgs.Empty);
-            OnAnyCurrencyCraftingStarted?.Invoke(this, EventArgs.Empty);
-            playerCanInteract = false;
+            OnNewCurrencyBatchCraftingStarted?.Invoke(this, EventArgs.Empty);
+            OnAnyNewCurrencyBatchCraftingStarted?.Invoke(this, EventArgs.Empty);
             showTooltipOnTrigger.HideTooltipShown();
             showTooltipOnTrigger.SetShowTooltips(false);
+
+        }
+
+        currentBatches++;
+        currencyCraftTimer += currencyCraftTime;
+
+        if (currentBatches == batchCapacity) {
+            playerCanInteract = false; 
+            OnMaxCurrencyBatchCraftingStarted?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -62,7 +80,7 @@ public class CurrencyCrafter : Structure
 
         playerInteracting = true;
 
-        if(!craftedCurrency && !craftingCurrency) {
+        if(currentBatches < batchCapacity && !craftingCurrency) {
 
             payCurrencyUI.SetPlayerInteracting(true);
 
@@ -95,6 +113,10 @@ public class CurrencyCrafter : Structure
 
     public int GetAmmoCraftAmount() {
         return currencyCraftAmount;
+    }
+
+    public int GetBatchCapacity() {
+        return batchCapacity;
     }
 
     public float GetAmmoCraftTimerNormalized() {

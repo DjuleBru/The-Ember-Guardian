@@ -157,12 +157,12 @@ public class HUBManager_Demo : MonoBehaviour
 
         foreach (HubMerchant hubMerchant in functionalDemoHubMerchantList) {
             hubMerchant.SetHasTalkLinesToShow(false, false);
-            hubMerchant.SetDemoMerchantUnlocked();
+            hubMerchant.SetMerchantUnlocked();
         }
 
         foreach (HubMerchant decorationalHubMerchant in decorationalDemoHubMerchantList) {
             decorationalHubMerchant.SetHasTalkLinesToShow(true, false);
-            decorationalHubMerchant.SetDemoMerchantUnlocked();
+            decorationalHubMerchant.SetMerchantUnlocked();
         }
 
         dogTamer.gameObject.SetActive(false);
@@ -179,12 +179,12 @@ public class HUBManager_Demo : MonoBehaviour
 
         foreach (HubMerchant hubMerchant in functionalDemoHubMerchantList) {
             hubMerchant.SetHasTalkLinesToShow(false, false);
-            hubMerchant.SetDemoMerchantUnlocked();
+            hubMerchant.SetMerchantUnlocked();
         }
 
         foreach (HubMerchant decorationalHubMerchant in decorationalDemoHubMerchantList) {
             decorationalHubMerchant.SetHasTalkLinesToShow(true, false);
-            decorationalHubMerchant.SetDemoMerchantUnlocked();
+            decorationalHubMerchant.SetMerchantUnlocked();
         }
 
         gemMerchantReward.DisableReward();
@@ -199,14 +199,14 @@ public class HUBManager_Demo : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         
         foreach (HubMerchant hubMerchant in functionalDemoHubMerchantList) {
-            hubMerchant.SetDemoMerchantUnlocked();
+            hubMerchant.SetMerchantUnlocked();
             hubMerchant.SetDemoMerchantFunctional();
             hubMerchant.SetHasTalkLinesToShow(false, false);
         }
 
         foreach (HubMerchant decorationalHubMerchant in decorationalDemoHubMerchantList) {
             decorationalHubMerchant.SetHasTalkLinesToShow(true, false);
-            decorationalHubMerchant.SetDemoMerchantUnlocked();
+            decorationalHubMerchant.SetMerchantUnlocked();
         }
 
         playerDiedWithWidow = ES3.Load("playerDiedWithWidow", false);
@@ -385,12 +385,12 @@ public class HUBManager_Demo : MonoBehaviour
 
                     foreach (HubMerchant functionalHubMerchant in functionalDemoHubMerchantList) {
                         functionalHubMerchant.SetHasTalkLinesToShow(true, false);
-                        functionalHubMerchant.SetDemoMerchantUnlocked();
+                        functionalHubMerchant.SetMerchantUnlocked();
                     }
 
                     foreach (HubMerchant decorationalHubMerchant in decorationalDemoHubMerchantList) {
                         decorationalHubMerchant.SetHasTalkLinesToShow(true, false);
-                        decorationalHubMerchant.SetDemoMerchantUnlocked();
+                        decorationalHubMerchant.SetMerchantUnlocked();
                     }
 
                 }

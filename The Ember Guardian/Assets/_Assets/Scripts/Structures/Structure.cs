@@ -127,7 +127,6 @@ public class Structure : MonoBehaviour {
             ActivateStructurePrimaryFunctionInteraction(true);
         }
 
-        Debug.Log(structureSO + " upgradeUnlocked " + upgradeUnlocked);
         if(!structureSO.upgradeableAtNight && upgradeUnlocked) {
             ActivateStructureUpgradeInteraction(true);
         }

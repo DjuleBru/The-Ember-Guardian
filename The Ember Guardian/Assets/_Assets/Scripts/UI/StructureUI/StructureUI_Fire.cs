@@ -62,7 +62,7 @@ public class StructureUI_Fire : StructureUI
 
     protected override void Start() {
         base.Start();
-        tickFuelValue = fire.GetOrbFuelValue() / barAmountPerOrb;
+        tickFuelValue = StructureStats.Instance.GetOrbFuelValue() / barAmountPerOrb;
         fire.OnPlayerTriggeredOut += Fire_OnPlayerTriggeredOut;
     }
 
@@ -168,7 +168,7 @@ public class StructureUI_Fire : StructureUI
 
         currentFuelDelta = currentFuelHighLimit - currentFuelLowLimit;
 
-        maxBarAmount = Mathf.FloorToInt(currentFuelDelta / fire.GetOrbFuelValue()) * barAmountPerOrb;
+        maxBarAmount = Mathf.FloorToInt(currentFuelDelta / StructureStats.Instance.GetOrbFuelValue()) * barAmountPerOrb;
         progressBar.sizeDelta = new Vector2(progressTemplateWidth, maxBarAmount * progressTemplateHeight);
         RefreshBackgroundProgressBar(maxBarAmount);
         RefreshFireSlotVisuals();

@@ -18,7 +18,7 @@ public class CurrencyCrafterSound : StructureSounds
     {
         base.Start();
         currencyCrafter.OnCurrencyCraftingEnded += AmmoCrafter_OnAmmoCraftingEnded;
-        currencyCrafter.OnCurrencyCraftingStarted += AmmoCrafter_OnAmmoCraftingStarted;
+        currencyCrafter.OnNewCurrencyBatchCraftingStarted += AmmoCrafter_OnAmmoCraftingStarted;
         currencyCrafter.OnCurrencyInstantiated += AmmoCrafter_OnCurrencyInstantiated;
     }
 

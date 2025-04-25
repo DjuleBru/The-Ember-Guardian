@@ -14,7 +14,8 @@ public class HubMerchant : MonoBehaviour
         MushroomMerchant,
         GunMerchant,
         DogTamer,
-        Codex
+        Codex,
+        ArchitectTable
     }
 
     [SerializeField] protected HubMerchantType hubMerchantType;
@@ -260,7 +261,7 @@ public class HubMerchant : MonoBehaviour
         }
     }
 
-    public void SetDemoMerchantUnlocked() {
+    public void SetMerchantUnlocked() {
         merchantUnlocked = true;
     }
 

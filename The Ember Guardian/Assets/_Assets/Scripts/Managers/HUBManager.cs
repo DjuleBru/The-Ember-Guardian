@@ -355,6 +355,8 @@ public class HUBManager : MonoBehaviour
         PlayerSave.Instance.SavePlayerMetaStats();
         DogStats.Instance.SaveDogStats();
         WorkerStats.Instance.SaveWorkerValues();
+        StructureStats.Instance.SaveStructureStats();
+        ArchitectTable.Instance.SaveStats();
 
         bool holdingEmber = false;
         if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ember).Count != 0) {

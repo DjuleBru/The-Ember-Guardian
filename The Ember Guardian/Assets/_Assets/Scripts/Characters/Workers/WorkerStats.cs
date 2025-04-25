@@ -11,7 +11,7 @@ public class WorkerStats : MonoBehaviour
     private int initialMaxFollowingWorkers = 2;
     private int maxFollowingWorkers;
     private int initialEmberlings;
-    private int emberlingArrivalNumber;
+    private int emberlingArrivalsNumber;
 
     private int initialHunterHealth = 2;
     private int initialHunterDamage = 10;
@@ -52,7 +52,7 @@ public class WorkerStats : MonoBehaviour
         interactionWithWorkersUnlocked = ES3.Load("interactionWithWorkersUnlocked", workerInteractions_Debug);
         maxFollowingWorkers = ES3.Load("maxFollowingWorkers", initialMaxFollowingWorkers);
         initialEmberlings = ES3.Load("initialEmberlings", 0);
-        emberlingArrivalNumber = ES3.Load("emberlingArrivalNumber", 0);
+        emberlingArrivalsNumber = ES3.Load("emberlingArrivalsNumber", 0);
 
         hunterDamageBuff = ES3.Load("hunterDamageBuff", 0);
         hunterHealthBuff = ES3.Load("hunterHealthBuff", 0);
@@ -73,17 +73,19 @@ public class WorkerStats : MonoBehaviour
     }
 
     public void SetInteractionWithWorkersUnlocked() {
-        ES3.Save("interactionWithWorkersUnlocked", true);
+        interactionWithWorkersUnlocked = true;
     }
 
-    public void SetMaxFollowingWorkers(int maxFollowingWorkers) {
-        ES3.Save("maxFollowingWorkers", maxFollowingWorkers);
+    public void SetMaxFollowingWorkers(int maxFollowingWorkersBuff) {
+        int maxFollowingWorkersTotal = initialMaxFollowingWorkers + maxFollowingWorkersBuff;
+        maxFollowingWorkers = maxFollowingWorkersTotal;
     }
     public void SetInitialEmberlings(int initialEmberlings) {
-        ES3.Save("initialEmberlings", initialEmberlings);
+        this.initialEmberlings = initialEmberlings;
     }
-    public void SetEmberlingsArrivalsNumber(float emberlingArrivalsNumber) {
-        ES3.Save("emberlingArrivalsNumber", emberlingArrivalsNumber);
+    public void SetEmberlingsArrivalsNumber(int emberlingArrivalsNumber) {
+        Debug.Log("SetEmberlingsArrivalsNumber " + emberlingArrivalsNumber);
+        this.emberlingArrivalsNumber = emberlingArrivalsNumber;
     }
 
     #region GET INITIAL VALUES
@@ -140,7 +142,7 @@ public class WorkerStats : MonoBehaviour
         return initialEmberlings;
     }
     public float GetEmberlingsArrivalsNumber() {
-        return emberlingArrivalNumber;
+        return emberlingArrivalsNumber;
     }
 
     public int GetHunterDamage() {
@@ -245,6 +247,11 @@ public class WorkerStats : MonoBehaviour
     #endregion
 
     public void SaveWorkerValues() {
+        ES3.Save("interactionWithWorkersUnlocked", interactionWithWorkersUnlocked);
+        ES3.Save("maxFollowingWorkers", maxFollowingWorkers);
+        ES3.Save("initialEmberlings", initialEmberlings);
+        ES3.Save("emberlingArrivalsNumber", emberlingArrivalsNumber);
+
         ES3.Save("hunterHealthBuff", hunterHealthBuff);
         ES3.Save("minerHealthBuff", minerHealthBuff);
         ES3.Save("guardHealthBuff", guardHealthBuff);

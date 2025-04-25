@@ -18,6 +18,8 @@ public class PlayerCamp : MonoBehaviour
     [SerializeField] private List<StructureLocation> level2DefensiveStructureLocationsUnlocked;
     [SerializeField] private List<StructureLocation> level3DefensiveStructureLocationsUnlocked;
 
+    [SerializeField] private StructureLocation ammoCrafter1Location;
+    [SerializeField] private StructureLocation researchTowerLocation;
     [SerializeField] private StructureLocation leftBarricade1;
     [SerializeField] private StructureLocation rightBarricade1;
     [SerializeField] private StructureLocation leftBarricade2;
@@ -32,9 +34,12 @@ public class PlayerCamp : MonoBehaviour
     private Vector3 leftBarricade3Position;
     private Vector3 rightBarricade3Position;
 
-
     private List<Structure> builtStructures = new List<Structure>();
     private List<Structure> builtTowers = new List<Structure>();
+
+    private bool ammoCrafterBuiltAtStart;
+    private bool researchTowerBuiltAtStart;
+    private bool barricades1BuiltAtStart;
 
     private bool initialFireLit;
     private void Awake() {
@@ -53,7 +58,27 @@ public class PlayerCamp : MonoBehaviour
         foreach (Structure structure in initialStructures) {
             structure.gameObject.SetActive(false);
         }
+
+        InitializeBuiltAtStartStructureLocations();
     }
+
+    private void InitializeBuiltAtStartStructureLocations() {
+        ammoCrafterBuiltAtStart = StructureStats.Instance.GetStartWithAmmoCrafter();
+        researchTowerBuiltAtStart = StructureStats.Instance.GetStartWithResearchTower();
+        barricades1BuiltAtStart = StructureStats.Instance.GetStartWithBarricades();
+
+        if (ammoCrafterBuiltAtStart) {
+            initialStructureLocationsBuilt.Add(ammoCrafter1Location);
+        }
+        if (researchTowerBuiltAtStart) {
+            initialStructureLocationsBuilt.Add(researchTowerLocation);
+        }
+        if (barricades1BuiltAtStart) {
+            initialStructureLocationsBuilt.Add(rightBarricade1);
+            initialStructureLocationsBuilt.Add(leftBarricade1);
+        }
+    }
+
     private void InitializeBarricadePositions() {
         leftBarricade1Position = leftBarricade1.transform.position;
         rightBarricade1Position = rightBarricade1.transform.position;
@@ -128,6 +153,7 @@ public class PlayerCamp : MonoBehaviour
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
         initialFireLit = true;
+
         foreach (StructureLocation location in initialStructureLocations) {
             location.UnlockStructureLocation();
         }

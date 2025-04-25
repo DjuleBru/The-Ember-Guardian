@@ -438,7 +438,7 @@ public class HubMerchantItem_WatcherMerchantItem : HubMerchantItem {
         if(watcherItemCategory != WatcherItemCategory.newShrine) {
             return watcherItemType.ToString();
         } else {
-            return structureType.ToString();
+            return structureType.ToString() + itemLevel;
         }
 
     }

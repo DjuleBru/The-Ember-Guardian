@@ -106,7 +106,7 @@ public class Tutorial : MonoBehaviour
         Shrine.OnAnyShrineActivated += Shrine_OnAnyShrineActivated;
         CurrencyCrafter.OnPlayerCollectedAnyCurrency += CurrencyCrafter_OnPlayerCollectedAnyCurrency;
         CurrencyCrafter.OnAnyCurrencyCraftingEnded += CurrencyCrafter_OnAnyCurrencyCraftingEnded;
-        CurrencyCrafter.OnAnyCurrencyCraftingStarted += CurrencyCrafter_OnAnyCurrencyCraftingStarted;
+        CurrencyCrafter.OnAnyNewCurrencyBatchCraftingStarted += CurrencyCrafter_OnAnyCurrencyCraftingStarted;
         Collectible.OnAnyCollectiblePickedUpByPlayer += Collectible_OnAnyCollectiblePickedUpByPlayer;
         startFireLocation.OnPlayerTriggeredIn += StartFireLocation_OnPlayerTriggeredIn;
         startFireLocation.OnPlayerTriggeredOut += StartFireLocation_OnPlayerTriggeredOut;
@@ -860,7 +860,7 @@ public class Tutorial : MonoBehaviour
         Shrine.OnAnyShrineActivated -= Shrine_OnAnyShrineActivated;
         CurrencyCrafter.OnPlayerCollectedAnyCurrency -= CurrencyCrafter_OnPlayerCollectedAnyCurrency;
         CurrencyCrafter.OnAnyCurrencyCraftingEnded -= CurrencyCrafter_OnAnyCurrencyCraftingEnded;
-        CurrencyCrafter.OnAnyCurrencyCraftingStarted -= CurrencyCrafter_OnAnyCurrencyCraftingStarted;
+        CurrencyCrafter.OnAnyNewCurrencyBatchCraftingStarted -= CurrencyCrafter_OnAnyCurrencyCraftingStarted;
         Collectible.OnAnyCollectiblePickedUpByPlayer -= Collectible_OnAnyCollectiblePickedUpByPlayer;
         startFireLocation.OnPlayerTriggeredIn -= StartFireLocation_OnPlayerTriggeredIn;
         ammoCrafterLocation.OnPlayerTriggeredIn -= AmmoCrafterLocation_OnPlayerTriggeredIn;

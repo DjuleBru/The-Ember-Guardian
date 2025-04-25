@@ -12,7 +12,7 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
     private List<Worker> guardsFollowingPlayer = new List<Worker>();
     private List<Worker> minersFollowingPlayer = new List<Worker>();
 
-    private int maxFollowingWorkers = 3;
+    private int maxFollowingWorkers;
     private float distanceBetweenFollowingWorkers = 1f;
     private float workersFollowDirection;
 
@@ -30,6 +30,8 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
 
     private void Start() {
         interactionWithWorkersUnlocked = WorkerStats.Instance.GetInteractionWithWorkersUnlocked();
+        maxFollowingWorkers = WorkerStats.Instance.GetMaxFollowingWorkers();
+        Debug.Log("maxFollowingWorkers " + maxFollowingWorkers);
         if (!interactionWithWorkersUnlocked) return;
 
         Mob.OnAnyMobDied += Worker_OnAnyMobDied;
@@ -203,6 +205,9 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
 
     public int GetMaxFollowingWorkers() {
         return maxFollowingWorkers;
+    }
+    public bool GetMaxFollowedWorkersReached() {
+        return workersFollowingPlayer.Count >= maxFollowingWorkers;
     }
 
     public bool GetHoveringWorkers() {
