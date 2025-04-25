@@ -124,24 +124,4 @@ public class CurrencyCrafterVisual : StructureVisual
         currencyBarTemplate.gameObject.SetActive(false);
     }
 
-    private void RefreshCurrencyBatchVisuals() {
-        // Clear previous batch visuals
-        foreach (RectTransform child in currencyBatchContainer) {
-            if (child == currencyBatchTemplate) continue;
-            Destroy(child.gameObject);
-        }
-
-        batchVisualList.Clear();
-        currencyBatchTemplate.gameObject.SetActive(true);
-
-        //int batchCount = ammoCrafter.GetRemainingBatchCount(); // tu dois exposer ça depuis CurrencyCrafter
-
-        for (int i = 0; i < batchCount; i++) {
-            RectTransform batchVisual = Instantiate(currencyBatchTemplate, currencyBatchContainer);
-            batchVisual.gameObject.SetActive(true);
-            batchVisualList.Add(batchVisual);
-        }
-
-        currencyBatchTemplate.gameObject.SetActive(false);
-    }
 }
