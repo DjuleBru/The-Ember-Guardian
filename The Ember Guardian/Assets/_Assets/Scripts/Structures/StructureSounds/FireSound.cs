@@ -62,7 +62,7 @@ public class FireSound : StructureSounds
 
         if (fire.GetState() == Fire.State.calm) {
             audioSource.clip = calmFireAudioClip;
-            volume2D.SetMaxDistanceToHear(fire.GetCalmFireRadius());
+            volume2D.SetMaxDistanceToHear(fire.GetLevel1FireRadius());
         }
 
         if (fire.GetState() == Fire.State.mild) {
@@ -72,7 +72,7 @@ public class FireSound : StructureSounds
 
         if (fire.GetState() == Fire.State.wild) {
             audioSource.clip = wildFireAudioClip;
-            volume2D.SetMaxDistanceToHear(fire.GetWildFireRadius());
+            volume2D.SetMaxDistanceToHear(fire.GetLevel2FireRadius());
         }
 
         if (fire.GetState() == Fire.State.insane) {

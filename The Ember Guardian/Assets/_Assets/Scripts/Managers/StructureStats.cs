@@ -11,8 +11,8 @@ public class StructureStats : MonoBehaviour
     private float initialOrbFuelValue = 10;
     private float fuelDepletionRate = 0.05f;
     private float initialFuelDepletionRate = 0.05f;
-    private int maxFuelTreshold = 50;
-    private int initialMaxFuelTreshold = 140;
+    private int maxFuelTreshold;
+    private int initialMaxFuelTreshold = 50;
 
     private int ammoCrafterBatchCapacity;
     private int initialAmmoCrafterBatchCapacity = 1;

@@ -104,31 +104,31 @@ public class FireVisual : StructureVisual
 
         // PREVIOUS STATE
         if (e.previousState == Fire.State.calm) {
-            initialFireAOEValue = fire.GetCalmFireRadius();
+            initialFireAOEValue = fire.GetLevel1FireRadius();
             initialFireLightIntensityValue = calmLightIntensityValue;
             initialFirePSEmissionRateValue = calmPSEmissionRateValue;
             initialFireLightLimitValue = calmLightRadius;
         }
 
         if (e.previousState == Fire.State.mild) {
-            initialFireAOEValue = fire.GetMildFireRadius();
+            initialFireAOEValue = fire.GetLevel1FireRadius();
             initialFireLightIntensityValue = mildLightIntensityValue;
             initialFirePSEmissionRateValue = mildPSEmissionRateValue;
-            initialFireLightLimitValue = mildLightRadius;
+            initialFireLightLimitValue = calmLightRadius;
         }
 
         if (e.previousState == Fire.State.insane) {
-            initialFireAOEValue = fire.GetInsaneFireRadius();
+            initialFireAOEValue = fire.GetLevel2FireRadius();
             initialFireLightIntensityValue = insaneLightIntensityValue;
             initialFirePSEmissionRateValue = insanePSEmissionRateValue;
-            initialFireLightLimitValue = insaneLightRadius;
+            initialFireLightLimitValue = mildLightRadius;
         }
 
         if (e.previousState == Fire.State.wild) {
-            initialFireAOEValue = fire.GetWildFireRadius();
+            initialFireAOEValue = fire.GetLevel2FireRadius();
             initialFireLightIntensityValue = wildLightIntensityValue;
             initialFirePSEmissionRateValue = wildPSEmissionRateValue;
-            initialFireLightLimitValue = wildLightRadius;
+            initialFireLightLimitValue = mildLightRadius;
         }
 
         if (e.previousState == Fire.State.extinguished) {
@@ -149,51 +149,51 @@ public class FireVisual : StructureVisual
             ChangeContinuousPSEmissionRate(0);
         }
 
-        if (e.newState == Fire.State.wild) {
-            fireAnimator.SetTrigger("Wild");
+        if (e.newState == Fire.State.calm) {
+            fireAnimator.SetTrigger("Calm");
 
-            finalFireAOEValue = fire.GetWildFireRadius();
-            finalFireLightLimiValue = wildLightRadius;
-            finalFireLightIntensityValue = wildLightIntensityValue;
-            finalFirePSEmissionRateValue = wildPSEmissionRateValue;
-            fireLimitLightSpriteRenderer.lightCookieSprite = fireLimitLightSprite3;
-
-            ChangeContinuousPSEmissionRate(continuousPSWildEmissionRate);
+            finalFireAOEValue = fire.GetLevel1FireRadius();
+            finalFireLightLimiValue = calmLightRadius;
+            finalFireLightIntensityValue = calmLightIntensityValue;
+            finalFirePSEmissionRateValue = calmPSEmissionRateValue;
+            fireLimitLightSpriteRenderer.lightCookieSprite = fireLimitLightSprite1;
         }
 
         if (e.newState == Fire.State.mild) {
             fireAnimator.ResetTrigger("Calm");
             fireAnimator.SetTrigger("Mild");
 
-            finalFireAOEValue = fire.GetMildFireRadius();
-            finalFireLightLimiValue = mildLightRadius;
+            finalFireAOEValue = fire.GetLevel1FireRadius();
+            finalFireLightLimiValue = calmLightRadius;
             finalFireLightIntensityValue = mildLightIntensityValue;
             finalFirePSEmissionRateValue = mildPSEmissionRateValue;
-            fireLimitLightSpriteRenderer.lightCookieSprite = fireLimitLightSprite2;
+            fireLimitLightSpriteRenderer.lightCookieSprite = fireLimitLightSprite1;
 
             ChangeContinuousPSEmissionRate(continuousPSMildEmissionRate);
+        }
+
+        if (e.newState == Fire.State.wild) {
+            fireAnimator.SetTrigger("Wild");
+
+            finalFireAOEValue = fire.GetLevel2FireRadius();
+            finalFireLightLimiValue = mildLightRadius;
+            finalFireLightIntensityValue = wildLightIntensityValue;
+            finalFirePSEmissionRateValue = wildPSEmissionRateValue;
+            fireLimitLightSpriteRenderer.lightCookieSprite = fireLimitLightSprite2;
+
+            ChangeContinuousPSEmissionRate(continuousPSWildEmissionRate);
         }
 
         if (e.newState == Fire.State.insane) {
             fireAnimator.SetTrigger("Insane");
 
-            finalFireAOEValue = fire.GetInsaneFireRadius();
-            finalFireLightLimiValue = insaneLightRadius;
+            finalFireAOEValue = fire.GetLevel2FireRadius();
+            finalFireLightLimiValue = mildLightRadius;
             finalFireLightIntensityValue = insaneLightIntensityValue;
             finalFirePSEmissionRateValue = insanePSEmissionRateValue;
-            fireLimitLightSpriteRenderer.lightCookieSprite = fireLimitLightSprite4;
+            fireLimitLightSpriteRenderer.lightCookieSprite = fireLimitLightSprite2;
 
             ChangeContinuousPSEmissionRate(continuousPSInsaneEmissionRate);
-        }
-
-        if (e.newState == Fire.State.calm) {
-            fireAnimator.SetTrigger("Calm");
-
-            finalFireAOEValue = fire.GetCalmFireRadius();
-            finalFireLightLimiValue = calmLightRadius;
-            finalFireLightIntensityValue = calmLightIntensityValue;
-            finalFirePSEmissionRateValue = calmPSEmissionRateValue;
-            fireLimitLightSpriteRenderer.lightCookieSprite = fireLimitLightSprite1;
         }
 
         lerping = true;

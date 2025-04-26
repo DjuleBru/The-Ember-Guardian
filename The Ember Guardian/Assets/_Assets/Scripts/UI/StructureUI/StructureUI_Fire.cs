@@ -147,21 +147,21 @@ public class StructureUI_Fire : StructureUI
 
         if (fire.GetState() == Fire.State.calm) {
             currentFuelLowLimit = fire.GetCalmFireTreshold();
-            currentFuelHighLimit = fire.GetMildFireTreshold();
+            currentFuelHighLimit = fire.GetWildFireTreshold();
         }
 
         if (fire.GetState() == Fire.State.mild) {
-            currentFuelLowLimit = fire.GetMildFireTreshold();
+            currentFuelLowLimit = fire.GetCalmFireTreshold();
             currentFuelHighLimit = fire.GetWildFireTreshold();
         }
 
         if (fire.GetState() == Fire.State.wild) {
             currentFuelLowLimit = fire.GetWildFireTreshold();
-            currentFuelHighLimit = fire.GetInsaneFireTreshold();
+            currentFuelHighLimit = fire.GetMaxFireTreshold();
         }
 
         if (fire.GetState() == Fire.State.insane) {
-            currentFuelLowLimit = fire.GetInsaneFireTreshold();
+            currentFuelLowLimit = fire.GetWildFireTreshold();
             currentFuelHighLimit = fire.GetMaxFireTreshold();
         }
 

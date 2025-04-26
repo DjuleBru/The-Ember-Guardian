@@ -19,15 +19,16 @@ public class Fire : Structure, IDamageable {
     [SerializeField] private float insaneFireRadius;
 
     private float orbFuelValue = 10;
-    private float fuelDepletionRate = 0.05f;
-    private int maxFuelTreshold = 140;
+    [SerializeField] private float fuelDepletionRate = 0.05f;
+    private int maxFuelTreshold = 50;
+    private int currentMaxFuelTreshold = 50;
     private float fuelTickValue = 10f/3f;
 
     private int criticalFuelTreshold = 14;
     private int calmFuelTreshold = 0;
-    private int mildFuelTreshold = 20;
-    private int wildFuelTreshold = 50;
-    private int insaneFuelTreshold = 90;
+    private int mildFuelTreshold = 10;
+    private int wildFuelTreshold = 20;
+    private int insaneFuelTreshold = 55;
 
     [SerializeField] private float extractingEmberFuelRateDepletion = 5f;
     [SerializeField] private float respawningPlayerFuelRateDepletion = 2f;
@@ -118,7 +119,7 @@ public class Fire : Structure, IDamageable {
 
         if (isMainFire) {
 
-            fuelLevel = mildFuelTreshold - 1;
+            fuelLevel = wildFuelTreshold - 1;
             Player.Instance.OnPlayerBackToTentToRespawn += Player_OnPlayerBackToTentToRespawn;
             PlayerCurrencies.Instance.OnEmberDropped += PlayerCurrencies_OnEmberDropped;
             Tent.Instance.OnStructureUpgraded += Tent_OnStructureUpgraded;
@@ -128,7 +129,7 @@ public class Fire : Structure, IDamageable {
 
         if(isEndLevelFire) {
             fuelLevel = insaneFuelTreshold - 1;
-            lerpDuration = 8f;
+            lerpDuration = 5f;
             ChangeState(State.wild);
         }
 
@@ -260,8 +261,8 @@ public class Fire : Structure, IDamageable {
 
     private void FireOrbCollider_OnOrbFellInFire(object sender, EventArgs e) {
 
-        if (fuelLevel + orbFuelValue >= maxFuelTreshold) {
-            fuelLevel = maxFuelTreshold - .1f;
+        if (fuelLevel + orbFuelValue >= currentMaxFuelTreshold) {
+            fuelLevel = currentMaxFuelTreshold - .1f;
         } else {
             fuelLevel += orbFuelValue;
         }
@@ -306,7 +307,7 @@ public class Fire : Structure, IDamageable {
     private void CheckFireFeedable() {
         if (lockFireInteractionFunctionsUpdate) return;
 
-        if(fuelLevel + fuelTickValue <= maxFuelTreshold) {
+        if(fuelLevel + fuelTickValue <= currentMaxFuelTreshold) {
             SetStructurePrimaryFunctionUnlocked(true);
         } else {
             SetStructurePrimaryFunctionUnlocked(false);
@@ -359,7 +360,7 @@ public class Fire : Structure, IDamageable {
         if (lockFireInteractionFunctionsUpdate) return;
         if (isEndLevelFire) return;
 
-        if(fuelLevel > (maxFuelTreshold - fuelTickValue*3)) {
+        if(fuelLevel > (currentMaxFuelTreshold - fuelTickValue*3)) {
             SetStructureSecondaryFunctionUnlocked(true);
         } else {
             SetStructureSecondaryFunctionUnlocked(false);
@@ -383,39 +384,36 @@ public class Fire : Structure, IDamageable {
     }
 
     private void SetFireCurrentMaxFuelTreshold() {
-        State maxState = State.mild;
+        State maxState = State.wild;
 
         if (Tent.Instance.GetStructureLevel() == 2) {
-            maxState = State.wild;
-        }
-        if (Tent.Instance.GetStructureLevel() == 3) {
-            maxState = State.insane;
-        }
-        if (Tent.Instance.GetStructureLevel() == 4) {
             maxState = State.insane;
         }
 
         if (maxState == State.calm) {
-            maxFuelTreshold = mildFuelTreshold;
+            currentMaxFuelTreshold = wildFuelTreshold;
         }
         if (maxState == State.mild) {
-            maxFuelTreshold = wildFuelTreshold;
+            currentMaxFuelTreshold = wildFuelTreshold;
         }
         if (maxState == State.wild) {
-            maxFuelTreshold = insaneFuelTreshold;
+            currentMaxFuelTreshold = maxFuelTreshold;
+        }
+        if (maxState == State.insane) {
+            currentMaxFuelTreshold = maxFuelTreshold;
         }
 
     }
 
     public void ManualSetFireCurrentMaxFuelTreshold(State state) {
         if (state == State.calm) {
-            maxFuelTreshold = mildFuelTreshold;
+            currentMaxFuelTreshold = mildFuelTreshold;
         }
         if (state == State.mild) {
-            maxFuelTreshold = wildFuelTreshold;
+            currentMaxFuelTreshold = wildFuelTreshold;
         }
         if (state == State.wild) {
-            maxFuelTreshold = insaneFuelTreshold;
+            currentMaxFuelTreshold = insaneFuelTreshold;
         }
     }
 
@@ -515,13 +513,13 @@ public class Fire : Structure, IDamageable {
         return state;
     }
 
-    public float GetCalmFireRadius() {
+    public float GetLevel1FireRadius() {
         return calmFireRadius;
     }
     public float GetMildFireRadius() {
         return mildFireRadius;
     }
-    public float GetWildFireRadius() {
+    public float GetLevel2FireRadius() {
         return wildFireRadius;
     }
 
@@ -569,7 +567,7 @@ public class Fire : Structure, IDamageable {
     }
 
     public float GetMaxFireTreshold() {
-        return maxFuelTreshold;
+        return currentMaxFuelTreshold;
     }
 
     public float GetLerpDuration() {
@@ -592,6 +590,9 @@ public class Fire : Structure, IDamageable {
         return isHubFire;
     }
 
+    public bool GetIsEndLevelAreaFire() {
+        return isEndLevelFire;
+    }
     public float GetFuelFireCooldownTimerNormalized() {
         return fuelFireNightTimer / fuelFireNightCooldown;
     }
