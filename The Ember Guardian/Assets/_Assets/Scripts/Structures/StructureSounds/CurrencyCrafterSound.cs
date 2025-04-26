@@ -27,8 +27,11 @@ public class CurrencyCrafterSound : StructureSounds
     }
 
     private void AmmoCrafter_OnAmmoCraftingStarted(object sender, System.EventArgs e) {
-        audioSource.volume = 1f * sfxVolume;
         audioSource.PlayOneShot(startCraftingAudioClip, sfxVolume);
+        audioSource.volume = 1f * sfxVolume;
+
+        if (currencyCrafter.GetCraftingCurrency()) return;
+
         StartCoroutine(StartPlayingLoop());
     }
 

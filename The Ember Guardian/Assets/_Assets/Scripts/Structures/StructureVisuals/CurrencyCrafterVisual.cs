@@ -8,15 +8,15 @@ public class CurrencyCrafterVisual : StructureVisual
     [SerializeField] private GameObject craftCurrency_PayOrbsGameObject;
     [SerializeField] private GameObject craftCurrency_craftingCurrencyGameObject;
 
-    [SerializeField] private RectTransform currencyBarContainer;
     [SerializeField] private RectTransform currencyBarTemplate;
 
     [SerializeField] private RectTransform currencyBatchContainer;
     [SerializeField] private RectTransform currencyBatchTemplate;
-    private List<RectTransform> batchVisualList = new List<RectTransform>();
+    private List<RectTransform> currencyBatchTemplateList = new List<RectTransform>();
 
     private Animator crafterAnimator;
 
+    private int currentBatch;
     private bool craftingAmmo;
     private CurrencyCrafter ammoCrafter;
     private List<CurrencyCrafterVisual_CurrencyBarTemplate> currencyBarTemplateList = new List<CurrencyCrafterVisual_CurrencyBarTemplate>();
@@ -31,7 +31,7 @@ public class CurrencyCrafterVisual : StructureVisual
         base.Start();
 
         ammoCrafter.OnCurrencyCraftingEnded += CurrencyCrafter_OnAmmoCraftingEnded;
-        ammoCrafter.OnNewCurrencyBatchCraftingStarted += CurrencyCrafter_OnAmmoCraftingStarted;
+        ammoCrafter.OnNewCurrencyBatchCraftingStarted += CurrencyCrafter_OnNewCurrencyBatchCraftingStarted;
         ammoCrafter.OnPlayerCollectedCurrency += CurrencyCrafter_OnPlayerCollectedAmmo;
         ammoCrafter.OnMaxCurrencyBatchCraftingStarted += AmmoCrafter_OnMaxCurrencyBatchCraftingStarted;
 
@@ -56,7 +56,7 @@ public class CurrencyCrafterVisual : StructureVisual
         craftCurrency_craftingCurrencyGameObject.SetActive(false);
     }
 
-    private void CurrencyCrafter_OnAmmoCraftingStarted(object sender, System.EventArgs e) {
+    private void CurrencyCrafter_OnNewCurrencyBatchCraftingStarted(object sender, System.EventArgs e) {
         craftCurrency_craftingCurrencyGameObject.SetActive(true);
         RefreshCurrencyBarVisuals();
         HighlightStructureFunctionIcon(false);
@@ -106,22 +106,39 @@ public class CurrencyCrafterVisual : StructureVisual
     }
 
     private void RefreshCurrencyBarVisuals() {
-        currencyBarTemplateList.Clear();
-        currencyBarTemplate.gameObject.SetActive(true);
+        Debug.Log("GetCurrentBatch " + ammoCrafter.GetCurrentBatch());
 
+        currencyBarTemplate.gameObject.SetActive(true);
+        currencyBatchTemplate.gameObject.SetActive(true);
+
+        if (ammoCrafter.GetCurrentBatch() == 0) {
+            //First batch launched
+            Debug.Log("clear currencyBarTemplateList");
+            currencyBarTemplateList.Clear();
+            currencyBatchTemplateList.Clear();
+            foreach (RectTransform child in currencyBatchContainer) {
+                if (child == currencyBatchTemplate) continue;
+                Destroy(child.gameObject);
+            }
+        }
+
+        Transform batchTemplate = Instantiate(currencyBatchTemplate, currencyBatchContainer);
+
+        batchTemplate.gameObject.SetActive(true);
         int ammoCount = ammoCrafter.GetAmmoCraftAmount();
-        foreach (RectTransform child in currencyBarContainer) {
+        foreach (RectTransform child in batchTemplate) {
             if (child == currencyBarTemplate) continue;
             Destroy(child.gameObject);
         }
 
         for (int i = 0; i < ammoCount; i++) {
-            CurrencyCrafterVisual_CurrencyBarTemplate ammoBar = Instantiate(currencyBarTemplate, currencyBarContainer).GetComponent<CurrencyCrafterVisual_CurrencyBarTemplate>();
+            CurrencyCrafterVisual_CurrencyBarTemplate ammoBar = Instantiate(currencyBarTemplate, batchTemplate).GetComponent<CurrencyCrafterVisual_CurrencyBarTemplate>();
             ammoBar.SetFillAmount(0f);
             currencyBarTemplateList.Add(ammoBar);
         }
 
         currencyBarTemplate.gameObject.SetActive(false);
+        currencyBatchTemplate.gameObject.SetActive(false);
     }
 
 }

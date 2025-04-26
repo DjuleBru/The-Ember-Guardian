@@ -40,9 +40,9 @@ public class FireVisual : StructureVisual
     [SerializeField] private Sprite fireLimitLightSprite3;
     [SerializeField] private Sprite fireLimitLightSprite4;
 
-    private float calmLightRadius = 2.1f;
-    private float mildLightRadius = 4.64f;
-    private float wildLightRadius = 8.23f;
+    private float calmLightRadius = 1.8f;
+    private float mildLightRadius = 4.2f;
+    private float wildLightRadius = 6.5f;
     private float insaneLightRadius = 11.17f;
 
     private float AOEFireLightIntensity = .65f;

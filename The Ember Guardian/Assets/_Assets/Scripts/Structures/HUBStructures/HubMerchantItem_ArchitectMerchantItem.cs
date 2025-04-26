@@ -25,7 +25,9 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
         SingleAmmoCraftDuration,
         AmmoCrafterBatchCapacity,
         AmmoCrafterMaxAmmoPerBatch,
-
+        SingleOrbCraftDuration,
+        OrbProcessorBatchCapacity,
+        OrbProcessorMaxOrbsPerBatch,
     }
 
     public enum ArchitectItemCategory {
@@ -132,6 +134,16 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
         }
         if (architectItemType == ArchitectItemType.SingleAmmoCraftDuration) {
             StructureStats.Instance.SetSingleAmmoCraftDurationBuff((int)buff);
+        }
+
+        if (architectItemType == ArchitectItemType.SingleOrbCraftDuration) {
+            StructureStats.Instance.SetSingleOrbCraftDurationBuff((int)buff);
+        }
+        if (architectItemType == ArchitectItemType.OrbProcessorBatchCapacity) {
+            StructureStats.Instance.SetOrbProcessorBatchCapacityBuff((int)buff);
+        }
+        if (architectItemType == ArchitectItemType.OrbProcessorMaxOrbsPerBatch) {
+            StructureStats.Instance.SetOrbProcessorMaxOrbsPerBatchBuff((int)buff);
         }
     }
 
@@ -281,6 +293,39 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
                 totalStatWithModifierPrefix = "";
             }
 
+            if (architectItemType == ArchitectItemType.SingleOrbCraftDuration) {
+                initialStatValue = StructureStats.Instance.GetInitialSingleOrbCraftDuration();
+                currentStatValue = StructureStats.Instance.GetOrbProcessorSingleOrbCraftDuration().ToString();
+
+                totalStatWithModifierPostfix = "s";
+                relativeStatPostfix = "s";
+                relativeStatPrefix = "";
+                initialStatPrefix = "";
+                totalStatWithModifierPrefix = "";
+            }
+
+            if (architectItemType == ArchitectItemType.OrbProcessorMaxOrbsPerBatch) {
+                initialStatValue = StructureStats.Instance.GetInitialOrbProcessorMaxOrbsPerBatch();
+                currentStatValue = StructureStats.Instance.GetOrbProcessorMaxOrbsPerBatch().ToString();
+
+                totalStatWithModifierPostfix = "";
+                relativeStatPostfix = "";
+                relativeStatPrefix = "+";
+                initialStatPrefix = "";
+                totalStatWithModifierPrefix = "";
+            }
+
+            if (architectItemType == ArchitectItemType.OrbProcessorBatchCapacity) {
+                initialStatValue = StructureStats.Instance.GetInitialOrbProcessorBatchCapacity();
+                currentStatValue = StructureStats.Instance.GetOrbProcessorBatchCapacity().ToString();
+
+                totalStatWithModifierPostfix = "";
+                relativeStatPostfix = "";
+                relativeStatPrefix = "+";
+                initialStatPrefix = "";
+                totalStatWithModifierPrefix = "";
+            }
+
             if (itemLevel == maxItemLevel) {
                 absoluteStatValueModifier = linkedStatModifierSO.statModifierList[itemLevel - 1];
                 totalStatWithModifier = initialStatValue + absoluteStatValueModifier * statValueModifierMultiplier;
@@ -413,7 +458,7 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentAmmoCrafterBatchCapacity") + " ");
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_ammoCrafterBatchCapacity") + " ");
             }
-            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_AmmoCrafterBatchCapacity") + " ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newAmmoCrafterBatchCapacity") + " ");
         }
         if (architectItemType == ArchitectItemType.AmmoCrafterMaxAmmoPerBatch) {
             if (itemLevel < maxItemLevel) {
@@ -421,6 +466,28 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_ammoCrafterMaxAmmoPerBatch") + " ");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newAmmoCrafterMaxAmmoPerBatch") + " ");
+        }
+
+        if (architectItemType == ArchitectItemType.SingleOrbCraftDuration) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentOrbCraftDuration") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_orbCraftDuration") + " ");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newOrbCraftDuration") + " ");
+        }
+        if (architectItemType == ArchitectItemType.OrbProcessorBatchCapacity) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentOrbProcessorBatchCapacity") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_orbProcessorBatchCapacity") + " ");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newOrbProcessorBatchCapacity") + " ");
+        }
+        if (architectItemType == ArchitectItemType.OrbProcessorMaxOrbsPerBatch) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentOrbProcessorMaxOrbsPerBatch") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_orbProcessorMaxOrbsPerBatch") + " ");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newOrbProcessorMaxOrbsPerBatch") + " ");
         }
 
         return statDescriptionList;

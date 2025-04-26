@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 8736111962518800507}
   - component: {fileID: 5586159128440916285}
   m_Layer: 0
-  m_Name: OrbBarContainer
+  m_Name: OrbBatchTemplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,17 +99,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1934429993747955266}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3931816421194257169}
-  m_Father: {fileID: 8558178901911187958}
+  m_Father: {fileID: 1178073982629626841}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.424}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5586159128440916285
@@ -288,6 +288,69 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5762768195139765920
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1178073982629626841}
+  - component: {fileID: 2883616567864560268}
+  m_Layer: 0
+  m_Name: OrbBatchContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1178073982629626841
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5762768195139765920}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8736111962518800507}
+  m_Father: {fileID: 8558178901911187958}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0.19}
+  m_SizeDelta: {x: 1.5, y: 2}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2883616567864560268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5762768195139765920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 7
+  m_Spacing: 0.1
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &7257005244099676239
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,7 +472,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8736111962518800507}
+  - {fileID: 1178073982629626841}
   m_Father: {fileID: 6117757297469953653}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -969,6 +1032,14 @@ PrefabInstance:
       propertyPath: initialPayCurrencySmoothTime
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5670219007980291320, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5670219007980291320, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.806
+      objectReference: {fileID: 0}
     - target: {fileID: 5937401065631940523, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1058,10 +1129,12 @@ MonoBehaviour:
   upgradeUnlocked: 0
   primaryFunctionUnlocked: 0
   secondaryFunctionUnlocked: 0
+  visualIndicator: {fileID: 0}
   currencyCraftTime: 90
   currencySpawnPoint: {fileID: 7441869313988092870}
   currencyTypeCrafted: 0
   currencyCraftAmount: 2
+  showTooltipOnTrigger: {fileID: 0}
 --- !u!4 &4039759338917417633 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2097073961957946881, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
@@ -1106,6 +1179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureSpriteRenderer: {fileID: 190870229499975902}
   structureFunctionIconSpriteRenderer: {fileID: 1816938978050232834}
+  structureInteractionIconImage: {fileID: 0}
   greyedStructionIconColor: {r: 1, g: 1, b: 1, a: 0.3137255}
   unhoveredMaterial: {fileID: 2100000, guid: f46cf4989354ad94b969d1ddae2b6aef, type: 2}
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
@@ -1114,8 +1188,9 @@ MonoBehaviour:
   structureHasFunctionIcon: 1
   craftCurrency_PayOrbsGameObject: {fileID: 7203990799742609256}
   craftCurrency_craftingCurrencyGameObject: {fileID: 9106199492425929992}
-  currencyBarContainer: {fileID: 8736111962518800507}
   currencyBarTemplate: {fileID: 3931816421194257169}
+  currencyBatchContainer: {fileID: 1178073982629626841}
+  currencyBatchTemplate: {fileID: 8736111962518800507}
 --- !u!1001 &3670425730308843407
 PrefabInstance:
   m_ObjectHideFlags: 0

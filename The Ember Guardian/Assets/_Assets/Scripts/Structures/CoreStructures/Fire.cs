@@ -21,6 +21,7 @@ public class Fire : Structure, IDamageable {
     private float orbFuelValue = 10;
     private float fuelDepletionRate = 0.05f;
     private int maxFuelTreshold = 140;
+    private float fuelTickValue = 10f/3f;
 
     private int criticalFuelTreshold = 14;
     private int calmFuelTreshold = 0;
@@ -258,11 +259,13 @@ public class Fire : Structure, IDamageable {
     }
 
     private void FireOrbCollider_OnOrbFellInFire(object sender, EventArgs e) {
-        fuelLevel += orbFuelValue;
 
-        if(fuelLevel >= maxFuelTreshold) {
-            fuelLevel = maxFuelTreshold;
+        if (fuelLevel + orbFuelValue >= maxFuelTreshold) {
+            fuelLevel = maxFuelTreshold - .1f;
+        } else {
+            fuelLevel += orbFuelValue;
         }
+
 
         if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
             fuelFireOnCooldown = true;
@@ -303,7 +306,7 @@ public class Fire : Structure, IDamageable {
     private void CheckFireFeedable() {
         if (lockFireInteractionFunctionsUpdate) return;
 
-        if(fuelLevel + orbFuelValue <= maxFuelTreshold) {
+        if(fuelLevel + fuelTickValue <= maxFuelTreshold) {
             SetStructurePrimaryFunctionUnlocked(true);
         } else {
             SetStructurePrimaryFunctionUnlocked(false);
@@ -356,7 +359,7 @@ public class Fire : Structure, IDamageable {
         if (lockFireInteractionFunctionsUpdate) return;
         if (isEndLevelFire) return;
 
-        if(fuelLevel > (maxFuelTreshold - orbFuelValue)) {
+        if(fuelLevel > (maxFuelTreshold - fuelTickValue*3)) {
             SetStructureSecondaryFunctionUnlocked(true);
         } else {
             SetStructureSecondaryFunctionUnlocked(false);
@@ -401,6 +404,7 @@ public class Fire : Structure, IDamageable {
         if (maxState == State.wild) {
             maxFuelTreshold = insaneFuelTreshold;
         }
+
     }
 
     public void ManualSetFireCurrentMaxFuelTreshold(State state) {

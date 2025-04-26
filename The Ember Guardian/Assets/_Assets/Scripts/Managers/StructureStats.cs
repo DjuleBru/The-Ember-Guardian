@@ -11,7 +11,7 @@ public class StructureStats : MonoBehaviour
     private float initialOrbFuelValue = 10;
     private float fuelDepletionRate = 0.05f;
     private float initialFuelDepletionRate = 0.05f;
-    private int maxFuelTreshold = 140;
+    private int maxFuelTreshold = 50;
     private int initialMaxFuelTreshold = 140;
 
     private int ammoCrafterBatchCapacity;
@@ -20,6 +20,13 @@ public class StructureStats : MonoBehaviour
     private int initialSingleAmmoCraftDuration = 15;
     private int ammoCrafterMaxAmmoPerBatch;
     private int initialAmmoCrafterMaxAmmoPerBatch = 3;
+
+    private int orbProcessorBatchCapacity;
+    private int initialOrbProcessorBatchCapacity = 1;
+    private int singleOrbCraftDuration;
+    private int initialSingleOrbCraftDuration = 45;
+    private int orbProcessorMaxOrbsPerBatch;
+    private int initialOrbProcessorMaxOrbsPerBatch = 2;
 
     private int tentHealAmountPerSmallOrb;
     private int initialTentHealAmountPerSmallOrb = 1;
@@ -51,6 +58,10 @@ public class StructureStats : MonoBehaviour
         singleAmmoCraftDuration = ES3.Load("singleAmmoCraftDuration", initialSingleAmmoCraftDuration);
         ammoCrafterMaxAmmoPerBatch = ES3.Load("ammoCrafterMaxAmmoPerBatch", initialAmmoCrafterMaxAmmoPerBatch);
 
+        orbProcessorBatchCapacity = ES3.Load("orbProcessorBatchCapacity", initialOrbProcessorBatchCapacity);
+        singleOrbCraftDuration = ES3.Load("singleOrbCraftDuration", initialSingleOrbCraftDuration);
+        orbProcessorMaxOrbsPerBatch = ES3.Load("orbProcessorMaxOrbsPerBatch", orbProcessorMaxOrbsPerBatch);
+
         barricadeHealthPerCrate = ES3.Load("barricadeHealthPerCrate", initialBarricadeHealthPerCrate);
 
         tentHealAmountPerSmallOrb = ES3.Load("tentHealAmountPerSmallOrb", initialTentHealAmountPerSmallOrb);
@@ -69,6 +80,10 @@ public class StructureStats : MonoBehaviour
         ES3.Save("ammoCrafterBatchCapacity", ammoCrafterBatchCapacity);
         ES3.Save("singleAmmoCraftDuration", singleAmmoCraftDuration);
         ES3.Save("ammoCrafterMaxAmmoPerBatch", ammoCrafterMaxAmmoPerBatch);
+
+        ES3.Save("orbProcessorBatchCapacity", orbProcessorBatchCapacity);
+        ES3.Save("singleOrbCraftDuration", singleOrbCraftDuration);
+        ES3.Save("orbProcessorMaxOrbsPerBatch", orbProcessorMaxOrbsPerBatch);
 
         ES3.Save("tentHealAmountPerSmallOrb", tentHealAmountPerSmallOrb);
 
@@ -188,6 +203,40 @@ public class StructureStats : MonoBehaviour
     }
     public void SetAmmoCrafterMaxAmmoPerBatchBuff(int maxAmmoPerBatchBuff) {
         ammoCrafterMaxAmmoPerBatch = initialAmmoCrafterMaxAmmoPerBatch + maxAmmoPerBatchBuff;
+    }
+
+    #endregion
+
+
+    #region ORB PROCESSOR
+    public int GetOrbProcessorBatchCapacity() {
+        return orbProcessorBatchCapacity;
+    }
+    public int GetInitialOrbProcessorBatchCapacity() {
+        return initialOrbProcessorBatchCapacity;
+    }
+    public void SetOrbProcessorBatchCapacityBuff(int batchCapacityBuff) {
+        orbProcessorBatchCapacity = initialOrbProcessorBatchCapacity + batchCapacityBuff;
+    }
+
+    public int GetOrbProcessorSingleOrbCraftDuration() {
+        return singleAmmoCraftDuration;
+    }
+    public int GetInitialSingleOrbCraftDuration() {
+        return initialSingleOrbCraftDuration;
+    }
+    public void SetSingleOrbCraftDurationBuff(int craftingSpeedBuff) {
+        singleOrbCraftDuration = initialSingleOrbCraftDuration + craftingSpeedBuff;
+    }
+
+    public int GetOrbProcessorMaxOrbsPerBatch() {
+        return orbProcessorMaxOrbsPerBatch;
+    }
+    public int GetInitialOrbProcessorMaxOrbsPerBatch() {
+        return initialOrbProcessorMaxOrbsPerBatch;
+    }
+    public void SetOrbProcessorMaxOrbsPerBatchBuff(int maxAmmoPerBatchBuff) {
+        orbProcessorMaxOrbsPerBatch = initialOrbProcessorMaxOrbsPerBatch + maxAmmoPerBatchBuff;
     }
 
     #endregion
