@@ -67,5 +67,11 @@ public class CreatureDamageCollider : MonoBehaviour
         int attackDamage = mobAttack.GetAttackDamage();
         iDamageable.TakeDamage(attackDamage, transform, false, ignoreTemporaryInvincibility);
         mobAttack.InvokeAttackHit();
+
+        Barricade barricade = (Barricade)iDamageable;
+        if(barricade != null) {
+            if (!barricade.GetBarricadeSpiked()) return;
+            mobAttack.GetComponent<Mob>().TakeDamage(barricade.GetSpikeDamage(), barricade.transform);
+        }
     }
 }

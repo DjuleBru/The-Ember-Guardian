@@ -10,10 +10,11 @@ public class Barricade : Structure, IDamageable {
     [SerializeField] private Transform meleeAttackPosition;
     [SerializeField] private BarricadeVisual barricadeVisual;
 
-    private int level1Health = 24;
-    private int level2Health = 32;
-    private int level3Health = 40;
-    private int level4Health = 56;
+    private int level1CrateAmount = 3;
+    private int level2CrateAmount = 4;
+    private int level3CrateAmount = 5;
+    private int level4CrateAmount = 7;
+    private int healthPerCrate;
 
     private int barricadeMaxHealth;
     private int barricadeHealth;
@@ -29,6 +30,8 @@ public class Barricade : Structure, IDamageable {
     public event EventHandler OnBarricadeLightSwitched;
     public event EventHandler OnBarricadeBreached;
 
+    private bool barricadeSpiked;
+    private int spikeDamage = 3;
     private bool isInnerBarricade;
     private bool barricadeRepairable;
 
@@ -37,8 +40,10 @@ public class Barricade : Structure, IDamageable {
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
 
-        barricadeMaxHealth = level1Health;
-        barricadeHealth = level1Health;
+        barricadeSpiked = StructureStats.Instance.GetBarricadesSpiked();
+        healthPerCrate = StructureStats.Instance.GetBarricadeHealthPerCrate();
+        barricadeMaxHealth = level1CrateAmount * healthPerCrate;
+        barricadeHealth = level1CrateAmount * healthPerCrate;
 
         OnAnyBarricadeBuilt?.Invoke(this, EventArgs.Empty);
     }
@@ -79,17 +84,17 @@ public class Barricade : Structure, IDamageable {
         base.UpgradeStructure();
 
         if (structureLevel == 2) {
-            barricadeMaxHealth = level2Health;
-            barricadeHealth = level2Health;
+            barricadeMaxHealth = level2CrateAmount * healthPerCrate;
+            barricadeHealth = level2CrateAmount * healthPerCrate;
         }
         if (structureLevel == 3) {
-            barricadeMaxHealth = level3Health;
-            barricadeHealth = level3Health;
+            barricadeMaxHealth = level3CrateAmount * healthPerCrate;
+            barricadeHealth = level3CrateAmount * healthPerCrate;
 
         }
         if (structureLevel == 4) {
-            barricadeMaxHealth = level4Health;
-            barricadeHealth = level4Health;
+            barricadeMaxHealth = level4CrateAmount * healthPerCrate;
+            barricadeHealth = level4CrateAmount * healthPerCrate;
         }
     }
 
@@ -196,6 +201,13 @@ public class Barricade : Structure, IDamageable {
                 barricadeVisual.ShowRepairStructureVisual(false);
             }
         }
+    }
+
+    public bool GetBarricadeSpiked() {
+        return barricadeSpiked;
+    }
+    public int GetSpikeDamage() {
+        return spikeDamage;
     }
 
 }

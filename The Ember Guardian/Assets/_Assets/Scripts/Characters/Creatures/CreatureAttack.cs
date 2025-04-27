@@ -47,6 +47,15 @@ public class CreatureAttack : MobAttack
 
                 attackTargetIDamageable.TakeDamage(attackDamage, transform, false, attackIgnoresTemporaryInvincibility);
 
+                if(!GetIsRangedAttack()) {
+                    // Melee attack creature
+
+                    Barricade barricade = (Barricade)attackTargetIDamageable;
+                    if (barricade != null) {
+                        if (!barricade.GetBarricadeSpiked()) return;
+                        creature.TakeDamage(barricade.GetSpikeDamage(), barricade.transform);
+                    }
+                }
             }
 
         }

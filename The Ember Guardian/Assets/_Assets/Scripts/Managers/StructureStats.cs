@@ -171,6 +171,10 @@ public class StructureStats : MonoBehaviour
         barricadeHealthPerCrate = initialBarricadeHealthPerCrate + barricadeHealthPerCrateBuff;
     }
 
+    public bool GetBarricadesSpiked() {
+        return barricadesSpiked;
+    }
+
     #endregion
 
     #region AMMO CRAFTER

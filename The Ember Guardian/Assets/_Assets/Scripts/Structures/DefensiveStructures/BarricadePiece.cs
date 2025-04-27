@@ -8,16 +8,27 @@ public class BarricadePiece : MonoBehaviour {
     [SerializeField] private Material hoveredMaterial;
     [SerializeField] private Material repairBarricadeMaterial;
     [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Sprite spikedSprite;
     [SerializeField] private Collider2D pieceCollider;
     private Animator animator;
     private Rigidbody2D rb;
     private Vector3 initialPosition;
+
+    private bool spiked;
 
     private Coroutine deactivateCoroutine;
 
     private void Awake() {
         initialPosition = transform.position;
         DisableBarricadePiece();
+    }
+
+    private void Start() {
+        spiked = StructureStats.Instance.GetBarricadesSpiked();
+
+        if(spiked) {
+            spriteRenderer.sprite = spikedSprite;
+        }
     }
 
     public void DisableBarricadePiece() {
