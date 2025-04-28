@@ -396,10 +396,11 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void TransferNextAmmoFromBag() {
-        int ammoAmountInBag = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count;
+        PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
+        int ammoAmountInBag = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(ammoType).Count;
 
         if (ammoAmountInBag > 0 && heldGun.GetCurrentAmmoClip() < heldGun.GetMaxAmmo()) {
-            UICurrencyManager.PlayerInventoryUI.DropNextCurrencyInBag(PlayerCurrencies.CurrencyType.ammo);
+            UICurrencyManager.PlayerInventoryUI.DropNextCurrencyInBag(ammoType);
         } else {
             OnPlayerTryReloadAmmoBelt_NoAmmoInBag?.Invoke(this, EventArgs.Empty);
             transferringAmmoFromBag = false;
@@ -425,6 +426,11 @@ public class PlayerShoot : MonoBehaviour
     private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         if(e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
             Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
+            collectible.SetMovingForPayment(true, 5f, ammoDestinationPoint);
+            collectible.SetScale(.5f);
+        }
+        if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo_special) {
+            Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo_special), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
             collectible.SetMovingForPayment(true, 5f, ammoDestinationPoint);
             collectible.SetScale(.5f);
         }
@@ -802,7 +808,9 @@ public class PlayerShoot : MonoBehaviour
     public int GetCurrentAmmoClip() {
         return heldGun.GetCurrentAmmoClip();
     }
-
+    public PlayerCurrencies.CurrencyType GetCurrentAmmoType() {
+        return heldGunSO.ammoTypeUsed;
+    }
     public int GetMaxAmmoClips() {
         return heldGun.GetMaxAmmo();
     }

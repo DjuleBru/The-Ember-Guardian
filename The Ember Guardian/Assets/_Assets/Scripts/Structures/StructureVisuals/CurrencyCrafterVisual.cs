@@ -5,13 +5,21 @@ using UnityEngine.UI;
 
 public class CurrencyCrafterVisual : StructureVisual
 {
+    [SerializeField] private StructureUI ammoCrafterUI;
     [SerializeField] private GameObject craftCurrency_PayOrbsGameObject;
+    [SerializeField] private GameObject craftSpecialCurrency_PayOrbsGameObject;
     [SerializeField] private GameObject craftCurrency_craftingCurrencyGameObject;
 
     [SerializeField] private RectTransform currencyBarTemplate;
+    [SerializeField] private Image currencyBarTemplateImage;
+    [SerializeField] private Image currencyBarTemplateBackgroundImage;
+    [SerializeField] private Sprite ammoSprite;
+    [SerializeField] private Sprite ammoSpecialSprite;
 
     [SerializeField] private RectTransform currencyBatchContainer;
     [SerializeField] private RectTransform currencyBatchTemplate;
+
+
     private List<RectTransform> currencyBatchTemplateList = new List<RectTransform>();
 
     private Animator crafterAnimator;
@@ -34,12 +42,28 @@ public class CurrencyCrafterVisual : StructureVisual
         ammoCrafter.OnNewCurrencyBatchCraftingStarted += CurrencyCrafter_OnNewCurrencyBatchCraftingStarted;
         ammoCrafter.OnPlayerCollectedCurrency += CurrencyCrafter_OnPlayerCollectedAmmo;
         ammoCrafter.OnMaxCurrencyBatchCraftingStarted += AmmoCrafter_OnMaxCurrencyBatchCraftingStarted;
+        ammoCrafterUI.OnStructureDisplayedFunctionChanged += AmmoCrafterUI_OnStructureDisplayedFunctionChanged;
+        ammoCrafter.OnPlayerTriggeredIn += AmmoCrafter_OnPlayerTriggeredIn;
+        ammoCrafter.OnPlayerTriggeredOut += AmmoCrafter_OnPlayerTriggeredOut;
 
-        craftCurrency_PayOrbsGameObject.SetActive(true);
-        craftCurrency_craftingCurrencyGameObject.SetActive(false);
+        craftCurrency_PayOrbsGameObject.SetActive(true); 
+        if (craftSpecialCurrency_PayOrbsGameObject != null) {
+            craftSpecialCurrency_PayOrbsGameObject.SetActive(true);
+        }
+
+        RefreshCurrencyBarVisuals();
         HighlightStructureFunctionIcon(true);
     }
 
+    private void AmmoCrafter_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
+        if (ammoCrafter.GetCraftingCurrency()) return;
+        craftCurrency_craftingCurrencyGameObject.SetActive(false);
+    }
+
+    private void AmmoCrafter_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        if (ammoCrafter.GetCraftingCurrency()) return;
+        craftCurrency_craftingCurrencyGameObject.SetActive(true);
+    }
 
     protected void Update() {
 
@@ -51,13 +75,20 @@ public class CurrencyCrafterVisual : StructureVisual
         }
     }
 
+    private void AmmoCrafterUI_OnStructureDisplayedFunctionChanged(object sender, System.EventArgs e) {
+        RefreshCurrencyBarVisuals();
+    }
     private void CurrencyCrafter_OnPlayerCollectedAmmo(object sender, System.EventArgs e) {
         craftCurrency_PayOrbsGameObject.SetActive(true);
-        craftCurrency_craftingCurrencyGameObject.SetActive(false);
+        if (craftSpecialCurrency_PayOrbsGameObject != null) {
+            craftSpecialCurrency_PayOrbsGameObject.SetActive(true);
+        }
+        RefreshCurrencyBarVisuals();
+
     }
 
     private void CurrencyCrafter_OnNewCurrencyBatchCraftingStarted(object sender, System.EventArgs e) {
-        craftCurrency_craftingCurrencyGameObject.SetActive(true);
+        //craftCurrency_craftingCurrencyGameObject.SetActive(true);
         RefreshCurrencyBarVisuals();
         HighlightStructureFunctionIcon(false);
 
@@ -70,10 +101,13 @@ public class CurrencyCrafterVisual : StructureVisual
 
     private void AmmoCrafter_OnMaxCurrencyBatchCraftingStarted(object sender, System.EventArgs e) {
         craftCurrency_PayOrbsGameObject.SetActive(false);
+
+        if(craftSpecialCurrency_PayOrbsGameObject != null) {
+            craftSpecialCurrency_PayOrbsGameObject.SetActive(false);
+        }
     }
 
     private void CurrencyCrafter_OnAmmoCraftingEnded(object sender, System.EventArgs e) {
-
         craftingAmmo = false;
         foreach(CurrencyCrafterVisual_CurrencyBarTemplate ammoTemplate in currencyBarTemplateList) {
             ammoTemplate.SetGlowMaterial();
@@ -86,7 +120,6 @@ public class CurrencyCrafterVisual : StructureVisual
             crafterAnimator.SetTrigger("Idle");
         }
     }
-
 
     private void RefreshCurrencyBarProgression(float craftingProgression) {
         float totalBars = currencyBarTemplateList.Count * craftingProgression;
@@ -106,14 +139,11 @@ public class CurrencyCrafterVisual : StructureVisual
     }
 
     private void RefreshCurrencyBarVisuals() {
-        Debug.Log("GetCurrentBatch " + ammoCrafter.GetCurrentBatch());
-
         currencyBarTemplate.gameObject.SetActive(true);
         currencyBatchTemplate.gameObject.SetActive(true);
 
         if (ammoCrafter.GetCurrentBatch() == 0) {
             //First batch launched
-            Debug.Log("clear currencyBarTemplateList");
             currencyBarTemplateList.Clear();
             currencyBatchTemplateList.Clear();
             foreach (RectTransform child in currencyBatchContainer) {
@@ -129,6 +159,24 @@ public class CurrencyCrafterVisual : StructureVisual
         foreach (RectTransform child in batchTemplate) {
             if (child == currencyBarTemplate) continue;
             Destroy(child.gameObject);
+        }
+
+        RectTransform rt = currencyBarTemplate.GetComponent<RectTransform>();
+
+        if (ammoCrafter.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.primaryFunction) {
+
+            currencyBarTemplateImage.sprite = ammoSprite;
+            currencyBarTemplateBackgroundImage.sprite = ammoSprite;
+
+            rt.sizeDelta = new Vector2(.2f, .5f);
+        }
+        if (ammoCrafter.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.secondaryFunction) {
+
+            currencyBarTemplateImage.sprite = ammoSpecialSprite;
+            currencyBarTemplateBackgroundImage.sprite = ammoSpecialSprite;
+
+
+            rt.sizeDelta = new Vector2(.3f, .5f);
         }
 
         for (int i = 0; i < ammoCount; i++) {

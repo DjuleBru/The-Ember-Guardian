@@ -23,11 +23,13 @@ MonoBehaviour:
   - {fileID: -2146848304, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
   - {fileID: 1906003518, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
   - {fileID: -1051984127, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
+  ammoTypeUsed: 7
   gunAnimator: {fileID: 22100000, guid: e730f9e110b5f3841b06e11e18aa15a3, type: 2}
   bulletIsParticle: 1
   bulletIsProjectile: 0
   bulletIsSprite: 0
   automaticWeapon: 1
+  delayBetweenClickAndShot: 0
   damagePerBullet: 4
   maxAmmo: 8
   pelletsPerBullet: 1
@@ -89,3 +91,4 @@ MonoBehaviour:
   cooldownSFXVolumeMultiplier: 0.5
   shootGunVolumeMultiplier: 0.35
   outOfAmmoVolumeMultiplier: 0.75
+  swapToWeaponVolumeMultiplier: 1

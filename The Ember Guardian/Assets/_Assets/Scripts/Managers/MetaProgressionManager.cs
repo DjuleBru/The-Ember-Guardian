@@ -146,39 +146,44 @@ public class MetaProgressionManager : MonoBehaviour
         List<Vector3> blueGemPositions = UICurrencyManager.HubInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.blueGem);
         List<Vector3> purpleGemPositions = UICurrencyManager.HubInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.purpleGem);
         List<Vector3> yellowGemPositions = UICurrencyManager.HubInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.yellowGem);
+        List<Vector3> cyanGemPositions = UICurrencyManager.HubInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.cyanGem);
 
         SaveGemPositions(PlayerCurrencies.CurrencyType.greenGem, greenGemPositions, false);
         SaveGemPositions(PlayerCurrencies.CurrencyType.redGem, redGemPositions, false);
         SaveGemPositions(PlayerCurrencies.CurrencyType.blueGem, blueGemPositions, false);
         SaveGemPositions(PlayerCurrencies.CurrencyType.purpleGem, purpleGemPositions, false);
         SaveGemPositions(PlayerCurrencies.CurrencyType.yellowGem, yellowGemPositions, false);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.cyanGem, cyanGemPositions, false);
     }
 
     public void SaveLevelGemsAndHoldingEmber(float proportionToSave = 1) {
-        Debug.Log("SaveLevelGemsAndHoldingEmber");
         List<Vector3> greenGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.greenGem);
         List<Vector3> redGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.redGem);
         List<Vector3> blueGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.blueGem);
         List<Vector3> purpleGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.purpleGem);
         List<Vector3> yellowGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.yellowGem);
+        List<Vector3> cyanGemPositions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.cyanGem);
 
         int newgreenGemPositionsSize = (int)(greenGemPositions.Count * (proportionToSave)); // Calcul du nombre d'éléments à conserver
         int newredGemPositionsSize = (int)(redGemPositions.Count * (proportionToSave)); // Calcul du nombre d'éléments à conserver
         int newblueGemPositionsSize = (int)(blueGemPositions.Count * (proportionToSave)); // Calcul du nombre d'éléments à conserver
         int newpurpleGemPositionsSize = (int)(purpleGemPositions.Count * (proportionToSave)); // Calcul du nombre d'éléments à conserver
         int newyellowGemPositionsSize = (int)(yellowGemPositions.Count * (proportionToSave)); // Calcul du nombre d'éléments à conserver
+        int newcyanGemPositionsSize = (int)(cyanGemPositions.Count * (proportionToSave)); // Calcul du nombre d'éléments à conserver
 
         List<Vector3> truncatedGreenGemPositions = greenGemPositions.GetRange(0, newgreenGemPositionsSize); // Conserver les premiers éléments
         List<Vector3> truncatedRedGemPositions = redGemPositions.GetRange(0, newredGemPositionsSize); // Conserver les premiers éléments
         List<Vector3> truncatedBlueGemPositions = blueGemPositions.GetRange(0, newblueGemPositionsSize); // Conserver les premiers éléments
         List<Vector3> truncatedPurpleGemPositions = purpleGemPositions.GetRange(0, newpurpleGemPositionsSize); // Conserver les premiers éléments
         List<Vector3> truncatedYellowGemPositions = yellowGemPositions.GetRange(0, newyellowGemPositionsSize); // Conserver les premiers éléments
+        List<Vector3> truncatedCyanGemPositions = cyanGemPositions.GetRange(0, newcyanGemPositionsSize); // Conserver les premiers éléments
 
         SaveGemPositions(PlayerCurrencies.CurrencyType.greenGem, truncatedGreenGemPositions, true);
         SaveGemPositions(PlayerCurrencies.CurrencyType.redGem, truncatedRedGemPositions, true);
         SaveGemPositions(PlayerCurrencies.CurrencyType.blueGem, truncatedBlueGemPositions, true);
         SaveGemPositions(PlayerCurrencies.CurrencyType.purpleGem, truncatedPurpleGemPositions, true);
         SaveGemPositions(PlayerCurrencies.CurrencyType.yellowGem, truncatedYellowGemPositions, true);
+        SaveGemPositions(PlayerCurrencies.CurrencyType.cyanGem, truncatedCyanGemPositions, true);
 
         ES3.Save("holdingEmber", false);
     }
@@ -336,6 +341,10 @@ public class MetaProgressionManager : MonoBehaviour
     public void SetGunUnlocked(GunSO gunSO, bool unlocked) {
         string key = gunSO.name;
         ES3.Save(key, unlocked);
+
+        if(gunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special) {
+            ES3.Save("specialAmmoUnlocked", true);
+        }
     }
 
     public bool GetGunUnlocked(GunSO gunSO) {
@@ -344,6 +353,10 @@ public class MetaProgressionManager : MonoBehaviour
         if (gunSO.gunType == GunSO.GunType.Rifle) return true;
 
         return ES3.Load(key, false);
+    }
+
+    public bool GetSpecialAmmoUnlocked() {
+        return ES3.Load("specialAmmoUnlocked", false);
     }
 
     public void SetInitialLevelAmmo(int initialLevelAmmo) {

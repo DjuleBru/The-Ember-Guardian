@@ -11,6 +11,7 @@ public class HubMerchantItem : MonoBehaviour
     [SerializeField] protected int blueGemCost;
     [SerializeField] protected int yellowGemCost;
     [SerializeField] protected int purpleGemCost;
+    [SerializeField] protected int cyanGemCost;
     [TextArea]
     [SerializeField] protected string description;
     [TextArea]
@@ -25,11 +26,14 @@ public class HubMerchantItem : MonoBehaviour
 
     [SerializeField] protected HubMerchantItemStatModifierSO linkedStatModifierSO;
 
+    private HubMerchant parentHubMerchant;
+
     protected List<int> greenGemCostList;
     protected List<int> redGemCostList;
     protected List<int> blueGemCostList;
     protected List<int> yellowGemCostList;
     protected List<int> purpleGemCostList;
+    protected List<int> cyanGemCostList;
 
     public static event EventHandler OnAnyHubMerchantItemBought;
     public static event EventHandler OnAnyHubMerchantItemUpgraded;
@@ -58,6 +62,7 @@ public class HubMerchantItem : MonoBehaviour
             yellowGemCostList = linkedStatModifierSO.yellowGemCostList;
             blueGemCostList = linkedStatModifierSO.blueGemCostList;
             purpleGemCostList = linkedStatModifierSO.purleGemCostList;
+            cyanGemCostList = linkedStatModifierSO.cyanGemCostList;
         }
 
         if(itemLevel == 0) {
@@ -112,11 +117,12 @@ public class HubMerchantItem : MonoBehaviour
     public bool CanBuyItem() {
         int playerGreenGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count;
         int playerRedGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count;
+        int playerCyanGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.cyanGem).Count;
         int playerBlueGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count;
         int playerYellowGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count;
         int playerPurpleGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count;
 
-        if (playerGreenGems >= greenGemCost && playerRedGems >= redGemCost && playerBlueGems >= blueGemCost && playerYellowGems >= yellowGemCost && playerPurpleGems >= purpleGemCost) {
+        if (playerGreenGems >= greenGemCost && playerRedGems >= redGemCost && playerBlueGems >= blueGemCost && playerYellowGems >= yellowGemCost && playerPurpleGems >= purpleGemCost && playerCyanGems >= cyanGemCost) {
 
             return true;
         }
@@ -162,6 +168,7 @@ public class HubMerchantItem : MonoBehaviour
         UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.blueGem, blueGemCost);
         UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.yellowGem, yellowGemCost);
         UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.purpleGem, purpleGemCost);
+        UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.cyanGem, cyanGemCost);
 
         OnAnyHubMerchantItemBought?.Invoke(this, EventArgs.Empty);
 
@@ -187,6 +194,10 @@ public class HubMerchantItem : MonoBehaviour
 
         if (purpleGemCostList != null && purpleGemCostList.Count > itemLevel) {
             purpleGemCost = purpleGemCostList[itemLevel];
+        }
+
+        if (cyanGemCostList != null && cyanGemCostList.Count > itemLevel) {
+            cyanGemCost = cyanGemCostList[itemLevel];
         }
     }
 
@@ -215,6 +226,12 @@ public class HubMerchantItem : MonoBehaviour
         OnItemMustRefreshDescriptionCard?.Invoke(this, EventArgs.Empty);
     }
 
+    public void SetHubMerchantParent(HubMerchant hubMerchant) {
+        parentHubMerchant = hubMerchant;
+    }
+    public HubMerchant GetHubMerchantParent() {
+        return parentHubMerchant;
+    }
     public string GetItemName() {
         return itemName;
     }
@@ -260,6 +277,9 @@ public class HubMerchantItem : MonoBehaviour
 
     public int GetPurpleGemCost() {
         return purpleGemCost;
+    }
+    public int GetCyanGemCost() {
+        return cyanGemCost;
     }
 
     public virtual string GetItemType() {

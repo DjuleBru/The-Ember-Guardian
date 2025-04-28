@@ -68,7 +68,7 @@ public class Collectible : MonoBehaviour
             // Lerp vers la position locale de la destination
             transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, smoothTime * Time.deltaTime);
 
-            if (currencyType == PlayerCurrencies.CurrencyType.ammo && Vector3.Distance(transform.localPosition, Vector3.zero) < .1f) {
+            if ((currencyType == PlayerCurrencies.CurrencyType.ammo || currencyType == PlayerCurrencies.CurrencyType.ammo_special) && Vector3.Distance(transform.localPosition, Vector3.zero) < .1f) {
                 PlayerShoot.Instance.AddAmmoClip(1);
                 Destroy(gameObject);
             }

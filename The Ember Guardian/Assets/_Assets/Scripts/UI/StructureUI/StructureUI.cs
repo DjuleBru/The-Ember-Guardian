@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,16 +14,18 @@ public class StructureUI : MonoBehaviour
     [SerializeField] protected GameObject switchUIGameObjectList;
 
     [SerializeField] protected GameObject functionPayOrbsUIList;
-    [SerializeField] protected GameObject decondaryFunctionPayOrbsUIList;
+    [SerializeField] protected GameObject secondaryFunctionPayOrbsUIList;
 
     [SerializeField] protected List<GameObject> upgradeToNextLevelPayOrbsUIList;
     [SerializeField] protected List<GameObject> upgradeToNextLevelUIGameObjectList;
 
     [SerializeField] protected List<GameObject> levelSlotVisualContainerList;
+    [SerializeField] protected bool returnToPrimaryFunctionUIOnTriggerExit = true;
 
     protected PayCurrencyUI payOrbsUI;
     protected Structure structure;
     protected bool playerInTriggerArea;
+    public event EventHandler OnStructureDisplayedFunctionChanged;
 
     protected virtual void Awake() {
         structure = GetComponentInParent<Structure>();
@@ -99,17 +102,24 @@ public class StructureUI : MonoBehaviour
         }
 
         UpdateArrowsVisibility();
+        OnStructureDisplayedFunctionChanged?.Invoke(this, EventArgs.Empty);
     }
 
     protected virtual void Structure_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
         if (!playerInTriggerArea) return;
+
         playerInTriggerArea = false;
-        ShowStructurePrimaryFunctionUI();
+
+        if(returnToPrimaryFunctionUIOnTriggerExit) {
+            SwitchToUIType(Structure.StructureInteractionType.primaryFunction);
+        }
+
         SetUIActive(false);
     }
 
     protected virtual void Structure_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
         if (playerInTriggerArea) return;
+
         playerInTriggerArea = true;
         SetUIActive(true);
         RefreshShownUI();
@@ -171,7 +181,10 @@ public class StructureUI : MonoBehaviour
         secondaryFunctionUIGameObject.SetActive(true);
         functionUIGameObject.SetActive(false);
         upgradeGameObject.SetActive(false);
-        payOrbsUI.SetOrbTemplateUIList(RecomposePayOrbsUIList(functionPayOrbsUIList));
+
+        if(secondaryFunctionPayOrbsUIList != null) {
+            payOrbsUI.SetOrbTemplateUIList(RecomposePayOrbsUIList(secondaryFunctionPayOrbsUIList));
+        }
     }
 
     protected void ShowStructureUpgradeUI() {

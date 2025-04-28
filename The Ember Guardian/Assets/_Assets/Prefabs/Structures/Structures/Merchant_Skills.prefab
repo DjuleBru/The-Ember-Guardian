@@ -9104,7 +9104,7 @@ MonoBehaviour:
   upgradeGameObject: {fileID: 1479499442892303178}
   switchUIGameObjectList: {fileID: 8925910982364295468}
   functionPayOrbsUIList: {fileID: 7222172686655869252}
-  decondaryFunctionPayOrbsUIList: {fileID: 0}
+  secondaryFunctionPayOrbsUIList: {fileID: 0}
   upgradeToNextLevelPayOrbsUIList:
   - {fileID: 6399663101081892598}
   - {fileID: 8548078608617878619}
@@ -9116,6 +9116,7 @@ MonoBehaviour:
   - {fileID: 4306417965687727105}
   - {fileID: 265492158163586408}
   - {fileID: 8133882756124360121}
+  returnToPrimaryFunctionUIOnTriggerExit: 1
   payCurrencyUI: {fileID: 3331399292821215483}
   merchantUIAnimator: {fileID: 4279296336018917748}
   allMerchantItemUIContainer: {fileID: 780285531268275974}

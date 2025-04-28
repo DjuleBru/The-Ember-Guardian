@@ -34,6 +34,18 @@ public class StructureStats : MonoBehaviour
     private int barricadeHealthPerCrate;
     private int initialBarricadeHealthPerCrate = 8;
 
+    private int skillMerchantMaxActiveSkillsDisplayed;
+    private int initialSkillMerchantMaxActiveSkillsDisplayed = 1;
+    private int skillMerchantMaxPassiveSkillsDisplayed;
+    private int initialSkillMerchantMaxPassiveSkillsDisplayed = 2;
+    private int trapMerchantMaxTrapsDisplayed;
+    private int initialTrapMerchantMaxTrapsDisplayed = 1;
+    private int trapMerchantMaxTrapUpgradesDisplayed;
+    private int initialTrapMerchantMaxTrapUpgradeDisplayed = 2;
+
+    private int startWithRandomTrapAmount;
+    private int initialStartWithRandomTrapAmount = 1;
+
     private bool barricadesSpiked;
     private bool startWithAmmoCrafter;
     private bool startWithResearchTower;
@@ -65,6 +77,12 @@ public class StructureStats : MonoBehaviour
         barricadeHealthPerCrate = ES3.Load("barricadeHealthPerCrate", initialBarricadeHealthPerCrate);
 
         tentHealAmountPerSmallOrb = ES3.Load("tentHealAmountPerSmallOrb", initialTentHealAmountPerSmallOrb);
+
+        skillMerchantMaxActiveSkillsDisplayed = ES3.Load("skillMerchantMaxActiveSkillsDisplayed", initialSkillMerchantMaxActiveSkillsDisplayed);
+        skillMerchantMaxPassiveSkillsDisplayed = ES3.Load("skillMerchantMaxPassiveSkillsDisplayed", initialSkillMerchantMaxPassiveSkillsDisplayed);
+        trapMerchantMaxTrapsDisplayed = ES3.Load("trapMerchantMaxTrapsDisplayed", initialTrapMerchantMaxTrapsDisplayed);
+        trapMerchantMaxTrapUpgradesDisplayed = ES3.Load("trapMerchantMaxTrapUpgradesDisplayed", initialTrapMerchantMaxTrapUpgradeDisplayed);
+        startWithRandomTrapAmount = ES3.Load("startWithRandomTrapAmount", initialStartWithRandomTrapAmount);
     }
 
     public void SaveStructureStats() {
@@ -88,6 +106,12 @@ public class StructureStats : MonoBehaviour
         ES3.Save("tentHealAmountPerSmallOrb", tentHealAmountPerSmallOrb);
 
         ES3.Save("barricadeHealthPerCrate", barricadeHealthPerCrate);
+
+        ES3.Save("skillMerchantMaxActiveSkillsDisplayed", skillMerchantMaxActiveSkillsDisplayed);
+        ES3.Save("skillMerchantMaxPassiveSkillsDisplayed", skillMerchantMaxPassiveSkillsDisplayed);
+        ES3.Save("trapMerchantMaxTrapsDisplayed", trapMerchantMaxTrapsDisplayed);
+        ES3.Save("trapMerchantMaxTrapUpgradesDisplayed", trapMerchantMaxTrapUpgradesDisplayed);
+        ES3.Save("startWithRandomTrapAmount", startWithRandomTrapAmount);
     }
 
     #region FIRE
@@ -211,7 +235,6 @@ public class StructureStats : MonoBehaviour
 
     #endregion
 
-
     #region ORB PROCESSOR
     public int GetOrbProcessorBatchCapacity() {
         return orbProcessorBatchCapacity;
@@ -241,6 +264,56 @@ public class StructureStats : MonoBehaviour
     }
     public void SetOrbProcessorMaxOrbsPerBatchBuff(int maxAmmoPerBatchBuff) {
         orbProcessorMaxOrbsPerBatch = initialOrbProcessorMaxOrbsPerBatch + maxAmmoPerBatchBuff;
+    }
+
+    #endregion
+
+    #region LEVELMERCHANTS
+    public int GetSkillMerchantMaxActiveSkillsDisplayed() {
+        return skillMerchantMaxActiveSkillsDisplayed;
+    }
+    public int GetInitialSkillMerchantMaxActiveSkillsDisplayed() {
+        return initialSkillMerchantMaxActiveSkillsDisplayed;
+    }
+    public int GetSkillMerchantMaxPassiveSkillsDisplayed() {
+        return skillMerchantMaxPassiveSkillsDisplayed;
+    }
+    public int GetInitialSkillMerchantMaxPassiveSkillsDisplayed() {
+        return initialSkillMerchantMaxPassiveSkillsDisplayed;
+    }
+    public int GetTrapMerchantMaxTrapsDisplayed() {
+        return trapMerchantMaxTrapsDisplayed;
+    }
+    public int GetInitialTrapMerchantMaxTrapsDisplayed() {
+        return initialTrapMerchantMaxTrapsDisplayed;
+    }
+    public int GetTrapMerchantMaxTrapUpgradesDisplayed() {
+        return trapMerchantMaxTrapUpgradesDisplayed;
+    }
+    public int GetInitialTrapMerchantMaxTrapUpgradesDisplayed() {
+        return initialTrapMerchantMaxTrapUpgradeDisplayed;
+    }
+    public int GetStartWithRandomTrapAmount() {
+        return startWithRandomTrapAmount;
+    }
+    public int GetInitialStartWithRandomTrapAmount() {
+        return initialStartWithRandomTrapAmount;
+    }
+
+    public void SetSkillsMerchantMaxActiveSkillsDisplayed(int skillsDisplayBuff) {
+        skillMerchantMaxActiveSkillsDisplayed = initialSkillMerchantMaxActiveSkillsDisplayed + skillsDisplayBuff;
+    }
+    public void SetSkillsMerchantMaxPassiveSkillsDisplayed(int skillsDisplayBuff) {
+        skillMerchantMaxPassiveSkillsDisplayed = initialSkillMerchantMaxPassiveSkillsDisplayed + skillsDisplayBuff;
+    }
+    public void SetTrapsMerchantMaxTrapsDisplayed(int trapsDisplayBuff) {
+        trapMerchantMaxTrapsDisplayed = initialTrapMerchantMaxTrapsDisplayed + trapsDisplayBuff;
+    }
+    public void SetTrapsMerchantMaxTrapUpgradesDisplayed(int skillsDisplayBuff) {
+        trapMerchantMaxTrapUpgradesDisplayed = initialTrapMerchantMaxTrapUpgradeDisplayed + skillsDisplayBuff;
+    }
+    public void SetStartWithRandomTrapAmount(int trapAmountBuff) {
+        startWithRandomTrapAmount = initialStartWithRandomTrapAmount + trapAmountBuff;
     }
 
     #endregion

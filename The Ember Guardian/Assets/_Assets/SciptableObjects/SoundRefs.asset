@@ -75,6 +75,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3fc27a79c89d5774980ccd4acbe349c1, type: 3}
   - {fileID: 8300000, guid: f6d1a848ce0b12f46a7f69a5f5c4765b, type: 3}
   - {fileID: 8300000, guid: 4f05ea045b674ab42940154745c2e342, type: 3}
+  ammoSpecialPickedUpByPlayer:
+  - {fileID: 8300000, guid: a3ba2d5d7817ad44eb820da0f918f45f, type: 3}
+  - {fileID: 8300000, guid: c9b88328d46875e40b5cfad633b97b1d, type: 3}
   emberPickedUpByPlayer:
   - {fileID: 8300000, guid: 4469f071ef80009469bd917d2b539dc1, type: 3}
   redGemPickedUpByPlayer:
@@ -218,6 +221,7 @@ MonoBehaviour:
   nightStart: {fileID: 0}
   nightStartWhoosh: {fileID: 8300000, guid: d812cf13f4b1728489137d693477d3ae, type: 3}
   ammoTickAdded: {fileID: 8300000, guid: 7b56f24627f28f24cbf24ce6977ef923, type: 3}
+  ammoSpecialTickAdded: {fileID: 8300000, guid: 6ba4d60fccd7e2f4a870f9418cbab1ee, type: 3}
   hpTickAdded: {fileID: 8300000, guid: 93c248d4a23177c419917c455a01e111, type: 3}
   fireTickRemoved: {fileID: 8300000, guid: 30d1f4196fc8b0b47a92e57cfe11a6a0, type: 3}
   criticalFireTickRemoved: {fileID: 8300000, guid: 46408484fc4a90d499d34e7681116e98, type: 3}

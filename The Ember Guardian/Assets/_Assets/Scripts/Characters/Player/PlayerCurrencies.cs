@@ -29,6 +29,8 @@ public class PlayerCurrencies : MonoBehaviour
         smokeEjector,
         shockerEjector,
         spikeEjector,
+        ammo_special,
+        cyanGem,
     }
     public enum CurrencyCategory {
         orb,

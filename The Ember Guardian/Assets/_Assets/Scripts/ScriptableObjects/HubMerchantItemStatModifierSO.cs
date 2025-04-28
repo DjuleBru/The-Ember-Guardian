@@ -13,4 +13,5 @@ public class HubMerchantItemStatModifierSO : ScriptableObject
     public List<int> blueGemCostList;
     public List<int> yellowGemCostList;
     public List<int> purleGemCostList;
+    public List<int> cyanGemCostList;
 }

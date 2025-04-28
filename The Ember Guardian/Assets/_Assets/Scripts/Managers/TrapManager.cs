@@ -72,7 +72,7 @@ public class TrapManager : MonoBehaviour
             return TrapItem.TrapType.smokeEjector;
         }
         if (currencyType == PlayerCurrencies.CurrencyType.spikeEjector) {
-            return TrapItem.TrapType.spikeEjector;
+            return TrapItem.TrapType.spikeEjectorSmall;
         }
         return TrapItem.TrapType.bearTrap;
     }

@@ -17,6 +17,7 @@ public class HubMerchantUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI blueGemAmount;
     [SerializeField] private TextMeshProUGUI yellowGemAmount;
     [SerializeField] private TextMeshProUGUI purpleGemAmount;
+    [SerializeField] private TextMeshProUGUI cyanGemAmount;
     [SerializeField] private GameObject firstButtonSelected;
 
     [SerializeField] private bool hasScrollView;
@@ -75,6 +76,7 @@ public class HubMerchantUI : MonoBehaviour
         blueGemAmount.text = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count.ToString();
         yellowGemAmount.text = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count.ToString();
         purpleGemAmount.text = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count.ToString();
+        cyanGemAmount.text = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.cyanGem).Count.ToString();
     }
 
     private void RefreshGameInputView() {

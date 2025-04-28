@@ -79,13 +79,23 @@ public class Structure : MonoBehaviour {
             return;
         }
 
-        if(currentStructureInteractionType == StructureInteractionType.upgrade) {
+        if (currentStructureInteractionType == StructureInteractionType.secondaryFunction) {
+            TriggerStructureSecondaryFunction();
+            return;
+        }
+
+        if (currentStructureInteractionType == StructureInteractionType.upgrade) {
             UpgradeStructure();
             return;
         }
     }
 
     protected virtual void TriggerStructurePrimaryFunction() {
+        OnAnyStructurePrimaryFunctionUsed?.Invoke(this, EventArgs.Empty);
+        OnStructurePrimaryFunctionUsed?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected virtual void TriggerStructureSecondaryFunction() {
         OnAnyStructurePrimaryFunctionUsed?.Invoke(this, EventArgs.Empty);
         OnStructurePrimaryFunctionUsed?.Invoke(this, EventArgs.Empty);
     }
@@ -196,8 +206,6 @@ public class Structure : MonoBehaviour {
     protected virtual void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
-        //return;
-
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         playerInTriggerArea = true;
@@ -246,12 +254,14 @@ public class Structure : MonoBehaviour {
     }
 
     public void SetStructurePrimaryFunctionUnlocked(bool unlocked) {
+
         if (primaryFunctionUnlocked == unlocked) return;
         primaryFunctionUnlocked = unlocked;
         ActivateStructurePrimaryFunctionInteraction(unlocked);
     }
 
     public void SetStructureSecondaryFunctionUnlocked(bool unlocked) {
+
         if (secondaryFunctionUnlocked == unlocked) return;
         secondaryFunctionUnlocked = unlocked;
         ActivateStructureSecondaryFunctionInteraction(unlocked);

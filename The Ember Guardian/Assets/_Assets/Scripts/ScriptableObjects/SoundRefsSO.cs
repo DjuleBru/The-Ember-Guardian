@@ -25,6 +25,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip[] bigRedOrbPickedUpByPlayer;
     public AudioClip[] smallRedOrbPickedUpByPlayer;
     public AudioClip[] ammoPickedUpByPlayer;
+    public AudioClip[] ammoSpecialPickedUpByPlayer;
     public AudioClip[] emberPickedUpByPlayer;
     public AudioClip[] redGemPickedUpByPlayer;
     public AudioClip[] greenGemPickedUpByPlayer;
@@ -103,6 +104,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip nightStart;
     public AudioClip nightStartWhoosh;
     public AudioClip ammoTickAdded;
+    public AudioClip ammoSpecialTickAdded;
     public AudioClip hpTickAdded;
     public AudioClip fireTickRemoved;
     public AudioClip criticalFireTickRemoved;

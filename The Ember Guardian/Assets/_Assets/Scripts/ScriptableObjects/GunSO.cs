@@ -20,6 +20,7 @@ public class GunSO : ScriptableObject
     public Sprite gunSprite;
     public Sprite reticleSprite;
     public List<Sprite> shotCountSprites;
+    public PlayerCurrencies.CurrencyType ammoTypeUsed;
 
     public RuntimeAnimatorController gunAnimator;
     public bool bulletIsParticle;

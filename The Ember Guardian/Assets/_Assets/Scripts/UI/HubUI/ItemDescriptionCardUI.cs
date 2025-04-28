@@ -25,12 +25,14 @@ public class ItemDescriptionCardUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI blueGemAmountText;
     [SerializeField] private TextMeshProUGUI yellowGemAmountText;
     [SerializeField] private TextMeshProUGUI purpleGemAmountText;
+    [SerializeField] private TextMeshProUGUI cyanGemAmountText;
 
     [SerializeField] private GameObject greenGemCostGO;
     [SerializeField] private GameObject redGemCostGO;
     [SerializeField] private GameObject blueGemCostGO;
     [SerializeField] private GameObject yellowGemCostGO;
     [SerializeField] private GameObject purpleGemCostGO;
+    [SerializeField] private GameObject cyanGemCostGO;
     [SerializeField] private TextMeshProUGUI maxLevelText;
     [SerializeField] private GameObject foreGround;
 
@@ -54,13 +56,14 @@ public class ItemDescriptionCardUI : MonoBehaviour
         maxLevelText.gameObject.SetActive(false);
     }
 
-    public void SetDescriptionCardCost(int greenGem, int redGem, int blueGem, int yellowGem, int purpleGem) {
+    public void SetDescriptionCardCost(int greenGem, int redGem, int blueGem, int yellowGem, int purpleGem, int cyanGem) {
 
         redGemAmountText.text = redGem.ToString();
         greenGemAmountText.text = greenGem.ToString();
         blueGemAmountText.text = blueGem.ToString();
         yellowGemAmountText.text = yellowGem.ToString();
         purpleGemAmountText.text = purpleGem.ToString();
+        cyanGemAmountText.text = cyanGem.ToString();
 
         if (greenGem == 0) {
             greenGemCostGO.SetActive(false);
@@ -81,10 +84,13 @@ public class ItemDescriptionCardUI : MonoBehaviour
         if (purpleGem == 0) {
             purpleGemCostGO.SetActive(false);
         }
+
+        if (cyanGem == 0) {
+            cyanGemCostGO.SetActive(false);
+        }
     }
 
     private void RefreshItemStatDescription(List<string> itemStatDescriptionList, List<string> itemStatList, List<bool> itemStatModifiersBools) {
-
         foreach(Transform child in itemStatDescriptionContainer) {
             if (child == itemStatDescriptionTemplate) continue;
             Destroy(child.gameObject);
@@ -152,6 +158,7 @@ public class ItemDescriptionCardUI : MonoBehaviour
         blueGemCostGO.SetActive(false);
         yellowGemCostGO.SetActive(false);
         purpleGemCostGO.SetActive(false);
+        cyanGemCostGO.SetActive(false);
 
     }
 

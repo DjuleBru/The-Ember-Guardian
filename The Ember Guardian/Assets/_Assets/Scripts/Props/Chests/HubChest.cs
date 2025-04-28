@@ -45,6 +45,7 @@ public class HubChest : MonoBehaviour
 
         allGemTypesList.Add(PlayerCurrencies.CurrencyType.greenGem);
         allGemTypesList.Add(PlayerCurrencies.CurrencyType.redGem);
+        allGemTypesList.Add(PlayerCurrencies.CurrencyType.cyanGem);
         allGemTypesList.Add(PlayerCurrencies.CurrencyType.blueGem);
         allGemTypesList.Add(PlayerCurrencies.CurrencyType.yellowGem);
         allGemTypesList.Add(PlayerCurrencies.CurrencyType.purpleGem);

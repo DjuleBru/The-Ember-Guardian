@@ -20,6 +20,10 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     [SerializeField] private Transform ammoTickTemplateBackground;
     [SerializeField] private Transform ammoTickContainerBackground;
 
+    [SerializeField] private Image ammoTickTemplateBackgroundRenderer;
+    [SerializeField] private Sprite ammoSprite;
+    [SerializeField] private Sprite ammoSpecialSprite;
+
     private CanvasGroup ammoBarCanvasGroup;
     private float ammoBarDisplayTime;   // Durée d'affichage de la barre
     private float ammoBarReloadDisplayTime = 2f;   // Durée d'affichage de la barre
@@ -203,6 +207,17 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 
             PlayerUI_TickTemplate ammoTick = Instantiate(ammoTickTemplate, ammoTickContainer).GetComponent<PlayerUI_TickTemplate>();
 
+            PlayerCurrencies.CurrencyType ammoType = PlayerShoot.Instance.GetCurrentAmmoType();
+            RectTransform rt = ammoTick.GetComponent<RectTransform>();
+            if (ammoType == PlayerCurrencies.CurrencyType.ammo) {
+                ammoTick.SetImageSprite(ammoSprite);
+                rt.sizeDelta = new Vector2(.3f, .1f);
+            }
+            if (ammoType == PlayerCurrencies.CurrencyType.ammo_special) {
+                ammoTick.SetImageSprite(ammoSpecialSprite);
+                rt.sizeDelta = new Vector2(.3f, .15f);
+            }
+
             ammoTick.gameObject.SetActive(true);
             PlayerUI_TickTemplate[] ammoTickArray = ammoTickContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
             ammoTickArray[0].AddTick();
@@ -222,16 +237,40 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         }
 
         int playerAmmo = PlayerShoot.Instance.GetCurrentAmmoClip();
+        PlayerCurrencies.CurrencyType ammoType = PlayerShoot.Instance.GetCurrentAmmoType();
+
         for (int i = 0; i < playerAmmo; i++) {
             PlayerUI_TickTemplate ammoTick = Instantiate(ammoTickTemplate, ammoTickContainer).GetComponent<PlayerUI_TickTemplate>();
+            RectTransform rt = ammoTick.GetComponent<RectTransform>();
             ammoTick.SetImageAlphaFull();
+            if (ammoType == PlayerCurrencies.CurrencyType.ammo) {
+                ammoTick.SetImageSprite(ammoSprite);
+                rt.sizeDelta = new Vector2(.3f, .1f);
+            }
+            if (ammoType == PlayerCurrencies.CurrencyType.ammo_special) {
+                ammoTick.SetImageSprite(ammoSpecialSprite);
+                rt.sizeDelta = new Vector2(.3f, .15f);
+            }
         }
 
+        
         ammoTickTemplate.gameObject.SetActive(false);
     }
 
     private void RefreshAmmoBarBackground() {
         ammoTickTemplateBackground.gameObject.SetActive(true);
+
+        PlayerCurrencies.CurrencyType ammoType = PlayerShoot.Instance.GetCurrentAmmoType();
+        RectTransform rt = ammoTickTemplateBackground.GetComponent<RectTransform>();
+
+        if (ammoType == PlayerCurrencies.CurrencyType.ammo) {
+            ammoTickTemplateBackgroundRenderer.sprite = ammoSprite;
+            rt.sizeDelta = new Vector2(.3f, .1f);
+        }
+        if (ammoType == PlayerCurrencies.CurrencyType.ammo_special) {
+            ammoTickTemplateBackgroundRenderer.sprite = ammoSpecialSprite;
+            rt.sizeDelta = new Vector2(.3f, .15f);
+        }
 
         foreach (Transform child in ammoTickContainerBackground) {
             if (child == ammoTickTemplateBackground) continue;

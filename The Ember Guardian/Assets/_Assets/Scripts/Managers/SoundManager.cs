@@ -278,7 +278,11 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlayerUI_AmmoBar_OnAmmoTickAdded(object sender, System.EventArgs e) {
-        PlaySound2D(soundRefsSO.ammoTickAdded,.7f);
+        if(PlayerShoot.Instance.GetHeldGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo) {
+            PlaySound2D(soundRefsSO.ammoTickAdded, .7f);
+        } else {
+            PlaySound2D(soundRefsSO.ammoSpecialTickAdded, .7f);
+        }
     }
 
     private void StructureUI_Fire_OnFireTickRemoved(object sender, System.EventArgs e) {
@@ -363,7 +367,7 @@ public class SoundManager : MonoBehaviour
         if (collectible.GetCurrencyCategory() == PlayerCurrencies.CurrencyCategory.trap) {
             PlaySound3D(soundRefsSO.trapTouchedFloor, (sender as MonoBehaviour).transform.position);
         }
-        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
+        if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo || collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo_special) {
             PlaySound3D(soundRefsSO.ammoTouchedFloor, (sender as MonoBehaviour).transform.position, .7f);
         }
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember) {
@@ -395,10 +399,10 @@ public class SoundManager : MonoBehaviour
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.smallRedOrb) {
             PlaySound2D(soundRefsSO.smallRedOrbPickedUpByPlayer, .7f);
         }
-        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.greenGem || currencyTypeCollected == PlayerCurrencies.CurrencyType.blueGem || currencyTypeCollected == PlayerCurrencies.CurrencyType.purpleGem) {
+        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.cyanGem || currencyTypeCollected == PlayerCurrencies.CurrencyType.blueGem || currencyTypeCollected == PlayerCurrencies.CurrencyType.purpleGem) {
             PlaySound2D(soundRefsSO.greenGemPickedUpByPlayer, .7f);
         }
-        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.redGem || currencyTypeCollected == PlayerCurrencies.CurrencyType.yellowGem) {
+        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.redGem || currencyTypeCollected == PlayerCurrencies.CurrencyType.yellowGem || currencyTypeCollected == PlayerCurrencies.CurrencyType.greenGem) {
             PlaySound2D(soundRefsSO.redGemPickedUpByPlayer, .7f);
         }
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.bearTrap || currencyTypeCollected == PlayerCurrencies.CurrencyType.bladeTrap || currencyTypeCollected == PlayerCurrencies.CurrencyType.shockerEjector || currencyTypeCollected == PlayerCurrencies.CurrencyType.smokeEjector || currencyTypeCollected == PlayerCurrencies.CurrencyType.spikeEjector) {
@@ -406,6 +410,9 @@ public class SoundManager : MonoBehaviour
         }
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.ammo) {
             PlaySound2D(soundRefsSO.ammoPickedUpByPlayer, .7f);
+        }
+        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.ammo_special) {
+            PlaySound2D(soundRefsSO.ammoSpecialPickedUpByPlayer);
         }
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.ember) {
             if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB && !initialEmberGiven) {
@@ -442,7 +449,7 @@ public class SoundManager : MonoBehaviour
             PlaySound3D(soundRefsSO.smallRedOrbDropped, (sender as MonoBehaviour).transform.position);
         }
 
-        if (e.currencyType == PlayerCurrencies.CurrencyType.ammo) {
+        if (e.currencyType == PlayerCurrencies.CurrencyType.ammo || e.currencyType == PlayerCurrencies.CurrencyType.ammo_special) {
             PlaySound3D(soundRefsSO.ammoDropped, (sender as MonoBehaviour).transform.position);
         }
 

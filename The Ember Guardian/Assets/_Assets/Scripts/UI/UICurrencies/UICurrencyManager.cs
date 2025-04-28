@@ -30,7 +30,9 @@ public class UICurrencyManager : MonoBehaviour
     [SerializeField] private Transform blueGemUIPrefab;
     [SerializeField] private Transform yellowGemUIPrefab;
     [SerializeField] private Transform purpleGemUIPrefab;
+    [SerializeField] private Transform cyanGemUIPrefab;
     [SerializeField] private Transform ammoUIPrefab;
+    [SerializeField] private Transform ammoSpecialUIPrefab;
     [SerializeField] private Transform emberUIPrefab;
     [SerializeField] private Transform bearTrapUIPrefab;
     [SerializeField] private Transform bladeTrapUIPrefab;
@@ -117,6 +119,9 @@ public class UICurrencyManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.redGem);
         }
+        if (Input.GetKeyDown(KeyCode.C)) {
+            AddCurrencyInBag(PlayerCurrencies.CurrencyType.cyanGem);
+        }
         if (Input.GetKeyDown(KeyCode.B)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.blueGem);
         }
@@ -127,7 +132,8 @@ public class UICurrencyManager : MonoBehaviour
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.purpleGem);
         }
         if (Input.GetKeyDown(KeyCode.H)) {
-            AddCurrencyInBag(PlayerCurrencies.CurrencyType.ammo);
+            //AddCurrencyInBag(PlayerCurrencies.CurrencyType.ammo);
+            AddCurrencyInBag(PlayerCurrencies.CurrencyType.ammo_special);
         }
         if (Input.GetKeyDown(KeyCode.J)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.bigRedOrb);
@@ -202,6 +208,11 @@ public class UICurrencyManager : MonoBehaviour
             currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
         }
 
+        if (currencyType == PlayerCurrencies.CurrencyType.cyanGem) {
+            currencyTransform = Instantiate(cyanGemUIPrefab, gemsSpawnPosition.position, Quaternion.identity, currencyContainer);
+            currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+        }
+
         if (currencyType == PlayerCurrencies.CurrencyType.redGem) {
             currencyTransform = Instantiate(redGemUIPrefab, gemsSpawnPosition.position, Quaternion.identity, currencyContainer);
             currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
@@ -224,6 +235,11 @@ public class UICurrencyManager : MonoBehaviour
 
         if (currencyType == PlayerCurrencies.CurrencyType.ammo) {
             currencyTransform = Instantiate(ammoUIPrefab, ammoSpawnPosition.position, Quaternion.identity, currencyContainer);
+            currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+        }
+
+        if (currencyType == PlayerCurrencies.CurrencyType.ammo_special) {
+            currencyTransform = Instantiate(ammoSpecialUIPrefab, ammoSpawnPosition.position, Quaternion.identity, currencyContainer);
             currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
         }
 
@@ -545,6 +561,10 @@ public class UICurrencyManager : MonoBehaviour
 
         if (currencyType == PlayerCurrencies.CurrencyType.purpleGem) {
             prefab = purpleGemUIPrefab;
+        }
+
+        if (currencyType == PlayerCurrencies.CurrencyType.cyanGem) {
+            prefab = cyanGemUIPrefab;
         }
 
         foreach (Vector3 position in currencyPositions) {

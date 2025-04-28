@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,9 @@ public class CurrenciesManager : MonoBehaviour
     [SerializeField] private Transform blueGemPrefab;
     [SerializeField] private Transform yellowGemPrefab;
     [SerializeField] private Transform purpleGemPrefab;
+    [SerializeField] private Transform cyanGemPrefab;
     [SerializeField] private Transform ammoPrefab;
+    [SerializeField] private Transform ammoSpecialPrefab;
     [SerializeField] private Transform emberPrefab;
     [SerializeField] private Transform bearTrapPrefab;
     [SerializeField] private Transform bladeTrapPrefab;
@@ -23,8 +26,47 @@ public class CurrenciesManager : MonoBehaviour
     [SerializeField] private Transform spikeEjectorTrapPrefab;
     [SerializeField] private Transform shockEjectorTrapPrefab;
 
+    [SerializeField] private List<HubMerchantItem> allHubMerchantItems = new List<HubMerchantItem>();
+    [SerializeField] private List<HubMerchantItemStatModifierSO> allHubMerchantItemsStatModifiers = new List<HubMerchantItemStatModifierSO>();
+    private int totalItemGreenGems;
+    private int totalItemRedGems;
+    private int totalItemBlueGems;
+    private int totalItemYellowGems;
+    private int totalItemPurpleGems;
+    private int totalItemCyanGems;
+
     private void Awake() {
         Instance = this;
+    }
+
+    [Button] 
+    public void CountTotalItemGemCosts() {
+        foreach (HubMerchantItem hubMerchantItem in allHubMerchantItems) {
+            totalItemGreenGems += hubMerchantItem.GetGreenGemCost();
+            totalItemRedGems += hubMerchantItem.GetRedGemCost();
+            totalItemBlueGems += hubMerchantItem.GetBlueGemCost();
+            totalItemYellowGems += hubMerchantItem.GetYellowGemCost();
+            totalItemPurpleGems += hubMerchantItem.GetPurpleGemCost();
+            totalItemCyanGems += hubMerchantItem.GetCyanGemCost();
+        }
+
+        foreach (HubMerchantItemStatModifierSO statModifier in allHubMerchantItemsStatModifiers) {
+            foreach (int gemCost in statModifier.greenGemCostList) {
+                totalItemGreenGems += gemCost;
+            }
+            foreach (int gemCost in statModifier.redGemCostList) {
+                totalItemRedGems += gemCost;
+            }
+            foreach (int gemCost in statModifier.yellowGemCostList) {
+                totalItemYellowGems += gemCost;
+            }
+            foreach (int gemCost in statModifier.blueGemCostList) {
+                totalItemBlueGems += gemCost;
+            }
+            foreach (int gemCost in statModifier.purleGemCostList) {
+                totalItemPurpleGems += gemCost;
+            }
+        }
     }
 
     public Transform GetCurrencyPrefab(PlayerCurrencies.CurrencyType currencyType) {
@@ -43,6 +85,9 @@ public class CurrenciesManager : MonoBehaviour
         if (currencyType == PlayerCurrencies.CurrencyType.redGem) {
             return redGemPrefab;
         }
+        if (currencyType == PlayerCurrencies.CurrencyType.cyanGem) {
+            return cyanGemPrefab;
+        }
         if (currencyType == PlayerCurrencies.CurrencyType.greenGem) {
             return greenGemPrefab;
         }
@@ -57,6 +102,9 @@ public class CurrenciesManager : MonoBehaviour
         }
         if (currencyType == PlayerCurrencies.CurrencyType.ammo) {
             return ammoPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.ammo_special) {
+            return ammoSpecialPrefab;
         }
         if (currencyType == PlayerCurrencies.CurrencyType.ember) {
             return emberPrefab;
@@ -89,7 +137,7 @@ public class CurrenciesManager : MonoBehaviour
         if (trapType == TrapItem.TrapType.smokeEjector) {
             return smokeEjectorTrapPrefab;
         }
-        if (trapType == TrapItem.TrapType.spikeEjector) {
+        if (trapType == TrapItem.TrapType.spikeEjectorSmall) {
             return spikeEjectorTrapPrefab;
         }
         if (trapType == TrapItem.TrapType.shockerEjector) {
@@ -121,6 +169,11 @@ public class CurrenciesManager : MonoBehaviour
             currencyTypesInCategory.Add(PlayerCurrencies.CurrencyType.smallBlueOrb);
             currencyTypesInCategory.Add(PlayerCurrencies.CurrencyType.bigRedOrb);
             currencyTypesInCategory.Add(PlayerCurrencies.CurrencyType.smallRedOrb);
+        }
+
+        if (currencyCategory == PlayerCurrencies.CurrencyCategory.ammo) {
+            currencyTypesInCategory.Add(PlayerCurrencies.CurrencyType.ammo);
+            currencyTypesInCategory.Add(PlayerCurrencies.CurrencyType.ammo_special);
         }
 
         if (currencyCategory == PlayerCurrencies.CurrencyCategory.gem) {

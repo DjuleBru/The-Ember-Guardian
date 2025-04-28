@@ -54,6 +54,10 @@ public class PlayerUI_TickTemplate : MonoBehaviour
         image.color = color;
     }
 
+    public void SetImageSprite(Sprite sprite) {
+        image.sprite = sprite;
+    }
+
     public void StopInFeedbacks() {
         inMmfPlayer.StopFeedbacks();
     }

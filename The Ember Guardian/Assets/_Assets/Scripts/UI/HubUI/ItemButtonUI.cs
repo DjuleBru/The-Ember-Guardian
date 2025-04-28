@@ -32,7 +32,8 @@ public class ItemButtonUI : ButtonUI
     [SerializeField] private TextMeshProUGUI itemMaxedLevelText;
     [SerializeField] private TextMeshProUGUI itemLevelText;
     [SerializeField] private TextMeshProUGUI itemMaxLevelText;
-
+    [SerializeField] private TextMeshProUGUI buyItemFromOtherMerchantText;
+    [SerializeField] private Animator buyItemFromOtherMerchantTextAnimator;
 
     [SerializeField] private bool showItemLevel;
     [SerializeField] private bool hideItemMaxLevel;
@@ -154,9 +155,10 @@ public class ItemButtonUI : ButtonUI
         int blueGemCost = hubMerchantItem.GetBlueGemCost();
         int yellowGemCost = hubMerchantItem.GetYellowGemCost();
         int purpleGemCost = hubMerchantItem.GetPurpleGemCost();
+        int cyanGemCost = hubMerchantItem.GetCyanGemCost();
 
         descriptionCard.SetDescriptionCardText(itemName, constantUnlockDescription, itemStatDescription, itemDescription, itemStatValues, itemStatModifierValues);
-        descriptionCard.SetDescriptionCardCost(greenGemCost, redGemCost, blueGemCost, yellowGemCost, purpleGemCost);
+        descriptionCard.SetDescriptionCardCost(greenGemCost, redGemCost, blueGemCost, yellowGemCost, purpleGemCost, cyanGemCost);
 
         if(itemLockedInDemo && HUBManager.Instance.GetIsDemo()) {
             descriptionCard.SetDescriptionCardItemLockedInDemo();
@@ -191,6 +193,7 @@ public class ItemButtonUI : ButtonUI
     public void BuyItem() {
         if (!hubMerchantItem.GetItemUnlocked() || (itemLockedInDemo && HUBManager.Instance.GetIsDemo())) {
             OnAnyLockedButtonTryPress?.Invoke(this, EventArgs.Empty);
+            CheckItemLockedFromOtherMerchantItem();
             return;
         }
 
@@ -247,6 +250,16 @@ public class ItemButtonUI : ButtonUI
 
     }
 
+    private void CheckItemLockedFromOtherMerchantItem() {
+        foreach(ItemButtonUI itemButtonUI in lockingItemButtonUIList) {
+            HubMerchant lockingItemHubMerchantParent = itemButtonUI.GetHubMerchantItem().GetHubMerchantParent();
+            if (lockingItemHubMerchantParent == null || lockingItemHubMerchantParent != hubMerchantItem.GetHubMerchantParent()) {
+                buyItemFromOtherMerchantText.text = "Buy " + itemButtonUI.GetHubMerchantItem().GetItemName() + " from " + lockingItemHubMerchantParent.GetHubMerchantName() + " first";
+                buyItemFromOtherMerchantTextAnimator.SetTrigger("Show");
+            }
+        }
+    }
+
     private void StartBuyItemVisuals() {
         if (hubMerchantItem.GetItemUpgradeable() && hubMerchantItem.GetItemMaxed()) {
             outlineImage.sprite = itemMaxedOutlineSprite;
@@ -260,7 +273,7 @@ public class ItemButtonUI : ButtonUI
 
         iconImage.material = new Material(iconImage.material);
         iconImage.material.SetFloat("_GreyscaleBlend", 0);
-        itemButtonUI_Visual.StartBuyAnimation(hubMerchantItem.GetRedGemCost(), hubMerchantItem.GetGreenGemCost(), hubMerchantItem.GetBlueGemCost(), hubMerchantItem.GetYellowGemCost(), hubMerchantItem.GetPurpleGemCost());
+        itemButtonUI_Visual.StartBuyAnimation(hubMerchantItem.GetRedGemCost(), hubMerchantItem.GetGreenGemCost(), hubMerchantItem.GetBlueGemCost(), hubMerchantItem.GetYellowGemCost(), hubMerchantItem.GetPurpleGemCost(), hubMerchantItem.GetCyanGemCost());
     }
 
     private void SetItemBoughtVisuals() {
@@ -341,7 +354,7 @@ public class ItemButtonUI : ButtonUI
     }
 
     public void StartUpgradeItemAnimation() {
-        itemButtonUI_Visual.StartBuyAnimation(hubMerchantItem.GetRedGemCost(), hubMerchantItem.GetGreenGemCost(), hubMerchantItem.GetBlueGemCost(), hubMerchantItem.GetYellowGemCost(), hubMerchantItem.GetPurpleGemCost());
+        itemButtonUI_Visual.StartBuyAnimation(hubMerchantItem.GetRedGemCost(), hubMerchantItem.GetGreenGemCost(), hubMerchantItem.GetBlueGemCost(), hubMerchantItem.GetYellowGemCost(), hubMerchantItem.GetPurpleGemCost(), hubMerchantItem.GetCyanGemCost());
     }
 
     public void SetLockingItemBought(ItemButtonUI itemButtonUI) {
@@ -490,6 +503,9 @@ public class ItemButtonUI : ButtonUI
 
     #endregion
 
+    public HubMerchantItem GetHubMerchantItem() {
+        return hubMerchantItem;
+    }
     public bool GetIsTreeChild() {
         return isTreeChild;
     }

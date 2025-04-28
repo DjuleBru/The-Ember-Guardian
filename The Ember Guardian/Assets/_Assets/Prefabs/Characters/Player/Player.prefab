@@ -35042,7 +35042,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0.27, y: 0.1}
+  m_SizeDelta: {x: 0.3, y: 0.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5022170145211865161
 CanvasRenderer:
@@ -99736,8 +99736,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.608, y: -0.557}
-  m_SizeDelta: {x: 0.25, y: 1}
+  m_AnchoredPosition: {x: -0.73, y: -0.557}
+  m_SizeDelta: {x: 0.3, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5533642734957346242
 MonoBehaviour:
@@ -99759,6 +99759,9 @@ MonoBehaviour:
   ammoTickContainer: {fileID: 5435482482912318343}
   ammoTickTemplateBackground: {fileID: 648194524246551284}
   ammoTickContainerBackground: {fileID: 2802890732744336651}
+  ammoTickTemplateBackgroundRenderer: {fileID: 4648521848492034320}
+  ammoSprite: {fileID: -1793149206, guid: 4b0a6e0b844627a429583d4db81a8485, type: 3}
+  ammoSpecialSprite: {fileID: -412660844, guid: 4b0a6e0b844627a429583d4db81a8485, type: 3}
 --- !u!1 &7340039820303448392
 GameObject:
   m_ObjectHideFlags: 0
@@ -102441,7 +102444,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.125, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &6263376001960348990

@@ -65,7 +65,7 @@ public class Currency_UI : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("DestroyCurrency")) {
 
-            if(currencyType == PlayerCurrencies.CurrencyType.ammo) {
+            if(currencyType == PlayerCurrencies.CurrencyType.ammo || currencyType == PlayerCurrencies.CurrencyType.ammo_special) {
                 ammoTriggerAmount++;
                 if (ammoTriggerAmount != 3) return;
             }

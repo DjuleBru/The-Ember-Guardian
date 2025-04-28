@@ -8,8 +8,10 @@ public class TrapItem : MerchantItem
         bladeTrap,
         bearTrap,
         smokeEjector,
-        spikeEjector,
+        spikeEjectorSmall,
         shockerEjector,
+        spikes,
+        flameEjector,
     }
 
     public TrapType trapType;

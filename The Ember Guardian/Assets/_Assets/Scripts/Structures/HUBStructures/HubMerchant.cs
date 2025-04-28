@@ -130,6 +130,7 @@ public class HubMerchant : MonoBehaviour
 
         foreach (HubMerchantItem hubMerchantItem in hubMerchantItemParent.GetComponentsInChildren<HubMerchantItem>()) {
             hubMerchantItems.Add(hubMerchantItem);
+            hubMerchantItem.SetHubMerchantParent(this);
         }
     }
 

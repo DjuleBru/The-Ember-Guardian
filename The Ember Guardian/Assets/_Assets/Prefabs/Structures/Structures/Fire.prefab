@@ -38186,10 +38186,11 @@ MonoBehaviour:
   isMainFire: 1
   isEndLevelFire: 0
   isHubFire: 0
-  calmFireRadius: 8.5
-  mildFireRadius: 8.5
+  calmFireRadius: 10
+  mildFireRadius: 10
   wildFireRadius: 20.35
   insaneFireRadius: 20.35
+  fuelDepletionRate: 0.05
   extractingEmberFuelRateDepletion: 5
   respawningPlayerFuelRateDepletion: 2
   debugFuelLevel: 0
@@ -38427,7 +38428,7 @@ MonoBehaviour:
   upgradeGameObject: {fileID: 4181146338195577452}
   switchUIGameObjectList: {fileID: 6147802896860545034}
   functionPayOrbsUIList: {fileID: 5382955344090603618}
-  decondaryFunctionPayOrbsUIList: {fileID: 0}
+  secondaryFunctionPayOrbsUIList: {fileID: 0}
   upgradeToNextLevelPayOrbsUIList:
   - {fileID: 8529392425079162832}
   - {fileID: 6354216934424298877}
