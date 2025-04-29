@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c7961ad1e3c5044a946b393c459b3b, type: 3}
+  m_Name: FireEjector
+  m_EditorClassIdentifier: 
+  itemType: 3
+  trapType: 7
+  trapUpgradeSO: {fileID: 0}
+  trapStructureSO: {fileID: 11400000, guid: 5aef824fb08907c4c816660e0926dddf, type: 2}
+  linkedTrapSO: {fileID: 0}
+  TrapName: Smoke Ejector
+  buyTrapPrice: 3
+  trapDamage: 5
+  trapSpecialStat: 5
+  trapCooldown: 5
+  trapUsesPerNight: 3
+  maxRearmsBeforeBreaking: 1
+  rearmPrice: 2
+  trapActiveDuration: 1.6
+  trapHasAOEAttack: 1
+  Icon: {fileID: 1344405616, guid: acdfaf23437c65d488a22e27b3e20f9b, type: 3}
+  currencyTypeToPay: 0
+  triggerTrapAudioClip:
+  - {fileID: 8300000, guid: db7cf260d8c258846b331352a9348756, type: 3}
+  - {fileID: 8300000, guid: 1d9f3b2744f9bc941923a9a04ccdd3e3, type: 3}
+  - {fileID: 8300000, guid: 0bb7d0c54a639994096ad58bcd953fc6, type: 3}
+  - {fileID: 8300000, guid: 66945820a89dded42aefea7673be0a95, type: 3}
+  reloadTrapAudioClip:
+  - {fileID: 8300000, guid: 6f50fa6239addf9419100e2b7525bbe1, type: 3}
+  - {fileID: 8300000, guid: 3f4d6cf49c904bd4e86bae3bf5798aa3, type: 3}
+  Description: Poisons the creatures that pass though the smoke.

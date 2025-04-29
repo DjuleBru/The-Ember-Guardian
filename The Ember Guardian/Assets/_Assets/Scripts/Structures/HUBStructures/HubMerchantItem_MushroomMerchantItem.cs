@@ -5,11 +5,11 @@ using UnityEngine;
 public class HubMerchantItem_MushroomMerchantItem : HubMerchantItem
 {
     public enum HubMerchantItem_MushroomMerchantItemType {
-        passiveFuelFireOnKills,
+        passiveDmgIncreaseToCreaturesNotInFireLight,
         passiveShootOnReload,
         passiveLastBulletDealsTwiceDamage,
         passiveMeleeAttackMagmaShot,
-        passiveHealOnKills,
+        passiveDamageIncreaseInLight,
         passiveAmmoGeneration,
         passiveChanceToDropDoubleXP,
         passiveShieldGenerator,
@@ -58,8 +58,16 @@ public class HubMerchantItem_MushroomMerchantItem : HubMerchantItem
     }
 
     public override void BuyItem() {
-        if (mushroomItemCategory == HubMerchantItem_MushroomMerchantItemCategory.levelMerchantUpgrade) {
+        if (mushroomItemCategory == HubMerchantItem_MushroomMerchantItemCategory.levelMerchantUpgrade || mushroomItemCategory == HubMerchantItem_MushroomMerchantItemCategory.startWithItem) {
             SetNewStatIncreaseStats();
+        }
+
+        if(mushroomItemCategory == HubMerchantItem_MushroomMerchantItemCategory.newActiveSkill || mushroomItemCategory == HubMerchantItem_MushroomMerchantItemCategory.newPassiveSkill) {
+            PlayerSave.Instance.HUBUnlockNewSkill(linkedSkillSO);
+        }
+
+        if (mushroomItemCategory == HubMerchantItem_MushroomMerchantItemCategory.newTrap) { 
+            TrapManager.Instance.HUBUnlockNewTrap(linkedTrapSO);
         }
 
         base.BuyItem();
@@ -67,8 +75,9 @@ public class HubMerchantItem_MushroomMerchantItem : HubMerchantItem
         RefreshStatValues();
         InvokeItemMustRefreshDescriptionCard();
     }
+
     public override void UpgradeItem() {
-        if (mushroomItemCategory == HubMerchantItem_MushroomMerchantItemCategory.levelMerchantUpgrade) {
+        if (mushroomItemCategory == HubMerchantItem_MushroomMerchantItemCategory.levelMerchantUpgrade || mushroomItemCategory == HubMerchantItem_MushroomMerchantItemCategory.startWithItem) {
             SetNewStatIncreaseStats();
         }
 
@@ -96,9 +105,17 @@ public class HubMerchantItem_MushroomMerchantItem : HubMerchantItem
         if (mushroomItemType == HubMerchantItem_MushroomMerchantItemType.trapMerchantMaxTrapUpgradesDisplayed) {
             StructureStats.Instance.SetTrapsMerchantMaxTrapUpgradesDisplayed((int)buff);
         }
+
         if (mushroomItemType == HubMerchantItem_MushroomMerchantItemType.startWith1RandomTrap) {
             StructureStats.Instance.SetStartWithRandomTrapAmount((int)buff);
         }
+        if (mushroomItemType == HubMerchantItem_MushroomMerchantItemType.startWith1RandomActiveSkill) {
+            PlayerStats.Instance.SetInitialRandomActiveSkillLevel((int)buff);
+        }
+        if (mushroomItemType == HubMerchantItem_MushroomMerchantItemType.startWith1RandomPassiveSkill) {
+            PlayerStats.Instance.SetInitialRandomPassiveSkillLevel((int)buff);
+        }
+
 
     }
 
@@ -116,7 +133,7 @@ public class HubMerchantItem_MushroomMerchantItem : HubMerchantItem
             statModifiedBools.Add(false);
             statValues.Add("");
         }
-        if (mushroomItemCategory == HubMerchantItem_MushroomMerchantItemCategory.levelMerchantUpgrade || mushroomItemType == HubMerchantItem_MushroomMerchantItemType.startWith1RandomTrap) {
+        if (mushroomItemCategory == HubMerchantItem_MushroomMerchantItemCategory.levelMerchantUpgrade || mushroomItemCategory == HubMerchantItem_MushroomMerchantItemCategory.startWithItem) {
 
             maxItemLevel = linkedStatModifierSO.statModifierList.Count;
 
@@ -176,8 +193,28 @@ public class HubMerchantItem_MushroomMerchantItem : HubMerchantItem
             }
 
             if (mushroomItemType == HubMerchantItem_MushroomMerchantItemType.startWith1RandomTrap) {
-                initialStatValue = StructureStats.Instance.GetStartWithRandomTrapAmount();
-                currentStatValue = StructureStats.Instance.GetInitialStartWithRandomTrapAmount().ToString();
+                initialStatValue = StructureStats.Instance.GetInitialStartWithRandomTrapAmount();
+                currentStatValue = StructureStats.Instance.GetStartWithRandomTrapAmount().ToString();
+
+                totalStatWithModifierPostfix = "";
+                relativeStatPostfix = "";
+                relativeStatPrefix = "+";
+                initialStatPrefix = "";
+                totalStatWithModifierPrefix = "";
+            }
+            if (mushroomItemType == HubMerchantItem_MushroomMerchantItemType.startWith1RandomActiveSkill) {
+                initialStatValue = 0;
+                currentStatValue = PlayerStats.Instance.GetStartWithRandomActiveSkillLevel().ToString();
+
+                totalStatWithModifierPostfix = "";
+                relativeStatPostfix = "";
+                relativeStatPrefix = "+";
+                initialStatPrefix = "";
+                totalStatWithModifierPrefix = "";
+            }
+            if (mushroomItemType == HubMerchantItem_MushroomMerchantItemType.startWith1RandomPassiveSkill) {
+                initialStatValue = 0;
+                currentStatValue = PlayerStats.Instance.GetStartWithRandomPassiveSkillLevel().ToString();
 
                 totalStatWithModifierPostfix = "";
                 relativeStatPostfix = "";
@@ -268,6 +305,20 @@ public class HubMerchantItem_MushroomMerchantItem : HubMerchantItem
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_startWithTrapAmount") + " ");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newStartWithTrapAmount") + " ");
+        }
+        if (mushroomItemType == HubMerchantItem_MushroomMerchantItemType.startWith1RandomActiveSkill) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentStartWithRandomActiveSkillLevel") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_startWithRandomActiveSkillLevel") + " ");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newStartWithRandomActiveSkillLevel") + " ");
+        }
+        if (mushroomItemType == HubMerchantItem_MushroomMerchantItemType.startWith1RandomPassiveSkill) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentStartWithRandomPassiveSkillLevel") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_startWithRandomPassiveSkillLevel") + " ");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newStartWithRandomPassiveSkillLevel") + " ");
         }
 
         return statDescriptionList;

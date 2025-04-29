@@ -26,7 +26,7 @@ public class HubMerchantItem : MonoBehaviour
 
     [SerializeField] protected HubMerchantItemStatModifierSO linkedStatModifierSO;
 
-    private HubMerchant parentHubMerchant;
+    [SerializeField] private HubMerchant parentHubMerchant;
 
     protected List<int> greenGemCostList;
     protected List<int> redGemCostList;
@@ -226,9 +226,6 @@ public class HubMerchantItem : MonoBehaviour
         OnItemMustRefreshDescriptionCard?.Invoke(this, EventArgs.Empty);
     }
 
-    public void SetHubMerchantParent(HubMerchant hubMerchant) {
-        parentHubMerchant = hubMerchant;
-    }
     public HubMerchant GetHubMerchantParent() {
         return parentHubMerchant;
     }
@@ -330,7 +327,6 @@ public class HubMerchantItem : MonoBehaviour
     public void SaveItemStatus() {
 
         if (!itemStatusChanged) return;
-        Debug.Log(GetItemType() + " itemBought " + itemBought);
         if(itemBought && !MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType())) {
             MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), itemBought);
         }

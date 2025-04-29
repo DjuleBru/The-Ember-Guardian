@@ -4,21 +4,42 @@ using UnityEngine;
 
 public class Merchant_Skills : Merchant
 {
-    [SerializeField] private List<SkillSO> merchantSkillSOList;
+    private List<SkillSO> merchantSkillSOList;
     private List<SkillItem> majorSkillList;
     private List<SkillItem> minorSkillList; // Référence aux skills du joueur
 
     protected List<SkillItem> majorSkillItemsForSale;
     protected List<SkillItem> minorSkillItemsForSale = new List<SkillItem>();
 
+    protected override void Start() {
+        base.Start();
+        PlayerSkills.Instance.OnInitialSkillsInitialized += PlayerSkills_OnInitialSkillsInitialized;
+    }
+
+    private void PlayerSkills_OnInitialSkillsInitialized(object sender, System.EventArgs e) {
+        InitializeMerchantItems();
+    }
+
     protected void InitializeSkillItems() {
         majorSkillList = new List<SkillItem>();
         minorSkillList = new List<SkillItem>();
         allItemsForSale = new List<MerchantItem>();
 
+        merchantSkillSOList = PlayerSave.Instance.GetAllSkillsUnlocked();
         foreach (SkillSO skillSO in merchantSkillSOList) {
             var skillItem = new SkillItem();
             skillItem.Initialize(skillSO);
+
+            // Check if player already has skill (initial skills)
+            SkillItem activeSkillItem = PlayerSkills.Instance.GetActiveSkillLeft();
+            List<SkillItem> passiveSkillList = PlayerSkills.Instance.GetPassiveSkillList();
+
+            if (activeSkillItem != null && activeSkillItem.skillType == skillSO.skillType) {
+                skillItem.currentLevel = PlayerSkills.Instance.GetActiveSkillLeft().currentLevel + 1;
+            }
+            if (passiveSkillList.Count != 0 && passiveSkillList[0].skillType == skillSO.skillType) {
+                skillItem.currentLevel = PlayerSkills.Instance.GetPassiveSkillList()[0].currentLevel + 1;
+            }
 
             if (skillSO.itemType == MerchantItem.MerchantItemType.ActiveSkill) {
                 allMajorMerchantItems.Add(skillItem);
@@ -33,6 +54,9 @@ public class Merchant_Skills : Merchant
     }
 
     protected override void InitializeMerchantItems() {
+        bigItemsToDisplayAmount = StructureStats.Instance.GetSkillMerchantMaxActiveSkillsDisplayed();
+        smallItemsToDisplayAmount = StructureStats.Instance.GetSkillMerchantMaxPassiveSkillsDisplayed();
+
         InitializeSkillItems();
         RefreshShopItems();
     }

@@ -45,31 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72e35f7e7139bfc40912ab7b1f18eec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialFireStructureLocation: {fileID: 0}
-  initialStructures:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  level1StructureLocationsUnlocked:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  level2StructureLocationsUnlocked:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  level3StructureLocationsUnlocked:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &35216558858147775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,3 +57,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb8fb7e434d69db41a34883f613a3bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allTrapsList:
+  - {fileID: 11400000, guid: 24a7c1ea7847c5f4d841f33581bf48ed, type: 2}
+  - {fileID: 11400000, guid: 35891f62972ae5a48af548fc187eab95, type: 2}
+  - {fileID: 11400000, guid: 6e18e8e5e3dfa2b4790f653cfacee2ea, type: 2}
+  - {fileID: 11400000, guid: de35e79a19a499949b94793a64269f5f, type: 2}
+  - {fileID: 11400000, guid: 073e1268de7c6e64c8ca2bf377941026, type: 2}
+  - {fileID: 11400000, guid: cdb411afab793dd43be6a76135d6ac81, type: 2}
+  - {fileID: 11400000, guid: 635aa25162d699f4a8e9a2b3a2a020cc, type: 2}
+  initialTrapsUnlockedList:
+  - {fileID: 11400000, guid: 635aa25162d699f4a8e9a2b3a2a020cc, type: 2}
+  - {fileID: 11400000, guid: cdb411afab793dd43be6a76135d6ac81, type: 2}

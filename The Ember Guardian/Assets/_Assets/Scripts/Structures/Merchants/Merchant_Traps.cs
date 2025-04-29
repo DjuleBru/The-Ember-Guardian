@@ -34,7 +34,7 @@ public class Merchant_Traps : Merchant
         trapUpgradeList = new List<TrapItem>();
         trapListForSale = new List<TrapItem>();
 
-        foreach (TrapSO trapSO in TrapManager.Instance.GetAllTrapSOList()) {
+        foreach (TrapSO trapSO in TrapManager.Instance.GetUnlockedTrapsAndTheirUpgrades()) {
             var trapItem = new TrapItem();
             trapItem.Initialize(trapSO);
 
@@ -51,6 +51,9 @@ public class Merchant_Traps : Merchant
     }
 
     protected override void InitializeMerchantItems() {
+        bigItemsToDisplayAmount = StructureStats.Instance.GetTrapMerchantMaxTrapsDisplayed();
+        smallItemsToDisplayAmount = StructureStats.Instance.GetTrapMerchantMaxTrapUpgradesDisplayed();
+
         InitializeTrapItems();
         RefreshShopItems();
     }

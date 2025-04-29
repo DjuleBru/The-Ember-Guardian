@@ -4704,6 +4704,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 45.9
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -5075,6 +5079,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Focus your aim to land precise, deadly shots while steadying your
     rifle in intense combat.
   unlockDescription: Zooms out and steadies aim, improving accuracy and range for
@@ -5085,7 +5090,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 14
   gunItemCategory: 1
   linkedGunSO: {fileID: 11400000, guid: 5cd7a3280cf3f054da4ecfc3026c5a7b, type: 2}
@@ -5298,6 +5305,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -5656,6 +5667,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Boosts your ammunition reserves, ensuring you're always ready for
     prolonged engagements.
   unlockDescription: 
@@ -5665,7 +5677,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 2291640ca0be2704a9c6b9fb5ff1489e, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 2
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 5cd7a3280cf3f054da4ecfc3026c5a7b, type: 2}
@@ -5878,6 +5892,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -6259,6 +6277,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Upgrade your magazine capacity, allowing for extended fire without
     constant reloading interruptions.
   unlockDescription: 
@@ -6268,7 +6287,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 9f67a19f345ec8b48a9d85d2bb0029ce, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 3
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
@@ -6458,6 +6479,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -6835,6 +6860,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Optimizes weapon mechanics, reducing the delay between shots for faster,
     more relentless firepower.
   unlockDescription: 
@@ -6844,7 +6870,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: a7305dc8c716dba4fad426b415d26c4b, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 5
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
@@ -7035,6 +7063,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -7416,6 +7448,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Upgrade your magazine capacity, allowing for extended fire without
     constant reloading interruptions.
   unlockDescription: 
@@ -7425,7 +7458,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 02f3d1ead79a3f6459116a3c7c8b1d91, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 3
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 8ba27ff3cc8764645aafc77187ac989c, type: 2}
@@ -7631,6 +7666,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -8012,6 +8051,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Optimizes weapon mechanics, reducing the delay between shots for faster,
     more relentless firepower.
   unlockDescription: 
@@ -8021,7 +8061,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: a1e5b8376aa1468498bd90179cfaecb5, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 12
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
@@ -8216,6 +8258,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -8609,6 +8655,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Streamline reloading mechanics to reduce downtime and keep the fight
     flowing smoothly.
   unlockDescription: 
@@ -8618,7 +8665,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: d89a85d062560e848bd31db61d2f87cc, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 4
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
@@ -8809,6 +8858,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 45.9
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -9201,6 +9254,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Focus your aim to land precise, deadly shots while steadying your
     rifle in intense combat.
   unlockDescription: Zooms out and steadies aim, improving accuracy and range for
@@ -9211,7 +9265,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 14
   gunItemCategory: 1
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
@@ -9424,6 +9480,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -9790,6 +9850,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Upgrade your magazine capacity, allowing for extended fire without
     constant reloading interruptions.
   unlockDescription: 
@@ -9799,7 +9860,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 96ea49ed590b2b9429a134cfc5121a03, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 3
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
@@ -10000,6 +10063,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -10377,6 +10444,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Optimizes weapon mechanics, reducing the delay between shots for faster,
     more relentless firepower.
   unlockDescription: 
@@ -10386,7 +10454,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: a16a1cfc8211e6d45a474fa10e9e0927, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 5
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 8ba27ff3cc8764645aafc77187ac989c, type: 2}
@@ -10581,6 +10651,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -10946,6 +11020,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Fine-tune your weapon to exploit weaknesses, increasing your chance
     of dealing critical damage.
   unlockDescription: 
@@ -10955,7 +11030,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 2990a76abe7bada42ae2eb4fb4aeafa4, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 1
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 8ba27ff3cc8764645aafc77187ac989c, type: 2}
@@ -11150,6 +11227,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -11515,6 +11596,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Fine-tune your weapon to exploit weaknesses, increasing your chance
     of dealing critical damage.
   unlockDescription: 
@@ -11524,7 +11606,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: a17e155fc4c906c41ba977536a94cda1, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 1
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 5cd7a3280cf3f054da4ecfc3026c5a7b, type: 2}
@@ -11719,6 +11803,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -12089,6 +12177,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Increases projectile impact, ensuring each shot delivers maximum devastation
     to your enemies.
   unlockDescription: +1 bullet damage
@@ -12098,7 +12187,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: a9acac1418fee714196ed27c2dcbde6b, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 0
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 8ba27ff3cc8764645aafc77187ac989c, type: 2}
@@ -12315,6 +12406,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -12681,6 +12776,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Streamline reloading mechanics to reduce downtime and keep the fight
     flowing smoothly.
   unlockDescription: 
@@ -12690,7 +12786,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 89927fa914a2e8247899ce9981718fc5, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 4
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
@@ -12892,6 +12990,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 45.9
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -13291,6 +13393,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Engineered for those who believe one shot should be enough to end
     any fight.
   unlockDescription: Concentrates all pellets into a single round, delivering immense
@@ -13301,7 +13404,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 16
   gunItemCategory: 1
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
@@ -13503,6 +13608,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -13875,6 +13984,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Upgrade your magazine capacity, allowing for extended fire without
     constant reloading interruptions.
   unlockDescription: 
@@ -13884,7 +13994,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: af935dd1dd7bccd42a57fb47a24e28cd, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 3
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 5cd7a3280cf3f054da4ecfc3026c5a7b, type: 2}
@@ -14075,6 +14187,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -14471,6 +14587,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Boosts your ammunition reserves, ensuring you're always ready for
     prolonged engagements.
   unlockDescription: 
@@ -14480,7 +14597,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 98ff7078318d90c4490d5355fd5d9020, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 2
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
@@ -14675,6 +14794,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -15021,6 +15144,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Streamline reloading mechanics to reduce downtime and keep the fight
     flowing smoothly.
   unlockDescription: 
@@ -15030,7 +15154,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 699cf45634e5e86419d3e09d5d9a0454, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 4
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 5cd7a3280cf3f054da4ecfc3026c5a7b, type: 2}
@@ -15236,6 +15362,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -15606,6 +15736,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Upgrade your magazine capacity, allowing for extended fire without
     constant reloading interruptions.
   unlockDescription: 
@@ -15615,7 +15746,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 1579a6d0c7338a047b0bbf15f81ae130, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 13
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
@@ -16147,6 +16280,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Enhance accuracy with optical sights, giving you an edge in targeting
     distant enemies.
   unlockDescription: Adds a laser sight to your rifle.
@@ -16156,7 +16290,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 0
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
@@ -16347,6 +16483,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -16736,6 +16876,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Boosts your ammunition reserves, ensuring you're always ready for
     prolonged engagements.
   unlockDescription: 
@@ -16745,7 +16886,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 752e67977f022bc44a6328b6891c7aec, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 2
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
@@ -16951,6 +17094,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -17324,6 +17471,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Streamline reloading mechanics to reduce downtime and keep the fight
     flowing smoothly.
   unlockDescription: 
@@ -17333,7 +17481,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 5e3ddb726e44d2a4aa1ec1e189be042c, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 4
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 8ba27ff3cc8764645aafc77187ac989c, type: 2}
@@ -17524,6 +17674,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -17928,6 +18082,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Boosts your ammunition reserves, ensuring you're always ready for
     prolonged engagements.
   unlockDescription: 
@@ -17937,7 +18092,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: c8cfe6d79ebd4424bb59a28aeff523ae, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 2
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
@@ -18132,6 +18289,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -18513,6 +18674,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A precision-engineered barrel extension, designed for those who prefer
     to keep their distance.
   unlockDescription: 
@@ -18522,7 +18684,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 541ea80e1e55f764194512c6f76b6a7a, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 17
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 8ba27ff3cc8764645aafc77187ac989c, type: 2}
@@ -18717,6 +18881,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -19086,6 +19254,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Fine-tune your weapon to exploit weaknesses, increasing your chance
     of dealing critical damage.
   unlockDescription: 
@@ -19095,7 +19264,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 3e083c0284ee94a4da70ee904ce873cf, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 1
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
@@ -19302,6 +19473,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -19659,6 +19834,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Boosts your ammunition reserves, ensuring you're always ready for
     prolonged engagements.
   unlockDescription: 
@@ -19668,7 +19844,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: c2350c62532081f4aaee11d840aa08b9, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 2
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 8ba27ff3cc8764645aafc77187ac989c, type: 2}
@@ -19890,6 +20068,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -20270,6 +20452,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Fine-tune your weapon to exploit weaknesses, increasing your chance
     of dealing critical damage.
   unlockDescription: 
@@ -20279,7 +20462,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 12bac8bf6b572c442a27cefa92f71367, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 1
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
@@ -20479,6 +20664,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 45.9
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -20843,6 +21032,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Engineered for long-range lethality, this sniper channels energy into
     pinpoint, devastating strikes
   unlockDescription: 
@@ -20852,7 +21042,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 1
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 18
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: 5cd7a3280cf3f054da4ecfc3026c5a7b, type: 2}
@@ -21096,6 +21288,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -21452,6 +21648,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Optimizes weapon mechanics, reducing the delay between shots for faster,
     more relentless firepower.
   unlockDescription: 
@@ -21461,7 +21658,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: c12d7fa3a3fb04b439b54cebebcfdd4b, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 12
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 8ba27ff3cc8764645aafc77187ac989c, type: 2}
@@ -21657,6 +21856,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -22013,6 +22216,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Boosts your ammunition reserves, ensuring you're always ready for
     prolonged engagements.
   unlockDescription: 
@@ -22022,7 +22226,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 7e641310224827943beffd26b112e445, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 2
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
@@ -22233,6 +22439,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -22598,6 +22808,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: "A custom choke that tightens the spread of your shots. Fewer pellets
     go wide\u2014more land where it hurts."
   unlockDescription: 
@@ -22607,7 +22818,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: a8bb85ddaaaa17940beefc4b46d56191, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 12
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
@@ -22818,6 +23031,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -23214,6 +23431,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Increases projectile impact, ensuring each shot delivers maximum devastation
     to your enemies.
   unlockDescription: +1 bullet damage
@@ -23223,7 +23441,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 3166a82600e8ddc4391953143d52902a, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 0
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
@@ -23434,6 +23654,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -23779,6 +24003,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Increases projectile impact, ensuring each shot delivers maximum devastation
     to your enemies.
   unlockDescription: +1 bullet damage
@@ -23788,7 +24013,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 2f6817d6482efdd4ea61bb0cfd3722b1, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 0
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
@@ -24010,6 +24237,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -24371,6 +24602,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Fine-tune your weapon to exploit weaknesses, increasing your chance
     of dealing critical damage.
   unlockDescription: 
@@ -24380,7 +24612,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 366b00c3747de8243a01ce00a9662507, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 1
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
@@ -24580,6 +24814,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -24948,6 +25186,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Streamline reloading mechanics to reduce downtime and keep the fight
     flowing smoothly.
   unlockDescription: 
@@ -24957,7 +25196,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 8aabc2d97ea03954ea5e477bd531fca4, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 4
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
@@ -25141,6 +25382,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -25498,6 +25743,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Optimizes weapon mechanics, reducing the delay between shots for faster,
     more relentless firepower.
   unlockDescription: 
@@ -25507,7 +25753,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: f335d110aff39cc4b95faf0672089b0e, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 5
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
@@ -25734,6 +25982,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 45.9
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -26168,6 +26420,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Devastating at close range, this shotgun unleashes bursts of energy
     to obliterate enemies in an instant.
   unlockDescription: 
@@ -26177,7 +26430,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 1
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 9
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
@@ -26383,6 +26638,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -26764,6 +27023,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Optimizes weapon mechanics, reducing the delay between shots for faster,
     more relentless firepower.
   unlockDescription: 
@@ -26773,7 +27033,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 9f3ac09ba2848a546ab14130315738ba, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 5
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
@@ -27163,6 +27425,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
   m_PrefabInstance: {fileID: 7608059826906570594}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6379354833504559172 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3539063435249221414, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+  m_PrefabInstance: {fileID: 7608059826906570594}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4adcd900756a69049a07aec610663eae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7933740876311178227 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 544668719937860753, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
@@ -27375,6 +27648,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 45.9
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -27796,6 +28073,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A precision weapon firing focused energy bolts, built for balance
     and versatility on any battlefield.
   unlockDescription: Best basic weapon
@@ -27805,7 +28083,9 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   itemEquipable: 1
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 8
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
@@ -28027,6 +28307,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -28403,6 +28687,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Increases projectile impact, ensuring each shot delivers maximum devastation
     to your enemies.
   unlockDescription: +1 bullet damage
@@ -28412,7 +28697,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: e1f8f3ae9886ad14ba956afee4d6b5d0, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 0
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 5cd7a3280cf3f054da4ecfc3026c5a7b, type: 2}
@@ -28623,6 +28910,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -28999,6 +29290,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Streamline reloading mechanics to reduce downtime and keep the fight
     flowing smoothly.
   unlockDescription: 
@@ -29008,7 +29300,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: ee9f9c67aba7d324a9b0c21928081a71, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 4
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
@@ -29208,6 +29502,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -29588,6 +29886,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Fine-tune your weapon to exploit weaknesses, increasing your chance
     of dealing critical damage.
   unlockDescription: 
@@ -29597,7 +29896,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: be97329d0d840964ab818a08f143e9a5, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 1
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
@@ -29793,6 +30094,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 45.9
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -30194,6 +30499,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Engineered for chaos, this system pushes the SMG to its limits in
     moments of desperation.
   unlockDescription: Boosts fire rate temporarily, trading precision for rapid suppression
@@ -30204,7 +30510,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 15
   gunItemCategory: 1
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
@@ -30420,6 +30728,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 45.9
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -30873,6 +31185,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A lightweight, rapid-fire energy weapon ideal for overwhelming foes
     with a storm of searing projectiles
   unlockDescription: 
@@ -30882,7 +31195,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 1
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 11
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
@@ -31089,6 +31404,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -31469,6 +31788,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Upgrade your magazine capacity, allowing for extended fire without
     constant reloading interruptions.
   unlockDescription: 
@@ -31478,7 +31798,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 2696695148ec9fa4bae132bcd6f08566, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 3
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 98c6ba77f23b1c543a44444c6761df0f, type: 2}
@@ -31673,6 +31995,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -32025,6 +32351,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Optimizes weapon mechanics, reducing the delay between shots for faster,
     more relentless firepower.
   unlockDescription: 
@@ -32034,7 +32361,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 6b573939a757a894ebadc7ced13eee36, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 5
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 5cd7a3280cf3f054da4ecfc3026c5a7b, type: 2}
@@ -32230,6 +32559,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -32626,6 +32959,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Upgrade your magazine capacity, allowing for extended fire without
     constant reloading interruptions.
   unlockDescription: 
@@ -32635,7 +32969,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 7e26957e9082c994983417f601ac3cc8, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 3
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
@@ -32830,6 +33166,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -33191,6 +33531,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Optimizes weapon mechanics, reducing the delay between shots for faster,
     more relentless firepower.
   unlockDescription: 
@@ -33200,7 +33541,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 61b1a871b4feb98478e78a240a89582c, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 5
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
@@ -33411,6 +33754,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -33807,6 +34154,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Increases projectile impact, ensuring each shot delivers maximum devastation
     to your enemies.
   unlockDescription: +1 bullet damage
@@ -33816,7 +34164,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 692b3c66e131c464191e3e48c72843b7, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 0
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
@@ -34023,6 +34373,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 45.9
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -34404,6 +34758,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Engineered for chaos, this system pushes the SMG to its limits in
     moments of desperation.
   unlockDescription: Boosts fire rate temporarily, trading precision for rapid suppression
@@ -34414,7 +34769,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 15
   gunItemCategory: 1
   linkedGunSO: {fileID: 11400000, guid: 8ba27ff3cc8764645aafc77187ac989c, type: 2}
@@ -34610,6 +34967,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 38.5
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -34993,6 +35354,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Developed for versatility, this system adjusts firing patterns to
     match any battlefield challenge.
   unlockDescription: Switch between semi-automatic and automatic  fire modes.
@@ -35002,7 +35364,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 7
   gunItemCategory: 1
   linkedGunSO: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
@@ -35213,6 +35577,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 45.9
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -35611,6 +35979,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A lightweight, rapid-fire energy weapon ideal for overwhelming foes
     with a storm of searing projectiles
   unlockDescription: 
@@ -35620,7 +35989,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 1
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 11
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: 8ba27ff3cc8764645aafc77187ac989c, type: 2}
@@ -35842,6 +36213,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -36227,6 +36602,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A precision-engineered barrel extension, designed for those who prefer
     to keep their distance.
   unlockDescription: 
@@ -36236,7 +36612,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 80b9e6d07c0c7694aa8683ba0a626a95, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 17
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 1ccb73c108e05a14a9f0bb4a3904aa05, type: 2}
@@ -36447,6 +36825,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 21.3
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -36854,6 +37236,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Increases projectile impact, ensuring each shot delivers maximum devastation
     to your enemies.
   unlockDescription: +1 bullet damage
@@ -36863,7 +37246,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: a3f56cf30e8c9e94a8283e4e3dde7691, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 0
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}
@@ -37079,6 +37464,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 45.9
       objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -37520,6 +37909,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Engineered for long-range lethality, this sniper channels energy into
     pinpoint, devastating strikes
   unlockDescription: 
@@ -37529,7 +37919,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 1
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 10
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: 7f5bd97effee1624ea1d278212b2546c, type: 2}

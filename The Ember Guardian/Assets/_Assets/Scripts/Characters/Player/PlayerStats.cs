@@ -96,11 +96,14 @@ public class PlayerStats : MonoBehaviour
     private float ammoRegenTime;
     private float chanceToDropx2;
 
+    private int startWithRandomActiveSkillLevel;
+    private int startWithRandomPassiveSkillLevel;
+
+    #endregion
+
     public event EventHandler OnPlayerShieldRegenTimeChanged;
     public event EventHandler OnPlayerAmmoRegenTimeChanged;
     public event EventHandler OnMoveSpeedChanged;
-    #endregion
-
     public event EventHandler OnFlashlightRangeChanged;
     public event EventHandler OnCanHold2WeaponsUnlocked;
 
@@ -157,6 +160,9 @@ public class PlayerStats : MonoBehaviour
         backpackGemSizePercentBuff = ES3.Load("backpackGemSizePercentBuff", 0f);
         backpackAmmoSizePercentBuff = ES3.Load("backpackAmmoSizePercentBuff", 0f);
         backpackOrbSizePercentBuff = ES3.Load("backpackOrbSizePercentBuff", 0f);
+
+        startWithRandomActiveSkillLevel = ES3.Load("startWithRandomActiveSkillLevel", 0);
+        startWithRandomPassiveSkillLevel = ES3.Load("startWithRandomPassiveSkillLevel", 0);
 
         hold2WeaponsUnlocked = ES3.Load("hold2WeaponsUnlocked", false);
     }
@@ -268,6 +274,13 @@ public class PlayerStats : MonoBehaviour
         RefreshCurrentPlayerStats();
     }
 
+    public void SetInitialRandomActiveSkillLevel(int levelBuff) {
+        startWithRandomActiveSkillLevel = levelBuff;
+    }
+    public void SetInitialRandomPassiveSkillLevel(int levelBuff) {
+        startWithRandomPassiveSkillLevel = levelBuff;
+    }
+
     public void SetHpRegenTimeAbsolute(float hpRegenTime) {
         absoluteHpRegenTimer_meta = hpRegenTime;
         RefreshCurrentPlayerStats();
@@ -293,6 +306,7 @@ public class PlayerStats : MonoBehaviour
     public int GetStartLevelAmmo() {
         return startLevelAmmo;
     }
+
     public int GetStartLevelOrbs() {
         return startLevelOrbs;
     }
@@ -350,6 +364,13 @@ public class PlayerStats : MonoBehaviour
 
     public float GetFlashlightRange() {
         return flashlightRange;
+    }
+
+    public int GetStartWithRandomActiveSkillLevel() {
+        return startWithRandomActiveSkillLevel;
+    }
+    public int GetStartWithRandomPassiveSkillLevel() {
+        return startWithRandomPassiveSkillLevel;
     }
 
     #endregion
@@ -437,6 +458,7 @@ public class PlayerStats : MonoBehaviour
     public int GetStartLevelAmmoBuff_Meta() {
         return startLevelAmmo_BuffAbsolute;
     }
+
     public int GetStartLevelOrbsBuff_Meta() {
         return startLevelOrbs_BuffAbsolute;
     }
@@ -551,6 +573,9 @@ public class PlayerStats : MonoBehaviour
         ES3.Save("backpackGemSizePercentBuff", backpackGemSizePercentBuff);
         ES3.Save("backpackAmmoSizePercentBuff", backpackAmmoSizePercentBuff);
         ES3.Save("backpackOrbSizePercentBuff", backpackOrbSizePercentBuff);
+
+        ES3.Save("startWithRandomActiveSkillLevel", startWithRandomActiveSkillLevel);
+        ES3.Save("startWithRandomPassiveSkillLevel", startWithRandomPassiveSkillLevel);
 
         ES3.Save("hold2WeaponsUnlocked", hold2WeaponsUnlocked);
     }

@@ -16,6 +16,21 @@ public class SkillItem : MerchantItem {
         activeMoveSpeedBuff,
         activeTeleportation,
         activeShootSpeedBuff,
+
+        activeMagmaShotBullet,
+        activeDarkFlame,
+        activeHealOnKills,
+        activeDarkSword,
+        activeWorkerAttackSpeedBuff,
+        activePlantMine,
+        activeFeedFireOnKills,
+        activeReaper,
+
+        passiveDmgIncreaseInLight,
+        passiveDmgIncreaseNotInLight,
+        passiveShootOnReload,
+        passiveMeleeAttackMagmaShot,
+        passiveLastBulletDealsTwiceDmaage,
     }
 
     public SkillSO skillSO { get; private set; }

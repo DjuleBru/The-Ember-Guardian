@@ -357,9 +357,11 @@ public class HUBManager : MonoBehaviour
         PlayerSave.Instance.SavePrimaryActiveGunSO(PlayerShoot.Instance.GetPrimaryGunSO());
         PlayerSave.Instance.SaveSecondaryActiveGunSO(PlayerShoot.Instance.GetSecondaryGunSO());
         PlayerSave.Instance.SavePlayerMetaStats();
+        PlayerSave.Instance.SaveNewUnlockedSkills();
         DogStats.Instance.SaveDogStats();
         WorkerStats.Instance.SaveWorkerValues();
         StructureStats.Instance.SaveStructureStats();
+        TrapManager.Instance.SaveNewUnlockedTraps();
         ArchitectTable.Instance.SaveStats();
 
         bool holdingEmber = false;

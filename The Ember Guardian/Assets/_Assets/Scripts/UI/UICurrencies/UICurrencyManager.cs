@@ -39,6 +39,8 @@ public class UICurrencyManager : MonoBehaviour
     [SerializeField] private Transform shockerEjectorUIPrefab;
     [SerializeField] private Transform smokeEjectorUIPrefab;
     [SerializeField] private Transform spikeEjectorUIPrefab;
+    [SerializeField] private Transform spikeUIPrefab;
+    [SerializeField] private Transform fireEjectorUIPrefab;
 
     [SerializeField] private int smallOrbValue = 5;
 
@@ -168,13 +170,19 @@ public class UICurrencyManager : MonoBehaviour
         AddMultipleCurrencies(currencyTypes, currencyTypesAmount);
     }
     private void AddInitialCurrencies() {
+        List<TrapSO> unlockedTraps = TrapManager.Instance.GetUnlockedTraps();
+        TrapSO randomTrapSO = unlockedTraps[UnityEngine.Random.Range(0,unlockedTraps.Count)];
+        PlayerCurrencies.CurrencyType randomTrap = CurrenciesManager.Instance.GetTrapCurrencyType(randomTrapSO.trapType);
+
         List<PlayerCurrencies.CurrencyType> currencyTypes = new List<PlayerCurrencies.CurrencyType> {
                 PlayerCurrencies.CurrencyType.bigBlueOrb,
                 PlayerCurrencies.CurrencyType.ammo,
+                randomTrap,
             };
         List<int> currencyTypesAmount = new List<int> {
             PlayerStats.Instance.GetStartLevelOrbs(),
             PlayerStats.Instance.GetStartLevelAmmo(),
+            StructureStats.Instance.GetStartWithRandomTrapAmount(),
             };
 
         AddMultipleCurrencies(currencyTypes, currencyTypesAmount);
@@ -266,6 +274,14 @@ public class UICurrencyManager : MonoBehaviour
         }
         if (currencyType == PlayerCurrencies.CurrencyType.shockerEjector) {
             currencyTransform = Instantiate(shockerEjectorUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, currencyContainer);
+            currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.spikes) {
+            currencyTransform = Instantiate(spikeUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, currencyContainer);
+            currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.fireEjector) {
+            currencyTransform = Instantiate(fireEjectorUIPrefab, blueOrbsSpawnPosition.position, Quaternion.identity, currencyContainer);
             currencyTransform.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
         }
 

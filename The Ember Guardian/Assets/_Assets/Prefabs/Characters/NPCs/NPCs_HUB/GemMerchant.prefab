@@ -2323,6 +2323,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.05
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -2496,6 +2500,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.13207549
       objectReference: {fileID: 0}
@@ -2656,6 +2664,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 7
   purpleGemCost: 2
+  cyanGemCost: 0
   description: 
   unlockDescription: 
   itemLevel: 2
@@ -2666,6 +2675,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 21
 --- !u!1001 &492964019985046215
 PrefabInstance:
@@ -2851,6 +2861,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 40.65
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -3027,6 +3041,10 @@ PrefabInstance:
       propertyPath: showItemLevel
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.059229266
@@ -3207,6 +3225,7 @@ MonoBehaviour:
   blueGemCost: 2
   yellowGemCost: 2
   purpleGemCost: 2
+  cyanGemCost: 0
   description: "Draws from the main flame\u2019s memory. Smaller, weaker\u2014but
     still enough to push back the dark."
   unlockDescription: 
@@ -3218,6 +3237,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 23
 --- !u!1001 &577034828948183956
 PrefabInstance:
@@ -3629,6 +3649,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.053844776
       objectReference: {fileID: 0}
@@ -3785,6 +3809,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A loose pile of crates, barely holding back the shadows.
   unlockDescription: "Barricade crates : <b>3</b> \nBarricade health : <b>24</b>"
   itemLevel: 1
@@ -3795,6 +3820,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 3
 --- !u!1001 &643686985325908341
 PrefabInstance:
@@ -4161,6 +4187,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.13207549
       objectReference: {fileID: 0}
@@ -4321,6 +4351,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 7
   purpleGemCost: 2
+  cyanGemCost: 0
   description: 
   unlockDescription: 
   itemLevel: 2
@@ -4331,6 +4362,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 22
 --- !u!1001 &747028736713584804
 PrefabInstance:
@@ -4733,6 +4765,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.053844776
       objectReference: {fileID: 0}
@@ -4881,6 +4917,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 3
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Stacked higher with sturdier crates, offering improved defense.
   unlockDescription: 'Barricade crates : <b>4</b> (+1)
 
@@ -4894,6 +4931,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 3
 --- !u!114 &7771111373995524599 stripped
 MonoBehaviour:
@@ -5074,6 +5112,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 31.1
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -5211,6 +5253,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.059229266
       objectReference: {fileID: 0}
@@ -5338,6 +5384,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A modest shelter offering warmth and refuge. Essential for survival
     in the emberlit dark.
   unlockDescription: Your initial camp setup.
@@ -5349,6 +5396,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 0
 --- !u!114 &7737935491302458219 stripped
 MonoBehaviour:
@@ -5549,6 +5597,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 69.75
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -5722,6 +5774,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.00756497
       objectReference: {fileID: 0}
@@ -5889,6 +5945,7 @@ MonoBehaviour:
   blueGemCost: 3
   yellowGemCost: 0
   purpleGemCost: 3
+  cyanGemCost: 0
   description: "A mystical vendor trading orbs for skills, shaping the player\u2019s
     destiny with active and passive powers."
   unlockDescription: 'Slain darklings will now drop Crimson Orbs.
@@ -5904,6 +5961,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 9
 --- !u!114 &7498644544640629105 stripped
 MonoBehaviour:
@@ -6111,6 +6169,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 72
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -6288,6 +6350,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.00756497
       objectReference: {fileID: 0}
@@ -6444,6 +6510,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 8
   purpleGemCost: 0
+  cyanGemCost: 0
   description: "An elder vendor draped in moss, selling magical seeds to grow orb-yielding
     plants for the camp\u2019s survival."
   unlockDescription: 'Unlocks <b> plant growing </b>, yielding a new source of orbs.
@@ -6458,6 +6525,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 11
 --- !u!1001 &2028529703793725710
 PrefabInstance:
@@ -6639,6 +6707,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 53.3
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -6812,6 +6884,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.059229266
       objectReference: {fileID: 0}
@@ -6979,6 +7055,7 @@ MonoBehaviour:
   blueGemCost: 5
   yellowGemCost: 5
   purpleGemCost: 5
+  cyanGemCost: 0
   description: A cozy setup with a canopy and cooking corner, offering both comfort
     and resilience.
   unlockDescription: 'Allows to upgrade your tent <b> Level 3 </b>, offering more
@@ -6993,6 +7070,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 0
 --- !u!114 &9053285517070049373 stripped
 MonoBehaviour:
@@ -7189,6 +7267,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 72
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -7378,6 +7460,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockHoverInteractions
       value: 0
       objectReference: {fileID: 0}
@@ -7563,6 +7649,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 2
   purpleGemCost: 8
+  cyanGemCost: 0
   description: Two cunning tricksters offering lethal traps to outsmart foes; surrounded
     by crates and flickering torches.
   unlockDescription: 'Unlocks <b>traps</b> that can be set to defend your camp.
@@ -7577,6 +7664,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 12
 --- !u!1001 &2757451435210648028
 PrefabInstance:
@@ -7863,6 +7951,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.13207549
       objectReference: {fileID: 0}
@@ -7987,6 +8079,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: "A sacred altar that anchors the player\u2019s soul, allowing progress
     to endure through the encroaching darkness."
   unlockDescription: Unlocks the saving shrine, allowing you to save your progression
@@ -7999,6 +8092,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 13
 --- !u!1001 &3377497606189648127
 PrefabInstance:
@@ -8176,6 +8270,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.05
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -8308,6 +8406,10 @@ PrefabInstance:
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.13207549
@@ -8452,6 +8554,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 7
   purpleGemCost: 2
+  cyanGemCost: 0
   description: 'This elevated radar provides vital intelligence on incoming waves:
     numbers, direction, and enemy types.'
   unlockDescription: Unlocks the <b>Observation Tower </b>, a device used to aquire
@@ -8464,6 +8567,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 14
 --- !u!1001 &3961317246035332561
 PrefabInstance:
@@ -8548,6 +8652,22 @@ PrefabInstance:
     - target: {fileID: 2233897265167930949, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2387248188288139305, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2387248188288139305, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2387248188288139305, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2387248188288139305, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2634346637618870733, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchorMax.x
@@ -9345,6 +9465,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 40.65
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -9473,6 +9597,10 @@ PrefabInstance:
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.053844776
@@ -9609,6 +9737,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 5
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A solid barricade of tightly packed crates, standing firm against
     assaults.
   unlockDescription: 'Barricade crates : <b>5</b> (+1)
@@ -9623,6 +9752,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 3
 --- !u!1001 &4354308620163447448
 PrefabInstance:
@@ -9788,6 +9918,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 40.65
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -9916,6 +10050,10 @@ PrefabInstance:
       propertyPath: hideItemMaxLevel
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.059229266
@@ -10078,6 +10216,7 @@ MonoBehaviour:
   blueGemCost: 2
   yellowGemCost: 2
   purpleGemCost: 2
+  cyanGemCost: 0
   description: Now equipped with a tarp, it shields the camp better and provides
     improved recovery.
   unlockDescription: 'Allows to upgrade your tent <b> Level 2 </b>, offering more
@@ -10092,6 +10231,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 0
 --- !u!1001 &4475269019595556246
 PrefabInstance:
@@ -10277,6 +10417,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.35
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -10449,6 +10593,10 @@ PrefabInstance:
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockHoverInteractions
       value: 0
@@ -10647,6 +10795,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 7
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A towering blockade of reinforced crates, nearly impenetrable to any
     foe.
   unlockDescription: 'Barricade crates : <b>7</b> (+2)
@@ -10661,6 +10810,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 3
 --- !u!1001 &5016347908599283015
 PrefabInstance:
@@ -10850,6 +11000,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.05
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -10999,6 +11153,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.053844776
       objectReference: {fileID: 0}
@@ -11118,6 +11276,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A shaky perch for trappers, providing basic vantage over the battlefield.
   unlockDescription: 'Trapper slots : <b>1</b>
 
@@ -11133,6 +11292,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 7
 --- !u!224 &5897259808284768114 stripped
 RectTransform:
@@ -11315,6 +11475,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.05
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -11452,6 +11616,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.13207549
       objectReference: {fileID: 0}
@@ -11579,6 +11747,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 7
   purpleGemCost: 2
+  cyanGemCost: 0
   description: Keeps the frontline noisy, and deadly.
   unlockDescription: 
   itemLevel: 1
@@ -11589,6 +11758,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 21
 --- !u!114 &2976249166729248622 stripped
 MonoBehaviour:
@@ -11798,6 +11968,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 69.75
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -11983,6 +12157,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockHoverInteractions
       value: 0
       objectReference: {fileID: 0}
@@ -12160,6 +12338,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 7
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A towering bastion of precision, enabling deadly shots and unmatched
     protection from above.
   unlockDescription: 'Trapper slots : <b>3</b> (+1)
@@ -12176,6 +12355,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 7
 --- !u!114 &3745897359924904408 stripped
 MonoBehaviour:
@@ -12592,6 +12772,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.13207549
       objectReference: {fileID: 0}
@@ -12751,6 +12935,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 7
   purpleGemCost: 2
+  cyanGemCost: 0
   description: Manned by emberlings, this defensive asset is messy, loud, efficient.
   unlockDescription: 
   itemLevel: 1
@@ -12761,6 +12946,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 22
 --- !u!114 &4431056709085408808 stripped
 MonoBehaviour:
@@ -12970,6 +13156,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.05
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -13087,6 +13277,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.13207549
       objectReference: {fileID: 0}
@@ -13198,6 +13392,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Converts salvaged materials into ammunition, ensuring you never run
     dry in the face of danger.
   unlockDescription: Unlocks the ammmo crafter, a core device used to generate ammo
@@ -13210,6 +13405,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 2
 --- !u!224 &8406802740140251359 stripped
 RectTransform:
@@ -13553,6 +13749,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.13207549
       objectReference: {fileID: 0}
@@ -13695,6 +13895,7 @@ MonoBehaviour:
   blueGemCost: 4
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A buzzing contraption that fuses minor orbs into greater orbs, unlocking
     their full potential.
   unlockDescription: Unlocks the orb processor, a device used to merge minor Orbs
@@ -13707,6 +13908,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 8
 --- !u!224 &8483119567123156064 stripped
 RectTransform:
@@ -13893,6 +14095,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 60.7
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -14066,6 +14272,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.059229266
       objectReference: {fileID: 0}
@@ -14220,6 +14430,7 @@ MonoBehaviour:
   blueGemCost: 7
   yellowGemCost: 7
   purpleGemCost: 7
+  cyanGemCost: 0
   description: A thriving hub of the camp, fully equipped for restoration and morale.
   unlockDescription: 'Allows to upgrade your tent <b> Level 4 </b>, offering more
     space to expand your camp.
@@ -14233,6 +14444,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 0
 --- !u!224 &8618281853970876613 stripped
 RectTransform:
@@ -14415,6 +14627,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.05
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -14551,6 +14767,10 @@ PrefabInstance:
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.13207549
@@ -14690,6 +14910,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 7
   purpleGemCost: 2
+  cyanGemCost: 0
   description: "Long sightlines. Clean shots. Let them come, this one\u2019s watching."
   unlockDescription: 
   itemLevel: 1
@@ -14700,6 +14921,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 20
 --- !u!224 &8197605326522401244 stripped
 RectTransform:
@@ -14882,6 +15104,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 53.3
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -15018,6 +15244,10 @@ PrefabInstance:
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.053844776
@@ -15163,6 +15393,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 5
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Strong and steady, the tower empowers hunters with improved range
     and stability.
   unlockDescription: 'Trapper slots : <b>2</b> (+1)
@@ -15179,6 +15410,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 7
 --- !u!224 &8329688969058666780 stripped
 RectTransform:
@@ -15377,6 +15609,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.05
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -15518,6 +15754,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.053844776
       objectReference: {fileID: 0}
@@ -15648,6 +15888,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 3
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Bolstered supports and height grant hunters better aim and coverage.
   unlockDescription: 'Trapper slots : <b>1</b>
 
@@ -15663,6 +15904,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 7
 --- !u!224 &8837012230777341015 stripped
 RectTransform:
@@ -15845,6 +16087,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.05
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -15977,6 +16223,10 @@ PrefabInstance:
       propertyPath: itemLockedInDemo
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.13207549
@@ -16116,6 +16366,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 7
   purpleGemCost: 2
+  cyanGemCost: 0
   description: "Old tech, barely stable. Blink across camp, just don\u2019t look
     down during the jump."
   unlockDescription: 
@@ -16127,6 +16378,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 24
 --- !u!224 &8928055904240815352 stripped
 RectTransform:
@@ -16325,6 +16577,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.05
+      objectReference: {fileID: 0}
     - target: {fileID: 3565854999122997300, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -16498,6 +16754,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: parentHubMerchant
+      value: 
+      objectReference: {fileID: 4036192485864741668}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: boughtBackgroundColor.b
       value: 0.13207549
       objectReference: {fileID: 0}
@@ -16653,6 +16913,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 7
   purpleGemCost: 2
+  cyanGemCost: 0
   description: 
   unlockDescription: 
   itemLevel: 2
@@ -16663,6 +16924,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 20
 --- !u!224 &8057197659181795303 stripped
 RectTransform:

@@ -2055,6 +2055,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Your companion now digs with heightened determination, occasionally
     uncovering two finds where there was thought to be one.
   unlockDescription: 
@@ -2064,7 +2065,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 6009fee8dfe87d7469c331de2520cd00, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 5
   itemCategory: 1
 --- !u!114 &6902949330329195165 stripped
@@ -2421,6 +2424,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: "A diet of tougher prey and relentless training has made your dog\u2019s
     bite sharper and deadlier."
   unlockDescription: 
@@ -2430,7 +2434,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: a8a54bd586e919e418e7b10750c0c75a, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 3
   itemCategory: 1
 --- !u!1001 &2902927552706368463
@@ -2568,6 +2574,10 @@ PrefabInstance:
     - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 53.3
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2775,6 +2785,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 5
+  cyanGemCost: 0
   description: Through careful guidance, your dog learns to unearth hidden resources
     buried in the ruins of the old world.
   unlockDescription: Unlocks the ability for your dog to occasionally dig resources.
@@ -2784,7 +2795,9 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 4
   itemCategory: 0
 --- !u!1001 &4591376573107779998
@@ -2922,6 +2935,10 @@ PrefabInstance:
     - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 53.3
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3110,6 +3127,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 5
+  cyanGemCost: 0
   description: "The Tamer\u2019s training has awakened your companion\u2019s primal
     instincts. With a ferocious bite, it defends you from immediate threats."
   unlockDescription: Unlocks the ability for your dog to occasionally bite creatures.
@@ -3119,7 +3137,9 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 0
   itemCategory: 0
 --- !u!114 &9061749565297241110 stripped
@@ -3487,6 +3507,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Focus and practice have turned your dog into a master forager, uncovering
     hidden resources with remarkable accuracy.
   unlockDescription: 
@@ -3496,7 +3517,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 02ab1a7964dfd6944ba4f648011097f0, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 8
   itemCategory: 1
 --- !u!114 &2573102211989738125 stripped
@@ -3860,6 +3883,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Heightened awareness ensures your dog rarely misses the subtle cues
     of an impending ambush
   unlockDescription: 
@@ -3869,7 +3893,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 063b11696ce3db243b0eb7384c5b224f, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 6
   itemCategory: 1
 --- !u!224 &6648371056870362858 stripped
@@ -4200,6 +4226,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: With training, your dog has learned to recover more efficiently from
     a bite, shortening the time between powerful attacks.
   unlockDescription: 
@@ -4209,7 +4236,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 8e156eb15269193499406a359210a648, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 2
   itemCategory: 1
 --- !u!114 &696627385797333974 stripped
@@ -4363,6 +4392,10 @@ PrefabInstance:
     - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 53.3
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4532,6 +4565,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 3
+  cyanGemCost: 0
   description: Trained to sense danger, your companion alerts you to unseen ambushes
     lurking in the shadows.
   unlockDescription: Unlocks the ability for your dog to detect an ambush and growl.
@@ -4541,7 +4575,9 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 7
   itemCategory: 0
 --- !u!114 &2122086125976459417 stripped
@@ -4898,6 +4934,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: "Refined training has amplified your dog\u2019s sense of smell, helping
     it locate resources more consistently."
   unlockDescription: 
@@ -4907,7 +4944,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: a0e8c480676fe834dad837c24ee26f80, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 4
   itemCategory: 1
 --- !u!114 &2534575092214879700 stripped
@@ -5246,3 +5285,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
   m_PrefabInstance: {fileID: 7608059826906570594}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6379354833504559172 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3539063435249221414, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+  m_PrefabInstance: {fileID: 7608059826906570594}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4adcd900756a69049a07aec610663eae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

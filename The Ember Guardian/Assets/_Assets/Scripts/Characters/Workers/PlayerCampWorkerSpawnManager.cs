@@ -28,7 +28,6 @@ public class PlayerCampWorkerSpawnManager : MonoBehaviour
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
-        Debug.Log("dayIndex " + dayIndex);
         if(dayIndex >= 2) {
             dayIndex = 0;
             StartCoroutine(SpawnArrivalEmberlings());

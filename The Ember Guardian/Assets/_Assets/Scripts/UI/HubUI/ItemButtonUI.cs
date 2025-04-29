@@ -10,8 +10,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemButtonUI : ButtonUI
-{
+public class ItemButtonUI : ButtonUI {
+
+    [SerializeField] private HubMerchant parentHubMerchant;
     [SerializeField] private List<ItemButtonUI> lockingItemButtonUIList;
     [SerializeField] private ItemDescriptionCardUI descriptionCard;
 
@@ -191,6 +192,7 @@ public class ItemButtonUI : ButtonUI
     }
 
     public void BuyItem() {
+
         if (!hubMerchantItem.GetItemUnlocked() || (itemLockedInDemo && HUBManager.Instance.GetIsDemo())) {
             OnAnyLockedButtonTryPress?.Invoke(this, EventArgs.Empty);
             CheckItemLockedFromOtherMerchantItem();
@@ -252,8 +254,9 @@ public class ItemButtonUI : ButtonUI
 
     private void CheckItemLockedFromOtherMerchantItem() {
         foreach(ItemButtonUI itemButtonUI in lockingItemButtonUIList) {
-            HubMerchant lockingItemHubMerchantParent = itemButtonUI.GetHubMerchantItem().GetHubMerchantParent();
-            if (lockingItemHubMerchantParent == null || lockingItemHubMerchantParent != hubMerchantItem.GetHubMerchantParent()) {
+            HubMerchant lockingItemHubMerchantParent = itemButtonUI.GetHubMerchantParent();
+
+            if (lockingItemHubMerchantParent != null && lockingItemHubMerchantParent != hubMerchantItem.GetHubMerchantParent()) {
                 buyItemFromOtherMerchantText.text = "Buy " + itemButtonUI.GetHubMerchantItem().GetItemName() + " from " + lockingItemHubMerchantParent.GetHubMerchantName() + " first";
                 buyItemFromOtherMerchantTextAnimator.SetTrigger("Show");
             }
@@ -359,7 +362,6 @@ public class ItemButtonUI : ButtonUI
 
     public void SetLockingItemBought(ItemButtonUI itemButtonUI) {
         lockingItemButtonUIList.Remove(itemButtonUI);
-
         if (lockingItemButtonUIList.Count != 0 && hubMerchantItem.GetUnlockRequiresAllPrerequisites()) return;
         SetItemUnlocked();
     }
@@ -504,7 +506,11 @@ public class ItemButtonUI : ButtonUI
     #endregion
 
     public HubMerchantItem GetHubMerchantItem() {
+        hubMerchantItem = GetComponent<HubMerchantItem>();
         return hubMerchantItem;
+    }
+    public HubMerchant GetHubMerchantParent() {
+        return parentHubMerchant;
     }
     public bool GetIsTreeChild() {
         return isTreeChild;

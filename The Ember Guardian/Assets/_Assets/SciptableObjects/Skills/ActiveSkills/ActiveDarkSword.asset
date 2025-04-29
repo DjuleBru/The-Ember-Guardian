@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c809380acb1014c852c47b344da906, type: 3}
+  m_Name: ActiveDarkSword
+  m_EditorClassIdentifier: 
+  itemType: 0
+  skillType: 14
+  passiveSkillEffect: {fileID: 0}
+  activeSkillEffect: {fileID: 11400000, guid: c537a044e89ca1d4187ab65505cdf5ba, type: 2}
+  SkillName: Shadowbrand
+  StatChanges: 
+  Icon: {fileID: -1492689405, guid: 4105873436a6f524ba4fbd8dd4df2873, type: 3}
+  currencyTypeToPay: 2
+  maxLevel: 5
+  activateSkillAudioClip: {fileID: 8300000, guid: 5265ca808b93f9140b20f7dce6b3966a, type: 3}
+  Description: Instantly teleport to a targeted location, bypassing obstacles and
+    confusing your enemies.

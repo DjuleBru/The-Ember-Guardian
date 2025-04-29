@@ -12,6 +12,7 @@ public class TrapItem : MerchantItem
         shockerEjector,
         spikes,
         flameEjector,
+        fireEjector,
     }
 
     public TrapType trapType;

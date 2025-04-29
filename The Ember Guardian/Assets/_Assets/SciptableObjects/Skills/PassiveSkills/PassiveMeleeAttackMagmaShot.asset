@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c809380acb1014c852c47b344da906, type: 3}
+  m_Name: PassiveMeleeAttackMagmaShot
+  m_EditorClassIdentifier: 
+  itemType: 1
+  skillType: 22
+  passiveSkillEffect: {fileID: 11400000, guid: 2c7e60102734d164493691f16a37184b, type: 2}
+  activeSkillEffect: {fileID: 0}
+  SkillName: Ashen Cleave
+  StatChanges: Health regeneration rate
+  Icon: {fileID: -17517674, guid: 81ff5ea95548b2547a26f5c0525a3295, type: 3}
+  currencyTypeToPay: 3
+  maxLevel: 5
+  activateSkillAudioClip: {fileID: 0}
+  Description: A nanite-infused implant restores your health over time, keeping you
+    combat-ready.

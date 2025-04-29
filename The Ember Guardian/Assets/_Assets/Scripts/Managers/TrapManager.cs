@@ -12,11 +12,18 @@ public class TrapManager : MonoBehaviour
     [SerializeField] private List<TrapUpgradeSO> allTrapUpgradeSOs; // Liste de tous les ScriptableObjects d'upgrades
     private Dictionary<TrapItem.TrapType, Dictionary<TrapUpgradeSO.TrapUpgradeType, int>> trapUpgradesLevels = new();
 
+    [SerializeField] private List<TrapSO> trapSOList;
+    [SerializeField] private List<TrapSO> initialTrapsUnlockedList;
+    private List<TrapSO> newTrapsUnlockedList = new List<TrapSO>();
+    private List<TrapSO> trapsUnlockedList = new List<TrapSO>();
+    private List<TrapSO> trapsAndUpgradesUnlockedList = new List<TrapSO>();
+
     private List<TrapItem.TrapType> trapTypesBoughtByPlayer = new List<TrapItem.TrapType>();
 
     private void Awake() {
         Instance = this;
         InitializeTraps(allTrapTypes);
+        LoadUnlockedTraps();
     }
 
 
@@ -97,4 +104,61 @@ public class TrapManager : MonoBehaviour
     public bool TrapTypeBoughtByPlayer(TrapItem.TrapType trapType) {
         return trapTypesBoughtByPlayer.Contains(trapType);
     }
+
+
+    #region SAVE_LOAD HUB
+    public void HUBUnlockNewTrap(TrapSO trapSO) {
+        newTrapsUnlockedList.Add(trapSO);
+    }
+
+    public void SaveNewUnlockedTraps() {
+        foreach (TrapSO trapSO in newTrapsUnlockedList) {
+            string key = trapSO.name + "_unlocked";
+            ES3.Save(key, true);
+        }
+    }
+
+    public void LoadUnlockedTraps() {
+        // Load Traps
+        foreach (TrapSO trapSO in initialTrapsUnlockedList) {
+            trapsUnlockedList.Add(trapSO);
+            trapsAndUpgradesUnlockedList.Add(trapSO);
+        }
+
+        foreach (TrapSO trapSO in trapSOList) {
+            string key = trapSO.name + "_unlocked";
+            bool unlocked = ES3.Load(key, false);
+
+            if (unlocked) {
+                trapsUnlockedList.Add(trapSO);
+                trapsAndUpgradesUnlockedList.Add(trapSO);
+            }
+        }
+
+
+        // Add Trap Upgrades linked to unlocked traps
+        List<TrapSO> trapUpgradesUnlocked = new List<TrapSO>();
+        foreach (TrapSO trapSOUpgrade in allTrapSOList) {
+            foreach (TrapSO trapSO in trapsUnlockedList) {
+                if (trapSO == trapSOUpgrade) continue;
+
+                if (trapSOUpgrade.linkedTrapSO == trapSO) {
+                    trapUpgradesUnlocked.Add(trapSOUpgrade);
+                }
+            }
+        }
+
+        foreach(TrapSO trapSO in trapUpgradesUnlocked) {
+            trapsAndUpgradesUnlockedList.Add(trapSO);
+        }
+    }
+
+    public List<TrapSO> GetUnlockedTraps() {
+        return trapsUnlockedList;
+    }
+    public List<TrapSO> GetUnlockedTrapsAndTheirUpgrades() {
+        return trapsAndUpgradesUnlockedList;
+    }
+
+    #endregion
 }

@@ -11,6 +11,7 @@ public class PlayerSkills : MonoBehaviour
     [SerializeField] private PassiveShield passiveShield;
 
     private List<SkillItem> passiveSkillList = new List<SkillItem>();
+    private List<SkillItem> activeSkillList = new List<SkillItem>();
     private SkillItem activeSkillLeft;
     private SkillItem activeSkillRight;
 
@@ -42,6 +43,7 @@ public class PlayerSkills : MonoBehaviour
     public event EventHandler OnLeftActiveSkillDeactivated;
     public event EventHandler OnRightActiveSkillActivated;
     public event EventHandler OnRightActiveSkillDeactivated;
+    public event EventHandler OnInitialSkillsInitialized;
 
     public class OnSkillAddedEventArgs : EventArgs {
         public SkillItem skillItemAdded;
@@ -57,6 +59,46 @@ public class PlayerSkills : MonoBehaviour
     private void Start() {
         GameInput.Instance.OnPlayerLeftSkillPerformed += GameInput_OnPlayerLeftSkillPerformed;
         GameInput.Instance.OnPlayerRightSkillPerformed += GameInput_OnPlayerRightSkillPerformed;
+
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            StartCoroutine(SetPlayerInitialSkills());
+        }
+    }
+
+    private IEnumerator SetPlayerInitialSkills() {
+        List<SkillSO> unlockedActiveSkillSOList = PlayerSave.Instance.GetActiveSkillsUnlocked();
+        List<SkillSO> unlockedPassiveSkillSOList = PlayerSave.Instance.GetPassiveSkillsUnlocked();
+        int initialActiveSkillLevel = PlayerStats.Instance.GetStartWithRandomActiveSkillLevel();
+        int initialPassiveSkillLevel = PlayerStats.Instance.GetStartWithRandomPassiveSkillLevel();
+
+        Debug.Log("initialActiveSkillLevel " + initialActiveSkillLevel);
+        Debug.Log("initialPassiveSkillLevel " + initialPassiveSkillLevel);
+
+        SkillSO randomActiveSkillSO = unlockedActiveSkillSOList[UnityEngine.Random.Range(0, unlockedActiveSkillSOList.Count)];
+        SkillSO randomPassiveSkillSO = unlockedPassiveSkillSOList[UnityEngine.Random.Range(0, unlockedPassiveSkillSOList.Count)];
+
+        yield return new WaitForSeconds(3.5f);
+
+        if(initialActiveSkillLevel != 0) {
+            SkillItem skillItem = new SkillItem();
+            skillItem.Initialize(randomActiveSkillSO);
+            skillItem.currentLevel = initialActiveSkillLevel;
+            AddActiveSkill(skillItem);
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        if (initialPassiveSkillLevel != 0) {
+            SkillItem skillItem = new SkillItem();
+            skillItem.Initialize(randomPassiveSkillSO);
+            skillItem.currentLevel = initialPassiveSkillLevel;
+            AddPassiveSkill(skillItem);
+        }
+
+
+        yield return new WaitForSeconds(.5f);
+
+        OnInitialSkillsInitialized?.Invoke(this, EventArgs.Empty);
     }
 
     private void Update() {
@@ -247,6 +289,7 @@ public class PlayerSkills : MonoBehaviour
         SkillSO skillSO = skillItem.GetSkillSO();
         SkillItem skillItemCopy = new SkillItem();
         skillItemCopy.Initialize(skillSO);
+        skillItemCopy.currentLevel = skillItem.currentLevel;
 
         SkillItem foundSkillItem = null;
 

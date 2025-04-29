@@ -3481,6 +3481,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 53.3
+      objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -3700,6 +3704,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Hardship has toughened your body.
   unlockDescription: Increases your maximum health.
   itemLevel: 0
@@ -3708,7 +3713,9 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 3a064256afcb11b4b993e98a5c045acd, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 4
 --- !u!114 &5173126443592431775 stripped
 MonoBehaviour:
@@ -4091,6 +4098,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: "The ember\u2019s flame lingers in your soul, healing your wounds
     slowly."
   unlockDescription: Passively heals you with time.
@@ -4100,7 +4108,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 53b40e8012fbaac478e1d81e91f1b978, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 5
 --- !u!1001 &1935147480402823061
 PrefabInstance:
@@ -4237,6 +4247,10 @@ PrefabInstance:
     - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 53.3
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4433,6 +4447,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Specialized canisters, designed to hold volatile orbs without risking
     a spill.
   unlockDescription: Upgrade your backpack's orb container size.
@@ -4442,7 +4457,9 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 9572e5344d063a04fb8f423db403f6f9, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 10
 --- !u!114 &8889670618211235526 stripped
 MonoBehaviour:
@@ -4791,6 +4808,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Speed comes from practice, and practice comes from survival.
   unlockDescription: Reduces the time it takes to swap weapons.
   itemLevel: 0
@@ -4799,7 +4817,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 05dda34dcaa4d4747b954c6604794cec, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 1
 --- !u!114 &7738014196565081214 stripped
 MonoBehaviour:
@@ -5171,6 +5191,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Through rigorous conditioning, your body lets you recover with more
     strength after falling.
   unlockDescription: Increases your health at respawn.
@@ -5180,7 +5201,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 9a2d3d2bd213dba4695c500fa169667c, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 15
 --- !u!1001 &4081647555786210509
 PrefabInstance:
@@ -5556,6 +5579,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Adapting to the unrelenting pace of the wild, your stride becomes
     lighter.
   unlockDescription: Increases your base movement speed.
@@ -5565,7 +5589,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: aa18d80ef511a5249ac976539a6407d3, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 6
 --- !u!1001 &4998852690134471338
 PrefabInstance:
@@ -5710,6 +5736,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 40.65
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -5918,6 +5948,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A small reserve of orbs, carefully preserved before each descent.
   unlockDescription: Start a new level with a few orbs.
   itemLevel: 0
@@ -5926,7 +5957,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: df105d6200c025c43a47a4849c8673d2, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 17
 --- !u!114 &516061917635970850 stripped
 MonoBehaviour:
@@ -6067,6 +6100,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.35
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -6266,6 +6303,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Custom pouches reinforced to safely store more emberlight gems.
   unlockDescription: Upgrade your backpack's gem container size.
   itemLevel: 0
@@ -6274,7 +6312,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 864d30afcc6362a458c5601ac3401117, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 9
 --- !u!224 &4627325055738585587 stripped
 RectTransform:
@@ -6424,6 +6464,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 53.3
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -6643,6 +6687,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Intense training has pushed your physical limits.
   unlockDescription: Increases your maximum stamina.
   itemLevel: 0
@@ -6651,7 +6696,9 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 699538f9058c2bc45b1fc100e589bfbd, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 14
 --- !u!114 &2810784804505129429 stripped
 MonoBehaviour:
@@ -6819,6 +6866,10 @@ PrefabInstance:
     - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 53.3
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -7030,6 +7081,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Your movements are now more fluid, your rolls covering more ground
     with each swift escape.
   unlockDescription: Increases your roll ability's range.
@@ -7039,7 +7091,9 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: f1f143e206297d74fa9b20af091f32bf, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 12
 --- !u!114 &2703095682734749530 stripped
 MonoBehaviour:
@@ -7413,6 +7467,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
   m_PrefabInstance: {fileID: 7608059826906570594}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6379354833504559172 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3539063435249221414, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+  m_PrefabInstance: {fileID: 7608059826906570594}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4adcd900756a69049a07aec610663eae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7654878786345034535
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7767,6 +7832,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Careful control of your breathing and movements lets you push farther.
   unlockDescription: Reduces the stamina use when running.
   itemLevel: 0
@@ -7775,7 +7841,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 4be76daec86a6c249befa1b2b64431a6, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 8
 --- !u!114 &6837120430969228026 stripped
 MonoBehaviour:
@@ -7920,6 +7988,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 38.5
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -8131,6 +8203,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A specialized lens salvaged from old technology.
   unlockDescription: Increases your flashlight's range.
   itemLevel: 0
@@ -8139,7 +8212,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: b21cbcba5eadd8e44989b42fc50ad450, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 2
 --- !u!224 &7417533910037606437 stripped
 RectTransform:
@@ -8519,6 +8594,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: "In the race for survival, you\u2019ve learned to outrun what once
     seemed inevitable."
   unlockDescription: Increases your run speed.
@@ -8528,7 +8604,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 57f951e27faaba141a15bbcfa556db97, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 7
 --- !u!114 &5058760634730346463 stripped
 MonoBehaviour:
@@ -8685,6 +8763,10 @@ PrefabInstance:
     - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 53.3
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -8896,6 +8978,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: ' Extra rounds strapped in, ready to go from the first shot.'
   unlockDescription: Start a level with more ammo.
   itemLevel: 0
@@ -8904,7 +8987,9 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 241d0695ffdb786438440e5a434436ee, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 16
 --- !u!114 &3542313847709960815 stripped
 MonoBehaviour:
@@ -9065,6 +9150,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 40.65
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -9273,6 +9362,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: "By refining your evasion technique, you\u2019ve learned to conserve
     energy while avoiding danger."
   unlockDescription: Decreases your roll ability's stamina use.
@@ -9282,7 +9372,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: abe7d6adb3a70594ea7e04c622528eb8, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 13
 --- !u!114 &3578168048684479324 stripped
 MonoBehaviour:
@@ -9439,6 +9531,10 @@ PrefabInstance:
     - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 53.3
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -9649,6 +9745,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A skill honed by survivors who faced the darkness unarmed too many
     times.
   unlockDescription: Allows you to carry a second weapon.
@@ -9658,7 +9755,9 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 0
 --- !u!224 &7077728038385620826 stripped
 RectTransform:
@@ -9804,6 +9903,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 53.3
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -10007,6 +10110,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: By studying the habits of unseen predators, you've learned to blend
     into the terrain.
   unlockDescription: Reduces your detection range when crouching.
@@ -10016,7 +10120,9 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 15e8bf7505861df4696ce656f32a5775, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 3
 --- !u!114 &3836309722994161048 stripped
 MonoBehaviour:
@@ -10157,6 +10263,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.35
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -10345,6 +10455,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Reinforced and expanded ammo compartment, allowing it to hold a larger
     stockpile.
   unlockDescription: Upgrade your backpack's ammo container size.
@@ -10354,7 +10465,9 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   itemEquipable: 0
+  unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 4063aaf6db14b474f9599e5ade0a3aca, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 11
 --- !u!114 &4418587624963190267 stripped
 MonoBehaviour:

@@ -2945,6 +2945,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 53.3
+      objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -3160,6 +3164,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Funnels more ember warmth into your wounded.
   unlockDescription: 
   itemLevel: 0
@@ -3170,6 +3175,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 0f338339418401d42aa13d5d4e18fb66, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 11
   architectItemCategory: 2
   linkedStructureSO: {fileID: 11400000, guid: 2238d687313306749905a52d96bf9d37, type: 2}
@@ -3558,6 +3564,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Refines orbs before combustion. More light, less loss.
   unlockDescription: 
   itemLevel: 0
@@ -3568,6 +3575,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: f2294d71d61fd4749aa94cd4edb1177a, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 9
   architectItemCategory: 2
   linkedStructureSO: {fileID: 11400000, guid: 9829931b3277cd94f913e96ff2756212, type: 2}
@@ -3923,6 +3931,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 6
   purpleGemCost: 0
+  cyanGemCost: 0
   description: "They say the signal\u2019s faintest at dusk. Good thing the tower\u2019s
     already tuned in."
   unlockDescription: 
@@ -3934,6 +3943,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 13
   architectItemCategory: 1
   linkedStructureSO: {fileID: 11400000, guid: 8e9a90bca5166ce4db5ef9a5b9233e73, type: 2}
@@ -4319,6 +4329,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Increases how many rounds are forged per load.
   unlockDescription: 
   itemLevel: 0
@@ -4329,6 +4340,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 2673c1d73eba146448a0069caf19330d, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 22
   architectItemCategory: 2
   linkedStructureSO: {fileID: 11400000, guid: 5f3384228b4bb734da69aa8696710d50, type: 2}
@@ -4701,6 +4713,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: More arcs, more blasts. The skies burn before they reach your gates.
   unlockDescription: 
   itemLevel: 0
@@ -4711,6 +4724,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 11400000, guid: 7c892d89dacdb4749b5f6c2998419d87, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 7
   architectItemCategory: 0
   linkedStructureSO: {fileID: 11400000, guid: 715ca0dcc7e8c86488cf749a782cd1c2, type: 2}
@@ -5073,6 +5087,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 8
   purpleGemCost: 0
+  cyanGemCost: 0
   description: A basic layer of defense, already in place when you warp in.
   unlockDescription: 
   itemLevel: 0
@@ -5083,6 +5098,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 14
   architectItemCategory: 1
   linkedStructureSO: {fileID: 11400000, guid: ca17caabd370ef941a9a03ca27f7b501, type: 2}
@@ -5457,6 +5473,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 6
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Starts your run ready to arm.
   unlockDescription: 
   itemLevel: 0
@@ -5467,6 +5484,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 12
   architectItemCategory: 1
   linkedStructureSO: {fileID: 11400000, guid: c7afad7f68fa6aa4d9911acecc53b4f9, type: 2}
@@ -5844,6 +5862,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: More fuel held, more hope sustained.
   unlockDescription: 
   itemLevel: 0
@@ -5854,6 +5873,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 12ae614a7b7c5eb4cbb909a2313df0a4, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 10
   architectItemCategory: 2
   linkedStructureSO: {fileID: 11400000, guid: 9829931b3277cd94f913e96ff2756212, type: 2}
@@ -6226,6 +6246,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Increased allowance for high-volume suppression points.
   unlockDescription: 
   itemLevel: 0
@@ -6236,6 +6257,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 11400000, guid: 7c892d89dacdb4749b5f6c2998419d87, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 6
   architectItemCategory: 0
   linkedStructureSO: {fileID: 11400000, guid: 8b6ef681cc4cd164bba9a221e04e8289, type: 2}
@@ -6393,6 +6415,10 @@ PrefabInstance:
     - target: {fileID: 3318711971709409342, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 60.7
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -6625,6 +6651,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 8
   purpleGemCost: 0
+  cyanGemCost: 0
   description: An old-world device reactivated with ember tech. Lets you reshape
     your base's skeleton at the hub.
   unlockDescription: 
@@ -6636,6 +6663,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 0
   architectItemCategory: 0
   linkedStructureSO: {fileID: 0}
@@ -6789,6 +6817,10 @@ PrefabInstance:
     - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.35
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -7009,6 +7041,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Faster than the scream of the first enemy.
   unlockDescription: 
   itemLevel: 0
@@ -7019,6 +7052,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: af9204d65ce90ae468ce6b859531cd7c, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 17
   architectItemCategory: 2
   linkedStructureSO: {fileID: 11400000, guid: c7afad7f68fa6aa4d9911acecc53b4f9, type: 2}
@@ -7172,6 +7206,10 @@ PrefabInstance:
     - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.35
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -7385,6 +7423,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 8
   purpleGemCost: 0
+  cyanGemCost: 0
   description: 
   unlockDescription: 
   itemLevel: 0
@@ -7395,6 +7434,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 16
   architectItemCategory: 2
   linkedStructureSO: {fileID: 11400000, guid: ca17caabd370ef941a9a03ca27f7b501, type: 2}
@@ -7793,6 +7833,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Expand the firegrid. More lights. More ground held against what creeps
     in.
   unlockDescription: 
@@ -7804,6 +7845,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 11400000, guid: 26f600a5000a94842811ebe44056881c, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 3
   architectItemCategory: 0
   linkedStructureSO: {fileID: 11400000, guid: 3237b7716988d3b4d87d0a3d5a14192f, type: 2}
@@ -8187,6 +8229,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: More slots, more firepower. The camp grows smarter.
   unlockDescription: 
   itemLevel: 0
@@ -8197,6 +8240,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: d787434fc9af1d741a91736d13b99b53, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 1
   architectItemCategory: 0
   linkedStructureSO: {fileID: 11400000, guid: c7afad7f68fa6aa4d9911acecc53b4f9, type: 2}
@@ -8556,6 +8600,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Converts more raw material at once.
   unlockDescription: 
   itemLevel: 0
@@ -8566,6 +8611,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: da3a4d8d24fd0e741bb9214fb560a896, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 18
   architectItemCategory: 2
   linkedStructureSO: {fileID: 11400000, guid: c7afad7f68fa6aa4d9911acecc53b4f9, type: 2}
@@ -8719,6 +8765,10 @@ PrefabInstance:
     - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.35
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -8934,6 +8984,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Faster than the scream of the first enemy.
   unlockDescription: 
   itemLevel: 0
@@ -8944,6 +8995,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 12ec1d01e06e2c44cac35a376adb2b6d, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 20
   architectItemCategory: 2
   linkedStructureSO: {fileID: 11400000, guid: 5f3384228b4bb734da69aa8696710d50, type: 2}
@@ -9325,6 +9377,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Punish anything that dares get close.
   unlockDescription: 
   itemLevel: 0
@@ -9335,6 +9388,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 6ed5ac87abee71f4ba0a1e940b5e85cb, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 15
   architectItemCategory: 2
   linkedStructureSO: {fileID: 11400000, guid: ca17caabd370ef941a9a03ca27f7b501, type: 2}
@@ -9718,6 +9772,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Uplink allows another sharpshooter's perch to be deployed.
   unlockDescription: 
   itemLevel: 0
@@ -9728,6 +9783,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 11400000, guid: 739f167c50bbb644196b0c20cd2878d9, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 5
   architectItemCategory: 0
   linkedStructureSO: {fileID: 11400000, guid: b0f28b943d128c049bf42a81442125f5, type: 2}
@@ -10107,6 +10163,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Authorized expansion of defensive trickery.
   unlockDescription: 
   itemLevel: 0
@@ -10117,6 +10174,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 11400000, guid: 729e1710c0bca65489bdc54c2f75005e, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 4
   architectItemCategory: 0
   linkedStructureSO: {fileID: 0}
@@ -10413,6 +10471,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7489869378029577361, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
   m_PrefabInstance: {fileID: 7608059826906570594}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6379354833504559172 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3539063435249221414, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+  m_PrefabInstance: {fileID: 7608059826906570594}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4adcd900756a69049a07aec610663eae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8057944855158700995
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10552,6 +10621,10 @@ PrefabInstance:
     - target: {fileID: 3307537071223064271, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487604348483450401, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_fontSize
+      value: 50.35
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchorMax.y
@@ -10759,6 +10832,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Old tech tuned to burn slower and smarter.
   unlockDescription: 
   itemLevel: 0
@@ -10769,6 +10843,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 40fd06512d9a6494b845b31b4f1f94c1, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 8
   architectItemCategory: 2
   linkedStructureSO: {fileID: 11400000, guid: 9829931b3277cd94f913e96ff2756212, type: 2}
@@ -11139,6 +11214,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Converts more raw material at once.
   unlockDescription: 
   itemLevel: 0
@@ -11149,6 +11225,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: a9d6631ee5bab2f4e897b4ca0b90aa15, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 21
   architectItemCategory: 2
   linkedStructureSO: {fileID: 11400000, guid: 5f3384228b4bb734da69aa8696710d50, type: 2}
@@ -11523,6 +11600,7 @@ MonoBehaviour:
   blueGemCost: 0
   yellowGemCost: 0
   purpleGemCost: 0
+  cyanGemCost: 0
   description: Increases how many rounds are forged per load.
   unlockDescription: 
   itemLevel: 0
@@ -11533,6 +11611,7 @@ MonoBehaviour:
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: df469b633377aa54e9e02d138bcd4a20, type: 2}
+  parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 19
   architectItemCategory: 2
   linkedStructureSO: {fileID: 11400000, guid: c7afad7f68fa6aa4d9911acecc53b4f9, type: 2}

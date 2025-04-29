@@ -25,6 +25,8 @@ public class CurrenciesManager : MonoBehaviour
     [SerializeField] private Transform smokeEjectorTrapPrefab;
     [SerializeField] private Transform spikeEjectorTrapPrefab;
     [SerializeField] private Transform shockEjectorTrapPrefab;
+    [SerializeField] private Transform spikeTrapPrefab;
+    [SerializeField] private Transform fireEjectorTrapPrefab;
 
     [SerializeField] private List<HubMerchantItem> allHubMerchantItems = new List<HubMerchantItem>();
     [SerializeField] private List<HubMerchantItemStatModifierSO> allHubMerchantItemsStatModifiers = new List<HubMerchantItemStatModifierSO>();
@@ -143,6 +145,12 @@ public class CurrenciesManager : MonoBehaviour
         if (trapType == TrapItem.TrapType.shockerEjector) {
             return shockEjectorTrapPrefab;
         }
+        if (trapType == TrapItem.TrapType.fireEjector) {
+            return fireEjectorTrapPrefab;
+        }
+        if (trapType == TrapItem.TrapType.spikes) {
+            return spikeTrapPrefab;
+        }
         return bearTrapPrefab;
     }
 
@@ -190,8 +198,37 @@ public class CurrenciesManager : MonoBehaviour
             currencyTypesInCategory.Add(PlayerCurrencies.CurrencyType.shockerEjector);
             currencyTypesInCategory.Add(PlayerCurrencies.CurrencyType.smokeEjector);
             currencyTypesInCategory.Add(PlayerCurrencies.CurrencyType.spikeEjector);
+            currencyTypesInCategory.Add(PlayerCurrencies.CurrencyType.spikes);
+            currencyTypesInCategory.Add(PlayerCurrencies.CurrencyType.fireEjector);
         }
 
         return currencyTypesInCategory;
+    }
+    public PlayerCurrencies.CurrencyType GetTrapCurrencyType(TrapItem.TrapType trapType) {
+        PlayerCurrencies.CurrencyType type = PlayerCurrencies.CurrencyType.bladeTrap;
+
+        if (trapType == TrapItem.TrapType.bladeTrap) {
+            type = PlayerCurrencies.CurrencyType.bladeTrap;
+        }
+        if (trapType == TrapItem.TrapType.bearTrap) {
+            type = PlayerCurrencies.CurrencyType.bearTrap;
+        }
+        if (trapType == TrapItem.TrapType.smokeEjector) {
+            type = PlayerCurrencies.CurrencyType.smokeEjector;
+        }
+        if (trapType == TrapItem.TrapType.spikeEjectorSmall) {
+            type = PlayerCurrencies.CurrencyType.spikeEjector;
+        }
+        if (trapType == TrapItem.TrapType.shockerEjector) {
+            type = PlayerCurrencies.CurrencyType.shockerEjector;
+        }
+        if (trapType == TrapItem.TrapType.fireEjector) {
+            type = PlayerCurrencies.CurrencyType.fireEjector;
+        }
+        if (trapType == TrapItem.TrapType.spikes) {
+            type = PlayerCurrencies.CurrencyType.spikes;
+        }
+
+        return type;
     }
 }

@@ -9,11 +9,16 @@ public class PlayerSave : MonoBehaviour
     public static PlayerSave Instance;
 
     [SerializeField] private GunSO initialActiveGun;
+    [SerializeField] private List<SkillSO> allSkillsList;
+    [SerializeField] private List<SkillSO> initialSkillsUnlockedList;
+    private List<SkillSO> newSkillsUnlockedList = new List<SkillSO>();
+    private List<SkillSO> skillsUnlockedList = new List<SkillSO>();
 
     private bool playerUnlockedFlagCarry;
 
     private void Awake() {
         Instance = this;
+        LoadUnlockedSkills();
     }
 
     private void Start() {
@@ -74,6 +79,64 @@ public class PlayerSave : MonoBehaviour
     public bool GetPlayerUnlockedFlagCarry() {
         return playerUnlockedFlagCarry;
     }
+
+    #region SKILLS
+    public void HUBUnlockNewSkill(SkillSO skillSO) {
+        newSkillsUnlockedList.Add(skillSO);
+    }
+
+    public void SaveNewUnlockedSkills() {
+        foreach (SkillSO skillSO in newSkillsUnlockedList) {
+            string key = skillSO.name + "_unlocked";
+            ES3.Save(key, true);
+        }
+    }
+
+    public void LoadUnlockedSkills() {
+        foreach (SkillSO skillSO in initialSkillsUnlockedList) {
+            skillsUnlockedList.Add(skillSO);
+        }
+        foreach (SkillSO skillSO in allSkillsList) {
+            string key = skillSO.name + "_unlocked";
+            bool unlocked = ES3.Load(key, false);
+
+            if (unlocked) {
+                skillsUnlockedList.Add(skillSO);
+            }
+        }
+    }
+
+    public List<SkillSO> GetAllSkillsUnlocked() {
+        return skillsUnlockedList;
+    }
+
+    public List<SkillSO> GetActiveSkillsUnlocked() {
+        List<SkillSO> activeSkillSOsUnlocked = new List<SkillSO>();
+
+        foreach(SkillSO skillSO in skillsUnlockedList) {
+            
+            if(skillSO.itemType == MerchantItem.MerchantItemType.ActiveSkill) {
+                activeSkillSOsUnlocked.Add(skillSO);
+            }
+        }
+
+        return activeSkillSOsUnlocked;
+    }
+    public List<SkillSO> GetPassiveSkillsUnlocked() {
+        List<SkillSO> passiveSkillSOsUnlocked = new List<SkillSO>();
+
+        foreach (SkillSO skillSO in skillsUnlockedList) {
+
+            if (skillSO.itemType == MerchantItem.MerchantItemType.PassiveSkill) {
+                passiveSkillSOsUnlocked.Add(skillSO);
+            }
+        }
+
+        return passiveSkillSOsUnlocked;
+    }
+
+    #endregion
+
     private void OnDestroy() {
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
     }
