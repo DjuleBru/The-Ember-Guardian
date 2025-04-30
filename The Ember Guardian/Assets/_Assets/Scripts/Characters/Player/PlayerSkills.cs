@@ -34,6 +34,10 @@ public class PlayerSkills : MonoBehaviour
     private bool rightSkillReady;
     private bool rightSkillRunning;
 
+    private bool shootOnReload;
+    private bool lastBulletDealsMoreDamage;
+    private float lastBulletDealsMoreDamageBuff;
+
     public event EventHandler<OnSkillAddedEventArgs> OnActiveSkillActivated;
     public event EventHandler<OnSkillDeactivatedArgs> OnActiveSkillDeactivated;
     public event EventHandler<OnSkillAddedEventArgs> OnActiveSkillAdded;
@@ -70,9 +74,6 @@ public class PlayerSkills : MonoBehaviour
         List<SkillSO> unlockedPassiveSkillSOList = PlayerSave.Instance.GetPassiveSkillsUnlocked();
         int initialActiveSkillLevel = PlayerStats.Instance.GetStartWithRandomActiveSkillLevel();
         int initialPassiveSkillLevel = PlayerStats.Instance.GetStartWithRandomPassiveSkillLevel();
-
-        Debug.Log("initialActiveSkillLevel " + initialActiveSkillLevel);
-        Debug.Log("initialPassiveSkillLevel " + initialPassiveSkillLevel);
 
         SkillSO randomActiveSkillSO = unlockedActiveSkillSOList[UnityEngine.Random.Range(0, unlockedActiveSkillSOList.Count)];
         SkillSO randomPassiveSkillSO = unlockedPassiveSkillSOList[UnityEngine.Random.Range(0, unlockedPassiveSkillSOList.Count)];
@@ -313,7 +314,9 @@ public class PlayerSkills : MonoBehaviour
     }
 
     public void ApplyPassiveSkillEffect(SkillItem skillItem) {
+        Debug.Log("ApplyPassiveSkillEffect " + skillItem.skillType);
         SkillSO skillItemSO = skillItem.GetSkillSO();
+        Debug.Log("skillItemSO " + skillItem.GetSkillSO());
         PassiveSkillEffectSO skillEffect = skillItemSO.passiveSkillEffect;
 
         float absoluteBuffEffectValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
@@ -370,6 +373,18 @@ public class PlayerSkills : MonoBehaviour
                 case SkillItem.SkillType.passiveShieldGenerator:
 
                     passiveShield.UnlockShield(absoluteBuffEffectValue);
+
+                    break;
+                case SkillItem.SkillType.passiveLastBulletDealsTwiceDamage:
+
+                    lastBulletDealsMoreDamage = true;
+                    lastBulletDealsMoreDamageBuff = 1 + relativeBuffEffectValue/100;
+
+                    break;
+
+                case SkillItem.SkillType.passiveShootOnReload:
+
+                    shootOnReload = true;
 
                     break;
                 default:
@@ -434,10 +449,30 @@ public class PlayerSkills : MonoBehaviour
         return (1 - rightSkillCooldownTimer / rightSkillCooldown);
     }
 
+    #region GET PASSIVE BUFFS ACTIVE
+    public bool GetLastBulletDealsMoreDamage() {
+        return lastBulletDealsMoreDamage;
+    }
+
+    public float GetLastBulletDealsMoreDamageBuff() {
+        return lastBulletDealsMoreDamageBuff;
+    }
+
+    public bool GetShootOnReload() {
+        return shootOnReload;
+    }
+    #endregion
+
     [Button] 
     private void AddActiveSkillDebug(SkillSO skillSO) {
         SkillItem skillItem = new SkillItem();
         skillItem.Initialize(skillSO);
         AddActiveSkill(skillItem);
+    }
+    [Button]
+    private void AddPassiveSkillDebug(SkillSO skillSO) {
+        SkillItem skillItem = new SkillItem();
+        skillItem.Initialize(skillSO);
+        AddPassiveSkill(skillItem);
     }
 }

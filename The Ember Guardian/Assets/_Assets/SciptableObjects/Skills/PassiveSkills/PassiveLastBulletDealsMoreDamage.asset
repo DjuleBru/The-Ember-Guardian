@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8c809380acb1014c852c47b344da906, type: 3}
-  m_Name: PassiveLastBulletDealsTwiceDamage
+  m_Name: PassiveLastBulletDealsMoreDamage
   m_EditorClassIdentifier: 
   itemType: 1
   skillType: 23
-  passiveSkillEffect: {fileID: 11400000, guid: 2c7e60102734d164493691f16a37184b, type: 2}
+  passiveSkillEffect: {fileID: 11400000, guid: b18572569f55c6b4abb8c178ccf4df42, type: 2}
   activeSkillEffect: {fileID: 0}
   SkillName: Final Judgement
-  StatChanges: Health regeneration rate
+  StatChanges: Damage buff
   Icon: {fileID: -701612539, guid: 81ff5ea95548b2547a26f5c0525a3295, type: 3}
   currencyTypeToPay: 3
   maxLevel: 5

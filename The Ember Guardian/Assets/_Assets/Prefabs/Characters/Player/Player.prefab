@@ -18086,6 +18086,7 @@ GameObject:
   - component: {fileID: 3397658637778327688}
   - component: {fileID: 7630914235038227580}
   - component: {fileID: 1879811350009131364}
+  - component: {fileID: 3980899287632662433}
   m_Layer: 12
   m_Name: BulletPS
   m_TagString: Untagged
@@ -22990,6 +22991,21 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   collisionDistanceThreshold: 0.7
   groundDestroysBullet: 1
+--- !u!114 &3980899287632662433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823623952297584731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a218cab597f4f6449d1b8c0915e62ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gun: {fileID: 4414568598253116254}
+  bulletPS: {fileID: 3397658637778327688}
+  trailPS: {fileID: 3390414860452648396}
 --- !u!1 &1843247763196393092
 GameObject:
   m_ObjectHideFlags: 0
@@ -29923,6 +29939,7 @@ GameObject:
   - component: {fileID: 3605755203328474537}
   - component: {fileID: 7355864616650822032}
   - component: {fileID: 7162840782935684292}
+  - component: {fileID: 3488239442925101089}
   m_Layer: 12
   m_Name: BulletPS
   m_TagString: Untagged
@@ -34827,6 +34844,21 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   collisionDistanceThreshold: 0.25
   groundDestroysBullet: 1
+--- !u!114 &3488239442925101089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2377577654307302111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a218cab597f4f6449d1b8c0915e62ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gun: {fileID: 4957314061034393287}
+  bulletPS: {fileID: 3605755203328474537}
+  trailPS: {fileID: 4026075874614649472}
 --- !u!1 &2404594704038995849
 GameObject:
   m_ObjectHideFlags: 0
@@ -35220,6 +35252,7 @@ GameObject:
   - component: {fileID: 1918585995434937215}
   - component: {fileID: 6263472470357615930}
   - component: {fileID: 6007570708736917277}
+  - component: {fileID: 5576169239083122850}
   m_Layer: 12
   m_Name: BulletPS
   m_TagString: Untagged
@@ -40124,6 +40157,21 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   collisionDistanceThreshold: 0.7
   groundDestroysBullet: 1
+--- !u!114 &5576169239083122850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2585019136595301730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a218cab597f4f6449d1b8c0915e62ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gun: {fileID: 17581904851837561}
+  bulletPS: {fileID: 1918585995434937215}
+  trailPS: {fileID: 7428051477647789358}
 --- !u!1 &2633166597023567504
 GameObject:
   m_ObjectHideFlags: 0
@@ -46680,6 +46728,7 @@ GameObject:
   - component: {fileID: 1704339275670907307}
   - component: {fileID: 5358086423431431809}
   - component: {fileID: 1679171217957912352}
+  - component: {fileID: 5217720791649849173}
   m_Layer: 12
   m_Name: BulletPS
   m_TagString: Untagged
@@ -51584,6 +51633,21 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   collisionDistanceThreshold: 0.7
   groundDestroysBullet: 1
+--- !u!114 &5217720791649849173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2922666428653604618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a218cab597f4f6449d1b8c0915e62ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gun: {fileID: 6883203372499532937}
+  bulletPS: {fileID: 1704339275670907307}
+  trailPS: {fileID: 4974283899492207007}
 --- !u!1 &2940476613359822104
 GameObject:
   m_ObjectHideFlags: 0
@@ -71565,6 +71629,7 @@ GameObject:
   - component: {fileID: 3263606336859823894}
   - component: {fileID: 4567819636273572574}
   - component: {fileID: 8814720941820676941}
+  - component: {fileID: 5743666378899093883}
   m_Layer: 12
   m_Name: BulletPS
   m_TagString: Untagged
@@ -76477,6 +76542,21 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   collisionDistanceThreshold: 0.7
   groundDestroysBullet: 1
+--- !u!114 &5743666378899093883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4829785847670192307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a218cab597f4f6449d1b8c0915e62ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gun: {fileID: 0}
+  bulletPS: {fileID: 0}
+  trailPS: {fileID: 0}
 --- !u!1 &4831605189778305307
 GameObject:
   m_ObjectHideFlags: 0
@@ -78505,6 +78585,7 @@ GameObject:
   - component: {fileID: 6341942190051968360}
   - component: {fileID: 7993383695498682077}
   - component: {fileID: 832137848122076138}
+  - component: {fileID: 8023592926531044172}
   m_Layer: 12
   m_Name: BulletPS
   m_TagString: Untagged
@@ -83409,6 +83490,21 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   collisionDistanceThreshold: 0.7
   groundDestroysBullet: 1
+--- !u!114 &8023592926531044172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5416529346066082585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a218cab597f4f6449d1b8c0915e62ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gun: {fileID: 7464516851526795374}
+  bulletPS: {fileID: 6341942190051968360}
+  trailPS: {fileID: 591945332041193382}
 --- !u!1 &5419318558638850876
 GameObject:
   m_ObjectHideFlags: 0
@@ -84105,6 +84201,7 @@ GameObject:
   - component: {fileID: 2319999289191864364}
   - component: {fileID: 8463366699601875115}
   - component: {fileID: 1692101270036928024}
+  - component: {fileID: 480225270202749745}
   m_Layer: 12
   m_Name: BulletPS
   m_TagString: Untagged
@@ -89010,6 +89107,21 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   collisionDistanceThreshold: 0.25
   groundDestroysBullet: 1
+--- !u!114 &480225270202749745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5444611097824315991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a218cab597f4f6449d1b8c0915e62ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gun: {fileID: 5508321129471777648}
+  bulletPS: {fileID: 2319999289191864364}
+  trailPS: {fileID: 1759116992622691034}
 --- !u!1 &5464528914067251582
 GameObject:
   m_ObjectHideFlags: 0
@@ -92777,6 +92889,7 @@ GameObject:
   - component: {fileID: 4821911438046629177}
   - component: {fileID: 8815889407254347293}
   - component: {fileID: 472815617431356129}
+  - component: {fileID: 7819770552940343977}
   m_Layer: 12
   m_Name: BulletPS
   m_TagString: Untagged
@@ -97681,6 +97794,21 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   collisionDistanceThreshold: 0.7
   groundDestroysBullet: 1
+--- !u!114 &7819770552940343977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6503578881206700442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a218cab597f4f6449d1b8c0915e62ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gun: {fileID: 923891791746236625}
+  bulletPS: {fileID: 4821911438046629177}
+  trailPS: {fileID: 6463048191336385509}
 --- !u!1 &6515063465280751193
 GameObject:
   m_ObjectHideFlags: 0
@@ -119280,6 +119408,7 @@ GameObject:
   - component: {fileID: 1768118708325465696}
   - component: {fileID: 1400797246381708163}
   - component: {fileID: 6072084128937464206}
+  - component: {fileID: 2584384365149670642}
   m_Layer: 12
   m_Name: BulletPS
   m_TagString: Untagged
@@ -124184,6 +124313,21 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   collisionDistanceThreshold: 0.7
   groundDestroysBullet: 0
+--- !u!114 &2584384365149670642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8737353265693034199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a218cab597f4f6449d1b8c0915e62ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gun: {fileID: 7511432097327493317}
+  bulletPS: {fileID: 1768118708325465696}
+  trailPS: {fileID: 6768282714014608944}
 --- !u!1 &8780181646247046297
 GameObject:
   m_ObjectHideFlags: 0
@@ -143488,10 +143632,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3539393163596176914, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: e1a5980a30928174bb88fa21dc366e6f, type: 2}
     - target: {fileID: 6455426156918751658, guid: ac339e72352a33c43b41c4156642971e, type: 3}
       propertyPath: m_Name
       value: TrailPS
@@ -143499,62 +143639,6 @@ PrefabInstance:
     - target: {fileID: 6455426156918751658, guid: ac339e72352a33c43b41c4156642971e, type: 3}
       propertyPath: m_Layer
       value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: ShapeModule.type
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: ShapeModule.angle
-      value: 5.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: ShapeModule.m_Rotation.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: ShapeModule.m_Rotation.y
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: ShapeModule.radiusThickness
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: InitialModule.startSize.minScalar
-      value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: InitialModule.startSize.minMaxState
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: InitialModule.gravityModifier.scalar
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: InitialModule.startSizeY.minMaxState
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: InitialModule.startSizeZ.minMaxState
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: EmissionModule.rateOverDistance.scalar
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: EmissionModule.rateOverDistance.minMaxState
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -144818,7 +144902,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5261251560359775264, guid: 914dab0e0af7d7547aa674ab2df03e48, type: 3}
       propertyPath: managedReferences[6524424540001402881].Duration
-      value: 2
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 5261251560359775264, guid: 914dab0e0af7d7547aa674ab2df03e48, type: 3}
       propertyPath: managedReferences[6524424540001402881].UniqueID
@@ -145410,7 +145494,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5261251560359775264, guid: 914dab0e0af7d7547aa674ab2df03e48, type: 3}
       propertyPath: managedReferences[6524424540001402880].m_ImpulseDefinition.m_TimeEnvelope.m_AttackTime
-      value: 2
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 5261251560359775264, guid: 914dab0e0af7d7547aa674ab2df03e48, type: 3}
       propertyPath: managedReferences[6524424540001402881].RangeFalloff.m_Curve.Array.data[0].weightedMode

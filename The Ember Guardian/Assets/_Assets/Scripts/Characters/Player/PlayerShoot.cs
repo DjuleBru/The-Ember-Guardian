@@ -181,7 +181,7 @@ public class PlayerShoot : MonoBehaviour
 
         if (playerJustPressedReload) {
             playerJustPressedReloadTimer += Time.deltaTime;
-            if (playerJustPressedReloadTimer > .175f) {
+            if (playerJustPressedReloadTimer > .2f) {
                 playerJustPressedReload = false;
                 StartTransferringAmmoFromBagInGun();
             }
@@ -324,17 +324,17 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
-    private void Shoot() {
-        StartCoroutine(ShootAfterDelay(heldGunSO.delayBetweenClickAndShot));
+    private void Shoot(bool shootOnReload = false) {
+        StartCoroutine(ShootAfterDelay(heldGunSO.delayBetweenClickAndShot, shootOnReload));
     }
 
-    private IEnumerator ShootAfterDelay(float delay) {
+    private IEnumerator ShootAfterDelay(float delay, bool shootOnReload = false) {
 
         heldGun.SetCurrentBullet(heldGun.GetCurrentBullet() - 1);
         OnPlayerStartedShot?.Invoke(this, EventArgs.Empty);
 
         // Handle cooldown
-        if (PlayerStats.Instance.GetShootCooldownTime() != 0) {
+        if (PlayerStats.Instance.GetShootCooldownTime() != 0 && !shootOnReload) {
             coolDownSFXTriggered = false;
             coolDownAnimationTriggered = false;
             coolingDown = true;
@@ -377,7 +377,7 @@ public class PlayerShoot : MonoBehaviour
                     return;
                 };
 
-                ReloadGun();
+                StartCoroutine(ReloadGunCoroutine());
             } else {
                 return;
             }
@@ -610,7 +610,7 @@ public class PlayerShoot : MonoBehaviour
             return;
         };
 
-        ReloadGun();
+        StartCoroutine(ReloadGunCoroutine());
     }
 
     private void GameInput_OnPlayerSwapGunPerformed(object sender, EventArgs e) {
@@ -678,13 +678,19 @@ public class PlayerShoot : MonoBehaviour
         swappingGun = false;
     }
 
-    private void ReloadGun() {
+    private IEnumerator ReloadGunCoroutine() {
         reloading = true;
         reloadingHands = true;
         playerJustPressedReload = false;
         reloadTimer = 0;
         reloadTime = PlayerStats.Instance.GetReloadTime();
         handsReloadTime = PlayerStats.Instance.GetHandsReloadTime();
+
+        if (PlayerSkills.Instance.GetShootOnReload()) {
+            Shoot(true);
+            yield return new WaitForEndOfFrame();
+        }
+
         OnPlayerReload?.Invoke(this, EventArgs.Empty);
     }
 

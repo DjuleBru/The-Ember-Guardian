@@ -16,9 +16,12 @@ public class Gun : MonoBehaviour
     protected bool gunUnlocked;
     protected bool secondaryAbilityUnlocked;
     protected bool lerpingGunAngle;
+    protected bool lastBulletShot;
 
     protected int pelletsPerBullet = 1;
+    protected int damagePerBulletAtRunStart;
     protected int damagePerBullet;
+    protected float totalBuffMultiplier = 1;
     protected float bulletKnockback;
     protected int currentAmmoClip;
     protected int maxAmmo;
@@ -48,6 +51,8 @@ public class Gun : MonoBehaviour
     public static event EventHandler OnAnyGunMaxAmmoChanged;
     public static event EventHandler OnAnyGunStatsUpgraded;
     public static event EventHandler OnAnyGunUnlocked;
+    public event EventHandler OnBuffedLastBulletShot;
+    public event EventHandler OnDebuffLastBulletShot;
 
 
     protected void Start() {
@@ -135,6 +140,7 @@ public class Gun : MonoBehaviour
 
         pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
         damagePerBullet = MetaProgressionManager.Instance.GetGunDamagePerBullet(gunSO);
+        damagePerBulletAtRunStart = damagePerBullet;
         ParticleSystem.MainModule shootPSMainModule = shootPS.main;
         shootPSMainModule.startSize = .2f;
     }
@@ -214,7 +220,15 @@ public class Gun : MonoBehaviour
 
     protected void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
         if (!gunActive) return;
-        if(gunSO.bulletIsParticle) {
+
+        //Check Passive SKills
+        CheckPassiveSkillEffectsOnBullet();
+
+        Shoot();
+    }
+
+    private void Shoot() {
+        if (gunSO.bulletIsParticle) {
             shootPS.Emit(pelletsPerBullet);
         }
 
@@ -223,13 +237,43 @@ public class Gun : MonoBehaviour
 
             Vector2 initialForce = PlayerAim.Instance.GetAimDir().normalized * bulletSpeed;
             gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce);
-
         }
-
     }
 
     public GunSO GetGunSO() {
         return gunSO;
+    }
+
+    public void BuffBulletDamage(float buffAmount) {
+        totalBuffMultiplier *= buffAmount;
+        RecalculateDamage();
+    }
+
+    public void DebuffBulletDamage(float debuffAmount) {
+        totalBuffMultiplier /= debuffAmount;
+        RecalculateDamage();
+    }
+    private void RecalculateDamage() {
+        damagePerBullet = (int)(damagePerBulletAtRunStart * totalBuffMultiplier);
+    }
+
+    private void CheckPassiveSkillEffectsOnBullet() {
+        if(PlayerSkills.Instance.GetLastBulletDealsMoreDamage()) {
+
+            if (lastBulletShot) {
+                lastBulletShot = false;
+                OnDebuffLastBulletShot?.Invoke(this, EventArgs.Empty);
+            }
+
+            if (PlayerShoot.Instance.GetCurrentBullets() == 0 && !lastBulletShot) {
+                //Last bullet
+                float damageBuff = PlayerSkills.Instance.GetLastBulletDealsMoreDamageBuff();
+                BuffBulletDamage(damageBuff);
+                OnBuffedLastBulletShot?.Invoke(this, EventArgs.Empty);
+                lastBulletShot = true;
+            }
+
+        }
     }
 
     #region GET PARAMETERS

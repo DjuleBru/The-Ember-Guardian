@@ -70,11 +70,13 @@ public class GunAnimator : MonoBehaviour
 
         float reloadAnimationSpeed = PlayerShoot.Instance.GetHeldGunSO().handsAnimationReloadTime / PlayerStats.Instance.GetHandsReloadTime();
         animator.speed = reloadAnimationSpeed;
+        Debug.Log(reloadAnimationSpeed);
         animator.SetTrigger("Reload");
     
     }
 
     private void PlayerShoot_OnPlayerReloadInterrupted(object sender, System.EventArgs e) {
+        Debug.Log("PlayerShoot_OnPlayerReloadInterrupted");
         animator.SetTrigger("InterruptReload");
         animator.speed = 1;
     }
