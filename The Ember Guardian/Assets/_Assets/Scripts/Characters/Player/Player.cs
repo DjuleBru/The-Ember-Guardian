@@ -376,7 +376,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public bool GetInNoOtherObjectTriggerArea() {
-        return !inPayCurrencyTriggerArea && !inMerchantTriggerArea && !inOtherInteractableObjectTriggerArea && !hoveringWorker && !inPetDogTriggerArea;
+        return !inPayCurrencyTriggerArea && !inMerchantTriggerArea && !inOtherInteractableObjectTriggerArea && !hoveringWorker;
     }
 
     public bool GetCanPetDog() {
@@ -384,7 +384,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public bool GetCanDropOrbOnTheFloor() {
-        return GetAllMenusClosed() && GetInteractingWithNoOtherObject() && GetInNoOtherObjectTriggerArea() && !dead && !cameraHasOtherTarget && !carryingOtherObject && !inPetDogTriggerArea;
+        return GetAllMenusClosed() && GetInteractingWithNoOtherObject() && GetInNoOtherObjectTriggerArea() && !dead && !cameraHasOtherTarget && !carryingOtherObject;
     }
 
     public bool GetPlayerControlInputsEnabled() {
@@ -393,7 +393,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public bool GetCanInteractWithStructureLocation() {
-        return GetAllMenusClosed() && GetPlayerControlInputsEnabled() && !hoveringWorker && !managingWorkers && !inPetDogTriggerArea;
+        return GetAllMenusClosed() && GetPlayerControlInputsEnabled() && !hoveringWorker && !managingWorkers;
     }
 
     public void Die() {

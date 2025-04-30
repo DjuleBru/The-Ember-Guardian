@@ -182,7 +182,7 @@ public class GameInput : MonoBehaviour
         if (interactPressed) {
             interactHoldTimer += Time.deltaTime;
 
-            if (interactHoldTimer > .25f && !holdingInteract) {
+            if (interactHoldTimer > .15f && !holdingInteract) {
                 holdingInteract = true;
                 OnPlayerInteractHeldDown?.Invoke(this, EventArgs.Empty);
             }

@@ -134,8 +134,8 @@ public class UICurrencyManager : MonoBehaviour
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.purpleGem);
         }
         if (Input.GetKeyDown(KeyCode.H)) {
-            //AddCurrencyInBag(PlayerCurrencies.CurrencyType.ammo);
-            AddCurrencyInBag(PlayerCurrencies.CurrencyType.ammo_special);
+            AddCurrencyInBag(PlayerCurrencies.CurrencyType.ammo);
+            //AddCurrencyInBag(PlayerCurrencies.CurrencyType.ammo_special);
         }
         if (Input.GetKeyDown(KeyCode.J)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.bigRedOrb);
@@ -520,6 +520,7 @@ public class UICurrencyManager : MonoBehaviour
             return;
         }
 
+        Debug.Log("cac");
         if (Player.Instance.GetCanDropOrbOnTheFloor()) {
             if (GetHasBigOrb()) {
                 DropNextCurrencyInBag(PlayerCurrencies.CurrencyType.bigBlueOrb);
