@@ -11350,7 +11350,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2349092539684067386}
   serializedVersion: 8
-  lengthInSec: 4
+  lengthInSec: 2
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -37653,7 +37653,7 @@ MonoBehaviour:
               m_PreInfinity: 2
               m_PostInfinity: 2
               m_RotationOrder: 4
-            m_AttackTime: 5.1
+            m_AttackTime: 3.1
             m_SustainTime: 0
             m_DecayTime: 0
             m_ScaleWithImpact: 1
@@ -37733,7 +37733,7 @@ MonoBehaviour:
         RemapRangeFalloff: {x: 0, y: 1}
         Owner: {fileID: 8362950116353532448}
         DebugActive: 0
-        Duration: 5.1
+        Duration: 3.1
         ResetShakerValuesAfterShake: 1
         ResetTargetValuesAfterShake: 1
         RelativeOrthographicSize: 1
@@ -37909,7 +37909,7 @@ MonoBehaviour:
         RemapRangeFalloff: {x: 0, y: 1}
         Owner: {fileID: 8362950116353532448}
         DebugActive: 0
-        Duration: 5.1
+        Duration: 3.1
         ResetShakerValuesAfterShake: 1
         ResetTargetValuesAfterShake: 1
         RemapIntensityZero: 0
@@ -38191,7 +38191,6 @@ MonoBehaviour:
   wildFireRadius: 20.35
   insaneFireRadius: 20.35
   fuelDepletionRate: 0.05
-  extractingEmberFuelRateDepletion: 5
   respawningPlayerFuelRateDepletion: 2
   debugFuelLevel: 0
   emberSpawnPosition: {fileID: 3486698585892022868}
@@ -38440,6 +38439,7 @@ MonoBehaviour:
   - {fileID: 1534934469428122919}
   - {fileID: 3251987198707727438}
   - {fileID: 6804672762735414431}
+  returnToPrimaryFunctionUIOnTriggerExit: 1
   fireProgressBarGameObject: {fileID: 4753682245529547433}
   progressBar: {fileID: 4931029010957737955}
   progressBarContainer: {fileID: 842548727862424488}
