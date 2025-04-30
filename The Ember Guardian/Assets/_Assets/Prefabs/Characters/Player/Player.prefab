@@ -76548,6 +76548,7 @@ MonoBehaviour:
   hpBarGameObject: {fileID: 7177597056381026574}
   hpTickTemplate: {fileID: 7336909787552260279}
   hpTickContainer: {fileID: 6251372985596987253}
+  debugAlwaysShow: 0
   hpBarDisplayTime: 2
   fadeOutDuration: 0.2
   fadeInDuration: 0.2
@@ -144717,7 +144718,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5261251560359775264, guid: 914dab0e0af7d7547aa674ab2df03e48, type: 3}
       propertyPath: managedReferences[6524424540001402881].Duration
-      value: 2
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 5261251560359775264, guid: 914dab0e0af7d7547aa674ab2df03e48, type: 3}
       propertyPath: managedReferences[6524424540001402881].UniqueID
@@ -145309,7 +145310,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5261251560359775264, guid: 914dab0e0af7d7547aa674ab2df03e48, type: 3}
       propertyPath: managedReferences[6524424540001402880].m_ImpulseDefinition.m_TimeEnvelope.m_AttackTime
-      value: 2
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 5261251560359775264, guid: 914dab0e0af7d7547aa674ab2df03e48, type: 3}
       propertyPath: managedReferences[6524424540001402881].RangeFalloff.m_Curve.Array.data[0].weightedMode

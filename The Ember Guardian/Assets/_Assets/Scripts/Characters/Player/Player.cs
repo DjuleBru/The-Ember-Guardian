@@ -396,6 +396,10 @@ public class Player : MonoBehaviour, IDamageable
         return GetAllMenusClosed() && GetPlayerControlInputsEnabled() && !hoveringWorker && !managingWorkers;
     }
 
+    public bool GetInPetDogTriggerArea() {
+        return inPetDogTriggerArea;
+    }
+
     public void Die() {
         bool isTutorial = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial;
         if (!isTutorial) {

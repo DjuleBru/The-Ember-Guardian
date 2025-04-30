@@ -181,7 +181,7 @@ public class PlayerShoot : MonoBehaviour
 
         if (playerJustPressedReload) {
             playerJustPressedReloadTimer += Time.deltaTime;
-            if (playerJustPressedReloadTimer > .175f) {
+            if (playerJustPressedReloadTimer > .2f) {
                 playerJustPressedReload = false;
                 StartTransferringAmmoFromBagInGun();
             }
