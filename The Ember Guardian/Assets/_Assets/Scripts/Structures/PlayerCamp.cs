@@ -68,19 +68,11 @@ public class PlayerCamp : MonoBehaviour
 
         if (!(structureLocation.GetStructureSOToBuild().structureType == StructureSO.StructureType.barricade)) return;
 
-        if(structureLocation == leftBarricade1) {
-            TryUnlockStructureLocationsBetweenBarricades(structureLocationsLockedBeforeBuildingBarricade, leftBarricade1Position, Vector3.zero);
-            TryUnlockStructureLocationsBetweenBarricades(trapLocations, leftBarricade2Position, leftBarricade1Position);
-        }
         if (structureLocation == leftBarricade2) {
             TryUnlockStructureLocationsBetweenBarricades(structureLocationsLockedBeforeBuildingBarricade, leftBarricade2Position, leftBarricade1Position);
             TryUnlockStructureLocationsBetweenBarricades(trapLocations, leftBarricade3Position, leftBarricade2Position);
         }
 
-        if (structureLocation == rightBarricade1) {
-            TryUnlockStructureLocationsBetweenBarricades(structureLocationsLockedBeforeBuildingBarricade, Vector3.zero, rightBarricade1Position);
-            TryUnlockStructureLocationsBetweenBarricades(trapLocations, rightBarricade1Position, rightBarricade2Position);
-        }
         if (structureLocation == rightBarricade2) {
             TryUnlockStructureLocationsBetweenBarricades(structureLocationsLockedBeforeBuildingBarricade, rightBarricade1Position, rightBarricade2Position);
             TryUnlockStructureLocationsBetweenBarricades(trapLocations, rightBarricade2Position, rightBarricade3Position);

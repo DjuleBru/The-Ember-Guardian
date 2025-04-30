@@ -27,7 +27,7 @@ public class Fire : Structure, IDamageable {
     [SerializeField] private int wildFuelTreshold;
     [SerializeField] private int insaneFuelTreshold;
     [SerializeField] private int maxFuelTreshold;
-    [SerializeField] private float extractingEmberFuelRateDepletion = 5f;
+    private float extractingEmberFuelRateDepletion = 8f;
     [SerializeField] private float respawningPlayerFuelRateDepletion = 2f;
     [SerializeField] private float debugFuelLevel;
     [SerializeField] private Transform emberSpawnPosition;
@@ -69,7 +69,7 @@ public class Fire : Structure, IDamageable {
     private bool lerping;
     private bool extractingEmber;
     private float extractingEmberTimer;
-    private float extractingEmberTime = 5f;
+    private float extractingEmberTime = 3f;
     private bool respawningPlayer;
     private float respawningPlayerTimer;
     private float respawningPlayerTime = 5f;
