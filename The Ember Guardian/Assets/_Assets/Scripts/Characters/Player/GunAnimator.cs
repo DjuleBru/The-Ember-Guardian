@@ -7,6 +7,8 @@ public class GunAnimator : MonoBehaviour
     protected Animator animator;
     protected Gun gun;
 
+    protected float meleeAttackAnimationSpeed = 1.5f;
+
     protected void Awake() {
         animator = GetComponent<Animator>();
         gun = GetComponent<Gun>();
@@ -31,6 +33,7 @@ public class GunAnimator : MonoBehaviour
 
     private void PlayerMeleeAttack_OnMeleeAttackStarted(object sender, System.EventArgs e) {
         animator.SetTrigger("MeleeAttack");
+        animator.speed = meleeAttackAnimationSpeed;
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {

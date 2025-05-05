@@ -9,7 +9,7 @@ public class PlayerMeleeAttack : MonoBehaviour
 
     private bool isMeleeAttacking;
     private float meleeAttackTimer;
-    private float meleeAttackCooldown = 1f;
+    private float meleeAttackCooldown = .75f;
 
     public event EventHandler OnMeleeAttackStarted;
 
