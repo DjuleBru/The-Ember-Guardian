@@ -50,7 +50,7 @@ public class CreatureAttack : MobAttack
                 if(!GetIsRangedAttack()) {
                     // Melee attack creature
 
-                    Barricade barricade = (Barricade)attackTargetIDamageable;
+                    Barricade barricade = attackTargetIDamageable as Barricade;
                     if (barricade != null) {
                         if (!barricade.GetBarricadeSpiked()) return;
                         creature.TakeDamage(barricade.GetSpikeDamage(), barricade.transform);

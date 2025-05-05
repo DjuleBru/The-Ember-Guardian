@@ -59,6 +59,16 @@ public class Creature : Mob
     private float poisonRateTimer;
     private float poisonedDuration = 10f;
 
+    public event EventHandler OnCreatureBurningStarted;
+    public event EventHandler OnCreatureBurningStopped;
+    private bool burning;
+    private bool burnImmune;
+    private int burnAmount;
+    private float burningTimer;
+    private float burningRate = .5f;
+    private float burningRateTimer;
+    private float burningDuration = 2f;
+
     public event EventHandler OnCreatureShockedStarted;
     public event EventHandler OnCreatureShockedStopped;
     private bool shocked;
@@ -372,13 +382,27 @@ public class Creature : Mob
                 OnCreaturePoisoneStopped?.Invoke(this, EventArgs.Empty);
             }
         }
-        if(shocked) {
+        if (burning) {
+            burningTimer -= Time.deltaTime;
+            burningRateTimer += Time.deltaTime;
+            if (burningRateTimer >= burningRate) {
+                TakeDamage(burnAmount, transform);
+                burningRateTimer = 0;
+            }
+
+            if (burningTimer < 0) {
+                burning = false;
+                OnCreatureBurningStopped?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        if (shocked) {
             shockedTimer -= Time.deltaTime;
             if (shockedTimer < 0) {
                 shocked = false;
                 OnCreatureShockedStopped?.Invoke(this, EventArgs.Empty);
             }
         }
+
     }
 
     public void ApplyBearTrapEffect(float immobilizeDuration, Vector3 trapPosition) {
@@ -409,6 +433,15 @@ public class Creature : Mob
         shockedTimer = shockedDuration;
 
         OnCreatureShockedStarted?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void ApplyBurning(int burnAmount) {
+        if (burnImmune) return;
+        burning = true;
+        this.burnAmount = burnAmount;
+        burningTimer = burningDuration;
+
+        OnCreatureBurningStarted?.Invoke(this, EventArgs.Empty);
     }
 
     #endregion

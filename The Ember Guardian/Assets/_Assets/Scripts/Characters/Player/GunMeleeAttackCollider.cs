@@ -33,13 +33,19 @@ public class GunMeleeAttackCollider : MonoBehaviour
         if (creatureHit != null) {
             creatureHit.TakeDamage(meleeAttackDamage, Player.Instance.transform, false);
 
-            // Calcule l'angle pour orienter l'explosion prefab
+            // Calcule l'angle pour orienter l'explosion prefab et le magma shot
             Vector3 hitPosition = collision.ClosestPoint(transform.position);
             Vector3 hitDir = (creatureHit.transform.position - transform.position).normalized;
             float angle = Mathf.Atan2(hitDir.y, hitDir.x) * Mathf.Rad2Deg;
 
             creatureHit.InstantiateHitPS(angle, hitPosition.y, false, meleeAttackDamage, hitPosition.x);
             meleeAttackHasHit = true;
+
+            if(PlayerSkills.Instance.GetMeleeAttackMagmaShot()) {
+                StaticProjectile magmaShot = Instantiate(PlayerSkills.Instance.GetMagmaShotPrefab(), hitPosition, Quaternion.Euler(0, 0, angle)).GetComponent<StaticProjectile>();
+                magmaShot.Initialize(PlayerAim.Instance.GetAimDirFloat(), null, PlayerSkills.Instance.GetMeleeAttackMagmaShotDamage(), true);
+                magmaShot.InitializeCarriedStatusEffects(true, PlayerSkills.Instance.GetMeleeAttackMagmaShotBurnAmount());
+            }
 
             OnGunMeleeAttackHit?.Invoke(this, EventArgs.Empty);
             OnAnyGunMeleeAttackHit?.Invoke(this, EventArgs.Empty);

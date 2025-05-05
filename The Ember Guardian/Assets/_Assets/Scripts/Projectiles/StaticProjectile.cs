@@ -11,9 +11,12 @@ public class StaticProjectile : MonoBehaviour
     private Animator staticProjectileAnimator;
     private float projectileLifetimer;
     private bool hasHit;
+    private bool isPlayerStaticProjectile;
     private bool projectileIsActive;
     private int damage;
 
+    private bool burningEffect;
+    private int burnAmount;
 
     private void Update() {
         projectileLifetimer += Time.deltaTime;
@@ -26,36 +29,52 @@ public class StaticProjectile : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if ((hasHit)) return;
 
-        if (collision.GetComponent<Player>() != null) {
-            Player.Instance.TakeDamage(damage, transform);
-            hasHit = true;
-        }
+        if(isPlayerStaticProjectile) {
 
-        if (collision.GetComponent<Barricade>() != null) {
-            collision.GetComponent<Barricade>().TakeDamage(1, transform);
-            hasHit = true;
-        }
+            if (collision.GetComponent<Creature>() != null) {
+                collision.GetComponent<Creature>().TakeDamage(damage, transform);
 
-        if (collision.GetComponent<Worker>() != null) {
-            Worker worker = collision.GetComponent<Worker>();
-            if(worker.GetRecruited()) {
-                collision.GetComponent<Worker>().TakeDamage(1, transform, false);
+                if(burningEffect) {
+                    collision.GetComponent<Creature>().ApplyBurning(burnAmount);
+                }
+            }
+
+        } else {
+
+            if (collision.GetComponent<Player>() != null) {
+                Player.Instance.TakeDamage(damage, transform);
+                hasHit = true;
+            }
+
+            if (collision.GetComponent<Barricade>() != null) {
+                collision.GetComponent<Barricade>().TakeDamage(1, transform);
+                hasHit = true;
+            }
+
+            if (collision.GetComponent<Worker>() != null) {
+                Worker worker = collision.GetComponent<Worker>();
+                if (worker.GetRecruited()) {
+                    collision.GetComponent<Worker>().TakeDamage(1, transform, false);
+                    hasHit = true;
+                }
+            }
+
+            // Hit Barricade
+            Fire fire = collision.gameObject.GetComponent<Fire>();
+            if (fire != null) {
+                collision.GetComponent<Fire>().TakeDamage(1, transform, false);
+                parentMob.Die();
                 hasHit = true;
             }
         }
 
-        // Hit Barricade
-        Fire fire = collision.gameObject.GetComponent<Fire>();
-        if (fire != null) {
-            collision.GetComponent<Fire>().TakeDamage(1, transform, false);
-            parentMob.Die();
-            hasHit = true;
-        }
     }
 
-    public void Initialize(float watchDir, Mob parentMob, int damage) {
+    public void Initialize(float watchDir, Mob parentMob, int damage, bool isPlayerStaticProjectile = false) {
         this.parentMob = parentMob;
         this.damage = damage;
+        this.isPlayerStaticProjectile = isPlayerStaticProjectile;
+
         if (watchDir < 0) {
             Vector3 localScale = Vector3.one;
             localScale.x = -1f;
@@ -65,6 +84,11 @@ public class StaticProjectile : MonoBehaviour
         staticProjectileAnimator = GetComponent<Animator>();
         staticProjectileAnimator.Play(staticProjectileAnimator.GetCurrentAnimatorStateInfo(0).fullPathHash, 0, 0f);
         staticProjectileAnimator.Update(0); // Force une mise à jour immédiate
+    }
+
+    public void InitializeCarriedStatusEffects(bool burning = false, int burnAmount = 5) {
+        burningEffect = burning;
+        this.burnAmount = burnAmount;
     }
 
     private void ResetInProjectilePool() {

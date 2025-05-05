@@ -10,12 +10,14 @@ public class CreatureStatusEffectsVisuals : MonoBehaviour
     [SerializeField] private GameObject shockedGameObject;
     [SerializeField] private GameObject poisonedGameObject;
     [SerializeField] private GameObject immobilizedGameObject;
+    [SerializeField] private GameObject burningGameObject;
 
     protected void Awake() {
         fireLightDebuffedGameObject.SetActive(false);
         shockedGameObject.SetActive(false);
         poisonedGameObject.SetActive(false);
         immobilizedGameObject.SetActive(false);
+        burningGameObject.SetActive(false);
 
         creature = GetComponentInParent<Creature>();
         creature.OnCreatureDied += Creature_OnCreatureDied;
@@ -27,6 +29,8 @@ public class CreatureStatusEffectsVisuals : MonoBehaviour
         creature.OnCreaturePoisoneStopped += Creature_OnCreaturePoisoneStopped;
         creature.OnCreatureShockedStarted += Creature_OnCreatureShockedStarted;
         creature.OnCreatureShockedStopped += Creature_OnCreatureShockedStopped;
+        creature.OnCreatureBurningStarted += Creature_OnCreatureBurningStarted;
+        creature.OnCreatureBurningStopped += Creature_OnCreatureBurningStopped;
     }
 
     private void Creature_OnCreatureDied(object sender, System.EventArgs e) {
@@ -34,6 +38,15 @@ public class CreatureStatusEffectsVisuals : MonoBehaviour
         poisonedGameObject.SetActive(false);
         immobilizedGameObject.SetActive(false);
         fireLightDebuffedGameObject.SetActive(false);
+        burningGameObject.SetActive(false);
+    }
+
+    private void Creature_OnCreatureBurningStopped(object sender, System.EventArgs e) {
+        burningGameObject.SetActive(false);
+    }
+
+    private void Creature_OnCreatureBurningStarted(object sender, System.EventArgs e) {
+        burningGameObject.SetActive(true);
     }
 
     private void Creature_OnCreatureShockedStopped(object sender, System.EventArgs e) {

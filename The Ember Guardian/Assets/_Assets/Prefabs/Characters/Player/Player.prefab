@@ -24869,7 +24869,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4712941642942225807
 Transform:
   m_ObjectHideFlags: 0
@@ -58848,7 +58848,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7420501803251000376
 Transform:
   m_ObjectHideFlags: 0
@@ -58888,7 +58888,7 @@ Animator:
   m_GameObject: {fileID: 3730277299435323058}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8723d16d7e19f0a42a1e5e224275d7b2, type: 2}
+  m_Controller: {fileID: 22100000, guid: 5cdfd4e4c3fe4f445b0a987c9ea82a65, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -76949,6 +76949,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   passiveShield: {fileID: 4809968831329830375}
+  magmaShotPrefab: {fileID: 8951337481921594862, guid: 194d1f6c4823ef046ba64fb93fdf9049, type: 3}
 --- !u!114 &2089533132175775193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84218,7 +84219,7 @@ Transform:
   m_GameObject: {fileID: 5444611097824315991}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.02, y: 0.0009999871, z: 0}
+  m_LocalPosition: {x: 1.02, y: 0.048, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -84858,7 +84859,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 16
+    angle: 3.5
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
@@ -84944,7 +84945,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.09
+      value: 0.03
       mode: 0
       spread: 0
       speed:
@@ -119221,7 +119222,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0

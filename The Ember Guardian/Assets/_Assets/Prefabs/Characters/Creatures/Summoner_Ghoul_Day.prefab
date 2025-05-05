@@ -479,6 +479,14 @@ PrefabInstance:
       propertyPath: creatureAnimator
       value: 
       objectReference: {fileID: 890632805542014312}
+    - target: {fileID: 2502436778530867593, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 2502436778530867593, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.07
+      objectReference: {fileID: 0}
     - target: {fileID: 2533432998412958594, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: ShapeModule.m_Scale.x
       value: 0.6648677
@@ -651,6 +659,10 @@ PrefabInstance:
       propertyPath: creatureAI
       value: 
       objectReference: {fileID: 6444008568150924580}
+    - target: {fileID: 8571825916105848638, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: creatureAnimatorManager
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8642631730259358339, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Sprite
       value: 

@@ -31,6 +31,7 @@ public class SkillItem : MerchantItem {
         passiveShootOnReload,
         passiveMeleeAttackMagmaShot,
         passiveLastBulletDealsTwiceDamage,
+        passiveDashFireTrail,
     }
 
     public SkillSO skillSO { get; private set; }

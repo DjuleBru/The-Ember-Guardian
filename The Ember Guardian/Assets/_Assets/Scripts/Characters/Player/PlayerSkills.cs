@@ -9,6 +9,7 @@ public class PlayerSkills : MonoBehaviour
     public static PlayerSkills Instance;
 
     [SerializeField] private PassiveShield passiveShield;
+    [SerializeField] private Transform magmaShotPrefab;
 
     private List<SkillItem> passiveSkillList = new List<SkillItem>();
     private List<SkillItem> activeSkillList = new List<SkillItem>();
@@ -35,8 +36,11 @@ public class PlayerSkills : MonoBehaviour
     private bool rightSkillRunning;
 
     private bool shootOnReload;
+    private bool meleeAttackMagmaShot;
     private bool lastBulletDealsMoreDamage;
     private float lastBulletDealsMoreDamageBuff;
+    private int meleeAttackMagmaShotDamage = 5;
+    private int meleeAttackMagmaShotBurnAmount = 2;
 
     public event EventHandler<OnSkillAddedEventArgs> OnActiveSkillActivated;
     public event EventHandler<OnSkillDeactivatedArgs> OnActiveSkillDeactivated;
@@ -387,7 +391,16 @@ public class PlayerSkills : MonoBehaviour
                     shootOnReload = true;
 
                     break;
+
+                case SkillItem.SkillType.passiveMeleeAttackMagmaShot:
+
+                    meleeAttackMagmaShot = true;
+                    meleeAttackMagmaShotBurnAmount += (int)relativeBuffEffectValue;
+
+                    break;
+
                 default:
+
                     Debug.LogWarning($"Unhandled skill type: {skillEffect.skillType}");
                     break;
             }
@@ -461,7 +474,22 @@ public class PlayerSkills : MonoBehaviour
     public bool GetShootOnReload() {
         return shootOnReload;
     }
+
+    public bool GetMeleeAttackMagmaShot() {
+        return meleeAttackMagmaShot;
+    }
+
+    public int GetMeleeAttackMagmaShotDamage() {
+        return meleeAttackMagmaShotDamage;
+    }
+    public int GetMeleeAttackMagmaShotBurnAmount() {
+        return meleeAttackMagmaShotBurnAmount;
+    }
     #endregion
+
+    public Transform GetMagmaShotPrefab() {
+        return magmaShotPrefab;
+    }
 
     [Button] 
     private void AddActiveSkillDebug(SkillSO skillSO) {
