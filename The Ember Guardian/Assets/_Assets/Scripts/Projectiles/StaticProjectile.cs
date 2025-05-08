@@ -20,9 +20,17 @@ public class StaticProjectile : MonoBehaviour
 
     private void Update() {
         projectileLifetimer += Time.deltaTime;
+
         if (projectileLifetimer > projectileLifetime && projectileIsActive) {
+
             projectileIsActive = false;
-            ResetInProjectilePool();
+
+            if (isPlayerStaticProjectile) {
+                Destroy(gameObject);
+            } else {
+                ResetInProjectilePool();
+            }
+
         }
     }
 
@@ -75,15 +83,17 @@ public class StaticProjectile : MonoBehaviour
         this.damage = damage;
         this.isPlayerStaticProjectile = isPlayerStaticProjectile;
 
-        if (watchDir < 0) {
-            Vector3 localScale = Vector3.one;
-            localScale.x = -1f;
-            transform.localScale = localScale;
-        }
+        //if (watchDir < 0) {
+        //    Vector3 localScale = Vector3.one;
+        //    localScale.y = -1f;
+        //    transform.localScale = localScale;
+        //}
 
         staticProjectileAnimator = GetComponent<Animator>();
         staticProjectileAnimator.Play(staticProjectileAnimator.GetCurrentAnimatorStateInfo(0).fullPathHash, 0, 0f);
         staticProjectileAnimator.Update(0); // Force une mise à jour immédiate
+
+        projectileIsActive = true;
     }
 
     public void InitializeCarriedStatusEffects(bool burning = false, int burnAmount = 5) {
@@ -96,5 +106,6 @@ public class StaticProjectile : MonoBehaviour
         gameObject.SetActive(false);
         hasHit = false;
         projectileIsActive = true;
+        projectileLifetimer = 0;
     }
 }

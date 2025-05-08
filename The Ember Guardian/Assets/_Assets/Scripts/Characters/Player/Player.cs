@@ -531,6 +531,7 @@ public class Player : MonoBehaviour, IDamageable
         });
     }
 
+    [Button]
     public void HealPlayer(int healAmount) {
         if(playerHealth + healAmount > PlayerStats.Instance.GetMaxHP()) {
             healAmount = PlayerStats.Instance.GetMaxHP() - playerHealth;
@@ -556,6 +557,7 @@ public class Player : MonoBehaviour, IDamageable
     public void KillPlayer() {
         Die();
     }
+
     public void OnDestroy() {
         PlayerStats.Instance.OnPlayerMaxHPChanged -= PlayerStats_OnPlayerMaxHPChanged;
         PlayerStats.Instance.OnPlayerHPRegenChanged -= PlayerStats_OnPlayerHPRegenChanged;

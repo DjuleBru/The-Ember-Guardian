@@ -57491,11 +57491,11 @@ MonoBehaviour:
   gun: {fileID: 5508321129471777648}
   bulletPS: {fileID: 230986148865389849}
   trailPS: {fileID: 2222911031966816361}
-  fireLightBuffedBulletDmg: {r: 0, g: 0, b: 0, a: 0}
-  fireLightBuffedBulletDmgStartColor: {r: 0, g: 0, b: 0, a: 0}
-  outFireLightBuffedBulletDmg: {r: 0, g: 0, b: 0, a: 0}
-  outFireLightBuffedBulletDmgStartColor: {r: 0, g: 0, b: 0, a: 0}
-  initialBulletPSColor: {r: 0, g: 0, b: 0, a: 0}
+  fireLightBuffedBulletDmg: {r: 1, g: 0.43529412, b: 0, a: 1}
+  fireLightBuffedBulletDmgStartColor: {r: 1, g: 0.8509804, b: 0, a: 1}
+  outFireLightBuffedBulletDmg: {r: 1, g: 0.11764706, b: 0, a: 1}
+  outFireLightBuffedBulletDmgStartColor: {r: 1, g: 0, b: 0.7647059, a: 1}
+  initialBulletPSColor: {r: 0.5686275, g: 0.85490197, b: 0.85882354, a: 1}
 --- !u!1 &3222880182537109536
 GameObject:
   m_ObjectHideFlags: 0
@@ -76887,7 +76887,7 @@ MonoBehaviour:
   deceleration: 7
   velPower: 0.9
   jumpForce: 6
-  rollForce: 6
+  rollForce: 12
   jumpCutMultiplier: 0.35
   gravityScale: 1.5
   fallGravityMultiplier: 1.8
@@ -76997,6 +76997,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   passiveShield: {fileID: 4809968831329830375}
   magmaShotPrefab: {fileID: 8951337481921594862, guid: 194d1f6c4823ef046ba64fb93fdf9049, type: 3}
+  fireDashPrefab: {fileID: 8951337481921594862, guid: be06d313fe24dce4eba9880e8384bf46, type: 3}
 --- !u!114 &2089533132175775193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145454,10 +145455,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3539393163596176914, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: e1a5980a30928174bb88fa21dc366e6f, type: 2}
     - target: {fileID: 6455426156918751658, guid: ac339e72352a33c43b41c4156642971e, type: 3}
       propertyPath: m_Name
       value: TrailPS
@@ -145465,62 +145462,6 @@ PrefabInstance:
     - target: {fileID: 6455426156918751658, guid: ac339e72352a33c43b41c4156642971e, type: 3}
       propertyPath: m_Layer
       value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: ShapeModule.type
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: ShapeModule.angle
-      value: 5.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: ShapeModule.m_Rotation.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: ShapeModule.m_Rotation.y
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: ShapeModule.radiusThickness
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: InitialModule.startSize.minScalar
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: InitialModule.startSize.minMaxState
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: InitialModule.gravityModifier.scalar
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: InitialModule.startSizeY.minMaxState
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: InitialModule.startSizeZ.minMaxState
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: EmissionModule.rateOverDistance.scalar
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8816777902882326330, guid: ac339e72352a33c43b41c4156642971e, type: 3}
-      propertyPath: EmissionModule.rateOverDistance.minMaxState
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

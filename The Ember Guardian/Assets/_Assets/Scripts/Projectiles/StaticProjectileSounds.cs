@@ -14,6 +14,7 @@ public class StaticProjectileSounds : SoundObject
     }
 
     public void TriggerProjectileSFX() {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
         audioSource.PlayOneShot(projectileSFXAudioClips[Random.Range(0, projectileSFXAudioClips.Length)], projectileSFXVolumeMultiplier * sfxVolume);
     }
 }

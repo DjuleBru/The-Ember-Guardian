@@ -11,6 +11,7 @@ public class PlayerSkills : MonoBehaviour
 
     [SerializeField] private PassiveShield passiveShield;
     [SerializeField] private Transform magmaShotPrefab;
+    [SerializeField] private Transform fireDashPrefab;
 
     private List<SkillItem> passiveSkillList = new List<SkillItem>();
     private List<SkillItem> activeSkillList = new List<SkillItem>();
@@ -42,6 +43,10 @@ public class PlayerSkills : MonoBehaviour
     private float lastBulletDealsMoreDamageBuff;
     private int meleeAttackMagmaShotDamage = 5;
     private int meleeAttackMagmaShotBurnAmount = 2;
+
+    private bool fireDashRoll;
+    private int fireDashRollDamage = 5;
+    private int fireDashRollBurnAmount = 2;
 
     private bool enteredLight;
     private bool increasedDamageInFireLight;
@@ -84,6 +89,7 @@ public class PlayerSkills : MonoBehaviour
         GameInput.Instance.OnPlayerLeftSkillPerformed += GameInput_OnPlayerLeftSkillPerformed;
         GameInput.Instance.OnPlayerRightSkillPerformed += GameInput_OnPlayerRightSkillPerformed;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+        PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
 
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             StartCoroutine(SetPlayerInitialSkills());
@@ -417,6 +423,13 @@ public class PlayerSkills : MonoBehaviour
 
                     break;
 
+                case SkillItem.SkillType.passiveDashFireTrail:
+
+                    fireDashRoll = true;
+                    fireDashRollBurnAmount += (int)relativeBuffEffectValue;
+
+                    break;
+
                 case SkillItem.SkillType.passiveDmgIncreaseInLight:
 
                     increasedDamageInFireLight = true;
@@ -549,6 +562,22 @@ public class PlayerSkills : MonoBehaviour
         return magmaShotPrefab;
     }
 
+    private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
+        if (!fireDashRoll) return;
+        StartCoroutine(InstantiateFireDashAfterDelay(.1f));
+    }
+
+    private IEnumerator InstantiateFireDashAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+
+        Vector3 positionToInstantiate = transform.position;
+        positionToInstantiate.y = 0;
+        StaticProjectile fireDash = Instantiate(fireDashPrefab, positionToInstantiate, Quaternion.identity).GetComponent<StaticProjectile>();
+        fireDash.Initialize(PlayerAim.Instance.GetAimDirFloat(), null, fireDashRollDamage, true);
+        fireDash.InitializeCarriedStatusEffects(true, fireDashRollBurnAmount);
+        fireDash.GetComponent<StaticProjectileSounds>().TriggerProjectileSFX();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Fire>() != null) return;
         if (collision.gameObject.GetComponent<FireOrbCollider>() != null) return;
@@ -572,6 +601,7 @@ public class PlayerSkills : MonoBehaviour
             StartCoroutine(HandleBuffDebuffsFireLight(false,0f));
         }
     }
+
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
         StartCoroutine(HandleBuffDebuffsFireLight(enteredLight, 1f));
