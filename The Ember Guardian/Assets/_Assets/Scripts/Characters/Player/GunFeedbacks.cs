@@ -13,6 +13,8 @@ public class GunFeedbacks : MonoBehaviour
 
     [SerializeField] private ParticleSystem loadGunPS1;
     [SerializeField] private ParticleSystem loadGunPS2;
+    [SerializeField] private ParticleSystem dmgBuffInFirePS;
+    [SerializeField] private ParticleSystem dmgBuffOutFirePS;
 
     private Gun gun;
 
@@ -24,8 +26,28 @@ public class GunFeedbacks : MonoBehaviour
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerStartedShot += PlayerShoot_OnPlayerStartedShot;
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoot_OnPlayerCooldownTrigger;
+        PlayerSkills.Instance.OnPlayerInFireLightBuffedDmg += PlayerSkills_OnPlayerInFireLightBuffedDmg;
+        PlayerSkills.Instance.OnPlayerInFireLightDebuffedDmg += PlayerSkills_OnPlayerInFireLightDebuffedDmg;
+        PlayerSkills.Instance.OnPlayerOutFireLightBuffedDmg += PlayerSkills_OnPlayerOutFireLightBuffed;
+        PlayerSkills.Instance.OnPlayerOutFireLightDebuffedDmg += PlayerSkills_OnPlayerOutFireLightDebuffedDmg;
 
         meleeAttackCollider.OnGunMeleeAttackHit += MeleeAttackCollider_OnGunMeleeAttackHit;
+    }
+
+    private void PlayerSkills_OnPlayerOutFireLightDebuffedDmg(object sender, System.EventArgs e) {
+        dmgBuffOutFirePS.Stop();
+    }
+
+    private void PlayerSkills_OnPlayerInFireLightDebuffedDmg(object sender, System.EventArgs e) {
+        dmgBuffInFirePS.Stop();
+    }
+
+    private void PlayerSkills_OnPlayerOutFireLightBuffed(object sender, System.EventArgs e) {
+        dmgBuffOutFirePS.Play();
+    }
+
+    private void PlayerSkills_OnPlayerInFireLightBuffedDmg(object sender, System.EventArgs e) {
+        dmgBuffInFirePS.Play();
     }
 
     private void MeleeAttackCollider_OnGunMeleeAttackHit(object sender, System.EventArgs e) {

@@ -21,7 +21,7 @@ public class Gun : MonoBehaviour
     protected int pelletsPerBullet = 1;
     protected int damagePerBulletAtRunStart;
     protected int damagePerBullet;
-    protected float totalBuffMultiplier = 1;
+    protected static float totalBuffMultiplier = 1;
     protected float bulletKnockback;
     protected int currentAmmoClip;
     protected int maxAmmo;
@@ -67,6 +67,12 @@ public class Gun : MonoBehaviour
         PlayerShoot.Instance.OnPlayerEmptyRevolverMagStart += PlayerShoot_OnPlayerEmptyRevolverMagStart;
         PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
         PlayerShoot.Instance.OnPlayerFocusBlastStopped += PlayerShoot_OnPlayerFocusBlastStopped;
+        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+
+        PlayerSkills.Instance.OnPlayerInFireLightBuffedDmg += PlayerSkills_OnPlayerInFireLightBuffedDmg;
+        PlayerSkills.Instance.OnPlayerInFireLightDebuffedDmg += PlayerSkills_OnPlayerInFireLightDebuffedDmg;
+        PlayerSkills.Instance.OnPlayerOutFireLightBuffedDmg += PlayerSkills_OnPlayerOutFireLightBuffed;
+        PlayerSkills.Instance.OnPlayerOutFireLightDebuffedDmg += PlayerSkills_OnPlayerOutFireLightDebuffedDmg;
     }
 
 
@@ -86,6 +92,10 @@ public class Gun : MonoBehaviour
         };
     }
 
+    private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
+        if (!gunActive) return;
+        RecalculateDamage();
+    }
     private void PlayerShoot_OnPlayerOverclockedSMGStopped(object sender, System.EventArgs e) {
         // Rétablit l'angle par défaut pour desserrer le cône
         lerpingGunAngle = true;
@@ -166,6 +176,37 @@ public class Gun : MonoBehaviour
         shootPSMainModule.startSize = totalBullerSize;
     }
 
+
+    private void PlayerSkills_OnPlayerOutFireLightDebuffedDmg(object sender, System.EventArgs e) {
+        if (!gunActive) return;
+        Debug.Log("PlayerSkills_OnPlayerOutFireLightDebuffedDmg " + PlayerSkills.Instance.GetDamageOutFireLightCurrentlyBuffed());
+        if (!PlayerSkills.Instance.GetDamageOutFireLightCurrentlyBuffed()) return;
+
+        DebuffBulletDamage(PlayerSkills.Instance.GetDamageBuffOutFireLight());
+    }
+
+    private void PlayerSkills_OnPlayerInFireLightDebuffedDmg(object sender, System.EventArgs e) {
+        if (!gunActive) return;
+        if (!PlayerSkills.Instance.GetDamageInFireLightCurrentlyBuffed()) return;
+
+        DebuffBulletDamage(PlayerSkills.Instance.GetDamageBuffInFireLight());
+    }
+
+    private void PlayerSkills_OnPlayerOutFireLightBuffed(object sender, System.EventArgs e) {
+        if (!gunActive) return;
+        if (PlayerSkills.Instance.GetDamageOutFireLightCurrentlyBuffed()) return;
+
+        BuffBulletDamage(PlayerSkills.Instance.GetDamageBuffOutFireLight());
+    }
+
+    private void PlayerSkills_OnPlayerInFireLightBuffedDmg(object sender, System.EventArgs e) {
+        if (!gunActive) return;
+        if (PlayerSkills.Instance.GetDamageInFireLightCurrentlyBuffed()) return;
+
+        BuffBulletDamage(PlayerSkills.Instance.GetDamageBuffInFireLight());
+    }
+
+
     public void RefreshGunStats() {
         gunUnlocked = MetaProgressionManager.Instance.GetGunUnlocked(gunSO);
 
@@ -234,7 +275,7 @@ public class Gun : MonoBehaviour
 
         if (gunSO.bulletIsProjectile) {
             GunProjectile gunProjectile = Instantiate(projectilePrefab, projectileSpawnPosition.position, Quaternion.identity).GetComponent<GunProjectile>();
-
+            gunProjectile.gameObject.SetActive(true);
             Vector2 initialForce = PlayerAim.Instance.GetAimDir().normalized * bulletSpeed;
             gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce);
         }
@@ -246,15 +287,19 @@ public class Gun : MonoBehaviour
 
     public void BuffBulletDamage(float buffAmount) {
         totalBuffMultiplier *= buffAmount;
+        Debug.Log("BuffBulletDamage " + totalBuffMultiplier);
         RecalculateDamage();
     }
 
     public void DebuffBulletDamage(float debuffAmount) {
         totalBuffMultiplier /= debuffAmount;
+        Debug.Log("DebuffBulletDamage " + totalBuffMultiplier);
         RecalculateDamage();
     }
+
     private void RecalculateDamage() {
         damagePerBullet = (int)(damagePerBulletAtRunStart * totalBuffMultiplier);
+        Debug.Log("RecalculateDamage " + totalBuffMultiplier);
     }
 
     private void CheckPassiveSkillEffectsOnBullet() {

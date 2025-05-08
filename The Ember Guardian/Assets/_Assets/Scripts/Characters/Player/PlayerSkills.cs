@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class PlayerSkills : MonoBehaviour
 {
@@ -42,6 +43,21 @@ public class PlayerSkills : MonoBehaviour
     private int meleeAttackMagmaShotDamage = 5;
     private int meleeAttackMagmaShotBurnAmount = 2;
 
+    private bool enteredLight;
+    private bool increasedDamageInFireLight;
+    private bool damageInFireLightCurrentlyBuffed;
+    private float damageBuffInFireLight;
+    private bool increasedDamageOutFireLight;
+    private bool damageOutFireLightCurrentlyBuffed;
+    private float damageBuffOutFireLight;
+
+    public event EventHandler OnPlayerInFireLightBuffedDmg;
+    public event EventHandler OnPlayerInFireLightDebuffedDmg;
+    public event EventHandler OnPlayerOutFireLightBuffedDmg;
+    public event EventHandler OnPlayerOutFireLightDebuffedDmg;
+    public event EventHandler OnPlayerInFireLightBuffRefresh;
+    public event EventHandler OnPlayerOutFireLightBuffRefresh;
+
     public event EventHandler<OnSkillAddedEventArgs> OnActiveSkillActivated;
     public event EventHandler<OnSkillDeactivatedArgs> OnActiveSkillDeactivated;
     public event EventHandler<OnSkillAddedEventArgs> OnActiveSkillAdded;
@@ -67,11 +83,13 @@ public class PlayerSkills : MonoBehaviour
     private void Start() {
         GameInput.Instance.OnPlayerLeftSkillPerformed += GameInput_OnPlayerLeftSkillPerformed;
         GameInput.Instance.OnPlayerRightSkillPerformed += GameInput_OnPlayerRightSkillPerformed;
+        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
 
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             StartCoroutine(SetPlayerInitialSkills());
         }
     }
+
 
     private IEnumerator SetPlayerInitialSkills() {
         List<SkillSO> unlockedActiveSkillSOList = PlayerSave.Instance.GetActiveSkillsUnlocked();
@@ -399,6 +417,29 @@ public class PlayerSkills : MonoBehaviour
 
                     break;
 
+                case SkillItem.SkillType.passiveDmgIncreaseInLight:
+
+                    increasedDamageInFireLight = true;
+                    damageBuffInFireLight = 1 + relativeBuffEffectValue/100;
+
+                    if(enteredLight) {
+                        OnPlayerInFireLightBuffedDmg?.Invoke(this, EventArgs.Empty);
+                        damageInFireLightCurrentlyBuffed = true;
+                    }
+
+                    break;
+
+                case SkillItem.SkillType.passiveDmgIncreaseNotInLight:
+
+                    increasedDamageOutFireLight = true;
+                    damageBuffOutFireLight = 1 + relativeBuffEffectValue /100;
+
+                    if (!enteredLight) {
+                        OnPlayerOutFireLightBuffedDmg?.Invoke(this, EventArgs.Empty);
+                        damageOutFireLightCurrentlyBuffed = true;
+                    }
+
+                    break;
                 default:
 
                     Debug.LogWarning($"Unhandled skill type: {skillEffect.skillType}");
@@ -470,7 +511,24 @@ public class PlayerSkills : MonoBehaviour
     public float GetLastBulletDealsMoreDamageBuff() {
         return lastBulletDealsMoreDamageBuff;
     }
-
+    public bool GetDamageInFireLightCurrentlyBuffed() {
+        return damageInFireLightCurrentlyBuffed;
+    }
+    public bool GetDamageOutFireLightCurrentlyBuffed() {
+        return damageOutFireLightCurrentlyBuffed;
+    }
+    public bool GetIncreasedDamageInFireLight() {
+        return increasedDamageInFireLight;
+    }
+    public bool GetIncreasedDamageOutFireLight() {
+        return increasedDamageOutFireLight;
+    }
+    public float GetDamageBuffInFireLight() {
+        return damageBuffInFireLight;
+    }
+    public float GetDamageBuffOutFireLight() {
+        return damageBuffOutFireLight;
+    }
     public bool GetShootOnReload() {
         return shootOnReload;
     }
@@ -489,6 +547,58 @@ public class PlayerSkills : MonoBehaviour
 
     public Transform GetMagmaShotPrefab() {
         return magmaShotPrefab;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.gameObject.GetComponent<Fire>() != null) return;
+        if (collision.gameObject.GetComponent<FireOrbCollider>() != null) return;
+
+        if (collision.gameObject.GetComponentInParent<Fire>() != null) {
+            enteredLight = true;
+
+            if (!increasedDamageInFireLight && !increasedDamageOutFireLight) return;
+            StartCoroutine(HandleBuffDebuffsFireLight(true,0f));
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) {
+        if (collision.gameObject.GetComponent<Fire>() != null) return;
+        if (collision.gameObject.GetComponent<FireOrbCollider>() != null) return;
+
+        if (collision.gameObject.GetComponentInParent<Fire>() != null) {
+            enteredLight = false;
+            if (!increasedDamageInFireLight && !increasedDamageOutFireLight) return;
+
+            StartCoroutine(HandleBuffDebuffsFireLight(false,0f));
+        }
+    }
+
+    private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
+        StartCoroutine(HandleBuffDebuffsFireLight(enteredLight, 1f));
+    }
+
+    private IEnumerator HandleBuffDebuffsFireLight(bool entered, float delay) {
+        yield return new WaitForSeconds(delay);
+
+        if(entered) {
+            if(increasedDamageOutFireLight) {
+                OnPlayerOutFireLightDebuffedDmg?.Invoke(this, EventArgs.Empty);
+                damageOutFireLightCurrentlyBuffed = false;
+            }
+            if(increasedDamageInFireLight) {
+                OnPlayerInFireLightBuffedDmg?.Invoke(this, EventArgs.Empty);
+                damageInFireLightCurrentlyBuffed = true;
+            }
+        } else {
+            if (increasedDamageInFireLight) {
+                OnPlayerInFireLightDebuffedDmg?.Invoke(this, EventArgs.Empty);
+                damageInFireLightCurrentlyBuffed = false;
+            }
+            if (increasedDamageOutFireLight) {
+                OnPlayerOutFireLightBuffedDmg?.Invoke(this, EventArgs.Empty);
+                damageOutFireLightCurrentlyBuffed = true;
+            }
+        }
     }
 
     [Button] 
