@@ -55,7 +55,8 @@ public class Chest_Special : Chest
 
         if (chestType == ChestType.weaponChest) {
             PlayerShoot.Instance.SetActiveGun(gunSOInChest);
-            //PlayerShoot.Instance.GetHeldGun().SetCurrentBullet();
+            yield return new WaitForSeconds(.2f);
+            PlayerShoot.Instance.SetGunToMaxAmmo(gunSOInChest);
 
         }
         if (chestType == ChestType.skillChest) {

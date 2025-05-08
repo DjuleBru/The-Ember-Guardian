@@ -494,13 +494,17 @@ public class DemoMainLevelManager : MonoBehaviour
         if (ammoCraftStarted) return;
 
         ammoCraftStarted = true;
+        ammoCrafterIndicator.SetActive(false);
         LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.TurnOnAmmoCrafter, LevelUI_ObjectiveUI.SubObjectiveType.WaitCraftingAmmo);
     }
 
     private void AmmoCrafter_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
         if (demoMainLevelTutorialCompleted) return;
-        if (ammoCraftStarted) return;
-        ammoCrafterIndicator.SetActive(true);
+        if (ammoCraftStarted) {
+            ammoCrafterIndicator.SetActive(false);
+        } else {
+            ammoCrafterIndicator.SetActive(true);
+        }
     }
 
     private void AmmoCrafter_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
