@@ -76,6 +76,8 @@ public class Player : MonoBehaviour, IDamageable
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
         playerHealth = PlayerStats.Instance.GetMaxHP();
+
+        Time.timeScale = 1.0f;
     }
 
     private void Start() {
