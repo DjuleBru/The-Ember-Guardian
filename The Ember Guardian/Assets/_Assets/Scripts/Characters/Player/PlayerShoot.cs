@@ -314,6 +314,19 @@ public class PlayerShoot : MonoBehaviour
         }
         OnBulletsChanged?.Invoke(this, EventArgs.Empty);
     }
+    public void SetGunToMaxAmmo(GunSO gunSO) {
+        int ammoRefill = 0;
+        foreach (Gun gun in allGunsList) {
+            if (gun.GetGunSO() == gunSO) {
+                ammoRefill = gun.GetMaxAmmo();
+                gun.SetGunAmmo(ammoRefill, gun.GetBulletsPerAmmoClip());
+            }
+        }
+        OnBulletsChanged?.Invoke(this, EventArgs.Empty);
+        OnPlayerAmmoRefilled?.Invoke(this, new OnAmmoRefilledEventArgs {
+            ammoAmount = ammoRefill
+        });
+    }
 
     private void InitializeGuns() {
         foreach (Gun gun in allGunsList) {
