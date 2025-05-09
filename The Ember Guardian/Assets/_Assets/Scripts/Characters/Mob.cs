@@ -88,7 +88,7 @@ public class Mob : MonoBehaviour, IDamageable
     }
 
     public virtual void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
-        Debug.Log(this + " TakeDamage " + damage);
+        //Debug.Log(this + " TakeDamage " + damage);
         if (health <= 0) return;
         
         if(critHit) {
@@ -107,6 +107,16 @@ public class Mob : MonoBehaviour, IDamageable
 
         if (health <= 0) {
             Die();
+        }
+    }
+
+    public virtual void HandlePlayerSkillEffects(float angle, float height) {
+        if(PlayerSkills.Instance.GetMagmaBullet()) {
+            Vector3 localPosition = new Vector3(transform.position.x, height, 0);
+            StaticProjectile magmaShot = Instantiate(PlayerSkills.Instance.GetMagmaShotPrefab(), localPosition, Quaternion.Euler(0, 0, angle)).GetComponent<StaticProjectile>();
+            magmaShot.Initialize(PlayerAim.Instance.GetAimDirFloat(), null, PlayerSkills.Instance.GetMagmaShotDamage(), true);
+            magmaShot.InitializeCarriedStatusEffects(true, PlayerSkills.Instance.GetMagmaShotBulletBurnAmount());
+            magmaShot.GetComponent<StaticProjectileSounds>().TriggerProjectileSFX();
         }
     }
 

@@ -32,6 +32,21 @@ public class PlayerSkills : MonoBehaviour
     private float shootCooldownBuffValue;
     private float shootCooldownBuffDuration = 8f;
 
+    private bool magmaShotBulletActive;
+    private float magmaShotBulletTimer;
+    private float magmaShotBulletSkillDuration;
+    private int magmaShotBulletBurnAmount = 2;
+
+    private bool healOnKillsActive;
+    private float healOnKillsTimer;
+    private float healOnKillsSkillDuration = 15f;
+    private int healPipsPerKill = 1;
+
+    private bool fuelFireOnKillsActive;
+    private float fuelFireOnKillsTimer;
+    private float fuelFireOnKillsSkillDuration = 15f;
+    private int fuelPipsPerKill = 1;
+
     private bool leftSkillReady;
     private bool leftSkillRunning;
     private bool rightSkillReady;
@@ -41,7 +56,7 @@ public class PlayerSkills : MonoBehaviour
     private bool meleeAttackMagmaShot;
     private bool lastBulletDealsMoreDamage;
     private float lastBulletDealsMoreDamageBuff;
-    private int meleeAttackMagmaShotDamage = 5;
+    private int magmaShotDamage = 5;
     private int meleeAttackMagmaShotBurnAmount = 2;
 
     private bool fireDashRoll;
@@ -96,7 +111,6 @@ public class PlayerSkills : MonoBehaviour
         }
     }
 
-
     private IEnumerator SetPlayerInitialSkills() {
         List<SkillSO> unlockedActiveSkillSOList = PlayerSave.Instance.GetActiveSkillsUnlocked();
         List<SkillSO> unlockedPassiveSkillSOList = PlayerSave.Instance.GetPassiveSkillsUnlocked();
@@ -134,79 +148,9 @@ public class PlayerSkills : MonoBehaviour
         HandleActiveSkillsCooldowns();
         HandleActiveMoveSpeedBuff();
         HandleActiveShootCooldownBuff();
-    }
-
-    private void HandleActiveSkillsCooldowns() {
-        if (activeSkillLeft != null && !leftSkillReady && !leftSkillRunning) {
-            leftSkillCooldownTimer -= Time.deltaTime;
-            if (leftSkillCooldownTimer <= 0) {
-                leftSkillReady = true;
-                OnActiveSkillReady?.Invoke(this, EventArgs.Empty);
-            }
-        }
-
-        if (activeSkillRight != null && !rightSkillReady && !rightSkillRunning) {
-
-            rightSkillCooldownTimer -= Time.deltaTime;
-            if (rightSkillCooldownTimer <= 0) {
-                rightSkillReady = true;
-                OnActiveSkillReady?.Invoke(this, EventArgs.Empty);
-            }
-        }
-    }
-
-    private void HandleActiveMoveSpeedBuff() {
-        if (!moveSpeedBuffActive) return;
-
-        moveSpeedBuffTimer -= Time.deltaTime;
-
-        if(moveSpeedBuffTimer <= 0) {
-            HandleActiveSkillDeactivation(SkillItem.SkillType.activeMoveSpeedBuff);
-        }
-    }
-
-    private void HandleActiveShootCooldownBuff() {
-        if (!shootCooldownBuffActive) return;
-
-        shootCooldownBuffTimer -= Time.deltaTime;
-
-        if (shootCooldownBuffTimer <= 0) {
-            HandleActiveSkillDeactivation(SkillItem.SkillType.activeShootSpeedBuff);
-        }
-    }
-
-    private void HandleActiveSkillDeactivation(SkillItem.SkillType skillType) {
-
-        if (activeSkillLeft != null && activeSkillLeft.skillType == skillType) {
-            leftSkillRunning = false;
-            leftSkillCooldownTimer = leftSkillCooldown;
-            OnLeftActiveSkillDeactivated?.Invoke(this, EventArgs.Empty);
-        }
-
-        if (activeSkillRight != null && activeSkillRight.skillType == skillType) {
-            rightSkillRunning = false;
-            rightSkillCooldownTimer = rightSkillCooldown;
-            OnRightActiveSkillDeactivated?.Invoke(this, EventArgs.Empty);
-        }
-
-        if(skillType == SkillItem.SkillType.activeMoveSpeedBuff) {
-            PlayerMovement.Instance.DebuffMoveSpeed(moveSpeedBuffAmount);
-            moveSpeedBuffActive = false;
-        }
-
-        if (skillType == SkillItem.SkillType.activeShootSpeedBuff) {
-            PlayerStats.Instance.DebuffShootCooldown(shootCooldownBuffValue);
-            shootCooldownBuffActive = false;
-        }
-
-        if (skillType == SkillItem.SkillType.activeTeleportation) {
-
-        }
-
-
-        OnActiveSkillDeactivated?.Invoke(this, new OnSkillDeactivatedArgs {
-            skillTypeDeactivated = skillType,
-        });
+        HandleActiveMagmaShotBullet();
+        HandleFuelOnKills();
+        HandleHealOnKills();
     }
 
     private void GameInput_OnPlayerRightSkillPerformed(object sender, EventArgs e) {
@@ -214,7 +158,7 @@ public class PlayerSkills : MonoBehaviour
 
         if (activeSkillRight == null) return;
 
-        if(rightSkillRunning) {
+        if (rightSkillRunning) {
             SkillItem.SkillType skillType = activeSkillRight.skillType;
             HandleActiveSkillDeactivation(skillType);
             return;
@@ -243,15 +187,126 @@ public class PlayerSkills : MonoBehaviour
         leftSkillReady = false;
     }
 
+    #region ACTIVE SKILLS TIMERS
+    private void HandleActiveSkillsCooldowns() {
+        if (activeSkillLeft != null && !leftSkillReady && !leftSkillRunning) {
+            leftSkillCooldownTimer -= Time.deltaTime;
+            if (leftSkillCooldownTimer <= 0) {
+                leftSkillReady = true;
+                OnActiveSkillReady?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        if (activeSkillRight != null && !rightSkillReady && !rightSkillRunning) {
+
+            rightSkillCooldownTimer -= Time.deltaTime;
+            if (rightSkillCooldownTimer <= 0) {
+                rightSkillReady = true;
+                OnActiveSkillReady?.Invoke(this, EventArgs.Empty);
+            }
+        }
+    }
+
+    private void HandleActiveMoveSpeedBuff() {
+        if (!moveSpeedBuffActive) return;
+
+        moveSpeedBuffTimer -= Time.deltaTime;
+
+        if (moveSpeedBuffTimer <= 0) {
+            HandleActiveSkillDeactivation(SkillItem.SkillType.activeMoveSpeedBuff);
+        }
+    }
+
+    private void HandleActiveShootCooldownBuff() {
+        if (!shootCooldownBuffActive) return;
+
+        shootCooldownBuffTimer -= Time.deltaTime;
+
+        if (shootCooldownBuffTimer <= 0) {
+            HandleActiveSkillDeactivation(SkillItem.SkillType.activeShootSpeedBuff);
+        }
+    }
+    private void HandleActiveMagmaShotBullet() {
+        if (!magmaShotBulletActive) return;
+
+        magmaShotBulletTimer -= Time.deltaTime;
+
+        if (magmaShotBulletTimer <= 0) {
+            HandleActiveSkillDeactivation(SkillItem.SkillType.activeMagmaShotBullet);
+        }
+    }
+    private void HandleFuelOnKills() {
+        if (!fuelFireOnKillsActive) return;
+
+        fuelFireOnKillsTimer -= Time.deltaTime;
+
+        if (fuelFireOnKillsTimer <= 0) {
+            HandleActiveSkillDeactivation(SkillItem.SkillType.activeFeedFireOnKills);
+        }
+    }
+    private void HandleHealOnKills() {
+        if (!healOnKillsActive) return;
+
+        healOnKillsTimer -= Time.deltaTime;
+
+        if (healOnKillsTimer <= 0) {
+            HandleActiveSkillDeactivation(SkillItem.SkillType.activeHealOnKills);
+        }
+    }
+    private void HandleActiveSkillDeactivation(SkillItem.SkillType skillType) {
+
+        if (activeSkillLeft != null && activeSkillLeft.skillType == skillType) {
+            leftSkillRunning = false;
+            leftSkillCooldownTimer = leftSkillCooldown;
+            OnLeftActiveSkillDeactivated?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (activeSkillRight != null && activeSkillRight.skillType == skillType) {
+            rightSkillRunning = false;
+            rightSkillCooldownTimer = rightSkillCooldown;
+            OnRightActiveSkillDeactivated?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (skillType == SkillItem.SkillType.activeMoveSpeedBuff) {
+            PlayerMovement.Instance.DebuffMoveSpeed(moveSpeedBuffAmount);
+            moveSpeedBuffActive = false;
+        }
+
+        if (skillType == SkillItem.SkillType.activeShootSpeedBuff) {
+            PlayerStats.Instance.DebuffShootCooldown(shootCooldownBuffValue);
+            shootCooldownBuffActive = false;
+        }
+
+        if (skillType == SkillItem.SkillType.activeMagmaShotBullet) {
+            magmaShotBulletActive = false;
+        }
+
+        if (skillType == SkillItem.SkillType.activeHealOnKills) {
+            healOnKillsActive = false;
+        }
+
+        if (skillType == SkillItem.SkillType.activeFeedFireOnKills) {
+            fuelFireOnKillsActive = false;
+        }
+
+        OnActiveSkillDeactivated?.Invoke(this, new OnSkillDeactivatedArgs {
+            skillTypeDeactivated = skillType,
+        });
+    }
+
+    #endregion
+
+    #region SKILLS ADDING & ACTIVATION
     public void ActivateActiveSkill(SkillItem skillItem, bool isLeftSkill) {
-        if(isLeftSkill) {
+        if (isLeftSkill) {
             leftSkillRunning = true;
             OnLeftActiveSkillActivated?.Invoke(this, EventArgs.Empty);
-        } else {
+        }
+        else {
             rightSkillRunning = true;
             OnRightActiveSkillActivated?.Invoke(this, EventArgs.Empty);
         }
-
+        Debug.Log("skillItem.currentLevel " + skillItem.currentLevel);
         float skillBuffValue = skillItem.skillSO.activeSkillEffect.GetValueAtLevel(skillItem.currentLevel);
         switch (skillItem.skillType) {
 
@@ -262,13 +317,13 @@ public class PlayerSkills : MonoBehaviour
                 moveSpeedBuffTimer = skillBuffValue;
                 moveSpeedBuffActive = true;
 
-            break;
+                break;
 
             case SkillItem.SkillType.activeTeleportation:
 
                 HandleActiveSkillDeactivation(SkillItem.SkillType.activeTeleportation);
 
-            break;
+                break;
 
             case SkillItem.SkillType.activeShootSpeedBuff:
 
@@ -278,7 +333,35 @@ public class PlayerSkills : MonoBehaviour
                 shootCooldownBuffTimer = shootCooldownBuffDuration;
                 shootCooldownBuffActive = true;
 
-            break;
+                break;
+
+            case SkillItem.SkillType.activeMagmaShotBullet:
+
+                magmaShotBulletSkillDuration = skillBuffValue;
+
+                magmaShotBulletTimer = magmaShotBulletSkillDuration;
+                magmaShotBulletActive = true;
+
+                break;
+
+            case SkillItem.SkillType.activeHealOnKills:
+                Debug.Log("skillBuffValue " + skillBuffValue);
+                healPipsPerKill = (int)skillBuffValue;
+
+                healOnKillsTimer = healOnKillsSkillDuration;
+                healOnKillsActive = true;
+
+                break;
+
+            case SkillItem.SkillType.activeFeedFireOnKills:
+
+                fuelPipsPerKill = (int)skillBuffValue;
+
+                fuelFireOnKillsTimer = fuelFireOnKillsSkillDuration;
+                fuelFireOnKillsActive = true;
+
+                break;
+
         }
 
         OnActiveSkillActivated?.Invoke(this, new OnSkillAddedEventArgs {
@@ -290,7 +373,7 @@ public class PlayerSkills : MonoBehaviour
 
         if (activeSkillLeft != null && activeSkillRight != null) return;
 
-        if(activeSkillLeft == null || activeSkillLeft.skillType == skillItem.skillType) {
+        if (activeSkillLeft == null || activeSkillLeft.skillType == skillItem.skillType) {
             // Active skill left is null OR player is upgrading left skill
 
             activeSkillLeft = skillItem;
@@ -330,7 +413,8 @@ public class PlayerSkills : MonoBehaviour
 
         if (foundSkillItem != null) {
             foundSkillItem.currentLevel++;
-        } else {
+        }
+        else {
             passiveSkillList.Add(skillItemCopy);
         }
 
@@ -350,15 +434,15 @@ public class PlayerSkills : MonoBehaviour
         float absoluteBuffEffectValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
         float relativeBuffEffectValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
 
-        if(skillItem.currentLevel > 1) {
-            relativeBuffEffectValue -= skillEffect.GetValueAtLevel(skillItem.currentLevel-1);
+        if (skillItem.currentLevel > 1) {
+            relativeBuffEffectValue -= skillEffect.GetValueAtLevel(skillItem.currentLevel - 1);
         }
 
         if (skillEffect != null) {
             switch (skillEffect.skillType) {
                 case SkillItem.SkillType.passiveMoveSpeedBuff:
 
-                    PlayerStats.Instance.BuffMoveSpeed(relativeBuffEffectValue/100);
+                    PlayerStats.Instance.BuffMoveSpeed(relativeBuffEffectValue / 100);
 
                     break;
 
@@ -384,19 +468,19 @@ public class PlayerSkills : MonoBehaviour
 
                     PlayerStats.Instance.BuffPlayerHealthRegen((int)relativeBuffEffectValue);
 
-                break;
+                    break;
 
                 case SkillItem.SkillType.passiveAmmoGenerator:
 
                     PlayerStats.Instance.BuffPlayerAmmoRegen((int)relativeBuffEffectValue);
 
-                break;
+                    break;
 
                 case SkillItem.SkillType.passiveChanceToDoubleXPDrop:
 
                     PlayerStats.Instance.BuffChanceToDropx2((int)relativeBuffEffectValue);
 
-                break;
+                    break;
 
                 case SkillItem.SkillType.passiveShieldGenerator:
 
@@ -406,7 +490,7 @@ public class PlayerSkills : MonoBehaviour
                 case SkillItem.SkillType.passiveLastBulletDealsTwiceDamage:
 
                     lastBulletDealsMoreDamage = true;
-                    lastBulletDealsMoreDamageBuff = 1 + relativeBuffEffectValue/100;
+                    lastBulletDealsMoreDamageBuff = 1 + relativeBuffEffectValue / 100;
 
                     break;
 
@@ -433,9 +517,9 @@ public class PlayerSkills : MonoBehaviour
                 case SkillItem.SkillType.passiveDmgIncreaseInLight:
 
                     increasedDamageInFireLight = true;
-                    damageBuffInFireLight = 1 + relativeBuffEffectValue/100;
+                    damageBuffInFireLight = 1 + relativeBuffEffectValue / 100;
 
-                    if(enteredLight) {
+                    if (enteredLight) {
                         OnPlayerInFireLightBuffedDmg?.Invoke(this, EventArgs.Empty);
                         damageInFireLightCurrentlyBuffed = true;
                     }
@@ -445,7 +529,7 @@ public class PlayerSkills : MonoBehaviour
                 case SkillItem.SkillType.passiveDmgIncreaseNotInLight:
 
                     increasedDamageOutFireLight = true;
-                    damageBuffOutFireLight = 1 + relativeBuffEffectValue /100;
+                    damageBuffOutFireLight = 1 + relativeBuffEffectValue / 100;
 
                     if (!enteredLight) {
                         OnPlayerOutFireLightBuffedDmg?.Invoke(this, EventArgs.Empty);
@@ -461,45 +545,51 @@ public class PlayerSkills : MonoBehaviour
         }
     }
 
-    public SkillItem GetActiveSkillLeft() { return activeSkillLeft;}
+    #endregion
 
-    public SkillItem GetActiveSkillRight() { return activeSkillRight;}
+    #region GET SKILLS
+    public SkillItem GetActiveSkillLeft() { return activeSkillLeft; }
+
+    public SkillItem GetActiveSkillRight() { return activeSkillRight; }
 
     public List<SkillItem> GetActiveSkillList() {
 
-        List < SkillItem > activeSkillList = new List<SkillItem> ();
+        List<SkillItem> activeSkillList = new List<SkillItem>();
 
-        if(activeSkillLeft != null) {
+        if (activeSkillLeft != null) {
             activeSkillList.Add(activeSkillLeft);
         }
 
-        if(activeSkillRight != null) {
+        if (activeSkillRight != null) {
             activeSkillList.Add(activeSkillRight);
         }
 
-        return activeSkillList; 
+        return activeSkillList;
     }
 
     public List<SkillItem> GetPassiveSkillList() { return passiveSkillList; }
 
-    public PassiveShield GetPassiveShield() { return passiveShield;}
+    #endregion
 
-    public float GetShootSpeedBuffDuration() { return shootCooldownBuffDuration;}
+    #region GET SKILL PARAMETERS
+    public PassiveShield GetPassiveShield() { return passiveShield; }
+
+    public float GetShootSpeedBuffDuration() { return shootCooldownBuffDuration; }
 
     public int GetCurrentSkillLevel(SkillItem skillItem) {
-        foreach(SkillItem playerSkillItem in passiveSkillList) {
-            if(playerSkillItem.skillType == skillItem.skillType) {
+        foreach (SkillItem playerSkillItem in passiveSkillList) {
+            if (playerSkillItem.skillType == skillItem.skillType) {
                 return playerSkillItem.currentLevel;
             }
         }
 
-        if(activeSkillLeft != null) {
+        if (activeSkillLeft != null) {
             if (skillItem.skillType == activeSkillLeft.skillType) {
                 return activeSkillLeft.currentLevel;
             }
         }
 
-        if(activeSkillRight != null) {
+        if (activeSkillRight != null) {
             if (skillItem.skillType == activeSkillRight.skillType) {
                 return activeSkillRight.currentLevel;
             }
@@ -515,8 +605,28 @@ public class PlayerSkills : MonoBehaviour
     public float GetRightActiveTimerNormalized() {
         return (1 - rightSkillCooldownTimer / rightSkillCooldown);
     }
+    public int GetMagmaShotDamage() {
+        return magmaShotDamage;
+    }
+    public int GetMeleeAttackMagmaShotBurnAmount() {
+        return meleeAttackMagmaShotBurnAmount;
+    }
+    public int GetMagmaShotBulletBurnAmount() {
+        return magmaShotBulletBurnAmount;
+    }
 
-    #region GET PASSIVE BUFFS ACTIVE
+    public int GetHealPipsPerKill() {
+        return healPipsPerKill;
+    }
+    public int GetFuelPipsPerKill() {
+        return fuelPipsPerKill;
+    }
+    public Transform GetMagmaShotPrefab() {
+        return magmaShotPrefab;
+    }
+    #endregion
+
+    #region GET BUFFS ACTIVE
     public bool GetLastBulletDealsMoreDamage() {
         return lastBulletDealsMoreDamage;
     }
@@ -545,23 +655,23 @@ public class PlayerSkills : MonoBehaviour
     public bool GetShootOnReload() {
         return shootOnReload;
     }
-
+    public bool GetMagmaBullet() {
+        return magmaShotBulletActive;
+    }
     public bool GetMeleeAttackMagmaShot() {
         return meleeAttackMagmaShot;
     }
+    public bool GetFuelFireOnKills() {
+        return fuelFireOnKillsActive;
+    }
 
-    public int GetMeleeAttackMagmaShotDamage() {
-        return meleeAttackMagmaShotDamage;
+    public bool GetHealPlayerOnKills() {
+        return healOnKillsActive;
     }
-    public int GetMeleeAttackMagmaShotBurnAmount() {
-        return meleeAttackMagmaShotBurnAmount;
-    }
+
     #endregion
 
-    public Transform GetMagmaShotPrefab() {
-        return magmaShotPrefab;
-    }
-
+    #region FIRE DASHING
     private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
         if (!fireDashRoll) return;
         StartCoroutine(InstantiateFireDashAfterDelay(.1f));
@@ -577,7 +687,9 @@ public class PlayerSkills : MonoBehaviour
         fireDash.InitializeCarriedStatusEffects(true, fireDashRollBurnAmount);
         fireDash.GetComponent<StaticProjectileSounds>().TriggerProjectileSFX();
     }
+    #endregion
 
+    #region FIRE LIGHT BUFFS & DEBUFFS
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Fire>() != null) return;
         if (collision.gameObject.GetComponent<FireOrbCollider>() != null) return;
@@ -586,7 +698,7 @@ public class PlayerSkills : MonoBehaviour
             enteredLight = true;
 
             if (!increasedDamageInFireLight && !increasedDamageOutFireLight) return;
-            StartCoroutine(HandleBuffDebuffsFireLight(true,0f));
+            StartCoroutine(HandleBuffDebuffsFireLight(true, 0f));
         }
     }
 
@@ -598,10 +710,9 @@ public class PlayerSkills : MonoBehaviour
             enteredLight = false;
             if (!increasedDamageInFireLight && !increasedDamageOutFireLight) return;
 
-            StartCoroutine(HandleBuffDebuffsFireLight(false,0f));
+            StartCoroutine(HandleBuffDebuffsFireLight(false, 0f));
         }
     }
-
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
         StartCoroutine(HandleBuffDebuffsFireLight(enteredLight, 1f));
@@ -610,16 +721,17 @@ public class PlayerSkills : MonoBehaviour
     private IEnumerator HandleBuffDebuffsFireLight(bool entered, float delay) {
         yield return new WaitForSeconds(delay);
 
-        if(entered) {
-            if(increasedDamageOutFireLight) {
+        if (entered) {
+            if (increasedDamageOutFireLight) {
                 OnPlayerOutFireLightDebuffedDmg?.Invoke(this, EventArgs.Empty);
                 damageOutFireLightCurrentlyBuffed = false;
             }
-            if(increasedDamageInFireLight) {
+            if (increasedDamageInFireLight) {
                 OnPlayerInFireLightBuffedDmg?.Invoke(this, EventArgs.Empty);
                 damageInFireLightCurrentlyBuffed = true;
             }
-        } else {
+        }
+        else {
             if (increasedDamageInFireLight) {
                 OnPlayerInFireLightDebuffedDmg?.Invoke(this, EventArgs.Empty);
                 damageInFireLightCurrentlyBuffed = false;
@@ -631,10 +743,13 @@ public class PlayerSkills : MonoBehaviour
         }
     }
 
+    #endregion
+
     [Button] 
-    private void AddActiveSkillDebug(SkillSO skillSO) {
+    private void AddActiveSkillDebug(SkillSO skillSO, int level) {
         SkillItem skillItem = new SkillItem();
         skillItem.Initialize(skillSO);
+        skillItem.currentLevel = level;
         AddActiveSkill(skillItem);
     }
     [Button]

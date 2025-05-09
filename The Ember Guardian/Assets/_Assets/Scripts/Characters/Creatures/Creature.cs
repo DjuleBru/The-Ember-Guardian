@@ -406,6 +406,7 @@ public class Creature : Mob
     }
 
     public void ApplyBearTrapEffect(float immobilizeDuration, Vector3 trapPosition) {
+        if (dead) return;
         if (immobilizeImmune) return;
         immobilized = true;
         immobilizedDuration = immobilizeDuration;
@@ -418,6 +419,7 @@ public class Creature : Mob
     }
 
     public void ApplySmokeTrapEffect(int poisonAmount) {
+        if (dead) return;
         if (poisonImmune) return;
         poisoned = true;
         this.poisonAmount = poisonAmount;
@@ -427,6 +429,7 @@ public class Creature : Mob
     }
 
     public void ApplyShockTrapEffect(float slowAmount) {
+        if (dead) return;
         if (shockedImmune) return;
         shocked = true;
         this.shockedSlowAmount = slowAmount;
@@ -436,6 +439,7 @@ public class Creature : Mob
     }
 
     public void ApplyBurning(int burnAmount) {
+        if (dead) return;
         if (burnImmune) return;
         burning = true;
         this.burnAmount = burnAmount;

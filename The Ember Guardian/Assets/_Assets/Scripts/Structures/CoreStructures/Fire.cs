@@ -261,24 +261,28 @@ public class Fire : Structure, IDamageable {
 
     private void FireOrbCollider_OnOrbFellInFire(object sender, EventArgs e) {
 
-        if (fuelLevel + orbFuelValue >= currentMaxFuelTreshold) {
-            fuelLevel = currentMaxFuelTreshold - .1f;
-        } else {
-            fuelLevel += orbFuelValue;
-        }
-
+        FuelFire(orbFuelValue);
 
         if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
             fuelFireOnCooldown = true;
             fuelFireNightTimer = 0;
         }
 
-        CheckFireStateUpgrade();
-
         StartCoroutine(SetJustFuelledFireFalseAfterDelay());
         justFuelledFire = true;
         OnFireFuelled?.Invoke(this, EventArgs.Empty);
         OnAnyFireFuelled?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void FuelFire(float fuelAmount) {
+        if (fuelLevel + fuelAmount >= currentMaxFuelTreshold) {
+            fuelLevel = currentMaxFuelTreshold - .1f;
+        }
+        else {
+            fuelLevel += fuelAmount;
+        }
+
+        CheckFireStateUpgrade();
     }
 
     private IEnumerator SetJustFuelledFireFalseAfterDelay() {

@@ -12,6 +12,9 @@ public class PlayerFeedbacks : MonoBehaviour
     [SerializeField] private MMF_Player activeMoveSpeedBuffEndFeedbacks;
     [SerializeField] private MMF_Player activeShootSpeedBuffStartFeedbacks;
     [SerializeField] private MMF_Player activeShootSpeedBuffEndFeedbacks;
+    [SerializeField] private MMF_Player activeMagmaShotBulletStartFeedbacks;
+    [SerializeField] private MMF_Player activeMagmaShotBulletEndFeedbacks;
+    [SerializeField] private MMF_Player activeHealOnKillsFeedbacks;
     [SerializeField] private MMF_Player activeTeleportationFeedbacks;
     [SerializeField] private MMF_Player aimingSightsStartFeedbacks;
     [SerializeField] private MMF_Player aimingSightsEndFeedbacks;
@@ -89,20 +92,28 @@ public class PlayerFeedbacks : MonoBehaviour
         if (e.skillItemAdded.skillType == SkillItem.SkillType.activeTeleportation) {
             activeTeleportationFeedbacks.PlayFeedbacks();
         }
+
+        if (e.skillItemAdded.skillType == SkillItem.SkillType.activeMagmaShotBullet || e.skillItemAdded.skillType == SkillItem.SkillType.activeFeedFireOnKills) {
+            activeMagmaShotBulletStartFeedbacks.PlayFeedbacks();
+        }
+
+        if (e.skillItemAdded.skillType == SkillItem.SkillType.activeHealOnKills) {
+            activeHealOnKillsFeedbacks.PlayFeedbacks();
+        }
     }
 
     private void PlayerSKills_OnActiveSkillDeactivated(object sender, PlayerSkills.OnSkillDeactivatedArgs e) {
 
         if (e.skillTypeDeactivated == SkillItem.SkillType.activeMoveSpeedBuff) {
             activeMoveSpeedBuffEndFeedbacks.PlayFeedbacks();
-
         }
 
         if (e.skillTypeDeactivated == SkillItem.SkillType.activeShootSpeedBuff) {
             activeShootSpeedBuffEndFeedbacks.PlayFeedbacks();
         }
 
-        if (e.skillTypeDeactivated == SkillItem.SkillType.activeTeleportation) {
+        if (e.skillTypeDeactivated == SkillItem.SkillType.activeMagmaShotBullet || e.skillTypeDeactivated == SkillItem.SkillType.activeFeedFireOnKills) {
+            activeMagmaShotBulletEndFeedbacks.PlayFeedbacks();
         }
     }
 

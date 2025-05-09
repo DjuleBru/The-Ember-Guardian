@@ -21,8 +21,21 @@ public class BulletPSVisuals : MonoBehaviour
         PlayerSkills.Instance.OnPlayerOutFireLightDebuffedDmg += PlayerSkills_OnPlayerOutFireLightDebuffedDmg;
         PlayerSkills.Instance.OnPlayerInFireLightBuffedDmg += PlayerSkills_OnPlayerInFireLightBuffedDmg;
         PlayerSkills.Instance.OnPlayerInFireLightDebuffedDmg += PlayerSkills_OnPlayerInFireLightDebuffedDmg;
+        PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
+        PlayerSkills.Instance.OnActiveSkillDeactivated += PlayerSkills_OnActiveSkillDeactivated;
     }
 
+    private void PlayerSkills_OnActiveSkillDeactivated(object sender, PlayerSkills.OnSkillDeactivatedArgs e) {
+        if (e.skillTypeDeactivated == SkillItem.SkillType.activeMagmaShotBullet || e.skillTypeDeactivated == SkillItem.SkillType.activeFeedFireOnKills) {
+            DeActivateFireBulletFeedbacks();
+        }
+    }
+
+    private void PlayerSkills_OnActiveSkillActivated(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
+        if (e.skillItemAdded.skillType == SkillItem.SkillType.activeMagmaShotBullet || e.skillItemAdded.skillType == SkillItem.SkillType.activeFeedFireOnKills) {
+            ActivateFireBulletFeedbacks();
+        }
+    }
     private void PlayerSkills_OnPlayerInFireLightDebuffedDmg(object sender, System.EventArgs e) {
 
         ParticleSystem.MainModule trailMainModule = trailPS.main;
@@ -44,16 +57,22 @@ public class BulletPSVisuals : MonoBehaviour
     }
 
     private void PlayerSkills_OnPlayerOutFireLightDebuffedDmg(object sender, System.EventArgs e) {
-
-        ParticleSystem.MainModule trailMainModule = trailPS.main;
-        trailMainModule.startColor = Color.white;
-
-        if (bulletPS == null) return;
-        ParticleSystem.MainModule bulletModule = bulletPS.main;
-        bulletModule.startColor = new ParticleSystem.MinMaxGradient(initialBulletPSColor, initialBulletPSColor);
+        DeActivateBuffedDamageFeedbacks();
     }
 
     private void PlayerSkills_OnPlayerOutFireLightBuffedDmg(object sender, System.EventArgs e) {
+        ActivateBuffedDamageFeedbacks();
+    }
+
+    private void Gun_OnDebuffLastBulletShot(object sender, System.EventArgs e) {
+        DeActivateBuffedDamageFeedbacks();
+    }
+
+    private void Gun_OnBuffedLastBulletShot(object sender, System.EventArgs e) {
+        ActivateBuffedDamageFeedbacks();
+    }
+
+    private void ActivateBuffedDamageFeedbacks() {
 
         ParticleSystem.MainModule trailMainModule = trailPS.main;
         trailMainModule.startColor = Color.red;
@@ -63,23 +82,29 @@ public class BulletPSVisuals : MonoBehaviour
         bulletModule.startColor = new ParticleSystem.MinMaxGradient(outFireLightBuffedBulletDmgStartColor, outFireLightBuffedBulletDmg);
     }
 
-    private void Gun_OnDebuffLastBulletShot(object sender, System.EventArgs e) {
-
-        ParticleSystem.MainModule bulletModule = bulletPS.main;
-        bulletModule.startColor = Color.white;
-
-        if (bulletPS == null) return;
+    private void DeActivateBuffedDamageFeedbacks() {
         ParticleSystem.MainModule trailMainModule = trailPS.main;
         trailMainModule.startColor = Color.white;
-    }
-
-    private void Gun_OnBuffedLastBulletShot(object sender, System.EventArgs e) {
-
-        ParticleSystem.MainModule trailMainModule = trailPS.main;
-        trailMainModule.startColor = Color.red;
 
         if (bulletPS == null) return;
         ParticleSystem.MainModule bulletModule = bulletPS.main;
-        bulletModule.startColor = Color.red;
+        bulletModule.startColor = new ParticleSystem.MinMaxGradient(initialBulletPSColor, initialBulletPSColor);
+    }
+
+    private void ActivateFireBulletFeedbacks() {
+        ParticleSystem.MainModule trailMainModule = trailPS.main;
+        trailMainModule.startColor = fireLightBuffedBulletDmg;
+
+        if (bulletPS == null) return;
+        ParticleSystem.MainModule bulletModule = bulletPS.main;
+        bulletModule.startColor = new ParticleSystem.MinMaxGradient(fireLightBuffedBulletDmgStartColor, fireLightBuffedBulletDmg);
+    }
+    private void DeActivateFireBulletFeedbacks() {
+        ParticleSystem.MainModule trailMainModule = trailPS.main;
+        trailMainModule.startColor = Color.white;
+
+        if (bulletPS == null) return;
+        ParticleSystem.MainModule bulletModule = bulletPS.main;
+        bulletModule.startColor = new ParticleSystem.MinMaxGradient(initialBulletPSColor, initialBulletPSColor);
     }
 }

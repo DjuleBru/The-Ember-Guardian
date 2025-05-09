@@ -43,7 +43,7 @@ public class GunMeleeAttackCollider : MonoBehaviour
 
             if(PlayerSkills.Instance.GetMeleeAttackMagmaShot()) {
                 StaticProjectile magmaShot = Instantiate(PlayerSkills.Instance.GetMagmaShotPrefab(), transform.position, Quaternion.Euler(0, 0, angle)).GetComponent<StaticProjectile>();
-                magmaShot.Initialize(PlayerAim.Instance.GetAimDirFloat(), null, PlayerSkills.Instance.GetMeleeAttackMagmaShotDamage(), true);
+                magmaShot.Initialize(PlayerAim.Instance.GetAimDirFloat(), null, PlayerSkills.Instance.GetMagmaShotDamage(), true);
                 magmaShot.InitializeCarriedStatusEffects(true, PlayerSkills.Instance.GetMeleeAttackMagmaShotBurnAmount());
                 magmaShot.GetComponent<StaticProjectileSounds>().TriggerProjectileSFX();
             }
