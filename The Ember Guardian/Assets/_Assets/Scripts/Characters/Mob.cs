@@ -115,7 +115,7 @@ public class Mob : MonoBehaviour, IDamageable
             Vector3 localPosition = new Vector3(transform.position.x, height, 0);
             StaticProjectile magmaShot = Instantiate(PlayerSkills.Instance.GetMagmaShotPrefab(), localPosition, Quaternion.Euler(0, 0, angle)).GetComponent<StaticProjectile>();
             magmaShot.Initialize(PlayerAim.Instance.GetAimDirFloat(), null, PlayerSkills.Instance.GetMagmaShotDamage(), true);
-            magmaShot.InitializeCarriedStatusEffects(true, PlayerSkills.Instance.GetMagmaShotBulletBurnAmount());
+            magmaShot.InitializeBurning(PlayerSkills.Instance.GetMagmaShotBulletBurnDuration());
             magmaShot.GetComponent<StaticProjectileSounds>().TriggerProjectileSFX();
         }
     }

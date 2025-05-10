@@ -63,7 +63,7 @@ public class Creature : Mob
     public event EventHandler OnCreatureBurningStopped;
     private bool burning;
     private bool burnImmune;
-    private int burnAmount;
+    private int burnAmount = 2;
     private float burningTimer;
     private float burningRate = .5f;
     private float burningRateTimer;
@@ -106,7 +106,9 @@ public class Creature : Mob
             triggerSoundTimer = triggerSoundTime;
         }
 
-        if(detectionRangeIncreased) {
+        HandleStatusEffects();
+
+        if (detectionRangeIncreased) {
 
             if(creatureMovement == null) {
                 Debug.Log("creatureMovement is null");
@@ -129,7 +131,6 @@ public class Creature : Mob
             }
         }
 
-        HandleStatusEffects();
     }
 
     public override void Die() {
@@ -405,14 +406,14 @@ public class Creature : Mob
 
     }
 
-    public void ApplyBearTrapEffect(float immobilizeDuration, Vector3 trapPosition) {
+    public void ApplyImmobilizeEffect(float immobilizeDuration, Vector3 immobilizePosition) {
         if (dead) return;
         if (immobilizeImmune) return;
         immobilized = true;
         immobilizedDuration = immobilizeDuration;
         immobilizedTimer = immobilizedDuration;
 
-        Vector3 position = new Vector3(trapPosition.x, transform.position.y, 0);
+        Vector3 position = new Vector3(immobilizePosition.x, transform.position.y, 0);
         transform.position = position;
 
         OnCreatureImmobilizedStarted?.Invoke(this, EventArgs.Empty);
@@ -438,11 +439,11 @@ public class Creature : Mob
         OnCreatureShockedStarted?.Invoke(this, EventArgs.Empty);
     }
 
-    public void ApplyBurning(int burnAmount) {
+    public void ApplyBurning(int burnDuration) {
         if (dead) return;
         if (burnImmune) return;
         burning = true;
-        this.burnAmount = burnAmount;
+        this.burningDuration = burnDuration;
         burningTimer = burningDuration;
 
         OnCreatureBurningStarted?.Invoke(this, EventArgs.Empty);

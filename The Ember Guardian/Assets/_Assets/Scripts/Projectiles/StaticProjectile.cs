@@ -16,8 +16,11 @@ public class StaticProjectile : MonoBehaviour
     private int damage;
 
     private bool burningEffect;
-    private int burnAmount;
+    private int burnDuration;
+    private bool immobilizeEffect;
+    private float immobilizeDuration;
 
+    public event EventHandler OnStaticProjectileHitCreature;
     private void Update() {
         projectileLifetimer += Time.deltaTime;
 
@@ -38,13 +41,17 @@ public class StaticProjectile : MonoBehaviour
         if ((hasHit)) return;
 
         if(isPlayerStaticProjectile) {
-
-            if (collision.GetComponent<Creature>() != null) {
-                collision.GetComponent<Creature>().TakeDamage(damage, transform);
+            Creature creatureHit = collision.GetComponent<Creature>();
+            if (creatureHit != null) {
+                creatureHit.TakeDamage(damage, transform);
 
                 if(burningEffect) {
-                    collision.GetComponent<Creature>().ApplyBurning(burnAmount);
+                    creatureHit.ApplyBurning(burnDuration);
                 }
+                if (immobilizeEffect) {
+                    creatureHit.ApplyImmobilizeEffect(immobilizeDuration, creatureHit.transform.position);
+                }
+                OnStaticProjectileHitCreature?.Invoke(this, EventArgs.Empty);
             }
 
         } else {
@@ -78,16 +85,18 @@ public class StaticProjectile : MonoBehaviour
 
     }
 
-    public void Initialize(float watchDir, Mob parentMob, int damage, bool isPlayerStaticProjectile = false) {
+    public void Initialize(float watchDir, Mob parentMob, int damage, bool isPlayerStaticProjectile = false, bool takeWatchDirInAccount = false) {
         this.parentMob = parentMob;
         this.damage = damage;
         this.isPlayerStaticProjectile = isPlayerStaticProjectile;
 
-        //if (watchDir < 0) {
-        //    Vector3 localScale = Vector3.one;
-        //    localScale.y = -1f;
-        //    transform.localScale = localScale;
-        //}
+        if(takeWatchDirInAccount) {
+            if (watchDir < 0) {
+                Vector3 localScale = Vector3.one;
+                localScale.x = -1f;
+                transform.localScale = localScale;
+            }
+        }
 
         staticProjectileAnimator = GetComponent<Animator>();
         staticProjectileAnimator.Play(staticProjectileAnimator.GetCurrentAnimatorStateInfo(0).fullPathHash, 0, 0f);
@@ -96,11 +105,15 @@ public class StaticProjectile : MonoBehaviour
         projectileIsActive = true;
     }
 
-    public void InitializeCarriedStatusEffects(bool burning = false, int burnAmount = 5) {
-        burningEffect = burning;
-        this.burnAmount = burnAmount;
+    public void InitializeBurning(int burnDuration = 5) {
+        burningEffect = true;
+        this.burnDuration = burnDuration;
     }
-
+    public void InitializeImmobilize(float immobilizeDuration = 5) {
+        Debug.Log("immobilizeDuration " + immobilizeDuration);
+        immobilizeEffect = true;
+        this.immobilizeDuration = immobilizeDuration;
+    }
     private void ResetInProjectilePool() {
         parentMob.GetComponent<MobAttack>().ResetStaticProjectileInObjectPool(this);
         gameObject.SetActive(false);

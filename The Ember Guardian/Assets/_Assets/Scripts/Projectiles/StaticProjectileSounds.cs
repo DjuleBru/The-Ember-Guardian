@@ -6,11 +6,35 @@ public class StaticProjectileSounds : SoundObject
 {
     [SerializeField] private AudioClip[] projectileSFXAudioClips;
     [SerializeField] private float projectileSFXVolumeMultiplier;
-    private AudioSource audioSource;
+    [SerializeField] private bool playSoundOnCreatureHit;
+    [SerializeField] private AudioClip[] projectileCreatureHitAudioClips;
+    [SerializeField] private float minDelayBetweenCreatureHitPlays = .2f;
 
+    private bool justHitCreature;
+    private float justHitCreatureTimer;
+
+    private AudioSource audioSource;
+    private StaticProjectile staticProjectile;
 
     private void Awake() {
         audioSource = GetComponent<AudioSource>();
+        staticProjectile = GetComponent<StaticProjectile>();
+
+        if (!playSoundOnCreatureHit) return;
+        staticProjectile.OnStaticProjectileHitCreature += StaticProjectile_OnStaticProjectileHitCreature;
+    }
+    private void Update() {
+        if (justHitCreature) {
+            justHitCreatureTimer -= Time.deltaTime;
+            if (justHitCreatureTimer < 0) {
+                justHitCreature = false;
+            }
+        }
+    }
+
+    private void StaticProjectile_OnStaticProjectileHitCreature(object sender, System.EventArgs e) {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        audioSource.PlayOneShot(projectileCreatureHitAudioClips[Random.Range(0, projectileCreatureHitAudioClips.Length)], projectileSFXVolumeMultiplier * sfxVolume);
     }
 
     public void TriggerProjectileSFX() {

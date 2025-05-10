@@ -35,7 +35,7 @@ public class PlayerSkills : MonoBehaviour
     private bool magmaShotBulletActive;
     private float magmaShotBulletTimer;
     private float magmaShotBulletSkillDuration;
-    private int magmaShotBulletBurnAmount = 2;
+    private int magmaShotBulletBurnDuration = 2;
 
     private bool healOnKillsActive;
     private float healOnKillsTimer;
@@ -57,11 +57,16 @@ public class PlayerSkills : MonoBehaviour
     private bool lastBulletDealsMoreDamage;
     private float lastBulletDealsMoreDamageBuff;
     private int magmaShotDamage = 5;
-    private int meleeAttackMagmaShotBurnAmount = 2;
+    private int meleeAttackMagmaShotBurnDuration = 2;
 
     private bool fireDashRoll;
     private int fireDashRollDamage = 5;
     private int fireDashRollBurnAmount = 2;
+
+    private int darkFlameDamage = 10;
+    private int darkSwordDamage;
+    private int darkFlameBurnAmount;
+    private int reaperDamage = 50;
 
     private bool enteredLight;
     private bool increasedDamageInFireLight;
@@ -362,6 +367,24 @@ public class PlayerSkills : MonoBehaviour
 
                 break;
 
+            case SkillItem.SkillType.activeDarkFlame:
+
+                darkFlameBurnAmount = (int)skillBuffValue;
+                HandleActiveSkillDeactivation(SkillItem.SkillType.activeDarkFlame);
+
+                break;
+            case SkillItem.SkillType.activeDarkSword:
+
+                darkSwordDamage = (int)skillBuffValue;
+                HandleActiveSkillDeactivation(SkillItem.SkillType.activeDarkSword);
+
+                break;
+            case SkillItem.SkillType.activeReaper:
+
+                reaperDamage = (int)skillBuffValue;
+                HandleActiveSkillDeactivation(SkillItem.SkillType.activeReaper);
+
+                break;
         }
 
         OnActiveSkillActivated?.Invoke(this, new OnSkillAddedEventArgs {
@@ -503,7 +526,7 @@ public class PlayerSkills : MonoBehaviour
                 case SkillItem.SkillType.passiveMeleeAttackMagmaShot:
 
                     meleeAttackMagmaShot = true;
-                    meleeAttackMagmaShotBurnAmount += (int)relativeBuffEffectValue;
+                    meleeAttackMagmaShotBurnDuration += (int)relativeBuffEffectValue;
 
                     break;
 
@@ -608,11 +631,11 @@ public class PlayerSkills : MonoBehaviour
     public int GetMagmaShotDamage() {
         return magmaShotDamage;
     }
-    public int GetMeleeAttackMagmaShotBurnAmount() {
-        return meleeAttackMagmaShotBurnAmount;
+    public int GetMeleeAttackMagmaShotBurnDuration() {
+        return meleeAttackMagmaShotBurnDuration;
     }
-    public int GetMagmaShotBulletBurnAmount() {
-        return magmaShotBulletBurnAmount;
+    public int GetMagmaShotBulletBurnDuration() {
+        return magmaShotBulletBurnDuration;
     }
 
     public int GetHealPipsPerKill() {
@@ -669,6 +692,19 @@ public class PlayerSkills : MonoBehaviour
         return healOnKillsActive;
     }
 
+    public int GetDarkSwordDamage() {
+        return darkSwordDamage;
+    }
+    public int GetDarkFlameDamage() {
+        return darkFlameDamage;
+    }
+    public int GetDarkFlameBurnAmount() {
+        return darkFlameBurnAmount;
+    }
+    public int GetReaperDamage() {
+        return reaperDamage;
+    }
+
     #endregion
 
     #region FIRE DASHING
@@ -684,7 +720,7 @@ public class PlayerSkills : MonoBehaviour
         positionToInstantiate.y = 0;
         StaticProjectile fireDash = Instantiate(fireDashPrefab, positionToInstantiate, Quaternion.identity).GetComponent<StaticProjectile>();
         fireDash.Initialize(PlayerAim.Instance.GetAimDirFloat(), null, fireDashRollDamage, true);
-        fireDash.InitializeCarriedStatusEffects(true, fireDashRollBurnAmount);
+        fireDash.InitializeBurning(fireDashRollBurnAmount);
         fireDash.GetComponent<StaticProjectileSounds>().TriggerProjectileSFX();
     }
     #endregion
