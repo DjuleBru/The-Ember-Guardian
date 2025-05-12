@@ -88,7 +88,7 @@ public class Mob : MonoBehaviour, IDamageable
     }
 
     public virtual void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
-        //Debug.Log(this + " TakeDamage " + damage);
+        Debug.Log(this + " TakeDamage " + damage);
         if (health <= 0) return;
         
         if(critHit) {

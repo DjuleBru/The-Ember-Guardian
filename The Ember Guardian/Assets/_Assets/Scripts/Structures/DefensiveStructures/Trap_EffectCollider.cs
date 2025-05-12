@@ -40,11 +40,11 @@ public class Trap_EffectCollider : MonoBehaviour
         }
 
         if (trap.GetTrapSO().trapType == TrapItem.TrapType.smokeEjector) {
-            creature.ApplySmokeTrapEffect(trap.GetTrapSO().trapSpecialStat);
+            creature.ApplyPoisonEffect(trap.GetTrapSO().trapSpecialStat);
         }
 
         if (trap.GetTrapSO().trapType == TrapItem.TrapType.shockerEjector) {
-            creature.ApplyShockTrapEffect(trap.GetTrapSO().trapSpecialStat);
+            creature.ApplyShockedEffect(trap.GetTrapSO().trapSpecialStat);
         }
     }
 }

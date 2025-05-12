@@ -7,10 +7,12 @@ public class ActiveDamageSpells : MonoBehaviour
     [SerializeField] private Transform darkFlamePrefab;
     [SerializeField] private Transform darkSwordPrefab;
     [SerializeField] private Transform reaperPrefab;
+    [SerializeField] private Transform darkMinePrefab;
 
     private float darkFlameDistanceToPlayer = 0f;
     private float darkSwordistanceToPlayer = 3f;
     private float reaperDistanceToPlayer = 5f;
+    private float darkMinePrefabDistanceToPlayer = 3f;
     private float darkSwordImmobilizeDuration = 1.5f;
 
 
@@ -45,6 +47,13 @@ public class ActiveDamageSpells : MonoBehaviour
 
             projectile.Initialize(instantiateDir, null, PlayerSkills.Instance.GetDarkSwordDamage(), true, true);
             projectile.InitializeImmobilize(darkSwordImmobilizeDuration);
+        }
+        if (e.skillItemAdded.skillType == SkillItem.SkillType.activePlantMine) {
+            Vector3 instantiatePosition = new Vector3(Player.Instance.transform.position.x + darkMinePrefabDistanceToPlayer * instantiateDir, 0, 0);
+            StaticProjectile projectile = Instantiate(darkMinePrefab, instantiatePosition, Quaternion.identity).GetComponent<StaticProjectile>();
+
+            projectile.Initialize(instantiateDir, null, PlayerSkills.Instance.GetDarkMineDamage(), true, true);
+            projectile.InitializePoison(PlayerSkills.Instance.GetDarkMinePoisonAmount());
         }
     }
 }

@@ -419,7 +419,7 @@ public class Creature : Mob
         OnCreatureImmobilizedStarted?.Invoke(this, EventArgs.Empty);
     }
 
-    public void ApplySmokeTrapEffect(int poisonAmount) {
+    public void ApplyPoisonEffect(int poisonAmount) {
         if (dead) return;
         if (poisonImmune) return;
         poisoned = true;
@@ -429,7 +429,7 @@ public class Creature : Mob
         OnCreaturePoisonedStarted?.Invoke(this, EventArgs.Empty);
     }
 
-    public void ApplyShockTrapEffect(float slowAmount) {
+    public void ApplyShockedEffect(float slowAmount) {
         if (dead) return;
         if (shockedImmune) return;
         shocked = true;

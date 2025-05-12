@@ -5,23 +5,27 @@ using UnityEngine;
 
 public class StaticProjectile : MonoBehaviour
 {
-    [SerializeField] private float projectileLifetime;
+    [SerializeField] protected float projectileLifetime;
 
-    private Mob parentMob;
-    private Animator staticProjectileAnimator;
-    private float projectileLifetimer;
-    private bool hasHit;
-    private bool isPlayerStaticProjectile;
-    private bool projectileIsActive;
-    private int damage;
+    protected Mob parentMob;
+    protected Animator staticProjectileAnimator;
+    protected float projectileLifetimer;
+    protected bool hasHit;
+    protected bool isPlayerStaticProjectile;
+    protected bool projectileIsActive;
+    protected int damage;
 
-    private bool burningEffect;
-    private int burnDuration;
-    private bool immobilizeEffect;
-    private float immobilizeDuration;
+    protected bool burningEffect;
+    protected int burnDuration;
+    protected bool immobilizeEffect;
+    protected float immobilizeDuration;
+    protected bool poisonEffect;
+    protected int poisonAmount;
 
     public event EventHandler OnStaticProjectileHitCreature;
-    private void Update() {
+    public event EventHandler OnTrapTriggered;
+
+    protected virtual void Update() {
         projectileLifetimer += Time.deltaTime;
 
         if (projectileLifetimer > projectileLifetime && projectileIsActive) {
@@ -33,11 +37,10 @@ public class StaticProjectile : MonoBehaviour
             } else {
                 ResetInProjectilePool();
             }
-
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
+    protected virtual void OnTriggerEnter2D(Collider2D collision) {
         if ((hasHit)) return;
 
         if(isPlayerStaticProjectile) {
@@ -50,6 +53,9 @@ public class StaticProjectile : MonoBehaviour
                 }
                 if (immobilizeEffect) {
                     creatureHit.ApplyImmobilizeEffect(immobilizeDuration, creatureHit.transform.position);
+                }
+                if (poisonEffect) {
+                    creatureHit.ApplyPoisonEffect(poisonAmount);
                 }
                 OnStaticProjectileHitCreature?.Invoke(this, EventArgs.Empty);
             }
@@ -114,11 +120,25 @@ public class StaticProjectile : MonoBehaviour
         immobilizeEffect = true;
         this.immobilizeDuration = immobilizeDuration;
     }
-    private void ResetInProjectilePool() {
+
+    public void InitializePoison(int poisonAmount = 5) {
+        Debug.Log("poisonAmount " + poisonAmount);
+        poisonEffect = true;
+        this.poisonAmount = poisonAmount;
+    }
+
+    protected void ResetInProjectilePool() {
         parentMob.GetComponent<MobAttack>().ResetStaticProjectileInObjectPool(this);
         gameObject.SetActive(false);
         hasHit = false;
         projectileIsActive = true;
         projectileLifetimer = 0;
+    }
+
+    protected void InvokeOnStaticProjectileHitCreature() {
+        OnStaticProjectileHitCreature?.Invoke(this, EventArgs.Empty);
+    }
+    protected void InvokeOnTrapTriggered() {
+        OnTrapTriggered?.Invoke(this, EventArgs.Empty);
     }
 }

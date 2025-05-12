@@ -66,6 +66,8 @@ public class PlayerSkills : MonoBehaviour
     private int darkFlameDamage = 10;
     private int darkSwordDamage;
     private int darkFlameBurnAmount;
+    private int darkMinePoisonAmount;
+    private int darkMineDamage = 30;
     private int reaperDamage = 50;
 
     private bool enteredLight;
@@ -385,6 +387,12 @@ public class PlayerSkills : MonoBehaviour
                 HandleActiveSkillDeactivation(SkillItem.SkillType.activeReaper);
 
                 break;
+            case SkillItem.SkillType.activePlantMine:
+
+                darkMinePoisonAmount = (int)skillBuffValue;
+                HandleActiveSkillDeactivation(SkillItem.SkillType.activePlantMine);
+
+                break;
         }
 
         OnActiveSkillActivated?.Invoke(this, new OnSkillAddedEventArgs {
@@ -700,6 +708,12 @@ public class PlayerSkills : MonoBehaviour
     }
     public int GetDarkFlameBurnAmount() {
         return darkFlameBurnAmount;
+    }
+    public int GetDarkMinePoisonAmount() {
+        return darkMinePoisonAmount;
+    }
+    public int GetDarkMineDamage() {
+        return darkMineDamage;
     }
     public int GetReaperDamage() {
         return reaperDamage;

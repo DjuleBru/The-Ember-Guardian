@@ -520,7 +520,6 @@ public class UICurrencyManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("cac");
         if (Player.Instance.GetCanDropOrbOnTheFloor()) {
             if (GetHasBigOrb()) {
                 DropNextCurrencyInBag(PlayerCurrencies.CurrencyType.bigBlueOrb);
