@@ -12,6 +12,8 @@ public class PlayerCurrencies : MonoBehaviour
 
     private List<Collectible> collectiblesBeingPaid = new List<Collectible>();
 
+    private float delayBetweenOrbDropAndInteractable = 2f;
+
     public enum CurrencyType {
         bigBlueOrb,
         smallBlueOrb,
@@ -125,7 +127,7 @@ public class PlayerCurrencies : MonoBehaviour
         }
 
         lastBlueOrbDroppedOnTheFloor.ApplyRandomForce(aimDirX, aimDirX*2, 6f, 8f);
-        lastBlueOrbDroppedOnTheFloor.SetCollectibleUnInteractable(3f);
+        lastBlueOrbDroppedOnTheFloor.SetCollectibleUnInteractable(delayBetweenOrbDropAndInteractable);
         lastBlueOrbDroppedOnTheFloor.SetDroppedByPlayer();
 
         OnBlueOrbDroppedOnTheFloor?.Invoke(this, new OnBlueOrbDroppedOnTheFloorEventArgs {
@@ -146,7 +148,7 @@ public class PlayerCurrencies : MonoBehaviour
     private void StartPayingCurrency(CurrencyType currencyType, PayCurrencyTemplateWorldUI destination, float currencyIndexNormalized) {
         float smoothTime = destination.GetInitialPayCurrencySmoothTime() * (currencyIndexNormalized) + destination.GetInitialPayCurrencySmoothTime();
 
-        if(currencyType != PlayerCurrencies.CurrencyType.ember) {
+        if (currencyType != PlayerCurrencies.CurrencyType.ember) {
             Transform currencyPrefab = CurrenciesManager.Instance.GetCurrencyPrefab(currencyType);
 
             lastCurrencyPaying = Instantiate(currencyPrefab, blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
@@ -156,7 +158,7 @@ public class PlayerCurrencies : MonoBehaviour
         } else {
 
             Collectible emberCarriedByPlayer = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyType), emberHoldPosition.position, Quaternion.identity).GetComponent<Collectible>();
-            emberCarriedByPlayer.SetMovingForPayment(true, 3f, destination.transform);
+            emberCarriedByPlayer.SetMovingForPayment(true, smoothTime, destination.transform);
             collectiblesBeingPaid.Add(emberCarriedByPlayer);
 
             SetCarryingEmber(false);

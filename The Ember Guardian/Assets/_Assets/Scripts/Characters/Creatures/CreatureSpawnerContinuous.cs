@@ -30,10 +30,12 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
 
     protected void Update() {
         if (dead) return;
-        if (mobSpawnedList.Count >= mobAmountToSpawn) return;
         if (!canSpawnMobsAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) return;
 
         spawnTimer -= Time.deltaTime;
+
+        if (mobSpawnedList.Count >= mobAmountToSpawn) return;
+
         if (spawnTimer < 0) {
             spawnTimer = spawnRate;
             StartCoroutine(SpawnCreature());
