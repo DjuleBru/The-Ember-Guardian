@@ -61,6 +61,7 @@ public class CurrencyCrafter : Structure
         if (!playerCanInteract) return;
 
         playerInteracting = true;
+        Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
 
         if(!craftedCurrency && !craftingCurrency) {
 
@@ -75,6 +76,15 @@ public class CurrencyCrafter : Structure
             showTooltipOnTrigger.SetShowTooltips(true);
 
         }
+
+        StartCoroutine(SetPlayerInteractionAfterDelay(.1f));
+
+    }
+
+    private IEnumerator SetPlayerInteractionAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+
+        Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
     }
 
     private IEnumerator CollectCurrencyFromCrafter(float delayBetweenAmmoInstantiation) {

@@ -1548,19 +1548,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5164218561250243012}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2987676082897926537}
-  m_Father: {fileID: 3649704198833706280}
+  m_Father: {fileID: 2778965277633773750}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -144.29823}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: -5.366516}
   m_SizeDelta: {x: 640, y: 280}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &4934912965813903080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2064,6 +2064,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6867330763499448388}
+  - {fileID: 5510664263069186921}
   m_Father: {fileID: 3649704198833706280}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -2240,6 +2241,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3649704198833706280}
   - component: {fileID: 1531181941658231217}
+  - component: {fileID: 5853096303493437924}
   m_Layer: 5
   m_Name: MainPanel
   m_TagString: Untagged
@@ -2263,17 +2265,16 @@ RectTransform:
   - {fileID: 4244887943792697181}
   - {fileID: 5570779721158351124}
   - {fileID: 2115477506622256864}
-  - {fileID: 5510664263069186921}
   - {fileID: 6808512822871535446}
   - {fileID: 2778965277633773750}
   - {fileID: 1269394579115894044}
   - {fileID: 3047722527791541418}
   m_Father: {fileID: 6417983938811343800}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -423, y: 18}
-  m_SizeDelta: {x: 800, y: 1000}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 550, y: 0}
+  m_SizeDelta: {x: -1100, y: -100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1531181941658231217
 CanvasGroup:
@@ -2287,6 +2288,28 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &5853096303493437924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6868289196194885508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fb257e27a3826f498ef156582ea8142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ultraWidePanelOffsetMinX: 1450
+  ultraWidePanelOffsetMinY: 0
+  ultraWidePanelOffsetMaxX: 0
+  ultraWidePanelOffsetMaxY: 0
+  ultraWidePanelPosX: 0
+  ultraWidePanelPosY: 0
+  ultraWidePanelWidth: 0
+  ultraWidePanelHeight: 0
+  onlyVerticalResize: 0
+  stretchedPanel: 1
 --- !u!1 &6985904492987669233
 GameObject:
   m_ObjectHideFlags: 0
