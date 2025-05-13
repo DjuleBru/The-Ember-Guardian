@@ -19,6 +19,8 @@ public class MobAttack : MonoBehaviour
     [SerializeField] protected float attackAnimationDelay;
     [SerializeField] protected float totalAttackAnimationTime;
 
+    protected float attackCooldownBuff = 1f;
+
     [SerializeField] protected int projectileAmountInPool;
     protected Queue<Projectile> availableProjectiles = new Queue<Projectile>();
     protected Queue<StaticProjectile> availableStaticProjectiles = new Queue<StaticProjectile>();
@@ -36,6 +38,7 @@ public class MobAttack : MonoBehaviour
     public event EventHandler OnMobAttack;
     public event EventHandler OnMobAttackHit;
     public event EventHandler OnAttackTargetSet;
+    public event EventHandler OnAttackSpeedModified;
 
     protected bool attacking;
     protected bool attackStarted;
@@ -59,7 +62,7 @@ public class MobAttack : MonoBehaviour
             attacking = true;
 
             if(attackTimer <= 0 ) {
-                attackTimer = attackCooldown;
+                attackTimer = attackCooldown / attackCooldownBuff;
                 Attack();
             }
 
@@ -276,6 +279,20 @@ public class MobAttack : MonoBehaviour
 
     public void ResetDamageBuff() {
         attackDamage = initialAttackDamage;
+    }
+
+    public void BuffAttackSpeed(float buff) {
+        attackCooldownBuff += buff;
+        Debug.Log("BuffAttackSpeed " + attackCooldownBuff);
+        OnAttackSpeedModified?.Invoke(this, EventArgs.Empty);
+    }
+    public void DebuffAttackSpeed(float deBuff) {
+        attackCooldownBuff -= deBuff;
+        Debug.Log("DebuffAttackSpeed " + attackCooldownBuff);
+        OnAttackSpeedModified?.Invoke(this, EventArgs.Empty);
+    }
+    public float GetAttackSpeedBuff() {
+        return attackCooldownBuff;
     }
 
     public void ResetProjectileInObjectPool(Projectile projectile) {

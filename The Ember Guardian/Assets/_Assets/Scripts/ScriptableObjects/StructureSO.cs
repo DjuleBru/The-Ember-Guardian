@@ -33,6 +33,8 @@ public class StructureSO : ScriptableObject
         mortarTower,
         secondaryFire,
         fastTravelTeleporter,
+        fireEjector,
+        spikes
     }
 
     public StructureType structureType;

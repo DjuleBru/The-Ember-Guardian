@@ -7,6 +7,8 @@ using UnityEngine;
 public class PlayerFeedbacks : MonoBehaviour
 {
     [SerializeField] private MMF_Player damagedFeedbacks;
+    [SerializeField] private MMF_Player critHitFreezeFrameFeedbacks;
+    [SerializeField] private MMF_Player critHitSlowMoFeedbacks;
     [SerializeField] private MMF_Player passiveShieldDamagedFeedbacks;
     [SerializeField] private MMF_Player activeMoveSpeedBuffStartFeedbacks;
     [SerializeField] private MMF_Player activeMoveSpeedBuffEndFeedbacks;
@@ -23,10 +25,15 @@ public class PlayerFeedbacks : MonoBehaviour
     [SerializeField] private MMF_Player petDogStartFeedbacks;
     [SerializeField] private MMF_Player petDogEndFeedbacks;
 
+    private float minDelayBetweenCritHitFeedbacks = .4f;
+    private float critHitFeedbacksTimer;
+    private bool critHitFeedbackRecentlyActivated;
+
     private bool playerExhausted;
 
     private void Start() {
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
+        Mob.OnAnyMobCritDamageTaken += Mob_OnAnyMobCritDamageTaken;
         PlayerMovement.Instance.OnPlayerExhaustionStarted += PlayerMovement_OnPlayerExhaustionStarted;
         PlayerMovement.Instance.OnPlayerExhaustionStopped += PlayerMovement_OnPlayerExhaustionStopped;
         PlayerMovement.Instance.OnPlayerAlmostExhaustionStarted += PlayerMovement_OnPlayerAlmostExhaustionStarted;
@@ -43,6 +50,25 @@ public class PlayerFeedbacks : MonoBehaviour
         PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAim_OnPlayerAimSightStarted;
     }
 
+    private void Update() {
+        if(critHitFeedbackRecentlyActivated) {
+            critHitFeedbacksTimer -= Time.deltaTime;
+            if(critHitFeedbacksTimer < 0) {
+                critHitFeedbackRecentlyActivated = false;
+            }
+        }
+    }
+
+    private void Mob_OnAnyMobCritDamageTaken(object sender, System.EventArgs e) {
+        if(sender as Mob is Creature) {
+            critHitFreezeFrameFeedbacks.PlayFeedbacks();
+
+            if (critHitFeedbackRecentlyActivated) return;
+            critHitSlowMoFeedbacks.PlayFeedbacks();
+            critHitFeedbackRecentlyActivated = true;
+            critHitFeedbacksTimer = minDelayBetweenCritHitFeedbacks;
+        }
+    }
 
     private void PetDog_OnPlayerEndedPettingDog(object sender, System.EventArgs e) {
         petDogEndFeedbacks.PlayFeedbacks();

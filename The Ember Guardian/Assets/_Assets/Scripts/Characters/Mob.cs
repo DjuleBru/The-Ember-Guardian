@@ -31,7 +31,7 @@ public class Mob : MonoBehaviour, IDamageable
     public event EventHandler OnMobHitObstacle;
     public event EventHandler<OnMobDamageTakenEventArgs> OnMobDamageTaken;
     public event EventHandler<OnMobDamageTakenEventArgs> OnMobCritDamageTaken;
-    public event EventHandler OnAnyMobCritDamageTaken;
+    public static event EventHandler OnAnyMobCritDamageTaken;
     public event EventHandler<OnMobDroppedCollectibleEventArgs> OnMobDroppedCollectibles;
 
     protected float inObstacleTriggerAreaSendEventRate = 1f;
@@ -88,7 +88,7 @@ public class Mob : MonoBehaviour, IDamageable
     }
 
     public virtual void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
-        Debug.Log(this + " TakeDamage " + damage);
+        //Debug.Log(this + " TakeDamage " + damage);
         if (health <= 0) return;
         
         if(critHit) {
@@ -97,6 +97,7 @@ public class Mob : MonoBehaviour, IDamageable
             OnMobCritDamageTaken?.Invoke(this, new OnMobDamageTakenEventArgs {
                 damageOriginTransform = damageSource,
             });
+            OnAnyMobCritDamageTaken?.Invoke(this, EventArgs.Empty);
         } else {
             health -= damage;
         }
@@ -122,7 +123,6 @@ public class Mob : MonoBehaviour, IDamageable
 
     public void TakeKnockback(float knockback, Vector2 knockBackDirNormalized) {
         if (dead) return;
-
         Vector2 knockBackForce = knockBackDirNormalized * knockback;
         rb.AddForce(knockBackForce, ForceMode2D.Impulse);
     }

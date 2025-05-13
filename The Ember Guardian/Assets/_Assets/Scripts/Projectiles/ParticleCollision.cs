@@ -15,7 +15,7 @@ public class ParticleCollision : MonoBehaviour
     private Vector3 previousPosition;
     private Vector3 particleMoveDir;
 
-    [SerializeField] private float collisionDistanceThreshold = .25f;
+    private float collisionDistanceThreshold = .75f;
     [SerializeField] private bool groundDestroysBullet = true;
 
     public static event EventHandler OnAnyBulletHitGround;

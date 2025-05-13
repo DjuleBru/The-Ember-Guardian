@@ -53,6 +53,11 @@ public class StaticProjectile_DarkTrap : StaticProjectile
                         if (immobilizeEffect) {
                             creatureHit.ApplyImmobilizeEffect(immobilizeDuration, creatureHit.transform.position);
                         }
+                        if (knockbackEffect) {
+                            Vector2 knockBackDirNormalized = (creatureHit.transform.position - transform.position).normalized;
+                            knockBackDirNormalized.y = 0;
+                            creatureHit.TakeKnockback(knockbackAmount, knockBackDirNormalized);
+                        }
 
                         InvokeOnStaticProjectileHitCreature();
 
@@ -102,7 +107,6 @@ public class StaticProjectile_DarkTrap : StaticProjectile
     }
 
     public void SetPoisonEffectAppliedFromAnimator() {
-        Debug.Log("SetPoisonEffectAppliedFromAnimator");
         trapPoisonEffectApplied = true;
     }
 }

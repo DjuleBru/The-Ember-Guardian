@@ -78,6 +78,11 @@ public class PlayerSkills : MonoBehaviour
     private bool damageOutFireLightCurrentlyBuffed;
     private float damageBuffOutFireLight;
 
+    private bool workerAttackSpeedCurrentlyBuffed;
+    private float workerAttackSpeedBuffDuration = 15f;
+    private float workerAttackSpeedBuffTimer;
+    private float workerAttackSpeedBuffAmount;
+
     public event EventHandler OnPlayerInFireLightBuffedDmg;
     public event EventHandler OnPlayerInFireLightDebuffedDmg;
     public event EventHandler OnPlayerOutFireLightBuffedDmg;
@@ -158,6 +163,7 @@ public class PlayerSkills : MonoBehaviour
         HandleActiveMagmaShotBullet();
         HandleFuelOnKills();
         HandleHealOnKills();
+        HandleWorkerAttackSpeedBuff();
     }
 
     private void GameInput_OnPlayerRightSkillPerformed(object sender, EventArgs e) {
@@ -260,6 +266,15 @@ public class PlayerSkills : MonoBehaviour
             HandleActiveSkillDeactivation(SkillItem.SkillType.activeHealOnKills);
         }
     }
+    private void HandleWorkerAttackSpeedBuff() {
+        if (!workerAttackSpeedCurrentlyBuffed) return;
+
+        workerAttackSpeedBuffTimer -= Time.deltaTime;
+
+        if (workerAttackSpeedBuffTimer <= 0) {
+            HandleActiveSkillDeactivation(SkillItem.SkillType.activeWorkerAttackSpeedBuff);
+        }
+    }
     private void HandleActiveSkillDeactivation(SkillItem.SkillType skillType) {
 
         if (activeSkillLeft != null && activeSkillLeft.skillType == skillType) {
@@ -294,6 +309,9 @@ public class PlayerSkills : MonoBehaviour
 
         if (skillType == SkillItem.SkillType.activeFeedFireOnKills) {
             fuelFireOnKillsActive = false;
+        }
+        if (skillType == SkillItem.SkillType.activeWorkerAttackSpeedBuff) {
+            workerAttackSpeedCurrentlyBuffed = false;
         }
 
         OnActiveSkillDeactivated?.Invoke(this, new OnSkillDeactivatedArgs {
@@ -393,6 +411,14 @@ public class PlayerSkills : MonoBehaviour
                 HandleActiveSkillDeactivation(SkillItem.SkillType.activePlantMine);
 
                 break;
+
+            case SkillItem.SkillType.activeWorkerAttackSpeedBuff:
+
+                workerAttackSpeedCurrentlyBuffed = true;
+                workerAttackSpeedBuffTimer = workerAttackSpeedBuffDuration;
+                workerAttackSpeedBuffAmount = (int)skillBuffValue;
+
+            break;
         }
 
         OnActiveSkillActivated?.Invoke(this, new OnSkillAddedEventArgs {
@@ -717,6 +743,10 @@ public class PlayerSkills : MonoBehaviour
     }
     public int GetReaperDamage() {
         return reaperDamage;
+    }
+
+    public float GetWorkerAttackSpeedBuffAmount() {
+        return workerAttackSpeedBuffAmount;
     }
 
     #endregion

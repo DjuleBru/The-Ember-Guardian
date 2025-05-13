@@ -106,6 +106,7 @@ public class PlayerStats : MonoBehaviour
     public event EventHandler OnMoveSpeedChanged;
     public event EventHandler OnFlashlightRangeChanged;
     public event EventHandler OnCanHold2WeaponsUnlocked;
+    public event EventHandler OnBackpackDimensionsChanged;
 
     private void Awake() {
         Instance = this;
@@ -264,14 +265,17 @@ public class PlayerStats : MonoBehaviour
     public void SetBackpackOrbSizeBuff(float orbSizeBuff) {
         this.backpackOrbSizePercentBuff = orbSizeBuff;
         RefreshCurrentPlayerStats();
+        OnBackpackDimensionsChanged?.Invoke(this, EventArgs.Empty);
     }
     public void SetBackpackGemSizeBuff(float gemSizeBuff) {
         this.backpackGemSizePercentBuff = gemSizeBuff;
         RefreshCurrentPlayerStats();
+        OnBackpackDimensionsChanged?.Invoke(this, EventArgs.Empty);
     }
     public void SetBackpackAmmoSizeBuff(float ammoSizeBuff) {
         this.backpackAmmoSizePercentBuff = ammoSizeBuff;
         RefreshCurrentPlayerStats();
+        OnBackpackDimensionsChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetInitialRandomActiveSkillLevel(int levelBuff) {

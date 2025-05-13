@@ -2,11 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class UICurrencyManagerVisual : MonoBehaviour
 {
     [SerializeField] private bool debugAlwaysShow;
     [SerializeField] private UICurrencyManager uICurrencyManager;
+
+    [SerializeField] private Sprite level2OrbContainerSprite;
+    [SerializeField] private Sprite level3OrbContainerSprite;
+    [SerializeField] private Sprite level2AmmoPocketSprite;
+    [SerializeField] private Sprite level3AmmoPocketSprite;
+    [SerializeField] private Sprite level2GemPocketSprite;
+    [SerializeField] private Sprite level3GemPocketSprite;
+    [SerializeField] private Sprite level2OrbContainerSprite_Front;
+    [SerializeField] private Sprite level3OrbContainerSprite_Front;
+    [SerializeField] private Sprite level2AmmoPocketSprite_Front;
+    [SerializeField] private Sprite level3AmmoPocketSprite_Front;
+    [SerializeField] private Sprite level2GemPocketSprite_Front;
+    [SerializeField] private Sprite level3GemPocketSprite_Front;
+    [SerializeField] private Image orbContainerImage;
+    [SerializeField] private Image ammoPocketImage;
+    [SerializeField] private Image gemPocketImage;
+    [SerializeField] private Image orbContainerImage_Front;
+    [SerializeField] private Image ammoPocketImage_Front;
+    [SerializeField] private Image gemPocketImage_Front;
+    [SerializeField] private Image orbContainerShadowImage;
+    [SerializeField] private Image ammoPocketShadowImage;
+    [SerializeField] private Image gemPocketShadowImage;
+    [SerializeField] private GameObject level1OrbContainerCollider;
+    [SerializeField] private GameObject level2OrbContainerCollider;
+    [SerializeField] private GameObject level3OrbContainerCollider;
+    [SerializeField] private GameObject level1AmmoPocketCollider;
+    [SerializeField] private GameObject level2AmmoPocketCollider;
+    [SerializeField] private GameObject level3AmmoPocketCollider;
+    [SerializeField] private GameObject level1GemPocketCollider;
+    [SerializeField] private GameObject level2GemPocketCollider;
+    [SerializeField] private GameObject level3GemPocketCollider;
+    [SerializeField] private GameObject ammoCollidersParent;
+    [SerializeField] private GameObject gemCollidersParent;
+    [SerializeField] private Vector2 level2OrbContainerAmmoPocketPosition;
+    [SerializeField] private Vector2 level2OrbContainerGemPocketPosition;
+    [SerializeField] private Vector2 level2AmmoCollidersParentPosition;
+    [SerializeField] private Vector2 level2GemCollidersParentPosition;
+    [SerializeField] private Vector2 level3OrbContainerAmmoPocketPosition;
+    [SerializeField] private Vector2 level3OrbContainerGemPocketPosition;
+    [SerializeField] private Vector2 level3AmmoCollidersParentPosition;
+    [SerializeField] private Vector2 level3GemCollidersParentPosition;
+
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private CanvasGroup currencyCanvasGroup;
     [SerializeField] private Animator backpackFrontAnimator;
@@ -19,6 +62,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
     public float frontDisplayTime = 1f;  // Durée du fade-out
     public float fadeOutDuration = .2f;  // Durée du fade-out
     public float fadeInDuration = .2f;  // Durée du fade-in
+
 
     private bool backpackAlmostFull;
     private float backpackBarDiplayTimer = 0f;
@@ -36,6 +80,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
         uICurrencyManager.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
         uICurrencyManager.OnCurrencyFailedToDrop += UICurrencyManager_OnCurrencyFailedToDrop;
 
+        PlayerStats.Instance.OnBackpackDimensionsChanged += PlayerStats_OnBackpackDimensionsChanged;
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerTryReloadAmmoBelt_NoAmmoInBag += PlayerShoot_OnPlayerTryReloadAmmoBelt_NoAmmoInBag;
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
@@ -52,6 +97,94 @@ public class UICurrencyManagerVisual : MonoBehaviour
             HubChest.Instance.OnChestClosed += HubChest_OnChestClosed;
             HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerOpenedAnyHubMerchantShop;
             HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+        }
+
+        RefreshBackpackVisuals();
+    }
+
+    private void PlayerStats_OnBackpackDimensionsChanged(object sender, System.EventArgs e) {
+        RefreshBackpackVisuals();
+    }
+
+    private void RefreshBackpackVisuals() {
+        if (!isPlayerInventory) return;
+
+        level1OrbContainerCollider.SetActive(false);
+        level2OrbContainerCollider.SetActive(false);
+        level3OrbContainerCollider.SetActive(false);
+        level1AmmoPocketCollider.SetActive(false);
+        level2AmmoPocketCollider.SetActive(false);
+        level3AmmoPocketCollider.SetActive(false);
+        level1GemPocketCollider.SetActive(false);
+        level2GemPocketCollider.SetActive(false);
+        level3GemPocketCollider.SetActive(false);
+
+        if (PlayerStats.Instance.GetBackpackOrbSizePercentBuff_Meta() == 0f) {
+            level1OrbContainerCollider.SetActive(true);
+        }
+        if (PlayerStats.Instance.GetBackpackOrbSizePercentBuff_Meta() == 10f) {
+            level2OrbContainerCollider.SetActive(true);
+            orbContainerImage.sprite = level2OrbContainerSprite;
+            orbContainerImage_Front.sprite = level2OrbContainerSprite_Front;
+            orbContainerShadowImage.sprite = level2OrbContainerSprite;
+
+            RectTransform ammoPocketRT = ammoPocketImage.GetComponent<RectTransform>();
+            ammoPocketRT.anchoredPosition = level2OrbContainerAmmoPocketPosition;
+            RectTransform gemPocketRT = gemPocketImage.GetComponent<RectTransform>();
+            gemPocketRT.anchoredPosition = level2OrbContainerGemPocketPosition;
+
+            RectTransform gemColliderParentRT = gemCollidersParent.GetComponent<RectTransform>();
+            gemColliderParentRT.anchoredPosition = level2GemCollidersParentPosition;
+            RectTransform ammoColliderParentRT = ammoCollidersParent.GetComponent<RectTransform>();
+            ammoColliderParentRT.anchoredPosition = level2AmmoCollidersParentPosition;
+        }
+        if (PlayerStats.Instance.GetBackpackOrbSizePercentBuff_Meta() == 20f) {
+            level3OrbContainerCollider.SetActive(true);
+            orbContainerImage.sprite = level3OrbContainerSprite;
+            orbContainerImage_Front.sprite = level3OrbContainerSprite_Front;
+            orbContainerShadowImage.sprite = level3OrbContainerSprite;
+
+            RectTransform ammoPocketRT = ammoPocketImage.GetComponent<RectTransform>();
+            ammoPocketRT.anchoredPosition = level3OrbContainerAmmoPocketPosition;
+            RectTransform gemPocketRT = gemPocketImage.GetComponent<RectTransform>();
+            gemPocketRT.anchoredPosition = level3OrbContainerGemPocketPosition;
+
+            RectTransform gemColliderParentRT = gemCollidersParent.GetComponent<RectTransform>();
+            gemColliderParentRT.anchoredPosition = level3GemCollidersParentPosition;
+            RectTransform ammoColliderParentRT = ammoCollidersParent.GetComponent<RectTransform>();
+            ammoColliderParentRT.anchoredPosition = level3AmmoCollidersParentPosition;
+        }
+
+        if (PlayerStats.Instance.GetBackpackAmmoSizePercentBuff_Meta() == 0f) {
+            level1AmmoPocketCollider.SetActive(true);
+        }
+        if (PlayerStats.Instance.GetBackpackAmmoSizePercentBuff_Meta() == 10f) {
+            level2AmmoPocketCollider.SetActive(true);
+            ammoPocketImage.sprite = level2OrbContainerSprite;
+            ammoPocketImage_Front.sprite = level2OrbContainerSprite_Front;
+            ammoPocketShadowImage.sprite = level2OrbContainerSprite;
+        }
+        if (PlayerStats.Instance.GetBackpackAmmoSizePercentBuff_Meta() == 20f) {
+            level3AmmoPocketCollider.SetActive(true);
+            ammoPocketImage.sprite = level3OrbContainerSprite;
+            ammoPocketImage_Front.sprite = level3OrbContainerSprite_Front;
+            ammoPocketShadowImage.sprite = level3OrbContainerSprite;
+        }
+
+        if (PlayerStats.Instance.GetBackpackGemSizePercentBuff_Meta() == 0f) {
+            level1GemPocketCollider.SetActive(true);
+        }
+        if (PlayerStats.Instance.GetBackpackGemSizePercentBuff_Meta() == 10f) {
+            level3GemPocketCollider.SetActive(true);
+            gemPocketImage.sprite = level2OrbContainerSprite;
+            gemPocketImage_Front.sprite = level2OrbContainerSprite_Front;
+            gemPocketShadowImage.sprite = level2OrbContainerSprite;
+        }
+        if (PlayerStats.Instance.GetBackpackGemSizePercentBuff_Meta() == 20f) {
+            level3GemPocketCollider.SetActive(true);
+            gemPocketImage.sprite = level3OrbContainerSprite;
+            gemPocketImage_Front.sprite = level3OrbContainerSprite_Front;
+            gemPocketShadowImage.sprite = level3OrbContainerSprite;
         }
     }
 

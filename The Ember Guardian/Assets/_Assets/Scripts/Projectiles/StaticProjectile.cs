@@ -21,6 +21,8 @@ public class StaticProjectile : MonoBehaviour
     protected float immobilizeDuration;
     protected bool poisonEffect;
     protected int poisonAmount;
+    protected bool knockbackEffect;
+    protected float knockbackAmount;
 
     public event EventHandler OnStaticProjectileHitCreature;
     public event EventHandler OnTrapTriggered;
@@ -56,6 +58,11 @@ public class StaticProjectile : MonoBehaviour
                 }
                 if (poisonEffect) {
                     creatureHit.ApplyPoisonEffect(poisonAmount);
+                }
+                if (knockbackEffect) {
+                    Vector2 knockBackDirNormalized = (creatureHit.transform.position - transform.position).normalized;
+                    knockBackDirNormalized.y = 0;
+                    creatureHit.TakeKnockback(knockbackAmount, knockBackDirNormalized);
                 }
                 OnStaticProjectileHitCreature?.Invoke(this, EventArgs.Empty);
             }
@@ -125,6 +132,11 @@ public class StaticProjectile : MonoBehaviour
         Debug.Log("poisonAmount " + poisonAmount);
         poisonEffect = true;
         this.poisonAmount = poisonAmount;
+    }
+    public void InitializeKnockback(float knockBackAmount) {
+        Debug.Log("knockBackAmount " + knockBackAmount);
+        knockbackEffect = true;
+        this.knockbackAmount = knockBackAmount;
     }
 
     protected void ResetInProjectilePool() {

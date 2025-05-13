@@ -72,4 +72,5 @@ public class WorkerAttack : MobAttack
         float randomized = UnityEngine.Random.Range(-hunterAnimalAttackPointRandomizer, hunterAnimalAttackPointRandomizer);
         return new Vector3(randomized, 0,0);
     }
+
 }

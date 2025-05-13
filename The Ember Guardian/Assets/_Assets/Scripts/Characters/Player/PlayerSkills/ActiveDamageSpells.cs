@@ -13,6 +13,7 @@ public class ActiveDamageSpells : MonoBehaviour
     private float darkSwordistanceToPlayer = 3f;
     private float reaperDistanceToPlayer = 5f;
     private float darkMinePrefabDistanceToPlayer = 3f;
+    private float darkMineKnockbackAmount = 75f;
     private float darkSwordImmobilizeDuration = 1.5f;
 
 
@@ -54,6 +55,7 @@ public class ActiveDamageSpells : MonoBehaviour
 
             projectile.Initialize(instantiateDir, null, PlayerSkills.Instance.GetDarkMineDamage(), true, true);
             projectile.InitializePoison(PlayerSkills.Instance.GetDarkMinePoisonAmount());
+            projectile.InitializeKnockback(darkMineKnockbackAmount);
         }
     }
 }
