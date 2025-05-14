@@ -61,7 +61,7 @@ public class PlayerSkills : MonoBehaviour
 
     private bool fireDashRoll;
     private int fireDashRollDamage = 5;
-    private int fireDashRollBurnAmount = 2;
+    private int fireDashRollBurnDuration = 2;
 
     private int darkFlameDamage = 10;
     private int darkSwordDamage;
@@ -483,9 +483,7 @@ public class PlayerSkills : MonoBehaviour
     }
 
     public void ApplyPassiveSkillEffect(SkillItem skillItem) {
-        Debug.Log("ApplyPassiveSkillEffect " + skillItem.skillType);
         SkillSO skillItemSO = skillItem.GetSkillSO();
-        Debug.Log("skillItemSO " + skillItem.GetSkillSO());
         PassiveSkillEffectSO skillEffect = skillItemSO.passiveSkillEffect;
 
         float absoluteBuffEffectValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
@@ -567,7 +565,7 @@ public class PlayerSkills : MonoBehaviour
                 case SkillItem.SkillType.passiveDashFireTrail:
 
                     fireDashRoll = true;
-                    fireDashRollBurnAmount += (int)relativeBuffEffectValue;
+                    fireDashRollBurnDuration += (int)relativeBuffEffectValue;
 
                     break;
 
@@ -764,7 +762,7 @@ public class PlayerSkills : MonoBehaviour
         positionToInstantiate.y = 0;
         StaticProjectile fireDash = Instantiate(fireDashPrefab, positionToInstantiate, Quaternion.identity).GetComponent<StaticProjectile>();
         fireDash.Initialize(PlayerAim.Instance.GetAimDirFloat(), null, fireDashRollDamage, true);
-        fireDash.InitializeBurning(fireDashRollBurnAmount);
+        fireDash.InitializeBurning(fireDashRollBurnDuration);
         fireDash.GetComponent<StaticProjectileSounds>().TriggerProjectileSFX();
     }
     #endregion

@@ -122,7 +122,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
         if (PlayerStats.Instance.GetBackpackOrbSizePercentBuff_Meta() == 0f) {
             level1OrbContainerCollider.SetActive(true);
         }
-        if (PlayerStats.Instance.GetBackpackOrbSizePercentBuff_Meta() == 10f) {
+        if (PlayerStats.Instance.GetBackpackOrbSizePercentBuff_Meta() == 15f) {
             level2OrbContainerCollider.SetActive(true);
             orbContainerImage.sprite = level2OrbContainerSprite;
             orbContainerImage_Front.sprite = level2OrbContainerSprite_Front;
@@ -138,7 +138,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
             RectTransform ammoColliderParentRT = ammoCollidersParent.GetComponent<RectTransform>();
             ammoColliderParentRT.anchoredPosition = level2AmmoCollidersParentPosition;
         }
-        if (PlayerStats.Instance.GetBackpackOrbSizePercentBuff_Meta() == 20f) {
+        if (PlayerStats.Instance.GetBackpackOrbSizePercentBuff_Meta() == 35f) {
             level3OrbContainerCollider.SetActive(true);
             orbContainerImage.sprite = level3OrbContainerSprite;
             orbContainerImage_Front.sprite = level3OrbContainerSprite_Front;
@@ -158,33 +158,33 @@ public class UICurrencyManagerVisual : MonoBehaviour
         if (PlayerStats.Instance.GetBackpackAmmoSizePercentBuff_Meta() == 0f) {
             level1AmmoPocketCollider.SetActive(true);
         }
-        if (PlayerStats.Instance.GetBackpackAmmoSizePercentBuff_Meta() == 10f) {
+        if (PlayerStats.Instance.GetBackpackAmmoSizePercentBuff_Meta() == 15f) {
             level2AmmoPocketCollider.SetActive(true);
-            ammoPocketImage.sprite = level2OrbContainerSprite;
-            ammoPocketImage_Front.sprite = level2OrbContainerSprite_Front;
-            ammoPocketShadowImage.sprite = level2OrbContainerSprite;
+            ammoPocketImage.sprite = level2AmmoPocketSprite;
+            ammoPocketImage_Front.sprite = level2AmmoPocketSprite_Front;
+            ammoPocketShadowImage.sprite = level2AmmoPocketSprite;
         }
-        if (PlayerStats.Instance.GetBackpackAmmoSizePercentBuff_Meta() == 20f) {
+        if (PlayerStats.Instance.GetBackpackAmmoSizePercentBuff_Meta() == 35f) {
             level3AmmoPocketCollider.SetActive(true);
-            ammoPocketImage.sprite = level3OrbContainerSprite;
-            ammoPocketImage_Front.sprite = level3OrbContainerSprite_Front;
-            ammoPocketShadowImage.sprite = level3OrbContainerSprite;
+            ammoPocketImage.sprite = level3AmmoPocketSprite;
+            ammoPocketImage_Front.sprite = level3AmmoPocketSprite_Front;
+            ammoPocketShadowImage.sprite = level3AmmoPocketSprite;
         }
 
         if (PlayerStats.Instance.GetBackpackGemSizePercentBuff_Meta() == 0f) {
             level1GemPocketCollider.SetActive(true);
         }
-        if (PlayerStats.Instance.GetBackpackGemSizePercentBuff_Meta() == 10f) {
+        if (PlayerStats.Instance.GetBackpackGemSizePercentBuff_Meta() == 15f) {
             level3GemPocketCollider.SetActive(true);
-            gemPocketImage.sprite = level2OrbContainerSprite;
-            gemPocketImage_Front.sprite = level2OrbContainerSprite_Front;
-            gemPocketShadowImage.sprite = level2OrbContainerSprite;
+            gemPocketImage.sprite = level2GemPocketSprite;
+            gemPocketImage_Front.sprite = level2GemPocketSprite_Front;
+            gemPocketShadowImage.sprite = level2GemPocketSprite;
         }
-        if (PlayerStats.Instance.GetBackpackGemSizePercentBuff_Meta() == 20f) {
+        if (PlayerStats.Instance.GetBackpackGemSizePercentBuff_Meta() == 35f) {
             level3GemPocketCollider.SetActive(true);
-            gemPocketImage.sprite = level3OrbContainerSprite;
-            gemPocketImage_Front.sprite = level3OrbContainerSprite_Front;
-            gemPocketShadowImage.sprite = level3OrbContainerSprite;
+            gemPocketImage.sprite = level3GemPocketSprite;
+            gemPocketImage_Front.sprite = level3GemPocketSprite_Front;
+            gemPocketShadowImage.sprite = level3GemPocketSprite;
         }
     }
 

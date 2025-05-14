@@ -17,7 +17,9 @@ MonoBehaviour:
   passiveSkillEffect: {fileID: 11400000, guid: 1f1e071b036f3e448bbcd23b294351d3, type: 2}
   activeSkillEffect: {fileID: 0}
   SkillName: Bloodchance Matrix
-  StatChanges: Creatures x2 drop chance
+  StatChanges: Creatures x2 Drop Chance
+  StatChangePrefix: +
+  StatChangeUnit: '%'
   Icon: {fileID: -555920396, guid: 81ff5ea95548b2547a26f5c0525a3295, type: 3}
   currencyTypeToPay: 3
   maxLevel: 5

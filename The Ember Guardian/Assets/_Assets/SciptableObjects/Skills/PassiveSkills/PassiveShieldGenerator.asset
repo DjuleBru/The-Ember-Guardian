@@ -15,11 +15,14 @@ MonoBehaviour:
   itemType: 1
   skillType: 4
   passiveSkillEffect: {fileID: 11400000, guid: d01f6e1d69fcfbb468ccd0b8531ccb87, type: 2}
+  activeSkillEffect: {fileID: 0}
   SkillName: Aegis Protocol
-  StatChanges: Shield regen time
+  StatChanges: Shield Regen Time
+  StatChangePrefix: 
+  StatChangeUnit: s
   Icon: {fileID: 1369589823, guid: 81ff5ea95548b2547a26f5c0525a3295, type: 3}
   currencyTypeToPay: 3
-  Price: 8
   maxLevel: 5
+  activateSkillAudioClip: {fileID: 0}
   Description: Deploy a passive shield generator to absorb a portion of incoming
     damage, increasing survivability.

@@ -52,8 +52,8 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
     }
     public void UpdateDescriptionPanelVisuals(MerchantItem merchantItem) {
         descriptionPanelItemIcon.sprite = merchantItem.icon;
-        descriptionPanelItemName.text = merchantItem.itemName + " " + merchantItem.currentLevel.ToString();
-        descriptionPanelItemDescription.text = merchantItem.itemDescription;
+        descriptionPanelItemName.text = LocalizationManager.Instance.GetLocalizedText(merchantItem.itemName) + " " + merchantItem.currentLevel.ToString();
+        descriptionPanelItemDescription.text = LocalizationManager.Instance.GetLocalizedText(merchantItem.itemName + "_Description");
 
         SetStatChangesText(merchantItem);
     }
@@ -119,50 +119,19 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
             previousStatValue = 0;
         }
 
+        previousStatText = "(" + skillSO.StatChangePrefix + (int)(previousStatValue) + ")";
+        currentStatText = skillSO.StatChangePrefix + ((int)(currentBuffValue)).ToString() + skillSO.StatChangeUnit;
+
         switch (skillSO.skillType) {
-            case SkillItem.SkillType.passiveMaxHPIncrease:
-                previousStatText = "(+" + (int)(previousStatValue) + ")";
-                currentStatText = "+" + ((int)(currentBuffValue)).ToString();
-                break;
-
-            case SkillItem.SkillType.passiveMoveSpeedBuff:
-                previousStatText = "(+" + (int)(previousStatValue) + "%)";
-                currentStatText = "+" + ((int)(currentBuffValue)).ToString() + "%";
-                break;
-
             case SkillItem.SkillType.passiveRunMaxTimeBuff:
                 previousStatText = "(" + (int)(PlayerStats.Instance.GetMaxStamina()) + "s)";
                 currentStatText = ((int)(PlayerStats.Instance.GetMaxStamina() + relativeStatValue)).ToString() + "s";
                 break;
 
-            case SkillItem.SkillType.passiveRunAccelerationFactorBuff:
-                previousStatText = "(+" + (int)(previousStatValue) + "%)";
-                currentStatText = "+" + ((int)(currentBuffValue)).ToString() + "%";
-                break;
-
-            case SkillItem.SkillType.passiveAmmoGenerator:
-                previousStatText = "(" + (int)previousStatValue + "s)";
-                currentStatText = "" + ((int)(currentBuffValue)).ToString() + "s";
-                break;
-
-            case SkillItem.SkillType.passiveHealthRegen:
-                previousStatText = "(" + (int)(previousStatValue) + "s)"; ;
-                currentStatText = "" + ((int)(currentBuffValue)).ToString() + "s";
-                break;
-
-            case SkillItem.SkillType.passiveChanceToDoubleXPDrop:
-                previousStatText = "(+" + (int)(previousStatValue) + "%)"; ;
-                currentStatText = "+" + ((int)(currentBuffValue)).ToString() + "%";
-                break;
-
-            case SkillItem.SkillType.passiveShieldGenerator:
-                previousStatText = "(" + previousStatValue + "s)"; ;
-                currentStatText = ((int)(currentBuffValue)).ToString() + "s";
-                break;
         }
 
         passiveItemStatValue.text = currentStatText;
-        passiveItemStatChangesDescription.text = skillSO.StatChanges + " " + previousStatText;
+        passiveItemStatChangesDescription.text = LocalizationManager.Instance.GetLocalizedText(skillSO.StatChanges) + " " + previousStatText;
     }
 
     private void SetActiveSkillStatsDescription(SkillItem skillItem) {
@@ -205,45 +174,18 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
             previousCooldownStatText = "";
         }
 
-        switch (skillSO.skillType) {
-            case SkillItem.SkillType.activeMoveSpeedBuff:
-
-                if (skillItem.currentLevel > 1) {
-                    previousStatText = " (" + previousStatValue.ToString() + "s)";
-                }
-                absoluteStatText = currentStatValue + "s";
-                absoluteStatDescriptionText = "Duration" + previousStatText;
-                cooldownStatText = currentCooldownValue.ToString() + "s";
-
-            break;
-
-            case SkillItem.SkillType.activeShootSpeedBuff:
-
-                if (skillItem.currentLevel > 1) {
-                    previousStatText = " (" + previousStatValue.ToString() + "%)";
-                }
-
-                absoluteStatText = "+" + currentStatValue + "%";
-                absoluteStatDescriptionText = "Fire Rate" + previousStatText;
-                cooldownStatText = currentCooldownValue.ToString() + "s";
-            break;
-
-            case SkillItem.SkillType.activeTeleportation:
-
-                if (skillItem.currentLevel > 1) {
-                    previousStatText = " (" + previousStatValue.ToString() + "m)";
-                }
-
-                absoluteStatText = "+" + currentStatValue + "m";
-                absoluteStatDescriptionText = "Warp distance" + previousStatText;
-                cooldownStatText = currentCooldownValue.ToString() + "s";
-            break;
+        if (skillItem.currentLevel > 1) {
+            previousStatText = " (" + previousStatValue.ToString() + skillSO.StatChangeUnit.ToString() + ")";
         }
+        absoluteStatText = currentStatValue + skillSO.StatChangeUnit.ToString();
+        cooldownStatText = currentCooldownValue.ToString() + "s";
 
         activeItemStatValue.text = absoluteStatText;
+
+        absoluteStatDescriptionText = LocalizationManager.Instance.GetLocalizedText(skillSO.StatChanges) + previousStatText;
         activeItemStatChangesDescription.text = absoluteStatDescriptionText;
         activeItemCooldownValue.text = cooldownStatText;
-        activeItemCooldownChangesText.text = "Cooldown " + previousCooldownStatText;
+        activeItemCooldownChangesText.text = LocalizationManager.Instance.GetLocalizedText("card_cooldown") + previousCooldownStatText;
     }
     private void SetTrapStatsDescription(TrapItem trapItem) {
         TrapSO trapSO = trapItem.trapSO;
@@ -267,20 +209,20 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
         switch (trapSO.trapType) {
             case TrapItem.TrapType.bearTrap:
 
-                trapSpecialStatDescription.text = "Immobilization duration";
+                trapSpecialStatDescription.text = LocalizationManager.Instance.GetLocalizedText("Immobilization duration");
                 trapSpecialStatValue.text += "s";
 
                 break;
 
             case TrapItem.TrapType.shockerEjector:
-                trapSpecialStatDescription.text = "Slow down effect";
+                trapSpecialStatDescription.text = LocalizationManager.Instance.GetLocalizedText("Slow down effect");
 
                 trapSpecialStatValue.text += "%";
 
                 break;
 
             case TrapItem.TrapType.smokeEjector:
-                trapSpecialStatDescription.text = "Poison duration";
+                trapSpecialStatDescription.text = LocalizationManager.Instance.GetLocalizedText("Poison duration");
 
                 trapSpecialStatValue.text += "/s";
 
@@ -363,32 +305,32 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
             case TrapUpgradeSO.TrapUpgradeType.damage:
                 previousStatText = "(+" + (int)(previousStatValue) + ")";
                 currentStatText = "+" + ((int)(currentBuffValue)).ToString();
-                passiveItemStatChangesDescription.text = " Damage ";
+                passiveItemStatChangesDescription.text = " " + LocalizationManager.Instance.GetLocalizedText("card_damage");
                 break;
 
             case TrapUpgradeSO.TrapUpgradeType.cooldown:
                 previousStatText = "(-" + (int)(previousStatValue) + "s)";
                 currentStatText = "-" + ((int)(currentBuffValue)).ToString() + "s";
-                passiveItemStatChangesDescription.text = " Cooldown ";
+                passiveItemStatChangesDescription.text = " " + LocalizationManager.Instance.GetLocalizedText("card_cooldown");
                 break;
 
 
             case TrapUpgradeSO.TrapUpgradeType.priceToReload:
                 previousStatText = "(-" + (int)(previousStatValue) + ")";
                 currentStatText = "-" + ((int)(currentBuffValue)).ToString();
-                passiveItemStatChangesDescription.text = " Rearm cost";
+                passiveItemStatChangesDescription.text = " " + LocalizationManager.Instance.GetLocalizedText("Rearm Price");
                 break;
 
             case TrapUpgradeSO.TrapUpgradeType.usesPerNight:
                 previousStatText = "(+" + (int)(previousStatValue) + ")";
                 currentStatText = ((int)(currentBuffValue)).ToString();
-                passiveItemStatChangesDescription.text = " Uses/night ";
+                passiveItemStatChangesDescription.text = " " + LocalizationManager.Instance.GetLocalizedText("Uses Per Night");
                 break;
 
             case TrapUpgradeSO.TrapUpgradeType.totalUses:
                 previousStatText = "(+" + (int)previousStatValue + ")";
                 currentStatText = "+" + ((int)(currentBuffValue)).ToString();
-                passiveItemStatChangesDescription.text = " Total Rearms ";
+                passiveItemStatChangesDescription.text = " " + LocalizationManager.Instance.GetLocalizedText("Total Rearms");
                 break;
 
             case TrapUpgradeSO.TrapUpgradeType.special:
@@ -399,25 +341,25 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
 
                         previousStatText = "(-" + (int)previousStatValue + "s)";
                         currentStatText = "-" + ((int)(currentBuffValue)).ToString() + "s";
-                        passiveItemStatChangesDescription.text = " Immobilization duration ";
+                        passiveItemStatChangesDescription.text = " " + LocalizationManager.Instance.GetLocalizedText("Immobilization Duration");
 
-                    break;
+                        break;
 
                     case TrapItem.TrapType.shockerEjector:
 
                         previousStatText = "(+" + (int)previousStatValue + "%)";
                         currentStatText = "+" + ((int)(currentBuffValue)).ToString() + "%";
-                        passiveItemStatChangesDescription.text = " Slow down Amount ";
+                        passiveItemStatChangesDescription.text = " " + LocalizationManager.Instance.GetLocalizedText("Slow Down Amount");
 
-                    break;
+                        break;
 
                     case TrapItem.TrapType.smokeEjector:
 
                         previousStatText = "(+" + (int)previousStatValue + "/s)";
                         currentStatText = "+" + ((int)(currentBuffValue)).ToString() + "/s";
-                        passiveItemStatChangesDescription.text = " Poison Damage ";
+                        passiveItemStatChangesDescription.text = " " + LocalizationManager.Instance.GetLocalizedText("Poison Damage");
 
-                    break;
+                        break;
                 }
 
                 break;

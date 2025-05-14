@@ -15,11 +15,14 @@ MonoBehaviour:
   itemType: 1
   skillType: 0
   passiveSkillEffect: {fileID: 11400000, guid: 1106f73a59bd77249b8ec6d0c9ff8583, type: 2}
+  activeSkillEffect: {fileID: 0}
   SkillName: Momentum Surge
-  StatChanges: Movement speed
+  StatChanges: Movement Speed
+  StatChangePrefix: +
+  StatChangeUnit: '%'
   Icon: {fileID: 1952354558, guid: 81ff5ea95548b2547a26f5c0525a3295, type: 3}
   currencyTypeToPay: 3
-  Price: 1
   maxLevel: 5
+  activateSkillAudioClip: {fileID: 0}
   Description: Enhance your movement speed with biomechanical boosters, letting you
     traverse faster across hostile terrains.

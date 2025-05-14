@@ -15,11 +15,14 @@ MonoBehaviour:
   itemType: 1
   skillType: 5
   passiveSkillEffect: {fileID: 11400000, guid: 2c7e60102734d164493691f16a37184b, type: 2}
+  activeSkillEffect: {fileID: 0}
   SkillName: Bio-Regen Module
-  StatChanges: Health regeneration rate
+  StatChanges: Health Regeneration Rate
+  StatChangePrefix: 
+  StatChangeUnit: s
   Icon: {fileID: -1567592961, guid: 81ff5ea95548b2547a26f5c0525a3295, type: 3}
   currencyTypeToPay: 3
-  Price: 1
   maxLevel: 5
+  activateSkillAudioClip: {fileID: 0}
   Description: A nanite-infused implant restores your health over time, keeping you
     combat-ready.

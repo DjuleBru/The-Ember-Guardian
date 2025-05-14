@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Merchant_Skills : Merchant
 {
+
     private List<SkillSO> merchantSkillSOList;
     private List<SkillItem> majorSkillList;
     private List<SkillItem> minorSkillList; // Référence aux skills du joueur
@@ -54,8 +55,14 @@ public class Merchant_Skills : Merchant
     }
 
     protected override void InitializeMerchantItems() {
-        bigItemsToDisplayAmount = StructureStats.Instance.GetSkillMerchantMaxActiveSkillsDisplayed();
-        smallItemsToDisplayAmount = StructureStats.Instance.GetSkillMerchantMaxPassiveSkillsDisplayed();
+
+        if(useDebugItemAmountToDisplay) {
+            bigItemsToDisplayAmount = debugBigItemToDisplay;
+            smallItemsToDisplayAmount = debugSmallItemToDisplay;
+        } else {
+            bigItemsToDisplayAmount = StructureStats.Instance.GetSkillMerchantMaxActiveSkillsDisplayed();
+            smallItemsToDisplayAmount = StructureStats.Instance.GetSkillMerchantMaxPassiveSkillsDisplayed();
+        }
 
         InitializeSkillItems();
         RefreshShopItems();

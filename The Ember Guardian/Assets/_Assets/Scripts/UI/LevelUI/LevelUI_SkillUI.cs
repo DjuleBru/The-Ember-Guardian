@@ -36,8 +36,10 @@ public class LevelUI_SkillUI : MonoBehaviour
     }
 
     private void RefreshSkillVisuals() {
-        skillTemplateImage.sprite = linkedSkill.icon;
-        skillTemplateBackgroundImage.sprite = linkedSkill.icon;
+        skillTemplateImage.sprite = linkedSkill.skillSO.Icon;
+        skillTemplateBackgroundImage.sprite = linkedSkill.skillSO.Icon;
+        Debug.Log(linkedSkill.skillSO);
+        Debug.Log(linkedSkill.skillSO.Icon);
         skillLevelText.text = linkedSkill.currentLevel.ToString();
     }
 

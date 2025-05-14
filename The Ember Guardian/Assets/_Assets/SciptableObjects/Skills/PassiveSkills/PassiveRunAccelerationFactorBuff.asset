@@ -15,11 +15,14 @@ MonoBehaviour:
   itemType: 1
   skillType: 2
   passiveSkillEffect: {fileID: 11400000, guid: 17642d15dbcdcba4fb865102384523e3, type: 2}
+  activeSkillEffect: {fileID: 0}
   SkillName: Kinetic Amplifier
-  StatChanges: Sprint speed
+  StatChanges: Sprint Speed
+  StatChangePrefix: +
+  StatChangeUnit: '%'
   Icon: {fileID: 1827521325, guid: 81ff5ea95548b2547a26f5c0525a3295, type: 3}
   currencyTypeToPay: 3
-  Price: 1
   maxLevel: 5
+  activateSkillAudioClip: {fileID: 0}
   Description: Augment your sprint acceleration with neural link enhancements for
     quick bursts of speed.

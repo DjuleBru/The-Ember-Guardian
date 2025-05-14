@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class StructureUI_Merchant : StructureUI {
@@ -71,7 +72,7 @@ public class StructureUI_Merchant : StructureUI {
 
     protected void GameInput_OnPlayerLeftRightDirPerformed(object sender, System.EventArgs e) {
         if (!merchant.GetShopOpen()) return;
-        NavigateUIItems();
+        //NavigateUIItems();
     }
 
     protected void NavigateUIItems() {
@@ -177,6 +178,7 @@ public class StructureUI_Merchant : StructureUI {
                 merchantItemUI.HighlightItem(true);
                 payCurrencyUI.SetOrbTemplateUIList(merchantItemUI.GetPayCurrencyTemplateWorldUIList());
                 selectedMerchantItem = merchantItemUI.GetMerchantItemLinked();
+                EventSystem.current.SetSelectedGameObject(merchantItemUI.gameObject);
             }
             else {
                 merchantItemUI.HighlightItem(false);
@@ -192,6 +194,7 @@ public class StructureUI_Merchant : StructureUI {
                 merchantItemUI.HighlightItem(true);
                 payCurrencyUI.SetOrbTemplateUIList(merchantItemUI.GetPayCurrencyTemplateWorldUIList());
                 selectedMerchantItem = merchantItemUI.GetMerchantItemLinked();
+                EventSystem.current.SetSelectedGameObject(merchantItemUI.gameObject);
             }
             else {
                 merchantItemUI.HighlightItem(false);

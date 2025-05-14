@@ -12,6 +12,8 @@ public class SkillSO : ScriptableObject
     public ActiveSkillEffectSO activeSkillEffect;
     public string SkillName;
     public string StatChanges;
+    public string StatChangePrefix;
+    public string StatChangeUnit;
     public Sprite Icon;
     public PlayerCurrencies.CurrencyType currencyTypeToPay;
     public int maxLevel;

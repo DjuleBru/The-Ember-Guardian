@@ -5150,7 +5150,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -0.09, y: 0.12}
+  m_AnchoredPosition: {x: -0.089999974, y: 0.119999886}
   m_SizeDelta: {x: 0.95, y: 0.95}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &801280109281496814
@@ -5697,7 +5697,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5471968009879342086}
-  - component: {fileID: 4354122103446873081}
+  - component: {fileID: 1434918344621841239}
   m_Layer: 3
   m_Name: MerchantItem_SmallContainer
   m_TagString: Untagged
@@ -5722,10 +5722,10 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -5.74, y: -1.68}
-  m_SizeDelta: {x: 4, y: 0.5299988}
+  m_AnchoredPosition: {x: -5.74, y: -0.74}
+  m_SizeDelta: {x: 1.96, y: 5.6}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4354122103446873081
+--- !u!114 &1434918344621841239
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5734,7 +5734,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2023845899289831709}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -7881,7 +7881,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5111998178707193458}
-  - component: {fileID: 2468887844130596082}
+  - component: {fileID: 8634998393961657282}
   m_Layer: 3
   m_Name: MerchantItem_BigContainer
   m_TagString: Untagged
@@ -7907,9 +7907,9 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 5.83, y: -0.7}
-  m_SizeDelta: {x: 3.7999992, y: 2}
+  m_SizeDelta: {x: 2.45, y: 5.57}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2468887844130596082
+--- !u!114 &8634998393961657282
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7918,7 +7918,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7770893529046516771}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -8849,6 +8849,10 @@ PrefabInstance:
       propertyPath: currencyTypeToPay
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialPayCurrencySmoothTime
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8891634777496794373, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -8946,6 +8950,10 @@ PrefabInstance:
     - target: {fileID: 5112677845429322696, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: initialPayCurrencySmoothTime
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5701359116775254949, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_IsActive
@@ -9046,6 +9054,9 @@ MonoBehaviour:
   secondaryFunctionUnlocked: 0
   visualIndicator: {fileID: 0}
   merchantType: 0
+  useDebugItemAmountToDisplay: 1
+  debugBigItemToDisplay: 3
+  debugSmallItemToDisplay: 4
   smallItemsToDisplayAmount: 2
   bigItemsToDisplayAmount: 1
 --- !u!1 &3637238596423453997 stripped
@@ -9285,6 +9296,10 @@ PrefabInstance:
     - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: currencyTypeToPay
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialPayCurrencySmoothTime
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8891634777496794373, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Color.b

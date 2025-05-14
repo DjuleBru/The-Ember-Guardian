@@ -11,6 +11,7 @@ public class ActiveFuelFireOnKills : MonoBehaviour {
     private bool initialFireLit;
 
     private void Start() {
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Level) return;
         Creature.OnAnyMobDied += Creature_OnAnyMobDied;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;

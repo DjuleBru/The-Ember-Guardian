@@ -12,7 +12,10 @@ public class Merchant : Structure {
         Traps,
     }
 
-    [SerializeField] protected MerchantType merchantType;
+    [SerializeField] protected MerchantType merchantType; 
+    [SerializeField] protected bool useDebugItemAmountToDisplay;
+    [SerializeField] protected int debugBigItemToDisplay;
+    [SerializeField] protected int debugSmallItemToDisplay;
 
     // Listes d'objets disponibles à la vente pour chaque type de marchand
     protected List<MerchantItem> allItemsForSale = new List<MerchantItem>();
