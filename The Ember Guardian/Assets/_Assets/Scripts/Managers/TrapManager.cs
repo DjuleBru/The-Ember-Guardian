@@ -17,6 +17,7 @@ public class TrapManager : MonoBehaviour
     private List<TrapSO> newTrapsUnlockedList = new List<TrapSO>();
     private List<TrapSO> trapsUnlockedList = new List<TrapSO>();
     private List<TrapSO> trapsAndUpgradesUnlockedList = new List<TrapSO>();
+    private List<TrapSO> allTrapsAndUpgradesList = new List<TrapSO>();
 
     private List<TrapItem.TrapType> trapTypesBoughtByPlayer = new List<TrapItem.TrapType>();
 
@@ -123,12 +124,14 @@ public class TrapManager : MonoBehaviour
         foreach (TrapSO trapSO in initialTrapsUnlockedList) {
             trapsUnlockedList.Add(trapSO);
             trapsAndUpgradesUnlockedList.Add(trapSO);
+            allTrapsAndUpgradesList.Add(trapSO);
         }
 
         foreach (TrapSO trapSO in trapSOList) {
             string key = trapSO.name + "_unlocked";
             bool unlocked = ES3.Load(key, false);
 
+            allTrapsAndUpgradesList.Add(trapSO);
             if (unlocked) {
                 trapsUnlockedList.Add(trapSO);
                 trapsAndUpgradesUnlockedList.Add(trapSO);
@@ -138,6 +141,7 @@ public class TrapManager : MonoBehaviour
 
         // Add Trap Upgrades linked to unlocked traps
         List<TrapSO> trapUpgradesUnlocked = new List<TrapSO>();
+        List<TrapSO> allTrapUpgrades = new List<TrapSO>();
         foreach (TrapSO trapSOUpgrade in allTrapSOList) {
             foreach (TrapSO trapSO in trapsUnlockedList) {
                 if (trapSO == trapSOUpgrade) continue;
@@ -146,10 +150,22 @@ public class TrapManager : MonoBehaviour
                     trapUpgradesUnlocked.Add(trapSOUpgrade);
                 }
             }
+
+            foreach (TrapSO trapSO in allTrapsAndUpgradesList) {
+                if (trapSO == trapSOUpgrade) continue;
+
+                if (trapSOUpgrade.linkedTrapSO == trapSO) {
+                    allTrapUpgrades.Add(trapSOUpgrade);
+                }
+            }
         }
 
         foreach(TrapSO trapSO in trapUpgradesUnlocked) {
             trapsAndUpgradesUnlockedList.Add(trapSO);
+        }
+
+        foreach (TrapSO trapSO in allTrapUpgrades) {
+            allTrapsAndUpgradesList.Add(trapSO);
         }
     }
 
@@ -157,7 +173,11 @@ public class TrapManager : MonoBehaviour
         return trapsUnlockedList;
     }
     public List<TrapSO> GetUnlockedTrapsAndTheirUpgrades() {
-        return trapsAndUpgradesUnlockedList;
+        if(DebugManager.Instance.GetDebugMode_AllTrapsUnlocked()) {
+            return allTrapsAndUpgradesList;
+        } else {
+            return trapsAndUpgradesUnlockedList;
+        }
     }
 
     #endregion

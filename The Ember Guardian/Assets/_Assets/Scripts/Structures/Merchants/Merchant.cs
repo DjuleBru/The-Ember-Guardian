@@ -110,7 +110,6 @@ public class Merchant : Structure {
             // Player is trying to buy an item
             if (currentSelectedItemAlreadyPurchased) return;
         }
-
         playerInteracting = true;
         payCurrencyUI.SetPlayerInteracting(true);
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Merchant_Skills : Merchant
@@ -11,6 +12,8 @@ public class Merchant_Skills : Merchant
 
     protected List<SkillItem> majorSkillItemsForSale;
     protected List<SkillItem> minorSkillItemsForSale = new List<SkillItem>();
+
+    protected int drawWeightForBoughtSkills = 3;
 
     protected override void Start() {
         base.Start();
@@ -100,40 +103,33 @@ public class Merchant_Skills : Merchant
     }
 
     protected override void RefreshShopItems() {
+        Debug.Log("RefreshShopItems");
         SetAllSkillsUnsold();
         RefreshCurrentMajorItemForSale();
         RefreshCurrentMinorItemListForSale();
     }
 
     protected void RefreshCurrentMajorItemForSale() {
+        Debug.Log("RefreshCurrentMajorItemForSale");
         // Pondération pour augmenter la chance des améliorations
-        List<SkillItem> weightedList = new List<SkillItem>();
+        List<SkillItem> majorSkillListToDisplay = new List<SkillItem>();
 
-        // Le joueur a moins de 2 skills actifs : on propose encore de nouveaux skills avec + de poids pour l'amélioration du skill actif
+        // Le joueur a moins de 2 skills actifs : on propose encore de nouveaux skills
         if (PlayerSkills.Instance.GetActiveSkillList().Count < 2) {
-            foreach (SkillItem skillItem in majorSkillList) {
-                if (PlayerSkills.Instance.GetCurrentSkillLevel(skillItem) > 0) {
-                    int weight = 4; // Pondération pour les améliorations
-                    for (int i = 0; i < weight; i++) {
-                        weightedList.Add(skillItem);
-                    }
-                }
-                else {
-                    // Ajoute une seule entrée pour les nouveaux skills
-                    weightedList.Add(skillItem);
-                }
+            foreach (SkillItem skillItem in this.majorSkillList) {
+                majorSkillListToDisplay.Add(skillItem);
             }
         } else {
             // Le joueur a 2 skills actifs : on propose uniquement des améliorations
 
-            foreach (SkillItem skillItem in majorSkillList) {
+            foreach (SkillItem skillItem in this.majorSkillList) {
                 if (PlayerSkills.Instance.GetCurrentSkillLevel(skillItem) > 0) {
-                    weightedList.Add(skillItem);
+                    majorSkillListToDisplay.Add(skillItem);
                 }
             }
         }
 
-        majorSkillItemsForSale = DrawSkillsWithoutReplacement(weightedList, bigItemsToDisplayAmount);
+        majorSkillItemsForSale = DrawSkillsWithoutReplacement(majorSkillListToDisplay, bigItemsToDisplayAmount);
         majorItemListForSale = ConvertSkillListInMerchantItemList(majorSkillItemsForSale);
 
         foreach(SkillItem skillItem in majorItemListForSale) {
@@ -143,23 +139,14 @@ public class Merchant_Skills : Merchant
 
     protected void RefreshCurrentMinorItemListForSale() {
         // Pondération pour augmenter la chance des améliorations
-        List<SkillItem> weightedList = new List<SkillItem>();
+        List<SkillItem> minorSkillList = new List<SkillItem>();
 
-        foreach (SkillItem skillItem in minorSkillList) {
-            if (PlayerSkills.Instance.GetCurrentSkillLevel(skillItem) > 0) {
-                int weight = 4; // Pondération pour les améliorations
-                for (int i = 0; i < weight; i++) {
-                    weightedList.Add(skillItem);
-                }
-            }
-            else {
-                // Ajoute une seule entrée pour les nouveaux skills
-                weightedList.Add(skillItem);
-            }
+        foreach (SkillItem skillItem in this.minorSkillList) {
+            minorSkillList.Add(skillItem);
         }
 
         // Effectuer le tirage à partir de la liste pondérée
-        minorSkillItemsForSale = DrawSkillsWithoutReplacement(weightedList, smallItemsToDisplayAmount);
+        minorSkillItemsForSale = DrawSkillsWithoutReplacement(minorSkillList, smallItemsToDisplayAmount);
         minorItemListForSale = ConvertSkillListInMerchantItemList(minorSkillItemsForSale);
 
         foreach (SkillItem skillItem in minorItemListForSale) {
@@ -168,26 +155,48 @@ public class Merchant_Skills : Merchant
     }
 
     public List<SkillItem> DrawSkillsWithoutReplacement(List<SkillItem> skillList, int numberOfDraws) {
-        List<SkillItem> skillListCopy = new List<SkillItem>();
-        foreach(SkillItem skillItem in skillList) {
-            skillListCopy.Add(skillItem);
+        // Créer une copie de la liste pour ne pas modifier l'original
+        List<SkillItem> skillListCopy = new List<SkillItem>(skillList);
+
+        // Créer une liste de pondérations basée sur les éléments
+        List<SkillItem> weightedList = new List<SkillItem>();
+
+        // Remplir la liste pondérée sans duplication des éléments, en fonction des poids
+        foreach (SkillItem skillItem in skillListCopy) {
+            int weight = 4; // Pondération pour les améliorations
+            for (int i = 0; i < weight; i++) {
+                weightedList.Add(skillItem);
+            }
         }
 
         // Vérifie si le nombre de tirages demandé est supérieur à la taille de la liste
-        if (numberOfDraws > skillListCopy.Count) {
-            Debug.LogWarning("Le nombre de tirages demandé est supérieur à la taille de la liste.");
-            numberOfDraws = skillListCopy.Count; // Limite le nombre de tirages
+        if (numberOfDraws > weightedList.Count) {
+            Debug.LogWarning("Le nombre de tirages demandé est supérieur à la taille de la liste pondérée.");
+            numberOfDraws = weightedList.Count; // Limite le nombre de tirages
         }
 
         // Liste des skills tirés
         List<SkillItem> drawnSkills = new List<SkillItem>();
+        HashSet<SkillItem> uniqueDrawnSkills = new HashSet<SkillItem>(); // Pour vérifier les doublons
 
-        // Effectue le tirage
-        for (int i = 0; i < numberOfDraws; i++) {
-            int randomIndex = Random.Range(0, skillListCopy.Count); // Sélectionne un index aléatoire
-            SkillItem selectedSkill = skillListCopy[randomIndex]; // Récupère le skill correspondant
-            drawnSkills.Add(selectedSkill); // Ajoute le skill à la liste des tirages
-            skillListCopy.RemoveAt(randomIndex); // Supprime le skill tiré de la liste originale
+        // Effectuer le tirage sans remplacement
+        while (drawnSkills.Count < numberOfDraws) {
+            // Filtrer la liste pour ne garder que les éléments qui n'ont pas encore été tirés
+            List<SkillItem> remainingItems = weightedList.Where(skillItem => !uniqueDrawnSkills.Contains(skillItem)).ToList();
+
+            // Si il n'y a pas assez d'éléments uniques restants pour compléter le tirage, on arrête
+            if (remainingItems.Count == 0) {
+                Debug.LogWarning("Pas assez d'éléments uniques restants pour effectuer le tirage.");
+                break;
+            }
+
+            // Tirage d'un élément aléatoire parmi les éléments restants
+            int randomIndex = Random.Range(0, remainingItems.Count);
+            SkillItem selectedSkill = remainingItems[randomIndex];
+
+            // Ajouter le skill à la liste et le marquer comme tiré
+            drawnSkills.Add(selectedSkill);
+            uniqueDrawnSkills.Add(selectedSkill); // Marquer comme tiré
         }
 
         return drawnSkills; // Retourne la liste des skills tirés

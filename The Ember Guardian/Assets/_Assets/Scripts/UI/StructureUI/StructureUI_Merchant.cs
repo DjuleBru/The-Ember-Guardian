@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class StructureUI_Merchant : StructureUI {
 
@@ -30,10 +31,16 @@ public class StructureUI_Merchant : StructureUI {
     public event EventHandler OnPlayerBoughtMinorItem;
     public event EventHandler OnPlayerBoughtMajorItem;
 
+    private List<MerchantItem> columnLeft = new();
+    private List<MerchantItem> columnRight = new();
+    private int selectedCol = 0; // 0 = gauche, 1 = droite
+    private int selectedRow = 0;
+
     protected MerchantItem selectedMerchantItem;
     protected int selectedItemIndex;
+    protected Vector2Int selectedGridPos;
     protected int previousSelectedItemIndex;
-
+    private int columns = 2;
 
     private List<MerchantItemUI> smallMerchantItemUIList = new List<MerchantItemUI>();
     private List<MerchantItemUI> bigMerchantItemUIList = new List<MerchantItemUI>();
@@ -50,8 +57,9 @@ public class StructureUI_Merchant : StructureUI {
         merchant.OnPlayerOpenedMerchantShop += Merchant_OnPlayerStartedInteractedWithMerchant;
         merchant.OnPlayerClosedMerchantShop += Merchant_OnPlayerStoppedInteractedWithMerchant;
         merchant.OnPlayerBoughtItem += Merchant_OnPlayerBoughtItem1;
-        GameInput.Instance.OnPlayerLeftRightDirPerformed += GameInput_OnPlayerLeftRightDirPerformed;
+        GameInput.Instance.OnPlayerNavigateUIPerformed += GameInput_OnPlayerNavigateUIPerformed;
     }
+
 
     protected void Merchant_OnPlayerStoppedInteractedWithMerchant(object sender, System.EventArgs e) {
         selectedItemIndex = 0;
@@ -70,46 +78,46 @@ public class StructureUI_Merchant : StructureUI {
         RefreshMerchantItemsUI();
     }
 
+    private void GameInput_OnPlayerNavigateUIPerformed(object sender, EventArgs e) {
+        if (!merchant.GetShopOpen()) return;
+        NavigateUIItems();
+    }
     protected void GameInput_OnPlayerLeftRightDirPerformed(object sender, System.EventArgs e) {
         if (!merchant.GetShopOpen()) return;
-        //NavigateUIItems();
+        NavigateUIItems();
     }
 
-    protected void NavigateUIItems() {
-        float selectDir = GameInput.Instance.GetMovementFloatNormalized();
+    void NavigateUIItems() {
+        Vector2 input = GameInput.Instance.GetUINavigationVector();
+        if (input == Vector2.zero) return;
 
-        // Compteur pour limiter les essais et éviter les boucles infinies
-        int attempts = 0;
+        int horizontal = Mathf.RoundToInt(input.x);
+        int vertical = -Mathf.RoundToInt(input.y); // haut = -1, bas = +1
 
-        if (selectDir != 0) {
-            // Naviguer à travers tous les items
-            List<MerchantItem> allItems = merchant.GetAllCurrentItemsForSale();
-            int itemCount = allItems.Count;
+        if (horizontal != 0) {
+            selectedCol = Mathf.Clamp(selectedCol + horizontal, 0, 1);
+            ClampSelection();
+        }
+
+        if (vertical != 0) {
+            int rowCount = GetCurrentColumn().Count;
+            int attempts = 0;
 
             do {
-                if (selectDir > 0) {
-                    selectedItemIndex = (selectedItemIndex + 1) % itemCount;
-                }
-                else {
-                    selectedItemIndex = (selectedItemIndex - 1 + itemCount) % itemCount;
-                }
+                selectedRow += vertical;
+
+                // wrap autour si on sort des limites
+                if (selectedRow < 0) selectedRow = rowCount - 1;
+                if (selectedRow >= rowCount) selectedRow = 0;
 
                 attempts++;
-
-                if (attempts >= itemCount) {
-                    Debug.LogWarning("All items are purchased! Navigation aborted.");
-                    HideItemUI();
-                    return;
-                }
-
-            } while (allItems[selectedItemIndex].isPurchased && allItems[selectedItemIndex].buyingLocksPurchasesUntilRefresh);
-
-            OnNewItemHovered?.Invoke(this, EventArgs.Empty);
-
-            UpdateSelectedItemUI();
-            UpdateDescriptionPanelVisuals();
-            previousSelectedItemIndex = selectedItemIndex;
+                if (attempts > rowCount) break; // sécurité anti-boucle infinie
+            }
+            while (!IsCurrentItemValid());
         }
+
+        ClampSelection(); // pour s'assurer qu'on reste dans la colonne correcte
+        UpdateSelectedItemUI();
     }
 
     private void SelectNextAvailableItem() {
@@ -121,8 +129,14 @@ public class StructureUI_Merchant : StructureUI {
         do {
             selectedItemIndex = (selectedItemIndex + 1) % itemCount;
 
+            Debug.Log(selectedItemIndex + " puchased " + allItems[selectedItemIndex].isPurchased);
+            Debug.Log(selectedItemIndex + " buyingLocksPurchasesUntilRefresh " + allItems[selectedItemIndex].buyingLocksPurchasesUntilRefresh);
+
             if (!allItems[selectedItemIndex].isPurchased && allItems[selectedItemIndex].buyingLocksPurchasesUntilRefresh) {
-                UpdateSelectedItemUI(); // Met à jour l'UI avec le prochain item valide
+                Debug.Log("selectedItemIndex " + selectedItemIndex);
+                selectedGridPos = GetGridPosFromIndex(selectedItemIndex);
+                Debug.Log("selectedGridPos " + selectedGridPos);
+                UpdateSelectedItemUI();
                 UpdateDescriptionPanelVisuals();
                 previousSelectedItemIndex = selectedItemIndex;
                 return;
@@ -131,108 +145,84 @@ public class StructureUI_Merchant : StructureUI {
             attempts++;
         } while (attempts < itemCount);
 
-        // Si tous les items sont achetés
         Debug.LogWarning("All items are purchased! No valid item to select.");
         HideItemUI();
-
     }
 
     protected void SelectFirstAvailableItem() {
         List<MerchantItem> allItems = merchant.GetAllCurrentItemsForSale();
-        int itemCount = allItems.Count;
 
-        // Commence toujours à l'index 0 pour chercher le premier item valide
-        int attempts = 0;
-        selectedItemIndex = 0;
-
-        do {
-            if (!allItems[selectedItemIndex].isPurchased && allItems[selectedItemIndex].buyingLocksPurchasesUntilRefresh) {
-                UpdateSelectedItemUI(); // Met à jour l'UI avec le premier item valide
+        for (int i = 0; i < allItems.Count; i++) {
+            if (!allItems[i].isPurchased && allItems[i].buyingLocksPurchasesUntilRefresh) {
+                selectedItemIndex = i;
+                selectedGridPos = GetGridPosFromIndex(i);
+                UpdateSelectedItemUI();
                 UpdateDescriptionPanelVisuals();
                 previousSelectedItemIndex = selectedItemIndex;
                 return;
             }
+        }
 
-            selectedItemIndex = (selectedItemIndex + 1) % itemCount; // Passe à l'item suivant
-            attempts++;
-        } while (attempts < itemCount);
-
-        // Si tous les items sont achetés
         Debug.LogWarning("All items are purchased! No valid item to select.");
         HideItemUI();
     }
 
-    protected void UpdateSelectedItemUI() {
-        // Ignore template dans les listes
-        int majorItemsCount = bigMerchantItemUIList.Count;
-        int minorItemsCount = smallMerchantItemUIList.Count;
-
-        // Initialisation de l'item sélectionné
-        selectedMerchantItem = null;
-
-        // Parcourir les items majeurs
-        for (int i = 0; i < majorItemsCount; i++) {
-            MerchantItemUI merchantItemUI = bigMerchantItemUIList[i];
-
-            if (i == selectedItemIndex) {
-                merchantItemUI.HighlightItem(true);
-                payCurrencyUI.SetOrbTemplateUIList(merchantItemUI.GetPayCurrencyTemplateWorldUIList());
-                selectedMerchantItem = merchantItemUI.GetMerchantItemLinked();
-                EventSystem.current.SetSelectedGameObject(merchantItemUI.gameObject);
-            }
-            else {
-                merchantItemUI.HighlightItem(false);
-            }
+    void UpdateSelectedItemUI() {
+        MerchantItem selected = GetCurrentItem();
+        if (selected == null) {
+            Debug.LogWarning("Aucun item sélectionnable");
+            return;
         }
 
-        // Parcourir les items mineurs
-        for (int i = 0; i < minorItemsCount; i++) {
-            MerchantItemUI merchantItemUI = smallMerchantItemUIList[i];
+        selectedItemIndex = merchant.GetAllCurrentItemsForSale().IndexOf(selected);
+        selectedMerchantItem = selected;
 
-            // L'index global commence après les items majeurs
-            if (i + majorItemsCount == selectedItemIndex) {
-                merchantItemUI.HighlightItem(true);
-                payCurrencyUI.SetOrbTemplateUIList(merchantItemUI.GetPayCurrencyTemplateWorldUIList());
-                selectedMerchantItem = merchantItemUI.GetMerchantItemLinked();
-                EventSystem.current.SetSelectedGameObject(merchantItemUI.gameObject);
-            }
-            else {
-                merchantItemUI.HighlightItem(false);
+        merchant.SetCurrentHoveredItem(selectedMerchantItem);
+        merchant.SetCurrentSelectedItemCanBeBought(
+            selectedMerchantItem.isPurchased && selectedMerchantItem.buyingLocksPurchasesUntilRefresh
+        );
+
+        // Refresh visuels
+        for (int i = 0; i < bigMerchantItemUIList.Count; i++) {
+            bool isSelected = (i == selectedItemIndex);
+            bigMerchantItemUIList[i].HighlightItem(i == selectedItemIndex);
+
+            if (isSelected) {
+                payCurrencyUI.SetOrbTemplateUIList(bigMerchantItemUIList[i].GetPayCurrencyTemplateWorldUIList());
             }
         }
 
-        // Vérifie si un item valide est trouvé
-        if (selectedMerchantItem != null) {
-            merchant.SetCurrentHoveredItem(selectedMerchantItem);
-            merchant.SetCurrentSelectedItemCanBeBought(selectedMerchantItem.isPurchased && selectedMerchantItem.buyingLocksPurchasesUntilRefresh);
+
+        // Mise à jour des items mineurs (décalage d'index)
+        for (int i = 0; i < smallMerchantItemUIList.Count; i++) {
+            int index = i + bigMerchantItemUIList.Count;
+            bool isSelected = (index == selectedItemIndex);
+            smallMerchantItemUIList[i].HighlightItem(isSelected);
+
+            if (isSelected) {
+                payCurrencyUI.SetOrbTemplateUIList(smallMerchantItemUIList[i].GetPayCurrencyTemplateWorldUIList());
+            }
         }
-        else {
-            Debug.LogWarning("UpdateSelectedItemUI: No valid item found for selection!");
-        }
+
+        OnNewItemHovered?.Invoke(this, EventArgs.Empty);
+        UpdateDescriptionPanelVisuals();
+        previousSelectedItemIndex = selectedItemIndex;
+
     }
 
     protected void UpdateDescriptionPanelVisuals() {
         //Check if we switched from big item to small item
         if(useMajorMinorDistinction) {
 
-            if(selectedItemIndex == 0 && previousSelectedItemIndex == 0) {
+            if(selectedItemIndex < bigMerchantItemUIList.Count) {
                 // First time the player opens the panel
-                merchantDescriptionPanelUI.OpenPanel();
                 merchantDescriptionPanelUI.SetPanelPosition(descriptionPanelLeftPosition);
-                OnDescriptionPanelOpened?.Invoke(this, EventArgs.Empty);
-            }
-
-            if (selectedItemIndex != 0 && previousSelectedItemIndex == 0) {
-                merchantDescriptionPanelUI.OpenPanel();
+            } else {
                 merchantDescriptionPanelUI.SetPanelPosition(descriptionPanelRightPosition);
-                OnDescriptionPanelOpened?.Invoke(this, EventArgs.Empty);
             }
 
-            if (selectedItemIndex == 0 && previousSelectedItemIndex != 0) {
-                merchantDescriptionPanelUI.OpenPanel();
-                merchantDescriptionPanelUI.SetPanelPosition(descriptionPanelLeftPosition);
-                OnDescriptionPanelOpened?.Invoke(this, EventArgs.Empty);
-            }
+            merchantDescriptionPanelUI.OpenPanel();
+            OnDescriptionPanelOpened?.Invoke(this, EventArgs.Empty);
 
         }
 
@@ -242,24 +232,20 @@ public class StructureUI_Merchant : StructureUI {
 
     private void HideItemUI() {
         merchantDescriptionPanelUI.ClosePanel();
-        int majorItemsCount = bigMerchantItemUIContainer.childCount - 1;
-        int minorItemsCount = smallMerchantItemUIContainer.childCount - 1;
 
-        // Parcourir les items majeurs
-        for (int i = 1; i <= majorItemsCount; i++) {
-            MerchantItemUI merchantItemUI = bigMerchantItemUIContainer.GetChild(i).GetComponent<MerchantItemUI>();
+        Debug.Log(bigMerchantItemUIList.Count);
+        foreach (MerchantItemUI merchantItemUI in bigMerchantItemUIList) {
+
             merchantItemUI.HighlightItem(false);
         }
 
-        // Parcourir les items mineurs
-        for (int i = 1; i <= minorItemsCount; i++) {
-            MerchantItemUI merchantItemUI = smallMerchantItemUIContainer.GetChild(i).GetComponent<MerchantItemUI>();
+        foreach (MerchantItemUI merchantItemUI in smallMerchantItemUIList) {
             merchantItemUI.HighlightItem(false);
         }
     }
 
     private void Merchant_OnPlayerBoughtItem1(object sender, Merchant.OnPlayerBoughtItemEventArgs e) {
-
+        Debug.Log(e.boughtItem.itemName);
         if(e.boughtItem.itemType == MerchantItem.MerchantItemType.ActiveSkill || e.boughtItem.itemType == MerchantItem.MerchantItemType.Trap) {
             OnPlayerBoughtMajorItem?.Invoke(this, EventArgs.Empty);
         }
@@ -351,8 +337,25 @@ public class StructureUI_Merchant : StructureUI {
             }
 
         }
+
+        SplitItemsIntoColumns();
     }
 
+    void SplitItemsIntoColumns() {
+        columnLeft.Clear();
+        columnRight.Clear();
+
+        foreach(MerchantItem item in merchant.GetMajorItemListForSale()) {
+            columnLeft.Add(item);
+        }
+        foreach (MerchantItem item in merchant.GetMinorItemListForSale()) {
+            columnRight.Add(item);
+        }
+
+        selectedCol = 0;
+        selectedRow = 0;
+        ClampSelection();
+    }
     protected void ShowItemsToSale(bool show) {
 
         if(show) {
@@ -362,5 +365,70 @@ public class StructureUI_Merchant : StructureUI {
         }
     }
 
+    void ClampSelection() {
+        int maxRow = GetCurrentColumn().Count - 1;
+        selectedRow = Mathf.Clamp(selectedRow, 0, maxRow);
 
+        // skip les items invalides
+        while (!IsCurrentItemValid() && selectedRow > 0) {
+            selectedRow--;
+        }
+    }
+
+    List<MerchantItem> GetCurrentColumn() {
+        return selectedCol == 0 ? columnLeft : columnRight;
+    }
+
+    MerchantItem GetCurrentItem() {
+        var column = GetCurrentColumn();
+        if (selectedRow >= 0 && selectedRow < column.Count)
+            return column[selectedRow];
+
+        return null;
+    }
+
+    bool IsCurrentItemValid() {
+        var item = GetCurrentItem();
+        return item != null && !item.isPurchased || (item.isPurchased && !item.buyingLocksPurchasesUntilRefresh);
+    }
+
+    int GetIndexFromGridPos(Vector2Int gridPos, int columns) {
+        return gridPos.y * columns + gridPos.x;
+    }
+
+    Vector2Int GetGridPosFromIndex(int index) {
+        List<MerchantItem> allItems = merchant.GetAllCurrentItemsForSale();
+
+        // Reconstruire les deux colonnes
+        List<MerchantItem> col0 = new List<MerchantItem>();
+        List<MerchantItem> col1 = new List<MerchantItem>();
+
+        for (int i = 0; i < allItems.Count; i++) {
+            if (i < merchant.GetMajorItemListForSale().Count) col0.Add(allItems[i]);  // Colonne 0
+            else col1.Add(allItems[i]);  // Colonne 1
+        }
+
+        // Calcul de l'index de la ligne dans la colonne
+        int currentIndex = 0;
+
+        for (int col = 0; col < 2; col++) {
+            List<MerchantItem> currentCol = (col == 0) ? col0 : col1;
+
+            if (index < currentIndex + currentCol.Count) {
+                int row = index - currentIndex;  // Calcul de la ligne
+
+                // Mettre à jour les valeurs de selectedCol et selectedRow
+                selectedCol = col;
+                selectedRow = row;
+
+                // Retourner la position sous forme de Vector2Int
+                return new Vector2Int(selectedCol, selectedRow);
+            }
+
+            currentIndex += currentCol.Count;
+        }
+
+        Debug.LogWarning("Index hors des limites dans GetGridPosFromIndex");
+        return new Vector2Int(0, 0);  // Si l'index est invalide
+    }
 }

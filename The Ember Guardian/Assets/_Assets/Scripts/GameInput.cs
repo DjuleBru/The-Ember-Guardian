@@ -59,6 +59,7 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnPlayerGunLightSwitch;
 
     public event EventHandler OnPlayerLeftRightDirPerformed;
+    public event EventHandler OnPlayerNavigateUIPerformed;
 
     public event EventHandler OnPlayerLeftRightSwitchPerformed;
     public event EventHandler OnPlayerLeftSwitchPerformed;
@@ -148,13 +149,19 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.HoverWorkers.performed += HoverWorkers_performed;
         playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
         playerInputActions.Player.Move.performed += Move_performed;
+        playerInputActions.Player.NavigateUI.performed += NavigateUI_performed;
     }
+
 
     private void InputUser_onChange(InputUser user, InputUserChange change, InputDevice arg3) {
         if (change == InputUserChange.ControlSchemeChanged) {
             currentControlScheme = user.controlScheme.Value.name;
         }
         OnPlayerInputChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void NavigateUI_performed(InputAction.CallbackContext obj) {
+        OnPlayerNavigateUIPerformed?.Invoke(this, EventArgs.Empty);
     }
 
     private void HoverWorkers_performed(InputAction.CallbackContext obj) {
@@ -320,6 +327,10 @@ public class GameInput : MonoBehaviour
     public float GetMovementFloatNormalized() {
         float moveInput = playerInputActions.Player.Move.ReadValue<float>();
         return moveInput;
+    }
+    public Vector2 GetUINavigationVector() {
+        Vector2 navigationInput = playerInputActions.Player.NavigateUI.ReadValue<Vector2>();
+        return navigationInput;
     }
     public float GetJumpDirNormalized() {
         float jumpDir = playerInputActions.Player.JumpDir.ReadValue<float>();

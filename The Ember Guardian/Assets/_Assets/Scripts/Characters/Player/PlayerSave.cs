@@ -107,7 +107,11 @@ public class PlayerSave : MonoBehaviour
     }
 
     public List<SkillSO> GetAllSkillsUnlocked() {
-        return skillsUnlockedList;
+        if(DebugManager.Instance.GetDebugMode_AllSkillsUnlocked()) {
+            return allSkillsList;
+        } else {
+            return skillsUnlockedList;
+        }
     }
 
     public List<SkillSO> GetActiveSkillsUnlocked() {

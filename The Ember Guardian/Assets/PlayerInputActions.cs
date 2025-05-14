@@ -215,6 +215,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NavigateUI"",
+                    ""type"": ""Value"",
+                    ""id"": ""347425d3-a19e-40df-83fd-ad1468eefcb5"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -767,6 +776,72 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""MeleeAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""846bc087-34ba-45f5-8bf6-6e1f9c7d101e"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NavigateUI"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""8a679698-7193-4b6b-9f4f-627ab61f67c1"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""NavigateUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""05871b56-f774-45d8-8bf8-5b8a8c31c91a"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""NavigateUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""bb905fa6-afb6-4e3d-be2b-f76bfffeec5c"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""NavigateUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""624510d1-7d33-4609-bd18-91034cc02e3a"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""NavigateUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""20217554-9287-4931-b01e-10e8839e0123"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""NavigateUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -819,6 +894,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_OpenPlayerTab = m_Player.FindAction("OpenPlayerTab", throwIfNotFound: true);
         m_Player_HoverWorkers = m_Player.FindAction("HoverWorkers", throwIfNotFound: true);
         m_Player_MeleeAttack = m_Player.FindAction("MeleeAttack", throwIfNotFound: true);
+        m_Player_NavigateUI = m_Player.FindAction("NavigateUI", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -906,6 +982,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_OpenPlayerTab;
     private readonly InputAction m_Player_HoverWorkers;
     private readonly InputAction m_Player_MeleeAttack;
+    private readonly InputAction m_Player_NavigateUI;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -931,6 +1008,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @OpenPlayerTab => m_Wrapper.m_Player_OpenPlayerTab;
         public InputAction @HoverWorkers => m_Wrapper.m_Player_HoverWorkers;
         public InputAction @MeleeAttack => m_Wrapper.m_Player_MeleeAttack;
+        public InputAction @NavigateUI => m_Wrapper.m_Player_NavigateUI;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1003,6 +1081,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MeleeAttack.started += instance.OnMeleeAttack;
             @MeleeAttack.performed += instance.OnMeleeAttack;
             @MeleeAttack.canceled += instance.OnMeleeAttack;
+            @NavigateUI.started += instance.OnNavigateUI;
+            @NavigateUI.performed += instance.OnNavigateUI;
+            @NavigateUI.canceled += instance.OnNavigateUI;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1070,6 +1151,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MeleeAttack.started -= instance.OnMeleeAttack;
             @MeleeAttack.performed -= instance.OnMeleeAttack;
             @MeleeAttack.canceled -= instance.OnMeleeAttack;
+            @NavigateUI.started -= instance.OnNavigateUI;
+            @NavigateUI.performed -= instance.OnNavigateUI;
+            @NavigateUI.canceled -= instance.OnNavigateUI;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1128,5 +1212,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnOpenPlayerTab(InputAction.CallbackContext context);
         void OnHoverWorkers(InputAction.CallbackContext context);
         void OnMeleeAttack(InputAction.CallbackContext context);
+        void OnNavigateUI(InputAction.CallbackContext context);
     }
 }

@@ -83,7 +83,6 @@ public class MerchantItemUI : MonoBehaviour
             itemVisualAnimator.ResetTrigger("Unhover");
             itemCurrencyContainerUIAnimator.SetTrigger("Hover");
             itemCurrencyContainerUIAnimator.ResetTrigger("Unhover");
-
         } else {
 
             itemVisualAnimator.SetTrigger("Unhover");

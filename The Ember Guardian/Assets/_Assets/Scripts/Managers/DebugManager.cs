@@ -23,6 +23,8 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool debugMode_DontShowVideoTip;
     [SerializeField] private bool debugMode_WindManager;
     [SerializeField] private bool debugMode_RainManager;
+    [SerializeField] private bool debugMode_AllSkillsUnlocked;
+    [SerializeField] private bool debugMode_AllTrapsUnlocked;
     [SerializeField] private bool disableCreatureDetection;
     [SerializeField] private bool showMobDestinationGizmos;
     [SerializeField] private bool takeScreenshotsContinuous;
@@ -129,6 +131,12 @@ public class DebugManager : MonoBehaviour
     public bool GetDebugMode_RainManager()
     {
         return debugMode_RainManager;
+    }
+    public bool GetDebugMode_AllSkillsUnlocked() {
+        return debugMode_AllSkillsUnlocked;
+    }
+    public bool GetDebugMode_AllTrapsUnlocked() {
+        return debugMode_AllTrapsUnlocked;
     }
     public bool GetDisableCreatureDetection() {
         return disableCreatureDetection;

@@ -15,17 +15,22 @@ MonoBehaviour:
   itemType: 4
   trapType: 0
   trapUpgradeSO: {fileID: 11400000, guid: 4b4b0b563320fd44e904a5ecfb23beae, type: 2}
+  trapStructureSO: {fileID: 0}
   linkedTrapSO: {fileID: 11400000, guid: 35891f62972ae5a48af548fc187eab95, type: 2}
-  TrapName: Blade Trap cooldown
+  TrapName: Blade Trap Cooldown
   buyTrapPrice: 3
   trapDamage: 0
   trapSpecialStat: 0
   trapCooldown: 0
   trapUsesPerNight: 0
-  trapReloadsBeforeBreaking: 0
-  trapPriceToReload: 0
+  maxRearmsBeforeBreaking: 0
+  rearmPrice: 0
+  trapActiveDuration: 0
+  trapHasAOEAttack: 0
   Icon: {fileID: -720945697, guid: 131d4d4cb09addc43b80369788938af7, type: 3}
   currencyTypeToPay: 0
-  triggerTrapAudioClip: {fileID: 0}
-  reloadTrapAudioClip: {fileID: 0}
+  triggerTrapAudioClip:
+  - {fileID: 0}
+  reloadTrapAudioClip:
+  - {fileID: 0}
   Description: Reduces the blade trap's cooldown.

@@ -51,8 +51,14 @@ public class Merchant_Traps : Merchant
     }
 
     protected override void InitializeMerchantItems() {
-        bigItemsToDisplayAmount = StructureStats.Instance.GetTrapMerchantMaxTrapsDisplayed();
-        smallItemsToDisplayAmount = StructureStats.Instance.GetTrapMerchantMaxTrapUpgradesDisplayed();
+        if (useDebugItemAmountToDisplay) {
+            bigItemsToDisplayAmount = debugBigItemToDisplay;
+            smallItemsToDisplayAmount = debugSmallItemToDisplay;
+        }
+        else {
+            bigItemsToDisplayAmount = StructureStats.Instance.GetTrapMerchantMaxTrapsDisplayed();
+            smallItemsToDisplayAmount = StructureStats.Instance.GetTrapMerchantMaxTrapUpgradesDisplayed();
+        }
 
         InitializeTrapItems();
         RefreshShopItems();
@@ -125,7 +131,6 @@ public class Merchant_Traps : Merchant
         foreach (TrapItem majorItem in majorItemListForSale) {
             if (!eligibleTrapTypes.Contains(majorItem.trapType)) {
                 eligibleTrapTypes.Add(majorItem.trapType);
-                Debug.Log("added trap type" + majorItem.trapType);
             }
         }
 

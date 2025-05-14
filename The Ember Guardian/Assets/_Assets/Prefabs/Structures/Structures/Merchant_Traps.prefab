@@ -6173,7 +6173,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5471968009879342086}
-  - component: {fileID: 4354122103446873081}
+  - component: {fileID: 8248737528809894651}
   m_Layer: 3
   m_Name: MerchantItem_SmallContainer
   m_TagString: Untagged
@@ -6198,10 +6198,10 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -4.24, y: -0.78}
-  m_SizeDelta: {x: 4, y: 0.5299988}
+  m_AnchoredPosition: {x: -5.41, y: -0.738}
+  m_SizeDelta: {x: 0.79, y: 3.91}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4354122103446873081
+--- !u!114 &8248737528809894651
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6210,7 +6210,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2023845899289831709}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -6218,8 +6218,8 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 3
-  m_Spacing: 0.65
+  m_ChildAlignment: 7
+  m_Spacing: 0.5
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -9812,7 +9812,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5111998178707193458}
-  - component: {fileID: 2468887844130596082}
+  - component: {fileID: 6545535118380180660}
   m_Layer: 3
   m_Name: MerchantItem_BigContainer
   m_TagString: Untagged
@@ -9837,10 +9837,10 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 3.9, y: -0.7}
-  m_SizeDelta: {x: 3.7999992, y: 2}
+  m_AnchoredPosition: {x: 5.43, y: -0.7}
+  m_SizeDelta: {x: 1.4, y: 4.14}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2468887844130596082
+--- !u!114 &6545535118380180660
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9849,7 +9849,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7770893529046516771}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -9857,8 +9857,8 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 5
-  m_Spacing: 0.4
+  m_ChildAlignment: 7
+  m_Spacing: 0.5
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -11078,9 +11078,9 @@ MonoBehaviour:
   secondaryFunctionUnlocked: 0
   visualIndicator: {fileID: 0}
   merchantType: 3
-  useDebugItemAmountToDisplay: 0
-  debugBigItemToDisplay: 0
-  debugSmallItemToDisplay: 0
+  useDebugItemAmountToDisplay: 1
+  debugBigItemToDisplay: 3
+  debugSmallItemToDisplay: 4
   smallItemsToDisplayAmount: 2
   bigItemsToDisplayAmount: 1
   trapCollectibleSpawnPosition: {fileID: 5431712652918135405}

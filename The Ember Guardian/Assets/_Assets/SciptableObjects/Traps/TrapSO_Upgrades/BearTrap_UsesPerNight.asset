@@ -15,17 +15,22 @@ MonoBehaviour:
   itemType: 4
   trapType: 1
   trapUpgradeSO: {fileID: 11400000, guid: 08f480e0843ef8f42b99ef023454db82, type: 2}
+  trapStructureSO: {fileID: 0}
   linkedTrapSO: {fileID: 11400000, guid: 24a7c1ea7847c5f4d841f33581bf48ed, type: 2}
+  TrapName: Bear Trap Uses/Night
   buyTrapPrice: 3
-  reloadTrapPrice: 1
-  TrapName: Bear Trap uses/night
-  TrapDamage: 0
-  TrapCooldown: 0
-  TrapUsesPerNight: 0
-  TrapReloadsBeforeBreaking: 0
-  TrapPriceToReload: 0
+  trapDamage: 0
+  trapSpecialStat: 0
+  trapCooldown: 0
+  trapUsesPerNight: 0
+  maxRearmsBeforeBreaking: 0
+  rearmPrice: 0
+  trapActiveDuration: 0
+  trapHasAOEAttack: 0
   Icon: {fileID: 1987385602, guid: 131d4d4cb09addc43b80369788938af7, type: 3}
   currencyTypeToPay: 0
-  triggerTrapAudioClip: {fileID: 0}
-  reloadTrapAudioClip: {fileID: 0}
+  triggerTrapAudioClip:
+  - {fileID: 0}
+  reloadTrapAudioClip:
+  - {fileID: 0}
   Description: Increases the bear trap's uses per night.

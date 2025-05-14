@@ -15,17 +15,22 @@ MonoBehaviour:
   itemType: 4
   trapType: 1
   trapUpgradeSO: {fileID: 11400000, guid: dcdd73fa8f923f043a2dcd5a2eb3b5a5, type: 2}
+  trapStructureSO: {fileID: 0}
   linkedTrapSO: {fileID: 11400000, guid: 24a7c1ea7847c5f4d841f33581bf48ed, type: 2}
-  TrapName: Bear Trap immobilization
+  TrapName: Bear Trap Immobilization
   buyTrapPrice: 3
   trapDamage: 0
   trapSpecialStat: 0
   trapCooldown: 0
   trapUsesPerNight: 0
-  trapReloadsBeforeBreaking: 0
-  trapPriceToReload: 0
+  maxRearmsBeforeBreaking: 0
+  rearmPrice: 0
+  trapActiveDuration: 0
+  trapHasAOEAttack: 0
   Icon: {fileID: -720945697, guid: 131d4d4cb09addc43b80369788938af7, type: 3}
   currencyTypeToPay: 0
-  triggerTrapAudioClip: {fileID: 0}
-  reloadTrapAudioClip: {fileID: 0}
+  triggerTrapAudioClip:
+  - {fileID: 0}
+  reloadTrapAudioClip:
+  - {fileID: 0}
   Description: Reduces the bear trap's cooldown.
