@@ -81,6 +81,10 @@ public class Creature : Mob
         rb = GetComponent<Rigidbody2D>();
         rb.mass = creatureSO.mass;
         triggerSoundTimer = UnityEngine.Random.Range(0, triggerSoundTime);
+
+        shockedImmune = creatureSO.immuneToShock;
+        poisonImmune = creatureSO.immuneToPoison;
+        immobilizeImmune = creatureSO.immuneToImmobilize;
     }
 
     private void Start() {
@@ -432,6 +436,7 @@ public class Creature : Mob
     public void ApplyShockedEffect(float slowAmount) {
         if (dead) return;
         if (shockedImmune) return;
+        if (shocked) return;
         shocked = true;
         this.shockedSlowAmount = slowAmount;
         shockedTimer = shockedDuration;

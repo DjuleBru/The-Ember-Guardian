@@ -54,7 +54,7 @@ public class Chest_Special : Chest
         StartCoroutine(MakeChestDisappear(5f));
 
         if (chestType == ChestType.weaponChest) {
-            PlayerShoot.Instance.SetActiveGun(gunSOInChest);
+            PlayerShoot.Instance.SetPrimaryWeaponSO(gunSOInChest);
             yield return new WaitForSeconds(.2f);
             PlayerShoot.Instance.SetGunToMaxAmmo(gunSOInChest);
 

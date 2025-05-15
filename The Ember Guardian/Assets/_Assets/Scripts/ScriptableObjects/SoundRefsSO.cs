@@ -74,6 +74,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip workerStoppedFollowing;
     public AudioClip hoveredFollowingWorkerChanged;
 
+    public AudioClip structureTypeToBuildChanged;
     public AudioClip huntingFlagPickedUp;
     public AudioClip huntingFlagDropped;
     public AudioClip huntingFlagReset;

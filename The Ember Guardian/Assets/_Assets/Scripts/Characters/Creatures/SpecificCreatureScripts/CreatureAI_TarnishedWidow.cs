@@ -29,6 +29,9 @@ public class CreatureAI_TarnishedWidow : CreatureAI
     private Vector3 barricadeJumpedOverPosition;
     private Vector3 behindBarricadeJumpPosition;
 
+
+    private Coroutine currentCoroutine;
+
     protected override void Start() {
         base.Start();
         GetComponent<CreatureAttack>().SetAttackIgnoresTemporaryInvincibility();
@@ -106,7 +109,7 @@ public class CreatureAI_TarnishedWidow : CreatureAI
 
             jumpTimer -= Time.deltaTime;
             if(jumpTimer < 0) {
-                StartCoroutine(LandCoroutine());
+                currentCoroutine = StartCoroutine(LandCoroutine());
                 jumpTimer = jumpCooldown;
             }
 
@@ -187,6 +190,10 @@ public class CreatureAI_TarnishedWidow : CreatureAI
     }
 
     private IEnumerator ExitWave() {
+        if(currentCoroutine != null) {
+            StopCoroutine(currentCoroutine);
+        }
+
         canJump = false;
         jumping = true;
         jumpTimer = jumpDuration;

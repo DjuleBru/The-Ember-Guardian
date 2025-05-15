@@ -99,6 +99,8 @@ public class SoundManager : MonoBehaviour
         }
 
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
+        StructureLocation.OnAnyStructureSOToBuildChanged += StructureLocation_OnAnyStructureSOToBuildChanged;
+
         Structure.OnAnyStructureUpgraded += Structure_OnAnyStructureUpgraded;
         Structure.OnAnyStructurePrimaryFunctionUsed += Structure_OnAnyStructurePrimaryFunctionUsed;
         Obstacle.OnAnyObstacleBuilt += Obstacle_OnAnyObstacleBuilt;
@@ -634,6 +636,11 @@ public class SoundManager : MonoBehaviour
         AudioClip audioClip = structureSO.buildAudioClip;
         PlaySound2D(audioClip, structureSO.buildVolumeMultiplier);
     }
+    private void StructureLocation_OnAnyStructureSOToBuildChanged(object sender, System.EventArgs e) {
+        AudioClip audioClip = soundRefsSO.structureTypeToBuildChanged;
+        PlaySound2D(audioClip, 1f);
+    }
+
 
     #endregion
 
@@ -785,6 +792,7 @@ public class SoundManager : MonoBehaviour
         SettingsManager.Instance.OnSfxVolumeChanged -= SettingsManager_OnSfxVolumeChanged;
 
         StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
+        StructureLocation.OnAnyStructureSOToBuildChanged -= StructureLocation_OnAnyStructureSOToBuildChanged;
         Structure.OnAnyStructureUpgraded -= Structure_OnAnyStructureUpgraded;
         Structure.OnAnyStructurePrimaryFunctionUsed -= Structure_OnAnyStructurePrimaryFunctionUsed;
         Obstacle.OnAnyObstacleBuilt -= Obstacle_OnAnyObstacleBuilt;
