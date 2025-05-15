@@ -18,6 +18,8 @@ public class StructureLocation : MonoBehaviour {
     public event EventHandler OnPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
     public event EventHandler OnStructureLocationUnlocked;
+    public event EventHandler OnStructureSOToBuildChanged;
+    public static event EventHandler OnAnyStructureSOToBuildChanged;
     public static event EventHandler<OnAnyStructureBuiltEventArgs> OnAnyStructureBuilt;
 
     public class OnAnyStructureBuiltEventArgs : EventArgs {
@@ -190,6 +192,13 @@ public class StructureLocation : MonoBehaviour {
         if (payCurrencyUI != null) {
             payCurrencyUI.OnCurrencyPaymentSuccess -= PayOrbsUI_OnOrbPaymentSuccess;
         }
+    }
+
+    protected void InvokeOnStructureSOToBuildChanged() {
+        OnStructureSOToBuildChanged?.Invoke(this, EventArgs.Empty);
+    }
+    protected void InvokeOnAnyStructureSOToBuildChanged() {
+        OnAnyStructureSOToBuildChanged?.Invoke(this, EventArgs.Empty);
     }
 
 }

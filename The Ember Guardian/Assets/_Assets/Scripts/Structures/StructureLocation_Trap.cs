@@ -12,7 +12,6 @@ public class StructureLocation_Trap : StructureLocation {
     private int currentCurrencyIndex = 0;
     private bool trapLocationActive = true;
 
-    public event EventHandler OnStructureSOToBuildChanged;
     public event EventHandler OnTrapTypesAmountInInventoryChanged;
 
     protected override void Start() {
@@ -67,7 +66,7 @@ public class StructureLocation_Trap : StructureLocation {
         if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
 
         currentCurrencyIndex = 0;
-        SetNewTrapSOToBuild();
+        SetTrapSOToBuild();
     }
 
 
@@ -100,8 +99,15 @@ public class StructureLocation_Trap : StructureLocation {
 
         structureSOToBuild = TrapManager.Instance.GetTrapSO(TrapManager.Instance.GetTrapType(currentTrapType)).trapStructureSO;
         payCurrencyTemplate.SetCurrencyTypeToPay(currentTrapType);
+        InvokeOnStructureSOToBuildChanged();
+        InvokeOnAnyStructureSOToBuildChanged();
+    }
+    private void SetTrapSOToBuild() {
+        PlayerCurrencies.CurrencyType currentTrapType = trapCurrencyTypesInPlayerInventory[currentCurrencyIndex];
 
-        OnStructureSOToBuildChanged?.Invoke(this, EventArgs.Empty);
+        structureSOToBuild = TrapManager.Instance.GetTrapSO(TrapManager.Instance.GetTrapType(currentTrapType)).trapStructureSO;
+        payCurrencyTemplate.SetCurrencyTypeToPay(currentTrapType);
+        InvokeOnStructureSOToBuildChanged();
     }
 
     private IEnumerator RefreshTrapTypesInPlayerInventoryAfterFrame() {
