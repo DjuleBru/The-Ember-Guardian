@@ -18,7 +18,14 @@ public class PlayerFeedbacks : MonoBehaviour
     [SerializeField] private MMF_Player exhaustedStartFeedbacks;
     [SerializeField] private MMF_Player exhaustedEndFeedbacks;
     [SerializeField] private MMF_Player petDogStartFeedbacks;
-    [SerializeField] private MMF_Player petDogEndFeedbacks;
+    [SerializeField] private MMF_Player petDogEndFeedbacks; 
+    [SerializeField] private MMF_Player critHitFreezeFrameFeedbacks;
+    [SerializeField] private MMF_Player critHitSlowMoFeedbacks;
+
+    private float minDelayBetweenCritHitFeedbacks = .4f;
+    private float critHitFeedbacksTimer;
+    private bool critHitFeedbackRecentlyActivated;
+
 
     private bool playerExhausted;
 
@@ -30,6 +37,8 @@ public class PlayerFeedbacks : MonoBehaviour
         PlayerMovement.Instance.OnPlayerAlmostExhaustionDeactivateFeedbacks += PlayerMovement_OnPlayerAlmostExhaustionDeactivateFeedbacks;
         PassiveShield.OnAnyPassiveShieldDied += PassiveShield_OnAnyPassiveShieldDied;
 
+        Mob.OnAnyMobCritDamageTaken += Mob_OnAnyMobCritDamageTaken;
+
         PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
         PlayerSkills.Instance.OnActiveSkillDeactivated += PlayerSKills_OnActiveSkillDeactivated;
 
@@ -40,6 +49,26 @@ public class PlayerFeedbacks : MonoBehaviour
         PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAim_OnPlayerAimSightStarted;
     }
 
+    private void Mob_OnAnyMobCritDamageTaken(object sender, System.EventArgs e) {
+        if (sender as Mob is Creature) {
+            critHitFreezeFrameFeedbacks.PlayFeedbacks();
+
+            if (critHitFeedbackRecentlyActivated) return;
+            critHitSlowMoFeedbacks.PlayFeedbacks();
+            critHitFeedbackRecentlyActivated = true;
+            critHitFeedbacksTimer = minDelayBetweenCritHitFeedbacks;
+        }
+
+    }
+
+    private void Update() {
+        if (critHitFeedbackRecentlyActivated) {
+            critHitFeedbacksTimer -= Time.deltaTime;
+            if (critHitFeedbacksTimer < 0) {
+                critHitFeedbackRecentlyActivated = false;
+            }
+        }
+    }
 
     private void PetDog_OnPlayerEndedPettingDog(object sender, System.EventArgs e) {
         petDogEndFeedbacks.PlayFeedbacks();
@@ -113,5 +142,9 @@ public class PlayerFeedbacks : MonoBehaviour
 
     private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
         damagedFeedbacks.PlayFeedbacks();
+    }
+
+    private void OnDestroy() {
+        Mob.OnAnyMobCritDamageTaken -= Mob_OnAnyMobCritDamageTaken;
     }
 }
