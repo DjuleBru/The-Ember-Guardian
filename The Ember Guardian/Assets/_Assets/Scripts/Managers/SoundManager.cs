@@ -54,6 +54,7 @@ public class SoundManager : MonoBehaviour
 
             PlayerSkills.Instance.OnActiveSkillReady += PlayerSkills_OnActiveSkillReady;
             PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
+            PlayerSkills.Instance.OnPassiveSkillAdded += PlayerSkills_OnPassiveSkillAdded;
 
             PassiveShield.OnAnyPassiveShieldActivated += PassiveShield_OnAnyPassiveShieldActivated;
             PassiveShield.OnAnyPassiveShieldDied += PassiveShield_OnAnyPassiveShieldDied;
@@ -149,6 +150,7 @@ public class SoundManager : MonoBehaviour
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine += HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
     }
+
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -591,6 +593,10 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(skillAudioClip);
     }
 
+    private void PlayerSkills_OnPassiveSkillAdded(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
+        AudioClip skillAudioClip = soundRefsSO.passiveSkillAdded;
+        PlaySound2D(skillAudioClip, 1f);
+    }
 
     private void PassiveShield_OnAnyPassiveShieldDied(object sender, System.EventArgs e) {
         AudioClip audioClip = soundRefsSO.passiveShieldDie;

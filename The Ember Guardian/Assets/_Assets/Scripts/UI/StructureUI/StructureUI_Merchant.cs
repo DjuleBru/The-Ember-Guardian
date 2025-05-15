@@ -89,6 +89,7 @@ public class StructureUI_Merchant : StructureUI {
 
     void NavigateUIItems() {
         Vector2 input = GameInput.Instance.GetUINavigationVector();
+        Debug.Log(input);
         if (input == Vector2.zero) return;
 
         int horizontal = Mathf.RoundToInt(input.x);
@@ -431,4 +432,5 @@ public class StructureUI_Merchant : StructureUI {
         Debug.LogWarning("Index hors des limites dans GetGridPosFromIndex");
         return new Vector2Int(0, 0);  // Si l'index est invalide
     }
+
 }

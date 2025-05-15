@@ -90,6 +90,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip revolverCooldown;
 
     public AudioClip playerRespawnFireExtact;
+    public AudioClip passiveSkillAdded;
     public AudioClip activeSkillReady;
     public AudioClip passiveShieldActivate;
     public AudioClip passiveShieldDie;

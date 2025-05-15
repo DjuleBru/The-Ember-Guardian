@@ -39,6 +39,7 @@ public class PayCurrencyUI : MonoBehaviour
     }
 
     public void SetPlayerInteracting(bool isInteracting) {
+        Debug.Log("SetPlayerInteracting " + isInteracting);
         if (playerInteracting == isInteracting) return;
         PlayerCurrencies.CurrencyType currencyTypeToPay = currencyTemplateWorldUIList[0].GetCurrencyTypeToPay();
         playerInteracting = isInteracting;
@@ -109,6 +110,7 @@ public class PayCurrencyUI : MonoBehaviour
     }
 
     public bool GetPlayerInteracting() {
+        Debug.Log("GetPlayerInteracting " + playerInteracting);
         return playerInteracting;
     }
 

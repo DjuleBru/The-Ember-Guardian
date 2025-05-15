@@ -36,6 +36,7 @@ public class Merchant : Structure {
     }
 
     protected bool shopOpened;
+    protected bool playerHoldingDownInteract;
     protected bool currentSelectedItemAlreadyPurchased;
     protected bool playerJustTriggeredInteraction;
     protected bool playerPayedToRefreshShop;
@@ -101,6 +102,7 @@ public class Merchant : Structure {
 
     protected override void GameInput_OnPlayerInteractPerformed(object sender, EventArgs e) {
         playerJustTriggeredInteraction = false;
+        playerHoldingDownInteract = false;
     }
 
     protected override void GameInput_OnPlayerInteractHeldDown(object sender, EventArgs e) {
@@ -111,6 +113,7 @@ public class Merchant : Structure {
             if (currentSelectedItemAlreadyPurchased) return;
         }
         playerInteracting = true;
+        playerHoldingDownInteract = true;
         payCurrencyUI.SetPlayerInteracting(true);
     }
 
@@ -120,7 +123,7 @@ public class Merchant : Structure {
         if (!playerInteracting) return;
         if (playerJustTriggeredInteraction) return;
 
-        if(payCurrencyUI.GetPlayerInteracting()) {
+        if(playerHoldingDownInteract) {
             payCurrencyUI.SetPlayerInteracting(false);
         } else {
             shopOpened = !shopOpened;
