@@ -151,4 +151,8 @@ public class PlayerFeedbacks : MonoBehaviour
     private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
         damagedFeedbacks.PlayFeedbacks();
     }
+
+    private void OnDestroy() {
+        Mob.OnAnyMobCritDamageTaken -= Mob_OnAnyMobCritDamageTaken;
+    }
 }
