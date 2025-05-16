@@ -7,7 +7,6 @@ public class ActiveFuelFireOnKills : MonoBehaviour {
     [SerializeField] private Transform fuelFirePrefab;
     [SerializeField] private ParticleSystem activateSkillPS;
     [SerializeField] private ParticleSystem skillActivePS;
-    private int fuelPerPip = 1;
     private bool initialFireLit;
 
     private void Start() {
@@ -58,7 +57,7 @@ public class ActiveFuelFireOnKills : MonoBehaviour {
     }
 
     private void FlyingCollectible_OnDestinationReached(object sender, System.EventArgs e) {
-        Fire.Instance.FuelFire(fuelPerPip);
+        Fire.Instance.FuelFire(PlayerSkills.Instance.GetFuelPerPip());
     }
 
 

@@ -78,8 +78,8 @@ public class PlayerTabMenuUI : MonoBehaviour
     private void GameInput_OnPlayerOpenPlayerTabPerformed(object sender, System.EventArgs e) {
         OpenCloseTab();
 
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
-            EventSystem.current.SetSelectedGameObject(firstButtonSelected);
+        EventSystem.current.SetSelectedGameObject(firstButtonSelected);
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
         }
     }
 
@@ -116,6 +116,9 @@ public class PlayerTabMenuUI : MonoBehaviour
         this.canCloseTab = canClose;
     }
 
+    public GameObject GetFirstSelectedButton() {
+        return firstButtonSelected;
+    }
     private void OnDestroy() {
         GameInput.Instance.OnPlayerOpenPlayerTabPerformed -= GameInput_OnPlayerOpenPlayerTabPerformed;
         HubMerchantUI.OnAnyHubMerchantOpenUIPanel -= HubMerchantUI_OnAnyHubMerchantOpenUIPanel;

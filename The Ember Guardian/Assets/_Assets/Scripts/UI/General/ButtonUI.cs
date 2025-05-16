@@ -15,6 +15,8 @@ public class ButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPo
     protected bool buttonSelected;
     protected bool buttonHovered;
 
+    [SerializeField] protected bool buttonPressable = true;
+
     protected virtual void Start() {
         OnAnyButtonHovered += ButtonUI_OnAnyButtonHovered;
         OnAnyButtonSelected += ButtonUI_OnAnyButtonSelected;
@@ -52,7 +54,6 @@ public class ButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPo
         buttonSelected = true;
 
         OnAnyButtonSelected?.Invoke(this, EventArgs.Empty);
-       
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData) {
@@ -69,6 +70,7 @@ public class ButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPo
     #endregion
 
     public void InvokeOnAnyButtonPressed() {
+        if (!buttonPressable) return;
         if(buttonSelected == this) {
             OnAnyButtonPressed?.Invoke(this, EventArgs.Empty);
         } else {

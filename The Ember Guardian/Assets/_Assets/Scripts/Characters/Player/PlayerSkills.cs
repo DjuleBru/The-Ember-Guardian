@@ -23,6 +23,11 @@ public class PlayerSkills : MonoBehaviour
     private float leftSkillCooldownTimer;
     private float leftSkillCooldown;
 
+    private bool leftSkillReady;
+    private bool leftSkillRunning;
+    private bool rightSkillReady;
+    private bool rightSkillRunning;
+
     private bool moveSpeedBuffActive;
     private float moveSpeedBuffAmount = 1.4f;
     private float moveSpeedBuffTimer;
@@ -41,16 +46,13 @@ public class PlayerSkills : MonoBehaviour
     private float healOnKillsTimer;
     private float healOnKillsSkillDuration = 15f;
     private int healPipsPerKill = 1;
+    private int pipsToHeal1Health = 4;
 
     private bool fuelFireOnKillsActive;
     private float fuelFireOnKillsTimer;
     private float fuelFireOnKillsSkillDuration = 15f;
     private int fuelPipsPerKill = 1;
-
-    private bool leftSkillReady;
-    private bool leftSkillRunning;
-    private bool rightSkillReady;
-    private bool rightSkillRunning;
+    private int fuelPerPip = 1;
 
     private bool shootOnReload;
     private bool meleeAttackMagmaShot;
@@ -65,6 +67,7 @@ public class PlayerSkills : MonoBehaviour
 
     private int darkFlameDamage = 10;
     private int darkSwordDamage;
+    private float darkSwordStunDuration = 1.5f;
     private int darkFlameBurnAmount;
     private int darkMinePoisonAmount;
     private int darkMineDamage = 30;
@@ -333,6 +336,7 @@ public class PlayerSkills : MonoBehaviour
         }
         Debug.Log("skillItem.currentLevel " + skillItem.currentLevel);
         float skillBuffValue = skillItem.skillSO.activeSkillEffect.GetValueAtLevel(skillItem.currentLevel);
+
         switch (skillItem.skillType) {
 
             case SkillItem.SkillType.activeMoveSpeedBuff:
@@ -676,8 +680,19 @@ public class PlayerSkills : MonoBehaviour
     public int GetFuelPipsPerKill() {
         return fuelPipsPerKill;
     }
+
+    public int GetFuelPerPip() {
+        return fuelPerPip;
+    }
+    public int GetPipsToHeal1Health() {
+        return pipsToHeal1Health;
+    }
     public Transform GetMagmaShotPrefab() {
         return magmaShotPrefab;
+    }
+
+    public float GetDarkSwordStunDuration() {
+        return darkSwordStunDuration;
     }
     #endregion
 
@@ -821,6 +836,300 @@ public class PlayerSkills : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Skill UI Descriptions
+
+    public List<string> GetActiveSkillStatDescriptionList(SkillItem skillItem) {
+        List<string> skillStatDescriptionList = new List<string>();
+
+        switch (skillItem.skillType) {
+            case SkillItem.SkillType.activeDarkFlame:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_damage"));
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Burn Duration"));
+            break;
+
+            case SkillItem.SkillType.activeDarkSword:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_damage"));
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Stun Duration"));
+                break;
+
+            case SkillItem.SkillType.activeFeedFireOnKills:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Skill Duration"));
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Fire Pips/Kill"));
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Fuel/Fire Pip"));
+                break;
+
+            case SkillItem.SkillType.activeHealOnKills:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Skill Duration"));
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Heal Pips/Kill"));
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Heal Pips To Heal"));
+                break;
+
+            case SkillItem.SkillType.activeMagmaShotBullet:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Skill Duration"));
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_damage"));
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Burn Duration"));
+                break;
+
+            case SkillItem.SkillType.activeMoveSpeedBuff:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Skill Duration"));
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Movement Speed"));
+                break;
+
+            case SkillItem.SkillType.activeShootSpeedBuff:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Skill Duration"));
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Movement Speed"));
+            break;
+
+            case SkillItem.SkillType.activePlantMine:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_damage"));
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Poison Damage"));
+                break;
+
+            case SkillItem.SkillType.activeReaper:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_damage"));
+                break;
+
+
+            case SkillItem.SkillType.activeTeleportation:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Warp Distance"));
+                break;
+
+            case SkillItem.SkillType.activeWorkerAttackSpeedBuff:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Skill Duration"));
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Worker Attack Speed"));
+                break;
+
+        }
+
+        skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_cooldown"));
+
+        return skillStatDescriptionList;
+
+    }
+
+    public List<string> GetActiveSkillStatList(SkillItem skillItem) {
+        List<string> skillStatList = new List<string>();
+        ActiveSkillEffectSO skillEffectSO = skillItem.skillSO.activeSkillEffect;
+        int skillLevel = GetCurrentSkillLevel(skillItem);
+
+        switch (skillItem.skillType) {
+
+            case SkillItem.SkillType.activeDarkFlame:
+
+                skillStatList.Add(darkFlameDamage.ToString());
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
+
+            break;
+
+            case SkillItem.SkillType.activeDarkSword:
+
+                skillStatList.Add(darkSwordDamage.ToString());
+                skillStatList.Add(darkSwordStunDuration.ToString() + "s");
+
+            break;
+
+            case SkillItem.SkillType.activeFeedFireOnKills:
+
+                skillStatList.Add(fuelFireOnKillsSkillDuration.ToString() + "s");
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString());
+                skillStatList.Add(fuelPerPip.ToString());
+
+                break;
+
+            case SkillItem.SkillType.activeHealOnKills:
+
+                skillStatList.Add(healOnKillsSkillDuration.ToString() + "s");
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString());
+                skillStatList.Add(pipsToHeal1Health.ToString());
+
+                break;
+
+            case SkillItem.SkillType.activeMagmaShotBullet:
+
+                skillStatList.Add(magmaShotBulletSkillDuration.ToString() + "s");
+                skillStatList.Add(magmaShotDamage.ToString());
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString());
+
+             break;
+
+            case SkillItem.SkillType.activeMoveSpeedBuff:
+
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
+                skillStatList.Add("+" + moveSpeedBuffAmount.ToString() + "%");
+
+            break;
+
+            case SkillItem.SkillType.activeShootSpeedBuff:
+
+                skillStatList.Add(shootCooldownBuffDuration.ToString() + "s");
+                skillStatList.Add("+" + skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
+
+            break;
+
+            case SkillItem.SkillType.activePlantMine:
+
+                skillStatList.Add(darkMineDamage.ToString());
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
+
+            break;
+
+            case SkillItem.SkillType.activeReaper:
+
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString());
+
+            break;
+
+            case SkillItem.SkillType.activeTeleportation:
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString());
+            break;
+
+            case SkillItem.SkillType.activeWorkerAttackSpeedBuff:
+                skillStatList.Add("+" + skillEffectSO.GetValueAtLevel(skillLevel).ToString());
+            break;
+        }
+
+        skillStatList.Add(skillEffectSO.GetCooldownAtLevel(skillLevel).ToString() + "s");
+
+        return skillStatList;
+    }
+
+    public List<string> GetPassiveSkillStatDescriptionList(SkillItem skillItem) {
+        List<string> skillStatDescriptionList = new List<string>();
+
+        switch (skillItem.skillType) {
+
+            case SkillItem.SkillType.passiveAmmoGenerator:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Ammo Generation Rate"));
+            break;
+
+            case SkillItem.SkillType.passiveChanceToDoubleXPDrop:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Creatures x2 Drop Chance"));
+            break;
+
+            case SkillItem.SkillType.passiveDashFireTrail:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Skill Damage"));
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Burn Duration"));
+            break;
+
+            case SkillItem.SkillType.passiveDmgIncreaseInLight:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Damage Increase In Light"));
+            break;
+
+            case SkillItem.SkillType.passiveDmgIncreaseNotInLight:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Damage Increase Out of Light"));
+            break;
+
+            case SkillItem.SkillType.passiveHealthRegen:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Health Regeneration Rate"));
+            break;
+
+            case SkillItem.SkillType.passiveLastBulletDealsTwiceDamage:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Last Bullet Damage Buff"));
+            break;
+
+            case SkillItem.SkillType.passiveMaxHPIncrease:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Maximum Health"));
+            break;
+
+            case SkillItem.SkillType.passiveMeleeAttackMagmaShot:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Skill Damage"));
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Burn Duration"));
+                break;
+
+            case SkillItem.SkillType.passiveMoveSpeedBuff:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Movement Speed"));
+            break;
+
+            case SkillItem.SkillType.passiveRunAccelerationFactorBuff:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Sprint Speed"));
+            break;
+
+            case SkillItem.SkillType.passiveRunMaxTimeBuff:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Sprint Duration"));
+            break;
+
+            case SkillItem.SkillType.passiveShieldGenerator:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Shield Regen Time"));
+            break;
+
+            case SkillItem.SkillType.passiveShootOnReload:
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Bullets shot"));
+            break;
+        }
+
+        return skillStatDescriptionList;
+
+    }
+    public List<string> GetPassiveSkillStatList(SkillItem skillItem) {
+        List<string> skillStatList = new List<string>();
+        PassiveSkillEffectSO skillEffectSO = skillItem.skillSO.passiveSkillEffect;
+        int skillLevel = GetCurrentSkillLevel(skillItem);
+
+        switch (skillItem.skillType) {
+
+            case SkillItem.SkillType.passiveAmmoGenerator:
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
+            break;
+            
+            case SkillItem.SkillType.passiveChanceToDoubleXPDrop:
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
+            break;
+
+            case SkillItem.SkillType.passiveDashFireTrail:
+                skillStatList.Add(fireDashRollDamage.ToString());
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
+                break;
+
+            case SkillItem.SkillType.passiveDmgIncreaseInLight:
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
+            break;
+
+            case SkillItem.SkillType.passiveDmgIncreaseNotInLight:
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
+            break;
+
+            case SkillItem.SkillType.passiveHealthRegen:
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
+            break;
+
+            case SkillItem.SkillType.passiveLastBulletDealsTwiceDamage:
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
+            break;
+
+            case SkillItem.SkillType.passiveMaxHPIncrease:
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString());
+            break;
+
+            case SkillItem.SkillType.passiveMeleeAttackMagmaShot:
+                skillStatList.Add(magmaShotDamage.ToString());
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString());
+            break;
+
+            case SkillItem.SkillType.passiveMoveSpeedBuff:
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
+            break;
+
+            case SkillItem.SkillType.passiveRunAccelerationFactorBuff:
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
+            break;
+
+            case SkillItem.SkillType.passiveRunMaxTimeBuff:
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
+            break;
+
+            case SkillItem.SkillType.passiveShieldGenerator:
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
+            break;
+
+            case SkillItem.SkillType.passiveShootOnReload:
+                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString());
+            break;
+        }
+
+        return skillStatList;
+    }
     #endregion
 
     [Button] 

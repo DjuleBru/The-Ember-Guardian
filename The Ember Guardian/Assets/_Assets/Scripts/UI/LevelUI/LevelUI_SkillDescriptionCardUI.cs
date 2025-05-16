@@ -8,16 +8,40 @@ public class LevelUI_SkillDescriptionCardUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI itemNameText;
     [SerializeField] private TextMeshProUGUI itemDescriptionText;
+    [SerializeField] private TextMeshProUGUI itemLoreDescriptionText;
     [SerializeField] private Transform itemStatDescriptionContainer;
     [SerializeField] private Transform itemStatDescriptionTemplate;
 
     [SerializeField] private TextMeshProUGUI itemStatTemplateText;
     [SerializeField] private TextMeshProUGUI itemStatTemplateValue;
 
-    public void SetDescriptionCardText(string itemName, List<string> itemStatDescriptionList, List<string> itemStatList, string itemDescription) {
+    private Animator animator;
+
+    private void Awake() {
+        animator = GetComponent<Animator>();
+        gameObject.SetActive(false);
+    }
+
+    private void Start() {
+        PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
+    }
+
+    private void PlayerTabMenuUI_OnPlayerTabClosed(object sender, System.EventArgs e) {
+        CloseDescriptionCard();
+    }
+
+    public void OpenDescriptionCard() {
+        animator.SetTrigger("Open");
+    }
+    public void CloseDescriptionCard() {
+        gameObject.SetActive(false);
+    }
+
+    public void SetDescriptionCardText(string itemName, List<string> itemStatDescriptionList, List<string> itemStatList) {
 
         itemNameText.text = LocalizationManager.Instance.GetLocalizedText(itemName);
-        itemDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(itemName + "_Description");
+        itemDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(itemName + "_ItemDescription");
+        itemLoreDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(itemName + "_Description");
 
 
         itemStatDescriptionTemplate.gameObject.SetActive(true);

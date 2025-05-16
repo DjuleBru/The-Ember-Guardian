@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -5,13 +6,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class LevelUI_SkillUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandler
 {
     private SkillItem linkedSkill;
     [SerializeField] private bool isLeftActiveSkill;
     [SerializeField] private bool isRightActiveSkill;
 
-    private Animator skillTemplateAnimator;
+    [SerializeField] private Animator skillTemplateAnimator;
     [SerializeField] private Image skillTemplateImage;
     [SerializeField] private Image skillTemplateBackgroundImage;
     [SerializeField] private Image skillTemplateOutlineImage;
@@ -21,15 +22,15 @@ public class LevelUI_SkillUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     private bool skillReady;
 
-    private void Awake() {
-        skillTemplateAnimator = GetComponent<Animator>();
-    }
-
-    private void Start() {
+    protected override void Start() {
+        base.Start();
         PlayerSkills.Instance.OnLeftActiveSkillActivated += PlayerSkills_OnLeftActiveSkillActivated;
         PlayerSkills.Instance.OnRightActiveSkillActivated += PlayerSkills_OnRightActiveSkillActivated;
         PlayerSkills.Instance.OnLeftActiveSkillDeactivated += PlayerSkills_OnLeftActiveSkillDeactivated;
         PlayerSkills.Instance.OnRightActiveSkillDeactivated += PlayerSkills_OnRightActiveSkillDeactivated;
+
+        OnAnyButtonHovered += LevelUI_SkillUI_OnAnyButtonHovered;
+        OnAnyButtonSelected += LevelUI_SkillUI_OnAnyButtonSelected;
     }
 
     public void SetLinkedSkill(SkillItem skillItem) {
@@ -113,16 +114,54 @@ public class LevelUI_SkillUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
 
     #region UI NAVIGATION
+    protected override void ButtonUI_OnAnyButtonSelected(object sender, EventArgs e) {
+        if (!GameInput.Instance.IsUsingGamepad()) return;
+        ButtonUI buttonUI = sender as ButtonUI;
 
-    public void OnPointerEnter(PointerEventData eventData) {
-        OpenCloseSkillDescriptionCard();
+        if (this == buttonUI) {
+            buttonSelected = true;
+        }
+
+        if (this != buttonUI && buttonSelected) {
+            buttonSelected = false;
+        }
+    }
+    private void LevelUI_SkillUI_OnAnyButtonSelected(object sender, System.EventArgs e) {
+        if (!(sender as ButtonUI is LevelUI_SkillUI)) {
+            OpenCloseSkillDescriptionCard(false);
+            return;
+        }
+        if (sender as ButtonUI != this) return;
+        OpenCloseSkillDescriptionCard(true);
+        SetDescriptionCardPosition();
     }
 
-    public void OnPointerExit(PointerEventData eventData) {
-        OpenCloseSkillDescriptionCard();
+    private void LevelUI_SkillUI_OnAnyButtonHovered(object sender, System.EventArgs e) {
+        if (sender as ButtonUI != this) return;
+        OpenCloseSkillDescriptionCard(true);
+        SetDescriptionCardPosition();
     }
 
-    private void OpenCloseSkillDescriptionCard() {
+    public override void OnPointerEnter(PointerEventData eventData) {
+        base.OnPointerEnter(eventData);
+    }
+
+    public override void OnPointerExit(PointerEventData eventData) {
+        base.OnPointerExit(eventData);
+        OpenCloseSkillDescriptionCard(false);
+    }
+
+    private void OpenCloseSkillDescriptionCard(bool open) {
+        if(open) {
+            skillDescriptionCard.gameObject.SetActive(true);
+            skillDescriptionCard.OpenDescriptionCard();
+            SetDesciptionCardText();
+        } else {
+            skillDescriptionCard.gameObject.SetActive(false);
+        }
+    }
+
+    public void SetDescriptionCardPosition() {
         RectTransform callerRT = this.GetComponent<RectTransform>();
         RectTransform descRT = skillDescriptionCard.GetComponent<RectTransform>();
 
@@ -134,16 +173,34 @@ public class LevelUI_SkillUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
         // Calculer la nouvelle position de la description card : 
         // On décale le long de X de la largeur (pour coller à droite)
-        float ypos = 0;
-        if(!isLeftActiveSkill && !isRightActiveSkill) {
-            ypos = -.1f;
+        float heigt = 280f;
+        if (!isLeftActiveSkill && !isRightActiveSkill) {
+            heigt = 230f;
         }
+
         Vector3 newDescPos = new Vector3(callerWorldPos.x + distanceToSkill, descRT.position.y, 0);
 
         // Positionner la description card à ce point
         descRT.position = newDescPos;
+        descRT.sizeDelta = new Vector2(descRT.sizeDelta.x, heigt);
+    }
+
+    private void SetDesciptionCardText() {
+
+        string skillName = LocalizationManager.Instance.GetLocalizedText(linkedSkill.skillSO.SkillName);
+        List<string> statList = new List<string>();
+        List<string> statDescriptionList = new List<string>();
+
+        if (!isLeftActiveSkill && !isRightActiveSkill) {
+            statList = PlayerSkills.Instance.GetPassiveSkillStatList(linkedSkill);
+            statDescriptionList = PlayerSkills.Instance.GetPassiveSkillStatDescriptionList(linkedSkill);
+        } else {
+            statList = PlayerSkills.Instance.GetActiveSkillStatList(linkedSkill);
+            statDescriptionList = PlayerSkills.Instance.GetActiveSkillStatDescriptionList(linkedSkill);
+        }
+
+        skillDescriptionCard.SetDescriptionCardText(skillName, statDescriptionList, statList);
     }
 
     #endregion
-
 }

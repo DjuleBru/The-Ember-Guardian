@@ -24,10 +24,10 @@ public class WeaponChangeButton : ButtonUI
         PlayerShoot.Instance.OnSecondaryWeaponChanged += PlayerShoot_OnSecondaryWeaponChanged;
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
-            button.enabled = false;
-            //button.onClick.AddListener(() => {
-            //    WeaponButtonPressLevel();
-            //});
+            //button.enabled = false;
+            button.onClick.AddListener(() => {
+                WeaponButtonPressLevel();
+            });
 
         } else {
 

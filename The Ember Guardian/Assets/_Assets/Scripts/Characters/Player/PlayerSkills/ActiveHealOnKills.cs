@@ -7,7 +7,6 @@ public class ActiveHealOnKills : MonoBehaviour
 
     [SerializeField] private Transform healOnKillsPrefab;
     [SerializeField] private ParticleSystem healOnKillsPS;
-    private int pipsToHeal1Health = 4;
     private int currentPipIndex;
 
     private void Start() {
@@ -52,7 +51,7 @@ public class ActiveHealOnKills : MonoBehaviour
 
     private void FlyingCollectible_OnDestinationReached(object sender, System.EventArgs e) {
         currentPipIndex++;
-        if(currentPipIndex >= pipsToHeal1Health) {
+        if(currentPipIndex >= PlayerSkills.Instance.GetPipsToHeal1Health()) {
             Player.Instance.HealPlayer(1);
             currentPipIndex = 0;
         }

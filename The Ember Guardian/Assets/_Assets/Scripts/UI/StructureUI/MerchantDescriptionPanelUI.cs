@@ -53,7 +53,7 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
     public void UpdateDescriptionPanelVisuals(MerchantItem merchantItem) {
         descriptionPanelItemIcon.sprite = merchantItem.icon;
         descriptionPanelItemName.text = LocalizationManager.Instance.GetLocalizedText(merchantItem.itemName) + " " + merchantItem.currentLevel.ToString();
-        descriptionPanelItemDescription.text = LocalizationManager.Instance.GetLocalizedText(merchantItem.itemName + "_Description");
+        descriptionPanelItemDescription.text = LocalizationManager.Instance.GetLocalizedText(merchantItem.itemName + "_ItemDescription");
 
         SetStatChangesText(merchantItem);
     }
