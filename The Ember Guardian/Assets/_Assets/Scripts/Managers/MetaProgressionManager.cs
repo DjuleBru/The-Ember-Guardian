@@ -563,6 +563,7 @@ public class MetaProgressionManager : MonoBehaviour
     public float GetGunShootConeAnle(GunSO gunSO) {
         string key = gunSO.gunType + "_shootConeAngle";
 
+        Debug.Log("GetGunShootConeAnle " + gunSO + " " + gunSO.shootConeAngle);
         return ES3.Load(key, gunSO.shootConeAngle);
     }
     #endregion

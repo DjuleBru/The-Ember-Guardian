@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PlayerTabMenuUI : MonoBehaviour
 {
@@ -118,6 +119,10 @@ public class PlayerTabMenuUI : MonoBehaviour
 
     public GameObject GetFirstSelectedButton() {
         return firstButtonSelected;
+    }
+
+    public void SetWeaponDownNavigationTarget(Button target) {
+        
     }
     private void OnDestroy() {
         GameInput.Instance.OnPlayerOpenPlayerTabPerformed -= GameInput_OnPlayerOpenPlayerTabPerformed;

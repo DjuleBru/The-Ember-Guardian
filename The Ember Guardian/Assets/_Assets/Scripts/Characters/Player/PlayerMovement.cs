@@ -55,6 +55,8 @@ public class PlayerMovement : MonoBehaviour {
     private float runTimePercentageBeforeWarningExhaustion = .75f;
     private Rigidbody2D rb;
 
+    private bool isMoving;
+
     public event EventHandler OnPlayerMovespeedChanged;
     public event EventHandler OnPlayerRoll;
     public event EventHandler OnPlayerRollEnded;
@@ -62,6 +64,8 @@ public class PlayerMovement : MonoBehaviour {
     public event EventHandler OnPlayerJumpTop;
     public event EventHandler OnPlayerJumpDown;
     public event EventHandler OnPlayerLanded;
+    public event EventHandler OnPlayerMoveStarted;
+    public event EventHandler OnPlayerMoveStopped;
     public event EventHandler OnPlayerRunStarted;
     public event EventHandler OnPlayerRunStopped;
     public event EventHandler OnPlayerAlmostExhaustionStarted;
@@ -111,6 +115,7 @@ public class PlayerMovement : MonoBehaviour {
     private void Update() {
         HandleMovingBackwards();
         HandleRunningAndExhaustion();
+        DetectMovement();
 
         if (Player.Instance.GetPlayerControlInputsEnabled()) {
             HandleCrouch();
@@ -149,6 +154,19 @@ public class PlayerMovement : MonoBehaviour {
         else {
             rb.gravityScale = gravityScale;
         }
+    }
+
+    private void DetectMovement() {
+        if (GameInput.Instance.GetMovementFloatNormalized() != 0 && !isMoving) {
+            isMoving = true;
+            OnPlayerMoveStarted?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (GameInput.Instance.GetMovementFloatNormalized() == 0 && isMoving) {
+            isMoving = false;
+            OnPlayerMoveStopped?.Invoke(this, EventArgs.Empty);
+        }
+
     }
 
     private void SettingsManager_OnHoldToggleRunChanged(object sender, EventArgs e) {

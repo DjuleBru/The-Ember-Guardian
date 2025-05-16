@@ -397,6 +397,10 @@ public class Gun : MonoBehaviour
     public bool GetSecondaryAbilityUnlocked() {
         return secondaryAbilityUnlocked;
     }
+
+    public float GetRange() {
+        return bulletSpeed * bulletLifetime;
+    }
     #endregion
 
     #region SET PARAMETERS
