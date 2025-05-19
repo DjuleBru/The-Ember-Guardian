@@ -185,6 +185,7 @@ public class UICurrencyManager : MonoBehaviour
             StructureStats.Instance.GetStartWithRandomTrapAmount(),
             };
 
+        Debug.Log("StructureStats.Instance.GetStartWithRandomTrapAmount() " + StructureStats.Instance.GetStartWithRandomTrapAmount());
         AddMultipleCurrencies(currencyTypes, currencyTypesAmount);
     }
 

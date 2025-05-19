@@ -362,7 +362,10 @@ public class HUBManager : MonoBehaviour
         WorkerStats.Instance.SaveWorkerValues();
         StructureStats.Instance.SaveStructureStats();
         TrapManager.Instance.SaveNewUnlockedTraps();
-        ArchitectTable.Instance.SaveStats();
+
+        if(ArchitectTable.Instance != null) {
+            ArchitectTable.Instance.SaveStats();
+        }
 
         bool holdingEmber = false;
         if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ember).Count != 0) {

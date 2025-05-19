@@ -253,11 +253,19 @@ public class PlayerAim : MonoBehaviour
         // Vérifie si on est arrivé à destination
 
         Vector3 pointerTarget = mousePosition;
+        
         if(pointerTargetOverride != Vector3.zero) {
             pointerTarget = pointerTargetOverride;
         }
+
         float distance = Vector2.Distance(gunTransform.position, pointerTarget);
-        distance = Mathf.Clamp(distance, 0f, weaponRange);
+        //distance = Mathf.Clamp(distance, 0f, weaponRange);
+
+        if(distance > weaponRange) {
+            Vector3 rayOrigin = gunTransform.position;
+            pointerTarget = rayOrigin + (Vector3)(aimDir.normalized * weaponRange);
+        }
+
         distancePrecisionModifier = Mathf.Lerp(minAimDistancePrecisionModifier, maxAimDistancePrecisionModifier, distance / weaponRange);
         precisionModifierWithDistance = currentPrecisionModifier * distancePrecisionModifier;
         float smoothSpeedModifier = smoothSpeed * distancePrecisionModifier;

@@ -12,6 +12,7 @@ public class VersioningManager : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI versioningText;
     [SerializeField] protected bool saveFileIncompatible;
     [SerializeField] protected bool isDemo;
+    [SerializeField] protected string prefixText;
     [SerializeField] protected float demoBuildVersion;
     [SerializeField] protected float buildVersion;
     [SerializeField] protected float latestCompatibleBuildVersion;
@@ -41,10 +42,8 @@ public class VersioningManager : MonoBehaviour
             else {
                 versionString = $"{major}.{minor}.{patch}";
             }
-            versioningText.text = "Demo version " + versionString;
-        } else {
-            versioningText.text = "Pre-alpha version " + versionString;
         }
+        versioningText.text = prefixText + " v." + versionString;
     }
 
     public bool CheckIncompatibleSaveFile() {

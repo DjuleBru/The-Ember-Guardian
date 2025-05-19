@@ -44,7 +44,7 @@ public class StructureStats : MonoBehaviour
     private int initialTrapMerchantMaxTrapUpgradeDisplayed = 2;
 
     private int startWithRandomTrapAmount;
-    private int initialStartWithRandomTrapAmount = 1;
+    private int initialStartWithRandomTrapAmount = 0;
 
     private bool barricadesSpiked;
     private bool startWithAmmoCrafter;
