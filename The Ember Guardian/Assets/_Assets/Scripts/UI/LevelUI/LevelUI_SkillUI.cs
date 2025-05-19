@@ -203,4 +203,11 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
     }
 
     #endregion
+
+    protected override void OnDestroy() {
+        base.OnDestroy();
+
+        OnAnyButtonHovered -= LevelUI_SkillUI_OnAnyButtonHovered;
+        OnAnyButtonSelected -= LevelUI_SkillUI_OnAnyButtonSelected;
+    }
 }

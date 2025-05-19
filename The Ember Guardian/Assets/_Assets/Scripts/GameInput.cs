@@ -89,6 +89,7 @@ public class GameInput : MonoBehaviour
     private string currentControlScheme;
     private Vector2 lastMousePosition;
     private bool isUsingGamepad;
+    public const float gamepadMovementDeadzone = 0.5f;
     public const float gamepadDeadzone = 0.2f;
 
     private void Awake() {
@@ -326,7 +327,12 @@ public class GameInput : MonoBehaviour
 
     public float GetMovementFloatNormalized() {
         float moveInput = playerInputActions.Player.Move.ReadValue<float>();
-        return moveInput;
+
+        if(Mathf.Abs(moveInput) > gamepadMovementDeadzone) {
+            return moveInput;
+        } else {
+            return 0;
+        }
     }
     public Vector2 GetUINavigationVector() {
         Vector2 navigationInput = playerInputActions.Player.NavigateUI.ReadValue<Vector2>();

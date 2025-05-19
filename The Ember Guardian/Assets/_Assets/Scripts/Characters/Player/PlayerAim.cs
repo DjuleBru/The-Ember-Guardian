@@ -20,6 +20,8 @@ public class PlayerAim : MonoBehaviour
     [SerializeField] private RectTransform ammoBarRightPosition;
 
     [SerializeField] private LayerMask enemyLayer; // Masque de couche pour les ennemis
+    [SerializeField] private LayerMask groundLayer; // Masque de couche pour les ennemis
+    [SerializeField] private LayerMask barricadesLayer; // Masque de couche pour les ennemis
     private float autoAimConeAngle = 7.5f; // Angle du cône de visée autour de la direction de visée
     private float detectionRange = 15f; // Portée de détection des ennemis
 
@@ -37,18 +39,28 @@ public class PlayerAim : MonoBehaviour
 
     private float currentPrecisionRadius = 0.3f;
     private float smoothSpeed = 1f;
-    private float noiseAmount = 0.2f;
+    private float noiseAmount = 0f;
     private float switchThreshold = 0.02f; // Distance pour considérer qu'on est "arrivé"
+    private float weaponRange;
 
     private bool lastOffsetWasUp = true;
     private float currentPrecisionModifier = 1;
+    private float previousWeaponPrecisionModifier = 1;
+    private float weaponPrecisionModifier = 1;
     private float distancePrecisionModifier;
     private float precisionModifierWithDistance;
     private float maxAimDistancePrecisionModifier = 1f;
     private float minAimDistancePrecisionModifier = .1f;
     private float runPrecisionDebuff = 1.5f;
     private float movePrecisionDebuff = 1.25f;
+    private float exhaustedPrecisionDebuff = 2.5f;
+    private float takeDamagePrecisionDebuff = 3f;
     private float crouchPrecisionBuff = 2;
+
+    private bool justTookDamage;
+    private float takeDamageTimeToRecoverPrecision = 1f;
+    private float takeDamageTimer;
+
 
     private Vector2 smoothedOffset = Vector2.zero;
     private Vector2 currentEffectiveOffsetTarget;
@@ -62,6 +74,9 @@ public class PlayerAim : MonoBehaviour
     private Vector3 aimDir;
     private Vector3 previousGamepadAim = new Vector3(1,0,0);
     private Vector3 previousAimDir = new Vector3(1,0,0);
+    private Vector3 pointerTargetOverride;
+    private RaycastHit2D closestHit;
+    private bool hasClosestHit = false;
 
     private bool limitAimAngle = false;
     private float maxAimAngle = 45f; // Maximum angle from the default aim direction (in degrees)
@@ -85,6 +100,7 @@ public class PlayerAim : MonoBehaviour
 
         PlayerShoot.Instance.OnPlayerAimedSightStarted += PlayerShoot_OnPlayerAimedSightStarted;
         PlayerShoot.Instance.OnPlayerAimedSightEnded += PlayerShoot_OnPlayerAimedSightEnded;
+        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
         PlayerMovement.Instance.OnPlayerRunStarted += PlayerMovement_OnPlayerRunStarted;
@@ -93,6 +109,9 @@ public class PlayerAim : MonoBehaviour
         PlayerMovement.Instance.OnPlayerCrouchedEnded += PlayerMovement_OnPlayerCrouchedEnded;
         PlayerMovement.Instance.OnPlayerMoveStarted += PlayerMovement_OnPlayerMoveStarted;
         PlayerMovement.Instance.OnPlayerMoveStopped += PlayerMovement_OnPlayerMoveStopped;
+        PlayerMovement.Instance.OnPlayerExhaustionStarted += PlayerMovement_OnPlayerExhaustionStarted;
+        PlayerMovement.Instance.OnPlayerExhaustionStopped += PlayerMovement_OnPlayerExhaustionStopped;
+        Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         SettingsManager.Instance.OnAimAssistChanged += SettingsManager_OnAimAssistChanged;
         SettingsManager.Instance.OnAutoAlignAimWithMovementChanged += SettingsManager_OnAutoAlignAimWithMovementChanged;
 
@@ -103,9 +122,11 @@ public class PlayerAim : MonoBehaviour
 
 
     private void Update() {
+        HandleJustTookDamagePrecisionDebuff();
         if (isRolling) return;
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
 
+        weaponRange = PlayerShoot.Instance.GetHeldGun().GetRange();
         if (isUsingGamepad) {
             HandleAimGamepad(GameInput.Instance.GetAimInput());
         }
@@ -116,6 +137,16 @@ public class PlayerAim : MonoBehaviour
         HandleRecoil();
     }
 
+    private void RefreshPrecisionVariables() {
+        GunSO gunSO = PlayerShoot.Instance.GetHeldGunSO();
+
+        weaponPrecisionModifier = gunSO.weaponPrecisionMultiplier;
+
+        DebuffPrecision(previousWeaponPrecisionModifier);
+        BuffPrecision(weaponPrecisionModifier);
+
+        previousWeaponPrecisionModifier = weaponPrecisionModifier;
+    }
     private void SettingsManager_OnAutoAlignAimWithMovementChanged(object sender, EventArgs e) {
         autoAimOnMovement = SettingsManager.Instance.GetAlignAimWithMovement();
     }
@@ -127,10 +158,16 @@ public class PlayerAim : MonoBehaviour
     private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
         isUsingGamepad = GameInput.Instance.IsUsingGamepad();
     }
+
     private void HandleRecoil() {
 
+        // Recul lissé
+        currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
+
     }
+
     private void HandleAimGamepad(Vector2 lookInput) {
+
         if (lookInput.magnitude > GameInput.gamepadDeadzone) {
             aimDir = new Vector3(lookInput.x, lookInput.y, 0).normalized;
             previousGamepadAim = aimDir;
@@ -151,65 +188,31 @@ public class PlayerAim : MonoBehaviour
             HandleAutoAim();
         }
 
-        aimDir.y += currentRecoil;
-
         if (limitAimAngle) {
             ApplyAimAngleLimit();
         }
 
         HandleXScale();
+        HandleCreaturesInAimDir();
 
-        mouseAimAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
+        Vector3 rayOrigin = gunTransform.position;
+        Vector3 virtualMousePosition = rayOrigin + (Vector3)(aimDir.normalized * weaponRange);
+
+        // Position finale du réticule d’arme (autour du pointeur)
+        Vector3 weaponReticleWorldPos = HandleEffectiveAimPosition(virtualMousePosition);
+
+        if (weaponReticleTransform != null) {
+            weaponReticleTransform.position = weaponReticleWorldPos;
+        }
+
+        // Direction réelle (utilisable pour les tirs)
+        Vector3 effectiveDir = (weaponReticleWorldPos - gunTransform.position).normalized;
+        effectiveAimAngle = Mathf.Atan2(effectiveDir.y, effectiveDir.x) * Mathf.Rad2Deg;
 
         foreach (Transform transform in followAimDirTransformList) {
-            transform.eulerAngles = new Vector3(0, 0, mouseAimAngle);
+            transform.eulerAngles = new Vector3(0, 0, effectiveAimAngle);
         }
 
-        // Smooth recoil back to zero
-        currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
-
-    }
-
-    private void HandleAutoAim() {
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, detectionRange, enemyLayer);
-
-        Transform target = null;
-        float closestAngle = float.MaxValue;
-
-        Vector2 directionToEnemy = Vector2.zero;
-        Vector2 closestEnemyAutoAimColliderPosition = Vector2.zero;
-
-        foreach (var enemy in hitEnemies) {
-            CreatureAutoAimCollider autoAimCollider = enemy.gameObject.GetComponent<CreatureAutoAimCollider>();
-            if (autoAimCollider == null) continue;
-
-            Creature creature = enemy.GetComponentInParent<Creature>();
-            if(creature.GetDead()) continue;
-
-            directionToEnemy = (autoAimCollider.GetAutoAimPosition() - transform.position).normalized;
-
-            // Calculer l'angle entre la direction de la visée et l'ennemi
-            float angleToEnemy = Vector2.Angle(aimDir, directionToEnemy);
-
-            // Vérifier si l'ennemi se trouve dans le cône de visée
-            if (angleToEnemy <= autoAimConeAngle) {
-                // Sélectionner l'ennemi le plus proche dans le cône
-                if (angleToEnemy < closestAngle) {
-                    closestAngle = angleToEnemy;
-                    target = enemy.transform;
-                    closestEnemyAutoAimColliderPosition = autoAimCollider.GetAutoAimPosition();
-                }
-            }
-        }
-
-        // Si un ennemi a été trouvé, ajuster la visée vers cet ennemi
-        if (target != null) {
-            Vector2 playerPosition = gunTransform.position;
-            Vector2 directionToTarget = (closestEnemyAutoAimColliderPosition - playerPosition).normalized;
-
-            // Lissage de la direction de la visée avec Lerp
-            aimDir = directionToTarget;
-        }
     }
 
     private void HandleAimMouse() {
@@ -228,9 +231,7 @@ public class PlayerAim : MonoBehaviour
         }
 
         HandleXScale();
-
-        // Angle "idéal" (vers la souris)
-        //mouseAimAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
+        HandleCreaturesInAimDir();
 
         // Position finale du réticule d’arme (autour du pointeur)
         Vector3 weaponReticleWorldPos = HandleEffectiveAimPosition(mousePosition);
@@ -241,23 +242,21 @@ public class PlayerAim : MonoBehaviour
 
         // Direction réelle (utilisable pour les tirs)
         Vector3 effectiveDir = (weaponReticleWorldPos - gunTransform.position).normalized;
-
         effectiveAimAngle = Mathf.Atan2(effectiveDir.y, effectiveDir.x) * Mathf.Rad2Deg;
-
-        // Tu peux utiliser effectiveDir pour tirer tes projectiles
 
         foreach (Transform transform in followAimDirTransformList) {
             transform.eulerAngles = new Vector3(0, 0, effectiveAimAngle);
         }
-
-        // Recul lissé
-        currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
     }
 
     private Vector3 HandleEffectiveAimPosition(Vector3 mousePosition) {
         // Vérifie si on est arrivé à destination
-        float weaponRange = PlayerShoot.Instance.GetHeldGun().GetRange();
-        float distance = Vector2.Distance(gunTransform.position, mousePosition);
+
+        Vector3 pointerTarget = mousePosition;
+        if(pointerTargetOverride != Vector3.zero) {
+            pointerTarget = pointerTargetOverride;
+        }
+        float distance = Vector2.Distance(gunTransform.position, pointerTarget);
         distance = Mathf.Clamp(distance, 0f, weaponRange);
         distancePrecisionModifier = Mathf.Lerp(minAimDistancePrecisionModifier, maxAimDistancePrecisionModifier, distance / weaponRange);
         precisionModifierWithDistance = currentPrecisionModifier * distancePrecisionModifier;
@@ -285,11 +284,92 @@ public class PlayerAim : MonoBehaviour
         Vector2 offsetWithNoiseAndRecoil = smoothedOffset + noise;
         offsetWithNoiseAndRecoil.y += currentRecoil;
 
-        Vector3 effectiveAimPos = mousePosition + (Vector3)(offsetWithNoiseAndRecoil);
+        Vector3 effectiveAimPos = pointerTarget + (Vector3)(offsetWithNoiseAndRecoil);
+
+        // Appliquer la contrainte de surface
+        if (hasClosestHit) {
+            Vector3 hitNormal = closestHit.normal;
+            Vector3 toOffset = effectiveAimPos - pointerTarget;
+            Vector3 projected = Vector3.ProjectOnPlane(toOffset, hitNormal);
+            effectiveAimPos = pointerTarget + projected;
+        }
 
         return effectiveAimPos;
     }
+    private void HandleCreaturesInAimDir() {
+        Vector2 rayOrigin = (Vector2)gunTransform.position;
+        Vector2 rayDir = aimDir;
+        LayerMask combinedMask = enemyLayer | groundLayer | barricadesLayer;
 
+        RaycastHit2D[] hits = Physics2D.RaycastAll(rayOrigin, rayDir, weaponRange, combinedMask);
+
+        float closestDistance = float.MaxValue;
+        Vector2 closestHitPoint = Vector2.zero;
+        hasClosestHit = false;
+
+        foreach (var hit in hits) {
+            // Ignore les colliders de détection spécifiques inutiles
+            if (hit.collider.GetComponent<CreatureDetectionCollider>() != null) continue;
+            if (hit.collider.GetComponent<CreatureAutoAimCollider>() != null) continue;
+            if (hit.collider.GetComponent<Barricade>() != null && hit.collider.GetComponent<Barricade>().GetBarricadeHealthNormalized() <= 0) continue;
+
+            float distance = Vector2.Distance(rayOrigin, hit.point);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestHitPoint = hit.point;
+                closestHit = hit;
+                hasClosestHit = true;
+            }
+        }
+
+        if (closestDistance < float.MaxValue) {
+            pointerTargetOverride = closestHitPoint;
+        }
+        else {
+            pointerTargetOverride = Vector3.zero;
+        }
+    }
+    private void HandleAutoAim() {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, detectionRange, enemyLayer);
+
+        Transform target = null;
+        float closestAngle = float.MaxValue;
+
+        Vector2 directionToEnemy = Vector2.zero;
+        Vector2 closestEnemyAutoAimColliderPosition = Vector2.zero;
+
+        foreach (var enemy in hitEnemies) {
+            CreatureAutoAimCollider autoAimCollider = enemy.gameObject.GetComponent<CreatureAutoAimCollider>();
+            if (autoAimCollider == null) continue;
+
+            Creature creature = enemy.GetComponentInParent<Creature>();
+            if (creature.GetDead()) continue;
+
+            directionToEnemy = (autoAimCollider.GetAutoAimPosition() - transform.position).normalized;
+
+            // Calculer l'angle entre la direction de la visée et l'ennemi
+            float angleToEnemy = Vector2.Angle(aimDir, directionToEnemy);
+
+            // Vérifier si l'ennemi se trouve dans le cône de visée
+            if (angleToEnemy <= autoAimConeAngle) {
+                // Sélectionner l'ennemi le plus proche dans le cône
+                if (angleToEnemy < closestAngle) {
+                    closestAngle = angleToEnemy;
+                    target = enemy.transform;
+                    closestEnemyAutoAimColliderPosition = autoAimCollider.GetAutoAimPosition();
+                }
+            }
+        }
+
+        // Si un ennemi a été trouvé, ajuster la visée vers cet ennemi
+        if (target != null) {
+            Vector2 playerPosition = gunTransform.position;
+            Vector2 directionToTarget = (closestEnemyAutoAimColliderPosition - playerPosition).normalized;
+
+            // Lissage de la direction de la visée avec Lerp
+            aimDir = directionToTarget;
+        }
+    }
     private void SelectNextRandomTargetForWeaponPointer() {
         if (goToMouseNext) {
             currentEffectiveOffsetTarget = Vector2.zero;
@@ -331,6 +411,31 @@ public class PlayerAim : MonoBehaviour
         DebuffPrecision(movePrecisionDebuff);
     }
 
+    private void PlayerMovement_OnPlayerExhaustionStopped(object sender, EventArgs e) {
+        BuffPrecision(exhaustedPrecisionDebuff);
+    }
+
+    private void PlayerMovement_OnPlayerExhaustionStarted(object sender, EventArgs e) {
+        DebuffPrecision(exhaustedPrecisionDebuff);
+    }
+
+    private void Player_OnPlayerDamaged(object sender, Player.OnPlayerChangedHealthEventArgs e) {
+        DebuffPrecision(takeDamagePrecisionDebuff);
+        takeDamageTimer = takeDamageTimeToRecoverPrecision;
+        justTookDamage = true;
+    }
+
+    private void HandleJustTookDamagePrecisionDebuff() {
+        if (justTookDamage) {
+            takeDamageTimer -= Time.deltaTime;
+            if (takeDamageTimer <= 0) {
+                justTookDamage = false;
+                BuffPrecision(takeDamagePrecisionDebuff);
+            }
+        }
+    }
+
+
     private void BuffPrecision(float buff) {
         currentPrecisionModifier /= buff;
         smoothSpeed /= buff;
@@ -338,6 +443,7 @@ public class PlayerAim : MonoBehaviour
         SelectNextRandomTargetForWeaponPointer();
         Debug.Log("BuffPrecision currentPrecisionModifier " + currentPrecisionModifier);
     }
+
     private void DebuffPrecision(float debuff) {
         currentPrecisionModifier *= debuff;
         smoothSpeed *= debuff;
@@ -401,7 +507,6 @@ public class PlayerAim : MonoBehaviour
         aimDir = new Vector3(Mathf.Cos(currentAngle * Mathf.Deg2Rad), Mathf.Sin(currentAngle * Mathf.Deg2Rad), 0).normalized;
     }
 
-
     private void PlayerMovement_OnPlayerRollEnded(object sender, EventArgs e) {
         isRolling = false;
     }
@@ -418,6 +523,10 @@ public class PlayerAim : MonoBehaviour
     private void PlayerShoot_OnPlayerAimedSightStarted(object sender, EventArgs e) {
         CameraManager.Instance.ChangeCameraTarget(aimSightTransform, false);
         OnPlayerAimSightStarted?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
+        RefreshPrecisionVariables();
     }
 
     public void AddRecoil(float recoil, float recoilDamping) {
@@ -579,5 +688,4 @@ public class PlayerAim : MonoBehaviour
     private void OnDestroy() {
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
     }
-
 }

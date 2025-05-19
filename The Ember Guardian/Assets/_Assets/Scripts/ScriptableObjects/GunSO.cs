@@ -33,7 +33,9 @@ public class GunSO : ScriptableObject
     public int pelletsPerBullet;
     public int shotsPerClip;
     public float critChance;
+    public bool useAngleInPS;
     public float shootConeAngle;
+    public float weaponPrecisionMultiplier = 1f;
     public float shootCreatureHearMultiplier = 1.75f;
     public float bulletLifetime;
     public float bulletSpeed;

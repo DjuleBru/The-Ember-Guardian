@@ -42,7 +42,9 @@ MonoBehaviour:
   pelletsPerBullet: 1
   shotsPerClip: 8
   critChance: 10
-  shootConeAngle: 0.1
+  useAngleInPS: 0
+  shootConeAngle: 1
+  weaponPrecisionMultiplier: 1
   shootCreatureHearMultiplier: 1.75
   bulletLifetime: 0.3
   bulletSpeed: 50
