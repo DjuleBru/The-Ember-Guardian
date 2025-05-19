@@ -19,18 +19,30 @@ MonoBehaviour:
   linkedTrapSO: {fileID: 0}
   TrapName: Spikes
   buyTrapPrice: 3
-  trapDamage: 30
-  trapSpecialStat: 5
-  trapCooldown: 15
-  trapUsesPerNight: 2
-  maxRearmsBeforeBreaking: 1
-  rearmPrice: 2
-  trapActiveDuration: 5
-  trapHasAOEAttack: 0
+  trapDamage: 4
+  trapSpecialStat: 0
+  trapCooldown: 0
+  trapUsesPerNight: 10
+  maxRearmsBeforeBreaking: 0
+  rearmPrice: 0
+  trapActiveDuration: 0
+  trapHasAOEAttack: 1
+  trapBreaksAfterRearms: 0
+  trapBreaksAfterUses: 1
   Icon: {fileID: -1159541971, guid: acdfaf23437c65d488a22e27b3e20f9b, type: 3}
   currencyTypeToPay: 0
   triggerTrapAudioClip:
-  - {fileID: 8300000, guid: c8ee6cba5afd6124eaea6e17d50a19bd, type: 3}
+  - {fileID: 8300000, guid: 23d8a535e91df3645bff48399a65dc38, type: 3}
+  - {fileID: 8300000, guid: 116af4cc8469d2346a711881cc626e54, type: 3}
+  - {fileID: 8300000, guid: c712aeaff02679445bf9edcfa6e506a2, type: 3}
+  - {fileID: 8300000, guid: 656a0fad997f29d41a271b2591d625bb, type: 3}
+  - {fileID: 8300000, guid: 5ac8cb917af65b04faf9bebba67ad7cc, type: 3}
+  - {fileID: 8300000, guid: a2242546111ecc94db614286ac2c7435, type: 3}
+  - {fileID: 8300000, guid: cca9386102a6785458150e5f5b50141a, type: 3}
+  - {fileID: 8300000, guid: 99fd0b0a25374204e93d95778ebae9c5, type: 3}
+  - {fileID: 8300000, guid: f780584ca6845294d85ce38922dddb35, type: 3}
+  - {fileID: 8300000, guid: 428f7890adaa78c43b6b787ecfbb4bb8, type: 3}
+  - {fileID: 8300000, guid: 39db55b6152d19b4aafb3c7112070171, type: 3}
   reloadTrapAudioClip:
   - {fileID: 8300000, guid: ff5e111c54f6fa743a7444358c5bf976, type: 3}
   - {fileID: 8300000, guid: 51818bee81f5e61499e2511ea4baf31c, type: 3}

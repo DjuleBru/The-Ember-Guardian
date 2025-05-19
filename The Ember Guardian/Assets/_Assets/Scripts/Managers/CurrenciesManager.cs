@@ -126,6 +126,12 @@ public class CurrenciesManager : MonoBehaviour
         if (currencyType == PlayerCurrencies.CurrencyType.smokeEjector) {
             return smokeEjectorTrapPrefab;
         }
+        if (currencyType == PlayerCurrencies.CurrencyType.spikes) {
+            return spikeTrapPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.fireEjector) {
+            return fireEjectorTrapPrefab;
+        }
         return bigBlueOrbPrefab;
     }
 
@@ -161,10 +167,13 @@ public class CurrenciesManager : MonoBehaviour
             category = PlayerCurrencies.CurrencyCategory.ammo;
         }
 
-        if(currencyType == PlayerCurrencies.CurrencyType.greenGem || currencyType == PlayerCurrencies.CurrencyType.redGem || currencyType == PlayerCurrencies.CurrencyType.blueGem || currencyType == PlayerCurrencies.CurrencyType.yellowGem || currencyType == PlayerCurrencies.CurrencyType.purpleGem) {
+        if(currencyType == PlayerCurrencies.CurrencyType.greenGem || currencyType == PlayerCurrencies.CurrencyType.redGem || currencyType == PlayerCurrencies.CurrencyType.blueGem || currencyType == PlayerCurrencies.CurrencyType.yellowGem || currencyType == PlayerCurrencies.CurrencyType.purpleGem || currencyType == PlayerCurrencies.CurrencyType.cyanGem) {
             category = PlayerCurrencies.CurrencyCategory.gem;
         }
 
+        if (currencyType == PlayerCurrencies.CurrencyType.bearTrap || currencyType == PlayerCurrencies.CurrencyType.smokeEjector || currencyType == PlayerCurrencies.CurrencyType.spikeEjector || currencyType == PlayerCurrencies.CurrencyType.spikes || currencyType == PlayerCurrencies.CurrencyType.bladeTrap || currencyType == PlayerCurrencies.CurrencyType.shockerEjector || currencyType == PlayerCurrencies.CurrencyType.fireEjector) {
+            category = PlayerCurrencies.CurrencyCategory.trap;
+        }
         return category;
     }
 

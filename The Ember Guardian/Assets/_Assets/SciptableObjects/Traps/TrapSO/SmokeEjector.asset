@@ -17,7 +17,7 @@ MonoBehaviour:
   trapUpgradeSO: {fileID: 0}
   trapStructureSO: {fileID: 11400000, guid: 5aef824fb08907c4c816660e0926dddf, type: 2}
   linkedTrapSO: {fileID: 0}
-  TrapName: Smoke Ejector
+  TrapName: Spikes
   buyTrapPrice: 3
   trapDamage: 5
   trapSpecialStat: 5
@@ -27,6 +27,8 @@ MonoBehaviour:
   rearmPrice: 2
   trapActiveDuration: 1.6
   trapHasAOEAttack: 1
+  trapBreaksAfterRearms: 1
+  trapBreaksAfterUses: 0
   Icon: {fileID: 1344405616, guid: acdfaf23437c65d488a22e27b3e20f9b, type: 3}
   currencyTypeToPay: 0
   triggerTrapAudioClip:

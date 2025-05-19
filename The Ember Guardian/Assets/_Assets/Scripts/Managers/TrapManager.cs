@@ -43,12 +43,6 @@ public class TrapManager : MonoBehaviour
         }
     }
 
-    public int GetTrapUpgradeLevel(TrapItem.TrapType trapType, TrapUpgradeSO.TrapUpgradeType upgradeType) {
-        if (trapUpgradesLevels.TryGetValue(trapType, out var upgradeDict) && upgradeDict.TryGetValue(upgradeType, out var level)) {
-            return level;
-        }
-        return 0; // Retourne un niveau par défaut si non trouvé
-    }
 
     public float GetCurrentUpgradeValue(TrapItem.TrapType trapType, TrapUpgradeSO.TrapUpgradeType upgradeType) {
         if (trapUpgradesLevels.TryGetValue(trapType, out var upgradeDict) &&
@@ -81,6 +75,12 @@ public class TrapManager : MonoBehaviour
         }
         if (currencyType == PlayerCurrencies.CurrencyType.spikeEjector) {
             return TrapItem.TrapType.spikeEjectorSmall;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.spikes) {
+            return TrapItem.TrapType.spikes;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.fireEjector) {
+            return TrapItem.TrapType.fireEjector;
         }
         return TrapItem.TrapType.bearTrap;
     }

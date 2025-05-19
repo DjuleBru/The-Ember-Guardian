@@ -449,7 +449,7 @@ public class PlayerAim : MonoBehaviour
         smoothSpeed /= buff;
         noiseAmount /= buff;
         SelectNextRandomTargetForWeaponPointer();
-        Debug.Log("BuffPrecision currentPrecisionModifier " + currentPrecisionModifier);
+        //Debug.Log("BuffPrecision currentPrecisionModifier " + currentPrecisionModifier);
     }
 
     private void DebuffPrecision(float debuff) {
@@ -457,7 +457,7 @@ public class PlayerAim : MonoBehaviour
         smoothSpeed *= debuff;
         noiseAmount *= debuff;
         SelectNextRandomTargetForWeaponPointer();
-        Debug.Log("DebuffPrecision currentPrecisionModifier " + currentPrecisionModifier);
+        //Debug.Log("DebuffPrecision currentPrecisionModifier " + currentPrecisionModifier);
     }
 
     private void ApplyAimAngleLimit()

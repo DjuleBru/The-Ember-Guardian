@@ -409,7 +409,7 @@ public class SoundManager : MonoBehaviour
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.redGem || currencyTypeCollected == PlayerCurrencies.CurrencyType.yellowGem || currencyTypeCollected == PlayerCurrencies.CurrencyType.greenGem) {
             PlaySound2D(soundRefsSO.redGemPickedUpByPlayer, .7f);
         }
-        if (currencyTypeCollected == PlayerCurrencies.CurrencyType.bearTrap || currencyTypeCollected == PlayerCurrencies.CurrencyType.bladeTrap || currencyTypeCollected == PlayerCurrencies.CurrencyType.shockerEjector || currencyTypeCollected == PlayerCurrencies.CurrencyType.smokeEjector || currencyTypeCollected == PlayerCurrencies.CurrencyType.spikeEjector) {
+        if (CurrenciesManager.Instance.GetCurrencyCategory(currencyTypeCollected) == PlayerCurrencies.CurrencyCategory.trap) {
             PlaySound2D(soundRefsSO.trapPickedUpByPlayer, .7f);
         }
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.ammo) {

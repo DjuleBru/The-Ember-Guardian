@@ -21,6 +21,8 @@ public class TrapSO : ScriptableObject
     public int rearmPrice;
     public float trapActiveDuration;
     public bool trapHasAOEAttack;
+    public bool trapBreaksAfterRearms;
+    public bool trapBreaksAfterUses;
     public Sprite Icon;
     public PlayerCurrencies.CurrencyType currencyTypeToPay;
     public AudioClip[] triggerTrapAudioClip;

@@ -82,6 +82,9 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnPlayerPausePerformed;
     public event EventHandler OnPlayerOpenPlayerTabPerformed;
 
+    public event EventHandler OnEditCampSelect;
+    public event EventHandler OnEditCampDeselect;
+
     private bool interactPressed;
     private bool holdingInteract;
     private float interactHoldTimer;
@@ -151,14 +154,25 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
         playerInputActions.Player.Move.performed += Move_performed;
         playerInputActions.Player.NavigateUI.performed += NavigateUI_performed;
-    }
 
+        playerInputActions.Player.CampCustomizationSelect.performed += Select_performed;
+        playerInputActions.Player.CampCustomizationDeselect.performed += Deselect_performed;
+    }
 
     private void InputUser_onChange(InputUser user, InputUserChange change, InputDevice arg3) {
         if (change == InputUserChange.ControlSchemeChanged) {
             currentControlScheme = user.controlScheme.Value.name;
         }
         OnPlayerInputChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Deselect_performed(InputAction.CallbackContext obj) {
+        OnEditCampDeselect?.Invoke(this, EventArgs.Empty);
+    }
+
+
+    private void Select_performed(InputAction.CallbackContext obj) {
+        OnEditCampSelect?.Invoke(this, EventArgs.Empty);
     }
 
     private void NavigateUI_performed(InputAction.CallbackContext obj) {

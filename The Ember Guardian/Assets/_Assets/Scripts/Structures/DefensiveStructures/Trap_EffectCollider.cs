@@ -23,6 +23,7 @@ public class Trap_EffectCollider : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) {
         Creature creature = collision.gameObject.GetComponent<Creature>();
+
         if (creature == null) return;
         if(!trap.GetTrapSO().trapHasAOEAttack) {
             if (creatureTouchedIndex > 0) return;
@@ -33,18 +34,6 @@ public class Trap_EffectCollider : MonoBehaviour
     }
 
     private void ApplyTrapEffect(Creature creature) {
-        creature.TakeDamage(trap.GetTrapSO().trapDamage, transform);
-
-        if(trap.GetTrapSO().trapType == TrapItem.TrapType.bearTrap) {
-            creature.ApplyImmobilizeEffect(trap.GetTrapSO().trapSpecialStat, transform.position);
-        }
-
-        if (trap.GetTrapSO().trapType == TrapItem.TrapType.smokeEjector) {
-            creature.ApplyPoisonEffect(trap.GetTrapSO().trapSpecialStat);
-        }
-
-        if (trap.GetTrapSO().trapType == TrapItem.TrapType.shockerEjector) {
-            creature.ApplyShockedEffect(trap.GetTrapSO().trapSpecialStat);
-        }
+        trap.ApplyTrapEffect(creature);
     }
 }

@@ -15,9 +15,9 @@ MonoBehaviour:
   itemType: 3
   trapType: 7
   trapUpgradeSO: {fileID: 0}
-  trapStructureSO: {fileID: 11400000, guid: 5aef824fb08907c4c816660e0926dddf, type: 2}
+  trapStructureSO: {fileID: 11400000, guid: 65180d6767cafa142be5f776047176bd, type: 2}
   linkedTrapSO: {fileID: 0}
-  TrapName: Smoke Ejector
+  TrapName: Fire Ejector
   buyTrapPrice: 3
   trapDamage: 5
   trapSpecialStat: 5
@@ -27,7 +27,9 @@ MonoBehaviour:
   rearmPrice: 2
   trapActiveDuration: 1.6
   trapHasAOEAttack: 1
-  Icon: {fileID: 1344405616, guid: acdfaf23437c65d488a22e27b3e20f9b, type: 3}
+  trapBreaksAfterRearms: 1
+  trapBreaksAfterUses: 0
+  Icon: {fileID: -589654011, guid: acdfaf23437c65d488a22e27b3e20f9b, type: 3}
   currencyTypeToPay: 0
   triggerTrapAudioClip:
   - {fileID: 8300000, guid: db7cf260d8c258846b331352a9348756, type: 3}

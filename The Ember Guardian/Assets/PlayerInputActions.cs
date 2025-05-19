@@ -224,6 +224,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""CampCustomizationSelect"",
+                    ""type"": ""Button"",
+                    ""id"": ""be50e0fc-98c5-4a65-ba50-90a444fdd48e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CampCustomizationDeselect"",
+                    ""type"": ""Button"",
+                    ""id"": ""29dec17d-02bf-4770-a5f3-ee70300c9f51"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -886,6 +904,50 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""NavigateUI"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6e862202-b91c-4001-9775-51b64c0da732"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""CampCustomizationSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aa067b32-d8e2-4f97-9e56-26cd36926f1d"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""CampCustomizationSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6dc4ef6e-9e0d-49cd-a903-e2978a4a6bbb"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""CampCustomizationDeselect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca9bac97-a38f-44cf-b611-96aa08612e5f"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""CampCustomizationDeselect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -939,6 +1001,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_HoverWorkers = m_Player.FindAction("HoverWorkers", throwIfNotFound: true);
         m_Player_MeleeAttack = m_Player.FindAction("MeleeAttack", throwIfNotFound: true);
         m_Player_NavigateUI = m_Player.FindAction("NavigateUI", throwIfNotFound: true);
+        m_Player_CampCustomizationSelect = m_Player.FindAction("CampCustomizationSelect", throwIfNotFound: true);
+        m_Player_CampCustomizationDeselect = m_Player.FindAction("CampCustomizationDeselect", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -1027,6 +1091,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_HoverWorkers;
     private readonly InputAction m_Player_MeleeAttack;
     private readonly InputAction m_Player_NavigateUI;
+    private readonly InputAction m_Player_CampCustomizationSelect;
+    private readonly InputAction m_Player_CampCustomizationDeselect;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1053,6 +1119,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @HoverWorkers => m_Wrapper.m_Player_HoverWorkers;
         public InputAction @MeleeAttack => m_Wrapper.m_Player_MeleeAttack;
         public InputAction @NavigateUI => m_Wrapper.m_Player_NavigateUI;
+        public InputAction @CampCustomizationSelect => m_Wrapper.m_Player_CampCustomizationSelect;
+        public InputAction @CampCustomizationDeselect => m_Wrapper.m_Player_CampCustomizationDeselect;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1128,6 +1196,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @NavigateUI.started += instance.OnNavigateUI;
             @NavigateUI.performed += instance.OnNavigateUI;
             @NavigateUI.canceled += instance.OnNavigateUI;
+            @CampCustomizationSelect.started += instance.OnCampCustomizationSelect;
+            @CampCustomizationSelect.performed += instance.OnCampCustomizationSelect;
+            @CampCustomizationSelect.canceled += instance.OnCampCustomizationSelect;
+            @CampCustomizationDeselect.started += instance.OnCampCustomizationDeselect;
+            @CampCustomizationDeselect.performed += instance.OnCampCustomizationDeselect;
+            @CampCustomizationDeselect.canceled += instance.OnCampCustomizationDeselect;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1198,6 +1272,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @NavigateUI.started -= instance.OnNavigateUI;
             @NavigateUI.performed -= instance.OnNavigateUI;
             @NavigateUI.canceled -= instance.OnNavigateUI;
+            @CampCustomizationSelect.started -= instance.OnCampCustomizationSelect;
+            @CampCustomizationSelect.performed -= instance.OnCampCustomizationSelect;
+            @CampCustomizationSelect.canceled -= instance.OnCampCustomizationSelect;
+            @CampCustomizationDeselect.started -= instance.OnCampCustomizationDeselect;
+            @CampCustomizationDeselect.performed -= instance.OnCampCustomizationDeselect;
+            @CampCustomizationDeselect.canceled -= instance.OnCampCustomizationDeselect;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1257,5 +1337,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnHoverWorkers(InputAction.CallbackContext context);
         void OnMeleeAttack(InputAction.CallbackContext context);
         void OnNavigateUI(InputAction.CallbackContext context);
+        void OnCampCustomizationSelect(InputAction.CallbackContext context);
+        void OnCampCustomizationDeselect(InputAction.CallbackContext context);
     }
 }

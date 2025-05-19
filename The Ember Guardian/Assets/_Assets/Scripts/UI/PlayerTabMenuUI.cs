@@ -71,6 +71,7 @@ public class PlayerTabMenuUI : MonoBehaviour
     private void HubMerchantUI_OnAnyHubMerchantOpenUIPanel(object sender, System.EventArgs e) {
         HubMerchantUI hubMerchantUI = (HubMerchantUI)sender;
         if (hubMerchantUI.GetHubMerchant().GetHubMerchantType() == HubMerchant.HubMerchantType.GemMerchant) return;
+        if (hubMerchantUI.GetHubMerchant().GetHubMerchantType() == HubMerchant.HubMerchantType.ArchitectTable) return;
 
         canCloseTab = false;
         FadeInTab();

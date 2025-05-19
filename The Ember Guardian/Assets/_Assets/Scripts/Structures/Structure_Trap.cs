@@ -7,10 +7,10 @@ using UnityEngine;
 public class Structure_Trap : Structure
 {
     [SerializeField] protected TrapSO trapSO;
-    [SerializeField] protected GameObject creatureTriggerCollider;
     protected StructureLocation_Trap trapStructureLocation;
 
     protected int trapDamage;
+    protected int trapSpecial;
     protected int usesPerNight;
     protected int rearmPrice;
     protected int maxRearms;
@@ -26,6 +26,7 @@ public class Structure_Trap : Structure
     protected bool trapIsActive;
     protected bool triggeredEnded;
     protected bool trapCoolingDown;
+    protected bool trapBroken;
 
     public event EventHandler OnTrapBroken;
     public event EventHandler OnTrapTriggered;
@@ -43,10 +44,10 @@ public class Structure_Trap : Structure
         RefreshTrapStats();
         maxRearms = trapSO.maxRearmsBeforeBreaking;
         currentRearmIndex = maxRearms;
-        creatureTriggerCollider.SetActive(false);
     }
 
     protected void Update() {
+        if (trapBroken) return;
 
         if (trapIsActive) {
             trapActiveTimer -= Time.deltaTime;
@@ -81,6 +82,7 @@ public class Structure_Trap : Structure
     public void TryTriggerTrap() {
         if (trapIsActive) return;
         if (trapCoolingDown) return;
+        if (trapBroken) return;
 
         if (currentUseIndex < usesPerNight) {
             currentUseIndex++;
@@ -91,6 +93,11 @@ public class Structure_Trap : Structure
 
             trapIsActive = true;
             triggeredEnded = false;
+
+            if (trapSO.trapBreaksAfterUses && !GetHasUsesLeft()) {
+                StartCoroutine(BreakTrapAfterRandomDelay(.1f));
+                return;
+            }
         }
     }
 
@@ -109,11 +116,9 @@ public class Structure_Trap : Structure
     }
 
     protected override void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
-        creatureTriggerCollider.SetActive(false);
-
         base.DayNightManager_OnDawnStart(sender, e);
 
-        if(currentRearmIndex == 0) {
+        if(trapSO.trapBreaksAfterRearms && currentRearmIndex == 0) {
             StartCoroutine(BreakTrapAfterRandomDelay());
             return;
         }
@@ -122,12 +127,6 @@ public class Structure_Trap : Structure
             OnTrapDepletedUses?.Invoke(this, EventArgs.Empty);
             ActivateStructurePrimaryFunctionInteraction(true);
         }
-    }
-
-    protected override void DayNightManager_OnNightStart(object sender, EventArgs e) {
-        creatureTriggerCollider.SetActive(true);
-
-        base.DayNightManager_OnNightStart(sender, e);
     }
 
     protected override void TriggerStructurePrimaryFunction() {
@@ -143,6 +142,9 @@ public class Structure_Trap : Structure
     protected void RefreshTrapStats() {
         int trapDamageUpgrade = (int)TrapManager.Instance.GetCurrentUpgradeValue(trapSO.trapType, TrapUpgradeSO.TrapUpgradeType.damage);
         trapDamage = trapSO.trapDamage + trapDamageUpgrade;
+
+        int trapSpecialUpgrade = (int)TrapManager.Instance.GetCurrentUpgradeValue(trapSO.trapType, TrapUpgradeSO.TrapUpgradeType.special);
+        trapSpecial = trapSO.trapSpecialStat + trapSpecialUpgrade;
 
         int usesPerNightUpgrade = (int)TrapManager.Instance.GetCurrentUpgradeValue(trapSO.trapType, TrapUpgradeSO.TrapUpgradeType.usesPerNight);
         usesPerNight = trapSO.trapUsesPerNight + usesPerNightUpgrade;
@@ -179,8 +181,13 @@ public class Structure_Trap : Structure
         StartCoroutine(BreakTrapAfterRandomDelay());
     }
 
-    private IEnumerator BreakTrapAfterRandomDelay() {
+    private IEnumerator BreakTrapAfterRandomDelay(float fixedDelay = 0) {
+        trapBroken = true;
         float randomDelay = UnityEngine.Random.Range(1f, 2f);
+
+        if(fixedDelay != 0) {
+            randomDelay = 0;
+        }
         yield return new WaitForSeconds(randomDelay);
 
         trapStructureLocation.ReActivateTrapStructureLocation();
@@ -190,8 +197,29 @@ public class Structure_Trap : Structure
         Destroy(gameObject);
     }
 
+
     public void SetTrapStructureLocation(StructureLocation_Trap trapStructureLocation) {
         this.trapStructureLocation = trapStructureLocation;
+    }
+
+    public void ApplyTrapEffect(Creature creature) {
+        creature.TakeDamage(trapDamage, transform);
+
+        if (trapSO.trapType == TrapItem.TrapType.bearTrap) {
+            creature.ApplyImmobilizeEffect(trapSpecial, transform.position);
+        }
+
+        if (trapSO.trapType == TrapItem.TrapType.smokeEjector) {
+            creature.ApplyPoisonEffect(trapSpecial);
+        }
+
+        if (trapSO.trapType == TrapItem.TrapType.fireEjector) {
+            creature.ApplyBurning(trapSpecial);
+        }
+
+        if (trapSO.trapType == TrapItem.TrapType.shockerEjector) {
+            creature.ApplyShockedEffect(trapSpecial);
+        }
     }
 
     protected void OnDestroy() {

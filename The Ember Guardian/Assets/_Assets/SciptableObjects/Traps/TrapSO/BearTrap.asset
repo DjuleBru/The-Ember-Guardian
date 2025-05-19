@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BearTrap
   m_EditorClassIdentifier: 
   itemType: 3
-  trapType: 7
+  trapType: 1
   trapUpgradeSO: {fileID: 0}
   trapStructureSO: {fileID: 11400000, guid: c13f5c95bde7d5944b33dd0fa98ad6ca, type: 2}
   linkedTrapSO: {fileID: 0}
@@ -27,6 +27,8 @@ MonoBehaviour:
   rearmPrice: 2
   trapActiveDuration: 5
   trapHasAOEAttack: 0
+  trapBreaksAfterRearms: 1
+  trapBreaksAfterUses: 0
   Icon: {fileID: -1870522980, guid: acdfaf23437c65d488a22e27b3e20f9b, type: 3}
   currencyTypeToPay: 0
   triggerTrapAudioClip:

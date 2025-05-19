@@ -192,7 +192,7 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
 
         trapSpecialStatValueGameObject.SetActive(false);
 
-        if(trapSO.trapType == TrapItem.TrapType.bearTrap || trapSO.trapType == TrapItem.TrapType.shockerEjector || trapSO.trapType == TrapItem.TrapType.smokeEjector) {
+        if(trapSO.trapType == TrapItem.TrapType.bearTrap || trapSO.trapType == TrapItem.TrapType.shockerEjector || trapSO.trapType == TrapItem.TrapType.smokeEjector || trapSO.trapType == TrapItem.TrapType.fireEjector) {
             trapSpecialStatValueGameObject.SetActive(true);
 
             float trapSpecialUpgrade = TrapManager.Instance.GetCurrentUpgradeValue(trapItem.trapType, TrapUpgradeSO.TrapUpgradeType.special);
@@ -209,20 +209,27 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
         switch (trapSO.trapType) {
             case TrapItem.TrapType.bearTrap:
 
-                trapSpecialStatDescription.text = LocalizationManager.Instance.GetLocalizedText("Immobilization duration");
+                trapSpecialStatDescription.text = LocalizationManager.Instance.GetLocalizedText("Immobilization Duration");
                 trapSpecialStatValue.text += "s";
 
                 break;
 
             case TrapItem.TrapType.shockerEjector:
-                trapSpecialStatDescription.text = LocalizationManager.Instance.GetLocalizedText("Slow down effect");
+                trapSpecialStatDescription.text = LocalizationManager.Instance.GetLocalizedText("Slow Down Effect");
 
                 trapSpecialStatValue.text += "%";
 
                 break;
 
             case TrapItem.TrapType.smokeEjector:
-                trapSpecialStatDescription.text = LocalizationManager.Instance.GetLocalizedText("Poison duration");
+                trapSpecialStatDescription.text = LocalizationManager.Instance.GetLocalizedText("Poison Duration");
+
+                trapSpecialStatValue.text += "/s";
+
+                break;
+
+            case TrapItem.TrapType.fireEjector:
+                trapSpecialStatDescription.text = LocalizationManager.Instance.GetLocalizedText("Burn Duration");
 
                 trapSpecialStatValue.text += "/s";
 
@@ -260,7 +267,7 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
         }
 
         int trapMaxReloadsUpgrade = (int)TrapManager.Instance.GetCurrentUpgradeValue(trapItem.trapType, TrapUpgradeSO.TrapUpgradeType.totalUses);
-        int totalMaxReloads = trapSO.trapUsesPerNight + trapMaxReloadsUpgrade;
+        int totalMaxReloads = trapSO.maxRearmsBeforeBreaking + trapMaxReloadsUpgrade;
         trapMaxReloadsStatValue.text = totalMaxReloads.ToString();
         if (trapMaxReloadsUpgrade != 0) {
             trapMaxReloadsStatValue.fontMaterial = UpgradeFontMaterial;
