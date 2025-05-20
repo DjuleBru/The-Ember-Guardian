@@ -77,7 +77,11 @@ public class Gun : MonoBehaviour
 
 
     protected void Update() {
-        
+        //HandleGunAngleLerp();
+
+
+    }
+    private void HandleGunAngleLerp() {
         if (lerpingGunAngle) {
             // Interpolation linéaire vers l'angle cible
             currentAngle = Mathf.Lerp(currentAngle, targetAngle, Time.deltaTime * adjustmentSpeed);
@@ -91,7 +95,6 @@ public class Gun : MonoBehaviour
             }
         };
     }
-
     private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
         if (!gunActive) return;
         RecalculateDamage();
@@ -238,7 +241,8 @@ public class Gun : MonoBehaviour
 
         if(gunSO.bulletIsParticle) {
             ParticleSystem.ShapeModule shootPSShape = shootPS.shape;
-            shootPSShape.angle = defaultAngle;
+            //shootPSShape.angle = defaultAngle;
+            shootPSShape.angle = 0.1f;
 
             ParticleSystem.MainModule shootPSMain = shootPS.main;
             shootPSMain.startLifetime = bulletLifetime;

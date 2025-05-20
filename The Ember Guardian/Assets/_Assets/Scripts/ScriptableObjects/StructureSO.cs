@@ -42,6 +42,7 @@ public class StructureSO : ScriptableObject
     public Transform structurePrefab;
     public Sprite structureSprite;
 
+    public bool structurePositionEditable;
     public bool level1StructureInitiallyUnlocked;
     public bool buildableAtNight;
     public bool upgradeableAtNight;

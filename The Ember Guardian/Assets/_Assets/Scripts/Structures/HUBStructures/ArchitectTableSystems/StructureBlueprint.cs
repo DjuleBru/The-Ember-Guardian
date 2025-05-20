@@ -2,43 +2,86 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class StructureBlueprint : MonoBehaviour, IPointerClickHandler {
+public class StructureBlueprint : MonoBehaviour {
 
+    [SerializeField] private StructureSO linkedStructureSO;
+    [SerializeField] private Image blueprintImage;
+
+    private Animator uiAnimator;
     public int widthInCells = 3;
     public bool isBeingMoved = false;
-    public int currentCell = 0;
+    public Vector2Int currentCell;
+    public List<Vector2Int> occupiedCells = new List<Vector2Int>();
 
-    private void Start() {
-        SetOccupiedCells(CampGrid.Instance, true);
+    private bool hovered;
+
+    private void Awake() {
+        Debug.Log("cac");
+        uiAnimator = GetComponent<Animator>();
+        Debug.Log(uiAnimator);
     }
 
-    public int GetStartCell(CampGrid grid) {
-        return grid.WorldToCell(GetComponent<RectTransform>().anchoredPosition.x);
+    void Start() { 
+        // Calcul de la cellule à partir de la position actuelle
+        SetOccupiedCells();
+        CampEditManager.Instance.RegisterStructure(this);
+
+        if(linkedStructureSO != null) {
+            blueprintImage.sprite = linkedStructureSO.structureSprite;
+            SetBlueprintSize();
+        }
     }
 
-    public bool CanPlaceAt(int startCell, CampGrid grid) {
+    public List<Vector2Int> GetOccupiedCells() {
+        return occupiedCells;
+    }
+
+    public void SetOccupiedCells() {
+        float x = GetComponent<RectTransform>().anchoredPosition.x;
+        currentCell = CampGrid.Instance.WorldToCell(x);
+
+        occupiedCells.Clear();
         for (int i = 0; i < widthInCells; i++) {
-            if (grid.IsCellOccupied(startCell + i)) return false;
+            occupiedCells.Add(new Vector2Int(currentCell.x + i, 0));
         }
-        return true;
-    }
 
-    public void SetOccupiedCells(CampGrid grid, bool state) {
-        int start = GetStartCell(grid);
-        for (int i = 0; i < widthInCells; i++) {
-            grid.SetCellOccupied(start + i, state);
+        if(currentCell.x < CampGrid.Instance.GetGridSize()/2) {
+            blueprintImage.GetComponent<RectTransform>().localScale = new Vector2(-1, 1);
         }
     }
 
-    public void OnPointerClick(PointerEventData eventData) {
-        if (CampEditManager.Instance.GetBlueprintBeingMoved() == null && !CampEditManager.Instance.GetMovingBlueprint()) {
-            isBeingMoved = true;
-            CampEditManager.Instance.StartMoving(this);
+    public StructureSO GetLinkedStructureSO() {
+        return linkedStructureSO;
+    }
+
+    public void SetStructureSO(StructureSO structureSO) {
+        linkedStructureSO = structureSO;
+        blueprintImage.sprite = linkedStructureSO.structureSprite;
+    }
+
+    public void SetBlueprintSize() {
+        GetComponent<RectTransform>().sizeDelta = new Vector2(widthInCells * CampGrid.Instance.GetCellSize(), 300);
+        blueprintImage.GetComponent<RectTransform>().sizeDelta = new Vector2(linkedStructureSO.structureSprite.rect.width * 2.8f, linkedStructureSO.structureSprite.rect.height * 2.8f);
+    }
+
+    public void SetHovered(bool hovered) {
+        if(!this.hovered && hovered) {
+            this.hovered = hovered;
+
+            if (uiAnimator == null) return;
+            uiAnimator.ResetTrigger("Hide");
+            uiAnimator.SetTrigger("Show");
+        }
+
+        if(this.hovered && !hovered) {
+            this.hovered = hovered;
+
+            if (uiAnimator == null) return;
+            uiAnimator.ResetTrigger("Show");
+            uiAnimator.SetTrigger("Hide");
         }
     }
 
-    public void StopMoving() {
-        isBeingMoved = false;
-    }
 }

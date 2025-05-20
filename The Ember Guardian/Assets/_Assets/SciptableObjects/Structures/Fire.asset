@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureType: 1
   structurePrefab: {fileID: 3205007466584431920, guid: 14b564114b8571045b1d8b976544bc5c, type: 3}
-  structureSprite: {fileID: 0}
+  structureSprite: {fileID: 188206192, guid: 1d0bc86c12ff16c43b45995fc688fd74, type: 3}
+  structurePositionEditable: 0
   level1StructureInitiallyUnlocked: 1
   buildableAtNight: 0
+  upgradeableAtNight: 0
   functionUsableAtNight: 1
+  playerCanAlwaysInteract: 0
   upgradeable: 0
   tentLevelRequiredForLevel2: 2
   tentLevelRequiredForLevel3: 3
