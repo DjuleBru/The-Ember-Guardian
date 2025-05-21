@@ -15,7 +15,9 @@ MonoBehaviour:
   structureType: 8
   structurePrefab: {fileID: 376005918902835770, guid: 9fd37bb874f5b614f99cc7baafe1bd50, type: 3}
   structureSprite: {fileID: -645883829, guid: 34eba1fb9ce6a1544aa23a95c0972063, type: 3}
-  structurePositionEditable: 1
+  structurePositionMovable: 1
+  structurePositionRemovable: 1
+  maxStructureBlueprintAmount: 1
   level1StructureInitiallyUnlocked: 0
   buildableAtNight: 1
   upgradeableAtNight: 0

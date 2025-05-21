@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureType: 5
   structurePrefab: {fileID: 376005918902835770, guid: 66853f91908156f4cbdb33546cc7fc15, type: 3}
-  structureSprite: {fileID: -1654454425, guid: bf8da3aab6b261543b438be917263346, type: 3}
-  structurePositionEditable: 1
+  structureSprite: {fileID: 444527085, guid: bf8da3aab6b261543b438be917263346, type: 3}
+  structurePositionMovable: 1
+  structurePositionRemovable: 1
+  maxStructureBlueprintAmount: 1
   level1StructureInitiallyUnlocked: 0
   buildableAtNight: 1
   upgradeableAtNight: 0

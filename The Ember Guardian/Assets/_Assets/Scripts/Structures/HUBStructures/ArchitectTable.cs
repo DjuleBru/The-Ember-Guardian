@@ -16,7 +16,7 @@ public class ArchitectTable : MonoBehaviour
 
     private int initialMaxAmmoCrafterAmount = 1;
     private int initialMaxSecondaryFireAmount = 2;
-    private int initialMaxTrapSlotsAmount = 4;
+    private int initialMaxTrapSlotsAmount = 6;
     private int initialMaxSniperTowerAmount = 1;
     private int initialMaxMachineGunTowerAmount = 1;
     private int initialMaxMortarPositionsAmount = 1;

@@ -6,59 +6,69 @@ using UnityEngine.UI;
 
 public class AutoScrollRect : MonoBehaviour {
 
-    private ScrollRect scrollRect; // Référence au ScrollRect
+    [SerializeField] private bool autoScrollWithMouse = false;
+
+    private ScrollRect scrollRect;
     private RectTransform hoveredButtonUI;
     private RectTransform previousSelectedButtonUI;
     private float smoothSpeed = 2f;
 
-    private EventSystem eventSystem; // Référence au système d'événements
+    private EventSystem eventSystem;
+
+    private RectTransform manualTarget;
+    private bool manualScrollRequest = false;
 
     void Start() {
-        eventSystem = EventSystem.current; // Récupérer l'EventSystem actif
+        eventSystem = EventSystem.current;
         scrollRect = GetComponent<ScrollRect>();
-
         scrollRect.enabled = true;
     }
 
     void Update() {
+        if (manualScrollRequest && manualTarget != null) {
+            previousSelectedButtonUI = manualTarget;
+            AdjustScrollPosition();
 
-        if (!GameInput.Instance.IsUsingGamepad()) return;
+            if (ReachedTargetPosition()) {
+                manualScrollRequest = false;
+                manualTarget = null;
+            }
+            return;
+        }
 
-        // Vérifie le bouton sélectionné par la manette ou le clavier
+        if (!autoScrollWithMouse) {
+            if (!GameInput.Instance.IsUsingGamepad()) return;
+        }
+
         GameObject selected = eventSystem.currentSelectedGameObject;
         if (selected != null && selected.GetComponent<Button>() != null) {
             hoveredButtonUI = selected.GetComponent<RectTransform>();
             previousSelectedButtonUI = hoveredButtonUI;
         }
 
-        // Ajuster la position du ScrollRect en fonction du bouton actuel
         if (previousSelectedButtonUI != null) {
             AdjustScrollPosition();
         }
     }
 
     private void AdjustScrollPosition() {
-        // Récupérer la taille du Content et de la Vue
         float contentWidth = scrollRect.content.rect.width;
         float contentHeight = scrollRect.content.rect.height;
         float viewportWidth = scrollRect.viewport.rect.width;
         float viewportHeight = scrollRect.viewport.rect.height;
 
-        // Récupérer la position locale du bouton dans le Content
         Vector2 buttonLocalPosition = previousSelectedButtonUI.localPosition;
         ItemButtonUI itemButtonUI = previousSelectedButtonUI.GetComponent<ItemButtonUI>();
         if (itemButtonUI != null) {
             buttonLocalPosition.x = itemButtonUI.GetLocalPosition().x;
         }
-        // Calculer les positions centrées pour les axes horizontal et vertical
+
         float centeredPositionX = buttonLocalPosition.x - viewportWidth / 2f;
         float centeredPositionY = buttonLocalPosition.y - viewportHeight / 2f;
 
-        // Calculer les positions normalisées pour chaque axe
         float normalizedPositionX = Mathf.Clamp01((centeredPositionX + contentWidth / 2f) / (contentWidth - viewportWidth));
         float normalizedPositionY = Mathf.Clamp01((centeredPositionY + contentHeight / 2f) / (contentHeight - viewportHeight));
 
-        // Appliquer les positions normalisées au ScrollRect
         scrollRect.horizontalNormalizedPosition = Mathf.Lerp(
             scrollRect.horizontalNormalizedPosition,
             normalizedPositionX,
@@ -70,4 +80,28 @@ public class AutoScrollRect : MonoBehaviour {
             Time.deltaTime * smoothSpeed);
     }
 
+    private float CalculateNormalizedX(RectTransform target) {
+        float contentWidth = scrollRect.content.rect.width;
+        float viewportWidth = scrollRect.viewport.rect.width;
+
+        Vector2 localPos = target.localPosition;
+        ItemButtonUI itemButtonUI = target.GetComponent<ItemButtonUI>();
+        if (itemButtonUI != null) {
+            localPos.x = itemButtonUI.GetLocalPosition().x;
+        }
+
+        float centeredX = localPos.x - viewportWidth / 2f;
+        return Mathf.Clamp01((centeredX + contentWidth / 2f) / (contentWidth - viewportWidth));
+    }
+
+    private bool ReachedTargetPosition() {
+        float targetX = CalculateNormalizedX(previousSelectedButtonUI);
+        float delta = Mathf.Abs(scrollRect.horizontalNormalizedPosition - targetX);
+        return delta < 0.01f;
+    }
+
+    public void CenterOn(RectTransform target) {
+        manualTarget = target;
+        manualScrollRequest = true;
+    }
 }

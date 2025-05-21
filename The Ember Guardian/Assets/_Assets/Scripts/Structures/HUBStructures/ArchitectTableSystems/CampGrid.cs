@@ -20,15 +20,13 @@ public class CampGrid : MonoBehaviour {
         Instance = this;
         InstatiateVisuals();
     }
-    void Start() {
-    }
 
     private void InstatiateVisuals() {
         for (int x = 0; x < gridSize; x++) {
             Vector2Int pos = new Vector2Int(x, 0);
             GridVisualUnit visual = Instantiate(gridVisualPrefab, visualGridContainer);
             visual.gameObject.SetActive(true);
-            visual.GetComponent<RectTransform>().anchoredPosition = new Vector2(x * cellSize, 300);
+            visual.GetComponent<RectTransform>().anchoredPosition = new Vector2(x * cellSize, visual.GetComponent<RectTransform>().anchoredPosition.y);
             visual.SetGridPos(pos);
             gridVisuals.Add(pos, visual);
         }
@@ -43,6 +41,16 @@ public class CampGrid : MonoBehaviour {
         foreach (var unit in gridVisuals.Values) {
             unit.SetHovered(false);
         }
+    }
+
+    public GridVisualUnit GetFirstHoveredCellWithStructure() {
+        foreach (var kvp in gridVisuals) {
+            GridVisualUnit cell = kvp.Value;
+            if (cell.IsHovered() && cell.GetOccupyingStructure() != null) {
+                return cell;
+            }
+        }
+        return null;
     }
 
     public bool CanPlaceAt(int startCell, int width, StructureBlueprint blueprintToIgnore = null) {
@@ -68,6 +76,23 @@ public class CampGrid : MonoBehaviour {
         return false;
     }
 
+    public int FindFirstAvailablePosition(int width, StructureBlueprint blueprint) {
+        int center = gridSize/2; // on considère 0 comme cellule centrale
+
+        for (int offset = 0; offset <= gridSize; offset++) {
+            int left = center - offset;
+            int right = center + offset;
+
+            // Priorité au centre, puis gauche, puis droite
+            if (CanPlaceAt(left, width, null)) return left;
+            if (offset != 0 && CanPlaceAt(right, width, blueprint)) return right;
+        }
+
+        Debug.LogWarning("Aucune place disponible pour placer la structure");
+        return center; // fallback si rien trouvé
+    }
+
+
     public float CellToWorld(int cellX) {
         return gridOriginX + (cellX * cellSize);
     }
@@ -89,7 +114,7 @@ public class CampGrid : MonoBehaviour {
             if (gridVisuals.TryGetValue(cell, out var unit)) {
 
                 if(occupied) {
-                    unit.SetOccupied(blueprint);
+                    unit.SetOccupyingStructure(blueprint);
                     blueprint.SetOccupiedCells();
                 } else {
                     unit.ClearOccupied();
@@ -111,6 +136,34 @@ public class CampGrid : MonoBehaviour {
                 else {
                     unit.SetSelected(false);
                 }
+            }
+
+        }
+    }
+
+    public void SetHoveredCells(int startCell, int width, bool selected) {
+
+        for (int i = 0; i < width; i++) {
+            Vector2Int cell = new Vector2Int(startCell + i, 0);
+
+            if (gridVisuals.TryGetValue(cell, out var unit)) {
+                if (selected) {
+                    unit.SetHovered(true);
+                }
+                else {
+                    unit.SetHovered(false);
+                }
+            }
+
+        }
+    }
+    public void SetUnvalidPositionCells(int startCell, int width) {
+
+        for (int i = 0; i < width; i++) {
+            Vector2Int cell = new Vector2Int(startCell + i, 0);
+
+            if (gridVisuals.TryGetValue(cell, out var unit)) {
+                unit.SetUnvalidBackgroundColor();
             }
 
         }
