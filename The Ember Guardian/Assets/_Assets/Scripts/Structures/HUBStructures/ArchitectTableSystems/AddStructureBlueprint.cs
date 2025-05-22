@@ -9,6 +9,7 @@ public class AddStructureBlueprint : MonoBehaviour
     [SerializeField] private StructureSO linkedStructureSO;
 
     [SerializeField] private Image structureIconImage;
+    [SerializeField] private TextMeshProUGUI structureNameText;
     [SerializeField] private TextMeshProUGUI maxStructureBlueprintText;
     [SerializeField] private TextMeshProUGUI currentStructureBlueprintText;
     [SerializeField] private TextMeshProUGUI maxedOutStructureBlueprintText;
@@ -29,6 +30,8 @@ public class AddStructureBlueprint : MonoBehaviour
     }
 
     private void Start() {
+        structureNameText.text = LocalizationManager.Instance.GetLocalizedText(linkedStructureSO.structureNameLocalizationKey);
+
         CampEditManager.Instance.OnStructureAdded += CampEditManager_OnStructureAdded;
         CampEditManager.Instance.OnStructureRemoved += CampEditManager_OnStructureRemoved;
         RefreshStructureAmounts();

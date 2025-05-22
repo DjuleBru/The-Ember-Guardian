@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: BearTrap
   m_EditorClassIdentifier: 
   structureType: 15
+  structureLocationPrefab: {fileID: 5715190931286185991, guid: 50278a890c281084d933a55467090c2c, type: 3}
   structurePrefab: {fileID: 6830574097356007786, guid: 9586dd6e54b8b854dba27a7fb93d520f, type: 3}
   structureSprite: {fileID: -1516415065, guid: c1a540771a16a814a91fe1eafbf8a712, type: 3}
+  structureNameLocalizationKey: Bear Trap
+  widthInCells: 1
   structurePositionMovable: 1
   structurePositionRemovable: 1
   maxStructureBlueprintAmount: 6

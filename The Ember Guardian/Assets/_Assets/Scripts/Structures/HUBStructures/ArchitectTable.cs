@@ -52,6 +52,8 @@ public class ArchitectTable : MonoBehaviour
         ES3.Save("maxMachineGunTowerAmount", maxMachineGunTowerAmount);
         ES3.Save("maxMortarPositionsAmount", maxMortarPositionsAmount);
 
+        CampEditManager.Instance.SaveCampLayout();
+
         if(architectTableUnlocked) {
             MetaProgressionManager.Instance.SetMerchantUnlocked(HubMerchant.HubMerchantType.ArchitectTable);
         }

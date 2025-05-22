@@ -547,6 +547,7 @@ GameObject:
   - component: {fileID: 7878772092912277036}
   - component: {fileID: 2034560652538848842}
   - component: {fileID: 2138511968913459172}
+  - component: {fileID: 7070657862694061235}
   m_Layer: 5
   m_Name: BlueprintUI
   m_TagString: Untagged
@@ -607,3 +608,24 @@ MonoBehaviour:
   dropBlueprintSprite: {fileID: -498932176, guid: f412755bd222d8948b5bb34808bac723, type: 3}
   resetMovementSprite: {fileID: 389507029, guid: f412755bd222d8948b5bb34808bac723, type: 3}
   removeBlueprintSprite: {fileID: 447215865, guid: f412755bd222d8948b5bb34808bac723, type: 3}
+--- !u!95 &7070657862694061235
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8986075613956676372}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 86e843a9b235d554292bad57229f4718, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

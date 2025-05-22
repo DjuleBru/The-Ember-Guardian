@@ -2,10 +2,20 @@ using Mono.CSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CampEditManager : MonoBehaviour {
     public static CampEditManager Instance;
+    public class StructurePlacementData {
+        public int positionIndex;
+        public StructureSO structureSO;
+
+        public StructurePlacementData(int index, StructureSO structureSO) {
+            this.positionIndex = index;
+            this.structureSO = structureSO;
+        }
+    }
 
     public enum CampEditMode {
         None,
@@ -19,7 +29,11 @@ public class CampEditManager : MonoBehaviour {
     [SerializeField] private Canvas canvas;
     [SerializeField] private Transform structureBlueprintPrefab;
     [SerializeField] private Transform structureBlueprintsParent;
-    [SerializeField] private List<StructureBlueprint> placedStructureBlueprints = new List<StructureBlueprint>();
+    [SerializeField] private int tentBlueprintInitialCell;
+    [SerializeField] private StructureBlueprint tentBlueprint;
+    [SerializeField] private Dictionary<int, StructureBlueprint> placedStructureBlueprints = new Dictionary<int, StructureBlueprint>();
+    [SerializeField] private GameObject initialStructureBlueprintsParentGO;
+    List<StructurePlacementData> savedLayout = new List<StructurePlacementData>();
     private CampGrid campGrid;
 
     private Vector2 mouseOffsetLocal;
@@ -35,12 +49,18 @@ public class CampEditManager : MonoBehaviour {
     private float draggingTimer;
     private float draggingStartTime = .15f;
 
+    public event EventHandler OnAnyChangeMade;
+    public event EventHandler OnLayoutSaved;
+    public event EventHandler OnLayoutResetToDefault;
+    public event EventHandler OnAllStructuresRemoved;
     public event EventHandler OnStructureRemoved;
     public event EventHandler OnStructureAdded;
 
     void Awake() {
         Instance = this;
         campGrid = GetComponent<CampGrid>();
+
+        LoadCampLayout();
     }
 
     private void Start() {
@@ -50,6 +70,11 @@ public class CampEditManager : MonoBehaviour {
 
         scrollRectEvents.OnDragEnded += ScrollRectEvents_OnDragEnded;
         scrollRectEvents.OnDragStarted += ScrollRectEvents_OnDragStarted;
+
+        // Check if no structure was saved
+        if (savedLayout.Count == 0) return;
+
+        InitializeCampLayout();
     }
 
     void Update() {
@@ -152,11 +177,18 @@ public class CampEditManager : MonoBehaviour {
 
         blueprintBeingMoved.SetMoving(false);
         int newCell = blueprintBeingMoved.currentCell.x;
+
+        int oldKey = placedStructureBlueprints.FirstOrDefault(kvp => kvp.Value == blueprintBeingMoved).Key;
+        placedStructureBlueprints.Remove(oldKey);
+        placedStructureBlueprints[newCell] = blueprintBeingMoved;
+
         campGrid.SetOccupiedCells(newCell, blueprintBeingMoved.widthInCells, true, blueprintBeingMoved);
         campGrid.SetSelectedCells(blueprintBeingMoved.currentCell.x, blueprintBeingMoved.widthInCells, false);
 
         blueprintBeingMoved.isBeingMoved = false;
         blueprintBeingMoved = null;
+
+        OnAnyChangeMade?.Invoke(this, EventArgs.Empty);
     }
 
     public StructureBlueprint GetBlueprintBeingMoved() => blueprintBeingMoved;
@@ -182,7 +214,8 @@ public class CampEditManager : MonoBehaviour {
     }
 
     public void RegisterStructure(StructureBlueprint structure) {
-        placedStructureBlueprints.Add(structure);
+        int cellX = structure.currentCell.x;
+        placedStructureBlueprints[cellX] = structure;
 
         foreach (var cell in structure.GetOccupiedCells()) {
             if (campGrid.gridVisuals.TryGetValue(cell, out var unit)) {
@@ -192,14 +225,22 @@ public class CampEditManager : MonoBehaviour {
     }
 
     public void RemoveStructure(StructureBlueprint structureBlueprint) {
-        placedStructureBlueprints.Remove(structureBlueprint);
+        int cellX = structureBlueprint.currentCell.x;
+        if (placedStructureBlueprints.ContainsKey(cellX)) {
+            placedStructureBlueprints.Remove(cellX);
+        }
 
         campGrid.SetOccupiedCells(structureBlueprint.currentCell.x, structureBlueprint.widthInCells, false);
         campGrid.SetSelectedCells(structureBlueprint.currentCell.x, structureBlueprint.widthInCells, false);
-        
-        OnStructureRemoved?.Invoke(this, EventArgs.Empty);
 
-        Destroy(structureBlueprint.gameObject);
+        OnStructureRemoved?.Invoke(this, EventArgs.Empty);
+        OnAnyChangeMade?.Invoke(this, EventArgs.Empty);
+
+        if(structureBlueprint.GetIsInitialBlueprint()) {
+            structureBlueprint.gameObject.SetActive(false);
+        } else {
+            Destroy(structureBlueprint.gameObject);
+        }
     }
 
     public void AddStructure(StructureSO structureSO) {
@@ -222,9 +263,8 @@ public class CampEditManager : MonoBehaviour {
 
         autoScrollRect.CenterOn(structureBlueprint.GetComponent<RectTransform>());
 
-        //StartMoving(structureBlueprint, false);
-
         OnStructureAdded?.Invoke(this, EventArgs.Empty);
+        OnAnyChangeMade?.Invoke(this, EventArgs.Empty);
     }
 
     public void UnhoverAll() {
@@ -232,10 +272,10 @@ public class CampEditManager : MonoBehaviour {
     }
 
     public int GetPlacedStructureBlueprintAmountOfType(StructureSO structureSO) {
-        int amount = 0; 
+        int amount = 0;
 
-        foreach(StructureBlueprint blueprint in placedStructureBlueprints) {
-            if(blueprint.GetLinkedStructureSO().structureType == structureSO.structureType) {
+        foreach (StructureBlueprint blueprint in placedStructureBlueprints.Values) {
+            if (blueprint.GetLinkedStructureSO().structureType == structureSO.structureType) {
                 amount++;
             }
         }
@@ -245,15 +285,6 @@ public class CampEditManager : MonoBehaviour {
 
     private void GameInput_OnEditCampSelect(object sender, System.EventArgs e) {
         // Pickup blueprint logic
-        if (currentMode == CampEditMode.AddingStructure) {
-
-            campGrid.SetHoveredCells(blueprintBeingAdded.currentCell.x, blueprintBeingAdded.widthInCells, false);
-            blueprintBeingAdded.SetHovered(false);
-
-            SetMode(CampEditMode.None);
-            return;
-        };
-
 
         if (GetMovingBlueprint()) return;
 
@@ -312,4 +343,116 @@ public class CampEditManager : MonoBehaviour {
     public void SetMode(CampEditMode mode) {
         currentMode = mode;
     }
+
+    public void RemoveAllStructure() {
+        List<StructureBlueprint> structureBlueprintsToRemove = new List<StructureBlueprint>();
+        Debug.Log("RemoveAllStructure " + placedStructureBlueprints.Count);
+
+        foreach (var kvp in placedStructureBlueprints) {
+            StructureBlueprint blueprint = kvp.Value;
+
+            if (blueprint.GetLinkedStructureSO().structurePositionRemovable) {
+                structureBlueprintsToRemove.Add(blueprint);
+            }
+        }
+
+        foreach (StructureBlueprint blueprintToRemove in structureBlueprintsToRemove) {
+            Debug.Log("blueprintToRemove " + blueprintToRemove);
+            RemoveStructure(blueprintToRemove);
+        }
+
+        Debug.Log("New  placedStructureBlueprints.Count " + placedStructureBlueprints.Count);
+        OnAnyChangeMade?.Invoke(this, EventArgs.Empty);
+        OnAllStructuresRemoved?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void ResetToDefault() {
+        StartCoroutine(ResetToDefaultCoroutine());
+    }
+
+    public IEnumerator ResetToDefaultCoroutine() {
+        RemoveAllStructure();
+
+        yield return new WaitForEndOfFrame();
+
+        StructureBlueprint[] structureBlueprints = initialStructureBlueprintsParentGO.GetComponentsInChildren<StructureBlueprint>(true);
+        savedLayout = new List<StructurePlacementData>();
+
+        Debug.Log("ResetToDefault structureBlueprints.Length" + structureBlueprints.Length);
+        PlaceBlueprintOnGrid(tentBlueprint, tentBlueprintInitialCell);
+
+        foreach (StructureBlueprint blueprint in structureBlueprints) {
+            blueprint.gameObject.SetActive(true);
+            blueprint.SetOccupiedCells();
+            PlaceBlueprintOnGrid(blueprint, blueprint.currentCell.x);
+        }
+
+        OnAnyChangeMade?.Invoke(this, EventArgs.Empty);
+        OnLayoutResetToDefault?.Invoke(this, EventArgs.Empty);
+
+    }
+
+    public void SaveCampLayout() {
+        List<StructurePlacementData> layoutToSave = new List<StructurePlacementData>();
+
+        foreach (var pair in placedStructureBlueprints) {
+            StructureSO so = pair.Value.GetLinkedStructureSO();
+
+            if (!so.structurePositionMovable) {
+                continue; // Skip les structures non déplaçables
+            }
+
+            layoutToSave.Add(new StructurePlacementData(pair.Key, so));
+        }
+
+        ES3.Save("campLayout", layoutToSave);
+
+        OnLayoutSaved?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void LoadCampLayout() {
+        savedLayout = ES3.Load("campLayout", new List<StructurePlacementData>());
+        Debug.Log("LoadCampLayout " + savedLayout.Count);
+    }
+
+    public bool GetCampLayoutCustomized() {
+        return savedLayout.Count > 0;
+    }
+
+    public void InitializeCampLayout() {
+        RemoveAllStructure();
+
+        foreach (var data in savedLayout) {
+
+            Debug.Log("Loading " + data.structureSO + " position "+ data.positionIndex);
+
+            if (!data.structureSO.structurePositionMovable || !data.structureSO.structurePositionRemovable) {
+
+                if(data.structureSO.structureType == StructureSO.StructureType.tent) {
+                    int tentStartCell = data.positionIndex;
+                    PlaceBlueprintOnGrid(tentBlueprint, tentStartCell);
+                }
+
+                continue; // Skip les structures non déplaçables
+            }
+
+            if (data.structureSO.structureLocationPrefab == null) continue;
+
+            StructureBlueprint structureBlueprint = Instantiate(structureBlueprintPrefab, structureBlueprintsParent).GetComponent<StructureBlueprint>();
+            structureBlueprint.SetStructureSO(data.structureSO);
+
+            int startCell = data.positionIndex;
+            PlaceBlueprintOnGrid(structureBlueprint, startCell);
+        }
+    }
+
+    private void PlaceBlueprintOnGrid(StructureBlueprint structureBlueprint, int startCell) {
+        float snappedX = campGrid.CellToWorld(startCell);
+        var rt = structureBlueprint.GetComponent<RectTransform>();
+        rt.anchoredPosition = new Vector2(snappedX, rt.anchoredPosition.y);
+        campGrid.SetOccupiedCells(startCell, structureBlueprint.widthInCells, true, structureBlueprint);
+
+        RegisterStructure(structureBlueprint);
+    }
+
 }

@@ -13,8 +13,8 @@ public class StructureBlueprint : MonoBehaviour {
     [SerializeField] private Material selectedMaterial;
     [SerializeField] private Material emptyMaterial;
     [SerializeField] private bool isInitialBlueprint;
+    private Animator blueprintAnimator;
 
-    private Animator uiAnimator;
     public int widthInCells = 3;
     public bool isBeingMoved = false;
     public bool isBeingRemoved = false;
@@ -22,22 +22,34 @@ public class StructureBlueprint : MonoBehaviour {
     public List<Vector2Int> occupiedCells = new List<Vector2Int>();
 
     private bool hovered;
-
+    public event EventHandler OnBlueprintHovered;
+    public event EventHandler OnBlueprintUnhovered;
     public event EventHandler OnStructureStartedMoving;
     public event EventHandler OnStructureStoppedMoving;
 
     private void Awake() {
-        uiAnimator = GetComponent<Animator>();
+        blueprintAnimator = GetComponent<Animator>();
     }
 
-    void Start() { 
-        // Calcul de la cellule à partir de la position actuelle
-        SetOccupiedCells();
+    void Start() {
 
-        if(linkedStructureSO != null) {
+        if (linkedStructureSO != null) {
             blueprintImage.sprite = linkedStructureSO.structureSprite;
             SetBlueprintSize();
         }
+
+        if (isInitialBlueprint && linkedStructureSO.structurePositionMovable && CampEditManager.Instance.GetCampLayoutCustomized()) {
+
+            if (linkedStructureSO.structureType != StructureSO.StructureType.tent) {
+                gameObject.SetActive(false);
+                return;
+            };
+
+        };
+
+        // Calcul de la cellule à partir de la position actuelle
+        SetOccupiedCells();
+
 
         if(isInitialBlueprint) {
             CampEditManager.Instance.RegisterStructure(this);
@@ -71,6 +83,8 @@ public class StructureBlueprint : MonoBehaviour {
     public void SetStructureSO(StructureSO structureSO) {
         linkedStructureSO = structureSO;
         blueprintImage.sprite = linkedStructureSO.structureSprite;
+        widthInCells = structureSO.widthInCells;
+
         SetOccupiedCells();
         SetBlueprintSize();
     }
@@ -92,23 +106,19 @@ public class StructureBlueprint : MonoBehaviour {
             this.hovered = hovered;
             HoverFunction(hovered);
 
-            if (uiAnimator == null) return;
-            uiAnimator.ResetTrigger("Hide");
-            uiAnimator.SetTrigger("Show");
-
+            OnBlueprintHovered?.Invoke(this, EventArgs.Empty);
         }
 
         if(this.hovered && !hovered) {
             this.hovered = hovered;
             HoverFunction(hovered);
 
-            if (uiAnimator == null) return;
-            uiAnimator.ResetTrigger("Show");
-            uiAnimator.SetTrigger("Hide");
+            OnBlueprintUnhovered?.Invoke(this, EventArgs.Empty);
         }
     }
 
     public void HoverFunction(bool hover) {
+        if (CampEditManager.Instance.GetMovingBlueprint()) return;
         if(linkedUIHoveredObjectAnimator != null) {
             if(hover) {
                 linkedUIHoveredObjectAnimator.ResetTrigger("Hide");
@@ -125,21 +135,27 @@ public class StructureBlueprint : MonoBehaviour {
 
         if (moving) {
             blueprintImage.material = selectedMaterial;
-            blueprintImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 10);
             OnStructureStartedMoving?.Invoke(this, EventArgs.Empty);
             if(!hovered) {
-                uiAnimator.ResetTrigger("Hide");
-                uiAnimator.SetTrigger("Show");
+                OnBlueprintHovered?.Invoke(this, EventArgs.Empty);
+                if (blueprintAnimator == null) return;
+                blueprintAnimator.SetTrigger("PickUp");
+                blueprintAnimator.ResetTrigger("Drop");
             }
 
         } else {
             blueprintImage.material = emptyMaterial;
-            blueprintImage.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0);
             OnStructureStoppedMoving?.Invoke(this, EventArgs.Empty);
 
-            uiAnimator.ResetTrigger("Show");
-            uiAnimator.SetTrigger("Hide");
+            OnBlueprintUnhovered?.Invoke(this, EventArgs.Empty);
+            if (blueprintAnimator == null) return;
+            blueprintAnimator.SetTrigger("Drop");
+            blueprintAnimator.ResetTrigger("PickUp");
         }
+    }
+
+    public bool GetIsInitialBlueprint() {
+        return isInitialBlueprint;
     }
 
 }

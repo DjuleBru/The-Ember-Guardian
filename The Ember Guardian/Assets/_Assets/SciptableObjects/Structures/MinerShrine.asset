@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: MinerShrine
   m_EditorClassIdentifier: 
   structureType: 5
+  structureLocationPrefab: {fileID: 4700977404103358565, guid: cea3f48392c1a8c48b3e253c5d7c1d1a, type: 3}
   structurePrefab: {fileID: 376005918902835770, guid: 66853f91908156f4cbdb33546cc7fc15, type: 3}
   structureSprite: {fileID: 444527085, guid: bf8da3aab6b261543b438be917263346, type: 3}
+  structureNameLocalizationKey: Scavenger Shrine
+  widthInCells: 2
   structurePositionMovable: 1
   structurePositionRemovable: 1
   maxStructureBlueprintAmount: 1

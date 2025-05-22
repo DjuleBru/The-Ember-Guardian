@@ -31,7 +31,6 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
     private void Start() {
         interactionWithWorkersUnlocked = WorkerStats.Instance.GetInteractionWithWorkersUnlocked();
         maxFollowingWorkers = WorkerStats.Instance.GetMaxFollowingWorkers();
-        Debug.Log("maxFollowingWorkers " + maxFollowingWorkers);
         if (!interactionWithWorkersUnlocked) return;
 
         Mob.OnAnyMobDied += Worker_OnAnyMobDied;

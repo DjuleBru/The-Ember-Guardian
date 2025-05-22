@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: BladeTrap
   m_EditorClassIdentifier: 
   structureType: 16
+  structureLocationPrefab: {fileID: 5715190931286185991, guid: 50278a890c281084d933a55467090c2c, type: 3}
   structurePrefab: {fileID: 6830574097356007786, guid: ba74951f9d9267b44bd24905a8876c12, type: 3}
   structureSprite: {fileID: 2045385125, guid: c1a540771a16a814a91fe1eafbf8a712, type: 3}
+  structureNameLocalizationKey: Blade Trap
+  widthInCells: 1
   structurePositionMovable: 1
   structurePositionRemovable: 1
   maxStructureBlueprintAmount: 6

@@ -34,14 +34,19 @@ public class StructureSO : ScriptableObject
         secondaryFire,
         fastTravelTeleporter,
         fireEjector,
-        spikes
+        spikes,
+        orbExtractor,
+
     }
 
     public StructureType structureType;
 
+    public Transform structureLocationPrefab;
     public Transform structurePrefab;
     public Sprite structureSprite;
 
+    public string structureNameLocalizationKey;
+    public int widthInCells;
     public bool structurePositionMovable;
     public bool structurePositionRemovable;
     public int maxStructureBlueprintAmount;

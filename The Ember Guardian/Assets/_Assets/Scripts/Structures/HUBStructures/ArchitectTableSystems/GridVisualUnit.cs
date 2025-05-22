@@ -9,9 +9,9 @@ public class GridVisualUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField] private Image background;
     [SerializeField] private Image border;
 
-    private Animator animator;
-    private Color initialBackgroundColor;
-    private Color initialBorderColor;
+    [SerializeField] private Animator animator;
+    [SerializeField] private Color initialBackgroundColor;
+    [SerializeField] private Color initialBorderColor;
     [SerializeField] private Color occupiedColor;
     [SerializeField] private Color selectedColor;
     [SerializeField] private Color unvalidPlacementColor;
@@ -20,16 +20,9 @@ public class GridVisualUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private bool selected;
     private bool hovered;
     private bool movable = true;
-    private bool removable = true;
     private Vector2Int gridPos;
     private StructureBlueprint occupyingStructure;
 
-    private void Awake() {
-        animator = GetComponent<Animator>();
-
-        initialBackgroundColor = background.color;
-        initialBorderColor = border.color;
-    }
     public void SetHovered(bool hovered) {
         if (selected) return;
         if (this.hovered == hovered) return;
@@ -80,7 +73,6 @@ public class GridVisualUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         background.color = occupiedColor;
 
         movable = occupyingStructure.GetLinkedStructureSO().structurePositionMovable;
-        removable = occupyingStructure.GetLinkedStructureSO().structurePositionRemovable;
 
         if(!movable) {
             animator.SetTrigger("Show");

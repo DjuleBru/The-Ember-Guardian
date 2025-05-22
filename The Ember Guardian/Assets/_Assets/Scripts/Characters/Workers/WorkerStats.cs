@@ -47,7 +47,6 @@ public class WorkerStats : MonoBehaviour
     }
 
     private void LoadStatValues() {
-        Debug.Log("LoadStatValues");
         workerInteractions_Debug = DebugManager.Instance.GetDebugMode_WorkerInteractions();
         interactionWithWorkersUnlocked = ES3.Load("interactionWithWorkersUnlocked", workerInteractions_Debug);
         maxFollowingWorkers = ES3.Load("maxFollowingWorkers", initialMaxFollowingWorkers);

@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: Spikes
   m_EditorClassIdentifier: 
   structureType: 26
+  structureLocationPrefab: {fileID: 5715190931286185991, guid: 50278a890c281084d933a55467090c2c, type: 3}
   structurePrefab: {fileID: 6830574097356007786, guid: 8254da312c84d024a933bf9a8d291896, type: 3}
   structureSprite: {fileID: -1692902824, guid: c1a540771a16a814a91fe1eafbf8a712, type: 3}
+  structureNameLocalizationKey: Spiked
+  widthInCells: 1
   structurePositionMovable: 1
   structurePositionRemovable: 1
   maxStructureBlueprintAmount: 6

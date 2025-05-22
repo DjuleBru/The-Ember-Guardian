@@ -7,6 +7,8 @@ public class PlayerCamp : MonoBehaviour
 {
     public static PlayerCamp Instance;
 
+    [SerializeField] private Transform initialStructureLocationsParent;
+    [SerializeField] private Transform customCampStructureLocationParent;
     [SerializeField] private StructureLocation initialFireStructureLocation;
     [SerializeField] private List<Structure> initialStructures;
 
@@ -26,6 +28,8 @@ public class PlayerCamp : MonoBehaviour
     [SerializeField] private StructureLocation rightBarricade2;
     [SerializeField] private StructureLocation leftBarricade3;
     [SerializeField] private StructureLocation rightBarricade3;
+
+    private float layoutMidPosition = 56.5f;
 
     private Vector3 leftBarricade1Position;
     private Vector3 rightBarricade1Position;
@@ -52,14 +56,45 @@ public class PlayerCamp : MonoBehaviour
 
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         Tent.Instance.OnStructureUpgraded += Tent_OnStructureUpgraded;
-        //CampZoneManager.Instance.OnCampZoneLimitsChanged += CampZoneManager_OnCampZoneLimitsChanged;
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
 
         foreach (Structure structure in initialStructures) {
             structure.gameObject.SetActive(false);
         }
 
-        InitializeBuiltAtStartStructureLocations();
+        LoadCustomCampLayout();
+
+        //InitializeBuiltAtStartStructureLocations();
+    }
+
+    private void LoadCustomCampLayout() {
+        List<CampEditManager.StructurePlacementData> structurePlacementData = ES3.Load("campLayout", new List<CampEditManager.StructurePlacementData>());
+
+        // Camp has never been customized
+        if (structurePlacementData.Count == 0) return;
+
+        foreach(StructureLocation location in initialStructureLocationsParent.GetComponentsInChildren<StructureLocation>()) {
+            location.gameObject.SetActive(false);
+        }
+
+        foreach(CampEditManager.StructurePlacementData data in structurePlacementData) {
+            StructureSO structureSO = data.structureSO;
+            int position = data.positionIndex;
+
+            float worldPositionX = LayoutToWorldPosition(position, structureSO);
+            Vector3 worldPosition = new Vector3(worldPositionX, 0, 0);
+
+            if (structureSO.structureType == StructureSO.StructureType.tent) {
+                Tent.Instance.transform.position = worldPosition;
+            } else {
+                if (structureSO.structureLocationPrefab == null) continue;
+                StructureLocation structureLocation = Instantiate(structureSO.structureLocationPrefab, customCampStructureLocationParent).GetComponent<StructureLocation>();
+                structureLocation.transform.position = worldPosition;
+                structureLocation.UnlockStructureLocation();
+            }
+
+        }
+
     }
 
     private void InitializeBuiltAtStartStructureLocations() {
@@ -244,6 +279,20 @@ public class PlayerCamp : MonoBehaviour
 
     public bool GetStructureBuiltAtStart(Structure structure) {
         return initialStructures.Contains(structure);
+    }
+
+    public float LayoutToWorldPosition(int startLayoutPosition, StructureSO structureSO) {
+        Debug.Log(structureSO.structureType + " startLayoutPosition " + startLayoutPosition);
+
+        float objectMidPointLayoutPosition;
+
+        objectMidPointLayoutPosition = startLayoutPosition + structureSO.widthInCells / 2f;
+
+        float relativeLayoutPosition = objectMidPointLayoutPosition - layoutMidPosition;
+
+        float layoutToWorldConversionFactor = 5f / 3.5f;
+        float worldLayoutPosition = relativeLayoutPosition * layoutToWorldConversionFactor;
+        return worldLayoutPosition;
     }
 
     private void OnDestroy() {

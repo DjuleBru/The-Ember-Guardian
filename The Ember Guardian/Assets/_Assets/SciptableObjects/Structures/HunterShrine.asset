@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: HunterShrine
   m_EditorClassIdentifier: 
   structureType: 4
+  structureLocationPrefab: {fileID: 8434879454533105174, guid: 70b355d293f7d1b43a655c7eb6d0e015, type: 3}
   structurePrefab: {fileID: 376005918902835770, guid: 23468147a69e171409db1142d8a3887d, type: 3}
   structureSprite: {fileID: 450413676, guid: f1a9abab3be99fd42a9b60f4e52f5a1f, type: 3}
+  structureNameLocalizationKey: Hunter Shrine
+  widthInCells: 2
   structurePositionMovable: 1
   structurePositionRemovable: 1
   maxStructureBlueprintAmount: 1

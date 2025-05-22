@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: Barricade
   m_EditorClassIdentifier: 
   structureType: 3
+  structureLocationPrefab: {fileID: 8434879454533105174, guid: df2bb087c60b63a4b93ecde78a7a6787, type: 3}
   structurePrefab: {fileID: 376005918902835770, guid: 0e5690236b01384439cf9578498c6acc, type: 3}
   structureSprite: {fileID: 559212063, guid: 175cfa9d756b5754aa0efe65d7ec62ef, type: 3}
+  structureNameLocalizationKey: Barricade
+  widthInCells: 2
   structurePositionMovable: 0
   structurePositionRemovable: 0
   maxStructureBlueprintAmount: 6
