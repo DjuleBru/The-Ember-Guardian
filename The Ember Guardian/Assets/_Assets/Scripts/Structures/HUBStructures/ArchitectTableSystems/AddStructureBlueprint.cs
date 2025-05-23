@@ -1,15 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AddStructureBlueprint : MonoBehaviour
+public class AddStructureBlueprint : ButtonUI
 {
     [SerializeField] private StructureSO linkedStructureSO;
 
     [SerializeField] private Image structureIconImage;
+    [SerializeField] private Material cleanMaterial;
+    [SerializeField] private Material lockedStructureIconMaterial;
+    [SerializeField] private Sprite lockedStructureSprite;
     [SerializeField] private TextMeshProUGUI structureNameText;
+    [SerializeField] private GameObject maxStructureAmountGameObject;
+    [SerializeField] private GameObject addStructureInstructionGameObject;
+    [SerializeField] private GameObject removeStructureInstructionGameObject;
+    [SerializeField] private GameObject backgroundImageGameObject;
     [SerializeField] private TextMeshProUGUI maxStructureBlueprintText;
     [SerializeField] private TextMeshProUGUI currentStructureBlueprintText;
     [SerializeField] private TextMeshProUGUI maxedOutStructureBlueprintText;
@@ -17,6 +25,7 @@ public class AddStructureBlueprint : MonoBehaviour
 
     [SerializeField] private int currentBlueprintAmount;
     [SerializeField] private int maxBlueprintAmount;
+    private bool locked;
     private Button button;
 
     private void Awake() {
@@ -29,15 +38,72 @@ public class AddStructureBlueprint : MonoBehaviour
         structureIconImage.sprite = linkedStructureSO.structureSprite;
     }
 
-    private void Start() {
+    protected override void Start() {
+        base.Start();
+        LoadStructureUnlocked();
+
         structureNameText.text = LocalizationManager.Instance.GetLocalizedText(linkedStructureSO.structureNameLocalizationKey);
 
+        HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
         CampEditManager.Instance.OnStructureAdded += CampEditManager_OnStructureAdded;
-        CampEditManager.Instance.OnStructureRemoved += CampEditManager_OnStructureRemoved;
+        CampEditManager.Instance.OnStructureRemovedAnySituation += CampEditManager_OnStructureRemovedAnySituation;
+        CampEditManager.Instance.OnLayoutResetToDefault += CampEditManager_OnLayoutResetToDefault;
+        GameInput.Instance.OnEditCampDeselect += GameInput_OnEditCampDeselect;
+        RefreshStructureAmounts();
+    }
+
+    private void GameInput_OnEditCampDeselect(object sender, EventArgs e) {
+        if (locked) return;
+        if(buttonHovered || buttonSelected) {
+            CampEditManager.Instance.TryRemoveBlueprintFromCamp(linkedStructureSO);
+        }
+    }
+
+    private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, EventArgs e) {
+        HubMerchantItem merchantItem = sender as HubMerchantItem;
+
+        HubMerchantItem_ArchitectMerchantItem architectMerchantItem = merchantItem as HubMerchantItem_ArchitectMerchantItem;
+        if (architectMerchantItem != null) {
+            if(architectMerchantItem.GetArchitectItemCategory() == HubMerchantItem_ArchitectMerchantItem.ArchitectItemCategory.architectTableUpgrades) {
+                RefreshStructureAmounts();
+            }
+        }
+
+        HubMerchantItem_GemMerchantItem gemMerchantItem = merchantItem as HubMerchantItem_GemMerchantItem;
+        if(gemMerchantItem != null) {
+            if (gemMerchantItem.GetStructureType() == linkedStructureSO.structureType) {
+                SetStructureUnlocked();
+            }
+        }
+    }
+
+    private void LoadStructureUnlocked() {
+        string saveString = linkedStructureSO.structureType.ToString() + (1);
+
+        if (!linkedStructureSO.level1StructureInitiallyUnlocked && !MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
+            locked = true;
+            //button.enabled = false;
+            //button.interactable = false;
+            structureIconImage.sprite = lockedStructureSprite;
+            plusIcon.GetComponent<Image>().enabled = false;
+            maxStructureAmountGameObject.SetActive(false);
+            structureNameText.gameObject.SetActive(false);
+        }
+    }
+
+    private void SetStructureUnlocked() {
+        locked = false;
+        //button.enabled = true;
+        //button.interactable = true;
+        structureIconImage.sprite = linkedStructureSO.structureSprite;
+        plusIcon.GetComponent<Image>().enabled = true;
+        maxStructureAmountGameObject.SetActive(true);
+        structureNameText.gameObject.SetActive(true);
         RefreshStructureAmounts();
     }
 
     private void TryAddStructureBlueprint() {
+        if (locked) return;
         if (currentBlueprintAmount >= maxBlueprintAmount) {
 
             return;
@@ -46,7 +112,7 @@ public class AddStructureBlueprint : MonoBehaviour
         CampEditManager.Instance.AddStructure(linkedStructureSO);
     }
 
-    private void CampEditManager_OnStructureRemoved(object sender, System.EventArgs e) {
+    private void CampEditManager_OnStructureRemovedAnySituation(object sender, System.EventArgs e) {
         RefreshStructureAmounts();
     }
 
@@ -54,9 +120,15 @@ public class AddStructureBlueprint : MonoBehaviour
         RefreshStructureAmounts();
     }
 
+    private void CampEditManager_OnLayoutResetToDefault(object sender, EventArgs e) {
+        RefreshStructureAmounts();
+    }
     private void RefreshStructureAmounts() {
         currentBlueprintAmount = CampEditManager.Instance.GetPlacedStructureBlueprintAmountOfType(linkedStructureSO);
         maxBlueprintAmount = linkedStructureSO.maxStructureBlueprintAmount;
+
+        Debug.Log(linkedStructureSO + " currentBlueprintAmount " + currentBlueprintAmount);
+        Debug.Log(linkedStructureSO + " maxBlueprintAmount " + maxBlueprintAmount);
 
         if(currentBlueprintAmount < maxBlueprintAmount) {
             plusIcon.gameObject.SetActive(true);
@@ -80,6 +152,10 @@ public class AddStructureBlueprint : MonoBehaviour
                 maxBlueprintAmount = ArchitectTable.Instance.GetMaxSecondaryFireAmount();
             break;
 
+            case StructureSO.StructureType.tower:
+                maxBlueprintAmount = ArchitectTable.Instance.GetMaxTowerAmount();
+            break;
+
             case StructureSO.StructureType.sniperTower:
                 maxBlueprintAmount = ArchitectTable.Instance.GetMaxSniperTowerAmount();
             break;
@@ -100,6 +176,23 @@ public class AddStructureBlueprint : MonoBehaviour
     private void RefreshStructureAmountTexts() {
         currentStructureBlueprintText.text = currentBlueprintAmount.ToString();
         maxStructureBlueprintText.text = "/" + maxBlueprintAmount.ToString();
+
+        if(currentBlueprintAmount == maxBlueprintAmount) {
+            addStructureInstructionGameObject.SetActive(false);
+        } else {
+            addStructureInstructionGameObject.SetActive(true);
+        }
+
+        if(currentBlueprintAmount == 0) {
+            removeStructureInstructionGameObject.SetActive(false);
+        }
+        else {
+            removeStructureInstructionGameObject.SetActive(true);
+        }
     }
 
+    protected override void OnDestroy() {
+        base.OnDestroy();
+        HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
+    }
 }

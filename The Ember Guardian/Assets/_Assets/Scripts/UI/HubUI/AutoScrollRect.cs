@@ -41,6 +41,12 @@ public class AutoScrollRect : MonoBehaviour {
         }
 
         GameObject selected = eventSystem.currentSelectedGameObject;
+
+        // Button is not in scroll rect
+        if (selected == null) return;
+        if (!IsChildOfScrollContent(selected))  return;
+        
+
         if (selected != null && selected.GetComponent<Button>() != null) {
             hoveredButtonUI = selected.GetComponent<RectTransform>();
             previousSelectedButtonUI = hoveredButtonUI;
@@ -103,5 +109,8 @@ public class AutoScrollRect : MonoBehaviour {
     public void CenterOn(RectTransform target) {
         manualTarget = target;
         manualScrollRequest = true;
+    }
+    private bool IsChildOfScrollContent(GameObject obj) {
+        return obj.transform.IsChildOf(transform);
     }
 }

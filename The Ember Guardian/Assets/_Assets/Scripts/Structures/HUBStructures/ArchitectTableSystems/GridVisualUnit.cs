@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class GridVisualUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
+public class GridVisualUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler {
 
     [SerializeField] private Image background;
     [SerializeField] private Image border;
@@ -26,6 +27,7 @@ public class GridVisualUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public void SetHovered(bool hovered) {
         if (selected) return;
         if (this.hovered == hovered) return;
+
 
         this.hovered = hovered;
 
@@ -118,6 +120,7 @@ public class GridVisualUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData) {
         if (hovered) return;
+
         CampEditManager.Instance.HoverGridCell(gridPos);
 
         if(occupyingStructure != null) {
@@ -137,5 +140,25 @@ public class GridVisualUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public bool IsHovered() {
         return hovered;
+    }
+
+    public void OnDeselect(BaseEventData eventData) {
+        if (!hovered) return;
+
+        CampEditManager.Instance.UnhoverAll();
+
+        if (occupyingStructure != null) {
+            occupyingStructure.SetHovered(false);
+        }
+    }
+
+    public void OnSelect(BaseEventData eventData) {
+        if (hovered) return;
+
+        CampEditManager.Instance.HoverGridCell(gridPos);
+
+        if (occupyingStructure != null) {
+            occupyingStructure.SetHovered(true);
+        }
     }
 }

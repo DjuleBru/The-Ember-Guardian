@@ -32,6 +32,8 @@ public class GameInput : MonoBehaviour
         characterMenu,
         hoverWorkers,
         meleeAttack,
+        editCampSelect,
+        editCampDeselect,
     }
 
     private PlayerInputActions playerInputActions;
@@ -432,6 +434,12 @@ public class GameInput : MonoBehaviour
 
             case Binding.torchOnOff:
                 return playerInputActions.Player.SwitchGunLight.bindings[0].ToDisplayString();
+
+            case Binding.editCampDeselect:
+                return playerInputActions.Player.CampCustomizationDeselect.bindings[0].ToDisplayString();
+
+            case Binding.editCampSelect:
+                return playerInputActions.Player.CampCustomizationSelect.bindings[0].ToDisplayString();
 
         }
 

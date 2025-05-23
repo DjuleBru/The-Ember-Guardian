@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: FastTravelTP
   m_EditorClassIdentifier: 
   structureType: 24
+  structureCategory: 3
+  structureLocationPrefab: {fileID: 0}
   structurePrefab: {fileID: 3205007466584431920, guid: 14b564114b8571045b1d8b976544bc5c, type: 3}
   structureSprite: {fileID: 21300000, guid: d6554ff518318d343979dc4f56f5ceac, type: 3}
   structureNameLocalizationKey: Anchor Relay
@@ -20,7 +22,7 @@ MonoBehaviour:
   structurePositionMovable: 1
   structurePositionRemovable: 1
   maxStructureBlueprintAmount: 2
-  level1StructureInitiallyUnlocked: 1
+  level1StructureInitiallyUnlocked: 0
   buildableAtNight: 0
   upgradeableAtNight: 0
   functionUsableAtNight: 1

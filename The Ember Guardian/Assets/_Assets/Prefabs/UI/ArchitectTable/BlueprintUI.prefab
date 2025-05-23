@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 8654209012440874752}
   - component: {fileID: 6695374687349822089}
   - component: {fileID: 5826337001668596057}
+  - component: {fileID: 4577383264767266804}
   m_Layer: 5
   m_Name: PickUpInstruction
   m_TagString: Untagged
@@ -193,6 +194,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4577383264767266804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552303815577283521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb242a7b04a3384db32562b4315d79a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputImage1: {fileID: 7580367123739122162}
+  inputImage2: {fileID: 0}
+  inputSpriteRenderer1: {fileID: 0}
+  inputSpriteRenderer2: {fileID: 0}
+  control: 18
 --- !u!1 &1983562849650537317
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,6 +298,7 @@ GameObject:
   - component: {fileID: 57839610558236362}
   - component: {fileID: 3665919732396245438}
   - component: {fileID: 9205222397189957690}
+  - component: {fileID: 7079590507609253622}
   m_Layer: 5
   m_Name: RemoveInstruction
   m_TagString: Untagged
@@ -386,6 +405,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7079590507609253622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2615013856605902588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb242a7b04a3384db32562b4315d79a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputImage1: {fileID: 3296335747650754522}
+  inputImage2: {fileID: 0}
+  inputSpriteRenderer1: {fileID: 0}
+  inputSpriteRenderer2: {fileID: 0}
+  control: 18
 --- !u!1 &2705249654198699975
 GameObject:
   m_ObjectHideFlags: 0

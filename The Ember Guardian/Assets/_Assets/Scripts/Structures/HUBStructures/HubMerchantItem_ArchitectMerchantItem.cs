@@ -99,6 +99,9 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
         if (architectItemType == ArchitectItemType.SniperTowerMaxAmount) {
             ArchitectTable.Instance.SetMaxSniperTowerAmountBuff((int)buff);
         }
+        if (architectItemType == ArchitectItemType.TowerMaxAmount) {
+            ArchitectTable.Instance.SetMaxTowerAmountBuff((int)buff);
+        }
         if (architectItemType == ArchitectItemType.MortarPositionsMaxAmount) {
             ArchitectTable.Instance.SetMaxMortarPositionsAmountBuff((int)buff);
         }
@@ -182,6 +185,10 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
                 if (architectItemType == ArchitectItemType.SniperTowerMaxAmount) {
                     initialStatValue = ArchitectTable.Instance.GetInitialMaxSniperTowerAmount();
                     currentStatValue = ArchitectTable.Instance.GetMaxSniperTowerAmount().ToString();
+                }
+                if (architectItemType == ArchitectItemType.TowerMaxAmount) {
+                    initialStatValue = ArchitectTable.Instance.GetInitialMaxTowerAmount();
+                    currentStatValue = ArchitectTable.Instance.GetMaxTowerAmount().ToString();
                 }
                 if (architectItemType == ArchitectItemType.MachineGunTowerMaxAmount) {
                     initialStatValue = ArchitectTable.Instance.GetInitialMachineGunTowerAmount();
@@ -379,6 +386,13 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newMaxTraps") + " ");
         }
+        if (architectItemType == ArchitectItemType.TowerMaxAmount) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentMaxTower") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_maxTower") + " ");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newMaxTower") + " ");
+        }
         if (architectItemType == ArchitectItemType.SniperTowerMaxAmount) {
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentMaxSniperTower") + " ");
@@ -498,5 +512,9 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
 
     public override string GetItemType() {
         return architectItemType.ToString();
+    }
+
+    public ArchitectItemCategory GetArchitectItemCategory() {
+        return architectItemCategory;
     }
 }

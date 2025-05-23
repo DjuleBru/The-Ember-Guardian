@@ -199,6 +199,7 @@ public class StructureUI : MonoBehaviour
             gameObject.SetActive(false);
         }
 
+        if (structureLevel > upgradeToNextLevelUIGameObjectList.Count) return;
         upgradeToNextLevelUIGameObjectList[structureLevel-1].SetActive(true);
         payOrbsUI.SetOrbTemplateUIList(RecomposePayOrbsUIList(upgradeToNextLevelPayOrbsUIList[structureLevel - 1]));
     }

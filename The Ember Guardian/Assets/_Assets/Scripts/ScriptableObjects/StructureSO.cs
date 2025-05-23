@@ -36,10 +36,16 @@ public class StructureSO : ScriptableObject
         fireEjector,
         spikes,
         orbExtractor,
-
+    }
+    public enum StructureCategory {
+        core,
+        tower,
+        trap,
+        util,
     }
 
     public StructureType structureType;
+    public StructureCategory structureCategory;
 
     public Transform structureLocationPrefab;
     public Transform structurePrefab;

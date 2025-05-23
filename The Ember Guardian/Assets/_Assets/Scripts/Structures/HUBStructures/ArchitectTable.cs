@@ -10,6 +10,7 @@ public class ArchitectTable : MonoBehaviour
     private int maxAmmoCrafterAmount;
     private int maxSecondaryFireAmount;
     private int maxTrapSlotsAmount;
+    private int maxTowerAmount;
     private int maxSniperTowerAmount;
     private int maxMachineGunTowerAmount;
     private int maxMortarPositionsAmount;
@@ -17,6 +18,7 @@ public class ArchitectTable : MonoBehaviour
     private int initialMaxAmmoCrafterAmount = 1;
     private int initialMaxSecondaryFireAmount = 2;
     private int initialMaxTrapSlotsAmount = 6;
+    private int initialMaxTowerAmount = 6;
     private int initialMaxSniperTowerAmount = 1;
     private int initialMaxMachineGunTowerAmount = 1;
     private int initialMaxMortarPositionsAmount = 1;
@@ -41,6 +43,7 @@ public class ArchitectTable : MonoBehaviour
         maxSniperTowerAmount = ES3.Load("maxSniperTowerAmount", initialMaxSniperTowerAmount);
         maxMachineGunTowerAmount = ES3.Load("maxMachineGunTowerAmount", initialMaxMachineGunTowerAmount);
         maxMortarPositionsAmount = ES3.Load("maxMortarPositionsAmount", initialMaxMortarPositionsAmount);
+        maxTowerAmount = ES3.Load("maxTowerAmount", initialMaxTowerAmount);
     }
 
     public void SaveStats() {
@@ -51,6 +54,7 @@ public class ArchitectTable : MonoBehaviour
         ES3.Save("maxSniperTowerAmount", maxSniperTowerAmount);
         ES3.Save("maxMachineGunTowerAmount", maxMachineGunTowerAmount);
         ES3.Save("maxMortarPositionsAmount", maxMortarPositionsAmount);
+        ES3.Save("maxTowerAmount", maxTowerAmount);
 
         CampEditManager.Instance.SaveCampLayout();
 
@@ -77,6 +81,9 @@ public class ArchitectTable : MonoBehaviour
     public void SetMaxTrapSlotsAmountBuff(int amountBuff) {
         maxTrapSlotsAmount = initialMaxTrapSlotsAmount + amountBuff;
     }
+    public void SetMaxTowerAmountBuff(int amountBuff) {
+        maxTowerAmount = initialMaxTowerAmount + amountBuff;
+    }
     public void SetMaxSniperTowerAmountBuff(int amountBuff) {
         maxSniperTowerAmount = initialMaxSniperTowerAmount + amountBuff;
     }
@@ -98,6 +105,9 @@ public class ArchitectTable : MonoBehaviour
     public int GetMaxTrapSlotsAmount() {
         return maxTrapSlotsAmount;
     }
+    public int GetMaxTowerAmount() {
+        return maxTowerAmount;
+    }
     public int GetMaxSniperTowerAmount() {
         return maxSniperTowerAmount;
     }
@@ -118,6 +128,9 @@ public class ArchitectTable : MonoBehaviour
     }
     public int GetInitialMaxTrapSlotsAmount() {
         return initialMaxTrapSlotsAmount;
+    }
+    public int GetInitialMaxTowerAmount() {
+        return initialMaxTowerAmount;
     }
     public int GetInitialMaxSniperTowerAmount() {
         return initialMaxSniperTowerAmount;

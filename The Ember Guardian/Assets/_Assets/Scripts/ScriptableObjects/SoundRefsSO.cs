@@ -66,6 +66,15 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip tryBuyMaxedHubMerchantItem;
     public AudioClip[] gemPSExplosion;
 
+    public AudioClip campEdit_LayoutReset;
+    public AudioClip campEdit_LayoutSaved;
+    public AudioClip campEdit_StructureAdded;
+    public AudioClip campEdit_StructureRemoved;
+    public AudioClip campEdit_StructurePickedUp;
+    public AudioClip campEdit_StructureDropped;
+    public AudioClip campEdit_AllStructuresRemoved;
+    public AudioClip campEdit_GridHovered;
+
     public AudioClip hubChestOpen;
     public AudioClip hubChestClose;
     public AudioClip scavengableMarkedToScavenge;

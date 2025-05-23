@@ -24,6 +24,8 @@ public class InputControlIcons : MonoBehaviour
         OpenPlayerMenu,
         SwitchBuildingFunctions,
         MeleeAttack,
+        EditCampSelect,
+        EditCampDeselect,
     }
 
 
@@ -261,6 +263,12 @@ public class InputControlIcons : MonoBehaviour
                 spriteList.Add(gamepadLeftArrowSprite);
                 spriteList.Add(gamepadRightArrowSprite);
             }
+            if (control == Control.EditCampDeselect) {
+                spriteList.Add(gamepadXSprite);
+            }
+            if (control == Control.EditCampSelect) {
+                spriteList.Add(gamepadASprite);
+            }
         } else {
 
             if (control == Control.MeleeAttack) {
@@ -390,6 +398,26 @@ public class InputControlIcons : MonoBehaviour
             }
             if (control == Control.Roll) {
                 string roll = GameInput.Instance.GetBindingText(GameInput.Binding.roll);
+
+                if (keyboardIconLookup.TryGetValue(roll, out Sprite icon1)) {
+                    spriteList.Add(icon1);
+                }
+                else {
+                    spriteList.Add(keyboardQuestionMarkSprite);
+                }
+            }
+            if (control == Control.EditCampSelect) {
+                string roll = GameInput.Instance.GetBindingText(GameInput.Binding.editCampSelect);
+
+                if (keyboardIconLookup.TryGetValue(roll, out Sprite icon1)) {
+                    spriteList.Add(icon1);
+                }
+                else {
+                    spriteList.Add(keyboardQuestionMarkSprite);
+                }
+            }
+            if (control == Control.EditCampDeselect) {
+                string roll = GameInput.Instance.GetBindingText(GameInput.Binding.editCampDeselect);
 
                 if (keyboardIconLookup.TryGetValue(roll, out Sprite icon1)) {
                     spriteList.Add(icon1);

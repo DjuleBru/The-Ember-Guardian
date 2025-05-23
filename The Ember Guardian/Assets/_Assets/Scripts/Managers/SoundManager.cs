@@ -98,6 +98,17 @@ public class SoundManager : MonoBehaviour
             VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
         }
 
+        if(CampEditManager.Instance != null) {
+            CampEditManager.Instance.OnLayoutResetToDefault += CampEditManager_OnLayoutResetToDefault;
+            CampEditManager.Instance.OnLayoutSaved += CampEditManager_OnLayoutSaved;
+            CampEditManager.Instance.OnStructureAdded += CampEditManager_OnStructureAdded;
+            CampEditManager.Instance.OnStructureRemovedIndividually += CampEditManager_OnStructureRemoved;
+            CampEditManager.Instance.OnStructurePickedUp += CampEditManager_OnStructurePickedUp;
+            CampEditManager.Instance.OnStructureDroppedMoving += CampEditManager_OnStructureDropped;
+            CampEditManager.Instance.OnAllStructuresRemoved += CampEditManager_OnAllStructuresRemoved;
+        }
+        StructureBlueprint.OnAnyBlueprintHovered += StructureBlueprint_OnAnyBlueprintHovered;
+
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         StructureLocation.OnAnyStructureSOToBuildChanged += StructureLocation_OnAnyStructureSOToBuildChanged;
 
@@ -119,6 +130,7 @@ public class SoundManager : MonoBehaviour
         ItemButtonUI_Visual.OnAnyGemPSTriggered += ItemButtonUI_Visual_OnAnyGemPSTriggered;
         ItemButtonUI.OnAnyLockedButtonTryPress += ItemButtonUI_OnAnyLockedButtonTryPress;
         ItemButtonUI.OnAnyHubMerchantItemTryBuyMaxedItem += ItemButtonUI_OnAnyHubMerchantItemTryBuyMaxedItem;
+
 
         ParticleCollision.OnAnyBulletHitEnemy += ParticleCollision_OnAnyBulletHitEnemy;
         ParticleCollision.OnAnyBulletHitEnemyCrit += ParticleCollision_OnAnyBulletHitEnemyCrit;
@@ -230,6 +242,37 @@ public class SoundManager : MonoBehaviour
     private void ItemButtonUI_OnAnyHubMerchantItemTryBuyMaxedItem(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.tryBuyMaxedHubMerchantItem);
     }
+    private void CampEditManager_OnStructureDropped(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.campEdit_StructureDropped, .75f);
+    }
+
+    private void StructureBlueprint_OnAnyBlueprintHovered(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.campEdit_GridHovered);
+    }
+
+    private void CampEditManager_OnStructurePickedUp(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.campEdit_StructurePickedUp, .5f);
+    }
+
+    private void CampEditManager_OnStructureRemoved(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.campEdit_StructureRemoved, .3f);
+    }
+
+    private void CampEditManager_OnStructureAdded(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.campEdit_StructureAdded, .5f);
+    }
+
+    private void CampEditManager_OnLayoutSaved(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.campEdit_LayoutSaved, .15f);
+    }
+    private void CampEditManager_OnAllStructuresRemoved(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.campEdit_AllStructuresRemoved, .15f);
+    }
+
+    private void CampEditManager_OnLayoutResetToDefault(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.campEdit_LayoutReset, .15f);
+    }
+
 
     private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.buyHubMerchantItem);
@@ -863,6 +906,7 @@ public class SoundManager : MonoBehaviour
         ItemButtonUI.OnAnyLockedButtonTryPress -= ItemButtonUI_OnAnyLockedButtonTryPress;
         MenuButton.OnAnyMenuButtonHovered -= MenuButton_OnAnyMenuButtonHovered;
         MenuButton.OnAnyMenuButtonPressed -= MenuButton_OnAnyMenuButtonPressed;
+        StructureBlueprint.OnAnyBlueprintHovered -= StructureBlueprint_OnAnyBlueprintHovered;
 
 
         ParticleCollision.OnAnyBulletHitEnemy -= ParticleCollision_OnAnyBulletHitEnemy;

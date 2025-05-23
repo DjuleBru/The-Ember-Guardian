@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Tower
   m_EditorClassIdentifier: 
   structureType: 7
+  structureCategory: 1
   structureLocationPrefab: {fileID: 8434879454533105174, guid: f3565369f715b874bb1c14416baf5020, type: 3}
   structurePrefab: {fileID: 376005918902835770, guid: fc0a8a8db0a0e8f4a8e689e94fd9b2ef, type: 3}
   structureSprite: {fileID: -1374893943, guid: 69899d8c78ea1e843ae3e31c442cf2a1, type: 3}
@@ -20,7 +21,7 @@ MonoBehaviour:
   widthInCells: 1
   structurePositionMovable: 1
   structurePositionRemovable: 1
-  maxStructureBlueprintAmount: 10
+  maxStructureBlueprintAmount: 6
   level1StructureInitiallyUnlocked: 1
   buildableAtNight: 1
   upgradeableAtNight: 0

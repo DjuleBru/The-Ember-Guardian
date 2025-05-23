@@ -35,12 +35,12 @@ public class GeneralEditionButtons : MonoBehaviour
         CampEditManager.Instance.OnLayoutSaved += CampEditManager_OnLayoutSaved;
 
         if(buttonType == ButtonType.SaveLayout || buttonType == ButtonType.RevertChanges) {
-            SetButtonEnabled(false);
+            //SetButtonEnabled(false);
         }
 
         if(!CampEditManager.Instance.GetCampLayoutCustomized()) {
             if (buttonType == ButtonType.ResetToDefault) {
-                SetButtonEnabled(false);
+                //SetButtonEnabled(false);
             }
         }
 
@@ -48,25 +48,25 @@ public class GeneralEditionButtons : MonoBehaviour
 
     private void CampEditManager_OnLayoutSaved(object sender, System.EventArgs e) {
         if (buttonType == ButtonType.SaveLayout || buttonType == ButtonType.RevertChanges) {
-            SetButtonEnabled(false);
+            //SetButtonEnabled(false);
         }
     }
 
     private void CampEditManager_OnLayoutResetToDefault(object sender, System.EventArgs e) {
         if (buttonType == ButtonType.ResetToDefault) {
-            SetButtonEnabled(false);
+            //SetButtonEnabled(false);
         }
     }
 
     private void CampEditManager_OnAllStructuresRemoved(object sender, System.EventArgs e) {
         if (buttonType == ButtonType.RemoveAllStructures) {
-            SetButtonEnabled(false);
+            //SetButtonEnabled(false);
         }
     }
 
     private void CampEditManager_OnAnyChangeMade(object sender, System.EventArgs e) {
         if (buttonType == ButtonType.SaveLayout || buttonType == ButtonType.RevertChanges || buttonType == ButtonType.ResetToDefault || buttonType == ButtonType.RemoveAllStructures) {
-            SetButtonEnabled(true);
+            //SetButtonEnabled(true);
         }
     }
 

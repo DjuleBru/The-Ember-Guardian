@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CampEditManager : MonoBehaviour {
     public static CampEditManager Instance;
@@ -34,12 +35,14 @@ public class CampEditManager : MonoBehaviour {
     [SerializeField] private Dictionary<int, StructureBlueprint> placedStructureBlueprints = new Dictionary<int, StructureBlueprint>();
     [SerializeField] private GameObject initialStructureBlueprintsParentGO;
     List<StructurePlacementData> savedLayout = new List<StructurePlacementData>();
+    private List<StructureSO.StructureType> structureTypesUnlockedThisSession = new List<StructureSO.StructureType>();
     private CampGrid campGrid;
 
     private Vector2 mouseOffsetLocal;
     private Vector3 movingStructureInitialPosition;
     private Vector2Int previousOccupiedCell;
     private StructureBlueprint blueprintBeingMoved;
+    private StructureBlueprint blueprintBeingHovered;
     private StructureBlueprint blueprintBeingAdded;
     private bool cancellingMovement;
     private bool dragging;
@@ -53,8 +56,12 @@ public class CampEditManager : MonoBehaviour {
     public event EventHandler OnLayoutSaved;
     public event EventHandler OnLayoutResetToDefault;
     public event EventHandler OnAllStructuresRemoved;
-    public event EventHandler OnStructureRemoved;
+    public event EventHandler OnStructureRemovedAnySituation;
+    public event EventHandler OnStructureRemovedIndividually;
     public event EventHandler OnStructureAdded;
+
+    public event EventHandler OnStructurePickedUp;
+    public event EventHandler OnStructureDroppedMoving;
 
     void Awake() {
         Instance = this;
@@ -67,6 +74,7 @@ public class CampEditManager : MonoBehaviour {
         GameInput.Instance.OnEditCampDeselect += GameInput_OnEditCampDeselect;
         GameInput.Instance.OnEditCampSelect += GameInput_OnEditCampSelect;
         GameInput.Instance.OnEditCampSelectReleased += GameInput_OnEditCampSelectReleased;
+        HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
 
         scrollRectEvents.OnDragEnded += ScrollRectEvents_OnDragEnded;
         scrollRectEvents.OnDragStarted += ScrollRectEvents_OnDragStarted;
@@ -151,6 +159,7 @@ public class CampEditManager : MonoBehaviour {
         }
 
         campGrid.SetSelectedCells(blueprintBeingMoved.currentCell.x, blueprintBeingMoved.widthInCells, true);
+        OnStructurePickedUp?.Invoke(this, EventArgs.Empty);
     }
 
     private void CancelPlacement() {
@@ -189,6 +198,7 @@ public class CampEditManager : MonoBehaviour {
         blueprintBeingMoved = null;
 
         OnAnyChangeMade?.Invoke(this, EventArgs.Empty);
+        OnStructureDroppedMoving?.Invoke(this, EventArgs.Empty);
     }
 
     public StructureBlueprint GetBlueprintBeingMoved() => blueprintBeingMoved;
@@ -197,6 +207,7 @@ public class CampEditManager : MonoBehaviour {
     public void HoverGridCell(Vector2Int gridPos) {
         campGrid.ClearAllHovered();
         GridVisualUnit hoveredUnit = campGrid.GetGridVisualAt(gridPos);
+        blueprintBeingAdded = null;
 
         if (hoveredUnit == null) return;
 
@@ -211,6 +222,7 @@ public class CampEditManager : MonoBehaviour {
         else {
             hoveredUnit.SetHovered(true);
         }
+
     }
 
     public void RegisterStructure(StructureBlueprint structure) {
@@ -224,7 +236,7 @@ public class CampEditManager : MonoBehaviour {
         }
     }
 
-    public void RemoveStructure(StructureBlueprint structureBlueprint) {
+    public void RemoveStructure(StructureBlueprint structureBlueprint, bool removeAllStructures = false) {
         int cellX = structureBlueprint.currentCell.x;
         if (placedStructureBlueprints.ContainsKey(cellX)) {
             placedStructureBlueprints.Remove(cellX);
@@ -233,7 +245,12 @@ public class CampEditManager : MonoBehaviour {
         campGrid.SetOccupiedCells(structureBlueprint.currentCell.x, structureBlueprint.widthInCells, false);
         campGrid.SetSelectedCells(structureBlueprint.currentCell.x, structureBlueprint.widthInCells, false);
 
-        OnStructureRemoved?.Invoke(this, EventArgs.Empty);
+        if(!removeAllStructures) {
+            // Dont call when all structures are removed simultaneously
+            OnStructureRemovedIndividually?.Invoke(this, EventArgs.Empty);
+        }
+
+        OnStructureRemovedAnySituation?.Invoke(this, EventArgs.Empty);
         OnAnyChangeMade?.Invoke(this, EventArgs.Empty);
 
         if(structureBlueprint.GetIsInitialBlueprint()) {
@@ -245,6 +262,12 @@ public class CampEditManager : MonoBehaviour {
 
     public void AddStructure(StructureSO structureSO) {
         SetMode(CampEditMode.AddingStructure);
+
+        if(blueprintBeingAdded != null) {
+            blueprintBeingAdded.SetHovered(false);
+            campGrid.SetHoveredCells(blueprintBeingAdded.currentCell.x, blueprintBeingAdded.widthInCells, false);
+
+        }
 
         StructureBlueprint structureBlueprint = Instantiate(structureBlueprintPrefab, structureBlueprintsParent).GetComponent<StructureBlueprint>();
         structureBlueprint.SetStructureSO(structureSO);
@@ -271,6 +294,14 @@ public class CampEditManager : MonoBehaviour {
         campGrid.ClearAllHovered();
     }
 
+    public void SetBlueprintHovered(StructureBlueprint blueprint) {
+        this.blueprintBeingHovered = blueprint;
+    }
+
+    public StructureBlueprint GetBlueprintHovered() {
+        return blueprintBeingHovered;
+    }
+ 
     public int GetPlacedStructureBlueprintAmountOfType(StructureSO structureSO) {
         int amount = 0;
 
@@ -283,23 +314,15 @@ public class CampEditManager : MonoBehaviour {
         return amount;
     }
 
-    private void GameInput_OnEditCampSelect(object sender, System.EventArgs e) {
-        // Pickup blueprint logic
+    private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, EventArgs e) {
+        HubMerchantItem merchantItem = sender as HubMerchantItem;
 
-        if (GetMovingBlueprint()) return;
+        HubMerchantItem_GemMerchantItem gemMerchantItem = merchantItem as HubMerchantItem_GemMerchantItem;
 
-        GridVisualUnit hoveredCell = campGrid.GetFirstHoveredCellWithStructure();
-
-        if (hoveredCell == null) return;
-        StructureBlueprint structure = hoveredCell.GetOccupyingStructure();
-
-        if (!structure.GetLinkedStructureSO().structurePositionMovable) return;
-        StartMoving(structure);
-
-        playerJustPressedSelect = true;
-        draggingTimer = 0;
+        if (gemMerchantItem != null) {
+            structureTypesUnlockedThisSession.Add(gemMerchantItem.GetStructureType());
+        }
     }
-
     private void GameInput_OnEditCampSelectReleased(object sender, System.EventArgs e) {
         // Drop bluprint logic
 
@@ -314,11 +337,29 @@ public class CampEditManager : MonoBehaviour {
 
     }
 
+    private void GameInput_OnEditCampSelect(object sender, System.EventArgs e) {
+        // Pickup blueprint logic
+
+        if (GetMovingBlueprint()) return;
+        if (blueprintBeingAdded != null) return;
+
+        GridVisualUnit hoveredCell = campGrid.GetFirstHoveredCellWithStructure();
+
+        if (hoveredCell == null) return;
+        StructureBlueprint structure = hoveredCell.GetOccupyingStructure();
+
+        if (!structure.GetLinkedStructureSO().structurePositionMovable) return;
+        StartMoving(structure);
+
+        playerJustPressedSelect = true;
+        draggingTimer = 0;
+    }
     private void GameInput_OnEditCampDeselect(object sender, System.EventArgs e) {
         if (GetMovingBlueprint()) {
             CancelPlacement();
         }
         else {
+            if (blueprintBeingAdded != null) return;
             GridVisualUnit hoveredCell = campGrid.GetFirstHoveredCellWithStructure();
             if (hoveredCell == null) return;
             StructureBlueprint structure = hoveredCell.GetOccupyingStructure();
@@ -344,9 +385,25 @@ public class CampEditManager : MonoBehaviour {
         currentMode = mode;
     }
 
+    public void TryRemoveBlueprintFromCamp(StructureSO structureSO) {
+        StructureBlueprint structureBlueprintToRemove = null;
+
+        foreach (var kvp in placedStructureBlueprints) {
+            StructureBlueprint blueprint = kvp.Value;
+
+            if (structureSO == blueprint.GetLinkedStructureSO()) {
+                structureBlueprintToRemove = blueprint;
+            }
+        }
+
+        if(structureBlueprintToRemove != null) {
+            RemoveStructure(structureBlueprintToRemove);
+            OnAnyChangeMade?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
     public void RemoveAllStructure() {
         List<StructureBlueprint> structureBlueprintsToRemove = new List<StructureBlueprint>();
-        Debug.Log("RemoveAllStructure " + placedStructureBlueprints.Count);
 
         foreach (var kvp in placedStructureBlueprints) {
             StructureBlueprint blueprint = kvp.Value;
@@ -357,11 +414,9 @@ public class CampEditManager : MonoBehaviour {
         }
 
         foreach (StructureBlueprint blueprintToRemove in structureBlueprintsToRemove) {
-            Debug.Log("blueprintToRemove " + blueprintToRemove);
-            RemoveStructure(blueprintToRemove);
+            RemoveStructure(blueprintToRemove, true);
         }
 
-        Debug.Log("New  placedStructureBlueprints.Count " + placedStructureBlueprints.Count);
         OnAnyChangeMade?.Invoke(this, EventArgs.Empty);
         OnAllStructuresRemoved?.Invoke(this, EventArgs.Empty);
     }
@@ -378,10 +433,10 @@ public class CampEditManager : MonoBehaviour {
         StructureBlueprint[] structureBlueprints = initialStructureBlueprintsParentGO.GetComponentsInChildren<StructureBlueprint>(true);
         savedLayout = new List<StructurePlacementData>();
 
-        Debug.Log("ResetToDefault structureBlueprints.Length" + structureBlueprints.Length);
         PlaceBlueprintOnGrid(tentBlueprint, tentBlueprintInitialCell);
 
         foreach (StructureBlueprint blueprint in structureBlueprints) {
+            if (blueprint.GetBlueprintLocked()) continue;
             blueprint.gameObject.SetActive(true);
             blueprint.SetOccupiedCells();
             PlaceBlueprintOnGrid(blueprint, blueprint.currentCell.x);
@@ -453,6 +508,18 @@ public class CampEditManager : MonoBehaviour {
         campGrid.SetOccupiedCells(startCell, structureBlueprint.widthInCells, true, structureBlueprint);
 
         RegisterStructure(structureBlueprint);
+    }
+
+    public bool GetStructureTypeUnlockedThisSession(StructureSO.StructureType structureType) {
+        return structureTypesUnlockedThisSession.Contains(structureType);
+    }
+
+    public StructureBlueprint GetStructureBlueprintBeingAdded() {
+        return blueprintBeingAdded;
+    }
+
+    private void OnDestroy() {
+        HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
     }
 
 }
