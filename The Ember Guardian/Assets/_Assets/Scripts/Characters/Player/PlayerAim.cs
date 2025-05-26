@@ -29,19 +29,23 @@ public class PlayerAim : MonoBehaviour
     private bool isAimingSight;
     private bool isRolling = false;
     private bool autoAimActive;
+    private bool isAimingCreature;
+    private bool isAimingCritZone;
 
     private float mouseAimAngle;
     private float effectiveAimAngle;
-    private float aimHeight;
-    private float lastMousePositionY;
-    private float mousePositionY;
-    private float mouseYDeltaTreshold = .1f;
 
     private float currentPrecisionRadius = 0.3f;
     private float smoothSpeed = 1f;
     private float noiseAmount = 0f;
     private float switchThreshold = 0.02f; // Distance pour considérer qu'on est "arrivé"
     private float weaponRange;
+
+    private float timeToPerfectAccuracy = 3f; // Durée avant précision parfaite
+    private float stationaryTimer = 0f;
+    private bool perfectPrecisionEventSent;
+    private bool playerIsStationary;
+    private bool playerIsExhausted;
 
     private bool lastOffsetWasUp = true;
     private float currentPrecisionModifier = 1;
@@ -61,10 +65,8 @@ public class PlayerAim : MonoBehaviour
     private float takeDamageTimeToRecoverPrecision = 1f;
     private float takeDamageTimer;
 
-
     private Vector2 smoothedOffset = Vector2.zero;
     private Vector2 currentEffectiveOffsetTarget;
-    private float aimSwitchTimer = 0f;
     private bool goToMouseNext = true;
 
     private float recoilDamping;
@@ -75,6 +77,8 @@ public class PlayerAim : MonoBehaviour
     private Vector3 previousGamepadAim = new Vector3(1,0,0);
     private Vector3 previousAimDir = new Vector3(1,0,0);
     private Vector3 pointerTargetOverride;
+    private Vector3 weaponReticleWorldPos;
+    private Vector2 offsetWithNoiseAndRecoil;
     private RaycastHit2D closestHit;
     private bool hasClosestHit = false;
 
@@ -121,8 +125,9 @@ public class PlayerAim : MonoBehaviour
     }
 
 
-    private void Update() {
+    private void LateUpdate() {
         HandleJustTookDamagePrecisionDebuff();
+
         if (isRolling) return;
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
 
@@ -199,7 +204,7 @@ public class PlayerAim : MonoBehaviour
         Vector3 virtualMousePosition = rayOrigin + (Vector3)(aimDir.normalized * weaponRange);
 
         // Position finale du réticule d’arme (autour du pointeur)
-        Vector3 weaponReticleWorldPos = HandleEffectiveAimPosition(virtualMousePosition);
+        weaponReticleWorldPos = HandleEffectiveAimPosition(virtualMousePosition);
 
         if (weaponReticleTransform != null) {
             weaponReticleTransform.position = weaponReticleWorldPos;
@@ -234,7 +239,7 @@ public class PlayerAim : MonoBehaviour
         HandleCreaturesInAimDir();
 
         // Position finale du réticule d’arme (autour du pointeur)
-        Vector3 weaponReticleWorldPos = HandleEffectiveAimPosition(mousePosition);
+        weaponReticleWorldPos = HandleEffectiveAimPosition(mousePosition);
 
         if (weaponReticleTransform != null) {
             weaponReticleTransform.position = weaponReticleWorldPos;
@@ -250,8 +255,10 @@ public class PlayerAim : MonoBehaviour
     }
 
     private Vector3 HandleEffectiveAimPosition(Vector3 mousePosition) {
-        // Vérifie si on est arrivé à destination
+        HandlePlayerStationary();
+        float stationaryAccuracyFactor = Mathf.Clamp01(stationaryTimer / timeToPerfectAccuracy);
 
+        // Vérifie si on est arrivé à destination
         Vector3 pointerTarget = mousePosition;
         
         if(pointerTargetOverride != Vector3.zero) {
@@ -289,7 +296,10 @@ public class PlayerAim : MonoBehaviour
         float noiseY = (Mathf.PerlinNoise(0f, Time.time * 2f) - 0.5f) * noiseAmount;
         Vector2 noise = new Vector2(noiseX, noiseY);
 
-        Vector2 offsetWithNoiseAndRecoil = smoothedOffset + noise;
+        Vector2 reducedOffset = Vector2.Lerp(smoothedOffset, Vector2.zero, stationaryAccuracyFactor);
+        Vector2 reducedNoise = Vector2.Lerp(noise, Vector2.zero, stationaryAccuracyFactor);
+
+        offsetWithNoiseAndRecoil = reducedOffset + reducedNoise;
         offsetWithNoiseAndRecoil.y += currentRecoil;
 
         Vector3 effectiveAimPos = pointerTarget + (Vector3)(offsetWithNoiseAndRecoil);
@@ -304,6 +314,28 @@ public class PlayerAim : MonoBehaviour
 
         return effectiveAimPos;
     }
+
+    public Vector3 GetWeaponReticleWorldPos() {
+        return weaponReticleWorldPos;
+    }
+
+    private void HandlePlayerStationary() {
+        playerIsStationary = !playerIsExhausted && !justTookDamage && Mathf.Abs(PlayerMovement.Instance.GetMoveSpeed()) < .2f;
+
+        if (playerIsStationary) {
+            stationaryTimer += Time.deltaTime;
+        }
+        else {
+            stationaryTimer = 0f;
+        }
+
+    }
+
+    private void ResetStationaryPerfectPrecision(float timeToPerfectAccuracyFractionToRemove = 0f) {
+        stationaryTimer = timeToPerfectAccuracy - timeToPerfectAccuracyFractionToRemove * timeToPerfectAccuracy;
+        perfectPrecisionEventSent = false;
+    }
+
     private void HandleCreaturesInAimDir() {
         Vector2 rayOrigin = (Vector2)gunTransform.position;
         Vector2 rayDir = aimDir;
@@ -315,11 +347,23 @@ public class PlayerAim : MonoBehaviour
         Vector2 closestHitPoint = Vector2.zero;
         hasClosestHit = false;
 
+        bool isAimingCreature = false;
+        bool isAimingCritZone = false;
         foreach (var hit in hits) {
             // Ignore les colliders de détection spécifiques inutiles
             if (hit.collider.GetComponent<CreatureDetectionCollider>() != null) continue;
             if (hit.collider.GetComponent<CreatureAutoAimCollider>() != null) continue;
             if (hit.collider.GetComponent<Barricade>() != null && hit.collider.GetComponent<Barricade>().GetBarricadeHealthNormalized() <= 0) continue;
+
+            if(hit.collider.GetComponent<Creature>() != null) {
+                isAimingCreature = true;
+            }
+
+            if (hit.collider.CompareTag("CritHitZone")) {
+                isAimingCritZone = true;
+            } else {
+                isAimingCritZone = false;
+            }
 
             float distance = Vector2.Distance(rayOrigin, hit.point);
             if (distance < closestDistance) {
@@ -329,6 +373,8 @@ public class PlayerAim : MonoBehaviour
                 hasClosestHit = true;
             }
         }
+        this.isAimingCreature = isAimingCreature;
+        this.isAimingCritZone = isAimingCritZone;
 
         if (closestDistance < float.MaxValue) {
             pointerTargetOverride = closestHitPoint;
@@ -396,10 +442,12 @@ public class PlayerAim : MonoBehaviour
     }
 
     private void PlayerMovement_OnPlayerCrouchedEnded(object sender, EventArgs e) {
+        ResetStationaryPerfectPrecision(0);
         DebuffPrecision(crouchPrecisionBuff);
     }
 
     private void PlayerMovement_OnPlayerCrouched(object sender, EventArgs e) {
+        ResetStationaryPerfectPrecision(.7f);
         BuffPrecision(crouchPrecisionBuff);
     }
 
@@ -420,10 +468,12 @@ public class PlayerAim : MonoBehaviour
     }
 
     private void PlayerMovement_OnPlayerExhaustionStopped(object sender, EventArgs e) {
+        playerIsExhausted = false;
         BuffPrecision(exhaustedPrecisionDebuff);
     }
 
     private void PlayerMovement_OnPlayerExhaustionStarted(object sender, EventArgs e) {
+        playerIsExhausted = true;
         DebuffPrecision(exhaustedPrecisionDebuff);
     }
 
@@ -443,7 +493,6 @@ public class PlayerAim : MonoBehaviour
         }
     }
 
-
     private void BuffPrecision(float buff) {
         currentPrecisionModifier /= buff;
         smoothSpeed /= buff;
@@ -458,6 +507,10 @@ public class PlayerAim : MonoBehaviour
         noiseAmount *= debuff;
         SelectNextRandomTargetForWeaponPointer();
         //Debug.Log("DebuffPrecision currentPrecisionModifier " + currentPrecisionModifier);
+    }
+
+    public float GetCurrentPrecisionModifier() {
+        return currentPrecisionModifier;
     }
 
     private void ApplyAimAngleLimit()
@@ -526,18 +579,23 @@ public class PlayerAim : MonoBehaviour
     private void PlayerShoot_OnPlayerAimedSightEnded(object sender, EventArgs e) {
         CameraManager.Instance.ResetCameraTargetToPlayer();
         OnPlayerAimSightEnded?.Invoke(this, EventArgs.Empty);
+        ResetStationaryPerfectPrecision();
     }
 
     private void PlayerShoot_OnPlayerAimedSightStarted(object sender, EventArgs e) {
         CameraManager.Instance.ChangeCameraTarget(aimSightTransform, false);
         OnPlayerAimSightStarted?.Invoke(this, EventArgs.Empty);
+
+        ResetStationaryPerfectPrecision(.5f);
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
         RefreshPrecisionVariables();
+        ResetStationaryPerfectPrecision();
     }
 
     public void AddRecoil(float recoil, float recoilDamping) {
+        ResetStationaryPerfectPrecision();
         currentRecoil += recoil;
         this.recoilDamping = recoilDamping;
 
@@ -687,6 +745,13 @@ public class PlayerAim : MonoBehaviour
         } else {
             return -1f;
         }
+    }
+
+    public bool GetIsAimingCritZone() {
+        return isAimingCritZone;
+    }
+    public bool GetIsAimingCreature() {
+        return isAimingCreature;
     }
 
     public Vector3 GetPreviousAimDir() {
