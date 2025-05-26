@@ -107,7 +107,9 @@ public class SoundManager : MonoBehaviour
             CampEditManager.Instance.OnStructureDroppedMoving += CampEditManager_OnStructureDropped;
             CampEditManager.Instance.OnAllStructuresRemoved += CampEditManager_OnAllStructuresRemoved;
         }
-        StructureBlueprint.OnAnyBlueprintHovered += StructureBlueprint_OnAnyBlueprintHovered;
+        StructureBlueprint.OnAnyBlueprintWithStructureHovered += StructureBlueprint_OnAnyBlueprintWithStructureHovered;
+        GridVisualUnit.OnAnyGridWithoutStructureHovered += GridVisualUnit_OnAnyGidWithoutStructureHovered;
+        GridVisualUnit.OnAnyGridHoveredWhileMovingBlueprint += GridVisualUnit_OnAnyGridHoveredWhileMovingBlueprint;
 
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         StructureLocation.OnAnyStructureSOToBuildChanged += StructureLocation_OnAnyStructureSOToBuildChanged;
@@ -164,7 +166,6 @@ public class SoundManager : MonoBehaviour
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine += HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
     }
-
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -246,12 +247,19 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(soundRefsSO.campEdit_StructureDropped, .75f);
     }
 
-    private void StructureBlueprint_OnAnyBlueprintHovered(object sender, System.EventArgs e) {
-        PlaySound2D(soundRefsSO.campEdit_GridHovered);
+    private void StructureBlueprint_OnAnyBlueprintWithStructureHovered(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.campEdit_GridHoveredWithStructure);
+    }
+
+    private void GridVisualUnit_OnAnyGidWithoutStructureHovered(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.campEdit_GridHovered, .3f);
+    }
+    private void GridVisualUnit_OnAnyGridHoveredWhileMovingBlueprint(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.campEdit_GridHoveredWhileMovingBlueprint, .2f);
     }
 
     private void CampEditManager_OnStructurePickedUp(object sender, System.EventArgs e) {
-        PlaySound2D(soundRefsSO.campEdit_StructurePickedUp, .5f);
+        PlaySound2D(soundRefsSO.campEdit_StructurePickedUp, .75f);
     }
 
     private void CampEditManager_OnStructureRemoved(object sender, System.EventArgs e) {
@@ -906,7 +914,8 @@ public class SoundManager : MonoBehaviour
         ItemButtonUI.OnAnyLockedButtonTryPress -= ItemButtonUI_OnAnyLockedButtonTryPress;
         MenuButton.OnAnyMenuButtonHovered -= MenuButton_OnAnyMenuButtonHovered;
         MenuButton.OnAnyMenuButtonPressed -= MenuButton_OnAnyMenuButtonPressed;
-        StructureBlueprint.OnAnyBlueprintHovered -= StructureBlueprint_OnAnyBlueprintHovered;
+        StructureBlueprint.OnAnyBlueprintWithStructureHovered -= StructureBlueprint_OnAnyBlueprintWithStructureHovered;
+        GridVisualUnit.OnAnyGridWithoutStructureHovered -= GridVisualUnit_OnAnyGidWithoutStructureHovered;
 
 
         ParticleCollision.OnAnyBulletHitEnemy -= ParticleCollision_OnAnyBulletHitEnemy;

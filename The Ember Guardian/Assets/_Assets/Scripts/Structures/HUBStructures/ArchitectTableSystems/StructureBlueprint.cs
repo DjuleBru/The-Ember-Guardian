@@ -12,6 +12,7 @@ public class StructureBlueprint : MonoBehaviour {
     [SerializeField] private Image blueprintImage;
     [SerializeField] private Animator linkedUIHoveredObjectAnimator;
     [SerializeField] private Material selectedMaterial;
+    [SerializeField] private Material hoveredMaterial;
     [SerializeField] private Material emptyMaterial;
     [SerializeField] private bool isInitialBlueprint;
     private Animator blueprintAnimator;
@@ -25,7 +26,7 @@ public class StructureBlueprint : MonoBehaviour {
     private bool locked;
     private bool hovered;
     public event EventHandler OnBlueprintHovered;
-    public static event EventHandler OnAnyBlueprintHovered;
+    public static event EventHandler OnAnyBlueprintWithStructureHovered;
     public event EventHandler OnBlueprintUnhovered;
     public event EventHandler OnStructureStartedMoving;
     public event EventHandler OnStructureStoppedMoving;
@@ -127,11 +128,12 @@ public class StructureBlueprint : MonoBehaviour {
             this.hovered = hovered;
             HoverFunction(hovered);
 
+            blueprintImage.material = hoveredMaterial;
             OnBlueprintHovered?.Invoke(this, EventArgs.Empty);
 
-            if(CampEditManager.Instance.GetBlueprintHovered() != this) {
+            if (CampEditManager.Instance.GetBlueprintHovered() != this) {
                 CampEditManager.Instance.SetBlueprintHovered(this);
-                OnAnyBlueprintHovered?.Invoke(this, EventArgs.Empty);
+                OnAnyBlueprintWithStructureHovered?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -139,6 +141,7 @@ public class StructureBlueprint : MonoBehaviour {
             this.hovered = hovered;
             HoverFunction(hovered);
 
+            blueprintImage.material = emptyMaterial;
             OnBlueprintUnhovered?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -174,7 +177,6 @@ public class StructureBlueprint : MonoBehaviour {
             blueprintImage.material = emptyMaterial;
             OnStructureStoppedMoving?.Invoke(this, EventArgs.Empty);
 
-            OnBlueprintUnhovered?.Invoke(this, EventArgs.Empty);
             blueprintAnimator.SetTrigger("Drop");
             blueprintAnimator.ResetTrigger("PickUp");
         }

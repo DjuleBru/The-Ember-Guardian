@@ -10,7 +10,13 @@ public class CampGridControllerNavigator : MonoBehaviour
     [SerializeField] private GameObject StopNavigationSelectedButton;
     private bool navigatingCampGrid;
     private int currentIndex = 0;
-    private int previousIndex = 0;
+
+    private bool isNavigating;
+    private bool isHoldingNavigationStick = false;
+    private float inputHoldTimer = 0f;
+    private float inputHoldDelay = 0.3f;
+    private float inputRepeatRate = 0.15f;
+    private int navigationDirection = 0; // -1 = gauche, 1 = droite
 
     private void Awake() {
         Instance = this;
@@ -18,19 +24,63 @@ public class CampGridControllerNavigator : MonoBehaviour
 
     private void Start() {
         GameInput.Instance.OnPlayerNavigateUIPerformed += GameInput_OnPlayerNavigateUIPerformed;
+        GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
+    }
+
+    private void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
+        isNavigating = false;
+    }
+
+    private void Update() {
+        if (!isNavigating) return;
+        float horizontal = Input.GetAxis("Horizontal");
+
+        if (Mathf.Abs(horizontal) > 0.5f) {
+            int direction = horizontal > 0 ? 1 : -1;
+
+            if (!isHoldingNavigationStick || direction != navigationDirection) {
+                isHoldingNavigationStick = true;
+                navigationDirection = direction;
+                inputHoldTimer = inputHoldDelay;
+                SetNextIndex(direction > 0);
+            }
+        }
+        else {
+            isHoldingNavigationStick = false;
+            navigationDirection = 0;
+            inputHoldTimer = 0f;
+        }
+
+        if (isHoldingNavigationStick) {
+            inputHoldTimer -= Time.deltaTime;
+
+            if (inputHoldTimer <= 0f) {
+                inputHoldTimer = inputRepeatRate;
+                SetNextIndex(navigationDirection > 0);
+            }
+        }
     }
 
     public void StartNavigation() {
-        Debug.Log("StartNavigation");
+        isNavigating = true;
         currentIndex = CampGrid.Instance.gridSize/2;
         navigatingCampGrid = true;
-        HighlightCurrent();
+        Vector2Int gridPos = new Vector2Int(currentIndex, 0);
+
+        GridVisualUnit gridUnit = CampGrid.Instance.GetGridVisualAt(gridPos);
+        EventSystem.current.SetSelectedGameObject(gridUnit.gameObject);
     }
 
     public void StopNavigation() {
-        Debug.Log("StopNavigation");
+        isNavigating = false;
         navigatingCampGrid = false;
+        StartCoroutine(SetStopNavigationSelectedButtonAfterDelay());
+    }
+
+    private IEnumerator SetStopNavigationSelectedButtonAfterDelay() {
+        yield return new WaitForEndOfFrame();
         EventSystem.current.SetSelectedGameObject(StopNavigationSelectedButton);
+        Debug.Log(StopNavigationSelectedButton);
     }
 
     private void HighlightCurrent() {
@@ -41,6 +91,30 @@ public class CampGridControllerNavigator : MonoBehaviour
 
         if (gridUnit.GetOccupyingStructure() == null) {
             EventSystem.current.SetSelectedGameObject(gridUnit.gameObject);
+        }
+
+        if(CampEditManager.Instance.GetMovingBlueprint()) {
+
+            StructureBlueprint blueprintBeingMoved = CampEditManager.Instance.GetBlueprintBeingMoved();
+            if (!CampGrid.Instance.CanPlaceAt(gridPos.x, blueprintBeingMoved.widthInCells, blueprintBeingMoved)) {
+                return;
+            }
+
+            // Libère ancienne position
+            CampGrid.Instance.SetOccupiedCells(blueprintBeingMoved.currentCell.x, blueprintBeingMoved.widthInCells, false);
+            CampGrid.Instance.SetSelectedCells(blueprintBeingMoved.currentCell.x, blueprintBeingMoved.widthInCells, false);
+
+            // Snap à la nouvelle position
+            float snappedX = CampGrid.Instance.CellToWorld(gridPos.x);
+            var rt = blueprintBeingMoved.GetComponent<RectTransform>();
+            rt.anchoredPosition = new Vector2(snappedX, rt.anchoredPosition.y);
+
+            // Met à jour la nouvelle cellule
+            blueprintBeingMoved.currentCell = gridPos;
+
+            // Réoccupe la nouvelle position
+            CampGrid.Instance.SetOccupiedCells(gridPos.x, blueprintBeingMoved.widthInCells, true, blueprintBeingMoved);
+            CampGrid.Instance.SetSelectedCells(gridPos.x, blueprintBeingMoved.widthInCells, true);
         }
     }
 
@@ -54,10 +128,10 @@ public class CampGridControllerNavigator : MonoBehaviour
         if (horizontal != 0) {
             if (!navigatingCampGrid) return;
 
-            if (horizontal > 0) SetNextIndex(true);
-            else SetNextIndex(false);
-
-            HighlightCurrent();
+            // Démarre juste la navigation, ne bouge pas maintenant
+            isNavigating = true;
+            navigationDirection = horizontal > 0 ? 1 : -1;
+            inputHoldTimer = inputHoldDelay; // ou 0f si tu veux un mouvement instantané
         }
 
         if (vertical != 0) {
@@ -67,7 +141,11 @@ public class CampGridControllerNavigator : MonoBehaviour
             }
             else {
                 GameObject selected = EventSystem.current.currentSelectedGameObject;
-                if(selected.GetComponent<GeneralEditionButtons>() != null) {
+                if (selected == null) {
+                    StopNavigation();
+                    return;
+                };
+                if (selected.GetComponent<GeneralEditionButtons>() != null) {
                     StartNavigation();
                 }
             }
@@ -95,7 +173,8 @@ public class CampGridControllerNavigator : MonoBehaviour
             GridVisualUnit gridUnit = CampGrid.Instance.GetGridVisualAt(gridPos);
             StructureBlueprint occupyingStructure = gridUnit.GetOccupyingStructure();
 
-            if (occupyingStructure == null) {
+            if (occupyingStructure == null || occupyingStructure.widthInCells == 1 || occupyingStructure == CampEditManager.Instance.GetBlueprintBeingMoved()) {
+                HighlightCurrent();
                 EventSystem.current.SetSelectedGameObject(gridUnit.gameObject);
                 break;
             }
@@ -122,16 +201,12 @@ public class CampGridControllerNavigator : MonoBehaviour
                 }
 
                 EventSystem.current.SetSelectedGameObject(gridUnit.gameObject);
+                HighlightCurrent();
                 break;
             }
 
             justWarpedToCenter = false;
         }
     }
-
-
-
-
-
 
 }

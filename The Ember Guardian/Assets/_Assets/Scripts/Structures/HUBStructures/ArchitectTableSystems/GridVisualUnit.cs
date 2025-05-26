@@ -23,11 +23,12 @@ public class GridVisualUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private bool movable = true;
     private Vector2Int gridPos;
     private StructureBlueprint occupyingStructure;
-
+    public static event EventHandler OnAnyGridWithoutStructureHovered;
+    public static event EventHandler OnAnyGridHoveredWhileMovingBlueprint;
+    public static bool justSentOnAnyGridHoveredWhileMovingBlueprintEvent;
     public void SetHovered(bool hovered) {
         if (selected) return;
         if (this.hovered == hovered) return;
-
 
         this.hovered = hovered;
 
@@ -43,6 +44,10 @@ public class GridVisualUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitH
                 Color color = background.color;
                 color.a += .1f;
                 background.color = color;
+            }
+
+            if(occupyingStructure == null) {
+                OnAnyGridWithoutStructureHovered?.Invoke(this, EventArgs.Empty);
             }
 
         }
@@ -62,6 +67,7 @@ public class GridVisualUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
             } else {
                 background.color = initialBackgroundColor;
+                CampEditManager.Instance.SetBlueprintHovered(null);
             }
         }
     }
@@ -94,7 +100,7 @@ public class GridVisualUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         Color color = background.color;
 
         if (selected) {
-
+            hovered = true;
             if (movable) {
                 animator.ResetTrigger("Hide");
                 animator.SetTrigger("Show");
@@ -102,7 +108,14 @@ public class GridVisualUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             border.color = selectedColor;
             color.a += .1f;
 
+            if(CampEditManager.Instance.GetMovingBlueprint() && !justSentOnAnyGridHoveredWhileMovingBlueprintEvent) {
+                OnAnyGridHoveredWhileMovingBlueprint?.Invoke(this, EventArgs.Empty);
+                justSentOnAnyGridHoveredWhileMovingBlueprintEvent = true;
+                StartCoroutine(SetJustSentOnAnyGridHoveredWhileMovingBlueprintEventAfterFrame());
+            }
+
         } else {
+            hovered = false;
 
             if (movable) {
                 animator.ResetTrigger("Show");
@@ -113,6 +126,11 @@ public class GridVisualUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
 
         background.color = color;
+    }
+
+    private IEnumerator SetJustSentOnAnyGridHoveredWhileMovingBlueprintEventAfterFrame() {
+        yield return new WaitForEndOfFrame();
+        justSentOnAnyGridHoveredWhileMovingBlueprintEvent=false;
     }
 
     public void SetGridPos(Vector2Int pos) => gridPos = pos;
@@ -159,6 +177,13 @@ public class GridVisualUnit : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         if (occupyingStructure != null) {
             occupyingStructure.SetHovered(true);
+        }
+    }
+
+    public void OnEnable() {
+        if(occupyingStructure != null && !occupyingStructure.GetLinkedStructureSO().structurePositionMovable) {
+            animator.ResetTrigger("Hide");
+            animator.SetTrigger("Show");
         }
     }
 }

@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GeneralEditionButtons : MonoBehaviour
+public class GeneralEditionButtons : ButtonUI
 {
    public enum ButtonType {
         RevertChanges,
@@ -26,7 +27,8 @@ public class GeneralEditionButtons : MonoBehaviour
         });
     }
 
-    private void Start() {
+    protected override void Start() {
+        base.Start();
         buttonFunctionText.text = LocalizationManager.Instance.GetLocalizedText(buttonType.ToString());
 
         CampEditManager.Instance.OnAnyChangeMade += CampEditManager_OnAnyChangeMade;
@@ -45,7 +47,18 @@ public class GeneralEditionButtons : MonoBehaviour
         }
 
     }
+    protected override void ButtonUI_OnAnyButtonSelected(object sender, EventArgs e) {
+        if (!GameInput.Instance.IsUsingGamepad()) return;
+        ButtonUI buttonUI = sender as ButtonUI;
 
+        if (this == buttonUI) {
+            buttonSelected = true;
+        }
+
+        if (this != buttonUI && buttonSelected) {
+            buttonSelected = false;
+        }
+    }
     private void CampEditManager_OnLayoutSaved(object sender, System.EventArgs e) {
         if (buttonType == ButtonType.SaveLayout || buttonType == ButtonType.RevertChanges) {
             //SetButtonEnabled(false);

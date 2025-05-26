@@ -127,9 +127,6 @@ public class AddStructureBlueprint : ButtonUI
         currentBlueprintAmount = CampEditManager.Instance.GetPlacedStructureBlueprintAmountOfType(linkedStructureSO);
         maxBlueprintAmount = linkedStructureSO.maxStructureBlueprintAmount;
 
-        Debug.Log(linkedStructureSO + " currentBlueprintAmount " + currentBlueprintAmount);
-        Debug.Log(linkedStructureSO + " maxBlueprintAmount " + maxBlueprintAmount);
-
         if(currentBlueprintAmount < maxBlueprintAmount) {
             plusIcon.gameObject.SetActive(true);
             maxedOutStructureBlueprintText.gameObject.SetActive(false);

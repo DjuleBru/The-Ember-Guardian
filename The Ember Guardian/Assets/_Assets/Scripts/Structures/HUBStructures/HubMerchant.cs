@@ -20,7 +20,7 @@ public class HubMerchant : MonoBehaviour
 
     [SerializeField] protected HubMerchantType hubMerchantType;
     [SerializeField] protected Transform hubMerchantCameraFocusPosition;
-    [SerializeField] protected string hubMerchantName;
+    [SerializeField] protected string hubMerchantNameLocalizationKey;
     [SerializeField] protected bool hubMerchantUnlockedAtStart;
 
     [SerializeField] protected GameObject activeGameObject;
@@ -283,7 +283,7 @@ public class HubMerchant : MonoBehaviour
     }
 
     public string GetHubMerchantName() {
-        return hubMerchantName;
+        return hubMerchantNameLocalizationKey;
     }
 
     public bool GetMerchantHasNewItems() {

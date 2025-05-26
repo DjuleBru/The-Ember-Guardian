@@ -11,7 +11,6 @@ public class HubMerchantUI : MonoBehaviour
     [SerializeField] private GameObject mainPanel;
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private Scrollbar scrollBar;
-    [SerializeField] private TextMeshProUGUI merchantNameText;
     [SerializeField] private TextMeshProUGUI redGemAmount;
     [SerializeField] private TextMeshProUGUI greenGemAmount;
     [SerializeField] private TextMeshProUGUI blueGemAmount;
@@ -48,7 +47,6 @@ public class HubMerchantUI : MonoBehaviour
 
         canvas.worldCamera = CameraManager.Instance.GetUICamera();
         canvas.sortingLayerName = "UI";
-        merchantNameText.text = hubMerchant.GetHubMerchantName();
         RefreshPlayerHubGems();
     }
 
@@ -103,7 +101,6 @@ public class HubMerchantUI : MonoBehaviour
 
     private void HubMerchant_OnPlayerInteractedWithHubMerchant(object sender, System.EventArgs e) {
         RefreshGameInputView();
-
         hubMerchantUInimator.SetTrigger("Show");
         hubMerchantUInimator.ResetTrigger("Hide");
         EventSystem.current.SetSelectedGameObject(firstButtonSelected);

@@ -96,6 +96,7 @@ public class CampEditManager : MonoBehaviour {
         if (currentMode != CampEditMode.MovingStructure || blueprintBeingMoved == null) return;
         if (dragging) return;
         if (cancellingMovement) return;
+        if (GameInput.Instance.IsUsingGamepad()) return;
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             blueprintBeingMoved.transform.parent as RectTransform,
@@ -193,7 +194,7 @@ public class CampEditManager : MonoBehaviour {
 
         campGrid.SetOccupiedCells(newCell, blueprintBeingMoved.widthInCells, true, blueprintBeingMoved);
         campGrid.SetSelectedCells(blueprintBeingMoved.currentCell.x, blueprintBeingMoved.widthInCells, false);
-
+        StartCoroutine(SetHoveredCellsAfterFrame(blueprintBeingMoved.currentCell.x, blueprintBeingMoved.widthInCells, true));
         blueprintBeingMoved.isBeingMoved = false;
         blueprintBeingMoved = null;
 
@@ -201,8 +202,10 @@ public class CampEditManager : MonoBehaviour {
         OnStructureDroppedMoving?.Invoke(this, EventArgs.Empty);
     }
 
-    public StructureBlueprint GetBlueprintBeingMoved() => blueprintBeingMoved;
-    public bool GetMovingBlueprint() => currentMode == CampEditMode.MovingStructure && blueprintBeingMoved != null;
+    private IEnumerator SetHoveredCellsAfterFrame(int startCell, int widthInCells, bool hovered) {
+        yield return new WaitForEndOfFrame();
+        campGrid.SetHoveredCells(startCell, widthInCells, hovered);
+    }
 
     public void HoverGridCell(Vector2Int gridPos) {
         campGrid.ClearAllHovered();
@@ -297,23 +300,6 @@ public class CampEditManager : MonoBehaviour {
     public void SetBlueprintHovered(StructureBlueprint blueprint) {
         this.blueprintBeingHovered = blueprint;
     }
-
-    public StructureBlueprint GetBlueprintHovered() {
-        return blueprintBeingHovered;
-    }
- 
-    public int GetPlacedStructureBlueprintAmountOfType(StructureSO structureSO) {
-        int amount = 0;
-
-        foreach (StructureBlueprint blueprint in placedStructureBlueprints.Values) {
-            if (blueprint.GetLinkedStructureSO().structureType == structureSO.structureType) {
-                amount++;
-            }
-        }
-
-        return amount;
-    }
-
     private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, EventArgs e) {
         HubMerchantItem merchantItem = sender as HubMerchantItem;
 
@@ -417,6 +403,8 @@ public class CampEditManager : MonoBehaviour {
             RemoveStructure(blueprintToRemove, true);
         }
 
+        RemoveStructure(tentBlueprint, false);
+
         OnAnyChangeMade?.Invoke(this, EventArgs.Empty);
         OnAllStructuresRemoved?.Invoke(this, EventArgs.Empty);
     }
@@ -432,6 +420,7 @@ public class CampEditManager : MonoBehaviour {
 
         StructureBlueprint[] structureBlueprints = initialStructureBlueprintsParentGO.GetComponentsInChildren<StructureBlueprint>(true);
         savedLayout = new List<StructurePlacementData>();
+
 
         PlaceBlueprintOnGrid(tentBlueprint, tentBlueprintInitialCell);
 
@@ -485,6 +474,7 @@ public class CampEditManager : MonoBehaviour {
 
                 if(data.structureSO.structureType == StructureSO.StructureType.tent) {
                     int tentStartCell = data.positionIndex;
+                    tentBlueprint.gameObject.SetActive(true);
                     PlaceBlueprintOnGrid(tentBlueprint, tentStartCell);
                 }
 
@@ -512,6 +502,24 @@ public class CampEditManager : MonoBehaviour {
 
     public bool GetStructureTypeUnlockedThisSession(StructureSO.StructureType structureType) {
         return structureTypesUnlockedThisSession.Contains(structureType);
+    }
+    
+    public StructureBlueprint GetBlueprintBeingMoved() => blueprintBeingMoved;
+    public bool GetMovingBlueprint() => currentMode == CampEditMode.MovingStructure && blueprintBeingMoved != null;
+    public StructureBlueprint GetBlueprintHovered() {
+        return blueprintBeingHovered;
+    }
+
+    public int GetPlacedStructureBlueprintAmountOfType(StructureSO structureSO) {
+        int amount = 0;
+
+        foreach (StructureBlueprint blueprint in placedStructureBlueprints.Values) {
+            if (blueprint.GetLinkedStructureSO().structureType == structureSO.structureType) {
+                amount++;
+            }
+        }
+
+        return amount;
     }
 
     public StructureBlueprint GetStructureBlueprintBeingAdded() {
