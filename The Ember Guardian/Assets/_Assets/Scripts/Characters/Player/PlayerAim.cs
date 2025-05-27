@@ -31,6 +31,7 @@ public class PlayerAim : MonoBehaviour
     private bool autoAimActive;
     private bool isAimingCreature;
     private bool isAimingCritZone;
+    private bool overridePointerTargetOnSurfaces = false;
 
     private float mouseAimAngle;
     private float effectiveAimAngle;
@@ -43,12 +44,12 @@ public class PlayerAim : MonoBehaviour
 
     private float timeToPerfectAccuracy = 3f; // Durée avant précision parfaite
     private float stationaryTimer = 0f;
-    private bool perfectPrecisionEventSent;
     private bool playerIsStationary;
     private bool playerIsExhausted;
 
     private bool lastOffsetWasUp = true;
     private float currentPrecisionModifier = 1;
+    private float currentRecoilModifier = 1;
     private float previousWeaponPrecisionModifier = 1;
     private float weaponPrecisionModifier = 1;
     private float distancePrecisionModifier;
@@ -60,6 +61,7 @@ public class PlayerAim : MonoBehaviour
     private float exhaustedPrecisionDebuff = 2.5f;
     private float takeDamagePrecisionDebuff = 3f;
     private float crouchPrecisionBuff = 2;
+    private float crouchRecoilReductionFactor = 2;
 
     private bool justTookDamage;
     private float takeDamageTimeToRecoverPrecision = 1f;
@@ -79,6 +81,13 @@ public class PlayerAim : MonoBehaviour
     private Vector3 pointerTargetOverride;
     private Vector3 weaponReticleWorldPos;
     private Vector2 offsetWithNoiseAndRecoil;
+    private Vector2 recoilDirectionOffset;
+    private Vector3 currentEffectiveAimPos;
+    private Vector3 virtualMousePosition;
+    private float aimFollowSpeed;
+    private float currentCursorDistanceFactor = 0.5f;
+    private float cursorLerpSpeed = 15f;
+
     private RaycastHit2D closestHit;
     private bool hasClosestHit = false;
 
@@ -95,6 +104,7 @@ public class PlayerAim : MonoBehaviour
 
     private void Start() {
         float angle = Mathf.Atan2(0, 1) * Mathf.Rad2Deg;
+        currentEffectiveAimPos = gunTransform.position;
 
         foreach (Transform transform in followAimDirTransformList) {
             transform.eulerAngles = new Vector3(0, 0, angle);
@@ -102,9 +112,13 @@ public class PlayerAim : MonoBehaviour
 
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
 
+        PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
         PlayerShoot.Instance.OnPlayerAimedSightStarted += PlayerShoot_OnPlayerAimedSightStarted;
         PlayerShoot.Instance.OnPlayerAimedSightEnded += PlayerShoot_OnPlayerAimedSightEnded;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+        PlayerShoot.Instance.OnWeaponSecondaryAbilityStarted += PlayerShoot_OnWeaponSecondaryAbilityStarted;
+        PlayerShoot.Instance.OnWeaponSecondaryAbilityEnded += PlayerShoot_OnWeaponSecondaryAbilityEnded;
+
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
         PlayerMovement.Instance.OnPlayerRunStarted += PlayerMovement_OnPlayerRunStarted;
@@ -124,11 +138,10 @@ public class PlayerAim : MonoBehaviour
         isUsingGamepad = GameInput.Instance.IsUsingGamepad();
     }
 
-
     private void LateUpdate() {
         HandleJustTookDamagePrecisionDebuff();
 
-        if (isRolling) return;
+        //if (isRolling) return;
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
 
         weaponRange = PlayerShoot.Instance.GetHeldGun().GetRange();
@@ -145,13 +158,18 @@ public class PlayerAim : MonoBehaviour
     private void RefreshPrecisionVariables() {
         GunSO gunSO = PlayerShoot.Instance.GetHeldGunSO();
 
+        currentPrecisionModifier = 1;
+        crouchPrecisionBuff = gunSO.crouchPrecisionBuff;
+        crouchRecoilReductionFactor = gunSO.crouchRecoilReductionFactor;
         weaponPrecisionModifier = gunSO.weaponPrecisionMultiplier;
+        aimFollowSpeed = gunSO.followMouseSpeed;
 
         DebuffPrecision(previousWeaponPrecisionModifier);
         BuffPrecision(weaponPrecisionModifier);
 
         previousWeaponPrecisionModifier = weaponPrecisionModifier;
     }
+
     private void SettingsManager_OnAutoAlignAimWithMovementChanged(object sender, EventArgs e) {
         autoAimOnMovement = SettingsManager.Instance.GetAlignAimWithMovement();
     }
@@ -165,10 +183,9 @@ public class PlayerAim : MonoBehaviour
     }
 
     private void HandleRecoil() {
-
         // Recul lissé
         currentRecoil = Mathf.Lerp(currentRecoil, 0f, Time.deltaTime * recoilDamping);
-
+        recoilDirectionOffset = Vector2.Lerp(recoilDirectionOffset, Vector2.zero, Time.deltaTime * recoilDamping);
     }
 
     private void HandleAimGamepad(Vector2 lookInput) {
@@ -201,7 +218,24 @@ public class PlayerAim : MonoBehaviour
         HandleCreaturesInAimDir();
 
         Vector3 rayOrigin = gunTransform.position;
-        Vector3 virtualMousePosition = rayOrigin + (Vector3)(aimDir.normalized * weaponRange);
+
+        // Ajustement dynamique de la distance du curseur
+        float stickIntensity = Mathf.Clamp01(lookInput.magnitude);
+
+        // Distance max dépend du stick (.75f*range pour au repos, .9f*range si poussé)
+        float baseDistanceFactor = Mathf.Lerp(0.75f, .9f, stickIntensity);
+
+        // Réduction si la visée est verticale
+        float horizontalFactor = Mathf.Clamp01(Mathf.Abs(aimDir.x)); // 1 = horizontal, 0 = vertical
+        float adjustedDistanceFactor = baseDistanceFactor * Mathf.Lerp(0.65f, 1f, horizontalFactor);
+        // On peut aller jusqu’à moitié moins de portée en vertical
+
+        currentCursorDistanceFactor = Mathf.Lerp(currentCursorDistanceFactor, adjustedDistanceFactor, Time.deltaTime * cursorLerpSpeed);
+
+        // Position finale du viseur
+        virtualMousePosition = rayOrigin + (Vector3)(aimDir.normalized * weaponRange * currentCursorDistanceFactor);
+
+        virtualMousePosition = rayOrigin + (Vector3)(aimDir.normalized * weaponRange * currentCursorDistanceFactor);
 
         // Position finale du réticule d’arme (autour du pointeur)
         weaponReticleWorldPos = HandleEffectiveAimPosition(virtualMousePosition);
@@ -217,7 +251,6 @@ public class PlayerAim : MonoBehaviour
         foreach (Transform transform in followAimDirTransformList) {
             transform.eulerAngles = new Vector3(0, 0, effectiveAimAngle);
         }
-
     }
 
     private void HandleAimMouse() {
@@ -266,12 +299,6 @@ public class PlayerAim : MonoBehaviour
         }
 
         float distance = Vector2.Distance(gunTransform.position, pointerTarget);
-        //distance = Mathf.Clamp(distance, 0f, weaponRange);
-
-        if(distance > weaponRange) {
-            Vector3 rayOrigin = gunTransform.position;
-            pointerTarget = rayOrigin + (Vector3)(aimDir.normalized * weaponRange);
-        }
 
         distancePrecisionModifier = Mathf.Lerp(minAimDistancePrecisionModifier, maxAimDistancePrecisionModifier, distance / weaponRange);
         precisionModifierWithDistance = currentPrecisionModifier * distancePrecisionModifier;
@@ -300,7 +327,7 @@ public class PlayerAim : MonoBehaviour
         Vector2 reducedNoise = Vector2.Lerp(noise, Vector2.zero, stationaryAccuracyFactor);
 
         offsetWithNoiseAndRecoil = reducedOffset + reducedNoise;
-        offsetWithNoiseAndRecoil.y += currentRecoil;
+        offsetWithNoiseAndRecoil += recoilDirectionOffset;
 
         Vector3 effectiveAimPos = pointerTarget + (Vector3)(offsetWithNoiseAndRecoil);
 
@@ -312,7 +339,9 @@ public class PlayerAim : MonoBehaviour
             effectiveAimPos = pointerTarget + projected;
         }
 
-        return effectiveAimPos;
+        currentEffectiveAimPos = Vector3.MoveTowards(currentEffectiveAimPos, effectiveAimPos, aimFollowSpeed * Time.deltaTime);
+
+        return currentEffectiveAimPos;
     }
 
     public Vector3 GetWeaponReticleWorldPos() {
@@ -333,7 +362,6 @@ public class PlayerAim : MonoBehaviour
 
     private void ResetStationaryPerfectPrecision(float timeToPerfectAccuracyFractionToRemove = 0f) {
         stationaryTimer = timeToPerfectAccuracy - timeToPerfectAccuracyFractionToRemove * timeToPerfectAccuracy;
-        perfectPrecisionEventSent = false;
     }
 
     private void HandleCreaturesInAimDir() {
@@ -376,13 +404,14 @@ public class PlayerAim : MonoBehaviour
         this.isAimingCreature = isAimingCreature;
         this.isAimingCritZone = isAimingCritZone;
 
-        if (closestDistance < float.MaxValue) {
+        if (overridePointerTargetOnSurfaces && closestDistance < float.MaxValue) {
             pointerTargetOverride = closestHitPoint;
         }
         else {
             pointerTargetOverride = Vector3.zero;
         }
     }
+
     private void HandleAutoAim() {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, detectionRange, enemyLayer);
 
@@ -424,31 +453,44 @@ public class PlayerAim : MonoBehaviour
             aimDir = directionToTarget;
         }
     }
+
     private void SelectNextRandomTargetForWeaponPointer() {
         if (goToMouseNext) {
             currentEffectiveOffsetTarget = Vector2.zero;
         }
         else {
-            float baseVerticalAngle = lastOffsetWasUp ? -90f : 90f; // alterne
-            float verticalAngle = baseVerticalAngle + UnityEngine.Random.Range(-30f, 30f);
-            lastOffsetWasUp = !lastOffsetWasUp; // on inverse pour la prochaine fois
-
-            float newAngle = verticalAngle * Mathf.Deg2Rad;
-            Vector2 offset = new Vector2(Mathf.Cos(newAngle), Mathf.Sin(newAngle)) * currentPrecisionRadius * precisionModifierWithDistance;
-            currentEffectiveOffsetTarget = offset;
+            SelectRandomTargetForWeaponPointer();
         }
 
         goToMouseNext = !goToMouseNext;
+
+    }
+
+    private void SelectRandomTargetForWeaponPointer() {
+        bool randomUpOrDown = UnityEngine.Random.Range(-1f, 1f) > 0;
+        float baseVerticalAngle = randomUpOrDown ? -90f : 90f; // alterne
+        float verticalAngle = baseVerticalAngle + UnityEngine.Random.Range(-30f, 30f);
+        //lastOffsetWasUp = !lastOffsetWasUp; // on inverse pour la prochaine fois
+
+        float newAngle = verticalAngle * Mathf.Deg2Rad;
+        Vector2 offset = new Vector2(Mathf.Cos(newAngle), Mathf.Sin(newAngle)) * currentPrecisionRadius * precisionModifierWithDistance;
+        currentEffectiveOffsetTarget = offset;
+    }
+
+    private void PlayerShoot_OnPlayerShot(object sender, EventArgs e) {
+        //SelectRandomTargetForWeaponPointer();
     }
 
     private void PlayerMovement_OnPlayerCrouchedEnded(object sender, EventArgs e) {
         ResetStationaryPerfectPrecision(0);
         DebuffPrecision(crouchPrecisionBuff);
+        DebuffRecoil(crouchRecoilReductionFactor);
     }
 
     private void PlayerMovement_OnPlayerCrouched(object sender, EventArgs e) {
         ResetStationaryPerfectPrecision(.7f);
         BuffPrecision(crouchPrecisionBuff);
+        BuffRecoil(crouchRecoilReductionFactor);
     }
 
     private void PlayerMovement_OnPlayerRunStopped(object sender, EventArgs e) {
@@ -476,7 +518,15 @@ public class PlayerAim : MonoBehaviour
         playerIsExhausted = true;
         DebuffPrecision(exhaustedPrecisionDebuff);
     }
+    private void PlayerShoot_OnWeaponSecondaryAbilityEnded(object sender, EventArgs e) {
+        float secondaryAbilityBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondaryAbilityPrecisionFactor;
+        DebuffPrecision(secondaryAbilityBuff);
+    }
 
+    private void PlayerShoot_OnWeaponSecondaryAbilityStarted(object sender, EventArgs e) {
+        float secondaryAbilityBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondaryAbilityPrecisionFactor;
+        BuffPrecision(secondaryAbilityBuff);
+    }
     private void Player_OnPlayerDamaged(object sender, Player.OnPlayerChangedHealthEventArgs e) {
         DebuffPrecision(takeDamagePrecisionDebuff);
         takeDamageTimer = takeDamageTimeToRecoverPrecision;
@@ -498,7 +548,6 @@ public class PlayerAim : MonoBehaviour
         smoothSpeed /= buff;
         noiseAmount /= buff;
         SelectNextRandomTargetForWeaponPointer();
-        //Debug.Log("BuffPrecision currentPrecisionModifier " + currentPrecisionModifier);
     }
 
     private void DebuffPrecision(float debuff) {
@@ -506,7 +555,14 @@ public class PlayerAim : MonoBehaviour
         smoothSpeed *= debuff;
         noiseAmount *= debuff;
         SelectNextRandomTargetForWeaponPointer();
-        //Debug.Log("DebuffPrecision currentPrecisionModifier " + currentPrecisionModifier);
+    }
+
+    private void BuffRecoil(float buff) {
+        currentRecoilModifier /= buff;
+    }
+
+    private void DebuffRecoil(float debuff) {
+        currentRecoilModifier *= debuff;
     }
 
     public float GetCurrentPrecisionModifier() {
@@ -579,6 +635,7 @@ public class PlayerAim : MonoBehaviour
     private void PlayerShoot_OnPlayerAimedSightEnded(object sender, EventArgs e) {
         CameraManager.Instance.ResetCameraTargetToPlayer();
         OnPlayerAimSightEnded?.Invoke(this, EventArgs.Empty);
+
         ResetStationaryPerfectPrecision();
     }
 
@@ -589,6 +646,7 @@ public class PlayerAim : MonoBehaviour
         ResetStationaryPerfectPrecision(.5f);
     }
 
+
     private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
         RefreshPrecisionVariables();
         ResetStationaryPerfectPrecision();
@@ -596,8 +654,15 @@ public class PlayerAim : MonoBehaviour
 
     public void AddRecoil(float recoil, float recoilDamping) {
         ResetStationaryPerfectPrecision();
-        currentRecoil += recoil;
+        currentRecoil += recoil * currentRecoilModifier;
+
         this.recoilDamping = recoilDamping;
+        Vector2 noise = new Vector2(
+                UnityEngine.Random.Range(-1f, 1f),
+                UnityEngine.Random.Range(-1f, 1f) // plus haut que bas (légèrement vers le haut)
+            ).normalized;
+
+        recoilDirectionOffset += noise * currentRecoil; // currentRecoilStrength : ton intensité de recul
 
         goToMouseNext = true;
     }
@@ -636,6 +701,14 @@ public class PlayerAim : MonoBehaviour
         return vec;
     }
 
+    public Vector3 GetVirtualMousePosition() {
+        return virtualMousePosition;
+    }
+
+    public float GetCurrentRecoil() {
+        return currentRecoil;
+    }
+
     public Vector3 GetMouseWorldPosition(Vector3 screenPosition, Camera worldCamera) {
         Vector3 worldPosition = worldCamera.ScreenToWorldPoint(screenPosition);
         return worldPosition;
@@ -646,13 +719,16 @@ public class PlayerAim : MonoBehaviour
     }
 
     private void HandleXScale() {
+        // Calculer la direction effective en X à partir du viseur réel
+
+        Vector2 effectiveDir = currentEffectiveAimPos - gunTransform.position;
         // Variables pour stocker les nouvelles échelles
         Vector3 localScale = transform.localScale; // Échelle du joueur
         Vector3 gunLocalScale = gunTransform.localScale; // Échelle de l'arme
 
         // Vérifie si le joueur change de direction
-        if (aimDir.x < 0 && previousAimDir.x >= 0) {
-            previousAimDir = aimDir;
+        if (effectiveDir.x < 0 && previousAimDir.x >= 0) {
+            previousAimDir = effectiveDir;
 
             // Inverse le personnage
             localScale.x = -1;
@@ -670,8 +746,8 @@ public class PlayerAim : MonoBehaviour
             gunShellPSTransform.localScale = gunLocalScale;
             OnXAimDirChanged?.Invoke(this, EventArgs.Empty);
         }
-        else if (aimDir.x > 0 && previousAimDir.x <= 0) {
-            previousAimDir = aimDir;
+        else if (effectiveDir.x > 0 && previousAimDir.x <= 0) {
+            previousAimDir = effectiveDir;
 
             // Retourne le personnage à l'orientation droite
             localScale.x = 1;
@@ -685,6 +761,7 @@ public class PlayerAim : MonoBehaviour
             foreach (Transform t in transformAffectedByXScalList) {
                 t.localScale = localScale;
             }
+
             gunTransform.localScale = gunLocalScale;
             gunShellPSTransform.localScale = gunLocalScale;
             OnXAimDirChanged?.Invoke(this, EventArgs.Empty);
@@ -737,6 +814,10 @@ public class PlayerAim : MonoBehaviour
 
     public Vector3 GetAimDir() {
         return aimDir;
+    }
+
+    public Vector3 GetEffectiveAimPosition() {
+        return currentEffectiveAimPos;
     }
 
     public float GetAimDirFloat() {

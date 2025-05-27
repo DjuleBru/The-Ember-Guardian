@@ -19,36 +19,46 @@ MonoBehaviour:
   - {fileID: -1239395625, guid: 5af45320dfd4de849b8fa428548670aa, type: 3}
   - {fileID: -1017087780, guid: 5af45320dfd4de849b8fa428548670aa, type: 3}
   - {fileID: -1391083118, guid: 5af45320dfd4de849b8fa428548670aa, type: 3}
-  ammoTypeUsed: 16
   gunAnimator: {fileID: 22100000, guid: a3a3466506f5c5a4abeeba2aa0b4599a, type: 2}
+  weaponCursorSprite: {fileID: 0}
+  weaponHitCursorSprite: {fileID: 0}
+  mouseCursorSprite_NE: {fileID: 0}
+  mouseCursorSprite_NW: {fileID: 0}
+  mouseCursorSprite_SE: {fileID: 0}
+  mouseCursorSprite_SW: {fileID: 0}
+  initialMouseCursorWidth: 0
+  initialMouseCursorHeight: 0
+  ammoTypeUsed: 16
   bulletIsParticle: 0
   bulletIsProjectile: 1
   bulletIsSprite: 0
   automaticWeapon: 0
   delayBetweenClickAndShot: 0.5
+  useAngleInPS: 0
   damagePerBullet: 40
   maxAmmo: 6
   pelletsPerBullet: 1
   shotsPerClip: 2
   critChance: 15
-  useAngleInPS: 0
-  shootConeAngle: 3.5
-  weaponPrecisionMultiplier: 0.8
-  shootCreatureHearMultiplier: 1.75
   bulletLifetime: 2.5
   bulletSpeed: 20
-  bulletKnockback: 100
-  weightAccelerationFactor: 1
-  reloadAccelerationFactor: 0.75
   shootCooldownTime: 1
-  shootCooldownSFXTriggerTime: 1
   reloadTime: 2
   handsReloadTime: 1.5
   handsAnimationReloadTime: 1
+  bulletKnockback: 100
+  shootCreatureHearMultiplier: 1.75
+  weightAccelerationFactor: 1
+  reloadAccelerationFactor: 0.75
+  followMouseSpeed: 40
   swapToWeaponTimeMultiplier: 1.5
   gunKnockback: 0.8
   gunRecoil: 1.5
   gunRecoilDamping: 4
+  shootConeAngle: 3.5
+  weaponPrecisionMultiplier: 0.8
+  weaponMaxRecoilImpactOnMouseReticle: 0.35
+  shootCooldownSFXTriggerTime: 1
   triggersShootFeedbackOnEachBuller: 1
   triggersShootSFXOnEachBuller: 1
   shootGunSound:

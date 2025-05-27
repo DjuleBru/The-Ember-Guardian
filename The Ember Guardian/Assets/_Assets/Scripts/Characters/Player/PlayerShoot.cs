@@ -30,6 +30,8 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPrimaryWeaponChanged;
     public event EventHandler OnSecondaryWeaponChanged;
 
+    public event EventHandler OnWeaponSecondaryAbilityStarted;
+    public event EventHandler OnWeaponSecondaryAbilityEnded;
     public event EventHandler OnPlayerAimedSightStarted;
     public event EventHandler OnPlayerAimedSightEnded;
     public event EventHandler OnPlayerSwitchedFireMode;
@@ -245,11 +247,13 @@ public class PlayerShoot : MonoBehaviour
 
                 if (secondaryAbilityActive) {
                     OnPlayerSetupLMGBipod?.Invoke(this, EventArgs.Empty);
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
                 }
                 else {
                     holdingStationaryGun = false;
                     PlayerAim.Instance.SetLimitAimAngle(false);
                     OnPlayerResetLMGBipod?.Invoke(this, EventArgs.Empty);
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
                 }
             }
 
@@ -471,6 +475,7 @@ public class PlayerShoot : MonoBehaviour
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Sniper) {
             OnPlayerAimedSightStarted?.Invoke(this, EventArgs.Empty);
+            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
             secondaryAbilityActive = true;
         }
 
@@ -488,6 +493,7 @@ public class PlayerShoot : MonoBehaviour
             shotLoaded = false;
 
             OnPlayerFocusBlastStarted?.Invoke(this, EventArgs.Empty);
+            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
             secondaryAbilityActive = true;
         }
 
@@ -496,6 +502,7 @@ public class PlayerShoot : MonoBehaviour
             PlayerStats.Instance.BuffShootCooldown(shootCooldownBuffValue);
 
             OnPlayerOverclockedSMGStarted?.Invoke(this, EventArgs.Empty);
+            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
             secondaryAbilityActive = true;
         }
 
@@ -509,6 +516,7 @@ public class PlayerShoot : MonoBehaviour
             }
 
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.LMG)
@@ -556,6 +564,7 @@ public class PlayerShoot : MonoBehaviour
                 gunKnockback = 1f;
 
                 OnPlayerEmptyRevolverMagStart?.Invoke(this, EventArgs.Empty);
+                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
 
                 secondaryAbilityActive = true;
                 emptyingRevolverMag = true;
@@ -570,6 +579,7 @@ public class PlayerShoot : MonoBehaviour
             projectileExplodesOnPlayerClick = true;
 
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -579,6 +589,7 @@ public class PlayerShoot : MonoBehaviour
 
             if (heldGun.GetGunSO().gunType == GunSO.GunType.Sniper) {
                 OnPlayerAimedSightEnded?.Invoke(this, EventArgs.Empty);
+                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
                 secondaryAbilityActive = false;
             }
 
@@ -586,6 +597,7 @@ public class PlayerShoot : MonoBehaviour
                 loadingShot = false;
 
                 OnPlayerFocusBlastStopped?.Invoke(this, EventArgs.Empty);
+                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
                 secondaryAbilityActive = false;
             }
 
@@ -593,6 +605,7 @@ public class PlayerShoot : MonoBehaviour
                 float shootCooldownBuffValue = 1.4f;
                 PlayerStats.Instance.DebuffShootCooldown(shootCooldownBuffValue);
                 OnPlayerOverclockedSMGStopped?.Invoke(this, EventArgs.Empty);
+                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
                 secondaryAbilityActive = false;
             }
 

@@ -107,10 +107,8 @@ public class PlayerTabMenuUI : MonoBehaviour
 
         if(tabMenuOpen) {
             FadeInTab();
-            OnPlayerTabOpened?.Invoke(this, EventArgs.Empty);
         } else {
             FadeOutTab();
-            OnPlayerTabClosed?.Invoke(this, EventArgs.Empty);
         }
     }
 

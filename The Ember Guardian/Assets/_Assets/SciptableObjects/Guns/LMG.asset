@@ -23,36 +23,46 @@ MonoBehaviour:
   - {fileID: 1282879509, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
   - {fileID: -1709508536, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
   - {fileID: -653879012, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
-  ammoTypeUsed: 7
   gunAnimator: {fileID: 9100000, guid: 429c9eebaded4324198c461af57afdbe, type: 2}
+  weaponCursorSprite: {fileID: 21300000, guid: b1aa9ebdbba1d2944bf7a506d9ef244e, type: 3}
+  weaponHitCursorSprite: {fileID: 21300000, guid: a25a91093bc6f774c8a8c3a9fcf3eb51, type: 3}
+  mouseCursorSprite_NE: {fileID: 21300000, guid: e95c0b88076c0264698405b96bb11d60, type: 3}
+  mouseCursorSprite_NW: {fileID: 21300000, guid: 0721de7e75a28ff4887818f6b99fab7e, type: 3}
+  mouseCursorSprite_SE: {fileID: 21300000, guid: 1d8c5deedd86e754b9d32a8fce196fc4, type: 3}
+  mouseCursorSprite_SW: {fileID: 21300000, guid: e4fdae90f8fdb734f94dbf62e85a889b, type: 3}
+  initialMouseCursorWidth: 55
+  initialMouseCursorHeight: 55
+  ammoTypeUsed: 7
   bulletIsParticle: 1
   bulletIsProjectile: 0
   bulletIsSprite: 0
   automaticWeapon: 1
   delayBetweenClickAndShot: 0
+  useAngleInPS: 0
   damagePerBullet: 10
   maxAmmo: 6
   pelletsPerBullet: 1
   shotsPerClip: 40
   critChance: 5
-  useAngleInPS: 0
-  shootConeAngle: 5
-  weaponPrecisionMultiplier: 0.5
-  shootCreatureHearMultiplier: 1.75
   bulletLifetime: 0.4
   bulletSpeed: 35
-  bulletKnockback: 10
-  weightAccelerationFactor: 0.8
-  reloadAccelerationFactor: 0.8
   shootCooldownTime: 0.18
-  shootCooldownSFXTriggerTime: 0
   reloadTime: 4.5
   handsReloadTime: 4.2
   handsAnimationReloadTime: 2.8
+  bulletKnockback: 10
+  shootCreatureHearMultiplier: 1.75
+  weightAccelerationFactor: 0.8
+  reloadAccelerationFactor: 0.8
+  followMouseSpeed: 20
   swapToWeaponTimeMultiplier: 3.5
   gunKnockback: 0.8
   gunRecoil: 0.3
   gunRecoilDamping: 3
+  shootConeAngle: 5
+  weaponPrecisionMultiplier: 0.4
+  weaponMaxRecoilImpactOnMouseReticle: 0.5
+  shootCooldownSFXTriggerTime: 0
   triggersShootFeedbackOnEachBuller: 1
   triggersShootSFXOnEachBuller: 1
   shootGunSound:

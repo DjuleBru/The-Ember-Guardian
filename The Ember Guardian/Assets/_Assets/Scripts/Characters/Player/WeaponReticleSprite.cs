@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class WeaponReticleSprite : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private SpriteRenderer hitReticleSpriteRenderer;
     [SerializeField] private Animator hitCursorAnimator;
     [SerializeField] private Color aimingCritZoneColor;
@@ -14,23 +13,25 @@ public class WeaponReticleSprite : MonoBehaviour
     private float showHitReticleTime = .2f;
     private bool showingHitReticle;
 
-    private void Awake() {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-    }
-
     private void Start() {
         ParticleCollision.OnAnyBulletHitEnemy += ParticleCollision_OnAnyBulletHitEnemy;
         ParticleCollision.OnAnyBulletHitEnemyCrit += ParticleCollision_OnAnyBulletHitEnemyCrit;
     }
 
     private void ParticleCollision_OnAnyBulletHitEnemyCrit(object sender, System.EventArgs e) {
+        StartCoroutine(ResetHitReticleColorAfterDelay(.3f));
         hitReticleSpriteRenderer.color = aimingCritZoneColor;
         ShowHitReticle();
     }
 
     private void ParticleCollision_OnAnyBulletHitEnemy(object sender, System.EventArgs e) {
-        hitReticleSpriteRenderer.color = Color.white;
+        StartCoroutine(ResetHitReticleColorAfterDelay(.01f));
         ShowHitReticle();
+    }
+
+    private IEnumerator ResetHitReticleColorAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+        hitReticleSpriteRenderer.color = Color.white;
     }
 
     private void Update() {
@@ -40,16 +41,18 @@ public class WeaponReticleSprite : MonoBehaviour
                 HideHitReticle();
             }
         }
-        if (PlayerAim.Instance.GetIsAimingCritZone()) {
-            spriteRenderer.color = aimingCritZoneColor;
-            return;
-        }
 
-        if (PlayerAim.Instance.GetIsAimingCreature()) {
-            spriteRenderer.color = aimingEnemyColor;
-            return;
-        }
-        spriteRenderer.color = Color.white;
+        //if (PlayerAim.Instance.GetIsAimingCritZone()) {
+        //    spriteRenderer.color = aimingCritZoneColor;
+        //    return;
+        //}
+
+        //if (PlayerAim.Instance.GetIsAimingCreature()) {
+        //    spriteRenderer.color = aimingEnemyColor;
+        //    return;
+        //}
+
+        //spriteRenderer.color = Color.white;
     }
 
     private void ShowHitReticle() {
@@ -63,6 +66,11 @@ public class WeaponReticleSprite : MonoBehaviour
         hitCursorAnimator.ResetTrigger("Show");
         hitCursorAnimator.SetTrigger("Hide");
         showingHitReticle = false;
+    }
+
+    private void OnDestroy() {
+        ParticleCollision.OnAnyBulletHitEnemy -= ParticleCollision_OnAnyBulletHitEnemy;
+        ParticleCollision.OnAnyBulletHitEnemyCrit -= ParticleCollision_OnAnyBulletHitEnemyCrit;
     }
 
 }

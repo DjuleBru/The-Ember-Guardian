@@ -149,14 +149,15 @@ public class VideoTipUI : MonoBehaviour
 
     private void OpenPanel() {
         if (dontShowDebugMode) return;
+
+        OnVideoTipPanelOpened?.Invoke(this, EventArgs.Empty);
+
         Time.timeScale = 0f;
         panelOpen = true;
         videoTipUIMainPanel.SetActive(true);
         videoTipUIMainPanelAnimator.ResetTrigger("Hide");
         videoTipUIMainPanelAnimator.SetTrigger("Show");
         EventSystem.current.SetSelectedGameObject(resumeButtonGO);
-
-        OnVideoTipPanelOpened?.Invoke(this, EventArgs.Empty);
     }
 
     private IEnumerator ShowTipTextList() {

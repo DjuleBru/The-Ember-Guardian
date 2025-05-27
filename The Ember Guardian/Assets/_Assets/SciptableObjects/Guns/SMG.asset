@@ -23,36 +23,49 @@ MonoBehaviour:
   - {fileID: -2146848304, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
   - {fileID: 1906003518, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
   - {fileID: -1051984127, guid: 2373c59428f68404ca5e7b269aef22b5, type: 3}
-  ammoTypeUsed: 7
   gunAnimator: {fileID: 22100000, guid: e730f9e110b5f3841b06e11e18aa15a3, type: 2}
+  weaponCursorSprite: {fileID: 21300000, guid: b1aa9ebdbba1d2944bf7a506d9ef244e, type: 3}
+  weaponHitCursorSprite: {fileID: 21300000, guid: a25a91093bc6f774c8a8c3a9fcf3eb51, type: 3}
+  mouseCursorSprite_NE: {fileID: 21300000, guid: a5635a1770cca97419cd5cf3a4e9138f, type: 3}
+  mouseCursorSprite_NW: {fileID: 21300000, guid: 9712a41e8d46559408201270a5732c31, type: 3}
+  mouseCursorSprite_SE: {fileID: 21300000, guid: 7d1651210e9a7234f912a2bbd863ef80, type: 3}
+  mouseCursorSprite_SW: {fileID: 21300000, guid: df73b3e6337345d48b58bb269f9e8a26, type: 3}
+  initialMouseCursorWidth: 55
+  initialMouseCursorHeight: 55
+  ammoTypeUsed: 7
   bulletIsParticle: 1
   bulletIsProjectile: 0
   bulletIsSprite: 0
   automaticWeapon: 1
   delayBetweenClickAndShot: 0
+  useAngleInPS: 0
   damagePerBullet: 4
   maxAmmo: 8
   pelletsPerBullet: 1
   shotsPerClip: 20
   critChance: 5
-  useAngleInPS: 0
-  shootConeAngle: 6
-  weaponPrecisionMultiplier: 0.65
-  shootCreatureHearMultiplier: 1.75
   bulletLifetime: 0.2
   bulletSpeed: 40
-  bulletKnockback: 5
-  weightAccelerationFactor: 1.1
-  reloadAccelerationFactor: 1.05
   shootCooldownTime: 0.17
-  shootCooldownSFXTriggerTime: 0
   reloadTime: 2
   handsReloadTime: 1.5
   handsAnimationReloadTime: 1
+  bulletKnockback: 5
+  shootCreatureHearMultiplier: 1.75
+  weightAccelerationFactor: 1.1
+  reloadAccelerationFactor: 1.05
+  followMouseSpeed: 45
   swapToWeaponTimeMultiplier: 0.8
   gunKnockback: 0.3
   gunRecoil: 0.2
   gunRecoilDamping: 4
+  shootConeAngle: 6
+  weaponPrecisionMultiplier: 0.65
+  weaponSecondaryAbilityPrecisionFactor: 0.4
+  weaponMaxRecoilImpactOnMouseReticle: 0.25
+  crouchPrecisionBuff: 1.5
+  crouchRecoilReductionFactor: 1.5
+  shootCooldownSFXTriggerTime: 0
   triggersShootFeedbackOnEachBuller: 1
   triggersShootSFXOnEachBuller: 1
   shootGunSound:

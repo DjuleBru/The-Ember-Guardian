@@ -528,7 +528,6 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     }
 
     public override void EquipOrUnequipItem() {
-        Debug.Log("Switching equip function to pause menu");
         return;
 
         if(gunItemCategory == GunItemCategory.newGun) {

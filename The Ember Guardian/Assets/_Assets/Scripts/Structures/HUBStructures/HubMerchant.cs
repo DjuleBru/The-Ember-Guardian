@@ -214,6 +214,7 @@ public class HubMerchant : MonoBehaviour
         playerInteractingWithMerchant = true;
 
         OnPlayerStartedTalkingWithHubMerchant?.Invoke(this, EventArgs.Empty);
+        OnPlayerStartedTalkingWithAnyHubMerchant?.Invoke(this, EventArgs.Empty);
     }
 
     protected void OnTriggerEnter2D(Collider2D collision) {

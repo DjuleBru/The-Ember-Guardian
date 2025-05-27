@@ -302,7 +302,14 @@ MonoBehaviour:
   cursorTexture: {fileID: 2800000, guid: a607a228b4c764b40982b6c836a9b70d, type: 3}
   cursorCanvas: {fileID: 3109365016523641097}
   canvasCursorGO: {fileID: 40471706822693075}
-  weaponCursorSprite: {fileID: 1552383466703848122}
+  weaponCursorSpriteRenderer: {fileID: 1552383466703848122}
+  weaponCursorHitSpriteRenderer: {fileID: 6735409964381061999}
+  weaponCursorGameObject: {fileID: 1171746157467787506}
+  mouseCursorGameObject: {fileID: 6983370182614200467}
+  mouseCursorSpriteRenderer_NE: {fileID: 7528847658017488501}
+  mouseCursorSpriteRenderer_NW: {fileID: 6885046987088336026}
+  mouseCursorSpriteRenderer_SE: {fileID: 4789822832156543760}
+  mouseCursorSpriteRenderer_SW: {fileID: 3899471044097009137}
 --- !u!1 &6816191878599857827
 GameObject:
   m_ObjectHideFlags: 0

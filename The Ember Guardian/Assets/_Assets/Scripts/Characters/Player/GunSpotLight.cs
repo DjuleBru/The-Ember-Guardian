@@ -61,6 +61,7 @@ public class GunSpotLight : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
         PlayerShoot.Instance.OnPlayerReloadInterrupted += PlayerShoot_OnPlayerReloadInterrupted;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+        PlayerAim.Instance.OnXAimDirChanged += PlayerAim_OnXAimDirChanged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
 
         if(PauseMenuUI.Instance != null) {
@@ -71,7 +72,8 @@ public class GunSpotLight : MonoBehaviour
         PlayerStats.Instance.OnFlashlightRangeChanged += PlayerStats_OnFlashlightRangeChanged;
     }
 
-    private void Update() {
+
+    private void LateUpdate() {
         if (playerJustTeleported) {
             playerJustTeleportedTimer += Time.deltaTime;
             if (playerJustTeleportedTimer > .5f) {
@@ -81,10 +83,11 @@ public class GunSpotLight : MonoBehaviour
         }
 
         if (rolling) return;
+        RefreshLightRotation();
+    }
 
-        float angle = gunVisualTransform.rotation.eulerAngles.z;
-        gunSpotLightTransform.eulerAngles = new Vector3(0, 0, angle - 90);
-
+    private void PlayerAim_OnXAimDirChanged(object sender, EventArgs e) {
+        RefreshLightRotation();
     }
 
     private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {
@@ -92,6 +95,11 @@ public class GunSpotLight : MonoBehaviour
         playerJustTeleported = true;
     }
 
+    private void RefreshLightRotation() {
+        Vector3 dir = gunVisualTransform.right;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        gunSpotLightTransform.eulerAngles = new Vector3(0, 0, angle - 90);
+    }
     private void SettingsManager_OnAutoSwitchLightGunChanged(object sender, EventArgs e) {
         autoSwitchWithDay = SettingsManager.Instance.GetAutoSwitchLight();
     }

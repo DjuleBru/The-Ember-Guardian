@@ -272,8 +272,6 @@ public class PlayerCamp : MonoBehaviour
     }
 
     public float LayoutToWorldPosition(int startLayoutPosition, StructureSO structureSO) {
-        Debug.Log(structureSO.structureType + " startLayoutPosition " + startLayoutPosition);
-
         float objectMidPointLayoutPosition;
 
         objectMidPointLayoutPosition = startLayoutPosition + structureSO.widthInCells / 2f;
