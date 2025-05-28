@@ -419,7 +419,6 @@ public class ItemButtonUI : ButtonUI {
     #region NAVIGATION
     protected override void ButtonUI_OnAnyButtonHovered(object sender, EventArgs e) {
         if (lockHoverInteractions) return;
-        //if(GameInput.Instance.IsUsingGamepad()) return;
         ItemButtonUI itemButtonUI = sender as ItemButtonUI;
         if (itemButtonUI == null) return;
 
@@ -474,6 +473,7 @@ public class ItemButtonUI : ButtonUI {
                 descriptionCard.transform.SetParent(transform.parent);
             }
 
+            Debug.Log("isTreeParent " + isTreeParent);
             if (isTreeParent) {
                 treeShowHide.ShowTree();
             }

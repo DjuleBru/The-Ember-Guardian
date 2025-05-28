@@ -12,10 +12,10 @@ public class PlayerCamp : MonoBehaviour
     [SerializeField] private StructureLocation initialFireStructureLocation;
     [SerializeField] private List<Structure> initialStructures;
 
-    [SerializeField] private List<StructureLocation> allStructureLocations;
     [SerializeField] private List<StructureLocation> trapLocations;
     [SerializeField] private List<StructureLocation> towerLocations;
     [SerializeField] private List<StructureLocation> initialStructureLocationsBuilt;
+    private List<StructureLocation> allStructureLocations;
 
     [SerializeField] private StructureLocation ammoCrafter1Location;
     [SerializeField] private StructureLocation researchTowerLocation;
@@ -69,20 +69,27 @@ public class PlayerCamp : MonoBehaviour
     }
 
     private void LoadCustomCampLayout() {
+        allStructureLocations = new List<StructureLocation>();
         List<CampEditManager.StructurePlacementData> structurePlacementData = ES3.Load("campLayout", new List<CampEditManager.StructurePlacementData>());
         customLayout = structurePlacementData.Count > 0;
 
+        Debug.Log("structurePlacementData.Count " + structurePlacementData.Count);
         // Camp has never been customized
-        if (!customLayout) return;
+        if (!customLayout) {
+            foreach (StructureLocation location in initialStructureLocationsParent.GetComponentsInChildren<StructureLocation>()) {
+                allStructureLocations.Add(location);
+            }
+            return;
+        }
+
         trapLocations.Clear();
         towerLocations.Clear();
-        allStructureLocations.Clear();
 
         foreach (StructureLocation location in initialStructureLocationsParent.GetComponentsInChildren<StructureLocation>()) {
             location.gameObject.SetActive(false);
         }
 
-        foreach(CampEditManager.StructurePlacementData data in structurePlacementData) {
+        foreach (CampEditManager.StructurePlacementData data in structurePlacementData) {
             StructureSO structureSO = data.structureSO;
             int position = data.positionIndex;
 

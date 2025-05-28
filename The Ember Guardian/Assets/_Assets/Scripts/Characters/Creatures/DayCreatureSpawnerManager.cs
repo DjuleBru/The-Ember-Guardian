@@ -54,7 +54,7 @@ public class DayCreatureSpawnerManager : MonoBehaviour
             // Ajuster la difficulté de base par un facteur lié à la distance du centre
             int groupDifficulty =  Mathf.FloorToInt(difficultyFactor * baseDifficultyPerGroup);
 
-            Debug.Log("distanceToCenter " + distanceToCenter + " groupDifficulty " + groupDifficulty);
+            //Debug.Log("distanceToCenter " + distanceToCenter + " groupDifficulty " + groupDifficulty);
 
             // Sélectionner les créatures à spawner pour ce groupe (maximum 3 types)
             List<CreatureSO> selectedCreatures = new List<CreatureSO>();  // Liste des créatures à spawner

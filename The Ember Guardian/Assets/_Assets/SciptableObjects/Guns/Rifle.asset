@@ -61,14 +61,18 @@ MonoBehaviour:
   shootCreatureHearMultiplier: 1.75
   weightAccelerationFactor: 1
   reloadAccelerationFactor: 0.75
-  followMouseSpeed: 30
+  followMouseSpeed: 35
   swapToWeaponTimeMultiplier: 1.5
   gunKnockback: 0.8
   gunRecoil: 0.2
   gunRecoilDamping: 4
   shootConeAngle: 1
   weaponPrecisionMultiplier: 1
+  weaponSecondaryAbilityPrecisionFactor: 1
+  weaponSecondaryRecoilReductionFactor: 1
   weaponMaxRecoilImpactOnMouseReticle: 0.25
+  crouchPrecisionBuff: 2
+  crouchRecoilReductionFactor: 2
   shootCooldownSFXTriggerTime: 0.2
   triggersShootFeedbackOnEachBuller: 1
   triggersShootSFXOnEachBuller: 1

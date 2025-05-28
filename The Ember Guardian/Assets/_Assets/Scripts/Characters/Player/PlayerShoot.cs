@@ -57,12 +57,8 @@ public class PlayerShoot : MonoBehaviour
         public int ammoAmount;
     }
 
-    [SerializeField] private Transform projectileSpawnPoint;
     [SerializeField] private Transform ammoDestinationPoint;
     [SerializeField] private Transform ammoSpawnPoint;
-    [SerializeField] private Transform projectilePrefab;
-    [SerializeField] private float projectileInitialForce;
-
 
     private float shootCooldownTimer;
     private float shootCooldownSFXTriggerTime;
@@ -78,7 +74,6 @@ public class PlayerShoot : MonoBehaviour
     private bool canShoot = true;
     private bool coolingDown;
     private bool reloading;
-    private bool reloadingInterruptedByRoll;
     private bool coolDownSFXTriggered;
     private bool coolDownAnimationTriggered;
     private bool playerJustPressedReload;
@@ -88,7 +83,6 @@ public class PlayerShoot : MonoBehaviour
     private bool rifleSemiAutoModeActive;
     private bool projectileExplodesOnPlayerClickModeActive;
     private bool projectileExplodesOnPlayerClick;
-    private bool ammoClipInfusedWithOrb;
 
     private bool canHold2Guns;
 
@@ -524,7 +518,6 @@ public class PlayerShoot : MonoBehaviour
             if (settingUpLMG) return;
             if(!secondaryAbilityActive)
             {
-                gunRecoil = 0f;
                 gunKnockback = 0f;
 
                 PlayerAim.Instance.SetGunStraight();
@@ -541,7 +534,6 @@ public class PlayerShoot : MonoBehaviour
 
             } else
             {
-                gunRecoil = heldGunSO.gunRecoil;
                 gunKnockback = heldGunSO.gunKnockback;
 
                 OnPlayerSetupLMGStopped?.Invoke(this, EventArgs.Empty);
@@ -738,6 +730,7 @@ public class PlayerShoot : MonoBehaviour
         }
 
         OnPlayerEmptyRevolverMagEnd?.Invoke(this, EventArgs.Empty);
+        OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
         secondaryAbilityActive = false;
 
         gunRecoil = heldGunSO.gunRecoil;

@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponReticleSprite : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer hitReticleSpriteRenderer;
+    [SerializeField] private Image hitReticleSpriteRenderer;
     [SerializeField] private Animator hitCursorAnimator;
     [SerializeField] private Color aimingCritZoneColor;
     [SerializeField] private Color aimingEnemyColor;

@@ -144,6 +144,7 @@ public class Gun : MonoBehaviour
 
         maxAmmo = MetaProgressionManager.Instance.GetGunMaxAmmo(gunSO);
         damagePerBullet = MetaProgressionManager.Instance.GetGunDamagePerBullet(gunSO);
+        damagePerBulletAtRunStart = damagePerBullet;
         bulletKnockback = MetaProgressionManager.Instance.GetGunBulletKnockback(gunSO);
         shotsPerClip = MetaProgressionManager.Instance.GetGunShotsPerClip(gunSO);
         critChance = MetaProgressionManager.Instance.GetGunCritChance(gunSO);
@@ -159,7 +160,6 @@ public class Gun : MonoBehaviour
         weightAccelerationFactor = MetaProgressionManager.Instance.GetGunWeightAccelerationFactor(gunSO);
 
         defaultAngle = MetaProgressionManager.Instance.GetGunShootConeAnle(gunSO);
-        defaultAngle = gunSO.shootConeAngle;
         currentAngle = defaultAngle;
         targetAngle = defaultAngle;
         sightAngle = defaultAngle / 3;
@@ -334,6 +334,11 @@ public class Gun : MonoBehaviour
 
     public float GetRange() {
         return bulletSpeed * bulletLifetime;
+    }
+
+    public float GetWeaponPrecisionModifier() {
+        float precisionMultiplier = gunSO.shootConeAngle/ defaultAngle;
+        return gunSO.weaponPrecisionMultiplier * precisionMultiplier;
     }
     #endregion
 

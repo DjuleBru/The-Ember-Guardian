@@ -23,12 +23,16 @@ public class PlayerAim : MonoBehaviour
     [SerializeField] private LayerMask groundLayer; // Masque de couche pour les ennemis
     [SerializeField] private LayerMask barricadesLayer; // Masque de couche pour les ennemis
     private float autoAimConeAngle = 7.5f; // Angle du cône de visée autour de la direction de visée
+    private float maxAutoAimConeAngle = 90f; // Angle max du cône de visée si l'ennemi est très proche
+    private float distanceToHaveMinAutoAimConeAngle = 3f; // Distance à partir de laquelle on considère que l’ennemi est "loin"
+    private float distanceToHaveMaxAutoAimConeAngle = .5f; // Distance à partir de laquelle on considère que l’ennemi est "proche"
     private float detectionRange = 15f; // Portée de détection des ennemis
 
     private bool isUsingGamepad;
     private bool isAimingSight;
     private bool isRolling = false;
     private bool autoAimActive;
+    private float autoAimSnapSmoothSpeed = 15f;
     private bool isAimingCreature;
     private bool isAimingCritZone;
     private bool overridePointerTargetOnSurfaces = false;
@@ -141,10 +145,8 @@ public class PlayerAim : MonoBehaviour
     private void LateUpdate() {
         HandleJustTookDamagePrecisionDebuff();
 
-        //if (isRolling) return;
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
 
-        weaponRange = PlayerShoot.Instance.GetHeldGun().GetRange();
         if (isUsingGamepad) {
             HandleAimGamepad(GameInput.Instance.GetAimInput());
         }
@@ -157,11 +159,12 @@ public class PlayerAim : MonoBehaviour
 
     private void RefreshPrecisionVariables() {
         GunSO gunSO = PlayerShoot.Instance.GetHeldGunSO();
+        Gun gun = PlayerShoot.Instance.GetHeldGun();
 
         currentPrecisionModifier = 1;
         crouchPrecisionBuff = gunSO.crouchPrecisionBuff;
         crouchRecoilReductionFactor = gunSO.crouchRecoilReductionFactor;
-        weaponPrecisionModifier = gunSO.weaponPrecisionMultiplier;
+        weaponPrecisionModifier = gun.GetWeaponPrecisionModifier();
         aimFollowSpeed = gunSO.followMouseSpeed;
 
         DebuffPrecision(previousWeaponPrecisionModifier);
@@ -205,13 +208,9 @@ public class PlayerAim : MonoBehaviour
             }
         }
 
-        // Auto-aim logic
-        if(autoAimActive) {
-            HandleAutoAim();
-        }
-
-        if (limitAimAngle) {
-            ApplyAimAngleLimit();
+        Vector2 autoAimTargetPos = Vector2.zero;
+        if (autoAimActive) {
+            autoAimTargetPos = HandleAutoAim();
         }
 
         HandleXScale();
@@ -233,12 +232,20 @@ public class PlayerAim : MonoBehaviour
         currentCursorDistanceFactor = Mathf.Lerp(currentCursorDistanceFactor, adjustedDistanceFactor, Time.deltaTime * cursorLerpSpeed);
 
         // Position finale du viseur
-        virtualMousePosition = rayOrigin + (Vector3)(aimDir.normalized * weaponRange * currentCursorDistanceFactor);
-
-        virtualMousePosition = rayOrigin + (Vector3)(aimDir.normalized * weaponRange * currentCursorDistanceFactor);
+        if (autoAimTargetPos != Vector2.zero) {
+            // Snap direct sur l’ennemi auto-aimé
+            virtualMousePosition = Vector3.Lerp(virtualMousePosition, autoAimTargetPos, Time.deltaTime * autoAimSnapSmoothSpeed);
+        }
+        else {
+            virtualMousePosition = rayOrigin + (Vector3)(aimDir.normalized * weaponRange * currentCursorDistanceFactor);
+        }
 
         // Position finale du réticule d’arme (autour du pointeur)
         weaponReticleWorldPos = HandleEffectiveAimPosition(virtualMousePosition);
+
+        if (limitAimAngle) {
+            weaponReticleWorldPos = ApplyAimAngleLimitClampedToCone(gunTransform.position, weaponReticleWorldPos);
+        }
 
         if (weaponReticleTransform != null) {
             weaponReticleTransform.position = weaponReticleWorldPos;
@@ -263,16 +270,15 @@ public class PlayerAim : MonoBehaviour
 
         aimDir = dirToMouse.normalized;
 
-
-        if (limitAimAngle) {
-            ApplyAimAngleLimit();
-        }
-
         HandleXScale();
         HandleCreaturesInAimDir();
 
         // Position finale du réticule d’arme (autour du pointeur)
         weaponReticleWorldPos = HandleEffectiveAimPosition(mousePosition);
+
+        if (limitAimAngle) {
+            weaponReticleWorldPos = ApplyAimAngleLimitClampedToCone(gunTransform.position, weaponReticleWorldPos);
+        }
 
         if (weaponReticleTransform != null) {
             weaponReticleTransform.position = weaponReticleWorldPos;
@@ -412,7 +418,7 @@ public class PlayerAim : MonoBehaviour
         }
     }
 
-    private void HandleAutoAim() {
+    private Vector2 HandleAutoAim() {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, detectionRange, enemyLayer);
 
         Transform target = null;
@@ -428,31 +434,40 @@ public class PlayerAim : MonoBehaviour
             Creature creature = enemy.GetComponentInParent<Creature>();
             if (creature.GetDead()) continue;
 
-            directionToEnemy = (autoAimCollider.GetAutoAimPosition() - transform.position).normalized;
+            Vector3 autoAimPos = autoAimCollider.GetAutoAimPosition();
+            float distanceToEnemy = Vector2.Distance(autoAimPos, transform.position);
+            if (distanceToEnemy > weaponRange*.9f) continue;
 
-            // Calculer l'angle entre la direction de la visée et l'ennemi
+            directionToEnemy = (autoAimPos - transform.position).normalized;
+
+            float dynamicConeAngle = Mathf.Lerp(
+                autoAimConeAngle,
+                maxAutoAimConeAngle,
+                Mathf.InverseLerp(distanceToHaveMaxAutoAimConeAngle, distanceToHaveMinAutoAimConeAngle, distanceToEnemy)
+            );
+
             float angleToEnemy = Vector2.Angle(aimDir, directionToEnemy);
 
-            // Vérifier si l'ennemi se trouve dans le cône de visée
-            if (angleToEnemy <= autoAimConeAngle) {
-                // Sélectionner l'ennemi le plus proche dans le cône
-                if (angleToEnemy < closestAngle) {
-                    closestAngle = angleToEnemy;
-                    target = enemy.transform;
-                    closestEnemyAutoAimColliderPosition = autoAimCollider.GetAutoAimPosition();
-                }
+            if (angleToEnemy < dynamicConeAngle && angleToEnemy < closestAngle) {
+                closestAngle = angleToEnemy;
+                target = enemy.transform;
+                closestEnemyAutoAimColliderPosition = autoAimPos;
             }
         }
 
-        // Si un ennemi a été trouvé, ajuster la visée vers cet ennemi
         if (target != null) {
             Vector2 playerPosition = gunTransform.position;
             Vector2 directionToTarget = (closestEnemyAutoAimColliderPosition - playerPosition).normalized;
 
-            // Lissage de la direction de la visée avec Lerp
             aimDir = directionToTarget;
+
+            // Snap visuel
+            return closestEnemyAutoAimColliderPosition;
         }
+
+        return Vector2.zero;
     }
+
 
     private void SelectNextRandomTargetForWeaponPointer() {
         if (goToMouseNext) {
@@ -521,11 +536,17 @@ public class PlayerAim : MonoBehaviour
     private void PlayerShoot_OnWeaponSecondaryAbilityEnded(object sender, EventArgs e) {
         float secondaryAbilityBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondaryAbilityPrecisionFactor;
         DebuffPrecision(secondaryAbilityBuff);
+
+        float recoilBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondaryRecoilReductionFactor;
+        DebuffRecoil(recoilBuff);
     }
 
     private void PlayerShoot_OnWeaponSecondaryAbilityStarted(object sender, EventArgs e) {
         float secondaryAbilityBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondaryAbilityPrecisionFactor;
         BuffPrecision(secondaryAbilityBuff);
+
+        float recoilBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondaryRecoilReductionFactor;
+        BuffRecoil(recoilBuff);
     }
     private void Player_OnPlayerDamaged(object sender, Player.OnPlayerChangedHealthEventArgs e) {
         DebuffPrecision(takeDamagePrecisionDebuff);
@@ -559,69 +580,41 @@ public class PlayerAim : MonoBehaviour
 
     private void BuffRecoil(float buff) {
         currentRecoilModifier /= buff;
+        Debug.Log("currentRecoilModifier " + currentRecoilModifier);
     }
 
     private void DebuffRecoil(float debuff) {
         currentRecoilModifier *= debuff;
+        Debug.Log("currentRecoilModifier " + currentRecoilModifier);
     }
 
     public float GetCurrentPrecisionModifier() {
         return currentPrecisionModifier;
     }
 
-    private void ApplyAimAngleLimit()
-    {
-        // Calculer l'angle actuel de la visée (déjà compris entre -180 et 180)
-        float currentAngle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
+    private Vector3 ApplyAimAngleLimitClampedToCone(Vector3 origin, Vector3 target) {
+        Vector3 dir = (target - origin).normalized;
+        float currentAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
-        // Initialiser les bornes d'angle
-        float minAngle = 0;
-        float maxAngle = 0;
+        float minAngle, maxAngle;
 
-        if (aimDir.x < 0)
-        {
-            // Bornes pour viser à gauche
+        if (dir.x < 0) {
             minAngle = -180 + maxAimAngle;
             maxAngle = 180 - maxAimAngle;
-
-            // Limiter l'angle dans les bornes définies
-            if (currentAngle > 0)
-            {
-                // Limiter l'angle dans les bornes définies
-                if (currentAngle < maxAngle)
-                {
-                    currentAngle = maxAngle;
-                }
-            }
-            if(currentAngle < 0)
-            {
-                // Limiter l'angle dans les bornes définies
-                if (currentAngle > minAngle)
-                {
-                    currentAngle = minAngle;
-                }
-            }
+            if (currentAngle > 0 && currentAngle < maxAngle)
+                currentAngle = maxAngle;
+            else if (currentAngle < 0 && currentAngle > minAngle)
+                currentAngle = minAngle;
         }
-        else
-        {
-            // Bornes pour viser à droite
+        else {
             minAngle = -maxAimAngle;
             maxAngle = maxAimAngle;
-
-            // Limiter l'angle dans les bornes définies
-            if (currentAngle < minAngle)
-            {
-                currentAngle = minAngle;
-            }
-            else if (currentAngle > maxAngle)
-            {
-                currentAngle = maxAngle;
-            }
+            currentAngle = Mathf.Clamp(currentAngle, minAngle, maxAngle);
         }
 
-
-        // Recalculer la direction de visée à partir de l'angle limité
-        aimDir = new Vector3(Mathf.Cos(currentAngle * Mathf.Deg2Rad), Mathf.Sin(currentAngle * Mathf.Deg2Rad), 0).normalized;
+        Vector3 limitedDir = new Vector3(Mathf.Cos(currentAngle * Mathf.Deg2Rad), Mathf.Sin(currentAngle * Mathf.Deg2Rad), 0);
+        float originalDist = Vector3.Distance(origin, target);
+        return origin + limitedDir * originalDist;
     }
 
     private void PlayerMovement_OnPlayerRollEnded(object sender, EventArgs e) {
@@ -650,12 +643,18 @@ public class PlayerAim : MonoBehaviour
     private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
         RefreshPrecisionVariables();
         ResetStationaryPerfectPrecision();
+
+        if (PlayerShoot.Instance.GetHeldGun().GetGunSO().bulletIsParticle) {
+            weaponRange = PlayerShoot.Instance.GetHeldGun().GetRange();
+        }
+        else {
+            weaponRange = 8f;
+        }
     }
 
     public void AddRecoil(float recoil, float recoilDamping) {
         ResetStationaryPerfectPrecision();
         currentRecoil += recoil * currentRecoilModifier;
-
         this.recoilDamping = recoilDamping;
         Vector2 noise = new Vector2(
                 UnityEngine.Random.Range(-1f, 1f),

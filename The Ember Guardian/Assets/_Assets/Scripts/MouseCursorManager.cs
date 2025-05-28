@@ -7,11 +7,13 @@ public class MouseCursorManager : MonoBehaviour
 {
     public static MouseCursorManager Instance;
 
+    [SerializeField] private Texture2D invisibleCursorTexture;
     [SerializeField] private Texture2D cursorTexture;
     [SerializeField] private Canvas cursorCanvas;
     [SerializeField] private RectTransform canvasCursorGO;
-    [SerializeField] private SpriteRenderer weaponCursorSpriteRenderer;
-    [SerializeField] private SpriteRenderer weaponCursorHitSpriteRenderer;
+    [SerializeField] private Image weaponCursorImage;
+    [SerializeField] private Image weaponCursorHitImage;
+    [SerializeField] private RectTransform weaponCursorRectTransform;
     [SerializeField] private GameObject weaponCursorGameObject;
     [SerializeField] private GameObject mouseCursorGameObject;
     [SerializeField] private Image mouseCursorSpriteRenderer_NE;
@@ -75,6 +77,20 @@ public class MouseCursorManager : MonoBehaviour
 
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
         ShowMouse(false);
+    }
+
+    private void LateUpdate() {
+        if (isMenuScene) return;
+
+        HandleMouseCursorSize();
+        HandleWeaponCursorPosition();
+
+        if (!GameInput.Instance.IsUsingGamepad()) {
+            HandleMouseCursorPosition();
+        }
+        else {
+            HandleGamepadCursorPosition();
+        }
     }
 
     private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
@@ -165,8 +181,8 @@ public class MouseCursorManager : MonoBehaviour
     }
 
     private void RefreshWeaponVariables() {
-        weaponCursorSpriteRenderer.sprite = currentGunSO.weaponCursorSprite;
-        weaponCursorHitSpriteRenderer.sprite = currentGunSO.weaponHitCursorSprite;
+        weaponCursorImage.sprite = currentGunSO.weaponCursorSprite;
+        weaponCursorHitImage.sprite = currentGunSO.weaponHitCursorSprite;
         mouseCursorSpriteRenderer_NE.sprite = currentGunSO.mouseCursorSprite_NE;
         mouseCursorSpriteRenderer_NW.sprite = currentGunSO.mouseCursorSprite_NW;
         mouseCursorSpriteRenderer_SE.sprite = currentGunSO.mouseCursorSprite_SE;
@@ -175,19 +191,6 @@ public class MouseCursorManager : MonoBehaviour
         initialMouseCursorWidth = currentGunSO.initialMouseCursorWidth;
         initialMouseCursorHeight = currentGunSO.initialMouseCursorHeight;
         weaponMaxRecoilImpactOnMouseReticle = currentGunSO.weaponMaxRecoilImpactOnMouseReticle;
-    }
-
-    private void LateUpdate() {
-        if (isMenuScene) return;
-
-        HandleMouseCursorSize();
-        HandleWeaponCursorPosition();
-
-        if(!GameInput.Instance.IsUsingGamepad()) {
-            HandleMouseCursorPosition();
-        } else {
-            HandleGamepadCursorPosition();
-        }
     }
 
     private void HandleMouseCursorSize() {
@@ -238,9 +241,9 @@ public class MouseCursorManager : MonoBehaviour
     }
 
     private void HandleWeaponCursorPosition() {
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        worldPos.z = 0f;
-        weaponCursorSpriteRenderer.transform.position = PlayerAim.Instance.GetWeaponReticleWorldPos();
+        Vector3 worldPos = PlayerAim.Instance.GetWeaponReticleWorldPos();
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+        weaponCursorRectTransform.position = screenPos;
     }
 
     private void GameInput_OnPlayerInputChanged(object sender, System.EventArgs e) {
@@ -259,12 +262,16 @@ public class MouseCursorManager : MonoBehaviour
     }
 
     public void ShowMouse(bool show) {
-        Debug.Log("ShowMouse " + show);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = show;
         weaponCursorGameObject.SetActive(!show);
         mouseCursorGameObject.SetActive(!show);
 
+        Cursor.visible = show;
+
+        if(!show) {
+            Cursor.SetCursor(invisibleCursorTexture, cursorHotspot, CursorMode.Auto);
+        } else {
+            Cursor.SetCursor(cursorTexture, cursorHotspot, CursorMode.Auto);
+        }
     }
 
     private bool AllMenusClosed() {

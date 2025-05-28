@@ -254,11 +254,6 @@ public class DemoMainLevelManager : MonoBehaviour
     }
 
     private void InitializeSpawners(bool demoMainLevelEncountered) {
-        Debug.Log("Initialize Spawners " + demoMainLevelEncountered);
-        Debug.Log("firstLevelLeftSpawners " + firstLevelLeftSpawners);
-        Debug.Log("firstLevelRightSpawners " + firstLevelRightSpawners);
-        Debug.Log("levelRightSpawnerGroups " + levelRightSpawnerGroups);
-        Debug.Log("levelLeftSpawnerGroups " + levelLeftSpawnerGroups);
 
         if (firstLevelLeftSpawners == null || firstLevelRightSpawners == null || levelRightSpawnerGroups == null || levelLeftSpawnerGroups == null) return;
         foreach (MobSpawner daySpawner in firstLevelLeftSpawners.GetComponentsInChildren<MobSpawner>()) {

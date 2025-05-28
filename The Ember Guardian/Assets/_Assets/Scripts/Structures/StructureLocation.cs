@@ -156,13 +156,10 @@ public class StructureLocation : MonoBehaviour {
     }
 
     protected void LoadStructureLocationBought() {
-        if (DebugManager.Instance.GetAllStructuresUnlocked()) {
+        if (DebugManager.Instance.GetAllStructuresUnlocked() || debugStructureTypeBought || structureSOToBuild.level1StructureInitiallyUnlocked) {
             gameObject.SetActive(true);
             return;
         }
-
-        if (debugStructureTypeBought) return;
-        if (structureSOToBuild.level1StructureInitiallyUnlocked) return;
 
         // Unlock upgrades if unlocked at gem merchant
         string saveString = structureSOToBuild.structureType.ToString() + (1);
@@ -171,11 +168,11 @@ public class StructureLocation : MonoBehaviour {
         if (!MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
             OnStructureLocationLoaded_Locked?.Invoke(this, EventArgs.Empty);
             gameObject.SetActive(false);
-            //Debug.Log(saveString + " location has NOT been bought at merchant ");
+            Debug.Log(saveString + " location has NOT been bought at merchant ");
         }
         else {
             gameObject.SetActive(true);
-            //Debug.Log(saveString + " location has been bought at merchant ");
+            Debug.Log(saveString + " location has been bought at merchant ");
         }
 
     }

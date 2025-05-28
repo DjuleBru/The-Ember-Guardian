@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AssaultRifle
   m_EditorClassIdentifier: 
   gunType: 7
-  gunSprite: {fileID: -1902726784, guid: 2b92b23389a877c4bb52f0c3fdcd7554, type: 3}
+  gunSprite: {fileID: 2136125128, guid: 2b92b23389a877c4bb52f0c3fdcd7554, type: 3}
   reticleSprite: {fileID: 0}
   shotCountSprites:
   - {fileID: 1695005031, guid: 1ba0315e3e5915f49ad3ccf27efb4ef1, type: 3}
@@ -58,7 +58,7 @@ MonoBehaviour:
   shootCreatureHearMultiplier: 1.75
   weightAccelerationFactor: 1
   reloadAccelerationFactor: 0.75
-  followMouseSpeed: 40
+  followMouseSpeed: 30
   swapToWeaponTimeMultiplier: 1.5
   gunKnockback: 0.6
   gunRecoil: 0.2
@@ -66,6 +66,7 @@ MonoBehaviour:
   shootConeAngle: 3.5
   weaponPrecisionMultiplier: 0.85
   weaponSecondaryAbilityPrecisionFactor: 1
+  weaponSecondaryRecoilReductionFactor: 1
   weaponMaxRecoilImpactOnMouseReticle: 0.25
   crouchPrecisionBuff: 2
   crouchRecoilReductionFactor: 2
