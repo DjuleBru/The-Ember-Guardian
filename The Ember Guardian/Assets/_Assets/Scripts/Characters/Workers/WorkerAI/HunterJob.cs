@@ -300,7 +300,6 @@ public class HunterJob : WorkerJob {
                     HeadToPickUpClosestOrb();
                     break;
 
-
                 case HunterState.hunting:
 
                     if (CheckBlockedByCreature()) {
@@ -317,7 +316,6 @@ public class HunterJob : WorkerJob {
                     workerAttack.SetAttackTarget(targetAnimal);
 
                     break;
-
 
                 case HunterState.droppingOrbs:
                     if (worker.GetTotalCurrencyAmount() == 0) {
@@ -337,7 +335,6 @@ public class HunterJob : WorkerJob {
 
                     break;
 
-
                 case HunterState.headingToGuard:
 
                     if (worker.GetStructureAssigned() != null) {
@@ -356,7 +353,6 @@ public class HunterJob : WorkerJob {
 
                     break;
 
-
                 case HunterState.guarding:
 
                     // Keep checking if camp limits have changed for ungarrisoned hunters
@@ -374,37 +370,36 @@ public class HunterJob : WorkerJob {
                     // DUSK : Keep checking if tower spots have been opened
                     if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
 
-                        if (worker.GetStructureAssigned() != null) return;
+                        if (worker.GetStructureAssigned() == null) {
+                            TryAssignTower();
 
-                        TryAssignTower();
+                            if (assignedTower != null) {
+                                ChangeState(HunterState.headingToGuard);
+                            }
+                        };
 
-                        if (assignedTower != null) {
-                            ChangeState(HunterState.headingToGuard);
-                        }
+                    }
+
+                    if (targetCreature == null) {
+
+                        if(assignedTower == null) {
+                            CheckClosestCreatureSmart();
+                        } else {
+                            CheckFurthestCreatureSmart();
+                        } 
 
                     }
                     else {
 
-                        if (targetCreature == null) {
-
-                            if(assignedTower == null) {
-                                CheckClosestCreatureSmart();
-                            } else {
-                                CheckFurthestCreatureSmart();
-                            } 
-
+                        if (!TargetIsInGuardingRange(targetCreature)) {
+                            workerAttack.RemoveAttackTarget();
                         }
                         else {
-
-                            if (!TargetIsInGuardingRange(targetCreature)) {
-                                workerAttack.RemoveAttackTarget();
-                            }
-                            else {
-                                workerAttack.SetAttackTarget(targetCreature);
-                            }
-
+                            workerAttack.SetAttackTarget(targetCreature);
                         }
+
                     }
+                    
 
                     break;
 
@@ -693,7 +688,6 @@ public class HunterJob : WorkerJob {
         targetCreature.OnCreatureUntargetable += TargetCreature_OnCreatureUntargetable;
     }
 
-
     private void TargetAnimal_OnAnimalDroppedCollectibles(object sender, Animal.OnMobDroppedCollectibleEventArgs e) {
         foreach(Collectible collectible1 in e.collectibleDroppedList) {
             orbsToCollect.Add(collectible1);
@@ -869,6 +863,7 @@ public class HunterJob : WorkerJob {
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         CheckNewDayCycleParameters();
+        targetCreature = null;
     }
 
     private void CheckNewDayCycleParameters() {

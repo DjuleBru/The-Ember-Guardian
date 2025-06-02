@@ -525,6 +525,9 @@ public class PlayerMovement : MonoBehaviour {
         return isRunning;
     }
 
+    public bool IsCrouching() {
+        return isCrouching;
+    } 
     public float GetLastMoveDir() {
         return lastMoveDir;
     }

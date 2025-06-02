@@ -34,8 +34,8 @@ MonoBehaviour:
   mouseCursorSprite_NW: {fileID: 21300000, guid: 2cdb3a461197bf0429bfb345f5540dd7, type: 3}
   mouseCursorSprite_SE: {fileID: 21300000, guid: 4eaa6524790f6994cb36c752441bd70a, type: 3}
   mouseCursorSprite_SW: {fileID: 21300000, guid: 4e05ac59642344747996720cf401aa7f, type: 3}
-  initialMouseCursorWidth: 55
-  initialMouseCursorHeight: 55
+  initialMouseCursorWidth: 60
+  initialMouseCursorHeight: 60
   ammoTypeUsed: 7
   bulletIsParticle: 1
   bulletIsProjectile: 0
@@ -64,12 +64,12 @@ MonoBehaviour:
   gunRecoil: 0.2
   gunRecoilDamping: 4
   shootConeAngle: 3.5
-  weaponPrecisionMultiplier: 0.85
+  weaponPrecisionMultiplier: 0.75
   weaponSecondaryAbilityPrecisionFactor: 1
   weaponSecondaryRecoilReductionFactor: 1
   weaponMaxRecoilImpactOnMouseReticle: 0.25
-  crouchPrecisionBuff: 2
-  crouchRecoilReductionFactor: 2
+  crouchPrecisionBuff: 1.5
+  crouchRecoilReductionFactor: 1.5
   shootCooldownSFXTriggerTime: 0
   triggersShootFeedbackOnEachBuller: 1
   triggersShootSFXOnEachBuller: 1

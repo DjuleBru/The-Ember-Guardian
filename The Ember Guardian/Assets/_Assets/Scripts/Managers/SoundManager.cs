@@ -697,11 +697,11 @@ public class SoundManager : MonoBehaviour
 
     #region PROPS
     private void HubChest_OnChestOpened(object sender, System.EventArgs e) {
-        PlaySound2D(soundRefsSO.hubChestOpen);
+        PlaySound2D(soundRefsSO.hubChestOpen, .6f);
     }
 
     private void HubChest_OnChestClosed(object sender, System.EventArgs e) {
-        PlaySound2D(soundRefsSO.hubChestClose);
+        PlaySound2D(soundRefsSO.hubChestClose,.8f) ;
     }
 
     private void Scavengable_OnAnyScavengableMarkedToScavenge(object sender, System.EventArgs e) {

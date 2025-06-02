@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -191,6 +192,7 @@ public class CreatureAI_TarnishedWidow : CreatureAI
 
     private IEnumerator ExitWave() {
         if(currentCoroutine != null) {
+            Debug.Log("ExitWave StopCoroutine");
             StopCoroutine(currentCoroutine);
         }
 
@@ -217,4 +219,8 @@ public class CreatureAI_TarnishedWidow : CreatureAI
         gameObject.SetActive(false);
     }
 
+    [Button]
+    public void ExitWaveDebug() {
+        StartCoroutine(ExitWave());
+    }
 }

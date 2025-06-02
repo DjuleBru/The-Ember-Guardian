@@ -33,7 +33,6 @@ public class ItemButtonUI_ChildTreeShowHide : MonoBehaviour
     }
 
     public void ShowTree() {
-        Debug.Log("ShowTree ");
         if (treeShown) return;
         if (activeCoroutine != null) {
             StopCoroutine(activeCoroutine);

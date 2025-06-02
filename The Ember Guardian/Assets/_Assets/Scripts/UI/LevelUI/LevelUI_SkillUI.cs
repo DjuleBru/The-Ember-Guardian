@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandler
 {
     private SkillItem linkedSkill;
+    private Button button;
     [SerializeField] private bool isLeftActiveSkill;
     [SerializeField] private bool isRightActiveSkill;
 
@@ -20,18 +21,25 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] private TextMeshProUGUI skillLevelText;
     [SerializeField] private LevelUI_SkillDescriptionCardUI skillDescriptionCard;
 
+    private bool tabMenuOpen;
     private bool skillReady;
 
     protected override void Start() {
         base.Start();
+        button = GetComponent<Button>();
+        button.enabled = false;
+
         PlayerSkills.Instance.OnLeftActiveSkillActivated += PlayerSkills_OnLeftActiveSkillActivated;
         PlayerSkills.Instance.OnRightActiveSkillActivated += PlayerSkills_OnRightActiveSkillActivated;
         PlayerSkills.Instance.OnLeftActiveSkillDeactivated += PlayerSkills_OnLeftActiveSkillDeactivated;
         PlayerSkills.Instance.OnRightActiveSkillDeactivated += PlayerSkills_OnRightActiveSkillDeactivated;
+        PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenu_OnPlayerTabClosed;
+        PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenu_OnPlayerTabOpened;
 
         OnAnyButtonHovered += LevelUI_SkillUI_OnAnyButtonHovered;
         OnAnyButtonSelected += LevelUI_SkillUI_OnAnyButtonSelected;
     }
+
 
     public void SetLinkedSkill(SkillItem skillItem) {
         linkedSkill = skillItem;
@@ -111,7 +119,15 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
         skillTemplateAnimator.SetBool("Active", true);
     }
 
+    private void PlayerTabMenu_OnPlayerTabOpened(object sender, EventArgs e) {
+        button.enabled = true;
+        tabMenuOpen = true;
+    }
 
+    private void PlayerTabMenu_OnPlayerTabClosed(object sender, EventArgs e) {
+        button.enabled = false;
+        tabMenuOpen = false;
+    }
 
     #region UI NAVIGATION
     protected override void ButtonUI_OnAnyButtonSelected(object sender, EventArgs e) {
@@ -138,15 +154,19 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
 
     private void LevelUI_SkillUI_OnAnyButtonHovered(object sender, System.EventArgs e) {
         if (sender as ButtonUI != this) return;
+        if (!tabMenuOpen) return;
+
         OpenCloseSkillDescriptionCard(true);
         SetDescriptionCardPosition();
     }
 
     public override void OnPointerEnter(PointerEventData eventData) {
+        if (!tabMenuOpen) return;
         base.OnPointerEnter(eventData);
     }
 
     public override void OnPointerExit(PointerEventData eventData) {
+        if (!tabMenuOpen) return;
         base.OnPointerExit(eventData);
         OpenCloseSkillDescriptionCard(false);
     }
@@ -173,9 +193,9 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
 
         // Calculer la nouvelle position de la description card : 
         // On décale le long de X de la largeur (pour coller à droite)
-        float heigt = 280f;
+        float heigt = 320;
         if (!isLeftActiveSkill && !isRightActiveSkill) {
-            heigt = 230f;
+            heigt = 250f;
         }
 
         Vector3 newDescPos = new Vector3(callerWorldPos.x + distanceToSkill, descRT.position.y, 0);
@@ -207,6 +227,8 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
     protected override void OnDestroy() {
         base.OnDestroy();
 
+        PlayerTabMenuUI.Instance.OnPlayerTabClosed -= PlayerTabMenu_OnPlayerTabClosed;
+        PlayerTabMenuUI.Instance.OnPlayerTabOpened -= PlayerTabMenu_OnPlayerTabOpened;
         OnAnyButtonHovered -= LevelUI_SkillUI_OnAnyButtonHovered;
         OnAnyButtonSelected -= LevelUI_SkillUI_OnAnyButtonSelected;
     }

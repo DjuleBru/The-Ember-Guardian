@@ -338,6 +338,7 @@ public class Gun : MonoBehaviour
 
     public float GetWeaponPrecisionModifier() {
         float precisionMultiplier = gunSO.shootConeAngle/ defaultAngle;
+        // precisionMultiplier = meta upgrades on precision
         return gunSO.weaponPrecisionMultiplier * precisionMultiplier;
     }
     #endregion

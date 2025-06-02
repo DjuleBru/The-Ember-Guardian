@@ -194,8 +194,9 @@ public class MouseCursorManager : MonoBehaviour
     }
 
     private void HandleMouseCursorSize() {
-        float currentPrecisionModifier = PlayerAim.Instance.GetCurrentPrecisionModifier();
+        float currentPrecisionModifier = PlayerAim.Instance.GetCurrentPrecisionModifier() / PlayerAim.Instance.GetWeaponPrecisionModifier();
         float currentRecoilNormalized = PlayerAim.Instance.GetCurrentRecoil() / currentGunSO.gunRecoil;
+
         float recoilPrecisionImpact = weaponMaxRecoilImpactOnMouseReticle* currentRecoilNormalized;
         currentPrecisionModifier += recoilPrecisionImpact;
 

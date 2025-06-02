@@ -46,12 +46,10 @@ public class WindSound : SoundObject
         yield return StartCoroutine(ChangeVolumeGradually(sfxVolume * audioSourceVolume));
     }
 
-    
-
     protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         base.SettingsManager_OnSfxVolumeChanged(sender, e);
 
-        audioSource2D.volume = sfxVolume;
+        audioSource2D.volume = sfxVolume * audioSourceVolume;
     }
 
     private AudioClip GetWindAudioClip(WindManager.WindStrength strength) {

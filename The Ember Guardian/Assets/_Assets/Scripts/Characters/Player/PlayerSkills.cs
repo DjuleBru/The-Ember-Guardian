@@ -425,6 +425,7 @@ public class PlayerSkills : MonoBehaviour
             break;
         }
 
+        SetActiveSkillParameters(skillItem);
         OnActiveSkillActivated?.Invoke(this, new OnSkillAddedEventArgs {
             skillItemAdded = skillItem,
         });
@@ -433,6 +434,8 @@ public class PlayerSkills : MonoBehaviour
     public void AddActiveSkill(SkillItem skillItem) {
 
         if (activeSkillLeft != null && activeSkillRight != null) return;
+
+        SetActiveSkillParameters(skillItem);
 
         if (activeSkillLeft == null || activeSkillLeft.skillType == skillItem.skillType) {
             // Active skill left is null OR player is upgrading left skill
@@ -454,6 +457,50 @@ public class PlayerSkills : MonoBehaviour
                 skillItemAdded = skillItem
             });
             return;
+        }
+    }
+
+    private void SetActiveSkillParameters(SkillItem skillItem) {
+        float skillBuffValue = skillItem.skillSO.activeSkillEffect.GetValueAtLevel(skillItem.currentLevel);
+
+        switch (skillItem.skillType) {
+
+            case SkillItem.SkillType.activeMoveSpeedBuff:
+                moveSpeedBuffTimer = skillBuffValue;
+                break;
+
+            case SkillItem.SkillType.activeShootSpeedBuff:
+                shootCooldownBuffValue = 1 + skillBuffValue / 100;
+                break;
+
+            case SkillItem.SkillType.activeMagmaShotBullet:
+                magmaShotBulletSkillDuration = skillBuffValue;
+
+                break;
+
+            case SkillItem.SkillType.activeHealOnKills:
+                healPipsPerKill = (int)skillBuffValue;
+                break;
+
+            case SkillItem.SkillType.activeFeedFireOnKills:
+                fuelPipsPerKill = (int)skillBuffValue;
+                break;
+
+            case SkillItem.SkillType.activeDarkFlame:
+                darkFlameBurnAmount = (int)skillBuffValue;
+                break;
+
+            case SkillItem.SkillType.activeDarkSword:
+                darkSwordDamage = (int)skillBuffValue;
+                break;
+
+            case SkillItem.SkillType.activeReaper:
+                reaperDamage = (int)skillBuffValue;
+                break;
+
+            case SkillItem.SkillType.activePlantMine:
+                darkMinePoisonAmount = (int)skillBuffValue;
+                break;
         }
     }
 
@@ -879,7 +926,7 @@ public class PlayerSkills : MonoBehaviour
 
             case SkillItem.SkillType.activeShootSpeedBuff:
                 skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Skill Duration"));
-                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Movement Speed"));
+                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_shotCooldown"));
             break;
 
             case SkillItem.SkillType.activePlantMine:
@@ -957,14 +1004,14 @@ public class PlayerSkills : MonoBehaviour
             case SkillItem.SkillType.activeMoveSpeedBuff:
 
                 skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
-                skillStatList.Add("+" + moveSpeedBuffAmount.ToString() + "%");
+                skillStatList.Add("+" + ((moveSpeedBuffAmount-1)*100).ToString() + "%");
 
             break;
 
             case SkillItem.SkillType.activeShootSpeedBuff:
 
                 skillStatList.Add(shootCooldownBuffDuration.ToString() + "s");
-                skillStatList.Add("+" + skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
+                skillStatList.Add("-" + skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
 
             break;
 
@@ -986,7 +1033,8 @@ public class PlayerSkills : MonoBehaviour
             break;
 
             case SkillItem.SkillType.activeWorkerAttackSpeedBuff:
-                skillStatList.Add("+" + skillEffectSO.GetValueAtLevel(skillLevel).ToString());
+                skillStatList.Add(workerAttackSpeedBuffDuration.ToString() + "s");
+                skillStatList.Add("+" + skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
             break;
         }
 
@@ -1070,7 +1118,7 @@ public class PlayerSkills : MonoBehaviour
         switch (skillItem.skillType) {
 
             case SkillItem.SkillType.passiveAmmoGenerator:
-                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
+                skillStatList.Add("1/" + skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
             break;
             
             case SkillItem.SkillType.passiveChanceToDoubleXPDrop:
@@ -1083,23 +1131,23 @@ public class PlayerSkills : MonoBehaviour
                 break;
 
             case SkillItem.SkillType.passiveDmgIncreaseInLight:
-                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
+                skillStatList.Add("+" + skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
             break;
 
             case SkillItem.SkillType.passiveDmgIncreaseNotInLight:
-                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
+                skillStatList.Add("+" + skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
             break;
 
             case SkillItem.SkillType.passiveHealthRegen:
-                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
+                skillStatList.Add("1/" + skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
             break;
 
             case SkillItem.SkillType.passiveLastBulletDealsTwiceDamage:
-                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
+                skillStatList.Add("+" + skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
             break;
 
             case SkillItem.SkillType.passiveMaxHPIncrease:
-                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString());
+                skillStatList.Add("+" + skillEffectSO.GetValueAtLevel(skillLevel).ToString());
             break;
 
             case SkillItem.SkillType.passiveMeleeAttackMagmaShot:
@@ -1108,15 +1156,15 @@ public class PlayerSkills : MonoBehaviour
             break;
 
             case SkillItem.SkillType.passiveMoveSpeedBuff:
-                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
+                skillStatList.Add("+" + skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
             break;
 
             case SkillItem.SkillType.passiveRunAccelerationFactorBuff:
-                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
+                skillStatList.Add("+" + skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "%");
             break;
 
             case SkillItem.SkillType.passiveRunMaxTimeBuff:
-                skillStatList.Add(skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
+                skillStatList.Add("+" + skillEffectSO.GetValueAtLevel(skillLevel).ToString() + "s");
             break;
 
             case SkillItem.SkillType.passiveShieldGenerator:

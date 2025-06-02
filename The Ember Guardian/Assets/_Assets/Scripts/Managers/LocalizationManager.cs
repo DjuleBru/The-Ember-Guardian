@@ -17,6 +17,7 @@ public class LocalizationManager : MonoBehaviour
         English,
         French,
         German,
+        Spanish,
     }
     [Serializable]
     public class LocalizationEntry {

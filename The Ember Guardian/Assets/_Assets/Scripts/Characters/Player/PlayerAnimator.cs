@@ -221,12 +221,20 @@ public class PlayerAnimator : MonoBehaviour
 
 
     private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
+        if (PlayerMovement.Instance.IsCrouching()) {
+            playerAnimator.SetBool("Crouching", false);
+        }
+
         playerAnimator.ResetTrigger("RollFinished");
         playerAnimator.SetTrigger("Roll");
         breatheVisual.SetActive(false);
     }
 
     private void PlayerMovement_OnPlayerRollEnded(object sender, EventArgs e) {
+        if(PlayerMovement.Instance.IsCrouching()) {
+            playerAnimator.SetBool("Crouching", true);
+        }
+
         playerAnimator.SetTrigger("RollFinished");
         breatheVisual.SetActive(isAlmostExhausted);
     }

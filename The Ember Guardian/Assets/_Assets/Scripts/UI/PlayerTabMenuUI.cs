@@ -32,20 +32,28 @@ public class PlayerTabMenuUI : MonoBehaviour
     private void Start() {
         GameInput.Instance.OnPlayerOpenPlayerTabPerformed += GameInput_OnPlayerOpenPlayerTabPerformed;
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
+        GameInput.Instance.OnPlayerPausePerformed += GameInput_OnPlayerPausePerformed;
         HubMerchantUI.OnAnyHubMerchantOpenUIPanel += HubMerchantUI_OnAnyHubMerchantOpenUIPanel;
         HubMerchantUI.OnAnyHubMerchantCloseUIPanel += HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
         ChangeWeaponPanel.Instance.OnChangeWeaponPanelOpened += ChangeWeaponPanel_OnChangeWeaponPanelOpened;
         ChangeWeaponPanel.Instance.OnChangeWeaponPanelClosed += ChangeWeaponPanel_OnChangeWeaponPanelClosed;
-
-
     }
 
-    private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
+    private void GameInput_OnPlayerPausePerformed(object sender, EventArgs e) {
         if (!tabMenuOpen) return;
         if (!canCloseTab) return;
         if (changeWeaponPanelOpen) return;
 
-        OpenCloseTab();
+        StartCoroutine(OpenCloseTabAfterFrame());
+    }
+
+    private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
+        Debug.Log("tabMenuOpen " + tabMenuOpen);
+        if (!tabMenuOpen) return;
+        if (!canCloseTab) return;
+        if (changeWeaponPanelOpen) return;
+
+        StartCoroutine(OpenCloseTabAfterFrame());
     }
 
     private void ChangeWeaponPanel_OnChangeWeaponPanelOpened(object sender, EventArgs e) {
@@ -78,6 +86,7 @@ public class PlayerTabMenuUI : MonoBehaviour
     }
 
     private void GameInput_OnPlayerOpenPlayerTabPerformed(object sender, System.EventArgs e) {
+        if (PauseMenuUI.Instance.isPaused) return;
         OpenCloseTab();
 
         EventSystem.current.SetSelectedGameObject(firstButtonSelected);
@@ -101,6 +110,11 @@ public class PlayerTabMenuUI : MonoBehaviour
         OnPlayerTabClosed?.Invoke(this, EventArgs.Empty);
     }
 
+    private IEnumerator OpenCloseTabAfterFrame() {
+        yield return new WaitForEndOfFrame();
+        OpenCloseTab();
+    }
+
     private void OpenCloseTab() {
         if (!canCloseTab) return;
         tabMenuOpen = !tabMenuOpen;
@@ -122,6 +136,10 @@ public class PlayerTabMenuUI : MonoBehaviour
 
     public void SetWeaponDownNavigationTarget(Button target) {
         
+    }
+
+    public bool GetTabMenuOpen() {
+        return tabMenuOpen;
     }
     private void OnDestroy() {
         GameInput.Instance.OnPlayerOpenPlayerTabPerformed -= GameInput_OnPlayerOpenPlayerTabPerformed;

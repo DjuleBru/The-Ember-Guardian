@@ -90,6 +90,7 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     protected void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
+        if (PlayerTabMenuUI.Instance.GetTabMenuOpen()) return;
         if (isPaused) {
             ShowPauseMenu(false);
             StartCoroutine(ResumePause());
@@ -97,6 +98,7 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     protected void GameInput_OnPlayerPausePerformed(object sender, System.EventArgs e) {
+        if (PlayerTabMenuUI.Instance.GetTabMenuOpen()) return;
         if (!canOpenPauseMenu) return;
         if (SceneLoader.Instance.GetIsCrossfading()) return;
 

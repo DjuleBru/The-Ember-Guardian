@@ -54,7 +54,6 @@ public class PlayerAim : MonoBehaviour
     private bool lastOffsetWasUp = true;
     private float currentPrecisionModifier = 1;
     private float currentRecoilModifier = 1;
-    private float previousWeaponPrecisionModifier = 1;
     private float weaponPrecisionModifier = 1;
     private float distancePrecisionModifier;
     private float precisionModifierWithDistance;
@@ -166,11 +165,6 @@ public class PlayerAim : MonoBehaviour
         crouchRecoilReductionFactor = gunSO.crouchRecoilReductionFactor;
         weaponPrecisionModifier = gun.GetWeaponPrecisionModifier();
         aimFollowSpeed = gunSO.followMouseSpeed;
-
-        DebuffPrecision(previousWeaponPrecisionModifier);
-        BuffPrecision(weaponPrecisionModifier);
-
-        previousWeaponPrecisionModifier = weaponPrecisionModifier;
     }
 
     private void SettingsManager_OnAutoAlignAimWithMovementChanged(object sender, EventArgs e) {
@@ -307,7 +301,7 @@ public class PlayerAim : MonoBehaviour
         float distance = Vector2.Distance(gunTransform.position, pointerTarget);
 
         distancePrecisionModifier = Mathf.Lerp(minAimDistancePrecisionModifier, maxAimDistancePrecisionModifier, distance / weaponRange);
-        precisionModifierWithDistance = currentPrecisionModifier * distancePrecisionModifier;
+        precisionModifierWithDistance = currentPrecisionModifier / weaponPrecisionModifier * distancePrecisionModifier;
         float smoothSpeedModifier = smoothSpeed * distancePrecisionModifier;
 
         if ((smoothedOffset - currentEffectiveOffsetTarget).sqrMagnitude < switchThreshold * switchThreshold) {
@@ -569,6 +563,8 @@ public class PlayerAim : MonoBehaviour
         smoothSpeed /= buff;
         noiseAmount /= buff;
         SelectNextRandomTargetForWeaponPointer();
+        //Debug.Log("BuffPrecision " + buff);
+        //Debug.Log("New Precision " + currentPrecisionModifier);
     }
 
     private void DebuffPrecision(float debuff) {
@@ -576,20 +572,25 @@ public class PlayerAim : MonoBehaviour
         smoothSpeed *= debuff;
         noiseAmount *= debuff;
         SelectNextRandomTargetForWeaponPointer();
+        //Debug.Log("DebuffPrecision " + debuff);
+        //Debug.Log("New Precision " + currentPrecisionModifier);
     }
 
     private void BuffRecoil(float buff) {
         currentRecoilModifier /= buff;
-        Debug.Log("currentRecoilModifier " + currentRecoilModifier);
+        //Debug.Log("currentRecoilModifier " + currentRecoilModifier);
     }
 
     private void DebuffRecoil(float debuff) {
         currentRecoilModifier *= debuff;
-        Debug.Log("currentRecoilModifier " + currentRecoilModifier);
+        //Debug.Log("currentRecoilModifier " + currentRecoilModifier);
     }
 
     public float GetCurrentPrecisionModifier() {
         return currentPrecisionModifier;
+    }
+    public float GetWeaponPrecisionModifier() {
+        return weaponPrecisionModifier;
     }
 
     private Vector3 ApplyAimAngleLimitClampedToCone(Vector3 origin, Vector3 target) {
