@@ -30,6 +30,7 @@ public class Dog : MonoBehaviour
 
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+        if (PlayerShoot.Instance.GetActionBlockedByJammedGun(GameInput.Binding.callDoggo)) return;
 
         if (currentIdleState == DogAI.State.walkWithPlayer) {
 

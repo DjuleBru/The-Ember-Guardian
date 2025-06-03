@@ -40,6 +40,7 @@ public class SoundManager : MonoBehaviour
             PlayerShoot.Instance.OnPlayerStartedShot += PlayerShoot_OnPlayerStartedShot;
             PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoor_OnPlayerCooldownSFXTrigger;
             PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
+            PlayerShoot.Instance.OnPlayerTryShoot_GunJammed += PlayerShoot_OnPlayerTryShoot_GunJammed;
             PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
             PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerShoot_OnPlayerSwitchedFireMode;
             PlayerShoot.Instance.OnPlayerAimedSightStarted += PlayerShoot_OnPlayerAimedSightStarted;
@@ -160,12 +161,15 @@ public class SoundManager : MonoBehaviour
         HuntingFlag_PlayerDefined.OnAnyHuntingFlagNewPositionSet += HuntingFlag_PlayerDefined_OnAnyHuntingFlagNewPositionSet;
         HuntingFlag_PlayerDefined.OnAnyHuntingFlagPickedUp += HuntingFlag_PlayerDefined_OnAnyHuntingFlagPickedUp;
         GunSpotLight.OnAnyLightSwitched += GunSpotLight_OnAnyLightSwitched;
+        Gun.OnAnyGunJammed += Gun_OnAnyGunJammed;
+        Gun.OnAnyGunJamRepaired += Gun_OnAnyGunJamRepaired;
 
         Tutorial.OnAnySpotLightActivated += Tutorial_OnAnySpotLightActivated;
 
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine += HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
     }
+
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -567,6 +571,20 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().outOfAmmoVolumeMultiplier);
     }
 
+    private void PlayerShoot_OnPlayerTryShoot_GunJammed(object sender, System.EventArgs e) {
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().tryShootGunJammedSound;
+        PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().tryShootGunJammedVolumeMultiplier);
+    }
+
+    private void Gun_OnAnyGunJammed(object sender, System.EventArgs e) {
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().gunJammedSound;
+        PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().gunJammedVolumeMultiplier);
+    }
+    private void Gun_OnAnyGunJamRepaired(object sender, System.EventArgs e) {
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().gunJamRepairedSound;
+        PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().gunJamRepairedVolumeMultiplier);
+    }
+
     private void PlayerShoor_OnPlayerCooldownSFXTrigger(object sender, System.EventArgs e) {
         if (PlayerShoot.Instance.GetHeldGunSO().cooldownGunSound.Length == 0) return;
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().cooldownGunSound;
@@ -944,6 +962,8 @@ public class SoundManager : MonoBehaviour
         HuntingFlag_PlayerDefined.OnAnyHuntingFlagNewPositionSet -= HuntingFlag_PlayerDefined_OnAnyHuntingFlagNewPositionSet;
         HuntingFlag_PlayerDefined.OnAnyHuntingFlagPickedUp -= HuntingFlag_PlayerDefined_OnAnyHuntingFlagPickedUp;
         GunSpotLight.OnAnyLightSwitched -= GunSpotLight_OnAnyLightSwitched;
+        Gun.OnAnyGunJammed -= Gun_OnAnyGunJammed;
+        Gun.OnAnyGunJamRepaired -= Gun_OnAnyGunJamRepaired;
 
         Tutorial.OnAnySpotLightActivated -= Tutorial_OnAnySpotLightActivated;
 

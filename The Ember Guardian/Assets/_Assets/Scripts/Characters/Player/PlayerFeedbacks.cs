@@ -24,6 +24,9 @@ public class PlayerFeedbacks : MonoBehaviour
     [SerializeField] private MMF_Player exhaustedEndFeedbacks;
     [SerializeField] private MMF_Player petDogStartFeedbacks;
     [SerializeField] private MMF_Player petDogEndFeedbacks;
+    [SerializeField] private MMF_Player gunJamStartFeedbacks;
+    [SerializeField] private MMF_Player gunJamEndFeedbacks;
+    [SerializeField] private MMF_Player gunJamProgressFeedbacks;
 
     private float minDelayBetweenCritHitFeedbacks = .4f;
     private float critHitFeedbacksTimer;
@@ -48,7 +51,12 @@ public class PlayerFeedbacks : MonoBehaviour
 
         PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAIm_OnPlayerAimSightEnded;
         PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAim_OnPlayerAimSightStarted;
+
+        GunJamHandler.OnAnyJamSequenceGenerated += GunJamHandler_OnAnyJamSequenceGenerated;
+        GunJamHandler.OnAnyJamSequenceCompleted += GunJamHandler_OnAnyJamSequenceCompleted;
+        GunJamHandler.OnAnyJamSequenceProgressed += GunJamHandler_OnAnyJamSequenceProgressed;
     }
+
 
     private void Update() {
         if(critHitFeedbackRecentlyActivated) {
@@ -59,6 +67,17 @@ public class PlayerFeedbacks : MonoBehaviour
         }
     }
 
+    private void GunJamHandler_OnAnyJamSequenceProgressed(object sender, GunJamHandler.OnAnyJamSequenceProgressedEventArgs e) {
+        gunJamProgressFeedbacks.PlayFeedbacks();
+    }
+
+    private void GunJamHandler_OnAnyJamSequenceCompleted(object sender, System.EventArgs e) {
+        gunJamEndFeedbacks.PlayFeedbacks();
+    }
+
+    private void GunJamHandler_OnAnyJamSequenceGenerated(object sender, GunJamHandler.OnJamSequenceGeneratedEventArgs e) {
+        gunJamStartFeedbacks.PlayFeedbacks();
+    }
     private void Mob_OnAnyMobCritDamageTaken(object sender, System.EventArgs e) {
         if(sender as Mob is Creature) {
             critHitFreezeFrameFeedbacks.PlayFeedbacks();
@@ -153,6 +172,9 @@ public class PlayerFeedbacks : MonoBehaviour
     }
 
     private void OnDestroy() {
+        GunJamHandler.OnAnyJamSequenceGenerated -= GunJamHandler_OnAnyJamSequenceGenerated;
+        GunJamHandler.OnAnyJamSequenceCompleted -= GunJamHandler_OnAnyJamSequenceCompleted;
+        GunJamHandler.OnAnyJamSequenceProgressed -= GunJamHandler_OnAnyJamSequenceProgressed;
         Mob.OnAnyMobCritDamageTaken -= Mob_OnAnyMobCritDamageTaken;
     }
 }

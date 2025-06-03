@@ -571,7 +571,7 @@ public class HunterJob : WorkerJob {
         if (checkClosestTargetTimer < 0 ) {
             checkClosestTargetTimer = checkClosestTargetCooldown;
 
-            Animal newTargetAnimal = AnimalManager.Instance.GetClosestAvailableAnimalInRadius(mobMovement.transform.position, worker.GetCampSideAddigned(), worker);
+            Animal newTargetAnimal = AnimalManager.Instance.GetClosestAvailableAnimalInRadius(worker);
 
             if (newTargetAnimal == null) {
                 // Hunter had a target animal but finds non anymore
@@ -585,6 +585,14 @@ public class HunterJob : WorkerJob {
             }
 
             if (newTargetAnimal != null && targetAnimal != newTargetAnimal) {
+                
+                if(newTargetAnimal.GetMaxHuntersAssigned()) {
+                    // New animal has max hunters but furthest hunter is further than this worker
+                    Worker furthestWorker = newTargetAnimal.GetFurthestWorkerAssigned();
+                    furthestWorker.GetComponent<HunterJob>().RemoveCurrentTargetAnimal();
+                    newTargetAnimal.UnAssignHunter(furthestWorker);
+                }
+
                 OnHunterFoundAnimal?.Invoke(this, EventArgs.Empty);
                 TargetAnimal(newTargetAnimal);
             }
@@ -666,13 +674,15 @@ public class HunterJob : WorkerJob {
         targetAnimal.AssignHunter(worker);
     }
 
-    private void RemoveCurrentTargetAnimal() {
+    public void RemoveCurrentTargetAnimal() {
         if (targetAnimal == null) return;
         targetAnimal.OnMobDroppedCollectibles -= TargetAnimal_OnAnimalDroppedCollectibles;
         targetAnimal.OnMobDamageTaken -= TargetAnimal_OnMobDamageTaken;
         targetAnimal.UnAssignHunter(worker);
         hasHitAnimal = false;
         targetAnimal = null;
+
+        ChangeState(HunterState.idle);
     }
 
     protected override void TargetCreature(Creature newTargetCreature) {

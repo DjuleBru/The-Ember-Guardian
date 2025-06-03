@@ -474,4 +474,59 @@ public class InputControlIcons : MonoBehaviour
 
         return spriteList;
     }
+
+    public Sprite GetSingleControlIconSprite(GameInput.Binding control) {
+        if (GameInput.Instance.IsUsingGamepad()) {
+            if (control == GameInput.Binding.reload) {
+                return gamepadYSprite;
+            }
+            if (control == GameInput.Binding.ability1) {
+                return gamepadLbSprite;
+            }
+            if (control == GameInput.Binding.ability2) {
+                return gamepadRbSprite;
+            }
+            if (control == GameInput.Binding.shoot) {
+                return gamepadRtSprite;
+            }
+            if (control == GameInput.Binding.interact) {
+                return gamepadXSprite;
+            }
+            if (control == GameInput.Binding.run) {
+                return gamepadL3Sprite;
+            }
+            if (control == GameInput.Binding.meleeAttack) {
+                return gamepadR3Sprite;
+            }
+            if (control == GameInput.Binding.torchOnOff) {
+                return gamepadDownArrowSprite;
+            }
+            if (control == GameInput.Binding.callDoggo) {
+                return gamepadBSprite;
+            }
+            if (control == GameInput.Binding.secondary) {
+                return gamepadLtSprite;
+            }
+            if (control == GameInput.Binding.roll) {
+                return gamepadASprite;
+            }
+            if (control == GameInput.Binding.characterMenu) {
+                return gamepadSelectSprite;
+            }
+            if (control == GameInput.Binding.buildingFunctionLeft) {
+                return gamepadLeftArrowSprite;
+            }
+            if (control == GameInput.Binding.buildingFunctionRight) {
+                return gamepadRightArrowSprite;
+            }
+        }
+        else {
+            string binding = GameInput.Instance.GetBindingText(control);
+            if (keyboardIconLookup.TryGetValue(binding, out Sprite icon1)) {
+                return icon1;
+            }
+        }
+
+        return keyboardQuestionMarkSprite;
+    }
 }

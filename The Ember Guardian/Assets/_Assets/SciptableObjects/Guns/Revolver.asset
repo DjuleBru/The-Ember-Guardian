@@ -50,6 +50,7 @@ MonoBehaviour:
   handsAnimationReloadTime: 1
   bulletKnockback: 30
   shootCreatureHearMultiplier: 1.75
+  jamProbability: 0.05
   weightAccelerationFactor: 1.15
   reloadAccelerationFactor: 0.75
   followMouseSpeed: 80
@@ -100,9 +101,15 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2c707419f490654468a181cc7a85e8ec, type: 3}
   outOfAmmoSound:
   - {fileID: 8300000, guid: 34b027e33db23f44891b7586138184a7, type: 3}
+  tryShootGunJammedSound: []
+  gunJammedSound: []
+  gunJamRepairedSound: []
   swapToWeaponSound: {fileID: 8300000, guid: 79807144d7c7634419a5cd72bb9319ac, type: 3}
   reloadSFXVolumeMultiplier: 0.65
   cooldownSFXVolumeMultiplier: 0.5
   shootGunVolumeMultiplier: 0.5
   outOfAmmoVolumeMultiplier: 0.75
+  tryShootGunJammedVolumeMultiplier: 0.5
+  gunJammedVolumeMultiplier: 1
+  gunJamRepairedVolumeMultiplier: 0.5
   swapToWeaponVolumeMultiplier: 1

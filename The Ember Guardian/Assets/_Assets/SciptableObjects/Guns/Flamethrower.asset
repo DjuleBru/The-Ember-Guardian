@@ -23,34 +23,51 @@ MonoBehaviour:
   - {fileID: 1282879509, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
   - {fileID: -1709508536, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
   - {fileID: -653879012, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
-  ammoTypeUsed: 7
   gunAnimator: {fileID: 9100000, guid: 0beb2d2999eb4f74abd437ff2b5f1e6e, type: 2}
+  weaponCursorSprite: {fileID: 0}
+  weaponHitCursorSprite: {fileID: 0}
+  mouseCursorSprite_NE: {fileID: 0}
+  mouseCursorSprite_NW: {fileID: 0}
+  mouseCursorSprite_SE: {fileID: 0}
+  mouseCursorSprite_SW: {fileID: 0}
+  initialMouseCursorWidth: 0
+  initialMouseCursorHeight: 0
+  ammoTypeUsed: 7
   bulletIsParticle: 0
   bulletIsProjectile: 0
   bulletIsSprite: 1
   automaticWeapon: 1
   delayBetweenClickAndShot: 0
+  useAngleInPS: 0
   damagePerBullet: 1
   maxAmmo: 6
   pelletsPerBullet: 3
   shotsPerClip: 200
   critChance: 0
-  shootConeAngle: 3
-  shootCreatureHearMultiplier: 1.75
   bulletLifetime: 0.8
   bulletSpeed: 10
-  bulletKnockback: 0
-  weightAccelerationFactor: 0.8
-  reloadAccelerationFactor: 0.8
   shootCooldownTime: 0.01
-  shootCooldownSFXTriggerTime: 0
   reloadTime: 4.5
   handsReloadTime: 4.2
   handsAnimationReloadTime: 2.8
+  bulletKnockback: 0
+  shootCreatureHearMultiplier: 1.75
+  jamProbability: 0.05
+  weightAccelerationFactor: 0.8
+  reloadAccelerationFactor: 0.8
+  followMouseSpeed: 40
   swapToWeaponTimeMultiplier: 1
   gunKnockback: 0
   gunRecoil: 0
   gunRecoilDamping: 0
+  shootConeAngle: 3
+  weaponPrecisionMultiplier: 1
+  weaponSecondaryAbilityPrecisionFactor: 1
+  weaponSecondaryRecoilReductionFactor: 1
+  weaponMaxRecoilImpactOnMouseReticle: 0.25
+  crouchPrecisionBuff: 2
+  crouchRecoilReductionFactor: 2
+  shootCooldownSFXTriggerTime: 0
   triggersShootFeedbackOnEachBuller: 0
   triggersShootSFXOnEachBuller: 0
   shootGunSound:
@@ -87,9 +104,15 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2c707419f490654468a181cc7a85e8ec, type: 3}
   outOfAmmoSound:
   - {fileID: 8300000, guid: 7d45048825d9b81489d648e1a12a269a, type: 3}
+  tryShootGunJammedSound: []
+  gunJammedSound: []
+  gunJamRepairedSound: []
   swapToWeaponSound: {fileID: 8300000, guid: 49c33c7f788163642b7172f4a4d51bd8, type: 3}
   reloadSFXVolumeMultiplier: 1
   cooldownSFXVolumeMultiplier: 0.5
   shootGunVolumeMultiplier: 0.5
   outOfAmmoVolumeMultiplier: 0.75
+  tryShootGunJammedVolumeMultiplier: 0.5
+  gunJammedVolumeMultiplier: 1
+  gunJamRepairedVolumeMultiplier: 0.5
   swapToWeaponVolumeMultiplier: 1

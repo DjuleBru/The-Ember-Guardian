@@ -17,6 +17,10 @@ public class Gun : MonoBehaviour
     protected bool secondaryAbilityUnlocked;
     protected bool lerpingGunAngle;
     protected bool lastBulletShot;
+    protected bool gunJammed;
+    protected bool gunJustJammed;
+    protected float gunJustJammedTimer;
+    protected float gunJustJammedDelay = 10f;
 
     protected int pelletsPerBullet = 1;
     protected int damagePerBulletAtRunStart;
@@ -51,6 +55,9 @@ public class Gun : MonoBehaviour
     public static event EventHandler OnAnyGunMaxAmmoChanged;
     public static event EventHandler OnAnyGunStatsUpgraded;
     public static event EventHandler OnAnyGunUnlocked;
+    public static event EventHandler OnAnyGunJammed;
+    public static event EventHandler OnAnyGunJamRepaired;
+    public event EventHandler OnGunJammed;
     public event EventHandler OnBuffedLastBulletShot;
     public event EventHandler OnDebuffLastBulletShot;
 
@@ -65,6 +72,15 @@ public class Gun : MonoBehaviour
         PlayerSkills.Instance.OnPlayerInFireLightDebuffedDmg += PlayerSkills_OnPlayerInFireLightDebuffedDmg;
         PlayerSkills.Instance.OnPlayerOutFireLightBuffedDmg += PlayerSkills_OnPlayerOutFireLightBuffed;
         PlayerSkills.Instance.OnPlayerOutFireLightDebuffedDmg += PlayerSkills_OnPlayerOutFireLightDebuffedDmg;
+    }
+
+    private void Update() {
+        if (!gunJustJammed) return;
+
+        gunJustJammedTimer -= Time.deltaTime;
+        if(gunJustJammedTimer < 0) {
+            gunJustJammed = false;
+        }
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
@@ -199,6 +215,7 @@ public class Gun : MonoBehaviour
 
         //Check Passive SKills
         CheckPassiveSkillEffectsOnBullet();
+        HandleGunJams();
 
         Shoot();
     }
@@ -213,6 +230,19 @@ public class Gun : MonoBehaviour
             gunProjectile.gameObject.SetActive(true);
             Vector2 initialForce = PlayerAim.Instance.GetAimDir().normalized * bulletSpeed;
             gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce);
+        }
+    }
+
+    private void HandleGunJams() {
+        if (gunJustJammed) return;
+
+        if (UnityEngine.Random.value < gunSO.jamProbability) {
+            gunJammed = true;
+            OnGunJammed?.Invoke(this, EventArgs.Empty);
+            OnAnyGunJammed?.Invoke(this, EventArgs.Empty);
+
+            gunJustJammed = true;
+            gunJustJammedTimer = gunJustJammedDelay;
         }
     }
 
@@ -259,6 +289,10 @@ public class Gun : MonoBehaviour
 
     public bool GetGunUnlocked() {
         return gunUnlocked;
+    }
+
+    public bool GetGunJammed() {
+        return gunJammed;
     }
     public Animator GetGunBodyAnimator() {
         return gunBodyAnimator;
@@ -344,6 +378,10 @@ public class Gun : MonoBehaviour
     #endregion
 
     #region SET PARAMETERS
+    public void SetGunUnJammed() {
+        gunJammed = false;
+        OnAnyGunJamRepaired?.Invoke(this, EventArgs.Empty);
+    }
 
     public void SetGunActive(bool gunActive) {
         this.gunActive = gunActive;

@@ -5,6 +5,7 @@ using UnityEngine;
 public class GunVisual : MonoBehaviour
 {
     protected Gun gun;
+    protected GunJamHandler gunJamHandler;
     protected GunSO gunSO;
     [SerializeField] protected GameObject gunVisualGameObject;
     [SerializeField] protected GameObject armGameObject;
@@ -22,6 +23,7 @@ public class GunVisual : MonoBehaviour
 
     protected virtual void Awake() {
         gun = GetComponent<Gun>();
+        gunJamHandler = GetComponent<GunJamHandler>();
         initialLightsColor = gunLightsSpriteRenderer.color;
 
         if (gunCooldownLightsSpriteRenderer != null) {
@@ -34,6 +36,8 @@ public class GunVisual : MonoBehaviour
     }
 
     protected virtual void Start() {
+        gun.OnGunJammed += Gun_OnGunJammed;
+        gunJamHandler.OnJamSequenceCompleted += GunJamHandler_OnJamSequenceCompleted;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
 
@@ -51,6 +55,15 @@ public class GunVisual : MonoBehaviour
         }
     }
 
+    private void GunJamHandler_OnJamSequenceCompleted(object sender, System.EventArgs e) {
+        StartCoroutine(ReloadBulletsVisual(.05f, 0, gunLightSpriteIndex));
+    }
+
+    private void Gun_OnGunJammed(object sender, System.EventArgs e) {
+        Sprite currentSprite = gunReloadSprites[0];
+        StopCoroutine(ResetGunAmmoSprite(currentSprite));
+        StartCoroutine(ResetGunAmmoSprite(currentSprite));
+    }
 
     private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
         if(gunSecondaryAbilityActiveSpriteRenderer != null) {

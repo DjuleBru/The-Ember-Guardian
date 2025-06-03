@@ -12,6 +12,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerShot;
     public event EventHandler OnPlayerStartedShot;
     public event EventHandler OnPlayerTryShoot_OutOfAmmo;
+    public event EventHandler OnPlayerTryShoot_GunJammed;
     public event EventHandler OnPlayerShootStopped;
     public event EventHandler OnPlayerCooldownTrigger;
     public event EventHandler OnPlayerCooldownAnimationTrigger;
@@ -336,6 +337,11 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void Shoot(bool shootOnReload = false) {
+        if (heldGun.GetGunJammed()) {
+            OnPlayerTryShoot_GunJammed?.Invoke(this, EventArgs.Empty);
+            return;
+        };
+
         StartCoroutine(ShootAfterDelay(heldGunSO.delayBetweenClickAndShot, shootOnReload));
     }
 
@@ -451,6 +457,7 @@ public class PlayerShoot : MonoBehaviour
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (!canShoot) return;
         if (swappingGun) return;
+        if (heldGun.GetGunJammed()) return;
 
         playerJustPressedReload = true;
         playerJustPressedReloadTimer = 0;
@@ -777,28 +784,26 @@ public class PlayerShoot : MonoBehaviour
         if (emptyingRevolverMag) return;
         if (swappingGun) return;
         if (loadingShot && !shotLoaded) return;
-
         if (Player.Instance.GetHP() == 0) return;
 
         if(heldGun.GetCurrentAmmoClip() < 0 || heldGun.GetCurrentBullet() == 0) {
-
             OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+            return;
+        }
 
-        } else {
+        Shoot();
+        playerIsHoldingDownShoot = true;
 
-            Shoot();
-            playerIsHoldingDownShoot = true;
-
-            if (projectileExplodesOnPlayerClickModeActive && !projectileExplodesOnPlayerClick) {
-                projectileExplodesOnPlayerClick = true;
-                return;
-            }
+        if (projectileExplodesOnPlayerClickModeActive && !projectileExplodesOnPlayerClick) {
+            projectileExplodesOnPlayerClick = true;
+            return;
         }
     }
 
     private void GameInput_OnPlayerShootCanceled(object sender, System.EventArgs e) {
         playerIsHoldingDownShoot = false;
     }
+
     private void Gun_OnAnyGunStatsUpgraded(object sender, EventArgs e) {
         PlayerStats.Instance.SetShootCooldownTime(heldGun.GetCooldownTime());
         PlayerStats.Instance.SetReloadTime(heldGun.GetReloadTime());
@@ -921,6 +926,13 @@ public class PlayerShoot : MonoBehaviour
     public bool GetReloading() {
         return reloading;
     }
+
+    public bool GetActionBlockedByJammedGun(GameInput.Binding binding) {
+        if (heldGun.GetGunJammed() && heldGun.GetComponent<GunJamHandler>().GetIsExpectedBinding(binding)) return true;
+
+        return false;
+    }
+
     #endregion
 
     public void SaveAllGunStats() {

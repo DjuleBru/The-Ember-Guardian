@@ -48,7 +48,6 @@ public class PlayerTabMenuUI : MonoBehaviour
     }
 
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
-        Debug.Log("tabMenuOpen " + tabMenuOpen);
         if (!tabMenuOpen) return;
         if (!canCloseTab) return;
         if (changeWeaponPanelOpen) return;

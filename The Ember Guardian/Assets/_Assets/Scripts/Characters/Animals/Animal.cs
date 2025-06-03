@@ -48,4 +48,32 @@ public class Animal : Mob
         return workersAssigned.Count == maxHuntersAssigned;
     }
 
+    public Worker GetFurthestWorkerAssigned() {
+        Worker furthestWorker = null;
+        float maxDistance = -1f;
+
+        foreach (Worker worker in workersAssigned) {
+            float distance = Vector2.Distance(worker.transform.position, this.transform.position);
+            if (distance > maxDistance) {
+                maxDistance = distance;
+                furthestWorker = worker;
+            }
+        }
+
+        return furthestWorker;
+    }
+
+    public float GetFurthestWorkerDistance() {
+        float maxDistance = -1f;
+
+        foreach (Worker worker in workersAssigned) {
+            float distance = Vector2.Distance(worker.transform.position, this.transform.position);
+            if (distance > maxDistance) {
+                maxDistance = distance;
+            }
+        }
+
+        return maxDistance;
+
+    }
 }

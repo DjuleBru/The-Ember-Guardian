@@ -161,7 +161,7 @@ public class CreaturesSpawnManager : MonoBehaviour
     private void CreaturesManager_OnCreatureAtNightKilled(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
         remainingNightCreaturesHP -= e.creature.GetCreatureSO().maxHealth;
         remainingNightCreatures--;
-        Debug.Log("creature killed : remainingNightCreatures " + remainingNightCreatures);
+        //Debug.Log("creature killed : remainingNightCreatures " + remainingNightCreatures);
 
         float remainingNightCreaturesHealthNormalized = (float)remainingNightCreaturesHP / (float)totalNightCreatureHP;
         float remainingNightCreaturesNormalized = (float)remainingNightCreatures / (float)totalNightCreatures;
@@ -574,7 +574,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         if (xSpawnPosition < minLevelXPosition) {
             xSpawnPosition = minLevelXPosition + 10f;
         }
-        Debug.Log(creatureToSpawn + " xSpawnPosition " + xSpawnPosition);
+        //Debug.Log(creatureToSpawn + " xSpawnPosition " + xSpawnPosition);
 
         return new Vector3(xSpawnPosition + UnityEngine.Random.Range(-4f, 4f), yPosition, 0);
 

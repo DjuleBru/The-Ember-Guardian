@@ -17,6 +17,8 @@ public class WorkerAttack : MobAttack
     private float minerTotalAttackAnimationTime = .5f;
     private float hunterAnimalAttackPointRandomizer;
 
+    private float probabilityToHaveHomingProjectileOnCreature = .33f;
+
 
     protected override void Awake() {
         base.Awake();
@@ -60,16 +62,20 @@ public class WorkerAttack : MobAttack
     }
 
     protected override void Attack() {
-        if(attackTargetIDamageable is Creature) {
-            homingProjectile = true;
-        } else {
+        if (attackTargetIDamageable is Creature) {
+            homingProjectile = UnityEngine.Random.value < probabilityToHaveHomingProjectileOnCreature;
+        }
+        else {
             homingProjectile = false;
         }
 
         base.Attack();
     }
+
     protected override Vector3 GetEndPointRandomOffstetValue() {
+
         float randomized = UnityEngine.Random.Range(-hunterAnimalAttackPointRandomizer, hunterAnimalAttackPointRandomizer);
+
         return new Vector3(randomized, 0,0);
     }
 

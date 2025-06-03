@@ -6,6 +6,7 @@ public class GunAnimator : MonoBehaviour
 {
     protected Animator animator;
     protected Gun gun;
+    protected GunJamHandler gunJamHandler;
 
     private float meleeAttackSpeed = 1.5f;
     private bool reloading;
@@ -13,9 +14,13 @@ public class GunAnimator : MonoBehaviour
     protected void Awake() {
         animator = GetComponent<Animator>();
         gun = GetComponent<Gun>();
+        gunJamHandler = GetComponent<GunJamHandler>();
     }
 
     protected void Start() {
+        gun.OnGunJammed += Gun_OnGunJammed;
+        gunJamHandler.OnCorrectJamSequenceInput += GunJamHandler_OnCorrectJamSequenceInput;
+
         PlayerShoot.Instance.OnPlayerShootStopped += PlayerShoot_OnPlayerShootStopped;
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoot_OnPlayerCooldownSFXTrigger;
@@ -33,6 +38,13 @@ public class GunAnimator : MonoBehaviour
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
     }
 
+    private void Gun_OnGunJammed(object sender, System.EventArgs e) {
+        animator.SetTrigger("OutOfAmmo");
+    }
+
+    private void GunJamHandler_OnCorrectJamSequenceInput(object sender, System.EventArgs e) {
+        animator.SetTrigger("GunJamHit");
+    }
 
     private void PlayerMeleeAttack_OnMeleeAttackStarted(object sender, System.EventArgs e) {
         animator.SetTrigger("MeleeAttack");

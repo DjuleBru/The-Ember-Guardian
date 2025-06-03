@@ -16,6 +16,7 @@ public class PlayerSounds : SoundObject
     [SerializeField] private AudioClip[] playerRollAudioClips;
     [SerializeField] private AudioClip[] playerMeleeAttackStartedAudioClips;
     [SerializeField] private AudioClip[] playerMeleeAttackHitAudioClips;
+    [SerializeField] private AudioClip[] gunJamHitProgress;
     [SerializeField] private AudioClip activeMoveSpeedBoostFootstepAudioClip;
 
     [SerializeField] private PlayerAnimator playerAnimator;
@@ -30,6 +31,8 @@ public class PlayerSounds : SoundObject
 
         playerAnimator.OnFootStepTriggered += PlayerAnimator_OnFootStepTriggered;
         playerBreathAnimator.OnPantTriggered += PlayerAnimator_OnPantTriggered;
+
+        GunJamHandler.OnAnyCorrectJamSequenceInput += GunJamHandler_OnAnyCorrectJamSequenceInput;
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
 
@@ -44,6 +47,10 @@ public class PlayerSounds : SoundObject
         GunMeleeAttackCollider.OnAnyGunMeleeAttackHit += GunMeleeAttackCollider_OnAnyGunMeleeAttackHit;
 
         activeMoveSpeedBoostVisual.OnMoveSpeedFootStepTriggered += ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered;
+    }
+
+    private void GunJamHandler_OnAnyCorrectJamSequenceInput(object sender, System.EventArgs e) {
+        playerAudioSource.PlayOneShot(gunJamHitProgress[Random.Range(0, gunJamHitProgress.Length)], sfxVolume * .7f);
     }
 
     private void GunMeleeAttackCollider_OnAnyGunMeleeAttackHit(object sender, System.EventArgs e) {
