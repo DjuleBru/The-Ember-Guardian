@@ -68,6 +68,8 @@ public class MouseCursorManager : MonoBehaviour
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
+        PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
+        PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
         VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
         VideoTipUI.Instance.OnVideoTipPanelOpened += VideoTipUI_OnVideoTipPanelOpened;
 
@@ -78,6 +80,7 @@ public class MouseCursorManager : MonoBehaviour
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
         ShowMouse(false);
     }
+
 
     private void LateUpdate() {
         if (isMenuScene) return;
@@ -117,6 +120,13 @@ public class MouseCursorManager : MonoBehaviour
         weaponCursorGameObject.SetActive(false);
     }
 
+    private void PlayerShoot_OnPlayerReloadEnded(object sender, System.EventArgs e) {
+        weaponCursorGameObject.SetActive(true);
+    }
+
+    private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
+        weaponCursorGameObject.SetActive(false);
+    }
     private void VideoTipUI_OnVideoTipPanelOpened(object sender, System.EventArgs e) {
         if (!isUsingGamepad) {
             ShowMouse(true);

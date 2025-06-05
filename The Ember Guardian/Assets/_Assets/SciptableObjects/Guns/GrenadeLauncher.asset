@@ -81,6 +81,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 19598cc33796bff49bbff2dd6517cfa1, type: 3}
   tryShootGunJammedSound: []
   gunJammedSound: []
+  gunJammHitProgressSound: []
   gunJamRepairedSound: []
   swapToWeaponSound: {fileID: 8300000, guid: 72d8ae05444397d4286992565b81b2a7, type: 3}
   reloadSFXVolumeMultiplier: 0.5
@@ -89,5 +90,6 @@ MonoBehaviour:
   outOfAmmoVolumeMultiplier: 0.75
   tryShootGunJammedVolumeMultiplier: 0.5
   gunJammedVolumeMultiplier: 1
+  gunJamHitProgressVolumeMultiplier: 1
   gunJamRepairedVolumeMultiplier: 0.5
   swapToWeaponVolumeMultiplier: 0.4

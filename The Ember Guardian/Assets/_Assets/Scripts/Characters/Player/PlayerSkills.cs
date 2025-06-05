@@ -171,7 +171,7 @@ public class PlayerSkills : MonoBehaviour
 
     private void GameInput_OnPlayerRightSkillPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
-        if (PlayerShoot.Instance.GetActionBlockedByJammedGun(GameInput.Binding.ability2)) return;
+        if (PlayerShoot.Instance.GetHeldGun().GetGunJammed()) return;
 
         if (activeSkillRight == null) return;
 
@@ -189,7 +189,7 @@ public class PlayerSkills : MonoBehaviour
 
     private void GameInput_OnPlayerLeftSkillPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
-        if (PlayerShoot.Instance.GetActionBlockedByJammedGun(GameInput.Binding.ability1)) return;
+        if (PlayerShoot.Instance.GetHeldGun().GetGunJammed()) return;
 
         if (activeSkillLeft == null) return;
 

@@ -120,6 +120,9 @@ public class GunSO : ScriptableObject
     [BoxGroup("Stats/Shoot")]
     [LabelWidth(300)]
     public float jamProbability = 0.05f;
+    [BoxGroup("Stats/Shoot")]
+    [LabelWidth(300)]
+    public int jamRepairHitAmount = 3;
     [BoxGroup("Stats/Weight")]
     [LabelWidth(300)]
     public float weightAccelerationFactor;
@@ -202,6 +205,9 @@ public class GunSO : ScriptableObject
     public AudioClip[] gunJammedSound;
     [BoxGroup("Sound")]
     [LabelWidth(300)]
+    public AudioClip[] gunJammHitProgressSound;
+    [BoxGroup("Sound")]
+    [LabelWidth(300)]
     public AudioClip[] gunJamRepairedSound;
     [BoxGroup("Sound")]
     [LabelWidth(300)]
@@ -225,6 +231,9 @@ public class GunSO : ScriptableObject
     [BoxGroup("Sound")]
     [LabelWidth(300)]
     public float gunJammedVolumeMultiplier;
+    [BoxGroup("Sound")]
+    [LabelWidth(300)]
+    public float gunJamHitProgressVolumeMultiplier;
     [BoxGroup("Sound")]
     [LabelWidth(300)]
     public float gunJamRepairedVolumeMultiplier;

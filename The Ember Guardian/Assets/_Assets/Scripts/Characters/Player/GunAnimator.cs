@@ -20,6 +20,7 @@ public class GunAnimator : MonoBehaviour
     protected void Start() {
         gun.OnGunJammed += Gun_OnGunJammed;
         gunJamHandler.OnCorrectJamSequenceInput += GunJamHandler_OnCorrectJamSequenceInput;
+        gunJamHandler.OnJamSequenceFailStarted += GunJamHandler_OnJamSequenceFailStarted;
 
         PlayerShoot.Instance.OnPlayerShootStopped += PlayerShoot_OnPlayerShootStopped;
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
@@ -36,6 +37,10 @@ public class GunAnimator : MonoBehaviour
         PlayerMeleeAttack.Instance.OnMeleeAttackStarted += PlayerMeleeAttack_OnMeleeAttackStarted;
 
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
+    }
+
+    private void GunJamHandler_OnJamSequenceFailStarted(object sender, System.EventArgs e) {
+        animator.SetTrigger("GunJamHit");
     }
 
     private void Gun_OnGunJammed(object sender, System.EventArgs e) {

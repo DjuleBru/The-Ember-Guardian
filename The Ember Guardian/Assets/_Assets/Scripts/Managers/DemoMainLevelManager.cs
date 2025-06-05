@@ -48,6 +48,7 @@ public class DemoMainLevelManager : MonoBehaviour
     private bool ammoCraftCollected;
     private bool recruitWorkerTooltipShown;
     private bool tabMenuTooltipShown;
+    private bool gunJammed;
 
     private int demoLevelLostAmount;
     private bool demoMainLevelTutorialCompleted;
@@ -104,6 +105,7 @@ public class DemoMainLevelManager : MonoBehaviour
         Worker.OnAnyOrbDroppedByWorker += Worker_OnAnyOrbDroppedByWorker;
         GameInput.Instance.OnPlayerSwapGunPerformed += GameInput_OnPlayerSwapGunPerformed;
         GameInput.Instance.OnPlayerSecondaryGunSelected += GameInput_OnPlayerSecondaryGunSelected;
+        PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
 
         if(rightChest != null) {
             rightChest.OnChestOpened += RightChest_OnChestOpened;
@@ -123,12 +125,14 @@ public class DemoMainLevelManager : MonoBehaviour
             CreaturesSpawnManager.Instance.SetMaxRemainingSubwaveCreaturesForNextSubwave(2);
             CreaturesSpawnManager.Instance.SetCanSpawnElite(false);
             CreaturesSpawnManager.Instance.SetSpawnEquallyFromBothSides(true);
+            PlayerShoot.Instance.SetGunCanJam(false);
 
             if (!demoMainLevelTutorialCompleted) {
                 StartCoroutine(SetDemoTutorialObjective());
                 fireBlockingCollider1.SetColliderSolid();
                 fireBlockingCollider2.SetColliderSolid();
                 Fire.Instance.SetFireInteractionsUpdateLocked(true);
+                PlayerCamp.Instance.BlockStructureUnlocks();
 
                 foreach (StructureLocation structureLocation in defensiveStructureLocations) {
                     structureLocation.gameObject.SetActive(false);
@@ -150,6 +154,15 @@ public class DemoMainLevelManager : MonoBehaviour
         if(demoMainLevelCompleted) {
             StartCoroutine(SetNightsToSurviveAfterDelay());
         }
+    }
+
+    private void PlayerShoot_OnPlayerShot(object sender, EventArgs e) {
+        if (!demoMainLevelTutorialCompleted) return;
+        if (gunJammed) return;
+
+        PlayerShoot.Instance.GetHeldGun().JamGun();
+        PlayerShoot.Instance.SetGunCanJam(true);
+        gunJammed = true;
     }
 
     private void GameInput_OnPlayerSecondaryGunSelected(object sender, EventArgs e) {
@@ -549,6 +562,7 @@ public class DemoMainLevelManager : MonoBehaviour
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
         
         foreach (StructureLocation structureLocation in defensiveStructureLocations) {
+            structureLocation.UnlockStructureLocation();
             structureLocation.gameObject.SetActive(true);
         }
 

@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -234,15 +235,12 @@ public class Gun : MonoBehaviour
     }
 
     private void HandleGunJams() {
+        if (!PlayerShoot.Instance.GetGunCanJam()) return;
         if (gunJustJammed) return;
 
-        if (UnityEngine.Random.value < gunSO.jamProbability) {
-            gunJammed = true;
-            OnGunJammed?.Invoke(this, EventArgs.Empty);
-            OnAnyGunJammed?.Invoke(this, EventArgs.Empty);
 
-            gunJustJammed = true;
-            gunJustJammedTimer = gunJustJammedDelay;
+        if (UnityEngine.Random.value < gunSO.jamProbability) {
+            JamGun();
         }
     }
 
@@ -381,6 +379,16 @@ public class Gun : MonoBehaviour
     public void SetGunUnJammed() {
         gunJammed = false;
         OnAnyGunJamRepaired?.Invoke(this, EventArgs.Empty);
+    }
+
+    [Button]
+    public void JamGun() {
+        gunJammed = true;
+        OnGunJammed?.Invoke(this, EventArgs.Empty);
+        OnAnyGunJammed?.Invoke(this, EventArgs.Empty);
+
+        gunJustJammed = true;
+        gunJustJammedTimer = gunJustJammedDelay;
     }
 
     public void SetGunActive(bool gunActive) {

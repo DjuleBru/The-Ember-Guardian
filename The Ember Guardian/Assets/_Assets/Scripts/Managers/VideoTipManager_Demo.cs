@@ -11,6 +11,8 @@ public class VideoTipManager_Demo : MonoBehaviour
     [SerializeField] private VideoTipSO hunterTip;
     [SerializeField] private VideoTipSO hunterFlagTip;
     [SerializeField] private VideoTipSO trapTip;
+    [SerializeField] private VideoTipSO gunJamTip;
+    [SerializeField] private VideoTipSO gunManagementTip;
 
     private bool workerRecruited;
     private bool healTentTipShown;
@@ -18,19 +20,62 @@ public class VideoTipManager_Demo : MonoBehaviour
     private bool fireManagementTipShown;
     private bool hunterFlagTipShown;
     private bool trapTipShown;
+    private bool gunJamTipShown;
+    private bool showGunManagementTip;
+    private bool gunManagementTipShown;
 
     private int hunterNumberRecruited;
 
     private void Start() {
         LoadTooltipsShown();
 
-        Fire.Instance.OnFireFuelled += Fire_OnFireFuelled;
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            Fire.Instance.OnFireFuelled += Fire_OnFireFuelled;
+            HuntingFlag_PlayerDefined.OnAnyPlayerTriggeredIn += HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn;
+            Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn_Level;
+            Worker.OnAnyWorkerRecruited += Worker_OnAnyWorkerRecruited;
+            Worker.OnAnyWorkerAssignedHunter += Worker_OnAnyWorkerAssignedHunter;
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
+            Gun.OnAnyGunJammed += Gun_OnAnyGunJammed;
+        }
+        
+        HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
+        HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+    }
 
-        HuntingFlag_PlayerDefined.OnAnyPlayerTriggeredIn += HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn;
-        Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn_Level;
-        Worker.OnAnyWorkerRecruited += Worker_OnAnyWorkerRecruited;
-        Worker.OnAnyWorkerAssignedHunter += Worker_OnAnyWorkerAssignedHunter;
-        UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
+    private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
+        if (gunManagementTipShown) return;
+
+        if(showGunManagementTip) {
+            VideoTipUI.Instance.PlayTipSO(gunManagementTip, 1f);
+            gunManagementTipShown = true;
+            ES3.Save("gunManagementTipShown", true);
+        }
+    }
+
+    private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, EventArgs e) {
+        if (gunManagementTipShown) return;
+        if(sender is HUBMerchantItem_GunMerchantItem) {
+            HUBMerchantItem_GunMerchantItem gunItem = sender as HUBMerchantItem_GunMerchantItem;
+            if(gunItem.GetGunItemCategory() == HUBMerchantItem_GunMerchantItem.GunItemCategory.newGun) {
+                showGunManagementTip = true;
+            }
+        }
+
+        if (sender is HubMerchantItem_TrainerMerchantItem) {
+            HubMerchantItem_TrainerMerchantItem trainerItem = sender as HubMerchantItem_TrainerMerchantItem;
+            if (trainerItem.GetTrainerItemType() == HubMerchantItem_TrainerMerchantItem.TrainerItemType.Hold2Weapons) {
+                showGunManagementTip = true;
+            }
+        }
+    }
+
+    private void Gun_OnAnyGunJammed(object sender, EventArgs e) {
+        if (gunJamTipShown) return;
+
+        gunJamTipShown = true;
+        VideoTipUI.Instance.PlayTipSO(gunJamTip, 1f);
+        ES3.Save("gunJamTipShown", true);
     }
 
     private void PlayerInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -98,6 +143,8 @@ public class VideoTipManager_Demo : MonoBehaviour
         hunterTipShown = ES3.Load("hunterTipShown", false);
         hunterFlagTipShown = ES3.Load("hunterFlagTipShown", false);
         trapTipShown = ES3.Load("trapTipShown", false);
+        gunJamTipShown = ES3.Load("gunJamTipShown", false);
+        gunManagementTipShown = ES3.Load("gunManagementTipShown", false);
     }
 
     private void OnDestroy() {
@@ -105,5 +152,7 @@ public class VideoTipManager_Demo : MonoBehaviour
         Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn_Level;
         Worker.OnAnyWorkerRecruited -= Worker_OnAnyWorkerRecruited;
         Worker.OnAnyWorkerAssignedHunter -= Worker_OnAnyWorkerAssignedHunter;
+        Gun.OnAnyGunJammed -= Gun_OnAnyGunJammed;
+        HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
     }
 }

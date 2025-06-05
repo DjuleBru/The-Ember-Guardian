@@ -103,14 +103,14 @@ public class Merchant_Skills : Merchant
     }
 
     protected override void RefreshShopItems() {
-        Debug.Log("RefreshShopItems");
+        //Debug.Log("RefreshShopItems");
         SetAllSkillsUnsold();
         RefreshCurrentMajorItemForSale();
         RefreshCurrentMinorItemListForSale();
     }
 
     protected void RefreshCurrentMajorItemForSale() {
-        Debug.Log("RefreshCurrentMajorItemForSale");
+        //Debug.Log("RefreshCurrentMajorItemForSale");
         // Pondération pour augmenter la chance des améliorations
         List<SkillItem> majorSkillListToDisplay = new List<SkillItem>();
 

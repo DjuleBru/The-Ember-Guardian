@@ -25,6 +25,7 @@ public class GunJamHandler : MonoBehaviour
 
     private int currentInputIndex;
     private bool isProgressing;
+    private bool justFailed;
     private float jamHitAnimationDuration = .3f;
 
     public event EventHandler OnCorrectJamSequenceInput;
@@ -33,7 +34,14 @@ public class GunJamHandler : MonoBehaviour
     public static event EventHandler<OnJamSequenceGeneratedEventArgs> OnAnyJamSequenceGenerated;
     public event EventHandler OnJamSequenceCompleted;
     public static event EventHandler OnAnyJamSequenceCompleted;
+    public event EventHandler OnJamSequenceFailStarted;
+    public static event EventHandler OnAnyJamSequenceFailStarted;
+    public event EventHandler OnJamSequenceFailed;
     public static event EventHandler OnAnyJamSequenceFailed;
+    public event EventHandler OnJamSequenceCancelled;
+    public static event EventHandler OnAnyJamSequenceCancelled;
+    public event EventHandler OnJamSequenceRestarted;
+    public static event EventHandler OnAnyJamSequenceRestarted;
     public class OnAnyJamSequenceProgressedEventArgs : EventArgs {
         public int currentIndex;
     }
@@ -63,12 +71,16 @@ public class GunJamHandler : MonoBehaviour
     private void PlayerShoo_OnPlayerSwappedGun(object sender, EventArgs e) {
         if (!gunJammed) return;
 
-        FailGunJamMiniGame();
         if (PlayerShoot.Instance.GetHeldGun() == gun) {
             isInGunJamQTE = true;
-        } else {
-            isInGunJamQTE = false;
+            OnJamSequenceRestarted?.Invoke(this, EventArgs.Empty);
+            OnAnyJamSequenceRestarted?.Invoke(this, EventArgs.Empty);
         }
+        else {
+            isInGunJamQTE = false;
+            CancelGunJamMiniGame();
+        }
+        
     }
 
     private void Gun_OnGunJammed(object sender, System.EventArgs e) {
@@ -79,7 +91,7 @@ public class GunJamHandler : MonoBehaviour
         isInGunJamQTE = true;
         gunJammed = true;
 
-        currentInputSequence = GenerateRandomSequence();
+        currentInputSequence = GenerateRandomSequence(PlayerShoot.Instance.GetHeldGunSO().jamRepairHitAmount);
         OnAnyJamSequenceGenerated?.Invoke(this, new OnJamSequenceGeneratedEventArgs {
             inputSequence = currentInputSequence
         });
@@ -138,6 +150,7 @@ public class GunJamHandler : MonoBehaviour
 
     private void OnBindingPressed(GameInput.Binding binding) {
         if (isProgressing) return;
+        if (justFailed) return;
 
         if (!isInGunJamQTE)
             return;
@@ -154,7 +167,7 @@ public class GunJamHandler : MonoBehaviour
             StartCoroutine(ProgressInJamSequenceAfterDelay(jamHitAnimationDuration));
         }
         else {
-            FailGunJamMiniGame();
+            StartCoroutine(FailGunJamMiniGame());
         }
     }
 
@@ -181,14 +194,33 @@ public class GunJamHandler : MonoBehaviour
         OnAnyJamSequenceCompleted?.Invoke(this, EventArgs.Empty);
     }
 
-    private void FailGunJamMiniGame() {
-        OnAnyJamSequenceFailed?.Invoke(this, EventArgs.Empty);
+    private void CancelGunJamMiniGame() {
+        OnAnyJamSequenceCancelled?.Invoke(this, EventArgs.Empty);
+        OnJamSequenceCancelled?.Invoke(this, EventArgs.Empty);
         currentInputSequence = new Queue<GameInput.Binding>();
         foreach (GameInput.Binding binding in initialInputSequence) {
             currentInputSequence.Enqueue(binding);
         }
 
         currentInputIndex = 0;
+    }
+
+    private IEnumerator FailGunJamMiniGame() {
+        justFailed = true;
+        OnJamSequenceFailStarted?.Invoke(this, EventArgs.Empty);
+        OnAnyJamSequenceFailStarted?.Invoke(this, EventArgs.Empty);
+        yield return new WaitForSeconds(.3f);
+
+        OnAnyJamSequenceFailed?.Invoke(this, EventArgs.Empty);
+        OnJamSequenceFailed?.Invoke(this, EventArgs.Empty);
+        currentInputSequence = new Queue<GameInput.Binding>();
+        foreach (GameInput.Binding binding in initialInputSequence) {
+            currentInputSequence.Enqueue(binding);
+        }
+
+        currentInputIndex = 0;
+
+        justFailed = false;
     }
 
     public bool GetIsExpectedBinding(GameInput.Binding binding) {

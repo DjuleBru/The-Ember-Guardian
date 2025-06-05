@@ -10,6 +10,7 @@ public class HubChest : MonoBehaviour
     private bool lockChestOpening;
     private bool playerInTriggerArea;
     private bool chestOpen;
+    private bool chestOpening;
     private bool hubChestInteractionTooltipShown;
 
     private PayCurrencyUI payCurrencyUI;
@@ -137,7 +138,7 @@ public class HubChest : MonoBehaviour
         if (lockChestOpening) return;
         if (collision.GetComponent<Player>() == null) return;
         playerInTriggerArea = false;
-        if (!chestOpen) return;
+        if (!chestOpen && !chestOpening) return;
 
         CloseChest();
 
@@ -156,9 +157,12 @@ public class HubChest : MonoBehaviour
 
     private IEnumerator OpenChestCoroutine() {
         OnChestOpened?.Invoke(this, EventArgs.Empty);
+        chestOpening = true;
+
         yield return new WaitForSeconds(3f);
 
         chestOpen = true;
+        chestOpening = false;
         Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
 
     }

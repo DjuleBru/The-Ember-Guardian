@@ -376,70 +376,70 @@ public class GameInput : MonoBehaviour
         switch(binding) {
 
             case Binding.moveLeft:
-                return playerInputActions.Player.Move.bindings[1].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.Move.bindings[1].ToDisplayString());
 
             case Binding.moveRight:
-                return playerInputActions.Player.Move.bindings[2].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.Move.bindings[2].ToDisplayString());
 
             case Binding.buildingFunctionLeft:
-                return playerInputActions.Player.LeftRightSwitch.bindings[1].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.LeftRightSwitch.bindings[1].ToDisplayString());
 
             case Binding.buildingFunctionRight:
-                return playerInputActions.Player.LeftRightSwitch.bindings[2].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.LeftRightSwitch.bindings[2].ToDisplayString());
 
             case Binding.interact:
-                return playerInputActions.Player.Interact.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.Interact.bindings[0].ToDisplayString());
 
             case Binding.run:
-                return playerInputActions.Player.Run.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.Run.bindings[0].ToDisplayString());
 
             case Binding.roll:
-                return playerInputActions.Player.Jump.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.Jump.bindings[0].ToDisplayString());
 
             case Binding.meleeAttack:
-                return playerInputActions.Player.MeleeAttack.bindings[0].ToDisplayString();
+                return  HandleLanguageConversions(playerInputActions.Player.MeleeAttack.bindings[0].ToDisplayString());
 
             case Binding.shoot:
-                return playerInputActions.Player.Shoot.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.Shoot.bindings[0].ToDisplayString());
 
             case Binding.reload:
-                return playerInputActions.Player.Reload.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.Reload.bindings[0].ToDisplayString());
 
             case Binding.secondary:
-                return playerInputActions.Player.WeaponSecondaryAbility.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.WeaponSecondaryAbility.bindings[0].ToDisplayString());
 
             case Binding.selectPrimaryGun:
-                return playerInputActions.Player.SelectPrimaryGun.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.SelectPrimaryGun.bindings[0].ToDisplayString());
 
             case Binding.selectSecondaryGun:
-                return playerInputActions.Player.SelectSecondaryGun.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.SelectSecondaryGun.bindings[0].ToDisplayString());
 
             case Binding.ability1:
-                return playerInputActions.Player.LeftSkill.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.LeftSkill.bindings[0].ToDisplayString());
 
             case Binding.ability2:
-                return playerInputActions.Player.RightSkill.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.RightSkill.bindings[0].ToDisplayString());
 
             case Binding.pause:
-                return playerInputActions.Player.Pause.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.Pause.bindings[0].ToDisplayString());
 
             case Binding.characterMenu:
-                return playerInputActions.Player.OpenPlayerTab.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.OpenPlayerTab.bindings[0].ToDisplayString());
 
             case Binding.hoverWorkers:
-                return playerInputActions.Player.HoverWorkers.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.HoverWorkers.bindings[0].ToDisplayString());
 
             case Binding.callDoggo:
-                return playerInputActions.Player.Back.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.Back.bindings[0].ToDisplayString());
 
             case Binding.torchOnOff:
-                return playerInputActions.Player.SwitchGunLight.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.SwitchGunLight.bindings[0].ToDisplayString());
 
             case Binding.editCampDeselect:
-                return playerInputActions.Player.CampCustomizationDeselect.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.CampCustomizationDeselect.bindings[0].ToDisplayString());
 
             case Binding.editCampSelect:
-                return playerInputActions.Player.CampCustomizationSelect.bindings[0].ToDisplayString();
+                return HandleLanguageConversions(playerInputActions.Player.CampCustomizationSelect.bindings[0].ToDisplayString());
 
         }
 
@@ -560,5 +560,22 @@ public class GameInput : MonoBehaviour
 
         ES3.Save("SavedCustomBindings", false, settingsSaveFileSettings);
         playerInputActions.Player.Enable();
+    }
+
+    public string HandleLanguageConversions(string bindingText) {
+
+        if (Application.systemLanguage == SystemLanguage.French) {
+            if (bindingText == "A") return "Q";
+            if (bindingText == "Q") return "A";
+            if (bindingText == "Z") return "W";
+            if (bindingText == "W") return "Z";
+        }
+
+        if (Application.systemLanguage == SystemLanguage.German) {
+            if (bindingText == "Z") return "Y";
+            if (bindingText == "Y") return "Z";
+        }
+
+        return bindingText;
     }
 }

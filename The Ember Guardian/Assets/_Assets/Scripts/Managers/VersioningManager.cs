@@ -13,8 +13,16 @@ public class VersioningManager : MonoBehaviour
     [SerializeField] protected bool saveFileIncompatible;
     [SerializeField] protected bool isDemo;
     [SerializeField] protected string prefixText;
-    [SerializeField] protected float demoBuildVersion;
-    [SerializeField] protected float buildVersion;
+    [SerializeField] private int state = 0;
+    [SerializeField] private int major = 9;
+    [SerializeField] private int minor = 1;
+    [SerializeField] private int patch = 2;
+
+    [SerializeField] private int demoState = 0;
+    [SerializeField] private int demoMajor = 9;
+    [SerializeField] private int demoMinor = 0;
+    [SerializeField] private int demoPatch = 1;
+
     [SerializeField] protected float latestCompatibleBuildVersion;
 
     private void Awake() {
@@ -22,37 +30,32 @@ public class VersioningManager : MonoBehaviour
     }
 
     private void Start() {
-        string versionString = buildVersion.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        int vMajor = isDemo ? demoState : state;
+        int vMinor = isDemo ? demoMajor : major;
+        int vPatch = isDemo ? demoMinor : minor;
+        int vBuild = isDemo ? demoPatch : patch;
 
-        if(isDemo) {
-            int major = (int)demoBuildVersion;
-
-            // On arrondit à 2 décimales pour éviter les imprécisions binaires
-            int minorAndPatch = (int)Mathf.Round((demoBuildVersion - major) * 100);
-
-            int minor = minorAndPatch / 10;
-            int patch = minorAndPatch % 10;
-
-            if (minor == 0 && patch == 0) {
-                versionString = $"{major}";
-            }
-            else if (patch == 0) {
-                versionString = $"{major}.{minor}";
-            }
-            else {
-                versionString = $"{major}.{minor}.{patch}";
-            }
-        }
+        string versionString = FormatVersion(vMajor, vMinor, vPatch, vBuild);
         versioningText.text = prefixText + " v." + versionString;
+    }
+
+    public static string FormatVersion(int major, int minor, int patch, int build) {
+        if (patch == 0 && build == 0)
+            return $"{major}.{minor}";
+        else if (build == 0)
+            return $"{major}.{minor}.{patch}";
+        else
+            return $"{major}.{minor}.{patch}.{build}";
     }
 
     public bool CheckIncompatibleSaveFile() {
         return false;
-        string key = "buildVersion_" + buildVersion + "_saveFileDeleted";
+        float version = ReconstructFloatVersion(state, major, minor, patch);
+        string key = "buildVersion_" + version + "_saveFileDeleted";
         string latestBuildSavedKey = "latestBuildSaved";
 
-        float latestBuildSaved = ES3.Load(latestBuildSavedKey, buildVersion);
-        ES3.Save(latestBuildSavedKey, buildVersion);
+        float latestBuildSaved = ES3.Load(latestBuildSavedKey, version);
+        ES3.Save(latestBuildSavedKey, version);
 
         if (!saveFileIncompatible) return false;
 
@@ -72,7 +75,9 @@ public class VersioningManager : MonoBehaviour
 
         return true;
     }
-
+    public static float ReconstructFloatVersion(int major, int minor, int patch, int build) {
+        return major + (minor * 0.01f) + (patch * 0.0001f) + (build * 0.000001f);
+    }
     public bool CheckNewSaveFile() {
 
         if (!ES3.FileExists()) {
@@ -88,7 +93,7 @@ public class VersioningManager : MonoBehaviour
 
             MusicManager.Instance.PauseMusic();
             MainMenuUI.Instance.HideAllMenuUI();
-            string key = "buildVersion_" + buildVersion + "_saveFileDeleted";
+            string key = "buildVersion_" + ReconstructFloatVersion(state, major, minor, patch) + "_saveFileDeleted";
             ES3.Save(key, true);
 
             return true;

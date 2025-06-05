@@ -49,7 +49,7 @@ public class PetDog : MonoBehaviour
         if (!playerInTriggerArea) return;
         if (playerPettingDogOnCooldown) return;
         if (!playerCanPetDog) return;
-        if (PlayerShoot.Instance.GetActionBlockedByJammedGun(GameInput.Binding.callDoggo)) return;
+        if (PlayerShoot.Instance.GetHeldGun().GetGunJammed()) return;
 
         if (!playerPettingDog) {
             StartPetDog();

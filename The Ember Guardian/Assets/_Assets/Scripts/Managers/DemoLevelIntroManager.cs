@@ -33,6 +33,7 @@ public class DemoLevelIntroManager : MonoBehaviour {
         StartCoroutine(SetInitialObjective());
         StartCoroutine(SetPlayerCurrenciesAfterDelay());
 
+        PlayerShoot.Instance.SetGunCanJam(false);
         Fire.Instance.ActivateInitialFire();
         Fire.Instance.gameObject.SetActive(true);
 

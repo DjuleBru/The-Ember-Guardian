@@ -73,6 +73,7 @@ public class PlayerShoot : MonoBehaviour
     private bool swappingGun;
     private bool autoReload;
     private bool canShoot = true;
+    private bool gunCanJam = true;
     private bool coolingDown;
     private bool reloading;
     private bool coolDownSFXTriggered;
@@ -136,6 +137,10 @@ public class PlayerShoot : MonoBehaviour
             if (canHold2Guns) {
                 this.secondayGunSO = PlayerSave.Instance.GetSecondaryActiveGun();
             }
+        }
+
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            SetGunCanJam(false);
         }
 
         SettingsManager.Instance.OnAutoReloadChanged += SettingsManager_OnAutoReloadChanged;
@@ -378,29 +383,8 @@ public class PlayerShoot : MonoBehaviour
         coolingDown = false;
 
         // Handle reload
-        if (heldGun.GetCurrentBullet() <= 0) {
-            if(autoReload) {
-                if (heldGun.GetCurrentBullet() == heldGun.GetBulletsPerAmmoClip()) return;
-                if (reloading) return;
-                if (coolingDown) return;
-
-                if (heldGun.GetCurrentAmmoClip() == 0) {
-                    OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
-
-                    if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count > 0) {
-                        OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    return;
-                };
-
-                StartCoroutine(ReloadGunCoroutine());
-            } else {
-                return;
-            }
-
-        } else {
-            if(automaticWeapon && playerIsHoldingDownShoot && !Player.Instance.GetDead()) {
+        if (heldGun.GetCurrentBullet() > 0) {
+            if (automaticWeapon && playerIsHoldingDownShoot && !Player.Instance.GetDead()) {
                 Shoot();
             }
         }
@@ -465,6 +449,11 @@ public class PlayerShoot : MonoBehaviour
 
     private void GameInput_OnWeaponSecondaryAbilitytPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+        if (heldGun.GetGunJammed()) {
+            OnPlayerTryShoot_GunJammed?.Invoke(this, EventArgs.Empty);
+            return;
+        }
+
         bool secondaryAbilityUnlocked = heldGun.GetSecondaryAbilityUnlocked();
         if (useDebugGun) {
             secondaryAbilityUnlocked = true;
@@ -786,11 +775,19 @@ public class PlayerShoot : MonoBehaviour
         if (loadingShot && !shotLoaded) return;
         if (Player.Instance.GetHP() == 0) return;
 
-        if(heldGun.GetCurrentAmmoClip() < 0 || heldGun.GetCurrentBullet() == 0) {
-            OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+        if(heldGun.GetCurrentBullet() == 0) {
+            if(heldGun.GetCurrentAmmoClip() > 0 && autoReload) {
+                StartCoroutine(ReloadGunCoroutine());
+            } else {
+                OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+
+                if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count > 0) {
+                    OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag?.Invoke(this, EventArgs.Empty);
+                }
+
+            }
             return;
         }
-
         Shoot();
         playerIsHoldingDownShoot = true;
 
@@ -813,6 +810,10 @@ public class PlayerShoot : MonoBehaviour
 
     public void SetCanShoot(bool canShoot) {
         this.canShoot = canShoot;
+    }
+
+    public void SetGunCanJam(bool canJam) {
+        gunCanJam = canJam;
     }
 
     #region GET PARAMETERS
@@ -927,10 +928,8 @@ public class PlayerShoot : MonoBehaviour
         return reloading;
     }
 
-    public bool GetActionBlockedByJammedGun(GameInput.Binding binding) {
-        if (heldGun.GetGunJammed() && heldGun.GetComponent<GunJamHandler>().GetIsExpectedBinding(binding)) return true;
-
-        return false;
+    public bool GetGunCanJam() {
+        return gunCanJam;
     }
 
     #endregion

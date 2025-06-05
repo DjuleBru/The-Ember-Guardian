@@ -27,6 +27,7 @@ public class PlayerFeedbacks : MonoBehaviour
     [SerializeField] private MMF_Player gunJamStartFeedbacks;
     [SerializeField] private MMF_Player gunJamEndFeedbacks;
     [SerializeField] private MMF_Player gunJamProgressFeedbacks;
+    [SerializeField] private MMF_Player gunJamFailedFeedbacks;
 
     private float minDelayBetweenCritHitFeedbacks = .4f;
     private float critHitFeedbacksTimer;
@@ -55,8 +56,10 @@ public class PlayerFeedbacks : MonoBehaviour
         GunJamHandler.OnAnyJamSequenceGenerated += GunJamHandler_OnAnyJamSequenceGenerated;
         GunJamHandler.OnAnyJamSequenceCompleted += GunJamHandler_OnAnyJamSequenceCompleted;
         GunJamHandler.OnAnyJamSequenceProgressed += GunJamHandler_OnAnyJamSequenceProgressed;
+        GunJamHandler.OnAnyJamSequenceFailed += GunJamHandler_OnAnyJamSequenceFailed;
+        GunJamHandler.OnAnyJamSequenceCancelled += GunJamHandler_OnAnyJamSequenceCancelled;
+        GunJamHandler.OnAnyJamSequenceRestarted += GunJamHandler_OnAnyJamSequenceRestarted;
     }
-
 
     private void Update() {
         if(critHitFeedbackRecentlyActivated) {
@@ -65,6 +68,17 @@ public class PlayerFeedbacks : MonoBehaviour
                 critHitFeedbackRecentlyActivated = false;
             }
         }
+    }
+
+    private void GunJamHandler_OnAnyJamSequenceFailed(object sender, System.EventArgs e) {
+        gunJamFailedFeedbacks.PlayFeedbacks();
+    }
+
+    private void GunJamHandler_OnAnyJamSequenceCancelled(object sender, System.EventArgs e) {
+        gunJamEndFeedbacks.PlayFeedbacks();
+    }
+    private void GunJamHandler_OnAnyJamSequenceRestarted(object sender, System.EventArgs e) {
+        gunJamStartFeedbacks.PlayFeedbacks();
     }
 
     private void GunJamHandler_OnAnyJamSequenceProgressed(object sender, GunJamHandler.OnAnyJamSequenceProgressedEventArgs e) {
@@ -175,6 +189,10 @@ public class PlayerFeedbacks : MonoBehaviour
         GunJamHandler.OnAnyJamSequenceGenerated -= GunJamHandler_OnAnyJamSequenceGenerated;
         GunJamHandler.OnAnyJamSequenceCompleted -= GunJamHandler_OnAnyJamSequenceCompleted;
         GunJamHandler.OnAnyJamSequenceProgressed -= GunJamHandler_OnAnyJamSequenceProgressed;
+        GunJamHandler.OnAnyJamSequenceFailed -= GunJamHandler_OnAnyJamSequenceFailed;
+        GunJamHandler.OnAnyJamSequenceCancelled -= GunJamHandler_OnAnyJamSequenceCancelled;
+        GunJamHandler.OnAnyJamSequenceRestarted -= GunJamHandler_OnAnyJamSequenceRestarted;
+
         Mob.OnAnyMobCritDamageTaken -= Mob_OnAnyMobCritDamageTaken;
     }
 }

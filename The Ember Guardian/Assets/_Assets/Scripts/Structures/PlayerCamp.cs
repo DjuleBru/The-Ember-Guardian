@@ -39,6 +39,7 @@ public class PlayerCamp : MonoBehaviour
     private List<Structure> builtStructures = new List<Structure>();
     private List<Structure> builtTowers = new List<Structure>();
 
+    private bool blockStructureUnlocks;
     private bool customLayout;
     private bool ammoCrafterBuiltAtStart;
     private bool researchTowerBuiltAtStart;
@@ -175,6 +176,9 @@ public class PlayerCamp : MonoBehaviour
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
         initialFireLit = true;
+        StartCoroutine(BuildStructuresUnlockedCoroutine(.5f));
+
+        if (blockStructureUnlocks) return;
 
         leftBarricade1.UnlockStructureLocation();
         rightBarricade1.UnlockStructureLocation();
@@ -184,7 +188,6 @@ public class PlayerCamp : MonoBehaviour
         TryUnlockStructureLocationsBetweenBarricades(allStructureLocations, Vector3.zero, rightBarricade1Position);
         TryUnlockStructureLocationsBetweenBarricades(trapLocations, rightBarricade1Position, rightBarricade2Position);
 
-        StartCoroutine(BuildStructuresUnlockedCoroutine(.5f));
     }
 
     private IEnumerator BuildStructuresUnlockedCoroutine(float delayBetweenBuilds) {
@@ -277,6 +280,10 @@ public class PlayerCamp : MonoBehaviour
 
         return closestTower;
     }
+
+    public void BlockStructureUnlocks() {
+        blockStructureUnlocks = true;
+    } 
 
     public float LayoutToWorldPosition(int startLayoutPosition, StructureSO structureSO) {
         float objectMidPointLayoutPosition;

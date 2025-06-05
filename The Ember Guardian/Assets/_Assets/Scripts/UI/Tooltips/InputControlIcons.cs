@@ -428,6 +428,7 @@ public class InputControlIcons : MonoBehaviour
             }
             if (control == Control.OpenPlayerMenu) {
                 string characterMenu = GameInput.Instance.GetBindingText(GameInput.Binding.characterMenu);
+                Debug.Log(characterMenu);
 
                 if (keyboardIconLookup.TryGetValue(characterMenu, out Sprite icon1)) {
                     spriteList.Add(icon1);
@@ -499,7 +500,7 @@ public class InputControlIcons : MonoBehaviour
                 return gamepadR3Sprite;
             }
             if (control == GameInput.Binding.torchOnOff) {
-                return gamepadDownArrowSprite;
+                return gamepadUpArrowSprite;
             }
             if (control == GameInput.Binding.callDoggo) {
                 return gamepadBSprite;

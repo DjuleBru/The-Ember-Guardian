@@ -498,6 +498,10 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
         return statDescriptionList;
     }
 
+    public TrainerItemType GetTrainerItemType() {
+        return trainerItemType;
+    }
+
     public override string GetItemType() {
         return trainerItemType.ToString();
     }

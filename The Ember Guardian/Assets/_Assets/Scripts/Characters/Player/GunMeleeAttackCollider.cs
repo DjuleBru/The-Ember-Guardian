@@ -36,7 +36,6 @@ public class GunMeleeAttackCollider : MonoBehaviour
             // Calcule l'angle pour orienter l'explosion prefab et le magma shot
             
             float angle = PlayerAim.Instance.GetAimAngle();
-            Debug.Log(angle);
             creatureHit.InstantiateHitPS(angle, transform.position.y, false, meleeAttackDamage, transform.position.x);
             
             meleeAttackHasHit = true;

@@ -35,11 +35,14 @@ public class SettingsManager : MonoBehaviour
     private bool autoReload;
     private bool streamerMode;
 
+    private float settingsVersion;
+
     private ES3Settings settingsSaveFileSettings;
 
     private void Awake() {
         Instance = this;
         settingsSaveFileSettings = new ES3Settings("Settings.es3");
+        settingsVersion = ES3.Load("settingsVersion", 0f, settingsSaveFileSettings);
         LoadSettings();
     }
 
@@ -58,9 +61,16 @@ public class SettingsManager : MonoBehaviour
         autoSwitchLightGun = ES3.Load("autoSwitchLightGun", true, settingsSaveFileSettings);
         controllerVibrations = ES3.Load("controllerVibrations", true, settingsSaveFileSettings);
         fullScreen = ES3.Load("fullScreen", true, settingsSaveFileSettings);
-        autoReload = ES3.Load("autoReload", false, settingsSaveFileSettings);
+        autoReload = ES3.Load("autoReload", true, settingsSaveFileSettings);
         currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
         streamerMode = ES3.Load("steamerMode", false, settingsSaveFileSettings);
+
+        if (settingsVersion < 0.9) {
+            // Mise à jour vers la version 0.9 : autoReload passe à true
+            autoReload = true;
+            ES3.Save("autoReload", true, settingsSaveFileSettings);
+            ES3.Save("settingsVersion", 0.9f, settingsSaveFileSettings);
+        }
     }
 
     #region SET SETTINGS

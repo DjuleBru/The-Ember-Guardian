@@ -11,6 +11,7 @@ public class GunJamSingleIconUI : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private Color validColor;
     [SerializeField] private Color resetColor;
+    [SerializeField] private Color failedColor;
     private GameInput.Binding binding;
     private int inputIndex;
     private bool iconShown;
@@ -31,9 +32,19 @@ public class GunJamSingleIconUI : MonoBehaviour
     }
 
     private void GunJamHandler_OnAnyJamSequenceFailed(object sender, System.EventArgs e) {
+        StartCoroutine(FailedCoroutine());
+    }
+
+    private IEnumerator FailedCoroutine() {
+        inputImage.color = failedColor;
+        inputImageBackground.color = failedColor;
+
+        yield return new WaitForSeconds(.3f);
+
         RefreshShowIcon();
         animator.ResetTrigger("Valid");
         animator.SetTrigger("Reset");
+        inputImage.color = Color.white;
         inputImageBackground.color = resetColor;
     }
 

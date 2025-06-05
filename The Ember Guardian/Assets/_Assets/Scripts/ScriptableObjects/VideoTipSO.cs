@@ -26,13 +26,13 @@ public class VideoTipSO : ScriptableObject
         HuntersFlag,
         DemoEnded,
         Trap,
+        GunJams,
+        GunManagement,
     }
 
     public VideoTipType tipType;
-    public TextSO tipName;
     public string tipNameLocalizationKey;
     public VideoClip tipClip;
-    public List<TextSO> tipTextList;
     public List<string> tipTextLocalizationKeys;
     public List<float> tipTextDelayToShowList;
 }
