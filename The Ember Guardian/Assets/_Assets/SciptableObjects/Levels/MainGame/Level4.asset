@@ -12,6 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
   m_Name: Level4
   m_EditorClassIdentifier: 
+  linkedSceneName: Level3_LostGreens
+  levelImage: {fileID: 0}
+  levelNameLocalizationKey: Level 4
+  faunaAmount: 0
+  scrapAmount: 0
+  minesAmount: 0
+  chestAmount: 0
+  wildEmberlingsAmount: 0
+  levelObjectiveType: 12
+  endLevelType: 14
+  talkToNpcAFterObjective: 0
+  nightsToSurviveAmount: 5
+  isNewEnvironmentDiscoveryLevel: 1
+  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: fe72f58b31466564f8f3f9e82a53595b, type: 3}
   levelsUnlockedByLevel:
   - {fileID: 11400000, guid: 68380da7c9c0faf45be065d4a9cda5eb, type: 2}
   - {fileID: 11400000, guid: 36a376877af4fca44b531d5dd7dff0fb, type: 2}
@@ -19,19 +33,39 @@ MonoBehaviour:
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 26f1ade022c3b804ab219a65abfc68f4, type: 2}
   newMerchantTextLinesAfterLevel:
   - {fileID: 11400000, guid: 1aa7febfc957ce947998288f0f8837a1, type: 2}
-  environmentType: 0
-  levelObjectiveType: 12
-  endLevelType: 14
-  nightsToSurviveAmount: 5
+  isReplayableLevel: 0
+  totalDayCreatureDifficulty: 0
+  dayCreatureTypes: []
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
   - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
   - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
   - {fileID: 11400000, guid: 30c45ff74017778438c5c78eed18975c, type: 2}
   - {fileID: 11400000, guid: ab8dd169f91741b48848a62dab906029, type: 2}
-  isNewEnvironmentDiscoveryLevel: 1
-  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: fe72f58b31466564f8f3f9e82a53595b, type: 3}
-  linkedSceneName: Level3_LostGreens
+  hasBoss: 0
+  bossCreatureType: {fileID: 0}
+  bossNightSpawns: 
+  baseDifficulty: 22
+  intialMinSubwaveDifficulty: 0
+  minSubwaveDifficulty: 5
+  intialMaxSubwaveDifficulty: 0
+  maxSubwaveDifficulty: 30
+  growthFactor: 1.5
+  setDifficultyAnimationCurve: 0
+  difficultyAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxWaveInAnimationCurve: 0
+  difficultyAtMaxWave: 0
+  minDifficultyAtMaxWave: 0
+  maxDifficultyAtMaxWave: 0
+  minMaxSubwaveDifficultyGrowthFactor: 0
+  startWaveToSpawnFromBothSides: 2
+  canSpawnElite: 1
+  environmentType: 0
   hasFog: 0
   fogFrontAlpha: 0
   fogBackAlpha: 0
@@ -41,19 +75,6 @@ MonoBehaviour:
   hasRain: 0
   initialRainIntensity: 0
   rainIntensitiesAllowedInLevel: 
-  baseDifficulty: 22
-  minSubwaveDifficulty: 5
-  maxSubwaveDifficulty: 30
-  growthFactor: 1.5
-  minWaveDuration: 9
-  maxWaveDuration: 90
-  startWaveToSpawnFromBothSides: 2
-  canSpawnElite: 1
-  minLevelXPosition: -200
-  maxLevelXPosition: 200
-  levelAudioClips:
-  - {fileID: 8300000, guid: 09c5969007630694984b81ccd6618337, type: 3}
-  - {fileID: 8300000, guid: d79c4b04637541d4fba193e4660d29a7, type: 3}
-  - {fileID: 8300000, guid: 67182c7decc49484f9b9722ed4fe9b37, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
+  levelRandomBackgroundTracks: []
+  levelExplorationTracks: []
+  levelExplorationTracksStreamerMode: []

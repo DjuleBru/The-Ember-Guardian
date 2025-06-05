@@ -10,6 +10,11 @@ public class MetaProgressionManager : MonoBehaviour
     [SerializeField] private bool destroySaveOnApplicationQuit;
     private bool flagCarry_Debug;
 
+    public event EventHandler<OnLevelSOUnlockedEventArgs> OnLevelSOUnlocked;
+    public class OnLevelSOUnlockedEventArgs : EventArgs {
+        public LevelSO levelSOUnlocked;
+    }
+
     public class OnGunChangedEventArgs : EventArgs {
         public GunSO.GunType gunTypeModified;
     }
@@ -303,6 +308,10 @@ public class MetaProgressionManager : MonoBehaviour
 
     public void SetLevelUnlocked(LevelSO levelSO) {
         ES3.Save(levelSO.name, true);
+
+        OnLevelSOUnlocked?.Invoke(this, new OnLevelSOUnlockedEventArgs {
+            levelSOUnlocked = levelSO
+        });
     }
 
     public List<LevelSO> GetPreviousLevelsUnlocked() {
@@ -577,6 +586,19 @@ public class MetaProgressionManager : MonoBehaviour
     }
     #endregion
 
+    #region CREATURES
+    
+    public void SetCreatureUnlocked(CreatureSO creatureSO) {
+        string key = creatureSO.enemyName + "_unlocked";
+        ES3.Save(key, true);
+    }
+
+    public bool GetCreatureUnlocked(CreatureSO creatureSO) {
+        string key = creatureSO.enemyName + "_unlocked";
+        return ES3.Load(key, false);
+    }
+
+    #endregion
 
     private void OnApplicationQuit() {
         if(destroySaveOnApplicationQuit) {

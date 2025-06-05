@@ -96,6 +96,9 @@ public class CameraManager : MonoBehaviour
     public void SetCameraOrthographicSize(float orthographicSize) {
         virtualCamera.m_Lens.OrthographicSize = orthographicSize;
     }
+    public void ResetCameraOrthographicSize() {
+        virtualCamera.m_Lens.OrthographicSize = initialCameraOrthographicSize;
+    }
 
     public Camera GetUICamera() {
         return UICamera;

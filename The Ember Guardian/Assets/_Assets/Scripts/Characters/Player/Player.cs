@@ -32,6 +32,7 @@ public class Player : MonoBehaviour, IDamageable
     private bool managingWorkers = false;
     private bool interactingWithMerchant = false;
     private bool inTeleporter = false;
+    private bool inTeleporterLevelSelectionMenu = false;
     private bool cameraHasOtherTarget = false;
     private bool pettingDog = false;
 
@@ -369,11 +370,11 @@ public class Player : MonoBehaviour, IDamageable
 
     #region GET PLAYER CONTROLS RESTRICTIONS
     public bool GetAllMenusClosed() {
-        return !pauseMenuOpen && !tabMenuOpen && !videoTipMenuOpen;
+        //Debug.Log("inTeleporterLevelSelectionMenu " + inTeleporterLevelSelectionMenu);
+        return !pauseMenuOpen && !tabMenuOpen && !videoTipMenuOpen && !inTeleporterLevelSelectionMenu;
     }
 
     public bool GetInteractingWithNoOtherObject() {
-
         return !interactingWithMerchant && !managingWorkers && !inTeleporter;
     }
 
@@ -498,6 +499,10 @@ public class Player : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(.5f);
         interactingWithMerchant = false;
         OnPlayerStoppedInteractingWithAnyInteractable?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SetInTeleporterLevelSelectionMenu(bool inMenu) {
+        inTeleporterLevelSelectionMenu = inMenu;
     }
 
     #endregion

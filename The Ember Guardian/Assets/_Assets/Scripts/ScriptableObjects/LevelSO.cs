@@ -15,73 +15,186 @@ public class LevelSO : ScriptableObject
         CorruptedCity,
     }
 
-    public List<LevelSO> levelsUnlockedByLevel;
-    public List<HubMerchant.HubMerchantType> merchantsUnlockedInLevel;
-    public MerchantTextLinesSO gemMerchantTextLinesAfterLevel;
-    public List<MerchantTextLinesSO> newMerchantTextLinesAfterLevel;
 
-    public LevelEnvironment environmentType;
+
+    public string linkedSceneName;
+
+    [BoxGroup("LevelDisplay")]
+    [LabelWidth(300)]
+    public Sprite levelImage;
+    [BoxGroup("LevelDisplay")]
+    [LabelWidth(300)]
+    public string levelNameLocalizationKey;
+    [BoxGroup("LevelDisplay")]
+    [LabelWidth(300)]
+    [Range(0, 10)]
+    public int faunaAmount;
+    [BoxGroup("LevelDisplay")]
+    [LabelWidth(300)]
+    [Range(0, 10)]
+    public int scrapAmount;
+    [BoxGroup("LevelDisplay")]
+    [LabelWidth(300)]
+    [Range(0, 10)]
+    public int minesAmount;
+    [BoxGroup("LevelDisplay")]
+    [LabelWidth(300)]
+    [Range(0, 10)]
+    public int chestAmount;
+    [BoxGroup("LevelDisplay")]
+    [LabelWidth(300)]
+    [Range(0, 10)]
+    public int wildEmberlingsAmount;
+
+    [BoxGroup("Objective")]
+    [LabelWidth(300)]
     public LevelUI_ObjectiveUI.ObjectiveType levelObjectiveType;
+    [BoxGroup("Objective")]
+    [LabelWidth(300)]
     public LevelUI_ObjectiveUI.ObjectiveType endLevelType;
+    [BoxGroup("Objective")]
+    [LabelWidth(300)]
     public bool talkToNpcAFterObjective;
+    [BoxGroup("Objective")]
+    [LabelWidth(300)]
     public int nightsToSurviveAmount = 0;
-    public List<CreatureSO> nightCreatureTypes;
-    public bool hasBoss;
-    [ShowIf("hasBoss")]
-    public CreatureSO bossCreatureType;
-    [ShowIf("hasBoss")]
-    public List<int> bossNightSpawns;
-
-    public bool isReplayableLevel;
-    [ShowIf("isReplayableLevel")]
-    public List<CreatureSO> dayCreatureTypes;
-    [ShowIf("isReplayableLevel")]
-    public int totalDayCreatureDifficulty;
-
+    [BoxGroup("Objective")]
+    [LabelWidth(300)]
     public bool isNewEnvironmentDiscoveryLevel;
+    [BoxGroup("Objective")]
+    [LabelWidth(300)]
     [ShowIf("isNewEnvironmentDiscoveryLevel")]
     public AudioClip newEnvironmentDiscoveryAudioClip;
 
-    public string linkedSceneName;
+    [BoxGroup("Progression")]
+    [LabelWidth(300)]
+    public List<LevelSO> levelsUnlockedByLevel;
+    [BoxGroup("Progression")]
+    [LabelWidth(300)]
+    public List<HubMerchant.HubMerchantType> merchantsUnlockedInLevel;
+    [BoxGroup("Progression")]
+    [LabelWidth(300)]
+    public MerchantTextLinesSO gemMerchantTextLinesAfterLevel;
+    [BoxGroup("Progression")]
+    [LabelWidth(300)]
+    public List<MerchantTextLinesSO> newMerchantTextLinesAfterLevel;
+
+    [BoxGroup("Creatures")]
+    [LabelWidth(300)]
+    public bool isReplayableLevel;
+    [BoxGroup("Creatures")]
+    [LabelWidth(300)]
+    [ShowIf("isReplayableLevel")]
+    public int totalDayCreatureDifficulty;
+    [BoxGroup("Creatures")]
+    [LabelWidth(300)]
+    public List<CreatureSO> dayCreatureTypes;
+    [BoxGroup("Creatures")]
+    [LabelWidth(300)]
+    public List<CreatureSO> nightCreatureTypes;
+    [BoxGroup("Creatures")]
+    [LabelWidth(300)]
+    public bool hasBoss;
+    [BoxGroup("Creatures")]
+    [LabelWidth(300)]
+    [ShowIf("hasBoss")]
+    public CreatureSO bossCreatureType;
+    [BoxGroup("Creatures")]
+    [LabelWidth(300)]
+    [ShowIf("hasBoss")]
+    public List<int> bossNightSpawns;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    public int baseDifficulty;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    public int intialMinSubwaveDifficulty;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    public int minSubwaveDifficulty;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    public int intialMaxSubwaveDifficulty;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    public int maxSubwaveDifficulty;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    public float growthFactor;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    public bool setDifficultyAnimationCurve;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    [ShowIf("setDifficultyAnimationCurve")]
+    public AnimationCurve difficultyAnimationCurve;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    [ShowIf("setDifficultyAnimationCurve")]
+    public int maxWaveInAnimationCurve;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    [ShowIf("setDifficultyAnimationCurve")]
+    public int difficultyAtMaxWave;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    [ShowIf("setDifficultyAnimationCurve")]
+    public int minDifficultyAtMaxWave;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    [ShowIf("setDifficultyAnimationCurve")]
+    public int maxDifficultyAtMaxWave;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    public float minMaxSubwaveDifficultyGrowthFactor;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    public int startWaveToSpawnFromBothSides;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    public bool canSpawnElite;
+
+    [BoxGroup("Environment")]
+    [LabelWidth(300)]
+    public LevelEnvironment environmentType;
+    [BoxGroup("Environment")]
+    [LabelWidth(300)]
     public bool hasFog;
     [ShowIf("hasFog")]
     public float fogFrontAlpha;
+    [BoxGroup("Environment")]
+    [LabelWidth(300)]
     [ShowIf("hasFog")]
     public float fogBackAlpha;
+    [BoxGroup("Environment")]
+    [LabelWidth(300)]
     public bool hasWind;
+    [BoxGroup("Environment")]
+    [LabelWidth(300)]
     [ShowIf("hasWind")]
     public WindManager.WindStrength initialWindStrength;
+    [BoxGroup("Environment")]
+    [LabelWidth(300)]
     [ShowIf("hasWind")]
     public List<WindManager.WindStrength> windStrengthsAllowedInLevel;
+    [BoxGroup("Environment")]
+    [LabelWidth(300)]
     public bool hasRain;
     [ShowIf("hasRain")]
     public RainManager.RainIntensity initialRainIntensity;
+    [BoxGroup("Environment")]
+    [LabelWidth(300)]
     [ShowIf("hasRain")]
     public List<RainManager.RainIntensity> rainIntensitiesAllowedInLevel;
 
-    public int baseDifficulty;
-    public int intialMinSubwaveDifficulty;
-    public int minSubwaveDifficulty;
-    public int intialMaxSubwaveDifficulty;
-    public int maxSubwaveDifficulty;
-    public float growthFactor;
-    public bool setDifficultyAnimationCurve;
-    [ShowIf("setDifficultyAnimationCurve")]
-    public AnimationCurve difficultyAnimationCurve;
-    [ShowIf("setDifficultyAnimationCurve")]
-    public int maxWaveInAnimationCurve;
-    [ShowIf("setDifficultyAnimationCurve")]
-    public int difficultyAtMaxWave;
-    [ShowIf("setDifficultyAnimationCurve")]
-    public int minDifficultyAtMaxWave;
-    [ShowIf("setDifficultyAnimationCurve")]
-    public int maxDifficultyAtMaxWave;
-    public float minMaxSubwaveDifficultyGrowthFactor;
-    public int startWaveToSpawnFromBothSides;
-    public bool canSpawnElite;
-
+    [BoxGroup("Music")]
+    [LabelWidth(300)]
     public List<AudioClip> levelRandomBackgroundTracks;
+    [BoxGroup("Music")]
+    [LabelWidth(300)]
     public List<AudioClip> levelExplorationTracks;
+    [BoxGroup("Music")]
+    [LabelWidth(300)]
     public List<AudioClip> levelExplorationTracksStreamerMode;
 
     public string GetLevelEnvironmentTypeString() {

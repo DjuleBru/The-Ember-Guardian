@@ -467,7 +467,6 @@ public class HUBManager_Demo : MonoBehaviour
 
         grassyAreaPortal.UnlockOrActivatePortal();
         grassyAreaPortal.SetPortalUnlockedInSave();
-        grassyAreaPortal.SetLinkedLevelSO(demoFirstLevelSO);
         MetaProgressionManager.Instance.SetLevelUnlocked(demoFirstLevelSO);
 
         yield return new WaitForSeconds(3f);

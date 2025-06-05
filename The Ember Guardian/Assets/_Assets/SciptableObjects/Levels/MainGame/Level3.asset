@@ -12,6 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
   m_Name: Level3
   m_EditorClassIdentifier: 
+  linkedSceneName: Level3_LostGreens
+  levelImage: {fileID: 0}
+  levelNameLocalizationKey: Level 3
+  faunaAmount: 0
+  scrapAmount: 0
+  minesAmount: 0
+  chestAmount: 0
+  wildEmberlingsAmount: 0
+  levelObjectiveType: 13
+  endLevelType: 16
+  talkToNpcAFterObjective: 1
+  nightsToSurviveAmount: 5
+  isNewEnvironmentDiscoveryLevel: 1
+  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: fe72f58b31466564f8f3f9e82a53595b, type: 3}
   levelsUnlockedByLevel:
   - {fileID: 11400000, guid: 68380da7c9c0faf45be065d4a9cda5eb, type: 2}
   - {fileID: 11400000, guid: 36a376877af4fca44b531d5dd7dff0fb, type: 2}
@@ -19,11 +33,9 @@ MonoBehaviour:
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 26f1ade022c3b804ab219a65abfc68f4, type: 2}
   newMerchantTextLinesAfterLevel:
   - {fileID: 11400000, guid: 1aa7febfc957ce947998288f0f8837a1, type: 2}
-  environmentType: 0
-  levelObjectiveType: 13
-  endLevelType: 16
-  talkToNpcAFterObjective: 1
-  nightsToSurviveAmount: 5
+  isReplayableLevel: 0
+  totalDayCreatureDifficulty: 0
+  dayCreatureTypes: []
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
   - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
@@ -33,21 +45,6 @@ MonoBehaviour:
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
-  isReplayableLevel: 0
-  dayCreatureTypes: []
-  totalDayCreatureDifficulty: 0
-  isNewEnvironmentDiscoveryLevel: 1
-  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: fe72f58b31466564f8f3f9e82a53595b, type: 3}
-  linkedSceneName: Level3_LostGreens
-  hasFog: 0
-  fogFrontAlpha: 0
-  fogBackAlpha: 0
-  hasWind: 1
-  initialWindStrength: 0
-  windStrengthsAllowedInLevel: 000000000100000002000000
-  hasRain: 0
-  initialRainIntensity: 0
-  rainIntensitiesAllowedInLevel: 
   baseDifficulty: 22
   intialMinSubwaveDifficulty: 0
   minSubwaveDifficulty: 5
@@ -68,6 +65,16 @@ MonoBehaviour:
   minMaxSubwaveDifficultyGrowthFactor: 0
   startWaveToSpawnFromBothSides: 2
   canSpawnElite: 1
+  environmentType: 0
+  hasFog: 0
+  fogFrontAlpha: 0
+  fogBackAlpha: 0
+  hasWind: 1
+  initialWindStrength: 0
+  windStrengthsAllowedInLevel: 000000000100000002000000
+  hasRain: 0
+  initialRainIntensity: 0
+  rainIntensitiesAllowedInLevel: 
   levelRandomBackgroundTracks: []
   levelExplorationTracks: []
   levelExplorationTracksStreamerMode: []

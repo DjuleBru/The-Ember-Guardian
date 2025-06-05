@@ -8,6 +8,7 @@ public class Portal : MonoBehaviour
     [SerializeField] private bool isHubDemoPortal;
     [SerializeField] private List<LevelSO> linkedLevelSOList;
     [SerializeField] private Transform playerPosition;
+    [SerializeField] private Transform levelSelectionCameraTarget;
     [SerializeField] private Transform dogPosition;
     [SerializeField] private Collider2D floorCollider;
     [SerializeField] private bool isEndLevelTeleporter;
@@ -27,6 +28,7 @@ public class Portal : MonoBehaviour
 
     private LevelSO linkedLevelSO;
     private bool playerInTriggerArea;
+    private bool playerOpenedPortalUI;
     private bool playerIsSetOnTeleporter;
     private bool portalUnlocked;
 
@@ -34,6 +36,7 @@ public class Portal : MonoBehaviour
     public  event EventHandler OnPortalActivated;
 
     public static event EventHandler OnAnyPortalSetToTeleportPlayer;
+    public event EventHandler OnPlayerInteractedWithPortalFromHub;
     public event EventHandler OnPortalSetToTeleportPlayer;
     public event EventHandler OnPortalAppeared;
     public static event EventHandler OnAnyPortalAppeared;
@@ -50,6 +53,8 @@ public class Portal : MonoBehaviour
     public static event EventHandler OnAnyTeleporterTeleportedPlayerOut;
     public static event EventHandler OnAnyPlayerTeleported;
 
+    public event EventHandler OnLinkedLevelSOSet;
+
     private void Awake() {
         if (isEndLevelTeleporter) {
             portalUnlocked = true;
@@ -64,6 +69,7 @@ public class Portal : MonoBehaviour
         DEBUGMODE = DebugManager.Instance.GetDebugMode_Portals();
 
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
+        MetaProgressionManager.Instance.OnLevelSOUnlocked += MetaProgressionManager_OnLevelSOUnlocked;
         floorCollider.enabled = false;
 
         if (isHUBTeleporter) {
@@ -83,7 +89,10 @@ public class Portal : MonoBehaviour
             }
 
             // DEEEEEEEEEEEEEEEEEEEBUG
-            if (DEBUGMODE) return;
+            if (DEBUGMODE) {
+                portalUnlocked = true;
+                return;
+            }
 
             if (MetaProgressionManager.Instance.GetNextHubArrivalThroughPortal() && MetaProgressionManager.Instance.lastHUBPortalUsedByPlayer == portalNumber) {
                 StartCoroutine(TeleportPlayerOutInHub());
@@ -100,12 +109,24 @@ public class Portal : MonoBehaviour
         }
     }
 
+    private void MetaProgressionManager_OnLevelSOUnlocked(object sender, MetaProgressionManager.OnLevelSOUnlockedEventArgs e) {
+        if(linkedLevelSOList.Contains(e.levelSOUnlocked)) {
+            SetLinkedLevelSO(e.levelSOUnlocked);
+        }
+    }
+
     private void GameInput_OnPlayerInteractStarted(object sender, System.EventArgs e) {
         if (!playerInTriggerArea) return;
         if (playerIsSetOnTeleporter) return;
+        if (playerOpenedPortalUI) return;
 
         if (isHUBTeleporter && !PlayerCurrencies.Instance.GetCarryingEmber() && !DEBUGMODE) {
             PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_carryEmber"), 2f);
+            return;
+        }
+
+        if(isHUBTeleporter) {
+            OnPlayerInteractedWithPortalFromHub?.Invoke(this, EventArgs.Empty);
             return;
         }
 
@@ -159,6 +180,10 @@ public class Portal : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         Destroy(gameObject);
+    }
+
+    public void TeleportPlayerFromHub() {
+        StartCoroutine(TeleportPlayerIn());
     }
 
     private IEnumerator TeleportPlayerIn() {
@@ -258,6 +283,10 @@ public class Portal : MonoBehaviour
         OnAnyPortalAppeared?.Invoke(this, EventArgs.Empty);
     }
 
+    public void SetPlayerOpenedPortalUI(bool isOpen) {
+        playerOpenedPortalUI = isOpen;
+    }
+
     public void SetPortalUnlockedInSave() {
         portalUnlocked = true;
         MetaProgressionManager.Instance.SetPortalUnlocked(gameObject.name);
@@ -283,11 +312,22 @@ public class Portal : MonoBehaviour
 
     public void SetLinkedLevelSO(LevelSO levelSO) {
         linkedLevelSO = levelSO;
+        OnLinkedLevelSOSet?.Invoke(this, EventArgs.Empty);
     }
 
     public int GetLinkedLevelSOIndex() {
         if (linkedLevelSO == null) return 0;
         return linkedLevelSOList.IndexOf(linkedLevelSO);
+    }
+    public LevelSO GetLinkedLevelSO() {
+        return linkedLevelSO;
+    }
+    public List<LevelSO> GetLinkedLevelSOList() {
+        return linkedLevelSOList;
+    }
+
+    public Transform GetLevelSelectionCameraTarget() {
+        return levelSelectionCameraTarget;
     }
 
     public bool GetPortalUnlocked() {
@@ -296,6 +336,10 @@ public class Portal : MonoBehaviour
 
     public bool GetPortalHasUnlockedUnfinishedLevels() {
         bool hasUnlockedAndUnfinishedLevels = false;
+
+        if(DEBUGMODE) {
+            return true;
+        }
 
         foreach(LevelSO levelSO in linkedLevelSOList) {
             if((!MetaProgressionManager.Instance.GetLevelCompleted(levelSO) || levelSO.isReplayableLevel )) {

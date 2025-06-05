@@ -12,17 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
   m_Name: Level1
   m_EditorClassIdentifier: 
+  linkedSceneName: Level1_VerdantGraveyard
+  levelImage: {fileID: 0}
+  levelNameLocalizationKey: Level 1
+  faunaAmount: 0
+  scrapAmount: 0
+  minesAmount: 0
+  chestAmount: 0
+  wildEmberlingsAmount: 0
+  levelObjectiveType: 12
+  endLevelType: 7
+  talkToNpcAFterObjective: 0
+  nightsToSurviveAmount: 0
+  isNewEnvironmentDiscoveryLevel: 1
+  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
   levelsUnlockedByLevel:
   - {fileID: 11400000, guid: 3ab5857536799d443b55dded6a554750, type: 2}
   merchantsUnlockedInLevel: 05000000
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 0b1c8212e6e2efb46b62739006bb0c37, type: 2}
   newMerchantTextLinesAfterLevel:
   - {fileID: 11400000, guid: 92bcaa62b672a0840af078105088088f, type: 2}
-  environmentType: 1
-  levelObjectiveType: 12
-  endLevelType: 7
-  talkToNpcAFterObjective: 0
-  nightsToSurviveAmount: 0
+  isReplayableLevel: 0
+  totalDayCreatureDifficulty: 0
+  dayCreatureTypes: []
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
   - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
@@ -30,21 +42,6 @@ MonoBehaviour:
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
-  isReplayableLevel: 0
-  dayCreatureTypes: []
-  totalDayCreatureDifficulty: 0
-  isNewEnvironmentDiscoveryLevel: 1
-  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
-  linkedSceneName: Level1_VerdantGraveyard
-  hasFog: 0
-  fogFrontAlpha: 0
-  fogBackAlpha: 0
-  hasWind: 0
-  initialWindStrength: 0
-  windStrengthsAllowedInLevel: 
-  hasRain: 0
-  initialRainIntensity: 0
-  rainIntensitiesAllowedInLevel: 
   baseDifficulty: 18
   intialMinSubwaveDifficulty: 0
   minSubwaveDifficulty: 8
@@ -65,6 +62,16 @@ MonoBehaviour:
   minMaxSubwaveDifficultyGrowthFactor: 0
   startWaveToSpawnFromBothSides: 2
   canSpawnElite: 0
+  environmentType: 1
+  hasFog: 0
+  fogFrontAlpha: 0
+  fogBackAlpha: 0
+  hasWind: 0
+  initialWindStrength: 0
+  windStrengthsAllowedInLevel: 
+  hasRain: 0
+  initialRainIntensity: 0
+  rainIntensitiesAllowedInLevel: 
   levelRandomBackgroundTracks: []
   levelExplorationTracks: []
   levelExplorationTracksStreamerMode: []

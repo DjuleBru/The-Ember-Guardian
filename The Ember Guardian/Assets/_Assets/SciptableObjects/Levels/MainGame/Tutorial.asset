@@ -12,37 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
   m_Name: Tutorial
   m_EditorClassIdentifier: 
+  linkedSceneName: 
+  levelImage: {fileID: 0}
+  levelNameLocalizationKey: Tutorial
+  faunaAmount: 0
+  scrapAmount: 0
+  minesAmount: 0
+  chestAmount: 0
+  wildEmberlingsAmount: 0
+  levelObjectiveType: 0
+  endLevelType: 0
+  talkToNpcAFterObjective: 0
+  nightsToSurviveAmount: 0
+  isNewEnvironmentDiscoveryLevel: 0
+  newEnvironmentDiscoveryAudioClip: {fileID: 0}
   levelsUnlockedByLevel: []
   merchantsUnlockedInLevel: 00000000
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 640d874f0f212a74d9a6b7d8805632c6, type: 2}
   newMerchantTextLinesAfterLevel:
   - {fileID: 11400000, guid: 640d874f0f212a74d9a6b7d8805632c6, type: 2}
-  environmentType: 0
-  levelObjectiveType: 0
-  endLevelType: 0
-  talkToNpcAFterObjective: 0
-  nightsToSurviveAmount: 0
+  isReplayableLevel: 0
+  totalDayCreatureDifficulty: 0
+  dayCreatureTypes: []
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
   - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
-  isReplayableLevel: 0
-  dayCreatureTypes: []
-  totalDayCreatureDifficulty: 0
-  isNewEnvironmentDiscoveryLevel: 0
-  newEnvironmentDiscoveryAudioClip: {fileID: 0}
-  linkedSceneName: 
-  hasFog: 0
-  fogFrontAlpha: 0
-  fogBackAlpha: 0
-  hasWind: 0
-  initialWindStrength: 0
-  windStrengthsAllowedInLevel: 
-  hasRain: 0
-  initialRainIntensity: 0
-  rainIntensitiesAllowedInLevel: 
   baseDifficulty: 20
   intialMinSubwaveDifficulty: 5
   minSubwaveDifficulty: 25
@@ -63,6 +60,16 @@ MonoBehaviour:
   minMaxSubwaveDifficultyGrowthFactor: 1.4
   startWaveToSpawnFromBothSides: 1
   canSpawnElite: 0
+  environmentType: 0
+  hasFog: 0
+  fogFrontAlpha: 0
+  fogBackAlpha: 0
+  hasWind: 0
+  initialWindStrength: 0
+  windStrengthsAllowedInLevel: 
+  hasRain: 0
+  initialRainIntensity: 0
+  rainIntensitiesAllowedInLevel: 
   levelRandomBackgroundTracks: []
   levelExplorationTracks: []
   levelExplorationTracksStreamerMode: []

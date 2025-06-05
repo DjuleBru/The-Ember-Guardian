@@ -17,6 +17,12 @@ public class CreatureSO : ScriptableObject
     [LabelWidth(100)]
     [TextArea]
     public string description;
+    [BoxGroup("Basic Info")]
+    [LabelWidth(100)]
+    public Sprite creatureIcon;
+    [BoxGroup("Basic Info")]
+    [LabelWidth(100)]
+    public Sprite creatureIcon_UniformScale;
 
 
     [HorizontalGroup("Game Data", 75)]

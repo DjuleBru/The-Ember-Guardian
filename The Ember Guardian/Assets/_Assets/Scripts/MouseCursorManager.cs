@@ -76,11 +76,12 @@ public class MouseCursorManager : MonoBehaviour
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerOpenedAnyHubMerchantShop;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant += HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
+        PortalUI.OnAnyPortalUIOpened += PortalUI_OnAnyPortalUIOpened;
+        PortalUI.OnAnyPortalUIClosed += PortalUI_OnAnyPortalUIClosed;
 
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
         ShowMouse(false);
     }
-
 
     private void LateUpdate() {
         if (isMenuScene) return;
@@ -95,6 +96,7 @@ public class MouseCursorManager : MonoBehaviour
             HandleGamepadCursorPosition();
         }
     }
+
 
     private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
         weaponCursorGameObject.SetActive(true);
@@ -148,6 +150,18 @@ public class MouseCursorManager : MonoBehaviour
         if (!isUsingGamepad) {
             ShowMouse(true);
         }
+    }
+    private void PortalUI_OnAnyPortalUIClosed(object sender, System.EventArgs e) {
+        if (!isUsingGamepad) {
+            ShowMouse(false);
+        }
+    }
+
+    private void PortalUI_OnAnyPortalUIOpened(object sender, System.EventArgs e) {
+        if (!isUsingGamepad) {
+            ShowMouse(true);
+        }
+
     }
     private void HubMerchant_OnPlayerOpenedAnyHubMerchantShop(object sender, System.EventArgs e) {
         ShowMouse(true);
@@ -293,6 +307,8 @@ public class MouseCursorManager : MonoBehaviour
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop -= HubMerchant_OnPlayerOpenedAnyHubMerchantShop;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant -= HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
+        PortalUI.OnAnyPortalUIOpened -= PortalUI_OnAnyPortalUIOpened;
+        PortalUI.OnAnyPortalUIClosed -= PortalUI_OnAnyPortalUIClosed;
     }
 
 }

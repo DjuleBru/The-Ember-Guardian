@@ -326,7 +326,6 @@ public class HUBManager : MonoBehaviour
 
             linkedPortal.UnlockOrActivatePortal();
             linkedPortal.SetPortalUnlockedInSave();
-            linkedPortal.SetLinkedLevelSO(levelSO);
 
             yield return new WaitForSeconds(3f);
         }
