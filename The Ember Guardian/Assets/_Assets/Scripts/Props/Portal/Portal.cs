@@ -73,19 +73,9 @@ public class Portal : MonoBehaviour
         floorCollider.enabled = false;
 
         if (isHUBTeleporter) {
-
             portalUnlocked = MetaProgressionManager.Instance.GetPortalUnlocked(gameObject.name);
             if(linkedLevelSOList.Count != 0 && !isHubDemoPortal) {
-                linkedLevelSO = linkedLevelSOList[MetaProgressionManager.Instance.GetPortalLinkedLevelSOIndex(portalNumber)];
-            }
-
-            if(isHubDemoPortal || isUnlockedAtStart) {
-                portalUnlocked = true;
-            }
-
-            if (!portalUnlocked && !isHubDemoPortal) {
-                gameObject.SetActive(false);
-                return;
+                SetLinkedLevelSO(linkedLevelSOList[MetaProgressionManager.Instance.GetPortalLinkedLevelSOIndex(portalNumber)]);
             }
 
             // DEEEEEEEEEEEEEEEEEEEBUG
@@ -93,6 +83,18 @@ public class Portal : MonoBehaviour
                 portalUnlocked = true;
                 return;
             }
+
+
+            if (isHubDemoPortal || isUnlockedAtStart) {
+                portalUnlocked = true;
+            }
+
+
+            if (!portalUnlocked && !isHubDemoPortal) {
+                gameObject.SetActive(false);
+                return;
+            }
+
 
             if (MetaProgressionManager.Instance.GetNextHubArrivalThroughPortal() && MetaProgressionManager.Instance.lastHUBPortalUsedByPlayer == portalNumber) {
                 StartCoroutine(TeleportPlayerOutInHub());
@@ -125,12 +127,16 @@ public class Portal : MonoBehaviour
             return;
         }
 
+        if(isHubDemoPortal) {
+            StartCoroutine(TeleportPlayerIn());
+            return;
+        }
+
         if(isHUBTeleporter) {
             OnPlayerInteractedWithPortalFromHub?.Invoke(this, EventArgs.Empty);
             return;
         }
 
-        StartCoroutine(TeleportPlayerIn());
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -146,10 +152,16 @@ public class Portal : MonoBehaviour
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
-        if (!gameObject.activeSelf) return;
         if (collision.GetComponent<Player>() == null) return;
+        if (!gameObject.activeSelf) {
 
-        if(isStartLevelTeleporter) {
+            if (playerInTriggerArea) {
+                Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
+            }
+            return;
+        };
+
+        if (isStartLevelTeleporter) {
             StartCoroutine(RemoveTeleporter());
 
         } else {
@@ -293,6 +305,7 @@ public class Portal : MonoBehaviour
     }
 
     public void UnlockOrActivatePortal() {
+        Debug.Log("UnlockOrActivatePortal " + portalUnlocked);
         if (!portalUnlocked) {
             // UnlockPortal
             gameObject.SetActive(true);

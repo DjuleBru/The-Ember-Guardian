@@ -12,6 +12,7 @@ public class Creature : Mob
     [SerializeField] private CreatureMovement creatureMovement;
     [SerializeField] private List<Collider2D> critZoneColliders;
 
+    private bool creatureUnlocked;
     private bool dropRedOrbsUnlocked;
     private bool dayCreature;
     private bool enteredLight;
@@ -88,9 +89,12 @@ public class Creature : Mob
     }
 
     private void Start() {
+        creatureUnlocked = MetaProgressionManager.Instance.GetCreatureUnlocked(creatureSO);
+
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerMovement.Instance.OnPlayerCrouched += PlayerMovement_OnPlayerCrouched;
         PlayerMovement.Instance.OnPlayerCrouchedEnded += PlayerMovement_OnPlayerCrouchedEnded;
+        MetaProgressionManager.Instance.OnCreatureSOUnlocked += MetaProgressionMaanger_OnCreatureSOUnlocked;
     }
 
     private void OnEnable() {
@@ -147,6 +151,11 @@ public class Creature : Mob
         }
 
         base.Die();
+
+        if(!creatureUnlocked) {
+            creatureUnlocked = true;
+            MetaProgressionManager.Instance.SetCreatureUnlocked(creatureSO);
+        }
 
         if (dropRedOrbsUnlocked) {
             SpawnDroppedCurrencies(creatureSO.currencyTypeDroppedList, creatureSO.currencyDropAmountList);
@@ -306,6 +315,12 @@ public class Creature : Mob
         }
         else {
             detectionCollider.SetRadius(creatureSO.detectionRange_Night);
+        }
+    }
+
+    private void MetaProgressionMaanger_OnCreatureSOUnlocked(object sender, MetaProgressionManager.OnCreatureSOUnlockedEventArgs e) {
+        if(e.creatureSOUnlocked == creatureSO) {
+            creatureUnlocked = true;
         }
     }
 

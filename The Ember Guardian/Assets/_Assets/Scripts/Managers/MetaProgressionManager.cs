@@ -15,6 +15,10 @@ public class MetaProgressionManager : MonoBehaviour
         public LevelSO levelSOUnlocked;
     }
 
+    public event EventHandler<OnCreatureSOUnlockedEventArgs> OnCreatureSOUnlocked;
+    public class OnCreatureSOUnlockedEventArgs : EventArgs {
+        public CreatureSO creatureSOUnlocked;
+    }
     public class OnGunChangedEventArgs : EventArgs {
         public GunSO.GunType gunTypeModified;
     }
@@ -591,6 +595,10 @@ public class MetaProgressionManager : MonoBehaviour
     public void SetCreatureUnlocked(CreatureSO creatureSO) {
         string key = creatureSO.enemyName + "_unlocked";
         ES3.Save(key, true);
+
+        OnCreatureSOUnlocked?.Invoke(this, new OnCreatureSOUnlockedEventArgs {
+            creatureSOUnlocked = creatureSO
+        });
     }
 
     public bool GetCreatureUnlocked(CreatureSO creatureSO) {

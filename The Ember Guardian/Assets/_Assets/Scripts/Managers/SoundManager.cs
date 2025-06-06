@@ -881,7 +881,6 @@ public class SoundManager : MonoBehaviour
             PlayerShoot.Instance.OnPlayerFocusBlastStopped -= Player_OnPlayerFocusBlastStopped;
             PlayerShoot.Instance.OnPlayerEmptyRevolverMagEnd -= PlayerSHoot_OnPlayerEmptyRevolverMagEnd;
 
-
             PlayerShoot.Instance.OnPlayerSetupLMGStarted -= PlayerSHoot_OnPlayerSetupLMGStarted;
             PlayerShoot.Instance.OnPlayerSetupLMGStopped -= PlayerSHoot_OnPlayerSetupLMGStopped;
 

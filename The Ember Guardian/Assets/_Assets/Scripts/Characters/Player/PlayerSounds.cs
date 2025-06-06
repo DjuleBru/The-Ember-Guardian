@@ -17,6 +17,7 @@ public class PlayerSounds : SoundObject
     [SerializeField] private AudioClip[] playerMeleeAttackStartedAudioClips;
     [SerializeField] private AudioClip[] playerMeleeAttackHitAudioClips;
     [SerializeField] private AudioClip[] gunJamHitFailed;
+    [SerializeField] private AudioClip[] gunJamSpamHitPerformed;
     [SerializeField] private AudioClip activeMoveSpeedBoostFootstepAudioClip;
 
     [SerializeField] private PlayerAnimator playerAnimator;
@@ -34,6 +35,7 @@ public class PlayerSounds : SoundObject
 
         GunJamHandler.OnAnyCorrectJamSequenceInput += GunJamHandler_OnAnyCorrectJamSequenceInput;
         GunJamHandler.OnAnyJamSequenceFailed += GunJamHandler_OnAnyJamSequenceFailed;
+        GunJamHandler.OnAnySpamButtonPressed += GunJamHandler_OnAnySpamButtonPressed;
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
 
@@ -48,6 +50,10 @@ public class PlayerSounds : SoundObject
         GunMeleeAttackCollider.OnAnyGunMeleeAttackHit += GunMeleeAttackCollider_OnAnyGunMeleeAttackHit;
 
         activeMoveSpeedBoostVisual.OnMoveSpeedFootStepTriggered += ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered;
+    }
+
+    private void GunJamHandler_OnAnySpamButtonPressed(object sender, System.EventArgs e) {
+        playerAudioSource.PlayOneShot(gunJamSpamHitPerformed[Random.Range(0, gunJamSpamHitPerformed.Length)], sfxVolume * .5f);
     }
 
     private void GunJamHandler_OnAnyJamSequenceFailed(object sender, System.EventArgs e) {
@@ -145,5 +151,6 @@ public class PlayerSounds : SoundObject
         PlayerMeleeAttack.Instance.OnMeleeAttackStarted -= PlayerMeleeAttack_OnMeleeAttackStarted;
         GunJamHandler.OnAnyCorrectJamSequenceInput -= GunJamHandler_OnAnyCorrectJamSequenceInput;
         GunJamHandler.OnAnyJamSequenceFailed -= GunJamHandler_OnAnyJamSequenceFailed;
+        GunJamHandler.OnAnySpamButtonPressed -= GunJamHandler_OnAnySpamButtonPressed;
     }
 }

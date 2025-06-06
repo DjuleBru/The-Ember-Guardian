@@ -40,7 +40,9 @@ public class PortalUI : MonoBehaviour {
         portal.OnPlayerMovedOnTeleporter += Portal_OnPlayerMovedOnTeleporter;
 
         linkedLevelSOList = portal.GetLinkedLevelSOList();
-        foreach(LevelSO levelSO in linkedLevelSOList) {
+        currentLevelSO = portal.GetLinkedLevelSO();
+        levelSOIndex = linkedLevelSOList.IndexOf(currentLevelSO);
+        foreach (LevelSO levelSO in linkedLevelSOList) {
             if(MetaProgressionManager.Instance.GetLevelUnlocked(levelSO)) {
                 unlockedLevelSOList.Add(levelSO);
             }
@@ -78,7 +80,7 @@ public class PortalUI : MonoBehaviour {
         Player.Instance.SetInTeleporterLevelSelectionMenu(true);
         PauseMenuUI.Instance.SetCanOpenPauseMenu(false);
 
-        CameraManager.Instance.ZoomIn(false, 1.2f, 1f);
+        CameraManager.Instance.ZoomIn(false, 1.1f, .5f);
         CameraManager.Instance.ChangeCameraTarget(portal.GetLevelSelectionCameraTarget());
 
         OnAnyPortalUIOpened?.Invoke(this, EventArgs.Empty);

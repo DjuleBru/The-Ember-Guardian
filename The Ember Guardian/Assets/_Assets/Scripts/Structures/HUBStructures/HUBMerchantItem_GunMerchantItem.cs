@@ -266,6 +266,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             // RANGE
             float initialRange = linkedGunSO.bulletLifetime * linkedGunSO.bulletSpeed;
             float modifiedRange = PlayerShoot.Instance.GetGun(linkedGunSO).GetBulletLifetime() * linkedGunSO.bulletSpeed;
+
             if (initialRange != modifiedRange) {
                 statModifiedBools.Add(true);
             }

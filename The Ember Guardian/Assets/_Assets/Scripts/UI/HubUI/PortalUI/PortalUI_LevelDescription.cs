@@ -9,7 +9,11 @@ public class PortalUI_LevelDescription : MonoBehaviour {
 
     [SerializeField] private Portal portal;
     [SerializeField] private TextMeshProUGUI levelNameText;
+    [SerializeField] private TextMeshProUGUI levelDescriptionText;
     [SerializeField] private Image levelSprite;
+    [SerializeField] private Image completedIndicatorImage;
+    [SerializeField] private Sprite completedIndicatorSprite;
+    [SerializeField] private Sprite newIndicatorSprite;
 
     [SerializeField] private Transform animalTickContainer;
     [SerializeField] private Transform animalTickTemplate;
@@ -29,6 +33,7 @@ public class PortalUI_LevelDescription : MonoBehaviour {
 
     private void Start() {
         portal.OnLinkedLevelSOSet += Portal_OnLinkedLevelSOSet;
+        SetLevelDescription(portal.GetLinkedLevelSO());
     }
 
     private void Portal_OnLinkedLevelSOSet(object sender, System.EventArgs e) {
@@ -39,13 +44,23 @@ public class PortalUI_LevelDescription : MonoBehaviour {
         currentLevelSO = levelSO;
 
         levelNameText.text = LocalizationManager.Instance.GetLocalizedText(levelSO.levelNameLocalizationKey);
+        levelDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(levelSO.levelDescriptionLocalizationKey);
         levelSprite.sprite = levelSO.levelImage;
 
         StartCoroutine(RefreshCreaturePanel());
+        RefreshCompletedIndicator();
         RefreshStat(animalTickContainer, animalTickTemplate, levelSO.faunaAmount);
         RefreshStat(scavengableTickContainer, scavengableTickTemplate, levelSO.scrapAmount);
         RefreshStat(workerCampsTickContainer, workerCampsTickTemplate, levelSO.wildEmberlingsAmount);
         RefreshStat(ChestTickContainer, ChestTickTemplate, levelSO.chestAmount);
+    }
+
+    private void RefreshCompletedIndicator() {
+        if(MetaProgressionManager.Instance.GetLevelCompleted(currentLevelSO)) {
+            completedIndicatorImage.sprite = completedIndicatorSprite;
+        } else {
+            completedIndicatorImage.sprite = newIndicatorSprite;
+        }
     }
 
     private IEnumerator RefreshCreaturePanel() {

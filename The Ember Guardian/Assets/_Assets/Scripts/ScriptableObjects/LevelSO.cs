@@ -27,6 +27,9 @@ public class LevelSO : ScriptableObject
     public string levelNameLocalizationKey;
     [BoxGroup("LevelDisplay")]
     [LabelWidth(300)]
+    public string levelDescriptionLocalizationKey;
+    [BoxGroup("LevelDisplay")]
+    [LabelWidth(300)]
     [Range(0, 10)]
     public int faunaAmount;
     [BoxGroup("LevelDisplay")]

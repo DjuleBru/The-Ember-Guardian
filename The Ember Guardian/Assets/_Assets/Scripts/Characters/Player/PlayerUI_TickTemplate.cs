@@ -50,6 +50,10 @@ public class PlayerUI_TickTemplate : MonoBehaviour
         image.color = Color.white;
     }
 
+    public void SetImageFill(float fillAmount) {
+        image.fillAmount = fillAmount;
+    }
+
     public void SetImageColor(Color color) {
         image.color = color;
     }
