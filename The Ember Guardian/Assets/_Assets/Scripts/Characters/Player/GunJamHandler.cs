@@ -44,7 +44,7 @@ public class GunJamHandler : MonoBehaviour
     private float spamDecayRate = .4f;
     private int spamStageCount;
     private int lastStageReached;
-    private float spamIncreasePerPress = .3f;
+    private float spamIncreasePerPress = .25f;
 
     public event EventHandler OnCorrectJamSequenceInput;
     public static event EventHandler OnAnyCorrectJamSequenceInput;
@@ -59,9 +59,7 @@ public class GunJamHandler : MonoBehaviour
     public static event EventHandler OnAnyJamSequenceFailStarted;
     public event EventHandler OnJamSequenceFailed;
     public static event EventHandler OnAnyJamSequenceFailed;
-    public event EventHandler OnJamSequenceCancelled;
     public static event EventHandler OnAnyJamSequenceCancelled;
-    public event EventHandler OnJamSequenceRestarted;
     public static event EventHandler OnAnyJamSequenceRestarted;
     public class OnSpamQTEProgressedEventArgs : EventArgs {
         public float spamProgress;
@@ -121,8 +119,8 @@ public class GunJamHandler : MonoBehaviour
 
         if (PlayerShoot.Instance.GetHeldGun() == gun) {
             isInGunJamQTE = true;
-            OnJamSequenceRestarted?.Invoke(this, EventArgs.Empty);
             OnAnyJamSequenceRestarted?.Invoke(this, EventArgs.Empty);
+
         }
         else {
             isInGunJamQTE = false;
@@ -231,14 +229,18 @@ public class GunJamHandler : MonoBehaviour
     }
 
     private void CancelGunJamMiniGame() {
-        OnAnyJamSequenceCancelled?.Invoke(this, EventArgs.Empty);
-        OnJamSequenceCancelled?.Invoke(this, EventArgs.Empty);
         currentInputSequence = new Queue<GameInput.Binding>();
         foreach (GameInput.Binding binding in initialInputSequence) {
             currentInputSequence.Enqueue(binding);
         }
 
         currentInputIndex = 0;
+
+        //For player feedbacks
+        bool otherWeaponIsJammed = PlayerShoot.Instance.GetHeldGun().GetGunJammed();
+
+        if (!otherWeaponIsJammed) {
+        }
     }
 
     private IEnumerator FailGunJamMiniGame() {
@@ -320,16 +322,20 @@ public class GunJamHandler : MonoBehaviour
 
         if (currentQTEType == QTEType.TimingChallenge) {
             OnAnyTimingButtonPressed?.Invoke(this, EventArgs.Empty);
-            bool timingQTEWasRight = PlayerUI_GunJam.Instance.TimingQTEIsRight();
+            bool timingQTEWasRight;
+
+            if (PlayerShoot.Instance.GetHeldGunSO() == PlayerShoot.Instance.GetPrimaryGunSO()) {
+                timingQTEWasRight = PlayerUI_GunJam.PrimaryWeaponGunJamUI.TimingQTEIsRight();
+            } else {
+                timingQTEWasRight = PlayerUI_GunJam.SecondaryWeaponGunJamUI.TimingQTEIsRight();
+            }
 
             if (timingQTEWasRight) {
                 currentInputIndex++;
-                StartCoroutine(ProgressInJamSequenceAfterDelay(jamHitAnimationDuration));
             }
             else {
                 StartCoroutine(FailGunJamMiniGame());
             }
-
         }
 
         OnBindingPressed(GameInput.Binding.reload);

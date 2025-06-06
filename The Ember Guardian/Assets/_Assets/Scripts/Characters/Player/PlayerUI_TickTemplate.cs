@@ -19,14 +19,14 @@ public class PlayerUI_TickTemplate : MonoBehaviour
         inMmfPlayer.PlayFeedbacks();
     }
 
-    public void RemoveTick(float forceMultiplier = 1f, bool addForce = true) {
+    public void RemoveTick(float forceYMultiplier = 1f, bool addForce = true, float torqueMultiplier = 1f, float forceXMultiplier = 0f) {
         rb = GetComponent<Rigidbody2D>();
 
         if(addForce) {
             rb.bodyType = RigidbodyType2D.Dynamic;
             rb.gravityScale = 1.5f;
-            Vector2 force = new Vector2(0, Random.Range(5, 8) * forceMultiplier);
-            float torque = Random.Range(-2f, 2f);
+            Vector2 force = new Vector2(Random.Range(-8, 8) * forceXMultiplier, Random.Range(5, 8) * forceYMultiplier);
+            float torque = Random.Range(-2f * torqueMultiplier, 2f * torqueMultiplier);
 
             rb.AddForce(force, ForceMode2D.Impulse);
             rb.AddTorque(torque, ForceMode2D.Impulse);

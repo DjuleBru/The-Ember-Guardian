@@ -5,23 +5,20 @@ using UnityEngine.UI;
 
 public class PlayerUI_GunJam : MonoBehaviour
 {
-    public static PlayerUI_GunJam Instance;
+    public static PlayerUI_GunJam PrimaryWeaponGunJamUI;
+    public static PlayerUI_GunJam SecondaryWeaponGunJamUI;
 
-    [SerializeField] private GunJamSingleIconUI inputIconTemplate;
+    [SerializeField] private bool isPrimaryWeaponJamUI;
+    private bool jamUIActive;
 
-    [SerializeField] private Transform primaryGunJamObject;
-    [SerializeField] private Transform secondaryGunJamObject;
+    [SerializeField] private Transform inputSequenceIconContainer;
+    [SerializeField] private GunJamSingleIconUI inputSequenceIconTemplate;
 
-    [SerializeField] private Transform primaryGunInputIconContainer;
-    [SerializeField] private Transform secondaryGunInputIconContainer;
-    [SerializeField] private Transform primarySpamGameObject;
-    [SerializeField] private Transform secondarySpamGameObject;
-    [SerializeField] private Transform timingGameObject;
-
+    [SerializeField] private GameObject spamGameObject;
+    [SerializeField] private Transform spamContainer;
     [SerializeField] private PlayerUI_TickTemplate spamTickTemplate;
-    [SerializeField] private Transform primaryGunSpamTickContainer;
-    [SerializeField] private Transform secondaryGunSpamTickContainer;
 
+    [SerializeField] private Transform timingGameObject;
     [SerializeField] private RectTransform tickTransform;
     [SerializeField] private RectTransform backgroundValidZone;
     [SerializeField] private RectTransform failZoneLeft;
@@ -33,16 +30,13 @@ public class PlayerUI_GunJam : MonoBehaviour
     private int maxStages; 
     private int currentStage = 0;
     private float totalWidth;
-
     private float tickSpeed = 3f; // pixels par seconde
     private float jamHitAnimationDuration = .3f;
 
-    private Transform activeGunJamObject;
-    private Transform activeInputContainer;
-    private Transform activeSpamContainer;
-    private Transform activeSpamGameObject;
-
+    private bool isSequenceQTEActive = false;
     private bool isTimingQTEActive = false;
+    private bool isSpamQTEActive = false;
+
     private float tickDirection = 1f;
     private float tickMinX;
     private float tickMaxX;
@@ -52,19 +46,20 @@ public class PlayerUI_GunJam : MonoBehaviour
     private List<PlayerUI_TickTemplate> currentActiveTickTemplateList = new List<PlayerUI_TickTemplate>();
     private int currentTickIndex = 0;
 
-    private bool isSpamQTEActive = false;
     private float currentSpamProgress = 0f;
     private float requiredSpamProgress = 1f;
 
     private void Awake() {
-        Instance = this;
+        if(isPrimaryWeaponJamUI) {
+            PrimaryWeaponGunJamUI = this;
+        } else {
+            SecondaryWeaponGunJamUI = this;
+        }
 
-        inputIconTemplate.gameObject.SetActive(false);
-        primaryGunJamObject.gameObject.SetActive(false);
-        secondaryGunJamObject.gameObject.SetActive(false);
-        primarySpamGameObject.gameObject.SetActive(false);
-        secondarySpamGameObject.gameObject.SetActive(false);
+        inputSequenceIconContainer.gameObject.SetActive(false);
         timingGameObject.gameObject.SetActive(false);
+        spamGameObject.gameObject.SetActive(false);
+        inputSequenceIconTemplate.gameObject.SetActive(false);
     }
 
     private void Start() {
@@ -124,8 +119,8 @@ public class PlayerUI_GunJam : MonoBehaviour
 
     private IEnumerator RemoveSpamTickAfterDelay(PlayerUI_TickTemplate tick, float delay) {
         yield return new WaitForSeconds(delay);
-        tick.transform.SetParent(activeGunJamObject);
-        tick.RemoveTick(.5f);
+        tick.transform.SetParent(transform);
+        tick.RemoveTick(1f, true, 2f, .3f);
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
@@ -133,10 +128,12 @@ public class PlayerUI_GunJam : MonoBehaviour
     }
 
     private void GunJamHandler_OnSpamQTEProgressed(object sender, GunJamHandler.OnSpamQTEProgressedEventArgs e) {
+        if (!jamUIActive) return;
         currentSpamProgress = e.spamProgress;
     }
 
     private void GunJamHandler_OnAnyTimingButtonPressed(object sender, System.EventArgs e) {
+        if (!jamUIActive) return;
         timingButtonJustPressed = true;
         timingButtonJustPressedTimer = jamHitAnimationDuration;
 
@@ -148,24 +145,29 @@ public class PlayerUI_GunJam : MonoBehaviour
     }
 
     private void GunJamHandler_OnAnyJamSequenceCompleted(object sender, System.EventArgs e) {
+        Debug.Log("jamUIActive " + jamUIActive);
+        if (!jamUIActive) return;
+
         CleanUISequence();
 
         if(isSpamQTEActive) {
             isSpamQTEActive = false;
-            activeSpamGameObject.gameObject.SetActive(false);
+            spamGameObject.gameObject.SetActive(false);
             currentActiveTickTemplateList.Clear();
             currentTickIndex = 0;
         }
 
+        Debug.Log("isTimingQTEActive " + isTimingQTEActive);
         if(isTimingQTEActive) {
             isTimingQTEActive = false;
             timingGameObject.gameObject.SetActive(false);
-            currentTickIndex = 0;
+            currentStage = 0;
         }
     }
 
     private void GunJamHandler_OnJamSequenceGenerated(object sender, GunJamHandler.OnJamSequenceGeneratedEventArgs e) {
         RefreshPrimaryOrSecondaryUI();
+        if (!jamUIActive) return;
 
         switch (e.qteType) {
             case GunJamHandler.QTEType.InputSequence:
@@ -182,10 +184,10 @@ public class PlayerUI_GunJam : MonoBehaviour
         }
     }
     private void HandleInputSequenceQTE(Queue<GameInput.Binding> inputSequence) {
-        activeInputContainer.gameObject.SetActive(true);
+        inputSequenceIconContainer.gameObject.SetActive(true);
         int i = 0;
         foreach (GameInput.Binding inputBinding in inputSequence) {
-            GunJamSingleIconUI inputIcon = Instantiate(inputIconTemplate.transform, activeInputContainer).GetComponent<GunJamSingleIconUI>();
+            GunJamSingleIconUI inputIcon = Instantiate(inputSequenceIconTemplate.transform, inputSequenceIconContainer).GetComponent<GunJamSingleIconUI>();
             inputIcon.gameObject.SetActive(true);
             inputIcon.SetBinding(inputBinding);
             inputIcon.SetIndex(i++);
@@ -208,12 +210,12 @@ public class PlayerUI_GunJam : MonoBehaviour
     }
 
     private void HandleSpamButtonQTE(float targetProgress) {
-        activeSpamGameObject.gameObject.SetActive(true);
+        spamGameObject.gameObject.SetActive(true);
         isSpamQTEActive = true;
         currentSpamProgress = 0f;
         requiredSpamProgress = targetProgress;
 
-        foreach (Transform child in activeSpamContainer) {
+        foreach (Transform child in spamContainer) {
             if (child == spamTickTemplate.transform) continue;
             Destroy(child.gameObject);
         }
@@ -222,7 +224,7 @@ public class PlayerUI_GunJam : MonoBehaviour
         currentActiveTickTemplateList.Clear();
 
         for (int i = 0; i < requiredSpamProgress; i++) {
-            var tickTemplate = Instantiate(spamTickTemplate, activeSpamContainer).GetComponent<PlayerUI_TickTemplate>();
+            var tickTemplate = Instantiate(spamTickTemplate, spamContainer).GetComponent<PlayerUI_TickTemplate>();
             tickTemplate.SetImageFill(0f);
             currentActiveTickTemplateList.Add(tickTemplate);
         }
@@ -232,27 +234,28 @@ public class PlayerUI_GunJam : MonoBehaviour
 
 
     private void RefreshPrimaryOrSecondaryUI() {
-        primaryGunJamObject.gameObject.SetActive(false);
-        secondaryGunJamObject.gameObject.SetActive(false);
-        primarySpamGameObject.gameObject.SetActive(false);
-        secondarySpamGameObject.gameObject.SetActive(false);
 
-        if (PlayerShoot.Instance.GetHeldGunSO() == PlayerShoot.Instance.GetPrimaryGunSO()) {
-            activeGunJamObject = primaryGunJamObject;
-            activeInputContainer = primaryGunInputIconContainer;
+        if ((isPrimaryWeaponJamUI && PlayerShoot.Instance.GetHeldGunSO() == PlayerShoot.Instance.GetPrimaryGunSO()) || (!isPrimaryWeaponJamUI && PlayerShoot.Instance.GetHeldGunSO() == PlayerShoot.Instance.GetSecondaryGunSO())) {
+            
+            if(isTimingQTEActive) {
+                timingGameObject.gameObject.SetActive(true);
+            }
+            if(isSpamQTEActive) {
+                spamGameObject.gameObject.SetActive(true);
+            }
+            if(isSequenceQTEActive) {
+                inputSequenceIconContainer.gameObject.SetActive(true);
+            }
+            jamUIActive = true;
 
-            activeSpamGameObject = primarySpamGameObject;
-            activeSpamContainer = primaryGunSpamTickContainer;
+        } else {
+
+            inputSequenceIconContainer.gameObject.SetActive(false);
+            timingGameObject.gameObject.SetActive(false);
+            spamGameObject.gameObject.SetActive(false);
+            jamUIActive = false;
         }
-        else {
-            activeGunJamObject = secondaryGunJamObject;
-            activeInputContainer = secondaryGunInputIconContainer;
 
-            activeSpamGameObject = secondarySpamGameObject;
-            activeSpamContainer = secondaryGunSpamTickContainer;
-        }
-
-        activeGunJamObject.gameObject.SetActive(true);
     }
 
     private void CheckTimingQTEAfterHitDelay() {
@@ -290,11 +293,12 @@ public class PlayerUI_GunJam : MonoBehaviour
         UpdateFailZones();
     }
     private void CleanUISequence() {
-        foreach(Transform child in activeInputContainer) {
-            if (child == inputIconTemplate.transform) continue;
+        foreach(Transform child in inputSequenceIconContainer) {
+            if (child == inputSequenceIconTemplate.transform) continue;
             Destroy(child.gameObject);
         }
     }
+
     public bool TimingQTEIsRight() {
         float tickX = tickTransform.anchoredPosition.x;
 

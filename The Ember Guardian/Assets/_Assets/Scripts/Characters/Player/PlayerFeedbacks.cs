@@ -34,6 +34,7 @@ public class PlayerFeedbacks : MonoBehaviour
     private bool critHitFeedbackRecentlyActivated;
 
     private bool playerExhausted;
+    private bool gunJamFeedbacksPlaying;
 
     private void Start() {
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
@@ -75,9 +76,14 @@ public class PlayerFeedbacks : MonoBehaviour
     }
 
     private void GunJamHandler_OnAnyJamSequenceCancelled(object sender, System.EventArgs e) {
+        if (!gunJamFeedbacksPlaying) return;
+        gunJamFeedbacksPlaying = false;
         gunJamEndFeedbacks.PlayFeedbacks();
     }
+
     private void GunJamHandler_OnAnyJamSequenceRestarted(object sender, System.EventArgs e) {
+        if (gunJamFeedbacksPlaying) return;
+        gunJamFeedbacksPlaying = true;
         gunJamStartFeedbacks.PlayFeedbacks();
     }
 
@@ -86,10 +92,14 @@ public class PlayerFeedbacks : MonoBehaviour
     }
 
     private void GunJamHandler_OnAnyJamSequenceCompleted(object sender, System.EventArgs e) {
+        if (!gunJamFeedbacksPlaying) return;
+        gunJamFeedbacksPlaying = false;
         gunJamEndFeedbacks.PlayFeedbacks();
     }
 
     private void GunJamHandler_OnAnyJamSequenceGenerated(object sender, GunJamHandler.OnJamSequenceGeneratedEventArgs e) {
+        if (gunJamFeedbacksPlaying) return;
+        gunJamFeedbacksPlaying = true;
         gunJamStartFeedbacks.PlayFeedbacks();
     }
     private void Mob_OnAnyMobCritDamageTaken(object sender, System.EventArgs e) {
