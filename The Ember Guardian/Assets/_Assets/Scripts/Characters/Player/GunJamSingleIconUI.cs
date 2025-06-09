@@ -101,8 +101,9 @@ public class GunJamSingleIconUI : MonoBehaviour
     }
 
     private void OnDestroy() {
-        GunJamHandler.OnAnyJamSequenceFailed -= GunJamHandler_OnAnyJamSequenceFailed;
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
         GunJamHandler.OnAnyJamSequenceProgressed -= GunJamHandler_OnAnyJamSequenceProgressed;
+        GunJamHandler.OnAnyCorrectJamSequenceInput -= GunJamHandler_OnAnyCorrectJamSequenceInput;
+        GunJamHandler.OnAnyJamSequenceFailed -= GunJamHandler_OnAnyJamSequenceFailed;
     }
 }

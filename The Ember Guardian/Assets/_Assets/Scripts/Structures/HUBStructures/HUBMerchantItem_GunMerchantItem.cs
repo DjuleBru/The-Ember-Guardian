@@ -26,6 +26,8 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         range,
         revolver,
         lmg,
+        jamProbability,
+        jamRepairHitAmount,
     }
 
     public enum GunItemCategory {
@@ -174,6 +176,16 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         if (gunItem == GunItemType.range) {
             float modifiedBulletLifetime = linkedGunSO.bulletLifetime + linkedStatModifierSO.statModifierList[itemLevel] / linkedGunSO.bulletSpeed;
             PlayerShoot.Instance.GetGun(linkedGunSO).SetGunBulletLifetime_Meta(modifiedBulletLifetime);
+        }
+
+        if (gunItem == GunItemType.jamProbability) {
+            float modifiedProbability = linkedGunSO.jamProbability + linkedStatModifierSO.statModifierList[itemLevel];
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetJamProbability(modifiedProbability);
+        }
+
+        if (gunItem == GunItemType.jamRepairHitAmount) {
+            float modifiedJamRepairHitAmount = linkedGunSO.jamRepairHitAmount + linkedStatModifierSO.statModifierList[itemLevel];
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetJamRepairHitAmount((int)modifiedJamRepairHitAmount);
         }
     }
    
@@ -368,6 +380,22 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 relativeStatPostfix = "m";
             }
 
+            if (gunItem == GunItemType.jamProbability) {
+                initialStatValue = linkedGunSO.jamProbability;
+                currentStatValue = (PlayerShoot.Instance.GetGun(linkedGunSO).GetJamProbability()).ToString("F2");
+                relativeStatPrefix = "";
+                totalStatWithModifierPostfix = "%";
+                relativeStatPostfix = "%";
+            }
+
+            if (gunItem == GunItemType.jamRepairHitAmount) {
+                initialStatValue = linkedGunSO.jamRepairHitAmount;
+                currentStatValue = (PlayerShoot.Instance.GetGun(linkedGunSO).GetJamRepairHitAmount()).ToString();
+                relativeStatPrefix = "";
+                totalStatWithModifierPostfix = "";
+                relativeStatPostfix = "";
+            }
+
             if (itemLevel == maxItemLevel) {
                 absoluteStatValueModifier = linkedStatModifierSO.statModifierList[itemLevel - 1];
                 totalStatWithModifier = initialStatValue + absoluteStatValueModifier * statValueModifierMultiplier;
@@ -513,6 +541,24 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 statDescriptionList.Add("");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newSpread") + " ");
+        }
+
+        if (gunItem == GunItemType.jamProbability) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentJamProbability") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_jamProbability") + " ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newJamProbability") + " ");
+        }
+
+        if (gunItem == GunItemType.jamRepairHitAmount) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentJamRepairHitAmount") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_jamRepairHitAmount") + " ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newJamRepairHitAmount") + " ");
         }
 
         return statDescriptionList;

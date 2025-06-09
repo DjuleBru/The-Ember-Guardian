@@ -215,6 +215,7 @@ public class PlayerMovement : MonoBehaviour {
         if (PauseMenuUI.Instance.isPaused) return;
         if (PlayerShoot.Instance.GetHoldingStationaryGun()) return;
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+        if (PlayerShoot.Instance.GetHeldGun().GetGunJammed() || PlayerShoot.Instance.GetHeldGun().GetGunJustJammed()) return;
 
         StartRolling();
         return;

@@ -21,7 +21,7 @@ public class Gun : MonoBehaviour
     protected bool gunJammed;
     protected bool gunJustJammed;
     protected float gunJustJammedTimer;
-    protected float gunJustJammedDelay = 10f;
+    protected float gunJustJammedDelay = 1f;
 
     protected int pelletsPerBullet = 1;
     protected int damagePerBulletAtRunStart;
@@ -36,6 +36,9 @@ public class Gun : MonoBehaviour
     protected float reloadTime;
     protected float handsReloadTime;
     protected float swapToWeaponTimeMultiplier;
+
+    protected int jamRepairHitAmount;
+    protected float jamProbability;
 
     protected float bulletLifetime;
     protected float bulletSpeed;
@@ -175,6 +178,8 @@ public class Gun : MonoBehaviour
         bulletSpeed = MetaProgressionManager.Instance.GetGunBulletSpeed(gunSO);
         reloadAccelerationFactor = MetaProgressionManager.Instance.GetGunReloadAccelerationFactor(gunSO);
         weightAccelerationFactor = MetaProgressionManager.Instance.GetGunWeightAccelerationFactor(gunSO);
+        jamProbability = MetaProgressionManager.Instance.GetGunJamProbability(gunSO)/100f;
+        jamRepairHitAmount = MetaProgressionManager.Instance.GetGunJamRepairHitAmount(gunSO);
 
         defaultAngle = MetaProgressionManager.Instance.GetGunShootConeAnle(gunSO);
         currentAngle = defaultAngle;
@@ -239,7 +244,7 @@ public class Gun : MonoBehaviour
         if (gunJustJammed) return;
 
 
-        if (UnityEngine.Random.value < gunSO.jamProbability) {
+        if (UnityEngine.Random.value < jamProbability) {
             JamGun();
         }
     }
@@ -291,6 +296,9 @@ public class Gun : MonoBehaviour
 
     public bool GetGunJammed() {
         return gunJammed;
+    }
+    public bool GetGunJustJammed() {
+        return gunJustJammed;
     }
     public Animator GetGunBodyAnimator() {
         return gunBodyAnimator;
@@ -373,12 +381,23 @@ public class Gun : MonoBehaviour
         // precisionMultiplier = meta upgrades on precision
         return gunSO.weaponPrecisionMultiplier * precisionMultiplier;
     }
+
+    public int GetJamRepairHitAmount() {
+        return jamRepairHitAmount;
+    }
+    public float GetJamProbability() {
+        return jamProbability;
+    }
+
     #endregion
 
     #region SET PARAMETERS
     public void SetGunUnJammed() {
         gunJammed = false;
         OnAnyGunJamRepaired?.Invoke(this, EventArgs.Empty);
+
+        gunJustJammed = true;
+        gunJustJammedTimer = gunJustJammedDelay;
     }
 
     [Button]
@@ -386,9 +405,6 @@ public class Gun : MonoBehaviour
         gunJammed = true;
         OnGunJammed?.Invoke(this, EventArgs.Empty);
         OnAnyGunJammed?.Invoke(this, EventArgs.Empty);
-
-        gunJustJammed = true;
-        gunJustJammedTimer = gunJustJammedDelay;
     }
 
     public void SetGunActive(bool gunActive) {
@@ -462,6 +478,15 @@ public class Gun : MonoBehaviour
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
+    public void SetJamRepairHitAmount(int jamRepairHitAmount) {
+        this.jamRepairHitAmount = jamRepairHitAmount;
+        OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
+    }
+    public void SetJamProbability(float jamProbability) {
+        this.jamProbability = jamProbability;
+        OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
+    }
+
     #endregion
 
     public void SaveMetaParameters() {
@@ -478,6 +503,9 @@ public class Gun : MonoBehaviour
         MetaProgressionManager.Instance.SetGunPelletsPerBullet(gunSO, pelletsPerBullet);
         MetaProgressionManager.Instance.SetGunBulletLifetime(gunSO, bulletLifetime);
         MetaProgressionManager.Instance.SetGunSwapToWeaponTimeMultiplier(gunSO, swapToWeaponTimeMultiplier);
+
+        MetaProgressionManager.Instance.SetGunJamProbability(gunSO, jamProbability);
+        MetaProgressionManager.Instance.SetGunJamRepairHitAmount(gunSO, jamRepairHitAmount);
 
         MetaProgressionManager.Instance.SetGunSecondaryAbilityUnlocked(gunSO, secondaryAbilityUnlocked);
         MetaProgressionManager.Instance.SetGunUnlocked(gunSO, gunUnlocked);

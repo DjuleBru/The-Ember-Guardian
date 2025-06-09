@@ -902,7 +902,6 @@ public class PlayerShoot : MonoBehaviour
                 unlockedAndUnequippedGunSOList.Add(gunSO);
             }
         }
-
         return unlockedAndUnequippedGunSOList;
     }
 

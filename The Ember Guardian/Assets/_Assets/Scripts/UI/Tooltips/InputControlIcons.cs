@@ -428,7 +428,6 @@ public class InputControlIcons : MonoBehaviour
             }
             if (control == Control.OpenPlayerMenu) {
                 string characterMenu = GameInput.Instance.GetBindingText(GameInput.Binding.characterMenu);
-                Debug.Log(characterMenu);
 
                 if (keyboardIconLookup.TryGetValue(characterMenu, out Sprite icon1)) {
                     spriteList.Add(icon1);

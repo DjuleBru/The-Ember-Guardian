@@ -196,7 +196,7 @@ public class PlayerUI_GunJam : MonoBehaviour
 
     private void HandleTimingQTE() {
         timingGameObject.gameObject.SetActive(true);
-        maxStages = PlayerShoot.Instance.GetHeldGunSO().jamRepairHitAmount;
+        maxStages = PlayerShoot.Instance.GetHeldGun().GetJamRepairHitAmount();
         isTimingQTEActive = true;
 
         float halfWidth = ((RectTransform)backgroundValidZone.parent).rect.width * 0.5f;

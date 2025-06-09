@@ -55,7 +55,8 @@ MonoBehaviour:
   handsAnimationReloadTime: 1
   bulletKnockback: 60
   shootCreatureHearMultiplier: 2.25
-  jamProbability: 0.04
+  jamProbability: 3
+  jamRepairHitAmount: 3
   weightAccelerationFactor: 0.9
   reloadAccelerationFactor: 0.55
   followMouseSpeed: 25
@@ -106,10 +107,18 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2c707419f490654468a181cc7a85e8ec, type: 3}
   outOfAmmoSound:
   - {fileID: 8300000, guid: b98aaa1d97aed8244b1576b894d0d598, type: 3}
-  tryShootGunJammedSound: []
-  gunJammedSound: []
-  gunJammHitProgressSound: []
-  gunJamRepairedSound: []
+  tryShootGunJammedSound:
+  - {fileID: 8300000, guid: a02ea301da17d4d4fbbdfd3dc685129a, type: 3}
+  gunJammedSound:
+  - {fileID: 8300000, guid: 18cf964f900c6a443b1d3155e24059f3, type: 3}
+  gunJammHitProgressSound:
+  - {fileID: 8300000, guid: 1353d63a99f3a0c45bbea9b5d3514455, type: 3}
+  - {fileID: 8300000, guid: 3570de036fa597049a0d7cfd4fb8900d, type: 3}
+  - {fileID: 8300000, guid: d7fd895d5c8d2f440a8218f8ed076209, type: 3}
+  - {fileID: 8300000, guid: fd7a3b32a57c9e54ca4309900e03a4fa, type: 3}
+  - {fileID: 8300000, guid: 3d1f89c607ea172458f86777b7fd544e, type: 3}
+  gunJamRepairedSound:
+  - {fileID: 8300000, guid: fa2c437d7857ab148a5f5b5faf1025fc, type: 3}
   swapToWeaponSound: {fileID: 8300000, guid: 44410cc1b7956fa48b296fe59bf65d00, type: 3}
   reloadSFXVolumeMultiplier: 0.75
   cooldownSFXVolumeMultiplier: 0.5

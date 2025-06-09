@@ -473,7 +473,6 @@ public class ItemButtonUI : ButtonUI {
                 descriptionCard.transform.SetParent(transform.parent);
             }
 
-            Debug.Log("isTreeParent " + isTreeParent);
             if (isTreeParent) {
                 treeShowHide.ShowTree();
             }

@@ -576,8 +576,27 @@ public class MetaProgressionManager : MonoBehaviour
     public float GetGunShootConeAnle(GunSO gunSO) {
         string key = gunSO.gunType + "_shootConeAngle";
 
-        //Debug.Log("GetGunShootConeAnle " + gunSO + " " + gunSO.shootConeAngle);
         return ES3.Load(key, gunSO.shootConeAngle);
+    }
+    public float GetGunJamProbability(GunSO gunSO) {
+        string key = gunSO.gunType + "_jamProbability";
+
+        return ES3.Load(key, gunSO.jamProbability);
+    }
+    public void SetGunJamProbability(GunSO gunSO, float jamProbability) {
+        string key = gunSO.gunType + "_jamProbability";
+
+        ES3.Save(key, jamProbability);
+    }
+    public int GetGunJamRepairHitAmount(GunSO gunSO) {
+        string key = gunSO.gunType + "_jamRepairHitAmount";
+
+        return ES3.Load(key, gunSO.jamRepairHitAmount);
+    }
+    public void SetGunJamRepairHitAmount(GunSO gunSO, int jamRepairHitAmount) {
+        string key = gunSO.gunType + "_jamRepairHitAmount";
+
+        ES3.Save(key, jamRepairHitAmount);
     }
     #endregion
 

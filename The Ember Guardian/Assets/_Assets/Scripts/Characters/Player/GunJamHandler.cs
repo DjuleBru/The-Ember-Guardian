@@ -30,6 +30,7 @@ public class GunJamHandler : MonoBehaviour
     GameInput.Binding.buildingFunctionRight,
     GameInput.Binding.callDoggo,
     GameInput.Binding.torchOnOff,
+    GameInput.Binding.roll,
     };
 
     private int currentInputIndex;
@@ -45,6 +46,8 @@ public class GunJamHandler : MonoBehaviour
     private int spamStageCount;
     private int lastStageReached;
     private float spamIncreasePerPress = .25f;
+
+    private Coroutine progressInInputSequenceQTECoroutine;
 
     public event EventHandler OnCorrectJamSequenceInput;
     public static event EventHandler OnAnyCorrectJamSequenceInput;
@@ -90,7 +93,10 @@ public class GunJamHandler : MonoBehaviour
         GameInput.Instance.OnPlayerLeftSwitchPerformed += GameInput_OnPlayerLeftSwitchPerformed;
         GameInput.Instance.OnPlayerRightSwitchPerformed += GameInput_OnPlayerRightSwitchPerformed;
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
+        GameInput.Instance.OnPlayerJumpPerformed += GameInput_OnPlayerJumpPerformed;
     }
+
+
     private void Update() {
         if (!isInGunJamQTE) return;
         if (currentQTEType != QTEType.SpamButton) return;
@@ -147,22 +153,22 @@ public class GunJamHandler : MonoBehaviour
         if (currentQTEType == QTEType.SpamButton) {
             spamProgress = 0f;
             lastStageReached = 0;
-            spamStageCount = PlayerShoot.Instance.GetHeldGunSO().jamRepairHitAmount;
+            spamStageCount = PlayerShoot.Instance.GetHeldGun().GetJamRepairHitAmount();
             spamTargetProgress = spamStageCount; // 1 touche = 1 unité
 
             currentInputSequence = new Queue<GameInput.Binding>();
-            currentInputSequence.Enqueue(GameInput.Binding.reload);
+            currentInputSequence.Enqueue(GameInput.Binding.roll);
         }
 
         if (currentQTEType == QTEType.TimingChallenge) {
             currentInputSequence = new Queue<GameInput.Binding>();
-            currentInputSequence.Enqueue(GameInput.Binding.reload);
+            currentInputSequence.Enqueue(GameInput.Binding.roll);
 
-            timingIndexAmount = PlayerShoot.Instance.GetHeldGunSO().jamRepairHitAmount;
+            timingIndexAmount = PlayerShoot.Instance.GetHeldGun().GetJamRepairHitAmount();
         }
 
         if (currentQTEType == QTEType.InputSequence) {
-            currentInputSequence = GenerateRandomSequence(PlayerShoot.Instance.GetHeldGunSO().jamRepairHitAmount);
+            currentInputSequence = GenerateRandomSequence(PlayerShoot.Instance.GetHeldGun().GetJamRepairHitAmount());
         }
 
         OnAnyJamSequenceGenerated?.Invoke(this, new OnJamSequenceGeneratedEventArgs {
@@ -188,78 +194,6 @@ public class GunJamHandler : MonoBehaviour
         return sequence;
     }
 
-
-    private IEnumerator ProgressInJamSequenceAfterDelay(float delay) {
-        yield return new WaitForSeconds(delay);
-
-        OnAnyJamSequenceProgressed?.Invoke(this, new OnAnyJamSequenceProgressedEventArgs {
-            currentIndex = currentInputIndex,
-        });
-
-        if(currentQTEType == QTEType.InputSequence) {
-            currentInputIndex++;
-            currentInputSequence.Dequeue();
-
-            if (currentInputSequence.Count == 0) {
-                CompleteGunJamMiniGame();
-            }
-        }
-
-        if(currentQTEType == QTEType.SpamButton) {
-            if (spamProgress >= spamTargetProgress) {
-                CompleteGunJamMiniGame();
-            }
-        }
-
-        if(currentQTEType == QTEType.TimingChallenge) {
-            if(currentInputIndex == timingIndexAmount) {
-                CompleteGunJamMiniGame();
-            }
-        }
-
-        isProgressing = false;
-    }
-
-    private void CompleteGunJamMiniGame() {
-        isInGunJamQTE = false;
-        gunJammed = false;
-        gun.SetGunUnJammed();
-        OnJamSequenceCompleted?.Invoke(this, EventArgs.Empty);
-        OnAnyJamSequenceCompleted?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void CancelGunJamMiniGame() {
-        currentInputSequence = new Queue<GameInput.Binding>();
-        foreach (GameInput.Binding binding in initialInputSequence) {
-            currentInputSequence.Enqueue(binding);
-        }
-
-        currentInputIndex = 0;
-
-        //For player feedbacks
-        bool otherWeaponIsJammed = PlayerShoot.Instance.GetHeldGun().GetGunJammed();
-
-        if (!otherWeaponIsJammed) {
-        }
-    }
-
-    private IEnumerator FailGunJamMiniGame() {
-        justFailed = true;
-        OnJamSequenceFailStarted?.Invoke(this, EventArgs.Empty);
-        OnAnyJamSequenceFailStarted?.Invoke(this, EventArgs.Empty);
-        yield return new WaitForSeconds(jamHitAnimationDuration);
-
-        OnAnyJamSequenceFailed?.Invoke(this, EventArgs.Empty);
-        OnJamSequenceFailed?.Invoke(this, EventArgs.Empty);
-        currentInputSequence = new Queue<GameInput.Binding>();
-        foreach (GameInput.Binding binding in initialInputSequence) {
-            currentInputSequence.Enqueue(binding);
-        }
-
-        currentInputIndex = 0;
-
-        justFailed = false;
-    }
 
     public bool GetIsExpectedBinding(GameInput.Binding binding) {
         GameInput.Binding expected = currentInputSequence.Peek();
@@ -312,6 +246,12 @@ public class GunJamHandler : MonoBehaviour
     private void GameInput_OnPlayerReloadPerformed(object sender, System.EventArgs e) {
         if (!isInGunJamQTE) return;
 
+        OnBindingPressed(GameInput.Binding.reload);
+    }
+
+    private void GameInput_OnPlayerJumpPerformed(object sender, EventArgs e) {
+        if (!isInGunJamQTE) return;
+
         if (currentQTEType == QTEType.SpamButton) {
             OnAnySpamButtonPressed?.Invoke(this, EventArgs.Empty);
 
@@ -321,12 +261,14 @@ public class GunJamHandler : MonoBehaviour
         }
 
         if (currentQTEType == QTEType.TimingChallenge) {
+            if (isProgressing) return;
             OnAnyTimingButtonPressed?.Invoke(this, EventArgs.Empty);
             bool timingQTEWasRight;
 
             if (PlayerShoot.Instance.GetHeldGunSO() == PlayerShoot.Instance.GetPrimaryGunSO()) {
                 timingQTEWasRight = PlayerUI_GunJam.PrimaryWeaponGunJamUI.TimingQTEIsRight();
-            } else {
+            }
+            else {
                 timingQTEWasRight = PlayerUI_GunJam.SecondaryWeaponGunJamUI.TimingQTEIsRight();
             }
 
@@ -338,18 +280,20 @@ public class GunJamHandler : MonoBehaviour
             }
         }
 
-        OnBindingPressed(GameInput.Binding.reload);
+        OnBindingPressed(GameInput.Binding.roll);
     }
 
     private void OnBindingPressed(GameInput.Binding binding) {
+        if (!isInGunJamQTE) return;
+        if (currentInputSequence.Count == 0) return;
+
+        if (currentQTEType == QTEType.InputSequence) {
+            OnBindingPressedInputSequence(binding);
+            return;
+        }
+
         if (isProgressing) return;
         if (justFailed) return;
-
-        if (!isInGunJamQTE)
-            return;
-
-        if (currentInputSequence.Count == 0)
-            return;
 
         GameInput.Binding expected = currentInputSequence.Peek();
         if (binding == expected) {
@@ -361,6 +305,123 @@ public class GunJamHandler : MonoBehaviour
         else {
             StartCoroutine(FailGunJamMiniGame());
         }
+    }
+
+    private void OnBindingPressedInputSequence(GameInput.Binding binding) {
+        if (justFailed) return;
+        if (!isInGunJamQTE) return;
+        if (currentInputSequence.Count == 0) return;
+
+        if(isProgressing) {
+            if(progressInInputSequenceQTECoroutine != null) {
+                StopCoroutine(progressInInputSequenceQTECoroutine);
+            }
+            progressInInputSequenceQTECoroutine = StartCoroutine(SkipCurrentProgressInInputSequence(jamHitAnimationDuration));
+        }
+
+        if (currentInputSequence.Count != 0) {
+
+            GameInput.Binding expected = currentInputSequence.Peek();
+            if (binding == expected) {
+
+                OnCorrectJamSequenceInput?.Invoke(this, EventArgs.Empty);
+                OnAnyCorrectJamSequenceInput?.Invoke(this, EventArgs.Empty);
+
+                isProgressing = true;
+                progressInInputSequenceQTECoroutine = StartCoroutine(ProgressInJamSequenceAfterDelay(jamHitAnimationDuration));
+            }
+            else {
+                StartCoroutine(FailGunJamMiniGame());
+            }
+        }
+
+    }
+
+    private IEnumerator ProgressInJamSequenceAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+
+        OnAnyJamSequenceProgressed?.Invoke(this, new OnAnyJamSequenceProgressedEventArgs {
+            currentIndex = currentInputIndex,
+        });
+
+        if (currentQTEType == QTEType.InputSequence) {
+            currentInputIndex++;
+            currentInputSequence.Dequeue();
+
+            if (currentInputSequence.Count == 0) {
+                CompleteGunJamMiniGame();
+            }
+        }
+
+        if (currentQTEType == QTEType.SpamButton) {
+            if (spamProgress >= spamTargetProgress) {
+                CompleteGunJamMiniGame();
+            }
+        }
+
+        if (currentQTEType == QTEType.TimingChallenge) {
+            if (currentInputIndex == timingIndexAmount) {
+                CompleteGunJamMiniGame();
+            }
+        }
+
+        isProgressing = false;
+        progressInInputSequenceQTECoroutine = null;
+    }
+
+    private IEnumerator SkipCurrentProgressInInputSequence(float delay) {
+        OnAnyJamSequenceProgressed?.Invoke(this, new OnAnyJamSequenceProgressedEventArgs {
+            currentIndex = currentInputIndex,
+        });
+
+        currentInputIndex++;
+        currentInputSequence.Dequeue();
+
+        if (currentInputSequence.Count == 0) {
+            yield return new WaitForSeconds(delay);
+            CompleteGunJamMiniGame();
+        }
+    }
+
+    private void CompleteGunJamMiniGame() {
+        isInGunJamQTE = false;
+        gunJammed = false;
+        gun.SetGunUnJammed();
+        OnJamSequenceCompleted?.Invoke(this, EventArgs.Empty);
+        OnAnyJamSequenceCompleted?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void CancelGunJamMiniGame() {
+        currentInputSequence = new Queue<GameInput.Binding>();
+        foreach (GameInput.Binding binding in initialInputSequence) {
+            currentInputSequence.Enqueue(binding);
+        }
+
+        currentInputIndex = 0;
+
+        //For player feedbacks
+        bool otherWeaponIsJammed = PlayerShoot.Instance.GetHeldGun().GetGunJammed();
+
+        if (!otherWeaponIsJammed) {
+        }
+    }
+
+    private IEnumerator FailGunJamMiniGame() {
+        justFailed = true;
+        OnJamSequenceFailStarted?.Invoke(this, EventArgs.Empty);
+        OnAnyJamSequenceFailStarted?.Invoke(this, EventArgs.Empty);
+        yield return new WaitForSeconds(jamHitAnimationDuration);
+
+        OnAnyJamSequenceFailed?.Invoke(this, EventArgs.Empty);
+        OnJamSequenceFailed?.Invoke(this, EventArgs.Empty);
+        currentInputSequence = new Queue<GameInput.Binding>();
+        foreach (GameInput.Binding binding in initialInputSequence) {
+            currentInputSequence.Enqueue(binding);
+        }
+
+        currentInputIndex = 0;
+
+        justFailed = false;
     }
 
     #endregion

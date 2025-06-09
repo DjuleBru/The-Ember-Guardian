@@ -88,6 +88,7 @@ public class PlayerFeedbacks : MonoBehaviour
     }
 
     private void GunJamHandler_OnAnyJamSequenceProgressed(object sender, GunJamHandler.OnAnyJamSequenceProgressedEventArgs e) {
+        if (!gunJamFeedbacksPlaying) return;
         gunJamProgressFeedbacks.PlayFeedbacks();
     }
 
