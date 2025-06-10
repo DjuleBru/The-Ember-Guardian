@@ -54,7 +54,7 @@ public class StructureVisual : MonoBehaviour {
         HandleInitialBuildAnimation();
     }
 
-    private void HandleInitialBuildAnimation() {
+    protected virtual void HandleInitialBuildAnimation() {
 
         if (!animateSpriteMaterialOnBuild) {
 

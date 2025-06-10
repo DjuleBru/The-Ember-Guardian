@@ -3738,7 +3738,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5482052251869582041}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
@@ -26753,7 +26753,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66d26174f0c40814195d34f12e97101f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Sharp Edge
+  itemName: Blast Radius Mod
   greenGemCost: 0
   redGemCost: 1
   blueGemCost: 0
@@ -26772,7 +26772,7 @@ MonoBehaviour:
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: c70cb3ecd5105c743b91a619f0b0cac0, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
-  gunItem: 1
+  gunItem: 22
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: a22a8773cd4c0154794603d3a65fc719, type: 2}
 --- !u!114 &8918400225801994333 stripped
@@ -35893,7 +35893,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 450
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -36370,7 +36370,7 @@ MonoBehaviour:
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
-  gunItem: 10
+  gunItem: 24
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: a22a8773cd4c0154794603d3a65fc719, type: 2}
 --- !u!114 &2110281257675227404 stripped
@@ -46013,7 +46013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66d26174f0c40814195d34f12e97101f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Heavy Rounds
+  itemName: Blast Compound
   greenGemCost: 0
   redGemCost: 1
   blueGemCost: 0
@@ -46032,7 +46032,7 @@ MonoBehaviour:
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: d93093779a4895d4d99f1ab6cbce7806, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
-  gunItem: 0
+  gunItem: 23
   gunItemCategory: 3
   linkedGunSO: {fileID: 11400000, guid: a22a8773cd4c0154794603d3a65fc719, type: 2}
 --- !u!224 &7409739025167074501 stripped

@@ -145,7 +145,6 @@ public class PlayerUI_GunJam : MonoBehaviour
     }
 
     private void GunJamHandler_OnAnyJamSequenceCompleted(object sender, System.EventArgs e) {
-        Debug.Log("jamUIActive " + jamUIActive);
         if (!jamUIActive) return;
 
         CleanUISequence();
@@ -157,7 +156,6 @@ public class PlayerUI_GunJam : MonoBehaviour
             currentTickIndex = 0;
         }
 
-        Debug.Log("isTimingQTEActive " + isTimingQTEActive);
         if(isTimingQTEActive) {
             isTimingQTEActive = false;
             timingGameObject.gameObject.SetActive(false);

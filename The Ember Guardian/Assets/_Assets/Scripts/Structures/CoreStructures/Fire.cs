@@ -502,7 +502,7 @@ public class Fire : Structure, IDamageable {
         OnInitialFireActivated?.Invoke(this, EventArgs.Empty);
         PlayerCurrencies.Instance.SetCarryingEmber(false);
     }
-    public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
+    public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
         fuelLevel -= (damage * damageToFuelConversionRate);
         CheckFireStateDowngrade();
         OnFireDamageTaken?.Invoke(this, EventArgs.Empty);

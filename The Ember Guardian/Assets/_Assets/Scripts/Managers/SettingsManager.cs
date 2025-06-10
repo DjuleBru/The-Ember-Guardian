@@ -23,6 +23,7 @@ public class SettingsManager : MonoBehaviour
     public event EventHandler OnLanguageChanged;
     public event EventHandler OnAutoReloadChanged;
     public event EventHandler OnSteamerModeChanged;
+    public event EventHandler OnShowDamageNumbersChanged;
 
 
     private LocalizationManager.Language currentLanguage = LocalizationManager.Language.English;
@@ -34,6 +35,7 @@ public class SettingsManager : MonoBehaviour
     private bool fullScreen;
     private bool autoReload;
     private bool streamerMode;
+    private bool showDamageNumbers;
 
     private float settingsVersion;
 
@@ -64,6 +66,7 @@ public class SettingsManager : MonoBehaviour
         autoReload = ES3.Load("autoReload", true, settingsSaveFileSettings);
         currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
         streamerMode = ES3.Load("steamerMode", false, settingsSaveFileSettings);
+        showDamageNumbers = ES3.Load("showDamageNumbers", true, settingsSaveFileSettings);
 
         if (settingsVersion < 0.9) {
             // Mise à jour vers la version 0.9 : autoReload passe à true
@@ -149,6 +152,12 @@ public class SettingsManager : MonoBehaviour
 
         ES3.Save("steamerMode", streamerMode, settingsSaveFileSettings);
     }
+    public void ChangeShowDamageNumbers() {
+        showDamageNumbers = !showDamageNumbers;
+        OnShowDamageNumbersChanged?.Invoke(this, EventArgs.Empty);
+
+        ES3.Save("showDamageNumbers", showDamageNumbers, settingsSaveFileSettings);
+    }
     public void ChangeLanguage() {
         int nextIndex = ((int)currentLanguage + 1) % System.Enum.GetValues(typeof(LocalizationManager.Language)).Length;
         currentLanguage = (LocalizationManager.Language)nextIndex;
@@ -179,7 +188,9 @@ public class SettingsManager : MonoBehaviour
     public bool GetStreamerMode() {
         return streamerMode;
     }
-
+    public bool GetShowDamageNumbers() {
+        return showDamageNumbers;
+    }
     public bool GetAlignAimWithMovement() {
         return autoAlignAimWithMovement;
     }

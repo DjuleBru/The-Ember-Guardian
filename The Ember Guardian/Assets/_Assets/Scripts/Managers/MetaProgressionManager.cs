@@ -415,6 +415,18 @@ public class MetaProgressionManager : MonoBehaviour
         ES3.Save(key, damageToSave);
     }
 
+    public void SetGunExplosionRadiusMultiplier(GunSO gunSO, float explosionRadiusMultiplierToSave) {
+        string key = gunSO.gunType + "_explosionRadiusMultiplier";
+
+        ES3.Save(key, explosionRadiusMultiplierToSave);
+    }
+
+    public float GetGunExplosionRadiusMultiplier(GunSO gunSO) {
+        string key = gunSO.gunType + "_explosionRadiusMultiplier";
+        float explosionRadiusMutliplier = ES3.Load(key, 1f);
+        return explosionRadiusMutliplier;
+    }
+
     public int GetGunDamagePerBullet(GunSO gunSO) {
         string key = gunSO.gunType + "_damagePerBullet";
         int damagePerBullet = ES3.Load(key, gunSO.damagePerBullet);

@@ -14,6 +14,7 @@ public class ChangeWeaponPanel : MonoBehaviour
 
     [SerializeField] private Transform changeWeaponSlotContainer;
     [SerializeField] private Transform changeWeaponSlotTemplate;
+    [SerializeField] private Transform emptyWeaponSlotTemplate;
     private List<GameObject> changeWeaponButtons;
 
     private WeaponChangeButton lastChangeButtonThatOpenedThisPanel;
@@ -65,21 +66,29 @@ public class ChangeWeaponPanel : MonoBehaviour
 
     private void UpdateWeaponSlots(List<GunSO> gunSOList) {
         changeWeaponSlotTemplate.gameObject.SetActive(true);
+        emptyWeaponSlotTemplate.gameObject.SetActive(true);
         changeWeaponButtons = new List<GameObject>();
 
         foreach (Transform child in changeWeaponSlotContainer) {
-            if (child == changeWeaponSlotTemplate) continue;
+            if (child == changeWeaponSlotTemplate || child == emptyWeaponSlotTemplate) continue;
             Destroy(child.gameObject);
         }
 
+        int unlockedGunAmount = 0;
         foreach(GunSO gunSO in gunSOList) {
             WeaponReplaceButton weaponReplaceButton = Instantiate(changeWeaponSlotTemplate, changeWeaponSlotContainer).GetComponent<WeaponReplaceButton>();
 
             weaponReplaceButton.SetLinkedGunSO(gunSO);
             changeWeaponButtons.Add(weaponReplaceButton.gameObject);
+            unlockedGunAmount++;
+        }
+
+        for(int i = 0; i < 10 - unlockedGunAmount; i++) {
+            Instantiate(emptyWeaponSlotTemplate, changeWeaponSlotContainer);
         }
 
         changeWeaponSlotTemplate.gameObject.SetActive(false);
+        emptyWeaponSlotTemplate.gameObject.SetActive(false);
     }
 
     public void SetPrimaryWeaponSwap(bool primaryWeaponSwap) {

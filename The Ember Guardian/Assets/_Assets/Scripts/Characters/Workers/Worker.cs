@@ -96,7 +96,7 @@ public class Worker : Mob {
         return totalAmount;
     }
 
-    public override void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
+    public override void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
         base.TakeDamage(damage, damageSource, critHit, ignoreTemporaryInvincibility);
         refillHealthTimer = 0;
     }

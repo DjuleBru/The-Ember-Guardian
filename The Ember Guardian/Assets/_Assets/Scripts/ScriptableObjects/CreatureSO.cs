@@ -22,7 +22,7 @@ public class CreatureSO : ScriptableObject
     public Sprite creatureIcon;
     [BoxGroup("Basic Info")]
     [LabelWidth(100)]
-    public Sprite creatureIcon_UniformScale;
+    public Sprite creatureIcon_Portrait;
 
 
     [HorizontalGroup("Game Data", 75)]

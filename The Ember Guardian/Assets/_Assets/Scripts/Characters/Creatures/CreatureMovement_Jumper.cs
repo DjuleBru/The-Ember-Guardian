@@ -19,7 +19,7 @@ public class CreatureMovement_Jumper : CreatureMovement
     [SerializeField] private float castDistance;
     [SerializeField] Vector2 boxSize;
     [SerializeField] private LayerMask groundLayerMask;
-    [SerializeField] private LayerMask platformLayerMask;
+    [SerializeField] private LayerMask obstacleLayerMask;
 
     public event EventHandler OnJumpStarted;
     public event EventHandler OnJumpLanded;
@@ -65,10 +65,8 @@ public class CreatureMovement_Jumper : CreatureMovement
     }
 
     private IEnumerator Jump() {
-
-        SetCanMove(false);
-
         if (!isJumping && IsGrounded() && !isDead) {
+            SetCanMove(false);
 
             OnJumpStarted?.Invoke(this, EventArgs.Empty);
 
@@ -86,7 +84,7 @@ public class CreatureMovement_Jumper : CreatureMovement
     }
 
     private bool IsGrounded() {
-        if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, groundLayerMask) || Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, platformLayerMask)) {
+        if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, groundLayerMask) || Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, obstacleLayerMask)) {
             return true;
         }
         else {
@@ -111,8 +109,19 @@ public class CreatureMovement_Jumper : CreatureMovement
 
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        // Vérifie si l'objet entrant est sur le LayerMask "ground"
-        if (((1 << collision.gameObject.layer) & groundLayerMask) != 0) {
+        int layer = collision.gameObject.layer;
+
+        bool isGround = (groundLayerMask & (1 << layer)) != 0;
+        bool isObstacle = (obstacleLayerMask & (1 << layer)) != 0;
+
+        if(isObstacle) {
+            Obstacle obstacle = collision.gameObject.GetComponentInParent<Obstacle>();
+            if(obstacle != null) {
+                if (!obstacle.GetBuilt()) return;
+            }
+        }
+
+        if (isGround || isObstacle) {
             OnJumpLanded?.Invoke(this, EventArgs.Empty);
             isJumping = false;
             SetCanMove(true);

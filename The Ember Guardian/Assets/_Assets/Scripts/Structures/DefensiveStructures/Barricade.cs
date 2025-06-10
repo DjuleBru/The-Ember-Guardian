@@ -60,7 +60,7 @@ public class Barricade : Structure, IDamageable {
     }
 
     [Button]
-    public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
+    public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
         if (barricadeHealth <= 0) return;
         barricadeHealth -= damage;
 

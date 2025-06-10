@@ -87,10 +87,9 @@ public class Mob : MonoBehaviour, IDamageable
         return mobSpawner;
     }
 
-    public virtual void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false) {
-        //Debug.Log(this + " TakeDamage " + damage);
+    public virtual void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
         if (health <= 0) return;
-        
+       
         if(critHit) {
             damage *= 2;
             health -= damage;

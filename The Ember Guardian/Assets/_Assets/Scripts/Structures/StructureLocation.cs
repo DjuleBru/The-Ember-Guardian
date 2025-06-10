@@ -133,7 +133,7 @@ public class StructureLocation : MonoBehaviour {
     }
 
     public virtual void UnlockStructureLocation() {
-        Debug.Log(structureSOToBuild + " UnlockStructureLocation");
+        //Debug.Log(structureSOToBuild + " UnlockStructureLocation");
         structureLocationUnlocked = true;
         OnStructureLocationUnlocked?.Invoke(this, EventArgs.Empty);
         showTooltipOnTrigger.SetShowTooltips(true);

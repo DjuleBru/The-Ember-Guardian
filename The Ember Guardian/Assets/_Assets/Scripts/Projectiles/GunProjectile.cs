@@ -13,6 +13,7 @@ public class GunProjectile : MonoBehaviour
     protected int projectileExplosionDamage;
 
     protected float lifetimeTimer;
+    protected float explosionRadiusMultiplier;
     protected bool projectileExploded;
     protected bool projectileHitCreature;
     protected bool projectileBouncedOnGround;
@@ -55,6 +56,7 @@ public class GunProjectile : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Static;
         OnProjectileExploded?.Invoke(this, EventArgs.Empty);
         PlayerShoot.Instance.OnPlayerTriggersProjectileExplosion -= PlayerShoot_OnPlayerTriggersProjectileExplosion;
+        transform.localScale = Vector3.one * explosionRadiusMultiplier;
 
         projectileExploded = true;
         StartCoroutine(DestroyGameObjectAfterDelay());
@@ -88,10 +90,11 @@ public class GunProjectile : MonoBehaviour
         }
     }
      
-    public void InitializeProjectile(Gun parentGun, float projectileLifetime, int projectileDamage, float knockbackForce, Vector2 initialForce) {
+    public void InitializeProjectile(Gun parentGun, float projectileLifetime, int projectileDamage, float knockbackForce, Vector2 initialForce, float explosionRadiusMultiplier) {
         this.parentGun = parentGun;
         this.projectileLifetime = projectileLifetime;
         this.projectileExplosionDamage = projectileDamage;
+        this.explosionRadiusMultiplier = explosionRadiusMultiplier;
         this.knockBackForce = knockbackForce;
         lifetimeTimer = projectileLifetime;
 

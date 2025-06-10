@@ -76,7 +76,7 @@ public class ParticleCollision : MonoBehaviour
                     // Try fetch mobHit or spawner Hit
                     Mob mobHit = other.GetComponent<Mob>();
                     CreatureSpawnerContinuous spawnerHit = other.GetComponent<CreatureSpawnerContinuous>();
-                    bool critHit = false;
+                    bool hitWeakSpot = false;
 
                     // Try fetch crit zone hit
                     RaycastHit2D[] hits = Physics2D.CircleCastAll(collisionPosition, .15f, Vector2.zero);
@@ -86,7 +86,7 @@ public class ParticleCollision : MonoBehaviour
                             // Vérifie si le collider appartient à une zone critique
                             if (hit.collider.CompareTag("CritHitZone")) {
                                 mobHit = hit.collider.GetComponentInParent<Mob>();
-                                critHit = true;
+                                hitWeakSpot = true;
                             }
                         }
                     }
@@ -101,19 +101,15 @@ public class ParticleCollision : MonoBehaviour
 
                     } else {
                         mobHit.HandlePlayerSkillEffects(angle, collisionPosition.y);
-                        float randomNumber = UnityEngine.Random.Range(0f, 1f);
-                        if (critHit && randomNumber < PlayerShoot.Instance.GetHeldGun().GetCritChance()/100) {
-                           
-                            mobHit.TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, true);
-                            mobHit.InstantiateHitPS(angle, collisionPosition.y, true, PlayerShoot.Instance.GetDamagePerBullet(), collisionPosition.x);
+                        bool critHit = UnityEngine.Random.Range(0f, 1f) < PlayerShoot.Instance.GetHeldGun().GetCritChance() / 100;
 
+                        mobHit.TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, critHit, false, hitWeakSpot);
+                        mobHit.InstantiateHitPS(angle, collisionPosition.y, critHit, PlayerShoot.Instance.GetDamagePerBullet(), collisionPosition.x);
+
+                        if (critHit) {
                             OnAnyBulletHitEnemyCrit?.Invoke(this, EventArgs.Empty);
-                            
                         }
                         else {
-                            mobHit.TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, false);
-                            mobHit.InstantiateHitPS(angle, collisionPosition.y, false, PlayerShoot.Instance.GetDamagePerBullet(), collisionPosition.x);
-
                             OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
                         }
 

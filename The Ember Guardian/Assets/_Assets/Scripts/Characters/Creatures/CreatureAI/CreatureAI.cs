@@ -369,10 +369,11 @@ public class CreatureAI : MonoBehaviour {
         };
     }
 
-    private void Creature_OnMobHitObstacle(object sender, EventArgs e) {
+    protected void Creature_OnMobHitObstacle(object sender, EventArgs e) {
         roamTimer = 0;
         ChangeState(State.idle);
     }
+
     protected virtual void Creature_OnCreatureDied(object sender, EventArgs e) {
         died = true;
     }

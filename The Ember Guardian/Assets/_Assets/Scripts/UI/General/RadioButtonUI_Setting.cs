@@ -18,6 +18,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         AutoReload,
         AdjustGamma,
         StreamerMode,
+        ShowDamageNumbers,
     }
 
     [SerializeField] private SettingType settingType;
@@ -46,6 +47,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         SettingsManager.Instance.OnLanguageChanged += SettingsManager_OnLanguageChanged;
         SettingsManager.Instance.OnAutoReloadChanged += SettingsManager_OnAutoReloadChanged;
         SettingsManager.Instance.OnSteamerModeChanged += SettingsManager_OnSteamerModeChanged;
+        SettingsManager.Instance.OnShowDamageNumbersChanged += SettingsManager_OnShowDamageNumbersChanged;
 
         RefreshVisual();
     }
@@ -79,6 +81,9 @@ public class RadioButtonUI_Setting : RadioButtonUI
         if (settingType == SettingType.StreamerMode) {
             SettingsManager.Instance.ChangeStreamerMode();
         }
+        if (settingType == SettingType.ShowDamageNumbers) {
+            SettingsManager.Instance.ChangeShowDamageNumbers();
+        }
         if (settingType == SettingType.AdjustGamma) {
             AdjustGammaUI.Instance.OpenPanel(false);
             SettingsMenuUI.Instance.HideSettingsPanel();
@@ -93,6 +98,10 @@ public class RadioButtonUI_Setting : RadioButtonUI
     }
 
     private void SettingsManager_OnSteamerModeChanged(object sender, System.EventArgs e) {
+        RefreshVisual();
+    }
+
+    private void SettingsManager_OnShowDamageNumbersChanged(object sender, System.EventArgs e) {
         RefreshVisual();
     }
 
@@ -137,6 +146,9 @@ public class RadioButtonUI_Setting : RadioButtonUI
         }
         if (settingType == SettingType.StreamerMode) {
             toggledImageGameObject.SetActive(SettingsManager.Instance.GetStreamerMode());
+        }
+        if (settingType == SettingType.ShowDamageNumbers) {
+            toggledImageGameObject.SetActive(SettingsManager.Instance.GetShowDamageNumbers());
         }
     }
 

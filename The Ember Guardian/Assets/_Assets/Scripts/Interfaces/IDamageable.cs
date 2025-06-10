@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IDamageable 
 {
-    void TakeDamage(int damage, Transform damageSource, bool crit = false, bool ignoreTemporaryInvincibility = false);
+    void TakeDamage(int damage, Transform damageSource, bool crit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false);
 
     void Die();
 

@@ -26,6 +26,7 @@ public class Gun : MonoBehaviour
     protected int pelletsPerBullet = 1;
     protected int damagePerBulletAtRunStart;
     protected int damagePerBullet;
+    protected float explosionRadiusMultiplier = 1;
     protected static float totalBuffMultiplier = 1;
     protected float bulletKnockback;
     protected int currentAmmoClip;
@@ -113,9 +114,7 @@ public class Gun : MonoBehaviour
             totalBullerSize = .4f;
         }
 
-        float focusBlastShotNerfer = 1.5f;
         damagePerBullet *= (pelletsPerBullet * (PlayerShoot.Instance.GetCurrentBullets()));
-        damagePerBullet = Mathf.RoundToInt(damagePerBullet/focusBlastShotNerfer);
         pelletsPerBullet = 1;
         ParticleSystem.MainModule shootPSMainModule = shootPS.main;
         shootPSMainModule.startSize = totalBullerSize;
@@ -165,6 +164,7 @@ public class Gun : MonoBehaviour
         maxAmmo = MetaProgressionManager.Instance.GetGunMaxAmmo(gunSO);
         damagePerBullet = MetaProgressionManager.Instance.GetGunDamagePerBullet(gunSO);
         damagePerBulletAtRunStart = damagePerBullet;
+        explosionRadiusMultiplier = MetaProgressionManager.Instance.GetGunExplosionRadiusMultiplier(gunSO);
         bulletKnockback = MetaProgressionManager.Instance.GetGunBulletKnockback(gunSO);
         shotsPerClip = MetaProgressionManager.Instance.GetGunShotsPerClip(gunSO);
         critChance = MetaProgressionManager.Instance.GetGunCritChance(gunSO);
@@ -235,7 +235,7 @@ public class Gun : MonoBehaviour
             GunProjectile gunProjectile = Instantiate(projectilePrefab, projectileSpawnPosition.position, Quaternion.identity).GetComponent<GunProjectile>();
             gunProjectile.gameObject.SetActive(true);
             Vector2 initialForce = PlayerAim.Instance.GetAimDir().normalized * bulletSpeed;
-            gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce);
+            gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce, explosionRadiusMultiplier);
         }
     }
 
@@ -388,7 +388,9 @@ public class Gun : MonoBehaviour
     public float GetJamProbability() {
         return jamProbability;
     }
-
+    public float GetExplosionRadiusMultiplier() {
+        return explosionRadiusMultiplier;
+    }
     #endregion
 
     #region SET PARAMETERS
@@ -487,12 +489,18 @@ public class Gun : MonoBehaviour
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
+    public void SetExplosionRadiusModified(float radiusModified) {
+        this.explosionRadiusMultiplier = radiusModified;
+        OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
+    }
+
     #endregion
 
     public void SaveMetaParameters() {
         if (!gunUnlocked) return;
 
         MetaProgressionManager.Instance.SetGunDamagePerBullet(gunSO, damagePerBullet);
+        MetaProgressionManager.Instance.SetGunExplosionRadiusMultiplier(gunSO, explosionRadiusMultiplier);
         MetaProgressionManager.Instance.SetGunShotsPerClip(gunSO, shotsPerClip);
         MetaProgressionManager.Instance.SetGunMaxAmmo(gunSO, maxAmmo);
         MetaProgressionManager.Instance.SetGunCooldown(gunSO, cooldownTime);

@@ -37,7 +37,6 @@ public class ItemDescriptionCardUI : MonoBehaviour
     [SerializeField] private GameObject foreGround;
 
     public void SetDescriptionCardText(string itemName, bool constantUnlockDescription, List<string> itemStatDescriptionList, string itemDescription,List<string> itemStatList = null, List<bool> itemModifiersBools = null) {
-
         itemNameText.text = LocalizationManager.Instance.GetLocalizedText(itemName);
         itemDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(itemName + "_Description");
 

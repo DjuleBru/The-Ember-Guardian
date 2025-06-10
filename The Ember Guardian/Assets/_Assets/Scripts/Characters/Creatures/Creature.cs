@@ -380,6 +380,32 @@ public class Creature : Mob
         this.maxHealth = health;
     }
 
+    public override void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
+
+        if (weakSpotHit) {
+            float scaledDamage = damage * 1.2f;
+            int baseDamage = Mathf.FloorToInt(scaledDamage);
+            float fractional = scaledDamage - baseDamage;
+
+            if (UnityEngine.Random.value < fractional)
+                baseDamage += 1;
+
+            damage = baseDamage;
+        }
+
+        base.TakeDamage(damage, damageSource, critHit, ignoreTemporaryInvincibility, weakSpotHit);
+
+        if (!SettingsManager.Instance.GetShowDamageNumbers()) return;
+
+        int damageToWriteAsNumber = damage;
+        if(critHit) {
+            damageToWriteAsNumber *= 2;
+        }
+
+        DamageNumber damageNumber = DamageNumberPool.Instance.Get(projectileTarget.position);
+        damageNumber.Initialize(damageToWriteAsNumber, weakSpotHit, critHit);
+    }
+
     #region STATUS EFFECTS
     private void HandleStatusEffects() {
         if(immobilized) {

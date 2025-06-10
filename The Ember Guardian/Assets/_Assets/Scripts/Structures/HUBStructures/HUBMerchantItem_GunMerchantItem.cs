@@ -28,6 +28,9 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         lmg,
         jamProbability,
         jamRepairHitAmount,
+        explosionRadiusBuff,
+        explosionDamage,
+        grenadeLauncher,
     }
 
     public enum GunItemCategory {
@@ -133,7 +136,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     }
 
     private void SetNewStatIncreaseStats() {
-        if (gunItem == GunItemType.bulletDamage) {
+        if (gunItem == GunItemType.bulletDamage || gunItem == GunItemType.explosionDamage) {
             float modifiedDamage = linkedGunSO.damagePerBullet + linkedStatModifierSO.statModifierList[itemLevel];
             PlayerShoot.Instance.GetGun(linkedGunSO).SetBulletDamage_Meta((int)modifiedDamage);
         }
@@ -187,6 +190,11 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             float modifiedJamRepairHitAmount = linkedGunSO.jamRepairHitAmount + linkedStatModifierSO.statModifierList[itemLevel];
             PlayerShoot.Instance.GetGun(linkedGunSO).SetJamRepairHitAmount((int)modifiedJamRepairHitAmount);
         }
+
+        if (gunItem == GunItemType.explosionRadiusBuff) {
+            float modifiedExplosionRadius = 100 + linkedStatModifierSO.statModifierList[itemLevel];
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetExplosionRadiusModified((float)modifiedExplosionRadius/100);
+        }
     }
    
     private void RefreshStatValues() {
@@ -218,6 +226,19 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                     statModifiedBools.Add(false);
                 }
                 statValues.Add(modifiedPelletsPerBullet.ToString());
+            }
+
+            if (gunItem == GunItemType.grenadeLauncher) {
+                // EXPLOSION RADIUS
+                float initialExplosionRadius = 1;
+                float modifiedExplosionRadius = PlayerShoot.Instance.GetGun(linkedGunSO).GetExplosionRadiusMultiplier();
+                if (initialExplosionRadius != modifiedExplosionRadius) {
+                    statModifiedBools.Add(true);
+                }
+                else {
+                    statModifiedBools.Add(false);
+                }
+                statValues.Add(((int)(modifiedExplosionRadius*100f)).ToString() + "%");
             }
 
             // SHOTS PER CLIP
@@ -352,7 +373,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 relativeStatPrefix = "+";
             }
 
-            if (gunItem == GunItemType.bulletDamage) {
+            if (gunItem == GunItemType.bulletDamage || gunItem == GunItemType.explosionDamage) {
                 initialStatValue = linkedGunSO.damagePerBullet;
                 currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetDamagePerBullet().ToString();
                 relativeStatPrefix = "+";
@@ -394,6 +415,14 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 relativeStatPrefix = "";
                 totalStatWithModifierPostfix = "";
                 relativeStatPostfix = "";
+            }
+
+            if (gunItem == GunItemType.explosionRadiusBuff) {
+                initialStatValue = 100;
+                currentStatValue = ((int)(PlayerShoot.Instance.GetGun(linkedGunSO).GetExplosionRadiusMultiplier()*100)).ToString();
+                relativeStatPrefix = "+";
+                totalStatWithModifierPostfix = "%";
+                relativeStatPostfix = "%";
             }
 
             if (itemLevel == maxItemLevel) {
@@ -447,7 +476,13 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         }
 
         if(gunItemCategory == GunItemCategory.newGun) {
-            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_bulletDamage") + " ");
+
+            if(gunItem != GunItemType.grenadeLauncher) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_bulletDamage") + " ");
+            } else {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_explosionDamage") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_explosionRadiusMultiplier") + " ");
+            }
 
             if (gunItem == GunItemType.shotgun) {
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_pelletsPerBullet") + " ");
@@ -469,6 +504,15 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 statDescriptionList.Add("");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newBulletDamage") + " ");
+        }
+
+        if (gunItem == GunItemType.explosionDamage) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentExplosionDamage") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_explosionDamage") + " ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newExplosionDamage") + " ");
         }
 
         if (gunItem == GunItemType.pelletsPerBullet) {
@@ -561,6 +605,14 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newJamRepairHitAmount") + " ");
         }
 
+        if (gunItem == GunItemType.explosionRadiusBuff) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentExplosionRadiusMultiplier") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_explosionRadiusMultiplier") + " ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newExplosionRadiusMultiplier") + " ");
+        }
         return statDescriptionList;
     }
 

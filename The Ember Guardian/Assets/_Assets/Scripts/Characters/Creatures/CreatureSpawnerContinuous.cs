@@ -99,7 +99,7 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
         return transform;
     }
 
-    public void TakeDamage(int damage, Transform damageSource, bool crit = false, bool ignoreTemporaryInvincibility = false) {
+    public void TakeDamage(int damage, Transform damageSource, bool crit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
         spawnerHealth -= damage;
 
         if(spawnerHealth <= 0) {

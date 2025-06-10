@@ -11,10 +11,13 @@ public class PlayerMovement : MonoBehaviour {
 
     [SerializeField] private float moveSpeedBackwardsMultiplier = .7f;
     [SerializeField] private float exhaustedSpeedFactor = 1.4f;
-    [SerializeField] private float runRecoverFactor = 1.3f;
     [SerializeField] private float aimingSightDecelerationFactor = .7f;
     [SerializeField] private float crouchAccelerationFactor = .7f;
     private float gunWeightAccelerationFactor;
+
+    private bool isRecoveringFast;
+    private float runRecoverFactor = 1.3f;
+    private float standingStillTRecoverFactor = 2f;
 
     [SerializeField] private float acceleration;
     [SerializeField] private float deceleration;
@@ -73,6 +76,8 @@ public class PlayerMovement : MonoBehaviour {
     public event EventHandler OnPlayerAlmostExhaustionDeactivateFeedbacks;
     public event EventHandler OnPlayerExhaustionStarted;
     public event EventHandler OnPlayerExhaustionStopped;
+    public event EventHandler OnPlayerRecoverStaminaFastStarted;
+    public event EventHandler OnPlayerRecoverStaminaFastStopped;
 
     public event EventHandler OnPlayerCrouched;
     public event EventHandler OnPlayerCrouchedEnded;
@@ -424,7 +429,32 @@ public class PlayerMovement : MonoBehaviour {
             if(staminaTimer > PlayerStats.Instance.GetMaxStamina()) {
                 staminaTimer = PlayerStats.Instance.GetMaxStamina();
             }
-            staminaTimer -= Time.deltaTime * runRecoverFactor;
+
+            float recoverFactor = runRecoverFactor;
+            if (!isMoving && !IsMovingBackwards()) {
+                // Player is standing still
+                recoverFactor = standingStillTRecoverFactor;
+
+                if(!isRecoveringFast && staminaTimer > PlayerStats.Instance.GetMaxStamina()/2) {
+                    // Trigger recovering fast feedbacks when actually tired
+                    OnPlayerRecoverStaminaFastStarted?.Invoke(this, EventArgs.Empty);
+                    isRecoveringFast = true;
+                }
+
+                if(isRecoveringFast && staminaTimer < .1f) {
+                    OnPlayerRecoverStaminaFastStopped?.Invoke(this, EventArgs.Empty);
+                    isRecoveringFast = false;
+                }
+
+            } else {
+                // Player is moving
+                if (isRecoveringFast) {
+                    OnPlayerRecoverStaminaFastStopped?.Invoke(this, EventArgs.Empty);
+                    isRecoveringFast = false;
+                }
+            }
+
+            staminaTimer -= recoverFactor * Time.deltaTime;
         }
 
         if (isAlmostExhausted) {
@@ -443,6 +473,12 @@ public class PlayerMovement : MonoBehaviour {
 
         if (isRunning && (moveSpeed != 0) && !isHubScene) {
             staminaTimer += Time.deltaTime * (1 - PlayerStats.Instance.GetRunStaminaDepletionPercentBuff_Meta()/100f);
+
+            if (isRecoveringFast) {
+                OnPlayerRecoverStaminaFastStopped?.Invoke(this, EventArgs.Empty);
+                isRecoveringFast = false;
+            }
+
         }
 
         // Almost exhausted

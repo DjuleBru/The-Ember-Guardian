@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerVisual : MonoBehaviour
 {
     [SerializeField] private ParticleSystem exhaustedPS;
+    [SerializeField] private ParticleSystem recoveringStaminaPS;
     [SerializeField] private Transform aimReticleGamepad;
     [SerializeField] private GameObject gunGameObject;
 
@@ -16,10 +17,20 @@ public class PlayerVisual : MonoBehaviour
     private void Start() {
         PlayerMovement.Instance.OnPlayerExhaustionStarted += PlayerMovement_OnPlayerExhaustionStarted;
         PlayerMovement.Instance.OnPlayerExhaustionStopped += PlayerMovement_OnPlayerExhaustionStopped;
+        PlayerMovement.Instance.OnPlayerRecoverStaminaFastStarted += PlayerMovement_OnPlayerRecoverStaminaFastStarted;
+        PlayerMovement.Instance.OnPlayerRecoverStaminaFastStopped += PlayerMovement_OnPlayerRecoverStaminaFastStopped;
         PetDog.Instance.OnPlayerStartedPettingDog += PetDog_OnPlayerStartedPettingDog;
         PetDog.Instance.OnPlayerEndedPettingDog += PetDog_OnPlayerEndedPettingDog;
 
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
+    }
+
+    private void PlayerMovement_OnPlayerRecoverStaminaFastStopped(object sender, System.EventArgs e) {
+        recoveringStaminaPS.Stop();
+    }
+
+    private void PlayerMovement_OnPlayerRecoverStaminaFastStarted(object sender, System.EventArgs e) {
+        recoveringStaminaPS.Play();
     }
 
     private void PetDog_OnPlayerEndedPettingDog(object sender, System.EventArgs e) {
