@@ -1093,6 +1093,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3712943569509326885}
   m_SourcePrefab: {fileID: 100100000, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+--- !u!114 &80626817700612572 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2599746549960306044, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+  m_PrefabInstance: {fileID: 2669040421589755040}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccae778582080ed4fb4a0e97df391882, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &190870229499975902 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 2858744977638243454, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
@@ -1186,9 +1197,15 @@ MonoBehaviour:
   structureSpriteMaterialAnimator: {fileID: 5204190960635622893}
   animateSpriteMaterialOnBuild: 1
   structureHasFunctionIcon: 1
+  ammoCrafterUI: {fileID: 80626817700612572}
   craftCurrency_PayOrbsGameObject: {fileID: 7203990799742609256}
+  craftSpecialCurrency_PayOrbsGameObject: {fileID: 0}
   craftCurrency_craftingCurrencyGameObject: {fileID: 9106199492425929992}
   currencyBarTemplate: {fileID: 3931816421194257169}
+  currencyBarTemplateImage: {fileID: 0}
+  currencyBarTemplateBackgroundImage: {fileID: 0}
+  ammoSprite: {fileID: 0}
+  ammoSpecialSprite: {fileID: 0}
   currencyBatchContainer: {fileID: 1178073982629626841}
   currencyBatchTemplate: {fileID: 8736111962518800507}
 --- !u!1001 &3670425730308843407

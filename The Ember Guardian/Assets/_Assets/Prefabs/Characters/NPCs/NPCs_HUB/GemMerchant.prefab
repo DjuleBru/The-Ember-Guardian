@@ -2063,6 +2063,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3258150a48cab4d94010b4bcf49dd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoScrollWithMouse: 0
 --- !u!114 &8520096916371657424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9288,7 +9289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hubMerchantType: 0
   hubMerchantCameraFocusPosition: {fileID: 1285355547250318050}
-  hubMerchantName: The Shard Trader
+  hubMerchantNameLocalizationKey: npc_gemTrader
   hubMerchantUnlockedAtStart: 1
   activeGameObject: {fileID: 2559116683721774755}
   inactiveGameObject: {fileID: 235170622054286131}

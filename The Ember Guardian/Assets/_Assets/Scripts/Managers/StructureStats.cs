@@ -9,10 +9,14 @@ public class StructureStats : MonoBehaviour
 
     private float orbFuelValue = 10;
     private float initialOrbFuelValue = 10;
-    private float fuelDepletionRate = 0.05f;
+    private float mainFireFuelDepletionRate = 0.05f;
     private float initialFuelDepletionRate = 0.05f;
-    private int maxFuelTreshold;
+    private int mainFireMaxFuelTreshold;
     private int initialMaxFuelTreshold = 50;
+    private float secondaryFireFuelDepletionRate = 0.05f;
+    private float initialSecondaryFireFuelDepletionRate = 0.05f;
+    private int secondaryFireMaxFuelTreshold;
+    private int initialSecondaryFireMaxFuelTreshold = 20;
 
     private int ammoCrafterBatchCapacity;
     private int initialAmmoCrafterBatchCapacity = 1;
@@ -51,6 +55,9 @@ public class StructureStats : MonoBehaviour
     private bool startWithResearchTower;
     private bool startWithBarricadeLayer;
 
+    private bool observationTowerEnemyTypesDetectionUnlocked;
+    private bool observationTowerEnemyAmountDetectionUnlocked;
+
     private void Awake() {
         Instance = this;
         LoadStructureStats();
@@ -62,9 +69,11 @@ public class StructureStats : MonoBehaviour
         startWithResearchTower = ES3.Load("startWithResearchTower", false);
         startWithBarricadeLayer = ES3.Load("startWithBarricadeLayer", false);
 
-        maxFuelTreshold = ES3.Load("maxFuelTreshold", initialMaxFuelTreshold);
         orbFuelValue = ES3.Load("orbFuelValue", initialOrbFuelValue);
-        fuelDepletionRate = ES3.Load("fuelDepletionRate", initialFuelDepletionRate);
+        mainFireMaxFuelTreshold = ES3.Load("maxFuelTreshold", initialMaxFuelTreshold);
+        mainFireFuelDepletionRate = ES3.Load("fuelDepletionRate", initialFuelDepletionRate);
+        secondaryFireMaxFuelTreshold = ES3.Load("secondaryFireMaxFuelTreshold", initialSecondaryFireMaxFuelTreshold);
+        secondaryFireFuelDepletionRate = ES3.Load("secondaryFireFuelDepletionRate", initialSecondaryFireFuelDepletionRate);
 
         ammoCrafterBatchCapacity = ES3.Load("ammoCrafterBatchCapacity", initialAmmoCrafterBatchCapacity);
         singleAmmoCraftDuration = ES3.Load("singleAmmoCraftDuration", initialSingleAmmoCraftDuration);
@@ -72,7 +81,7 @@ public class StructureStats : MonoBehaviour
 
         orbProcessorBatchCapacity = ES3.Load("orbProcessorBatchCapacity", initialOrbProcessorBatchCapacity);
         singleOrbCraftDuration = ES3.Load("singleOrbCraftDuration", initialSingleOrbCraftDuration);
-        orbProcessorMaxOrbsPerBatch = ES3.Load("orbProcessorMaxOrbsPerBatch", orbProcessorMaxOrbsPerBatch);
+        orbProcessorMaxOrbsPerBatch = ES3.Load("orbProcessorMaxOrbsPerBatch", initialOrbProcessorMaxOrbsPerBatch);
 
         barricadeHealthPerCrate = ES3.Load("barricadeHealthPerCrate", initialBarricadeHealthPerCrate);
 
@@ -83,6 +92,9 @@ public class StructureStats : MonoBehaviour
         trapMerchantMaxTrapsDisplayed = ES3.Load("trapMerchantMaxTrapsDisplayed", initialTrapMerchantMaxTrapsDisplayed);
         trapMerchantMaxTrapUpgradesDisplayed = ES3.Load("trapMerchantMaxTrapUpgradesDisplayed", initialTrapMerchantMaxTrapUpgradeDisplayed);
         startWithRandomTrapAmount = ES3.Load("startWithRandomTrapAmount", initialStartWithRandomTrapAmount);
+
+        observationTowerEnemyTypesDetectionUnlocked = ES3.Load("researchTowerEnemyTypesDetectionUnlocked", false);
+        observationTowerEnemyAmountDetectionUnlocked = ES3.Load("researchTowerEnemyAmountDetectionUnlocked", false);
     }
 
     public void SaveStructureStats() {
@@ -91,9 +103,11 @@ public class StructureStats : MonoBehaviour
         ES3.Save("startWithResearchTower", startWithResearchTower);
         ES3.Save("startWithBarricadeLayer", startWithBarricadeLayer);
 
-        ES3.Save("maxFuelTreshold", maxFuelTreshold);
         ES3.Save("orbFuelValue", orbFuelValue);
-        ES3.Save("fuelDepletionRate", fuelDepletionRate);
+        ES3.Save("mainFireMaxFuelTreshold", mainFireMaxFuelTreshold);
+        ES3.Save("mainFireFuelDepletionRate", mainFireFuelDepletionRate);
+        ES3.Save("secondaryFireFuelDepletionRate", secondaryFireFuelDepletionRate);
+        ES3.Save("secondaryFireMaxFuelTreshold", secondaryFireMaxFuelTreshold);
 
         ES3.Save("ammoCrafterBatchCapacity", ammoCrafterBatchCapacity);
         ES3.Save("singleAmmoCraftDuration", singleAmmoCraftDuration);
@@ -112,18 +126,27 @@ public class StructureStats : MonoBehaviour
         ES3.Save("trapMerchantMaxTrapsDisplayed", trapMerchantMaxTrapsDisplayed);
         ES3.Save("trapMerchantMaxTrapUpgradesDisplayed", trapMerchantMaxTrapUpgradesDisplayed);
         ES3.Save("startWithRandomTrapAmount", startWithRandomTrapAmount);
+
+        ES3.Save("researchTowerEnemyTypesDetectionUnlocked", observationTowerEnemyTypesDetectionUnlocked);
+        ES3.Save("researchTowerEnemyAmountDetectionUnlocked", observationTowerEnemyAmountDetectionUnlocked);
     }
 
     #region FIRE
 
-    public int GetMaxFuelTreshold() {
-        return maxFuelTreshold;
+    public int GetMainFireMaxFuelTreshold() {
+        return mainFireMaxFuelTreshold;
+    }
+    public int GetSecondaryFireMaxFuelTreshold() {
+        return secondaryFireMaxFuelTreshold;
     }
     public float GetOrbFuelValue() {
         return orbFuelValue;
     }
-    public float GetFuelDepletionRate() {
-        return fuelDepletionRate;
+    public float GetMainFireFuelDepletionRate() {
+        return mainFireFuelDepletionRate;
+    }
+    public float GetSecondaryFireFuelDepletionRate() {
+        return secondaryFireFuelDepletionRate;
     }
     public int GetInitialMaxFuelTreshold() {
         return initialMaxFuelTreshold;
@@ -136,13 +159,13 @@ public class StructureStats : MonoBehaviour
     }
 
     public void SetMaxFuelTresholdBuff(int maxFuelTresholdBuff) {
-        maxFuelTreshold = initialMaxFuelTreshold + maxFuelTresholdBuff;
+        mainFireMaxFuelTreshold = initialMaxFuelTreshold + maxFuelTresholdBuff;
     }
     public void SetOrbFuelValueBuff(int orbFuelValueBuff) {
         orbFuelValue = initialOrbFuelValue + orbFuelValueBuff;
     }
     public void SetFuelDepletionRateBuff(float fuelDepletionRateBuff) {
-        fuelDepletionRate = initialFuelDepletionRate + fuelDepletionRateBuff/60f;
+        mainFireFuelDepletionRate = initialFuelDepletionRate + fuelDepletionRateBuff/60f;
     }
 
 
@@ -266,6 +289,22 @@ public class StructureStats : MonoBehaviour
         orbProcessorMaxOrbsPerBatch = initialOrbProcessorMaxOrbsPerBatch + maxAmmoPerBatchBuff;
     }
 
+    #endregion
+
+    #region OTHER
+    public bool GetObservationTowerEnemyTypesDetectionUnlocked() {
+        return observationTowerEnemyTypesDetectionUnlocked;
+    }
+    public bool GetObservationTowerEnemyAmountDetectionUnlocked() {
+        return observationTowerEnemyAmountDetectionUnlocked;
+    }
+
+    public void SetObservationTowerEnemyTypesDetectionUnlocked() {
+        observationTowerEnemyTypesDetectionUnlocked = true;
+    }
+    public void SetObservationTowerEnemyAmountDetectionUnlocked() {
+        observationTowerEnemyAmountDetectionUnlocked = true;
+    }
     #endregion
 
     #region LEVELMERCHANTS

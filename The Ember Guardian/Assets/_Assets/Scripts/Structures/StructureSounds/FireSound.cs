@@ -7,6 +7,7 @@ public class FireSound : StructureSounds
     private Fire fire;
     private SoundVolume2D volume2D;
 
+    [SerializeField] private StructureUI_Fire fireUI;
     [SerializeField] private AudioSource extractingEmberAudioSource;
 
     [SerializeField] private AudioClip calmFireAudioClip;
@@ -17,7 +18,7 @@ public class FireSound : StructureSounds
     [SerializeField] private AudioClip[] orbDroppedInFireAudioClipArray1;
     [SerializeField] private AudioClip[] orbDroppedInFireAudioClipArray2;
     [SerializeField] private AudioClip[] fireDamagedAudioClipArray;
-    [SerializeField] private AudioClip fireTickRemovedAudioClip;
+    [SerializeField] private AudioClip secondaryFireTickRemovedAudioClip;
     [SerializeField] private AudioClip extractingEmberAudioClip;
 
     protected override void Awake() { 
@@ -33,6 +34,12 @@ public class FireSound : StructureSounds
         fire.OnFireDamageTaken += Fire_OnFireDamageTaken;
         fire.OnFireEmberExtractionStopped += Fire_OnFireEmberExtractionStopped;
         fire.OnFireEmberExtractionStarted += Fire_OnFireEmberExtractionStarted;
+        fireUI.OnFireTickRemoved += FireUI_OnFireTickRemoved;
+    }
+
+    private void FireUI_OnFireTickRemoved(object sender, StructureUI_Fire.OnFireTickRemovedEventArgs e) {
+        if (!fire.GetIsSecondaryFire()) return;
+        audioSource.PlayOneShot(secondaryFireTickRemovedAudioClip, sfxVolume);
     }
 
     protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {

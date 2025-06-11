@@ -126,27 +126,7 @@ public class LevelSO : ScriptableObject
     public float growthFactor;
     [BoxGroup("Creatures/NightWaves")]
     [LabelWidth(300)]
-    public bool setDifficultyAnimationCurve;
-    [BoxGroup("Creatures/NightWaves")]
-    [LabelWidth(300)]
-    [ShowIf("setDifficultyAnimationCurve")]
-    public AnimationCurve difficultyAnimationCurve;
-    [BoxGroup("Creatures/NightWaves")]
-    [LabelWidth(300)]
-    [ShowIf("setDifficultyAnimationCurve")]
-    public int maxWaveInAnimationCurve;
-    [BoxGroup("Creatures/NightWaves")]
-    [LabelWidth(300)]
-    [ShowIf("setDifficultyAnimationCurve")]
-    public int difficultyAtMaxWave;
-    [BoxGroup("Creatures/NightWaves")]
-    [LabelWidth(300)]
-    [ShowIf("setDifficultyAnimationCurve")]
-    public int minDifficultyAtMaxWave;
-    [BoxGroup("Creatures/NightWaves")]
-    [LabelWidth(300)]
-    [ShowIf("setDifficultyAnimationCurve")]
-    public int maxDifficultyAtMaxWave;
+    public int maxWaveNumber;
     [BoxGroup("Creatures/NightWaves")]
     [LabelWidth(300)]
     public float minMaxSubwaveDifficultyGrowthFactor;

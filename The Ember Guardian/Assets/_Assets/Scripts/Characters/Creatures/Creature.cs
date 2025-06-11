@@ -15,7 +15,7 @@ public class Creature : Mob
     private bool creatureUnlocked;
     private bool dropRedOrbsUnlocked;
     private bool dayCreature;
-    private bool enteredLight;
+    private int inFireLightAmount;
 
     private bool creatureTargeted;
     private bool creatureCanBeTargeted = true;
@@ -286,11 +286,14 @@ public class Creature : Mob
 
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);
+
         if(collision.gameObject.GetComponentInParent<Fire>() != null) {
-            if (enteredLight) return;
+            inFireLightAmount++;
+
+            if (inFireLightAmount != 0) return;
             if (creatureSO.isBoss) return;
+
             OnCreatureEnteredLight?.Invoke(this, EventArgs.Empty);
-            enteredLight = true;
         }
     }
 
@@ -298,11 +301,12 @@ public class Creature : Mob
         base.OnTriggerExit2D(collision);
 
         if (collision.gameObject.GetComponentInParent<Fire>() != null) {
-            if (!enteredLight) return;
+            inFireLightAmount--;
+
+            if (inFireLightAmount != 0) return;
             if (creatureSO.isBoss) return;
 
             OnCreatureExitedLight?.Invoke(this, EventArgs.Empty);
-            enteredLight = false;
         }
     }
 

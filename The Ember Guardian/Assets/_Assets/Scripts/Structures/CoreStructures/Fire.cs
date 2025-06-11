@@ -11,6 +11,7 @@ public class Fire : Structure, IDamageable {
 
     [SerializeField] private bool isMainFire;
     [SerializeField] private bool isEndLevelFire;
+    [SerializeField] private bool isSecondaryFire;
     [SerializeField] private bool isHubFire;
 
     [SerializeField] private float calmFireRadius;
@@ -24,11 +25,11 @@ public class Fire : Structure, IDamageable {
     private int currentMaxFuelTreshold = 50;
     private float fuelTickValue = 10f/3f;
 
-    private int criticalFuelTreshold = 14;
-    private int calmFuelTreshold = 0;
-    private int mildFuelTreshold = 10;
-    private int wildFuelTreshold = 20;
-    private int insaneFuelTreshold = 55;
+    [SerializeField] private int criticalFuelTreshold = 14;
+    [SerializeField] private int calmFuelTreshold = 0;
+    [SerializeField] private int mildFuelTreshold = 10;
+    [SerializeField] private int wildFuelTreshold = 20;
+    [SerializeField] private int insaneFuelTreshold = 55;
 
     private float extractingEmberFuelRateDepletion = 8f;
     [SerializeField] private float respawningPlayerFuelRateDepletion = 2f;
@@ -41,6 +42,8 @@ public class Fire : Structure, IDamageable {
     private bool emberExtractionDisabled;
     private float fuelLevel;
     private float damageToFuelConversionRate = 5f;
+
+    private StructureLocation_SecondaryFire secondaryFireStructureLocation;
 
     public enum State {
         extinguished,
@@ -102,7 +105,10 @@ public class Fire : Structure, IDamageable {
     }
 
     protected override void Start() {
+        fireOrbCollider.OnOrbFellInFire += FireOrbCollider_OnOrbFellInFire;
+
         LoadStats();
+
         if(!isHubFire) {
             base.Start();
         } else {
@@ -114,8 +120,6 @@ public class Fire : Structure, IDamageable {
                 UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
             }
         }
-
-        fireOrbCollider.OnOrbFellInFire += FireOrbCollider_OnOrbFellInFire;
 
         if (isMainFire) {
 
@@ -133,13 +137,14 @@ public class Fire : Structure, IDamageable {
             ChangeState(State.wild);
         }
 
-        if(isHubFire) {
-            state = State.calm;
+        if (isSecondaryFire) {
+            fuelLevel = wildFuelTreshold - 1;
             ChangeState(State.calm);
+            SetStructurePrimaryFunctionUnlocked(false);
         }
 
-
-        if(isHubFire) {
+        if (isHubFire) {
+            ChangeState(State.calm);
             SetStructurePrimaryFunctionUnlocked(false);
             RefreshHubFireEmberExtractable();
         } else {
@@ -149,8 +154,15 @@ public class Fire : Structure, IDamageable {
 
     private void LoadStats() {
         orbFuelValue = StructureStats.Instance.GetOrbFuelValue();
-        fuelDepletionRate = StructureStats.Instance.GetFuelDepletionRate();
-        maxFuelTreshold = StructureStats.Instance.GetMaxFuelTreshold();
+
+        if(isSecondaryFire) {
+            fuelDepletionRate = StructureStats.Instance.GetSecondaryFireFuelDepletionRate();
+            maxFuelTreshold = StructureStats.Instance.GetSecondaryFireMaxFuelTreshold();
+            currentMaxFuelTreshold = maxFuelTreshold;
+        } else {
+            fuelDepletionRate = StructureStats.Instance.GetMainFireFuelDepletionRate();
+            maxFuelTreshold = StructureStats.Instance.GetMainFireMaxFuelTreshold();
+        }
     }
 
     private void PlayerInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -180,6 +192,7 @@ public class Fire : Structure, IDamageable {
     }
 
     private void Tent_OnStructureUpgraded(object sender, EventArgs e) {
+        if (!isMainFire) return;
         SetFireCurrentMaxFuelTreshold();
     }
 
@@ -326,6 +339,9 @@ public class Fire : Structure, IDamageable {
 
         if (fuelLevel < 0 && state == State.calm) {
             ChangeState(State.extinguished);
+            if(isSecondaryFire) {
+                StartCoroutine(ReactivateStructureLocationAfterDelay());
+            }
         }
 
         if(fuelLevel <= mildFuelTreshold && state == State.mild) {
@@ -339,6 +355,7 @@ public class Fire : Structure, IDamageable {
         if (fuelLevel <= insaneFuelTreshold && state == State.insane) {
             ChangeState(State.wild);
         }
+
         CheckFireFeedable();
     }
 
@@ -363,6 +380,7 @@ public class Fire : Structure, IDamageable {
         if (extractingEmber) return;
         if (lockFireInteractionFunctionsUpdate) return;
         if (isEndLevelFire) return;
+        if (isSecondaryFire) return;
 
         if(fuelLevel > (currentMaxFuelTreshold - fuelTickValue*3)) {
             SetStructureSecondaryFunctionUnlocked(true);
@@ -388,6 +406,8 @@ public class Fire : Structure, IDamageable {
     }
 
     private void SetFireCurrentMaxFuelTreshold() {
+        if (!isMainFire) return;
+
         State maxState = State.wild;
 
         if (Tent.Instance.GetStructureLevel() == 2) {
@@ -512,6 +532,12 @@ public class Fire : Structure, IDamageable {
 
     }
 
+    private IEnumerator ReactivateStructureLocationAfterDelay() {
+        yield return new WaitForSeconds(2f);
+        secondaryFireStructureLocation.ReActivateFireStructureLocation();
+        Destroy(gameObject);
+    }
+
     #region GET PARAMETERS
     public State GetState() {
         return state;
@@ -589,9 +615,15 @@ public class Fire : Structure, IDamageable {
     public bool GetFuelFireOnCooldown() {
         return fuelFireOnCooldown;
     }
+    public bool GetIsMainFire() {
+        return isMainFire;
+    }
 
     public bool GetIsHubFire() {
         return isHubFire;
+    }
+    public bool GetIsSecondaryFire() {
+        return isSecondaryFire;
     }
 
     public bool GetIsEndLevelAreaFire() {
@@ -631,6 +663,9 @@ public class Fire : Structure, IDamageable {
         emberExtractionDisabled = true;
     }
 
+    public void SetSecondaryFireStructureLocation(StructureLocation_SecondaryFire location) {
+        secondaryFireStructureLocation = location;
+    }
 
     #endregion
 

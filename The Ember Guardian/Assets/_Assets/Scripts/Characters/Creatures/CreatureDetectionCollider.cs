@@ -277,7 +277,7 @@ public class CreatureDetectionCollider : MonoBehaviour
             }
 
             if (iDamageable is Fire) {
-                if (CanAddFireToTargets()) {
+                if (CanAddFireToTargets(iDamageable)) {
                     currentPriority = int.MaxValue;
                 }
                 else continue;
@@ -302,9 +302,10 @@ public class CreatureDetectionCollider : MonoBehaviour
         creatureAI.SetAttackTarget(highestPriorityTarget, iDamageablesDetected);
     }
 
-    private bool CanAddFireToTargets() {
-        // Check if player is in range in the y axis !
-        if (!CampZoneManager.Instance.IsWithinCampZoneLimits(transform.position)) {
+    private bool CanAddFireToTargets(IDamageable fire) {
+        float distanceToFire = Mathf.Abs(transform.position.x - (fire as MonoBehaviour).transform.position.x);
+
+        if (distanceToFire > 10) {
             return false;
         } else {
             return true;

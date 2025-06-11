@@ -257,7 +257,11 @@ public class ItemButtonUI : ButtonUI {
             HubMerchant lockingItemHubMerchantParent = itemButtonUI.GetHubMerchantParent();
 
             if (lockingItemHubMerchantParent != null && lockingItemHubMerchantParent != hubMerchantItem.GetHubMerchantParent()) {
-                buyItemFromOtherMerchantText.text = "Buy " + itemButtonUI.GetHubMerchantItem().GetItemName() + " from " + lockingItemHubMerchantParent.GetHubMerchantName() + " first";
+
+                string itemNameLocalized = LocalizationManager.Instance.GetLocalizedText(itemButtonUI.GetHubMerchantItem().GetItemName());
+                string hubMerchantParentLocalized = LocalizationManager.Instance.GetLocalizedText(lockingItemHubMerchantParent.GetHubMerchantName());
+
+                buyItemFromOtherMerchantText.text = "Buy " + itemNameLocalized + " from " + hubMerchantParentLocalized + " first";
                 buyItemFromOtherMerchantTextAnimator.SetTrigger("Show");
             }
         }

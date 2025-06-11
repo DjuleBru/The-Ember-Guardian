@@ -82,7 +82,16 @@ public class FireVisual : StructureVisual
             Player.Instance.OnPlayerBackToTentToRespawn += Player_OnPlayerBackToTentToRespawn;
         }
 
-        StartCoroutine(LerpFireLightIntensity(0, AOEFireLightIntensity, 1f));
+        if(fire.GetIsSecondaryFire()) {
+            if(DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Day) {
+                StartCoroutine(LerpFireLightIntensity(0, AOEFireLightIntensity, 1f));
+            } else {
+                StartCoroutine(LerpFireLightIntensity(AOEFireLightIntensity, 0, 1f));
+            }
+        } else {
+            StartCoroutine(LerpFireLightIntensity(0, AOEFireLightIntensity, 1f));
+        }
+
     }
 
     private void Player_OnPlayerBackToTentToRespawn(object sender, System.EventArgs e) {

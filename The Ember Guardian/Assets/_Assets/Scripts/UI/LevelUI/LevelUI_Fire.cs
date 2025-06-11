@@ -29,8 +29,8 @@ public class LevelUI_Fire : MonoBehaviour
     }
 
     private void Start() {
-        StructureUI_Fire.OnFireMaxBarAmountChanged += StructureUI_Fire_OnFireMaxBarAmountChanged;
-        StructureUI_Fire.OnFireTickRemoved += StructureUI_Fire_OnFireTickRemoved1;
+        StructureUI_Fire.Instance.OnFireMaxBarAmountChanged += StructureUI_Fire_OnFireMaxBarAmountChanged;
+        StructureUI_Fire.Instance.OnFireTickRemoved += StructureUI_Fire_OnFireTickRemoved1;
         Fire.Instance.OnFireFuelled += Fire_OnFireFuelled;
         Fire.Instance.OnFireChangedState += Fire_OnFireChangedState;
 
@@ -170,8 +170,6 @@ public class LevelUI_Fire : MonoBehaviour
     }
 
     private void OnDestroy() {
-        StructureUI_Fire.OnFireMaxBarAmountChanged -= StructureUI_Fire_OnFireMaxBarAmountChanged;
-        StructureUI_Fire.OnFireTickRemoved -= StructureUI_Fire_OnFireTickRemoved1;
         Fire.Instance.OnFireFuelled -= Fire_OnFireFuelled;
         Fire.Instance.OnFireChangedState -= Fire_OnFireChangedState;
     }

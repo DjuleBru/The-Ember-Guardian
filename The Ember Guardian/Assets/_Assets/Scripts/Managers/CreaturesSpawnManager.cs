@@ -6,8 +6,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine.Rendering.Universal;
 
-public class CreaturesSpawnManager : MonoBehaviour
-{
+public class CreaturesSpawnManager : MonoBehaviour {
     public static CreaturesSpawnManager Instance;
 
     [SerializeField] private List<AnimationCurve> subWaveDifficultyCurveList;
@@ -48,14 +47,7 @@ public class CreaturesSpawnManager : MonoBehaviour
     private int startWaveToSpawnFromBothSides;
     private int baseDifficulty;
     private float growthFactor;
-    private bool setDifficultyAnimationCurve;
     private float minMaxSubwaveDifficultyGrowthFactor;
-
-    private AnimationCurve difficultyAnimationCurve;
-    private int difficultyAtMaxWave;
-    private int minDifficultyAtMaxWave;
-    private int maxDifficultyAtMaxWave;
-    private int maxWavesInAnimationCurve;
 
     private bool spawnEquallyFromBothSides;
     private bool canSpawnElite;
@@ -69,6 +61,9 @@ public class CreaturesSpawnManager : MonoBehaviour
     private float waveDifficultyLeftProportion;
     private float waveDifficultyRightProportion;
 
+    private int maxWaveNumber;
+    private float maxWaveDifficulty;
+
     private float minLevelXPosition;
     private float maxLevelXPosition;
 
@@ -79,6 +74,7 @@ public class CreaturesSpawnManager : MonoBehaviour
 
     private bool debugInputs;
     private bool debugDontSpawnAtNight;
+
     private void Awake() {
         Instance = this;
 
@@ -93,6 +89,7 @@ public class CreaturesSpawnManager : MonoBehaviour
 
         creatureTypes = levelSO.nightCreatureTypes;
         baseDifficulty = levelSO.baseDifficulty;
+        maxWaveNumber = levelSO.maxWaveNumber;
 
         hasBoss = levelSO.hasBoss;
         bossCreatureType = levelSO.bossCreatureType;
@@ -103,13 +100,6 @@ public class CreaturesSpawnManager : MonoBehaviour
         maxSubwaveDifficulty = levelSO.maxSubwaveDifficulty;
         initialMaxSubwaveDifficulty = levelSO.intialMaxSubwaveDifficulty;
 
-        setDifficultyAnimationCurve = levelSO.setDifficultyAnimationCurve;
-        difficultyAtMaxWave = levelSO.difficultyAtMaxWave;
-        difficultyAnimationCurve = levelSO.difficultyAnimationCurve;
-        minDifficultyAtMaxWave = levelSO.minDifficultyAtMaxWave;
-        maxDifficultyAtMaxWave = levelSO.maxDifficultyAtMaxWave;
-
-        maxWavesInAnimationCurve = levelSO.maxWaveInAnimationCurve;
         growthFactor = levelSO.growthFactor;
         minMaxSubwaveDifficultyGrowthFactor = levelSO.minMaxSubwaveDifficultyGrowthFactor;
         startWaveToSpawnFromBothSides = levelSO.startWaveToSpawnFromBothSides;
@@ -129,6 +119,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         debugInputs = DebugManager.Instance.GetAllowDebugInputs_CreaturesSpawnManager();
         debugDontSpawnAtNight = DebugManager.Instance.GetDebugDontSpawnAtNight();
 
+        maxWaveDifficulty = baseDifficulty * Mathf.Pow(growthFactor, maxWaveNumber);
     }
 
     private void LevelManager_OnLevelLimitsChanged(object sender, EventArgs e) {
@@ -148,7 +139,7 @@ public class CreaturesSpawnManager : MonoBehaviour
             remainingNightCreaturesNormalized = remainingNightCreaturesNormalized
         });
     }
-    
+
     private void CreaturesManager_OnCreatureAtNightSpawned(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
         float remainingNightCreaturesHealthNormalized = (float)remainingNightCreaturesHP / (float)totalNightCreatureHP;
         float remainingNightCreaturesNormalized = (float)remainingNightCreatures / (float)totalNightCreatures;
@@ -183,8 +174,8 @@ public class CreaturesSpawnManager : MonoBehaviour
     private void HandleDebugInputs() {
         if (Input.GetKeyDown(KeyCode.U)) {
             currentWaveNumber++;
-            //SetWaveParameters(currentWaveNumber, true, true);
-            SetTutorialWave();
+            SetWaveParameters(currentWaveNumber, true, true);
+            //SetTutorialWave();
         }
         if (Input.GetKeyDown(KeyCode.T)) {
             Debug.Log("SpawnWave");
@@ -195,13 +186,14 @@ public class CreaturesSpawnManager : MonoBehaviour
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         currentWaveNumber++;
 
-        if(spawnEquallyFromBothSides) {
+        if (spawnEquallyFromBothSides) {
 
             waveDifficultyLeftProportion = .5f;
             waveDifficultyRightProportion = .5f;
             SetWaveParameters(currentWaveNumber, false, false);
 
-        } else {
+        }
+        else {
             SetWaveParameters(currentWaveNumber, true, true);
         }
     }
@@ -229,24 +221,10 @@ public class CreaturesSpawnManager : MonoBehaviour
     public void SetWaveParameters(int waveNumber, bool wavesRandomSideProportion, bool subWaveRandomSideProportion) {
         totalNightCreatures = 0;
 
-        if (setDifficultyAnimationCurve) {
-            Debug.Log("setDifficultyAnimationCurve");
-            float waveNumberNormalized = (float)(waveNumber-1) / (float)maxWavesInAnimationCurve;
-            if(waveNumberNormalized > 1) {
-                waveNumberNormalized = 1;
-            }
-            waveDifficulty = baseDifficulty + difficultyAtMaxWave * difficultyAnimationCurve.Evaluate(waveNumberNormalized);
-            minSubwaveDifficulty = initialMinSubwaveDifficulty + minDifficultyAtMaxWave * difficultyAnimationCurve.Evaluate(waveNumberNormalized);
-            maxSubwaveDifficulty = initialMaxSubwaveDifficulty + maxDifficultyAtMaxWave * difficultyAnimationCurve.Evaluate(waveNumberNormalized);
+        waveDifficulty = baseDifficulty * Mathf.Pow(growthFactor, waveNumber);
 
-        } else {
-
-            waveDifficulty = baseDifficulty * Mathf.Pow(growthFactor, waveNumber);
-
-            minSubwaveDifficulty = initialMinSubwaveDifficulty * Mathf.Pow(minMaxSubwaveDifficultyGrowthFactor, waveNumber);
-            maxSubwaveDifficulty = initialMaxSubwaveDifficulty * Mathf.Pow(minMaxSubwaveDifficultyGrowthFactor, waveNumber);
-        }
-
+        minSubwaveDifficulty = initialMinSubwaveDifficulty * Mathf.Pow(minMaxSubwaveDifficultyGrowthFactor, waveNumber);
+        maxSubwaveDifficulty = initialMaxSubwaveDifficulty * Mathf.Pow(minMaxSubwaveDifficultyGrowthFactor, waveNumber);
 
         // Add boss
         if (hasBoss) {
@@ -261,13 +239,13 @@ public class CreaturesSpawnManager : MonoBehaviour
         }
 
 
-        subWaveNumber = (int)(waveDifficulty / maxSubwaveDifficulty)+1;
+        subWaveNumber = (int)(waveDifficulty / maxSubwaveDifficulty) + 1;
         AnimationCurve subWaveDifficultyCurve = subWaveDifficultyCurveList[UnityEngine.Random.Range(0, subWaveDifficultyCurveList.Count)];
 
-        if(wavesRandomSideProportion) {
+        if (wavesRandomSideProportion) {
             SetWaveSidesProportion(waveNumber);
 
-            if(waveDifficultyLeftProportion == 0 || waveDifficultyRightProportion == 0) {
+            if (waveDifficultyLeftProportion == 0 || waveDifficultyRightProportion == 0) {
                 // All creatures from ONE side : reduce difficulty
                 //waveDifficulty = waveDifficulty / 1.25f;
             }
@@ -285,7 +263,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         waveCreaturesDictionary.Clear();
         List<float> subWaveDifficultiesRelative = new List<float>();
 
-        for (int i=0 ; i < subWaveNumber; i++) {
+        for (int i = 0; i < subWaveNumber; i++) {
             float subWaveDifficultyXNormalized = (float)i / (subWaveNumber + 1);
             float subWaveDifficulty = subWaveDifficultyCurve.Evaluate(subWaveDifficultyXNormalized);
             subWaveDifficultiesRelative.Add(subWaveDifficulty);
@@ -294,7 +272,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         float totalSubWaveDifficultiesAbsolute = subWaveDifficultiesRelative.Sum();
         for (int i = 0; i < subWaveNumber; i++) {
 
-            float subWaveDifficultyAbsolute = (waveDifficulty / totalSubWaveDifficultiesAbsolute)* subWaveDifficultiesRelative[i];
+            float subWaveDifficultyAbsolute = (waveDifficulty / totalSubWaveDifficultiesAbsolute) * subWaveDifficultiesRelative[i];
             if (subWaveDifficultyAbsolute < minSubwaveDifficulty) {
                 subWaveDifficultyAbsolute = minSubwaveDifficulty;
             }
@@ -470,7 +448,7 @@ public class CreaturesSpawnManager : MonoBehaviour
 
         if (!canSpawnElite || creatureToSpawn.isBoss) return;
         float eliteRandomFloat = UnityEngine.Random.Range(0f, 1f);
-        if(eliteRandomFloat < eliteSpawnProbability) {
+        if (eliteRandomFloat < eliteSpawnProbability) {
             creature.SetAsEliteCreature();
         }
     }
@@ -483,7 +461,7 @@ public class CreaturesSpawnManager : MonoBehaviour
         }
 
         // Add boss
-        if(hasBoss && subWaveIndex == 0) {
+        if (hasBoss && subWaveIndex == 0) {
             if (bossNightsSpawns.Contains(currentWaveNumber)) {
                 creaturesToSpawn.Add(bossCreatureType);
                 difficultyBudget -= bossCreatureType.difficulty;
@@ -526,8 +504,8 @@ public class CreaturesSpawnManager : MonoBehaviour
     List<CreatureSO> SelectCreatureSOTypes() {
         List<CreatureSO> creaturesThisWave = new List<CreatureSO>();
 
-        foreach(CreatureSO creatureSO in creatureTypes) {
-            if(creatureSO.initialWaveSpawn <= currentWaveNumber) {
+        foreach (CreatureSO creatureSO in creatureTypes) {
+            if (creatureSO.initialWaveSpawn <= currentWaveNumber) {
                 creaturesThisWave.Add(creatureSO);
             }
         }
@@ -538,29 +516,19 @@ public class CreaturesSpawnManager : MonoBehaviour
     Vector3 GetSpawnPosition(SpawnSide spawnSide, CreatureSO creatureToSpawn) {
         // Logique pour choisir une position de spawn, par exemple autour d'une zone spécifique
         float xSpawnPosition = 0;
-        float spawnDistance= spawnDistanceToPlayerOrCamp;
+        float spawnDistance = spawnDistanceToPlayerOrCamp;
 
-        if(creatureToSpawn.isBoss) {
+        if (creatureToSpawn.isBoss) {
             spawnDistance /= 2f;
         }
 
 
         if (spawnSide == SpawnSide.Left) {
             xSpawnPosition = CampZoneManager.Instance.GetMinZoneLimit() - spawnDistance;
-            //if (Player.Instance.transform.position.x < CampZoneManager.Instance.GetMinZoneLimit()) {
-            //    xSpawnPosition = Player.Instance.transform.position.x - spawnDistance * .66f;
-            //} else {
-            //    xSpawnPosition = CampZoneManager.Instance.GetMinZoneLimit() - spawnDistance;
-            //}
 
-        } else {
+        }
+        else {
             xSpawnPosition = CampZoneManager.Instance.GetMaxZoneLimit() + spawnDistance;
-            //if (Player.Instance.transform.position.x > CampZoneManager.Instance.GetMaxZoneLimit()) {
-            //    xSpawnPosition = Player.Instance.transform.position.x + spawnDistance * .66f;
-            //}
-            //else {
-            //    xSpawnPosition = CampZoneManager.Instance.GetMaxZoneLimit() + spawnDistance;
-            //}
         }
 
         float yPosition = 2f;
@@ -568,13 +536,12 @@ public class CreaturesSpawnManager : MonoBehaviour
             yPosition = UnityEngine.Random.Range(creatureToSpawn.flightMinAltitude, creatureToSpawn.flightMaxAltitude);
         }
 
-        if(xSpawnPosition > maxLevelXPosition) {
+        if (xSpawnPosition > maxLevelXPosition) {
             xSpawnPosition = maxLevelXPosition - 10f;
         }
         if (xSpawnPosition < minLevelXPosition) {
             xSpawnPosition = minLevelXPosition + 10f;
         }
-        //Debug.Log(creatureToSpawn + " xSpawnPosition " + xSpawnPosition);
 
         return new Vector3(xSpawnPosition + UnityEngine.Random.Range(-4f, 4f), yPosition, 0);
 
@@ -637,21 +604,6 @@ public class CreaturesSpawnManager : MonoBehaviour
         return totalCreatures;
     }
 
-    public int GetTotalPlannedCreaturesHPForNight(List<SpawnedCreatureInfo> spawnedCreatures) {
-        int totalCreatureHP = 0;
-
-        // Parcourir la liste des créatures spawnées
-        foreach (var spawnedCreature in spawnedCreatures) {
-            if (spawnedCreature.creature != null) { // Vérifie que la créature n'est pas nulle
-                totalCreatureHP += spawnedCreature.creature.maxHealth;
-            }
-            else {
-                Debug.LogWarning("SpawnedCreatureInfo contains a null creature.");
-            }
-        }
-
-        return totalCreatureHP;
-    }
     public void SetBaseDifficulty(int baseDifficulty) {
         this.baseDifficulty = baseDifficulty;
     }
@@ -674,11 +626,34 @@ public class CreaturesSpawnManager : MonoBehaviour
         maxRemainingSubWaveCreaturesForNextSubwave = maxCreatures;
     }
 
-    public void SetSetDifficultyAnimationCurve() {
-        setDifficultyAnimationCurve = true;
-    }
-
     public int GetCurrentWaveNumber() {
         return currentWaveNumber;
     }
+
+    public float GetCurrentWaveDifficulty() {
+        return waveDifficulty;
+    }
+    public float GetMaxWaveDifficulty() {
+        return maxWaveDifficulty;
+    }
+
+    public Dictionary<CreatureSO, int> GetNextWaveCreaturesBySide(SpawnSide side) {
+        Dictionary<CreatureSO, int> creaturesCount = new Dictionary<CreatureSO, int>();
+
+        foreach (var subWave in waveCreaturesDictionary.Values) {
+            foreach (var creatureInfo in subWave) {
+                if (creatureInfo.spawnSide == side) {
+                    if (!creaturesCount.ContainsKey(creatureInfo.creature)) {
+                        creaturesCount[creatureInfo.creature] = 1;
+                    }
+                    else {
+                        creaturesCount[creatureInfo.creature]++;
+                    }
+                }
+            }
+        }
+
+        return creaturesCount;
+    }
+
 }

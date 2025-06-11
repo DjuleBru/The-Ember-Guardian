@@ -88,7 +88,6 @@ public class DemoMainLevelManager : MonoBehaviour
         LevelManager.Instance.OnLevelFailed += LevelManager_OnLevelFailed;
         LevelManager.Instance.OnLevelSuccess += LevelManager_OnLevelSuccess;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
-        DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
         VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
         Animal.OnAnyMobDied += Animal_OnAnyMobDied;
         Collectible.OnAnyCollectiblePickedUpByPlayer += Collectible_OnAnyCollectiblePickedUpByPlayer;
@@ -255,14 +254,6 @@ public class DemoMainLevelManager : MonoBehaviour
         if (rightPropCollected) {
             endLevelPortal.transform.position = levelLeftTeleporterPosition.position;
             StartCoroutine(EnableEndLevelPortal(4f));
-        }
-    }
-
-    private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
-        int dayNumber = DayNightManager.Instance.GetCurrentDay();
-
-        if (dayNumber == 4) {
-            CreaturesSpawnManager.Instance.SetSetDifficultyAnimationCurve();
         }
     }
 

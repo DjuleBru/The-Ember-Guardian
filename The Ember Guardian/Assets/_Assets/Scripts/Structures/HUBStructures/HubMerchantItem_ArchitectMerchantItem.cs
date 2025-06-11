@@ -28,6 +28,8 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
         SingleOrbCraftDuration,
         OrbProcessorBatchCapacity,
         OrbProcessorMaxOrbsPerBatch,
+        ObservationTowerEnemyTypes,
+        ObservationTowerEnemyAmounts,
     }
 
     public enum ArchitectItemCategory {
@@ -46,7 +48,7 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
     }
 
     public override void BuyItem() {
-        if (architectItemCategory != ArchitectItemCategory.startWithStructure && architectItemType != ArchitectItemType.ArchitectTable && architectItemType != ArchitectItemType.BarricadeSpiked) {
+        if (itemUpgradeable) {
 
             SetNewStatIncreaseStats();
 
@@ -68,7 +70,12 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
             if (architectItemType == ArchitectItemType.BarricadeSpiked) {
                 StructureStats.Instance.SetBarricadesSpiked();
             }
-
+            if (architectItemType == ArchitectItemType.ObservationTowerEnemyAmounts) {
+                StructureStats.Instance.SetObservationTowerEnemyAmountDetectionUnlocked();
+            }
+            if (architectItemType == ArchitectItemType.ObservationTowerEnemyTypes) {
+                StructureStats.Instance.SetObservationTowerEnemyTypesDetectionUnlocked();
+            }
         }
 
         base.BuyItem();
@@ -148,6 +155,7 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
         if (architectItemType == ArchitectItemType.OrbProcessorMaxOrbsPerBatch) {
             StructureStats.Instance.SetOrbProcessorMaxOrbsPerBatchBuff((int)buff);
         }
+
     }
 
     private void RefreshStatValues() {
@@ -158,7 +166,7 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
         statModifiedBools.Add(false);
         statValues.Add("");
 
-        if (architectItemCategory != ArchitectItemCategory.startWithStructure && architectItemType != ArchitectItemType.ArchitectTable && architectItemType != ArchitectItemType.BarricadeSpiked) {
+        if (itemUpgradeable) {
 
             maxItemLevel = linkedStatModifierSO.statModifierList.Count;
 
@@ -216,7 +224,7 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
 
             if(architectItemType == ArchitectItemType.FireFuelDepletion) {
                 initialStatValue = StructureStats.Instance.GetInitialFuelDepletionRate()*60f;
-                currentStatValue = (StructureStats.Instance.GetFuelDepletionRate()*60f).ToString("F1");
+                currentStatValue = (StructureStats.Instance.GetMainFireFuelDepletionRate()*60f).ToString("F1");
 
                 totalStatWithModifierPostfix = "/min";
                 relativeStatPostfix = "/min";
@@ -226,7 +234,7 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
             }
             if (architectItemType == ArchitectItemType.MaxFuelCapacity) {
                 initialStatValue = StructureStats.Instance.GetInitialMaxFuelTreshold();
-                currentStatValue = StructureStats.Instance.GetMaxFuelTreshold().ToString();
+                currentStatValue = StructureStats.Instance.GetMainFireMaxFuelTreshold().ToString();
 
                 totalStatWithModifierPostfix = "";
                 relativeStatPostfix = "";

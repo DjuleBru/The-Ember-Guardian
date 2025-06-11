@@ -11099,6 +11099,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814f3a117acff70438f17220495c658b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireUI: {fileID: 1462040423932742404}
   extractingEmberAudioSource: {fileID: 7980981743070373733}
   calmFireAudioClip: {fileID: 8300000, guid: 4c19ab16980a9ee45b5681353e4248a7, type: 3}
   mildFireAudioClip: {fileID: 8300000, guid: c7efb86615b30f64ab833ce3e55e7072, type: 3}
@@ -11114,7 +11115,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fdb005d631245a64586809fc608165ee, type: 3}
   fireDamagedAudioClipArray:
   - {fileID: 8300000, guid: 94b0d996fb0e14840b5dc53cc6beef59, type: 3}
-  fireTickRemovedAudioClip: {fileID: 8300000, guid: 30d1f4196fc8b0b47a92e57cfe11a6a0, type: 3}
+  secondaryFireTickRemovedAudioClip: {fileID: 8300000, guid: 957de08df5fb5f7419dd9aab6f7a049b, type: 3}
   extractingEmberAudioClip: {fileID: 8300000, guid: a698673fe8290254690daf5263bce2c3, type: 3}
 --- !u!82 &4790294746347968894
 AudioSource:
@@ -38185,6 +38186,7 @@ MonoBehaviour:
   fireRadiusCollider: {fileID: 7294656095997144733}
   isMainFire: 1
   isEndLevelFire: 0
+  isSecondaryFire: 0
   isHubFire: 0
   calmFireRadius: 10
   mildFireRadius: 10

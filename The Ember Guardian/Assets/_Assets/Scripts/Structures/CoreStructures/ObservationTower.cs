@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +18,24 @@ public class ObservationTower : Structure
 
         Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D collision) {
+        base.OnTriggerEnter2D(collision);
+
+        if (collision.gameObject.GetComponent<Player>() == null) return;
+        if (observationTowerActive) {
+            LevelUI_WaveInfoUI.Instance.ShowFullWaveInfoUI();
+        }
+    }
+
+    protected override void OnTriggerExit2D(Collider2D collision) {
+        base.OnTriggerExit2D(collision);
+
+        if (collision.gameObject.GetComponent<Player>() == null) return;
+        if (observationTowerActive) {
+            LevelUI_WaveInfoUI.Instance.HideFullWaveInfoUI();
+        }
     }
 
     private void Player_OnPlayerExitedCamp(object sender, EventArgs e) {
@@ -48,12 +67,15 @@ public class ObservationTower : Structure
         }
     }
 
+    [Button]
     private void ActivateObservationTower() {
         observationTowerActive = true;
         OnObservationTowerActivated?.Invoke(this, EventArgs.Empty);
         OnAnyObservationTowerActivated?.Invoke(this, EventArgs.Empty);
 
+        LevelUI_WaveInfoUI.Instance.RefreshWaveInfo();
         LevelUI_WaveInfoUI.Instance.ShowWaveInfoUI();
+        LevelUI_WaveInfoUI.Instance.ShowFullWaveInfoUI();
     }
 
     private void DeactivateObservationTower() {

@@ -9,6 +9,7 @@ public class WaveInfoUI_CreatureTemplate : MonoBehaviour
     [SerializeField] private Image creatureIcon;
     [SerializeField] private Sprite hideCreatureSprite;
     [SerializeField] private TextMeshProUGUI creatureAmountText;
+    [SerializeField] private GameObject creatureAmountGameObject;
 
     public void SetCreature(CreatureSO creatureSO, int creatureAmount, bool showCreatureSprite, bool showCreatureAmount) {
         if(showCreatureSprite) {
@@ -20,7 +21,7 @@ public class WaveInfoUI_CreatureTemplate : MonoBehaviour
         if(showCreatureAmount) {
             creatureAmountText.text = creatureAmount.ToString();
         } else {
-            creatureAmountText.text = "?";
+            creatureAmountGameObject.SetActive(false);
         }
     }
 }

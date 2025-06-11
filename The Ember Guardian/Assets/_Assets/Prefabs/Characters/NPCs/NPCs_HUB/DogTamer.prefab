@@ -112,6 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3258150a48cab4d94010b4bcf49dd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  autoScrollWithMouse: 0
 --- !u!114 &6540478622909370562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5049,6 +5050,10 @@ PrefabInstance:
       propertyPath: hubMerchantItemParent
       value: 
       objectReference: {fileID: 100804174906476335}
+    - target: {fileID: 3539063435249221414, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: hubMerchantNameLocalizationKey
+      value: npc_tamer
+      objectReference: {fileID: 0}
     - target: {fileID: 3693388833246835377, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: localizationKey
       value: npc_tamer

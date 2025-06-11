@@ -119,8 +119,8 @@ public class SoundManager : MonoBehaviour
         Structure.OnAnyStructurePrimaryFunctionUsed += Structure_OnAnyStructurePrimaryFunctionUsed;
         Obstacle.OnAnyObstacleBuilt += Obstacle_OnAnyObstacleBuilt;
 
-        StructureUI_Fire.OnFireTickRemoved += StructureUI_Fire_OnFireTickRemoved;
-        StructureUI_Fire.OnCricitalFireTickRemoved += StructureUI_Fire_OnCricitalFireTickRemoved;
+        StructureUI_Fire.OnMainFireTickRemoved += StructureUI_Fire_OnFireTickRemoved;
+        StructureUI_Fire.OnMainCricitalFireTickRemoved += StructureUI_Fire_OnCricitalFireTickRemoved;
         MenuButton.OnAnyMenuButtonHovered += MenuButton_OnAnyMenuButtonHovered;
         MenuButton.OnAnyMenuButtonPressed += MenuButton_OnAnyMenuButtonPressed;
 
@@ -917,8 +917,8 @@ public class SoundManager : MonoBehaviour
             VideoTipUI.Instance.OnVideoTipPanelClosed -= VideoTipUI_OnVideoTipPanelClosed;
         }
 
-        StructureUI_Fire.OnFireTickRemoved -= StructureUI_Fire_OnFireTickRemoved;
-        StructureUI_Fire.OnCricitalFireTickRemoved -= StructureUI_Fire_OnCricitalFireTickRemoved;
+        StructureUI_Fire.OnMainFireTickRemoved -= StructureUI_Fire_OnFireTickRemoved;
+        StructureUI_Fire.OnMainCricitalFireTickRemoved -= StructureUI_Fire_OnCricitalFireTickRemoved;
         PlayerWorldUITooltip.OnTooltipHidden -= PlayerWorldUITooltip_OnTooltipHidden;
         PlayerWorldUITooltip.OnTooltipShown -= PlayerWorldUITooltup_OnTooltipShown;
         ButtonUI.OnAnyButtonPressed -= ButtonUI_OnAnyButtonPressed;

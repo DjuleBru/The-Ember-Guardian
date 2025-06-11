@@ -167,7 +167,7 @@ public class CurrencyCrafter : Structure
     public bool GetCraftingCurrency() {
         return craftingCurrency;
     }
-    public int GetAmmoCraftAmount() {
+    public int GetCurrencyCraftAmount() {
         return currencyCraftAmount;
     }
 

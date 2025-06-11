@@ -45,9 +45,13 @@ public class StructureUI_Fire : StructureUI
 
     private Fire fire;
 
-    public static event EventHandler<OnFireTickRemovedEventArgs> OnFireTickRemoved;
-    public static event EventHandler OnCricitalFireTickRemoved;
-    public static event EventHandler OnFireMaxBarAmountChanged;
+    public static event EventHandler<OnFireTickRemovedEventArgs> OnMainFireTickRemoved;
+    public static event EventHandler OnMainCricitalFireTickRemoved;
+    public static event EventHandler OnMainFireMaxBarAmountChanged;
+
+    public event EventHandler<OnFireTickRemovedEventArgs> OnFireTickRemoved;
+    public event EventHandler OnCricitalFireTickRemoved;
+    public event EventHandler OnFireMaxBarAmountChanged;
 
     public class OnFireTickRemovedEventArgs : EventArgs {
         public int currentBars;
@@ -55,9 +59,12 @@ public class StructureUI_Fire : StructureUI
 
     protected override void Awake() {
         base.Awake();
-        Instance = this;
         fire = GetComponentInParent<Fire>();
         progressBarCanvasGroup = fireProgressBarGameObject.GetComponent<CanvasGroup>();
+
+        if(fire.GetIsMainFire()) {
+            Instance = this;
+        }
     }
 
     protected override void Start() {
@@ -171,7 +178,12 @@ public class StructureUI_Fire : StructureUI
         progressBar.sizeDelta = new Vector2(progressTemplateWidth, maxBarAmount * progressTemplateHeight);
         RefreshBackgroundProgressBar(maxBarAmount);
         RefreshFireSlotVisuals();
+
         OnFireMaxBarAmountChanged?.Invoke(this, EventArgs.Empty);
+
+        if(fire.GetIsMainFire()) {
+            OnMainFireMaxBarAmountChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void RefreshProgressBar(int targetBarAmount) {
@@ -245,6 +257,9 @@ public class StructureUI_Fire : StructureUI
             barsLeftToRemove -= 1;
 
             if(Fire.Instance.GetFireFuelLevelCritical()) {
+                if (fire.GetIsMainFire()) {
+                    OnMainCricitalFireTickRemoved?.Invoke(this, EventArgs.Empty);
+                }
                 OnCricitalFireTickRemoved?.Invoke(this, EventArgs.Empty);
                 fireUIAnimator.SetBool("FuelCritical", true);
             }
@@ -263,15 +278,28 @@ public class StructureUI_Fire : StructureUI
                     Instantiate(progressBarTemplate, progressBarContainer);
                 }
 
+                 
                 OnFireTickRemoved?.Invoke(this, new OnFireTickRemovedEventArgs {
                     currentBars = currentBarAmount
                 });
 
+                if(fire.GetIsMainFire()) {
+                    OnMainFireTickRemoved?.Invoke(this, new OnFireTickRemovedEventArgs {
+                        currentBars = currentBarAmount
+                    });
+                }
+
             } else {
 
+                
                 OnFireTickRemoved?.Invoke(this, new OnFireTickRemovedEventArgs {
-                    currentBars = currentBarAmount - 1
+                    currentBars = currentBarAmount
                 });
+                if (fire.GetIsMainFire()) {
+                    OnMainFireTickRemoved?.Invoke(this, new OnFireTickRemovedEventArgs {
+                        currentBars = currentBarAmount - 1
+                    });
+                }
             }
 
 
