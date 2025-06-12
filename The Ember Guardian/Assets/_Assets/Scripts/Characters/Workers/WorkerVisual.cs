@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -10,6 +11,7 @@ public class WorkerVisual : MobVisual {
     private HunterJob hunterJob;
     private GuardJob guardJob;
     private MinerJob minerJob;
+    private EngineerJob engineerJob;
     private JoblessJob joblessJob;
 
     [SerializeField] private WorkerInteractionCollider interactionCollider;
@@ -40,6 +42,7 @@ public class WorkerVisual : MobVisual {
         guardJob = GetComponentInParent<GuardJob>();
         minerJob = GetComponentInParent<MinerJob>();
         joblessJob = GetComponentInParent<JoblessJob>();
+        engineerJob = GetComponentInParent<EngineerJob>();
         workerStatusSpriteRenderer.sprite = null;
 
         worker.OnMobDied += Worker_OnMobDied;
@@ -48,8 +51,11 @@ public class WorkerVisual : MobVisual {
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
         workerAI.OnWorkerFollowPlayerChanged += WorkerAI_OnWorkerFollowPlayerChanged;
         worker.OnWorkerCollectedCurrency += Worker_OnWorkerCollectedCurrency;
-        worker.OnWorkerDroppedAllCurrencied += Worker_OnWorkerDroppedAllCurrencied;
+        worker.OnWorkerDroppedCurrency += Worker_OnWorkerDroppedCurrency;
+        worker.OnWorkerDroppedAllCurrencies += Worker_OnWorkerDroppedAllCurrencied;
 
+        engineerJob.OnEngineerChangedState += EngineerJob_OnEngineerChangedState;
+        engineerJob.OnEngineerHideTool += EngineerJob_OnEngineerHideTool;
 
         hunterJob.OnHunterFindsNoAnimal += HunterJob_OnHunterFindsNoAnimal;
         hunterJob.OnHunterChangedState += HunterJob_OnHunterChangedState;
@@ -67,6 +73,28 @@ public class WorkerVisual : MobVisual {
         holdingCurrencyGO.SetActive(false);
     }
 
+
+    private void EngineerJob_OnEngineerHideTool(object sender, System.EventArgs e) {
+        ShowWeapon(false);
+    }
+
+    private void EngineerJob_OnEngineerChangedState(object sender, System.EventArgs e) {
+        if(engineerJob.GetState() == EngineerJob.EngineerState.idle) {
+            ShowWeapon(true);
+        }
+
+    }
+
+    private void ShowWeapon(bool show) {
+        workerWeaponSpriteRenderer.enabled = show;
+        workerWeaponGlowSpriteRenderer.enabled = show;
+    }
+
+    private void Worker_OnWorkerDroppedCurrency(object sender, System.EventArgs e) {
+        if(worker.GetTotalCurrencyAmount() == 0) {
+            holdingCurrencyGO.SetActive(false);
+        }
+    }
 
     private void Worker_OnWorkerDroppedAllCurrencied(object sender, System.EventArgs e) {
         holdingCurrencyGO.SetActive(false);
@@ -144,7 +172,6 @@ public class WorkerVisual : MobVisual {
             }
         }
     }
-
 
     private void HunterJob_OnHunterChangedState(object sender, System.EventArgs e) {
         HunterJob.HunterState state = hunterJob.GetState();

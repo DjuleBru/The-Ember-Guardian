@@ -10,12 +10,15 @@ public class Structure : MonoBehaviour {
     [SerializeField] protected bool primaryFunctionUnlocked;
     [SerializeField] protected bool secondaryFunctionUnlocked;
     [SerializeField] protected GameObject visualIndicator;
+    [SerializeField] private PlayerCurrencies.CurrencyType refillCurrencyTypeNeeded;
+    [SerializeField] private int minimumRefillAmountRequired;
     protected bool upgradable;
 
     private CampZoneManager.CampSide campSide;
     protected PayCurrencyUI payCurrencyUI;
 
     public event EventHandler OnPlayerTriggeredIn;
+    public event EventHandler OnWorkerStartedRefilling;
     public static event EventHandler OnAnyPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
     public static event EventHandler OnAnyPlayerTriggeredOut;
@@ -31,6 +34,9 @@ public class Structure : MonoBehaviour {
     protected bool playerInteracting;
     protected int structureLevel = 1;
 
+    protected bool needsEngineerRefill;
+    protected List<EngineerJob> engineersAssigned = new List<EngineerJob>();
+    protected List<EngineerJob> engineersWorking = new List<EngineerJob>();
     private float playerInteractingTimer;
 
     public enum StructureInteractionType {
@@ -226,6 +232,45 @@ public class Structure : MonoBehaviour {
         Player.Instance.SetInPayCurrencyArea(false);
     }
 
+    public void AssignEngineer(EngineerJob engineerJob) {
+        if (engineersAssigned.Contains(engineerJob)) return;
+
+        engineersAssigned.Add(engineerJob);
+    }
+
+    public void RemoveAssignedEngineer(EngineerJob engineerJob) {
+        if (!engineersAssigned.Contains(engineerJob)) return;
+
+        SetEngineerWorking(engineerJob, false);
+        engineersAssigned.Remove(engineerJob);
+    }
+
+    public bool NeedsEngineering() {
+        return engineersAssigned.Count < structureSO.maxEngineersWorking;
+    }
+
+    public virtual void SetEngineerWorking(EngineerJob engineer, bool working) {
+        if(working) {
+            if (engineersWorking.Contains(engineer)) return;
+            engineersWorking.Add(engineer);
+        } else {
+            if (!engineersWorking.Contains(engineer)) return;
+            engineersWorking.Remove(engineer);
+        }
+    }
+
+    public bool NeedsEngineerRefill() {
+        return needsEngineerRefill;
+    }
+
+    public PlayerCurrencies.CurrencyType GetRefillCurrencyTypeNeeded() {
+        return refillCurrencyTypeNeeded;
+    }
+
+    public int GetMinimumRefillAmountRequired() {
+        return minimumRefillAmountRequired;
+    }
+
     #region InteractionTypes
 
     protected virtual void GameInput_OnPlayerInteractPerformed(object sender, EventArgs e) {
@@ -373,6 +418,11 @@ public class Structure : MonoBehaviour {
 
     public bool GetPlayerCanInteract() {
         return playerCanInteract;
+    }
+
+    public void SetWorkerRefillingStructure(WorkerCurrencies workerCurrencies ,bool refilling) {
+        payCurrencyUI.SetWorkerInteracting(workerCurrencies, refilling);
+        OnWorkerStartedRefilling?.Invoke(this, EventArgs.Empty);
     }
 
     #endregion

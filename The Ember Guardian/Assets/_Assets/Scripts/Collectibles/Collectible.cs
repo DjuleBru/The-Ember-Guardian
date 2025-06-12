@@ -40,6 +40,7 @@ public class Collectible : MonoBehaviour
     protected bool touchedFloor;
     protected bool enteredPayCurrencyUISlot;
 
+    protected bool movingForReloading;
     protected bool movingForPayment;
     protected bool destroyOnDestinationReached;
     protected float smoothTime = 5f;
@@ -68,7 +69,7 @@ public class Collectible : MonoBehaviour
             // Lerp vers la position locale de la destination
             transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, smoothTime * Time.deltaTime);
 
-            if ((currencyType == PlayerCurrencies.CurrencyType.ammo || currencyType == PlayerCurrencies.CurrencyType.ammo_special) && Vector3.Distance(transform.localPosition, Vector3.zero) < .1f) {
+            if (movingForReloading && Vector3.Distance(transform.localPosition, Vector3.zero) < .1f) {
                 PlayerShoot.Instance.AddAmmoClip(1);
                 Destroy(gameObject);
             }
@@ -213,9 +214,10 @@ public class Collectible : MonoBehaviour
         solidCollider.enabled = false;
     }
 
-    public virtual void SetMovingForPayment(bool moving, float smoothTime = 1f, Transform destination = null) {
+    public virtual void SetMovingForPayment(bool moving, float smoothTime = 1f, Transform destination = null, bool movingForReloading = false) {
 
         this.movingForPayment = moving;
+        this.movingForReloading = movingForReloading;
         this.smoothTime = smoothTime;
         paymentDestination = destination;
         transform.SetParent(destination);

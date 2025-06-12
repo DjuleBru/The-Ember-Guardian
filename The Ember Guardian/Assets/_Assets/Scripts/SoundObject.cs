@@ -41,8 +41,15 @@ public class SoundObject : MonoBehaviour
     protected void PlaySFXAfterDelay(AudioClip audioClip, float delay, float volume = 1f) {
         StartCoroutine(PlaySFXAfterDelayCoroutine(audioClip, delay, volume));
     }
+    protected void PlaySFXAfterDelay(AudioClip[] audioClip, float delay, float volume = 1f) {
+        StartCoroutine(PlaySFXAfterDelayCoroutine(audioClip, delay, volume));
+    }
 
     private IEnumerator PlaySFXAfterDelayCoroutine(AudioClip audioClip,float delay, float volume = 1f) {
+        yield return new WaitForSeconds(delay);
+        PlaySound2D(audioClip, volume);
+    }
+    private IEnumerator PlaySFXAfterDelayCoroutine(AudioClip[] audioClip, float delay, float volume = 1f) {
         yield return new WaitForSeconds(delay);
         PlaySound2D(audioClip, volume);
     }

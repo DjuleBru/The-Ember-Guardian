@@ -9,8 +9,8 @@ public class Ember : Collectible
     protected override void Awake() {
         base.Awake();
     }
-    public override void SetMovingForPayment(bool moving, float smoothTime = 1f, Transform destination = null) {
-        base.SetMovingForPayment(moving, smoothTime, destination);
+    public override void SetMovingForPayment(bool moving, float smoothTime = 1f, Transform destination = null, bool movingForReloading = false) {
+        base.SetMovingForPayment(moving, smoothTime, destination, movingForReloading);
 
         if(moving) {
             emphasizePositionGameObject.SetActive(false);

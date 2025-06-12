@@ -13,6 +13,7 @@ public class WorkerAI : MonoBehaviour
     private HunterJob hunterJob;
     private GuardJob guardJob;
     private MinerJob minerJob;
+    private EngineerJob engineerJob;
 
     private bool followingPlayer;
 
@@ -21,7 +22,8 @@ public class WorkerAI : MonoBehaviour
         jobless,
         hunter,
         miner,
-        guard
+        guard,
+        engineer
     }
 
     private JobTypes currentJob;
@@ -41,6 +43,7 @@ public class WorkerAI : MonoBehaviour
         hunterJob = GetComponent<HunterJob>();
         guardJob = GetComponent<GuardJob>();
         minerJob = GetComponent<MinerJob>();
+        engineerJob = GetComponent<EngineerJob>();
     }
 
     private void Start() {
@@ -67,6 +70,13 @@ public class WorkerAI : MonoBehaviour
             minerJob.InitializeJob();
             minerJob.enabled = true;
         }
+
+        if (currentJob == JobTypes.engineer) {
+            WorkerManager.Instance.RemoveJoblessWorker(worker);
+            engineerJob.InitializeJob();
+            engineerJob.enabled = true;
+        }
+
         if (currentJob == JobTypes.guard) {
             WorkerManager.Instance.RemoveJoblessWorker(worker);
             guardJob.InitializeJob();
@@ -87,6 +97,7 @@ public class WorkerAI : MonoBehaviour
         hunterJob.enabled = false;
         minerJob.enabled = false;
         guardJob.enabled = false;
+        engineerJob.enabled = false;
     }
 
     public JobTypes GetJob() {

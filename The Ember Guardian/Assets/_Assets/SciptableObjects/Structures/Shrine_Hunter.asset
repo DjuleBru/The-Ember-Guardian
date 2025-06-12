@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df36671b0790e8341a67078a96cfcbc5, type: 3}
-  m_Name: GuardShrine
+  m_Name: Shrine_Hunter
   m_EditorClassIdentifier: 
-  structureType: 6
-  structureLocationPrefab: {fileID: 2041480858183994556, guid: a9d045ed5f01be444a4be7c06cd73814, type: 3}
-  structurePrefab: {fileID: 376005918902835770, guid: dfb5f7aa015446e488a2c6440480dcfb, type: 3}
-  structureSprite: {fileID: -838287215, guid: cf79cc6ef6d03504f8cc5f5437071e9a, type: 3}
-  structureNameLocalizationKey: Guard Shrine
+  structureType: 4
+  structureLocationPrefab: {fileID: 8434879454533105174, guid: 70b355d293f7d1b43a655c7eb6d0e015, type: 3}
+  structurePrefab: {fileID: 376005918902835770, guid: 23468147a69e171409db1142d8a3887d, type: 3}
+  structureSprite: {fileID: 450413676, guid: f1a9abab3be99fd42a9b60f4e52f5a1f, type: 3}
+  structureNameLocalizationKey: Hunter Shrine
   widthInCells: 2
   structurePositionMovable: 1
   structurePositionRemovable: 1
   maxStructureBlueprintAmount: 1
-  level1StructureInitiallyUnlocked: 0
+  level1StructureInitiallyUnlocked: 1
   buildableAtNight: 1
   upgradeableAtNight: 0
   functionUsableAtNight: 1

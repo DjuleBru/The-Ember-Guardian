@@ -12,6 +12,7 @@ public class Shrine : Structure
         hunterShrine,
         minerShrine,
         guardShrine,
+        engineerShrine,
     }
 
     [SerializeField] private Transform workerSpawnPosition;
@@ -26,7 +27,10 @@ public class Shrine : Structure
     protected override void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         base.PayOrbsUI_OnOrbPaymentSuccess(sender, e);
 
-        showTooltipOnTrigger.HideTooltipShown();
+        if (showTooltipOnTrigger != null) {
+            showTooltipOnTrigger.HideTooltipShown();
+        };
+
         Worker joblessWorker = WorkerManager.Instance.GetFirstJoblessWorker();
 
         if(shrineType == ShrineType.hunterShrine) {
@@ -41,6 +45,10 @@ public class Shrine : Structure
             joblessWorker.transform.position = workerSpawnPosition.position;
             joblessWorker.GetComponent<WorkerAI>().SetJob(WorkerAI.JobTypes.guard);
         }
+        if (shrineType == ShrineType.engineerShrine) {
+            joblessWorker.transform.position = workerSpawnPosition.position;
+            joblessWorker.GetComponent<WorkerAI>().SetJob(WorkerAI.JobTypes.engineer);
+        }
 
         OnShrineActivated?.Invoke(this, EventArgs.Empty);
         OnAnyShrineActivated?.Invoke(this, EventArgs.Empty);
@@ -52,12 +60,16 @@ public class Shrine : Structure
 
     private void RefreshShrineActivation() {
         if (WorkerManager.Instance.GetJoblessWorkerAmount() == 0) {
-            showTooltipOnTrigger.SetShowTooltips(false);
             SetStructurePrimaryFunctionUnlocked(false);
+
+            if (showTooltipOnTrigger == null) return;
+            showTooltipOnTrigger.SetShowTooltips(false);
         }
         else {
-            showTooltipOnTrigger.SetShowTooltips(true);
             SetStructurePrimaryFunctionUnlocked(true);
+
+            if (showTooltipOnTrigger == null) return;
+            showTooltipOnTrigger.SetShowTooltips(true);
         }
     }
 

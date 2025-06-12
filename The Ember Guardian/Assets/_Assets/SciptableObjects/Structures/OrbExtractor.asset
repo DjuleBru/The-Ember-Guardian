@@ -27,6 +27,11 @@ MonoBehaviour:
   upgradeableAtNight: 0
   functionUsableAtNight: 1
   playerCanAlwaysInteract: 0
+  engineerCanWorkByDay: 1
+  engineerCanWorkByNight: 1
+  workingEngineerHideTool: 1
+  engineerWorkingPriority: 5
+  maxEngineersWorking: 1
   upgradeable: 0
   tentLevelRequiredForLevel2: 2
   tentLevelRequiredForLevel3: 3
@@ -34,7 +39,7 @@ MonoBehaviour:
   buildingUpgradeSpriteList:
   - {fileID: -645883829, guid: 34eba1fb9ce6a1544aa23a95c0972063, type: 3}
   - {fileID: 105420755, guid: 34eba1fb9ce6a1544aa23a95c0972063, type: 3}
-  buildAudioClip: {fileID: 8300000, guid: 063f9aa3f22bb22419be6d9088f9c45a, type: 3}
+  buildAudioClip: {fileID: 8300000, guid: 83e385d2430a1d344ab213482d1ffbc0, type: 3}
   buildVolumeMultiplier: 1
   useFunctionAudioClip: {fileID: 0}
   useFunctionVolumeMultiplier: 1

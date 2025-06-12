@@ -10,22 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df36671b0790e8341a67078a96cfcbc5, type: 3}
-  m_Name: HunterShrine
+  m_Name: Shrine_Engineer
   m_EditorClassIdentifier: 
-  structureType: 4
-  structureLocationPrefab: {fileID: 8434879454533105174, guid: 70b355d293f7d1b43a655c7eb6d0e015, type: 3}
-  structurePrefab: {fileID: 376005918902835770, guid: 23468147a69e171409db1142d8a3887d, type: 3}
-  structureSprite: {fileID: 450413676, guid: f1a9abab3be99fd42a9b60f4e52f5a1f, type: 3}
-  structureNameLocalizationKey: Hunter Shrine
+  structureType: 28
+  structureCategory: 0
+  structureLocationPrefab: {fileID: 4700977404103358565, guid: 13fda1562ecbad34ca078fabb2679046, type: 3}
+  structurePrefab: {fileID: 376005918902835770, guid: 55c331fe9a0bc8b4fa8bd5747924910e, type: 3}
+  structureSprite: {fileID: 444527085, guid: bf8da3aab6b261543b438be917263346, type: 3}
+  structureNameLocalizationKey: Engineer Shrine
   widthInCells: 2
   structurePositionMovable: 1
   structurePositionRemovable: 1
   maxStructureBlueprintAmount: 1
-  level1StructureInitiallyUnlocked: 1
+  level1StructureInitiallyUnlocked: 0
   buildableAtNight: 1
   upgradeableAtNight: 0
   functionUsableAtNight: 1
   playerCanAlwaysInteract: 0
+  engineerCanWorkByDay: 0
+  engineerCanWorkByNight: 0
+  workingEngineerHideTool: 0
+  maxEngineersWorking: 0
   upgradeable: 0
   tentLevelRequiredForLevel2: 2
   tentLevelRequiredForLevel3: 3

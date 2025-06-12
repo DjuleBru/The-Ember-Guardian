@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,28 +6,84 @@ using UnityEngine;
 public class OrbExtractor : Structure
 {
     [SerializeField] private Transform orbSpawnPosition;
-    [SerializeField] private float orbExtractionDuration = 60f;
-    private float orbExtractionRate = 1f;
-    private float orbExtractionTimer;
+    [SerializeField] private int drillAmountRequiredToCollectOrb = 10;
+    [SerializeField] private Transform engineerWorkingPosition;
+    [SerializeField] private Transform engineerDropPosition;
 
-    private bool crafting;
+    private int drillIndex;
+
+    public event EventHandler OnExtractorStartedDrilling;
+    public event EventHandler OnEngineerStartedWorking;
+    public event EventHandler OnEngineerStoppedWorking;
+
+    private float probabilityToExtractBigOrb = .3f;
+    private float drillAnimationDuration = 1.5f;
+    private float extractionRate = 1f;
+    private float extractionRateWithEngineer = 3f;
+    private float extractionTimer;
+    private float pauseDuration = 8f;
 
     protected override void Start() {
         base.Start();
-        orbExtractionTimer = orbExtractionDuration;
+
+        extractionTimer = 2f;
     }
 
     private void Update() {
-        orbExtractionTimer -= Time.deltaTime * orbExtractionRate;
-        if(orbExtractionTimer <= 0) {
+        extractionTimer -= Time.deltaTime * extractionRate;
+        if(extractionTimer <= 0) {
+            StartCoroutine(Drill());
+            extractionTimer = pauseDuration;
+        }
+    }
+
+    private IEnumerator Drill() {
+        drillIndex++;
+        OnExtractorStartedDrilling?.Invoke(this, EventArgs.Empty);
+
+        if(engineersWorking.Count != 0) {
+            engineersWorking[0].OrbExtractorTriggerDrill();
+        }
+
+        yield return new WaitForSeconds(drillAnimationDuration);
+        
+        if(drillIndex == drillAmountRequiredToCollectOrb) {
             ExtractOrb();
-            orbExtractionTimer = orbExtractionDuration;
+            drillIndex = 0;
         }
     }
 
     private void ExtractOrb() {
-        Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.bigBlueOrb), orbSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
-        collectible.ApplyRandomForce(-1, 1, 2, 4);
+        Transform currencyPrefab = CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.smallBlueOrb);
+
+        if (UnityEngine.Random.value < probabilityToExtractBigOrb) {
+            currencyPrefab = CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.bigBlueOrb);
+        }
+
+        Collectible collectible = Instantiate(currencyPrefab, orbSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
+        collectible.ApplyRandomForce(-2, 2, 4, 6);
         collectible.SetCanBePickedUpByWorkerAfterDelay(2f);
+        collectible.SetCollectibleUnInteractable(1f);
+    }
+
+    public override void SetEngineerWorking(EngineerJob engineer, bool working) {
+        base.SetEngineerWorking(engineer, working);
+
+        Debug.Log("SetEngineerWorking " + working);
+
+        if(working) {
+
+            extractionRate = extractionRateWithEngineer;
+            engineer.transform.position = engineerWorkingPosition.position;
+            OnEngineerStartedWorking?.Invoke(this, EventArgs.Empty);
+
+        } else {
+
+            extractionRate = 1f;
+            engineer.transform.position = engineerDropPosition.position;
+            OnEngineerStoppedWorking?.Invoke(this, EventArgs.Empty);
+
+        }
+
     }
 }

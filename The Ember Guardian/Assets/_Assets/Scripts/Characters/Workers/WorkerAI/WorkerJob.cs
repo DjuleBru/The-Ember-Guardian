@@ -111,7 +111,16 @@ public class WorkerJob : MonoBehaviour
         return false;
     }
 
-    public void StayAwayFromCreature(Creature closestCreature) {
+    protected bool CheckBlockedByCreature() {
+        if (closestCreature != null) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public virtual void StayAwayFromCreature(Creature closestCreature) {
 
         mobMovement.SetMoveSpeed(fleeMoveSpeed);
 
@@ -190,7 +199,7 @@ public class WorkerJob : MonoBehaviour
         }
     }
 
-    protected bool CheckDropCurrenciesToPlayer() {
+    protected virtual bool CheckDropCurrenciesToPlayer() {
         if (worker.GetPlayerIsClose() && worker.GetTotalCurrencyAmount() > 0) {
             return true;
         }

@@ -9,6 +9,7 @@ public class WorkerAnimatorManager : MonoBehaviour
     [SerializeField] private RuntimeAnimatorController hunterAnimator;
     [SerializeField] private RuntimeAnimatorController guardAnimator;
     [SerializeField] private RuntimeAnimatorController minerAnimator;
+    [SerializeField] private RuntimeAnimatorController engineerAnimator;
     [SerializeField] private Animator workerBodyAnimator;
 
     private Worker worker;
@@ -16,6 +17,7 @@ public class WorkerAnimatorManager : MonoBehaviour
     private MobAttack mobAttack;
     private MobMovement mobMovement;
     private Animator animator;
+    private EngineerJob engineerJob;
 
     private bool moving;
     private float moveDir;
@@ -31,11 +33,14 @@ public class WorkerAnimatorManager : MonoBehaviour
         mobMovement = GetComponentInParent<MobMovement>();
         mobAttack = GetComponentInParent<MobAttack>();
         animator = GetComponent<Animator>();
+        engineerJob = GetComponentInParent<EngineerJob>();
 
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
         mobAttack.OnMobAttack += MobAttack_OnMobAttack;
         worker.OnMobDied += Worker_OnMobDied;
         worker.OnMobDamageTaken += Worker_OnMobDamageTaken;
+        engineerJob.OnOrbExtractorTriggeredDrill += EngineerJob_OnOrbExtractorTriggeredDrill;
+        engineerJob.OnEngineerTurnsWrench += EngineerJob_OnEngineerTurnsWrench;
     }
 
     private void Worker_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {
@@ -130,7 +135,16 @@ public class WorkerAnimatorManager : MonoBehaviour
         return previousWatchDir;
     }
 
+    private void EngineerJob_OnOrbExtractorTriggeredDrill(object sender, EventArgs e) {
+        animator.SetTrigger("WorkInOrbExtractor");
+
+        HandleScaleChange(transform.position.x);
+    }
     private void MobAttack_OnMobAttack(object sender, System.EventArgs e) {
+        animator.SetTrigger("Attack");
+    }
+
+    private void EngineerJob_OnEngineerTurnsWrench(object sender, EventArgs e) {
         animator.SetTrigger("Attack");
     }
 
@@ -166,6 +180,9 @@ public class WorkerAnimatorManager : MonoBehaviour
             animator.runtimeAnimatorController = minerAnimator;
         }
 
+        if (workerAI.GetJob() == WorkerAI.JobTypes.engineer) {
+            animator.runtimeAnimatorController = engineerAnimator;
+        }
         moving = false;
     }
 

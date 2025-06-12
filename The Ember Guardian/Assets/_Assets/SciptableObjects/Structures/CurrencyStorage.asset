@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df36671b0790e8341a67078a96cfcbc5, type: 3}
-  m_Name: MinerShrine
+  m_Name: CurrencyStorage
   m_EditorClassIdentifier: 
-  structureType: 5
-  structureLocationPrefab: {fileID: 4700977404103358565, guid: cea3f48392c1a8c48b3e253c5d7c1d1a, type: 3}
-  structurePrefab: {fileID: 376005918902835770, guid: 66853f91908156f4cbdb33546cc7fc15, type: 3}
-  structureSprite: {fileID: 444527085, guid: bf8da3aab6b261543b438be917263346, type: 3}
-  structureNameLocalizationKey: Scavenger Shrine
-  widthInCells: 2
+  structureType: 29
+  structureCategory: 3
+  structureLocationPrefab: {fileID: 0}
+  structurePrefab: {fileID: 6344758737003657820, guid: b4a3dc4aca3799d47975e4e5925c44e8, type: 3}
+  structureSprite: {fileID: 21300000, guid: d6554ff518318d343979dc4f56f5ceac, type: 3}
+  structureNameLocalizationKey: Orb Extractor
+  widthInCells: 3
   structurePositionMovable: 1
   structurePositionRemovable: 1
   maxStructureBlueprintAmount: 1
@@ -26,14 +27,20 @@ MonoBehaviour:
   upgradeableAtNight: 0
   functionUsableAtNight: 1
   playerCanAlwaysInteract: 0
+  engineerCanWorkByDay: 0
+  engineerCanWorkByNight: 0
+  workingEngineerHideTool: 0
+  maxEngineersWorking: 1
   upgradeable: 0
   tentLevelRequiredForLevel2: 2
   tentLevelRequiredForLevel3: 3
   tentLevelRequiredForLevel4: 4
-  buildingUpgradeSpriteList: []
-  buildAudioClip: {fileID: 8300000, guid: 063f9aa3f22bb22419be6d9088f9c45a, type: 3}
+  buildingUpgradeSpriteList:
+  - {fileID: -645883829, guid: 34eba1fb9ce6a1544aa23a95c0972063, type: 3}
+  - {fileID: 105420755, guid: 34eba1fb9ce6a1544aa23a95c0972063, type: 3}
+  buildAudioClip: {fileID: 8300000, guid: 83e385d2430a1d344ab213482d1ffbc0, type: 3}
   buildVolumeMultiplier: 1
-  useFunctionAudioClip: {fileID: 8300000, guid: 1e68af01ea6bbc64db8c36ce0e6ac426, type: 3}
+  useFunctionAudioClip: {fileID: 0}
   useFunctionVolumeMultiplier: 1
   upgradeAudioClip: {fileID: 8300000, guid: cc9af60211e5e3d4489327c93469c6d7, type: 3}
   upgradeVolumeMultiplier: 1

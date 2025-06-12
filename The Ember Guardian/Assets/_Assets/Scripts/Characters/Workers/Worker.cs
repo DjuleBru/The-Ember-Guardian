@@ -22,6 +22,7 @@ public class Worker : Mob {
     private bool droppingCurrencies;
     private bool recruited;
     private float playerIsCloseTimer;
+    private float timeToStayClose = .75f;
 
     private float dropDelay = 0.125f; // Délai entre chaque drop
     private float dropTimer = 0f; // Compteur pour suivre le temps écoulé
@@ -37,7 +38,8 @@ public class Worker : Mob {
     public event EventHandler OnWorkerHovered;
     public event EventHandler OnWorkerUnhovered;
     public event EventHandler OnWorkerCollectedCurrency;
-    public event EventHandler OnWorkerDroppedAllCurrencied;
+    public event EventHandler OnWorkerDroppedCurrency;
+    public event EventHandler OnWorkerDroppedAllCurrencies;
 
     private void Awake() {
         workerAI = GetComponent<WorkerAI>();    
@@ -88,6 +90,17 @@ public class Worker : Mob {
         dropTimer = 0f; // Réinitialiser le timer
     }
 
+    public void RemoveCurrency(PlayerCurrencies.CurrencyType currencyType) {
+        Debug.Log("RemoveCurrency " + currencyType);
+        collectedCurrencies[currencyType]--;
+
+        if (!collectedCurrencies.ContainsKey(currencyType)) {
+            collectedCurrencies[currencyType] = 0;
+        }
+
+        OnWorkerDroppedCurrency?.Invoke(this, EventArgs.Empty);
+    }
+
     public int GetTotalCurrencyAmount() {
         int totalAmount = 0;
         foreach (var amount in collectedCurrencies.Values) {
@@ -122,7 +135,7 @@ public class Worker : Mob {
 
     public bool PlayerIsCloseAndStayedAround() {
         float distance = 2f;
-        float timeToStayClose = .75f;
+        timeToStayClose = .75f;
 
         playerIsCloseTimer += Time.deltaTime;
 
@@ -166,6 +179,7 @@ public class Worker : Mob {
 
                         // Réduire la valeur après chaque drop
                         collectedCurrencies[currency.Key]--;
+                        OnWorkerDroppedCurrency?.Invoke(this, EventArgs.Empty);
 
                         // Si la valeur atteint 0, retirer l'élément du dictionnaire
                         if (collectedCurrencies[currency.Key] <= 0) {
@@ -178,7 +192,7 @@ public class Worker : Mob {
                 // Si plus rien à dropper, arrêter le processus
                 if (collectedCurrencies.Count == 0) {
                     droppingCurrencies = false;
-                    OnWorkerDroppedAllCurrencied?.Invoke(this, EventArgs.Empty);
+                    OnWorkerDroppedAllCurrencies?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
@@ -224,8 +238,13 @@ public class Worker : Mob {
             health = (int)WorkerStats.Instance.GetHunterHealth();
             OnAnyWorkerAssignedHunter?.Invoke(this, EventArgs.Empty);
         }
-        if (workerAI.GetJob() == WorkerAI.JobTypes.guard) {
-            health = (int)WorkerStats.Instance.GetGuardHealth();
+
+        if (workerAI.GetJob() == WorkerAI.JobTypes.miner) {
+            health = (int)WorkerStats.Instance.GetMinerHealth();
+        }
+
+        if (workerAI.GetJob() == WorkerAI.JobTypes.engineer) {
+            timeToStayClose = 2f;
         }
 
         initialHealth = health;

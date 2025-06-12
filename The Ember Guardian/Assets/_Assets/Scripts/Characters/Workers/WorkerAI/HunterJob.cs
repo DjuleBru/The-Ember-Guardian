@@ -601,15 +601,6 @@ public class HunterJob : WorkerJob {
         return false;
     }
 
-    private bool CheckBlockedByCreature() {
-        if(closestCreature != null) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
     private bool CheckClosestCreatureSmart() {
         checkClosestTargetTimer -= Time.deltaTime;
 

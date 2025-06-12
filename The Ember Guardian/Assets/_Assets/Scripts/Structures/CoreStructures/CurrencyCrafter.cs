@@ -15,6 +15,8 @@ public class CurrencyCrafter : Structure
     [SerializeField] private ShowTooltipOnTrigger showTooltipOnTrigger;
 
     private PlayerCurrencies.CurrencyType currencyTypeBeingCrafted;
+    private float craftingRate = 1f;
+    private float engineerCraftingRateBuff = .25f;
     private int batchCapacity = 1;
     private int currentBatches;
     private bool craftingCurrency;
@@ -35,6 +37,7 @@ public class CurrencyCrafter : Structure
         base.Start();
         SetStructurePrimaryFunctionUnlocked(true);
         ActivateStructurePrimaryFunctionInteraction(true);
+        needsEngineerRefill = true;
 
         if(currencyTypeCrafted == PlayerCurrencies.CurrencyType.ammo) {
             currencyCraftAmount = StructureStats.Instance.GetAmmoCrafterMaxAmmoPerBatch();
@@ -106,6 +109,7 @@ public class CurrencyCrafter : Structure
         currencyCraftTimer += currencyCraftTime;
         if (currentBatches == batchCapacity) {
             playerCanInteract = false;
+            needsEngineerRefill = false;
             OnMaxCurrencyBatchCraftingStarted?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -163,9 +167,14 @@ public class CurrencyCrafter : Structure
             yield return new WaitForSeconds(delayBetweenAmmoInstantiation);
         }
 
+        needsEngineerRefill = true;
     }
+
     public bool GetCraftingCurrency() {
         return craftingCurrency;
+    }
+    public bool GetCraftedCurrency() {
+        return craftedCurrency;
     }
     public int GetCurrencyCraftAmount() {
         return currencyCraftAmount;
@@ -185,5 +194,17 @@ public class CurrencyCrafter : Structure
 
     public PlayerCurrencies.CurrencyType GetCurrencyTypeCrafted() {
         return currencyTypeCrafted;
+    }
+
+    public override void SetEngineerWorking(EngineerJob engineer, bool working) {
+        base.SetEngineerWorking(engineer, working);
+
+        if (working) {
+            craftingRate += engineerCraftingRateBuff;
+        }
+        else {
+            craftingRate -= engineerCraftingRateBuff;
+        }
+
     }
 }

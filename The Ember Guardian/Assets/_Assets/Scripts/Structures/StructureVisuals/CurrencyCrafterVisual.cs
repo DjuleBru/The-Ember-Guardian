@@ -45,6 +45,7 @@ public class CurrencyCrafterVisual : StructureVisual
         ammoCrafterUI.OnStructureDisplayedFunctionChanged += AmmoCrafterUI_OnStructureDisplayedFunctionChanged;
         currencyCrafter.OnPlayerTriggeredIn += AmmoCrafter_OnPlayerTriggeredIn;
         currencyCrafter.OnPlayerTriggeredOut += AmmoCrafter_OnPlayerTriggeredOut;
+        currencyCrafter.OnWorkerStartedRefilling += CurrencyCrafter_OnWorkerStartedRefilling;
 
         craftCurrency_PayOrbsGameObject.SetActive(true); 
         if (craftSpecialCurrency_PayOrbsGameObject != null) {
@@ -57,13 +58,23 @@ public class CurrencyCrafterVisual : StructureVisual
 
     private void AmmoCrafter_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
         if (currencyCrafter.GetCraftingCurrency()) return;
+        if (currencyCrafter.GetCraftedCurrency()) return;
+        
         craftCurrency_craftingCurrencyGameObject.SetActive(false);
     }
 
     private void AmmoCrafter_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
         if (currencyCrafter.GetCraftingCurrency()) return;
+        if (currencyCrafter.GetCraftedCurrency()) return;
+
         craftCurrency_craftingCurrencyGameObject.SetActive(true);
     }
+    private void CurrencyCrafter_OnWorkerStartedRefilling(object sender, System.EventArgs e) {
+        if (currencyCrafter.GetCraftingCurrency()) return;
+
+        craftCurrency_craftingCurrencyGameObject.SetActive(true);
+    }
+
 
     protected void Update() {
 

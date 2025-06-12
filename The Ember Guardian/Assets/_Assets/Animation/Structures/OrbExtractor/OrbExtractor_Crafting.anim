@@ -136,6 +136,15 @@ AnimationClip:
     classID: 212
     script: {fileID: 0}
     flags: 2
+  - serializedVersion: 2
+    curve:
+    - time: 0
+      value: {fileID: 0}
+    attribute: m_Sprite
+    path: StructureVisualGO/EngineerSprite
+    classID: 212
+    script: {fileID: 0}
+    flags: 2
   m_SampleRate: 10
   m_WrapMode: 0
   m_Bounds:
@@ -163,6 +172,15 @@ AnimationClip:
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 2238906974
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    - serializedVersion: 2
+      path: 712888006
       attribute: 0
       script: {fileID: 0}
       typeID: 212
@@ -207,6 +225,7 @@ AnimationClip:
     - {fileID: 1770199789, guid: e29cd3cfd287210499f386be27eec304, type: 3}
     - {fileID: 281308123, guid: e29cd3cfd287210499f386be27eec304, type: 3}
     - {fileID: -829072888, guid: e29cd3cfd287210499f386be27eec304, type: 3}
+    - {fileID: 0}
     - {fileID: 0}
   m_AnimationClipSettings:
     serializedVersion: 2

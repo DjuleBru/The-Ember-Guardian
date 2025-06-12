@@ -36,6 +36,8 @@ public class StructureSO : ScriptableObject
         fireEjector,
         spikes,
         orbExtractor,
+        engineerShrine,
+        currencyStorage,
     }
     public enum StructureCategory {
         core,
@@ -61,6 +63,12 @@ public class StructureSO : ScriptableObject
     public bool upgradeableAtNight;
     public bool functionUsableAtNight;
     public bool playerCanAlwaysInteract;
+    public bool engineerCanWorkByDay;
+    public bool engineerCanWorkByNight;
+    public bool workingEngineerHideTool;
+    [PropertyRange(0,10)]
+    public int engineerWorkingPriority;
+    public int maxEngineersWorking;
 
     public bool upgradeable = true;
     [ShowIf("upgradeable")]

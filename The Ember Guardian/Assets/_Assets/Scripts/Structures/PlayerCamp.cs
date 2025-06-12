@@ -37,6 +37,7 @@ public class PlayerCamp : MonoBehaviour
     private Vector3 rightBarricade3Position;
 
     private List<Structure> builtStructures = new List<Structure>();
+    private List<Structure> currencyStorages = new List<Structure>();
     private List<Structure> builtTowers = new List<Structure>();
 
     private bool blockStructureUnlocks;
@@ -284,6 +285,62 @@ public class PlayerCamp : MonoBehaviour
     public void BlockStructureUnlocks() {
         blockStructureUnlocks = true;
     } 
+
+    public Structure GetClosestAvailableEngineerDayStructureToWork(Vector3 engineerPosition) {
+        float closestDistance = Mathf.Infinity;
+        Structure closestAvailableStructure = null;
+
+        foreach(Structure structure in builtStructures) {
+            if (!structure.GetStructureSO().engineerCanWorkByDay) continue;
+            if (!structure.NeedsEngineering()) continue;
+            if (structure.NeedsEngineerRefill()) {
+                CurrencyStorage storage = GetCurrencyStorageWithCurrencies(structure.GetRefillCurrencyTypeNeeded(), structure.GetMinimumRefillAmountRequired());
+                if (storage == null) continue;
+            };
+
+            float distanceToStructure = Mathf.Abs(engineerPosition.x - structure.transform.position.x);
+            if(distanceToStructure < closestDistance) {
+                closestDistance = distanceToStructure;
+                closestAvailableStructure = structure;
+            }
+        }
+
+        return closestAvailableStructure;
+    }
+
+    public Structure GetClosestAvailableEngineerNightStructureToWork(Vector3 engineerPosition) {
+        float closestDistance = Mathf.Infinity;
+        Structure closestAvailableStructure = null;
+
+        foreach (Structure structure in builtStructures) {
+            if (!structure.GetStructureSO().engineerCanWorkByNight) continue;
+            if (!structure.NeedsEngineering()) continue;
+
+            float distanceToStructure = Mathf.Abs(engineerPosition.x - structure.transform.position.x);
+            if (distanceToStructure < closestDistance) {
+                closestDistance = distanceToStructure;
+                closestAvailableStructure = structure;
+            }
+        }
+
+        return closestAvailableStructure;
+    }
+
+    public void AddCurrencyStorage(CurrencyStorage storage) {
+        currencyStorages.Add(storage);
+    }
+
+    public CurrencyStorage GetCurrencyStorageWithCurrencies(PlayerCurrencies.CurrencyType currencyType, int currencyAmountRequired) {
+        CurrencyStorage storage = null;
+
+        foreach(CurrencyStorage currencyStorage in currencyStorages) {
+            if(currencyStorage.GetCurrencyTypeStored() == currencyType && currencyStorage.GetCurrencyAmountStored() >= currencyAmountRequired) {
+                storage = currencyStorage;
+            }
+        }
+
+        return storage;
+    }
 
     public float LayoutToWorldPosition(int startLayoutPosition, StructureSO structureSO) {
         float objectMidPointLayoutPosition;

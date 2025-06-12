@@ -198,16 +198,6 @@ public class MinerJob : WorkerJob {
         }
     }
 
-    private bool CheckBlockedByCreature() {
-        if (closestCreature != null) {
-            return true;
-        }
-        else {
-            return false;
-        }
-
-    }
-
     private void FollowPlayer() {
         Vector3 destination = WorkerFollowPlayerHandler.Instance.GetWorkerFollowPosition(worker);
 

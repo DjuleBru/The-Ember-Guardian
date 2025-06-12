@@ -40,6 +40,7 @@ public class StructureUI : MonoBehaviour
         structure.OnPlayerTriggeredOut += Structure_OnPlayerTriggeredOut;
         structure.OnStructureInteractionsUpdated += Structure_OnStructureInteractionsUpdated;
         structure.OnStructureUpgraded += Structure_OnStructureUpgraded;
+        structure.OnWorkerStartedRefilling += Structure_OnWorkerStartedRefilling;
 
         GameInput.Instance.OnPlayerRightSwitchPerformed += GameInput_OnPlayerRightSwitchPerformed;
         GameInput.Instance.OnPlayerLeftSwitchPerformed += GameInput_OnPlayerLeftSwitchPerformed;
@@ -125,13 +126,16 @@ public class StructureUI : MonoBehaviour
         RefreshShownUI();
     }
 
+    private void Structure_OnWorkerStartedRefilling(object sender, EventArgs e) {
+        SetUIActive(true);
+    }
+
     protected virtual void SetUIActive(bool active) {
         UIGameObject.SetActive(active);
 
         foreach(GameObject go in otherUIGameObjectList) {
             go.SetActive(active);
         }
-        //UpdateSwitchUIGameObjectActivation();
     }
 
     protected void UpdateArrowsVisibility() {
@@ -155,15 +159,6 @@ public class StructureUI : MonoBehaviour
         // Afficher ou cacher les flèches
         leftArrow.gameObject.SetActive(currentIndex > 0); // Flèche gauche active si ce n'est pas le premier élément
         rightArrow.gameObject.SetActive(currentIndex < activeTypes.Count - 1); // Flèche droite active si ce n'est pas le dernier élément
-    }
-
-    protected void UpdateSwitchUIGameObjectActivation() {
-
-        if (structure.GetActiveStructureInteractionTypeList().Count > 1) {
-            switchUIGameObjectList.SetActive(true);
-        } else {
-            switchUIGameObjectList.SetActive(false);
-        }
     }
 
     protected void ShowStructurePrimaryFunctionUI() {

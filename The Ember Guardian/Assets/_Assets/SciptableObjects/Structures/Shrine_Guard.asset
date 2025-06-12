@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df36671b0790e8341a67078a96cfcbc5, type: 3}
+  m_Name: Shrine_Guard
+  m_EditorClassIdentifier: 
+  structureType: 6
+  structureLocationPrefab: {fileID: 2041480858183994556, guid: a9d045ed5f01be444a4be7c06cd73814, type: 3}
+  structurePrefab: {fileID: 376005918902835770, guid: dfb5f7aa015446e488a2c6440480dcfb, type: 3}
+  structureSprite: {fileID: -838287215, guid: cf79cc6ef6d03504f8cc5f5437071e9a, type: 3}
+  structureNameLocalizationKey: Guard Shrine
+  widthInCells: 2
+  structurePositionMovable: 1
+  structurePositionRemovable: 1
+  maxStructureBlueprintAmount: 1
+  level1StructureInitiallyUnlocked: 0
+  buildableAtNight: 1
+  upgradeableAtNight: 0
+  functionUsableAtNight: 1
+  playerCanAlwaysInteract: 0
+  upgradeable: 0
+  tentLevelRequiredForLevel2: 2
+  tentLevelRequiredForLevel3: 3
+  tentLevelRequiredForLevel4: 4
+  buildingUpgradeSpriteList: []
+  buildAudioClip: {fileID: 8300000, guid: 063f9aa3f22bb22419be6d9088f9c45a, type: 3}
+  buildVolumeMultiplier: 1
+  useFunctionAudioClip: {fileID: 8300000, guid: 1e68af01ea6bbc64db8c36ce0e6ac426, type: 3}
+  useFunctionVolumeMultiplier: 1
+  upgradeAudioClip: {fileID: 8300000, guid: cc9af60211e5e3d4489327c93469c6d7, type: 3}
+  upgradeVolumeMultiplier: 1
