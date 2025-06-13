@@ -184,6 +184,7 @@ public class GunSpotLight : MonoBehaviour
         if (PlayerShoot.Instance.GetHeldGun().GetGunJammed()) return;
 
         if (!canSwitchLight) return;
+        if (Player.Instance.GetInCurrencyStorageArea()) return;
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         SwitchLight();
     }

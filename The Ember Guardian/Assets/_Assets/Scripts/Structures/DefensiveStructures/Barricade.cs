@@ -49,7 +49,6 @@ public class Barricade : Structure, IDamageable {
     }
 
     public void Die() {
-        Debug.Log("barricade destroyed !");
         OnBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
         OnAnyBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
         OnBarricadeBreached?.Invoke(this, EventArgs.Empty);
@@ -113,6 +112,8 @@ public class Barricade : Structure, IDamageable {
             SetStructurePrimaryFunctionUnlocked(true);
             SetStructureUpgradableUnlocked(false);
             barricadeRepairable = true;
+            needsEngineerRefill = true;
+            needsEngineering = true;
         }
     }
 
@@ -131,13 +132,14 @@ public class Barricade : Structure, IDamageable {
     }
 
     private void RepairBarricade() {
-
         barricadeHealth = barricadeMaxHealth;
         OnBarricadeRepaired?.Invoke(this, EventArgs.Empty);
         OnAnyBarricadeRepaired?.Invoke(this, EventArgs.Empty);
         SetStructurePrimaryFunctionUnlocked(false);
         RefreshStructureUpgradeInteraction();
-        barricadeRepairable = true;
+        barricadeRepairable = false;
+        needsEngineerRefill = false;
+        needsEngineering = false;
     }
 
     public void SetAsOuterBarricade(bool outerBarricade) {

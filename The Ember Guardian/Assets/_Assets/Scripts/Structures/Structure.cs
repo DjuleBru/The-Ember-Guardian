@@ -10,8 +10,6 @@ public class Structure : MonoBehaviour {
     [SerializeField] protected bool primaryFunctionUnlocked;
     [SerializeField] protected bool secondaryFunctionUnlocked;
     [SerializeField] protected GameObject visualIndicator;
-    [SerializeField] private PlayerCurrencies.CurrencyType refillCurrencyTypeNeeded;
-    [SerializeField] private int minimumRefillAmountRequired;
     protected bool upgradable;
 
     private CampZoneManager.CampSide campSide;
@@ -24,7 +22,7 @@ public class Structure : MonoBehaviour {
     public static event EventHandler OnAnyPlayerTriggeredOut;
     public event EventHandler OnStructureUpgraded;
     public static event EventHandler OnAnyStructureUpgraded;
-    public event EventHandler OnStructurePrimaryFunctionUsed;
+    public event EventHandler OnStructureFunctionUsed;
     public static event EventHandler OnAnyStructurePrimaryFunctionUsed;
     public event EventHandler OnStructureInteractionsUpdated;
     public event EventHandler OnInitialCampStructureBuilt;
@@ -34,6 +32,7 @@ public class Structure : MonoBehaviour {
     protected bool playerInteracting;
     protected int structureLevel = 1;
 
+    protected bool needsEngineering;
     protected bool needsEngineerRefill;
     protected List<EngineerJob> engineersAssigned = new List<EngineerJob>();
     protected List<EngineerJob> engineersWorking = new List<EngineerJob>();
@@ -79,6 +78,7 @@ public class Structure : MonoBehaviour {
 
     protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         payCurrencyUI.SetPlayerInteracting(false);
+        payCurrencyUI.StopWorkerInteraction();
         
         if(currentStructureInteractionType == StructureInteractionType.primaryFunction) {
             TriggerStructurePrimaryFunction();
@@ -98,12 +98,12 @@ public class Structure : MonoBehaviour {
 
     protected virtual void TriggerStructurePrimaryFunction() {
         OnAnyStructurePrimaryFunctionUsed?.Invoke(this, EventArgs.Empty);
-        OnStructurePrimaryFunctionUsed?.Invoke(this, EventArgs.Empty);
+        OnStructureFunctionUsed?.Invoke(this, EventArgs.Empty);
     }
 
     protected virtual void TriggerStructureSecondaryFunction() {
         OnAnyStructurePrimaryFunctionUsed?.Invoke(this, EventArgs.Empty);
-        OnStructurePrimaryFunctionUsed?.Invoke(this, EventArgs.Empty);
+        OnStructureFunctionUsed?.Invoke(this, EventArgs.Empty);
     }
 
     protected virtual void UpgradeStructure() {
@@ -246,7 +246,7 @@ public class Structure : MonoBehaviour {
     }
 
     public bool NeedsEngineering() {
-        return engineersAssigned.Count < structureSO.maxEngineersWorking;
+        return engineersAssigned.Count < structureSO.maxEngineersWorking && needsEngineering;
     }
 
     public virtual void SetEngineerWorking(EngineerJob engineer, bool working) {
@@ -264,11 +264,11 @@ public class Structure : MonoBehaviour {
     }
 
     public PlayerCurrencies.CurrencyType GetRefillCurrencyTypeNeeded() {
-        return refillCurrencyTypeNeeded;
+        return payCurrencyUI.GetCurrentCurrencyTemplateWorldUI().GetCurrencyTypeToPay();
     }
 
     public int GetMinimumRefillAmountRequired() {
-        return minimumRefillAmountRequired;
+        return payCurrencyUI.GetCurrencyAmountToPay();
     }
 
     #region InteractionTypes
@@ -334,7 +334,7 @@ public class Structure : MonoBehaviour {
         RefreshPlayerCanInteract();
     }
 
-    protected void ActivateStructurePrimaryFunctionInteraction(bool active) {
+    protected virtual void ActivateStructurePrimaryFunctionInteraction(bool active) {
         if (active) {
             if (!activeStructureInteractionsTypeList.Contains(StructureInteractionType.primaryFunction)) {
                 activeStructureInteractionsTypeList.Add(StructureInteractionType.primaryFunction);
@@ -351,7 +351,7 @@ public class Structure : MonoBehaviour {
         RefreshPlayerCanInteract();
     }
 
-    protected void ActivateStructureSecondaryFunctionInteraction(bool active) {
+    protected virtual void ActivateStructureSecondaryFunctionInteraction(bool active) {
         if (active) {
             if (!activeStructureInteractionsTypeList.Contains(StructureInteractionType.secondaryFunction)) {
                 activeStructureInteractionsTypeList.Add(StructureInteractionType.secondaryFunction);
@@ -418,6 +418,12 @@ public class Structure : MonoBehaviour {
 
     public bool GetPlayerCanInteract() {
         return playerCanInteract;
+    }
+    protected bool GetHasCurrenciesToPay() {
+        if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(GetRefillCurrencyTypeNeeded()).Count > 0) {
+            return true; // Continue à payer
+        }
+        return false;
     }
 
     public void SetWorkerRefillingStructure(WorkerCurrencies workerCurrencies ,bool refilling) {

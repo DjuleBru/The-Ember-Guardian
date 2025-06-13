@@ -699,7 +699,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: currencyTypeToPay
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: initialPayCurrencySmoothTime
@@ -895,8 +895,10 @@ MonoBehaviour:
   upgradeUnlocked: 0
   primaryFunctionUnlocked: 0
   secondaryFunctionUnlocked: 0
+  visualIndicator: {fileID: 0}
+  refillCurrencyTypeNeeded: 0
+  minimumRefillAmountRequired: 0
   trapSO: {fileID: 0}
-  creatureTriggerCollider: {fileID: 2503779565072172721}
 --- !u!1 &4783755774072309381 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8798209634761237626, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
@@ -925,12 +927,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UIGameObject: {fileID: 3236741044846647819}
+  otherUIGameObjectList: []
   functionUIGameObject: {fileID: 7646891457639701844}
   secondaryFunctionUIGameObject: {fileID: 7043548012524304353}
   upgradeGameObject: {fileID: 1025492292814707513}
   switchUIGameObjectList: {fileID: 7020073425690427743}
   functionPayOrbsUIList: {fileID: 9117877066883277111}
-  decondaryFunctionPayOrbsUIList: {fileID: 0}
+  secondaryFunctionPayOrbsUIList: {fileID: 0}
   upgradeToNextLevelPayOrbsUIList:
   - {fileID: 4783755774072309381}
   - {fileID: 7787738731543020584}
@@ -942,6 +945,7 @@ MonoBehaviour:
   - {fileID: 2409429630693512306}
   - {fileID: 1809405396517584155}
   - {fileID: 7661221566630546890}
+  returnToPrimaryFunctionUIOnTriggerExit: 1
   trap: {fileID: 2104712210732650182}
   rearmTrapPayCurrencyContainer: {fileID: 8559794431363147271}
   rearmTrapPayCurrencyTemplate: {fileID: 664661778744832094}

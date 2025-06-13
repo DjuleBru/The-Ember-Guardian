@@ -6502,12 +6502,21 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e2215b651a9f5814f8272e7ea264f65c, type: 3}
   - {fileID: 8300000, guid: a2a0d073571b7604a9cd2602763a7739, type: 3}
   - {fileID: 8300000, guid: eeda6824f57659a418a4a6af4ed72117, type: 3}
+  turnWrenchAudioClips:
+  - {fileID: 8300000, guid: e2f08d634fe3da148acb3e5497ef4dd6, type: 3}
+  - {fileID: 8300000, guid: 6a01284fa80d82c42ad8835aec705a19, type: 3}
+  - {fileID: 8300000, guid: 80a7db993fef92f4f900a7bec57f23a9, type: 3}
+  - {fileID: 8300000, guid: e599ccf4d2787b34fb3055e573a97aa1, type: 3}
+  - {fileID: 8300000, guid: e922e827df8e11b4aaeed5c338ba0fe8, type: 3}
+  - {fileID: 8300000, guid: e3244b33b27309347bb38080a59a71fa, type: 3}
   footstepVolumeMultiplier: 1
   spearHitVolumeMultiplier: 1
   pickaxeHitVolumeMultiplier: 1
+  turnWrenchVolumeMultiplier: 1
   workerAI: {fileID: 6873851068007498257}
   workerAttack: {fileID: 178243791046534343}
   workerAnimator: {fileID: 2534391042090512400}
+  engineerJob: {fileID: 818546432972795175}
 --- !u!82 &2983391623574374428
 AudioSource:
   m_ObjectHideFlags: 0

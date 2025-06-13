@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Barricade
   m_EditorClassIdentifier: 
   structureType: 3
+  structureCategory: 0
   structureLocationPrefab: {fileID: 8434879454533105174, guid: df2bb087c60b63a4b93ecde78a7a6787, type: 3}
   structurePrefab: {fileID: 376005918902835770, guid: 0e5690236b01384439cf9578498c6acc, type: 3}
   structureSprite: {fileID: 559212063, guid: 175cfa9d756b5754aa0efe65d7ec62ef, type: 3}
@@ -26,6 +27,11 @@ MonoBehaviour:
   upgradeableAtNight: 0
   functionUsableAtNight: 0
   playerCanAlwaysInteract: 1
+  engineerCanWorkByDay: 1
+  engineerCanWorkByNight: 0
+  workingEngineerHideTool: 0
+  engineerWorkingPriority: 7
+  maxEngineersWorking: 1
   upgradeable: 1
   tentLevelRequiredForLevel2: 1
   tentLevelRequiredForLevel3: 2

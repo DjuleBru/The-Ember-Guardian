@@ -39,6 +39,7 @@ public class PlayerCamp : MonoBehaviour
     private List<Structure> builtStructures = new List<Structure>();
     private List<Structure> currencyStorages = new List<Structure>();
     private List<Structure> builtTowers = new List<Structure>();
+    private List<Structure> builtSpecialTowers = new List<Structure>();
 
     private bool blockStructureUnlocks;
     private bool customLayout;
@@ -248,7 +249,16 @@ public class PlayerCamp : MonoBehaviour
         if (structure is Tower) {
             builtTowers.Add(structure);
         }
+
+        if (structure is SpecialTower) {
+            builtSpecialTowers.Add(structure);
+        }
     }
+
+    public void RemoveStructure(Structure structure) {
+        builtStructures.Remove(structure);
+    }
+
     public int GetAvailableTowers(CampZoneManager.CampSide workerCampSide) {
         int availableTowers = 0;
 
@@ -286,29 +296,31 @@ public class PlayerCamp : MonoBehaviour
         blockStructureUnlocks = true;
     } 
 
-    public Structure GetClosestAvailableEngineerDayStructureToWork(Vector3 engineerPosition) {
-        float closestDistance = Mathf.Infinity;
-        Structure closestAvailableStructure = null;
+    public Structure GetHighestPriorityAvailableEngineerStructureToWork(bool nightOrDusk) {
+        int highestPriority = 0;
+        Structure highestPriorityStructure = null;
 
         foreach(Structure structure in builtStructures) {
-            if (!structure.GetStructureSO().engineerCanWorkByDay) continue;
+            if (!nightOrDusk && !structure.GetStructureSO().engineerCanWorkByDay) continue;
+            if (nightOrDusk && !structure.GetStructureSO().engineerCanWorkByNight) continue;
+
             if (!structure.NeedsEngineering()) continue;
             if (structure.NeedsEngineerRefill()) {
                 CurrencyStorage storage = GetCurrencyStorageWithCurrencies(structure.GetRefillCurrencyTypeNeeded(), structure.GetMinimumRefillAmountRequired());
                 if (storage == null) continue;
             };
 
-            float distanceToStructure = Mathf.Abs(engineerPosition.x - structure.transform.position.x);
-            if(distanceToStructure < closestDistance) {
-                closestDistance = distanceToStructure;
-                closestAvailableStructure = structure;
+            int structurePriority = structure.GetStructureSO().engineerWorkingPriority;
+            if(structurePriority > highestPriority) {
+                highestPriority = structurePriority;
+                highestPriorityStructure = structure;
             }
         }
 
-        return closestAvailableStructure;
+        return highestPriorityStructure;
     }
 
-    public Structure GetClosestAvailableEngineerNightStructureToWork(Vector3 engineerPosition) {
+    public Structure GetHighestPriorityAvailableEngineerStructureToWork(Vector3 engineerPosition) {
         float closestDistance = Mathf.Infinity;
         Structure closestAvailableStructure = null;
 
@@ -325,7 +337,65 @@ public class PlayerCamp : MonoBehaviour
 
         return closestAvailableStructure;
     }
+    public Structure GetClosestDefensiveStructureNeedingCurrency(Vector3 engineerPosition, List<PlayerCurrencies.CurrencyType> currencyTypeList) {
+        float closestDistance = Mathf.Infinity;
+        Structure closestAvailableStructure = null;
 
+        foreach (Structure structure in builtStructures) {
+            if (!structure.GetStructureSO().engineerCanWorkByDay) continue;
+
+            if (structure.NeedsEngineerRefill()) {
+                if (!currencyTypeList.Contains(structure.GetRefillCurrencyTypeNeeded())) continue;
+            };
+
+            float distanceToStructure = Mathf.Abs(engineerPosition.x - structure.transform.position.x);
+            if (distanceToStructure < closestDistance) {
+                closestDistance = distanceToStructure;
+                closestAvailableStructure = structure;
+            }
+        }
+
+        return closestAvailableStructure;
+    }
+    public Structure GetClosestDefensiveStructureNeedingCurrency(Vector3 engineerPosition, PlayerCurrencies.CurrencyType currencyType) {
+        float closestDistance = Mathf.Infinity;
+        Structure closestAvailableStructure = null;
+
+        foreach (Structure structure in builtStructures) {
+            if (!structure.GetStructureSO().engineerCanWorkByDay) continue;
+
+            if (structure.NeedsEngineerRefill()) {
+                if (structure.GetRefillCurrencyTypeNeeded() != currencyType) continue;
+            };
+
+            float distanceToStructure = Mathf.Abs(engineerPosition.x - structure.transform.position.x);
+            if (distanceToStructure < closestDistance) {
+                closestDistance = distanceToStructure;
+                closestAvailableStructure = structure;
+            }
+        }
+
+        return closestAvailableStructure;
+    }
+    public CurrencyStorage GetClosestCurrencyStorageWithSpace(Vector3 engineerPosition, PlayerCurrencies.CurrencyType currencyType) {
+        float closestDistance = Mathf.Infinity;
+        CurrencyStorage closestAvailableCurrencyStorage = null;
+
+        foreach (Structure structure in currencyStorages) {
+
+            CurrencyStorage storage = structure as CurrencyStorage;
+            if(storage.GetCurrencyTypeStored() != currencyType) continue;
+            if(storage.GetStorageFull()) continue;
+
+            float distanceToStructure = Mathf.Abs(engineerPosition.x - structure.transform.position.x);
+            if (distanceToStructure < closestDistance) {
+                closestDistance = distanceToStructure;
+                closestAvailableCurrencyStorage = storage;
+            }
+        }
+
+        return closestAvailableCurrencyStorage;
+    }
     public void AddCurrencyStorage(CurrencyStorage storage) {
         currencyStorages.Add(storage);
     }

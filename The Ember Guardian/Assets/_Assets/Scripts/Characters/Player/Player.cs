@@ -25,6 +25,7 @@ public class Player : MonoBehaviour, IDamageable
     private bool inMerchantTriggerArea = false;
     private bool inOtherInteractableObjectTriggerArea = false;
     private bool inPetDogTriggerArea = false;
+    private bool inCurrencyStorageArea = false;
 
     private bool carryingOtherObject = false;
     private bool hoveringWorker = false;
@@ -558,6 +559,12 @@ public class Player : MonoBehaviour, IDamageable
         return interactingWithMerchant;
     }
 
+    public bool GetInCurrencyStorageArea() {
+        return inCurrencyStorageArea;
+    }
+    public void SetInCurrencyStorageArea(bool inArea) {
+        this.inCurrencyStorageArea = inArea;
+    }
     [Button] 
     public void KillPlayer() {
         Die();

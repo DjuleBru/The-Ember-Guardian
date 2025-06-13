@@ -122,7 +122,6 @@ public class Fire : Structure, IDamageable {
         }
 
         if (isMainFire) {
-
             fuelLevel = wildFuelTreshold - 1;
             Player.Instance.OnPlayerBackToTentToRespawn += Player_OnPlayerBackToTentToRespawn;
             PlayerCurrencies.Instance.OnEmberDropped += PlayerCurrencies_OnEmberDropped;
@@ -204,6 +203,7 @@ public class Fire : Structure, IDamageable {
     private void Update() {
         HandleFuelDecrease();
         HandleFuelFireCooldown();
+        CheckNeedsRefillFromEngineer();
 
         if (isHubFire) return;
 
@@ -239,6 +239,7 @@ public class Fire : Structure, IDamageable {
     }
 
     private void HandleFuelDecrease() {
+
         if (extractingEmber) {
             extractingEmberTimer -= Time.deltaTime;
             fuelLevel -= Time.deltaTime * extractingEmberFuelRateDepletion;
@@ -248,6 +249,7 @@ public class Fire : Structure, IDamageable {
             }
 
         }
+
         else if (respawningPlayer) {
             if (lockFireInteractionFunctionsUpdate) return;
 
@@ -257,6 +259,7 @@ public class Fire : Structure, IDamageable {
                 respawningPlayer = false;
             }
         }
+
         else {
             if (justFuelledFire) return;
             if (lockFireInteractionFunctionsUpdate) return;
@@ -266,6 +269,16 @@ public class Fire : Structure, IDamageable {
             }
         }
 
+    }
+
+    private void CheckNeedsRefillFromEngineer() {
+        if(fuelLevel < (wildFuelTreshold - .1)) {
+            needsEngineering = true;
+            needsEngineerRefill = true;
+        } else {
+            needsEngineering = false;
+            needsEngineerRefill = false;
+        }
     }
 
     private void ChangeFireRadius(float fireRadius) {

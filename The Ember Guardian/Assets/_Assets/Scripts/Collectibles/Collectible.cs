@@ -222,7 +222,13 @@ public class Collectible : MonoBehaviour
         paymentDestination = destination;
         transform.SetParent(destination);
 
+
         if(moving) {
+
+            if (!movingForReloading && (currencyType == PlayerCurrencies.CurrencyType.ammo || currencyType == PlayerCurrencies.CurrencyType.ammo_special)) {
+                transform.rotation = Quaternion.Euler(0f, 0f, 90f);
+            }
+
             rb.gravityScale = 0;
             rb.bodyType = RigidbodyType2D.Kinematic;
         } else {

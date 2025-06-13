@@ -168,6 +168,7 @@ public class BarricadeVisual : StructureVisual {
 
     protected void RepairStructureVisual() {
         foreach (BarricadePiece piece in currentFallenBarricadePieceList) {
+            piece.EnableBarricadePiece();
             piece.BarricadePieceBuilt();
         }
         currentFallenBarricadePieceList.Clear();

@@ -108,6 +108,7 @@ public class SoundManager : MonoBehaviour
             CampEditManager.Instance.OnStructureDroppedMoving += CampEditManager_OnStructureDropped;
             CampEditManager.Instance.OnAllStructuresRemoved += CampEditManager_OnAllStructuresRemoved;
         }
+
         StructureBlueprint.OnAnyBlueprintWithStructureHovered += StructureBlueprint_OnAnyBlueprintWithStructureHovered;
         GridVisualUnit.OnAnyGridWithoutStructureHovered += GridVisualUnit_OnAnyGidWithoutStructureHovered;
         GridVisualUnit.OnAnyGridHoveredWhileMovingBlueprint += GridVisualUnit_OnAnyGridHoveredWhileMovingBlueprint;
@@ -134,7 +135,6 @@ public class SoundManager : MonoBehaviour
         ItemButtonUI.OnAnyLockedButtonTryPress += ItemButtonUI_OnAnyLockedButtonTryPress;
         ItemButtonUI.OnAnyHubMerchantItemTryBuyMaxedItem += ItemButtonUI_OnAnyHubMerchantItemTryBuyMaxedItem;
 
-
         ParticleCollision.OnAnyBulletHitEnemy += ParticleCollision_OnAnyBulletHitEnemy;
         ParticleCollision.OnAnyBulletHitEnemyCrit += ParticleCollision_OnAnyBulletHitEnemyCrit;
         ParticleCollision.OnAnyBulletHitGround += ParticleCollision_OnAnyBulletHitGround;
@@ -145,6 +145,7 @@ public class SoundManager : MonoBehaviour
         LevelNPCGemReward.OnAnyCurrencyDropped += LevelNPCGemReward_OnAnyCurrencyDropped;
         Chest.OnAnyChestSpawnedCollectible += Chest_OnAnyChestSpawnedCollectible;
         Scavengable.OnAnyScavengableMarkedToScavenge += Scavengable_OnAnyScavengableMarkedToScavenge;
+        CurrencyStorage.OnAnyCurrencySpawned += CurrencyStorage_OnAnyCurrencySpawned;
 
         WorkerAI.OnAnyWorkerFollowPlayerStarted += WorkerAI_OnAnyWorkerFollowPlayerStarted;
         WorkerAI.OnAnyWorkerFollowPlayerStopped += WorkerAI_OnAnyWorkerFollowPlayerStopped;
@@ -169,7 +170,6 @@ public class SoundManager : MonoBehaviour
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine += HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
     }
-
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -444,6 +444,33 @@ public class SoundManager : MonoBehaviour
         SetCorrectCurrencySound(currencyTypeCollected);
     }
 
+    private AudioClip[] SetCorrectCurrencySpawnSound(PlayerCurrencies.CurrencyType currencyTypeSpawned) {
+        if (CurrenciesManager.Instance.GetCurrencyCategory(currencyTypeSpawned) == PlayerCurrencies.CurrencyCategory.gem) {
+            return soundRefsSO.gemDropped;
+        }
+        if (CurrenciesManager.Instance.GetCurrencyCategory(currencyTypeSpawned) == PlayerCurrencies.CurrencyCategory.trap) {
+            return soundRefsSO.trapPickedUpByPlayer;
+        }
+        if (currencyTypeSpawned == PlayerCurrencies.CurrencyType.bigBlueOrb) {
+            return soundRefsSO.bigBlueOrbDropped;
+        }
+        if (currencyTypeSpawned == PlayerCurrencies.CurrencyType.smallBlueOrb) {
+            return soundRefsSO.smallBlueOrbDropped;
+        }
+        if (currencyTypeSpawned == PlayerCurrencies.CurrencyType.bigRedOrb) {
+            return soundRefsSO.bigRedOrbDropped;
+        }
+        if (currencyTypeSpawned == PlayerCurrencies.CurrencyType.smallRedOrb) {
+            return soundRefsSO.smallRedOrbDropped;
+        }
+
+        if (currencyTypeSpawned == PlayerCurrencies.CurrencyType.ammo || currencyTypeSpawned == PlayerCurrencies.CurrencyType.ammo_special) {
+            return soundRefsSO.ammoDropped;
+        }
+
+        return null;
+    }
+
     private void SetCorrectCurrencySound(PlayerCurrencies.CurrencyType currencyTypeCollected) {
 
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.bigBlueOrb) {
@@ -483,35 +510,17 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    private void CurrencyStorage_OnAnyCurrencySpawned(object sender, CurrencyStorage.OnAnyCurrencySpawnedEventArgs e) {
+        PlaySound3D(SetCorrectCurrencySpawnSound(e.currencyType), (sender as MonoBehaviour).transform.position);
+    }
+
     private void LevelNPCGemReward_OnAnyCurrencyDropped(object sender, LevelNPCGemReward.OnAnyCurrencyDroppedEventArgs e) {
         PlayerCurrencies.CurrencyType currencyTypeCollected = e.currencyType;
         SetCorrectCurrencySound(currencyTypeCollected);
     }
 
     private void Chest_OnAnyChestSpawnedCollectible(object sender, Chest.OnAnyChestSpawnedCollectibleEventArgs e) {
-        if(CurrenciesManager.Instance.GetCurrencyCategory(e.currencyType) == PlayerCurrencies.CurrencyCategory.gem) {
-            PlaySound3D(soundRefsSO.gemDropped, (sender as MonoBehaviour).transform.position);
-            return;
-
-        }
-
-        if (e.currencyType == PlayerCurrencies.CurrencyType.bigBlueOrb) {
-            PlaySound3D(soundRefsSO.bigBlueOrbDropped, (sender as MonoBehaviour).transform.position);
-        }
-        if (e.currencyType == PlayerCurrencies.CurrencyType.smallBlueOrb) {
-            PlaySound3D(soundRefsSO.smallBlueOrbDropped, (sender as MonoBehaviour).transform.position);
-        }
-        if (e.currencyType == PlayerCurrencies.CurrencyType.bigRedOrb) {
-            PlaySound3D(soundRefsSO.bigRedOrbDropped, (sender as MonoBehaviour).transform.position);
-        }
-        if (e.currencyType == PlayerCurrencies.CurrencyType.smallRedOrb) {
-            PlaySound3D(soundRefsSO.smallRedOrbDropped, (sender as MonoBehaviour).transform.position);
-        }
-
-        if (e.currencyType == PlayerCurrencies.CurrencyType.ammo || e.currencyType == PlayerCurrencies.CurrencyType.ammo_special) {
-            PlaySound3D(soundRefsSO.ammoDropped, (sender as MonoBehaviour).transform.position);
-        }
-
+        PlaySound3D(SetCorrectCurrencySpawnSound(e.currencyType), (sender as MonoBehaviour).transform.position);
     }
 
     private void Collectible_OnAnyCollectiblePickedUpByWorker(object sender, System.EventArgs e) {
@@ -521,6 +530,7 @@ public class SoundManager : MonoBehaviour
     private void PlayerCurrencies_OnBlueOrbDroppedOnTheFloor(object sender, PlayerCurrencies.OnBlueOrbDroppedOnTheFloorEventArgs e) {
         PlaySound3D(soundRefsSO.bigBlueOrbDropped, (sender as MonoBehaviour).transform.position);
     }
+
     private void Collectible_OnAnyCollectiblePlouffed(object sender, Collectible.OnAnyCollectiblePouffedEventArgs e) {
         bool isBigCollectible = false;
 
@@ -945,6 +955,7 @@ public class SoundManager : MonoBehaviour
         Chest.OnAnyChestSpawnedCollectible -= Chest_OnAnyChestSpawnedCollectible;
         LevelNPCGemReward.OnAnyCurrencyDropped -= LevelNPCGemReward_OnAnyCurrencyDropped;
         Scavengable.OnAnyScavengableMarkedToScavenge -= Scavengable_OnAnyScavengableMarkedToScavenge;
+        CurrencyStorage.OnAnyCurrencySpawned -= CurrencyStorage_OnAnyCurrencySpawned;
 
         Worker.OnAnyWorkerAssignedHunter -= Worker_OnAnyWorkerAssignedHunter;
         Worker.OnAnyWorkerDied -= Worker_OnAnyWorkerDied;

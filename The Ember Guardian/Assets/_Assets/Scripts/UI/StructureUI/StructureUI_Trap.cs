@@ -16,12 +16,7 @@ public class StructureUI_Trap : StructureUI
 
     protected override void Start() {
         base.Start();
-
         //Demo : set refresh currencies to small blue orbs
-        if(DemoMainLevelManager.Instance != null) {
-            PayCurrencyTemplateWorldUI template = rearmTrapPayCurrencyTemplate.GetComponent<PayCurrencyTemplateWorldUI>();
-            template.SetCurrencyTypeToPay(PlayerCurrencies.CurrencyType.smallBlueOrb);
-        }
 
         RefreshTrapRearmUI();
     }

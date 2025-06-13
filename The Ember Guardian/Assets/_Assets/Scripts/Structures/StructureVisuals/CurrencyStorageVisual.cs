@@ -7,8 +7,10 @@ public class CurrencyStorageVisual : MonoBehaviour
     [SerializeField] private Sprite[] fillingSpriteList;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private CurrencyStorage currencyStorage;
+    [SerializeField] private GameObject currencyStoragePickupInstruction;
 
     private void Awake() {
+        currencyStoragePickupInstruction.SetActive(false);
         currencyStorage.OnCurrencyStored += CurrencyStorage_OnCurrencyStored;
         currencyStorage.OnCurrencyRemoved += CurrencyStorage_OnCurrencyRemoved;
     }
@@ -25,6 +27,15 @@ public class CurrencyStorageVisual : MonoBehaviour
         float fillAmountNormalized = currencyStorage.GetCurrencyStoredAmountNormalized();
 
         int spriteIndex = Mathf.FloorToInt(fillAmountNormalized * (fillingSpriteList.Length - 1));
+        if(fillAmountNormalized != 0 && spriteIndex == 0) {
+            spriteIndex = 1;
+        }
         spriteRenderer.sprite = fillingSpriteList[spriteIndex];
+
+        if(currencyStorage.GetCurrencyAmountStored() == 0) {
+            currencyStoragePickupInstruction.SetActive(false);
+        } else {
+            currencyStoragePickupInstruction.SetActive(true);
+        }
     }
 }

@@ -26,6 +26,7 @@ public class InputControlIcons : MonoBehaviour
         MeleeAttack,
         EditCampSelect,
         EditCampDeselect,
+        CollectCurrencyFromContainer,
     }
 
 
@@ -266,6 +267,9 @@ public class InputControlIcons : MonoBehaviour
             if (control == Control.EditCampDeselect) {
                 spriteList.Add(gamepadXSprite);
             }
+            if (control == Control.CollectCurrencyFromContainer) {
+                spriteList.Add(gamepadUpArrowSprite);
+            }
             if (control == Control.EditCampSelect) {
                 spriteList.Add(gamepadASprite);
             }
@@ -428,6 +432,25 @@ public class InputControlIcons : MonoBehaviour
             }
             if (control == Control.OpenPlayerMenu) {
                 string characterMenu = GameInput.Instance.GetBindingText(GameInput.Binding.characterMenu);
+
+                if (keyboardIconLookup.TryGetValue(characterMenu, out Sprite icon1)) {
+                    spriteList.Add(icon1);
+                }
+                else {
+                    spriteList.Add(keyboardQuestionMarkSprite);
+                }
+            }if (control == Control.OpenPlayerMenu) {
+                string characterMenu = GameInput.Instance.GetBindingText(GameInput.Binding.characterMenu);
+
+                if (keyboardIconLookup.TryGetValue(characterMenu, out Sprite icon1)) {
+                    spriteList.Add(icon1);
+                }
+                else {
+                    spriteList.Add(keyboardQuestionMarkSprite);
+                }
+            }
+            if (control == Control.CollectCurrencyFromContainer) {
+                string characterMenu = GameInput.Instance.GetBindingText(GameInput.Binding.collectCurrencyFromContainer);
 
                 if (keyboardIconLookup.TryGetValue(characterMenu, out Sprite icon1)) {
                     spriteList.Add(icon1);

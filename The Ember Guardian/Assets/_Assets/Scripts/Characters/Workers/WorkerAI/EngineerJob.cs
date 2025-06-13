@@ -7,12 +7,14 @@ public class EngineerJob : WorkerJob {
 
     public enum EngineerState {
         idle,
-        droppingOrbs,
-        pickingUpOrbs,
+        droppingCurrency,
+        pickingUpCurrency,
         followPlayerIdle,
         blockedByCreatures,
         headToSafety,
 
+        headingToDrop,
+        headingToStructureToRefill,
         headingToStructure,
         workingInStructure,
         headingToRefill,
@@ -33,12 +35,14 @@ public class EngineerJob : WorkerJob {
     private Structure assignedStructure;
     private Vector3 assignedStructureRandomDestinationPoint;
     private CurrencyStorage targetCurrencyStorage;
+    private CurrencyCrafter currencyCrafterAssigned;
 
     private EngineerState previousState;
     private EngineerState state;
 
     private float turnWrenchTimer;
     private float turnWrenchDelay = 3f;
+    private float turnWrenchBoost = 2f;
 
     public event EventHandler OnEngineerTurnsWrench;
     public event EventHandler OnEngineerChangedState;
@@ -67,7 +71,7 @@ public class EngineerJob : WorkerJob {
 
     private void Update() {
         if (CheckDropCurrenciesToPlayer()) {
-            ChangeState(EngineerState.droppingOrbs);
+            ChangeState(EngineerState.droppingCurrency);
         }
 
         if (followingPlayer) {
@@ -107,7 +111,6 @@ public class EngineerJob : WorkerJob {
 
                     assignedStructure.SetWorkerRefillingStructure(workerCurrencies, true);
 
-
                 break;
 
                 case EngineerState.headingToStructure:
@@ -116,9 +119,21 @@ public class EngineerJob : WorkerJob {
 
                 break;
 
+                case EngineerState.headingToStructureToRefill:
+
+                    HeadToStructure();
+
+                    break;
+
                 case EngineerState.headingToRefill:
 
                     HeadToRefill();
+
+                break;
+
+                case EngineerState.headingToDrop:
+
+                    HeadToDrop();
 
                 break;
 
@@ -126,18 +141,18 @@ public class EngineerJob : WorkerJob {
 
                     WorkInStructure();
                     if (CheckOrbsToCollect()) {
-                        ChangeState(EngineerState.pickingUpOrbs);
+                        ChangeState(EngineerState.pickingUpCurrency);
                     }
 
                     break;
 
-                case EngineerState.pickingUpOrbs:
+                case EngineerState.pickingUpCurrency:
 
-                    HeadToPickUpClosestOrb();
+                    HeadToPickUpClosestCurrency();
 
                     break;
 
-                case EngineerState.droppingOrbs:
+                case EngineerState.droppingCurrency:
 
                     if (worker.GetTotalCurrencyAmount() == 0) {
                         ChangeState(previousState);
@@ -188,7 +203,7 @@ public class EngineerJob : WorkerJob {
             }
         }
 
-        if (state == EngineerState.headingToStructure || state == EngineerState.headingToRefill || state == EngineerState.refillingStructure) {
+        if (state == EngineerState.headingToStructure || state == EngineerState.headingToRefill || state == EngineerState.refillingStructure || state == EngineerState.headingToDrop) {
             mobMovement.SetMoveSpeed(headingToStructureMoveSpeed);
         }
 
@@ -198,32 +213,14 @@ public class EngineerJob : WorkerJob {
         }
     }
 
-    public EngineerState GetState() {
-        return state;
-    }
-
-    private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
-        isNightOrDusk = true;
-        ChangeState(EngineerState.idle);
-    }
-
-    private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
-        isNightOrDusk = false;
-        ChangeState(EngineerState.idle);
-    }
-
     private void CheckAvailableWork() {
+
+        // Check held currencies
+        if(CheckDropCurrenciesInContainers()) return;
+        
+        // Check structures
         Structure closestAvailableStructure = null;
-
-        if (!isNightOrDusk) {
-            // Day Job
-            closestAvailableStructure = PlayerCamp.Instance.GetClosestAvailableEngineerDayStructureToWork(transform.position);
-
-        } else {
-            // Night Job
-            closestAvailableStructure = PlayerCamp.Instance.GetClosestAvailableEngineerNightStructureToWork(transform.position);
-        }
-
+        closestAvailableStructure = PlayerCamp.Instance.GetHighestPriorityAvailableEngineerStructureToWork(isNightOrDusk);
 
         if (closestAvailableStructure != null) {
             AssignStructure(closestAvailableStructure);
@@ -240,17 +237,80 @@ public class EngineerJob : WorkerJob {
         }
     }
 
-    private void FindTargetCurrencyStorage() {
-        targetCurrencyStorage = PlayerCamp.Instance.GetCurrencyStorageWithCurrencies(assignedStructure.GetRefillCurrencyTypeNeeded(), assignedStructure.GetMinimumRefillAmountRequired());
+    public bool CheckDropCurrenciesInContainers() {
+        bool workerIsCarryingAmmo = worker.GetCurrencyAmount(PlayerCurrencies.CurrencyType.ammo) > 0;
+        bool workerIsCarryingSpecialAmmo = worker.GetCurrencyAmount(PlayerCurrencies.CurrencyType.ammo_special) > 0;
+        bool workerIsCarryingOrbs = worker.GetCurrencyAmount(PlayerCurrencies.CurrencyType.bigBlueOrb) > 0;
+        bool workerIsCarryingSmallOrbs = worker.GetCurrencyAmount(PlayerCurrencies.CurrencyType.smallBlueOrb) > 0;
 
-        if (targetCurrencyStorage == null) {
-            ChangeState(EngineerState.idle);
-        } else {
-            ChangeState(EngineerState.headingToRefill);
+        List<PlayerCurrencies.CurrencyType> ammoList = new List<PlayerCurrencies.CurrencyType>();
+        if (workerIsCarryingAmmo) {
+            ammoList.Add(PlayerCurrencies.CurrencyType.ammo);
         }
+        if (workerIsCarryingSpecialAmmo) {
+            ammoList.Add(PlayerCurrencies.CurrencyType.ammo_special);
+        }
+        Structure structureNeedingAmmo = PlayerCamp.Instance.GetClosestDefensiveStructureNeedingCurrency(transform.position, ammoList);
 
+        if (structureNeedingAmmo != null) {
+            // Ammo sink found
+
+        }
+        else {
+            // Ammo sink not found : drop in storage
+
+            if (workerIsCarryingAmmo) {
+                targetCurrencyStorage = PlayerCamp.Instance.GetClosestCurrencyStorageWithSpace(transform.position, PlayerCurrencies.CurrencyType.ammo);
+            }
+
+            if (workerIsCarryingSpecialAmmo) {
+                targetCurrencyStorage = PlayerCamp.Instance.GetClosestCurrencyStorageWithSpace(transform.position, PlayerCurrencies.CurrencyType.ammo_special);
+            }
+
+            if (workerIsCarryingOrbs) {
+                targetCurrencyStorage = PlayerCamp.Instance.GetClosestCurrencyStorageWithSpace(transform.position, PlayerCurrencies.CurrencyType.bigBlueOrb);
+            }
+
+            if (workerIsCarryingSmallOrbs) {
+                targetCurrencyStorage = PlayerCamp.Instance.GetClosestCurrencyStorageWithSpace(transform.position, PlayerCurrencies.CurrencyType.smallBlueOrb);
+            }
+
+            if (targetCurrencyStorage != null) {
+                ChangeState(EngineerState.headingToDrop);
+                return true;
+            }
+        }
+        
+
+        return false;
     }
 
+    public void AssignStructure(Structure structure) {
+        assignedStructure = structure;
+        structure.AssignEngineer(this);
+
+        if (structure.GetStructureSO().workingEngineerHideTool) {
+            OnEngineerHideTool?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (structure is CurrencyCrafter) {
+            CurrencyCrafter currencyCrafter = (CurrencyCrafter)structure;
+            currencyCrafter.OnCurrencyInstantiated += CurrencyCrafter_OnCurrencyInstantiated;
+        }
+    }
+
+    public void UnassignStructure() {
+
+        if (assignedStructure is CurrencyCrafter) {
+            CurrencyCrafter currencyCrafter = (CurrencyCrafter)assignedStructure;
+            currencyCrafter.OnCurrencyInstantiated -= CurrencyCrafter_OnCurrencyInstantiated;
+        }
+
+        assignedStructure.RemoveAssignedEngineer(this);
+        assignedStructure = null;
+    }
+
+    #region MOVEMENT
     private void HeadToStructure() {
         float distanceToStructure = Mathf.Abs(transform.position.x - assignedStructure.transform.position.x);
 
@@ -285,8 +345,46 @@ public class EngineerJob : WorkerJob {
         }
     }
 
+    private void HeadToDrop() {
+        float distanceToStorage = Mathf.Abs(transform.position.x - targetCurrencyStorage.transform.position.x);
+
+        if (distanceToStorage < .5f) {
+            TryDropCurrencyInStorage();
+            targetCurrencyStorage = null;
+            ChangeState(EngineerState.idle);
+        }
+        else {
+            mobMovement.SetMoveTarget(targetCurrencyStorage.transform.position);
+        }
+    }
+
+    public void HeadToPickUpClosestCurrency() {
+        if (orbsToCollect.Count == 0) {
+            ChangeState(EngineerState.idle);
+            return;
+        }
+
+        Collectible orbToCollect = orbsToCollect[0];
+        Vector3 targetDestination = new Vector3(orbToCollect.transform.position.x, 0, 0);
+
+        mobMovement.SetMoveTarget(targetDestination);
+    }
+    #endregion
+
+    #region STORAGE
+    private void FindTargetCurrencyStorage() {
+        targetCurrencyStorage = PlayerCamp.Instance.GetCurrencyStorageWithCurrencies(assignedStructure.GetRefillCurrencyTypeNeeded(), assignedStructure.GetMinimumRefillAmountRequired());
+
+        if (targetCurrencyStorage == null) {
+            ChangeState(EngineerState.idle);
+        }
+        else {
+            ChangeState(EngineerState.headingToRefill);
+        }
+
+    }
     private void TryPickupCurrenciesFromStorage() {
-        if(targetCurrencyStorage.GetCurrencyAmountStored() < assignedStructure.GetMinimumRefillAmountRequired()) {
+        if (targetCurrencyStorage.GetCurrencyAmountStored() < assignedStructure.GetMinimumRefillAmountRequired()) {
             ChangeState(EngineerState.idle);
             return;
         }
@@ -296,6 +394,52 @@ public class EngineerJob : WorkerJob {
             worker.CollectCurrency(assignedStructure.GetRefillCurrencyTypeNeeded());
         }
     }
+    private void TryDropCurrencyInStorage() {
+        PlayerCurrencies.CurrencyType currencyTypeToStore = targetCurrencyStorage.GetCurrencyTypeStored();
+
+        for (int i = 0; i < worker.GetCurrencyAmount(currencyTypeToStore); i++) {
+
+            if (targetCurrencyStorage.GetStorageFull()) {
+                ChangeState(EngineerState.idle);
+                return;
+            }
+
+            targetCurrencyStorage.StoreCurrency();
+            worker.RemoveCurrency(currencyTypeToStore);
+        }
+    }
+
+    #endregion
+
+    #region WORK
+
+    private void WorkInStructure() {
+        if (assignedStructure is CurrencyCrafter) {
+            currencyCrafterAssigned = (CurrencyCrafter)assignedStructure;
+            WorkInCurrencyCrafter();
+        }
+    }
+
+    private void WorkInCurrencyCrafter() {
+        if (!reachedAssignedStructureWorkingPoint) return;
+
+        turnWrenchTimer -= Time.deltaTime;
+        if (turnWrenchTimer <= 0) {
+            OnEngineerTurnsWrench?.Invoke(this, EventArgs.Empty);
+            turnWrenchTimer = turnWrenchDelay;
+
+            if (currencyCrafterAssigned.GetCraftedCurrency()) {
+                currencyCrafterAssigned.WorkerCollectCurrencyFromCrafter();
+            }
+            else {
+                currencyCrafterAssigned.AccelerateCrafting(turnWrenchBoost);
+                StartCoroutine(SetRandomDestinationCloseToAssignedStructureAfterDelay(1f));
+            }
+
+        }
+
+    }
+    #endregion
 
     private void WorkerCurrencies_OnPaymentFinalized(object sender, EventArgs e) {
         ChangeState(EngineerState.idle);
@@ -310,7 +454,7 @@ public class EngineerJob : WorkerJob {
         if (!assignedStructure.NeedsEngineerRefill()) return;
 
         if(worker.GetCurrencyAmount(assignedStructure.GetRefillCurrencyTypeNeeded()) >= assignedStructure.GetMinimumRefillAmountRequired()) {
-            ChangeState(EngineerState.headingToStructure);
+            ChangeState(EngineerState.headingToStructureToRefill);
         }
     }
 
@@ -323,45 +467,19 @@ public class EngineerJob : WorkerJob {
         }
     }
 
-    private void WorkInStructure() {
-        if(assignedStructure is CurrencyCrafter) {
-            WorkInCurrencyCrafter();
-        }
-    }
-
-    private void WorkInCurrencyCrafter() {
-        if (!reachedAssignedStructureWorkingPoint) return;
-        
-        turnWrenchTimer -= Time.deltaTime;
-        if(turnWrenchTimer <= 0) {
-            OnEngineerTurnsWrench?.Invoke(this, EventArgs.Empty);
-            turnWrenchTimer = turnWrenchDelay;
-            SetRandomDestinationCloseToAssignedStructure();
-        }
-    }
-
     private void WorkerMovement_OnDestinationReached(object sender, EventArgs e) {
         reachedAssignedStructureWorkingPoint = true;
     }
 
-    private void SetRandomDestinationCloseToAssignedStructure() {
+    private IEnumerator SetRandomDestinationCloseToAssignedStructureAfterDelay(float delay) {
         reachedAssignedStructureWorkingPoint = false;
+        yield return new WaitForSeconds(delay);
+
+        if (assignedStructure == null) yield break;
+
         float randomX = UnityEngine.Random.Range(assignedStructure.transform.position.x - 1f, assignedStructure.transform.position.x + 1f);
         assignedStructureRandomDestinationPoint = new Vector3(randomX, 0, 0);
         mobMovement.SetMoveTarget(assignedStructureRandomDestinationPoint);
-    }
-
-    public void HeadToPickUpClosestOrb() {
-
-        if (orbsToCollect.Count == 0) {
-            ChangeState(EngineerState.idle);
-            return;
-        }
-
-        Collectible orbToCollect = orbsToCollect[0];
-        Vector3 targetDestination = new Vector3(orbToCollect.transform.position.x, 0, 0);
-
-        mobMovement.SetMoveTarget(targetDestination);
     }
 
     private void FollowPlayer() {
@@ -372,31 +490,22 @@ public class EngineerJob : WorkerJob {
         }
     }
 
-    public void AssignStructure(Structure structure) {
-        assignedStructure = structure;
-        structure.AssignEngineer(this);
-
-        if(structure.GetStructureSO().workingEngineerHideTool) {
-            OnEngineerHideTool?.Invoke(this, EventArgs.Empty);
-        }
-    }
-
-    public void UnassignStructure() {
-        assignedStructure.RemoveAssignedEngineer(this);
-        assignedStructure = null;
+    private void CurrencyCrafter_OnCurrencyInstantiated(object sender, CurrencyCrafter.OnCurrencyInstantiatedEventArgs e) {
+        AssignCollectible(e.collectible);
+        ChangeState(EngineerState.pickingUpCurrency);
     }
 
     public void OrbExtractorTriggerDrill() {
         OnOrbExtractorTriggeredDrill?.Invoke(this, EventArgs.Empty);
     }
-    protected override bool CheckDropCurrenciesToPlayer() {
-        if(targetCurrencyStorage != null && (state == EngineerState.refillingStructure || state == EngineerState.headingToRefill || state == EngineerState.headingToStructure)) {
-            // worker is close to storage
-            if (Mathf.Abs(transform.position.x - targetCurrencyStorage.transform.position.x) < 2f) {
 
-                return false;
-            }
+    protected override bool CheckDropCurrenciesToPlayer() {
+
+        if(targetCurrencyStorage != null && (state == EngineerState.refillingStructure || state == EngineerState.headingToRefill || state == EngineerState.headingToStructureToRefill || state == EngineerState.headingToDrop)) {
+            // worker is transferring currencies
+            return false;
         }
+
 
         if (worker.GetPlayerIsClose() && worker.GetTotalCurrencyAmount() > 0) {
             return true;
@@ -404,4 +513,18 @@ public class EngineerJob : WorkerJob {
         return false;
     }
 
+
+    private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
+        isNightOrDusk = true;
+        ChangeState(EngineerState.idle);
+    }
+
+    private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
+        isNightOrDusk = false;
+        ChangeState(EngineerState.idle);
+    }
+
+    public EngineerState GetState() {
+        return state;
+    }
 }

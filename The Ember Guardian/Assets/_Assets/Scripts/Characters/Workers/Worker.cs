@@ -91,7 +91,6 @@ public class Worker : Mob {
     }
 
     public void RemoveCurrency(PlayerCurrencies.CurrencyType currencyType) {
-        Debug.Log("RemoveCurrency " + currencyType);
         collectedCurrencies[currencyType]--;
 
         if (!collectedCurrencies.ContainsKey(currencyType)) {
@@ -135,7 +134,6 @@ public class Worker : Mob {
 
     public bool PlayerIsCloseAndStayedAround() {
         float distance = 2f;
-        timeToStayClose = .75f;
 
         playerIsCloseTimer += Time.deltaTime;
 
@@ -244,7 +242,7 @@ public class Worker : Mob {
         }
 
         if (workerAI.GetJob() == WorkerAI.JobTypes.engineer) {
-            timeToStayClose = 2f;
+            timeToStayClose = 2.5f;
         }
 
         initialHealth = health;

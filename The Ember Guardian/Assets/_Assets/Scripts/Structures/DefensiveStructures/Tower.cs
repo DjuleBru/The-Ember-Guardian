@@ -5,28 +5,28 @@ using UnityEngine;
 
 public class Tower : Structure
 {
-    private List<Worker> assignedWorkersList = new List<Worker>();
-    private int maxWorkersAssigned = 1;
+    protected List<Worker> assignedWorkersList = new List<Worker>();
+    protected int maxWorkersAssigned = 1;
 
-    [SerializeField] private GameObject level1TowerCollider;
-    [SerializeField] private GameObject level2TowerCollider;
-    [SerializeField] private GameObject level3TowerCollider;
-    [SerializeField] private GameObject level4TowerCollider;
+    [SerializeField] protected GameObject level1TowerCollider;
+    [SerializeField] protected GameObject level2TowerCollider;
+    [SerializeField] protected GameObject level3TowerCollider;
+    [SerializeField] protected GameObject level4TowerCollider;
 
-    [SerializeField] private List<Transform> level1GarrisonPositions;
-    [SerializeField] private List<Transform> level2GarrisonPositions;
-    [SerializeField] private List<Transform> level3GarrisonPositions;
-    [SerializeField] private List<Transform> level4GarrisonPositions;
+    [SerializeField] protected List<Transform> level1GarrisonPositions;
+    [SerializeField] protected List<Transform> level2GarrisonPositions;
+    [SerializeField] protected List<Transform> level3GarrisonPositions;
+    [SerializeField] protected List<Transform> level4GarrisonPositions;
 
-    private float level1RangeMultiplier = 1.25f;
-    private float level2RangeMultiplier = 1.5f;
-    private float level3RangeMultiplier = 1.5f;
-    private float level4RangeMultiplier = 2f;
+    protected float level1RangeMultiplier = 1.25f;
+    protected float level2RangeMultiplier = 1.5f;
+    protected float level3RangeMultiplier = 1.5f;
+    protected float level4RangeMultiplier = 2f;
 
-    private float level1DamageMultiplier = 1.25f;
-    private float level2DamageMultiplier = 1.5f;
-    private float level3DamageMultiplier = 1.5f;
-    private float level4DamageMultiplier = 2f;
+    protected float level1DamageMultiplier = 1.25f;
+    protected float level2DamageMultiplier = 1.5f;
+    protected float level3DamageMultiplier = 1.5f;
+    protected float level4DamageMultiplier = 2f;
 
     public event EventHandler OnHunterGarrisoned;
     public event EventHandler OnPlayerClimbedOnTower;
@@ -41,7 +41,7 @@ public class Tower : Structure
         Worker.OnAnyWorkerDied += Worker_OnAnyWorkerDied;
     }
 
-    private void Worker_OnAnyWorkerDied(object sender, EventArgs e) {
+    protected void Worker_OnAnyWorkerDied(object sender, EventArgs e) {
         Worker worker = (Worker)sender;
 
         if(assignedWorkersList.Contains(worker)) {
@@ -74,11 +74,18 @@ public class Tower : Structure
         }
     }
 
-    private void DisableAllGarrisonColliders() {
+    protected void DisableAllGarrisonColliders() {
         level1TowerCollider.SetActive(false);
-        level2TowerCollider.SetActive(false);
-        level3TowerCollider.SetActive(false);
-        level4TowerCollider.SetActive(false);
+
+        if(level2TowerCollider != null) {
+            level2TowerCollider.SetActive(false);
+        }
+        if (level3TowerCollider != null) {
+            level3TowerCollider.SetActive(false);
+        }
+        if (level4TowerCollider != null) {
+            level4TowerCollider.SetActive(false);
+        }
     }
 
     protected override void UpgradeStructure() {
@@ -113,7 +120,7 @@ public class Tower : Structure
         OnHunterGarrisoned?.Invoke(this, EventArgs.Empty);
     }
 
-    private void SetWorkerGarrisonPosition(Worker worker) {
+    protected void SetWorkerGarrisonPosition(Worker worker) {
         int workerIndex = assignedWorkersList.IndexOf(worker);
         Vector3 garrisonPosition = new Vector3(0, 0, 0);
         float rangeBuff = 1f;
@@ -169,7 +176,7 @@ public class Tower : Structure
         StartCoroutine(UnGarrisonWorkersCoroutine());
     }
 
-    private IEnumerator UnGarrisonWorkersCoroutine() {
+    protected IEnumerator UnGarrisonWorkersCoroutine() {
 
         for (int i = assignedWorkersList.Count - 1; i >= 0; i--) {
             Worker worker = assignedWorkersList[i];
@@ -184,7 +191,7 @@ public class Tower : Structure
         assignedWorkersList.Clear();
     }
 
-    private void MovePlayerOnTower() {
+    protected void MovePlayerOnTower() {
         Vector3 garrisonPosition = Vector3.zero;
 
         if (structureLevel == 1) {
@@ -210,7 +217,7 @@ public class Tower : Structure
         OnPlayerClimbedOnTower?.Invoke(this, EventArgs.Empty);
     }
 
-    private void OnDestroy() {
+    protected void OnDestroy() {
         Worker.OnAnyWorkerDied -= Worker_OnAnyWorkerDied;
     }
 

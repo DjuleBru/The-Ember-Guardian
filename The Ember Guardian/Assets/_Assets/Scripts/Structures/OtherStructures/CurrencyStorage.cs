@@ -6,11 +6,16 @@ using UnityEngine;
 public class CurrencyStorage : Structure
 {
     [SerializeField] private PlayerCurrencies.CurrencyType currencyTypeStored;
+    [SerializeField] private Transform currencySpawnPoint;
     [SerializeField] private int maxCurrencyAmountStored = 15;
     private int currencyAmountStored;
 
     public event EventHandler OnCurrencyStored;
     public event EventHandler OnCurrencyRemoved;
+    public static event EventHandler<OnAnyCurrencySpawnedEventArgs> OnAnyCurrencySpawned;
+    public class OnAnyCurrencySpawnedEventArgs:EventArgs {
+        public PlayerCurrencies.CurrencyType currencyType;
+    }
 
     protected override void Awake() {
         base.Awake();
@@ -18,13 +23,30 @@ public class CurrencyStorage : Structure
         PlayerCamp.Instance.AddCurrencyStorage(this);
     }
 
+    protected override void Start() {
+        base.Start();
+        GameInput.Instance.OnCurrencyCollectedFromContainer += GameInput_OnCurrencyCollectedFromContainer;
+    }
+
+    private void GameInput_OnCurrencyCollectedFromContainer(object sender, EventArgs e) {
+        if (!playerInTriggerArea) return;
+        if (currencyAmountStored <= 0) return;
+
+        RemoveCurrency();
+
+        Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyTypeStored), currencySpawnPoint.position, Quaternion.identity).GetComponent<Collectible>();
+        collectible.SetCollectibleUnInteractable(1.5f);
+        collectible.ApplyRandomForce(-1, 1, 3, 5);
+
+        OnAnyCurrencySpawned?.Invoke(this, new OnAnyCurrencySpawnedEventArgs {
+            currencyType = currencyTypeStored,
+        });
+    }
+
     protected override void TriggerStructurePrimaryFunction() {
         base.TriggerStructurePrimaryFunction();
 
-        currencyAmountStored++;
-        OnCurrencyStored?.Invoke(this, EventArgs.Empty);
-
-        RefreshInteractable();
+        StoreCurrency();
 
         if (GetHasCurrenciesToPay() && playerInteracting && currencyAmountStored < maxCurrencyAmountStored) {
             payCurrencyUI.SetPlayerInteractingContinuous(); // Continue l'interaction
@@ -33,11 +55,13 @@ public class CurrencyStorage : Structure
             payCurrencyUI.SetPlayerInteracting(false);
         }
     }
-    private bool GetHasCurrenciesToPay() {
-        if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(currencyTypeStored).Count > 0) {
-            return true; // Continue à payer
-        }
-        return false;
+
+    public void StoreCurrency() {
+        currencyAmountStored++;
+        OnCurrencyStored?.Invoke(this, EventArgs.Empty);
+
+        RefreshInteractable();
+
     }
 
     public void RemoveCurrency() {
@@ -56,7 +80,6 @@ public class CurrencyStorage : Structure
     }
 
     private void RefreshInteractable() {
-        Debug.Log("currencyAmountStored " + currencyAmountStored);
         if(currencyAmountStored < maxCurrencyAmountStored) {
             ActivateStructurePrimaryFunctionInteraction(true);
         } else {
@@ -67,4 +90,21 @@ public class CurrencyStorage : Structure
     public float GetCurrencyStoredAmountNormalized() {
         return (float)currencyAmountStored/ (float)maxCurrencyAmountStored;
     }
+
+    public bool GetStorageFull() {
+        return currencyAmountStored >= maxCurrencyAmountStored;
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D collision) {
+        base.OnTriggerEnter2D(collision);
+        if (collision.gameObject.GetComponent<Player>() == null) return;
+        Player.Instance.SetInCurrencyStorageArea(true);
+    }
+
+    protected override void OnTriggerExit2D(Collider2D collision) {
+        base.OnTriggerExit2D(collision);
+        if (collision.gameObject.GetComponent<Player>() == null) return;
+        Player.Instance.SetInCurrencyStorageArea(false);
+    }
+
 }

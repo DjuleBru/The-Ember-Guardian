@@ -260,22 +260,6 @@ public class MinerJob : WorkerJob {
         }
     }
 
-    public void AssignCollectible(Collectible collectible) {
-        orbsToCollect.Add(collectible);
-        collectible.OnCollectibleDestroyed += CollectibleSpawned_OnCollectibleDestroyed;
-    }
-
-    private void CollectibleSpawned_OnCollectibleDestroyed(object sender, System.EventArgs e) {
-        Collectible collectible = sender as Collectible;
-        RemoveOrbToCollect(collectible);
-    }
-
-    public void RemoveOrbToCollect(Collectible collectible) {
-        if (orbsToCollect.Contains(collectible)) {
-            orbsToCollect.Remove(collectible);
-        }
-    }
-
     public event EventHandler OnMinerChangedState;
 
     public override void InitializeJob() {

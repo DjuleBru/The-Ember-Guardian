@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureType: 20
   structureCategory: 1
-  structureLocationPrefab: {fileID: 0}
-  structurePrefab: {fileID: 376005918902835770, guid: fc0a8a8db0a0e8f4a8e689e94fd9b2ef, type: 3}
+  structureLocationPrefab: {fileID: 8434879454533105174, guid: 0acf61dea21383946a4b69d8803c74fa, type: 3}
+  structurePrefab: {fileID: 376005918902835770, guid: 46560462b2d9d2345b7c25f73e7ed6ec, type: 3}
   structureSprite: {fileID: 21300000, guid: d6554ff518318d343979dc4f56f5ceac, type: 3}
   structureNameLocalizationKey: Sniper Tower
   widthInCells: 1
@@ -27,6 +27,11 @@ MonoBehaviour:
   upgradeableAtNight: 0
   functionUsableAtNight: 0
   playerCanAlwaysInteract: 1
+  engineerCanWorkByDay: 1
+  engineerCanWorkByNight: 1
+  workingEngineerHideTool: 0
+  engineerWorkingPriority: 9
+  maxEngineersWorking: 1
   upgradeable: 1
   tentLevelRequiredForLevel2: 1
   tentLevelRequiredForLevel3: 2

@@ -128,6 +128,12 @@ public class StructureUI : MonoBehaviour
 
     private void Structure_OnWorkerStartedRefilling(object sender, EventArgs e) {
         SetUIActive(true);
+        StartCoroutine(SetUIActiveAfterDelay(1f, false));
+    }
+
+    protected IEnumerator SetUIActiveAfterDelay(float delay, bool active) {
+        yield return new WaitForSeconds(delay);
+        SetUIActive(active);
     }
 
     protected virtual void SetUIActive(bool active) {
@@ -241,6 +247,10 @@ public class StructureUI : MonoBehaviour
         }
 
         return payOrbsUIList;
+    }
+
+    public int GetCurrentPayCurrencyAmount() {
+        return payOrbsUI.GetCurrencyAmountToPay();
     }
 
 }

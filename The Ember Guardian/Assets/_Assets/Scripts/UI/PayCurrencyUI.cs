@@ -18,6 +18,8 @@ public class PayCurrencyUI : MonoBehaviour
     public event EventHandler<OnSingleOrbFilledEventArgs> OnSingleCurrencyPaid;
     public static event EventHandler<OnSingleOrbFilledEventArgs> OnAnySingleCurrencyPaid;
 
+    private Coroutine payingCurrencyContinuousCoroutine;
+
     public class OnSingleOrbFilledEventArgs : EventArgs {
         public PlayerCurrencies.CurrencyType currencyType;
         public int currencyIndex;
@@ -42,7 +44,6 @@ public class PayCurrencyUI : MonoBehaviour
 
     public void SetPlayerInteracting(bool isInteracting) {
         if (playerInteracting == isInteracting) return;
-        Debug.Log("SetPlayerInteracting " + isInteracting);
 
         PlayerCurrencies.CurrencyType currencyTypeToPay = currencyTemplateWorldUIList[0].GetCurrencyTypeToPay();
         playerInteracting = isInteracting;
@@ -56,6 +57,10 @@ public class PayCurrencyUI : MonoBehaviour
             PlayerCurrencies.Instance.CancelCurrencyPayment(currenciesFailedToPayFallInWater);
             UICurrencyManager.PlayerInventoryUI.SetPayingCurrency(this, currencyTypeToPay, false);
 
+            if(payingCurrencyContinuousCoroutine != null) {
+                StopCoroutine(payingCurrencyContinuousCoroutine);
+            }
+
         } else {
             UICurrencyManager.PlayerInventoryUI.SetPayingCurrency(this, currencyTypeToPay, true);
         }
@@ -65,11 +70,20 @@ public class PayCurrencyUI : MonoBehaviour
         playerInteracting = true;
         PlayerCurrencies.CurrencyType currencyTypeToPay = currencyTemplateWorldUIList[0].GetCurrencyTypeToPay();
         currencyIndex = 0;
+        payingCurrencyContinuousCoroutine = StartCoroutine(SetPayingCurrencyAfterDelay(.25f, currencyTypeToPay));
+
+        //UICurrencyManager.PlayerInventoryUI.SetPayingCurrency(this, currencyTypeToPay, true);
+    }
+
+    private IEnumerator SetPayingCurrencyAfterDelay(float delay, PlayerCurrencies.CurrencyType currencyTypeToPay) {
+        yield return new WaitForSeconds(delay);
         UICurrencyManager.PlayerInventoryUI.SetPayingCurrency(this, currencyTypeToPay, true);
     }
 
     public void SetWorkerInteracting(WorkerCurrencies workerCurrencies, bool isInteracting) {
+
         if (workerInteracting == isInteracting) return;
+        Debug.Log("SetWorkerInteracting " + isInteracting);
 
         workerCurrenciesInteracting = workerCurrencies;
 
@@ -89,6 +103,10 @@ public class PayCurrencyUI : MonoBehaviour
         else {
             workerCurrencies.SetPayingCurrency(this, currencyTypeToPay, true);
         }
+    }
+
+    public void StopWorkerInteraction() {
+        SetWorkerInteracting(workerCurrenciesInteracting, false);
     }
 
     public void SetOrbTemplateUIList(List<PayCurrencyTemplateWorldUI> orbTemplateList) {
@@ -140,6 +158,10 @@ public class PayCurrencyUI : MonoBehaviour
 
     public float GetCurrencyIndexNormalized() {
         return (float)currencyIndex / (float)currencyTemplateWorldUIList.Count;
+    }
+
+    public int GetCurrencyAmountToPay() {
+        return currencyTemplateWorldUIList.Count;
     }
 
     public bool GetPlayerInteracting() {

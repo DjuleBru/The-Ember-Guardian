@@ -29,13 +29,6 @@ public class Tent : Structure
         Player.Instance.OnPlayerHealed += Player_OnPlayerHealed;
     }
 
-    private bool GetHasCurrenciesToPay() {
-        if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.smallBlueOrb).Count > 0) {
-            return true; // Continue à payer
-        }
-        return false;
-    }
-
 
     private void Player_OnPlayerHealed(object sender, Player.OnPlayerChangedHealthEventArgs e) {
         RefreshPlayerStructurePrimaryInteraction();

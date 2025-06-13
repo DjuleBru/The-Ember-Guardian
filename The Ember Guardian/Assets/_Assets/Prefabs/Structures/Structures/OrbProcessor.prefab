@@ -438,7 +438,7 @@ Transform:
   m_GameObject: {fileID: 7433427125034709217}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.908, y: 0.649, z: 0}
+  m_LocalPosition: {x: 0.82, y: 1.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1141,11 +1141,15 @@ MonoBehaviour:
   primaryFunctionUnlocked: 0
   secondaryFunctionUnlocked: 0
   visualIndicator: {fileID: 0}
+  refillCurrencyTypeNeeded: 0
+  minimumRefillAmountRequired: 0
   currencyCraftTime: 90
   currencySpawnPoint: {fileID: 7441869313988092870}
   currencyTypeCrafted: 0
   currencyCraftAmount: 2
   showTooltipOnTrigger: {fileID: 0}
+  debugBatchCapacity: 0
+  debugSpecialAmmoUnlocked: 0
 --- !u!4 &4039759338917417633 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2097073961957946881, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}

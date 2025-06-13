@@ -205,6 +205,21 @@ public class WorkerJob : MonoBehaviour
         }
         return false;
     }
+    public void AssignCollectible(Collectible collectible) {
+        orbsToCollect.Add(collectible);
+        collectible.OnCollectibleDestroyed += CollectibleSpawned_OnCollectibleDestroyed;
+    }
+
+    protected void CollectibleSpawned_OnCollectibleDestroyed(object sender, System.EventArgs e) {
+        Collectible collectible = sender as Collectible;
+        RemoveOrbToCollect(collectible);
+    }
+
+    public void RemoveOrbToCollect(Collectible collectible) {
+        if (orbsToCollect.Contains(collectible)) {
+            orbsToCollect.Remove(collectible);
+        }
+    }
 
     protected bool CheckOrbsToCollect() {
         if (orbsToCollect.Count > 0) {

@@ -79,6 +79,7 @@ public class Structure_Trap : Structure
         }
     }
 
+    [Button]
     public void TryTriggerTrap() {
         if (trapIsActive) return;
         if (trapCoolingDown) return;
@@ -126,6 +127,8 @@ public class Structure_Trap : Structure
         if (currentUseIndex != 0) {
             OnTrapDepletedUses?.Invoke(this, EventArgs.Empty);
             ActivateStructurePrimaryFunctionInteraction(true);
+            needsEngineering = true;
+            needsEngineerRefill = true;
         }
     }
 
@@ -136,6 +139,8 @@ public class Structure_Trap : Structure
         ActivateStructurePrimaryFunctionInteraction(false);
 
         OnTrapRearmed?.Invoke(this, EventArgs.Empty);
+        needsEngineering = false;
+        needsEngineerRefill = false;
         base.TriggerStructurePrimaryFunction();
     }
 
@@ -192,8 +197,10 @@ public class Structure_Trap : Structure
 
         trapStructureLocation.ReActivateTrapStructureLocation();
         OnTrapBroken?.Invoke(this, EventArgs.Empty);
+        PlayerCamp.Instance.RemoveStructure(this);
 
         yield return new WaitForSeconds(1f);
+
         Destroy(gameObject);
     }
 

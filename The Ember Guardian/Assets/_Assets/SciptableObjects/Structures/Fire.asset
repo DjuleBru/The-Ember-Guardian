@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Fire
   m_EditorClassIdentifier: 
   structureType: 1
+  structureCategory: 0
+  structureLocationPrefab: {fileID: 0}
   structurePrefab: {fileID: 3205007466584431920, guid: 14b564114b8571045b1d8b976544bc5c, type: 3}
   structureSprite: {fileID: 188206192, guid: 1d0bc86c12ff16c43b45995fc688fd74, type: 3}
   structureNameLocalizationKey: Fire
@@ -25,6 +27,11 @@ MonoBehaviour:
   upgradeableAtNight: 0
   functionUsableAtNight: 1
   playerCanAlwaysInteract: 0
+  engineerCanWorkByDay: 1
+  engineerCanWorkByNight: 1
+  workingEngineerHideTool: 0
+  engineerWorkingPriority: 10
+  maxEngineersWorking: 1
   upgradeable: 0
   tentLevelRequiredForLevel2: 2
   tentLevelRequiredForLevel3: 3

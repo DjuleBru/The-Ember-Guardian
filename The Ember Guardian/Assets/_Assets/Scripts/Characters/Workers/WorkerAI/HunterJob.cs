@@ -690,12 +690,8 @@ public class HunterJob : WorkerJob {
     }
 
     private void TargetAnimal_OnAnimalDroppedCollectibles(object sender, Animal.OnMobDroppedCollectibleEventArgs e) {
-        foreach(Collectible collectible1 in e.collectibleDroppedList) {
-            orbsToCollect.Add(collectible1);
-        }
-
-        foreach(Collectible collectible in orbsToCollect) {
-            collectible.OnCollectibleDestroyed += Collectible_OnCollectibleDestroyed;
+        foreach(Collectible collectible in e.collectibleDroppedList) {
+            AssignCollectible(collectible);
         }
 
         RemoveCurrentTargetAnimal();
@@ -841,17 +837,6 @@ public class HunterJob : WorkerJob {
         mobMovement.SetMoveTarget(targetDestination);
         state = newState;
         OnHunterChangedState?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void Collectible_OnCollectibleDestroyed(object sender, System.EventArgs e) {
-        Collectible collectible = sender as Collectible;
-        RemoveOrbToCollect(collectible);
-    }
-
-    public void RemoveOrbToCollect(Collectible collectible) {
-        if(orbsToCollect.Contains(collectible)) {
-            orbsToCollect.Remove(collectible);
-        }
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {

@@ -14,9 +14,10 @@ public class CurrencyCrafter : Structure
     [SerializeField] private int currencyCraftAmount = 3;
     [SerializeField] private ShowTooltipOnTrigger showTooltipOnTrigger;
 
+    [SerializeField] private int debugBatchCapacity;
+    [SerializeField] private bool debugSpecialAmmoUnlocked;
+
     private PlayerCurrencies.CurrencyType currencyTypeBeingCrafted;
-    private float craftingRate = 1f;
-    private float engineerCraftingRateBuff = .25f;
     private int batchCapacity = 1;
     private int currentBatches;
     private bool craftingCurrency;
@@ -31,21 +32,26 @@ public class CurrencyCrafter : Structure
     public event EventHandler OnPlayerCollectedCurrency;
     public static event EventHandler OnPlayerCollectedAnyCurrency;
     public event EventHandler OnMaxCurrencyBatchCraftingStarted;
-    public event EventHandler OnCurrencyInstantiated;
+    public event EventHandler<OnCurrencyInstantiatedEventArgs> OnCurrencyInstantiated;
+
+    public class OnCurrencyInstantiatedEventArgs:EventArgs {
+        public Collectible collectible;
+    }
 
     protected override void Start() {
         base.Start();
         SetStructurePrimaryFunctionUnlocked(true);
         ActivateStructurePrimaryFunctionInteraction(true);
         needsEngineerRefill = true;
+        needsEngineering = true;
 
-        if(currencyTypeCrafted == PlayerCurrencies.CurrencyType.ammo) {
+        if (currencyTypeCrafted == PlayerCurrencies.CurrencyType.ammo) {
             currencyCraftAmount = StructureStats.Instance.GetAmmoCrafterMaxAmmoPerBatch();
             currencyCraftTime = StructureStats.Instance.GetAmmoCrafterSingleAmmoCraftDuration() * currencyCraftAmount;
             batchCapacity = StructureStats.Instance.GetAmmoCrafterBatchCapacity();
 
             specialAmmoUnlocked = MetaProgressionManager.Instance.GetSpecialAmmoUnlocked();
-            if (specialAmmoUnlocked) {
+            if (specialAmmoUnlocked || debugSpecialAmmoUnlocked) {
                 SetStructureSecondaryFunctionUnlocked(true);
             }
         }
@@ -55,6 +61,10 @@ public class CurrencyCrafter : Structure
             currencyCraftTime = StructureStats.Instance.GetInitialSingleOrbCraftDuration() * currencyCraftAmount;
             batchCapacity = StructureStats.Instance.GetOrbProcessorBatchCapacity();
         }
+
+        if(debugBatchCapacity != 0) {
+            batchCapacity = debugBatchCapacity;
+        }
     }
 
     private void Update() {
@@ -63,11 +73,12 @@ public class CurrencyCrafter : Structure
         currencyCraftTimer -= Time.deltaTime;
 
         if(currencyCraftTimer < 0) {
-            OnCurrencyCraftingEnded?.Invoke(this, EventArgs.Empty);
-            OnAnyCurrencyCraftingEnded?.Invoke(this, EventArgs.Empty);
             craftingCurrency = false;
             craftedCurrency = true;
             playerCanInteract = true;
+
+            OnCurrencyCraftingEnded?.Invoke(this, EventArgs.Empty);
+            OnAnyCurrencyCraftingEnded?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -101,15 +112,14 @@ public class CurrencyCrafter : Structure
                 showTooltipOnTrigger.SetShowTooltips(false);
             }
 
+            needsEngineerRefill = false;
             craftingCurrency = true;
-
         }
 
         currentBatches++;
         currencyCraftTimer += currencyCraftTime;
         if (currentBatches == batchCapacity) {
             playerCanInteract = false;
-            needsEngineerRefill = false;
             OnMaxCurrencyBatchCraftingStarted?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -148,6 +158,13 @@ public class CurrencyCrafter : Structure
         Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
     }
 
+    public void WorkerCollectCurrencyFromCrafter() {
+        craftedCurrency = false;
+        StartCoroutine(CollectCurrencyFromCrafter(.2f));
+        SetStructurePrimaryFunctionUnlocked(true);
+        SetStructureSecondaryFunctionUnlocked(specialAmmoUnlocked);
+    }
+
     private IEnumerator CollectCurrencyFromCrafter(float delayBetweenAmmoInstantiation) {
         craftedCurrency = false;
         payCurrencyUI.ResetCurrencyPayment();
@@ -162,12 +179,20 @@ public class CurrencyCrafter : Structure
             Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyTypeBeingCrafted), currencySpawnPoint.position, Quaternion.identity).GetComponent<Collectible>();
             collectible.SetCollectibleUnInteractable(1.5f);
             collectible.ApplyRandomForce(-1, 1, 3, 5);
+            collectible.SetCanBePickedUpByWorkerAfterDelay(0);
 
-            OnCurrencyInstantiated?.Invoke(this, EventArgs.Empty);
+            OnCurrencyInstantiated?.Invoke(this, new OnCurrencyInstantiatedEventArgs {
+                collectible = collectible
+            });
+
             yield return new WaitForSeconds(delayBetweenAmmoInstantiation);
         }
 
         needsEngineerRefill = true;
+    }
+
+    public void AccelerateCrafting(float accelerationTime) {
+        currencyCraftTimer -= accelerationTime;
     }
 
     public bool GetCraftingCurrency() {
@@ -196,15 +221,4 @@ public class CurrencyCrafter : Structure
         return currencyTypeCrafted;
     }
 
-    public override void SetEngineerWorking(EngineerJob engineer, bool working) {
-        base.SetEngineerWorking(engineer, working);
-
-        if (working) {
-            craftingRate += engineerCraftingRateBuff;
-        }
-        else {
-            craftingRate -= engineerCraftingRateBuff;
-        }
-
-    }
 }

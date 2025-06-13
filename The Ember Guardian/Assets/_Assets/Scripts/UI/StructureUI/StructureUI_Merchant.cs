@@ -53,7 +53,7 @@ public class StructureUI_Merchant : StructureUI {
 
     protected override void Start() {
         base.Start();
-        merchant.OnStructurePrimaryFunctionUsed += Merchant_OnStructurePrimaryFunctionUsed;
+        merchant.OnStructureFunctionUsed += Merchant_OnStructurePrimaryFunctionUsed;
         merchant.OnPlayerOpenedMerchantShop += Merchant_OnPlayerStartedInteractedWithMerchant;
         merchant.OnPlayerClosedMerchantShop += Merchant_OnPlayerStoppedInteractedWithMerchant;
         merchant.OnPlayerBoughtItem += Merchant_OnPlayerBoughtItem1;

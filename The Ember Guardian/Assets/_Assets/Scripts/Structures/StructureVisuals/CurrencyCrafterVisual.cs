@@ -150,10 +150,9 @@ public class CurrencyCrafterVisual : StructureVisual
     }
 
     private void RefreshCurrencyBarVisuals() {
-        Debug.Log("RefreshCurrencyBarVisuals");
         currencyBarTemplate.gameObject.SetActive(true);
-        currencyBatchTemplate.gameObject.SetActive(true);
 
+        if(currencyCrafter.GetCurrentBatch() == 0) {
             //First batch launched
             currencyBarTemplateList.Clear();
             currencyBatchTemplateList.Clear();
@@ -161,12 +160,13 @@ public class CurrencyCrafterVisual : StructureVisual
             foreach (RectTransform child in currencyBatchContainer) {
                 if (child == currencyBatchTemplate) continue;
                 Destroy(child.gameObject);
-
             }
+        }
 
         Transform batchTemplate = Instantiate(currencyBatchTemplate, currencyBatchContainer);
 
         batchTemplate.gameObject.SetActive(true);
+        batchTemplate.GetComponent<RectTransform>().SetAsFirstSibling();
         int currencyCount = currencyCrafter.GetCurrencyCraftAmount();
         foreach (RectTransform child in batchTemplate) {
             if (child == currencyBarTemplate) continue;
@@ -200,7 +200,6 @@ public class CurrencyCrafterVisual : StructureVisual
         }
 
         currencyBarTemplate.gameObject.SetActive(false);
-        currencyBatchTemplate.gameObject.SetActive(false);
     }
 
 }
