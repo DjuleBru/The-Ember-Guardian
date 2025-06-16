@@ -30,17 +30,18 @@ MonoBehaviour:
   engineerCanWorkByDay: 1
   engineerCanWorkByNight: 1
   workingEngineerHideTool: 0
+  workingEngineerHideVisual: 1
   engineerWorkingPriority: 9
-  maxEngineersWorking: 1
+  maxEngineersAssignedWorking: 1
+  maxEngineersAssignedRefilling: 1
+  refillCurrencyTypeNeeded: 7
   upgradeable: 1
   tentLevelRequiredForLevel2: 1
   tentLevelRequiredForLevel3: 2
   tentLevelRequiredForLevel4: 3
   buildingUpgradeSpriteList:
-  - {fileID: -1374893943, guid: 69899d8c78ea1e843ae3e31c442cf2a1, type: 3}
-  - {fileID: -693508561, guid: 69899d8c78ea1e843ae3e31c442cf2a1, type: 3}
-  - {fileID: -1902018475, guid: 69899d8c78ea1e843ae3e31c442cf2a1, type: 3}
-  - {fileID: 1003993355, guid: 69899d8c78ea1e843ae3e31c442cf2a1, type: 3}
+  - {fileID: -1496671194, guid: da7fc77ffa43a544bb244352ea40ff5a, type: 3}
+  - {fileID: 1965919706, guid: da7fc77ffa43a544bb244352ea40ff5a, type: 3}
   buildAudioClip: {fileID: 8300000, guid: cd5f14a0e207b164aa9bfb0a157d19d3, type: 3}
   buildVolumeMultiplier: 1
   useFunctionAudioClip: {fileID: 0}

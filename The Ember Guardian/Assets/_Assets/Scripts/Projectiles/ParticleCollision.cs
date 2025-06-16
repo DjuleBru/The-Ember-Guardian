@@ -22,6 +22,11 @@ public class ParticleCollision : MonoBehaviour
     public static event EventHandler OnAnyBulletHitEnemy;
     public static event EventHandler OnAnyBulletHitEnemyCrit;
 
+    private bool initialized;
+    private int damage;
+    private float knockback;
+    private Transform source;
+
     void Start()
     {
         ps = GetComponent<ParticleSystem>();
@@ -91,6 +96,19 @@ public class ParticleCollision : MonoBehaviour
                         }
                     }
 
+                    int bulletDamage = damage;
+                    float knockBack = knockback;
+                    bool critHit = false;
+                    Transform bulletSource = source;
+
+                    if (!initialized) {
+                        // Bullet shot by player
+                        damage = PlayerShoot.Instance.GetDamagePerBullet();
+                        bulletSource = Player.Instance.transform;
+                        knockBack = PlayerShoot.Instance.GetBulletKnockback();
+                        critHit = UnityEngine.Random.Range(0f, 1f) < PlayerShoot.Instance.GetHeldGun().GetCritChance() / 100;
+                    }
+
                     if (mobHit == null) {
 
                         if (groundDestroysBullet) {
@@ -100,11 +118,13 @@ public class ParticleCollision : MonoBehaviour
 
 
                     } else {
-                        mobHit.HandlePlayerSkillEffects(angle, collisionPosition.y);
-                        bool critHit = UnityEngine.Random.Range(0f, 1f) < PlayerShoot.Instance.GetHeldGun().GetCritChance() / 100;
+                        if(!initialized) {
+                            // Bullet shot by player
+                            mobHit.HandlePlayerSkillEffects(angle, collisionPosition.y);
+                        }
 
-                        mobHit.TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, critHit, false, hitWeakSpot);
-                        mobHit.InstantiateHitPS(angle, collisionPosition.y, critHit, PlayerShoot.Instance.GetDamagePerBullet(), collisionPosition.x);
+                        mobHit.TakeDamage(damage, bulletSource, critHit, false, hitWeakSpot);
+                        mobHit.InstantiateHitPS(angle, collisionPosition.y, critHit, damage, collisionPosition.x);
 
                         if (critHit) {
                             OnAnyBulletHitEnemyCrit?.Invoke(this, EventArgs.Empty);
@@ -114,13 +134,12 @@ public class ParticleCollision : MonoBehaviour
                         }
 
                         Vector2 bulletDirNormalized = new Vector2(moveDir.x, moveDir.y).normalized;
-                        mobHit.TakeKnockback(PlayerShoot.Instance.GetBulletKnockback(), bulletDirNormalized);
+                        mobHit.TakeKnockback(knockBack, bulletDirNormalized);
                     }
 
                     if(spawnerHit != null) {
-                        other.GetComponent<CreatureSpawnerContinuous>().TakeDamage(PlayerShoot.Instance.GetDamagePerBullet(), Player.Instance.transform, false);
+                        other.GetComponent<CreatureSpawnerContinuous>().TakeDamage(bulletDamage, bulletSource, false);
                         other.GetComponent<CreatureSpawnerContinuous>().InstantiateHitPS(angle, collisionPosition.y, false);
-
 
                         OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
                     }
@@ -141,10 +160,15 @@ public class ParticleCollision : MonoBehaviour
                 }
 
             }
-
-
         }
-
     }
+
+    public void InitializeBulletPS(Transform source, int damage, float knockBack, float collisionDistanceTreshold) {
+        this.source = source;
+        this.damage = damage;
+        this.knockback = knockBack;
+        initialized = true;
+        this.collisionDistanceThreshold = collisionDistanceTreshold;
+    } 
 
 }

@@ -127,8 +127,7 @@ public class Structure_Trap : Structure
         if (currentUseIndex != 0) {
             OnTrapDepletedUses?.Invoke(this, EventArgs.Empty);
             ActivateStructurePrimaryFunctionInteraction(true);
-            needsEngineering = true;
-            needsEngineerRefill = true;
+            needsRefill = true;
         }
     }
 
@@ -139,8 +138,8 @@ public class Structure_Trap : Structure
         ActivateStructurePrimaryFunctionInteraction(false);
 
         OnTrapRearmed?.Invoke(this, EventArgs.Empty);
-        needsEngineering = false;
-        needsEngineerRefill = false;
+        OnTrapRearmed?.Invoke(this, EventArgs.Empty);
+        needsRefill = false;
         base.TriggerStructurePrimaryFunction();
     }
 

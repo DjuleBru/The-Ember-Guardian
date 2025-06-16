@@ -27,6 +27,7 @@ public class OrbExtractor : Structure
         base.Start();
 
         extractionTimer = 2f;
+        needsWorking = true;
     }
 
     private void Update() {
@@ -41,8 +42,10 @@ public class OrbExtractor : Structure
         drillIndex++;
         OnExtractorStartedDrilling?.Invoke(this, EventArgs.Empty);
 
-        if(engineersWorking.Count != 0) {
-            engineersWorking[0].OrbExtractorTriggerDrill();
+        if(engineersAssignedWorking.Count != 0) {
+            if(engineersAssignedWorking[0].GetState() == EngineerJob.EngineerState.workingInStructure) {
+                engineersAssignedWorking[0].OrbExtractorTriggerDrill();
+            }
         }
 
         yield return new WaitForSeconds(drillAnimationDuration);
@@ -68,6 +71,7 @@ public class OrbExtractor : Structure
 
     public override void SetEngineerWorking(EngineerJob engineer, bool working) {
         base.SetEngineerWorking(engineer, working);
+        needsWorking = !working;
 
         Debug.Log("SetEngineerWorking " + working);
 

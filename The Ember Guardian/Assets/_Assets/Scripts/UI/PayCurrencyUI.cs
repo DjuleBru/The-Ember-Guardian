@@ -81,9 +81,7 @@ public class PayCurrencyUI : MonoBehaviour
     }
 
     public void SetWorkerInteracting(WorkerCurrencies workerCurrencies, bool isInteracting) {
-
         if (workerInteracting == isInteracting) return;
-        Debug.Log("SetWorkerInteracting " + isInteracting);
 
         workerCurrenciesInteracting = workerCurrencies;
 

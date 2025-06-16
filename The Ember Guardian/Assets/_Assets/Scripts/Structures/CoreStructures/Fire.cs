@@ -273,11 +273,9 @@ public class Fire : Structure, IDamageable {
 
     private void CheckNeedsRefillFromEngineer() {
         if(fuelLevel < (wildFuelTreshold - .1)) {
-            needsEngineering = true;
-            needsEngineerRefill = true;
+            needsRefill = true;
         } else {
-            needsEngineering = false;
-            needsEngineerRefill = false;
+            needsRefill = false;
         }
     }
 

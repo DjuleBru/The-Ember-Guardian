@@ -80,7 +80,6 @@ public class WorkerCurrencies : MonoBehaviour {
         lastCurrencyPaying.SetMovingForPayment(true, smoothTime, destination.transform);
         //lastCurrencyPaying.SetCanBePickedUpByWorkerAfterDelay(3f);
         collectiblesBeingPaid.Add(lastCurrencyPaying);
-
     }
 
     public void FinalizeCurrencyPayment() {

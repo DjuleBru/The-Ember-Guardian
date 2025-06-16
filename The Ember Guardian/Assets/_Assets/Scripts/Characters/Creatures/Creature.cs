@@ -11,6 +11,7 @@ public class Creature : Mob
     [SerializeField] private CreatureDetectionCollider detectionCollider;
     [SerializeField] private CreatureMovement creatureMovement;
     [SerializeField] private List<Collider2D> critZoneColliders;
+    [SerializeField] private Transform autoAimPosition;
 
     private bool creatureUnlocked;
     private bool dropRedOrbsUnlocked;
@@ -528,6 +529,10 @@ public class Creature : Mob
 
     public bool GetCreatureCanBeTargeted() {
         return creatureCanBeTargeted;
+    }
+
+    public Transform GetAutoAimPosition() {
+        return autoAimPosition;
     }
 
     private void OnDestroy() {

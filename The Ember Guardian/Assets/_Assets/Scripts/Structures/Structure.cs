@@ -32,10 +32,13 @@ public class Structure : MonoBehaviour {
     protected bool playerInteracting;
     protected int structureLevel = 1;
 
-    protected bool needsEngineering;
-    protected bool needsEngineerRefill;
-    protected List<EngineerJob> engineersAssigned = new List<EngineerJob>();
-    protected List<EngineerJob> engineersWorking = new List<EngineerJob>();
+    protected int maxEngineersAssignedWorking;
+    protected int maxEngineersAssignedRefilling;
+    protected bool needsRefill;
+    protected bool needsWorking;
+    protected bool isBeingRefilledByEngineer;
+    protected List<EngineerJob> engineersAssignedRefilling = new List<EngineerJob>();
+    protected List<EngineerJob> engineersAssignedWorking = new List<EngineerJob>();
     private float playerInteractingTimer;
 
     public enum StructureInteractionType {
@@ -74,13 +77,16 @@ public class Structure : MonoBehaviour {
         if (!structureSO.upgradeableAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
             ActivateStructureUpgradeInteraction(false);
         }
+        maxEngineersAssignedRefilling = structureSO.maxEngineersAssignedRefilling;
+        maxEngineersAssignedWorking = structureSO.maxEngineersAssignedWorking;
     }
 
     protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         payCurrencyUI.SetPlayerInteracting(false);
         payCurrencyUI.StopWorkerInteraction();
-        
-        if(currentStructureInteractionType == StructureInteractionType.primaryFunction) {
+        isBeingRefilledByEngineer = false;
+
+        if (currentStructureInteractionType == StructureInteractionType.primaryFunction) {
             TriggerStructurePrimaryFunction();
             return;
         }
@@ -232,39 +238,82 @@ public class Structure : MonoBehaviour {
         Player.Instance.SetInPayCurrencyArea(false);
     }
 
-    public void AssignEngineer(EngineerJob engineerJob) {
-        if (engineersAssigned.Contains(engineerJob)) return;
+    public void AssignEngineerRefill(EngineerJob engineerJob) {
+        if (engineersAssignedRefilling.Contains(engineerJob)) return;
 
-        engineersAssigned.Add(engineerJob);
+        engineersAssignedRefilling.Add(engineerJob);
+    }
+    public void AssignEngineerWorking(EngineerJob engineerJob) {
+        if (engineersAssignedWorking.Contains(engineerJob)) return;
+
+        engineersAssignedWorking.Add(engineerJob);
     }
 
     public void RemoveAssignedEngineer(EngineerJob engineerJob) {
-        if (!engineersAssigned.Contains(engineerJob)) return;
+
+        if (engineersAssignedRefilling.Contains(engineerJob)) {
+            engineersAssignedRefilling.Remove(engineerJob);
+        }
+
+        if (engineersAssignedWorking.Contains(engineerJob)) {
+            engineersAssignedWorking.Remove(engineerJob);
+        }
 
         SetEngineerWorking(engineerJob, false);
-        engineersAssigned.Remove(engineerJob);
     }
 
-    public bool NeedsEngineering() {
-        return engineersAssigned.Count < structureSO.maxEngineersWorking && needsEngineering;
+    public List<EngineerJob> GetEngineersWorking() {
+        return engineersAssignedWorking;
     }
 
     public virtual void SetEngineerWorking(EngineerJob engineer, bool working) {
+        Debug.Log("SetEngineerWorking " + working + " engineersAssignedWorking.Count " + engineersAssignedWorking.Count + " maxEngineersAssignedWorking " + maxEngineersAssignedWorking);
         if(working) {
-            if (engineersWorking.Contains(engineer)) return;
-            engineersWorking.Add(engineer);
+
+            if (!engineersAssignedWorking.Contains(engineer)) {
+                engineersAssignedWorking.Add(engineer);
+            };
+
         } else {
-            if (!engineersWorking.Contains(engineer)) return;
-            engineersWorking.Remove(engineer);
+
+            if (engineersAssignedWorking.Contains(engineer)) {
+                engineersAssignedWorking.Remove(engineer);
+            };
+
+        }
+
+        if(engineersAssignedWorking.Count  == maxEngineersAssignedWorking) {
+            needsWorking = false;
         }
     }
 
-    public bool NeedsEngineerRefill() {
-        return needsEngineerRefill;
+    public bool NeedsEngineering() {
+        bool needsRefillingEngineers = engineersAssignedRefilling.Count < maxEngineersAssignedRefilling;
+        bool needsWorkingEngineers = engineersAssignedWorking.Count < maxEngineersAssignedWorking;
+
+        return (needsRefillingEngineers && needsRefill) || (needsWorkingEngineers && needsWorking);
+    }
+
+    public bool NeedsRefillingEngineers() {
+        bool needsRefillingEngineers = engineersAssignedRefilling.Count < maxEngineersAssignedRefilling;
+        return needsRefillingEngineers;
+    }
+
+    public bool NeedsWorkingEngineers() {
+        bool needsWorkingEngineers = engineersAssignedWorking.Count < maxEngineersAssignedWorking;
+        return needsWorkingEngineers;
+    }
+
+    public bool NeedsRefill() {
+        return needsRefill;
+    }
+
+    public bool NeedsWorking() {
+        return needsWorking;
     }
 
     public PlayerCurrencies.CurrencyType GetRefillCurrencyTypeNeeded() {
-        return payCurrencyUI.GetCurrentCurrencyTemplateWorldUI().GetCurrencyTypeToPay();
+        return structureSO.refillCurrencyTypeNeeded;
     }
 
     public int GetMinimumRefillAmountRequired() {
@@ -426,7 +475,11 @@ public class Structure : MonoBehaviour {
         return false;
     }
 
-    public void SetWorkerRefillingStructure(WorkerCurrencies workerCurrencies ,bool refilling) {
+    public void SetWorkerRefillingStructure(WorkerCurrencies workerCurrencies, bool refilling) {
+        if (isBeingRefilledByEngineer) return;
+
+        Debug.Log("SetWorkerRefillingStructure " + refilling);
+        isBeingRefilledByEngineer = true;
         payCurrencyUI.SetWorkerInteracting(workerCurrencies, refilling);
         OnWorkerStartedRefilling?.Invoke(this, EventArgs.Empty);
     }

@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,9 +22,8 @@ public class StructureUI_SpecialTower : StructureUI
 
     private float ammoBarDisplayTime;   // Durée d'affichage de la barre
     private float ammoBarReloadDisplayTime = 2f;   // Durée d'affichage de la barre
-    private float ammoBarExitCampDisplayTime = 3f;   // Durée d'affichage de la barre
     private float fadeOutDuration = .2f;  // Durée du fade-out
-    private float fadeInDuration = .2f;  // Durée du fade-in
+    private float fadeInDuration = .1f;  // Durée du fade-in
 
     private float ammoBarDisplayTimer = 0f;
     private bool isFadingOut = false;
@@ -43,14 +43,31 @@ public class StructureUI_SpecialTower : StructureUI
         RefreshAmmoBarBackground();
     }
 
+    private void Update() {
+
+        if (isFadingIn) {
+            HandleFadeIn();
+            return;
+        }
+
+        if (uiActive) return;
+        HandleFadeOut();
+    }
+
     private void SpecialTower_OnAmmoClipRemoved(object sender, System.EventArgs e) {
-        FadeInAmmoBar();
         RemoveAmmoTick();
     }
 
     private void SpecialTower_OnAmmoClipAdded(object sender, System.EventArgs e) {
         FadeInAmmoBar();
         AddAmmoTick();
+    }
+
+    protected override void SetUIActive(bool active) {
+        base.SetUIActive(active);
+        if(active) {
+            FadeInAmmoBar();
+        }
     }
 
     private void AddAmmoTick() {
@@ -72,14 +89,11 @@ public class StructureUI_SpecialTower : StructureUI
         ammoTickArray[0].AddTick();
     }
 
-    private void RemoveAmmoTick() {
-        if (specialTower.GetCurrentAmmoClip() < 0) return;
+    [Button]
+    public void RemoveAmmoTick() {
+        FadeInAmmoBar();
 
-        if (specialTower.GetCurrentAmmoClip() != 0) {
-            ammoBarCanvasGroup.alpha = 1f;
-            ammoBarDisplayTime = ammoBarReloadDisplayTime;
-            ammoBarDisplayTimer = ammoBarDisplayTime;
-        }
+        if (specialTower.GetCurrentAmmoClip() < 0) return;
 
         PlayerUI_TickTemplate[] ammoTickArray = ammoTickContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
         ammoTickArray[0].GetComponent<RectTransform>().SetParent(transform);
@@ -115,8 +129,7 @@ public class StructureUI_SpecialTower : StructureUI
         ammoTickTemplateBackground.gameObject.SetActive(false);
     }
     private void FadeInAmmoBar() {
-
-        ammoBarDisplayTime = ammoBarExitCampDisplayTime;
+        ammoBarDisplayTime = ammoBarReloadDisplayTime;
 
         if (ammoBarDisplayTimer <= 0) {
             isFadingIn = true;
@@ -127,4 +140,48 @@ public class StructureUI_SpecialTower : StructureUI
         }
     }
 
+    private void HandleFadeIn() {
+        // Réduit le timer pour le fade-in
+        ammoBarDisplayTimer -= Time.deltaTime;
+
+        float alpha = Mathf.Clamp01(1 - (ammoBarDisplayTimer / fadeInDuration));
+        ammoBarCanvasGroup.alpha = alpha;
+        //Debug.Log(1 - (ammoBarDisplayTimer / fadeInDuration));
+
+        // Quand le fade-in est terminé
+        if (ammoBarDisplayTimer <= 0f) {
+            ammoBarCanvasGroup.alpha = 1f;
+            isFadingIn = false;
+            ammoBarDisplayTimer = ammoBarDisplayTime; // Initialise le timer pour maintenir la barre visible
+        }
+    }
+
+    private void HandleFadeOut() {
+
+        // Si le timer est en cours et que le fade-out n'a pas commencé
+        if (ammoBarDisplayTimer > 0f && !isFadingOut) {
+            ammoBarDisplayTimer -= Time.deltaTime;
+
+            // Démarre le fade-out lorsque le timer atteint 0
+            if (ammoBarDisplayTimer <= 0f) {
+                isFadingOut = true;
+                ammoBarDisplayTimer = fadeOutDuration; // Initialise le timer pour le fade
+            }
+        }
+
+        // Gestion du fade-out
+        if (isFadingOut) {
+            float alpha = Mathf.Clamp01(ammoBarDisplayTimer / fadeOutDuration);
+            ammoBarCanvasGroup.alpha = alpha;
+
+            // Réduit le timer pour le fade-out
+            ammoBarDisplayTimer -= Time.deltaTime;
+
+            // Quand le fade-out est terminé
+            if (ammoBarDisplayTimer <= 0f) {
+                ammoBarCanvasGroup.alpha = 0;
+                isFadingOut = false;
+            }
+        }
+    }
 }

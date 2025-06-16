@@ -112,8 +112,7 @@ public class Barricade : Structure, IDamageable {
             SetStructurePrimaryFunctionUnlocked(true);
             SetStructureUpgradableUnlocked(false);
             barricadeRepairable = true;
-            needsEngineerRefill = true;
-            needsEngineering = true;
+            needsRefill = true;
         }
     }
 
@@ -138,8 +137,7 @@ public class Barricade : Structure, IDamageable {
         SetStructurePrimaryFunctionUnlocked(false);
         RefreshStructureUpgradeInteraction();
         barricadeRepairable = false;
-        needsEngineerRefill = false;
-        needsEngineering = false;
+        needsRefill = false;
     }
 
     public void SetAsOuterBarricade(bool outerBarricade) {

@@ -363,7 +363,6 @@ MonoBehaviour:
   primaryFunctionUnlocked: 0
   secondaryFunctionUnlocked: 0
   visualIndicator: {fileID: 0}
-  refillCurrencyTypeNeeded: 0
   showTooltipOnTrigger: {fileID: 0}
   workerSpawnPosition: {fileID: 6664458144435640411}
   shrineType: 1
@@ -638,7 +637,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: initialPayCurrencySmoothTime
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8891634777496794373, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Sprite
@@ -945,7 +944,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: initialPayCurrencySmoothTime
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8891634777496794373, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Sprite

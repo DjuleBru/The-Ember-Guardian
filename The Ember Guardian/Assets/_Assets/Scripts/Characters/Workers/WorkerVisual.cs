@@ -56,6 +56,7 @@ public class WorkerVisual : MobVisual {
 
         engineerJob.OnEngineerChangedState += EngineerJob_OnEngineerChangedState;
         engineerJob.OnEngineerHideTool += EngineerJob_OnEngineerHideTool;
+        engineerJob.OnEngineerHideVisual += EngineerJob_OnEngineerHideVisual;
 
         hunterJob.OnHunterFindsNoAnimal += HunterJob_OnHunterFindsNoAnimal;
         hunterJob.OnHunterChangedState += HunterJob_OnHunterChangedState;
@@ -73,14 +74,20 @@ public class WorkerVisual : MobVisual {
         holdingCurrencyGO.SetActive(false);
     }
 
+    private void EngineerJob_OnEngineerHideVisual(object sender, System.EventArgs e) {
+        ShowVisual(false);
+    }
 
     private void EngineerJob_OnEngineerHideTool(object sender, System.EventArgs e) {
         ShowWeapon(false);
     }
 
     private void EngineerJob_OnEngineerChangedState(object sender, System.EventArgs e) {
+        if (engineerJob.GetState() == EngineerJob.EngineerState.droppingCurrency) return;
+
         if(engineerJob.GetState() == EngineerJob.EngineerState.idle) {
             ShowWeapon(true);
+            ShowVisual(true);
         }
 
     }
@@ -88,6 +95,11 @@ public class WorkerVisual : MobVisual {
     private void ShowWeapon(bool show) {
         workerWeaponSpriteRenderer.enabled = show;
         workerWeaponGlowSpriteRenderer.enabled = show;
+    }
+
+    private void ShowVisual(bool show) {
+        ShowWeapon(show);
+        workerBodySpriteRenderer.enabled = show;
     }
 
     private void Worker_OnWorkerDroppedCurrency(object sender, System.EventArgs e) {

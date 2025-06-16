@@ -66,9 +66,12 @@ public class StructureSO : ScriptableObject
     public bool engineerCanWorkByDay;
     public bool engineerCanWorkByNight;
     public bool workingEngineerHideTool;
+    public bool workingEngineerHideVisual;
     [PropertyRange(0,10)]
     public int engineerWorkingPriority;
-    public int maxEngineersWorking;
+    public int maxEngineersAssignedWorking;
+    public int maxEngineersAssignedRefilling;
+    public PlayerCurrencies.CurrencyType refillCurrencyTypeNeeded;
 
     public bool upgradeable = true;
     [ShowIf("upgradeable")]

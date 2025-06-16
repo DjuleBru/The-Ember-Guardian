@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,9 +8,13 @@ public class WorkerDetectionCollider : MonoBehaviour
     private List<Creature> creaturesInDetectionColliderRange = new List<Creature>();
     private bool creaturesInDetectionCollider;
     private CircleCollider2D detectionCollider;
+    private float initialDetectionColliderRadius;
+
+    public event EventHandler OnCreaturesInColliderChanged;
 
     private void Awake() {
         detectionCollider = GetComponent<CircleCollider2D>();
+        initialDetectionColliderRadius = detectionCollider.radius;
         RandomizeDetectionColliderRadius();
     }
 
@@ -17,6 +22,13 @@ public class WorkerDetectionCollider : MonoBehaviour
         float radius = detectionCollider.radius;
         float radiusRandomized = radius + UnityEngine.Random.Range(-radius/10,radius/10);
         detectionCollider.radius = radiusRandomized;
+    }
+
+    public void SetDetectionColliderRadius(float radius) {
+        detectionCollider.radius = radius;
+    }
+    public void ResetDetectionColliderRadius() {
+        detectionCollider.radius = initialDetectionColliderRadius;
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -50,6 +62,8 @@ public class WorkerDetectionCollider : MonoBehaviour
         } else {
             creaturesInDetectionCollider = false;
         }
+
+        OnCreaturesInColliderChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public bool CreaturesInDetectionCollider() {
@@ -70,20 +84,4 @@ public class WorkerDetectionCollider : MonoBehaviour
 
         return closestCreature;
     }
-
-    public float GetClosestCreatureDistance() {
-        Creature closestCreature = null;
-        float distanceToClosestCreature = Mathf.Infinity;
-
-        foreach (Creature creature in creaturesInDetectionColliderRange) {
-            float distanceToCreature = Mathf.Abs(creature.transform.position.x - transform.position.x);
-            if (distanceToCreature < distanceToClosestCreature) {
-                distanceToClosestCreature = distanceToCreature;
-                closestCreature = creature;
-            }
-        }
-
-        return distanceToClosestCreature;
-    }
-
 }

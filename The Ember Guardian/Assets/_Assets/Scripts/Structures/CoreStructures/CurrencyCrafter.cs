@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CurrencyCrafter : Structure
@@ -42,8 +43,8 @@ public class CurrencyCrafter : Structure
         base.Start();
         SetStructurePrimaryFunctionUnlocked(true);
         ActivateStructurePrimaryFunctionInteraction(true);
-        needsEngineerRefill = true;
-        needsEngineering = true;
+        needsRefill = true;
+        needsWorking = false;
 
         if (currencyTypeCrafted == PlayerCurrencies.CurrencyType.ammo) {
             currencyCraftAmount = StructureStats.Instance.GetAmmoCrafterMaxAmmoPerBatch();
@@ -103,7 +104,6 @@ public class CurrencyCrafter : Structure
     private void TriggerCrafterFunction() {
         if (!craftedCurrency) {
             // No batch is being crafted
-
             OnNewCurrencyBatchCraftingStarted?.Invoke(this, EventArgs.Empty);
             OnAnyNewCurrencyBatchCraftingStarted?.Invoke(this, EventArgs.Empty);
 
@@ -112,7 +112,8 @@ public class CurrencyCrafter : Structure
                 showTooltipOnTrigger.SetShowTooltips(false);
             }
 
-            needsEngineerRefill = false;
+            needsRefill = false;
+            needsWorking = true;
             craftingCurrency = true;
         }
 
@@ -188,7 +189,8 @@ public class CurrencyCrafter : Structure
             yield return new WaitForSeconds(delayBetweenAmmoInstantiation);
         }
 
-        needsEngineerRefill = true;
+        needsRefill = true;
+        needsWorking = false;
     }
 
     public void AccelerateCrafting(float accelerationTime) {

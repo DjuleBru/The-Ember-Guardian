@@ -22,6 +22,7 @@ public class StructureUI : MonoBehaviour
     [SerializeField] protected List<GameObject> levelSlotVisualContainerList;
     [SerializeField] protected bool returnToPrimaryFunctionUIOnTriggerExit = true;
 
+    protected bool uiActive = true;
     protected PayCurrencyUI payOrbsUI;
     protected Structure structure;
     protected bool playerInTriggerArea;
@@ -127,6 +128,7 @@ public class StructureUI : MonoBehaviour
     }
 
     private void Structure_OnWorkerStartedRefilling(object sender, EventArgs e) {
+        Debug.Log("Structure_OnWorkerStartedRefilling ");
         SetUIActive(true);
         StartCoroutine(SetUIActiveAfterDelay(1f, false));
     }
@@ -137,11 +139,15 @@ public class StructureUI : MonoBehaviour
     }
 
     protected virtual void SetUIActive(bool active) {
+        if (uiActive == active) return;
+        
+        //Debug.Log("SetUIActive " + active);
         UIGameObject.SetActive(active);
 
-        foreach(GameObject go in otherUIGameObjectList) {
+        foreach (GameObject go in otherUIGameObjectList) {
             go.SetActive(active);
         }
+        uiActive = active;
     }
 
     protected void UpdateArrowsVisibility() {

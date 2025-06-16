@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: da7fc77ffa43a544bb244352ea40ff5a
+guid: fe8746d58c8c21442bf373c300d40752
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,106 +110,190 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Tower_SniperStructure_0
+      name: Sniper_Weapon_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 336
-        width: 79
-        height: 80
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        y: 0
+        width: 50
+        height: 17
+      alignment: 9
+      pivot: {x: 0.35, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7262187a8e3f24446b331da3bef1d660
-      internalID: -1496671194
+      spriteID: eb86e76ab88e05c4fa24d12aeae01cba
+      internalID: 1183724928
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tower_SniperStructure_1
+      name: Sniper_Weapon_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 249.8
-        width: 79
-        height: 83.2
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 50
+        y: 0
+        width: 50
+        height: 17
+      alignment: 9
+      pivot: {x: 0.35, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e79291c8843e7ad469fc5fa9a1317cb7
-      internalID: 1965919706
+      spriteID: 31da9848665d7874d8bb5a3f61447a38
+      internalID: 163152006
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tower_SniperStructure_2
+      name: Sniper_Weapon_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 166.8
-        width: 79
-        height: 83.2
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 100
+        y: 0
+        width: 50
+        height: 17
+      alignment: 9
+      pivot: {x: 0.35, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d4aeb5458c46eb8469e91779c48a58fc
-      internalID: 458841907
+      spriteID: 6a17e00fed32ea348b3a29eb2da57adf
+      internalID: -1738847366
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tower_SniperStructure_3
+      name: Sniper_Weapon_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 83.8
-        width: 79
-        height: 83.2
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 150
+        y: 0
+        width: 50
+        height: 17
+      alignment: 9
+      pivot: {x: 0.35, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 312bc11aa1af4ac459b39a8f31733705
-      internalID: -2074623489
+      spriteID: 3b1e5d9ef6a3cef428d459403196bab5
+      internalID: 292147265
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tower_SniperStructure_4
+      name: Sniper_Weapon_4
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0.80000305
-        width: 79
-        height: 83.2
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 200
+        y: 0
+        width: 50
+        height: 17
+      alignment: 9
+      pivot: {x: 0.35, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 40f00ccfc23f4c643b5651c0e841e88e
-      internalID: 1486632193
+      spriteID: cdac3a51b5d289d4aa0766c60b7a0b91
+      internalID: 1295737501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sniper_Weapon_5
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 0
+        width: 50
+        height: 17
+      alignment: 9
+      pivot: {x: 0.35, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3987f0d94d737e40981fff143d6ee9c
+      internalID: 575302964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sniper_Weapon_6
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 0
+        width: 50
+        height: 17
+      alignment: 9
+      pivot: {x: 0.35, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ea81b420e80e8c4092fd586c8ce5d80
+      internalID: -624326449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sniper_Weapon_7
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 0
+        width: 50
+        height: 17
+      alignment: 9
+      pivot: {x: 0.35, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6cd9b692cb4b34a49ae346bde764ecf2
+      internalID: 1688567993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sniper_Weapon_8
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 0
+        width: 50
+        height: 17
+      alignment: 9
+      pivot: {x: 0.35, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 992fa1671ef32fc4697b9bbcdf0f8971
+      internalID: -764823257
       vertices: []
       indices: 
       edges: []
@@ -225,11 +309,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Tower_SniperStructure_0: -1496671194
-      Tower_SniperStructure_1: 1965919706
-      Tower_SniperStructure_2: 458841907
-      Tower_SniperStructure_3: -2074623489
-      Tower_SniperStructure_4: 1486632193
+      Sniper_Weapon_0: 1183724928
+      Sniper_Weapon_1: 163152006
+      Sniper_Weapon_2: -1738847366
+      Sniper_Weapon_3: 292147265
+      Sniper_Weapon_4: 1295737501
+      Sniper_Weapon_5: 575302964
+      Sniper_Weapon_6: -624326449
+      Sniper_Weapon_7: 1688567993
+      Sniper_Weapon_8: -764823257
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
