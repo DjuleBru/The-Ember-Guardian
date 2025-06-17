@@ -34,7 +34,7 @@ public static class RoamBehavior
 
         if (Mathf.Abs(mobMovement.transform.position.x - targetDestination.x) < .1f) {
 
-            float randomRoamPoint = Random.Range(CampZoneManager.Instance.GetCampCenterMinLimit(), CampZoneManager.Instance.GetCampCenterMaxLimit());
+            float randomRoamPoint = Random.Range(CampZoneManager.Instance.GetMinZoneLimit() + 5, CampZoneManager.Instance.GetMaxZoneLimit() - 5);
 
             Vector3 randomMoveTarget = new Vector3(randomRoamPoint, 0, 0);
             mobMovement.SetMoveTarget(randomMoveTarget);

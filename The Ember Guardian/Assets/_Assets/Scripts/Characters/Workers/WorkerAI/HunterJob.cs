@@ -17,7 +17,6 @@ public class HunterJob : WorkerJob {
     private float distanceToHuntingLimit = 3f;
 
     private bool hasHitAnimal;
-    private bool followingPlayer;
 
     protected Animal targetAnimal;
 
@@ -97,11 +96,12 @@ public class HunterJob : WorkerJob {
             ChangeState(HunterState.droppingOrbs);
 
         } else {
-
-            if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Dusk) {
-                if (CheckOrbsToCollect() && state != HunterState.hunting && state != HunterState.blockedByCreatures) {
-                    ChangeState(HunterState.pickingUpOrbs);
-                };
+            if(!followingPlayer) {
+                if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Dusk) {
+                    if (CheckOrbsToCollect() && state != HunterState.hunting && state != HunterState.blockedByCreatures) {
+                        ChangeState(HunterState.pickingUpOrbs);
+                    };
+                }
             }
 
         }
@@ -900,8 +900,6 @@ public class HunterJob : WorkerJob {
     public override void InitializeJob() {
         base.InitializeJob();
 
-        workerAI.OnWorkerFollowPlayerChanged += WorkerAI_OnWorkerFollowPlayerChanged;
-
         mobMovement.OnDestinationReached += WorkerMovement_OnDestinationReached;
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
@@ -916,15 +914,15 @@ public class HunterJob : WorkerJob {
         }
     }
 
-    private void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
-        followingPlayer = workerAI.GetFollowingPlayer();
+    protected override void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
+        base.WorkerAI_OnWorkerFollowPlayerChanged(sender, e);
+        workerAttack.RemoveAttackTarget();
 
-        if(followingPlayer) {
+        if (followingPlayer) {
             state = HunterState.followPlayerIdle;
         } else {
             state = HunterState.idle;
             CheckNewDayCycleParameters();
-            workerAttack.RemoveAttackTarget();
         }
 
         roamTimer = 0f;

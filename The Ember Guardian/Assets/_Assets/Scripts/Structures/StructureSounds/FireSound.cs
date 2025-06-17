@@ -34,7 +34,10 @@ public class FireSound : StructureSounds
         fire.OnFireDamageTaken += Fire_OnFireDamageTaken;
         fire.OnFireEmberExtractionStopped += Fire_OnFireEmberExtractionStopped;
         fire.OnFireEmberExtractionStarted += Fire_OnFireEmberExtractionStarted;
-        fireUI.OnFireTickRemoved += FireUI_OnFireTickRemoved;
+
+        if(fireUI != null) {
+            fireUI.OnFireTickRemoved += FireUI_OnFireTickRemoved;
+        }
     }
 
     private void FireUI_OnFireTickRemoved(object sender, StructureUI_Fire.OnFireTickRemovedEventArgs e) {

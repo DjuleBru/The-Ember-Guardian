@@ -21,6 +21,7 @@ public class StructureBlueprint : MonoBehaviour {
     public bool isBeingMoved = false;
     public bool isBeingRemoved = false;
     public Vector2Int currentCell;
+    public Vector2Int initialCell;
     public List<Vector2Int> occupiedCells = new List<Vector2Int>();
 
     private bool locked;
@@ -75,6 +76,7 @@ public class StructureBlueprint : MonoBehaviour {
 
         if (isInitialBlueprint) {
             CampEditManager.Instance.RegisterStructure(this);
+            initialCell = currentCell;
         }
     }
 
@@ -94,6 +96,22 @@ public class StructureBlueprint : MonoBehaviour {
         if (currentCell.x < CampGrid.Instance.GetGridSize()/2) {
             blueprintImageParent.localScale = new Vector2(-1, 1);
         } else {
+            blueprintImageParent.localScale = new Vector2(1, 1);
+        }
+    }
+
+    public void SetInitialCell() {
+        currentCell = initialCell;
+
+        occupiedCells.Clear();
+        for (int i = 0; i < widthInCells; i++) {
+            occupiedCells.Add(new Vector2Int(currentCell.x + i, 0));
+        }
+
+        if (currentCell.x < CampGrid.Instance.GetGridSize() / 2) {
+            blueprintImageParent.localScale = new Vector2(-1, 1);
+        }
+        else {
             blueprintImageParent.localScale = new Vector2(1, 1);
         }
     }

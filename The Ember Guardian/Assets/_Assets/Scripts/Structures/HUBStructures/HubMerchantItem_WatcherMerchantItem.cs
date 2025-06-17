@@ -23,6 +23,10 @@ public class HubMerchantItem_WatcherMerchantItem : HubMerchantItem {
         GuardHealth,
         GuardDamage,
         GuardAttackCooldown,
+        EngineerShrine,
+        EngineerSpeed,
+        EngineerWrenchSpeed,
+        EngineerContainerSize,
     }
     public enum WatcherItemCategory {
         newShrine,
@@ -102,6 +106,12 @@ public class HubMerchantItem_WatcherMerchantItem : HubMerchantItem {
         if (watcherItemType == WatcherItemType.GuardSpeed) {
             WorkerStats.Instance.SetGuardMoveSpeedBuff(buff * 0.01f);
         }
+        if (watcherItemType == WatcherItemType.EngineerSpeed) {
+            WorkerStats.Instance.SetEngineerMoveSpeedBuff(buff * 0.01f);
+        }
+        if (watcherItemType == WatcherItemType.EngineerWrenchSpeed) {
+            WorkerStats.Instance.SetEngineerWrenchSpeedBuff(buff * 0.01f);
+        }
 
         if (watcherItemType == WatcherItemType.HunterAttackCooldown) {
             WorkerStats.Instance.SetHunterAttackCooldownBuff(buff);
@@ -118,6 +128,9 @@ public class HubMerchantItem_WatcherMerchantItem : HubMerchantItem {
         }
         if (watcherItemType == WatcherItemType.MinerLuckyPickaxe) {
             WorkerStats.Instance.SetMinerLuckyPickaxeProb(buff * 0.01f);
+        }
+        if (watcherItemType == WatcherItemType.EngineerContainerSize) {
+            StructureStats.Instance.SetEngineerContainerSizeBuff(buff * 0.01f);
         }
     }
 
@@ -201,6 +214,36 @@ public class HubMerchantItem_WatcherMerchantItem : HubMerchantItem {
             if (watcherItemType == WatcherItemType.MinerSpeed) {
                 initialStatValue = 0;
                 currentStatValue = (WorkerStats.Instance.GetMinerMoveSpeedBuff() * 100f).ToString();
+                totalStatWithModifierPostfix = "%";
+                relativeStatPostfix = "%";
+                relativeStatPrefix = "+";
+                initialStatPrefix = "+";
+                totalStatWithModifierPrefix = "+";
+            }
+
+            if (watcherItemType == WatcherItemType.EngineerSpeed) {
+                initialStatValue = 0;
+                currentStatValue = (WorkerStats.Instance.GetEngineerMoveSpeedBuff() * 100f).ToString();
+                totalStatWithModifierPostfix = "%";
+                relativeStatPostfix = "%";
+                relativeStatPrefix = "+";
+                initialStatPrefix = "+";
+                totalStatWithModifierPrefix = "+";
+            }
+
+            if (watcherItemType == WatcherItemType.EngineerWrenchSpeed) {
+                initialStatValue = 0;
+                currentStatValue = (WorkerStats.Instance.GetEngineerWrenchSpeedBuff() * 100f).ToString();
+                totalStatWithModifierPostfix = "%";
+                relativeStatPostfix = "%";
+                relativeStatPrefix = "+";
+                initialStatPrefix = "+";
+                totalStatWithModifierPrefix = "+";
+            }
+
+            if (watcherItemType == WatcherItemType.EngineerContainerSize) {
+                initialStatValue = 0;
+                currentStatValue = (StructureStats.Instance.GetEngineerContainerSizeBuff() * 100f).ToString();
                 totalStatWithModifierPostfix = "%";
                 relativeStatPostfix = "%";
                 relativeStatPrefix = "+";
@@ -413,7 +456,6 @@ public class HubMerchantItem_WatcherMerchantItem : HubMerchantItem {
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newMinerSpeed") + " ");
         }
-
         if (watcherItemType == WatcherItemType.MinerLuckyPickaxe) {
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentMinerLuckyPickaxe") + " ");
@@ -428,6 +470,30 @@ public class HubMerchantItem_WatcherMerchantItem : HubMerchantItem {
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newHunterAccuracy") + " ");
         }
+
+        if (watcherItemType == WatcherItemType.EngineerSpeed) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentEngineerSpeed") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_engineerSpeed") + " ");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newEngineerSpeed") + " ");
+        }
+        if (watcherItemType == WatcherItemType.EngineerWrenchSpeed) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentEngineerWrenchSpeed") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_engineerWrenchSpeed") + " ");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newEngineerWrenchSpeed") + " ");
+        }
+
+        if (watcherItemType == WatcherItemType.EngineerContainerSize) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentEngineerContainerSize") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_engineerContainerSize") + " ");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newEngineerContainerSized") + " ");
+        }
+
 
         return statDescriptionList;
     }

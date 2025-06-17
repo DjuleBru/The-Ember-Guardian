@@ -25,12 +25,10 @@ public class EngineerJob : WorkerJob {
 
     private WorkerCurrencies workerCurrencies;
     private WorkerMovement workerMovement;
-    private WorkerDetectionCollider workerDetectionCollider;
 
     private float headingToStructureMoveSpeed = 3.5f;
 
     private bool isNightOrDusk;
-    private bool followingPlayer;
 
     private bool reachedAssignedStructureWorkingPoint;
     private Structure assignedStructure;
@@ -70,6 +68,8 @@ public class EngineerJob : WorkerJob {
         if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
             isNightOrDusk = true;
         }
+
+        turnWrenchDelay = turnWrenchDelay - turnWrenchDelay*WorkerStats.Instance.GetEngineerWrenchSpeedBuff();
     }
 
     private void Update() {
@@ -549,6 +549,30 @@ public class EngineerJob : WorkerJob {
         OnOrbExtractorTriggeredDrill?.Invoke(this, EventArgs.Empty);
     }
 
+    public override void InitializeJob() {
+        base.InitializeJob();
+
+        DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+        DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+
+        if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
+            ChangeState(EngineerState.idle);
+        }
+        else {
+            ChangeState(EngineerState.headToSafety);
+        }
+    }
+
+    protected override void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
+        base.WorkerAI_OnWorkerFollowPlayerChanged(sender, e);
+        if (followingPlayer) {
+            ChangeState(EngineerState.followPlayerIdle);
+        }
+        else {
+            ChangeState(EngineerState.idle);
+        }
+    }
+
     protected override bool CheckDropCurrenciesToPlayer() {
 
         if(targetCurrencyStorage != null && (state == EngineerState.refillingStructure || state == EngineerState.headingToRefill || state == EngineerState.headingToStructureToRefill || state == EngineerState.headingToDrop)) {
@@ -567,13 +591,15 @@ public class EngineerJob : WorkerJob {
     private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
         isNightOrDusk = true;
 
-        if(state == EngineerState.workingInStructure) {
+        if (followingPlayer) return;
+        if (state == EngineerState.workingInStructure) {
             ChangeState(EngineerState.idle);
         }
     }
 
     private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         isNightOrDusk = false;
+        if (followingPlayer) return;
         ChangeState(EngineerState.idle);
     }
 

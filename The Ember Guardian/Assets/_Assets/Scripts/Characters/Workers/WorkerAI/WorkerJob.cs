@@ -23,6 +23,7 @@ public class WorkerJob : MonoBehaviour
     protected bool hasSetSpeed;
     protected bool isInSafeZone;
     protected bool hasSetCampDestination;
+    protected bool followingPlayer;
 
     protected float headToCampMoveSpeed = 2.5f;
     protected float roamMoveSpeed = 1.5f;
@@ -238,5 +239,10 @@ public class WorkerJob : MonoBehaviour
         workerAI = GetComponent<WorkerAI>();
 
         mobMovement.SetMoveTarget(mobMovement.transform.position);
+
+        workerAI.OnWorkerFollowPlayerChanged += WorkerAI_OnWorkerFollowPlayerChanged;
+    }
+    protected virtual void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
+        followingPlayer = workerAI.GetFollowingPlayer();
     }
 }

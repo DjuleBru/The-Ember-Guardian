@@ -31,6 +31,9 @@ public class WorkerStats : MonoBehaviour
     private int guardHealthBuff;
     private float guardMoveSpeedBuff;
 
+    private float engineerMoveSpeedBuff;
+    private float engineerWrenchSpeedBuff;
+
     private int initialMinerHealth = 1;
     private int initialMinerDamage = 1;
     private float initialMinerAttackCooldown = 1.2f;
@@ -69,6 +72,9 @@ public class WorkerStats : MonoBehaviour
         minerHealthBuff = ES3.Load("minerHealthBuff", 0);
         minerPickaxeLuckyProb = ES3.Load("minerPickaxeLuckyProb", 0f);
         minerMoveSpeedBuff = ES3.Load("minerMoveSpeedBuff", 0f);
+
+        engineerMoveSpeedBuff = ES3.Load("engineerMoveSpeedBuff", 0f);
+        engineerWrenchSpeedBuff = ES3.Load("engineerWrenchSpeedBuff", 0f);
     }
 
     public void SetInteractionWithWorkersUnlocked() {
@@ -191,6 +197,12 @@ public class WorkerStats : MonoBehaviour
     public float GetGuardMoveSpeedBuff() {
         return guardMoveSpeedBuff;
     }
+    public float GetEngineerMoveSpeedBuff() {
+        return engineerMoveSpeedBuff;
+    }
+    public float GetEngineerWrenchSpeedBuff() {
+        return engineerWrenchSpeedBuff;
+    }
 
     #endregion
 
@@ -234,7 +246,12 @@ public class WorkerStats : MonoBehaviour
     public void SetGuardMoveSpeedBuff(float guardMoveSpeedBuff) {
         this.guardMoveSpeedBuff = guardMoveSpeedBuff;
     }
-
+    public void SetEngineerMoveSpeedBuff(float engineerMoveSpeedBuff) {
+        this.engineerMoveSpeedBuff = engineerMoveSpeedBuff;
+    }
+    public void SetEngineerWrenchSpeedBuff(float engineerWrenchSpeedBuff) {
+        this.engineerWrenchSpeedBuff = engineerWrenchSpeedBuff;
+    }
     public void SetHunterAccuracyBuff(float hunterAccuracyBuff) {
         this.hunterAccuracyBuff = hunterAccuracyBuff;
     }
@@ -263,6 +280,8 @@ public class WorkerStats : MonoBehaviour
         ES3.Save("hunterMoveSpeedBuff", hunterMoveSpeedBuff);
         ES3.Save("minerMoveSpeedBuff", minerMoveSpeedBuff);
         ES3.Save("guardMoveSpeedBuff", guardMoveSpeedBuff);
+        ES3.Save("engineerMoveSpeedBuff", engineerMoveSpeedBuff);
+        ES3.Save("engineerWrenchSpeedBuff", engineerWrenchSpeedBuff);
         ES3.Save("hunterAccuracyBuff", hunterAccuracyBuff);
         ES3.Save("minerPickaxeLuckyProb", minerPickaxeLuckyProb);
     }

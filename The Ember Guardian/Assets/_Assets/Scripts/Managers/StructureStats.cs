@@ -50,6 +50,8 @@ public class StructureStats : MonoBehaviour
     private int startWithRandomTrapAmount;
     private int initialStartWithRandomTrapAmount = 0;
 
+    private float engineerContainerSizeBuff;
+
     private bool barricadesSpiked;
     private bool startWithAmmoCrafter;
     private bool startWithResearchTower;
@@ -92,6 +94,7 @@ public class StructureStats : MonoBehaviour
         trapMerchantMaxTrapsDisplayed = ES3.Load("trapMerchantMaxTrapsDisplayed", initialTrapMerchantMaxTrapsDisplayed);
         trapMerchantMaxTrapUpgradesDisplayed = ES3.Load("trapMerchantMaxTrapUpgradesDisplayed", initialTrapMerchantMaxTrapUpgradeDisplayed);
         startWithRandomTrapAmount = ES3.Load("startWithRandomTrapAmount", initialStartWithRandomTrapAmount);
+        engineerContainerSizeBuff = ES3.Load("engineerContainerSizeBuff", 0f);
 
         observationTowerEnemyTypesDetectionUnlocked = ES3.Load("researchTowerEnemyTypesDetectionUnlocked", false);
         observationTowerEnemyAmountDetectionUnlocked = ES3.Load("researchTowerEnemyAmountDetectionUnlocked", false);
@@ -126,6 +129,8 @@ public class StructureStats : MonoBehaviour
         ES3.Save("trapMerchantMaxTrapsDisplayed", trapMerchantMaxTrapsDisplayed);
         ES3.Save("trapMerchantMaxTrapUpgradesDisplayed", trapMerchantMaxTrapUpgradesDisplayed);
         ES3.Save("startWithRandomTrapAmount", startWithRandomTrapAmount);
+
+        ES3.Save("engineerContainerSizeBuff", engineerContainerSizeBuff);
 
         ES3.Save("researchTowerEnemyTypesDetectionUnlocked", observationTowerEnemyTypesDetectionUnlocked);
         ES3.Save("researchTowerEnemyAmountDetectionUnlocked", observationTowerEnemyAmountDetectionUnlocked);
@@ -304,6 +309,13 @@ public class StructureStats : MonoBehaviour
     }
     public void SetObservationTowerEnemyAmountDetectionUnlocked() {
         observationTowerEnemyAmountDetectionUnlocked = true;
+    }
+
+    public float GetEngineerContainerSizeBuff() {
+        return engineerContainerSizeBuff;
+    }
+    public void SetEngineerContainerSizeBuff(float buff) {
+        engineerContainerSizeBuff = buff;
     }
     #endregion
 

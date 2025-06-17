@@ -99,7 +99,6 @@ public class StructureUI_SpecialTower : StructureUI
         ammoTickArray[0].GetComponent<RectTransform>().SetParent(transform);
         ammoTickArray[0].RemoveTick();
     }
-
     private void RefreshAmmoBarBackground() {
         ammoTickTemplateBackground.gameObject.SetActive(true);
 
@@ -139,7 +138,6 @@ public class StructureUI_SpecialTower : StructureUI
             ammoBarDisplayTimer = ammoBarDisplayTime;
         }
     }
-
     private void HandleFadeIn() {
         // Réduit le timer pour le fade-in
         ammoBarDisplayTimer -= Time.deltaTime;

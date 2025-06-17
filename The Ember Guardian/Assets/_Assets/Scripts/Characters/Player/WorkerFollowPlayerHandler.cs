@@ -11,6 +11,7 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
     private List<Worker> huntersFollowingPlayer = new List<Worker>();
     private List<Worker> guardsFollowingPlayer = new List<Worker>();
     private List<Worker> minersFollowingPlayer = new List<Worker>();
+    private List<Worker> engineersFollowingPlayer = new List<Worker>();
 
     private int maxFollowingWorkers;
     private float distanceBetweenFollowingWorkers = 1f;
@@ -168,6 +169,9 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
         if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.miner) {
             minersFollowingPlayer.Add(worker);
         }
+        if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.engineer) {
+            engineersFollowingPlayer.Add(worker);
+        }
 
         ReorderWorkerPositions();
     }
@@ -186,6 +190,9 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
         if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.miner) {
             minersFollowingPlayer.Remove(worker);
         }
+        if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.engineer) {
+            engineersFollowingPlayer.Remove(worker);
+        }
 
         ReorderWorkerPositions();
     }
@@ -198,6 +205,8 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
         reorderedWorkers.AddRange(huntersFollowingPlayer);
 
         reorderedWorkers.AddRange(minersFollowingPlayer);
+
+        reorderedWorkers.AddRange(engineersFollowingPlayer);
 
         workersFollowingPlayer = reorderedWorkers;
     }

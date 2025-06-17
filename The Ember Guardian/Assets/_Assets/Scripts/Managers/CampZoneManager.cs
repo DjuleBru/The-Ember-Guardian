@@ -222,6 +222,7 @@ public class CampZoneManager : MonoBehaviour
 
         return closestExteriorZoneLimit;
     }
+
     public float GetCampCenterMinLimit() {
         return campCenterMinLimit;
     }

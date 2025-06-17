@@ -33,6 +33,7 @@ public class Structure : MonoBehaviour {
     protected int structureLevel = 1;
 
     protected int maxEngineersAssignedWorking;
+    protected int engineersWorking;
     protected int maxEngineersAssignedRefilling;
     protected bool needsRefill;
     protected bool needsWorking;
@@ -244,6 +245,7 @@ public class Structure : MonoBehaviour {
         engineersAssignedRefilling.Add(engineerJob);
     }
     public void AssignEngineerWorking(EngineerJob engineerJob) {
+        // Only assignment : not actually working
         if (engineersAssignedWorking.Contains(engineerJob)) return;
 
         engineersAssignedWorking.Add(engineerJob);
@@ -257,32 +259,40 @@ public class Structure : MonoBehaviour {
 
         if (engineersAssignedWorking.Contains(engineerJob)) {
             engineersAssignedWorking.Remove(engineerJob);
+            SetEngineerWorking(engineerJob, false);
         }
 
-        SetEngineerWorking(engineerJob, false);
     }
 
     public List<EngineerJob> GetEngineersWorking() {
         return engineersAssignedWorking;
     }
 
+    public int GetEngineersGarrisoned() {
+        return engineersWorking;
+    }
+
     public virtual void SetEngineerWorking(EngineerJob engineer, bool working) {
-        Debug.Log("SetEngineerWorking " + working + " engineersAssignedWorking.Count " + engineersAssignedWorking.Count + " maxEngineersAssignedWorking " + maxEngineersAssignedWorking);
+        // Actually working
+        Debug.Log("SetEngineerWorking " + working + " engineersWorking " + engineersWorking + " maxEngineersAssignedWorking " + maxEngineersAssignedWorking);
+
         if(working) {
 
             if (!engineersAssignedWorking.Contains(engineer)) {
                 engineersAssignedWorking.Add(engineer);
+                engineersWorking++;
             };
 
         } else {
 
             if (engineersAssignedWorking.Contains(engineer)) {
                 engineersAssignedWorking.Remove(engineer);
+                engineersWorking--;
             };
 
         }
 
-        if(engineersAssignedWorking.Count  == maxEngineersAssignedWorking) {
+        if(engineersWorking == maxEngineersAssignedWorking) {
             needsWorking = false;
         }
     }

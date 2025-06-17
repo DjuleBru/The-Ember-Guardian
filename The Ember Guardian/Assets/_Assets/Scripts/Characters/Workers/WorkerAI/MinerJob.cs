@@ -16,7 +16,6 @@ public class MinerJob : WorkerJob {
     private float attackRangeRandomized;
 
     private bool isNightOrDusk;
-    private bool followingPlayer;
 
     public enum MinerState {
         idle,
@@ -265,8 +264,6 @@ public class MinerJob : WorkerJob {
     public override void InitializeJob() {
         base.InitializeJob();
 
-        workerAI.OnWorkerFollowPlayerChanged += WorkerAI_OnWorkerFollowPlayerChanged;
-
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
 
@@ -278,9 +275,11 @@ public class MinerJob : WorkerJob {
         }
     }
 
-    private void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
-        followingPlayer = workerAI.GetFollowingPlayer();
-        if(followingPlayer) {
+    protected override void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
+        base.WorkerAI_OnWorkerFollowPlayerChanged(sender, e);
+        workerAttack.RemoveAttackTarget();
+
+        if (followingPlayer) {
             ChangeState(MinerState.followPlayerIdle);
         } else {
             ChangeState(MinerState.idle);

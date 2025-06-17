@@ -294,7 +294,6 @@ public class MobAttack : MonoBehaviour
     }
 
     public void ResetStaticProjectileInObjectPool(StaticProjectile projectile) {
-        Debug.Log("ResetStaticProjectileInObjectPool");
         projectile.transform.position = projectileSpawnPoint.position;
         projectile.transform.SetParent(projectileSpawnPoint);
         availableStaticProjectiles.Enqueue(projectile); // Remettre le projectile dans la queue

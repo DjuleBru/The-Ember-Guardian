@@ -8,8 +8,6 @@ public class GuardJob : WorkerJob {
     private GuardState state;
     private GuardState previousState;
 
-    private bool followingPlayer; 
-
     private float attackRange = 1f;
     private float followPlayerTargetingRange = 10f;
     private float attackRangeRandomized;
@@ -218,8 +216,6 @@ public class GuardJob : WorkerJob {
     public override void InitializeJob() {
         base.InitializeJob();
 
-        workerAI.OnWorkerFollowPlayerChanged += WorkerAI_OnWorkerFollowPlayerChanged;
-
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
@@ -227,13 +223,16 @@ public class GuardJob : WorkerJob {
         ChangeState(GuardState.headingToGuard);
     }
 
-    private void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
-        followingPlayer = workerAI.GetFollowingPlayer();
-        if(followingPlayer) {
+    protected override void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
+        base.WorkerAI_OnWorkerFollowPlayerChanged(sender, e);
+        workerAttack.RemoveAttackTarget();
+
+        if (followingPlayer) {
             state = GuardState.followPlayerIdle;
         } else {
             state = GuardState.headingToGuard;
         }
+
         roamTimer = 0;
     }
 

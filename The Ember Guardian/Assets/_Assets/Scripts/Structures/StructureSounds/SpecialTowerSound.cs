@@ -10,11 +10,13 @@ public class SpecialTowerSound : StructureSounds
     [SerializeField] private AudioClip[] removeAmmoAudioClips;
     [SerializeField] private AudioClip[] shootAudioClips;
     [SerializeField] private AudioClip[] reloadAudioClips;
+    [SerializeField] private AudioClip[] cooldownAudioClips;
     [SerializeField] private AudioClip playerClimbOnTower;
     [SerializeField] private float addAmmoVolumeMultiplier;
     [SerializeField] private float removeAmmoVolumeMultiplier;
     [SerializeField] private float shootVolumeMultiplier;
     [SerializeField] private float reloadVolumeMultiplier;
+    [SerializeField] private float cooldownVolumeMultiplier;
 
     protected override void Start() {
         base.Start();
@@ -27,7 +29,12 @@ public class SpecialTowerSound : StructureSounds
         foreach(SpecialTower_Manner manner in  manners) {
             manner.OnMannerShot += Manner_OnMannerShot;
             manner.OnMannerReloadingStarted += Manner_OnMannerReloadingStarted;
+            manner.OnMannerCooldownEventTriggered += Manner_OnMannerCooldownEventTriggered;
         }
+    }
+
+    private void Manner_OnMannerCooldownEventTriggered(object sender, System.EventArgs e) {
+        PlaySound2D(cooldownAudioClips, cooldownVolumeMultiplier);
     }
 
     private void Manner_OnMannerReloadingStarted(object sender, System.EventArgs e) {

@@ -27,6 +27,7 @@ public class WorkerVisual : MobVisual {
     [SerializeField] private Sprite exclamationMarkSprite;
     [SerializeField] private Sprite hoveredSprite;
     [SerializeField] private GameObject holdingCurrencyGO;
+    [SerializeField] private ParticleSystem engineerWrenchPS;
 
     private float unHoveredBodySpriteLightIntensity = .9f;
     private float hoveredBodySpriteLightIntensity = 1.1f;
@@ -57,6 +58,7 @@ public class WorkerVisual : MobVisual {
         engineerJob.OnEngineerChangedState += EngineerJob_OnEngineerChangedState;
         engineerJob.OnEngineerHideTool += EngineerJob_OnEngineerHideTool;
         engineerJob.OnEngineerHideVisual += EngineerJob_OnEngineerHideVisual;
+        engineerJob.OnEngineerTurnsWrench += EngineerJob_OnEngineerTurnsWrench;
 
         hunterJob.OnHunterFindsNoAnimal += HunterJob_OnHunterFindsNoAnimal;
         hunterJob.OnHunterChangedState += HunterJob_OnHunterChangedState;
@@ -72,6 +74,15 @@ public class WorkerVisual : MobVisual {
         workerWeaponSpriteRenderer.sortingOrder = currentMaxSortingOrder+1;
         workerWeaponGlowSpriteRenderer.sortingOrder = currentMaxSortingOrder+2;
         holdingCurrencyGO.SetActive(false);
+    }
+
+    private void EngineerJob_OnEngineerTurnsWrench(object sender, System.EventArgs e) {
+        StartCoroutine(TriggerWrenchPSAfterDelay());
+    }
+
+    private IEnumerator TriggerWrenchPSAfterDelay() {
+        yield return new WaitForSeconds(.2f);
+        engineerWrenchPS.Play();
     }
 
     private void EngineerJob_OnEngineerHideVisual(object sender, System.EventArgs e) {

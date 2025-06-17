@@ -47,14 +47,6 @@ public class WorkerMovement : MobMovement
         followingPlayer = workerAI.GetFollowingPlayer();
     }
 
-    private IEnumerator SetTargetMoveSpeedAfterDelay(float delay) {
-        yield return new WaitForSeconds(delay);
-
-        float moveSpeedRandomizer = UnityEngine.Random.Range(PlayerMovement.Instance.GetTargetMoveSpeed()/15, PlayerMovement.Instance.GetTargetMoveSpeed()/10);
-        SetMoveSpeed(PlayerMovement.Instance.GetTargetMoveSpeed() - moveSpeedRandomizer);
-
-    }
-
     public override void SetMoveSpeed(float moveSpeed) {
 
         float moveSpeedBuff = 0f;
@@ -66,6 +58,9 @@ public class WorkerMovement : MobMovement
         }
         if (workerAI.GetJob() == WorkerAI.JobTypes.miner) {
             moveSpeedBuff = WorkerStats.Instance.GetMinerMoveSpeedBuff();
+        }
+        if (workerAI.GetJob() == WorkerAI.JobTypes.engineer) {
+            moveSpeedBuff = WorkerStats.Instance.GetEngineerMoveSpeedBuff();
         }
 
         this.moveSpeed = moveSpeed * (1+moveSpeedBuff);

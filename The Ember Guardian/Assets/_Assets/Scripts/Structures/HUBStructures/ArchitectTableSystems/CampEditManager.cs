@@ -427,7 +427,7 @@ public class CampEditManager : MonoBehaviour {
         foreach (StructureBlueprint blueprint in structureBlueprints) {
             if (blueprint.GetBlueprintLocked()) continue;
             blueprint.gameObject.SetActive(true);
-            blueprint.SetOccupiedCells();
+            blueprint.SetInitialCell();
             PlaceBlueprintOnGrid(blueprint, blueprint.currentCell.x);
         }
 

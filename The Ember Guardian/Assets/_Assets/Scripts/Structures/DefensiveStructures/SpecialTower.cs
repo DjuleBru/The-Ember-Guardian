@@ -120,14 +120,15 @@ public class SpecialTower : Structure {
     }
     protected void SetEngineerGarrisonPosition(EngineerJob engineer) {
         int workerIndex = engineersAssignedWorking.IndexOf(engineer);
+        Debug.Log(workerIndex);
         Vector3 garrisonPosition = new Vector3(0, 0, 0);
 
         if (structureLevel == 1) {
-            garrisonPosition = level1GarrisonPositions[0].position;
+            garrisonPosition = level1GarrisonPositions[workerIndex].position;
         }
 
         if (structureLevel == 2) {
-            garrisonPosition = level2GarrisonPositions[0].position;
+            garrisonPosition = level2GarrisonPositions[workerIndex].position;
         }
 
         engineer.transform.position = garrisonPosition;

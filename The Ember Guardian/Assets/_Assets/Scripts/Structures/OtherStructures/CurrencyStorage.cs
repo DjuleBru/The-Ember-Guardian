@@ -26,6 +26,10 @@ public class CurrencyStorage : Structure
     protected override void Start() {
         base.Start();
         GameInput.Instance.OnCurrencyCollectedFromContainer += GameInput_OnCurrencyCollectedFromContainer;
+
+        Debug.Log("maxCurrencyAmountStored " + maxCurrencyAmountStored);
+        maxCurrencyAmountStored = maxCurrencyAmountStored + Mathf.RoundToInt(StructureStats.Instance.GetEngineerContainerSizeBuff() * maxCurrencyAmountStored);
+        Debug.Log("NewMaxCurrencyAmountStored " + maxCurrencyAmountStored);
     }
 
     private void GameInput_OnCurrencyCollectedFromContainer(object sender, EventArgs e) {

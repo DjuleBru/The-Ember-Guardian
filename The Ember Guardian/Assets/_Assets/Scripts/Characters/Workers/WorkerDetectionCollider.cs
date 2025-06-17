@@ -84,4 +84,8 @@ public class WorkerDetectionCollider : MonoBehaviour
 
         return closestCreature;
     }
+
+    public List<Creature> GetCreaturesInDetectionCollider() {
+        return creaturesInDetectionColliderRange;
+    }
 }
