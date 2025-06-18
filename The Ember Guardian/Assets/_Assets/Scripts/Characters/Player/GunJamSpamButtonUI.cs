@@ -23,5 +23,6 @@ public class GunJamSpamButtonUI : MonoBehaviour
 
     private void OnDestroy() {
         GunJamHandler.OnAnySpamButtonPressed -= GunJamHandler_OnAnySpamButtonPressed;
+        GunJamHandler.OnAnyTimingButtonPressed -= GunJamHandler_OnAnyTimingButtonPressed;
     }
 }

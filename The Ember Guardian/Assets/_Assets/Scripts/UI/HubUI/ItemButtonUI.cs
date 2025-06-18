@@ -85,6 +85,7 @@ public class ItemButtonUI : ButtonUI {
 
         if(DebugManager.Instance.GetAllItemsUnlockedInDemo()) {
             itemLockedInDemo = false;
+            lockHoverInteractions = false;
         }
     }
 

@@ -32,22 +32,43 @@ public class ScavengableManager : MonoBehaviour
 
         return scavengablesToScavenge;
     }
-    
 
-    public Scavengable GetClosestScavengableToScavenge(Vector3 minerPosition) {
+
+    public Scavengable GetClosestHighestPriorityScavengableToScavenge(Vector3 minerPosition) {
         List<Scavengable> scavengabledToScavenge = GetAvailableScavengableList();
 
-        float distanceToClosesyScavengable = Mathf.Infinity;
-        Scavengable closestScavengable = null;
+        Scavengable closestNonMine = null;
+        float closestNonMineDistance = Mathf.Infinity;
 
-        foreach(Scavengable scavengable in scavengabledToScavenge) {
-            float distanceToScanvegable = Mathf.Abs(scavengable.transform.position.x - minerPosition.x);
-            if (distanceToScanvegable < distanceToClosesyScavengable) {
-                closestScavengable = scavengable;
-                distanceToClosesyScavengable = distanceToScanvegable;
+        Scavengable closestMine = null;
+        float closestMineDistance = Mathf.Infinity;
+
+        foreach (Scavengable scavengable in scavengabledToScavenge) {
+            float distance = Mathf.Abs(scavengable.transform.position.x - minerPosition.x);
+
+            if (scavengable.GetIsMine()) {
+                if (!scavengable.GetMineActive()) {
+                    continue; // ignorer les mines inactives
+                }
+
+                if (distance < closestMineDistance) {
+                    closestMine = scavengable;
+                    closestMineDistance = distance;
+                }
+            }
+            else {
+                if (distance < closestNonMineDistance) {
+                    closestNonMine = scavengable;
+                    closestNonMineDistance = distance;
+                }
             }
         }
 
-        return closestScavengable;
+        if (closestNonMine != null) {
+            return closestNonMine;
+        }
+        else {
+            return closestMine;
+        }
     }
 }

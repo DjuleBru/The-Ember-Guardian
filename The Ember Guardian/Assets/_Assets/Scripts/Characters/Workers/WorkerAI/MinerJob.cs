@@ -183,6 +183,7 @@ public class MinerJob : WorkerJob {
         }
 
     }
+
     public void StayOutOfCreatureRange() {
 
         mobMovement.SetMoveSpeed(fleeMoveSpeed);
@@ -238,7 +239,7 @@ public class MinerJob : WorkerJob {
     }
 
     private void CheckAvailableScavengables() {
-        Scavengable assignableScavengable = ScavengableManager.Instance.GetClosestScavengableToScavenge(transform.position);
+        Scavengable assignableScavengable = ScavengableManager.Instance.GetClosestHighestPriorityScavengableToScavenge(transform.position);
 
         if(assignableScavengable != null) {
             AssignScavengable(assignableScavengable);
@@ -253,6 +254,7 @@ public class MinerJob : WorkerJob {
     }
 
     public void UnAssignScavengable() {
+        assignedScavengable.UnassignMiner(this);
         assignedScavengable = null;
         workerAttack.RemoveAttackTarget();
 
@@ -316,6 +318,9 @@ public class MinerJob : WorkerJob {
         OnMinerChangedState?.Invoke(this, EventArgs.Empty);
 
         if(state == MinerState.idle) {
+            if(assignedScavengable != null) {
+                UnAssignScavengable();
+            }
             mobMovement.SetMoveSpeed(roamMoveSpeed);
         }
         if (state == MinerState.headingToMine) {
@@ -333,7 +338,6 @@ public class MinerJob : WorkerJob {
 
     public void ExitFromMine() {
         gameObject.SetActive(true);
-        ChangeState(MinerState.headToSafety);
     }
 
     public MinerState GetState() {

@@ -18,6 +18,7 @@ public class Scavengable : MonoBehaviour, IDamageable {
     [SerializeField] private int hitsToCollectOneCurrency;
     [SerializeField] private bool isMine;
     [SerializeField] private bool infiniteSource;
+    [SerializeField] private bool doNotYieldResources;
 
     [SerializeField] private int maxMinersAssigned;
     [SerializeField] private float initialTimeToMineOneResource = 25;
@@ -36,8 +37,11 @@ public class Scavengable : MonoBehaviour, IDamageable {
     private bool markedToScavenge;
     private bool depleted;
     private bool playerInTriggerArea;
+    private bool mineActive = true;
 
 
+    public event EventHandler OnActivatedMining;
+    public event EventHandler OnDeactivatedMining;
     public event EventHandler OnPlayerTriggerIn;
     public event EventHandler OnPlayerTriggerOut;
     public event EventHandler OnDamageTaken;
@@ -105,15 +109,17 @@ public class Scavengable : MonoBehaviour, IDamageable {
             UnassignMiner(miner);
             miner.UnAssignScavengable();
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.3f);
         }
     }
 
     private IEnumerator SetAmmoTypeCollected() {
         yield return new WaitForSeconds(1f);
-        if (PlayerShoot.Instance.GetPrimaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special || PlayerShoot.Instance.GetSecondaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special) {
+        bool secondaryGunUnlocked = PlayerShoot.Instance.GetSecondaryGunSO() != null;
+
+        if (PlayerShoot.Instance.GetPrimaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special || (secondaryGunUnlocked && PlayerShoot.Instance.GetSecondaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special)) {
             luckyPickaxeCurrencyTypeCollected = PlayerCurrencies.CurrencyType.ammo_special;
-            if (PlayerShoot.Instance.GetPrimaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special && PlayerShoot.Instance.GetSecondaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special) {
+            if (PlayerShoot.Instance.GetPrimaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special && (secondaryGunUnlocked && PlayerShoot.Instance.GetSecondaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special)) {
                 currencyTypeCollected = PlayerCurrencies.CurrencyType.ammo_special;
             }
         }
@@ -123,6 +129,10 @@ public class Scavengable : MonoBehaviour, IDamageable {
         markedToScavenge = true;
         OnScavengableMarkedToScavenge?.Invoke(this, EventArgs.Empty);
         OnAnyScavengableMarkedToScavenge?.Invoke(this, EventArgs.Empty);
+
+        if (isMine) {
+            Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
+        }
     }
 
     public void Die() {
@@ -146,7 +156,7 @@ public class Scavengable : MonoBehaviour, IDamageable {
         health -= damage;
         hitsTaken += damage;
         OnDamageTaken?.Invoke(this, EventArgs.Empty);
-        if (hitsTaken >= hitsToCollectOneCurrency) {
+        if (hitsTaken >= hitsToCollectOneCurrency && !doNotYieldResources) {
             hitsTaken = 0;
             SpawnCurrency();
         }
@@ -258,7 +268,24 @@ public class Scavengable : MonoBehaviour, IDamageable {
         if (!playerInTriggerArea) return;
         if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
 
-        payOrbsUI.SetPlayerInteracting(true);
+        if(!markedToScavenge) {
+            payOrbsUI.SetPlayerInteracting(true);
+        } else {
+            if(isMine) {
+                ToggleMineActive();
+            }
+        }
+    }
+
+    private void ToggleMineActive() {
+        mineActive = !mineActive;
+
+        if(mineActive) {
+            OnActivatedMining?.Invoke(this, EventArgs.Empty);
+        } else {
+            OnDeactivatedMining?.Invoke(this, EventArgs.Empty);
+            StartCoroutine(RemoveMinersFromMine());
+        }
     }
 
     protected void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
@@ -272,6 +299,10 @@ public class Scavengable : MonoBehaviour, IDamageable {
         return isMine;
     }
 
+    public bool GetMineActive() {
+        return mineActive;
+    }
+
     public float GetTimeToExtractOneResourceNormalized() {
         return (timeToMineOneResource - initialTimeToMineOneResource) / (maxTimeToMineOneResource - initialTimeToMineOneResource);
     }
@@ -283,6 +314,10 @@ public class Scavengable : MonoBehaviour, IDamageable {
         Player.Instance.SetInPayCurrencyArea(false);
         playerInTriggerArea = true;
         OnPlayerTriggerIn?.Invoke(this, EventArgs.Empty);
+
+        if(isMine && markedToScavenge) {
+            Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
@@ -293,5 +328,9 @@ public class Scavengable : MonoBehaviour, IDamageable {
         payOrbsUI.SetPlayerInteracting(false);
         playerInTriggerArea = false;
         OnPlayerTriggerOut?.Invoke(this, EventArgs.Empty);
+
+        if (isMine && markedToScavenge) {
+            Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
+        }
     }
 }

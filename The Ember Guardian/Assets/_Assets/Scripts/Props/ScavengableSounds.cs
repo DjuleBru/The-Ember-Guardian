@@ -6,6 +6,7 @@ public class ScavengableSounds : SoundObject
 {
     [SerializeField] private AudioClip backgorundAudioClip;
     [SerializeField] private AudioClip[] minerGarrisonerAudioClip;
+    [SerializeField] private AudioClip toggleMiningAudioClip;
     [SerializeField] private AudioSource backgroundAudioSource;
     private Scavengable scavengable;
 
@@ -20,16 +21,27 @@ public class ScavengableSounds : SoundObject
 
         scavengable.OnMinerStartsMining += Scavengable_OnMinerStartsMining;
         scavengable.OnMinerStopsMining += Scavengable_OnMinerStopsMining;
+        scavengable.OnDeactivatedMining += Scavengable_OnDeactivatedMining;
+        scavengable.OnActivatedMining += Scavengable_OnActivatedMining;
+    }
+
+    private void Scavengable_OnActivatedMining(object sender, System.EventArgs e) {
+        PlaySound2D(toggleMiningAudioClip);
+    }
+
+    private void Scavengable_OnDeactivatedMining(object sender, System.EventArgs e) {
+        PlaySound2D(toggleMiningAudioClip);
     }
 
     private void Scavengable_OnMinerStopsMining(object sender, System.EventArgs e) {
         backgroundAudioSource.Stop();
 
+        PlaySound2D(minerGarrisonerAudioClip, .7f);
         backgroundPlaying = false;
     }
 
     private void Scavengable_OnMinerStartsMining(object sender, System.EventArgs e) {
-        PlaySound2D(minerGarrisonerAudioClip);
+        PlaySound2D(minerGarrisonerAudioClip, .7f);
 
         if (backgroundPlaying) return;
 

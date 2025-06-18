@@ -98,7 +98,6 @@ public class PlayerWorldUITooltip : MonoBehaviour
 
         Sprite iconSprite = spriteList[0];
         Sprite iconSprite2 = null;
-        Debug.Log("ShowTooltipInstruction " + spriteList.Count);
 
         constrolInstructionText1With2Icons.gameObject.SetActive(false);
         constrolInstructionText1.gameObject.SetActive(true);

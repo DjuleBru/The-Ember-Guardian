@@ -64,13 +64,13 @@ public class EngineerJob : WorkerJob {
         workerMovement.OnDestinationReached += WorkerMovement_OnDestinationReached;
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
-
         if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
             isNightOrDusk = true;
         }
 
         turnWrenchDelay = turnWrenchDelay - turnWrenchDelay*WorkerStats.Instance.GetEngineerWrenchSpeedBuff();
     }
+
 
     private void Update() {
         if (CheckDropCurrenciesToPlayer()) {

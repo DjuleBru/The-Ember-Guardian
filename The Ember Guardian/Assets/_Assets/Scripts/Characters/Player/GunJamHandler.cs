@@ -53,17 +53,16 @@ public class GunJamHandler : MonoBehaviour
     private Coroutine progressInInputSequenceQTECoroutine;
 
     public event EventHandler OnCorrectJamSequenceInput;
+    public event EventHandler OnJamSequenceCompleted;
+    public event EventHandler OnJamSequenceFailStarted;
+    public event EventHandler OnJamSequenceFailed;
     public static event EventHandler OnAnyCorrectJamSequenceInput;
     public static event EventHandler OnAnySpamButtonPressed;
     public static event EventHandler OnAnyTimingButtonPressed;
     public static event EventHandler<OnAnyJamSequenceProgressedEventArgs> OnAnyJamSequenceProgressed;
     public static event EventHandler<OnSpamQTEProgressedEventArgs> OnSpamQTEProgressed;
     public static event EventHandler<OnJamSequenceGeneratedEventArgs> OnAnyJamSequenceGenerated;
-    public event EventHandler OnJamSequenceCompleted;
     public static event EventHandler OnAnyJamSequenceCompleted;
-    public event EventHandler OnJamSequenceFailStarted;
-    public static event EventHandler OnAnyJamSequenceFailStarted;
-    public event EventHandler OnJamSequenceFailed;
     public static event EventHandler OnAnyJamSequenceFailed;
     public static event EventHandler OnAnyJamSequenceCancelled;
     public static event EventHandler OnAnyJamSequenceRestarted;
@@ -433,7 +432,6 @@ public class GunJamHandler : MonoBehaviour
         justFailed = true;
         perfectQTESequence = false;
         OnJamSequenceFailStarted?.Invoke(this, EventArgs.Empty);
-        OnAnyJamSequenceFailStarted?.Invoke(this, EventArgs.Empty);
         yield return new WaitForSeconds(jamHitAnimationDuration);
 
         OnAnyJamSequenceFailed?.Invoke(this, EventArgs.Empty);
