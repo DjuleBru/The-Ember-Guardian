@@ -108,6 +108,9 @@ public class LevelSO : ScriptableObject
     public List<int> bossNightSpawns;
     [BoxGroup("Creatures/NightWaves")]
     [LabelWidth(300)]
+    public int startWaveToSpawnFromBothSides;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
     public int baseDifficulty;
     [BoxGroup("Creatures/NightWaves")]
     [LabelWidth(300)]
@@ -132,7 +135,19 @@ public class LevelSO : ScriptableObject
     public float minMaxSubwaveDifficultyGrowthFactor;
     [BoxGroup("Creatures/NightWaves")]
     [LabelWidth(300)]
-    public int startWaveToSpawnFromBothSides;
+    public bool setDifficultyAnimationCurve;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    [ShowIf("setDifficultyAnimationCurve")]
+    public int difficultyAtMaxWave;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    [ShowIf("setDifficultyAnimationCurve")]
+    public AnimationCurve difficultyAnimationCurve;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    [ShowIf("setDifficultyAnimationCurve")]
+    public int maxWaveInAnimationCurve;
     [BoxGroup("Creatures/NightWaves")]
     [LabelWidth(300)]
     public bool canSpawnElite;

@@ -57,7 +57,7 @@ public class SpecialTower : Structure {
         }
 
         if (GetHasCurrenciesToPay() && playerInteracting) {
-            payCurrencyUI.SetPlayerInteractingContinuous(); // Continue l'interaction
+            payCurrencyUI.SetPlayerInteractingContinuous(.2f); // Continue l'interaction
         }
         else {
             payCurrencyUI.SetPlayerInteracting(false);

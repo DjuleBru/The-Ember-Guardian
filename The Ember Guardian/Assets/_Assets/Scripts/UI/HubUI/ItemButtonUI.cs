@@ -82,6 +82,10 @@ public class ItemButtonUI : ButtonUI {
         base.Start();
         HubChest.Instance.OnChestClosed += HubChest_OnChestClosed;
         UICurrencyManager.HubInventoryUI.OnCurrencyRemovedFromBag += HubInventoryUI_OnCurrencyRemovedFromBag;
+
+        if(DebugManager.Instance.GetAllItemsUnlockedInDemo()) {
+            itemLockedInDemo = false;
+        }
     }
 
     private void HubChest_OnChestClosed(object sender, EventArgs e) {

@@ -53,7 +53,7 @@ public class CurrencyStorage : Structure
         StoreCurrency();
 
         if (GetHasCurrenciesToPay() && playerInteracting && currencyAmountStored < maxCurrencyAmountStored) {
-            payCurrencyUI.SetPlayerInteractingContinuous(); // Continue l'interaction
+            payCurrencyUI.SetPlayerInteractingContinuous(.2f); // Continue l'interaction
         }
         else {
             payCurrencyUI.SetPlayerInteracting(false);

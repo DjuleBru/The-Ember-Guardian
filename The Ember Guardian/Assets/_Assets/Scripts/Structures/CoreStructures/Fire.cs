@@ -143,6 +143,7 @@ public class Fire : Structure, IDamageable {
         }
 
         if (isHubFire) {
+            state = State.calm;
             ChangeState(State.calm);
             SetStructurePrimaryFunctionUnlocked(false);
             RefreshHubFireEmberExtractable();

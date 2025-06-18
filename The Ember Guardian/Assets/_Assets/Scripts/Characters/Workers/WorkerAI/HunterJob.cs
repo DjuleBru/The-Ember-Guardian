@@ -747,9 +747,8 @@ public class HunterJob : WorkerJob {
             hasSetSpeed = true;
         }
 
-        Vector3 targetDestination = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned(), 2f);
-        Vector3 targetDestinationRandomized = new Vector3(targetDestination.x + UnityEngine.Random.Range(-1f, 1f), 0, 0);
-
+        Vector3 targetDestination = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned(), 3.5f);
+        Vector3 targetDestinationRandomized = new Vector3(targetDestination.x + UnityEngine.Random.Range(-1.5f, 1.5f), 0, 0);
         mobMovement.SetMoveTarget(targetDestinationRandomized);
 
         if(Mathf.Abs(transform.position.x - targetDestinationRandomized.x) < 0.1f) {

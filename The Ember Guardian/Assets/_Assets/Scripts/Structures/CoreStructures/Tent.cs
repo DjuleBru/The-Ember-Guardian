@@ -43,7 +43,7 @@ public class Tent : Structure
         Player.Instance.HealPlayer(healAmountPerOrb);
 
         if (GetHasCurrenciesToPay() && playerInteracting && Player.Instance.GetHP() < PlayerStats.Instance.GetMaxHP()) {
-            payCurrencyUI.SetPlayerInteractingContinuous(); // Continue l'interaction
+            payCurrencyUI.SetPlayerInteractingContinuous(.2f); // Continue l'interaction
         } else {
             payCurrencyUI.SetPlayerInteracting(false);
         }

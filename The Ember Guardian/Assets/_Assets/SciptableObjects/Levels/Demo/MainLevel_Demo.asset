@@ -15,6 +15,7 @@ MonoBehaviour:
   linkedSceneName: DemoLevel_Main
   levelImage: {fileID: 0}
   levelNameLocalizationKey: 
+  levelDescriptionLocalizationKey: 
   faunaAmount: 8
   scrapAmount: 0
   minesAmount: 0
@@ -50,25 +51,65 @@ MonoBehaviour:
   hasBoss: 1
   bossCreatureType: {fileID: 11400000, guid: 99d459fd6a02c044d90152bcc6de9ffb, type: 2}
   bossNightSpawns: 02000000050000000a0000000f00000014000000190000001e00000023000000280000002d00000032000000370000003c00000041000000460000004b00000050000000550000005a0000005f00000064000000
-  baseDifficulty: 15
+  startWaveToSpawnFromBothSides: 2
+  baseDifficulty: 30
   intialMinSubwaveDifficulty: 5
   minSubwaveDifficulty: 25
   intialMaxSubwaveDifficulty: 10
   maxSubwaveDifficulty: 60
-  growthFactor: 1.8
-  setDifficultyAnimationCurve: 0
+  growthFactor: 1.35
+  maxWaveNumber: 0
+  minMaxSubwaveDifficultyGrowthFactor: 1.5
+  setDifficultyAnimationCurve: 1
+  difficultyAtMaxWave: 1000
   difficultyAnimationCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1.14174
-      outSlope: 1.14174
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.037671234
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.03
+      value: 0.09
+      inSlope: 3.401822
+      outSlope: 3.401822
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.46678704
+    - serializedVersion: 3
+      time: 0.05
+      value: 0.28
+      inSlope: 2.1741638
+      outSlope: 2.1741638
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.05075601
+    - serializedVersion: 3
+      time: 0.1
+      value: 0.5
+      inSlope: 3.2394924
+      outSlope: 3.2394924
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.2765662
+      value: 0.8670784
+      inSlope: 0.50297856
+      outSlope: 0.50297856
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.0697902
     - serializedVersion: 3
       time: 1
       value: 1
@@ -82,11 +123,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxWaveInAnimationCurve: 100
-  difficultyAtMaxWave: 6000
-  minDifficultyAtMaxWave: 300
-  maxDifficultyAtMaxWave: 1000
-  minMaxSubwaveDifficultyGrowthFactor: 1.4
-  startWaveToSpawnFromBothSides: 2
   canSpawnElite: 1
   environmentType: 1
   hasFog: 0

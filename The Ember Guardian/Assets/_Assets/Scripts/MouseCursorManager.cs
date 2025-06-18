@@ -54,10 +54,10 @@ public class MouseCursorManager : MonoBehaviour
             return;
         };
 
-        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerAim_OnPlayerSwappedGun;
         currentGunSO = PlayerShoot.Instance.GetHeldGunSO();
         currentCursorSize = new Vector2(initialMouseCursorWidth, initialMouseCursorHeight);
 
+        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerAim_OnPlayerSwappedGun;
         PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
         PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
         PauseMenuUI.Instance.OnPauseMenuClosed += PauseMenuUI_OnPauseMenuClosed;
@@ -309,6 +309,7 @@ public class MouseCursorManager : MonoBehaviour
         HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant -= HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
         PortalUI.OnAnyPortalUIOpened -= PortalUI_OnAnyPortalUIOpened;
         PortalUI.OnAnyPortalUIClosed -= PortalUI_OnAnyPortalUIClosed;
+        GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
     }
 
 }

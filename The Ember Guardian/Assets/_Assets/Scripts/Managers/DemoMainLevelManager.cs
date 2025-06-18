@@ -87,6 +87,7 @@ public class DemoMainLevelManager : MonoBehaviour
     private void Start() {
         LevelManager.Instance.OnLevelFailed += LevelManager_OnLevelFailed;
         LevelManager.Instance.OnLevelSuccess += LevelManager_OnLevelSuccess;
+        DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
         Animal.OnAnyMobDied += Animal_OnAnyMobDied;
@@ -154,9 +155,17 @@ public class DemoMainLevelManager : MonoBehaviour
             StartCoroutine(SetNightsToSurviveAfterDelay());
         }
     }
+    private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
+        int dayNumber = DayNightManager.Instance.GetCurrentDay();
+
+        if (dayNumber == 4) {
+            CreaturesSpawnManager.Instance.SetSetDifficultyAnimationCurve();
+        }
+    }
 
     private void PlayerShoot_OnPlayerShot(object sender, EventArgs e) {
         if (!demoMainLevelTutorialCompleted) return;
+        if (demoFirstLevelCompleted) return;
         if (gunJammed) return;
 
         PlayerShoot.Instance.GetHeldGun().JamGun();

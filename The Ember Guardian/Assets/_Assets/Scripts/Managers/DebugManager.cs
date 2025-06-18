@@ -27,6 +27,7 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool debugMode_AllTrapsUnlocked;
     [SerializeField] private bool disableCreatureDetection;
     [SerializeField] private bool showMobDestinationGizmos;
+    [SerializeField] private bool allItemsUnlockedInDemo;
     [SerializeField] private bool takeScreenshotsContinuous;
     [SerializeField] private bool takeScreenshotsOnKeyPressed;
 
@@ -143,5 +144,8 @@ public class DebugManager : MonoBehaviour
     }
     public bool GetShowMobDestinationGyzmos() {
         return disableCreatureDetection;
+    }
+    public bool GetAllItemsUnlockedInDemo() {
+        return allItemsUnlockedInDemo;
     }
 }

@@ -40,6 +40,9 @@ public class Gun : MonoBehaviour
 
     protected int jamRepairHitAmount;
     protected float jamProbability;
+    protected bool perfectJamQTESucceeded;
+    protected int bulletAfterPerfectJamSucceededIndex;
+    protected float perfectJamDamageBuff = 2f;
 
     protected float bulletLifetime;
     protected float bulletSpeed;
@@ -63,9 +66,10 @@ public class Gun : MonoBehaviour
     public static event EventHandler OnAnyGunJammed;
     public static event EventHandler OnAnyGunJamRepaired;
     public event EventHandler OnGunJammed;
+    public event EventHandler OnPerfectQTEDamageBuff;
+    public event EventHandler OnPerfectQTEDamageBuffEnded;
     public event EventHandler OnBuffedLastBulletShot;
     public event EventHandler OnDebuffLastBulletShot;
-
 
     protected void Start() {
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
@@ -125,7 +129,6 @@ public class Gun : MonoBehaviour
         shootPSShapeModule.angle = angle;
     }
 
-
     private void PlayerSkills_OnPlayerOutFireLightDebuffedDmg(object sender, System.EventArgs e) {
         if (!gunActive) return;
         Debug.Log("PlayerSkills_OnPlayerOutFireLightDebuffedDmg " + PlayerSkills.Instance.GetDamageOutFireLightCurrentlyBuffed());
@@ -154,7 +157,6 @@ public class Gun : MonoBehaviour
 
         BuffBulletDamage(PlayerSkills.Instance.GetDamageBuffInFireLight());
     }
-
 
     public void RefreshGunStats() {
         gunUnlocked = MetaProgressionManager.Instance.GetGunUnlocked(gunSO);
@@ -237,12 +239,20 @@ public class Gun : MonoBehaviour
             Vector2 initialForce = PlayerAim.Instance.GetAimDir().normalized * bulletSpeed;
             gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce, explosionRadiusMultiplier);
         }
+
+        if(perfectJamQTESucceeded) {
+            bulletAfterPerfectJamSucceededIndex++;
+            if(bulletAfterPerfectJamSucceededIndex >= gunSO.perfectQTEBulletAmountDamageBuffed) {
+                perfectJamQTESucceeded = false;
+                DebuffBulletDamage(perfectJamDamageBuff);
+                OnPerfectQTEDamageBuffEnded?.Invoke(this, EventArgs.Empty);
+            }
+        }
     }
 
     private void HandleGunJams() {
         if (!PlayerShoot.Instance.GetGunCanJam()) return;
         if (gunJustJammed) return;
-
 
         if (UnityEngine.Random.value < jamProbability) {
             JamGun();
@@ -394,12 +404,18 @@ public class Gun : MonoBehaviour
     #endregion
 
     #region SET PARAMETERS
-    public void SetGunUnJammed() {
+    public void SetGunUnJammed(bool pefectQTESequence) {
         gunJammed = false;
         OnAnyGunJamRepaired?.Invoke(this, EventArgs.Empty);
 
         gunJustJammed = true;
         gunJustJammedTimer = gunJustJammedDelay;
+        this.perfectJamQTESucceeded = pefectQTESequence;
+
+        if(pefectQTESequence) {
+            OnPerfectQTEDamageBuff?.Invoke(this, EventArgs.Empty);
+            BuffBulletDamage(perfectJamDamageBuff);
+        }
     }
 
     [Button]

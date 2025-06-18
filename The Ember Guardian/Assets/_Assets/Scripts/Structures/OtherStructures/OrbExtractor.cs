@@ -18,13 +18,15 @@ public class OrbExtractor : Structure
 
     private float probabilityToExtractBigOrb = .3f;
     private float drillAnimationDuration = 1.5f;
-    private float extractionRate = 1f;
+    private float extractionRate = .7f;
     private float extractionRateWithEngineer = 3f;
     private float extractionTimer;
     private float pauseDuration = 8f;
 
     protected override void Start() {
         base.Start();
+
+        extractionRateWithEngineer = extractionRateWithEngineer + extractionRateWithEngineer * WorkerStats.Instance.GetEngineerWrenchSpeedBuff();
 
         extractionTimer = 2f;
         needsWorking = true;

@@ -127,7 +127,7 @@ public class Portal : MonoBehaviour
             return;
         }
 
-        if(isHubDemoPortal) {
+        if(isHubDemoPortal || isEndLevelTeleporter) {
             StartCoroutine(TeleportPlayerIn());
             return;
         }

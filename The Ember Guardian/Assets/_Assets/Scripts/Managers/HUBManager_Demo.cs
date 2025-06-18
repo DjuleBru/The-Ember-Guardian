@@ -282,7 +282,6 @@ public class HUBManager_Demo : MonoBehaviour
     }
 
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
-        ES3.Save("firstDemoHubEncounter", false);
     }
 
     private void HubMerchant_OnAnyPlayerTriggeredIn(object sender, System.EventArgs e) {
@@ -308,6 +307,7 @@ public class HUBManager_Demo : MonoBehaviour
 
                 LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUB_ExtractEmber, LevelUI_ObjectiveUI.SubObjectiveType.HUB_HeadToTeleporter);
 
+                ES3.Save("firstDemoHubEncounter", false);
                 StartCoroutine(ActivateTeleporterCoroutine());
 
             }

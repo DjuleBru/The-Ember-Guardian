@@ -18,6 +18,9 @@ public class GunJamHandler : MonoBehaviour
     private Gun gun;
     private bool gunJammed;
     private bool isInGunJamQTE;
+    private bool perfectQTESequence;
+    private float perfectQTESpamButtonTime;
+    private float perfectQTESpamTimer;
 
     private Queue<GameInput.Binding> initialInputSequence;
     private Queue<GameInput.Binding> currentInputSequence;
@@ -64,6 +67,7 @@ public class GunJamHandler : MonoBehaviour
     public static event EventHandler OnAnyJamSequenceFailed;
     public static event EventHandler OnAnyJamSequenceCancelled;
     public static event EventHandler OnAnyJamSequenceRestarted;
+    public static event EventHandler OnAnyPerfectJamSequenceCompleted;
     public class OnSpamQTEProgressedEventArgs : EventArgs {
         public float spamProgress;
     }
@@ -101,10 +105,10 @@ public class GunJamHandler : MonoBehaviour
         if (!isInGunJamQTE) return;
         if (currentQTEType != QTEType.SpamButton) return;
 
+        perfectQTESpamTimer += Time.deltaTime;
         if (spamProgress > 0f) {
             spamProgress -= spamDecayRate * Time.deltaTime;
             spamProgress = Mathf.Max(spamProgress, lastStageReached);
-
 
             OnSpamQTEProgressed?.Invoke(this, new OnSpamQTEProgressedEventArgs {
                 spamProgress = spamProgress
@@ -155,9 +159,12 @@ public class GunJamHandler : MonoBehaviour
             lastStageReached = 0;
             spamStageCount = PlayerShoot.Instance.GetHeldGun().GetJamRepairHitAmount();
             spamTargetProgress = spamStageCount; // 1 touche = 1 unité
+            perfectQTESpamButtonTime = spamStageCount + .5f;
+            perfectQTESpamTimer = 0;
 
             currentInputSequence = new Queue<GameInput.Binding>();
             currentInputSequence.Enqueue(GameInput.Binding.roll);
+            perfectQTESequence = false;
         }
 
         if (currentQTEType == QTEType.TimingChallenge) {
@@ -165,10 +172,12 @@ public class GunJamHandler : MonoBehaviour
             currentInputSequence.Enqueue(GameInput.Binding.roll);
 
             timingIndexAmount = PlayerShoot.Instance.GetHeldGun().GetJamRepairHitAmount();
+            perfectQTESequence = true;
         }
 
         if (currentQTEType == QTEType.InputSequence) {
             currentInputSequence = GenerateRandomSequence(PlayerShoot.Instance.GetHeldGun().GetJamRepairHitAmount());
+            perfectQTESequence = true;
         }
 
         OnAnyJamSequenceGenerated?.Invoke(this, new OnJamSequenceGeneratedEventArgs {
@@ -193,7 +202,6 @@ public class GunJamHandler : MonoBehaviour
         }
         return sequence;
     }
-
 
     public bool GetIsExpectedBinding(GameInput.Binding binding) {
         GameInput.Binding expected = currentInputSequence.Peek();
@@ -355,6 +363,11 @@ public class GunJamHandler : MonoBehaviour
 
         if (currentQTEType == QTEType.SpamButton) {
             if (spamProgress >= spamTargetProgress) {
+
+                if (perfectQTESpamTimer < perfectQTESpamButtonTime) {
+                    perfectQTESequence = true;
+                }
+
                 CompleteGunJamMiniGame();
             }
         }
@@ -386,7 +399,17 @@ public class GunJamHandler : MonoBehaviour
     private void CompleteGunJamMiniGame() {
         isInGunJamQTE = false;
         gunJammed = false;
-        gun.SetGunUnJammed();
+
+        gun.SetGunUnJammed(perfectQTESequence);
+
+        Debug.Log("perfectQTESpamTimer " + perfectQTESpamTimer);
+        Debug.Log("perfectQTESpamButtonTime " + perfectQTESpamButtonTime);
+
+
+        if (perfectQTESequence) {
+            OnAnyPerfectJamSequenceCompleted?.Invoke(this, EventArgs.Empty);
+        }
+
         OnJamSequenceCompleted?.Invoke(this, EventArgs.Empty);
         OnAnyJamSequenceCompleted?.Invoke(this, EventArgs.Empty);
     }
@@ -408,12 +431,13 @@ public class GunJamHandler : MonoBehaviour
 
     private IEnumerator FailGunJamMiniGame() {
         justFailed = true;
+        perfectQTESequence = false;
         OnJamSequenceFailStarted?.Invoke(this, EventArgs.Empty);
         OnAnyJamSequenceFailStarted?.Invoke(this, EventArgs.Empty);
         yield return new WaitForSeconds(jamHitAnimationDuration);
 
         OnAnyJamSequenceFailed?.Invoke(this, EventArgs.Empty);
-        OnJamSequenceFailed?.Invoke(this, EventArgs.Empty);
+
         currentInputSequence = new Queue<GameInput.Binding>();
         foreach (GameInput.Binding binding in initialInputSequence) {
             currentInputSequence.Enqueue(binding);

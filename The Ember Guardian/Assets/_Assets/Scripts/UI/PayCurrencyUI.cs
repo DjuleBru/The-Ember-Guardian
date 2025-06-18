@@ -66,11 +66,11 @@ public class PayCurrencyUI : MonoBehaviour
         }
     }
 
-    public void SetPlayerInteractingContinuous() {
+    public void SetPlayerInteractingContinuous(float delayBetweenDrops) {
         playerInteracting = true;
         PlayerCurrencies.CurrencyType currencyTypeToPay = currencyTemplateWorldUIList[0].GetCurrencyTypeToPay();
         currencyIndex = 0;
-        payingCurrencyContinuousCoroutine = StartCoroutine(SetPayingCurrencyAfterDelay(.25f, currencyTypeToPay));
+        payingCurrencyContinuousCoroutine = StartCoroutine(SetPayingCurrencyAfterDelay(delayBetweenDrops, currencyTypeToPay));
 
         //UICurrencyManager.PlayerInventoryUI.SetPayingCurrency(this, currencyTypeToPay, true);
     }

@@ -228,6 +228,10 @@ public class MinerJob : WorkerJob {
 
         if(distanceToScavengable < .5f) {
             ChangeState(MinerState.Mining);
+            if(assignedScavengable.GetIsMine()) {
+                assignedScavengable.MinerEntersMine(this);
+                gameObject.SetActive(false);
+            }
         } else {
             mobMovement.SetMoveTarget(assignedScavengableMiningPosition.position);
         }
@@ -307,7 +311,6 @@ public class MinerJob : WorkerJob {
 
         Vector3 targetDestination = mobMovement.transform.position;
 
-
         mobMovement.SetMoveTarget(targetDestination);
         state = newState;
         OnMinerChangedState?.Invoke(this, EventArgs.Empty);
@@ -323,11 +326,21 @@ public class MinerJob : WorkerJob {
             workerAttack.RemoveAttackTarget();
         }
         if (state == MinerState.headToSafety) {
+            workerAttack.RemoveAttackTarget();
             mobMovement.SetMoveSpeed(headToCampMoveSpeed);
         }
     }
 
+    public void ExitFromMine() {
+        gameObject.SetActive(true);
+        ChangeState(MinerState.headToSafety);
+    }
+
     public MinerState GetState() {
         return state;
+    }
+
+    public Scavengable GetScavengableAssigned() {
+        return assignedScavengable;
     }
 }

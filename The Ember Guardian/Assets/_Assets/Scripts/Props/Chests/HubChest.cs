@@ -67,7 +67,7 @@ public class HubChest : MonoBehaviour
             CloseChest(); // Ferme le coffre si plus de gemmes
         }
         else {
-            payCurrencyUI.SetPlayerInteractingContinuous(); // Continue l'interaction
+            payCurrencyUI.SetPlayerInteractingContinuous(0f); // Continue l'interaction
         }
     }
 

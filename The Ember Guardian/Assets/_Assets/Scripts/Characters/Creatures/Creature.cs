@@ -289,11 +289,10 @@ public class Creature : Mob
         base.OnTriggerEnter2D(collision);
 
         if(collision.gameObject.GetComponentInParent<Fire>() != null) {
-            inFireLightAmount++;
-
             if (inFireLightAmount != 0) return;
             if (creatureSO.isBoss) return;
 
+            inFireLightAmount++;
             OnCreatureEnteredLight?.Invoke(this, EventArgs.Empty);
         }
     }

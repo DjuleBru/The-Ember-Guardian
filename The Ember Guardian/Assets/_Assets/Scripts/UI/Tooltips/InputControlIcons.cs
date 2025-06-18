@@ -439,15 +439,6 @@ public class InputControlIcons : MonoBehaviour
                 else {
                     spriteList.Add(keyboardQuestionMarkSprite);
                 }
-            }if (control == Control.OpenPlayerMenu) {
-                string characterMenu = GameInput.Instance.GetBindingText(GameInput.Binding.characterMenu);
-
-                if (keyboardIconLookup.TryGetValue(characterMenu, out Sprite icon1)) {
-                    spriteList.Add(icon1);
-                }
-                else {
-                    spriteList.Add(keyboardQuestionMarkSprite);
-                }
             }
             if (control == Control.CollectCurrencyFromContainer) {
                 string characterMenu = GameInput.Instance.GetBindingText(GameInput.Binding.collectCurrencyFromContainer);

@@ -123,6 +123,9 @@ public class GunSO : ScriptableObject
     [BoxGroup("Stats/Shoot")]
     [LabelWidth(300)]
     public int jamRepairHitAmount = 3;
+    [BoxGroup("Stats/Shoot")]
+    [LabelWidth(300)]
+    public int perfectQTEBulletAmountDamageBuffed;
     [BoxGroup("Stats/Weight")]
     [LabelWidth(300)]
     public float weightAccelerationFactor;

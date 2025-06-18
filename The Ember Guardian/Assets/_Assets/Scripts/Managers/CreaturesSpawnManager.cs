@@ -9,8 +9,6 @@ using UnityEngine.Rendering.Universal;
 public class CreaturesSpawnManager : MonoBehaviour {
     public static CreaturesSpawnManager Instance;
 
-    [SerializeField] private List<AnimationCurve> subWaveDifficultyCurveList;
-
     public class SpawnedCreatureInfo {
         public CreatureSO creature; // Type de créature à spawner
         public SpawnSide spawnSide; // Position de spawn (gauche ou droite)
@@ -32,6 +30,15 @@ public class CreaturesSpawnManager : MonoBehaviour {
     private float spawnDistanceToPlayerOrCamp = 40f;
 
     private List<CreatureSO> creatureTypes;
+
+    [SerializeField] private List<AnimationCurve> subWaveDifficultyCurveList;
+
+    [SerializeField] private AnimationCurve difficultyAnimationCurve;
+    private bool setDifficultyAnimationCurve;
+    private int difficultyAtMaxWave;
+    private int minDifficultyAtMaxWave;
+    private int maxDifficultyAtMaxWave;
+    private int maxWavesInAnimationCurve;
 
     private bool hasBoss;
     private CreatureSO bossCreatureType;
@@ -103,6 +110,11 @@ public class CreaturesSpawnManager : MonoBehaviour {
         growthFactor = levelSO.growthFactor;
         minMaxSubwaveDifficultyGrowthFactor = levelSO.minMaxSubwaveDifficultyGrowthFactor;
         startWaveToSpawnFromBothSides = levelSO.startWaveToSpawnFromBothSides;
+
+        setDifficultyAnimationCurve = levelSO.setDifficultyAnimationCurve;
+        difficultyAtMaxWave = levelSO.difficultyAtMaxWave;
+        difficultyAnimationCurve = levelSO.difficultyAnimationCurve;
+        maxWavesInAnimationCurve = levelSO.maxWaveInAnimationCurve;
 
         canSpawnElite = levelSO.canSpawnElite;
     }
@@ -221,7 +233,19 @@ public class CreaturesSpawnManager : MonoBehaviour {
     public void SetWaveParameters(int waveNumber, bool wavesRandomSideProportion, bool subWaveRandomSideProportion) {
         totalNightCreatures = 0;
 
-        waveDifficulty = baseDifficulty * Mathf.Pow(growthFactor, waveNumber);
+        if (setDifficultyAnimationCurve) {
+
+            float waveNumberNormalized = (float)(waveNumber) / (float)maxWavesInAnimationCurve;
+            if (waveNumberNormalized > 1) {
+                waveNumberNormalized = 1;
+            }
+            waveDifficulty = difficultyAtMaxWave * difficultyAnimationCurve.Evaluate(waveNumberNormalized);
+
+        } else {
+
+            waveDifficulty = baseDifficulty * Mathf.Pow(waveNumber, growthFactor);
+
+        }
 
         minSubwaveDifficulty = initialMinSubwaveDifficulty * Mathf.Pow(minMaxSubwaveDifficultyGrowthFactor, waveNumber);
         maxSubwaveDifficulty = initialMaxSubwaveDifficulty * Mathf.Pow(minMaxSubwaveDifficultyGrowthFactor, waveNumber);
@@ -256,8 +280,8 @@ public class CreaturesSpawnManager : MonoBehaviour {
         Debug.Log("WaveDifficulty " + waveDifficulty);
         Debug.Log("minSubwaveDifficulty " + minSubwaveDifficulty);
         Debug.Log("maxSubwaveDifficulty " + maxSubwaveDifficulty);
-        Debug.Log("waveLeftProportion " + waveDifficultyLeftProportion);
-        Debug.Log("waveRightProportion " + waveDifficultyRightProportion);
+        //Debug.Log("waveLeftProportion " + waveDifficultyLeftProportion);
+        //Debug.Log("waveRightProportion " + waveDifficultyRightProportion);
 
         // Préparer la liste de toutes les créatures à spawner pour cette vague
         waveCreaturesDictionary.Clear();
@@ -291,7 +315,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         totalNightCreatureHP = 0;
         remainingNightCreaturesHP = 0;
 
-        Debug.Log("totalNightCreatures " + totalNightCreatures);
+        //Debug.Log("totalNightCreatures " + totalNightCreatures);
         remainingNightCreatures = totalNightCreatures;
     }
 
@@ -636,7 +660,9 @@ public class CreaturesSpawnManager : MonoBehaviour {
     public float GetMaxWaveDifficulty() {
         return maxWaveDifficulty;
     }
-
+    public void SetSetDifficultyAnimationCurve() {
+        setDifficultyAnimationCurve = true;
+    }
     public Dictionary<CreatureSO, int> GetNextWaveCreaturesBySide(SpawnSide side) {
         Dictionary<CreatureSO, int> creaturesCount = new Dictionary<CreatureSO, int>();
 

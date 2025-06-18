@@ -16,11 +16,18 @@ public class Scavengable : MonoBehaviour, IDamageable {
     [SerializeField] private int currencyAmountCollected;
 
     [SerializeField] private int hitsToCollectOneCurrency;
+    [SerializeField] private bool isMine;
     [SerializeField] private bool infiniteSource;
 
     [SerializeField] private int maxMinersAssigned;
+    [SerializeField] private float initialTimeToMineOneResource = 25;
+    [SerializeField] private float maxTimeToMineOneResource;
+    [SerializeField] private float miningTimeIncreasePerResourceExtracted = 1;
+    private float timeToMineOneResource;
+    private float miningTimer;
 
     private List<MinerJob> minerAssignedList = new List<MinerJob>();
+    private List<MinerJob> minersMiningList = new List<MinerJob>();
 
     private int health;
     private int hitsTaken;
@@ -30,10 +37,14 @@ public class Scavengable : MonoBehaviour, IDamageable {
     private bool depleted;
     private bool playerInTriggerArea;
 
+
     public event EventHandler OnPlayerTriggerIn;
     public event EventHandler OnPlayerTriggerOut;
     public event EventHandler OnDamageTaken;
     public event EventHandler OnScavengableMarkedToScavenge;
+    public event EventHandler OnMinerStartsMining;
+    public event EventHandler OnMinerStopsMining;
+    public event EventHandler OnMinerExtractedResourceFromMine;
     public static event EventHandler OnAnyScavengableMarkedToScavenge;
     public event EventHandler OnScavengableDepleted;
     public event EventHandler<OnStavengableSpawnedCurrencyEventArgs> OnScavengableSpawnedCurrency;
@@ -51,9 +62,61 @@ public class Scavengable : MonoBehaviour, IDamageable {
     private void Start() {
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
+        DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
 
         payOrbsUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
         payOrbsUI.SetOrbTemplateUIList(scavengeStructureCurrencyTemplates);
+
+        if(currencyTypeCollected == PlayerCurrencies.CurrencyType.ammo) {
+            StartCoroutine(SetAmmoTypeCollected());
+        }
+
+        timeToMineOneResource = initialTimeToMineOneResource;
+        miningTimer = timeToMineOneResource;
+    }
+
+    private void Update() {
+        if (!isMine) return;
+        if (minersMiningList.Count == 0) return;
+
+        miningTimer -= Time.deltaTime * minersMiningList.Count;
+
+        if(miningTimer <= 0) {
+            timeToMineOneResource += miningTimeIncreasePerResourceExtracted;
+            miningTimer = timeToMineOneResource;
+            OnMinerExtractedResourceFromMine?.Invoke(this, EventArgs.Empty);
+            AddCurrencyToMiner();
+        }
+    }
+
+    private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
+        if(isMine) {
+            StartCoroutine(RemoveMinersFromMine());
+        }
+    }
+
+    private IEnumerator RemoveMinersFromMine() {
+        List<MinerJob> minersAssignedCopy = new List<MinerJob>();
+        foreach (MinerJob miner in minerAssignedList) {
+            minersAssignedCopy.Add(miner);
+        }
+
+        foreach (MinerJob miner in minersAssignedCopy) {
+            UnassignMiner(miner);
+            miner.UnAssignScavengable();
+
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    private IEnumerator SetAmmoTypeCollected() {
+        yield return new WaitForSeconds(1f);
+        if (PlayerShoot.Instance.GetPrimaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special || PlayerShoot.Instance.GetSecondaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special) {
+            luckyPickaxeCurrencyTypeCollected = PlayerCurrencies.CurrencyType.ammo_special;
+            if (PlayerShoot.Instance.GetPrimaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special && PlayerShoot.Instance.GetSecondaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special) {
+                currencyTypeCollected = PlayerCurrencies.CurrencyType.ammo_special;
+            }
+        }
     }
 
     protected void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
@@ -90,6 +153,16 @@ public class Scavengable : MonoBehaviour, IDamageable {
 
         if (health <= damage && !infiniteSource) {
             Die();
+        }
+    }
+
+    private void AddCurrencyToMiner() {
+        MinerJob minerJob = minerAssignedList[UnityEngine.Random.Range(0, minerAssignedList.Count)];
+        minerJob.GetComponent<Worker>().CollectCurrency(currencyTypeCollected);
+
+        float luckyPickaxeChance = UnityEngine.Random.Range(0f, 1f);
+        if (luckyPickaxeChance < WorkerStats.Instance.GetMinerLuckyPickaxeProb()) {
+            minerJob.GetComponent<Worker>().CollectCurrency(luckyPickaxeCurrencyTypeCollected);
         }
     }
 
@@ -133,13 +206,36 @@ public class Scavengable : MonoBehaviour, IDamageable {
         minerAssignedList.Add(miner);
     }
 
+    public void MinerEntersMine(MinerJob minerJob) {
+        minersMiningList.Add(minerJob);
+        OnMinerStartsMining?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void MinerExitsMine(MinerJob minerJob) {
+        minersMiningList.Remove(minerJob);
+        OnMinerStopsMining?.Invoke(this, EventArgs.Empty);
+    }
+
     public void UnassignMiner(MinerJob miner) {
         if (!minerAssignedList.Contains(miner)) return;
         minerAssignedList.Remove(miner);
+
+        if (isMine) {
+            MinerExitsMine(miner);
+            miner.ExitFromMine();
+        }
     }
 
     public bool GetMaxMinersAssigned() {
         return minerAssignedList.Count >= maxMinersAssigned;
+    }
+
+    public int GetMaxMinerAmount() {
+        return maxMinersAssigned;
+    }
+
+    public int GetMinerAmountMining() {
+        return minersMiningList.Count;
     }
 
     public bool GetDepleted() {
@@ -170,6 +266,14 @@ public class Scavengable : MonoBehaviour, IDamageable {
 
         payOrbsUI.SetPlayerInteracting(false);
         payOrbsUI.ResetCurrencyPayment();
+    }
+
+    public bool GetIsMine() {
+        return isMine;
+    }
+
+    public float GetTimeToExtractOneResourceNormalized() {
+        return (timeToMineOneResource - initialTimeToMineOneResource) / (maxTimeToMineOneResource - initialTimeToMineOneResource);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

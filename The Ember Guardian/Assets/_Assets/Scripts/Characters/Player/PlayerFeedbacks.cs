@@ -28,6 +28,7 @@ public class PlayerFeedbacks : MonoBehaviour
     [SerializeField] private MMF_Player gunJamEndFeedbacks;
     [SerializeField] private MMF_Player gunJamProgressFeedbacks;
     [SerializeField] private MMF_Player gunJamFailedFeedbacks;
+    [SerializeField] private MMF_Player gunJamPerfectSequenceFeedbacks;
 
     private float minDelayBetweenCritHitFeedbacks = .4f;
     private float critHitFeedbacksTimer;
@@ -60,7 +61,9 @@ public class PlayerFeedbacks : MonoBehaviour
         GunJamHandler.OnAnyJamSequenceFailed += GunJamHandler_OnAnyJamSequenceFailed;
         GunJamHandler.OnAnyJamSequenceCancelled += GunJamHandler_OnAnyJamSequenceCancelled;
         GunJamHandler.OnAnyJamSequenceRestarted += GunJamHandler_OnAnyJamSequenceRestarted;
+        GunJamHandler.OnAnyPerfectJamSequenceCompleted += GunJamHandler_OnAnyPerfectJamSequenceCompleted;
     }
+
 
     private void Update() {
         if(critHitFeedbackRecentlyActivated) {
@@ -96,6 +99,12 @@ public class PlayerFeedbacks : MonoBehaviour
         if (!gunJamFeedbacksPlaying) return;
         gunJamFeedbacksPlaying = false;
         gunJamEndFeedbacks.PlayFeedbacks();
+    }
+
+    private void GunJamHandler_OnAnyPerfectJamSequenceCompleted(object sender, System.EventArgs e) {
+        if (!gunJamFeedbacksPlaying) return;
+        gunJamFeedbacksPlaying = false;
+        gunJamPerfectSequenceFeedbacks.PlayFeedbacks();
     }
 
     private void GunJamHandler_OnAnyJamSequenceGenerated(object sender, GunJamHandler.OnJamSequenceGeneratedEventArgs e) {
@@ -203,6 +212,7 @@ public class PlayerFeedbacks : MonoBehaviour
         GunJamHandler.OnAnyJamSequenceFailed -= GunJamHandler_OnAnyJamSequenceFailed;
         GunJamHandler.OnAnyJamSequenceCancelled -= GunJamHandler_OnAnyJamSequenceCancelled;
         GunJamHandler.OnAnyJamSequenceRestarted -= GunJamHandler_OnAnyJamSequenceRestarted;
+        GunJamHandler.OnAnyPerfectJamSequenceCompleted -= GunJamHandler_OnAnyPerfectJamSequenceCompleted;
 
         Mob.OnAnyMobCritDamageTaken -= Mob_OnAnyMobCritDamageTaken;
     }

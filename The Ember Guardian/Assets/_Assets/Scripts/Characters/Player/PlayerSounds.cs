@@ -18,6 +18,7 @@ public class PlayerSounds : SoundObject
     [SerializeField] private AudioClip[] playerMeleeAttackHitAudioClips;
     [SerializeField] private AudioClip[] gunJamHitFailed;
     [SerializeField] private AudioClip[] gunJamSpamHitPerformed;
+    [SerializeField] private AudioClip[] gunJamPerfectQTE;
     [SerializeField] private AudioClip activeMoveSpeedBoostFootstepAudioClip;
 
     [SerializeField] private PlayerAnimator playerAnimator;
@@ -36,6 +37,7 @@ public class PlayerSounds : SoundObject
         GunJamHandler.OnAnyCorrectJamSequenceInput += GunJamHandler_OnAnyCorrectJamSequenceInput;
         GunJamHandler.OnAnyJamSequenceFailed += GunJamHandler_OnAnyJamSequenceFailed;
         GunJamHandler.OnAnySpamButtonPressed += GunJamHandler_OnAnySpamButtonPressed;
+        GunJamHandler.OnAnyPerfectJamSequenceCompleted += GunJamHandler_OnAnyPerfectJamSequenceCompleted;
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
 
@@ -50,6 +52,10 @@ public class PlayerSounds : SoundObject
         GunMeleeAttackCollider.OnAnyGunMeleeAttackHit += GunMeleeAttackCollider_OnAnyGunMeleeAttackHit;
 
         activeMoveSpeedBoostVisual.OnMoveSpeedFootStepTriggered += ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered;
+    }
+
+    private void GunJamHandler_OnAnyPerfectJamSequenceCompleted(object sender, System.EventArgs e) {
+        playerAudioSource.PlayOneShot(gunJamPerfectQTE[Random.Range(0, gunJamPerfectQTE.Length)], sfxVolume * .75f);
     }
 
     private void GunJamHandler_OnAnySpamButtonPressed(object sender, System.EventArgs e) {
@@ -152,5 +158,6 @@ public class PlayerSounds : SoundObject
         GunJamHandler.OnAnyCorrectJamSequenceInput -= GunJamHandler_OnAnyCorrectJamSequenceInput;
         GunJamHandler.OnAnyJamSequenceFailed -= GunJamHandler_OnAnyJamSequenceFailed;
         GunJamHandler.OnAnySpamButtonPressed -= GunJamHandler_OnAnySpamButtonPressed;
+        GunJamHandler.OnAnyPerfectJamSequenceCompleted -= GunJamHandler_OnAnyPerfectJamSequenceCompleted;
     }
 }

@@ -86,7 +86,7 @@ public class WorkerVisual : MobVisual {
     }
 
     private void EngineerJob_OnEngineerHideVisual(object sender, System.EventArgs e) {
-        ShowVisual(false);
+        ShowBodyVisual(false);
     }
 
     private void EngineerJob_OnEngineerHideTool(object sender, System.EventArgs e) {
@@ -94,21 +94,40 @@ public class WorkerVisual : MobVisual {
     }
 
     private void EngineerJob_OnEngineerChangedState(object sender, System.EventArgs e) {
+        if (engineerJob.GetState() == EngineerJob.EngineerState.blockedByCreatures) {
+            if (!workerBlockedByCreatures) {
+                workerBlockedByCreatures = true;
+                ChangeStatusSprite(exclamationMarkSprite);
+            }
+        }
+        else {
+            if (workerBlockedByCreatures) {
+                workerStatusSpriteRenderer.sprite = null;
+                workerBlockedByCreatures = false;
+            }
+        }
+
         if (engineerJob.GetState() == EngineerJob.EngineerState.droppingCurrency) return;
 
         if(engineerJob.GetState() == EngineerJob.EngineerState.idle) {
             ShowWeapon(true);
-            ShowVisual(true);
+            ShowBodyVisual(true);
         }
 
+    }
+
+    private void ShowAllVisuals(bool show) {
+        ShowWeapon(show);
+        ShowBodyVisual(show);
+        workerStatusSpriteRenderer.enabled = show;
+        holdingCurrencyGO.GetComponent<SpriteRenderer>().enabled = show;
     }
 
     private void ShowWeapon(bool show) {
         workerWeaponSpriteRenderer.enabled = show;
         workerWeaponGlowSpriteRenderer.enabled = show;
     }
-
-    private void ShowVisual(bool show) {
+    private void ShowBodyVisual(bool show) {
         ShowWeapon(show);
         workerBodySpriteRenderer.enabled = show;
     }
@@ -193,6 +212,14 @@ public class WorkerVisual : MobVisual {
                 workerStatusSpriteRenderer.sprite = null;
                 workerBlockedByCreatures = false;
             }
+        }
+
+        if(state == MinerJob.MinerState.Mining) {
+            if(minerJob.GetScavengableAssigned().GetIsMine()) {
+                ShowAllVisuals(false);
+            } 
+        } else {
+            ShowAllVisuals(true);
         }
     }
 
