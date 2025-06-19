@@ -8,7 +8,7 @@ public class MinerJob : WorkerJob {
     private MinerState state;
     private MinerState previousState;
 
-    private Scavengable assignedScavengable;
+    private IScavengable assignedScavengable;
     private Transform assignedScavengableMiningPosition;
 
     private float headToMineMoveSpeed = 2.5f;
@@ -209,7 +209,11 @@ public class MinerJob : WorkerJob {
     public void HeadToPickUpClosestOrb() {
 
         if (orbsToCollect.Count == 0) {
-            ChangeState(MinerState.idle);
+            if((assignedScavengable as MonoBehaviour) == null) {
+                ChangeState(MinerState.idle);
+            } else {
+                ChangeState(MinerState.headingToMine);
+            }
             return;
         }
 
@@ -229,8 +233,9 @@ public class MinerJob : WorkerJob {
 
         if(distanceToScavengable < .5f) {
             ChangeState(MinerState.Mining);
-            if(assignedScavengable.GetIsMine()) {
-                assignedScavengable.MinerEntersMine(this);
+            assignedScavengable.MinerStartsMining(this);
+
+            if (assignedScavengable.GetIsMine()) {
                 gameObject.SetActive(false);
             }
         } else {
@@ -239,7 +244,7 @@ public class MinerJob : WorkerJob {
     }
 
     private void CheckAvailableScavengables() {
-        Scavengable assignableScavengable = ScavengableManager.Instance.GetClosestHighestPriorityScavengableToScavenge(transform.position);
+        IScavengable assignableScavengable = ScavengableManager.Instance.GetClosestHighestPriorityScavengableToScavenge(transform.position);
 
         if(assignableScavengable != null) {
             AssignScavengable(assignableScavengable);
@@ -247,7 +252,7 @@ public class MinerJob : WorkerJob {
 
     }
 
-    public void AssignScavengable(Scavengable scavengable) {
+    public void AssignScavengable(IScavengable scavengable) {
         assignedScavengable = scavengable;
         scavengable.AssignMiner(this);
         assignedScavengableMiningPosition = scavengable.GetMeleeAttackPosition();
@@ -344,7 +349,7 @@ public class MinerJob : WorkerJob {
         return state;
     }
 
-    public Scavengable GetScavengableAssigned() {
+    public IScavengable GetScavengableAssigned() {
         return assignedScavengable;
     }
 }

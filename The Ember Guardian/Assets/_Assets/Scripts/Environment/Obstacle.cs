@@ -16,18 +16,19 @@ public class Obstacle : MonoBehaviour {
 
     protected List<PayCurrencyTemplateWorldUI> buildStructureOrbTemplates = new List<PayCurrencyTemplateWorldUI>();
 
-    private bool hubScene;
-    private bool playerInTriggerArea;
-    private bool obstacleBuilt;
+    protected bool hubScene;
+    protected bool playerInTriggerArea;
+    protected bool obstacleBuilt;
 
     public event EventHandler OnObstacleBuilt;
+    public static event EventHandler OnAnyObstacleInitialized;
     public static event EventHandler OnAnyObstacleBuilt;
     public static event EventHandler OnAnyPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredIn;
     public static event EventHandler OnAnyPlayerTriggeredOut;
     public event EventHandler OnPlayerTriggeredOut;
 
-    protected void Awake() {
+    protected virtual void Awake() {
         payCurrencyUI = GetComponent<PayCurrencyUI>();
         InitializeOrbTemplateList();
 
@@ -41,32 +42,38 @@ public class Obstacle : MonoBehaviour {
 
         payCurrencyUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
         payCurrencyUI.SetOrbTemplateUIList(buildStructureOrbTemplates);
+
+        OnAnyObstacleInitialized?.Invoke(this, EventArgs.Empty);
     }
 
-    protected void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
+    protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         BuildObstacle();
     }
 
-    private void BuildObstacle() {
+    protected virtual void BuildObstacle() {
         foreach(Collider2D collider in blockingColliders) {
               collider.enabled = false;
         }
 
         obstacleSolidCollider.enabled = true;
         obstacleBuilt = true;
-        OnObstacleBuilt?.Invoke(this, EventArgs.Empty);
-        OnAnyObstacleBuilt?.Invoke(this, EventArgs.Empty);
+        InvokeObstacleBuiltEvents();
         SetTriggerExit();
     }
 
-    protected void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
+    public void InvokeObstacleBuiltEvents() {
+        OnObstacleBuilt?.Invoke(this, EventArgs.Empty);
+        OnAnyObstacleBuilt?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected virtual void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         //if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
 
         payCurrencyUI.SetPlayerInteracting(true);
     }
 
-    protected void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+    protected virtual void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
         if (hubScene) return;
         if (!playerInTriggerArea) return;
 
@@ -74,7 +81,7 @@ public class Obstacle : MonoBehaviour {
         payCurrencyUI.ResetCurrencyPayment();
     }
 
-    protected void OnTriggerEnter2D(Collider2D collision) {
+    protected virtual void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
         if (obstacleBuilt) return;
 
@@ -84,13 +91,12 @@ public class Obstacle : MonoBehaviour {
         playerInTriggerArea = true;
     }
 
-    protected void OnTriggerExit2D(Collider2D collision) {
+    protected virtual void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
         SetTriggerExit();
     }
 
-    private void SetTriggerExit() {
-
+    protected void SetTriggerExit() {
         Player.Instance.SetInPayCurrencyArea(false);
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
         OnAnyPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);

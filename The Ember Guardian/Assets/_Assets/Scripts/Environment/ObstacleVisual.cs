@@ -8,6 +8,7 @@ public class ObstacleVisual : MonoBehaviour
     [SerializeField] private GameObject obstacleUIGameObject;
     [SerializeField] private Animator obstacleAnimator;
     [SerializeField] private Obstacle obstacle;
+    [SerializeField] private bool hideOnTriggerExit = true;
 
     private void Start() {
         obstacle.OnObstacleBuilt += Obstacle_OnObstacleBuilt;
@@ -19,15 +20,19 @@ public class ObstacleVisual : MonoBehaviour
     private void Obstacle_OnObstacleBuilt(object sender, System.EventArgs e) {
         obstacleAnimator.SetTrigger("Build");
         obstacleUIGameObject.SetActive(false);
+
+        Debug.Log("Obstacle_OnObstacleBuilt");
     }
 
     private void Obstacle_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
         if (obstacle.GetBuilt()) return;
+        if (!hideOnTriggerExit) return;
         obstacleVisualGameObject.SetActive(false);
     }
 
     private void Obstacle_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
         if (obstacle.GetBuilt()) return;
+        if (!hideOnTriggerExit) return;
         obstacleVisualGameObject.SetActive(true);
     }
 

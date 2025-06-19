@@ -6,14 +6,16 @@ public class ScavengableSounds : SoundObject
 {
     [SerializeField] private AudioClip backgorundAudioClip;
     [SerializeField] private AudioClip[] minerGarrisonerAudioClip;
+    [SerializeField] private AudioClip[] pieceFellAudioClip;
     [SerializeField] private AudioClip toggleMiningAudioClip;
     [SerializeField] private AudioSource backgroundAudioSource;
-    private Scavengable scavengable;
+    [SerializeField] private ScavengableObstacleVisual scavengableObstacleVisual;
+    private IScavengable scavengable;
 
     private bool backgroundPlaying;
 
     private void Awake() {
-        scavengable = GetComponentInParent<Scavengable>();
+        scavengable = GetComponentInParent<IScavengable>();
     }
 
     protected override void Start() {
@@ -23,6 +25,14 @@ public class ScavengableSounds : SoundObject
         scavengable.OnMinerStopsMining += Scavengable_OnMinerStopsMining;
         scavengable.OnDeactivatedMining += Scavengable_OnDeactivatedMining;
         scavengable.OnActivatedMining += Scavengable_OnActivatedMining;
+
+        if(scavengableObstacleVisual != null) {
+            scavengableObstacleVisual.OnPieceFell += ScavengableObstacleVisual_OnPieceFell;
+        }
+    }
+
+    private void ScavengableObstacleVisual_OnPieceFell(object sender, System.EventArgs e) {
+        PlaySound2D(pieceFellAudioClip);
     }
 
     private void Scavengable_OnActivatedMining(object sender, System.EventArgs e) {
@@ -34,19 +44,22 @@ public class ScavengableSounds : SoundObject
     }
 
     private void Scavengable_OnMinerStopsMining(object sender, System.EventArgs e) {
-        backgroundAudioSource.Stop();
-
         PlaySound2D(minerGarrisonerAudioClip, .7f);
-        backgroundPlaying = false;
+
+        if (scavengable.GetIsMine()) {
+            backgroundAudioSource.Stop();
+            backgroundPlaying = false;
+        }
     }
 
     private void Scavengable_OnMinerStartsMining(object sender, System.EventArgs e) {
         PlaySound2D(minerGarrisonerAudioClip, .7f);
 
         if (backgroundPlaying) return;
-
-        backgroundAudioSource.clip = backgorundAudioClip;
-        backgroundAudioSource.Play();
-        backgroundPlaying = true;
+        if (scavengable.GetIsMine()) {
+            backgroundAudioSource.clip = backgorundAudioClip;
+            backgroundAudioSource.Play();
+            backgroundPlaying = true;
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Scavengable : MonoBehaviour, IDamageable {
+public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
 
     private PayCurrencyUI payOrbsUI;
     protected List<PayCurrencyTemplateWorldUI> scavengeStructureCurrencyTemplates = new List<PayCurrencyTemplateWorldUI>();
@@ -37,7 +37,7 @@ public class Scavengable : MonoBehaviour, IDamageable {
     private bool markedToScavenge;
     private bool depleted;
     private bool playerInTriggerArea;
-    private bool mineActive = true;
+    private bool scavengingActive = true;
 
 
     public event EventHandler OnActivatedMining;
@@ -75,8 +75,11 @@ public class Scavengable : MonoBehaviour, IDamageable {
             StartCoroutine(SetAmmoTypeCollected());
         }
 
-        timeToMineOneResource = initialTimeToMineOneResource;
-        miningTimer = timeToMineOneResource;
+        if(isMine) {
+            timeToMineOneResource = initialTimeToMineOneResource;
+            miningTimer = timeToMineOneResource;
+            OnDeactivatedMining?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void Update() {
@@ -132,6 +135,7 @@ public class Scavengable : MonoBehaviour, IDamageable {
 
         if (isMine) {
             Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
+            OnActivatedMining?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -139,7 +143,12 @@ public class Scavengable : MonoBehaviour, IDamageable {
         depleted = true;
         OnScavengableDepleted?.Invoke(this, EventArgs.Empty);
 
-        foreach(MinerJob miner in minerAssignedList) {
+        List<MinerJob> minerAssignedListCopy = new List<MinerJob>();
+        foreach(MinerJob minerJob in minerAssignedList) {
+            minerAssignedListCopy.Add(minerJob);
+        }
+
+        foreach(MinerJob miner in minerAssignedListCopy) {
             miner.UnAssignScavengable();
         }
     }
@@ -161,7 +170,7 @@ public class Scavengable : MonoBehaviour, IDamageable {
             SpawnCurrency();
         }
 
-        if (health <= damage && !infiniteSource) {
+        if (health <= 0 && !infiniteSource) {
             Die();
         }
     }
@@ -216,12 +225,12 @@ public class Scavengable : MonoBehaviour, IDamageable {
         minerAssignedList.Add(miner);
     }
 
-    public void MinerEntersMine(MinerJob minerJob) {
+    public void MinerStartsMining(MinerJob minerJob) {
         minersMiningList.Add(minerJob);
         OnMinerStartsMining?.Invoke(this, EventArgs.Empty);
     }
 
-    public void MinerExitsMine(MinerJob minerJob) {
+    public void MinerStopsMining(MinerJob minerJob) {
         minersMiningList.Remove(minerJob);
         OnMinerStopsMining?.Invoke(this, EventArgs.Empty);
     }
@@ -229,9 +238,9 @@ public class Scavengable : MonoBehaviour, IDamageable {
     public void UnassignMiner(MinerJob miner) {
         if (!minerAssignedList.Contains(miner)) return;
         minerAssignedList.Remove(miner);
+        MinerStopsMining(miner);
 
         if (isMine) {
-            MinerExitsMine(miner);
             miner.ExitFromMine();
         }
     }
@@ -272,15 +281,15 @@ public class Scavengable : MonoBehaviour, IDamageable {
             payOrbsUI.SetPlayerInteracting(true);
         } else {
             if(isMine) {
-                ToggleMineActive();
+                ToggleScavengingActive();
             }
         }
     }
 
-    private void ToggleMineActive() {
-        mineActive = !mineActive;
+    private void ToggleScavengingActive() {
+        scavengingActive = !scavengingActive;
 
-        if(mineActive) {
+        if(scavengingActive) {
             OnActivatedMining?.Invoke(this, EventArgs.Empty);
         } else {
             OnDeactivatedMining?.Invoke(this, EventArgs.Empty);
@@ -299,8 +308,8 @@ public class Scavengable : MonoBehaviour, IDamageable {
         return isMine;
     }
 
-    public bool GetMineActive() {
-        return mineActive;
+    public bool GetScavengingActive() {
+        return scavengingActive;
     }
 
     public float GetTimeToExtractOneResourceNormalized() {
@@ -309,6 +318,7 @@ public class Scavengable : MonoBehaviour, IDamageable {
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (!scavengedUnlocked) return;
+        if (depleted) return;
         if (collision.GetComponent<Player>() == null) return;
 
         Player.Instance.SetInPayCurrencyArea(false);
@@ -322,6 +332,7 @@ public class Scavengable : MonoBehaviour, IDamageable {
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (!scavengedUnlocked) return;
+        if (depleted) return;
         if (collision.GetComponent<Player>() == null) return;
 
         Player.Instance.SetInPayCurrencyArea(true);

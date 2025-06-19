@@ -14,8 +14,7 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private Transform leftLevelEndCollider;
     [SerializeField] private Transform rightLevelEndCollider;
-    [SerializeField] private List<Obstacle> obstaclesInLevel = new List<Obstacle>();
-    [SerializeField] private List<Obstacle> builtObstacles;
+    [SerializeField] private List<Obstacle> blockingObstacles;
     private float minLevelLimit;
     private float maxLevelLimit;
 
@@ -30,47 +29,48 @@ public class LevelManager : MonoBehaviour
 
     private void Awake() {
         Instance = this;
-
-        foreach(Obstacle obstacle in obstaclesInLevel) {
-            builtObstacles.Add(obstacle);
-            obstacle.OnObstacleBuilt += Obstacle_OnObstacleBuilt;
-        }
-
-        RefreshLevelLimits();
+        Obstacle.OnAnyObstacleInitialized += Obstacle_OnAnyObstacleInitialized;
     }
-
-    private void Obstacle_OnObstacleBuilt(object sender, EventArgs e) {
-        Obstacle obstacle = (Obstacle)sender;
-        builtObstacles.Remove(obstacle);
-        RefreshLevelLimits();
-    }
-
     private void Start() {
-        if(levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest) {
+        if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest) {
             EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
         }
 
-        if(levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
+        if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
             LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
         }
 
-        if(levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
+        if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
             LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
         }
 
-        if(levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArmorer) {
+        if (levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArmorer) {
             levelHubMerchant.OnPlayerStoppedInteractingWithHubMerchant += LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant;
         }
 
         ES3.Save("lastLevelEnvironment", levelSO.environmentType);
 
+        RefreshLevelLimits();
     }
 
+    private void Obstacle_OnAnyObstacleInitialized(object sender, EventArgs e) {
+        Obstacle obstacle = (Obstacle)sender;
+        blockingObstacles.Add(obstacle);
+        obstacle.OnObstacleBuilt += Obstacle_OnObstacleBuilt;
+    }
+
+    private void Obstacle_OnObstacleBuilt(object sender, EventArgs e) {
+        Obstacle obstacle = (Obstacle)sender;
+        blockingObstacles.Remove(obstacle);
+        RefreshLevelLimits();
+    }
+
+  
     private void RefreshLevelLimits() {
         float maxLevelLimitTemp = rightLevelEndCollider.transform.position.x;
         float minLevelLimitTemp = leftLevelEndCollider.transform.position.x;
 
-        foreach(Obstacle obstacle in builtObstacles) {
+        foreach(Obstacle obstacle in blockingObstacles) {
 
             if(obstacle.transform.position.x < 0 && obstacle.transform.position.x > minLevelLimitTemp) {
                 minLevelLimitTemp = obstacle.transform.position.x;
@@ -212,6 +212,7 @@ public class LevelManager : MonoBehaviour
 
     private void OnDestroy() {
         LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted -= LevelUI_OnObjectiveCompleted;
+        Obstacle.OnAnyObstacleInitialized -= Obstacle_OnAnyObstacleInitialized;
 
         if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest) {
             EndLevelArea.Instance.OnEndLevelFireLit -= EndLevelArea_OnEndLevelFireLit;

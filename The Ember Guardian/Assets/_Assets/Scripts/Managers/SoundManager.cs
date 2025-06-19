@@ -145,6 +145,7 @@ public class SoundManager : MonoBehaviour
         LevelNPCGemReward.OnAnyCurrencyDropped += LevelNPCGemReward_OnAnyCurrencyDropped;
         Chest.OnAnyChestSpawnedCollectible += Chest_OnAnyChestSpawnedCollectible;
         Scavengable.OnAnyScavengableMarkedToScavenge += Scavengable_OnAnyScavengableMarkedToScavenge;
+        ScavengableObstacle.OnAnyScavengableMarkedToScavenge += Scavengable_OnAnyScavengableMarkedToScavenge;
         CurrencyStorage.OnAnyCurrencySpawned += CurrencyStorage_OnAnyCurrencySpawned;
 
         WorkerAI.OnAnyWorkerFollowPlayerStarted += WorkerAI_OnAnyWorkerFollowPlayerStarted;
@@ -955,6 +956,7 @@ public class SoundManager : MonoBehaviour
         Chest.OnAnyChestSpawnedCollectible -= Chest_OnAnyChestSpawnedCollectible;
         LevelNPCGemReward.OnAnyCurrencyDropped -= LevelNPCGemReward_OnAnyCurrencyDropped;
         Scavengable.OnAnyScavengableMarkedToScavenge -= Scavengable_OnAnyScavengableMarkedToScavenge;
+        ScavengableObstacle.OnAnyScavengableMarkedToScavenge -= Scavengable_OnAnyScavengableMarkedToScavenge;
         CurrencyStorage.OnAnyCurrencySpawned -= CurrencyStorage_OnAnyCurrencySpawned;
 
         Worker.OnAnyWorkerAssignedHunter -= Worker_OnAnyWorkerAssignedHunter;

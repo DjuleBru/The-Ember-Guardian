@@ -6,23 +6,23 @@ public class ScavengableManager : MonoBehaviour
 {
     public static ScavengableManager Instance;
 
-    private List<Scavengable> scavengablesInLevelList = new List<Scavengable>();
+    private List<IScavengable> scavengablesInLevelList = new List<IScavengable>();
 
     private void Awake() {
         Instance = this;
     }
 
     private void Start() {
-        foreach(Scavengable scavengable in GetComponentsInChildren<Scavengable>()) {
+        foreach(IScavengable scavengable in GetComponentsInChildren<IScavengable>()) {
             scavengablesInLevelList.Add(scavengable);
         }
     }
 
-    public List<Scavengable> GetAvailableScavengableList() {
+    public List<IScavengable> GetAvailableScavengableList() {
 
-        List<Scavengable> scavengablesToScavenge = new List<Scavengable>();
+        List<IScavengable> scavengablesToScavenge = new List<IScavengable>();
 
-        foreach(Scavengable scavengable in  scavengablesInLevelList) {
+        foreach(IScavengable scavengable in  scavengablesInLevelList) {
             if (scavengable.GetDepleted()) continue;
             if (scavengable.GetMaxMinersAssigned()) continue;
             if (!scavengable.GetMarkedToScavenge()) continue;
@@ -34,20 +34,20 @@ public class ScavengableManager : MonoBehaviour
     }
 
 
-    public Scavengable GetClosestHighestPriorityScavengableToScavenge(Vector3 minerPosition) {
-        List<Scavengable> scavengabledToScavenge = GetAvailableScavengableList();
+    public IScavengable GetClosestHighestPriorityScavengableToScavenge(Vector3 minerPosition) {
+        List<IScavengable> scavengabledToScavenge = GetAvailableScavengableList();
 
-        Scavengable closestNonMine = null;
+        IScavengable closestNonMine = null;
         float closestNonMineDistance = Mathf.Infinity;
 
-        Scavengable closestMine = null;
+        IScavengable closestMine = null;
         float closestMineDistance = Mathf.Infinity;
 
-        foreach (Scavengable scavengable in scavengabledToScavenge) {
-            float distance = Mathf.Abs(scavengable.transform.position.x - minerPosition.x);
+        foreach (IScavengable scavengable in scavengabledToScavenge) {
+            float distance = Mathf.Abs((scavengable as MonoBehaviour).transform.position.x - minerPosition.x);
 
             if (scavengable.GetIsMine()) {
-                if (!scavengable.GetMineActive()) {
+                if (!scavengable.GetScavengingActive()) {
                     continue; // ignorer les mines inactives
                 }
 
@@ -57,6 +57,10 @@ public class ScavengableManager : MonoBehaviour
                 }
             }
             else {
+                if (!scavengable.GetScavengingActive()) {
+                    continue; // ignorer les mines inactives
+                }
+
                 if (distance < closestNonMineDistance) {
                     closestNonMine = scavengable;
                     closestNonMineDistance = distance;
