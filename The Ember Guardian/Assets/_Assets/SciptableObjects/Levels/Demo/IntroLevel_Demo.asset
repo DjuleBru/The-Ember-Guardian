@@ -12,18 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
   m_Name: IntroLevel_Demo
   m_EditorClassIdentifier: 
-  levelsUnlockedByLevel:
-  - {fileID: 11400000, guid: 3a0673a7c12356241a8cba1c954bec69, type: 2}
+  linkedSceneName: DemoLevel_Intro
+  levelImage: {fileID: 0}
+  levelNameLocalizationKey: 
+  levelDescriptionLocalizationKey: 
+  faunaAmount: 0
+  scrapAmount: 0
+  minesAmount: 0
+  chestAmount: 0
+  wildEmberlingsAmount: 0
+  levelObjectiveType: 2
+  endLevelType: 2
+  talkToNpcAFterObjective: 0
+  nightsToSurviveAmount: 0
+  isNewEnvironmentDiscoveryLevel: 1
+  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
+  levelsUnlockedByLevel: []
   merchantsUnlockedInLevel: 0200000005000000
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 9c7379f902ca4b74d9a3c101b87212b3, type: 2}
   newMerchantTextLinesAfterLevel:
   - {fileID: 11400000, guid: 748e490f4fe4f2d40bd244009d72c632, type: 2}
   - {fileID: 11400000, guid: 5eb9be5c901d03349a40690831d066c5, type: 2}
-  environmentType: 1
-  levelObjectiveType: 2
-  endLevelType: 2
-  talkToNpcAFterObjective: 0
-  nightsToSurviveAmount: 0
+  isReplayableLevel: 0
+  totalDayCreatureDifficulty: 0
+  dayCreatureTypes: []
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
   - {fileID: 11400000, guid: a0c1321c3dbd0704c9f6bf0aec0e77b3, type: 2}
@@ -32,12 +44,26 @@ MonoBehaviour:
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
-  isReplayableLevel: 0
-  dayCreatureTypes: []
-  totalDayCreatureDifficulty: 0
-  isNewEnvironmentDiscoveryLevel: 1
-  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
-  linkedSceneName: DemoLevel_Intro
+  startWaveToSpawnFromBothSides: 1
+  baseDifficulty: 100
+  intialMinSubwaveDifficulty: 20
+  minSubwaveDifficulty: 20
+  intialMaxSubwaveDifficulty: 60
+  maxSubwaveDifficulty: 60
+  growthFactor: 1.35
+  maxWaveNumber: 0
+  minMaxSubwaveDifficultyGrowthFactor: 1.2
+  setDifficultyAnimationCurve: 0
+  difficultyAtMaxWave: 0
+  difficultyAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxWaveInAnimationCurve: 0
+  canSpawnElite: 0
+  environmentType: 1
   hasFog: 0
   fogFrontAlpha: 1
   fogBackAlpha: 1
@@ -47,25 +73,6 @@ MonoBehaviour:
   hasRain: 0
   initialRainIntensity: 0
   rainIntensitiesAllowedInLevel: 
-  baseDifficulty: 100
-  intialMinSubwaveDifficulty: 20
-  minSubwaveDifficulty: 20
-  intialMaxSubwaveDifficulty: 60
-  maxSubwaveDifficulty: 60
-  growthFactor: 1.35
-  setDifficultyAnimationCurve: 0
-  difficultyAnimationCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  maxWaveInAnimationCurve: 0
-  difficultyAtMaxWave: 0
-  minDifficultyAtMaxWave: 0
-  maxDifficultyAtMaxWave: 0
-  minMaxSubwaveDifficultyGrowthFactor: 1.2
-  startWaveToSpawnFromBothSides: 1
-  canSpawnElite: 0
   levelRandomBackgroundTracks: []
   levelExplorationTracks: []
+  levelExplorationTracksStreamerMode: []

@@ -8,6 +8,7 @@ public class MetaProgressionManager : MonoBehaviour
 {
     public static MetaProgressionManager Instance;
     [SerializeField] private bool destroySaveOnApplicationQuit;
+    [SerializeField] private List<LevelSO> allLevelSOList;
     private bool flagCarry_Debug;
 
     public event EventHandler<OnLevelSOUnlockedEventArgs> OnLevelSOUnlocked;
@@ -320,12 +321,29 @@ public class MetaProgressionManager : MonoBehaviour
 
     public List<LevelSO> GetPreviousLevelsUnlocked() {
         string key = "_previousLevelsUnlocked";
-        return ES3.Load(key, new List<LevelSO>());
+        List<string> levelNames = ES3.Load(key, new List<string>());
+
+        List<LevelSO> previousLevelsUnlocked = new List<LevelSO>();
+        foreach(string name in levelNames) {
+            foreach(LevelSO levelSO in allLevelSOList) {
+                if(levelSO.levelNameLocalizationKey == name) {
+                    previousLevelsUnlocked.Add(levelSO);
+                }
+            }
+        }
+
+        return previousLevelsUnlocked;
     }
 
     public void SetPreviousLevelsUnlocked(List<LevelSO> levelSOList) {
         string key = "_previousLevelsUnlocked";
-        ES3.Save(key, levelSOList);
+
+        List<string> levelNames = new List<string>();
+        foreach(LevelSO levelSO in levelSOList) {
+            levelNames.Add(levelSO.levelNameLocalizationKey);
+        }
+
+        ES3.Save(key, levelNames);
     }
 
     public bool GetLevelCompleted(LevelSO levelSO) {
