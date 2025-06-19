@@ -28,38 +28,65 @@ public class PlayerSave : MonoBehaviour
 
     public void SavePrimaryActiveGunSO(GunSO gunSO) {
         if (gunSO == null) return;
-        ES3.Save("primaryActiveGunSO", gunSO);
+
+        ES3.Save("primaryActiveGunSO", gunSO.gunType);
     }
 
     public void SaveSecondaryActiveGunSO(GunSO gunSO) {
         if (gunSO == null) return;
-        ES3.Save("secondaryActiveGunSO", gunSO);
+
+        ES3.Save("secondaryActiveGunSO", gunSO.gunType);
     }
 
     public void SavePlayerMetaStats() {
         PlayerStats.Instance.SaveMetaBuffValues();
         PlayerShoot.Instance.SaveAllGunStats();
-    } 
-
-    public GunSO GetPrimaryActiveGun() {
-        GunSO activeGun = ES3.Load("primaryActiveGunSO", initialActiveGun);
-        if(activeGun == null || activeGun.name == "") {
-            return initialActiveGun;
-        }
-
-        return activeGun;
     }
 
+    public GunSO.GunType GetPrimaryActiveGunType() {
+        if (!ES3.KeyExists("primaryActiveGunSO"))
+            return initialActiveGun.gunType;
 
-    public GunSO GetSecondaryActiveGun() {
-        GunSO activeGun = ES3.Load("secondaryActiveGunSO", initialActiveGun);
-        if (activeGun == null) {
-            return initialActiveGun;
+        try {
+            // Essaye de charger l’enum (nouveau format)
+            return ES3.Load<GunSO.GunType>("primaryActiveGunSO");
         }
+        catch (System.InvalidOperationException) {
+            // Fallback : ancien format = ScriptableObject
+            GunSO oldGunSO = ES3.Load<GunSO>("primaryActiveGunSO");
+            GunSO.GunType gunTypeFromOldSO = oldGunSO.gunType;
 
-        return activeGun;
+            // Convertit la save au nouveau format
+            SavePrimaryActiveGunSO(oldGunSO);
+
+            return gunTypeFromOldSO;
+        }
     }
 
+    public GunSO.GunType GetSecondaryActiveGunType() {
+        try {
+            // Essaye de lire en tant que GunType (nouveau format)
+            return ES3.Load<GunSO.GunType>("secondaryActiveGunSO");
+        }
+        catch (System.InvalidOperationException) {
+            // Fallback : l'ancien fichier contenait un ScriptableObject
+            GunSO oldGunSO = ES3.Load<GunSO>("secondaryActiveGunSO");
+            GunSO.GunType gunTypeFromOldSO = oldGunSO.gunType;
+
+            // Réécris la sauvegarde en format propre pour la suite
+            SaveSecondaryActiveGunSO(oldGunSO);
+
+            return gunTypeFromOldSO;
+        }
+    }
+
+    public bool GetSecondaryGunIsEquipped() {
+        if(ES3.KeyExists("secondaryActiveGunSO")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
         if (GetPlayerUnlockedFlagCarry()) return;

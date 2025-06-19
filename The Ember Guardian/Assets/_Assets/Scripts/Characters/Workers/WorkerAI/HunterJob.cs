@@ -13,6 +13,11 @@ public class HunterJob : WorkerJob {
     private float attackRange;
     private float distanceToPlayerWhenCreatureIsAround = 4f;
 
+    private Vector3 targetDefensiveDestinationRandomized;
+    private Vector3 targetDefensiveDestination;
+    private float randomizeDestinationTimer;
+    private float randomizeDestinationRate = 2f;
+
     private float checkBlockedByCreatureTimer;
     private float distanceToHuntingLimit = 3f;
 
@@ -747,11 +752,17 @@ public class HunterJob : WorkerJob {
             hasSetSpeed = true;
         }
 
-        Vector3 targetDestination = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned(), 3.5f);
-        Vector3 targetDestinationRandomized = new Vector3(targetDestination.x + UnityEngine.Random.Range(-1.5f, 1.5f), 0, 0);
-        mobMovement.SetMoveTarget(targetDestinationRandomized);
+        randomizeDestinationTimer -= Time.deltaTime;
 
-        if(Mathf.Abs(transform.position.x - targetDestinationRandomized.x) < 0.1f) {
+        if(randomizeDestinationTimer <= 0) {
+            randomizeDestinationTimer = randomizeDestinationRate;
+            targetDefensiveDestination = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned(), 3.5f);
+            targetDefensiveDestinationRandomized = new Vector3(targetDefensiveDestination.x + UnityEngine.Random.Range(-2f, 2f), 0, 0);
+        }
+
+        mobMovement.SetMoveTarget(targetDefensiveDestinationRandomized);
+
+        if(Mathf.Abs(transform.position.x - targetDefensiveDestinationRandomized.x) < 0.1f) {
             ChangeState(HunterState.guarding);
         }
 
@@ -815,8 +826,9 @@ public class HunterJob : WorkerJob {
         previousState = state;
 
         Vector3 targetDestination = mobMovement.transform.position;
+        randomizeDestinationTimer = 0;
 
-        if(newState == HunterState.headingBackToHuntingLimit) {
+        if (newState == HunterState.headingBackToHuntingLimit) {
             if (transform.position.x < 0) {
                 targetDestination.x = CampZoneManager.Instance.GetClosestHuntingLimit(transform.position, distanceToHuntingLimit).x;
             }

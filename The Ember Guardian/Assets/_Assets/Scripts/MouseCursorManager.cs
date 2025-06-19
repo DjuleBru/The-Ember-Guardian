@@ -287,8 +287,7 @@ public class MouseCursorManager : MonoBehaviour
     }
 
     public void ShowMouse(bool show) {
-        weaponCursorGameObject.SetActive(!show);
-        mouseCursorGameObject.SetActive(!show);
+        if (this == null) return; // Safety check if called on destroyed object
 
         Cursor.visible = show;
 
@@ -297,6 +296,18 @@ public class MouseCursorManager : MonoBehaviour
         } else {
             Cursor.SetCursor(cursorTexture, cursorHotspot, CursorMode.Auto);
         }
+
+        if (weaponCursorGameObject == null) {
+            Debug.LogError("weaponCursorGameObject est null dans ShowMouse()");
+            return;
+        }
+        weaponCursorGameObject.SetActive(!show);
+
+        if (mouseCursorGameObject == null) {
+            Debug.LogError("mouseCursorGameObject est null dans ShowMouse()");
+            return;
+        }
+        mouseCursorGameObject.SetActive(!show);
     }
 
     private bool AllMenusClosed() {

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Users;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameInput : MonoBehaviour
@@ -100,6 +101,7 @@ public class GameInput : MonoBehaviour
     private bool isUsingGamepad;
     public const float gamepadMovementDeadzone = 0.5f;
     public const float gamepadDeadzone = 0.2f;
+    private bool sceneIsReady = false;
 
     private void Awake() {
 
@@ -127,7 +129,9 @@ public class GameInput : MonoBehaviour
 
 
         playerInputActions.Player.Enable();
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
+  
 
     private void Start() {
         playerInput = GetComponent<PlayerInput>();
@@ -167,10 +171,24 @@ public class GameInput : MonoBehaviour
 
         playerInputActions.Player.CollectCurrencyFromContainer.performed += CollectCurrencyFromContainer_performed;
     }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        StartCoroutine(EnableInputChangedPropagationNextFrame());
+    }
+    private IEnumerator EnableInputChangedPropagationNextFrame() {
+        yield return null; // attend une frame (tous les Start() seront passés)
+        sceneIsReady = true;
+    }
+
     private void InputUser_onChange(InputUser user, InputUserChange change, InputDevice arg3) {
+        if (!sceneIsReady) {
+            Debug.Log("[GameInput] Input change ignoré, la scène n’est pas encore prête");
+            return;
+        }
+
         if (change == InputUserChange.ControlSchemeChanged) {
             currentControlScheme = user.controlScheme.Value.name;
         }
+
         OnPlayerInputChanged?.Invoke(this, EventArgs.Empty);
     }
 
@@ -588,5 +606,9 @@ public class GameInput : MonoBehaviour
         }
 
         return bindingText;
+    }
+
+    private void OnDestroy() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }

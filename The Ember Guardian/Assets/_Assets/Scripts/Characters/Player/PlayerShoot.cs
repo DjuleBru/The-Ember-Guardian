@@ -126,16 +126,18 @@ public class PlayerShoot : MonoBehaviour
         autoReload = SettingsManager.Instance.GetAutoReload();
         useDebugGun = DebugManager.Instance.GetDebugMode_PlayerWeapons();
         if (useDebugGun) {
-            SetActiveGun(debugGun);
+            SetActiveGun(debugGun.gunType);
             if (debugSecondaryGun != null) {
                 canHold2Guns = true;
                 secondayGunSO = debugSecondaryGun;
             }
         } else {
-            SetActiveGun(PlayerSave.Instance.GetPrimaryActiveGun());
+            SetActiveGun(PlayerSave.Instance.GetPrimaryActiveGunType());
             canHold2Guns = PlayerStats.Instance.GetCanHold2WeaponsUnlocked();
             if (canHold2Guns) {
-                this.secondayGunSO = PlayerSave.Instance.GetSecondaryActiveGun();
+                if(PlayerSave.Instance.GetSecondaryGunIsEquipped()) {
+                    secondayGunSO = GetGunSO(PlayerSave.Instance.GetSecondaryActiveGunType());
+                }
             }
         }
 
@@ -250,49 +252,61 @@ public class PlayerShoot : MonoBehaviour
                     OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
                 }
                 else {
-                    holdingStationaryGun = false;
-                    PlayerAim.Instance.SetLimitAimAngle(false);
-                    OnPlayerResetLMGBipod?.Invoke(this, EventArgs.Empty);
-                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                    RemoveLMGBipod();
                 }
             }
 
         }
     }
 
+    public void RemoveLMGBipod() {
+        if (!holdingStationaryGun) return;
+        OnPlayerSetupLMGStopped?.Invoke(this, EventArgs.Empty);
+        OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        secondaryAbilityActive = false;
+
+        holdingStationaryGun = false;
+        PlayerAim.Instance.SetLimitAimAngle(false);
+        OnPlayerResetLMGBipod?.Invoke(this, EventArgs.Empty);
+        OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+    }
 
     public void SetPrimaryWeaponSO(GunSO gunSO) {
         primaryGunSO = gunSO;
-        SetActiveGun(gunSO, true);
+        SetActiveGun(gunSO.gunType, true);
         OnPrimaryWeaponChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetSecondaryWeaponSO(GunSO gunSO) {
         secondayGunSO = gunSO;
-        SetActiveGun(gunSO, false);
+        SetActiveGun(gunSO.gunType, false);
         OnSecondaryWeaponChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public void SetActiveGun(GunSO gunSO, bool primaryGun = true) {
+    public void SetActiveGun(GunSO.GunType gunType, bool primaryGun = true) {
         Gun activeGun = null;
+        GunSO activeGunSO = null;
 
         foreach(Gun gun in allGunsList) {
             gun.gameObject.SetActive(false);
             gun.SetGunActive(false);
-            if(gun.GetGunSO() == gunSO) {
+
+            if(gun.GetGunSO().gunType == gunType) {
                 activeGun = gun;
+                activeGunSO = gun.GetGunSO();
             }
+
         }
 
         activeGun.gameObject.SetActive(true);
-        heldGunSO = gunSO;
+        heldGunSO = activeGunSO;
         heldGun = activeGun;
         heldGun.SetGunActive(true);
 
         shootCooldownSFXTriggerTime = heldGunSO.shootCooldownSFXTriggerTime;
         gunRecoil = heldGunSO.gunRecoil;
         gunKnockback = heldGunSO.gunKnockback; 
-        automaticWeapon = gunSO.automaticWeapon;
+        automaticWeapon = activeGunSO.automaticWeapon;
         if (rifleSemiAutoModeActive) {
             automaticWeapon = true;
         }
@@ -302,12 +316,27 @@ public class PlayerShoot : MonoBehaviour
         PlayerStats.Instance.SetHandsReloadTime(heldGun.GetHandsReloadTime());
 
         if(primaryGun) {
-            primaryGunSO = gunSO;
+            primaryGunSO = activeGunSO;
         } else {
-            secondayGunSO = gunSO;
+            secondayGunSO = activeGunSO;
         }
 
         OnPlayerSwappedGun?.Invoke(this, EventArgs.Empty);
+    }
+
+    public GunSO GetGunSO(GunSO.GunType gunType) {
+        GunSO gunSO = null;
+
+        foreach (Gun gun in allGunsList) {
+            gun.gameObject.SetActive(false);
+            gun.SetGunActive(false);
+
+            if (gun.GetGunSO().gunType == gunType) {
+                gunSO = gun.GetGunSO();
+            }
+
+        }
+        return gunSO;
     }
 
     public void SetGunAmmo(GunSO gunSO, int ammoCount) {
@@ -685,7 +714,7 @@ public class PlayerShoot : MonoBehaviour
         float swapGunStartAnimationTime = .25f * heldGun.GetSwapToWeaponTimeMultiplier();
 
         yield return new WaitForSeconds(swapGunStartAnimationTime);
-        SetActiveGun(gunSO, primaryGunSO);
+        SetActiveGun(gunSO.gunType, primaryGunSO);
         float swapGunEndAnimationTime = .35f * heldGun.GetSwapToWeaponTimeMultiplier();
 
         yield return new WaitForSeconds(swapGunEndAnimationTime);

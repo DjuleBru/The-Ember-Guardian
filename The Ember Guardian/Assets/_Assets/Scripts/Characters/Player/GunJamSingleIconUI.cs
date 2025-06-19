@@ -24,6 +24,12 @@ public class GunJamSingleIconUI : MonoBehaviour
         RefreshInput();
     }
 
+    private void GunJamHandler_OnAnyJamSequenceFailed(object sender, GunJamHandler.OnAnyJamSequenceProgressedEventArgs e) {
+        if (e.currentIndex == inputIndex) {
+            StartCoroutine(FailedCoroutine());
+        }
+    }
+
     private void GunJamHandler_OnAnyCorrectJamSequenceInput(object sender, System.EventArgs e) {
         if (iconShown) {
             animator.ResetTrigger("Reset");
@@ -31,9 +37,6 @@ public class GunJamSingleIconUI : MonoBehaviour
         }
     }
 
-    private void GunJamHandler_OnAnyJamSequenceFailed(object sender, System.EventArgs e) {
-        StartCoroutine(FailedCoroutine());
-    }
 
     private IEnumerator FailedCoroutine() {
         inputImage.color = failedColor;
@@ -41,7 +44,7 @@ public class GunJamSingleIconUI : MonoBehaviour
 
         yield return new WaitForSeconds(.3f);
 
-        RefreshShowIcon();
+        //RefreshShowIcon();
         animator.ResetTrigger("Valid");
         animator.SetTrigger("Reset");
         inputImage.color = Color.white;

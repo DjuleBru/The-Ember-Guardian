@@ -74,7 +74,7 @@ public class PlayerFeedbacks : MonoBehaviour
         }
     }
 
-    private void GunJamHandler_OnAnyJamSequenceFailed(object sender, System.EventArgs e) {
+    private void GunJamHandler_OnAnyJamSequenceFailed(object sender, GunJamHandler.OnAnyJamSequenceProgressedEventArgs e) {
         gunJamFailedFeedbacks.PlayFeedbacks();
     }
 

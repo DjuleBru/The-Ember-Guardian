@@ -62,7 +62,7 @@ public class PlayerSounds : SoundObject
         playerAudioSource.PlayOneShot(gunJamSpamHitPerformed[Random.Range(0, gunJamSpamHitPerformed.Length)], sfxVolume * .5f);
     }
 
-    private void GunJamHandler_OnAnyJamSequenceFailed(object sender, System.EventArgs e) {
+    private void GunJamHandler_OnAnyJamSequenceFailed(object sender, GunJamHandler.OnAnyJamSequenceProgressedEventArgs e) {
         playerAudioSource.PlayOneShot(gunJamHitFailed[Random.Range(0, gunJamHitFailed.Length)], sfxVolume * .7f);
     }
 

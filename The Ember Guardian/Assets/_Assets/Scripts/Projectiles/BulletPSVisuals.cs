@@ -14,14 +14,11 @@ public class BulletPSVisuals : MonoBehaviour
     [SerializeField] private Color initialBulletPSColor;
 
     private bool outLightDamageBuffed;
-    private bool perfectQTEDamageBuffed;
     private bool lastBulletShotDamageBuffed;
 
     private void Start() {
         gun.OnBuffedLastBulletShot += Gun_OnBuffedLastBulletShot;
         gun.OnDebuffLastBulletShot += Gun_OnDebuffLastBulletShot;
-        gun.OnPerfectQTEDamageBuff += Gun_OnPerfectQTEDamageBuff;
-        gun.OnPerfectQTEDamageBuffEnded += Gun_OnPerfectQTEDamageBuffEnded;
 
         PlayerSkills.Instance.OnPlayerOutFireLightBuffedDmg += PlayerSkills_OnPlayerOutFireLightBuffedDmg;
         PlayerSkills.Instance.OnPlayerOutFireLightDebuffedDmg += PlayerSkills_OnPlayerOutFireLightDebuffedDmg;
@@ -84,15 +81,6 @@ public class BulletPSVisuals : MonoBehaviour
         ActivateBuffedDamageFeedbacks();
     }
 
-    private void Gun_OnPerfectQTEDamageBuffEnded(object sender, System.EventArgs e) {
-        perfectQTEDamageBuffed = false;
-        DeActivateBuffedDamageFeedbacks();
-    }
-
-    private void Gun_OnPerfectQTEDamageBuff(object sender, System.EventArgs e) {
-        perfectQTEDamageBuffed = true;
-        ActivateBuffedDamageFeedbacks();
-    }
     private void ActivateBuffedDamageFeedbacks() {
         ParticleSystem.MainModule trailMainModule = trailPS.main;
         trailMainModule.startColor = Color.red;
@@ -103,7 +91,7 @@ public class BulletPSVisuals : MonoBehaviour
     }
 
     private void DeActivateBuffedDamageFeedbacks() {
-        if (perfectQTEDamageBuffed || lastBulletShotDamageBuffed || outLightDamageBuffed) return;
+        if (lastBulletShotDamageBuffed || outLightDamageBuffed) return;
 
         ParticleSystem.MainModule trailMainModule = trailPS.main;
         trailMainModule.startColor = Color.white;

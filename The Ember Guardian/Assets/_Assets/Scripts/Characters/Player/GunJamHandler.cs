@@ -63,7 +63,7 @@ public class GunJamHandler : MonoBehaviour
     public static event EventHandler<OnSpamQTEProgressedEventArgs> OnSpamQTEProgressed;
     public static event EventHandler<OnJamSequenceGeneratedEventArgs> OnAnyJamSequenceGenerated;
     public static event EventHandler OnAnyJamSequenceCompleted;
-    public static event EventHandler OnAnyJamSequenceFailed;
+    public static event EventHandler<OnAnyJamSequenceProgressedEventArgs> OnAnyJamSequenceFailed;
     public static event EventHandler OnAnyJamSequenceCancelled;
     public static event EventHandler OnAnyJamSequenceRestarted;
     public static event EventHandler OnAnyPerfectJamSequenceCompleted;
@@ -133,7 +133,7 @@ public class GunJamHandler : MonoBehaviour
         }
         else {
             isInGunJamQTE = false;
-            CancelGunJamMiniGame();
+            //CancelGunJamMiniGame();
         }
         
     }
@@ -401,9 +401,6 @@ public class GunJamHandler : MonoBehaviour
 
         gun.SetGunUnJammed(perfectQTESequence);
 
-        Debug.Log("perfectQTESpamTimer " + perfectQTESpamTimer);
-        Debug.Log("perfectQTESpamButtonTime " + perfectQTESpamButtonTime);
-
 
         if (perfectQTESequence) {
             OnAnyPerfectJamSequenceCompleted?.Invoke(this, EventArgs.Empty);
@@ -420,12 +417,6 @@ public class GunJamHandler : MonoBehaviour
         }
 
         currentInputIndex = 0;
-
-        //For player feedbacks
-        bool otherWeaponIsJammed = PlayerShoot.Instance.GetHeldGun().GetGunJammed();
-
-        if (!otherWeaponIsJammed) {
-        }
     }
 
     private IEnumerator FailGunJamMiniGame() {
@@ -434,14 +425,14 @@ public class GunJamHandler : MonoBehaviour
         OnJamSequenceFailStarted?.Invoke(this, EventArgs.Empty);
         yield return new WaitForSeconds(jamHitAnimationDuration);
 
-        OnAnyJamSequenceFailed?.Invoke(this, EventArgs.Empty);
+        OnAnyJamSequenceFailed?.Invoke(this, new OnAnyJamSequenceProgressedEventArgs {
+            currentIndex = currentInputIndex,
+        });
 
-        currentInputSequence = new Queue<GameInput.Binding>();
-        foreach (GameInput.Binding binding in initialInputSequence) {
-            currentInputSequence.Enqueue(binding);
-        }
-
-        currentInputIndex = 0;
+        //currentInputSequence = new Queue<GameInput.Binding>();
+        //foreach (GameInput.Binding binding in initialInputSequence) {
+        //    currentInputSequence.Enqueue(binding);
+        //}
 
         justFailed = false;
     }

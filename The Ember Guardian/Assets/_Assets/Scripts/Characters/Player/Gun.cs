@@ -65,6 +65,7 @@ public class Gun : MonoBehaviour
     public static event EventHandler OnAnyGunUnlocked;
     public static event EventHandler OnAnyGunJammed;
     public static event EventHandler OnAnyGunJamRepaired;
+    public static event EventHandler OnAnyGunJamBuffedDamageShot;
     public event EventHandler OnGunJammed;
     public event EventHandler OnPerfectQTEDamageBuff;
     public event EventHandler OnPerfectQTEDamageBuffEnded;
@@ -180,9 +181,8 @@ public class Gun : MonoBehaviour
         bulletSpeed = MetaProgressionManager.Instance.GetGunBulletSpeed(gunSO);
         reloadAccelerationFactor = MetaProgressionManager.Instance.GetGunReloadAccelerationFactor(gunSO);
         weightAccelerationFactor = MetaProgressionManager.Instance.GetGunWeightAccelerationFactor(gunSO);
-        jamProbability = MetaProgressionManager.Instance.GetGunJamProbability(gunSO)/100f;
+        jamProbability = MetaProgressionManager.Instance.GetGunJamProbability(gunSO);
         jamRepairHitAmount = MetaProgressionManager.Instance.GetGunJamRepairHitAmount(gunSO);
-
         defaultAngle = MetaProgressionManager.Instance.GetGunShootConeAnle(gunSO);
         currentAngle = defaultAngle;
         targetAngle = defaultAngle;
@@ -241,11 +241,16 @@ public class Gun : MonoBehaviour
         }
 
         if(perfectJamQTESucceeded) {
+
             bulletAfterPerfectJamSucceededIndex++;
+
             if(bulletAfterPerfectJamSucceededIndex >= gunSO.perfectQTEBulletAmountDamageBuffed) {
                 perfectJamQTESucceeded = false;
+                bulletAfterPerfectJamSucceededIndex = 0;
                 DebuffBulletDamage(perfectJamDamageBuff);
                 OnPerfectQTEDamageBuffEnded?.Invoke(this, EventArgs.Empty);
+            } else {
+                OnAnyGunJamBuffedDamageShot?.Invoke(this, EventArgs.Empty);
             }
         }
     }
@@ -254,7 +259,7 @@ public class Gun : MonoBehaviour
         if (!PlayerShoot.Instance.GetGunCanJam()) return;
         if (gunJustJammed) return;
 
-        if (UnityEngine.Random.value < jamProbability) {
+        if (UnityEngine.Random.value < jamProbability/100f) {
             JamGun();
         }
     }
@@ -423,6 +428,10 @@ public class Gun : MonoBehaviour
         gunJammed = true;
         OnGunJammed?.Invoke(this, EventArgs.Empty);
         OnAnyGunJammed?.Invoke(this, EventArgs.Empty);
+
+        if(gunSO.gunType == GunSO.GunType.LMG) {
+            PlayerShoot.Instance.RemoveLMGBipod();
+        }
     }
 
     public void SetGunActive(bool gunActive) {

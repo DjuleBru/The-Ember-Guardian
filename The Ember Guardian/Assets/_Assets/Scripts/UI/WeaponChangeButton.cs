@@ -42,7 +42,7 @@ public class WeaponChangeButton : ButtonUI
         OnAnyWeaponChangeButtonPressed?.Invoke(this, EventArgs.Empty);
 
         if (linkedGunSO != null) {
-            PlayerShoot.Instance.SetActiveGun(linkedGunSO, isPrimaryWeaponButton);
+            PlayerShoot.Instance.SetActiveGun(linkedGunSO.gunType, isPrimaryWeaponButton);
         }
 
         if (PlayerShoot.Instance.GetUnlockedGunSOList().Count <= 1) return;

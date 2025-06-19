@@ -403,7 +403,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             if (gunItem == GunItemType.jamProbability) {
                 initialStatValue = linkedGunSO.jamProbability;
-                currentStatValue = (PlayerShoot.Instance.GetGun(linkedGunSO).GetJamProbability()).ToString("F2");
+                currentStatValue = (PlayerShoot.Instance.GetGun(linkedGunSO).GetJamProbability()*100f).ToString("F2");
                 relativeStatPrefix = "";
                 totalStatWithModifierPostfix = "%";
                 relativeStatPostfix = "%";
@@ -678,9 +678,9 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         itemEquipped = true;
 
         if(primaryGun) {
-            PlayerShoot.Instance.SetActiveGun(linkedGunSO, true);
+            PlayerShoot.Instance.SetActiveGun(linkedGunSO.gunType, true);
         } else {
-            PlayerShoot.Instance.SetActiveGun(linkedGunSO, false);
+            PlayerShoot.Instance.SetActiveGun(linkedGunSO.gunType, false);
         }
     }
 

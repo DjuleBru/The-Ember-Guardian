@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbc96e1564c4fd42a7ef7eee87d437f, type: 3}
   m_Name: Flamethrower
   m_EditorClassIdentifier: 
-  gunType: 5
+  gunType: 8
   gunSprite: {fileID: -385952185, guid: b81429096f3a0ce4887bbcedaff2454f, type: 3}
   reticleSprite: {fileID: 0}
   shotCountSprites:
@@ -54,6 +54,7 @@ MonoBehaviour:
   shootCreatureHearMultiplier: 1.75
   jamProbability: 1
   jamRepairHitAmount: 3
+  perfectQTEBulletAmountDamageBuffed: 0
   weightAccelerationFactor: 0.8
   reloadAccelerationFactor: 0.8
   followMouseSpeed: 40

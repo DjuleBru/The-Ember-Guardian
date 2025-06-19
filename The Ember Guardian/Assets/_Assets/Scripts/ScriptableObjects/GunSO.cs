@@ -15,6 +15,7 @@ public class GunSO : ScriptableObject
         LMG,
         GrenadeLauncher,
         AssaultRifle,
+        FlameThrower,
     }
 
     public GunType gunType;

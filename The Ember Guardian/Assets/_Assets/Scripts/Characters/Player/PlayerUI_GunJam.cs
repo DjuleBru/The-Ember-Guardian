@@ -137,7 +137,12 @@ public class PlayerUI_GunJam : MonoBehaviour
         timingButtonJustPressed = true;
         timingButtonJustPressedTimer = jamHitAnimationDuration;
 
-        if(TimingQTEIsRight()) {
+        if (timerBarOutlineAnimator == null) {
+            Debug.LogWarning("timerBarOutlineAnimator n'est pas assigné dans PlayerUI_GunJam !");
+            return;
+        }
+
+        if (TimingQTEIsRight()) {
             timerBarOutlineAnimator.SetTrigger("Valid");
         } else {
             timerBarOutlineAnimator.SetTrigger("Wrong");
@@ -169,14 +174,17 @@ public class PlayerUI_GunJam : MonoBehaviour
 
         switch (e.qteType) {
             case GunJamHandler.QTEType.InputSequence:
+                isSequenceQTEActive = true;
                 HandleInputSequenceQTE(e.inputSequence);
                 break;
 
             case GunJamHandler.QTEType.TimingChallenge:
+                isTimingQTEActive = true;
                 HandleTimingQTE();
                 break;
 
             case GunJamHandler.QTEType.SpamButton:
+                isSpamQTEActive = true;
                 HandleSpamButtonQTE(e.spamTargetProgress);
                 break;
         }
@@ -195,7 +203,6 @@ public class PlayerUI_GunJam : MonoBehaviour
     private void HandleTimingQTE() {
         timingGameObject.gameObject.SetActive(true);
         maxStages = PlayerShoot.Instance.GetHeldGun().GetJamRepairHitAmount();
-        isTimingQTEActive = true;
 
         float halfWidth = ((RectTransform)backgroundValidZone.parent).rect.width * 0.5f;
         tickMinX = -halfWidth;
@@ -209,7 +216,6 @@ public class PlayerUI_GunJam : MonoBehaviour
 
     private void HandleSpamButtonQTE(float targetProgress) {
         spamGameObject.gameObject.SetActive(true);
-        isSpamQTEActive = true;
         currentSpamProgress = 0f;
         requiredSpamProgress = targetProgress;
 
@@ -232,10 +238,9 @@ public class PlayerUI_GunJam : MonoBehaviour
 
 
     private void RefreshPrimaryOrSecondaryUI() {
-
         if ((isPrimaryWeaponJamUI && PlayerShoot.Instance.GetHeldGunSO() == PlayerShoot.Instance.GetPrimaryGunSO()) || (!isPrimaryWeaponJamUI && PlayerShoot.Instance.GetHeldGunSO() == PlayerShoot.Instance.GetSecondaryGunSO())) {
-            
-            if(isTimingQTEActive) {
+
+            if (isTimingQTEActive) {
                 timingGameObject.gameObject.SetActive(true);
             }
             if(isSpamQTEActive) {
