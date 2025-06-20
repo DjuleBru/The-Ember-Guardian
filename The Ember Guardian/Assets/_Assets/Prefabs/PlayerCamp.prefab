@@ -1075,6 +1075,7 @@ Transform:
   - {fileID: 2193910943059484005}
   - {fileID: 3664221577173508573}
   - {fileID: 959910811223358273}
+  - {fileID: 8390603333250837135}
   - {fileID: 2691161113958497872}
   - {fileID: 8690657198797438498}
   - {fileID: 5737011536327548161}
@@ -1099,7 +1100,6 @@ MonoBehaviour:
   initialFireStructureLocation: {fileID: 1703631306087369961}
   initialStructures:
   - {fileID: 2797284188696963274}
-  allStructureLocations: []
   trapLocations:
   - {fileID: 2243671752762724874}
   - {fileID: 7895624417727118994}
@@ -1116,6 +1116,7 @@ MonoBehaviour:
   - {fileID: 6616474437684472167}
   - {fileID: 8994679954321981860}
   initialStructureLocationsBuilt: []
+  worldStructureLocations: []
   ammoCrafter1Location: {fileID: 7486461100805128629}
   researchTowerLocation: {fileID: 5063891812071716310}
   leftBarricade1: {fileID: 3859503691319708305}
@@ -2306,6 +2307,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &9146723629270333893
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8390603333250837135}
+  m_Layer: 0
+  m_Name: WorldStructureLocations
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8390603333250837135
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9146723629270333893}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1621881242586693024}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9181301253718687066
 GameObject:
   m_ObjectHideFlags: 0

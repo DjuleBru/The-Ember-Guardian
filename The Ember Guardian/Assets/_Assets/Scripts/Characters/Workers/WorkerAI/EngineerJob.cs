@@ -85,6 +85,10 @@ public class EngineerJob : WorkerJob {
                     FollowPlayer();
 
                     break;
+
+                case EngineerState.droppingCurrency:
+                    DroppingOrbsUpdate();
+                 break;
             }
         }
         else {
@@ -156,22 +160,7 @@ public class EngineerJob : WorkerJob {
                     break;
 
                 case EngineerState.droppingCurrency:
-
-                    if (worker.GetTotalCurrencyAmount() == 0) {
-                        ChangeState(previousState);
-                        return;
-                    }
-
-                    if (worker.PlayerIsCloseAndStayedAround()) {
-                        worker.DropCurrencies();
-                        return;
-                    }
-
-                    if (!worker.GetPlayerIsClose()) {
-                        ChangeState(previousState);
-                        return;
-                    }
-
+                    DroppingOrbsUpdate();
                     break;
 
                 case EngineerState.blockedByCreatures:
@@ -587,6 +576,9 @@ public class EngineerJob : WorkerJob {
         return false;
     }
 
+    public override void ReturnToPreviousState() {
+        ChangeState(previousState);
+    }
 
     private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
         isNightOrDusk = true;

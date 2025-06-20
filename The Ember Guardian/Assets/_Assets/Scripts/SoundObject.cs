@@ -8,8 +8,7 @@ public class SoundObject : MonoBehaviour
     protected AudioSource audioSource2D;
 
     protected virtual void Start() {
-        audioSource2D = GetComponent<AudioSource>();    
-
+        audioSource2D = GetComponent<AudioSource>();
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
         SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
     }

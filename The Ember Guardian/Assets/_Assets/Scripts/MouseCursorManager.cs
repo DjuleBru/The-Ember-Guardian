@@ -72,6 +72,9 @@ public class MouseCursorManager : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
         VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
         VideoTipUI.Instance.OnVideoTipPanelOpened += VideoTipUI_OnVideoTipPanelOpened;
+        FastTravelTP.OnAnyPlayerWarpedOut += FastTravelTP_OnAnyPlayerWarpedOut;
+        FastTravelTP.OnAnyPlayerCanceledTP += FastTravelTP_OnAnyPlayerCanceledTP;
+        FastTravelTP.OnAnyPlayerPositionedOnTP += FastTravelTP_OnAnyPlayerPositionedOnTP;
 
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerOpenedAnyHubMerchantShop;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
@@ -99,40 +102,52 @@ public class MouseCursorManager : MonoBehaviour
 
 
     private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
-        weaponCursorGameObject.SetActive(true);
+        ShowWeaponCursorGO(true);
     }
 
     private void Player_OnPlayerDied(object sender, System.EventArgs e) {
-        weaponCursorGameObject.SetActive(false);
+        ShowWeaponCursorGO(false);
     }
 
     private void PetDog_OnPlayerEndedPettingDog(object sender, System.EventArgs e) {
-        weaponCursorGameObject.SetActive(true);
+        ShowWeaponCursorGO(true);
     }
 
     private void PetDog_OnPlayerStartedPettingDog(object sender, System.EventArgs e) {
-        weaponCursorGameObject.SetActive(false);
+        ShowWeaponCursorGO(false);
     }
 
     private void PlayerMovement_OnPlayerRollEnded(object sender, System.EventArgs e) {
-        weaponCursorGameObject.SetActive(true);
+        ShowWeaponCursorGO(true);
     }
 
     private void PlayerMovement_OnPlayerRoll(object sender, System.EventArgs e) {
-        weaponCursorGameObject.SetActive(false);
+        ShowWeaponCursorGO(false);
     }
 
     private void PlayerShoot_OnPlayerReloadEnded(object sender, System.EventArgs e) {
-        weaponCursorGameObject.SetActive(true);
+        ShowWeaponCursorGO(true);
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
-        weaponCursorGameObject.SetActive(false);
+        ShowWeaponCursorGO(false);
     }
     private void VideoTipUI_OnVideoTipPanelOpened(object sender, System.EventArgs e) {
         if (!isUsingGamepad) {
             ShowMouse(true);
         }
+    }
+
+    private void FastTravelTP_OnAnyPlayerWarpedOut(object sender, System.EventArgs e) {
+        ShowWeaponCursorGO(true);
+    }
+
+    private void FastTravelTP_OnAnyPlayerPositionedOnTP(object sender, System.EventArgs e) {
+        ShowWeaponCursorGO(false);
+    }
+
+    private void FastTravelTP_OnAnyPlayerCanceledTP(object sender, System.EventArgs e) {
+        ShowWeaponCursorGO(true);
     }
 
     private void VideoTipUI_OnVideoTipPanelClosed(object sender, VideoTipUI.OnVideoTipPanelClosedEventArgs e) {
@@ -271,6 +286,11 @@ public class MouseCursorManager : MonoBehaviour
         weaponCursorRectTransform.position = screenPos;
     }
 
+    private void ShowWeaponCursorGO(bool show) {
+        weaponCursorGameObject.SetActive(show);
+        PlayerAim.Instance.SetWeaponReticleToAimPos();
+    }
+
     private void GameInput_OnPlayerInputChanged(object sender, System.EventArgs e) {
         isUsingGamepad = GameInput.Instance.IsUsingGamepad();
 
@@ -293,6 +313,7 @@ public class MouseCursorManager : MonoBehaviour
 
         if(!show) {
             Cursor.SetCursor(invisibleCursorTexture, cursorHotspot, CursorMode.Auto);
+            PlayerAim.Instance.SetWeaponReticleToAimPos();
         } else {
             Cursor.SetCursor(cursorTexture, cursorHotspot, CursorMode.Auto);
         }
@@ -302,6 +323,7 @@ public class MouseCursorManager : MonoBehaviour
             return;
         }
         weaponCursorGameObject.SetActive(!show);
+        
 
         if (mouseCursorGameObject == null) {
             Debug.LogError("mouseCursorGameObject est null dans ShowMouse()");
@@ -321,6 +343,9 @@ public class MouseCursorManager : MonoBehaviour
         PortalUI.OnAnyPortalUIOpened -= PortalUI_OnAnyPortalUIOpened;
         PortalUI.OnAnyPortalUIClosed -= PortalUI_OnAnyPortalUIClosed;
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
+        FastTravelTP.OnAnyPlayerWarpedOut -= FastTravelTP_OnAnyPlayerWarpedOut;
+        FastTravelTP.OnAnyPlayerCanceledTP -= FastTravelTP_OnAnyPlayerCanceledTP;
+        FastTravelTP.OnAnyPlayerPositionedOnTP -= FastTravelTP_OnAnyPlayerPositionedOnTP;
     }
 
 }

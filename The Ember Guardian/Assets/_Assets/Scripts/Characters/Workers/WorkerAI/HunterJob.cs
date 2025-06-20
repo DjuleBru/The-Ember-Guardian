@@ -176,23 +176,9 @@ public class HunterJob : WorkerJob {
                     break;
 
                 case HunterState.droppingOrbs:
+                    DroppingOrbsUpdate();
 
-                    if (worker.GetTotalCurrencyAmount() == 0) {
-                        ChangeState(previousState);
-                        return;
-                    }
-
-                    if (worker.PlayerIsCloseAndStayedAround()) {
-                        worker.DropCurrencies();
-                        return;
-                    }
-
-                    if (!worker.GetPlayerIsClose()) {
-                        ChangeState(previousState);
-                        return;
-                    }
-
-                 break;
+                    break;
             }
         } else {
 
@@ -323,21 +309,7 @@ public class HunterJob : WorkerJob {
                     break;
 
                 case HunterState.droppingOrbs:
-                    if (worker.GetTotalCurrencyAmount() == 0) {
-                        ChangeState(previousState);
-                        return;
-                    }
-
-                    if (worker.PlayerIsCloseAndStayedAround()) {
-                        worker.DropCurrencies();
-                        return;
-                    }
-
-                    if (!worker.GetPlayerIsClose()) {
-                        ChangeState(previousState);
-                        return;
-                    }
-
+                    DroppingOrbsUpdate();
                     break;
 
                 case HunterState.headingToGuard:
@@ -849,6 +821,10 @@ public class HunterJob : WorkerJob {
         state = newState;
         OnHunterChangedState?.Invoke(this, EventArgs.Empty);
     }
+    public override void ReturnToPreviousState() {
+        ChangeState(previousState);
+    }
+
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
         CheckNewDayCycleParameters();

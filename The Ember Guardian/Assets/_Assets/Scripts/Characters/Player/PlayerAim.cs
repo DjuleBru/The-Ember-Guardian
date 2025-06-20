@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerAim : MonoBehaviour
 {
@@ -346,6 +347,14 @@ public class PlayerAim : MonoBehaviour
 
     public Vector3 GetWeaponReticleWorldPos() {
         return weaponReticleWorldPos;
+    }
+
+    public void SetWeaponReticleToAimPos() {
+        if(isUsingGamepad) {
+            currentEffectiveAimPos = virtualMousePosition;
+        } else {
+            currentEffectiveAimPos = GetMouseWorldPosition();
+        }
     }
 
     private void HandlePlayerStationary() {

@@ -103,6 +103,12 @@ public class MinerJob : WorkerJob {
                         TargetCreature(aggroedCreature);
                     }
                     break;
+
+                case MinerState.droppingOrbs:
+
+                    DroppingOrbsUpdate();
+
+                break;
             }
         } else {
 
@@ -155,20 +161,7 @@ public class MinerJob : WorkerJob {
 
                 case MinerState.droppingOrbs:
 
-                    if (worker.GetTotalCurrencyAmount() == 0) {
-                        ChangeState(previousState);
-                        return;
-                    }
-
-                    if (worker.PlayerIsCloseAndStayedAround()) {
-                        worker.DropCurrencies();
-                        return;
-                    }
-
-                    if (!worker.GetPlayerIsClose()) {
-                        ChangeState(previousState);
-                        return;
-                    }
+                    DroppingOrbsUpdate();
 
                 break;
 
@@ -340,6 +333,10 @@ public class MinerJob : WorkerJob {
             mobMovement.SetMoveSpeed(headToCampMoveSpeed);
         }
     }
+    public override void ReturnToPreviousState() {
+        ChangeState(previousState);
+    }
+
 
     public void ExitFromMine() {
         gameObject.SetActive(true);

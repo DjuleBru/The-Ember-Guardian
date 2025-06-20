@@ -65,6 +65,7 @@ public class DogAnimatorManager : MonoBehaviour {
         petDog.OnPlayerStoppedPettingDog += PetDog_OnPlayerStoppedPettingDog;
         Portal.OnAnyPlayerTeleported += Portal_OnAnyPlayerTeleported;
         Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
+        FastTravelTP.OnAnyDogWarped += FastTravelTP_OnAnyDogWarped;
 
         sniffTimer = sniffTrialRate;
         sitTimer = sitTrialRate;
@@ -110,6 +111,9 @@ public class DogAnimatorManager : MonoBehaviour {
         dogBodyAnimator.SetTrigger("Teleport");
     }
 
+    private void FastTravelTP_OnAnyDogWarped(object sender, EventArgs e) {
+        dogBodyAnimator.SetTrigger("Teleport_Out");
+    }
     private void DogAI_OnStateChanged(object sender, System.EventArgs e) {
         DogAI.State newState = dogAI.GetState();
         ResetAllTriggers();
@@ -419,5 +423,6 @@ public class DogAnimatorManager : MonoBehaviour {
         Portal.OnAnyPlayerTeleported -= Portal_OnAnyPlayerTeleported;
         Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
         DogDigAbility.Instance.OnSniffStart -= DogDigAbility_OnSniffStart;
+        FastTravelTP.OnAnyDogWarped -= FastTravelTP_OnAnyDogWarped;
     }
 }

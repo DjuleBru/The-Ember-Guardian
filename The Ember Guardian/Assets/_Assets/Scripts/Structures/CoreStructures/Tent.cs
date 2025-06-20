@@ -8,10 +8,14 @@ public class Tent : Structure
     public static Tent Instance;
     private int healAmountPerOrb = 1;
     [SerializeField] private int maxLevel;
+    [SerializeField] private FastTravelTP fastTravelTP;
 
     protected override void Awake() {
         base.Awake();
         Instance = this;
+
+        fastTravelTP.gameObject.SetActive(false);
+        FastTravelTP.OnAnyFastTravelTPBuilt += FastTravelTP_OnAnyFastTravelTPBuilt;
     }
 
     protected override void Start() {
@@ -72,6 +76,18 @@ public class Tent : Structure
         else {
             SetStructureUpgradableUnlocked(true);
         }
+    }
+
+    public FastTravelTP GetTentFastTravelTP() {
+        return fastTravelTP;
+    }
+
+    private void FastTravelTP_OnAnyFastTravelTPBuilt(object sender, EventArgs e) {
+        fastTravelTP.gameObject.SetActive(true);
+    }
+
+    private void OnDestroy() {
+        FastTravelTP.OnAnyFastTravelTPBuilt -= FastTravelTP_OnAnyFastTravelTPBuilt;
     }
 
 }

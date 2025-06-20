@@ -218,6 +218,10 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
         return workersFollowingPlayer.Count >= maxFollowingWorkers;
     }
 
+    public List<Worker> GetFollowingWorkers() {
+        return workersFollowingPlayer;
+    }
+
     public bool GetHoveringWorkers() {
         return hoveringFollowingWorkers;
     }

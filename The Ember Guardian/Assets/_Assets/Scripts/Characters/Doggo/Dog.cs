@@ -67,6 +67,9 @@ public class Dog : MonoBehaviour
         dogAI.SetState(DogAI.State.idle);
         dogAI.SetState(DogAI.State.stay);
     }
+    public void MoveOutTeleporter() {
+        dogAI.SetState(GetIdleState());
+    }
 
     public DogAI.State GetIdleState() {
         return currentIdleState;

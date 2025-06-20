@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class WorkerJob : MonoBehaviour
 {
+    public enum WorkerState {
+
+    }
     protected Worker worker;
     protected WorkerAI workerAI;
     protected MobMovement mobMovement;
@@ -227,6 +230,27 @@ public class WorkerJob : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void DroppingOrbsUpdate() {
+        if (worker.GetTotalCurrencyAmount() == 0) {
+            ReturnToPreviousState();
+            return;
+        }
+
+        if (worker.PlayerIsCloseAndStayedAround()) {
+            worker.DropCurrencies();
+            return;
+        }
+
+        if (!worker.GetPlayerIsClose()) {
+            ReturnToPreviousState();
+            return;
+        }
+    }
+
+    public virtual void ReturnToPreviousState() {
+
     }
 
     public virtual void InitializeJob() {

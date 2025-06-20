@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df36671b0790e8341a67078a96cfcbc5, type: 3}
-  m_Name: FastTravelTP
+  m_Name: FastTravelTP_WithinBase
   m_EditorClassIdentifier: 
   structureType: 24
   structureCategory: 3
-  structureLocationPrefab: {fileID: 0}
-  structurePrefab: {fileID: 3205007466584431920, guid: 14b564114b8571045b1d8b976544bc5c, type: 3}
+  structureLocationPrefab: {fileID: 8434879454533105174, guid: 0c2c21dbdbd2f0d488d6f5ea8b7aed8e, type: 3}
+  structurePrefab: {fileID: 6212992262444972498, guid: 363b7b42fef438645b28820f809771ec, type: 3}
   structureSprite: {fileID: 21300000, guid: d6554ff518318d343979dc4f56f5ceac, type: 3}
   structureNameLocalizationKey: Anchor Relay
   widthInCells: 1
@@ -23,16 +23,24 @@ MonoBehaviour:
   structurePositionRemovable: 1
   maxStructureBlueprintAmount: 2
   level1StructureInitiallyUnlocked: 0
-  buildableAtNight: 0
+  buildableAtNight: 1
   upgradeableAtNight: 0
   functionUsableAtNight: 1
-  playerCanAlwaysInteract: 0
+  playerCanAlwaysInteract: 1
+  engineerCanWorkByDay: 0
+  engineerCanWorkByNight: 0
+  workingEngineerHideTool: 0
+  workingEngineerHideVisual: 0
+  engineerWorkingPriority: 0
+  maxEngineersAssignedWorking: 0
+  maxEngineersAssignedRefilling: 0
+  refillCurrencyTypeNeeded: 0
   upgradeable: 0
   tentLevelRequiredForLevel2: 2
   tentLevelRequiredForLevel3: 3
   tentLevelRequiredForLevel4: 4
   buildingUpgradeSpriteList: []
-  buildAudioClip: {fileID: 8300000, guid: 49ffc0467b2fc53458cbe4ef6c9b4e3f, type: 3}
+  buildAudioClip: {fileID: 8300000, guid: df823c15f73ff894c9833c04673f6536, type: 3}
   buildVolumeMultiplier: 1
   useFunctionAudioClip: {fileID: 0}
   useFunctionVolumeMultiplier: 1

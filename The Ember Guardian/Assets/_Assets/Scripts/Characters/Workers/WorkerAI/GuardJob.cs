@@ -100,23 +100,8 @@ public class GuardJob : WorkerJob {
                     break;
 
                 case GuardState.droppingOrbs:
-
-                    if (worker.GetTotalCurrencyAmount() == 0) {
-                        ChangeState(previousState);
-                        return;
-                    }
-
-                    if (worker.PlayerIsCloseAndStayedAround()) {
-                        worker.DropCurrencies();
-                        return;
-                    }
-
-                    if (!worker.GetPlayerIsClose()) {
-                        ChangeState(previousState);
-                        return;
-                    }
-
-                break;
+                    DroppingOrbsUpdate();
+                    break;
 
             }
         } else {
@@ -140,21 +125,7 @@ public class GuardJob : WorkerJob {
                     break;
 
                 case GuardState.droppingOrbs:
-
-                    if (worker.GetTotalCurrencyAmount() == 0) {
-                        ChangeState(previousState);
-                        return;
-                    }
-
-                    if (worker.PlayerIsCloseAndStayedAround()) {
-                        worker.DropCurrencies();
-                        return;
-                    }
-
-                    if (!worker.GetPlayerIsClose()) {
-                        ChangeState(previousState);
-                        return;
-                    }
+                    DroppingOrbsUpdate();
 
                     break;
 
@@ -350,6 +321,10 @@ public class GuardJob : WorkerJob {
         state = newState;
         OnGuardChangedState?.Invoke(this, EventArgs.Empty);
     }
+    public override void ReturnToPreviousState() {
+        ChangeState(previousState);
+    }
+
 
     public GuardState GetState() {
         return state;

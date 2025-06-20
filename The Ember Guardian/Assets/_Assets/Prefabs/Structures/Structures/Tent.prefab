@@ -6111,6 +6111,99 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2348105456408850973, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
   m_PrefabInstance: {fileID: 6215109062533984939}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6273776753007226164
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7718949139325710665}
+    m_Modifications:
+    - target: {fileID: 427008561540772137, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: isTentTP
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2174817044988501987, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: m_Size.x
+      value: 0.7819562
+      objectReference: {fileID: 0}
+    - target: {fileID: 2174817044988501987, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.015488386
+      objectReference: {fileID: 0}
+    - target: {fileID: 5884295518496406326, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6212992262444972498, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 6212992262444972498, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6212992262444972498, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6212992262444972498, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6212992262444972498, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6212992262444972498, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6212992262444972498, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6212992262444972498, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6212992262444972498, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6212992262444972498, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6218804238007672931, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: isTentTP
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8901992449016547398, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+      propertyPath: m_Name
+      value: FastTravelTP_WithinBase
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+--- !u!4 &83339944580420838 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6212992262444972498, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+  m_PrefabInstance: {fileID: 6273776753007226164}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &98321864333282647 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6218804238007672931, guid: 363b7b42fef438645b28820f809771ec, type: 3}
+  m_PrefabInstance: {fileID: 6273776753007226164}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d274fbe064f45354cb2c184d5f187abd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7433235375229352960
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6759,7 +6852,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7506368512435722411, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_Size.x
-      value: 3.41
+      value: 2.3852105
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506368512435722411, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.5263665
       objectReference: {fileID: 0}
     - target: {fileID: 7687860166416340409, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_Sprite
@@ -6821,6 +6918,9 @@ PrefabInstance:
     - {fileID: 3188464822276457179, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2097073961957946881, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 83339944580420838}
     - targetCorrespondingSourceObject: {fileID: 9013458545296523658, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8865403903894813596}
@@ -6886,6 +6986,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6067243271262904690, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
   m_PrefabInstance: {fileID: 8504338643289737032}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &7718949139325710665 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2097073961957946881, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+  m_PrefabInstance: {fileID: 8504338643289737032}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &8205809381130334411 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 569035577446299523, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
@@ -6914,3 +7019,4 @@ MonoBehaviour:
   secondaryFunctionUnlocked: 0
   visualIndicator: {fileID: 0}
   maxLevel: 3
+  fastTravelTP: {fileID: 98321864333282647}

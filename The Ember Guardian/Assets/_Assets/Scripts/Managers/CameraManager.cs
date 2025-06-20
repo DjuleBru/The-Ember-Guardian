@@ -1,4 +1,5 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,12 +15,26 @@ public class CameraManager : MonoBehaviour
 
     private Coroutine currentZoomCoroutine;
 
+    private bool cameraCenteredOnPlayer;
+    public event EventHandler OnCameraCenteredOnPlayer;
+
     private void Awake() {
         Instance = this;
     }
 
     private void Start() {
         virtualCamera.m_Lens.OrthographicSize = initialCameraOrthographicSize;
+    }
+
+    private void Update() {
+        if(!cameraCenteredOnPlayer) {
+            float distanceFromCameraToPlayer = Mathf.Abs(Camera.main.transform.position.x - Player.Instance.transform.position.x);
+            if (distanceFromCameraToPlayer < 2f) {
+                cameraCenteredOnPlayer = true;
+                OnCameraCenteredOnPlayer?.Invoke(this, EventArgs.Empty);
+                Debug.Log("OnCameraCenteredOnPlayer");
+            }
+        }
     }
 
     public void ZoomIn(bool toInitialValue, float targetZoomInOrthographicSizeMultiplier = 1f, float zoomDuration = 1f) {
@@ -50,8 +65,13 @@ public class CameraManager : MonoBehaviour
     }
 
     public void ResetCameraTargetToPlayer() {
+        cameraCenteredOnPlayer = false;
         virtualCamera.m_Follow = Player.Instance.transform;
         Player.Instance.SetCameraHasOtherTarget(false);
+    }
+
+    public void SetCameraNotCenteredOnPlayer() {
+        cameraCenteredOnPlayer = false;
     }
 
     private void StartZoom(float targetSize, float zoomDuration) {

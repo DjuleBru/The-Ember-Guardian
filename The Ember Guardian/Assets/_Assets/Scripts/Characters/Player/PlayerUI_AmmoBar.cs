@@ -287,10 +287,12 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     }
 
     private void Player_OnPlayerExitedCamp(object sender, System.EventArgs e) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         FadeInAmmoBar();
     }
 
     private void Player_OnPlayerEnteredCamp(object sender, System.EventArgs e) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (Player.Instance.GetDead()) return;
         FadeInAmmoBar();
     }

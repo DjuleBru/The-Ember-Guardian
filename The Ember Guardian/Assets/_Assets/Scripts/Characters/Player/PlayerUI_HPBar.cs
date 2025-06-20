@@ -227,11 +227,13 @@ public class PlayerUI_HPBar : MonoBehaviour
     }
 
     private void Player_OnPlayerExitedCamp(object sender, System.EventArgs e) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         FadeInHPBar();
     }
 
     private void Player_OnPlayerEnteredCamp(object sender, System.EventArgs e) {
         if (Player.Instance.GetDead()) return;
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         FadeInHPBar();
     }
 

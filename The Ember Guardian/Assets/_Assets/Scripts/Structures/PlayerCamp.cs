@@ -15,6 +15,7 @@ public class PlayerCamp : MonoBehaviour
     [SerializeField] private List<StructureLocation> trapLocations;
     [SerializeField] private List<StructureLocation> towerLocations;
     [SerializeField] private List<StructureLocation> initialStructureLocationsBuilt;
+    [SerializeField] private List<StructureLocation> worldStructureLocations;
     private List<StructureLocation> allStructureLocations;
 
     [SerializeField] private StructureLocation ammoCrafter1Location;
@@ -40,6 +41,7 @@ public class PlayerCamp : MonoBehaviour
     private List<Structure> currencyStorages = new List<Structure>();
     private List<Structure> builtTowers = new List<Structure>();
     private List<Structure> builtSpecialTowers = new List<Structure>();
+    private List<FastTravelTP> allFastTravelTPsBuilt = new List<FastTravelTP>();
 
     private bool blockStructureUnlocks;
     private bool customLayout;
@@ -69,6 +71,7 @@ public class PlayerCamp : MonoBehaviour
 
         LoadCustomCampLayout();
         InitializeBuiltAtStartStructureLocations();
+        InitializeWorldStructureLocations();
     }
 
     private void LoadCustomCampLayout() {
@@ -130,7 +133,11 @@ public class PlayerCamp : MonoBehaviour
             researchTowerLocation = structureLocation;
         }
     }
-
+    private void InitializeWorldStructureLocations() {
+        foreach(StructureLocation location in worldStructureLocations) {
+            location.UnlockStructureLocation();
+        }
+    }
     private void InitializeBuiltAtStartStructureLocations() {
         if (ammoCrafterBuiltAtStart) {
             initialStructureLocationsBuilt.Add(ammoCrafter1Location);
@@ -252,6 +259,10 @@ public class PlayerCamp : MonoBehaviour
 
         if (structure is SpecialTower) {
             builtSpecialTowers.Add(structure);
+        }
+
+        if (structure is FastTravelTP) {
+            allFastTravelTPsBuilt.Add(structure as FastTravelTP);
         }
     }
 
@@ -377,6 +388,16 @@ public class PlayerCamp : MonoBehaviour
         }
 
         return storage;
+    }
+
+    public List<FastTravelTP> GetAllFastTravelTPsBuilt() {
+        List<FastTravelTP> listCopy = new List<FastTravelTP>();
+
+        foreach(FastTravelTP tp in allFastTravelTPsBuilt) {
+            listCopy.Add(tp);
+        }
+
+        return listCopy;
     }
 
     public float LayoutToWorldPosition(int startLayoutPosition, StructureSO structureSO) {

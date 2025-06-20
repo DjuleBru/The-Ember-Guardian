@@ -30,8 +30,11 @@ public class PlayerAnimator : MonoBehaviour
     private void Awake() {
         Portal.OnAnyPlayerTeleported += Portal_OnPlayerTeleported;
         Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
+        FastTravelTP.OnAnyPlayerWarped += FastTravelTP_OnAnyPlayerWarped;
+        FastTravelTP.OnAnyPlayerWarpedOut += FastTravelTP_OnAnyPlayerWarpedOut;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerSHoor_OnPlayerSwappedGun;
     }
+
 
     private void Start() {
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
@@ -191,6 +194,21 @@ public class PlayerAnimator : MonoBehaviour
         emberBodyAnimator.SetTrigger("Teleport_Out");
     }
 
+    private void FastTravelTP_OnAnyPlayerWarpedOut(object sender, EventArgs e) {
+        bodyAnimator.SetTrigger("Teleport_Out");
+        gunBodyAnimator.SetTrigger("Teleport_Out");
+        armBodyAnimator.SetTrigger("Teleport_Out");
+        emberBodyAnimator.SetTrigger("Teleport_Out");
+    }
+
+    private void FastTravelTP_OnAnyPlayerWarped(object sender, EventArgs e) {
+        bodyAnimator.SetTrigger("Teleport");
+        gunBodyAnimator.SetTrigger("Teleport");
+        armBodyAnimator.SetTrigger("Teleport");
+        emberBodyAnimator.SetTrigger("Teleport");
+    }
+
+
     private void PlayerMovement_OnPlayerCrouchedEnded(object sender, System.EventArgs e) {
         playerAnimator.SetBool("Crouching", false);
     }
@@ -342,6 +360,8 @@ public class PlayerAnimator : MonoBehaviour
         Player.Instance.OnPlayerDamagedRecentlyEnded -= Player_OnPlayerDamagedRecentlyEnded;
         Portal.OnAnyPlayerTeleported -= Portal_OnPlayerTeleported;
         Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
+        FastTravelTP.OnAnyPlayerWarped -= FastTravelTP_OnAnyPlayerWarped;
+        FastTravelTP.OnAnyPlayerWarpedOut -= FastTravelTP_OnAnyPlayerWarpedOut;
     }
 
     private void OnDisable() {
