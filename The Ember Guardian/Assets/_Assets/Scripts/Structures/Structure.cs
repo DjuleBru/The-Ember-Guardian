@@ -181,38 +181,27 @@ public class Structure : MonoBehaviour {
     }
     protected virtual void RefreshStructureUpgradeInteraction() {
         if (!upgradable) return;
-        bool ungradeUnlocked = false;
+        bool upgradeUnlocked = false;
 
         // Check if upgrade has been unlocked at gem merchant
         string saveString = structureSO.structureType.ToString() + (structureLevel+1);
 
         if (!MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
             //Debug.Log(saveString + " has NOT been bought at merchant ");
-            ungradeUnlocked = false;
+            upgradeUnlocked = false;
         } else {
-            ungradeUnlocked = true;
+            upgradeUnlocked = true;
         }
 
-        if (ungradeUnlocked)
-        {
-            // Check if tent is high level enough
-            if (structureLevel == 1 && Tent.Instance.GetStructureLevel() >= structureSO.tentLevelRequiredForLevel2) {
-                ungradeUnlocked = true;
-            }
-            if (structureLevel == 2 && Tent.Instance.GetStructureLevel() >= structureSO.tentLevelRequiredForLevel3) {
-                ungradeUnlocked = true;
-            }
-
-            if (structureLevel == 3 && Tent.Instance.GetStructureLevel() >= structureSO.tentLevelRequiredForLevel4) {
-                ungradeUnlocked = true;
-            }
+        if (DebugManager.Instance.GetAllStructureUpgradesUnlocked() && structureLevel < structureSO.maxLevel) {
+            upgradeUnlocked = true;
         }
 
-        if (DebugManager.Instance.GetAllStructureUpgradesUnlocked()) {
-            ungradeUnlocked = true;
+        if(structureLevel == structureSO.maxLevel) {
+            upgradeUnlocked = false;
         }
         
-        SetStructureUpgradableUnlocked(ungradeUnlocked);
+        SetStructureUpgradableUnlocked(upgradeUnlocked);
         OnStructureInteractionsUpdated?.Invoke(this, EventArgs.Empty);
     }
 
@@ -358,14 +347,12 @@ public class Structure : MonoBehaviour {
     }
 
     public void SetStructurePrimaryFunctionUnlocked(bool unlocked) {
-
         if (primaryFunctionUnlocked == unlocked) return;
         primaryFunctionUnlocked = unlocked;
         ActivateStructurePrimaryFunctionInteraction(unlocked);
     }
 
     public void SetStructureSecondaryFunctionUnlocked(bool unlocked) {
-
         if (secondaryFunctionUnlocked == unlocked) return;
         secondaryFunctionUnlocked = unlocked;
         ActivateStructureSecondaryFunctionInteraction(unlocked);

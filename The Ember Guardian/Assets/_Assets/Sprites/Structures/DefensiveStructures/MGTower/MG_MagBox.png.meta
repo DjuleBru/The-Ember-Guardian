@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0ffb221808c739a4d8a6eb4351e1e34c
+guid: 918f1ee33e4e0d648b4f92d929e631c6
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -110,106 +110,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Tower_MGStructure_0
+      name: MG_MagBox_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 336
-        width: 97
-        height: 80
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        y: 0
+        width: 61
+        height: 21
+      alignment: 9
+      pivot: {x: 0.73, y: 0.43}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 63528d1fb21cdad40a2e65da726ecc0b
-      internalID: -716610982
+      spriteID: fe175203bd49cd841b7a829270ed7b6b
+      internalID: 810078738
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tower_MGStructure_1
+      name: MG_MagBox_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 249.8
-        width: 97
-        height: 83.2
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 61
+        y: 0
+        width: 61
+        height: 21
+      alignment: 9
+      pivot: {x: 0.73, y: 0.43}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 15d5f824cf0a83141ac460874b7ee52b
-      internalID: -1905118232
+      spriteID: eb93f0d2d9ac65540bd6a7de75aedf30
+      internalID: 1641588820
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tower_MGStructure_2
+      name: MG_MagBox_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 166.8
-        width: 97
-        height: 83.2
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 122
+        y: 0
+        width: 61
+        height: 21
+      alignment: 9
+      pivot: {x: 0.73, y: 0.43}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 259c1ea364223174389bf515db94b52e
-      internalID: 1773117134
+      spriteID: 5ac8046c684350d4f83efbd6cfbc06f3
+      internalID: -1443006888
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tower_MGStructure_3
+      name: MG_MagBox_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 83.8
-        width: 97
-        height: 83.2
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 183
+        y: 0
+        width: 61
+        height: 21
+      alignment: 9
+      pivot: {x: 0.73, y: 0.43}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0b7a12f9ee56b05459748eee941416bb
-      internalID: -1110571714
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tower_MGStructure_4
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0.80000305
-        width: 97
-        height: 83.2
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d57299c3e0f348e4fb924cc6030abaf0
-      internalID: -344085932
+      spriteID: 9d0b82afaf8ba4541a4e0b74c2cdf112
+      internalID: -1017836794
       vertices: []
       indices: 
       edges: []
@@ -225,11 +204,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Tower_MGStructure_0: -716610982
-      Tower_MGStructure_1: -1905118232
-      Tower_MGStructure_2: 1773117134
-      Tower_MGStructure_3: -1110571714
-      Tower_MGStructure_4: -344085932
+      MG_MagBox_0: 810078738
+      MG_MagBox_1: 1641588820
+      MG_MagBox_2: -1443006888
+      MG_MagBox_3: -1017836794
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

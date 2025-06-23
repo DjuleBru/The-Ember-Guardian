@@ -328,9 +328,6 @@ public class PlayerShoot : MonoBehaviour
         GunSO gunSO = null;
 
         foreach (Gun gun in allGunsList) {
-            gun.gameObject.SetActive(false);
-            gun.SetGunActive(false);
-
             if (gun.GetGunSO().gunType == gunType) {
                 gunSO = gun.GetGunSO();
             }

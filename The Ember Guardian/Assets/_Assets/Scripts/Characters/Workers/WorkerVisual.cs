@@ -13,6 +13,7 @@ public class WorkerVisual : MobVisual {
     private MinerJob minerJob;
     private EngineerJob engineerJob;
     private JoblessJob joblessJob;
+    private WorkerMovement workerMovement;
 
     [SerializeField] private WorkerInteractionCollider interactionCollider;
 
@@ -44,6 +45,7 @@ public class WorkerVisual : MobVisual {
         minerJob = GetComponentInParent<MinerJob>();
         joblessJob = GetComponentInParent<JoblessJob>();
         engineerJob = GetComponentInParent<EngineerJob>();
+        workerMovement = GetComponentInParent<WorkerMovement>();
         workerStatusSpriteRenderer.sprite = null;
 
         worker.OnMobDied += Worker_OnMobDied;
@@ -54,6 +56,8 @@ public class WorkerVisual : MobVisual {
         worker.OnWorkerCollectedCurrency += Worker_OnWorkerCollectedCurrency;
         worker.OnWorkerDroppedCurrency += Worker_OnWorkerDroppedCurrency;
         worker.OnWorkerDroppedAllCurrencies += Worker_OnWorkerDroppedAllCurrencied;
+        workerMovement.OnTPEnded += WorkerMovement_OnTPEnded;
+        workerMovement.OnTPStarted += WorkerMovement_OnTPStarted;
 
         engineerJob.OnEngineerChangedState += EngineerJob_OnEngineerChangedState;
         engineerJob.OnEngineerHideTool += EngineerJob_OnEngineerHideTool;
@@ -76,6 +80,7 @@ public class WorkerVisual : MobVisual {
         holdingCurrencyGO.SetActive(false);
     }
 
+
     private void EngineerJob_OnEngineerTurnsWrench(object sender, System.EventArgs e) {
         StartCoroutine(TriggerWrenchPSAfterDelay());
     }
@@ -87,6 +92,13 @@ public class WorkerVisual : MobVisual {
 
     private void EngineerJob_OnEngineerHideVisual(object sender, System.EventArgs e) {
         ShowBodyVisual(false);
+    }
+    private void WorkerMovement_OnTPStarted(object sender, System.EventArgs e) {
+        ShowBodyVisual(false);
+    }
+
+    private void WorkerMovement_OnTPEnded(object sender, System.EventArgs e) {
+        ShowBodyVisual(true);
     }
 
     private void EngineerJob_OnEngineerHideTool(object sender, System.EventArgs e) {

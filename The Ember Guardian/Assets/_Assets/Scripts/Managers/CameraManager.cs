@@ -15,6 +15,7 @@ public class CameraManager : MonoBehaviour
 
     private Coroutine currentZoomCoroutine;
 
+    private bool isMainMenu;
     private bool cameraCenteredOnPlayer;
     public event EventHandler OnCameraCenteredOnPlayer;
 
@@ -24,15 +25,18 @@ public class CameraManager : MonoBehaviour
 
     private void Start() {
         virtualCamera.m_Lens.OrthographicSize = initialCameraOrthographicSize;
+
+        isMainMenu = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu;
     }
 
     private void Update() {
+        if (isMainMenu) return;
+
         if(!cameraCenteredOnPlayer) {
             float distanceFromCameraToPlayer = Mathf.Abs(Camera.main.transform.position.x - Player.Instance.transform.position.x);
             if (distanceFromCameraToPlayer < 2f) {
                 cameraCenteredOnPlayer = true;
                 OnCameraCenteredOnPlayer?.Invoke(this, EventArgs.Empty);
-                Debug.Log("OnCameraCenteredOnPlayer");
             }
         }
     }

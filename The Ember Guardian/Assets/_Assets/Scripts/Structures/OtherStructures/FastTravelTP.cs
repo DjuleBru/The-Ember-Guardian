@@ -7,6 +7,7 @@ public class FastTravelTP : Structure
 {
     [SerializeField] private Transform playerPositionOnTP;
     [SerializeField] private Collider2D floorCollider;
+    [SerializeField] private Collider2D floorColliderForWorkers;
     [SerializeField] private bool isTentTP;
 
     public event EventHandler OnPlayerPositionedOnTP;
@@ -33,10 +34,12 @@ public class FastTravelTP : Structure
     private int currentTPIndex = 0;
     private int fastTravelTPIndexIdentifier = 0;
     private static int fastTravelTPIndex = 0;
+    private Coroutine workerTPCoroutine;
 
     protected override void Awake() {
         base.Awake();
         floorCollider.enabled = false;
+        floorColliderForWorkers.enabled = false;
 
         OnAnyFastTravelTPBuilt?.Invoke(this, EventArgs.Empty);
 
@@ -229,6 +232,37 @@ public class FastTravelTP : Structure
         return fastTravelTPIndexIdentifier;
     }
 
+    public Vector3 GetPlayerPositionOnTP() {
+        return playerPositionOnTP.position;
+    }
+
+    public void StartTeleporting(WorkerMovement workerMovement, float delay) {
+        workerMovement.transform.position = playerPositionOnTP.position;
+        floorColliderForWorkers.enabled = true;
+        OnOtherCharacterWarped?.Invoke(this, EventArgs.Empty);
+
+        if(workerTPCoroutine != null) {
+            StopCoroutine(workerTPCoroutine);
+        }
+        workerTPCoroutine = StartCoroutine(DeactivateWorkerFloorColliderAfterDelay(delay));
+    }
+
+    public void ReceiveTeleporting(WorkerMovement workerMovement) {
+        workerMovement.transform.position = playerPositionOnTP.position;
+        floorColliderForWorkers.enabled = true;
+        OnOtherCharacterWarped?.Invoke(this, EventArgs.Empty);
+
+        if (workerTPCoroutine != null) {
+            StopCoroutine(workerTPCoroutine);
+        }
+
+        workerTPCoroutine = StartCoroutine(DeactivateWorkerFloorColliderAfterDelay(1f));
+    }
+
+    private IEnumerator DeactivateWorkerFloorColliderAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+        floorColliderForWorkers.enabled = true;
+    }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Tent
   m_EditorClassIdentifier: 
   structureType: 0
+  structureCategory: 0
   structureLocationPrefab: {fileID: 0}
   structurePrefab: {fileID: 6212992262444972498, guid: dbba6f77d96419640a98b881771de681, type: 3}
   structureSprite: {fileID: 1699954747, guid: 78b613df896cc8341ab089cfa6c78fc2, type: 3}
@@ -26,10 +27,16 @@ MonoBehaviour:
   upgradeableAtNight: 0
   functionUsableAtNight: 1
   playerCanAlwaysInteract: 0
+  engineerCanWorkByDay: 0
+  engineerCanWorkByNight: 0
+  workingEngineerHideTool: 0
+  workingEngineerHideVisual: 0
+  engineerWorkingPriority: 0
+  maxEngineersAssignedWorking: 0
+  maxEngineersAssignedRefilling: 0
+  refillCurrencyTypeNeeded: 0
   upgradeable: 1
-  tentLevelRequiredForLevel2: 2
-  tentLevelRequiredForLevel3: 3
-  tentLevelRequiredForLevel4: 4
+  maxLevel: 3
   buildingUpgradeSpriteList:
   - {fileID: 1699954747, guid: 78b613df896cc8341ab089cfa6c78fc2, type: 3}
   - {fileID: 428198014, guid: 78b613df896cc8341ab089cfa6c78fc2, type: 3}

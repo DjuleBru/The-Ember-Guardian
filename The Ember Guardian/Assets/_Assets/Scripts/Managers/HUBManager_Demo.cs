@@ -332,6 +332,7 @@ public class HUBManager_Demo : MonoBehaviour
     private IEnumerator FirstHUBEnterCoroutine() {
         UICurrencyManager.HubInventoryUI.RemoveAllCurrenciesFromBag();
         dogTamer.gameObject.SetActive(false);
+        hubFire.SetHubFireEmberExtractable(false);
 
         yield return new WaitForSeconds(5f);
         gemMerchant.ResetAllItemStatuses();

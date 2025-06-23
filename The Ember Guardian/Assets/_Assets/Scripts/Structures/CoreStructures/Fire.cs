@@ -146,7 +146,6 @@ public class Fire : Structure, IDamageable {
             state = State.calm;
             ChangeState(State.calm);
             SetStructurePrimaryFunctionUnlocked(false);
-            RefreshHubFireEmberExtractable();
         } else {
             SetFireCurrentMaxFuelTreshold();
         }
@@ -167,11 +166,13 @@ public class Fire : Structure, IDamageable {
 
     private void PlayerInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         if (emberExtracted) return;
+        if (emberExtractionDisabled) return;
         RefreshHubFireEmberExtractable();
     }
 
     private void PlayerInventoryUI_OnCurrencyRemovedFromBag(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         if (emberExtracted) return;
+        if (emberExtractionDisabled) return;
         RefreshHubFireEmberExtractable();
     }
 
@@ -659,17 +660,21 @@ public class Fire : Structure, IDamageable {
     #region SET PARAMETERS
 
     public void SetFireInteractionsUpdateLocked(bool locked) {
+        Debug.Log("SetFireInteractionsUpdateLocked " + locked);
 
         SetStructurePrimaryFunctionUnlocked(!locked);
         SetStructureSecondaryFunctionUnlocked(!locked);
         lockFireInteractionFunctionsUpdate = locked;
     }
     public void SetHubFireEmberExtractable(bool extractable) {
+        Debug.Log("SetHubFireEmberExtractable " + extractable);
         SetStructureSecondaryFunctionUnlocked(extractable);
         ActivateStructureSecondaryFunctionInteraction(extractable);
         if (extractable) {
             SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);
         }
+
+        emberExtractionDisabled = !extractable;
     }
     public void DisableEmberExtraction() {
         emberExtractionDisabled = true;

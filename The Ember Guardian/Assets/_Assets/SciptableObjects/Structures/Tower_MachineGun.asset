@@ -15,7 +15,7 @@ MonoBehaviour:
   structureType: 21
   structureCategory: 1
   structureLocationPrefab: {fileID: 8434879454533105174, guid: 56e27d9731d62e643ae720a54b2a7fe7, type: 3}
-  structurePrefab: {fileID: 376005918902835770, guid: 15b0f2a1b6cd1204597a2a40c0905896, type: 3}
+  structurePrefab: {fileID: 6431982926558010740, guid: 15b0f2a1b6cd1204597a2a40c0905896, type: 3}
   structureSprite: {fileID: 21300000, guid: d6554ff518318d343979dc4f56f5ceac, type: 3}
   structureNameLocalizationKey: Machine Gun Tower
   widthInCells: 3
@@ -36,9 +36,7 @@ MonoBehaviour:
   maxEngineersAssignedRefilling: 0
   refillCurrencyTypeNeeded: 7
   upgradeable: 1
-  tentLevelRequiredForLevel2: 1
-  tentLevelRequiredForLevel3: 2
-  tentLevelRequiredForLevel4: 3
+  maxLevel: 2
   buildingUpgradeSpriteList:
   - {fileID: -1374893943, guid: 69899d8c78ea1e843ae3e31c442cf2a1, type: 3}
   - {fileID: -693508561, guid: 69899d8c78ea1e843ae3e31c442cf2a1, type: 3}

@@ -142,7 +142,7 @@ public class SpecialTower : Structure {
             level2TowerCollider.SetActive(true);
             maxEngineersAssignedWorking = level2TowerEngineerCapacity;
 
-            if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+            if (DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
                 needsWorking = true;
             }
         }

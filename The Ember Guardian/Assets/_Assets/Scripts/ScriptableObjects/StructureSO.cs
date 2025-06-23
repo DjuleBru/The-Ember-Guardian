@@ -75,11 +75,7 @@ public class StructureSO : ScriptableObject
 
     public bool upgradeable = true;
     [ShowIf("upgradeable")]
-    public int tentLevelRequiredForLevel2 = 2;
-    [ShowIf("upgradeable")]
-    public int tentLevelRequiredForLevel3 = 3;
-    [ShowIf("upgradeable")]
-    public int tentLevelRequiredForLevel4 = 4;
+    public int maxLevel;
 
     [ShowIf("upgradeable")]
     public List<Sprite> buildingUpgradeSpriteList;

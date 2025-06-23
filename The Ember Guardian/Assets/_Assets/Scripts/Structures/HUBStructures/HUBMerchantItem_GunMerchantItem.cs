@@ -137,8 +137,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
     private void SetNewStatIncreaseStats() {
         if (gunItem == GunItemType.bulletDamage || gunItem == GunItemType.explosionDamage) {
-            float modifiedDamage = linkedGunSO.damagePerBullet + linkedStatModifierSO.statModifierList[itemLevel];
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetBulletDamage_Meta((int)modifiedDamage);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetBulletDamage_Meta((int)linkedStatModifierSO.statModifierList[itemLevel]);
         }
 
         if (gunItem == GunItemType.shotsPerClip) {
@@ -403,7 +402,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
             if (gunItem == GunItemType.jamProbability) {
                 initialStatValue = linkedGunSO.jamProbability;
-                currentStatValue = (PlayerShoot.Instance.GetGun(linkedGunSO).GetJamProbability()*100f).ToString("F2");
+                currentStatValue = (PlayerShoot.Instance.GetGun(linkedGunSO).GetJamProbability()).ToString("F2");
                 relativeStatPrefix = "";
                 totalStatWithModifierPostfix = "%";
                 relativeStatPostfix = "%";

@@ -74,7 +74,11 @@ public class SpecialTower_MannerVisual : MonoBehaviour {
     }
 
     private void Manner_OnMannerCooldownEventTriggered(object sender, System.EventArgs e) {
-        mannerAnimator.SetTrigger("Cooldown");
+
+        if(hasCooldown) {
+            mannerAnimator.SetTrigger("Cooldown");
+        }
+
         cooldownAnimationDone = true;
         StartCoroutine(TriggerShellOutAfterDelay());
     }

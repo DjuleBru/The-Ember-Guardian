@@ -59,6 +59,7 @@ public class Gun : MonoBehaviour
     protected float currentAngle; // L'angle actuel du cône
     protected float targetAngle; // L'angle cible vers lequel le cône doit se diriger
     protected float focusedBlastAngle = .1f; // L'angle cible vers lequel le cône doit se diriger
+    protected float focusedBlastDamageBuff;
 
     public static event EventHandler OnAnyGunMaxAmmoChanged;
     public static event EventHandler OnAnyGunStatsUpgraded;
@@ -99,17 +100,18 @@ public class Gun : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerFocusBlastStopped(object sender, System.EventArgs e) {
+        if (gunSO.gunType != GunSO.GunType.Shotgun) return;
         SetPSShootAngle(defaultAngle);
 
         pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
-        damagePerBullet = MetaProgressionManager.Instance.GetGunDamagePerBullet(gunSO);
-        damagePerBulletAtRunStart = damagePerBullet;
+        DebuffBulletDamage(focusedBlastDamageBuff);
         ParticleSystem.MainModule shootPSMainModule = shootPS.main;
         shootPSMainModule.startSize = .2f;
 
     }
 
     private void PlayerShoot_OnPlayerFocusBlastStarted(object sender, System.EventArgs e) {
+        if (gunSO.gunType != GunSO.GunType.Shotgun) return;
         SetPSShootAngle(focusedBlastAngle);
 
         float sizePerBullet = .04f;
@@ -119,7 +121,8 @@ public class Gun : MonoBehaviour
             totalBullerSize = .4f;
         }
 
-        damagePerBullet *= (pelletsPerBullet * (PlayerShoot.Instance.GetCurrentBullets()));
+        focusedBlastDamageBuff = pelletsPerBullet * PlayerShoot.Instance.GetCurrentBullets();
+        BuffBulletDamage(focusedBlastDamageBuff);
         pelletsPerBullet = 1;
         ParticleSystem.MainModule shootPSMainModule = shootPS.main;
         shootPSMainModule.startSize = totalBullerSize;
@@ -270,13 +273,11 @@ public class Gun : MonoBehaviour
 
     public void BuffBulletDamage(float buffAmount) {
         totalBuffMultiplier *= buffAmount;
-        Debug.Log("BuffBulletDamage " + totalBuffMultiplier);
         RecalculateDamage();
     }
 
     public void DebuffBulletDamage(float debuffAmount) {
         totalBuffMultiplier /= debuffAmount;
-        Debug.Log("DebuffBulletDamage " + totalBuffMultiplier);
         RecalculateDamage();
     }
 
