@@ -192,8 +192,14 @@ public class Projectile : MonoBehaviour
         // Hit mob
         mobHit = collision.GetComponentInParent<Mob>();
         if (mobHit != null  && mobHit != parentMob) {
-            // Check if worker is shooting another worker
-            if (mobHit is Worker && !enemyProjectile) return;
+
+            Worker worker = mobHit as Worker;
+            if (worker != null) {
+                // Check if worker is shooting another worker
+                if (!enemyProjectile) return;
+                // Check if worker is in a tower
+                if (worker.GetDefensiveStructureAssigned() != null) return;
+            }
             if (enemyProjectile && mobHit is Creature) return;
 
             HandleMobCollision(mobHit);

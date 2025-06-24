@@ -5532,6 +5532,7 @@ MonoBehaviour:
   shellOutPSDelay: 0.3
   shellOutPS: {fileID: 5751864758547748954}
   reloadLightsTime: 0.5
+  reloadsLights: 1
 --- !u!95 &2122022079884783803
 Animator:
   serializedVersion: 5
@@ -6013,6 +6014,7 @@ MonoBehaviour:
   shellOutPSDelay: 0.3
   shellOutPS: {fileID: 6597341408600563788}
   reloadLightsTime: 0.5
+  reloadsLights: 1
 --- !u!95 &2703508071242957642
 Animator:
   serializedVersion: 5
@@ -6908,10 +6910,11 @@ MonoBehaviour:
   shootPS_Collision: {fileID: 2266488371845342040}
   bulletIsParticle: 1
   bulletIsProjectile: 0
-  hasCooldownAnimationAndSound: 1
+  hasCooldownAnimation: 1
+  hasCooldownSound: 1
   cooldownDelay: 0.5
   mannerMinimumShootDistance: 7
-  mannerRange: 25
+  mannerRange: 30
   mannerReloadTime: 3
   mannerReloadHandsTime: 2
   mannerCooldownTime: 2
@@ -6920,6 +6923,8 @@ MonoBehaviour:
   collisionDistanceTreshold: 3
   shotsPerAmmoClip: 3
   pelletsPerBullet: 1
+  maxAngleToAim: 360
+  maxEngineersManning: 1
 --- !u!1 &5023521982742287485
 GameObject:
   m_ObjectHideFlags: 0
@@ -6974,10 +6979,11 @@ MonoBehaviour:
   shootPS_Collision: {fileID: 9043527547017257439}
   bulletIsParticle: 1
   bulletIsProjectile: 0
-  hasCooldownAnimationAndSound: 1
+  hasCooldownAnimation: 1
+  hasCooldownSound: 1
   cooldownDelay: 0.5
   mannerMinimumShootDistance: 7
-  mannerRange: 25
+  mannerRange: 30
   mannerReloadTime: 3
   mannerReloadHandsTime: 2
   mannerCooldownTime: 2
@@ -6986,6 +6992,8 @@ MonoBehaviour:
   collisionDistanceTreshold: 3
   shotsPerAmmoClip: 3
   pelletsPerBullet: 1
+  maxAngleToAim: 360
+  maxEngineersManning: 1
 --- !u!1 &6251382371856495487
 GameObject:
   m_ObjectHideFlags: 0

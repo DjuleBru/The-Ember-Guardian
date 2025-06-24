@@ -16,9 +16,9 @@ MonoBehaviour:
   structureCategory: 3
   structureLocationPrefab: {fileID: 8434879454533105174, guid: 0c2c21dbdbd2f0d488d6f5ea8b7aed8e, type: 3}
   structurePrefab: {fileID: 6212992262444972498, guid: 363b7b42fef438645b28820f809771ec, type: 3}
-  structureSprite: {fileID: 21300000, guid: d6554ff518318d343979dc4f56f5ceac, type: 3}
+  structureSprite: {fileID: 21300000, guid: 12257ec5744d29e46895004305b3468b, type: 3}
   structureNameLocalizationKey: Anchor Relay
-  widthInCells: 1
+  widthInCells: 3
   structurePositionMovable: 1
   structurePositionRemovable: 1
   maxStructureBlueprintAmount: 2
@@ -36,9 +36,7 @@ MonoBehaviour:
   maxEngineersAssignedRefilling: 0
   refillCurrencyTypeNeeded: 0
   upgradeable: 0
-  tentLevelRequiredForLevel2: 2
-  tentLevelRequiredForLevel3: 3
-  tentLevelRequiredForLevel4: 4
+  maxLevel: 0
   buildingUpgradeSpriteList: []
   buildAudioClip: {fileID: 8300000, guid: df823c15f73ff894c9833c04673f6536, type: 3}
   buildVolumeMultiplier: 1

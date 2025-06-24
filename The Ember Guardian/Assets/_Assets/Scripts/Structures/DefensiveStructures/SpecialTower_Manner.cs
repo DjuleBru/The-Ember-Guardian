@@ -11,37 +11,41 @@ public class SpecialTower_Manner : MonoBehaviour {
         MachineGun,
     }
 
-    [SerializeField] private MannerType mannerType;
-    [SerializeField] private SpecialTower specialTower;
-    [SerializeField] private GameObject visualGameObject;
-    [SerializeField] private int mannerIndex;
-    [SerializeField] private Transform weaponTransform;
-    [SerializeField] private ParticleSystem shootPS;
-    [SerializeField] private ParticleCollision shootPS_Collision;
+    [SerializeField] protected MannerType mannerType;
+    [SerializeField] protected SpecialTower specialTower;
+    [SerializeField] protected GameObject visualGameObject;
+    [SerializeField] protected int mannerIndex;
+    [SerializeField] protected Transform weaponTransform;
+    [SerializeField] protected ParticleSystem shootPS;
+    [SerializeField] protected ParticleCollision shootPS_Collision;
 
-    [SerializeField] private bool bulletIsParticle;
-    [SerializeField] private bool bulletIsProjectile;
-    [SerializeField] private bool hasCooldownAnimationAndSound;
-    [SerializeField] private float cooldownDelay;
-    [SerializeField] private float mannerMinimumShootDistance;
-    [SerializeField] private float mannerRange;
-    [SerializeField] private float mannerReloadTime;
-    [SerializeField] private float mannerReloadHandsTime;
-    [SerializeField] private float mannerCooldownTime;
-    [SerializeField] private int bulletDamage;
-    [SerializeField] private float bulletKnockback;
-    [SerializeField] private float collisionDistanceTreshold;
-    [SerializeField] private int shotsPerAmmoClip;
-    [SerializeField] private int pelletsPerBullet;
-    private int currentShotIndex;
+    [SerializeField] protected bool bulletIsParticle;
+    [SerializeField] protected bool bulletIsProjectile;
+    [SerializeField] protected bool hasCooldownAnimation;
+    [SerializeField] protected bool hasCooldownSound;
+    [SerializeField] protected float cooldownDelay;
+    [SerializeField] protected float mannerMinimumShootDistance;
+    [SerializeField] protected float mannerRange;
+    [SerializeField] protected float mannerReloadTime;
+    [SerializeField] protected float mannerReloadHandsTime;
+    [SerializeField] protected float mannerCooldownTime;
+    [SerializeField] protected int bulletDamage;
+    [SerializeField] protected float bulletKnockback;
+    [SerializeField] protected float collisionDistanceTreshold;
+    [SerializeField] protected int shotsPerAmmoClip;
+    [SerializeField] protected int pelletsPerBullet;
+    [SerializeField] protected float maxAngleToAim = 360f;
+    protected int currentShotIndex;
 
-    private EngineerJob engineerManning;
-    private float reloadTimer;
-    private float cooldownTimer;
-    private bool reloading;
-    private bool reloadingStarted;
-    private bool readyToShoot;
-    private bool cooldownTriggered;
+    [SerializeField] protected int maxEngineersManning;
+    [SerializeField] protected bool hasReloadingEngineer;
+    protected List<EngineerJob> engineersManning = new List<EngineerJob>();
+    protected float reloadTimer;
+    protected float cooldownTimer;
+    protected bool reloading;
+    protected bool reloadingStarted;
+    protected bool readyToShoot;
+    protected bool cooldownTriggered;
 
     public event EventHandler OnEngineerStartedManning;
     public event EventHandler OnEngineerStoppedManning;
@@ -52,11 +56,13 @@ public class SpecialTower_Manner : MonoBehaviour {
     public event EventHandler OnMannerReloadingHandsEnded;
     public event EventHandler OnMannerCooldownEventTriggered;
 
-    private bool isManning;
-    private bool towerOutOfAmmo;
-    private Creature targetCreature;
+    protected bool towerOutOfAmmo;
+    protected Creature targetCreature;
 
-    private void Awake() {
+    protected float targetCreatureTimer;
+    protected float targetCreatureRate = .5f;
+
+    protected virtual void Awake() {
         if (mannerIndex != 0) {
             visualGameObject.SetActive(false);
         }
@@ -66,14 +72,13 @@ public class SpecialTower_Manner : MonoBehaviour {
         readyToShoot = true;
     }
 
-    private void Start() {
-        specialTower.OnEngineerExitedTower += SpecialTower_OnEngineerStoppedManning;
-        specialTower.OnEngineerEnteredTower += SpecialTower_OnEngineerStartedManning;
+    protected void Start() {
+        specialTower.OnEngineerExitedTower += SpecialTower_OnEngineerExitedTower;
         specialTower.OnStructureUpgraded += SpecialTower_OnStructureUpgraded;
         specialTower.OnAmmoClipAdded += SpecialTower_OnAmmoClipAdded;
     }
 
-    private void SpecialTower_OnAmmoClipAdded(object sender, EventArgs e) {
+    protected void SpecialTower_OnAmmoClipAdded(object sender, EventArgs e) {
         if(towerOutOfAmmo && currentShotIndex == 0) {
             StartCoroutine(HandleReloading());
         }
@@ -81,12 +86,18 @@ public class SpecialTower_Manner : MonoBehaviour {
         towerOutOfAmmo = false;
     }
 
-    private void Update() {
-        if (!isManning) return;
+    protected void Update() {
+        if (engineersManning.Count == 0) return;
         if (currentShotIndex == 0) return;
         if (reloading) return;
 
         HandleCooldown();
+
+        targetCreatureTimer -= Time.deltaTime;
+        if(targetCreatureTimer < 0) {
+            targetCreatureTimer = targetCreatureRate;
+            HandleTargetingCreatures();
+        }
 
         if (targetCreature == null) return;
 
@@ -97,7 +108,7 @@ public class SpecialTower_Manner : MonoBehaviour {
         }
     }
 
-    private void Shoot() {
+    protected virtual void Shoot() {
         if (bulletIsProjectile) {
             //GunProjectile gunProjectile = Instantiate(projectilePrefab, projectileSpawnPosition.position, Quaternion.identity).GetComponent<GunProjectile>();
             //gunProjectile.gameObject.SetActive(true);
@@ -111,6 +122,7 @@ public class SpecialTower_Manner : MonoBehaviour {
 
         currentShotIndex--;
         if(currentShotIndex == 0 && !towerOutOfAmmo) {
+
             StartCoroutine(HandleReloading());
             reloading = true;
         }
@@ -125,7 +137,9 @@ public class SpecialTower_Manner : MonoBehaviour {
         cooldownTriggered = false;
     }
 
-    private IEnumerator HandleReloading() {
+    protected IEnumerator HandleReloading() {
+        if (hasReloadingEngineer && engineersManning.Count < maxEngineersManning) yield break;
+
         yield return new WaitForSeconds(.5f);
 
         OnMannerReloadingStarted?.Invoke(this, EventArgs.Empty);
@@ -143,7 +157,7 @@ public class SpecialTower_Manner : MonoBehaviour {
         reloadTimer = 0;
     }
 
-    private void HandleCooldown() {
+    protected void HandleCooldown() {
         if (readyToShoot) return;
 
         cooldownTimer += Time.deltaTime;
@@ -161,63 +175,69 @@ public class SpecialTower_Manner : MonoBehaviour {
         }
     }
 
-    private void HandleAim() {
+    protected void HandleAim() {
         Transform target = targetCreature.GetAutoAimPosition();
         Vector3 direction = target.position - weaponTransform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
         weaponTransform.rotation = Quaternion.Euler(0f, 0f, angle);
         Vector3 localScale = Vector3.one;
+
         if (direction.x < 0) {
             localScale.y = -1;
         }
+        if (transform.position.x < 0) {
+            localScale.x = -1;
+        }
+
         weaponTransform.localScale = localScale;
 
     }
 
-    private void SpecialTower_OnEngineerStoppedManning(object sender, System.EventArgs e) {
-        if (specialTower.GetEngineersWorking().Count == mannerIndex) {
-            isManning = false;
+    public void AssignEngineer(EngineerJob engineer) {
+
+        SetEngineerManning(engineer, true);
+        OnEngineerStartedManning?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected void SpecialTower_OnEngineerExitedTower(object sender, SpecialTower.OnEngineerEnteredTowerEventArgs e) {
+        if (engineersManning.Contains(e.engineerJob)) {
+            SetEngineerManning(e.engineerJob, false);
             OnEngineerStoppedManning?.Invoke(this, EventArgs.Empty);
-            SetEngineerManning(engineerManning, false);
             weaponTransform.rotation = Quaternion.identity;
             weaponTransform.localScale = Vector3.one;
         }
     }
 
-    private void SpecialTower_OnEngineerStartedManning(object sender, System.EventArgs e) {
-
-        if (specialTower.GetEngineersGarrisoned() == mannerIndex + 1) {
-            isManning = true;
-            OnEngineerStartedManning?.Invoke(this, EventArgs.Empty);
-            SetEngineerManning(specialTower.GetEngineersWorking()[mannerIndex], true);
-        }
-    }
-
-    private void SpecialTower_OnStructureUpgraded(object sender, System.EventArgs e) {
+    protected virtual void SpecialTower_OnStructureUpgraded(object sender, System.EventArgs e) {
         if (mannerIndex == 1) {
             visualGameObject.SetActive(true);
         }
     }
 
-    private void SetEngineerManning(EngineerJob engineerJob, bool manning) {
-
+    protected void SetEngineerManning(EngineerJob engineerJob, bool manning) {
         if (manning) {
-            engineerManning = engineerJob;
-            engineerManning.GetDetectionCollider().SetDetectionColliderRadius(mannerRange);
-            engineerManning.GetDetectionCollider().OnCreaturesInColliderChanged += SpecialTower_Manner_OnCreaturesInColliderChanged;
+            engineersManning.Add(engineerJob);
+            engineerJob.GetDetectionCollider().SetDetectionColliderRadius(mannerRange);
+            engineerJob.GetDetectionCollider().OnCreaturesInColliderChanged += SpecialTower_Manner_OnCreaturesInColliderChanged;
         }
         else {
             engineerJob.GetDetectionCollider().ResetDetectionColliderRadius();
             engineerJob.GetDetectionCollider().OnCreaturesInColliderChanged -= SpecialTower_Manner_OnCreaturesInColliderChanged;
+            engineersManning.Remove(engineerJob);
         }
-
     }
 
-    private void SpecialTower_Manner_OnCreaturesInColliderChanged(object sender, EventArgs e) {
+    protected void SpecialTower_Manner_OnCreaturesInColliderChanged(object sender, EventArgs e) {
+        HandleTargetingCreatures();
+    }
 
+    protected void HandleTargetingCreatures() {
         if (mannerType == MannerType.Sniper) {
-            targetCreature = GetHighestHealthCreature(engineerManning.GetDetectionCollider().GetCreaturesInDetectionCollider(), mannerMinimumShootDistance);
+            targetCreature = GetHighestHealthCreature(engineersManning[0].GetDetectionCollider().GetCreaturesInDetectionCollider(), mannerMinimumShootDistance);
+        }
+        if (mannerType == MannerType.MachineGun) {
+            targetCreature = GetClosestCreature(engineersManning[0].GetDetectionCollider().GetCreaturesInDetectionCollider(), mannerMinimumShootDistance);
         }
 
         if (targetCreature != null) {
@@ -235,7 +255,7 @@ public class SpecialTower_Manner : MonoBehaviour {
         return shotsPerAmmoClip;
     }
 
-    private Creature GetHighestHealthCreature(List<Creature> creaturesInRange, float minDistanceToShoot) {
+    protected Creature GetHighestHealthCreature(List<Creature> creaturesInRange, float minDistanceToShoot) {
         int maxCreatureHP = 0;
         Creature highestHPCreature = null;
 
@@ -253,7 +273,51 @@ public class SpecialTower_Manner : MonoBehaviour {
         return highestHPCreature;
     }
 
-    public bool GetHasCooldown() {
-        return hasCooldownAnimationAndSound;
+    protected Creature GetClosestCreature(List<Creature> creaturesInRange, float minDistanceToShoot) {
+        float closestCreatureDistance = Mathf.Infinity;
+        Creature closestCreature = null;
+
+        foreach (Creature creature in creaturesInRange) {
+
+            float distanceToCreature = Vector3.Distance(transform.position, creature.transform.position);
+            if (distanceToCreature < minDistanceToShoot) continue;
+
+            // Si un angle max est défini (< 360), on le prend en compte
+            Vector3 directionToCreature = creature.transform.position - transform.position;
+            Vector3 aimDir = new Vector3(1, 0, 0);
+            if (transform.position.x < 0) {
+                aimDir = new Vector3(-1, 0, 0);
+            }
+            if (maxAngleToAim < 360f) {
+                float angle = Vector3.Angle(aimDir, directionToCreature);
+                if (angle > maxAngleToAim * 0.5f)
+                    continue;
+            }
+
+            if (distanceToCreature < closestCreatureDistance) {
+                closestCreature = creature;
+                closestCreatureDistance = distanceToCreature;
+            }
+        }
+
+        return closestCreature;
+    }
+
+
+    public void InvokeOnMannerShot() {
+        OnMannerShot?.Invoke(this, EventArgs.Empty);
+    }
+    public bool GetHasCooldownAnimation() {
+        return hasCooldownAnimation;
+    }
+
+    public bool HasAvailableSlot() {
+        return engineersManning.Count < maxEngineersManning;
+    }
+    public int GetMaxEngineersManning() {
+        return maxEngineersManning;
+    }
+    public int GetEngineersManning() {
+        return engineersManning.Count;
     }
 }

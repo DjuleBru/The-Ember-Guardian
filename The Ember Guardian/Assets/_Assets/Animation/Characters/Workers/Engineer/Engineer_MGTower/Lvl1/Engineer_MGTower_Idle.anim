@@ -59,25 +59,16 @@ AnimationClip:
     - time: 0
       value: {fileID: 0}
     attribute: m_Sprite
-    path: Hands
+    path: Hands_Reloader
     classID: 212
     script: {fileID: 0}
     flags: 2
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -453778589, guid: d0fd0e478d6ee764a99109e2a116a698, type: 3}
+      value: {fileID: 0}
     attribute: m_Sprite
-    path: Mag
-    classID: 212
-    script: {fileID: 0}
-    flags: 2
-  - serializedVersion: 2
-    curve:
-    - time: 0
-      value: {fileID: 1026291492, guid: e659f2c454c6e824a81710792928ff59, type: 3}
-    attribute: m_Sprite
-    path: Mag_Lights
+    path: Weapon/Hands_Shooter
     classID: 212
     script: {fileID: 0}
     flags: 2
@@ -125,7 +116,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 2817465596
+      path: 567917927
       attribute: 0
       script: {fileID: 0}
       typeID: 212
@@ -134,16 +125,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 674458012
-      attribute: 0
-      script: {fileID: 0}
-      typeID: 212
-      customType: 23
-      isPPtrCurve: 1
-      isIntCurve: 0
-      isSerializeReferenceCurve: 0
-    - serializedVersion: 2
-      path: 1119311616
+      path: 833206569
       attribute: 0
       script: {fileID: 0}
       typeID: 212
@@ -157,8 +139,7 @@ AnimationClip:
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
-    - {fileID: -453778589, guid: d0fd0e478d6ee764a99109e2a116a698, type: 3}
-    - {fileID: 1026291492, guid: e659f2c454c6e824a81710792928ff59, type: 3}
+    - {fileID: 0}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

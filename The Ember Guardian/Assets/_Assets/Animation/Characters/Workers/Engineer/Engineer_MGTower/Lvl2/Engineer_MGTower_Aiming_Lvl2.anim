@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Engineer_MGTower_Aiming
+  m_Name: Engineer_MGTower_Aiming_Lvl2
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,7 +21,7 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -925756966, guid: cef9200d0acd61249b93d7a510e01cea, type: 3}
+      value: {fileID: 90110389, guid: d57580b91a6450643bae4c3422d1d9ef, type: 3}
     attribute: m_Sprite
     path: Manner
     classID: 212
@@ -30,7 +30,7 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 163152006, guid: fe8746d58c8c21442bf373c300d40752, type: 3}
+      value: {fileID: 6304635, guid: c0bc1bdbf58e0504c8ad09315603fbd4, type: 3}
     attribute: m_Sprite
     path: Weapon
     classID: 212
@@ -42,6 +42,32 @@ AnimationClip:
       value: {fileID: 0}
     attribute: m_Sprite
     path: Weapon/MuzzleFlash
+    classID: 212
+    script: {fileID: 0}
+    flags: 2
+  - serializedVersion: 2
+    curve:
+    - time: 0
+      value: {fileID: -841992032, guid: d57580b91a6450643bae4c3422d1d9ef, type: 3}
+    - time: 0.1
+      value: {fileID: -1894887434, guid: d57580b91a6450643bae4c3422d1d9ef, type: 3}
+    - time: 0.2
+      value: {fileID: 1598861483, guid: d57580b91a6450643bae4c3422d1d9ef, type: 3}
+    - time: 0.3
+      value: {fileID: -339964773, guid: d57580b91a6450643bae4c3422d1d9ef, type: 3}
+    - time: 0.4
+      value: {fileID: -640847145, guid: d57580b91a6450643bae4c3422d1d9ef, type: 3}
+    attribute: m_Sprite
+    path: Manner2
+    classID: 212
+    script: {fileID: 0}
+    flags: 2
+  - serializedVersion: 2
+    curve:
+    - time: 0
+      value: {fileID: 0}
+    attribute: m_Sprite
+    path: Weapon/Hands_Shooter
     classID: 212
     script: {fileID: 0}
     flags: 2
@@ -79,16 +105,40 @@ AnimationClip:
       isPPtrCurve: 1
       isIntCurve: 0
       isSerializeReferenceCurve: 0
+    - serializedVersion: 2
+      path: 488709403
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    - serializedVersion: 2
+      path: 833206569
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -925756966, guid: cef9200d0acd61249b93d7a510e01cea, type: 3}
-    - {fileID: 163152006, guid: fe8746d58c8c21442bf373c300d40752, type: 3}
+    - {fileID: 90110389, guid: d57580b91a6450643bae4c3422d1d9ef, type: 3}
+    - {fileID: 6304635, guid: c0bc1bdbf58e0504c8ad09315603fbd4, type: 3}
+    - {fileID: 0}
+    - {fileID: -841992032, guid: d57580b91a6450643bae4c3422d1d9ef, type: 3}
+    - {fileID: -1894887434, guid: d57580b91a6450643bae4c3422d1d9ef, type: 3}
+    - {fileID: 1598861483, guid: d57580b91a6450643bae4c3422d1d9ef, type: 3}
+    - {fileID: -339964773, guid: d57580b91a6450643bae4c3422d1d9ef, type: 3}
+    - {fileID: -640847145, guid: d57580b91a6450643bae4c3422d1d9ef, type: 3}
     - {fileID: 0}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.1
+    m_StopTime: 0.5
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

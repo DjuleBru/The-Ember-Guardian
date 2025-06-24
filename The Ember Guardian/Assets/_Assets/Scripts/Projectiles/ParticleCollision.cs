@@ -17,10 +17,17 @@ public class ParticleCollision : MonoBehaviour
 
     private float collisionDistanceThreshold = .75f;
     [SerializeField] private bool groundDestroysBullet = true;
+    [SerializeField] private bool isPlayerWeaponPS;
 
-    public static event EventHandler OnAnyBulletHitGround;
-    public static event EventHandler OnAnyBulletHitEnemy;
-    public static event EventHandler OnAnyBulletHitEnemyCrit;
+    public static event EventHandler<OnBulletHitEventArgs> OnAnyBulletHitGround;
+    public static event EventHandler<OnBulletHitEventArgs> OnAnyBulletHitEnemy;
+    public static event EventHandler<OnBulletHitEventArgs> OnAnyPlayerBulletHitGround;
+    public static event EventHandler<OnBulletHitEventArgs> OnAnyPlayerBulletHitEnemy;
+    public static event EventHandler<OnBulletHitEventArgs> OnAnyPlayerBulletHitEnemyCrit;
+
+    public class OnBulletHitEventArgs {
+        public Vector3 bulletHitPosition;
+    }
 
     private bool initialized;
     private int damage;
@@ -113,7 +120,16 @@ public class ParticleCollision : MonoBehaviour
 
                         if (groundDestroysBullet) {
                             Instantiate(explosionPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
-                            OnAnyBulletHitGround?.Invoke(this, EventArgs.Empty);
+
+                            if(isPlayerWeaponPS) {
+                                OnAnyPlayerBulletHitGround?.Invoke(this, new OnBulletHitEventArgs {
+                                    bulletHitPosition = collisionPosition
+                                });
+                            } else {
+                                OnAnyBulletHitGround?.Invoke(this, new OnBulletHitEventArgs {
+                                    bulletHitPosition = collisionPosition
+                                });
+                            }
                         };
 
 
@@ -127,10 +143,20 @@ public class ParticleCollision : MonoBehaviour
                         mobHit.InstantiateHitPS(angle, collisionPosition.y, critHit, damage, collisionPosition.x);
 
                         if (critHit) {
-                            OnAnyBulletHitEnemyCrit?.Invoke(this, EventArgs.Empty);
+                            OnAnyPlayerBulletHitEnemyCrit?.Invoke(this, new OnBulletHitEventArgs {
+                                bulletHitPosition = collisionPosition
+                            });
                         }
                         else {
-                            OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
+                            if(isPlayerWeaponPS) {
+                                OnAnyPlayerBulletHitEnemy?.Invoke(this, new OnBulletHitEventArgs {
+                                    bulletHitPosition = collisionPosition
+                                });
+                            } else {
+                                OnAnyBulletHitEnemy?.Invoke(this, new OnBulletHitEventArgs {
+                                    bulletHitPosition = collisionPosition
+                                });
+                            }
                         }
 
                         Vector2 bulletDirNormalized = new Vector2(moveDir.x, moveDir.y).normalized;
@@ -141,7 +167,15 @@ public class ParticleCollision : MonoBehaviour
                         other.GetComponent<CreatureSpawnerContinuous>().TakeDamage(bulletDamage, bulletSource, false);
                         other.GetComponent<CreatureSpawnerContinuous>().InstantiateHitPS(angle, collisionPosition.y, false);
 
-                        OnAnyBulletHitEnemy?.Invoke(this, EventArgs.Empty);
+                        if(isPlayerWeaponPS) {
+                            OnAnyPlayerBulletHitEnemy?.Invoke(this, new OnBulletHitEventArgs {
+                                bulletHitPosition = collisionPosition
+                            });
+                        } else {
+                            OnAnyBulletHitEnemy?.Invoke(this, new OnBulletHitEventArgs {
+                                bulletHitPosition = collisionPosition
+                            });
+                        }
                     }
 
                     damagedParticles.Add(j); // Marque cette particule comme ayant déjà infligé des dégâts

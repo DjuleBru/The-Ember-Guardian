@@ -182,7 +182,7 @@ public class Tower : Structure
             Worker worker = assignedWorkersList[i];
             Vector3 groundPosition = new Vector3(transform.position.x, 1, 0);
             worker.transform.position = groundPosition;
-            worker.AssignStructure(null);
+            worker.AssignDefensiveStructure(null);
             worker.GetComponent<HunterJob>().ResetRangeBuff();
             worker.GetComponent<HunterJob>().ResetDamageBuff();
             yield return new WaitForSeconds(.2f);

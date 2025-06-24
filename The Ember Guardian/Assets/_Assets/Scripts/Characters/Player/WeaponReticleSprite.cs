@@ -16,19 +16,20 @@ public class WeaponReticleSprite : MonoBehaviour
 
     private void Start() {
         ParticleCollision.OnAnyBulletHitEnemy += ParticleCollision_OnAnyBulletHitEnemy;
-        ParticleCollision.OnAnyBulletHitEnemyCrit += ParticleCollision_OnAnyBulletHitEnemyCrit;
+        ParticleCollision.OnAnyPlayerBulletHitEnemyCrit += ParticleCollision_OnAnyBulletHitEnemyCrit;
     }
 
-    private void ParticleCollision_OnAnyBulletHitEnemyCrit(object sender, System.EventArgs e) {
+    private void ParticleCollision_OnAnyBulletHitEnemyCrit(object sender, ParticleCollision.OnBulletHitEventArgs e) {
         StartCoroutine(ResetHitReticleColorAfterDelay(.3f));
         hitReticleSpriteRenderer.color = aimingCritZoneColor;
         ShowHitReticle();
     }
 
-    private void ParticleCollision_OnAnyBulletHitEnemy(object sender, System.EventArgs e) {
+    private void ParticleCollision_OnAnyBulletHitEnemy(object sender, ParticleCollision.OnBulletHitEventArgs e) {
         StartCoroutine(ResetHitReticleColorAfterDelay(.01f));
         ShowHitReticle();
     }
+
 
     private IEnumerator ResetHitReticleColorAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
@@ -71,7 +72,7 @@ public class WeaponReticleSprite : MonoBehaviour
 
     private void OnDestroy() {
         ParticleCollision.OnAnyBulletHitEnemy -= ParticleCollision_OnAnyBulletHitEnemy;
-        ParticleCollision.OnAnyBulletHitEnemyCrit -= ParticleCollision_OnAnyBulletHitEnemyCrit;
+        ParticleCollision.OnAnyPlayerBulletHitEnemyCrit -= ParticleCollision_OnAnyBulletHitEnemyCrit;
     }
 
 }

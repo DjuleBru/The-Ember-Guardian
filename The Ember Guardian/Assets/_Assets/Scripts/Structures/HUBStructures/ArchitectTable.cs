@@ -14,6 +14,7 @@ public class ArchitectTable : MonoBehaviour
     private int maxSniperTowerAmount;
     private int maxMachineGunTowerAmount;
     private int maxMortarPositionsAmount;
+    private int maxFastTravelTP;
 
     private int initialMaxAmmoCrafterAmount = 1;
     private int initialMaxSecondaryFireAmount = 2;
@@ -22,6 +23,7 @@ public class ArchitectTable : MonoBehaviour
     private int initialMaxSniperTowerAmount = 1;
     private int initialMaxMachineGunTowerAmount = 1;
     private int initialMaxMortarPositionsAmount = 1;
+    private int initialMaxFastTravelTP = 1;
 
     [SerializeField] private GameObject activeHubMerchantGameObject;
     [SerializeField] private GameObject inActiveHubMerchantGameObject;
@@ -44,6 +46,7 @@ public class ArchitectTable : MonoBehaviour
         maxMachineGunTowerAmount = ES3.Load("maxMachineGunTowerAmount", initialMaxMachineGunTowerAmount);
         maxMortarPositionsAmount = ES3.Load("maxMortarPositionsAmount", initialMaxMortarPositionsAmount);
         maxTowerAmount = ES3.Load("maxTowerAmount", initialMaxTowerAmount);
+        maxFastTravelTP = ES3.Load("maxFastTravelTP", initialMaxFastTravelTP);
     }
 
     public void SaveStats() {
@@ -55,6 +58,7 @@ public class ArchitectTable : MonoBehaviour
         ES3.Save("maxMachineGunTowerAmount", maxMachineGunTowerAmount);
         ES3.Save("maxMortarPositionsAmount", maxMortarPositionsAmount);
         ES3.Save("maxTowerAmount", maxTowerAmount);
+        ES3.Save("maxFastTravelTP", maxFastTravelTP);
 
         CampEditManager.Instance.SaveCampLayout();
 
@@ -93,6 +97,9 @@ public class ArchitectTable : MonoBehaviour
     public void SetMaxMortarPositionsAmountBuff(int amountBuff) {
         maxMortarPositionsAmount = initialMaxMortarPositionsAmount + amountBuff;
     }
+    public void SetMaxFastTravelTPAmountBuff(int amountBuff) {
+        maxFastTravelTP = initialMaxFastTravelTP + amountBuff;
+    }
     #endregion
 
     #region GET MAX STRUCTURE AMOUNTS
@@ -117,6 +124,11 @@ public class ArchitectTable : MonoBehaviour
     public int GetMortarPositionsAmount() {
         return maxMortarPositionsAmount;
     }
+
+    public int GetMaxFastTravelTPAmount() {
+        return maxMortarPositionsAmount;
+    }
+
     #endregion
 
     #region GET INITIAL MAX STRUCTURE AMOUNTS
@@ -140,6 +152,9 @@ public class ArchitectTable : MonoBehaviour
     }
     public int GetInitialMortarPositionsAmount() {
         return initialMaxMortarPositionsAmount;
+    }
+    public int GetInitialMaxFastTravelTPAmount() {
+        return initialMaxFastTravelTP;
     }
     #endregion
 }

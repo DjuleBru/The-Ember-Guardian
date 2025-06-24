@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class SpecialTower_MannerVisual : MonoBehaviour {
 
-    [SerializeField] private SpecialTower specialTower;
-    [SerializeField] private SpecialTower_Manner manner;
-    [SerializeField] private Animator mannerAnimator;
-    [SerializeField] private SpriteRenderer weaponSpriteRenderer;
+    [SerializeField] protected SpecialTower specialTower;
+    [SerializeField] protected SpecialTower_Manner manner;
+    [SerializeField] protected Animator mannerAnimator;
+    [SerializeField] protected SpriteRenderer weaponSpriteRenderer;
     [SerializeField] protected SpriteRenderer weaponLightsSpriteRenderer;
     [SerializeField] protected SpriteRenderer mannerSpriteRenderer;
     [SerializeField] protected List<Sprite> lightsSpriteList;
@@ -17,20 +17,21 @@ public class SpecialTower_MannerVisual : MonoBehaviour {
     [SerializeField] protected ParticleSystem shellOutPS;
 
     [SerializeField] protected float reloadLightsTime;
+    [SerializeField] protected bool reloadsLights = true;
 
-    private bool outOfAmmo;
-    private bool lastClipStartedEmptying;
-    private bool aiming;
-    private bool cooldownAnimationDone;
-    private bool hasCooldown;
+    protected bool outOfAmmo;
+    protected bool lastClipStartedEmptying;
+    protected bool aiming;
+    protected bool cooldownAnimationDone;
+    protected bool hasCooldown;
 
     protected int lightSpriteIndex;
-    private void Awake() {
+    protected virtual void Awake() {
         mannerSpriteRenderer.gameObject.SetActive(false);
         lightSpriteIndex = lightsSpriteList.Count;
     }
 
-    private void Start() {
+    protected void Start() {
         manner.OnEngineerStartedManning += Manner_OnEngineerStartedManning;
         manner.OnEngineerStoppedManning += Manner_OnEngineerStoppedManning;
         manner.OnCreatureTargeted += Manner_OnCreatureTargeted;
@@ -42,12 +43,13 @@ public class SpecialTower_MannerVisual : MonoBehaviour {
         specialTower.OnAmmoClipRemoved += SpecialTower_OnAmmoClipRemoved;
         specialTower.OnAmmoClipAdded += SpecialTower_OnAmmoClipAdded;
 
-        hasCooldown = manner.GetHasCooldown();
+        hasCooldown = manner.GetHasCooldownAnimation();
     }
 
 
-    private void Manner_OnMannerReloadingHandsEnded(object sender, System.EventArgs e) {
+    protected void Manner_OnMannerReloadingHandsEnded(object sender, System.EventArgs e) {
         float delayBetweenSprites = reloadLightsTime / lightsSpriteList.Count;
+        if (!reloadsLights) return;
 
         StartCoroutine(ChangeRemainingBulletsVisuals(delayBetweenSprites, 0, lightsSpriteList.Count-1));
     }
@@ -73,7 +75,7 @@ public class SpecialTower_MannerVisual : MonoBehaviour {
         }
     }
 
-    private void Manner_OnMannerCooldownEventTriggered(object sender, System.EventArgs e) {
+    protected void Manner_OnMannerCooldownEventTriggered(object sender, System.EventArgs e) {
 
         if(hasCooldown) {
             mannerAnimator.SetTrigger("Cooldown");
@@ -83,12 +85,12 @@ public class SpecialTower_MannerVisual : MonoBehaviour {
         StartCoroutine(TriggerShellOutAfterDelay());
     }
 
-    private IEnumerator TriggerShellOutAfterDelay() {
+    protected IEnumerator TriggerShellOutAfterDelay() {
         yield return new WaitForSeconds(shellOutPSDelay);
         shellOutPS.Emit(1);
     }
 
-    private void Manner_OnMannerReloadingStarted(object sender, System.EventArgs e) {
+    protected virtual void Manner_OnMannerReloadingStarted(object sender, System.EventArgs e) {
         mannerAnimator.SetTrigger("Reload");
 
         if(outOfAmmo) {
@@ -97,7 +99,7 @@ public class SpecialTower_MannerVisual : MonoBehaviour {
         }
     }
 
-    private void Manner_OnMannerShot(object sender, System.EventArgs e) {
+    protected virtual void Manner_OnMannerShot(object sender, System.EventArgs e) {
         mannerAnimator.SetTrigger("Shoot");
         cooldownAnimationDone = false;
 
@@ -123,7 +125,7 @@ public class SpecialTower_MannerVisual : MonoBehaviour {
         }
     }
 
-    private void Manner_OnNoCreatureFound(object sender, System.EventArgs e) {
+    protected void Manner_OnNoCreatureFound(object sender, System.EventArgs e) {
         aiming = false;
 
         if (outOfAmmo) return;
@@ -131,28 +133,29 @@ public class SpecialTower_MannerVisual : MonoBehaviour {
         mannerAnimator.SetBool("Aiming", false);
     }
 
-    private void Manner_OnCreatureTargeted(object sender, System.EventArgs e) {
+    protected void Manner_OnCreatureTargeted(object sender, System.EventArgs e) {
         aiming = true;
 
         if (outOfAmmo) return;
         mannerAnimator.SetBool("Aiming", true);
     }
 
-    private void Manner_OnEngineerStoppedManning(object sender, System.EventArgs e) {
-        mannerAnimator.SetBool("Manned", false);
+    protected virtual void Manner_OnEngineerStoppedManning(object sender, System.EventArgs e) {
         mannerAnimator.SetBool("Aiming", false);
+        mannerAnimator.SetInteger("EngineersManning", manner.GetEngineersManning());
+
         aiming = false;
 
         mannerSpriteRenderer.gameObject.SetActive(false);
     }
 
-    private void Manner_OnEngineerStartedManning(object sender, System.EventArgs e) {
-        mannerAnimator.SetBool("Manned", true);
+    protected virtual void Manner_OnEngineerStartedManning(object sender, System.EventArgs e) {
+        mannerAnimator.SetInteger("EngineersManning", manner.GetEngineersManning());
         
         mannerSpriteRenderer.gameObject.SetActive(true);
     }
 
-    private void SpecialTower_OnAmmoClipAdded(object sender, System.EventArgs e) {
+    protected void SpecialTower_OnAmmoClipAdded(object sender, System.EventArgs e) {
         if (aiming) {
             mannerAnimator.SetBool("Aiming", true);
         }
@@ -161,7 +164,7 @@ public class SpecialTower_MannerVisual : MonoBehaviour {
         outOfAmmo = false;
     }
 
-    private void SpecialTower_OnAmmoClipRemoved(object sender, System.EventArgs e) {
+    protected void SpecialTower_OnAmmoClipRemoved(object sender, System.EventArgs e) {
         if(specialTower.GetCurrentAmmoClip() == 0) {
             lastClipStartedEmptying = true;
         }

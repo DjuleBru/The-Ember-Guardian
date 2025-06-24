@@ -136,8 +136,10 @@ public class SoundManager : MonoBehaviour
         ItemButtonUI.OnAnyHubMerchantItemTryBuyMaxedItem += ItemButtonUI_OnAnyHubMerchantItemTryBuyMaxedItem;
 
         ParticleCollision.OnAnyBulletHitEnemy += ParticleCollision_OnAnyBulletHitEnemy;
-        ParticleCollision.OnAnyBulletHitEnemyCrit += ParticleCollision_OnAnyBulletHitEnemyCrit;
         ParticleCollision.OnAnyBulletHitGround += ParticleCollision_OnAnyBulletHitGround;
+        ParticleCollision.OnAnyPlayerBulletHitEnemyCrit += ParticleCollision_OnAnyBulletHitEnemyCrit;
+        ParticleCollision.OnAnyPlayerBulletHitEnemy += ParticleCollision_OnAnyPlayerBulletHitEnemy;
+        ParticleCollision.OnAnyPlayerBulletHitGround += ParticleCollision_OnAnyPlayerBulletHitGround;
 
         Collectible.OnAnyCollectibleTouchedFloor += Collectible_OnAnyCollectibleTouchedFloor;
         Collectible.OnAnyCollectiblePickedUpByWorker += Collectible_OnAnyCollectiblePickedUpByWorker;
@@ -171,6 +173,7 @@ public class SoundManager : MonoBehaviour
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine += HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
     }
+
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -554,18 +557,30 @@ public class SoundManager : MonoBehaviour
 
     #region SHOOTING
 
-    private void ParticleCollision_OnAnyBulletHitEnemyCrit(object sender, System.EventArgs e) {
-        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitEnemyCritSound;
-        PlaySound2D(audioClipArray,  1f);
-    }
-    private void ParticleCollision_OnAnyBulletHitGround(object sender, System.EventArgs e) {
+    private void ParticleCollision_OnAnyPlayerBulletHitGround(object sender, ParticleCollision.OnBulletHitEventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitGroundSound;
         PlaySound2D(audioClipArray, .5f);
     }
 
-    private void ParticleCollision_OnAnyBulletHitEnemy(object sender, System.EventArgs e) {
+    private void ParticleCollision_OnAnyPlayerBulletHitEnemy(object sender, ParticleCollision.OnBulletHitEventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitEnemySound;
-        PlaySound2D(audioClipArray,  .5f);
+        PlaySound2D(audioClipArray, .5f);
+    }
+
+    private void ParticleCollision_OnAnyBulletHitEnemyCrit(object sender, ParticleCollision.OnBulletHitEventArgs e) {
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitEnemyCritSound;
+        PlaySound2D(audioClipArray, 1f);
+    }
+
+
+    private void ParticleCollision_OnAnyBulletHitGround(object sender, ParticleCollision.OnBulletHitEventArgs e) {
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitGroundSound;
+        PlaySound3D(audioClipArray, e.bulletHitPosition, .5f);
+    }
+
+    private void ParticleCollision_OnAnyBulletHitEnemy(object sender, ParticleCollision.OnBulletHitEventArgs e) {
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitEnemySound;
+        PlaySound3D(audioClipArray, e.bulletHitPosition, .5f);
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
@@ -841,6 +856,7 @@ public class SoundManager : MonoBehaviour
 
     private void PlaySound3D(AudioClip audioClip, Vector3 position, float volume = 1f) {
         Vector3 newPosition = new Vector3(position.x, position.y, Camera.main.transform.position.z);
+
         AudioSource.PlayClipAtPoint(audioClip, newPosition, volume * sfxVolume);
     }
 
@@ -947,8 +963,10 @@ public class SoundManager : MonoBehaviour
 
 
         ParticleCollision.OnAnyBulletHitEnemy -= ParticleCollision_OnAnyBulletHitEnemy;
-        ParticleCollision.OnAnyBulletHitEnemyCrit -= ParticleCollision_OnAnyBulletHitEnemyCrit;
+        ParticleCollision.OnAnyPlayerBulletHitEnemyCrit -= ParticleCollision_OnAnyBulletHitEnemyCrit;
         ParticleCollision.OnAnyBulletHitGround -= ParticleCollision_OnAnyBulletHitGround;
+        ParticleCollision.OnAnyPlayerBulletHitEnemy -= ParticleCollision_OnAnyPlayerBulletHitEnemy;
+        ParticleCollision.OnAnyPlayerBulletHitGround -= ParticleCollision_OnAnyPlayerBulletHitGround;
 
         Collectible.OnAnyCollectibleTouchedFloor -= Collectible_OnAnyCollectibleTouchedFloor;
         Collectible.OnAnyCollectiblePickedUpByWorker -= Collectible_OnAnyCollectiblePickedUpByWorker;

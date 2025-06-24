@@ -153,6 +153,10 @@ public class AddStructureBlueprint : ButtonUI
                 maxBlueprintAmount = ArchitectTable.Instance.GetMaxTowerAmount();
             break;
 
+            case StructureSO.StructureType.fastTravelTeleporter:
+                maxBlueprintAmount = ArchitectTable.Instance.GetMaxFastTravelTPAmount();
+                break;
+
             case StructureSO.StructureType.sniperTower:
                 maxBlueprintAmount = ArchitectTable.Instance.GetMaxSniperTowerAmount();
             break;

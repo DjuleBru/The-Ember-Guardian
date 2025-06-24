@@ -17,9 +17,13 @@ public class SpecialTower : Structure {
 
     public event EventHandler OnAmmoClipAdded;
     public event EventHandler OnAmmoClipRemoved;
-    public event EventHandler OnEngineerExitedTower;
-    public event EventHandler OnEngineerEnteredTower;
+    public event EventHandler<OnEngineerEnteredTowerEventArgs> OnEngineerExitedTower;
+    public event EventHandler<OnEngineerEnteredTowerEventArgs> OnEngineerEnteredTower;
     public event EventHandler OnPlayerClimberOnSpecialTower;
+
+    public class OnEngineerEnteredTowerEventArgs : EventArgs {
+        public EngineerJob engineerJob;
+    }
 
     protected override void Awake() {
         base.Awake();
@@ -109,15 +113,32 @@ public class SpecialTower : Structure {
         base.SetEngineerWorking(engineer, working);
 
         if (working) {
-            OnEngineerEnteredTower?.Invoke(this, EventArgs.Empty);
+            OnEngineerEnteredTower?.Invoke(this, new OnEngineerEnteredTowerEventArgs {
+                engineerJob = engineer
+            });
+            AssignEngineerToNextAvailableManner(engineer);
             SetEngineerGarrisonPosition(engineer);
+            engineer.GetComponent<Worker>().AssignDefensiveStructure(this);
         }
 
         else {
-            OnEngineerExitedTower?.Invoke(this, EventArgs.Empty);
+            OnEngineerExitedTower?.Invoke(this, new OnEngineerEnteredTowerEventArgs {
+                engineerJob = engineer
+            });
+            engineer.GetComponent<Worker>().AssignDefensiveStructure(null);
         }
 
     }
+    private void AssignEngineerToNextAvailableManner(EngineerJob engineer) {
+        foreach (var manner in manners) {
+            if (manner.HasAvailableSlot()) {
+                manner.AssignEngineer(engineer);
+                return;
+            }
+        }
+
+    }
+
     protected void SetEngineerGarrisonPosition(EngineerJob engineer) {
         int workerIndex = engineersAssignedWorking.IndexOf(engineer);
         Debug.Log(workerIndex);

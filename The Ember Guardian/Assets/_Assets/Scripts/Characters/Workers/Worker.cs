@@ -14,7 +14,7 @@ public class Worker : Mob {
 
     private WorkerAI workerAI;
 
-    private Structure structureAssigned;
+    private Structure defensiveStructureAssigned;
 
     private Dictionary<PlayerCurrencies.CurrencyType, int> collectedCurrencies = new Dictionary<PlayerCurrencies.CurrencyType, int>();
 
@@ -196,12 +196,12 @@ public class Worker : Mob {
         }
     }
 
-    public Structure GetStructureAssigned() {
-        return structureAssigned;
+    public Structure GetDefensiveStructureAssigned() {
+        return defensiveStructureAssigned;
     }
 
-    public void AssignStructure(Structure structure) {
-        structureAssigned = structure;
+    public void AssignDefensiveStructure(Structure structure) {
+        defensiveStructureAssigned = structure;
     }
 
     public bool GetRecruited() {

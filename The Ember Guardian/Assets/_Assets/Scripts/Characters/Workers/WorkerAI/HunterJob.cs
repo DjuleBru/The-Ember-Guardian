@@ -314,8 +314,8 @@ public class HunterJob : WorkerJob {
 
                 case HunterState.headingToGuard:
 
-                    if (worker.GetStructureAssigned() != null) {
-                        assignedTower = worker.GetStructureAssigned() as Tower;
+                    if (worker.GetDefensiveStructureAssigned() != null) {
+                        assignedTower = worker.GetDefensiveStructureAssigned() as Tower;
                     }
                     else {
                         TryAssignTower();
@@ -333,7 +333,7 @@ public class HunterJob : WorkerJob {
                 case HunterState.guarding:
 
                     // Keep checking if camp limits have changed for ungarrisoned hunters
-                    if (worker.GetStructureAssigned() == null) {
+                    if (worker.GetDefensiveStructureAssigned() == null) {
 
                         Vector3 targetDestination = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned(), 2f);
 
@@ -347,7 +347,7 @@ public class HunterJob : WorkerJob {
                     // DUSK : Keep checking if tower spots have been opened
                     if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
 
-                        if (worker.GetStructureAssigned() == null) {
+                        if (worker.GetDefensiveStructureAssigned() == null) {
                             TryAssignTower();
 
                             if (assignedTower != null) {
@@ -774,7 +774,7 @@ public class HunterJob : WorkerJob {
     public void SetGarrisoned(Vector3 position, Tower tower) {
         mobMovement.SetMoveTarget(position);
 
-        worker.AssignStructure(tower);
+        worker.AssignDefensiveStructure(tower);
         workerAnimatorManager.SetWatchDir(position.x);
     }
 
