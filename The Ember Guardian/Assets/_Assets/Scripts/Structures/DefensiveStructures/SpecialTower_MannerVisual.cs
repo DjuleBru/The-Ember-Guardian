@@ -75,7 +75,7 @@ public class SpecialTower_MannerVisual : MonoBehaviour {
         }
     }
 
-    protected void Manner_OnMannerCooldownEventTriggered(object sender, System.EventArgs e) {
+    protected virtual void Manner_OnMannerCooldownEventTriggered(object sender, System.EventArgs e) {
 
         if(hasCooldown) {
             mannerAnimator.SetTrigger("Cooldown");

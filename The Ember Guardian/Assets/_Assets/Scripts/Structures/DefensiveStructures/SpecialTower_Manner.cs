@@ -66,7 +66,9 @@ public class SpecialTower_Manner : MonoBehaviour {
         if (mannerIndex != 0) {
             visualGameObject.SetActive(false);
         }
-        shootPS_Collision.InitializeBulletPS(transform, bulletDamage, bulletKnockback, collisionDistanceTreshold);
+        if(bulletIsParticle) {
+            shootPS_Collision.InitializeBulletPS(transform, bulletDamage, bulletKnockback, collisionDistanceTreshold);
+        }
 
         currentShotIndex = shotsPerAmmoClip;
         readyToShoot = true;
@@ -130,9 +132,9 @@ public class SpecialTower_Manner : MonoBehaviour {
 
         if (bulletIsParticle) {
             shootPS.Emit(pelletsPerBullet);
-            OnMannerShot?.Invoke(this, EventArgs.Empty);
         }
 
+        OnMannerShot?.Invoke(this, EventArgs.Empty);
         readyToShoot = false;
         cooldownTriggered = false;
     }
@@ -157,6 +159,10 @@ public class SpecialTower_Manner : MonoBehaviour {
         reloadTimer = 0;
     }
 
+    public void InvokeOnMannerReloadingHandsEnded() {
+        OnMannerReloadingHandsEnded?.Invoke(this, EventArgs.Empty);
+    }
+
     protected void HandleCooldown() {
         if (readyToShoot) return;
 
@@ -175,7 +181,7 @@ public class SpecialTower_Manner : MonoBehaviour {
         }
     }
 
-    protected void HandleAim() {
+    protected virtual void HandleAim() {
         Transform target = targetCreature.GetAutoAimPosition();
         Vector3 direction = target.position - weaponTransform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -237,6 +243,9 @@ public class SpecialTower_Manner : MonoBehaviour {
             targetCreature = GetHighestHealthCreature(engineersManning[0].GetDetectionCollider().GetCreaturesInDetectionCollider(), mannerMinimumShootDistance);
         }
         if (mannerType == MannerType.MachineGun) {
+            targetCreature = GetClosestCreature(engineersManning[0].GetDetectionCollider().GetCreaturesInDetectionCollider(), mannerMinimumShootDistance);
+        }
+        if (mannerType == MannerType.Mortar) {
             targetCreature = GetClosestCreature(engineersManning[0].GetDetectionCollider().GetCreaturesInDetectionCollider(), mannerMinimumShootDistance);
         }
 
@@ -319,5 +328,15 @@ public class SpecialTower_Manner : MonoBehaviour {
     }
     public int GetEngineersManning() {
         return engineersManning.Count;
+    }
+
+    public Creature GetTargetCreature() {
+        return targetCreature;
+    }
+
+    private void OnDestroy() {
+        foreach (EngineerJob engineer in engineersManning) {
+            engineer.GetDetectionCollider().OnCreaturesInColliderChanged -= SpecialTower_Manner_OnCreaturesInColliderChanged;
+        }
     }
 }

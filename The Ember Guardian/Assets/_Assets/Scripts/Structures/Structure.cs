@@ -33,7 +33,7 @@ public class Structure : MonoBehaviour {
     protected int structureLevel = 1;
 
     protected int maxEngineersAssignedWorking;
-    protected int engineersWorking;
+    protected int engineersGarrisoned;
     protected int maxEngineersAssignedRefilling;
     protected bool needsRefill;
     protected bool needsWorking;
@@ -258,30 +258,33 @@ public class Structure : MonoBehaviour {
     }
 
     public int GetEngineersGarrisoned() {
-        return engineersWorking;
+        return engineersGarrisoned;
+    }
+    public int GetMaxEngineersWorking() {
+        return maxEngineersAssignedWorking;
     }
 
     public virtual void SetEngineerWorking(EngineerJob engineer, bool working) {
         // Actually working
-        Debug.Log("SetEngineerWorking " + working + " engineersWorking " + engineersWorking + " maxEngineersAssignedWorking " + maxEngineersAssignedWorking);
+        Debug.Log(this + " SetEngineerWorking " + working + " engineersWorking " + engineersGarrisoned + " maxEngineersAssignedWorking " + maxEngineersAssignedWorking);
 
         if(working) {
 
             if (!engineersAssignedWorking.Contains(engineer)) {
                 engineersAssignedWorking.Add(engineer);
-                engineersWorking++;
+                engineersGarrisoned++;
             };
 
         } else {
 
             if (engineersAssignedWorking.Contains(engineer)) {
                 engineersAssignedWorking.Remove(engineer);
-                engineersWorking--;
+                engineersGarrisoned--;
             };
 
         }
 
-        if(engineersWorking == maxEngineersAssignedWorking) {
+        if(engineersGarrisoned == maxEngineersAssignedWorking) {
             needsWorking = false;
         }
     }

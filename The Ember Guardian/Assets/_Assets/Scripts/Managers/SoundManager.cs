@@ -157,9 +157,6 @@ public class SoundManager : MonoBehaviour
         Worker.OnAnyWorkerAssignedHunter += Worker_OnAnyWorkerAssignedHunter;
         Worker.OnAnyWorkerDied += Worker_OnAnyWorkerDied;
 
-        Projectile.OnAnyProjectileHit += Projectile_OnAnyProjectileHit;
-        Projectile.OnAnyProjectileInstantiated += Projectile_OnAnyProjectileInstantiated;
-
         EndLevelAreaProp.OnAnyEndLevelAreaPropBurned += EndLevelAreaProp_OnAnyEndLevelAreaPropBurned;
         HuntingFlag.OnAnyHuntingFlagReset += HuntingFlag_OnAnyHuntingFlagReset;
         HuntingFlag_PlayerDefined.OnAnyHuntingFlagNewPositionSet += HuntingFlag_PlayerDefined_OnAnyHuntingFlagNewPositionSet;
@@ -359,20 +356,6 @@ public class SoundManager : MonoBehaviour
         criticalFireTickJustRemoved = true;
 
         PlaySound2D(soundRefsSO.criticalFireTickRemoved);
-    }
-
-    #endregion
-
-    #region Attacks
-
-    private void Projectile_OnAnyProjectileInstantiated(object sender, System.EventArgs e) {
-        Projectile projectile = (Projectile)sender;
-        PlaySound3D(projectile.GetProjectileSO().projectileInstantiatedAudioClips, (sender as MonoBehaviour).transform.position);
-    }
-
-    private void Projectile_OnAnyProjectileHit(object sender, System.EventArgs e) {
-        Projectile projectile = (Projectile)sender;
-        PlaySound3D(projectile.GetProjectileSO().projectileHitAudioClips, (sender as MonoBehaviour).transform.position);
     }
 
     #endregion
@@ -851,6 +834,7 @@ public class SoundManager : MonoBehaviour
     #region PLAY SOUNDS
 
     private void PlaySound3D(AudioClip[] audioClipArray, Vector3 position, float volume = 1f) {
+        if (audioClipArray.Length == 0) return;
         PlaySound3D(audioClipArray[Random.Range(0, audioClipArray.Length)], position, volume);
     }
 
@@ -861,6 +845,7 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlaySound2D(AudioClip[] audioClipArray, float volume = 1f) {
+        if (audioClipArray.Length == 0) return;
         AudioClip audioClip = audioClipArray[Random.Range(0, audioClipArray.Length)];
         PlaySound2D(audioClip, volume);
     }
@@ -983,9 +968,6 @@ public class SoundManager : MonoBehaviour
         Worker.OnAnyWorkerRecruited -= Worker_OnAnyWorkerRecruited;
         Worker.OnAnyWorkerAssignedHunter -= Worker_OnAnyWorkerAssignedHunter;
         Worker.OnAnyWorkerDied -= Worker_OnAnyWorkerDied;
-
-        Projectile.OnAnyProjectileHit -= Projectile_OnAnyProjectileHit;
-        Projectile.OnAnyProjectileInstantiated -= Projectile_OnAnyProjectileInstantiated;
 
         EndLevelAreaProp.OnAnyEndLevelAreaPropBurned -= EndLevelAreaProp_OnAnyEndLevelAreaPropBurned;
         HuntingFlag.OnAnyHuntingFlagReset -= HuntingFlag_OnAnyHuntingFlagReset;

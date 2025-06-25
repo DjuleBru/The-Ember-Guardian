@@ -316,12 +316,13 @@ public class PlayerCamp : MonoBehaviour
             if (nightOrDusk && !structure.GetStructureSO().engineerCanWorkByNight) continue;
 
             if (!structure.NeedsEngineering()) continue;
-
+            if (structure.GetEngineersWorking().Count == structure.GetMaxEngineersWorking()) continue;
 
             if (structure.NeedsRefill()) {
                 CurrencyStorage storage = GetCurrencyStorageWithCurrencies(structure.GetRefillCurrencyTypeNeeded(), structure.GetMinimumRefillAmountRequired());
                 if (storage == null && !structure.NeedsWorking()) continue;
             };
+
 
             int structurePriority = structure.GetStructureSO().engineerWorkingPriority;
             if(structurePriority > highestPriority) {
@@ -329,7 +330,6 @@ public class PlayerCamp : MonoBehaviour
                 highestPriorityStructure = structure;
             }
         }
-
         return highestPriorityStructure;
     }
 

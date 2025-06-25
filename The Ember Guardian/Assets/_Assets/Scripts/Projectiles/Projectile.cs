@@ -29,6 +29,7 @@ public class Projectile : MonoBehaviour
 
     private Vector3 nextPosition;
     private Vector3 trajectoryEndPointRandomized;
+    private Vector3 trajectoryEndPointRandomizer;
 
     private float trajectoryMaxRelativeHeight;
     private float projectileMoveSpeed;
@@ -72,6 +73,7 @@ public class Projectile : MonoBehaviour
 
         trajectoryStartPoint = transform.position;
 
+        trajectoryEndPointRandomizer = endPointRandomOffsetValue;
         trajectoryEndPointRandomized = targetTransform.position + endPointRandomOffsetValue;
 
         trajectoryEndPoint = trajectoryEndPointRandomized;
@@ -101,7 +103,7 @@ public class Projectile : MonoBehaviour
         if (homingProjectile) {
 
             if(projectileTarget != null) {
-                trajectoryEndPoint = projectileTarget.transform.position;
+                trajectoryEndPoint = projectileTarget.transform.position + trajectoryEndPointRandomizer;
             }
 
             trajectoryRange = trajectoryEndPoint - trajectoryStartPoint;
@@ -157,6 +159,7 @@ public class Projectile : MonoBehaviour
     }
 
     protected virtual void ProjectileHasHit(bool mobHit) {
+        if (projectileHasHit) return;
 
         projectileHasHit = true;
         OnProjectileHit?.Invoke(this, EventArgs.Empty);
@@ -183,7 +186,7 @@ public class Projectile : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (projectileHasHit) return;
+        if (projectileHasHit && !projectileSO.isExplosiveProjectile) return;
         if (collision.gameObject.GetComponent<CreatureDetectionCollider>() != null) return;
         if (collision.gameObject.GetComponent<WorkerDetectionCollider>() != null) return;
         if (collision.gameObject.GetComponent<WorkerInteractionCollider>() != null) return;

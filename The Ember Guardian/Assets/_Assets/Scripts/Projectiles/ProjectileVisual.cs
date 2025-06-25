@@ -19,6 +19,11 @@ public class ProjectileVisual : MonoBehaviour
     private void Start() {
         projectile.OnProjectileHit += Projectile_OnProjectileHit;
         projectile.OnProjectileReset += Projectile_OnProjectileReset;
+
+        float direction = projectile.GetTrajectoryEndPoint().x - transform.position.x;
+        if ((direction) < 0) {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
     }
 
     private void Projectile_OnProjectileReset(object sender, System.EventArgs e) {

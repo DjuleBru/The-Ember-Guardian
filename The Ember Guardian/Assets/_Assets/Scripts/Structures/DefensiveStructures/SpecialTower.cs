@@ -11,6 +11,7 @@ public class SpecialTower : Structure {
     [SerializeField] protected GameObject level1TowerCollider;
     [SerializeField] protected GameObject level2TowerCollider;
     [SerializeField] protected int level2TowerEngineerCapacity;
+    [SerializeField] protected bool playerCanClimbOnTower = true;
 
     [SerializeField] private int maxAmmoClipsInStorage;
     private int currentAmmoClip;
@@ -73,7 +74,7 @@ public class SpecialTower : Structure {
 
         bool playerWasHoldingInteract = GameInput.Instance.GetWasHoldingInteract();
 
-        if (!playerWasHoldingInteract && playerInTriggerArea && Player.Instance.transform.position.y < 2f) {
+        if (playerCanClimbOnTower && !playerWasHoldingInteract && playerInTriggerArea && Player.Instance.transform.position.y < 2f) {
             MovePlayerOnTower();
         }
     }
@@ -119,6 +120,11 @@ public class SpecialTower : Structure {
             AssignEngineerToNextAvailableManner(engineer);
             SetEngineerGarrisonPosition(engineer);
             engineer.GetComponent<Worker>().AssignDefensiveStructure(this);
+            engineersGarrisoned++;
+
+            if(engineersGarrisoned == maxEngineersAssignedWorking) {
+                needsWorking = false;
+            }
         }
 
         else {
@@ -126,6 +132,7 @@ public class SpecialTower : Structure {
                 engineerJob = engineer
             });
             engineer.GetComponent<Worker>().AssignDefensiveStructure(null);
+            engineersGarrisoned--;
         }
 
     }
@@ -141,7 +148,6 @@ public class SpecialTower : Structure {
 
     protected void SetEngineerGarrisonPosition(EngineerJob engineer) {
         int workerIndex = engineersAssignedWorking.IndexOf(engineer);
-        Debug.Log(workerIndex);
         Vector3 garrisonPosition = new Vector3(0, 0, 0);
 
         if (structureLevel == 1) {

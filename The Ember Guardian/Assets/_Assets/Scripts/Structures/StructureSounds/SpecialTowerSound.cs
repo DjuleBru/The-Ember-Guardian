@@ -12,6 +12,7 @@ public class SpecialTowerSound : StructureSounds
     [SerializeField] private AudioClip[] reloadAudioClips;
     [SerializeField] private AudioClip[] cooldownAudioClips;
     [SerializeField] private AudioClip playerClimbOnTower;
+    [SerializeField] private float shootDelayToPlaySound = 0;
     [SerializeField] private float addAmmoVolumeMultiplier;
     [SerializeField] private float removeAmmoVolumeMultiplier;
     [SerializeField] private float shootVolumeMultiplier;
@@ -42,7 +43,7 @@ public class SpecialTowerSound : StructureSounds
     }
 
     private void Manner_OnMannerShot(object sender, System.EventArgs e) {
-        PlaySound2D(shootAudioClips, shootVolumeMultiplier);
+        PlaySFXAfterDelay(shootAudioClips, shootDelayToPlaySound, shootVolumeMultiplier);
     }
 
     private void SpecialTower_OnEngineerExitedTower(object sender, System.EventArgs e) {

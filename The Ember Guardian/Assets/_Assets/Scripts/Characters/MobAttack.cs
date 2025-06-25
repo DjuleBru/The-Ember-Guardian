@@ -21,8 +21,8 @@ public class MobAttack : MonoBehaviour
 
     protected float attackCooldownBuff = 1f;
 
-    [SerializeField] protected int projectileAmountInPool;
-    protected Queue<Projectile> availableProjectiles = new Queue<Projectile>();
+    [SerializeField] protected int projectileAmountInPool; 
+    protected Dictionary<ProjectileSO, Queue<Projectile>> projectilePools = new Dictionary<ProjectileSO, Queue<Projectile>>();
     protected Queue<StaticProjectile> availableStaticProjectiles = new Queue<StaticProjectile>();
 
     protected Mob mob;
@@ -48,7 +48,7 @@ public class MobAttack : MonoBehaviour
     protected virtual void Awake() {
         mob = GetComponent<Mob>();
         if(isProjectileAttack) {
-            InitializeProjectilePool();
+            InitializeProjectilePool(projectileSO);
         }
         if (isStaticProjectileAttack) {
             InitializeStaticProjectilePool();
@@ -98,13 +98,7 @@ public class MobAttack : MonoBehaviour
 
         if (previousAttackTargetIDamageable != null) {
 
-            Projectile projectile = null;
-            if (availableProjectiles.Count > 0) {
-                projectile = availableProjectiles.Dequeue(); // Prendre un projectile disponible
-            } else {
-                projectile = AddNewProjectileInProjectilePool();
-            }
-
+            Projectile projectile = GetNextProjectileInPool(projectileSO);
 
             Vector3 endPointRandomOffsetValue = GetEndPointRandomOffstetValue();
             projectile.gameObject.SetActive(true);
@@ -115,6 +109,21 @@ public class MobAttack : MonoBehaviour
         yield return new WaitForSeconds(totalAttackAnimationTime - delay);
 
         attackStarted = false;
+    }
+
+    public Projectile GetNextProjectileInPool(ProjectileSO projectileSO) {
+        if (!projectilePools.ContainsKey(projectileSO)) {
+            projectilePools[projectileSO] = new Queue<Projectile>();
+        }
+
+        Queue<Projectile> pool = projectilePools[projectileSO];
+
+        if (pool.Count > 0) {
+            return pool.Dequeue();
+        }
+        else {
+            return AddNewProjectileInProjectilePool(projectileSO);
+        }
     }
 
     protected IEnumerator SpawnStaticProjectileAfterDelay(float delayToSpawnStaticProjectile, float totalAttackAnimationTime) {
@@ -171,15 +180,20 @@ public class MobAttack : MonoBehaviour
         attackStarted = false;
     }
 
-    protected void InitializeProjectilePool() {
+    public void InitializeProjectilePool(ProjectileSO projectileSO) {
+        if (!projectilePools.ContainsKey(projectileSO)) {
+            projectilePools[projectileSO] = new Queue<Projectile>();
+        }
+
         Transform projectilePrefab = projectileSO.projectilePrefab;
 
         for (int i = 0; i < projectileAmountInPool; ++i) {
             Projectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity, projectileSpawnPoint).GetComponent<Projectile>();
             projectile.gameObject.SetActive(false);
-            availableProjectiles.Enqueue(projectile);
+            projectilePools[projectileSO].Enqueue(projectile);
         }
     }
+
     protected void InitializeStaticProjectilePool() {
         Transform projectilePrefab = staticProjectilePrefab;
 
@@ -191,7 +205,7 @@ public class MobAttack : MonoBehaviour
 
     }
 
-    protected Projectile AddNewProjectileInProjectilePool() {
+    public Projectile AddNewProjectileInProjectilePool(ProjectileSO projectileSO) {
         Transform projectilePrefab = projectileSO.projectilePrefab;
 
         Projectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity, projectileSpawnPoint).GetComponent<Projectile>();
@@ -288,9 +302,16 @@ public class MobAttack : MonoBehaviour
     }
 
     public void ResetProjectileInObjectPool(Projectile projectile) {
+        ProjectileSO projectileSO = projectile.GetProjectileSO();
+
+        if (!projectilePools.ContainsKey(projectileSO)) {
+            projectilePools[projectileSO] = new Queue<Projectile>();
+        }
+
         projectile.transform.position = projectileSpawnPoint.position;
         projectile.transform.SetParent(projectileSpawnPoint);
-        availableProjectiles.Enqueue(projectile); // Remettre le projectile dans la queue
+        projectile.gameObject.SetActive(false);
+        projectilePools[projectileSO].Enqueue(projectile);
     }
 
     public void ResetStaticProjectileInObjectPool(StaticProjectile projectile) {

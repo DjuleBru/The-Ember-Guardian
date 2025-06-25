@@ -11,6 +11,7 @@ public class ProjectileSO : ScriptableObject
     public AnimationCurve projectileYDifferentialWithTargetAnimationCurve;
     public AnimationCurve projectileSpeedAnimationCurve;
 
+    public bool isExplosiveProjectile;
     public float projectileMaxMoveSpeed;
     public float projectileTrajectoryYCurve = .2f;
     public float trajectoryEndPointRandomOffsetValue;

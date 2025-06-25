@@ -74,7 +74,12 @@ public class WorkerAttack : MobAttack
 
     protected override Vector3 GetEndPointRandomOffstetValue() {
 
+        
         float randomized = UnityEngine.Random.Range(-hunterAnimalAttackPointRandomizer, hunterAnimalAttackPointRandomizer);
+
+        if (homingProjectile) {
+            randomized = 0;
+        }
 
         return new Vector3(randomized, 0,0);
     }

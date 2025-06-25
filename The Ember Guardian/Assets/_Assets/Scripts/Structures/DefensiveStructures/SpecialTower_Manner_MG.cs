@@ -42,19 +42,16 @@ public class SpecialTower_Manner_MG : SpecialTower_Manner {
         }
 
 
-        if (bulletIsParticle) {
-            InvokeOnMannerShot();
-
-            if (shootingTop) {
-                level2PS_Top.Emit(pelletsPerBullet);
-                OnTopPSShot?.Invoke(this, EventArgs.Empty);
-            } else {
-                level2PS_Bot.Emit(pelletsPerBullet);
-                OnBotPSShot?.Invoke(this, EventArgs.Empty);
-            }
-
-            shootingTop = !shootingTop;
+        InvokeOnMannerShot();
+        if (shootingTop) {
+            level2PS_Top.Emit(pelletsPerBullet);
+            OnTopPSShot?.Invoke(this, EventArgs.Empty);
         }
+        else {
+            level2PS_Bot.Emit(pelletsPerBullet);
+            OnBotPSShot?.Invoke(this, EventArgs.Empty);
+        }
+        shootingTop = !shootingTop;
 
         readyToShoot = false;
         cooldownTriggered = false;
