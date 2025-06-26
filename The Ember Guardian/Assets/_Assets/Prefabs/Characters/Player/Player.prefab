@@ -113252,10 +113252,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7013635720175516432}
+  - component: {fileID: 8913106858233095903}
   - component: {fileID: 5489468714518195547}
   - component: {fileID: 6566285147448799312}
   - component: {fileID: 1889095667047823766}
-  - component: {fileID: 8913106858233095903}
   m_Layer: 12
   m_Name: AOEBody
   m_TagString: Untagged
@@ -113278,6 +113278,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7288071011835389396}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8913106858233095903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5220288824026132568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc1c6d8dfb524e64eafc038c091a2c32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &5489468714518195547
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -113392,18 +113404,6 @@ CircleCollider2D:
   m_Offset: {x: -0.011796474, y: 0}
   serializedVersion: 2
   m_Radius: 4.995857
---- !u!114 &8913106858233095903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5220288824026132568}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc1c6d8dfb524e64eafc038c091a2c32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5344450516279225612
 GameObject:
   m_ObjectHideFlags: 0

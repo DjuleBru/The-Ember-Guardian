@@ -35,6 +35,7 @@ public class SpecialTower_Manner : MonoBehaviour {
     [SerializeField] protected int shotsPerAmmoClip;
     [SerializeField] protected int pelletsPerBullet;
     [SerializeField] protected float maxAngleToAim = 360f;
+    protected float attackSpeedBuff = 1f;
     protected int currentShotIndex;
 
     [SerializeField] protected int maxEngineersManning;
@@ -88,7 +89,7 @@ public class SpecialTower_Manner : MonoBehaviour {
         towerOutOfAmmo = false;
     }
 
-    protected void Update() {
+    protected virtual void Update() {
         if (engineersManning.Count == 0) return;
         if (currentShotIndex == 0) return;
         if (reloading) return;
@@ -166,7 +167,7 @@ public class SpecialTower_Manner : MonoBehaviour {
     protected void HandleCooldown() {
         if (readyToShoot) return;
 
-        cooldownTimer += Time.deltaTime;
+        cooldownTimer += Time.deltaTime * attackSpeedBuff;
 
         if(cooldownTimer > cooldownDelay) {
             if(!cooldownTriggered) {
@@ -332,6 +333,15 @@ public class SpecialTower_Manner : MonoBehaviour {
 
     public Creature GetTargetCreature() {
         return targetCreature;
+    }
+
+    public void BuffCooldownTime(float buff) {
+        Debug.Log("BuffCooldownTime " + buff);
+        attackSpeedBuff += buff;
+    }
+    public void DebuffCooldownTime(float buff) {
+        Debug.Log("DebuffCooldownTime " + buff);
+        attackSpeedBuff -= buff;
     }
 
     private void OnDestroy() {

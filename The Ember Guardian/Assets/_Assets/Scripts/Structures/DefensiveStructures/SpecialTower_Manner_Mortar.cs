@@ -8,7 +8,13 @@ public class SpecialTower_Manner_Mortar : SpecialTower_Manner
 
     [SerializeField] private ProjectileSO mortarProjectileSO_lvl1;
     [SerializeField] private ProjectileSO mortarProjectileSO_lvl2;
+    [SerializeField] private Transform testMortarProjectileForces;
+
     [SerializeField] private Transform projectileSpawnPosition;
+
+    [SerializeField] private float level2Range;
+    [SerializeField] private float level2Damage;
+
     protected Queue<Projectile> availableProjectiles = new Queue<Projectile>();
     private ProjectileSO mortarProjectileSO;
 
@@ -25,6 +31,36 @@ public class SpecialTower_Manner_Mortar : SpecialTower_Manner
     protected override void SpecialTower_OnStructureUpgraded(object sender, System.EventArgs e) {
         level2Mortar = true;
         mortarProjectileSO = mortarProjectileSO_lvl2;
+        mannerRange = level2Range;
+        
+        foreach(EngineerJob engineer in engineersManning) {
+            engineer.GetDetectionCollider().SetDetectionColliderRadius(mannerRange);
+        }
+    }
+
+    protected override void Update() {
+        
+        if (engineersManning.Count == 0) return;
+        if (currentShotIndex == 0) return;
+        if (reloading) return;
+
+        if (engineersManning.Count == 2) {
+            HandleCooldown();
+        };
+
+        targetCreatureTimer -= Time.deltaTime;
+        if (targetCreatureTimer < 0) {
+            targetCreatureTimer = targetCreatureRate;
+            HandleTargetingCreatures();
+        }
+
+        if (targetCreature == null) return;
+
+        HandleAim();
+
+        if (readyToShoot) {
+            Shoot();
+        }
     }
 
     protected override void Shoot() {
@@ -43,7 +79,6 @@ public class SpecialTower_Manner_Mortar : SpecialTower_Manner
 
         projectile.gameObject.SetActive(true);
         projectile.transform.position = projectileSpawnPosition.position;
-
         Vector3 randomizer = new Vector3(UnityEngine.Random.Range(1, -1), 0, 0);
 
         if(targetCreature == null) {
@@ -53,7 +88,8 @@ public class SpecialTower_Manner_Mortar : SpecialTower_Manner
         // No more targets : cancel shot
         if (targetCreature == null) yield break;
 
-        projectile.ActivateAndInitialize(targetCreature.transform, mortarProjectileSO, engineersManning[0].GetComponent<Worker>(), bulletDamage, randomizer, true);
+        ProjectileForces projectileForces = projectile.GetComponent<ProjectileForces>();
+        projectileForces.ActivateAndInitializeWithForces(targetCreature.transform, mortarProjectileSO_lvl1, engineersManning[0].GetComponent<Worker>(), bulletDamage, 0 ,true);
         OnProjectileShot?.Invoke(this, EventArgs.Empty);
 
         if (specialTower.GetCurrentAmmoClip() == 0) {

@@ -21,7 +21,8 @@ public class ProjectileVisual : MonoBehaviour
         projectile.OnProjectileReset += Projectile_OnProjectileReset;
 
         float direction = projectile.GetTrajectoryEndPoint().x - transform.position.x;
-        if ((direction) < 0) {
+
+        if ((projectile.transform.position.x) < 0 && direction < 0) {
             transform.localScale = new Vector3(-1, 1, 1);
         }
     }

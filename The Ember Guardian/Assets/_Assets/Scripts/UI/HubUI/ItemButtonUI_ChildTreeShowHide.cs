@@ -8,6 +8,7 @@ public class ItemButtonUI_ChildTreeShowHide : MonoBehaviour
     [SerializeField] private List<Image> inputLinkList; 
     [SerializeField] private float fadeDuration = 0.15f;
     [SerializeField] private Image treeRaycastImage;
+    [SerializeField] private Image treeRaycastImage2;
     private CanvasGroup canvasGroup;
 
     private Coroutine activeCoroutine;
@@ -23,6 +24,10 @@ public class ItemButtonUI_ChildTreeShowHide : MonoBehaviour
         canvasGroup = GetComponent<CanvasGroup>();
 
         treeRaycastImage.raycastTarget = true;
+        if(treeRaycastImage2 != null) {
+            treeRaycastImage2.raycastTarget = true;
+        }
+
         canvasGroup.alpha = 0;
         canvasGroup.interactable = false;
         foreach (var image in inputLinkList) {
@@ -69,6 +74,9 @@ public class ItemButtonUI_ChildTreeShowHide : MonoBehaviour
         canvasGroup.alpha = 1f;
         canvasGroup.interactable = true;
         treeRaycastImage.raycastTarget = false;
+        if(treeRaycastImage2 != null) {
+            treeRaycastImage2.raycastTarget = false;
+        }
         foreach (var image in inputLinkList) {
             Color color = image.color;
             color.a = 1f;

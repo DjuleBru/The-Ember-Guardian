@@ -53,7 +53,6 @@ public class SkillItem : MerchantItem {
 
             itemName = skillSO.SkillName;
             itemStatChanges = skillSO.StatChanges;
-            itemDescription = skillSO.Description;
             itemType = skillSO.itemType;
             skillType = skillSO.skillType;
             icon = skillSO.Icon;

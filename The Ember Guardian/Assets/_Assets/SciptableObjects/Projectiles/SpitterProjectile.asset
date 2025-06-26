@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad119f31ca28824aad1883e1ac68ecb, type: 3}
   m_Name: SpitterProjectile
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 7911136206213874445, guid: 633b6fa6e55658540b5a5461f59a52dd, type: 3}
+  projectilePrefab: {fileID: 7911136206213874445, guid: 96b299c63ef15664e9714488b780a584, type: 3}
+  isExplosiveProjectile: 0
+  usesAnimationCurve: 0
   projectileTrajectoryAnimationCurve:
     serializedVersion: 2
     m_Curve:
@@ -115,6 +117,13 @@ MonoBehaviour:
   projectileMaxMoveSpeed: 10
   projectileTrajectoryYCurve: 0.5
   trajectoryEndPointRandomOffsetValue: 0.5
+  usesForce: 1
+  minApexY: 4
+  maxApexY: 12
+  distanceToTargetForMinApex: 2
+  distanceToTargetForMaxApex: 15
+  apexRandomizer: 2
+  gravityScale: 4
   projectileInstantiatedAudioClips:
   - {fileID: 8300000, guid: b61e7a58c80f544409551ae17ae120ce, type: 3}
   - {fileID: 8300000, guid: 9319c286fa470054599ea79023524ff4, type: 3}

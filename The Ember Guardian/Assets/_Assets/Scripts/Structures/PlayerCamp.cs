@@ -96,7 +96,7 @@ public class PlayerCamp : MonoBehaviour
         }
 
         foreach (CampEditManager.StructurePlacementData data in structurePlacementData) {
-            StructureSO structureSO = data.structureSO;
+            StructureSO structureSO = StructuresManager.Instance.GetStructureSO(data.structureType);
             int position = data.positionIndex;
 
             float worldPositionX = LayoutToWorldPosition(position, structureSO);

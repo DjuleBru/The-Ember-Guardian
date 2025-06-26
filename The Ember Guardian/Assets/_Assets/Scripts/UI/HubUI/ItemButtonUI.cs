@@ -21,6 +21,7 @@ public class ItemButtonUI : ButtonUI {
     [SerializeField] private Image iconImage;
     [SerializeField] private Image outlineImage;
     [SerializeField] private Image backgroundImage;
+    [SerializeField] private GameObject lockedFromOtherMerchantImage;
     [SerializeField] private ItemButtonUI_Visual itemButtonUI_Visual;
     [SerializeField] private Color boughtOutlineColor;
     [SerializeField] private Color boughtBackgroundColor;
@@ -271,6 +272,16 @@ public class ItemButtonUI : ButtonUI {
             }
         }
     }
+    private bool ItemLockedFromOtherMerchantItem() {
+        foreach (ItemButtonUI itemButtonUI in lockingItemButtonUIList) {
+            HubMerchant lockingItemHubMerchantParent = itemButtonUI.GetHubMerchantParent();
+
+            if (lockingItemHubMerchantParent != null && lockingItemHubMerchantParent != hubMerchantItem.GetHubMerchantParent()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private void StartBuyItemVisuals() {
         if (hubMerchantItem.GetItemUpgradeable() && hubMerchantItem.GetItemMaxed()) {
@@ -384,6 +395,18 @@ public class ItemButtonUI : ButtonUI {
     }
 
     private void RefreshItemStatusVisuals() {
+
+        if (ItemLockedFromOtherMerchantItem()) {
+            lockedFromOtherMerchantImage.gameObject.SetActive(true);
+            iconImage.gameObject.SetActive(false);
+            lockHoverInteractions = true;
+        }
+        else {
+            lockedFromOtherMerchantImage.gameObject.SetActive(false);
+            iconImage.gameObject.SetActive(true);
+            lockHoverInteractions = false;
+        }
+
         if (!hubMerchantItem.GetItemUnlocked() || (itemLockedInDemo && HUBManager.Instance.GetIsDemo())) {
             outlineImage.color = Color.grey;
             return;

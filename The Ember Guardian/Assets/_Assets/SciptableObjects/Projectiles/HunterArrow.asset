@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad119f31ca28824aad1883e1ac68ecb, type: 3}
   m_Name: HunterArrow
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 7911136206213874445, guid: a311ce4e518152146b39355d91931a25, type: 3}
+  projectilePrefab: {fileID: 7911136206213874445, guid: 068377ba5f17b6641901f7b39ac0300c, type: 3}
+  isExplosiveProjectile: 0
+  usesAnimationCurve: 0
   projectileTrajectoryAnimationCurve:
     serializedVersion: 2
     m_Curve:
@@ -115,6 +117,13 @@ MonoBehaviour:
   projectileMaxMoveSpeed: 15
   projectileTrajectoryYCurve: 0.5
   trajectoryEndPointRandomOffsetValue: 0.2
+  usesForce: 1
+  minApexY: 4
+  maxApexY: 10
+  distanceToTargetForMinApex: 2
+  distanceToTargetForMaxApex: 15
+  apexRandomizer: 2
+  gravityScale: 6
   projectileInstantiatedAudioClips:
   - {fileID: 8300000, guid: 1a92dc2cd6f6fa243945d06998ed24cb, type: 3}
   - {fileID: 8300000, guid: e5658a90c72739c48afea640aad82222, type: 3}

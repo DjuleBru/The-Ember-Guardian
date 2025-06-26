@@ -10,6 +10,7 @@ public class StructureLocationVisual : MonoBehaviour
     [SerializeField] protected SpriteRenderer structureVisual_Build;
     [SerializeField] protected SpriteRenderer structureVisual_ProgressionLocked;
     [SerializeField] protected Sprite[] progressionLockedCampSprites;
+    [SerializeField] protected Transform payCurrenciesGO;
 
     protected StructureLocation structureLocation;
     protected bool buildable;
@@ -39,13 +40,14 @@ public class StructureLocationVisual : MonoBehaviour
         } else {
             buildable = (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night);
         }
-        
     }
 
     protected void SetXAxisScale() {
         if(structureLocation.transform.position.x < 0) {
             Vector3 localScale = new Vector3(-1, 1, 1);
             transform.localScale = localScale;
+
+            payCurrenciesGO.localScale = new Vector3(-1, 1, 1);
         }
     }
 

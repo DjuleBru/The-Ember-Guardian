@@ -6511,7 +6511,7 @@ Transform:
   m_GameObject: {fileID: 2667511936893756392}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.68, y: 2.38, z: 0}
+  m_LocalPosition: {x: 0.65, y: 2.29, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6630,7 +6630,7 @@ Transform:
   m_GameObject: {fileID: 4275770461355550044}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.61, z: 0}
+  m_LocalPosition: {x: 0.1, y: 3.59, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6866,6 +6866,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8504583562692284216}
   - component: {fileID: 8637429564804074707}
+  - component: {fileID: 9157973927857565804}
   m_Layer: 0
   m_Name: Manner0
   m_TagString: Untagged
@@ -6925,6 +6926,42 @@ MonoBehaviour:
   pelletsPerBullet: 1
   maxAngleToAim: 360
   maxEngineersManning: 1
+  hasReloadingEngineer: 0
+--- !u!58 &9157973927857565804
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4907582518888982057}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.028424472, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.11911234
 --- !u!1 &5023521982742287485
 GameObject:
   m_ObjectHideFlags: 0
@@ -6935,6 +6972,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4870491508172662096}
   - component: {fileID: 4534770321828416904}
+  - component: {fileID: 8760106113169474457}
   m_Layer: 0
   m_Name: Manner1
   m_TagString: Untagged
@@ -6994,6 +7032,42 @@ MonoBehaviour:
   pelletsPerBullet: 1
   maxAngleToAim: 360
   maxEngineersManning: 1
+  hasReloadingEngineer: 0
+--- !u!58 &8760106113169474457
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5023521982742287485}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.005684823, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.18733093
 --- !u!1 &6251382371856495487
 GameObject:
   m_ObjectHideFlags: 0
@@ -17833,6 +17907,7 @@ MonoBehaviour:
   cam: {fileID: 0}
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   groundDestroysBullet: 1
+  isPlayerWeaponPS: 0
 --- !u!1 &7930138178368759625
 GameObject:
   m_ObjectHideFlags: 0
@@ -17994,6 +18069,7 @@ MonoBehaviour:
   cooldownAudioClips:
   - {fileID: 8300000, guid: 0d83a9a872c7b0e4284513c303d62d3c, type: 3}
   playerClimbOnTower: {fileID: 8300000, guid: 68c7e01ce135c4d46ad6afe5b3893d6b, type: 3}
+  shootDelayToPlaySound: 0
   addAmmoVolumeMultiplier: 1
   removeAmmoVolumeMultiplier: 1
   shootVolumeMultiplier: 1
@@ -22929,6 +23005,7 @@ MonoBehaviour:
   cam: {fileID: 0}
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   groundDestroysBullet: 1
+  isPlayerWeaponPS: 0
 --- !u!1 &8230800140391008266
 GameObject:
   m_ObjectHideFlags: 0
@@ -24907,6 +24984,7 @@ MonoBehaviour:
   level1TowerCollider: {fileID: 9167047541157140508}
   level2TowerCollider: {fileID: 934103378498474821}
   level2TowerEngineerCapacity: 2
+  playerCanClimbOnTower: 1
   maxAmmoClipsInStorage: 5
 --- !u!1 &3574650016445750356 stripped
 GameObject:

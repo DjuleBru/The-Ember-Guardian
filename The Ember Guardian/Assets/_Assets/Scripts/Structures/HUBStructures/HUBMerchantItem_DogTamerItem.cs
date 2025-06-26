@@ -5,20 +5,44 @@ using UnityEngine;
 public class HUBMerchantItem_DogTamerItem : HubMerchantItem
 {
     public enum DogTamerItemType {
-        BiteAbility,
-        DigResourceAbility,
-        BiteCooldown,
-        BiteDamage,
-        DigResourceCooldown,
-        DigResourceDoubleProbability,
-        AmbushDetectionProbability,
-        AmbushDetectionAbility,
-        DigResourceProbability,
+        GermanShepherd_BiteAbility,
+        GermanShepherd_DigResourceAbility,
+        GermanShepherd_BiteCooldown,
+        GermanShepherd_BiteDamage,
+        GermanShepherd_DigResourceCooldown,
+        GermanShepherd_DigResourceDoubleProbability,
+        GermanShepherd_AmbushDetectionProbability,
+        GermanShepherd_AmbushDetectionAbility,
+        GermanShepherd_DigResourceProbability,
+
+        Dog_GermanShepherd,
+        Dog_GoldenRetreiver,
+        Dog_DarkCompanion,
+
+        GoldenRetreiver_BiteAbility,
+        GoldenRetreiver_BiteCooldown,
+        GoldenRetreiver_BiteDamage,
+        GoldenRetreiver_BuffWorkersAbility,
+        GoldenRetreiver_BuffWorkersBuffAmount,
+        GoldenRetreiver_BuffWorkersRadius,
+        GoldenRetreiver_PickUpItems,
+
+        DarkCompanion_BiteAbility,
+        DarkCompanion_BiteCooldown,
+        DarkCompanion_BiteDamage,
+        DarkCompanion_LaserAttack,
+        DarkCompanion_LaserDamagePerSecond,
+        DarkCompanion_LaserCooldown,
+        DarkCompanion_StompAbility,
+        DarkCompanion_StompCooldown,
+        DarkCompanion_StompStunDuration,
+        DarkCompanion_StompDamage,
     }
 
     public enum DogTamerItemCategory {
         NewAbility,
         StatUpgrade,
+        NewDog,
     }
 
     [SerializeField] private DogTamerItemType itemType;
@@ -31,13 +55,13 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
 
     public override void BuyItem() {
         if (itemCategory == DogTamerItemCategory.NewAbility) {
-            if(itemType == DogTamerItemType.BiteAbility) {
+            if(itemType == DogTamerItemType.GermanShepherd_BiteAbility) {
                 DogStats.Instance.UnlockBiteAbility();
             }
-            if(itemType == DogTamerItemType.DigResourceAbility) {
+            if(itemType == DogTamerItemType.GermanShepherd_DigResourceAbility) {
                 DogStats.Instance.UnlockDigResourceAbility();
             }
-            if(itemType == DogTamerItemType.AmbushDetectionAbility) {
+            if(itemType == DogTamerItemType.GermanShepherd_AmbushDetectionAbility) {
                 DogStats.Instance.UnlockDetectAmbushAbility();
             }
         }
@@ -85,7 +109,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
             float relativeDamageBulletModifier = 0;
 
 
-            if (itemType == DogTamerItemType.BiteCooldown) {
+            if (itemType == DogTamerItemType.GermanShepherd_BiteCooldown) {
                 initialStatValue = DogStats.Instance.GetInitialBiteCooldown();
                 currentStatValue = DogStats.Instance.GetBiteCooldown().ToString();
                 totalStatWithModifierPostfix = "s";
@@ -95,7 +119,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
                 totalStatWithModifierPrefix = "";
             }
 
-            if (itemType == DogTamerItemType.BiteDamage) {
+            if (itemType == DogTamerItemType.GermanShepherd_BiteDamage) {
                 initialStatValue = DogStats.Instance.GetInitialBiteDamage();
                 currentStatValue = DogStats.Instance.GetBiteDamage().ToString();
                 totalStatWithModifierPostfix = "";
@@ -105,7 +129,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
                 totalStatWithModifierPrefix = "";
             }
 
-            if (itemType == DogTamerItemType.DigResourceProbability) {
+            if (itemType == DogTamerItemType.GermanShepherd_DigResourceProbability) {
                 initialStatValue = DogStats.Instance.GetInitialDigResourceProbability();
                 currentStatValue = DogStats.Instance.GetDigResourceProbility().ToString();
                 totalStatWithModifierPostfix = "%";
@@ -115,7 +139,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
                 totalStatWithModifierPrefix = "";
             }
 
-            if (itemType == DogTamerItemType.DigResourceCooldown) {
+            if (itemType == DogTamerItemType.GermanShepherd_DigResourceCooldown) {
                 initialStatValue = DogStats.Instance.GetInitialDigResourceCooldown();
                 currentStatValue = DogStats.Instance.GetDigResourceCooldown().ToString();
                 totalStatWithModifierPostfix = "s";
@@ -125,7 +149,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
                 totalStatWithModifierPrefix = "";
             }
 
-            if (itemType == DogTamerItemType.DigResourceDoubleProbability) {
+            if (itemType == DogTamerItemType.GermanShepherd_DigResourceDoubleProbability) {
                 initialStatValue = DogStats.Instance.GetInitialDigResourceDoubleProbability();
                 currentStatValue = DogStats.Instance.GetDigResourceDoubleProbability().ToString();
                 totalStatWithModifierPostfix = "%";
@@ -135,7 +159,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
                 totalStatWithModifierPrefix = "";
             }
 
-            if (itemType == DogTamerItemType.AmbushDetectionProbability) {
+            if (itemType == DogTamerItemType.GermanShepherd_AmbushDetectionProbability) {
                 initialStatValue = DogStats.Instance.GetInitialAmbushDetectionProbability();
                 currentStatValue = DogStats.Instance.GetDetectAmbushProbability().ToString();
                 totalStatWithModifierPostfix = "%";
@@ -187,22 +211,22 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
     private void SetNewStatIncreaseStats() {
         float newAbsoluteValueBuff = linkedStatModifierSO.statModifierList[itemLevel];
 
-        if (itemType == DogTamerItemType.BiteCooldown) {
+        if (itemType == DogTamerItemType.GermanShepherd_BiteCooldown) {
             DogStats.Instance.BuffBiteCooldown(newAbsoluteValueBuff);
         }
-        if (itemType == DogTamerItemType.BiteDamage) {
+        if (itemType == DogTamerItemType.GermanShepherd_BiteDamage) {
             DogStats.Instance.BuffBiteDamage((int)newAbsoluteValueBuff);
         }
-        if (itemType == DogTamerItemType.DigResourceDoubleProbability) {
+        if (itemType == DogTamerItemType.GermanShepherd_DigResourceDoubleProbability) {
             DogStats.Instance.BuffDigResourceDoubleProbability(newAbsoluteValueBuff);
         }
-        if (itemType == DogTamerItemType.DigResourceCooldown) {
+        if (itemType == DogTamerItemType.GermanShepherd_DigResourceCooldown) {
             DogStats.Instance.BuffDigResourceCooldown(newAbsoluteValueBuff);
         }
-        if (itemType == DogTamerItemType.AmbushDetectionProbability) {
+        if (itemType == DogTamerItemType.GermanShepherd_AmbushDetectionProbability) {
             DogStats.Instance.BuffAmbushDetectionProbability(newAbsoluteValueBuff);
         }
-        if (itemType == DogTamerItemType.DigResourceProbability) {
+        if (itemType == DogTamerItemType.GermanShepherd_DigResourceProbability) {
             DogStats.Instance.BuffDigResourceProbability(newAbsoluteValueBuff);
         }
     }
@@ -224,7 +248,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
             statDescriptionList.Add(unlockDescription);
         }
 
-        if (itemType == DogTamerItemType.BiteCooldown) {
+        if (itemType == DogTamerItemType.GermanShepherd_BiteCooldown) {
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current bite cooldown ");
                 statDescriptionList.Add("Bite cooldown ");
@@ -233,7 +257,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
             statDescriptionList.Add("New bite cooldown ");
         }
 
-        if (itemType == DogTamerItemType.BiteDamage) {
+        if (itemType == DogTamerItemType.GermanShepherd_BiteDamage) {
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current bite damage ");
                 statDescriptionList.Add("Bite damage ");
@@ -242,7 +266,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
             statDescriptionList.Add("New bite damage ");
         }
 
-        if (itemType == DogTamerItemType.DigResourceCooldown) {
+        if (itemType == DogTamerItemType.GermanShepherd_DigResourceCooldown) {
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current dig cooldown ");
                 statDescriptionList.Add("Dig cooldown ");
@@ -251,7 +275,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
             statDescriptionList.Add("New dig cooldown ");
         }
 
-        if (itemType == DogTamerItemType.DigResourceProbability) {
+        if (itemType == DogTamerItemType.GermanShepherd_DigResourceProbability) {
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Current dig probability ");
                 statDescriptionList.Add("Dig probability ");
@@ -260,7 +284,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
             statDescriptionList.Add("New dig probability ");
         }
 
-        if (itemType == DogTamerItemType.DigResourceDoubleProbability) {
+        if (itemType == DogTamerItemType.GermanShepherd_DigResourceDoubleProbability) {
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Dig x2 chance ");
                 statDescriptionList.Add("x2 chance ");
@@ -269,7 +293,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
             statDescriptionList.Add("New x2 chance ");
         }
 
-        if (itemType == DogTamerItemType.AmbushDetectionProbability) {
+        if (itemType == DogTamerItemType.GermanShepherd_AmbushDetectionProbability) {
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add("Detect ambush chance ");
                 statDescriptionList.Add("Detection chance ");

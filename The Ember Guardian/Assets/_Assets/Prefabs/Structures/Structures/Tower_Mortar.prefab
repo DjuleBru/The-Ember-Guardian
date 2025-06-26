@@ -265,7 +265,7 @@ MonoBehaviour:
         ResetTargetValuesAfterShake: 1
         ShakeSpeed: 50
         ShakeRange: 0.1
-        ShakeMainDirection: {x: 1, y: 0, z: 0}
+        ShakeMainDirection: {x: 0, y: 1, z: 0}
         RandomizeDirection: 0
         ShakeAltDirection: {x: 0, y: 1, z: 0}
         RandomizeDirectionOnPlay: 0
@@ -666,7 +666,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.2
+      scalar: 0.3
       minScalar: 0.15
       maxCurve:
         serializedVersion: 2
@@ -1530,7 +1530,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 10
+        scalar: 15
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -1581,7 +1581,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
       cycleCount: 1
-      repeatInterval: 0.01
+      repeatInterval: 0.2
       probability: 1
   SizeModule:
     enabled: 0
@@ -5390,7 +5390,7 @@ Transform:
   m_GameObject: {fileID: 2741440275362368039}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.8, y: 1.411, z: 0}
+  m_LocalPosition: {x: 0.928, y: 1.18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5910,20 +5910,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 909314654429486205, guid: 46560462b2d9d2345b7c25f73e7ed6ec, type: 3}
       propertyPath: shootVolumeMultiplier
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 909314654429486205, guid: 46560462b2d9d2345b7c25f73e7ed6ec, type: 3}
       propertyPath: shootAudioClips.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 909314654429486205, guid: 46560462b2d9d2345b7c25f73e7ed6ec, type: 3}
       propertyPath: shootAudioClips.Array.data[0]
       value: 
-      objectReference: {fileID: 8300000, guid: 5c42f0678a6a5d04a869e7a5ac1f94bb, type: 3}
+      objectReference: {fileID: 8300000, guid: 9882c6e6c1f20ca4aac5277ca4c58660, type: 3}
     - target: {fileID: 909314654429486205, guid: 46560462b2d9d2345b7c25f73e7ed6ec, type: 3}
       propertyPath: shootAudioClips.Array.data[1]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8300000, guid: 35aceda25d0f17d459ea73325ee963b8, type: 3}
     - target: {fileID: 909314654429486205, guid: 46560462b2d9d2345b7c25f73e7ed6ec, type: 3}
       propertyPath: shootAudioClips.Array.data[2]
       value: 
@@ -5946,11 +5946,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1191286124975781576, guid: 46560462b2d9d2345b7c25f73e7ed6ec, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.823
+      value: -0.861
       objectReference: {fileID: 0}
     - target: {fileID: 1191286124975781576, guid: 46560462b2d9d2345b7c25f73e7ed6ec, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.401
+      value: 1.197
       objectReference: {fileID: 0}
     - target: {fileID: 1261167102824250818, guid: 46560462b2d9d2345b7c25f73e7ed6ec, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6541,7 +6541,10 @@ MonoBehaviour:
   hasReloadingEngineer: 1
   mortarProjectileSO_lvl1: {fileID: 11400000, guid: 07719890ad5ec47458575069973bee8b, type: 2}
   mortarProjectileSO_lvl2: {fileID: 11400000, guid: 4fbb7a991830efe4fbed41b33da82a5f, type: 2}
+  testMortarProjectileForces: {fileID: 7911136206213874445, guid: 7fe8262b50165e943a461fcc4a993bf0, type: 3}
   projectileSpawnPosition: {fileID: 999112956358923450}
+  level2Range: 35
+  level2Damage: 25
 --- !u!4 &7341675773674992441 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7717396373542308265, guid: 46560462b2d9d2345b7c25f73e7ed6ec, type: 3}

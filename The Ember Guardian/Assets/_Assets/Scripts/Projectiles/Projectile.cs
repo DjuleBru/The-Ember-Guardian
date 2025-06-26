@@ -6,48 +6,48 @@ using UnityEngine.Tilemaps;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private LayerMask animalLayer;
+    [SerializeField] protected LayerMask groundLayer;
+    [SerializeField] protected LayerMask animalLayer;
 
-    private ProjectileSO projectileSO;
+    protected ProjectileSO projectileSO;
 
     private AnimationCurve projectileTrajectoryAnimationCurve;
     private AnimationCurve projectileYDifferentialWithTargetAnimationCurve;
     private AnimationCurve projectileSpeedAnimationCurve;
 
     private float projectileMaxMoveSpeed;
-    protected float projectileTrajectoryYCurve = .2f;
+    private float projectileTrajectoryYCurve = .2f;
 
-    private Rigidbody2D rb;
+    protected Rigidbody2D rb;
 
-    private Vector3 trajectoryRange;
-    private Vector3 trajectoryStartPoint;
-    private Vector3 trajectoryEndPoint;
-    private Transform projectileTarget;
-    private Vector3 projectileStartPoint;
-    private Vector3 projectileMoveDir;
+    protected Vector3 trajectoryRange;
+    protected Vector3 trajectoryStartPoint;
+    protected Vector3 trajectoryEndPoint;
+    protected Transform projectileTarget;
+    protected Vector3 projectileStartPoint;
+    protected Vector3 projectileMoveDir;
 
-    private Vector3 nextPosition;
-    private Vector3 trajectoryEndPointRandomized;
-    private Vector3 trajectoryEndPointRandomizer;
+    protected Vector3 nextPosition;
+    protected Vector3 trajectoryEndPointRandomized;
+    protected Vector3 trajectoryEndPointRandomizer;
 
-    private float trajectoryMaxRelativeHeight;
-    private float projectileMoveSpeed;
-    private float nextYTrajectoryPosition;
-    private float nextPositionXNormalized;
-    private float nextPositionYCorrectionAbsolute;
+    protected float trajectoryMaxRelativeHeight;
+    protected float projectileMoveSpeed;
+    protected float nextYTrajectoryPosition;
+    protected float nextPositionXNormalized;
+    protected float nextPositionYCorrectionAbsolute;
 
-    private bool projectileHasHit;
+    protected bool projectileHasHit;
     public event EventHandler OnProjectileHit;
     public event EventHandler OnProjectileReset;
     public static event EventHandler OnAnyProjectileInstantiated;
     public static event EventHandler OnAnyProjectileHit;
 
-    private Mob parentMob;
-    private Mob mobHit;
-    private bool enemyProjectile;
-    private bool homingProjectile;
-    private int damage;
+    protected Mob parentMob;
+    protected Mob mobHit;
+    protected bool enemyProjectile;
+    protected bool homingProjectile;
+    protected int damage;
 
     public void ActivateAndInitialize(Transform targetTransform, ProjectileSO projectileSO, Mob parentMob, int damage, Vector3 endPointRandomOffsetValue,  bool homingProjectile) {
         if(targetTransform == null) {
@@ -89,16 +89,16 @@ public class Projectile : MonoBehaviour
         OnAnyProjectileInstantiated?.Invoke(this, EventArgs.Empty);
     }
 
-    private void Start() {
+    protected void Start() {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Update() {
+    protected virtual void Update() {
         if (projectileHasHit) return;
         UpdateProjectilePosition();
     }
 
-    private void UpdateProjectilePosition() {
+    protected void UpdateProjectilePosition() {
 
         if (homingProjectile) {
 
@@ -172,20 +172,20 @@ public class Projectile : MonoBehaviour
         StartCoroutine(ResetInObjectPoolAfterDelay(2f));
     }
 
-    private IEnumerator ResetInObjectPoolAfterDelay(float delay) {
+    protected IEnumerator ResetInObjectPoolAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
         ResetInObjectPool();
     }
 
-    public Vector2 GetTrajectoryEndPoint() {
+    public virtual Vector2 GetTrajectoryEndPoint() {
         return trajectoryEndPointRandomized;
     }
 
-    public Vector3 GetProjectileMoveDir() {
+    public virtual Vector3 GetProjectileMoveDir() {
         return projectileMoveDir;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
+    protected void OnTriggerEnter2D(Collider2D collision) {
         if (projectileHasHit && !projectileSO.isExplosiveProjectile) return;
         if (collision.gameObject.GetComponent<CreatureDetectionCollider>() != null) return;
         if (collision.gameObject.GetComponent<WorkerDetectionCollider>() != null) return;
@@ -224,9 +224,14 @@ public class Projectile : MonoBehaviour
             barricade.TakeDamage(damage, parentMob.transform);
         }
 
+        // Sol ou autres
+        if (groundLayer == (groundLayer | (1 << collision.gameObject.layer))) {
+            ProjectileHasHit(false);
+        }
+
     }
 
-    private void HandleMobCollision(Mob mob) {
+    protected void HandleMobCollision(Mob mob) {
 
         if (mobHit != null) {
             ProjectileHasHit(true);
@@ -239,7 +244,7 @@ public class Projectile : MonoBehaviour
         return projectileSO;
     }
 
-    private void ResetInObjectPool() {
+    protected void ResetInObjectPool() {
         OnProjectileReset?.Invoke(this, EventArgs.Empty);
         projectileHasHit = false;
         gameObject.SetActive(false);
@@ -249,5 +254,9 @@ public class Projectile : MonoBehaviour
         } else {
             Destroy(gameObject);
         }
+    }
+
+    public void InvokeOnAnyProjectileInstantiated() {
+        OnAnyProjectileInstantiated?.Invoke(this, EventArgs.Empty);
     }
 }

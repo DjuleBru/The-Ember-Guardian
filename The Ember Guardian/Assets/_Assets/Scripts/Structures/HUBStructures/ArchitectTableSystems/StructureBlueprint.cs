@@ -206,7 +206,6 @@ public class StructureBlueprint : MonoBehaviour {
 
     public bool GetBlueprintLocked() {
         LoadStructureUnlocked();
-        Debug.Log(linkedStructureSO.structureType + " GetBlueprintLocked " + locked);
         return locked;
     } 
 }

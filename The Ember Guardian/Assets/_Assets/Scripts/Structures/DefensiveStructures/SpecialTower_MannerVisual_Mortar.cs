@@ -41,6 +41,7 @@ public class SpecialTower_MannerVisual_Mortar : SpecialTower_MannerVisual
 
     private float distanceToCreatureFar = 15;
     private float distanceToCreatureClose = 3;
+    private float distanceToCreatureFarLevel2 = 20;
 
     private float refreshAimingVisualsTimer;
     private float refreshAimingVisualsRate = 1f;
@@ -129,7 +130,7 @@ public class SpecialTower_MannerVisual_Mortar : SpecialTower_MannerVisual
         aimingCloseRightSprite = aimingCloseRightSprite_lvl2;
         aimingFarRightSprite = aimingFarRightSprite_lvl2;
 
-
+        distanceToCreatureFar = distanceToCreatureFarLevel2;
         weaponSpriteRenderer.sprite = aimingCloseRightSprite;
         mannerAnimator.SetInteger("EngineersManning", engineersManning);
     }

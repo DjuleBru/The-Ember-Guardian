@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad119f31ca28824aad1883e1ac68ecb, type: 3}
   m_Name: MortarProjectile_Lvl1
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 7911136206213874445, guid: efc20758c8562ba47ba05aed4f48e52e, type: 3}
+  projectilePrefab: {fileID: 7911136206213874445, guid: 7fe8262b50165e943a461fcc4a993bf0, type: 3}
+  isExplosiveProjectile: 1
+  usesAnimationCurve: 0
   projectileTrajectoryAnimationCurve:
     serializedVersion: 2
     m_Curve:
@@ -112,10 +114,16 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  isExplosiveProjectile: 1
-  projectileMaxMoveSpeed: 16
+  projectileMaxMoveSpeed: 20
   projectileTrajectoryYCurve: 0.6
   trajectoryEndPointRandomOffsetValue: 0.5
+  usesForce: 1
+  minApexY: 10
+  maxApexY: 20
+  distanceToTargetForMinApex: 0
+  distanceToTargetForMaxApex: 25
+  apexRandomizer: 1
+  gravityScale: 3
   projectileInstantiatedAudioClips: []
   projectileHitAudioClips:
   - {fileID: 8300000, guid: 54b7fe9fbf2a02c47bcfc940b05de274, type: 3}

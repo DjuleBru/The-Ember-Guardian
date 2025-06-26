@@ -10,11 +10,11 @@ public class CampEditManager : MonoBehaviour {
     public static CampEditManager Instance;
     public class StructurePlacementData {
         public int positionIndex;
-        public StructureSO structureSO;
+        public StructureSO.StructureType structureType;
 
-        public StructurePlacementData(int index, StructureSO structureSO) {
+        public StructurePlacementData(int index, StructureSO.StructureType structureType) {
             this.positionIndex = index;
-            this.structureSO = structureSO;
+            this.structureType = structureType;
         }
     }
 
@@ -441,12 +441,13 @@ public class CampEditManager : MonoBehaviour {
 
         foreach (var pair in placedStructureBlueprints) {
             StructureSO so = pair.Value.GetLinkedStructureSO();
+            StructureSO.StructureType type = pair.Value.GetLinkedStructureSO().structureType;
 
             if (!so.structurePositionMovable) {
                 continue; // Skip les structures non déplaçables
             }
 
-            layoutToSave.Add(new StructurePlacementData(pair.Key, so));
+            layoutToSave.Add(new StructurePlacementData(pair.Key, type));
         }
 
         ES3.Save("campLayout", layoutToSave);
@@ -468,11 +469,11 @@ public class CampEditManager : MonoBehaviour {
 
         foreach (var data in savedLayout) {
 
-            Debug.Log("Loading " + data.structureSO + " position "+ data.positionIndex);
+            StructureSO structureSO = StructuresManager.Instance.GetStructureSO(data.structureType);
 
-            if (!data.structureSO.structurePositionMovable || !data.structureSO.structurePositionRemovable) {
+            if (!structureSO.structurePositionMovable || !structureSO.structurePositionRemovable) {
 
-                if(data.structureSO.structureType == StructureSO.StructureType.tent) {
+                if(structureSO.structureType == StructureSO.StructureType.tent) {
                     int tentStartCell = data.positionIndex;
                     tentBlueprint.gameObject.SetActive(true);
                     PlaceBlueprintOnGrid(tentBlueprint, tentStartCell);
@@ -481,10 +482,10 @@ public class CampEditManager : MonoBehaviour {
                 continue; // Skip les structures non déplaçables
             }
 
-            if (data.structureSO.structureLocationPrefab == null) continue;
+            if (structureSO.structureLocationPrefab == null) continue;
 
             StructureBlueprint structureBlueprint = Instantiate(structureBlueprintPrefab, structureBlueprintsParent).GetComponent<StructureBlueprint>();
-            structureBlueprint.SetStructureSO(data.structureSO);
+            structureBlueprint.SetStructureSO(structureSO);
 
             int startCell = data.positionIndex;
             PlaceBlueprintOnGrid(structureBlueprint, startCell);

@@ -583,6 +583,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1998490222443866992, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1998490222443866992, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: projectile
+      value: 
+      objectReference: {fileID: 5817916299726158870}
     - target: {fileID: 2520302452764269856, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: ShapeModule.type
       value: 12
@@ -635,6 +643,14 @@ PrefabInstance:
       propertyPath: EmissionModule.rateOverDistance.scalar
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3231861799023087051, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231861799023087051, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: projectile
+      value: 
+      objectReference: {fileID: 5817916299726158870}
     - target: {fileID: 3459014175029108294, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -667,6 +683,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+    - target: {fileID: 5585382106776468501, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7811116705413329226, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.028
@@ -741,9 +761,10 @@ PrefabInstance:
       objectReference: {fileID: 7831464554734585439}
     - target: {fileID: 8132320804815214056, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_Name
-      value: MortarProjectile_lvl1
+      value: MortarProjectileForces_lvl2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4666816475507756428, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7284273568497472285, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
@@ -753,6 +774,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4077543150976677561}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8132320804815214056, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 5817916299726158870}
     - targetCorrespondingSourceObject: {fileID: 8132320804815214056, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7831464554734585439}
@@ -783,6 +807,27 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8132320804815214056, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
   m_PrefabInstance: {fileID: 167773680537722600}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5817916299726158870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8255032049192913664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8138b3d606315b14395f5933e6dfefdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  animalLayer:
+    serializedVersion: 2
+    m_Bits: 16384
+  gravityScale: 3
+  homingStrength: 2
+  apexY: 10
 --- !u!95 &7831464554734585439
 Animator:
   serializedVersion: 5
@@ -793,7 +838,7 @@ Animator:
   m_GameObject: {fileID: 8255032049192913664}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cfa7a472c3acd8d42998e5deb82acfd6, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3a7d04d12558079419c327c2fa544a31, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

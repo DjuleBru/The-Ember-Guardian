@@ -40,6 +40,10 @@ public class SpecialTower : Structure {
         base.Start();
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+
+        if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+            needsWorking = true;
+        } 
     }
 
     protected override void DayNightManager_OnDawnStart(object sender, EventArgs e) {
@@ -120,6 +124,7 @@ public class SpecialTower : Structure {
             AssignEngineerToNextAvailableManner(engineer);
             SetEngineerGarrisonPosition(engineer);
             engineer.GetComponent<Worker>().AssignDefensiveStructure(this);
+            engineer.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
             engineersGarrisoned++;
 
             if(engineersGarrisoned == maxEngineersAssignedWorking) {
@@ -132,6 +137,7 @@ public class SpecialTower : Structure {
                 engineerJob = engineer
             });
             engineer.GetComponent<Worker>().AssignDefensiveStructure(null);
+            engineer.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             engineersGarrisoned--;
         }
 
