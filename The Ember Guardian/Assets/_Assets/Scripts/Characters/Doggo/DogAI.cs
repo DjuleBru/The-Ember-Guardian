@@ -18,72 +18,77 @@ public class DogAI : MonoBehaviour
         growling,
         barking,
         attacking,
+        pickingUpOrbs,
+        droppingOrbs,
+        runToPlayer,
     }
 
-    private State state;
-    private State currentBehaviorIdleState;
-    private MobMovement dogMovement;
-    [SerializeField] private DogCreatureDetectionCollider creatureDetectionCollider;
-    private Creature closestCreature;
-    private Creature closestIncomingCreature;
+    protected State state;
+    protected State previousState;
+    protected State currentBehaviorIdleState;
+    protected MobMovement dogMovement;
+    [SerializeField] protected Dog.DogType dogAIType;
+    [SerializeField] protected DogCreatureDetectionCollider creatureDetectionCollider;
+    protected Creature closestCreature;
+    protected Creature closestIncomingCreature;
 
-    private Vector3 stickWithPlayerMoveTarget;
-    private Vector3 stayPointToRoamAround;
-    private bool hasSetSpeed;
+    protected Vector3 stickWithPlayerMoveTarget;
+    protected Vector3 stayPointToRoamAround;
+    protected bool hasSetSpeed;
 
-    private float roamRadius = 5f;
-    private float roamTimer;
-    private float roamChangeDestionationRate = 10f;
+    protected float roamRadius = 5f;
+    protected float roamTimer;
+    protected float roamChangeDestionationRate = 10f;
 
-    private float walkMoveSpeed = 1.5f;
-    private float runMoveSpeed = 7f;
+    protected float walkMoveSpeed = 1.5f;
+    protected float runMoveSpeed = 7f;
 
-    private float distanceToPlayer;
-    private float distanceToCamp;
-    private float distanceToStickWithPlayerTarget;
-    private float distanceInFrontOfPlayer = 6f;
-    private float minDistanceToPlayer = 1f;
-    private float maxDistanceToPlayer = 10f;
-    private float distanceToRunToCamp = 5f;
-    private float playerStickedAroundTimer;
+    protected float distanceToPlayer;
+    protected float distanceToCamp;
+    protected float distanceToStickWithPlayerTarget;
+    protected float distanceInFrontOfPlayer = 6f;
+    protected float minDistanceToPlayer = 1f;
+    protected float maxDistanceToPlayer = 10f;
+    protected float distanceToRunToCamp = 5f;
+    protected float playerStickedAroundTimer;
 
-    private float distanceToPlayerToRoamWhenStickingAround = 1f;
-    private float distanceToRunToPlayerWhenStickingAround = 12f;
-    private float distanceToWalkToPlayerWhenStickingAroundReference = 10f;
-    private float distanceToWalkToPlayerWhenStickingAround = 6f;
+    protected float distanceToPlayerToRoamWhenStickingAround = 1f;
+    protected float distanceToRunToPlayerWhenStickingAround = 12f;
+    protected float distanceToWalkToPlayerWhenStickingAroundReference = 10f;
+    protected float distanceToWalkToPlayerWhenStickingAround = 6f;
 
-    private float creatureBarkDistanceToDog = 7f;
-    private float creatureBarkDistanceToPlayer = 10f;
+    protected float creatureBarkDistanceToDog = 7f;
+    protected float creatureBarkDistanceToPlayer = 10f;
 
-    private bool playerRunning;
-    private float lastPlayerDirection;
-    private float changeDirectionTimer;
-    private float requiredDirectionChangeDuration = .5f;
+    protected bool playerRunning;
+    protected float lastPlayerDirection;
+    protected float changeDirectionTimer;
+    protected float requiredDirectionChangeDuration = .5f;
 
-    private bool dogJustStoppedGrowling;
-    private float dogJustStoppedGrowlingTimer;
-    private float dogJustStoppedGrowlingTime = 3f;
+    protected bool dogJustStoppedGrowling;
+    protected float dogJustStoppedGrowlingTimer;
+    protected float dogJustStoppedGrowlingTime = 3f;
 
-    private float barkingTimer;
-    private float barkTimeToAttack = 1.5f;
+    protected float barkingTimer;
+    protected float barkTimeToAttack = 1.5f;
 
-    private bool hasBiteUnlocked;
-    private bool biteStarted;
-    private bool biteReady;
-    private bool isHubScene;
-    private float biteTimer;
-    private float biteAnimationDelay = .5f;
-    private float biteCooldown;
-    private int biteDamage;
+    protected bool hasBiteUnlocked;
+    protected bool biteStarted;
+    protected bool biteReady;
+    protected bool isHubScene;
+    protected float biteTimer;
+    protected float biteAnimationDelay = .5f;
+    protected float biteCooldown;
+    protected int biteDamage;
 
     public event EventHandler OnStateChanged;
     public event EventHandler OnDogBite;
 
-    private void Awake() {
+    protected virtual void Awake() {
         dogMovement = GetComponent<MobMovement>();
     }
 
-    private void Start() {
+    protected virtual void Start() {
         PlayerMovement.Instance.OnPlayerRunStarted += PlayerMovement_OnPlayerRunStarted;
         PlayerMovement.Instance.OnPlayerRunStopped += PlayerMovement_OnPlayerRunStopped;
 
@@ -93,9 +98,20 @@ public class DogAI : MonoBehaviour
         stayPointToRoamAround = transform.position;
         roamTimer = roamChangeDestionationRate;
 
-        hasBiteUnlocked = DogStats.Instance.GetBiteAbilityUnlocked();
-        biteCooldown = DogStats.Instance.GetBiteCooldown();
-        biteDamage = DogStats.Instance.GetBiteDamage();
+        hasBiteUnlocked = DogStats.Instance.GetGermanShepherdBiteAbilityUnlocked();
+
+        if(Dog.Instance.GetDogType() == Dog.DogType.GermanShepherd) {
+            biteCooldown = DogStats.Instance.GetGermanShepherdBiteCooldown();
+            biteDamage = DogStats.Instance.GetGermanShepherdBiteDamage();
+        }
+        if (Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
+            biteCooldown = DogStats.Instance.GetRetreiverBiteCooldown();
+            biteDamage = DogStats.Instance.GetRetreiverBiteDamage();
+        }
+        if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
+            biteCooldown = DogStats.Instance.GetDarkCompanionBiteCooldown();
+            biteDamage = DogStats.Instance.GetDarkCompanionBiteDamage();
+        }
 
         isHubScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB;
 
@@ -104,12 +120,11 @@ public class DogAI : MonoBehaviour
         }
     }
 
-    private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
-
+    protected void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         SetIdleBehaviorState(State.idle);
     }
 
-    private void Update() {
+    protected virtual void Update() {
         HandleGrowling();
 
         if (hasBiteUnlocked) {
@@ -287,7 +302,7 @@ public class DogAI : MonoBehaviour
         ChangeState(state);
     }
 
-    private void ChangeState(State newState) {
+    protected virtual void ChangeState(State newState) {
         if (state == newState) return;
         RandomizeDistanceVariables();
 
@@ -314,11 +329,12 @@ public class DogAI : MonoBehaviour
 
         roamTimer = roamChangeDestionationRate;
 
+        previousState = state;
         state = newState;
         OnStateChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    private void HeadToBarkAtCampZoneLimit() {
+    protected void HeadToBarkAtCampZoneLimit() {
         float destinationPositionX = CampZoneManager.Instance.GetMaxZoneLimit() - 4f;
 
         if(closestIncomingCreature.transform.position.x < 0) {
@@ -334,7 +350,7 @@ public class DogAI : MonoBehaviour
         }
     }
 
-    private Creature CheckClosestIncomingCreature() {
+    protected Creature CheckClosestIncomingCreature() {
         float xPositionToCheckFrom = transform.position.x;
         float minCampCenterLimit = CampZoneManager.Instance.GetCampCenterMinLimit();
         float maxCampCenterLimit = CampZoneManager.Instance.GetCampCenterMaxLimit();
@@ -356,7 +372,7 @@ public class DogAI : MonoBehaviour
         return CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(positionToCheckFrom, 100f, 0, true);
     }
 
-    private void CheckNightInCamp() {
+    protected void CheckNightInCamp() {
         if (isHubScene) return;
         if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) return;
 
@@ -365,12 +381,12 @@ public class DogAI : MonoBehaviour
         }
     }
 
-    private void RandomizeDistanceVariables() {
+    protected void RandomizeDistanceVariables() {
         distanceInFrontOfPlayer = UnityEngine.Random.Range(0, distanceToWalkToPlayerWhenStickingAroundReference);
         distanceToWalkToPlayerWhenStickingAround = UnityEngine.Random.Range(0, distanceInFrontOfPlayer);
     }
 
-    private void HandleGrowling() {
+    protected void HandleGrowling() {
         if (state == State.attacking) return;
 
         if (dogJustStoppedGrowling) {
@@ -387,7 +403,7 @@ public class DogAI : MonoBehaviour
 
     }
 
-    private void HandleBarkToAttack() {
+    protected void HandleBarkToAttack() {
         barkingTimer += Time.deltaTime;
         if (closestCreature == null || closestCreature.transform.position.y > 2f) return;
 
@@ -397,7 +413,7 @@ public class DogAI : MonoBehaviour
         }
     }
 
-    private void HandleBiteTimer() {
+    protected void HandleBiteTimer() {
         if(!biteReady) {
             biteTimer -= Time.deltaTime;
             if(biteTimer < 0) {
@@ -406,23 +422,23 @@ public class DogAI : MonoBehaviour
             }
         }
     }
-    private void PlayerMovement_OnPlayerRunStarted(object sender, EventArgs e) {
+    protected void PlayerMovement_OnPlayerRunStarted(object sender, EventArgs e) {
         playerRunning = true;
         if (state == State.walkWithPlayer) {
             float randomTimer = UnityEngine.Random.Range(0, 2f);
             StartCoroutine(StartRunningWithPlayerAfterDelay(randomTimer));
         }
     }
-    private void PlayerMovement_OnPlayerRunStopped(object sender, EventArgs e) {
+    protected void PlayerMovement_OnPlayerRunStopped(object sender, EventArgs e) {
         playerRunning = false;
     }
-    private IEnumerator StartRunningWithPlayerAfterDelay(float delay) {
+    protected IEnumerator StartRunningWithPlayerAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
 
         ChangeState(State.runWithPlayer);
     }
 
-    private void Roam(Vector3 pointToRoamAround) {
+    protected void Roam(Vector3 pointToRoamAround) {
         if (!hasSetSpeed) {
             dogMovement.SetMoveSpeed(walkMoveSpeed);
             hasSetSpeed = true;
@@ -436,7 +452,7 @@ public class DogAI : MonoBehaviour
         }
     }
 
-    private void RoamInCamp() {
+    protected void RoamInCamp() {
 
         if (!hasSetSpeed) {
             dogMovement.SetMoveSpeed(walkMoveSpeed);
@@ -452,7 +468,7 @@ public class DogAI : MonoBehaviour
         }
     }
 
-    private bool PlayerIsTooFar() {
+    protected bool PlayerIsTooFar() {
         float distanceToPlayer = Mathf.Abs(transform.position.x - Player.Instance.transform.position.x);
 
         if(distanceToPlayer > maxDistanceToPlayer) {
@@ -463,7 +479,7 @@ public class DogAI : MonoBehaviour
 
     }
 
-    private void StickWithPlayer() {
+    protected void StickWithPlayer() {
         float currentPlayerDirection = PlayerMovement.Instance.GetLastMoveDir();
 
         // Vérifiez si la direction a changé
@@ -487,7 +503,7 @@ public class DogAI : MonoBehaviour
         dogMovement.SetMoveTarget(stickWithPlayerMoveTarget);
     }
 
-    private void HeadToAttackClosestCreature() {
+    protected void HeadToAttackClosestCreature() {
         float distanceToCreature = Mathf.Abs(transform.position.x - closestCreature.transform.position.x);
         float biteRange = 2.5f;
 
@@ -509,7 +525,7 @@ public class DogAI : MonoBehaviour
         }
     }
 
-    private IEnumerator AttackClosestCreature(Creature creature) {
+    protected IEnumerator AttackClosestCreature(Creature creature) {
         float standStillDelay = .2f;
         yield return new WaitForSeconds(standStillDelay);
 
@@ -530,7 +546,7 @@ public class DogAI : MonoBehaviour
         ChangeState(State.walkWithPlayer);
     }
 
-    private void CheckCreaturesInGrowlRange() {
+    protected void CheckCreaturesInGrowlRange() {
         closestCreature = creatureDetectionCollider.GetClosestCreature();
         bool ambushClose = creatureDetectionCollider.AmbushSpawnersInDetectionCollider();
 
@@ -549,7 +565,7 @@ public class DogAI : MonoBehaviour
         }
     }
 
-    private void CheckCreaturesInBarkRange() {
+    protected void CheckCreaturesInBarkRange() {
         if(closestCreature == null) {
             ChangeState(currentBehaviorIdleState);
             return;
@@ -580,5 +596,9 @@ public class DogAI : MonoBehaviour
     }
     public State GetState() {
         return state;
+    }
+
+    public Dog.DogType GetDogAIType() {
+        return dogAIType;
     }
 }

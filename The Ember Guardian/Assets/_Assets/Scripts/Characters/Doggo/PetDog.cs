@@ -7,7 +7,6 @@ public class PetDog : MonoBehaviour
 {
     public static PetDog Instance;
 
-    [SerializeField] private DogAI dogAI;
     [SerializeField] private Transform playerPetDogPosition;
     private MobMovement dogMovement;
 
@@ -42,7 +41,8 @@ public class PetDog : MonoBehaviour
         Player.Instance.OnPlayerExitedAnyInteractableTriggerArea += Player_OnPlayerExitedAnyInteractableTriggerArea;
         Player.Instance.OnPlayerStartedInteractingWithAnyInteractable += Player_OnPlayerStartedInteractingWithAnyInteractable;
         Player.Instance.OnPlayerStoppedInteractingWithAnyInteractable += Player_OnPlayerStoppedInteractingWithAnyInteractable;
-        dogMovement = dogAI.GetComponent<MobMovement>();
+
+        dogMovement = Dog.Instance.GetComponent<MobMovement>();
     }
 
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
@@ -201,7 +201,8 @@ public class PetDog : MonoBehaviour
             }
         }
 
-        if (dogAI.GetState() == DogAI.State.stay || dogAI.GetState() == DogAI.State.stayAtCamp || dogAI.GetState() == DogAI.State.idle || dogAI.GetState() == DogAI.State.stayAtCamp || dogAI.GetState() == DogAI.State.stayAtCamp || dogAI.GetState() == DogAI.State.walkWithPlayer) {
+        DogAI.State dogState = Dog.Instance.GetCurrentDogAI().GetState();
+        if (dogState == DogAI.State.stay || dogState == DogAI.State.stayAtCamp || dogState == DogAI.State.idle || dogState == DogAI.State.stayAtCamp || dogState == DogAI.State.stayAtCamp || dogState == DogAI.State.walkWithPlayer) {
             playerCanPetDog = true;
         }
     }

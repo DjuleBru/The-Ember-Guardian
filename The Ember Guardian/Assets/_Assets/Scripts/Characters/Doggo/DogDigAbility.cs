@@ -27,11 +27,11 @@ public class DogDigAbility : MonoBehaviour
     private void Start() {
         dogAnimator.OnDogSniffedEnd += DogAnimator_OnDogSniffedEnd;
 
-        digAbilityUnlocked = DogStats.Instance.GetdigResourceAbilityUnlocked();
+        digAbilityUnlocked = DogStats.Instance.GetGermanShepherdDigResourceAbilityUnlocked();
 
-        digCooldown = DogStats.Instance.GetDigResourceCooldown();
-        digProbability = DogStats.Instance.GetDigResourceProbility()/100f;
-        digDoubleProbability = DogStats.Instance.GetDigResourceDoubleProbability()/100f;
+        digCooldown = DogStats.Instance.GetGermanShepherdDigResourceCooldown();
+        digProbability = DogStats.Instance.GetGermanShepherdDigResourceProbility()/100f;
+        digDoubleProbability = DogStats.Instance.GetGermanShepherdDigResourceDoubleProbability()/100f;
 
         digTimer = digCooldown;
     }

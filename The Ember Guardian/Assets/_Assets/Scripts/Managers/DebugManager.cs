@@ -28,6 +28,7 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool disableCreatureDetection;
     [SerializeField] private bool showMobDestinationGizmos;
     [SerializeField] private bool allItemsUnlockedInDemo;
+    [SerializeField] private bool dropRedOrbsUnlocked;
     [SerializeField] private bool takeScreenshotsContinuous;
     [SerializeField] private bool takeScreenshotsOnKeyPressed;
 
@@ -147,5 +148,8 @@ public class DebugManager : MonoBehaviour
     }
     public bool GetAllItemsUnlockedInDemo() {
         return allItemsUnlockedInDemo;
+    }
+    public bool GetDropRedOrbsUnlocked() {
+        return dropRedOrbsUnlocked;
     }
 }

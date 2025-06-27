@@ -6,6 +6,8 @@ public class DoggoVisual : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer bodySpriteRenderer;
     [SerializeField] private ParticleSystem runDustPS;
+    [SerializeField] private DogAI_Retreiver retreiverAI;
+    [SerializeField] private GameObject hasCurrenciesGO;
     private DogAnimatorManager dogAnimatorManager;
 
 
@@ -20,6 +22,18 @@ public class DoggoVisual : MonoBehaviour
         Portal.OnAnyPortalSetToTeleportPlayer += Portal_OnAnyPortalSetToTeleportPlayer;
 
         dogAnimatorManager.OnFootstepTriggered += DogAnimatorManager_OnFootstepTriggered;
+        retreiverAI.OnDogCollectedCurrency += RetreiverAI_OnDogCollectedCurrency;
+        retreiverAI.OnDogDroppedAllCurrencies += RetreiverAI_OnDogDroppedAllCurrencies;
+
+        hasCurrenciesGO.SetActive(false);
+    }
+
+    private void RetreiverAI_OnDogDroppedAllCurrencies(object sender, System.EventArgs e) {
+        hasCurrenciesGO.SetActive(false);
+    }
+
+    private void RetreiverAI_OnDogCollectedCurrency(object sender, System.EventArgs e) {
+        hasCurrenciesGO.SetActive(true);
     }
 
     private void DogAnimatorManager_OnFootstepTriggered(object sender, System.EventArgs e) {

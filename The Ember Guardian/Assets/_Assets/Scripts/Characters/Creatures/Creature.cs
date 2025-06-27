@@ -91,6 +91,7 @@ public class Creature : Mob
 
     private void Start() {
         creatureUnlocked = MetaProgressionManager.Instance.GetCreatureUnlocked(creatureSO);
+        dropRedOrbsUnlocked = DebugManager.Instance.GetDropRedOrbsUnlocked();
 
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerMovement.Instance.OnPlayerCrouched += PlayerMovement_OnPlayerCrouched;

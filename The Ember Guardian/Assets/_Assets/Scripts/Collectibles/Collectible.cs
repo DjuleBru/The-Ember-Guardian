@@ -111,11 +111,11 @@ public class Collectible : MonoBehaviour
 
             Worker worker = collision.gameObject.GetComponent<Worker>();
 
-            if (worker != null) {
-                if (currencyType == PlayerCurrencies.CurrencyType.ember) return;
-                if (currencyCategory == PlayerCurrencies.CurrencyCategory.gem) return;
-                if (aggroedByWorker && worker != aggroedWildWorker) return;
+            if (currencyType == PlayerCurrencies.CurrencyType.ember) return;
+            if (currencyCategory == PlayerCurrencies.CurrencyCategory.gem) return;
+            if (aggroedByWorker && worker != aggroedWildWorker) return;
 
+            if (worker != null) {
                 WorkerAI.JobTypes workerJob = worker.GetComponent<WorkerAI>().GetJob();
 
                 if (workerJob == WorkerAI.JobTypes.wild && !collected && currencyType == PlayerCurrencies.CurrencyType.bigBlueOrb && droppedByPlayer) {
@@ -137,6 +137,7 @@ public class Collectible : MonoBehaviour
                 }
 
             }
+
         }
 
     }
@@ -150,6 +151,11 @@ public class Collectible : MonoBehaviour
             return;
         };
 
+    }
+
+    public void RetreiverCollectThis() {
+        OnAnyCollectiblePickedUpByWorker?.Invoke(this, EventArgs.Empty);
+        Destroy(gameObject);
     }
 
     public void PlayerCollectThis(PlayerCurrencies.CurrencyType currencyType) {
@@ -265,6 +271,10 @@ public class Collectible : MonoBehaviour
 
     public bool GetInteractable() {
         return interactable;
+    }
+
+    public bool GetCanBePickedUpByWorker() {
+        return interactable && canBePickedUpByWorker;
     }
 
     public void SetCanBePickedUpByWorker() {

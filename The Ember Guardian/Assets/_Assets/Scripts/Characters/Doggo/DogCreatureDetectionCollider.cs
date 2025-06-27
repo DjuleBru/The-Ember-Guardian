@@ -43,9 +43,9 @@ public class DogCreatureDetectionCollider : MonoBehaviour
         }
 
         if (ambushSpawner != null) {
-            if (!DogStats.Instance.GetDetectAmbushAbilityUnlocked()) return;
+            if (!DogStats.Instance.GetGermanShepherdDetectAmbushAbilityUnlocked()) return;
 
-            float probabilityToDetectAmbush = DogStats.Instance.GetDetectAmbushProbability()/100f;
+            float probabilityToDetectAmbush = DogStats.Instance.GetGermanShepherdDetectAmbushProbability()/100f;
             float randomFloat = Random.Range(0f, 1f);
             Debug.Log("randomFloat " + randomFloat + " probabilityToDetectAmbush " + probabilityToDetectAmbush);
 

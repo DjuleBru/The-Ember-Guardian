@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddd5932e107b81b4baf4a96188aa40f2, type: 3}
-  m_Name: AmbushDetectionProbability
+  m_Name: RetreiverBiteCooldown
   m_EditorClassIdentifier: 
   statModifierList:
-  - 15
-  - 25
-  - 35
+  - -5
+  - -10
+  - -15
   greenGemCostList: 
   redGemCostList: 
   blueGemCostList: 
   yellowGemCostList: 
   purleGemCostList: 020000000300000004000000
+  cyanGemCostList: 

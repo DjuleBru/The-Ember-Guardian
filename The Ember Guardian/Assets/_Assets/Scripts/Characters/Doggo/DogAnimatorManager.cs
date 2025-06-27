@@ -7,6 +7,9 @@ using UnityEngine;
 public class DogAnimatorManager : MonoBehaviour {
 
     [SerializeField] private Animator dogBodyAnimator;
+    [SerializeField] private RuntimeAnimatorController germanShepherdAnimator;
+    [SerializeField] private RuntimeAnimatorController goldenAnimator;
+    [SerializeField] private RuntimeAnimatorController darkCompanionAnimator;
     [SerializeField] private PetDog petDog;
 
     private Animator animator;
@@ -57,9 +60,9 @@ public class DogAnimatorManager : MonoBehaviour {
     private void Awake() {
         animator = GetComponent<Animator>();
         dog = GetComponentInParent<Dog>();
-        dogAI = GetComponentInParent<DogAI>();
         dogMovement = GetComponentInParent<MobMovement>();
 
+        dog.OnDogTypeChanged += Dog_OnDogTypeChanged;
         petDog.OnPlayerStartedPettingDog += PetDog_OnPlayerStartedPettingDog;
         petDog.OnPlayerRefreshedPettingDog += PetDog_OnPlayerRefreshedPettingDog;
         petDog.OnPlayerStoppedPettingDog += PetDog_OnPlayerStoppedPettingDog;
@@ -74,12 +77,36 @@ public class DogAnimatorManager : MonoBehaviour {
 
 
     private void Start() {
-        dogAI.OnStateChanged += DogAI_OnStateChanged;
-        dogAI.OnDogBite += DogAI_OnDogBite;
+        foreach(DogAI dogAI in Dog.Instance.GetDogAIList()) {
+            dogAI.OnStateChanged += DogAI_OnStateChanged;
+            dogAI.OnDogBite += DogAI_OnDogBite;
+        }
+        dogAI = Dog.Instance.GetCurrentDogAI();
+
         dogMovement.SetReadyToMoveAnimator(false);
         DogDigAbility.Instance.OnSniffStart += DogDigAbility_OnSniffStart;
 
-        digAbilityUnlocked = DogStats.Instance.GetdigResourceAbilityUnlocked();
+        digAbilityUnlocked = DogStats.Instance.GetGermanShepherdDigResourceAbilityUnlocked();
+
+        SetDogTypeAnimator();
+    }
+
+    private void Dog_OnDogTypeChanged(object sender, EventArgs e) {
+        SetDogTypeAnimator();
+        dogAI = Dog.Instance.GetCurrentDogAI();
+    }
+    private void SetDogTypeAnimator() {
+        Dog.DogType dogType = Dog.Instance.GetDogType();
+
+        if(dogType == Dog.DogType.GermanShepherd) {
+            animator.runtimeAnimatorController = germanShepherdAnimator;
+        }
+        if (dogType == Dog.DogType.GoldenRetreiver) {
+            animator.runtimeAnimatorController = goldenAnimator;
+        }
+        if (dogType == Dog.DogType.DarkCompanion) {
+            animator.runtimeAnimatorController = darkCompanionAnimator;
+        }
     }
 
     private void DogAI_OnDogBite(object sender, EventArgs e) {
@@ -115,7 +142,7 @@ public class DogAnimatorManager : MonoBehaviour {
         dogBodyAnimator.SetTrigger("Teleport_Out");
     }
     private void DogAI_OnStateChanged(object sender, System.EventArgs e) {
-        DogAI.State newState = dogAI.GetState();
+        DogAI.State newState = dog.GetCurrentDogAI().GetState();
         ResetAllTriggers();
         CheckStopSniffing();
         sitTimer = sitTrialRate;
@@ -133,7 +160,7 @@ public class DogAnimatorManager : MonoBehaviour {
             animator.SetBool("Walking", false);
         }
 
-        if (newState == DogAI.State.runWithPlayer || newState == DogAI.State.runToCamp || newState == DogAI.State.nightInCampRunToClosestCreature) {
+        if (newState == DogAI.State.runWithPlayer || newState == DogAI.State.runToCamp || newState == DogAI.State.nightInCampRunToClosestCreature || newState == DogAI.State.pickingUpOrbs || newState == DogAI.State.runToPlayer) {
             animator.SetTrigger("Wake");
             animator.SetTrigger("Stand");
             animator.SetBool("Running", true);
