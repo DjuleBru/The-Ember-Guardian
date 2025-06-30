@@ -79,6 +79,14 @@ public class Creature : Mob
     private float shockedTimer;
     private float shockedSlowAmount;
 
+
+    public event EventHandler OnCreatureStunStarted;
+    public event EventHandler OnCreatureStunStopped;
+    private bool stunned;
+    private bool stunImmune;
+    private float stunDuration = 10f;
+    private float stunTimer;
+
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
         rb.mass = creatureSO.mass;
@@ -420,7 +428,14 @@ public class Creature : Mob
                 OnCreatureImmobilizedStopped?.Invoke(this, EventArgs.Empty);
             }
         }
-        if(poisoned) {
+        if (stunned) {
+            stunTimer -= Time.deltaTime;
+            if (stunTimer < 0) {
+                stunned = false;
+                OnCreatureStunStopped?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        if (poisoned) {
             poisonedTimer -= Time.deltaTime;
             poisonRateTimer += Time.deltaTime;
             if(poisonRateTimer >= poisonRate) {
@@ -468,7 +483,18 @@ public class Creature : Mob
 
         OnCreatureImmobilizedStarted?.Invoke(this, EventArgs.Empty);
     }
+    public void ApplyStunEffect(float stunDuration, Vector3 immobilizePosition) {
+        if (dead) return;
+        if (stunImmune) return;
+        stunned = true;
+        this.stunDuration = stunDuration;
+        stunTimer = stunDuration;
 
+        Vector3 position = new Vector3(immobilizePosition.x, transform.position.y, 0);
+        transform.position = position;
+
+        OnCreatureStunStarted?.Invoke(this, EventArgs.Empty);
+    }
     public void ApplyPoisonEffect(int poisonAmount) {
         if (dead) return;
         if (poisonImmune) return;

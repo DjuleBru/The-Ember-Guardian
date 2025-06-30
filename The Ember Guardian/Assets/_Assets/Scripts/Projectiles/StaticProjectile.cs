@@ -18,7 +18,9 @@ public class StaticProjectile : MonoBehaviour
     protected bool burningEffect;
     protected int burnDuration;
     protected bool immobilizeEffect;
+    protected bool stunEffect;
     protected float immobilizeDuration;
+    protected float stunDuration;
     protected bool poisonEffect;
     protected int poisonAmount;
     protected bool knockbackEffect;
@@ -55,6 +57,9 @@ public class StaticProjectile : MonoBehaviour
                 }
                 if (immobilizeEffect) {
                     creatureHit.ApplyImmobilizeEffect(immobilizeDuration, creatureHit.transform.position);
+                }
+                if (stunEffect) {
+                    creatureHit.ApplyStunEffect(stunDuration, creatureHit.transform.position);
                 }
                 if (poisonEffect) {
                     creatureHit.ApplyPoisonEffect(poisonAmount);
@@ -98,7 +103,7 @@ public class StaticProjectile : MonoBehaviour
 
     }
 
-    public void Initialize(float watchDir, Mob parentMob, int damage, bool isPlayerStaticProjectile = false, bool takeWatchDirInAccount = false) {
+    public virtual void Initialize(float watchDir, Mob parentMob, int damage, bool isPlayerStaticProjectile = false, bool takeWatchDirInAccount = false) {
         this.parentMob = parentMob;
         this.damage = damage;
         this.isPlayerStaticProjectile = isPlayerStaticProjectile;
@@ -123,9 +128,12 @@ public class StaticProjectile : MonoBehaviour
         this.burnDuration = burnDuration;
     }
     public void InitializeImmobilize(float immobilizeDuration = 5) {
-        Debug.Log("immobilizeDuration " + immobilizeDuration);
         immobilizeEffect = true;
         this.immobilizeDuration = immobilizeDuration;
+    }
+    public void InitializeStun(float stunDuration = 5) {
+        stunEffect = true;
+        this.stunDuration = stunDuration;
     }
 
     public void InitializePoison(int poisonAmount = 5) {
@@ -140,11 +148,16 @@ public class StaticProjectile : MonoBehaviour
     }
 
     protected void ResetInProjectilePool() {
-        parentMob.GetComponent<MobAttack>().ResetStaticProjectileInObjectPool(this);
-        gameObject.SetActive(false);
-        hasHit = false;
-        projectileIsActive = true;
-        projectileLifetimer = 0;
+        if(parentMob != null) {
+            parentMob.GetComponent<MobAttack>().ResetStaticProjectileInObjectPool(this);
+            gameObject.SetActive(false);
+            hasHit = false;
+            projectileIsActive = true;
+            projectileLifetimer = 0;
+        } else {
+            Destroy(gameObject);
+        }
+
     }
 
     protected void InvokeOnStaticProjectileHitCreature() {

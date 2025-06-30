@@ -10,22 +10,22 @@ public class ProjectileForces : Projectile {
     private float gravityScale = 1f;
     private float homingStrength = 2f;
 
-    private Transform target;
     private bool hasHit = false;
     private bool homing;
     private bool hasPassedApex;
 
-    public void ActivateAndInitializeWithForces(Transform targetTransform, ProjectileSO projectileSO, Mob parentMob, int damage, float targetRandomizer, bool homing) {
+    public void ActivateAndInitializeWithForces(Transform targetTransform, ProjectileSO projectileSO, Transform damageSource, int damage, float targetRandomizer, bool homing) {
         if (targetTransform == null) {
             ResetInObjectPool();
             return;
         }
 
-        this.parentMob = parentMob;
+        this.damageSource = damageSource;
+        parentMob = damageSource.GetComponent<Mob>();
         this.damage = damage;
         this.homing = homing;
         this.projectileSO = projectileSO;
-        target = targetTransform;
+        projectileTarget = targetTransform;
         hasPassedApex = false;
 
         if (parentMob is Creature) {
@@ -37,18 +37,18 @@ public class ProjectileForces : Projectile {
         this.gravityScale = projectileSO.gravityScale;
         rb.velocity = Vector2.zero;
         rb.gravityScale = gravityScale;
-        transform.right = (target.position - transform.position).normalized;
+        transform.right = (projectileTarget.position - transform.position).normalized;
 
         float randomizedX = UnityEngine.Random.Range(-targetRandomizer, targetRandomizer);
         
-        Vector2 targetPosition = new Vector2(target.position.x - randomizedX, target.position.y);
+        Vector2 targetPosition = new Vector2(projectileTarget.position.x - randomizedX, projectileTarget.position.y);
         if(homing) {
-            targetPosition = target.position;
+            targetPosition = projectileTarget.position;
         }
 
         Vector2 launchVelocity = CalculateLaunchVelocityWithApex(transform.position, targetPosition);
         rb.AddForce(launchVelocity, ForceMode2D.Impulse);
-
+        Debug.Log("launchVelocity " + launchVelocity);
         hasHit = false;
 
         InvokeOnAnyProjectileInstantiated();
@@ -69,7 +69,7 @@ public class ProjectileForces : Projectile {
     }
 
     private void FixedUpdate() {
-        if (hasHit || !homing || target == null) return;
+        if (hasHit || !homing || projectileTarget == null) return;
 
         // Vérifie si on a passé l’apex (le point le plus haut)
         if (!hasPassedApex && rb.velocity.y < .5f) {
@@ -79,7 +79,7 @@ public class ProjectileForces : Projectile {
 
         if (!hasPassedApex) return; // Laisse la parabole se faire tranquillement
 
-        Vector2 desiredDir = ((Vector2)(target.position - transform.position)).normalized;
+        Vector2 desiredDir = ((Vector2)(projectileTarget.position - transform.position)).normalized;
         Vector2 currentVelocity = rb.velocity;
         Vector2 newVelocity = Vector2.Lerp(currentVelocity, desiredDir * currentVelocity.magnitude, Time.fixedDeltaTime * homingStrength);
         rb.velocity = newVelocity;
@@ -137,6 +137,6 @@ public class ProjectileForces : Projectile {
         return rb.velocity;
     }
     public override Vector2 GetTrajectoryEndPoint() {
-        return target.transform.position;
+        return projectileTarget.transform.position;
     }
 }

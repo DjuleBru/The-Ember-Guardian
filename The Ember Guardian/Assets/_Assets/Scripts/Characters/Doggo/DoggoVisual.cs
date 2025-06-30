@@ -8,6 +8,8 @@ public class DoggoVisual : MonoBehaviour
     [SerializeField] private ParticleSystem runDustPS;
     [SerializeField] private DogAI_Retreiver retreiverAI;
     [SerializeField] private GameObject hasCurrenciesGO;
+    [SerializeField] private DogCreatureDetectionCollider detectionCollider;
+    [SerializeField] private GameObject detectedAmbushGO;
     private DogAnimatorManager dogAnimatorManager;
 
 
@@ -18,6 +20,8 @@ public class DoggoVisual : MonoBehaviour
         dog = GetComponentInParent<Dog>();
         dogAI = GetComponentInParent<DogAI>();
         dogAnimatorManager = GetComponent<DogAnimatorManager>();
+        detectionCollider.OnAmbushDetected += DetectionCollider_OnAmbushDetected;
+        detectionCollider.OnNoAmbushDetected += DetectionCollider_OnNoAmbushDetected;
         Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
         Portal.OnAnyPortalSetToTeleportPlayer += Portal_OnAnyPortalSetToTeleportPlayer;
 
@@ -26,6 +30,15 @@ public class DoggoVisual : MonoBehaviour
         retreiverAI.OnDogDroppedAllCurrencies += RetreiverAI_OnDogDroppedAllCurrencies;
 
         hasCurrenciesGO.SetActive(false);
+        detectedAmbushGO.SetActive(false);
+    }
+
+    private void DetectionCollider_OnNoAmbushDetected(object sender, System.EventArgs e) {
+        detectedAmbushGO.SetActive(false);
+    }
+
+    private void DetectionCollider_OnAmbushDetected(object sender, System.EventArgs e) {
+        detectedAmbushGO.SetActive(true);
     }
 
     private void RetreiverAI_OnDogDroppedAllCurrencies(object sender, System.EventArgs e) {

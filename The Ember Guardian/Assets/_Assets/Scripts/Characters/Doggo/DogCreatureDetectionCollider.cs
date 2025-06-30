@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,9 @@ public class DogCreatureDetectionCollider : MonoBehaviour
 
     private float detectionColliderRadius_Day = 14f;
     private float detectionColliderRadius_Night = 7f;
+
+    public event EventHandler OnAmbushDetected;
+    public event EventHandler OnNoAmbushDetected;
 
     private void Awake() {
         detectionCollider = GetComponent<CircleCollider2D>();
@@ -46,7 +50,7 @@ public class DogCreatureDetectionCollider : MonoBehaviour
             if (!DogStats.Instance.GetGermanShepherdDetectAmbushAbilityUnlocked()) return;
 
             float probabilityToDetectAmbush = DogStats.Instance.GetGermanShepherdDetectAmbushProbability()/100f;
-            float randomFloat = Random.Range(0f, 1f);
+            float randomFloat = UnityEngine.Random.Range(0f, 1f);
             Debug.Log("randomFloat " + randomFloat + " probabilityToDetectAmbush " + probabilityToDetectAmbush);
 
             if(randomFloat <= probabilityToDetectAmbush) {
@@ -88,9 +92,11 @@ public class DogCreatureDetectionCollider : MonoBehaviour
 
         if (creaturesAmbushSpawnersInDetectionColliderRange.Count > 0) {
             ambushSpawnersInDetectionCollider = true;
+            OnAmbushDetected?.Invoke(this, EventArgs.Empty);
         }
         else {
             ambushSpawnersInDetectionCollider = false;
+            OnNoAmbushDetected?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -117,6 +123,30 @@ public class DogCreatureDetectionCollider : MonoBehaviour
         return closestCreature;
     }
 
+    public Creature GetCreatureWithHighestLocalDensity(float radius = 4f) {
+        Creature densestCreature = null;
+        int maxNeighborCount = -1;
+
+        foreach (Creature candidate in creaturesInDetectionColliderRange) {
+            int neighborCount = 0;
+
+            foreach (Creature other in creaturesInDetectionColliderRange) {
+                if (other == candidate) continue;
+
+                float distance = Vector2.Distance(candidate.transform.position, other.transform.position);
+                if (distance <= radius) {
+                    neighborCount++;
+                }
+            }
+
+            if (neighborCount > maxNeighborCount) {
+                maxNeighborCount = neighborCount;
+                densestCreature = candidate;
+            }
+        }
+
+        return densestCreature;
+    }
     public float GetClosestCreatureDistance() {
         Creature closestCreature = null;
         float distanceToClosestCreature = Mathf.Infinity;

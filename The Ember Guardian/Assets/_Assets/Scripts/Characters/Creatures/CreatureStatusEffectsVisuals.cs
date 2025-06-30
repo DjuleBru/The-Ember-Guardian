@@ -10,6 +10,7 @@ public class CreatureStatusEffectsVisuals : MonoBehaviour
     [SerializeField] private GameObject shockedGameObject;
     [SerializeField] private GameObject poisonedGameObject;
     [SerializeField] private GameObject immobilizedGameObject;
+    [SerializeField] private GameObject stunnedGameObject;
     [SerializeField] private GameObject burningGameObject;
 
     protected void Awake() {
@@ -18,6 +19,7 @@ public class CreatureStatusEffectsVisuals : MonoBehaviour
         poisonedGameObject.SetActive(false);
         immobilizedGameObject.SetActive(false);
         burningGameObject.SetActive(false);
+        stunnedGameObject.SetActive(false);
 
         creature = GetComponentInParent<Creature>();
         creature.OnCreatureDied += Creature_OnCreatureDied;
@@ -25,6 +27,8 @@ public class CreatureStatusEffectsVisuals : MonoBehaviour
         creature.OnCreatureExitedLight += Creature_OnCreatureExitedLight;
         creature.OnCreatureImmobilizedStarted += Creature_OnCreatureImmobilizedStarted;
         creature.OnCreatureImmobilizedStopped += Creature_OnCreatureImmobilizedStopped;
+        creature.OnCreatureStunStarted += Creature_OnCreatureStunStarted;
+        creature.OnCreatureStunStopped += Creature_OnCreatureStunStopped;
         creature.OnCreaturePoisonedStarted += Creature_OnCreaturePoisonedStarted;
         creature.OnCreaturePoisoneStopped += Creature_OnCreaturePoisoneStopped;
         creature.OnCreatureShockedStarted += Creature_OnCreatureShockedStarted;
@@ -72,6 +76,14 @@ public class CreatureStatusEffectsVisuals : MonoBehaviour
     private void Creature_OnCreatureImmobilizedStarted(object sender, System.EventArgs e) {
         immobilizedGameObject.SetActive(true);
     }
+    private void Creature_OnCreatureStunStopped(object sender, System.EventArgs e) {
+        stunnedGameObject.SetActive(false);
+    }
+
+    private void Creature_OnCreatureStunStarted(object sender, System.EventArgs e) {
+        stunnedGameObject.SetActive(true);
+    }
+
 
     private void Creature_OnCreatureExitedLight(object sender, System.EventArgs e) {
         fireLightDebuffedGameObject.SetActive(false);

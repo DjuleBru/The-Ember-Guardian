@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class DogSounds : SoundObject
 {
+    [SerializeField] private DogAI_DarkCompanion darkCompanionAI;
     [SerializeField] private AudioSource dogAudioSource;
     [SerializeField] private AudioSource dogOtherSFXAudioSource;
+    [SerializeField] private AudioSource dogRollingAudioSource;
     [SerializeField] private AudioClip[] footStepAudioClips;
     [SerializeField] private AudioClip[] breatheAudioClips;
     [SerializeField] private AudioClip[] sniffAudioClips;
@@ -24,6 +26,10 @@ public class DogSounds : SoundObject
     [SerializeField] private AudioClip[] petLoopAudioClips;
     [SerializeField] private AudioClip[] petBarkAudioClips;
     [SerializeField] private AudioClip[] petTapAudioClips;
+    [SerializeField] private AudioClip[] skidAudioClips;
+    [SerializeField] private AudioClip rollingAudioClip;
+    [SerializeField] private AudioClip laserAttackAudioClip;
+    [SerializeField] private AudioClip stompAttackAudioClip;
 
     [SerializeField] private DogAnimatorManager dogAnimator; 
 
@@ -33,6 +39,7 @@ public class DogSounds : SoundObject
     private float barkTimer;
     private float barkRateWhenRunningToAttack = .8f;
     private bool runningToAttack;
+    private bool running;
 
     private bool pettingDogSFXPlaying;
     private bool pettingDogBarkPlaying;
@@ -50,6 +57,8 @@ public class DogSounds : SoundObject
         dogAnimator.OnDogGrowl += DogAnimator_OnDogGrowl;
         dogAnimator.OnDogBark += DogAnimator_OnDogBark;
         dogAnimator.OnDogBite += DogAnimator_OnDogBite;
+        darkCompanionAI.OnLaserAbilityStarted += DarkCompanionAI_OnLaserAbilityStarted;
+        darkCompanionAI.OnStompAbilityStarted += DarkCompanionAI_OnStompAbilityStarted;
 
         PetDog.Instance.OnPlayerStoppedPettingDog += PetDog_OnPlayerStoppedPettingDog;
         PetDog.Instance.OnPlayerStartedPettingDog += PetDot_OnPlayerStartedPettingDog;
@@ -58,6 +67,21 @@ public class DogSounds : SoundObject
 
         foreach(DogAI dogAI in Dog.Instance.GetDogAIList()) {
             dogAI.OnStateChanged += DogAI_OnStateChanged;
+            dogAI.OnDogBite += DogAI_OnDogBite;
+        }
+    }
+
+    private void DarkCompanionAI_OnStompAbilityStarted(object sender, System.EventArgs e) {
+        dogAudioSource.PlayOneShot(stompAttackAudioClip, sfxVolume);
+    }
+
+    private void DarkCompanionAI_OnLaserAbilityStarted(object sender, System.EventArgs e) {
+        dogAudioSource.PlayOneShot(laserAttackAudioClip, sfxVolume);
+    }
+
+    private void DogAI_OnDogBite(object sender, System.EventArgs e) {
+        if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
+            dogAudioSource.PlayOneShot(biteAudioClips_darkCompanion[Random.Range(0, biteAudioClips_darkCompanion.Length)], sfxVolume * .7f);
         }
     }
 
@@ -138,6 +162,21 @@ public class DogSounds : SoundObject
 
         if(state == DogAI.State.attacking) {
             runningToAttack = true;
+        }
+
+        if(Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
+            if(!running && Dog.Instance.GetCurrentDogAI().GetRunning()) {
+                dogRollingAudioSource.clip = rollingAudioClip;
+                dogRollingAudioSource.Play();
+
+                running = true;
+            };
+
+            if(running && !Dog.Instance.GetCurrentDogAI().GetRunning()) {
+                dogRollingAudioSource.Stop();
+                PlaySound2D(skidAudioClips, .3f);
+                running = false;
+            }
         }
     }
 

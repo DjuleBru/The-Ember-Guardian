@@ -40,6 +40,7 @@ public class MobAttack : MonoBehaviour
     public event EventHandler OnAttackTargetSet;
     public event EventHandler OnAttackSpeedModified;
 
+    protected bool stunned = true;
     protected bool attacking;
     protected bool attackStarted;
     protected bool homingProjectile;
@@ -56,6 +57,8 @@ public class MobAttack : MonoBehaviour
     }
 
     protected void Update() {
+        if (!stunned) return;
+
         attackTimer -= Time.deltaTime;
 
         if ((attackTargetIDamageable as MonoBehaviour)!= null) {
@@ -105,11 +108,11 @@ public class MobAttack : MonoBehaviour
             projectile.transform.SetParent(null);
 
             if(projectileSO.usesAnimationCurve) {
-                projectile.ActivateAndInitialize(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, mob, attackDamage, endPointRandomOffsetValue, homingProjectile);
+                projectile.ActivateAndInitialize(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, transform, attackDamage, endPointRandomOffsetValue, homingProjectile);
             }
             if(projectileSO.usesForce) {
                 ProjectileForces projectileForce = projectile.GetComponent<ProjectileForces>();
-                projectileForce.ActivateAndInitializeWithForces(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, mob, attackDamage, endPointRandomOffsetValue.x, homingProjectile);
+                projectileForce.ActivateAndInitializeWithForces(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, transform, attackDamage, endPointRandomOffsetValue.x, homingProjectile);
             }
         }
 

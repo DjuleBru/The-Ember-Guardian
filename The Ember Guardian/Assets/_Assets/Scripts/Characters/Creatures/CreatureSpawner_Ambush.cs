@@ -1,3 +1,4 @@
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityVector2;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class CreatureSpawner_Ambush : MobSpawner {
     [SerializeField] protected float delayBetweenMobSpawn = .1f;
     [SerializeField] protected float minSpawnPositionFromPlayer;
     [SerializeField] protected float maxSpawnPositionFromPlayer;
+
 
     private bool ambushSpawned;
 
@@ -36,6 +38,7 @@ public class CreatureSpawner_Ambush : MobSpawner {
 
     private IEnumerator SpawnAmbush() {
         int i = 0;
+        GetComponent<Collider2D>().enabled = false;
 
         foreach(Transform mob in mobPrefabList) {
             int mobAmount = mobAmountList[i];

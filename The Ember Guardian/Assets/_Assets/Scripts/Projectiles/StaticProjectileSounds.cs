@@ -10,6 +10,7 @@ public class StaticProjectileSounds : SoundObject
     [SerializeField] private AudioClip[] projectileCreatureHitAudioClips;
     [SerializeField] private float minDelayBetweenCreatureHitPlays = .2f;
     [SerializeField] private AudioClip[] projectileExplosionAudioClips;
+    [SerializeField] private float projectileCreatureHitVolumeMultiplier;
 
     private bool justHitCreature;
     private float justHitCreatureTimer;
@@ -42,11 +43,16 @@ public class StaticProjectileSounds : SoundObject
 
     private void StaticProjectile_OnStaticProjectileHitCreature(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
-        audioSource.PlayOneShot(projectileCreatureHitAudioClips[Random.Range(0, projectileCreatureHitAudioClips.Length)], projectileSFXVolumeMultiplier * sfxVolume);
+        if (projectileCreatureHitAudioClips.Length == 0) return;
+
+        audioSource.PlayOneShot(projectileCreatureHitAudioClips[Random.Range(0, projectileCreatureHitAudioClips.Length)], projectileCreatureHitVolumeMultiplier * sfxVolume);
     }
 
     public void TriggerProjectileSFX() {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
-        audioSource.PlayOneShot(projectileSFXAudioClips[Random.Range(0, projectileSFXAudioClips.Length)], projectileSFXVolumeMultiplier * sfxVolume);
+        if (projectileSFXAudioClips.Length == 0) return;
+
+        AudioClip audioClip = projectileSFXAudioClips[Random.Range(0, projectileSFXAudioClips.Length)];
+        audioSource.PlayOneShot(audioClip, projectileSFXVolumeMultiplier * sfxVolume);
     }
 }

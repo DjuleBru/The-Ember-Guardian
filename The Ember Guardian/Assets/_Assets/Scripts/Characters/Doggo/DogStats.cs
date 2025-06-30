@@ -33,9 +33,9 @@ public class DogStats : MonoBehaviour {
 
     private int darkCompanionBiteDamage;
     private float darkCompanionBiteCooldown;
-    private float darkCompanionLaserDamage;
+    private int darkCompanionLaserDamage;
     private float darkCompanionLaserCooldown;
-    private float darkCompanionStompDamage;
+    private int darkCompanionStompDamage;
     private float darkCompanionStompCooldown;
     private float darkCompanionStompStunDuration;
 
@@ -53,9 +53,9 @@ public class DogStats : MonoBehaviour {
 
     [SerializeField] private int initialDarkCompanionBiteDamage;
     [SerializeField] private float initialDarkCompanionBiteCooldown;
-    [SerializeField] private float initialDarkCompanionLaserDamage;
+    [SerializeField] private int initialDarkCompanionLaserDamage;
     [SerializeField] private float initialDarkCompanionLaserCooldown;
-    [SerializeField] private float initialDarkCompanionStompDamage;
+    [SerializeField] private int initialDarkCompanionStompDamage;
     [SerializeField] private float initialDarkCompanionStompCooldown;
     [SerializeField] private float initialDarkCompanionStompStunDuration;
 
@@ -101,6 +101,8 @@ public class DogStats : MonoBehaviour {
         retreiverBuffWorkersAmount = ES3.Load("retreiverBuffWorkersAmount", initialRetreiverBuffWorkersAmount);
         retreiverBuffWorkersRadius = ES3.Load("retreiverBuffWorkersRadius", initialRetreiverBuffWorkersRadius);
 
+        darkCompanionBiteDamage = ES3.Load("darkCompanionBiteDamage", initialDarkCompanionBiteDamage);
+        darkCompanionBiteCooldown = ES3.Load("darkCompanionBiteCooldown", initialDarkCompanionBiteCooldown);
         darkCompanionLaserDamage = ES3.Load("darkCompanionLaserDamage", initialDarkCompanionLaserDamage);
         darkCompanionLaserCooldown = ES3.Load("darkCompanionLaserCooldown", initialDarkCompanionLaserCooldown);
         darkCompanionStompDamage = ES3.Load("darkCompanionStompDamage", initialDarkCompanionStompDamage);
@@ -240,13 +242,13 @@ public class DogStats : MonoBehaviour {
     public float GetDarkCompanionBiteCooldown() {
         return darkCompanionBiteCooldown;
     }
-    public float GetDarkCompanionLaserDamage() {
+    public int GetDarkCompanionLaserDamage() {
         return darkCompanionLaserDamage;
     }
     public float GetDarkCompanionLaserCooldown() {
         return darkCompanionLaserCooldown;
     }
-    public float GetDarkCompanionStompDamage() {
+    public int GetDarkCompanionStompDamage() {
         return darkCompanionStompDamage;
     }
     public float GetDarkCompanionStompCooldown() {

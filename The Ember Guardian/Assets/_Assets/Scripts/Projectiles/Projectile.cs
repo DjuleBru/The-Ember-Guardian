@@ -23,6 +23,7 @@ public class Projectile : MonoBehaviour
     protected Vector3 trajectoryRange;
     protected Vector3 trajectoryStartPoint;
     protected Vector3 trajectoryEndPoint;
+    protected Transform damageSource;
     protected Transform projectileTarget;
     protected Vector3 projectileStartPoint;
     protected Vector3 projectileMoveDir;
@@ -49,13 +50,14 @@ public class Projectile : MonoBehaviour
     protected bool homingProjectile;
     protected int damage;
 
-    public void ActivateAndInitialize(Transform targetTransform, ProjectileSO projectileSO, Mob parentMob, int damage, Vector3 endPointRandomOffsetValue,  bool homingProjectile) {
+    public void ActivateAndInitialize(Transform targetTransform, ProjectileSO projectileSO, Transform damageSource, int damage, Vector3 endPointRandomOffsetValue,  bool homingProjectile) {
         if(targetTransform == null) {
             ResetInObjectPool();
             return;
         }
 
-        this.parentMob = parentMob;
+        this.damageSource = damageSource;
+        parentMob = damageSource.GetComponent<Mob>();
         this.projectileSO = projectileSO;
         this.damage = damage;
         this.homingProjectile = homingProjectile;
@@ -235,7 +237,7 @@ public class Projectile : MonoBehaviour
 
         if (mobHit != null) {
             ProjectileHasHit(true);
-            mobHit.TakeDamage(damage, parentMob.transform, false);
+            mobHit.TakeDamage(damage, damageSource, false);
             return;
         }
     }

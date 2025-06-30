@@ -89,7 +89,7 @@ public class SpecialTower_Manner_Mortar : SpecialTower_Manner
         if (targetCreature == null) yield break;
 
         ProjectileForces projectileForces = projectile.GetComponent<ProjectileForces>();
-        projectileForces.ActivateAndInitializeWithForces(targetCreature.transform, mortarProjectileSO_lvl1, engineersManning[0].GetComponent<Worker>(), bulletDamage, 0 ,true);
+        projectileForces.ActivateAndInitializeWithForces(targetCreature.transform, mortarProjectileSO_lvl1, engineersManning[0].transform, bulletDamage, 0 ,true);
         OnProjectileShot?.Invoke(this, EventArgs.Empty);
 
         if (specialTower.GetCurrentAmmoClip() == 0) {

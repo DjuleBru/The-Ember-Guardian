@@ -24,6 +24,8 @@ public class CreatureMovement : MobMovement
         creature.OnCreatureEnteredLight += Creature_OnCreatureEnteredLight;
         creature.OnCreatureImmobilizedStarted += Creature_OnCreatureImmobilizedStarted;
         creature.OnCreatureImmobilizedStopped += Creature_OnCreatureImmobilizedStopped;
+        creature.OnCreatureStunStarted += Creature_OnCreatureStunStarted;
+        creature.OnCreatureStunStopped += Creature_OnCreatureStunStopped;
         creature.OnCreatureShockedStarted += Creature_OnCreatureShockedStarted;
         creature.OnCreatureShockedStopped += Creature_OnCreatureShockedStopped;
         InitializeCreatureMoveSpeed();
@@ -80,6 +82,14 @@ public class CreatureMovement : MobMovement
 
     private void Creature_OnCreatureImmobilizedStopped(object sender, System.EventArgs e) {
         immobilized = false;
+    }
+    private void Creature_OnCreatureStunStopped(object sender, System.EventArgs e) {
+        immobilized = false;
+    }
+
+    private void Creature_OnCreatureStunStarted(object sender, System.EventArgs e) {
+        immobilized = true;
+        rb.velocity = Vector2.zero;
     }
 
     private void Creature_OnCreatureImmobilizedStarted(object sender, System.EventArgs e) {

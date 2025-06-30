@@ -11,6 +11,7 @@ public class DogAnimatorManager : MonoBehaviour {
     [SerializeField] private RuntimeAnimatorController goldenAnimator;
     [SerializeField] private RuntimeAnimatorController darkCompanionAnimator;
     [SerializeField] private PetDog petDog;
+    [SerializeField] private DogAI_DarkCompanion darkCompanionAI;
 
     private Animator animator;
     private Dog dog;
@@ -56,6 +57,8 @@ public class DogAnimatorManager : MonoBehaviour {
     public event EventHandler OnDogBite;
 
     private bool running;
+    private bool shootingContinuousLaser;
+    private bool stomping;
 
     private void Awake() {
         animator = GetComponent<Animator>();
@@ -82,6 +85,10 @@ public class DogAnimatorManager : MonoBehaviour {
             dogAI.OnDogBite += DogAI_OnDogBite;
         }
         dogAI = Dog.Instance.GetCurrentDogAI();
+        darkCompanionAI.OnLaserAbilityStarted += DarkCompanionAI_OnLaserAbilityStarted;
+        darkCompanionAI.OnStompAbilityStarted += DarkCompanionAI_OnStompAbilityStarted;
+        darkCompanionAI.OnLaserAbilityEnded += DarkCompanionAI_OnLaserAbilityEnded;
+        darkCompanionAI.OnStompAbilityEnded += DarkCompanionAI_OnStompAbilityEnded;
 
         dogMovement.SetReadyToMoveAnimator(false);
         DogDigAbility.Instance.OnSniffStart += DogDigAbility_OnSniffStart;
@@ -89,6 +96,58 @@ public class DogAnimatorManager : MonoBehaviour {
         digAbilityUnlocked = DogStats.Instance.GetGermanShepherdDigResourceAbilityUnlocked();
 
         SetDogTypeAnimator();
+    }
+
+    private void Update() {
+        if (!stomping && !shootingContinuousLaser) {
+            HandleXScale();
+        }
+        HandleAnimatorMovementBool();
+
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        string stateName = animator.runtimeAnimatorController.animationClips
+            .FirstOrDefault(clip => Animator.StringToHash(clip.name) == stateInfo.shortNameHash)?.name;
+
+        if (!digAbilityUnlocked) {
+            if (stateName == "Doggo_Walk") {
+                HandleSniffStart();
+            }
+        }
+
+        if (stateName == "Doggo_WalkSniff") {
+            HandleSniffEnd();
+        }
+
+        if (stateName == "Doggo_Idle") {
+            HandleSitStart();
+            HandleSleepStart();
+        }
+
+        if (stateName == "Doggo_SitIdle") {
+            HandleSitEnd();
+        }
+
+        if (stateName == "Doggo_Sleep") {
+            HandleSleepEnd();
+        }
+    }
+    private void DarkCompanionAI_OnStompAbilityEnded(object sender, EventArgs e) {
+        stomping = false;
+    }
+
+    private void DarkCompanionAI_OnLaserAbilityEnded(object sender, EventArgs e) {
+        shootingContinuousLaser = false;
+    }
+
+    private void DarkCompanionAI_OnStompAbilityStarted(object sender, EventArgs e) {
+        animator.SetTrigger("Stomp");
+        stomping = true;
+    }
+
+    private void DarkCompanionAI_OnLaserAbilityStarted(object sender, EventArgs e) {
+        animator.SetTrigger("Laser");
+        shootingContinuousLaser = true;
+        HandleScaleChange(Dog.Instance.GetComponent<DogAI_DarkCompanion>().GetWatchDir());
     }
 
     private void Dog_OnDogTypeChanged(object sender, EventArgs e) {
@@ -197,38 +256,6 @@ public class DogAnimatorManager : MonoBehaviour {
         }
     }
 
-    private void Update() {
-
-        HandleXScale();
-        HandleAnimatorMovementBool();
-
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        string stateName = animator.runtimeAnimatorController.animationClips
-            .FirstOrDefault(clip => Animator.StringToHash(clip.name) == stateInfo.shortNameHash)?.name;
-
-        if(!digAbilityUnlocked) {
-            if (stateName == "Doggo_Walk") {
-                HandleSniffStart();
-            }
-        }
-
-        if (stateName == "Doggo_WalkSniff") {
-            HandleSniffEnd();
-        }
-
-        if (stateName == "Doggo_Idle") {
-            HandleSitStart();
-            HandleSleepStart();
-        }
-
-        if (stateName == "Doggo_SitIdle") {
-            HandleSitEnd();
-        }
-
-        if (stateName == "Doggo_Sleep") {
-            HandleSleepEnd();
-        }
-    }
 
     private void CheckStopSniffing() {
         if (!digAbilityUnlocked) return;

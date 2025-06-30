@@ -13,6 +13,8 @@ public class CreatureAnimatorManager : MonoBehaviour
 
     protected bool spawned;
     protected bool moving;
+    protected bool stunned;
+    protected bool immobilized;
     protected float moveDir;
     protected float lastMoveDir;
     protected float watchDir;
@@ -31,6 +33,8 @@ public class CreatureAnimatorManager : MonoBehaviour
 
         mobAttack.OnMobAttack += MobAttack_OnMobAttack;
         creature.OnMobDied += Creature_OnMobDied;
+        creature.OnCreatureStunStarted += Creature_OnCreatureStunStarted;
+        creature.OnCreatureStunStopped += Creature_OnCreatureStunStopped;
         mobMovement.OnMoveSpeedBuffChanged += MobMovement_OnMoveSpeedBuffChanged;
     }
 
@@ -72,7 +76,7 @@ public class CreatureAnimatorManager : MonoBehaviour
             return;
         };
 
-        if (moveDir != 0) {
+        if (moveDir != 0 && !stunned && !immobilized) {
 
             if (!moving) {
                 animator.SetBool("Walking", true);
@@ -92,6 +96,7 @@ public class CreatureAnimatorManager : MonoBehaviour
     }
 
     protected void HandleXScale() {
+        if (stunned || immobilized) return;
 
         if (moving) {
             HandleScaleChange(moveDir);
@@ -106,6 +111,13 @@ public class CreatureAnimatorManager : MonoBehaviour
         HandleScaleChange(lastMoveDir);
     }
 
+    private void Creature_OnCreatureStunStopped(object sender, EventArgs e) {
+        stunned = false;
+    }
+
+    private void Creature_OnCreatureStunStarted(object sender, EventArgs e) {
+        stunned = true;
+    }
     protected void HandleScaleChange(float watchDir) {
         if (watchDir < 0 && previousWatchDir > 0) {
             previousWatchDir = watchDir;

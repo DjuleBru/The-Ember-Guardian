@@ -18,6 +18,8 @@ public class CreatureAttack : MobAttack
         attackAnimationDelay = creature.GetCreatureSO().attackAnimationDelay;
         totalAttackAnimationTime = creature.GetCreatureSO().totalAttackAnimationTime;
         enteredLightAttackSpeedDebuff = creature.GetCreatureSO().enteredLightattackRateDebuff;
+        creature.OnCreatureStunStarted += Creature_OnCreatureStunStarted;
+        creature.OnCreatureStunStopped += Creature_OnCreatureStunStopped;
     }
 
     protected void Start() {
@@ -84,4 +86,13 @@ public class CreatureAttack : MobAttack
         attacking = false;
         attackTargetIDamageable = null;
     }
+
+    private void Creature_OnCreatureStunStopped(object sender, EventArgs e) {
+        stunned = true;
+    }
+
+    private void Creature_OnCreatureStunStarted(object sender, EventArgs e) {
+        stunned = false;
+    }
+
 }
