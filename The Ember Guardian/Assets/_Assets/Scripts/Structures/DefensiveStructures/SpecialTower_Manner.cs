@@ -244,10 +244,10 @@ public class SpecialTower_Manner : MonoBehaviour {
             targetCreature = GetHighestHealthCreature(engineersManning[0].GetDetectionCollider().GetCreaturesInDetectionCollider(), mannerMinimumShootDistance);
         }
         if (mannerType == MannerType.MachineGun) {
-            targetCreature = GetClosestCreature(engineersManning[0].GetDetectionCollider().GetCreaturesInDetectionCollider(), mannerMinimumShootDistance);
+            targetCreature = GetClosestCreature(engineersManning[0].GetDetectionCollider().GetCreaturesInDetectionCollider(), mannerMinimumShootDistance, true);
         }
         if (mannerType == MannerType.Mortar) {
-            targetCreature = GetClosestCreature(engineersManning[0].GetDetectionCollider().GetCreaturesInDetectionCollider(), mannerMinimumShootDistance);
+            targetCreature = GetClosestCreature(engineersManning[0].GetDetectionCollider().GetCreaturesInDetectionCollider(), mannerMinimumShootDistance, false);
         }
 
         if (targetCreature != null) {
@@ -283,11 +283,12 @@ public class SpecialTower_Manner : MonoBehaviour {
         return highestHPCreature;
     }
 
-    protected Creature GetClosestCreature(List<Creature> creaturesInRange, float minDistanceToShoot) {
+    protected Creature GetClosestCreature(List<Creature> creaturesInRange, float minDistanceToShoot, bool targetFlying) {
         float closestCreatureDistance = Mathf.Infinity;
         Creature closestCreature = null;
 
         foreach (Creature creature in creaturesInRange) {
+            if (!targetFlying && creature.GetCreatureSO().flying) continue;
 
             float distanceToCreature = Vector3.Distance(transform.position, creature.transform.position);
             if (distanceToCreature < minDistanceToShoot) continue;

@@ -58,7 +58,9 @@ public class EngineerJob : WorkerJob {
         workerDetectionCollider = GetComponentInChildren<WorkerDetectionCollider>();
     }
 
-    protected void Start() {
+    protected override void Start() {
+        base.Start();
+
         worker.OnWorkerDroppedCurrency += Worker_OnWorkerDroppedCurrency;
         worker.OnWorkerCollectedCurrency += Worker_OnWorkerCollectedCurrency;
         workerMovement.OnDestinationReached += WorkerMovement_OnDestinationReached;

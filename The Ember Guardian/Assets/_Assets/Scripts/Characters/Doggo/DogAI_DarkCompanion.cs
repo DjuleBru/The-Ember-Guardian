@@ -29,7 +29,7 @@ public class DogAI_DarkCompanion : DogAI
     private float biteLaserShotRange = 15f;
     private int laserAbilityTickDamage;
     private int stompAbilityDamage;
-    private float laserAbilityTickCooldown = .3f;
+    private float laserAbilityTickCooldown;
     private float laserAbilityRange = 6f;
     private float stompAbilityRange = 1f;
     private float stompStunDuration;
@@ -58,6 +58,7 @@ public class DogAI_DarkCompanion : DogAI
         stompAbilityDamage = DogStats.Instance.GetDarkCompanionStompDamage();
         stompStunDuration = DogStats.Instance.GetDarkCompanionStompStunDuration();
 
+        laserAbilityTickCooldown = DogStats.Instance.GetDarkCompanionLaserTickCooldown();
 
         currentAttackAbility = AttackAbility.none;
     }

@@ -95,7 +95,7 @@ public class HubMerchantItem : MonoBehaviour
 
         } else {
             itemBought = true;
-            itemUnlocked = true;
+            itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType());
             itemLevel = maxItemLevel;
 
             if(itemEquipable) {

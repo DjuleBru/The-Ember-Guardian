@@ -7,26 +7,34 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
     [SerializeField] private SpriteRenderer pickUpSpriteRenderer;
+    [SerializeField] private GameObject exclamationMark;
 
     private HuntingFlag huntingFlag;
     private bool playerInTriggerArea;
     private bool playerCarryingFlag;
+    private bool tooFarForHunters;
+    private float maxSecureDistance;
 
     public static event EventHandler OnAnyHuntingFlagPickedUp;
     public static event EventHandler OnAnyHuntingFlagNewPositionSet;
     public static event EventHandler OnAnyPlayerTriggeredIn;
+    public static event EventHandler OnHuntingFlagTooFar;
 
     private void Awake() {
         huntingFlag = GetComponentInParent<HuntingFlag>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         pickUpSpriteRenderer.enabled = false;
+        exclamationMark.SetActive(false);
     }
 
     private void Start() {
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
+        CampZoneManager.Instance.OnCampZoneLimitsChanged += CampZoneManager_OnCampZoneLimitsChanged;
 
+        RefreshMaxSecureDistance();
         huntingFlag.OnPlayerResetManualHuntingLimit += HuntingFlag_OnPlayerResetManualHuntingLimit;
     }
+
 
     private void Update() {
         if (!huntingFlag.GetPlayerCarryingFlag()) return;
@@ -42,11 +50,41 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
 
             SetNewFlagPosition(currentPosition);
         }
+
+        CheckSecureDistance();
+        
+    }
+
+    private void CampZoneManager_OnCampZoneLimitsChanged(object sender, EventArgs e) {
+        RefreshMaxSecureDistance();
+    }
+
+    private void RefreshMaxSecureDistance() {
+        float hunterRunBackToCampSpeed = (1 + WorkerStats.Instance.GetHunterMoveSpeedBuff()) * WorkerStats.Instance.GetHeadToCampMoveSpeed();
+        maxSecureDistance = hunterRunBackToCampSpeed * DayNightManager.Instance.GetDuskDuration() + CampZoneManager.Instance.GetMaxZoneLimit();
+        CheckSecureDistance();
+        Debug.Log("maxSecureDistance " + maxSecureDistance);
+    }
+    private void CheckSecureDistance() {
+        if (!tooFarForHunters) {
+            if(Mathf.Abs(transform.position.x) > maxSecureDistance) {
+                tooFarForHunters = true;
+                exclamationMark.SetActive(true);
+                OnHuntingFlagTooFar?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        if (tooFarForHunters) {
+            if (Mathf.Abs(transform.position.x) < maxSecureDistance) {
+                tooFarForHunters = false;
+                exclamationMark.SetActive(false);
+            }
+        }
     }
 
     private void GameInput_OnPlayerInteractPerformed(object sender, System.EventArgs e) {
 
-        if(playerCarryingFlag) {
+        if (playerCarryingFlag) {
             if (!Player.Instance.GetInNoOtherObjectTriggerArea()) return;
             Vector3 currentPosition = new Vector3(Player.Instance.transform.position.x, 0f, 0f);
             SetNewFlagPosition(currentPosition);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,11 +51,13 @@ public class DogStats : MonoBehaviour {
     [SerializeField] private float initialRetreiverBiteCooldown;
     [SerializeField] private float initialRetreiverBuffWorkersAmount;
     [SerializeField] private float initialRetreiverBuffWorkersRadius;
+    [SerializeField] private float initialRetreiverCurrenciesDetectionRange;
 
     [SerializeField] private int initialDarkCompanionBiteDamage;
     [SerializeField] private float initialDarkCompanionBiteCooldown;
     [SerializeField] private int initialDarkCompanionLaserDamage;
     [SerializeField] private float initialDarkCompanionLaserCooldown;
+    [SerializeField] private float initialDarkCompanionLaserTickCooldown;
     [SerializeField] private int initialDarkCompanionStompDamage;
     [SerializeField] private float initialDarkCompanionStompCooldown;
     [SerializeField] private float initialDarkCompanionStompStunDuration;
@@ -66,6 +69,14 @@ public class DogStats : MonoBehaviour {
     [SerializeField] private bool debugUnlockPickUpItemsAbility;
     [SerializeField] private bool debugUnlockLaserAbility;
     [SerializeField] private bool debugUnlockStompAbility;
+
+    public event EventHandler OnNewDogUnlocked;
+    public event EventHandler OnNewAbilityUnlocked;
+    public event EventHandler OnAbilityUpgraded;
+
+    [SerializeField] private Sprite germanShepherdIcon;
+    [SerializeField] private Sprite retreiverIcon;
+    [SerializeField] private Sprite darkCompanionIcon;
 
     private void Awake() {
         Instance = this;
@@ -128,6 +139,9 @@ public class DogStats : MonoBehaviour {
     }
     public float GetGermanShepherdInitialAmbushDetectionProbability() {
         return initialGermanShepherdAmbushDetectionProbability;
+    }
+    public float GetRetreiverInitialResourceDetectionRange() {
+        return initialRetreiverCurrenciesDetectionRange;
     }
 
     public int GetInitialRetreiverBiteDamage() {
@@ -245,6 +259,9 @@ public class DogStats : MonoBehaviour {
     public int GetDarkCompanionLaserDamage() {
         return darkCompanionLaserDamage;
     }
+    public float GetDarkCompanionLaserTickCooldown() {
+        return initialDarkCompanionLaserTickCooldown;
+    }
     public float GetDarkCompanionLaserCooldown() {
         return darkCompanionLaserCooldown;
     }
@@ -264,95 +281,144 @@ public class DogStats : MonoBehaviour {
     public void UnlockRetreiver() {
         retreiverUnlocked = true;
         Dog.Instance.SetDogType(Dog.DogType.GoldenRetreiver);
+        OnNewDogUnlocked?.Invoke(this, EventArgs.Empty);
     }
     public void UnlockDarkCompanion() {
         darkCompanionUnlocked = true;
         Dog.Instance.SetDogType(Dog.DogType.DarkCompanion);
-        Debug.Log("UnlockDarkCompanion");
+        OnNewDogUnlocked?.Invoke(this, EventArgs.Empty);
     }
 
     public void UnlockGermanShepherdBiteAbility() {
         germanShepherdBiteAbilityUnlocked = true;
+        OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
     }
     public void UnlockGermanShepherdDigResourceAbility() {
         germanShepherdDigResourceAbilityUnlocked = true;
+        OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
     }
     public void UnlockGermanShepherdDetectAmbushAbility() {
         germanShepherdDetectAmbushAbilityUnlocked = true;
+        OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
     }
     public void UnlockRetreiverBiteAbility() {
         retreiverBiteAbilityUnlocked = true;
+        OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
     }
     public void UnlockRetreiverBuffWorkersAbility() {
         retreiverBuffWorkersAbilityUnlocked = true;
+        OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
     }
     public void UnlockRetreiverPickUpItemsAbility() {
         retreiverPickUpItemsAbilityUnlocked = true;
+        OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
     }
     public void UnlockDarkCompanionBiteAbility() {
         darkCompanionBiteAbilityUnlocked = true;
+        OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
     }
     public void UnlockDarkCompanionLaserAbility() {
         darkCompanionLaserAbilityUnlocked = true;
+        OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
     }
     public void UnlockDarkCompanionStompAbility() {
         darkCompanionStompAbilityUnlocked = true;
+        OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
     }
 
     public void BuffGermanShepherdAmbushDetectionProbability(float ambushDetectionProbabilityAbsoluteBuff) {
         this.germanShepherdAmbushDetectionProbability = initialGermanShepherdAmbushDetectionProbability + ambushDetectionProbabilityAbsoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void BuffGermanShepherdBiteDamage(int biteDamageAbsoluteBuff) {
         this.germanShepherdBiteDamage = initialGermanShepherdBiteDamage + biteDamageAbsoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void BuffGermanShepherdDigResourceCooldown(float digResourceCooldownAbsoluteBuff) {
         this.germanShepherdDigResourceCooldown = initialGermanShepherdDigResourceCooldown + digResourceCooldownAbsoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void BuffGermanShepherdDigResourceProbability(float absoluteBuff) {
         this.germanShepherdDigResourceProbability = initialGermanShepherdDigResourceProbability + absoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void BuffGermanShepherdDigResourceDoubleProbability(float absoluteBuff) {
         this.germanShepherdDigResourceDoubleProbability = initialGermanShepherdDigResourceDoubleProbability + absoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void BuffGermanShepherdBiteCooldown(float biteCooldownAbsoluteBuff) {
         this.germanShepherdBiteCooldown = initialGermanShepherdBiteCooldown + biteCooldownAbsoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
     public void BuffRetreiverBiteDamage(int biteDamageAbsoluteBuff) {
         this.retreiverBiteDamage = initialRetreiverBiteDamage + biteDamageAbsoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void BuffRetreiverBiteCooldown(float biteCooldownAbsoluteBuff) {
         this.retreiverBiteCooldown = initialRetreiverBiteCooldown + biteCooldownAbsoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void BuffRetreiverBuffWorkersAmount(float absoluteBuff) {
         this.retreiverBuffWorkersAmount = initialRetreiverBuffWorkersAmount + absoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void BuffRetreiverBuffWorkersRadius(float absoluteBuff) {
         this.retreiverBuffWorkersRadius = initialRetreiverBuffWorkersRadius + absoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
     public void BuffDarkCompanionBiteDamage(int biteDamageAbsoluteBuff) {
         this.darkCompanionBiteDamage = initialDarkCompanionBiteDamage + biteDamageAbsoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void BuffDarkCompanionBiteCooldown(float biteCooldownAbsoluteBuff) {
         this.darkCompanionBiteCooldown = initialDarkCompanionBiteCooldown + biteCooldownAbsoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void BuffDarkCompanionLaserDamage(int absoluteBuff) {
         this.darkCompanionLaserDamage = initialDarkCompanionLaserDamage + absoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void BuffDarkCompanionLaserCooldown(float absoluteBuff) {
         this.darkCompanionLaserCooldown = initialDarkCompanionLaserCooldown + absoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void BuffDarkCompanionStompDamage(int absoluteBuff) {
         this.darkCompanionStompDamage = initialDarkCompanionStompDamage + absoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void BuffDarkCompanionStompCooldown(float absoluteBuff) {
         this.darkCompanionStompCooldown = initialDarkCompanionStompCooldown + absoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void BuffDarkCompanionStompStunDuration(float absoluteBuff) {
         this.darkCompanionStompStunDuration = initialDarkCompanionStompStunDuration + absoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
     #endregion
+
+    public bool GetDogUnlocked(Dog.DogType dogType) {
+        if (dogType == Dog.DogType.GermanShepherd) return true;
+        if (dogType == Dog.DogType.GoldenRetreiver) return retreiverUnlocked;
+        if (dogType == Dog.DogType.DarkCompanion) return darkCompanionUnlocked;
+        return false;
+    }
+
+    public Sprite GetDogIconSprite(Dog.DogType type) {
+        if(type == Dog.DogType.GermanShepherd) {
+            return germanShepherdIcon;
+        }
+
+        if(type == Dog.DogType.GoldenRetreiver) {
+            return retreiverIcon;
+        }
+
+        if(type == Dog.DogType.DarkCompanion) {
+            return darkCompanionIcon;
+        }
+        return germanShepherdIcon;
+    }
 
     #region SAVE PARAMETERS
     public void SaveDogStats() {

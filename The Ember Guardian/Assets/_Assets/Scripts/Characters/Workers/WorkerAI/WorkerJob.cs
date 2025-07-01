@@ -44,6 +44,12 @@ public class WorkerJob : MonoBehaviour
     protected float blockedByCreaturesTimer;
     protected float blockedByCreaturesCooldown = 2f;
 
+    protected virtual void Start() {
+        headToCampMoveSpeed = WorkerStats.Instance.GetHeadToCampMoveSpeed();
+        roamMoveSpeed = WorkerStats.Instance.GetRoamMoveSpeed();
+        fleeMoveSpeed = WorkerStats.Instance.GetFleeMoveSpeed();
+    }
+
     protected virtual void TargetCreature(Creature newTargetCreature) {
         if (targetCreature == newTargetCreature) return;
 

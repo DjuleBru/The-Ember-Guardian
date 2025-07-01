@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -132,6 +133,25 @@ public class Dog : MonoBehaviour
         OnDogTypeChanged?.Invoke(this, EventArgs.Empty);
 
         Debug.Log("SetDogType " + dogType);
+    }
+
+    [Button]
+    public void UnlockDogType(DogType dogType) {
+        if(dogType == DogType.GoldenRetreiver) {
+            MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HUBMerchantItem_DogTamerItem.DogTamerItemType.Dog_GoldenRetreiver.ToString(), true);
+            DogStats.Instance.UnlockRetreiver();
+            DogStats.Instance.UnlockRetreiverBiteAbility();
+        }
+
+        if (dogType == DogType.DarkCompanion) {
+            MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HUBMerchantItem_DogTamerItem.DogTamerItemType.Dog_DarkCompanion.ToString(), true);
+            DogStats.Instance.UnlockDarkCompanion();
+            DogStats.Instance.UnlockDarkCompanionBiteAbility();
+        }
+
+        this.dogType = dogType;
+        SetCurrentDogAI();
+        OnDogTypeChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public List<DogAI> GetDogAIList() {

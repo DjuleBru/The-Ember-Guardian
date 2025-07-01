@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -276,6 +277,11 @@ public class VideoTipManager : MonoBehaviour
     }
 
     #endregion
+
+    [Button] 
+    public void TestTip(VideoTipSO tipSO) {
+        VideoTipUI.Instance.PlayTipSO(tipSO, 0f);
+    }
 
     private void LoadTooltipsShown() {
         dieTipShown = ES3.Load("dieTipShown", false);

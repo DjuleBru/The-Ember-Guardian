@@ -64,11 +64,18 @@ public class DogSounds : SoundObject
         PetDog.Instance.OnPlayerStartedPettingDog += PetDot_OnPlayerStartedPettingDog;
         PetDog.Instance.OnPlayerRefreshedPettingDog += PetDog_OnPlayerRefreshedPettingDog;
         PetDog.Instance.OnPlayerEndedPettingDog += PetDog_OnPlayerEndedPettingDog;
+        Dog.Instance.OnDogTypeChanged += Dog_OnDogTypeChanged;
 
         foreach(DogAI dogAI in Dog.Instance.GetDogAIList()) {
             dogAI.OnStateChanged += DogAI_OnStateChanged;
             dogAI.OnDogBite += DogAI_OnDogBite;
         }
+    }
+
+    private void Dog_OnDogTypeChanged(object sender, System.EventArgs e) {
+        dogAudioSource.Stop();
+        dogOtherSFXAudioSource.Stop();
+        dogRollingAudioSource.Stop();
     }
 
     private void DarkCompanionAI_OnStompAbilityStarted(object sender, System.EventArgs e) {

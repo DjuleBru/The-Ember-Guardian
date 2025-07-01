@@ -18,6 +18,7 @@ public class PlayerTooltipManager : MonoBehaviour
     private bool prepareSwapGunTooltip;
     private bool selectOtherGunTooltipShown;
     private bool selectOtherGunTooltipBeingShown;
+    private bool huntingFlagTooFarShown;
     private bool secondaryWeaponAbilityShown;
 
     private int tryReloadAttemptAmount;
@@ -45,9 +46,11 @@ public class PlayerTooltipManager : MonoBehaviour
         PlayerShoot.Instance.OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag += PlayerShoot_OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
+        HuntingFlag_PlayerDefined.OnHuntingFlagTooFar += HuntingFlag_PlayerDefined_OnHuntingFlagTooFar;
 
         gunSOAbilityPreparedList = ES3.Load("gunSOAbilityPreparedList", new List<GunSO>());
         selectOtherGunTooltipShown = ES3.Load("selectOtherGunTooltipShown", false);
+        huntingFlagTooFarShown = ES3.Load("huntingFlagTooFarShown", false);
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
 
@@ -93,6 +96,14 @@ public class PlayerTooltipManager : MonoBehaviour
             tooltipLeft.ShowTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_ammoTip"), InputControlIcons.Control.Reload, 4f);
         }
     }
+
+    private void HuntingFlag_PlayerDefined_OnHuntingFlagTooFar(object sender, System.EventArgs e) {
+        if (huntingFlagTooFarShown) return;
+
+        tooltipLeft.ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_huntingFlagTooFar"), 5f);
+        ES3.Save("huntingFlagTooFarShown", true);
+    }
+
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
         TryShowGunSecondaryAbilityTooltip();
@@ -203,5 +214,6 @@ public class PlayerTooltipManager : MonoBehaviour
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         PlayerShoot.Instance.OnPlayerSwappedGun -= PlayerShoot_OnPlayerSwappedGun;
         HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
+        HuntingFlag_PlayerDefined.OnHuntingFlagTooFar -= HuntingFlag_PlayerDefined_OnHuntingFlagTooFar;
     }
 }

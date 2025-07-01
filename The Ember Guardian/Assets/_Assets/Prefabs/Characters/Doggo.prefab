@@ -2183,10 +2183,12 @@ MonoBehaviour:
   initialRetreiverBiteCooldown: 30
   initialRetreiverBuffWorkersAmount: 10
   initialRetreiverBuffWorkersRadius: 6
+  initialRetreiverCurrenciesDetectionRange: 20
   initialDarkCompanionBiteDamage: 30
   initialDarkCompanionBiteCooldown: 30
   initialDarkCompanionLaserDamage: 10
   initialDarkCompanionLaserCooldown: 20
+  initialDarkCompanionLaserTickCooldown: 0.3
   initialDarkCompanionStompDamage: 20
   initialDarkCompanionStompCooldown: 80
   initialDarkCompanionStompStunDuration: 3
@@ -2197,6 +2199,9 @@ MonoBehaviour:
   debugUnlockPickUpItemsAbility: 0
   debugUnlockLaserAbility: 0
   debugUnlockStompAbility: 0
+  germanShepherdIcon: {fileID: 21300000, guid: 1f07936a3a623cb4791ac7e68cef338e, type: 3}
+  retreiverIcon: {fileID: 21300000, guid: 1c185dffd2a4b6442b6f61ff8275f1c3, type: 3}
+  darkCompanionIcon: {fileID: 21300000, guid: 9073bf5f678c1ef42af794e74cec0683, type: 3}
 --- !u!114 &1436243691899500231
 MonoBehaviour:
   m_ObjectHideFlags: 0

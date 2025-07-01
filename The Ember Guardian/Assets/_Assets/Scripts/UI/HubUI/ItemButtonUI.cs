@@ -25,22 +25,24 @@ public class ItemButtonUI : ButtonUI {
     [SerializeField] private ItemButtonUI_Visual itemButtonUI_Visual;
     [SerializeField] private Color boughtOutlineColor;
     [SerializeField] private Color boughtBackgroundColor;
-    [SerializeField] private Sprite outlineImageBoughtSprite;
     [SerializeField] private List<Image> outputLinkUnlockedImageList;
     [SerializeField] private GameObject itemLevelBackgroundGameObject;
-    [SerializeField] private Sprite defaultOutlineSprite;
-    [SerializeField] private Sprite itemEquippedOutlineSprite;
-    [SerializeField] private Sprite itemMaxedOutlineSprite;
     [SerializeField] private TextMeshProUGUI itemMaxedLevelText;
     [SerializeField] private TextMeshProUGUI itemLevelText;
     [SerializeField] private TextMeshProUGUI itemMaxLevelText;
     [SerializeField] private TextMeshProUGUI buyItemFromOtherMerchantText;
     [SerializeField] private Animator buyItemFromOtherMerchantTextAnimator;
 
+    [SerializeField] private Sprite outlineImageBoughtSprite;
+    [SerializeField] private Sprite defaultOutlineSprite;
+    [SerializeField] private Sprite itemEquippedOutlineSprite;
+    [SerializeField] private Sprite itemMaxedOutlineSprite;
+
     [SerializeField] private bool showItemLevel;
     [SerializeField] private bool hideItemMaxLevel;
     [SerializeField] private bool lockHoverInteractions;
     [SerializeField] private bool itemLockedInDemo;
+    [SerializeField] private bool hideItemIconUntilUnlocked;
 
     [SerializeField] private ItemButtonUI_ChildTreeShowHide treeShowHide;
     [SerializeField] private bool isTreeParent;
@@ -396,7 +398,7 @@ public class ItemButtonUI : ButtonUI {
 
     private void RefreshItemStatusVisuals() {
 
-        if (ItemLockedFromOtherMerchantItem()) {
+        if (ItemLockedFromOtherMerchantItem() || (!hubMerchantItem.GetItemUnlocked() && hideItemIconUntilUnlocked)) {
             lockedFromOtherMerchantImage.gameObject.SetActive(true);
             iconImage.gameObject.SetActive(false);
             lockHoverInteractions = true;

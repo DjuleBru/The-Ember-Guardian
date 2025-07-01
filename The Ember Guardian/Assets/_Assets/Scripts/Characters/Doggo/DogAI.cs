@@ -95,6 +95,7 @@ public class DogAI : MonoBehaviour
     protected virtual void Start() {
         PlayerMovement.Instance.OnPlayerRunStarted += PlayerMovement_OnPlayerRunStarted;
         PlayerMovement.Instance.OnPlayerRunStopped += PlayerMovement_OnPlayerRunStopped;
+        Dog.Instance.OnDogTypeChanged += Dog_OnDogTypeChanged;
 
         currentBehaviorIdleState = Dog.Instance.GetIdleState();
         ChangeState(Dog.Instance.GetInitialState());
@@ -125,6 +126,10 @@ public class DogAI : MonoBehaviour
         if(DayNightManager.Instance != null) {
             DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         }
+    }
+
+    private void Dog_OnDogTypeChanged(object sender, EventArgs e) {
+        ChangeState(Dog.Instance.GetInitialState());
     }
 
     protected void DayNightManager_OnDawnStart(object sender, EventArgs e) {
@@ -303,7 +308,7 @@ public class DogAI : MonoBehaviour
     protected virtual void ChangeState(State newState) {
         if (state == newState) return;
         RandomizeDistanceVariables();
-        Debug.Log("ChangeState " + newState);
+        //Debug.Log("ChangeState " + newState);
         dogMovement.SetMoveTarget(transform.position);
         hasSetSpeed = false;
 

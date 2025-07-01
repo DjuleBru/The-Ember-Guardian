@@ -13,10 +13,14 @@ public class WorkerStats : MonoBehaviour
     private int initialEmberlings;
     private int emberlingArrivalsNumber;
 
+    private float headToCampMoveSpeed = 2.5f;
+    private float roamMoveSpeed = 1.5f;
+    private float fleeMoveSpeed = 3.5f;
+
     private int initialHunterHealth = 2;
     private int initialHunterDamage = 10;
     private float initialHunterAttackCooldown = 3f;
-    private float initialHunterAccuracy = 2f;
+    private float initialHunterAccuracy = 1.5f;
     private int hunterDamageBuff;
     private int hunterHealthBuff;
     private float hunterAttackCooldownBuff;
@@ -94,6 +98,15 @@ public class WorkerStats : MonoBehaviour
     }
 
     #region GET INITIAL VALUES
+    public float GetRoamMoveSpeed() {
+        return roamMoveSpeed;
+    }
+    public float GetHeadToCampMoveSpeed() {
+        return headToCampMoveSpeed;
+    }
+    public float GetFleeMoveSpeed() {
+        return fleeMoveSpeed;
+    }
     public int GetInitialMaxFollowingWorkers() {
         return initialMaxFollowingWorkers;
     }

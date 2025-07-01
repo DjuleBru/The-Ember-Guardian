@@ -7336,7 +7336,7 @@ MonoBehaviour:
   unlockDescription: Unlocks the ability for your dog to occasionally bite creatures.
   itemLevel: 0
   maxItemLevel: 0
-  isBoughtAtStart: 0
+  isBoughtAtStart: 1
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   itemEquipable: 0
@@ -13205,6 +13205,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3210028993958844630}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: hideItemIconUntilUnlocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -13308,8 +13312,8 @@ MonoBehaviour:
   unlockDescription: Unlocks the ability for your dog to occasionally bite creatures.
   itemLevel: 0
   maxItemLevel: 0
-  isBoughtAtStart: 0
-  isUnlockedAtStart: 1
+  isBoughtAtStart: 1
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
@@ -14022,6 +14026,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1488652300849773358}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: hideItemIconUntilUnlocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: outputLinkUnlockedImageList.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -14136,8 +14144,8 @@ MonoBehaviour:
   unlockDescription: Unlocks the ability for your dog to occasionally bite creatures.
   itemLevel: 0
   maxItemLevel: 0
-  isBoughtAtStart: 0
-  isUnlockedAtStart: 1
+  isBoughtAtStart: 1
+  isUnlockedAtStart: 0
   itemUpgradeable: 0
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0

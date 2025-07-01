@@ -83,7 +83,7 @@ public class SpecialTower_Manner_Mortar : SpecialTower_Manner
 
         if(targetCreature == null) {
             // Target may have died in the delay
-            targetCreature = GetClosestCreature(engineersManning[0].GetDetectionCollider().GetCreaturesInDetectionCollider(), mannerMinimumShootDistance);
+            targetCreature = GetClosestCreature(engineersManning[0].GetDetectionCollider().GetCreaturesInDetectionCollider(), mannerMinimumShootDistance, false);
         }
         // No more targets : cancel shot
         if (targetCreature == null) yield break;

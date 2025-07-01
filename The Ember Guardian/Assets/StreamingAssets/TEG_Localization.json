@@ -681,6 +681,38 @@
    "Italian": ""
  },
  {
+   "key": "general_probability",
+   "English": "Probability",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "general_attackSpeed",
+   "English": "Attack Speed",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "general_radius",
+   "English": "Radius",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "general_stun",
+   "English": "Stun",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
    "key": "npc_gemTrader",
    "English": "The Gem Trader",
    "German": "Der Edelsteinhändler",
@@ -1925,7 +1957,7 @@
    "English": "Weapon Jamming",
    "German": "Waffenklemmungen",
    "French": "Enrayage des armes",
-   "Spanish": "Armas encasquilladas",
+   "Spanish": "Arma encasquilla",
    "Italian": ""
  },
  {
@@ -1941,7 +1973,7 @@
    "English": "• Solve the QTE to fix the jam.",
    "German": "• Absolviere das QTE um die Klemmung zu reparieren.",
    "French": "• Résolvez le QTE pour la remettre en état.",
-   "Spanish": "• Resuelve el QTE para arreglarla.",
+   "Spanish": "• Resuelve el QTE para arreglar el encasquillamiento.",
    "Italian": ""
  },
  {
@@ -1949,7 +1981,7 @@
    "English": "• A perfect sequence will boost your next bullet(s) damage !",
    "German": "• Eine perfekte Eingabe erhöht den Schaden deiner nächsten Kugel(n)!",
    "French": "• Une séquence parfaite augmentera les dégâts de vos prochains tirs !",
-   "Spanish": "• Una secuencia perfecta aumentará el daño de tus próximos disparos.",
+   "Spanish": "• ¡Una secuencia perfecta aumentará el daño de tu(s) próximo(s) disparo(s)!",
    "Italian": ""
  },
  {
@@ -2005,7 +2037,7 @@
    "English": "• By default, only one weapon can be brought into a level.",
    "German": "• Standardmäßig kann nur eine Waffe mit in's Level gebracht werden.",
    "French": "• Par défaut, une seule arme peut être amenée dans un niveau.",
-   "Spanish": "• Por defecto, solo se puede llevar un arma al nivel.",
+   "Spanish": "• Por defecto, solo se puede llevar un arma en un nivel.",
    "Italian": ""
  },
  {
@@ -2013,7 +2045,7 @@
    "English": "• The \"Dual Arsenal Mastery\" upgrade from the Trainer allows two carry two weapons.",
    "German": "• Durch das die \"Meisterung des dualen Arsenals\" Upgrade vom Trainer kannst du zwei Waffen tragen.",
    "French": "• L'amélioration \"Double Arsenal\" chez l'Entraîneur permet de transporter deux armes.",
-   "Spanish": "• La mejora \"Dominio del Arsenal Dual\" del Entrenador permite llevar dos armas.",
+   "Spanish": "• La mejora \"Dominio del Arsenal Dual\" disponible en el Entrenador te permite llevar dos armas.",
    "Italian": ""
  },
  {
@@ -2133,7 +2165,7 @@
    "English": "Stability",
    "German": "",
    "French": "Stabilité",
-   "Spanish": "",
+   "Spanish": "Estabilidad",
    "Italian": ""
  },
  {
@@ -2141,7 +2173,7 @@
    "English": "Weapon Mastery",
    "German": "",
    "French": "Maîtrise de l'arme",
-   "Spanish": "",
+   "Spanish": "Dominio de las armas",
    "Italian": ""
  },
  {
@@ -2309,7 +2341,7 @@
    "English": "Current Probability",
    "German": "Aktuelle Ladehemmungswahrscheinlichkeit",
    "French": "Probabilité d'Enrayage Actuelle",
-   "Spanish": "Probabilidad actual de encasquillado",
+   "Spanish": "Probabilidad actual de encasquillamiento",
    "Italian": ""
  },
  {
@@ -2317,7 +2349,7 @@
    "English": "Jam Probability",
    "German": "Wahrscheinlichkeit einer Ladehemmung",
    "French": "Probabilité d'Enrayége",
-   "Spanish": "Probabilidad de encasquillado",
+   "Spanish": "Probabilidad de encasquillamiento",
    "Italian": ""
  },
  {
@@ -2325,7 +2357,7 @@
    "English": "New Jam Probability",
    "German": "Neue Wahrscheinlichkeit einer Ladehemmung",
    "French": "Nouvelle Probabilité d'Enrayage",
-   "Spanish": "Nueva probabilidad de encasquillado",
+   "Spanish": "Nueva probabilidad de encasquillamiento",
    "Italian": ""
  },
  {
@@ -2333,7 +2365,7 @@
    "English": "Current Jam Bashes",
    "German": "Aktuelle Schläge zur Entklemmung",
    "French": "Nombre de Coups (Enrayage)",
-   "Spanish": "Golpes actuales para desatascar",
+   "Spanish": "Cantidad de golpes actual para desencasquillar",
    "Italian": ""
  },
  {
@@ -2341,7 +2373,7 @@
    "English": "Bashing",
    "German": "Schläge zur Reparatur",
    "French": "Coups pour Réparer",
-   "Spanish": "Golpes para reparar",
+   "Spanish": "Cantidad de golpes para desencasquillar",
    "Italian": ""
  },
  {
@@ -2349,7 +2381,7 @@
    "English": "New Jam Bashes",
    "German": "Neue Schläge zur Entklemmung",
    "French": "Nouveaux Coups (Enrayage)",
-   "Spanish": "Nuevos golpes para desatascar",
+   "Spanish": "Nueva cantidad de golpes para desencasquillar",
    "Italian": ""
  },
  {
@@ -4002,7 +4034,7 @@
  },
  {
    "key": "card_currentDoubleDigProbability",
-   "English": "Dig x2 Chance",
+   "English": "Dig x2 Probability",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -4010,7 +4042,7 @@
  },
  {
    "key": "card_doubleDigProbability",
-   "English": "x2 Chance",
+   "English": "x2 Probability",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -4018,7 +4050,7 @@
  },
  {
    "key": "card_newDoubleDigProbability",
-   "English": "New x2 Chance",
+   "English": "New x2 Probability",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -4026,7 +4058,7 @@
  },
  {
    "key": "card_currentDetectAmbushProbability",
-   "English": "Detect Ambush Chance",
+   "English": "Detect Ambush Probability",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -4034,7 +4066,7 @@
  },
  {
    "key": "card_detectAmbushProbability",
-   "English": "Detection Chance",
+   "English": "Detection Probability",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -4042,7 +4074,7 @@
  },
  {
    "key": "card_newDetectAmbushProbability",
-   "English": "New detect Chance",
+   "English": "New detect Probability",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -4661,7 +4693,7 @@
    "English": "Lowers malfunction risk through reinforced internal parts.",
    "German": "Verringert das Störungsrisiko durch verstärkte interne Bauteile.",
    "French": "Réduit les risques d’enrayement grâce à des pièces internes renforcées.",
-   "Spanish": "Reduce el riesgo de fallos gracias a piezas internas reforzadas.",
+   "Spanish": "Reduce el riesgo de fallos en el arma gracias a piezas internas reforzadas.",
    "Italian": ""
  },
  {
@@ -4669,7 +4701,7 @@
    "English": "Quick-Clear Lever",
    "German": "Schnellentriegelungshebel",
    "French": "Déblocage Rapide",
-   "Spanish": "Palanca de Desbloqueo Rápido",
+   "Spanish": "Palanca de Desencasquillado Rápido",
    "Italian": ""
  },
  {
@@ -5117,7 +5149,7 @@
    "English": "This elevated radar provides vital intelligence on incoming waves: numbers, direction, and enemy types.",
    "German": "Dieses hoch angebrachte Radar liefert wichtige Informationen über ankommende Wellen, wie: Anzahl, Richtung und Feindtypen.",
    "French": "Ce radar élevé fournit des informations cruciales sur les vagues ennemies : nombre, direction et types d’ennemis.",
-   "Spanish": "Este radar elevado proporciona inteligencia vital sobre las hordas entrantes: número, dirección y tipos de enemigos.",
+   "Spanish": "Este radar elevado proporciona inteligencia vital sobre las hordas entrantes: número, dirección y tipos de enemigo.",
    "Italian": ""
  },
  {
@@ -5133,7 +5165,7 @@
    "English": "Sniper Tower",
    "German": "Scharfschützenturm",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Torre de Francotirador",
    "Italian": ""
  },
  {
@@ -5141,7 +5173,7 @@
    "English": "Sniper Tower 1",
    "German": "Scharfschützenturm 1",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Torre de Francotirador 1",
    "Italian": ""
  },
  {
@@ -5149,7 +5181,7 @@
    "English": "Long sightlines. Clean shots. Let them come, this one’s watching.",
    "German": "Lange Sichtlinien und saubere Schüsse. Lass sie nur kommen, der Turm wird sie sehen.",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Amplia línea de visión. Disparos precisos. Que vengan, este los está vigilando.",
    "Italian": ""
  },
  {
@@ -5157,7 +5189,7 @@
    "English": "Unlocks the <b>Sniper Tower</b>, a tower equipped with a high-damage precision rifle.",
    "German": "Schaltet den <b>Scharfschützenturm</b> frei, ein Turm, der mit einer hoch gradig tötlichen Prätisionsgewehr ausgerüstet ist.",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Desbloquea la <b>Torre de Francotirador</b>, una torre equipada con un rifle de precisión de alto daño.",
    "Italian": ""
  },
  {
@@ -5165,7 +5197,7 @@
    "English": "Sniper Tower 2",
    "German": "Scharfschützenturm 2",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Torre de Francotirador 2",
    "Italian": ""
  },
  {
@@ -5173,7 +5205,7 @@
    "English": "A second marksman joins the watch. Two eyes, one breath, no mercy.",
    "German": "Ein zweiter Schütze sitzt Wache im Turm. Zwei Augen, ein Atem, keine Gnade.",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Un segundo tirador se une a la guardia. Dos ojos, un aliento, sin piedad.",
    "Italian": ""
  },
  {
@@ -5181,7 +5213,7 @@
    "English": "Sniper Tower Capacity: <b>2</b> (+1)",
    "German": "Kapazität des Scharfschützenturm: <b>2</b> (+1)",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Capacidad de la Torre de Francotirador: <b>2</b> (+1)",
    "Italian": ""
  },
  {
@@ -5189,7 +5221,7 @@
    "English": "Machine Gun Tower",
    "German": "Maschinengewehrturm",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Torre de Ametralladora",
    "Italian": ""
  },
  {
@@ -5197,7 +5229,7 @@
    "English": "Machine Gun Tower 1",
    "German": "Maschinengewehrturm 1",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Torre de Ametralladora 1",
    "Italian": ""
  },
  {
@@ -5205,7 +5237,7 @@
    "English": "Keeps the frontline noisy, and deadly.",
    "German": "Macht die Front extra laut... und tötlich.",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Mantiene la línea del frente ruidosa y letal.",
    "Italian": ""
  },
  {
@@ -5213,7 +5245,7 @@
    "English": "Unlocks the <b>Machine Gun Tower</b>, a tower equipped with a devastating machine gun.",
    "German": "Schaltet den <b>Maschinengewehrturm</b> frei, ein Turm, der mit einem verheerenden Maschinengewehr ausgerüstet ist.",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Desbloquea la <b>Torre de Ametralladora</b>, una torre equipada con una ametralladora devastadora.",
    "Italian": ""
  },
  {
@@ -5221,7 +5253,7 @@
    "English": "Machine Gun Tower 2",
    "German": "Maschinengewehrturm 2",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Torre de Ametralladora 2",
    "Italian": ""
  },
  {
@@ -5229,7 +5261,7 @@
    "English": "Double the barrels to deliver double the damage.",
    "German": "Verdoppelt die Kugeln um doppelten Schaden zu verursachen.",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Duplica los cañones para infligir el doble de daño.",
    "Italian": ""
  },
  {
@@ -5237,7 +5269,7 @@
    "English": "Rate of fire: <b>+100%</b>",
    "German": "Feuerrate: <b>+100%</b>",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Cadencia de fuego: <b>+100%</b>",
    "Italian": ""
  },
  {
@@ -5245,7 +5277,7 @@
    "English": "Mortar Position",
    "German": "Mörser Position",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Posición del Mortero",
    "Italian": ""
  },
  {
@@ -5253,7 +5285,7 @@
    "English": "Mortar Position 1",
    "German": "Mörser Position 1",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Posición del Mortero 1",
    "Italian": ""
  },
  {
@@ -5261,7 +5293,7 @@
    "English": "Manned by emberlings, this defensive asset is messy, loud, efficient.",
    "German": "Von Glutlingen bedient ist diese Verteidigungsmaßnahme schmutzig, laut, aber effizient.",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Manejado por los cazadores, este recurso defensivo es carnicero, ruidoso y eficiente.",
    "Italian": ""
  },
  {
@@ -5269,7 +5301,7 @@
    "English": "Unlocks the <b>Mortar Position</b>, a platform ready to host a mortar.",
    "German": "Schaltet die <b>Mörser Position</b> frei, eine Platform, welche einen Mörser behausen kann.",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Desbloquea la <b>Posición de Mortero</b>, una plataforma lista para albergar un mortero.",
    "Italian": ""
  },
  {
@@ -5277,7 +5309,7 @@
    "English": "Mortar Position 2",
    "German": "Mörser Position 2",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Posición de Mortero 2",
    "Italian": ""
  },
  {
@@ -5285,7 +5317,7 @@
    "English": "One shell shakes the ground like thunder.",
    "German": "Eine Mörsergranate lässt den Boden, wie ein Gewitter, beben.",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Un proyectil hace temblar el suelo como un trueno.",
    "Italian": ""
  },
  {
@@ -5293,7 +5325,7 @@
    "English": "Range : <b>30m</b>(+10m) <br> Explosion damage: <b>15</b> (+5)",
    "German": "Reichweite: <b>30m</b>(+10m) <br> Explosionsschaden: <b>15</b> (+5)",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Alcance: <b>30m</b>(+10m) <br>Daño por explosión: <b>15</b> (+5)",
    "Italian": ""
  },
  {
@@ -5301,7 +5333,7 @@
    "English": "Kindled Beacon",
    "German": "Entzündetes Leuchtfeuer",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Baliza Encendida",
    "Italian": ""
  },
  {
@@ -5309,7 +5341,7 @@
    "English": "Draws from the main flame’s memory. Smaller, weaker-but still enough to push back the dark.",
    "German": "Zieht Energie aus der Erinnerung der Hauptflamme. Kleiner, schwächer - aber trotzdem genug um die Dunkelheit zurück zu drängen.",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Se nutre de la fuente de la llama principal. Más pequeña, más débil, pero suficiente para repeler la oscuridad.",
    "Italian": ""
  },
  {
@@ -5317,7 +5349,7 @@
    "English": "Unlocks <b>Secondary fires</b>, smaller flames to light at your camp's furthest limits.",
    "German": "Schalte <b>Sekundäre Feuer</b> frei, kleinere Flammen, um deine Basis auf's Maximum zu erhöhen.",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Desbloquea <b>Fuegos Secundarios</b>, llamas más pequeñas para iluminar los confines más remotos de tu campamento.",
    "Italian": ""
  },
  {
@@ -5325,7 +5357,7 @@
    "English": "Anchor Relay",
    "German": "Ankerstaffel",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Relé de Anclaje",
    "Italian": ""
  },
  {
@@ -5333,7 +5365,7 @@
    "English": "Phase Anchor Relays",
    "German": "Phasen Ankerstaffel",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Relés de Anclaje de Fase",
    "Italian": ""
  },
  {
@@ -5341,7 +5373,7 @@
    "English": "Old tech, barely stable. Blink across camp, just don’t look down during the jump.",
    "German": "Veraltete Technik mit kaum Stabilität. Blinzle durch deine Basis, achte bloß nicht auf den Boden.",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Tecnología antigua, apenas estable. Teletransportate a través del campamento, pero no mires hacia abajo durante el salto.",
    "Italian": ""
  },
  {
@@ -5349,7 +5381,7 @@
    "English": "Unlocks <b>Phase Anchor Relays</b>, which once built allow you to teleport accross your base.",
    "German": "Schalte <b>Phasen Ankerstaffeln</b> frei, welche dir, sobald gebaut, erlauben, dich zwischen ihnen hin und her zu teleportieren.",
    "French": "",
-   "Spanish": "",
+   "Spanish": "Desbloquea <b>Relés de anclaje de fase</b>, que una vez construidos te permiten teletransportarte a través de tu base.",
    "Italian": ""
  },
  {
@@ -8577,7 +8609,7 @@
    "Italian": ""
  },
  {
-   "key": "Crushing Pulse_StompDamage",
+   "key": "Crushing Pulse",
    "English": "Crushing Pulse",
    "German": "",
    "French": "",
@@ -8585,7 +8617,7 @@
    "Italian": ""
  },
  {
-   "key": "DarkCompanion_StompDamage_Description",
+   "key": "Crushing Pulse_Description",
    "English": "Increases the impact damage of the stomps.",
    "German": "",
    "French": "",
@@ -8593,7 +8625,7 @@
    "Italian": ""
  },
  {
-   "key": "DarkCompanion_StompDamage_UnlockDescription",
+   "key": "Crushing Pulse_UnlockDescription",
    "English": "Not just a hit. It’s a shockwave: enough to break bones and crack stone.",
    "German": "",
    "French": "",
@@ -10541,6 +10573,46 @@
    "English": "Teleport",
    "German": "",
    "French": "Téléporter",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "dog_bite",
+   "English": "Bite",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "dog_dig",
+   "English": "Dig",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "dog_ambush",
+   "English": "Ambush",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "dog_buffWorkers",
+   "English": "Workers",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "dog_detectionRange",
+   "English": "Detection Range",
+   "German": "",
+   "French": "",
    "Spanish": "",
    "Italian": ""
  }

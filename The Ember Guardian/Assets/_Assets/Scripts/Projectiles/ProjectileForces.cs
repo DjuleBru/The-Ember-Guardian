@@ -48,7 +48,6 @@ public class ProjectileForces : Projectile {
 
         Vector2 launchVelocity = CalculateLaunchVelocityWithApex(transform.position, targetPosition);
         rb.AddForce(launchVelocity, ForceMode2D.Impulse);
-        Debug.Log("launchVelocity " + launchVelocity);
         hasHit = false;
 
         InvokeOnAnyProjectileInstantiated();
@@ -73,7 +72,6 @@ public class ProjectileForces : Projectile {
 
         // Vérifie si on a passé l’apex (le point le plus haut)
         if (!hasPassedApex && rb.velocity.y < .5f) {
-            Debug.Log(rb.velocity.y + " hasPassedApex " + hasPassedApex);
             hasPassedApex = true;
         }
 

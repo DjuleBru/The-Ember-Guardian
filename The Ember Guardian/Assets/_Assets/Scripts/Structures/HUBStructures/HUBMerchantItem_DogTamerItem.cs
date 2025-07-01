@@ -180,7 +180,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
                 totalStatWithModifierPrefix = "";
             }
 
-            if (itemType == DogTamerItemType.DarkCompanion_LaserCooldown) {
+            if (itemType == DogTamerItemType.DarkCompanion_BiteCooldown) {
                 initialStatValue = DogStats.Instance.GetInitialDarkCompanionBiteCooldown();
                 currentStatValue = DogStats.Instance.GetDarkCompanionBiteCooldown().ToString();
                 totalStatWithModifierPostfix = "s";
@@ -190,7 +190,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
                 totalStatWithModifierPrefix = "";
             }
 
-            if (itemType == DogTamerItemType.DarkCompanion_LaserDamage) {
+            if (itemType == DogTamerItemType.DarkCompanion_BiteDamage) {
                 initialStatValue = DogStats.Instance.GetInitialDarkCompanionBiteDamage();
                 currentStatValue = DogStats.Instance.GetDarkCompanionBiteDamage().ToString();
                 totalStatWithModifierPostfix = "";
@@ -211,8 +211,8 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
             }
 
             if (itemType == DogTamerItemType.DarkCompanion_LaserDamage) {
-                initialStatValue = DogStats.Instance.GetInitialDarkCompanionLaserDamage();
-                currentStatValue = DogStats.Instance.GetDarkCompanionLaserDamage().ToString();
+                initialStatValue = (int)(DogStats.Instance.GetInitialDarkCompanionLaserDamage() / DogStats.Instance.GetDarkCompanionLaserTickCooldown());
+                currentStatValue = ((int)(DogStats.Instance.GetDarkCompanionLaserDamage() / DogStats.Instance.GetDarkCompanionLaserTickCooldown())).ToString();
                 totalStatWithModifierPostfix = "";
                 relativeStatPostfix = "";
                 relativeStatPrefix = "+";
