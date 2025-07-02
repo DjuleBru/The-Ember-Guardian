@@ -137,7 +137,8 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
     private void SetNewStatIncreaseStats() {
         if (gunItem == GunItemType.bulletDamage || gunItem == GunItemType.explosionDamage) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetBulletDamage_Meta((int)linkedStatModifierSO.statModifierList[itemLevel]);
+            int modifiedDamage = linkedGunSO.damagePerBullet + (int)linkedStatModifierSO.statModifierList[itemLevel];
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetBulletDamage_Meta(modifiedDamage);
         }
 
         if (gunItem == GunItemType.shotsPerClip) {

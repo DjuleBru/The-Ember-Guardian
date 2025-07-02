@@ -40,7 +40,7 @@ public class DogChangeButton : ButtonUI {
     private void DogButtonPressHub() {
         //OnAnyWeaponChangeButtonPressed?.Invoke(this, EventArgs.Empty);
 
-        //if (PlayerShoot.Instance.GetUnlockedGunSOList().Count <= 1) return;
+        if (!DogStats.Instance.GetRetreiverUnlocked() && !DogStats.Instance.GetDarkCompanionUnlocked()) return;
 
         //ChangeWeaponPanel.Instance.SetPrimaryWeaponSwap(isPrimaryWeaponButton);
 

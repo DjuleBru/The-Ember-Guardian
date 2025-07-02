@@ -12,7 +12,6 @@ public class DogAbilityTemplate : MonoBehaviour
     [SerializeField] private TextMeshProUGUI abilityStatValue;
 
     public void InitializeAbility(HUBMerchantItem_DogTamerItem.DogTamerItemType itemType) {
-        Debug.Log("Initialize Ability " + itemType);
         abilityStatTemplate.gameObject.SetActive(true);
 
         switch (itemType) {

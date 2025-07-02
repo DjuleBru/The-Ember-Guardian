@@ -10,6 +10,9 @@ public class DogReplaceButton : ButtonUI
 
     private Button button;
     private Dog.DogType linkedDogType;
+
+    public static event EventHandler OnDogSwapped;
+
     private void Awake() {
         button = GetComponent<Button>();
         button.onClick.AddListener(() => {
@@ -19,6 +22,7 @@ public class DogReplaceButton : ButtonUI
 
     private void SwapDog() {
         Dog.Instance.SetDogType(linkedDogType);
+        OnDogSwapped?.Invoke(this, EventArgs.Empty);
 
         ChangeDogPanel.Instance.OpenClosePanel();
     }

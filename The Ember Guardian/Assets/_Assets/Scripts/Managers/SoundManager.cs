@@ -170,9 +170,8 @@ public class SoundManager : MonoBehaviour
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine += HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
 
-        Dog.Instance.OnDogTypeChanged += Dog_OnDogTypeChanged;
+        DogReplaceButton.OnDogSwapped += DogReplaceButton_OnDogSwapped;
     }
-
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -831,10 +830,11 @@ public class SoundManager : MonoBehaviour
     private void Dog_OnPlayerCalledDog(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.playerCallDog, .6f);
     }
-    private void Dog_OnDogTypeChanged(object sender, System.EventArgs e) {
+
+    private void DogReplaceButton_OnDogSwapped(object sender, System.EventArgs e) {
         AudioClip audioClip = soundRefsSO.germanShepherdSelected;
 
-        if(Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
+        if (Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
             audioClip = soundRefsSO.retreiverSelected;
         }
         if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
@@ -842,6 +842,7 @@ public class SoundManager : MonoBehaviour
         }
         PlaySound2D(audioClip, .6f);
     }
+
     #endregion
 
     #region PLAY SOUNDS
@@ -994,6 +995,7 @@ public class SoundManager : MonoBehaviour
 
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop -= HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine -= HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
+        DogReplaceButton.OnDogSwapped -= DogReplaceButton_OnDogSwapped;
     }
 
 }
