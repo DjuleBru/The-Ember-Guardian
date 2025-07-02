@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -273,6 +274,14 @@ public class WorkerStats : MonoBehaviour
     }
 
 
+    #endregion
+
+    #region UNLOCK SHRINES
+
+    [Button]
+    public void UnlockShrineType(StructureSO.StructureType structureType) {
+        MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(structureType.ToString() + "1", true);
+    }
     #endregion
 
     public void SaveWorkerValues() {

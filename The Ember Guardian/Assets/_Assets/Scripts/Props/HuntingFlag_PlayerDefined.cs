@@ -63,7 +63,6 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
         float hunterRunBackToCampSpeed = (1 + WorkerStats.Instance.GetHunterMoveSpeedBuff()) * WorkerStats.Instance.GetHeadToCampMoveSpeed();
         maxSecureDistance = hunterRunBackToCampSpeed * DayNightManager.Instance.GetDuskDuration() + CampZoneManager.Instance.GetMaxZoneLimit();
         CheckSecureDistance();
-        Debug.Log("maxSecureDistance " + maxSecureDistance);
     }
     private void CheckSecureDistance() {
         if (!tooFarForHunters) {

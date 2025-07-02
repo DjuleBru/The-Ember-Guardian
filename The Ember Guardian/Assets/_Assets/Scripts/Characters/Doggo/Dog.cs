@@ -43,15 +43,12 @@ public class Dog : MonoBehaviour
         if (useDebugDogType) {
             dogType = debugDogType;
         }
+        SetCurrentDogAI();
     }
 
     private void Start() {
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         currentIdleState = initialIdleState;
-
-
-
-        SetCurrentDogAI();
 
         OnDogTypeChanged?.Invoke(this, EventArgs.Empty);
     }

@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private bool isRecoveringFast;
     private float runRecoverFactor = 1.3f;
-    private float standingStillTRecoverFactor = 2f;
+    private float standingStillTRecoverFactor = 2.3f;
 
     [SerializeField] private float acceleration;
     [SerializeField] private float deceleration;

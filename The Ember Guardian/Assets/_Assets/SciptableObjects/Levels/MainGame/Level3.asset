@@ -28,8 +28,7 @@ MonoBehaviour:
   isNewEnvironmentDiscoveryLevel: 1
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: fe72f58b31466564f8f3f9e82a53595b, type: 3}
   levelsUnlockedByLevel:
-  - {fileID: 11400000, guid: 68380da7c9c0faf45be065d4a9cda5eb, type: 2}
-  - {fileID: 11400000, guid: 36a376877af4fca44b531d5dd7dff0fb, type: 2}
+  - {fileID: 11400000, guid: 33e7be3a86073324584f9f5d3dec87b6, type: 2}
   merchantsUnlockedInLevel: 03000000
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 26f1ade022c3b804ab219a65abfc68f4, type: 2}
   newMerchantTextLinesAfterLevel:
@@ -46,13 +45,17 @@ MonoBehaviour:
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
-  baseDifficulty: 22
-  intialMinSubwaveDifficulty: 0
-  minSubwaveDifficulty: 5
-  intialMaxSubwaveDifficulty: 0
-  maxSubwaveDifficulty: 30
-  growthFactor: 1.5
+  startWaveToSpawnFromBothSides: 1
+  baseDifficulty: 25
+  intialMinSubwaveDifficulty: 10
+  minSubwaveDifficulty: 25
+  intialMaxSubwaveDifficulty: 15
+  maxSubwaveDifficulty: 65
+  growthFactor: 1.4
+  maxWaveNumber: 1
+  minMaxSubwaveDifficultyGrowthFactor: 1.5
   setDifficultyAnimationCurve: 0
+  difficultyAtMaxWave: 0
   difficultyAnimationCurve:
     serializedVersion: 2
     m_Curve: []
@@ -60,11 +63,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxWaveInAnimationCurve: 0
-  difficultyAtMaxWave: 0
-  minDifficultyAtMaxWave: 0
-  maxDifficultyAtMaxWave: 0
-  minMaxSubwaveDifficultyGrowthFactor: 0
-  startWaveToSpawnFromBothSides: 2
   canSpawnElite: 1
   environmentType: 0
   hasFog: 0

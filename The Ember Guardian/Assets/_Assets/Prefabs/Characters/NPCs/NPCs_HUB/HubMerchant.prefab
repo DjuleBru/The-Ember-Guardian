@@ -1265,7 +1265,6 @@ MonoBehaviour:
   mainPanel: {fileID: 8541172817734294006}
   scrollRect: {fileID: 0}
   scrollBar: {fileID: 0}
-  merchantNameText: {fileID: 51322853746667882}
   redGemAmount: {fileID: 3906374648137485506}
   greenGemAmount: {fileID: 1685206664190108152}
   blueGemAmount: {fileID: 4556060414657030973}
@@ -2154,7 +2153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hubMerchantType: 0
   hubMerchantCameraFocusPosition: {fileID: 2823736090664261427}
-  hubMerchantName: 
+  hubMerchantNameLocalizationKey: 
   hubMerchantUnlockedAtStart: 0
   activeGameObject: {fileID: 1547727666127543154}
   inactiveGameObject: {fileID: 3871428146972053218}
@@ -3206,8 +3205,8 @@ MonoBehaviour:
   onMessage:
     m_PersistentCalls:
       m_Calls: []
-  waitForNormalChars: 0.03
-  waitLong: 0.6
+  waitForNormalChars: 0.02
+  waitLong: 0.4
   waitMiddle: 0.2
   avoidMultiplePunctuationWait: 0
   waitForNewLines: 1

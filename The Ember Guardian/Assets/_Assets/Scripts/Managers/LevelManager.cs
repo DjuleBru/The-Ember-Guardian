@@ -111,7 +111,13 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+
     private void LevelUI_OnObjectiveCompleted(object sender, EventArgs e) {
+        LevelSuccess();
+    }
+
+    [Button]
+    private void LevelSuccess() {
         Vector3 endLevelPortalPosition = new Vector3(Player.Instance.transform.position.x + 10f, 0, 0);
 
         if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
@@ -127,7 +133,8 @@ public class LevelManager : MonoBehaviour
                 endLevelPortal.transform.position = endLevelPortalPosition;
                 StartCoroutine(EnableEndLevelPortal(2f));
 
-            } else {
+            }
+            else {
 
                 endLevelPortalPosition = new Vector3(levelHubMerchant.transform.position.x + 10f, 0, 0);
                 StartCoroutine(EnableEndLevelPortal(2f));

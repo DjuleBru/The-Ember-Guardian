@@ -12,25 +12,26 @@ public class PauseMenuUI_Tutorial : PauseMenuUI
 
     protected override void Start() {
         base.Start();
+        skipTutorialText.text = "Skip Tutorial";
         buttonConfirm_SkipTutorial.OnButtonDeselected += ButtonConfirm_SkipTutorial_OnButtonDeselected;
     }
 
     private void ButtonConfirm_SkipTutorial_OnButtonDeselected(object sender, System.EventArgs e) {
         confirmSkipTutorial = false;
-        skipTutorialText.text = "Skip Tutorial";
+        skipTutorialText.text = LocalizationManager.Instance.GetLocalizedText("menu_skipTutorial");
     }
 
     public void SkipTutorialButton() {
         if (confirmSkipTutorial) {
             ShowPauseMenu(false);
 
-            MetaProgressionManager.Instance.SetTutorialCompleted();
+            MetaProgressionManager.Instance.SetTutorialSkipped();
 
             SceneLoader.Instance.LoadHub(1f);
         }
         else {
             confirmSkipTutorial = true;
-            skipTutorialText.text = "Confirm ?";
+            skipTutorialText.text = LocalizationManager.Instance.GetLocalizedText("menu_confirm");
         }
     }
 
@@ -40,7 +41,7 @@ public class PauseMenuUI_Tutorial : PauseMenuUI
         }
         else {
             confirmExitGame = true;
-            exitGameText.text = "Confirm ?";
+            exitGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_confirm");
         }
     }
 }

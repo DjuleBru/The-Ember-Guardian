@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
-  m_Name: Level5
+  m_Name: Level6
   m_EditorClassIdentifier: 
   linkedSceneName: Level1_VerdantGraveyard
   levelImage: {fileID: 0}
-  levelNameLocalizationKey: Level 5
+  levelNameLocalizationKey: Level 6
+  levelDescriptionLocalizationKey: 
   faunaAmount: 0
   scrapAmount: 0
   minesAmount: 0
@@ -42,13 +43,17 @@ MonoBehaviour:
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
+  startWaveToSpawnFromBothSides: 2
   baseDifficulty: 6
   intialMinSubwaveDifficulty: 0
   minSubwaveDifficulty: 0
   intialMaxSubwaveDifficulty: 0
   maxSubwaveDifficulty: 10
   growthFactor: 1.6
+  maxWaveNumber: 0
+  minMaxSubwaveDifficultyGrowthFactor: 0
   setDifficultyAnimationCurve: 0
+  difficultyAtMaxWave: 0
   difficultyAnimationCurve:
     serializedVersion: 2
     m_Curve: []
@@ -56,11 +61,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxWaveInAnimationCurve: 0
-  difficultyAtMaxWave: 0
-  minDifficultyAtMaxWave: 0
-  maxDifficultyAtMaxWave: 0
-  minMaxSubwaveDifficultyGrowthFactor: 0
-  startWaveToSpawnFromBothSides: 2
   canSpawnElite: 1
   environmentType: 3
   hasFog: 0

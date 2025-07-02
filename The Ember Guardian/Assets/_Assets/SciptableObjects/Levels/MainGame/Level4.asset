@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
   m_Name: Level4
   m_EditorClassIdentifier: 
-  linkedSceneName: Level3_LostGreens
+  linkedSceneName: Level4_CorruptedCity
   levelImage: {fileID: 0}
-  levelNameLocalizationKey: Level 4
+  levelNameLocalizationKey: Level4
+  levelDescriptionLocalizationKey: Level4_Description
   faunaAmount: 0
   scrapAmount: 0
   minesAmount: 0
@@ -27,12 +28,12 @@ MonoBehaviour:
   isNewEnvironmentDiscoveryLevel: 1
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: fe72f58b31466564f8f3f9e82a53595b, type: 3}
   levelsUnlockedByLevel:
-  - {fileID: 11400000, guid: 68380da7c9c0faf45be065d4a9cda5eb, type: 2}
-  - {fileID: 11400000, guid: 36a376877af4fca44b531d5dd7dff0fb, type: 2}
-  merchantsUnlockedInLevel: 03000000
-  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 26f1ade022c3b804ab219a65abfc68f4, type: 2}
+  - {fileID: 11400000, guid: f0b31a5a8b1509b4abc10076fd857695, type: 2}
+  - {fileID: 11400000, guid: f203a3f5152d8cd47b92724fbbb14ce3, type: 2}
+  merchantsUnlockedInLevel: 01000000
+  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 631d97c4246ca7d45a2e951885ef357d, type: 2}
   newMerchantTextLinesAfterLevel:
-  - {fileID: 11400000, guid: 1aa7febfc957ce947998288f0f8837a1, type: 2}
+  - {fileID: 11400000, guid: 4a57527f7ee7dc3409a94ffa57e765b3, type: 2}
   isReplayableLevel: 0
   totalDayCreatureDifficulty: 0
   dayCreatureTypes: []
@@ -45,13 +46,17 @@ MonoBehaviour:
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
+  startWaveToSpawnFromBothSides: 2
   baseDifficulty: 22
   intialMinSubwaveDifficulty: 0
   minSubwaveDifficulty: 5
   intialMaxSubwaveDifficulty: 0
   maxSubwaveDifficulty: 30
   growthFactor: 1.5
+  maxWaveNumber: 0
+  minMaxSubwaveDifficultyGrowthFactor: 0
   setDifficultyAnimationCurve: 0
+  difficultyAtMaxWave: 0
   difficultyAnimationCurve:
     serializedVersion: 2
     m_Curve: []
@@ -59,11 +64,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxWaveInAnimationCurve: 0
-  difficultyAtMaxWave: 0
-  minDifficultyAtMaxWave: 0
-  maxDifficultyAtMaxWave: 0
-  minMaxSubwaveDifficultyGrowthFactor: 0
-  startWaveToSpawnFromBothSides: 2
   canSpawnElite: 1
   environmentType: 0
   hasFog: 0

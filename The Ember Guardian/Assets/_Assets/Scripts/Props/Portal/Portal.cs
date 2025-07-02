@@ -53,6 +53,7 @@ public class Portal : MonoBehaviour
     public static event EventHandler OnAnyTeleporterTeleportedPlayerOut;
     public static event EventHandler OnAnyPlayerTeleported;
 
+
     public event EventHandler OnLinkedLevelSOSet;
 
     private void Awake() {
@@ -168,6 +169,7 @@ public class Portal : MonoBehaviour
             if (!portalUnlocked) return;
 
             if (collision.gameObject.GetComponent<Player>() != null) {
+                if (isHUBTeleporter && !GetPortalHasUnlockedUnfinishedLevels()) return;
                 Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
                 playerInTriggerArea = false;
                 OnPlayerExitedTriggerArea?.Invoke(this, EventArgs.Empty);
@@ -300,17 +302,18 @@ public class Portal : MonoBehaviour
     }
 
     public void SetPortalUnlockedInSave() {
-        portalUnlocked = true;
-        MetaProgressionManager.Instance.SetPortalUnlocked(gameObject.name);
+        if(portalUnlocked) {
+            MetaProgressionManager.Instance.SetPortalUnlocked(gameObject.name);
+        }
     }
 
     public void UnlockOrActivatePortal() {
-        Debug.Log("UnlockOrActivatePortal " + portalUnlocked);
         if (!portalUnlocked) {
             // UnlockPortal
             gameObject.SetActive(true);
             MakePortalAppear();
             OnPortalUnlocked?.Invoke(this, EventArgs.Empty);
+            portalUnlocked = true;
 
         } else {
             // Activate portal

@@ -11,7 +11,7 @@ public class RainManager : MonoBehaviour
     public static RainManager Instance;
 
 
-    [SerializeField] private ModernWater2D modernWater2D;
+    private ModernWater2D modernWater2D;
 
     [SerializeField] private ParticleSystem rainPS_GroundCollisions;
     [SerializeField] private ParticleSystem rainPS_NoCollisions;
@@ -77,6 +77,7 @@ public class RainManager : MonoBehaviour
     {
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) return;
 
+        modernWater2D = WaterManager.Instance.GetComponent<ModernWater2D>();
         debugMode = DebugManager.Instance.GetDebugMode_RainManager();
 
         cameraTransform = Camera.main.transform;

@@ -12,12 +12,9 @@ public class LevelObjectives : MonoBehaviour
     [SerializeField] private HubMerchantTalkUI levelMerchantTalkUI;
     [SerializeField] private MerchantTextLinesSO finalMerchantTextLines;
 
-    private EndLevelArea endLevelArea;
-
     private bool emberExtracted;
     private bool initialFireLit;
     private bool darklingNestCleared;
-    private bool playerStoppedInteractingWithMerchant;
     private int NPCInteractionsIndex;
 
     private int nightsSurvived = -1;
@@ -215,7 +212,7 @@ public class LevelObjectives : MonoBehaviour
     #endregion
 
     private IEnumerator EndLevelCoroutine() {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
         levelMerchantTalkUI.SetTalkingWithMerchant(finalMerchantTextLines);
     }
 

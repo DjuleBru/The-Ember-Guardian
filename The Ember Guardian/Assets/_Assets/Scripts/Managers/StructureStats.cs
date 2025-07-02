@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -318,6 +319,11 @@ public class StructureStats : MonoBehaviour
         engineerContainerSizeBuff = buff;
     }
     #endregion
+
+    [Button]
+    public void UnlockArchitectTable() {
+        MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_ArchitectMerchantItem.ArchitectItemType.ArchitectTable.ToString(), true);
+    }
 
     #region LEVELMERCHANTS
     public int GetSkillMerchantMaxActiveSkillsDisplayed() {

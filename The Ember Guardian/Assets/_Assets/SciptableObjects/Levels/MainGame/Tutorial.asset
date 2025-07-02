@@ -41,13 +41,17 @@ MonoBehaviour:
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
-  baseDifficulty: 20
-  intialMinSubwaveDifficulty: 5
+  startWaveToSpawnFromBothSides: 1
+  baseDifficulty: 25
+  intialMinSubwaveDifficulty: 10
   minSubwaveDifficulty: 25
-  intialMaxSubwaveDifficulty: 10
+  intialMaxSubwaveDifficulty: 15
   maxSubwaveDifficulty: 60
   growthFactor: 1.2
+  maxWaveNumber: 0
+  minMaxSubwaveDifficultyGrowthFactor: 1.4
   setDifficultyAnimationCurve: 0
+  difficultyAtMaxWave: 0
   difficultyAnimationCurve:
     serializedVersion: 2
     m_Curve: []
@@ -55,11 +59,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxWaveInAnimationCurve: 0
-  difficultyAtMaxWave: 0
-  minDifficultyAtMaxWave: 0
-  maxDifficultyAtMaxWave: 0
-  minMaxSubwaveDifficultyGrowthFactor: 1.4
-  startWaveToSpawnFromBothSides: 1
   canSpawnElite: 0
   environmentType: 0
   hasFog: 0

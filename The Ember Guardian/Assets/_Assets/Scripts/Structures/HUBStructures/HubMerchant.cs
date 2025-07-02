@@ -298,6 +298,10 @@ public class HubMerchant : MonoBehaviour
         return merchantHasTalkLinesToShow;
     }
 
+    public bool GetPlayerInteractingWithMerchant() {
+        return playerInteractingWithMerchant;
+    }
+
     public bool GetMerchantIsLevelNPC() {
         return isLevelNPC;
     }

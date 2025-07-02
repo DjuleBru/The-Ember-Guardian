@@ -8,6 +8,7 @@ public class CampGridControllerNavigator : MonoBehaviour
 
     public static CampGridControllerNavigator Instance;
     [SerializeField] private GameObject StopNavigationSelectedButton;
+    private HubMerchant architectTableHubMerchant;
     private bool navigatingCampGrid;
     private int currentIndex = 0;
 
@@ -20,6 +21,7 @@ public class CampGridControllerNavigator : MonoBehaviour
 
     private void Awake() {
         Instance = this;
+        architectTableHubMerchant = GetComponent<HubMerchant>();
     }
 
     private void Start() {
@@ -32,6 +34,7 @@ public class CampGridControllerNavigator : MonoBehaviour
     }
 
     private void Update() {
+        if (!architectTableHubMerchant.GetPlayerInteractingWithMerchant()) return;
         if (!isNavigating) return;
         float horizontal = Input.GetAxis("Horizontal");
 

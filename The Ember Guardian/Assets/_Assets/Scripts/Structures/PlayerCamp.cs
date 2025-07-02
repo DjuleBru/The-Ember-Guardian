@@ -79,7 +79,6 @@ public class PlayerCamp : MonoBehaviour
         List<CampEditManager.StructurePlacementData> structurePlacementData = ES3.Load("campLayout", new List<CampEditManager.StructurePlacementData>());
         customLayout = structurePlacementData.Count > 0;
 
-        Debug.Log("structurePlacementData.Count " + structurePlacementData.Count);
         // Camp has never been customized
         if (!customLayout) {
             foreach (StructureLocation location in initialStructureLocationsParent.GetComponentsInChildren<StructureLocation>()) {

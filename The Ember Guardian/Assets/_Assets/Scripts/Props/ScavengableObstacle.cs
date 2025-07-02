@@ -106,7 +106,7 @@ public class ScavengableObstacle : Obstacle, IScavengable
         }
     }
 
-    protected override void BuildObstacle() {
+    public override void BuildObstacle() {
         foreach (Collider2D collider in blockingColliders) {
             collider.enabled = false;
         }

@@ -242,11 +242,11 @@ public class VideoTipManager : MonoBehaviour
             hunterTipShown = true;
         }
 
-        if (structureSO.structureType == StructureSO.StructureType.tower) {
-            if (setupDefensesTipShown) return;
-            VideoTipUI.Instance.PlayTipSO(setupDefensesTip, 1f);
-            setupDefensesTipShown = true;
-        }
+        //if (structureSO.structureType == StructureSO.StructureType.tower) {
+        //    if (setupDefensesTipShown) return;
+        //    VideoTipUI.Instance.PlayTipSO(setupDefensesTip, 1f);
+        //    setupDefensesTipShown = true;
+        //}
     }
 
     private void TutorialCollider_OnRecruitWorkerTipCollided(object sender, EventArgs e) {

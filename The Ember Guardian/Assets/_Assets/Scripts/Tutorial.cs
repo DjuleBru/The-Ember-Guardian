@@ -133,6 +133,7 @@ public class Tutorial : MonoBehaviour
         }
 
         PlayerShoot.Instance.SetCanShoot(false);
+        PlayerShoot.Instance.SetGunCanJam(false);
         StartCoroutine(SetGunAmmoAfterDelay());
         StartCoroutine(ShowMoveTooltipAfterDelay());
 
@@ -168,7 +169,7 @@ public class Tutorial : MonoBehaviour
 
         LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.PrepareForNight);
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectivesUnlocked);
-        Fire.Instance.ManualSetFireCurrentMaxFuelTreshold(Fire.State.mild);
+        Fire.Instance.ManualSetFireCurrentMaxFuelTreshold(Fire.State.wild);
         Fire.Instance.SetStructurePrimaryFunctionUnlocked(true);
         UnlockDefensiveStructureLocations();
     }

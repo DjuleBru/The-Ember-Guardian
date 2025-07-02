@@ -16,11 +16,11 @@ MonoBehaviour:
   levelImage: {fileID: 21300000, guid: c7fb59f91438eb840882608e84543028, type: 3}
   levelNameLocalizationKey: Level1
   levelDescriptionLocalizationKey: Level1_Description
-  faunaAmount: 0
+  faunaAmount: 4
   scrapAmount: 0
   minesAmount: 0
-  chestAmount: 0
-  wildEmberlingsAmount: 0
+  chestAmount: 3
+  wildEmberlingsAmount: 3
   levelObjectiveType: 12
   endLevelType: 7
   talkToNpcAFterObjective: 0
@@ -43,13 +43,17 @@ MonoBehaviour:
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
-  baseDifficulty: 18
-  intialMinSubwaveDifficulty: 0
-  minSubwaveDifficulty: 8
-  intialMaxSubwaveDifficulty: 0
-  maxSubwaveDifficulty: 20
+  startWaveToSpawnFromBothSides: 1
+  baseDifficulty: 20
+  intialMinSubwaveDifficulty: 10
+  minSubwaveDifficulty: 25
+  intialMaxSubwaveDifficulty: 15
+  maxSubwaveDifficulty: 60
   growthFactor: 1.3
+  maxWaveNumber: 0
+  minMaxSubwaveDifficultyGrowthFactor: 1.4
   setDifficultyAnimationCurve: 0
+  difficultyAtMaxWave: 0
   difficultyAnimationCurve:
     serializedVersion: 2
     m_Curve: []
@@ -57,11 +61,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxWaveInAnimationCurve: 0
-  difficultyAtMaxWave: 0
-  minDifficultyAtMaxWave: 0
-  maxDifficultyAtMaxWave: 0
-  minMaxSubwaveDifficultyGrowthFactor: 0
-  startWaveToSpawnFromBothSides: 2
   canSpawnElite: 0
   environmentType: 1
   hasFog: 0

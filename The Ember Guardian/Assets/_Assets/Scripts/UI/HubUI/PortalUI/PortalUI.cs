@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PortalUI : MonoBehaviour {
 
@@ -11,6 +12,9 @@ public class PortalUI : MonoBehaviour {
     [SerializeField] private Portal portal;
     [SerializeField] private Animator portalUIAnimator;
     [SerializeField] private Animator portalDescriptionUIAnimator;
+    [SerializeField] private Image nextLevelButtonIcon;
+    [SerializeField] private Sprite nextLevelButtonIconSprite;
+    [SerializeField] private Sprite lockedSprite;
 
     private List<LevelSO> linkedLevelSOList;
     private List<LevelSO> unlockedLevelSOList = new List<LevelSO>();
@@ -38,17 +42,32 @@ public class PortalUI : MonoBehaviour {
         GameInput.Instance.OnPlayerPausePerformed += GameInput_OnPlayerPausePerformed;
         portal.OnPlayerInteractedWithPortalFromHub += Portal_OnPlayerInteractedWithPortalFromHub;
         portal.OnPlayerMovedOnTeleporter += Portal_OnPlayerMovedOnTeleporter;
+        portal.OnLinkedLevelSOSet += Portal_OnLinkedLevelSOSet;
 
-        linkedLevelSOList = portal.GetLinkedLevelSOList();
-        currentLevelSO = portal.GetLinkedLevelSO();
-        levelSOIndex = linkedLevelSOList.IndexOf(currentLevelSO);
+        SetDisplayedLevelSO();
+        RefreshUnlockedLevels();
+        RefreshCanClickOnNextLevel();
+    }
+
+    private void Portal_OnLinkedLevelSOSet(object sender, EventArgs e) {
+        SetDisplayedLevelSO();
+
+        RefreshUnlockedLevels();
+    }
+    private void RefreshUnlockedLevels() {
+        unlockedLevelSOList.Clear();
         foreach (LevelSO levelSO in linkedLevelSOList) {
-            if(MetaProgressionManager.Instance.GetLevelUnlocked(levelSO)) {
+            if (MetaProgressionManager.Instance.GetLevelUnlocked(levelSO)) {
                 unlockedLevelSOList.Add(levelSO);
             }
         }
     }
-
+    private void SetDisplayedLevelSO() {
+        linkedLevelSOList = portal.GetLinkedLevelSOList();
+        currentLevelSO = portal.GetLinkedLevelSO();
+        levelSOIndex = linkedLevelSOList.IndexOf(currentLevelSO);
+        RefreshCanClickOnNextLevel();
+    }
 
     private void GameInput_OnPlayerPausePerformed(object sender, EventArgs e) {
         if (!portalUIOpen) return;
@@ -122,13 +141,14 @@ public class PortalUI : MonoBehaviour {
         levelSOIndex--;
         currentLevelSO = linkedLevelSOList[levelSOIndex];
         portal.SetLinkedLevelSO(currentLevelSO);
+        RefreshCanClickOnNextLevel();
 
         switchingLevel = false;
     }
 
     public void NextLevel() {
         if (switchingLevel) return;
-        if (levelSOIndex == linkedLevelSOList.Count-1) return;
+        if (levelSOIndex == unlockedLevelSOList.Count-1) return;
 
         StartCoroutine(NextLevelCoroutine());
     }
@@ -142,7 +162,17 @@ public class PortalUI : MonoBehaviour {
         levelSOIndex++;
         currentLevelSO = linkedLevelSOList[levelSOIndex];
         portal.SetLinkedLevelSO(currentLevelSO);
-
+        RefreshCanClickOnNextLevel();
         switchingLevel = false;
+    }
+
+    private void RefreshCanClickOnNextLevel() {
+        if (levelSOIndex == unlockedLevelSOList.Count-1) {
+            nextLevelButtonIcon.sprite = lockedSprite;
+        }
+        else {
+            nextLevelButtonIcon.sprite = nextLevelButtonIconSprite;
+        }
+
     }
 }

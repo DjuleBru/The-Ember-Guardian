@@ -187,7 +187,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.U)) {
             currentWaveNumber++;
             SetWaveParameters(currentWaveNumber, true, true);
-            //SetTutorialWave();
+            SetTutorialWave();
         }
         if (Input.GetKeyDown(KeyCode.T)) {
             Debug.Log("SpawnWave");
@@ -221,7 +221,6 @@ public class CreaturesSpawnManager : MonoBehaviour {
         waveDifficultyRightProportion = .5f;
 
         SetWaveParameters(currentWaveNumber, false, false);
-
     }
 
     public void SetDemoWave() {

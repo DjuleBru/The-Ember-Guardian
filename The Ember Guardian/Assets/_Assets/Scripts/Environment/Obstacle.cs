@@ -50,7 +50,7 @@ public class Obstacle : MonoBehaviour {
         BuildObstacle();
     }
 
-    protected virtual void BuildObstacle() {
+    public virtual void BuildObstacle() {
         foreach(Collider2D collider in blockingColliders) {
               collider.enabled = false;
         }

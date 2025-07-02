@@ -92,6 +92,12 @@ public class MetaProgressionManager : MonoBehaviour
     public bool GetTutorialCompleted() {
         return ES3.Load("tutorialComplete", false);
     }
+    public void SetTutorialSkipped() {
+        ES3.Save("tutorialSkipped", true);
+    }
+    public bool GetTutorialSkipped() {
+        return ES3.Load("tutorialSkipped", false);
+    }
 
     #endregion
 
@@ -224,12 +230,12 @@ public class MetaProgressionManager : MonoBehaviour
         SetNextMerchantTalkLinesShowShopAfterDialog(merchantType, textLinesSO);
 
         string key = merchantType.ToString() + "_nextTextLinesSO";
-        ES3.Save(key, textLinesSO.merchantTextLines);
+        ES3.Save(key, textLinesSO.merchantTextLinesLocalizationKeys);
     }
 
     public List<string> GetNextMerchantTextLines(HubMerchant.HubMerchantType merchantType) {
         string key = merchantType.ToString() + "_nextTextLinesSO";
-        return ES3.Load(key, defaultMerchantTextLinesSO.merchantTextLines);
+        return ES3.Load(key, defaultMerchantTextLinesSO.merchantTextLinesLocalizationKeys);
     }
 
     public void SetNextMerchantTalkLinesShowShopAfterDialog(HubMerchant.HubMerchantType merchantType, MerchantTextLinesSO textLinesSO) {
