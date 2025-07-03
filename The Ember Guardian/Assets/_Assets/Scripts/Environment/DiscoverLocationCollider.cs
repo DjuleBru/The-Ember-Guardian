@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DiscoverLocationCollider : MonoBehaviour
 {
-    private bool playerCollided;
+    public static bool playerCollided;
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (playerCollided) return;

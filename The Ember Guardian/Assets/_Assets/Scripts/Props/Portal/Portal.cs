@@ -143,17 +143,21 @@ public class Portal : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if (!portalUnlocked) return;
         if (playerIsSetOnTeleporter) return;
-        if (isHUBTeleporter && !GetPortalHasUnlockedUnfinishedLevels()) return;
 
         if (collision.gameObject.GetComponent<Player>() != null) {
-            Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
             playerInTriggerArea = true;
+
+            if (isHUBTeleporter && !GetPortalHasUnlockedUnfinishedLevels()) return;
+
+            Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
             OnPlayerEnteredTriggerArea?.Invoke(this, EventArgs.Empty);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.GetComponent<Player>() == null) return;
+        playerIsSetOnTeleporter = false;
+
         if (!gameObject.activeSelf) {
 
             if (playerInTriggerArea) {
@@ -166,15 +170,15 @@ public class Portal : MonoBehaviour
             StartCoroutine(RemoveTeleporter());
 
         } else {
+
             if (!portalUnlocked) return;
 
-            if (collision.gameObject.GetComponent<Player>() != null) {
-                if (isHUBTeleporter && !GetPortalHasUnlockedUnfinishedLevels()) return;
-                Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
-                playerInTriggerArea = false;
-                OnPlayerExitedTriggerArea?.Invoke(this, EventArgs.Empty);
-                floorCollider.enabled = false;
-            }
+            if (isHUBTeleporter && !GetPortalHasUnlockedUnfinishedLevels() && !playerIsSetOnTeleporter) return;
+
+            Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
+            playerInTriggerArea = false;
+            OnPlayerExitedTriggerArea?.Invoke(this, EventArgs.Empty);
+            floorCollider.enabled = false;
         }
 
         playerIsSetOnTeleporter = false;

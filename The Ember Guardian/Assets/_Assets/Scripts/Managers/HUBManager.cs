@@ -99,8 +99,9 @@ public class HUBManager : MonoBehaviour
 
             nextArrivalThroughPortal = false;
             enterHubCollider.gameObject.SetActive(false);
-
-            if(!demoHUB) {
+            hubFire.RefreshHubFireEmberExtractable();
+            RefreshPlayerHasGemsIndicators();
+            if (!demoHUB) {
                 MusicManager.Instance.PlayMusicDelayed(hubDelayToStartPlayingMusic);
             }
         }
@@ -436,6 +437,7 @@ public class HUBManager : MonoBehaviour
 
             fireIndicatorActive = false;
             fireIndicator.gameObject.SetActive(false);
+            hubFireEmberExtractable = false;
 
         }
         else {
@@ -446,6 +448,7 @@ public class HUBManager : MonoBehaviour
             hubFire.SetHubFireEmberExtractable(true);
             fireIndicatorActive = true;
             fireIndicator.gameObject.SetActive(true);
+            hubFireEmberExtractable = true;
         }
     }
 

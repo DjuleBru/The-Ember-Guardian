@@ -27,6 +27,12 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         SurviveNights,
         FindStockpiles,
         ReturnToHub,
+        ExploreCorruptedCity,
+        FindArchitectTable,
+        CollectOrbs,
+        EscortConvoy,
+        DefendFlame,
+        FindAndDestroyTwoNests,
     }
 
     public enum SubObjectiveType {
@@ -68,6 +74,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         FindArmorerStockpile,
         FindTrainerStockpile,
         TeleportBackToHub,
+        FindArchitect,
     }
 
     public static LevelUI_ObjectiveUI Instance;

@@ -16,17 +16,17 @@ MonoBehaviour:
   levelImage: {fileID: 0}
   levelNameLocalizationKey: Level4
   levelDescriptionLocalizationKey: Level4_Description
-  faunaAmount: 0
-  scrapAmount: 0
+  faunaAmount: 2
+  scrapAmount: 8
   minesAmount: 0
-  chestAmount: 0
-  wildEmberlingsAmount: 0
-  levelObjectiveType: 12
-  endLevelType: 14
+  chestAmount: 4
+  wildEmberlingsAmount: 4
+  levelObjectiveType: 19
+  endLevelType: 7
   talkToNpcAFterObjective: 0
   nightsToSurviveAmount: 5
   isNewEnvironmentDiscoveryLevel: 1
-  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: fe72f58b31466564f8f3f9e82a53595b, type: 3}
+  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 8442aad3a0f414c44a1935459cc4ce73, type: 3}
   levelsUnlockedByLevel:
   - {fileID: 11400000, guid: f0b31a5a8b1509b4abc10076fd857695, type: 2}
   - {fileID: 11400000, guid: f203a3f5152d8cd47b92724fbbb14ce3, type: 2}
@@ -39,10 +39,7 @@ MonoBehaviour:
   dayCreatureTypes: []
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
-  - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
   - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
-  - {fileID: 11400000, guid: 30c45ff74017778438c5c78eed18975c, type: 2}
-  - {fileID: 11400000, guid: ab8dd169f91741b48848a62dab906029, type: 2}
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 

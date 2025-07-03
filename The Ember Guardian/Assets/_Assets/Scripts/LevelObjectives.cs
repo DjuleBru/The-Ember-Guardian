@@ -14,6 +14,7 @@ public class LevelObjectives : MonoBehaviour
 
     private bool emberExtracted;
     private bool initialFireLit;
+    private bool darklingNestFound;
     private bool darklingNestCleared;
     private int NPCInteractionsIndex;
 
@@ -40,8 +41,9 @@ public class LevelObjectives : MonoBehaviour
             PlayerCurrencies.Instance.OnEmberDropped += PlayerCurrencies_OnEmberDropped;
 
             if (EndLevelArea.Instance != null) {
-                EndLevelArea.Instance.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
                 EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
+                EndLevelArea.Instance.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
+                EndLevelAreaCollider.OnPlayerTriggeredInAnyEndLevelArea += EndLevelAreaCollider_OnPlayerTriggeredInAnyEndLevelArea;
             }
         }
 
@@ -51,6 +53,7 @@ public class LevelObjectives : MonoBehaviour
             nightsToSurvive = LevelManager.Instance.GetLevelSO().nightsToSurviveAmount;
         }
     }
+
 
     private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         nightsSurvived++;
@@ -110,6 +113,17 @@ public class LevelObjectives : MonoBehaviour
 
         }
 
+        if (objectiveTypeToShow == LevelUI_ObjectiveUI.ObjectiveType.ExploreCorruptedCity) {
+
+            LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.ExploreCorruptedCity);
+            List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
+                    LevelUI_ObjectiveUI.SubObjectiveType.FindArchitect,
+                    LevelUI_ObjectiveUI.SubObjectiveType.FindNest,
+                };
+
+            LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
+
+        }
 
     }
 
@@ -172,6 +186,12 @@ public class LevelObjectives : MonoBehaviour
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.TalkToWatcher);
             }
         }
+
+        if (levelMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.StructuresMerchant) {
+
+            yield return new WaitForSeconds(1f);
+            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FindArchitect);
+        }
     }
 
     #region DESTROY NEST LEVEL
@@ -189,13 +209,21 @@ public class LevelObjectives : MonoBehaviour
     }
 
     private void EndLevelArea_OnEndLevelFireLit(object sender, System.EventArgs e) {
-        StartCoroutine(EndLevelCoroutine());
+        if(LevelManager.Instance.GetLevelSO().levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArmorer) {
+            StartCoroutine(StartFinalMerchantDialog());
+        }
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
     }
 
     private void EndLevelArea_OnEndLevelAreaCleared(object sender, System.EventArgs e) {
         darklingNestCleared = true;
         LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.ClearNest, LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
+    }
+
+    private void EndLevelAreaCollider_OnPlayerTriggeredInAnyEndLevelArea(object sender, EventArgs e) {
+        if (darklingNestFound) return;
+        darklingNestFound = true;
+        LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.FindNest, LevelUI_ObjectiveUI.SubObjectiveType.ClearNest);
     }
 
     private void UICurrencyManager_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -211,7 +239,7 @@ public class LevelObjectives : MonoBehaviour
 
     #endregion
 
-    private IEnumerator EndLevelCoroutine() {
+    private IEnumerator StartFinalMerchantDialog() {
         yield return new WaitForSeconds(3f);
         levelMerchantTalkUI.SetTalkingWithMerchant(finalMerchantTextLines);
     }
@@ -227,6 +255,10 @@ public class LevelObjectives : MonoBehaviour
     public void SetNightsToSurvive(int nightsToSurvive) {
         Debug.Log("SetNightsToSurvive " + nightsToSurvive);
         this.nightsToSurvive = nightsToSurvive;
+    }
+
+    private void OnDestroy() {
+        EndLevelAreaCollider.OnPlayerTriggeredInAnyEndLevelArea -= EndLevelAreaCollider_OnPlayerTriggeredInAnyEndLevelArea;
     }
 
 }

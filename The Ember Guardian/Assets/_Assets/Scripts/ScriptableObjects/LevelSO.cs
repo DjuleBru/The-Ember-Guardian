@@ -9,10 +9,10 @@ public class LevelSO : ScriptableObject
     public enum LevelEnvironment {
         TheLostGreens,
         TheVerdantGraveyard,
-        Gloomspire,
-        SacredTemple,
+        TheLumenHollow,
         City,
         CorruptedCity,
+        TheFracturedDistrict,
     }
 
 

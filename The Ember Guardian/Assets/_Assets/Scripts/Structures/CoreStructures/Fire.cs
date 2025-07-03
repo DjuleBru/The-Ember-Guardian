@@ -165,18 +165,20 @@ public class Fire : Structure, IDamageable {
     }
 
     private void PlayerInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        if (!isHubFire) return;
         if (emberExtracted) return;
         if (emberExtractionDisabled) return;
         RefreshHubFireEmberExtractable();
     }
 
     private void PlayerInventoryUI_OnCurrencyRemovedFromBag(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        if (!isHubFire) return;
         if (emberExtracted) return;
         if (emberExtractionDisabled) return;
         RefreshHubFireEmberExtractable();
     }
 
-    private void RefreshHubFireEmberExtractable() {
+    public void RefreshHubFireEmberExtractable() {
         if (UICurrencyManager.PlayerInventoryUI == null) return;
         if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfCategory(PlayerCurrencies.CurrencyCategory.gem).Count == 0) {
             SetStructureSecondaryFunctionUnlocked(true);

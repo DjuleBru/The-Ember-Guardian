@@ -1,14 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EndLevelAreaCollider : MonoBehaviour
 {
+    public static event EventHandler OnPlayerTriggeredInAnyEndLevelArea;
+
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() != null) {
+            Debug.Log(EndLevelArea.Instance.AllCreaturesKilled());
             if (EndLevelArea.Instance.GetPlayerDestroyedNest()) return;
             if (EndLevelArea.Instance.AllCreaturesKilled()) return;
 
+            OnPlayerTriggeredInAnyEndLevelArea?.Invoke(this, EventArgs.Empty);
             EndLevelArea.Instance.SetPlayerInTriggerArea(true);
             MusicManager.Instance.SetEndLevelMusic(2f);
             MusicManager.Instance.SetAudioTargerVolume(.3f);

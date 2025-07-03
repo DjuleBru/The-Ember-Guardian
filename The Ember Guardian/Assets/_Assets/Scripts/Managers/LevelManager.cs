@@ -120,10 +120,6 @@ public class LevelManager : MonoBehaviour
     private void LevelSuccess() {
         Vector3 endLevelPortalPosition = new Vector3(Player.Instance.transform.position.x + 10f, 0, 0);
 
-        if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
-            StartCoroutine(EnableEndLevelPortal(2f));
-        }
-
         if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
             if (DemoMainLevelManager.Instance != null) {
 
@@ -140,6 +136,8 @@ public class LevelManager : MonoBehaviour
                 StartCoroutine(EnableEndLevelPortal(2f));
             }
 
+        } else {
+            StartCoroutine(EnableEndLevelPortal(2f));
         }
 
         OnLevelSuccess?.Invoke(this, EventArgs.Empty);

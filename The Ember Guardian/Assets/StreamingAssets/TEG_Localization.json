@@ -121,6 +121,14 @@
    "Italian": ""
  },
  {
+   "key": "menu_skipTutorial",
+   "English": "Skip Tutorial",
+   "German": "",
+   "French": "Passer le tutoriel",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
    "key": "menu_progressionSaved",
    "English": "Progression saved",
    "German": "Fortschritt gespeichert",
@@ -9466,9 +9474,9 @@
  },
  {
    "key": "tooltip_saveAmmoTip",
-   "English": "I should save my ammo",
+   "English": "I should save each bullet",
    "German": "Ich sollte meine Munition sparsam nutzen",
-   "French": "Je devrais économiser mes munitions",
+   "French": "Je devrais économiser chaque balle.",
    "Spanish": "Puedo curarme en la tienda de campaña",
    "Italian": ""
  },
@@ -9547,6 +9555,14 @@
  {
    "key": "tooltip_ectractEmberFirst",
    "English": "I should extract an ember first",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "tooltip_huntingFlagTooFar",
+   "English": "Hunters might not make it back to camp...",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9682,7 +9698,7 @@
  },
  {
    "key": "gemTrader_Intro2",
-   "English": "Do you see this fire? It’s not just a flame. It’s a bond. A refuge. A<slide a=.2> promise.</slide>",
+   "English": "This isn’t just <slide a=.2> any fire.</slide>… what you’ve lit is one of the old hearts of the world.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9746,7 +9762,7 @@
  },
  {
    "key": "gemTrader_Outro4",
-   "English": "Perhaps he’ll aid you, if you can remind him of what he’s lost.",
+   "English": "Go, and bring back what this place <bounce a=.2 f=1.2>needs</bounce> to grow.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9754,7 +9770,7 @@
  },
  {
    "key": "gemTrader_Outro5",
-   "English": "Go, and bring back what this place <bounce a=.2 f=1.2>needs</bounce> to grow.",
+   "English": "Oh, and don't spend too long in there. There's much more to be done.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9770,7 +9786,7 @@
  },
  {
    "key": "gemTrader_PostLevel1_2",
-   "English": "There are <slide a=.2>others</slide> in The Verdant Graveyard who might actually be useful.",
+   "English": "One spark rekindled, and suddenly you think you're some kind of warden of the light?",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9778,7 +9794,7 @@
  },
  {
    "key": "gemTrader_PostLevel1_3",
-   "English": "You’ll meet the Trainer, a <wave a=.2 f=1.5>fool</wave> who believes in strength through...<slide a=.2> odd</slide> means.",
+   "English": "There are <slide a=.2>others</slide> in The Verdant Graveyard who might actually be useful.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9786,7 +9802,7 @@
  },
  {
    "key": "gemTrader_PostLevel1_4",
-   "English": "And the Tamer? He might turn that <wiggle a=.05 f=2>barking</wiggle> mutt of yours into <slide a=.2>something</slide> worth keeping around.",
+   "English": "You’ll meet the Trainer, a <wave a=.2 f=1.5>fool</wave> who believes in strength through...<slide a=.2> odd</slide> means.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9794,7 +9810,7 @@
  },
  {
    "key": "gemTrader_PostLevel1_5",
-   "English": "Let me guess - they’ll want <bounce a=.2 f=1.2>gems</bounce> too?",
+   "English": "And the Tamer? He might turn that <wiggle a=.05 f=2>barking</wiggle> mutt of yours into <slide a=.2>something</slide> worth keeping around.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9802,7 +9818,23 @@
  },
  {
    "key": "gemTrader_PostLevel1_6",
-   "English": "Don’t forget <slide a=.2>who</slide> keeps this flame alive. Just make sure you bring back <bounce a=.2 f=1.2>enough</bounce> for me next time.",
+   "English": "Let me guess - they’ll want <bounce a=.2 f=1.2>gems</bounce> too?",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel1_7",
+   "English": "Just don’t forget what this is really about. That was only one flame. The world’s still <slide a=.2>drowning</slide> in shadow.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel1_8",
+   "English": "And I’m the one keeping this one alive. Bring back <bounce a=.2 f=1.2>enough</bounce> next time.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9818,7 +9850,7 @@
  },
  {
    "key": "gemTrader_PostLevel2_2",
-   "English": "You’re not done yet. The only path forward is deeper into <shake a=.4>The Lost Greens</shake>.",
+   "English": "You’ve already rekindled the <wiggle a=.05 f=2>Eternal Flame</wiggle> here at the hub, one of the four primordial fires.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9826,8 +9858,32 @@
  },
  {
    "key": "gemTrader_PostLevel2_3",
+   "English": "But don’t get comfortable. The true trial lies ahead.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel2_4",
+   "English": "The only path forward is deeper into <shake a=.4>The Lost Greens</shake>, where another fire waits.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel2_5",
    "English": "There, you’ll find <wave a=.2 f=1.5>The Watcher</wave>. She sees what others miss… and she’ll <wiggle a=.05 f=2>strengthen</wiggle> your emberlings.",
    "German": "Dort wirst du <wave a=.2 f=1.5>Den Wächter</wave> finden. Sie sieht was andere übersehen… und sie wird deine Glutlinge <wiggle a=.05 f=2>verstärken</wiggle>.",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel2_6",
+   "English": "Light all four primordial flames, and a final path will open to the <bounce a=.2 f=1.2>Fractured District</bounce>, a place long forgotten.",
+   "German": "",
    "French": "",
    "Spanish": "",
    "Italian": ""
@@ -9850,7 +9906,7 @@
  },
  {
    "key": "gemTrader_PostLevel3_2",
-   "English": "<wave a=.2 f=1.5>Artifacts</wave>. Relics of the old flame, power forged before the dark swallowed everything.",
+   "English": "Two fires alive now. Two bonds reforged. The <slide a=.2>path</slide> widens, but the work only grows.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9858,7 +9914,7 @@
  },
  {
    "key": "gemTrader_PostLevel3_3",
-   "English": "Gather them all, and <slide a=.2>maybe</slide> you’ll turn the tide. Wipe out the things that creep beyond the fire.",
+   "English": "The <wiggle a=.05 f=2>Corrupted City</wiggle> waits. Once the heart of this place, now a <slide a=.2>shadow</slide> of itself, <shake a=.4>twisted</shake> and dangerous.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9866,7 +9922,7 @@
  },
  {
    "key": "gemTrader_PostLevel3_4",
-   "English": "One lies ahead, past <shake a=.4>The Lost Greens</shake>.",
+   "English": "Lighting its flame won’t be easy. The darkness there is <dangle a=.2>thick</dangle>, and the work? <bounce a=.2 f=1.2>heavy</bounce>.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9874,7 +9930,7 @@
  },
  {
    "key": "gemTrader_PostLevel3_5",
-   "English": "But I’ve cracked open a path to <slide a=.2>The Sacred Temple</slide>. Choices, choices…",
+   "English": "You’ll need the <slide a=.2>Architect</slide>. A master of structures, someone who can turn ruins into refuge.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9882,7 +9938,375 @@
  },
  {
    "key": "gemTrader_PostLevel3_6",
-   "English": "<wave a=.2 f=1.5>Pick your road.</wave> But don’t come crying if it eats you alive.",
+   "English": "Bring him back here, to the Hub. Only then can you hope to <wiggle a=.05 f=2>kindle</wiggle> that fire.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel4_1",
+   "English": "Ah, the flames burn brighter with you around. <wiggle a=.05 f=2>Good, very good.</wiggle>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel4_2",
+   "English": "But the <slide a=.2>Corrupted City</slide>… it’s a beast not tamed yet.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel4_3",
+   "English": "Now, you face a choice: delve deeper into the Corrupted City to find the Architect’s Table...",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel4_4",
+   "English": "or journey to the <slide a=.2>GloomSpire</slide>, a place heavy with orbs, ripe for the taking.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel4_5",
+   "English": "Stockpile them well. The convoy depends on your harvest.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel5_1",
+   "English": "The flame at <wiggle a=.05 f=2>Lost Greens</wiggle> is flickering...",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel5_2",
+   "English": "An attack’s coming, but old <slide a=.2>wards and emberlings</slide> still hold it at bay, for now.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel5_3",
+   "English": "At the same time, a <bounce a=.2 f=1.2>convoi</bounce> must carry a sacred ember deep into the <wiggle a=.05 f=2>GloomSpire</wiggle>.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel5_4",
+   "English": "With that chance, you’ll be able to kindle the primordial fires that guard those lands: your best shot at turning the tide.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel5_5",
+   "English": "Both tasks demand your attention. <dangle a=.2>One without the other won’t save us.</dangle>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel6_1",
+   "English": "You’ve held the flame at <wiggle a=.05 f=2>Lost Greens</wiggle> and safely escorted the <bounce a=.2 f=1.2>convoi</bounce>.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel6_2",
+   "English": "Now the way is open to the <wiggle a=.05 f=2>Corrupted City</wiggle> and <slide a=.2>GloomSpire</slide>.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel6_3",
+   "English": "It’s time to light the primordial fires there, and push back the darkness further.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel6_4",
+   "English": "The fate of this land <shake a=.4>rests in your hands.</shake>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel7.1_1",
+   "English": "The <wiggle a=.05 f=2>Corrupted City</wiggle> fire burns bright now.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel7.1_2",
+   "English": "Its shadows recede, but the battle isn’t over.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel7.1_3",
+   "English": "<slide a=.2>Keep your guard up.</slide> The darkness still claws at the edges.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel7.2_1",
+   "English": "The <wiggle a=.05 f=2>GloomSpire</wiggle> fire roars to life, lighting the depths.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel7.2_2",
+   "English": "The shadows falter, but their hunger remains.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel7.2_3",
+   "English": "Prepare yourself. The hardest trials lie ahead.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel7_1",
+   "English": "You’ve rekindled the <bounce a=.2 f=1.2>four primordial fires</bounce>.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel7_2",
+   "English": "The <wiggle a=.05 f=2>network of light</wiggle> pulses stronger, the <slide a=.2>Eternal Flame</slide> manifests fully now.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel7_3",
+   "English": "The <shake a=.4>Victorian City</shake> awaits.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel7_4",
+   "English": "Once the heart of civilization, now lost to mist, shattered glass, and forgotten arcane technologies.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel7_5",
+   "English": "There lies the <dangle a=.2>final known fire</dangle>, once the heart that connected all others.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel7_6",
+   "English": "To reach it, you must gather resources anew, secure the roads, and prepare <wave a=.2 f=1.5>one last convoy</wave>.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel8_1",
+   "English": "<slide a=.2>The orbs are ready.</slide>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel8_2",
+   "English": "It’s time to move the <wiggle a=.05 f=2>source ember</wiggle> - the heart of our flame, deep into the wilds.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel8_3",
+   "English": "This <bounce a=.3 f=1.5>convoi</bounce> must survive the journey.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel8_4",
+   "English": "Without it, the <shake a=.4>darkness</shake> will only grow stronger.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel9_1",
+   "English": "<shake a=.3>They’ve sensed our progress.</shake>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel9_2",
+   "English": "The darkness strikes back, twice as fierce.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel9_3",
+   "English": "One wave <wiggle a=.05 f=2>storms the Corrupted City flame</wiggle>,",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel9_4",
+   "English": "The other <slide a=.2>swarms the GloomSpire flame</slide>.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel9_5",
+   "English": "You’ll need to <bounce a=.2 f=1.4>defend both fires</bounce>, no matter the cost.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel9_6",
+   "English": "The fate of everything rests on them surviving.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel10.1_1",
+   "English": "<wiggle a=.05 f=2>Corrupted City stands.</wiggle>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel10.1_2",
+   "English": "Your fight held strong, the shadows <shake a=.3>recoiled</shake>.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel10.1_3",
+   "English": "But don’t get comfortable.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel10.2_1",
+   "English": "<slide a=.2>The GloomSpire flame burns bright.</slide>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel10.2_2",
+   "English": "You’ve pushed back the spores and their whispers.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel10.2_3",
+   "English": "Still, the night is thick, and the <wave a=.2 f=1.5>threat lingers</wave>.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel10_1",
+   "English": "<shake a=.3>The time has come.</shake>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel10_2",
+   "English": "Armed with fire and steel, <wiggle a=.05 f=2>you</wiggle>, your loyal dog, and your emberlings will face the shadow’s heart.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel10_3",
+   "English": "The final battle awaits at the <bounce a=.3 f=1.6>peak of Victorian City</bounce>.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel10_4",
+   "English": "<slide a=.2>Bring the light, or watch all burn.</slide>",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9977,8 +10401,8 @@
    "Italian": ""
  },
  {
-   "key": "trainer_LevelIntro1",
-   "English": "Strength isn’t <slide a=.2>given</slide>, it’s <shake a=.4>forged</shake>. You want to endure what’s out there? <wave a=.2 f=1.5>Prove it.</wave>",
+   "key": "trainer_LevelIntro2",
+   "English": "The Lost Greens had their own flame once. Bright. Defiant.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -9986,7 +10410,7 @@
  },
  {
    "key": "trainer_LevelIntro2",
-   "English": "Here. These gems are a start. But the <slide a=.2>real work</slide> begins at the flame.",
+   "English": "Now it’s just embers and rot. Maybe you'll change that.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -10041,16 +10465,8 @@
    "Italian": ""
  },
  {
-   "key": "tamer_LevelIntro1",
-   "English": "That dog of yours? <slide a=.2>Cute</slide>, but <wave a=.2 f=1.5>useless</wave>. I can fix that.",
-   "German": "",
-   "French": "",
-   "Spanish": "",
-   "Italian": ""
- },
- {
    "key": "tamer_LevelIntro2",
-   "English": "Take these gems. Consider it a down payment for the work ahead.",
+   "English": "When the flame lit up again... he felt it, didn’t he?",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -10058,7 +10474,71 @@
  },
  {
    "key": "tamer_LevelIntro3",
+   "English": "Tail low, ears up: like something ancient just <wiggle a=.05 f=2>called</wiggle> to him.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "tamer_LevelIntro4",
+   "English": "<slide a=.2> cough cough </slide>.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "tamer_LevelIntro5",
    "English": "I’ll head to your hub... <slide a=.2>if my lungs don’t give out first.</slide>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "tamer_PostLevel4_1",
+   "English": "Well, <slide a=.2>look what we got here...</slide>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "tamer_PostLevel4_2",
+   "English": "This fluffball’s more than just a cute face, he’s got a knack for boosting the little emberlings.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "tamer_PostLevel4_3",
+   "English": "<slide a=.15>And don’t let his wagging tail fool ya</slide>: he’ll fetch your gear quicker than you can light a smoke",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "tamer_PostLevel8_1",
+   "English": "Now <bounce a=.3 f=1.3>this one’s</bounce> no ordinary mutt.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "tamer_PostLevel8_2",
+   "English": "<shake a=.4>Dark energy</shake> cracklin’ beneath that fur: he’ll blast through enemies like they’re nothin’ but ash”",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "tamer_PostLevel8_3",
+   "English": "<shake a=.4>Be warned, he knows neither mercy nor rest.</shake>",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -10098,7 +10578,7 @@
  },
  {
    "key": "watcher_LevelIntro1",
-   "English": "<wiggle a=.05 f=2>The Lost Greens </wiggle>.... they are dangerous, but without someone to hold the line, they’ll only get worse.",
+   "English": "<wiggle a=.05 f=2>The Lost Greens</wiggle>... a seed of flame lies buried here, waiting to be rekindled.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -10106,7 +10586,7 @@
  },
  {
    "key": "watcher_LevelIntro2",
-   "English": "Survive the nights, push them back. Show this land the fire <shake a=.4>still burns</shake>.",
+   "English": "Without that fire, the dark will choke these lands, and nothing will stand.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -10114,7 +10594,7 @@
  },
  {
    "key": "watcher_LevelIntro3",
-   "English": "Prey is plentiful, though the easiest hunts won’t sustain you forever.",
+   "English": "Survive the nights, push them back. Show this land the fire <shake a=.4>still burns</shake>.",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -10122,6 +10602,14 @@
  },
  {
    "key": "watcher_LevelIntro4",
+   "English": "Prey is plentiful, though the easiest hunts won’t sustain you forever.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "watcher_LevelIntro5",
    "English": "Sooner or later, you’ll need to venture<slide a=.2> further</slide>, into<wiggle a=.05 f=2> wilder</wiggle> grounds.",
    "German": "",
    "French": "",
@@ -10154,7 +10642,87 @@
  },
  {
    "key": "watcher_LevelOutro4",
-   "English": "Heh… Even the little one knows. <wave a=.2 f=1.5>The nights only get darker</wave>.",
+   "English": "These small wanderers were <wiggle a=.05 f=2>drained</wiggle> by shadow’s touch.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "watcher_LevelOutro5",
+   "English": "Some say they were once human. Others whisper they were born from the <slide a=.2>Flame itself</slide>.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "watcher_LevelOutro6",
+   "English": "They speak little... but they listen.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "watcher_PostLevel4_1",
+   "English": "Those <wiggle a=.05 f=2>Scavengers</wiggle> you found: they’re more than wanderers now.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "watcher_PostLevel4_2",
+   "English": "<slide a=.2>Train them well</slide>, and they’ll bring you treasures from the shadows.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "watcher_PostLevel5.2_1",
+   "English": "<bounce a=.3 f=1.5>Engineers,</bounce> the hands that build hope from ashes.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "watcher_PostLevel5.2_2",
+   "English": "Masters of structure and trap alike.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "watcher_PostLevel5.2_3",
+   "English": "Give them the tools, <wiggle a=.05 f=2>and watch your defenses bloom.</wiggle>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "watcher_PostLevel6_1",
+   "English": "<dangle a=.2>Guards</dangle>, the shield against the dark.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "watcher_PostLevel6_2",
+   "English": "They hold the line so you don’t have to.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "watcher_PostLevel6_3",
+   "English": "Strengthen their resolve, <slide a=.2>and the shadows will falter.</slide>",
    "German": "",
    "French": "",
    "Spanish": "",
@@ -10169,11 +10737,187 @@
    "Italian": ""
  },
  {
+   "key": "architect_LevelIntro1",
+   "English": "Ah, you’re here at last. I’ve hauled this old pack all the way here.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "architect_LevelIntro2",
+   "English": "That darkling nest… if it still <wiggle a=.05 f=2>lurks</wiggle>, it’s blocking your path back. You’ll need to clear it first.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "architect_LevelIntro3",
+   "English": "No shortcuts through <slide a=.2>shadows</slide>, young one.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "architect_LevelIntro4",
+   "English": "If you manage that, I’ll try to <slide a=.2>make it back</slide> to the Hub. Though at my age, <wiggle a=.05 f=2>the road grows heavy</wiggle>.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "architect_LevelIntro5",
+   "English": "We’ll see if these old bones hold. See you at the flame.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "architect_HubIntro1",
+   "English": "Ah, you’re back. <dangle a=.2>Good.</dangle>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "architect_HubIntro2",
+   "English": "I’m here to <slide a=.2>help you build</slide> stronger, smarter. Structures that last longer, protect better.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "architect_HubIntro3",
+   "English": "There’s an old relic, forgotten by most. My architect’s table.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "architect_HubIntro4",
+   "English": "It lets you <bounce a=.2 f=1.2>reshape your camp</bounce>, move structures where you need them.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "architect_HubIntro5",
+   "English": "But its secrets are buried deep, in the heart of the <slide a=.2>Corrupted City.</slide>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "architect_HubIntro6",
+   "English": "For now, let’s make what you have <slide a=.2>better than before.</slide>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "architect_PostLevel5.1_1",
+   "English": "<dangle a=.2>Ah, so you’ve found it...</dangle>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "architect_PostLevel5.1_2",
+   "English": "This relic holds the power to reshape your base.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "architect_PostLevel5.1_3",
+   "English": "Move, improve, build anew. Use it wisely, for the fire depends on it.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
    "key": "mushroom_DemoDecorational",
    "English": "<wiggle a=.05 f=2>Heehee… Unlocks, upgrades, oddities…</wiggle>For those who seek more.",
    "German": "<wiggle a=.05 f=2>Hihiii … Freischaltungen, Upgrades, Kuriositäten …</wiggle>Für alle, die mehr suchen.",
    "French": "<wiggle a=.05 f=2>Hehehe... Déblocages, améliorations, bizarreries...</wiggle> Pour ceux qui en veulent toujours plus!",
    "Spanish": "<wiggle a=.05 f=2>Jeje... Desbloqueos, mejoras, rarezas…</wiggle>Para aquellos que buscan más.",
+   "Italian": ""
+ },
+ {
+   "key": "mushroom_LevelIntro1",
+   "English": "Ah, a fresh face! <bounce a=.2 f=1.2>Welcome, welcome!</bounce>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "mushroom_LevelIntro2",
+   "English": "This place? <slide a=.2>Tick, tick, tick…</slide> Danger grows fast, friend.",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "mushroom_LevelIntro3",
+   "English": "You linger too long, and the nights will <wiggle a=.05 f=3>swallow you whole.</wiggle>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "mushroom_LevelIntro4",
+   "English": "Better start <slide a=.2>digging</slide> deep and fast: there’s orbs down there, but only if you move quick!",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "mushroom_LevelIntro5",
+   "English": "Me? I’m off. <slide a=.2>See you at the flame.</slide>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "mushroom_HubIntro1",
+   "English": "Ah, back so soon! <bounce a=.2 f=1.2>Good.</bounce>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "mushroom_HubIntro2",
+   "English": "I’m the mushroom in your merchants’ stew, adding <slide a=.2>spices</slide>, new tricks, and traps",
+   "German": "",
+   "French": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "mushroom_HubIntro3",
+   "English": "That’ll make your enemies <wiggle a=.05 f=2>think twice.</wiggle>",
+   "German": "",
+   "French": "",
+   "Spanish": "",
    "Italian": ""
  },
  {
@@ -10603,14 +11347,6 @@
  {
    "key": "dog_buffWorkers",
    "English": "Workers",
-   "German": "",
-   "French": "",
-   "Spanish": "",
-   "Italian": ""
- },
- {
-   "key": "dog_detectionRange",
-   "English": "Detection Range",
    "German": "",
    "French": "",
    "Spanish": "",

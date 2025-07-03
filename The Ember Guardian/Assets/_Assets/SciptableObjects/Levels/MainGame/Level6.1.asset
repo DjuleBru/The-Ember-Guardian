@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
+  m_Name: Level6.1
+  m_EditorClassIdentifier: 
+  linkedSceneName: Level1_VerdantGraveyard
+  levelImage: {fileID: 0}
+  levelNameLocalizationKey: Level 6
+  levelDescriptionLocalizationKey: 
+  faunaAmount: 0
+  scrapAmount: 0
+  minesAmount: 0
+  chestAmount: 0
+  wildEmberlingsAmount: 0
+  levelObjectiveType: 10
+  endLevelType: 0
+  talkToNpcAFterObjective: 0
+  nightsToSurviveAmount: 0
+  isNewEnvironmentDiscoveryLevel: 1
+  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
+  levelsUnlockedByLevel:
+  - {fileID: 11400000, guid: 36a376877af4fca44b531d5dd7dff0fb, type: 2}
+  merchantsUnlockedInLevel: 01000000
+  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 285aab84b4a4ad648a8899052f346e6f, type: 2}
+  newMerchantTextLinesAfterLevel: []
+  isReplayableLevel: 0
+  totalDayCreatureDifficulty: 0
+  dayCreatureTypes: []
+  nightCreatureTypes:
+  - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
+  - {fileID: 11400000, guid: a0c1321c3dbd0704c9f6bf0aec0e77b3, type: 2}
+  - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
+  - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
+  hasBoss: 0
+  bossCreatureType: {fileID: 0}
+  bossNightSpawns: 
+  startWaveToSpawnFromBothSides: 2
+  baseDifficulty: 6
+  intialMinSubwaveDifficulty: 0
+  minSubwaveDifficulty: 0
+  intialMaxSubwaveDifficulty: 0
+  maxSubwaveDifficulty: 10
+  growthFactor: 1.6
+  maxWaveNumber: 0
+  minMaxSubwaveDifficultyGrowthFactor: 0
+  setDifficultyAnimationCurve: 0
+  difficultyAtMaxWave: 0
+  difficultyAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxWaveInAnimationCurve: 0
+  canSpawnElite: 1
+  environmentType: 3
+  hasFog: 0
+  fogFrontAlpha: 0
+  fogBackAlpha: 0
+  hasWind: 0
+  initialWindStrength: 0
+  windStrengthsAllowedInLevel: 
+  hasRain: 0
+  initialRainIntensity: 0
+  rainIntensitiesAllowedInLevel: 
+  levelRandomBackgroundTracks: []
+  levelExplorationTracks: []
+  levelExplorationTracksStreamerMode: []
