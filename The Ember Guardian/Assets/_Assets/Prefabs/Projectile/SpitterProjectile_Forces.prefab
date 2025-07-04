@@ -149,6 +149,11 @@ ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 2520302452764269856, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
   m_PrefabInstance: {fileID: 167773680537722600}
   m_PrefabAsset: {fileID: 0}
+--- !u!58 &6107622544754403661 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6239366878450202533, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+  m_PrefabInstance: {fileID: 167773680537722600}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6124176129316968214 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6244659763167169022, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
@@ -198,3 +203,4 @@ MonoBehaviour:
   animalLayer:
     serializedVersion: 2
     m_Bits: 16384
+  solidCollider: {fileID: 6107622544754403661}

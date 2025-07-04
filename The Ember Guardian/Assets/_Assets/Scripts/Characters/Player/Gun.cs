@@ -12,6 +12,7 @@ public class Gun : MonoBehaviour
     [SerializeField] protected GunSO gunSO;
     [SerializeField] protected Animator gunBodyAnimator;
     [SerializeField] protected Animator armBodyAnimator;
+    private GunJamHandler gunJamHandler;
 
     protected bool gunActive;
     protected bool gunUnlocked;
@@ -74,6 +75,8 @@ public class Gun : MonoBehaviour
     public event EventHandler OnDebuffLastBulletShot;
 
     protected void Start() {
+        gunJamHandler = GetComponent<GunJamHandler>();
+
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
         PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
         PlayerShoot.Instance.OnPlayerFocusBlastStopped += PlayerShoot_OnPlayerFocusBlastStopped;
@@ -86,12 +89,20 @@ public class Gun : MonoBehaviour
     }
 
     private void Update() {
+
+        if (DebugManager.Instance.GetGunJamDebugInputsAllowed() && gunActive) {
+            if (Input.GetKeyDown(KeyCode.J)) {
+                JamGun();
+            }
+        }
+
         if (!gunJustJammed) return;
 
         gunJustJammedTimer -= Time.deltaTime;
         if(gunJustJammedTimer < 0) {
             gunJustJammed = false;
         }
+
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
@@ -310,8 +321,8 @@ public class Gun : MonoBehaviour
         return gunUnlocked;
     }
 
-    public bool GetGunJammed() {
-        return gunJammed;
+    public bool GetGunJammedAndNextInputSequence(GameInput.Binding binding) {
+        return gunJammed && gunJamHandler.GetIsExpectedBinding(binding);
     }
     public bool GetGunJustJammed() {
         return gunJustJammed;
@@ -407,18 +418,23 @@ public class Gun : MonoBehaviour
     public float GetExplosionRadiusMultiplier() {
         return explosionRadiusMultiplier;
     }
+
+
     #endregion
 
     #region SET PARAMETERS
-    public void SetGunUnJammed(bool pefectQTESequence) {
+    public void SetGunUnJammed(bool gunJamSuccess) {
         gunJammed = false;
-        OnAnyGunJamRepaired?.Invoke(this, EventArgs.Empty);
+
+        if(gunJamSuccess) {
+            OnAnyGunJamRepaired?.Invoke(this, EventArgs.Empty);
+        }
 
         gunJustJammed = true;
         gunJustJammedTimer = gunJustJammedDelay;
-        this.perfectJamQTESucceeded = pefectQTESequence;
+        this.perfectJamQTESucceeded = gunJamSuccess;
 
-        if(pefectQTESequence) {
+        if(gunJamSuccess) {
             OnPerfectQTEDamageBuff?.Invoke(this, EventArgs.Empty);
             BuffBulletDamage(perfectJamDamageBuff);
         }

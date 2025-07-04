@@ -22,6 +22,9 @@ public class WorkerManager : MonoBehaviour
     private List<Worker> workersInPlayerInteractionArea = new List<Worker>();
     private Worker closestInteractableWorkerFromPlayer;
 
+    private bool minerUnlocked;
+    private bool guardUnlocked;
+    private bool engineerUnlocked;
 
     public event EventHandler OnJoblessWorkerAmountChanged;
     public event EventHandler OnRecruitedWorkerDied;
@@ -33,6 +36,10 @@ public class WorkerManager : MonoBehaviour
 
     private void Awake() {
         Instance = this;
+
+        minerUnlocked = ES3.Load("minerUnlocked", false);
+        guardUnlocked = ES3.Load("guardUnlocked", false);
+        engineerUnlocked = ES3.Load("engineerUnlocked", false);
     }
 
     private void Update() {
@@ -77,7 +84,40 @@ public class WorkerManager : MonoBehaviour
         recruitedWorkers.Add(worker);
         joblessWorkers.Add(worker);
 
+        CheckUnlockNewWorkerType(worker);
+
         OnJoblessWorkerAmountChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void CheckUnlockNewWorkerType(Worker worker) {
+        if(!minerUnlocked) {
+            if(worker.GetWildJobType() == WorkerAI.JobTypes.miner) {
+                minerUnlocked = true;
+                ES3.Save("minerUnlocked", true);
+                MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(StructureSO.StructureType.minerShrine + "1", true);
+                MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(StructureSO.StructureType.minerShrine + "1", true);
+                MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType.WorkerMerchant, true);
+            }
+        }
+
+        if (!guardUnlocked) {
+            if (worker.GetWildJobType() == WorkerAI.JobTypes.guard) {
+                guardUnlocked = true;
+                ES3.Save("guardUnlocked", true);
+                MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(StructureSO.StructureType.guardShrine + "1", true);
+                MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(StructureSO.StructureType.minerShrine + "1", true);
+                MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType.WorkerMerchant, true);
+            }
+        }
+        if (!engineerUnlocked) {
+            if (worker.GetWildJobType() == WorkerAI.JobTypes.engineer) {
+                engineerUnlocked = true;
+                ES3.Save("minerUnlocked", true);
+                MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(StructureSO.StructureType.engineerShrine + "1", true);
+                MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(StructureSO.StructureType.minerShrine + "1", true);
+                MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType.WorkerMerchant, true);
+            }
+        }
     }
 
     public void AutoAssignSideToWorker(Worker worker) {

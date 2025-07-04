@@ -11,7 +11,7 @@ public class GunJammedPS : MonoBehaviour
     private void Start() {
         Gun.OnAnyGunJammed += Gun_OnAnyGunJammed;
         GunJamHandler.OnAnyJamSequenceProgressed += GunJamHandler_OnAnyJamSequenceProgressed;
-        GunJamHandler.OnAnyJamSequenceFailed += GunJamHandler_OnAnyJamSequenceFailed;
+        GunJamHandler.OnAnyJamWrongInput += GunJamHandler_OnAnyJamSequenceFailed;
         PlayerShoot.Instance.OnPlayerTryShoot_GunJammed += PlayerShoot_OnPlayerTryShoot_GunJammed;
         Gun.OnAnyGunJamBuffedDamageShot += Gun_OnAnyGunJamBuffedDamageShot;
     }
@@ -47,7 +47,7 @@ public class GunJammedPS : MonoBehaviour
     private void OnDestroy() {
         Gun.OnAnyGunJammed -= Gun_OnAnyGunJammed;
         GunJamHandler.OnAnyJamSequenceProgressed -= GunJamHandler_OnAnyJamSequenceProgressed;
-        GunJamHandler.OnAnyJamSequenceFailed -= GunJamHandler_OnAnyJamSequenceFailed;
+        GunJamHandler.OnAnyJamWrongInput -= GunJamHandler_OnAnyJamSequenceFailed;
         Gun.OnAnyGunJamBuffedDamageShot -= Gun_OnAnyGunJamBuffedDamageShot;
     }
 }

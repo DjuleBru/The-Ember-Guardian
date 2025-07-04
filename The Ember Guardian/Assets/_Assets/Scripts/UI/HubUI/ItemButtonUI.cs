@@ -15,6 +15,7 @@ public class ItemButtonUI : ButtonUI {
     [SerializeField] private HubMerchant parentHubMerchant;
     [SerializeField] private List<ItemButtonUI> lockingItemButtonUIList;
     [SerializeField] private ItemDescriptionCardUI descriptionCard;
+    [SerializeField] private GameObject newUnlockedItemGO;
 
     [SerializeField] private Color outlineUnlockedBuyableColor;
     [SerializeField] private Color outlineUnlockedButNotBuyableColor;
@@ -62,6 +63,8 @@ public class ItemButtonUI : ButtonUI {
     private void Awake() {
         button = GetComponent<Button>();
         hubMerchantItem = GetComponent<HubMerchantItem>();
+
+        newUnlockedItemGO.SetActive(false);
 
         iconImage.material = new Material(iconImage.material);
         outlineImage.material = new Material(outlineImage.material);
@@ -143,10 +146,13 @@ public class ItemButtonUI : ButtonUI {
             SetOutputLinksBought();
         }
 
+        if(hubMerchantItem.GetNewItemUnlocked()) {
+            newUnlockedItemGO.SetActive(true);
+        }
+
         RefreshItemStatusVisuals();
         RefreshItemLevelUI();
         RefreshDescriptionCard();
-        //RefreshItemEquippedUI();
     }
 
     private void RefreshDescriptionCard() {
@@ -460,7 +466,12 @@ public class ItemButtonUI : ButtonUI {
             itemHovered = true;
             descriptionCard.gameObject.SetActive(true);
 
-            if(treeShowHide != null) {
+            if (hubMerchantItem.GetNewItemUnlocked()) {
+                newUnlockedItemGO.SetActive(false);
+                hubMerchantItem.SetNewItemUnlocked();
+            }
+
+            if (treeShowHide != null) {
                 descriptionCard.transform.SetParent(treeShowHide.transform.parent);
             } else {
                 descriptionCard.transform.SetParent(transform.parent);
@@ -499,6 +510,11 @@ public class ItemButtonUI : ButtonUI {
         if (this == itemButtonUI) {
             itemSelected = true;
             descriptionCard.gameObject.SetActive(true);
+
+            if (hubMerchantItem.GetNewItemUnlocked()) {
+                newUnlockedItemGO.SetActive(false);
+                hubMerchantItem.SetNewItemUnlocked();
+            }
 
             if (treeShowHide != null) {
                 descriptionCard.transform.SetParent(treeShowHide.transform.parent);

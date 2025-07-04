@@ -162,6 +162,7 @@ MonoBehaviour:
   obstacleUIGameObject: {fileID: 5321811618752527047}
   obstacleAnimator: {fileID: 9143951144002116122}
   obstacle: {fileID: 4116056205626363369}
+  hideOnTriggerExit: 1
 --- !u!1 &2934380073947121562
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,7 +683,7 @@ MonoBehaviour:
   currencyTypeToPay: 0
   orbImageOutline: {fileID: 2417488607516134995}
   payCurrencyUIAnimator: {fileID: 2899916506533799793}
-  initialPayCurrencySmoothTime: 4
+  initialPayCurrencySmoothTime: 6
 --- !u!58 &3258630055826654497
 CircleCollider2D:
   m_ObjectHideFlags: 0

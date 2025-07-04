@@ -368,10 +368,10 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void Shoot(bool shootOnReload = false) {
-        if (heldGun.GetGunJammed()) {
-            OnPlayerTryShoot_GunJammed?.Invoke(this, EventArgs.Empty);
-            return;
-        };
+        //if (heldGun.GetGunJammed()) {
+        //    OnPlayerTryShoot_GunJammed?.Invoke(this, EventArgs.Empty);
+        //    return;
+        //};
 
         StartCoroutine(ShootAfterDelay(heldGunSO.delayBetweenClickAndShot, shootOnReload));
     }
@@ -463,19 +463,96 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
+    private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+
+        // Grenade Launcher Secondary
+        if (projectileExplodesOnPlayerClickModeActive && projectileExplodesOnPlayerClick) {
+            OnPlayerTriggersProjectileExplosion?.Invoke(this, EventArgs.Empty);
+            projectileExplodesOnPlayerClick = false;
+            return;
+        }
+
+        if (!canShoot) return;
+        if (coolingDown) return;
+        if (reloading) return;
+        if (emptyingRevolverMag) return;
+        if (swappingGun) return;
+        if (loadingShot && !shotLoaded) return;
+        if (Player.Instance.GetHP() == 0) return;
+
+        if (heldGun.GetCurrentBullet() == 0) {
+            TryAutoReload();
+            return;
+        }
+
+        Shoot();
+        playerIsHoldingDownShoot = true;
+
+        if (projectileExplodesOnPlayerClickModeActive && !projectileExplodesOnPlayerClick) {
+            projectileExplodesOnPlayerClick = true;
+            return;
+        }
+    }
+
+    private void TryAutoReload() {
+        if (heldGun.GetCurrentAmmoClip() > 0 && autoReload) {
+            StartCoroutine(ReloadGunCoroutine());
+        }
+        else {
+            OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+
+            if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count > 0) {
+                OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag?.Invoke(this, EventArgs.Empty);
+            }
+
+        }
+    }
+
+    private void GameInput_OnPlayerShootCanceled(object sender, System.EventArgs e) {
+        playerIsHoldingDownShoot = false;
+    }
     private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (!canShoot) return;
         if (swappingGun) return;
-        if (heldGun.GetGunJammed()) return;
+        if (heldGun.GetGunJammedAndNextInputSequence(GameInput.Binding.reload)) return;
 
         playerJustPressedReload = true;
         playerJustPressedReloadTimer = 0;
     }
 
+    private void GameInput_OnPlayerReloadCanceled(object sender, EventArgs e) {
+        if (!playerJustPressedReload) {
+            // Player is transferring ammo from bag in gun
+            transferringAmmoFromBag = false;
+            return;
+        };
+
+        playerJustPressedReload = false;
+        playerJustPressedReloadTimer = 0;
+
+        if (heldGun.GetCurrentBullet() == heldGun.GetBulletsPerAmmoClip()) return;
+        if (reloading) return;
+        if (coolingDown) return;
+
+        if (heldGun.GetCurrentAmmoClip() == 0) {
+            OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+
+            if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count > 0) {
+                OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag?.Invoke(this, EventArgs.Empty);
+            }
+
+            return;
+        };
+
+        StartCoroutine(ReloadGunCoroutine());
+    }
+
     private void GameInput_OnWeaponSecondaryAbilitytPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
-        if (heldGun.GetGunJammed()) {
+
+        if (heldGun.GetGunJammedAndNextInputSequence(GameInput.Binding.secondary)) {
             OnPlayerTryShoot_GunJammed?.Invoke(this, EventArgs.Empty);
             return;
         }
@@ -498,10 +575,16 @@ public class PlayerShoot : MonoBehaviour
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Shotgun) {
             if (coolingDown) return;
             if (!canShoot) return;
-            if (heldGun.GetCurrentAmmoClip() < 0 || heldGun.GetCurrentBullet() == 0) {
+
+            if (heldGun.GetCurrentBullet() == 0) {
+                TryAutoReload();
+                return;
+            }
+            if (heldGun.GetCurrentAmmoClip() < 0) {
                 OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
                 return;
             }
+            
 
             loadingShot = true;
             loadingShotTime = 1.75f;
@@ -572,7 +655,14 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Revolver) {
-            if (GetCurrentBullets() == 0) return;
+            if (heldGun.GetCurrentBullet() == 0) {
+                TryAutoReload();
+                return;
+            }
+            if (heldGun.GetCurrentAmmoClip() < 0) {
+                OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+                return;
+            }
             if (!secondaryAbilityActive) {
                 gunRecoil = .25f;
                 gunKnockback = 1f;
@@ -624,33 +714,6 @@ public class PlayerShoot : MonoBehaviour
             }
 
         }
-    }
-
-    private void GameInput_OnPlayerReloadCanceled(object sender, EventArgs e) {
-        if (!playerJustPressedReload) {
-            // Player is transferring ammo from bag in gun
-            transferringAmmoFromBag = false;
-            return;
-        };
-
-        playerJustPressedReload = false;
-        playerJustPressedReloadTimer = 0;
-
-        if (heldGun.GetCurrentBullet() == heldGun.GetBulletsPerAmmoClip()) return;
-        if (reloading) return;
-        if (coolingDown) return;
-
-        if (heldGun.GetCurrentAmmoClip() == 0) {
-            OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
-
-            if(UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count > 0) {
-                OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag?.Invoke(this, EventArgs.Empty);
-            }
-
-            return;
-        };
-
-        StartCoroutine(ReloadGunCoroutine());
     }
 
     private void GameInput_OnPlayerSwapGunPerformed(object sender, EventArgs e) {
@@ -783,49 +846,6 @@ public class PlayerShoot : MonoBehaviour
         canShoot = false;
     }
 
-    private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {
-        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
-
-        // Grenade Launcher Secondary
-        if(projectileExplodesOnPlayerClickModeActive && projectileExplodesOnPlayerClick) {
-            OnPlayerTriggersProjectileExplosion?.Invoke(this, EventArgs.Empty);
-            projectileExplodesOnPlayerClick = false;
-            return;
-        }
-
-        if (!canShoot) return;
-        if (coolingDown) return;
-        if (reloading) return;
-        if (emptyingRevolverMag) return;
-        if (swappingGun) return;
-        if (loadingShot && !shotLoaded) return;
-        if (Player.Instance.GetHP() == 0) return;
-
-        if(heldGun.GetCurrentBullet() == 0) {
-            if(heldGun.GetCurrentAmmoClip() > 0 && autoReload) {
-                StartCoroutine(ReloadGunCoroutine());
-            } else {
-                OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
-
-                if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count > 0) {
-                    OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag?.Invoke(this, EventArgs.Empty);
-                }
-
-            }
-            return;
-        }
-        Shoot();
-        playerIsHoldingDownShoot = true;
-
-        if (projectileExplodesOnPlayerClickModeActive && !projectileExplodesOnPlayerClick) {
-            projectileExplodesOnPlayerClick = true;
-            return;
-        }
-    }
-
-    private void GameInput_OnPlayerShootCanceled(object sender, System.EventArgs e) {
-        playerIsHoldingDownShoot = false;
-    }
 
     private void Gun_OnAnyGunStatsUpgraded(object sender, EventArgs e) {
         PlayerStats.Instance.SetShootCooldownTime(heldGun.GetCooldownTime());

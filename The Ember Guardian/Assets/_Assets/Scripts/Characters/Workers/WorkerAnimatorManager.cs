@@ -20,6 +20,7 @@ public class WorkerAnimatorManager : MonoBehaviour
     private EngineerJob engineerJob;
 
     private bool moving;
+    private bool wildJobTypeSet;
     private float moveDir;
     private float watchDir;
     private float previousWatchDir = 1f;
@@ -37,6 +38,7 @@ public class WorkerAnimatorManager : MonoBehaviour
 
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
         mobAttack.OnMobAttack += MobAttack_OnMobAttack;
+        worker.OnWildJobTypeSet += Worker_OnWildJobTypeSet;
         worker.OnMobDied += Worker_OnMobDied;
         worker.OnMobDamageTaken += Worker_OnMobDamageTaken;
         engineerJob.OnOrbExtractorTriggeredDrill += EngineerJob_OnOrbExtractorTriggeredDrill;
@@ -48,7 +50,8 @@ public class WorkerAnimatorManager : MonoBehaviour
     }
 
     private void Start() {
-        RefreshJobAnimator();
+        if (worker.GetWildJobType() != workerAI.GetJob()) return;
+        RefreshJobAnimator(workerAI.GetJob());
     }
 
     private void Update() {
@@ -57,6 +60,10 @@ public class WorkerAnimatorManager : MonoBehaviour
         HandleXScale();
         HandleAnimatorMovementBool();
 
+    }
+
+    private void Worker_OnWildJobTypeSet(object sender, EventArgs e) {
+        RefreshJobAnimator(worker.GetWildJobType());
     }
 
     private void HandleAnimatorMovementBool() {
@@ -149,38 +156,40 @@ public class WorkerAnimatorManager : MonoBehaviour
     }
 
     private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
-        RefreshJobAnimator();
+        if (worker.GetWildJobType() != workerAI.GetJob()) return;
+        RefreshJobAnimator(workerAI.GetJob());
     }
 
     private void Worker_OnMobDied(object sender, System.EventArgs e) {
         animator.SetTrigger("Die");
     }
 
-    private void RefreshJobAnimator() {
+    private void RefreshJobAnimator(WorkerAI.JobTypes jobType) {
+        Debug.Log("RefreshJobAnimator " + jobType);
 
-        if (workerAI.GetJob() == WorkerAI.JobTypes.wild) {
+        if (jobType == WorkerAI.JobTypes.wild) {
             animator.runtimeAnimatorController = joblessAnimator;
             animator.speed = .75f;
         }
 
-        if (workerAI.GetJob() == WorkerAI.JobTypes.jobless) {
+        if (jobType == WorkerAI.JobTypes.jobless) {
             animator.runtimeAnimatorController = joblessAnimator;
             animator.speed = 1f;
         }
 
-        if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
+        if (jobType == WorkerAI.JobTypes.hunter) {
             animator.runtimeAnimatorController = hunterAnimator;
         }
 
-        if (workerAI.GetJob() == WorkerAI.JobTypes.guard) {
+        if (jobType == WorkerAI.JobTypes.guard) {
             animator.runtimeAnimatorController = guardAnimator;
         }
 
-        if (workerAI.GetJob() == WorkerAI.JobTypes.miner) {
+        if (jobType == WorkerAI.JobTypes.miner) {
             animator.runtimeAnimatorController = minerAnimator;
         }
 
-        if (workerAI.GetJob() == WorkerAI.JobTypes.engineer) {
+        if (jobType == WorkerAI.JobTypes.engineer) {
             animator.runtimeAnimatorController = engineerAnimator;
         }
         moving = false;

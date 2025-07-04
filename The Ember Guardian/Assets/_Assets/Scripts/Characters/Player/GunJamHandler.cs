@@ -18,9 +18,13 @@ public class GunJamHandler : MonoBehaviour
     private Gun gun;
     private bool gunJammed;
     private bool isInGunJamQTE;
-    private bool perfectQTESequence;
-    private float perfectQTESpamButtonTime;
-    private float perfectQTESpamTimer;
+    private float gunJamDuration;
+    private float gunJamTimer;
+
+    private float inputSequenceTimePerInput = 1.4f;
+    private float spamButtonTimePerTick = 1.35f;
+    private float timingQTETimePerTick = 1.5f;
+    private float wrongInputTimePenaltyPercent = .2f;
 
     private Queue<GameInput.Binding> initialInputSequence;
     private Queue<GameInput.Binding> currentInputSequence;
@@ -63,14 +67,19 @@ public class GunJamHandler : MonoBehaviour
     public static event EventHandler<OnSpamQTEProgressedEventArgs> OnSpamQTEProgressed;
     public static event EventHandler<OnJamSequenceGeneratedEventArgs> OnAnyJamSequenceGenerated;
     public static event EventHandler OnAnyJamSequenceCompleted;
-    public static event EventHandler<OnAnyJamSequenceProgressedEventArgs> OnAnyJamSequenceFailed;
+    public static event EventHandler<OnAnyJamSequenceProgressedEventArgs> OnAnyJamWrongInput;
     public static event EventHandler OnAnyJamSequenceCancelled;
     public static event EventHandler OnAnyJamSequenceRestarted;
     public static event EventHandler OnAnyPerfectJamSequenceCompleted;
+
+    public static event EventHandler<OnAnyJamTimerProgressedEventArgs> OnAnyJamTimerProgressed;
     public class OnSpamQTEProgressedEventArgs : EventArgs {
         public float spamProgress;
     }
-    
+    public class OnAnyJamTimerProgressedEventArgs : EventArgs {
+        public float jamProgressTimerNormalized;
+    }
+
     public class OnAnyJamSequenceProgressedEventArgs : EventArgs {
         public int currentIndex;
     }
@@ -102,9 +111,19 @@ public class GunJamHandler : MonoBehaviour
 
     private void Update() {
         if (!isInGunJamQTE) return;
+
+        gunJamTimer += Time.deltaTime;
+        OnAnyJamTimerProgressed?.Invoke(this, new OnAnyJamTimerProgressedEventArgs {
+            jamProgressTimerNormalized = gunJamTimer / gunJamDuration
+        });
+
+        if(gunJamTimer > gunJamDuration) {
+           CompleteGunJamMiniGame();
+            return;
+        }
+
         if (currentQTEType != QTEType.SpamButton) return;
 
-        perfectQTESpamTimer += Time.deltaTime;
         if (spamProgress > 0f) {
             spamProgress -= spamDecayRate * Time.deltaTime;
             spamProgress = Mathf.Max(spamProgress, lastStageReached);
@@ -145,6 +164,7 @@ public class GunJamHandler : MonoBehaviour
     private void StartJamMiniGame() {
         isInGunJamQTE = true;
         gunJammed = true;
+        gunJamTimer = 0;
 
         QTEType qteType = (QTEType)UnityEngine.Random.Range(0, System.Enum.GetValues(typeof(QTEType)).Length);
         currentQTEType = qteType;
@@ -158,12 +178,10 @@ public class GunJamHandler : MonoBehaviour
             lastStageReached = 0;
             spamStageCount = PlayerShoot.Instance.GetHeldGun().GetJamRepairHitAmount();
             spamTargetProgress = spamStageCount; // 1 touche = 1 unité
-            perfectQTESpamButtonTime = spamStageCount + .5f;
-            perfectQTESpamTimer = 0;
+            gunJamDuration = spamStageCount * spamButtonTimePerTick;
 
             currentInputSequence = new Queue<GameInput.Binding>();
             currentInputSequence.Enqueue(GameInput.Binding.roll);
-            perfectQTESequence = false;
         }
 
         if (currentQTEType == QTEType.TimingChallenge) {
@@ -171,12 +189,14 @@ public class GunJamHandler : MonoBehaviour
             currentInputSequence.Enqueue(GameInput.Binding.roll);
 
             timingIndexAmount = PlayerShoot.Instance.GetHeldGun().GetJamRepairHitAmount();
-            perfectQTESequence = true;
+            gunJamDuration = timingIndexAmount * timingQTETimePerTick;
         }
 
         if (currentQTEType == QTEType.InputSequence) {
-            currentInputSequence = GenerateRandomSequence(PlayerShoot.Instance.GetHeldGun().GetJamRepairHitAmount());
-            perfectQTESequence = true;
+            int inputAmount = PlayerShoot.Instance.GetHeldGun().GetJamRepairHitAmount();
+            currentInputSequence = GenerateRandomSequence(inputAmount);
+
+            gunJamDuration = inputAmount * inputSequenceTimePerInput;
         }
 
         OnAnyJamSequenceGenerated?.Invoke(this, new OnJamSequenceGeneratedEventArgs {
@@ -283,7 +303,7 @@ public class GunJamHandler : MonoBehaviour
                 currentInputIndex++;
             }
             else {
-                StartCoroutine(FailGunJamMiniGame());
+                StartCoroutine(WrongInputGunJamMiniGame());
             }
         }
 
@@ -310,7 +330,7 @@ public class GunJamHandler : MonoBehaviour
             StartCoroutine(ProgressInJamSequenceAfterDelay(jamHitAnimationDuration));
         }
         else {
-            StartCoroutine(FailGunJamMiniGame());
+            StartCoroutine(WrongInputGunJamMiniGame());
         }
     }
 
@@ -338,7 +358,7 @@ public class GunJamHandler : MonoBehaviour
                 progressInInputSequenceQTECoroutine = StartCoroutine(ProgressInJamSequenceAfterDelay(jamHitAnimationDuration));
             }
             else {
-                StartCoroutine(FailGunJamMiniGame());
+                StartCoroutine(WrongInputGunJamMiniGame());
             }
         }
 
@@ -362,11 +382,6 @@ public class GunJamHandler : MonoBehaviour
 
         if (currentQTEType == QTEType.SpamButton) {
             if (spamProgress >= spamTargetProgress) {
-
-                if (perfectQTESpamTimer < perfectQTESpamButtonTime) {
-                    perfectQTESequence = true;
-                }
-
                 CompleteGunJamMiniGame();
             }
         }
@@ -398,9 +413,13 @@ public class GunJamHandler : MonoBehaviour
     private void CompleteGunJamMiniGame() {
         isInGunJamQTE = false;
         gunJammed = false;
+        bool perfectQTESequence = false;
+
+        if (gunJamTimer < gunJamDuration) {
+            perfectQTESequence = true;
+        }
 
         gun.SetGunUnJammed(perfectQTESequence);
-
 
         if (perfectQTESequence) {
             OnAnyPerfectJamSequenceCompleted?.Invoke(this, EventArgs.Empty);
@@ -419,15 +438,18 @@ public class GunJamHandler : MonoBehaviour
         currentInputIndex = 0;
     }
 
-    private IEnumerator FailGunJamMiniGame() {
+    private IEnumerator WrongInputGunJamMiniGame() {
         justFailed = true;
-        perfectQTESequence = false;
         OnJamSequenceFailStarted?.Invoke(this, EventArgs.Empty);
-        yield return new WaitForSeconds(jamHitAnimationDuration);
-
-        OnAnyJamSequenceFailed?.Invoke(this, new OnAnyJamSequenceProgressedEventArgs {
+        OnAnyJamWrongInput?.Invoke(this, new OnAnyJamSequenceProgressedEventArgs {
             currentIndex = currentInputIndex,
         });
+
+        gunJamTimer += gunJamDuration * wrongInputTimePenaltyPercent;
+
+        yield return new WaitForSeconds(jamHitAnimationDuration);
+
+
 
         //currentInputSequence = new Queue<GameInput.Binding>();
         //foreach (GameInput.Binding binding in initialInputSequence) {
@@ -437,5 +459,14 @@ public class GunJamHandler : MonoBehaviour
         justFailed = false;
     }
 
+    public bool GetIsExpectedInput(GameInput.Binding binding) {
+        GameInput.Binding expected = currentInputSequence.Peek();
+
+        return binding == expected;
+    }
+
+    public float GetJamTimerNormalized() {
+        return gunJamTimer/gunJamDuration;
+    }
     #endregion
 }

@@ -181,7 +181,7 @@ public class GunSpotLight : MonoBehaviour
 
     private void GameInput_OnPlayerGunLightSwitch(object sender, System.EventArgs e) {
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
-        if (PlayerShoot.Instance.GetHeldGun().GetGunJammed()) return;
+        if (PlayerShoot.Instance.GetHeldGun().GetGunJammedAndNextInputSequence(GameInput.Binding.torchOnOff)) return;
 
         if (!canSwitchLight) return;
         if (Player.Instance.GetInCurrencyStorageArea()) return;

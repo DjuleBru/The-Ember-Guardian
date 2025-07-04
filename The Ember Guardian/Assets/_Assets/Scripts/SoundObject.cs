@@ -29,8 +29,18 @@ public class SoundObject : MonoBehaviour
 
     protected void PlaySound2D(AudioClip[] audioClipArray, float volume = 1f) {
         if (audioClipArray.Length == 0) return;
-        AudioClip audioClip = audioClipArray[Random.Range(0, audioClipArray.Length)];
-        PlaySound2D(audioClip, volume);
+
+        if (audioClipArray.Length == 1) {
+            float originalPitch = audioSource2D.pitch;
+            audioSource2D.pitch = Random.Range(0.95f, 1.05f); // Pitch légèrement aléatoire
+            PlaySound2D(audioClipArray[0], volume);
+            audioSource2D.pitch = originalPitch; // On remet le pitch à la normale
+        }
+        else {
+            AudioClip audioClip = audioClipArray[Random.Range(0, audioClipArray.Length)];
+            PlaySound2D(audioClip, volume);
+        }
+
     }
 
     protected void PlaySound2D(AudioClip audioClip, float volume = 1f) {

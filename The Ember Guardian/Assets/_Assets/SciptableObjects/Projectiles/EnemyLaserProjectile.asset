@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ad119f31ca28824aad1883e1ac68ecb, type: 3}
+  m_Name: EnemyLaserProjectile
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 7911136206213874445, guid: f18551cd64f86a54baa43958be33eb52, type: 3}
+  isExplosiveProjectile: 0
+  canBeDestoyedByBullets: 1
+  usesAnimationCurve: 0
+  projectileTrajectoryAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  projectileYDifferentialWithTargetAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  projectileSpeedAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.20159289
+      outSlope: 0.20159289
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.048260175
+    - serializedVersion: 3
+      time: 0.06047732
+      value: 0.9935384
+      inSlope: -1.3030484
+      outSlope: -1.3030484
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.06487635
+    - serializedVersion: 3
+      time: 0.14906953
+      value: 0.82419354
+      inSlope: -0.9992007
+      outSlope: -0.9992007
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.5
+      inSlope: -0.3809871
+      outSlope: -0.3809871
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  projectileMaxMoveSpeed: 1
+  projectileTrajectoryYCurve: 0
+  trajectoryEndPointRandomOffsetValue: 1
+  usesForce: 1
+  trajectoryMode: 1
+  straightLineSpeed: 8
+  minApexY: 0
+  maxApexY: 0
+  distanceToTargetForMinApex: 2
+  distanceToTargetForMaxApex: 15
+  apexRandomizer: 0
+  gravityScale: 0
+  projectileInstantiatedAudioClips: []
+  projectileHitAudioClips:
+  - {fileID: 8300000, guid: 5c7df53dfdc69904e892691f7a73dd23, type: 3}

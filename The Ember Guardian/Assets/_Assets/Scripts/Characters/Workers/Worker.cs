@@ -13,6 +13,7 @@ public class Worker : Mob {
     private CampZoneManager.CampSide sideAssigned;
 
     private WorkerAI workerAI;
+    private WorkerAI.JobTypes wildJobType = WorkerAI.JobTypes.jobless;
 
     private Structure defensiveStructureAssigned;
 
@@ -40,6 +41,7 @@ public class Worker : Mob {
     public event EventHandler OnWorkerCollectedCurrency;
     public event EventHandler OnWorkerDroppedCurrency;
     public event EventHandler OnWorkerDroppedAllCurrencies;
+    public event EventHandler OnWildJobTypeSet;
 
     private void Awake() {
         workerAI = GetComponent<WorkerAI>();    
@@ -68,7 +70,7 @@ public class Worker : Mob {
     public void RecruitWorker(bool playSound = true) {
         WorkerManager.Instance.AddRecruitedWorker(this);
         mobSpawner.RemoveMobFromMobSpawnedList(this);
-        workerAI.SetJob(WorkerAI.JobTypes.jobless);
+        workerAI.SetJob(wildJobType);
         recruited = true;
 
         if (!playSound) return;
@@ -254,6 +256,15 @@ public class Worker : Mob {
 
     public void SetPosition(Vector3 position) {
         transform.position = position;
+    }
+
+    public void SetWildJobType(WorkerAI.JobTypes jobType) {
+        wildJobType = jobType;
+        OnWildJobTypeSet?.Invoke(this, EventArgs.Empty);
+    }
+
+    public WorkerAI.JobTypes GetWildJobType() {
+        return wildJobType; 
     }
 
 }

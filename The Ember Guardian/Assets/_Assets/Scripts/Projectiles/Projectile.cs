@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] protected LayerMask groundLayer;
     [SerializeField] protected LayerMask animalLayer;
+    [SerializeField] protected Collider2D solidCollider;
 
     protected ProjectileSO projectileSO;
 
@@ -62,6 +63,12 @@ public class Projectile : MonoBehaviour
         this.damage = damage;
         this.homingProjectile = homingProjectile;
         projectileTarget = targetTransform;
+
+        if(!projectileSO.canBeDestoyedByBullets) {
+            solidCollider.enabled = false;
+        } else {
+            solidCollider.enabled = true;
+        }
 
         if (parentMob is Creature) {
             enemyProjectile = true;
@@ -149,7 +156,7 @@ public class Projectile : MonoBehaviour
         // Guide projectile along animation curve
         transform.position = nextPosition;
 
-        if (nextPositionXNormalized > 1.1) {
+        if (nextPositionXNormalized > 1.2) {
             // Projectile has reached the end of its animation curve
             ProjectileHasHit(false);
         }
@@ -166,7 +173,7 @@ public class Projectile : MonoBehaviour
         projectileHasHit = true;
         OnProjectileHit?.Invoke(this, EventArgs.Empty);
         OnAnyProjectileHit?.Invoke(this, EventArgs.Empty);
-
+        solidCollider.enabled = false;
         if(!gameObject.activeInHierarchy) {
             Debug.Log(this + " projectile is not active in hierarchy !");
         }
@@ -189,7 +196,13 @@ public class Projectile : MonoBehaviour
 
     protected void OnTriggerEnter2D(Collider2D collision) {
         if (projectileHasHit && !projectileSO.isExplosiveProjectile) return;
-        if (collision.gameObject.GetComponent<CreatureDetectionCollider>() != null) return;
+
+        mobHit = collision.GetComponentInParent<Mob>();
+        bool playerHit = collision.GetComponentInParent<Player>() != null;
+        Barricade barricade = collision.gameObject.GetComponentInParent<Barricade>();
+        bool groundHitOrOther = groundLayer == (groundLayer | (1 << collision.gameObject.layer));
+
+        if (mobHit == null && !playerHit && barricade == null && !groundHitOrOther) return;
         if (collision.gameObject.GetComponent<WorkerDetectionCollider>() != null) return;
         if (collision.gameObject.GetComponent<WorkerInteractionCollider>() != null) return;
 
@@ -212,15 +225,18 @@ public class Projectile : MonoBehaviour
         }
 
         // Hit Player
-        if(collision.GetComponentInParent<Player>() != null && enemyProjectile) {
+        if (collision.GetComponentInParent<Player>() != null && enemyProjectile) {
             if (collision.GetComponent<HuntingFlag>() != null) return;
             ProjectileHasHit(false);
-            Player.Instance.TakeDamage(damage, parentMob.transform);
+            Transform damageSource = null;
+            if(parentMob != null) {
+                damageSource = parentMob.transform;
+            }
+            Player.Instance.TakeDamage(damage, damageSource);
             return;
         }
 
         // Hit Barricade
-        Barricade barricade = collision.gameObject.GetComponentInParent<Barricade>();
         if (barricade != null && enemyProjectile && barricade.GetBarricadeHealthNormalized() > 0) {
             ProjectileHasHit(false);
             barricade.TakeDamage(damage, parentMob.transform);
@@ -255,6 +271,12 @@ public class Projectile : MonoBehaviour
             parentMob.GetComponent<MobAttack>().ResetProjectileInObjectPool(this);
         } else {
             Destroy(gameObject);
+        }
+    }
+
+    public void TryDestroyProjectile() {
+        if(projectileSO.canBeDestoyedByBullets) {
+            ProjectileHasHit(false);
         }
     }
 

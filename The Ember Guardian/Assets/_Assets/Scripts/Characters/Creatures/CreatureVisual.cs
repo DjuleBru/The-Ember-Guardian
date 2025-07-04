@@ -10,6 +10,7 @@ public class CreatureVisual : MobVisual
     [SerializeField] private Material cleanMaterial;
     [SerializeField] private GameObject debuffedGameObject;
     [SerializeField] private SpriteRenderer glowSpriteRenderer;
+    [SerializeField] private SpriteRenderer glowSpriteRenderer2;
     [SerializeField] private ParticleSystem creatureElitePS;
     [SerializeField] private Color damageEliteOutlineColor;
     [SerializeField] private Color speedEliteOutlineColor;
@@ -20,6 +21,10 @@ public class CreatureVisual : MobVisual
         creature.OnMobDamageTaken += Creature_OnMobDamageTaken;
         creature.OnMobDied += Creature_OnMobDied;
         glowSpriteRenderer.sortingOrder = currentMaxSortingOrder + 1;
+
+        if(glowSpriteRenderer2 != null) {
+            glowSpriteRenderer2.sortingOrder = currentMaxSortingOrder + 2;
+        }
     }
 
     private void Creature_OnMobDied(object sender, System.EventArgs e) {

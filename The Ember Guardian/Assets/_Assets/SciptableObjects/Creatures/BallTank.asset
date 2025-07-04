@@ -22,30 +22,30 @@ MonoBehaviour:
   detectionRange_Day: 10
   detectionRange_Night: 10
   flying: 1
-  flightMinAltitude: 2
-  flightMaxAltitude: 8
-  dayMoveSpeed: 4
-  nightMoveSpeed: 4
+  flightMinAltitude: 6
+  flightMaxAltitude: 12
+  dayMoveSpeed: 3
+  nightMoveSpeed: 3
   enteredLightMoveSpeedDebuff: 1.3
   moveSpeedRandomizerDelta: 0.25
-  maxHealth: 3
+  maxHealth: 10
   damage: 1
-  attackRate: 3
+  attackRate: 2
   enteredLightattackRateDebuff: 2.5
-  isRangedAttack: 0
-  minAttackRange: 0.75
-  maxAttackRange: 1.5
+  isRangedAttack: 1
+  minAttackRange: 4
+  maxAttackRange: 10
   hasSpecialAbility: 0
   specialAbilityCooldown: 0
-  attackRangeRandomizer: 0.2
-  attackRangeMaxDistanceMiss: 0.1
+  attackRangeRandomizer: 2
+  attackRangeMaxDistanceMiss: 1
   damageToFire: 1
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0
-  attackAnimationDelay: 0.3
+  attackAnimationDelay: 0.4
   attackSFXDelayAfterAnimationStart: 0
-  totalAttackAnimationTime: 0.5
+  totalAttackAnimationTime: 1.1
   hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 1
@@ -61,45 +61,51 @@ MonoBehaviour:
   spawnProbability: 0.6
   maxCreaturesPerPacket: 8
   dieAudioClips:
-  - {fileID: 8300000, guid: 66e5bfeffa8b36a4ca6717707b600ee6, type: 3}
-  - {fileID: 8300000, guid: 4f54ce541ec5a28429c5ddc9dc95fc8f, type: 3}
-  - {fileID: 8300000, guid: d0594038e770e64469dd169f7a0e0d4f, type: 3}
-  dieVolumeMultiplier: 1
+  - {fileID: 8300000, guid: 446c7fdec8473644b966d3a38677b69f, type: 3}
+  - {fileID: 8300000, guid: 2880d1e342369564bb6af71ec202c486, type: 3}
+  - {fileID: 8300000, guid: c1880a30f8500e84c842471a93f940b6, type: 3}
+  dieVolumeMultiplier: 0.5
   aggroAudioClips:
-  - {fileID: 8300000, guid: 492b6d2c1e1454245a87bd66eaa5d205, type: 3}
-  - {fileID: 8300000, guid: f182f14159f9c754287632ff803a8daf, type: 3}
-  - {fileID: 8300000, guid: a7680f2471babd64da22621a1120c1ca, type: 3}
-  - {fileID: 8300000, guid: f59fc5a9df78ce1438003044021eadcb, type: 3}
-  - {fileID: 8300000, guid: 2abbf14bc2a64a1458df71e1e9e0ef53, type: 3}
-  aggroVolumeMultiplier: 1
+  - {fileID: 8300000, guid: b1955a2f436102440b9cf811d014a3f1, type: 3}
+  - {fileID: 8300000, guid: 2dfe05cf25fd8b441aa206df3950e8d7, type: 3}
+  - {fileID: 8300000, guid: 9b2069d1c179a244d84fbe919f49b3ef, type: 3}
+  - {fileID: 8300000, guid: 3124fb5c03dae1c479645774df18e578, type: 3}
+  - {fileID: 8300000, guid: dd4fd68fa75072845a80e4256e9d9943, type: 3}
+  aggroVolumeMultiplier: 0.6
   attackSFXHandledByAnimation: 0
   attackStartedChargingAudioClips: []
   attackReleasedAudioClips: []
-  attackHitAudioClips:
-  - {fileID: 8300000, guid: 0cf1acdeceaff2547b4ad8abfe4d893e, type: 3}
-  - {fileID: 8300000, guid: ba5447ba12544e549ba9214c09d11829, type: 3}
-  - {fileID: 8300000, guid: 5c1d40756d9536741a09badcfdb0c976, type: 3}
-  - {fileID: 8300000, guid: cbd9d2b8bb2d6f74b947080c099fe69a, type: 3}
-  - {fileID: 8300000, guid: 4197fc59d80a1104cbe1b88312a401cc, type: 3}
+  attackHitAudioClips: []
   attackVolumeMultiplier: 0.5
-  attackAudioClips: []
+  attackAudioClips:
+  - {fileID: 8300000, guid: c9e7539f8884c2144866d47036c5c6ca, type: 3}
+  - {fileID: 8300000, guid: 90d3a3d643adaba418be4877bf4279a2, type: 3}
+  - {fileID: 8300000, guid: 1c1182dccb196954e9d3d439a3bff2ed, type: 3}
+  - {fileID: 8300000, guid: 013de8e57b56c984b84b80e0367083a6, type: 3}
+  - {fileID: 8300000, guid: 99144316539c5154082d65e7c406ec10, type: 3}
+  - {fileID: 8300000, guid: 369d9cb40bbe28f42a9824f526a13d3e, type: 3}
   attackHitVolumeMultiplier: 0.7
-  idleAudioClips: []
+  idleAudioClips:
+  - {fileID: 8300000, guid: ac191cc6a85b3454da95183f0fe0e981, type: 3}
+  - {fileID: 8300000, guid: 6a92960c47090464584fc9e4ab2eb815, type: 3}
+  - {fileID: 8300000, guid: effbe8f33dd170d4d9e4b8a4d3c82f15, type: 3}
+  - {fileID: 8300000, guid: b7b36d07ec996de46a53d4369d07ecac, type: 3}
   idleVolumeMultiplier: 0.5
-  footStepAudioClips:
-  - {fileID: 8300000, guid: edcf27146afc24c479bb6005aa3d78d7, type: 3}
-  - {fileID: 8300000, guid: 449b02c069f9f5a43b39c22b0aa5efe4, type: 3}
-  - {fileID: 8300000, guid: 6183f629bd98e9741a0dab0086b07aec, type: 3}
-  - {fileID: 8300000, guid: 3e45112e6549d3743b2b03c017533d6e, type: 3}
-  - {fileID: 8300000, guid: cc20a5dcd4739d34eaa9f8fb851aead6, type: 3}
-  - {fileID: 8300000, guid: 1d638800d6d5ae34aadb75b4286f871e, type: 3}
-  - {fileID: 8300000, guid: 78cecb04a58211d428969715243f0732, type: 3}
-  - {fileID: 8300000, guid: e865db8ddc64d3744abf183a4e96c48a, type: 3}
-  - {fileID: 8300000, guid: 2682ad98bccba0d439a006f5a8703a22, type: 3}
-  - {fileID: 8300000, guid: bcd0efc454cc01e45824ee348f05073a, type: 3}
+  footStepAudioClips: []
   footstepVolumeMultiplier: 1
+  hasContinousAudioClip: 1
+  continuousAudioClip:
+  - {fileID: 8300000, guid: aa03898559cd0dc41a573b9415283ef2, type: 3}
   spawnAudioClips:
   - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
   - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}
   - {fileID: 8300000, guid: b6d953aeaa52e58499a331b756752ad1, type: 3}
   spawnVolumeMultiplier: 0.75
+  bulletHitAudioClips:
+  - {fileID: 8300000, guid: e8255e52a3feba8469d4d680886ef8b4, type: 3}
+  - {fileID: 8300000, guid: 4c26275d855a282479dc097f844a2362, type: 3}
+  - {fileID: 8300000, guid: c4e78cc3486c66e41a044c0b0a2ae9d7, type: 3}
+  - {fileID: 8300000, guid: c7ead20edc468e24a86195f640218010, type: 3}
+  - {fileID: 8300000, guid: b08f5ac8a197e76408abf125f5ea7870, type: 3}
+  - {fileID: 8300000, guid: 6615caae1c691bd4e92666d2d32f4408, type: 3}
+  bulletHitVolumeMultiplier: 0.5

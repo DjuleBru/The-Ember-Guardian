@@ -44,7 +44,7 @@ public class HubMerchantItem_WatcherMerchantItem : HubMerchantItem {
     }
 
     public override void BuyItem() {
-        if (watcherItemType == WatcherItemType.ControlEmberlings || watcherItemCategory == WatcherItemCategory.newShrine) {
+        if (watcherItemType == WatcherItemType.ControlEmberlings) {
 
             WorkerStats.Instance.SetInteractionWithWorkersUnlocked();
 

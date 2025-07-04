@@ -58,7 +58,7 @@ public class PlayerFeedbacks : MonoBehaviour
         GunJamHandler.OnAnyJamSequenceGenerated += GunJamHandler_OnAnyJamSequenceGenerated;
         GunJamHandler.OnAnyJamSequenceCompleted += GunJamHandler_OnAnyJamSequenceCompleted;
         GunJamHandler.OnAnyJamSequenceProgressed += GunJamHandler_OnAnyJamSequenceProgressed;
-        GunJamHandler.OnAnyJamSequenceFailed += GunJamHandler_OnAnyJamSequenceFailed;
+        GunJamHandler.OnAnyJamWrongInput += GunJamHandler_OnAnyJamSequenceFailed;
         GunJamHandler.OnAnyJamSequenceCancelled += GunJamHandler_OnAnyJamSequenceCancelled;
         GunJamHandler.OnAnyJamSequenceRestarted += GunJamHandler_OnAnyJamSequenceRestarted;
         GunJamHandler.OnAnyPerfectJamSequenceCompleted += GunJamHandler_OnAnyPerfectJamSequenceCompleted;
@@ -209,7 +209,7 @@ public class PlayerFeedbacks : MonoBehaviour
         GunJamHandler.OnAnyJamSequenceGenerated -= GunJamHandler_OnAnyJamSequenceGenerated;
         GunJamHandler.OnAnyJamSequenceCompleted -= GunJamHandler_OnAnyJamSequenceCompleted;
         GunJamHandler.OnAnyJamSequenceProgressed -= GunJamHandler_OnAnyJamSequenceProgressed;
-        GunJamHandler.OnAnyJamSequenceFailed -= GunJamHandler_OnAnyJamSequenceFailed;
+        GunJamHandler.OnAnyJamWrongInput -= GunJamHandler_OnAnyJamSequenceFailed;
         GunJamHandler.OnAnyJamSequenceCancelled -= GunJamHandler_OnAnyJamSequenceCancelled;
         GunJamHandler.OnAnyJamSequenceRestarted -= GunJamHandler_OnAnyJamSequenceRestarted;
         GunJamHandler.OnAnyPerfectJamSequenceCompleted -= GunJamHandler_OnAnyPerfectJamSequenceCompleted;

@@ -2,12 +2,14 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ProjectileForces;
 
 [CreateAssetMenu()]
 public class ProjectileSO : ScriptableObject
 {
     public Transform projectilePrefab;
     public bool isExplosiveProjectile;
+    public bool canBeDestoyedByBullets;
 
     public bool usesAnimationCurve;
     [BoxGroup("AnimationCurve")]
@@ -24,6 +26,12 @@ public class ProjectileSO : ScriptableObject
     public float trajectoryEndPointRandomOffsetValue;
 
     public bool usesForce;
+
+    [BoxGroup("Forces")]
+    public ProjectileForces.TrajectoryMode trajectoryMode = TrajectoryMode.CurvedApex;
+    [BoxGroup("Forces")]
+    public float straightLineSpeed = 10f;
+
     [BoxGroup("Forces")]
     public float minApexY;
     [BoxGroup("Forces")]

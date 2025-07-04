@@ -109,12 +109,14 @@ MonoBehaviour:
   projectileTrajectoryYCurve: 0
   trajectoryEndPointRandomOffsetValue: 0
   usesForce: 0
+  trajectoryMode: 1
+  straightLineSpeed: 10
   minApexY: 0.5
   maxApexY: 0.5
   distanceToTargetForMinApex: 0
   distanceToTargetForMaxApex: 15
   apexRandomizer: 0
-  gravityScale: 5
+  gravityScale: 0
   projectileInstantiatedAudioClips: []
   projectileHitAudioClips:
   - {fileID: 8300000, guid: f12ec3bb8a1d8104bb7c55d2749614cd, type: 3}

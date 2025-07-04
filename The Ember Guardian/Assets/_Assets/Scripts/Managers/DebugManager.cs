@@ -10,6 +10,7 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool debugMode_DontSpawnWavesAtNight;
     [SerializeField] private bool allowDebugInputs_DayNightManager;
     [SerializeField] private bool allowDebugInputs_CurrencyUIManager;
+    [SerializeField] private bool allowDebugInputs_gunJam;
     [SerializeField] private bool debugMode_PlayerWeapons;
     [SerializeField] private bool debugMode_Portals;
     [SerializeField] private bool debugMode_HUBManager;
@@ -151,5 +152,9 @@ public class DebugManager : MonoBehaviour
     }
     public bool GetDropRedOrbsUnlocked() {
         return dropRedOrbsUnlocked;
+    }
+
+    public bool GetGunJamDebugInputsAllowed() {
+        return allowDebugInputs_gunJam;
     }
 }

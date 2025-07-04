@@ -5,6 +5,7 @@ using UnityEngine;
 public class CreatureSound : SoundObject
 {
     protected AudioSource creatureAudioSource;
+    [SerializeField] protected AudioSource creatureContinousAudioSource;
     protected CreatureSO creatureSO;
 
     protected bool attackSFXHandledByAnimation;
@@ -43,6 +44,15 @@ public class CreatureSound : SoundObject
         creatureSO = creature.GetCreatureSO();
         attackSFXHandledByAnimation = creatureSO.attackSFXHandledByAnimation;
         attackSFXDelayAfterAnimationStart = creatureSO.attackSFXDelayAfterAnimationStart;
+
+        if(creatureSO.hasContinousAudioClip) {
+            AudioClip continuousAudioClip = creatureSO.continuousAudioClip[UnityEngine.Random.Range(0, creatureSO.continuousAudioClip.Length)];
+            creatureContinousAudioSource.clip = continuousAudioClip; 
+            float maxStartTime = Mathf.Max(0f, continuousAudioClip.length - 0.1f); // Évite les bords pour ne pas couper trop court
+            creatureContinousAudioSource.time = Random.Range(0f, maxStartTime);
+            creatureContinousAudioSource.pitch = Random.Range(0.95f, 1.05f);
+            creatureContinousAudioSource.Play();
+        }
 
         if (IsTooFarFromPlayer()) return;
         AudioClip audioClip = creatureSO.spawnAudioClips[Random.Range(0, creatureSO.spawnAudioClips.Length)];
@@ -114,6 +124,7 @@ public class CreatureSound : SoundObject
         if (IsTooFarFromPlayer()) return;
 
         creatureAudioSource.PlayOneShot(creatureSO.dieAudioClips[Random.Range(0, creatureSO.dieAudioClips.Length)], creatureSO.dieVolumeMultiplier * sfxVolume);
+        creatureContinousAudioSource.Stop();
     }
 
     protected bool IsTooFarFromPlayer() {

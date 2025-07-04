@@ -65,7 +65,7 @@ public class Dog : MonoBehaviour
 
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
-        if (PlayerShoot.Instance.GetHeldGun().GetGunJammed()) return;
+        if (PlayerShoot.Instance.GetHeldGun().GetGunJammedAndNextInputSequence(GameInput.Binding.callDoggo)) return;
 
         if (currentIdleState == DogAI.State.walkWithPlayer) {
 
@@ -136,12 +136,16 @@ public class Dog : MonoBehaviour
     public void UnlockDogType(DogType dogType) {
         if(dogType == DogType.GoldenRetreiver) {
             MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HUBMerchantItem_DogTamerItem.DogTamerItemType.Dog_GoldenRetreiver.ToString(), true);
+            MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HUBMerchantItem_DogTamerItem.DogTamerItemType.Dog_GoldenRetreiver.ToString(), true);
+            MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType.DogTamer, true);
             DogStats.Instance.UnlockRetreiver();
             DogStats.Instance.UnlockRetreiverBiteAbility();
         }
 
         if (dogType == DogType.DarkCompanion) {
             MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HUBMerchantItem_DogTamerItem.DogTamerItemType.Dog_DarkCompanion.ToString(), true);
+            MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HUBMerchantItem_DogTamerItem.DogTamerItemType.Dog_DarkCompanion.ToString(), true);
+            MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType.DogTamer, true);
             DogStats.Instance.UnlockDarkCompanion();
             DogStats.Instance.UnlockDarkCompanionBiteAbility();
         }

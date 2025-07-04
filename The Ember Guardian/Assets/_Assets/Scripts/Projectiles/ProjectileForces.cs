@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class ProjectileForces : Projectile {
 
+    public enum TrajectoryMode {
+        CurvedApex,
+        StraightLine
+    }
 
     [Header("Physique")]
     private float gravityScale = 1f;
@@ -28,6 +32,13 @@ public class ProjectileForces : Projectile {
         projectileTarget = targetTransform;
         hasPassedApex = false;
 
+        if (!projectileSO.canBeDestoyedByBullets) {
+            solidCollider.enabled = false;
+        }
+        else {
+            solidCollider.enabled = true;
+        }
+
         if (parentMob is Creature) {
             enemyProjectile = true;
         }
@@ -46,7 +57,18 @@ public class ProjectileForces : Projectile {
             targetPosition = projectileTarget.position;
         }
 
-        Vector2 launchVelocity = CalculateLaunchVelocityWithApex(transform.position, targetPosition);
+        Vector2 launchVelocity = Vector2.zero;
+
+        switch (projectileSO.trajectoryMode) {
+            case TrajectoryMode.StraightLine:
+                launchVelocity = CalculateStraightLineVelocity(transform.position, targetPosition, projectileSO.straightLineSpeed);
+                break;
+            case TrajectoryMode.CurvedApex:
+            default:
+                launchVelocity = CalculateLaunchVelocityWithApex(transform.position, targetPosition);
+                break;
+        }
+
         rb.AddForce(launchVelocity, ForceMode2D.Impulse);
         hasHit = false;
 
@@ -123,6 +145,11 @@ public class ProjectileForces : Projectile {
         Vector2 velocity = new Vector2(vx, vyUp);
 
         return velocity;
+    }
+
+    private Vector2 CalculateStraightLineVelocity(Vector2 start, Vector2 end, float speed) {
+        Vector2 dir = (end - start).normalized;
+        return dir * speed;
     }
 
     protected override void ProjectileHasHit(bool mobHit) {

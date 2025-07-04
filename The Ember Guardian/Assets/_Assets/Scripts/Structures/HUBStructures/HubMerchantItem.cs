@@ -28,6 +28,7 @@ public class HubMerchantItem : MonoBehaviour
 
     [SerializeField] private HubMerchant parentHubMerchant;
 
+    private ItemButtonUI itemButtonUI;
     protected List<int> greenGemCostList;
     protected List<int> redGemCostList;
     protected List<int> blueGemCostList;
@@ -47,6 +48,7 @@ public class HubMerchantItem : MonoBehaviour
 
     protected bool itemBought;
     protected bool itemUnlocked;
+    protected bool newItemUnlocked;
     protected bool itemEquipped;
     protected bool itemStatusChanged;
 
@@ -96,6 +98,7 @@ public class HubMerchantItem : MonoBehaviour
         } else {
             itemBought = true;
             itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType());
+            newItemUnlocked = MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType());
             itemLevel = maxItemLevel;
 
             if(itemEquipable) {
@@ -311,6 +314,14 @@ public class HubMerchantItem : MonoBehaviour
     public bool GetItemUnlocked() {
         return itemUnlocked;
     }
+    public bool GetNewItemUnlocked() {
+        return newItemUnlocked;
+    }
+
+    public void SetNewItemUnlocked() {
+        newItemUnlocked = false;
+        itemStatusChanged = true;
+    }
 
     public virtual int GetItemLevel() {
         return itemLevel;
@@ -327,6 +338,7 @@ public class HubMerchantItem : MonoBehaviour
     public void SaveItemStatus() {
 
         if (!itemStatusChanged) return;
+
         if(itemBought && !MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType())) {
             MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), itemBought);
         }
@@ -337,6 +349,10 @@ public class HubMerchantItem : MonoBehaviour
 
         if (itemUnlocked && !MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType())) {
             MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType(), itemUnlocked);
+        }
+
+        if(!newItemUnlocked && MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType())) {
+            MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(GetItemType(), false);
         }
 
         if(itemEquipable) {
@@ -353,6 +369,10 @@ public class HubMerchantItem : MonoBehaviour
         MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType(), false);
         if (itemEquipable) {
             MetaProgressionManager.Instance.SetHubMerchantItemEquipped(GetItemType(), false);
+        }
+
+        if(isBoughtAtStart) {
+            MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(GetItemType(), false);
         }
     }
 }

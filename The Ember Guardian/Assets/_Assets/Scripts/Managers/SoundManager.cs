@@ -150,6 +150,7 @@ public class SoundManager : MonoBehaviour
         ScavengableObstacle.OnAnyScavengableMarkedToScavenge += Scavengable_OnAnyScavengableMarkedToScavenge;
         CurrencyStorage.OnAnyCurrencySpawned += CurrencyStorage_OnAnyCurrencySpawned;
 
+        Mob.OnAnyMobDamageTaken += Mob_OnAnyMobDamageTaken;
         WorkerAI.OnAnyWorkerFollowPlayerStarted += WorkerAI_OnAnyWorkerFollowPlayerStarted;
         WorkerAI.OnAnyWorkerFollowPlayerStopped += WorkerAI_OnAnyWorkerFollowPlayerStopped;
         Worker.OnAnyOrbDroppedByWorker += Worker_OnAnyOrbDroppedByWorker;
@@ -541,14 +542,22 @@ public class SoundManager : MonoBehaviour
 
     #region SHOOTING
 
+    private void Mob_OnAnyMobDamageTaken(object sender, System.EventArgs e) {
+        Mob mob = sender as Mob;
+        Creature creature = mob as Creature;
+        if (creature == null) return;
+
+        PlaySound2D(creature.GetCreatureSO().bulletHitAudioClips, creature.GetCreatureSO().bulletHitVolumeMultiplier);
+    }
+
     private void ParticleCollision_OnAnyPlayerBulletHitGround(object sender, ParticleCollision.OnBulletHitEventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitGroundSound;
         PlaySound2D(audioClipArray, .5f);
     }
 
     private void ParticleCollision_OnAnyPlayerBulletHitEnemy(object sender, ParticleCollision.OnBulletHitEventArgs e) {
-        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitEnemySound;
-        PlaySound2D(audioClipArray, .5f);
+        //AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitEnemySound;
+        //PlaySound2D(audioClipArray, .5f);
     }
 
     private void ParticleCollision_OnAnyBulletHitEnemyCrit(object sender, ParticleCollision.OnBulletHitEventArgs e) {
@@ -860,8 +869,22 @@ public class SoundManager : MonoBehaviour
 
     private void PlaySound2D(AudioClip[] audioClipArray, float volume = 1f) {
         if (audioClipArray.Length == 0) return;
-        AudioClip audioClip = audioClipArray[Random.Range(0, audioClipArray.Length)];
-        PlaySound2D(audioClip, volume);
+
+
+        if (audioClipArray.Length == 1) {
+            float originalPitch = audioSource2D.pitch;
+            float newPitch = Random.Range(0.9f, 1.1f); // Pitch légèrement aléatoire
+
+            audioSource2D.pitch = newPitch;
+            PlaySound2D(audioClipArray[0], volume);
+            audioSource2D.pitch = originalPitch; // On remet le pitch à la normale
+
+        }
+        else {
+            AudioClip audioClip = audioClipArray[Random.Range(0, audioClipArray.Length)];
+            PlaySound2D(audioClip, volume);
+        }
+
     }
 
     private void PlaySound2D(AudioClip audioClip, float volume = 1f) {
@@ -976,6 +999,7 @@ public class SoundManager : MonoBehaviour
         ScavengableObstacle.OnAnyScavengableMarkedToScavenge -= Scavengable_OnAnyScavengableMarkedToScavenge;
         CurrencyStorage.OnAnyCurrencySpawned -= CurrencyStorage_OnAnyCurrencySpawned;
 
+        Mob.OnAnyMobDamageTaken -= Mob_OnAnyMobDamageTaken;
         Worker.OnAnyWorkerAssignedHunter -= Worker_OnAnyWorkerAssignedHunter;
         Worker.OnAnyWorkerDied -= Worker_OnAnyWorkerDied;
         Worker.OnAnyOrbDroppedByWorker -= Worker_OnAnyOrbDroppedByWorker;

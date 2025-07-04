@@ -323,6 +323,8 @@ public class StructureStats : MonoBehaviour
     [Button]
     public void UnlockArchitectTable() {
         MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_ArchitectMerchantItem.ArchitectItemType.ArchitectTable.ToString(), true);
+        MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_ArchitectMerchantItem.ArchitectItemType.ArchitectTable.ToString(), true);
+        MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType.StructuresMerchant, true);
     }
 
     #region LEVELMERCHANTS

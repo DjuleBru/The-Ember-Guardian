@@ -30,6 +30,7 @@ public class Mob : MonoBehaviour, IDamageable
     public static event EventHandler OnAnyMobDied;
     public event EventHandler OnMobHitObstacle;
     public event EventHandler<OnMobDamageTakenEventArgs> OnMobDamageTaken;
+    public static event EventHandler OnAnyMobDamageTaken;
     public event EventHandler<OnMobDamageTakenEventArgs> OnMobCritDamageTaken;
     public static event EventHandler OnAnyMobCritDamageTaken;
     public event EventHandler<OnMobDroppedCollectibleEventArgs> OnMobDroppedCollectibles;
@@ -104,6 +105,8 @@ public class Mob : MonoBehaviour, IDamageable
         OnMobDamageTaken?.Invoke(this, new OnMobDamageTakenEventArgs {
             damageOriginTransform = damageSource,
         });
+
+        OnAnyMobDamageTaken?.Invoke(this, EventArgs.Empty);
 
         if (health <= 0) {
             Die();

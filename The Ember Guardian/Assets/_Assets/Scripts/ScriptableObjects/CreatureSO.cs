@@ -248,6 +248,12 @@ public class CreatureSO : ScriptableObject
     [BoxGroup("SFX")]
     [LabelWidth(200)]
     public float footstepVolumeMultiplier = .2f;
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public bool hasContinousAudioClip;
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public AudioClip[] continuousAudioClip;
 
     [BoxGroup("SFX")]
     [LabelWidth(200)]
@@ -255,5 +261,13 @@ public class CreatureSO : ScriptableObject
     [BoxGroup("SFX")]
     [LabelWidth(200)]
     public float spawnVolumeMultiplier = .75f;
+
+
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public AudioClip[] bulletHitAudioClips;
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public float bulletHitVolumeMultiplier = 1f;
 
 }

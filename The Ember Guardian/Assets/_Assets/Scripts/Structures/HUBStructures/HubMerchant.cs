@@ -68,7 +68,7 @@ public class HubMerchant : MonoBehaviour
         if (isHubMerchant) {
             // HUB behavior
 
-            if(isFunctionalDemoHubMerchant || isDecorationalDemoHubMerchant) {
+            if (isFunctionalDemoHubMerchant || isDecorationalDemoHubMerchant) {
                 // Demo merchant
                 InitializeDemoHubMerchant();
             } else {
@@ -106,6 +106,8 @@ public class HubMerchant : MonoBehaviour
                 merchantHasTalkLinesToShow = MetaProgressionManager.Instance.GetMerchantHasTalkLinesToShow(hubMerchantType);
             }
         }
+
+        merchantHasNewItems = MetaProgressionManager.Instance.GetHubMerchantNewItemsToSale(hubMerchantType);
 
         hubMerchantLoaded = true;
     }
@@ -196,6 +198,7 @@ public class HubMerchant : MonoBehaviour
         OnPlayerStoppedInteractingWithAnyHubMerchant?.Invoke(this, EventArgs.Empty);
 
         if (merchantHasNewItems) {
+            MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(hubMerchantType, false);
             merchantHasNewItems = false;
         }
 

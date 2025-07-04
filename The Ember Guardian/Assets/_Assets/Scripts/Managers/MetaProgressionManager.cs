@@ -272,6 +272,10 @@ public class MetaProgressionManager : MonoBehaviour
         string key = merchantItemSaveString + "_Unlocked";
         return ES3.Load(key, false);
     }
+    public bool GetHubMerchantItemNewlyUnlocked(string merchantItemSaveString) {
+        string key = merchantItemSaveString + "_NewlyUnlocked";
+        return ES3.Load(key, false);
+    }
 
     public bool GetMerchantItemBought(string merchantItemSaveString) {
         string key = merchantItemSaveString + "_Bought";
@@ -294,9 +298,23 @@ public class MetaProgressionManager : MonoBehaviour
 
         return level;
     }
+    public void SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType merchantType, bool newItemsToSale) {
+        string key = merchantType.ToString() + "_NewItemsToSale";
+        ES3.Save(key, newItemsToSale);
+    }
+
+    public bool GetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType merchantType) {
+        string key = merchantType.ToString() + "_NewItemsToSale";
+        return ES3.Load(key, false);
+    }
 
     public void SetHubMerchantItemUnlocked(string merchantItemSaveString, bool unlocked) {
         string key = merchantItemSaveString + "_Unlocked";
+        ES3.Save(key, unlocked);
+    }
+
+    public void SetHubMerchantItemNewlyUnlocked(string merchantItemSaveString, bool unlocked) {
+        string key = merchantItemSaveString + "_NewlyUnlocked";
         ES3.Save(key, unlocked);
     }
 

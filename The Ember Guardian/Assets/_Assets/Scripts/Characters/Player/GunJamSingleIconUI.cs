@@ -20,7 +20,7 @@ public class GunJamSingleIconUI : MonoBehaviour
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
         GunJamHandler.OnAnyJamSequenceProgressed += GunJamHandler_OnAnyJamSequenceProgressed;
         GunJamHandler.OnAnyCorrectJamSequenceInput += GunJamHandler_OnAnyCorrectJamSequenceInput;
-        GunJamHandler.OnAnyJamSequenceFailed += GunJamHandler_OnAnyJamSequenceFailed;
+        GunJamHandler.OnAnyJamWrongInput += GunJamHandler_OnAnyJamSequenceFailed;
         RefreshInput();
     }
 
@@ -107,6 +107,6 @@ public class GunJamSingleIconUI : MonoBehaviour
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
         GunJamHandler.OnAnyJamSequenceProgressed -= GunJamHandler_OnAnyJamSequenceProgressed;
         GunJamHandler.OnAnyCorrectJamSequenceInput -= GunJamHandler_OnAnyCorrectJamSequenceInput;
-        GunJamHandler.OnAnyJamSequenceFailed -= GunJamHandler_OnAnyJamSequenceFailed;
+        GunJamHandler.OnAnyJamWrongInput -= GunJamHandler_OnAnyJamSequenceFailed;
     }
 }

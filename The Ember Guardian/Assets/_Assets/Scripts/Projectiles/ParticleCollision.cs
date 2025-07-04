@@ -118,6 +118,11 @@ public class ParticleCollision : MonoBehaviour
 
                     if (mobHit == null) {
 
+                        Projectile projectileHit = other.GetComponent<Projectile>();
+                        if (projectileHit != null) {
+                            projectileHit.TryDestroyProjectile();
+                        }
+
                         if (groundDestroysBullet) {
                             Instantiate(explosionPrefab, collisionEvents[0].intersection, Quaternion.Euler(0, 0, angle));
 

@@ -18,6 +18,8 @@ public class WorkerVisual : MobVisual {
     [SerializeField] private WorkerInteractionCollider interactionCollider;
 
     [SerializeField] private Material emptyMaterial;
+    [SerializeField] private Material blackAndWhiteMaterial;
+    [SerializeField] private Material weaponGlowMaterial;
     [SerializeField] private Light2D bodySpriteLight;
     [SerializeField] private SpriteRenderer workerBodySpriteRenderer;
     [SerializeField] private SpriteRenderer workerWeaponSpriteRenderer;
@@ -78,6 +80,10 @@ public class WorkerVisual : MobVisual {
         workerWeaponSpriteRenderer.sortingOrder = currentMaxSortingOrder+1;
         workerWeaponGlowSpriteRenderer.sortingOrder = currentMaxSortingOrder+2;
         holdingCurrencyGO.SetActive(false);
+
+        workerBodySpriteRenderer.material = blackAndWhiteMaterial;
+        workerWeaponSpriteRenderer.material = blackAndWhiteMaterial;
+        workerWeaponGlowSpriteRenderer.material = blackAndWhiteMaterial;
     }
 
 
@@ -301,6 +307,8 @@ public class WorkerVisual : MobVisual {
     private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
         if(workerAI.GetJob() != WorkerAI.JobTypes.wild) {
             workerBodySpriteRenderer.material = emptyMaterial;
+            workerWeaponSpriteRenderer.material = emptyMaterial;
+            workerWeaponGlowSpriteRenderer.material = weaponGlowMaterial;
         }
     }
 

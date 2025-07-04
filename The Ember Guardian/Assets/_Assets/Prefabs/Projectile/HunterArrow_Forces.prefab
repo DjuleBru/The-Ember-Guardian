@@ -204,6 +204,11 @@ PrefabInstance:
       insertIndex: 1
       addedObject: {fileID: 6278869569823065902}
   m_SourcePrefab: {fileID: 100100000, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+--- !u!58 &6107622544754403661 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6239366878450202533, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+  m_PrefabInstance: {fileID: 167773680537722600}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7440788198392024565 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7284273568497472285, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
@@ -232,6 +237,7 @@ MonoBehaviour:
   animalLayer:
     serializedVersion: 2
     m_Bits: 16384
+  solidCollider: {fileID: 6107622544754403661}
 --- !u!1001 &6938867945866011760
 PrefabInstance:
   m_ObjectHideFlags: 0

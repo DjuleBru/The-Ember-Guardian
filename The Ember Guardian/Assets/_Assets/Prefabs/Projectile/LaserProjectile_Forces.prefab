@@ -16,6 +16,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1998490222443866992, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: projectile
+      value: 
+      objectReference: {fileID: 3966030319208612200}
+    - target: {fileID: 2520302452764269856, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: ShapeModule.type
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2520302452764269856, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: ShapeModule.angle
       value: 7.1
@@ -26,35 +34,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2520302452764269856, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: ShapeModule.radius.value
-      value: 0.38
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2520302452764269856, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2520302452764269856, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2520302452764269856, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2520302452764269856, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: InitialModule.gravityModifier.scalar
-      value: 0.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2520302452764269856, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: UVModule.sprites.Array.data[0].sprite
       value: 
       objectReference: {fileID: -1027805047, guid: 947f12a27cca10843910728bb7c18291, type: 3}
+    - target: {fileID: 3231861799023087051, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: projectile
+      value: 
+      objectReference: {fileID: 3966030319208612200}
     - target: {fileID: 3459014175029108294, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 84daae7459c20664c9feb1d7e7c96f0f, type: 2}
+    - target: {fileID: 3529667935503174910, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: maxDistanceToHear
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4180268832326320235, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: m_Radius
+      value: 0.22
+      objectReference: {fileID: 0}
     - target: {fileID: 4559383177539395646, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 377725159, guid: 947f12a27cca10843910728bb7c18291, type: 3}
+      objectReference: {fileID: 416485406, guid: cb704a8ad2a127e4fb34f9a39fdfe2af, type: 3}
     - target: {fileID: 4559383177539395646, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f46cf4989354ad94b969d1ddae2b6aef, type: 2}
+      objectReference: {fileID: 2100000, guid: 02ccbdb33f1a5c54eae20384cc69f9a1, type: 2}
+    - target: {fileID: 6239366878450202533, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: m_Radius
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 7811116705413329226, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.018
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7811116705413329226, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7906969339353844363, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -119,40 +155,39 @@ PrefabInstance:
     - target: {fileID: 8081538258593089863, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: projectileAnimator
       value: 
-      objectReference: {fileID: 6200481295927819779}
+      objectReference: {fileID: 4833352311561757035}
     - target: {fileID: 8132320804815214056, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_Name
-      value: SpitterProjectile
+      value: LaserProjectile_Forces
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4666816475507756428, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6244659763167169022, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 8132320804815214056, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 3966030319208612200}
+    - targetCorrespondingSourceObject: {fileID: 586738763032035048, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6200481295927819779}
+      addedObject: {fileID: 4833352311561757035}
   m_SourcePrefab: {fileID: 100100000, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
---- !u!198 &2354789952250905544 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 2520302452764269856, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
-  m_PrefabInstance: {fileID: 167773680537722600}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6124176129316968214 stripped
+--- !u!1 &752257877726830592 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 6244659763167169022, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+  m_CorrespondingSourceObject: {fileID: 586738763032035048, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
   m_PrefabInstance: {fileID: 167773680537722600}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &6200481295927819779
+--- !u!95 &4833352311561757035
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6124176129316968214}
+  m_GameObject: {fileID: 752257877726830592}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5d6086e2e4b32f148b553e235df5c1bc, type: 2}
+  m_Controller: {fileID: 9100000, guid: f3f518ef6ed4a314f8f5fd3532b54238, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -163,3 +198,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!198 &2354789952250905544 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2520302452764269856, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+  m_PrefabInstance: {fileID: 167773680537722600}
+  m_PrefabAsset: {fileID: 0}
+--- !u!58 &6107622544754403661 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6239366878450202533, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+  m_PrefabInstance: {fileID: 167773680537722600}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8255032049192913664 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8132320804815214056, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+  m_PrefabInstance: {fileID: 167773680537722600}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3966030319208612200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8255032049192913664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8138b3d606315b14395f5933e6dfefdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  animalLayer:
+    serializedVersion: 2
+    m_Bits: 16384
+  solidCollider: {fileID: 6107622544754403661}

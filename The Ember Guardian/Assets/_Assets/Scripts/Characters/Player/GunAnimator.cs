@@ -40,7 +40,7 @@ public class GunAnimator : MonoBehaviour
     }
 
     private void GunJamHandler_OnJamSequenceFailStarted(object sender, System.EventArgs e) {
-        animator.SetTrigger("GunJamHit");
+        //animator.SetTrigger("GunJamHit");
     }
 
     private void Gun_OnGunJammed(object sender, System.EventArgs e) {

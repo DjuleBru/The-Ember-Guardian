@@ -8,9 +8,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1602260578434848686, guid: 42dded48edf875847a342ecc218c5beb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2530186093429734612, guid: 42dded48edf875847a342ecc218c5beb, type: 3}
       propertyPath: m_Name
       value: Portal_Bloody
+      objectReference: {fileID: 0}
+    - target: {fileID: 3616357842680383040, guid: 42dded48edf875847a342ecc218c5beb, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3616357842680383040, guid: 42dded48edf875847a342ecc218c5beb, type: 3}
+      propertyPath: m_Color.g
+      value: 0.11267607
+      objectReference: {fileID: 0}
+    - target: {fileID: 3616357842680383040, guid: 42dded48edf875847a342ecc218c5beb, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3616357842680383040, guid: 42dded48edf875847a342ecc218c5beb, type: 3}
+      propertyPath: m_Intensity
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5135291784983250698, guid: 42dded48edf875847a342ecc218c5beb, type: 3}
       propertyPath: m_Sprite

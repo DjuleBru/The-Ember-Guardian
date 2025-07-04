@@ -23,7 +23,11 @@ public class PlayerUI_GunJam : MonoBehaviour
     [SerializeField] private RectTransform backgroundValidZone;
     [SerializeField] private RectTransform failZoneLeft;
     [SerializeField] private RectTransform failZoneRight; 
-    [SerializeField] private Animator timerBarOutlineAnimator; 
+    [SerializeField] private Animator timerBarOutlineAnimator;
+
+    [SerializeField] private GameObject gunJamTimerGameObject;
+    [SerializeField] private Image gunJamTimerFillImage; 
+    [SerializeField] private Animator gunJamTimerAnimator; 
     
     private float initialValidFraction = 0.6f; // 60% au départ
     private float finalValidFraction = 0.2f;   // 20% à la fin
@@ -60,6 +64,7 @@ public class PlayerUI_GunJam : MonoBehaviour
         timingGameObject.gameObject.SetActive(false);
         spamGameObject.gameObject.SetActive(false);
         inputSequenceIconTemplate.gameObject.SetActive(false);
+        gunJamTimerGameObject.gameObject.SetActive(false);
     }
 
     private void Start() {
@@ -67,6 +72,8 @@ public class PlayerUI_GunJam : MonoBehaviour
         GunJamHandler.OnAnyJamSequenceCompleted += GunJamHandler_OnAnyJamSequenceCompleted;
         GunJamHandler.OnSpamQTEProgressed += GunJamHandler_OnSpamQTEProgressed;
         GunJamHandler.OnAnyTimingButtonPressed += GunJamHandler_OnAnyTimingButtonPressed;
+        GunJamHandler.OnAnyJamTimerProgressed += GunJamHandler_OnAnyJamTimerProgressed;
+        GunJamHandler.OnAnyJamWrongInput += GunJamHandler_OnAnyJamWrongInput;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
     }
 
@@ -116,6 +123,13 @@ public class PlayerUI_GunJam : MonoBehaviour
         };
 
     }
+    private void GunJamHandler_OnAnyJamWrongInput(object sender, GunJamHandler.OnAnyJamSequenceProgressedEventArgs e) {
+        gunJamTimerAnimator.SetTrigger("Penalty");
+    }
+
+    private void GunJamHandler_OnAnyJamTimerProgressed(object sender, GunJamHandler.OnAnyJamTimerProgressedEventArgs e) {
+        gunJamTimerFillImage.fillAmount = 1 - e.jamProgressTimerNormalized;
+    }
 
     private IEnumerator RemoveSpamTickAfterDelay(PlayerUI_TickTemplate tick, float delay) {
         yield return new WaitForSeconds(delay);
@@ -154,7 +168,8 @@ public class PlayerUI_GunJam : MonoBehaviour
 
         CleanUISequence();
 
-        if(isSpamQTEActive) {
+        gunJamTimerGameObject.gameObject.SetActive(false);
+        if (isSpamQTEActive) {
             isSpamQTEActive = false;
             spamGameObject.gameObject.SetActive(false);
             currentActiveTickTemplateList.Clear();
@@ -172,6 +187,7 @@ public class PlayerUI_GunJam : MonoBehaviour
         RefreshPrimaryOrSecondaryUI();
         if (!jamUIActive) return;
 
+        gunJamTimerGameObject.gameObject.SetActive(true);
         switch (e.qteType) {
             case GunJamHandler.QTEType.InputSequence:
                 isSequenceQTEActive = true;
@@ -235,7 +251,6 @@ public class PlayerUI_GunJam : MonoBehaviour
 
         spamTickTemplate.gameObject.SetActive(false);
     }
-
 
     private void RefreshPrimaryOrSecondaryUI() {
         if ((isPrimaryWeaponJamUI && PlayerShoot.Instance.GetHeldGunSO() == PlayerShoot.Instance.GetPrimaryGunSO()) || (!isPrimaryWeaponJamUI && PlayerShoot.Instance.GetHeldGunSO() == PlayerShoot.Instance.GetSecondaryGunSO())) {
@@ -324,5 +339,7 @@ public class PlayerUI_GunJam : MonoBehaviour
         GunJamHandler.OnAnyJamSequenceCompleted -= GunJamHandler_OnAnyJamSequenceCompleted;
         GunJamHandler.OnSpamQTEProgressed -= GunJamHandler_OnSpamQTEProgressed;
         GunJamHandler.OnAnyTimingButtonPressed -= GunJamHandler_OnAnyTimingButtonPressed;
+        GunJamHandler.OnAnyJamTimerProgressed -= GunJamHandler_OnAnyJamTimerProgressed;
+        GunJamHandler.OnAnyJamWrongInput -= GunJamHandler_OnAnyJamWrongInput;
     }
 }
