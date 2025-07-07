@@ -18,6 +18,9 @@ public class MobAttack : MonoBehaviour
     [SerializeField] protected float attackCooldown;
     [SerializeField] protected float attackAnimationDelay;
     [SerializeField] protected float totalAttackAnimationTime;
+    [SerializeField] protected bool shootsMultipleProjectilesInAttack;
+    [SerializeField] protected int projectileAmountShotInAttack = 1;
+    [SerializeField] protected float delayBetweenProjectileSpawns;
 
     protected float attackCooldownBuff = 1f;
 
@@ -95,29 +98,37 @@ public class MobAttack : MonoBehaviour
         attackStarted = true;
         yield return new WaitForSeconds(delay);
 
-        if (mob.GetDead()) yield break;
+        for(int i = 0; i < projectileAmountShotInAttack; i++) {
+            if (mob.GetDead()) yield break;
 
-        // Projectile can be instantiated AFTER attack target reset, so must keep track of previous attack target
+            // Projectile can be instantiated AFTER attack target reset, so must keep track of previous attack target
 
-        if (previousAttackTargetIDamageable != null) {
-
-            Projectile projectile = GetNextProjectileInPool(projectileSO);
-
-            Vector3 endPointRandomOffsetValue = GetEndPointRandomOffstetValue();
-            projectile.gameObject.SetActive(true);
-            projectile.transform.SetParent(null);
-
-            if(projectileSO.usesAnimationCurve) {
-                projectile.ActivateAndInitialize(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, transform, attackDamage, endPointRandomOffsetValue, homingProjectile);
+            if (previousAttackTargetIDamageable != null) {
+                SpawnProjectile();
             }
-            if(projectileSO.usesForce) {
-                ProjectileForces projectileForce = projectile.GetComponent<ProjectileForces>();
-                projectileForce.ActivateAndInitializeWithForces(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, transform, attackDamage, endPointRandomOffsetValue.x, homingProjectile);
-            }
+            yield return new WaitForSeconds(delayBetweenProjectileSpawns);
         }
+       
 
         yield return new WaitForSeconds(totalAttackAnimationTime - delay);
         attackStarted = false;
+    }
+
+    protected void SpawnProjectile() {
+
+        Projectile projectile = GetNextProjectileInPool(projectileSO);
+
+        Vector3 endPointRandomOffsetValue = GetEndPointRandomOffstetValue();
+        projectile.gameObject.SetActive(true);
+        projectile.transform.SetParent(null);
+
+        if (projectileSO.usesAnimationCurve) {
+            projectile.ActivateAndInitialize(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, transform, attackDamage, endPointRandomOffsetValue, homingProjectile);
+        }
+        if (projectileSO.usesForce) {
+            ProjectileForces projectileForce = projectile.GetComponent<ProjectileForces>();
+            projectileForce.ActivateAndInitializeWithForces(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, transform, attackDamage, endPointRandomOffsetValue.x, homingProjectile);
+        }
     }
 
     public Projectile GetNextProjectileInPool(ProjectileSO projectileSO) {

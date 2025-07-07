@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e57289136e0e1e6418ec81259b9649b2, type: 3}
+  m_Name: DarkMech
+  m_EditorClassIdentifier: 
+  enemyName: Spitter
+  isBoss: 0
+  description: Ranged mob that fires arced projectiles
+  creatureIcon: {fileID: 21300000, guid: 6beda75071a7e3d41865443c1a7ff90f, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: 4f632e33cab00f843a61d6016853f58e, type: 3}
+  creaturePrefab: {fileID: 0}
+  mass: 20
+  detectionRange_Day: 15
+  detectionRange_Night: 12
+  flying: 0
+  flightMinAltitude: 0
+  flightMaxAltitude: 0
+  dayMoveSpeed: 2.5
+  nightMoveSpeed: 2.5
+  aggroMoveSpeedBuff: 1.2
+  enteredLightMoveSpeedDebuff: 1.5
+  moveSpeedRandomizerDelta: 0.25
+  maxHealth: 80
+  damage: 1
+  attackRate: 4
+  enteredLightattackRateDebuff: 2.5
+  isRangedAttack: 1
+  minAttackRange: 10
+  maxAttackRange: 15
+  attackRangeRandomizer: 2
+  attackRangeMaxDistanceMiss: 1
+  damageToFire: 1
+  immuneToPoison: 0
+  immuneToShock: 0
+  immuneToImmobilize: 0
+  attackAnimationDelay: 0.6
+  attackSFXDelayAfterAnimationStart: 0
+  totalAttackAnimationTime: 2
+  hasCustomSpawnAnimation: 0
+  spawnAnimationDuration: 1
+  baseMovementAnimationSpeed: 0.85
+  workerTargetingPriority: 1
+  playerTargetingPriority: 2
+  barricadeTargetingPriority: 3
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 1
+  currencyTypeDroppedList: 0200000003000000
+  currencyDropAmountList: 0100000002000000
+  difficulty: 4
+  initialWaveSpawn: 2
+  spawnProbability: 0.5
+  maxCreaturesPerPacket: 3
+  dieAudioClips:
+  - {fileID: 8300000, guid: 7c6eeba99f90050418a6860b03b89c2d, type: 3}
+  dieVolumeMultiplier: 2
+  aggroAudioClips:
+  - {fileID: 8300000, guid: 0f446c4cdb1cc9d4492137ca2d01599d, type: 3}
+  aggroVolumeMultiplier: 0.8
+  attackSFXHandledByAnimation: 0
+  attackStartedChargingAudioClips: []
+  attackReleasedAudioClips: []
+  attackHitAudioClips: []
+  attackVolumeMultiplier: 2.5
+  attackAudioClips:
+  - {fileID: 8300000, guid: 7aa74c6cf27659a40aca37961e8d8717, type: 3}
+  attackHitVolumeMultiplier: 0.5
+  idleAudioClips: []
+  idleVolumeMultiplier: 0.5
+  footStepAudioClips:
+  - {fileID: 8300000, guid: 70d5fdcccec1daf439cf37c20b2b9a00, type: 3}
+  footstepVolumeMultiplier: 0.15
+  hasContinousAudioClip: 0
+  continuousAudioClip: []
+  spawnAudioClips:
+  - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
+  - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}
+  - {fileID: 8300000, guid: b6d953aeaa52e58499a331b756752ad1, type: 3}
+  spawnVolumeMultiplier: 0.75
+  bulletHitAudioClips:
+  - {fileID: 8300000, guid: e8255e52a3feba8469d4d680886ef8b4, type: 3}
+  - {fileID: 8300000, guid: 4c26275d855a282479dc097f844a2362, type: 3}
+  - {fileID: 8300000, guid: c4e78cc3486c66e41a044c0b0a2ae9d7, type: 3}
+  - {fileID: 8300000, guid: c7ead20edc468e24a86195f640218010, type: 3}
+  - {fileID: 8300000, guid: b08f5ac8a197e76408abf125f5ea7870, type: 3}
+  - {fileID: 8300000, guid: 6615caae1c691bd4e92666d2d32f4408, type: 3}
+  bulletHitVolumeMultiplier: 0.5

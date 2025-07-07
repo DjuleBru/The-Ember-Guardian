@@ -1,0 +1,139 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ad119f31ca28824aad1883e1ac68ecb, type: 3}
+  m_Name: CorruptedArcherArrow
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 7911136206213874445, guid: ec09c55a8377ffe45bc6a116c635ff78, type: 3}
+  isExplosiveProjectile: 0
+  canBeDestoyedByBullets: 0
+  usesAnimationCurve: 0
+  projectileTrajectoryAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2.3279412
+      outSlope: 2.3279412
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.1043574
+    - serializedVersion: 3
+      time: 0.55
+      value: 1
+      inSlope: -0.035392124
+      outSlope: -0.035392124
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.19862552
+    - serializedVersion: 3
+      time: 1.001831
+      value: 0.00030517578
+      inSlope: -3.870154
+      outSlope: -3.870154
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.06928966
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.502647
+      value: -3.925867
+      inSlope: -6.276533
+      outSlope: -6.276533
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.5224944
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  projectileYDifferentialWithTargetAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  projectileSpeedAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.6
+      outSlope: -0.6
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 0.7
+      inSlope: -0.012486565
+      outSlope: -0.012486565
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.14880955
+      outWeight: 0.16071427
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.6
+      outSlope: 0.6
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  projectileMaxMoveSpeed: 15
+  projectileTrajectoryYCurve: 0.5
+  trajectoryEndPointRandomOffsetValue: 0.2
+  usesForce: 1
+  trajectoryMode: 0
+  straightLineSpeed: 10
+  minApexY: 1
+  maxApexY: 2.5
+  distanceToTargetForMinApex: 2
+  distanceToTargetForMaxApex: 15
+  apexRandomizer: 0.2
+  gravityScale: 2
+  projectileInstantiatedAudioClips:
+  - {fileID: 8300000, guid: 1a92dc2cd6f6fa243945d06998ed24cb, type: 3}
+  - {fileID: 8300000, guid: e5658a90c72739c48afea640aad82222, type: 3}
+  - {fileID: 8300000, guid: e3f05109858719d41845ca432050f8a0, type: 3}
+  - {fileID: 8300000, guid: 057b363f7fd7dde4b915b936c163b88d, type: 3}
+  projectileHitAudioClips:
+  - {fileID: 8300000, guid: 2cc0a2766d4587a42a6c488b4e1968b6, type: 3}
+  - {fileID: 8300000, guid: 38aaba85d85abb146a1a661015e6d7fa, type: 3}
+  - {fileID: 8300000, guid: a2fbcc82c4dafae48a0d27c568a7662b, type: 3}
+  - {fileID: 8300000, guid: 4fcaff8c4d951114882a14bb5e9fa1f4, type: 3}

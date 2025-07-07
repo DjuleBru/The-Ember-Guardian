@@ -97,6 +97,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
+      propertyPath: CollisionModule.type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
       propertyPath: ForceModule.y.scalar
       value: -3
       objectReference: {fileID: 0}
@@ -107,6 +111,14 @@ PrefabInstance:
     - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
       propertyPath: ShapeModule.arc.value
       value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
+      propertyPath: CollisionModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
+      propertyPath: CollisionModule.quality
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
       propertyPath: ForceModule.y.minScalar
@@ -186,11 +198,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 0.6
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
       propertyPath: InitialModule.startSpeed.minScalar
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
+      propertyPath: CollisionModule.collidesWith.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
       propertyPath: InitialModule.startColor.minColor.r
@@ -218,7 +234,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
       propertyPath: InitialModule.startLifetime.minScalar
-      value: 0.3
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7951989349695372159, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
       propertyPath: EmissionModule.rateOverTime.minMaxState
@@ -334,7 +350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8722689981165860565, guid: 2e6f4160ceffdf44da4912027307c163, type: 3}
       propertyPath: lifetime
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

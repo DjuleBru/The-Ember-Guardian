@@ -7,24 +7,24 @@ using UnityEngine;
 public class Creature : Mob
 {
 
-    [SerializeField] private CreatureSO creatureSO;
-    [SerializeField] private CreatureDetectionCollider detectionCollider;
-    [SerializeField] private CreatureMovement creatureMovement;
-    [SerializeField] private List<Collider2D> critZoneColliders;
-    [SerializeField] private Transform autoAimPosition;
+    [SerializeField] protected CreatureSO creatureSO;
+    [SerializeField] protected CreatureDetectionCollider detectionCollider;
+    [SerializeField] protected CreatureMovement creatureMovement;
+    [SerializeField] protected List<Collider2D> critZoneColliders;
+    [SerializeField] protected Transform autoAimPosition;
 
-    private bool creatureUnlocked;
-    private bool dropRedOrbsUnlocked;
-    private bool dayCreature;
-    private int inFireLightAmount;
+    protected bool creatureUnlocked;
+    protected bool dropRedOrbsUnlocked;
+    protected bool dayCreature;
+    protected int inFireLightAmount;
 
-    private bool creatureTargeted;
-    private bool creatureCanBeTargeted = true;
+    protected bool creatureTargeted;
+    protected bool creatureCanBeTargeted = true;
 
-    private bool eliteCreature;
-    private bool eliteHPCreature;
-    private bool eliteSpeedCreature;
-    private bool eliteDamageCreature;
+    protected bool eliteCreature;
+    protected bool eliteHPCreature;
+    protected bool eliteSpeedCreature;
+    protected bool eliteDamageCreature;
 
     public event EventHandler OnCreatureEnteredLight;
     public event EventHandler OnCreatureExitedLight;
@@ -34,60 +34,60 @@ public class Creature : Mob
     public event EventHandler OnCreatureTargetable;
     public event EventHandler OnCreatureIdleSoundTriggered;
 
-    private float triggerSoundTimer;
-    private float triggerSoundTime = 5f;
+    protected float triggerSoundTimer;
+    protected float triggerSoundTime = 5f;
 
-    private float detectionRangeIncreasedTimer;
-    private float detectionRangeIncreasedTime = 5f;
-    private bool detectionRangeIncreased;
+    protected float detectionRangeIncreasedTimer;
+    protected float detectionRangeIncreasedTime = 5f;
+    protected bool detectionRangeIncreased;
 
-    private bool playerCrouchRangeDecreased;
-    private float playerShootDetectionRangeMultiplier;
+    protected bool playerCrouchRangeDecreased;
+    protected float playerShootDetectionRangeMultiplier;
 
     public event EventHandler OnCreatureImmobilizedStarted;
     public event EventHandler OnCreatureImmobilizedStopped;
-    private bool immobilizeImmune;
-    private bool immobilized;
-    private float immobilizedDuration;
-    private float immobilizedTimer;
+    protected bool immobilizeImmune;
+    protected bool immobilized;
+    protected float immobilizedDuration;
+    protected float immobilizedTimer;
 
     public event EventHandler OnCreaturePoisonedStarted;
     public event EventHandler OnCreaturePoisoneStopped;
-    private bool poisoned;
-    private bool poisonImmune;
-    private int poisonAmount;
-    private float poisonedTimer;
-    private float poisonRate = 1.5f;
-    private float poisonRateTimer;
-    private float poisonedDuration = 10f;
+    protected bool poisoned;
+    protected bool poisonImmune;
+    protected int poisonAmount;
+    protected float poisonedTimer;
+    protected float poisonRate = 1.5f;
+    protected float poisonRateTimer;
+    protected float poisonedDuration = 10f;
 
     public event EventHandler OnCreatureBurningStarted;
     public event EventHandler OnCreatureBurningStopped;
-    private bool burning;
-    private bool burnImmune;
-    private int burnAmount = 2;
-    private float burningTimer;
-    private float burningRate = .5f;
-    private float burningRateTimer;
-    private float burningDuration = 2f;
+    protected bool burning;
+    protected bool burnImmune;
+    protected int burnAmount = 2;
+    protected float burningTimer;
+    protected float burningRate = .5f;
+    protected float burningRateTimer;
+    protected float burningDuration = 2f;
 
     public event EventHandler OnCreatureShockedStarted;
     public event EventHandler OnCreatureShockedStopped;
-    private bool shocked;
-    private bool shockedImmune;
-    private float shockedDuration = 10f;
-    private float shockedTimer;
-    private float shockedSlowAmount;
+    protected bool shocked;
+    protected bool shockedImmune;
+    protected float shockedDuration = 10f;
+    protected float shockedTimer;
+    protected float shockedSlowAmount;
 
 
     public event EventHandler OnCreatureStunStarted;
     public event EventHandler OnCreatureStunStopped;
-    private bool stunned;
-    private bool stunImmune;
-    private float stunDuration = 10f;
-    private float stunTimer;
+    protected bool stunned;
+    protected bool stunImmune;
+    protected float stunDuration = 10f;
+    protected float stunTimer;
 
-    private void Awake() {
+    protected virtual void Awake() {
         rb = GetComponent<Rigidbody2D>();
         rb.mass = creatureSO.mass;
         triggerSoundTimer = UnityEngine.Random.Range(0, triggerSoundTime);
@@ -97,7 +97,7 @@ public class Creature : Mob
         immobilizeImmune = creatureSO.immuneToImmobilize;
     }
 
-    private void Start() {
+    protected virtual void Start() {
         creatureUnlocked = MetaProgressionManager.Instance.GetCreatureUnlocked(creatureSO);
         dropRedOrbsUnlocked = DebugManager.Instance.GetDropRedOrbsUnlocked();
 
@@ -107,7 +107,7 @@ public class Creature : Mob
         MetaProgressionManager.Instance.OnCreatureSOUnlocked += MetaProgressionMaanger_OnCreatureSOUnlocked;
     }
 
-    private void OnEnable() {
+    protected void OnEnable() {
         CreaturesManager.Instance.AddCreatureSpawned(this);
         health = creatureSO.maxHealth;
         maxHealth = creatureSO.maxHealth;
@@ -199,7 +199,7 @@ public class Creature : Mob
         GetComponent<Rigidbody2D>().gravityScale = 0;
     }
 
-    private void DemoDropGems() {
+    protected void DemoDropGems() {
         List<PlayerCurrencies.CurrencyType> gemTypeDrop = new List<PlayerCurrencies.CurrencyType>();
         List<int> gemTypeAmountDrop = new List<int>();
 
@@ -220,7 +220,7 @@ public class Creature : Mob
         SpawnDroppedCurrencies(gemTypeDrop, gemTypeAmountDrop);
     }
 
-    private void EliteDropGems() {
+    protected void EliteDropGems() {
         List<PlayerCurrencies.CurrencyType> gemTypeDrop = new List<PlayerCurrencies.CurrencyType>();
         List<int> gemTypeAmountDrop = new List<int>();
 
@@ -280,12 +280,12 @@ public class Creature : Mob
 
     }
 
-    private IEnumerator DisableGameObjectAfterDelay() {
+    protected IEnumerator DisableGameObjectAfterDelay() {
         yield return new WaitForSeconds(2f);
         gameObject.SetActive(false);
     }
 
-    private IEnumerator DestroyGameObjectAfterDelay() {
+    protected IEnumerator DestroyGameObjectAfterDelay() {
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);
     }
@@ -331,19 +331,19 @@ public class Creature : Mob
         }
     }
 
-    private void MetaProgressionMaanger_OnCreatureSOUnlocked(object sender, MetaProgressionManager.OnCreatureSOUnlockedEventArgs e) {
+    protected void MetaProgressionMaanger_OnCreatureSOUnlocked(object sender, MetaProgressionManager.OnCreatureSOUnlockedEventArgs e) {
         if(e.creatureSOUnlocked == creatureSO) {
             creatureUnlocked = true;
         }
     }
 
-    private void PlayerMovement_OnPlayerCrouchedEnded(object sender, EventArgs e) {
+    protected void PlayerMovement_OnPlayerCrouchedEnded(object sender, EventArgs e) {
         float playerCrouchDetectionRangeDivider = PlayerStats.Instance.GetCrouchDetectionRangeReductionPercentBuff_Meta()/100f;
         if (playerCrouchDetectionRangeDivider == 0) return;
         detectionCollider.DebuffRadius(playerCrouchDetectionRangeDivider);
     }
 
-    private void PlayerMovement_OnPlayerCrouched(object sender, EventArgs e) {
+    protected void PlayerMovement_OnPlayerCrouched(object sender, EventArgs e) {
         float playerCrouchDetectionRangeDivider = PlayerStats.Instance.GetCrouchDetectionRangeReductionPercentBuff_Meta()/100f;
         if (playerCrouchDetectionRangeDivider == 0) return;
         detectionCollider.BuffRadius(playerCrouchDetectionRangeDivider);
@@ -351,7 +351,7 @@ public class Creature : Mob
         playerCrouchRangeDecreased = true;
     }
 
-    private void PlayerShoot_OnPlayerShotProjectile(object sender, EventArgs e) {
+    protected void PlayerShoot_OnPlayerShotProjectile(object sender, EventArgs e) {
         if (detectionRangeIncreased) return;
 
         playerShootDetectionRangeMultiplier = PlayerShoot.Instance.GetHeldGunSO().shootCreatureHearMultiplier;
@@ -363,7 +363,7 @@ public class Creature : Mob
         CreatureHeardPlayerShoot(true);
     }
 
-    private void CreatureHeardPlayerShoot(bool heard) {
+    protected void CreatureHeardPlayerShoot(bool heard) {
         if (heard) {
             detectionCollider.BuffRadius(playerShootDetectionRangeMultiplier);
         } else {
@@ -407,11 +407,14 @@ public class Creature : Mob
         }
 
         base.TakeDamage(damage, damageSource, critHit, ignoreTemporaryInvincibility, weakSpotHit);
+        ShowDamageNumber(damage, critHit, weakSpotHit);
+    }
 
+    protected virtual void ShowDamageNumber(int damage, bool critHit, bool weakSpotHit) {
         if (!SettingsManager.Instance.GetShowDamageNumbers()) return;
 
         int damageToWriteAsNumber = damage;
-        if(critHit) {
+        if (critHit) {
             damageToWriteAsNumber *= 2;
         }
 
@@ -420,7 +423,7 @@ public class Creature : Mob
     }
 
     #region STATUS EFFECTS
-    private void HandleStatusEffects() {
+    protected void HandleStatusEffects() {
         if(immobilized) {
             immobilizedTimer -= Time.deltaTime;
             if(immobilizedTimer < 0) {
@@ -561,7 +564,7 @@ public class Creature : Mob
         return autoAimPosition;
     }
 
-    private void OnDestroy() {
+    protected void OnDestroy() {
         PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
         PlayerMovement.Instance.OnPlayerCrouched -= PlayerMovement_OnPlayerCrouched;
         PlayerMovement.Instance.OnPlayerCrouchedEnded -= PlayerMovement_OnPlayerCrouchedEnded;

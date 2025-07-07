@@ -12,6 +12,7 @@ public class Mob : MonoBehaviour, IDamageable
     [SerializeField] protected Transform mobHitPS_Splatter_Continuous;
     [SerializeField] protected Transform mobHitPS_Splatter_Crit;
     [SerializeField] protected bool useHitXPosition;
+    protected bool instantiatePSOnHit = true;
 
     protected MobSpawner mobSpawner;
 
@@ -130,18 +131,25 @@ public class Mob : MonoBehaviour, IDamageable
     }
 
     public void InstantiateHitPS(float angle, float height, bool critHit, int damage, float xPosition) {
+        if (!instantiatePSOnHit) return;
         Vector3 localPosition = new Vector3(transform.position.x,height,0);
         if(useHitXPosition) {
             localPosition.x = xPosition;
         }
 
-        if(!critHit) {
-            Instantiate(mobHitPS_Splatter, localPosition, Quaternion.Euler(0, 0, angle), transform); // Particules pour impact normal
+        if(critHit && mobHitPS_Splatter_Crit != null) {
+
+            Instantiate(mobHitPS_Splatter_Crit, localPosition, Quaternion.Euler(0, 0, angle)); // Particules pour impact normal
+
         } else {
-            Instantiate(mobHitPS_Splatter_Crit, localPosition, Quaternion.Euler(0, 0, angle), transform); // Particules pour impact normal
+            if (mobHitPS_Splatter != null) {
+                Instantiate(mobHitPS_Splatter, localPosition, Quaternion.Euler(0, 0, angle)); // Particules pour impact normal
+            }
         }
 
-        Instantiate(mobHitPS_Splatter_Continuous, localPosition, Quaternion.Euler(0, 0, angle), transform); // Particules pour impact normal
+        if (mobHitPS_Splatter_Continuous != null) {
+            Instantiate(mobHitPS_Splatter_Continuous, localPosition, Quaternion.Euler(0, 0, angle)); // Particules pour impact normal
+        }
     }
 
     public virtual void Die() {
@@ -177,6 +185,11 @@ public class Mob : MonoBehaviour, IDamageable
         return dead;
     }
 
+    public void InvokeOnMobDamageTaken(Transform damageOrigin) {
+        OnMobDamageTaken?.Invoke(this, new OnMobDamageTakenEventArgs {
+            damageOriginTransform = damageOrigin
+        });
+    }
     public void InvokeOnMobDroppedCollectibles(List<Collectible> collectibleDroppedList) {
         OnMobDroppedCollectibles?.Invoke(this, new OnMobDroppedCollectibleEventArgs {
             collectibleDroppedList = collectiblesDropped

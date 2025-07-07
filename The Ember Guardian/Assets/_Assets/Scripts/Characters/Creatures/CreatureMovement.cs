@@ -55,6 +55,7 @@ public class CreatureMovement : MobMovement
         initialMobSpeed = initialMobSpeed + Random.Range(-creature.GetCreatureSO().moveSpeedRandomizerDelta, creature.GetCreatureSO().moveSpeedRandomizerDelta);
 
         moveSpeed = initialMobSpeed;
+        aggroMoveSpeedBuff = creature.GetCreatureSO().aggroMoveSpeedBuff;
     }
 
     public void SetCreatureAggroMoveSpeed(bool aggroMoveSpeed) {

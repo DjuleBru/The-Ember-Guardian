@@ -64,6 +64,10 @@ public class CreatureSO : ScriptableObject
     public float nightMoveSpeed;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
+    [Range(1, 20)]
+    public float aggroMoveSpeedBuff = 1.5f;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
     [Range(1, 3)]
     public float enteredLightMoveSpeedDebuff;
     [VerticalGroup("Game Data/Stats")]
@@ -97,15 +101,6 @@ public class CreatureSO : ScriptableObject
     [LabelWidth(200)]
     [Range(.1f, 20)]
     public float maxAttackRange;
-    [VerticalGroup("Game Data/Stats")]
-    [LabelWidth(200)]
-    public bool hasSpecialAbility;
-    [VerticalGroup("Game Data/Stats")]
-    [LabelWidth(200)]
-    [ShowIf("hasSpecialAbility")]
-    [Range(.1f, 20)]
-    public float specialAbilityCooldown;
-
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
     [Range(.1f, 10)]
