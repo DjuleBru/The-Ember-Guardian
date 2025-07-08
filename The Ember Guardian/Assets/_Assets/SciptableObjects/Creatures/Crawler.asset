@@ -21,11 +21,15 @@ MonoBehaviour:
   mass: 10
   detectionRange_Day: 10
   detectionRange_Night: 10
+  primaryAttackSO: {fileID: 11400000, guid: 99478e09c3f35a64c97f9c46f234cbd1, type: 2}
+  secondaryAttackSO: {fileID: 0}
+  specialAttackSO: {fileID: 0}
   flying: 0
   flightMinAltitude: 0
   flightMaxAltitude: 0
   dayMoveSpeed: 3
   nightMoveSpeed: 3
+  aggroMoveSpeedBuff: 1.5
   enteredLightMoveSpeedDebuff: 2
   moveSpeedRandomizerDelta: 0.3
   maxHealth: 10
@@ -35,8 +39,6 @@ MonoBehaviour:
   isRangedAttack: 0
   minAttackRange: 0.5
   maxAttackRange: 1
-  hasSpecialAbility: 0
-  specialAbilityCooldown: 0
   attackRangeRandomizer: 0.2
   attackRangeMaxDistanceMiss: 0.1
   damageToFire: 1
@@ -108,6 +110,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9a450c4338a0f1b419a7c704a6e94b55, type: 3}
   - {fileID: 8300000, guid: d6b2434db1e04c64f83e0d633e3d4b8e, type: 3}
   footstepVolumeMultiplier: 0.5
+  hasContinousAudioClip: 0
+  continuousAudioClip: []
   spawnAudioClips:
   - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
   - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}

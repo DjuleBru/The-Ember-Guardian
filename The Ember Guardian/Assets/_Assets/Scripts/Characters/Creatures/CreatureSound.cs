@@ -8,7 +8,6 @@ public class CreatureSound : SoundObject
     [SerializeField] protected AudioSource creatureContinousAudioSource;
     protected CreatureSO creatureSO;
 
-    protected bool attackSFXHandledByAnimation;
     [SerializeField] protected bool canHearCreatureOutsideScreen;
     [SerializeField] protected AudioSource creatureIdleAudioSource;
 
@@ -42,8 +41,7 @@ public class CreatureSound : SoundObject
         creatureAnimatorSounds.OnChargedAttackReleased += CreatureAnimatorSounds_OnChargedAttackReleased;
 
         creatureSO = creature.GetCreatureSO();
-        attackSFXHandledByAnimation = creatureSO.attackSFXHandledByAnimation;
-        attackSFXDelayAfterAnimationStart = creatureSO.attackSFXDelayAfterAnimationStart;
+        attackSFXDelayAfterAnimationStart = creatureAttack.GetCurrentCreatureAttackSO().attackSFXDelayAfterAnimationStart;
 
         if(creatureSO.hasContinousAudioClip) {
             AudioClip continuousAudioClip = creatureSO.continuousAudioClip[UnityEngine.Random.Range(0, creatureSO.continuousAudioClip.Length)];
@@ -62,34 +60,42 @@ public class CreatureSound : SoundObject
 
     protected void CreatureAnimatorSounds_OnChargedAttackReleased(object sender, System.EventArgs e) {
         if (IsTooFarFromPlayer()) return;
-        if (creatureSO.attackReleasedAudioClips.Length > 0) {
-            creatureAudioSource.PlayOneShot(creatureSO.attackReleasedAudioClips[Random.Range(0, creatureSO.attackReleasedAudioClips.Length)], creatureSO.attackVolumeMultiplier * sfxVolume);
+        AudioClip[] audioClips = creatureAttack.GetCurrentCreatureAttackSO().attackReleasedAudioClips;
+        if (audioClips.Length > 0) {
+            creatureAudioSource.PlayOneShot(audioClips[Random.Range(0, audioClips.Length)], creatureAttack.GetCurrentCreatureAttackSO().attackVolumeMultiplier * sfxVolume);
         }
     }
 
     protected void CreatureAnimatorSounds_OnAttackStartedCharging(object sender, System.EventArgs e) {
         if (IsTooFarFromPlayer()) return;
-        if (creatureSO.attackStartedChargingAudioClips.Length > 0) {
-            creatureAudioSource.PlayOneShot(creatureSO.attackStartedChargingAudioClips[Random.Range(0, creatureSO.attackStartedChargingAudioClips.Length)], creatureSO.attackVolumeMultiplier * sfxVolume);
+        AudioClip[] audioClips = creatureAttack.GetCurrentCreatureAttackSO().attackStartedChargingAudioClips;
+        if (audioClips.Length > 0) {
+            creatureAudioSource.PlayOneShot(audioClips[Random.Range(0, audioClips.Length)], creatureAttack.GetCurrentCreatureAttackSO().attackVolumeMultiplier * sfxVolume);
         }
     }
 
     protected void CreatureAttack_OnMobAttack(object sender, System.EventArgs e) {
-        if (attackSFXHandledByAnimation) return;
+        if (creatureAttack.GetCurrentCreatureAttackSO().attackSFXHandledByAnimation) return;
         if (IsTooFarFromPlayer()) return;
         StartCoroutine(PlayAttackSFXAfterDelay(attackSFXDelayAfterAnimationStart));
     }
 
     protected IEnumerator PlayAttackSFXAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
-        if (creatureSO.attackAudioClips.Length > 0) {
-            creatureAudioSource.PlayOneShot(creatureSO.attackAudioClips[Random.Range(0, creatureSO.attackAudioClips.Length)], creatureSO.attackVolumeMultiplier * sfxVolume);
+        AudioClip[] audioClips = creatureAttack.GetCurrentCreatureAttackSO().attackAudioClips;
+
+        if (audioClips.Length > 0) {
+            creatureAudioSource.PlayOneShot(audioClips[Random.Range(0, audioClips.Length)], creatureAttack.GetCurrentCreatureAttackSO().attackVolumeMultiplier * sfxVolume);
         }
     }
 
     protected void CreatureAttack_OnMobAttackHit(object sender, System.EventArgs e) {
         if (IsTooFarFromPlayer()) return;
-        creatureAudioSource.PlayOneShot(creatureSO.attackHitAudioClips[Random.Range(0, creatureSO.attackHitAudioClips.Length)], creatureSO.attackHitVolumeMultiplier * sfxVolume);
+        AudioClip[] audioClips = creatureAttack.GetCurrentCreatureAttackSO().attackHitAudioClips;
+        if (audioClips.Length > 0) {
+            creatureAudioSource.PlayOneShot(audioClips[Random.Range(0, audioClips.Length)], creatureAttack.GetCurrentCreatureAttackSO().attackHitVolumeMultiplier * sfxVolume);
+        }
+       
     }
 
     protected void CreatureAnimator_OnFootStepTriggered(object sender, System.EventArgs e) {

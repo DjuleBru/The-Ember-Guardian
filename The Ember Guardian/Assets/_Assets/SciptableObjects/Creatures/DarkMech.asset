@@ -21,6 +21,9 @@ MonoBehaviour:
   mass: 20
   detectionRange_Day: 15
   detectionRange_Night: 12
+  primaryAttackSO: {fileID: 11400000, guid: 3cfa3c2ecb87ced4098e313ba056a55b, type: 2}
+  secondaryAttackSO: {fileID: 0}
+  specialAttackSO: {fileID: 0}
   flying: 0
   flightMinAltitude: 0
   flightMaxAltitude: 0
@@ -37,7 +40,7 @@ MonoBehaviour:
   minAttackRange: 10
   maxAttackRange: 15
   attackRangeRandomizer: 2
-  attackRangeMaxDistanceMiss: 1
+  attackRangeMaxDistanceMiss: 2
   damageToFire: 1
   immuneToPoison: 0
   immuneToShock: 0
@@ -61,7 +64,7 @@ MonoBehaviour:
   maxCreaturesPerPacket: 3
   dieAudioClips:
   - {fileID: 8300000, guid: 7c6eeba99f90050418a6860b03b89c2d, type: 3}
-  dieVolumeMultiplier: 2
+  dieVolumeMultiplier: 2.5
   aggroAudioClips:
   - {fileID: 8300000, guid: 0f446c4cdb1cc9d4492137ca2d01599d, type: 3}
   aggroVolumeMultiplier: 0.8

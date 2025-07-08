@@ -8,17 +8,12 @@ public class CreatureAI_RangedFlee : CreatureAI
 
     protected override void Awake() {
         base.Awake();
-        minAllowedDistanceFromPlayer = UnityEngine.Random.Range(minAllowedDistanceFromPlayer - minAllowedDistanceFromPlayer / 5, minAllowedDistanceFromPlayer + minAllowedDistanceFromPlayer / 5);
-
-        if(minAllowedDistanceFromPlayer >= minAttackRange) {
-            minAllowedDistanceFromPlayer -= minAttackRange/4f;
-        }
     }
 
     protected override void SetAttackRange() {
+        base.SetAttackRange();
 
-        minAttackRange = creature.GetCreatureSO().minAttackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
-        maxAttackRange = creature.GetCreatureSO().maxAttackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
+        minAllowedDistanceFromPlayer = UnityEngine.Random.Range(minAllowedDistanceFromPlayer - minAllowedDistanceFromPlayer / 5, minAllowedDistanceFromPlayer + minAllowedDistanceFromPlayer / 5);
         if (minAllowedDistanceFromPlayer >= minAttackRange) {
             minAllowedDistanceFromPlayer -= minAttackRange / 4f;
         }

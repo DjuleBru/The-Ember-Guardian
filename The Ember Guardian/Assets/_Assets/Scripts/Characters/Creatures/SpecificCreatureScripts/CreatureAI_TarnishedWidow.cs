@@ -137,7 +137,7 @@ public class CreatureAI_TarnishedWidow : CreatureAI
             return;
         }
 
-        if (attackTarget == null || (!CheckAttackTargetInRange() && !mobAttack.GetAttackStarted())) {
+        if (attackTarget == null || (!CheckAttackTargetInRange() && !creatureAttack.GetAttackStarted())) {
             ChangeState(State.moveToTarget);
             return;
         }
@@ -157,7 +157,7 @@ public class CreatureAI_TarnishedWidow : CreatureAI
         jumpTimer = jumpDuration;
         barricadeJumpedOverPosition = (attackTarget as MonoBehaviour).transform.position;
         behindBarricadeJumpPosition = barricadeJumpedOverPosition;
-        mobAttack.RemoveAttackTarget();
+        creatureAttack.RemoveAttackTarget();
         detectionCollider.ExcludeIDamageableFromDetectableTargets(attackTarget);
         creature.SetCreatureCanBeTargeted(false);
 
@@ -200,7 +200,7 @@ public class CreatureAI_TarnishedWidow : CreatureAI
         jumping = true;
         jumpTimer = jumpDuration;
         creature.SetCreatureCanBeTargeted(false);
-        mobAttack.RemoveAttackTarget();
+        creatureAttack.RemoveAttackTarget();
 
         if (barricadeJumpedOverPosition.x > 0) {
             behindBarricadeJumpPosition.x -= distanceToLandBehindBarricade;

@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4031d27ff643044292075ec5021e470, type: 3}
+  m_Name: DarkMechAttack
+  m_EditorClassIdentifier: 
+  isRangedAttack: 1
+  isProjectileAttack: 1
+  isStaticProjectileAttack: 0
+  isAnimatedAttack: 0
+  attackCooldown: 4
+  minAttackRange: 10
+  maxAttackRange: 15
+  hasDifferentDayAndNightRange: 0
+  minAttackRange_Night: 10
+  maxAttackRange_Night: 15
+  attackRangeRandomizer: 2
+  damage: 1
+  damageToFire: 1
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 1
+  attackAnimationDelay: 0.6
+  totalAttackAnimationTime: 2
+  attackSFXDelayAfterAnimationStart: 0
+  staticProjectilePrefab: {fileID: 0}
+  staticProjectileAutoTargetsPlayer: 0
+  projectileAmountInPool: 6
+  projectileAmountShotInAttack: 3
+  delayBetweenProjectileSpawns: 0.3
+  projectileSO: {fileID: 11400000, guid: 0602c8ce3c78c4541af18d4ac8f1a47f, type: 2}
+  attackRangeRandomizerMiss: 2
+  attackSFXHandledByAnimation: 0
+  attackAudioClips:
+  - {fileID: 8300000, guid: 7aa74c6cf27659a40aca37961e8d8717, type: 3}
+  attackHitAudioClips: []
+  attackStartedChargingAudioClips: []
+  attackReleasedAudioClips: []
+  attackVolumeMultiplier: 2.5
+  attackHitVolumeMultiplier: 0.5

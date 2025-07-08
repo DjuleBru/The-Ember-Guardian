@@ -7,7 +7,7 @@ public class CreatureAI : MonoBehaviour {
 
     protected Creature creature;
     protected CreatureMovement creatureMovement;
-    protected MobAttack mobAttack;
+    protected CreatureAttack creatureAttack;
 
     protected float minAttackRange;
     protected float maxAttackRange;
@@ -50,7 +50,7 @@ public class CreatureAI : MonoBehaviour {
 
     protected virtual void Awake() {
         creatureMovement = GetComponent<CreatureMovement>();
-        mobAttack = GetComponent<MobAttack>();
+        creatureAttack = GetComponent<CreatureAttack>();
         creature = GetComponent<Creature>();
 
         spawned = false;
@@ -67,8 +67,12 @@ public class CreatureAI : MonoBehaviour {
 
     protected virtual void SetAttackRange() {
 
-        minAttackRange = creature.GetCreatureSO().minAttackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
-        maxAttackRange = creature.GetCreatureSO().maxAttackRange + UnityEngine.Random.Range(-creature.GetCreatureSO().attackRangeRandomizer, creature.GetCreatureSO().attackRangeRandomizer);
+        float minAttackRangeSO = creatureAttack.GetCurrentCreatureAttackSO().minAttackRange;
+        float maxAttackRangeSO = creatureAttack.GetCurrentCreatureAttackSO().maxAttackRange;
+        float attackRangeRandomizerSO = creatureAttack.GetCurrentCreatureAttackSO().attackRangeRandomizer;
+
+        minAttackRange = minAttackRangeSO + UnityEngine.Random.Range(-attackRangeRandomizerSO, attackRangeRandomizerSO);
+        maxAttackRange = maxAttackRangeSO + UnityEngine.Random.Range(-attackRangeRandomizerSO, attackRangeRandomizerSO);
     
     }
 
@@ -197,7 +201,7 @@ public class CreatureAI : MonoBehaviour {
             return;
         }
 
-        if (attackTarget == null || (!CheckAttackTargetInRange() && !mobAttack.GetAttackStarted())) {
+        if (attackTarget == null || (!CheckAttackTargetInRange() && !creatureAttack.GetAttackStarted())) {
             ChangeState(State.moveToTarget);
             return;
         }
@@ -230,7 +234,7 @@ public class CreatureAI : MonoBehaviour {
         if (died) return;
         if (newState == State.attacking) {
             creatureMovement.SetMoveTarget(transform.position);
-            mobAttack.SetAttackTarget(attackTarget);
+            creatureAttack.SetAttackTarget(attackTarget);
 
             if (followingTargetBuffedSpeed) {
                 creatureMovement.SetCreatureAggroMoveSpeed(false);
@@ -240,7 +244,7 @@ public class CreatureAI : MonoBehaviour {
 
         if(newState == State.walkingToFire) {
             creatureMovement.SetMoveTarget(transform.position);
-            mobAttack.RemoveAttackTarget();
+            creatureAttack.RemoveAttackTarget();
 
             //creatureMovement.SetMoveSpeed(walkingToFireMoveSpeed);
             followingTargetBuffedSpeed = true;
@@ -248,7 +252,7 @@ public class CreatureAI : MonoBehaviour {
 
         if (newState == State.walkingToSpawner) {
             creatureMovement.SetMoveTarget(transform.position);
-            mobAttack.RemoveAttackTarget();
+            creatureAttack.RemoveAttackTarget();
 
             if (followingTargetBuffedSpeed) {
                 creatureMovement.SetCreatureAggroMoveSpeed(false);
@@ -268,7 +272,7 @@ public class CreatureAI : MonoBehaviour {
                 followingTargetBuffedSpeed = true;
             }
 
-            mobAttack.RemoveAttackTarget();
+            creatureAttack.RemoveAttackTarget();
         }
 
         if (newState == State.idle) {
@@ -278,7 +282,7 @@ public class CreatureAI : MonoBehaviour {
             }
 
             creatureMovement.SetMoveTarget(transform.position);
-            mobAttack.RemoveAttackTarget();
+            creatureAttack.RemoveAttackTarget();
         }
 
         state = newState;

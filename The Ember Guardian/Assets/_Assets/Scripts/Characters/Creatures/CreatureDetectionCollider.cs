@@ -7,6 +7,7 @@ public class CreatureDetectionCollider : MonoBehaviour
     private Creature creature;
     private CreatureAI creatureAI;
     private CreatureMovement creatureMovement;
+    private CreatureAttack creatureAttack;
     private CircleCollider2D circleCollider;
     private List<IDamageable> iDamageablesInDetectionRange = new List<IDamageable>();
     private List<IDamageable> iDamageablesExcludedFromDetection = new List<IDamageable>();
@@ -34,6 +35,7 @@ public class CreatureDetectionCollider : MonoBehaviour
         creature = GetComponentInParent<Creature>();
         creatureAI = GetComponentInParent<CreatureAI>();
         creatureMovement = GetComponentInParent<CreatureMovement>();
+        creatureAttack = GetComponentInParent<CreatureAttack>();
         circleCollider = GetComponent<CircleCollider2D>();
     }
 
@@ -318,13 +320,13 @@ public class CreatureDetectionCollider : MonoBehaviour
         // Check if player is in range in the y axis (tower) !
         if(Player.Instance.transform.position.y > 0.1f) {
 
-            if (!creature.GetCreatureSO().canAttackPlayerOnTower) {
+            if (!creatureAttack.GetCurrentCreatureAttackSO().canAttackPlayerOnTower) {
                 return false;
             }
 
             else {
                 // Creature can attack player on tower : is he in range ? (ex. ghouls on lvl 1 towers)
-                if (Player.Instance.transform.position.y > creature.GetCreatureSO().minAttackRange) {
+                if (Player.Instance.transform.position.y > creatureAttack.GetCurrentCreatureAttackSO().minAttackRange) {
                     return false;
                 }
             }
@@ -341,7 +343,7 @@ public class CreatureDetectionCollider : MonoBehaviour
 
             // Player is within camp zone
 
-            if (creature.GetCreatureSO().canAttackPlayerBehindBarricades) {
+            if (creatureAttack.GetCurrentCreatureAttackSO().canAttackPlayerBehindBarricades) {
                 return true;
             }
 

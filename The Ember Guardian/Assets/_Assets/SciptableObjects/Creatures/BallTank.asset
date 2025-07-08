@@ -21,11 +21,15 @@ MonoBehaviour:
   mass: 5
   detectionRange_Day: 10
   detectionRange_Night: 10
+  primaryAttackSO: {fileID: 11400000, guid: a7ee0484d62370e4a94124ce9876329d, type: 2}
+  secondaryAttackSO: {fileID: 0}
+  specialAttackSO: {fileID: 0}
   flying: 1
   flightMinAltitude: 6
   flightMaxAltitude: 12
   dayMoveSpeed: 3
   nightMoveSpeed: 3
+  aggroMoveSpeedBuff: 1.5
   enteredLightMoveSpeedDebuff: 1.3
   moveSpeedRandomizerDelta: 0.25
   maxHealth: 10

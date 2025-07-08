@@ -23,8 +23,8 @@ public class CreatureAI_Flying : CreatureAI
 
     protected override void Start() {
         base.Start();
-        mobAttack.OnMobAttackHit += MobAttack_OnMobAttackHit;
-        repositionCooldown = creature.GetCreatureSO().attackRate - .1f;
+        creatureAttack.OnMobAttackHit += MobAttack_OnMobAttackHit;
+        repositionCooldown = creatureAttack.GetCurrentCreatureAttackSO().attackCooldown - .1f;
 
         minAltitude = creature.GetCreatureSO().flightMinAltitude;
         maxAltitude = creature.GetCreatureSO().flightMaxAltitude;
@@ -34,7 +34,7 @@ public class CreatureAI_Flying : CreatureAI
         isRepositioning = true;
         repositionTimer = repositionCooldown;
         roamTimer = 0;
-        mobAttack.RemoveAttackTarget();
+        creatureAttack.RemoveAttackTarget();
         lastPlayerHitPosition = transform.position;
     }
 
@@ -111,7 +111,7 @@ public class CreatureAI_Flying : CreatureAI
                     return;
                 }
 
-                if (!CheckAttackTargetInRange() && !mobAttack.GetAttackStarted()) {
+                if (!CheckAttackTargetInRange() && !creatureAttack.GetAttackStarted()) {
                     ChangeState(State.moveToTarget);
                     return;
                 }

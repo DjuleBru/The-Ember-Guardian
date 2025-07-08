@@ -25,10 +25,11 @@ public class CreatureSO : ScriptableObject
     public Sprite creatureIcon_Portrait;
 
 
-    [HorizontalGroup("Game Data", 75)]
-    [PreviewField]
+    [BoxGroup("Basic Info")]
+    [LabelWidth(100)]
     public GameObject creaturePrefab;
 
+    [HorizontalGroup("Game Data")]
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
     [Range(1, 100)]
@@ -41,6 +42,15 @@ public class CreatureSO : ScriptableObject
     [LabelWidth(200)]
     [Range(1, 20)]
     public float detectionRange_Night;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
+    public CreatureAttackSO primaryAttackSO;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
+    public CreatureAttackSO secondaryAttackSO;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
+    public CreatureAttackSO specialAttackSO;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
     public bool flying;
@@ -80,41 +90,8 @@ public class CreatureSO : ScriptableObject
     public int maxHealth;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
-    [Range(1, 20)]
-    public int damage;
-    [VerticalGroup("Game Data/Stats")]
-    [LabelWidth(200)]
-    [Range(1f, 5)]
-    public float attackRate;
-    [VerticalGroup("Game Data/Stats")]
-    [LabelWidth(200)]
     [Range(1, 3)]
     public float enteredLightattackRateDebuff;
-    [VerticalGroup("Game Data/Stats")]
-    [LabelWidth(200)]
-    public bool isRangedAttack;
-    [VerticalGroup("Game Data/Stats")]
-    [LabelWidth(200)]
-    [Range(.1f, 20)]
-    public float minAttackRange;
-    [VerticalGroup("Game Data/Stats")]
-    [LabelWidth(200)]
-    [Range(.1f, 20)]
-    public float maxAttackRange;
-    [VerticalGroup("Game Data/Stats")]
-    [LabelWidth(200)]
-    [Range(.1f, 10)]
-    public float attackRangeRandomizer;
-    [VerticalGroup("Game Data/Stats")]
-    [LabelWidth(200)]
-    [Range(.1f, 10)]
-    [ShowIf("isRangedAttack")]
-    public float attackRangeMaxDistanceMiss;
-    [VerticalGroup("Game Data/Stats")]
-    [LabelWidth(200)]
-    [Range(0, 3)]
-    public int damageToFire;
-
 
     [BoxGroup("Game Data/Status Effects")]
     [LabelWidth(200)]
@@ -126,22 +103,13 @@ public class CreatureSO : ScriptableObject
     [LabelWidth(200)]
     public bool immuneToImmobilize;
 
-    [BoxGroup("Game Data/Animation Parameters")]
-    [LabelWidth(200)]
-    public float attackAnimationDelay;
-    [BoxGroup("Game Data/Animation Parameters")]
-    [LabelWidth(200)]
-    public float attackSFXDelayAfterAnimationStart;
-    [BoxGroup("Game Data/Animation Parameters")]
-    [LabelWidth(200)]
-    public float totalAttackAnimationTime;
-    [BoxGroup("Game Data/Animation Parameters")]
+    [BoxGroup("Animation Parameters")]
     [LabelWidth(200)]
     public bool hasCustomSpawnAnimation;
-    [BoxGroup("Game Data/Animation Parameters")]
+    [BoxGroup("Animation Parameters")]
     [LabelWidth(200)]
     public float spawnAnimationDuration = 1f;
-    [BoxGroup("Game Data/Animation Parameters")]
+    [BoxGroup("Animation Parameters")]
     [LabelWidth(200)]
     [Range(.5f, 2)]
     public float baseMovementAnimationSpeed;
@@ -159,12 +127,6 @@ public class CreatureSO : ScriptableObject
     [LabelWidth(200)]
     [Range(0, 5)]
     public int barricadeTargetingPriority;
-    [BoxGroup("AI")]
-    [LabelWidth(200)]
-    public bool canAttackPlayerBehindBarricades;
-    [BoxGroup("AI")]
-    [LabelWidth(200)]
-    public bool canAttackPlayerOnTower;
 
 
     [BoxGroup("Drop Stats")]
@@ -205,30 +167,6 @@ public class CreatureSO : ScriptableObject
     [BoxGroup("SFX")]
     [LabelWidth(200)]
     public float aggroVolumeMultiplier = .5f;
-
-
-    public bool attackSFXHandledByAnimation;
-    [ShowIf("attackSFXHandledByAnimation")]
-    [BoxGroup("SFX")]
-    [LabelWidth(200)]
-    public AudioClip[] attackStartedChargingAudioClips;
-    [ShowIf("attackSFXHandledByAnimation")]
-    [BoxGroup("SFX")]
-    [LabelWidth(200)]
-    public AudioClip[] attackReleasedAudioClips;
-
-    [BoxGroup("SFX")]
-    [LabelWidth(200)]
-    public AudioClip[] attackHitAudioClips;
-    [BoxGroup("SFX")]
-    [LabelWidth(200)]
-    public float attackVolumeMultiplier = .5f;
-    [BoxGroup("SFX")]
-    [LabelWidth(200)]
-    public AudioClip[] attackAudioClips;
-    [BoxGroup("SFX")]
-    [LabelWidth(200)]
-    public float attackHitVolumeMultiplier = .5f;
 
     [BoxGroup("SFX")]
     [LabelWidth(200)]

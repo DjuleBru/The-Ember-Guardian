@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4031d27ff643044292075ec5021e470, type: 3}
+  m_Name: BanditAttack
+  m_EditorClassIdentifier: 
+  isRangedAttack: 0
+  isProjectileAttack: 0
+  isStaticProjectileAttack: 0
+  isAnimatedAttack: 1
+  attackCooldown: 2.5
+  minAttackRange: 1.5
+  maxAttackRange: 2.5
+  hasDifferentDayAndNightRange: 0
+  minAttackRange_Night: 10
+  maxAttackRange_Night: 15
+  attackRangeRandomizer: 0.3
+  damage: 1
+  damageToFire: 1
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 0
+  attackAnimationDelay: 0.1
+  totalAttackAnimationTime: 0.6
+  attackSFXDelayAfterAnimationStart: 0
+  staticProjectilePrefab: {fileID: 7991158393713654780, guid: a5ea1941e0688aa4fb8f9502aeee8c9d, type: 3}
+  projectileAmountInPool: 0
+  projectileAmountShotInAttack: 0
+  delayBetweenProjectileSpawns: 0
+  projectileSO: {fileID: 11400000, guid: f6761823ce1e8164095fc93d0a9bbfd2, type: 2}
+  attackRangeRandomizerMiss: 0.5
+  attackSFXHandledByAnimation: 0
+  attackAudioClips:
+  - {fileID: 8300000, guid: fe40a58834a1552469ea3ddb318ba63d, type: 3}
+  - {fileID: 8300000, guid: 7c320ffa39f173c48b3bd0605cf2ffd0, type: 3}
+  - {fileID: 8300000, guid: ac5ac89374fbfc14c98c3f0279c39d0b, type: 3}
+  - {fileID: 8300000, guid: 847acbedb1031194785921cc2aa568c9, type: 3}
+  - {fileID: 8300000, guid: e44cdcac083cd4a41b267f82be2d046e, type: 3}
+  attackHitAudioClips:
+  - {fileID: 8300000, guid: 300d3bd6039a10545ad2b7c9bb41e01c, type: 3}
+  - {fileID: 8300000, guid: 46f47b256de48d44fa6cdb698adf0ffa, type: 3}
+  - {fileID: 8300000, guid: 613df4a8fdcc6884889acaa78768e016, type: 3}
+  attackStartedChargingAudioClips: []
+  attackReleasedAudioClips: []
+  attackVolumeMultiplier: 0.5
+  attackHitVolumeMultiplier: 1

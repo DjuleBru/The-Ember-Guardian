@@ -34,7 +34,6 @@ public class CreatureDamageCollider : MonoBehaviour
             Player player = (iDamageable as MonoBehaviour).GetComponent<Player>();
 
             if(player != null) {
-                Debug.Log(creatureDamageColliderParent.PlayerJustExitedCollider());
                 if (creatureDamageColliderParent.PlayerJustExitedCollider()) return;
                 // Attack hit player
                 if (impactAmountOnPlayerInSingleAnimation >= maxImpactAmountInSingleAnimation) return;

@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4031d27ff643044292075ec5021e470, type: 3}
+  m_Name: CrawlerAttack
+  m_EditorClassIdentifier: 
+  isRangedAttack: 0
+  isProjectileAttack: 0
+  isStaticProjectileAttack: 0
+  isAnimatedAttack: 0
+  attackCooldown: 2
+  minAttackRange: 0.5
+  maxAttackRange: 1
+  attackRangeRangomizer: 0.2
+  damage: 1
+  damageToFire: 1
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 0
+  attackAnimationDelay: 0.2
+  totalAttackAnimationTime: 0.8
+  attackSFXDelayAfterAnimationStart: 0
+  staticProjectilePrefab: {fileID: 0}
+  projectileAmountInPool: 0
+  projectileAmountShotInAttack: 0
+  delayBetweenProjectileSpawns: 0
+  projectileSO: {fileID: 0}
+  attackRangeRangomizerMiss: 0
+  attackAudioClips: []
+  attackHitAudioClips:
+  - {fileID: 8300000, guid: 240bd358628162b4bb6261b9ddcc28aa, type: 3}
+  - {fileID: 8300000, guid: d5e60a888feddd14ea24eb78163f90e8, type: 3}
+  - {fileID: 8300000, guid: 9371dd072a28bd24783f79e92adaeff0, type: 3}
+  - {fileID: 8300000, guid: 8646592f13bfba84f81361b4237b4b02, type: 3}
+  - {fileID: 8300000, guid: f1f01ed90f31d6441a13b0ca03219eaa, type: 3}
+  attackVolumeMultiplier: 0.5
+  attackHitVolumeMultiplier: 0.5
