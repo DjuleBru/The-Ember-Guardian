@@ -108,11 +108,15 @@ public class StaticProjectile : MonoBehaviour
         this.damage = damage;
         this.isPlayerStaticProjectile = isPlayerStaticProjectile;
 
+        Debug.Log("watchDir " + watchDir + " takeWatchDirInAccount " + takeWatchDirInAccount);
+
         if(takeWatchDirInAccount) {
             if (watchDir < 0) {
                 Vector3 localScale = Vector3.one;
                 localScale.x = -1f;
                 transform.localScale = localScale;
+            } else {
+                transform.localScale = Vector3.one;
             }
         }
 

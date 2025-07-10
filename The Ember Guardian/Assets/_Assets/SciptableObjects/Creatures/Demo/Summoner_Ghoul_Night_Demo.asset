@@ -21,39 +21,28 @@ MonoBehaviour:
   mass: 20
   detectionRange_Day: 8
   detectionRange_Night: 8
+  primaryAttackSO: {fileID: 0}
+  secondaryAttackSO: {fileID: 0}
+  specialAttackSO: {fileID: 0}
   flying: 0
   flightMinAltitude: 0
   flightMaxAltitude: 0
   dayMoveSpeed: 1.8
   nightMoveSpeed: 3
+  aggroMoveSpeedBuff: 1.5
   enteredLightMoveSpeedDebuff: 1.3
   moveSpeedRandomizerDelta: 0.25
   maxHealth: 60
-  damage: 1
-  attackRate: 2.04
   enteredLightattackRateDebuff: 2.5
-  isRangedAttack: 0
-  minAttackRange: 1
-  maxAttackRange: 2
-  hasSpecialAbility: 1
-  specialAbilityCooldown: 15
-  attackRangeRandomizer: 0.5
-  attackRangeMaxDistanceMiss: 0.1
-  damageToFire: 1
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0
-  attackAnimationDelay: 0.2
-  attackSFXDelayAfterAnimationStart: 0
-  totalAttackAnimationTime: 0.6
   hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 0.85
   workerTargetingPriority: 1
   playerTargetingPriority: 3
   barricadeTargetingPriority: 2
-  canAttackPlayerBehindBarricades: 0
-  canAttackPlayerOnTower: 0
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
   difficulty: 8
@@ -71,19 +60,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 09714533c5bc0f645b482e3f1ed6e3e3, type: 3}
   - {fileID: 8300000, guid: a342ad29969dcc54eb2e92743940c990, type: 3}
   aggroVolumeMultiplier: 0.8
-  attackSFXHandledByAnimation: 0
-  attackStartedChargingAudioClips: []
-  attackReleasedAudioClips: []
-  attackHitAudioClips:
-  - {fileID: 8300000, guid: 498923413eb6f0e4ea28d723b12ca66d, type: 3}
-  - {fileID: 8300000, guid: 3e67517f55127384c90ac83a87ba48e3, type: 3}
-  - {fileID: 8300000, guid: 8dc34b702fb94c640b1d5eba346d684e, type: 3}
-  - {fileID: 8300000, guid: f4be78a8f1c3ad84dbfa82505829ddfc, type: 3}
-  - {fileID: 8300000, guid: 6003e96bc848ca242aa3664bb7b27ca7, type: 3}
-  - {fileID: 8300000, guid: 927031e169138904594b453531c1eb33, type: 3}
-  attackVolumeMultiplier: 0.5
-  attackAudioClips: []
-  attackHitVolumeMultiplier: 0.5
   idleAudioClips:
   - {fileID: 8300000, guid: 0955a64cf2c91f441a67c383939107a9, type: 3}
   - {fileID: 8300000, guid: 5cf867f48b95cb84f9c42ae6f8bc4ccb, type: 3}
@@ -104,8 +80,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3275cfe9c27b2e94ea3c4fb7e31a6a3a, type: 3}
   - {fileID: 8300000, guid: f9486f641620faa4aa7d979d40bbdc80, type: 3}
   footstepVolumeMultiplier: 0.5
+  hasContinousAudioClip: 0
+  continuousAudioClip: []
   spawnAudioClips:
   - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
   - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}
   - {fileID: 8300000, guid: b6d953aeaa52e58499a331b756752ad1, type: 3}
   spawnVolumeMultiplier: 0.75
+  bulletHitAudioClips:
+  - {fileID: 8300000, guid: 5f188511e9287924ab0bc56282bb5bb1, type: 3}
+  - {fileID: 8300000, guid: 370af63962d422e42a9ddc6c19243081, type: 3}
+  - {fileID: 8300000, guid: 32433cb07860c854f8514231e93f3813, type: 3}
+  - {fileID: 8300000, guid: 7c4ef5419b0a7a24b9c549ea14b1e263, type: 3}
+  - {fileID: 8300000, guid: 3aa5ce64a65a5a2489835833a2a763a5, type: 3}
+  bulletHitVolumeMultiplier: 1

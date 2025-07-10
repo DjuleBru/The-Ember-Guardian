@@ -13,6 +13,8 @@ public class GunVisual : MonoBehaviour
     [SerializeField] protected SpriteRenderer gunLightsSpriteRenderer;
     [SerializeField] protected SpriteRenderer gunCooldownLightsSpriteRenderer;
     [SerializeField] protected Color outOfAmmoCooldownLightsColor;
+    [SerializeField] protected Material initalLightsSpriteRendererMaterial;
+    [SerializeField] protected Material weaponSurgeLightsSpriteRendererMaterial;
 
     protected float tryShootOutOfAmmoAnimationDuration = .3f;
     protected Color initialLightsColor;
@@ -38,6 +40,8 @@ public class GunVisual : MonoBehaviour
     protected virtual void Start() {
         gun.OnGunJammed += Gun_OnGunJammed;
         gunJamHandler.OnJamSequenceCompleted += GunJamHandler_OnJamSequenceCompleted;
+        gun.OnPerfectQTEDamageBuff += Gun_OnPerfectQTEDamageBuff;
+        gun.OnPerfectQTEDamageBuffEnded += Gun_OnPerfectQTEDamageBuffEnded;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
 
@@ -53,6 +57,14 @@ public class GunVisual : MonoBehaviour
         if(gunSecondaryAbilityActiveSpriteRenderer != null) {
             gunSecondaryAbilityActiveSpriteRenderer.enabled = false;
         }
+    }
+
+    private void Gun_OnPerfectQTEDamageBuffEnded(object sender, System.EventArgs e) {
+        gunLightsSpriteRenderer.material = initalLightsSpriteRendererMaterial;
+    }
+
+    private void Gun_OnPerfectQTEDamageBuff(object sender, System.EventArgs e) {
+        gunLightsSpriteRenderer.material = weaponSurgeLightsSpriteRendererMaterial;
     }
 
     private void GunJamHandler_OnJamSequenceCompleted(object sender, System.EventArgs e) {

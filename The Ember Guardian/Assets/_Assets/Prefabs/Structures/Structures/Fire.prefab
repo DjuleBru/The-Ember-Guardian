@@ -38035,7 +38035,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: initialPayCurrencySmoothTime
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5738346740003807192, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_LocalPosition.x
@@ -38193,6 +38193,11 @@ MonoBehaviour:
   wildFireRadius: 20.35
   insaneFireRadius: 20.35
   fuelDepletionRate: 0.05
+  criticalFuelTreshold: 14
+  calmFuelTreshold: 0
+  mildFuelTreshold: 10
+  wildFuelTreshold: 20
+  insaneFuelTreshold: 55
   respawningPlayerFuelRateDepletion: 2
   debugFuelLevel: 0
   emberSpawnPosition: {fileID: 3486698585892022868}

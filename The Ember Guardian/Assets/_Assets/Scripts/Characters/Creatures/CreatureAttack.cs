@@ -16,6 +16,10 @@ public class CreatureAttack : MobAttack
     private float attackRangeMaxDistanceMiss;
     private int damageToFire;
 
+
+    protected Transform primaryAttackProjectileSpawnPosition;
+    [SerializeField] protected Transform secondaryAttackProjectileSpawnPosition;
+
     protected override void Awake() {
         base.Awake();
         creature = GetComponent<Creature>();
@@ -24,6 +28,7 @@ public class CreatureAttack : MobAttack
         creature.OnCreatureStunStarted += Creature_OnCreatureStunStarted;
         creature.OnCreatureStunStopped += Creature_OnCreatureStunStopped;
 
+        primaryAttackProjectileSpawnPosition = projectileSpawnPoint;
         SetAttackSO(creature.GetCreatureSO().primaryAttackSO);
     }
 
@@ -68,6 +73,13 @@ public class CreatureAttack : MobAttack
 
         projectileSO = attackSO.projectileSO;
         staticProjectilePrefab = attackSO.staticProjectilePrefab;
+
+        if(attackSO == creature.GetCreatureSO().secondaryAttackSO) {
+            projectileSpawnPoint = secondaryAttackProjectileSpawnPosition;
+        }
+        if (attackSO == creature.GetCreatureSO().primaryAttackSO) {
+            projectileSpawnPoint = primaryAttackProjectileSpawnPosition;
+        }
     }
 
     public override void DealDamage() {
@@ -127,6 +139,13 @@ public class CreatureAttack : MobAttack
 
     private void Creature_OnCreatureStunStarted(object sender, EventArgs e) {
         stunned = false;
+    }
+
+    public bool GetIsPrimaryAttack() {
+        return currentCreatureAttackSO == creature.GetCreatureSO().primaryAttackSO;
+    }
+    public bool GetIsSecondaryAttack() {
+        return currentCreatureAttackSO == creature.GetCreatureSO().secondaryAttackSO;
     }
 
     public CreatureAttackSO GetCurrentCreatureAttackSO() {

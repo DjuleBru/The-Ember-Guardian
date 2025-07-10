@@ -66,7 +66,7 @@ public class CreatureAI : MonoBehaviour {
 
 
     protected virtual void SetAttackRange() {
-
+        if (creatureAttack.GetCurrentCreatureAttackSO() == null) return;
         float minAttackRangeSO = creatureAttack.GetCurrentCreatureAttackSO().minAttackRange;
         float maxAttackRangeSO = creatureAttack.GetCurrentCreatureAttackSO().maxAttackRange;
         float attackRangeRandomizerSO = creatureAttack.GetCurrentCreatureAttackSO().attackRangeRandomizer;
@@ -77,7 +77,6 @@ public class CreatureAI : MonoBehaviour {
     }
 
     private void SetInitialState() {
-
 
         if (creature.IsDayCreature()) {
 
@@ -288,7 +287,7 @@ public class CreatureAI : MonoBehaviour {
         state = newState;
     }
 
-    protected bool CheckAttackTargetInRange() {
+    protected virtual bool CheckAttackTargetInRange() {
         if ((attackTarget as MonoBehaviour) == null) return false;
         Vector3 targetPosition = attackTarget.GetMeleeAttackPosition().position;
 

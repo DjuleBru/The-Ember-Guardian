@@ -543,11 +543,11 @@ public class SoundManager : MonoBehaviour
     #region SHOOTING
 
     private void Mob_OnAnyMobDamageTaken(object sender, System.EventArgs e) {
-        Mob mob = sender as Mob;
-        Creature creature = mob as Creature;
-        if (creature == null) return;
+        //Mob mob = sender as Mob;
+        //Creature creature = mob as Creature;
+        //if (creature == null) return;
 
-        PlaySound2D(creature.GetCreatureSO().bulletHitAudioClips, creature.GetCreatureSO().bulletHitVolumeMultiplier);
+        //PlaySound2D(creature.GetCreatureSO().bulletHitAudioClips, creature.GetCreatureSO().bulletHitVolumeMultiplier);
     }
 
     private void ParticleCollision_OnAnyPlayerBulletHitGround(object sender, ParticleCollision.OnBulletHitEventArgs e) {
@@ -556,8 +556,12 @@ public class SoundManager : MonoBehaviour
     }
 
     private void ParticleCollision_OnAnyPlayerBulletHitEnemy(object sender, ParticleCollision.OnBulletHitEventArgs e) {
-        //AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitEnemySound;
-        //PlaySound2D(audioClipArray, .5f);
+        Creature creatureHit = e.mobHit as Creature;
+
+        if (creatureHit == null) return;
+
+        AudioClip[] audioClipArray = creatureHit.GetCreatureSO().bulletHitAudioClips;
+        PlaySound2D(audioClipArray, creatureHit.GetCreatureSO().bulletHitVolumeMultiplier);
     }
 
     private void ParticleCollision_OnAnyBulletHitEnemyCrit(object sender, ParticleCollision.OnBulletHitEventArgs e) {
@@ -572,8 +576,12 @@ public class SoundManager : MonoBehaviour
     }
 
     private void ParticleCollision_OnAnyBulletHitEnemy(object sender, ParticleCollision.OnBulletHitEventArgs e) {
-        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitEnemySound;
-        PlaySound3D(audioClipArray, e.bulletHitPosition, .5f);
+        Creature creatureHit = e.mobHit as Creature;
+
+        if (creatureHit == null) return;
+
+        AudioClip[] audioClipArray = creatureHit.GetCreatureSO().bulletHitAudioClips;
+        PlaySound3D(audioClipArray, e.bulletHitPosition, creatureHit.GetCreatureSO().bulletHitVolumeMultiplier);
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {

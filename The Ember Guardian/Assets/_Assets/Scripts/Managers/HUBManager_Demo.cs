@@ -518,6 +518,7 @@ public class HUBManager_Demo : MonoBehaviour
         if (firstDemoHubEncounter) {
             if (!emberExtractionTalkLineShown) return;
             if (emberExtracted) return;
+            if (PlayerCurrencies.Instance.GetCarryingEmber()) return;
         } else {
             if (!fireIndicatorActive) return;
         }

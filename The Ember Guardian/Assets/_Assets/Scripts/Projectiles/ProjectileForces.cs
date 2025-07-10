@@ -72,6 +72,7 @@ public class ProjectileForces : Projectile {
         rb.AddForce(launchVelocity, ForceMode2D.Impulse);
         hasHit = false;
 
+        InvokeOnProjectileInitialized();
         InvokeOnAnyProjectileInstantiated();
     }
 
@@ -93,11 +94,11 @@ public class ProjectileForces : Projectile {
         if (hasHit || !homing || projectileTarget == null) return;
 
         // Vérifie si on a passé l’apex (le point le plus haut)
-        if (!hasPassedApex && rb.velocity.y < .5f) {
-            hasPassedApex = true;
-        }
+        //if (!hasPassedApex && rb.velocity.y < .5f) {
+        //    hasPassedApex = true;
+        //}
 
-        if (!hasPassedApex) return; // Laisse la parabole se faire tranquillement
+        //if (!hasPassedApex) return; // Laisse la parabole se faire tranquillement
 
         Vector2 desiredDir = ((Vector2)(projectileTarget.position - transform.position)).normalized;
         Vector2 currentVelocity = rb.velocity;

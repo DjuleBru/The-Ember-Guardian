@@ -42,6 +42,7 @@ public class Projectile : MonoBehaviour
     protected bool projectileHasHit;
     public event EventHandler OnProjectileHit;
     public event EventHandler OnProjectileReset;
+    public event EventHandler OnProjectileInitialized;
     public static event EventHandler OnAnyProjectileInstantiated;
     public static event EventHandler OnAnyProjectileHit;
 
@@ -95,6 +96,7 @@ public class Projectile : MonoBehaviour
         float distanceToTarget = Mathf.Abs(trajectoryEndPointRandomized.x - transform.position.x);
         trajectoryMaxRelativeHeight = distanceToTarget * projectileTrajectoryYCurve;
 
+        OnProjectileInitialized?.Invoke(this, EventArgs.Empty);
         OnAnyProjectileInstantiated?.Invoke(this, EventArgs.Empty);
     }
 
@@ -203,6 +205,7 @@ public class Projectile : MonoBehaviour
         bool groundHitOrOther = groundLayer == (groundLayer | (1 << collision.gameObject.layer));
 
         if (mobHit == null && !playerHit && barricade == null && !groundHitOrOther) return;
+        if (collision.gameObject.GetComponent<CreatureDetectionCollider>() != null) return;
         if (collision.gameObject.GetComponent<WorkerDetectionCollider>() != null) return;
         if (collision.gameObject.GetComponent<WorkerInteractionCollider>() != null) return;
 
@@ -218,7 +221,10 @@ public class Projectile : MonoBehaviour
                 // Check if worker is in a tower
                 if (worker.GetDefensiveStructureAssigned() != null) return;
             }
-            if (enemyProjectile && mobHit is Creature) return;
+
+            if (mobHit is Creature) {
+                if(enemyProjectile) return;
+            }
 
             HandleMobCollision(mobHit);
             return;
@@ -282,5 +288,8 @@ public class Projectile : MonoBehaviour
 
     public void InvokeOnAnyProjectileInstantiated() {
         OnAnyProjectileInstantiated?.Invoke(this, EventArgs.Empty);
+    }
+    public void InvokeOnProjectileInitialized() {
+        OnProjectileInitialized?.Invoke(this, EventArgs.Empty);
     }
 }

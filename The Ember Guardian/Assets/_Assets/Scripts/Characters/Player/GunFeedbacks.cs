@@ -15,6 +15,7 @@ public class GunFeedbacks : MonoBehaviour
     [SerializeField] private ParticleSystem loadGunPS2;
     [SerializeField] private ParticleSystem dmgBuffInFirePS;
     [SerializeField] private ParticleSystem dmgBuffOutFirePS;
+    [SerializeField] private ParticleSystem dmgBuffSurgePS;
 
     private Gun gun;
 
@@ -26,6 +27,9 @@ public class GunFeedbacks : MonoBehaviour
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerStartedShot += PlayerShoot_OnPlayerStartedShot;
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoot_OnPlayerCooldownTrigger;
+        PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
+        PlayerShoot.Instance.OnBulletsChanged += PlayerShoot_OnBulletsChanged;
+        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerSHoot_OnPlayerSwappedGun;
         PlayerSkills.Instance.OnPlayerInFireLightBuffedDmg += PlayerSkills_OnPlayerInFireLightBuffedDmg;
         PlayerSkills.Instance.OnPlayerInFireLightDebuffedDmg += PlayerSkills_OnPlayerInFireLightDebuffedDmg;
         PlayerSkills.Instance.OnPlayerOutFireLightBuffedDmg += PlayerSkills_OnPlayerOutFireLightBuffed;
@@ -34,6 +38,36 @@ public class GunFeedbacks : MonoBehaviour
         PlayerSkills.Instance.OnActiveSkillDeactivated += PlayerSkills_OnActiveSkillDeactivated;
 
         meleeAttackCollider.OnGunMeleeAttackHit += MeleeAttackCollider_OnGunMeleeAttackHit;
+        gun.OnPerfectQTEDamageBuff += Gun_OnPerfectQTEDamageBuff;
+        gun.OnPerfectQTEDamageBuffEnded += Gun_OnPerfectQTEDamageBuffEnded;
+    }
+
+    private void PlayerSHoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
+        if (gun.GetDamageSurgeBuffed() && gun.GetGunActive() && PlayerShoot.Instance.GetCurrentBullets() != 0) {
+            dmgBuffSurgePS.Play();
+        }
+    }
+
+    private void PlayerShoot_OnBulletsChanged(object sender, System.EventArgs e) {
+        if (gun.GetDamageSurgeBuffed()) {
+            if(PlayerShoot.Instance.GetCurrentBullets() == 0) {
+                dmgBuffSurgePS.Stop();
+            }
+        }
+    }
+
+    private void PlayerShoot_OnPlayerReloadEnded(object sender, System.EventArgs e) {
+        if(gun.GetDamageSurgeBuffed()) {
+            dmgBuffSurgePS.Play();
+        }
+    }
+
+    private void Gun_OnPerfectQTEDamageBuffEnded(object sender, System.EventArgs e) {
+        dmgBuffSurgePS.Stop();
+    }
+
+    private void Gun_OnPerfectQTEDamageBuff(object sender, System.EventArgs e) {
+        dmgBuffSurgePS.Play();
     }
 
     private void PlayerSkills_OnActiveSkillDeactivated(object sender, PlayerSkills.OnSkillDeactivatedArgs e) {

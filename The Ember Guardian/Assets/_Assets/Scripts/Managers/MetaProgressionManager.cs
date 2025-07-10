@@ -647,6 +647,17 @@ public class MetaProgressionManager : MonoBehaviour
 
         return ES3.Load(key, gunSO.jamRepairHitAmount);
     }
+    public int GetGunSurgeWindowBulletsAmountBuffed(GunSO gunSO) {
+        string key = gunSO.gunType + "_surgeWindowBulletAmountBuffed";
+
+        return ES3.Load(key, gunSO.perfectQTEBulletAmountDamageBuffed);
+    }
+
+    public void SetGunSurgeWindowBulletsAmountBuffed(GunSO gunSO, int bulletAmountBuffed) {
+        string key = gunSO.gunType + "_surgeWindowBulletAmountBuffed";
+
+        ES3.Save(key, bulletAmountBuffed);
+    }
     public void SetGunJamRepairHitAmount(GunSO gunSO, int jamRepairHitAmount) {
         string key = gunSO.gunType + "_jamRepairHitAmount";
 

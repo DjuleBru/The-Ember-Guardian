@@ -41,8 +41,9 @@ public class Gun : MonoBehaviour
 
     protected int jamRepairHitAmount;
     protected float jamProbability;
-    protected bool perfectJamQTESucceeded;
+    protected bool damageSurgeBuffed;
     protected int bulletAfterPerfectJamSucceededIndex;
+    protected int surgeWindowBulletAmountBuffed;
     protected float perfectJamDamageBuff = 2f;
 
     protected float bulletLifetime;
@@ -195,8 +196,10 @@ public class Gun : MonoBehaviour
         bulletSpeed = MetaProgressionManager.Instance.GetGunBulletSpeed(gunSO);
         reloadAccelerationFactor = MetaProgressionManager.Instance.GetGunReloadAccelerationFactor(gunSO);
         weightAccelerationFactor = MetaProgressionManager.Instance.GetGunWeightAccelerationFactor(gunSO);
-        jamProbability = MetaProgressionManager.Instance.GetGunJamProbability(gunSO);
         jamRepairHitAmount = MetaProgressionManager.Instance.GetGunJamRepairHitAmount(gunSO);
+        surgeWindowBulletAmountBuffed = MetaProgressionManager.Instance.GetGunSurgeWindowBulletsAmountBuffed(gunSO);
+        jamProbability = gunSO.jamProbability;
+
         defaultAngle = MetaProgressionManager.Instance.GetGunShootConeAnle(gunSO);
         currentAngle = defaultAngle;
         targetAngle = defaultAngle;
@@ -254,12 +257,12 @@ public class Gun : MonoBehaviour
             gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce, explosionRadiusMultiplier);
         }
 
-        if(perfectJamQTESucceeded) {
+        if(damageSurgeBuffed) {
 
             bulletAfterPerfectJamSucceededIndex++;
 
-            if(bulletAfterPerfectJamSucceededIndex >= gunSO.perfectQTEBulletAmountDamageBuffed) {
-                perfectJamQTESucceeded = false;
+            if(bulletAfterPerfectJamSucceededIndex >= surgeWindowBulletAmountBuffed) {
+                damageSurgeBuffed = false;
                 bulletAfterPerfectJamSucceededIndex = 0;
                 DebuffBulletDamage(perfectJamDamageBuff);
                 OnPerfectQTEDamageBuffEnded?.Invoke(this, EventArgs.Empty);
@@ -418,6 +421,13 @@ public class Gun : MonoBehaviour
     public float GetExplosionRadiusMultiplier() {
         return explosionRadiusMultiplier;
     }
+    public int GetSurgeWindowBulletAmountBuffed() {
+        return surgeWindowBulletAmountBuffed;
+    }
+
+    public bool GetDamageSurgeBuffed() {
+        return damageSurgeBuffed;
+    }
 
 
     #endregion
@@ -432,7 +442,7 @@ public class Gun : MonoBehaviour
 
         gunJustJammed = true;
         gunJustJammedTimer = gunJustJammedDelay;
-        this.perfectJamQTESucceeded = gunJamSuccess;
+        this.damageSurgeBuffed = gunJamSuccess;
 
         if(gunJamSuccess) {
             OnPerfectQTEDamageBuff?.Invoke(this, EventArgs.Empty);
@@ -530,6 +540,10 @@ public class Gun : MonoBehaviour
         this.jamProbability = jamProbability;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
+    public void SetSurgeWindowBulletBoost(int bulletAmount) {
+        surgeWindowBulletAmountBuffed = bulletAmount;
+        OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
+    }
 
     public void SetExplosionRadiusModified(float radiusModified) {
         this.explosionRadiusMultiplier = radiusModified;
@@ -555,7 +569,7 @@ public class Gun : MonoBehaviour
         MetaProgressionManager.Instance.SetGunSwapToWeaponTimeMultiplier(gunSO, swapToWeaponTimeMultiplier);
 
         MetaProgressionManager.Instance.SetGunJamProbability(gunSO, jamProbability);
-        MetaProgressionManager.Instance.SetGunJamRepairHitAmount(gunSO, jamRepairHitAmount);
+        MetaProgressionManager.Instance.SetGunSurgeWindowBulletsAmountBuffed(gunSO, surgeWindowBulletAmountBuffed);
 
         MetaProgressionManager.Instance.SetGunSecondaryAbilityUnlocked(gunSO, secondaryAbilityUnlocked);
         MetaProgressionManager.Instance.SetGunUnlocked(gunSO, gunUnlocked);

@@ -7,7 +7,7 @@ public class CreatureAnimatorManager : MonoBehaviour
 {
     protected Creature creature;
     protected CreatureAI creatureAI;
-    protected MobAttack mobAttack;
+    protected CreatureAttack creatureAttack;
     protected MobMovement mobMovement;
     protected Animator animator;
 
@@ -28,10 +28,10 @@ public class CreatureAnimatorManager : MonoBehaviour
         creature = GetComponentInParent<Creature>();
         creatureAI = GetComponentInParent<CreatureAI>();
         mobMovement = GetComponentInParent<MobMovement>();
-        mobAttack = GetComponentInParent<MobAttack>();
+        creatureAttack = GetComponentInParent<CreatureAttack>();
         animator = GetComponent<Animator>();
 
-        mobAttack.OnMobAttack += MobAttack_OnMobAttack;
+        creatureAttack.OnMobAttack += MobAttack_OnMobAttack;
         creature.OnMobDied += Creature_OnMobDied;
         creature.OnCreatureStunStarted += Creature_OnCreatureStunStarted;
         creature.OnCreatureStunStopped += Creature_OnCreatureStunStopped;
@@ -103,8 +103,8 @@ public class CreatureAnimatorManager : MonoBehaviour
             return;
         }
 
-        if (mobAttack.GetAttacking()) {
-            HandleScaleChange(mobAttack.GetAttackDir().x);
+        if (creatureAttack.GetAttacking()) {
+            HandleScaleChange(creatureAttack.GetAttackDir().x);
             return;
         }
 
@@ -140,7 +140,14 @@ public class CreatureAnimatorManager : MonoBehaviour
     }
 
     protected void MobAttack_OnMobAttack(object sender, System.EventArgs e) {
-        animator.SetTrigger("Attack");
+        if(creatureAttack.GetIsPrimaryAttack()) {
+            animator.SetTrigger("Attack");
+        }
+
+        if (creatureAttack.GetIsSecondaryAttack()) {
+            animator.SetTrigger("Attack_Secondary");
+        }
+
     }
 
     protected void Creature_OnMobDied(object sender, System.EventArgs e) {

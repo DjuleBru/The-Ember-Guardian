@@ -173,7 +173,7 @@ public class MobAttack : MonoBehaviour
             projectile.gameObject.SetActive(true);
             projectile.transform.SetParent(null);
             projectile.transform.position = spawnPosition;
-            projectile.Initialize(GetAttackDir().x, mob, attackDamage);
+            projectile.Initialize(GetAttackDir().x, mob, attackDamage, false, true);
         }
 
         OnMobAttackHit?.Invoke(this, EventArgs.Empty);

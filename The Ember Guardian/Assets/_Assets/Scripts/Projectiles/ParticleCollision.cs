@@ -27,6 +27,7 @@ public class ParticleCollision : MonoBehaviour
 
     public class OnBulletHitEventArgs {
         public Vector3 bulletHitPosition;
+        public Mob mobHit;
     }
 
     private bool initialized;
@@ -149,17 +150,20 @@ public class ParticleCollision : MonoBehaviour
 
                         if (critHit) {
                             OnAnyPlayerBulletHitEnemyCrit?.Invoke(this, new OnBulletHitEventArgs {
-                                bulletHitPosition = collisionPosition
+                                bulletHitPosition = collisionPosition,
+                                mobHit = mobHit
                             });
                         }
                         else {
                             if(isPlayerWeaponPS) {
                                 OnAnyPlayerBulletHitEnemy?.Invoke(this, new OnBulletHitEventArgs {
-                                    bulletHitPosition = collisionPosition
+                                    bulletHitPosition = collisionPosition,
+                                    mobHit = mobHit
                                 });
                             } else {
                                 OnAnyBulletHitEnemy?.Invoke(this, new OnBulletHitEventArgs {
-                                    bulletHitPosition = collisionPosition
+                                    bulletHitPosition = collisionPosition,
+                                    mobHit = mobHit
                                 });
                             }
                         }

@@ -19,11 +19,33 @@ public class ProjectileVisual : MonoBehaviour
     private void Start() {
         projectile.OnProjectileHit += Projectile_OnProjectileHit;
         projectile.OnProjectileReset += Projectile_OnProjectileReset;
+        projectile.OnProjectileInitialized += Projectile_OnProjectileInitialized;
 
+    }
+
+    private void Projectile_OnProjectileInitialized(object sender, System.EventArgs e) {
         float direction = projectile.GetTrajectoryEndPoint().x - transform.position.x;
+        RefreshProjectileXAxisScale(direction);
+    }
 
-        if ((projectile.transform.position.x) < 0 && direction < 0) {
-            transform.localScale = new Vector3(-1, 1, 1);
+    private void RefreshProjectileXAxisScale(float direction) {
+
+        if (direction < 0) {
+            if (transform.parent.localScale.x < 0) {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else {
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+
+        }
+        else {
+            if (transform.parent.localScale.x > 0) {
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+            else {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
         }
     }
 

@@ -41,7 +41,10 @@ public class CreatureSound : SoundObject
         creatureAnimatorSounds.OnChargedAttackReleased += CreatureAnimatorSounds_OnChargedAttackReleased;
 
         creatureSO = creature.GetCreatureSO();
-        attackSFXDelayAfterAnimationStart = creatureAttack.GetCurrentCreatureAttackSO().attackSFXDelayAfterAnimationStart;
+
+        if(creatureAttack.GetCurrentCreatureAttackSO() != null) {
+            attackSFXDelayAfterAnimationStart = creatureAttack.GetCurrentCreatureAttackSO().attackSFXDelayAfterAnimationStart;
+        }
 
         if(creatureSO.hasContinousAudioClip) {
             AudioClip continuousAudioClip = creatureSO.continuousAudioClip[UnityEngine.Random.Range(0, creatureSO.continuousAudioClip.Length)];

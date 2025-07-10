@@ -791,7 +791,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: initialPayCurrencySmoothTime
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1062,12 +1062,9 @@ MonoBehaviour:
   primaryFunctionUnlocked: 0
   secondaryFunctionUnlocked: 0
   visualIndicator: {fileID: 7406095219712383691}
-  refillCurrencyTypeNeeded: 0
-  minimumRefillAmountRequired: 1
   currencyCraftTime: 45
   currencySpawnPoint: {fileID: 7441869313988092870}
   currencyTypeCrafted: 7
-  ammoCrafterUI: {fileID: 80626817700612572}
   currencyCraftAmount: 3
   showTooltipOnTrigger: {fileID: 6997359004773197039}
   debugBatchCapacity: 0
@@ -1273,7 +1270,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: initialPayCurrencySmoothTime
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

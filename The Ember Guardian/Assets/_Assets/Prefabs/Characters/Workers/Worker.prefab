@@ -294,6 +294,9 @@ MonoBehaviour:
   attackCooldown: 3
   attackAnimationDelay: 0.6
   totalAttackAnimationTime: 0
+  shootsMultipleProjectilesInAttack: 0
+  projectileAmountShotInAttack: 1
+  delayBetweenProjectileSpawns: 0
   projectileAmountInPool: 2
 --- !u!1 &677239287442010653
 GameObject:
@@ -10410,7 +10413,7 @@ Animator:
   m_GameObject: {fileID: 2322691198232855453}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 3670e3cf6d9e39c44b847359c4ade90d, type: 2}
+  m_Controller: {fileID: 9100000, guid: 05dfd77b43b29f54bbd15547a3fc02d6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

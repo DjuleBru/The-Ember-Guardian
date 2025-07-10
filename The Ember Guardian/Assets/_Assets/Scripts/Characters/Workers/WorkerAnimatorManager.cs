@@ -156,8 +156,13 @@ public class WorkerAnimatorManager : MonoBehaviour
     }
 
     private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
-        if (worker.GetWildJobType() != workerAI.GetJob()) return;
-        RefreshJobAnimator(workerAI.GetJob());
+        //Debug.Log(workerAI.GetJob());
+        if(workerAI.GetJob() == WorkerAI.JobTypes.wild) {
+            RefreshJobAnimator(worker.GetWildJobType());
+        } else {
+            RefreshJobAnimator(workerAI.GetJob());
+        }
+
     }
 
     private void Worker_OnMobDied(object sender, System.EventArgs e) {
@@ -165,8 +170,6 @@ public class WorkerAnimatorManager : MonoBehaviour
     }
 
     private void RefreshJobAnimator(WorkerAI.JobTypes jobType) {
-        Debug.Log("RefreshJobAnimator " + jobType);
-
         if (jobType == WorkerAI.JobTypes.wild) {
             animator.runtimeAnimatorController = joblessAnimator;
             animator.speed = .75f;

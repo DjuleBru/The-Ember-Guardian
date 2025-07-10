@@ -17,12 +17,12 @@ MonoBehaviour:
   description: Ranged mob that fires arced projectiles
   creatureIcon: {fileID: 21300000, guid: 6beda75071a7e3d41865443c1a7ff90f, type: 3}
   creatureIcon_Portrait: {fileID: 21300000, guid: 4f632e33cab00f843a61d6016853f58e, type: 3}
-  creaturePrefab: {fileID: 0}
+  creaturePrefab: {fileID: 4997657120178985709, guid: 33774ca414bd2ed4192576c622d2780a, type: 3}
   mass: 20
-  detectionRange_Day: 15
+  detectionRange_Day: 20
   detectionRange_Night: 12
   primaryAttackSO: {fileID: 11400000, guid: 3cfa3c2ecb87ced4098e313ba056a55b, type: 2}
-  secondaryAttackSO: {fileID: 0}
+  secondaryAttackSO: {fileID: 11400000, guid: d158ba812ed46794f80bd77dabcf3c0b, type: 2}
   specialAttackSO: {fileID: 0}
   flying: 0
   flightMinAltitude: 0
@@ -33,29 +33,16 @@ MonoBehaviour:
   enteredLightMoveSpeedDebuff: 1.5
   moveSpeedRandomizerDelta: 0.25
   maxHealth: 80
-  damage: 1
-  attackRate: 4
   enteredLightattackRateDebuff: 2.5
-  isRangedAttack: 1
-  minAttackRange: 10
-  maxAttackRange: 15
-  attackRangeRandomizer: 2
-  attackRangeMaxDistanceMiss: 2
-  damageToFire: 1
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0
-  attackAnimationDelay: 0.6
-  attackSFXDelayAfterAnimationStart: 0
-  totalAttackAnimationTime: 2
   hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 0.85
   workerTargetingPriority: 1
   playerTargetingPriority: 2
   barricadeTargetingPriority: 3
-  canAttackPlayerBehindBarricades: 0
-  canAttackPlayerOnTower: 1
   currencyTypeDroppedList: 0200000003000000
   currencyDropAmountList: 0100000002000000
   difficulty: 4
@@ -68,14 +55,6 @@ MonoBehaviour:
   aggroAudioClips:
   - {fileID: 8300000, guid: 0f446c4cdb1cc9d4492137ca2d01599d, type: 3}
   aggroVolumeMultiplier: 0.8
-  attackSFXHandledByAnimation: 0
-  attackStartedChargingAudioClips: []
-  attackReleasedAudioClips: []
-  attackHitAudioClips: []
-  attackVolumeMultiplier: 2.5
-  attackAudioClips:
-  - {fileID: 8300000, guid: 7aa74c6cf27659a40aca37961e8d8717, type: 3}
-  attackHitVolumeMultiplier: 0.5
   idleAudioClips: []
   idleVolumeMultiplier: 0.5
   footStepAudioClips:

@@ -106,14 +106,16 @@ public class HUBManager : MonoBehaviour
             }
         }
 
-        hubFire.OnPlayerTriggeredIn += HubFire_OnPlayerTriggeredIn;
-        hubFire.OnPlayerTriggeredOut += HubFire_OnPlayerTriggeredOut;
-        hubFire.OnFireEmberExtracted += HubFire_OnFireEmberExtracted;
-        hubFire.OnFireEmberExtractionStarted += HubFire_OnFireEmberExtractionStarted;
-        gemMerchant.OnPlayerTriggeredIn += GemMerchant_OnPlayerTriggeredIn;
-        gemMerchant.OnPlayerTriggeredOut += GemMerchant_OnPlayerTriggeredOut;
-        HubChest.Instance.OnChestOpened += HubChest_OnChestOpened;
-        HubChest.Instance.OnChestClosed += HubChest_OnChestClosed;
+        if(!demoHUB) {
+            hubFire.OnPlayerTriggeredIn += HubFire_OnPlayerTriggeredIn;
+            hubFire.OnPlayerTriggeredOut += HubFire_OnPlayerTriggeredOut;
+            hubFire.OnFireEmberExtracted += HubFire_OnFireEmberExtracted;
+            hubFire.OnFireEmberExtractionStarted += HubFire_OnFireEmberExtractionStarted;
+            gemMerchant.OnPlayerTriggeredIn += GemMerchant_OnPlayerTriggeredIn;
+            gemMerchant.OnPlayerTriggeredOut += GemMerchant_OnPlayerTriggeredOut;
+            HubChest.Instance.OnChestOpened += HubChest_OnChestOpened;
+            HubChest.Instance.OnChestClosed += HubChest_OnChestClosed;
+        }
 
         if (DEBUGMODE) {
             Player.Instance.SetPosition(DEBUGPlayerSpawnPoint.position);
@@ -428,6 +430,7 @@ public class HUBManager : MonoBehaviour
     }
 
     private void RefreshPlayerHasGemsIndicators() {
+        if (GetIsDemo()) return;
         bool playerHasGemsInInventory = (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfCategory(PlayerCurrencies.CurrencyCategory.gem).Count != 0);
 
         if (playerHasGemsInInventory) {

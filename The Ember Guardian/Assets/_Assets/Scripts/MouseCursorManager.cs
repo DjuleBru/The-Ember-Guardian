@@ -72,6 +72,7 @@ public class MouseCursorManager : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
         VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
         VideoTipUI.Instance.OnVideoTipPanelOpened += VideoTipUI_OnVideoTipPanelOpened;
+        Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
         FastTravelTP.OnAnyPlayerWarpedOut += FastTravelTP_OnAnyPlayerWarpedOut;
         FastTravelTP.OnAnyPlayerCanceledTP += FastTravelTP_OnAnyPlayerCanceledTP;
         FastTravelTP.OnAnyPlayerPositionedOnTP += FastTravelTP_OnAnyPlayerPositionedOnTP;
@@ -85,6 +86,7 @@ public class MouseCursorManager : MonoBehaviour
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
         ShowMouse(false);
     }
+
 
     private void LateUpdate() {
         if (isMenuScene) return;
@@ -138,6 +140,9 @@ public class MouseCursorManager : MonoBehaviour
         }
     }
 
+    private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, System.EventArgs e) {
+        ShowWeaponCursorGO(true);
+    }
     private void FastTravelTP_OnAnyPlayerWarpedOut(object sender, System.EventArgs e) {
         ShowWeaponCursorGO(true);
     }
@@ -346,6 +351,7 @@ public class MouseCursorManager : MonoBehaviour
         FastTravelTP.OnAnyPlayerWarpedOut -= FastTravelTP_OnAnyPlayerWarpedOut;
         FastTravelTP.OnAnyPlayerCanceledTP -= FastTravelTP_OnAnyPlayerCanceledTP;
         FastTravelTP.OnAnyPlayerPositionedOnTP -= FastTravelTP_OnAnyPlayerPositionedOnTP;
+        Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
     }
 
 }

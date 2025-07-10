@@ -26,8 +26,8 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         range,
         revolver,
         lmg,
-        jamProbability,
-        jamRepairHitAmount,
+        surgeWindowBoost,
+        surgeWindowHitAmount,
         explosionRadiusBuff,
         explosionDamage,
         grenadeLauncher,
@@ -181,12 +181,13 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             PlayerShoot.Instance.GetGun(linkedGunSO).SetGunBulletLifetime_Meta(modifiedBulletLifetime);
         }
 
-        if (gunItem == GunItemType.jamProbability) {
-            float modifiedProbability = linkedGunSO.jamProbability + linkedStatModifierSO.statModifierList[itemLevel];
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetJamProbability(modifiedProbability);
+        if (gunItem == GunItemType.surgeWindowBoost) {
+            int modifiedBulletsAmount = linkedGunSO.perfectQTEBulletAmountDamageBuffed + (int)linkedStatModifierSO.statModifierList[itemLevel];
+            Debug.Log("modifiedBulletsAmount " + modifiedBulletsAmount);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSurgeWindowBulletBoost(modifiedBulletsAmount);
         }
 
-        if (gunItem == GunItemType.jamRepairHitAmount) {
+        if (gunItem == GunItemType.surgeWindowHitAmount) {
             float modifiedJamRepairHitAmount = linkedGunSO.jamRepairHitAmount + linkedStatModifierSO.statModifierList[itemLevel];
             PlayerShoot.Instance.GetGun(linkedGunSO).SetJamRepairHitAmount((int)modifiedJamRepairHitAmount);
         }
@@ -401,15 +402,15 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 relativeStatPostfix = "m";
             }
 
-            if (gunItem == GunItemType.jamProbability) {
-                initialStatValue = linkedGunSO.jamProbability;
-                currentStatValue = (PlayerShoot.Instance.GetGun(linkedGunSO).GetJamProbability()).ToString("F2");
-                relativeStatPrefix = "";
-                totalStatWithModifierPostfix = "%";
-                relativeStatPostfix = "%";
+            if (gunItem == GunItemType.surgeWindowBoost) {
+                initialStatValue = linkedGunSO.perfectQTEBulletAmountDamageBuffed;
+                currentStatValue = (PlayerShoot.Instance.GetGun(linkedGunSO).GetSurgeWindowBulletAmountBuffed()).ToString();
+                relativeStatPrefix = "+";
+                totalStatWithModifierPostfix = "";
+                relativeStatPostfix = "";
             }
 
-            if (gunItem == GunItemType.jamRepairHitAmount) {
+            if (gunItem == GunItemType.surgeWindowHitAmount) {
                 initialStatValue = linkedGunSO.jamRepairHitAmount;
                 currentStatValue = (PlayerShoot.Instance.GetGun(linkedGunSO).GetJamRepairHitAmount()).ToString();
                 relativeStatPrefix = "";
@@ -587,16 +588,16 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newSpread") + " ");
         }
 
-        if (gunItem == GunItemType.jamProbability) {
+        if (gunItem == GunItemType.surgeWindowBoost) {
             if (itemLevel < maxItemLevel) {
-                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentJamProbability") + " ");
-                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_jamProbability") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentSurgeWindowBoost") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_surgeWindowBoost") + " ");
                 statDescriptionList.Add("");
             }
-            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newJamProbability") + " ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newSurgeWindowBoost") + " ");
         }
 
-        if (gunItem == GunItemType.jamRepairHitAmount) {
+        if (gunItem == GunItemType.surgeWindowHitAmount) {
             if (itemLevel < maxItemLevel) {
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentJamRepairHitAmount") + " ");
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_jamRepairHitAmount") + " ");

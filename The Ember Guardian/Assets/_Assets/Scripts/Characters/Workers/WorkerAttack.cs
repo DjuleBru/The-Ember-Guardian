@@ -17,7 +17,7 @@ public class WorkerAttack : MobAttack
     private float minerTotalAttackAnimationTime = .5f;
     private float hunterAnimalAttackPointRandomizer;
 
-    private float probabilityToHaveHomingProjectileOnCreature = .33f;
+    private float probabilityToHaveHomingProjectileOnCreature = .6f;
 
 
     protected override void Awake() {
