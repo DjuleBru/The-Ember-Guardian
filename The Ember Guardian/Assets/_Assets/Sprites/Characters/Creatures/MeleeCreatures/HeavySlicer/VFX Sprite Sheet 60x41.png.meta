@@ -1,0 +1,919 @@
+fileFormatVersion: 2
+guid: 0cd0edace682965448a684edb26d05ad
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 82
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9bf56d2446fd2f74cb697f7f6416375e
+      internalID: 1203837755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_1
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 82
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59ab12650a2b4dc49839932451dab617
+      internalID: -1677670031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_2
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 82
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4aac296460111154999a7c79beeda4b5
+      internalID: -777316228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_3
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 82
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e14da7339831968488e52b014826f0a8
+      internalID: 1941286475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_4
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 82
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c426bea9e9fa324ebf7c7b08a481985
+      internalID: 695343436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_5
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 82
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 48161d6031d2a544c9e90e7d92c78e54
+      internalID: 1092758418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_6
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 82
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd635471ab37419448c57998fc40ff1a
+      internalID: -1466279086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_7
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 82
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 37bffed409416be4ca559ad0cbf5baf6
+      internalID: -506721545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_8
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 82
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e379f5502d1cba7408b9ab04c3d2425e
+      internalID: 430469544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_9
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 82
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b17b1357bb4d1104f9e00d4b0b322a75
+      internalID: -386127041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_10
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 82
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84a3e91f0f97c874a903f37d897264a3
+      internalID: 767404514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_11
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 82
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aea3e5ee2cec8da4b8a5410a0dcae5d0
+      internalID: 1526473599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 41
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1e8ec9c001f42c4fa951dcb0ec3d76a
+      internalID: 366354903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_13
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 41
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8cd54a3c4e7a3f4091160ae3d9e97d8
+      internalID: -1288435971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_14
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 41
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4acba809c9c8f9c4c9a945d131eef759
+      internalID: 1733391159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_15
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 41
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aaf200825c04cc349a793288f0d6e8c5
+      internalID: 522425573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_16
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 41
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8699bbfa264a7bb4080fc5a83d1b0ff0
+      internalID: -908370967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_17
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 41
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a275b0653339ea5428eab45cf4661cc2
+      internalID: -2072967524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_18
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 41
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 48ff5b09a1e1b934d94d4456170dfe06
+      internalID: 1576032830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_19
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 41
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8a67fd313dc4cb46a0341748fdce8ae
+      internalID: -178121951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_20
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 41
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a6143237e77dea43a92770df70c5446
+      internalID: -1824877294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_21
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 41
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f6a458617e7a7b498726b130f1fc70b
+      internalID: 955558620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_22
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 41
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5677322a979b8f4468bc247164a7dee6
+      internalID: 1891511328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_23
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 41
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fcef8c9ffda01f541a43fe983f9addd6
+      internalID: -555068070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4d917dea4423da4c96891de60355e71
+      internalID: 439406911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_25
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 0
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5131a8f4073095f47811ba61d4a926ed
+      internalID: 170654511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_26
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 0
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b2f28152ef93764886609a11adf3073
+      internalID: -1748391336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_27
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 0
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9679ba34f9e4ca4089eca770714e4e0
+      internalID: -652356122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_28
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 0
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 220720e63ad28e54d937840508de12b1
+      internalID: 1963916792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_29
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 0
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 850c0cfc875fe334f8007a8eb7dc8fa7
+      internalID: -1092259912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_30
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 0
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 256db3e71912f2b43b7eec3947e80652
+      internalID: 1079376296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_31
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 0
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54af876922bc6f34789fa94cd5b21197
+      internalID: 268802461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_32
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 0
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f183db14bdb73344a01a9a433eb3b26
+      internalID: 785863574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_33
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 0
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd7e6460427d86a4bb752b9fc57c2c59
+      internalID: 1462722856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_34
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 0
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be4983ec15d8363419b5d752174e23eb
+      internalID: 802550202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VFX Sprite Sheet 60x41_35
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 0
+        width: 60
+        height: 41
+      alignment: 9
+      pivot: {x: 0.32, y: 0.087}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b408d06fccf20fe4fa4aaf2986fe7dd3
+      internalID: -898717824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      VFX Sprite Sheet 60x41_0: 1203837755
+      VFX Sprite Sheet 60x41_1: -1677670031
+      VFX Sprite Sheet 60x41_10: 767404514
+      VFX Sprite Sheet 60x41_11: 1526473599
+      VFX Sprite Sheet 60x41_12: 366354903
+      VFX Sprite Sheet 60x41_13: -1288435971
+      VFX Sprite Sheet 60x41_14: 1733391159
+      VFX Sprite Sheet 60x41_15: 522425573
+      VFX Sprite Sheet 60x41_16: -908370967
+      VFX Sprite Sheet 60x41_17: -2072967524
+      VFX Sprite Sheet 60x41_18: 1576032830
+      VFX Sprite Sheet 60x41_19: -178121951
+      VFX Sprite Sheet 60x41_2: -777316228
+      VFX Sprite Sheet 60x41_20: -1824877294
+      VFX Sprite Sheet 60x41_21: 955558620
+      VFX Sprite Sheet 60x41_22: 1891511328
+      VFX Sprite Sheet 60x41_23: -555068070
+      VFX Sprite Sheet 60x41_24: 439406911
+      VFX Sprite Sheet 60x41_25: 170654511
+      VFX Sprite Sheet 60x41_26: -1748391336
+      VFX Sprite Sheet 60x41_27: -652356122
+      VFX Sprite Sheet 60x41_28: 1963916792
+      VFX Sprite Sheet 60x41_29: -1092259912
+      VFX Sprite Sheet 60x41_3: 1941286475
+      VFX Sprite Sheet 60x41_30: 1079376296
+      VFX Sprite Sheet 60x41_31: 268802461
+      VFX Sprite Sheet 60x41_32: 785863574
+      VFX Sprite Sheet 60x41_33: 1462722856
+      VFX Sprite Sheet 60x41_34: 802550202
+      VFX Sprite Sheet 60x41_35: -898717824
+      VFX Sprite Sheet 60x41_4: 695343436
+      VFX Sprite Sheet 60x41_5: 1092758418
+      VFX Sprite Sheet 60x41_6: -1466279086
+      VFX Sprite Sheet 60x41_7: -506721545
+      VFX Sprite Sheet 60x41_8: 430469544
+      VFX Sprite Sheet 60x41_9: -386127041
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

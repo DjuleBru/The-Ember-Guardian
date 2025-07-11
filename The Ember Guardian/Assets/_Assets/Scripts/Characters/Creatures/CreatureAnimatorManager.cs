@@ -54,6 +54,7 @@ public class CreatureAnimatorManager : MonoBehaviour
     }
 
     protected void MobMovement_OnMoveSpeedBuffChanged(object sender, MobMovement.OnMoveSpeedBuffedEventArgs e) {
+        if (!e.changeAnimatorSpeed) return;
         animatorSpeedMultiplier = baseMovementAnimationSpeed * e.moveSpeedBuff;
         animator.SetFloat("AnimationSpeedMultiplier", animatorSpeedMultiplier);
     }
@@ -166,5 +167,9 @@ public class CreatureAnimatorManager : MonoBehaviour
 
     public void SetUnReadyToMove() {
         mobMovement.SetReadyToMoveAnimator(false);
+    }
+
+    public void SetUnReadyToMoveAnimatorAndStopMoving() {
+        mobMovement.SetUnReadyToMoveAnimatorAndStopMoving();
     }
 }

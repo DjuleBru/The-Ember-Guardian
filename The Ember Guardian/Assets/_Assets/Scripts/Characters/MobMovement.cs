@@ -30,10 +30,13 @@ public class MobMovement : MonoBehaviour
     protected float movementForce;
 
     protected bool destinationReached;
+    protected bool moving;
     protected bool canMove = true;
     protected bool readyToMoveAnimator = true;
     public event EventHandler OnDestinationReached;
     public event EventHandler OnDestinationSet;
+    public event EventHandler OnMovementStarted;
+    public event EventHandler OnMovementStopped;
 
     protected bool showDestinationGyzmos;
 
@@ -41,6 +44,7 @@ public class MobMovement : MonoBehaviour
 
     public class OnMoveSpeedBuffedEventArgs : EventArgs {
         public float moveSpeedBuff;
+        public bool changeAnimatorSpeed;
     }
 
     protected virtual void Awake() {
@@ -62,7 +66,16 @@ public class MobMovement : MonoBehaviour
 
     protected virtual void FixedUpdate() {
 
-        if(showDestinationGyzmos) {
+        if(moving && rb.velocity.magnitude < .2f) {
+            moving = false;
+            OnMovementStopped?.Invoke(this, EventArgs.Empty);
+        }
+        if (!moving && rb.velocity.magnitude > .2f) {
+            moving = true;
+            OnMovementStarted?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (showDestinationGyzmos) {
             Vector3 debugLineOrigin = new Vector3(transform.position.x, transform.position.y + .5f, 0);
             Vector3 debugLineDestination = new Vector3(targetDestination.x, targetDestination.y + .5f, 0);
             Debug.DrawLine(debugLineOrigin, debugLineDestination, Color.yellow);
@@ -141,21 +154,24 @@ public class MobMovement : MonoBehaviour
         this.moveSpeed = moveSpeed;
     }
 
-    public void BuffMoveSpeed(float moveSpeedBuff) {
+    public void BuffMoveSpeed(float moveSpeedBuff, bool changeAnimatorSpeed = true) {
+
         this.moveSpeedBuff *= moveSpeedBuff;
         moveSpeed = initialMobSpeed * this.moveSpeedBuff;
 
         OnMoveSpeedBuffChanged?.Invoke(this, new OnMoveSpeedBuffedEventArgs {
-            moveSpeedBuff = this.moveSpeedBuff
+            moveSpeedBuff = this.moveSpeedBuff,
+            changeAnimatorSpeed = changeAnimatorSpeed
         });
     }
 
-    public void DebuffMoveSpeed(float moveSpeedBuff) {
+    public void DebuffMoveSpeed(float moveSpeedBuff, bool changeAnimatorSpeed = true) {
         this.moveSpeedBuff /= moveSpeedBuff;
         moveSpeed = initialMobSpeed * this.moveSpeedBuff;
 
         OnMoveSpeedBuffChanged?.Invoke(this, new OnMoveSpeedBuffedEventArgs {
-            moveSpeedBuff = this.moveSpeedBuff
+            moveSpeedBuff = this.moveSpeedBuff,
+            changeAnimatorSpeed = changeAnimatorSpeed
         });
     }
 
@@ -165,8 +181,9 @@ public class MobMovement : MonoBehaviour
         moveSpeed = initialMobSpeed;
 
         OnMoveSpeedBuffChanged?.Invoke(this, new OnMoveSpeedBuffedEventArgs {
-            moveSpeedBuff = moveSpeedBuff
-        });
+            moveSpeedBuff = moveSpeedBuff,
+            changeAnimatorSpeed = true
+        });;
     }
 
     public virtual void SetMoveTarget(Vector3 moveTarget) {
@@ -177,6 +194,11 @@ public class MobMovement : MonoBehaviour
 
     public void SetReadyToMoveAnimator(bool ready) {
         readyToMoveAnimator = ready;
+    }
+
+    public void SetUnReadyToMoveAnimatorAndStopMoving() {
+        readyToMoveAnimator = false;
+        rb.velocity = Vector2.zero;
     }
 
     public void SetCanMove(bool canMove) {

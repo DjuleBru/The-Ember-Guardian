@@ -33,29 +33,16 @@ MonoBehaviour:
   enteredLightMoveSpeedDebuff: 1.3
   moveSpeedRandomizerDelta: 0.25
   maxHealth: 30
-  damage: 1
-  attackRate: 2.5
   enteredLightattackRateDebuff: 2.5
-  isRangedAttack: 0
-  minAttackRange: 1.5
-  maxAttackRange: 2.5
-  attackRangeRandomizer: 0.3
-  attackRangeMaxDistanceMiss: 0.1
-  damageToFire: 1
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0
-  attackAnimationDelay: 0.1
-  attackSFXDelayAfterAnimationStart: 0
-  totalAttackAnimationTime: 0.6
   hasCustomSpawnAnimation: 1
   spawnAnimationDuration: 1.5
   baseMovementAnimationSpeed: 1
   workerTargetingPriority: 1
   playerTargetingPriority: 3
   barricadeTargetingPriority: 2
-  canAttackPlayerBehindBarricades: 0
-  canAttackPlayerOnTower: 0
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
   difficulty: 4
@@ -73,21 +60,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 164b575ed5669ab4e93986fbb582cec9, type: 3}
   - {fileID: 8300000, guid: c79e47720f0fc2d44b1e4da02780899b, type: 3}
   aggroVolumeMultiplier: 1
-  attackSFXHandledByAnimation: 0
-  attackStartedChargingAudioClips: []
-  attackReleasedAudioClips: []
-  attackHitAudioClips:
-  - {fileID: 8300000, guid: 300d3bd6039a10545ad2b7c9bb41e01c, type: 3}
-  - {fileID: 8300000, guid: 46f47b256de48d44fa6cdb698adf0ffa, type: 3}
-  - {fileID: 8300000, guid: 613df4a8fdcc6884889acaa78768e016, type: 3}
-  attackVolumeMultiplier: 0.5
-  attackAudioClips:
-  - {fileID: 8300000, guid: fe40a58834a1552469ea3ddb318ba63d, type: 3}
-  - {fileID: 8300000, guid: 7c320ffa39f173c48b3bd0605cf2ffd0, type: 3}
-  - {fileID: 8300000, guid: ac5ac89374fbfc14c98c3f0279c39d0b, type: 3}
-  - {fileID: 8300000, guid: 847acbedb1031194785921cc2aa568c9, type: 3}
-  - {fileID: 8300000, guid: e44cdcac083cd4a41b267f82be2d046e, type: 3}
-  attackHitVolumeMultiplier: 1
   idleAudioClips:
   - {fileID: 8300000, guid: 1108bf18be83c9546912466653c2f812, type: 3}
   - {fileID: 8300000, guid: bae0df06c24b13b41b7fd2a8b8e627d1, type: 3}

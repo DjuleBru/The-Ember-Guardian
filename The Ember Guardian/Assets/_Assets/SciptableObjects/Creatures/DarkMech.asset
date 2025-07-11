@@ -62,6 +62,8 @@ MonoBehaviour:
   footstepVolumeMultiplier: 0.15
   hasContinousAudioClip: 0
   continuousAudioClip: []
+  hasContinousMovementAudioClip: 0
+  continuousMovementAudioClip: []
   spawnAudioClips:
   - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
   - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}
@@ -74,4 +76,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c7ead20edc468e24a86195f640218010, type: 3}
   - {fileID: 8300000, guid: b08f5ac8a197e76408abf125f5ea7870, type: 3}
   - {fileID: 8300000, guid: 6615caae1c691bd4e92666d2d32f4408, type: 3}
-  bulletHitVolumeMultiplier: 0.5
+  bulletHitVolumeMultiplier: 0.2

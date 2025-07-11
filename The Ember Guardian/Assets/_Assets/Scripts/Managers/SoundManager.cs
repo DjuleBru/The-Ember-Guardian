@@ -140,6 +140,7 @@ public class SoundManager : MonoBehaviour
         ParticleCollision.OnAnyPlayerBulletHitEnemyCrit += ParticleCollision_OnAnyBulletHitEnemyCrit;
         ParticleCollision.OnAnyPlayerBulletHitEnemy += ParticleCollision_OnAnyPlayerBulletHitEnemy;
         ParticleCollision.OnAnyPlayerBulletHitGround += ParticleCollision_OnAnyPlayerBulletHitGround;
+        ParticleCollision.OnAnyParticleBouncedOff += ParticleCollision_OnParticleBouncedOff;
 
         Collectible.OnAnyCollectibleTouchedFloor += Collectible_OnAnyCollectibleTouchedFloor;
         Collectible.OnAnyCollectiblePickedUpByWorker += Collectible_OnAnyCollectiblePickedUpByWorker;
@@ -173,6 +174,7 @@ public class SoundManager : MonoBehaviour
 
         DogReplaceButton.OnDogSwapped += DogReplaceButton_OnDogSwapped;
     }
+
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -552,6 +554,10 @@ public class SoundManager : MonoBehaviour
 
     private void ParticleCollision_OnAnyPlayerBulletHitGround(object sender, ParticleCollision.OnBulletHitEventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitGroundSound;
+        PlaySound2D(audioClipArray, .5f);
+    }
+    private void ParticleCollision_OnParticleBouncedOff(object sender, System.EventArgs e) {
+        AudioClip[] audioClipArray = soundRefsSO.bulletBoucedOff;
         PlaySound2D(audioClipArray, .5f);
     }
 
@@ -997,6 +1003,7 @@ public class SoundManager : MonoBehaviour
         ParticleCollision.OnAnyBulletHitGround -= ParticleCollision_OnAnyBulletHitGround;
         ParticleCollision.OnAnyPlayerBulletHitEnemy -= ParticleCollision_OnAnyPlayerBulletHitEnemy;
         ParticleCollision.OnAnyPlayerBulletHitGround -= ParticleCollision_OnAnyPlayerBulletHitGround;
+        ParticleCollision.OnAnyParticleBouncedOff -= ParticleCollision_OnParticleBouncedOff;
 
         Collectible.OnAnyCollectibleTouchedFloor -= Collectible_OnAnyCollectibleTouchedFloor;
         Collectible.OnAnyCollectiblePickedUpByWorker -= Collectible_OnAnyCollectiblePickedUpByWorker;

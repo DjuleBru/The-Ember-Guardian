@@ -349,6 +349,8 @@ AnimationClip:
     flags: 2
   - serializedVersion: 2
     curve:
+    - time: 0
+      value: {fileID: 0}
     - time: 0.6
       value: {fileID: 809687069, guid: ccce020051c7912448c919fd38f5c743, type: 3}
     - time: 0.7
@@ -495,6 +497,7 @@ AnimationClip:
     - {fileID: 876027397, guid: 6ed11ae5456fc3e4083ff94b088e3a0b, type: 3}
     - {fileID: -153781904, guid: 6ed11ae5456fc3e4083ff94b088e3a0b, type: 3}
     - {fileID: 168248093, guid: 6ed11ae5456fc3e4083ff94b088e3a0b, type: 3}
+    - {fileID: 0}
     - {fileID: 809687069, guid: ccce020051c7912448c919fd38f5c743, type: 3}
     - {fileID: -1007663402, guid: ccce020051c7912448c919fd38f5c743, type: 3}
     - {fileID: -2015217304, guid: ccce020051c7912448c919fd38f5c743, type: 3}
@@ -824,6 +827,34 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
+    functionName: SetUnReadyToMove
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.6
+    functionName: TriggerAttackSFX
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1
+    functionName: TriggerAttackSFX
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.4
+    functionName: TriggerAttackSFX
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.6
     functionName: SetReadyToMove
     data: 
     objectReferenceParameter: {fileID: 0}

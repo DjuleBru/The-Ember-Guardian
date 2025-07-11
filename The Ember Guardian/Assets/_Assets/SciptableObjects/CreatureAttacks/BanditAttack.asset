@@ -31,12 +31,13 @@ MonoBehaviour:
   totalAttackAnimationTime: 0.6
   attackSFXDelayAfterAnimationStart: 0
   staticProjectilePrefab: {fileID: 7991158393713654780, guid: a5ea1941e0688aa4fb8f9502aeee8c9d, type: 3}
+  staticProjectileAutoTargetsPlayer: 0
   projectileAmountInPool: 0
   projectileAmountShotInAttack: 0
   delayBetweenProjectileSpawns: 0
   projectileSO: {fileID: 11400000, guid: f6761823ce1e8164095fc93d0a9bbfd2, type: 2}
   attackRangeRandomizerMiss: 0.5
-  attackSFXHandledByAnimation: 0
+  attackSFXHandledByAnimation: 1
   attackAudioClips:
   - {fileID: 8300000, guid: fe40a58834a1552469ea3ddb318ba63d, type: 3}
   - {fileID: 8300000, guid: 7c320ffa39f173c48b3bd0605cf2ffd0, type: 3}

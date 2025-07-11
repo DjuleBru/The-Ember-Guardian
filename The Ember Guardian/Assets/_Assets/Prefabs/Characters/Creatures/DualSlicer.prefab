@@ -78,7 +78,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.25, y: 1.5625}
+  m_Size: {x: 4.375, y: 1.625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -198,39 +198,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 273775804963594397, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Size.x
-      value: 0.6755827
+      value: 0.546807
       objectReference: {fileID: 0}
     - target: {fileID: 273775804963594397, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Size.y
-      value: 0.52304333
+      value: 0.9305913
       objectReference: {fileID: 0}
     - target: {fileID: 273775804963594397, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Offset.x
-      value: -0.026613202
+      value: -0.055192858
       objectReference: {fileID: 0}
     - target: {fileID: 273775804963594397, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Offset.y
-      value: 0.30770895
+      value: 0.46730527
       objectReference: {fileID: 0}
     - target: {fileID: 273775804963594397, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Direction
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 617523866817803319, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Size.x
-      value: 0.30747527
+      value: 0.2094878
       objectReference: {fileID: 0}
     - target: {fileID: 617523866817803319, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Size.y
-      value: 0.51319504
+      value: 0.30747527
       objectReference: {fileID: 0}
     - target: {fileID: 617523866817803319, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Offset.x
-      value: 0.008370668
+      value: -0.04062307
       objectReference: {fileID: 0}
     - target: {fileID: 617523866817803319, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Offset.y
-      value: -0.5573652
+      value: -0.19320533
       objectReference: {fileID: 0}
     - target: {fileID: 795836368442943769, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Offset.x
@@ -318,12 +318,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5478679135054183592, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: maxImpactAmountInSingleAnimation
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5757064800425388701, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: creatureSO
       value: 
-      objectReference: {fileID: 11400000, guid: 30c45ff74017778438c5c78eed18975c, type: 2}
+      objectReference: {fileID: 11400000, guid: 51ff0da5c29d9704d98a8e536853da77, type: 2}
     - target: {fileID: 6065107878212410819, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -404,6 +404,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: CritHitZone
       objectReference: {fileID: 0}
+    - target: {fileID: 7582748658384806886, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: glowSpriteRenderer2
+      value: 
+      objectReference: {fileID: 2473783173817393121}
     - target: {fileID: 7624359409499782810, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

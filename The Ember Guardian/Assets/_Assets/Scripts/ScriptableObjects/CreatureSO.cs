@@ -187,6 +187,12 @@ public class CreatureSO : ScriptableObject
     [BoxGroup("SFX")]
     [LabelWidth(200)]
     public AudioClip[] continuousAudioClip;
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public bool hasContinousMovementAudioClip;
+    [BoxGroup("SFX")]
+    [LabelWidth(200)]
+    public AudioClip[] continuousMovementAudioClip;
 
     [BoxGroup("SFX")]
     [LabelWidth(200)]

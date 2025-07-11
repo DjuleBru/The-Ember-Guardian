@@ -108,7 +108,11 @@ MonoBehaviour:
   attackCooldown: 0
   attackAnimationDelay: 0
   totalAttackAnimationTime: 0
+  shootsMultipleProjectilesInAttack: 0
+  projectileAmountShotInAttack: 1
+  delayBetweenProjectileSpawns: 0
   projectileAmountInPool: 0
+  secondaryAttackProjectileSpawnPosition: {fileID: 0}
 --- !u!50 &3798161515241024080
 Rigidbody2D:
   serializedVersion: 4

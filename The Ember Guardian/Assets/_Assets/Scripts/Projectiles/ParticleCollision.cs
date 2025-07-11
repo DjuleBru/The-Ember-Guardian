@@ -8,6 +8,7 @@ public class ParticleCollision : MonoBehaviour
 {
 
     private ParticleSystem ps;
+    private ParticleSystem.CollisionModule collisionModule;
     public List<ParticleCollisionEvent> collisionEvents;
     public CinemachineVirtualCamera cam;
     public GameObject explosionPrefab;
@@ -24,6 +25,7 @@ public class ParticleCollision : MonoBehaviour
     public static event EventHandler<OnBulletHitEventArgs> OnAnyPlayerBulletHitGround;
     public static event EventHandler<OnBulletHitEventArgs> OnAnyPlayerBulletHitEnemy;
     public static event EventHandler<OnBulletHitEventArgs> OnAnyPlayerBulletHitEnemyCrit;
+    public static event EventHandler OnAnyParticleBouncedOff;
 
     public class OnBulletHitEventArgs {
         public Vector3 bulletHitPosition;
@@ -38,6 +40,7 @@ public class ParticleCollision : MonoBehaviour
     void Start()
     {
         ps = GetComponent<ParticleSystem>();
+        collisionModule = ps.collision;
         collisionEvents = new List<ParticleCollisionEvent>();
         previousPosition = transform.position;
     }
@@ -74,6 +77,18 @@ public class ParticleCollision : MonoBehaviour
             // Parcours chaque particule pour voir laquelle est proche de la collision
             for (int j = 0; j < particleCount; j++) {
 
+                bool bounceOff = false;
+                // Bounce
+                if (other.CompareTag("BounceOff")) {
+                    bounceOff = true;
+                    collisionModule.bounce = 1;
+                    collisionModule.lifetimeLoss = 0;
+                }
+                else {
+                    collisionModule.bounce = 0;
+                    collisionModule.lifetimeLoss = 1;
+                }
+
                 // Vérifie si la particule n'a pas déjà infligé des dégâts pour cette collision
                 if (!damagedParticles.Contains(j) && Vector3.Distance(particles[j].position, collisionPosition) < collisionDistanceThreshold) {
 
@@ -81,9 +96,14 @@ public class ParticleCollision : MonoBehaviour
                     Vector3 moveDir = (collisionPosition - PlayerShoot.Instance.GetHeldGun().transform.position).normalized;
                     float angle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
 
-                    if(groundDestroysBullet) {
+                    if(!bounceOff && groundDestroysBullet) {
                         particles[j].remainingLifetime = 0; // Détruit seulement la particule proche de l'impact
                         ps.SetParticles(particles, particleCount); // Réinjecte les particules mises à jour dans le système
+                    }
+
+                    if (bounceOff) {
+                        ps.SetParticles(particles, particleCount);
+                        OnAnyParticleBouncedOff?.Invoke(this, EventArgs.Empty);
                     }
 
                     // Try fetch mobHit or spawner Hit
@@ -190,18 +210,6 @@ public class ParticleCollision : MonoBehaviour
                     damagedParticles.Add(j); // Marque cette particule comme ayant déjà infligé des dégâts
                     break; // Sort de la boucle pour passer à la collision suivante
                 }
-
-                if (Vector3.Distance(particles[j].position, collisionPosition) < collisionDistanceThreshold) {
-
-                    if(groundDestroysBullet) {
-                        particles[j].remainingLifetime = 0; // Détruit seulement la particule proche de l'impact
-
-                        // Réinjecte les particules mises à jour dans le système
-                        ps.SetParticles(particles, particleCount);
-                    }
-
-                }
-
             }
         }
     }

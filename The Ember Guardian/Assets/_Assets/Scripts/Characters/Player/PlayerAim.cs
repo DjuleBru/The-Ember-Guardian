@@ -68,7 +68,7 @@ public class PlayerAim : MonoBehaviour
     private float crouchRecoilReductionFactor = 2;
 
     private bool justTookDamage;
-    private float takeDamageTimeToRecoverPrecision = 1f;
+    private float damageImmunityAfterTakingDamageTime;
     private float takeDamageTimer;
 
     private Vector2 smoothedOffset = Vector2.zero;
@@ -140,6 +140,8 @@ public class PlayerAim : MonoBehaviour
         autoAimOnMovement = SettingsManager.Instance.GetAlignAimWithMovement();
         autoAimActive = SettingsManager.Instance.GetAimAssist();
         isUsingGamepad = GameInput.Instance.IsUsingGamepad();
+
+        damageImmunityAfterTakingDamageTime = PlayerStats.Instance.GetDamagedImmunityTime();
     }
 
     private void LateUpdate() {
@@ -552,8 +554,10 @@ public class PlayerAim : MonoBehaviour
         BuffRecoil(recoilBuff);
     }
     private void Player_OnPlayerDamaged(object sender, Player.OnPlayerChangedHealthEventArgs e) {
+        if (justTookDamage) return;
+
         DebuffPrecision(takeDamagePrecisionDebuff);
-        takeDamageTimer = takeDamageTimeToRecoverPrecision;
+        takeDamageTimer = damageImmunityAfterTakingDamageTime;
         justTookDamage = true;
     }
 
