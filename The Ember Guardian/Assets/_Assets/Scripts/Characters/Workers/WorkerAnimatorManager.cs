@@ -157,6 +157,7 @@ public class WorkerAnimatorManager : MonoBehaviour
 
     private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
         //Debug.Log(workerAI.GetJob());
+
         if(workerAI.GetJob() == WorkerAI.JobTypes.wild) {
             RefreshJobAnimator(worker.GetWildJobType());
         } else {

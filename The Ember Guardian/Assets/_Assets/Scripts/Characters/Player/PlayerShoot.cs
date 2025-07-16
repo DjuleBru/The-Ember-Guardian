@@ -17,6 +17,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerCooldownTrigger;
     public event EventHandler OnPlayerCooldownAnimationTrigger;
     public event EventHandler OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag;
+    public event EventHandler OnPlayerTryReload_FullAmmoBelt;
     public event EventHandler OnPlayerTryReloadAmmoBelt_NoAmmoInBag;
     public event EventHandler OnPlayerReload;
     public event EventHandler OnPlayerReloadHandEnded;
@@ -425,6 +426,11 @@ public class PlayerShoot : MonoBehaviour
     private void TransferNextAmmoFromBag() {
         PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
         int ammoAmountInBag = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(ammoType).Count;
+
+        if(heldGun.GetCurrentAmmoClip() == heldGun.GetMaxAmmo()) {
+            OnPlayerTryReload_FullAmmoBelt?.Invoke(this, EventArgs.Empty);
+            return;
+        }
 
         if (ammoAmountInBag > 0 && heldGun.GetCurrentAmmoClip() < heldGun.GetMaxAmmo()) {
             UICurrencyManager.PlayerInventoryUI.DropNextCurrencyInBag(ammoType);

@@ -756,7 +756,7 @@ public class SoundManager : MonoBehaviour
     }
 
     private void Scavengable_OnAnyScavengableMarkedToScavenge(object sender, System.EventArgs e) {
-        PlaySound2D(soundRefsSO.scavengableMarkedToScavenge);
+        PlaySound2D(soundRefsSO.scavengableMarkedToScavenge, .6f);
     }
 
     private void HuntingFlag_PlayerDefined_OnAnyHuntingFlagPickedUp(object sender, System.EventArgs e) {

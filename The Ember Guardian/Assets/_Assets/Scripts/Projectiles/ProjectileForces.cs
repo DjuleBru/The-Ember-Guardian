@@ -12,7 +12,7 @@ public class ProjectileForces : Projectile {
 
     [Header("Physique")]
     private float gravityScale = 1f;
-    private float homingStrength = 2f;
+    private float homingStrength = 4f;
 
     private bool hasHit = false;
     private bool homing;
@@ -93,17 +93,19 @@ public class ProjectileForces : Projectile {
     private void FixedUpdate() {
         if (hasHit || !homing || projectileTarget == null) return;
 
-        // Vérifie si on a passé l’apex (le point le plus haut)
-        //if (!hasPassedApex && rb.velocity.y < .5f) {
-        //    hasPassedApex = true;
-        //}
+        Vector2 toTarget = ((Vector2)(projectileTarget.position - transform.position)).normalized;
+        Vector2 velocity = rb.velocity;
+        float speed = velocity.magnitude;
 
-        //if (!hasPassedApex) return; // Laisse la parabole se faire tranquillement
+        // Clamp la rotation de la velocity
+        float maxTurnRate = 90f * Mathf.Deg2Rad; // max 180°/s
+        float angleBetween = Vector2.SignedAngle(velocity, toTarget);
+        float maxAngleDelta = maxTurnRate * Time.fixedDeltaTime;
 
-        Vector2 desiredDir = ((Vector2)(projectileTarget.position - transform.position)).normalized;
-        Vector2 currentVelocity = rb.velocity;
-        Vector2 newVelocity = Vector2.Lerp(currentVelocity, desiredDir * currentVelocity.magnitude, Time.fixedDeltaTime * homingStrength);
-        rb.velocity = newVelocity;
+        float clampedAngle = Mathf.Clamp(angleBetween, -maxAngleDelta, maxAngleDelta);
+        Vector2 newDir = Quaternion.Euler(0, 0, clampedAngle) * velocity.normalized;
+
+        rb.velocity = newDir * speed;
     }
 
     private Vector2 CalculateLaunchVelocityWithApex(Vector2 start, Vector2 end) {
@@ -113,6 +115,14 @@ public class ProjectileForces : Projectile {
         float minApexY = projectileSO.minApexY;
         float maxApexY = projectileSO.maxApexY;
         float apexRandomizer = projectileSO.apexRandomizer;
+
+        Creature targetCreature = projectileTarget.GetComponentInParent<Creature>();
+        if (targetCreature != null) {
+            if(targetCreature.GetCreatureSO().flying) {
+                minApexY = targetCreature.transform.position.y + 2;
+                maxApexY = targetCreature.transform.position.y + 3;
+            }
+        }
 
         float g = Mathf.Abs(Physics2D.gravity.y * gravityScale);
 

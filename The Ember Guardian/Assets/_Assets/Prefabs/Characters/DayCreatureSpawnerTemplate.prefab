@@ -46,7 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneViewSpawnerSpriteRenderer: {fileID: 0}
   mobPrefab: {fileID: 0}
-  spawnPosition: {fileID: 3179234607718819779}
+  spawnPositionList:
+  - {fileID: 3179234607718819779}
   spawnPositionRandomizer: 10
   radiusToRoamAround: 7
   mobAmountToSpawn: 0
@@ -57,3 +58,4 @@ MonoBehaviour:
   canSpawnEliteCreatures: 0
   eliteSpawnProbability: 0
   eliteSpawnAmount: 0
+  linkedMobSpawner: {fileID: 0}

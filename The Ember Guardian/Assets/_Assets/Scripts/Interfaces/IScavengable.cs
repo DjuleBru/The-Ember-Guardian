@@ -28,4 +28,6 @@ public interface IScavengable : IDamageable
     void MinerStopsMining(MinerJob minerJob);
     void AssignMiner(MinerJob minerJob);
     void UnassignMiner(MinerJob minerJob);
+
+    void SetScavengableUnlocked(bool unlocked);
 }

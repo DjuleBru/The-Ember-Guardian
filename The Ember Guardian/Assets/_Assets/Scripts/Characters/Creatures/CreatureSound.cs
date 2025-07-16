@@ -67,9 +67,11 @@ public class CreatureSound : SoundObject
         }
 
         if (IsTooFarFromPlayer()) return;
-        AudioClip audioClip = creatureSO.spawnAudioClips[Random.Range(0, creatureSO.spawnAudioClips.Length)];
-
-        creatureAudioSource.PlayOneShot(audioClip, creatureSO.spawnVolumeMultiplier * sfxVolume);
+        if(creatureSO.spawnAudioClips.Length > 0) {
+            AudioClip audioClip = creatureSO.spawnAudioClips[Random.Range(0, creatureSO.spawnAudioClips.Length)];
+            creatureAudioSource.PlayOneShot(audioClip, creatureSO.spawnVolumeMultiplier * sfxVolume);
+        }
+        
     }
 
     private void CreatureMovement_OnMovementStopped(object sender, System.EventArgs e) {

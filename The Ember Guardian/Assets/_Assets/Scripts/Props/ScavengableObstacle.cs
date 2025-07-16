@@ -182,6 +182,10 @@ public class ScavengableObstacle : Obstacle, IScavengable
         return (float)hitsTaken / (float)hitsToRemoveObstacle;
     }
 
+    public void SetScavengableUnlocked(bool unlocked) {
+        return;
+    }
+
     protected override void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
         if (obstacleBuilt) return;

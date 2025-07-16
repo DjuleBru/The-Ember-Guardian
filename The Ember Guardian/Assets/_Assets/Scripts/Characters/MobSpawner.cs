@@ -7,7 +7,7 @@ public class MobSpawner : MonoBehaviour
 {
     [SerializeField] protected SpriteRenderer sceneViewSpawnerSpriteRenderer;
     [SerializeField] protected Transform mobPrefab;
-    [SerializeField] protected Transform spawnPosition;
+    [SerializeField] protected List<Transform> spawnPositionList;
     [SerializeField] protected float spawnPositionRandomizer;
     [SerializeField] protected float radiusToRoamAround;
     [SerializeField] protected int mobAmountToSpawn;
@@ -93,7 +93,7 @@ public class MobSpawner : MonoBehaviour
         for (int i = 0; i < mobAmount; i++) {
 
             float positionRandomizer = UnityEngine.Random.Range(-spawnPositionRandomizer, spawnPositionRandomizer);
-            Vector3 spawnPositionRandomized = spawnPosition.position;
+            Vector3 spawnPositionRandomized = spawnPositionList[0].position;
             spawnPositionRandomized.x += positionRandomizer;
 
             Mob mob = Instantiate(mobPrefab, spawnPositionRandomized, Quaternion.identity).GetComponent<Mob>();
@@ -132,7 +132,7 @@ public class MobSpawner : MonoBehaviour
         for (int i = 0; i < mobAmount; i++) {
 
             float positionRandomizer = UnityEngine.Random.Range(-spawnPositionRandomizer, spawnPositionRandomizer);
-            Vector3 spawnPositionRandomized = spawnPosition.position;
+            Vector3 spawnPositionRandomized = spawnPositionList[0].position;
             spawnPositionRandomized.x += positionRandomizer;
 
             if (creatureSO.flying) {
@@ -164,7 +164,7 @@ public class MobSpawner : MonoBehaviour
     public IEnumerator SpawnMobsCoroutine(float delayBetweenMobs) {
         for (int i = 0; i < mobAmountToSpawn; i++) {
             float positionRandomizer = UnityEngine.Random.Range(-spawnPositionRandomizer, spawnPositionRandomizer);
-            Vector3 spawnPositionRandomized = spawnPosition.position;
+            Vector3 spawnPositionRandomized = spawnPositionList[0].position;
             spawnPositionRandomized.x += positionRandomizer;
 
             Mob mob = Instantiate(mobPrefab, spawnPositionRandomized, Quaternion.identity).GetComponent<Mob>();

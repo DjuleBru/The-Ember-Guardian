@@ -152,17 +152,23 @@ public class Creature : Mob
     }
 
     public override void Die() {
+        CreatureDieFunction();
+        OnCreatureDied?.Invoke(this, EventArgs.Empty);
+    }
+
+
+    private void CreatureDieFunction() {
         dead = true;
 
         CreaturesManager.Instance.RemoveCreatureSpawned(this);
 
-        if(mobSpawner != null) {
+        if (mobSpawner != null) {
             mobSpawner.RemoveMobFromMobSpawnedList(this);
         }
 
         base.Die();
 
-        if(!creatureUnlocked) {
+        if (!creatureUnlocked) {
             creatureUnlocked = true;
             MetaProgressionManager.Instance.SetCreatureUnlocked(creatureSO);
         }
@@ -172,27 +178,27 @@ public class Creature : Mob
             InvokeOnMobDroppedCollectibles(collectiblesDropped);
         }
 
-        if(DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetIsMainDemoLevel()) {
+        if (DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetIsMainDemoLevel()) {
             DemoDropGems();
         }
 
-        if(eliteCreature) {
-            if(DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetIsMainDemoLevel()) {
+        if (eliteCreature) {
+            if (DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetIsMainDemoLevel()) {
                 DemoDropGems();
-            } else {
+            }
+            else {
                 EliteDropGems();
             }
         }
 
-        if(creatureSO.isBoss) {
+        if (creatureSO.isBoss) {
             BossUI.Instance.Hide();
         }
 
-        OnCreatureDied?.Invoke(this, EventArgs.Empty);
         StartCoroutine(DestroyGameObjectAfterDelay());
         GetComponent<Collider2D>().enabled = false;
 
-        foreach(Collider2D cd in critZoneColliders) {
+        foreach (Collider2D cd in critZoneColliders) {
             cd.enabled = false;
         }
 

@@ -31,6 +31,8 @@ public class LevelManager : MonoBehaviour
         Instance = this;
         Obstacle.OnAnyObstacleInitialized += Obstacle_OnAnyObstacleInitialized;
     }
+
+
     private void Start() {
         if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest) {
             EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;

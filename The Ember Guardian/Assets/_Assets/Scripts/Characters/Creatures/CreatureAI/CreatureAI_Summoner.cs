@@ -10,6 +10,10 @@ public class CreatureAI_Summoner : CreatureAI {
     [SerializeField] private float minimumFleeTime;
     [SerializeField] private CreatureSpawnerContinuous creatureSpawnerContinuous;
 
+    [SerializeField] private bool spawnMobsOnDeath;
+    [SerializeField] private float spawnMobsOnDeathAnimationDelay;
+    [SerializeField] private List<Transform> mobSpawnPointsOnDeath;
+
     private GameObject attackTargetGO;
     private float fleeTimer;
     [SerializeField] private float distanceToTargetToStopWalking = 8f;
@@ -28,12 +32,12 @@ public class CreatureAI_Summoner : CreatureAI {
     }
 
     protected override void Update() {
-        if(spawning) {
-            return;
-        }
+        if(spawning) return;
+
         if((attackTarget as MonoBehaviour) != null) {
             attackTargetGO = (attackTarget as MonoBehaviour).gameObject;
         }
+
         base.Update();
     }
 
@@ -45,7 +49,6 @@ public class CreatureAI_Summoner : CreatureAI {
         spawning = true;
         creatureMovement.SetMoveTarget(transform.position);
     }
-
 
     protected override void HeadToTarget() {
         if (attackTarget == null) return;
@@ -126,8 +129,21 @@ public class CreatureAI_Summoner : CreatureAI {
         }
 
     }
+
     protected override void Creature_OnCreatureDied(object sender, EventArgs e) {
         died = true;
+
+        StartCoroutine(DieCoroutine());
         creatureSpawnerContinuous.SetDead();
+    }
+
+    private IEnumerator DieCoroutine() {
+        yield return new WaitForSeconds(spawnMobsOnDeathAnimationDelay);
+
+        if(spawnMobsOnDeath) {
+            foreach(Transform spawnPos in mobSpawnPointsOnDeath) {
+                creatureSpawnerContinuous.SpawnMobAtPosition(spawnPos);
+            }
+        }
     }
 }

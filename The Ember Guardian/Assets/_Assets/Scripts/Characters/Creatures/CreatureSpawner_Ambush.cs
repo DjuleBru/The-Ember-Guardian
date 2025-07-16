@@ -6,7 +6,6 @@ using UnityEngine;
 public class CreatureSpawner_Ambush : MobSpawner {
 
     [SerializeField] protected List<Transform> mobPrefabList;
-    [SerializeField] protected List<Transform> spawnPositionsList;
     [SerializeField] protected List<int> mobAmountList;
     [SerializeField] protected float delayBetweenMobSpawn = .1f;
     [SerializeField] protected float minSpawnPositionFromPlayer;
@@ -57,7 +56,7 @@ public class CreatureSpawner_Ambush : MobSpawner {
 
     private Vector3 GetRandomizedSpawnPosition(int creatureIndex) {
 
-        Transform spawnPosition = spawnPositionsList[creatureIndex];
+        Transform spawnPosition = spawnPositionList[creatureIndex];
             
         float xRandomizer = Random.Range(minSpawnPositionFromPlayer, maxSpawnPositionFromPlayer);
         float directionRandomizer = Random.Range(-1f, 1f);

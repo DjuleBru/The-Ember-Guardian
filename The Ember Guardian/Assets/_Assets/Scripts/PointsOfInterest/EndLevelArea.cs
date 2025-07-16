@@ -10,6 +10,7 @@ public class EndLevelArea : MonoBehaviour
     [SerializeField] private Transform endLevelAreaSpawnerParent;
     [SerializeField] private GameObject endLevelAreaFire;
     [SerializeField] private Portal endLevelPortal;
+    [SerializeField] private StructureLocation endLevelAreaBackToBaseTPLocation;
 
     private MobSpawner[] endLevelAreaSpawnerList;
     private List<Mob> mobsInArea = new List<Mob>();
@@ -88,8 +89,17 @@ public class EndLevelArea : MonoBehaviour
 
         if (mobsInArea.Count == 0) {
             endLevelAreaFire.SetActive(true);
+            StartCoroutine(ActivateEndLevelTPAfterDelay(1f));
             OnEndLevelAreaCleared?.Invoke(this, EventArgs.Empty);
             MusicManager.Instance.StopEndLevelMusic();
+        }
+    }
+
+    private IEnumerator ActivateEndLevelTPAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+
+        if (endLevelAreaBackToBaseTPLocation != null) {
+            endLevelAreaBackToBaseTPLocation.BuildStructure();
         }
     }
 

@@ -314,8 +314,12 @@ public class CreatureAI : MonoBehaviour {
     }
 
     protected void MoveTowardsSpawner() {
-        Vector3 targetDestination = creature.GetMobSpawner().transform.position;
+        Vector3 targetDestination = transform.position;
 
+        if (creature.GetMobSpawner() != null) {
+            targetDestination = creature.GetMobSpawner().transform.position;
+        }
+       
         creatureMovement.SetMoveTarget(targetDestination);
 
         if (Mathf.Abs(transform.position.x - targetDestination.x) < minAttackRange) {

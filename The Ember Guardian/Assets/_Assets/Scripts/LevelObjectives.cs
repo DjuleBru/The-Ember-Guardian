@@ -29,6 +29,7 @@ public class LevelObjectives : MonoBehaviour
 
     private void Start() {
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
+        Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
 
         if (levelMerchantList.Count != 0) {
             foreach (HubMerchant levelMerchant in levelMerchantList) {
@@ -193,6 +194,9 @@ public class LevelObjectives : MonoBehaviour
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FindArchitect);
         }
     }
+    private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, EventArgs e) {
+        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.TeleportBackToHub);
+    }
 
     #region DESTROY NEST LEVEL
 
@@ -213,6 +217,13 @@ public class LevelObjectives : MonoBehaviour
             StartCoroutine(StartFinalMerchantDialog());
         }
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
+        StartCoroutine(ShowReturnToHubObjective(4f));
+    }
+
+    private IEnumerator ShowReturnToHubObjective(float delayBeforeShowing) {
+        yield return new WaitForSeconds(delayBeforeShowing);
+        LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.ReturnToHub);
+        LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.TeleportBackToHub});
     }
 
     private void EndLevelArea_OnEndLevelAreaCleared(object sender, System.EventArgs e) {
@@ -259,6 +270,7 @@ public class LevelObjectives : MonoBehaviour
 
     private void OnDestroy() {
         EndLevelAreaCollider.OnPlayerTriggeredInAnyEndLevelArea -= EndLevelAreaCollider_OnPlayerTriggeredInAnyEndLevelArea;
+        Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
     }
 
 }

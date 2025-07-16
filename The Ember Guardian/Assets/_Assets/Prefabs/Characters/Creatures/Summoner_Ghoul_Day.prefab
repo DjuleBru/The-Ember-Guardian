@@ -113,7 +113,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneViewSpawnerSpriteRenderer: {fileID: 0}
   mobPrefab: {fileID: 2100628709117196716, guid: 61fc72d8cc17be84eb6679397d2fd53c, type: 3}
-  spawnPosition: {fileID: 590498446364819386}
+  spawnPositionList:
+  - {fileID: 590498446364819386}
   spawnPositionRandomizer: 0
   radiusToRoamAround: 0
   mobAmountToSpawn: 2
@@ -761,7 +762,13 @@ MonoBehaviour:
   roamRadius: 3
   distanceToFleeFromTarget: 10
   minimumFleeTime: 2
+  spawnRate: 0
+  spawnAnimationDelay: 0
   creatureSpawnerContinuous: {fileID: 7578288738974065730}
+  spawnMobsOnDeath: 0
+  spawnMobsOnDeathAnimationDelay: 0
+  mobSpawnPoints: []
+  mobSpawnPointsOnDeath: []
   distanceToTargetToStopWalking: 12
 --- !u!4 &5663241041523577314 stripped
 Transform:

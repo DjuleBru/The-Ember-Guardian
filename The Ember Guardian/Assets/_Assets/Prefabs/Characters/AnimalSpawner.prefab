@@ -24,6 +24,14 @@ PrefabInstance:
       propertyPath: isAnimalSpawner
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2780275624035290928, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
+      propertyPath: spawnPositionList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2780275624035290928, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
+      propertyPath: spawnPositionList.Array.data[0]
+      value: 
+      objectReference: {fileID: 6062664339227444936}
     - target: {fileID: 4798202510917334166, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
       propertyPath: m_Name
       value: AnimalSpawner
@@ -77,3 +85,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
+--- !u!4 &6062664339227444936 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 888231358417916019, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
+  m_PrefabInstance: {fileID: 6372954862967609019}
+  m_PrefabAsset: {fileID: 0}

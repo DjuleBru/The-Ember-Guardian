@@ -228,11 +228,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneViewSpawnerSpriteRenderer: {fileID: 7173696647073313958}
   mobPrefab: {fileID: 0}
-  spawnPosition: {fileID: 7456974094614398954}
+  spawnPositionList:
+  - {fileID: 1015057575054326257}
+  - {fileID: 6640945949512533269}
+  - {fileID: 7865275466535520196}
+  spawnPositionRandomizer: 0
+  radiusToRoamAround: 0
   mobAmountToSpawn: 0
   maxMobsRespawningAtDawn: 0
   isCreatureSpawner: 1
   isAnimalSpawner: 0
+  blockSpawningOnStart: 0
+  canSpawnEliteCreatures: 0
+  eliteSpawnProbability: 0
+  eliteSpawnAmount: 0
+  linkedMobSpawner: {fileID: 0}
   mobPrefabList:
   - {fileID: 2100628709117196716, guid: 61fc72d8cc17be84eb6679397d2fd53c, type: 3}
   - {fileID: 2100628709117196716, guid: 1daa7a1cf491ad0428c8464c1aed981a, type: 3}

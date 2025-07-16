@@ -140,7 +140,7 @@ public class CreatureAnimatorManager : MonoBehaviour
         spawned = true;
     }
 
-    protected void MobAttack_OnMobAttack(object sender, System.EventArgs e) {
+    protected virtual void MobAttack_OnMobAttack(object sender, System.EventArgs e) {
         if(creatureAttack.GetIsPrimaryAttack()) {
             animator.SetTrigger("Attack");
         }
@@ -148,10 +148,9 @@ public class CreatureAnimatorManager : MonoBehaviour
         if (creatureAttack.GetIsSecondaryAttack()) {
             animator.SetTrigger("Attack_Secondary");
         }
-
     }
 
-    protected void Creature_OnMobDied(object sender, System.EventArgs e) {
+    protected virtual void Creature_OnMobDied(object sender, System.EventArgs e) {
         animator.SetTrigger("Die");
         float playerDir = Player.Instance.transform.position.x - transform.position.x;
         HandleScaleChange(playerDir);

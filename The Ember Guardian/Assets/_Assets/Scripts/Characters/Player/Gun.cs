@@ -78,6 +78,7 @@ public class Gun : MonoBehaviour
     protected void Start() {
         gunJamHandler = GetComponent<GunJamHandler>();
 
+        Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
         PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
         PlayerShoot.Instance.OnPlayerFocusBlastStopped += PlayerShoot_OnPlayerFocusBlastStopped;
@@ -243,6 +244,13 @@ public class Gun : MonoBehaviour
         HandleGunJams();
 
         Shoot();
+    }
+
+    private void Player_OnPlayerDied(object sender, EventArgs e) {
+        if(damageSurgeBuffed) {
+            damageSurgeBuffed = false;
+            OnPerfectQTEDamageBuffEnded?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void Shoot() {

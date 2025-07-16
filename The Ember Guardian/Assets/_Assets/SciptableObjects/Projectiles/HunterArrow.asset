@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 7911136206213874445, guid: 068377ba5f17b6641901f7b39ac0300c, type: 3}
   isExplosiveProjectile: 0
+  canBeDestoyedByBullets: 0
   usesAnimationCurve: 0
   projectileTrajectoryAnimationCurve:
     serializedVersion: 2
@@ -118,8 +119,10 @@ MonoBehaviour:
   projectileTrajectoryYCurve: 0.5
   trajectoryEndPointRandomOffsetValue: 0.2
   usesForce: 1
+  trajectoryMode: 0
+  straightLineSpeed: 10
   minApexY: 4
-  maxApexY: 10
+  maxApexY: 12
   distanceToTargetForMinApex: 2
   distanceToTargetForMaxApex: 15
   apexRandomizer: 2

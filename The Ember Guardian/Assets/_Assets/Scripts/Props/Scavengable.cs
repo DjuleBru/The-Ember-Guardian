@@ -231,14 +231,17 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
     }
 
     public void MinerStopsMining(MinerJob minerJob) {
+        if (!minersMiningList.Contains(minerJob)) return;
         minersMiningList.Remove(minerJob);
         OnMinerStopsMining?.Invoke(this, EventArgs.Empty);
     }
 
     public void UnassignMiner(MinerJob miner) {
-        if (!minerAssignedList.Contains(miner)) return;
-        minerAssignedList.Remove(miner);
         MinerStopsMining(miner);
+
+        if (minerAssignedList.Contains(miner)) {
+            minerAssignedList.Remove(miner);
+        };
 
         if (isMine) {
             miner.ExitFromMine();
@@ -316,12 +319,16 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
         return (timeToMineOneResource - initialTimeToMineOneResource) / (maxTimeToMineOneResource - initialTimeToMineOneResource);
     }
 
+    public void SetScavengableUnlocked(bool unlocked) {
+        this.scavengedUnlocked = unlocked;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision) {
         if (!scavengedUnlocked) return;
         if (depleted) return;
         if (collision.GetComponent<Player>() == null) return;
 
-        Player.Instance.SetInPayCurrencyArea(false);
+        Player.Instance.SetInPayCurrencyArea(true);
         playerInTriggerArea = true;
         OnPlayerTriggerIn?.Invoke(this, EventArgs.Empty);
 
@@ -332,10 +339,11 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (!scavengedUnlocked) return;
+        Player.Instance.SetInPayCurrencyArea(false);
+
         if (depleted) return;
         if (collision.GetComponent<Player>() == null) return;
 
-        Player.Instance.SetInPayCurrencyArea(true);
         payOrbsUI.SetPlayerInteracting(false);
         playerInTriggerArea = false;
         OnPlayerTriggerOut?.Invoke(this, EventArgs.Empty);

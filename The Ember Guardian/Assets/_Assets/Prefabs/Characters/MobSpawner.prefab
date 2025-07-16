@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1365893121
-  m_SortingLayer: -5
+  m_SortingLayer: -8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0ae5357695308b5408d2a64cdd0c4f98, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -163,8 +163,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneViewSpawnerSpriteRenderer: {fileID: 5032015013220033746}
   mobPrefab: {fileID: 0}
-  spawnPosition: {fileID: 888231358417916019}
+  spawnPositionList:
+  - {fileID: 888231358417916019}
+  spawnPositionRandomizer: 0
+  radiusToRoamAround: 0
   mobAmountToSpawn: 2
+  maxMobsRespawningAtDawn: 0
+  isCreatureSpawner: 0
+  isAnimalSpawner: 0
+  blockSpawningOnStart: 0
+  canSpawnEliteCreatures: 0
+  eliteSpawnProbability: 0
+  eliteSpawnAmount: 0
+  linkedMobSpawner: {fileID: 0}
 --- !u!1 &7526209351080445915
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,7 +248,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1365893121
-  m_SortingLayer: -5
+  m_SortingLayer: -8
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0ae5357695308b5408d2a64cdd0c4f98, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

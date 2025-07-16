@@ -194,7 +194,7 @@ public class MobAttack : MonoBehaviour
 
         attackStarted = false;
     }
-    protected IEnumerator AnimatedAttackCoroutine(float totalAttackAnimationTime) {
+    protected virtual IEnumerator AnimatedAttackCoroutine(float totalAttackAnimationTime) {
         attackStarted = true;
         yield return new WaitForSeconds(totalAttackAnimationTime);
         attackStarted = false;

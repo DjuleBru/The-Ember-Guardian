@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class CreatureAttack : MobAttack
 {
-    private Creature creature;
-    private float enteredLightAttackSpeedDebuff;
-    private float nightAttackSpeedBuff = 1.5f;
-    private CreatureAttackSO currentCreatureAttackSO;
+    protected Creature creature;
+    protected float enteredLightAttackSpeedDebuff;
+    protected float nightAttackSpeedBuff = 1.5f;
+    protected CreatureAttackSO currentCreatureAttackSO;
 
-    private float minAttackRange;
-    private float maxAttackRange;
-    private float attackRangeRandomizer;
-    private float attackRangeMaxDistanceMiss;
-    private int damageToFire;
+    protected float minAttackRange;
+    protected float maxAttackRange;
+    protected float attackRangeRandomizer;
+    protected float attackRangeMaxDistanceMiss;
+    protected int damageToFire;
 
 
     protected Transform primaryAttackProjectileSpawnPosition;
@@ -112,11 +112,11 @@ public class CreatureAttack : MobAttack
         InvokeAttackHit();
     }
 
-    private void Creature_OnCreatureExitedLight(object sender, System.EventArgs e) {
+    protected void Creature_OnCreatureExitedLight(object sender, System.EventArgs e) {
         attackCooldown /= enteredLightAttackSpeedDebuff;
     }
 
-    private void Creature_OnCreatureEnteredLight(object sender, System.EventArgs e) {
+    protected void Creature_OnCreatureEnteredLight(object sender, System.EventArgs e) {
         attackCooldown *= enteredLightAttackSpeedDebuff;
     }
 
@@ -133,11 +133,11 @@ public class CreatureAttack : MobAttack
         attackTargetIDamageable = null;
     }
 
-    private void Creature_OnCreatureStunStopped(object sender, EventArgs e) {
+    protected void Creature_OnCreatureStunStopped(object sender, EventArgs e) {
         stunned = true;
     }
 
-    private void Creature_OnCreatureStunStarted(object sender, EventArgs e) {
+    protected void Creature_OnCreatureStunStarted(object sender, EventArgs e) {
         stunned = false;
     }
 

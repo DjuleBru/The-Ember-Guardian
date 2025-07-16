@@ -253,13 +253,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2780275624035290928, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 868062903159978349, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1940582309211690870}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4798202510917334166, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 741646387251392079}
     - targetCorrespondingSourceObject: {fileID: 7526209351080445915, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4398358682168850030}
@@ -267,6 +271,39 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 121082607926170886}
   m_SourcePrefab: {fileID: 100100000, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
+--- !u!1 &1938777014892044845 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4798202510917334166, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
+  m_PrefabInstance: {fileID: 6372954862967609019}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &741646387251392079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938777014892044845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f752b6cecab66141bf88528909f5464, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneViewSpawnerSpriteRenderer: {fileID: 2135839067699540585}
+  mobPrefab: {fileID: 860173671428369790, guid: 61aa75413f6dfed43afbcec4a72fa6bb, type: 3}
+  spawnPositionList:
+  - {fileID: 6062664339227444936}
+  spawnPositionRandomizer: 0
+  radiusToRoamAround: 5
+  mobAmountToSpawn: 2
+  maxMobsRespawningAtDawn: 1
+  isCreatureSpawner: 0
+  isAnimalSpawner: 0
+  blockSpawningOnStart: 0
+  canSpawnEliteCreatures: 0
+  eliteSpawnProbability: 0
+  eliteSpawnAmount: 0
+  linkedMobSpawner: {fileID: 0}
+  jobType: 1
 --- !u!212 &2135839067699540585 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 5032015013220033746, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
@@ -312,6 +349,11 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &6062664339227444936 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 888231358417916019, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}
+  m_PrefabInstance: {fileID: 6372954862967609019}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6087373777405161430 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 868062903159978349, guid: 5ce19372696d50546a7e41aaa6dbd741, type: 3}

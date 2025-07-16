@@ -45,10 +45,10 @@ MonoBehaviour:
   barricadeTargetingPriority: 3
   currencyTypeDroppedList: 0200000003000000
   currencyDropAmountList: 0100000002000000
-  difficulty: 4
+  difficulty: 10
   initialWaveSpawn: 2
-  spawnProbability: 0.5
-  maxCreaturesPerPacket: 3
+  spawnProbability: 0.4
+  maxCreaturesPerPacket: 2
   dieAudioClips:
   - {fileID: 8300000, guid: 7c6eeba99f90050418a6860b03b89c2d, type: 3}
   dieVolumeMultiplier: 2.5
@@ -76,4 +76,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c7ead20edc468e24a86195f640218010, type: 3}
   - {fileID: 8300000, guid: b08f5ac8a197e76408abf125f5ea7870, type: 3}
   - {fileID: 8300000, guid: 6615caae1c691bd4e92666d2d32f4408, type: 3}
-  bulletHitVolumeMultiplier: 0.2
+  bulletHitVolumeMultiplier: 0.4

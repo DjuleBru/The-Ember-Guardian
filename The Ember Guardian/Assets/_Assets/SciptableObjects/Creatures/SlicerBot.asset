@@ -40,8 +40,8 @@ MonoBehaviour:
   hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 1.3
-  workerTargetingPriority: 3
-  playerTargetingPriority: 2
+  workerTargetingPriority: 2
+  playerTargetingPriority: 3
   barricadeTargetingPriority: 1
   currencyTypeDroppedList: 03000000
   currencyDropAmountList: 01000000
@@ -80,4 +80,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c7ead20edc468e24a86195f640218010, type: 3}
   - {fileID: 8300000, guid: b08f5ac8a197e76408abf125f5ea7870, type: 3}
   - {fileID: 8300000, guid: 6615caae1c691bd4e92666d2d32f4408, type: 3}
-  bulletHitVolumeMultiplier: 0.2
+  bulletHitVolumeMultiplier: 0.4

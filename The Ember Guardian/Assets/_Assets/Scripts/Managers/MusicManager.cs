@@ -12,6 +12,7 @@ public class MusicManager : MonoBehaviour {
     public enum NewLocationMusicInterruptionSource {
         creatureAggro,
         buildFire,
+        none,
     }
 
     [SerializeField] private NewLocationMusicInterruptionSource discoveryMusicInterruptionSource;
@@ -299,7 +300,12 @@ public class MusicManager : MonoBehaviour {
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
         if (isPlayingLevelDiscoveryMusic && discoveryMusicInterruptionSource == NewLocationMusicInterruptionSource.buildFire) {
-            StopCurrentMusic(1f);
+            StopCurrentMusic(2f);
+        }
+
+        if (isPlayingLevelDiscoveryMusic && discoveryMusicInterruptionSource == NewLocationMusicInterruptionSource.none) {
+            float startVolume = GetCurrentMusicVolume();
+            StartCoroutine(FadeOutCoroutine(2f, startVolume/2f));
         }
     }
 
@@ -711,8 +717,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     private IEnumerator FadeOutCoroutine(float fadeDuration, float targetFadeVolume) {
-        AudioSource activeSource = isUsingAudioSourceA ? audioSourceA : audioSourceB;
-        float startVolume = activeSource.volume;
+        float startVolume = GetCurrentMusicVolume();
 
         // Réduire progressivement le volume
         for (float t = 0; t < fadeDuration; t += Time.deltaTime) {
@@ -735,6 +740,7 @@ public class MusicManager : MonoBehaviour {
 
         isUsingAudioSourceA = !isUsingAudioSourceA;
     }
+
 
     private IEnumerator FadeInCoroutine(float fadeDuration, float initialVolume) {
         audioSourceA.volume = initialVolume;
@@ -766,6 +772,10 @@ public class MusicManager : MonoBehaviour {
         yield return StartCoroutine(FadeInCoroutine(fadeInDuration, 0));
     }
 
+    private float GetCurrentMusicVolume() {
+        AudioSource activeSource = isUsingAudioSourceA ? audioSourceA : audioSourceB;
+        return activeSource.volume;
+    }
     public void SetAudioVolume(float volume) {
         audioSourceA.volume = volume * musicSettingVolume;
         audioSourceB.volume = volume * musicSettingVolume;

@@ -14,6 +14,7 @@ public class MinerJob : WorkerJob {
     private float headToMineMoveSpeed = 2.5f;
     private float attackRange = 1f;
     private float attackRangeRandomized;
+    private float nightAggroCreatureDistance = 5f;
 
     private bool isNightOrDusk;
 
@@ -112,7 +113,7 @@ public class MinerJob : WorkerJob {
             }
         } else {
 
-            if (CheckBlockedByCreature() && state != MinerState.blockedByCreatures) {
+            if (CheckBlockedByCreature() && state != MinerState.blockedByCreatures && state != MinerState.idle) {
                 ChangeState(MinerState.blockedByCreatures);
                 return;
             };
@@ -120,18 +121,21 @@ public class MinerJob : WorkerJob {
             switch (state) {
 
                 case MinerState.idle:
-                    RoamInCampCenter();
-                    CheckAvailableScavengables();
+                    if (!IsInSafeZone()) {
+                        ChangeState(MinerState.headToSafety);
+                    }
 
-                    if (assignedScavengable != null && !isNightOrDusk) {
-                        ChangeState(MinerState.headingToMine);
+                    if (isNightOrDusk) {
+                        NightIdleStateUpdate();
+                    } else {
+                        DayIdleStateUpdate();
                     }
 
                     break;
 
                 case MinerState.headToSafety:
-                    if (isInSafeZone) {
-                        RoamInCampCenter();
+                    if (IsInSafeZone()) {
+                        ChangeState(MinerState.idle);
                     }
                     else {
                         HeadToCampCenter();
@@ -175,6 +179,37 @@ public class MinerJob : WorkerJob {
             }
         }
 
+    }
+
+    private void DayIdleStateUpdate() {
+        RoamInCampCenter();
+
+        CheckAvailableScavengables();
+
+        if (assignedScavengable != null && !isNightOrDusk) {
+            ChangeState(MinerState.headingToMine);
+        }
+    }
+    private void NightIdleStateUpdate() {
+        RoamInCampCenter();
+
+        CheckAggroClosestCreatureSmart(transform.position, nightAggroCreatureDistance);
+        if (aggroedCreature == null) {
+            targetCreature = null;
+            workerAttack.RemoveAttackTarget();
+            return;
+        }
+
+        if (!TargetIsInRange(aggroedCreature, attackRangeRandomized)) {
+            targetCreature = null;
+            workerAttack.RemoveAttackTarget();
+
+            mobMovement.SetMoveTarget(aggroedCreature.transform.position);
+            mobMovement.SetMoveSpeed(headToCampMoveSpeed);
+        }
+        else {
+            TargetCreature(aggroedCreature);
+        }
     }
 
     public void StayOutOfCreatureRange() {
@@ -252,6 +287,7 @@ public class MinerJob : WorkerJob {
     }
 
     public void UnAssignScavengable() {
+        if (assignedScavengable == null) return;
         assignedScavengable.UnassignMiner(this);
         assignedScavengable = null;
         workerAttack.RemoveAttackTarget();
@@ -271,7 +307,7 @@ public class MinerJob : WorkerJob {
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
 
-        if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
+        if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Dusk) {
             ChangeState(MinerState.idle);
         }
         else {
@@ -294,6 +330,7 @@ public class MinerJob : WorkerJob {
         isNightOrDusk = true;
 
         if (followingPlayer) return;
+        if (worker.GetDead()) return;
         ChangeState(MinerState.headToSafety);
     }
 
@@ -307,6 +344,7 @@ public class MinerJob : WorkerJob {
     private void ChangeState(MinerState newState) {
         if (newState == state) return;
 
+        hasSetCampDestination = false; 
         previousState = state;
 
         Vector3 targetDestination = mobMovement.transform.position;
@@ -316,9 +354,7 @@ public class MinerJob : WorkerJob {
         OnMinerChangedState?.Invoke(this, EventArgs.Empty);
 
         if(state == MinerState.idle) {
-            if(assignedScavengable != null) {
-                UnAssignScavengable();
-            }
+            UnAssignScavengable();
             mobMovement.SetMoveSpeed(roamMoveSpeed);
         }
         if (state == MinerState.headingToMine) {
@@ -326,6 +362,9 @@ public class MinerJob : WorkerJob {
             mobMovement.SetMoveSpeed(headToMineMoveSpeed);
         }
         if (state == MinerState.pickingUpOrbs) {
+            if(assignedScavengable != null) {
+                assignedScavengable.MinerStopsMining(this);
+            }
             workerAttack.RemoveAttackTarget();
         }
         if (state == MinerState.headToSafety) {
@@ -348,5 +387,10 @@ public class MinerJob : WorkerJob {
 
     public IScavengable GetScavengableAssigned() {
         return assignedScavengable;
+    }
+
+    private void OnDestroy() {
+        DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
+        DayNightManager.Instance.OnDuskStart -= DayNightManager_OnDuskStart;
     }
 }

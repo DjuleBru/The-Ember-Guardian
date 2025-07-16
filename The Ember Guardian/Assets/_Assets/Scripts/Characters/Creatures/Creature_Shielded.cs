@@ -52,7 +52,6 @@ public class Creature_Shielded : Creature
 
         } else {
 
-            ShowDamageNumber(damage, critHit, weakSpotHit);
             if (weakSpotHit) {
                 float scaledDamage = damage * 1.2f;
                 int baseDamage = Mathf.FloorToInt(scaledDamage);

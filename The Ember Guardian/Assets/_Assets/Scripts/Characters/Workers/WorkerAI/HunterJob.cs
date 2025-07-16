@@ -880,10 +880,6 @@ public class HunterJob : WorkerJob {
         return state;
     }
 
-    public bool IsInSafeZone() {
-        return (transform.position.x > CampZoneManager.Instance.GetCampCenterMinLimit() && transform.position.x < CampZoneManager.Instance.GetCampCenterMaxLimit());
-    }
-
     public override void InitializeJob() {
         base.InitializeJob();
 

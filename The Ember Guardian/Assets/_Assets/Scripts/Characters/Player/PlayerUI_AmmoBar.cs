@@ -48,6 +48,8 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReloadHandEnded += PlayerSHoot_OnPlayerReloadHandEnded;
         PlayerShoot.Instance.OnPlayerAmmoRefilled += PlayerShoot_OnPlayerAmmoRefilled;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+        PlayerShoot.Instance.OnPlayerTryReloadAmmoBelt_NoAmmoInBag += PlayerShoot_OnPlayerTryReloadAmmoBelt_NoAmmoInBag;
+        PlayerShoot.Instance.OnPlayerTryReload_FullAmmoBelt += PlayerShoot_OnPlayerTryReload_FullAmmoBelt;
         Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
@@ -58,6 +60,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         Structure.OnAnyPlayerTriggeredOut += Structure_OnAnyPlayerTriggeredOut;
 
         Gun.OnAnyGunMaxAmmoChanged += Gun_OnAnyGunMaxAmmoChanged;
+        
 
 
         if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
@@ -72,6 +75,13 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         ammoBarCanvasGroup = ammoBarGameObject.GetComponent<CanvasGroup>();
     }
 
+    private void PlayerShoot_OnPlayerTryReload_FullAmmoBelt(object sender, EventArgs e) {
+        FadeInAmmoBar();
+    }
+
+    private void PlayerShoot_OnPlayerTryReloadAmmoBelt_NoAmmoInBag(object sender, EventArgs e) {
+        FadeInAmmoBar();
+    }
 
     private void PLayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
         tabMenuOpen = true;
@@ -317,7 +327,6 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     private void FadeInAmmoBar() {
 
         ammoBarDisplayTime = ammoBarExitCampDisplayTime;
-
         if (ammoBarDisplayTimer <= 0) {
             isFadingIn = true;
             ammoBarDisplayTimer = fadeInDuration;

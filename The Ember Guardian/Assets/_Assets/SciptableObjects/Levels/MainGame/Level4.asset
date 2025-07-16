@@ -26,7 +26,7 @@ MonoBehaviour:
   talkToNpcAFterObjective: 0
   nightsToSurviveAmount: 5
   isNewEnvironmentDiscoveryLevel: 1
-  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 8442aad3a0f414c44a1935459cc4ce73, type: 3}
+  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 44c16486412762746846d3ba99afb3dd, type: 3}
   levelsUnlockedByLevel:
   - {fileID: 11400000, guid: f0b31a5a8b1509b4abc10076fd857695, type: 2}
   - {fileID: 11400000, guid: f203a3f5152d8cd47b92724fbbb14ce3, type: 2}
@@ -39,19 +39,23 @@ MonoBehaviour:
   dayCreatureTypes: []
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
+  - {fileID: 11400000, guid: 92e601c9dd7bf334186de532c5e816de, type: 2}
+  - {fileID: 11400000, guid: 51ff0da5c29d9704d98a8e536853da77, type: 2}
+  - {fileID: 11400000, guid: 80b1c2cc48aec984a983f1a5b95758a8, type: 2}
   - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
+  - {fileID: 11400000, guid: ed591899c44e7db44b289f544e933d8d, type: 2}
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
-  startWaveToSpawnFromBothSides: 2
-  baseDifficulty: 22
-  intialMinSubwaveDifficulty: 0
-  minSubwaveDifficulty: 5
-  intialMaxSubwaveDifficulty: 0
-  maxSubwaveDifficulty: 30
+  startWaveToSpawnFromBothSides: 1
+  baseDifficulty: 25
+  intialMinSubwaveDifficulty: 10
+  minSubwaveDifficulty: 25
+  intialMaxSubwaveDifficulty: 15
+  maxSubwaveDifficulty: 65
   growthFactor: 1.5
-  maxWaveNumber: 0
-  minMaxSubwaveDifficultyGrowthFactor: 0
+  maxWaveNumber: 1
+  minMaxSubwaveDifficultyGrowthFactor: 1.5
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
   difficultyAnimationCurve:

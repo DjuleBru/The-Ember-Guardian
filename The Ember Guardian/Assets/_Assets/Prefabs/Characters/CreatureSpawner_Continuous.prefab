@@ -81,7 +81,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneViewSpawnerSpriteRenderer: {fileID: 0}
   mobPrefab: {fileID: 2100628709117196716, guid: 1daa7a1cf491ad0428c8464c1aed981a, type: 3}
-  spawnPosition: {fileID: 5435968000822787108}
+  spawnPositionList:
+  - {fileID: 5435968000822787108}
   spawnPositionRandomizer: 0
   radiusToRoamAround: 5
   mobAmountToSpawn: 5

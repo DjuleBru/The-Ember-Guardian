@@ -40,15 +40,15 @@ MonoBehaviour:
   hasCustomSpawnAnimation: 1
   spawnAnimationDuration: 1.5
   baseMovementAnimationSpeed: 1
-  workerTargetingPriority: 1
-  playerTargetingPriority: 3
-  barricadeTargetingPriority: 2
+  workerTargetingPriority: 3
+  playerTargetingPriority: 2
+  barricadeTargetingPriority: 1
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
-  difficulty: 4
+  difficulty: 6
   initialWaveSpawn: 2
   spawnProbability: 0.5
-  maxCreaturesPerPacket: 4
+  maxCreaturesPerPacket: 3
   dieAudioClips:
   - {fileID: 8300000, guid: 01a52bcf5417d84439601f88f80a0b27, type: 3}
   - {fileID: 8300000, guid: 2e5a89f5a424ae548a9d310ebe53f7a3, type: 3}
@@ -64,7 +64,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c81c27459f966de4086bc1b5402bf32b, type: 3}
   - {fileID: 8300000, guid: f70287761539d48459160a8f95e93293, type: 3}
   - {fileID: 8300000, guid: 47ba841546998d242a034d919f0688d6, type: 3}
-  aggroVolumeMultiplier: 0.5
+  aggroVolumeMultiplier: 1
   idleAudioClips:
   - {fileID: 8300000, guid: ca43102ddc5745947b278845d3160221, type: 3}
   - {fileID: 8300000, guid: da284ad84e9e7af42b6f0becb40ec259, type: 3}
@@ -87,6 +87,8 @@ MonoBehaviour:
   footstepVolumeMultiplier: 0.7
   hasContinousAudioClip: 0
   continuousAudioClip: []
+  hasContinousMovementAudioClip: 0
+  continuousMovementAudioClip: []
   spawnAudioClips:
   - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
   - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}

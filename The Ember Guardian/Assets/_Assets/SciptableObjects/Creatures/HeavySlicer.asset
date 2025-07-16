@@ -30,7 +30,7 @@ MonoBehaviour:
   dayMoveSpeed: 2.5
   nightMoveSpeed: 2.5
   aggroMoveSpeedBuff: 1.3
-  enteredLightMoveSpeedDebuff: 1.5
+  enteredLightMoveSpeedDebuff: 1
   moveSpeedRandomizerDelta: 0.25
   maxHealth: 180
   enteredLightattackRateDebuff: 2.5
@@ -45,10 +45,10 @@ MonoBehaviour:
   barricadeTargetingPriority: 2
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
-  difficulty: 4
-  initialWaveSpawn: 2
-  spawnProbability: 0.5
-  maxCreaturesPerPacket: 4
+  difficulty: 20
+  initialWaveSpawn: 3
+  spawnProbability: 0.2
+  maxCreaturesPerPacket: 1
   dieAudioClips:
   - {fileID: 8300000, guid: 9ba189bf254e1dd4b8abaae1029772af, type: 3}
   - {fileID: 8300000, guid: 207ce004c414aeb40a14d844e6d3d3a3, type: 3}

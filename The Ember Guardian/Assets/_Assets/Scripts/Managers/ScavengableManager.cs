@@ -6,6 +6,7 @@ public class ScavengableManager : MonoBehaviour
 {
     public static ScavengableManager Instance;
 
+    [SerializeField] private bool scavengablesUnlocked = true;
     private List<IScavengable> scavengablesInLevelList = new List<IScavengable>();
 
     private void Awake() {
@@ -15,6 +16,22 @@ public class ScavengableManager : MonoBehaviour
     private void Start() {
         foreach(IScavengable scavengable in GetComponentsInChildren<IScavengable>()) {
             scavengablesInLevelList.Add(scavengable);
+        }
+
+        if(!scavengablesUnlocked) {
+            foreach (IScavengable scavengable in scavengablesInLevelList) {
+                scavengable.SetScavengableUnlocked(false);
+            }
+        }
+
+        Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
+    }
+
+    private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
+        if (!scavengablesUnlocked) {
+            foreach (IScavengable scavengable in scavengablesInLevelList) {
+                scavengable.SetScavengableUnlocked(true);
+            }
         }
     }
 

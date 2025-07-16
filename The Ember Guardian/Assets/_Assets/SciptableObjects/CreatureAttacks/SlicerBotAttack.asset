@@ -16,7 +16,7 @@ MonoBehaviour:
   isProjectileAttack: 0
   isStaticProjectileAttack: 0
   isAnimatedAttack: 0
-  attackCooldown: 2
+  attackCooldown: 1
   minAttackRange: 0.3
   maxAttackRange: 0.5
   hasDifferentDayAndNightRange: 0
@@ -39,12 +39,14 @@ MonoBehaviour:
   attackRangeRandomizerMiss: 0
   attackSFXHandledByAnimation: 0
   attackAudioClips:
-  - {fileID: 8300000, guid: f7b0f8c9041141b42858fd3599ce72bd, type: 3}
-  - {fileID: 8300000, guid: 8c5a0429c2d02ea40a936530c3bd7333, type: 3}
-  - {fileID: 8300000, guid: 678e62a4ef3a3b547aed066bebe5e12f, type: 3}
-  - {fileID: 8300000, guid: 112e661d04d0edc4fb3e7c7ad5b8b2b0, type: 3}
-  attackHitAudioClips: []
+  - {fileID: 8300000, guid: b33c45315defcb844a29fc7887b6339e, type: 3}
+  - {fileID: 8300000, guid: 699b58f9e17d2ce4fbd7af0a7895d36c, type: 3}
+  - {fileID: 8300000, guid: 053c818b1de331f44b60fa117e95e1f1, type: 3}
+  - {fileID: 8300000, guid: cf3d089a104c984419074fa47ec51128, type: 3}
+  attackHitAudioClips:
+  - {fileID: 8300000, guid: 09b6a1ddd408ea94cb9e919364cf58f6, type: 3}
+  - {fileID: 8300000, guid: 15b5496717480c84786918e054724683, type: 3}
   attackStartedChargingAudioClips: []
   attackReleasedAudioClips: []
-  attackVolumeMultiplier: 0.5
-  attackHitVolumeMultiplier: 0.5
+  attackVolumeMultiplier: 0.8
+  attackHitVolumeMultiplier: 1

@@ -11,7 +11,7 @@ public class WorkerSpawner : MobSpawner
         for (int i = 0; i < mobAmount; i++) {
 
             float positionRandomizer = UnityEngine.Random.Range(-spawnPositionRandomizer, spawnPositionRandomizer);
-            Vector3 spawnPositionRandomized = spawnPosition.position;
+            Vector3 spawnPositionRandomized = spawnPositionList[0].position;
             spawnPositionRandomized.x += positionRandomizer;
 
             Worker worker = Instantiate(mobPrefab, spawnPositionRandomized, Quaternion.identity).GetComponent<Worker>();

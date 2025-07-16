@@ -22,7 +22,7 @@ public class GunJamHandler : MonoBehaviour
     private float gunJamTimer;
 
     private float inputSequenceTimePerInput = 1.4f;
-    private float spamButtonTimePerTick = 1.35f;
+    private float spamButtonTimePerTick = 1.5f;
     private float timingQTETimePerTick = 1.5f;
     private float wrongInputTimePenaltyPercent = .2f;
 

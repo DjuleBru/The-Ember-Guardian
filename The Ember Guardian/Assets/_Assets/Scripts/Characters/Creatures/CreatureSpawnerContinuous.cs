@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
 
+    [SerializeField] protected int mobAmountSpawnedSimultaneously = 1;
     [SerializeField] protected int spawnerHealth;
     [SerializeField] protected float spawnRate;
     [SerializeField] protected float spawnAnimationDelay;
@@ -48,48 +49,62 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
         yield return new WaitForSeconds(spawnAnimationDelay);
 
         OnSpawnerSpawned?.Invoke(this, EventArgs.Empty);
-        SpawnMobs(1);
+        SpawnMobs(mobAmountSpawnedSimultaneously);
     }
 
     public override void SpawnMobs(int mobAmount) {
         for (int i = 0; i < mobAmount; i++) {
-            Mob mob = Instantiate(mobPrefab, spawnPosition.position, Quaternion.identity).GetComponent<Mob>();
+            Mob mob = Instantiate(mobPrefab, spawnPositionList[i].position, Quaternion.identity).GetComponent<Mob>();
             mobSpawnedList.Add(mob);
             mob.SetMobSpawner(this);
 
-            if (isCreatureSpawner) {
-
-                Creature creature = (Creature)mob;
-                if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
-
-                    creature.SetAsDayCreature(false);
-                    CreaturesManager.Instance.AddAdditionalCreatureToNightWave(creature);
-
-                } else {
-
-                    mob.GetComponent<Creature>().SetAsDayCreature(true);
-                }
-
-                mob.transform.parent = SpawnedObjects.Instance.creaturesContainer;
-            }
-
-            if (mob is Worker) {
-                mob.transform.parent = SpawnedObjects.Instance.workersContainer;
-            }
-
-            if (mob is Animal) {
-                mob.transform.parent = SpawnedObjects.Instance.AnimalsContainer;
-            }
-
+            HandleMobSpawn(mob);
             InvokeOnMobSpawned(mob);
         }
     }
+
+    public void SpawnMobAtPosition(Transform position) {
+        Mob mob = Instantiate(mobPrefab, position.position, Quaternion.identity).GetComponent<Mob>();
+        mobSpawnedList.Add(mob);
+        mob.SetMobSpawner(this);
+
+        HandleMobSpawn(mob);
+        InvokeOnMobSpawned(mob);
+    }
+
+    private void HandleMobSpawn(Mob mob) {
+
+        if (isCreatureSpawner) {
+
+            Creature creature = (Creature)mob;
+            if (DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+
+                creature.SetAsDayCreature(false);
+                CreaturesManager.Instance.AddAdditionalCreatureToNightWave(creature);
+
+            }
+            else {
+
+                mob.GetComponent<Creature>().SetAsDayCreature(true);
+            }
+
+            mob.transform.parent = SpawnedObjects.Instance.creaturesContainer;
+        }
+
+        if (mob is Worker) {
+            mob.transform.parent = SpawnedObjects.Instance.workersContainer;
+        }
+
+        if (mob is Animal) {
+            mob.transform.parent = SpawnedObjects.Instance.AnimalsContainer;
+        }
+    }
+
     public void Die() {
         dead = true;
         GetComponent<Collider2D>().enabled = false;
         OnSpawnerDied?.Invoke(this, EventArgs.Empty);
     }
-
 
     public Transform GetMeleeAttackPosition() {
         return transform;
