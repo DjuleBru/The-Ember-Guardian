@@ -18,6 +18,13 @@ public class LevelSO : ScriptableObject
 
 
     public string linkedSceneName;
+    public bool isBranchingLevel;
+    [ShowIf("isBranchingLevel")]
+    public LevelSO requiredLevelSO1;
+    [ShowIf("isBranchingLevel")]
+    public LevelSO requiredLevelSO2;
+    [ShowIf("isBranchingLevel")]
+    public LevelSO parallelLevelSO;
 
     [BoxGroup("LevelDisplay")]
     [LabelWidth(300)]

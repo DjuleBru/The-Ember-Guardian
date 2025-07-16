@@ -26,7 +26,7 @@
  },
  {
    "key": "Spanish",
-   "English": "",
+   "English": "obj",
    "French": "",
    "German": "",
    "Spanish": "Español",
@@ -817,6 +817,14 @@
    "Italian": ""
  },
  {
+   "key": "Obj_ExploreCorruptedCity",
+   "English": "Explore the Corrupted City",
+   "French": "Explorer la Cité Corrompue",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
    "key": "Obj_Survive",
    "English": "Survive the night",
    "French": "Survivre à la nuit",
@@ -1238,6 +1246,14 @@
    "French": "Nuits",
    "German": "Nächte",
    "Spanish": "Noches",
+   "Italian": ""
+ },
+ {
+   "key": "SubObj_FindArchitect",
+   "English": "Meet the Arthitect",
+   "French": "Rencontrer l'Architecte",
+   "German": "",
+   "Spanish": "",
    "Italian": ""
  },
  {
@@ -10354,7 +10370,7 @@
  },
  {
    "key": "gemTrader_PostLevel3_4",
-   "English": "Lighting its flame won’t be easy. The darkness there is <dangle a=.2>thick</dangle>, and the work? <bounce a=.2 f=1.2>heavy</bounce>.",
+   "English": "Lighting its flame won’t be easy. The darkness there is <dangle a=.2>thick</dangle>, and the work <bounce a=.2 f=1.2>heavy</bounce>.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10394,7 +10410,7 @@
  },
  {
    "key": "gemTrader_PostLevel4_3",
-   "English": "Now, you face a choice: delve deeper into the Corrupted City to find the Architect’s Table...",
+   "English": "Now, you face a choice: delve deeper into the Corrupted City to find an old relic, the Blueprint Altar...",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10402,7 +10418,7 @@
  },
  {
    "key": "gemTrader_PostLevel4_4",
-   "English": "or journey to the <slide a=.2>GloomSpire</slide>, a place heavy with orbs, ripe for the taking.",
+   "English": "or journey to the <slide a=.2>LumenHollow</slide>, a place heavy with orbs, ripe for the taking.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10417,40 +10433,112 @@
    "Italian": ""
  },
  {
-   "key": "gemTrader_PostLevel5_1",
-   "English": "The flame at <wiggle a=.05 f=2>Lost Greens</wiggle> is flickering...",
+   "key": "gemTrader_PostLevel5.1_1",
+   "English": "Hah… <bounce a=.2 f=1.1>The Blueprint Altar</bounce> has returned.",
    "French": "",
    "German": "",
    "Spanish": "",
    "Italian": ""
  },
  {
-   "key": "gemTrader_PostLevel5_2",
-   "English": "An attack’s coming, but old <slide a=.2>wards and emberlings</slide> still hold it at bay, for now.",
+   "key": "gemTrader_PostLevel5.1_2",
+   "English": "You’ve no idea what you've just set in motion, do you?",
    "French": "",
    "German": "",
    "Spanish": "",
    "Italian": ""
  },
  {
-   "key": "gemTrader_PostLevel5_3",
-   "English": "At the same time, a <bounce a=.2 f=1.2>convoi</bounce> must carry a sacred ember deep into the <wiggle a=.05 f=2>GloomSpire</wiggle>.",
+   "key": "gemTrader_PostLevel5.1_3",
+   "English": "Time to lay down something that <slide a=.2>holds</slide> when the dark comes knocking.",
    "French": "",
    "German": "",
    "Spanish": "",
    "Italian": ""
  },
  {
-   "key": "gemTrader_PostLevel5_4",
-   "English": "With that chance, you’ll be able to kindle the primordial fires that guard those lands: your best shot at turning the tide.",
+   "key": "gemTrader_PostLevel5.1_Before5.2Completed_1",
+   "English": "Now let's get the second part of the plan in motion.",
    "French": "",
    "German": "",
    "Spanish": "",
    "Italian": ""
  },
  {
-   "key": "gemTrader_PostLevel5_5",
-   "English": "Both tasks demand your attention. <dangle a=.2>One without the other won’t save us.</dangle>",
+   "key": "gemTrader_PostLevel5.1_Before5.2Completed_2",
+   "English": "Stockpile orbs from the LumenHollow to prepare the convoy.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel5.1_Before5.2Completed_3",
+   "English": "That's all you need to know... <slide a=.2>for now.</slide>",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel5.2_1",
+   "English": "All that hauling, all that dust… think it was for decoration?",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel5.2_2",
+   "English": "Those orbs... <slide a=.2>they're going on a journey</slide>.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel5.2_Before5.1Completed_1",
+   "English": "But first, head to the Corrupted City's and bring back the Blueprint Altar.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel5.2_Before5.1Completed_2",
+   "English": "We'll need this powerful relic to restore the balance between light and dark.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "GemMerchant_PostLevel5_AfterBoth_1",
+   "English": "We’re moving the orbs you collected to the Eternal Flame.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "GemMerchant_PostLevel5_AfterBoth_2",
+   "English": "And you’re leading the convoy. So gear up! Once it rolls out, there’s no turning back.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "GemMerchant_PostLevel5_AfterBoth_3",
+   "English": "Once they’re in place, we can activate the defenses: traps, barriers, sentries.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "GemMerchant_PostLevel5_AfterBoth_4",
+   "English": "Because when that fire flares back up... every cursed thing in the deep will come running.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10466,7 +10554,7 @@
  },
  {
    "key": "gemTrader_PostLevel6_2",
-   "English": "Now the way is open to the <wiggle a=.05 f=2>Corrupted City</wiggle> and <slide a=.2>GloomSpire</slide>.",
+   "English": "Now the way is open to the <wiggle a=.05 f=2>Corrupted City</wiggle> and the <slide a=.2> LumenHollow</slide>.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10514,7 +10602,7 @@
  },
  {
    "key": "gemTrader_PostLevel7.2_1",
-   "English": "The <wiggle a=.05 f=2>GloomSpire</wiggle> fire roars to life, lighting the depths.",
+   "English": "The <wiggle a=.05 f=2>The LumenHollow</wiggle> fire roars to life, lighting the depths.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10642,7 +10730,7 @@
  },
  {
    "key": "gemTrader_PostLevel9_4",
-   "English": "The other <slide a=.2>swarms the GloomSpire flame</slide>.",
+   "English": "The other <slide a=.2>swarms the The LumenHollow flame</slide>.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10690,7 +10778,7 @@
  },
  {
    "key": "gemTrader_PostLevel10.2_1",
-   "English": "<slide a=.2>The GloomSpire flame burns bright.</slide>",
+   "English": "<slide a=.2>The The LumenHollow flame burns bright.</slide>",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -11343,7 +11431,6 @@
    "German": "",
    "Spanish": "",
    "Italian": ""
-
  }
 ]
 }

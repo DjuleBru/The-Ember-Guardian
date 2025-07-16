@@ -75,6 +75,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         FindTrainerStockpile,
         TeleportBackToHub,
         FindArchitect,
+        ProgressWithScavengers,
     }
 
     public static LevelUI_ObjectiveUI Instance;

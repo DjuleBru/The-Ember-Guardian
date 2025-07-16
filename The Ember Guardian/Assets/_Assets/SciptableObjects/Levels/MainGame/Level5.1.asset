@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
   m_Name: Level5.1
   m_EditorClassIdentifier: 
-  linkedSceneName: Level1_VerdantGraveyard
+  linkedSceneName: Level5.1_CorruptedCity
+  isBranchingLevel: 1
+  requiredLevelSO1: {fileID: 0}
+  requiredLevelSO2: {fileID: 0}
+  parallelLevelSO: {fileID: 11400000, guid: f203a3f5152d8cd47b92724fbbb14ce3, type: 2}
   levelImage: {fileID: 0}
   levelNameLocalizationKey: Level 5.1
   levelDescriptionLocalizationKey: 
@@ -25,13 +29,14 @@ MonoBehaviour:
   endLevelType: 0
   talkToNpcAFterObjective: 0
   nightsToSurviveAmount: 0
-  isNewEnvironmentDiscoveryLevel: 1
+  isNewEnvironmentDiscoveryLevel: 0
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
   levelsUnlockedByLevel:
-  - {fileID: 11400000, guid: 36a376877af4fca44b531d5dd7dff0fb, type: 2}
-  merchantsUnlockedInLevel: 01000000
-  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 285aab84b4a4ad648a8899052f346e6f, type: 2}
-  newMerchantTextLinesAfterLevel: []
+  - {fileID: 11400000, guid: 2907cb0bb1a923a47825d18e9c2d38d1, type: 2}
+  merchantsUnlockedInLevel: 08000000
+  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 6775fa9b7e66b07408477db161b7b659, type: 2}
+  newMerchantTextLinesAfterLevel:
+  - {fileID: 11400000, guid: 61d1375f736f0db4ca05d3d479bec721, type: 2}
   isReplayableLevel: 0
   totalDayCreatureDifficulty: 0
   dayCreatureTypes: []

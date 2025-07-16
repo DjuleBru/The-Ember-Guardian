@@ -5,7 +5,8 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class MerchantTextLinesSO : ScriptableObject
 {
-    public List<string> merchantTextLines;
     public List<string> merchantTextLinesLocalizationKeys;
+    public MerchantTextLinesSO nextTextLineSO_LinkedLevelNotCompleted;
+    public MerchantTextLinesSO nextTextLineSO_LinkedLevelCompleted;
     public bool showShopAfterDialog;
 }

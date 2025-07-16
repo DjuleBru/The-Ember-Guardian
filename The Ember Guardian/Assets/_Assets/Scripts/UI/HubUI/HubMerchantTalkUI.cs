@@ -125,10 +125,15 @@ public class HubMerchantTalkUI : MonoBehaviour
     }
 
     public void SetTextLinesSO(MerchantTextLinesSO textLinesSO) {
+        this.textLinesSO = textLinesSO;
         showShopAfterDialog = textLinesSO.showShopAfterDialog;
         merchantTalkLinesLocalizationKeys = textLinesSO.merchantTextLinesLocalizationKeys;
         merchantHasTalkLinesToShow = true;
         hubMerchant.SetHasTalkLinesToShow(true);
+    }
+
+    public MerchantTextLinesSO GetCurrentTextLineSO() {
+        return textLinesSO;
     }
 
     private IEnumerator StartTalkingToMerchantCoroutine() {

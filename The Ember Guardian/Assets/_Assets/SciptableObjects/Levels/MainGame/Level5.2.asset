@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
   m_Name: Level5.2
   m_EditorClassIdentifier: 
-  linkedSceneName: Level1_VerdantGraveyard
+  linkedSceneName: Level5.2_Gloomspire
+  isBranchingLevel: 1
+  requiredLevelSO1: {fileID: 0}
+  requiredLevelSO2: {fileID: 0}
+  parallelLevelSO: {fileID: 11400000, guid: f0b31a5a8b1509b4abc10076fd857695, type: 2}
   levelImage: {fileID: 0}
   levelNameLocalizationKey: Level 5.2
   levelDescriptionLocalizationKey: 
@@ -21,16 +25,16 @@ MonoBehaviour:
   minesAmount: 0
   chestAmount: 0
   wildEmberlingsAmount: 0
-  levelObjectiveType: 10
-  endLevelType: 0
+  levelObjectiveType: 20
+  endLevelType: 20
   talkToNpcAFterObjective: 0
   nightsToSurviveAmount: 0
   isNewEnvironmentDiscoveryLevel: 1
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
   levelsUnlockedByLevel:
-  - {fileID: 11400000, guid: 36a376877af4fca44b531d5dd7dff0fb, type: 2}
-  merchantsUnlockedInLevel: 01000000
-  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 285aab84b4a4ad648a8899052f346e6f, type: 2}
+  - {fileID: 11400000, guid: 2907cb0bb1a923a47825d18e9c2d38d1, type: 2}
+  merchantsUnlockedInLevel: 
+  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: e900c2d6727423d48bae5276d37dfd7f, type: 2}
   newMerchantTextLinesAfterLevel: []
   isReplayableLevel: 0
   totalDayCreatureDifficulty: 0
