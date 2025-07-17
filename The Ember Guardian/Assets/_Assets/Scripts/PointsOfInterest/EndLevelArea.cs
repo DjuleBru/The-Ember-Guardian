@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -88,11 +89,16 @@ public class EndLevelArea : MonoBehaviour
         } 
 
         if (mobsInArea.Count == 0) {
-            endLevelAreaFire.SetActive(true);
-            StartCoroutine(ActivateEndLevelTPAfterDelay(1f));
-            OnEndLevelAreaCleared?.Invoke(this, EventArgs.Empty);
-            MusicManager.Instance.StopEndLevelMusic();
+            ClearEndLevelArea();
         }
+    }
+
+    [Button]
+    public void ClearEndLevelArea() {
+        endLevelAreaFire.SetActive(true);
+        StartCoroutine(ActivateEndLevelTPAfterDelay(1f));
+        OnEndLevelAreaCleared?.Invoke(this, EventArgs.Empty);
+        MusicManager.Instance.StopEndLevelMusic();
     }
 
     private IEnumerator ActivateEndLevelTPAfterDelay(float delay) {

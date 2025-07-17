@@ -10,6 +10,7 @@ public class StructureLocation : MonoBehaviour {
     [SerializeField] protected Transform orbTemplateWorldUIParent;
     [SerializeField] protected bool debugStructureTypeBought;
     [SerializeField] protected bool isAlwaysUnlocked;
+    [SerializeField] protected float worldLocationScaleX;
     [SerializeField] protected ShowTooltipOnTrigger showTooltipOnTrigger;
 
     protected List<PayCurrencyTemplateWorldUI> buildStructureOrbTemplates = new List<PayCurrencyTemplateWorldUI>();
@@ -19,6 +20,7 @@ public class StructureLocation : MonoBehaviour {
     public event EventHandler OnPlayerTriggeredOut;
     public event EventHandler OnStructureLocationUnlocked;
     public event EventHandler OnStructureSOToBuildChanged;
+    public static event EventHandler OnAnyPlayerTriggeredIn;
     public static event EventHandler OnAnyStructureSOToBuildChanged;
     public static event EventHandler<OnAnyStructureBuiltEventArgs> OnAnyStructureBuilt;
 
@@ -29,6 +31,7 @@ public class StructureLocation : MonoBehaviour {
     protected bool structureLocationUnlocked;
     protected bool playerInTriggerArea;
     protected bool isBeingDestroyed;
+    protected bool isWorldLocation;
 
     protected virtual void Awake() {
         payCurrencyUI = GetComponent<PayCurrencyUI>();
@@ -72,7 +75,9 @@ public class StructureLocation : MonoBehaviour {
         OnAnyStructureBuilt?.Invoke(this, new OnAnyStructureBuiltEventArgs {
             structureBuilt = structure
         });
-
+        if(isWorldLocation) {
+            structure.SetAsWorldStructure(worldLocationScaleX);
+        }
         
         StartCoroutine(DestroyGameObjectAfterFrame());
         return structure;
@@ -112,6 +117,7 @@ public class StructureLocation : MonoBehaviour {
 
         Player.Instance.SetInPayCurrencyArea(true);
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
+        OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         playerInTriggerArea = true;
     }
 
@@ -199,6 +205,17 @@ public class StructureLocation : MonoBehaviour {
     }
     protected void InvokeOnAnyStructureSOToBuildChanged() {
         OnAnyStructureSOToBuildChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SetAsWorldStructureLocation() {
+        isWorldLocation = true;
+    }
+    public bool GetIsWorldStructureLocation() {
+        return isWorldLocation;
+    }
+
+    public float GetStructureLocationWorldScaleX() {
+        return worldLocationScaleX;
     }
 
 }

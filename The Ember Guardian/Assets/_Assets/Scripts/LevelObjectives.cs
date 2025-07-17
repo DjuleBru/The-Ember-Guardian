@@ -20,8 +20,11 @@ public class LevelObjectives : MonoBehaviour
 
     private int nightsSurvived = -1;
     private int nightsToSurvive;
+    [SerializeField] private int obstaclesToRemove;
+    private int obstaclesRemoved;
 
     public event EventHandler OnNightSurvived;
+    public event EventHandler OnObstacleRemoved;
 
     private void Awake() {
         Instance = this;
@@ -30,6 +33,7 @@ public class LevelObjectives : MonoBehaviour
     private void Start() {
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
+        ScavengableObstacle.OnAnyObstacleBuilt += ScavengableObstacle_OnAnyObstacleBuilt;
 
         if (levelMerchantList.Count != 0) {
             foreach (HubMerchant levelMerchant in levelMerchantList) {
@@ -74,6 +78,18 @@ public class LevelObjectives : MonoBehaviour
         }
     }
 
+    private void ScavengableObstacle_OnAnyObstacleBuilt(object sender, EventArgs e) {
+        ScavengableObstacle obstacle = sender as ScavengableObstacle;
+        if (obstacle != null) {
+            obstaclesRemoved++;
+            OnObstacleRemoved?.Invoke(this, EventArgs.Empty);
+
+            if (obstaclesRemoved == obstaclesToRemove) {
+                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.ProgressWithScavengers);
+                StartCoroutine(ShowReturnToHubObjective(2f));
+            }
+        }
+    }
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
         initialFireLit = true;
 
@@ -114,6 +130,17 @@ public class LevelObjectives : MonoBehaviour
 
         }
 
+        if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindArchitectTable) {
+
+            LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.FindArchitectTable);
+            List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
+                    LevelUI_ObjectiveUI.SubObjectiveType.TalkToArchitect
+                };
+
+            LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
+
+        }
+
         if (objectiveTypeToShow == LevelUI_ObjectiveUI.ObjectiveType.ExploreCorruptedCity) {
 
             LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.ExploreCorruptedCity);
@@ -130,6 +157,8 @@ public class LevelObjectives : MonoBehaviour
 
     private void LevelMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, System.EventArgs e) {
         NPCInteractionsIndex++;
+
+        Debug.Log(LevelManager.Instance.GetLevelSO().endLevelType);
 
         HubMerchant levelMerchant = (HubMerchant)sender;
         StartCoroutine(SetNextNPCObjective(levelMerchant));
@@ -191,11 +220,25 @@ public class LevelObjectives : MonoBehaviour
         if (levelMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.StructuresMerchant) {
 
             yield return new WaitForSeconds(1f);
-            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FindArchitect);
+
+            if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindArchitectTable) {
+                LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.TalkToArchitect, LevelUI_ObjectiveUI.SubObjectiveType.ProgressWithScavengers);
+            }
+
+            if((LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest)) {
+                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FindArchitect);
+            }
+                
         }
     }
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, EventArgs e) {
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.TeleportBackToHub);
+    }
+
+    private IEnumerator ShowReturnToHubObjective(float delayBeforeShowing) {
+        yield return new WaitForSeconds(delayBeforeShowing);
+        LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.ReturnToHub);
+        LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.TeleportBackToHub });
     }
 
     #region DESTROY NEST LEVEL
@@ -218,12 +261,6 @@ public class LevelObjectives : MonoBehaviour
         }
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
         StartCoroutine(ShowReturnToHubObjective(4f));
-    }
-
-    private IEnumerator ShowReturnToHubObjective(float delayBeforeShowing) {
-        yield return new WaitForSeconds(delayBeforeShowing);
-        LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.ReturnToHub);
-        LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.TeleportBackToHub});
     }
 
     private void EndLevelArea_OnEndLevelAreaCleared(object sender, System.EventArgs e) {
@@ -268,9 +305,17 @@ public class LevelObjectives : MonoBehaviour
         this.nightsToSurvive = nightsToSurvive;
     }
 
+    public int GetObstaclesToRemove() {
+        return obstaclesToRemove;
+    }
+    public int GetObstaclesRemoved() {
+        return obstaclesRemoved;
+    }
+
     private void OnDestroy() {
         EndLevelAreaCollider.OnPlayerTriggeredInAnyEndLevelArea -= EndLevelAreaCollider_OnPlayerTriggeredInAnyEndLevelArea;
         Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
+        ScavengableObstacle.OnAnyObstacleBuilt -= ScavengableObstacle_OnAnyObstacleBuilt;
     }
 
 }

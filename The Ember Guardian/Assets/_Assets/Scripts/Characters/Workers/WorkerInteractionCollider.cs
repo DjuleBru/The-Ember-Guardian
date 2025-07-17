@@ -15,18 +15,24 @@ public class WorkerInteractionCollider : MonoBehaviour
 
     private void Start() {
         interactionWithWorkersUnlocked = WorkerStats.Instance.GetInteractionWithWorkersUnlocked();
-        if (!interactionWithWorkersUnlocked) return;
-
-        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
+        WorkerStats.Instance.OnInteractionsWithWorkersUnlocked += WorkerStats_OnInteractionsWithWorkersUnlocked;
 
         workerAI = GetComponentInParent<WorkerAI>();
         worker = GetComponentInParent<Worker>();
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
+
+        if (!interactionWithWorkersUnlocked) return;
+        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
     }
 
     private void WorkerAI_OnJobChanged(object sender, EventArgs e) {
         if (workerAI.GetJob() == WorkerAI.JobTypes.wild || workerAI.GetJob() == WorkerAI.JobTypes.jobless) return;
         StartCoroutine(SetWorkerCanBeOrderedAfterDelay(1f));
+    }
+
+    private void WorkerStats_OnInteractionsWithWorkersUnlocked(object sender, EventArgs e) {
+        interactionWithWorkersUnlocked = true;
+        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
     }
 
     private IEnumerator SetWorkerCanBeOrderedAfterDelay(float delay) {

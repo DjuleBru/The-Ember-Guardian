@@ -28,6 +28,12 @@ public class WorkerAttack : MobAttack
 
     protected void Start() {
         hunterAnimalAttackPointRandomizer = WorkerStats.Instance.GetHunterAccuracy();
+        float hunterAccuracyBuff = WorkerStats.Instance.GetHunterAccuracyBuff();
+
+        probabilityToHaveHomingProjectileOnCreature *= (1 + hunterAccuracyBuff / 200);
+        if(probabilityToHaveHomingProjectileOnCreature > .9f) {
+            probabilityToHaveHomingProjectileOnCreature = .9f;
+        }
     }
 
     private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
@@ -68,7 +74,7 @@ public class WorkerAttack : MobAttack
         else {
             homingProjectile = false;
         }
-
+        
         base.Attack();
     }
 

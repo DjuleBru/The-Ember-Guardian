@@ -58,17 +58,29 @@ public class CampZoneManager : MonoBehaviour
     }
 
     private void Barricade_OnAnyBarricadeBuilt(object sender, EventArgs e) {
-        functionalBarricades.Add((sender as Barricade));
+        Barricade barricade = sender as Barricade;
+
+        if (barricade.GetIsWorldStructure()) return;
+
+        functionalBarricades.Add((barricade));
         RefreshCampZoneLimits();
     }
 
     private void Barricade_OnAnyBarricadeRepaired(object sender, EventArgs e) {
-        functionalBarricades.Add((sender as Barricade));
+        Barricade barricade = sender as Barricade;
+
+        if (barricade.GetIsWorldStructure()) return;
+
+        functionalBarricades.Add((barricade));
         RefreshCampZoneLimits();
     }
 
     private void Barricade_OnAnyBarricadeDestroyed(object sender, EventArgs e) {
-        functionalBarricades.Remove((sender as Barricade));
+        Barricade barricade = sender as Barricade;
+
+        if (barricade.GetIsWorldStructure()) return;
+
+        functionalBarricades.Remove((barricade));
         RefreshCampZoneLimits();
     }
 
@@ -159,6 +171,14 @@ public class CampZoneManager : MonoBehaviour
         if(position.x >= minZoneLimit && position.x <= maxZoneLimit) {
             return true;
         } else {
+            return false;
+        }
+    }
+    public bool IsWithinCampCenterZoneLimits(Vector3 position) {
+        if (position.x >= campCenterMinLimit && position.x <= campCenterMaxLimit) {
+            return true;
+        }
+        else {
             return false;
         }
     }

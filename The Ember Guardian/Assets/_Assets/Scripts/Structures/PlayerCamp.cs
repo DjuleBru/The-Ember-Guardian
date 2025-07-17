@@ -135,6 +135,7 @@ public class PlayerCamp : MonoBehaviour
     private void InitializeWorldStructureLocations() {
         foreach(StructureLocation location in worldStructureLocations) {
             location.UnlockStructureLocation();
+            location.SetAsWorldStructureLocation();
         }
     }
     private void InitializeBuiltAtStartStructureLocations() {

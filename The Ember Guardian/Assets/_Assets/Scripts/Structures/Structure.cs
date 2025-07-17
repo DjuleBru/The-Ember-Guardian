@@ -30,7 +30,9 @@ public class Structure : MonoBehaviour {
     protected bool playerInTriggerArea;
     protected bool playerCanInteract;
     protected bool playerInteracting;
+    protected bool isWorldStructure;
     protected int structureLevel = 1;
+    private float worldScaleX;
 
     protected int maxEngineersAssignedWorking;
     protected int engineersGarrisoned;
@@ -482,6 +484,19 @@ public class Structure : MonoBehaviour {
         isBeingRefilledByEngineer = true;
         payCurrencyUI.SetWorkerInteracting(workerCurrencies, refilling);
         OnWorkerStartedRefilling?.Invoke(this, EventArgs.Empty);
+    }
+    public void SetAsWorldStructure(float scaleX) {
+        Debug.Log("SetAsWorldStructure");
+        isWorldStructure = true;
+        worldScaleX = scaleX;
+    }
+
+    public bool GetIsWorldStructure() {
+        return isWorldStructure;
+    }
+
+    public float GetWorldScaleX() {
+        return worldScaleX;
     }
 
     #endregion

@@ -23,6 +23,8 @@ public class ScavengableObstacle : Obstacle, IScavengable
     [SerializeField] private int maxMinersAssigned;
     [SerializeField] private int hitsToRemoveObstacle;
 
+    [SerializeField] private List<SpawnOnDamageThreshold> spawnOnDamageThresholds;
+
     private int health;
     private int hitsTaken;
     private bool depleted;
@@ -35,6 +37,7 @@ public class ScavengableObstacle : Obstacle, IScavengable
     protected override void Awake() {
         base.Awake();
         health = hitsToRemoveObstacle;
+
     }
 
     protected override void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
@@ -76,15 +79,40 @@ public class ScavengableObstacle : Obstacle, IScavengable
         OnAnyScavengableMarkedToScavenge?.Invoke(this, EventArgs.Empty);
     }
 
-
     public void TakeDamage(int damage, Transform damageSource, bool crit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
         health -= damage;
         hitsTaken += damage;
 
         OnDamageTaken?.Invoke(this, EventArgs.Empty);
 
+        CheckSpawnCreatures();
+
         if (health <= 0) {
             Die();
+        }
+    }
+
+    private void CheckSpawnCreatures() {
+        float healthNormalized = (float)health / hitsToRemoveObstacle;
+
+        foreach (var spawnThreshold in spawnOnDamageThresholds) {
+            if (spawnThreshold.hasTriggered) continue;
+
+            if (healthNormalized <= spawnThreshold.healthThresholdNormalized) {
+                StartCoroutine(SpawnCreatures(spawnThreshold));
+                spawnThreshold.hasTriggered = true;
+            }
+        }
+    }
+
+    private IEnumerator SpawnCreatures(SpawnOnDamageThreshold spawnTreshold) {
+        foreach (var spawnData in spawnTreshold.creaturesToSpawn) {
+
+            for(int  i = 0; i < spawnData.amount; i++) {
+                spawnData.mobSpawner.SpawnCreatures(spawnData.creatureType, 1, true);
+                yield return new WaitForSeconds(.4f);
+            }
+
         }
     }
 

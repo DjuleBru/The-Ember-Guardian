@@ -16,6 +16,7 @@ public class Creature : Mob
     protected bool creatureUnlocked;
     protected bool dropRedOrbsUnlocked;
     protected bool dayCreature;
+    protected bool agressiveDayCreature;
     protected int inFireLightAmount;
 
     protected bool creatureTargeted;
@@ -337,6 +338,10 @@ public class Creature : Mob
         }
     }
 
+    public void SetAsAgressiveDayCreature() {
+        agressiveDayCreature = true;
+    }
+
     protected void MetaProgressionMaanger_OnCreatureSOUnlocked(object sender, MetaProgressionManager.OnCreatureSOUnlockedEventArgs e) {
         if(e.creatureSOUnlocked == creatureSO) {
             creatureUnlocked = true;
@@ -377,9 +382,6 @@ public class Creature : Mob
         }
     }
 
-    public bool IsDayCreature() { 
-        return dayCreature;
-    }
 
     public void SetCreatureTargeted(bool creatureTargeted) {
         this.creatureTargeted = creatureTargeted;
@@ -558,6 +560,13 @@ public class Creature : Mob
         return eliteDamageCreature;
     }
 
+    public bool IsDayCreature() {
+        return dayCreature;
+    }
+    public bool IsAgressiveDayCreature() {
+        return agressiveDayCreature;
+    }
+ 
     public float GetShockSlowAmount() {
         return shockedSlowAmount;
     }

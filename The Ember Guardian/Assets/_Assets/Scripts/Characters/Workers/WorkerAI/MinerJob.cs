@@ -17,6 +17,7 @@ public class MinerJob : WorkerJob {
     private float nightAggroCreatureDistance = 5f;
 
     private bool isNightOrDusk;
+    private bool miningScavengableObstacle;
 
     public enum MinerState {
         idle,
@@ -113,7 +114,7 @@ public class MinerJob : WorkerJob {
             }
         } else {
 
-            if (CheckBlockedByCreature() && state != MinerState.blockedByCreatures && state != MinerState.idle) {
+            if (CheckBlockedByCreature() && state != MinerState.blockedByCreatures && state != MinerState.idle && !miningScavengableObstacle) {
                 ChangeState(MinerState.blockedByCreatures);
                 return;
             };
@@ -371,6 +372,15 @@ public class MinerJob : WorkerJob {
             workerAttack.RemoveAttackTarget();
             mobMovement.SetMoveSpeed(headToCampMoveSpeed);
         }
+
+        if (state == MinerState.Mining) {
+            if(assignedScavengable is ScavengableObstacle) {
+                miningScavengableObstacle = true;
+            } else {
+                miningScavengableObstacle = false;
+            }
+        }
+
     }
     public override void ReturnToPreviousState() {
         ChangeState(previousState);

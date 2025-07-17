@@ -95,6 +95,7 @@ public class FireVisual : StructureVisual
     }
 
     private void Player_OnPlayerBackToTentToRespawn(object sender, System.EventArgs e) {
+        if (!fire.GetIsMainFire()) return;
         playerRespawnPS.Play();
     }
 

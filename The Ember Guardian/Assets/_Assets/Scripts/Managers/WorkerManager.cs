@@ -105,7 +105,7 @@ public class WorkerManager : MonoBehaviour
                 guardUnlocked = true;
                 ES3.Save("guardUnlocked", true);
                 MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(StructureSO.StructureType.guardShrine + "1", true);
-                MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(StructureSO.StructureType.minerShrine + "1", true);
+                MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(StructureSO.StructureType.guardShrine + "1", true);
                 MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType.WorkerMerchant, true);
             }
         }
@@ -114,7 +114,7 @@ public class WorkerManager : MonoBehaviour
                 engineerUnlocked = true;
                 ES3.Save("minerUnlocked", true);
                 MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(StructureSO.StructureType.engineerShrine + "1", true);
-                MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(StructureSO.StructureType.minerShrine + "1", true);
+                MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(StructureSO.StructureType.engineerShrine + "1", true);
                 MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType.WorkerMerchant, true);
             }
         }

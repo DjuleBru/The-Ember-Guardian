@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class WorkerStats : MonoBehaviour
 
     private bool interactionWithWorkersUnlocked;
     private bool workerInteractions_Debug;
-    private int initialMaxFollowingWorkers = 2;
+    private int initialMaxFollowingWorkers = 3;
     private int maxFollowingWorkers;
     private int initialEmberlings;
     private int emberlingArrivalsNumber;
@@ -49,6 +50,8 @@ public class WorkerStats : MonoBehaviour
     private float minerPickaxeLuckyProb;
     private float minerMoveSpeedBuff;
 
+    public event EventHandler OnInteractionsWithWorkersUnlocked;
+    
     private void Awake() {
         Instance = this;
         LoadStatValues();
@@ -84,6 +87,9 @@ public class WorkerStats : MonoBehaviour
 
     public void SetInteractionWithWorkersUnlocked() {
         interactionWithWorkersUnlocked = true;
+
+        ES3.Save("interactionWithWorkersUnlocked", true);
+        OnInteractionsWithWorkersUnlocked?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetMaxFollowingWorkers(int maxFollowingWorkersBuff) {
@@ -285,7 +291,6 @@ public class WorkerStats : MonoBehaviour
     #endregion
 
     public void SaveWorkerValues() {
-        ES3.Save("interactionWithWorkersUnlocked", interactionWithWorkersUnlocked);
         ES3.Save("maxFollowingWorkers", maxFollowingWorkers);
         ES3.Save("initialEmberlings", initialEmberlings);
         ES3.Save("emberlingArrivalsNumber", emberlingArrivalsNumber);

@@ -568,6 +568,10 @@ public class ItemButtonUI : ButtonUI {
         return isTreeParent;
     }
 
+    public bool GetHideItemIconUntilUnlocked() {
+        return hideItemIconUntilUnlocked;
+    }
+
     public Vector2 GetLocalPosition() {
         if(isTreeChild) {
             return treeShowHide.GetComponent<RectTransform>().localPosition;

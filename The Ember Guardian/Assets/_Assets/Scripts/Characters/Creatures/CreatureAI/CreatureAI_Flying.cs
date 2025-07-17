@@ -53,71 +53,7 @@ public class CreatureAI_Flying : CreatureAI
             return;
         }
 
-        switch (state) {
-
-            case State.idle:
-
-                if (detectedAttackTarget && !aggroedRecently) {
-                    ChangeState(State.moveToTarget);
-                }
-
-                Roam();
-
-                break;
-
-            case State.walkingToFire:
-
-                MoveTowardsFire();
-                if (detectedAttackTarget && !aggroedRecently) {
-                    ChangeState(State.moveToTarget);
-                }
-
-                break;
-
-            case State.walkingToSpawner:
-
-                MoveTowardsSpawner();
-                if (detectedAttackTarget && !aggroedRecently) {
-                    ChangeState(State.moveToTarget);
-                }
-
-                break;
-
-            case State.moveToTarget:
-                if (!detectedAttackTarget) {
-                    if (creature.IsDayCreature()) {
-                        ChangeState(State.walkingToSpawner);
-                        return;
-                    }
-                    else {
-                        ChangeState(State.walkingToFire);
-                        return;
-                    }
-                }
-
-                HeadToTarget();
-
-                break;
-
-            case State.attacking:
-
-                if (!detectedAttackTarget) {
-                    if (creature.IsDayCreature()) {
-                        ChangeState(State.walkingToSpawner);
-                    }
-                    else {
-                        ChangeState(State.walkingToFire);
-                    }
-                    return;
-                }
-
-                if (!CheckAttackTargetInRange() && !creatureAttack.GetAttackStarted()) {
-                    ChangeState(State.moveToTarget);
-                    return;
-                }
-
-                break;
-        }
+        StateSwitch();
     }
 
     protected override void MoveTowardsFire() {
@@ -184,10 +120,6 @@ public class CreatureAI_Flying : CreatureAI
         if (Vector3.Distance(transform.position, targetDestination) < minAttackRange) {
             ChangeState(State.attacking);
             return;
-        }
-
-        if (Vector3.Distance(transform.position, targetDestination) < minAttackRange) {
-            ChangeState(State.attacking);
         }
 
         creatureMovement.SetMoveTarget(targetDestination);

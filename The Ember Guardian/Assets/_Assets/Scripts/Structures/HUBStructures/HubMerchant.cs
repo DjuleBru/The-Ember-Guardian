@@ -100,6 +100,9 @@ public class HubMerchant : MonoBehaviour
         merchantJustArrivedInHub = MetaProgressionManager.Instance.GetMerchantJustArrivedInHub(hubMerchantType);
         if (merchantJustArrivedInHub && !DEBUGActivateMerchant) {
             merchantHasTalkLinesToShow = true;
+            if(hubMerchantType == HubMerchantType.ArchitectTable) {
+               StructureStats.Instance.UnlockArchitectTable();
+            }
         }
         else {
             if(!DEBUGActivateMerchant) {

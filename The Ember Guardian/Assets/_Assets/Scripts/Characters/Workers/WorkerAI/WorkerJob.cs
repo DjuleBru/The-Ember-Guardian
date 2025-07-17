@@ -155,7 +155,7 @@ public class WorkerJob : MonoBehaviour
 
     public bool CreatureIsTooClose(Creature closestCreature, float distance) {
         if (closestCreature != null) {
-            bool creatureIsTooClose = Mathf.Abs(closestCreature.transform.position.x) - Mathf.Abs(transform.position.x) < distance ;
+            bool creatureIsTooClose = Mathf.Abs(closestCreature.transform.position.x - transform.position.x) < distance ;
             return creatureIsTooClose;
         }
         return false;

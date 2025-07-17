@@ -337,6 +337,7 @@ public class Fire : Structure, IDamageable {
     }
 
     private void CheckFireFeedable() {
+        if (!isMainFire) return;
         if (lockFireInteractionFunctionsUpdate) return;
 
         if(fuelLevel + fuelTickValue <= currentMaxFuelTreshold) {
@@ -539,8 +540,8 @@ public class Fire : Structure, IDamageable {
     }
     public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
         fuelLevel -= (damage * damageToFuelConversionRate);
-        CheckFireStateDowngrade();
         OnFireDamageTaken?.Invoke(this, EventArgs.Empty);
+        CheckFireStateDowngrade();
     }
 
     public void Die() {

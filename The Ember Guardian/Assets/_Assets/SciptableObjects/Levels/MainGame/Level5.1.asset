@@ -25,8 +25,8 @@ MonoBehaviour:
   minesAmount: 0
   chestAmount: 0
   wildEmberlingsAmount: 0
-  levelObjectiveType: 10
-  endLevelType: 0
+  levelObjectiveType: 20
+  endLevelType: 20
   talkToNpcAFterObjective: 0
   nightsToSurviveAmount: 0
   isNewEnvironmentDiscoveryLevel: 0
@@ -42,21 +42,25 @@ MonoBehaviour:
   dayCreatureTypes: []
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
-  - {fileID: 11400000, guid: a0c1321c3dbd0704c9f6bf0aec0e77b3, type: 2}
-  - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
   - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
+  - {fileID: 11400000, guid: 92e601c9dd7bf334186de532c5e816de, type: 2}
+  - {fileID: 11400000, guid: 510ddc0451847e3419a83e0ae739424e, type: 2}
+  - {fileID: 11400000, guid: 698d6580902b79444bc46c0d2ace76fe, type: 2}
+  - {fileID: 11400000, guid: 80b1c2cc48aec984a983f1a5b95758a8, type: 2}
+  - {fileID: 11400000, guid: 51ff0da5c29d9704d98a8e536853da77, type: 2}
+  - {fileID: 11400000, guid: ed591899c44e7db44b289f544e933d8d, type: 2}
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
-  startWaveToSpawnFromBothSides: 2
-  baseDifficulty: 6
-  intialMinSubwaveDifficulty: 0
-  minSubwaveDifficulty: 0
-  intialMaxSubwaveDifficulty: 0
-  maxSubwaveDifficulty: 10
-  growthFactor: 1.6
-  maxWaveNumber: 0
-  minMaxSubwaveDifficultyGrowthFactor: 0
+  startWaveToSpawnFromBothSides: 1
+  baseDifficulty: 25
+  intialMinSubwaveDifficulty: 10
+  minSubwaveDifficulty: 25
+  intialMaxSubwaveDifficulty: 15
+  maxSubwaveDifficulty: 65
+  growthFactor: 1.5
+  maxWaveNumber: 1
+  minMaxSubwaveDifficultyGrowthFactor: 1.5
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
   difficultyAnimationCurve:
@@ -67,7 +71,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   maxWaveInAnimationCurve: 0
   canSpawnElite: 1
-  environmentType: 3
+  environmentType: 4
   hasFog: 0
   fogFrontAlpha: 0
   fogBackAlpha: 0

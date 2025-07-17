@@ -76,6 +76,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         TeleportBackToHub,
         FindArchitect,
         ProgressWithScavengers,
+        TalkToArchitect,
     }
 
     public static LevelUI_ObjectiveUI Instance;
@@ -102,6 +103,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     private void Start() {
         if(LevelObjectives.Instance != null) {
             LevelObjectives.Instance.OnNightSurvived += LevelObjectives_OnNightSurvived;
+            LevelObjectives.Instance.OnObstacleRemoved += LevelObjectives_OnObstacleRemoved;
         }
     }
 
@@ -239,14 +241,28 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         }
     }
 
+    private void LevelObjectives_OnObstacleRemoved(object sender, EventArgs e) {
+        foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>(true)) {
+            if (subObjectiveUI.GetSubObjectiveType() == SubObjectiveType.None) continue;
+
+            if (subObjectiveUI.GetSubObjectiveType() == SubObjectiveType.ProgressWithScavengers) {
+                subObjectiveUI.SetSubObjective(SubObjectiveType.ProgressWithScavengers);
+            }
+
+        }
+    }
+
     public string GetSubObjectiveTextFromType(SubObjectiveType subObjectiveType) {
         string subObjectiveKey = "SubObj_" + subObjectiveType.ToString();
 
         if (subObjectiveType == SubObjectiveType.SurviveNights) {
             return LocalizationManager.Instance.GetLocalizedText("SubObj_Survive") + " " + LevelObjectives.Instance.GetNightsToSurvive() + " " + LocalizationManager.Instance.GetLocalizedText("SubObj_Nights") + " " + "(" + LevelObjectives.Instance.GetNightsSurvived() + "/" + LevelObjectives.Instance.GetNightsToSurvive() + ")";
-        } else {
-            return LocalizationManager.Instance.GetLocalizedText(subObjectiveKey);
         }
+        if (subObjectiveType == SubObjectiveType.ProgressWithScavengers) {
+            return LocalizationManager.Instance.GetLocalizedText("SubObj_ProgressWithScavengers") + " " + LevelObjectives.Instance.GetObstaclesToRemove() + " " + LocalizationManager.Instance.GetLocalizedText("SubObj_Obstacles") + " " + "(" + LevelObjectives.Instance.GetObstaclesRemoved() + "/" + LevelObjectives.Instance.GetObstaclesToRemove() + ")";
+        }
+        return LocalizationManager.Instance.GetLocalizedText(subObjectiveKey);
+        
     }
 
     private string GetObjectiveTextFromType(ObjectiveType objectiveType) {

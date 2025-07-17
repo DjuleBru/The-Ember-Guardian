@@ -10,8 +10,6 @@ public class ScavengableVisual : MonoBehaviour
     [SerializeField] private SpriteRenderer glowSpriteRenderer;
     [SerializeField] private Transform minerAssignedContainer;
     [SerializeField] private Transform minerAssignedTemplate;
-    [SerializeField] private Transform minerAssignedContainerBackground;
-    [SerializeField] private Transform minerAssignedTemplateBackground;
     [SerializeField] private Sprite depletedSprite;
     [SerializeField] private GameObject effortRequiredGO;
     [SerializeField] private Image effortRequiredImage;
@@ -33,10 +31,6 @@ public class ScavengableVisual : MonoBehaviour
 
     private void Awake() {
         scavengable = GetComponentInParent<IScavengable>();
-        minerAssignedTemplate.gameObject.SetActive(false);
-        minerAssignedContainer.gameObject.SetActive(false);
-        minerAssignedContainerBackground.gameObject.SetActive(false);
-
     }
 
     private void Start() {
@@ -51,8 +45,9 @@ public class ScavengableVisual : MonoBehaviour
         scavengable.OnDeactivatedMining += Scavengable_OnDeactivatedMining;
 
         for (int i = 0; i < scavengable.GetMaxMinerAmount(); i++) {
-            Instantiate(minerAssignedTemplateBackground, minerAssignedContainerBackground);
+            Transform template = Instantiate(minerAssignedTemplate, minerAssignedContainer);
         }
+        minerAssignedContainer.gameObject.SetActive(false);
 
         if (effortRequiredGO != null) {
             effortRequiredGO.SetActive(false);
@@ -60,8 +55,6 @@ public class ScavengableVisual : MonoBehaviour
         if (miningStatusGO != null) {
             miningStatusGO.SetActive(false);
         }
-
-        minerAssignedTemplateBackground.gameObject.SetActive(false);
     }
 
     private void Scavengable_OnDeactivatedMining(object sender, System.EventArgs e) {
@@ -101,8 +94,12 @@ public class ScavengableVisual : MonoBehaviour
         }
 
         minerAssignedTemplate.gameObject.SetActive(true);
-        for (int i  = 0; i < scavengable.GetMinerAmountMining(); i++) {
-            Instantiate(minerAssignedTemplate, minerAssignedContainer);
+        int minersMining = scavengable.GetMinerAmountMining();
+        for (int i  = 0; i < scavengable.GetMaxMinerAmount(); i++) {
+            Transform template = Instantiate(minerAssignedTemplate, minerAssignedContainer);
+            if(i < minersMining) {
+                template.Find("MinersMiningTemplate").gameObject.SetActive(true);
+            }
         }
         minerAssignedTemplate.gameObject.SetActive(false);
     }
@@ -116,7 +113,6 @@ public class ScavengableVisual : MonoBehaviour
     private void Scavengable_OnScavengableMarkedToScavenge(object sender, System.EventArgs e) {
         orbCostUIGO.gameObject.SetActive(false);
         minerAssignedContainer.gameObject.SetActive(true);
-        minerAssignedContainerBackground.gameObject.SetActive(true);
 
         if (effortRequiredGO != null) {
             effortRequiredGO.SetActive(true);

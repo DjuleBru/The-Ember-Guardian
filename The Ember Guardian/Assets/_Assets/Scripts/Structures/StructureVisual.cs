@@ -22,15 +22,20 @@ public class StructureVisual : MonoBehaviour {
 
     protected virtual void Awake() {
         structure = GetComponentInParent<Structure>();
-        SetXAxisScale();
 
         if (structureInteractionIconImage != null) {
             structureInteractionIconImage.enabled = false;
         }
+        SetXAxisScale();
     }
 
     protected void SetXAxisScale() {
-        if (structure.transform.position.x < 0) {
+        float scaleX = structure.transform.position.x;
+        if (structure.GetIsWorldStructure()) {
+            scaleX = structure.GetWorldScaleX();
+        };
+
+        if (scaleX < 0) {
             Vector3 localScale = new Vector3(-1, 1, 1);
             transform.localScale = localScale;
         }
@@ -48,6 +53,7 @@ public class StructureVisual : MonoBehaviour {
         }
 
         HandleInitialBuildAnimation();
+        SetXAxisScale();
     }
 
     private void Structure_OnInitialCampStructureBuilt(object sender, System.EventArgs e) {

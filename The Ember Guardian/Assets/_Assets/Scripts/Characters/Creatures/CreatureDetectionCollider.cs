@@ -310,6 +310,7 @@ public class CreatureDetectionCollider : MonoBehaviour
         if (distanceToFire > 10) {
             return false;
         } else {
+            if (IsTargetBehindBarricade((fire as MonoBehaviour).transform)) return false;
             return true;
         }
     }
@@ -335,15 +336,19 @@ public class CreatureDetectionCollider : MonoBehaviour
 
         }
 
-        // Check if player is out of camp
-        if (!CampZoneManager.Instance.IsWithinCampZoneLimits(Player.Instance.transform.position)) {
+        // Check if player is behind a barricade
+        if (!IsTargetBehindBarricade(Player.Instance.transform)) {
+            
+            // Player is not behind a barricade : check if player is within camp center zone limits
+            if(CampZoneManager.Instance.IsWithinCampCenterZoneLimits(Player.Instance.transform.position)) {
+                return false;
+            }
 
-            // Player is out of camp
             return true;
 
         } else {
 
-            // Player is within camp zone
+            // Player is behind a barricade
             CreatureAttackSO attackSO = creatureAttack.GetCurrentCreatureAttackSO();
             if (attackSO == null) {
                 return false;
@@ -356,6 +361,18 @@ public class CreatureDetectionCollider : MonoBehaviour
 
         return false;
     }
+
+    private bool IsTargetBehindBarricade(Transform targetTransform) {
+        Vector2 origin = transform.position;
+        Vector2 target = targetTransform.transform.position;
+        Vector2 direction = (target - origin).normalized;
+        float distance = Vector2.Distance(origin, target);
+
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, LayerMask.GetMask("Barricades"));
+
+        return hit.collider != null;
+    }
+
     private bool CanAddBarricadeToTargets(Barricade barricade) {
         if (barricadeTargetingPriority == 0) return false;
         if (barricade.GetBarricadeHealthNormalized() > 0) {
@@ -369,7 +386,13 @@ public class CreatureDetectionCollider : MonoBehaviour
         // Check if worker is out of camp AND player is around too
         if (workerTargetingPriority == 0) return false;
         if (worker.GetDefensiveStructureAssigned() != null) return false;
-        if (!CampZoneManager.Instance.IsWithinCampZoneLimits(worker.transform.position)) {
+
+        if (!IsTargetBehindBarricade(worker.transform)) {
+            // Worker is not behind a barricade : check if worker is within camp zone limits
+            if (CampZoneManager.Instance.IsWithinCampZoneLimits(worker.transform.position)) {
+                return false;
+            }
+
             return true;
         }
         return false;

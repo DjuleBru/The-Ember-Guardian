@@ -62,6 +62,7 @@ public class BarricadeVisual : StructureVisual {
         if(!spotLightUnlocked) {
             barricadeSpotLightGameObject.SetActive(false);
         }
+        SetXAxisScale();
     }
 
     private void Barricade_OnBarricadeLightSwitched(object sender, EventArgs e) {

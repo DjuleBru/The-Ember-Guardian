@@ -79,7 +79,9 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     protected virtual void LoadItemStatus() {
-        if(!isBoughtAtStart) {
+        newItemUnlocked = MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType());
+
+        if (!isBoughtAtStart) {
 
             itemBought = MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType());
             
@@ -98,7 +100,6 @@ public class HubMerchantItem : MonoBehaviour
         } else {
             itemBought = true;
             itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType());
-            newItemUnlocked = MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType());
             itemLevel = maxItemLevel;
 
             if(itemEquipable) {
@@ -109,7 +110,6 @@ public class HubMerchantItem : MonoBehaviour
         if (isUnlockedAtStart) {
             itemUnlocked = true;
         }
-
         OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
     }
 

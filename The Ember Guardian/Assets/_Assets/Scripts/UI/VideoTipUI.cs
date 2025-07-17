@@ -91,6 +91,11 @@ public class VideoTipUI : MonoBehaviour
     }
 
     public void PlayTipSO(VideoTipSO videoTipSO, float delayToPlayTip = 0f) {
+        if(videoTipSO == null) {
+            Debug.LogError("VideoTipSO is null");
+            return;
+        }
+
         shownVideoTipSO = videoTipSO;
         videoPlayer.clip = videoTipSO.tipClip;
         tipName.text = LocalizationManager.Instance.GetLocalizedText(videoTipSO.tipNameLocalizationKey);

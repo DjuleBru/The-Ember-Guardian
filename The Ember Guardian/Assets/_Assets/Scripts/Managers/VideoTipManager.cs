@@ -24,6 +24,11 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO storeGemsTip;
     [SerializeField] private VideoTipSO swapWeaponTip;
     [SerializeField] private VideoTipSO huntingFlagTip;
+    [SerializeField] private VideoTipSO scavengablesTip;
+    [SerializeField] private VideoTipSO worldPortalTip;
+    [SerializeField] private VideoTipSO scavengableObstacleTip;
+    [SerializeField] private VideoTipSO controlEmberlingsTip;
+    [SerializeField] private VideoTipSO architectTableTip;
 
     private bool isLevelScene;
     private bool isTutorialScene;
@@ -47,6 +52,12 @@ public class VideoTipManager : MonoBehaviour
     private bool storeGemsTipShown;
     private bool swapWeaponTipShown;
     private bool huntingFlagTipShown;
+    private bool scavengablesTipShown;
+    private bool worldPortalTipShown;
+    private bool scavengableObstacleTipShown;
+    private bool controlEmberlingsTipShown;
+    private bool architectTableTipShown;
+
 
     private void Awake() {
         Instance = this;
@@ -106,6 +117,11 @@ public class VideoTipManager : MonoBehaviour
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+
+        if(EndLevelArea.Instance != null) {
+            EndLevelArea.Instance.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
+        }
+
     }
 
     private void SubscribeToHubEvents() {
@@ -114,6 +130,15 @@ public class VideoTipManager : MonoBehaviour
         HubChest.Instance.OnChestSetCanOpen += HubChest_OnChestSetCanOpen;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
     }
+
+    private void EndLevelArea_OnEndLevelAreaCleared(object sender, EventArgs e) {
+        if (worldPortalTipShown) return;
+
+        worldPortalTipShown = true;
+        ES3.Save("worldPortalTipShown", true);
+        VideoTipUI.Instance.PlayTipSO(worldPortalTip);
+    }
+
 
     private void HubChest_OnChestSetCanOpen(object sender, EventArgs e) {
         if (storeGemsTipShown) return;
@@ -146,6 +171,18 @@ public class VideoTipManager : MonoBehaviour
             ES3.Save("huntingFlagTipShown", true);
 
         }
+
+        if (hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.StructuresMerchant) {
+            if (!isLevelScene) return;
+            if (LevelManager.Instance.GetLevelSO().endLevelType != LevelUI_ObjectiveUI.ObjectiveType.FindArchitectTable) return;
+            if (scavengableObstacleTipShown) return;
+
+            VideoTipUI.Instance.PlayTipSO(scavengableObstacleTip, 1f);
+
+            scavengableObstacleTipShown = true;
+            ES3.Save("scavengableObstacleTipShown", true);
+
+        }
     }
 
     #region HUB ONLY
@@ -166,6 +203,15 @@ public class VideoTipManager : MonoBehaviour
             gunTipShown = true;
             ES3.Save("gunTipShown", true);
         }
+
+        if (hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.ArchitectTable) {
+            if (architectTableTipShown) return;
+
+            VideoTipUI.Instance.PlayTipSO(architectTableTip, 0f);
+
+            architectTableTipShown = true;
+            ES3.Save("architectTableTipShown", architectTableTipShown);
+        }
     }
 
     #endregion
@@ -182,12 +228,20 @@ public class VideoTipManager : MonoBehaviour
     }
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
-        if (setupEconomyTipShown) return;
+        if (!setupEconomyTipShown) {
+            VideoTipUI.Instance.PlayTipSO(setupEconomyTip, 1f);
 
-        VideoTipUI.Instance.PlayTipSO(setupEconomyTip, 1f);
+            setupEconomyTipShown = true;
+            ES3.Save("setupEconomyTipShown", true);
+        };
 
-        setupEconomyTipShown = true;
-        ES3.Save("setupEconomyTipShown", true);
+        if(!scavengablesTipShown && LevelManager.Instance.GetLevelSO().levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.ExploreCorruptedCity) {
+            VideoTipUI.Instance.PlayTipSO(scavengablesTip, 1f);
+
+            scavengablesTipShown = true;
+            ES3.Save("scavengablesTipShown", true);
+        }
+
     }
 
     private void Structure_OnAnyPlayerTriggeredIn_Level(object sender, EventArgs e) {
@@ -283,6 +337,11 @@ public class VideoTipManager : MonoBehaviour
         VideoTipUI.Instance.PlayTipSO(tipSO, 0f);
     }
 
+    public void PlayControlEmberlingsTip() {
+        if (controlEmberlingsTipShown) return;
+        VideoTipUI.Instance.PlayTipSO(controlEmberlingsTip, 0f);
+    }
+
     private void LoadTooltipsShown() {
         dieTipShown = ES3.Load("dieTipShown", false);
         setupEconomyTipShown = ES3.Load("setupEconomyTipShown", false);
@@ -291,31 +350,30 @@ public class VideoTipManager : MonoBehaviour
         storeGemsTipShown = ES3.Load("storeGemsTipShown", false);
         swapWeaponTipShown = ES3.Load("swapWeaponTipShown", false);
         huntingFlagTipShown = ES3.Load("huntingFlagTipShown", false);
+        scavengablesTipShown = ES3.Load("scavengablesTipShown", false);
+        worldPortalTipShown = ES3.Load("worldPortalTipShown", false);
+        scavengableObstacleTipShown = ES3.Load("scavengableObstacleTipShown", false);
+        controlEmberlingsTipShown = ES3.Load("controlEmberlingsTipShown", false);
+        architectTableTipShown = ES3.Load("architectTableTipShown", false);
     }
 
     private void OnDestroy() {
 
-        if(isLevelScene) {
-            Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
-            Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn_Level;
-            Fire.Instance.OnInitialFireActivated -= Fire_OnInitialFireActivated;
-            Player.Instance.OnPlayerExitedCamp -= Player_OnPlayerExitedCamp;
-            HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
-        }
+        Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
+        Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn_Level;
+        Fire.Instance.OnInitialFireActivated -= Fire_OnInitialFireActivated;
+        Player.Instance.OnPlayerExitedCamp -= Player_OnPlayerExitedCamp;
+        HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
 
-        if(isHubScene) {
-            HubMerchant.OnAnyPlayerTriggeredIn -= HubMerchant_OnAnyPlayerTriggeredIn;
-        }
+        HubMerchant.OnAnyPlayerTriggeredIn -= HubMerchant_OnAnyPlayerTriggeredIn;
 
-        if(isTutorialScene) {
-            UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
-            Mob.OnAnyMobDied -= Creature_OnAnyMobDied;
-            TutorialCollider.OnRollTipCollided -= TutorialCollider_OnRollTipCollided;
-            TutorialCollider.OnRecruitWorkerTipCollided -= TutorialCollider_OnRecruitWorkerTipCollided;
-            StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
-            Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn_Tutorial;
-            DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
-        }
+        UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
+        Mob.OnAnyMobDied -= Creature_OnAnyMobDied;
+        TutorialCollider.OnRollTipCollided -= TutorialCollider_OnRollTipCollided;
+        TutorialCollider.OnRecruitWorkerTipCollided -= TutorialCollider_OnRecruitWorkerTipCollided;
+        StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
+        Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn_Tutorial;
+        DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
 
     }
 }

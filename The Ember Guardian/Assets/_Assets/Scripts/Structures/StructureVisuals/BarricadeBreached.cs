@@ -29,6 +29,8 @@ public class BarricadeBreached : MonoBehaviour
         breachedVisual.gameObject.SetActive(false);
         animator.enabled = false;
 
+        if (barricade.GetIsWorldStructure()) return;
+
         barricade.OnBarricadeDestroyed += Barricade_OnBarricadeDestroyed;
         barricade.OnBarricadeRepaired += Barricade_OnBarricadeRepaired;
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;

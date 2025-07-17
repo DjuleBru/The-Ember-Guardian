@@ -43,7 +43,13 @@ public class StructureLocationVisual : MonoBehaviour
     }
 
     protected void SetXAxisScale() {
-        if(structureLocation.transform.position.x < 0) {
+        float scaleX = structureLocation.transform.position.x;
+
+        if(structureLocation.GetIsWorldStructureLocation()) {
+            scaleX = structureLocation.GetStructureLocationWorldScaleX();
+        }
+
+        if (scaleX < 0) {
             Vector3 localScale = new Vector3(-1, 1, 1);
             transform.localScale = localScale;
 

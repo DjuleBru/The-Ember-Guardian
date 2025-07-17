@@ -133,7 +133,9 @@ public class HunterJob : WorkerJob {
                             workerAttack.RemoveAttackTarget();
 
                         }
+
                         else {
+
                             if (!CreatureIsTooClose(closestCreature, minimumDistanceToStaySafeFromCreature)) {
                                 ChangeState(HunterState.followPlayerAttackCreature);
                             };
@@ -503,8 +505,6 @@ public class HunterJob : WorkerJob {
                     }
                 }
             };
-
-            
         }
     }
 
@@ -585,7 +585,6 @@ public class HunterJob : WorkerJob {
             checkClosestTargetTimer = checkClosestTargetCooldown;
 
             Creature newTargetCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(mobMovement.transform.position, attackRange, workerAttack.GetAttackDamage(), true);
-
             if (newTargetCreature == null) {
                 targetCreature = null;
                 return false;
@@ -795,6 +794,7 @@ public class HunterJob : WorkerJob {
 
     private void ChangeState(HunterState newState) {
         if (newState == state) return;
+        //Debug.Log("ChangeState " + newState);
         previousState = state;
 
         Vector3 targetDestination = mobMovement.transform.position;
@@ -902,9 +902,10 @@ public class HunterJob : WorkerJob {
         workerAttack.RemoveAttackTarget();
 
         if (followingPlayer) {
-            state = HunterState.followPlayerIdle;
+            ChangeState(HunterState.followPlayerIdle);
         } else {
-            state = HunterState.idle;
+
+            ChangeState(HunterState.idle);
             CheckNewDayCycleParameters();
         }
 

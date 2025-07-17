@@ -128,7 +128,7 @@ public class MobSpawner : MonoBehaviour
         }
     }
 
-    public virtual void SpawnCreatures(CreatureSO creatureSO, int mobAmount) {
+    public virtual void SpawnCreatures(CreatureSO creatureSO, int mobAmount, bool agressiveDayCreature = false) {
         for (int i = 0; i < mobAmount; i++) {
 
             float positionRandomizer = UnityEngine.Random.Range(-spawnPositionRandomizer, spawnPositionRandomizer);
@@ -147,10 +147,14 @@ public class MobSpawner : MonoBehaviour
                 spawnPositionRandomized.x = LevelManager.Instance.GetMinLevelLimitAbsolute() + 10f;
             }
 
-            Mob mob = Instantiate(mobPrefab, spawnPositionRandomized, Quaternion.identity).GetComponent<Mob>();
+            Mob mob = Instantiate(creatureSO.creaturePrefab, spawnPositionRandomized, Quaternion.identity).GetComponent<Mob>();
             mobSpawnedList.Add(mob);
             mob.SetMobSpawner(this);
             mob.GetComponent<Creature>().SetAsDayCreature(true);
+
+            if(agressiveDayCreature) {
+                mob.GetComponent<Creature>().SetAsAgressiveDayCreature();
+            }
 
             mob.transform.parent = SpawnedObjects.Instance.creaturesContainer;
             if (canSpawnEliteCreatures) {

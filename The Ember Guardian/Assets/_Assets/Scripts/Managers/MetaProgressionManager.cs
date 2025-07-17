@@ -314,6 +314,7 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     public void SetHubMerchantItemNewlyUnlocked(string merchantItemSaveString, bool unlocked) {
+        Debug.Log("SetHubMerchantItemNewlyUnlocked " + merchantItemSaveString);
         string key = merchantItemSaveString + "_NewlyUnlocked";
         ES3.Save(key, unlocked);
     }

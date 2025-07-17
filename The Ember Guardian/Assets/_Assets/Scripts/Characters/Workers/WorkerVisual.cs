@@ -48,7 +48,7 @@ public class WorkerVisual : MobVisual {
         joblessJob = GetComponentInParent<JoblessJob>();
         engineerJob = GetComponentInParent<EngineerJob>();
         workerMovement = GetComponentInParent<WorkerMovement>();
-        workerStatusSpriteRenderer.sprite = null;
+        ChangeStatusSprite(null);
 
         worker.OnMobDied += Worker_OnMobDied;
         worker.OnWorkerHovered += Worker_OnWorkerHovered;
@@ -112,26 +112,7 @@ public class WorkerVisual : MobVisual {
     }
 
     private void EngineerJob_OnEngineerChangedState(object sender, System.EventArgs e) {
-        if (engineerJob.GetState() == EngineerJob.EngineerState.blockedByCreatures) {
-            if (!workerBlockedByCreatures) {
-                workerBlockedByCreatures = true;
-                ChangeStatusSprite(exclamationMarkSprite);
-            }
-        }
-        else {
-            if (workerBlockedByCreatures) {
-                workerStatusSpriteRenderer.sprite = null;
-                workerBlockedByCreatures = false;
-            }
-        }
-
-        if (engineerJob.GetState() == EngineerJob.EngineerState.droppingCurrency) return;
-
-        if(engineerJob.GetState() == EngineerJob.EngineerState.idle) {
-            ShowWeapon(true);
-            ShowBodyVisual(true);
-        }
-
+        RefreshStatusAndWeaponSprite();
     }
 
     private void ShowAllVisuals(bool show) {
@@ -177,7 +158,7 @@ public class WorkerVisual : MobVisual {
         } else {
             bodySpriteLight.intensity = unHoveredBodySpriteLightIntensity;
             workerBodySpriteRenderer.material = emptyMaterial;
-            workerStatusSpriteRenderer.sprite = null;
+            ChangeStatusSprite(null);
         }
     }
 
@@ -185,8 +166,8 @@ public class WorkerVisual : MobVisual {
         if (workerAI.GetJob() == WorkerAI.JobTypes.wild || workerAI.GetJob() == WorkerAI.JobTypes.jobless) return;
 
         workerBodySpriteRenderer.material = emptyMaterial;
-        workerStatusSpriteRenderer.sprite = null;
         bodySpriteLight.intensity = unHoveredBodySpriteLightIntensity;
+        RefreshStatusAndWeaponSprite();
     }
 
     private void Worker_OnWorkerHovered(object sender, System.EventArgs e) {
@@ -201,15 +182,21 @@ public class WorkerVisual : MobVisual {
 
         bodySpriteLight.intensity = unHoveredBodySpriteLightIntensity;
         workerBodySpriteRenderer.material = emptyMaterial;
-        workerStatusSpriteRenderer.sprite = null;
+
+        if (workerAI.GetFollowingPlayer()) {
+            ChangeStatusSprite(null);
+        }
+        else {
+            RefreshStatusAndWeaponSprite();
+        }
     }
 
     private void Worker_OnMobDied(object sender, System.EventArgs e) {
-        workerStatusSpriteRenderer.sprite = null;
+        ChangeStatusSprite(null);
     }
 
     private void JoblessJob_OnJoblessNotBlockedByCreatures(object sender, System.EventArgs e) {
-        workerStatusSpriteRenderer.sprite = null;
+        ChangeStatusSprite(null);
     }
 
     private void JoblessJob_OnJoblessBlockedByCreatures(object sender, System.EventArgs e) {
@@ -217,48 +204,12 @@ public class WorkerVisual : MobVisual {
     }
 
     private void MinerJob_OnMinerChangedState(object sender, System.EventArgs e) {
-        MinerJob.MinerState state = minerJob.GetState();
-
-        if (state == MinerJob.MinerState.blockedByCreatures) {
-            if (!workerBlockedByCreatures) {
-                workerBlockedByCreatures = true;
-                ChangeStatusSprite(exclamationMarkSprite);
-            }
-        }
-        else {
-            if(workerBlockedByCreatures) {
-                workerStatusSpriteRenderer.sprite = null;
-                workerBlockedByCreatures = false;
-            }
-        }
-
-        if(state == MinerJob.MinerState.Mining) {
-            if(minerJob.GetScavengableAssigned().GetIsMine()) {
-                ShowAllVisuals(false);
-            } 
-        } else {
-            ShowAllVisuals(true);
-        }
+        RefreshStatusAndWeaponSprite();
     }
 
     private void HunterJob_OnHunterChangedState(object sender, System.EventArgs e) {
-        HunterJob.HunterState state = hunterJob.GetState();
-
-        if (state == HunterJob.HunterState.blockedByCreatures) {
-            if(!workerBlockedByCreatures) {
-                workerBlockedByCreatures = true;
-                ChangeStatusSprite(exclamationMarkSprite);
-            }
-        } else {
-            if (workerBlockedByCreatures) {
-                workerStatusSpriteRenderer.sprite = null;
-                workerBlockedByCreatures = false;
-            }
-        }
-        if(state == HunterJob.HunterState.headingToGuard) {
-            hunterFoundAnimal = true;
-            workerStatusSpriteRenderer.sprite = null;
-        }
+        RefreshStatusAndWeaponSprite();
+        
     }
 
     private void HunterJob_OnHunterFindsNoAnimal(object sender, System.EventArgs e) {
@@ -271,7 +222,7 @@ public class WorkerVisual : MobVisual {
     private void HunterJob_OnHunterFoundAnimal(object sender, System.EventArgs e) {
         if(!hunterFoundAnimal) {
             hunterFoundAnimal = true;
-            workerStatusSpriteRenderer.sprite = null;
+            ChangeStatusSprite(null);
         }
     }
 
@@ -279,12 +230,12 @@ public class WorkerVisual : MobVisual {
         if (!worker.GetRecruited()) return;
 
         if (workerBlockedByCreatures) {
-            workerStatusSpriteRenderer.sprite = null;
+            ChangeStatusSprite(null);
         }
 
         if(workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
             if (!hunterFoundAnimal) {
-                workerStatusSpriteRenderer.sprite = null;
+                ChangeStatusSprite(null);
             }
         }
        
@@ -292,11 +243,11 @@ public class WorkerVisual : MobVisual {
 
     private void InteractionCollider_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
         if (!worker.GetRecruited()) return;
+        if (workerAI.GetFollowingPlayer()) return;
 
         if (workerBlockedByCreatures) {
             ChangeStatusSprite(exclamationMarkSprite);
         }
-
         if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
             if (!hunterFoundAnimal) {
                 ChangeStatusSprite(questionMarkSprite);
@@ -310,6 +261,99 @@ public class WorkerVisual : MobVisual {
             workerWeaponSpriteRenderer.material = emptyMaterial;
             workerWeaponGlowSpriteRenderer.material = weaponGlowMaterial;
         }
+    }
+
+    private void RefreshStatusAndWeaponSprite() {
+        WorkerAI.JobTypes job = workerAI.GetJob();
+        ChangeStatusSprite(null);
+
+        if (workerAI.GetFollowingPlayer()) {
+            ChangeStatusSprite(null);
+            return;
+        }
+
+        switch (job) {
+            case WorkerAI.JobTypes.hunter:
+                HunterJob.HunterState state = hunterJob.GetState();
+
+                if (state == HunterJob.HunterState.blockedByCreatures) {
+                    if (!workerBlockedByCreatures) {
+                        workerBlockedByCreatures = true;
+                        ChangeStatusSprite(exclamationMarkSprite);
+                    }
+                } else {
+                    if (workerBlockedByCreatures) {
+                        ChangeStatusSprite(null);
+                        workerBlockedByCreatures = false;
+                    }
+                }
+
+                if (state == HunterJob.HunterState.headingToGuard) {
+                    hunterFoundAnimal = true;
+                    ChangeStatusSprite(null);
+                    return;
+                }
+
+                if(!hunterFoundAnimal) {
+                    ChangeStatusSprite(questionMarkSprite);
+                }
+
+                break;
+            case WorkerAI.JobTypes.miner:
+                MinerJob.MinerState minerState = minerJob.GetState();
+
+                if (minerState == MinerJob.MinerState.blockedByCreatures) {
+                    if (!workerBlockedByCreatures) {
+                        workerBlockedByCreatures = true;
+                        ChangeStatusSprite(exclamationMarkSprite);
+                    }
+                }
+                else {
+                    if (workerBlockedByCreatures) {
+                        ChangeStatusSprite(null);
+                        workerBlockedByCreatures = false;
+                    }
+                }
+
+                if (minerState == MinerJob.MinerState.Mining) {
+                    if (minerJob.GetScavengableAssigned().GetIsMine()) {
+                        ShowAllVisuals(false);
+                    }
+                }
+                else {
+                    ShowAllVisuals(true);
+                }
+                break;
+
+            case WorkerAI.JobTypes.engineer:
+                EngineerJob.EngineerState engineerState = engineerJob.GetState();
+                if (engineerState == EngineerJob.EngineerState.blockedByCreatures) {
+                    if (!workerBlockedByCreatures) {
+                        workerBlockedByCreatures = true;
+                        ChangeStatusSprite(exclamationMarkSprite);
+                    }
+                }
+                else {
+                    if (workerBlockedByCreatures) {
+                        ChangeStatusSprite(null);
+                        workerBlockedByCreatures = false;
+                    }
+                }
+
+                if (engineerState == EngineerJob.EngineerState.droppingCurrency) return;
+
+                if (engineerState == EngineerJob.EngineerState.idle) {
+                    ShowWeapon(true);
+                    ShowBodyVisual(true);
+                }
+
+                break;
+
+            case WorkerAI.JobTypes.guard:
+                break;
+
+        }
+        
     }
 
     private void ChangeStatusSprite(Sprite sprite) {

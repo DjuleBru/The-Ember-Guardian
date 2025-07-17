@@ -24,10 +24,14 @@ public class WorkerUI : MonoBehaviour
         hunterJob.OnHunterFindsNoAnimal += HunterJob_OnHunterFindsNoAnimal;
         hunterJob.OnHunterChangedState += HunterJob_OnHunterChangedState;
         hunterJob.OnHunterFoundAnimal += HunterJob_OnHunterFoundAnimal;
+        workerAI.OnWorkerFollowPlayerChanged += WorkerAI_OnWorkerFollowPlayerChanged;
 
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
     }
 
+    private void WorkerAI_OnWorkerFollowPlayerChanged(object sender, System.EventArgs e) {
+        talkText.text = "";
+    }
 
     private void Start() {
         talkText.text = "";
@@ -75,6 +79,7 @@ public class WorkerUI : MonoBehaviour
     }
 
     private void InteractionCollider_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        if (workerAI.GetFollowingPlayer()) return;
 
         if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
             if (workerBlockedByCreatures) {
