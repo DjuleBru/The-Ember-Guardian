@@ -50,6 +50,52 @@ public class ScavengableManager : MonoBehaviour
         return scavengablesToScavenge;
     }
 
+    public IScavengable GetClosestHighestPriorityScavengableToScavenge(MinerJob requestingMiner) {
+        List<IScavengable> scavengables = GetAvailableScavengableList();
+        List<MinerJob> allMiners = WorkerManager.Instance.GetRecruitedMiners();
+
+        Dictionary<MinerJob, (IScavengable scavengable, int priority, float distance)> pendingAssignments = new();
+
+        foreach (IScavengable scavengable in scavengables) {
+            if (!scavengable.GetScavengingActive()) continue;
+
+            int scavPriority = scavengable.GetMiningPriority();
+            Vector3 scavPos = (scavengable as MonoBehaviour).transform.position;
+
+            MinerJob closestMiner = null;
+            float closestDistance = Mathf.Infinity;
+
+            foreach (MinerJob miner in allMiners) {
+                if (miner.GetScavengableAssigned() != null) continue;
+
+                float dist = Mathf.Abs(miner.transform.position.x - scavPos.x);
+
+                if (dist < closestDistance) {
+                    closestDistance = dist;
+                    closestMiner = miner;
+                }
+            }
+
+            if (closestMiner == null) continue;
+
+            if (!pendingAssignments.TryGetValue(closestMiner, out var currentAssignment)) {
+                pendingAssignments[closestMiner] = (scavengable, scavPriority, closestDistance);
+            }
+            else {
+                // Comparer les priorités, puis les distances si égalité
+                if (scavPriority < currentAssignment.priority ||
+                    (scavPriority == currentAssignment.priority && closestDistance < currentAssignment.distance)) {
+                    pendingAssignments[closestMiner] = (scavengable, scavPriority, closestDistance);
+                }
+            }
+        }
+
+        if (pendingAssignments.TryGetValue(requestingMiner, out var assigned)) {
+            return assigned.scavengable;
+        }
+
+        return null;
+    }
 
     public IScavengable GetClosestHighestPriorityScavengableToScavenge(Vector3 minerPosition) {
         List<IScavengable> scavengabledToScavenge = GetAvailableScavengableList();

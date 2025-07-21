@@ -28,6 +28,8 @@ public class PlayerSounds : SoundObject
 
     private bool almostExhausted;
     private bool exhaustedSFXPlaying;
+    private float pausedReloadAudioTime = 0f;
+
     protected override void Start() {
         base.Start();
 
@@ -43,6 +45,7 @@ public class PlayerSounds : SoundObject
 
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerReloadInterrupted += PlayerShoot_OnPlayerReloadInterrupted;
+        PlayerShoot.Instance.OnPlayerReloadInterruptedEnded += PlayerShoot_OnPlayerReloadInterruptedEnded;
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerExhaustionStarted += PlayerMovement_OnPlayerExhaustionStarted;
         PlayerMovement.Instance.OnPlayerAlmostExhaustionStarted += PlayerMovement_OnPlayerAlmostExhaustionStarted;
@@ -89,10 +92,17 @@ public class PlayerSounds : SoundObject
     }
 
     private void PlayerShoot_OnPlayerReloadInterrupted(object sender, System.EventArgs e) {
-        playerReloadAudioSource.Stop();
+        pausedReloadAudioTime = playerReloadAudioSource.time;
+        playerReloadAudioSource.Pause();
+    }
+
+    private void PlayerShoot_OnPlayerReloadInterruptedEnded(object sender, System.EventArgs e) {
+        playerReloadAudioSource.time = pausedReloadAudioTime;
+        playerReloadAudioSource.Play();
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
+        playerReloadAudioSource.time = 0;
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().reloadGunSound;
         playerReloadAudioSource.clip = audioClipArray[Random.Range(0, audioClipArray.Length)];
         playerReloadAudioSource.volume = sfxVolume * PlayerShoot.Instance.GetHeldGunSO().reloadSFXVolumeMultiplier;

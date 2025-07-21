@@ -36,6 +36,7 @@ public class GameInput : MonoBehaviour
         editCampSelect,
         editCampDeselect,
         collectCurrencyFromContainer,
+        commandWorkers,
     }
 
     private PlayerInputActions playerInputActions;
@@ -47,8 +48,8 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnPlayerRunPerformed;
     public event EventHandler OnPlayerRunCanceled;
 
-    public event EventHandler OnPlayerJumpPerformed;
-    public event EventHandler OnPlayerJumpCanceled;
+    public event EventHandler OnPlayerRollPerformed;
+    public event EventHandler OnPlayerRollCanceled;
 
     public event EventHandler OnPlayerInteractPerformed;
     public event EventHandler OnPlayerInteractHeldDown;
@@ -72,7 +73,7 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnPlayerLeftSkillPerformed;
     public event EventHandler OnPlayerRightSkillPerformed;
 
-    public event EventHandler OnPlayerSwapGunPerformed;
+    public event EventHandler OnPlayerSwapGunCanceled;
     public event EventHandler OnPlayerPrimaryGunSelected;
     public event EventHandler OnPlayerSecondaryGunSelected;
 
@@ -90,11 +91,22 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnEditCampSelectReleased;
     public event EventHandler OnEditCampDeselect;
 
+    public event EventHandler OnCommandWorkerPerformed;
+    public event EventHandler OnCommandWorkerHeldDown;
+    public event EventHandler OnCommandWorkerHeldDownStarted;
+
     public event EventHandler OnCurrencyCollectedFromContainer;
 
     private bool interactPressed;
     private bool holdingInteract;
     private float interactHoldTimer;
+
+    private bool commandWorkersPressed;
+    private bool holdingCommandWorkersStarted;
+    private bool holdingCommandWorkers;
+    private float commandWorkersHoldTimer;
+    private float commandWorkersHoldTime = 1.25f;
+    private float commandWorkersStartHoldTime = .25f;
 
     private string currentControlScheme;
     private Vector2 lastMousePosition;
@@ -102,6 +114,7 @@ public class GameInput : MonoBehaviour
     public const float gamepadMovementDeadzone = 0.5f;
     public const float gamepadDeadzone = 0.2f;
     private bool sceneIsReady = false;
+
 
     private void Awake() {
 
@@ -132,7 +145,6 @@ public class GameInput : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
   
-
     private void Start() {
         playerInput = GetComponent<PlayerInput>();
         InputUser.onChange += InputUser_onChange;
@@ -147,7 +159,7 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.Shoot.canceled += Shoot_canceled;
         playerInputActions.Player.Reload.performed += Reload_performed;
         playerInputActions.Player.Reload.canceled += Reload_canceled;
-        playerInputActions.Player.SwapGun.performed += SwapGun_performed;
+        playerInputActions.Player.SwapGun.canceled += SwapGun_canceled;
         playerInputActions.Player.SelectPrimaryGun.performed += SelectPrimaryGun_performed;
         playerInputActions.Player.SelectSecondaryGun.performed += SelectSecondaryGun_performed;
         playerInputActions.Player.SwitchGunLight.performed += SwitchGunLight_performed;
@@ -160,7 +172,10 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.OpenPlayerTab.performed += OpenPlayerTab_performed;
         playerInputActions.Player.MeleeAttack.performed += MeleeAttack_performed;
 
+        playerInputActions.Player.CommandWorker.performed += CommandWorker_performed;
+        playerInputActions.Player.CommandWorker.canceled += CommandWorker_canceled;
         playerInputActions.Player.HoverWorkers.performed += HoverWorkers_performed;
+
         playerInputActions.Player.LeftRightSwitch.performed += LeftRightSwitch_performed;
         playerInputActions.Player.Move.performed += Move_performed;
         playerInputActions.Player.NavigateUI.performed += NavigateUI_performed;
@@ -171,6 +186,35 @@ public class GameInput : MonoBehaviour
 
         playerInputActions.Player.CollectCurrencyFromContainer.performed += CollectCurrencyFromContainer_performed;
     }
+
+
+    private void Update() {
+        DetectControlSchemeMouse();
+
+        if (interactPressed) {
+            interactHoldTimer += Time.deltaTime;
+
+            if (interactHoldTimer > .2f && !holdingInteract) {
+                holdingInteract = true;
+                OnPlayerInteractHeldDown?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        if (commandWorkersPressed) {
+            commandWorkersHoldTimer += Time.deltaTime;
+
+            if(commandWorkersHoldTimer > commandWorkersStartHoldTime && !holdingCommandWorkersStarted) {
+                holdingCommandWorkersStarted = true;
+                OnCommandWorkerHeldDownStarted?.Invoke(this, EventArgs.Empty);
+            }
+            if (commandWorkersHoldTimer > commandWorkersHoldTime && !holdingCommandWorkers) {
+                holdingCommandWorkers = true;
+                OnCommandWorkerHeldDown?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         StartCoroutine(EnableInputChangedPropagationNextFrame());
     }
@@ -196,8 +240,6 @@ public class GameInput : MonoBehaviour
         OnEditCampDeselect?.Invoke(this, EventArgs.Empty);
     }
 
-
-
     private void CollectCurrencyFromContainer_performed(InputAction.CallbackContext obj) {
         OnCurrencyCollectedFromContainer?.Invoke(this, EventArgs.Empty);
     }
@@ -217,6 +259,17 @@ public class GameInput : MonoBehaviour
         OnHoverWorkersPerformed?.Invoke(this, EventArgs.Empty);
     }
 
+    private void CommandWorker_performed(InputAction.CallbackContext obj) {
+        OnCommandWorkerPerformed?.Invoke(this, EventArgs.Empty);
+        commandWorkersPressed = true;
+    }
+    private void CommandWorker_canceled(InputAction.CallbackContext obj) {
+        commandWorkersPressed = false;
+        holdingCommandWorkers = false;
+        holdingCommandWorkersStarted = false;
+        commandWorkersHoldTimer = 0f;
+    }
+
     private void MeleeAttack_performed(InputAction.CallbackContext obj) {
         OnMeleeAttackPerformed?.Invoke(this, EventArgs.Empty);
     }
@@ -232,18 +285,6 @@ public class GameInput : MonoBehaviour
         OnPlayerBackPerformed?.Invoke(this, EventArgs.Empty);
     }
 
-    private void Update() {
-        DetectControlSchemeMouse();
-
-        if (interactPressed) {
-            interactHoldTimer += Time.deltaTime;
-
-            if (interactHoldTimer > .2f && !holdingInteract) {
-                holdingInteract = true;
-                OnPlayerInteractHeldDown?.Invoke(this, EventArgs.Empty);
-            }
-        }
-    }
     private void DetectControlSchemeMouse() {
         Vector2 mousePosition = Input.mousePosition;
         Vector2 gamepadLookInput = playerInputActions.Player.Aim.ReadValue<Vector2>();
@@ -314,8 +355,8 @@ public class GameInput : MonoBehaviour
         OnPlayerPrimaryGunSelected?.Invoke(this, EventArgs.Empty);
     }
 
-    private void SwapGun_performed(InputAction.CallbackContext obj) {
-        OnPlayerSwapGunPerformed?.Invoke(this, EventArgs.Empty);
+    private void SwapGun_canceled(InputAction.CallbackContext obj) {
+        OnPlayerSwapGunCanceled?.Invoke(this, EventArgs.Empty);
     }
     private void Reload_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
         OnPlayerReloadPerformed?.Invoke(this, EventArgs.Empty);
@@ -352,11 +393,11 @@ public class GameInput : MonoBehaviour
         OnPlayerInteractPerformed?.Invoke(this, EventArgs.Empty);
     }
     private void Jump_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
-        OnPlayerJumpCanceled?.Invoke(this, EventArgs.Empty);
+        OnPlayerRollCanceled?.Invoke(this, EventArgs.Empty);
     }
 
     private void Jump_performed(InputAction.CallbackContext obj) {
-        OnPlayerJumpPerformed?.Invoke(this, EventArgs.Empty);
+        OnPlayerRollPerformed?.Invoke(this, EventArgs.Empty);
     }
 
     private void Run_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj) {
@@ -365,6 +406,10 @@ public class GameInput : MonoBehaviour
 
     private void Run_performed(InputAction.CallbackContext obj) {
         OnPlayerRunPerformed?.Invoke(this, EventArgs.Empty);
+    }
+
+    public float GetCommandWorkersHoldDownTimerNormalized() {
+        return commandWorkersHoldTimer / commandWorkersHoldTime;
     }
 
     #endregion
@@ -469,6 +514,9 @@ public class GameInput : MonoBehaviour
 
             case Binding.editCampSelect:
                 return HandleLanguageConversions(playerInputActions.Player.CampCustomizationSelect.bindings[0].ToDisplayString());
+
+            case Binding.commandWorkers:
+                return HandleLanguageConversions(playerInputActions.Player.CommandWorker.bindings[0].ToDisplayString());
 
         }
 

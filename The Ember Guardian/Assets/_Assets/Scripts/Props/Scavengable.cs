@@ -20,6 +20,7 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
     [SerializeField] private bool infiniteSource;
     [SerializeField] private bool doNotYieldResources;
 
+    [SerializeField] private int miningPriority;
     [SerializeField] private int maxMinersAssigned;
     [SerializeField] private float initialTimeToMineOneResource = 25;
     [SerializeField] private float maxTimeToMineOneResource;
@@ -264,6 +265,9 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
         return depleted;
     }
 
+    public int GetMiningPriority() {
+        return miningPriority;
+    }
     public bool GetMarkedToScavenge() {
         return markedToScavenge;
     }

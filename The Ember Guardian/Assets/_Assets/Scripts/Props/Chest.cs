@@ -159,10 +159,11 @@ public class Chest : MonoBehaviour
 
     protected virtual void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
+        playerInTriggerArea = false;
+
         if (chestDisappearsAutomaticallyAfterOpened && chestOpened) return;
         if (chestLocked) return;
 
-        playerInTriggerArea = false;
         Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
 
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
@@ -253,5 +254,12 @@ public class Chest : MonoBehaviour
     }
     public void SetChestLocked(bool locked) {
         chestLocked = locked;
+    }
+
+    private void OnDestroy() {
+
+        GameInput.Instance.OnPlayerInteractCanceled -= GameInput_OnPlayerInteractCanceled;
+        GameInput.Instance.OnPlayerInteractPerformed -= GameInput_OnPlayerInteractPerformed;
+        Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
     }
 }

@@ -145,7 +145,10 @@ public class CurrencyCrafter : Structure
 
             SetStructurePrimaryFunctionUnlocked(true);
             SetStructureSecondaryFunctionUnlocked(specialAmmoUnlocked);
-            showTooltipOnTrigger.SetShowTooltips(true);
+
+            if(showTooltipOnTrigger != null) {
+                showTooltipOnTrigger.SetShowTooltips(true);
+            }
 
         }
 

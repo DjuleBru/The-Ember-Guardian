@@ -51,7 +51,7 @@ public class FastTravelTP : Structure
         base.Start();
         GameInput.Instance.OnPlayerRightSwitchPerformed += GameInput_OnPlayerRightSwitchPerformed;
         GameInput.Instance.OnPlayerLeftSwitchPerformed += GameInput_OnPlayerLeftSwitchPerformed;
-        GameInput.Instance.OnPlayerJumpPerformed += GameInput_OnPlayerJumpPerformed;
+        GameInput.Instance.OnPlayerRollPerformed += GameInput_OnPlayerJumpPerformed;
         CameraManager.Instance.OnCameraCenteredOnPlayer += CameraManager_OnCameraCenteredOnPlayer;
     }
 

@@ -15,6 +15,7 @@ public class CreatureAttack : MobAttack
     protected float attackRangeRandomizer;
     protected float attackRangeMaxDistanceMiss;
     protected int damageToFire;
+    protected int damageToBarricades;
 
 
     protected Transform primaryAttackProjectileSpawnPosition;
@@ -55,6 +56,7 @@ public class CreatureAttack : MobAttack
 
         attackDamage = attackSO.damage;
         damageToFire = attackSO.damageToFire;
+        damageToBarricades = attackSO.damageToBarricades;
 
         attackCooldown = attackSO.attackCooldown;
         attackDamage = attackSO.damage;
@@ -94,6 +96,10 @@ public class CreatureAttack : MobAttack
                 }
 
             } else {
+
+                if(attackTargetIDamageable is Barricade) {
+                    attackDamage = damageToBarricades;
+                }
 
                 attackTargetIDamageable.TakeDamage(attackDamage, transform, false, attackIgnoresTemporaryInvincibility);
 

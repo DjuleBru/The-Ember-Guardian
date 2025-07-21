@@ -251,6 +251,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CommandWorker"",
+                    ""type"": ""Button"",
+                    ""id"": ""16be880d-fe12-4500-86e8-3833d6b4dfd0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -763,7 +772,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""0a8e97e6-796f-4ac6-9864-144e305a24fd"",
-                    ""path"": ""<Keyboard>/g"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard"",
@@ -774,7 +783,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""b810fabd-ed6f-4325-817a-fa98904ddb74"",
-                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -979,6 +988,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""CollectCurrencyFromContainer"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""472d6434-9878-49da-b295-fb218ae28231"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""CommandWorker"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""08014802-5ab8-4eee-8e7c-718c125d4b2a"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""CommandWorker"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1035,6 +1066,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_CampCustomizationSelect = m_Player.FindAction("CampCustomizationSelect", throwIfNotFound: true);
         m_Player_CampCustomizationDeselect = m_Player.FindAction("CampCustomizationDeselect", throwIfNotFound: true);
         m_Player_CollectCurrencyFromContainer = m_Player.FindAction("CollectCurrencyFromContainer", throwIfNotFound: true);
+        m_Player_CommandWorker = m_Player.FindAction("CommandWorker", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -1126,6 +1158,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_CampCustomizationSelect;
     private readonly InputAction m_Player_CampCustomizationDeselect;
     private readonly InputAction m_Player_CollectCurrencyFromContainer;
+    private readonly InputAction m_Player_CommandWorker;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1155,6 +1188,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @CampCustomizationSelect => m_Wrapper.m_Player_CampCustomizationSelect;
         public InputAction @CampCustomizationDeselect => m_Wrapper.m_Player_CampCustomizationDeselect;
         public InputAction @CollectCurrencyFromContainer => m_Wrapper.m_Player_CollectCurrencyFromContainer;
+        public InputAction @CommandWorker => m_Wrapper.m_Player_CommandWorker;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1239,6 +1273,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CollectCurrencyFromContainer.started += instance.OnCollectCurrencyFromContainer;
             @CollectCurrencyFromContainer.performed += instance.OnCollectCurrencyFromContainer;
             @CollectCurrencyFromContainer.canceled += instance.OnCollectCurrencyFromContainer;
+            @CommandWorker.started += instance.OnCommandWorker;
+            @CommandWorker.performed += instance.OnCommandWorker;
+            @CommandWorker.canceled += instance.OnCommandWorker;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1318,6 +1355,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CollectCurrencyFromContainer.started -= instance.OnCollectCurrencyFromContainer;
             @CollectCurrencyFromContainer.performed -= instance.OnCollectCurrencyFromContainer;
             @CollectCurrencyFromContainer.canceled -= instance.OnCollectCurrencyFromContainer;
+            @CommandWorker.started -= instance.OnCommandWorker;
+            @CommandWorker.performed -= instance.OnCommandWorker;
+            @CommandWorker.canceled -= instance.OnCommandWorker;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1380,5 +1420,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnCampCustomizationSelect(InputAction.CallbackContext context);
         void OnCampCustomizationDeselect(InputAction.CallbackContext context);
         void OnCollectCurrencyFromContainer(InputAction.CallbackContext context);
+        void OnCommandWorker(InputAction.CallbackContext context);
     }
 }

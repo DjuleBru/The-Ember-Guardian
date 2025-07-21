@@ -93,13 +93,14 @@ public class PlayerMovement : MonoBehaviour {
 
         GameInput.Instance.OnPlayerRunPerformed += GameInput_OnPlayerRunStarted;
         GameInput.Instance.OnPlayerRunCanceled += GameInput_OnPlayerRunCanceled;
-        GameInput.Instance.OnPlayerJumpCanceled += GameInput_OnPlayerJumpCanceled;
-        GameInput.Instance.OnPlayerJumpPerformed += GameInput_OnPlayerJumpStarted;
+        GameInput.Instance.OnPlayerRollCanceled += GameInput_OnPlayerJumpCanceled;
+        GameInput.Instance.OnPlayerRollPerformed += GameInput_OnPlayerJumpStarted;
         PlayerAim.Instance.OnPlayerAimSightStarted += PlayerAIm_OnPlayerAimSightStarted;
         PlayerAim.Instance.OnPlayerAimSightEnded += PlayerAim_OnPlayerAimSightEnded;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerReloadHandEnded += PlayerShoot_OnPlayerReloadHandEnded;
         PlayerShoot.Instance.OnPlayerReloadInterrupted += PlayerShoot_OnPlayerReloadInterrupted;
+        PlayerShoot.Instance.OnPlayerReloadInterruptedEnded += PlayerShoot_OnPlayerReloadInterruptedEnded;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
 
         PlayerStats.Instance.OnMoveSpeedChanged += PlayerState_OnMoveSpeedChanged;
@@ -202,6 +203,11 @@ public class PlayerMovement : MonoBehaviour {
     private void PlayerShoot_OnPlayerReloadInterrupted(object sender, EventArgs e) {
         float reloadAccelerationFactor = PlayerShoot.Instance.GetGunReloadAccelerationFactor();
         DebuffMoveSpeed(reloadAccelerationFactor);
+    }
+
+    private void PlayerShoot_OnPlayerReloadInterruptedEnded(object sender, EventArgs e) {
+        float reloadAccelerationFactor = PlayerShoot.Instance.GetGunReloadAccelerationFactor();
+        BuffMoveSpeed(reloadAccelerationFactor);
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, EventArgs e) {
@@ -621,8 +627,8 @@ public class PlayerMovement : MonoBehaviour {
 
         GameInput.Instance.OnPlayerRunPerformed -= GameInput_OnPlayerRunStarted;
         GameInput.Instance.OnPlayerRunCanceled -= GameInput_OnPlayerRunCanceled;
-        GameInput.Instance.OnPlayerJumpCanceled -= GameInput_OnPlayerJumpCanceled;
-        GameInput.Instance.OnPlayerJumpPerformed -= GameInput_OnPlayerJumpStarted;
+        GameInput.Instance.OnPlayerRollCanceled -= GameInput_OnPlayerJumpCanceled;
+        GameInput.Instance.OnPlayerRollPerformed -= GameInput_OnPlayerJumpStarted;
         PlayerAim.Instance.OnPlayerAimSightStarted -= PlayerAIm_OnPlayerAimSightStarted;
         PlayerAim.Instance.OnPlayerAimSightEnded -= PlayerAim_OnPlayerAimSightEnded;
 

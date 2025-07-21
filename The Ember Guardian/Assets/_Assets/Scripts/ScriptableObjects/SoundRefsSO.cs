@@ -129,6 +129,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip subObjectiveCompleted;
     public AudioClip subObjectiveProgressed;
     public AudioClip locationRevealed;
+    public AudioClip dayCountShown;
 
     public AudioClip germanShepherdSelected;
     public AudioClip retreiverSelected;

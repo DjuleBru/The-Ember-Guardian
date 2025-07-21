@@ -19,14 +19,28 @@ public class GunSounds : SoundObject
     protected override void Start() {
         base.Start();
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+        PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
+        PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
 
         surgeAudioSource.loop = true;
         surgeAudioSource.clip = surgeAudioClip;
         surgeAudioSource.volume = sfxVolume * surgeBuffVolume;
     }
 
+    private void PlayerShoot_OnPlayerReloadEnded(object sender, System.EventArgs e) {
+        if (gun.GetGunActive() && gun.GetDamageSurgeBuffed()) {
+            surgeAudioSource.Play();
+        }
+    }
+
+    private void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
+        if(PlayerShoot.Instance.GetCurrentBullets() == 0) {
+            surgeAudioSource.Stop();
+        }
+    }
+
     private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
-        if(gun.GetGunActive() && gun.GetDamageSurgeBuffed()) {
+        if(gun.GetGunActive() && gun.GetDamageSurgeBuffed() && PlayerShoot.Instance.GetCurrentBullets() > 0) {
             surgeAudioSource.Play();
         }
 

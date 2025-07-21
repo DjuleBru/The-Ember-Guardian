@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Level3
   m_EditorClassIdentifier: 
   linkedSceneName: Level3_LostGreens
+  isBranchingLevel: 0
+  requiredLevelSO1: {fileID: 0}
+  requiredLevelSO2: {fileID: 0}
+  parallelLevelSO: {fileID: 0}
   levelImage: {fileID: 21300000, guid: 04ce6b5dffb7df845a2d4cca8dcfa03e, type: 3}
   levelNameLocalizationKey: Level3
   levelDescriptionLocalizationKey: Level3_Description
@@ -52,7 +56,7 @@ MonoBehaviour:
   intialMaxSubwaveDifficulty: 15
   maxSubwaveDifficulty: 65
   growthFactor: 1.4
-  maxWaveNumber: 1
+  typicalLevelDaysToComplete: 5
   minMaxSubwaveDifficultyGrowthFactor: 1.5
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
@@ -75,5 +79,10 @@ MonoBehaviour:
   initialRainIntensity: 0
   rainIntensitiesAllowedInLevel: 
   levelRandomBackgroundTracks: []
-  levelExplorationTracks: []
+  levelExplorationTracks:
+  - {fileID: 8300000, guid: 6aff3c3b53839b84999b8acaf10537cd, type: 3}
+  - {fileID: 8300000, guid: 6be0e396dd03dd54e83c4b1bd9269e22, type: 3}
+  - {fileID: 8300000, guid: da679ddcf110a004aa68e7770839a596, type: 3}
+  - {fileID: 8300000, guid: 225988420223d59428ac58bc41ac618a, type: 3}
+  - {fileID: 8300000, guid: cfe595955de0ac64d8b321b39f2e80b8, type: 3}
   levelExplorationTracksStreamerMode: []

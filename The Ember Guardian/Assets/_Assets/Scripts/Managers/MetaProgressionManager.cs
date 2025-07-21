@@ -128,7 +128,6 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     public void SetPortalUnlocked(string portalName) {
-        Debug.Log("Set Portal Unlocked");
         string key = portalName + "_Unlocked";
         ES3.Save(key, true);
     }
@@ -314,7 +313,7 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     public void SetHubMerchantItemNewlyUnlocked(string merchantItemSaveString, bool unlocked) {
-        Debug.Log("SetHubMerchantItemNewlyUnlocked " + merchantItemSaveString);
+        Debug.Log("SetHubMerchantItemNewlyUnlocked " + merchantItemSaveString + " " + unlocked);
         string key = merchantItemSaveString + "_NewlyUnlocked";
         ES3.Save(key, unlocked);
     }

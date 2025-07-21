@@ -22,7 +22,27 @@ public class WorkerInteractionCollider : MonoBehaviour
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
 
         if (!interactionWithWorkersUnlocked) return;
-        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
+        GameInput.Instance.OnCommandWorkerPerformed += GameInput_OnCommandWorkerPerformed;
+    }
+
+    private void GameInput_OnCommandWorkerPerformed(object sender, EventArgs e) {
+        bool isClosestInteractableWorker = true;
+
+        if (!workerCanBeOrdered) isClosestInteractableWorker = false;
+        
+        if (WorkerFollowPlayerHandler.Instance.GetMaxFollowedWorkersReached()) isClosestInteractableWorker = false;
+        if (workerAI.GetFollowingPlayer()) isClosestInteractableWorker = false;
+        if (WorkerFollowPlayerHandler.Instance.GetHoveringWorkers()) isClosestInteractableWorker = false;
+        if (WorkerManager.Instance.GetClosestWorkerInPlayerInteractionArea() == null || WorkerManager.Instance.GetClosestWorkerInPlayerInteractionArea() != worker) isClosestInteractableWorker = false;
+
+        if(isClosestInteractableWorker) {
+            WorkerManager.Instance.RemoveWorkerFromPlayerInteractionArea(worker);
+            workerAI.SetFollowingPlayer(true, true);
+        } else {
+            OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+            WorkerManager.Instance.RemoveWorkerFromPlayerInteractionArea(worker);
+        }
+
     }
 
     private void WorkerAI_OnJobChanged(object sender, EventArgs e) {
@@ -32,23 +52,12 @@ public class WorkerInteractionCollider : MonoBehaviour
 
     private void WorkerStats_OnInteractionsWithWorkersUnlocked(object sender, EventArgs e) {
         interactionWithWorkersUnlocked = true;
-        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
+        GameInput.Instance.OnCommandWorkerPerformed += GameInput_OnCommandWorkerPerformed;
     }
 
     private IEnumerator SetWorkerCanBeOrderedAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
         workerCanBeOrdered = true;
-    }
-
-    private void GameInput_OnPlayerInteractPerformed(object sender, EventArgs e) {
-        if (!workerCanBeOrdered) return;
-        if (WorkerFollowPlayerHandler.Instance.GetMaxFollowedWorkersReached()) return;
-        if (workerAI.GetFollowingPlayer()) return;
-        if (WorkerFollowPlayerHandler.Instance.GetHoveringWorkers()) return;
-        if (WorkerManager.Instance.GetClosestWorkerInPlayerInteractionArea() == null || WorkerManager.Instance.GetClosestWorkerInPlayerInteractionArea() != worker) return;
-
-        WorkerManager.Instance.RemoveWorkerFromPlayerInteractionArea(worker, false);
-        workerAI.SetFollowingPlayer(true, true);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -71,7 +80,6 @@ public class WorkerInteractionCollider : MonoBehaviour
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
-        if (WorkerFollowPlayerHandler.Instance.GetMaxFollowedWorkersReached()) return;
 
         if (!interactionWithWorkersUnlocked) return;
 
@@ -79,6 +87,6 @@ public class WorkerInteractionCollider : MonoBehaviour
         if (workerAI.GetFollowingPlayer()) return;
         if (!workerCanBeOrdered) return;
 
-        WorkerManager.Instance.RemoveWorkerFromPlayerInteractionArea(worker, true);
+        WorkerManager.Instance.RemoveWorkerFromPlayerInteractionArea(worker);
     }
 }

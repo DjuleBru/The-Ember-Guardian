@@ -265,11 +265,9 @@ public class WorkerManager : MonoBehaviour
 
     public void AddWorkerToPlayerInteractionArea(Worker worker) {
         workersInPlayerInteractionArea.Add(worker);
-
-        Player.Instance.SetHoveringWorker(true);
     }
 
-    public void RemoveWorkerFromPlayerInteractionArea(Worker worker, bool triggeredOut) {
+    public void RemoveWorkerFromPlayerInteractionArea(Worker worker) {
         if (!workersInPlayerInteractionArea.Contains(worker)) return;
         workersInPlayerInteractionArea.Remove(worker);
 
@@ -277,11 +275,6 @@ public class WorkerManager : MonoBehaviour
 
         if (workersInPlayerInteractionArea.Count == 0) {
             closestInteractableWorkerFromPlayer = null;
-            if(triggeredOut) {
-                Player.Instance.SetHoveringWorker(false);
-            } else {
-                Player.Instance.ResetHoveringWorkerAfterInteractCanceled();
-            }
         }
     }
 
@@ -308,6 +301,16 @@ public class WorkerManager : MonoBehaviour
 
     public List<Worker> GetRecruitedWorkers() {
         return recruitedWorkers;
+    }
+    public List<MinerJob> GetRecruitedMiners() {
+        List<MinerJob> recruitedMiners = new List<MinerJob>();
+
+        foreach(Worker worker in recruitedWorkers) {
+            if(worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.miner) {
+                recruitedMiners.Add(worker.GetComponent<MinerJob>());
+            }
+        }
+        return recruitedMiners;
     }
 
 }

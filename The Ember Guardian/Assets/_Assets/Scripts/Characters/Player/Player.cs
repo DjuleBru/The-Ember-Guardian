@@ -28,7 +28,6 @@ public class Player : MonoBehaviour, IDamageable
     private bool inCurrencyStorageArea = false;
 
     private bool carryingOtherObject = false;
-    private bool hoveringWorker = false;
     private bool cancellingHoveringWorker = false;
     private bool managingWorkers = false;
     private bool interactingWithMerchant = false;
@@ -88,7 +87,6 @@ public class Player : MonoBehaviour, IDamageable
         PlayerStats.Instance.OnPlayerMaxHPChanged += PlayerStats_OnPlayerMaxHPChanged;
         PlayerStats.Instance.OnPlayerHPRegenChanged += PlayerStats_OnPlayerHPRegenChanged;
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
-        GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
 
         VideoTipUI.Instance.OnVideoTipPanelOpened += VideoTipUI_OnVideoTipPanelOpened;
         VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
@@ -257,25 +255,6 @@ public class Player : MonoBehaviour, IDamageable
         this.carryingOtherObject = carryingOtherObject;
     }
 
-    public void SetHoveringWorker(bool hoveringWorker) {
-        this.hoveringWorker = hoveringWorker;
-    }
-
-    public void ResetHoveringWorkerAfterInteractCanceled() {
-        cancellingHoveringWorker = true;
-    }
-
-    private void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
-        if(cancellingHoveringWorker) {
-            StartCoroutine(SetHoveringWorkerAfterFrameCoroutine(false));
-            cancellingHoveringWorker = false;
-        }
-    }
-
-    private IEnumerator SetHoveringWorkerAfterFrameCoroutine(bool hoveringWorker) {
-        yield return new WaitForEndOfFrame();
-        this.hoveringWorker = hoveringWorker;
-    }
     public void SetManagingWorkers(bool managingWorkers) {
         this.managingWorkers = managingWorkers;
 
@@ -380,11 +359,11 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public bool GetInNoOtherObjectTriggerArea() {
-        return !inPayCurrencyTriggerArea && !inMerchantTriggerArea && !inOtherInteractableObjectTriggerArea && !hoveringWorker;
+        return !inPayCurrencyTriggerArea && !inMerchantTriggerArea && !inOtherInteractableObjectTriggerArea;
     }
 
     public bool GetCanPetDog() {
-        return GetAllMenusClosed() && GetInteractingWithNoOtherObject() && !dead && !cameraHasOtherTarget && !carryingOtherObject && !inPayCurrencyTriggerArea && !inMerchantTriggerArea && !inOtherInteractableObjectTriggerArea && !hoveringWorker;
+        return GetAllMenusClosed() && GetInteractingWithNoOtherObject() && !dead && !cameraHasOtherTarget && !carryingOtherObject && !inPayCurrencyTriggerArea && !inMerchantTriggerArea && !inOtherInteractableObjectTriggerArea;
     }
 
     public bool GetCanDropOrbOnTheFloor() {
@@ -397,7 +376,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public bool GetCanInteractWithStructureLocation() {
-        return GetAllMenusClosed() && GetPlayerControlInputsEnabled() && !hoveringWorker && !managingWorkers;
+        return GetAllMenusClosed() && GetPlayerControlInputsEnabled() && !managingWorkers;
     }
 
     public void Die() {
@@ -574,7 +553,6 @@ public class Player : MonoBehaviour, IDamageable
         PlayerStats.Instance.OnPlayerMaxHPChanged -= PlayerStats_OnPlayerMaxHPChanged;
         PlayerStats.Instance.OnPlayerHPRegenChanged -= PlayerStats_OnPlayerHPRegenChanged;
         PlayerMovement.Instance.OnPlayerRoll -= PlayerMovement_OnPlayerRoll;
-        GameInput.Instance.OnPlayerInteractCanceled -= GameInput_OnPlayerInteractCanceled;
         VideoTipUI.Instance.OnVideoTipPanelOpened -= VideoTipUI_OnVideoTipPanelOpened;
         VideoTipUI.Instance.OnVideoTipPanelClosed -= VideoTipUI_OnVideoTipPanelClosed;
 

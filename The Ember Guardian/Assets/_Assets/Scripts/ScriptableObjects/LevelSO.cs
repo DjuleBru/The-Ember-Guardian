@@ -136,7 +136,7 @@ public class LevelSO : ScriptableObject
     public float growthFactor;
     [BoxGroup("Creatures/NightWaves")]
     [LabelWidth(300)]
-    public int maxWaveNumber;
+    public int typicalLevelDaysToComplete;
     [BoxGroup("Creatures/NightWaves")]
     [LabelWidth(300)]
     public float minMaxSubwaveDifficultyGrowthFactor;

@@ -20,6 +20,7 @@ public interface IScavengable : IDamageable
     bool GetMaxMinersAssigned();
     bool GetMarkedToScavenge();
     bool GetIsMine();
+    int GetMiningPriority();
     bool GetScavengingActive();
     int GetMaxMinerAmount();
     int GetMinerAmountMining();

@@ -79,7 +79,7 @@ public class VersioningManager : MonoBehaviour
         return major + (minor * 0.01f) + (patch * 0.0001f) + (build * 0.000001f);
     }
     public bool CheckNewSaveFile() {
-
+        Debug.Log("ES3.FileExists " + ES3.FileExists());
         if (!ES3.FileExists()) {
 
             if(MainMenuUI_StartupMessagePanel.Instance != null) {

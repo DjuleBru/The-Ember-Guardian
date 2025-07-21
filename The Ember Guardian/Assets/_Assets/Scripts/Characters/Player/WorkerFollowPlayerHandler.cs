@@ -24,6 +24,7 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
     private bool interactionWithWorkersUnlocked;
 
     public event EventHandler OnHoveredFollowingWorkerChanged;
+    public event EventHandler OnAllFollowingWorkersRemoved;
 
     private void Awake() {
         Instance = this;
@@ -35,11 +36,13 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
         if (!interactionWithWorkersUnlocked) return;
 
         Mob.OnAnyMobDied += Worker_OnAnyMobDied;
-        GameInput.Instance.OnHoverWorkersPerformed += GameInput_OnHoverWorkersPerformed;
+        GameInput.Instance.OnCommandWorkerHeldDown += GameInput_OnCommandWorkerHeldDown;
+        //GameInput.Instance.OnHoverWorkersPerformed += GameInput_OnHoverWorkersPerformed;
         GameInput.Instance.OnPlayerLeftRightDirPerformed += GameInput_OnPlayerLeftRightDirPerformed;
-        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
+        GameInput.Instance.OnCommandWorkerPerformed += GameInput_OnCommandWorkerPerformed;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
     }
+
 
     private void Player_OnPlayerDied(object sender, EventArgs e) {
         List<Worker> workersToRemove = new List<Worker>();
@@ -72,7 +75,7 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
         return followPosition;
     }
 
-    private void GameInput_OnPlayerInteractPerformed(object sender, System.EventArgs e) {
+    private void GameInput_OnCommandWorkerPerformed(object sender, EventArgs e) {
         if (!hoveringFollowingWorkers) return;
 
         Worker workerRemoved = workersFollowingPlayer[workerHoverIndex];
@@ -80,13 +83,15 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
         workerRemoved.HoverWorker(false);
 
         workerHoverIndex = 0;
-        if(workersFollowingPlayer.Count > 0) {
+        if (workersFollowingPlayer.Count > 0) {
             HoverWorker(workersFollowingPlayer[workerHoverIndex]);
-        } else {
+        }
+        else {
             StartCoroutine(SetHoveringWorkerAfterFrame(false));
             Player.Instance.SetManagingWorkersAfterFrame(false);
         }
     }
+
 
     private IEnumerator SetHoveringWorkerAfterFrame(bool hoveringFollowingWorkers) {
         yield return new WaitForEndOfFrame();
@@ -120,25 +125,44 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
         OnHoveredFollowingWorkerChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    private void GameInput_OnCommandWorkerHeldDown(object sender, EventArgs e) {
+        if (workersFollowingPlayer.Count == 0) return;
+
+        RemoveAllFollowingWorkers();
+    }
+
     private void GameInput_OnHoverWorkersPerformed(object sender, System.EventArgs e) {
         if (workersFollowingPlayer.Count == 0) return;
 
-        hoveringFollowingWorkers = !hoveringFollowingWorkers;
+        RemoveAllFollowingWorkers();
 
-        Player.Instance.SetManagingWorkers(hoveringFollowingWorkers);
+        // PREVIOUS CODE : HANDLE SINGLE WORKER SELECTION
+        //hoveringFollowingWorkers = !hoveringFollowingWorkers;
 
-        if(hoveringFollowingWorkers ) {
-            StartHoveringWorkers();
+        //Player.Instance.SetManagingWorkers(hoveringFollowingWorkers);
 
-        } else {
-            UnhoverPreviousHoveredWorker(workersFollowingPlayer[workerHoverIndex]);
+        //if(hoveringFollowingWorkers ) {
+        //    StartHoveringWorkers();
+        //} else {
+        //    UnhoverPreviousHoveredWorker(workersFollowingPlayer[workerHoverIndex]);
+        //}
+    }
+
+    private void RemoveAllFollowingWorkers() {
+        List<Worker> workersFollowingPlayerCopy = new List<Worker>();
+        foreach (Worker worker in workersFollowingPlayer) {
+            workersFollowingPlayerCopy.Add(worker);
         }
+        foreach (Worker worker in workersFollowingPlayerCopy) {
+            RemoveFollowingWorker(worker, false);
+        }
+
+        OnAllFollowingWorkersRemoved?.Invoke(this, EventArgs.Empty);
     }
 
     private void StartHoveringWorkers() {
         workerHoverIndex = 0;
         HoverWorker(workersFollowingPlayer[workerHoverIndex]);
-
     }
 
     private void HoverWorker(Worker worker) {
@@ -230,7 +254,7 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
         Worker.OnAnyMobDied -= Worker_OnAnyMobDied;
         GameInput.Instance.OnHoverWorkersPerformed -= GameInput_OnHoverWorkersPerformed;
         GameInput.Instance.OnPlayerLeftRightDirPerformed -= GameInput_OnPlayerLeftRightDirPerformed;
-        GameInput.Instance.OnPlayerInteractPerformed -= GameInput_OnPlayerInteractPerformed;
+        //GameInput.Instance.OnCommandWorkerPerformed -= GameInput_OnCommandWorkerPerformed;
         Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
     }
 }

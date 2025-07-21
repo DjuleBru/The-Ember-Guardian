@@ -27,6 +27,7 @@ public class InputControlIcons : MonoBehaviour
         EditCampSelect,
         EditCampDeselect,
         CollectCurrencyFromContainer,
+        CommandWorkers,
     }
 
 
@@ -270,6 +271,9 @@ public class InputControlIcons : MonoBehaviour
             if (control == Control.CollectCurrencyFromContainer) {
                 spriteList.Add(gamepadUpArrowSprite);
             }
+            if (control == Control.CommandWorkers) {
+                spriteList.Add(gamepadUpArrowSprite);
+            }
             if (control == Control.EditCampSelect) {
                 spriteList.Add(gamepadASprite);
             }
@@ -479,6 +483,16 @@ public class InputControlIcons : MonoBehaviour
                 }
                 if (keyboardIconLookup.TryGetValue(moveRight, out Sprite icon2)) {
                     spriteList.Add(icon2);
+                }
+                else {
+                    spriteList.Add(keyboardQuestionMarkSprite);
+                }
+            }
+            if (control == Control.CommandWorkers) {
+                string commandWorkers = GameInput.Instance.GetBindingText(GameInput.Binding.commandWorkers);
+
+                if (keyboardIconLookup.TryGetValue(commandWorkers, out Sprite icon1)) {
+                    spriteList.Add(icon1);
                 }
                 else {
                     spriteList.Add(keyboardQuestionMarkSprite);

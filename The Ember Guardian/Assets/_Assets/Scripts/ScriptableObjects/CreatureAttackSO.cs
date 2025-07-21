@@ -49,6 +49,9 @@ public class CreatureAttackSO : ScriptableObject
     public int damageToFire;
     [BoxGroup("General")]
     [LabelWidth(200)]
+    public int damageToBarricades;
+    [BoxGroup("General")]
+    [LabelWidth(200)]
     public bool canAttackPlayerBehindBarricades;
     [BoxGroup("General")]
     [LabelWidth(200)]

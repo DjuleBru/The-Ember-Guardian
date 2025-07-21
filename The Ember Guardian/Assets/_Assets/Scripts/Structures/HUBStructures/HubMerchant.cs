@@ -44,7 +44,7 @@ public class HubMerchant : MonoBehaviour
     public event EventHandler OnPlayerOpenedHubMerchantShop;
     public event EventHandler OnPlayerStoppedInteractingWithHubMerchant;
     public event EventHandler OnPlayerStartedTalkingWithHubMerchant;
-    public event EventHandler OnMerchantHasNewTalkLines;
+    public event EventHandler OnMerchantHasNewInteraction;
     public event EventHandler OnMerchantHideExclamationMark;
     public static event EventHandler OnPlayerStartedTalkingWithAnyHubMerchant;
     public static event EventHandler OnPlayerOpenedAnyHubMerchantShop;
@@ -80,6 +80,8 @@ public class HubMerchant : MonoBehaviour
             // Level behavior : idle, talk to player, disappear
             merchantHasTalkLinesToShow = true;
         }
+
+        SetHubMerchantParentInItems();
     }
 
     protected void InitializeHubMerchantInHub() {
@@ -262,7 +264,7 @@ public class HubMerchant : MonoBehaviour
         merchantHasTalkLinesToShow = hasTalkLinesToShow;
 
         if (hasTalkLinesToShow && showExclamationMark) {
-            OnMerchantHasNewTalkLines?.Invoke(this, EventArgs.Empty);
+            OnMerchantHasNewInteraction?.Invoke(this, EventArgs.Empty);
         } else {
             OnMerchantHideExclamationMark?.Invoke(this, EventArgs.Empty);
         }
@@ -295,6 +297,11 @@ public class HubMerchant : MonoBehaviour
 
     public bool GetMerchantHasNewItems() {
         return merchantHasNewItems;
+    }
+
+    public void SetMerchantHasNewItems() {
+        merchantHasNewItems = true;
+        OnMerchantHasNewInteraction?.Invoke(this, EventArgs.Empty);
     }
 
     public bool GetMerchantJustArrivedInHub() {
@@ -340,6 +347,12 @@ public class HubMerchant : MonoBehaviour
             if(merchantItem.GetItemBought()) {
                 merchantItem.ResetItemStatus();
             }
+        }
+    }
+
+    public void SetHubMerchantParentInItems() {
+        foreach (HubMerchantItem merchantItem in hubMerchantItems) {
+            merchantItem.GetComponent<ItemButtonUI>().SetParentHubMerchant(this);
         }
     }
 

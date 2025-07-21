@@ -18,6 +18,7 @@ public class GunJamHandler : MonoBehaviour
     private Gun gun;
     private bool gunJammed;
     private bool isInGunJamQTE;
+    private bool gunIsHeldGun;
     private float gunJamDuration;
     private float gunJamTimer;
 
@@ -105,23 +106,27 @@ public class GunJamHandler : MonoBehaviour
         GameInput.Instance.OnPlayerLeftSwitchPerformed += GameInput_OnPlayerLeftSwitchPerformed;
         GameInput.Instance.OnPlayerRightSwitchPerformed += GameInput_OnPlayerRightSwitchPerformed;
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
-        GameInput.Instance.OnPlayerJumpPerformed += GameInput_OnPlayerJumpPerformed;
+        GameInput.Instance.OnPlayerRollPerformed += GameInput_OnPlayerJumpPerformed;
+
+        RefreshJamFeedbacks();
     }
 
 
     private void Update() {
         if (!isInGunJamQTE) return;
+        if (!gunIsHeldGun) return;
+
 
         gunJamTimer += Time.deltaTime;
         OnAnyJamTimerProgressed?.Invoke(this, new OnAnyJamTimerProgressedEventArgs {
             jamProgressTimerNormalized = gunJamTimer / gunJamDuration
         });
 
-        if(gunJamTimer > gunJamDuration) {
-           CompleteGunJamMiniGame();
+        if (gunJamTimer > gunJamDuration) {
+            CompleteGunJamMiniGame();
             return;
         }
-
+        
         if (currentQTEType != QTEType.SpamButton) return;
 
         if (spamProgress > 0f) {
@@ -143,18 +148,22 @@ public class GunJamHandler : MonoBehaviour
     }
 
     private void PlayerShoo_OnPlayerSwappedGun(object sender, EventArgs e) {
-        if (!gunJammed) return;
+        gunIsHeldGun = PlayerShoot.Instance.GetHeldGun() == gun;
 
-        if (PlayerShoot.Instance.GetHeldGun() == gun) {
-            isInGunJamQTE = true;
+        if (!gunIsHeldGun) return;
+
+        RefreshJamFeedbacks();
+    }
+
+    private void RefreshJamFeedbacks() {
+
+        if (gunJammed) {
             OnAnyJamSequenceRestarted?.Invoke(this, EventArgs.Empty);
+        }
 
+        if (!gunJammed) {
+            OnAnyJamSequenceCancelled?.Invoke(this, EventArgs.Empty);
         }
-        else {
-            isInGunJamQTE = false;
-            //CancelGunJamMiniGame();
-        }
-        
     }
 
     private void Gun_OnGunJammed(object sender, System.EventArgs e) {
@@ -236,48 +245,56 @@ public class GunJamHandler : MonoBehaviour
     #region INPUT RESPONSE
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
         if (!isInGunJamQTE) return;
+        if (!gunIsHeldGun) return;
         if (currentQTEType != QTEType.InputSequence) return;
         OnBindingPressed(GameInput.Binding.callDoggo);
     }
 
     private void GameInput_OnPlayerRightSwitchPerformed(object sender, System.EventArgs e) {
         if (!isInGunJamQTE) return;
+        if (!gunIsHeldGun) return;
         if (currentQTEType != QTEType.InputSequence) return;
         OnBindingPressed(GameInput.Binding.buildingFunctionRight);
     }
 
     private void GameInput_OnPlayerLeftSwitchPerformed(object sender, System.EventArgs e) {
         if (!isInGunJamQTE) return;
+        if (!gunIsHeldGun) return;
         if (currentQTEType != QTEType.InputSequence) return;
         OnBindingPressed(GameInput.Binding.buildingFunctionLeft);
     }
 
     private void GameInput_OnPlayerGunLightSwitch(object sender, System.EventArgs e) {
         if (!isInGunJamQTE) return;
+        if (!gunIsHeldGun) return;
         if (currentQTEType != QTEType.InputSequence) return;
         OnBindingPressed(GameInput.Binding.torchOnOff);
     }
 
     private void GameInput_OnPlayerRightSkillPerformed(object sender, System.EventArgs e) {
         if (!isInGunJamQTE) return;
+        if (!gunIsHeldGun) return;
         if (currentQTEType != QTEType.InputSequence) return;
         OnBindingPressed(GameInput.Binding.ability2);
     }
 
     private void GameInput_OnPlayerLeftSkillPerformed(object sender, System.EventArgs e) {
         if (!isInGunJamQTE) return;
+        if (!gunIsHeldGun) return;
         if (currentQTEType != QTEType.InputSequence) return;
         OnBindingPressed(GameInput.Binding.ability1);
     }
 
     private void GameInput_OnPlayerReloadPerformed(object sender, System.EventArgs e) {
         if (!isInGunJamQTE) return;
+        if (!gunIsHeldGun) return;
 
         OnBindingPressed(GameInput.Binding.reload);
     }
 
     private void GameInput_OnPlayerJumpPerformed(object sender, EventArgs e) {
         if (!isInGunJamQTE) return;
+        if (!gunIsHeldGun) return;
 
         if (currentQTEType == QTEType.SpamButton) {
             OnAnySpamButtonPressed?.Invoke(this, EventArgs.Empty);
@@ -312,6 +329,7 @@ public class GunJamHandler : MonoBehaviour
 
     private void OnBindingPressed(GameInput.Binding binding) {
         if (!isInGunJamQTE) return;
+        if (!gunIsHeldGun) return;
         if (currentInputSequence.Count == 0) return;
 
         if (currentQTEType == QTEType.InputSequence) {
@@ -337,6 +355,7 @@ public class GunJamHandler : MonoBehaviour
     private void OnBindingPressedInputSequence(GameInput.Binding binding) {
         if (justFailed) return;
         if (!isInGunJamQTE) return;
+        if (!gunIsHeldGun) return;
         if (currentInputSequence.Count == 0) return;
 
         if(isProgressing) {

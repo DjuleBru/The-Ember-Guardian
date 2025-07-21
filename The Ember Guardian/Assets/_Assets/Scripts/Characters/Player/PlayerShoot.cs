@@ -22,6 +22,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerReload;
     public event EventHandler OnPlayerReloadHandEnded;
     public event EventHandler OnPlayerReloadInterrupted;
+    public event EventHandler OnPlayerReloadInterruptedEnded;
     public event EventHandler OnPlayerReloadEnded;
     public event EventHandler<OnAmmoRefilledEventArgs> OnPlayerAmmoRefilled;
     public event EventHandler OnBulletsChanged;
@@ -77,6 +78,7 @@ public class PlayerShoot : MonoBehaviour
     private bool gunCanJam = true;
     private bool coolingDown;
     private bool reloading;
+    private bool reloadingInterrupted;
     private bool coolDownSFXTriggered;
     private bool coolDownAnimationTriggered;
     private bool playerJustPressedReload;
@@ -153,7 +155,7 @@ public class PlayerShoot : MonoBehaviour
         GameInput.Instance.OnPlayerReloadCanceled += GameInput_OnPlayerReloadCanceled;
         GameInput.Instance.OnPlayerPrimaryGunSelected += GameInput_OnPlayerPrimaryGunSelected;
         GameInput.Instance.OnPlayerSecondaryGunSelected += GameInput_OnPlayerSecondaryGunSelected;
-        GameInput.Instance.OnPlayerSwapGunPerformed += GameInput_OnPlayerSwapGunPerformed;
+        GameInput.Instance.OnPlayerSwapGunCanceled += GameInput_OnPlayerSwapGunPerformed;
 
         GameInput.Instance.OnWeaponSecondaryAbilityCanceled += GameInput_OnWeaponSecondaryAbilityCanceled;
         GameInput.Instance.OnWeaponSecondaryAbilityPerformed += GameInput_OnWeaponSecondaryAbilitytPerformed;
@@ -219,7 +221,7 @@ public class PlayerShoot : MonoBehaviour
             return;
         }
 
-        if (reloading) {
+        if (reloading && !reloadingInterrupted) {
             reloadTimer += Time.deltaTime;
 
             if (reloadTimer >= handsReloadTime && reloadingHands) {
@@ -840,13 +842,16 @@ public class PlayerShoot : MonoBehaviour
 
     private void PlayerMovement_OnPlayerRollEnded(object sender, EventArgs e) {
         canShoot = true;
+        if(reloadingInterrupted) {
+            reloadingInterrupted = false;
+            OnPlayerReloadInterruptedEnded?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (reloadingHands) {
-            reloading = false;
-            reloadingHands = false; 
+            reloadingInterrupted = true;
             OnPlayerReloadInterrupted?.Invoke(this, EventArgs.Empty);
         }
         canShoot = false;
@@ -929,6 +934,14 @@ public class PlayerShoot : MonoBehaviour
     public Gun GetHeldGun() {
         return heldGun;
     }
+    
+    public Gun GetNotHeldGun() {
+        if(heldGunSO == primaryGunSO) {
+            return GetGun(secondayGunSO);
+        } else {
+            return GetGun(primaryGunSO);
+        }
+    }
 
     public List<GunSO> GetAllGunSOList() {
         return allGunSOList;
@@ -998,7 +1011,7 @@ public class PlayerShoot : MonoBehaviour
         GameInput.Instance.OnPlayerReloadCanceled -= GameInput_OnPlayerReloadCanceled;
         GameInput.Instance.OnPlayerPrimaryGunSelected -= GameInput_OnPlayerPrimaryGunSelected;
         GameInput.Instance.OnPlayerSecondaryGunSelected -= GameInput_OnPlayerSecondaryGunSelected;
-        GameInput.Instance.OnPlayerSwapGunPerformed -= GameInput_OnPlayerSwapGunPerformed;
+        GameInput.Instance.OnPlayerSwapGunCanceled -= GameInput_OnPlayerSwapGunPerformed;
 
         GameInput.Instance.OnWeaponSecondaryAbilityCanceled -= GameInput_OnWeaponSecondaryAbilityCanceled;
         GameInput.Instance.OnWeaponSecondaryAbilityPerformed -= GameInput_OnWeaponSecondaryAbilitytPerformed;

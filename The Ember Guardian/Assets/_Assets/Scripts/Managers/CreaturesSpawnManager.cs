@@ -68,7 +68,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
     private float waveDifficultyLeftProportion;
     private float waveDifficultyRightProportion;
 
-    private int maxWaveNumber;
+    private int typicalLevelDaysToComplete;
     private float maxWaveDifficulty;
 
     private float minLevelXPosition;
@@ -96,7 +96,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
         creatureTypes = levelSO.nightCreatureTypes;
         baseDifficulty = levelSO.baseDifficulty;
-        maxWaveNumber = levelSO.maxWaveNumber;
+        typicalLevelDaysToComplete = levelSO.typicalLevelDaysToComplete;
 
         hasBoss = levelSO.hasBoss;
         bossCreatureType = levelSO.bossCreatureType;
@@ -131,7 +131,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         debugInputs = DebugManager.Instance.GetAllowDebugInputs_CreaturesSpawnManager();
         debugDontSpawnAtNight = DebugManager.Instance.GetDebugDontSpawnAtNight();
 
-        maxWaveDifficulty = baseDifficulty * Mathf.Pow(growthFactor, maxWaveNumber);
+        maxWaveDifficulty = baseDifficulty * Mathf.Pow(growthFactor, typicalLevelDaysToComplete);
     }
 
     private void LevelManager_OnLevelLimitsChanged(object sender, EventArgs e) {

@@ -25,12 +25,14 @@ MonoBehaviour:
   attackRangeRandomizer: 0.3
   damage: 1
   damageToFire: 1
+  damageToBarricades: 1
   canAttackPlayerBehindBarricades: 0
   canAttackPlayerOnTower: 0
   attackAnimationDelay: 0.3
   totalAttackAnimationTime: 1.2
   attackSFXDelayAfterAnimationStart: 0
   staticProjectilePrefab: {fileID: 7991158393713654780, guid: a5ea1941e0688aa4fb8f9502aeee8c9d, type: 3}
+  staticProjectileAutoTargetsPlayer: 0
   projectileAmountInPool: 2
   projectileAmountShotInAttack: 1
   delayBetweenProjectileSpawns: 0

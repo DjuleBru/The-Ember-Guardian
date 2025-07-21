@@ -318,8 +318,8 @@ public class HubMerchantItem : MonoBehaviour
         return newItemUnlocked;
     }
 
-    public void SetNewItemUnlocked() {
-        newItemUnlocked = false;
+    public void SetNewItemUnlocked(bool unlocked) {
+        newItemUnlocked = unlocked;
         itemStatusChanged = true;
     }
 
@@ -354,8 +354,11 @@ public class HubMerchantItem : MonoBehaviour
         if(!newItemUnlocked && MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType())) {
             MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(GetItemType(), false);
         }
+        if (newItemUnlocked && !MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType())) {
+            MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(GetItemType(), true);
+        }
 
-        if(itemEquipable) {
+        if (itemEquipable) {
             MetaProgressionManager.Instance.SetHubMerchantItemEquipped(GetItemType(), itemEquipped);
         }
 

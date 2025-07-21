@@ -60,6 +60,7 @@ public class GunSpotLight : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
         PlayerShoot.Instance.OnPlayerReloadInterrupted += PlayerShoot_OnPlayerReloadInterrupted;
+        PlayerShoot.Instance.OnPlayerReloadInterruptedEnded += PlayerShooot_OnPlayerReloadInterruptedEnded;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
         PlayerAim.Instance.OnXAimDirChanged += PlayerAim_OnXAimDirChanged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
@@ -152,6 +153,12 @@ public class GunSpotLight : MonoBehaviour
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
 
         reloading = false;
+    }
+
+    private void PlayerShooot_OnPlayerReloadInterruptedEnded(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
+        reloading = true;
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, EventArgs e) {

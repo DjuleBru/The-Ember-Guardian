@@ -35,7 +35,7 @@ public class Obstacle : MonoBehaviour {
         obstacleSolidCollider.enabled = false;
     }
 
-    protected void Start() {
+    protected virtual void Start() {
         hubScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB;
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
@@ -84,16 +84,19 @@ public class Obstacle : MonoBehaviour {
     protected virtual void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
         if (obstacleBuilt) return;
-
-        Player.Instance.SetInPayCurrencyArea(true);
-        OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
-        OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
-        playerInTriggerArea = true;
+        SetTriggerEnter();
     }
 
     protected virtual void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
         SetTriggerExit();
+    }
+
+    protected void SetTriggerEnter() {
+        Player.Instance.SetInPayCurrencyArea(true);
+        OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
+        OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
+        playerInTriggerArea = true;
     }
 
     protected void SetTriggerExit() {

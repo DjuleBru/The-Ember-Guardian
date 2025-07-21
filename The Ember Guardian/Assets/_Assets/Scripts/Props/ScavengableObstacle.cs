@@ -15,13 +15,17 @@ public class ScavengableObstacle : Obstacle, IScavengable
     public event EventHandler OnMinerStartsMining;
     public event EventHandler OnMinerStopsMining;
     public event EventHandler OnActivatedMining;
+    public static event EventHandler OnAnyScavengableObstacleActivatedMining;
     public event EventHandler OnDeactivatedMining;
     public event EventHandler OnDamageTaken;
 
+    [SerializeField] protected int miningPriority;
     [SerializeField] protected bool requiresMiners;
     [SerializeField] private List<Transform> minePoints;
     [SerializeField] private int maxMinersAssigned;
     [SerializeField] private int hitsToRemoveObstacle;
+    [SerializeField] private bool playerHasToBeCloseToScavenge = true;
+    private float maxPlayerDistanceToScavenge = 30f;
 
     [SerializeField] private List<SpawnOnDamageThreshold> spawnOnDamageThresholds;
 
@@ -38,6 +42,26 @@ public class ScavengableObstacle : Obstacle, IScavengable
         base.Awake();
         health = hitsToRemoveObstacle;
 
+    }
+
+    protected override void Start() {
+        base.Start();
+        DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+    }
+
+    protected void Update() {
+        if (!scavengingActive) return;
+
+        float distanceToPlayer = Mathf.Abs(transform.position.x - Player.Instance.transform.position.x);
+        if(distanceToPlayer > maxPlayerDistanceToScavenge) {
+            ToggleScavengingActive();
+        }
+    }
+
+    private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
+        if(scavengingActive) {
+            ToggleScavengingActive();
+        }
     }
 
     protected override void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
@@ -66,6 +90,7 @@ public class ScavengableObstacle : Obstacle, IScavengable
 
         if (scavengingActive) {
             OnActivatedMining?.Invoke(this, EventArgs.Empty);
+            OnAnyScavengableObstacleActivatedMining?.Invoke(this, EventArgs.Empty);
         }
         else {
             OnDeactivatedMining?.Invoke(this, EventArgs.Empty);
@@ -77,6 +102,7 @@ public class ScavengableObstacle : Obstacle, IScavengable
         markedToScavenge = true;
         OnScavengableMarkedToScavenge?.Invoke(this, EventArgs.Empty);
         OnAnyScavengableMarkedToScavenge?.Invoke(this, EventArgs.Empty);
+        ToggleScavengingActive();
     }
 
     public void TakeDamage(int damage, Transform damageSource, bool crit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
@@ -110,7 +136,7 @@ public class ScavengableObstacle : Obstacle, IScavengable
 
             for(int  i = 0; i < spawnData.amount; i++) {
                 spawnData.mobSpawner.SpawnCreatures(spawnData.creatureType, 1, true);
-                yield return new WaitForSeconds(.4f);
+                yield return new WaitForSeconds(1f);
             }
 
         }
@@ -126,12 +152,15 @@ public class ScavengableObstacle : Obstacle, IScavengable
 
         List<MinerJob> minerAssignedListCopy = new List<MinerJob>();
         foreach (MinerJob minerJob in minerAssignedList) {
+            if (minerJob == null) continue;
             minerAssignedListCopy.Add(minerJob);
         }
 
         foreach (MinerJob miner in minerAssignedListCopy) {
             miner.UnAssignScavengable();
         }
+
+        minerAssignedList.Clear();
     }
 
     public override void BuildObstacle() {
@@ -185,6 +214,8 @@ public class ScavengableObstacle : Obstacle, IScavengable
     public void UnassignMiner(MinerJob minerJob) {
         if (!minerAssignedList.Contains(minerJob)) return;
         minerAssignedList.Remove(minerJob);
+
+        if (!minersMiningList.Contains(minerJob)) return;
         MinerStopsMining(minerJob);
     }
 
@@ -210,6 +241,10 @@ public class ScavengableObstacle : Obstacle, IScavengable
         return (float)hitsTaken / (float)hitsToRemoveObstacle;
     }
 
+    public int GetMiningPriority() {
+        return miningPriority;
+    }
+
     public void SetScavengableUnlocked(bool unlocked) {
         return;
     }
@@ -218,14 +253,15 @@ public class ScavengableObstacle : Obstacle, IScavengable
         if (collision.gameObject.GetComponent<Player>() == null) return;
         if (obstacleBuilt) return;
 
-        Player.Instance.SetInPayCurrencyArea(true);
         OnPlayerTriggerIn?.Invoke(this, EventArgs.Empty);
-        playerInTriggerArea = true;
+        Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
+        SetTriggerEnter();
     }
 
     protected override void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
         OnPlayerTriggerOut?.Invoke(this, EventArgs.Empty);
+        Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
         SetTriggerExit();
     }
 }

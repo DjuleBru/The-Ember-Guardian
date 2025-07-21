@@ -95,6 +95,7 @@ public class ScavengableVisual : MonoBehaviour
 
         minerAssignedTemplate.gameObject.SetActive(true);
         int minersMining = scavengable.GetMinerAmountMining();
+
         for (int i  = 0; i < scavengable.GetMaxMinerAmount(); i++) {
             Transform template = Instantiate(minerAssignedTemplate, minerAssignedContainer);
             if(i < minersMining) {
@@ -122,6 +123,7 @@ public class ScavengableVisual : MonoBehaviour
             cancelText.text = LocalizationManager.Instance.GetLocalizedText("mine_active");
             LayoutRebuilder.ForceRebuildLayoutImmediate(cancelText.GetComponent<RectTransform>());
         }
+        RefreshMinersInMine();
     }
 
     private void Scavengable_OnScavengableDepleted(object sender, System.EventArgs e) {

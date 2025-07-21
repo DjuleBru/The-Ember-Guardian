@@ -47,6 +47,7 @@ public class SceneLoader : MonoBehaviour
         return sceneType;
     }
     public void LoadTutorial(float crossfadeDuration) {
+        Debug.Log("LoadTutorial ");
         StartCoroutine(LoadSceneAfterCrossfade("Level0_Tutorial", crossfadeDuration));
     }
 

@@ -87,6 +87,7 @@ public class SoundManager : MonoBehaviour
         }
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             WorkerFollowPlayerHandler.Instance.OnHoveredFollowingWorkerChanged += WorkerFollowPlayerHandler_OnHoveredFollowingWorkerChanged;
+            LevelUI_DayCountUI.Instance.OnDayUIShown += LevelUI_OnDayUIShown;
         }
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
@@ -154,6 +155,7 @@ public class SoundManager : MonoBehaviour
         Mob.OnAnyMobDamageTaken += Mob_OnAnyMobDamageTaken;
         WorkerAI.OnAnyWorkerFollowPlayerStarted += WorkerAI_OnAnyWorkerFollowPlayerStarted;
         WorkerAI.OnAnyWorkerFollowPlayerStopped += WorkerAI_OnAnyWorkerFollowPlayerStopped;
+        WorkerFollowPlayerHandler.Instance.OnAllFollowingWorkersRemoved += WorkerFollowPlayerHandler_OnAllFollowingWorkersRemoved;
         Worker.OnAnyOrbDroppedByWorker += Worker_OnAnyOrbDroppedByWorker;
         Worker.OnAnyWorkerRecruited += Worker_OnAnyWorkerRecruited;
         Worker.OnAnyWorkerAssignedHunter += Worker_OnAnyWorkerAssignedHunter;
@@ -174,7 +176,6 @@ public class SoundManager : MonoBehaviour
 
         DogReplaceButton.OnDogSwapped += DogReplaceButton_OnDogSwapped;
     }
-
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -239,6 +240,10 @@ public class SoundManager : MonoBehaviour
     private void LevelUI_OnLocationTextShown(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.locationRevealed, .5f);
     }
+    private void LevelUI_OnDayUIShown(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.dayCountShown, .5f);
+    }
+
     private void ItemButtonUI_OnAnyLockedButtonTryPress(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.tryBuyLockedHubMerchantItem, .5f);
     }
@@ -371,6 +376,9 @@ public class SoundManager : MonoBehaviour
     }
 
     private void WorkerAI_OnAnyWorkerFollowPlayerStopped(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.workerStoppedFollowing, 1f);
+    }
+    private void WorkerFollowPlayerHandler_OnAllFollowingWorkersRemoved(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.workerStoppedFollowing, 1f);
     }
 

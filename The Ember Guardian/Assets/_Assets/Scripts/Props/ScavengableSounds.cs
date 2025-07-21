@@ -36,11 +36,11 @@ public class ScavengableSounds : SoundObject
     }
 
     private void Scavengable_OnActivatedMining(object sender, System.EventArgs e) {
-        PlaySound2D(toggleMiningAudioClip);
+        PlaySound2D(toggleMiningAudioClip, 2f);
     }
 
     private void Scavengable_OnDeactivatedMining(object sender, System.EventArgs e) {
-        PlaySound2D(toggleMiningAudioClip);
+        PlaySound2D(toggleMiningAudioClip, 2f);
     }
 
     private void Scavengable_OnMinerStopsMining(object sender, System.EventArgs e) {

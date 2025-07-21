@@ -22,7 +22,7 @@ public class Gun : MonoBehaviour
     protected bool gunJammed;
     protected bool gunJustJammed;
     protected float gunJustJammedTimer;
-    protected float gunJustJammedDelay = 1f;
+    protected float gunJustJammedDelay = 10f;
 
     protected int pelletsPerBullet = 1;
     protected int damagePerBulletAtRunStart;
@@ -42,6 +42,7 @@ public class Gun : MonoBehaviour
     protected int jamRepairHitAmount;
     protected float jamProbability;
     protected bool damageSurgeBuffed;
+    protected bool damageSurgeBuffedLastBullet;
     protected int bulletAfterPerfectJamSucceededIndex;
     protected int surgeWindowBulletAmountBuffed;
     protected float perfectJamDamageBuff = 2f;
@@ -89,6 +90,7 @@ public class Gun : MonoBehaviour
         PlayerSkills.Instance.OnPlayerOutFireLightBuffedDmg += PlayerSkills_OnPlayerOutFireLightBuffed;
         PlayerSkills.Instance.OnPlayerOutFireLightDebuffedDmg += PlayerSkills_OnPlayerOutFireLightDebuffedDmg;
     }
+
 
     private void Update() {
 
@@ -265,12 +267,17 @@ public class Gun : MonoBehaviour
             gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce, explosionRadiusMultiplier);
         }
 
-        if(damageSurgeBuffed) {
+        if (damageSurgeBuffedLastBullet) {
+            damageSurgeBuffedLastBullet = false;
+        }
+
+        if (damageSurgeBuffed) {
 
             bulletAfterPerfectJamSucceededIndex++;
 
             if(bulletAfterPerfectJamSucceededIndex >= surgeWindowBulletAmountBuffed) {
                 damageSurgeBuffed = false;
+                damageSurgeBuffedLastBullet = true;
                 bulletAfterPerfectJamSucceededIndex = 0;
                 DebuffBulletDamage(perfectJamDamageBuff);
                 OnPerfectQTEDamageBuffEnded?.Invoke(this, EventArgs.Empty);
@@ -282,6 +289,7 @@ public class Gun : MonoBehaviour
 
     private void HandleGunJams() {
         if (!PlayerShoot.Instance.GetGunCanJam()) return;
+        if (PlayerShoot.Instance.GetNotHeldGun().GetGunJammed()) return;
         if (gunJustJammed) return;
 
         if (UnityEngine.Random.value < jamProbability/100f) {
@@ -420,6 +428,10 @@ public class Gun : MonoBehaviour
         return gunSO.weaponPrecisionMultiplier * precisionMultiplier;
     }
 
+    public bool GetGunJammed() {
+        return gunJammed;
+    }
+
     public int GetJamRepairHitAmount() {
         return jamRepairHitAmount;
     }
@@ -436,7 +448,9 @@ public class Gun : MonoBehaviour
     public bool GetDamageSurgeBuffed() {
         return damageSurgeBuffed;
     }
-
+    public bool GetDamageSurgeBuffedLastBullet() {
+        return damageSurgeBuffed || damageSurgeBuffedLastBullet;
+    }
 
     #endregion
 
@@ -448,8 +462,6 @@ public class Gun : MonoBehaviour
             OnAnyGunJamRepaired?.Invoke(this, EventArgs.Empty);
         }
 
-        gunJustJammed = true;
-        gunJustJammedTimer = gunJustJammedDelay;
         this.damageSurgeBuffed = gunJamSuccess;
 
         if(gunJamSuccess) {
@@ -461,6 +473,9 @@ public class Gun : MonoBehaviour
     [Button]
     public void JamGun() {
         gunJammed = true;
+        gunJustJammed = true;
+        gunJustJammedTimer = gunJustJammedDelay;
+
         OnGunJammed?.Invoke(this, EventArgs.Empty);
         OnAnyGunJammed?.Invoke(this, EventArgs.Empty);
 

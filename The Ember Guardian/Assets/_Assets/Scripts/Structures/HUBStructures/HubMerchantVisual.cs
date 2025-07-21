@@ -21,7 +21,7 @@ public class HubMerchantVisual : MonoBehaviour
         hubMerchant.OnPlayerTriggeredOut += HubMerchant_OnPlayerTriggeredOut;
         hubMerchant.OnPlayerOpenedHubMerchantShop += HubMerchant_OnPlayerInteractedWithHubMerchant;
         hubMerchant.OnPlayerStartedTalkingWithHubMerchant += HubMerchant_OnPlayerStartedTalkingWithHubMerchant;
-        hubMerchant.OnMerchantHasNewTalkLines += HubMerchant_OnMerchantHasNewTalkLines;
+        hubMerchant.OnMerchantHasNewInteraction += HubMerchant_OnMerchantHasNewTalkLines;
         hubMerchant.OnMerchantHideExclamationMark += HubMerchant_OnMerchantHideExclamationMark;
 
         if (hubMerchant.GetMerchantHasNewItems() || hubMerchant.GetMerchantJustArrivedInHub() || hubMerchant.GetMerchantIsLevelNPC() || hubMerchant.GetMerchantHasNewTalkLinkes()) {

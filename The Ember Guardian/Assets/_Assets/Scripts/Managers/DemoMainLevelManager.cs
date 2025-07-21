@@ -103,7 +103,7 @@ public class DemoMainLevelManager : MonoBehaviour
         Worker.OnAnyWorkerRecruited += Worker_OnAnyWorkerRecruited;
         Worker.OnAnyWorkerAssignedHunter += Worker_OnAnyWorkerAssignedHunter;
         Worker.OnAnyOrbDroppedByWorker += Worker_OnAnyOrbDroppedByWorker;
-        GameInput.Instance.OnPlayerSwapGunPerformed += GameInput_OnPlayerSwapGunPerformed;
+        GameInput.Instance.OnPlayerSwapGunCanceled += GameInput_OnPlayerSwapGunPerformed;
         GameInput.Instance.OnPlayerSecondaryGunSelected += GameInput_OnPlayerSecondaryGunSelected;
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
 
@@ -624,7 +624,7 @@ public class DemoMainLevelManager : MonoBehaviour
         Obstacle.OnAnyPlayerTriggeredIn -= Obstacle_OnAnyPlayerTriggeredIn;
         Obstacle.OnAnyPlayerTriggeredOut -= Obstacle_OnAnyPlayerTriggeredOut;
         StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
-        GameInput.Instance.OnPlayerSwapGunPerformed -= GameInput_OnPlayerSwapGunPerformed;
+        GameInput.Instance.OnPlayerSwapGunCanceled -= GameInput_OnPlayerSwapGunPerformed;
         GameInput.Instance.OnPlayerSecondaryGunSelected -= GameInput_OnPlayerSecondaryGunSelected;
     }
 }

@@ -19,20 +19,26 @@ MonoBehaviour:
   attackCooldown: 2
   minAttackRange: 0.5
   maxAttackRange: 1
-  attackRangeRangomizer: 0.2
+  hasDifferentDayAndNightRange: 0
+  minAttackRange_Night: 0
+  maxAttackRange_Night: 0
+  attackRangeRandomizer: 0
   damage: 1
   damageToFire: 1
+  damageToBarricades: 1
   canAttackPlayerBehindBarricades: 0
   canAttackPlayerOnTower: 0
   attackAnimationDelay: 0.2
   totalAttackAnimationTime: 0.8
   attackSFXDelayAfterAnimationStart: 0
   staticProjectilePrefab: {fileID: 0}
+  staticProjectileAutoTargetsPlayer: 0
   projectileAmountInPool: 0
   projectileAmountShotInAttack: 0
   delayBetweenProjectileSpawns: 0
   projectileSO: {fileID: 0}
-  attackRangeRangomizerMiss: 0
+  attackRangeRandomizerMiss: 0
+  attackSFXHandledByAnimation: 0
   attackAudioClips: []
   attackHitAudioClips:
   - {fileID: 8300000, guid: 240bd358628162b4bb6261b9ddcc28aa, type: 3}
@@ -40,5 +46,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9371dd072a28bd24783f79e92adaeff0, type: 3}
   - {fileID: 8300000, guid: 8646592f13bfba84f81361b4237b4b02, type: 3}
   - {fileID: 8300000, guid: f1f01ed90f31d6441a13b0ca03219eaa, type: 3}
+  attackStartedChargingAudioClips: []
+  attackReleasedAudioClips: []
   attackVolumeMultiplier: 0.5
   attackHitVolumeMultiplier: 0.5

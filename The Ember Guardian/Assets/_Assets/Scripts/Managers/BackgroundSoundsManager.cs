@@ -71,7 +71,7 @@ public class BackgroundSoundsManager : MonoBehaviour
         cycleTransitionWhoosh.PlayOneShot(soundRefs.duskStartWhoosh);
         cycleTransitionSounds.PlayOneShot(soundRefs.duskStart);
 
-        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, 1f, .3f, 1f));
+        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, 1f, .3f, 2f));
     }
 
     private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
@@ -82,7 +82,7 @@ public class BackgroundSoundsManager : MonoBehaviour
         cycleTransitionWhoosh.PlayOneShot(soundRefs.dayStartWhoosh);
         cycleTransitionSounds.PlayOneShot(soundRefs.dayStart);
 
-        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, .3f, 1f));
+        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, .3f, 2f));
     }
 
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
@@ -92,8 +92,8 @@ public class BackgroundSoundsManager : MonoBehaviour
         }
 
         cycleTransitionWhoosh.PlayOneShot(soundRefs.nightStartWhoosh);
-        //cycleTransitionSounds.PlayOneShot(soundRefs.dawnStart);
-        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, .3f, 1f));
+        cycleTransitionSounds.PlayOneShot(soundRefs.nightStart);
+        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, .3f, 5f));
 
         if (isInCavern) return;
         TransitionToClip(nightAudioClip, audioClipVolume_Night);
@@ -108,7 +108,7 @@ public class BackgroundSoundsManager : MonoBehaviour
 
         cycleTransitionWhoosh.PlayOneShot(soundRefs.dawnStartWhoosh);
         cycleTransitionSounds.PlayOneShot(soundRefs.dawnStart);
-        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, .3f, 1f));
+        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, .3f, 2f));
 
         if (isInCavern) return;
         TransitionToClip(dayAudioClip, audioClipVolume_Day);

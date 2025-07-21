@@ -181,6 +181,8 @@ public class PlayerUI_GunJam : MonoBehaviour
             timingGameObject.gameObject.SetActive(false);
             currentStage = 0;
         }
+
+        isSequenceQTEActive = false;
     }
 
     private void GunJamHandler_OnJamSequenceGenerated(object sender, GunJamHandler.OnJamSequenceGeneratedEventArgs e) {
@@ -264,6 +266,11 @@ public class PlayerUI_GunJam : MonoBehaviour
             if(isSequenceQTEActive) {
                 inputSequenceIconContainer.gameObject.SetActive(true);
             }
+
+            if(isTimingQTEActive || isSpamQTEActive || isSequenceQTEActive) {
+                gunJamTimerGameObject.SetActive(true);
+            }
+
             jamUIActive = true;
 
         } else {
@@ -271,6 +278,7 @@ public class PlayerUI_GunJam : MonoBehaviour
             inputSequenceIconContainer.gameObject.SetActive(false);
             timingGameObject.gameObject.SetActive(false);
             spamGameObject.gameObject.SetActive(false);
+            gunJamTimerGameObject.SetActive(false);
             jamUIActive = false;
         }
 

@@ -20,6 +20,7 @@ public class MusicManager : MonoBehaviour {
     [SerializeField] private float discoverNewLocationAudioVolume = .4f;
     [SerializeField] private float backgroundTracksAudioVolume = .2f;
     [SerializeField] private float nightMusicAudioVolume = .4f;
+    [SerializeField] private float mainMenuMusicAudioVolume = .4f;
     private float musicSettingVolume;
 
     [SerializeField] private AudioClip mainMenuMusic; 
@@ -156,7 +157,8 @@ public class MusicManager : MonoBehaviour {
         }
 
         if (isMainMenuScene) {
-            if(streamerMode) {
+            SetAudioVolume(mainMenuMusicAudioVolume);
+            if (streamerMode) {
                 audioSourceA.clip = mainMenuMusicStreamerMode;
             } else {
                 audioSourceA.clip = mainMenuMusic;

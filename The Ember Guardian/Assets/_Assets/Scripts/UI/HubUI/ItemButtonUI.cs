@@ -140,10 +140,9 @@ public class ItemButtonUI : ButtonUI {
 
         if (hubMerchantItem.GetItemUnlocked()) {
             SetItemUnlocked();
-        }
-
-        if (hubMerchantItem.GetItemBought()) {
-            SetOutputLinksBought();
+            if (hubMerchantItem.GetItemBought()) {
+                SetOutputLinksBought();
+            }
         }
 
         if(hubMerchantItem.GetNewItemUnlocked()) {
@@ -200,6 +199,8 @@ public class ItemButtonUI : ButtonUI {
         ItemButtonUI itemButtonUI = (ItemButtonUI)sender;
 
         if (lockingItemButtonUIList.Contains(itemButtonUI)) {
+
+            CheckNewItemUnlocked(itemButtonUI);
             SetLockingItemBought(itemButtonUI);
             RefreshItemStatusVisuals();
         }
@@ -390,8 +391,26 @@ public class ItemButtonUI : ButtonUI {
 
     public void SetLockingItemBought(ItemButtonUI itemButtonUI) {
         lockingItemButtonUIList.Remove(itemButtonUI);
+
         if (lockingItemButtonUIList.Count != 0 && hubMerchantItem.GetUnlockRequiresAllPrerequisites()) return;
         SetItemUnlocked();
+    }
+
+    private void CheckNewItemUnlocked(ItemButtonUI itemButtonUI) {
+        if (itemButtonUI.GetHubMerchantParent() != GetHubMerchantParent()) {
+
+            bool lockingItemBought = MetaProgressionManager.Instance.GetMerchantItemBought(itemButtonUI.GetHubMerchantItem().GetItemType());
+            bool lockingItemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(itemButtonUI.GetHubMerchantItem().GetItemType());
+
+            if (lockingItemBought || !lockingItemUnlocked) return;
+
+            hubMerchantItem.SetNewItemUnlocked(true);
+            newUnlockedItemGO.SetActive(true);
+
+            if (lockingItemButtonUIList.Count != 0 && hubMerchantItem.GetUnlockRequiresAllPrerequisites()) return;
+
+            parentHubMerchant.SetMerchantHasNewItems();
+        }
     }
 
     public void SetItemUnlocked() {
@@ -403,17 +422,27 @@ public class ItemButtonUI : ButtonUI {
     }
 
     private void RefreshItemStatusVisuals() {
-
-        if (ItemLockedFromOtherMerchantItem() || (!hubMerchantItem.GetItemUnlocked() && hideItemIconUntilUnlocked)) {
-            lockedFromOtherMerchantImage.gameObject.SetActive(true);
-            iconImage.gameObject.SetActive(false);
-            lockHoverInteractions = true;
+        //Debug.Log(hubMerchantItem.GetItemType() + " unlocked" + hubMerchantItem.GetItemUnlocked());
+        if (!hubMerchantItem.GetItemUnlocked()) {
+            //Debug.Log(hubMerchantItem.GetItemType() + " ItemLockedFromOtherMerchantItem " + ItemLockedFromOtherMerchantItem());
+            //Debug.Log(hubMerchantItem.GetItemType() + " hideItemIconUntilUnlocked " + hideItemIconUntilUnlocked);
+            if (ItemLockedFromOtherMerchantItem() || hideItemIconUntilUnlocked) {
+                lockedFromOtherMerchantImage.gameObject.SetActive(true);
+                iconImage.gameObject.SetActive(false);
+                lockHoverInteractions = true;
+            }
+            else {
+                lockedFromOtherMerchantImage.gameObject.SetActive(false);
+                iconImage.gameObject.SetActive(true);
+                lockHoverInteractions = false;
+            }
         }
         else {
             lockedFromOtherMerchantImage.gameObject.SetActive(false);
             iconImage.gameObject.SetActive(true);
             lockHoverInteractions = false;
         }
+
 
         if (!hubMerchantItem.GetItemUnlocked() || (itemLockedInDemo && HUBManager.Instance.GetIsDemo())) {
             outlineImage.color = Color.grey;
@@ -468,7 +497,7 @@ public class ItemButtonUI : ButtonUI {
 
             if (hubMerchantItem.GetNewItemUnlocked()) {
                 newUnlockedItemGO.SetActive(false);
-                hubMerchantItem.SetNewItemUnlocked();
+                hubMerchantItem.SetNewItemUnlocked(false);
             }
 
             if (treeShowHide != null) {
@@ -513,7 +542,7 @@ public class ItemButtonUI : ButtonUI {
 
             if (hubMerchantItem.GetNewItemUnlocked()) {
                 newUnlockedItemGO.SetActive(false);
-                hubMerchantItem.SetNewItemUnlocked();
+                hubMerchantItem.SetNewItemUnlocked(false);
             }
 
             if (treeShowHide != null) {
@@ -570,6 +599,10 @@ public class ItemButtonUI : ButtonUI {
 
     public bool GetHideItemIconUntilUnlocked() {
         return hideItemIconUntilUnlocked;
+    }
+
+    public void SetParentHubMerchant(HubMerchant hubMerchant) {
+        parentHubMerchant = hubMerchant;
     }
 
     public Vector2 GetLocalPosition() {

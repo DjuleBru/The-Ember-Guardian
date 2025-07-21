@@ -9,6 +9,7 @@ public class DamageNumber : MonoBehaviour
     [SerializeField] private Color weakSpotHitColor;
     [SerializeField] private Color critHitColor;
     [SerializeField] private Color critHitInWeakSpotColor;
+    [SerializeField] private Color surgeWindowBuffedColor;
 
     private float timeBeforeFade = 0.3f;
     private float fadeDuration = 0.2f;
@@ -47,22 +48,27 @@ public class DamageNumber : MonoBehaviour
         Vector3 randomForceApplied = new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(3, 7), 0);
         GetComponent<Rigidbody2D>().AddForce(randomForceApplied, ForceMode2D.Impulse);
 
-        if (weakSpotHit && critHit) {
-
-            damageNumberText.color = critHitInWeakSpotColor;
-
+        bool surgeWindowBuffed = PlayerShoot.Instance.GetHeldGun().GetDamageSurgeBuffedLastBullet();
+        if (surgeWindowBuffed) {
+            damageNumberText.color = surgeWindowBuffedColor;
         } else {
 
-            if (critHit) {
-                damageNumberText.color = critHitColor;
-            }
+            if (weakSpotHit && critHit) {
 
-            if (weakSpotHit) {
-                damageNumberText.color = weakSpotHitColor;
+                damageNumberText.color = critHitInWeakSpotColor;
+
+            }
+            else {
+
+                if (critHit) {
+                    damageNumberText.color = critHitColor;
+                }
+
+                if (weakSpotHit) {
+                    damageNumberText.color = weakSpotHitColor;
+                }
             }
         }
-
-
         StartCoroutine(FadeOut());
     }
 

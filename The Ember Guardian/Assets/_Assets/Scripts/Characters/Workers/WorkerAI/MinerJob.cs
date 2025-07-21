@@ -16,6 +16,9 @@ public class MinerJob : WorkerJob {
     private float attackRangeRandomized;
     private float nightAggroCreatureDistance = 5f;
 
+    private float checkAvailableScavengablesTimer;
+    private float checkAvailableScavengablesRate = .5f;
+
     private bool isNightOrDusk;
     private bool miningScavengableObstacle;
 
@@ -122,9 +125,9 @@ public class MinerJob : WorkerJob {
             switch (state) {
 
                 case MinerState.idle:
-                    if (!IsInSafeZone()) {
-                        ChangeState(MinerState.headToSafety);
-                    }
+                    //if (!IsInSafeZone()) {
+                    //    HeadToCampCenter();
+                    //}
 
                     if (isNightOrDusk) {
                         NightIdleStateUpdate();
@@ -185,11 +188,17 @@ public class MinerJob : WorkerJob {
     private void DayIdleStateUpdate() {
         RoamInCampCenter();
 
-        CheckAvailableScavengables();
+        checkAvailableScavengablesTimer += Time.deltaTime;
 
-        if (assignedScavengable != null && !isNightOrDusk) {
-            ChangeState(MinerState.headingToMine);
+        if(checkAvailableScavengablesTimer > checkAvailableScavengablesRate) {
+            checkAvailableScavengablesTimer = 0;
+            CheckAvailableScavengables();
+
+            if (assignedScavengable != null && !isNightOrDusk) {
+                ChangeState(MinerState.headingToMine);
+            }
         }
+
     }
     private void NightIdleStateUpdate() {
         RoamInCampCenter();
@@ -273,7 +282,7 @@ public class MinerJob : WorkerJob {
     }
 
     private void CheckAvailableScavengables() {
-        IScavengable assignableScavengable = ScavengableManager.Instance.GetClosestHighestPriorityScavengableToScavenge(transform.position);
+        IScavengable assignableScavengable = ScavengableManager.Instance.GetClosestHighestPriorityScavengableToScavenge(this);
 
         if(assignableScavengable != null) {
             AssignScavengable(assignableScavengable);
@@ -282,6 +291,9 @@ public class MinerJob : WorkerJob {
     }
 
     public void AssignScavengable(IScavengable scavengable) {
+        Debug.Log(gameObject.GetInstanceID() + " AssignScavengable " + scavengable);
+        UnAssignScavengable();
+
         assignedScavengable = scavengable;
         scavengable.AssignMiner(this);
         assignedScavengableMiningPosition = scavengable.GetMeleeAttackPosition();
@@ -289,6 +301,8 @@ public class MinerJob : WorkerJob {
 
     public void UnAssignScavengable() {
         if (assignedScavengable == null) return;
+
+        Debug.Log(gameObject.GetInstanceID() + " UnAssignScavengable " + assignedScavengable);
         assignedScavengable.UnassignMiner(this);
         assignedScavengable = null;
         workerAttack.RemoveAttackTarget();
@@ -307,6 +321,7 @@ public class MinerJob : WorkerJob {
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+        ScavengableObstacle.OnAnyScavengableObstacleActivatedMining += ScavengableObstacle_OnAnyScavengableObstacleActivatedMining;
 
         if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Dusk) {
             ChangeState(MinerState.idle);
@@ -314,6 +329,11 @@ public class MinerJob : WorkerJob {
         else {
             ChangeState(MinerState.headToSafety);
         }
+    }
+
+    private void ScavengableObstacle_OnAnyScavengableObstacleActivatedMining(object sender, EventArgs e) {
+        UnAssignScavengable();
+        CheckAvailableScavengables();
     }
 
     protected override void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
@@ -386,7 +406,6 @@ public class MinerJob : WorkerJob {
         ChangeState(previousState);
     }
 
-
     public void ExitFromMine() {
         gameObject.SetActive(true);
     }
@@ -402,5 +421,6 @@ public class MinerJob : WorkerJob {
     private void OnDestroy() {
         DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnDuskStart -= DayNightManager_OnDuskStart;
+        ScavengableObstacle.OnAnyScavengableObstacleActivatedMining -= ScavengableObstacle_OnAnyScavengableObstacleActivatedMining;
     }
 }

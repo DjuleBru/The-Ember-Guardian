@@ -361,10 +361,8 @@ public class VideoTipManager : MonoBehaviour
 
         Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
         Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn_Level;
-        Fire.Instance.OnInitialFireActivated -= Fire_OnInitialFireActivated;
         Player.Instance.OnPlayerExitedCamp -= Player_OnPlayerExitedCamp;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
-
         HubMerchant.OnAnyPlayerTriggeredIn -= HubMerchant_OnAnyPlayerTriggeredIn;
 
         UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
@@ -373,7 +371,10 @@ public class VideoTipManager : MonoBehaviour
         TutorialCollider.OnRecruitWorkerTipCollided -= TutorialCollider_OnRecruitWorkerTipCollided;
         StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn_Tutorial;
-        DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
 
+        if(isLevelScene || isTutorialScene || isDemoTutorial) {
+            DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
+            Fire.Instance.OnInitialFireActivated -= Fire_OnInitialFireActivated;
+        }
     }
 }

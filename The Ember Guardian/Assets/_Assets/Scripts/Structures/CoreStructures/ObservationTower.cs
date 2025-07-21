@@ -25,6 +25,7 @@ public class ObservationTower : Structure
 
         if (collision.gameObject.GetComponent<Player>() == null) return;
         if (observationTowerActive) {
+            LevelUI_WaveInfoUI.Instance.ShowWaveInfoUI();
             LevelUI_WaveInfoUI.Instance.ShowFullWaveInfoUI();
         }
     }
@@ -35,19 +36,20 @@ public class ObservationTower : Structure
         if (collision.gameObject.GetComponent<Player>() == null) return;
         if (observationTowerActive) {
             LevelUI_WaveInfoUI.Instance.HideFullWaveInfoUI();
+            LevelUI_WaveInfoUI.Instance.HideWaveInfoUI();
         }
     }
 
     private void Player_OnPlayerExitedCamp(object sender, EventArgs e) {
-        if (!observationTowerActive) return;
+        //if (!observationTowerActive) return;
 
-        LevelUI_WaveInfoUI.Instance.HideWaveInfoUI();
+        //LevelUI_WaveInfoUI.Instance.HideWaveInfoUI();
     }
 
     private void Player_OnPlayerEnteredCamp(object sender, EventArgs e) {
-        if (!observationTowerActive) return;
+        //if (!observationTowerActive) return;
 
-        LevelUI_WaveInfoUI.Instance.ShowWaveInfoUI();
+        //LevelUI_WaveInfoUI.Instance.ShowWaveInfoUI();
     }
 
     protected override void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
@@ -61,10 +63,14 @@ public class ObservationTower : Structure
         base.DayNightManager_OnNightStart(sender, e);
 
         if (observationTowerActive) {
-            SetStructurePrimaryFunctionUnlocked(true);
             DeactivateObservationTower();
-
+            LevelUI_WaveInfoUI.Instance.HideWaveInfoUI();
         }
+    }
+    protected override void DayNightManager_OnDawnStart(object sender, EventArgs e) {
+        base.DayNightManager_OnDawnStart(sender, e);
+
+        SetStructurePrimaryFunctionUnlocked(true);
     }
 
     [Button]

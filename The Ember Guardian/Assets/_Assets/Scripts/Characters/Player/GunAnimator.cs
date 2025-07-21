@@ -9,7 +9,8 @@ public class GunAnimator : MonoBehaviour
     protected GunJamHandler gunJamHandler;
 
     private float meleeAttackSpeed = 1.5f;
-    private bool reloading;
+    private bool reloading; 
+    private float reloadAnimTime = 0f;
 
     protected void Awake() {
         animator = GetComponent<Animator>();
@@ -28,6 +29,7 @@ public class GunAnimator : MonoBehaviour
         PlayerShoot.Instance.OnPlayerCooldownAnimationTrigger += PlayerShoot_OnPlayerCooldownAnimationTrigger;
         PlayerShoot.Instance.OnPlayerReload += PlayerSHoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
+        PlayerShoot.Instance.OnPlayerReloadInterruptedEnded += PlayerShoot_OnPlayerReloadInterruptedEnded;
         PlayerShoot.Instance.OnPlayerReloadInterrupted += PlayerShoot_OnPlayerReloadInterrupted;
         PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
         PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerSHoot_OnPlayerSwitchedFireMode;
@@ -38,6 +40,7 @@ public class GunAnimator : MonoBehaviour
 
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
     }
+
 
     private void GunJamHandler_OnJamSequenceFailStarted(object sender, System.EventArgs e) {
         //animator.SetTrigger("GunJamHit");
@@ -102,11 +105,21 @@ public class GunAnimator : MonoBehaviour
     private void PlayerShoot_OnPlayerReloadEnded(object sender, System.EventArgs e) {
         reloading = false;
     }
-    private void PlayerShoot_OnPlayerReloadInterrupted(object sender, System.EventArgs e) {
-        reloading = false;
+    private void PlayerShoot_OnPlayerReloadInterruptedEnded(object sender, System.EventArgs e) {
+        animator.Play("Reload", 0, reloadAnimTime); // Reprend à la même position
+        animator.speed = 1f;
+    }
 
-        animator.SetTrigger("InterruptReload");
-        animator.speed = 1;
+    private void PlayerShoot_OnPlayerReloadInterrupted(object sender, System.EventArgs e) {
+        AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+        reloadAnimTime = state.normalizedTime;
+
+        animator.speed = 0f;
+
+        //reloading = false;
+
+        //animator.SetTrigger("InterruptReload");
+        //animator.speed = 1;
     }
 
     protected void PlayerShoot_OnPlayerCooldownSFXTrigger(object sender, System.EventArgs e) {

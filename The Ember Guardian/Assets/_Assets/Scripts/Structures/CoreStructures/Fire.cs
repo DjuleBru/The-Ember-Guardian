@@ -539,6 +539,9 @@ public class Fire : Structure, IDamageable {
         PlayerCurrencies.Instance.SetCarryingEmber(false);
     }
     public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
+
+        Debug.Log("TakeDamage " + damage);
+        Debug.Log("Fuel decrease " + damage * damageToFuelConversionRate);
         fuelLevel -= (damage * damageToFuelConversionRate);
         OnFireDamageTaken?.Invoke(this, EventArgs.Empty);
         CheckFireStateDowngrade();
