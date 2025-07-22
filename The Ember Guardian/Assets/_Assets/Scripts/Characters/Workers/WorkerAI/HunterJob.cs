@@ -49,6 +49,7 @@ public class HunterJob : WorkerJob {
     private List<HunterState> duskAndNightHunterStates;
 
     private Tower assignedTower;
+    private Transform escortPosition;
 
     public event EventHandler OnHunterChangedState;
     public event EventHandler OnHunterFindsNoAnimal;

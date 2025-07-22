@@ -79,10 +79,7 @@ public class ProjectileForces : Projectile {
     protected override void Update() {
         if (transform.position.y < 0 && !projectileHasHit) {
 
-            // Fire hit ?
-            if (enemyProjectile && Mathf.Abs(transform.position.x) < .5f) {
-                Fire.Instance.TakeDamage(1, parentMob.transform);
-            }
+           
 
             // Ground hit
             ProjectileHasHit(false);
@@ -167,6 +164,11 @@ public class ProjectileForces : Projectile {
         base.ProjectileHasHit(mobHit);
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.velocity = Vector2.zero;
+
+        // Fire hit ?
+        if (enemyProjectile && Mathf.Abs(transform.position.x) < .5f) {
+            Fire.Instance.TakeDamage(1, parentMob.transform);
+        }
     }
 
     public override Vector3 GetProjectileMoveDir() {

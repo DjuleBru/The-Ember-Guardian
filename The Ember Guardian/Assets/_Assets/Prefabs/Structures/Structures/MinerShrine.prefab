@@ -86,7 +86,7 @@ PrefabInstance:
     - target: {fileID: 2858744977638243454, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -1654454425, guid: bf8da3aab6b261543b438be917263346, type: 3}
+      objectReference: {fileID: -494374817, guid: bf8da3aab6b261543b438be917263346, type: 3}
     - target: {fileID: 2858744977638243454, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -227,6 +227,8 @@ MonoBehaviour:
   upgradeUnlocked: 0
   primaryFunctionUnlocked: 0
   secondaryFunctionUnlocked: 0
+  visualIndicator: {fileID: 0}
+  showTooltipOnTrigger: {fileID: 0}
   workerSpawnPosition: {fileID: 6664458144435640411}
   shrineType: 1
 --- !u!1 &8212365878099605028 stripped
@@ -248,6 +250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureSpriteRenderer: {fileID: 190870229499975902}
   structureFunctionIconSpriteRenderer: {fileID: 0}
+  structureInteractionIconImage: {fileID: 0}
   greyedStructionIconColor: {r: 0, g: 0, b: 0, a: 0}
   unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}

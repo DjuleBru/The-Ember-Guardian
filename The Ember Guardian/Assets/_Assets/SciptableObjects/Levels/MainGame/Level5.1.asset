@@ -20,11 +20,11 @@ MonoBehaviour:
   levelImage: {fileID: 0}
   levelNameLocalizationKey: Level 5.1
   levelDescriptionLocalizationKey: 
-  faunaAmount: 0
-  scrapAmount: 0
+  faunaAmount: 6
+  scrapAmount: 6
   minesAmount: 0
-  chestAmount: 0
-  wildEmberlingsAmount: 0
+  chestAmount: 2
+  wildEmberlingsAmount: 4
   levelObjectiveType: 20
   endLevelType: 20
   talkToNpcAFterObjective: 0
@@ -42,7 +42,6 @@ MonoBehaviour:
   dayCreatureTypes: []
   nightCreatureTypes:
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
-  - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
   - {fileID: 11400000, guid: 92e601c9dd7bf334186de532c5e816de, type: 2}
   - {fileID: 11400000, guid: 510ddc0451847e3419a83e0ae739424e, type: 2}
   - {fileID: 11400000, guid: 698d6580902b79444bc46c0d2ace76fe, type: 2}
@@ -58,9 +57,9 @@ MonoBehaviour:
   minSubwaveDifficulty: 25
   intialMaxSubwaveDifficulty: 15
   maxSubwaveDifficulty: 65
-  growthFactor: 1.5
+  growthFactor: 1.4
   typicalLevelDaysToComplete: 6
-  minMaxSubwaveDifficultyGrowthFactor: 1.5
+  minMaxSubwaveDifficultyGrowthFactor: 1.4
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
   difficultyAnimationCurve:

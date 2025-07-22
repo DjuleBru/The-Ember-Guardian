@@ -86,6 +86,8 @@ public class CurrencyCrafterVisual : StructureVisual
 
     private void AmmoCrafterUI_OnStructureDisplayedFunctionChanged(object sender, System.EventArgs e) {
         if (craftingCurrency) return;
+        Debug.Log("currencyCrafter.GetCraftedCurrency() " + currencyCrafter.GetCraftedCurrency());
+        if (currencyCrafter.GetCraftedCurrency()) return;
         RefreshCurrencyBarVisuals();
     }
 

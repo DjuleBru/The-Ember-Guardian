@@ -70,14 +70,11 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     private bool payingCurrencyJustCanceled;
-    private bool formingBigOrb;
-    private bool formingBigOrbCanceled;
-    private bool tryingToDropOrb;
     private bool justInteractedWithStructure;
-    private bool structureFunctionJustUsed;
 
+    private bool tryingToDropOrb;
     private float tryingToDropOrbTimer;
-    private float tryingToDropOrbHoldTime = .2f;
+    private float tryingToDropOrbMaxHoldTime = .7f;
 
     private void Awake() {
         if(isPlayerInventory) {
@@ -109,6 +106,12 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     private void Update() {
+        if(tryingToDropOrb) {
+            tryingToDropOrbTimer += Time.deltaTime;
+            if(tryingToDropOrbTimer > tryingToDropOrbMaxHoldTime) {
+                tryingToDropOrb = false;
+            }
+        }
         if(allowDebugInputs) {
             HandleDebugInputs();
         }
@@ -381,15 +384,6 @@ public class UICurrencyManager : MonoBehaviour
 
         return currencyList;
     }
-    public void TryFormBigOrb(bool droppingOrb) {
-        //if (formingBigOrb) return;
-
-        //formingBigOrb = true;
-
-        //smallOrbsPickupTimer = 0;
-        //smallOrbsInBag = GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.smallBlueOrb);
-        //smallOrbIndex = smallOrbsInBag.Count -1;
-    }
 
     public void DropNextCurrencyInBag(PlayerCurrencies.CurrencyType currencyType) {
         List<Currency_UI> currenciesOfType = GetCurrenciesInBagOfType(currencyType);
@@ -499,11 +493,8 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     private void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
-        //if (Player.Instance.GetCanDropOrbOnTheFloor()) {
-        //    tryingToDropOrb = true;
-        //    tryingToDropOrbTimer = 0;
-        //    formingBigOrbCanceled = false;
-        //}
+        tryingToDropOrb = true;
+        tryingToDropOrbTimer = 0;
     }
 
     private void GameInput_OnPlayerInteractHeldDown(object sender, EventArgs e) {
@@ -511,6 +502,7 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     private void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+
         if (justInteractedWithStructure) {
             justInteractedWithStructure = false;
             return;
@@ -521,7 +513,7 @@ public class UICurrencyManager : MonoBehaviour
             return;
         }
 
-        if (Player.Instance.GetCanDropOrbOnTheFloor()) {
+        if (tryingToDropOrb && Player.Instance.GetCanDropOrbOnTheFloor()) {
             if (GetHasBigOrb()) {
                 DropNextCurrencyInBag(PlayerCurrencies.CurrencyType.bigBlueOrb);
             } else {

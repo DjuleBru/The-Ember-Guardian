@@ -25,7 +25,7 @@ public class LevelUI_DayCountUI : MonoBehaviour
     }
 
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
-        StartCoroutine(ShowDayCountUIAfterDelay(7f));
+        StartCoroutine(ShowDayCountUIAfterDelay(9f));
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {

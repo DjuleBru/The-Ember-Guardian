@@ -8,11 +8,13 @@ public class ScavengableSounds : SoundObject
     [SerializeField] private AudioClip[] minerGarrisonerAudioClip;
     [SerializeField] private AudioClip[] pieceFellAudioClip;
     [SerializeField] private AudioClip toggleMiningAudioClip;
+    [SerializeField] private AudioClip[] creaturesSpawnedRumble;
     [SerializeField] private AudioSource backgroundAudioSource;
     [SerializeField] private ScavengableObstacleVisual scavengableObstacleVisual;
     private IScavengable scavengable;
 
     private bool backgroundPlaying;
+    private bool creaturesSpawning;
 
     private void Awake() {
         scavengable = GetComponentInParent<IScavengable>();
@@ -29,6 +31,25 @@ public class ScavengableSounds : SoundObject
         if(scavengableObstacleVisual != null) {
             scavengableObstacleVisual.OnPieceFell += ScavengableObstacleVisual_OnPieceFell;
         }
+
+        if(scavengable is ScavengableObstacle) {
+            ScavengableObstacle scavengableObstacle = scavengable as ScavengableObstacle;
+            scavengableObstacle.OnCreatureSpawned += ScavengableObstacle_OnCreatureSpawned;
+            scavengableObstacle.OnObstacleBuilt += ScavengableObstacle_OnObstacleBuilt;
+        }
+    }
+
+    private void ScavengableObstacle_OnObstacleBuilt(object sender, System.EventArgs e) {
+        creaturesSpawning = false;
+        MusicManager.Instance.FadeOutMusic(2f);
+    }
+
+    private void ScavengableObstacle_OnCreatureSpawned(object sender, System.EventArgs e) {
+        PlaySound2D(creaturesSpawnedRumble);
+        if(!creaturesSpawning) {
+            creaturesSpawning = true;
+            MusicManager.Instance.SetClearingObstacleMusic(1f);
+        }
     }
 
     private void ScavengableObstacleVisual_OnPieceFell(object sender, System.EventArgs e) {
@@ -41,6 +62,8 @@ public class ScavengableSounds : SoundObject
 
     private void Scavengable_OnDeactivatedMining(object sender, System.EventArgs e) {
         PlaySound2D(toggleMiningAudioClip, 2f);
+        creaturesSpawning = false;
+        MusicManager.Instance.FadeOutMusic(2f);
     }
 
     private void Scavengable_OnMinerStopsMining(object sender, System.EventArgs e) {

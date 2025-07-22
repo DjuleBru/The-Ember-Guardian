@@ -107,7 +107,14 @@ public class Barricade : Structure, IDamageable {
     }
 
     private void RefreshBarricadeRepair() {
-        if(!barricadeVisual.GetBarricadeHasAllSprites() && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
+        if (isWorldStructure) {
+            SetStructurePrimaryFunctionUnlocked(false);
+            SetStructureUpgradableUnlocked(false);
+            barricadeRepairable = false;
+            return;
+        }
+
+        if (!barricadeVisual.GetBarricadeHasAllSprites() && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
             // At least 1 sprite fell
             SetStructurePrimaryFunctionUnlocked(true);
             SetStructureUpgradableUnlocked(false);

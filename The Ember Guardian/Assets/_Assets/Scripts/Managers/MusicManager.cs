@@ -50,7 +50,7 @@ public class MusicManager : MonoBehaviour {
     private Coroutine nightCoroutine;
 
     [SerializeField] private AudioClip endLevelMusic;
-    [SerializeField] private AudioClip discoverNewLocationMusic;
+    [SerializeField] private AudioClip clearingObstacleCreaturesSpawningClip;
     private List<AudioClip> levelRandomBackgroundTracks;
     private List<AudioClip> levelRandomBackgroundTracksPooled;
     private List<AudioClip> levelExplorationTracks;
@@ -76,6 +76,7 @@ public class MusicManager : MonoBehaviour {
     private bool isPlayingLevelDiscoveryMusic;
     private bool isPlayingPeacefulMusic;
     private bool isPlayingExplorationMusic;
+    private bool isPlayingClearRubbleMusic;
     private bool isPlayingEndLevelAreaMusic;
     private bool isPlayingNightMusic;
     private bool musicAudioLevelReducedWithPause;
@@ -177,6 +178,39 @@ public class MusicManager : MonoBehaviour {
             }
         }
 
+    }
+    private void Update() {
+        if (fireDamageTakenRecently != 0) {
+            fireDamageTakenTimer -= Time.deltaTime;
+            if (fireDamageTakenTimer < 0) {
+                fireDamageTakenTimer = fireDamageTakenRemoveRate;
+                fireDamageTakenRecently--;
+            }
+        }
+
+        if (!CanPlayDayTrack()) return;
+        if (isPlayingLevelDiscoveryMusic) return;
+        if (isPlayingPeacefulMusic) return;
+        if (isPlayingExplorationMusic) return;
+        if (isPlayingClearRubbleMusic) return;
+
+        if (isLevelScene) {
+            peacefulTimer += Time.deltaTime;
+
+            if (peacefulTimer >= minPeacefulTimerDelay) {
+                playMusicAttemptTimer += Time.deltaTime;
+
+                if (playMusicAttemptTimer > playMusicAttemptRate) {
+                    playMusicAttemptTimer = 0;
+
+                    float randomNumber = UnityEngine.Random.Range(0, 1f);
+
+                    if (randomNumber < playMusicAttemptProbability) {
+                        PlayRandomPeacefulMusic();
+                    }
+                }
+            }
+        }
     }
     private void ResetLevelBackgroundTracksPooled() {
         levelRandomBackgroundTracksPooled = new List<AudioClip>();
@@ -353,6 +387,7 @@ public class MusicManager : MonoBehaviour {
         if (isPlayingNightMusic) return;
         if (isPlayingLevelDiscoveryMusic && discoveryMusicInterruptionSource != NewLocationMusicInterruptionSource.creatureAggro) return;
         if (isPlayingExplorationMusic) return;
+        if (isPlayingClearRubbleMusic) return;
 
         peacefulTimer = 0;
         playMusicAttemptTimer = 0;
@@ -367,38 +402,6 @@ public class MusicManager : MonoBehaviour {
         return true;
     }
 
-    private void Update() {
-        if(fireDamageTakenRecently != 0) {
-            fireDamageTakenTimer -= Time.deltaTime;
-            if(fireDamageTakenTimer < 0) {
-                fireDamageTakenTimer = fireDamageTakenRemoveRate;
-                fireDamageTakenRecently--;
-            }
-        }
-
-        if (!CanPlayDayTrack()) return;
-        if (isPlayingLevelDiscoveryMusic) return;
-        if (isPlayingPeacefulMusic) return;
-        if (isPlayingExplorationMusic) return;
-
-        if(isLevelScene) {
-            peacefulTimer += Time.deltaTime;
-
-            if(peacefulTimer >= minPeacefulTimerDelay) {
-                playMusicAttemptTimer += Time.deltaTime;
-
-                if(playMusicAttemptTimer > playMusicAttemptRate) {
-                    playMusicAttemptTimer = 0;
-
-                    float randomNumber = UnityEngine.Random.Range(0, 1f);
-
-                    if (randomNumber < playMusicAttemptProbability) {
-                        PlayRandomPeacefulMusic();
-                    }
-                }
-            }
-        }
-    }
 
     [Button]
     private void PlayRandomPeacefulMusic() {
@@ -714,6 +717,7 @@ public class MusicManager : MonoBehaviour {
         isPlayingPeacefulMusic = false;
         isPlayingEndLevelAreaMusic = false;
         isPlayingExplorationMusic = false;
+        isPlayingClearRubbleMusic = false;
 
         StartCoroutine(FadeOutCoroutine(fadeDuration, 0));
     }
@@ -742,7 +746,6 @@ public class MusicManager : MonoBehaviour {
 
         isUsingAudioSourceA = !isUsingAudioSourceA;
     }
-
 
     private IEnumerator FadeInCoroutine(float fadeDuration, float initialVolume) {
         audioSourceA.volume = initialVolume;
@@ -812,7 +815,21 @@ public class MusicManager : MonoBehaviour {
 
     }
 
-    public void StopEndLevelMusic() {
+    public void SetClearingObstacleMusic(float fadeInDuration) {
+        isPlayingClearRubbleMusic = true;
+        targetVolume = discoverNewLocationAudioVolume * musicSettingVolume;
+
+        if (audioSourceA.isPlaying) {
+
+            StartCoroutine(FadeOutThenInCoroutine(fadeInDuration, fadeInDuration, clearingObstacleCreaturesSpawningClip));
+
+        }
+        else {
+            audioSourceA.clip = clearingObstacleCreaturesSpawningClip;
+            FadeInMusic(fadeInDuration);
+        }
+    }
+    public void StopCurrentMusic() {
         StopCurrentMusic(3f);
     }
 

@@ -75,6 +75,7 @@ public class StaticProjectile : MonoBehaviour
         } else {
 
             if (collision.GetComponent<Player>() != null) {
+                if (collision.GetComponent<HuntingFlag_PlayerDefined>() != null) return;
                 Player.Instance.TakeDamage(damage, transform);
                 hasHit = true;
             }

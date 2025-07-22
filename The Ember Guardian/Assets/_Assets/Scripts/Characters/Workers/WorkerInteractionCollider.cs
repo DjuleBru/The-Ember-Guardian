@@ -14,7 +14,9 @@ public class WorkerInteractionCollider : MonoBehaviour
     private bool interactionWithWorkersUnlocked;
 
     private void Start() {
-        interactionWithWorkersUnlocked = WorkerStats.Instance.GetInteractionWithWorkersUnlocked();
+        //interactionWithWorkersUnlocked = WorkerStats.Instance.GetInteractionWithWorkersUnlocked();
+        interactionWithWorkersUnlocked = false;
+
         WorkerStats.Instance.OnInteractionsWithWorkersUnlocked += WorkerStats_OnInteractionsWithWorkersUnlocked;
 
         workerAI = GetComponentInParent<WorkerAI>();
@@ -88,5 +90,9 @@ public class WorkerInteractionCollider : MonoBehaviour
         if (!workerCanBeOrdered) return;
 
         WorkerManager.Instance.RemoveWorkerFromPlayerInteractionArea(worker);
+    }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnCommandWorkerPerformed -= GameInput_OnCommandWorkerPerformed;
     }
 }

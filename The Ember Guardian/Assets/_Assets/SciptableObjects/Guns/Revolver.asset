@@ -41,13 +41,13 @@ MonoBehaviour:
   maxAmmo: 6
   pelletsPerBullet: 1
   shotsPerClip: 5
-  critChance: 15
+  critChance: 10
   bulletLifetime: 0.18
   bulletSpeed: 65
   shootCooldownTime: 0.5
-  reloadTime: 2.2
-  handsReloadTime: 2
-  handsAnimationReloadTime: 1
+  reloadTime: 4.2
+  handsReloadTime: 3.5
+  handsAnimationReloadTime: 3
   bulletKnockback: 30
   shootCreatureHearMultiplier: 1.75
   jamProbability: 1.5
@@ -78,7 +78,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fe313ba0f91f40e47832b99f1df35019, type: 3}
   - {fileID: 8300000, guid: 524b9d488513790428d105b58db6a6f7, type: 3}
   reloadGunSound:
-  - {fileID: 8300000, guid: 497ca2561e0e6574c9811d612c98dec1, type: 3}
+  - {fileID: 8300000, guid: c2e075609b1c32549926f159902b94fc, type: 3}
   cooldownGunSound:
   - {fileID: 8300000, guid: 79807144d7c7634419a5cd72bb9319ac, type: 3}
   bulletHitGroundSound:

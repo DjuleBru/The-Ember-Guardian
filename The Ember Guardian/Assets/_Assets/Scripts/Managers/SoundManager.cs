@@ -88,6 +88,7 @@ public class SoundManager : MonoBehaviour
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             WorkerFollowPlayerHandler.Instance.OnHoveredFollowingWorkerChanged += WorkerFollowPlayerHandler_OnHoveredFollowingWorkerChanged;
             LevelUI_DayCountUI.Instance.OnDayUIShown += LevelUI_OnDayUIShown;
+            WorkerFollowPlayerHandler.Instance.OnAllFollowingWorkersRemoved += WorkerFollowPlayerHandler_OnAllFollowingWorkersRemoved;
         }
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
@@ -155,7 +156,6 @@ public class SoundManager : MonoBehaviour
         Mob.OnAnyMobDamageTaken += Mob_OnAnyMobDamageTaken;
         WorkerAI.OnAnyWorkerFollowPlayerStarted += WorkerAI_OnAnyWorkerFollowPlayerStarted;
         WorkerAI.OnAnyWorkerFollowPlayerStopped += WorkerAI_OnAnyWorkerFollowPlayerStopped;
-        WorkerFollowPlayerHandler.Instance.OnAllFollowingWorkersRemoved += WorkerFollowPlayerHandler_OnAllFollowingWorkersRemoved;
         Worker.OnAnyOrbDroppedByWorker += Worker_OnAnyOrbDroppedByWorker;
         Worker.OnAnyWorkerRecruited += Worker_OnAnyWorkerRecruited;
         Worker.OnAnyWorkerAssignedHunter += Worker_OnAnyWorkerAssignedHunter;
@@ -807,6 +807,9 @@ public class SoundManager : MonoBehaviour
         }
         if (merchantType == HubMerchant.HubMerchantType.GunMerchant) {
             PlaySound2D(soundRefsSO.gunMerchantVoiceLines);
+        }
+        if (merchantType == HubMerchant.HubMerchantType.ArchitectTable) {
+            PlaySound2D(soundRefsSO.blueprintAltarVoiceLines);
         }
         if (merchantType == HubMerchant.HubMerchantType.StructuresMerchant) {
             PlaySound2D(soundRefsSO.structuresMerchantVoiceLines);

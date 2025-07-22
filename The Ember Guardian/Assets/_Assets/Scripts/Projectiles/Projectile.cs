@@ -232,7 +232,7 @@ public class Projectile : MonoBehaviour
 
         // Hit Player
         if (collision.GetComponentInParent<Player>() != null && enemyProjectile) {
-            if (collision.GetComponent<HuntingFlag>() != null) return;
+            if (collision.GetComponent<HuntingFlag_PlayerDefined>() != null) return;
             ProjectileHasHit(false);
             Transform damageSource = null;
             if(parentMob != null) {

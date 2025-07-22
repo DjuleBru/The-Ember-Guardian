@@ -151,6 +151,34 @@ public class Fire : Structure, IDamageable {
         }
     }
 
+    private void Update() {
+        HandleFuelDecrease();
+        HandleFuelFireCooldown();
+        CheckNeedsRefillFromEngineer();
+
+        if (isHubFire) return;
+
+        if (lerping) {
+
+            lerpTimer += Time.deltaTime;
+            float normalizedTime = lerpTimer / lerpDuration;
+
+            if (normalizedTime >= 1) {
+                normalizedTime = 1;
+                lerpTimer = 0;
+                lerping = false;
+            }
+
+            float currentFireAOEValue = Mathf.Lerp(initialFireAOEValue, finalFireAOEValue, normalizedTime);
+
+            ChangeFireRadius(currentFireAOEValue);
+        }
+
+        CheckFireStateDowngrade();
+        CheckFireSecondaryFunctionInteractable();
+        debugFuelLevel = fuelLevel;
+    }
+
     private void LoadStats() {
         orbFuelValue = StructureStats.Instance.GetOrbFuelValue();
 
@@ -204,34 +232,6 @@ public class Fire : Structure, IDamageable {
         respawningPlayerTimer = 5f;
     }
 
-    private void Update() {
-        HandleFuelDecrease();
-        HandleFuelFireCooldown();
-        CheckNeedsRefillFromEngineer();
-
-        if (isHubFire) return;
-
-        if (lerping) {
-
-            lerpTimer += Time.deltaTime;
-            float normalizedTime = lerpTimer / lerpDuration;
-
-            if (normalizedTime >= 1) {
-                normalizedTime = 1;
-                lerpTimer = 0;
-                lerping = false;
-            }
-
-            float currentFireAOEValue = Mathf.Lerp(initialFireAOEValue, finalFireAOEValue, normalizedTime);
-
-            ChangeFireRadius(currentFireAOEValue);
-        }
-
-        CheckFireStateDowngrade();
-        CheckFireSecondaryFunctionInteractable();
-        debugFuelLevel = fuelLevel;
-    }
-
     private void HandleFuelFireCooldown() {
         if (!fuelFireOnCooldown) return;
 
@@ -243,6 +243,7 @@ public class Fire : Structure, IDamageable {
     }
 
     private void HandleFuelDecrease() {
+        if (isSecondaryFire) return;
 
         if (extractingEmber) {
             extractingEmberTimer -= Time.deltaTime;
@@ -332,8 +333,7 @@ public class Fire : Structure, IDamageable {
         OnFireEmberExtracted?.Invoke(this, EventArgs.Empty);
 
         yield return new WaitForSeconds(2f);
-        OnFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
-        OnAnyFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
+        StopExtractingEmber();
     }
 
     private void CheckFireFeedable() {
@@ -527,10 +527,14 @@ public class Fire : Structure, IDamageable {
         payCurrencyUI.SetPlayerInteracting(false);
 
         if(extractingEmber) {
-            extractingEmber = false;
-            OnFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
-            OnAnyFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
+            StopExtractingEmber();
         }
+    }
+
+    protected void StopExtractingEmber() {
+        extractingEmber = false;
+        OnFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
+        OnAnyFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
     }
 
     public void ActivateInitialFire() {
@@ -538,6 +542,7 @@ public class Fire : Structure, IDamageable {
         OnInitialFireActivated?.Invoke(this, EventArgs.Empty);
         PlayerCurrencies.Instance.SetCarryingEmber(false);
     }
+
     public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
 
         Debug.Log("TakeDamage " + damage);
@@ -556,7 +561,16 @@ public class Fire : Structure, IDamageable {
         secondaryFireStructureLocation.ReActivateFireStructureLocation();
         Destroy(gameObject);
     }
+    protected override void OnTriggerExit2D(Collider2D collision) {
+        if(collision.GetComponent<Player>() != null) {
+            if (extractingEmber) {
+                StopExtractingEmber();
+            }
+        }
 
+        base.OnTriggerExit2D(collision);
+
+    }
     #region GET PARAMETERS
     public State GetState() {
         return state;

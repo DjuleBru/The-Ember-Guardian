@@ -77,7 +77,7 @@ public class EndLevelArea : MonoBehaviour
     public void TryFadeOutMusic() {
         if (mobsAggroingPlayer.Count == 0) {
             if (playerInTriggerArea) return;
-            MusicManager.Instance.StopEndLevelMusic();
+            MusicManager.Instance.StopCurrentMusic();
         }
     }
 
@@ -98,7 +98,7 @@ public class EndLevelArea : MonoBehaviour
         endLevelAreaFire.SetActive(true);
         StartCoroutine(ActivateEndLevelTPAfterDelay(1f));
         OnEndLevelAreaCleared?.Invoke(this, EventArgs.Empty);
-        MusicManager.Instance.StopEndLevelMusic();
+        MusicManager.Instance.StopCurrentMusic();
     }
 
     private IEnumerator ActivateEndLevelTPAfterDelay(float delay) {

@@ -18,6 +18,11 @@ public class ObservationTower : Structure
 
         Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
+
+        if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+            SetStructurePrimaryFunctionUnlocked(false);
+        }
+
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {

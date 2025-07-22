@@ -54,6 +54,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip[] heroMerchantVoiceLines;
     public AudioClip[] workerMerchantVoiceLines;
     public AudioClip[] gunMerchantVoiceLines;
+    public AudioClip[] blueprintAltarVoiceLines;
     public AudioClip[] codexVoiceLines;
 
     public AudioClip pressMenuButton;

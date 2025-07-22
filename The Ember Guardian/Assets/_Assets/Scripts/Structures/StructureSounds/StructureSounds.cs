@@ -38,4 +38,8 @@ public class StructureSounds : SoundObject
         audioSource.volume = 0;
         audioSource.Stop(); // Arrêter la musique
     }
+
+    private void OnDestroy() {
+        SceneLoader.Instance.OnSceneFadeOut -= SceneLoader_OnSceneFadeOut;
+    }
 }

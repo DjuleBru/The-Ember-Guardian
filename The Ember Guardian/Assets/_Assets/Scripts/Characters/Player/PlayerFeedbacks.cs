@@ -30,7 +30,7 @@ public class PlayerFeedbacks : MonoBehaviour
     [SerializeField] private MMF_Player gunJamFailedFeedbacks;
     [SerializeField] private MMF_Player gunJamPerfectSequenceFeedbacks;
 
-    private float minDelayBetweenCritHitFeedbacks = .4f;
+    private float minDelayBetweenCritHitFeedbacks = 1f;
     private float critHitFeedbacksTimer;
     private bool critHitFeedbackRecentlyActivated;
 
@@ -75,40 +75,52 @@ public class PlayerFeedbacks : MonoBehaviour
     }
 
     private void GunJamHandler_OnAnyJamSequenceFailed(object sender, GunJamHandler.OnAnyJamSequenceProgressedEventArgs e) {
+        if (gunJamFailedFeedbacks.IsPlaying) return;
+
         gunJamFailedFeedbacks.PlayFeedbacks();
     }
 
     private void GunJamHandler_OnAnyJamSequenceCancelled(object sender, System.EventArgs e) {
         if (!gunJamFeedbacksPlaying) return;
+
         gunJamFeedbacksPlaying = false;
         gunJamEndFeedbacks.PlayFeedbacks();
     }
 
     private void GunJamHandler_OnAnyJamSequenceRestarted(object sender, System.EventArgs e) {
         if (gunJamFeedbacksPlaying) return;
+        if (gunJamStartFeedbacks.IsPlaying) return;
+
         gunJamFeedbacksPlaying = true;
         gunJamStartFeedbacks.PlayFeedbacks();
     }
 
     private void GunJamHandler_OnAnyJamSequenceProgressed(object sender, GunJamHandler.OnAnyJamSequenceProgressedEventArgs e) {
         if (!gunJamFeedbacksPlaying) return;
+        if (gunJamProgressFeedbacks.IsPlaying) return;
+
         gunJamProgressFeedbacks.PlayFeedbacks();
     }
 
     private void GunJamHandler_OnAnyJamSequenceCompleted(object sender, System.EventArgs e) {
         if (!gunJamFeedbacksPlaying) return;
+
         gunJamFeedbacksPlaying = false;
         gunJamEndFeedbacks.PlayFeedbacks();
     }
 
     private void GunJamHandler_OnAnyPerfectJamSequenceCompleted(object sender, System.EventArgs e) {
         if (!gunJamFeedbacksPlaying) return;
+        if (gunJamPerfectSequenceFeedbacks.IsPlaying) return;
+
         gunJamFeedbacksPlaying = false;
         gunJamPerfectSequenceFeedbacks.PlayFeedbacks();
     }
 
     private void GunJamHandler_OnAnyJamSequenceGenerated(object sender, GunJamHandler.OnJamSequenceGeneratedEventArgs e) {
         if (gunJamFeedbacksPlaying) return;
+        if (gunJamStartFeedbacks.IsPlaying) return;
+
         gunJamFeedbacksPlaying = true;
         gunJamStartFeedbacks.PlayFeedbacks();
     }

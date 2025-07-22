@@ -130,6 +130,7 @@ public class FastTravelTP : Structure
         isReceiverTP = false;
 
         yield return new WaitForSeconds(.6f);
+        floorCollider.enabled = false;
 
         if(Dog.Instance.GetIdleState() == DogAI.State.walkWithPlayer) {
             teleportingOther = true;
@@ -155,8 +156,8 @@ public class FastTravelTP : Structure
             yield return new WaitForSeconds(.7f);
         }
 
+        floorColliderForWorkers.enabled = false;
         teleportingOther = false;
-        floorCollider.enabled = false;
     }
 
     public FastTravelTP GetReceiverFastTravelTP() {
@@ -261,16 +262,19 @@ public class FastTravelTP : Structure
 
     private IEnumerator DeactivateWorkerFloorColliderAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
-        floorColliderForWorkers.enabled = true;
+        floorColliderForWorkers.enabled = false;
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);
+        if (collision.GetComponent<Player>() == null) return;
         Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
     }
 
     protected override void OnTriggerExit2D(Collider2D collision) {
         base.OnTriggerExit2D(collision);
+        if (collision.GetComponent<Player>() == null) return;
+
         Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
 
     }

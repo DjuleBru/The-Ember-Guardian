@@ -9,6 +9,8 @@ public class CurrencyCrafter : Structure
     private float currencyCraftTimer;
 
     [SerializeField] private float currencyCraftTime = 45f;
+    private float primaryCurrencyCraftTime;
+    private float secondaryCurrencyCraftTime;
     [SerializeField] private Transform currencySpawnPoint;
     [SerializeField] private PlayerCurrencies.CurrencyType currencyTypeCrafted;
 
@@ -50,6 +52,8 @@ public class CurrencyCrafter : Structure
             currencyCraftAmount = StructureStats.Instance.GetAmmoCrafterMaxAmmoPerBatch();
             currencyCraftTime = StructureStats.Instance.GetAmmoCrafterSingleAmmoCraftDuration() * currencyCraftAmount;
             batchCapacity = StructureStats.Instance.GetAmmoCrafterBatchCapacity();
+            primaryCurrencyCraftTime = currencyCraftTime;
+            secondaryCurrencyCraftTime = currencyCraftTime * 2;
 
             specialAmmoUnlocked = MetaProgressionManager.Instance.GetSpecialAmmoUnlocked();
             if (specialAmmoUnlocked || debugSpecialAmmoUnlocked) {
@@ -63,7 +67,8 @@ public class CurrencyCrafter : Structure
             batchCapacity = StructureStats.Instance.GetOrbProcessorBatchCapacity();
         }
 
-        if(debugBatchCapacity != 0) {
+        primaryCurrencyCraftTime = currencyCraftTime;
+        if (debugBatchCapacity != 0) {
             batchCapacity = debugBatchCapacity;
         }
     }
@@ -86,6 +91,7 @@ public class CurrencyCrafter : Structure
     protected override void TriggerStructurePrimaryFunction() {
         if(currencyTypeCrafted == PlayerCurrencies.CurrencyType.ammo) {
             currencyTypeBeingCrafted = PlayerCurrencies.CurrencyType.ammo;
+            currencyCraftTime = primaryCurrencyCraftTime;
         }
 
         TriggerCrafterFunction();
@@ -95,6 +101,7 @@ public class CurrencyCrafter : Structure
     protected override void TriggerStructureSecondaryFunction() {
         if (currencyTypeCrafted == PlayerCurrencies.CurrencyType.ammo) {
             currencyTypeBeingCrafted = PlayerCurrencies.CurrencyType.ammo_special;
+            currencyCraftTime = secondaryCurrencyCraftTime;
         }
 
         TriggerCrafterFunction();

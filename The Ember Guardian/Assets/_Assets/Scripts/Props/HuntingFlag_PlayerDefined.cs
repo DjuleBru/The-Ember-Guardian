@@ -124,17 +124,13 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
         transform.SetParent(huntingFlag.transform);
         transform.position = position;
 
-        //Vector3 originalScale = transform.localScale;
-        //Vector3 scaleReversed = originalScale;
-        //scaleReversed.x = -scaleReversed.x;
-        //transform.localScale = scaleReversed;
-
         OnAnyHuntingFlagNewPositionSet?.Invoke(this, EventArgs.Empty);
     }
 
     private void ResetFlagPosition() {
         transform.localScale = new Vector3(-1, 1, 1);
         huntingFlag.SetPlayerDefinedHuntingLimit(false);
+        playerCarryingFlag = false;
         transform.SetParent(huntingFlag.transform);
         transform.position = huntingFlag.GetCampDefinedHuntingFlagPosition();
     }

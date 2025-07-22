@@ -18,6 +18,7 @@ public class ScavengableObstacle : Obstacle, IScavengable
     public static event EventHandler OnAnyScavengableObstacleActivatedMining;
     public event EventHandler OnDeactivatedMining;
     public event EventHandler OnDamageTaken;
+    public event EventHandler OnCreatureSpawned;
 
     [SerializeField] protected int miningPriority;
     [SerializeField] protected bool requiresMiners;
@@ -25,7 +26,7 @@ public class ScavengableObstacle : Obstacle, IScavengable
     [SerializeField] private int maxMinersAssigned;
     [SerializeField] private int hitsToRemoveObstacle;
     [SerializeField] private bool playerHasToBeCloseToScavenge = true;
-    private float maxPlayerDistanceToScavenge = 30f;
+    private float maxPlayerDistanceToScavenge = 40f;
 
     [SerializeField] private List<SpawnOnDamageThreshold> spawnOnDamageThresholds;
 
@@ -124,7 +125,10 @@ public class ScavengableObstacle : Obstacle, IScavengable
         foreach (var spawnThreshold in spawnOnDamageThresholds) {
             if (spawnThreshold.hasTriggered) continue;
 
+
             if (healthNormalized <= spawnThreshold.healthThresholdNormalized) {
+                OnCreatureSpawned?.Invoke(this, EventArgs.Empty);
+
                 StartCoroutine(SpawnCreatures(spawnThreshold));
                 spawnThreshold.hasTriggered = true;
             }

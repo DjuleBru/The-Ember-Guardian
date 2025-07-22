@@ -87,6 +87,7 @@ public class HuntingFlag : MonoBehaviour
 
     public void ResetPlayerManuallySetHuntingLimit() {
         playerManuallySetFlagPosition = false;
+        playerIsCarryingFlag = false;
         OnPlayerResetManualHuntingLimit?.Invoke(this, EventArgs.Empty);
         OnAnyHuntingFlagReset?.Invoke(this, EventArgs.Empty);
     }

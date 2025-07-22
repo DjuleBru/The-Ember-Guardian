@@ -125,10 +125,6 @@ public class MinerJob : WorkerJob {
             switch (state) {
 
                 case MinerState.idle:
-                    //if (!IsInSafeZone()) {
-                    //    HeadToCampCenter();
-                    //}
-
                     if (isNightOrDusk) {
                         NightIdleStateUpdate();
                     } else {
@@ -291,7 +287,6 @@ public class MinerJob : WorkerJob {
     }
 
     public void AssignScavengable(IScavengable scavengable) {
-        Debug.Log(gameObject.GetInstanceID() + " AssignScavengable " + scavengable);
         UnAssignScavengable();
 
         assignedScavengable = scavengable;
@@ -318,12 +313,13 @@ public class MinerJob : WorkerJob {
 
     public override void InitializeJob() {
         base.InitializeJob();
-
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
         ScavengableObstacle.OnAnyScavengableObstacleActivatedMining += ScavengableObstacle_OnAnyScavengableObstacleActivatedMining;
 
-        if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Dusk) {
+        isNightOrDusk = DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk;
+
+        if (!isNightOrDusk) {
             ChangeState(MinerState.idle);
         }
         else {

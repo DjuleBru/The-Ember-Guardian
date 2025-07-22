@@ -75,6 +75,7 @@ public class WorkerDetectionCollider : MonoBehaviour
         float distanceToClosestCreature = Mathf.Infinity;
 
         foreach(Creature creature in creaturesInDetectionColliderRange) {
+            if (creature == null) continue;
             float distanceToCreature = Mathf.Abs(creature.transform.position.x - transform.position.x);
             if (distanceToCreature < distanceToClosestCreature) {
                 distanceToClosestCreature = distanceToCreature;

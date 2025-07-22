@@ -289,7 +289,7 @@ public class Gun : MonoBehaviour
 
     private void HandleGunJams() {
         if (!PlayerShoot.Instance.GetGunCanJam()) return;
-        if (PlayerShoot.Instance.GetNotHeldGun().GetGunJammed()) return;
+        if (PlayerShoot.Instance.GetNotHeldGun() != null && PlayerShoot.Instance.GetNotHeldGun().GetGunJammed()) return;
         if (gunJustJammed) return;
 
         if (UnityEngine.Random.value < jamProbability/100f) {
