@@ -37,7 +37,7 @@ public class DamageNumber : MonoBehaviour
         DamageNumberPool.Instance.ReturnToPool(this);
     }
 
-    public void Initialize(int damage, bool weakSpotHit, bool critHit) {
+    public void Initialize(int damage, bool weakSpotHit, bool critHit, bool playerIsDamageSource) {
         damageNumberText.color = Color.white;
         damageNumberText.text = damage.ToString();
 
@@ -48,27 +48,31 @@ public class DamageNumber : MonoBehaviour
         Vector3 randomForceApplied = new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(3, 7), 0);
         GetComponent<Rigidbody2D>().AddForce(randomForceApplied, ForceMode2D.Impulse);
 
-        bool surgeWindowBuffed = PlayerShoot.Instance.GetHeldGun().GetDamageSurgeBuffedLastBullet();
-        if (surgeWindowBuffed) {
-            damageNumberText.color = surgeWindowBuffedColor;
-        } else {
-
-            if (weakSpotHit && critHit) {
-
-                damageNumberText.color = critHitInWeakSpotColor;
-
+        if(playerIsDamageSource) {
+            bool surgeWindowBuffed = PlayerShoot.Instance.GetHeldGun().GetDamageSurgeBuffedLastBullet();
+            if (surgeWindowBuffed) {
+                damageNumberText.color = surgeWindowBuffedColor;
             }
             else {
 
-                if (critHit) {
-                    damageNumberText.color = critHitColor;
-                }
+                if (weakSpotHit && critHit) {
 
-                if (weakSpotHit) {
-                    damageNumberText.color = weakSpotHitColor;
+                    damageNumberText.color = critHitInWeakSpotColor;
+
+                }
+                else {
+
+                    if (critHit) {
+                        damageNumberText.color = critHitColor;
+                    }
+
+                    if (weakSpotHit) {
+                        damageNumberText.color = weakSpotHitColor;
+                    }
                 }
             }
         }
+      
         StartCoroutine(FadeOut());
     }
 

@@ -44,7 +44,7 @@ public class GuardJob : WorkerJob {
             ChangeState(GuardState.droppingOrbs);
         }
 
-        if(followingPlayer) {
+        if(escorting) {
             switch (state) {
 
                 case GuardState.followPlayerIdle:
@@ -198,7 +198,7 @@ public class GuardJob : WorkerJob {
         base.WorkerAI_OnWorkerFollowPlayerChanged(sender, e);
         workerAttack.RemoveAttackTarget();
 
-        if (followingPlayer) {
+        if (escorting) {
             state = GuardState.followPlayerIdle;
         } else {
             state = GuardState.headingToGuard;
@@ -295,7 +295,7 @@ public class GuardJob : WorkerJob {
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
-        if (followingPlayer) return;
+        if (escorting) return;
         ChangeState(GuardState.headingToGuard);
     }
 
@@ -303,7 +303,7 @@ public class GuardJob : WorkerJob {
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
-        if (followingPlayer) return;
+        if (escorting) return;
         ChangeState(GuardState.followPlayerIdle);
     }
 

@@ -16,6 +16,7 @@ public class ScavengableObstacle : Obstacle, IScavengable
     public event EventHandler OnMinerStopsMining;
     public event EventHandler OnActivatedMining;
     public static event EventHandler OnAnyScavengableObstacleActivatedMining;
+    public static event EventHandler OnAnyScavengableObstacleDeActivatedMining;
     public event EventHandler OnDeactivatedMining;
     public event EventHandler OnDamageTaken;
     public event EventHandler OnCreatureSpawned;
@@ -29,6 +30,7 @@ public class ScavengableObstacle : Obstacle, IScavengable
     private float maxPlayerDistanceToScavenge = 40f;
 
     [SerializeField] private List<SpawnOnDamageThreshold> spawnOnDamageThresholds;
+    [SerializeField] private Transform escortPosition;
 
     private int health;
     private int hitsTaken;
@@ -95,6 +97,7 @@ public class ScavengableObstacle : Obstacle, IScavengable
         }
         else {
             OnDeactivatedMining?.Invoke(this, EventArgs.Empty);
+            OnAnyScavengableObstacleDeActivatedMining?.Invoke(this, EventArgs.Empty);
             UnassignAllMiners();
         }
     }
@@ -251,6 +254,10 @@ public class ScavengableObstacle : Obstacle, IScavengable
 
     public void SetScavengableUnlocked(bool unlocked) {
         return;
+    }
+
+    public Transform GetEscortTransform() {
+        return escortPosition;
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {

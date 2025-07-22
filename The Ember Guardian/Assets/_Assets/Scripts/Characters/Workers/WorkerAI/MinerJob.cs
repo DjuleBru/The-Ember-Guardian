@@ -51,7 +51,7 @@ public class MinerJob : WorkerJob {
             ChangeState(MinerState.droppingOrbs);
         }
 
-        if (followingPlayer) {
+        if (escorting) {
             switch (state) {
 
                 case MinerState.followPlayerIdle:
@@ -220,7 +220,7 @@ public class MinerJob : WorkerJob {
 
     public void StayOutOfCreatureRange() {
 
-        mobMovement.SetMoveSpeed(fleeMoveSpeed);
+        mobMovement.SetMoveSpeed(fleeOrEscortMoveSpeed);
 
         Creature closestCreature = workerDetectionCollider.GetClosestCreature();
 
@@ -297,7 +297,6 @@ public class MinerJob : WorkerJob {
     public void UnAssignScavengable() {
         if (assignedScavengable == null) return;
 
-        Debug.Log(gameObject.GetInstanceID() + " UnAssignScavengable " + assignedScavengable);
         assignedScavengable.UnassignMiner(this);
         assignedScavengable = null;
         workerAttack.RemoveAttackTarget();
@@ -336,7 +335,7 @@ public class MinerJob : WorkerJob {
         base.WorkerAI_OnWorkerFollowPlayerChanged(sender, e);
         workerAttack.RemoveAttackTarget();
 
-        if (followingPlayer) {
+        if (escorting) {
             ChangeState(MinerState.followPlayerIdle);
         } else {
             ChangeState(MinerState.idle);
@@ -346,7 +345,7 @@ public class MinerJob : WorkerJob {
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
         isNightOrDusk = true;
 
-        if (followingPlayer) return;
+        if (escorting) return;
         if (worker.GetDead()) return;
         ChangeState(MinerState.headToSafety);
     }
@@ -354,7 +353,7 @@ public class MinerJob : WorkerJob {
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         isNightOrDusk = false;
 
-        if (followingPlayer) return;
+        if (escorting) return;
         ChangeState(MinerState.idle);
     }
 

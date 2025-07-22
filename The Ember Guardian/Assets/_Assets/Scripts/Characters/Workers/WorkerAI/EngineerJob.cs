@@ -79,7 +79,7 @@ public class EngineerJob : WorkerJob {
             ChangeState(EngineerState.droppingCurrency);
         }
 
-        if (followingPlayer) {
+        if (escorting) {
             switch (state) {
 
                 case EngineerState.followPlayerIdle:
@@ -556,7 +556,7 @@ public class EngineerJob : WorkerJob {
 
     protected override void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
         base.WorkerAI_OnWorkerFollowPlayerChanged(sender, e);
-        if (followingPlayer) {
+        if (escorting) {
             ChangeState(EngineerState.followPlayerIdle);
         }
         else {
@@ -585,7 +585,7 @@ public class EngineerJob : WorkerJob {
     private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
         isNightOrDusk = true;
 
-        if (followingPlayer) return;
+        if (escorting) return;
         if (state == EngineerState.workingInStructure) {
             ChangeState(EngineerState.idle);
         }
@@ -593,7 +593,7 @@ public class EngineerJob : WorkerJob {
 
     private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         isNightOrDusk = false;
-        if (followingPlayer) return;
+        if (escorting) return;
         ChangeState(EngineerState.idle);
     }
 

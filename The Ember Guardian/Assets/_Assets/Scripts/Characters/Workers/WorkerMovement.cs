@@ -34,7 +34,7 @@ public class WorkerMovement : MobMovement
         if (!followingPlayer) return;
 
         if(workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
-            if (hunterJob.GetState() == HunterJob.HunterState.followPlayerAttackCreature) return;
+            if (hunterJob.GetState() == HunterJob.HunterState.escortAttackCreature) return;
         }
         if (workerAI.GetJob() == WorkerAI.JobTypes.guard) {
             if (guardJob.GetState() == GuardJob.GuardState.followPlayerAttackCreature) return;
@@ -49,6 +49,7 @@ public class WorkerMovement : MobMovement
         float newSpeed = Mathf.Lerp(minSpeed, maxSpeed, speedFactor);
         SetMoveSpeed(newSpeed);
     }
+
     protected override void FixedUpdate() {
         if (teleporting) return;
 

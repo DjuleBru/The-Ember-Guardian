@@ -415,10 +415,12 @@ public class Creature : Mob
         }
 
         base.TakeDamage(damage, damageSource, critHit, ignoreTemporaryInvincibility, weakSpotHit);
-        ShowDamageNumber(damage, critHit, weakSpotHit);
+        bool playerIsDamageSource = (damageSource.GetComponent<Player>() != null);
+
+        ShowDamageNumber(damage, critHit, weakSpotHit, playerIsDamageSource);
     }
 
-    protected virtual void ShowDamageNumber(int damage, bool critHit, bool weakSpotHit) {
+    protected virtual void ShowDamageNumber(int damage, bool critHit, bool weakSpotHit, bool playerIsDamageSource) {
         if (!SettingsManager.Instance.GetShowDamageNumbers()) return;
 
         int damageToWriteAsNumber = damage;
@@ -427,7 +429,7 @@ public class Creature : Mob
         }
 
         DamageNumber damageNumber = DamageNumberPool.Instance.Get(projectileTarget.position);
-        damageNumber.Initialize(damageToWriteAsNumber, weakSpotHit, critHit);
+        damageNumber.Initialize(damageToWriteAsNumber, weakSpotHit, critHit, playerIsDamageSource);
     }
 
     #region STATUS EFFECTS

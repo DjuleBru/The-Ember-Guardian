@@ -27,8 +27,9 @@ public class HunterJob : WorkerJob {
 
     public enum HunterState {
         idle, 
-        followPlayerIdle,
-        followPlayerAttackCreature,
+        headingToEscort,
+        escortingIdle,
+        escortAttackCreature,
         blockedByCreatures,
         workingWithPlayerToShootCreatures,
         headingToHunt,
@@ -49,7 +50,7 @@ public class HunterJob : WorkerJob {
     private List<HunterState> duskAndNightHunterStates;
 
     private Tower assignedTower;
-    private Transform escortPosition;
+    private Transform escortTransform;
 
     public event EventHandler OnHunterChangedState;
     public event EventHandler OnHunterFindsNoAnimal;
@@ -84,6 +85,14 @@ public class HunterJob : WorkerJob {
 
     }
 
+    protected override void Start() {
+        base.Start();
+        ScavengableObstacle.OnAnyScavengableObstacleActivatedMining += ScavengableObstacle_OnAnyScavengableObstacleActivatedMining;
+        ScavengableObstacle.OnAnyObstacleBuilt += ScavengableObstacle_OnAnyObstacleBuilt;
+        ScavengableObstacle.OnAnyScavengableObstacleDeActivatedMining += ScavengableObstacle_OnAnyScavengableObstacleDeActivatedMining;
+        worker.OnMobDied += Worker_OnMobDied;
+    }
+
     private void Update() {
 
         if (targetAnimal != null) {
@@ -102,7 +111,7 @@ public class HunterJob : WorkerJob {
             ChangeState(HunterState.droppingOrbs);
 
         } else {
-            if(!followingPlayer) {
+            if(!escorting) {
                 if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Dusk) {
                     if (CheckOrbsToCollect() && state != HunterState.hunting && state != HunterState.blockedByCreatures) {
                         ChangeState(HunterState.pickingUpOrbs);
@@ -118,11 +127,17 @@ public class HunterJob : WorkerJob {
             CheckDusk();
         }
 
-        if (followingPlayer) {
+        if (escorting) {
             switch (state) {
 
-                case HunterState.followPlayerIdle:
-                    FollowPlayer();
+                case HunterState.headingToEscort:
+
+                    HeadToEscort();
+
+                    break;
+
+                case HunterState.escortingIdle:
+                    Escort();
 
                     if (closestCreature != null) {
 
@@ -138,7 +153,7 @@ public class HunterJob : WorkerJob {
                         else {
 
                             if (!CreatureIsTooClose(closestCreature, minimumDistanceToStaySafeFromCreature)) {
-                                ChangeState(HunterState.followPlayerAttackCreature);
+                                ChangeState(HunterState.escortAttackCreature);
                             };
 
                         }
@@ -146,10 +161,10 @@ public class HunterJob : WorkerJob {
 
                     break;
 
-                case HunterState.followPlayerAttackCreature:
+                case HunterState.escortAttackCreature:
                     if (targetCreature == null) {
                         workerAttack.RemoveAttackTarget();
-                        ChangeState(HunterState.followPlayerIdle);
+                        ChangeState(HunterState.escortingIdle);
                         return;
                     }
 
@@ -161,13 +176,13 @@ public class HunterJob : WorkerJob {
 
                     if (PlayerIsTooFar()) {
                         workerAttack.RemoveAttackTarget();
-                        ChangeState(HunterState.followPlayerIdle);
+                        ChangeState(HunterState.escortingIdle);
                         return;
                     }
 
                     if (!TargetIsInHuntingRange(targetCreature)) {
                         workerAttack.RemoveAttackTarget();
-                        ChangeState(HunterState.followPlayerIdle);
+                        ChangeState(HunterState.escortingIdle);
                     }
                     else {
                         mobMovement.SetMoveTarget(transform.position);
@@ -471,16 +486,27 @@ public class HunterJob : WorkerJob {
         }
     }
 
-    private void FollowPlayer() {
-        Vector3 destination = WorkerFollowPlayerHandler.Instance.GetWorkerFollowPosition(worker);
+    private void Escort() {
+        Roam(5f, escortTransform.position);
+
+        if(Mathf.Abs(escortTransform.position.x - transform.position.x) > 5f) {
+            ChangeState(HunterState.headingToEscort);
+        }
+    }
+
+    private void HeadToEscort() {
+        mobMovement.SetMoveSpeed(fleeOrEscortMoveSpeed);
+        Vector3 destination = escortTransform.position;
 
         if (Mathf.Abs(destination.x - transform.position.x) > .5f) {
             mobMovement.SetMoveTarget(destination);
+        } else {
+            ChangeState(HunterState.escortingIdle);
         }
     }
 
     public void StayOutOfCreatureRange() {
-        mobMovement.SetMoveSpeed(fleeMoveSpeed);
+        mobMovement.SetMoveSpeed(fleeOrEscortMoveSpeed);
 
         Creature closestCreature = workerDetectionCollider.GetClosestCreature();
 
@@ -624,7 +650,7 @@ public class HunterJob : WorkerJob {
     }
 
     private void CheckDusk() {
-        if (followingPlayer) return;
+        if (escorting) return;
         if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk) {
             ChangeState(HunterState.headingToGuard);
         }
@@ -795,7 +821,7 @@ public class HunterJob : WorkerJob {
 
     private void ChangeState(HunterState newState) {
         if (newState == state) return;
-        //Debug.Log("ChangeState " + newState);
+
         previousState = state;
 
         Vector3 targetDestination = mobMovement.transform.position;
@@ -853,7 +879,7 @@ public class HunterJob : WorkerJob {
     }
 
     private void SetDawnStartParameters() {
-        if (followingPlayer) return;
+        if (escorting) return;
 
         checkClosestTargetTimer = 0;
 
@@ -864,13 +890,17 @@ public class HunterJob : WorkerJob {
     }
 
     private void SetNightStartParameters() {
-        if (followingPlayer) return;
+        if (escorting) return;
     }
 
     private void SetDuskStartParameters() {
-        if (followingPlayer) return;
+        if (escorting) return;
 
         ChangeState(HunterState.headingToGuard);
+    }
+
+    private void Worker_OnMobDied(object sender, EventArgs e) {
+        RemoveCurrentTargetAnimal();
     }
 
     private void WorkerMovement_OnDestinationReached(object sender, System.EventArgs e) {
@@ -902,8 +932,8 @@ public class HunterJob : WorkerJob {
         base.WorkerAI_OnWorkerFollowPlayerChanged(sender, e);
         workerAttack.RemoveAttackTarget();
 
-        if (followingPlayer) {
-            ChangeState(HunterState.followPlayerIdle);
+        if (escorting) {
+            ChangeState(HunterState.headingToEscort);
         } else {
 
             ChangeState(HunterState.idle);
@@ -911,6 +941,27 @@ public class HunterJob : WorkerJob {
         }
 
         roamTimer = 0f;
+    }
+
+    private void ScavengableObstacle_OnAnyScavengableObstacleActivatedMining(object sender, EventArgs e) {
+        ScavengableObstacle obstacle = sender as ScavengableObstacle;
+
+        // Check if obstacle is on the same side
+        if ((obstacle.transform.position.x > 0 && worker.GetCampSideAddigned() == CampZoneManager.CampSide.left) || (obstacle.transform.position.x < 0 && worker.GetCampSideAddigned() == CampZoneManager.CampSide.right)) return; ;
+
+        escortTransform = obstacle.GetEscortTransform();
+        escorting = true;
+        ChangeState(HunterState.headingToEscort);
+    }
+
+    private void ScavengableObstacle_OnAnyObstacleBuilt(object sender, EventArgs e) {
+        escorting = false;
+        ChangeState(HunterState.idle);
+    }
+
+    private void ScavengableObstacle_OnAnyScavengableObstacleDeActivatedMining(object sender, EventArgs e) {
+        escorting = false;
+        ChangeState(HunterState.idle);
     }
 
     private void OnDisable() {
@@ -924,5 +975,11 @@ public class HunterJob : WorkerJob {
 
         DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnDuskStart -= DayNightManager_OnDuskStart;
+    }
+
+    private void OnDestroy() {
+        ScavengableObstacle.OnAnyScavengableObstacleActivatedMining -= ScavengableObstacle_OnAnyScavengableObstacleActivatedMining;
+        ScavengableObstacle.OnAnyObstacleBuilt -= ScavengableObstacle_OnAnyObstacleBuilt;
+        ScavengableObstacle.OnAnyScavengableObstacleDeActivatedMining -= ScavengableObstacle_OnAnyScavengableObstacleDeActivatedMining;
     }
 }

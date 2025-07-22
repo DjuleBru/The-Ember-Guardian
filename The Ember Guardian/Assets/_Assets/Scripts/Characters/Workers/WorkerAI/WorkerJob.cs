@@ -26,11 +26,11 @@ public class WorkerJob : MonoBehaviour
     protected bool hasSetSpeed;
     protected bool isInSafeZone;
     protected bool hasSetCampDestination;
-    protected bool followingPlayer;
+    protected bool escorting;
 
     protected float headToCampMoveSpeed = 2.5f;
     protected float roamMoveSpeed = 1.5f;
-    protected float fleeMoveSpeed = 3.5f;
+    protected float fleeOrEscortMoveSpeed = 3.5f;
     protected float roamTimer;
     protected float roamChangeDestinationRate = 6f;
     protected float minimumDistanceToStaySafeFromCreature = 6f;
@@ -47,7 +47,7 @@ public class WorkerJob : MonoBehaviour
     protected virtual void Start() {
         headToCampMoveSpeed = WorkerStats.Instance.GetHeadToCampMoveSpeed();
         roamMoveSpeed = WorkerStats.Instance.GetRoamMoveSpeed();
-        fleeMoveSpeed = WorkerStats.Instance.GetFleeMoveSpeed();
+        fleeOrEscortMoveSpeed = WorkerStats.Instance.GetFleeMoveSpeed();
     }
 
     protected virtual void TargetCreature(Creature newTargetCreature) {
@@ -132,7 +132,7 @@ public class WorkerJob : MonoBehaviour
 
     public virtual void StayAwayFromCreature(Creature closestCreature) {
 
-        mobMovement.SetMoveSpeed(fleeMoveSpeed);
+        mobMovement.SetMoveSpeed(fleeOrEscortMoveSpeed);
 
         if (closestCreature != null) {
 
@@ -276,6 +276,6 @@ public class WorkerJob : MonoBehaviour
         workerAI.OnWorkerFollowPlayerChanged += WorkerAI_OnWorkerFollowPlayerChanged;
     }
     protected virtual void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
-        followingPlayer = workerAI.GetFollowingPlayer();
+        escorting = workerAI.GetFollowingPlayer();
     }
 }

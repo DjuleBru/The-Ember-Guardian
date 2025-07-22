@@ -36,7 +36,8 @@ public class Creature_Shielded : Creature
     public override void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
         if(shieldActive) {
 
-            ShowDamageNumber(damage, critHit, weakSpotHit);
+            bool playerIsDamageSource = (damageSource.GetComponent<Player>() != null);
+            ShowDamageNumber(damage, critHit, weakSpotHit, playerIsDamageSource);
             if (critHit) {
                 damage *= 2;
             }
