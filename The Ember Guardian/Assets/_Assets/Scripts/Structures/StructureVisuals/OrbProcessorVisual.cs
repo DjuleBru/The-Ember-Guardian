@@ -34,7 +34,7 @@ public class OrbProcessorVisual : StructureVisual
     private void OrbProcessor_OnOrbCraftingEnded(object sender, System.EventArgs e) {
         craftingOrb = false;
         foreach (CurrencyCrafterVisual_CurrencyBarTemplate orbTemplate in orbsTemplateList) {
-            orbTemplate.SetGlowMaterial();
+            orbTemplate.SetCrafted();
         }
 
         HighlightStructureFunctionIcon(true);

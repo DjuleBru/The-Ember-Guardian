@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScavengableObstacle : Obstacle, IScavengable
+public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
 {
 
     public event EventHandler OnPlayerTriggerIn;
@@ -31,6 +31,8 @@ public class ScavengableObstacle : Obstacle, IScavengable
 
     [SerializeField] private List<SpawnOnDamageThreshold> spawnOnDamageThresholds;
     [SerializeField] private Transform escortPosition;
+    [SerializeField] private Transform escortMinPosition;
+    [SerializeField] private Transform escortMaxPosition;
 
     private int health;
     private int hitsTaken;
@@ -258,6 +260,12 @@ public class ScavengableObstacle : Obstacle, IScavengable
 
     public Transform GetEscortTransform() {
         return escortPosition;
+    }
+    public Transform GetEscortMinTransform() {
+        return escortMinPosition;
+    }
+    public Transform GetEscortMaxTransform() {
+        return escortMaxPosition;
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {

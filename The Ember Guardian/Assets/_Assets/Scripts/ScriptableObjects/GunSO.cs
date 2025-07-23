@@ -157,6 +157,12 @@ public class GunSO : ScriptableObject
     public float weaponPrecisionMultiplier = 1f;
     [BoxGroup("Stats/Precision")]
     [LabelWidth(300)]
+    public float movePrecisionDebuff = 1.25f;
+    [BoxGroup("Stats/Precision")]
+    [LabelWidth(300)]
+    public float runPrecisionDebuff = 1.5f;
+    [BoxGroup("Stats/Precision")]
+    [LabelWidth(300)]
     public float weaponSecondaryAbilityPrecisionFactor = 1f;
     [BoxGroup("Stats/Precision")]
     [LabelWidth(300)]

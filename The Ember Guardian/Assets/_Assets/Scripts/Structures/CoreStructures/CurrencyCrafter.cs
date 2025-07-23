@@ -25,6 +25,7 @@ public class CurrencyCrafter : Structure
     private int currentBatches;
     private bool craftingCurrency;
     private bool craftedCurrency;
+    private bool collectingCurrency;
 
     private bool specialAmmoUnlocked;
 
@@ -152,15 +153,21 @@ public class CurrencyCrafter : Structure
 
             SetStructurePrimaryFunctionUnlocked(true);
             SetStructureSecondaryFunctionUnlocked(specialAmmoUnlocked);
-
+            RefreshPlayerCanInteract();
             if(showTooltipOnTrigger != null) {
                 showTooltipOnTrigger.SetShowTooltips(true);
             }
-
         }
 
         StartCoroutine(SetPlayerInteractionAfterDelay(.1f));
 
+    }
+    protected override void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+       base.GameInput_OnPlayerInteractCanceled(sender, e);
+        if(collectingCurrency) {
+            collectingCurrency = false;
+            RefreshPlayerCanInteract();
+        }
     }
 
     private IEnumerator SetPlayerInteractionAfterDelay(float delay) {
@@ -178,6 +185,7 @@ public class CurrencyCrafter : Structure
 
     private IEnumerator CollectCurrencyFromCrafter(float delayBetweenAmmoInstantiation) {
         craftedCurrency = false;
+        collectingCurrency = true;
         payCurrencyUI.ResetCurrencyPayment();
 
         int currentBatchesCopy = currentBatches;
@@ -232,5 +240,29 @@ public class CurrencyCrafter : Structure
     public PlayerCurrencies.CurrencyType GetCurrencyTypeCrafted() {
         return currencyTypeCrafted;
     }
+    protected override void RefreshPlayerCanInteract() {
+        if(craftingCurrency) {
+            playerCanInteract = false;
+            return;
+        }
 
+        if(collectingCurrency) {
+            playerCanInteract = false;
+            return;
+        }
+
+        if (craftedCurrency) {
+            playerCanInteract = true;
+            return;
+        }
+
+
+        if (activeStructureInteractionsTypeList.Count == 0) {
+            playerCanInteract = false;
+        }
+        else {
+            playerCanInteract = true;
+        }
+
+    }
 }

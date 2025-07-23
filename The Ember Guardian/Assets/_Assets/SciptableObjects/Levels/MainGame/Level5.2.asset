@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
   m_Name: Level5.2
   m_EditorClassIdentifier: 
-  linkedSceneName: Level5.2_Gloomspire
+  linkedSceneName: Level5.2_LumenHollow
   isBranchingLevel: 1
   requiredLevelSO1: {fileID: 0}
   requiredLevelSO2: {fileID: 0}
@@ -54,7 +54,7 @@ MonoBehaviour:
   intialMaxSubwaveDifficulty: 0
   maxSubwaveDifficulty: 10
   growthFactor: 1.6
-  maxWaveNumber: 0
+  typicalLevelDaysToComplete: 0
   minMaxSubwaveDifficultyGrowthFactor: 0
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
@@ -66,10 +66,10 @@ MonoBehaviour:
     m_RotationOrder: 4
   maxWaveInAnimationCurve: 0
   canSpawnElite: 1
-  environmentType: 3
-  hasFog: 0
-  fogFrontAlpha: 0
-  fogBackAlpha: 0
+  environmentType: 2
+  hasFog: 1
+  fogFrontAlpha: 1
+  fogBackAlpha: 1
   hasWind: 0
   initialWindStrength: 0
   windStrengthsAllowedInLevel: 

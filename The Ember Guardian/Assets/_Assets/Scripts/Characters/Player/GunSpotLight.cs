@@ -29,6 +29,8 @@ public class GunSpotLight : MonoBehaviour
     private void Awake() {
         gun = GetComponent<Gun>();
         Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
+        FastTravelTP.OnAnyPlayerWarped += FastTravelTP_OnAnyPlayerWarped;
+        FastTravelTP.OnAnyPlayerWarpedOut += FastTravelTP_OnAnyPlayerWarpedOut;
 
         gunSpotLight = gunSpotLightTransform.GetComponent<Light2D>();
         gunShootLight.pointLightOuterAngle = 360;
@@ -95,6 +97,20 @@ public class GunSpotLight : MonoBehaviour
         if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Level) return;
         playerJustTeleported = true;
     }
+
+    private void FastTravelTP_OnAnyPlayerWarpedOut(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+        playerJustTeleportedTimer = 0;
+        playerJustTeleported = true;
+    }
+
+    private void FastTravelTP_OnAnyPlayerWarped(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+        if (lightActive) {
+            SwitchLight();
+        }
+    }
+
 
     private void RefreshLightRotation() {
         Vector3 dir = gunVisualTransform.right;
@@ -235,5 +251,7 @@ public class GunSpotLight : MonoBehaviour
         Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
         Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
         Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
+        FastTravelTP.OnAnyPlayerWarped -= FastTravelTP_OnAnyPlayerWarped;
+        FastTravelTP.OnAnyPlayerWarpedOut -= FastTravelTP_OnAnyPlayerWarpedOut;
     }
 }

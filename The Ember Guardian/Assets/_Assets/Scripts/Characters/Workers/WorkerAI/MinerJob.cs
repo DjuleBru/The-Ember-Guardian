@@ -220,7 +220,7 @@ public class MinerJob : WorkerJob {
 
     public void StayOutOfCreatureRange() {
 
-        mobMovement.SetMoveSpeed(fleeOrEscortMoveSpeed);
+        mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
 
         Creature closestCreature = workerDetectionCollider.GetClosestCreature();
 

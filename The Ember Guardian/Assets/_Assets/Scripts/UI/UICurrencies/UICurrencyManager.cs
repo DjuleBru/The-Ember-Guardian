@@ -74,7 +74,7 @@ public class UICurrencyManager : MonoBehaviour
 
     private bool tryingToDropOrb;
     private float tryingToDropOrbTimer;
-    private float tryingToDropOrbMaxHoldTime = .7f;
+    private float tryingToDropOrbMaxHoldTime = .5f;
 
     private void Awake() {
         if(isPlayerInventory) {
@@ -502,21 +502,28 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     private void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+        // At end of frame because SetPayingCurrency would run before and payingCurrencyJustCanceled hadn't updated
+        StartCoroutine(InteractCanceledAfterFrame());
+    }
+
+    private IEnumerator InteractCanceledAfterFrame() {
+        yield return new WaitForEndOfFrame();
 
         if (justInteractedWithStructure) {
             justInteractedWithStructure = false;
-            return;
+            yield break;
         };
 
-        if(payingCurrencyJustCanceled) {
+        if (payingCurrencyJustCanceled) {
             payingCurrencyJustCanceled = false;
-            return;
+            yield break;
         }
 
         if (tryingToDropOrb && Player.Instance.GetCanDropOrbOnTheFloor()) {
             if (GetHasBigOrb()) {
                 DropNextCurrencyInBag(PlayerCurrencies.CurrencyType.bigBlueOrb);
-            } else {
+            }
+            else {
                 OnCurrencyFailedToDrop?.Invoke(this, EventArgs.Empty);
             }
         }

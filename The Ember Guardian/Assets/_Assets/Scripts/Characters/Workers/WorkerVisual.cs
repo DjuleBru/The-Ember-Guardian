@@ -55,6 +55,7 @@ public class WorkerVisual : MobVisual {
         worker.OnWorkerUnhovered += Worker_OnWorkerUnhovered;
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
         workerAI.OnWorkerFollowPlayerChanged += WorkerAI_OnWorkerFollowPlayerChanged;
+        workerAI.OnEscortingChanged += WorkerAI_OnEscortingChanged;
         worker.OnWorkerCollectedCurrency += Worker_OnWorkerCollectedCurrency;
         worker.OnWorkerDroppedCurrency += Worker_OnWorkerDroppedCurrency;
         worker.OnWorkerDroppedAllCurrencies += Worker_OnWorkerDroppedAllCurrencied;
@@ -85,7 +86,6 @@ public class WorkerVisual : MobVisual {
         workerWeaponSpriteRenderer.material = blackAndWhiteMaterial;
         workerWeaponGlowSpriteRenderer.material = blackAndWhiteMaterial;
     }
-
 
     private void EngineerJob_OnEngineerTurnsWrench(object sender, System.EventArgs e) {
         StartCoroutine(TriggerWrenchPSAfterDelay());
@@ -191,6 +191,15 @@ public class WorkerVisual : MobVisual {
         }
     }
 
+    private void WorkerAI_OnEscortingChanged(object sender, System.EventArgs e) {
+        if (workerAI.GetEscorting()) {
+            ChangeStatusSprite(null);
+        }
+        else {
+            RefreshStatusAndWeaponSprite();
+        }
+    }
+
     private void Worker_OnMobDied(object sender, System.EventArgs e) {
         ChangeStatusSprite(null);
     }
@@ -268,6 +277,7 @@ public class WorkerVisual : MobVisual {
         ChangeStatusSprite(null);
 
         if (workerAI.GetFollowingPlayer()) return;
+        if (workerAI.GetEscorting()) return;
 
         switch (job) {
             case WorkerAI.JobTypes.hunter:

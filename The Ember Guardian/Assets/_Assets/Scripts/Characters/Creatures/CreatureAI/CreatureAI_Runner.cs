@@ -32,6 +32,7 @@ public class CreatureAI_Runner : CreatureAI
             runTimer += Time.deltaTime;
             if(runTimer >= runDuration) {
                 StopRunning();
+                runTimer = 0;
             }
         }
 
@@ -48,7 +49,7 @@ public class CreatureAI_Runner : CreatureAI
     protected override void ChangeState(State newState) {
         base.ChangeState(newState);
 
-        if(newState != State.moveToTarget) {
+        if(newState != State.moveToTarget && newState != State.walkingToFire) {
             if(running) {
                 StopRunning();
             }
@@ -77,6 +78,7 @@ public class CreatureAI_Runner : CreatureAI
     }
 
     private void StopRunning() {
+        Debug.Log("StopRunning " + runTimer);
         running = false;
         justRunned = true;
         justRunnedTimer = 0;

@@ -50,6 +50,7 @@ public class HunterJob : WorkerJob {
     private List<HunterState> duskAndNightHunterStates;
 
     private Tower assignedTower;
+    private IEscortable assignedEscortable;
     private Transform escortTransform;
 
     public event EventHandler OnHunterChangedState;
@@ -487,17 +488,17 @@ public class HunterJob : WorkerJob {
     }
 
     private void Escort() {
-        Roam(5f, escortTransform.position);
+        mobMovement.SetMoveSpeed(escortMoveSpeed);
 
-        if(Mathf.Abs(escortTransform.position.x - transform.position.x) > 5f) {
+        RoamBetweenPoints(assignedEscortable.GetEscortMinTransform().position, assignedEscortable.GetEscortMaxTransform().position);
+        if(transform.position.x > assignedEscortable.GetEscortMaxTransform().position.x || transform.position.x < assignedEscortable.GetEscortMinTransform().position.x) {
             ChangeState(HunterState.headingToEscort);
         }
     }
 
     private void HeadToEscort() {
-        mobMovement.SetMoveSpeed(fleeOrEscortMoveSpeed);
+        mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
         Vector3 destination = escortTransform.position;
-
         if (Mathf.Abs(destination.x - transform.position.x) > .5f) {
             mobMovement.SetMoveTarget(destination);
         } else {
@@ -506,7 +507,7 @@ public class HunterJob : WorkerJob {
     }
 
     public void StayOutOfCreatureRange() {
-        mobMovement.SetMoveSpeed(fleeOrEscortMoveSpeed);
+        mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
 
         Creature closestCreature = workerDetectionCollider.GetClosestCreature();
 
@@ -717,7 +718,6 @@ public class HunterJob : WorkerJob {
         Vector3 targetDestination = new Vector3(targetAnimal.transform.position.x, 0, 0);
 
         mobMovement.SetMoveTarget(targetDestination);
-        hasSetSpeed = false;
     }
 
     public void HeadBackToHuntingLimits() {
@@ -847,7 +847,10 @@ public class HunterJob : WorkerJob {
         mobMovement.SetMoveTarget(targetDestination);
         state = newState;
         OnHunterChangedState?.Invoke(this, EventArgs.Empty);
+
+        hasSetSpeed = false;
     }
+
     public override void ReturnToPreviousState() {
         ChangeState(previousState);
     }
@@ -944,24 +947,28 @@ public class HunterJob : WorkerJob {
     }
 
     private void ScavengableObstacle_OnAnyScavengableObstacleActivatedMining(object sender, EventArgs e) {
-        ScavengableObstacle obstacle = sender as ScavengableObstacle;
+        ScavengableObstacle scavengableObstacle = sender as ScavengableObstacle;
 
         // Check if obstacle is on the same side
-        if ((obstacle.transform.position.x > 0 && worker.GetCampSideAddigned() == CampZoneManager.CampSide.left) || (obstacle.transform.position.x < 0 && worker.GetCampSideAddigned() == CampZoneManager.CampSide.right)) return; ;
+        if ((scavengableObstacle.transform.position.x > 0 && worker.GetCampSideAddigned() == CampZoneManager.CampSide.left) || (scavengableObstacle.transform.position.x < 0 && worker.GetCampSideAddigned() == CampZoneManager.CampSide.right)) return; ;
 
-        escortTransform = obstacle.GetEscortTransform();
+        assignedEscortable = scavengableObstacle;
+        escortTransform = assignedEscortable.GetEscortTransform();
         escorting = true;
         ChangeState(HunterState.headingToEscort);
+        workerAI.SetEscorting(true);
     }
 
     private void ScavengableObstacle_OnAnyObstacleBuilt(object sender, EventArgs e) {
         escorting = false;
         ChangeState(HunterState.idle);
+        workerAI.SetEscorting(false);
     }
 
     private void ScavengableObstacle_OnAnyScavengableObstacleDeActivatedMining(object sender, EventArgs e) {
         escorting = false;
         ChangeState(HunterState.idle);
+        workerAI.SetEscorting(false);
     }
 
     private void OnDisable() {

@@ -42,20 +42,19 @@ MonoBehaviour:
   totalDayCreatureDifficulty: 0
   dayCreatureTypes: []
   nightCreatureTypes:
-  - {fileID: 11400000, guid: b27e7bc56456c4540924d93c318c5c13, type: 2}
-  - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
+  - {fileID: 11400000, guid: 873edd5c658b8f34a87c1ca4ef6ad998, type: 2}
   hasBoss: 0
   bossCreatureType: {fileID: 11400000, guid: 99d459fd6a02c044d90152bcc6de9ffb, type: 2}
   bossNightSpawns: 0100000002000000
   startWaveToSpawnFromBothSides: 1
   baseDifficulty: 25
   intialMinSubwaveDifficulty: 10
-  minSubwaveDifficulty: 2
+  minSubwaveDifficulty: 25
   intialMaxSubwaveDifficulty: 15
   maxSubwaveDifficulty: 65
   growthFactor: 1.2
   typicalLevelDaysToComplete: 6
-  minMaxSubwaveDifficultyGrowthFactor: 1
+  minMaxSubwaveDifficultyGrowthFactor: 1.4
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
   difficultyAnimationCurve:

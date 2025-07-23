@@ -166,6 +166,8 @@ public class PlayerAim : MonoBehaviour
         currentPrecisionModifier = 1;
         crouchPrecisionBuff = gunSO.crouchPrecisionBuff;
         crouchRecoilReductionFactor = gunSO.crouchRecoilReductionFactor;
+        movePrecisionDebuff = gunSO.movePrecisionDebuff;
+        runPrecisionDebuff = gunSO.runPrecisionDebuff;
         weaponPrecisionModifier = gun.GetWeaponPrecisionModifier();
         aimFollowSpeed = gunSO.followMouseSpeed;
     }

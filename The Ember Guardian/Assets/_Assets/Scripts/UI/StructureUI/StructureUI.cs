@@ -71,11 +71,9 @@ public class StructureUI : MonoBehaviour
         if (activeTypes.Count <= 1) return;
 
         int currentIndex = activeTypes.IndexOf(structure.GetCurrentStructureInteractionType());
-        if (currentIndex > 0) {
-            // Passer au type précédent
-            Structure.StructureInteractionType prevType = activeTypes[currentIndex - 1];
-            SwitchToUIType(prevType);
-        }
+        int newIndex = (currentIndex - 1 + activeTypes.Count) % activeTypes.Count;
+
+        SwitchToUIType(activeTypes[newIndex]);
     }
 
     private void GameInput_OnPlayerRightSwitchPerformed(object sender, System.EventArgs e) {
@@ -83,11 +81,9 @@ public class StructureUI : MonoBehaviour
         if (activeTypes.Count <= 1) return;
 
         int currentIndex = activeTypes.IndexOf(structure.GetCurrentStructureInteractionType());
-        if (currentIndex < activeTypes.Count - 1) {
-            // Passer au type suivant
-            Structure.StructureInteractionType nextType = activeTypes[currentIndex + 1];
-            SwitchToUIType(nextType);
-        }
+        int newIndex = (currentIndex + 1) % activeTypes.Count;
+
+        SwitchToUIType(activeTypes[newIndex]);
     }
 
     private void SwitchToUIType(Structure.StructureInteractionType interactionType) {
@@ -163,8 +159,11 @@ public class StructureUI : MonoBehaviour
         if (activeTypes.Count <= 1) {
             leftArrow.gameObject.SetActive(false);
             rightArrow.gameObject.SetActive(false);
-            return;
+        } else {
+            leftArrow.gameObject.SetActive(true);
+            rightArrow.gameObject.SetActive(true);
         }
+        return;
 
         int currentIndex = activeTypes.IndexOf(structure.GetCurrentStructureInteractionType());
 

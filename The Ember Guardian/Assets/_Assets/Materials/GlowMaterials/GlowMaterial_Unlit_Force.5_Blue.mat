@@ -17,6 +17,7 @@ Material:
   - GLOWLIGHT_ON
   - GLOWTEX_ON
   - GLOW_ON
+  - SHINE_ON
   m_InvalidKeywords:
   - ETC1_EXTERNAL_ALPHA
   - _GLOWAFFECTLIGHT_ON
@@ -26,7 +27,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: _LitAmount
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -220,10 +221,10 @@ Material:
     - _ShakeUvSpeed: 2.5
     - _ShakeUvX: 1.5
     - _ShakeUvY: 1
-    - _ShineGlow: 1
-    - _ShineLocation: 0.5
-    - _ShineRotate: 0
-    - _ShineWidth: 0.1
+    - _ShineGlow: 0
+    - _ShineLocation: 1
+    - _ShineRotate: 3.35
+    - _ShineWidth: 0.05
     - _TextureScrollXSpeed: 1
     - _TextureScrollYSpeed: 0
     - _TwistUvAmount: 1
@@ -266,5 +267,5 @@ Material:
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverlayColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ShineColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShineColor: {r: 0, g: 1, b: 0.98039216, a: 1}
   m_BuildTextureStacks: []

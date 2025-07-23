@@ -30,7 +30,8 @@ public class WorkerJob : MonoBehaviour
 
     protected float headToCampMoveSpeed = 2.5f;
     protected float roamMoveSpeed = 1.5f;
-    protected float fleeOrEscortMoveSpeed = 3.5f;
+    protected float fleeOrHeadToEscortMoveSpeed = 3.5f;
+    protected float escortMoveSpeed = 2f;
     protected float roamTimer;
     protected float roamChangeDestinationRate = 6f;
     protected float minimumDistanceToStaySafeFromCreature = 6f;
@@ -47,7 +48,7 @@ public class WorkerJob : MonoBehaviour
     protected virtual void Start() {
         headToCampMoveSpeed = WorkerStats.Instance.GetHeadToCampMoveSpeed();
         roamMoveSpeed = WorkerStats.Instance.GetRoamMoveSpeed();
-        fleeOrEscortMoveSpeed = WorkerStats.Instance.GetFleeMoveSpeed();
+        fleeOrHeadToEscortMoveSpeed = WorkerStats.Instance.GetFleeMoveSpeed();
     }
 
     protected virtual void TargetCreature(Creature newTargetCreature) {
@@ -132,7 +133,7 @@ public class WorkerJob : MonoBehaviour
 
     public virtual void StayAwayFromCreature(Creature closestCreature) {
 
-        mobMovement.SetMoveSpeed(fleeOrEscortMoveSpeed);
+        mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
 
         if (closestCreature != null) {
 
@@ -206,6 +207,20 @@ public class WorkerJob : MonoBehaviour
         if (roamTimer < 0) {
             roamTimer = roamChangeDestinationRate;
             RoamBehavior.RoamAroundPoint(mobMovement, roamDistance, positionToRoamAround, false);
+        }
+    }
+    public void RoamBetweenPoints(Vector3 minPositionToRoamAround, Vector3 maxPositionToRoamAround) {
+
+        if (!hasSetSpeed) {
+            mobMovement.SetMoveSpeed(roamMoveSpeed);
+            hasSetSpeed = true;
+        }
+
+        roamTimer -= Time.deltaTime;
+
+        if (roamTimer < 0) {
+            roamTimer = roamChangeDestinationRate;
+            RoamBehavior.RoamBetweenPoints(mobMovement, minPositionToRoamAround, maxPositionToRoamAround, false);
         }
     }
 

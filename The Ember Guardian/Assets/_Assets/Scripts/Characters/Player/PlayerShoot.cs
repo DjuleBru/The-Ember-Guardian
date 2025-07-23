@@ -618,12 +618,13 @@ public class PlayerShoot : MonoBehaviour
 
             if (rifleSemiAutoModeActive) {
                 automaticWeapon = true;
+                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
             } else {
                 automaticWeapon = false;
+                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
             }
 
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
-            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.LMG)

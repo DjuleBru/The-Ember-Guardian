@@ -108,6 +108,7 @@ public class GunJamHandler : MonoBehaviour
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         GameInput.Instance.OnPlayerRollPerformed += GameInput_OnPlayerJumpPerformed;
 
+        gunIsHeldGun = PlayerShoot.Instance.GetHeldGun() == gun;
         RefreshJamFeedbacks();
     }
 

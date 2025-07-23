@@ -252,6 +252,17 @@ public class MobAttack : MonoBehaviour
 
         OnMobAttackHit?.Invoke(this, EventArgs.Empty);
     }
+    public virtual void DealDamage(IDamageable iDamageable) {
+
+        if (iDamageable != null) {
+            iDamageable.TakeDamage(attackDamage, transform, false, attackIgnoresTemporaryInvincibility);
+        }
+        if ((iDamageable as MonoBehaviour) == Fire.Instance) {
+            mob.Die();
+        }
+
+        OnMobAttackHit?.Invoke(this, EventArgs.Empty);
+    }
 
     protected virtual Vector3 GetEndPointRandomOffstetValue() {
         return Vector3.zero;

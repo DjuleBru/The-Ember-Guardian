@@ -12,6 +12,8 @@ public class PlayerVisual : MonoBehaviour
     private void Awake() {
         Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
         Portal.OnAnyPortalSetToTeleportPlayer += Portal_OnAnyPortalSetToTeleportPlayer;
+        FastTravelTP.OnAnyPlayerWarped += FastTravelTP_OnAnyPlayerWarped;
+        FastTravelTP.OnAnyPlayerWarpedOut += FastTravelTP_OnAnyPlayerWarpedOut;
     }
 
     private void Start() {
@@ -62,6 +64,14 @@ public class PlayerVisual : MonoBehaviour
     private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, System.EventArgs e) {
         ShowVisuals(true);
     }
+    private void FastTravelTP_OnAnyPlayerWarpedOut(object sender, System.EventArgs e) {
+        ShowVisuals(true);
+    }
+
+    private void FastTravelTP_OnAnyPlayerWarped(object sender, System.EventArgs e) {
+        ShowVisuals(false);
+    }
+
 
     private void PlayerMovement_OnPlayerExhaustionStopped(object sender, System.EventArgs e) {
         exhaustedPS.Stop();
@@ -79,5 +89,7 @@ public class PlayerVisual : MonoBehaviour
         Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
         Portal.OnAnyPortalSetToTeleportPlayer -= Portal_OnAnyPortalSetToTeleportPlayer;
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
+        FastTravelTP.OnAnyPlayerWarped -= FastTravelTP_OnAnyPlayerWarped;
+        FastTravelTP.OnAnyPlayerWarpedOut -= FastTravelTP_OnAnyPlayerWarpedOut;
     }
 }

@@ -16,6 +16,7 @@ public class WorkerAI : MonoBehaviour
     private EngineerJob engineerJob;
 
     private bool followingPlayer;
+    private bool escorting;
 
     public enum JobTypes {
         wild,
@@ -31,6 +32,7 @@ public class WorkerAI : MonoBehaviour
 
     public event EventHandler OnJobChanged;
     public event EventHandler OnWorkerFollowPlayerChanged;
+    public event EventHandler OnEscortingChanged;
     public static event EventHandler OnAnyWorkerFollowPlayerStarted;
     public static event EventHandler OnAnyWorkerFollowPlayerStopped;
 
@@ -124,7 +126,16 @@ public class WorkerAI : MonoBehaviour
 
     public bool GetFollowingPlayer() {
         return followingPlayer;
-    } 
+    }
+
+    public void SetEscorting(bool escorting) {
+        this.escorting = escorting;
+        OnEscortingChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public bool GetEscorting() {
+        return escorting;
+    }
 
     public void SetDebugSpawn() {
         debugSpawn = true;

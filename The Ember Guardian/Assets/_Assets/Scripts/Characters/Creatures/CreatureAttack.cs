@@ -88,7 +88,6 @@ public class CreatureAttack : MobAttack
         if (attackTargetIDamageable != null) {
 
             if ((attackTargetIDamageable as MonoBehaviour) == Fire.Instance) {
-
                 attackTargetIDamageable.TakeDamage(damageToFire, transform, false, attackIgnoresTemporaryInvincibility);
 
                 if (!creature.GetCreatureSO().isBoss) {
