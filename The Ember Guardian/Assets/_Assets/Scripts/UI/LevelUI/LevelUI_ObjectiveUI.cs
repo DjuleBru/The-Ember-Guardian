@@ -77,6 +77,8 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         FindArchitect,
         ProgressWithScavengers,
         TalkToArchitect,
+        BuildWatcherArtifact,
+        CollectOrbs,
     }
 
     public static LevelUI_ObjectiveUI Instance;
@@ -104,8 +106,10 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         if(LevelObjectives.Instance != null) {
             LevelObjectives.Instance.OnNightSurvived += LevelObjectives_OnNightSurvived;
             LevelObjectives.Instance.OnObstacleRemoved += LevelObjectives_OnObstacleRemoved;
+            LevelObjectives.Instance.OnWatcherArtifactFilled += LevelObjectives_OnWatcherArtifactFilled;
         }
     }
+
 
     public void ShowObjectiveUI(ObjectiveType objectiveType) {
         objectiveText.text = GetObjectiveTextFromType(objectiveType);
@@ -231,22 +235,23 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
 
 
     private void LevelObjectives_OnNightSurvived(object sender, EventArgs e) {
-        foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>(true)) {
-            if (subObjectiveUI.GetSubObjectiveType() == SubObjectiveType.None) continue;
-
-            if (subObjectiveUI.GetSubObjectiveType() == SubObjectiveType.SurviveNights) {
-                subObjectiveUI.SetSubObjective(SubObjectiveType.SurviveNights);
-            }
-
-        }
+        RefreshCountableSubObjective(SubObjectiveType.SurviveNights);
     }
 
     private void LevelObjectives_OnObstacleRemoved(object sender, EventArgs e) {
+        RefreshCountableSubObjective(SubObjectiveType.ProgressWithScavengers);
+    }
+
+    private void LevelObjectives_OnWatcherArtifactFilled(object sender, EventArgs e) {
+        RefreshCountableSubObjective(SubObjectiveType.CollectOrbs);
+    }
+
+    private void RefreshCountableSubObjective(SubObjectiveType subObjectiveType) {
         foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>(true)) {
             if (subObjectiveUI.GetSubObjectiveType() == SubObjectiveType.None) continue;
 
-            if (subObjectiveUI.GetSubObjectiveType() == SubObjectiveType.ProgressWithScavengers) {
-                subObjectiveUI.SetSubObjective(SubObjectiveType.ProgressWithScavengers);
+            if (subObjectiveUI.GetSubObjectiveType() == subObjectiveType) {
+                subObjectiveUI.SetSubObjective(subObjectiveType);
             }
 
         }
@@ -260,6 +265,9 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         }
         if (subObjectiveType == SubObjectiveType.ProgressWithScavengers) {
             return LocalizationManager.Instance.GetLocalizedText("SubObj_ProgressWithScavengers") + " " + LevelObjectives.Instance.GetObstaclesToRemove() + " " + LocalizationManager.Instance.GetLocalizedText("SubObj_Obstacles") + " " + "(" + LevelObjectives.Instance.GetObstaclesRemoved() + "/" + LevelObjectives.Instance.GetObstaclesToRemove() + ")";
+        }
+        if (subObjectiveType == SubObjectiveType.CollectOrbs) {
+            return LocalizationManager.Instance.GetLocalizedText("SubObj_CollectOrbs") + "(" + LevelObjectives.Instance.GetWatcherArtifactFillAmount() + "/" + LevelObjectives.Instance.GetWatcherArtifactTotalFillAmount() + ")";
         }
         return LocalizationManager.Instance.GetLocalizedText(subObjectiveKey);
         

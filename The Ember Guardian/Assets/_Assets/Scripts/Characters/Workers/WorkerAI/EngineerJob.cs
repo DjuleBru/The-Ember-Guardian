@@ -411,7 +411,7 @@ public class EngineerJob : WorkerJob {
 
         for (int i = 0; i < worker.GetCurrencyAmount(currencyTypeToStore); i++) {
 
-            if (targetCurrencyStorage.GetStorageFull()) {
+            if (targetCurrencyStorage.GetEngineerCanPickUpOrbs()) {
                 ChangeState(EngineerState.idle);
                 return;
             }

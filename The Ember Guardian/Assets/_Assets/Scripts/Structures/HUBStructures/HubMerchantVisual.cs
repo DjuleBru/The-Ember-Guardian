@@ -24,6 +24,7 @@ public class HubMerchantVisual : MonoBehaviour
         hubMerchant.OnMerchantHasNewInteraction += HubMerchant_OnMerchantHasNewTalkLines;
         hubMerchant.OnMerchantHideExclamationMark += HubMerchant_OnMerchantHideExclamationMark;
 
+
         if (hubMerchant.GetMerchantHasNewItems() || hubMerchant.GetMerchantJustArrivedInHub() || hubMerchant.GetMerchantIsLevelNPC() || hubMerchant.GetMerchantHasNewTalkLinkes()) {
             newItemsForSaleGameObject.gameObject.SetActive(true);
         }

@@ -22,9 +22,12 @@ public class LevelObjectives : MonoBehaviour
     private int nightsToSurvive;
     [SerializeField] private int obstaclesToRemove;
     private int obstaclesRemoved;
+    [SerializeField] private int watcherArtifactFillUpTotalAmount;
+    private int watcherArtifactFillUpAmount;
 
     public event EventHandler OnNightSurvived;
     public event EventHandler OnObstacleRemoved;
+    public event EventHandler OnWatcherArtifactFilled;
 
     private void Awake() {
         Instance = this;
@@ -33,6 +36,7 @@ public class LevelObjectives : MonoBehaviour
     private void Start() {
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
+        StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         ScavengableObstacle.OnAnyObstacleBuilt += ScavengableObstacle_OnAnyObstacleBuilt;
 
         if (levelMerchantList.Count != 0) {
@@ -57,8 +61,12 @@ public class LevelObjectives : MonoBehaviour
             DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
             nightsToSurvive = LevelManager.Instance.GetLevelSO().nightsToSurviveAmount;
         }
-    }
 
+        if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
+            CurrencyStorage_Objective.OnAnyMaxCurrencyAmountReached += CurrencyStorage_Objective_OnAnyMaxCurrencyAmountReached;
+        }
+
+    }
 
     private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         nightsSurvived++;
@@ -78,6 +86,17 @@ public class LevelObjectives : MonoBehaviour
         }
     }
 
+    private void CurrencyStorage_Objective_OnAnyMaxCurrencyAmountReached(object sender, EventArgs e) {
+        watcherArtifactFillUpAmount++;
+        OnWatcherArtifactFilled?.Invoke(this, EventArgs.Empty);
+
+        if (watcherArtifactFillUpAmount == watcherArtifactFillUpTotalAmount) {
+
+            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbs);
+            StartCoroutine(ShowReturnToHubObjective(4f));
+        }
+    }
+
     private void ScavengableObstacle_OnAnyObstacleBuilt(object sender, EventArgs e) {
         ScavengableObstacle obstacle = sender as ScavengableObstacle;
         if (obstacle != null) {
@@ -90,6 +109,23 @@ public class LevelObjectives : MonoBehaviour
             }
         }
     }
+
+    private void StructureLocation_OnAnyStructureBuilt(object sender, StructureLocation.OnAnyStructureBuiltEventArgs e) {
+        StructureLocation location = sender as StructureLocation;
+
+        if(location.GetStructureSOToBuild().structureType == StructureSO.StructureType.currencyStorage_Objective) {
+            if(LevelManager.Instance.GetLevelSO().levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
+
+                List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveList = new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbs };
+                LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveList);
+
+                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.BuildWatcherArtifact);
+
+            }
+        }
+
+    }
+
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
         initialFireLit = true;
 
@@ -140,6 +176,18 @@ public class LevelObjectives : MonoBehaviour
             LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
 
         }
+
+        if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
+
+            LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs);
+            List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
+                    LevelUI_ObjectiveUI.SubObjectiveType.TalkToWatcher
+                };
+
+            LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
+
+        }
+
 
         if (objectiveTypeToShow == LevelUI_ObjectiveUI.ObjectiveType.ExploreCorruptedCity) {
 
@@ -213,6 +261,13 @@ public class LevelObjectives : MonoBehaviour
             yield return new WaitForSeconds(1f);
 
             if(NPCInteractionsIndex == 2) {
+                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.TalkToWatcher);
+            }
+
+            if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
+                List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveList = new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.BuildWatcherArtifact };
+                LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveList);
+
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.TalkToWatcher);
             }
         }
@@ -312,10 +367,19 @@ public class LevelObjectives : MonoBehaviour
         return obstaclesRemoved;
     }
 
+    public int GetWatcherArtifactTotalFillAmount() {
+        return watcherArtifactFillUpTotalAmount;
+    }
+    public int GetWatcherArtifactFillAmount() {
+        return watcherArtifactFillUpAmount;
+    }
+
     private void OnDestroy() {
         EndLevelAreaCollider.OnPlayerTriggeredInAnyEndLevelArea -= EndLevelAreaCollider_OnPlayerTriggeredInAnyEndLevelArea;
         Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
         ScavengableObstacle.OnAnyObstacleBuilt -= ScavengableObstacle_OnAnyObstacleBuilt;
+        StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
+        CurrencyStorage_Objective.OnAnyMaxCurrencyAmountReached -= CurrencyStorage_Objective_OnAnyMaxCurrencyAmountReached;
     }
 
 }

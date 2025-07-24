@@ -58,6 +58,13 @@ public class HubMerchant : MonoBehaviour
 
     protected bool hubMerchantLoaded;
 
+    protected void Awake() {
+        if (isLevelNPC) {
+            // Level behavior : idle, talk to player, disappear
+            merchantHasTalkLinesToShow = true;
+        }
+    }
+
     protected void Start() {
         DEBUGActivateMerchant = DebugManager.Instance.GetDebugMode_HUBMerchants();
 
@@ -76,10 +83,6 @@ public class HubMerchant : MonoBehaviour
             }
         }
 
-        if (isLevelNPC) {
-            // Level behavior : idle, talk to player, disappear
-            merchantHasTalkLinesToShow = true;
-        }
 
         SetHubMerchantParentInItems();
     }
@@ -261,11 +264,30 @@ public class HubMerchant : MonoBehaviour
     }
 
     public void SetHasTalkLinesToShow(bool hasTalkLinesToShow, bool showExclamationMark = true) {
+        Debug.Log("SetHasTalkLinesToShow " + hasTalkLinesToShow);
         merchantHasTalkLinesToShow = hasTalkLinesToShow;
 
         if (hasTalkLinesToShow && showExclamationMark) {
             OnMerchantHasNewInteraction?.Invoke(this, EventArgs.Empty);
         } else {
+            OnMerchantHideExclamationMark?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public void SetHasTalkLinesToShowAfterDelay(bool hasTalkLinesToShow, bool showExclamationMark = true, float delay = 0f) {
+        StartCoroutine(SetHasTalkLinesToShowAfterDelayCoroutine(hasTalkLinesToShow, showExclamationMark, delay));   
+        
+    }
+
+    private IEnumerator SetHasTalkLinesToShowAfterDelayCoroutine(bool hasTalkLinesToShow, bool showExclamationMark = true, float delay = 0f) {
+        yield return new WaitForSeconds(delay);
+
+        merchantHasTalkLinesToShow = hasTalkLinesToShow;
+
+        if (hasTalkLinesToShow && showExclamationMark) {
+            OnMerchantHasNewInteraction?.Invoke(this, EventArgs.Empty);
+        }
+        else {
             OnMerchantHideExclamationMark?.Invoke(this, EventArgs.Empty);
         }
     }

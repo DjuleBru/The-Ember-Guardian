@@ -27,6 +27,7 @@ public class DayNightVisualsManager : MonoBehaviour
     [SerializeField] private float transitionDuration;
 
     [SerializeField] private SpriteRenderer skySpriteRenderer;
+    [SerializeField] private SpriteRenderer skySpriteRenderer2;
     [SerializeField] private Light2D globalLight2D;
     [SerializeField] private Light2D sunLight2D;
     [SerializeField] private Light2D moonLight2D;
@@ -75,6 +76,9 @@ public class DayNightVisualsManager : MonoBehaviour
 
         globalLight2D.color = dawnLightColor;
         skySpriteRenderer.color = dawnSkyColor;
+        if(skySpriteRenderer2 != null) {
+            skySpriteRenderer2.color = dawnSkyColor;
+        }
         globalLight2D.intensity = dawnLightIntensity;
         moonLight2D.intensity = 0;
     }
@@ -105,6 +109,10 @@ public class DayNightVisualsManager : MonoBehaviour
                 sunLight2D.intensity = LightIntensityTransition(0, sunLightIntensity);
                 moonLight2D.intensity = LightIntensityTransition(moonLightIntensity, 0);
 
+                if (skySpriteRenderer2 != null) {
+                    skySpriteRenderer2.color = ColorTransition(nightSkyColor, dawnSkyColor);
+                }
+
                 moonTransitionSpeed = cycleTransitionMoonTransitionSpeed;
             }
             else {
@@ -122,6 +130,10 @@ public class DayNightVisualsManager : MonoBehaviour
                 globalLight2D.color = ColorTransition(dawnLightColor, dayLightColor);
                 skySpriteRenderer.color = ColorTransition(dawnSkyColor, daySkytColor);
                 globalLight2D.intensity = LightIntensityTransition(dawnLightIntensity, dayLightIntensity);
+
+                if (skySpriteRenderer2 != null) {
+                    skySpriteRenderer2.color = ColorTransition(dawnSkyColor, daySkytColor);
+                }
             }
             else {
                 transitionProgress = 0;
@@ -136,6 +148,11 @@ public class DayNightVisualsManager : MonoBehaviour
             if (transitionProgress < 1) {
                 globalLight2D.color = ColorTransition(dayLightColor, duskLightColor);
                 skySpriteRenderer.color = ColorTransition(daySkytColor, duskSkyColor);
+
+                if (skySpriteRenderer2 != null) {
+                    skySpriteRenderer2.color = ColorTransition(daySkytColor, duskSkyColor);
+                }
+
                 globalLight2D.intensity = LightIntensityTransition(dayLightIntensity, duskLightIntensity);
             }
             else {
@@ -154,6 +171,10 @@ public class DayNightVisualsManager : MonoBehaviour
                 globalLight2D.intensity = LightIntensityTransition(duskLightIntensity, nightLightIntensity);
                 sunLight2D.intensity = LightIntensityTransition(sunLightIntensity, 0);
                 moonLight2D.intensity = LightIntensityTransition(0, moonLightIntensity);
+
+                if (skySpriteRenderer2 != null) {
+                    skySpriteRenderer2.color = ColorTransition(duskSkyColor, nightSkyColor);
+                }
 
                 moonPositionXNormalized = transitionProgress * duskNightAnimationCurveFraction;
                 currentMoonPositionXNormalized = moonPositionXNormalized;

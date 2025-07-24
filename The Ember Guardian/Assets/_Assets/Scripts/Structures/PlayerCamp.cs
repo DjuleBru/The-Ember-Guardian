@@ -363,7 +363,7 @@ public class PlayerCamp : MonoBehaviour
 
             CurrencyStorage storage = structure as CurrencyStorage;
             if(storage.GetCurrencyTypeStored() != currencyType) continue;
-            if(storage.GetStorageFull()) continue;
+            if(storage.GetEngineerCanPickUpOrbs()) continue;
 
             float distanceToStructure = Mathf.Abs(engineerPosition.x - structure.transform.position.x);
             if (distanceToStructure < closestDistance) {

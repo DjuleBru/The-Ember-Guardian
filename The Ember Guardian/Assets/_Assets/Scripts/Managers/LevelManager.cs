@@ -15,6 +15,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Transform leftLevelEndCollider;
     [SerializeField] private Transform rightLevelEndCollider;
     [SerializeField] private List<Obstacle> blockingObstacles;
+    [SerializeField] private StructureLocation conditionalLockedStructureLocation;
+    [SerializeField] private bool setEndLevelPositionRelativeToPlayer = true;
     private float minLevelLimit;
     private float maxLevelLimit;
 
@@ -34,6 +36,8 @@ public class LevelManager : MonoBehaviour
 
 
     private void Start() {
+        conditionalLockedStructureLocation.gameObject.SetActive(false);
+
         if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest) {
             EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
         }
@@ -50,9 +54,20 @@ public class LevelManager : MonoBehaviour
             levelHubMerchant.OnPlayerStoppedInteractingWithHubMerchant += LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant;
         }
 
+        if (levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
+            levelHubMerchant.SetHasTalkLinesToShowAfterDelay(false,false, 1f);
+            levelHubMerchant.OnPlayerStoppedInteractingWithHubMerchant += LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant;
+            LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
+        }
+
+        Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         ES3.Save("lastLevelEnvironment", levelSO.environmentType);
 
         RefreshLevelLimits();
+    }
+
+    private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
+        levelHubMerchant.SetHasTalkLinesToShow(true);
     }
 
     private void Obstacle_OnAnyObstacleInitialized(object sender, EventArgs e) {
@@ -67,7 +82,6 @@ public class LevelManager : MonoBehaviour
         RefreshLevelLimits();
     }
 
-  
     private void RefreshLevelLimits() {
         float maxLevelLimitTemp = rightLevelEndCollider.transform.position.x;
         float minLevelLimitTemp = leftLevelEndCollider.transform.position.x;
@@ -111,6 +125,11 @@ public class LevelManager : MonoBehaviour
         if(levelHubMerchantInteractionIndex == 2) {
             StartCoroutine(EnableEndLevelPortal(2f));
         }
+
+        if(levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
+            conditionalLockedStructureLocation.gameObject.SetActive(true);
+            conditionalLockedStructureLocation.UnlockStructureLocation();
+        }
     }
 
 
@@ -120,7 +139,11 @@ public class LevelManager : MonoBehaviour
 
     [Button]
     private void LevelSuccess() {
-        Vector3 endLevelPortalPosition = new Vector3(Player.Instance.transform.position.x + 10f, 0, 0);
+        Vector3 endLevelPortalPosition = endLevelPortal.transform.position; 
+
+        if (setEndLevelPositionRelativeToPlayer) {
+            endLevelPortalPosition = new Vector3(Player.Instance.transform.position.x + 10f, 0, 0);
+        }
 
         if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
             if (DemoMainLevelManager.Instance != null) {
@@ -133,7 +156,6 @@ public class LevelManager : MonoBehaviour
 
             }
             else {
-
                 endLevelPortalPosition = new Vector3(levelHubMerchant.transform.position.x + 10f, 0, 0);
                 StartCoroutine(EnableEndLevelPortal(2f));
             }

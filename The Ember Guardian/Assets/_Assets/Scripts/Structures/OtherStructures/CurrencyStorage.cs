@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class CurrencyStorage : Structure
 {
-    [SerializeField] private PlayerCurrencies.CurrencyType currencyTypeStored;
-    [SerializeField] private Transform currencySpawnPoint;
-    [SerializeField] private int maxCurrencyAmountStored = 15;
-    private int currencyAmountStored;
+    [SerializeField] protected PlayerCurrencies.CurrencyType currencyTypeStored;
+    [SerializeField] protected Transform currencySpawnPoint;
+    [SerializeField] protected int maxCurrencyAmountStored = 15;
+    protected bool engineersCanPickUpOrbs = true;
+    protected int currencyAmountStored;
 
     public event EventHandler OnCurrencyStored;
     public event EventHandler OnCurrencyRemoved;
@@ -32,7 +33,7 @@ public class CurrencyStorage : Structure
         Debug.Log("NewMaxCurrencyAmountStored " + maxCurrencyAmountStored);
     }
 
-    private void GameInput_OnCurrencyCollectedFromContainer(object sender, EventArgs e) {
+    protected virtual void GameInput_OnCurrencyCollectedFromContainer(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (currencyAmountStored <= 0) return;
 
@@ -79,11 +80,15 @@ public class CurrencyStorage : Structure
         return currencyAmountStored;
     }
 
+    public int GetMaxCurrencyAmountStored() {
+        return maxCurrencyAmountStored;
+    }
+
     public PlayerCurrencies.CurrencyType GetCurrencyTypeStored() {
         return currencyTypeStored;
     }
 
-    private void RefreshInteractable() {
+    protected void RefreshInteractable() {
         if(currencyAmountStored < maxCurrencyAmountStored) {
             ActivateStructurePrimaryFunctionInteraction(true);
         } else {
@@ -95,8 +100,8 @@ public class CurrencyStorage : Structure
         return (float)currencyAmountStored/ (float)maxCurrencyAmountStored;
     }
 
-    public bool GetStorageFull() {
-        return currencyAmountStored >= maxCurrencyAmountStored;
+    public bool GetEngineerCanPickUpOrbs() {
+        return currencyAmountStored >= maxCurrencyAmountStored && engineersCanPickUpOrbs;
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {

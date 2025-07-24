@@ -38,6 +38,7 @@ public class StructureSO : ScriptableObject
         orbExtractor,
         engineerShrine,
         currencyStorage,
+        currencyStorage_Objective,
     }
     public enum StructureCategory {
         core,
