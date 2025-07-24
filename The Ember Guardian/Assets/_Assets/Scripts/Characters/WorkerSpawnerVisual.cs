@@ -7,7 +7,7 @@ public class WorkerSpawnerVisual : MonoBehaviour
 {
     private MobSpawner mobSpawner;
     private Animator animator;
-    [SerializeField] private Light2D light;
+    [SerializeField] private List<Light2D> lightList;
     [SerializeField] private Animator lightAnimator;
 
     private void Awake() {
@@ -24,8 +24,10 @@ public class WorkerSpawnerVisual : MonoBehaviour
             lightAnimator.SetTrigger("On");
         }
 
-        if(light != null) {
-            light.enabled = true;
+        if(lightList.Count != 0) {
+            foreach(Light2D light in lightList) {
+                light.enabled = true;
+            }
         }
     }
 
@@ -39,8 +41,10 @@ public class WorkerSpawnerVisual : MonoBehaviour
             lightAnimator.SetTrigger("Off");
         }
 
-        if (light != null) {
-            light.enabled = false;
+        if (lightList.Count != 0) {
+            foreach (Light2D light in lightList) {
+                light.enabled = false;
+            }
         }
     }
 }

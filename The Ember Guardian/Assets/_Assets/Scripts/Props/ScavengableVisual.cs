@@ -132,6 +132,10 @@ public class ScavengableVisual : MonoBehaviour
             bodySpriteRenderer.sprite = depletedSprite;
         }
 
+        if(glowSpriteRenderer != null) {
+            glowSpriteRenderer.enabled = false;
+        }
+
         scavengableUIAnimator.gameObject.SetActive(false);
     }
 

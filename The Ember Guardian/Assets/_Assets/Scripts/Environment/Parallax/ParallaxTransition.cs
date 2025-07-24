@@ -37,14 +37,27 @@ public class ParallaxTransition : MonoBehaviour
 
     private void Update() {
 
-        if(Player.Instance.transform.position.x < rightTransitionPosition && Player.Instance.transform.position.x > leftTransitionPosition) {
+        float playerX = Player.Instance.transform.position.x;
 
-            float rightParallaxAmount = (Player.Instance.transform.position.x - leftTransitionPosition) / transitionRange;
-            float leftParallaxAmount = 1- rightParallaxAmount;
+        // GESTION DES TRANSPARENCES
+        if (playerX < rightTransitionPosition && playerX > leftTransitionPosition) {
+            float rightParallaxAmount = (playerX - leftTransitionPosition) / transitionRange;
+            float leftParallaxAmount = 1f - rightParallaxAmount;
 
             leftParallax.SetParallaxTransparency(leftParallaxAmount);
             rightParallax.SetParallaxTransparency(rightParallaxAmount);
-
+        }
+        else {
+            // Sortie à gauche
+            if (playerX <= leftTransitionPosition) {
+                leftParallax.SetParallaxTransparency(1f);
+                rightParallax.SetParallaxTransparency(0f);
+            }
+            // Sortie à droite
+            else if (playerX >= rightTransitionPosition) {
+                leftParallax.SetParallaxTransparency(0f);
+                rightParallax.SetParallaxTransparency(1f);
+            }
         }
 
         if (Player.Instance.transform.position.x < rightCameraTransitionPosition && Player.Instance.transform.position.x > leftCameraTransitionPosition) {

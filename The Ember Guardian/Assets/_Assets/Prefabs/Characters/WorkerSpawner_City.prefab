@@ -68,6 +68,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -1263226723, guid: 5098325944ee4364d874f1176a21b921, type: 3}
+    - target: {fileID: 4398358682168850030, guid: 265056ee7ddc9014889f39dd6af5ab46, type: 3}
+      propertyPath: lightList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398358682168850030, guid: 265056ee7ddc9014889f39dd6af5ab46, type: 3}
+      propertyPath: lightList.Array.data[0]
+      value: 
+      objectReference: {fileID: 8193356145486730451}
     - target: {fileID: 5474458405317905971, guid: 265056ee7ddc9014889f39dd6af5ab46, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -93,3 +101,14 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 265056ee7ddc9014889f39dd6af5ab46, type: 3}
+--- !u!114 &8193356145486730451 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5531511217646096610, guid: 265056ee7ddc9014889f39dd6af5ab46, type: 3}
+  m_PrefabInstance: {fileID: 4429085879593747505}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

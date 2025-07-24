@@ -13,6 +13,7 @@ public class Fog_Front : MonoBehaviour
 
     private float screenRadius = 10f;
     private bool fireLitAndOutsideFogDisappeared;
+    private bool inCavern;
 
     private void Awake() {
         fogRenderer = GetComponent<SpriteRenderer>();
@@ -35,6 +36,7 @@ public class Fog_Front : MonoBehaviour
 
     private void Update() {
         if (initialAlpha == 0) return;
+        if (inCavern) return;
         if(fireLitAndOutsideFogDisappeared) {
             AdjustFogAlphaBasedOnDistance();
         }
@@ -85,6 +87,65 @@ public class Fog_Front : MonoBehaviour
         fogRenderer.color = new Color(fogRenderer.color.r, fogRenderer.color.g, fogRenderer.color.b, 0f);
         fogRenderer.material.SetFloat("_FadeAmount", 0);
     }
+    private IEnumerator FadeOutFogAlpha() {
+        float elapsed = 0f;
 
+        while (elapsed < fadeDuration) {
+            elapsed += Time.deltaTime;
+            float t = elapsed / fadeDuration;
+
+            // Appliquer une courbe Ease-In (quadratique)
+            t = t * t;
+
+            // Calculer la nouvelle valeur de fade
+            float newAlpha = Mathf.Lerp(1, 0, t);
+
+            // Mettre à jour l'alpha
+            fogRenderer.color = new Color(fogRenderer.color.r, fogRenderer.color.g, fogRenderer.color.b, newAlpha);
+            yield return null;
+        }
+
+        // Fin du fade-out
+        fireLitAndOutsideFogDisappeared = true;
+
+        fogRenderer.color = new Color(fogRenderer.color.r, fogRenderer.color.g, fogRenderer.color.b, 0f);
+        fogRenderer.material.SetFloat("_FadeAmount", 0);
+    }
+
+    private IEnumerator FadeInFogAlpha() {
+        float elapsed = 0f;
+
+        // Obtenir l'alpha initial
+        float startFade = 0;
+
+        while (elapsed < fadeDuration) {
+            elapsed += Time.deltaTime;
+            float t = elapsed / fadeDuration;
+
+            // Appliquer une courbe Ease-In (quadratique)
+            t = t * t;
+
+            // Calculer la nouvelle valeur de fade
+            float newFade = Mathf.Lerp(1, 0, t);
+
+            // Mettre à jour l'alpha
+            fogRenderer.color = new Color(fogRenderer.color.r, fogRenderer.color.g, fogRenderer.color.b, newFade);
+            yield return null;
+        }
+
+        // Fin du fade-out
+        fogRenderer.color = new Color(fogRenderer.color.r, fogRenderer.color.g, fogRenderer.color.b, 1);
+    }
+
+    public void SetInCavern(bool inCavern) {
+        if (!LevelManager.Instance.GetLevelSO().hasFog) return;
+        this.inCavern = inCavern;
+
+        if(inCavern) {
+            StartCoroutine(FadeOutFogAlpha());
+        } else {
+            StartCoroutine(FadeInFogAlpha());
+        }
+    }
 
 }

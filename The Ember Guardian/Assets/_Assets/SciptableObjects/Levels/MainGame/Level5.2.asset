@@ -67,15 +67,15 @@ MonoBehaviour:
   maxWaveInAnimationCurve: 0
   canSpawnElite: 1
   environmentType: 2
-  hasFog: 1
-  fogFrontAlpha: 1
-  fogBackAlpha: 1
+  hasFog: 0
+  fogFrontAlpha: 0.5
+  fogBackAlpha: 0.5
   hasWind: 0
   initialWindStrength: 0
   windStrengthsAllowedInLevel: 
-  hasRain: 0
+  hasRain: 1
   initialRainIntensity: 0
-  rainIntensitiesAllowedInLevel: 
+  rainIntensitiesAllowedInLevel: 000000000100000002000000
   levelRandomBackgroundTracks: []
   levelExplorationTracks:
   - {fileID: 8300000, guid: 6aff3c3b53839b84999b8acaf10537cd, type: 3}

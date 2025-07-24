@@ -326,7 +326,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c91b83b2cc6893b47b99ebced7a2a63a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  light: {fileID: 5531511217646096610}
+  lightList:
+  - {fileID: 5531511217646096610}
   lightAnimator: {fileID: 5474458405317905971}
 --- !u!95 &121082607926170886
 Animator:
