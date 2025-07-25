@@ -21,6 +21,7 @@ public class CreatureAI : MonoBehaviour {
     [SerializeField] protected float roamChangeDestinationRate = 10f;
     [SerializeField] protected float roamRadius = 3f;
     protected float roamTimer;
+    private float flankDirection = 1;
 
     protected bool aggroedRecently;
     protected bool died;
@@ -63,6 +64,10 @@ public class CreatureAI : MonoBehaviour {
         creature.OnMobHitObstacle += Creature_OnMobHitObstacle;
 
         SetAttackRange();
+
+        if (creature.GetCreatureSO().canFlank) {
+            flankDirection = Mathf.Sign(UnityEngine.Random.Range(-1f, 1f));
+        }
     }
 
 
@@ -71,10 +76,26 @@ public class CreatureAI : MonoBehaviour {
         float minAttackRangeSO = creatureAttack.GetCurrentCreatureAttackSO().minAttackRange;
         float maxAttackRangeSO = creatureAttack.GetCurrentCreatureAttackSO().maxAttackRange;
         float attackRangeRandomizerSO = creatureAttack.GetCurrentCreatureAttackSO().attackRangeRandomizer;
+        float maxAttackRangeRandomizerSO = creatureAttack.GetCurrentCreatureAttackSO().maxAttackRangeRandomizer;
 
-        minAttackRange = minAttackRangeSO + UnityEngine.Random.Range(-attackRangeRandomizerSO, attackRangeRandomizerSO);
-        maxAttackRange = maxAttackRangeSO + UnityEngine.Random.Range(-attackRangeRandomizerSO, attackRangeRandomizerSO);
-    
+        float attackRangeRandomizer = UnityEngine.Random.Range(-attackRangeRandomizerSO, attackRangeRandomizerSO);
+        float maxAttackRangeRandomizer = UnityEngine.Random.Range(-maxAttackRangeRandomizerSO, maxAttackRangeRandomizerSO);
+        minAttackRange = minAttackRangeSO + attackRangeRandomizer;
+        maxAttackRange = maxAttackRangeSO + maxAttackRangeRandomizer;
+
+        if(minAttackRange < 0 ) {
+            minAttackRange *= -1;
+            maxAttackRange *= -1;
+        }
+
+        if(minAttackRange < maxAttackRange) {
+            maxAttackRange = minAttackRange + .2f;
+        }
+    }
+
+    protected void SetAttackDir() {
+        if (creature.GetCreatureSO().canFlank) return;
+        flankDirection = -Mathf.Sign((attackTarget as MonoBehaviour).transform.position.x - transform.position.x);
     }
 
     private void SetInitialState() {
@@ -308,6 +329,7 @@ public class CreatureAI : MonoBehaviour {
             }
 
             creatureAttack.RemoveAttackTarget();
+            SetAttackDir();
         }
 
         if (newState == State.idle) {
@@ -336,13 +358,22 @@ public class CreatureAI : MonoBehaviour {
 
     protected virtual void HeadToTarget() {
         if ((attackTarget as MonoBehaviour) == null) return;
-        
-        Vector3 targetDestination = attackTarget.GetMeleeAttackPosition().position;
 
-        creatureMovement.SetMoveTarget(targetDestination);
-        if (Mathf.Abs(transform.position.x - targetDestination.x) < minAttackRange) {
+        Vector3 targetPosition = attackTarget.GetMeleeAttackPosition().position;
+        Vector3 destination;
+
+        destination = targetPosition + new Vector3(Mathf.Abs(minAttackRange) * flankDirection, 0f, 0f);
+        // Distance jusqu’à la position derrière la cible
+        float distanceToDestination = Mathf.Abs(transform.position.x - destination.x);
+
+        // Si on y est: attaque
+        if (distanceToDestination < 0.1f) {
             ChangeState(State.attacking);
+            return;
         }
+
+        // Dans les deux cas, on continue à se déplacer
+        creatureMovement.SetMoveTarget(destination);
     }
 
     protected virtual void MoveTowardsFire() {

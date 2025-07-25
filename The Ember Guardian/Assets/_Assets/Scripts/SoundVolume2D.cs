@@ -10,6 +10,7 @@ public class SoundVolume2D : MonoBehaviour
 
     [SerializeField] private bool active = true;
     private float sfxVolume;
+    private float fadeMultiplier = 1f;
 
     private void Awake() {
         audioSource = GetComponent<AudioSource>();
@@ -32,11 +33,13 @@ public class SoundVolume2D : MonoBehaviour
 
         if(volume < 0) volume = 0;
 
-        audioSource.volume = volume;
+        audioSource.volume = volume * fadeMultiplier;
     }
 
     public void SetMaxDistanceToHear(float distance) {
         maxDistanceToHear = distance;
     }
-
+    public void SetFadeMultiplier(float value) {
+        fadeMultiplier = Mathf.Clamp01(value);
+    }
 }

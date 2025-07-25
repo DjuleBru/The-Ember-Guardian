@@ -17,6 +17,7 @@ public class PortalSound : SoundObject {
     [SerializeField] private AudioSource teleporterIdleAudioSource;
     private AudioSource teleporterAudioSource;
     private Portal portal;
+    private SoundVolume2D soundVolume2D;
 
     private void Awake() {
         portal = GetComponentInParent<Portal>();
@@ -29,6 +30,8 @@ public class PortalSound : SoundObject {
         portal.OnPlayerEnteredTriggerArea += Portal_OnPlayerEnteredTriggerArea;
         portal.OnPlayerExitedTriggerArea += Portal_OnPlayerExitedTriggerArea;
         portal.OnTeleporterActivatedOut += Portal_OnTeleporterActivatedOut;
+
+        soundVolume2D = teleporterIdleAudioSource.GetComponent<SoundVolume2D>();
     }
 
     protected override void Start() {
@@ -39,7 +42,7 @@ public class PortalSound : SoundObject {
         }
        
         teleporterIdleAudioSource.clip = idleAudioClip;
-        if(teleporterIdleAudioSource.enabled) {
+        if(portal.GetIsHUBTeleporter()) {
             teleporterIdleAudioSource.Play();
         }
     }
@@ -60,10 +63,12 @@ public class PortalSound : SoundObject {
 
     private void Portal_OnPortalDisappeared(object sender, System.EventArgs e) {
         teleporterAudioSource.PlayOneShot(appearAudioClip, .15f * sfxVolume);
+        FadeOutIdleAudio(2f);
     }
 
     private void Portal_OnPlayerExitedTriggerArea(object sender, System.EventArgs e) {
         teleporterAudioSource.PlayOneShot(beamLightOffAudioClip, .5f * sfxVolume);
+        Debug.Log("Portal_OnPlayerExitedTriggerArea");
     }
 
     private void Portal_OnPlayerEnteredTriggerArea(object sender, System.EventArgs e) {
@@ -72,6 +77,7 @@ public class PortalSound : SoundObject {
 
     private void Portal_OnPortalAppeared(object sender, System.EventArgs e) {
         StartCoroutine(PlayDelayed(.1f, appearAudioClip, .3f));
+        FadeInIdleAudio(2f);
     }
 
     private void Portal_OnPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
@@ -86,6 +92,32 @@ public class PortalSound : SoundObject {
     private IEnumerator PlayDelayed(float delay, AudioClip audioClip, float volume) {
         yield return new WaitForSeconds(delay);
         teleporterAudioSource.PlayOneShot(audioClip, volume * sfxVolume);
+    }
+    public void FadeInIdleAudio(float duration = 1f) {
+        if (!teleporterIdleAudioSource.isPlaying)
+            teleporterIdleAudioSource.Play();
+        StartCoroutine(FadeIdleAudioVolume(0f, 1f, duration));
+    }
+
+    public void FadeOutIdleAudio(float duration = 1f) {
+        StartCoroutine(FadeIdleAudioVolume(1f, 0f, duration, stopAfterFade: true));
+    }
+
+    private IEnumerator FadeIdleAudioVolume(float from, float to, float duration, bool stopAfterFade = false) {
+        float t = 0f;
+
+        while (t < duration) {
+            t += Time.deltaTime;
+            float value = Mathf.Lerp(from, to, t / duration);
+            soundVolume2D.SetFadeMultiplier(value);
+            yield return null;
+        }
+
+        soundVolume2D.SetFadeMultiplier(to);
+
+        if (stopAfterFade && to == 0f) {
+            teleporterIdleAudioSource.Stop();
+        }
     }
 
 }

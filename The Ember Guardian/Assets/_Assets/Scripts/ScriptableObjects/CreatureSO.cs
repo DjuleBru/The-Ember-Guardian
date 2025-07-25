@@ -56,6 +56,9 @@ public class CreatureSO : ScriptableObject
     public bool flying;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
+    public bool canFlank;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
     [Range(1, 20)]
     [ShowIf("flying")]
     public float flightMinAltitude;

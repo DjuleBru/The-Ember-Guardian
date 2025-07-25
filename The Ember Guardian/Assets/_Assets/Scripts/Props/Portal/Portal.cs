@@ -188,7 +188,7 @@ public class Portal : MonoBehaviour
 
     private IEnumerator RemoveTeleporter() {
         playerInTriggerArea = false;
-        OnPlayerExitedTriggerArea?.Invoke(this, EventArgs.Empty);
+        //OnPlayerExitedTriggerArea?.Invoke(this, EventArgs.Empty);
         floorCollider.enabled = false;
         GetComponent<Collider2D>().enabled = false;
 

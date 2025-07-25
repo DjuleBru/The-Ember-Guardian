@@ -43,6 +43,9 @@ public class CreatureAttackSO : ScriptableObject
     public float attackRangeRandomizer;
     [BoxGroup("General")]
     [LabelWidth(200)]
+    public float maxAttackRangeRandomizer;
+    [BoxGroup("General")]
+    [LabelWidth(200)]
     public int damage;
     [BoxGroup("General")]
     [LabelWidth(200)]
