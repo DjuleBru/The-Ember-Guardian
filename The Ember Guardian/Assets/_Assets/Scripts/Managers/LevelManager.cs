@@ -36,7 +36,9 @@ public class LevelManager : MonoBehaviour
 
 
     private void Start() {
-        conditionalLockedStructureLocation.gameObject.SetActive(false);
+        if(conditionalLockedStructureLocation != null) {
+            conditionalLockedStructureLocation.gameObject.SetActive(false);
+        }
 
         if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest) {
             EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
@@ -127,8 +129,10 @@ public class LevelManager : MonoBehaviour
         }
 
         if(levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
-            conditionalLockedStructureLocation.gameObject.SetActive(true);
-            conditionalLockedStructureLocation.UnlockStructureLocation();
+            if(conditionalLockedStructureLocation != null) {
+                conditionalLockedStructureLocation.gameObject.SetActive(true);
+                conditionalLockedStructureLocation.UnlockStructureLocation();
+            }
         }
     }
 

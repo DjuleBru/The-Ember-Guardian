@@ -78,7 +78,7 @@ public class PetDog : MonoBehaviour
         RefreshCanPetDog();
     }
 
-    private void StartPetDog() {
+    public void StartPetDog() {
         playerPettingDog = true;
 
         dogMovement.SetMoveTarget(Player.Instance.transform.position);

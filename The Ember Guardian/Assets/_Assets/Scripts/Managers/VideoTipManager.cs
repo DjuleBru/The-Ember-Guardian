@@ -24,11 +24,16 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO storeGemsTip;
     [SerializeField] private VideoTipSO swapWeaponTip;
     [SerializeField] private VideoTipSO huntingFlagTip;
-    [SerializeField] private VideoTipSO scavengablesTip;
+    [SerializeField] private VideoTipSO scavengersTip;
+    [SerializeField] private VideoTipSO engineersTip_basic;
+    [SerializeField] private VideoTipSO engineersTip_advanced;
+    [SerializeField] private VideoTipSO guardTips;
     [SerializeField] private VideoTipSO worldPortalTip;
     [SerializeField] private VideoTipSO scavengableObstacleTip;
     [SerializeField] private VideoTipSO controlEmberlingsTip;
     [SerializeField] private VideoTipSO architectTableTip;
+    [SerializeField] private VideoTipSO mineTip;
+    [SerializeField] private VideoTipSO watcherArtifactTip;
 
     private bool isLevelScene;
     private bool isTutorialScene;
@@ -57,6 +62,11 @@ public class VideoTipManager : MonoBehaviour
     private bool scavengableObstacleTipShown;
     private bool controlEmberlingsTipShown;
     private bool architectTableTipShown;
+    private bool engineerTipBasicShown;
+    private bool engineerTipAdvancedShown;
+    private bool mineTipShown;
+    private bool guardTipShown;
+    private bool watcherArtifactTipShown;
 
 
     private void Awake() {
@@ -117,11 +127,33 @@ public class VideoTipManager : MonoBehaviour
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+        Worker.OnAnyWorkerRecruited += Worker_OnAnyWorkerRecruited;
+        Scavengable.OnAnyScavengableMarkedToScavenge += Scavengable_OnAnyScavengableMarkedToScavenge;
+        StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
 
-        if(EndLevelArea.Instance != null) {
+        if (EndLevelArea.Instance != null) {
             EndLevelArea.Instance.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
         }
 
+    }
+
+    private void Scavengable_OnAnyScavengableMarkedToScavenge(object sender, EventArgs e) {
+        Scavengable scavengable = sender as Scavengable;
+        if(scavengable.GetIsMine()) {
+            if (mineTipShown) return;
+            mineTipShown = true;
+            ES3.Save("mineTipShown", true);
+
+            VideoTipUI.Instance.PlayTipSO(mineTip, .5f);
+        }
+    }
+
+    private void Worker_OnAnyWorkerRecruited(object sender, EventArgs e) {
+        Worker worker = (Worker)sender;
+
+        if (worker.GetWildJobType() == WorkerAI.JobTypes.engineer) {
+            
+        }
     }
 
     private void SubscribeToHubEvents() {
@@ -173,15 +205,46 @@ public class VideoTipManager : MonoBehaviour
         }
 
         if (hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.StructuresMerchant) {
+
             if (!isLevelScene) return;
-            if (LevelManager.Instance.GetLevelSO().endLevelType != LevelUI_ObjectiveUI.ObjectiveType.FindArchitectTable) return;
-            if (scavengableObstacleTipShown) return;
+            if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindArchitectTable) {
+                if (scavengableObstacleTipShown) return;
 
-            VideoTipUI.Instance.PlayTipSO(scavengableObstacleTip, 1f);
+                VideoTipUI.Instance.PlayTipSO(scavengableObstacleTip, 1f);
 
-            scavengableObstacleTipShown = true;
-            ES3.Save("scavengableObstacleTipShown", true);
+                scavengableObstacleTipShown = true;
+                ES3.Save("scavengableObstacleTipShown", true);
 
+            }; 
+            
+            if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
+                if(engineerTipBasicShown) return;
+
+                engineerTipBasicShown = true;
+                ES3.Save("engineerTipBasicShown", true);
+                VideoTipUI.Instance.PlayTipSO(engineersTip_basic);
+
+            };
+
+        }
+    }
+
+    private void StructureLocation_OnAnyStructureBuilt(object sender, EventArgs e) {
+        StructureLocation structureLocation = (StructureLocation)sender;
+        StructureSO structureSO = structureLocation.GetStructureSOToBuild();
+
+        if (structureSO.structureType == StructureSO.StructureType.hunterShrine) {
+            if (hunterTipShown) return;
+            VideoTipUI.Instance.PlayTipSO(hunterTip, 0f);
+            hunterTipShown = true;
+        }
+
+        if (structureSO.structureType == StructureSO.StructureType.currencyStorage_Objective) {
+            if (watcherArtifactTipShown) return;
+            VideoTipUI.Instance.PlayTipSO(watcherArtifactTip, 1f);
+            watcherArtifactTipShown = true;
+
+            ES3.Save("watcherArtifactTipShown", true);
         }
     }
 
@@ -236,7 +299,7 @@ public class VideoTipManager : MonoBehaviour
         };
 
         if(!scavengablesTipShown && LevelManager.Instance.GetLevelSO().levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.ExploreCorruptedCity) {
-            VideoTipUI.Instance.PlayTipSO(scavengablesTip, 1f);
+            VideoTipUI.Instance.PlayTipSO(scavengersTip, 1f);
 
             scavengablesTipShown = true;
             ES3.Save("scavengablesTipShown", true);
@@ -286,22 +349,6 @@ public class VideoTipManager : MonoBehaviour
         }
     }
 
-    private void StructureLocation_OnAnyStructureBuilt(object sender, EventArgs e) {
-        StructureLocation structureLocation = (StructureLocation)sender;
-        StructureSO structureSO = structureLocation.GetStructureSOToBuild();
-
-        if(structureSO.structureType == StructureSO.StructureType.hunterShrine) {
-            if (hunterTipShown) return;
-            VideoTipUI.Instance.PlayTipSO(hunterTip, 0f);
-            hunterTipShown = true;
-        }
-
-        //if (structureSO.structureType == StructureSO.StructureType.tower) {
-        //    if (setupDefensesTipShown) return;
-        //    VideoTipUI.Instance.PlayTipSO(setupDefensesTip, 1f);
-        //    setupDefensesTipShown = true;
-        //}
-    }
 
     private void TutorialCollider_OnRecruitWorkerTipCollided(object sender, EventArgs e) {
         if (recruitEmberlingTipShown) return;
@@ -355,6 +402,11 @@ public class VideoTipManager : MonoBehaviour
         scavengableObstacleTipShown = ES3.Load("scavengableObstacleTipShown", false);
         controlEmberlingsTipShown = ES3.Load("controlEmberlingsTipShown", false);
         architectTableTipShown = ES3.Load("architectTableTipShown", false);
+        engineerTipBasicShown = ES3.Load("engineerTipBasicShown", false);
+        engineerTipAdvancedShown = ES3.Load("engineerTipAdvancedShown", false);
+        guardTipShown = ES3.Load("guardTipShown", false);
+        mineTipShown = ES3.Load("mineTipShown", false);
+        watcherArtifactTipShown = ES3.Load("watcherArtifactTipShown", false);
     }
 
     private void OnDestroy() {
@@ -364,6 +416,7 @@ public class VideoTipManager : MonoBehaviour
         Player.Instance.OnPlayerExitedCamp -= Player_OnPlayerExitedCamp;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         HubMerchant.OnAnyPlayerTriggeredIn -= HubMerchant_OnAnyPlayerTriggeredIn;
+        Worker.OnAnyWorkerRecruited -= Worker_OnAnyWorkerRecruited;
 
         UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
         Mob.OnAnyMobDied -= Creature_OnAnyMobDied;

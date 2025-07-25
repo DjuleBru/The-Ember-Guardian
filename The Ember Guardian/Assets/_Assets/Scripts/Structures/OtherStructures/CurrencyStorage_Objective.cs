@@ -7,6 +7,7 @@ public class CurrencyStorage_Objective : CurrencyStorage
 {
 
     [SerializeField] private List<int> maxCurrencyStorageList;
+    [SerializeField] private List<float> difficultyReductionFactorsList;
     private int maxCurrencyStorageIndex;
 
     public event EventHandler OnMaxCurrencyAmountReached;
@@ -25,6 +26,7 @@ public class CurrencyStorage_Objective : CurrencyStorage
         if(currencyAmountStored == maxCurrencyAmountStored) {
             OnMaxCurrencyAmountReached?.Invoke(this, EventArgs.Empty);
             OnAnyMaxCurrencyAmountReached?.Invoke(this, EventArgs.Empty);
+            ActivateWaveDifficultyReductionEffect();
 
             if ((maxCurrencyStorageIndex+1) < maxCurrencyStorageList.Count) {
                 RefreshMaxCurrencyAmountStored();
@@ -34,6 +36,11 @@ public class CurrencyStorage_Objective : CurrencyStorage
             RefreshInteractable();
         }
 
+    }
+
+    private void ActivateWaveDifficultyReductionEffect() {
+        CreaturesSpawnManager.Instance.ApplyPermanentShockwaveEffect(difficultyReductionFactorsList[maxCurrencyStorageIndex]);
+        DayNightVisualsManager.Instance.RefreshSunColorBasedOnDifficulty(.75f);
     }
 
     private void RefreshMaxCurrencyAmountStored() {

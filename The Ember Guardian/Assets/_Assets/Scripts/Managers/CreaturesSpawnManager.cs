@@ -39,6 +39,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
     private int minDifficultyAtMaxWave;
     private int maxDifficultyAtMaxWave;
     private int maxWavesInAnimationCurve;
+    private float cumulativeDifficultyMultiplier = 1f;
 
     private bool hasBoss;
     private CreatureSO bossCreatureType;
@@ -60,6 +61,9 @@ public class CreaturesSpawnManager : MonoBehaviour {
     private bool canSpawnElite;
     private float eliteSpawnProbability = .05f;
 
+    [SerializeField] private float referenceWaveInitialDifficulty;
+    [SerializeField] private float referenceWaveGrowthFactor;
+    private float referenceWaveDifficulty;
     private float waveDifficulty;
     private float initialMinSubwaveDifficulty;
     private float minSubwaveDifficulty;
@@ -187,7 +191,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.U)) {
             currentWaveNumber++;
             SetWaveParameters(currentWaveNumber, true, true);
-            SetTutorialWave();
+            //SetTutorialWave();
         }
         if (Input.GetKeyDown(KeyCode.T)) {
             Debug.Log("SpawnWave");
@@ -208,6 +212,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         else {
             SetWaveParameters(currentWaveNumber, true, true);
         }
+        SetReferenceWaveParameters(currentWaveNumber);
     }
 
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
@@ -248,6 +253,11 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
         minSubwaveDifficulty = initialMinSubwaveDifficulty * Mathf.Pow(minMaxSubwaveDifficultyGrowthFactor, waveNumber);
         maxSubwaveDifficulty = initialMaxSubwaveDifficulty * Mathf.Pow(minMaxSubwaveDifficultyGrowthFactor, waveNumber);
+
+        // Appliquer le multiplicateur cumulatif
+        waveDifficulty *= cumulativeDifficultyMultiplier;
+        minSubwaveDifficulty *= cumulativeDifficultyMultiplier;
+        maxSubwaveDifficulty *= cumulativeDifficultyMultiplier;
 
         // Add boss
         if (hasBoss) {
@@ -316,6 +326,10 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
         //Debug.Log("totalNightCreatures " + totalNightCreatures);
         remainingNightCreatures = totalNightCreatures;
+    }
+
+    private void SetReferenceWaveParameters(int waveNumber) {
+        referenceWaveDifficulty = referenceWaveInitialDifficulty * Mathf.Pow(waveNumber, referenceWaveGrowthFactor);
     }
 
     private List<SpawnedCreatureInfo> PrepareSubWaveCreatures(float subWaveDifficulty, float leftProportion, int subWaveIndex, bool subWaveRandomSideProportion) {
@@ -603,6 +617,12 @@ public class CreaturesSpawnManager : MonoBehaviour {
         }
     }
 
+    public void ApplyPermanentShockwaveEffect(float additionalReductionMultiplier) {
+        cumulativeDifficultyMultiplier *= additionalReductionMultiplier;
+        Debug.Log("cumulativeDifficultyMultiplier " + cumulativeDifficultyMultiplier);
+        SetWaveParameters(currentWaveNumber, true, true);
+    }
+
     public bool GetAllNightCreaturesKilled() {
         return remainingNightCreatures == 0;
     }
@@ -661,6 +681,10 @@ public class CreaturesSpawnManager : MonoBehaviour {
     }
     public void SetSetDifficultyAnimationCurve() {
         setDifficultyAnimationCurve = true;
+    }
+
+    public float GetReferenceWaveDifficulty() {
+        return referenceWaveDifficulty;
     }
     public Dictionary<CreatureSO, int> GetNextWaveCreaturesBySide(SpawnSide side) {
         Dictionary<CreatureSO, int> creaturesCount = new Dictionary<CreatureSO, int>();

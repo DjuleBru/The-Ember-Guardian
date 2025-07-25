@@ -282,11 +282,13 @@ public class DogStats : MonoBehaviour {
         retreiverUnlocked = true;
         Dog.Instance.SetDogType(Dog.DogType.GoldenRetreiver);
         OnNewDogUnlocked?.Invoke(this, EventArgs.Empty);
+        ES3.Save("retreiverUnlocked", retreiverUnlocked);
     }
     public void UnlockDarkCompanion() {
         darkCompanionUnlocked = true;
         Dog.Instance.SetDogType(Dog.DogType.DarkCompanion);
         OnNewDogUnlocked?.Invoke(this, EventArgs.Empty);
+        ES3.Save("darkCompanionUnlocked", darkCompanionUnlocked);
     }
 
     public void UnlockGermanShepherdBiteAbility() {
@@ -422,8 +424,6 @@ public class DogStats : MonoBehaviour {
 
     #region SAVE PARAMETERS
     public void SaveDogStats() {
-        ES3.Save("retreiverUnlocked", retreiverUnlocked);
-        ES3.Save("darkCompanionUnlocked", darkCompanionUnlocked);
 
         ES3.Save("germanShepherdBiteAbilityUnlocked", germanShepherdBiteAbilityUnlocked);
         ES3.Save("germanShepherdDigResourceAbilityUnlocked", germanShepherdDigResourceAbilityUnlocked);

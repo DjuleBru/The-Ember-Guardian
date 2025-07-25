@@ -63,7 +63,8 @@ public class StructureLocationVisual : MonoBehaviour
     }
 
     protected virtual void StructureLocation_OnStructureLocationUnlocked(object sender, System.EventArgs e) {
-        if (progression_locked) return;
+        progression_locked = false;
+        structureVisual_ProgressionLocked.gameObject.SetActive(false);
 
         slotVisual.SetActive(true);
     }

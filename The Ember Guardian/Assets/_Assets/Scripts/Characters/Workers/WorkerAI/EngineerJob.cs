@@ -103,7 +103,14 @@ public class EngineerJob : WorkerJob {
             switch (state) {
 
                 case EngineerState.idle:
-                    RoamInCampCenter();
+
+                    if (isInSafeZone) {
+                        RoamInCampCenter();
+                    }
+                    else {
+                        HeadToCampCenter();
+                    }
+
                     CheckAvailableWork();
                     break;
 

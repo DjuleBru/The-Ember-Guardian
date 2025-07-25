@@ -411,4 +411,27 @@ public class PlayerCamp : MonoBehaviour
         float worldLayoutPosition = relativeLayoutPosition * layoutToWorldConversionFactor;
         return worldLayoutPosition;
     }
+
+    public void ReplaceStructureLocation(StructureLocation oldLocation, StructureLocation newLocation) {
+        if (allStructureLocations.Contains(oldLocation)) {
+            int index = allStructureLocations.IndexOf(oldLocation);
+            allStructureLocations[index] = newLocation;
+        }
+
+        if (trapLocations.Contains(oldLocation)) {
+            trapLocations.Remove(oldLocation);
+            if (newLocation.GetStructureSOToBuild().structureCategory == StructureSO.StructureCategory.trap)
+                trapLocations.Add(newLocation);
+        }
+
+        if (towerLocations.Contains(oldLocation)) {
+            towerLocations.Remove(oldLocation);
+            if (newLocation.GetStructureSOToBuild().structureCategory == StructureSO.StructureCategory.tower)
+                towerLocations.Add(newLocation);
+        }
+    }
+
+    public List<StructureLocation> GetAllStructureLocations() {
+        return allStructureLocations;
+    }
 }

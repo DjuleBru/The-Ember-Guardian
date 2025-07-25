@@ -118,7 +118,6 @@ public class PlayerCurrencies : MonoBehaviour
     }
 
     private void DropBigOrbOnFloor() {
-        Debug.Log("DropBigOrbOnFloor");
         lastBlueOrbDroppedOnTheFloor = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(CurrencyType.bigBlueOrb), blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
 
         float aimDirX = PlayerAim.Instance.GetAimDir().x;

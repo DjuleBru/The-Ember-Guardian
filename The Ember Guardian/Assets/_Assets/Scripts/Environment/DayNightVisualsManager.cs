@@ -5,6 +5,9 @@ using UnityEngine.Rendering.Universal;
 
 public class DayNightVisualsManager : MonoBehaviour
 {
+
+    public static DayNightVisualsManager Instance;
+
     [SerializeField] private Color dawnLightColor;
     [SerializeField] private Color dawnSkyColor;
     [SerializeField] private float dawnLightIntensity;
@@ -38,6 +41,10 @@ public class DayNightVisualsManager : MonoBehaviour
     [SerializeField] private bool dontHandleSunMovement;
     [SerializeField] private bool dontHandleMoonLight;
 
+    [SerializeField] private bool showIncomingWaveDifficultyOnSun;
+    [SerializeField] private Color sunEasyIncomingWaveColor;
+    [SerializeField] private Color sunHardIncomingWaveColor;
+
     private float nightDawnTransitionAnimationCurveFraction = .05f;
     [SerializeField] private float dawnAnimationCurveFraction = .1f;
 
@@ -65,6 +72,10 @@ public class DayNightVisualsManager : MonoBehaviour
     private bool dayStarted;
     private bool nightStarted;
     private bool duskStarted;
+
+    private void Awake() {
+        Instance = this;
+    }
 
     private void Start() {
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
@@ -305,6 +316,9 @@ public class DayNightVisualsManager : MonoBehaviour
         dawnStarted = true;
         transitionProgress = 0;
 
+        if(showIncomingWaveDifficultyOnSun) {
+            RefreshSunColorBasedOnDifficulty(.1f);
+        }
     }
 
     private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
@@ -344,6 +358,25 @@ public class DayNightVisualsManager : MonoBehaviour
 
     private float LightIntensityTransition(float initialIntensity, float finalIntensity) {
         return Mathf.Lerp(initialIntensity, finalIntensity, transitionProgress);
+    }
+
+    public void RefreshSunColorBasedOnDifficulty(float delay) {
+        StartCoroutine(RefreshSunColorBasedOnDifficultyAfterDelay(delay));
+    }
+
+    public IEnumerator RefreshSunColorBasedOnDifficultyAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+
+        float currentWaveDifficulty = CreaturesSpawnManager.Instance.GetCurrentWaveDifficulty();
+        float referenceWaveDifficulty = CreaturesSpawnManager.Instance.GetReferenceWaveDifficulty();
+
+        float dangerRatio = currentWaveDifficulty / referenceWaveDifficulty;
+        dangerRatio = Mathf.Clamp01((dangerRatio - 1f) / 0.5f);
+
+        Debug.Log("dangerRatio " + dangerRatio);
+        Color sunColor = Color.Lerp(sunEasyIncomingWaveColor, sunHardIncomingWaveColor, dangerRatio);
+
+        sunLight2D.color = sunColor;
     }
 
 }
