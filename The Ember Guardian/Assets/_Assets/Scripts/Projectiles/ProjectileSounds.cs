@@ -10,10 +10,24 @@ public class ProjectileSounds : SoundObject
 
     private void Awake() {
         projectile.OnProjectileHit += Projectile_OnProjectileHit;
+        projectile.OnProjectileInitialized += Projectile_OnProjectileInitialized;
+    }
+
+    private void Projectile_OnProjectileInitialized(object sender, System.EventArgs e) {
+        if(audioSource2D == null) {
+            audioSource2D = GetComponent<AudioSource>();
+        }
+        PlaySound2D(projectile.GetProjectileSO().projectileInstantiatedAudioClips, projectileInstantiatedVolumeMultiplier);
     }
 
     protected override void Start() {
+        // Projectile sounds has not subscribed to initialize : play instantiate sound
         base.Start();
+
+        if (audioSource2D == null) {
+            audioSource2D = GetComponent<AudioSource>();
+        }
+
         PlaySound2D(projectile.GetProjectileSO().projectileInstantiatedAudioClips, projectileInstantiatedVolumeMultiplier);
     }
 

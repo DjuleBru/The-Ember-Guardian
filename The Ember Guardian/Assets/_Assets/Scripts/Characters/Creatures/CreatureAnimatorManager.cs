@@ -99,13 +99,13 @@ public class CreatureAnimatorManager : MonoBehaviour
     protected void HandleXScale() {
         if (stunned || immobilized) return;
 
-        if (moving) {
-            HandleScaleChange(moveDir);
+        if (creatureAttack.GetAttacking()) {
+            HandleScaleChange(creatureAttack.GetAttackDir().x);
             return;
         }
 
-        if (creatureAttack.GetAttacking()) {
-            HandleScaleChange(creatureAttack.GetAttackDir().x);
+        if (moving && moveDir != 0) {
+            HandleScaleChange(moveDir);
             return;
         }
 

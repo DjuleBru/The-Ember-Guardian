@@ -47,6 +47,10 @@ public class CreatureSO : ScriptableObject
     public CreatureAttackSO primaryAttackSO;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
+    public bool hasRangedAndMeleeAttack;
+    [ShowIf("hasRangedAndMeleeAttack")]
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
     public CreatureAttackSO secondaryAttackSO;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]

@@ -17,6 +17,7 @@ public class CreatureAttack : MobAttack
     protected int damageToFire;
     protected int damageToBarricades;
 
+    public event EventHandler OnAttackSOChanged;
 
     protected Transform primaryAttackProjectileSpawnPosition;
     [SerializeField] protected Transform secondaryAttackProjectileSpawnPosition;
@@ -82,6 +83,8 @@ public class CreatureAttack : MobAttack
         if (attackSO == creature.GetCreatureSO().primaryAttackSO) {
             projectileSpawnPoint = primaryAttackProjectileSpawnPosition;
         }
+
+        OnAttackSOChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public override void DealDamage() {

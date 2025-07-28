@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4031d27ff643044292075ec5021e470, type: 3}
+  m_Name: LandMineAttack
+  m_EditorClassIdentifier: 
+  isRangedAttack: 0
+  isProjectileAttack: 0
+  isStaticProjectileAttack: 0
+  isAnimatedAttack: 1
+  attackCooldown: 99
+  minAttackRange: 0.5
+  maxAttackRange: 0.7
+  hasDifferentDayAndNightRange: 0
+  minAttackRange_Night: 0
+  maxAttackRange_Night: 0
+  attackRangeRandomizer: 0
+  maxAttackRangeRandomizer: 0
+  damage: 3
+  damageToFire: 1
+  damageToBarricades: 3
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 0
+  attackAnimationDelay: 0
+  totalAttackAnimationTime: 0.7
+  attackSFXDelayAfterAnimationStart: 0
+  staticProjectilePrefab: {fileID: 0}
+  staticProjectileAutoTargetsPlayer: 0
+  projectileAmountInPool: 0
+  projectileAmountShotInAttack: 0
+  delayBetweenProjectileSpawns: 0
+  projectileSO: {fileID: 0}
+  attackRangeRandomizerMiss: 0
+  attackSFXHandledByAnimation: 0
+  attackAudioClips:
+  - {fileID: 8300000, guid: 496074a782e035c4388ea9af75b91b89, type: 3}
+  - {fileID: 8300000, guid: 7d7161ca8829a324eae79fa7bb172ec1, type: 3}
+  - {fileID: 8300000, guid: 0814ce6316fc6a94c8bd1168122c3294, type: 3}
+  attackHitAudioClips: []
+  attackStartedChargingAudioClips: []
+  attackReleasedAudioClips: []
+  attackVolumeMultiplier: 1
+  attackHitVolumeMultiplier: 0.5

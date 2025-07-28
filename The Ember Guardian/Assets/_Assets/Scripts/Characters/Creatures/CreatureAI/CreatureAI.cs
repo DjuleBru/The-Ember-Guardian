@@ -21,7 +21,7 @@ public class CreatureAI : MonoBehaviour {
     [SerializeField] protected float roamChangeDestinationRate = 10f;
     [SerializeField] protected float roamRadius = 3f;
     protected float roamTimer;
-    private float flankDirection = 1;
+    protected float flankDirection = 1;
 
     protected bool aggroedRecently;
     protected bool died;
@@ -39,6 +39,10 @@ public class CreatureAI : MonoBehaviour {
     public static event EventHandler OnAnyCreatureUntargetPlayer;
     public event EventHandler OnCreatureTargetPlayer;
 
+    protected bool hasRangedAndMeleeAttack;
+    protected CreatureAttackSO rangedAttackSO;
+    protected CreatureAttackSO meleeAttackSO;
+
     public enum State {
         idle,
         walkingToFire,
@@ -55,6 +59,10 @@ public class CreatureAI : MonoBehaviour {
         creatureAttack = GetComponent<CreatureAttack>();
         creature = GetComponent<Creature>();
 
+        hasRangedAndMeleeAttack = creature.GetCreatureSO().hasRangedAndMeleeAttack;
+        rangedAttackSO = creature.GetCreatureSO().primaryAttackSO;
+        meleeAttackSO = creature.GetCreatureSO().secondaryAttackSO;
+
         spawned = false;
         StartCoroutine(SetSpawnedAfterDelay(creature.GetCreatureSO().spawnAnimationDuration));
     }
@@ -62,6 +70,7 @@ public class CreatureAI : MonoBehaviour {
     protected virtual void Start() {
         creature.OnCreatureDied += Creature_OnCreatureDied;
         creature.OnMobHitObstacle += Creature_OnMobHitObstacle;
+        creatureAttack.OnAttackSOChanged += CreatureAttack_OnAttackSOChanged;
 
         SetAttackRange();
 
@@ -70,6 +79,21 @@ public class CreatureAI : MonoBehaviour {
         }
     }
 
+    private void CreatureAttack_OnAttackSOChanged(object sender, EventArgs e) {
+        SetAttackRange();
+    }
+
+    protected virtual void Update() {
+        if (died) return;
+        if (!spawned) return;
+
+        if(hasRangedAndMeleeAttack) {
+            CheckAttackChange();
+        }
+
+        HandleAggroRecently();
+        StateSwitch();
+    }
 
     protected virtual void SetAttackRange() {
         if (creatureAttack.GetCurrentCreatureAttackSO() == null) return;
@@ -124,14 +148,6 @@ public class CreatureAI : MonoBehaviour {
         spawned = true;
         creatureMovement.SetSpawned();
         SetInitialState();
-    }
-
-    protected virtual void Update() {
-        if (died) return;
-        if (!spawned) return;
-
-        HandleAggroRecently();
-        StateSwitch();
     }
 
     protected virtual void StateSwitch() {
@@ -232,7 +248,6 @@ public class CreatureAI : MonoBehaviour {
         }
 
         HeadToTarget();
-
     }
 
     protected virtual void AttackingStateUpdate() {
@@ -257,6 +272,26 @@ public class CreatureAI : MonoBehaviour {
         }
     }
     #endregion
+
+    protected void CheckAttackChange() {
+        if ((attackTarget as MonoBehaviour) == null) return;
+        if (creatureAttack.GetAttackStarted()) return;
+
+        float meleeAttackMaxRange = creature.GetCreatureSO().secondaryAttackSO.maxAttackRange;
+
+        Vector3 targetPosition = attackTarget.GetMeleeAttackPosition().position;
+        float distanceToTarget = Mathf.Abs(transform.position.x - targetPosition.x);
+        if (distanceToTarget < meleeAttackMaxRange && creatureAttack.GetCurrentCreatureAttackSO() == rangedAttackSO) {
+            creatureAttack.SetAttackSO(meleeAttackSO);
+            ChangeState(State.moveToTarget);
+        }
+
+
+        if (distanceToTarget >= meleeAttackMaxRange && creatureAttack.GetCurrentCreatureAttackSO() == meleeAttackSO) {
+            creatureAttack.SetAttackSO(rangedAttackSO);
+            ChangeState(State.moveToTarget);
+        }
+    }
 
     protected void Roam() {
 

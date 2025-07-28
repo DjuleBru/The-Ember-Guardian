@@ -22,9 +22,11 @@ MonoBehaviour:
   detectionRange_Day: 20
   detectionRange_Night: 12
   primaryAttackSO: {fileID: 11400000, guid: 3cfa3c2ecb87ced4098e313ba056a55b, type: 2}
+  hasRangedAndMeleeAttack: 1
   secondaryAttackSO: {fileID: 11400000, guid: d158ba812ed46794f80bd77dabcf3c0b, type: 2}
   specialAttackSO: {fileID: 0}
   flying: 0
+  canFlank: 0
   flightMinAltitude: 0
   flightMaxAltitude: 0
   dayMoveSpeed: 2.5

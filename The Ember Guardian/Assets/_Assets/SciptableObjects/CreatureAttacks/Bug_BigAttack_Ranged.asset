@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4031d27ff643044292075ec5021e470, type: 3}
+  m_Name: Bug_BigAttack_Ranged
+  m_EditorClassIdentifier: 
+  isRangedAttack: 1
+  isProjectileAttack: 1
+  isStaticProjectileAttack: 0
+  isAnimatedAttack: 0
+  attackCooldown: 4
+  minAttackRange: 12
+  maxAttackRange: 18
+  hasDifferentDayAndNightRange: 1
+  minAttackRange_Night: 8
+  maxAttackRange_Night: 14
+  attackRangeRandomizer: 0.2
+  maxAttackRangeRandomizer: 0
+  damage: 1
+  damageToFire: 1
+  damageToBarricades: 1
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 1
+  attackAnimationDelay: 0.3
+  totalAttackAnimationTime: 0.6
+  attackSFXDelayAfterAnimationStart: 0
+  staticProjectilePrefab: {fileID: 0}
+  staticProjectileAutoTargetsPlayer: 0
+  projectileAmountInPool: 6
+  projectileAmountShotInAttack: 3
+  delayBetweenProjectileSpawns: 0.05
+  projectileSO: {fileID: 11400000, guid: f9a4d427799ef5b47bb3458e5bae23e3, type: 2}
+  attackRangeRandomizerMiss: 3
+  attackSFXHandledByAnimation: 0
+  attackAudioClips:
+  - {fileID: 8300000, guid: 07708d8d3ae779e4caa26f0e7637e15e, type: 3}
+  - {fileID: 8300000, guid: 9c94615eff35ff042ab2cc5fbf5ae6b6, type: 3}
+  - {fileID: 8300000, guid: 96f77f4b6097ffa4a94f15da4683b84a, type: 3}
+  attackHitAudioClips: []
+  attackStartedChargingAudioClips: []
+  attackReleasedAudioClips: []
+  attackVolumeMultiplier: 0.5
+  attackHitVolumeMultiplier: 0.7

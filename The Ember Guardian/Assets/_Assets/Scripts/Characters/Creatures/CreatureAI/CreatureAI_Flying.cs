@@ -8,15 +8,16 @@ public class CreatureAI_Flying : CreatureAI
     private float maxAltitude = 7f;
 
     [SerializeField] private float repositionCooldown; // Temps entre le repositionnement après une attaque
+    [SerializeField] private float distanceToDropOnTarget;
+    [SerializeField] private float distanceToDropOnTargetRandomizer;
+    private float distanceToDropOnTargetRandomized;
     private float repositionTimer; // Temps entre le repositionnement après une attaque
     private bool isRepositioning;
 
-    private float playerYTargetMin = 1.3f;
-    private float playerYTargetMax = 1.3f;
+    private float playerYTargetAltitude = 1.5f;
 
     private float yRandomizerTimer;
     private float yRandomizerRate = 2f;
-    private float distanceToDropOnTarget;
     private float yOffset;
 
     private Vector3 lastPlayerHitPosition;
@@ -42,6 +43,9 @@ public class CreatureAI_Flying : CreatureAI
         if (died) return;
 
         HandleAggroRecently();
+        if (hasRangedAndMeleeAttack) {
+            CheckAttackChange();
+        }
 
         if (isRepositioning) {
             repositionTimer -= Time.deltaTime;
@@ -69,11 +73,11 @@ public class CreatureAI_Flying : CreatureAI
             yRandomizerTimer = yRandomizerRate;
 
             // Déterminer une altitude différente pour la mouche
-            distanceToDropOnTarget = UnityEngine.Random.Range(1f, 4f);
+            distanceToDropOnTargetRandomized = distanceToDropOnTarget + UnityEngine.Random.Range(-distanceToDropOnTargetRandomizer, distanceToDropOnTargetRandomizer);
             yOffset = Mathf.Sin(Time.time * 2f) * 0.5f + UnityEngine.Random.Range(minAltitude, maxAltitude);
         }
 
-        if (distanceToFireX > distanceToDropOnTarget) {
+        if (distanceToFireX > distanceToDropOnTargetRandomized) {
             // Si la mouche est encore loin, reste à une altitude variable
             targetDestination.y += yOffset;
 
@@ -81,8 +85,7 @@ public class CreatureAI_Flying : CreatureAI
         else {
 
             // Add y position randomized
-            float yRandomized = UnityEngine.Random.Range(playerYTargetMin, playerYTargetMax);
-            targetDestination.y += yRandomized;
+            targetDestination.y += playerYTargetAltitude;
         }
 
         creatureMovement.SetMoveTarget(targetDestination);
@@ -101,22 +104,19 @@ public class CreatureAI_Flying : CreatureAI
             yRandomizerTimer = yRandomizerRate;
 
             // Déterminer une altitude différente pour la mouche
-            distanceToDropOnTarget = UnityEngine.Random.Range(1f, 3f);
+            distanceToDropOnTargetRandomized = distanceToDropOnTarget + UnityEngine.Random.Range(-distanceToDropOnTargetRandomizer, distanceToDropOnTargetRandomizer);
             yOffset = Mathf.Sin(Time.time * 2f) * 0.5f + UnityEngine.Random.Range(minAltitude, maxAltitude);
         }
 
-        if (distanceToPlayerX > distanceToDropOnTarget) {
+        if (distanceToPlayerX > distanceToDropOnTargetRandomized) {
             // Si la mouche est encore loin, reste à une altitude variable
             targetDestination.y += yOffset;
 
         } else {
 
             // Add y position randomized
-            float yRandomized = UnityEngine.Random.Range(playerYTargetMin, playerYTargetMax);
-            targetDestination.y += yRandomized;
+            targetDestination.y += playerYTargetAltitude;
         }
-
-
         if (Vector3.Distance(transform.position, targetDestination) < minAttackRange) {
             ChangeState(State.attacking);
             return;
