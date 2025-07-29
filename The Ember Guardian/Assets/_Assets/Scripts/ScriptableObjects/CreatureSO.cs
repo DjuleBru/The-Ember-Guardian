@@ -102,6 +102,9 @@ public class CreatureSO : ScriptableObject
 
     [BoxGroup("Game Data/Status Effects")]
     [LabelWidth(200)]
+    public float probabilityToAggroOnGunShot = 1f;
+    [BoxGroup("Game Data/Status Effects")]
+    [LabelWidth(200)]
     public bool immuneToPoison; 
     [BoxGroup("Game Data/Status Effects")]
     [LabelWidth(200)]

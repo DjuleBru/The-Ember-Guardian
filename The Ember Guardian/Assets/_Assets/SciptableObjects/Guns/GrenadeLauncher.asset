@@ -28,7 +28,7 @@ MonoBehaviour:
   mouseCursorSprite_SW: {fileID: 21300000, guid: b9281fd3e4912b34186895dd0184c440, type: 3}
   initialMouseCursorWidth: 45
   initialMouseCursorHeight: 45
-  ammoTypeUsed: 16
+  ammoTypeUsed: 7
   bulletIsParticle: 0
   bulletIsProjectile: 1
   bulletIsSprite: 0
@@ -60,6 +60,8 @@ MonoBehaviour:
   gunRecoilDamping: 4
   shootConeAngle: 3.5
   weaponPrecisionMultiplier: 0.8
+  movePrecisionDebuff: 1.25
+  runPrecisionDebuff: 1.5
   weaponSecondaryAbilityPrecisionFactor: 1
   weaponSecondaryRecoilReductionFactor: 1
   weaponMaxRecoilImpactOnMouseReticle: 0.35

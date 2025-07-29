@@ -277,4 +277,12 @@ public class RainManager : MonoBehaviour
         return currentRainIntensity;
     }
 
+    public void SetInCavern(bool inCavern) {
+        if(inCavern) {
+            SetRainLevel(RainIntensity.none);
+        } else {
+            SetRainLevel(currentRainIntensity);
+        }
+    }
+
 }

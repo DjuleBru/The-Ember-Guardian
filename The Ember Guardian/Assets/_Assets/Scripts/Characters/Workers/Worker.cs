@@ -244,7 +244,7 @@ public class Worker : Mob {
         }
 
         if (workerAI.GetJob() == WorkerAI.JobTypes.engineer) {
-            timeToStayClose = 2.5f;
+            timeToStayClose = 2f;
         }
 
         initialHealth = health;

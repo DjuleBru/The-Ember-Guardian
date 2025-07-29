@@ -24,6 +24,7 @@ public class ParallaxTransition : MonoBehaviour
 
     private float transitionRange;
 
+    private bool playerIsInTransitionParallax;
     private bool transitionStarted;
 
     private void Awake() {
@@ -37,30 +38,33 @@ public class ParallaxTransition : MonoBehaviour
 
     private void Update() {
 
-        float playerX = Player.Instance.transform.position.x;
+        float cameraX = Camera.main.transform.position.x;
 
         // GESTION DES TRANSPARENCES
-        if (playerX < rightTransitionPosition && playerX > leftTransitionPosition) {
-            float rightParallaxAmount = (playerX - leftTransitionPosition) / transitionRange;
+        if (cameraX < rightTransitionPosition && cameraX > leftTransitionPosition) {
+            float rightParallaxAmount = (cameraX - leftTransitionPosition) / transitionRange;
             float leftParallaxAmount = 1f - rightParallaxAmount;
 
             leftParallax.SetParallaxTransparency(leftParallaxAmount);
             rightParallax.SetParallaxTransparency(rightParallaxAmount);
+            playerIsInTransitionParallax = true;
         }
         else {
             // Sortie à gauche
-            if (playerX <= leftTransitionPosition) {
+            if (cameraX <= leftTransitionPosition && playerIsInTransitionParallax) {
                 leftParallax.SetParallaxTransparency(1f);
                 rightParallax.SetParallaxTransparency(0f);
+                playerIsInTransitionParallax = false;
             }
             // Sortie à droite
-            else if (playerX >= rightTransitionPosition) {
+            else if (cameraX >= rightTransitionPosition && playerIsInTransitionParallax) {
                 leftParallax.SetParallaxTransparency(0f);
                 rightParallax.SetParallaxTransparency(1f);
+                playerIsInTransitionParallax = false;
             }
         }
 
-        if (Player.Instance.transform.position.x < rightCameraTransitionPosition && Player.Instance.transform.position.x > leftCameraTransitionPosition) {
+        if (cameraX < rightCameraTransitionPosition && cameraX > leftCameraTransitionPosition) {
 
             if (!transitionStarted && hasCameraTransition) {
                 transitionCamera.enabled = true;

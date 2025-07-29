@@ -27,15 +27,16 @@ MonoBehaviour:
   specialAttackSO: {fileID: 0}
   flying: 1
   canFlank: 1
-  flightMinAltitude: 7
-  flightMaxAltitude: 11
+  flightMinAltitude: 5
+  flightMaxAltitude: 9
   dayMoveSpeed: 1.5
   nightMoveSpeed: 1.5
   aggroMoveSpeedBuff: 1.5
   enteredLightMoveSpeedDebuff: 1.3
   moveSpeedRandomizerDelta: 0.25
-  maxHealth: 80
+  maxHealth: 100
   enteredLightattackRateDebuff: 2.5
+  probabilityToAggroOnGunShot: 1
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0

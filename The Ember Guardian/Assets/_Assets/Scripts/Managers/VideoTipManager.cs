@@ -217,7 +217,7 @@ public class VideoTipManager : MonoBehaviour
 
             }; 
             
-            if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
+            if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
                 if(engineerTipBasicShown) return;
 
                 engineerTipBasicShown = true;

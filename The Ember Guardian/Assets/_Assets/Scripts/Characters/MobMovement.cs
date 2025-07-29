@@ -187,6 +187,7 @@ public class MobMovement : MonoBehaviour
     }
 
     public virtual void SetMoveTarget(Vector3 moveTarget) {
+
         OnDestinationSet?.Invoke(this, EventArgs.Empty);
         this.targetDestination = moveTarget;
         destinationReached = false;

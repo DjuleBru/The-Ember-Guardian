@@ -29,6 +29,7 @@ public class PlayerFeedbacks : MonoBehaviour
     [SerializeField] private MMF_Player gunJamProgressFeedbacks;
     [SerializeField] private MMF_Player gunJamFailedFeedbacks;
     [SerializeField] private MMF_Player gunJamPerfectSequenceFeedbacks;
+    [SerializeField] private MMF_Player blindedFeedbacks;
 
     private float minDelayBetweenCritHitFeedbacks = 1f;
     private float critHitFeedbacksTimer;
@@ -39,6 +40,7 @@ public class PlayerFeedbacks : MonoBehaviour
 
     private void Start() {
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
+        Player.Instance.OnPlayerBlinded += Player_OnPlayerBlinded;
         Mob.OnAnyMobCritDamageTaken += Mob_OnAnyMobCritDamageTaken;
         PlayerMovement.Instance.OnPlayerExhaustionStarted += PlayerMovement_OnPlayerExhaustionStarted;
         PlayerMovement.Instance.OnPlayerExhaustionStopped += PlayerMovement_OnPlayerExhaustionStopped;
@@ -217,6 +219,9 @@ public class PlayerFeedbacks : MonoBehaviour
         damagedFeedbacks.PlayFeedbacks();
     }
 
+    private void Player_OnPlayerBlinded(object sender, System.EventArgs e) {
+        blindedFeedbacks.PlayFeedbacks();
+    }
     private void OnDestroy() {
         GunJamHandler.OnAnyJamSequenceGenerated -= GunJamHandler_OnAnyJamSequenceGenerated;
         GunJamHandler.OnAnyJamSequenceCompleted -= GunJamHandler_OnAnyJamSequenceCompleted;

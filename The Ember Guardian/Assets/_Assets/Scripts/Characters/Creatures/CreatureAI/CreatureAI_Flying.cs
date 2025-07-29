@@ -10,11 +10,11 @@ public class CreatureAI_Flying : CreatureAI
     [SerializeField] private float repositionCooldown; // Temps entre le repositionnement après une attaque
     [SerializeField] private float distanceToDropOnTarget;
     [SerializeField] private float distanceToDropOnTargetRandomizer;
+    [SerializeField] private float playerYTargetAltitude = 1.5f;
     private float distanceToDropOnTargetRandomized;
     private float repositionTimer; // Temps entre le repositionnement après une attaque
     private bool isRepositioning;
 
-    private float playerYTargetAltitude = 1.5f;
 
     private float yRandomizerTimer;
     private float yRandomizerRate = 2f;

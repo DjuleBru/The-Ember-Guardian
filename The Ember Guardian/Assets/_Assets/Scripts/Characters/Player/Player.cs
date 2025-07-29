@@ -58,6 +58,7 @@ public class Player : MonoBehaviour, IDamageable
     public event EventHandler OnPlayerStoppedExploring;
     public event EventHandler<OnPlayerChangedHealthEventArgs> OnPlayerDamaged;
     public event EventHandler OnPlayerDamagedRecentlyEnded;
+    public event EventHandler OnPlayerBlinded;
     public event EventHandler<OnPlayerChangedHealthEventArgs> OnPlayerHealed;
     public event EventHandler OnPlayerDied;
     public event EventHandler OnPlayerRespawned;
@@ -544,6 +545,11 @@ public class Player : MonoBehaviour, IDamageable
     public void SetInCurrencyStorageArea(bool inArea) {
         this.inCurrencyStorageArea = inArea;
     }
+    
+    public void BlindPlayer() {
+        OnPlayerBlinded?.Invoke(this, EventArgs.Empty);
+    }
+    
     [Button] 
     public void KillPlayer() {
         Die();

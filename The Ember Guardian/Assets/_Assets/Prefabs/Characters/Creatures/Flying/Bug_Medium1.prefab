@@ -168,25 +168,33 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.72
       objectReference: {fileID: 0}
+    - target: {fileID: 3169633286473734908, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 3169633286473734908, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3798161515241024080, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_GravityScale
       value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4515677608398901837, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Size.x
-      value: 1.0599394
+      value: 1.309476
       objectReference: {fileID: 0}
     - target: {fileID: 4515677608398901837, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Size.y
-      value: 1.0092883
+      value: 1.1560745
       objectReference: {fileID: 0}
     - target: {fileID: 4515677608398901837, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Offset.x
-      value: 0.19236878
+      value: 0.31713706
       objectReference: {fileID: 0}
     - target: {fileID: 4515677608398901837, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Offset.y
-      value: -0.6392424
+      value: -0.7126355
       objectReference: {fileID: 0}
     - target: {fileID: 5348768613547079162, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalScale.x
@@ -300,6 +308,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 213640482, guid: 2309f0d7fc94fcf40a48df67463144f2, type: 3}
+    - target: {fileID: 8677001440942180455, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.222
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2201482587927928448, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
     - {fileID: 6447040630869028713, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
@@ -364,6 +376,7 @@ MonoBehaviour:
   repositionCooldown: 2
   distanceToDropOnTarget: 3
   distanceToDropOnTargetRandomizer: 2
+  playerYTargetAltitude: 1.3
 --- !u!4 &3505303790524414288 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1304696204632015260, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}

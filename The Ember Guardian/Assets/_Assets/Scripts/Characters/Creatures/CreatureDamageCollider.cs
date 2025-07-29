@@ -9,6 +9,7 @@ public class CreatureDamageCollider : MonoBehaviour
     [SerializeField] private CreatureDamageColliderParent creatureDamageColliderParent;
 
     [SerializeField] private int maxImpactAmountInSingleAnimation = 1;
+    [SerializeField] private bool blindingAttack;
     private int impactAmountOnPlayerInSingleAnimation;
 
 
@@ -45,6 +46,10 @@ public class CreatureDamageCollider : MonoBehaviour
                 }
 
                 impactAmountOnPlayerInSingleAnimation++;
+
+                if(blindingAttack) {
+                    Player.Instance.BlindPlayer();
+                }
 
             } else {
                 // Attack hit worker, barricade or fire

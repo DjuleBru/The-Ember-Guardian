@@ -69,7 +69,9 @@ public class LevelManager : MonoBehaviour
     }
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
-        levelHubMerchant.SetHasTalkLinesToShow(true);
+        if(levelHubMerchant != null) {
+            levelHubMerchant.SetHasTalkLinesToShow(true);
+        }
     }
 
     private void Obstacle_OnAnyObstacleInitialized(object sender, EventArgs e) {

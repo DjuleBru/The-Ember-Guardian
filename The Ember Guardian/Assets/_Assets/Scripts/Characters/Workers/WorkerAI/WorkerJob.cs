@@ -35,7 +35,7 @@ public class WorkerJob : MonoBehaviour
     protected float roamTimer;
     protected float roamChangeDestinationRate = 6f;
     protected float minimumDistanceToStaySafeFromCreature = 6f;
-    protected float distanceToFleeFromCreature;
+    protected float distanceToFleeFromCreature = 20f;
     protected float distanceToStartFleeingFromCreature = 15f;
     protected float maxDistanceToPlayerWhenFollowing = 10f;
     protected float minDistanceToPlayerWhenFollowing = 5f;
@@ -134,7 +134,6 @@ public class WorkerJob : MonoBehaviour
     public virtual void StayAwayFromCreature(Creature closestCreature) {
 
         mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
-
         if (closestCreature != null) {
 
             float direction = closestCreature.transform.position.x - transform.position.x;
@@ -148,7 +147,6 @@ public class WorkerJob : MonoBehaviour
             Vector3 safePosition = new Vector3(closestCreature.transform.position.x + direction * distanceToFleeFromCreature, 0, 0);
             mobMovement.SetMoveTarget(safePosition);
             workerAttack.RemoveAttackTarget();
-
             return;
         }
 
@@ -163,7 +161,6 @@ public class WorkerJob : MonoBehaviour
     }
 
     public void HeadToCampCenter() {
-
         if (!hasSetSpeed) {
             mobMovement.SetMoveSpeed(headToCampMoveSpeed);
             hasSetSpeed = true;

@@ -94,8 +94,10 @@ public class EngineerJob : WorkerJob {
             }
         }
         else {
-
-            if (CheckBlockedByCreature() && state != EngineerState.blockedByCreatures) {
+            closestCreature = workerDetectionCollider.GetClosestCreature();
+            isInSafeZone = IsInSafeZone();
+            if (CheckBlockedByCreature() && state != EngineerState.blockedByCreatures && !isInSafeZone && state != EngineerState.workingInStructure) {
+                Debug.Log(isInSafeZone);
                 ChangeState(EngineerState.blockedByCreatures);
                 return;
             };
@@ -187,11 +189,10 @@ public class EngineerJob : WorkerJob {
     private void ChangeState(EngineerState newState) {
         if (newState == state) return;
 
-        Debug.Log("ChangeState " + newState);
-
         previousState = state;
 
         Vector3 targetDestination = mobMovement.transform.position;
+        hasSetCampDestination = false;
 
         mobMovement.SetMoveTarget(targetDestination);
         state = newState;
@@ -448,7 +449,12 @@ public class EngineerJob : WorkerJob {
             turnWrenchTimer = turnWrenchDelay;
 
             if (currencyCrafterAssigned.GetCraftedCurrency()) {
-                currencyCrafterAssigned.WorkerCollectCurrencyFromCrafter();
+                // Pick up currency only if there is a storage
+                if(PlayerCamp.Instance.GetClosestCurrencyStorageWithSpace(transform.position, currencyCrafterAssigned.GetCurrencyTypeCrafted())) {
+                    currencyCrafterAssigned.WorkerCollectCurrencyFromCrafter();
+                } else {
+                    ChangeState(EngineerState.idle);
+                }
             }
             else {
                 currencyCrafterAssigned.AccelerateCrafting(turnWrenchBoost);

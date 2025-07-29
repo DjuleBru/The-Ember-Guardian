@@ -66,7 +66,7 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
     }
     private void CheckSecureDistance() {
         if (!tooFarForHunters) {
-            if(Mathf.Abs(transform.position.x) > maxSecureDistance) {
+            if(EvaluateOptimizedPath() > maxSecureDistance) {
                 tooFarForHunters = true;
                 exclamationMark.SetActive(true);
                 OnHuntingFlagTooFar?.Invoke(this, EventArgs.Empty);
@@ -74,11 +74,34 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
         }
 
         if (tooFarForHunters) {
-            if (Mathf.Abs(transform.position.x) < maxSecureDistance) {
+            if (EvaluateOptimizedPath() < maxSecureDistance) {
                 tooFarForHunters = false;
                 exclamationMark.SetActive(false);
             }
         }
+    }
+    private float EvaluateOptimizedPath() {
+        Vector2 targetPos = Fire.Instance.transform.position;
+        Vector3 currentPos = transform.position;
+        float directDist = Vector3.Distance(currentPos, targetPos);
+        float bestTotalDist = directDist;
+
+        foreach (var tpFrom in PlayerCamp.Instance.GetAllFastTravelTPsBuilt()) {
+            float distToTP = Vector3.Distance(currentPos, tpFrom.transform.position);
+
+            foreach (var tpTo in PlayerCamp.Instance.GetAllFastTravelTPsBuilt()) {
+                if (tpFrom == tpTo) continue;
+
+                float distFromTP = Vector3.Distance(tpTo.transform.position, targetPos);
+                float totalDistance = distToTP + distFromTP;
+
+                if (totalDistance < bestTotalDist) {
+                    bestTotalDist = totalDistance;
+                }
+            }
+        }
+
+        return bestTotalDist;
     }
 
     private void GameInput_OnPlayerInteractPerformed(object sender, System.EventArgs e) {

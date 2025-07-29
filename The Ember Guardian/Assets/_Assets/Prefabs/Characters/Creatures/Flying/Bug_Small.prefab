@@ -78,7 +78,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2, y: 2}
+  m_Size: {x: 1.25, y: 1.75}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -174,11 +174,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3169633286473734908, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.07
+      value: -0.112
       objectReference: {fileID: 0}
     - target: {fileID: 3169633286473734908, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.07
+      value: 0.021
       objectReference: {fileID: 0}
     - target: {fileID: 3798161515241024080, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_GravityScale
@@ -190,19 +190,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4515677608398901837, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Size.x
-      value: 0.65609604
+      value: 0.91639435
       objectReference: {fileID: 0}
     - target: {fileID: 4515677608398901837, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Size.y
-      value: 0.6278807
+      value: 0.8206942
       objectReference: {fileID: 0}
     - target: {fileID: 4515677608398901837, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Offset.x
-      value: -0.009552926
+      value: -0.004732564
       objectReference: {fileID: 0}
     - target: {fileID: 4515677608398901837, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Offset.y
-      value: -0.4485386
+      value: -0.54494536
       objectReference: {fileID: 0}
     - target: {fileID: 5348768613547079162, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalScale.x
@@ -304,6 +304,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 89856312, guid: 09686f21e518c1948887fe82e31c0aba, type: 3}
+    - target: {fileID: 8677001440942180455, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.035
+      objectReference: {fileID: 0}
+    - target: {fileID: 8677001440942180455, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.035
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2201482587927928448, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
     - {fileID: 6447040630869028713, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
@@ -368,6 +376,7 @@ MonoBehaviour:
   repositionCooldown: 2
   distanceToDropOnTarget: 4
   distanceToDropOnTargetRandomizer: 2
+  playerYTargetAltitude: 1.5
 --- !u!4 &3505303790524414288 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1304696204632015260, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}

@@ -368,15 +368,20 @@ public class Creature : Mob
         playerShootDetectionRangeMultiplier = PlayerShoot.Instance.GetHeldGunSO().shootCreatureHearMultiplier;
         if (Mathf.Abs(Player.Instance.transform.position.x - transform.position.x) > detectionCollider.GetRadius() * playerShootDetectionRangeMultiplier) return;
         // Player is too far
-
-        detectionRangeIncreased = true;
-        detectionRangeIncreasedTimer = detectionRangeIncreasedTime;
         CreatureHeardPlayerShoot(true);
     }
 
     protected void CreatureHeardPlayerShoot(bool heard) {
         if (heard) {
-            detectionCollider.BuffRadius(playerShootDetectionRangeMultiplier);
+
+            float randomFloat = UnityEngine.Random.value;
+            if(randomFloat < creatureSO.probabilityToAggroOnGunShot) {
+                detectionRangeIncreased = true;
+                detectionRangeIncreasedTimer = detectionRangeIncreasedTime;
+
+                detectionCollider.BuffRadius(playerShootDetectionRangeMultiplier);
+            }
+
         } else {
             detectionCollider.DebuffRadius(playerShootDetectionRangeMultiplier);
         }

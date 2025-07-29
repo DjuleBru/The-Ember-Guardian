@@ -268,7 +268,6 @@ public class Structure : MonoBehaviour {
 
     public virtual void SetEngineerWorking(EngineerJob engineer, bool working) {
         // Actually working
-        Debug.Log(this + " SetEngineerWorking " + working + " engineersWorking " + engineersGarrisoned + " maxEngineersAssignedWorking " + maxEngineersAssignedWorking);
 
         if(working) {
 

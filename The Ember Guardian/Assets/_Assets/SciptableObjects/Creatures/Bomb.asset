@@ -22,6 +22,7 @@ MonoBehaviour:
   detectionRange_Day: 10
   detectionRange_Night: 10
   primaryAttackSO: {fileID: 11400000, guid: 3d697cf431e0a74449a1cb919f342508, type: 2}
+  hasRangedAndMeleeAttack: 0
   secondaryAttackSO: {fileID: 0}
   specialAttackSO: {fileID: 0}
   flying: 0
@@ -35,6 +36,7 @@ MonoBehaviour:
   moveSpeedRandomizerDelta: 0.7
   maxHealth: 10
   enteredLightattackRateDebuff: 2.5
+  probabilityToAggroOnGunShot: 0.5
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0

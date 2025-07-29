@@ -12,6 +12,8 @@ public class Cavern : MonoBehaviour
         if(collision.gameObject.GetComponent<Player>() != null) {
             BackgroundSoundsManager.Instance.SetInCavern(true, cavernAudioClip, cavernAudioVolume);
             fog_Front.SetInCavern(true);
+            DayNightVisualsManager.Instance.SetInCave(true);
+            RainManager.Instance.SetInCavern(true);
         }
     }
 
@@ -19,6 +21,8 @@ public class Cavern : MonoBehaviour
         if (collision.gameObject.GetComponent<Player>() != null) {
             BackgroundSoundsManager.Instance.SetInCavern(false, cavernAudioClip, cavernAudioVolume);
             fog_Front.SetInCavern(false);
+            DayNightVisualsManager.Instance.SetInCave(false);
+            RainManager.Instance.SetInCavern(false);
         }
     }
 }

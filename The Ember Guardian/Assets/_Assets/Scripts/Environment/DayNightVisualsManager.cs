@@ -68,6 +68,14 @@ public class DayNightVisualsManager : MonoBehaviour
     private float currentMoonPositionXNormalized;
     private float targetMoonPositionXNormalized;
 
+    [SerializeField] private Color caveLightColor;
+    [SerializeField] private float caveLightIntensity;
+    private Color currentLightColor;
+    private float currentLightIntensity;
+
+    private bool inCave;
+    private bool caveEnterTransitionStarted;
+    private bool caveExitTransitionStarted;
     private bool dawnStarted;
     private bool dayStarted;
     private bool nightStarted;
@@ -87,7 +95,11 @@ public class DayNightVisualsManager : MonoBehaviour
 
         globalLight2D.color = dawnLightColor;
         skySpriteRenderer.color = dawnSkyColor;
-        if(skySpriteRenderer2 != null) {
+
+        currentLightColor = dawnLightColor;
+        currentLightIntensity = dawnLightIntensity;
+
+        if (skySpriteRenderer2 != null) {
             skySpriteRenderer2.color = dawnSkyColor;
         }
         globalLight2D.intensity = dawnLightIntensity;
@@ -110,6 +122,36 @@ public class DayNightVisualsManager : MonoBehaviour
     }
 
     private void HandleCycleTransitions() {
+        if(inCave) {
+            if(caveEnterTransitionStarted) {
+                transitionProgress += Time.deltaTime / transitionDuration;
+
+                if (transitionProgress < 1) {
+                    globalLight2D.color = ColorTransition(currentLightColor, caveLightColor);
+                    globalLight2D.intensity = LightIntensityTransition(currentLightIntensity, caveLightIntensity);
+                }
+                else {
+                    caveEnterTransitionStarted = false;
+                    transitionProgress = 0;
+                }
+            }
+            return;
+        }
+
+        if (caveExitTransitionStarted) {
+            transitionProgress += Time.deltaTime / transitionDuration;
+
+            if (transitionProgress < 1) {
+                globalLight2D.color = ColorTransition(caveLightColor, currentLightColor);
+                globalLight2D.intensity = LightIntensityTransition(caveLightIntensity, currentLightIntensity);
+            }
+            else {
+                caveExitTransitionStarted = false;
+                transitionProgress = 0;
+            }
+            return;
+        }
+
         if (dawnStarted) {
             transitionProgress += Time.deltaTime / transitionDuration;
 
@@ -315,8 +357,10 @@ public class DayNightVisualsManager : MonoBehaviour
 
         dawnStarted = true;
         transitionProgress = 0;
+        currentLightColor = dawnLightColor;
+        currentLightIntensity = dawnLightIntensity;
 
-        if(showIncomingWaveDifficultyOnSun) {
+        if (showIncomingWaveDifficultyOnSun) {
             RefreshSunColorBasedOnDifficulty(.1f);
         }
     }
@@ -337,12 +381,17 @@ public class DayNightVisualsManager : MonoBehaviour
 
         dayStarted = true;
         transitionProgress = 0;
+        currentLightColor = dayLightColor;
+        currentLightIntensity = dayLightIntensity;
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
         totalAnimationCurveFractionProgress += dayAnimationCurveFraction;
         duskStarted = true;
         transitionProgress = 0;
+
+        currentLightColor = duskLightColor;
+        currentLightIntensity = duskLightIntensity;
     }
 
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
@@ -350,6 +399,9 @@ public class DayNightVisualsManager : MonoBehaviour
         targetMoonPositionXNormalized = 0f;
         nightStarted = true;
         transitionProgress = 0;
+
+        currentLightColor = nightLightColor;
+        currentLightIntensity = nightLightIntensity;
     }
 
     private Color ColorTransition(Color initialColor, Color finalColor) {
@@ -379,4 +431,14 @@ public class DayNightVisualsManager : MonoBehaviour
         sunLight2D.color = sunColor;
     }
 
+    public void SetInCave(bool inCave) {
+        if (!this.inCave && inCave) {
+            caveEnterTransitionStarted = true;
+        }
+        if (this.inCave && !inCave) {
+            caveExitTransitionStarted = true;
+        }
+        this.inCave = inCave;
+
+    } 
 }

@@ -25,10 +25,10 @@ MonoBehaviour:
   minesAmount: 0
   chestAmount: 0
   wildEmberlingsAmount: 0
-  levelObjectiveType: 21
-  endLevelType: 21
+  levelObjectiveType: 16
+  endLevelType: 16
   talkToNpcAFterObjective: 0
-  nightsToSurviveAmount: 0
+  nightsToSurviveAmount: 7
   isNewEnvironmentDiscoveryLevel: 1
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 0103559dd388370479b665ba928e7009, type: 3}
   levelsUnlockedByLevel:
@@ -38,24 +38,27 @@ MonoBehaviour:
   newMerchantTextLinesAfterLevel: []
   isReplayableLevel: 0
   totalDayCreatureDifficulty: 0
-  dayCreatureTypes: []
+  dayCreatureTypes:
+  - {fileID: 11400000, guid: 9c9076f8b6a22de4ebbd843c06ddcb3d, type: 2}
   nightCreatureTypes:
-  - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
-  - {fileID: 11400000, guid: a0c1321c3dbd0704c9f6bf0aec0e77b3, type: 2}
-  - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
-  - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
+  - {fileID: 11400000, guid: a0252d9509f4f3244af84b9de1268479, type: 2}
+  - {fileID: 11400000, guid: e1a51e692d8a7594597c7d4ea0f2e750, type: 2}
+  - {fileID: 11400000, guid: a8478894db1dd464292493c5e12bb3b1, type: 2}
+  - {fileID: 11400000, guid: 801ac2fa2144d5c4a8a531fade06b5de, type: 2}
+  - {fileID: 11400000, guid: 2a869f182b5b34b41aa44f2e41093c0d, type: 2}
+  - {fileID: 11400000, guid: 62e52f1a115920948b5e7acc35ebadd9, type: 2}
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
   startWaveToSpawnFromBothSides: 2
-  baseDifficulty: 30
+  baseDifficulty: 40
   intialMinSubwaveDifficulty: 10
   minSubwaveDifficulty: 25
   intialMaxSubwaveDifficulty: 15
   maxSubwaveDifficulty: 65
-  growthFactor: 1.7
+  growthFactor: 1.15
   typicalLevelDaysToComplete: 7
-  minMaxSubwaveDifficultyGrowthFactor: 1.5
+  minMaxSubwaveDifficultyGrowthFactor: 1.4
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
   difficultyAnimationCurve:

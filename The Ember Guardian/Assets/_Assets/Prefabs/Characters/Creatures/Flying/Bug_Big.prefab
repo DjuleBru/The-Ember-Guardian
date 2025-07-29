@@ -182,7 +182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3169633286473734908, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.104
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3798161515241024080, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_GravityScale
@@ -190,15 +190,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4515677608398901837, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Size.x
-      value: 1.8613266
+      value: 2.129683
       objectReference: {fileID: 0}
     - target: {fileID: 4515677608398901837, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Size.y
-      value: 0.4160223
+      value: 0.5352917
       objectReference: {fileID: 0}
     - target: {fileID: 4515677608398901837, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Offset.x
-      value: 1.4142084
+      value: 1.5483866
       objectReference: {fileID: 0}
     - target: {fileID: 4515677608398901837, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Offset.y
@@ -320,6 +320,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 1527957795, guid: c35ad5aa3ed59614986e85d8c4e4edb9, type: 3}
+    - target: {fileID: 8677001440942180455, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.27
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2201482587927928448, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
     - {fileID: 6447040630869028713, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
@@ -381,6 +385,7 @@ MonoBehaviour:
   repositionCooldown: 2
   distanceToDropOnTarget: 6
   distanceToDropOnTargetRandomizer: 1
+  playerYTargetAltitude: 1.3
 --- !u!4 &3505303790524414288 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1304696204632015260, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}

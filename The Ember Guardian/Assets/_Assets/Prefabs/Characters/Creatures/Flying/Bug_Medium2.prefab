@@ -186,11 +186,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3169633286473734908, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.014
+      value: -0.04
       objectReference: {fileID: 0}
     - target: {fileID: 3169633286473734908, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.015
+      value: -0.147
       objectReference: {fileID: 0}
     - target: {fileID: 3798161515241024080, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_GravityScale
@@ -314,11 +314,11 @@ PrefabInstance:
       objectReference: {fileID: -1116411055, guid: bfbba19ee06bfc644bd6d263b57a199f, type: 3}
     - target: {fileID: 8677001440942180455, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.022
+      value: 0.007
       objectReference: {fileID: 0}
     - target: {fileID: 8677001440942180455, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.317
+      value: -0.402
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2201482587927928448, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
@@ -384,6 +384,7 @@ MonoBehaviour:
   repositionCooldown: 2
   distanceToDropOnTarget: 8
   distanceToDropOnTargetRandomizer: 1
+  playerYTargetAltitude: 1.5
 --- !u!4 &3505303790524414288 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1304696204632015260, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}

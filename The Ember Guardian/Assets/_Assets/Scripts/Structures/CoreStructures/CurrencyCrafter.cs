@@ -83,6 +83,7 @@ public class CurrencyCrafter : Structure
             craftingCurrency = false;
             craftedCurrency = true;
             playerCanInteract = true;
+            needsWorking = false;
 
             OnCurrencyCraftingEnded?.Invoke(this, EventArgs.Empty);
             OnAnyCurrencyCraftingEnded?.Invoke(this, EventArgs.Empty);
@@ -149,7 +150,7 @@ public class CurrencyCrafter : Structure
             if (!craftedCurrency) return;
             // Ammo has not finished crafting
 
-            StartCoroutine(CollectCurrencyFromCrafter(.2f));
+            StartCoroutine(CollectCurrencyFromCrafter(.2f, false));
 
             SetStructurePrimaryFunctionUnlocked(true);
             SetStructureSecondaryFunctionUnlocked(specialAmmoUnlocked);
@@ -178,12 +179,12 @@ public class CurrencyCrafter : Structure
 
     public void WorkerCollectCurrencyFromCrafter() {
         craftedCurrency = false;
-        StartCoroutine(CollectCurrencyFromCrafter(.2f));
+        StartCoroutine(CollectCurrencyFromCrafter(.2f, true));
         SetStructurePrimaryFunctionUnlocked(true);
         SetStructureSecondaryFunctionUnlocked(specialAmmoUnlocked);
     }
 
-    private IEnumerator CollectCurrencyFromCrafter(float delayBetweenAmmoInstantiation) {
+    private IEnumerator CollectCurrencyFromCrafter(float delayBetweenAmmoInstantiation, bool collectedByWorker) {
         craftedCurrency = false;
         collectingCurrency = true;
         payCurrencyUI.ResetCurrencyPayment();
@@ -198,7 +199,11 @@ public class CurrencyCrafter : Structure
             Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyTypeBeingCrafted), currencySpawnPoint.position, Quaternion.identity).GetComponent<Collectible>();
             collectible.SetCollectibleUnInteractable(1.5f);
             collectible.ApplyRandomForce(-1, 1, 3, 5);
-            collectible.SetCanBePickedUpByWorkerAfterDelay(0);
+
+            if(collectedByWorker) {
+                collectible.SetCanBePickedUpByWorkerAfterDelay(0);
+            }
+
 
             OnCurrencyInstantiated?.Invoke(this, new OnCurrencyInstantiatedEventArgs {
                 collectible = collectible
