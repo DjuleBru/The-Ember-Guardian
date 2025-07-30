@@ -52,6 +52,8 @@ public class PlayerUI_HPBar : MonoBehaviour
         Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
         PlayerStats.Instance.OnPlayerMaxHPChanged += PlayerStats_OnPlayerMaxHPChanged;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
+        FastTravelTP.OnAnyPlayerPositionedOnTP += FastTravelTP_OnAnyPlayerPositionedOnTP;
+        FastTravelTP.OnAnyPlayerWarped += FastTravelTP_OnAnyPlayerWarped;
 
         if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
             PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
@@ -63,6 +65,13 @@ public class PlayerUI_HPBar : MonoBehaviour
         hpBarGameObject.SetActive(false);
     }
 
+    private void FastTravelTP_OnAnyPlayerWarped(object sender, EventArgs e) {
+        hpBarGameObject.SetActive(false);
+    }
+
+    private void FastTravelTP_OnAnyPlayerPositionedOnTP(object sender, EventArgs e) {
+        hpBarGameObject.SetActive(false);
+    }
 
     private void PLayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
         tabMenuOpen = true;
@@ -296,5 +305,7 @@ public class PlayerUI_HPBar : MonoBehaviour
 
         Portal.OnAnyPlayerTeleported -= Portal_OnAnyPlayerTeleported;
         Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
+        FastTravelTP.OnAnyPlayerPositionedOnTP -= FastTravelTP_OnAnyPlayerPositionedOnTP;
+        FastTravelTP.OnAnyPlayerWarped -= FastTravelTP_OnAnyPlayerWarped;
     }
 }

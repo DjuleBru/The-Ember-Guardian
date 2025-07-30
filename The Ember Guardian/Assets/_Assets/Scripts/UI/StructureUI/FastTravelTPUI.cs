@@ -30,6 +30,7 @@ public class FastTravelTPUI : MonoBehaviour
         fastTravelTP.OnPlayerWarpedOut += FastTravelTP_OnPlayerWarpedOut;
         fastTravelTP.OnPlayerTriggeredOut += FastTravelTP_OnPlayerTriggeredOut;
         fastTravelTP.OnTPSetAsReceiver += FastTravelTP_OnTPSetAsReceiver;
+        fastTravelTP.OnPlayerTriggeredIn += FastTravelTP_OnPlayerTriggeredIn;
 
         changeDestinationTPUIGO.SetActive(false);
         instructionsGO.SetActive(false);
@@ -50,7 +51,14 @@ public class FastTravelTPUI : MonoBehaviour
 
     private void FastTravelTP_OnPlayerTriggeredOut(object sender, EventArgs e) {
         setpOnTPGO.SetActive(true);
+        if(fastTravelTP.GetIsTentTP()) {
+            identifierIcon.gameObject.SetActive(false);
+        }
     }
+    private void FastTravelTP_OnPlayerTriggeredIn(object sender, EventArgs e) {
+        identifierIcon.gameObject.SetActive(true);
+    }
+
 
     private void FastTravelTP_OnPlayerWarped(object sender, EventArgs e) {
         setpOnTPGO.SetActive(false);

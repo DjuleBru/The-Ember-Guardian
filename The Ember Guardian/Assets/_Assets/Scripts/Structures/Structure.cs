@@ -478,14 +478,11 @@ public class Structure : MonoBehaviour {
 
     public void SetWorkerRefillingStructure(WorkerCurrencies workerCurrencies, bool refilling) {
         if (isBeingRefilledByEngineer) return;
-
-        Debug.Log("SetWorkerRefillingStructure " + refilling);
         isBeingRefilledByEngineer = true;
         payCurrencyUI.SetWorkerInteracting(workerCurrencies, refilling);
         OnWorkerStartedRefilling?.Invoke(this, EventArgs.Empty);
     }
     public void SetAsWorldStructure(float scaleX) {
-        Debug.Log("SetAsWorldStructure");
         isWorldStructure = true;
         worldScaleX = scaleX;
     }

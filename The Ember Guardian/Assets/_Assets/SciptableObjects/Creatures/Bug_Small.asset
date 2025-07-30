@@ -29,6 +29,7 @@ MonoBehaviour:
   canFlank: 1
   flightMinAltitude: 3
   flightMaxAltitude: 8
+  flightAltitudeRandomizer: 2
   dayMoveSpeed: 4
   nightMoveSpeed: 4
   aggroMoveSpeedBuff: 1.5
@@ -36,6 +37,7 @@ MonoBehaviour:
   moveSpeedRandomizerDelta: 0.25
   maxHealth: 3
   enteredLightattackRateDebuff: 2.5
+  probabilityToAggroOnGunShot: 1
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0

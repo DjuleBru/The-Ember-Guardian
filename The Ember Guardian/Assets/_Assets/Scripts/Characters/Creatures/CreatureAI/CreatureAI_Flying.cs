@@ -15,6 +15,7 @@ public class CreatureAI_Flying : CreatureAI
     private float repositionTimer; // Temps entre le repositionnement après une attaque
     private bool isRepositioning;
 
+    private Vector3 fireTargetDestination;
 
     private float yRandomizerTimer;
     private float yRandomizerRate = 2f;
@@ -27,7 +28,9 @@ public class CreatureAI_Flying : CreatureAI
         creatureAttack.OnMobAttackHit += MobAttack_OnMobAttackHit;
         repositionCooldown = creatureAttack.GetCurrentCreatureAttackSO().attackCooldown - .1f;
 
-        minAltitude = creature.GetCreatureSO().flightMinAltitude;
+        float altitudeRandomizer = creature.GetCreatureSO().flightAltitudeRandomizer;
+        float randomY = UnityEngine.Random.Range(0, altitudeRandomizer);
+        minAltitude = creature.GetCreatureSO().flightMinAltitude + randomY;
         maxAltitude = creature.GetCreatureSO().flightMaxAltitude;
     }
 
@@ -63,32 +66,39 @@ public class CreatureAI_Flying : CreatureAI
     protected override void MoveTowardsFire() {
 
         CheckDistanceToPlayerOrCampForMoveSpeed();
-        Vector3 targetDestination = new Vector3(0, 0, 0);
 
-        float distanceToFireX = Mathf.Abs(transform.position.x - targetDestination.x);
+        float distanceToFireX = Mathf.Abs(transform.position.x - Fire.Instance.transform.position.x);
 
         yRandomizerTimer -= Time.deltaTime;
 
         if (yRandomizerTimer <= 0) {
             yRandomizerTimer = yRandomizerRate;
 
-            // Déterminer une altitude différente pour la mouche
+            // Recalcule le random pour la distance de drop
             distanceToDropOnTargetRandomized = distanceToDropOnTarget + UnityEngine.Random.Range(-distanceToDropOnTargetRandomizer, distanceToDropOnTargetRandomizer);
+
+            // Calcule yOffset oscillant dans [minAltitude, maxAltitude]
             yOffset = Mathf.Sin(Time.time * 2f) * 0.5f + UnityEngine.Random.Range(minAltitude, maxAltitude);
         }
 
-        if (distanceToFireX > distanceToDropOnTargetRandomized) {
-            // Si la mouche est encore loin, reste à une altitude variable
-            targetDestination.y += yOffset;
-
+        // Gère l’altitude minimale pour éviter que la créature tombe trop bas
+        if (transform.position.y < minAltitude) {
+            // Force la créature à remonter au moins à minAltitude + un offset aléatoire
+            fireTargetDestination.y += 1;
         }
         else {
-
-            // Add y position randomized
-            targetDestination.y += playerYTargetAltitude;
+            fireTargetDestination = Fire.Instance.transform.position;
+            if (distanceToFireX > distanceToDropOnTargetRandomized) {
+                // La cible est loin : vole à une altitude variable entre min et max altitude avec oscillation
+                fireTargetDestination.y += yOffset;
+            }
+            else {
+                // La cible est proche : vole à hauteur fixe autour de playerYTargetAltitude
+                fireTargetDestination.y += playerYTargetAltitude;
+            }
         }
 
-        creatureMovement.SetMoveTarget(targetDestination);
+        creatureMovement.SetMoveTarget(fireTargetDestination);
     }
 
     protected override void HeadToTarget() {

@@ -264,6 +264,9 @@ public class FastTravelTP : Structure
         yield return new WaitForSeconds(delay);
         floorColliderForWorkers.enabled = false;
     }
+    public bool GetIsTentTP() {
+        return isTentTP;
+    }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);

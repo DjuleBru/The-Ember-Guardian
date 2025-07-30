@@ -79,6 +79,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         TalkToArchitect,
         BuildWatcherArtifact,
         CollectOrbs,
+        TalkToMushroomMerchant,
     }
 
     public static LevelUI_ObjectiveUI Instance;

@@ -81,6 +81,7 @@ public class LevelObjectives : MonoBehaviour
 
             } else {
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.SurviveNights);
+                StartCoroutine(ShowReturnToHubObjective(4f));
             }
 
         }
@@ -181,7 +182,7 @@ public class LevelObjectives : MonoBehaviour
 
             LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs);
             List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
-                    LevelUI_ObjectiveUI.SubObjectiveType.TalkToWatcher
+                    LevelUI_ObjectiveUI.SubObjectiveType.TalkToMushroomMerchant
                 };
 
             LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
@@ -205,8 +206,6 @@ public class LevelObjectives : MonoBehaviour
 
     private void LevelMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, System.EventArgs e) {
         NPCInteractionsIndex++;
-
-        Debug.Log(LevelManager.Instance.GetLevelSO().endLevelType);
 
         HubMerchant levelMerchant = (HubMerchant)sender;
         StartCoroutine(SetNextNPCObjective(levelMerchant));
@@ -284,6 +283,19 @@ public class LevelObjectives : MonoBehaviour
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FindArchitect);
             }
                 
+        }
+
+        if (levelMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.MushroomMerchant) {
+
+            yield return new WaitForSeconds(1f);
+
+            if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
+                List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveList = new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.BuildWatcherArtifact };
+                LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveList);
+
+                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.TalkToMushroomMerchant);
+            }
+
         }
     }
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, EventArgs e) {

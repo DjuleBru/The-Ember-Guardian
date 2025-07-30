@@ -13,7 +13,6 @@ public class BackgroundSoundsManager : MonoBehaviour
 
     [SerializeField] private AudioClip dayAudioClip;
     [SerializeField] private AudioClip nightAudioClip;
-    [SerializeField] private AudioClip cavernAudioClip;
 
     [SerializeField] private SoundRefsSO soundRefs;
 

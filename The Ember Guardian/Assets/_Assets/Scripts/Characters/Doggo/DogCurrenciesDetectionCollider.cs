@@ -8,6 +8,7 @@ public class DogCurrenciesDetectionCollider : MonoBehaviour
     private Collectible closestCollectibleToCollect;
 
     private void Update() {
+        if (Dog.Instance.GetDogType() != Dog.DogType.GoldenRetreiver) return;
         CheckClosestCollectibleToCollect();
     }
 
@@ -17,8 +18,13 @@ public class DogCurrenciesDetectionCollider : MonoBehaviour
         if(collectible != null && !collectiblesInTriggerArea.Contains(collectible)) {
 
             collectiblesInTriggerArea.Add(collectible);
-
+            collectible.OnCollectibleDestroyed += Collectible_OnCollectibleDestroyed;
         }
+    }
+
+    private void Collectible_OnCollectibleDestroyed(object sender, System.EventArgs e) {
+        Collectible collectible = sender as Collectible;
+        collectiblesInTriggerArea.Remove(collectible);
     }
 
     private void OnTriggerExit2D(Collider2D collision) {

@@ -131,9 +131,10 @@ public class LevelManager : MonoBehaviour
         }
 
         if(levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
-            if(conditionalLockedStructureLocation != null) {
+            if (conditionalLockedStructureLocation != null) {
                 conditionalLockedStructureLocation.gameObject.SetActive(true);
                 conditionalLockedStructureLocation.UnlockStructureLocation();
+                Debug.Log("LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant");
             }
         }
     }
@@ -162,7 +163,9 @@ public class LevelManager : MonoBehaviour
 
             }
             else {
-                endLevelPortalPosition = new Vector3(levelHubMerchant.transform.position.x + 10f, 0, 0);
+                if(levelHubMerchant != null) {
+                    endLevelPortalPosition = new Vector3(levelHubMerchant.transform.position.x + 10f, 0, 0);
+                }
                 StartCoroutine(EnableEndLevelPortal(2f));
             }
 

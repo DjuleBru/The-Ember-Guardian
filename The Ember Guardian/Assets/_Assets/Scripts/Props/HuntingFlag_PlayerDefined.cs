@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HuntingFlag_PlayerDefined : MonoBehaviour
@@ -25,7 +23,10 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         pickUpSpriteRenderer.enabled = false;
         exclamationMark.SetActive(false);
+
+        FastTravelTP.OnAnyFastTravelTPBuilt += FastTravelTP_OnAnyFastTravelTPBuilt;
     }
+
 
     private void Start() {
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
@@ -38,7 +39,6 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
 
     private void Update() {
         if (!huntingFlag.GetPlayerCarryingFlag()) return;
-
         if(CampZoneManager.Instance.IsWithinCampZoneLimits(transform.position)) {
             Vector3 currentPosition = new Vector3(Player.Instance.transform.position.x, 0f, 0f);
 
@@ -52,7 +52,12 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
         }
 
         CheckSecureDistance();
-        
+
+    }
+
+    private void FastTravelTP_OnAnyFastTravelTPBuilt(object sender, EventArgs e) {
+        Debug.Log("FastTravelTP_OnAnyFastTravelTPBuilt");
+        Invoke("CheckSecureDistance", .1f);
     }
 
     private void CampZoneManager_OnCampZoneLimitsChanged(object sender, EventArgs e) {
@@ -154,6 +159,7 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
         transform.localScale = new Vector3(-1, 1, 1);
         huntingFlag.SetPlayerDefinedHuntingLimit(false);
         playerCarryingFlag = false;
+        Player.Instance.SetCarryinhOtherObject(false);
         transform.SetParent(huntingFlag.transform);
         transform.position = huntingFlag.GetCampDefinedHuntingFlagPosition();
     }
@@ -189,5 +195,9 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
 
     public bool GetPlayerIsCarryingFlag() {
         return playerCarryingFlag;
+    }
+
+    private void OnDestroy() {
+        FastTravelTP.OnAnyFastTravelTPBuilt -= FastTravelTP_OnAnyFastTravelTPBuilt;
     }
 }

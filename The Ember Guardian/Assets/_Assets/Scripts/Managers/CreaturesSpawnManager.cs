@@ -135,7 +135,8 @@ public class CreaturesSpawnManager : MonoBehaviour {
         debugInputs = DebugManager.Instance.GetAllowDebugInputs_CreaturesSpawnManager();
         debugDontSpawnAtNight = DebugManager.Instance.GetDebugDontSpawnAtNight();
 
-        maxWaveDifficulty = baseDifficulty * Mathf.Pow(growthFactor, typicalLevelDaysToComplete);
+        maxWaveDifficulty = baseDifficulty * Mathf.Pow(typicalLevelDaysToComplete, growthFactor);
+        Debug.Log("maxWaveDifficulty " + maxWaveDifficulty);
     }
 
     private void LevelManager_OnLevelLimitsChanged(object sender, EventArgs e) {

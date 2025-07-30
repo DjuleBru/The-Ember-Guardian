@@ -645,6 +645,7 @@ public class PlayerShoot : MonoBehaviour
 
                 secondaryAbilityActive = true;
                 holdingStationaryGun = true;
+                SetGunCanJam(false);
 
             } else
             {
@@ -658,6 +659,7 @@ public class PlayerShoot : MonoBehaviour
                 canShoot = false;
 
                 secondaryAbilityActive = false;
+                SetGunCanJam(true);
 
             }
 

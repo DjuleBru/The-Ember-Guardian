@@ -478,10 +478,6 @@ public class Gun : MonoBehaviour
 
         OnGunJammed?.Invoke(this, EventArgs.Empty);
         OnAnyGunJammed?.Invoke(this, EventArgs.Empty);
-
-        if(gunSO.gunType == GunSO.GunType.LMG) {
-            PlayerShoot.Instance.RemoveLMGBipod();
-        }
     }
 
     public void SetGunActive(bool gunActive) {
