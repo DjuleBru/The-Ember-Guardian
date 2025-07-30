@@ -14,6 +14,7 @@ public class Cavern : MonoBehaviour
             fog_Front.SetInCavern(true);
             DayNightVisualsManager.Instance.SetInCave(true);
             RainManager.Instance.SetInCavern(true);
+            WindManager.Instance.SetInCavern(true);
         }
     }
 
@@ -23,6 +24,7 @@ public class Cavern : MonoBehaviour
             fog_Front.SetInCavern(false);
             DayNightVisualsManager.Instance.SetInCave(false);
             RainManager.Instance.SetInCavern(false);
+            WindManager.Instance.SetInCavern(false);
         }
     }
 }

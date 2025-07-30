@@ -8,6 +8,7 @@ public class FireFeedbacks : MonoBehaviour
     private Fire fire;
     [SerializeField] private MMF_Player damagedFeedbacks;
     [SerializeField] private MMF_Player ectractingEmberFeedbacks;
+    [SerializeField] private ParticleSystem orbDissolvedPS;
 
     private void Awake() {
         fire = GetComponentInParent<Fire>();
@@ -17,6 +18,11 @@ public class FireFeedbacks : MonoBehaviour
         fire.OnFireDamageTaken += Fire_OnFireDamageTaken;
         fire.OnFireEmberExtractionStarted += Fire_OnFireEmberExtractionStarted;
         fire.OnFireEmberExtractionStopped += Fire_OnFireEmberExtractionStopped;
+        fire.OnStructureFunctionUsed += Fire_OnStructureFunctionUsed;
+    }
+
+    private void Fire_OnStructureFunctionUsed(object sender, System.EventArgs e) {
+        orbDissolvedPS.Play();
     }
 
     private void Fire_OnFireEmberExtractionStopped(object sender, System.EventArgs e) {

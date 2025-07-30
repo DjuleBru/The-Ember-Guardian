@@ -17,6 +17,7 @@ public class FireSound : StructureSounds
 
     [SerializeField] private AudioClip[] orbDroppedInFireAudioClipArray1;
     [SerializeField] private AudioClip[] orbDroppedInFireAudioClipArray2;
+    [SerializeField] private AudioClip[] orbPaidAudioClipArray;
     [SerializeField] private AudioClip[] fireDamagedAudioClipArray;
     [SerializeField] private AudioClip secondaryFireTickRemovedAudioClip;
     [SerializeField] private AudioClip extractingEmberAudioClip;
@@ -31,6 +32,7 @@ public class FireSound : StructureSounds
 
         fire.OnFireChangedState += Fire_OnFireChangedState;
         fire.OnFireFuelled += Fire_OnFireFuelled;
+        fire.OnStructureFunctionUsed += Fire_OnStructureFunctionUsed;
         fire.OnFireDamageTaken += Fire_OnFireDamageTaken;
         fire.OnFireEmberExtractionStopped += Fire_OnFireEmberExtractionStopped;
         fire.OnFireEmberExtractionStarted += Fire_OnFireEmberExtractionStarted;
@@ -38,6 +40,10 @@ public class FireSound : StructureSounds
         if(fireUI != null) {
             fireUI.OnFireTickRemoved += FireUI_OnFireTickRemoved;
         }
+    }
+
+    private void Fire_OnStructureFunctionUsed(object sender, System.EventArgs e) {
+        audioSource.PlayOneShot(orbPaidAudioClipArray[Random.Range(0, orbPaidAudioClipArray.Length)], sfxVolume);
     }
 
     private void FireUI_OnFireTickRemoved(object sender, StructureUI_Fire.OnFireTickRemovedEventArgs e) {

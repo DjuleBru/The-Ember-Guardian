@@ -28,7 +28,6 @@ public class GameFlowCollider : MonoBehaviour
 
             MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType.WorkerMerchant, true);
             WorkerStats.Instance.SetInteractionWithWorkersUnlocked();
-            VideoTipManager.Instance.PlayControlEmberlingsTip();
             playerCollided = true;
         }
     }

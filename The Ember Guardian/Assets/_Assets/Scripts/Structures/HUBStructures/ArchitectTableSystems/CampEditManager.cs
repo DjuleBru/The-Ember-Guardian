@@ -308,6 +308,11 @@ public class CampEditManager : MonoBehaviour {
         if (gemMerchantItem != null) {
             structureTypesUnlockedThisSession.Add(gemMerchantItem.GetStructureType());
         }
+
+        HubMerchantItem_WatcherMerchantItem watcherMerchantItem = merchantItem as HubMerchantItem_WatcherMerchantItem;
+        if (watcherMerchantItem != null) {
+            structureTypesUnlockedThisSession.Add(watcherMerchantItem.GetStructureType());
+        }
     }
     private void GameInput_OnEditCampSelectReleased(object sender, System.EventArgs e) {
         // Drop bluprint logic
@@ -394,6 +399,7 @@ public class CampEditManager : MonoBehaviour {
         foreach (var kvp in placedStructureBlueprints) {
             StructureBlueprint blueprint = kvp.Value;
 
+            Debug.Log("blueprint " + blueprint.GetLinkedStructureSO());
             if (blueprint.GetLinkedStructureSO().structurePositionRemovable) {
                 structureBlueprintsToRemove.Add(blueprint);
             }
@@ -403,7 +409,7 @@ public class CampEditManager : MonoBehaviour {
             RemoveStructure(blueprintToRemove, true);
         }
 
-        RemoveStructure(tentBlueprint, false);
+        //RemoveStructure(tentBlueprint, false);
 
         OnAnyChangeMade?.Invoke(this, EventArgs.Empty);
         OnAllStructuresRemoved?.Invoke(this, EventArgs.Empty);

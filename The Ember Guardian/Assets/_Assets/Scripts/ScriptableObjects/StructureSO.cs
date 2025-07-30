@@ -37,8 +37,11 @@ public class StructureSO : ScriptableObject
         spikes,
         orbExtractor,
         engineerShrine,
-        currencyStorage,
+        currencyStorage_BigOrb,
         currencyStorage_Objective,
+        currencyStorage_SmallOrb,
+        currencyStorage_Ammo,
+        currencyStorage_SpecialAmmo,
     }
     public enum StructureCategory {
         core,

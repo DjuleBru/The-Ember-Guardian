@@ -105,8 +105,6 @@ public class Fire : Structure, IDamageable {
     }
 
     protected override void Start() {
-        fireOrbCollider.OnOrbFellInFire += FireOrbCollider_OnOrbFellInFire;
-
         LoadStats();
 
         if(!isHubFire) {
@@ -190,6 +188,26 @@ public class Fire : Structure, IDamageable {
             fuelDepletionRate = StructureStats.Instance.GetMainFireFuelDepletionRate();
             maxFuelTreshold = StructureStats.Instance.GetMainFireMaxFuelTreshold();
         }
+    }
+    protected override void TriggerStructurePrimaryFunction() {
+        base.TriggerStructurePrimaryFunction();
+        StartCoroutine(OrbPaidToFuelCoroutine(.1f));
+    }
+
+    private IEnumerator OrbPaidToFuelCoroutine(float delay) {
+        yield return new WaitForSeconds(delay);
+
+        FuelFire(orbFuelValue);
+
+        if (DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+            fuelFireOnCooldown = true;
+            fuelFireNightTimer = 0;
+        }
+
+        StartCoroutine(SetJustFuelledFireFalseAfterDelay());
+        justFuelledFire = true;
+        OnFireFuelled?.Invoke(this, EventArgs.Empty);
+        OnAnyFireFuelled?.Invoke(this, EventArgs.Empty);
     }
 
     private void PlayerInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -286,21 +304,6 @@ public class Fire : Structure, IDamageable {
 
     private void ChangeFireRadius(float fireRadius) {
         fireRadiusCollider.radius = fireRadius;
-    }
-
-    private void FireOrbCollider_OnOrbFellInFire(object sender, EventArgs e) {
-
-        FuelFire(orbFuelValue);
-
-        if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
-            fuelFireOnCooldown = true;
-            fuelFireNightTimer = 0;
-        }
-
-        StartCoroutine(SetJustFuelledFireFalseAfterDelay());
-        justFuelledFire = true;
-        OnFireFuelled?.Invoke(this, EventArgs.Empty);
-        OnAnyFireFuelled?.Invoke(this, EventArgs.Empty);
     }
 
     public void FuelFire(float fuelAmount) {

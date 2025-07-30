@@ -175,7 +175,7 @@ public class StructureLocation : MonoBehaviour {
         if (!MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
             OnStructureLocationLoaded_Locked?.Invoke(this, EventArgs.Empty);
             gameObject.SetActive(false);
-            //Debug.Log(saveString + " location has NOT been bought at merchant ");
+            Debug.Log(saveString + " location has NOT been bought at merchant ");
         }
         else {
             gameObject.SetActive(true);

@@ -27,6 +27,10 @@ public class HubMerchantItem_WatcherMerchantItem : HubMerchantItem {
         EngineerSpeed,
         EngineerWrenchSpeed,
         EngineerContainerSize,
+        EngineerContainerUnlock_BigOrb,
+        EngineerContainerUnlock_SmallOrb,
+        EngineerContainerUnlock_Ammo,
+        EngineerContainerUnlock_AmmoSpecial,
     }
     public enum WatcherItemCategory {
         newShrine,
@@ -44,6 +48,7 @@ public class HubMerchantItem_WatcherMerchantItem : HubMerchantItem {
     }
 
     public override void BuyItem() {
+
         if (watcherItemType == WatcherItemType.ControlEmberlings) {
 
             WorkerStats.Instance.SetInteractionWithWorkersUnlocked();
@@ -501,11 +506,16 @@ public class HubMerchantItem_WatcherMerchantItem : HubMerchantItem {
         return false;
     }
     public override string GetItemType() {
+
         if(watcherItemCategory != WatcherItemCategory.newShrine) {
             return watcherItemType.ToString();
         } else {
-            return structureType.ToString() + itemLevel;
+            return structureType.ToString() + "1";
         }
 
+    }
+
+    public StructureSO.StructureType GetStructureType() {
+        return structureType;
     }
 }

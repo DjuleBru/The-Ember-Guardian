@@ -75,12 +75,24 @@ public class AddStructureBlueprint : ButtonUI
                 SetStructureUnlocked();
             }
         }
+
+        HubMerchantItem_WatcherMerchantItem watcherMerchantItem = merchantItem as HubMerchantItem_WatcherMerchantItem;
+        if (watcherMerchantItem != null) {
+            if (watcherMerchantItem.GetStructureType() == linkedStructureSO.structureType) {
+                SetStructureUnlocked();
+            }
+        }
     }
 
     private void LoadStructureUnlocked() {
         string saveString = linkedStructureSO.structureType.ToString() + (1);
+        bool itemIsLocked = !linkedStructureSO.level1StructureInitiallyUnlocked && !MetaProgressionManager.Instance.GetMerchantItemBought(saveString);
 
-        if (!linkedStructureSO.level1StructureInitiallyUnlocked && !MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
+        if(CampEditManager.Instance.GetStructureTypeUnlockedThisSession(linkedStructureSO.structureType)) {
+            itemIsLocked = false;
+        }
+
+        if (itemIsLocked) {
             locked = true;
             //button.enabled = false;
             //button.interactable = false;

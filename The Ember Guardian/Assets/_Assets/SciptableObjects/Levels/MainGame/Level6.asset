@@ -32,7 +32,8 @@ MonoBehaviour:
   isNewEnvironmentDiscoveryLevel: 0
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
   levelsUnlockedByLevel:
-  - {fileID: 11400000, guid: 36a376877af4fca44b531d5dd7dff0fb, type: 2}
+  - {fileID: 11400000, guid: 492cb278ae7c18c48b8138322c43f087, type: 2}
+  - {fileID: 11400000, guid: 20e7ee7a32bd5d7448e5e07ae7827ed9, type: 2}
   merchantsUnlockedInLevel: 04000000
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 61610008e955b91448560af86b3f045b, type: 2}
   newMerchantTextLinesAfterLevel: []
@@ -70,9 +71,9 @@ MonoBehaviour:
   hasFog: 0
   fogFrontAlpha: 0
   fogBackAlpha: 0
-  hasWind: 0
+  hasWind: 1
   initialWindStrength: 0
-  windStrengthsAllowedInLevel: 
+  windStrengthsAllowedInLevel: 00000000020000000300000004000000
   hasRain: 0
   initialRainIntensity: 0
   rainIntensitiesAllowedInLevel: 

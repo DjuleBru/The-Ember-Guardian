@@ -18,7 +18,7 @@ MonoBehaviour:
   structurePrefab: {fileID: 376005918902835770, guid: 55c331fe9a0bc8b4fa8bd5747924910e, type: 3}
   structureSprite: {fileID: 21300000, guid: d6554ff518318d343979dc4f56f5ceac, type: 3}
   structureNameLocalizationKey: Engineer Shrine
-  widthInCells: 4
+  widthInCells: 2
   structurePositionMovable: 1
   structurePositionRemovable: 1
   maxStructureBlueprintAmount: 1
@@ -36,9 +36,7 @@ MonoBehaviour:
   maxEngineersAssignedRefilling: 0
   refillCurrencyTypeNeeded: 0
   upgradeable: 0
-  tentLevelRequiredForLevel2: 2
-  tentLevelRequiredForLevel3: 3
-  tentLevelRequiredForLevel4: 4
+  maxLevel: 0
   buildingUpgradeSpriteList: []
   buildAudioClip: {fileID: 8300000, guid: 063f9aa3f22bb22419be6d9088f9c45a, type: 3}
   buildVolumeMultiplier: 1

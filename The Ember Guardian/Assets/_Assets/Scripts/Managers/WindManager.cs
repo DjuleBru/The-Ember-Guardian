@@ -18,8 +18,10 @@ public class WindManager : MonoBehaviour
     private bool hasWind;
     private bool debugMode;
     private WindStrength currentWindStrength = WindStrength.none;
+    private WindStrength windStrengthOutside = WindStrength.none;
     private float currentWindDir;
     private List<WindStrength> windStrengthAllowedInLevel;
+    private WindStrength previousWindStrength = WindStrength.none;
 
     public event EventHandler OnWindStrengthChanged;
 
@@ -42,6 +44,7 @@ public class WindManager : MonoBehaviour
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
 
         currentWindStrength = LevelManager.Instance.GetLevelSO().initialWindStrength;
+        windStrengthOutside = currentWindStrength;
         RandomizeWindDir();
 
         debugMode = DebugManager.Instance.GetDebugMode_WindManager();
@@ -92,10 +95,19 @@ public class WindManager : MonoBehaviour
     private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         if (!hasWind) return;
         if (windStrengthAllowedInLevel.Count == 0) return;
-        currentWindStrength = windStrengthAllowedInLevel[UnityEngine.Random.Range(0, windStrengthAllowedInLevel.Count)];
-        RandomizeWindDir();
 
+        if (previousWindStrength == WindStrength.strong || previousWindStrength == WindStrength.extreme) {
+            currentWindStrength = WindStrength.none;
+        }
+        else {
+            currentWindStrength = windStrengthAllowedInLevel[UnityEngine.Random.Range(0, windStrengthAllowedInLevel.Count)];
+        }
+
+        windStrengthOutside = currentWindStrength;
+
+        RandomizeWindDir();
         OnWindStrengthChanged?.Invoke(this, EventArgs.Empty);
+        previousWindStrength = currentWindStrength;
     }
 
     private void RandomizeWindDir() {
@@ -133,6 +145,16 @@ public class WindManager : MonoBehaviour
         }
 
         return 1;
+    }
+    public void SetInCavern(bool inCavern) {
+        if (inCavern) {
+            currentWindStrength = WindStrength.none;
+        }
+        else {
+            currentWindStrength = windStrengthOutside;
+        }
+
+        OnWindStrengthChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnDestroy() {

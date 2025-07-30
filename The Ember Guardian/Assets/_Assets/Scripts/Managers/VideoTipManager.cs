@@ -34,6 +34,8 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO architectTableTip;
     [SerializeField] private VideoTipSO mineTip;
     [SerializeField] private VideoTipSO watcherArtifactTip;
+    [SerializeField] private VideoTipSO windTip;
+    [SerializeField] private VideoTipSO specialAmmoTip;
 
     private bool isLevelScene;
     private bool isTutorialScene;
@@ -60,13 +62,14 @@ public class VideoTipManager : MonoBehaviour
     private bool scavengablesTipShown;
     private bool worldPortalTipShown;
     private bool scavengableObstacleTipShown;
-    private bool controlEmberlingsTipShown;
     private bool architectTableTipShown;
     private bool engineerTipBasicShown;
     private bool engineerTipAdvancedShown;
     private bool mineTipShown;
     private bool guardTipShown;
     private bool watcherArtifactTipShown;
+    private bool windTipShown;
+    private bool specialAmmoTipShown;
 
 
     private void Awake() {
@@ -91,6 +94,8 @@ public class VideoTipManager : MonoBehaviour
             SubscribeToHubEvents();
         }
 
+        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
             isTutorialScene = true;
             SubscribeToTutorialEvents();
@@ -107,6 +112,8 @@ public class VideoTipManager : MonoBehaviour
             emberExtractionTipShown = true;
         }
     }
+
+
     private void SubscribeToDemoTutorialEvents() {
         UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
     }
@@ -130,11 +137,23 @@ public class VideoTipManager : MonoBehaviour
         Worker.OnAnyWorkerRecruited += Worker_OnAnyWorkerRecruited;
         Scavengable.OnAnyScavengableMarkedToScavenge += Scavengable_OnAnyScavengableMarkedToScavenge;
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
+        WindManager.Instance.OnWindStrengthChanged += WindManager_OnWindStrengthChanged;
 
         if (EndLevelArea.Instance != null) {
             EndLevelArea.Instance.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
         }
 
+    }
+
+    private void WindManager_OnWindStrengthChanged(object sender, EventArgs e) {
+        if (windTipShown) return;
+
+        if(WindManager.Instance.GetWindStrength() != WindManager.WindStrength.none) {
+            VideoTipUI.Instance.PlayTipSO(windTip, 1f);
+
+            windTipShown = true;
+            ES3.Save("windTipShown", true);
+        }
     }
 
     private void Scavengable_OnAnyScavengableMarkedToScavenge(object sender, EventArgs e) {
@@ -145,6 +164,18 @@ public class VideoTipManager : MonoBehaviour
             ES3.Save("mineTipShown", true);
 
             VideoTipUI.Instance.PlayTipSO(mineTip, .5f);
+        }
+    }
+    private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
+        if (specialAmmoTipShown) return;
+
+        GunSO gunSO = PlayerShoot.Instance.GetHeldGunSO();
+
+        if(gunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special) {
+            VideoTipUI.Instance.PlayTipSO(specialAmmoTip, 1f);
+
+            specialAmmoTipShown = true;
+            ES3.Save("specialAmmoTipShown", true);
         }
     }
 
@@ -245,6 +276,15 @@ public class VideoTipManager : MonoBehaviour
             watcherArtifactTipShown = true;
 
             ES3.Save("watcherArtifactTipShown", true);
+        }
+
+        if (structureSO.structureType == StructureSO.StructureType.currencyStorage_Ammo || structureSO.structureType == StructureSO.StructureType.currencyStorage_SpecialAmmo || structureSO.structureType == StructureSO.StructureType.currencyStorage_BigOrb || structureSO.structureType == StructureSO.StructureType.currencyStorage_SmallOrb) {
+            if (engineerTipAdvancedShown) return;
+
+            VideoTipUI.Instance.PlayTipSO(engineersTip_advanced, 0f);
+            engineerTipAdvancedShown = true;
+
+            ES3.Save("engineerTipAdvancedShown", true);
         }
     }
 
@@ -384,10 +424,6 @@ public class VideoTipManager : MonoBehaviour
         VideoTipUI.Instance.PlayTipSO(tipSO, 0f);
     }
 
-    public void PlayControlEmberlingsTip() {
-        if (controlEmberlingsTipShown) return;
-        VideoTipUI.Instance.PlayTipSO(controlEmberlingsTip, 0f);
-    }
 
     private void LoadTooltipsShown() {
         dieTipShown = ES3.Load("dieTipShown", false);
@@ -400,13 +436,14 @@ public class VideoTipManager : MonoBehaviour
         scavengablesTipShown = ES3.Load("scavengablesTipShown", false);
         worldPortalTipShown = ES3.Load("worldPortalTipShown", false);
         scavengableObstacleTipShown = ES3.Load("scavengableObstacleTipShown", false);
-        controlEmberlingsTipShown = ES3.Load("controlEmberlingsTipShown", false);
         architectTableTipShown = ES3.Load("architectTableTipShown", false);
         engineerTipBasicShown = ES3.Load("engineerTipBasicShown", false);
         engineerTipAdvancedShown = ES3.Load("engineerTipAdvancedShown", false);
         guardTipShown = ES3.Load("guardTipShown", false);
         mineTipShown = ES3.Load("mineTipShown", false);
         watcherArtifactTipShown = ES3.Load("watcherArtifactTipShown", false);
+        windTipShown = ES3.Load("windTipShown", false);
+        specialAmmoTipShown = ES3.Load("specialAmmoTipShown", false);
     }
 
     private void OnDestroy() {

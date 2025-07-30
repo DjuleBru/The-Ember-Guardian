@@ -49,6 +49,5 @@ public class MetaProgressionLevelManager : MonoBehaviour
 
         MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType.WorkerMerchant, true);
         WorkerStats.Instance.SetInteractionWithWorkersUnlocked();
-        VideoTipManager.Instance.PlayControlEmberlingsTip();
     }
 }

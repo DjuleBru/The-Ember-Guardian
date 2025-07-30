@@ -122,6 +122,7 @@ public class PlayerAim : MonoBehaviour
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
         PlayerShoot.Instance.OnWeaponSecondaryAbilityStarted += PlayerShoot_OnWeaponSecondaryAbilityStarted;
         PlayerShoot.Instance.OnWeaponSecondaryAbilityEnded += PlayerShoot_OnWeaponSecondaryAbilityEnded;
+        Gun.OnAnyGunStatsUpgraded += Gun_OnAnyGunStatsUpgraded;
 
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
@@ -143,6 +144,7 @@ public class PlayerAim : MonoBehaviour
 
         damageImmunityAfterTakingDamageTime = PlayerStats.Instance.GetDamagedImmunityTime();
     }
+
 
     private void LateUpdate() {
         HandleJustTookDamagePrecisionDebuff();
@@ -572,6 +574,9 @@ public class PlayerAim : MonoBehaviour
             }
         }
     }
+    private void Gun_OnAnyGunStatsUpgraded(object sender, EventArgs e) {
+        RefreshPrecisionVariables();
+    }
 
     private void BuffPrecision(float buff) {
         currentPrecisionModifier /= buff;
@@ -856,5 +861,6 @@ public class PlayerAim : MonoBehaviour
 
     private void OnDestroy() {
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
+        Gun.OnAnyGunStatsUpgraded -= Gun_OnAnyGunStatsUpgraded;
     }
 }
