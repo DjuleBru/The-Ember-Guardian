@@ -32,7 +32,9 @@ public class Obstacle : MonoBehaviour {
         payCurrencyUI = GetComponent<PayCurrencyUI>();
         InitializeOrbTemplateList();
 
-        obstacleSolidCollider.enabled = false;
+        if(obstacleSolidCollider != null) {
+            obstacleSolidCollider.enabled = false;
+        }
     }
 
     protected virtual void Start() {
@@ -55,7 +57,10 @@ public class Obstacle : MonoBehaviour {
               collider.enabled = false;
         }
 
-        obstacleSolidCollider.enabled = true;
+        if(obstacleSolidCollider != null) {
+            obstacleSolidCollider.enabled = true;
+        }
+
         obstacleBuilt = true;
         InvokeObstacleBuiltEvents();
         SetTriggerExit();

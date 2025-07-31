@@ -31,7 +31,7 @@ public class WorkerStats : MonoBehaviour
 
     private int initialGuardDamage = 5;
     private float initialGuardAttackCooldown = 1f;
-    private float initialGuardHealth = 10f;
+    private float initialGuardHealth = 20f;
     private int guardDamageBuff;
     private float guardAttackCooldownBuff;
     private int guardHealthBuff;

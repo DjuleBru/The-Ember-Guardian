@@ -386,6 +386,7 @@ public class CreatureDetectionCollider : MonoBehaviour
         // Check if worker is out of camp AND player is around too
         if (workerTargetingPriority == 0) return false;
         if (worker.GetDefensiveStructureAssigned() != null) return false;
+        if (creature.GetCreatureSO().flying && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) return false;
 
         if (!IsTargetBehindBarricade(worker.transform)) {
             // Worker is not behind a barricade : check if worker is within camp zone limits

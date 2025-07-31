@@ -1297,8 +1297,8 @@
    "Italian": ""
  },
  {
-   "key": "SubObj_BuildArtifact",
-   "English": "Build the Watcher's Artifact",
+   "key": "SubObj_BuildWatcherArtifact",
+   "English": "Build The Throned Sentinel",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -1306,7 +1306,7 @@
  },
  {
    "key": "SubObj_CollectOrbs",
-   "English": "Fill up the Watcher's Artifact",
+   "English": "Fill up The Throned Sentinel",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -1646,30 +1646,6 @@
    "French": "• Vous pouvez améliorer la fenêtre de surtension. chez l'armurier.",
    "German": "• Du kannst das Boost Zeitfenster beim Waffenschmied verbessern",
    "Spanish": "• Puedes mejorar la Ventana de Oportunidad en el Armero",
-   "Italian": ""
- },
- {
-   "key": "VideoTip_WorkerCamp0",
-   "English": "Lost emberlings",
-   "French": "Braiselins sauvages",
-   "German": "",
-   "Spanish": "",
-   "Italian": ""
- },
- {
-   "key": "VideoTip_WorkerCamp1",
-   "English": "Lost emberlings can be rectuited at emberling camps",
-   "French": "Les braiselins peuvent être recrutés dans leurs camps",
-   "German": "",
-   "Spanish": "",
-   "Italian": ""
- },
- {
-   "key": "VideoTip_WorkerCamp2",
-   "English": "• New emberlings appear there at dawn",
-   "French": "• De nouveaux braiselins y apparaissent a l'aube",
-   "German": "",
-   "Spanish": "",
    "Italian": ""
  },
  {
@@ -2606,22 +2582,6 @@
    "French": "Augmente l’impact des projectiles, garantissant que chaque tir inflige un maximum de dégâts à vos ennemis.",
    "German": "Erhöhe den Projektileinschlag, um sicherzustellen, dass jeder Schuss das Maximum an Veheerung an deinen Gegnern anrichtet.",
    "Spanish": "Aumenta la fuerza de impacto de los proyectiles lo que garantiza que cada disparo cause la máxima devastación a tus enemigos.",
-   "Italian": ""
- },
- {
-   "key": "Blast Compound",
-   "English": "Blast Compound",
-   "French": "",
-   "German": "",
-   "Spanish": "",
-   "Italian": ""
- },
- {
-   "key": "Blast Compound_Description",
-   "English": "Increases explosion damage.",
-   "French": "",
-   "German": "",
-   "Spanish": "",
    "Italian": ""
  },
  {
@@ -4609,74 +4569,10 @@
    "Italian": ""
  },
  {
-   "key": "mine_depth",
-   "English": "Depth",
-   "French": "Profondeur",
-   "German": "",
-   "Spanish": "",
-   "Italian": ""
- },
- {
-   "key": "mine_active",
-   "English": "Active",
-   "French": "Actif",
-   "German": "",
-   "Spanish": "",
-   "Italian": ""
- },
- {
-   "key": "tp_exit",
-   "English": "Step Out",
-   "French": "Sortir",
-   "German": "",
-   "Spanish": "",
-   "Italian": ""
- },
- {
-   "key": "tp_teleport",
-   "English": "Teleport",
-   "French": "Téléporter",
-   "German": "",
-   "Spanish": "",
-   "Italian": ""
- },
- {
-   "key": "dog_bite",
-   "English": "Bite",
-   "French": "",
-   "German": "",
-   "Spanish": "",
-   "Italian": ""
- },
- {
-   "key": "dog_dig",
-   "English": "Dig",
-   "French": "",
-   "German": "",
-   "Spanish": "",
-   "Italian": ""
- },
- {
-   "key": "dog_ambush",
-   "English": "Ambush",
-   "French": "",
-   "German": "",
-   "Spanish": "",
-   "Italian": ""
- },
- {
-   "key": "dog_buffWorkers",
-   "English": "Workers",
-   "French": "",
-   "German": "",
-   "Spanish": "",
-   "Italian": ""
- },
- {
-   "key": "day",
-   "English": "Day",
-   "French": "",
-   "German": "",
+   "key": "DEMO - FULL GAME",
+   "English": "DEMO - FULL GAME",
+   "French": "DEMO - FULL GAME",
+   "German": "DEMO - FULL GAME",
    "Spanish": "",
    "Italian": ""
  },
@@ -5100,6 +4996,438 @@
    "key": "VideoTip_SwapWeaponTip3",
    "English": "• Different weapons require varying amounts of time to switch between.",
    "French": "• Différentes armes prennent plus ou moins de temps à être équipées.",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_WorkerCamp0",
+   "English": "Lost emberlings",
+   "French": "Braiselins sauvages",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_WorkerCamp1",
+   "English": "Lost emberlings can be rectuited at emberling camps",
+   "French": "Les braiselins peuvent être recrutés dans leurs camps",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_WorkerCamp2",
+   "English": "• New emberlings appear there at dawn",
+   "French": "• De nouveaux braiselins y apparaissent a l'aube",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_FastTravelTP0",
+   "English": "Fast Travel Teleporters",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_FastTravelTP1",
+   "English": "• Step onto a teleporter using [icon:Interact]",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_FastTravelTP2",
+   "English": "• Then press [icon:SwitchBuildingFunctions] to choose your destination",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_FastTravelTP3",
+   "English": "• Each teleporter has a unique symbol to identify it",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_FastTravelTP4",
+   "English": "• Your tent also has a teleporter, always marked with [icon:tentTPIcon]",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Scavengers0",
+   "English": "Scavengers !",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Scavengers1",
+   "English": "Scavengers can extract resources from Resource Nodes.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Scavengers2",
+   "English": "• Hold[icon:Interact]to mark a resource node for Scavengers.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Scavengers3",
+   "English": "• Resource Nodes are finite. Once depleted, they're empty for good",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Scavengers4",
+   "English": "• Different nodes yield different resources: Orbs, Small Orbs, or Ammo",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_ScavengableObstacle0",
+   "English": "Mine Down Obstacles",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_ScavengableObstacle1",
+   "English": "Some obstacles must be mined by Scavengers to clear the way.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_ScavengableObstacle2",
+   "English": "• Beware! Mining noise attracts nearby creatures",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_ScavengableObstacle3",
+   "English": "• When mining starts, nearby Hunters will move in to protect the workers",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_ScavengableObstacle4",
+   "English": "• Mining stops at dusk or if you move too far from the site",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_ArchitectTable0",
+   "English": "The Blueprint Altar",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_ArchitectTable1",
+   "English": "• Use the Blueprint Altar to customize your camp layout",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_ArchitectTable2",
+   "English": "• Visit the Architect to increase structure limits per type",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_ArchitectTable3",
+   "English": "• Keep in mind that placing structures beyond your barricades requires a Tent upgrade",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_EngineersBasic0",
+   "English": "Engineers - Basics",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_EngineersBasic1",
+   "English": "Engineers play several key roles in your camp.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_EngineersBasic2",
+   "English": "• They can boost the speed of production structures",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_EngineersBasic3",
+   "English": "• They can operate Advanced Towers (which require ammo)",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_EngineersBasic4",
+   "English": "• More functions unlock once you build Storage Containers",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_EngineersAdvanced0",
+   "English": "Engineers - Advanced",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_EngineersAdvanced1",
+   "English": "Fill Storage Containers to enable Engineers to manage logistics.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_EngineersAdvanced2",
+   "English": "• They’ll refuel the fire if it's running low",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_EngineersAdvanced3",
+   "English": "• They can deliver orbs to crafters and load ammo into towers",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_EngineersAdvanced4",
+   "English": "• They will then drop crafted resources in containers.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_EngineersAdvanced5",
+   "English": "• Each container stores one resource type. Press [icon:CollectCurrencyFromContainer] to collect it",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_ThroneArtifact0",
+   "English": "The Throned Sentinel",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_ThroneArtifact1",
+   "English": "• Powering the Sentinel reduces the number of enemies at night",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_ThroneArtifact2",
+   "English": "• The sun's hue indicates how intense the coming night will be",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_ThroneArtifact3",
+   "English": "• Timing your use of the Artifact is key to survival",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Mines0",
+   "English": "Mines",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Mines1",
+   "English": "Your scavengers can also work in Mines",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Mines2",
+   "English": "• Mines provide an infinite source of orbs.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Mines3",
+   "English": "• The more you mine, the deeper it goes, and the slower the yield.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Mines4",
+   "English": "• You can deactivate a mine with [icon:Interact] once it's no longer efficient.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_SpecialBullets0",
+   "English": "Special Ammo",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_SpecialBullets1",
+   "English": "• Stronger weapons require Special Ammo to fire",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_SpecialBullets2",
+   "English": "• Press [icon:SwitchBuildingFunctions] at a Crafter to change the ammo type being produced",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_SpecialBullets3",
+   "English": "• Special Ammo costs twice as much and takes twice as long to craft compared to regular ammo",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Wind0",
+   "English": "Wind",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Wind1",
+   "English": "• There are 4 levels of wind - calm, mild, strong and extreme.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Wind2",
+   "English": "• Wind has an impact on movement speed.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Wind3",
+   "English": "• At dusk, wind level falls down - use this at your advantage !",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Guards0",
+   "English": "Guards",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Guards1",
+   "English": "• Guards are tough worker units",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Guards2",
+   "English": "• They provide an extra layer of defense during night attacks",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_Guards3",
+   "English": "• They'll also protect you and your Scavengers when clearing Orbstacles",
+   "French": "",
    "German": "",
    "Spanish": "",
    "Italian": ""
@@ -6625,6 +6953,22 @@
    "Italian": ""
  },
  {
+   "key": "Blast Compound",
+   "English": "Blast Compound",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Blast Compound_Description",
+   "English": "Increases explosion damage.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
    "key": "Tent 4",
    "English": "Tent 4",
    "French": "",
@@ -7875,6 +8219,102 @@
  {
    "key": "Supply Cache Upgrade_UnlockDescription",
    "English": "Cleaned up and rigged to hold more than they should.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Orb Storage",
+   "English": "Orb Storage",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Orb Storage_Description",
+   "English": "Unlocks an Orb Container",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Orb Storage_UnlockDescription",
+   "English": "It hums when full.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Small Orb Storage",
+   "English": "Small Orb Storage",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Small Orb Storage_Description",
+   "English": "Unlocks a small Orb Container",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Small Orb Storage_UnlockDescription",
+   "English": "Enough to hold the dark off.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Ammo Storage",
+   "English": "Ammo Storage",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Ammo Storage_Description",
+   "English": "Unlocks an Ammo Container",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Ammo Storage_UnlockDescription",
+   "English": "Turrets don’t reload themselves.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Special Ammo Storage",
+   "English": "Special Ammo Storage",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Special Ammo Storage_Description",
+   "English": "Unlocks a Special Ammo Container",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Special Ammo Storage_UnlockDescription",
+   "English": "For when things get ugly.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10490,7 +10930,7 @@
  },
  {
    "key": "gemTrader_PostLevel4_5",
-   "English": "Stockpile them well. The convoy depends on your harvest.",
+   "English": "Survive that place, and maybe we can light a flame where none has burned in ages.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10530,7 +10970,7 @@
  },
  {
    "key": "gemTrader_PostLevel5.1_Before5.2Completed_2",
-   "English": "Stockpile orbs from the LumenHollow to prepare the convoy.",
+   "English": "Scout the Hollow. If you can survive its bite, we’ll have a place to plant the flame.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10554,7 +10994,7 @@
  },
  {
    "key": "gemTrader_PostLevel5.2_2",
-   "English": "Those orbs... <slide a=.2>they're going on a journey</slide>.",
+   "English": "These orbs are fuel for something older than the Hollow itself.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10578,7 +11018,7 @@
  },
  {
    "key": "GemMerchant_PostLevel5_AfterBoth_1",
-   "English": "We’re moving the orbs you collected to the Eternal Flame.",
+   "English": "We’ll need fuel. A lot of it. The Hollow’s flame won’t light itself.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10586,7 +11026,7 @@
  },
  {
    "key": "GemMerchant_PostLevel5_AfterBoth_2",
-   "English": "And you’re leading the convoy. So gear up! Once it rolls out, there’s no turning back.",
+   "English": "Start gathering. We’ll stock the orbs near the altar, ready for the final push.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10594,7 +11034,7 @@
  },
  {
    "key": "GemMerchant_PostLevel5_AfterBoth_3",
-   "English": "Once they’re in place, we can activate the defenses: traps, barriers, sentries.",
+   "English": "Once we’ve got enough, we move as one. A convoy, right through the dark.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10602,7 +11042,7 @@
  },
  {
    "key": "GemMerchant_PostLevel5_AfterBoth_4",
-   "English": "Because when that fire flares back up... every cursed thing in the deep will come running.",
+   "English": "That fire goes up, and so does the alarm. <wiggle a=.05 f=2>The whole Hollow will hear it.</wiggle>",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10610,7 +11050,7 @@
  },
  {
    "key": "gemTrader_PostLevel6_1",
-   "English": "You’ve held the flame at <wiggle a=.05 f=2>Lost Greens</wiggle> and safely escorted the <bounce a=.2 f=1.2>convoi</bounce>.",
+   "English": "We’re moving the orbs you collected thanks to a beast the Tamer found.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10618,7 +11058,7 @@
  },
  {
    "key": "gemTrader_PostLevel6_2",
-   "English": "Now the way is open to the <wiggle a=.05 f=2>Corrupted City</wiggle> and the <slide a=.2> LumenHollow</slide>.",
+   "English": "And you’re leading the convoy. So gear up! Once it rolls out, there’s no turning back.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10626,7 +11066,7 @@
  },
  {
    "key": "gemTrader_PostLevel6_3",
-   "English": "It’s time to light the primordial fires there, and push back the darkness further.",
+   "English": "Once they’re in place, we can activate the defenses: traps, barriers, sentries.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -10634,7 +11074,31 @@
  },
  {
    "key": "gemTrader_PostLevel6_4",
-   "English": "The fate of this land <shake a=.4>rests in your hands.</shake>",
+   "English": "Because when that fire flares back up... every cursed thing in the deep will come running.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel6_5",
+   "English": "This isn’t just a supply run. <bounce a=.2 f=1.2>You’re reigniting a primordial flame.</bounce",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel6_6",
+   "English": "The Hollow… or the City. Both once burned bright. Both now lie cold.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_PostLevel6_7",
+   "English": "Whichever you choose, the land will feel it. The dark will feel it.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -11457,6 +11921,30 @@
    "Italian": ""
  },
  {
+   "key": "architect_Engineers1",
+   "English": "<bounce a=.2 f=1.2Engineers</bounce>, hm? Smart hands, steady minds. Just what this place needs.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "architect_Engineers2",
+   "English": "<slide a=.2>LumenHollow</slide> doesn’t give second chances. I’ve outfitted the camp with a few Sniper Towers.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "architect_Engineers3",
+   "English": "Let your engineers man them. They see farther, shoot sharper.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
    "key": "mushroom_LevelIntro1",
    "English": "Ah, a fresh face! <bounce a=.2 f=1.2>Welcome, welcome!</bounce>",
    "French": "",
@@ -11482,7 +11970,7 @@
  },
  {
    "key": "mushroom_LevelIntro4",
-   "English": "Better start <slide a=.2>digging</slide> deep and fast: there’s orbs down there, but only if you move quick!",
+   "English": "I found something old, <shake a=.4>pulsing</shake> with intent.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -11490,7 +11978,31 @@
  },
  {
    "key": "mushroom_LevelIntro5",
-   "English": "Me? I’m off. <slide a=.2>See you at the flame.</slide>",
+   "English": "Feed it orbs, and it will hold the night back… For a while.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "mushroom_LevelIntro6",
+   "English": "Best thing? Those orbs don’t vanish. I’ve seen the trails… They’re going somewhere.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "mushroom_LevelIntro7",
+   "English": "Toward a plan, maybe? A convoy? Hah… just guessing.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "mushroom_LevelIntro8",
+   "English": "<wiggle a=.05 f=2>Two birds, one ember.</wiggle>",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -11595,6 +12107,78 @@
  {
    "key": "tooltip_huntingFlagTooFar",
    "English": "Hunters might not make it back to camp...",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "mine_depth",
+   "English": "Depth",
+   "French": "Profondeur",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "mine_active",
+   "English": "Active",
+   "French": "Actif",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "tp_exit",
+   "English": "Step Out",
+   "French": "Sortir",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "tp_teleport",
+   "English": "Teleport",
+   "French": "Téléporter",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "dog_bite",
+   "English": "Bite",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "dog_dig",
+   "English": "Dig",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "dog_ambush",
+   "English": "Ambush",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "dog_buffWorkers",
+   "English": "Workers",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "day",
+   "English": "Day",
    "French": "",
    "German": "",
    "Spanish": "",

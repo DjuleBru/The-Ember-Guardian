@@ -37,7 +37,7 @@ public class WorkerMovement : MobMovement
             if (hunterJob.GetState() == HunterJob.HunterState.escortAttackCreature) return;
         }
         if (workerAI.GetJob() == WorkerAI.JobTypes.guard) {
-            if (guardJob.GetState() == GuardJob.GuardState.followPlayerAttackCreature) return;
+            if (guardJob.GetState() == GuardJob.GuardState.escorting) return;
         }
 
         float minSpeed = 2f;  // Vitesse minimale

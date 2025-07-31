@@ -28,6 +28,17 @@ public class VideoTipSO : ScriptableObject
         Trap,
         GunJams,
         GunManagement,
+        WorldPortals,
+        ScavengableObstacle,
+        Scavengers,
+        ArchitectTable,
+        Engineers_basic,
+        Engineers_advanced,
+        ThroneArtifact,
+        Mines,
+        SpecialAmmo,
+        Wind,
+        Guards,
     }
 
     public VideoTipType tipType;

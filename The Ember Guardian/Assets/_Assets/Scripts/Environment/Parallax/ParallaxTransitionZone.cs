@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ParallaxTransitionZone : MonoBehaviour {
+    public static ParallaxTransitionZone ActiveZone;
 
     [SerializeField] private Transform leftLimitPosition;
     [SerializeField] private Transform leftFadeEndPosition;
@@ -26,6 +27,13 @@ public class ParallaxTransitionZone : MonoBehaviour {
 
     private void Update() {
         float cameraX = Camera.main.transform.position.x;
+
+
+        if (IsCameraInsideZone(cameraX)) {
+            ActiveZone = this;
+        }
+        if (ActiveZone != this) return;
+
         float interiorAlpha = 0f;
 
         if (cameraX <= leftLimitX || cameraX >= rightLimitX) {
@@ -51,4 +59,9 @@ public class ParallaxTransitionZone : MonoBehaviour {
         interiorParallax.SetParallaxTransparency(interiorAlpha);
         exteriorParallax.SetParallaxTransparency(1f - interiorAlpha);
     }
+
+    private bool IsCameraInsideZone(float x) {
+        return x >= leftLimitX && x <= rightLimitX;
+    }
+
 }

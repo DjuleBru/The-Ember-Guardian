@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e57289136e0e1e6418ec81259b9649b2, type: 3}
+  m_Name: BallTank
+  m_EditorClassIdentifier: 
+  enemyName: Ball Tank
+  isBoss: 0
+  description: Melee mob that can respawn after it's first death !
+  creatureIcon: {fileID: 21300000, guid: 94dd52a0697a9c04094397af1d499cdf, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: 7d317277886596c4db0482b6d7cf0c93, type: 3}
+  creaturePrefab: {fileID: 4997657120178985709, guid: 5e9f9144733369d4a911384b05a6eb82, type: 3}
+  mass: 5
+  detectionRange_Day: 10
+  detectionRange_Night: 10
+  primaryAttackSO: {fileID: 11400000, guid: a7ee0484d62370e4a94124ce9876329d, type: 2}
+  hasRangedAndMeleeAttack: 0
+  secondaryAttackSO: {fileID: 0}
+  specialAttackSO: {fileID: 0}
+  flying: 1
+  canFlank: 0
+  flightMinAltitude: 4
+  flightMaxAltitude: 12
+  flightAltitudeRandomizer: 3
+  dayMoveSpeed: 3
+  nightMoveSpeed: 3
+  aggroMoveSpeedBuff: 1.5
+  enteredLightMoveSpeedDebuff: 1.3
+  moveSpeedRandomizerDelta: 0.25
+  maxHealth: 10
+  enteredLightattackRateDebuff: 2.5
+  probabilityToAggroOnGunShot: 1
+  immuneToPoison: 0
+  immuneToShock: 0
+  immuneToImmobilize: 0
+  hasCustomSpawnAnimation: 0
+  spawnAnimationDuration: 1
+  baseMovementAnimationSpeed: 1
+  workerTargetingPriority: 0
+  playerTargetingPriority: 3
+  barricadeTargetingPriority: 0
+  currencyTypeDroppedList: 02000000
+  currencyDropAmountList: 01000000
+  difficulty: 5
+  initialWaveSpawn: 1
+  spawnProbability: 0.5
+  maxCreaturesPerPacket: 3
+  dieAudioClips:
+  - {fileID: 8300000, guid: 446c7fdec8473644b966d3a38677b69f, type: 3}
+  - {fileID: 8300000, guid: 2880d1e342369564bb6af71ec202c486, type: 3}
+  - {fileID: 8300000, guid: c1880a30f8500e84c842471a93f940b6, type: 3}
+  dieVolumeMultiplier: 0.5
+  aggroAudioClips:
+  - {fileID: 8300000, guid: b1955a2f436102440b9cf811d014a3f1, type: 3}
+  - {fileID: 8300000, guid: 2dfe05cf25fd8b441aa206df3950e8d7, type: 3}
+  - {fileID: 8300000, guid: 9b2069d1c179a244d84fbe919f49b3ef, type: 3}
+  - {fileID: 8300000, guid: 3124fb5c03dae1c479645774df18e578, type: 3}
+  - {fileID: 8300000, guid: dd4fd68fa75072845a80e4256e9d9943, type: 3}
+  aggroVolumeMultiplier: 0.6
+  idleAudioClips:
+  - {fileID: 8300000, guid: ac191cc6a85b3454da95183f0fe0e981, type: 3}
+  - {fileID: 8300000, guid: 6a92960c47090464584fc9e4ab2eb815, type: 3}
+  - {fileID: 8300000, guid: effbe8f33dd170d4d9e4b8a4d3c82f15, type: 3}
+  - {fileID: 8300000, guid: b7b36d07ec996de46a53d4369d07ecac, type: 3}
+  idleVolumeMultiplier: 0.5
+  footStepAudioClips: []
+  footstepVolumeMultiplier: 1
+  hasContinousAudioClip: 1
+  continuousAudioClip:
+  - {fileID: 8300000, guid: aa03898559cd0dc41a573b9415283ef2, type: 3}
+  hasContinousMovementAudioClip: 0
+  continuousMovementAudioClip: []
+  spawnAudioClips:
+  - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
+  - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}
+  - {fileID: 8300000, guid: b6d953aeaa52e58499a331b756752ad1, type: 3}
+  spawnVolumeMultiplier: 0.75
+  bulletHitAudioClips:
+  - {fileID: 8300000, guid: e8255e52a3feba8469d4d680886ef8b4, type: 3}
+  - {fileID: 8300000, guid: 4c26275d855a282479dc097f844a2362, type: 3}
+  - {fileID: 8300000, guid: c4e78cc3486c66e41a044c0b0a2ae9d7, type: 3}
+  - {fileID: 8300000, guid: c7ead20edc468e24a86195f640218010, type: 3}
+  - {fileID: 8300000, guid: b08f5ac8a197e76408abf125f5ea7870, type: 3}
+  - {fileID: 8300000, guid: 6615caae1c691bd4e92666d2d32f4408, type: 3}
+  bulletHitVolumeMultiplier: 0.4

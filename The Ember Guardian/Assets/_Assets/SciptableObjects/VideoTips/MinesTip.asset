@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9fa10d62b4949b408320628dd0195ef, type: 3}
+  m_Name: MinesTip
+  m_EditorClassIdentifier: 
+  tipType: 27
+  tipNameLocalizationKey: VideoTip_Mines0
+  tipClip: {fileID: 32900000, guid: f114ccb4a20ceaa45aad24ca581806fd, type: 3}
+  tipTextLocalizationKeys:
+  - VideoTip_Mines1
+  - VideoTip_Mines2
+  - VideoTip_Mines3
+  - VideoTip_Mines4
+  tipTextDelayToShowList:
+  - 0
+  - 0
+  - 2
+  - 5

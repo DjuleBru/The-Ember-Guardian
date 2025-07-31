@@ -138,11 +138,6 @@ public class VideoTipManager : MonoBehaviour
         Scavengable.OnAnyScavengableMarkedToScavenge += Scavengable_OnAnyScavengableMarkedToScavenge;
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         WindManager.Instance.OnWindStrengthChanged += WindManager_OnWindStrengthChanged;
-
-        if (EndLevelArea.Instance != null) {
-            EndLevelArea.Instance.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
-        }
-
     }
 
     private void WindManager_OnWindStrengthChanged(object sender, EventArgs e) {
@@ -180,10 +175,15 @@ public class VideoTipManager : MonoBehaviour
     }
 
     private void Worker_OnAnyWorkerRecruited(object sender, EventArgs e) {
+        if (guardTipShown) return;
+
         Worker worker = (Worker)sender;
 
-        if (worker.GetWildJobType() == WorkerAI.JobTypes.engineer) {
-            
+        if (worker.GetWildJobType() == WorkerAI.JobTypes.guard) {
+            VideoTipUI.Instance.PlayTipSO(guardTips, 1f);
+
+            guardTipShown = true;
+            ES3.Save("guardTipShown", true);
         }
     }
 
@@ -193,15 +193,6 @@ public class VideoTipManager : MonoBehaviour
         HubChest.Instance.OnChestSetCanOpen += HubChest_OnChestSetCanOpen;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
     }
-
-    private void EndLevelArea_OnEndLevelAreaCleared(object sender, EventArgs e) {
-        if (worldPortalTipShown) return;
-
-        worldPortalTipShown = true;
-        ES3.Save("worldPortalTipShown", true);
-        VideoTipUI.Instance.PlayTipSO(worldPortalTip);
-    }
-
 
     private void HubChest_OnChestSetCanOpen(object sender, EventArgs e) {
         if (storeGemsTipShown) return;
@@ -348,7 +339,14 @@ public class VideoTipManager : MonoBehaviour
     }
 
     private void Structure_OnAnyPlayerTriggeredIn_Level(object sender, EventArgs e) {
+        Structure structure = sender as Structure;
+        if(structure.GetStructureSO().structureType == StructureSO.StructureType.fastTravelTeleporter) {
+            if (worldPortalTipShown) return;
 
+            worldPortalTipShown = true;
+            ES3.Save("worldPortalTipShown", true);
+            VideoTipUI.Instance.PlayTipSO(worldPortalTip);
+        }
     }
 
     private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {

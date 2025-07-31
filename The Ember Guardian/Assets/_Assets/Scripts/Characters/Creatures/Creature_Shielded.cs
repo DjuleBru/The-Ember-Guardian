@@ -7,11 +7,15 @@ public class Creature_Shielded : Creature
 {
     [SerializeField] private int shieldMaxHealth;
     [SerializeField] private float shieldCooldown;
+    [SerializeField] private bool activateShieldOnStart = true;
+    [SerializeField] private bool activateShieldAfterDamageTaken;
+    [SerializeField] private float timeToActivateShieldAfterDamageTaken;
 
     private float shieldTimer;
     private int shieldHealth;
 
     private bool shieldActive;
+    private bool shieldOnCooldown;
 
     public event EventHandler OnShieldRegenerated;
     public event EventHandler OnShieldDestroyed;
@@ -20,12 +24,17 @@ public class Creature_Shielded : Creature
     protected override void Start() {
         base.Start();
         shieldHealth = shieldMaxHealth;
+
+        if(activateShieldOnStart) {
+            ActivateShield();
+        }
     }
 
     protected override void Update() {
         base.Update();
 
         if (shieldActive) return;
+        if (activateShieldAfterDamageTaken) return;
 
         shieldTimer -= Time.deltaTime;
         if(shieldTimer <= 0) {
@@ -67,6 +76,17 @@ public class Creature_Shielded : Creature
             base.TakeDamage(damage, damageSource, critHit, ignoreTemporaryInvincibility, weakSpotHit);
         }
 
+        if(activateShieldAfterDamageTaken && !shieldActive && !shieldOnCooldown) {
+            StartCoroutine(ActivateShieldAfterDelay(timeToActivateShieldAfterDamageTaken));
+        }
+
+    }
+
+    private IEnumerator ActivateShieldAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+        if (dead) yield break;
+
+        ActivateShield();
     }
 
     private void ActivateShield() {
@@ -81,6 +101,7 @@ public class Creature_Shielded : Creature
         shieldHealth = 0;
         shieldActive = false;
         shieldTimer = shieldCooldown;
+        shieldOnCooldown = true;
         instantiatePSOnHit = true;
 
         OnShieldDestroyed?.Invoke(this, EventArgs.Empty);

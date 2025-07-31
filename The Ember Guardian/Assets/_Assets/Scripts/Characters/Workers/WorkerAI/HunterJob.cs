@@ -463,7 +463,7 @@ public class HunterJob : WorkerJob {
     }
     private bool PlayerIsTooFar() {
         float distanceFromPlayerToAggroedCreature = Mathf.Abs(Mathf.Abs(Player.Instance.transform.position.x) - Mathf.Abs(transform.position.x));
-        return distanceFromPlayerToAggroedCreature > maxDistanceToPlayerWhenFollowing;
+        return distanceFromPlayerToAggroedCreature > maxDistanceToEscortTargetWhenEscorting;
     }
 
     private bool HunterIsWithinHuntingLimits() {
@@ -949,6 +949,7 @@ public class HunterJob : WorkerJob {
     private void ScavengableObstacle_OnAnyScavengableObstacleActivatedMining(object sender, EventArgs e) {
         ScavengableObstacle scavengableObstacle = sender as ScavengableObstacle;
 
+        if (!scavengableObstacle.GetEscortedByWorkers()) return;
         // Check if obstacle is on the same side
         if ((scavengableObstacle.transform.position.x > 0 && worker.GetCampSideAddigned() == CampZoneManager.CampSide.left) || (scavengableObstacle.transform.position.x < 0 && worker.GetCampSideAddigned() == CampZoneManager.CampSide.right)) return; ;
 

@@ -37,7 +37,7 @@ public class WorkerJob : MonoBehaviour
     protected float minimumDistanceToStaySafeFromCreature = 6f;
     protected float distanceToFleeFromCreature = 20f;
     protected float distanceToStartFleeingFromCreature = 15f;
-    protected float maxDistanceToPlayerWhenFollowing = 10f;
+    protected float maxDistanceToEscortTargetWhenEscorting = 10f;
     protected float minDistanceToPlayerWhenFollowing = 5f;
 
     protected float checkClosestTargetTimer;
@@ -88,7 +88,7 @@ public class WorkerJob : MonoBehaviour
     protected bool PlayerIsTooFarFromWorker() {
 
         float distanceFromPlayer = Mathf.Abs(Mathf.Abs(Player.Instance.transform.position.x) - Mathf.Abs(transform.position.x));
-        return distanceFromPlayer > maxDistanceToPlayerWhenFollowing;
+        return distanceFromPlayer > maxDistanceToEscortTargetWhenEscorting;
 
     }
 

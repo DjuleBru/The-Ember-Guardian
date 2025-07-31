@@ -27,6 +27,7 @@ public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
     [SerializeField] private int maxMinersAssigned;
     [SerializeField] private int hitsToRemoveObstacle;
     [SerializeField] private bool playerHasToBeCloseToScavenge = true;
+    [SerializeField] private bool escortedByWorkers = true;
     private float maxPlayerDistanceToScavenge = 40f;
 
     [SerializeField] private List<SpawnOnDamageThreshold> spawnOnDamageThresholds;
@@ -266,6 +267,10 @@ public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
     }
     public Transform GetEscortMaxTransform() {
         return escortMaxPosition;
+    }
+
+    public bool GetEscortedByWorkers() {
+        return escortedByWorkers;
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {

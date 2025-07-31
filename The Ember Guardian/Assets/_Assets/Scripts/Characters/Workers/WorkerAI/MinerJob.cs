@@ -39,7 +39,7 @@ public class MinerJob : WorkerJob {
         float workerDetectionColliderRadius = workerDetectionCollider.GetComponent<CircleCollider2D>().radius;
         distanceToFleeFromCreature = UnityEngine.Random.Range(workerDetectionColliderRadius - workerDetectionColliderRadius / 3, workerDetectionColliderRadius - workerDetectionColliderRadius / 4);
         
-        maxDistanceToPlayerWhenFollowing = 5f;
+        maxDistanceToEscortTargetWhenEscorting = 5f;
         minDistanceToPlayerWhenFollowing = 3f;
         attackRangeRandomized = UnityEngine.Random.Range(attackRange - attackRange / 4, attackRange + attackRange / 4);
     }
@@ -327,6 +327,8 @@ public class MinerJob : WorkerJob {
     }
 
     private void ScavengableObstacle_OnAnyScavengableObstacleActivatedMining(object sender, EventArgs e) {
+        if (DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) return;
+
         UnAssignScavengable();
         CheckAvailableScavengables();
     }

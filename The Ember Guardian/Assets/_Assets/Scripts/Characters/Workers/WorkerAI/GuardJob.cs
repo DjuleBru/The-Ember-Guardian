@@ -1,3 +1,4 @@
+using Mono.CSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,9 +15,12 @@ public class GuardJob : WorkerJob {
     private float distanceToOuterWallWhenGuarding = 3f;
     private float distanceToOuterWallToTargetCreatureAtNight = 14f;
 
+    private IEscortable assignedEscortable;
+    private Transform escortTransform;
+
     public enum GuardState {
-        followPlayerIdle,
-        followPlayerAttackCreature,
+        headingToEscort,
+        escorting,
         guardingDay,
         droppingOrbs,
         headingToGuard,
@@ -30,7 +34,14 @@ public class GuardJob : WorkerJob {
         distanceToFleeFromCreature = UnityEngine.Random.Range(workerDetectionColliderRadius - workerDetectionColliderRadius / 3, workerDetectionColliderRadius - workerDetectionColliderRadius / 4);
         attackRangeRandomized = UnityEngine.Random.Range(attackRange - attackRange / 4, attackRange + attackRange / 4);
 
-        maxDistanceToPlayerWhenFollowing = 10f;
+        maxDistanceToEscortTargetWhenEscorting = 10f;
+    }
+
+    protected override void Start() {
+        base.Start();
+        ScavengableObstacle.OnAnyScavengableObstacleActivatedMining += ScavengableObstacle_OnAnyScavengableObstacleActivatedMining;
+        ScavengableObstacle.OnAnyObstacleBuilt += ScavengableObstacle_OnAnyObstacleBuilt;
+        ScavengableObstacle.OnAnyScavengableObstacleDeActivatedMining += ScavengableObstacle_OnAnyScavengableObstacleDeActivatedMining;
     }
 
     private void Update() {
@@ -47,42 +58,25 @@ public class GuardJob : WorkerJob {
         if(escorting) {
             switch (state) {
 
-                case GuardState.followPlayerIdle:
+                case GuardState.headingToEscort:
 
-                    FollowPlayer();
+                    HeadToEscort();
 
-                    if (closestCreature != null) {
+                    break;
 
-                        CheckAggroClosestCreatureSmart(transform.position, followPlayerTargetingRange);
+                case GuardState.escorting:
 
-                        if (aggroedCreature == null) {
-
-                            targetCreature = null;
-                            workerAttack.RemoveAttackTarget();
-
-                        }
-                        else {
-                            if (!PlayerIsTooFarFromWorker()) {
-                                ChangeState(GuardState.followPlayerAttackCreature);
-                            };
-
-                        }
-                    }
-
-                break;
-
-                case GuardState.followPlayerAttackCreature:
 
                     CheckAggroClosestCreatureSmart(transform.position, followPlayerTargetingRange);
                     if (aggroedCreature == null) {
                         targetCreature = null;
                         workerAttack.RemoveAttackTarget();
-                        ChangeState(GuardState.followPlayerIdle);
+                        ChangeState(GuardState.headingToEscort);
                         return;
                     }
 
-                    if (PlayerIsTooFarFromWorker()) {
-                        ChangeState(GuardState.followPlayerIdle);
+                    if (GuardIsTooFarFromEscortedTarget()) {
+                        ChangeState(GuardState.headingToEscort);
                         return;
                     }
 
@@ -193,13 +187,33 @@ public class GuardJob : WorkerJob {
        
         ChangeState(GuardState.headingToGuard);
     }
+    private void HeadToEscort() {
+        mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
+        Vector3 destination = escortTransform.position;
+        if (Mathf.Abs(destination.x - transform.position.x) > .5f) {
+            mobMovement.SetMoveTarget(destination);
+        }
+        else {
+            ChangeState(GuardState.escorting);
+        }
+    }
+
+    private bool GuardIsTooFarFromEscortedTarget() {
+        Vector3 destination = escortTransform.position;
+        if (Mathf.Abs(destination.x - transform.position.x) > maxDistanceToEscortTargetWhenEscorting) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     protected override void WorkerAI_OnWorkerFollowPlayerChanged(object sender, EventArgs e) {
         base.WorkerAI_OnWorkerFollowPlayerChanged(sender, e);
         workerAttack.RemoveAttackTarget();
 
         if (escorting) {
-            state = GuardState.followPlayerIdle;
+            state = GuardState.headingToEscort;
         } else {
             state = GuardState.headingToGuard;
         }
@@ -304,14 +318,14 @@ public class GuardJob : WorkerJob {
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         if (escorting) return;
-        ChangeState(GuardState.followPlayerIdle);
+        ChangeState(GuardState.headingToEscort);
     }
 
     private void ChangeState(GuardState newState) {
         if (newState == state) return;
         previousState = state;
 
-        if(newState == GuardState.followPlayerIdle) {
+        if(newState == GuardState.headingToEscort) {
             workerAttack.RemoveAttackTarget();
         }
 
@@ -325,8 +339,39 @@ public class GuardJob : WorkerJob {
         ChangeState(previousState);
     }
 
+    private void ScavengableObstacle_OnAnyScavengableObstacleActivatedMining(object sender, EventArgs e) {
+        ScavengableObstacle scavengableObstacle = sender as ScavengableObstacle;
+
+        if (!scavengableObstacle.GetEscortedByWorkers()) return;
+        // Check if obstacle is on the same side
+        if ((scavengableObstacle.transform.position.x > 0 && worker.GetCampSideAddigned() == CampZoneManager.CampSide.left) || (scavengableObstacle.transform.position.x < 0 && worker.GetCampSideAddigned() == CampZoneManager.CampSide.right)) return; ;
+
+        assignedEscortable = scavengableObstacle;
+        escortTransform = assignedEscortable.GetEscortTransform();
+        escorting = true;
+        ChangeState(GuardState.headingToEscort);
+        workerAI.SetEscorting(true);
+    }
+
+    private void ScavengableObstacle_OnAnyObstacleBuilt(object sender, EventArgs e) {
+        escorting = false;
+        ChangeState(GuardState.guardingDay);
+        workerAI.SetEscorting(false);
+    }
+
+
+    private void ScavengableObstacle_OnAnyScavengableObstacleDeActivatedMining(object sender, EventArgs e) {
+        escorting = false;
+        ChangeState(GuardState.guardingDay);
+        workerAI.SetEscorting(false);
+    }
 
     public GuardState GetState() {
         return state;
+    }
+    private void OnDestroy() {
+        ScavengableObstacle.OnAnyScavengableObstacleActivatedMining -= ScavengableObstacle_OnAnyScavengableObstacleActivatedMining;
+        ScavengableObstacle.OnAnyObstacleBuilt -= ScavengableObstacle_OnAnyObstacleBuilt;
+        ScavengableObstacle.OnAnyScavengableObstacleDeActivatedMining -= ScavengableObstacle_OnAnyScavengableObstacleDeActivatedMining;
     }
 }

@@ -41,12 +41,12 @@ MonoBehaviour:
   dayCreatureTypes:
   - {fileID: 11400000, guid: 9c9076f8b6a22de4ebbd843c06ddcb3d, type: 2}
   nightCreatureTypes:
-  - {fileID: 11400000, guid: a0252d9509f4f3244af84b9de1268479, type: 2}
-  - {fileID: 11400000, guid: e1a51e692d8a7594597c7d4ea0f2e750, type: 2}
-  - {fileID: 11400000, guid: a8478894db1dd464292493c5e12bb3b1, type: 2}
   - {fileID: 11400000, guid: 801ac2fa2144d5c4a8a531fade06b5de, type: 2}
-  - {fileID: 11400000, guid: 2a869f182b5b34b41aa44f2e41093c0d, type: 2}
+  - {fileID: 11400000, guid: a8478894db1dd464292493c5e12bb3b1, type: 2}
+  - {fileID: 11400000, guid: e1a51e692d8a7594597c7d4ea0f2e750, type: 2}
+  - {fileID: 11400000, guid: a0252d9509f4f3244af84b9de1268479, type: 2}
   - {fileID: 11400000, guid: 62e52f1a115920948b5e7acc35ebadd9, type: 2}
+  - {fileID: 11400000, guid: 2a869f182b5b34b41aa44f2e41093c0d, type: 2}
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
@@ -57,7 +57,7 @@ MonoBehaviour:
   intialMaxSubwaveDifficulty: 15
   maxSubwaveDifficulty: 65
   growthFactor: 1.15
-  typicalLevelDaysToComplete: 7
+  typicalLevelDaysToComplete: 8
   minMaxSubwaveDifficultyGrowthFactor: 1.4
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
