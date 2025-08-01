@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
   m_Name: Level7.2
   m_EditorClassIdentifier: 
-  linkedSceneName: Level1_VerdantGraveyard
+  linkedSceneName: Level7.2_LumenHollow
   isBranchingLevel: 1
   requiredLevelSO1: {fileID: 0}
   requiredLevelSO2: {fileID: 0}
-  parallelLevelSO: {fileID: 11400000, guid: 492cb278ae7c18c48b8138322c43f087, type: 2}
+  parallelLevelSO: {fileID: 11400000, guid: 20e7ee7a32bd5d7448e5e07ae7827ed9, type: 2}
   levelImage: {fileID: 0}
   levelNameLocalizationKey: Level 7.2
   levelDescriptionLocalizationKey: 
@@ -25,37 +25,43 @@ MonoBehaviour:
   minesAmount: 0
   chestAmount: 0
   wildEmberlingsAmount: 0
-  levelObjectiveType: 10
-  endLevelType: 0
+  levelObjectiveType: 21
+  endLevelType: 21
   talkToNpcAFterObjective: 0
   nightsToSurviveAmount: 0
-  isNewEnvironmentDiscoveryLevel: 1
+  isNewEnvironmentDiscoveryLevel: 0
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
   levelsUnlockedByLevel:
-  - {fileID: 11400000, guid: 36a376877af4fca44b531d5dd7dff0fb, type: 2}
-  merchantsUnlockedInLevel: 01000000
-  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 285aab84b4a4ad648a8899052f346e6f, type: 2}
-  newMerchantTextLinesAfterLevel: []
+  - {fileID: 11400000, guid: e00dce060c8c50d45bec8f5aedfa01d7, type: 2}
+  merchantsUnlockedInLevel: 04000000
+  gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: de5cee30e64b11844b98118d817bfa92, type: 2}
+  newMerchantTextLinesAfterLevel:
+  - {fileID: 11400000, guid: 61610008e955b91448560af86b3f045b, type: 2}
   isReplayableLevel: 0
   totalDayCreatureDifficulty: 0
-  dayCreatureTypes: []
+  dayCreatureTypes:
+  - {fileID: 11400000, guid: 9c9076f8b6a22de4ebbd843c06ddcb3d, type: 2}
+  - {fileID: 11400000, guid: 582a862bd856e30469b02bdae99cc2af, type: 2}
   nightCreatureTypes:
-  - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
-  - {fileID: 11400000, guid: a0c1321c3dbd0704c9f6bf0aec0e77b3, type: 2}
-  - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
-  - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
+  - {fileID: 11400000, guid: 801ac2fa2144d5c4a8a531fade06b5de, type: 2}
+  - {fileID: 11400000, guid: a8478894db1dd464292493c5e12bb3b1, type: 2}
+  - {fileID: 11400000, guid: e1a51e692d8a7594597c7d4ea0f2e750, type: 2}
+  - {fileID: 11400000, guid: a1fa313ce4ce3d54a9d0f8a20278ed2b, type: 2}
+  - {fileID: 11400000, guid: 2a869f182b5b34b41aa44f2e41093c0d, type: 2}
+  - {fileID: 11400000, guid: 62e52f1a115920948b5e7acc35ebadd9, type: 2}
+  - {fileID: 11400000, guid: a0252d9509f4f3244af84b9de1268479, type: 2}
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
   startWaveToSpawnFromBothSides: 2
-  baseDifficulty: 6
-  intialMinSubwaveDifficulty: 0
-  minSubwaveDifficulty: 0
-  intialMaxSubwaveDifficulty: 0
-  maxSubwaveDifficulty: 10
-  growthFactor: 1.6
-  maxWaveNumber: 0
-  minMaxSubwaveDifficultyGrowthFactor: 0
+  baseDifficulty: 30
+  intialMinSubwaveDifficulty: 10
+  minSubwaveDifficulty: 25
+  intialMaxSubwaveDifficulty: 15
+  maxSubwaveDifficulty: 65
+  growthFactor: 1.7
+  typicalLevelDaysToComplete: 7
+  minMaxSubwaveDifficultyGrowthFactor: 1.5
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
   difficultyAnimationCurve:
@@ -70,9 +76,9 @@ MonoBehaviour:
   hasFog: 0
   fogFrontAlpha: 0
   fogBackAlpha: 0
-  hasWind: 0
+  hasWind: 1
   initialWindStrength: 0
-  windStrengthsAllowedInLevel: 
+  windStrengthsAllowedInLevel: 00000000020000000300000004000000
   hasRain: 0
   initialRainIntensity: 0
   rainIntensitiesAllowedInLevel: 

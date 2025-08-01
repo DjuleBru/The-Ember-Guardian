@@ -15,8 +15,8 @@ MonoBehaviour:
   enemyName: Crawler
   isBoss: 0
   description: Basic monster, a bit swarmy.
-  creatureIcon: {fileID: 21300000, guid: eb6de8e99ab46ed42bc756bb49482541, type: 3}
-  creatureIcon_Portrait: {fileID: 21300000, guid: 8536efaf080df0841b42a3246a1088c4, type: 3}
+  creatureIcon: {fileID: 21300000, guid: 58941cd31c8cb2d47a91be9bfd175519, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: 174891a8b32123042a1e645ebf82459d, type: 3}
   creaturePrefab: {fileID: 2465624883499499618, guid: ccfd3b879522d614485ec27ba62ea982, type: 3}
   mass: 10
   detectionRange_Day: 10
@@ -29,6 +29,7 @@ MonoBehaviour:
   canFlank: 1
   flightMinAltitude: 0
   flightMaxAltitude: 0
+  flightAltitudeRandomizer: 0
   dayMoveSpeed: 3.5
   nightMoveSpeed: 3.5
   aggroMoveSpeedBuff: 1.5

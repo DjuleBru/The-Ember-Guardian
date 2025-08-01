@@ -219,6 +219,7 @@ public class Chest : MonoBehaviour
         OnChestDisappear?.Invoke(this, EventArgs.Empty);
 
         yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
         Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
 
         yield return new WaitForSeconds(delayToDisappear);

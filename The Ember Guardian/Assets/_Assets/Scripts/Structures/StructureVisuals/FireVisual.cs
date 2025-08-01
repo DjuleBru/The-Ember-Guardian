@@ -8,6 +8,11 @@ public class FireVisual : StructureVisual
     private Fire fire;
     private Animator fireAnimator;
 
+    [SerializeField] private RuntimeAnimatorController primordialFireRedAnimator;
+    [SerializeField] private RuntimeAnimatorController primordialFireGreenAnimator;
+    [SerializeField] private RuntimeAnimatorController primordialFirePurpleAnimator;
+    [SerializeField] private RuntimeAnimatorController primordialFireBlueAnimator;
+
     [SerializeField] private Light2D AOEFireLight;
     [SerializeField] private Light2D fireLimitLight;
     [SerializeField] private Light2D fireAtmosphericLight1;
@@ -18,6 +23,8 @@ public class FireVisual : StructureVisual
     [SerializeField] private ParticleSystem continuousPS;
     [SerializeField] private ParticleSystem fuelledPS;
     [SerializeField] private ParticleSystem playerRespawnPS;
+    [SerializeField] private ParticleSystem orbInsertedPS;
+    [SerializeField] private ParticleSystem extractingEmberPS;
 
     [SerializeField] private float calmLightIntensityValue;
     [SerializeField] private float mildLightIntensityValue;
@@ -39,6 +46,30 @@ public class FireVisual : StructureVisual
     [SerializeField] private Sprite fireLimitLightSprite2;
     [SerializeField] private Sprite fireLimitLightSprite3;
     [SerializeField] private Sprite fireLimitLightSprite4;
+
+    [SerializeField] private Color blueLimitLightColor;
+    [SerializeField] private Color blueAmbientLightColor;
+    [SerializeField] private ParticleSystem.MinMaxGradient blueFuelledPSMinMaxGradient;
+    [SerializeField] private Gradient blueContinuousPSColorGradient;
+    [SerializeField] private Gradient blueOtherPSColorGradient;
+
+    [SerializeField] private Color redLimitLightColor;
+    [SerializeField] private Color redAmbientLightColor;
+    [SerializeField] private ParticleSystem.MinMaxGradient redFuelledPSMinMaxGradient;
+    [SerializeField] private Gradient redContinuousPSColorGradient;
+    [SerializeField] private Gradient redOtherPSColorGradient;
+
+    [SerializeField] private Color greenLimitLightColor;
+    [SerializeField] private Color greenAmbientLightColor;
+    [SerializeField] private ParticleSystem.MinMaxGradient greenFuelledPSMinMaxGradient;
+    [SerializeField] private Gradient greenContinuousPSColorGradient;
+    [SerializeField] private Gradient greenOtherPSColorGradient;
+
+    [SerializeField] private Color purpleLimitLightColor;
+    [SerializeField] private Color purpleAmbientLightColor;
+    [SerializeField] private ParticleSystem.MinMaxGradient purpleFuelledPSMinMaxGradient;
+    [SerializeField] private Gradient purpleContinuousPSColorGradient;
+    [SerializeField] private Gradient purpleOtherPSColorGradient;
 
     private float calmLightRadius = 2.12f;
     private float mildLightRadius = 4.2f;
@@ -75,6 +106,10 @@ public class FireVisual : StructureVisual
     protected override void Start() {
         base.Start();
 
+        if(fire.GetIsPrimordialFire()) {
+            SetPrimordialFireColors(fire.GetPrimordialFireColor());
+        }
+
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
             DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
@@ -92,6 +127,79 @@ public class FireVisual : StructureVisual
             StartCoroutine(LerpFireLightIntensity(0, AOEFireLightIntensity, 1f));
         }
 
+    }
+
+    private void SetPrimordialFireColors(Fire.PrimordialFireColor fireColor) {
+        Color limitLightColor = blueLimitLightColor;
+        Color ambientLightColor = blueAmbientLightColor;
+        Gradient continuousPSColorGradient = blueContinuousPSColorGradient;
+        Gradient otherPSColorGradient = blueOtherPSColorGradient;
+        ParticleSystem.MinMaxGradient fuelledPSMinMaxGradient = blueFuelledPSMinMaxGradient;
+
+        RuntimeAnimatorController animatorController = primordialFireBlueAnimator;
+
+        if(fireColor == Fire.PrimordialFireColor.Red) {
+            limitLightColor = redLimitLightColor;
+            ambientLightColor = redAmbientLightColor;
+            continuousPSColorGradient = redContinuousPSColorGradient;
+            otherPSColorGradient = redOtherPSColorGradient;
+            fuelledPSMinMaxGradient = redFuelledPSMinMaxGradient;
+
+            animatorController = primordialFireRedAnimator;
+        }
+
+        if (fireColor == Fire.PrimordialFireColor.Green) {
+            limitLightColor = greenLimitLightColor;
+            ambientLightColor = greenAmbientLightColor;
+            continuousPSColorGradient = greenContinuousPSColorGradient;
+            otherPSColorGradient = greenOtherPSColorGradient;
+            fuelledPSMinMaxGradient = greenFuelledPSMinMaxGradient;
+
+            animatorController = primordialFireGreenAnimator;
+        }
+
+        if (fireColor == Fire.PrimordialFireColor.Purple) {
+            limitLightColor = purpleLimitLightColor;
+            ambientLightColor = purpleAmbientLightColor;
+            continuousPSColorGradient = purpleContinuousPSColorGradient;
+            otherPSColorGradient = purpleOtherPSColorGradient;
+            fuelledPSMinMaxGradient = purpleFuelledPSMinMaxGradient;
+
+            animatorController = primordialFirePurpleAnimator;
+        }
+
+        if (fireColor == Fire.PrimordialFireColor.Orange) return;
+
+        fireLimitLight.color = limitLightColor;
+        fireLimitLightSpriteRenderer.color = limitLightColor;
+
+        fireAtmosphericLight1.color = ambientLightColor;
+        fireAtmosphericLight1.color = ambientLightColor;
+        fireAmbienLightSpriteRenderer.color = ambientLightColor;
+
+        ParticleSystem.ColorOverLifetimeModule colorOverLifetime = AOEFirePS.colorOverLifetime;
+        colorOverLifetime.color = otherPSColorGradient;
+
+        ParticleSystem.ColorOverLifetimeModule colorOverLifetime2 = atmosphericPS.colorOverLifetime;
+        colorOverLifetime2.color = otherPSColorGradient;
+
+        ParticleSystem.ColorOverLifetimeModule colorOverLifetime3 = playerRespawnPS.colorOverLifetime;
+        colorOverLifetime3.color = otherPSColorGradient;
+
+        ParticleSystem.ColorOverLifetimeModule colorOverLifetime4 = continuousPS.colorOverLifetime;
+        colorOverLifetime4.color = continuousPSColorGradient;
+
+        ParticleSystem.ColorOverLifetimeModule colorOverLifetime5 = extractingEmberPS.colorOverLifetime;
+        colorOverLifetime5.color = continuousPSColorGradient;
+
+        ParticleSystem.MainModule mainModule = fuelledPS.main;
+        mainModule.startColor = fuelledPSMinMaxGradient;
+
+        ParticleSystem.MainModule mainModule2 = orbInsertedPS.main;
+        mainModule2.startColor = fuelledPSMinMaxGradient;
+
+
+        fireAnimator.runtimeAnimatorController = animatorController;
     }
 
     private void Player_OnPlayerBackToTentToRespawn(object sender, System.EventArgs e) {

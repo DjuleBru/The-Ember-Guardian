@@ -207,4 +207,8 @@ public class PetDog : MonoBehaviour
         }
     }
 
+    public bool GetPlayerCanPetDog() {
+        return playerCanPetDog;
+    }
+
 }

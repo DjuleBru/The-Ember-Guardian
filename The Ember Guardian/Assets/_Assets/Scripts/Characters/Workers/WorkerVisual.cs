@@ -252,16 +252,7 @@ public class WorkerVisual : MobVisual {
 
     private void InteractionCollider_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
         if (!worker.GetRecruited()) return;
-        if (workerAI.GetFollowingPlayer()) return;
-
-        if (workerBlockedByCreatures) {
-            ChangeStatusSprite(exclamationMarkSprite);
-        }
-        if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
-            if (!hunterFoundAnimal) {
-                ChangeStatusSprite(questionMarkSprite);
-            }
-        };
+        RefreshStatusAndWeaponSprite();
     }
 
     private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
@@ -278,6 +269,7 @@ public class WorkerVisual : MobVisual {
 
         if (workerAI.GetFollowingPlayer()) return;
         if (workerAI.GetEscorting()) return;
+
 
         switch (job) {
             case WorkerAI.JobTypes.hunter:

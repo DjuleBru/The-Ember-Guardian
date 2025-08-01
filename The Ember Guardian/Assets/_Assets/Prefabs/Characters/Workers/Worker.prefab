@@ -10382,7 +10382,6 @@ MonoBehaviour:
   workerStatusAnimator: {fileID: 873555978826982272}
   questionMarkSprite: {fileID: -307630437, guid: e8e923d63dddd104ab6b526b5d5d3046, type: 3}
   exclamationMarkSprite: {fileID: 1766720799, guid: e8e923d63dddd104ab6b526b5d5d3046, type: 3}
-  followingPlayerSprite: {fileID: -1696170939, guid: e8e923d63dddd104ab6b526b5d5d3046, type: 3}
   hoveredSprite: {fileID: 457478843, guid: e8e923d63dddd104ab6b526b5d5d3046, type: 3}
   holdingCurrencyGO: {fileID: 6771054027750595340}
   engineerWrenchPS: {fileID: 7474744679895510634}
@@ -11604,7 +11603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b52ebbea11cad48b0d93c2883134ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDistanceToHear: 10
+  maxDistanceToHear: 20
   maxAudioSourceVolume: 1
   active: 1
 --- !u!1 &8641990047504606073

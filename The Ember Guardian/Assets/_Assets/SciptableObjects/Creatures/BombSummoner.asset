@@ -15,18 +15,21 @@ MonoBehaviour:
   enemyName: Summoner
   isBoss: 0
   description: Melee mob that can respawn after it's first death !
-  creatureIcon: {fileID: 21300000, guid: c8da4e1937bd88c43951c33f6d726431, type: 3}
-  creatureIcon_Portrait: {fileID: 21300000, guid: 9d43ad776aed051429d6cfc34ba8c831, type: 3}
+  creatureIcon: {fileID: 21300000, guid: 3cea1890d48a93a4d93724235c9efeb1, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: 12c32cd04a30b4b4193a2be7f4708eac, type: 3}
   creaturePrefab: {fileID: 4997657120178985709, guid: a121a61fd566ab44c87a00bab80da068, type: 3}
   mass: 20
   detectionRange_Day: 8
   detectionRange_Night: 8
   primaryAttackSO: {fileID: 0}
+  hasRangedAndMeleeAttack: 0
   secondaryAttackSO: {fileID: 0}
   specialAttackSO: {fileID: 0}
   flying: 0
+  canFlank: 0
   flightMinAltitude: 0
   flightMaxAltitude: 0
+  flightAltitudeRandomizer: 0
   dayMoveSpeed: 3
   nightMoveSpeed: 3
   aggroMoveSpeedBuff: 1.5
@@ -34,6 +37,7 @@ MonoBehaviour:
   moveSpeedRandomizerDelta: 0.25
   maxHealth: 60
   enteredLightattackRateDebuff: 2.5
+  probabilityToAggroOnGunShot: 1
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0

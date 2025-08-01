@@ -591,11 +591,12 @@ public class Tutorial : MonoBehaviour
     }
 
     private void PlayerSHoot_OnPlayerShot(object sender, System.EventArgs e) {
-        if (!shootTipShown) return;
-        if (shootTipHidden) return;
-
-        StartCoroutine(HideTooltipAfterDelay(2f));
-        shootTipHidden = true;
+        if (shootTipShown) {
+            if (!shootTipHidden) {
+                StartCoroutine(HideTooltipAfterDelay(2f));
+                shootTipHidden = true;
+            };
+        };
     }
 
     private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {

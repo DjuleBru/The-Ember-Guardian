@@ -349,14 +349,14 @@ public class GuardJob : WorkerJob {
         assignedEscortable = scavengableObstacle;
         escortTransform = assignedEscortable.GetEscortTransform();
         escorting = true;
-        ChangeState(GuardState.headingToEscort);
         workerAI.SetEscorting(true);
+        ChangeState(GuardState.headingToEscort);
     }
 
     private void ScavengableObstacle_OnAnyObstacleBuilt(object sender, EventArgs e) {
         escorting = false;
-        ChangeState(GuardState.guardingDay);
         workerAI.SetEscorting(false);
+        ChangeState(GuardState.guardingDay);
     }
 
 

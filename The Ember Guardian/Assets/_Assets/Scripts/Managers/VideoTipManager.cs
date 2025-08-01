@@ -16,13 +16,13 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO healTentTip;
     [SerializeField] private VideoTipSO setupEconomyTip;
     [SerializeField] private VideoTipSO setupDefensesTip;
+    [SerializeField] private VideoTipSO trapTip;
     [SerializeField] private VideoTipSO emberExtractionTip;
     [SerializeField] private VideoTipSO dayNightCycleTip;
     [SerializeField] private VideoTipSO hunterTip;
     [SerializeField] private VideoTipSO recruitEmberlingTip;
     [SerializeField] private VideoTipSO gunTip;
     [SerializeField] private VideoTipSO storeGemsTip;
-    [SerializeField] private VideoTipSO swapWeaponTip;
     [SerializeField] private VideoTipSO huntingFlagTip;
     [SerializeField] private VideoTipSO scavengersTip;
     [SerializeField] private VideoTipSO engineersTip_basic;
@@ -30,12 +30,13 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO guardTips;
     [SerializeField] private VideoTipSO worldPortalTip;
     [SerializeField] private VideoTipSO scavengableObstacleTip;
-    [SerializeField] private VideoTipSO controlEmberlingsTip;
     [SerializeField] private VideoTipSO architectTableTip;
     [SerializeField] private VideoTipSO mineTip;
     [SerializeField] private VideoTipSO watcherArtifactTip;
     [SerializeField] private VideoTipSO windTip;
     [SerializeField] private VideoTipSO specialAmmoTip;
+    [SerializeField] private VideoTipSO surgeWindowTip;
+    [SerializeField] private VideoTipSO gunManagementTip;
 
     private bool isLevelScene;
     private bool isTutorialScene;
@@ -50,14 +51,12 @@ public class VideoTipManager : MonoBehaviour
     private bool recruitEmberlingTipShown;
     private bool emberExtractionTipShown;
     private bool healTentTipShown;
-    private bool setupDefensesTipShown;
 
     private bool dieTipShown;
     private bool setupEconomyTipShown;
     private bool dayNightCycleTipShown;
     private bool gunTipShown;
     private bool storeGemsTipShown;
-    private bool swapWeaponTipShown;
     private bool huntingFlagTipShown;
     private bool scavengablesTipShown;
     private bool worldPortalTipShown;
@@ -70,7 +69,11 @@ public class VideoTipManager : MonoBehaviour
     private bool watcherArtifactTipShown;
     private bool windTipShown;
     private bool specialAmmoTipShown;
+    private bool trapTipShown;
+    private bool surgeWindowTipShown;
+    private bool gunManagementTipShown;
 
+    private bool showGunManagementTip;
 
     private void Awake() {
         Instance = this;
@@ -95,6 +98,7 @@ public class VideoTipManager : MonoBehaviour
         }
 
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+        Gun.OnAnyGunJammed += Gun_OnAnyGunJammed;
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
             isTutorialScene = true;
@@ -108,7 +112,6 @@ public class VideoTipManager : MonoBehaviour
             hunterTipShown = true;
             recruitEmberlingTipShown = true;
             healTentTipShown = true;
-            setupDefensesTipShown = true;
             emberExtractionTipShown = true;
         }
     }
@@ -138,6 +141,15 @@ public class VideoTipManager : MonoBehaviour
         Scavengable.OnAnyScavengableMarkedToScavenge += Scavengable_OnAnyScavengableMarkedToScavenge;
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         WindManager.Instance.OnWindStrengthChanged += WindManager_OnWindStrengthChanged;
+        UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
+    }
+
+    private void Gun_OnAnyGunJammed(object sender, EventArgs e) {
+        if (surgeWindowTipShown) return;
+        VideoTipUI.Instance.PlayTipSO(surgeWindowTip, .7f);
+
+        surgeWindowTipShown = true;
+        ES3.Save("surgeWindowTipShown", true);
     }
 
     private void WindManager_OnWindStrengthChanged(object sender, EventArgs e) {
@@ -150,6 +162,18 @@ public class VideoTipManager : MonoBehaviour
             ES3.Save("windTipShown", true);
         }
     }
+
+    private void PlayerInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        if (trapTipShown) return;
+
+        if (e.currencyUIDropped.GetCurrencyCategory() == PlayerCurrencies.CurrencyCategory.trap) {
+            VideoTipUI.Instance.PlayTipSO(trapTip, 1f);
+
+            trapTipShown = true;
+            ES3.Save("trapTipShown", true);
+        }
+    }
+
 
     private void Scavengable_OnAnyScavengableMarkedToScavenge(object sender, EventArgs e) {
         Scavengable scavengable = sender as Scavengable;
@@ -191,7 +215,24 @@ public class VideoTipManager : MonoBehaviour
         HubMerchant.OnAnyPlayerTriggeredIn += HubMerchant_OnAnyPlayerTriggeredIn;
         HubChest.Instance.OnChestOpened += HubChest_OnChestOpened;
         HubChest.Instance.OnChestSetCanOpen += HubChest_OnChestSetCanOpen;
+        HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+    }
+    private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, EventArgs e) {
+        if (gunManagementTipShown) return;
+        if (sender is HUBMerchantItem_GunMerchantItem) {
+            HUBMerchantItem_GunMerchantItem gunItem = sender as HUBMerchantItem_GunMerchantItem;
+            if (gunItem.GetGunItemCategory() == HUBMerchantItem_GunMerchantItem.GunItemCategory.newGun) {
+                showGunManagementTip = true;
+            }
+        }
+
+        if (sender is HubMerchantItem_TrainerMerchantItem) {
+            HubMerchantItem_TrainerMerchantItem trainerItem = sender as HubMerchantItem_TrainerMerchantItem;
+            if (trainerItem.GetTrainerItemType() == HubMerchantItem_TrainerMerchantItem.TrainerItemType.Hold2Weapons) {
+                showGunManagementTip = true;
+            }
+        }
     }
 
     private void HubChest_OnChestSetCanOpen(object sender, EventArgs e) {
@@ -205,15 +246,11 @@ public class VideoTipManager : MonoBehaviour
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
         HubMerchant hubMerchant = (HubMerchant)sender;
-        if (hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.HeroMerchant) {
-            if (swapWeaponTipShown) return;
-            if (!PlayerStats.Instance.GetCanHold2WeaponsUnlocked()) return;
 
-            VideoTipUI.Instance.PlayTipSO(swapWeaponTip, 1f);
-
-            swapWeaponTipShown = true;
-            ES3.Save("swapWeaponTipShown", true);
-
+        if (showGunManagementTip) {
+            VideoTipUI.Instance.PlayTipSO(gunManagementTip, 1f);
+            gunManagementTipShown = true;
+            ES3.Save("gunManagementTipShown", true);
         }
 
         if (hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.WorkerMerchant) {
@@ -402,7 +439,7 @@ public class VideoTipManager : MonoBehaviour
 
     private void Creature_OnAnyMobDied(object sender, EventArgs e) {
         if (critHitsTipShown) return;
-        VideoTipUI.Instance.PlayTipSO(critHitsTip, 3f);
+        VideoTipUI.Instance.PlayTipSO(critHitsTip, 2f);
         critHitsTipShown = true;
     }
 
@@ -429,7 +466,6 @@ public class VideoTipManager : MonoBehaviour
         dayNightCycleTipShown = ES3.Load("dayNightCycleTipShown", false);
         gunTipShown = ES3.Load("gunTipShown", false);
         storeGemsTipShown = ES3.Load("storeGemsTipShown", false);
-        swapWeaponTipShown = ES3.Load("swapWeaponTipShown", false);
         huntingFlagTipShown = ES3.Load("huntingFlagTipShown", false);
         scavengablesTipShown = ES3.Load("scavengablesTipShown", false);
         worldPortalTipShown = ES3.Load("worldPortalTipShown", false);
@@ -442,6 +478,8 @@ public class VideoTipManager : MonoBehaviour
         watcherArtifactTipShown = ES3.Load("watcherArtifactTipShown", false);
         windTipShown = ES3.Load("windTipShown", false);
         specialAmmoTipShown = ES3.Load("specialAmmoTipShown", false);
+        trapTipShown = ES3.Load("trapTipShown", false);
+        surgeWindowTipShown = ES3.Load("surgeWindowTipShown", false);
     }
 
     private void OnDestroy() {
@@ -452,6 +490,7 @@ public class VideoTipManager : MonoBehaviour
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         HubMerchant.OnAnyPlayerTriggeredIn -= HubMerchant_OnAnyPlayerTriggeredIn;
         Worker.OnAnyWorkerRecruited -= Worker_OnAnyWorkerRecruited;
+        Gun.OnAnyGunJammed -= Gun_OnAnyGunJammed;
 
         UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
         Mob.OnAnyMobDied -= Creature_OnAnyMobDied;

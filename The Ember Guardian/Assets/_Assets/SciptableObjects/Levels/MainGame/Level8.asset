@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   linkedSceneName: Level1_VerdantGraveyard
   isBranchingLevel: 1
-  requiredLevelSO1: {fileID: 11400000, guid: 492cb278ae7c18c48b8138322c43f087, type: 2}
-  requiredLevelSO2: {fileID: 11400000, guid: 20e7ee7a32bd5d7448e5e07ae7827ed9, type: 2}
+  requiredLevelSO1: {fileID: 11400000, guid: 20e7ee7a32bd5d7448e5e07ae7827ed9, type: 2}
+  requiredLevelSO2: {fileID: 11400000, guid: 2907cb0bb1a923a47825d18e9c2d38d1, type: 2}
   parallelLevelSO: {fileID: 0}
   levelImage: {fileID: 0}
   levelNameLocalizationKey: Level 8
@@ -32,7 +32,7 @@ MonoBehaviour:
   isNewEnvironmentDiscoveryLevel: 1
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
   levelsUnlockedByLevel:
-  - {fileID: 11400000, guid: 36a376877af4fca44b531d5dd7dff0fb, type: 2}
+  - {fileID: 11400000, guid: c808ecc4cb5f41a408b016d110cbea35, type: 2}
   merchantsUnlockedInLevel: 01000000
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 285aab84b4a4ad648a8899052f346e6f, type: 2}
   newMerchantTextLinesAfterLevel: []
@@ -54,7 +54,7 @@ MonoBehaviour:
   intialMaxSubwaveDifficulty: 0
   maxSubwaveDifficulty: 10
   growthFactor: 1.6
-  maxWaveNumber: 0
+  typicalLevelDaysToComplete: 0
   minMaxSubwaveDifficultyGrowthFactor: 0
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0

@@ -72,6 +72,8 @@ public class CreatureAI : MonoBehaviour {
         creature.OnMobHitObstacle += Creature_OnMobHitObstacle;
         creatureAttack.OnAttackSOChanged += CreatureAttack_OnAttackSOChanged;
 
+        Player.Instance.OnPlayerDied += Player_OnPlayerDied;
+
         SetAttackRange();
 
         if (creature.GetCreatureSO().canFlank) {
@@ -79,9 +81,6 @@ public class CreatureAI : MonoBehaviour {
         }
     }
 
-    private void CreatureAttack_OnAttackSOChanged(object sender, EventArgs e) {
-        SetAttackRange();
-    }
 
     protected virtual void Update() {
         if (died) return;
@@ -95,6 +94,14 @@ public class CreatureAI : MonoBehaviour {
         StateSwitch();
     }
 
+    private void Player_OnPlayerDied(object sender, EventArgs e) {
+        creatureAttack.RemoveAttackTarget();
+        ChangeState(State.idle);
+    }
+
+    private void CreatureAttack_OnAttackSOChanged(object sender, EventArgs e) {
+        SetAttackRange();
+    }
     protected virtual void SetAttackRange() {
         if (creatureAttack.GetCurrentCreatureAttackSO() == null) return;
         float minAttackRangeSO = creatureAttack.GetCurrentCreatureAttackSO().minAttackRange;

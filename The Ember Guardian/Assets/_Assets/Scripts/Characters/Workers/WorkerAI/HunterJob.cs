@@ -15,6 +15,7 @@ public class HunterJob : WorkerJob {
 
     private Vector3 targetDefensiveDestinationRandomized;
     private Vector3 targetDefensiveDestination;
+    private Vector3 escortDestination;
     private float randomizeDestinationTimer;
     private float randomizeDestinationRate = 2f;
 
@@ -498,9 +499,8 @@ public class HunterJob : WorkerJob {
 
     private void HeadToEscort() {
         mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
-        Vector3 destination = escortTransform.position;
-        if (Mathf.Abs(destination.x - transform.position.x) > .5f) {
-            mobMovement.SetMoveTarget(destination);
+        if (Mathf.Abs(escortDestination.x - transform.position.x) > .5f) {
+            mobMovement.SetMoveTarget(escortDestination);
         } else {
             ChangeState(HunterState.escortingIdle);
         }
@@ -955,15 +955,19 @@ public class HunterJob : WorkerJob {
 
         assignedEscortable = scavengableObstacle;
         escortTransform = assignedEscortable.GetEscortTransform();
+
+        escortDestination = escortTransform.position;
+        escortDestination.x += UnityEngine.Random.Range(-2f, 2f);
+
         escorting = true;
-        ChangeState(HunterState.headingToEscort);
         workerAI.SetEscorting(true);
+        ChangeState(HunterState.headingToEscort);
     }
 
     private void ScavengableObstacle_OnAnyObstacleBuilt(object sender, EventArgs e) {
         escorting = false;
-        ChangeState(HunterState.idle);
         workerAI.SetEscorting(false);
+        ChangeState(HunterState.idle);
     }
 
     private void ScavengableObstacle_OnAnyScavengableObstacleDeActivatedMining(object sender, EventArgs e) {

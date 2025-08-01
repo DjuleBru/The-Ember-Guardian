@@ -1313,6 +1313,14 @@
    "Italian": ""
  },
  {
+   "key": "SubObj_TalkToMuushroomMerchant",
+   "English": "Talk to the SporeMonger",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
    "key": "VideoTip_Reloading0",
    "English": "Reloading",
    "French": "Rechargement",
@@ -3113,6 +3121,30 @@
    "Italian": ""
  },
  {
+   "key": "Orb Extractor",
+   "English": "Orb Extractor",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Orb Extractor_Description",
+   "English": "A slow digger built for sustained orb extraction.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Orb Extractor_UnlockDescription",
+   "English": "Unlocks the orb extractor, a structure providing an infinite but slow source of orbs.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
    "key": "The Orb Alchemist",
    "English": "The Orb Alchemist",
    "French": "L'Alchimiste d'Orbes",
@@ -3150,6 +3182,14 @@
    "French": "Deux escrocs rusés proposant des pièges mortels pour déjouer leurs ennemis, entourés de caisses et de torches vacillantes.",
    "German": "Zwei listige Gauner, die Fallen anbieten, um deine Feine zu überlisten. Sie sind umgeben von Kisten und flackernden Fackeln.",
    "Spanish": "Dos astutos embaucadores que ofrecen trampas letales para burlar a los enemigos",
+   "Italian": ""
+ },
+ {
+   "key": "The Masked Dealers_UnlockDescription",
+   "English": "Unlocks the <b>Masked Dealers</b>, a structure used to aquire traps within a level.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
    "Italian": ""
  },
  {
@@ -4698,7 +4738,7 @@
  },
  {
    "key": "VideoTip_CritHitTip0",
-   "English": "Critical Hits",
+   "English": "Weak Spots & Critical Hits",
    "French": "Coups Critiques",
    "German": "",
    "Spanish": "",
@@ -4706,7 +4746,7 @@
  },
  {
    "key": "VideoTip_CritHitTip1",
-   "English": "• Hitting a weak spots has a chance of dealing critical damage",
+   "English": "• Hitting a weak spot deals bonus damage",
    "French": "• Toucher un point faible a des chances d'infigler des dégâts critiques",
    "German": "",
    "Spanish": "",
@@ -4714,8 +4754,24 @@
  },
  {
    "key": "VideoTip_CritHitTip2",
-   "English": "• Each weapon has a different critical hit probability",
+   "English": "• Weapons can also land critical hits",
    "French": "• Chaque arme a une probabilité de coup critique différente",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_CritHitTip3",
+   "English": "• Each weapon has its own critical hit chance",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "VideoTip_CritHitTip4",
+   "English": "• Weak spot and critical hits can stack for massive damage!",
+   "French": "",
    "German": "",
    "Spanish": "",
    "Italian": ""
@@ -4938,7 +4994,7 @@
  },
  {
    "key": "VideoTip_StoringGemsTip1",
-   "English": "Gems[icon:greenGem][icon:redGem][icon:blueGem][icon:yellowGem][icon:purpleGem]",
+   "English": "Gems[icon:greenGem][icon:redGem][icon:blueGem][icon:yellowGem][icon:purpleGem][icon:cyanGem]",
    "French": "Les gemmes[icon:greenGem][icon:redGem][icon:blueGem][icon:yellowGem][icon:purpleGem]",
    "German": "",
    "Spanish": "",
@@ -5034,7 +5090,7 @@
  },
  {
    "key": "VideoTip_FastTravelTP1",
-   "English": "• Step onto a teleporter using [icon:Interact]",
+   "English": "Step onto a teleporter using [icon:Interact]",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -5106,7 +5162,7 @@
  },
  {
    "key": "VideoTip_ScavengableObstacle0",
-   "English": "Mine Down Obstacles",
+   "English": "Clear Obstacles",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -5154,7 +5210,7 @@
  },
  {
    "key": "VideoTip_ArchitectTable1",
-   "English": "• Use the Blueprint Altar to customize your camp layout",
+   "English": "Use the Blueprint Altar to customize your camp layout",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -5178,7 +5234,7 @@
  },
  {
    "key": "VideoTip_EngineersBasic0",
-   "English": "Engineers - Basics",
+   "English": "Engineers : Basics",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -5218,7 +5274,7 @@
  },
  {
    "key": "VideoTip_EngineersAdvanced0",
-   "English": "Engineers - Advanced",
+   "English": "Engineers : Advanced",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -5274,7 +5330,7 @@
  },
  {
    "key": "VideoTip_ThroneArtifact1",
-   "English": "• Powering the Sentinel reduces the number of enemies at night",
+   "English": "Powering the Sentinel reduces the number of enemies at night",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -5330,7 +5386,7 @@
  },
  {
    "key": "VideoTip_Mines4",
-   "English": "• You can deactivate a mine with [icon:Interact] once it's no longer efficient.",
+   "English": "• You can deactivate a mine once it's no longer efficient.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -5346,7 +5402,7 @@
  },
  {
    "key": "VideoTip_SpecialBullets1",
-   "English": "• Stronger weapons require Special Ammo to fire",
+   "English": "Stronger weapons require Special Ammo to fire",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -5378,7 +5434,7 @@
  },
  {
    "key": "VideoTip_Wind1",
-   "English": "• There are 4 levels of wind - calm, mild, strong and extreme.",
+   "English": "You’ll encounter windy conditions in some levels.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -5410,7 +5466,7 @@
  },
  {
    "key": "VideoTip_Guards1",
-   "English": "• Guards are tough worker units",
+   "English": "Guards are tough worker units",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -7059,6 +7115,30 @@
  {
    "key": "Blueprint Altar_UnlockDescription",
    "English": "Unlocks the Blueprint Altar.<br>Lets you reshape your base's skeleton at the hub.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Tower Slots",
+   "English": "Tower Slots",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Tower Slots_Description",
+   "English": "More towers, more defense. Expand your frontline.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "Tower Slots_UnlockDescription",
+   "English": "Increases Tower Slots at the Blueprint Altar.",
    "French": "",
    "German": "",
    "Spanish": "",

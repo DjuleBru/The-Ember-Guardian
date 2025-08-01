@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9fa10d62b4949b408320628dd0195ef, type: 3}
   m_Name: CritHitTip
   m_EditorClassIdentifier: 
-  tipType: 0
-  tipName: {fileID: 11400000, guid: 6a09ea38748b0f0448a2603e7f5eae01, type: 2}
+  tipType: 1
   tipNameLocalizationKey: VideoTip_CritHitTip0
   tipClip: {fileID: 32900000, guid: 952ca9d443bf4474588d6049b426898f, type: 3}
-  tipTextList:
-  - {fileID: 11400000, guid: e6320bfcaa0288243a36da1f7031548d, type: 2}
-  - {fileID: 11400000, guid: 3afdc4d8b880cfc47997aeece9617c06, type: 2}
   tipTextLocalizationKeys:
   - VideoTip_CritHitTip1
   - VideoTip_CritHitTip2
+  - VideoTip_CritHitTip3
+  - VideoTip_CritHitTip4
   tipTextDelayToShowList:
   - 1
   - 3
+  - 5
+  - 7

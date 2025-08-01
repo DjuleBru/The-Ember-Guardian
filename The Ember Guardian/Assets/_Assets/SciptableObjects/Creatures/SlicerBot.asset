@@ -15,18 +15,21 @@ MonoBehaviour:
   enemyName: Crawler
   isBoss: 0
   description: Basic monster, a bit swarmy.
-  creatureIcon: {fileID: 21300000, guid: eb6de8e99ab46ed42bc756bb49482541, type: 3}
-  creatureIcon_Portrait: {fileID: 21300000, guid: 8536efaf080df0841b42a3246a1088c4, type: 3}
+  creatureIcon: {fileID: 21300000, guid: 101643964bd4ae44c87d0ba5a3de1f76, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: 089391eda397e5f4b846ea8cb60518be, type: 3}
   creaturePrefab: {fileID: 0}
   mass: 10
   detectionRange_Day: 10
   detectionRange_Night: 10
   primaryAttackSO: {fileID: 11400000, guid: 249a661ad0ac28341b1571474221d881, type: 2}
+  hasRangedAndMeleeAttack: 0
   secondaryAttackSO: {fileID: 0}
   specialAttackSO: {fileID: 0}
   flying: 0
+  canFlank: 0
   flightMinAltitude: 0
   flightMaxAltitude: 0
+  flightAltitudeRandomizer: 0
   dayMoveSpeed: 3
   nightMoveSpeed: 3
   aggroMoveSpeedBuff: 1.5
@@ -34,6 +37,7 @@ MonoBehaviour:
   moveSpeedRandomizerDelta: 0.5
   maxHealth: 30
   enteredLightattackRateDebuff: 2.5
+  probabilityToAggroOnGunShot: 1
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0

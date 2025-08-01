@@ -19,6 +19,7 @@ public class TutorialCollider : MonoBehaviour
     [SerializeField] private bool isWorkerCampCollider_Demo;
     [SerializeField] private bool isDogTipCollider;
     [SerializeField] private bool isRunTipCollider;
+    [SerializeField] private bool isJamGunCollider;
 
     private Tutorial tutorial;
     private Collider2D tutorialCollider;
@@ -47,7 +48,7 @@ public class TutorialCollider : MonoBehaviour
             tutorial.ActivateCreatureSpotLight();
         }
 
-        if(isStopMusicCollider && !playerCollided) {
+        if (isStopMusicCollider && !playerCollided) {
             playerCollided = true;
             tutorial.StartSetupCampObjective();
             MusicManager.Instance.FadeOutMusic(5f);
@@ -87,7 +88,6 @@ public class TutorialCollider : MonoBehaviour
             playerCollided = true;
             DemoLevelIntroManager.Instance.ShowRunTooltip();
         }
-
     }
 
     private void OnTriggerExit2D(Collider2D collision) {

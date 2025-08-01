@@ -17,20 +17,30 @@ public class MainMenuVisual : MonoBehaviour
 
     [SerializeField] private GameObject cityWaterGO;
     [SerializeField] private GameObject verdantGraveyardWaterGO;
+    [SerializeField] private GameObject corruptedCityWaterGO;
+    [SerializeField] private GameObject lumenHollowWaterGO;
+    [SerializeField] private GameObject fracturedDistrictWaterGO;
 
     [SerializeField] private GameObject cityParallaxGO;
     [SerializeField] private GameObject verdantGraveyardParallaxGO;
     [SerializeField] private GameObject lostGreensParallaxGO;
+    [SerializeField] private GameObject corruptedCityParallaxGO;
+    [SerializeField] private GameObject lumenHollowParallaxGO;
+    [SerializeField] private GameObject fracturedDistrictParallaxGO;
 
     [SerializeField] private GameObject cityGridGO;
     [SerializeField] private GameObject verdantGridGO;
     [SerializeField] private GameObject lostGridGO;
     [SerializeField] private GameObject corruptedGridGO;
+    [SerializeField] private GameObject lumenHollowGridGO;
+    [SerializeField] private GameObject facturedDistrictGridGO;
 
     [SerializeField] private GameObject cityPropsGO;
     [SerializeField] private GameObject verdantPropsGO;
     [SerializeField] private GameObject lostPropsGO;
     [SerializeField] private GameObject corruptedPropsGO;
+    [SerializeField] private GameObject lumenHollowPropsGO;
+    [SerializeField] private GameObject fracturedDistrictPropsGO;
 
     [SerializeField] private Light2D moonLight;
     [SerializeField] private Light2D globalLight;
@@ -40,27 +50,37 @@ public class MainMenuVisual : MonoBehaviour
     [SerializeField] private float verdantGraveyardIntensity;
     [SerializeField] private float lostGreensIntensity;
     [SerializeField] private float corruptedCityIntensity;
+    [SerializeField] private float lumenHollowIntensity;
+    [SerializeField] private float fracturedDistrictIntensity;
 
     [SerializeField] private float cityMoonLightIntensity;
     [SerializeField] private float verdanyGraveyardMoonIntensity;
     [SerializeField] private float lostGreensMoonIntensity;
     [SerializeField] private float corruptedMoonCityIntensity;
+    [SerializeField] private float lumenHollowMoonIntensity;
+    [SerializeField] private float fracturedDistrictMoonIntensity;
 
     [SerializeField] private float cityMoonLightOuterRadius;
     [SerializeField] private float verdanyGraveyardOuterRadius;
     [SerializeField] private float lostGreensOuterRadius;
     [SerializeField] private float corruptedMoonOuterRadius;
+    [SerializeField] private float lumenHollowMoonOuterRadius;
+    [SerializeField] private float fracturedDistrictOuterRadius;
 
     [SerializeField] private Transform cityMoonPosition;
     [SerializeField] private Transform verdantGraveyardMoonPosition;
     [SerializeField] private Transform lostGreensMoonPosition;
     [SerializeField] private Transform corruptedCityMoonPosition;
+    [SerializeField] private Transform lumenHollowMoonPosition;
+    [SerializeField] private Transform fracturedDistrictMoonPosition;
 
 
     [SerializeField] private Color citySkyColor;
     [SerializeField] private Color verdantGraveyardSkyColor;
     [SerializeField] private Color lostGreensSkyColor;
     [SerializeField] private Color corruptedCitySkyColor;
+    [SerializeField] private Color lumenHollowSkyColor;
+    [SerializeField] private Color fracturedDistrictSkyColor;
 
     private LevelSO.LevelEnvironment levelEnvironment;
 
@@ -122,6 +142,7 @@ public class MainMenuVisual : MonoBehaviour
                 moonLight.intensity = lostGreensMoonIntensity;
                 moonLight.pointLightOuterRadius = lostGreensOuterRadius;
 
+                verdantGraveyardWaterGO.SetActive(true);
                 break;
 
             case LevelSO.LevelEnvironment.CorruptedCity:
@@ -134,6 +155,19 @@ public class MainMenuVisual : MonoBehaviour
                 globalLight.intensity = corruptedCityIntensity;
                 moonLight.intensity = corruptedMoonCityIntensity;
                 moonLight.pointLightOuterRadius = corruptedMoonOuterRadius;
+
+                break;
+
+            case LevelSO.LevelEnvironment.TheLumenHollow:
+                lumenHollowParallaxGO.SetActive(true);
+                lumenHollowPropsGO.SetActive(true);
+                lumenHollowGridGO.SetActive(true);
+
+                moonTransform.position = lumenHollowMoonPosition.position;
+                skySpriteRenderer.color = lumenHollowSkyColor;
+                globalLight.intensity = lumenHollowIntensity;
+                moonLight.intensity = lumenHollowMoonIntensity;
+                moonLight.pointLightOuterRadius = lumenHollowMoonOuterRadius;
 
                 break;
         }

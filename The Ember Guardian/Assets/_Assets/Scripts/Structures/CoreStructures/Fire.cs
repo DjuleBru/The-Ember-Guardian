@@ -1,9 +1,18 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Fire : Structure, IDamageable {
+
+    public enum PrimordialFireColor {
+        Orange,
+        Red,
+        Blue,
+        Green,
+        Purple,
+    }
 
     public static Fire Instance;
 
@@ -13,6 +22,9 @@ public class Fire : Structure, IDamageable {
     [SerializeField] private bool isEndLevelFire;
     [SerializeField] private bool isSecondaryFire;
     [SerializeField] private bool isHubFire;
+    [SerializeField] private bool isPrimordialFire;
+    [ShowIf("isPrimordialFire")]
+    [SerializeField] private PrimordialFireColor primordialFireColor;
 
     [SerializeField] private float calmFireRadius;
     [SerializeField] private float mildFireRadius;
@@ -99,6 +111,10 @@ public class Fire : Structure, IDamageable {
             EndLevelArea.Instance.SetEndLevelFireLit();
         }
 
+        if(isHubFire) {
+            LoadLastPrimordialFireLit();
+        }
+
         base.Awake();
 
         fireOrbCollider = GetComponentInChildren<FireOrbCollider>();
@@ -110,6 +126,7 @@ public class Fire : Structure, IDamageable {
         if(!isHubFire) {
             base.Start();
         } else {
+            
             GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
             GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
             GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
@@ -147,7 +164,12 @@ public class Fire : Structure, IDamageable {
         } else {
             SetFireCurrentMaxFuelTreshold();
         }
+
+        if(isPrimordialFire && !isHubFire) {
+            LevelManager.Instance.OnLevelSuccess += LevelManager_OnLevelSuccess;
+        }
     }
+
 
     private void Update() {
         HandleFuelDecrease();
@@ -189,6 +211,15 @@ public class Fire : Structure, IDamageable {
             maxFuelTreshold = StructureStats.Instance.GetMainFireMaxFuelTreshold();
         }
     }
+
+    private void LoadLastPrimordialFireLit() {
+        primordialFireColor = ES3.Load("lastPrimordialFireLit", PrimordialFireColor.Orange);
+    }
+    private void LevelManager_OnLevelSuccess(object sender, EventArgs e) {
+        ES3.Save("lastPrimordialFireLit", primordialFireColor);
+        LevelUI_Locations.Instance.ShowFireTextAfterDelay(4f);
+    }
+
     protected override void TriggerStructurePrimaryFunction() {
         base.TriggerStructurePrimaryFunction();
         StartCoroutine(OrbPaidToFuelCoroutine(.1f));
@@ -648,6 +679,7 @@ public class Fire : Structure, IDamageable {
         return initialFireLit;
     }
 
+
     public bool GetFuelFireOnCooldown() {
         return fuelFireOnCooldown;
     }
@@ -662,6 +694,13 @@ public class Fire : Structure, IDamageable {
         return isSecondaryFire;
     }
 
+    public bool GetIsPrimordialFire() {
+        return isPrimordialFire;
+    }
+
+    public PrimordialFireColor GetPrimordialFireColor() {
+        return primordialFireColor;
+    }
     public bool GetIsEndLevelAreaFire() {
         return isEndLevelFire;
     }

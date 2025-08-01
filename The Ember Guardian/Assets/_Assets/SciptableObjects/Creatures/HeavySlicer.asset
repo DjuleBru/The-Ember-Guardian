@@ -15,18 +15,21 @@ MonoBehaviour:
   enemyName: Bandit
   isBoss: 0
   description: Melee mob that can respawn after it's first death !
-  creatureIcon: {fileID: 21300000, guid: be39524c206226a409dd916f4be200db, type: 3}
-  creatureIcon_Portrait: {fileID: 21300000, guid: a3482e2598499f245a0f5c2f74f3661d, type: 3}
+  creatureIcon: {fileID: 21300000, guid: 1b70451b406ac8a459fdf173f221ba24, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: 83ea69a9dad6cc64a876b24d5098953a, type: 3}
   creaturePrefab: {fileID: 4997657120178985709, guid: 76490140bdc9c9a47a98ec58c16c76fb, type: 3}
   mass: 20
   detectionRange_Day: 10
   detectionRange_Night: 10
   primaryAttackSO: {fileID: 11400000, guid: 469e67a9a21d3614aacff8072d3e4a86, type: 2}
+  hasRangedAndMeleeAttack: 0
   secondaryAttackSO: {fileID: 0}
   specialAttackSO: {fileID: 0}
   flying: 0
+  canFlank: 0
   flightMinAltitude: 0
   flightMaxAltitude: 0
+  flightAltitudeRandomizer: 0
   dayMoveSpeed: 2.5
   nightMoveSpeed: 2.5
   aggroMoveSpeedBuff: 1.3
@@ -34,6 +37,7 @@ MonoBehaviour:
   moveSpeedRandomizerDelta: 0.25
   maxHealth: 180
   enteredLightattackRateDebuff: 1.75
+  probabilityToAggroOnGunShot: 1
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0

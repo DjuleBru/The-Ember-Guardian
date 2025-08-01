@@ -32,9 +32,20 @@ public class LevelUI_Locations : MonoBehaviour
 
         StartCoroutine(ShowLocationCoroutine(5f));
     }
+    public void ShowFireTextAfterDelay(float delay) {
+        locationsAnimator.ResetTrigger("Hide");
+        locationsAnimator.SetTrigger("Show");
+
+        locationsText.gameObject.SetActive(true);
+        locationsText.text = "{fade d=3}" + LocalizationManager.Instance.GetLocalizedText("primordialFireLit");// Relance les animations si nécessaire
+        OnLocationTextShown?.Invoke(this, EventArgs.Empty);
+
+        StartCoroutine(ShowLocationCoroutine(delay));
+    }
 
     private IEnumerator ShowLocationCoroutine(float showDuration) {
         yield return new WaitForSeconds(showDuration);
+        locationsAnimator.ResetTrigger("Show");
         locationsAnimator.SetTrigger("Hide");
     }
 }

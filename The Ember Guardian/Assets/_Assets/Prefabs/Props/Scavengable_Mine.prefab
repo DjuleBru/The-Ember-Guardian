@@ -1457,14 +1457,14 @@ MonoBehaviour:
   currencyTypeCollected: 0
   luckyPickaxeCurrencyTypeCollected: 1
   currencyAmountCollected: 5
-  hitsToCollectOneCurrency: 20
+  hitsToCollectOneCurrency: 25
   isMine: 1
   infiniteSource: 1
   doNotYieldResources: 0
   miningPriority: 2
   maxMinersAssigned: 5
-  initialTimeToMineOneResource: 25
-  maxTimeToMineOneResource: 60
+  initialTimeToMineOneResource: 30
+  maxTimeToMineOneResource: 100
   miningTimeIncreasePerResourceExtracted: 1
 --- !u!114 &3891897307562291088
 MonoBehaviour:
@@ -1716,6 +1716,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 20dd6df366c2e7f4fa1ec599b0af084e, type: 3}
   pieceFellAudioClip: []
   toggleMiningAudioClip: {fileID: 8300000, guid: 1298c9d7fed8da64aabebbacecfb3792, type: 3}
+  creaturesSpawnedRumble: []
   backgroundAudioSource: {fileID: 149414133620779048}
   scavengableObstacleVisual: {fileID: 0}
 --- !u!82 &1778526414608269605
