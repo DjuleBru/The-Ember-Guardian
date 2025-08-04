@@ -36,12 +36,16 @@ public class WeaponButtonContainer : MonoBehaviour
         bool secondaryWeaponUnlocked = PlayerStats.Instance.GetCanHold2WeaponsUnlocked();
 
         if (secondaryWeaponUnlocked) {
-            GunSO secondaryGunSO = PlayerShoot.Instance.GetSecondaryGunSO();
-            secondaryWeaponButton.gameObject.SetActive(true);
-            secondaryWeaponButton.SetLinkedGunSO(secondaryGunSO);
+            ActivateSecondaryWeaponSlot();
         }
         else {
             secondaryWeaponButton.gameObject.SetActive(false);
         }
+    }
+
+    private void ActivateSecondaryWeaponSlot() {
+        GunSO secondaryGunSO = PlayerShoot.Instance.GetSecondaryGunSO();
+        secondaryWeaponButton.gameObject.SetActive(true);
+        secondaryWeaponButton.SetLinkedGunSO(secondaryGunSO);
     }
 }

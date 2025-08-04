@@ -11,7 +11,6 @@ public class SoundVolume2D : MonoBehaviour
     [SerializeField] private bool active = true;
     private float sfxVolume;
     private float fadeMultiplier = 1f;
-    private bool playerIsNull;
 
     private void Awake() {
         audioSource = GetComponent<AudioSource>();
@@ -21,8 +20,6 @@ public class SoundVolume2D : MonoBehaviour
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
         audioSource.volume = sfxVolume;
         SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
-
-        playerIsNull = Player.Instance == null;
     }
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
@@ -31,7 +28,6 @@ public class SoundVolume2D : MonoBehaviour
 
     private void Update() {
         if (!active) return;
-        if (playerIsNull) return;
         float distanceToAudioSource = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
         float volume = (1 - (distanceToAudioSource / maxDistanceToHear)) * maxAudioSourceVolume * sfxVolume;
 

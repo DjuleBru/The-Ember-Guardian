@@ -25,16 +25,16 @@ MonoBehaviour:
   minesAmount: 0
   chestAmount: 0
   wildEmberlingsAmount: 0
-  levelObjectiveType: 10
-  endLevelType: 0
+  levelObjectiveType: 23
+  endLevelType: 16
   talkToNpcAFterObjective: 0
-  nightsToSurviveAmount: 0
-  isNewEnvironmentDiscoveryLevel: 1
+  nightsToSurviveAmount: 8
+  isNewEnvironmentDiscoveryLevel: 0
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
   levelsUnlockedByLevel:
   - {fileID: 11400000, guid: 20e7ee7a32bd5d7448e5e07ae7827ed9, type: 2}
   - {fileID: 11400000, guid: 2907cb0bb1a923a47825d18e9c2d38d1, type: 2}
-  merchantsUnlockedInLevel: 01000000
+  merchantsUnlockedInLevel: 
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 9fe254dc38fc9434ba8e2d89c0f9e6b7, type: 2}
   newMerchantTextLinesAfterLevel: []
   isReplayableLevel: 0
@@ -49,18 +49,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 510ddc0451847e3419a83e0ae739424e, type: 2}
   - {fileID: 11400000, guid: 92e601c9dd7bf334186de532c5e816de, type: 2}
   - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
-  hasBoss: 0
-  bossCreatureType: {fileID: 0}
-  bossNightSpawns: 
+  hasBoss: 1
+  bossCreatureType: {fileID: 11400000, guid: 99d459fd6a02c044d90152bcc6de9ffb, type: 2}
+  bossNightSpawns: 0400000008000000
   startWaveToSpawnFromBothSides: 2
-  baseDifficulty: 6
-  intialMinSubwaveDifficulty: 0
-  minSubwaveDifficulty: 0
-  intialMaxSubwaveDifficulty: 0
-  maxSubwaveDifficulty: 10
-  growthFactor: 1.6
-  typicalLevelDaysToComplete: 0
-  minMaxSubwaveDifficultyGrowthFactor: 0
+  baseDifficulty: 40
+  intialMinSubwaveDifficulty: 10
+  minSubwaveDifficulty: 25
+  intialMaxSubwaveDifficulty: 15
+  maxSubwaveDifficulty: 65
+  growthFactor: 1.15
+  typicalLevelDaysToComplete: 8
+  minMaxSubwaveDifficultyGrowthFactor: 1.4
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
   difficultyAnimationCurve:
@@ -78,9 +78,9 @@ MonoBehaviour:
   hasWind: 0
   initialWindStrength: 0
   windStrengthsAllowedInLevel: 
-  hasRain: 0
+  hasRain: 1
   initialRainIntensity: 0
-  rainIntensitiesAllowedInLevel: 
+  rainIntensitiesAllowedInLevel: 0000000001000000020000000300000004000000
   levelRandomBackgroundTracks: []
   levelExplorationTracks:
   - {fileID: 8300000, guid: 6aff3c3b53839b84999b8acaf10537cd, type: 3}

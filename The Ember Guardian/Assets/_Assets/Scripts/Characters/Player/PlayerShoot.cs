@@ -32,6 +32,7 @@ public class PlayerShoot : MonoBehaviour
 
     public event EventHandler OnPrimaryWeaponChanged;
     public event EventHandler OnSecondaryWeaponChanged;
+    public event EventHandler OnPlayerWeaponReplaced;
 
     public event EventHandler OnWeaponSecondaryAbilityStarted;
     public event EventHandler OnWeaponSecondaryAbilityEnded;
@@ -110,6 +111,7 @@ public class PlayerShoot : MonoBehaviour
 
     private GunSO primaryGunSO;
     private GunSO secondayGunSO;
+    private GunSO replacedGunSO;
 
     [SerializeField] private List<Gun> allGunsList;
     [SerializeField] private List<GunSO> allGunSOList;
@@ -279,14 +281,42 @@ public class PlayerShoot : MonoBehaviour
         SetActiveGun(gunSO.gunType, true);
         OnPrimaryWeaponChanged?.Invoke(this, EventArgs.Empty);
     }
-
     public void SetSecondaryWeaponSO(GunSO gunSO) {
         secondayGunSO = gunSO;
         SetActiveGun(gunSO.gunType, false);
         OnSecondaryWeaponChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    public void ReplaceHeldWeaponSO(GunSO gunSO) {
+
+        if(heldGunSO == primaryGunSO) {
+            replacedGunSO = primaryGunSO;
+            SetPrimaryWeaponSO(gunSO);
+        } else {
+            replacedGunSO = secondayGunSO;
+            SetSecondaryWeaponSO(gunSO);
+        }
+
+        OnPlayerWeaponReplaced?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void ReplaceWeaponSO(GunSO gunSO, bool replacePrimaryWeapon) {
+
+        if (replacePrimaryWeapon) {
+            replacedGunSO = primaryGunSO;
+            SetPrimaryWeaponSO(gunSO);
+        }
+        else {
+            replacedGunSO = secondayGunSO;
+            SetSecondaryWeaponSO(gunSO);
+        }
+
+        OnPlayerWeaponReplaced?.Invoke(this, EventArgs.Empty);
+    }
+
+
     public void SetActiveGun(GunSO.GunType gunType, bool primaryGun = true) {
+        Debug.Log("SetActiveGun " + gunType);
         Gun activeGun = null;
         GunSO activeGunSO = null;
 
@@ -971,6 +1001,14 @@ public class PlayerShoot : MonoBehaviour
             }
         }
         return unlockedAndUnequippedGunSOList;
+    }
+
+    public List<GunSO> GetGunSOInStock() {
+        List<GunSO> gunSOInStock = new List<GunSO>();
+
+        gunSOInStock.Add(replacedGunSO);
+
+        return gunSOInStock;
     }
 
     public bool GetReloadingHands() {

@@ -93,6 +93,17 @@ public class Chest : MonoBehaviour
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
+
+        int totalGemAmount = 0;
+        int i = 0;
+        foreach(PlayerCurrencies.CurrencyType type in currencyTypeToRewardList) {
+
+            if(CurrenciesManager.Instance.GetCurrencyCategory(type) == PlayerCurrencies.CurrencyCategory.gem) {
+                totalGemAmount += rewardAmountList[i];
+            }
+            i++;
+        }
+        GemDropManager.Instance.RecordChestGems(totalGemAmount);
     }
 
 

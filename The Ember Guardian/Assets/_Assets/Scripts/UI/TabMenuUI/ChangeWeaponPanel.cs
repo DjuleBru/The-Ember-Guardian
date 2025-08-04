@@ -11,6 +11,7 @@ public class ChangeWeaponPanel : MonoBehaviour
 
     private bool panelOpen;
     private bool primaryWeaponSwap;
+    private bool isLevelScene;
 
     [SerializeField] private Transform changeWeaponSlotContainer;
     [SerializeField] private Transform changeWeaponSlotTemplate;
@@ -33,11 +34,15 @@ public class ChangeWeaponPanel : MonoBehaviour
         Gun.OnAnyGunUnlocked += Gun_OnAnyGunUnlocked;
         PlayerShoot.Instance.OnPrimaryWeaponChanged += PlayerShoot_OnPrimaryWeaponChanged;
         PlayerShoot.Instance.OnSecondaryWeaponChanged += PlayerShoot_OnSecondaryWeaponChanged;
+        PlayerShoot.Instance.OnPlayerWeaponReplaced += PlayerShoot_OnPlayerWeaponReplaced;
 
         UpdateWeaponSlots(PlayerShoot.Instance.GetUnlockedAndUnequippedGunSOList());
 
+        isLevelScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level;
+
         gameObject.SetActive(false);
     }
+
 
     private void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
         if(panelOpen) {
@@ -52,16 +57,37 @@ public class ChangeWeaponPanel : MonoBehaviour
         OnChangeWeaponPanelClosed?.Invoke(this, EventArgs.Empty);
     }
 
+    private void PlayerShoot_OnPlayerWeaponReplaced(object sender, EventArgs e) {
+        UpdateWeaponSlots(PlayerShoot.Instance.GetGunSOInStock());
+    }
+
     private void PlayerShoot_OnSecondaryWeaponChanged(object sender, System.EventArgs e) {
-        UpdateWeaponSlots(PlayerShoot.Instance.GetUnlockedAndUnequippedGunSOList());
+        if (isLevelScene) {
+            UpdateWeaponSlots(PlayerShoot.Instance.GetGunSOInStock());
+        }
+        else {
+            UpdateWeaponSlots(PlayerShoot.Instance.GetUnlockedAndUnequippedGunSOList());
+        }
+
     }
 
     private void PlayerShoot_OnPrimaryWeaponChanged(object sender, System.EventArgs e) {
-        UpdateWeaponSlots(PlayerShoot.Instance.GetUnlockedAndUnequippedGunSOList());
+        if(isLevelScene) {
+            UpdateWeaponSlots(PlayerShoot.Instance.GetGunSOInStock());
+        } else {
+            UpdateWeaponSlots(PlayerShoot.Instance.GetUnlockedAndUnequippedGunSOList());
+        }
+
     }
 
     private void Gun_OnAnyGunUnlocked(object sender, System.EventArgs e) {
-        UpdateWeaponSlots(PlayerShoot.Instance.GetUnlockedAndUnequippedGunSOList());
+        if (isLevelScene) {
+            UpdateWeaponSlots(PlayerShoot.Instance.GetGunSOInStock());
+        }
+        else {
+            UpdateWeaponSlots(PlayerShoot.Instance.GetUnlockedAndUnequippedGunSOList());
+        }
+
     }
 
     private void UpdateWeaponSlots(List<GunSO> gunSOList) {

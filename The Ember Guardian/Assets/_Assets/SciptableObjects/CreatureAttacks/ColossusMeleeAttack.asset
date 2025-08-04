@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4031d27ff643044292075ec5021e470, type: 3}
+  m_Name: ColossusMeleeAttack
+  m_EditorClassIdentifier: 
+  isRangedAttack: 0
+  isProjectileAttack: 0
+  isStaticProjectileAttack: 0
+  isAnimatedAttack: 1
+  attackCooldown: 1.5
+  minAttackRange: 3
+  maxAttackRange: 4
+  hasDifferentDayAndNightRange: 0
+  minAttackRange_Night: 0
+  maxAttackRange_Night: 0
+  attackRangeRandomizer: 0
+  maxAttackRangeRandomizer: 0
+  damage: 1
+  damageToFire: 2
+  damageToBarricades: 2
+  canAttackPlayerBehindBarricades: 1
+  canAttackPlayerOnTower: 0
+  attackAnimationDelay: 0.4
+  totalAttackAnimationTime: 2.2
+  attackSFXDelayAfterAnimationStart: 1
+  staticProjectilePrefab: {fileID: 0}
+  staticProjectileAutoTargetsPlayer: 0
+  projectileAmountInPool: 0
+  projectileAmountShotInAttack: 0
+  delayBetweenProjectileSpawns: 0
+  projectileSO: {fileID: 0}
+  attackRangeRandomizerMiss: 0
+  attackSFXHandledByAnimation: 0
+  attackAudioClips:
+  - {fileID: 8300000, guid: 9ffde96872b2acd4198a3b2fd5c64ca1, type: 3}
+  - {fileID: 8300000, guid: 409b62d58983121448fb2db828c8bb62, type: 3}
+  - {fileID: 8300000, guid: b29f13819ad84c440b5bf6ca17e972d9, type: 3}
+  attackHitAudioClips:
+  - {fileID: 8300000, guid: ed07ecc0cf11a5649b0bed809c1c2489, type: 3}
+  - {fileID: 8300000, guid: b6327cbb36b024c4e92697d91477b041, type: 3}
+  - {fileID: 8300000, guid: 21216f467a220f74e9b69835949785d1, type: 3}
+  - {fileID: 8300000, guid: 2b8781723ff61b5489b834c4acb4f13d, type: 3}
+  - {fileID: 8300000, guid: d81e1b82f5aea0e43aeeaba82643596a, type: 3}
+  attackStartedChargingAudioClips: []
+  attackReleasedAudioClips: []
+  attackVolumeMultiplier: 0.5
+  attackHitVolumeMultiplier: 1

@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,6 +58,13 @@ public class HubMerchant : MonoBehaviour
     [SerializeField] protected bool isDecorationalDemoHubMerchant;
 
     protected bool hubMerchantLoaded;
+
+    protected int redGemCosts;
+    protected int blueGemCosts;
+    protected int greenGemCosts;
+    protected int yellowGemCosts;
+    protected int purpleGemCosts;
+    protected int cyanGemCosts;
 
     protected void Awake() {
         if (isLevelNPC) {
@@ -371,6 +379,14 @@ public class HubMerchant : MonoBehaviour
         }
     }
 
+    [Button]
+    public int CountAllGemCosts(PlayerCurrencies.CurrencyType gemType) {
+        int gemCosts = 0;
+        foreach (HubMerchantItem merchantItem in hubMerchantItems) {
+            gemCosts += merchantItem.GetTotalGemCosts(gemType);
+        }
+        return gemCosts;
+    }
     public void SetHubMerchantParentInItems() {
         foreach (HubMerchantItem merchantItem in hubMerchantItems) {
             merchantItem.GetComponent<ItemButtonUI>().SetParentHubMerchant(this);

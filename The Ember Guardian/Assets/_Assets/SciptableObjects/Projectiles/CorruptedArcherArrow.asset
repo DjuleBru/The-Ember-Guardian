@@ -121,11 +121,11 @@ MonoBehaviour:
   usesForce: 1
   trajectoryMode: 0
   straightLineSpeed: 10
-  minApexY: 1
-  maxApexY: 2.5
+  minApexY: 3
+  maxApexY: 8
   distanceToTargetForMinApex: 2
   distanceToTargetForMaxApex: 15
-  apexRandomizer: 0.2
+  apexRandomizer: 1
   gravityScale: 2
   projectileInstantiatedAudioClips:
   - {fileID: 8300000, guid: 1a92dc2cd6f6fa243945d06998ed24cb, type: 3}

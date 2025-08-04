@@ -37,6 +37,8 @@ MonoBehaviour:
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 0b1c8212e6e2efb46b62739006bb0c37, type: 2}
   newMerchantTextLinesAfterLevel:
   - {fileID: 11400000, guid: 92bcaa62b672a0840af078105088088f, type: 2}
+  unlocksNewGemType: 1
+  newGemTypeUnlockedByLevelList: 05000000
   isReplayableLevel: 0
   totalDayCreatureDifficulty: 0
   dayCreatureTypes: []
@@ -73,9 +75,9 @@ MonoBehaviour:
   hasWind: 0
   initialWindStrength: 0
   windStrengthsAllowedInLevel: 
-  hasRain: 0
+  hasRain: 1
   initialRainIntensity: 0
-  rainIntensitiesAllowedInLevel: 
+  rainIntensitiesAllowedInLevel: 000000000100000002000000
   levelRandomBackgroundTracks: []
   levelExplorationTracks:
   - {fileID: 8300000, guid: 6aff3c3b53839b84999b8acaf10537cd, type: 3}

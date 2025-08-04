@@ -25,11 +25,20 @@ public class WeaponReplaceButton : ButtonUI {
 
     private void SwapWeapon() {
         bool primaryWeaponSwap = ChangeWeaponPanel.Instance.GetPrimaryWeaponSwap();
+        bool levelReplace = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level;
 
-        if(primaryWeaponSwap) {
-            PlayerShoot.Instance.SetPrimaryWeaponSO(linkedGunSO);
+        if (levelReplace) {
+            PlayerShoot.Instance.ReplaceWeaponSO(linkedGunSO, primaryWeaponSwap);
+
         } else {
-            PlayerShoot.Instance.SetSecondaryWeaponSO(linkedGunSO);
+
+            if (primaryWeaponSwap) {
+                PlayerShoot.Instance.SetPrimaryWeaponSO(linkedGunSO);
+            }
+            else {
+                PlayerShoot.Instance.SetSecondaryWeaponSO(linkedGunSO);
+            }
+
         }
 
         ChangeWeaponPanel.Instance.OpenClosePanel();

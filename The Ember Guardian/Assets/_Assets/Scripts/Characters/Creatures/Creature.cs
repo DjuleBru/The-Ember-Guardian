@@ -14,7 +14,7 @@ public class Creature : Mob
     [SerializeField] protected Transform autoAimPosition;
 
     protected bool creatureUnlocked;
-    protected bool dropRedOrbsUnlocked;
+    protected bool dropRedOrbs;
     protected bool dayCreature;
     protected bool agressiveDayCreature;
     protected int inFireLightAmount;
@@ -100,7 +100,7 @@ public class Creature : Mob
 
     protected virtual void Start() {
         creatureUnlocked = MetaProgressionManager.Instance.GetCreatureUnlocked(creatureSO);
-        dropRedOrbsUnlocked = DebugManager.Instance.GetDropRedOrbsUnlocked();
+        dropRedOrbs = DebugManager.Instance.GetDropRedOrbsUnlocked() && PlayerCamp.Instance.GetHasSkillMerchantInLayout();
 
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerMovement.Instance.OnPlayerCrouched += PlayerMovement_OnPlayerCrouched;
@@ -174,7 +174,7 @@ public class Creature : Mob
             MetaProgressionManager.Instance.SetCreatureUnlocked(creatureSO);
         }
 
-        if (dropRedOrbsUnlocked) {
+        if (dropRedOrbs) {
             SpawnDroppedCurrencies(creatureSO.currencyTypeDroppedList, creatureSO.currencyDropAmountList);
             InvokeOnMobDroppedCollectibles(collectiblesDropped);
         }
@@ -228,28 +228,15 @@ public class Creature : Mob
     }
 
     protected void EliteDropGems() {
-        List<PlayerCurrencies.CurrencyType> gemTypeDrop = new List<PlayerCurrencies.CurrencyType>();
-        List<int> gemTypeAmountDrop = new List<int>();
+        int randomRequestedAmount = GetDroppedGems(0.5f, 3); // même logique que toi
 
-        int gemTypeDropped = UnityEngine.Random.Range(0, 5);
-        if(gemTypeDropped == 0) {
-            gemTypeDrop.Add(PlayerCurrencies.CurrencyType.greenGem);
-        }
-        if (gemTypeDropped == 1) {
-            gemTypeDrop.Add(PlayerCurrencies.CurrencyType.redGem);
-        }
-        if (gemTypeDropped == 2) {
-            gemTypeDrop.Add(PlayerCurrencies.CurrencyType.yellowGem);
-        }
-        if (gemTypeDropped == 3) {
-            gemTypeDrop.Add(PlayerCurrencies.CurrencyType.blueGem);
-        }
-        if (gemTypeDropped == 4) {
-            gemTypeDrop.Add(PlayerCurrencies.CurrencyType.purpleGem);
-        }
+        if (!GemDropManager.Instance.TrySpendFromDropPool(randomRequestedAmount, out int actualDropAmount))
+            return;
 
-        int gemAmountDropped = GetDroppedGems(.5f, 5);
-        gemTypeAmountDrop.Add(gemAmountDropped);
+        PlayerCurrencies.CurrencyType selectedGemType = GemDropManager.Instance.GetBalancedGemType();
+
+        List<PlayerCurrencies.CurrencyType> gemTypeDrop = new List<PlayerCurrencies.CurrencyType> { selectedGemType };
+        List<int> gemTypeAmountDrop = new List<int> { actualDropAmount };
 
         SpawnDroppedCurrencies(gemTypeDrop, gemTypeAmountDrop);
     }

@@ -431,6 +431,20 @@ public class PlayerCamp : MonoBehaviour
         }
     }
 
+    public bool GetHasSkillMerchantInLayout() {
+        foreach(StructureLocation location in allStructureLocations) {
+            if(location.GetStructureSOToBuild().structureType == StructureSO.StructureType.merchant_skills) {
+                return true;
+            }
+        }
+        foreach (Structure structure in builtStructures) {
+            if (structure.GetStructureSO().structureType == StructureSO.StructureType.merchant_skills) {
+                return true;
+            }
+        }
+
+        return false;
+    }
     public List<StructureLocation> GetAllStructureLocations() {
         return allStructureLocations;
     }

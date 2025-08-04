@@ -9,6 +9,8 @@ public class Chest_Special : Chest
 
     [SerializeField] private GunSO gunSOInChest;
     [SerializeField] private List<SkillSO> skillSOListInChest;
+    [SerializeField] private bool replacePrimaryWeapon;
+
     private SkillSO skillSOSelected;
 
     private bool rewardOfferedToPlayerStarted;
@@ -54,7 +56,9 @@ public class Chest_Special : Chest
         StartCoroutine(MakeChestDisappear(5f));
 
         if (chestType == ChestType.weaponChest) {
-            PlayerShoot.Instance.SetPrimaryWeaponSO(gunSOInChest);
+
+            PlayerShoot.Instance.ReplaceHeldWeaponSO(gunSOInChest);
+
             yield return new WaitForSeconds(.2f);
             PlayerShoot.Instance.SetGunToMaxAmmo(gunSOInChest);
 

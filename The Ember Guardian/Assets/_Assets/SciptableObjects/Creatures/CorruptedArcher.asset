@@ -21,38 +21,32 @@ MonoBehaviour:
   mass: 20
   detectionRange_Day: 14
   detectionRange_Night: 12
+  primaryAttackSO: {fileID: 11400000, guid: 81b28277c9b5a6743bad1f88994dcdcd, type: 2}
+  hasRangedAndMeleeAttack: 0
+  secondaryAttackSO: {fileID: 0}
+  specialAttackSO: {fileID: 0}
   flying: 0
+  canFlank: 0
   flightMinAltitude: 0
   flightMaxAltitude: 0
+  flightAltitudeRandomizer: 0
   dayMoveSpeed: 3
   nightMoveSpeed: 4
   aggroMoveSpeedBuff: 1.5
   enteredLightMoveSpeedDebuff: 1.5
   moveSpeedRandomizerDelta: 0.25
   maxHealth: 30
-  damage: 1
-  attackRate: 3
   enteredLightattackRateDebuff: 2.5
-  isRangedAttack: 1
-  minAttackRange: 13
-  maxAttackRange: 18
-  attackRangeRandomizer: 1
-  attackRangeMaxDistanceMiss: 2
-  damageToFire: 1
+  probabilityToAggroOnGunShot: 1
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0
-  attackAnimationDelay: 0.6
-  attackSFXDelayAfterAnimationStart: 0
-  totalAttackAnimationTime: 1
   hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 0.85
   workerTargetingPriority: 1
   playerTargetingPriority: 2
   barricadeTargetingPriority: 3
-  canAttackPlayerBehindBarricades: 0
-  canAttackPlayerOnTower: 1
   currencyTypeDroppedList: 0200000003000000
   currencyDropAmountList: 0100000002000000
   difficulty: 4
@@ -66,14 +60,6 @@ MonoBehaviour:
   aggroAudioClips:
   - {fileID: 8300000, guid: 5da7b2d5772937b478a6d4cc4aa360a1, type: 3}
   aggroVolumeMultiplier: 0.5
-  attackSFXHandledByAnimation: 0
-  attackStartedChargingAudioClips: []
-  attackReleasedAudioClips: []
-  attackHitAudioClips: []
-  attackVolumeMultiplier: 1
-  attackAudioClips:
-  - {fileID: 8300000, guid: 79be682ce360dbe4fbba58b5393295fb, type: 3}
-  attackHitVolumeMultiplier: 0.5
   idleAudioClips: []
   idleVolumeMultiplier: 0.5
   footStepAudioClips:
@@ -90,6 +76,8 @@ MonoBehaviour:
   footstepVolumeMultiplier: 0.5
   hasContinousAudioClip: 0
   continuousAudioClip: []
+  hasContinousMovementAudioClip: 0
+  continuousMovementAudioClip: []
   spawnAudioClips:
   - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
   - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}

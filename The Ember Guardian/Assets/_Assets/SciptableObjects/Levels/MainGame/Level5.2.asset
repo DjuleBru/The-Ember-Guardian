@@ -33,9 +33,12 @@ MonoBehaviour:
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 0103559dd388370479b665ba928e7009, type: 3}
   levelsUnlockedByLevel:
   - {fileID: 11400000, guid: 492cb278ae7c18c48b8138322c43f087, type: 2}
-  merchantsUnlockedInLevel: 
+  merchantsUnlockedInLevel: 04000000
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: e900c2d6727423d48bae5276d37dfd7f, type: 2}
-  newMerchantTextLinesAfterLevel: []
+  newMerchantTextLinesAfterLevel:
+  - {fileID: 11400000, guid: 61610008e955b91448560af86b3f045b, type: 2}
+  unlocksNewGemType: 1
+  newGemTypeUnlockedByLevelList: 11000000
   isReplayableLevel: 0
   totalDayCreatureDifficulty: 0
   dayCreatureTypes:

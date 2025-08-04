@@ -175,13 +175,15 @@ public class DemoMainLevelManager : MonoBehaviour
 
     private void GameInput_OnPlayerSecondaryGunSelected(object sender, EventArgs e) {
         if(leftPropCollected || rightPropCollected) {
-            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_cannotSwapWeapon"), 3f);
+            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("tooltip_cannotSwapWeapon"), InputControlIcons.Control.OpenPlayerMenu, 3f);
+            //PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_cannotSwapWeapon"), 3f);
         }
     }
 
     private void GameInput_OnPlayerSwapGunPerformed(object sender, EventArgs e) {
         if (leftPropCollected || rightPropCollected) {
-            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_cannotSwapWeapon"), 3f);
+            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("tooltip_cannotSwapWeapon"), InputControlIcons.Control.OpenPlayerMenu, 3f);
+            //PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_cannotSwapWeapon"), 3f);
         }
     }
 

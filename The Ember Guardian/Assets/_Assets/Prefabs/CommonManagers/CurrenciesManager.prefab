@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7050613424298854827}
   - component: {fileID: 284740985127853068}
+  - component: {fileID: 3020759460836913848}
   m_Layer: 0
   m_Name: CurrenciesManager
   m_TagString: Untagged
@@ -66,3 +67,17 @@ MonoBehaviour:
   fireEjectorTrapPrefab: {fileID: 4096008502524423227, guid: 6436897c11c8b4e4f8c1ad9efcfe9b84, type: 3}
   allHubMerchantItems: []
   allHubMerchantItemsStatModifiers: []
+--- !u!114 &3020759460836913848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4512818604537213811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde7ea1f5b2543e458d96900e8dd912a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allHubMerchantsUnlockedInHub: []
+  gemTypesDroppedUnlocked: 

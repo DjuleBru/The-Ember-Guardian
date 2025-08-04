@@ -12,6 +12,7 @@ public class Player : MonoBehaviour, IDamageable
 
     [SerializeField] private Transform projectileTarget;
     [SerializeField] private Transform carryingFlagPosition;
+    [SerializeField] private CapsuleCollider2D playerCollider;
 
     private Rigidbody2D rb;
     private bool dead;
@@ -88,6 +89,8 @@ public class Player : MonoBehaviour, IDamageable
         PlayerStats.Instance.OnPlayerMaxHPChanged += PlayerStats_OnPlayerMaxHPChanged;
         PlayerStats.Instance.OnPlayerHPRegenChanged += PlayerStats_OnPlayerHPRegenChanged;
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
+        PlayerMovement.Instance.OnPlayerCrouched += PlayerMovement_OnPlayerCrouched;
+        PlayerMovement.Instance.OnPlayerCrouchedEnded += PlayerMovement_OnPlayerCrouchedEnded;
 
         VideoTipUI.Instance.OnVideoTipPanelOpened += VideoTipUI_OnVideoTipPanelOpened;
         VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
@@ -240,6 +243,15 @@ public class Player : MonoBehaviour, IDamageable
 
     private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
         StartCoroutine(RollCoroutine());
+    }
+    private void PlayerMovement_OnPlayerCrouchedEnded(object sender, EventArgs e) {
+        playerCollider.offset = new Vector2(-0.06608671f, 0.8430732f);
+        playerCollider.size = new Vector2(0.4201719f, 1.679177f);
+    }
+
+    private void PlayerMovement_OnPlayerCrouched(object sender, EventArgs e) {
+        playerCollider.offset = new Vector2(-0.06608671f, 0.6297099f);
+        playerCollider.size = new Vector2(0.4201719f, 1.25245f);
     }
 
     private IEnumerator RollCoroutine() {

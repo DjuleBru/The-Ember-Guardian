@@ -88,6 +88,13 @@ public class LevelSO : ScriptableObject
     [BoxGroup("Progression")]
     [LabelWidth(300)]
     public List<MerchantTextLinesSO> newMerchantTextLinesAfterLevel;
+    [BoxGroup("Progression")]
+    [LabelWidth(300)]
+    public bool unlocksNewGemType;
+    [BoxGroup("Progression")]
+    [LabelWidth(300)]
+    [ShowIf("unlocksNewGemType")]
+    public List<PlayerCurrencies.CurrencyType> newGemTypeUnlockedByLevelList;
 
     [BoxGroup("Creatures")]
     [LabelWidth(300)]

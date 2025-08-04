@@ -51,11 +51,27 @@ public class HubMerchantItem : MonoBehaviour
     protected bool newItemUnlocked;
     protected bool itemEquipped;
     protected bool itemStatusChanged;
+    protected bool initializedCostList;
 
     protected List<string> statValues = new List<string>();
     protected List<bool> statModifiedBools = new List<bool>();
     
     protected virtual void Awake() {
+        InitializeCostLists();
+       
+
+        if(itemLevel == 0) {
+            itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
+        }
+        UpdateItemCost();
+    }
+
+    protected virtual void Start() {
+        LoadItemStatus();
+    }
+    protected void InitializeCostLists() {
+        if (initializedCostList) return;
+
         if (linkedStatModifierSO != null) {
             maxItemLevel = linkedStatModifierSO.statModifierList.Count;
 
@@ -67,17 +83,8 @@ public class HubMerchantItem : MonoBehaviour
             cyanGemCostList = linkedStatModifierSO.cyanGemCostList;
         }
 
-        if(itemLevel == 0) {
-            itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
-        }
-
-        UpdateItemCost();
+        initializedCostList = true;
     }
-
-    protected virtual void Start() {
-        LoadItemStatus();
-    }
-
     protected virtual void LoadItemStatus() {
         newItemUnlocked = MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType());
 
@@ -280,6 +287,69 @@ public class HubMerchantItem : MonoBehaviour
     }
     public int GetCyanGemCost() {
         return cyanGemCost;
+    }
+
+    public int GetTotalGemCosts(PlayerCurrencies.CurrencyType gemType) {
+        InitializeCostLists();
+
+        int totalGemCosts = 0;
+
+        if(linkedStatModifierSO != null) {
+
+            switch (gemType) {
+                case PlayerCurrencies.CurrencyType.redGem:
+                    foreach (int cost in linkedStatModifierSO.redGemCostList) {
+                        totalGemCosts += cost;
+                    }
+                    break;
+                case PlayerCurrencies.CurrencyType.blueGem:
+                    foreach (int cost in linkedStatModifierSO.blueGemCostList) {
+                        totalGemCosts += cost;
+                    }
+                    break;
+                case PlayerCurrencies.CurrencyType.greenGem:
+                    foreach (int cost in linkedStatModifierSO.greenGemCostList) {
+                        totalGemCosts += cost;
+                    }
+                    break;
+                case PlayerCurrencies.CurrencyType.yellowGem:
+                    foreach (int cost in linkedStatModifierSO.yellowGemCostList) {
+                        totalGemCosts += cost;
+                    }
+                    break;
+                case PlayerCurrencies.CurrencyType.purpleGem:
+                    foreach (int cost in linkedStatModifierSO.purleGemCostList) {
+                        totalGemCosts += cost;
+                    }
+                    break;
+                case PlayerCurrencies.CurrencyType.cyanGem:
+                    foreach (int cost in linkedStatModifierSO.cyanGemCostList) {
+                        totalGemCosts += cost;
+                    }
+                    break;
+            }
+        } else {
+
+            if (linkedStatModifierSO != null) {
+                switch (gemType) {
+                    case PlayerCurrencies.CurrencyType.redGem:
+                        return redGemCost;
+                    case PlayerCurrencies.CurrencyType.blueGem:
+                        return blueGemCost;
+                    case PlayerCurrencies.CurrencyType.greenGem:
+                        return greenGemCost;
+                    case PlayerCurrencies.CurrencyType.yellowGem:
+                        return yellowGemCost;
+                    case PlayerCurrencies.CurrencyType.purpleGem:
+                        return purpleGemCost;
+                    case PlayerCurrencies.CurrencyType.cyanGem:
+                        return cyanGemCost;
+                }
+            }
+        }
+
+
+        return totalGemCosts;
     }
 
     public virtual string GetItemType() {

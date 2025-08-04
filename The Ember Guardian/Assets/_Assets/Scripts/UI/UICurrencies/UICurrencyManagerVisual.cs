@@ -175,7 +175,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
             level1GemPocketCollider.SetActive(true);
         }
         if (PlayerStats.Instance.GetBackpackGemSizePercentBuff_Meta() == 15f) {
-            level3GemPocketCollider.SetActive(true);
+            level2GemPocketCollider.SetActive(true);
             gemPocketImage.sprite = level2GemPocketSprite;
             gemPocketImage_Front.sprite = level2GemPocketSprite_Front;
             gemPocketShadowImage.sprite = level2GemPocketSprite;

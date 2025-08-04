@@ -864,7 +864,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneViewSpawnerSpriteRenderer: {fileID: 0}
   mobPrefab: {fileID: 860173671428369790, guid: 61aa75413f6dfed43afbcec4a72fa6bb, type: 3}
-  spawnPosition: {fileID: 0}
+  spawnPositionList: []
   spawnPositionRandomizer: 0
   radiusToRoamAround: 0
   mobAmountToSpawn: 0
@@ -1026,7 +1026,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneViewSpawnerSpriteRenderer: {fileID: 0}
   mobPrefab: {fileID: 860173671428369790, guid: 61aa75413f6dfed43afbcec4a72fa6bb, type: 3}
-  spawnPosition: {fileID: 0}
+  spawnPositionList: []
   spawnPositionRandomizer: 0
   radiusToRoamAround: 0
   mobAmountToSpawn: 0
@@ -1107,7 +1107,6 @@ MonoBehaviour:
   - {fileID: 8733481748352430929}
   - {fileID: 4875905738997811536}
   - {fileID: 4387661427555122358}
-  - {fileID: 0}
   towerLocations:
   - {fileID: 6838880210696603848}
   - {fileID: 2367693404058329062}
