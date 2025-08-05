@@ -16,6 +16,10 @@ public class GunSO : ScriptableObject
         GrenadeLauncher,
         AssaultRifle,
         FlameThrower,
+        Minigun,
+        Test,
+        DoubleBarreledShotgun,
+        AAGun,
     }
 
     public GunType gunType;
@@ -70,7 +74,17 @@ public class GunSO : ScriptableObject
     public bool bulletIsSprite;
     [BoxGroup("General")]
     [LabelWidth(300)]
+    public bool canUseMeleeAttack = true;
+    [BoxGroup("General")]
+    [LabelWidth(300)]
     public bool automaticWeapon;
+    [BoxGroup("General")]
+    [LabelWidth(300)]
+    public bool shotNeedsLoading;
+    [BoxGroup("General")]
+    [LabelWidth(300)]
+    [ShowIf("shotNeedsLoading")]
+    public float loadShotTime;
     [BoxGroup("General")]
     [LabelWidth(300)]
     public float delayBetweenClickAndShot;

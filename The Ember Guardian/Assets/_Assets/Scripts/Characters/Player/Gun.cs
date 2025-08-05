@@ -12,7 +12,7 @@ public class Gun : MonoBehaviour
     [SerializeField] protected GunSO gunSO;
     [SerializeField] protected Animator gunBodyAnimator;
     [SerializeField] protected Animator armBodyAnimator;
-    private GunJamHandler gunJamHandler;
+    protected GunJamHandler gunJamHandler;
 
     protected bool gunActive;
     protected bool gunUnlocked;
@@ -92,7 +92,7 @@ public class Gun : MonoBehaviour
     }
 
 
-    private void Update() {
+    protected void Update() {
 
         if (DebugManager.Instance.GetGunJamDebugInputsAllowed() && gunActive) {
             if (Input.GetKeyDown(KeyCode.J)) {
@@ -109,12 +109,12 @@ public class Gun : MonoBehaviour
 
     }
 
-    private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
+    protected void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
         if (!gunActive) return;
         RecalculateDamage();
     }
 
-    private void PlayerShoot_OnPlayerFocusBlastStopped(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerFocusBlastStopped(object sender, System.EventArgs e) {
         if (gunSO.gunType != GunSO.GunType.Shotgun) return;
         SetPSShootAngle(defaultAngle);
 
@@ -125,7 +125,7 @@ public class Gun : MonoBehaviour
 
     }
 
-    private void PlayerShoot_OnPlayerFocusBlastStarted(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerFocusBlastStarted(object sender, System.EventArgs e) {
         if (gunSO.gunType != GunSO.GunType.Shotgun) return;
         SetPSShootAngle(focusedBlastAngle);
 
@@ -143,12 +143,12 @@ public class Gun : MonoBehaviour
         shootPSMainModule.startSize = totalBullerSize;
     }
 
-    private void SetPSShootAngle(float angle) {
+    protected void SetPSShootAngle(float angle) {
         ParticleSystem.ShapeModule shootPSShapeModule = shootPS.shape;
         shootPSShapeModule.angle = angle;
     }
 
-    private void PlayerSkills_OnPlayerOutFireLightDebuffedDmg(object sender, System.EventArgs e) {
+    protected void PlayerSkills_OnPlayerOutFireLightDebuffedDmg(object sender, System.EventArgs e) {
         if (!gunActive) return;
         Debug.Log("PlayerSkills_OnPlayerOutFireLightDebuffedDmg " + PlayerSkills.Instance.GetDamageOutFireLightCurrentlyBuffed());
         if (!PlayerSkills.Instance.GetDamageOutFireLightCurrentlyBuffed()) return;
@@ -156,21 +156,21 @@ public class Gun : MonoBehaviour
         DebuffBulletDamage(PlayerSkills.Instance.GetDamageBuffOutFireLight());
     }
 
-    private void PlayerSkills_OnPlayerInFireLightDebuffedDmg(object sender, System.EventArgs e) {
+    protected void PlayerSkills_OnPlayerInFireLightDebuffedDmg(object sender, System.EventArgs e) {
         if (!gunActive) return;
         if (!PlayerSkills.Instance.GetDamageInFireLightCurrentlyBuffed()) return;
 
         DebuffBulletDamage(PlayerSkills.Instance.GetDamageBuffInFireLight());
     }
 
-    private void PlayerSkills_OnPlayerOutFireLightBuffed(object sender, System.EventArgs e) {
+    protected void PlayerSkills_OnPlayerOutFireLightBuffed(object sender, System.EventArgs e) {
         if (!gunActive) return;
         if (PlayerSkills.Instance.GetDamageOutFireLightCurrentlyBuffed()) return;
 
         BuffBulletDamage(PlayerSkills.Instance.GetDamageBuffOutFireLight());
     }
 
-    private void PlayerSkills_OnPlayerInFireLightBuffedDmg(object sender, System.EventArgs e) {
+    protected void PlayerSkills_OnPlayerInFireLightBuffedDmg(object sender, System.EventArgs e) {
         if (!gunActive) return;
         if (PlayerSkills.Instance.GetDamageInFireLightCurrentlyBuffed()) return;
 
@@ -248,14 +248,19 @@ public class Gun : MonoBehaviour
         Shoot();
     }
 
-    private void Player_OnPlayerDied(object sender, EventArgs e) {
+    protected void Player_OnPlayerDied(object sender, EventArgs e) {
         if(damageSurgeBuffed) {
             damageSurgeBuffed = false;
             OnPerfectQTEDamageBuffEnded?.Invoke(this, EventArgs.Empty);
         }
     }
 
-    private void Shoot() {
+    protected virtual void Shoot() {
+
+        if(gunSO.bulletIsSprite) {
+            return;
+        }
+
         if (gunSO.bulletIsParticle) {
             shootPS.Emit(pelletsPerBullet);
         }
@@ -263,7 +268,7 @@ public class Gun : MonoBehaviour
         if (gunSO.bulletIsProjectile) {
             GunProjectile gunProjectile = Instantiate(projectilePrefab, projectileSpawnPosition.position, Quaternion.identity).GetComponent<GunProjectile>();
             gunProjectile.gameObject.SetActive(true);
-            Vector2 initialForce = PlayerAim.Instance.GetAimDir().normalized * bulletSpeed;
+            Vector2 initialForce = PlayerAim.Instance.GetEffectiveAimDir().normalized * bulletSpeed;
             gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce, explosionRadiusMultiplier);
         }
 
@@ -287,7 +292,7 @@ public class Gun : MonoBehaviour
         }
     }
 
-    private void HandleGunJams() {
+    protected void HandleGunJams() {
         if (!PlayerShoot.Instance.GetGunCanJam()) return;
         if (PlayerShoot.Instance.GetNotHeldGun() != null && PlayerShoot.Instance.GetNotHeldGun().GetGunJammed()) return;
         if (gunJustJammed) return;
@@ -311,11 +316,11 @@ public class Gun : MonoBehaviour
         RecalculateDamage();
     }
 
-    private void RecalculateDamage() {
+    protected void RecalculateDamage() {
         damagePerBullet = (int)(damagePerBulletAtRunStart * totalBuffMultiplier);
     }
 
-    private void CheckPassiveSkillEffectsOnBullet() {
+    protected void CheckPassiveSkillEffectsOnBullet() {
         if(PlayerSkills.Instance.GetLastBulletDealsMoreDamage()) {
 
             if (lastBulletShot) {

@@ -13,57 +13,62 @@ MonoBehaviour:
   m_Name: Flamethrower
   m_EditorClassIdentifier: 
   gunType: 8
-  gunSprite: {fileID: -385952185, guid: b81429096f3a0ce4887bbcedaff2454f, type: 3}
+  gunSprite: {fileID: 469046108, guid: e16c31bfbfbcfa8429181fc0073db9b1, type: 3}
   reticleSprite: {fileID: 0}
   shotCountSprites:
-  - {fileID: -1531563590, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
-  - {fileID: 648843377, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
-  - {fileID: 346760949, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
-  - {fileID: 1570746237, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
-  - {fileID: 1282879509, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
-  - {fileID: -1709508536, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
-  - {fileID: -653879012, guid: 9ff1edaf19dd37c45aa06cc59c65bc35, type: 3}
+  - {fileID: 2043364060, guid: 1f0383f981921344585628d8a1e86635, type: 3}
+  - {fileID: 247167603, guid: 1f0383f981921344585628d8a1e86635, type: 3}
+  - {fileID: 139950148, guid: 1f0383f981921344585628d8a1e86635, type: 3}
+  - {fileID: -1179337562, guid: 1f0383f981921344585628d8a1e86635, type: 3}
+  - {fileID: 596369944, guid: 1f0383f981921344585628d8a1e86635, type: 3}
+  - {fileID: -1101251632, guid: 1f0383f981921344585628d8a1e86635, type: 3}
+  - {fileID: 1025920887, guid: 1f0383f981921344585628d8a1e86635, type: 3}
+  - {fileID: 346369971, guid: 1f0383f981921344585628d8a1e86635, type: 3}
   gunAnimator: {fileID: 9100000, guid: 0beb2d2999eb4f74abd437ff2b5f1e6e, type: 2}
-  weaponCursorSprite: {fileID: 0}
-  weaponHitCursorSprite: {fileID: 0}
-  mouseCursorSprite_NE: {fileID: 0}
-  mouseCursorSprite_NW: {fileID: 0}
-  mouseCursorSprite_SE: {fileID: 0}
-  mouseCursorSprite_SW: {fileID: 0}
-  initialMouseCursorWidth: 0
-  initialMouseCursorHeight: 0
+  weaponCursorSprite: {fileID: 21300000, guid: b1aa9ebdbba1d2944bf7a506d9ef244e, type: 3}
+  weaponHitCursorSprite: {fileID: 21300000, guid: a25a91093bc6f774c8a8c3a9fcf3eb51, type: 3}
+  mouseCursorSprite_NE: {fileID: 21300000, guid: a5635a1770cca97419cd5cf3a4e9138f, type: 3}
+  mouseCursorSprite_NW: {fileID: 21300000, guid: 9712a41e8d46559408201270a5732c31, type: 3}
+  mouseCursorSprite_SE: {fileID: 21300000, guid: 7d1651210e9a7234f912a2bbd863ef80, type: 3}
+  mouseCursorSprite_SW: {fileID: 21300000, guid: df73b3e6337345d48b58bb269f9e8a26, type: 3}
+  initialMouseCursorWidth: 50
+  initialMouseCursorHeight: 50
   ammoTypeUsed: 7
   bulletIsParticle: 0
   bulletIsProjectile: 0
   bulletIsSprite: 1
   automaticWeapon: 1
+  shotNeedsLoading: 1
+  loadShotTime: 0.5
   delayBetweenClickAndShot: 0
   useAngleInPS: 0
   damagePerBullet: 1
   maxAmmo: 6
-  pelletsPerBullet: 3
-  shotsPerClip: 200
+  pelletsPerBullet: 1
+  shotsPerClip: 5
   critChance: 0
-  bulletLifetime: 0.8
-  bulletSpeed: 10
-  shootCooldownTime: 0.01
+  bulletLifetime: 0.5
+  bulletSpeed: 20
+  shootCooldownTime: 0.5
   reloadTime: 4.5
   handsReloadTime: 4.2
   handsAnimationReloadTime: 2.8
   bulletKnockback: 0
   shootCreatureHearMultiplier: 1.75
-  jamProbability: 1
-  jamRepairHitAmount: 3
+  jamProbability: 0
+  jamRepairHitAmount: 0
   perfectQTEBulletAmountDamageBuffed: 0
-  weightAccelerationFactor: 0.8
-  reloadAccelerationFactor: 0.8
-  followMouseSpeed: 40
+  weightAccelerationFactor: 0.5
+  reloadAccelerationFactor: 0.5
+  followMouseSpeed: 10
   swapToWeaponTimeMultiplier: 1
   gunKnockback: 0
   gunRecoil: 0
   gunRecoilDamping: 0
-  shootConeAngle: 3
+  shootConeAngle: 10
   weaponPrecisionMultiplier: 1
+  movePrecisionDebuff: 1.25
+  runPrecisionDebuff: 1.5
   weaponSecondaryAbilityPrecisionFactor: 1
   weaponSecondaryRecoilReductionFactor: 1
   weaponMaxRecoilImpactOnMouseReticle: 0.25

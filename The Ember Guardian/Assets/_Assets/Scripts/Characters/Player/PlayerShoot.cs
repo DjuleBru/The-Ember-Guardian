@@ -29,6 +29,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerSwappedGunStarted;
     public event EventHandler OnPlayerSwappedGun;
     public event EventHandler OnGunsLoaded;
+    public event EventHandler OnShotStartedLoading;
 
     public event EventHandler OnPrimaryWeaponChanged;
     public event EventHandler OnSecondaryWeaponChanged;
@@ -89,6 +90,7 @@ public class PlayerShoot : MonoBehaviour
     private bool rifleSemiAutoModeActive;
     private bool projectileExplodesOnPlayerClickModeActive;
     private bool projectileExplodesOnPlayerClick;
+    private bool aaGunSpawnsChildProjectiles;
 
     private bool canHold2Guns;
 
@@ -99,6 +101,7 @@ public class PlayerShoot : MonoBehaviour
     private float ammoRegenTimer;
 
     protected bool reloadingHands;
+    protected bool shotNeedsLoading;
     protected bool loadingShot;
     protected bool shotLoaded;
     protected float loadingShotTimer;
@@ -183,8 +186,11 @@ public class PlayerShoot : MonoBehaviour
             if (loadingShotTimer > loadingShotTime) {
                 shotLoaded = true;
                 Shoot();
-                heldGun.SetCurrentBullet(0);
-                OnBulletsChanged?.Invoke(this, EventArgs.Empty);
+
+                if(heldGunSO.gunType == GunSO.GunType.Shotgun) {
+                    heldGun.SetCurrentBullet(0);
+                    OnBulletsChanged?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
 
@@ -314,7 +320,6 @@ public class PlayerShoot : MonoBehaviour
         OnPlayerWeaponReplaced?.Invoke(this, EventArgs.Empty);
     }
 
-
     public void SetActiveGun(GunSO.GunType gunType, bool primaryGun = true) {
         Debug.Log("SetActiveGun " + gunType);
         Gun activeGun = null;
@@ -340,6 +345,7 @@ public class PlayerShoot : MonoBehaviour
         gunRecoil = heldGunSO.gunRecoil;
         gunKnockback = heldGunSO.gunKnockback; 
         automaticWeapon = activeGunSO.automaticWeapon;
+        shotNeedsLoading = activeGunSO.shotNeedsLoading;
         if (rifleSemiAutoModeActive) {
             automaticWeapon = true;
         }
@@ -401,11 +407,6 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void Shoot(bool shootOnReload = false) {
-        //if (heldGun.GetGunJammed()) {
-        //    OnPlayerTryShoot_GunJammed?.Invoke(this, EventArgs.Empty);
-        //    return;
-        //};
-
         StartCoroutine(ShootAfterDelay(heldGunSO.delayBetweenClickAndShot, shootOnReload));
     }
 
@@ -433,6 +434,7 @@ public class PlayerShoot : MonoBehaviour
 
         Vector2 gunKnockbackForce = new Vector2(aimDir * gunKnockback * -1, 0);
         Player.Instance.AddKnockBack(gunKnockbackForce);
+
         OnBulletsChanged?.Invoke(this, EventArgs.Empty);
 
         OnPlayerShot?.Invoke(this, EventArgs.Empty);
@@ -446,6 +448,11 @@ public class PlayerShoot : MonoBehaviour
             if (automaticWeapon && playerIsHoldingDownShoot && !Player.Instance.GetDead()) {
                 Shoot();
             }
+            else {
+                OnPlayerShootStopped?.Invoke(this, EventArgs.Empty);
+            }
+        } else {
+            OnPlayerShootStopped?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -524,13 +531,25 @@ public class PlayerShoot : MonoBehaviour
             return;
         }
 
-        Shoot();
+        if(shotNeedsLoading) {
+            loadingShot = true;
+            loadingShotTime = heldGunSO.loadShotTime;
+            OnShotStartedLoading?.Invoke(this, EventArgs.Empty);
+        } else {
+            Shoot();
+        }
+
         playerIsHoldingDownShoot = true;
 
         if (projectileExplodesOnPlayerClickModeActive && !projectileExplodesOnPlayerClick) {
             projectileExplodesOnPlayerClick = true;
             return;
         }
+    }
+
+    private void GameInput_OnPlayerShootCanceled(object sender, System.EventArgs e) {
+        playerIsHoldingDownShoot = false;
+        OnPlayerShootStopped?.Invoke(this, EventArgs.Empty);
     }
 
     private void TryAutoReload() {
@@ -546,10 +565,7 @@ public class PlayerShoot : MonoBehaviour
 
         }
     }
-
-    private void GameInput_OnPlayerShootCanceled(object sender, System.EventArgs e) {
-        playerIsHoldingDownShoot = false;
-    }
+ 
     private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (!canShoot) return;
@@ -722,6 +738,13 @@ public class PlayerShoot : MonoBehaviour
         if (heldGun.GetGunSO().gunType == GunSO.GunType.GrenadeLauncher) {
             projectileExplodesOnPlayerClickModeActive = !projectileExplodesOnPlayerClickModeActive;
             projectileExplodesOnPlayerClick = true;
+
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.AAGun) {
+            aaGunSpawnsChildProjectiles = !aaGunSpawnsChildProjectiles;
 
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
             OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
@@ -1021,6 +1044,10 @@ public class PlayerShoot : MonoBehaviour
     }
     public bool GetProjectileExplodesOnPlayerClickModeActive() {
         return projectileExplodesOnPlayerClickModeActive;
+    }
+
+    public bool GetAAGunSpawnsChildBullets() {
+        return aaGunSpawnsChildProjectiles;
     }
 
     public bool GetDebugSecondaryAbilityUnlocked() {

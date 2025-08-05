@@ -5392,10 +5392,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5834909706332022908}
   - component: {fileID: 497713366661671481}
-  - component: {fileID: 1591687601433499044}
   - component: {fileID: 2915329858226487894}
+  - component: {fileID: 6535286854957357638}
   m_Layer: 0
-  m_Name: GunProjectile
+  m_Name: GunProjectile_GrenadeLauncher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5446,19 +5446,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &1591687601433499044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3544158763880737185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06cfa8853faeb2147b94bd6977bc0043, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gunProjectile_BounceHandler: {fileID: 2690273212303444028}
 --- !u!58 &2915329858226487894
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5494,6 +5481,20 @@ CircleCollider2D:
   m_Offset: {x: -0.011849854, y: -0.009951234}
   serializedVersion: 2
   m_Radius: 0.11648321
+--- !u!114 &6535286854957357638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3544158763880737185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 087ee10806cf3364da8948fca9a34bd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunProjectile_BounceHandler: {fileID: 2690273212303444028}
+  explodeOnContact: 0
 --- !u!1 &6112042537097569714
 GameObject:
   m_ObjectHideFlags: 0

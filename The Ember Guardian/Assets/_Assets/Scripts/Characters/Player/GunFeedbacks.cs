@@ -37,7 +37,10 @@ public class GunFeedbacks : MonoBehaviour
         PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
         PlayerSkills.Instance.OnActiveSkillDeactivated += PlayerSkills_OnActiveSkillDeactivated;
 
-        meleeAttackCollider.OnGunMeleeAttackHit += MeleeAttackCollider_OnGunMeleeAttackHit;
+        if(meleeAttackCollider != null) {
+            meleeAttackCollider.OnGunMeleeAttackHit += MeleeAttackCollider_OnGunMeleeAttackHit;
+        }
+
         gun.OnPerfectQTEDamageBuff += Gun_OnPerfectQTEDamageBuff;
         gun.OnPerfectQTEDamageBuffEnded += Gun_OnPerfectQTEDamageBuffEnded;
     }

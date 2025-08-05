@@ -477,7 +477,6 @@ public class PlayerAim : MonoBehaviour
         return Vector2.zero;
     }
 
-
     private void SelectNextRandomTargetForWeaponPointer() {
         if (goToMouseNext) {
             currentEffectiveOffsetTarget = Vector2.zero;
@@ -834,6 +833,9 @@ public class PlayerAim : MonoBehaviour
 
     public Vector3 GetAimDir() {
         return aimDir;
+    }
+    public Vector3 GetEffectiveAimDir() {
+        return currentEffectiveAimPos - gunTransform.position;
     }
 
     public Vector3 GetEffectiveAimPosition() {

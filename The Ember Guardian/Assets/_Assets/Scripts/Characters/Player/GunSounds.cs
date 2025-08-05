@@ -10,7 +10,7 @@ public class GunSounds : SoundObject
 
     private Gun gun;
 
-    protected void Awake() {
+    protected virtual void Awake() {
         gun = GetComponent<Gun>();
         gun.OnPerfectQTEDamageBuff += Gun_OnPerfectQTEDamageBuff;
         gun.OnPerfectQTEDamageBuffEnded += Gun_OnPerfectQTEDamageBuffEnded;

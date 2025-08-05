@@ -18,12 +18,11 @@ public class GunAnimator : MonoBehaviour
         gunJamHandler = GetComponent<GunJamHandler>();
     }
 
-    protected void Start() {
+    protected virtual void Start() {
         gun.OnGunJammed += Gun_OnGunJammed;
         gunJamHandler.OnCorrectJamSequenceInput += GunJamHandler_OnCorrectJamSequenceInput;
         gunJamHandler.OnJamSequenceFailStarted += GunJamHandler_OnJamSequenceFailStarted;
 
-        PlayerShoot.Instance.OnPlayerShootStopped += PlayerShoot_OnPlayerShootStopped;
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoot_OnPlayerCooldownSFXTrigger;
         PlayerShoot.Instance.OnPlayerCooldownAnimationTrigger += PlayerShoot_OnPlayerCooldownAnimationTrigger;
@@ -141,12 +140,8 @@ public class GunAnimator : MonoBehaviour
         animator.speed = 1;
     }
 
-    protected void PlayerShoot_OnPlayerShootStopped(object sender, System.EventArgs e) {
-
-    }
 
     protected void OnDestroy() {
-        PlayerShoot.Instance.OnPlayerShootStopped -= PlayerShoot_OnPlayerShootStopped;
         PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnPlayerCooldownTrigger -= PlayerShoot_OnPlayerCooldownSFXTrigger;
         PlayerShoot.Instance.OnPlayerCooldownAnimationTrigger -= PlayerShoot_OnPlayerCooldownAnimationTrigger;

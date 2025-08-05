@@ -39,6 +39,8 @@ MonoBehaviour:
   bulletIsProjectile: 0
   bulletIsSprite: 0
   automaticWeapon: 0
+  shotNeedsLoading: 0
+  loadShotTime: 0
   delayBetweenClickAndShot: 0
   useAngleInPS: 1
   damagePerBullet: 4
@@ -46,7 +48,7 @@ MonoBehaviour:
   pelletsPerBullet: 5
   shotsPerClip: 4
   critChance: 5
-  bulletLifetime: 0.3
+  bulletLifetime: 0.35
   bulletSpeed: 30
   shootCooldownTime: 0.8
   reloadTime: 1.5
@@ -64,8 +66,10 @@ MonoBehaviour:
   gunKnockback: 2.5
   gunRecoil: 0.6
   gunRecoilDamping: 3
-  shootConeAngle: 16
+  shootConeAngle: 10
   weaponPrecisionMultiplier: 1
+  movePrecisionDebuff: 1.25
+  runPrecisionDebuff: 1.5
   weaponSecondaryAbilityPrecisionFactor: 10
   weaponSecondaryRecoilReductionFactor: 1
   weaponMaxRecoilImpactOnMouseReticle: 0.25
