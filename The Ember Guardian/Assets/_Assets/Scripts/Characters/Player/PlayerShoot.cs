@@ -57,6 +57,7 @@ public class PlayerShoot : MonoBehaviour
     private bool settingUpLMG;
     private bool holdingStationaryGun;
     private bool emptyingRevolverMag;
+    private bool silencerActive;
 
     public class OnAmmoRefilledEventArgs : EventArgs {
         public int ammoAmount;
@@ -91,6 +92,7 @@ public class PlayerShoot : MonoBehaviour
     private bool projectileExplodesOnPlayerClickModeActive;
     private bool projectileExplodesOnPlayerClick;
     private bool aaGunSpawnsChildProjectiles;
+    private bool rocketLauncherSpawnsMiniRockets;
 
     private bool canHold2Guns;
 
@@ -102,6 +104,7 @@ public class PlayerShoot : MonoBehaviour
 
     protected bool reloadingHands;
     protected bool shotNeedsLoading;
+    protected bool loadedShotFiredIfNotFullyLoaded;
     protected bool loadingShot;
     protected bool shotLoaded;
     protected float loadingShotTimer;
@@ -149,7 +152,7 @@ public class PlayerShoot : MonoBehaviour
             }
         }
 
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             SetGunCanJam(false);
         }
 
@@ -180,11 +183,11 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void Update() {
-
         if (loadingShot && !shotLoaded) {
             loadingShotTimer += Time.deltaTime;
             if (loadingShotTimer > loadingShotTime) {
                 shotLoaded = true;
+                loadingShot = false;
                 Shoot();
 
                 if(heldGunSO.gunType == GunSO.GunType.Shotgun) {
@@ -346,6 +349,7 @@ public class PlayerShoot : MonoBehaviour
         gunKnockback = heldGunSO.gunKnockback; 
         automaticWeapon = activeGunSO.automaticWeapon;
         shotNeedsLoading = activeGunSO.shotNeedsLoading;
+        loadedShotFiredIfNotFullyLoaded = activeGunSO.loadedShotFiredIfNotFullyLoaded;
         if (rifleSemiAutoModeActive) {
             automaticWeapon = true;
         }
@@ -533,7 +537,9 @@ public class PlayerShoot : MonoBehaviour
 
         if(shotNeedsLoading) {
             loadingShot = true;
+            shotLoaded = false;
             loadingShotTime = heldGunSO.loadShotTime;
+            loadingShotTimer = 0;
             OnShotStartedLoading?.Invoke(this, EventArgs.Empty);
         } else {
             Shoot();
@@ -548,6 +554,17 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnPlayerShootCanceled(object sender, System.EventArgs e) {
+        if (loadingShot && shotNeedsLoading && loadedShotFiredIfNotFullyLoaded) {
+            if (loadingShotTimer > heldGunSO.minLoadShotTime) {
+                if (heldGun.GetCurrentBullet() > 0) {
+                    Shoot();
+                }
+            };
+        }
+
+        loadingShot = false;
+        shotLoaded = false;
+
         playerIsHoldingDownShoot = false;
         OnPlayerShootStopped?.Invoke(this, EventArgs.Empty);
     }
@@ -749,6 +766,19 @@ public class PlayerShoot : MonoBehaviour
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
             OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
         }
+
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.RocketLauncher) {
+            rocketLauncherSpawnsMiniRockets = !rocketLauncherSpawnsMiniRockets;
+
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.Pistol) {
+            silencerActive = !silencerActive;
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {
@@ -941,6 +971,10 @@ public class PlayerShoot : MonoBehaviour
         return returnGun;
     }
 
+    public float GetLoadingShotTimerNormalized() {
+        return loadingShotTimer / loadingShotTime;
+    }
+
     public int GetDamagePerBullet() {
         return heldGun.GetDamagePerBullet();
     }
@@ -1048,6 +1082,12 @@ public class PlayerShoot : MonoBehaviour
 
     public bool GetAAGunSpawnsChildBullets() {
         return aaGunSpawnsChildProjectiles;
+    }
+    public bool GetRocketLauncherMiniRockets() {
+        return rocketLauncherSpawnsMiniRockets;
+    }
+    public bool GetSilencerActive() {
+        return silencerActive;
     }
 
     public bool GetDebugSecondaryAbilityUnlocked() {

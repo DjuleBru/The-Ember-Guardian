@@ -38,6 +38,8 @@ public class SoundManager : MonoBehaviour
         if (Player.Instance != null) {
             Player.Instance.OnPlayerBackToTentToRespawn += Player_OnPlayerBackToTentToRespawn;
             PlayerShoot.Instance.OnPlayerStartedShot += PlayerShoot_OnPlayerStartedShot;
+            PlayerShoot.Instance.OnShotStartedLoading += PlayerShoot_OnShotStartedLoading;
+            PlayerShoot.Instance.OnPlayerShootStopped += PlayerShoot_OnPlayerShootStopped;
             PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoor_OnPlayerCooldownSFXTrigger;
             PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
             PlayerShoot.Instance.OnPlayerTryShoot_GunJammed += PlayerShoot_OnPlayerTryShoot_GunJammed;
@@ -628,13 +630,14 @@ public class SoundManager : MonoBehaviour
 
     private void PlayerShoor_OnPlayerCooldownSFXTrigger(object sender, System.EventArgs e) {
         if (PlayerShoot.Instance.GetHeldGunSO().cooldownGunSound.Length == 0) return;
+        if (PlayerShoot.Instance.GetHeldGun().GetCurrentBullet() == 0) return;
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().cooldownGunSound;
         PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().cooldownSFXVolumeMultiplier);
     }
     private void PlayerShoot_OnPlayerStartedShot(object sender, System.EventArgs e) {
         if (!PlayerShoot.Instance.GetHeldGunSO().triggersShootSFXOnEachBuller) return;
 
-        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().shootGunSound;
+        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGun().GetComponent<GunSounds>().GetShootAudioClips();
         float volume = PlayerShoot.Instance.GetHeldGunSO().shootGunVolumeMultiplier;
         PlaySound2D(audioClipArray, volume);
     }
@@ -663,6 +666,17 @@ public class SoundManager : MonoBehaviour
         gunPoweringUpAudioSource.Stop();
     }
 
+    private void PlayerShoot_OnShotStartedLoading(object sender, System.EventArgs e) {
+        if(PlayerShoot.Instance.GetHeldGunSO().startLoadingShotGunSound != null) {
+            gunPoweringUpAudioSource.PlayOneShot(PlayerShoot.Instance.GetHeldGunSO().startLoadingShotGunSound, sfxVolume);
+        }
+    }
+
+    private void PlayerShoot_OnPlayerShootStopped(object sender, System.EventArgs e) {
+        if(gunPoweringUpAudioSource.isPlaying) {
+            gunPoweringUpAudioSource.Stop();
+        }
+    }
 
     private void PlayerSHoot_OnPlayerSetupLMGStopped(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.lmgReset);
@@ -941,7 +955,7 @@ public class SoundManager : MonoBehaviour
         Obstacle.OnAnyObstacleBuilt -= Obstacle_OnAnyObstacleBuilt;
 
         if (Player.Instance != null) {
-            PlayerShoot.Instance.OnPlayerStartedShot -= PlayerShoot_OnPlayerStartedShot;
+            PlayerShoot.Instance.OnShotStartedLoading -= PlayerShoot_OnPlayerStartedShot;
             PlayerShoot.Instance.OnPlayerCooldownTrigger -= PlayerShoor_OnPlayerCooldownSFXTrigger;
             PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo -= PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
             PlayerShoot.Instance.OnPlayerSwappedGun -= PlayerShoot_OnPlayerSwappedGun;

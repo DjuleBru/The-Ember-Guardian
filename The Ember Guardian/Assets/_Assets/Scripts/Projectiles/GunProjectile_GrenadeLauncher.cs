@@ -25,4 +25,8 @@ public class GunProjectile_GrenadeLauncher : GunProjectile
             Explode();
         }
     }
+
+    protected void OnDestroy() {
+        PlayerShoot.Instance.OnPlayerTriggersProjectileExplosion -= PlayerShoot_OnPlayerTriggersProjectileExplosion;
+    }
 }

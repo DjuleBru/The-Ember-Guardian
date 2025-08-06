@@ -8,6 +8,8 @@ public class GunProjectile : MonoBehaviour
 
     [SerializeField] protected GunProjectile_BounceHandler gunProjectile_BounceHandler;
     [SerializeField] protected bool explodeOnContact;
+    [SerializeField] protected bool damagesPlayer;
+    [SerializeField] protected float maxDistanceToDamagePlayer = 1f;
 
     protected Rigidbody2D rb;
     protected float projectileLifetime;
@@ -22,6 +24,7 @@ public class GunProjectile : MonoBehaviour
 
     protected bool projectileExplodesOnContact;
 
+    protected Vector2 initialForce;
     protected Gun parentGun;
     public event EventHandler OnProjectileExploded;
 
@@ -45,16 +48,25 @@ public class GunProjectile : MonoBehaviour
     }
 
     protected virtual void Explode() {
+        transform.rotation = Quaternion.identity;
+
         rb.bodyType = RigidbodyType2D.Static;
         OnProjectileExploded?.Invoke(this, EventArgs.Empty);
         transform.localScale = Vector3.one * explosionRadiusMultiplier;
 
         projectileExploded = true;
-        StartCoroutine(DestroyGameObjectAfterDelay());
+
+        if(damagesPlayer) {
+            if(Vector3.Distance(transform.position, Player.Instance.transform.position) < maxDistanceToDamagePlayer) {
+                Player.Instance.TakeDamage(1, this.transform);
+            }
+        }
+
+        StartCoroutine(DestroyGameObjectAfterDelay(1f));
     }
 
-    protected IEnumerator DestroyGameObjectAfterDelay() {
-        yield return new WaitForSeconds(1f);
+    protected IEnumerator DestroyGameObjectAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
 
         Destroy(gameObject);
     }
@@ -104,7 +116,7 @@ public class GunProjectile : MonoBehaviour
         creatureHit.TakeKnockback(knockBackForce, knockbackDirNormalized);
     }
      
-    public void InitializeProjectile(Gun parentGun, float projectileLifetime, int projectileDamage, float knockbackForce, Vector2 initialForce, float explosionRadiusMultiplier) {
+    public virtual void InitializeProjectile(Gun parentGun, float projectileLifetime, int projectileDamage, float knockbackForce, Vector2 initialForce, float explosionRadiusMultiplier) {
         this.parentGun = parentGun;
         this.projectileLifetime = projectileLifetime;
         this.projectileExplosionDamage = projectileDamage;
@@ -113,11 +125,15 @@ public class GunProjectile : MonoBehaviour
         lifetimeTimer = projectileLifetime;
 
         rb = GetComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Dynamic;
         rb.AddForce(initialForce, ForceMode2D.Impulse);
         float torque = UnityEngine.Random.Range(-10f, 10f);
         rb.AddTorque(torque);
+
+        this.initialForce = initialForce;
     }
 
-    protected void OnDestroy() {
+    public void InvokeOnProjectileExploded() {
+        OnProjectileExploded?.Invoke(this, EventArgs.Empty);    
     }
 }

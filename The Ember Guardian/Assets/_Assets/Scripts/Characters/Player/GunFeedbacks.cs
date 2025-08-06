@@ -25,7 +25,8 @@ public class GunFeedbacks : MonoBehaviour
 
     private void Start() {
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
-        PlayerShoot.Instance.OnPlayerStartedShot += PlayerShoot_OnPlayerStartedShot;
+        PlayerShoot.Instance.OnShotStartedLoading += PlayerShoot_OnShotStartedLoading;
+        PlayerShoot.Instance.OnPlayerShootStopped += PlayerShoot_OnPlayerShootStopped;
         PlayerShoot.Instance.OnPlayerCooldownTrigger += PlayerShoot_OnPlayerCooldownTrigger;
         PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
         PlayerShoot.Instance.OnBulletsChanged += PlayerShoot_OnBulletsChanged;
@@ -105,7 +106,7 @@ public class GunFeedbacks : MonoBehaviour
         meleeAttackFeedbacks.PlayFeedbacks();
     }
 
-    private void PlayerShoot_OnPlayerStartedShot(object sender, System.EventArgs e) {
+    private void PlayerShoot_OnShotStartedLoading(object sender, System.EventArgs e) {
         if(loadGunPS1 != null) {
             loadGunPS1.Play();
         }
@@ -113,6 +114,19 @@ public class GunFeedbacks : MonoBehaviour
             loadGunPS2.Play();
         }
     }
+    private void PlayerShoot_OnPlayerShootStopped(object sender, System.EventArgs e) {
+        if (loadGunPS1 != null) {
+            if(loadGunPS1.isPlaying) {
+                loadGunPS1.Stop();
+            }
+        }
+        if (loadGunPS2 != null) {
+            if (loadGunPS2.isPlaying) {
+                loadGunPS2.Stop();
+            }
+        }
+    }
+
 
     private void PlayerShoot_OnPlayerCooldownTrigger(object sender, System.EventArgs e) {
         if(!gun.GetGunActive()) return;

@@ -352,7 +352,7 @@ public class Creature : Mob
     protected void PlayerShoot_OnPlayerShotProjectile(object sender, EventArgs e) {
         if (detectionRangeIncreased) return;
 
-        playerShootDetectionRangeMultiplier = PlayerShoot.Instance.GetHeldGunSO().shootCreatureHearMultiplier;
+        playerShootDetectionRangeMultiplier = PlayerShoot.Instance.GetHeldGun().GetShootCreatureHearMultiplier();
         if (Mathf.Abs(Player.Instance.transform.position.x - transform.position.x) > detectionCollider.GetRadius() * playerShootDetectionRangeMultiplier) return;
         // Player is too far
         CreatureHeardPlayerShoot(true);

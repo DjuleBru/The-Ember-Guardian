@@ -6,11 +6,4 @@ using UnityEngine;
 public class Gun_AAGun : Gun
 {
 
-    protected override void Shoot() {
-        base.Shoot();
-        if(PlayerShoot.Instance.GetAAGunSpawnsChildBullets()) {
-            currentBullet--;
-        }
-    }
-
 }

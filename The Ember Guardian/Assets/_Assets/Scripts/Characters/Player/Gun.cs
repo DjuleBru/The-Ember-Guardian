@@ -38,6 +38,7 @@ public class Gun : MonoBehaviour
     protected float reloadTime;
     protected float handsReloadTime;
     protected float swapToWeaponTimeMultiplier;
+    protected float shootCreatureHearMultiplier;
 
     protected int jamRepairHitAmount;
     protected float jamProbability;
@@ -76,7 +77,7 @@ public class Gun : MonoBehaviour
     public event EventHandler OnBuffedLastBulletShot;
     public event EventHandler OnDebuffLastBulletShot;
 
-    protected void Start() {
+    protected virtual void Start() {
         gunJamHandler = GetComponent<GunJamHandler>();
 
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
@@ -108,6 +109,7 @@ public class Gun : MonoBehaviour
         }
 
     }
+
 
     protected void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
         if (!gunActive) return;
@@ -202,6 +204,7 @@ public class Gun : MonoBehaviour
         jamRepairHitAmount = MetaProgressionManager.Instance.GetGunJamRepairHitAmount(gunSO);
         surgeWindowBulletAmountBuffed = MetaProgressionManager.Instance.GetGunSurgeWindowBulletsAmountBuffed(gunSO);
         jamProbability = gunSO.jamProbability;
+        shootCreatureHearMultiplier = gunSO.shootCreatureHearMultiplier;
 
         defaultAngle = MetaProgressionManager.Instance.GetGunShootConeAnle(gunSO);
         currentAngle = defaultAngle;
@@ -268,7 +271,14 @@ public class Gun : MonoBehaviour
         if (gunSO.bulletIsProjectile) {
             GunProjectile gunProjectile = Instantiate(projectilePrefab, projectileSpawnPosition.position, Quaternion.identity).GetComponent<GunProjectile>();
             gunProjectile.gameObject.SetActive(true);
-            Vector2 initialForce = PlayerAim.Instance.GetEffectiveAimDir().normalized * bulletSpeed;
+
+            float loadingShotMultiplier = 1;
+            if(PlayerShoot.Instance.GetHeldGunSO().shotNeedsLoading && PlayerShoot.Instance.GetHeldGunSO().loadedShotFiredIfNotFullyLoaded) {
+                loadingShotMultiplier = PlayerShoot.Instance.GetLoadingShotTimerNormalized();
+            }
+
+            Vector2 initialForce = loadingShotMultiplier * PlayerAim.Instance.GetEffectiveAimDir().normalized * bulletSpeed;
+
             gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce, explosionRadiusMultiplier);
         }
 
@@ -385,6 +395,10 @@ public class Gun : MonoBehaviour
 
     public float GetBulletKnockback() {
         return bulletKnockback;
+    }
+
+    public float GetShootCreatureHearMultiplier() {
+        return shootCreatureHearMultiplier;
     }
 
     public int GetPelletsPerBullet() {

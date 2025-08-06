@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbc96e1564c4fd42a7ef7eee87d437f, type: 3}
+  m_Name: RocketLauncher
+  m_EditorClassIdentifier: 
+  gunType: 10
+  gunSprite: {fileID: 2009694370, guid: 2b92b23389a877c4bb52f0c3fdcd7554, type: 3}
+  reticleSprite: {fileID: 0}
+  shotCountSprites:
+  - {fileID: -370901345, guid: 5b3a2c66409232147990f5e71720f118, type: 3}
+  - {fileID: -1012901754, guid: 5b3a2c66409232147990f5e71720f118, type: 3}
+  - {fileID: -1358598801, guid: 5b3a2c66409232147990f5e71720f118, type: 3}
+  - {fileID: 16109283, guid: 5b3a2c66409232147990f5e71720f118, type: 3}
+  - {fileID: 229830566, guid: 5b3a2c66409232147990f5e71720f118, type: 3}
+  - {fileID: 1539092823, guid: 5b3a2c66409232147990f5e71720f118, type: 3}
+  - {fileID: 1052466483, guid: 5b3a2c66409232147990f5e71720f118, type: 3}
+  gunAnimator: {fileID: 22100000, guid: 886fbe611245b664ebc9bd7921c1b6e8, type: 2}
+  weaponCursorSprite: {fileID: 21300000, guid: b1aa9ebdbba1d2944bf7a506d9ef244e, type: 3}
+  weaponHitCursorSprite: {fileID: 21300000, guid: 6bb044ad6c14d9c4ea83dec7dfb0db42, type: 3}
+  mouseCursorSprite_NE: {fileID: 21300000, guid: a5635a1770cca97419cd5cf3a4e9138f, type: 3}
+  mouseCursorSprite_NW: {fileID: 21300000, guid: 9712a41e8d46559408201270a5732c31, type: 3}
+  mouseCursorSprite_SE: {fileID: 21300000, guid: 7d1651210e9a7234f912a2bbd863ef80, type: 3}
+  mouseCursorSprite_SW: {fileID: 21300000, guid: df73b3e6337345d48b58bb269f9e8a26, type: 3}
+  initialMouseCursorWidth: 55
+  initialMouseCursorHeight: 55
+  ammoTypeUsed: 16
+  bulletIsParticle: 0
+  bulletIsProjectile: 1
+  bulletIsSprite: 0
+  canUseMeleeAttack: 0
+  automaticWeapon: 0
+  shotNeedsLoading: 0
+  loadedShotFiredIfNotFullyLoaded: 0
+  loadShotTime: 0.3
+  minLoadShotTime: 0
+  delayBetweenClickAndShot: 0.1
+  useAngleInPS: 0
+  damagePerBullet: 60
+  maxAmmo: 5
+  pelletsPerBullet: 1
+  shotsPerClip: 3
+  critChance: 15
+  bulletLifetime: 1
+  bulletSpeed: 10
+  shootCooldownTime: 1.5
+  reloadTime: 2.5
+  handsReloadTime: 1.5
+  handsAnimationReloadTime: 1
+  bulletKnockback: 60
+  shootCreatureHearMultiplier: 2.25
+  jamProbability: 0
+  jamRepairHitAmount: 3
+  perfectQTEBulletAmountDamageBuffed: 1
+  weightAccelerationFactor: 0.85
+  reloadAccelerationFactor: 0.85
+  followMouseSpeed: 25
+  swapToWeaponTimeMultiplier: 2.5
+  gunKnockback: 5
+  gunRecoil: 4
+  gunRecoilDamping: 2
+  shootConeAngle: 3.5
+  weaponPrecisionMultiplier: 0.5
+  movePrecisionDebuff: 1.25
+  runPrecisionDebuff: 1.5
+  weaponSecondaryAbilityPrecisionFactor: 1
+  weaponSecondaryRecoilReductionFactor: 1
+  weaponMaxRecoilImpactOnMouseReticle: 2
+  crouchPrecisionBuff: 2
+  crouchRecoilReductionFactor: 2
+  shotCooldownAnimationTriggerTime: 0.5
+  shootCooldownSFXTriggerTime: 0.3
+  triggersShootFeedbackOnEachBuller: 1
+  triggersShootSFXOnEachBuller: 1
+  shootGunSound:
+  - {fileID: 8300000, guid: b483daecadd690946b158d90f7a9f950, type: 3}
+  - {fileID: 8300000, guid: 6980f477f8dcb8c46b1d41cac93e4af3, type: 3}
+  startLoadingShotGunSound: {fileID: 0}
+  reloadGunSound:
+  - {fileID: 8300000, guid: 951b062a7964d5a41b90e974b8aa6c9d, type: 3}
+  cooldownGunSound:
+  - {fileID: 8300000, guid: 88e53fa7c2a61384bb147c9074d43586, type: 3}
+  - {fileID: 8300000, guid: 480be6bc7007fc143ada1efa509586d4, type: 3}
+  bulletHitGroundSound: []
+  bulletHitEnemySound: []
+  bulletHitEnemyCritSound: []
+  outOfAmmoSound:
+  - {fileID: 8300000, guid: b98aaa1d97aed8244b1576b894d0d598, type: 3}
+  tryShootGunJammedSound:
+  - {fileID: 8300000, guid: a02ea301da17d4d4fbbdfd3dc685129a, type: 3}
+  gunJammedSound:
+  - {fileID: 8300000, guid: 18cf964f900c6a443b1d3155e24059f3, type: 3}
+  gunJammHitProgressSound:
+  - {fileID: 8300000, guid: 1353d63a99f3a0c45bbea9b5d3514455, type: 3}
+  - {fileID: 8300000, guid: 3570de036fa597049a0d7cfd4fb8900d, type: 3}
+  - {fileID: 8300000, guid: d7fd895d5c8d2f440a8218f8ed076209, type: 3}
+  - {fileID: 8300000, guid: fd7a3b32a57c9e54ca4309900e03a4fa, type: 3}
+  - {fileID: 8300000, guid: 3d1f89c607ea172458f86777b7fd544e, type: 3}
+  gunJamRepairedSound:
+  - {fileID: 8300000, guid: fa2c437d7857ab148a5f5b5faf1025fc, type: 3}
+  swapToWeaponSound: {fileID: 8300000, guid: a8d165ac254f5854fbd6a50120569242, type: 3}
+  reloadSFXVolumeMultiplier: 0.75
+  cooldownSFXVolumeMultiplier: 0.5
+  shootGunVolumeMultiplier: 0.5
+  outOfAmmoVolumeMultiplier: 0.75
+  tryShootGunJammedVolumeMultiplier: 0.5
+  gunJammedVolumeMultiplier: 1
+  gunJamHitProgressVolumeMultiplier: 1
+  gunJamRepairedVolumeMultiplier: 0.5
+  swapToWeaponVolumeMultiplier: 1

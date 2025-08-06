@@ -8,9 +8,9 @@ public class GunAnimator : MonoBehaviour
     protected Gun gun;
     protected GunJamHandler gunJamHandler;
 
-    private float meleeAttackSpeed = 1.5f;
-    private bool reloading; 
-    private float reloadAnimTime = 0f;
+    protected float meleeAttackSpeed = 1.5f;
+    protected bool reloading; 
+    protected float reloadAnimTime = 0f;
 
     protected void Awake() {
         animator = GetComponent<Animator>();
@@ -41,30 +41,30 @@ public class GunAnimator : MonoBehaviour
     }
 
 
-    private void GunJamHandler_OnJamSequenceFailStarted(object sender, System.EventArgs e) {
+    protected void GunJamHandler_OnJamSequenceFailStarted(object sender, System.EventArgs e) {
         //animator.SetTrigger("GunJamHit");
     }
 
-    private void Gun_OnGunJammed(object sender, System.EventArgs e) {
+    protected void Gun_OnGunJammed(object sender, System.EventArgs e) {
         animator.SetTrigger("OutOfAmmo");
     }
 
-    private void GunJamHandler_OnCorrectJamSequenceInput(object sender, System.EventArgs e) {
+    protected void GunJamHandler_OnCorrectJamSequenceInput(object sender, System.EventArgs e) {
         animator.SetTrigger("GunJamHit");
     }
 
-    private void PlayerMeleeAttack_OnMeleeAttackStarted(object sender, System.EventArgs e) {
+    protected void PlayerMeleeAttack_OnMeleeAttackStarted(object sender, System.EventArgs e) {
         animator.SetTrigger("MeleeAttack");
         animator.speed = meleeAttackSpeed;
     }
 
-    private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
         animator.SetTrigger("SwapGunEnd");
         float animationMultiplier =  1/gun.GetSwapToWeaponTimeMultiplier();
         animator.SetFloat("SwapGunMultiplier", animationMultiplier);
     }
 
-    private void PlayerShoot_OnPlayerSwappedGunStarted(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerSwappedGunStarted(object sender, System.EventArgs e) {
         animator.SetTrigger("SwapGunStart");
         float animationMultiplier = 1/gun.GetSwapToWeaponTimeMultiplier();
         animator.SetFloat("SwapGunMultiplier", animationMultiplier);
@@ -76,11 +76,18 @@ public class GunAnimator : MonoBehaviour
 
     protected void PlayerShoot_OnPlayerCooldownAnimationTrigger(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
+        StartCoroutine(TriggerCDAnimationAfterDelay(gun.GetGunSO().shotCooldownAnimationTriggerTime));
+
+    }
+
+    protected IEnumerator TriggerCDAnimationAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
 
         if (gun.GetCurrentBullet() != 0) {
             animator.speed = 1;
             animator.SetTrigger("Cooldown");
-        } else {
+        }
+        else {
             animator.speed = 1;
             animator.SetTrigger("OutOfAmmo");
         }
@@ -101,15 +108,15 @@ public class GunAnimator : MonoBehaviour
     
     }
 
-    private void PlayerShoot_OnPlayerReloadEnded(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerReloadEnded(object sender, System.EventArgs e) {
         reloading = false;
     }
-    private void PlayerShoot_OnPlayerReloadInterruptedEnded(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerReloadInterruptedEnded(object sender, System.EventArgs e) {
         animator.Play("Reload", 0, reloadAnimTime); // Reprend à la même position
         animator.speed = 1f;
     }
 
-    private void PlayerShoot_OnPlayerReloadInterrupted(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerReloadInterrupted(object sender, System.EventArgs e) {
         AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
         reloadAnimTime = state.normalizedTime;
 
@@ -131,7 +138,7 @@ public class GunAnimator : MonoBehaviour
         animator.Play("Idle");
     }
 
-    protected void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
+    protected virtual void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
         animator.SetTrigger("Shoot");
 
         // Only for passive skill shoot on reload

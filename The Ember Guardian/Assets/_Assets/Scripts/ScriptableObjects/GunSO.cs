@@ -17,9 +17,10 @@ public class GunSO : ScriptableObject
         AssaultRifle,
         FlameThrower,
         Minigun,
-        Test,
+        RocketLauncher,
         DoubleBarreledShotgun,
         AAGun,
+        Pistol,
     }
 
     public GunType gunType;
@@ -84,7 +85,15 @@ public class GunSO : ScriptableObject
     [BoxGroup("General")]
     [LabelWidth(300)]
     [ShowIf("shotNeedsLoading")]
+    public bool loadedShotFiredIfNotFullyLoaded;
+    [BoxGroup("General")]
+    [LabelWidth(300)]
+    [ShowIf("shotNeedsLoading")]
     public float loadShotTime;
+    [BoxGroup("General")]
+    [LabelWidth(300)]
+    [ShowIf("shotNeedsLoading")]
+    public float minLoadShotTime;
     [BoxGroup("General")]
     [LabelWidth(300)]
     public float delayBetweenClickAndShot;
@@ -193,6 +202,9 @@ public class GunSO : ScriptableObject
 
     [BoxGroup("Sound")]
     [LabelWidth(300)]
+    public float shotCooldownAnimationTriggerTime;
+    [BoxGroup("Sound")]
+    [LabelWidth(300)]
     public float shootCooldownSFXTriggerTime;
     [BoxGroup("Sound")]
     [LabelWidth(300)]
@@ -203,6 +215,10 @@ public class GunSO : ScriptableObject
     [BoxGroup("Sound")]
     [LabelWidth(300)]
     public AudioClip[] shootGunSound;
+    [BoxGroup("Sound")]
+    [LabelWidth(300)]
+    [ShowIf("shotNeedsLoading")]
+    public AudioClip startLoadingShotGunSound;
     [BoxGroup("Sound")]
     [LabelWidth(300)]
     public AudioClip[] reloadGunSound;
