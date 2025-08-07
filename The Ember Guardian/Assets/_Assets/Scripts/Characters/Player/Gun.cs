@@ -93,7 +93,7 @@ public class Gun : MonoBehaviour
     }
 
 
-    protected void Update() {
+    protected virtual void Update() {
 
         if (DebugManager.Instance.GetGunJamDebugInputsAllowed() && gunActive) {
             if (Input.GetKeyDown(KeyCode.J)) {
@@ -179,7 +179,7 @@ public class Gun : MonoBehaviour
         BuffBulletDamage(PlayerSkills.Instance.GetDamageBuffInFireLight());
     }
 
-    public void RefreshGunStats() {
+    public virtual void RefreshGunStats() {
         gunUnlocked = MetaProgressionManager.Instance.GetGunUnlocked(gunSO);
 
         pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
@@ -241,7 +241,7 @@ public class Gun : MonoBehaviour
         currentBullet = currentBuller;
     }
 
-    protected void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
+    protected virtual void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
         if (!gunActive) return;
 
         //Check Passive SKills
@@ -259,7 +259,7 @@ public class Gun : MonoBehaviour
     }
 
     protected virtual void Shoot() {
-
+        Debug.Log("shoot " + pelletsPerBullet);
         if(gunSO.bulletIsSprite) {
             return;
         }

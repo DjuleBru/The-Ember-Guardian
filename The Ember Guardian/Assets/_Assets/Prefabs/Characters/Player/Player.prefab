@@ -191479,7 +191479,7 @@ MonoBehaviour:
   gunSO: {fileID: 11400000, guid: daff7aeea0ad61b499ee2405acbff7a6, type: 2}
   gunBodyAnimator: {fileID: 1398826721309774827}
   armBodyAnimator: {fileID: 9065088813446192630}
-  spinUpRate: 0.015
+  spinUpDuration: 3
 --- !u!114 &1314484452597307473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191587,6 +191587,7 @@ MonoBehaviour:
   poweringAudioSource: {fileID: 7163602008624779846}
   powerUpDelay: 0.5
   powerSourceVolumeMultiplier: 2
+  minigun: {fileID: 3123144109648013029}
 --- !u!1 &7961093759729346700
 GameObject:
   m_ObjectHideFlags: 0

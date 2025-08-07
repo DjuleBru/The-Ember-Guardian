@@ -8,36 +8,24 @@ public class GunSounds_Minigun : GunSounds {
     [SerializeField] protected AudioSource poweringAudioSource;
     [SerializeField] private float powerUpDelay = 0.5f; // Délai avant de commencer le powering up
     [SerializeField] private float powerSourceVolumeMultiplier = 1f;
+    [SerializeField] private Gun_Minigun minigun;
 
     private Coroutine currentSoundRoutine;
-    private bool isShooting = false;
+    private bool isSpinning = false;
     private bool isLoopingPowered = false;
 
     protected override void Start() {
         base.Start();
-        PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
-        PlayerShoot.Instance.OnPlayerShootStopped += PlayerShoot_OnPlayerShootStopped;
+        minigun.OnMinigunStartedSpinning += Minigun_OnMinigunStartedSpinning;
+        minigun.OnMinigunStoppedSpinning += Minigun_OnMinigunStoppedSpinning;
 
 
         poweringAudioSource.volume = sfxVolume * powerSourceVolumeMultiplier;
     }
 
-    protected override void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
-        base.PlayerShoot_OnPlayerShot(sender, e);
-
-        if (!isShooting) {
-            isShooting = true;
-
-            if (currentSoundRoutine != null)
-                StopCoroutine(currentSoundRoutine);
-
-            currentSoundRoutine = StartCoroutine(DelayedPowerUpAndLoop());
-        }
-    }
-
-    private void PlayerShoot_OnPlayerShootStopped(object sender, System.EventArgs e) {
-        if (!isShooting) return;
-        isShooting = false;
+    private void Minigun_OnMinigunStoppedSpinning(object sender, System.EventArgs e) {
+        if (!isSpinning) return;
+        isSpinning = false;
 
         if (currentSoundRoutine != null) {
             StopCoroutine(currentSoundRoutine);
@@ -58,11 +46,24 @@ public class GunSounds_Minigun : GunSounds {
         }
     }
 
+    private void Minigun_OnMinigunStartedSpinning(object sender, System.EventArgs e) {
+
+        if (!isSpinning) {
+            isSpinning = true;
+
+            if (currentSoundRoutine != null)
+                StopCoroutine(currentSoundRoutine);
+
+            currentSoundRoutine = StartCoroutine(DelayedPowerUpAndLoop());
+        }
+    }
+
+
     private IEnumerator DelayedPowerUpAndLoop() {
         // Phase attente avant de commencer le powering up
         yield return new WaitForSeconds(powerUpDelay);
 
-        if (!isShooting)
+        if (!isSpinning)
             yield break;
 
         // Powering Up
@@ -73,7 +74,7 @@ public class GunSounds_Minigun : GunSounds {
 
         yield return new WaitForSeconds(gunPoweringUpClip.length);
 
-        if (!isShooting)
+        if (!isSpinning)
             yield break;
 
         // Boucle sur gunPoweredClip

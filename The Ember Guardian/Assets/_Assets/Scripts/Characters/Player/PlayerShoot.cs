@@ -779,6 +779,10 @@ public class PlayerShoot : MonoBehaviour
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
             OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
         }
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.Minigun) {
+            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+            secondaryAbilityActive = true;
+        }
     }
 
     private void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {
@@ -803,6 +807,10 @@ public class PlayerShoot : MonoBehaviour
                 float shootCooldownBuffValue = 1.4f;
                 PlayerStats.Instance.DebuffShootCooldown(shootCooldownBuffValue);
                 OnPlayerOverclockedSMGStopped?.Invoke(this, EventArgs.Empty);
+                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                secondaryAbilityActive = false;
+            }
+            if (heldGun.GetGunSO().gunType == GunSO.GunType.Minigun) {
                 OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
                 secondaryAbilityActive = false;
             }
