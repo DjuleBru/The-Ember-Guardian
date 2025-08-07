@@ -109,7 +109,7 @@ public class ChangeWeaponPanel : MonoBehaviour
             unlockedGunAmount++;
         }
 
-        for(int i = 0; i < 10 - unlockedGunAmount; i++) {
+        for(int i = 0; i < 12 - unlockedGunAmount; i++) {
             Instantiate(emptyWeaponSlotTemplate, changeWeaponSlotContainer);
         }
 

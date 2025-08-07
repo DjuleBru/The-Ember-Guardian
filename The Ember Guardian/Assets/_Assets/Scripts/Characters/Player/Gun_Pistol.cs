@@ -20,7 +20,7 @@ public class Gun_Pistol : Gun
         if (!gunActive) return;
 
         if (PlayerShoot.Instance.GetSilencerActive()) {
-            shootCreatureHearMultiplier = 1;
+            shootCreatureHearMultiplier = 1.15f;
             DebuffBulletDamage(gunSilencerDamageReduction);
         }
         else {

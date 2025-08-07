@@ -324,7 +324,6 @@ public class PlayerShoot : MonoBehaviour
     }
 
     public void SetActiveGun(GunSO.GunType gunType, bool primaryGun = true) {
-        Debug.Log("SetActiveGun " + gunType);
         Gun activeGun = null;
         GunSO activeGunSO = null;
 
@@ -382,7 +381,7 @@ public class PlayerShoot : MonoBehaviour
     public void SetGunAmmo(GunSO gunSO, int ammoCount) {
         foreach (Gun gun in allGunsList) {
             if (gun.GetGunSO() == gunSO) {
-                gun.SetGunAmmo(ammoCount, 0);
+                gun.SetGunAmmo(ammoCount, ammoCount);
             }
         }
         OnBulletsChanged?.Invoke(this, EventArgs.Empty);
@@ -779,7 +778,7 @@ public class PlayerShoot : MonoBehaviour
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
             OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
         }
-        if (heldGun.GetGunSO().gunType == GunSO.GunType.Minigun) {
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.MiniGun) {
             OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
             secondaryAbilityActive = true;
         }
@@ -810,7 +809,7 @@ public class PlayerShoot : MonoBehaviour
                 OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
                 secondaryAbilityActive = false;
             }
-            if (heldGun.GetGunSO().gunType == GunSO.GunType.Minigun) {
+            if (heldGun.GetGunSO().gunType == GunSO.GunType.MiniGun) {
                 OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
                 secondaryAbilityActive = false;
             }

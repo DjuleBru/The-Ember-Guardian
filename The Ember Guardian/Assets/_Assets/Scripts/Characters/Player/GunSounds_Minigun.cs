@@ -19,7 +19,6 @@ public class GunSounds_Minigun : GunSounds {
         minigun.OnMinigunStartedSpinning += Minigun_OnMinigunStartedSpinning;
         minigun.OnMinigunStoppedSpinning += Minigun_OnMinigunStoppedSpinning;
 
-
         poweringAudioSource.volume = sfxVolume * powerSourceVolumeMultiplier;
     }
 

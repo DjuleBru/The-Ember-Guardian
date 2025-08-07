@@ -259,7 +259,6 @@ public class Gun : MonoBehaviour
     }
 
     protected virtual void Shoot() {
-        Debug.Log("shoot " + pelletsPerBullet);
         if(gunSO.bulletIsSprite) {
             return;
         }

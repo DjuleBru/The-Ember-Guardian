@@ -31,6 +31,9 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         explosionRadiusBuff,
         explosionDamage,
         grenadeLauncher,
+        subExplosivesAmount,
+        subExplosivesDamage,
+        spinUpTime,
     }
 
     public enum GunItemCategory {

@@ -15,7 +15,7 @@ public class PlayerAim : MonoBehaviour
     [SerializeField] private Transform weaponReticleTransform; // Le réticule du tir effectif
 
     [SerializeField] private List<Transform> transformAffectedByXScalList;
-    [SerializeField] private Transform gunShellPSTransform;
+    [SerializeField] private List<Transform> gunShellPSTransformList;
     [SerializeField] private RectTransform ammoBarTransform;
     [SerializeField] private RectTransform ammoBarLeftPosition;
     [SerializeField] private RectTransform ammoBarRightPosition;
@@ -768,7 +768,9 @@ public class PlayerAim : MonoBehaviour
                 t.localScale = localScale;
             }
             gunTransform.localScale = gunLocalScale;
-            gunShellPSTransform.localScale = gunLocalScale;
+            foreach(Transform transform in gunShellPSTransformList) {
+                transform.localScale = gunLocalScale;
+            }
             OnXAimDirChanged?.Invoke(this, EventArgs.Empty);
         }
         else if (effectiveDir.x > 0 && previousAimDir.x <= 0) {
@@ -788,7 +790,9 @@ public class PlayerAim : MonoBehaviour
             }
 
             gunTransform.localScale = gunLocalScale;
-            gunShellPSTransform.localScale = gunLocalScale;
+            foreach (Transform transform in gunShellPSTransformList) {
+                transform.localScale = gunLocalScale;
+            }
             OnXAimDirChanged?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -812,8 +816,10 @@ public class PlayerAim : MonoBehaviour
             foreach (Transform t in transformAffectedByXScalList) {
                 t.localScale = localScale;
             }
-            gunTransform.localScale = gunLocalScale;
-            gunShellPSTransform.localScale = gunLocalScale;
+            gunTransform.localScale = gunLocalScale; 
+            foreach (Transform transform in gunShellPSTransformList) {
+                transform.localScale = gunLocalScale;
+            }
             OnXAimDirChanged?.Invoke(this, EventArgs.Empty);
         }
         else if (watchDir <= 0) {
@@ -832,7 +838,9 @@ public class PlayerAim : MonoBehaviour
                 t.localScale = localScale;
             }
             gunTransform.localScale = gunLocalScale;
-            gunShellPSTransform.localScale = gunLocalScale;
+            foreach (Transform transform in gunShellPSTransformList) {
+                transform.localScale = gunLocalScale;
+            }
             OnXAimDirChanged?.Invoke(this, EventArgs.Empty);
         }
     }

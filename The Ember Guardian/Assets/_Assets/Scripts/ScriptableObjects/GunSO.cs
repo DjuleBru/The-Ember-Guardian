@@ -16,7 +16,7 @@ public class GunSO : ScriptableObject
         GrenadeLauncher,
         AssaultRifle,
         FlameThrower,
-        Minigun,
+        MiniGun,
         RocketLauncher,
         DoubleBarreledShotgun,
         AAGun,

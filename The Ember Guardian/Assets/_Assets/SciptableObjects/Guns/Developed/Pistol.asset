@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Pistol
   m_EditorClassIdentifier: 
   gunType: 13
-  gunSprite: {fileID: -251386141, guid: 2b92b23389a877c4bb52f0c3fdcd7554, type: 3}
+  gunSprite: {fileID: -472707137, guid: 2b92b23389a877c4bb52f0c3fdcd7554, type: 3}
   reticleSprite: {fileID: 0}
   shotCountSprites:
   - {fileID: -767141609, guid: 62b68dd2c13576d428f046155047a96a, type: 3}
@@ -38,7 +38,9 @@ MonoBehaviour:
   canUseMeleeAttack: 1
   automaticWeapon: 0
   shotNeedsLoading: 0
+  loadedShotFiredIfNotFullyLoaded: 0
   loadShotTime: 0
+  minLoadShotTime: 0
   delayBetweenClickAndShot: 0
   useAngleInPS: 0
   damagePerBullet: 8
@@ -73,6 +75,7 @@ MonoBehaviour:
   weaponMaxRecoilImpactOnMouseReticle: 0.25
   crouchPrecisionBuff: 1.5
   crouchRecoilReductionFactor: 1.5
+  shotCooldownAnimationTriggerTime: 0
   shootCooldownSFXTriggerTime: 0
   triggersShootFeedbackOnEachBuller: 1
   triggersShootSFXOnEachBuller: 1
@@ -82,6 +85,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2c83c10d6f5a5574e951c8c8ccedc146, type: 3}
   - {fileID: 8300000, guid: 6dc24a744f6c21941a0803e5fedd1b8c, type: 3}
   - {fileID: 8300000, guid: 05abb31395f54db4fbb0f68c8865defc, type: 3}
+  startLoadingShotGunSound: {fileID: 0}
   reloadGunSound:
   - {fileID: 8300000, guid: b05cd599f9c7ad24f9197f4291e4bdf8, type: 3}
   cooldownGunSound:

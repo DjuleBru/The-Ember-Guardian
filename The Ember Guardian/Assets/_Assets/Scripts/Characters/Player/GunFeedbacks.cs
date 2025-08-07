@@ -6,24 +6,24 @@ using UnityEngine;
 
 public class GunFeedbacks : MonoBehaviour
 {
-    [SerializeField] private GunMeleeAttackCollider meleeAttackCollider;
-    [SerializeField] private MMF_Player mmfPlayer;
-    [SerializeField] private MMF_Player meleeAttackFeedbacks;
-    [SerializeField] private ParticleSystem shellOutPS;
+    [SerializeField] protected GunMeleeAttackCollider meleeAttackCollider;
+    [SerializeField] protected MMF_Player mmfPlayer;
+    [SerializeField] protected MMF_Player meleeAttackFeedbacks;
+    [SerializeField] protected ParticleSystem shellOutPS;
 
-    [SerializeField] private ParticleSystem loadGunPS1;
-    [SerializeField] private ParticleSystem loadGunPS2;
-    [SerializeField] private ParticleSystem dmgBuffInFirePS;
-    [SerializeField] private ParticleSystem dmgBuffOutFirePS;
-    [SerializeField] private ParticleSystem dmgBuffSurgePS;
+    [SerializeField] protected ParticleSystem loadGunPS1;
+    [SerializeField] protected ParticleSystem loadGunPS2;
+    [SerializeField] protected ParticleSystem dmgBuffInFirePS;
+    [SerializeField] protected ParticleSystem dmgBuffOutFirePS;
+    [SerializeField] protected ParticleSystem dmgBuffSurgePS;
 
-    private Gun gun;
+    protected Gun gun;
 
-    private void Awake() {
+    protected void Awake() {
         gun = GetComponentInParent<Gun>();
     }
 
-    private void Start() {
+    protected virtual void Start() {
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerShoot.Instance.OnShotStartedLoading += PlayerShoot_OnShotStartedLoading;
         PlayerShoot.Instance.OnPlayerShootStopped += PlayerShoot_OnPlayerShootStopped;
@@ -46,13 +46,13 @@ public class GunFeedbacks : MonoBehaviour
         gun.OnPerfectQTEDamageBuffEnded += Gun_OnPerfectQTEDamageBuffEnded;
     }
 
-    private void PlayerSHoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
+    protected void PlayerSHoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
         if (gun.GetDamageSurgeBuffed() && gun.GetGunActive() && PlayerShoot.Instance.GetCurrentBullets() != 0) {
             dmgBuffSurgePS.Play();
         }
     }
 
-    private void PlayerShoot_OnBulletsChanged(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnBulletsChanged(object sender, System.EventArgs e) {
         if (gun.GetDamageSurgeBuffed()) {
             if(PlayerShoot.Instance.GetCurrentBullets() == 0) {
                 dmgBuffSurgePS.Stop();
@@ -60,53 +60,53 @@ public class GunFeedbacks : MonoBehaviour
         }
     }
 
-    private void PlayerShoot_OnPlayerReloadEnded(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerReloadEnded(object sender, System.EventArgs e) {
         if(gun.GetDamageSurgeBuffed()) {
             dmgBuffSurgePS.Play();
         }
     }
 
-    private void Gun_OnPerfectQTEDamageBuffEnded(object sender, System.EventArgs e) {
+    protected void Gun_OnPerfectQTEDamageBuffEnded(object sender, System.EventArgs e) {
         dmgBuffSurgePS.Stop();
     }
 
-    private void Gun_OnPerfectQTEDamageBuff(object sender, System.EventArgs e) {
+    protected void Gun_OnPerfectQTEDamageBuff(object sender, System.EventArgs e) {
         dmgBuffSurgePS.Play();
     }
 
-    private void PlayerSkills_OnActiveSkillDeactivated(object sender, PlayerSkills.OnSkillDeactivatedArgs e) {
+    protected void PlayerSkills_OnActiveSkillDeactivated(object sender, PlayerSkills.OnSkillDeactivatedArgs e) {
         if(e.skillTypeDeactivated == SkillItem.SkillType.activeMagmaShotBullet) {
             dmgBuffInFirePS.Stop();
         }
     }
 
-    private void PlayerSkills_OnActiveSkillActivated(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
+    protected void PlayerSkills_OnActiveSkillActivated(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
         if (e.skillItemAdded.skillType == SkillItem.SkillType.activeMagmaShotBullet) {
             dmgBuffInFirePS.Play();
         }
     }
 
-    private void PlayerSkills_OnPlayerOutFireLightDebuffedDmg(object sender, System.EventArgs e) {
+    protected void PlayerSkills_OnPlayerOutFireLightDebuffedDmg(object sender, System.EventArgs e) {
         dmgBuffOutFirePS.Stop();
     }
 
-    private void PlayerSkills_OnPlayerInFireLightDebuffedDmg(object sender, System.EventArgs e) {
+    protected void PlayerSkills_OnPlayerInFireLightDebuffedDmg(object sender, System.EventArgs e) {
         dmgBuffInFirePS.Stop();
     }
 
-    private void PlayerSkills_OnPlayerOutFireLightBuffed(object sender, System.EventArgs e) {
+    protected void PlayerSkills_OnPlayerOutFireLightBuffed(object sender, System.EventArgs e) {
         dmgBuffOutFirePS.Play();
     }
 
-    private void PlayerSkills_OnPlayerInFireLightBuffedDmg(object sender, System.EventArgs e) {
+    protected void PlayerSkills_OnPlayerInFireLightBuffedDmg(object sender, System.EventArgs e) {
         dmgBuffInFirePS.Play();
     }
 
-    private void MeleeAttackCollider_OnGunMeleeAttackHit(object sender, System.EventArgs e) {
+    protected void MeleeAttackCollider_OnGunMeleeAttackHit(object sender, System.EventArgs e) {
         meleeAttackFeedbacks.PlayFeedbacks();
     }
 
-    private void PlayerShoot_OnShotStartedLoading(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnShotStartedLoading(object sender, System.EventArgs e) {
         if(loadGunPS1 != null) {
             loadGunPS1.Play();
         }
@@ -114,7 +114,7 @@ public class GunFeedbacks : MonoBehaviour
             loadGunPS2.Play();
         }
     }
-    private void PlayerShoot_OnPlayerShootStopped(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerShootStopped(object sender, System.EventArgs e) {
         if (loadGunPS1 != null) {
             if(loadGunPS1.isPlaying) {
                 loadGunPS1.Stop();
@@ -128,12 +128,12 @@ public class GunFeedbacks : MonoBehaviour
     }
 
 
-    private void PlayerShoot_OnPlayerCooldownTrigger(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerCooldownTrigger(object sender, System.EventArgs e) {
         if(!gun.GetGunActive()) return;
         shellOutPS.Emit(1);
     }
 
-    private void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
         if (!gun.GetGunSO().triggersShootSFXOnEachBuller) return;
         mmfPlayer.PlayFeedbacks();
