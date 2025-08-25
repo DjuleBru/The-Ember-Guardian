@@ -18,8 +18,12 @@ public class AdjustGammaUI : MonoBehaviour
     [SerializeField] private Button languageButton;
     private LiftGammaGain liftGammaGain;
 
+    private bool panelOpen;
+
     private void Awake() {
         panel.SetActive(false);
+        panelOpen = false;
+
         Instance = this;
     }
 
@@ -36,6 +40,7 @@ public class AdjustGammaUI : MonoBehaviour
 
     }
     private void Gameinput_OnPlayerBackPerformed(object sender, EventArgs e) {
+        if (!panelOpen) return;
         ClosePanel();
     }
 
@@ -58,9 +63,13 @@ public class AdjustGammaUI : MonoBehaviour
         }
 
         if (MainMenuUI.Instance != null) {
+
             MainMenuUI.Instance.HideAllMenuUI();
             MainMenuUI.Instance.HideMainMenuButtons();
+
         }
+
+        panelOpen = true;
 
     }
 
@@ -68,13 +77,19 @@ public class AdjustGammaUI : MonoBehaviour
         panel.gameObject.SetActive(false);
 
         if(MainMenuUI.Instance != null) {
-            MainMenuUI.Instance.ShowAllMenuUI();
-            MainMenuUI.Instance.ShowMainMenuButtons();
 
-            if(!MusicManager.Instance.GetPlayingMusic()) {
-                MusicManager.Instance.PlayMusic();
+            if (!CharacterSelectUI.Instance.HasChosenCharacter()) {
+                CharacterSelectUI.Instance.OpenPanel();
+            }
+            else {
+                MainMenuUI.Instance.ShowAllMenuUI();
+                MainMenuUI.Instance.ShowMainMenuButtons();
+                if (!MusicManager.Instance.GetPlayingMusic()) {
+                    MusicManager.Instance.PlayMusic();
+                }
             }
         }
+        panelOpen = false;
     }
 
     private void OnDestroy() {

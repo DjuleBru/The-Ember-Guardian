@@ -28,7 +28,7 @@ public class ChangeWeaponPanel : MonoBehaviour
     }
 
     private void Start() {
-        PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
+        PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
 
         Gun.OnAnyGunUnlocked += Gun_OnAnyGunUnlocked;
@@ -43,6 +43,14 @@ public class ChangeWeaponPanel : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void PlayerTabMenuUI_OnPlayerTabClosed(object sender, EventArgs e) {
+        if (panelOpen) {
+            panelOpen = false;
+            gameObject.SetActive(false);
+            lastChangeButtonThatOpenedThisPanel = null;
+            OnChangeWeaponPanelClosed?.Invoke(this, EventArgs.Empty);
+        }
+    }
 
     private void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
         if(panelOpen) {
@@ -50,12 +58,6 @@ public class ChangeWeaponPanel : MonoBehaviour
         }
     }
 
-    private void PlayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
-        panelOpen = false;
-        gameObject.SetActive(false);
-        lastChangeButtonThatOpenedThisPanel = null;
-        OnChangeWeaponPanelClosed?.Invoke(this, EventArgs.Empty);
-    }
 
     private void PlayerShoot_OnPlayerWeaponReplaced(object sender, EventArgs e) {
         UpdateWeaponSlots(PlayerShoot.Instance.GetGunSOInStock());
@@ -153,7 +155,7 @@ public class ChangeWeaponPanel : MonoBehaviour
         Gun.OnAnyGunUnlocked -= Gun_OnAnyGunUnlocked;
         PlayerShoot.Instance.OnPrimaryWeaponChanged -= PlayerShoot_OnPrimaryWeaponChanged;
         PlayerShoot.Instance.OnSecondaryWeaponChanged -= PlayerShoot_OnSecondaryWeaponChanged;
-        PlayerTabMenuUI.Instance.OnPlayerTabOpened -= PlayerTabMenuUI_OnPlayerTabOpened;
+        PlayerTabMenuUI.Instance.OnPlayerTabClosed -= PlayerTabMenuUI_OnPlayerTabClosed;
         GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
     }
 }

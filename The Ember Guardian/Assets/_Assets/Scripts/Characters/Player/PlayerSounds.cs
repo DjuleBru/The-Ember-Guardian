@@ -9,10 +9,14 @@ public class PlayerSounds : SoundObject
 
     [SerializeField] private AudioClip[] footStepAudioClips;
     [SerializeField] private AudioClip[] playerDamagedAudioClips;
+    [SerializeField] private AudioClip[] playerDamagedAudioClips_Female;
     [SerializeField] private AudioClip[] playerDiedAudioClips;
+    [SerializeField] private AudioClip[] playerDiedAudioClips_Female;
     [SerializeField] private AudioClip[] playerDamagedElectricAudioClips;
     [SerializeField] private AudioClip[] playerPantAudioClips;
+    [SerializeField] private AudioClip[] playerPantAudioClips_Female;
     [SerializeField] private AudioClip[] playerExhaustedAudioClips;
+    [SerializeField] private AudioClip[] playerExhaustedAudioClips_Female;
     [SerializeField] private AudioClip[] playerRollAudioClips;
     [SerializeField] private AudioClip[] playerMeleeAttackStartedAudioClips;
     [SerializeField] private AudioClip[] playerMeleeAttackHitAudioClips;
@@ -26,12 +30,20 @@ public class PlayerSounds : SoundObject
     [SerializeField] private AnimationCurve pitchWithSpeedAnimationCurve;
     [SerializeField] private ActiveMoveSpeedBoostVisual activeMoveSpeedBoostVisual;
 
+    private AudioClip[] playerDamagedAudioClips_selectedGender;
+    private AudioClip[] playerDiedAudioClips_selectedGender;
+    private AudioClip[] playerPantAudioClips_selectedGender;
+    private AudioClip[] playerExhaustedAudioClips_selectedGender;
+
     private bool almostExhausted;
     private bool exhaustedSFXPlaying;
     private float pausedReloadAudioTime = 0f;
 
     protected override void Start() {
         base.Start();
+
+        bool isFemaleAnimator = ES3.Load("characterType", false);
+        SetSelectedGenderAudioClips(isFemaleAnimator);
 
         playerAnimator.OnFootStepTriggered += PlayerAnimator_OnFootStepTriggered;
         playerBreathAnimator.OnPantTriggered += PlayerAnimator_OnPantTriggered;
@@ -55,6 +67,21 @@ public class PlayerSounds : SoundObject
         GunMeleeAttackCollider.OnAnyGunMeleeAttackHit += GunMeleeAttackCollider_OnAnyGunMeleeAttackHit;
 
         activeMoveSpeedBoostVisual.OnMoveSpeedFootStepTriggered += ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered;
+    }
+
+    private void SetSelectedGenderAudioClips(bool isFemale) {
+        if(isFemale) {
+            playerDamagedAudioClips_selectedGender = playerDamagedAudioClips_Female;
+            playerDiedAudioClips_selectedGender = playerDiedAudioClips_Female;
+            playerPantAudioClips_selectedGender = playerPantAudioClips_Female;
+            playerExhaustedAudioClips_selectedGender = playerExhaustedAudioClips_Female;
+
+        } else {
+            playerDamagedAudioClips_selectedGender = playerDamagedAudioClips;
+            playerDiedAudioClips_selectedGender = playerDiedAudioClips;
+            playerPantAudioClips_selectedGender = playerPantAudioClips;
+            playerExhaustedAudioClips_selectedGender = playerExhaustedAudioClips;
+        }
     }
 
     private void GunJamHandler_OnAnyPerfectJamSequenceCompleted(object sender, System.EventArgs e) {
@@ -115,7 +142,7 @@ public class PlayerSounds : SoundObject
     }
 
     private void Player_OnPlayerDied(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(playerDiedAudioClips[Random.Range(0, playerDiedAudioClips.Length)], sfxVolume);
+        playerAudioSource.PlayOneShot(playerDiedAudioClips_selectedGender[Random.Range(0, playerDiedAudioClips_selectedGender.Length)], sfxVolume);
     }
 
     private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
@@ -127,12 +154,12 @@ public class PlayerSounds : SoundObject
 
     private IEnumerator PlayHumanDamagedAudioClip() {
         yield return new WaitForSeconds(.075f);
-        playerAudioSource.PlayOneShot(playerDamagedAudioClips[Random.Range(0, playerDamagedAudioClips.Length)], sfxVolume);
+        playerAudioSource.PlayOneShot(playerDamagedAudioClips_selectedGender[Random.Range(0, playerDamagedAudioClips_selectedGender.Length)], sfxVolume);
     }
 
     private void PlayerMovement_OnPlayerExhaustionStarted(object sender, System.EventArgs e) {
         exhaustedSFXPlaying = true;
-        AudioClip audioclip = playerExhaustedAudioClips[Random.Range(0, playerExhaustedAudioClips.Length)];
+        AudioClip audioclip = playerExhaustedAudioClips_selectedGender[Random.Range(0, playerExhaustedAudioClips_selectedGender.Length)];
         playerAudioSource.PlayOneShot(audioclip, sfxVolume * .5f);
 
         StartCoroutine(SetExhaustionSFXPlaying(audioclip.length));
@@ -151,7 +178,7 @@ public class PlayerSounds : SoundObject
             volumeMultiplier = .15f;
         }
 
-        playerAudioSource.PlayOneShot(playerPantAudioClips[Random.Range(0, playerPantAudioClips.Length)], sfxVolume * volumeMultiplier);
+        playerAudioSource.PlayOneShot(playerPantAudioClips_selectedGender[Random.Range(0, playerPantAudioClips_selectedGender.Length)], sfxVolume * volumeMultiplier);
     }
     private void ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered(object sender, System.EventArgs e) {
         playerAudioSource.PlayOneShot(activeMoveSpeedBoostFootstepAudioClip, sfxVolume / 8);

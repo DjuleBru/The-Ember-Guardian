@@ -156,6 +156,7 @@ public class MainMenuVisual : MonoBehaviour
                 moonLight.intensity = corruptedMoonCityIntensity;
                 moonLight.pointLightOuterRadius = corruptedMoonOuterRadius;
 
+                corruptedCityWaterGO.SetActive(true);
                 break;
 
             case LevelSO.LevelEnvironment.TheLumenHollow:
@@ -169,6 +170,7 @@ public class MainMenuVisual : MonoBehaviour
                 moonLight.intensity = lumenHollowMoonIntensity;
                 moonLight.pointLightOuterRadius = lumenHollowMoonOuterRadius;
 
+                lumenHollowWaterGO.SetActive(true);
                 break;
         }
     }
@@ -177,8 +179,11 @@ public class MainMenuVisual : MonoBehaviour
     private void DisableAllVisuals() {
         cityWaterGO.SetActive(false);
         verdantGraveyardWaterGO.SetActive(false);
+        corruptedCityWaterGO.SetActive(false);
+        lumenHollowWaterGO.SetActive(false);
 
         cityParallaxGO.SetActive(false);
+        lumenHollowParallaxGO.SetActive(false);
         verdantGraveyardParallaxGO.SetActive(false);
         lostGreensParallaxGO.SetActive(false);
 
@@ -186,11 +191,14 @@ public class MainMenuVisual : MonoBehaviour
         verdantPropsGO.SetActive(false);
         lostPropsGO.SetActive(false);
         corruptedPropsGO.SetActive(false);
+        lumenHollowPropsGO.SetActive(false);
 
         cityGridGO.SetActive(false);
         verdantGridGO.SetActive(false);
         lostGridGO.SetActive(false);
         corruptedGridGO.SetActive(false);
+        lumenHollowGridGO.SetActive(false);
+
 
     }
 }

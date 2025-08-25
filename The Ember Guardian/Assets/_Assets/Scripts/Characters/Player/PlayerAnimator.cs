@@ -6,6 +6,9 @@ using UnityEngine;
 public class PlayerAnimator : MonoBehaviour
 {
     [SerializeField] private Animator playerAnimator;
+    [SerializeField] private RuntimeAnimatorController playerAnimator_male;
+    [SerializeField] private RuntimeAnimatorController playerAnimator_female;
+
     [SerializeField] private Animator bodyAnimator;
     [SerializeField] private Animator gunBodyAnimator;
     [SerializeField] private Animator armBodyAnimator;
@@ -37,6 +40,9 @@ public class PlayerAnimator : MonoBehaviour
 
 
     private void Start() {
+        bool isFemaleAnimator = ES3.Load("characterType", false);
+        SetMaleOrFemaleAnimator(isFemaleAnimator);
+
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
         PlayerMovement.Instance.OnPlayerJumpUp += PlayerMovement_OnPlayerJumpUp;
@@ -72,6 +78,13 @@ public class PlayerAnimator : MonoBehaviour
         breatheVisual.SetActive(false);
     }
 
+    private void SetMaleOrFemaleAnimator(bool isFemale) {
+        if(isFemale) {
+            playerAnimator.runtimeAnimatorController = playerAnimator_female;
+        } else {
+            playerAnimator.runtimeAnimatorController = playerAnimator_male;
+        }
+    }
 
     private void Update() {
         if (dead) return;

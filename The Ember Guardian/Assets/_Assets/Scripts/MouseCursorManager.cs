@@ -72,6 +72,7 @@ public class MouseCursorManager : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReloadEnded += PlayerShoot_OnPlayerReloadEnded;
         VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
         VideoTipUI.Instance.OnVideoTipPanelOpened += VideoTipUI_OnVideoTipPanelOpened;
+        Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
         Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
         FastTravelTP.OnAnyPlayerWarpedOut += FastTravelTP_OnAnyPlayerWarpedOut;
         FastTravelTP.OnAnyPlayerCanceledTP += FastTravelTP_OnAnyPlayerCanceledTP;
@@ -86,7 +87,6 @@ public class MouseCursorManager : MonoBehaviour
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
         ShowMouse(false);
     }
-
 
     private void LateUpdate() {
         if (isMenuScene) return;
@@ -143,6 +143,10 @@ public class MouseCursorManager : MonoBehaviour
     private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, System.EventArgs e) {
         ShowWeaponCursorGO(true);
     }
+    private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
+        ShowWeaponCursorGO(false);
+    }
+
     private void FastTravelTP_OnAnyPlayerWarpedOut(object sender, System.EventArgs e) {
         ShowWeaponCursorGO(true);
     }
@@ -164,11 +168,15 @@ public class MouseCursorManager : MonoBehaviour
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, System.EventArgs e) {
         if (!isUsingGamepad) {
             ShowMouse(false);
+        } else {
+            ShowWeaponAndMouseCursorGO(true);
         }
     }
     private void HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant(object sender, System.EventArgs e) {
         if (!isUsingGamepad) {
             ShowMouse(true);
+        } else {
+            ShowWeaponAndMouseCursorGO(true);
         }
     }
     private void PortalUI_OnAnyPortalUIClosed(object sender, System.EventArgs e) {
@@ -184,7 +192,12 @@ public class MouseCursorManager : MonoBehaviour
 
     }
     private void HubMerchant_OnPlayerOpenedAnyHubMerchantShop(object sender, System.EventArgs e) {
-        ShowMouse(true);
+        if(isUsingGamepad) {
+            ShowWeaponAndMouseCursorGO(false);
+        } else {
+           ShowMouse(true);
+        }        
+
     }
 
     private void PauseMenuUI_OnPauseMenuOpened(object sender, System.EventArgs e) {
@@ -337,6 +350,11 @@ public class MouseCursorManager : MonoBehaviour
         mouseCursorGameObject.SetActive(!show);
     }
 
+    private void ShowWeaponAndMouseCursorGO(bool show) {
+        weaponCursorGameObject.SetActive(show);
+        mouseCursorGameObject.SetActive(show);
+    }
+
     private bool AllMenusClosed() {
         return !tabMenuOpen && !pauseMenuOpen;
     }
@@ -352,6 +370,7 @@ public class MouseCursorManager : MonoBehaviour
         FastTravelTP.OnAnyPlayerCanceledTP -= FastTravelTP_OnAnyPlayerCanceledTP;
         FastTravelTP.OnAnyPlayerPositionedOnTP -= FastTravelTP_OnAnyPlayerPositionedOnTP;
         Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
+        Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
     }
 
 }

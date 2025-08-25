@@ -112,7 +112,7 @@ public class GameInput : MonoBehaviour
     private Vector2 lastMousePosition;
     private bool isUsingGamepad;
     public const float gamepadMovementDeadzone = 0.5f;
-    public const float gamepadDeadzone = 0.2f;
+    public const float gamepadDeadzone = 0.4f;
     private bool sceneIsReady = false;
 
 

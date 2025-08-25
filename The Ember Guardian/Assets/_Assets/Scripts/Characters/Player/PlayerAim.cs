@@ -23,7 +23,7 @@ public class PlayerAim : MonoBehaviour
     [SerializeField] private LayerMask enemyLayer; // Masque de couche pour les ennemis
     [SerializeField] private LayerMask groundLayer; // Masque de couche pour les ennemis
     [SerializeField] private LayerMask barricadesLayer; // Masque de couche pour les ennemis
-    private float autoAimConeAngle = 7.5f; // Angle du cône de visée autour de la direction de visée
+    private float autoAimConeAngle = 5f; // Angle du cône de visée autour de la direction de visée
     private float maxAutoAimConeAngle = 90f; // Angle max du cône de visée si l'ennemi est très proche
     private float distanceToHaveMinAutoAimConeAngle = 3f; // Distance à partir de laquelle on considère que l’ennemi est "loin"
     private float distanceToHaveMaxAutoAimConeAngle = .5f; // Distance à partir de laquelle on considère que l’ennemi est "proche"
@@ -33,7 +33,8 @@ public class PlayerAim : MonoBehaviour
     private bool isAimingSight;
     private bool isRolling = false;
     private bool autoAimActive;
-    private float autoAimSnapSmoothSpeed = 15f;
+    private float autoAimSnapSmoothSpeed = 10f;
+    private float angleDeadzone = .35f;
     private bool isAimingCreature;
     private bool isAimingCritZone;
     private bool overridePointerTargetOnSurfaces = false;
@@ -196,8 +197,19 @@ public class PlayerAim : MonoBehaviour
     private void HandleAimGamepad(Vector2 lookInput) {
 
         if (lookInput.magnitude > GameInput.gamepadDeadzone) {
-            aimDir = new Vector3(lookInput.x, lookInput.y, 0).normalized;
-            previousGamepadAim = aimDir;
+            Vector3 targetDir = new Vector3(lookInput.x, lookInput.y, 0f).normalized;
+
+            // Calcul de l’écart angulaire avec la dernière direction
+            float angleDiff = Vector2.Angle(previousGamepadAim, targetDir);
+            if (angleDiff > angleDeadzone) {
+                // Si l’écart dépasse la deadzone angulaire on met à jour
+                aimDir = targetDir;
+                previousGamepadAim = aimDir;
+            }
+            else {
+                // Sinon, on garde la direction précédente pour éviter les micro-tremblements
+                aimDir = previousGamepadAim;
+            }
         }
         else {
             // Utiliser la direction du déplacement quand le stick est au repos *si l'option est activée*
@@ -222,9 +234,8 @@ public class PlayerAim : MonoBehaviour
 
         // Ajustement dynamique de la distance du curseur
         float stickIntensity = Mathf.Clamp01(lookInput.magnitude);
-
-        // Distance max dépend du stick (.75f*range pour au repos, .9f*range si poussé)
-        float baseDistanceFactor = Mathf.Lerp(0.75f, .9f, stickIntensity);
+        // Distance max dépend du stick (.5f*range pour au repos, .9f*range si poussé)
+        float baseDistanceFactor = Mathf.Lerp(0.5f, .9f, stickIntensity);
 
         // Réduction si la visée est verticale
         float horizontalFactor = Mathf.Clamp01(Mathf.Abs(aimDir.x)); // 1 = horizontal, 0 = vertical
@@ -437,6 +448,8 @@ public class PlayerAim : MonoBehaviour
         Vector2 directionToEnemy = Vector2.zero;
         Vector2 closestEnemyAutoAimColliderPosition = Vector2.zero;
 
+        float closestDistance = float.MaxValue;
+
         foreach (var enemy in hitEnemies) {
             CreatureAutoAimCollider autoAimCollider = enemy.gameObject.GetComponent<CreatureAutoAimCollider>();
             if (autoAimCollider == null) continue;
@@ -446,22 +459,24 @@ public class PlayerAim : MonoBehaviour
 
             Vector3 autoAimPos = autoAimCollider.GetAutoAimPosition();
             float distanceToEnemy = Vector2.Distance(autoAimPos, transform.position);
-            if (distanceToEnemy > weaponRange*.9f) continue;
+            if (distanceToEnemy > weaponRange * .9f) continue;
 
-            directionToEnemy = (autoAimPos - transform.position).normalized;
-
+            Vector2 dirToEnemy = (autoAimPos - transform.position).normalized;
             float dynamicConeAngle = Mathf.Lerp(
                 autoAimConeAngle,
                 maxAutoAimConeAngle,
                 Mathf.InverseLerp(distanceToHaveMaxAutoAimConeAngle, distanceToHaveMinAutoAimConeAngle, distanceToEnemy)
             );
 
-            float angleToEnemy = Vector2.Angle(aimDir, directionToEnemy);
+            float angleToEnemy = Vector2.Angle(aimDir, dirToEnemy);
 
-            if (angleToEnemy < dynamicConeAngle && angleToEnemy < closestAngle) {
-                closestAngle = angleToEnemy;
-                target = enemy.transform;
-                closestEnemyAutoAimColliderPosition = autoAimPos;
+            if (angleToEnemy < dynamicConeAngle) {
+                // ICI : on prend le plus proche dans le cône
+                if (distanceToEnemy < closestDistance) {
+                    closestDistance = distanceToEnemy;
+                    target = enemy.transform;
+                    closestEnemyAutoAimColliderPosition = autoAimPos;
+                }
             }
         }
 

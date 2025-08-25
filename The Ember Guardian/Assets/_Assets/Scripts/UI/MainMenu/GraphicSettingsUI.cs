@@ -6,6 +6,7 @@ public class GraphicSettingsUI : MonoBehaviour
 {
 
     [SerializeField] private GameObject adjustGammaGO;
+
     private void Start() {
         RectTransform rt = GetComponent<RectTransform>();
         

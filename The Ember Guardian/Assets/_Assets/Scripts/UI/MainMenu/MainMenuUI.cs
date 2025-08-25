@@ -24,6 +24,7 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] protected Button_Confirm buttonConfirm_ResetProgression;
     [SerializeField] protected TextMeshProUGUI continueGameText;
     [SerializeField] protected TextMeshProUGUI newGameText;
+    [SerializeField] private GameObject swapCharacter_WorldCanvas;
 
     [SerializeField] protected GameObject mainMenuPanelGameObject;
 
@@ -89,6 +90,8 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     public virtual void SettingsButton() {
+        swapCharacter_WorldCanvas.gameObject.SetActive(true);
+
         SettingsMenuUI.Instance.OpenSettingsPanel();
         HideMainMenuButtons();
     }
@@ -218,6 +221,8 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     public void ShowMainMenuButtons() {
+        swapCharacter_WorldCanvas.gameObject.SetActive(false);
+
         StartCoroutine(FadeInMainMenu(0f));
         mainMenuPanelOpen = true;
     }

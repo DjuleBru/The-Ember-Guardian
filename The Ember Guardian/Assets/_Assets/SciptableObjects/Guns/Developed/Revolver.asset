@@ -37,7 +37,9 @@ MonoBehaviour:
   canUseMeleeAttack: 1
   automaticWeapon: 0
   shotNeedsLoading: 0
+  loadedShotFiredIfNotFullyLoaded: 0
   loadShotTime: 0
+  minLoadShotTime: 0
   delayBetweenClickAndShot: 0
   useAngleInPS: 0
   damagePerBullet: 25
@@ -72,6 +74,7 @@ MonoBehaviour:
   weaponMaxRecoilImpactOnMouseReticle: 1
   crouchPrecisionBuff: 1
   crouchRecoilReductionFactor: 1
+  shotCooldownAnimationTriggerTime: 0
   shootCooldownSFXTriggerTime: 0.5
   triggersShootFeedbackOnEachBuller: 1
   triggersShootSFXOnEachBuller: 1
@@ -82,6 +85,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 69229f8725cae404bbe385b346c63b0e, type: 3}
   - {fileID: 8300000, guid: fe313ba0f91f40e47832b99f1df35019, type: 3}
   - {fileID: 8300000, guid: 524b9d488513790428d105b58db6a6f7, type: 3}
+  startLoadingShotGunSound: {fileID: 0}
   reloadGunSound:
   - {fileID: 8300000, guid: c2e075609b1c32549926f159902b94fc, type: 3}
   cooldownGunSound:
@@ -90,12 +94,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 59dcfb178b39c434495515f32be26dd4, type: 3}
   - {fileID: 8300000, guid: f1838753b53df84439313b212c62a244, type: 3}
   - {fileID: 8300000, guid: c0353d6efb03226488a061199578493c, type: 3}
-  bulletHitEnemySound:
-  - {fileID: 8300000, guid: 5f188511e9287924ab0bc56282bb5bb1, type: 3}
-  - {fileID: 8300000, guid: 370af63962d422e42a9ddc6c19243081, type: 3}
-  - {fileID: 8300000, guid: 32433cb07860c854f8514231e93f3813, type: 3}
-  - {fileID: 8300000, guid: 7c4ef5419b0a7a24b9c549ea14b1e263, type: 3}
-  - {fileID: 8300000, guid: 3aa5ce64a65a5a2489835833a2a763a5, type: 3}
+  bulletHitSoundMultiplier: 0.5
   bulletHitEnemyCritSound:
   - {fileID: 8300000, guid: 9584f9bef1f0bde42a29b1ea508db349, type: 3}
   - {fileID: 8300000, guid: 13abdb87b8bb56644b4b11f45e060f17, type: 3}

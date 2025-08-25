@@ -577,7 +577,9 @@ public class SoundManager : MonoBehaviour
         if (creatureHit == null) return;
 
         AudioClip[] audioClipArray = creatureHit.GetCreatureSO().bulletHitAudioClips;
-        PlaySound2D(audioClipArray, creatureHit.GetCreatureSO().bulletHitVolumeMultiplier);
+        float bulletHitVolumeMultiplier = PlayerShoot.Instance.GetHeldGunSO().bulletHitSoundMultiplier;
+
+        PlaySound2D(audioClipArray, bulletHitVolumeMultiplier);
     }
 
     private void ParticleCollision_OnAnyBulletHitEnemyCrit(object sender, ParticleCollision.OnBulletHitEventArgs e) {
@@ -588,7 +590,9 @@ public class SoundManager : MonoBehaviour
 
     private void ParticleCollision_OnAnyBulletHitGround(object sender, ParticleCollision.OnBulletHitEventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitGroundSound;
-        PlaySound3D(audioClipArray, e.bulletHitPosition, .5f);
+
+        float bulletHitSoundMultiplier = PlayerShoot.Instance.GetHeldGunSO().bulletHitSoundMultiplier;
+        PlaySound3D(audioClipArray, e.bulletHitPosition, .5f* bulletHitSoundMultiplier);
     }
 
     private void ParticleCollision_OnAnyBulletHitEnemy(object sender, ParticleCollision.OnBulletHitEventArgs e) {

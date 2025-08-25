@@ -230,7 +230,7 @@ public class GunSO : ScriptableObject
     public AudioClip[] bulletHitGroundSound;
     [BoxGroup("Sound")]
     [LabelWidth(300)]
-    public AudioClip[] bulletHitEnemySound;
+    public float bulletHitSoundMultiplier = 1f;
     [BoxGroup("Sound")]
     [LabelWidth(300)]
     public AudioClip[] bulletHitEnemyCritSound;

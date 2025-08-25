@@ -160,7 +160,10 @@ public class CreatureSound : SoundObject
         if (IsTooFarFromPlayer()) return;
 
         creatureAudioSource.PlayOneShot(creatureSO.dieAudioClips[Random.Range(0, creatureSO.dieAudioClips.Length)], creatureSO.dieVolumeMultiplier * sfxVolume);
-        creatureContinousAudioSource.Stop();
+
+        if(creatureContinousAudioSource != null) {
+            creatureContinousAudioSource.Stop();
+        }
     }
 
     protected bool IsTooFarFromPlayer() {
