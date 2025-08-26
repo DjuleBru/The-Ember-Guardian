@@ -46,7 +46,7 @@ public class PlayerTooltipManager : MonoBehaviour
         PlayerShoot.Instance.OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag += PlayerShoot_OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
-        HuntingFlag_PlayerDefined.OnHuntingFlagTooFar += HuntingFlag_PlayerDefined_OnHuntingFlagTooFar;
+        HuntingFlag_PlayerDefined.OnHuntingFlagTooFarCarriedByPlayer += HuntingFlag_PlayerDefined_OnHuntingFlagTooFar;
 
         gunSOAbilityPreparedList = ES3.Load("gunSOAbilityPreparedList", new List<GunSO>());
         selectOtherGunTooltipShown = ES3.Load("selectOtherGunTooltipShown", false);
@@ -214,6 +214,6 @@ public class PlayerTooltipManager : MonoBehaviour
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         PlayerShoot.Instance.OnPlayerSwappedGun -= PlayerShoot_OnPlayerSwappedGun;
         HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
-        HuntingFlag_PlayerDefined.OnHuntingFlagTooFar -= HuntingFlag_PlayerDefined_OnHuntingFlagTooFar;
+        HuntingFlag_PlayerDefined.OnHuntingFlagTooFarCarriedByPlayer -= HuntingFlag_PlayerDefined_OnHuntingFlagTooFar;
     }
 }

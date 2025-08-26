@@ -24,7 +24,7 @@ public class PlayerAim : MonoBehaviour
     [SerializeField] private LayerMask groundLayer; // Masque de couche pour les ennemis
     [SerializeField] private LayerMask barricadesLayer; // Masque de couche pour les ennemis
     private float autoAimConeAngle = 5f; // Angle du cône de visée autour de la direction de visée
-    private float maxAutoAimConeAngle = 90f; // Angle max du cône de visée si l'ennemi est très proche
+    private float maxAutoAimConeAngle = 30f; // Angle max du cône de visée si l'ennemi est très proche
     private float distanceToHaveMinAutoAimConeAngle = 3f; // Distance à partir de laquelle on considère que l’ennemi est "loin"
     private float distanceToHaveMaxAutoAimConeAngle = .5f; // Distance à partir de laquelle on considère que l’ennemi est "proche"
     private float detectionRange = 15f; // Portée de détection des ennemis
@@ -33,7 +33,7 @@ public class PlayerAim : MonoBehaviour
     private bool isAimingSight;
     private bool isRolling = false;
     private bool autoAimActive;
-    private float autoAimSnapSmoothSpeed = 10f;
+    private float autoAimSnapSmoothSpeed = 17f;
     private float angleDeadzone = .35f;
     private bool isAimingCreature;
     private bool isAimingCritZone;
@@ -455,7 +455,10 @@ public class PlayerAim : MonoBehaviour
             if (autoAimCollider == null) continue;
 
             Creature creature = enemy.GetComponentInParent<Creature>();
-            if (creature.GetDead()) continue;
+            if(creature != null) {
+                 if (creature.GetDead()) continue;
+            }
+           
 
             Vector3 autoAimPos = autoAimCollider.GetAutoAimPosition();
             float distanceToEnemy = Vector2.Distance(autoAimPos, transform.position);

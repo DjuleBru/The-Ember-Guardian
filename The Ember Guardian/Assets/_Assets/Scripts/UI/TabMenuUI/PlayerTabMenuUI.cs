@@ -63,7 +63,6 @@ public class PlayerTabMenuUI : MonoBehaviour
         changeWeaponPanelOpen = false; 
         
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
-            Debug.Log("firstButtonSelected");
             EventSystem.current.SetSelectedGameObject(firstButtonSelected);
         }
     }
@@ -89,7 +88,6 @@ public class PlayerTabMenuUI : MonoBehaviour
         if (PauseMenuUI.Instance.isPaused) return;
         OpenCloseTab();
 
-        Debug.Log("firstButtonSelected");
         EventSystem.current.SetSelectedGameObject(firstButtonSelected);
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
         }

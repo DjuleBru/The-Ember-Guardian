@@ -22,7 +22,7 @@ public class Gun : MonoBehaviour
     protected bool gunJammed;
     protected bool gunJustJammed;
     protected float gunJustJammedTimer;
-    protected float gunJustJammedDelay = 10f;
+    protected float gunJustJammedDelay = 60f;
 
     protected int pelletsPerBullet = 1;
     protected int damagePerBulletAtRunStart;
@@ -59,6 +59,9 @@ public class Gun : MonoBehaviour
     protected float critChance = .15f;
     protected float reloadAccelerationFactor;
     protected float weightAccelerationFactor;
+    protected float spinUpDuration;
+    protected int subExplosivesAmount;
+    protected int subExplosivesDamage;
 
     protected float currentAngle; // L'angle actuel du cône
     protected float targetAngle; // L'angle cible vers lequel le cône doit se diriger
@@ -203,6 +206,10 @@ public class Gun : MonoBehaviour
         weightAccelerationFactor = MetaProgressionManager.Instance.GetGunWeightAccelerationFactor(gunSO);
         jamRepairHitAmount = MetaProgressionManager.Instance.GetGunJamRepairHitAmount(gunSO);
         surgeWindowBulletAmountBuffed = MetaProgressionManager.Instance.GetGunSurgeWindowBulletsAmountBuffed(gunSO);
+        spinUpDuration = MetaProgressionManager.Instance.GetGunSpinUpDuration(gunSO);
+        subExplosivesAmount = MetaProgressionManager.Instance.GetGunSubExplosivesAmount(gunSO);
+        subExplosivesDamage = MetaProgressionManager.Instance.GetGunSubExplosivesDamage(gunSO);
+
         jamProbability = gunSO.jamProbability;
         shootCreatureHearMultiplier = gunSO.shootCreatureHearMultiplier;
 
@@ -409,6 +416,15 @@ public class Gun : MonoBehaviour
     public float GetBulletLifetime() {
         return bulletLifetime;
     }
+    public float GetSpinUpDuration() {
+        return spinUpDuration;
+    }
+    public int GetSubExplosivesDamage() {
+        return subExplosivesDamage;
+    }
+    public int GetSubExplosivesAmount() {
+        return subExplosivesAmount;
+    }
     public float GetReloadTime() {
         return reloadTime;
     }
@@ -534,7 +550,7 @@ public class Gun : MonoBehaviour
         this.maxAmmo = maxAmmo;
         OnAnyGunMaxAmmoChanged?.Invoke(this, EventArgs.Empty);
     }
-    public void SetCooldownTime_Meta(float cooldownTime) {
+    public virtual void SetCooldownTime_Meta(float cooldownTime) {
         this.cooldownTime = cooldownTime;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
@@ -569,6 +585,18 @@ public class Gun : MonoBehaviour
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
+    public void SetSubExplosivesAmount(int subExplosivesAmount) {
+        this.subExplosivesAmount = subExplosivesAmount;
+        OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
+    }
+    public void SetSubExplosivesDamage(int subExplosivesDamage) {
+        this.subExplosivesDamage = subExplosivesDamage;
+        OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
+    }
+    public void SetSpinUpDuration(float spinUpDuration) {
+        this.spinUpDuration = spinUpDuration;
+        OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
+    }
     public void SetJamRepairHitAmount(int jamRepairHitAmount) {
         this.jamRepairHitAmount = jamRepairHitAmount;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
@@ -603,6 +631,9 @@ public class Gun : MonoBehaviour
         MetaProgressionManager.Instance.SetGunShootConeAnle(gunSO, defaultAngle);
         MetaProgressionManager.Instance.SetGunPelletsPerBullet(gunSO, pelletsPerBullet);
         MetaProgressionManager.Instance.SetGunBulletLifetime(gunSO, bulletLifetime);
+        MetaProgressionManager.Instance.SetGunSubExplosivesDamage(gunSO, subExplosivesDamage);
+        MetaProgressionManager.Instance.SetGunSubExplosivesAmount(gunSO, subExplosivesAmount);
+        MetaProgressionManager.Instance.SetGunSpinUpDuration(gunSO, spinUpDuration);
         MetaProgressionManager.Instance.SetGunSwapToWeaponTimeMultiplier(gunSO, swapToWeaponTimeMultiplier);
 
         MetaProgressionManager.Instance.SetGunJamProbability(gunSO, jamProbability);

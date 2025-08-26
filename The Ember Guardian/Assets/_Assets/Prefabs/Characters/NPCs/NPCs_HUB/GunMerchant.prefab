@@ -9138,7 +9138,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: c2350c62532081f4aaee11d840aa08b9, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 6bded82cc31c72d47acc2964d4384ede, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 2
   gunItemCategory: 3
@@ -10344,7 +10344,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: ff351201916bae349b438d6da59450bc, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 5c700dabec4525447a7f4ca92ab15855, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 4
   gunItemCategory: 3
@@ -12807,7 +12807,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 6b75599d4813d674bb93b083fdab1e7c, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: da3640f92c7f25947ae7b25be377cf18, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 23
   gunItemCategory: 3
@@ -14021,7 +14021,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 5e3ddb726e44d2a4aa1ec1e189be042c, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 24676b9cb990df746aed63d9a4136135, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 4
   gunItemCategory: 3
@@ -18904,7 +18904,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: fd9031ab5e7b88f43a0a38480b075690, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: ec21237f24346154d8fd361778e64a35, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 3
   gunItemCategory: 3
@@ -21347,7 +21347,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: fd9031ab5e7b88f43a0a38480b075690, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 73f016f692b4fca4a9eff6be4ed533a0, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 3
   gunItemCategory: 3
@@ -29516,11 +29516,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 450
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -161.64
+      value: -178
       objectReference: {fileID: 0}
     - target: {fileID: 3162550493512327587, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
@@ -29572,7 +29572,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 125
+      value: 127.5
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -29617,6 +29617,22 @@ PrefabInstance:
     - target: {fileID: 4275334315943472678, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 9.900002
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446599287728712335, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446599287728712335, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446599287728712335, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 407.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446599287728712335, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 4505521103792303915, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Layer
@@ -30039,7 +30055,7 @@ MonoBehaviour:
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
-  gunItem: 10
+  gunItem: 28
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: daff7aeea0ad61b499ee2405acbff7a6, type: 2}
 --- !u!1001 &2997420428955185109
@@ -36704,7 +36720,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: c873103dada80674e959e8911e19f810, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 487e120adc727bc4088ce0602bd9c9ce, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 27
   gunItemCategory: 3
@@ -41485,7 +41501,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 9a25a865de9b5114aabce58cc509f2ac, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: e3a24ce2ea3a7b2408f98ce7146a419f, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 25
   gunItemCategory: 3
@@ -42097,7 +42113,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: a9acac1418fee714196ed27c2dcbde6b, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: e946eb700bd2ebd4d8b9e0273097977f, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 23
   gunItemCategory: 3
@@ -42685,7 +42701,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: ff351201916bae349b438d6da59450bc, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 0d6a4fdcd8e5aa74583c5ba23ad60f32, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 4
   gunItemCategory: 3
@@ -44004,7 +44020,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: a16a1cfc8211e6d45a474fa10e9e0927, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: fc7b966b640ca9a4da3dd022fe6f285f, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 5
   gunItemCategory: 3
@@ -45736,7 +45752,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 6665d9d50dfaad14cbc0109eaf320e5f, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 37b322c0d80062747a2b2181fbc7c160, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 5
   gunItemCategory: 3
@@ -48126,7 +48142,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: a16a1cfc8211e6d45a474fa10e9e0927, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 1d8d530197d75f44f87db480783aba81, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 5
   gunItemCategory: 3
@@ -49909,7 +49925,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: c754f272c73ad244685601f4d756d611, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 87007d47763119a4b8216ae0e933dedb, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 2
   gunItemCategory: 3
@@ -50528,7 +50544,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 02f3d1ead79a3f6459116a3c7c8b1d91, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: ea2bf38b38f277a44bdeb9f620a16b48, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 3
   gunItemCategory: 3
@@ -51100,7 +51116,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 6665d9d50dfaad14cbc0109eaf320e5f, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: f43f08be0f7d0754193de86a32a03e2d, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 5
   gunItemCategory: 3
@@ -53616,7 +53632,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: c873103dada80674e959e8911e19f810, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 9e21c8309de62964c9eb98c4dda86d46, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 12
   gunItemCategory: 3
@@ -54860,7 +54876,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 6b75599d4813d674bb93b083fdab1e7c, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 46f046df0b045e84c959a7dd67aabb09, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 0
   gunItemCategory: 3
@@ -55739,11 +55755,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 450
+      value: 520
       objectReference: {fileID: 0}
     - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -161.64
+      value: -191
       objectReference: {fileID: 0}
     - target: {fileID: 3162550493512327587, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
@@ -56262,7 +56278,7 @@ MonoBehaviour:
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
-  gunItem: 10
+  gunItem: 29
   gunItemCategory: 0
   linkedGunSO: {fileID: 11400000, guid: 61e116fc2b34b794ebe8d7153109e4f7, type: 2}
 --- !u!114 &5820597058229963746 stripped
@@ -57474,7 +57490,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: c754f272c73ad244685601f4d756d611, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 3e7c5ecffa43d6d4da6571c88bb18bdf, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 2
   gunItemCategory: 3
@@ -58066,7 +58082,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 9a25a865de9b5114aabce58cc509f2ac, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 4d2ca8343e71e0542be7a9f72a255d05, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 26
   gunItemCategory: 3
@@ -59261,7 +59277,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 2990a76abe7bada42ae2eb4fb4aeafa4, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 9154e22e868788f4782d9666c5711fda, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 22
   gunItemCategory: 3
@@ -64109,7 +64125,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 4ee0a07fb4657d640bc916e266a31322, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 5b6d25d22b3fbf04c8e9df4a00e24fc0, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 21
   gunItemCategory: 3
@@ -66014,7 +66030,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 5e3ddb726e44d2a4aa1ec1e189be042c, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: fd595f8c72c7e43418c4e974d635f25d, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 4
   gunItemCategory: 3
@@ -71386,7 +71402,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: a9acac1418fee714196ed27c2dcbde6b, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: 7b42625ce25ac01439d3166dcf54c19d, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 0
   gunItemCategory: 3
@@ -75165,7 +75181,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 2990a76abe7bada42ae2eb4fb4aeafa4, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: a13cdd3b6175c2f4da23c0f97b17b9e4, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 1
   gunItemCategory: 3
@@ -76407,7 +76423,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: 02f3d1ead79a3f6459116a3c7c8b1d91, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: a319f5096984e8c418c98df5aaa67d92, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 3
   gunItemCategory: 3
@@ -77626,7 +77642,7 @@ MonoBehaviour:
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
-  linkedStatModifierSO: {fileID: 11400000, guid: c2350c62532081f4aaee11d840aa08b9, type: 2}
+  linkedStatModifierSO: {fileID: 11400000, guid: ad75864f96cd06944a39e3ccce60165d, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   gunItem: 2
   gunItemCategory: 3

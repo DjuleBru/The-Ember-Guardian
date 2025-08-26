@@ -68,7 +68,6 @@ public class PortalSound : SoundObject {
 
     private void Portal_OnPlayerExitedTriggerArea(object sender, System.EventArgs e) {
         teleporterAudioSource.PlayOneShot(beamLightOffAudioClip, .5f * sfxVolume);
-        Debug.Log("Portal_OnPlayerExitedTriggerArea");
     }
 
     private void Portal_OnPlayerEnteredTriggerArea(object sender, System.EventArgs e) {

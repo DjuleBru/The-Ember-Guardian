@@ -98,6 +98,9 @@ public class GunVisual : MonoBehaviour
         if (!gameObject.activeInHierarchy) return;
 
         float bulletsAmountNormalized = (float)PlayerShoot.Instance.GetCurrentBullets() / (float)PlayerShoot.Instance.GetMaxBulletsPerClip();
+        if(bulletsAmountNormalized < 0) {
+            bulletsAmountNormalized = 0;
+        }
         int reloadSpriteIndex = Mathf.RoundToInt(bulletsAmountNormalized * gunReloadSprites.Count);
         Sprite currentSprite = gunReloadSprites[reloadSpriteIndex];
 

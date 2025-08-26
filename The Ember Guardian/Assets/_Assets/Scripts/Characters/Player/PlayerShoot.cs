@@ -529,7 +529,7 @@ public class PlayerShoot : MonoBehaviour
         if (loadingShot && !shotLoaded) return;
         if (Player.Instance.GetHP() == 0) return;
 
-        if (heldGun.GetCurrentBullet() == 0) {
+        if (heldGun.GetCurrentBullet() <= 0) {
             TryAutoReload();
             return;
         }

@@ -2,13 +2,18 @@ using UnityEngine;
 using System.Collections;
 
 public class GunSounds_Minigun : GunSounds {
-    [SerializeField] private AudioClip gunPoweringUpClip;
     [SerializeField] private AudioClip gunPoweringDownClip;
     [SerializeField] private AudioClip gunPoweredClip;
     [SerializeField] protected AudioSource poweringAudioSource;
     [SerializeField] private float powerUpDelay = 0.5f; // Délai avant de commencer le powering up
     [SerializeField] private float powerSourceVolumeMultiplier = 1f;
     [SerializeField] private Gun_Minigun minigun;
+
+    [SerializeField] private AudioClip gunPoweringUpClip;
+    //[SerializeField] private AudioClip gunPoweringUpClip_3_5s;
+    //[SerializeField] private AudioClip gunPoweringUpClip_3s;
+    //[SerializeField] private AudioClip gunPoweringUpClip_2_5s;
+    //[SerializeField] private AudioClip gunPoweringUpClip_2s;
 
     private Coroutine currentSoundRoutine;
     private bool isSpinning = false;
@@ -46,7 +51,7 @@ public class GunSounds_Minigun : GunSounds {
     }
 
     private void Minigun_OnMinigunStartedSpinning(object sender, System.EventArgs e) {
-
+        SetCorrectPoweringUpClip();
         if (!isSpinning) {
             isSpinning = true;
 
@@ -57,21 +62,28 @@ public class GunSounds_Minigun : GunSounds {
         }
     }
 
+    private void SetCorrectPoweringUpClip() {
+    }
 
     private IEnumerator DelayedPowerUpAndLoop() {
-        // Phase attente avant de commencer le powering up
         yield return new WaitForSeconds(powerUpDelay);
 
         if (!isSpinning)
             yield break;
 
-        // Powering Up
+        float spinUpDuration = minigun.GetSpinUpDuration();
+        float clipDuration = gunPoweringUpClip.length;
+
         poweringAudioSource.Stop();
         poweringAudioSource.loop = false;
         poweringAudioSource.clip = gunPoweringUpClip;
+
+        // Calcule le pitch pour caler la durée du clip sur le spinUp
+        float pitch = clipDuration / spinUpDuration;
+        poweringAudioSource.pitch = pitch;
         poweringAudioSource.Play();
 
-        yield return new WaitForSeconds(gunPoweringUpClip.length);
+        yield return new WaitForSeconds(spinUpDuration);
 
         if (!isSpinning)
             yield break;
@@ -81,10 +93,27 @@ public class GunSounds_Minigun : GunSounds {
         poweringAudioSource.clip = gunPoweredClip;
         poweringAudioSource.loop = true;
         poweringAudioSource.Play();
+
+        // On garde le pitch actuel au début, puis on le ramène progressivement à 1
+        StartCoroutine(SmoothPitchReset(poweringAudioSource, poweringAudioSource.pitch, 1f, 0.3f));
     }
+    private IEnumerator SmoothPitchReset(AudioSource source, float startPitch, float targetPitch, float fadeTime) {
+        float elapsed = 0f;
+
+        while (elapsed < fadeTime) {
+            elapsed += Time.deltaTime;
+            float t = elapsed / fadeTime;
+            source.pitch = Mathf.Lerp(startPitch, targetPitch, t);
+            yield return null;
+        }
+
+        source.pitch = targetPitch; // sécurité pour terminer pile à 1
+    }
+
     protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         base.SettingsManager_OnSfxVolumeChanged (sender, e);
 
         poweringAudioSource.volume = sfxVolume * powerSourceVolumeMultiplier;
     }
+
 }

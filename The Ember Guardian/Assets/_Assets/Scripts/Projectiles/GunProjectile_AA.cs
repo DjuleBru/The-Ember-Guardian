@@ -9,16 +9,19 @@ public class GunProjectile_AA : GunProjectile
     [SerializeField] private Transform childGunAirProjectilePrefab;
     [SerializeField] private Transform childGunProjectilePrefab;
 
-    [SerializeField] private int childGunProjectilesInstantiated = 5;
     [SerializeField] private float childBulletLifetime = 10f;
     [SerializeField] private float childBulletAirLifetime = .22f;
-    [SerializeField] private int childDamagePerBullet = 5;
     [SerializeField] private int childBulletKnockback = 0;
 
+    private int childDamagePerBullet;
+    private int childGunProjectilesInstantiated;
     private bool instantiateChildGunGroundProjectiles;
 
     protected void Start() {
         instantiateChildGunGroundProjectiles = PlayerShoot.Instance.GetAAGunSpawnsChildBullets();
+
+        childGunProjectilesInstantiated = PlayerShoot.Instance.GetHeldGun().GetSubExplosivesAmount();
+        childDamagePerBullet = PlayerShoot.Instance.GetHeldGun().GetSubExplosivesDamage();
     }
 
     protected override void DamageCreatureHit(Creature creatureHit, Collider2D collision) {
@@ -46,7 +49,8 @@ public class GunProjectile_AA : GunProjectile
                 gunProjectile.gameObject.SetActive(true);
                 Vector2 initialForce = new Vector2(UnityEngine.Random.Range(-10f,10f),UnityEngine.Random.Range(-10f, 10f));
 
-                gunProjectile.InitializeProjectile(parentGun, childBulletLifetime, childDamagePerBullet, childBulletKnockback, initialForce, explosionRadiusMultiplier);
+                float childBulletLifetimeRandomized = UnityEngine.Random.Range(childBulletLifetime - childBulletLifetime / 10, childBulletLifetime + childBulletLifetime / 10);
+                gunProjectile.InitializeProjectile(parentGun, childBulletLifetimeRandomized, childDamagePerBullet, childBulletKnockback, initialForce, explosionRadiusMultiplier);
             }
         } else {
             for (int i = 0; i < childGunProjectilesInstantiated; ++i) {
@@ -55,7 +59,7 @@ public class GunProjectile_AA : GunProjectile
                 gunProjectile.gameObject.SetActive(true);
                 Vector2 initialForce = new Vector2(UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f));
 
-                float lifeTimeRandomized = childBulletAirLifetime + UnityEngine.Random.Range(0, childBulletAirLifetime / 2);
+                float lifeTimeRandomized = childBulletAirLifetime + UnityEngine.Random.Range(-childBulletAirLifetime/1.5f, childBulletAirLifetime / 1.5f);
                 gunProjectile.InitializeProjectile(parentGun, lifeTimeRandomized, childDamagePerBullet, childBulletKnockback, initialForce, explosionRadiusMultiplier);
             }
         }

@@ -245,13 +245,13 @@ public class Player : MonoBehaviour, IDamageable
         StartCoroutine(RollCoroutine());
     }
     private void PlayerMovement_OnPlayerCrouchedEnded(object sender, EventArgs e) {
-        playerCollider.offset = new Vector2(-0.06608671f, 0.8430732f);
-        playerCollider.size = new Vector2(0.4201719f, 1.679177f);
+        playerCollider.offset = new Vector2(-0.06608671f, 0.6866874f);
+        playerCollider.size = new Vector2(0.4201719f, 1.366405f);
     }
 
     private void PlayerMovement_OnPlayerCrouched(object sender, EventArgs e) {
-        playerCollider.offset = new Vector2(-0.06608671f, 0.6297099f);
-        playerCollider.size = new Vector2(0.4201719f, 1.25245f);
+        playerCollider.offset = new Vector2(-0.06608671f, 0.5149697f);
+        playerCollider.size = new Vector2(0.4201719f, 1.022969f);
     }
 
     private IEnumerator RollCoroutine() {

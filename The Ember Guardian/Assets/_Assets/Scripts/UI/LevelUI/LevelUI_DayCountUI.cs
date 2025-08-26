@@ -37,6 +37,7 @@ public class LevelUI_DayCountUI : MonoBehaviour
 
     private IEnumerator ShowDayCountUIAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
+        if (LevelManager.Instance.GetLevelSucceeded()) yield break;
         dayTextAnimator.SetTrigger("Show");
         OnDayUIShown?.Invoke(this, EventArgs.Empty);
     }

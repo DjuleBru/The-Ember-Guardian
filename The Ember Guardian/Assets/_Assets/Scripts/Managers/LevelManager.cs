@@ -22,6 +22,7 @@ public class LevelManager : MonoBehaviour
 
 
     private bool levelRegionUnlocked;
+    private bool levelSucceeded;
     private int levelHubMerchantInteractionIndex;
 
     public event EventHandler OnNewLocationShown;
@@ -146,6 +147,7 @@ public class LevelManager : MonoBehaviour
 
     [Button]
     private void LevelSuccess() {
+        if (levelSucceeded) return;
         Vector3 endLevelPortalPosition = endLevelPortal.transform.position; 
 
         if (setEndLevelPositionRelativeToPlayer) {
@@ -175,6 +177,7 @@ public class LevelManager : MonoBehaviour
 
         OnLevelSuccess?.Invoke(this, EventArgs.Empty);
         endLevelPortal.transform.position = endLevelPortalPosition;
+        levelSucceeded = true;
     }
 
     private void EndLevelArea_OnEndLevelFireLit(object sender, EventArgs e) {
@@ -247,6 +250,9 @@ public class LevelManager : MonoBehaviour
         MetaProgressionManager.Instance.SetNextMerchantTalkLines(HubMerchant.HubMerchantType.GemMerchant, levelSO.gemMerchantTextLinesAfterLevel);
     }
 
+    public bool GetLevelSucceeded() {
+        return levelSucceeded;
+    }
 
     private void OnDestroy() {
         LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted -= LevelUI_OnObjectiveCompleted;

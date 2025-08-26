@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Gun_Minigun : Gun {
 
-    [SerializeField] private float spinUpDuration = 3.5f;
     private float currentSpinCooldown;
     private float standardMaxSpinRate = 0.12f;
     private float maxSpinRate;
@@ -46,6 +45,8 @@ public class Gun_Minigun : Gun {
     }
 
     private void StopSpinning() {
+        if (!isSpinning) return;
+
         isSpinning = false;
         OnMinigunStoppedSpinning?.Invoke(this, EventArgs.Empty);
         PlayerMovement.Instance.BuffMoveSpeed(spinningMovementDebuff);
@@ -62,6 +63,7 @@ public class Gun_Minigun : Gun {
 
     private void PlayerShoot_OnWeaponSecondaryAbilityStarted(object sender, EventArgs e) {
         if (!gunActive) return;
+        if (secondaryActive) return;
 
         secondaryActive = true;
         secondaryAmmoConsumptionTimer = 0;
@@ -72,9 +74,12 @@ public class Gun_Minigun : Gun {
 
     public override void RefreshGunStats() {
        base.RefreshGunStats();
+
+        float cooldownBuff = cooldownTime / gunSO.shootCooldownTime;
+
         spinStartCooldown = cooldownTime;
         currentSpinCooldown = cooldownTime;
-        maxSpinRate = standardMaxSpinRate;
+        maxSpinRate = standardMaxSpinRate * cooldownBuff;
     }
 
     protected override void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
@@ -122,5 +127,15 @@ public class Gun_Minigun : Gun {
                 }
             }
         }
+    }
+
+    public override void SetCooldownTime_Meta(float cooldownTime) {
+        base.SetCooldownTime_Meta(cooldownTime);
+
+        float cooldownBuff =  cooldownTime / gunSO.shootCooldownTime;
+
+        spinStartCooldown = cooldownTime;
+        currentSpinCooldown = cooldownTime;
+        maxSpinRate = standardMaxSpinRate * cooldownBuff;
     }
 }

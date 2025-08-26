@@ -5,8 +5,9 @@ using UnityEngine;
 public class PlayerVisualOnlyMainMenu : MonoBehaviour
 {
 
-    [SerializeField] private RuntimeAnimatorController femaleAnimatorController;
-    [SerializeField] Animator characterVisualAnimator;
+    [SerializeField] private Sprite femaleSprite;
+    [SerializeField] private Sprite maleSprite;
+    [SerializeField] private SpriteRenderer characterSpriteRenderer;
 
     private void Start() {
         CharacterSelectUI.Instance.OnCharacterChanged += CharacterSelectUI_OnCharacterChanged;
@@ -21,9 +22,10 @@ public class PlayerVisualOnlyMainMenu : MonoBehaviour
     private void SetCharacterVisuals() {
         bool chosenCharacterIsFemale = CharacterSelectUI.Instance.GetChosenCharacterIsFemale();
 
-        Debug.Log("SetCharacterVisuals chosenCharacterIsFemale " + chosenCharacterIsFemale);
         if (chosenCharacterIsFemale) {
-            characterVisualAnimator.runtimeAnimatorController = femaleAnimatorController;
+            characterSpriteRenderer.sprite = femaleSprite;
+        } else {
+            characterSpriteRenderer.sprite = maleSprite;
         }
     }
 }

@@ -34,6 +34,8 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         subExplosivesAmount,
         subExplosivesDamage,
         spinUpTime,
+        minigun,
+        AAgun,
     }
 
     public enum GunItemCategory {
@@ -199,6 +201,21 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             float modifiedExplosionRadius = 100 + linkedStatModifierSO.statModifierList[itemLevel];
             PlayerShoot.Instance.GetGun(linkedGunSO).SetExplosionRadiusModified((float)modifiedExplosionRadius/100);
         }
+
+        if (gunItem == GunItemType.spinUpTime) {
+            float modifiedSpinUpTime = linkedGunSO.spinUpDuration + linkedStatModifierSO.statModifierList[itemLevel];
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSpinUpDuration((float)modifiedSpinUpTime);
+        }
+
+        if (gunItem == GunItemType.subExplosivesDamage) {
+            float modifiedSubExplosivesDamage = linkedGunSO.subExplosivesDamage + linkedStatModifierSO.statModifierList[itemLevel];
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesDamage((int)modifiedSubExplosivesDamage);
+        }
+
+        if (gunItem == GunItemType.subExplosivesAmount) {
+            float modifiedSubExplosivesAmount = linkedGunSO.subExplosivesAmount + linkedStatModifierSO.statModifierList[itemLevel];
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesAmount((int)modifiedSubExplosivesAmount);
+        }
     }
    
     private void RefreshStatValues() {
@@ -245,6 +262,30 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 statValues.Add(((int)(modifiedExplosionRadius*100f)).ToString() + "%");
             }
 
+            if (gunItem == GunItemType.AAgun) {
+                // SUB EXPLOSIVES AMOUNT
+                float subExplosivesAmount = linkedGunSO.subExplosivesAmount;
+                float modifiedSubExplosivesAmount = PlayerShoot.Instance.GetGun(linkedGunSO).GetSubExplosivesAmount();
+                if (subExplosivesAmount != modifiedSubExplosivesAmount) {
+                    statModifiedBools.Add(true);
+                }
+                else {
+                    statModifiedBools.Add(false);
+                }
+                statValues.Add(((int)(modifiedSubExplosivesAmount)).ToString());
+
+                // SUB EXPLOSIVES Damage
+                float subExplosivesDamage = linkedGunSO.subExplosivesDamage;
+                float modifiedSubExplosivesDamage= PlayerShoot.Instance.GetGun(linkedGunSO).GetSubExplosivesDamage();
+                if (subExplosivesDamage != modifiedSubExplosivesDamage) {
+                    statModifiedBools.Add(true);
+                }
+                else {
+                    statModifiedBools.Add(false);
+                }
+                statValues.Add(((int)(modifiedSubExplosivesDamage)).ToString());
+            }
+
             // SHOTS PER CLIP
             int initialShotsPerClip = linkedGunSO.shotsPerClip;
             int modifiedShotsPerClip = PlayerShoot.Instance.GetGun(linkedGunSO).GetShotsPerClip();
@@ -277,6 +318,19 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 statModifiedBools.Add(false);
             }
             statValues.Add(modifierCooldown.ToString("F2") + "s");
+
+            // SPIN UP TIME
+            if (gunItem == GunItemType.minigun) {
+                float initialSpinUpTime = linkedGunSO.spinUpDuration;
+                float modifiedSpinUpTime = PlayerShoot.Instance.GetGun(linkedGunSO).GetSpinUpDuration();
+                if (initialSpinUpTime != modifiedSpinUpTime) {
+                    statModifiedBools.Add(true);
+                }
+                else {
+                    statModifiedBools.Add(false);
+                }
+                statValues.Add((modifiedSpinUpTime).ToString() + "s");
+            }
 
             // RELOAD TIME
             float initialReloadTime = linkedGunSO.reloadTime;
@@ -429,6 +483,25 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 relativeStatPostfix = "%";
             }
 
+            if (gunItem == GunItemType.spinUpTime) {
+                initialStatValue = linkedGunSO.spinUpDuration;
+                currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetSpinUpDuration().ToString();
+                totalStatWithModifierPostfix = "s";
+                relativeStatPostfix = "s";
+            }
+
+            if (gunItem == GunItemType.subExplosivesDamage) {
+                initialStatValue = linkedGunSO.subExplosivesDamage;
+                currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetSubExplosivesDamage().ToString();
+                relativeStatPrefix = "+";
+            }
+
+            if (gunItem == GunItemType.subExplosivesAmount) {
+                initialStatValue = linkedGunSO.subExplosivesAmount;
+                currentStatValue = PlayerShoot.Instance.GetGun(linkedGunSO).GetSubExplosivesAmount().ToString();
+                relativeStatPrefix = "+";
+            }
+
             if (itemLevel == maxItemLevel) {
                 absoluteStatValueModifier = linkedStatModifierSO.statModifierList[itemLevel - 1];
                 totalStatWithModifier = initialStatValue + absoluteStatValueModifier * statValueModifierMultiplier;
@@ -492,9 +565,19 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_pelletsPerBullet") + " ");
             }
 
+            if (gunItem == GunItemType.AAgun) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_subExplosivesAmount") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_subExplosivesDamage") + " ");
+            }
+
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_shotsPerClip") + " ");
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_maxAmmoClips") + " ");
-            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_cooldown") + " ");
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_cooldown") + " "); 
+            
+            if (gunItem == GunItemType.minigun) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_spinUpDuration") + " ");
+            }
+
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_reloadTime") + " ");
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_critChance") + " ");
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_range") + " ");
@@ -617,6 +700,34 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newExplosionRadiusMultiplier") + " ");
         }
+
+        if (gunItem == GunItemType.spinUpTime) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentSpinUpDuration") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_spinUpDuration") + " ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newSpinUpDuration") + " ");
+        }
+
+        if (gunItem == GunItemType.subExplosivesAmount) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentSubExplosivesAmount") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_subExplosivesAmount") + " ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newSubExplosivesAmount") + " ");
+        }
+
+        if (gunItem == GunItemType.subExplosivesDamage) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentSubExplosivesDamage") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_subExplosivesDamage") + " ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newSubExplosivesDamage") + " ");
+        }
+
         return statDescriptionList;
     }
 

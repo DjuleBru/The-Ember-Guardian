@@ -220,6 +220,7 @@ public class VideoTipManager : MonoBehaviour
     }
     private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, EventArgs e) {
         if (gunManagementTipShown) return;
+
         if (sender is HUBMerchantItem_GunMerchantItem) {
             HUBMerchantItem_GunMerchantItem gunItem = sender as HUBMerchantItem_GunMerchantItem;
             if (gunItem.GetGunItemCategory() == HUBMerchantItem_GunMerchantItem.GunItemCategory.newGun) {
@@ -247,7 +248,7 @@ public class VideoTipManager : MonoBehaviour
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
         HubMerchant hubMerchant = (HubMerchant)sender;
 
-        if (showGunManagementTip) {
+        if (showGunManagementTip && !gunManagementTipShown) {
             VideoTipUI.Instance.PlayTipSO(gunManagementTip, 1f);
             gunManagementTipShown = true;
             ES3.Save("gunManagementTipShown", true);

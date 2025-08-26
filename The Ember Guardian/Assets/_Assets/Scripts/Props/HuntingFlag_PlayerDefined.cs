@@ -16,7 +16,7 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
     public static event EventHandler OnAnyHuntingFlagPickedUp;
     public static event EventHandler OnAnyHuntingFlagNewPositionSet;
     public static event EventHandler OnAnyPlayerTriggeredIn;
-    public static event EventHandler OnHuntingFlagTooFar;
+    public static event EventHandler OnHuntingFlagTooFarCarriedByPlayer;
 
     private void Awake() {
         huntingFlag = GetComponentInParent<HuntingFlag>();
@@ -74,7 +74,10 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
             if(EvaluateOptimizedPath() > maxSecureDistance) {
                 tooFarForHunters = true;
                 exclamationMark.SetActive(true);
-                OnHuntingFlagTooFar?.Invoke(this, EventArgs.Empty);
+
+                if(playerCarryingFlag) {
+                    OnHuntingFlagTooFarCarriedByPlayer?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
 

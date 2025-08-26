@@ -39,9 +39,16 @@ public class MainMenuUI : MonoBehaviour {
         buttonConfirm_ResetProgression.OnButtonDeselected += ButtonConfirm_ResetProgression_OnButtonDeselected;
 
         InitializeButtonNavigation();
+
+
         if (!VersioningManager.Instance.CheckNewSaveFile() && !VersioningManager.Instance.CheckIncompatibleSaveFile()) {
 
-            StartCoroutine(FadeInMainMenu(1.5f));
+
+            if (!CharacterSelectUI.Instance.HasChosenCharacter()) {
+                CharacterSelectUI.Instance.OpenPanel();
+            } else {
+                StartCoroutine(FadeInMainMenu(1.5f));
+            }
 
         } else {
             Debug.Log("Set interactable false");

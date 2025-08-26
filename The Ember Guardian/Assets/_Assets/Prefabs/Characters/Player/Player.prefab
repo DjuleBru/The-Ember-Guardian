@@ -118662,7 +118662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a218cab597f4f6449d1b8c0915e62ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gun: {fileID: 0}
+  gun: {fileID: 8924854332139249825}
   bulletPS: {fileID: 3979122248730124314}
   trailPS: {fileID: 7767197668874572433}
   fireLightBuffedBulletDmg: {r: 1, g: 0.43529412, b: 0, a: 1}
@@ -170679,7 +170679,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8408435833414752509
 Transform:
   m_ObjectHideFlags: 0
@@ -201107,7 +201107,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7895957726873715220
 Transform:
   m_ObjectHideFlags: 0
@@ -201174,7 +201174,6 @@ MonoBehaviour:
   gunSO: {fileID: 11400000, guid: daff7aeea0ad61b499ee2405acbff7a6, type: 2}
   gunBodyAnimator: {fileID: 1398826721309774827}
   armBodyAnimator: {fileID: 9065088813446192630}
-  spinUpDuration: 3
 --- !u!114 &1314484452597307473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201280,13 +201279,13 @@ MonoBehaviour:
   surgeAudioClip: {fileID: 8300000, guid: f93c04e54d1690c46aa2a9c39d941c14, type: 3}
   surgeAudioSource: {fileID: 680134493645706436}
   surgeBuffVolume: 0.3
-  gunPoweringUpClip: {fileID: 8300000, guid: d85dd8c8949bd594f93092c811dfc08d, type: 3}
   gunPoweringDownClip: {fileID: 8300000, guid: 5c95e06662bbb314aa8569be37262094, type: 3}
   gunPoweredClip: {fileID: 8300000, guid: 3a4efa3bcc013a443b9ee9f9033d978a, type: 3}
   poweringAudioSource: {fileID: 7163602008624779846}
   powerUpDelay: 0.5
-  powerSourceVolumeMultiplier: 2
+  powerSourceVolumeMultiplier: 3
   minigun: {fileID: 3123144109648013029}
+  gunPoweringUpClip: {fileID: 8300000, guid: d85dd8c8949bd594f93092c811dfc08d, type: 3}
 --- !u!1 &7961093759729346700
 GameObject:
   m_ObjectHideFlags: 0

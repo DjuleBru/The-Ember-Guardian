@@ -64,6 +64,7 @@ public class VideoTipUI : MonoBehaviour
 
     private void Update() {
         //if (Input.GetKeyDown(KeyCode.V)) {
+        //    SetEndDemoTip();
         //    PlayTipSO(testTipSO);
         //    OpenPanel();
         //    PlayTip();
@@ -83,6 +84,7 @@ public class VideoTipUI : MonoBehaviour
         Vector2 newAnchoredPos = rt.anchoredPosition;
         newAnchoredPos.x = 0; // Nouvelle position X
         rt.anchoredPosition = newAnchoredPos;
+        rt.sizeDelta = new Vector2(820, 980);
 
         yield return new WaitForSecondsRealtime(5f);
 

@@ -524,6 +524,21 @@ public class MetaProgressionManager : MonoBehaviour
 
         ES3.Save(key, bulletLitefime);
     }
+    public void SetGunSpinUpDuration(GunSO gunSO, float spinUpDuration) {
+        string key = gunSO.gunType + "_spinUpDuration";
+
+        ES3.Save(key, spinUpDuration);
+    }
+    public void SetGunSubExplosivesAmount(GunSO gunSO, int subExplosivesAmount) {
+        string key = gunSO.gunType + "_subExplosivesAmount";
+
+        ES3.Save(key, subExplosivesAmount);
+    }
+    public void SetGunSubExplosivesDamage(GunSO gunSO, int subExplosivesDamage) {
+        string key = gunSO.gunType + "_subExplosivesDamage";
+
+        ES3.Save(key, subExplosivesDamage);
+    }
 
     public float GetGunBulletSpeed(GunSO gunSO) {
         string key = gunSO.gunType + "_bulletSpeed";
@@ -663,6 +678,22 @@ public class MetaProgressionManager : MonoBehaviour
 
         ES3.Save(key, jamRepairHitAmount);
     }
+    public float GetGunSpinUpDuration(GunSO gunSO) {
+        string key = gunSO.gunType + "_spinUpDuration";
+
+        return ES3.Load(key, gunSO.spinUpDuration);
+    }
+    public int GetGunSubExplosivesAmount(GunSO gunSO) {
+        string key = gunSO.gunType + "_subExplosivesAmount";
+
+        return ES3.Load(key, gunSO.subExplosivesAmount);
+    }
+    public int GetGunSubExplosivesDamage(GunSO gunSO) {
+        string key = gunSO.gunType + "_subExplosivesDamage";
+
+        return ES3.Load(key, gunSO.subExplosivesDamage);
+    }
+
     #endregion
 
     #region OTHER

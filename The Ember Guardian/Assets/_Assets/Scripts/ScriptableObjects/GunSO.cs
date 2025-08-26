@@ -140,6 +140,15 @@ public class GunSO : ScriptableObject
     public float bulletKnockback;
     [BoxGroup("Stats/Shoot")]
     [LabelWidth(300)]
+    public float spinUpDuration = 3.5f;
+    [BoxGroup("Stats/Shoot")]
+    [LabelWidth(300)]
+    public int subExplosivesAmount;
+    [BoxGroup("Stats/Shoot")]
+    [LabelWidth(300)]
+    public int subExplosivesDamage;
+    [BoxGroup("Stats/Shoot")]
+    [LabelWidth(300)]
     public float shootCreatureHearMultiplier = 1.75f;
     [BoxGroup("Stats/Shoot")]
     [LabelWidth(300)]
