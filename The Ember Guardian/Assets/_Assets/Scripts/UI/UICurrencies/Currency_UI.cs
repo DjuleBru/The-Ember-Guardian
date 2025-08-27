@@ -2,6 +2,7 @@ using MoreMountains.Feedbacks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Currency_UI : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class Currency_UI : MonoBehaviour
 
     [SerializeField] private PlayerCurrencies.CurrencyType currencyType;
     [SerializeField] private PlayerCurrencies.CurrencyCategory currencyCategory;
+    [SerializeField] private Animator purifyAnimator;
+    [SerializeField] private Sprite purifiedSprite;
+    [SerializeField] private Image gemImage;
 
     private bool movingOrb;
     private Transform destinationTransform;
@@ -110,6 +114,14 @@ public class Currency_UI : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Dynamic;
         initialTimerOver = false;
         initialTimer = 1.5f;
+    }
+
+    public void PurifyGem() {
+        purifyAnimator.SetTrigger("Purify");
+        gemImage.sprite = purifiedSprite;
+    }
+    public void SetPurifiedGem() {
+        gemImage.sprite = purifiedSprite;
     }
 
     public PlayerCurrencies.CurrencyType GetCurrencyType() {

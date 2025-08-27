@@ -21,21 +21,21 @@ MonoBehaviour:
   mass: 100
   detectionRange_Day: 12
   detectionRange_Night: 10
-  primaryAttackSO: {fileID: 11400000, guid: 8a18cdf0acbf7d9438a2bd4ffadbb8f4, type: 2}
+  primaryAttackSO: {fileID: 11400000, guid: b27bfcb06c3e88643acb6d38709c62e2, type: 2}
   hasRangedAndMeleeAttack: 1
-  secondaryAttackSO: {fileID: 11400000, guid: b27bfcb06c3e88643acb6d38709c62e2, type: 2}
+  secondaryAttackSO: {fileID: 11400000, guid: 8a18cdf0acbf7d9438a2bd4ffadbb8f4, type: 2}
   specialAttackSO: {fileID: 0}
-  flying: 0
+  flying: 1
   canFlank: 0
-  flightMinAltitude: 1
-  flightMaxAltitude: 1
+  flightMinAltitude: 0
+  flightMaxAltitude: 0
   flightAltitudeRandomizer: 0
-  dayMoveSpeed: 3
-  nightMoveSpeed: 3
-  aggroMoveSpeedBuff: 1.5
-  enteredLightMoveSpeedDebuff: 1.5
+  dayMoveSpeed: 1.1
+  nightMoveSpeed: 1.1
+  aggroMoveSpeedBuff: 1.2
+  enteredLightMoveSpeedDebuff: 1.2
   moveSpeedRandomizerDelta: 0
-  maxHealth: 2000
+  maxHealth: 1500
   enteredLightattackRateDebuff: 2.5
   probabilityToAggroOnGunShot: 1
   immuneToPoison: 1
@@ -45,8 +45,8 @@ MonoBehaviour:
   spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 0.5
   workerTargetingPriority: 1
-  playerTargetingPriority: 2
-  barricadeTargetingPriority: 3
+  playerTargetingPriority: 3
+  barricadeTargetingPriority: 2
   currencyTypeDroppedList: 03000000
   currencyDropAmountList: 01000000
   difficulty: 50

@@ -376,8 +376,19 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     public void SetLevelCompleted(LevelSO levelSO) {
+        Debug.Log("SetLevelCompleted " + levelSO);
+        SetLastLevelCompleted(levelSO);
         string key = levelSO.ToString() + "_Completed";
         ES3.Save(key, true);
+    }
+
+    public void SetLastLevelCompleted(LevelSO levelSO) {
+        string key =  "LastLevelCompleted_";
+        ES3.Save(key, levelSO.ToString());
+    }
+    public string GetLastLevelCompletedString() {
+        string key = "LastLevelCompleted_";
+        return ES3.Load<string>(key);
     }
 
     public bool GetLevelRegionUnlocked(LevelSO.LevelEnvironment environmentType) {

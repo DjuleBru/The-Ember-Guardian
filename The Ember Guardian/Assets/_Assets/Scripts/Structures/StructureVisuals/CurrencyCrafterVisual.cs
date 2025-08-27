@@ -58,6 +58,7 @@ public class CurrencyCrafterVisual : StructureVisual
 
     private void AmmoCrafter_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
         if (currencyCrafter.GetCraftingCurrency()) return;
+        if (currencyCrafter.GetCraftedCurrency()) return;
         
         craftCurrency_craftingCurrencyGameObject.SetActive(false);
     }

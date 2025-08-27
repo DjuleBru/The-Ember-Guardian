@@ -62,6 +62,7 @@ public class HUBManager : MonoBehaviour
             chestIndicator.gameObject.SetActive(false);
             fireIndicator.gameObject.SetActive(false);
         }
+
         totalGemsAfterTutorial = initialGreenGemsAfterTutorial + initialYellowGemsAfterTutorial + initialRedGemsAfterTutorial;
     }
 
@@ -84,6 +85,7 @@ public class HUBManager : MonoBehaviour
             HubMerchantItem_GemMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_GemMerchantItem_OnAnyHubMerchantItemBought;
             UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
             UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
+            Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
         }
 
         else {
@@ -122,7 +124,6 @@ public class HUBManager : MonoBehaviour
             Player.Instance.SetPosition(DEBUGPlayerSpawnPoint.position);
         }
     }
-  
 
     private void HubInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         if (firstHubEncounterRoutineOver) return;
@@ -250,6 +251,15 @@ public class HUBManager : MonoBehaviour
     #endregion
 
     #region FIRST HUB ENCOUNTER
+
+    private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, EventArgs e) {
+        if (firstHubEncounterRoutineOver) return;
+
+        firstHubEncounterRoutineOver = true;
+        ES3.Save("firstHubEncounterRoutineOver", true);
+
+        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.HUB_HeadToTeleporter);
+    }
 
     private void HubMerchantItem_GemMerchantItem_OnAnyHubMerchantItemBought(object sender, System.EventArgs e) {
         if (firstHubEncounterRoutineOver) return;
@@ -412,6 +422,7 @@ public class HUBManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         LevelUI_Locations.Instance.ShowLocationText(LocalizationManager.Instance.GetLocalizedText("TheEternalFlame"));
+        gemMerchantIndicator.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(7f);
 
@@ -420,7 +431,6 @@ public class HUBManager : MonoBehaviour
             LevelUI_ObjectiveUI.SubObjectiveType.HUB_TalkToTrader,
         };
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveTypes);
-        gemMerchantIndicator.gameObject.SetActive(true);
     }
 
     private IEnumerator StartGemMerchantTextLines(MerchantTextLinesSO textLines) {
@@ -443,9 +453,6 @@ public class HUBManager : MonoBehaviour
 
             yield return new WaitForSeconds(3f);
         }
-
-        firstHubEncounterRoutineOver = true;
-        ES3.Save("firstHubEncounterRoutineOver", true);
         CameraManager.Instance.ResetCameraTargetToPlayer();
     }
 
@@ -538,6 +545,7 @@ public class HUBManager : MonoBehaviour
 
         HubMerchantTalkUI.OnAnyMerchantEndTalk -= HubMerchantTalkUI_OnAnyMerchantEndTalk;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+        Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
     }
 
 }

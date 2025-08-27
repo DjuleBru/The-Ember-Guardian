@@ -38,14 +38,17 @@ MonoBehaviour:
   newMerchantTextLinesAfterLevel:
   - {fileID: 11400000, guid: 748e490f4fe4f2d40bd244009d72c632, type: 2}
   - {fileID: 11400000, guid: 5eb9be5c901d03349a40690831d066c5, type: 2}
+  unlocksNewGemType: 0
+  newGemTypeUnlockedByLevelList: 
   isReplayableLevel: 0
   totalDayCreatureDifficulty: 0
   dayCreatureTypes: []
   nightCreatureTypes:
   - {fileID: 11400000, guid: a8478894db1dd464292493c5e12bb3b1, type: 2}
-  hasBoss: 0
-  bossCreatureType: {fileID: 11400000, guid: 99d459fd6a02c044d90152bcc6de9ffb, type: 2}
-  bossNightSpawns: 0100000002000000
+  - {fileID: 11400000, guid: a8489a867b556644aade49405764f086, type: 2}
+  hasBoss: 1
+  bossCreatureType: {fileID: 11400000, guid: a8489a867b556644aade49405764f086, type: 2}
+  bossNightSpawns: 01000000
   startWaveToSpawnFromBothSides: 1
   baseDifficulty: 40
   intialMinSubwaveDifficulty: 10

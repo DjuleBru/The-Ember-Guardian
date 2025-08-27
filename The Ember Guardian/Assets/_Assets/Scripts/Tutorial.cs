@@ -89,6 +89,7 @@ public class Tutorial : MonoBehaviour
 
     private void Start() {
         testing = DebugManager.Instance.GetDebugMode_Tutorial();
+        PlayerCamp.Instance.BlockStructureUnlocks();
 
         VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
         LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
@@ -181,8 +182,8 @@ public class Tutorial : MonoBehaviour
                 //LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbsFromHunters);
                 //LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.RecruitMoreEmberlings);
                 //LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightMainFire);
-                //StartCoroutine(StartGuardingWorkersObjective(0f));
-                StartSetupCampObjective();
+                StartCoroutine(StartGuardingWorkersObjective(0f));
+                //StartSetupCampObjective();
             }
 
         }
@@ -317,6 +318,8 @@ public class Tutorial : MonoBehaviour
 
             Fire.Instance.SetFireInteractionsUpdateLocked(true);
             Fire.Instance.SetStructureSecondaryFunctionUnlocked(false);
+            ammoCrafterLocation.UnlockStructureLocation();
+            hunterShrineLocation.UnlockStructureLocation();
             ammoCrafterLocationIndicator.SetActive(true);
             hunterShrineLocationIndicator.SetActive(true);
             fireBuilt = true;

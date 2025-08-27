@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class CreatureAnimatorManager_Colossus : CreatureAnimatorManager
 {
-
+   
     protected override void Awake() {
         base.Awake();
-        SetUnReadyToMove();
+        //SetUnReadyToMove();
     }
 
-    protected override void Start() {
-        base.Start();
-        creatureAI.OnCreatureAggro += CreatureAI_OnCreatureAggro;
-    }
+    //protected override void Start() {
+    //    base.Start();
+    //    creatureAI.OnCreatureAggro += CreatureAI_OnCreatureAggro;
+    //}
 
-    private void CreatureAI_OnCreatureAggro(object sender, System.EventArgs e) {
-        animator.SetTrigger("Wake");
-    }
+    //private void CreatureAI_OnCreatureAggro(object sender, System.EventArgs e) {
+    //    animator.SetTrigger("Wake");
+    //}
 }

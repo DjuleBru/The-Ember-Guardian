@@ -280,7 +280,7 @@ public class CreatureAI : MonoBehaviour {
     }
     #endregion
 
-    protected void CheckAttackChange() {
+    protected virtual void CheckAttackChange() {
         if ((attackTarget as MonoBehaviour) == null) return;
         if (creatureAttack.GetAttackStarted()) return;
 

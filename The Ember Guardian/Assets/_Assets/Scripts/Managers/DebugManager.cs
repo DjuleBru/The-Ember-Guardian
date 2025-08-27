@@ -32,6 +32,7 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool dropRedOrbsUnlocked;
     [SerializeField] private bool takeScreenshotsContinuous;
     [SerializeField] private bool takeScreenshotsOnKeyPressed;
+    [SerializeField] private bool saveAfterEachLevel;
 
     int i = 0;
     private float screenshotTakeTimer;
@@ -156,5 +157,8 @@ public class DebugManager : MonoBehaviour
 
     public bool GetGunJamDebugInputsAllowed() {
         return allowDebugInputs_gunJam;
+    }
+    public bool GetSaveAfterEachLevelDebug() {
+        return saveAfterEachLevel;
     }
 }

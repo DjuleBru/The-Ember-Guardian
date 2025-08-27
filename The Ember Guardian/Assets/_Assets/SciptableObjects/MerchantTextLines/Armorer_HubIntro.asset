@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
   m_Name: Armorer_HubIntro
   m_EditorClassIdentifier: 
-  merchantTextLines: []
   merchantTextLinesLocalizationKeys:
   - armorer_HubIntro1
   - armorer_HubIntro2
+  - armorer_HubIntro3
+  nextTextLineSO_LinkedLevelNotCompleted: {fileID: 0}
+  nextTextLineSO_LinkedLevelCompleted: {fileID: 0}
   showShopAfterDialog: 1

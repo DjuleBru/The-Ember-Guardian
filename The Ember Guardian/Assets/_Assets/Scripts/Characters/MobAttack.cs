@@ -287,7 +287,7 @@ public class MobAttack : MonoBehaviour
         attackTargetGameObject = null;
     }
 
-    public Vector3 GetAttackDir() {
+    public virtual Vector3 GetAttackDir() {
         if((attackTargetIDamageable as MonoBehaviour) == null) {
             return Vector3.zero;
         }

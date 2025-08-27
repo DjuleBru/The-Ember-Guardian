@@ -237,11 +237,12 @@ public class LevelObjectives : MonoBehaviour
 
         if (levelMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.GunMerchant) {
 
-            LevelUI_ObjectiveUI.Instance.SetObjectiveCompleted(.5f);
-
-            yield return new WaitForSeconds(2f);
 
             if (NPCInteractionsIndex == 1) {
+
+                LevelUI_ObjectiveUI.Instance.SetObjectiveCompleted(.5f);
+
+                yield return new WaitForSeconds(2f);
                 LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.DestroyNest);
 
                 List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType>();
@@ -302,6 +303,10 @@ public class LevelObjectives : MonoBehaviour
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.TeleportBackToHub);
     }
 
+    public void ShowReturnToHubObj(float delay) {
+        StartCoroutine(ShowReturnToHubObjective(delay));
+    }
+ 
     private IEnumerator ShowReturnToHubObjective(float delayBeforeShowing) {
         yield return new WaitForSeconds(delayBeforeShowing);
         LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.ReturnToHub);
@@ -325,9 +330,8 @@ public class LevelObjectives : MonoBehaviour
     private void EndLevelArea_OnEndLevelFireLit(object sender, System.EventArgs e) {
         if(LevelManager.Instance.GetLevelSO().levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArmorer) {
             StartCoroutine(StartFinalMerchantDialog());
+            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
         }
-        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
-        StartCoroutine(ShowReturnToHubObjective(4f));
     }
 
     private void EndLevelArea_OnEndLevelAreaCleared(object sender, System.EventArgs e) {

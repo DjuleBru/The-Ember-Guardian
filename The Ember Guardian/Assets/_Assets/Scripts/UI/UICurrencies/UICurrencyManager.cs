@@ -293,6 +293,7 @@ public class UICurrencyManager : MonoBehaviour
 
         if(this == HubInventoryUI) {
             currencyTransform.localScale *= 1.5f;
+            currencyUICollected.PurifyGem();
         }
 
         //foreach (Currency_UI currency in currenciesInBag) {
@@ -589,6 +590,7 @@ public class UICurrencyManager : MonoBehaviour
             currenciesInBag.Add(currencyUI);
             if(isHubInventory) {
                 currencyUI.transform.localScale *= 1.5f;
+                currencyUI.PurifyGem();
             }
         }
 

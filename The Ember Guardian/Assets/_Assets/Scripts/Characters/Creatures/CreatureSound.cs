@@ -107,13 +107,17 @@ public class CreatureSound : SoundObject
     protected void CreatureAttack_OnMobAttack(object sender, System.EventArgs e) {
         if (creatureAttack.GetCurrentCreatureAttackSO().attackSFXHandledByAnimation) return;
         if (IsTooFarFromPlayer()) return;
+
+        if (creatureAttack.GetCurrentCreatureAttackSO() != null) {
+            attackSFXDelayAfterAnimationStart = creatureAttack.GetCurrentCreatureAttackSO().attackSFXDelayAfterAnimationStart;
+        }
+
         StartCoroutine(PlayAttackSFXAfterDelay(attackSFXDelayAfterAnimationStart));
     }
 
     protected IEnumerator PlayAttackSFXAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
         AudioClip[] audioClips = creatureAttack.GetCurrentCreatureAttackSO().attackAudioClips;
-
         if (audioClips.Length > 0) {
             creatureAudioSource.PlayOneShot(audioClips[Random.Range(0, audioClips.Length)], creatureAttack.GetCurrentCreatureAttackSO().attackVolumeMultiplier * sfxVolume);
         }

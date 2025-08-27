@@ -25,6 +25,7 @@ public class MouseCursorManager : MonoBehaviour
     private bool isUsingGamepad;
     private bool pauseMenuOpen;
     private bool tabMenuOpen;
+    private bool videoTipMenuOpen;
 
     private GunSO currentGunSO;
     private float initialMouseCursorWidth = 55f;
@@ -137,6 +138,8 @@ public class MouseCursorManager : MonoBehaviour
         ShowWeaponCursorGO(false);
     }
     private void VideoTipUI_OnVideoTipPanelOpened(object sender, System.EventArgs e) {
+        videoTipMenuOpen = true;
+        Debug.Log("videoTipMenuOpen " + videoTipMenuOpen);
         if (!isUsingGamepad) {
             ShowMouse(true);
         }
@@ -147,10 +150,10 @@ public class MouseCursorManager : MonoBehaviour
     }
 
     private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, System.EventArgs e) {
-        ShowWeaponCursorGO(true);
+        ShowWeaponAndMouseCursorGO(true);
     }
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
-        ShowWeaponCursorGO(false);
+        ShowWeaponAndMouseCursorGO(false);
     }
 
     private void FastTravelTP_OnAnyPlayerWarpedOut(object sender, System.EventArgs e) {
@@ -166,6 +169,8 @@ public class MouseCursorManager : MonoBehaviour
     }
 
     private void VideoTipUI_OnVideoTipPanelClosed(object sender, VideoTipUI.OnVideoTipPanelClosedEventArgs e) {
+        videoTipMenuOpen = false;
+        Debug.Log("videoTipMenuOpen " + videoTipMenuOpen);
         if (!isUsingGamepad) {
             ShowMouse(false);
         }
@@ -217,7 +222,7 @@ public class MouseCursorManager : MonoBehaviour
     private void PauseMenuUI_OnPauseMenuClosed(object sender, System.EventArgs e) {
         pauseMenuOpen = false;
 
-        if (!isUsingGamepad && AllMenusClosed()) {
+        if (!isUsingGamepad) {
             ShowMouse(false);
         }
     }
@@ -225,7 +230,7 @@ public class MouseCursorManager : MonoBehaviour
     private void PlayerTabMenuUI_OnPlayerTabClosed(object sender, System.EventArgs e) {
         tabMenuOpen = false;
 
-        if (!isUsingGamepad && AllMenusClosed()) {
+        if (!isUsingGamepad) {
             ShowMouse(false);
         }
     }
@@ -332,6 +337,7 @@ public class MouseCursorManager : MonoBehaviour
 
     public void ShowMouse(bool show) {
         if (this == null) return; // Safety check if called on destroyed object
+        if (!show && !AllMenusClosed()) return;
 
         Cursor.visible = show;
 
@@ -362,7 +368,7 @@ public class MouseCursorManager : MonoBehaviour
     }
 
     private bool AllMenusClosed() {
-        return !tabMenuOpen && !pauseMenuOpen;
+        return !tabMenuOpen && !pauseMenuOpen && !videoTipMenuOpen;
     }
 
     private void OnDestroy() {

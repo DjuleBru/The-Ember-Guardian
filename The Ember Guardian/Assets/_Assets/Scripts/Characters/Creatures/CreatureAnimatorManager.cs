@@ -96,7 +96,7 @@ public class CreatureAnimatorManager : MonoBehaviour
         }
     }
 
-    protected void HandleXScale() {
+    protected virtual void HandleXScale() {
         if (stunned || immobilized) return;
 
         if (creatureAttack.GetAttacking()) {

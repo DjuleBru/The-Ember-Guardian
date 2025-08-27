@@ -63,12 +63,12 @@ public class CreatureSO : ScriptableObject
     public bool canFlank;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
-    [Range(1, 20)]
+    [Range(0, 20)]
     [ShowIf("flying")]
     public float flightMinAltitude;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
-    [Range(1, 20)]
+    [Range(0, 20)]
     [ShowIf("flying")]
     public float flightMaxAltitude;
     [VerticalGroup("Game Data/Stats")]

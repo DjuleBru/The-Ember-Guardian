@@ -16,8 +16,8 @@ MonoBehaviour:
   isProjectileAttack: 0
   isStaticProjectileAttack: 0
   isAnimatedAttack: 1
-  attackCooldown: 1.5
-  minAttackRange: 5
+  attackCooldown: 2.5
+  minAttackRange: 6
   maxAttackRange: 8
   hasDifferentDayAndNightRange: 0
   minAttackRange_Night: 0
@@ -27,7 +27,7 @@ MonoBehaviour:
   damage: 1
   damageToFire: 2
   damageToBarricades: 2
-  canAttackPlayerBehindBarricades: 1
+  canAttackPlayerBehindBarricades: 0
   canAttackPlayerOnTower: 0
   attackAnimationDelay: 0.4
   totalAttackAnimationTime: 2.2
@@ -52,5 +52,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d81e1b82f5aea0e43aeeaba82643596a, type: 3}
   attackStartedChargingAudioClips: []
   attackReleasedAudioClips: []
-  attackVolumeMultiplier: 0.5
+  attackVolumeMultiplier: 1
   attackHitVolumeMultiplier: 1

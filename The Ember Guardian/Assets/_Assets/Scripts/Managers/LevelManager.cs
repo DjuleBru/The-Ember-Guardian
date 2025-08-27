@@ -128,7 +128,8 @@ public class LevelManager : MonoBehaviour
     private void LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, EventArgs e) {
         levelHubMerchantInteractionIndex++;
         if(levelHubMerchantInteractionIndex == 2) {
-            StartCoroutine(EnableEndLevelPortal(2f));
+            LevelObjectives.Instance.ShowReturnToHubObj(2f);
+            StartCoroutine(EnableEndLevelPortal(3f));
         }
 
         if(levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
@@ -211,7 +212,7 @@ public class LevelManager : MonoBehaviour
         OnLevelFailed?.Invoke(this, EventArgs.Empty);
         StartCoroutine(LooseLevelCoroutine());
 
-        float defeatGemsProportionsRewarded = .33f;
+        float defeatGemsProportionsRewarded = .66f;
         if (DemoMainLevelManager.Instance != null) {
             defeatGemsProportionsRewarded = 1f;
         }

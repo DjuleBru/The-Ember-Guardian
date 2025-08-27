@@ -224,6 +224,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     public void SetObjectiveCompleted(float delay) {
+        Debug.Log("SetObjectiveCompleted");
         StartCoroutine(SetObjectiveCompletedCoroutine(delay));
     }
 
