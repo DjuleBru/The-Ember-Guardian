@@ -217,7 +217,7 @@ public class Fire : Structure, IDamageable {
     }
     private void LevelManager_OnLevelSuccess(object sender, EventArgs e) {
         ES3.Save("lastPrimordialFireLit", primordialFireColor);
-        LevelUI_Locations.Instance.ShowFireTextAfterDelay(4f);
+        LevelUI_Locations.Instance.ShowFireTextAfterDelay(1f);
     }
 
     protected override void TriggerStructurePrimaryFunction() {
@@ -256,16 +256,25 @@ public class Fire : Structure, IDamageable {
     }
 
     public void RefreshHubFireEmberExtractable() {
+
         if (UICurrencyManager.PlayerInventoryUI == null) return;
+        if (PlayerCurrencies.Instance.GetCarryingEmber()) {
+            SetStructureSecondaryFunctionUnlocked(false);
+            ActivateStructureSecondaryFunctionInteraction(false);
+            return;
+        };
+
         if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfCategory(PlayerCurrencies.CurrencyCategory.gem).Count == 0) {
             SetStructureSecondaryFunctionUnlocked(true);
             ActivateStructureSecondaryFunctionInteraction(true);
             SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);
-        } else {
+        }
+        else {
             SetStructureSecondaryFunctionUnlocked(false);
             ActivateStructureSecondaryFunctionInteraction(false);
         };
     }
+
 
     private void PlayerCurrencies_OnEmberDropped(object sender, EventArgs e) {
         emberExtracted = false;

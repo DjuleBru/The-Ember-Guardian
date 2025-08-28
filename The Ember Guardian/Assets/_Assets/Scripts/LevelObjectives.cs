@@ -16,6 +16,7 @@ public class LevelObjectives : MonoBehaviour
     private bool initialFireLit;
     private bool darklingNestFound;
     private bool darklingNestCleared;
+    private bool returnToHubObjectiveShown;
     private int NPCInteractionsIndex;
 
     private int nightsSurvived = -1;
@@ -81,7 +82,7 @@ public class LevelObjectives : MonoBehaviour
 
             } else {
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.SurviveNights);
-                StartCoroutine(ShowReturnToHubObjective(4f));
+                ShowReturnToHubObj(4f);
             }
 
         }
@@ -94,7 +95,7 @@ public class LevelObjectives : MonoBehaviour
         if (watcherArtifactFillUpAmount == watcherArtifactFillUpTotalAmount) {
 
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbs);
-            StartCoroutine(ShowReturnToHubObjective(4f));
+            ShowReturnToHubObj(4f);
         }
     }
 
@@ -106,7 +107,7 @@ public class LevelObjectives : MonoBehaviour
 
             if (obstaclesRemoved == obstaclesToRemove) {
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.ProgressWithScavengers);
-                StartCoroutine(ShowReturnToHubObjective(2f));
+                ShowReturnToHubObj(4f);
             }
         }
     }
@@ -304,6 +305,10 @@ public class LevelObjectives : MonoBehaviour
     }
 
     public void ShowReturnToHubObj(float delay) {
+        if (returnToHubObjectiveShown) return;
+
+        returnToHubObjectiveShown = true;
+
         StartCoroutine(ShowReturnToHubObjective(delay));
     }
  
@@ -330,8 +335,11 @@ public class LevelObjectives : MonoBehaviour
     private void EndLevelArea_OnEndLevelFireLit(object sender, System.EventArgs e) {
         if(LevelManager.Instance.GetLevelSO().levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArmorer) {
             StartCoroutine(StartFinalMerchantDialog());
-            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
+        } else {
+            ShowReturnToHubObj(3f);
         }
+
+        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
     }
 
     private void EndLevelArea_OnEndLevelAreaCleared(object sender, System.EventArgs e) {

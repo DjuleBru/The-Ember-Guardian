@@ -48,7 +48,6 @@ public class CreatureAttack : MobAttack
 
     public void SetAttackSO(CreatureAttackSO attackSO) {
         if (attackSO == null) return;
-        Debug.Log("SetAttackSO " + attackSO);
         currentCreatureAttackSO = attackSO;
 
         isProjectileAttack = attackSO.isProjectileAttack;

@@ -121,6 +121,7 @@ public class WorkerManager : MonoBehaviour
     }
 
     public void AutoAssignSideToWorker(Worker worker) {
+        Debug.Log("AutoAssignSideToWorker ");
         float randomFloat = UnityEngine.Random.Range(0.0f, 1.0f);
         bool equalGoesLeft = false;
         if (randomFloat < 0.5f) {
@@ -223,7 +224,7 @@ public class WorkerManager : MonoBehaviour
         }
 
         if(campSide == CampZoneManager.CampSide.left) {
-            rightSideAssignedHunters.Add(worker);
+            leftSideAssignedHunters.Add(worker);
             worker.AssignSide(CampZoneManager.CampSide.left);
         }
         if (campSide == CampZoneManager.CampSide.right) {

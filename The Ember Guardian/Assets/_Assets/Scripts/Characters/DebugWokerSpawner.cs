@@ -29,7 +29,11 @@ public class DebugWokerSpawner : MobSpawner
             worker.transform.parent = SpawnedObjects.Instance.workersContainer;
             worker.RecruitWorker(false);
             worker.GetComponent<WorkerAI>().SetDebugSpawn();
-            WorkerManager.Instance.AssignSideToHunter(worker, campSide);
+
+            if(jobType == WorkerAI.JobTypes.hunter) {
+                WorkerManager.Instance.AssignSideToHunter(worker, campSide);
+            }
+
             yield return new WaitForEndOfFrame();
             worker.GetComponent<WorkerAI>().SetJob(jobType);
 

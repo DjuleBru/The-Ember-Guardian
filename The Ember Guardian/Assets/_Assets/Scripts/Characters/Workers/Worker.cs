@@ -248,7 +248,7 @@ public class Worker : Mob {
         }
 
         initialHealth = health;
-        if (workerAI.GetDebugSpawn()) return;
+        //if (workerAI.GetDebugSpawn()) return;
         if(workerAI.GetJob() != WorkerAI.JobTypes.wild && workerAI.GetJob() != WorkerAI.JobTypes.jobless) {
             WorkerManager.Instance.AutoAssignSideToWorker(this);
         }

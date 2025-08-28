@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57289136e0e1e6418ec81259b9649b2, type: 3}
   m_Name: TarnishedWidow
   m_EditorClassIdentifier: 
-  enemyName: Slug
+  enemyName: TarnishedWidow
   isBoss: 1
   description: Basic, slightly tanky, slow creature.
   creatureIcon: {fileID: 21300000, guid: 40ddd6d1c183d494bb18b8abf32d634b, type: 3}
@@ -22,40 +22,31 @@ MonoBehaviour:
   detectionRange_Day: 12
   detectionRange_Night: 6
   primaryAttackSO: {fileID: 11400000, guid: 0ea8f16dee8d8684eb956762fee60002, type: 2}
+  hasRangedAndMeleeAttack: 0
   secondaryAttackSO: {fileID: 0}
   specialAttackSO: {fileID: 0}
   flying: 0
+  canFlank: 0
   flightMinAltitude: 0
   flightMaxAltitude: 0
+  flightAltitudeRandomizer: 0
   dayMoveSpeed: 2.2
   nightMoveSpeed: 2.2
   aggroMoveSpeedBuff: 1.5
   enteredLightMoveSpeedDebuff: 1.5
   moveSpeedRandomizerDelta: 0
   maxHealth: 2150
-  damage: 2
-  attackRate: 3
   enteredLightattackRateDebuff: 2.5
-  isRangedAttack: 0
-  minAttackRange: 3
-  maxAttackRange: 4
-  attackRangeRandomizer: 0.1
-  attackRangeMaxDistanceMiss: 0.1
-  damageToFire: 2
+  probabilityToAggroOnGunShot: 1
   immuneToPoison: 1
   immuneToShock: 1
   immuneToImmobilize: 1
-  attackAnimationDelay: 0.4
-  attackSFXDelayAfterAnimationStart: 0.3
-  totalAttackAnimationTime: 1.7
   hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 0.5
   workerTargetingPriority: 1
   playerTargetingPriority: 2
   barricadeTargetingPriority: 3
-  canAttackPlayerBehindBarricades: 1
-  canAttackPlayerOnTower: 0
   currencyTypeDroppedList: 03000000
   currencyDropAmountList: 01000000
   difficulty: 50
@@ -67,21 +58,6 @@ MonoBehaviour:
   dieVolumeMultiplier: 1.2
   aggroAudioClips: []
   aggroVolumeMultiplier: 0.8
-  attackSFXHandledByAnimation: 0
-  attackStartedChargingAudioClips: []
-  attackReleasedAudioClips: []
-  attackHitAudioClips:
-  - {fileID: 8300000, guid: ed07ecc0cf11a5649b0bed809c1c2489, type: 3}
-  - {fileID: 8300000, guid: b6327cbb36b024c4e92697d91477b041, type: 3}
-  - {fileID: 8300000, guid: 21216f467a220f74e9b69835949785d1, type: 3}
-  - {fileID: 8300000, guid: 2b8781723ff61b5489b834c4acb4f13d, type: 3}
-  - {fileID: 8300000, guid: d81e1b82f5aea0e43aeeaba82643596a, type: 3}
-  attackVolumeMultiplier: 0.5
-  attackAudioClips:
-  - {fileID: 8300000, guid: 9ffde96872b2acd4198a3b2fd5c64ca1, type: 3}
-  - {fileID: 8300000, guid: 409b62d58983121448fb2db828c8bb62, type: 3}
-  - {fileID: 8300000, guid: b29f13819ad84c440b5bf6ca17e972d9, type: 3}
-  attackHitVolumeMultiplier: 1
   idleAudioClips: []
   idleVolumeMultiplier: 0.5
   footStepAudioClips:
@@ -96,6 +72,8 @@ MonoBehaviour:
   footstepVolumeMultiplier: 2
   hasContinousAudioClip: 0
   continuousAudioClip: []
+  hasContinousMovementAudioClip: 0
+  continuousMovementAudioClip: []
   spawnAudioClips:
   - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
   - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}

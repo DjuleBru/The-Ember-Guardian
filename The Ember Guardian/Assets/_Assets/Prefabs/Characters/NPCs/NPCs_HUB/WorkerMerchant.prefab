@@ -8562,7 +8562,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 140
+      value: -165.28073
       objectReference: {fileID: 0}
     - target: {fileID: 3162550493512327587, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
@@ -8602,7 +8602,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 125
+      value: 127.5
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -8631,6 +8631,22 @@ PrefabInstance:
     - target: {fileID: 4275334315943472678, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 9.900002
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446599287728712335, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446599287728712335, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446599287728712335, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 407.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446599287728712335, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -15023,7 +15039,7 @@ PrefabInstance:
     - target: {fileID: 6631584754312160576, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: edfcc61a41fe6774a8a2b051c69d1b9b, type: 3}
+      objectReference: {fileID: 21300000, guid: c24055b6949a7d54a9f97fe044f34897, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: itemLockedInDemo
       value: 1
@@ -15121,7 +15137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 694c9a0798357e84ea56b5b8d80611c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Signal Beacon
+  itemName: Initial Emberlings
   greenGemCost: 0
   redGemCost: 0
   blueGemCost: 5
@@ -15133,7 +15149,7 @@ MonoBehaviour:
   itemLevel: 0
   maxItemLevel: 0
   isBoughtAtStart: 0
-  isUnlockedAtStart: 0
+  isUnlockedAtStart: 1
   itemUpgradeable: 1
   itemEquipable: 0
   unlockRequiresAllPrerequisited: 0

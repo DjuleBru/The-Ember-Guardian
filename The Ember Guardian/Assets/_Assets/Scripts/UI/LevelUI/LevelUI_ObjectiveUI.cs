@@ -124,6 +124,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     public void SetNewObjectiveUI(ObjectiveType objectiveType) {
         objectiveText.text = GetObjectiveTextFromType(objectiveType);
         objectiveGameObject.SetActive(true);
+        objectiveAnimator.ResetTrigger("Completed");
         objectiveAnimator.SetTrigger("NewObjective");
         OnObjectiveUIShown?.Invoke(this, EventArgs.Empty);
 
@@ -224,7 +225,6 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     public void SetObjectiveCompleted(float delay) {
-        Debug.Log("SetObjectiveCompleted");
         StartCoroutine(SetObjectiveCompletedCoroutine(delay));
     }
 

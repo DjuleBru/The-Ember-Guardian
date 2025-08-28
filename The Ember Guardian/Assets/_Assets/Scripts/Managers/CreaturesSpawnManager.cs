@@ -19,6 +19,21 @@ public class CreaturesSpawnManager : MonoBehaviour {
         }
     }
 
+    private List<SpecialWaveType> specialWaveTypesInLevel;
+    private float specialWaveProbability;
+    private int maxSpecialWaveAmount;
+    private int currentSpecialWaveAmount;
+    private bool hasSpecialWaveTypes;
+    public enum SpecialWaveType {
+        none,
+        crawlers,
+        flying,
+        ghouls,
+    }
+    [SerializeField] private CreatureSO crawlerCreature;
+    [SerializeField] private CreatureSO ghoulCreature;
+    private SpecialWaveType currentSpecialWaveType = SpecialWaveType.none;
+
     public event EventHandler<OnRemainingNightCreaturesChangedEventArgs> OnRemainingNightCreaturesChanged;
     public class OnRemainingNightCreaturesChangedEventArgs : EventArgs {
         public float remainingNightCreaturesNormalized;
@@ -119,6 +134,11 @@ public class CreaturesSpawnManager : MonoBehaviour {
         difficultyAtMaxWave = levelSO.difficultyAtMaxWave;
         difficultyAnimationCurve = levelSO.difficultyAnimationCurve;
         maxWavesInAnimationCurve = levelSO.maxWaveInAnimationCurve;
+
+        hasSpecialWaveTypes = levelSO.hasSpecialWaveTypes;
+        specialWaveProbability = levelSO.specialWaveProbability;
+        specialWaveTypesInLevel = levelSO.specialWaveTypesInLevel;
+        maxSpecialWaveAmount = levelSO.maxSpecialWaveAmount;
 
         canSpawnElite = levelSO.canSpawnElite;
     }
@@ -237,6 +257,20 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
     public void SetWaveParameters(int waveNumber, bool wavesRandomSideProportion, bool subWaveRandomSideProportion) {
         totalNightCreatures = 0;
+        bool bossSpawnsThisNight = false;
+        if (hasBoss) {
+            bossSpawnsThisNight = bossNightsSpawns.Contains(currentWaveNumber);
+        }
+
+        currentSpecialWaveType = SpecialWaveType.none;
+        if (hasSpecialWaveTypes && !bossSpawnsThisNight && currentSpecialWaveAmount < maxSpecialWaveAmount) {
+            float roll = UnityEngine.Random.Range(0f, 1f);
+            if (roll < specialWaveProbability) {
+                currentSpecialWaveType = specialWaveTypesInLevel[UnityEngine.Random.Range(0, specialWaveTypesInLevel.Count)];
+                currentSpecialWaveAmount++;
+                Debug.Log("Special wave type selected: " + currentSpecialWaveType);
+            }
+        }
 
         if (setDifficultyAnimationCurve) {
 
@@ -261,17 +295,19 @@ public class CreaturesSpawnManager : MonoBehaviour {
         maxSubwaveDifficulty *= cumulativeDifficultyMultiplier;
 
         // Add boss
-        if (hasBoss) {
-            if (bossNightsSpawns.Contains(currentWaveNumber)) {
-                Debug.Log("WaveDifficultyBeforeAddingBoss " + waveDifficulty);
+        if (hasBoss && bossSpawnsThisNight) {
+            Debug.Log("WaveDifficultyBeforeAddingBoss " + waveDifficulty);
 
-                waveDifficulty /= 3f;
-                minSubwaveDifficulty /= 3f;
-                maxSubwaveDifficulty /= 3f;
-
-            };
+            waveDifficulty /= 3f;
+            minSubwaveDifficulty /= 3f;
+            maxSubwaveDifficulty /= 3f;
         }
 
+        if (currentSpecialWaveType == SpecialWaveType.flying) {
+            waveDifficulty /= 1.5f;
+            minSubwaveDifficulty /= 1.5f;
+            maxSubwaveDifficulty /= 1.5f;
+        }
 
         subWaveNumber = (int)(waveDifficulty / maxSubwaveDifficulty) + 1;
         AnimationCurve subWaveDifficultyCurve = subWaveDifficultyCurveList[UnityEngine.Random.Range(0, subWaveDifficultyCurveList.Count)];
@@ -339,7 +375,15 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
         List<SpawnedCreatureInfo> waveCreatures = new List<SpawnedCreatureInfo>();
 
-        List<CreatureSO> creaturesToSpawn = GetCreatureSOListToSpawn(subWaveDifficulty, subWaveIndex);
+        List<CreatureSO> creaturesToSpawn = new List<CreatureSO>();
+
+        if (currentSpecialWaveType != SpecialWaveType.none) {
+            creaturesToSpawn = GetSpecialWaveCreatures(currentSpecialWaveType, subWaveDifficulty);
+        }
+        else {
+            creaturesToSpawn = GetCreatureSOListToSpawn(subWaveDifficulty, subWaveIndex);
+        }
+
         int totalCreaturesToSpawn = creaturesToSpawn.Count;
 
         // Décide d'un spawn à gauche, à droite, ou des deux côtés
@@ -393,6 +437,66 @@ public class CreaturesSpawnManager : MonoBehaviour {
             }
         }
         return waveCreatures;
+    }
+
+    private List<CreatureSO> GetSpecialWaveCreatures(SpecialWaveType waveType, float difficultyBudget) {
+        List<CreatureSO> creaturesToSpawn = new List<CreatureSO>();
+        CreatureSO forcedCreature = null;
+
+        switch (waveType) {
+            case SpecialWaveType.crawlers:
+                forcedCreature = crawlerCreature;
+                break;
+            case SpecialWaveType.ghouls:
+                forcedCreature = ghoulCreature;
+                break;
+            default:
+                Debug.LogWarning("Special wave type not implemented: " + waveType);
+                return creaturesToSpawn;
+
+            case SpecialWaveType.flying:
+                List<CreatureSO> flyingCreatures = new List<CreatureSO>();
+                foreach (CreatureSO creatureSO in creatureTypes) {
+                    if(creatureSO.flying) {
+                        flyingCreatures.Add(creatureSO);
+                    }
+                }
+                float totalProbability = flyingCreatures.Sum(c => c.spawnProbability);
+
+                while (difficultyBudget > 0) {
+                    float randomValue = UnityEngine.Random.Range(0f, totalProbability);
+                    float cumulative = 0f;
+                    CreatureSO selected = null;
+
+                    foreach (var c in flyingCreatures) {
+                        cumulative += c.spawnProbability;
+                        if (randomValue <= cumulative) {
+                            selected = c;
+                            break;
+                        }
+                    }
+
+                    if (selected != null && difficultyBudget >= selected.difficulty) {
+                        creaturesToSpawn.Add(selected);
+                        difficultyBudget -= selected.difficulty;
+                    }
+                    else {
+                        break;
+                    }
+                }
+
+                 break;
+        }
+
+        if (forcedCreature == null) return creaturesToSpawn;
+
+        // On dépense tout le budget uniquement en cette créature
+        while (difficultyBudget >= forcedCreature.difficulty) {
+            creaturesToSpawn.Add(forcedCreature);
+            difficultyBudget -= forcedCreature.difficulty;
+        }
+
+        return creaturesToSpawn;
     }
 
     private void SetWaveSidesProportion(int waveNumber) {
@@ -450,6 +554,14 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
                 // Vérifier la taille max du paquet
                 int maxPacketSize = currentGroup[0].creature.maxCreaturesPerPacket;
+
+                if (currentSpecialWaveType == SpecialWaveType.ghouls || currentSpecialWaveType == SpecialWaveType.flying) {
+                    maxPacketSize *= 2;
+                }
+                if (currentSpecialWaveType == SpecialWaveType.crawlers) {
+                    maxPacketSize *= 3;
+                }
+
                 int chunkSize = currentGroup.Count > maxPacketSize ? maxPacketSize : currentGroup.Count;
 
                 for (int i = 0; i < chunkSize; i++) {

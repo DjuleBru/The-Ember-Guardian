@@ -62,7 +62,6 @@ public class DogDigAbility : MonoBehaviour
             sniffing = true;
             OnSniffStart?.Invoke(this, EventArgs.Empty);
             digTimer = digCooldown;
-            Debug.Log("StartSniff");
             return;
         }
 

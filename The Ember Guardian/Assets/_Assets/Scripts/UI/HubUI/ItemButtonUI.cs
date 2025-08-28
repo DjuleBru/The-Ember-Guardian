@@ -207,7 +207,6 @@ public class ItemButtonUI : ButtonUI {
     }
 
     public void BuyItem() {
-
         if (!hubMerchantItem.GetItemUnlocked() || (itemLockedInDemo && HUBManager.Instance.GetIsDemo())) {
             OnAnyLockedButtonTryPress?.Invoke(this, EventArgs.Empty);
             CheckItemLockedFromOtherMerchantItem();

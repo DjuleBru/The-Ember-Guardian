@@ -97,6 +97,13 @@ public class Barricade : Structure, IDamageable {
         }
     }
 
+    protected override void DayNightManager_OnNightStart(object sender, EventArgs e) {
+        base.DayNightManager_OnNightStart(sender, e);
+        if (barricadeRepairable) {
+            barricadeVisual.ShowRepairStructureVisual(false);
+        }
+    }
+
     protected override void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         base.DayNightManager_OnDawnStart(sender, e);
         RefreshBarricadeRepair();

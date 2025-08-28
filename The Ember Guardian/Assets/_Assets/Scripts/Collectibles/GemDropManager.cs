@@ -80,7 +80,7 @@ public class GemDropManager : MonoBehaviour
 
     private IEnumerator UpdateLevelGems() {
         yield return new WaitForSeconds(1f);
-        totalGemsDropPoolPerRun = Mathf.RoundToInt((maxBagGemCapacity - totalChestGems) * 1.3f);
+        totalGemsDropPoolPerRun = Mathf.RoundToInt((maxBagGemCapacity - totalChestGems) * 1.5f);
         currentGemDropPool = totalGemsDropPoolPerRun;
     }
 

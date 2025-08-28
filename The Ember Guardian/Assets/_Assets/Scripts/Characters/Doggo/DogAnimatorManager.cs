@@ -259,7 +259,10 @@ public class DogAnimatorManager : MonoBehaviour {
 
     private void CheckStopSniffing() {
         if (!digAbilityUnlocked) return;
-        if(animator.GetBool("Sniffing") == true) {
+
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("Doggo_WalkSniff")) {
+            animator.SetBool("Sniffing", false);
             OnDogSniffedEnd?.Invoke(this, EventArgs.Empty);
         }
     }

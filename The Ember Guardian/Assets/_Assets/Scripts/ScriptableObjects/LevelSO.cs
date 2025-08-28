@@ -165,6 +165,18 @@ public class LevelSO : ScriptableObject
     [BoxGroup("Creatures/NightWaves")]
     [LabelWidth(300)]
     public bool canSpawnElite;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    public bool hasSpecialWaveTypes;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    public List<CreaturesSpawnManager.SpecialWaveType> specialWaveTypesInLevel;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    public float specialWaveProbability;
+    [BoxGroup("Creatures/NightWaves")]
+    [LabelWidth(300)]
+    public int maxSpecialWaveAmount;
 
     [BoxGroup("Environment")]
     [LabelWidth(300)]

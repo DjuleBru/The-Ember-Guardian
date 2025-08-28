@@ -66,7 +66,6 @@ public class MobAttack : MonoBehaviour
 
         if ((attackTargetIDamageable as MonoBehaviour)!= null) {
             attacking = true;
-
             if(attackTimer <= 0 ) {
                 attackTimer = attackCooldown / attackCooldownBuff;
                 Attack();
@@ -257,7 +256,12 @@ public class MobAttack : MonoBehaviour
         if (iDamageable != null) {
             iDamageable.TakeDamage(attackDamage, transform, false, attackIgnoresTemporaryInvincibility);
         }
+
         if ((iDamageable as MonoBehaviour) == Fire.Instance) {
+            if(mob is Creature) {
+                Creature creature = (Creature) mob;
+                if (creature.GetCreatureSO().isBoss) return;
+            }
             mob.Die();
         }
 

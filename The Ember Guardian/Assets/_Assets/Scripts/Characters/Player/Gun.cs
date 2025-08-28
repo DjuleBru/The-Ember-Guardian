@@ -290,6 +290,7 @@ public class Gun : MonoBehaviour
 
         if (damageSurgeBuffedLastBullet) {
             damageSurgeBuffedLastBullet = false;
+            DebuffBulletDamage(perfectJamDamageBuff);
         }
 
         if (damageSurgeBuffed) {
@@ -300,7 +301,6 @@ public class Gun : MonoBehaviour
                 damageSurgeBuffed = false;
                 damageSurgeBuffedLastBullet = true;
                 bulletAfterPerfectJamSucceededIndex = 0;
-                DebuffBulletDamage(perfectJamDamageBuff);
                 OnPerfectQTEDamageBuffEnded?.Invoke(this, EventArgs.Empty);
             } else {
                 OnAnyGunJamBuffedDamageShot?.Invoke(this, EventArgs.Empty);

@@ -32,7 +32,7 @@ public class CreatureSO : ScriptableObject
     [HorizontalGroup("Game Data")]
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
-    [Range(1, 100)]
+    [Range(1, 1000)]
     public float mass;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
@@ -78,11 +78,11 @@ public class CreatureSO : ScriptableObject
     public float flightAltitudeRandomizer;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
-    [Range(1, 20)]
+    [Range(0.1f, 20)]
     public float dayMoveSpeed;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
-    [Range(1, 20)]
+    [Range(0.1f, 20)]
     public float nightMoveSpeed;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]

@@ -481,6 +481,7 @@ public class VideoTipManager : MonoBehaviour
         specialAmmoTipShown = ES3.Load("specialAmmoTipShown", false);
         trapTipShown = ES3.Load("trapTipShown", false);
         surgeWindowTipShown = ES3.Load("surgeWindowTipShown", false);
+        gunManagementTipShown = ES3.Load("gunManagementTipShown", false);
     }
 
     private void OnDestroy() {

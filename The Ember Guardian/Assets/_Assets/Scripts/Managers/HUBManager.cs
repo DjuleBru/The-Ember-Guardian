@@ -34,9 +34,9 @@ public class HUBManager : MonoBehaviour
     private float hubDelayToStartPlayingMusic = 3f;
 
     private int gemAmountDroppedInChest;
-    private int initialRedGemsAfterTutorial = 3;
-    private int initialGreenGemsAfterTutorial = 3;
-    private int initialYellowGemsAfterTutorial = 3;
+    private int initialRedGemsAfterTutorial = 5;
+    private int initialGreenGemsAfterTutorial = 5;
+    private int initialYellowGemsAfterTutorial = 5;
     private int totalGemsAfterTutorial;
 
     private bool firstHubEncounterRoutineOver;
@@ -475,7 +475,13 @@ public class HUBManager : MonoBehaviour
     }
 
     private void RefreshPlayerHasGemsIndicators() {
-        if (GetIsDemo()) return;
+        StartCoroutine(RefreshPlayerHasGemsIndicatorsAfterDelay());
+    }
+
+    private IEnumerator RefreshPlayerHasGemsIndicatorsAfterDelay() {
+        yield return new WaitForSeconds(.1f);
+        if (GetIsDemo()) yield break;
+
         bool playerHasGemsInInventory = (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfCategory(PlayerCurrencies.CurrencyCategory.gem).Count != 0);
 
         if (playerHasGemsInInventory) {
@@ -493,10 +499,17 @@ public class HUBManager : MonoBehaviour
             chestIndicatorActive = false;
             chestIndicator.gameObject.SetActive(false);
 
-            hubFire.SetHubFireEmberExtractable(true);
-            fireIndicatorActive = true;
-            fireIndicator.gameObject.SetActive(true);
-            hubFireEmberExtractable = true;
+            if (!PlayerCurrencies.Instance.GetCarryingEmber()) {
+                fireIndicatorActive = true;
+                fireIndicator.gameObject.SetActive(true);
+                hubFireEmberExtractable = true;
+            }
+            else {
+                fireIndicatorActive = false;
+                fireIndicator.gameObject.SetActive(false);
+                hubFireEmberExtractable = false;
+            };
+
         }
     }
 

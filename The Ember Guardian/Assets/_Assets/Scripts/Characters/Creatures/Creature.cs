@@ -228,7 +228,7 @@ public class Creature : Mob
     }
 
     protected void EliteDropGems() {
-        int randomRequestedAmount = GetDroppedGems(0.5f, 3);
+        int randomRequestedAmount = GetDroppedGems(0.5f, 2);
 
         if (!GemDropManager.Instance.TrySpendFromDropPool(randomRequestedAmount, out int actualDropAmount))
             return;

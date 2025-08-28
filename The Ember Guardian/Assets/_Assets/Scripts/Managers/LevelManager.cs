@@ -70,6 +70,7 @@ public class LevelManager : MonoBehaviour
     }
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
+        if (levelHubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.WorkerMerchant) return;
         if(levelHubMerchant != null) {
             levelHubMerchant.SetHasTalkLinesToShow(true);
         }
@@ -144,6 +145,7 @@ public class LevelManager : MonoBehaviour
 
     private void LevelUI_OnObjectiveCompleted(object sender, EventArgs e) {
         LevelSuccess();
+        LevelObjectives.Instance.ShowReturnToHubObj(2.5f);
     }
 
     [Button]
@@ -227,7 +229,6 @@ public class LevelManager : MonoBehaviour
     }
 
     private IEnumerator EnableEndLevelPortal(float delayToEnable) {
-        Debug.Log("enableEndLevelPortal");
         yield return new WaitForSeconds(delayToEnable);
         endLevelPortal.gameObject.SetActive(true);
     }
