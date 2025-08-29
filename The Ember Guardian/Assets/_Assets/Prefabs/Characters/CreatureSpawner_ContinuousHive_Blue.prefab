@@ -52,9 +52,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: CreatureSpawner_ContinuousHive_Blue
       objectReference: {fileID: 0}
+    - target: {fileID: 7560338047481546779, guid: 32251729879ffef4bad0cb6e330a7b02, type: 3}
+      propertyPath: spawnerHealth
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 8757581385236500672, guid: 32251729879ffef4bad0cb6e330a7b02, type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8757581385236500672, guid: 32251729879ffef4bad0cb6e330a7b02, type: 3}
       propertyPath: m_Materials.Array.data[0]

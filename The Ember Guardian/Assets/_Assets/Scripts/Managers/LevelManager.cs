@@ -70,8 +70,8 @@ public class LevelManager : MonoBehaviour
     }
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
-        if (levelHubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.WorkerMerchant) return;
         if(levelHubMerchant != null) {
+            if (levelHubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.WorkerMerchant) return;
             levelHubMerchant.SetHasTalkLinesToShow(true);
         }
     }
@@ -214,7 +214,7 @@ public class LevelManager : MonoBehaviour
         OnLevelFailed?.Invoke(this, EventArgs.Empty);
         StartCoroutine(LooseLevelCoroutine());
 
-        float defeatGemsProportionsRewarded = .66f;
+        float defeatGemsProportionsRewarded = 1f;
         if (DemoMainLevelManager.Instance != null) {
             defeatGemsProportionsRewarded = 1f;
         }

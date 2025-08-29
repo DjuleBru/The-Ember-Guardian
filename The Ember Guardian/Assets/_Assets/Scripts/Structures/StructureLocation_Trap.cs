@@ -142,6 +142,8 @@ public class StructureLocation_Trap : StructureLocation {
     public void ReActivateTrapStructureLocation() {
         trapLocationActive = true;
         gameObject.SetActive(true);
+
+        StartCoroutine(RefreshTrapTypesInPlayerInventoryAfterFrame());
     }
 
     private void OnDestroy() {

@@ -115,7 +115,7 @@ public class MusicManager : MonoBehaviour {
         }
 
         SetAudioVolume(discoverNewLocationAudioVolume);
-        targetVolume = discoverNewLocationAudioVolume;
+        SetAudioTargerVolume(discoverNewLocationAudioVolume);
         audioSourceA.ignoreListenerPause = true;
         audioSourceB.ignoreListenerPause = true;
 
@@ -352,7 +352,7 @@ public class MusicManager : MonoBehaviour {
 
     private void LevelManager_OnNewLocationShown(object sender, System.EventArgs e) {
         audioSourceA.clip = LevelManager.Instance.GetLevelSO().newEnvironmentDiscoveryAudioClip;
-        audioSourceA.volume = discoverNewLocationAudioVolume;
+        SetAudioVolume(discoverNewLocationAudioVolume);
         PlayMusicDelayed(4f);
         isPlayingLevelDiscoveryMusic = true;
         waitingToDiscoverLocation = false;

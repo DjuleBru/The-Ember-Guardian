@@ -30,7 +30,6 @@ public class Player : MonoBehaviour, IDamageable
 
     private bool carryingOtherObject = false;
     private bool cancellingHoveringWorker = false;
-    private bool managingWorkers = false;
     private bool interactingWithMerchant = false;
     private bool inTeleporter = false;
     private bool inTeleporterLevelSelectionMenu = false;
@@ -268,22 +267,22 @@ public class Player : MonoBehaviour, IDamageable
         this.carryingOtherObject = carryingOtherObject;
     }
 
-    public void SetManagingWorkers(bool managingWorkers) {
-        this.managingWorkers = managingWorkers;
+    //public void SetManagingWorkers(bool managingWorkers) {
+    //    this.managingWorkers = managingWorkers;
 
-        if(managingWorkers) {
-            OnPlayerStartedInteractingWithAnyInteractable?.Invoke(this, EventArgs.Empty);
-        } else {
-            OnPlayerStoppedInteractingWithAnyInteractable?.Invoke(this, EventArgs.Empty);
-        }
-    }
-    public void SetManagingWorkersAfterFrame(bool managingWorkers) {
-        StartCoroutine(SetManagingWorkersAfterFrameeCoroutine(managingWorkers));
-    }
-    private IEnumerator SetManagingWorkersAfterFrameeCoroutine(bool managingWorkers) {
-        yield return new WaitForEndOfFrame();
-        this.managingWorkers = managingWorkers;
-    }
+    //    if(managingWorkers) {
+    //        OnPlayerStartedInteractingWithAnyInteractable?.Invoke(this, EventArgs.Empty);
+    //    } else {
+    //        OnPlayerStoppedInteractingWithAnyInteractable?.Invoke(this, EventArgs.Empty);
+    //    }
+    //}
+    //public void SetManagingWorkersAfterFrame(bool managingWorkers) {
+    //    StartCoroutine(SetManagingWorkersAfterFrameeCoroutine(managingWorkers));
+    //}
+    //private IEnumerator SetManagingWorkersAfterFrameeCoroutine(bool managingWorkers) {
+    //    yield return new WaitForEndOfFrame();
+    //    this.managingWorkers = managingWorkers;
+    //}
 
     public void SetInPayCurrencyArea(bool inPayCurrencyArea) {
         inPayCurrencyTriggerArea = inPayCurrencyArea;
@@ -368,7 +367,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public bool GetInteractingWithNoOtherObject() {
-        return !interactingWithMerchant && !managingWorkers && !inTeleporter;
+        return !interactingWithMerchant && !inTeleporter;
     }
 
     public bool GetInNoOtherObjectTriggerArea() {
@@ -389,7 +388,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public bool GetCanInteractWithStructureLocation() {
-        return GetAllMenusClosed() && GetPlayerControlInputsEnabled() && !managingWorkers;
+        return GetAllMenusClosed() && GetPlayerControlInputsEnabled();
     }
 
     public void Die() {
@@ -480,6 +479,7 @@ public class Player : MonoBehaviour, IDamageable
     public void StartInteractingWithMerchant() {
         interactingWithMerchant = true;
         OnPlayerStartedInteractingWithAnyInteractable?.Invoke(this, EventArgs.Empty);
+        PlayerMovement.Instance.StopMovement();
     }
     
     public void StopInteractingWithMerchant() {

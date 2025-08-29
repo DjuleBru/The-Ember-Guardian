@@ -100,7 +100,6 @@ public class Creature : Mob
 
     protected virtual void Start() {
         creatureUnlocked = MetaProgressionManager.Instance.GetCreatureUnlocked(creatureSO);
-        dropRedOrbs = DebugManager.Instance.GetDropRedOrbsUnlocked() && PlayerCamp.Instance.GetHasSkillMerchantInLayout();
 
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerMovement.Instance.OnPlayerCrouched += PlayerMovement_OnPlayerCrouched;
@@ -174,7 +173,8 @@ public class Creature : Mob
             MetaProgressionManager.Instance.SetCreatureUnlocked(creatureSO);
         }
 
-        if (dropRedOrbs) {
+        dropRedOrbs = MetaProgressionManager.Instance.GetDropRedOrbsUnlocked() && PlayerCamp.Instance.GetHasSkillMerchantInLayoutAndUnlocked();
+        if (dropRedOrbs && IsDayCreature()) {
             SpawnDroppedCurrencies(creatureSO.currencyTypeDroppedList, creatureSO.currencyDropAmountList);
             InvokeOnMobDroppedCollectibles(collectiblesDropped);
         }

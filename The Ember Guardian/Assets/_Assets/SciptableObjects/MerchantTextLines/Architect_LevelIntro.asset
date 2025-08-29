@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ed9a16b1ce6b8458c713e7b1244c69, type: 3}
   m_Name: Architect_LevelIntro
   m_EditorClassIdentifier: 
-  merchantTextLines: []
   merchantTextLinesLocalizationKeys:
   - architect_LevelIntro1
   - architect_LevelIntro2
   - architect_LevelIntro3
   - architect_LevelIntro4
   - architect_LevelIntro5
+  nextTextLineSO_LinkedLevelNotCompleted: {fileID: 0}
+  nextTextLineSO_LinkedLevelCompleted: {fileID: 0}
   showShopAfterDialog: 0

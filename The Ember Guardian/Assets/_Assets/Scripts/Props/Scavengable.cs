@@ -123,8 +123,10 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
 
         if (PlayerShoot.Instance.GetPrimaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special || (secondaryGunUnlocked && PlayerShoot.Instance.GetSecondaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special)) {
             luckyPickaxeCurrencyTypeCollected = PlayerCurrencies.CurrencyType.ammo_special;
+            
             if (PlayerShoot.Instance.GetPrimaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special && (secondaryGunUnlocked && PlayerShoot.Instance.GetSecondaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special)) {
                 currencyTypeCollected = PlayerCurrencies.CurrencyType.ammo_special;
+                timeToMineOneResource *= 2;
             }
         }
     }

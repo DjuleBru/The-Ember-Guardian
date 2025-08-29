@@ -51,11 +51,11 @@ public class Merchant : Structure {
     }
 
     private void Update() {
-        if (Input.GetKeyUp(KeyCode.R)) {
-            RefreshShopItems();
-            ActivateStructurePrimaryFunctionInteraction(true);
-            playerPayedToRefreshShop = false;
-        }
+        //if (Input.GetKeyUp(KeyCode.R)) {
+        //    RefreshShopItems();
+        //    ActivateStructurePrimaryFunctionInteraction(true);
+        //    playerPayedToRefreshShop = false;
+        //}
     }
 
     protected override void DayNightManager_OnDawnStart(object sender, EventArgs e) {

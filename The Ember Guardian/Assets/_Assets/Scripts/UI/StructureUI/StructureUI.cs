@@ -175,18 +175,31 @@ public class StructureUI : MonoBehaviour
     protected void ShowStructurePrimaryFunctionUI() {
         structure.SetCurrentStructureInteractionType(Structure.StructureInteractionType.primaryFunction);
 
-        functionUIGameObject.SetActive(true);
-        secondaryFunctionUIGameObject.SetActive(false);
-        upgradeGameObject.SetActive(false);
+        if(functionUIGameObject != null) {
+            functionUIGameObject.SetActive(true);
+        }
+        if(secondaryFunctionPayOrbsUIList != null) {
+            secondaryFunctionUIGameObject.SetActive(false);
+        }
+        if(upgradeGameObject != null) {
+            upgradeGameObject.SetActive(false);
+        }
+
         payOrbsUI.SetOrbTemplateUIList(RecomposePayOrbsUIList(functionPayOrbsUIList));
     }
 
     protected void ShowStructureSecondaryFunctionUI() {
         structure.SetCurrentStructureInteractionType(Structure.StructureInteractionType.secondaryFunction);
 
-        secondaryFunctionUIGameObject.SetActive(true);
-        functionUIGameObject.SetActive(false);
-        upgradeGameObject.SetActive(false);
+        if (functionUIGameObject != null) {
+            functionUIGameObject.SetActive(false);
+        }
+        if (secondaryFunctionUIGameObject != null) {
+            secondaryFunctionUIGameObject.SetActive(true);
+        }
+        if (upgradeGameObject != null) {
+            upgradeGameObject.SetActive(false);
+        }
 
         if(secondaryFunctionPayOrbsUIList != null) {
             payOrbsUI.SetOrbTemplateUIList(RecomposePayOrbsUIList(secondaryFunctionPayOrbsUIList));
@@ -196,9 +209,15 @@ public class StructureUI : MonoBehaviour
     protected void ShowStructureUpgradeUI() {
         structure.SetCurrentStructureInteractionType(Structure.StructureInteractionType.upgrade);
 
-        functionUIGameObject.SetActive(false);
-        secondaryFunctionUIGameObject.SetActive(false);
-        upgradeGameObject.SetActive(true);
+        if (functionUIGameObject != null) {
+            functionUIGameObject.SetActive(false);
+        }
+        if (secondaryFunctionUIGameObject != null) {
+            secondaryFunctionUIGameObject.SetActive(false);
+        }
+        if (upgradeGameObject != null) {
+            upgradeGameObject.SetActive(true);
+        }
 
         int structureLevel = structure.GetStructureLevel();
         foreach(GameObject gameObject in upgradeToNextLevelUIGameObjectList) {
@@ -214,9 +233,16 @@ public class StructureUI : MonoBehaviour
         List<Structure.StructureInteractionType> activeTypes = structure.GetActiveStructureInteractionTypeList();
 
         // Désactiver toutes les UI par défaut
-        functionUIGameObject.SetActive(false);
-        secondaryFunctionUIGameObject.SetActive(false);
-        upgradeGameObject.SetActive(false);
+
+        if (functionUIGameObject != null) {
+            functionUIGameObject.SetActive(false);
+        }
+        if (secondaryFunctionUIGameObject != null) {
+            secondaryFunctionUIGameObject.SetActive(false);
+        }
+        if (upgradeGameObject != null) {
+            upgradeGameObject.SetActive(false);
+        }
 
         // Afficher le type courant
         if (activeTypes.Contains(structure.GetCurrentStructureInteractionType())) {

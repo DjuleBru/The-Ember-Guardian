@@ -41,6 +41,7 @@ public class MetaProgressionManager : MonoBehaviour
     public bool gemsRewardedFromlastLevel { get; private set; }
     public List<Vector3> hubGreenGemPositions { get; private set; }
     public List<Vector3> hubRedGemPositions { get; private set; }
+    public bool dropRedOrbsUnlocked;
     #endregion
 
     #region METAMERCHANTS
@@ -49,13 +50,6 @@ public class MetaProgressionManager : MonoBehaviour
 
     private void Awake() {
         Instance = this;
-
-        // Create a new ES3Settings to enable encryption.
-        //string saveFilePassword = "es3SavePass59463";
-        //var settings = new ES3Settings(ES3.EncryptionType.AES, saveFilePassword);
-        //var settingsDefault = new ES3Settings("SaveFile.es3", settings);
-        //ES3.Save<Transform>("myTransform", this.transform, settingsDefault);
-
         tutorialComplete = ES3.Load("tutorialComplete", false);
 
         if (SceneLoader.Instance != null && SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
@@ -64,6 +58,7 @@ public class MetaProgressionManager : MonoBehaviour
         }
 
         flagCarry_Debug = DebugManager.Instance.GetDebugMode_FlagCarry();
+        dropRedOrbsUnlocked = ES3.Load("dropRedOrbsUnlocked", false);
     }
 
     private void Update() {
@@ -80,6 +75,15 @@ public class MetaProgressionManager : MonoBehaviour
 
     public void SetSavedOnce() {
         ES3.Save("savedOnce", true);
+    }
+
+    public bool GetDropRedOrbsUnlocked() {
+        return dropRedOrbsUnlocked;
+    }
+
+    public void SetDropRedOrbsUnlocked() {
+        dropRedOrbsUnlocked = true;
+        ES3.Save("dropRedOrbsUnlocked", true);
     }
 
     #endregion

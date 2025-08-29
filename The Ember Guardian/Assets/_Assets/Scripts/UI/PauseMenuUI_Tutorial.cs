@@ -12,7 +12,7 @@ public class PauseMenuUI_Tutorial : PauseMenuUI
 
     protected override void Start() {
         base.Start();
-        skipTutorialText.text = "Skip Tutorial";
+        skipTutorialText.text = LocalizationManager.Instance.GetLocalizedText("menu_skipTutorial");
         buttonConfirm_SkipTutorial.OnButtonDeselected += ButtonConfirm_SkipTutorial_OnButtonDeselected;
     }
 

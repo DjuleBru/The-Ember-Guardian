@@ -56,6 +56,8 @@ public class FastTravelTP : Structure
     }
 
     private void GameInput_OnPlayerJumpPerformed(object sender, EventArgs e) {
+        if (!isSelectingReceiverTP) return;
+
         isSelectingReceiverTP = false;
         floorCollider.enabled = false;
         OnPlayerCanceledTP?.Invoke(this, EventArgs.Empty);

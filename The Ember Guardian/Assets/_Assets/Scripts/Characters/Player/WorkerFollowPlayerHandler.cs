@@ -89,7 +89,7 @@ public class WorkerFollowPlayerHandler : MonoBehaviour
         }
         else {
             StartCoroutine(SetHoveringWorkerAfterFrame(false));
-            Player.Instance.SetManagingWorkersAfterFrame(false);
+            //Player.Instance.SetManagingWorkersAfterFrame(false);
         }
     }
 

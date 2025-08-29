@@ -37,6 +37,7 @@ public class HUBManager : MonoBehaviour
     private int initialRedGemsAfterTutorial = 5;
     private int initialGreenGemsAfterTutorial = 5;
     private int initialYellowGemsAfterTutorial = 5;
+    private int initialPurpleGemsAfterTutorial = 1;
     private int totalGemsAfterTutorial;
 
     private bool firstHubEncounterRoutineOver;
@@ -63,7 +64,7 @@ public class HUBManager : MonoBehaviour
             fireIndicator.gameObject.SetActive(false);
         }
 
-        totalGemsAfterTutorial = initialGreenGemsAfterTutorial + initialYellowGemsAfterTutorial + initialRedGemsAfterTutorial;
+        totalGemsAfterTutorial = initialGreenGemsAfterTutorial + initialYellowGemsAfterTutorial + initialRedGemsAfterTutorial + initialPurpleGemsAfterTutorial;
     }
 
     private void Start() {
@@ -79,6 +80,7 @@ public class HUBManager : MonoBehaviour
 
             StartCoroutine(FirstHUBSpawnCoroutine());
             enterHubCollider.gameObject.SetActive(true);
+            MetaProgressionManager.Instance.SetTutorialCompleted();
 
             HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
             HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant += HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
@@ -396,14 +398,16 @@ public class HUBManager : MonoBehaviour
             MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.yellowGem, initialYellowGemsAfterTutorial);
             MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.redGem, initialRedGemsAfterTutorial);
             MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.greenGem, initialGreenGemsAfterTutorial);
+            MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.purpleGem, initialPurpleGemsAfterTutorial);
 
             List<PlayerCurrencies.CurrencyType> tutorialSkippedGems = new List<PlayerCurrencies.CurrencyType> {
                 PlayerCurrencies.CurrencyType.yellowGem,
                 PlayerCurrencies.CurrencyType.redGem,
-                PlayerCurrencies.CurrencyType.greenGem
+                PlayerCurrencies.CurrencyType.greenGem,
+                PlayerCurrencies.CurrencyType.purpleGem
             };
             List<int> tutorialSkippedGemAmount = new List<int> {
-                initialYellowGemsAfterTutorial,initialRedGemsAfterTutorial,initialGreenGemsAfterTutorial,
+                initialYellowGemsAfterTutorial,initialRedGemsAfterTutorial,initialGreenGemsAfterTutorial,initialPurpleGemsAfterTutorial
             };
             UICurrencyManager.PlayerInventoryUI.AddMultipleCurrencies(tutorialSkippedGems, tutorialSkippedGemAmount);
         }

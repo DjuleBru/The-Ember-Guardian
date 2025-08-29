@@ -148,9 +148,9 @@ public class MainMenuUI : MonoBehaviour {
                 SceneLoader.Instance.LoadDemoIntro(2f);
             }
             else {
-                bool playerLeftDemoInLevel = ES3.Load("playerLeftInLevel", false);
+                bool playerLeftInLevel = ES3.Load("playerLeftInLevel", false);
 
-                if(playerLeftDemoInLevel) {
+                if(playerLeftInLevel) {
                     SceneLoader.Instance.LoadLastLevel(1f);
                 } else {
                     SceneLoader.Instance.LoadHub(1f);

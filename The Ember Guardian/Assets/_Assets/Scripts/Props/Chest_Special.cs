@@ -38,7 +38,9 @@ public class Chest_Special : Chest
         };
 
         if(!chestOpenedAnimationOver) {
+            if (chestOpenedAnimationStarted) return;
             chestOpened = true;
+            chestOpenedAnimationStarted = true;
             StartCoroutine(OpenChestCoroutine(false));
             InvokeOnChestOpened();
 

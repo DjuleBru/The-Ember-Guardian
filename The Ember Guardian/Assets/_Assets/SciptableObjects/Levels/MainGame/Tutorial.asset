@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Tutorial
   m_EditorClassIdentifier: 
   linkedSceneName: 
+  isBranchingLevel: 0
+  requiredLevelSO1: {fileID: 0}
+  requiredLevelSO2: {fileID: 0}
+  parallelLevelSO: {fileID: 0}
   levelImage: {fileID: 0}
   levelNameLocalizationKey: Tutorial
   levelDescriptionLocalizationKey: Tutorial_Description
@@ -32,6 +36,8 @@ MonoBehaviour:
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 640d874f0f212a74d9a6b7d8805632c6, type: 2}
   newMerchantTextLinesAfterLevel:
   - {fileID: 11400000, guid: 640d874f0f212a74d9a6b7d8805632c6, type: 2}
+  unlocksNewGemType: 0
+  newGemTypeUnlockedByLevelList: 
   isReplayableLevel: 0
   totalDayCreatureDifficulty: 0
   dayCreatureTypes: []
@@ -42,13 +48,13 @@ MonoBehaviour:
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
   startWaveToSpawnFromBothSides: 1
-  baseDifficulty: 25
+  baseDifficulty: 30
   intialMinSubwaveDifficulty: 10
   minSubwaveDifficulty: 25
   intialMaxSubwaveDifficulty: 15
   maxSubwaveDifficulty: 60
   growthFactor: 1.2
-  maxWaveNumber: 0
+  typicalLevelDaysToComplete: 0
   minMaxSubwaveDifficultyGrowthFactor: 1.4
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
@@ -60,7 +66,11 @@ MonoBehaviour:
     m_RotationOrder: 4
   maxWaveInAnimationCurve: 0
   canSpawnElite: 0
-  environmentType: 0
+  hasSpecialWaveTypes: 0
+  specialWaveTypesInLevel: 
+  specialWaveProbability: 0
+  maxSpecialWaveAmount: 0
+  environmentType: 3
   hasFog: 0
   fogFrontAlpha: 0
   fogBackAlpha: 0

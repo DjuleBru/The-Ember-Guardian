@@ -121,12 +121,15 @@ public class Barricade : Structure, IDamageable {
             return;
         }
 
-        if (!barricadeVisual.GetBarricadeHasAllSprites() && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
+        if (!barricadeVisual.GetBarricadeHasAllSprites()) {
             // At least 1 sprite fell
-            SetStructurePrimaryFunctionUnlocked(true);
             SetStructureUpgradableUnlocked(false);
-            barricadeRepairable = true;
-            needsRefill = true;
+
+            if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
+                SetStructurePrimaryFunctionUnlocked(true);
+                barricadeRepairable = true;
+                needsRefill = true;
+            }
         }
     }
 

@@ -76,11 +76,11 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerTryReload_FullAmmoBelt(object sender, EventArgs e) {
-        FadeInAmmoBar();
+        ForceShowAmmoBar(ammoBarReloadDisplayTime);
     }
 
     private void PlayerShoot_OnPlayerTryReloadAmmoBelt_NoAmmoInBag(object sender, EventArgs e) {
-        FadeInAmmoBar();
+        ForceShowAmmoBar(ammoBarReloadDisplayTime);
     }
 
     private void PLayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
@@ -175,7 +175,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerAmmoRefilled(object sender, PlayerShoot.OnAmmoRefilledEventArgs e) {
-        FadeInAmmoBar();
+        ForceShowAmmoBar(ammoBarReloadDisplayTime);
         StartCoroutine(RefillAmmoBar(e.ammoAmount));
 
         if (PlayerShoot.Instance.GetCurrentAmmoClip() <= PlayerShoot.Instance.GetMaxAmmoClips() / 3) {
@@ -189,14 +189,10 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     private void PlayerSHoot_OnPlayerReloadHandEnded(object sender, EventArgs e) {
         if (PlayerShoot.Instance.GetCurrentAmmoClip() < 0) return;
 
-        if (PlayerShoot.Instance.GetCurrentAmmoClip() != 0) {
-            ammoBarGameObject.SetActive(true);
-            ammoBarBackgroundGameObject.SetActive(true);
-            ammoBarCanvasGroup.alpha = 1f;
-            ammoBarDisplayTime = ammoBarReloadDisplayTime;
-            ammoBarDisplayTimer = ammoBarDisplayTime;
-        }
+        // Affiche directement la barre (ignore tout fade-out en cours)
+        ForceShowAmmoBar(ammoBarReloadDisplayTime);
 
+        // Gestion du mode critique si faible en munitions
         if (PlayerShoot.Instance.GetCurrentAmmoClip() <= PlayerShoot.Instance.GetMaxAmmoClips() / 3) {
             ammoBarCritical = true;
             ammoBarCanvasGroup.alpha = 1f;
@@ -205,10 +201,14 @@ public class PlayerUI_AmmoBar : MonoBehaviour
             ammoBarCritical = false;
         }
 
+        // Retrait du tick (correspond à la munition utilisée dans la main)
         PlayerUI_TickTemplate[] ammoTickArray = ammoTickContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
-        ammoTickArray[0].GetComponent<RectTransform>().SetParent(transform);
-        ammoTickArray[0].RemoveTick();
+        if (ammoTickArray.Length > 0) {
+            ammoTickArray[0].GetComponent<RectTransform>().SetParent(transform);
+            ammoTickArray[0].RemoveTick();
+        }
 
+        // Rafraîchit l’affichage des ticks
         RefreshAmmoBar();
     }
 
@@ -310,7 +310,6 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     private void Structure_OnAnyPlayerTriggeredOut(object sender, System.EventArgs e) {
         if (sender is CurrencyCrafter) {
             inAmmoCrafterArea = false;
-            FadeInAmmoBar();
         }
     }
 
@@ -336,6 +335,15 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 
         ammoBarGameObject.SetActive(true);
         ammoBarBackgroundGameObject.SetActive(true);
+    }
+    private void ForceShowAmmoBar(float displayDuration = 2f) {
+        ammoBarGameObject.SetActive(true);
+        ammoBarBackgroundGameObject.SetActive(true);
+        ammoBarCanvasGroup.alpha = 1f;
+        isFadingIn = false;
+        isFadingOut = false;
+        ammoBarDisplayTime = displayDuration;
+        ammoBarDisplayTimer = ammoBarDisplayTime;
     }
 
     private void OnDestroy() {

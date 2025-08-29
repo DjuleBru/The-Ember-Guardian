@@ -21,13 +21,6 @@ public class HuntingFlag : MonoBehaviour
 
     private void Start() {
         Obstacle.OnAnyObstacleBuilt += Obstacle_OnAnyObstacleBuilt;
-        Player.Instance.OnPlayerDied += Player_OnPlayerDied;
-    }
-
-    private void Player_OnPlayerDied(object sender, EventArgs e) {
-        if(playerIsCarryingFlag) {
-            ResetPlayerManuallySetHuntingLimit();
-        }
     }
 
     private void Obstacle_OnAnyObstacleBuilt(object sender, EventArgs e) {
@@ -114,6 +107,5 @@ public class HuntingFlag : MonoBehaviour
 
     private void OnDestroy() {
         Obstacle.OnAnyObstacleBuilt -= Obstacle_OnAnyObstacleBuilt;
-        Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
     }
 } 

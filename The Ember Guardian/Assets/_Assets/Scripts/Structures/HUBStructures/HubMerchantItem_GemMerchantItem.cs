@@ -15,4 +15,13 @@ public class HubMerchantItem_GemMerchantItem : HubMerchantItem
         return structureType;
     }
 
+    public override void BuyItem() {
+        base.BuyItem();
+
+        if(structureType == StructureSO.StructureType.merchant_skills) {
+            MetaProgressionManager.Instance.SetDropRedOrbsUnlocked();
+        }
+
+    }
+
 }

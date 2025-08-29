@@ -349,9 +349,6 @@ public class PlayerShoot : MonoBehaviour
         automaticWeapon = activeGunSO.automaticWeapon;
         shotNeedsLoading = activeGunSO.shotNeedsLoading;
         loadedShotFiredIfNotFullyLoaded = activeGunSO.loadedShotFiredIfNotFullyLoaded;
-        if (rifleSemiAutoModeActive) {
-            automaticWeapon = true;
-        }
 
         PlayerStats.Instance.SetShootCooldownTime(heldGun.GetCooldownTime());
         PlayerStats.Instance.SetReloadTime(heldGun.GetReloadTime());
@@ -775,8 +772,15 @@ public class PlayerShoot : MonoBehaviour
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Pistol) {
             silencerActive = !silencerActive;
+
+            if (silencerActive) {
+                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+            }
+            else {
+                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            }
+
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
-            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
         }
         if (heldGun.GetGunSO().gunType == GunSO.GunType.MiniGun) {
             OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
@@ -832,6 +836,13 @@ public class PlayerShoot : MonoBehaviour
             secondayGunSO = debugSecondaryGun;
         }
 
+        if (rifleSemiAutoModeActive) {
+            automaticWeapon = false;
+            rifleSemiAutoModeActive = false;
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
         if (secondayGunSO != null) {
             if (heldGunSO == secondayGunSO) return;
             StartCoroutine(SetActiveGunAfterDelay(secondayGunSO, false));
@@ -841,6 +852,13 @@ public class PlayerShoot : MonoBehaviour
     private void GameInput_OnPlayerPrimaryGunSelected(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (!CanSwapGun()) return;
+
+        if (rifleSemiAutoModeActive) {
+            automaticWeapon = false;
+            rifleSemiAutoModeActive = false;
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
 
         if (useDebugGun) {
             primaryGunSO = debugGun;
@@ -854,6 +872,14 @@ public class PlayerShoot : MonoBehaviour
 
     private void SwapGun() {
         if (!CanSwapGun()) return;
+
+        Debug.Log("rifleSemiAutoModeActive " + rifleSemiAutoModeActive);
+        if (rifleSemiAutoModeActive) {
+            automaticWeapon = false;
+            rifleSemiAutoModeActive = false;
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
 
         if (heldGunSO == secondayGunSO) {
             StartCoroutine(SetActiveGunAfterDelay(primaryGunSO));

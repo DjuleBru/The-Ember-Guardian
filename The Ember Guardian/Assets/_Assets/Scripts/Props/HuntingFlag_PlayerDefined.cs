@@ -31,11 +31,18 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
     private void Start() {
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
         CampZoneManager.Instance.OnCampZoneLimitsChanged += CampZoneManager_OnCampZoneLimitsChanged;
+        Player.Instance.OnPlayerDied += Player_OnPlayerDied;
 
         RefreshMaxSecureDistance();
         huntingFlag.OnPlayerResetManualHuntingLimit += HuntingFlag_OnPlayerResetManualHuntingLimit;
     }
 
+    private void Player_OnPlayerDied(object sender, EventArgs e) {
+        if(huntingFlag.GetPlayerCarryingFlag()) {
+            Vector3 currentPosition = new Vector3(Player.Instance.transform.position.x, 0f, 0f);
+            SetNewFlagPosition(currentPosition);
+        }
+    }
 
     private void Update() {
         if (!huntingFlag.GetPlayerCarryingFlag()) return;

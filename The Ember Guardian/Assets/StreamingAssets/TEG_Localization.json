@@ -2194,7 +2194,7 @@
  },
  {
    "key": "card_newSubExplosivesAmount",
-   "English": "NewSub-Explosives Amount",
+   "English": "New Sub-Explosives Amount",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -11010,15 +11010,7 @@
  },
  {
    "key": "gemTrader_Intro3",
-   "English": "<wiggle a=.05 f=2>The Eternal Flame</wiggle>... it ties you, me, and all who will come.",
-   "French": "",
-   "German": "",
-   "Spanish": "",
-   "Italian": ""
- },
- {
-   "key": "gemTrader_Intro4",
-   "English": "Here, you can build, strengthen, shape... but it all comes at a cost. <bounce a=.2 f=1.2>Gems</bounce>. Many gems.",
+   "English": "You stand at the first <slide a=.2>A Primordial Fire.</slide>, <wiggle a=.05 f=2>The Eternal Flame</wiggle>... it ties you, me, and all who will come.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -11026,7 +11018,7 @@
  },
  {
    "key": "gemTrader_Intro5",
-   "English": "I can help, of course. Gems can create structures, tools... even uncover secrets the shadows fear.",
+   "English": "Here, you can build, strengthen, shape... but it all comes at a cost. <bounce a=.2 f=1.2>Gems</bounce>. Many gems.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -11034,7 +11026,15 @@
  },
  {
    "key": "gemTrader_Intro6",
-   "English": "Drop yours in the chest… <bounce a=.2 f=1.2>Only then</bounce> can you make use of them.",
+   "English": "I can help, of course. Gems can create structures, tools... even uncover secrets the shadows fear.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "gemTrader_Intro7",
+   "English": "Purify them in the chest… <bounce a=.2 f=1.2>Only then</bounce> will the Flame recognize them.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -11154,7 +11154,7 @@
  },
  {
    "key": "gemTrader_PostLevel2_2",
-   "English": "You’ve already rekindled the <wiggle a=.05 f=2>Eternal Flame</wiggle> here at the hub, one of the four primordial fires.",
+   "English": "You’ve already rekindled the <wiggle a=.05 f=2>Eternal Flame</wiggle> here at the hub, one of the five <slide a=.2>Primordial Fires</slide>.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -11170,7 +11170,7 @@
  },
  {
    "key": "gemTrader_PostLevel2_4",
-   "English": "The only path forward is deeper into <shake a=.4>The Lost Greens</shake>, where another fire waits.",
+   "English": "The only path forward is deeper into <shake a=.4>The Lost Greens</shake>, where the Second <slide a=.2>Primordial Fire</slide> waits.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -11777,6 +11777,14 @@
    "Italian": ""
  },
  {
+   "key": "armorer_HubIntro3",
+   "English": "I only take gems once they’re purified at the Flame. Don’t bring me raw junk.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
    "key": "armorer_LevelIntro1",
    "English": "<dangle a=.2>Well</dangle>, you took your time getting here. I’ve been stuck guarding this <shake a=.4>cursed</shake> nest, waiting for someone reckless enough to take it on",
    "French": "",
@@ -11825,6 +11833,14 @@
    "Italian": ""
  },
  {
+   "key": "trainer_LevelIntro1",
+   "English": "Hmph. Another stray wandering into the ruins.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
    "key": "trainer_LevelIntro2",
    "English": "The Lost Greens had their own flame once. Bright. Defiant.",
    "French": "",
@@ -11858,7 +11874,15 @@
  },
  {
    "key": "tamer_HubIntro2",
-   "English": "With the right skills, that dog won’t just <slide a=.2>follow</slide> you. It’ll <slide a=.2>save your life</slide>.",
+   "English": "With the right skills, that dog won’t just <wiggle a=.05 f=2>follow</wiggle> you. It’ll <slide a=.2>save your life</slide>.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "tamer_LevelIntro1",
+   "English": "<slide a=.2>Easy now…</slide> not every shadow out here wants you dead. Not yet.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -12354,7 +12378,7 @@
  },
  {
    "key": "mushroom_LevelIntro2",
-   "English": "This place? <slide a=.2>Tick, tick, tick…</slide> Danger grows fast, friend.",
+   "English": "Call me whatever you like, most just say \"The SporeMonger\"",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -12362,7 +12386,7 @@
  },
  {
    "key": "mushroom_LevelIntro3",
-   "English": "You linger too long, and the nights will <wiggle a=.05 f=3>swallow you whole.</wiggle>",
+   "English": "I trade oddities. <bounce a=.2 f=1.2>Spores, scraps</bounce>, things that don’t belong yet still survive.",
    "French": "",
    "German": "",
    "Spanish": "",
@@ -12370,6 +12394,30 @@
  },
  {
    "key": "mushroom_LevelIntro4",
+   "English": "Stick close to the fire, friend. Out here, <slide a=.2>the dark is always hungry.</slide>",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "mushroom_ArtifactIntro1",
+   "English": "This place? <slide a=.2>Tick, tick, tick…</slide> Danger grows fast, friend.",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "mushroom_ArtifactIntro2",
+   "English": "You linger too long, and the nights will <wiggle a=.05 f=3>swallow you whole.</wiggle>",
+   "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "mushroom_ArtifactIntro3",
    "English": "I found something old, <shake a=.4>pulsing</shake> with intent.",
    "French": "",
    "German": "",
@@ -12377,7 +12425,7 @@
    "Italian": ""
  },
  {
-   "key": "mushroom_LevelIntro5",
+   "key": "mushroom_ArtifactIntro4",
    "English": "Feed it orbs, and it will hold the night back… For a while.",
    "French": "",
    "German": "",
@@ -12385,7 +12433,7 @@
    "Italian": ""
  },
  {
-   "key": "mushroom_LevelIntro6",
+   "key": "mushroom_ArtifactIntro5",
    "English": "Best thing? Those orbs don’t vanish. I’ve seen the trails… They’re going somewhere.",
    "French": "",
    "German": "",
@@ -12393,7 +12441,7 @@
    "Italian": ""
  },
  {
-   "key": "mushroom_LevelIntro7",
+   "key": "mushroom_ArtifactIntro6",
    "English": "Toward a plan, maybe? A convoy? Hah… just guessing.",
    "French": "",
    "German": "",
@@ -12401,7 +12449,7 @@
    "Italian": ""
  },
  {
-   "key": "mushroom_LevelIntro8",
+   "key": "mushroom_ArtifactIntro7",
    "English": "<wiggle a=.05 f=2>Two birds, one ember.</wiggle>",
    "French": "",
    "German": "",
@@ -12572,6 +12620,14 @@
    "key": "primordialFireLit",
    "English": "Primordial Fire Lit",
    "French": "",
+   "German": "",
+   "Spanish": "",
+   "Italian": ""
+ },
+ {
+   "key": "The Colossus",
+   "English": "The Colossus",
+   "French": "Le Colosse",
    "German": "",
    "Spanish": "",
    "Italian": ""

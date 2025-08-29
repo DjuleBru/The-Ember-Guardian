@@ -18,7 +18,7 @@ public class PauseMenuUI_Level : PauseMenuUI {
 
     private void ButtonConfirm_BackToHub_OnButtonDeselected(object sender, System.EventArgs e) {
         confirmBackToHub = false;
-        backToHubText.text = "Back To Hub";
+        backToHubText.text = LocalizationManager.Instance.GetLocalizedText("menu_backToHub");
         progressionSavedTextIndicator.SetTrigger("Hide");
     }
 
@@ -42,7 +42,7 @@ public class PauseMenuUI_Level : PauseMenuUI {
         else {
 
             confirmBackToHub = true;
-            backToHubText.text = "Confirm ?";
+            backToHubText.text = LocalizationManager.Instance.GetLocalizedText("menu_confirm");
             progressionSavedTextIndicator.SetTrigger("Show"); 
             progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedText("menu_progressionNotSaved");
             progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = unsavedTextColor;
@@ -61,7 +61,7 @@ public class PauseMenuUI_Level : PauseMenuUI {
         }
         else {
             confirmExitGame = true;
-            exitGameText.text = "Confirm ?";
+            exitGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_confirm");
             progressionSavedTextIndicator.SetTrigger("Show");
             progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedText("menu_progressionNotSaved");
             progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = unsavedTextColor;

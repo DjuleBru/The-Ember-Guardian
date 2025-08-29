@@ -168,6 +168,7 @@ public class PlayerAim : MonoBehaviour
         Gun gun = PlayerShoot.Instance.GetHeldGun();
 
         currentPrecisionModifier = currentPrecisionMovementModifier;
+
         crouchPrecisionBuff = gunSO.crouchPrecisionBuff;
         crouchRecoilReductionFactor = gunSO.crouchRecoilReductionFactor;
         movePrecisionDebuff = gunSO.movePrecisionDebuff;
@@ -597,6 +598,7 @@ public class PlayerAim : MonoBehaviour
     }
 
     private void BuffPrecision(float buff, bool isMovementModifier = false) {
+
         currentPrecisionModifier /= buff;
         smoothSpeed /= buff;
         noiseAmount /= buff;
@@ -608,6 +610,7 @@ public class PlayerAim : MonoBehaviour
     }
 
     private void DebuffPrecision(float debuff, bool isMovementModifier = false) {
+
         currentPrecisionModifier *= debuff;
         smoothSpeed *= debuff;
         noiseAmount *= debuff;
