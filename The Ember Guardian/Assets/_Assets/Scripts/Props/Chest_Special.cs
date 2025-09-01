@@ -10,6 +10,8 @@ public class Chest_Special : Chest
     [SerializeField] private GunSO gunSOInChest;
     [SerializeField] private List<SkillSO> skillSOListInChest;
     [SerializeField] private bool replacePrimaryWeapon;
+    [SerializeField] private bool findingWeaponUnlocksItInShop;
+    [SerializeField] private HUBMerchantItem_GunMerchantItem.GunItemType weaponMerchantItemType;
 
     private SkillSO skillSOSelected;
 
@@ -20,7 +22,13 @@ public class Chest_Special : Chest
         if (chestType == ChestType.skillChest) {
             SelectRandomSkill();
         }
+
+        bool weaponUnlockedInShop = MetaProgressionManager.Instance.GetMerchantItemUnlocked(weaponMerchantItemType.ToString() + " " + gunSOInChest.ToString());
+        if (findingWeaponUnlocksItInShop && weaponUnlockedInShop) {
+            gameObject.SetActive(false);
+        }
     }
+
     private void SelectRandomSkill() {
         skillSOSelected = skillSOListInChest[UnityEngine.Random.Range(0, skillSOListInChest.Count)];
     }
@@ -60,6 +68,7 @@ public class Chest_Special : Chest
         if (chestType == ChestType.weaponChest) {
 
             PlayerShoot.Instance.ReplaceHeldWeaponSO(gunSOInChest);
+            CheckUnlockNewWeapon();
 
             yield return new WaitForSeconds(.2f);
             PlayerShoot.Instance.SetGunToMaxAmmo(gunSOInChest);
@@ -107,6 +116,20 @@ public class Chest_Special : Chest
 
     public SkillSO GetSkillSO() {
         return skillSOSelected;
+    }
+
+    protected void CheckUnlockNewWeapon() {
+        bool weaponUnlockedInShop = MetaProgressionManager.Instance.GetMerchantItemUnlocked(weaponMerchantItemType.ToString());
+        if (weaponUnlockedInShop) return;
+        if (!findingWeaponUnlocksItInShop) return;
+
+        string gunShopItemString = weaponMerchantItemType.ToString() + " " + gunSOInChest.ToString();
+
+        MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(gunShopItemString, true);
+        MetaProgressionManager.Instance.SetHubMerchantItemBought(gunShopItemString, true);
+        MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(gunShopItemString, true);
+        MetaProgressionManager.Instance.SetGunUnlocked(gunSOInChest, true);
+
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {

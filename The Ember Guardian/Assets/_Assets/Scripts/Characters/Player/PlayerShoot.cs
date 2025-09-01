@@ -117,7 +117,7 @@ public class PlayerShoot : MonoBehaviour
 
     private GunSO primaryGunSO;
     private GunSO secondayGunSO;
-    private GunSO replacedGunSO;
+    private List<GunSO> replacedGunSOList = new List<GunSO>();
 
     [SerializeField] private List<Gun> allGunsList;
     [SerializeField] private List<GunSO> allGunSOList;
@@ -297,12 +297,15 @@ public class PlayerShoot : MonoBehaviour
     }
 
     public void ReplaceHeldWeaponSO(GunSO gunSO) {
+        if (replacedGunSOList.Contains(gunSO)) {
+            replacedGunSOList.Remove(gunSO);
+        }
 
-        if(heldGunSO == primaryGunSO) {
-            replacedGunSO = primaryGunSO;
+        if (heldGunSO == primaryGunSO) {
+            replacedGunSOList.Add(primaryGunSO);
             SetPrimaryWeaponSO(gunSO);
         } else {
-            replacedGunSO = secondayGunSO;
+            replacedGunSOList.Add(secondayGunSO);
             SetSecondaryWeaponSO(gunSO);
         }
 
@@ -310,13 +313,16 @@ public class PlayerShoot : MonoBehaviour
     }
 
     public void ReplaceWeaponSO(GunSO gunSO, bool replacePrimaryWeapon) {
+        if(replacedGunSOList.Contains(gunSO)) {
+            replacedGunSOList.Remove(gunSO);
+        }
 
         if (replacePrimaryWeapon) {
-            replacedGunSO = primaryGunSO;
+            replacedGunSOList.Add(primaryGunSO);
             SetPrimaryWeaponSO(gunSO);
         }
         else {
-            replacedGunSO = secondayGunSO;
+            replacedGunSOList.Add(secondayGunSO);
             SetSecondaryWeaponSO(gunSO);
         }
 
@@ -1081,6 +1087,7 @@ public class PlayerShoot : MonoBehaviour
 
         return unlockedGunSOList;
     }
+
     public List<GunSO> GetUnlockedAndUnequippedGunSOList() {
         List<GunSO> unlockedGunSOList = GetUnlockedGunSOList();
         List<GunSO> unlockedAndUnequippedGunSOList = new List<GunSO>();
@@ -1094,11 +1101,7 @@ public class PlayerShoot : MonoBehaviour
     }
 
     public List<GunSO> GetGunSOInStock() {
-        List<GunSO> gunSOInStock = new List<GunSO>();
-
-        gunSOInStock.Add(replacedGunSO);
-
-        return gunSOInStock;
+        return replacedGunSOList;
     }
 
     public bool GetReloadingHands() {

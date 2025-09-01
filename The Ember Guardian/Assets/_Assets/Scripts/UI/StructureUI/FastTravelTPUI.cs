@@ -9,6 +9,7 @@ public class FastTravelTPUI : MonoBehaviour
     [SerializeField] private FastTravelTP fastTravelTP;
 
     [SerializeField] private List<Sprite> fastTravelTPIdentifiers;
+    [SerializeField] private Sprite tentTravelTPIdentifier;
     [SerializeField] private GameObject changeDestinationTPUIGO;
     [SerializeField] private GameObject instructionsGO;
     [SerializeField] private GameObject setpOnTPGO;
@@ -37,8 +38,13 @@ public class FastTravelTPUI : MonoBehaviour
         leftArrowGO.SetActive(false);
         righArrowGO.SetActive(false);
 
-        identifier = fastTravelTPIdentifiers[fastTravelTP.GetFastTravelTPIdentifier()];
-        identifierIcon.sprite = identifier;
+        if(!fastTravelTP.GetIsTentTP()) {
+            identifier = fastTravelTPIdentifiers[fastTravelTP.GetFastTravelTPIdentifier()];
+            identifierIcon.sprite = identifier;
+        } else {
+            identifierIcon.sprite = tentTravelTPIdentifier;
+        }
+
     }
 
     private void FastTravelTP_OnPlayerWarpEnded(object sender, EventArgs e) {

@@ -431,6 +431,8 @@ public class GunJamHandler : MonoBehaviour
     }
 
     private void CompleteGunJamMiniGame() {
+        if (!gunIsHeldGun) return;
+
         isInGunJamQTE = false;
         gunJammed = false;
         bool perfectQTESequence = false;

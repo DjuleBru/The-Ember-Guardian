@@ -56,6 +56,7 @@ public class CurrencyCrafter : Structure
             primaryCurrencyCraftTime = currencyCraftTime;
             secondaryCurrencyCraftTime = currencyCraftTime * 2;
 
+            PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
             specialAmmoUnlocked = MetaProgressionManager.Instance.GetSpecialAmmoUnlocked();
             if (specialAmmoUnlocked || debugSpecialAmmoUnlocked) {
                 SetStructureSecondaryFunctionUnlocked(true);
@@ -72,6 +73,19 @@ public class CurrencyCrafter : Structure
         if (debugBatchCapacity != 0) {
             batchCapacity = debugBatchCapacity;
         }
+    }
+
+    private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
+        if (specialAmmoUnlocked) return;
+
+        GunSO gunSO = PlayerShoot.Instance.GetHeldGunSO();
+
+        if (gunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special) {
+            SetStructureSecondaryFunctionUnlocked(true);
+            specialAmmoUnlocked = true;
+        }
+
+        
     }
 
     private void Update() {

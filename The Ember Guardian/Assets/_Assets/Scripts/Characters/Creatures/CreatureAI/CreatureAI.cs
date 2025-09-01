@@ -126,6 +126,8 @@ public class CreatureAI : MonoBehaviour {
 
     protected void SetAttackDir() {
         if (creature.GetCreatureSO().canFlank) return;
+        if ((attackTarget as MonoBehaviour) == null) return;
+
         flankDirection = -Mathf.Sign((attackTarget as MonoBehaviour).transform.position.x - transform.position.x);
     }
 
@@ -288,6 +290,7 @@ public class CreatureAI : MonoBehaviour {
 
         Vector3 targetPosition = attackTarget.GetMeleeAttackPosition().position;
         float distanceToTarget = Mathf.Abs(transform.position.x - targetPosition.x);
+
         if (distanceToTarget < meleeAttackMaxRange && creatureAttack.GetCurrentCreatureAttackSO() == rangedAttackSO) {
             creatureAttack.SetAttackSO(meleeAttackSO);
             ChangeState(State.moveToTarget);

@@ -75,6 +75,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
     private bool spawnEquallyFromBothSides;
     private bool canSpawnElite;
     private float eliteSpawnProbability = .05f;
+    private float bossNightWaveDifficultyMultiplier;
 
     [SerializeField] private float referenceWaveInitialDifficulty;
     [SerializeField] private float referenceWaveGrowthFactor;
@@ -120,6 +121,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         hasBoss = levelSO.hasBoss;
         bossCreatureType = levelSO.bossCreatureType;
         bossNightsSpawns = levelSO.bossNightSpawns;
+        bossNightWaveDifficultyMultiplier = levelSO.bossNightWaveDifficultyMultiplier;
 
         minSubwaveDifficulty = levelSO.minSubwaveDifficulty;
         initialMinSubwaveDifficulty = levelSO.intialMinSubwaveDifficulty;
@@ -298,9 +300,9 @@ public class CreaturesSpawnManager : MonoBehaviour {
         if (hasBoss && bossSpawnsThisNight) {
             Debug.Log("WaveDifficultyBeforeAddingBoss " + waveDifficulty);
 
-            waveDifficulty /= 3f;
-            minSubwaveDifficulty /= 3f;
-            maxSubwaveDifficulty /= 3f;
+            waveDifficulty *= bossNightWaveDifficultyMultiplier;
+            minSubwaveDifficulty *= bossNightWaveDifficultyMultiplier;
+            maxSubwaveDifficulty *= bossNightWaveDifficultyMultiplier;
         }
 
         if (currentSpecialWaveType == SpecialWaveType.flying) {
@@ -669,7 +671,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         float spawnDistance = spawnDistanceToPlayerOrCamp;
 
         if (creatureToSpawn.isBoss) {
-            spawnDistance /= 2f;
+            spawnDistance /= 1.5f;
         }
 
 

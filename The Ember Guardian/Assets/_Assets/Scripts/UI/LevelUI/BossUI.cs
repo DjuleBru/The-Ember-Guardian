@@ -92,8 +92,7 @@ public class BossUI : MonoBehaviour
                 bossHealthBarPhase2.fillAmount = healthNormalized / 0.5f; // 50% à 0%
             }
         } else {
-            bossHealthBarFill.fillAmount = (healthNormalized - 0.5f) / 0.5f; // 100% à 50%
+            bossHealthBarFill.fillAmount = healthNormalized;
         }
-        
     }
 }

@@ -36,9 +36,14 @@ public class ChangeWeaponPanel : MonoBehaviour
         PlayerShoot.Instance.OnSecondaryWeaponChanged += PlayerShoot_OnSecondaryWeaponChanged;
         PlayerShoot.Instance.OnPlayerWeaponReplaced += PlayerShoot_OnPlayerWeaponReplaced;
 
-        UpdateWeaponSlots(PlayerShoot.Instance.GetUnlockedAndUnequippedGunSOList());
-
         isLevelScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level;
+
+        if (isLevelScene) {
+            UpdateWeaponSlots(PlayerShoot.Instance.GetGunSOInStock());
+        }
+        else {
+            UpdateWeaponSlots(PlayerShoot.Instance.GetUnlockedAndUnequippedGunSOList());
+        }
 
         gameObject.SetActive(false);
     }

@@ -37,6 +37,8 @@ MonoBehaviour:
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: de5cee30e64b11844b98118d817bfa92, type: 2}
   newMerchantTextLinesAfterLevel:
   - {fileID: 11400000, guid: 61610008e955b91448560af86b3f045b, type: 2}
+  unlocksNewGemType: 0
+  newGemTypeUnlockedByLevelList: 
   isReplayableLevel: 0
   totalDayCreatureDifficulty: 0
   dayCreatureTypes:
@@ -47,6 +49,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a8478894db1dd464292493c5e12bb3b1, type: 2}
   - {fileID: 11400000, guid: e1a51e692d8a7594597c7d4ea0f2e750, type: 2}
   - {fileID: 11400000, guid: a1fa313ce4ce3d54a9d0f8a20278ed2b, type: 2}
+  - {fileID: 11400000, guid: 1bfa75f67d0287c48879c0aecc973cda, type: 2}
   - {fileID: 11400000, guid: 2a869f182b5b34b41aa44f2e41093c0d, type: 2}
   - {fileID: 11400000, guid: 62e52f1a115920948b5e7acc35ebadd9, type: 2}
   - {fileID: 11400000, guid: a0252d9509f4f3244af84b9de1268479, type: 2}
@@ -72,6 +75,10 @@ MonoBehaviour:
     m_RotationOrder: 4
   maxWaveInAnimationCurve: 0
   canSpawnElite: 1
+  hasSpecialWaveTypes: 0
+  specialWaveTypesInLevel: 
+  specialWaveProbability: 0
+  maxSpecialWaveAmount: 0
   environmentType: 3
   hasFog: 0
   fogFrontAlpha: 0

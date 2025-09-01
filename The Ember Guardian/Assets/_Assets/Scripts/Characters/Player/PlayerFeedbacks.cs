@@ -131,6 +131,8 @@ public class PlayerFeedbacks : MonoBehaviour
             critHitFreezeFrameFeedbacks.PlayFeedbacks();
 
             if (critHitFeedbackRecentlyActivated) return;
+            if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Shotgun) return;
+
             critHitSlowMoFeedbacks.PlayFeedbacks();
             critHitFeedbackRecentlyActivated = true;
             critHitFeedbacksTimer = minDelayBetweenCritHitFeedbacks;
@@ -216,12 +218,19 @@ public class PlayerFeedbacks : MonoBehaviour
     }
 
     private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
+        if (isPlayingAnyZoomFeedback()) return;
+
         damagedFeedbacks.PlayFeedbacks();
     }
 
     private void Player_OnPlayerBlinded(object sender, System.EventArgs e) {
         blindedFeedbacks.PlayFeedbacks();
     }
+
+    private bool isPlayingAnyZoomFeedback() {
+        return  petDogStartFeedbacks.IsPlaying || petDogEndFeedbacks.IsPlaying || gunJamStartFeedbacks.IsPlaying || gunJamEndFeedbacks.IsPlaying || gunJamFailedFeedbacks.IsPlaying || activeShootSpeedBuffStartFeedbacks.IsPlaying || activeShootSpeedBuffEndFeedbacks.IsPlaying || activeTeleportationFeedbacks.IsPlaying || activeMagmaShotBulletEndFeedbacks.IsPlaying || activeMagmaShotBulletStartFeedbacks.IsPlaying || activeHealOnKillsFeedbacks.IsPlaying;
+    }
+
     private void OnDestroy() {
         GunJamHandler.OnAnyJamSequenceGenerated -= GunJamHandler_OnAnyJamSequenceGenerated;
         GunJamHandler.OnAnyJamSequenceCompleted -= GunJamHandler_OnAnyJamSequenceCompleted;

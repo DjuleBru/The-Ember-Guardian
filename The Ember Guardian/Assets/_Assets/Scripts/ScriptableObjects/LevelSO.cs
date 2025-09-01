@@ -120,6 +120,10 @@ public class LevelSO : ScriptableObject
     [LabelWidth(300)]
     [ShowIf("hasBoss")]
     public List<int> bossNightSpawns;
+    [BoxGroup("Creatures")]
+    [LabelWidth(300)]
+    [ShowIf("hasBoss")]
+    public float bossNightWaveDifficultyMultiplier = .33f;
     [BoxGroup("Creatures/NightWaves")]
     [LabelWidth(300)]
     public int startWaveToSpawnFromBothSides;

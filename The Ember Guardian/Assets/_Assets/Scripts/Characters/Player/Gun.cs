@@ -21,8 +21,10 @@ public class Gun : MonoBehaviour
     protected bool lastBulletShot;
     protected bool gunJammed;
     protected bool gunJustJammed;
+    protected bool gunJamInCooldown;
     protected float gunJustJammedTimer;
-    protected float gunJustJammedDelay = 60f;
+    protected float gunJustJammedTime = 1f;
+    protected float delayBetweenJams = 60f;
 
     protected int pelletsPerBullet = 1;
     protected int damagePerBulletAtRunStart;
@@ -104,11 +106,15 @@ public class Gun : MonoBehaviour
             }
         }
 
-        if (!gunJustJammed) return;
+        if (!gunJamInCooldown) return;
 
-        gunJustJammedTimer -= Time.deltaTime;
-        if(gunJustJammedTimer < 0) {
+        gunJustJammedTimer += Time.deltaTime;
+        if(gunJustJammedTimer > gunJustJammedTime && gunJustJammed) {
             gunJustJammed = false;
+        }
+
+        if (gunJustJammedTimer > delayBetweenJams) {
+            gunJamInCooldown = false;
         }
 
     }
@@ -259,7 +265,9 @@ public class Gun : MonoBehaviour
     }
 
     protected void Player_OnPlayerDied(object sender, EventArgs e) {
-        if(damageSurgeBuffed) {
+        if (!gunActive) return;
+
+        if (damageSurgeBuffed) {
             damageSurgeBuffed = false;
             OnPerfectQTEDamageBuffEnded?.Invoke(this, EventArgs.Empty);
         }
@@ -311,7 +319,7 @@ public class Gun : MonoBehaviour
     protected void HandleGunJams() {
         if (!PlayerShoot.Instance.GetGunCanJam()) return;
         if (PlayerShoot.Instance.GetNotHeldGun() != null && PlayerShoot.Instance.GetNotHeldGun().GetGunJammed()) return;
-        if (gunJustJammed) return;
+        if (gunJamInCooldown) return;
 
         if (UnityEngine.Random.value < jamProbability/100f) {
             JamGun();
@@ -508,7 +516,8 @@ public class Gun : MonoBehaviour
     public void JamGun() {
         gunJammed = true;
         gunJustJammed = true;
-        gunJustJammedTimer = gunJustJammedDelay;
+        gunJamInCooldown = true;
+        gunJustJammedTimer = 0;
 
         OnGunJammed?.Invoke(this, EventArgs.Empty);
         OnAnyGunJammed?.Invoke(this, EventArgs.Empty);
@@ -638,6 +647,7 @@ public class Gun : MonoBehaviour
 
         MetaProgressionManager.Instance.SetGunJamProbability(gunSO, jamProbability);
         MetaProgressionManager.Instance.SetGunSurgeWindowBulletsAmountBuffed(gunSO, surgeWindowBulletAmountBuffed);
+        MetaProgressionManager.Instance.SetGunJamRepairHitAmount(gunSO, jamRepairHitAmount);
 
         MetaProgressionManager.Instance.SetGunSecondaryAbilityUnlocked(gunSO, secondaryAbilityUnlocked);
         MetaProgressionManager.Instance.SetGunUnlocked(gunSO, gunUnlocked);

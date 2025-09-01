@@ -89,6 +89,7 @@ public class CreatureDetectionCollider : MonoBehaviour
         // Fire
         Fire fire = other.GetComponent<Fire>();
         if (fire != null) {
+            if (fire.GetIsEndLevelAreaFire()) return;
             AddIDamageableInDetectionRange(fire);
         }
 

@@ -15,6 +15,9 @@ public class Currency_UI : MonoBehaviour
     [SerializeField] private Image gemImage;
 
     private bool movingOrb;
+    private bool currencyJustLoaded;
+    private float currencyLoadedTimer;
+    private float currencyLoadedTime = 2f;
     private Transform destinationTransform;
     private float smoothTime;
     private Rigidbody2D rb;
@@ -48,6 +51,13 @@ public class Currency_UI : MonoBehaviour
         //float positionYNormalized = (topPositionY - transform.position.y) / (topPositionY - bottomPositionY);
         //float mass = Mathf.Lerp(minMass, maxMass, positionYNormalized);
         //rb.mass = mass;
+
+        if(currencyJustLoaded) {
+            currencyLoadedTime += Time.deltaTime;
+            if(currencyLoadedTime > currencyLoadedTimer) {
+                currencyJustLoaded = false;
+            }
+        }
 
         if (movingOrb) {
             // Lerp vers la destination pour un mouvement lissé
@@ -83,7 +93,8 @@ public class Currency_UI : MonoBehaviour
         if (fellFromBag) return;
         Currency_UI currencyUIHit = collision.gameObject.GetComponentInParent<Currency_UI>();
         if (currencyUIHit != null) {
-            currencyUIHit.SetCurrencyRbMovable();
+            if (currencyJustLoaded) return;
+            currencyUIHit.SetCurrencyRbMovable(true);
         }
     }
 
@@ -91,7 +102,7 @@ public class Currency_UI : MonoBehaviour
         Currency_UI currencyUIHit = collision.gameObject.GetComponentInParent<Currency_UI>();
         if (currencyUIHit != null) {
             if (currencyUIHit.GetFellFromBag()) return;
-            SetCurrencyRbMovable();
+            SetCurrencyRbMovable(true);
         }
     }
 
@@ -108,12 +119,20 @@ public class Currency_UI : MonoBehaviour
         return movingOrb;
     }
 
-    public void SetCurrencyRbMovable() {
+    public void SetCurrencyRbMovable(bool movable) {
         if (currencyType == PlayerCurrencies.CurrencyType.ember) return;
-        //rb.WakeUp();
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        initialTimerOver = false;
-        initialTimer = 1.5f;
+
+        if(movable) {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            initialTimerOver = false;
+            initialTimer = 1.5f;
+        }
+
+    }
+
+    public void SetCurrencyLoaded() {
+        currencyJustLoaded = true;
+        rb.bodyType = RigidbodyType2D.Static;
     }
 
     public void PurifyGem() {

@@ -588,9 +588,14 @@ public class UICurrencyManager : MonoBehaviour
             Quaternion randomRotation = Quaternion.Euler(0f, 0f, UnityEngine.Random.Range(0f, 360f)); // Rotation aléatoire sur l'axe Z
             Currency_UI currencyUI = Instantiate(prefab, position, randomRotation, currencyContainer).GetComponent<Currency_UI>();
             currenciesInBag.Add(currencyUI);
+
             if(isHubInventory) {
                 currencyUI.transform.localScale *= 1.5f;
                 currencyUI.PurifyGem();
+            }
+
+            if (isPlayerInventory) {
+                currencyUI.SetCurrencyLoaded();
             }
         }
 

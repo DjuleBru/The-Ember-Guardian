@@ -51,11 +51,9 @@ public class PlayerAim : MonoBehaviour
     private float timeToPerfectAccuracy = 3f; // Durée avant précision parfaite
     private float stationaryTimer = 0f;
     private bool playerIsStationary;
-    private bool playerIsExhausted;
 
     private bool lastOffsetWasUp = true;
     private float currentPrecisionModifier = 1;
-    private float currentPrecisionMovementModifier = 1;
     private float currentRecoilModifier = 1;
     private float weaponPrecisionModifier = 1;
     private float distancePrecisionModifier;
@@ -69,7 +67,13 @@ public class PlayerAim : MonoBehaviour
     private float crouchPrecisionBuff = 2;
     private float crouchRecoilReductionFactor = 2;
 
+    private bool isMoving;
+    private bool isRunning;
+    private bool isCrouching;
+    private bool isExhausted;
     private bool justTookDamage;
+    private bool secondaryAbilityActive;
+
     private float damageImmunityAfterTakingDamageTime;
     private float takeDamageTimer;
 
@@ -99,6 +103,7 @@ public class PlayerAim : MonoBehaviour
 
     private bool limitAimAngle = false;
     private float maxAimAngle = 45f; // Maximum angle from the default aim direction (in degrees)
+
 
     public event EventHandler OnXAimDirChanged;
     public event EventHandler OnPlayerAimSightStarted;
@@ -163,19 +168,6 @@ public class PlayerAim : MonoBehaviour
         HandleRecoil();
     }
 
-    private void RefreshPrecisionVariables() {
-        GunSO gunSO = PlayerShoot.Instance.GetHeldGunSO();
-        Gun gun = PlayerShoot.Instance.GetHeldGun();
-
-        currentPrecisionModifier = currentPrecisionMovementModifier;
-
-        crouchPrecisionBuff = gunSO.crouchPrecisionBuff;
-        crouchRecoilReductionFactor = gunSO.crouchRecoilReductionFactor;
-        movePrecisionDebuff = gunSO.movePrecisionDebuff;
-        runPrecisionDebuff = gunSO.runPrecisionDebuff;
-        weaponPrecisionModifier = gun.GetWeaponPrecisionModifier();
-        aimFollowSpeed = gunSO.followMouseSpeed;
-    }
 
     private void SettingsManager_OnAutoAlignAimWithMovementChanged(object sender, EventArgs e) {
         autoAimOnMovement = SettingsManager.Instance.GetAlignAimWithMovement();
@@ -377,7 +369,7 @@ public class PlayerAim : MonoBehaviour
     }
 
     private void HandlePlayerStationary() {
-        playerIsStationary = !playerIsExhausted && !justTookDamage && Mathf.Abs(PlayerMovement.Instance.GetMoveSpeed()) < .2f;
+        playerIsStationary = !isExhausted && !justTookDamage && Mathf.Abs(PlayerMovement.Instance.GetMoveSpeed()) < .2f;
 
         if (playerIsStationary) {
             stationaryTimer += Time.deltaTime;
@@ -525,63 +517,65 @@ public class PlayerAim : MonoBehaviour
     }
 
     private void PlayerMovement_OnPlayerCrouchedEnded(object sender, EventArgs e) {
+        isCrouching = false;
+
+        RecalculatePrecision();
         ResetStationaryPerfectPrecision(0);
-        DebuffPrecision(crouchPrecisionBuff, true);
-        DebuffRecoil(crouchRecoilReductionFactor);
     }
 
     private void PlayerMovement_OnPlayerCrouched(object sender, EventArgs e) {
+        isCrouching = true;
+
+        RecalculatePrecision();
         ResetStationaryPerfectPrecision(.7f);
-        BuffPrecision(crouchPrecisionBuff, true);
-        BuffRecoil(crouchRecoilReductionFactor);
     }
 
     private void PlayerMovement_OnPlayerRunStopped(object sender, EventArgs e) {
-        BuffPrecision(runPrecisionDebuff, true);
+        isRunning = false;
+        RecalculatePrecision();
     }
 
     private void PlayerMovement_OnPlayerRunStarted(object sender, EventArgs e) {
-        DebuffPrecision(runPrecisionDebuff, true);
+        isRunning = true;
+        RecalculatePrecision();
     }
 
     private void PlayerMovement_OnPlayerMoveStopped(object sender, EventArgs e) {
-        BuffPrecision(movePrecisionDebuff, true);
+        isMoving = false;
+        RecalculatePrecision();
     }
 
     private void PlayerMovement_OnPlayerMoveStarted(object sender, EventArgs e) {
-        DebuffPrecision(movePrecisionDebuff, true);
+        isMoving = true;
+        RecalculatePrecision();
     }
 
     private void PlayerMovement_OnPlayerExhaustionStopped(object sender, EventArgs e) {
-        playerIsExhausted = false;
-        BuffPrecision(exhaustedPrecisionDebuff, true);
+        isExhausted = false;
+        RecalculatePrecision();
     }
 
     private void PlayerMovement_OnPlayerExhaustionStarted(object sender, EventArgs e) {
-        playerIsExhausted = true;
-        DebuffPrecision(exhaustedPrecisionDebuff, true);
+        isExhausted = true;
+        RecalculatePrecision();
     }
-    private void PlayerShoot_OnWeaponSecondaryAbilityEnded(object sender, EventArgs e) {
-        float secondaryAbilityBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondaryAbilityPrecisionFactor;
-        DebuffPrecision(secondaryAbilityBuff);
 
-        float recoilBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondaryRecoilReductionFactor;
-        DebuffRecoil(recoilBuff);
+    private void PlayerShoot_OnWeaponSecondaryAbilityEnded(object sender, EventArgs e) {
+        secondaryAbilityActive = false;
+        RecalculatePrecision();
     }
 
     private void PlayerShoot_OnWeaponSecondaryAbilityStarted(object sender, EventArgs e) {
-        float secondaryAbilityBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondaryAbilityPrecisionFactor;
-        BuffPrecision(secondaryAbilityBuff);
-
-        float recoilBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondaryRecoilReductionFactor;
-        BuffRecoil(recoilBuff);
+        secondaryAbilityActive = true;
+        RecalculatePrecision();
     }
     private void Player_OnPlayerDamaged(object sender, Player.OnPlayerChangedHealthEventArgs e) {
         if (justTookDamage) return;
 
-        DebuffPrecision(takeDamagePrecisionDebuff);
         takeDamageTimer = damageImmunityAfterTakingDamageTime;
         justTookDamage = true;
+
+        RecalculatePrecision();
     }
 
     private void HandleJustTookDamagePrecisionDebuff() {
@@ -589,46 +583,80 @@ public class PlayerAim : MonoBehaviour
             takeDamageTimer -= Time.deltaTime;
             if (takeDamageTimer <= 0) {
                 justTookDamage = false;
-                BuffPrecision(takeDamagePrecisionDebuff);
+                RecalculatePrecision();
             }
         }
     }
+
     private void Gun_OnAnyGunStatsUpgraded(object sender, EventArgs e) {
-        RefreshPrecisionVariables();
+        RecalculatePrecision();
     }
 
-    private void BuffPrecision(float buff, bool isMovementModifier = false) {
+    private void RecalculatePrecision() {
+
+        GunSO gunSO = PlayerShoot.Instance.GetHeldGun().GetGunSO();
+        Gun gun = PlayerShoot.Instance.GetHeldGun();
+
+        currentPrecisionModifier = 1f;
+        smoothSpeed = 1f;
+        noiseAmount = 0;
+
+        float secondaryAbilityBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondaryAbilityPrecisionFactor;
+        float recoilBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondaryRecoilReductionFactor;
+
+        crouchPrecisionBuff = gunSO.crouchPrecisionBuff;
+        crouchRecoilReductionFactor = gunSO.crouchRecoilReductionFactor;
+        movePrecisionDebuff = gunSO.movePrecisionDebuff;
+        runPrecisionDebuff = gunSO.runPrecisionDebuff;
+        weaponPrecisionModifier = gun.GetWeaponPrecisionModifier();
+        aimFollowSpeed = gunSO.followMouseSpeed;
+
+        if (isMoving) {
+            DebuffPrecision(movePrecisionDebuff);
+        }
+
+        if (isRunning) {
+            DebuffPrecision(runPrecisionDebuff);
+        }
+
+        if (isCrouching) {
+            BuffPrecision(crouchPrecisionBuff);
+            BuffRecoil(crouchRecoilReductionFactor);
+        }
+
+        if (isExhausted) {
+            DebuffPrecision(exhaustedPrecisionDebuff);
+        }
+
+        if (justTookDamage) {
+            DebuffPrecision(takeDamagePrecisionDebuff);
+        }
+
+        if(secondaryAbilityActive) {
+            BuffPrecision(secondaryAbilityBuff);
+            BuffRecoil(recoilBuff);
+        }
+
+        SelectNextRandomTargetForWeaponPointer();
+    }
+
+    private void BuffPrecision(float buff) {
 
         currentPrecisionModifier /= buff;
         smoothSpeed /= buff;
         noiseAmount /= buff;
-        SelectNextRandomTargetForWeaponPointer();
-
-        if(isMovementModifier) {
-            currentPrecisionMovementModifier /= buff;
-        }
     }
 
-    private void DebuffPrecision(float debuff, bool isMovementModifier = false) {
+    private void DebuffPrecision(float debuff) {
 
         currentPrecisionModifier *= debuff;
         smoothSpeed *= debuff;
         noiseAmount *= debuff;
 
-        if (isMovementModifier) {
-            currentPrecisionMovementModifier *= debuff;
-        }
-
-        SelectNextRandomTargetForWeaponPointer();
     }
 
     private void BuffRecoil(float buff) {
         currentRecoilModifier /= buff;
-        //Debug.Log("currentRecoilModifier " + currentRecoilModifier);
-    }
-
-    private void DebuffRecoil(float debuff) {
-        currentRecoilModifier *= debuff;
         //Debug.Log("currentRecoilModifier " + currentRecoilModifier);
     }
 
@@ -688,7 +716,8 @@ public class PlayerAim : MonoBehaviour
 
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
-        RefreshPrecisionVariables();
+        RecalculatePrecision();
+
         ResetStationaryPerfectPrecision();
 
         if (PlayerShoot.Instance.GetHeldGun().GetGunSO().bulletIsParticle) {

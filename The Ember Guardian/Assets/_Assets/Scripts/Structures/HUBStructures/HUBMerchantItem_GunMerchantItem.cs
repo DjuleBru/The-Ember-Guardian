@@ -36,6 +36,8 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         spinUpTime,
         minigun,
         AAgun,
+        pistol,
+        rocketLauncher,
     }
 
     public enum GunItemCategory {

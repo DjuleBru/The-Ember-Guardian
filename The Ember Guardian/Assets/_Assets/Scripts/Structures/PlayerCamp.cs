@@ -170,6 +170,27 @@ public class PlayerCamp : MonoBehaviour
                     structureLocation.UnlockStructureLocation();
                 }
             }
+        }
+
+        StartCoroutine(CheckBuildMerchantCoroutine(structureLocations, minBarricadePosition, maxBarricadePosition));
+    }
+
+    private IEnumerator CheckBuildMerchantCoroutine(List<StructureLocation> structureLocations, Vector3 minBarricadePosition, Vector3 maxBarricadePosition) {
+        if (!initialFireLit) yield break;
+
+        yield return new WaitForSeconds(.5f);
+
+        foreach (StructureLocation structureLocation in structureLocations) {
+            if (structureLocation == null) continue;
+            if (IsWithinBarricadePosition(structureLocation.transform.position, minBarricadePosition, maxBarricadePosition)) {
+                if(structureLocation.GetStructureLocationBought()) {
+                    if (structureLocation.GetStructureSOToBuild().structureType == StructureSO.StructureType.merchant_skills || structureLocation.GetStructureSOToBuild().structureType == StructureSO.StructureType.merchant_traps) {
+                        structureLocation.BuildStructure();
+                        yield return new WaitForSeconds(.3f);
+                    }
+                }
+
+            }
 
         }
     }

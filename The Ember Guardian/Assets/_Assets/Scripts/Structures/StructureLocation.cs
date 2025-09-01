@@ -32,6 +32,7 @@ public class StructureLocation : MonoBehaviour {
     protected bool playerInTriggerArea;
     protected bool isBeingDestroyed;
     protected bool isWorldLocation;
+    protected bool structureLocationBought;
 
     protected virtual void Awake() {
         payCurrencyUI = GetComponent<PayCurrencyUI>();
@@ -164,6 +165,7 @@ public class StructureLocation : MonoBehaviour {
 
     protected void LoadStructureLocationBought() {
         if (DebugManager.Instance.GetAllStructuresUnlocked() || debugStructureTypeBought || structureSOToBuild.level1StructureInitiallyUnlocked) {
+            structureLocationBought = true;
             gameObject.SetActive(true);
             return;
         }
@@ -173,11 +175,13 @@ public class StructureLocation : MonoBehaviour {
 
         //Debug.Log("saveString " + saveString);
         if (!MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
+            structureLocationBought = false;
             OnStructureLocationLoaded_Locked?.Invoke(this, EventArgs.Empty);
             gameObject.SetActive(false);
             //Debug.Log(saveString + " location has NOT been bought at merchant ");
         }
         else {
+            structureLocationBought = true;
             gameObject.SetActive(true);
             //Debug.Log(saveString + " location has been bought at merchant ");
         }
@@ -211,6 +215,10 @@ public class StructureLocation : MonoBehaviour {
     }
     public bool GetIsWorldStructureLocation() {
         return isWorldLocation;
+    }
+
+    public bool GetStructureLocationBought() {
+        return structureLocationBought;
     }
 
     public float GetStructureLocationWorldScaleX() {

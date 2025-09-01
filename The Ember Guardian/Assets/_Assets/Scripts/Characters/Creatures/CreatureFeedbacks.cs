@@ -9,6 +9,7 @@ public class CreatureFeedbacks : MonoBehaviour
     [SerializeField] protected MMF_Player enteredLightFeedbacks;
     [SerializeField] protected MMF_Player footStepFeedbacks;
     [SerializeField] protected MMF_Player attackHitFeedbacks;
+    [SerializeField] protected MMF_Player attackFeedbacks;
 
     [SerializeField] protected CreatureAnimatorManager creatureAnimatorManager;
     [SerializeField] protected CreatureAI creatureAI;
@@ -35,9 +36,15 @@ public class CreatureFeedbacks : MonoBehaviour
 
         if (creatureAttack != null) {
             creatureAttack.OnMobAttackHit += CreatureAttach_OnMobAttackHit;
+            creatureAttack.OnMobAttack += CreatureAttack_OnMobAttack;
         }
     }
 
+    private void CreatureAttack_OnMobAttack(object sender, System.EventArgs e) {
+        if(attackFeedbacks != null) {
+            attackFeedbacks.PlayFeedbacks();
+        }
+    }
 
     protected void CreatureAttach_OnMobAttackHit(object sender, System.EventArgs e) {
         if (attackHitFeedbacks != null) {
