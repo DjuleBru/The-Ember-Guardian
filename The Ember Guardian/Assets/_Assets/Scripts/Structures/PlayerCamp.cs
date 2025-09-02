@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerCamp : MonoBehaviour
@@ -70,7 +71,7 @@ public class PlayerCamp : MonoBehaviour
         barricades1BuiltAtStart = StructureStats.Instance.GetStartWithBarricades();
 
         LoadCustomCampLayout();
-        InitializeBuiltAtStartStructureLocations();
+        StartCoroutine(InitializeBuiltAtStartStructureLocations());
         InitializeWorldStructureLocations();
     }
 
@@ -138,7 +139,8 @@ public class PlayerCamp : MonoBehaviour
             location.SetAsWorldStructureLocation();
         }
     }
-    private void InitializeBuiltAtStartStructureLocations() {
+    private IEnumerator InitializeBuiltAtStartStructureLocations() {
+        yield return new WaitForSeconds(.1f);
         if (ammoCrafterBuiltAtStart) {
             initialStructureLocationsBuilt.Add(ammoCrafter1Location);
         }
@@ -148,6 +150,17 @@ public class PlayerCamp : MonoBehaviour
         if (barricades1BuiltAtStart) {
             initialStructureLocationsBuilt.Add(rightBarricade1);
             initialStructureLocationsBuilt.Add(leftBarricade1);
+        }
+
+        // Merchants
+        foreach (StructureLocation structureLocation in allStructureLocations) {
+            if (structureLocation == null) continue;
+
+            if (structureLocation.GetStructureLocationBought()) {
+                if (structureLocation.GetStructureSOToBuild().structureType == StructureSO.StructureType.merchant_skills || structureLocation.GetStructureSOToBuild().structureType == StructureSO.StructureType.merchant_traps) {
+                    initialStructureLocationsBuilt.Add(structureLocation);
+                }
+            }
         }
     }
 
@@ -172,7 +185,8 @@ public class PlayerCamp : MonoBehaviour
             }
         }
 
-        StartCoroutine(CheckBuildMerchantCoroutine(structureLocations, minBarricadePosition, maxBarricadePosition));
+        // Build merchants when barricade built
+        //StartCoroutine(CheckBuildMerchantCoroutine(structureLocations, minBarricadePosition, maxBarricadePosition));
     }
 
     private IEnumerator CheckBuildMerchantCoroutine(List<StructureLocation> structureLocations, Vector3 minBarricadePosition, Vector3 maxBarricadePosition) {
@@ -189,9 +203,7 @@ public class PlayerCamp : MonoBehaviour
                         yield return new WaitForSeconds(.3f);
                     }
                 }
-
             }
-
         }
     }
 
@@ -455,7 +467,7 @@ public class PlayerCamp : MonoBehaviour
     public bool GetHasSkillMerchantInLayoutAndUnlocked() {
         foreach(StructureLocation location in allStructureLocations) {
             if(location.GetStructureSOToBuild().structureType == StructureSO.StructureType.merchant_skills) {
-                if(location.GetStructureLocationUnlocked()) {
+                if(location.GetStructureLocationBought()) {
                     return true;
                 }
             }

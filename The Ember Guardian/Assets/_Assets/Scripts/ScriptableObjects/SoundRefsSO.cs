@@ -106,6 +106,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip playerRespawnFireExtact;
     public AudioClip passiveSkillAdded;
     public AudioClip activeSkillReady;
+    public AudioClip activeSkillDeleted;
     public AudioClip passiveShieldActivate;
     public AudioClip passiveShieldDie;
     public AudioClip playerActiveTeleport;

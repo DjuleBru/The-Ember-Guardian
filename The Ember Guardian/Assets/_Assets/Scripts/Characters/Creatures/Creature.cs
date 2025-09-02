@@ -41,6 +41,8 @@ public class Creature : Mob
     protected float detectionRangeIncreasedTimer;
     protected float detectionRangeIncreasedTime = 5f;
     protected bool detectionRangeIncreased;
+    protected float probabilityToDropOrb;
+    protected float nightCreatureDropProbabilityReductionFactor = 4f;
 
     protected bool playerCrouchRangeDecreased;
     protected float playerShootDetectionRangeMultiplier;
@@ -96,6 +98,7 @@ public class Creature : Mob
         shockedImmune = creatureSO.immuneToShock;
         poisonImmune = creatureSO.immuneToPoison;
         immobilizeImmune = creatureSO.immuneToImmobilize;
+        probabilityToDropOrb = creatureSO.probabilityToDropOrb;
     }
 
     protected virtual void Start() {
@@ -174,9 +177,19 @@ public class Creature : Mob
         }
 
         dropRedOrbs = MetaProgressionManager.Instance.GetDropRedOrbsUnlocked() && PlayerCamp.Instance.GetHasSkillMerchantInLayoutAndUnlocked();
-        if (dropRedOrbs && IsDayCreature()) {
-            SpawnDroppedCurrencies(creatureSO.currencyTypeDroppedList, creatureSO.currencyDropAmountList);
-            InvokeOnMobDroppedCollectibles(collectiblesDropped);
+
+        if (dropRedOrbs) {
+            float randomValue = UnityEngine.Random.value;
+
+            if(!IsDayCreature()) {
+                // Night creatures : drop probability reduced
+                probabilityToDropOrb /= nightCreatureDropProbabilityReductionFactor;
+            }
+
+            if(randomValue < probabilityToDropOrb) {
+                SpawnDroppedCurrencies(creatureSO.currencyTypeDroppedList, creatureSO.currencyDropAmountList);
+                InvokeOnMobDroppedCollectibles(collectiblesDropped);
+            }
         }
 
         if (DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetIsMainDemoLevel()) {

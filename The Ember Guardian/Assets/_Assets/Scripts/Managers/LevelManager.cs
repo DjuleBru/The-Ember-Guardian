@@ -129,8 +129,13 @@ public class LevelManager : MonoBehaviour
     private void LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, EventArgs e) {
         levelHubMerchantInteractionIndex++;
         if(levelHubMerchantInteractionIndex == 2) {
-            LevelObjectives.Instance.ShowReturnToHubObj(2f);
-            StartCoroutine(EnableEndLevelPortal(3f));
+            float delayToShowReturnToHubObj = 2f;
+            if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
+                delayToShowReturnToHubObj = 4f;
+            }
+
+            LevelObjectives.Instance.ShowReturnToHubObj(delayToShowReturnToHubObj);
+            StartCoroutine(EnableEndLevelPortal(delayToShowReturnToHubObj+1f));
         }
 
         if(levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
@@ -145,7 +150,12 @@ public class LevelManager : MonoBehaviour
 
     private void LevelUI_OnObjectiveCompleted(object sender, EventArgs e) {
         LevelSuccess();
-        LevelObjectives.Instance.ShowReturnToHubObj(2.5f);
+
+        float delayToShowReturnToHubObj = 2.5f;
+        if(levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
+            delayToShowReturnToHubObj = 4f;
+        }
+        LevelObjectives.Instance.ShowReturnToHubObj(delayToShowReturnToHubObj);
     }
 
     [Button]

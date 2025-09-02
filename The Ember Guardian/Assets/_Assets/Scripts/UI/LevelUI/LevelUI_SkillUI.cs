@@ -14,6 +14,7 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] private bool isRightActiveSkill;
 
     [SerializeField] private Animator skillTemplateAnimator;
+    [SerializeField] private Animator skillDeleteAnimator;
     [SerializeField] private Image skillTemplateImage;
     [SerializeField] private Image skillTemplateBackgroundImage;
     [SerializeField] private Image skillTemplateOutlineImage;
@@ -47,6 +48,8 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
     }
 
     private void RefreshSkillVisuals() {
+        if(linkedSkill == null) return;
+
         skillTemplateImage.sprite = linkedSkill.skillSO.Icon;
         skillTemplateBackgroundImage.sprite = linkedSkill.skillSO.Icon;
         Debug.Log(linkedSkill.skillSO);
@@ -104,18 +107,22 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
     }
 
     private void PlayerSkills_OnRightActiveSkillDeactivated(object sender, System.EventArgs e) {
+        if (!isRightActiveSkill) return;
         skillTemplateAnimator.SetBool("Active", false);
     }
 
     private void PlayerSkills_OnLeftActiveSkillDeactivated(object sender, System.EventArgs e) {
+        if (!isLeftActiveSkill) return;
         skillTemplateAnimator.SetBool("Active", false);
     }
 
     private void PlayerSkills_OnRightActiveSkillActivated(object sender, System.EventArgs e) {
+        if (!isRightActiveSkill) return;
         skillTemplateAnimator.SetBool("Active", true);
     }
 
     private void PlayerSkills_OnLeftActiveSkillActivated(object sender, System.EventArgs e) {
+        if (!isLeftActiveSkill) return;
         skillTemplateAnimator.SetBool("Active", true);
     }
 
@@ -127,6 +134,20 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
     private void PlayerTabMenu_OnPlayerTabClosed(object sender, EventArgs e) {
         button.enabled = false;
         tabMenuOpen = false;
+
+        if (skillDeleteAnimator != null) {
+            skillDeleteAnimator.ResetTrigger("Show");
+            skillDeleteAnimator.SetTrigger("Hide");
+        }
+    }
+
+
+    public void RemoveSkill() {
+        OpenCloseSkillDescriptionCard(false);
+        skillTemplateAnimator.SetBool("Active", true);
+        skillTemplateAnimator.SetBool("Ready", true);
+        PlayerSkills.Instance.RemoveActiveSkill(linkedSkill);
+        PlayerTabMenuUI.Instance.SelectFirstButtonSelected();
     }
 
     #region UI NAVIGATION
@@ -142,14 +163,38 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
             buttonSelected = false;
         }
     }
+
     private void LevelUI_SkillUI_OnAnyButtonSelected(object sender, System.EventArgs e) {
         if (!(sender as ButtonUI is LevelUI_SkillUI)) {
             OpenCloseSkillDescriptionCard(false);
+
+            if(!(sender as ButtonUI is DeleteSkillUI)) {
+                if (skillDeleteAnimator != null) {
+                    skillDeleteAnimator.ResetTrigger("Show");
+                    skillDeleteAnimator.SetTrigger("Hide");
+                }
+            }
+
             return;
         }
-        if (sender as ButtonUI != this) return;
+
+        if (sender as ButtonUI != this) {
+            if (!(sender as ButtonUI is DeleteSkillUI)) {
+                if (skillDeleteAnimator != null) {
+                    skillDeleteAnimator.ResetTrigger("Show");
+                    skillDeleteAnimator.SetTrigger("Hide");
+                }
+            }
+            return;
+        }
         OpenCloseSkillDescriptionCard(true);
         SetDescriptionCardPosition();
+
+        if (skillDeleteAnimator != null) {
+            skillDeleteAnimator.ResetTrigger("Hide");
+            skillDeleteAnimator.SetTrigger("Show");
+        }
+
     }
 
     private void LevelUI_SkillUI_OnAnyButtonHovered(object sender, System.EventArgs e) {
@@ -158,6 +203,13 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
 
         OpenCloseSkillDescriptionCard(true);
         SetDescriptionCardPosition();
+
+
+        if (skillDeleteAnimator != null) {
+            skillDeleteAnimator.ResetTrigger("Hide");
+            skillDeleteAnimator.SetTrigger("Show");
+        }
+
     }
 
     public override void OnPointerEnter(PointerEventData eventData) {
@@ -168,7 +220,12 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
     public override void OnPointerExit(PointerEventData eventData) {
         if (!tabMenuOpen) return;
         base.OnPointerExit(eventData);
-        OpenCloseSkillDescriptionCard(false);
+        OpenCloseSkillDescriptionCard(false); 
+        
+        if (skillDeleteAnimator != null) {
+            skillDeleteAnimator.ResetTrigger("Show");
+            skillDeleteAnimator.SetTrigger("Hide");
+        }
     }
 
     private void OpenCloseSkillDescriptionCard(bool open) {
@@ -176,6 +233,7 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
             skillDescriptionCard.gameObject.SetActive(true);
             skillDescriptionCard.OpenDescriptionCard();
             SetDesciptionCardText();
+
         } else {
             skillDescriptionCard.gameObject.SetActive(false);
         }

@@ -146,6 +146,9 @@ public class CreatureSO : ScriptableObject
 
     [BoxGroup("Drop Stats")]
     [LabelWidth(200)]
+    public float probabilityToDropOrb = .5f;
+    [BoxGroup("Drop Stats")]
+    [LabelWidth(200)]
     public List<PlayerCurrencies.CurrencyType> currencyTypeDroppedList;
     [BoxGroup("Drop Stats")]
     [LabelWidth(200)]

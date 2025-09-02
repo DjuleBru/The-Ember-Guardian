@@ -20,11 +20,19 @@ public class Chest_Special : Chest
     protected override void Start() {
         base.Start();
         if (chestType == ChestType.skillChest) {
+            StartCoroutine(CheckSkillStatueActive());
             SelectRandomSkill();
         }
 
         bool weaponUnlockedInShop = MetaProgressionManager.Instance.GetMerchantItemUnlocked(weaponMerchantItemType.ToString() + " " + gunSOInChest.ToString());
         if (findingWeaponUnlocksItInShop && weaponUnlockedInShop) {
+            gameObject.SetActive(false);
+        }
+    }
+
+    private IEnumerator CheckSkillStatueActive() {
+        yield return new WaitForSeconds(.1f);
+        if (PlayerCamp.Instance.GetHasSkillMerchantInLayoutAndUnlocked()) {
             gameObject.SetActive(false);
         }
     }

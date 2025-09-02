@@ -30,6 +30,7 @@ public class Gun : MonoBehaviour
     protected int damagePerBulletAtRunStart;
     protected int damagePerBullet;
     protected float explosionRadiusMultiplier = 1;
+    protected static float gunDamageBuffMultiplier = 1;
     protected static float totalBuffMultiplier = 1;
     protected float bulletKnockback;
     protected int currentAmmoClip;
@@ -298,7 +299,7 @@ public class Gun : MonoBehaviour
 
         if (damageSurgeBuffedLastBullet) {
             damageSurgeBuffedLastBullet = false;
-            DebuffBulletDamage(perfectJamDamageBuff);
+            DebuffBulletDamage(perfectJamDamageBuff, false);
         }
 
         if (damageSurgeBuffed) {
@@ -330,18 +331,29 @@ public class Gun : MonoBehaviour
         return gunSO;
     }
 
-    public void BuffBulletDamage(float buffAmount) {
-        totalBuffMultiplier *= buffAmount;
+    public void BuffBulletDamage(float buffAmount, bool globalBuff = true) {
+        if(globalBuff) {
+            totalBuffMultiplier *= buffAmount;
+        } else {
+            gunDamageBuffMultiplier *= buffAmount;
+        }
+
         RecalculateDamage();
     }
 
-    public void DebuffBulletDamage(float debuffAmount) {
-        totalBuffMultiplier /= debuffAmount;
+    public void DebuffBulletDamage(float debuffAmount, bool globalDebuff = true) {
+        if (globalDebuff) {
+            totalBuffMultiplier /= debuffAmount;
+        }
+        else {
+            gunDamageBuffMultiplier /= debuffAmount;
+        }
+
         RecalculateDamage();
     }
 
     protected void RecalculateDamage() {
-        damagePerBullet = (int)(damagePerBulletAtRunStart * totalBuffMultiplier);
+        damagePerBullet = (int)(damagePerBulletAtRunStart * totalBuffMultiplier * gunDamageBuffMultiplier);
     }
 
     protected void CheckPassiveSkillEffectsOnBullet() {
@@ -498,6 +510,7 @@ public class Gun : MonoBehaviour
 
     #region SET PARAMETERS
     public void SetGunUnJammed(bool gunJamSuccess) {
+        Debug.Log(this + " SetGunUnJammed gunJamSuccess " + gunJamSuccess);
         gunJammed = false;
 
         if(gunJamSuccess) {
@@ -508,7 +521,7 @@ public class Gun : MonoBehaviour
 
         if(gunJamSuccess) {
             OnPerfectQTEDamageBuff?.Invoke(this, EventArgs.Empty);
-            BuffBulletDamage(perfectJamDamageBuff);
+            BuffBulletDamage(perfectJamDamageBuff, false);
         }
     }
 

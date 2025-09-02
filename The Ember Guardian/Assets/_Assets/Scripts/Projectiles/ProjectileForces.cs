@@ -18,7 +18,9 @@ public class ProjectileForces : Projectile {
     private bool homing;
     private bool hasPassedApex;
 
-    public void ActivateAndInitializeWithForces(Transform targetTransform, ProjectileSO projectileSO, Transform damageSource, int damage, float targetRandomizer, bool homing) {
+    public void ActivateAndInitializeWithForces(IDamageable targetIDamageable, ProjectileSO projectileSO, Transform damageSource, int damage, float targetRandomizer, bool homing) {
+        Transform targetTransform = targetIDamageable.GetProjectileTarget();
+
         if (targetTransform == null) {
             ResetInObjectPool();
             return;
@@ -54,7 +56,13 @@ public class ProjectileForces : Projectile {
         
         Vector2 targetPosition = new Vector2(projectileTarget.position.x - randomizedX, projectileTarget.position.y);
         if(homing) {
-            targetPosition = projectileTarget.position;
+            float estFlightTime = Vector2.Distance(transform.position, projectileTarget.position)
+                      / projectileSO.straightLineSpeed;
+
+
+            Vector2 targetVel = (targetIDamageable as MonoBehaviour).GetComponent<Rigidbody2D>().velocity;
+
+            targetPosition = (Vector2)projectileTarget.position + targetVel * estFlightTime;
         }
 
         Vector2 launchVelocity = Vector2.zero;
@@ -95,7 +103,7 @@ public class ProjectileForces : Projectile {
         float speed = velocity.magnitude;
 
         // Clamp la rotation de la velocity
-        float maxTurnRate = 90f * Mathf.Deg2Rad; // max 180°/s
+        float maxTurnRate = 180f * Mathf.Deg2Rad; // max 180°/s
         float angleBetween = Vector2.SignedAngle(velocity, toTarget);
         float maxAngleDelta = maxTurnRate * Time.fixedDeltaTime;
 

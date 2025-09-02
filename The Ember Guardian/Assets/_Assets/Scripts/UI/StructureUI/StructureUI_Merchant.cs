@@ -129,13 +129,8 @@ public class StructureUI_Merchant : StructureUI {
         do {
             selectedItemIndex = (selectedItemIndex + 1) % itemCount;
 
-            Debug.Log(selectedItemIndex + " puchased " + allItems[selectedItemIndex].isPurchased);
-            Debug.Log(selectedItemIndex + " buyingLocksPurchasesUntilRefresh " + allItems[selectedItemIndex].buyingLocksPurchasesUntilRefresh);
-
             if (!allItems[selectedItemIndex].isPurchased && allItems[selectedItemIndex].buyingLocksPurchasesUntilRefresh) {
-                Debug.Log("selectedItemIndex " + selectedItemIndex);
                 selectedGridPos = GetGridPosFromIndex(selectedItemIndex);
-                Debug.Log("selectedGridPos " + selectedGridPos);
                 UpdateSelectedItemUI();
                 UpdateDescriptionPanelVisuals();
                 previousSelectedItemIndex = selectedItemIndex;
@@ -245,10 +240,31 @@ public class StructureUI_Merchant : StructureUI {
     }
 
     private void Merchant_OnPlayerBoughtItem1(object sender, Merchant.OnPlayerBoughtItemEventArgs e) {
-        Debug.Log(e.boughtItem.itemName);
-        if(e.boughtItem.itemType == MerchantItem.MerchantItemType.ActiveSkill || e.boughtItem.itemType == MerchantItem.MerchantItemType.Trap) {
+
+        if(e.boughtItem.itemType == MerchantItem.MerchantItemType.ActiveSkill) {
+            // Check refund
+            Merchant_Skills skillsMerchant = sender as Merchant_Skills;
+
+            if (PlayerSkills.Instance.GetActiveSkillLeft() != null && PlayerSkills.Instance.GetActiveSkillRight() != null) {
+                // Player has 2 skills already
+
+                SkillItem skill = e.boughtItem as SkillItem;
+                if (PlayerSkills.Instance.GetActiveSkillLeft().skillType != skill.skillType && PlayerSkills.Instance.GetActiveSkillRight().skillType != skill.skillType) {
+                    // Both skills are different than the one he's trying to buy
+
+                    skillsMerchant.RefundPlayer();
+                    return;
+                }
+                
+            }
+
+
+        }
+
+        if (e.boughtItem.itemType == MerchantItem.MerchantItemType.ActiveSkill || e.boughtItem.itemType == MerchantItem.MerchantItemType.Trap) {
             OnPlayerBoughtMajorItem?.Invoke(this, EventArgs.Empty);
         }
+
 
         if (e.boughtItem.itemType == MerchantItem.MerchantItemType.PassiveSkill || e.boughtItem.itemType == MerchantItem.MerchantItemType.TrapUpgrade) {
             OnPlayerBoughtMinorItem?.Invoke(this, EventArgs.Empty);
@@ -262,6 +278,7 @@ public class StructureUI_Merchant : StructureUI {
             SelectNextAvailableItem();
         }
     }
+
 
     private MerchantItemUI FindMerchantItemUI(MerchantItem merchantItem) {
         MerchantItemUI foundMerchantItemUI = null;
@@ -357,7 +374,6 @@ public class StructureUI_Merchant : StructureUI {
         ClampSelection();
     }
     protected void ShowItemsToSale(bool show) {
-
         if(show) {
             merchantUIAnimator.SetTrigger("Show");
         } else {

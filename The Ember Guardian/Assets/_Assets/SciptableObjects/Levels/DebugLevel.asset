@@ -44,17 +44,11 @@ MonoBehaviour:
   totalDayCreatureDifficulty: 0
   dayCreatureTypes: []
   nightCreatureTypes:
-  - {fileID: 11400000, guid: a8478894db1dd464292493c5e12bb3b1, type: 2}
-  - {fileID: 11400000, guid: a8489a867b556644aade49405764f086, type: 2}
-  - {fileID: 11400000, guid: e1a51e692d8a7594597c7d4ea0f2e750, type: 2}
-  - {fileID: 11400000, guid: a0252d9509f4f3244af84b9de1268479, type: 2}
-  - {fileID: 11400000, guid: 510ddc0451847e3419a83e0ae739424e, type: 2}
-  - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
-  - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
-  - {fileID: 11400000, guid: 801ac2fa2144d5c4a8a531fade06b5de, type: 2}
+  - {fileID: 11400000, guid: 1bfa75f67d0287c48879c0aecc973cda, type: 2}
   hasBoss: 0
   bossCreatureType: {fileID: 11400000, guid: a8489a867b556644aade49405764f086, type: 2}
   bossNightSpawns: 01000000
+  bossNightWaveDifficultyMultiplier: 0.33
   startWaveToSpawnFromBothSides: 1
   baseDifficulty: 40
   intialMinSubwaveDifficulty: 10
@@ -77,6 +71,7 @@ MonoBehaviour:
   hasSpecialWaveTypes: 1
   specialWaveTypesInLevel: 02000000
   specialWaveProbability: 1
+  maxSpecialWaveAmount: 0
   environmentType: 1
   hasFog: 0
   fogFrontAlpha: 1

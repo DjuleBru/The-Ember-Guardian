@@ -12,7 +12,7 @@ public class BarricadeBreached : MonoBehaviour
 
     private Animator animator;
     private Camera mainCamera;
-    private bool isNight;
+    private bool isDuskOrNight;
     private bool barricadeBreached;
     private bool isInPlayerScreen;
 
@@ -39,7 +39,7 @@ public class BarricadeBreached : MonoBehaviour
 
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
-        isNight = true;
+        isDuskOrNight = true;
         if(barricadeBreached) {
             breachedVisual.gameObject.SetActive(true);
             animator.enabled = true;
@@ -53,7 +53,7 @@ public class BarricadeBreached : MonoBehaviour
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
-        isNight = false; 
+        isDuskOrNight = false; 
         breachedVisual.gameObject.SetActive(false);
         animator.enabled = false;
     }
@@ -65,7 +65,7 @@ public class BarricadeBreached : MonoBehaviour
     }
 
     private void Update() {
-        if (!isNight) return;
+        if (!isDuskOrNight) return;
         if (!barricadeBreached) return;
 
         Vector3 barricadeWorldPos = barricade.transform.position;

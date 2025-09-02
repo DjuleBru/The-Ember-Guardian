@@ -133,6 +133,10 @@ public class PlayerTabMenuUI : MonoBehaviour
         return firstButtonSelected;
     }
 
+    public void SelectFirstButtonSelected() {
+        EventSystem.current.SetSelectedGameObject(firstButtonSelected);
+    }
+
     public void SetWeaponDownNavigationTarget(Button target) {
         
     }

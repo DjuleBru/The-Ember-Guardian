@@ -52,12 +52,16 @@ public class MerchantItemUI : MonoBehaviour
         itemPurchased = true;
 
         if(linkedItem.buyingLocksPurchasesUntilRefresh) {
-            currencyUIParent.gameObject.SetActive(false);
-            merchantItemImage.material.SetFloat("_GreyscaleBlend", 1f);
+            SetItemSoldVisuals();
         } else {
             itemCurrencyContainerUIAnimator.SetTrigger("Unhover");
             itemCurrencyContainerUIAnimator.SetTrigger("Hover");
         }
+    }
+
+    public void SetItemSoldVisuals() {
+        currencyUIParent.gameObject.SetActive(false);
+        merchantItemImage.material.SetFloat("_GreyscaleBlend", 1f);
     }
 
     protected void RefreshItemPriceCurrencyUI() {

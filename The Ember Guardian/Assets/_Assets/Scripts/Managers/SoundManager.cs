@@ -177,7 +177,9 @@ public class SoundManager : MonoBehaviour
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine += HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
 
         DogReplaceButton.OnDogSwapped += DogReplaceButton_OnDogSwapped;
+        DeleteSkillUI.OnAnyActiveSkillDeleted += DeleteSkillUI_OnAnyActiveSkillDeleted;
     }
+
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -895,6 +897,10 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(audioClip, .6f);
     }
 
+    private void DeleteSkillUI_OnAnyActiveSkillDeleted(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.activeSkillDeleted);
+    }
+
     #endregion
 
     #region PLAY SOUNDS
@@ -1064,6 +1070,7 @@ public class SoundManager : MonoBehaviour
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop -= HubMerchant_OnPlayerInteractedWithAnyHubMerchant;
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine -= HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
         DogReplaceButton.OnDogSwapped -= DogReplaceButton_OnDogSwapped;
+        DeleteSkillUI.OnAnyActiveSkillDeleted -= DeleteSkillUI_OnAnyActiveSkillDeleted;
     }
 
 }

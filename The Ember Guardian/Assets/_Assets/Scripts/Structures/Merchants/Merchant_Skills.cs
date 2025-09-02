@@ -6,6 +6,7 @@ using UnityEngine;
 public class Merchant_Skills : Merchant
 {
 
+    [SerializeField] private Transform refundDropPosition;
     private List<SkillSO> merchantSkillSOList;
     private List<SkillItem> majorSkillList;
     private List<SkillItem> minorSkillList; // Référence aux skills du joueur
@@ -103,6 +104,8 @@ public class Merchant_Skills : Merchant
     }
 
     protected override void RefreshShopItems() {
+        base.RefreshShopItems();
+
         //Debug.Log("RefreshShopItems");
         SetAllSkillsUnsold();
         RefreshCurrentMajorItemForSale();
@@ -110,29 +113,34 @@ public class Merchant_Skills : Merchant
     }
 
     protected void RefreshCurrentMajorItemForSale() {
-        //Debug.Log("RefreshCurrentMajorItemForSale");
-        // Pondération pour augmenter la chance des améliorations
         List<SkillItem> majorSkillListToDisplay = new List<SkillItem>();
 
-        // Le joueur a moins de 2 skills actifs : on propose encore de nouveaux skills
-        if (PlayerSkills.Instance.GetActiveSkillList().Count < 2) {
-            foreach (SkillItem skillItem in this.majorSkillList) {
-                majorSkillListToDisplay.Add(skillItem);
-            }
-        } else {
-            // Le joueur a 2 skills actifs : on propose uniquement des améliorations
+        int activeSkillCount = PlayerSkills.Instance.GetActiveSkillList().Count;
 
-            foreach (SkillItem skillItem in this.majorSkillList) {
-                if (PlayerSkills.Instance.GetCurrentSkillLevel(skillItem) > 0) {
+        // Calcul dynamique du weight en fonction du nombre total de skills
+        // minWeight = 2 si peu d’éléments, maxWeight = 4 si beaucoup
+        int weight = 2 + (this.majorSkillList.Count - 3) * (4 - 2) / (10 - 3);
+        weight = Mathf.Clamp(weight, 2, 4); // limite entre 2 et 4
+
+        foreach (SkillItem skillItem in this.majorSkillList) {
+            int currentLevel = PlayerSkills.Instance.GetCurrentSkillLevel(skillItem);
+
+            if (currentLevel > 0 && activeSkillCount > 1) {
+                // Skill déjà acquis et plus d’un skill actif : appliquer la pondération
+                for (int i = 0; i < weight; i++) {
                     majorSkillListToDisplay.Add(skillItem);
                 }
+            }
+            else {
+                // Skill pas encore acquis ou unique skill actif : pondération 1
+                majorSkillListToDisplay.Add(skillItem);
             }
         }
 
         majorSkillItemsForSale = DrawSkillsWithoutReplacement(majorSkillListToDisplay, bigItemsToDisplayAmount);
         majorItemListForSale = ConvertSkillListInMerchantItemList(majorSkillItemsForSale);
 
-        foreach(SkillItem skillItem in majorItemListForSale) {
+        foreach (SkillItem skillItem in majorItemListForSale) {
             allItemsForSale.Add(skillItem);
         }
     }
@@ -155,51 +163,38 @@ public class Merchant_Skills : Merchant
     }
 
     public List<SkillItem> DrawSkillsWithoutReplacement(List<SkillItem> skillList, int numberOfDraws) {
-        // Créer une copie de la liste pour ne pas modifier l'original
+        // Créer une copie pour ne pas modifier l'original
         List<SkillItem> skillListCopy = new List<SkillItem>(skillList);
 
-        // Créer une liste de pondérations basée sur les éléments
-        List<SkillItem> weightedList = new List<SkillItem>();
-
-        // Remplir la liste pondérée sans duplication des éléments, en fonction des poids
-        foreach (SkillItem skillItem in skillListCopy) {
-            int weight = 4; // Pondération pour les améliorations
-            for (int i = 0; i < weight; i++) {
-                weightedList.Add(skillItem);
-            }
-        }
-
         // Vérifie si le nombre de tirages demandé est supérieur à la taille de la liste
-        if (numberOfDraws > weightedList.Count) {
+        if (numberOfDraws > skillListCopy.Count) {
             Debug.LogWarning("Le nombre de tirages demandé est supérieur à la taille de la liste pondérée.");
-            numberOfDraws = weightedList.Count; // Limite le nombre de tirages
+            numberOfDraws = skillListCopy.Count;
         }
 
         // Liste des skills tirés
         List<SkillItem> drawnSkills = new List<SkillItem>();
-        HashSet<SkillItem> uniqueDrawnSkills = new HashSet<SkillItem>(); // Pour vérifier les doublons
+        HashSet<SkillItem> uniqueDrawnSkills = new HashSet<SkillItem>(); // Pour éviter les doublons
 
-        // Effectuer le tirage sans remplacement
+        // Tirage sans remplacement
         while (drawnSkills.Count < numberOfDraws) {
-            // Filtrer la liste pour ne garder que les éléments qui n'ont pas encore été tirés
-            List<SkillItem> remainingItems = weightedList.Where(skillItem => !uniqueDrawnSkills.Contains(skillItem)).ToList();
+            // Filtrer les éléments déjà tirés
+            List<SkillItem> remainingItems = skillListCopy.Where(skillItem => !uniqueDrawnSkills.Contains(skillItem)).ToList();
 
-            // Si il n'y a pas assez d'éléments uniques restants pour compléter le tirage, on arrête
             if (remainingItems.Count == 0) {
                 Debug.LogWarning("Pas assez d'éléments uniques restants pour effectuer le tirage.");
                 break;
             }
 
-            // Tirage d'un élément aléatoire parmi les éléments restants
+            // Tirage aléatoire
             int randomIndex = Random.Range(0, remainingItems.Count);
             SkillItem selectedSkill = remainingItems[randomIndex];
 
-            // Ajouter le skill à la liste et le marquer comme tiré
             drawnSkills.Add(selectedSkill);
-            uniqueDrawnSkills.Add(selectedSkill); // Marquer comme tiré
+            uniqueDrawnSkills.Add(selectedSkill);
         }
 
-        return drawnSkills; // Retourne la liste des skills tirés
+        return drawnSkills;
     }
 
     public List<MerchantItem> ConvertSkillListInMerchantItemList(List<SkillItem> list) {
@@ -219,4 +214,42 @@ public class Merchant_Skills : Merchant
             return skill.skillSO.activeSkillEffect.GetPriceAtLevel(skill.currentLevel);
         }
     }
+    protected override void TriggerStructurePrimaryFunction() {
+
+        if (!playerPayedToRefreshShop) {
+            base.TriggerStructurePrimaryFunction();
+            ActivateStructurePrimaryFunctionInteraction(false);
+
+            playerPayedToRefreshShop = true;
+            OpenCloseShop(true);
+
+        }
+        else {
+
+            InvokeOnPlayerBoughtItem();
+        }
+
+        playerJustTriggeredInteraction = true;
+    }
+
+
+    public void RefundPlayer() {
+        payCurrencyUI.SetPlayerInteracting(false);
+        StartCoroutine(RefundPlayer(payCurrencyUI.GetCurrencyAmountToPay()));
+    }
+
+    private IEnumerator RefundPlayer(int amountToRefund) {
+        for (int i = 0; i < amountToRefund; i++) {
+
+            Transform currencyPrefab = CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.bigRedOrb);
+
+            Collectible lastBlueOrbDroppedOnTheFloor = Instantiate(currencyPrefab, refundDropPosition.position, Quaternion.identity).GetComponent<Collectible>();
+            lastBlueOrbDroppedOnTheFloor.ApplyRandomUpwardsForce(3, 6);
+            lastBlueOrbDroppedOnTheFloor.SetCollectibleUnInteractable(1f);
+            lastBlueOrbDroppedOnTheFloor.SetCanBePickedUpByWorker();
+
+            yield return new WaitForSeconds(.1f);
+        }
+    }
+
 }

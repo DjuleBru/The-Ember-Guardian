@@ -7,7 +7,9 @@ using UnityEngine.UI;
 public class LevelUI_Skills : MonoBehaviour
 {
     [SerializeField] private RectTransform activeSkillLeftRectTransform;
+    [SerializeField] private Button activeSkillLeftDeleteButton;
     [SerializeField] private RectTransform activeSkillRightRectTransform;
+    [SerializeField] private Button activeSkillRightDeleteButton;
 
     [SerializeField] private RectTransform passiveSkillContainerRectTransform;
     [SerializeField] private RectTransform passiveSkillTemplateRectTransform;
@@ -18,6 +20,7 @@ public class LevelUI_Skills : MonoBehaviour
 
     private void Start() {
         PlayerSkills.Instance.OnActiveSkillAdded += PlayerSkills_OnActiveSkillAdded;
+        PlayerSkills.Instance.OnActiveSkillRemoved += PlayerSkills_OnActiveSkillRemoved;
         PlayerSkills.Instance.OnPassiveSkillAdded += PlayerSkills_OnPassiveSkillAdded;
 
         activeSkillLeftRectTransform.gameObject.SetActive(false);
@@ -26,7 +29,6 @@ public class LevelUI_Skills : MonoBehaviour
 
         activeSkillLeftButton = activeSkillLeftRectTransform.GetComponent<Button>();
         activeSkillRightButton = activeSkillRightRectTransform.GetComponent<Button>();
-
     }
 
     private void PlayerSkills_OnPassiveSkillAdded(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
@@ -35,18 +37,32 @@ public class LevelUI_Skills : MonoBehaviour
     }
 
     private void PlayerSkills_OnActiveSkillAdded(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
-        if(PlayerSkills.Instance.GetActiveSkillLeft() != null) {
+        RefreshActiveSkillsDisplay();
+    }
+
+    private void PlayerSkills_OnActiveSkillRemoved(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
+        RefreshActiveSkillsDisplay();
+    }
+
+    private void RefreshActiveSkillsDisplay() {
+        if (PlayerSkills.Instance.GetActiveSkillLeft() != null) {
             activeSkillLeftRectTransform.gameObject.SetActive(true);
             activeSkillLeftRectTransform.GetComponent<LevelUI_SkillUI>().SetLinkedSkill(PlayerSkills.Instance.GetActiveSkillLeft());
+        } else {
+            activeSkillLeftRectTransform.gameObject.SetActive(false);
+            activeSkillLeftRectTransform.GetComponent<LevelUI_SkillUI>().SetLinkedSkill(null);
         }
 
         if (PlayerSkills.Instance.GetActiveSkillRight() != null) {
             activeSkillRightRectTransform.gameObject.SetActive(true);
             activeSkillRightRectTransform.GetComponent<LevelUI_SkillUI>().SetLinkedSkill(PlayerSkills.Instance.GetActiveSkillRight());
+        } else {
+            activeSkillRightRectTransform.gameObject.SetActive(false);
+            activeSkillRightRectTransform.GetComponent<LevelUI_SkillUI>().SetLinkedSkill(null);
         }
 
         UpdateNavigation();
-    }
+    } 
 
     private void RefreshPassiveSkillsUI() {
         passiveButtons.Clear();
@@ -69,26 +85,47 @@ public class LevelUI_Skills : MonoBehaviour
         // ActiveSkillLeft
         if (activeSkillLeftButton.gameObject.activeSelf) {
             var nav = new Navigation { mode = Navigation.Mode.Explicit };
-            nav.selectOnUp = PlayerTabMenuUI.Instance.GetFirstSelectedButton().GetComponent<Button>();
+            var deleteButtonNav = new Navigation { mode = Navigation.Mode.Explicit };
 
-            if (activeSkillRightButton.gameObject.activeSelf)
+            nav.selectOnUp = PlayerTabMenuUI.Instance.GetFirstSelectedButton().GetComponent<Button>();
+            nav.selectOnDown = activeSkillLeftDeleteButton;
+            deleteButtonNav.selectOnUp = activeSkillLeftButton;
+
+            if (activeSkillRightButton.gameObject.activeSelf) {
                 nav.selectOnRight = activeSkillRightButton;
-            else if (passiveButtons.Count > 0)
+                deleteButtonNav.selectOnRight = activeSkillRightButton;
+            }
+
+            else if (passiveButtons.Count > 0) {
                 nav.selectOnRight = passiveButtons[0];
+                deleteButtonNav.selectOnRight = passiveButtons[0];
+            }
 
             activeSkillLeftButton.navigation = nav;
+            activeSkillLeftDeleteButton.navigation = deleteButtonNav;
+
         }
 
         // ActiveSkillRight
         if (activeSkillRightButton.gameObject.activeSelf) {
             var nav = new Navigation { mode = Navigation.Mode.Explicit };
+            var deleteButtonNav = new Navigation { mode = Navigation.Mode.Explicit };
+
             nav.selectOnUp = PlayerTabMenuUI.Instance.GetFirstSelectedButton().GetComponent<Button>();
+            nav.selectOnDown = activeSkillRightDeleteButton;
+            deleteButtonNav.selectOnUp = activeSkillRightButton;
 
             nav.selectOnLeft = activeSkillLeftButton.gameObject.activeSelf ? activeSkillLeftButton : null;
-            if (passiveButtons.Count > 0)
+            deleteButtonNav.selectOnLeft = activeSkillLeftButton.gameObject.activeSelf ? activeSkillLeftButton : null;
+
+            if (passiveButtons.Count > 0) {
                 nav.selectOnRight = passiveButtons[0];
+                deleteButtonNav.selectOnRight = passiveButtons[0];
+            }
+
 
             activeSkillRightButton.navigation = nav;
+            activeSkillRightDeleteButton.navigation = deleteButtonNav;
         }
 
         // Passive buttons

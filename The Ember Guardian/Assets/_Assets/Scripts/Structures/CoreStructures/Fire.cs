@@ -215,9 +215,10 @@ public class Fire : Structure, IDamageable {
     private void LoadLastPrimordialFireLit() {
         primordialFireColor = ES3.Load("lastPrimordialFireLit", PrimordialFireColor.Orange);
     }
+
     private void LevelManager_OnLevelSuccess(object sender, EventArgs e) {
         ES3.Save("lastPrimordialFireLit", primordialFireColor);
-        LevelUI_Locations.Instance.ShowFireTextAfterDelay(1f);
+        LevelUI_Locations.Instance.ShowFireTextForTime(5f);
     }
 
     protected override void TriggerStructurePrimaryFunction() {

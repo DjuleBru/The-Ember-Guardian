@@ -96,6 +96,7 @@ public class PlayerSkills : MonoBehaviour
     public event EventHandler<OnSkillAddedEventArgs> OnActiveSkillActivated;
     public event EventHandler<OnSkillDeactivatedArgs> OnActiveSkillDeactivated;
     public event EventHandler<OnSkillAddedEventArgs> OnActiveSkillAdded;
+    public event EventHandler<OnSkillAddedEventArgs> OnActiveSkillRemoved;
     public event EventHandler<OnSkillAddedEventArgs> OnPassiveSkillAdded;
     public event EventHandler OnActiveSkillReady;
     public event EventHandler OnLeftActiveSkillActivated;
@@ -653,6 +654,33 @@ public class PlayerSkills : MonoBehaviour
         }
     }
 
+    public void RemoveActiveSkill(SkillItem skillItem) {
+        if(activeSkillLeft != null) {
+            if (activeSkillLeft.skillType == skillItem.skillType) {
+                // Removing left skill
+
+                activeSkillLeft = null;
+                OnActiveSkillRemoved?.Invoke(this, new OnSkillAddedEventArgs {
+                    skillItemAdded = skillItem
+                });
+                return;
+
+            }
+        }
+        
+        if(activeSkillRight != null) {
+            if (activeSkillRight.skillType == skillItem.skillType) {
+                // Removing left skill
+
+                activeSkillRight = null;
+                OnActiveSkillRemoved?.Invoke(this, new OnSkillAddedEventArgs {
+                    skillItemAdded = skillItem
+                });
+                return;
+            }
+        }
+    }
+ 
     #endregion
 
     #region GET SKILLS

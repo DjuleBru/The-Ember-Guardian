@@ -107,7 +107,7 @@ public class Structure_Trap : Structure
     }
 
     private void MerchantItem_OnAnyMerchantItemBought(object sender, System.EventArgs e) {
-        TrapItem trapItem = (TrapItem)sender;
+        TrapItem trapItem = sender as TrapItem;
 
         if (trapItem != null) {
             if(trapItem.itemType == MerchantItem.MerchantItemType.TrapUpgrade) {

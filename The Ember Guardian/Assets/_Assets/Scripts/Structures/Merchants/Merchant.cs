@@ -40,6 +40,7 @@ public class Merchant : Structure {
     protected bool currentSelectedItemAlreadyPurchased;
     protected bool playerJustTriggeredInteraction;
     protected bool playerPayedToRefreshShop;
+    protected bool refreshAfterPlayerClosesShop;
     [SerializeField] protected int smallItemsToDisplayAmount = 2;
     [SerializeField] protected int bigItemsToDisplayAmount = 1;
 
@@ -48,7 +49,10 @@ public class Merchant : Structure {
         InitializeMerchantItems();
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+        GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
+        PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
     }
+
 
     private void Update() {
         //if (Input.GetKeyUp(KeyCode.R)) {
@@ -60,19 +64,26 @@ public class Merchant : Structure {
 
     protected override void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         base.DayNightManager_OnDawnStart(sender, e);
+        refreshAfterPlayerClosesShop = true;
 
-        RefreshShopItems();
-        ActivateStructurePrimaryFunctionInteraction(true);
-        playerPayedToRefreshShop = false;
+        if (!shopOpened) {
+            RefreshShopItems();
+        }
+
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);
-        Player.Instance.SetInMerchantTriggerArea(true);
+
+        if(collision.GetComponent<Player>() != null) {
+            Player.Instance.SetInMerchantTriggerArea(true);
+        }
     }
     protected override void OnTriggerExit2D(Collider2D collision) {
         base.OnTriggerExit2D (collision);
-        Player.Instance.SetInMerchantTriggerArea(false);
+        if (collision.GetComponent<Player>() != null) {
+            Player.Instance.SetInMerchantTriggerArea(false);
+        }
     }
 
     protected override void TriggerStructurePrimaryFunction() {
@@ -94,7 +105,16 @@ public class Merchant : Structure {
         playerJustTriggeredInteraction = true;
     }
 
+    public void InvokeOnPlayerBoughtItem() {
+        OnPlayerBoughtItem?.Invoke(this, new OnPlayerBoughtItemEventArgs {
+            boughtItem = currentHoveredItem
+        });
+    }
+
     protected virtual void RefreshShopItems() {
+        refreshAfterPlayerClosesShop = false;
+        ActivateStructurePrimaryFunctionInteraction(true);
+        playerPayedToRefreshShop = false;
     }
 
     protected virtual void InitializeMerchantItems() {
@@ -131,6 +151,21 @@ public class Merchant : Structure {
         }
     }
 
+    private void PlayerTabMenuUI_OnPlayerTabOpened(object sender, EventArgs e) {
+        if (shopOpened) {
+            shopOpened = false;
+            OpenCloseShop(shopOpened);
+        };
+    }
+
+    private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
+        if (shopOpened) {
+            shopOpened = false;
+            OpenCloseShop(shopOpened);
+        };
+
+    }
+
     protected void OpenCloseShop(bool shopOpened) {
         if (!shopOpened) {
 
@@ -139,6 +174,11 @@ public class Merchant : Structure {
             this.shopOpened = false;
             Player.Instance.StopInteractingWithMerchant();
             CameraManager.Instance.ZoomOut(true, .5f);
+
+            if (refreshAfterPlayerClosesShop) {
+                RefreshShopItems();
+            }
+
             OnPlayerClosedMerchantShop?.Invoke(this, EventArgs.Empty);
             return;
 
@@ -192,5 +232,4 @@ public class Merchant : Structure {
     public void SetCurrentHoveredItem(MerchantItem merchantItem) {
         currentHoveredItem = merchantItem;
     }
-
 }

@@ -58,9 +58,7 @@ public class CurrencyCrafter : Structure
 
             PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
             specialAmmoUnlocked = MetaProgressionManager.Instance.GetSpecialAmmoUnlocked();
-            if (specialAmmoUnlocked || debugSpecialAmmoUnlocked) {
-                SetStructureSecondaryFunctionUnlocked(true);
-            }
+            RefreshSpecialAmmoUnlocked();
         }
 
         if (currencyTypeCrafted == PlayerCurrencies.CurrencyType.bigBlueOrb) {
@@ -78,14 +76,36 @@ public class CurrencyCrafter : Structure
     private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
         if (specialAmmoUnlocked) return;
 
-        GunSO gunSO = PlayerShoot.Instance.GetHeldGunSO();
+        RefreshSpecialAmmoUnlocked();
+    }
 
-        if (gunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special) {
-            SetStructureSecondaryFunctionUnlocked(true);
-            specialAmmoUnlocked = true;
+    private void RefreshSpecialAmmoUnlocked() {
+        GunSO primaryGunSO = PlayerShoot.Instance.GetPrimaryGunSO();
+        GunSO secondaryGunSO = PlayerShoot.Instance.GetSecondaryGunSO();
+        GunSO heldGunSO = PlayerShoot.Instance.GetHeldGunSO();
+
+        bool unlockSpecialAmmo = false;
+
+        if (primaryGunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special) {
+            unlockSpecialAmmo = true;
+        }
+        if(secondaryGunSO != null && secondaryGunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special) {
+            unlockSpecialAmmo = true;
+        }
+        if(heldGunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special) {
+            unlockSpecialAmmo = true;
+        }
+        if(debugSpecialAmmoUnlocked) {
+            unlockSpecialAmmo = true;
         }
 
-        
+        if(unlockSpecialAmmo) {
+            SetStructureSecondaryFunctionUnlocked(true);
+            specialAmmoUnlocked = true;
+        } else {
+            SetStructureSecondaryFunctionUnlocked(false);
+            specialAmmoUnlocked = false;
+        }
     }
 
     private void Update() {

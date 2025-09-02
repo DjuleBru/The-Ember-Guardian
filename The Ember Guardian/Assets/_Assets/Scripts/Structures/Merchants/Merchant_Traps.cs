@@ -88,6 +88,8 @@ public class Merchant_Traps : Merchant
     }
 
     protected override void RefreshShopItems() {
+        base.RefreshShopItems();
+
         SetAllSkillsUnsold();
         RefreshCurrentMajorItemForSale();
         RefreshCurrentMinorItemListForSale();

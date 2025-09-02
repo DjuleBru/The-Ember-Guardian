@@ -41,7 +41,7 @@ public class PortalUI : MonoBehaviour {
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         GameInput.Instance.OnPlayerPausePerformed += GameInput_OnPlayerPausePerformed;
         portal.OnPlayerInteractedWithPortalFromHub += Portal_OnPlayerInteractedWithPortalFromHub;
-        portal.OnPlayerMovedOnTeleporter += Portal_OnPlayerMovedOnTeleporter;
+        portal.OnPlayerStartedTeleportingFromHub += Portal_OnPlayerStartedTeleportingFromHub;
         portal.OnLinkedLevelSOSet += Portal_OnLinkedLevelSOSet;
 
         SetDisplayedLevelSO();
@@ -82,7 +82,7 @@ public class PortalUI : MonoBehaviour {
     private void Portal_OnPlayerInteractedWithPortalFromHub(object sender, System.EventArgs e) {
         OpenPanel();
     }
-    private void Portal_OnPlayerMovedOnTeleporter(object sender, EventArgs e) {
+    private void Portal_OnPlayerStartedTeleportingFromHub(object sender, EventArgs e) {
         ClosePanel(false);
     }
 

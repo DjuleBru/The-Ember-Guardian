@@ -279,7 +279,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
-
+        targetVolume = volumeBeforeTalkingToNPC;
         if (isPlayingLevelDiscoveryMusic || isPlayingPeacefulMusic || isPlayingExplorationMusic) {
             StartCoroutine(FadeInCoroutine(1f, volumeBeforeTalkingToNPC / 1.5f));
         }

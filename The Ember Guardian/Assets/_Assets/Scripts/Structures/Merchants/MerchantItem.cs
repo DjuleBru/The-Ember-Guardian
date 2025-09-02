@@ -43,4 +43,10 @@ public class MerchantItem
     public virtual void Unpurchase() {
         isPurchased = false;
     }
+
+    public void SetPurchased() {
+        // Logique générique pour l'achat (soustraction d'or, ajout à l'inventaire, etc.)
+
+        isPurchased = true;
+    }
 }

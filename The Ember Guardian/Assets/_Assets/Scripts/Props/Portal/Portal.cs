@@ -37,6 +37,7 @@ public class Portal : MonoBehaviour
 
     public static event EventHandler OnAnyPortalSetToTeleportPlayer;
     public event EventHandler OnPlayerInteractedWithPortalFromHub;
+    public event EventHandler OnPlayerStartedTeleportingFromHub;
     public event EventHandler OnPortalSetToTeleportPlayer;
     public event EventHandler OnPortalAppeared;
     public static event EventHandler OnAnyPortalAppeared;
@@ -211,8 +212,9 @@ public class Portal : MonoBehaviour
         floorCollider.enabled = true;
         Player.Instance.MoveOnTeleporter(playerPosition);
         Dog.Instance.MoveOnTeleporter(dogPosition);
+        OnPlayerStartedTeleportingFromHub?.Invoke(this, EventArgs.Empty);
 
-        if(isHUBTeleporter) {
+        if (isHUBTeleporter) {
             HUBManager.Instance.SaveHub();
         }
 
@@ -220,7 +222,6 @@ public class Portal : MonoBehaviour
 
         OnPlayerMovedOnTeleporter?.Invoke(this, EventArgs.Empty);
         OnAnyPlayerMovedOnTeleporter?.Invoke(this, EventArgs.Empty);
-
 
         yield return new WaitForSeconds(delayToActivateTeleporter);
         OnTeleporterActivated?.Invoke(this, EventArgs.Empty);

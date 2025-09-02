@@ -54,9 +54,17 @@ public class LevelUI_WaveInfoUI : MonoBehaviour
         float leftRatio = (float)leftRaw / currentWaveDifficulty;
         float rightRatio = (float)rightRaw / currentWaveDifficulty;
 
-        int leftScore = Mathf.Clamp(Mathf.RoundToInt(leftRatio * globalThreatRatio * maxDifficulty * 1.5f), 0, maxDifficulty);
-        int rightScore = Mathf.Clamp(Mathf.RoundToInt(rightRatio * globalThreatRatio * maxDifficulty * 1.5f), 0, maxDifficulty);
+        int leftScore = Mathf.Clamp(
+            Mathf.RoundToInt(leftRatio * globalThreatRatio * maxDifficulty * 1.5f),
+            leftRaw > 0 ? 1 : 0,
+            maxDifficulty
+            );
 
+        int rightScore = Mathf.Clamp(
+            Mathf.RoundToInt(rightRatio * globalThreatRatio * maxDifficulty * 1.5f),
+            rightRaw > 0 ? 1 : 0,
+            maxDifficulty
+        );
         return (leftScore, rightScore);
     }
 

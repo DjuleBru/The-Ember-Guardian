@@ -25,12 +25,18 @@ MonoBehaviour:
   level1StructureInitiallyUnlocked: 0
   buildableAtNight: 0
   upgradeableAtNight: 0
-  functionUsableAtNight: 0
-  playerCanAlwaysInteract: 0
+  functionUsableAtNight: 1
+  playerCanAlwaysInteract: 1
+  engineerCanWorkByDay: 0
+  engineerCanWorkByNight: 0
+  workingEngineerHideTool: 0
+  workingEngineerHideVisual: 0
+  engineerWorkingPriority: 0
+  maxEngineersAssignedWorking: 0
+  maxEngineersAssignedRefilling: 0
+  refillCurrencyTypeNeeded: 0
   upgradeable: 0
-  tentLevelRequiredForLevel2: 2
-  tentLevelRequiredForLevel3: 3
-  tentLevelRequiredForLevel4: 4
+  maxLevel: 0
   buildingUpgradeSpriteList: []
   buildAudioClip: {fileID: 8300000, guid: 97119ba95845ffd459babd0f0eefe5e3, type: 3}
   buildVolumeMultiplier: 0.5

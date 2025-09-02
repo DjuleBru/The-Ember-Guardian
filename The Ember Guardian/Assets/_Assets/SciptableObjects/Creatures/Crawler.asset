@@ -29,6 +29,7 @@ MonoBehaviour:
   canFlank: 1
   flightMinAltitude: 0
   flightMaxAltitude: 0
+  flightAltitudeRandomizer: 0
   dayMoveSpeed: 3
   nightMoveSpeed: 3
   aggroMoveSpeedBuff: 1.5
@@ -46,6 +47,7 @@ MonoBehaviour:
   workerTargetingPriority: 3
   playerTargetingPriority: 2
   barricadeTargetingPriority: 1
+  probabilityToDropOrb: 0.2
   currencyTypeDroppedList: 03000000
   currencyDropAmountList: 01000000
   difficulty: 1

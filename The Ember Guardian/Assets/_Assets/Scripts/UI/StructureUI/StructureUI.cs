@@ -136,8 +136,7 @@ public class StructureUI : MonoBehaviour
 
     protected virtual void SetUIActive(bool active) {
         if (uiActive == active) return;
-        
-        //Debug.Log("SetUIActive " + active);
+
         UIGameObject.SetActive(active);
 
         foreach (GameObject go in otherUIGameObjectList) {

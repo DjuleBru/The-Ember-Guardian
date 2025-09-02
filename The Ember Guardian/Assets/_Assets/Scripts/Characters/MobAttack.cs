@@ -126,7 +126,7 @@ public class MobAttack : MonoBehaviour
         }
         if (projectileSO.usesForce) {
             ProjectileForces projectileForce = projectile.GetComponent<ProjectileForces>();
-            projectileForce.ActivateAndInitializeWithForces(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, transform, attackDamage, endPointRandomOffsetValue.x, homingProjectile);
+            projectileForce.ActivateAndInitializeWithForces(previousAttackTargetIDamageable, projectileSO, transform, attackDamage, endPointRandomOffsetValue.x, homingProjectile);
         }
     }
 
