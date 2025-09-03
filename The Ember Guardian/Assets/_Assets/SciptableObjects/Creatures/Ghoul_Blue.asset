@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57289136e0e1e6418ec81259b9649b2, type: 3}
   m_Name: Ghoul_Blue
   m_EditorClassIdentifier: 
-  enemyName: Ghoul
+  enemyName: Ghoul_Blue
   isBoss: 0
   description: Melee mob that can respawn after it's first death !
   creatureIcon: {fileID: 21300000, guid: ca6fe3ce67c07e74ba47082016ab73a5, type: 3}
@@ -47,6 +47,7 @@ MonoBehaviour:
   workerTargetingPriority: 1
   playerTargetingPriority: 3
   barricadeTargetingPriority: 2
+  probabilityToDropOrb: 0.5
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
   difficulty: 3

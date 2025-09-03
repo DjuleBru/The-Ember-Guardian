@@ -35,7 +35,7 @@ MonoBehaviour:
   aggroMoveSpeedBuff: 1.5
   enteredLightMoveSpeedDebuff: 1.3
   moveSpeedRandomizerDelta: 0.25
-  maxHealth: 10
+  maxHealth: 25
   enteredLightattackRateDebuff: 2.5
   probabilityToAggroOnGunShot: 1
   immuneToPoison: 0
@@ -50,10 +50,10 @@ MonoBehaviour:
   probabilityToDropOrb: 1
   currencyTypeDroppedList: 03000000
   currencyDropAmountList: 01000000
-  difficulty: 5
+  difficulty: 4
   initialWaveSpawn: 1
   spawnProbability: 0.5
-  maxCreaturesPerPacket: 3
+  maxCreaturesPerPacket: 6
   dieAudioClips:
   - {fileID: 8300000, guid: 446c7fdec8473644b966d3a38677b69f, type: 3}
   - {fileID: 8300000, guid: 2880d1e342369564bb6af71ec202c486, type: 3}

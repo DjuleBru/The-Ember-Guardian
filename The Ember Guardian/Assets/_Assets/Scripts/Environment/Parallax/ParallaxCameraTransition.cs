@@ -38,6 +38,7 @@ public class ParallaxCameraTransition : MonoBehaviour
                 transitionCamera.enabled = true;
                 mainCamera.enabled = false;
                 transitionStarted = true;
+                CameraManager.Instance.SetCameraLockedByTransition(true);
             }
 
         }
@@ -47,6 +48,7 @@ public class ParallaxCameraTransition : MonoBehaviour
                 transitionCamera.enabled = false;
                 mainCamera.enabled = true;
                 transitionStarted = false;
+                CameraManager.Instance.SetCameraLockedByTransition(false);
             }
 
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,8 @@ public class Merchant_Skills : Merchant
     protected List<SkillItem> minorSkillItemsForSale = new List<SkillItem>();
 
     protected int drawWeightForBoughtSkills = 3;
+
+    public static event EventHandler OnPlayerRefundedItem;
 
     protected override void Start() {
         base.Start();
@@ -187,7 +190,7 @@ public class Merchant_Skills : Merchant
             }
 
             // Tirage aléatoire
-            int randomIndex = Random.Range(0, remainingItems.Count);
+            int randomIndex = UnityEngine.Random.Range(0, remainingItems.Count);
             SkillItem selectedSkill = remainingItems[randomIndex];
 
             drawnSkills.Add(selectedSkill);
@@ -236,6 +239,8 @@ public class Merchant_Skills : Merchant
     public void RefundPlayer() {
         payCurrencyUI.SetPlayerInteracting(false);
         StartCoroutine(RefundPlayer(payCurrencyUI.GetCurrencyAmountToPay()));
+
+        OnPlayerRefundedItem?.Invoke(this, EventArgs.Empty);
     }
 
     private IEnumerator RefundPlayer(int amountToRefund) {

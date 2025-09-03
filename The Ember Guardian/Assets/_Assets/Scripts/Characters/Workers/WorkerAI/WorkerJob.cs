@@ -12,7 +12,7 @@ public class WorkerJob : MonoBehaviour
     protected WorkerAI workerAI;
     protected MobMovement mobMovement;
     protected WorkerAnimatorManager workerAnimatorManager;
-    protected MobAttack workerAttack;
+    protected WorkerAttack workerAttack;
 
     protected Creature closestCreature;
     protected Creature targetCreature;
@@ -279,7 +279,7 @@ public class WorkerJob : MonoBehaviour
 
         mobMovement = GetComponentInChildren<MobMovement>();
         workerAnimatorManager = GetComponentInChildren<WorkerAnimatorManager>();
-        workerAttack = GetComponent<MobAttack>();
+        workerAttack = GetComponent<WorkerAttack>();
         worker = GetComponent<Worker>();
         workerAI = GetComponent<WorkerAI>();
 

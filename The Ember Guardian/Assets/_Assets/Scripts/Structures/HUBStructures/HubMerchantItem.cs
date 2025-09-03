@@ -67,8 +67,9 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     protected virtual void Start() {
-        LoadItemStatus();
+        OnItemMustRefreshDescriptionCard?.Invoke(this, EventArgs.Empty);
     }
+
     protected void InitializeCostLists() {
         if (initializedCostList) return;
 
@@ -85,7 +86,7 @@ public class HubMerchantItem : MonoBehaviour
 
         initializedCostList = true;
     }
-    protected virtual void LoadItemStatus() {
+    public virtual void LoadItemStatus() {
         newItemUnlocked = MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType());
 
         if (!isBoughtAtStart) {

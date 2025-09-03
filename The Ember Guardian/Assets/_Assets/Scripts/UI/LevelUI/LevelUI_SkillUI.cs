@@ -52,8 +52,7 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
 
         skillTemplateImage.sprite = linkedSkill.skillSO.Icon;
         skillTemplateBackgroundImage.sprite = linkedSkill.skillSO.Icon;
-        Debug.Log(linkedSkill.skillSO);
-        Debug.Log(linkedSkill.skillSO.Icon);
+        Debug.Log(linkedSkill.skillSO + " level " + linkedSkill.currentLevel);
         skillLevelText.text = linkedSkill.currentLevel.ToString();
     }
 

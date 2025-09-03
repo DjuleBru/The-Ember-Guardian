@@ -60,7 +60,7 @@ public class ItemButtonUI : ButtonUI {
     public static event EventHandler OnAnyHubMerchantItemFailedBuy;
     public static event EventHandler OnAnyHubMerchantItemTryBuyMaxedItem;
 
-    private void Awake() {
+    public void InitializeItemButtonUI() {
         button = GetComponent<Button>();
         hubMerchantItem = GetComponent<HubMerchantItem>();
 
@@ -137,7 +137,6 @@ public class ItemButtonUI : ButtonUI {
     }
 
     private void HubMerchantItem_OnHubMerchantItemLoaded(object sender, EventArgs e) {
-
         if (hubMerchantItem.GetItemUnlocked()) {
             SetItemUnlocked();
             if (hubMerchantItem.GetItemBought()) {
@@ -151,7 +150,7 @@ public class ItemButtonUI : ButtonUI {
 
         RefreshItemStatusVisuals();
         RefreshItemLevelUI();
-        RefreshDescriptionCard();
+        //RefreshDescriptionCard();
     }
 
     private void RefreshDescriptionCard() {

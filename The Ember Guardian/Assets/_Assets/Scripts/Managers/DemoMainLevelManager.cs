@@ -36,6 +36,8 @@ public class DemoMainLevelManager : MonoBehaviour
     [SerializeField] private PropFadeOut rightPropFadeOut;
     [SerializeField] private Chest leftChest;
     [SerializeField] private Chest rightChest;
+    private Transform activeCollider = null;
+
     private bool showingGetReady;
     private bool mainFireLit;
     private bool leftPropCollected;
@@ -208,16 +210,14 @@ public class DemoMainLevelManager : MonoBehaviour
     }
 
     private void Update() {
-        if(!demoMainLevelTutorialCompleted) {
-            
-            HandleBlockingCollider(fireFuelledBlockingCollider1.transform.position, LocalizationManager.Instance.GetLocalizedText("tooltip_fuelFireBlocking"));
-            HandleBlockingCollider(fireFuelledBlockingCollider2.transform.position, LocalizationManager.Instance.GetLocalizedText("tooltip_fuelFireBlocking"));
-           
+        if (!demoMainLevelTutorialCompleted) {
+            HandleBlockingCollider(fireFuelledBlockingCollider1.transform, LocalizationManager.Instance.GetLocalizedText("tooltip_fuelFireBlocking"));
+            HandleBlockingCollider(fireFuelledBlockingCollider2.transform, LocalizationManager.Instance.GetLocalizedText("tooltip_fuelFireBlocking"));
+
             if (!mainFireLit) {
-                HandleBlockingCollider(fireBlockingCollider1.transform.position, LocalizationManager.Instance.GetLocalizedText("tooltip_lightFireBlocking"));
-                HandleBlockingCollider(fireBlockingCollider2.transform.position, LocalizationManager.Instance.GetLocalizedText("tooltip_lightFireBlocking"));
-            };
-           
+                HandleBlockingCollider(fireBlockingCollider1.transform, LocalizationManager.Instance.GetLocalizedText("tooltip_lightFireBlocking"));
+                HandleBlockingCollider(fireBlockingCollider2.transform, LocalizationManager.Instance.GetLocalizedText("tooltip_lightFireBlocking"));
+            }
         }
     }
 
@@ -600,15 +600,21 @@ public class DemoMainLevelManager : MonoBehaviour
         }
     }
 
-    private void HandleBlockingCollider(Vector3 colliderPosition, string textToShow) {
-        if (Mathf.Abs(Player.Instance.transform.position.x - colliderPosition.x) < 1.5f && !showingGetReady) {
-            showingGetReady = true;
-            PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip(textToShow, 3f);
+    private void HandleBlockingCollider(Transform collider, string textToShow) {
+        float dist = Mathf.Abs(Player.Instance.transform.position.x - collider.position.x);
+
+        // Si joueur entre dans la zone de ce collider
+        if (dist < 1.5f && activeCollider == null) {
+            activeCollider = collider;
+
+            PlayerTalkUI.Instance.ShowTalkText(textToShow, 3f);
         }
 
-        if (Mathf.Abs(Player.Instance.transform.position.x - colliderPosition.x) > 1.5f && showingGetReady) {
-            showingGetReady = false;
-            PlayerTooltipManager.Instance.GetTooltipRight().HideTooltip();
+        // Si joueur quitte ce collider
+        if (activeCollider == collider && dist > 1.5f) {
+            activeCollider = null;
+
+            PlayerTalkUI.Instance.HideTalkText();
         }
     }
 

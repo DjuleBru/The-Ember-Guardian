@@ -399,7 +399,6 @@ public class CampEditManager : MonoBehaviour {
         foreach (var kvp in placedStructureBlueprints) {
             StructureBlueprint blueprint = kvp.Value;
 
-            Debug.Log("blueprint " + blueprint.GetLinkedStructureSO());
             if (blueprint.GetLinkedStructureSO().structurePositionRemovable) {
                 structureBlueprintsToRemove.Add(blueprint);
             }

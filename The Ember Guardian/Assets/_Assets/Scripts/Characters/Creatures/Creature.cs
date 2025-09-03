@@ -12,6 +12,10 @@ public class Creature : Mob
     [SerializeField] protected CreatureMovement creatureMovement;
     [SerializeField] protected List<Collider2D> critZoneColliders;
     [SerializeField] protected Transform autoAimPosition;
+    protected CreatureAI creatureAI;
+    protected CreatureAttack creatureAttack;
+
+    protected bool creatureActive = true;
 
     protected bool creatureUnlocked;
     protected bool dropRedOrbs;
@@ -93,6 +97,9 @@ public class Creature : Mob
     protected virtual void Awake() {
         rb = GetComponent<Rigidbody2D>();
         rb.mass = creatureSO.mass;
+        creatureAI = GetComponent<CreatureAI>();
+        creatureAttack = GetComponent<CreatureAttack>();
+
         triggerSoundTimer = UnityEngine.Random.Range(0, triggerSoundTime);
 
         shockedImmune = creatureSO.immuneToShock;
@@ -584,6 +591,22 @@ public class Creature : Mob
 
     public Transform GetAutoAimPosition() {
         return autoAimPosition;
+    }
+
+    public void SetCreatureActive(bool active) {
+        if (creatureActive == active) return;
+        creatureActive = active;
+
+        creatureAttack.enabled = active;
+        creatureAI.enabled = active;
+        creatureMovement.enabled = active;
+
+        if(active) {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+        } else {
+            rb.bodyType = RigidbodyType2D.Static;
+        }
+
     }
 
     protected void OnDestroy() {

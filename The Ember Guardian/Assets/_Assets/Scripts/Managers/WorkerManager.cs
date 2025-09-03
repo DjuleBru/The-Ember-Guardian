@@ -121,7 +121,6 @@ public class WorkerManager : MonoBehaviour
     }
 
     public void AutoAssignSideToWorker(Worker worker) {
-        Debug.Log("AutoAssignSideToWorker ");
         float randomFloat = UnityEngine.Random.Range(0.0f, 1.0f);
         bool equalGoesLeft = false;
         if (randomFloat < 0.5f) {

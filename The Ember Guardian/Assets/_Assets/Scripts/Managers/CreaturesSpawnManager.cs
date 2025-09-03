@@ -57,6 +57,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
     private float cumulativeDifficultyMultiplier = 1f;
 
     private bool hasBoss;
+    private bool bossSpawnsThisNight;
     private CreatureSO bossCreatureType;
     private List<int> bossNightsSpawns;
 
@@ -259,7 +260,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
     public void SetWaveParameters(int waveNumber, bool wavesRandomSideProportion, bool subWaveRandomSideProportion) {
         totalNightCreatures = 0;
-        bool bossSpawnsThisNight = false;
+        bossSpawnsThisNight = false;
         if (hasBoss) {
             bossSpawnsThisNight = bossNightsSpawns.Contains(currentWaveNumber);
         }
@@ -801,6 +802,11 @@ public class CreaturesSpawnManager : MonoBehaviour {
     public float GetReferenceWaveDifficulty() {
         return referenceWaveDifficulty;
     }
+
+    public bool GetBossSpawnsThisNight() {
+        return bossSpawnsThisNight;
+    }
+
     public Dictionary<CreatureSO, int> GetNextWaveCreaturesBySide(SpawnSide side) {
         Dictionary<CreatureSO, int> creaturesCount = new Dictionary<CreatureSO, int>();
 

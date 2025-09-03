@@ -204,7 +204,7 @@ public class MetaProgressionManager : MonoBehaviour
         SaveGemPositions(PlayerCurrencies.CurrencyType.yellowGem, truncatedYellowGemPositions, true);
         SaveGemPositions(PlayerCurrencies.CurrencyType.cyanGem, truncatedCyanGemPositions, true);
 
-        ES3.Save("holdingEmber", false);
+        ES3.Save("holdingEmber", PlayerCurrencies.Instance.GetCarryingEmber());
     }
 
     public void SaveGemPositions(PlayerCurrencies.CurrencyType gemType, List<Vector3> positions, bool playerInventory) {

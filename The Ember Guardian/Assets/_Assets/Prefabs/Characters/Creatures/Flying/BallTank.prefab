@@ -6098,7 +6098,10 @@ MonoBehaviour:
   - {fileID: 5567317440449189492}
   autoAimPosition: {fileID: 4447324208709954084}
   shieldMaxHealth: 30
-  shieldCooldown: 5
+  shieldCooldown: 3
+  activateShieldOnStart: 1
+  activateShieldAfterDamageTaken: 0
+  timeToActivateShieldAfterDamageTaken: 0
 --- !u!114 &1959805565751717940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6139,6 +6142,7 @@ MonoBehaviour:
   repositionCooldown: 0
   distanceToDropOnTarget: 4
   distanceToDropOnTargetRandomizer: 1
+  playerYTargetAltitude: 1.5
 --- !u!70 &5567317440449189492 stripped
 CapsuleCollider2D:
   m_CorrespondingSourceObject: {fileID: 617523866817803319, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}

@@ -101,7 +101,7 @@ public class UICurrencyManager : MonoBehaviour
                 AddDebugCurrency();
             }
 
-            AddInitialCurrencies();
+            StartCoroutine(AddInitialCurrencies());
         }
     }
 
@@ -172,23 +172,37 @@ public class UICurrencyManager : MonoBehaviour
 
         AddMultipleCurrencies(currencyTypes, currencyTypesAmount);
     }
-    private void AddInitialCurrencies() {
+
+    private IEnumerator AddInitialCurrencies() {
+        yield return new WaitForSeconds(7f);
+
         List<TrapSO> unlockedTraps = TrapManager.Instance.GetUnlockedTraps();
         TrapSO randomTrapSO = unlockedTraps[UnityEngine.Random.Range(0,unlockedTraps.Count)];
         PlayerCurrencies.CurrencyType randomTrap = CurrenciesManager.Instance.GetTrapCurrencyType(randomTrapSO.trapType);
 
+        PlayerCurrencies.CurrencyType initialAmmoType = PlayerCurrencies.CurrencyType.ammo;
+        int ammoAmount = PlayerStats.Instance.GetStartLevelAmmo();
+        bool hasOnlySpecialAmmo = PlayerShoot.Instance.GetHasOnlySpecialAmmo();
+
+        if(hasOnlySpecialAmmo) {
+            initialAmmoType = PlayerCurrencies.CurrencyType.ammo_special;
+            ammoAmount /= 2;
+        }
+
         List<PlayerCurrencies.CurrencyType> currencyTypes = new List<PlayerCurrencies.CurrencyType> {
                 PlayerCurrencies.CurrencyType.bigBlueOrb,
-                PlayerCurrencies.CurrencyType.ammo,
+                initialAmmoType,
                 randomTrap,
             };
+
         List<int> currencyTypesAmount = new List<int> {
             PlayerStats.Instance.GetStartLevelOrbs(),
-            PlayerStats.Instance.GetStartLevelAmmo(),
+            ammoAmount,
             StructureStats.Instance.GetStartWithRandomTrapAmount(),
             };
 
-        Debug.Log("StructureStats.Instance.GetStartWithRandomTrapAmount() " + StructureStats.Instance.GetStartWithRandomTrapAmount());
+
+
         AddMultipleCurrencies(currencyTypes, currencyTypesAmount);
     }
 

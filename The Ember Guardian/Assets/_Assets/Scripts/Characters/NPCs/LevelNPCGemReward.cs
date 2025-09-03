@@ -35,10 +35,18 @@ public class LevelNPCGemReward : MonoBehaviour
         foreach (PlayerCurrencies.CurrencyType currencyType in currencyTypeToRewardList) {
             int rewardAmount = rewardAmountList[j];
 
+            PlayerCurrencies.CurrencyType currencyTypeToReward = currencyType;
+            if(currencyType == PlayerCurrencies.CurrencyType.ammo) {
+                if(PlayerShoot.Instance.GetHasOnlySpecialAmmo()) {
+                    currencyTypeToReward = PlayerCurrencies.CurrencyType.ammo_special;
+                    rewardAmount /= 2;
+                }
+            }
+
             for (int i = 0; i < rewardAmount; i++) {
                 Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyType), orbSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
                 OnAnyCurrencyDropped?.Invoke(this, new OnAnyCurrencyDroppedEventArgs {
-                    currencyType = currencyType,
+                    currencyType = currencyTypeToReward,
                 });
 
                 yield return new WaitForSeconds(.2f);

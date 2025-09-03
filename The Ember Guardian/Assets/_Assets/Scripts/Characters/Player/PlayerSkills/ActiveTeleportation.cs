@@ -11,7 +11,7 @@ public class ActiveTeleportation : MonoBehaviour
     [SerializeField] private LayerMask obstacleLayer; // Masque des obstacles à vérifier
     [SerializeField] private GameObject teleportRayPrefab; // Masque des obstacles à vérifier
 
-    private float delayToTeleportPlayer = 2f;
+    private float delayToTeleportPlayer = 1.5f;
     private float teleportDistance = 15f;
     private float teleportDuration= .2f;
 

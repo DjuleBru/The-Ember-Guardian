@@ -24,6 +24,10 @@ public class MobSpawner : MonoBehaviour
     [SerializeField] protected MobSpawner linkedMobSpawner;
     protected int eliteSpawnedAmount;
 
+    private float creatureActivationDistance = 50f;
+    private float checkTimer;
+    private float checkInterval = 2f;
+
     protected List<Mob> mobSpawnedList = new List<Mob>();
 
     public event EventHandler<OnMobSpawnedEventArgs> OnMobSpawned;
@@ -31,6 +35,7 @@ public class MobSpawner : MonoBehaviour
     public event EventHandler OnAllMobRemoved;
 
     protected bool mobsCanSpawnAtDawn = true;
+
 
     public class OnMobSpawnedEventArgs : EventArgs {
         public Mob mob;
@@ -48,6 +53,29 @@ public class MobSpawner : MonoBehaviour
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         if (blockSpawningOnStart) return;
         SpawnMobs(mobAmountToSpawn);
+    }
+
+    protected virtual void Update() {
+        if (!isCreatureSpawner) return;
+
+        checkTimer -= Time.deltaTime;
+        if (checkTimer <= 0f) {
+            checkTimer = checkInterval;
+            HandleMobActivationPerMob();
+        }
+    }
+
+    private void HandleMobActivationPerMob() {
+
+        for (int i = 0; i < mobSpawnedList.Count; i++) {
+            Creature creature = mobSpawnedList[i].GetComponent<Creature>();
+            if (creature == null) continue;
+
+            float distance = Mathf.Abs(Player.Instance.transform.position.x - creature.transform.position.x);
+            bool shouldBeActive = distance <= creatureActivationDistance;
+
+            creature.SetCreatureActive(shouldBeActive);
+        }
     }
 
     private void LinkedMobSpawner_OnAllMobRemoved(object sender, EventArgs e) {

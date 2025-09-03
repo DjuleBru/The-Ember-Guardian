@@ -53,14 +53,15 @@ MonoBehaviour:
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
+  bossNightWaveDifficultyMultiplier: 0.33
   startWaveToSpawnFromBothSides: 1
-  baseDifficulty: 40
+  baseDifficulty: 60
   intialMinSubwaveDifficulty: 10
   minSubwaveDifficulty: 25
   intialMaxSubwaveDifficulty: 15
   maxSubwaveDifficulty: 65
-  growthFactor: 1.15
-  typicalLevelDaysToComplete: 5
+  growthFactor: 1.05
+  typicalLevelDaysToComplete: 6
   minMaxSubwaveDifficultyGrowthFactor: 1.1
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0

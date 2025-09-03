@@ -44,6 +44,7 @@ public class SoundManager : MonoBehaviour
             PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo += PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
             PlayerShoot.Instance.OnPlayerTryShoot_GunJammed += PlayerShoot_OnPlayerTryShoot_GunJammed;
             PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+            PlayerShoot.Instance.OnPlayerSwappedGunStarted += PlayerShoot_OnPlayerSwappedGunStarted;
             PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerShoot_OnPlayerSwitchedFireMode;
             PlayerShoot.Instance.OnPlayerAimedSightStarted += PlayerShoot_OnPlayerAimedSightStarted;
             PlayerShoot.Instance.OnPlayerAimedSightEnded += PlayerShoot_OnPlayerAimedSightEnded;
@@ -178,6 +179,7 @@ public class SoundManager : MonoBehaviour
 
         DogReplaceButton.OnDogSwapped += DogReplaceButton_OnDogSwapped;
         DeleteSkillUI.OnAnyActiveSkillDeleted += DeleteSkillUI_OnAnyActiveSkillDeleted;
+        Merchant_Skills.OnPlayerRefundedItem += Merchant_Skills_OnPlayerRefundedItem;
     }
 
 
@@ -615,6 +617,11 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().swapToWeaponVolumeMultiplier);
     }
 
+    private void PlayerShoot_OnPlayerSwappedGunStarted(object sender, System.EventArgs e) {
+        AudioClip audioClipArray = PlayerShoot.Instance.GetHeldGunSO().swapToWeaponSound;
+        PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().swapToWeaponVolumeMultiplier);
+    }
+
     private void PlayerShoot_OnPlayerTryShoot_OutOfAmmo(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().outOfAmmoSound;
         PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().outOfAmmoVolumeMultiplier);
@@ -900,6 +907,9 @@ public class SoundManager : MonoBehaviour
     private void DeleteSkillUI_OnAnyActiveSkillDeleted(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.activeSkillDeleted);
     }
+    private void Merchant_Skills_OnPlayerRefundedItem(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.merchantRefundItem, .7f);
+    }
 
     #endregion
 
@@ -969,6 +979,7 @@ public class SoundManager : MonoBehaviour
             PlayerShoot.Instance.OnPlayerCooldownTrigger -= PlayerShoor_OnPlayerCooldownSFXTrigger;
             PlayerShoot.Instance.OnPlayerTryShoot_OutOfAmmo -= PlayerShoot_OnPlayerTryShoot_OutOfAmmo;
             PlayerShoot.Instance.OnPlayerSwappedGun -= PlayerShoot_OnPlayerSwappedGun;
+            PlayerShoot.Instance.OnPlayerSwappedGunStarted -= PlayerShoot_OnPlayerSwappedGunStarted;
 
             PlayerShoot.Instance.OnPlayerSwitchedFireMode -= PlayerShoot_OnPlayerSwitchedFireMode;
             PlayerShoot.Instance.OnPlayerAimedSightStarted -= PlayerShoot_OnPlayerAimedSightStarted;
@@ -1071,6 +1082,7 @@ public class SoundManager : MonoBehaviour
         HubMerchantTalkUI.OnAnyMerchantShowNewTalkLine -= HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine;
         DogReplaceButton.OnDogSwapped -= DogReplaceButton_OnDogSwapped;
         DeleteSkillUI.OnAnyActiveSkillDeleted -= DeleteSkillUI_OnAnyActiveSkillDeleted;
+        Merchant_Skills.OnPlayerRefundedItem -= Merchant_Skills_OnPlayerRefundedItem;
     }
 
 }

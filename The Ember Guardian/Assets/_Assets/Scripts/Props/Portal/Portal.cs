@@ -125,7 +125,7 @@ public class Portal : MonoBehaviour
         if (playerOpenedPortalUI) return;
 
         if (isHUBTeleporter && !PlayerCurrencies.Instance.GetCarryingEmber() && !DEBUGMODE) {
-            PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_carryEmber"), 2f);
+            PlayerTalkUI.Instance.ShowTalkText(LocalizationManager.Instance.GetLocalizedText("tooltip_carryEmber"), 2f);
             return;
         }
 

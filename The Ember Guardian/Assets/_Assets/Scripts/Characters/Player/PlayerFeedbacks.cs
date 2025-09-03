@@ -80,6 +80,7 @@ public class PlayerFeedbacks : MonoBehaviour
         if (gunJamFailedFeedbacks.IsPlaying) return;
 
         gunJamFailedFeedbacks.PlayFeedbacks();
+        Debug.Log("gunJamFailedFeedbacks.PlayFeedbacks()");
     }
 
     private void GunJamHandler_OnAnyJamSequenceCancelled(object sender, System.EventArgs e) {
@@ -87,6 +88,7 @@ public class PlayerFeedbacks : MonoBehaviour
 
         gunJamFeedbacksPlaying = false;
         gunJamEndFeedbacks.PlayFeedbacks();
+        Debug.Log("gunJamEndFeedbacks.PlayFeedbacks()");
     }
 
     private void GunJamHandler_OnAnyJamSequenceRestarted(object sender, System.EventArgs e) {
@@ -109,6 +111,7 @@ public class PlayerFeedbacks : MonoBehaviour
 
         gunJamFeedbacksPlaying = false;
         gunJamEndFeedbacks.PlayFeedbacks();
+        Debug.Log("gunJamEndFeedbacks.PlayFeedbacks()");
     }
 
     private void GunJamHandler_OnAnyPerfectJamSequenceCompleted(object sender, System.EventArgs e) {
@@ -117,6 +120,7 @@ public class PlayerFeedbacks : MonoBehaviour
 
         gunJamFeedbacksPlaying = false;
         gunJamPerfectSequenceFeedbacks.PlayFeedbacks();
+        Debug.Log("gunJamPerfectSequenceFeedbacks.PlayFeedbacks()");
     }
 
     private void GunJamHandler_OnAnyJamSequenceGenerated(object sender, GunJamHandler.OnJamSequenceGeneratedEventArgs e) {

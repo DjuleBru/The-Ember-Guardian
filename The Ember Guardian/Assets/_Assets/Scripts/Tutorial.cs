@@ -263,7 +263,7 @@ public class Tutorial : MonoBehaviour
 
         if (fireFuelledNumber == 1) {
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FuelFire);
-            PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_fireLightTip"), 4f);
+            PlayerTalkUI.Instance.ShowTalkText(LocalizationManager.Instance.GetLocalizedText("tooltip_fireLightTip"), 4f);
 
             if (barricadeNumberBuilt == 2 && towerNumberBuilt == 2) {
                 StartCoroutine(StartSurviveTheNightObjective());
@@ -724,13 +724,13 @@ public class Tutorial : MonoBehaviour
 
         climbTowerTooltipShown = true;
         StartCoroutine(HideTooltipAfterDelay(.2f));
-        PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_towerTip"), 4f);
+        PlayerTalkUI.Instance.ShowTalkText(LocalizationManager.Instance.GetLocalizedText("tooltip_towerTip"), 4f);
     }
 
     private void HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn(object sender, EventArgs e) {
         if(huntingFlagTooltipShown) return;
         huntingFlagTooltipShown = true;
-        PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_hunterFlagTip"), 4f);
+        PlayerTalkUI.Instance.ShowTalkText(LocalizationManager.Instance.GetLocalizedText("tooltip_hunterFlagTip"), 4f);
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
@@ -744,7 +744,7 @@ public class Tutorial : MonoBehaviour
 
         if (!saveAmmoTooltipShown) {
             if (PlayerShoot.Instance.GetCurrentBullets() != 0) {
-                PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_saveAmmoTip"), 3f);
+                PlayerTalkUI.Instance.ShowTalkText(LocalizationManager.Instance.GetLocalizedText("tooltip_saveAmmoTip"), 3f);
                 saveAmmoTooltipShown = true;
             }
         }
@@ -753,7 +753,7 @@ public class Tutorial : MonoBehaviour
         if (!fireBuilt) return;
         if (healTooltipShown) return;
         healTooltipShown = true;
-        PlayerTooltipManager.Instance.GetTooltipRight().ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_healTentTip"), 3f);
+        PlayerTalkUI.Instance.ShowTalkText(LocalizationManager.Instance.GetLocalizedText("tooltip_healTentTip"), 3f);
     }
     public void ShowLightTip() {
         StartCoroutine(ShowLightTipCoroutine());

@@ -23,6 +23,7 @@ public class ItemButtonUI_Visual : MonoBehaviour
     }
 
     public void SetItemLoadedBought() {
+        animator = GetComponent<Animator>();
         animator.enabled = true;
     }
 

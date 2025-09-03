@@ -58,7 +58,9 @@ public class MouseCursorManager : MonoBehaviour
         currentGunSO = PlayerShoot.Instance.GetHeldGunSO();
         currentCursorSize = new Vector2(initialMouseCursorWidth, initialMouseCursorHeight);
 
-        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerAim_OnPlayerSwappedGun;
+        PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+        PlayerShoot.Instance.OnPlayerSwappedGunStarted += PlayerShoot_OnPlayerSwappedGunStarted;
+        PlayerShoot.Instance.OnPlayerSwappedGunEnded += PlayerShoot_OnPlayerSwappedGunEnded;
         PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
         PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
         PauseMenuUI.Instance.OnPauseMenuClosed += PauseMenuUI_OnPauseMenuClosed;
@@ -243,7 +245,14 @@ public class MouseCursorManager : MonoBehaviour
         }
     }
 
-    private void PlayerAim_OnPlayerSwappedGun(object sender, System.EventArgs e) {
+    private void PlayerShoot_OnPlayerSwappedGunStarted(object sender, System.EventArgs e) {
+        ShowWeaponCursorGO(false);
+    }
+    private void PlayerShoot_OnPlayerSwappedGunEnded(object sender, System.EventArgs e) {
+        ShowWeaponCursorGO(true);
+    }
+
+    private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
         currentGunSO = PlayerShoot.Instance.GetHeldGunSO();
         RefreshWeaponVariables();
     }

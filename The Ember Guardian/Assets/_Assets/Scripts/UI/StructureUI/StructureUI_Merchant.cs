@@ -95,7 +95,15 @@ public class StructureUI_Merchant : StructureUI {
         int vertical = -Mathf.RoundToInt(input.y); // haut = -1, bas = +1
 
         if (horizontal != 0) {
+            int oldCol = selectedCol;
             selectedCol = Mathf.Clamp(selectedCol + horizontal, 0, 1);
+
+            // Vérifie que la nouvelle colonne contient au moins un item valide
+            if (!HasAnyValidItemInColumn(selectedCol)) {
+                // Si non on reste dans l’ancienne
+                selectedCol = oldCol;
+            }
+
             ClampSelection();
         }
 
@@ -169,7 +177,10 @@ public class StructureUI_Merchant : StructureUI {
             return;
         }
 
-        selectedItemIndex = merchant.GetAllCurrentItemsForSale().IndexOf(selected);
+        int newIndex = merchant.GetAllCurrentItemsForSale().IndexOf(selected);
+        bool itemChanged = (newIndex != previousSelectedItemIndex);
+
+        selectedItemIndex = newIndex;
         selectedMerchantItem = selected;
 
         merchant.SetCurrentHoveredItem(selectedMerchantItem);
@@ -180,15 +191,13 @@ public class StructureUI_Merchant : StructureUI {
         // Refresh visuels
         for (int i = 0; i < bigMerchantItemUIList.Count; i++) {
             bool isSelected = (i == selectedItemIndex);
-            bigMerchantItemUIList[i].HighlightItem(i == selectedItemIndex);
+            bigMerchantItemUIList[i].HighlightItem(isSelected);
 
             if (isSelected) {
                 payCurrencyUI.SetOrbTemplateUIList(bigMerchantItemUIList[i].GetPayCurrencyTemplateWorldUIList());
             }
         }
 
-
-        // Mise à jour des items mineurs (décalage d'index)
         for (int i = 0; i < smallMerchantItemUIList.Count; i++) {
             int index = i + bigMerchantItemUIList.Count;
             bool isSelected = (index == selectedItemIndex);
@@ -199,10 +208,17 @@ public class StructureUI_Merchant : StructureUI {
             }
         }
 
-        OnNewItemHovered?.Invoke(this, EventArgs.Empty);
-        UpdateDescriptionPanelVisuals();
-        previousSelectedItemIndex = selectedItemIndex;
+        if (itemChanged) {
+            OnNewItemHovered?.Invoke(this, EventArgs.Empty);
+            // On déplace/ouvre le panel seulement si changement de sélection
+            UpdateDescriptionPanelVisuals();
+        }
+        else {
+            // On rafraîchit quand même la description si l’état de l’item change (ex: achat)
+            merchantDescriptionPanelUI.UpdateDescriptionPanelVisuals(selectedMerchantItem);
+        }
 
+        previousSelectedItemIndex = selectedItemIndex;
     }
 
     protected void UpdateDescriptionPanelVisuals() {
@@ -394,6 +410,9 @@ public class StructureUI_Merchant : StructureUI {
     List<MerchantItem> GetCurrentColumn() {
         return selectedCol == 0 ? columnLeft : columnRight;
     }
+    List<MerchantItem> GetColumn(int col) {
+        return col == 0 ? columnLeft : columnRight;
+    }
 
     MerchantItem GetCurrentItem() {
         var column = GetCurrentColumn();
@@ -403,9 +422,21 @@ public class StructureUI_Merchant : StructureUI {
         return null;
     }
 
+    bool IsItemValid(MerchantItem item) {
+        return item != null && (!item.isPurchased || (item.isPurchased && !item.buyingLocksPurchasesUntilRefresh));
+    }
+
     bool IsCurrentItemValid() {
         var item = GetCurrentItem();
-        return item != null && !item.isPurchased || (item.isPurchased && !item.buyingLocksPurchasesUntilRefresh);
+        return IsItemValid(item);
+    }
+
+    bool HasAnyValidItemInColumn(int col) {
+        var columnItems = GetColumn(col);
+        foreach (var item in columnItems) {
+            if (IsItemValid(item)) return true;
+        }
+        return false;
     }
 
     int GetIndexFromGridPos(Vector2Int gridPos, int columns) {

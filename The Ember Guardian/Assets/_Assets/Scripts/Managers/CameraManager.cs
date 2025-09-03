@@ -19,6 +19,10 @@ public class CameraManager : MonoBehaviour
     private bool cameraCenteredOnPlayer;
     public event EventHandler OnCameraCenteredOnPlayer;
 
+    [SerializeField] private float maxZoomDurationBeforeReset = 15f; // Temps max avant retour auto
+    private float zoomTimer = 0f;
+    private bool cameraLockedByTransition;
+
     private void Awake() {
         Instance = this;
     }
@@ -32,11 +36,26 @@ public class CameraManager : MonoBehaviour
     private void Update() {
         if (isMainMenu) return;
 
-        if(!cameraCenteredOnPlayer) {
+        // Check centrage caméra/player
+        if (!cameraCenteredOnPlayer) {
             float distanceFromCameraToPlayer = Mathf.Abs(Camera.main.transform.position.x - Player.Instance.transform.position.x);
             if (distanceFromCameraToPlayer < 2f) {
                 cameraCenteredOnPlayer = true;
                 OnCameraCenteredOnPlayer?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        // --- SÉCURITÉ ZOOM ---
+        if (!cameraLockedByTransition) {
+            if (Mathf.Abs(virtualCamera.m_Lens.OrthographicSize - initialCameraOrthographicSize) > 0.01f) {
+                zoomTimer += Time.deltaTime;
+                if (zoomTimer >= maxZoomDurationBeforeReset) {
+                    StartZoom(initialCameraOrthographicSize, 1f);
+                    zoomTimer = 0f;
+                }
+            }
+            else {
+                zoomTimer = 0f;
             }
         }
     }
@@ -122,6 +141,9 @@ public class CameraManager : MonoBehaviour
     }
     public void ResetCameraOrthographicSize() {
         virtualCamera.m_Lens.OrthographicSize = initialCameraOrthographicSize;
+    }
+    public void SetCameraLockedByTransition(bool locked) {
+        cameraLockedByTransition = locked;
     }
 
     public Camera GetUICamera() {

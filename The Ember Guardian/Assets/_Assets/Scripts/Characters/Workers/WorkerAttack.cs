@@ -17,6 +17,7 @@ public class WorkerAttack : MobAttack
     private float minerTotalAttackAnimationTime = .5f;
     private float hunterAnimalAttackPointRandomizer;
 
+    private float initialProbabilityToHaveHomingProjectileOnCreature;
     private float probabilityToHaveHomingProjectileOnCreature = .6f;
 
 
@@ -34,6 +35,8 @@ public class WorkerAttack : MobAttack
         if(probabilityToHaveHomingProjectileOnCreature > .9f) {
             probabilityToHaveHomingProjectileOnCreature = .9f;
         }
+
+        initialProbabilityToHaveHomingProjectileOnCreature = probabilityToHaveHomingProjectileOnCreature;
     }
 
     private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
@@ -88,6 +91,14 @@ public class WorkerAttack : MobAttack
         }
 
         return new Vector3(randomized, 0,0);
+    }
+
+    public void SetHomingArrows() {
+        probabilityToHaveHomingProjectileOnCreature = 1f;
+    }
+
+    public void ResetHomingArrowsProbability() {
+        probabilityToHaveHomingProjectileOnCreature = 1f;
     }
 
 }

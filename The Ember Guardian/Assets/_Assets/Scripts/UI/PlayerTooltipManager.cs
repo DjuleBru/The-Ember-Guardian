@@ -32,6 +32,22 @@ public class PlayerTooltipManager : MonoBehaviour
     private string smgText2;
     private string sniperText1;
     private string sniperText2;
+    private string AAGunText1;
+    private string AAGunText2;
+    private string AssaultRifleText1;
+    private string AssaultRifleText2;
+    private string GrenadeLauncherText1;
+    private string GrenadeLauncherText2;
+    private string LMGText1;
+    private string LMGText2;
+    private string MinigunText1;
+    private string MinigunText2;
+    private string PistolText1;
+    private string PistolText2;
+    private string RevolverText1;
+    private string RevolverText2;
+    private string RocketLauncherText1;
+    private string RocketLauncherText2;
     #endregion
 
     private void Awake() {
@@ -62,6 +78,22 @@ public class PlayerTooltipManager : MonoBehaviour
             smgText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_smgText2");
             sniperText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
             sniperText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_sniperText2");
+            AAGunText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
+            AAGunText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_AAGunText2");
+            AssaultRifleText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
+            AssaultRifleText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_AssaultRifleText2");
+            GrenadeLauncherText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
+            GrenadeLauncherText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_GrenadeLauncherText2");
+            LMGText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
+            LMGText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_LMGText2");
+            MinigunText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
+            MinigunText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_MinigunText2");
+            PistolText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
+            PistolText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_PistolText2");
+            RevolverText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
+            RevolverText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_RevolverText2");
+            RocketLauncherText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
+            RocketLauncherText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_RocketLauncherText2");
         }
     }
 
@@ -100,7 +132,7 @@ public class PlayerTooltipManager : MonoBehaviour
     private void HuntingFlag_PlayerDefined_OnHuntingFlagTooFar(object sender, System.EventArgs e) {
         if (huntingFlagTooFarShown) return;
 
-        tooltipLeft.ShowTooltip(LocalizationManager.Instance.GetLocalizedText("tooltip_huntingFlagTooFar"), 5f);
+        PlayerTalkUI.Instance.ShowTalkText(LocalizationManager.Instance.GetLocalizedText("tooltip_huntingFlagTooFar"), 5f);
         ES3.Save("huntingFlagTooFarShown", true);
     }
 
@@ -134,6 +166,32 @@ public class PlayerTooltipManager : MonoBehaviour
             }
             if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Sniper) {
                 PrepareTooltipInstruction(sniperText1, sniperText2, InputControlIcons.Control.SecondaryGunAbility);
+            }
+
+            if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.AAGun) {
+                PrepareTooltipInstruction(AAGunText1, AAGunText2, InputControlIcons.Control.SecondaryGunAbility);
+            }
+            if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.AssaultRifle) {
+                PrepareTooltipInstruction(AssaultRifleText1, AssaultRifleText2, InputControlIcons.Control.SecondaryGunAbility);
+            }
+            if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.GrenadeLauncher) {
+                PrepareTooltipInstruction(GrenadeLauncherText1, GrenadeLauncherText2, InputControlIcons.Control.Shoot);
+            }
+            if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.LMG) {
+                PrepareTooltipInstruction(LMGText1, LMGText2, InputControlIcons.Control.SecondaryGunAbility);
+            }
+
+            if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Pistol) {
+                PrepareTooltipInstruction(PistolText1, PistolText2, InputControlIcons.Control.SecondaryGunAbility);
+            }
+            if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Revolver) {
+                PrepareTooltipInstruction(RevolverText1, RevolverText2, InputControlIcons.Control.SecondaryGunAbility);
+            }
+            if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.RocketLauncher) {
+                PrepareTooltipInstruction(RocketLauncherText1, RocketLauncherText2, InputControlIcons.Control.SecondaryGunAbility);
+            }
+            if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.MiniGun) {
+                PrepareTooltipInstruction(MinigunText1, MinigunText2, InputControlIcons.Control.SecondaryGunAbility);
             }
 
             preparedDisplayTime = 10f;

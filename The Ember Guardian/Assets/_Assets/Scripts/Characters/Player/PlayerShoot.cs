@@ -27,6 +27,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler<OnAmmoRefilledEventArgs> OnPlayerAmmoRefilled;
     public event EventHandler OnBulletsChanged;
     public event EventHandler OnPlayerSwappedGunStarted;
+    public event EventHandler OnPlayerSwappedGunEnded;
     public event EventHandler OnPlayerSwappedGun;
     public event EventHandler OnGunsLoaded;
     public event EventHandler OnShotStartedLoading;
@@ -912,6 +913,7 @@ public class PlayerShoot : MonoBehaviour
 
         yield return new WaitForSeconds(swapGunEndAnimationTime);
         swappingGun = false;
+        OnPlayerSwappedGunEnded?.Invoke(this, EventArgs.Empty);
     }
 
     private IEnumerator ReloadGunCoroutine() {
@@ -1146,6 +1148,10 @@ public class PlayerShoot : MonoBehaviour
         foreach(Gun gun in allGunsList) {
             gun.SaveMetaParameters();
         }
+    }
+
+    public bool GetHasOnlySpecialAmmo() {
+        return primaryGunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special && (secondayGunSO != null && secondayGunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special);
     }
 
     private void OnDestroy() {

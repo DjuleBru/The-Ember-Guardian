@@ -13,10 +13,10 @@ public class DogStats : MonoBehaviour {
     private bool germanShepherdBiteAbilityUnlocked;
     private bool germanShepherdDigResourceAbilityUnlocked;
     private bool germanShepherdDetectAmbushAbilityUnlocked;
-    private bool retreiverBiteAbilityUnlocked;
+    private bool retreiverBiteAbilityUnlocked = true;
     private bool retreiverBuffWorkersAbilityUnlocked;
     private bool retreiverPickUpItemsAbilityUnlocked;
-    private bool darkCompanionBiteAbilityUnlocked;
+    private bool darkCompanionBiteAbilityUnlocked = true;
     private bool darkCompanionLaserAbilityUnlocked;
     private bool darkCompanionStompAbilityUnlocked;
 
@@ -93,10 +93,8 @@ public class DogStats : MonoBehaviour {
         germanShepherdBiteAbilityUnlocked = ES3.Load("germanShepherdBiteAbilityUnlocked", false);
         germanShepherdDigResourceAbilityUnlocked = ES3.Load("germanShepherdDigResourceAbilityUnlocked", false);
         germanShepherdDetectAmbushAbilityUnlocked = ES3.Load("germanShepherdDetectAmbushAbilityUnlocked", false);
-        retreiverBiteAbilityUnlocked = ES3.Load("retreiverBiteAbilityUnlocked", false);
         retreiverBuffWorkersAbilityUnlocked = ES3.Load("retreiverBuffWorkersAbilityUnlocked", false);
         retreiverPickUpItemsAbilityUnlocked = ES3.Load("retreiverPickUpItemsAbilityUnlocked", false);
-        darkCompanionBiteAbilityUnlocked = ES3.Load("darkCompanionBiteAbilityUnlocked", false);
         darkCompanionLaserAbilityUnlocked = ES3.Load("darkCompanionLaserAbilityUnlocked", false);
         darkCompanionStompAbilityUnlocked = ES3.Load("darkCompanionStompAbilityUnlocked", false);
 

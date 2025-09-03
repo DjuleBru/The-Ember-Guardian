@@ -802,6 +802,7 @@ public class HunterJob : WorkerJob {
 
         worker.AssignDefensiveStructure(tower);
         workerAnimatorManager.SetWatchDir(position.x);
+        workerAttack.SetHomingArrows();
     }
 
     public void BuffRange(float buff) {
@@ -888,6 +889,7 @@ public class HunterJob : WorkerJob {
 
         RemoveCurrentTargetAnimal();
         assignedTower = null;
+        workerAttack.ResetHomingArrowsProbability();
 
         ChangeState(HunterState.idle);
     }

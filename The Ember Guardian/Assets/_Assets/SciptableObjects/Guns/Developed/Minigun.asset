@@ -59,7 +59,7 @@ MonoBehaviour:
   delayBetweenClickAndShot: 0
   useAngleInPS: 1
   damagePerBullet: 3
-  maxAmmo: 4
+  maxAmmo: 2
   pelletsPerBullet: 1
   shotsPerClip: 100
   critChance: 0
@@ -70,6 +70,9 @@ MonoBehaviour:
   handsReloadTime: 2.3
   handsAnimationReloadTime: 1
   bulletKnockback: 5
+  spinUpDuration: 3.5
+  subExplosivesAmount: 0
+  subExplosivesDamage: 0
   shootCreatureHearMultiplier: 1.75
   jamProbability: 0
   jamRepairHitAmount: 0

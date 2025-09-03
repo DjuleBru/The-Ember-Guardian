@@ -127,8 +127,8 @@ public class Chest_Special : Chest
     }
 
     protected void CheckUnlockNewWeapon() {
-        bool weaponUnlockedInShop = MetaProgressionManager.Instance.GetMerchantItemUnlocked(weaponMerchantItemType.ToString());
-        if (weaponUnlockedInShop) return;
+        bool weaponBoughtInShop = MetaProgressionManager.Instance.GetMerchantItemBought(weaponMerchantItemType.ToString());
+        if (weaponBoughtInShop) return;
         if (!findingWeaponUnlocksItInShop) return;
 
         string gunShopItemString = weaponMerchantItemType.ToString() + " " + gunSOInChest.ToString();

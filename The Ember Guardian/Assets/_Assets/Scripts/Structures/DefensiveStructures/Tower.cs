@@ -94,11 +94,12 @@ public class Tower : Structure
 
         if (structureLevel == 2) {
             level2TowerCollider.SetActive(true);
+            maxWorkersAssigned = 2;
         }
 
         if (structureLevel == 3) {
             level3TowerCollider.SetActive(true);
-            maxWorkersAssigned = 2;
+            maxWorkersAssigned = 3;
         }
 
         if (structureLevel == 4) {

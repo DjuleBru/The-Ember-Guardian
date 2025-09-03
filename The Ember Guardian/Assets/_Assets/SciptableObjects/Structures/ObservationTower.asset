@@ -16,7 +16,7 @@ MonoBehaviour:
   structureCategory: 3
   structureLocationPrefab: {fileID: 0}
   structurePrefab: {fileID: 6212992262444972498, guid: 29ca3413aa7f8f545a42498ccb97b6e8, type: 3}
-  structureSprite: {fileID: -1515975468, guid: c9258a484b67660408a0c243a69dea11, type: 3}
+  structureSprite: {fileID: -448266187, guid: c9258a484b67660408a0c243a69dea11, type: 3}
   structureNameLocalizationKey: Observation Tower
   widthInCells: 1
   structurePositionMovable: 1
@@ -27,10 +27,16 @@ MonoBehaviour:
   upgradeableAtNight: 0
   functionUsableAtNight: 1
   playerCanAlwaysInteract: 0
+  engineerCanWorkByDay: 0
+  engineerCanWorkByNight: 0
+  workingEngineerHideTool: 0
+  workingEngineerHideVisual: 0
+  engineerWorkingPriority: 0
+  maxEngineersAssignedWorking: 0
+  maxEngineersAssignedRefilling: 0
+  refillCurrencyTypeNeeded: 0
   upgradeable: 0
-  tentLevelRequiredForLevel2: 2
-  tentLevelRequiredForLevel3: 3
-  tentLevelRequiredForLevel4: 4
+  maxLevel: 0
   buildingUpgradeSpriteList:
   - {fileID: 769547836, guid: 78c74fc20ec74d948ba3760e297d4990, type: 3}
   buildAudioClip: {fileID: 8300000, guid: ebd7d0bdc0838b34d858c35154a42e2d, type: 3}

@@ -10,6 +10,7 @@ public class StructureBlueprint : MonoBehaviour {
     [SerializeField] private StructureSO linkedStructureSO;
     [SerializeField] private RectTransform blueprintImageParent;
     [SerializeField] private Image blueprintImage;
+    [SerializeField] private GameObject secondaryFireRadiusGO;
     [SerializeField] private Animator linkedUIHoveredObjectAnimator;
     [SerializeField] private Material selectedMaterial;
     [SerializeField] private Material hoveredMaterial;
@@ -43,6 +44,14 @@ public class StructureBlueprint : MonoBehaviour {
             blueprintImage.sprite = linkedStructureSO.structureSprite;
             SetBlueprintSize();
 
+            if (linkedStructureSO.structureType == StructureSO.StructureType.secondaryFire) {
+                secondaryFireRadiusGO.SetActive(true);
+                linkedUIHoveredObjectAnimator = secondaryFireRadiusGO.GetComponent<Animator>();
+            }
+            else {
+                secondaryFireRadiusGO.SetActive(false);
+            }
+
             if (locked) return;
         }
 
@@ -62,6 +71,7 @@ public class StructureBlueprint : MonoBehaviour {
     }
 
     private void InitializeBlueprint() {
+
         if (isInitialBlueprint && linkedStructureSO.structurePositionMovable && CampEditManager.Instance.GetCampLayoutCustomized()) {
 
             if (linkedStructureSO.structureType != StructureSO.StructureType.tent) {
