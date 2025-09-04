@@ -280,7 +280,7 @@ public class CurrencyCrafter : Structure
         return currencyTypeCrafted;
     }
     protected override void RefreshPlayerCanInteract() {
-        if(craftingCurrency) {
+        if(craftingCurrency && currentBatches == batchCapacity) {
             playerCanInteract = false;
             return;
         }

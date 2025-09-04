@@ -12,6 +12,7 @@ public class DogAnimatorManager : MonoBehaviour {
     [SerializeField] private RuntimeAnimatorController darkCompanionAnimator;
     [SerializeField] private PetDog petDog;
     [SerializeField] private DogAI_DarkCompanion darkCompanionAI;
+    [SerializeField] private DogAI_Retreiver retreiverAI;
 
     private Animator animator;
     private Dog dog;
@@ -85,10 +86,12 @@ public class DogAnimatorManager : MonoBehaviour {
             dogAI.OnDogBite += DogAI_OnDogBite;
         }
         dogAI = Dog.Instance.GetCurrentDogAI();
+
         darkCompanionAI.OnLaserAbilityStarted += DarkCompanionAI_OnLaserAbilityStarted;
         darkCompanionAI.OnStompAbilityStarted += DarkCompanionAI_OnStompAbilityStarted;
         darkCompanionAI.OnLaserAbilityEnded += DarkCompanionAI_OnLaserAbilityEnded;
         darkCompanionAI.OnStompAbilityEnded += DarkCompanionAI_OnStompAbilityEnded;
+        retreiverAI.OnDogStartedDroppingCurrency += RetreiverAI_OnDogStartedDroppingCurrency;
 
         dogMovement.SetReadyToMoveAnimator(false);
         DogDigAbility.Instance.OnSniffStart += DogDigAbility_OnSniffStart;
@@ -97,6 +100,8 @@ public class DogAnimatorManager : MonoBehaviour {
 
         SetDogTypeAnimator();
     }
+
+
 
     private void Update() {
         if (!stomping && !shootingContinuousLaser) {
@@ -254,6 +259,11 @@ public class DogAnimatorManager : MonoBehaviour {
         else {
             animator.SetBool("Barking", false);
         }
+    }
+
+    private void RetreiverAI_OnDogStartedDroppingCurrency(object sender, EventArgs e) {
+        animator.SetBool("Running", false);
+        animator.SetBool("Walking", false);
     }
 
 

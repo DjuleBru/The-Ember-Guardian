@@ -20,7 +20,7 @@ public class SpecialTower_MannerVisual : MonoBehaviour {
     [SerializeField] protected bool reloadsLights = true;
 
     protected bool outOfAmmo;
-    protected bool lastClipStartedEmptying;
+    protected bool lastClipStartedEmptying = true;
     protected bool aiming;
     protected bool cooldownAnimationDone;
     protected bool hasCooldown;
@@ -167,6 +167,8 @@ public class SpecialTower_MannerVisual : MonoBehaviour {
     protected void SpecialTower_OnAmmoClipRemoved(object sender, System.EventArgs e) {
         if(specialTower.GetCurrentAmmoClip() == 0) {
             lastClipStartedEmptying = true;
+        } else {
+            lastClipStartedEmptying = false;
         }
     }
 }

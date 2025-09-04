@@ -17,19 +17,19 @@ MonoBehaviour:
   isStaticProjectileAttack: 0
   isAnimatedAttack: 1
   attackCooldown: 3
-  minAttackRange: 0.3
-  maxAttackRange: 3
+  minAttackRange: 0.4
+  maxAttackRange: 2.5
   hasDifferentDayAndNightRange: 0
   minAttackRange_Night: 0
   maxAttackRange_Night: 0
-  attackRangeRandomizer: 0.2
+  attackRangeRandomizer: 0.05
   maxAttackRangeRandomizer: 0
   damage: 1
   damageToFire: 1
   damageToBarricades: 1
   canAttackPlayerBehindBarricades: 0
   canAttackPlayerOnTower: 1
-  attackAnimationDelay: 0.4
+  attackAnimationDelay: 0.3
   totalAttackAnimationTime: 1
   attackSFXDelayAfterAnimationStart: 0
   staticProjectilePrefab: {fileID: 0}

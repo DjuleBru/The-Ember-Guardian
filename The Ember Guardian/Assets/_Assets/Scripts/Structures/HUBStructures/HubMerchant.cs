@@ -47,12 +47,16 @@ public class HubMerchant : MonoBehaviour
     public event EventHandler OnPlayerStartedTalkingWithHubMerchant;
     public event EventHandler OnMerchantHasNewInteraction;
     public event EventHandler OnMerchantHideExclamationMark;
+    public event EventHandler OnMerchantFadeOutStarted;
     public static event EventHandler OnPlayerStartedTalkingWithAnyHubMerchant;
     public static event EventHandler OnPlayerOpenedAnyHubMerchantShop;
     public static event EventHandler OnPlayerStoppedInteractingWithAnyHubMerchant;
 
     [SerializeField] protected bool isHubMerchant;
     [SerializeField] protected bool isLevelNPC;
+    [SerializeField] protected bool fadeOutAfterTalk;
+    [SerializeField] protected float delayToFadeOutAfterTalk;
+    protected float fadeOutDuration = 1.5f;
 
     [SerializeField] protected bool isFunctionalDemoHubMerchant;
     [SerializeField] protected bool isDecorationalDemoHubMerchant;
@@ -101,6 +105,7 @@ public class HubMerchant : MonoBehaviour
     }
 
     protected void InitializeItemButtonUIs() {
+        Debug.Log(this + " InitializeItemButtonUIs");
         foreach (HubMerchantItem merchantItem in hubMerchantItems) {
             merchantItem.GetComponent<ItemButtonUI>().InitializeItemButtonUI();
         }
@@ -237,6 +242,14 @@ public class HubMerchant : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
         playerInteractingWithMerchant = false;
+
+        if(fadeOutAfterTalk) {
+            yield return new WaitForSeconds(delayToFadeOutAfterTalk);
+            OnMerchantFadeOutStarted?.Invoke(this, EventArgs.Empty);
+            yield return new WaitForSeconds(fadeOutDuration);
+
+            gameObject.SetActive(false);
+        }
     }
 
     public void StartTalkingWithMerchant() {
@@ -370,6 +383,7 @@ public class HubMerchant : MonoBehaviour
     public bool GetMerchantIsDecorationalDemoMerchant() {
         return isDecorationalDemoHubMerchant;
     }
+
     #endregion
 
     public void SaveMerchant() {

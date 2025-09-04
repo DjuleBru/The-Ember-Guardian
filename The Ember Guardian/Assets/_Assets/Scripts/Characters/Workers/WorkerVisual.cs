@@ -205,10 +205,13 @@ public class WorkerVisual : MobVisual {
     }
 
     private void JoblessJob_OnJoblessNotBlockedByCreatures(object sender, System.EventArgs e) {
+
+        Debug.Log("JoblessJob_OnJoblessNotBlockedByCreatures");
         ChangeStatusSprite(null);
     }
 
     private void JoblessJob_OnJoblessBlockedByCreatures(object sender, System.EventArgs e) {
+        Debug.Log("JoblessJob_OnJoblessBlockedByCreatures");
         ChangeStatusSprite(exclamationMarkSprite);
     }
 

@@ -30,6 +30,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         flying,
         ghouls,
     }
+    [SerializeField] private Transform nightCreaturesTransformParent;
     [SerializeField] private CreatureSO crawlerCreature;
     [SerializeField] private CreatureSO ghoulCreature;
     private SpecialWaveType currentSpecialWaveType = SpecialWaveType.none;
@@ -40,6 +41,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
     }
 
     private Dictionary<int, List<SpawnedCreatureInfo>> waveCreaturesDictionary = new Dictionary<int, List<SpawnedCreatureInfo>>();
+    private Dictionary<CreatureSO, Queue<Creature>> creaturePools = new Dictionary<CreatureSO, Queue<Creature>>();
 
     public enum SpawnSide { Left, Right };
     private float spawnDistanceToPlayerOrCamp = 40f;
@@ -595,7 +597,13 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
 
     private void SpawnCreatureAtSide(CreatureSO creatureToSpawn, SpawnSide spawnSide) {
-        Creature creature = Instantiate(creatureToSpawn.creaturePrefab, GetSpawnPosition(spawnSide, creatureToSpawn), Quaternion.identity).GetComponent<Creature>();
+
+        Creature creature = GetCreatureFromPool(
+            creatureToSpawn,
+            GetSpawnPosition(spawnSide, creatureToSpawn),
+            Quaternion.identity
+        );
+
         creature.SetAsDayCreature(false);
         CreaturesManager.Instance.AddCreatureToNightWave(creature);
 
@@ -824,6 +832,30 @@ public class CreaturesSpawnManager : MonoBehaviour {
         }
 
         return creaturesCount;
+    }
+
+    private Creature GetCreatureFromPool(CreatureSO creatureSO, Vector3 position, Quaternion rotation) {
+        if (!creaturePools.ContainsKey(creatureSO)) {
+            creaturePools[creatureSO] = new Queue<Creature>();
+        }
+
+        Queue<Creature> pool = creaturePools[creatureSO];
+
+        Creature creature;
+        if (pool.Count > 0 && !pool.Peek().gameObject.activeSelf && !creatureSO.isBoss) {
+            creature = pool.Dequeue();
+            creature.transform.position = position;
+            creature.transform.rotation = rotation;
+            creature.gameObject.SetActive(true);
+        }
+        else {
+            creature = Instantiate(creatureSO.creaturePrefab, position, rotation, nightCreaturesTransformParent).GetComponent<Creature>();
+        }
+
+        // On remet dans la file pour être réutilisé plus tard
+        pool.Enqueue(creature);
+
+        return creature;
     }
 
 }

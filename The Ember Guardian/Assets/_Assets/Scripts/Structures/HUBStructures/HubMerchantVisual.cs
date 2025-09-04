@@ -8,6 +8,7 @@ public class HubMerchantVisual : MonoBehaviour
     [SerializeField] private Material hoveredMaterial;
     [SerializeField] private SpriteRenderer bodySpriteRenderer;
     [SerializeField] private GameObject newItemsForSaleGameObject;
+    [SerializeField] private Animator bodyAnimator;
 
     private HubMerchant hubMerchant;
 
@@ -23,11 +24,16 @@ public class HubMerchantVisual : MonoBehaviour
         hubMerchant.OnPlayerStartedTalkingWithHubMerchant += HubMerchant_OnPlayerStartedTalkingWithHubMerchant;
         hubMerchant.OnMerchantHasNewInteraction += HubMerchant_OnMerchantHasNewTalkLines;
         hubMerchant.OnMerchantHideExclamationMark += HubMerchant_OnMerchantHideExclamationMark;
+        hubMerchant.OnMerchantFadeOutStarted += HubMerchant_OnMerchantFadeOutStarted;
 
 
         if (hubMerchant.GetMerchantHasNewItems() || hubMerchant.GetMerchantJustArrivedInHub() || hubMerchant.GetMerchantIsLevelNPC() || hubMerchant.GetMerchantHasNewTalkLinkes()) {
             newItemsForSaleGameObject.gameObject.SetActive(true);
         }
+    }
+
+    private void HubMerchant_OnMerchantFadeOutStarted(object sender, System.EventArgs e) {
+        bodyAnimator.SetTrigger("FadeOut");
     }
 
     private void HubMerchant_OnMerchantHideExclamationMark(object sender, System.EventArgs e) {

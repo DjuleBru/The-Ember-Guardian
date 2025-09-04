@@ -15,6 +15,16 @@ public class CreatureShieldVisual : MonoBehaviour
         creature_Shielded.OnShieldDestroyed += Creature_Shielded_OnShieldDestroyed;
         creature_Shielded.OnShieldRegenerated += Creature_Shielded_OnShieldRegenerated;
         creature_Shielded.OnShieldTakesDamage += Creature_Shielded_OnShieldTakesDamage;
+        creature_Shielded.OnCreatureDied += Creature_Shielded_OnCreatureDied;
+        creature_Shielded.OnCreatureEnabled += Creature_Shielded_OnCreatureEnabled;
+    }
+
+    private void Creature_Shielded_OnCreatureEnabled(object sender, System.EventArgs e) {
+        shieldSpriteRenderer.enabled = true;
+    }
+
+    private void Creature_Shielded_OnCreatureDied(object sender, System.EventArgs e) {
+        shieldSpriteRenderer.enabled = false;
     }
 
     private void Start() {

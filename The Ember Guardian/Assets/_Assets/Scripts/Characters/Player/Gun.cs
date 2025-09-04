@@ -510,7 +510,6 @@ public class Gun : MonoBehaviour
 
     #region SET PARAMETERS
     public void SetGunUnJammed(bool gunJamSuccess) {
-        Debug.Log(this + " SetGunUnJammed gunJamSuccess " + gunJamSuccess);
         gunJammed = false;
 
         if(gunJamSuccess) {

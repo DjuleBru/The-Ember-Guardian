@@ -24,8 +24,8 @@ public class Chest_Special : Chest
             SelectRandomSkill();
         }
 
-        bool weaponUnlockedInShop = MetaProgressionManager.Instance.GetMerchantItemUnlocked(weaponMerchantItemType.ToString() + " " + gunSOInChest.ToString());
-        if (findingWeaponUnlocksItInShop && weaponUnlockedInShop) {
+        bool weaponBoughtInShop = MetaProgressionManager.Instance.GetMerchantItemBought(weaponMerchantItemType.ToString() + " " + gunSOInChest.ToString());
+        if (findingWeaponUnlocksItInShop && weaponBoughtInShop) {
             gameObject.SetActive(false);
         }
     }
@@ -127,7 +127,7 @@ public class Chest_Special : Chest
     }
 
     protected void CheckUnlockNewWeapon() {
-        bool weaponBoughtInShop = MetaProgressionManager.Instance.GetMerchantItemBought(weaponMerchantItemType.ToString());
+        bool weaponBoughtInShop = MetaProgressionManager.Instance.GetMerchantItemBought(weaponMerchantItemType.ToString() + " " + gunSOInChest.ToString());
         if (weaponBoughtInShop) return;
         if (!findingWeaponUnlocksItInShop) return;
 

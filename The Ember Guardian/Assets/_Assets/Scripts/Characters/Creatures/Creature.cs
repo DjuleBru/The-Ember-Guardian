@@ -38,6 +38,7 @@ public class Creature : Mob
     public event EventHandler OnCreatureUntargetable;
     public event EventHandler OnCreatureTargetable;
     public event EventHandler OnCreatureIdleSoundTriggered;
+    public event EventHandler OnCreatureEnabled;
 
     protected float triggerSoundTimer;
     protected float triggerSoundTime = 5f;
@@ -94,6 +95,8 @@ public class Creature : Mob
     protected float stunDuration = 10f;
     protected float stunTimer;
 
+    protected float initialGravityScale;
+
     protected virtual void Awake() {
         rb = GetComponent<Rigidbody2D>();
         rb.mass = creatureSO.mass;
@@ -106,6 +109,7 @@ public class Creature : Mob
         poisonImmune = creatureSO.immuneToPoison;
         immobilizeImmune = creatureSO.immuneToImmobilize;
         probabilityToDropOrb = creatureSO.probabilityToDropOrb;
+        initialGravityScale = rb.gravityScale;
     }
 
     protected virtual void Start() {
@@ -119,8 +123,24 @@ public class Creature : Mob
 
     protected void OnEnable() {
         CreaturesManager.Instance.AddCreatureSpawned(this);
+        dead = false;
         health = creatureSO.maxHealth;
         maxHealth = creatureSO.maxHealth;
+
+        GetComponent<Collider2D>().enabled = true;
+        rb.gravityScale = initialGravityScale;
+        foreach (Collider2D cd in critZoneColliders) {
+            cd.enabled = true;
+        }
+
+        creatureMovement.enabled = true;
+        creatureAttack.enabled = true;
+        if (creatureAttack != null) {
+            creatureAttack.enabled = true;
+        }
+        ResetStatusFX();
+
+        OnCreatureEnabled?.Invoke(this, EventArgs.Empty);
     }
 
     protected override void Update() {
@@ -165,7 +185,6 @@ public class Creature : Mob
         CreatureDieFunction();
         OnCreatureDied?.Invoke(this, EventArgs.Empty);
     }
-
 
     private void CreatureDieFunction() {
         dead = true;
@@ -300,8 +319,14 @@ public class Creature : Mob
     }
 
     protected IEnumerator DestroyGameObjectAfterDelay() {
-        yield return new WaitForSeconds(2f);
-        Destroy(gameObject);
+        yield return new WaitForSeconds(3f);
+
+        if(IsDayCreature()) {
+            Destroy(gameObject);
+        } else {
+            gameObject.SetActive(false);
+        }
+
     }
 
     public CreatureSO GetCreatureSO() {
@@ -549,6 +574,14 @@ public class Creature : Mob
         burningTimer = burningDuration;
 
         OnCreatureBurningStarted?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void ResetStatusFX() {
+        immobilized = false;
+        stunned = false;
+        poisoned = false;
+        shocked = false;
+        burning = false;
     }
 
     #endregion

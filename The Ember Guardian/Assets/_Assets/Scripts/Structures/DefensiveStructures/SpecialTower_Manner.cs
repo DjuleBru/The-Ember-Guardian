@@ -47,6 +47,7 @@ public class SpecialTower_Manner : MonoBehaviour {
     protected bool reloadingStarted;
     protected bool readyToShoot;
     protected bool cooldownTriggered;
+    protected bool readyToReload;
 
     public event EventHandler OnEngineerStartedManning;
     public event EventHandler OnEngineerStoppedManning;
@@ -82,10 +83,14 @@ public class SpecialTower_Manner : MonoBehaviour {
     }
 
     protected void SpecialTower_OnAmmoClipAdded(object sender, EventArgs e) {
+        if(engineersManning.Count == 0) {
+            readyToReload = true;
+            return;
+        }
+
         if(towerOutOfAmmo && currentShotIndex == 0) {
             StartCoroutine(HandleReloading());
         }
-
         towerOutOfAmmo = false;
     }
 
@@ -227,6 +232,14 @@ public class SpecialTower_Manner : MonoBehaviour {
             engineersManning.Add(engineerJob);
             engineerJob.GetDetectionCollider().SetDetectionColliderRadius(mannerRange);
             engineerJob.GetDetectionCollider().OnCreaturesInColliderChanged += SpecialTower_Manner_OnCreaturesInColliderChanged;
+
+            if(readyToReload) {
+                if (towerOutOfAmmo && currentShotIndex == 0) {
+                    StartCoroutine(HandleReloading());
+                }
+                towerOutOfAmmo = false;
+                readyToReload = false;
+            }
         }
         else {
             engineerJob.GetDetectionCollider().ResetDetectionColliderRadius();

@@ -96,8 +96,8 @@ public class EngineerJob : WorkerJob {
         else {
             closestCreature = workerDetectionCollider.GetClosestCreature();
             isInSafeZone = IsInSafeZone();
+
             if (CheckBlockedByCreature() && state != EngineerState.blockedByCreatures && !isInSafeZone && state != EngineerState.workingInStructure) {
-                Debug.Log(isInSafeZone);
                 ChangeState(EngineerState.blockedByCreatures);
                 return;
             };
@@ -177,7 +177,7 @@ public class EngineerJob : WorkerJob {
                 case EngineerState.blockedByCreatures:
                     StayAwayFromCreature(closestCreature);
 
-                    if (!CheckBlockedByCreature()) {
+                    if (!CheckBlockedByCreature() || isInSafeZone) {
                         ChangeState(EngineerState.idle);
                     }
                     break;
@@ -188,6 +188,15 @@ public class EngineerJob : WorkerJob {
 
     private void ChangeState(EngineerState newState) {
         if (newState == state) return;
+        if (worker.GetDead()) return;
+
+        if (mobMovement == null) {
+            Debug.LogWarning("mobMovement not initialized yet");
+            mobMovement = GetComponentInChildren<MobMovement>();
+            if(mobMovement == null) {
+                return;
+            }
+        }
 
         previousState = state;
 
@@ -607,6 +616,7 @@ public class EngineerJob : WorkerJob {
     private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         isNightOrDusk = false;
         if (escorting) return;
+
         ChangeState(EngineerState.idle);
     }
 

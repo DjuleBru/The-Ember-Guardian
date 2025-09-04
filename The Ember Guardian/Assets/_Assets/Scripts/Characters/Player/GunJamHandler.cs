@@ -431,7 +431,6 @@ public class GunJamHandler : MonoBehaviour
     }
 
     private void CompleteGunJamMiniGame() {
-        Debug.Log("CompleteGunJamMiniGame " + gun  + " gunIsHeldGun " + gunIsHeldGun);
         if (!gunIsHeldGun) return;
 
         isInGunJamQTE = false;

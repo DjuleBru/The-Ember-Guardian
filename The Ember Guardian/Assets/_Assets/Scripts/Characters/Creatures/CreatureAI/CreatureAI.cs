@@ -70,6 +70,7 @@ public class CreatureAI : MonoBehaviour {
     protected virtual void Start() {
         creature.OnCreatureDied += Creature_OnCreatureDied;
         creature.OnMobHitObstacle += Creature_OnMobHitObstacle;
+        creature.OnCreatureEnabled += Creature_OnCreatureEnabled;
         creatureAttack.OnAttackSOChanged += CreatureAttack_OnAttackSOChanged;
 
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
@@ -92,6 +93,10 @@ public class CreatureAI : MonoBehaviour {
 
         HandleAggroRecently();
         StateSwitch();
+    }
+    private void Creature_OnCreatureEnabled(object sender, EventArgs e) {
+        creatureAttack.RemoveAttackTarget(); 
+        StartCoroutine(SetSpawnedAfterDelay(creature.GetCreatureSO().spawnAnimationDuration));
     }
 
     private void Player_OnPlayerDied(object sender, EventArgs e) {
@@ -251,6 +256,7 @@ public class CreatureAI : MonoBehaviour {
                 return;
             }
             else {
+                Debug.Log("walkingToFire");
                 ChangeState(State.walkingToFire);
                 return;
             }

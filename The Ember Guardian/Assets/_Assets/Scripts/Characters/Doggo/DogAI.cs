@@ -425,6 +425,7 @@ public class DogAI : MonoBehaviour
 
         if (barkingTimer > barkTimeToAttack && biteReady) {
             barkingTimer = 0;
+            biteStarted = false;
             ChangeState(State.attacking);
         }
     }

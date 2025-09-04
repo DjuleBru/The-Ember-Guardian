@@ -111,7 +111,6 @@ public class PlayerFeedbacks : MonoBehaviour
 
         gunJamFeedbacksPlaying = false;
         gunJamEndFeedbacks.PlayFeedbacks();
-        Debug.Log("gunJamEndFeedbacks.PlayFeedbacks()");
     }
 
     private void GunJamHandler_OnAnyPerfectJamSequenceCompleted(object sender, System.EventArgs e) {
@@ -120,7 +119,6 @@ public class PlayerFeedbacks : MonoBehaviour
 
         gunJamFeedbacksPlaying = false;
         gunJamPerfectSequenceFeedbacks.PlayFeedbacks();
-        Debug.Log("gunJamPerfectSequenceFeedbacks.PlayFeedbacks()");
     }
 
     private void GunJamHandler_OnAnyJamSequenceGenerated(object sender, GunJamHandler.OnJamSequenceGeneratedEventArgs e) {

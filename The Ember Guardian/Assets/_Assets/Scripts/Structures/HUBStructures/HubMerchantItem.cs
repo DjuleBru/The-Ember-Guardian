@@ -59,7 +59,6 @@ public class HubMerchantItem : MonoBehaviour
     protected virtual void Awake() {
         InitializeCostLists();
        
-
         if(itemLevel == 0) {
             itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
         }
@@ -297,63 +296,66 @@ public class HubMerchantItem : MonoBehaviour
     public int GetTotalGemCosts(PlayerCurrencies.CurrencyType gemType) {
         InitializeCostLists();
 
+        // Cas 1 : Item non-upgradable et déjà acheté :plus de coût
+        if (!itemUpgradeable && itemBought) {
+            return 0;
+        }
+
         int totalGemCosts = 0;
 
-        if(linkedStatModifierSO != null) {
+        if (linkedStatModifierSO != null) {
+            List<int> costList = null;
 
             switch (gemType) {
                 case PlayerCurrencies.CurrencyType.redGem:
-                    foreach (int cost in linkedStatModifierSO.redGemCostList) {
-                        totalGemCosts += cost;
-                    }
+                    costList = linkedStatModifierSO.redGemCostList;
                     break;
                 case PlayerCurrencies.CurrencyType.blueGem:
-                    foreach (int cost in linkedStatModifierSO.blueGemCostList) {
-                        totalGemCosts += cost;
-                    }
+                    costList = linkedStatModifierSO.blueGemCostList;
                     break;
                 case PlayerCurrencies.CurrencyType.greenGem:
-                    foreach (int cost in linkedStatModifierSO.greenGemCostList) {
-                        totalGemCosts += cost;
-                    }
+                    costList = linkedStatModifierSO.greenGemCostList;
                     break;
                 case PlayerCurrencies.CurrencyType.yellowGem:
-                    foreach (int cost in linkedStatModifierSO.yellowGemCostList) {
-                        totalGemCosts += cost;
-                    }
+                    costList = linkedStatModifierSO.yellowGemCostList;
                     break;
                 case PlayerCurrencies.CurrencyType.purpleGem:
-                    foreach (int cost in linkedStatModifierSO.purleGemCostList) {
-                        totalGemCosts += cost;
-                    }
+                    costList = linkedStatModifierSO.purleGemCostList;
                     break;
                 case PlayerCurrencies.CurrencyType.cyanGem:
-                    foreach (int cost in linkedStatModifierSO.cyanGemCostList) {
-                        totalGemCosts += cost;
-                    }
+                    costList = linkedStatModifierSO.cyanGemCostList;
                     break;
             }
-        } else {
 
-            if (linkedStatModifierSO != null) {
-                switch (gemType) {
-                    case PlayerCurrencies.CurrencyType.redGem:
-                        return redGemCost;
-                    case PlayerCurrencies.CurrencyType.blueGem:
-                        return blueGemCost;
-                    case PlayerCurrencies.CurrencyType.greenGem:
-                        return greenGemCost;
-                    case PlayerCurrencies.CurrencyType.yellowGem:
-                        return yellowGemCost;
-                    case PlayerCurrencies.CurrencyType.purpleGem:
-                        return purpleGemCost;
-                    case PlayerCurrencies.CurrencyType.cyanGem:
-                        return cyanGemCost;
+            if (costList != null) {
+                // Cas 2 : Item upgradable mais déjà au max :rien à ajouter
+                if (itemLevel >= costList.Count) {
+                    return 0;
+                }
+
+                // On ne compte que les coûts à partir du niveau actuel + 1
+                for (int i = itemLevel; i < costList.Count; i++) {
+                    totalGemCosts += costList[i];
                 }
             }
         }
-
-
+        else {
+            // Cas fallback : item simple avec un coût unique
+            switch (gemType) {
+                case PlayerCurrencies.CurrencyType.redGem:
+                    return itemBought ? 0 : redGemCost;
+                case PlayerCurrencies.CurrencyType.blueGem:
+                    return itemBought ? 0 : blueGemCost;
+                case PlayerCurrencies.CurrencyType.greenGem:
+                    return itemBought ? 0 : greenGemCost;
+                case PlayerCurrencies.CurrencyType.yellowGem:
+                    return itemBought ? 0 : yellowGemCost;
+                case PlayerCurrencies.CurrencyType.purpleGem:
+                    return itemBought ? 0 : purpleGemCost;
+                case PlayerCurrencies.CurrencyType.cyanGem:
+                    return itemBought ? 0 : cyanGemCost;
+            }
+        }
         return totalGemCosts;
     }
 

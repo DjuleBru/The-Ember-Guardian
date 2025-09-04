@@ -47,13 +47,17 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerFocusBlastStopped;
     public event EventHandler OnPlayerSetupLMGStarted;
     public event EventHandler OnPlayerSetupLMGBipod;
-    public event EventHandler OnPlayerResetLMGBipod;
-    public event EventHandler OnPlayerSetupLMGStopped;
+    public event EventHandler<OnPlayerResetLMGBipodEventArgs> OnPlayerResetLMGBipod;
+    public event EventHandler<OnPlayerResetLMGBipodEventArgs> OnPlayerSetupLMGStopped;
     public event EventHandler OnPlayerEmptyRevolverMagStart;
     public event EventHandler OnPlayerEmptyRevolverMagEnd;
     public event EventHandler OnPlayerTriggersProjectileExplosion;
 
-    private float setupLMGTime = 2.5f;
+    public class OnPlayerResetLMGBipodEventArgs : EventArgs {
+        public bool removeBecauseDied;
+    }
+
+    private float setupLMGTime = 2f;
     private float setupLMGTimer;
     private bool settingUpLMG;
     private bool holdingStationaryGun;
@@ -172,6 +176,7 @@ public class PlayerShoot : MonoBehaviour
         PlayerStats.Instance.OnPlayerAmmoRegenTimeChanged += PlayerStats_OnPlayerAmmoRegenTimeChanged;
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
+        Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Gun.OnAnyGunStatsUpgraded += Gun_OnAnyGunStatsUpgraded;
 
         if(UICurrencyManager.PlayerInventoryUI != null) {
@@ -267,22 +272,28 @@ public class PlayerShoot : MonoBehaviour
                     OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
                 }
                 else {
-                    RemoveLMGBipod();
+                    RemoveLMGBipod(false);
                 }
             }
 
         }
     }
 
-    public void RemoveLMGBipod() {
+    public void RemoveLMGBipod(bool removeBecauseDied) {
         if (!holdingStationaryGun) return;
-        OnPlayerSetupLMGStopped?.Invoke(this, EventArgs.Empty);
+
+        OnPlayerSetupLMGStopped?.Invoke(this, new OnPlayerResetLMGBipodEventArgs {
+            removeBecauseDied = removeBecauseDied
+        });
+
         OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
         secondaryAbilityActive = false;
 
         holdingStationaryGun = false;
         PlayerAim.Instance.SetLimitAimAngle(false);
-        OnPlayerResetLMGBipod?.Invoke(this, EventArgs.Empty);
+        OnPlayerResetLMGBipod?.Invoke(this, new OnPlayerResetLMGBipodEventArgs {
+            removeBecauseDied = removeBecauseDied
+        });
         OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
     }
 
@@ -717,7 +728,9 @@ public class PlayerShoot : MonoBehaviour
             {
                 gunKnockback = heldGunSO.gunKnockback;
 
-                OnPlayerSetupLMGStopped?.Invoke(this, EventArgs.Empty);
+                OnPlayerSetupLMGStopped?.Invoke(this, new OnPlayerResetLMGBipodEventArgs {
+                    removeBecauseDied = false
+                });
                 OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
 
                 settingUpLMG = true;
@@ -974,6 +987,14 @@ public class PlayerShoot : MonoBehaviour
             OnPlayerReloadInterruptedEnded?.Invoke(this, EventArgs.Empty);
         }
     }
+    private void Player_OnPlayerDied(object sender, EventArgs e) {
+
+        if(settingUpLMG || holdingStationaryGun) {
+            RemoveLMGBipod(true);
+        }
+
+    }
+
 
     private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;

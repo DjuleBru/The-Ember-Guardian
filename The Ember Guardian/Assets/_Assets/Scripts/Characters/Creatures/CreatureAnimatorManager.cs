@@ -35,16 +35,23 @@ public class CreatureAnimatorManager : MonoBehaviour
         creature.OnMobDied += Creature_OnMobDied;
         creature.OnCreatureStunStarted += Creature_OnCreatureStunStarted;
         creature.OnCreatureStunStopped += Creature_OnCreatureStunStopped;
+        creature.OnCreatureEnabled += Creature_OnCreatureEnabled;
         mobMovement.OnMoveSpeedBuffChanged += MobMovement_OnMoveSpeedBuffChanged;
     }
 
+    private void Creature_OnCreatureEnabled(object sender, EventArgs e) {
+        SpawnVisuals();
+    }
 
     protected virtual void Start() {
         baseMovementAnimationSpeed = creature.GetCreatureSO().baseMovementAnimationSpeed;
         animatorSpeedMultiplier = baseMovementAnimationSpeed;
         animator.SetFloat("AnimationSpeedMultiplier", animatorSpeedMultiplier);
 
+        SpawnVisuals();
+    }
 
+    protected void SpawnVisuals() {
         spawned = false;
         StartCoroutine(SetSpawnedAfterDelay(creature.GetCreatureSO().spawnAnimationDuration));
 
@@ -154,6 +161,10 @@ public class CreatureAnimatorManager : MonoBehaviour
         animator.SetTrigger("Die");
         float playerDir = Player.Instance.transform.position.x - transform.position.x;
         HandleScaleChange(playerDir);
+
+        moving = false;
+        stunned = false;
+        immobilized = false;
     }
 
     public void FootStepEvent() {

@@ -172,7 +172,7 @@ public class MinerJob : WorkerJob {
                 case MinerState.blockedByCreatures:
                     StayOutOfCreatureRange();
 
-                    if (!CheckBlockedByCreature()) {
+                    if (!CheckBlockedByCreature() || IsInSafeZone()) {
                         ChangeState(MinerState.idle);
                     }
                     break;

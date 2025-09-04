@@ -352,6 +352,8 @@ public class Structure : MonoBehaviour {
 
     public void SetStructurePrimaryFunctionUnlocked(bool unlocked) {
         if (primaryFunctionUnlocked == unlocked) return;
+
+        Debug.Log("SetStructurePrimaryFunctionUnlocked");
         primaryFunctionUnlocked = unlocked;
         ActivateStructurePrimaryFunctionInteraction(unlocked);
     }

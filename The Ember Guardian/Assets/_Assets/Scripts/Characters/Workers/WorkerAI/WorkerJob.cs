@@ -271,7 +271,7 @@ public class WorkerJob : MonoBehaviour
     }
 
     public bool IsInSafeZone() {
-        return (transform.position.x > CampZoneManager.Instance.GetCampCenterMinLimit() && transform.position.x < CampZoneManager.Instance.GetCampCenterMaxLimit());
+        return (transform.position.x > CampZoneManager.Instance.GetMinZoneLimit() && transform.position.x < CampZoneManager.Instance.GetMaxZoneLimit());
     }
 
     public virtual void InitializeJob() {

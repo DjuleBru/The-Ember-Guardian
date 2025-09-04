@@ -42,6 +42,7 @@ public class FastTravelTPUI : MonoBehaviour
             identifier = fastTravelTPIdentifiers[fastTravelTP.GetFastTravelTPIdentifier()];
             identifierIcon.sprite = identifier;
         } else {
+            identifier = tentTravelTPIdentifier;
             identifierIcon.sprite = tentTravelTPIdentifier;
         }
 
@@ -97,7 +98,12 @@ public class FastTravelTPUI : MonoBehaviour
         leftArrowGO.SetActive(direction < 0);
         righArrowGO.SetActive(direction > 0);
 
-        identifierIcon.sprite = fastTravelTPIdentifiers[receiver.GetFastTravelTPIdentifier()];
+        if (receiver.GetIsTentTP()) {
+            identifierIcon.sprite = tentTravelTPIdentifier;
+        } else {
+            identifierIcon.sprite = fastTravelTPIdentifiers[receiver.GetFastTravelTPIdentifier()];
+        }
+
     }
 
     private void FastTravelTP_OnPlayerPositionedOnTP(object sender, System.EventArgs e) {

@@ -177,6 +177,9 @@ public class PlayerAnimator : MonoBehaviour
         bodyAnimator.SetTrigger("Die");
         gunBodyAnimator.SetTrigger("Die");
         armBodyAnimator.SetTrigger("Die");
+        playerAnimator.SetBool("Crouching", false);
+        playerAnimator.SetBool("Walking", false);
+        playerAnimator.SetBool("Running", false);
         diePS.Play();
         dead = true;
     }

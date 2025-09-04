@@ -374,6 +374,7 @@ public class MouseCursorManager : MonoBehaviour
     private void ShowWeaponAndMouseCursorGO(bool show) {
         weaponCursorGameObject.SetActive(show);
         mouseCursorGameObject.SetActive(show);
+        PlayerAim.Instance.SetWeaponReticleToAimPos();
     }
 
     private bool AllMenusClosed() {

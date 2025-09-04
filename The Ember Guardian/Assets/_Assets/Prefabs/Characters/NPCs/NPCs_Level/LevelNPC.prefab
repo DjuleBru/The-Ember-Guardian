@@ -194,6 +194,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8938920112529290321}
   - component: {fileID: 4972648929520065309}
+  - component: {fileID: 57446523303830840}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -268,6 +269,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &57446523303830840
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5915826603231666303}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 700ad7ee1e79c1e4ea5399a80122e755, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6764002142501566998
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,7 +349,7 @@ MonoBehaviour:
   continueGameObject: {fileID: 5527645721863406604}
   continueInputImage: {fileID: 5110024098303773545}
   textLinesSO: {fileID: 0}
-  merchantTalkLines: []
+  merchantTalkLinesLocalizationKeys: []
   DEBUGShowTextLines: 0
 --- !u!223 &7345381680610371633
 Canvas:
@@ -527,6 +549,7 @@ MonoBehaviour:
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
   bodySpriteRenderer: {fileID: 4972648929520065309}
   newItemsForSaleGameObject: {fileID: 8880214776125205184}
+  bodyAnimator: {fileID: 57446523303830840}
 --- !u!95 &7920413404797677476
 Animator:
   serializedVersion: 5
@@ -598,13 +621,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hubMerchantType: 0
   hubMerchantCameraFocusPosition: {fileID: 8608837756367449444}
-  hubMerchantName: 
+  hubMerchantNameLocalizationKey: 
   hubMerchantUnlockedAtStart: 0
   activeGameObject: {fileID: 0}
   inactiveGameObject: {fileID: 0}
   hubMerchantItemParent: {fileID: 0}
   isHubMerchant: 0
   isLevelNPC: 0
+  fadeOutAfterTalk: 0
+  delayToFadeOutAfterTalk: 0
+  isFunctionalDemoHubMerchant: 0
+  isDecorationalDemoHubMerchant: 0
 --- !u!61 &5583479248851906653
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -82,6 +82,9 @@ public class ItemButtonUI : ButtonUI {
         hubMerchantItem.OnItemMustRefreshDescriptionCard += HubMerchantItem_OnItemMustRefreshDescriptionCard;
         hubMerchantItem.OnHubMerchantItemEquipped += HubMerchantItem_OnHubMerchantItemEquipped;
         hubMerchantItem.OnHubMerchantItemUnequipped += HubMerchantItem_OnHubMerchantItemUnequipped;
+
+
+        Debug.Log("InitializeItemButtonUI");
     }
 
     protected override void Start() {
@@ -93,6 +96,8 @@ public class ItemButtonUI : ButtonUI {
             itemLockedInDemo = false;
             lockHoverInteractions = false;
         }
+
+        RefreshItemStatusVisuals();
     }
 
     private void HubChest_OnChestClosed(object sender, EventArgs e) {
@@ -113,6 +118,7 @@ public class ItemButtonUI : ButtonUI {
 
     private void HubMerchantItem_OnItemMustRefreshDescriptionCard(object sender, EventArgs e) {
         RefreshDescriptionCard();
+        RefreshItemLevelUI();
     }
 
     private void HubMerchantItem_OnHubMerchantItemBought(object sender, EventArgs e) {
@@ -420,10 +426,7 @@ public class ItemButtonUI : ButtonUI {
     }
 
     private void RefreshItemStatusVisuals() {
-        //Debug.Log(hubMerchantItem.GetItemType() + " unlocked" + hubMerchantItem.GetItemUnlocked());
         if (!hubMerchantItem.GetItemUnlocked()) {
-            //Debug.Log(hubMerchantItem.GetItemType() + " ItemLockedFromOtherMerchantItem " + ItemLockedFromOtherMerchantItem());
-            //Debug.Log(hubMerchantItem.GetItemType() + " hideItemIconUntilUnlocked " + hideItemIconUntilUnlocked);
             if (ItemLockedFromOtherMerchantItem() || hideItemIconUntilUnlocked) {
                 lockedFromOtherMerchantImage.gameObject.SetActive(true);
                 iconImage.gameObject.SetActive(false);

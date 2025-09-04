@@ -13,7 +13,6 @@ public class JoblessJob : WorkerJob, IJobBehavior {
     }
 
     private void Update() {
-
         if (CheckBlockedByCreature()) {
             mobMovement.SetMoveTarget(mobMovement.transform.position);
             return;
@@ -31,7 +30,7 @@ public class JoblessJob : WorkerJob, IJobBehavior {
         if (workerDetectionCollider.CreaturesInDetectionCollider()) {
             Vector3 creaturePosition = workerDetectionCollider.GetClosestCreature().transform.position;
 
-            if(Mathf.Abs(creaturePosition.x) > Mathf.Abs(transform.position.x)) {
+            if (Mathf.Abs(creaturePosition.x) > Mathf.Abs(transform.position.x)) {
                 // Creature is not in the way
                 if (blockedByCreatures) {
                     blockedByCreatures = false;
@@ -40,14 +39,17 @@ public class JoblessJob : WorkerJob, IJobBehavior {
                 return false;
             }
 
-            if (!blockedByCreatures) {
+            if (!blockedByCreatures && !IsInSafeZone()) {
                 blockedByCreatures = true;
                 OnJoblessBlockedByCreatures?.Invoke(this, EventArgs.Empty);
             }
-            return true;
+
+            if(blockedByCreatures) {
+                return true;
+            }
         }
        
-        if(!workerDetectionCollider.CreaturesInDetectionCollider()) {
+        if(!workerDetectionCollider.CreaturesInDetectionCollider() || IsInSafeZone()) {
             if(blockedByCreatures) {
                 blockedByCreatures = false;
                 OnJoblessNotBlockedByCreatures?.Invoke(this, EventArgs.Empty);

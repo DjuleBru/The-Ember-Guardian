@@ -67,9 +67,9 @@ public class ObservationTower : Structure
     protected override void DayNightManager_OnNightStart(object sender, EventArgs e) {
         base.DayNightManager_OnNightStart(sender, e);
 
+        SetStructurePrimaryFunctionUnlocked(false);
         if (observationTowerActive) {
             DeactivateObservationTower();
-            LevelUI_WaveInfoUI.Instance.HideWaveInfoUI();
         }
     }
     protected override void DayNightManager_OnDawnStart(object sender, EventArgs e) {
@@ -95,5 +95,6 @@ public class ObservationTower : Structure
         observationTowerActive = false;
 
         LevelUI_WaveInfoUI.Instance.HideWaveInfoUI();
+        SetStructurePrimaryFunctionUnlocked(false);
     }
 }

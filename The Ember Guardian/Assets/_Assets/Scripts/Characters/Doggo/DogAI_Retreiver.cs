@@ -15,12 +15,13 @@ public class DogAI_Retreiver : DogAI {
     private float playerIsCloseTimer;
     private float timeToStayClose = .7f;
     private float dropTimer;
-    private float dropDelay = 0.125f;
+    private float dropDelay = 0.25f;
     private Dictionary<PlayerCurrencies.CurrencyType, int> collectedCurrencies = new Dictionary<PlayerCurrencies.CurrencyType, int>();
     public static event EventHandler OnAnyOrbDroppedByDog;
     public event EventHandler OnDogCollectedCurrency;
     public event EventHandler OnDogDroppedCurrency;
     public event EventHandler OnDogDroppedAllCurrencies;
+    public event EventHandler OnDogStartedDroppingCurrency;
 
     protected override void Start() {
         base.Start();
@@ -31,19 +32,19 @@ public class DogAI_Retreiver : DogAI {
 
         if (pickUpItemsUnlocked) {
 
-            if(state != State.pickingUpOrbs && currenciesDetectionCollider.GetClosestCollectibleToCollect() != null) {
-                ChangeState(State.pickingUpOrbs);
+            if (state == State.droppingOrbs) {
+                DroppingOrbsUpdate();
                 return;
             }
 
-            if(state != State.droppingOrbs && CheckDropCurrenciesToPlayer()) {
+            if (state != State.droppingOrbs && CheckDropCurrenciesToPlayer()) {
                 droppingCurrencies = true;
                 ChangeState(State.droppingOrbs);
                 return;
             }
 
-            if (state == State.droppingOrbs) {
-                DroppingOrbsUpdate();
+            if (state != State.pickingUpOrbs && state != State.droppingOrbs && currenciesDetectionCollider.GetClosestCollectibleToCollect() != null) {
+                ChangeState(State.pickingUpOrbs);
                 return;
             }
 
@@ -69,9 +70,14 @@ public class DogAI_Retreiver : DogAI {
 
     protected override void ChangeState(State newState) {
         base.ChangeState(newState);
+
         if(newState == State.pickingUpOrbs || newState == State.runToPlayer) {
             dogMovement.SetMoveSpeed(runMoveSpeed);
             hasSetSpeed = true;
+        }
+
+        if(newState == State.droppingOrbs) {
+            OnDogStartedDroppingCurrency?.Invoke(this, EventArgs.Empty);
         }
 
     }
@@ -90,6 +96,7 @@ public class DogAI_Retreiver : DogAI {
             playerStickedAroundTimer = 0;
         }
     }
+
     protected void HeadToPlayer() {
         float destinationPositionX = Player.Instance.transform.position.x;
 

@@ -127,6 +127,7 @@ public class CreatureAI_Flying : CreatureAI
             // Add y position randomized
             targetDestination.y += playerYTargetAltitude;
         }
+
         if (Vector3.Distance(transform.position, targetDestination) < minAttackRange) {
             ChangeState(State.attacking);
             return;

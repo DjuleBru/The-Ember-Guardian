@@ -118,6 +118,7 @@ public class CreatureSO : ScriptableObject
     [LabelWidth(200)]
     public bool immuneToImmobilize;
 
+    
     [BoxGroup("Animation Parameters")]
     [LabelWidth(200)]
     public bool hasCustomSpawnAnimation;

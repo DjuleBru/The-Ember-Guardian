@@ -53,7 +53,7 @@ public class SoundManager : MonoBehaviour
             PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
             PlayerShoot.Instance.OnPlayerFocusBlastStopped += Player_OnPlayerFocusBlastStopped;
             PlayerShoot.Instance.OnPlayerSetupLMGStarted += PlayerSHoot_OnPlayerSetupLMGStarted;
-            PlayerShoot.Instance.OnPlayerSetupLMGStopped += PlayerSHoot_OnPlayerSetupLMGStopped;
+            PlayerShoot.Instance.OnPlayerSetupLMGStopped += PlayerShoot_OnPlayerSetupLMGStopped;
             PlayerShoot.Instance.OnPlayerEmptyRevolverMagEnd += PlayerSHoot_OnPlayerEmptyRevolverMagEnd;
 
             PlayerSkills.Instance.OnActiveSkillReady += PlayerSkills_OnActiveSkillReady;
@@ -181,7 +181,6 @@ public class SoundManager : MonoBehaviour
         DeleteSkillUI.OnAnyActiveSkillDeleted += DeleteSkillUI_OnAnyActiveSkillDeleted;
         Merchant_Skills.OnPlayerRefundedItem += Merchant_Skills_OnPlayerRefundedItem;
     }
-
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -691,14 +690,16 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    private void PlayerSHoot_OnPlayerSetupLMGStopped(object sender, System.EventArgs e) {
-        PlaySound2D(soundRefsSO.lmgReset);
-    }
 
     private void PlayerSHoot_OnPlayerEmptyRevolverMagEnd(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.revolverCooldown);
     }
 
+    private void PlayerShoot_OnPlayerSetupLMGStopped(object sender, PlayerShoot.OnPlayerResetLMGBipodEventArgs e) {
+        if(!e.removeBecauseDied) {
+            PlaySound2D(soundRefsSO.lmgReset);
+        }
+    }
 
     private void PlayerSHoot_OnPlayerSetupLMGStarted(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.lmgSetup);
@@ -991,7 +992,7 @@ public class SoundManager : MonoBehaviour
             PlayerShoot.Instance.OnPlayerEmptyRevolverMagEnd -= PlayerSHoot_OnPlayerEmptyRevolverMagEnd;
 
             PlayerShoot.Instance.OnPlayerSetupLMGStarted -= PlayerSHoot_OnPlayerSetupLMGStarted;
-            PlayerShoot.Instance.OnPlayerSetupLMGStopped -= PlayerSHoot_OnPlayerSetupLMGStopped;
+            PlayerShoot.Instance.OnPlayerSetupLMGStopped -= PlayerShoot_OnPlayerSetupLMGStopped;
 
             PlayerSkills.Instance.OnActiveSkillReady -= PlayerSkills_OnActiveSkillReady;
             PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;

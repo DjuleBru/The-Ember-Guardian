@@ -84,13 +84,6 @@ public class PlayerStats : MonoBehaviour
     private int startLevelOrbs_BuffAbsolute;
     #endregion
 
-    #region WORKERS
-    private int maxFollowingWorkers;
-    private int maxFollowingWorkers_BuffAbsolute;
-    private int initialEmberlings;
-    private int emberlingArrivalsProbability;
-    #endregion
-
     #region OTHER
     private float shieldRegenTime;
     private float ammoRegenTime;

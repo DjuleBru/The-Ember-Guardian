@@ -41,12 +41,15 @@ MonoBehaviour:
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0
+  dieAnimationDuration: 1.5
+  fadeOutAfterDieAnimation: 1
   hasCustomSpawnAnimation: 1
   spawnAnimationDuration: 1.5
   baseMovementAnimationSpeed: 1
   workerTargetingPriority: 1
   playerTargetingPriority: 3
   barricadeTargetingPriority: 2
+  probabilityToDropOrb: 0.5
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
   difficulty: 4

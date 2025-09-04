@@ -40,6 +40,7 @@ public class CreatureSound : SoundObject
         creatureAnimator.OnFootStepTriggered += CreatureAnimator_OnFootStepTriggered;
         creatureMovement.OnMovementStarted += CreatureMovement_OnMovementStarted;
         creatureMovement.OnMovementStopped += CreatureMovement_OnMovementStopped;
+        creature.OnCreatureEnabled += Creature_OnCreatureEnabled;
 
         creatureAnimatorSounds.OnAttackStartedCharging += CreatureAnimatorSounds_OnAttackStartedCharging;
         creatureAnimatorSounds.OnChargedAttackReleased += CreatureAnimatorSounds_OnChargedAttackReleased;
@@ -65,13 +66,14 @@ public class CreatureSound : SoundObject
             creatureContinousAudioSource.clip = continuousMovementAudioClip;
             float maxStartTime = Mathf.Max(0f, continuousMovementAudioClip.length - 0.1f); // Évite les bords pour ne pas couper trop court
         }
+    }
 
+    private void Creature_OnCreatureEnabled(object sender, System.EventArgs e) {
         if (IsTooFarFromPlayer()) return;
-        if(creatureSO.spawnAudioClips.Length > 0) {
+        if (creatureSO.spawnAudioClips.Length > 0) {
             AudioClip audioClip = creatureSO.spawnAudioClips[Random.Range(0, creatureSO.spawnAudioClips.Length)];
             creatureAudioSource.PlayOneShot(audioClip, creatureSO.spawnVolumeMultiplier * sfxVolume);
         }
-        
     }
 
     private void CreatureMovement_OnMovementStopped(object sender, System.EventArgs e) {

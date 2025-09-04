@@ -598,6 +598,7 @@ public class PlayerAim : MonoBehaviour
         Gun gun = PlayerShoot.Instance.GetHeldGun();
 
         currentPrecisionModifier = 1f;
+        currentRecoilModifier = 1f;
         smoothSpeed = 1f;
         noiseAmount = 0;
 
@@ -657,7 +658,6 @@ public class PlayerAim : MonoBehaviour
 
     private void BuffRecoil(float buff) {
         currentRecoilModifier /= buff;
-        //Debug.Log("currentRecoilModifier " + currentRecoilModifier);
     }
 
     public float GetCurrentPrecisionModifier() {
