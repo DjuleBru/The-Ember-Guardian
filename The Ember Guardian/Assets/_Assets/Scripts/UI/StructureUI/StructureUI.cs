@@ -146,6 +146,8 @@ public class StructureUI : MonoBehaviour
     }
 
     protected void UpdateArrowsVisibility() {
+        if (switchUIGameObjectList == null) return;
+
         Transform leftArrow = switchUIGameObjectList.transform.Find("LeftArrow");
         Transform rightArrow = switchUIGameObjectList.transform.Find("RightArrow");
 
@@ -281,6 +283,11 @@ public class StructureUI : MonoBehaviour
 
     public int GetCurrentPayCurrencyAmount() {
         return payOrbsUI.GetCurrencyAmountToPay();
+    }
+
+    protected void OnDestroy() {
+        GameInput.Instance.OnPlayerRightSwitchPerformed -= GameInput_OnPlayerRightSwitchPerformed;
+        GameInput.Instance.OnPlayerLeftSwitchPerformed -= GameInput_OnPlayerLeftSwitchPerformed;
     }
 
 }

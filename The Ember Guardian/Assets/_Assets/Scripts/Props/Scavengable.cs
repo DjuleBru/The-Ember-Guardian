@@ -332,7 +332,7 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
     private void OnTriggerEnter2D(Collider2D collision) {
         if (!scavengedUnlocked) return;
         if (depleted) return;
-        if (markedToScavenge && !isMine) return;
+        //if (markedToScavenge && !isMine) return;
         if (collision.GetComponent<Player>() == null) return;
 
         Player.Instance.SetInPayCurrencyArea(true);

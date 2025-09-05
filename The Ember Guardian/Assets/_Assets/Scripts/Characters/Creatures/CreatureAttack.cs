@@ -29,6 +29,7 @@ public class CreatureAttack : MobAttack
         enteredLightAttackSpeedDebuff = creature.GetCreatureSO().enteredLightattackRateDebuff;
         creature.OnCreatureStunStarted += Creature_OnCreatureStunStarted;
         creature.OnCreatureStunStopped += Creature_OnCreatureStunStopped;
+        creature.OnCreatureEnabled += Creature_OnCreatureEnabled;
 
         primaryAttackProjectileSpawnPosition = projectileSpawnPoint;
         SetAttackSO(creature.GetCreatureSO().primaryAttackSO);
@@ -38,10 +39,20 @@ public class CreatureAttack : MobAttack
         creature.OnCreatureEnteredLight += Creature_OnCreatureEnteredLight;
         creature.OnCreatureExitedLight += Creature_OnCreatureExitedLight;
 
-        if(creature.GetIsEliteDamageCreature()) {
+    }
+    private void Creature_OnCreatureEnabled(object sender, EventArgs e) {
+        attacking = false;
+        attackStarted = false;
+        stunned = false;
+        InitializeCreatureAttack();
+    }
+
+    private void InitializeCreatureAttack() {
+
+        if (creature.GetIsEliteDamageCreature()) {
             attackDamage *= 2;
         }
-        if(!creature.IsDayCreature()) {
+        if (!creature.IsDayCreature()) {
             attackCooldown /= nightAttackSpeedBuff;
         }
     }

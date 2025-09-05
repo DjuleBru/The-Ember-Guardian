@@ -28,10 +28,16 @@ public class CreatureMovement : MobMovement
         creature.OnCreatureStunStopped += Creature_OnCreatureStunStopped;
         creature.OnCreatureShockedStarted += Creature_OnCreatureShockedStarted;
         creature.OnCreatureShockedStopped += Creature_OnCreatureShockedStopped;
+        creature.OnCreatureEnabled += Creature_OnCreatureEnabled;
         InitializeCreatureMoveSpeed();
-
     }
 
+    private void Creature_OnCreatureEnabled(object sender, System.EventArgs e) {
+        InitializeCreatureMoveSpeed();
+        enteredLight = false;
+        immobilized = false;
+        aggroMoveSpeedSet = false;
+    }
 
     protected override void FixedUpdate() {
         if (!spawned) return;
@@ -39,7 +45,9 @@ public class CreatureMovement : MobMovement
         base.FixedUpdate();
     }
 
+
     public void InitializeCreatureMoveSpeed() {
+        initialMobSpeed = creature.GetCreatureSO().dayMoveSpeed;
 
         if (creature.IsDayCreature()) {
             initialMobSpeed = creature.GetCreatureSO().dayMoveSpeed;

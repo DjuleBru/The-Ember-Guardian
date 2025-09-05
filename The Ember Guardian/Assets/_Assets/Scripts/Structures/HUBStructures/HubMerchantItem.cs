@@ -121,6 +121,7 @@ public class HubMerchantItem : MonoBehaviour
         if (isUnlockedAtStart) {
             itemUnlocked = true;
         }
+
         OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
     }
 

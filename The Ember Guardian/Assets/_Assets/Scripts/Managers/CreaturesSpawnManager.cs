@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using Unity.VisualScripting;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UIElements;
 
 public class CreaturesSpawnManager : MonoBehaviour {
     public static CreaturesSpawnManager Instance;
@@ -308,12 +309,6 @@ public class CreaturesSpawnManager : MonoBehaviour {
             maxSubwaveDifficulty *= bossNightWaveDifficultyMultiplier;
         }
 
-        if (currentSpecialWaveType == SpecialWaveType.flying) {
-            waveDifficulty /= 1.5f;
-            minSubwaveDifficulty /= 1.5f;
-            maxSubwaveDifficulty /= 1.5f;
-        }
-
         subWaveNumber = (int)(waveDifficulty / maxSubwaveDifficulty) + 1;
         AnimationCurve subWaveDifficultyCurve = subWaveDifficultyCurveList[UnityEngine.Random.Range(0, subWaveDifficultyCurveList.Count)];
 
@@ -597,13 +592,13 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
 
     private void SpawnCreatureAtSide(CreatureSO creatureToSpawn, SpawnSide spawnSide) {
+        //Creature creature = GetCreatureFromPool(
+        //    creatureToSpawn,
+        //    GetSpawnPosition(spawnSide, creatureToSpawn),
+        //    Quaternion.identity
+        //);
 
-        Creature creature = GetCreatureFromPool(
-            creatureToSpawn,
-            GetSpawnPosition(spawnSide, creatureToSpawn),
-            Quaternion.identity
-        );
-
+        Creature creature = Instantiate(creatureToSpawn.creaturePrefab, GetSpawnPosition(spawnSide, creatureToSpawn), Quaternion.identity, nightCreaturesTransformParent).GetComponent<Creature>();
         creature.SetAsDayCreature(false);
         CreaturesManager.Instance.AddCreatureToNightWave(creature);
 

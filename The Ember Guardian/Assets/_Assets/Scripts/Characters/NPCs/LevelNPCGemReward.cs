@@ -44,7 +44,7 @@ public class LevelNPCGemReward : MonoBehaviour
             }
 
             for (int i = 0; i < rewardAmount; i++) {
-                Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyType), orbSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
+                Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyTypeToReward), orbSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
                 OnAnyCurrencyDropped?.Invoke(this, new OnAnyCurrencyDroppedEventArgs {
                     currencyType = currencyTypeToReward,
                 });

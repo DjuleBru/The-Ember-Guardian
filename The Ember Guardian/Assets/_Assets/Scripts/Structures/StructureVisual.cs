@@ -128,4 +128,10 @@ public class StructureVisual : MonoBehaviour {
         }
     }
 
+    protected void OnDestroy() {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
+            PlayerCampVisual.Instance.OnCampBackgroundBuilt -= PlayerCampVisual_OnCampBackgroundBuilt;
+        }
+    }
+
 }

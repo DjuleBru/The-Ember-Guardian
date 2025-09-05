@@ -458,6 +458,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currencyBarFill: {fileID: 162971975254427532}
   glowMaterial: {fileID: 2100000, guid: f690093cf7e693041943c1ec96d3d6ae, type: 2}
+  craftingSprited: {fileID: 0}
+  craftedSprited: {fileID: 0}
 --- !u!1 &7433427125034709217
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,7 +575,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistanceToHear: 6
   maxAudioSourceVolume: 1
-  active: 1
+  active: 0
 --- !u!114 &9070717348681560644
 MonoBehaviour:
   m_ObjectHideFlags: 0

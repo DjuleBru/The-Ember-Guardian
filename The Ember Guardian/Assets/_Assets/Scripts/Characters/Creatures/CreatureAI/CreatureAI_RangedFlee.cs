@@ -20,7 +20,7 @@ public class CreatureAI_RangedFlee : CreatureAI
     }
 
     protected override void HeadToTarget() {
-        if (attackTarget == null) return;
+        if ((attackTarget as MonoBehaviour) == null) return;
 
         Vector3 targetPosition = attackTarget.GetMeleeAttackPosition().position; 
         float distanceToTargetX = Mathf.Abs(targetPosition.x - transform.position.x);

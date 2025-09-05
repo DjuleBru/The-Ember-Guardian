@@ -102,7 +102,7 @@ public class PlayerAim : MonoBehaviour
     private bool hasClosestHit = false;
 
     private bool limitAimAngle = false;
-    private float maxAimAngle = 45f; // Maximum angle from the default aim direction (in degrees)
+    private float maxAimAngle = 60f; // Maximum angle from the default aim direction (in degrees)
 
 
     public event EventHandler OnXAimDirChanged;

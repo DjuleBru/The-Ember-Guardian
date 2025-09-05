@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class Projectile : MonoBehaviour
 {
@@ -127,10 +125,12 @@ public class Projectile : MonoBehaviour
 
         if(transform.position.y < 0 && !projectileHasHit) {
 
-            // Fire hit ?
-            if (enemyProjectile && Mathf.Abs(transform.position.x) < .5f) {
-                Fire.Instance.TakeDamage(1, parentMob.transform);
-            }
+            //// Fire hit ?
+            //if (enemyProjectile && Mathf.Abs(transform.position.x) < .5f) {
+            //    Debug.Log("Fire Hit on Update");
+            //    Fire.Instance.TakeDamage(1, parentMob.transform);
+            //    parentMob.Die();
+            //}
 
             // Ground hit
             ProjectileHasHit(false);
@@ -204,11 +204,12 @@ public class Projectile : MonoBehaviour
         Barricade barricade = collision.gameObject.GetComponentInParent<Barricade>();
         bool groundHitOrOther = groundLayer == (groundLayer | (1 << collision.gameObject.layer));
 
-        if (mobHit == null && !playerHit && barricade == null && !groundHitOrOther) return;
+        FireOrbCollider fireOrbCollider = collision.gameObject.GetComponent<FireOrbCollider>();
+
+        if (mobHit == null && !playerHit && barricade == null && !groundHitOrOther && fireOrbCollider == null) return;
         if (collision.gameObject.GetComponent<CreatureDetectionCollider>() != null) return;
         if (collision.gameObject.GetComponent<WorkerDetectionCollider>() != null) return;
         if (collision.gameObject.GetComponent<WorkerInteractionCollider>() != null) return;
-
 
         // Hit mob
         mobHit = collision.GetComponentInParent<Mob>();
@@ -247,6 +248,28 @@ public class Projectile : MonoBehaviour
             ProjectileHasHit(false);
             barricade.TakeDamage(damage, parentMob.transform);
         }
+
+        // Hit Secondary Fire ?
+        if (fireOrbCollider != null) {
+            Fire fire = fireOrbCollider.GetComponentInParent<Fire>();
+            if (fire.GetIsSecondaryFire()) {
+                ProjectileHasHit(false);
+                if (enemyProjectile) {
+                    fire.TakeDamage(1, parentMob.transform);
+                }
+            };
+
+            if (fire.GetIsMainFire()) {
+                parentMob.Die();
+                Debug.Log("Fire Hit on Trigger");
+            }
+        }
+
+        if (barricade != null && enemyProjectile && barricade.GetBarricadeHealthNormalized() > 0) {
+            ProjectileHasHit(false);
+            barricade.TakeDamage(damage, parentMob.transform);
+        }
+
 
         // Sol ou autres
         if (groundLayer == (groundLayer | (1 << collision.gameObject.layer))) {

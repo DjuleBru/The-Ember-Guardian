@@ -62,6 +62,7 @@ public class CreatureAnimatorManager : MonoBehaviour
 
     protected void MobMovement_OnMoveSpeedBuffChanged(object sender, MobMovement.OnMoveSpeedBuffedEventArgs e) {
         if (!e.changeAnimatorSpeed) return;
+        if (animator == null) return;
         animatorSpeedMultiplier = baseMovementAnimationSpeed * e.moveSpeedBuff;
         animator.SetFloat("AnimationSpeedMultiplier", animatorSpeedMultiplier);
     }

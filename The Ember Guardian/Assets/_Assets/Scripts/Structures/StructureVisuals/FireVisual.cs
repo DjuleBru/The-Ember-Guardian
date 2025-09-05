@@ -426,5 +426,13 @@ public class FireVisual : StructureVisual
         AOEFireLight.intensity = destinationIntensity; // S'assurer que la valeur finale est bien atteinte
     }
 
+    private void OnDestroy() {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
+            DayNightManager.Instance.OnDayStart -= DayNightManager_OnDayStart;
+            DayNightManager.Instance.OnDuskStart -= DayNightManager_OnDuskStart;
+
+            Player.Instance.OnPlayerBackToTentToRespawn -= Player_OnPlayerBackToTentToRespawn;
+        }
+    }
 
 }

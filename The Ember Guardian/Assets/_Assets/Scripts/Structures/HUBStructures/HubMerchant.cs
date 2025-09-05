@@ -23,6 +23,8 @@ public class HubMerchant : MonoBehaviour
     [SerializeField] protected Transform hubMerchantCameraFocusPosition;
     [SerializeField] protected string hubMerchantNameLocalizationKey;
     [SerializeField] protected bool hubMerchantUnlockedAtStart;
+    [SerializeField] protected bool unlockHubMerchantWhenPlayerStopsTalking;
+    [SerializeField] protected MerchantTextLinesSO backToHubMerchantTextLines;
 
     [SerializeField] protected GameObject activeGameObject;
     [SerializeField] protected GameObject inactiveGameObject;
@@ -105,7 +107,6 @@ public class HubMerchant : MonoBehaviour
     }
 
     protected void InitializeItemButtonUIs() {
-        Debug.Log(this + " InitializeItemButtonUIs");
         foreach (HubMerchantItem merchantItem in hubMerchantItems) {
             merchantItem.GetComponent<ItemButtonUI>().InitializeItemButtonUI();
         }
@@ -238,6 +239,13 @@ public class HubMerchant : MonoBehaviour
 
         if (merchantJustArrivedInHub) {
             merchantJustArrivedInHub = false;
+        }
+
+        if(isLevelNPC) {
+            if (unlockHubMerchantWhenPlayerStopsTalking) {
+                MetaProgressionManager.Instance.SetMerchantUnlocked(hubMerchantType);
+                MetaProgressionManager.Instance.SetNextMerchantTalkLines(hubMerchantType, backToHubMerchantTextLines);
+            }
         }
 
         yield return new WaitForEndOfFrame();

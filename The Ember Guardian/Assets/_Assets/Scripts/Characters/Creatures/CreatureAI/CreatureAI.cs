@@ -256,7 +256,6 @@ public class CreatureAI : MonoBehaviour {
                 return;
             }
             else {
-                Debug.Log("walkingToFire");
                 ChangeState(State.walkingToFire);
                 return;
             }
@@ -515,5 +514,9 @@ public class CreatureAI : MonoBehaviour {
 
     public State GetState() {
         return state;
+    }
+
+    protected void OnDestroy() {
+        Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
     }
 }

@@ -82,9 +82,6 @@ public class ItemButtonUI : ButtonUI {
         hubMerchantItem.OnItemMustRefreshDescriptionCard += HubMerchantItem_OnItemMustRefreshDescriptionCard;
         hubMerchantItem.OnHubMerchantItemEquipped += HubMerchantItem_OnHubMerchantItemEquipped;
         hubMerchantItem.OnHubMerchantItemUnequipped += HubMerchantItem_OnHubMerchantItemUnequipped;
-
-
-        Debug.Log("InitializeItemButtonUI");
     }
 
     protected override void Start() {
@@ -150,7 +147,7 @@ public class ItemButtonUI : ButtonUI {
             }
         }
 
-        if(hubMerchantItem.GetNewItemUnlocked()) {
+        if(hubMerchantItem.GetNewItemUnlocked() && hubMerchantItem.GetItemUnlocked()) {
             newUnlockedItemGO.SetActive(true);
         }
 
@@ -205,8 +202,8 @@ public class ItemButtonUI : ButtonUI {
 
         if (lockingItemButtonUIList.Contains(itemButtonUI)) {
 
-            CheckNewItemUnlocked(itemButtonUI);
             SetLockingItemBought(itemButtonUI);
+            CheckNewItemUnlocked(itemButtonUI);
             RefreshItemStatusVisuals();
         }
     }
@@ -409,10 +406,10 @@ public class ItemButtonUI : ButtonUI {
             if (lockingItemBought || !lockingItemUnlocked) return;
 
             hubMerchantItem.SetNewItemUnlocked(true);
-            newUnlockedItemGO.SetActive(true);
 
             if (lockingItemButtonUIList.Count != 0 && hubMerchantItem.GetUnlockRequiresAllPrerequisites()) return;
 
+            newUnlockedItemGO.SetActive(true);
             parentHubMerchant.SetMerchantHasNewItems();
         }
     }
@@ -496,7 +493,7 @@ public class ItemButtonUI : ButtonUI {
             itemHovered = true;
             descriptionCard.gameObject.SetActive(true);
 
-            if (hubMerchantItem.GetNewItemUnlocked()) {
+            if (hubMerchantItem.GetNewItemUnlocked() && hubMerchantItem.GetItemUnlocked()) {
                 newUnlockedItemGO.SetActive(false);
                 hubMerchantItem.SetNewItemUnlocked(false);
             }
@@ -541,7 +538,7 @@ public class ItemButtonUI : ButtonUI {
             itemSelected = true;
             descriptionCard.gameObject.SetActive(true);
 
-            if (hubMerchantItem.GetNewItemUnlocked()) {
+            if (hubMerchantItem.GetNewItemUnlocked() && hubMerchantItem.GetItemUnlocked()) {
                 newUnlockedItemGO.SetActive(false);
                 hubMerchantItem.SetNewItemUnlocked(false);
             }

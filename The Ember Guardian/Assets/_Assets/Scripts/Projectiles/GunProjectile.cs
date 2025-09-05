@@ -73,13 +73,21 @@ public class GunProjectile : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D collision) {
         Creature creatureHit = collision.GetComponent<Creature>();
+        CreatureSpawnerContinuous spawnerHit = collision.GetComponent<CreatureSpawnerContinuous>();
 
-        if (creatureHit != null) {
+        if (creatureHit != null || spawnerHit != null) {
             if (explodeOnContact) {
                 if (!projectileExploded) {
                     Explode();
                 };
-                DamageCreatureHit(creatureHit, collision);
+
+                if(creatureHit != null) {
+                    DamageCreatureHit(creatureHit, collision);
+                    return;
+                }
+                if(spawnerHit != null) {
+                    DamageSpawnerHit(spawnerHit, collision);
+                }
 
             }
             else {
@@ -89,10 +97,24 @@ public class GunProjectile : MonoBehaviour
                     if (projectileBouncedOnGround) return;
                     projectileHitCreature = true;
                     int projectileHitDamage = Mathf.RoundToInt(projectileExplosionDamage / 10f);
-                    creatureHit.TakeDamage(projectileHitDamage, transform, false);
+
+                    if(creatureHit != null) {
+                        creatureHit.TakeDamage(projectileHitDamage, transform, false);
+                        return;
+                    }
+                    if(spawnerHit != null) {
+                        spawnerHit.TakeDamage(projectileHitDamage, transform, false);
+                    }
+
                 }
                 else {
-                    DamageCreatureHit(creatureHit, collision);
+                    if (creatureHit != null) {
+                        DamageCreatureHit(creatureHit, collision);
+                        return;
+                    }
+                    if (spawnerHit != null) {
+                        DamageSpawnerHit(spawnerHit, collision);
+                    }
                 }
             }
 
@@ -115,7 +137,11 @@ public class GunProjectile : MonoBehaviour
         knockbackDirNormalized.y = 0;
         creatureHit.TakeKnockback(knockBackForce, knockbackDirNormalized);
     }
-     
+
+    protected virtual void DamageSpawnerHit(CreatureSpawnerContinuous spawner, Collider2D collision) {
+        spawner.TakeDamage(projectileExplosionDamage, transform, false);
+    }
+
     public virtual void InitializeProjectile(Gun parentGun, float projectileLifetime, int projectileDamage, float knockbackForce, Vector2 initialForce, float explosionRadiusMultiplier) {
         this.parentGun = parentGun;
         this.projectileLifetime = projectileLifetime;

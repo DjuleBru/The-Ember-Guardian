@@ -353,7 +353,6 @@ public class Structure : MonoBehaviour {
     public void SetStructurePrimaryFunctionUnlocked(bool unlocked) {
         if (primaryFunctionUnlocked == unlocked) return;
 
-        Debug.Log("SetStructurePrimaryFunctionUnlocked");
         primaryFunctionUnlocked = unlocked;
         ActivateStructurePrimaryFunctionInteraction(unlocked);
     }
@@ -498,4 +497,12 @@ public class Structure : MonoBehaviour {
     }
 
     #endregion
+
+    protected void OnDestroy() {
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
+            DayNightManager.Instance.OnNightStart -= DayNightManager_OnNightStart;
+            DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
+            Tent.Instance.OnStructureUpgraded -= Tent_OnStructureUpgraded;
+        }
+    }
 }

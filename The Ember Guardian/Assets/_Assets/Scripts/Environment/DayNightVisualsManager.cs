@@ -135,7 +135,6 @@ public class DayNightVisualsManager : MonoBehaviour
                     transitionProgress = 0;
                 }
             }
-            return;
         }
 
         if (caveExitTransitionStarted) {
@@ -149,11 +148,11 @@ public class DayNightVisualsManager : MonoBehaviour
                 caveExitTransitionStarted = false;
                 transitionProgress = 0;
             }
-            return;
         }
 
         if (dawnStarted) {
             transitionProgress += Time.deltaTime / transitionDuration;
+            if (inCave) return;
 
             if (transitionProgress < 1) {
                 globalLight2D.color = ColorTransition(nightLightColor, dawnLightColor);
@@ -178,6 +177,7 @@ public class DayNightVisualsManager : MonoBehaviour
 
         if (dayStarted) {
             transitionProgress += Time.deltaTime / transitionDuration;
+            if (inCave) return;
 
             if (transitionProgress < 1) {
                 globalLight2D.color = ColorTransition(dawnLightColor, dayLightColor);
@@ -197,6 +197,7 @@ public class DayNightVisualsManager : MonoBehaviour
 
         if (duskStarted) {
             transitionProgress += Time.deltaTime / transitionDuration;
+            if (inCave) return;
 
             if (transitionProgress < 1) {
                 globalLight2D.color = ColorTransition(dayLightColor, duskLightColor);
@@ -217,6 +218,7 @@ public class DayNightVisualsManager : MonoBehaviour
 
         if (nightStarted) {
             transitionProgress += Time.deltaTime / transitionDuration;
+            if (inCave) return;
 
             if (transitionProgress < 1) {
                 globalLight2D.color = ColorTransition(duskLightColor, nightLightColor);
@@ -356,6 +358,9 @@ public class DayNightVisualsManager : MonoBehaviour
         }
 
         dawnStarted = true;
+        dayStarted = false;
+        duskStarted = false;
+        nightStarted = false;
         transitionProgress = 0;
         currentLightColor = dawnLightColor;
         currentLightIntensity = dawnLightIntensity;
@@ -379,7 +384,10 @@ public class DayNightVisualsManager : MonoBehaviour
             return;
         }
 
-        dayStarted = true;
+        dayStarted = true; 
+        dawnStarted = false;
+        duskStarted = false;
+        nightStarted = false;
         transitionProgress = 0;
         currentLightColor = dayLightColor;
         currentLightIntensity = dayLightIntensity;
@@ -388,6 +396,9 @@ public class DayNightVisualsManager : MonoBehaviour
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
         totalAnimationCurveFractionProgress += dayAnimationCurveFraction;
         duskStarted = true;
+        dawnStarted = false;
+        dayStarted = false;
+        nightStarted = false; 
         transitionProgress = 0;
 
         currentLightColor = duskLightColor;
@@ -398,6 +409,9 @@ public class DayNightVisualsManager : MonoBehaviour
         totalAnimationCurveFractionProgress += duskAnimationCurveFraction;
         targetMoonPositionXNormalized = 0f;
         nightStarted = true;
+        dawnStarted = false;
+        duskStarted = false;
+        dayStarted = false;
         transitionProgress = 0;
 
         currentLightColor = nightLightColor;

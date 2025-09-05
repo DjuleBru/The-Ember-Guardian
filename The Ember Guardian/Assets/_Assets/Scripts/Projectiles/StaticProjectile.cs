@@ -93,11 +93,19 @@ public class StaticProjectile : MonoBehaviour
                 }
             }
 
-            // Hit Barricade
+          
+            // Hit Fire
             Fire fire = collision.gameObject.GetComponent<Fire>();
             if (fire != null) {
-                collision.GetComponent<Fire>().TakeDamage(1, transform, false);
-                parentMob.Die();
+
+                if (fire.GetIsSecondaryFire()) {
+                    collision.GetComponent<Fire>().TakeDamage(1, transform, false);
+                };
+
+                if (fire.GetIsMainFire()) {
+                    collision.GetComponent<Fire>().TakeDamage(1, transform, false);
+                    parentMob.Die();
+                }
                 hasHit = true;
             }
         }

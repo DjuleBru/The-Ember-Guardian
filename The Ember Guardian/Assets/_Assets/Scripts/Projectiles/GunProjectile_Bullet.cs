@@ -9,6 +9,7 @@ public class GunProjectile_Bullet : GunProjectile
 
     protected override void OnTriggerEnter2D(Collider2D collision) {
         Creature creatureHit = collision.GetComponent<Creature>();
+        CreatureSpawnerContinuous spawnerHit = collision.GetComponent<CreatureSpawnerContinuous>();
 
         if (creatureHit != null) {
             if(penetrationIndex >= penetrationMaxAmount) {
@@ -17,7 +18,13 @@ public class GunProjectile_Bullet : GunProjectile
             }
 
             penetrationIndex++;
-            DamageCreatureHit(creatureHit, collision);
+            if (creatureHit != null) {
+                DamageCreatureHit(creatureHit, collision);
+                return;
+            }
+            if (spawnerHit != null) {
+                DamageSpawnerHit(spawnerHit, collision);
+            }
         }
 
         // Détection du sol (Layer "Ground")

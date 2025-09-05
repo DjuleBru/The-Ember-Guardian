@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -266,6 +267,7 @@ public class Creature : Mob
         SpawnDroppedCurrencies(gemTypeDrop, gemTypeAmountDrop);
     }
 
+    [Button]
     protected void EliteDropGems() {
         int randomRequestedAmount = GetDroppedGems(0.5f, 2);
 
@@ -321,11 +323,13 @@ public class Creature : Mob
     protected IEnumerator DestroyGameObjectAfterDelay() {
         yield return new WaitForSeconds(3f);
 
-        if(IsDayCreature()) {
-            Destroy(gameObject);
-        } else {
-            gameObject.SetActive(false);
-        }
+        Destroy(gameObject);
+
+        //if (IsDayCreature()) {
+        //    Destroy(gameObject);
+        //} else {
+        //    gameObject.SetActive(false);
+        //}
 
     }
 
