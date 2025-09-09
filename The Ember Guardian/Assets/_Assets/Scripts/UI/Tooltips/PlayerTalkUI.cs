@@ -15,6 +15,8 @@ public class PlayerTalkUI : MonoBehaviour
     }
 
     private void Start() {
+        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+        talkText.font = font;
         talkText.text = "";
 
         if(DayNightManager.Instance != null) {

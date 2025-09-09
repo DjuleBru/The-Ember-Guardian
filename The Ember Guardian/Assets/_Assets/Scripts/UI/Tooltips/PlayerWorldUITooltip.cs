@@ -38,6 +38,12 @@ public class PlayerWorldUITooltip : MonoBehaviour
 
     private void Start() {
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
+
+        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+        tooltipText.font = font;
+        constrolInstructionText1.font = font;
+        constrolInstructionText1With2Icons.font = font;
+        constrolInstructionText2.font = font;
     }
 
     private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {

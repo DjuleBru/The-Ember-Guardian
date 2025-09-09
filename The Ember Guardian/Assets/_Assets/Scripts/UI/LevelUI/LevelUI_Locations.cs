@@ -23,6 +23,8 @@ public class LevelUI_Locations : MonoBehaviour
 
     private void Start() {
         locationsText.gameObject.SetActive(false);
+
+        locationsText.font = LocalizationManager.Instance.GetCurrentFont();
     }
 
     public void ShowLocationText(string locationName) {

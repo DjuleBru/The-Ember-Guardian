@@ -42,7 +42,11 @@ public class AddStructureBlueprint : ButtonUI
         base.Start();
         LoadStructureUnlocked();
 
-        structureNameText.text = LocalizationManager.Instance.GetLocalizedText(linkedStructureSO.structureNameLocalizationKey);
+        var localizedResult = LocalizationManager.Instance.GetLocalized(linkedStructureSO.structureNameLocalizationKey);
+        structureNameText.text = localizedResult.text;
+        if (localizedResult.font != null) {
+            structureNameText.font = localizedResult.font;
+        }
 
         HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
         CampEditManager.Instance.OnStructureAdded += CampEditManager_OnStructureAdded;

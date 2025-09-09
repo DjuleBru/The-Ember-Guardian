@@ -36,6 +36,24 @@ public class ItemDescriptionCardUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI maxLevelText;
     [SerializeField] private GameObject foreGround;
 
+    public void SetDescriptionCardFonts() {
+        TMP_FontAsset fontAsset = LocalizationManager.Instance.GetCurrentFont();
+
+        itemNameText.font = fontAsset;
+        itemDescriptionText.font = fontAsset;
+        itemStatTemplateText.font = fontAsset;
+        itemStatTemplateValue.font = fontAsset;
+        itemStatDescriptionText.font = fontAsset;
+        redGemAmountText.font = fontAsset;
+        greenGemAmountText.font = fontAsset;
+        blueGemAmountText.font = fontAsset;
+        yellowGemAmountText.font = fontAsset;
+        purpleGemAmountText.font = fontAsset;
+        cyanGemAmountText.font= fontAsset;
+
+        maxLevelText.font = fontAsset;
+    }
+
     public void SetDescriptionCardText(string itemName, bool constantUnlockDescription, List<string> itemStatDescriptionList, string itemDescription,List<string> itemStatList = null, List<bool> itemModifiersBools = null) {
         itemNameText.text = LocalizationManager.Instance.GetLocalizedText(itemName);
         itemDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(itemName + "_Description");

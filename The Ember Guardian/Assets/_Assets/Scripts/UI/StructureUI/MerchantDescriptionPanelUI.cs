@@ -38,6 +38,25 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
     [SerializeField] protected Material cleanFontMaterial;
     [SerializeField] protected Material UpgradeFontMaterial;
 
+    private void Start() {
+        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+        descriptionPanelItemName.font = font;
+        descriptionPanelItemDescription.font = font;
+        passiveItemStatValue.font = font;
+        passiveItemStatChangesDescription.font = font;
+        activeItemStatValue.font = font;
+        activeItemStatChangesDescription.font = font;
+        activeItemCooldownValue.font = font;
+        activeItemCooldownChangesText.font = font;
+        trapDamageStatValue.font = font;
+        trapCooldownStatValue.font = font;
+        trapUsesPerNightStatValue.font = font;
+        trapMaxReloadsStatValue.font = font;
+        trapReloadPriceStatValue.font = font;
+        trapSpecialStatValue.font = font;
+        trapSpecialStatDescription.font = font;
+    }
+
     public void SetPanelPosition(RectTransform rectTransform) {
         //Check if we switched from big item to small item
         descriptionPanelRectTransform.position = rectTransform.position;

@@ -60,6 +60,14 @@ public class PauseMenuUI : MonoBehaviour
             UICurrencyManager.HubInventoryUI.OnCurrencyRemovedFromBag += HubInventoryUI_OnCurrencyRemovedFromBag;
 
         }
+
+        //RefreshFonts();
+    }
+
+    private void RefreshFonts() {
+        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+        exitGameText.font = font;
+        backToMenuText.font = font;
     }
 
     private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {

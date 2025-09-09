@@ -3,21 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using static LocalizationManager;
 public class LocalizationData {
     public Dictionary<string, Dictionary<string, string>> languages;
 }
 
+public class LocalizedResult {
+    public string text;
+    public TMP_FontAsset font;
+
+    public LocalizedResult(string text, TMP_FontAsset font) {
+        this.text = text;
+        this.font = font;
+    }
+}
+
 public class LocalizationManager : MonoBehaviour
 {
     public static LocalizationManager Instance;
     private Dictionary<string, Dictionary<string, string>> localizedTexts;
+    [SerializeField] private TMP_FontAsset standardFont;
+    [SerializeField] private TMP_FontAsset japaneseFont;
+
     public enum Language {
         English,
         French,
         German,
         Spanish,
+        Japanese,
     }
     [Serializable]
     public class LocalizationEntry {
@@ -26,7 +41,7 @@ public class LocalizationManager : MonoBehaviour
         public string French;
         public string German;
         public string Spanish;
-        public string Italian;
+        public string Japanese;
     }
     public class LocalizationData {
         public List<LocalizationEntry> entries;
@@ -62,6 +77,19 @@ public class LocalizationManager : MonoBehaviour
         }
     }
 
+    public LocalizedResult GetLocalized(string key) {
+        string translatedText = GetLocalizedText(key); // ton code existant
+        TMP_FontAsset fontToUse = null;
+
+        if (currentLanguage == Language.Japanese) {
+            fontToUse = japaneseFont;
+        } else {
+            fontToUse = standardFont;
+        }
+        // tu peux rajouter d'autres polices plus tard si besoin
+
+        return new LocalizedResult(translatedText, fontToUse);
+    }
 
     public string GetLocalizedText(string key) {
         string translatedText = "";
@@ -78,7 +106,7 @@ public class LocalizationManager : MonoBehaviour
                         break;
                     case "Spanish": translatedText = entry.Spanish;
                         break;
-                    case "Italian": translatedText = entry.Italian;
+                    case "Japanese": translatedText = entry.Japanese;
                         break;
                     default: translatedText = entry.English;  // Default language
                         break;
@@ -97,4 +125,12 @@ public class LocalizationManager : MonoBehaviour
         }
         return translatedText;  // Return the key if no translation is found
     }
+
+    public TMP_FontAsset GetCurrentFont() {
+        Language currentLanguage = SettingsManager.Instance.GetLanguage();
+
+        if (currentLanguage == Language.Japanese) return japaneseFont;
+        return standardFont;
+    }
+
 }

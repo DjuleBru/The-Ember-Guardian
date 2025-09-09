@@ -31,6 +31,9 @@ public class WorkerUI : MonoBehaviour
     }
 
     private void Start() {
+        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+        talkText.font = font;
+
         talkText.text = "";
         interactionCollider.OnPlayerTriggeredIn += InteractionCollider_OnPlayerTriggeredIn;
         interactionCollider.OnPlayerTriggeredOut += InteractionCollider_OnPlayerTriggeredOut;

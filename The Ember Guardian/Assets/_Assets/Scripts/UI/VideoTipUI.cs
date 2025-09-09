@@ -55,6 +55,10 @@ public class VideoTipUI : MonoBehaviour
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         videoTipUIMainPanel.SetActive(false);
         replayTipButtonGO.GetComponent<Button>().interactable = false;
+
+        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+        resumeButtonText.font = font;
+        tipName.font = font;
     }
 
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {

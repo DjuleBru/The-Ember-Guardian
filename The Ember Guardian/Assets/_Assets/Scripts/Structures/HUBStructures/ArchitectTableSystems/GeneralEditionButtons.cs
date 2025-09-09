@@ -29,7 +29,12 @@ public class GeneralEditionButtons : ButtonUI
 
     protected override void Start() {
         base.Start();
-        buttonFunctionText.text = LocalizationManager.Instance.GetLocalizedText(buttonType.ToString());
+
+        var localizedResult = LocalizationManager.Instance.GetLocalized(buttonType.ToString());
+        buttonFunctionText.text = localizedResult.text;
+        if (localizedResult.font != null) {
+            buttonFunctionText.font = localizedResult.font;
+        }
 
         CampEditManager.Instance.OnAnyChangeMade += CampEditManager_OnAnyChangeMade;
         CampEditManager.Instance.OnAllStructuresRemoved += CampEditManager_OnAllStructuresRemoved;

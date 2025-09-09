@@ -109,6 +109,8 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
             LevelObjectives.Instance.OnObstacleRemoved += LevelObjectives_OnObstacleRemoved;
             LevelObjectives.Instance.OnWatcherArtifactFilled += LevelObjectives_OnWatcherArtifactFilled;
         }
+
+        objectiveText.font = LocalizationManager.Instance.GetCurrentFont();
     }
 
 

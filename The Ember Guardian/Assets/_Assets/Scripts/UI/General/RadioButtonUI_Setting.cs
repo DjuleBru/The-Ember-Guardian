@@ -106,6 +106,12 @@ public class RadioButtonUI_Setting : RadioButtonUI
     }
 
     private void RefreshVisual() {
+        if(toggledText != null) {
+            TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+            toggledText.font = font;
+        }
+
+
         if (settingType == SettingType.HoldToRun) {
             if(SettingsManager.Instance.GetHoldToRun()) {
                 toggledText.text = LocalizationManager.Instance.GetLocalizedText("menu_hold");

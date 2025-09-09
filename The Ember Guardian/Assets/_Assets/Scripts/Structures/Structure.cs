@@ -499,7 +499,7 @@ public class Structure : MonoBehaviour {
     #endregion
 
     protected void OnDestroy() {
-        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB && SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.MainMenu) {
             DayNightManager.Instance.OnNightStart -= DayNightManager_OnNightStart;
             DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
             Tent.Instance.OnStructureUpgraded -= Tent_OnStructureUpgraded;

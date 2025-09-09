@@ -55,6 +55,9 @@ public class ScavengableVisual : MonoBehaviour
         if (miningStatusGO != null) {
             miningStatusGO.SetActive(false);
         }
+
+        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+        cancelText.font = font;
     }
 
     private void Scavengable_OnDeactivatedMining(object sender, System.EventArgs e) {

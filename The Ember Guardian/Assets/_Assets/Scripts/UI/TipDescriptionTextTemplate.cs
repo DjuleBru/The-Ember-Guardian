@@ -16,6 +16,11 @@ public class TipDescriptionTextTemplate : MonoBehaviour
         templateAnimator.enabled = false;
     }
 
+    private void Start() {
+        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+        templateText.font = font;
+    }
+
     public void SetTipDescriptionAdvanced(string text, bool isMainTitle = false) {
         RectTransform rt = templateIcon.GetComponent<RectTransform>();
         if (isMainTitle) {

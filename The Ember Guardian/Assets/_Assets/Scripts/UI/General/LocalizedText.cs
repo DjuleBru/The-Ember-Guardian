@@ -20,7 +20,13 @@ public class LocalizedText : MonoBehaviour
 
     public void UpdateText() {
         if (LocalizationManager.Instance != null) {
-            textComponent.text = LocalizationManager.Instance.GetLocalizedText(localizationKey);
+            var result = LocalizationManager.Instance.GetLocalized(localizationKey);
+
+            textComponent.text = result.text;
+
+            if (result.font != null) {
+                textComponent.font = result.font;
+            }
         }
     }
 }

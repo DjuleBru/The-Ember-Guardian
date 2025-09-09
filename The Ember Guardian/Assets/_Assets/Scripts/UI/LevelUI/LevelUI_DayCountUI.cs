@@ -22,6 +22,9 @@ public class LevelUI_DayCountUI : MonoBehaviour
         dayTextAnimator = GetComponent<Animator>();
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
+
+        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+        dayText.font = font;
     }
 
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {

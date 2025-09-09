@@ -45,6 +45,9 @@ public class HubMerchantTalkUI : MonoBehaviour
 
         continueInputImage.sprite = InputControlIcons.Instance.GetControlIconSprite(InputControlIcons.Control.Interact)[0];
 
+        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+        talkText.font = font;
+
         LoadTalkData();
     }
 

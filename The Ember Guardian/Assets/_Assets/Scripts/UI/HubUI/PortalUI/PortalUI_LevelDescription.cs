@@ -43,6 +43,10 @@ public class PortalUI_LevelDescription : MonoBehaviour {
     public void SetLevelDescription(LevelSO levelSO) {
         currentLevelSO = levelSO;
 
+        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+        levelNameText.font = font;
+        levelDescriptionText.font = font;
+
         levelNameText.text = LocalizationManager.Instance.GetLocalizedText(levelSO.levelNameLocalizationKey);
         levelDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(levelSO.levelDescriptionLocalizationKey);
         levelSprite.sprite = levelSO.levelImage;

@@ -11,8 +11,10 @@ public class DogAbilityTemplate : MonoBehaviour
     [SerializeField] private TextMeshProUGUI abilityStatText;
     [SerializeField] private TextMeshProUGUI abilityStatValue;
 
+
     public void InitializeAbility(HUBMerchantItem_DogTamerItem.DogTamerItemType itemType) {
         abilityStatTemplate.gameObject.SetActive(true);
+        RefreshFonts();
 
         switch (itemType) {
 
@@ -142,5 +144,12 @@ public class DogAbilityTemplate : MonoBehaviour
 
 
         abilityStatTemplate.gameObject.SetActive(false);
+    }
+
+    private void RefreshFonts() {
+        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+        abilityNameText.font = font;
+        abilityStatText.font = font;
+        abilityStatValue.font = font;
     }
 }

@@ -15,6 +15,10 @@ public class SubObjectiveUI : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    private void Start() {
+        subObjectiveText.font = LocalizationManager.Instance.GetCurrentFont();
+    }
+
     public void SetSubObjective(LevelUI_ObjectiveUI.SubObjectiveType subObjectiveType) {
         this.subObjectiveType = subObjectiveType;
         subObjectiveText.text = LevelUI_ObjectiveUI.Instance.GetSubObjectiveTextFromType(subObjectiveType);
