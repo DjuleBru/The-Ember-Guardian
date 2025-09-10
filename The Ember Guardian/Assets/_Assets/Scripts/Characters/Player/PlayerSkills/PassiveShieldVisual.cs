@@ -22,6 +22,27 @@ public class PassiveShieldVisual : MonoBehaviour
     private void Start() {
         passiveShield.OnShieldActivated += PassiveShield_OnShieldActivated;
         passiveShield.OnShieldDied += PassiveShield_OnShieldDied;
+        FastTravelTP.OnAnyPlayerWarped += FastTravelTP_OnAnyPlayerWarped;
+        FastTravelTP.OnAnyPlayerWarpedOut += FastTravelTP_OnAnyPlayerWarpedOut;
+        Portal.OnAnyPlayerTeleported += Portal_OnAnyPlayerTeleported;
+    }
+
+    private void Portal_OnAnyPlayerTeleported(object sender, System.EventArgs e) {
+        if(passiveShield.GetShieldActive()) {
+            shieldBodySpriteRenderer.enabled = false;
+        }
+    }
+
+    private void FastTravelTP_OnAnyPlayerWarpedOut(object sender, System.EventArgs e) {
+        if (passiveShield.GetShieldActive()) {
+            shieldBodySpriteRenderer.enabled = true;
+        }
+    }
+
+    private void FastTravelTP_OnAnyPlayerWarped(object sender, System.EventArgs e) {
+        if (passiveShield.GetShieldActive()) {
+            shieldBodySpriteRenderer.enabled = false;
+        }
     }
 
     private void PassiveShield_OnShieldDied(object sender, System.EventArgs e) {
@@ -31,5 +52,11 @@ public class PassiveShieldVisual : MonoBehaviour
     private void PassiveShield_OnShieldActivated(object sender, System.EventArgs e) {
         shieldBodySpriteRenderer.enabled = true;
         shieldAnimator.SetTrigger("Activate");
+    }
+
+    private void OnDestroy() {
+        FastTravelTP.OnAnyPlayerWarped -= FastTravelTP_OnAnyPlayerWarped;
+        FastTravelTP.OnAnyPlayerWarpedOut -= FastTravelTP_OnAnyPlayerWarpedOut;
+        Portal.OnAnyPlayerTeleported -= Portal_OnAnyPlayerTeleported;
     }
 }

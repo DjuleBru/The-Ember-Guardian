@@ -35,6 +35,7 @@ public class Creature_Shielded : Creature
 
         if (shieldActive) return;
         if (activateShieldAfterDamageTaken) return;
+        if (dead) return;
 
         shieldTimer -= Time.deltaTime;
         if(shieldTimer <= 0) {

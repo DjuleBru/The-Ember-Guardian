@@ -117,8 +117,11 @@ public class CreatureSO : ScriptableObject
     [BoxGroup("Game Data/Status Effects")]
     [LabelWidth(200)]
     public bool immuneToImmobilize;
+    [BoxGroup("Game Data/Status Effects")]
+    [LabelWidth(200)]
+    public bool immuneToFire;
 
-    
+
     [BoxGroup("Animation Parameters")]
     [LabelWidth(200)]
     public bool hasCustomSpawnAnimation;

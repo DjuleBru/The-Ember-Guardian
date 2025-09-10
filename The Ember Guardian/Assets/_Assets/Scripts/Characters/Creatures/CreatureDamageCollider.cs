@@ -53,7 +53,10 @@ public class CreatureDamageCollider : MonoBehaviour
 
             } else {
                 // Attack hit worker, barricade or fire
-                mobAttack.DealDamage(iDamageable);
+                // Only hit target if it was attacking it
+                if(mobAttack.GetAttackTarget() == iDamageable) {
+                    mobAttack.DealDamage(iDamageable);
+                }
             }
 
         }

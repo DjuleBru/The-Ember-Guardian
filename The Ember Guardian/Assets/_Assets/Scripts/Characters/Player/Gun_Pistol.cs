@@ -9,10 +9,10 @@ public class Gun_Pistol : Gun
 
     protected override void Start() {
         base.Start();
-        PlayerShoot.Instance.OnWeaponSecondaryAbilityStarted += PlayerShoot_OnWeaponSecondaryAbilityStarted;
+        PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerShoot_OnPlayerSwitchedFireMode;
     }
 
-    private void PlayerShoot_OnWeaponSecondaryAbilityStarted(object sender, EventArgs e) {
+    private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, EventArgs e) {
         CheckPlayerHasSilencer();
     }
 
@@ -21,11 +21,11 @@ public class Gun_Pistol : Gun
 
         if (PlayerShoot.Instance.GetSilencerActive()) {
             shootCreatureHearMultiplier = 1.15f;
-            DebuffBulletDamage(gunSilencerDamageReduction);
+            DebuffBulletDamage(gunSilencerDamageReduction, false);
         }
         else {
             shootCreatureHearMultiplier = gunSO.shootCreatureHearMultiplier;
-            BuffBulletDamage(gunSilencerDamageReduction);
+            BuffBulletDamage(gunSilencerDamageReduction, false);
         }
     }
 

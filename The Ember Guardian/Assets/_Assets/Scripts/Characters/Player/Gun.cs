@@ -30,7 +30,7 @@ public class Gun : MonoBehaviour
     protected int damagePerBulletAtRunStart;
     protected int damagePerBullet;
     protected float explosionRadiusMultiplier = 1;
-    protected static float gunDamageBuffMultiplier = 1;
+    protected float gunDamageBuffMultiplier = 1;
     protected static float totalBuffMultiplier = 1;
     protected float bulletKnockback;
     protected int currentAmmoClip;
@@ -131,7 +131,7 @@ public class Gun : MonoBehaviour
         SetPSShootAngle(defaultAngle);
 
         pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
-        DebuffBulletDamage(focusedBlastDamageBuff);
+        DebuffBulletDamage(focusedBlastDamageBuff, false);
         ParticleSystem.MainModule shootPSMainModule = shootPS.main;
         shootPSMainModule.startSize = .2f;
 
@@ -149,7 +149,7 @@ public class Gun : MonoBehaviour
         }
 
         focusedBlastDamageBuff = pelletsPerBullet * PlayerShoot.Instance.GetCurrentBullets();
-        BuffBulletDamage(focusedBlastDamageBuff);
+        BuffBulletDamage(focusedBlastDamageBuff, false);
         pelletsPerBullet = 1;
         ParticleSystem.MainModule shootPSMainModule = shootPS.main;
         shootPSMainModule.startSize = totalBullerSize;

@@ -40,21 +40,29 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
 
     private void Start() {
         TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+
         descriptionPanelItemName.font = font;
         descriptionPanelItemDescription.font = font;
-        passiveItemStatValue.font = font;
-        passiveItemStatChangesDescription.font = font;
-        activeItemStatValue.font = font;
-        activeItemStatChangesDescription.font = font;
-        activeItemCooldownValue.font = font;
-        activeItemCooldownChangesText.font = font;
-        trapDamageStatValue.font = font;
-        trapCooldownStatValue.font = font;
-        trapUsesPerNightStatValue.font = font;
-        trapMaxReloadsStatValue.font = font;
-        trapReloadPriceStatValue.font = font;
-        trapSpecialStatValue.font = font;
-        trapSpecialStatDescription.font = font;
+
+        if (passiveItemStatValue != null) {
+            passiveItemStatValue.font = font;
+            passiveItemStatChangesDescription.font = font;
+            activeItemStatValue.font = font;
+            activeItemStatChangesDescription.font = font;
+            activeItemCooldownValue.font = font;
+            activeItemCooldownChangesText.font = font;
+        }
+
+        if(trapDamageStatValue != null) {
+            trapDamageStatValue.font = font;
+            trapCooldownStatValue.font = font;
+            trapUsesPerNightStatValue.font = font;
+            trapMaxReloadsStatValue.font = font;
+            trapReloadPriceStatValue.font = font;
+            trapSpecialStatValue.font = font;
+            trapSpecialStatDescription.font = font;
+        }
+
     }
 
     public void SetPanelPosition(RectTransform rectTransform) {
@@ -138,7 +146,7 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
             previousStatValue = 0;
         }
 
-        previousStatText = "(" + skillSO.StatChangePrefix + (int)(previousStatValue) + ")";
+        previousStatText = "(" + skillSO.StatChangePrefix + (int)(previousStatValue) + skillSO.StatChangeUnit + ")";
         currentStatText = skillSO.StatChangePrefix + ((int)(currentBuffValue)).ToString() + skillSO.StatChangeUnit;
 
         switch (skillSO.skillType) {

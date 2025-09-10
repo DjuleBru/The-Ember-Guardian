@@ -41,7 +41,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 977070045626552078, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_Name
-      value: EngineerShrine
+      value: GuardShrine
       objectReference: {fileID: 0}
     - target: {fileID: 2323155349443575450, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_LocalPosition.x
@@ -86,7 +86,7 @@ PrefabInstance:
     - target: {fileID: 2858744977638243454, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -1654454425, guid: bf8da3aab6b261543b438be917263346, type: 3}
+      objectReference: {fileID: 811465413, guid: a1b786b2af16f8842b282319965ab021, type: 3}
     - target: {fileID: 2858744977638243454, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -97,7 +97,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 2a068ad8d9af19545bf32a427b301ded, type: 2}
     - target: {fileID: 3549839082585346721, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.62
+      value: 1.73
       objectReference: {fileID: 0}
     - target: {fileID: 3909566777382549958, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_IsActive
@@ -149,15 +149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7506368512435722411, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_Size.x
-      value: 0.7014421
-      objectReference: {fileID: 0}
-    - target: {fileID: 7506368512435722411, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
-      propertyPath: m_Offset.x
-      value: 0.05379647
-      objectReference: {fileID: 0}
-    - target: {fileID: 8124003534650656326, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
-      propertyPath: m_Controller
-      value: 
+      value: 1.7
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3188464822276457179, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
@@ -203,7 +195,7 @@ Animator:
   m_GameObject: {fileID: 1675418871973464426}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 42c284a5e1a68c948be3543afa77d9e7, type: 2}
+  m_Controller: {fileID: 22100000, guid: 7e9998d24294ad14e9a941fd1559d380, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -231,14 +223,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9460b329a579edc4f81dfffaf1c2d68f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  structureSO: {fileID: 11400000, guid: 307b9540ad983194f99cd09b372535e4, type: 2}
+  structureSO: {fileID: 11400000, guid: 56dd7dc15aa121d4daeed30b5a336830, type: 2}
   upgradeUnlocked: 0
   primaryFunctionUnlocked: 0
   secondaryFunctionUnlocked: 0
   visualIndicator: {fileID: 0}
   showTooltipOnTrigger: {fileID: 0}
   workerSpawnPosition: {fileID: 6664458144435640411}
-  shrineType: 3
+  shrineType: 2
 --- !u!1 &8212365878099605028 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6121088288681775748, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}

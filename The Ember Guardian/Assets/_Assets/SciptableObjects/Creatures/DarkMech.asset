@@ -20,7 +20,7 @@ MonoBehaviour:
   creaturePrefab: {fileID: 4997657120178985709, guid: 33774ca414bd2ed4192576c622d2780a, type: 3}
   mass: 20
   detectionRange_Day: 20
-  detectionRange_Night: 12
+  detectionRange_Night: 16.5
   primaryAttackSO: {fileID: 11400000, guid: 3cfa3c2ecb87ced4098e313ba056a55b, type: 2}
   hasRangedAndMeleeAttack: 1
   secondaryAttackSO: {fileID: 11400000, guid: d158ba812ed46794f80bd77dabcf3c0b, type: 2}
@@ -41,6 +41,7 @@ MonoBehaviour:
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0
+  immuneToFire: 1
   hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 0.85

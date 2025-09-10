@@ -324,12 +324,12 @@ public class MobAttack : MonoBehaviour
 
     public void BuffAttackSpeed(float buff) {
         attackCooldownBuff += buff;
-        Debug.Log("BuffAttackSpeed " + attackCooldownBuff);
+        //Debug.Log("BuffAttackSpeed " + attackCooldownBuff);
         OnAttackSpeedModified?.Invoke(this, EventArgs.Empty);
     }
     public void DebuffAttackSpeed(float deBuff) {
         attackCooldownBuff -= deBuff;
-        Debug.Log("DebuffAttackSpeed " + attackCooldownBuff);
+        //Debug.Log("DebuffAttackSpeed " + attackCooldownBuff);
         OnAttackSpeedModified?.Invoke(this, EventArgs.Empty);
     }
     public float GetAttackSpeedBuff() {
@@ -361,6 +361,10 @@ public class MobAttack : MonoBehaviour
 
     public void SetAttackIgnoresTemporaryInvincibility() {
         attackIgnoresTemporaryInvincibility = true;
+    }
+
+    public IDamageable GetAttackTarget() {
+        return attackTargetIDamageable;
     }
 
 }

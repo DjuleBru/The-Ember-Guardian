@@ -46,18 +46,20 @@ public class CameraManager : MonoBehaviour
         }
 
         // --- SÉCURITÉ ZOOM ---
-        if (!cameraLockedByTransition) {
-            if (Mathf.Abs(virtualCamera.m_Lens.OrthographicSize - initialCameraOrthographicSize) > 0.01f) {
-                zoomTimer += Time.deltaTime;
-                if (zoomTimer >= maxZoomDurationBeforeReset) {
-                    StartZoom(initialCameraOrthographicSize, 1f);
-                    zoomTimer = 0f;
-                }
-            }
-            else {
+        if (cameraLockedByTransition) return;
+        if (Player.Instance.GetInteractingWithMerchant()) return;
+
+        if (Mathf.Abs(virtualCamera.m_Lens.OrthographicSize - initialCameraOrthographicSize) > 0.01f) {
+            zoomTimer += Time.deltaTime;
+            if (zoomTimer >= maxZoomDurationBeforeReset) {
+                StartZoom(initialCameraOrthographicSize, 1f);
                 zoomTimer = 0f;
             }
         }
+        else {
+            zoomTimer = 0f;
+        }
+        
     }
 
     public void ZoomIn(bool toInitialValue, float targetZoomInOrthographicSizeMultiplier = 1f, float zoomDuration = 1f) {
@@ -148,5 +150,9 @@ public class CameraManager : MonoBehaviour
 
     public Camera GetUICamera() {
         return UICamera;
+    }
+
+    public bool GetCameraCenteredOnPlayer() {
+        return cameraCenteredOnPlayer;
     }
 }

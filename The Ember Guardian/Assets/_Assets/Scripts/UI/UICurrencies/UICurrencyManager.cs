@@ -174,7 +174,7 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     private IEnumerator AddInitialCurrencies() {
-        yield return new WaitForSeconds(7f);
+        yield return new WaitForSeconds(6f);
 
         List<TrapSO> unlockedTraps = TrapManager.Instance.GetUnlockedTraps();
         TrapSO randomTrapSO = unlockedTraps[UnityEngine.Random.Range(0,unlockedTraps.Count)];

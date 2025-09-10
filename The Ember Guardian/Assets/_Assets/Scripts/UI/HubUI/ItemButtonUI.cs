@@ -75,12 +75,6 @@ public class ItemButtonUI : ButtonUI {
             itemLevelBackgroundGameObject.SetActive(false);
         }
 
-        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
-        itemMaxedLevelText.font = font;
-        itemLevelText.font = font;
-        itemMaxLevelText.font = font;
-        buyItemFromOtherMerchantText.font = font;
-
         OnAnyOutputLinkUnlocked += ItemButtonUI_OnAnyOutputLinkUnlocked;
         hubMerchantItem.OnHubMerchantItemBought += HubMerchantItem_OnHubMerchantItemBought;
         hubMerchantItem.OnHubMerchantItemLoaded += HubMerchantItem_OnHubMerchantItemLoaded;
@@ -99,6 +93,13 @@ public class ItemButtonUI : ButtonUI {
             itemLockedInDemo = false;
             lockHoverInteractions = false;
         }
+
+        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+        itemMaxedLevelText.font = font;
+        itemLevelText.font = font;
+        itemMaxLevelText.font = font;
+        buyItemFromOtherMerchantText.font = font;
+
 
         RefreshItemStatusVisuals();
     }

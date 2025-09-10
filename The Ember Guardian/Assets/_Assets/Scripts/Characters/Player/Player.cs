@@ -335,6 +335,10 @@ public class Player : MonoBehaviour, IDamageable
         this.cameraHasOtherTarget = cameraHasOtherTarget;
     }
 
+    public bool GetCameraHasOtherTarget() {
+        return cameraHasOtherTarget;
+    }
+
     private void PauseMenuUI_OnPauseMenuOpened(object sender, EventArgs e) {
         pauseMenuOpen = true;
     }

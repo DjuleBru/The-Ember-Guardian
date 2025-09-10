@@ -109,6 +109,7 @@ public class Creature : Mob
         shockedImmune = creatureSO.immuneToShock;
         poisonImmune = creatureSO.immuneToPoison;
         immobilizeImmune = creatureSO.immuneToImmobilize;
+        burnImmune = creatureSO.immuneToFire;
         probabilityToDropOrb = creatureSO.probabilityToDropOrb;
         initialGravityScale = rb.gravityScale;
     }

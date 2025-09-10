@@ -17,12 +17,13 @@ MonoBehaviour:
   isStaticProjectileAttack: 0
   isAnimatedAttack: 0
   attackCooldown: 4
-  minAttackRange: 14
-  maxAttackRange: 18
-  hasDifferentDayAndNightRange: 0
+  minAttackRange: 13.5
+  maxAttackRange: 18.5
+  hasDifferentDayAndNightRange: 1
   minAttackRange_Night: 10
   maxAttackRange_Night: 15
-  attackRangeRandomizer: 2
+  attackRangeRandomizer: 1.5
+  maxAttackRangeRandomizer: 0
   damage: 1
   damageToFire: 1
   damageToBarricades: 1

@@ -175,7 +175,6 @@ public class CreaturesSpawnManager : MonoBehaviour {
         remainingNightCreatures++;
         totalNightCreatures++;
 
-        Debug.Log("remainingNightCreatures 1 spawned" + remainingNightCreatures);
         float remainingNightCreaturesNormalized = (float)remainingNightCreatures / (float)totalNightCreatures;
 
         OnRemainingNightCreaturesChanged?.Invoke(this, new OnRemainingNightCreaturesChangedEventArgs {

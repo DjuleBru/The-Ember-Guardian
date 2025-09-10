@@ -57,7 +57,7 @@ public class PlayerShoot : MonoBehaviour
         public bool removeBecauseDied;
     }
 
-    private float setupLMGTime = 2f;
+    private float setupLMGTime = 1.8f;
     private float setupLMGTimer;
     private bool settingUpLMG;
     private bool holdingStationaryGun;
@@ -282,11 +282,10 @@ public class PlayerShoot : MonoBehaviour
     public void RemoveLMGBipod(bool removeBecauseDied) {
         if (!holdingStationaryGun) return;
 
-        OnPlayerSetupLMGStopped?.Invoke(this, new OnPlayerResetLMGBipodEventArgs {
-            removeBecauseDied = removeBecauseDied
-        });
+        //OnPlayerSetupLMGStopped?.Invoke(this, new OnPlayerResetLMGBipodEventArgs {
+        //    removeBecauseDied = removeBecauseDied
+        //});
 
-        OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
         secondaryAbilityActive = false;
 
         holdingStationaryGun = false;

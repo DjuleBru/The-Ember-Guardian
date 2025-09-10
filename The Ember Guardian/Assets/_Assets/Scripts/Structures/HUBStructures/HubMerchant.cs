@@ -197,6 +197,7 @@ public class HubMerchant : MonoBehaviour
         if (isHubMerchant && !merchantUnlocked) return;
         if (isDecorationalDemoHubMerchant) return;
         if (playerInteractingWithMerchant) return;
+        if (Player.Instance.GetCameraHasOtherTarget()) return;
 
         if (isHubMerchant) {
             StartInteractingWithMerchant();

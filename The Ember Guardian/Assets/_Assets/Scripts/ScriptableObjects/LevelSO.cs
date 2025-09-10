@@ -56,6 +56,9 @@ public class LevelSO : ScriptableObject
     [Range(0, 10)]
     public int wildEmberlingsAmount;
 
+    [Range(0, 5)]
+    public float duskDurationIncreasePerDay;
+
     [BoxGroup("Objective")]
     [LabelWidth(300)]
     public LevelUI_ObjectiveUI.ObjectiveType levelObjectiveType;

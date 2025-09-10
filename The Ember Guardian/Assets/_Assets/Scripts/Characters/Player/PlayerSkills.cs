@@ -136,7 +136,7 @@ public class PlayerSkills : MonoBehaviour
         SkillSO randomActiveSkillSO = unlockedActiveSkillSOList[UnityEngine.Random.Range(0, unlockedActiveSkillSOList.Count)];
         SkillSO randomPassiveSkillSO = unlockedPassiveSkillSOList[UnityEngine.Random.Range(0, unlockedPassiveSkillSOList.Count)];
 
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(8.5f);
 
         if(initialActiveSkillLevel != 0) {
             SkillItem skillItem = new SkillItem();
@@ -436,10 +436,6 @@ public class PlayerSkills : MonoBehaviour
 
     public void AddActiveSkill(SkillItem skillItem) {
 
-        if (activeSkillLeft != null && activeSkillRight != null) return;
-
-        SetActiveSkillParameters(skillItem);
-
         if (activeSkillLeft == null || activeSkillLeft.skillType == skillItem.skillType) {
             // Active skill left is null OR player is upgrading left skill
 
@@ -448,6 +444,7 @@ public class PlayerSkills : MonoBehaviour
             OnActiveSkillAdded?.Invoke(this, new OnSkillAddedEventArgs {
                 skillItemAdded = skillItem
             });
+            SetActiveSkillParameters(skillItem);
             return;
         }
 
@@ -459,6 +456,7 @@ public class PlayerSkills : MonoBehaviour
             OnActiveSkillAdded?.Invoke(this, new OnSkillAddedEventArgs {
                 skillItemAdded = skillItem
             });
+            SetActiveSkillParameters(skillItem);
             return;
         }
     }

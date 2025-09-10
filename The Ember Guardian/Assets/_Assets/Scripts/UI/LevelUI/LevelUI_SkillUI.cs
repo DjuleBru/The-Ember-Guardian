@@ -14,6 +14,8 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
     [SerializeField] private bool isRightActiveSkill;
 
     [SerializeField] private Animator skillTemplateAnimator;
+    [SerializeField] private Button skillDeleteButton;
+    [SerializeField] private ButtonUI skillDeleteButtonUI;
     [SerializeField] private Animator skillDeleteAnimator;
     [SerializeField] private Image skillTemplateImage;
     [SerializeField] private Image skillTemplateBackgroundImage;
@@ -52,7 +54,6 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
 
         skillTemplateImage.sprite = linkedSkill.skillSO.Icon;
         skillTemplateBackgroundImage.sprite = linkedSkill.skillSO.Icon;
-        Debug.Log(linkedSkill.skillSO + " level " + linkedSkill.currentLevel);
         skillLevelText.text = linkedSkill.currentLevel.ToString();
     }
 
@@ -128,11 +129,14 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
     private void PlayerTabMenu_OnPlayerTabOpened(object sender, EventArgs e) {
         button.enabled = true;
         tabMenuOpen = true;
+
+        EnableSkillDeleteButton(true);
     }
 
     private void PlayerTabMenu_OnPlayerTabClosed(object sender, EventArgs e) {
         button.enabled = false;
         tabMenuOpen = false;
+        EnableSkillDeleteButton(false);
 
         if (skillDeleteAnimator != null) {
             skillDeleteAnimator.ResetTrigger("Show");
@@ -277,6 +281,12 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
         }
 
         skillDescriptionCard.SetDescriptionCardText(skillName, statDescriptionList, statList);
+    }
+
+    private void EnableSkillDeleteButton(bool enabled) {
+        if (skillDeleteButton == null) return;
+        skillDeleteButton.enabled = enabled;
+        skillDeleteButtonUI.enabled = enabled;
     }
 
     #endregion

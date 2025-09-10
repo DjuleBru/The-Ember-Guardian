@@ -13,6 +13,7 @@ public class DayNightManager : MonoBehaviour
     [SerializeField] private float dayDuration;
     [SerializeField] private float duskDuration;
     [SerializeField] private float nightDuration;
+    private float duskDurationIncreasePerDay;
 
     [SerializeField] private bool cyclePaused;
     [SerializeField] private State debugState;
@@ -55,6 +56,8 @@ public class DayNightManager : MonoBehaviour
         Fire.Instance.OnFireEmberExtractionStarted += Fire_OnFireEmberExtractionStarted;
         Fire.Instance.OnFireEmberExtractionStopped += Fire_OnFireEmberExtractionStopped;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
+
+        duskDurationIncreasePerDay = LevelManager.Instance.GetLevelSO().duskDurationIncreasePerDay;
 
         allowDebugInputs = DebugManager.Instance.GetAllowDebugInputs_DayNightManager();
 
@@ -170,6 +173,8 @@ public class DayNightManager : MonoBehaviour
         }
         if(newState == State.Dawn) {
             currentDay++;
+
+            duskDuration += duskDurationIncreasePerDay;
             OnDawnStart?.Invoke(this, EventArgs.Empty);
         }
         if(newState == State.Night) {

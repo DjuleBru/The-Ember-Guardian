@@ -8,7 +8,6 @@ public class GunAnimator_LMG : GunAnimator {
 
     protected override void PlayerSHoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
         bipodEnabled = !bipodEnabled;
-
         if(bipodEnabled) {
             animator.SetTrigger("DeployBipod");
         } else {

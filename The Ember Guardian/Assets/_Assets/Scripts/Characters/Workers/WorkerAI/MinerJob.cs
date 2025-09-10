@@ -14,7 +14,7 @@ public class MinerJob : WorkerJob {
     private float headToMineMoveSpeed = 2.5f;
     private float attackRange = 1f;
     private float attackRangeRandomized;
-    private float nightAggroCreatureDistance = 5f;
+    private float nightAggroCreatureDistance = 3f;
 
     private float checkAvailableScavengablesTimer;
     private float checkAvailableScavengablesRate = .5f;
@@ -117,7 +117,8 @@ public class MinerJob : WorkerJob {
             }
         } else {
 
-            if (CheckBlockedByCreature() && state != MinerState.blockedByCreatures && state != MinerState.idle && !miningScavengableObstacle) {
+            isInSafeZone = IsInSafeZone();
+            if (CheckBlockedByCreature() && state != MinerState.blockedByCreatures && state != MinerState.idle && !miningScavengableObstacle && !isInSafeZone) {
                 ChangeState(MinerState.blockedByCreatures);
                 return;
             };

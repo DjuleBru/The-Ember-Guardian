@@ -23,10 +23,6 @@ public class WorkerStatusEffectVisuals : MonoBehaviour
             float t = Mathf.Clamp01((attackSpeedBuff - 1) / maxAttackSpeedRate);
             float rate = Mathf.Lerp(minPSRate, maxPSRate, t);
 
-            Debug.Log("buff amount " + attackSpeedBuff);
-            Debug.Log("t " + t);
-            Debug.Log("rate " + rate);
-
             ParticleSystem.EmissionModule emissionModule = attackSpeedBuffPS.emission;
             emissionModule.rateOverTime = rate;
             attackSpeedBuffPS.Play();

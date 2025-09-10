@@ -113,7 +113,6 @@ public class SpecialTower : Structure {
         }
     }
 
-
     public override void SetEngineerWorking(EngineerJob engineer, bool working) {
         base.SetEngineerWorking(engineer, working);
 
@@ -186,6 +185,20 @@ public class SpecialTower : Structure {
     }
     public int GetMaxAmmoClips() {
         return maxAmmoClipsInStorage;
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D collision) {
+        base.OnTriggerEnter2D(collision);
+        if ((collision.gameObject.GetComponent<Player>() != null)) {
+            Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
+        }
+    }
+
+    protected override void OnTriggerExit2D(Collider2D collision) {
+        base.OnTriggerExit2D(collision);
+        if ((collision.gameObject.GetComponent<Player>() != null)) {
+            Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
+        }
     }
 
 }

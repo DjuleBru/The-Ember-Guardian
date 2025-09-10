@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Shrine_Hunter
   m_EditorClassIdentifier: 
   structureType: 4
+  structureCategory: 0
   structureLocationPrefab: {fileID: 8434879454533105174, guid: 70b355d293f7d1b43a655c7eb6d0e015, type: 3}
   structurePrefab: {fileID: 376005918902835770, guid: 23468147a69e171409db1142d8a3887d, type: 3}
-  structureSprite: {fileID: 450413676, guid: f1a9abab3be99fd42a9b60f4e52f5a1f, type: 3}
+  structureSprite: {fileID: 1171659442, guid: c39795eb7b2d7c349b4a819860e76287, type: 3}
   structureNameLocalizationKey: Hunter Shrine
   widthInCells: 2
   structurePositionMovable: 1
@@ -26,10 +27,16 @@ MonoBehaviour:
   upgradeableAtNight: 0
   functionUsableAtNight: 1
   playerCanAlwaysInteract: 0
+  engineerCanWorkByDay: 0
+  engineerCanWorkByNight: 0
+  workingEngineerHideTool: 0
+  workingEngineerHideVisual: 0
+  engineerWorkingPriority: 0
+  maxEngineersAssignedWorking: 0
+  maxEngineersAssignedRefilling: 0
+  refillCurrencyTypeNeeded: 0
   upgradeable: 0
-  tentLevelRequiredForLevel2: 2
-  tentLevelRequiredForLevel3: 3
-  tentLevelRequiredForLevel4: 4
+  maxLevel: 0
   buildingUpgradeSpriteList: []
   buildAudioClip: {fileID: 8300000, guid: 063f9aa3f22bb22419be6d9088f9c45a, type: 3}
   buildVolumeMultiplier: 1

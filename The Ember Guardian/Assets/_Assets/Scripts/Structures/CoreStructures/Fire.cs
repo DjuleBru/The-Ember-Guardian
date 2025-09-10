@@ -50,6 +50,7 @@ public class Fire : Structure, IDamageable {
 
     private FireOrbCollider fireOrbCollider;
     private bool initialFireLit;
+    private bool mainFireEmberExtractable;
     private bool emberExtracted;
     private bool emberExtractionDisabled;
     private float fuelLevel;
@@ -279,6 +280,7 @@ public class Fire : Structure, IDamageable {
 
     private void PlayerCurrencies_OnEmberDropped(object sender, EventArgs e) {
         emberExtracted = false;
+        EnableMainFireEmberExtraction(false);
     }
 
     private void Tent_OnStructureUpgraded(object sender, EventArgs e) {
@@ -443,10 +445,20 @@ public class Fire : Structure, IDamageable {
         if (isSecondaryFire) return;
 
         if(fuelLevel > (currentMaxFuelTreshold - fuelTickValue*3)) {
-            SetStructureSecondaryFunctionUnlocked(true);
+            EnableMainFireEmberExtraction(true);
+
         } else {
-            SetStructureSecondaryFunctionUnlocked(false);
+            EnableMainFireEmberExtraction(false);
         }
+    }
+
+    private void EnableMainFireEmberExtraction(bool enabled) {
+        if (mainFireEmberExtractable == enabled) return;
+
+        mainFireEmberExtractable = enabled;
+
+        SetStructureSecondaryFunctionUnlocked(enabled);
+        ActivateStructureSecondaryFunctionInteraction(enabled);
     }
 
     private void ChangeState(State newState) {

@@ -182,18 +182,18 @@ public class Chest : MonoBehaviour
     }
 
     protected IEnumerator OpenChestCoroutine(bool spawnCollectibles) {
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(.1f);
 
         if(chestDisappearsAutomaticallyAfterOpened) {
             Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
         }
 
-        yield return new WaitForSeconds(delayToChestUnlockAnimation);
+        yield return new WaitForSeconds(delayToChestUnlockAnimation - .1f);
 
         playerPayingCurrencies = false;
         OnChestUnlocked?.Invoke(this, EventArgs.Empty);
 
-        yield return new WaitForSeconds(delayToSpawnCollectibles - delayToChestUnlockAnimation);
+        yield return new WaitForSeconds(delayToSpawnCollectibles - delayToChestUnlockAnimation - .1f);
 
         if(spawnCollectibles) {
             int j = 0;
