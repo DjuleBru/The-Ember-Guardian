@@ -540,10 +540,10 @@ public class PlayerSkills : MonoBehaviour
 
         float absoluteBuffEffectValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
         float relativeBuffEffectValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
-
         if (skillItem.currentLevel > 1) {
             relativeBuffEffectValue -= skillEffect.GetValueAtLevel(skillItem.currentLevel - 1);
         }
+        Debug.Log(skillItem.itemName + " skillItem.currentLevel " + skillItem.currentLevel + " " + relativeBuffEffectValue);
 
         if (skillEffect != null) {
             switch (skillEffect.skillType) {
@@ -1216,9 +1216,10 @@ public class PlayerSkills : MonoBehaviour
         AddActiveSkill(skillItem);
     }
     [Button]
-    private void AddPassiveSkillDebug(SkillSO skillSO) {
+    private void AddPassiveSkillDebug(SkillSO skillSO, int level) {
         SkillItem skillItem = new SkillItem();
         skillItem.Initialize(skillSO);
+        skillItem.currentLevel = level;
         AddPassiveSkill(skillItem);
     }
 }

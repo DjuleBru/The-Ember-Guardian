@@ -30,7 +30,9 @@ public class ActiveHealOnKills : MonoBehaviour
     private void Creature_OnAnyMobDied(object sender, System.EventArgs e) {
         if (!PlayerSkills.Instance.GetHealPlayerOnKills()) return;
 
+        if (!(sender is Creature)) return;
         Creature creatureKilled = sender as Creature;
+
         Vector3 spawnPosition = creatureKilled.GetProjectileTarget().position;
        StartCoroutine(InstantiateHealPips(spawnPosition, PlayerSkills.Instance.GetHealPipsPerKill()));
     }

@@ -494,12 +494,12 @@ public class PlayerStats : MonoBehaviour
     #region BUFF TEMP PARAMETERS
 
     public void BuffMoveSpeed(float buffAmount) {
-        Debug.Log("BuffMoveSpeed " + initialMoveSpeed * buffAmount);
+        Debug.Log("BuffMoveSpeed " + buffAmount);
         moveSpeed += initialMoveSpeed * buffAmount;
         OnMoveSpeedChanged?.Invoke(this, EventArgs.Empty);
     }
     public void DebuffMoveSpeed(float buffAmount) {
-        Debug.Log("DebuffMoveSpeed " + initialMoveSpeed * buffAmount);
+        Debug.Log("DebuffMoveSpeed " + buffAmount);
         moveSpeed -= initialMoveSpeed * buffAmount;
         OnMoveSpeedChanged?.Invoke(this, EventArgs.Empty);
     }
@@ -538,7 +538,7 @@ public class PlayerStats : MonoBehaviour
 
     public void BuffPlayerAmmoRegen(float buffAmount) {
         Debug.Log("BuffPlayerAmmoRegen " + buffAmount);
-        ammoRegenTime = buffAmount;
+        ammoRegenTime += buffAmount;
         OnPlayerAmmoRegenTimeChanged?.Invoke(this, EventArgs.Empty);
     }
 

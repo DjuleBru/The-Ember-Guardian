@@ -137,7 +137,10 @@ public class DogAI : MonoBehaviour
     }
 
     protected virtual void Update() {
-        HandleGrowling();
+        if(state != State.stay) {
+            HandleGrowling();
+        }
+
         HandleBiteTimer();
 
         if(!IsNightState() && state != State.attacking && state != State.growling && state != State.barking) {

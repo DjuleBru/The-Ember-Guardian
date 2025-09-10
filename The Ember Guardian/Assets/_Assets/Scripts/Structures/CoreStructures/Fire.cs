@@ -153,9 +153,7 @@ public class Fire : Structure, IDamageable {
         }
 
         if (isSecondaryFire) {
-            fuelLevel = wildFuelTreshold - 1;
-            ChangeState(State.calm);
-            SetStructurePrimaryFunctionUnlocked(false);
+           ResetSecondaryFire();
         }
 
         if (isHubFire) {
@@ -170,7 +168,18 @@ public class Fire : Structure, IDamageable {
             LevelManager.Instance.OnLevelSuccess += LevelManager_OnLevelSuccess;
         }
     }
+    protected override void DayNightManager_OnDawnStart(object sender, EventArgs e) {
+        base.DayNightManager_OnDawnStart(sender, e);
+        if(isSecondaryFire && fuelLevel >= 0) {
+            ResetSecondaryFire();
+        }
+    }
 
+    private void ResetSecondaryFire() {
+        fuelLevel = wildFuelTreshold - 1;
+        ChangeState(State.calm);
+        SetStructurePrimaryFunctionUnlocked(false);
+    }
 
     private void Update() {
         HandleFuelDecrease();
@@ -224,7 +233,20 @@ public class Fire : Structure, IDamageable {
 
     protected override void TriggerStructurePrimaryFunction() {
         base.TriggerStructurePrimaryFunction();
-        StartCoroutine(OrbPaidToFuelCoroutine(.1f));
+
+        if (isSecondaryFire) {
+
+            fuelLevel = wildFuelTreshold - 1;
+            ChangeState(State.calm);
+            SetStructurePrimaryFunctionUnlocked(false);
+
+        } else {
+
+            StartCoroutine(OrbPaidToFuelCoroutine(.1f));
+
+        }
+
+
     }
 
     private IEnumerator OrbPaidToFuelCoroutine(float delay) {
@@ -402,7 +424,8 @@ public class Fire : Structure, IDamageable {
         if (fuelLevel < 0 && state == State.calm) {
             ChangeState(State.extinguished);
             if(isSecondaryFire) {
-                StartCoroutine(ReactivateStructureLocationAfterDelay());
+                SetStructurePrimaryFunctionUnlocked(true);
+                //StartCoroutine(ReactivateStructureLocationAfterDelay());
             }
         }
 
@@ -599,9 +622,11 @@ public class Fire : Structure, IDamageable {
         PlayerCurrencies.Instance.SetCarryingEmber(false);
     }
 
+    [Button]
     public void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
 
         fuelLevel -= (damage * damageToFuelConversionRate);
+        if (fuelLevel < 0) fuelLevel = -0.1f;
         OnFireDamageTaken?.Invoke(this, EventArgs.Empty);
         CheckFireStateDowngrade();
     }

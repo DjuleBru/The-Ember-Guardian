@@ -312,6 +312,10 @@ public class CreatureDetectionCollider : MonoBehaviour
             return false;
         } else {
             if (IsTargetBehindBarricade((fire as MonoBehaviour).transform)) return false;
+
+            Fire fireClass = fire as Fire;
+            if (fireClass.GetIsSecondaryFire() && fireClass.GetCurrentFuelLevel() < 0) return false;
+
             return true;
         }
     }
