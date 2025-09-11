@@ -9,6 +9,9 @@ public class StructureUI_Fire : StructureUI
 {
     public static StructureUI_Fire Instance;
 
+    [SerializeField] private List<PayCurrencyTemplateWorldUI> rebuildFirePayOrbsUI;
+    [SerializeField] private PayCurrencyTemplateWorldUI repairFirePayOrbsUI;
+    [SerializeField] private PayCurrencyUI payCurrencyUI;
     [SerializeField] private GameObject fireProgressBarGameObject;
     [SerializeField] private RectTransform progressBar;
     [SerializeField] private RectTransform progressBarContainer;
@@ -69,6 +72,8 @@ public class StructureUI_Fire : StructureUI
 
     protected override void Start() {
         base.Start();
+
+        RefreshRepairOrRebuildSecondaryFireUI();
         fire.OnPlayerTriggeredOut += Fire_OnPlayerTriggeredOut;
     }
 
@@ -95,6 +100,26 @@ public class StructureUI_Fire : StructureUI
 
             currentBarAmount = targetBarAmount;
         }
+    }
+
+    private void RefreshRepairOrRebuildSecondaryFireUI() {
+        if (!fire.GetIsSecondaryFire()) return;
+
+        List<PayCurrencyTemplateWorldUI> orbTemplateList = new List<PayCurrencyTemplateWorldUI>();
+        orbTemplateList.Add(repairFirePayOrbsUI);
+
+        if (fire.GetCurrentFuelLevel() < 0) {
+            foreach (PayCurrencyTemplateWorldUI worldTemplate in rebuildFirePayOrbsUI) {
+                worldTemplate.gameObject.SetActive(true);
+                orbTemplateList.Add(worldTemplate);
+            }
+        } else {
+            foreach (PayCurrencyTemplateWorldUI worldTemplate in rebuildFirePayOrbsUI) {
+                worldTemplate.gameObject.SetActive(false);
+            }
+        }
+
+        payCurrencyUI.SetOrbTemplateUIList(orbTemplateList);
     }
 
     private void DisplayProgressBar() {
@@ -230,7 +255,7 @@ public class StructureUI_Fire : StructureUI
 
         }
 
-        if(!Fire.Instance.GetFireFuelLevelCritical()) {
+        if(!Fire.Instance.GetFireFuelLevelCritical() && fire.GetIsMainFire()) {
             fireUIAnimator.SetBool("FuelCritical", false);
         }
 
@@ -350,6 +375,7 @@ public class StructureUI_Fire : StructureUI
     protected override void Structure_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
         base.Structure_OnPlayerTriggeredIn(sender, e);
         DisplayProgressBar();
+        RefreshRepairOrRebuildSecondaryFireUI();
     }
 
     public int GetMaxBarAmount() {

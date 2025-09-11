@@ -25,7 +25,7 @@ public class Tower : Structure
 
     protected float level1DamageMultiplier = 1.25f;
     protected float level2DamageMultiplier = 1.5f;
-    protected float level3DamageMultiplier = 1.5f;
+    protected float level3DamageMultiplier = 1.75f;
     protected float level4DamageMultiplier = 2f;
 
     public event EventHandler OnHunterGarrisoned;
@@ -104,7 +104,7 @@ public class Tower : Structure
 
         if (structureLevel == 4) {
             level4TowerCollider.SetActive(true);
-            maxWorkersAssigned = 3;
+            maxWorkersAssigned = 4;
         }
 
         foreach(Worker worker in assignedWorkersList) {

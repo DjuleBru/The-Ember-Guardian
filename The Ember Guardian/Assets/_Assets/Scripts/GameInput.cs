@@ -96,6 +96,7 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnCommandWorkerHeldDownStarted;
 
     public event EventHandler OnCurrencyCollectedFromContainer;
+    public event EventHandler OnRefundGunPerformed;
 
     private bool interactPressed;
     private bool holdingInteract;
@@ -185,6 +186,8 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.CampCustomizationDeselect.performed += Deselect_performed;
 
         playerInputActions.Player.CollectCurrencyFromContainer.performed += CollectCurrencyFromContainer_performed;
+
+        playerInputActions.Player.RefundWeapon.performed += RefundWeapon_performed;
     }
 
 
@@ -242,6 +245,9 @@ public class GameInput : MonoBehaviour
 
     private void CollectCurrencyFromContainer_performed(InputAction.CallbackContext obj) {
         OnCurrencyCollectedFromContainer?.Invoke(this, EventArgs.Empty);
+    }
+    private void RefundWeapon_performed(InputAction.CallbackContext obj) {
+        OnRefundGunPerformed?.Invoke(this, EventArgs.Empty);
     }
 
     private void Select_performed(InputAction.CallbackContext obj) {

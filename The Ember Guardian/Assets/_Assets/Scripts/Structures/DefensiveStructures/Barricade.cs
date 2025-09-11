@@ -124,10 +124,12 @@ public class Barricade : Structure, IDamageable {
         if (!barricadeVisual.GetBarricadeHasAllSprites()) {
             // At least 1 sprite fell
             SetStructureUpgradableUnlocked(false);
+            SetStructurePrimaryFunctionUnlocked(true);
+            barricadeRepairable = true;
+            needsRefill = true;
 
             if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
-                SetStructurePrimaryFunctionUnlocked(true);
-                barricadeRepairable = true;
+                // For engineers ?
                 needsRefill = true;
             }
         }

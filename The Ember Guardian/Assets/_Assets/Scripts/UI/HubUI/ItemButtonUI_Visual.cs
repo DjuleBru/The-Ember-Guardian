@@ -31,6 +31,10 @@ public class ItemButtonUI_Visual : MonoBehaviour
         StartCoroutine(StartBuyAnimationCoroutine(redCost, greenCost, blueCost, yellowCost, purpleCost, cyanCost));
     }
 
+    public void DisableAnimator() {
+        animator.enabled = false;
+    }
+
     private IEnumerator StartBuyAnimationCoroutine(int redCost, int greenCost, int blueCost, int yellowCost, int purpleCost, int cyanCost) {
         int greenParticlesToEmit = greenCost * 5;
         int redParticlesToEmit = redCost * 5;

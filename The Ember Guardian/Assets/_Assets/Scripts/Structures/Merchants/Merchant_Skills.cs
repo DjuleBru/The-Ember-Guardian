@@ -15,7 +15,15 @@ public class Merchant_Skills : Merchant
     protected List<SkillItem> majorSkillItemsForSale;
     protected List<SkillItem> minorSkillItemsForSale = new List<SkillItem>();
 
-    protected int drawWeightForBoughtSkills = 3;
+    protected int initialMajorSkillAmount = 3;
+    protected int maxMajorSkillAmount = 11;
+    protected int minDrawWeightForMajorBoughtSkills = 2;
+    protected int maxDrawWeightForMajorBoughtSkills = 5;
+
+    protected int initialMinorSkillAmount = 3;
+    protected int maxMinorSkillAmount = 14;
+    protected int minDrawWeightForMinorBoughtSkills = 3;
+    protected int maxDrawWeightForMinorBoughtSkills = 6;
 
     public static event EventHandler OnPlayerRefundedItem;
 
@@ -122,8 +130,8 @@ public class Merchant_Skills : Merchant
 
         // Calcul dynamique du weight en fonction du nombre total de skills
         // minWeight = 2 si peu d’éléments, maxWeight = 4 si beaucoup
-        int weight = 2 + (this.majorSkillList.Count - 3) * (4 - 2) / (10 - 3);
-        weight = Mathf.Clamp(weight, 2, 4); // limite entre 2 et 4
+        int weight = minDrawWeightForMajorBoughtSkills + (this.majorSkillList.Count - initialMajorSkillAmount) * (maxDrawWeightForMajorBoughtSkills - minDrawWeightForMajorBoughtSkills) / (maxMajorSkillAmount - initialMajorSkillAmount);
+        weight = Mathf.Clamp(weight, minDrawWeightForMajorBoughtSkills, maxDrawWeightForMajorBoughtSkills); // limite entre 2 et 4
 
         foreach (SkillItem skillItem in this.majorSkillList) {
             int currentLevel = PlayerSkills.Instance.GetCurrentSkillLevel(skillItem);
@@ -150,14 +158,30 @@ public class Merchant_Skills : Merchant
 
     protected void RefreshCurrentMinorItemListForSale() {
         // Pondération pour augmenter la chance des améliorations
-        List<SkillItem> minorSkillList = new List<SkillItem>();
+        List<SkillItem> minorSkillListToDisplay = new List<SkillItem>();
+
+        // Calcul dynamique du weight en fonction du nombre total de skills
+        // minWeight = 2 si peu d’éléments, maxWeight = 4 si beaucoup
+        int weight = minDrawWeightForMinorBoughtSkills + (this.majorSkillList.Count - initialMinorSkillAmount) * (maxDrawWeightForMinorBoughtSkills - minDrawWeightForMinorBoughtSkills) / (maxMinorSkillAmount - initialMinorSkillAmount);
+        weight = Mathf.Clamp(weight, minDrawWeightForMinorBoughtSkills, maxDrawWeightForMinorBoughtSkills); // limite entre 2 et 4
 
         foreach (SkillItem skillItem in this.minorSkillList) {
-            minorSkillList.Add(skillItem);
+            int currentLevel = PlayerSkills.Instance.GetCurrentSkillLevel(skillItem);
+
+            if (currentLevel > 0) {
+                // Skill déjà acquis
+                for (int i = 0; i < weight; i++) {
+                    minorSkillListToDisplay.Add(skillItem);
+                }
+            }
+            else {
+                // Skill pas encore acquis ou unique skill actif : pondération 1
+                minorSkillListToDisplay.Add(skillItem);
+            }
         }
 
         // Effectuer le tirage à partir de la liste pondérée
-        minorSkillItemsForSale = DrawSkillsWithoutReplacement(minorSkillList, smallItemsToDisplayAmount);
+        minorSkillItemsForSale = DrawSkillsWithoutReplacement(minorSkillListToDisplay, smallItemsToDisplayAmount);
         minorItemListForSale = ConvertSkillListInMerchantItemList(minorSkillItemsForSale);
 
         foreach (SkillItem skillItem in minorItemListForSale) {

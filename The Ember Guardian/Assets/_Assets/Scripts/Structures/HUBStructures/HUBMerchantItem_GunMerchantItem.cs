@@ -219,7 +219,69 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesAmount((int)modifiedSubExplosivesAmount);
         }
     }
-   
+
+    private void ResetStats() {
+        if (gunItem == GunItemType.bulletDamage || gunItem == GunItemType.explosionDamage) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetBulletDamage_Meta(linkedGunSO.damagePerBullet);
+        }
+
+        if (gunItem == GunItemType.shotsPerClip) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetShotsPerClip_Meta((int)linkedGunSO.shotsPerClip);
+        }
+
+        if (gunItem == GunItemType.maxAmmo) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetMaxAmmo_Meta((int)linkedGunSO.maxAmmo);
+        }
+
+        if (gunItem == GunItemType.cooldownTime) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetCooldownTime_Meta(linkedGunSO.shootCooldownTime);
+        }
+
+        if (gunItem == GunItemType.reloadTime) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetReloadTime_Meta(linkedGunSO.reloadTime);
+        }
+
+        if (gunItem == GunItemType.critChance) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetCritChange_Meta((int)linkedGunSO.critChance);
+        }
+
+        if (gunItem == GunItemType.shootConeAngle) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetShootConeAngle_Meta(linkedGunSO.shootConeAngle);
+        }
+
+        if (gunItem == GunItemType.pelletsPerBullet) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetPelletsPerBullet_Meta((int)linkedGunSO.pelletsPerBullet);
+        }
+
+        if (gunItem == GunItemType.range) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetGunBulletLifetime_Meta(linkedGunSO.bulletLifetime);
+        }
+
+        if (gunItem == GunItemType.surgeWindowBoost) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSurgeWindowBulletBoost(linkedGunSO.perfectQTEBulletAmountDamageBuffed);
+        }
+
+        if (gunItem == GunItemType.surgeWindowHitAmount) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetJamRepairHitAmount((int)linkedGunSO.jamRepairHitAmount);
+        }
+
+        if (gunItem == GunItemType.explosionRadiusBuff) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetExplosionRadiusModified(1);
+        }
+
+        if (gunItem == GunItemType.spinUpTime) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSpinUpDuration(linkedGunSO.spinUpDuration);
+        }
+
+        if (gunItem == GunItemType.subExplosivesDamage) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesDamage((int)linkedGunSO.subExplosivesDamage);
+        }
+
+        if (gunItem == GunItemType.subExplosivesAmount) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesAmount((int)linkedGunSO.subExplosivesAmount);
+        }
+    }
+
     private void RefreshStatValues() {
         statModifiedBools.Clear();
         statValues.Clear();
@@ -819,6 +881,13 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     }
     public GunSO GetLinkedGunSO() {
         return linkedGunSO;
+    }
+
+    public override void ResetGunItemStatus() {
+        base.ResetGunItemStatus();
+        ResetStats();
+        RefreshStatValues();
+        InvokeItemMustRefreshDescriptionCard();
     }
 
     private void OnDestroy() {

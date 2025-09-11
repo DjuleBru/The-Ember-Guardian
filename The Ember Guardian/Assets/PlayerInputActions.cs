@@ -260,6 +260,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RefundWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""c1aa3abc-bb84-4daa-a37b-84ea2a2c8173"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1010,6 +1019,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""CommandWorker"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""23ed4373-b4b0-462c-a37e-8ae0e1b8be91"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""RefundWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""27851e66-a225-44f1-967a-1e7777160f10"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""RefundWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1067,6 +1098,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_CampCustomizationDeselect = m_Player.FindAction("CampCustomizationDeselect", throwIfNotFound: true);
         m_Player_CollectCurrencyFromContainer = m_Player.FindAction("CollectCurrencyFromContainer", throwIfNotFound: true);
         m_Player_CommandWorker = m_Player.FindAction("CommandWorker", throwIfNotFound: true);
+        m_Player_RefundWeapon = m_Player.FindAction("RefundWeapon", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -1159,6 +1191,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_CampCustomizationDeselect;
     private readonly InputAction m_Player_CollectCurrencyFromContainer;
     private readonly InputAction m_Player_CommandWorker;
+    private readonly InputAction m_Player_RefundWeapon;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1189,6 +1222,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @CampCustomizationDeselect => m_Wrapper.m_Player_CampCustomizationDeselect;
         public InputAction @CollectCurrencyFromContainer => m_Wrapper.m_Player_CollectCurrencyFromContainer;
         public InputAction @CommandWorker => m_Wrapper.m_Player_CommandWorker;
+        public InputAction @RefundWeapon => m_Wrapper.m_Player_RefundWeapon;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1276,6 +1310,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CommandWorker.started += instance.OnCommandWorker;
             @CommandWorker.performed += instance.OnCommandWorker;
             @CommandWorker.canceled += instance.OnCommandWorker;
+            @RefundWeapon.started += instance.OnRefundWeapon;
+            @RefundWeapon.performed += instance.OnRefundWeapon;
+            @RefundWeapon.canceled += instance.OnRefundWeapon;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1358,6 +1395,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CommandWorker.started -= instance.OnCommandWorker;
             @CommandWorker.performed -= instance.OnCommandWorker;
             @CommandWorker.canceled -= instance.OnCommandWorker;
+            @RefundWeapon.started -= instance.OnRefundWeapon;
+            @RefundWeapon.performed -= instance.OnRefundWeapon;
+            @RefundWeapon.canceled -= instance.OnRefundWeapon;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1421,5 +1461,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnCampCustomizationDeselect(InputAction.CallbackContext context);
         void OnCollectCurrencyFromContainer(InputAction.CallbackContext context);
         void OnCommandWorker(InputAction.CallbackContext context);
+        void OnRefundWeapon(InputAction.CallbackContext context);
     }
 }

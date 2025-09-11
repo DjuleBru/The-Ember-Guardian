@@ -108,6 +108,7 @@ public class HubMerchantItem : MonoBehaviour
             itemBought = true;
             itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType());
             if(newItemUnlocked) {
+                Debug.Log(GetItemType() + " newItemUnlocked");
                 itemUnlocked = true;
             }
 
@@ -149,6 +150,8 @@ public class HubMerchantItem : MonoBehaviour
     public virtual void UnlockItem() {
         itemUnlocked = true;
         itemStatusChanged = true;
+
+        //Debug.Log("UnlockItem " + GetItemType());
     }
 
     public virtual void BuyItem() {
@@ -360,6 +363,25 @@ public class HubMerchantItem : MonoBehaviour
         return totalGemCosts;
     }
 
+    public int GetRedGemsPaid() {
+        InitializeCostLists();
+
+        // Cas 1 : Item non-upgradable et déjà acheté :plus de coût
+        if (!itemUpgradeable && itemBought) {
+            return redGemCost;
+        }
+
+        int totalGemCosts = 0;
+
+        if (linkedStatModifierSO != null) {
+            for(int i = 0; i < itemLevel; i++) {
+                totalGemCosts += linkedStatModifierSO.redGemCostList[i];
+            }
+        }
+
+        return totalGemCosts;
+    }
+
     public virtual string GetItemType() {
         return "defaultItemType";
     }
@@ -397,6 +419,7 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public void SetNewItemUnlocked(bool unlocked) {
+        Debug.Log(GetItemType() + " SetNewItemUnlocked " + unlocked);
         newItemUnlocked = unlocked;
         itemStatusChanged = true;
     }
@@ -443,6 +466,7 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public void ResetItemStatus() {
+
         MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), false);
         if (itemUpgradeable) {
             MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), 0);
@@ -455,5 +479,18 @@ public class HubMerchantItem : MonoBehaviour
         if(isBoughtAtStart) {
             MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(GetItemType(), false);
         }
+
+        
+    }
+    public virtual void ResetGunItemStatus() {
+        itemBought = false;
+        itemUnlocked = false;
+        itemLevel = 0;
+
+        itemStatusChanged = true;
+
+        UpdateItemCost();
+        OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
+        OnItemMustRefreshDescriptionCard?.Invoke(this, EventArgs.Empty);
     }
 }

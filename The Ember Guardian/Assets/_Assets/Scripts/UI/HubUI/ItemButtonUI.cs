@@ -16,6 +16,7 @@ public class ItemButtonUI : ButtonUI {
     [SerializeField] private List<ItemButtonUI> lockingItemButtonUIList;
     [SerializeField] private ItemDescriptionCardUI descriptionCard;
     [SerializeField] private GameObject newUnlockedItemGO;
+    private List<ItemButtonUI> initialLockingItemButtonUIList = new List<ItemButtonUI>();
 
     [SerializeField] private Color outlineUnlockedBuyableColor;
     [SerializeField] private Color outlineUnlockedButNotBuyableColor;
@@ -64,6 +65,10 @@ public class ItemButtonUI : ButtonUI {
         button = GetComponent<Button>();
         hubMerchantItem = GetComponent<HubMerchantItem>();
 
+        foreach (ItemButtonUI buttonUI in lockingItemButtonUIList) {
+            initialLockingItemButtonUIList.Add(buttonUI);
+        }
+
         newUnlockedItemGO.SetActive(false);
 
         iconImage.material = new Material(iconImage.material);
@@ -82,12 +87,21 @@ public class ItemButtonUI : ButtonUI {
         hubMerchantItem.OnItemMustRefreshDescriptionCard += HubMerchantItem_OnItemMustRefreshDescriptionCard;
         hubMerchantItem.OnHubMerchantItemEquipped += HubMerchantItem_OnHubMerchantItemEquipped;
         hubMerchantItem.OnHubMerchantItemUnequipped += HubMerchantItem_OnHubMerchantItemUnequipped;
+
+        if (hubMerchantItem is HUBMerchantItem_GunMerchantItem) {
+            HUBMerchantItem_GunMerchantItem gunItem = hubMerchantItem as HUBMerchantItem_GunMerchantItem;
+            if(gunItem.GetGunItemCategory() == HUBMerchantItem_GunMerchantItem.GunItemCategory.newGun) {
+                GameInput.Instance.OnRefundGunPerformed += GameInput_OnRefundGunPerformed;
+            }  
+        }
+
     }
 
     protected override void Start() {
         base.Start();
         HubChest.Instance.OnChestClosed += HubChest_OnChestClosed;
         UICurrencyManager.HubInventoryUI.OnCurrencyRemovedFromBag += HubInventoryUI_OnCurrencyRemovedFromBag;
+
 
         if(DebugManager.Instance.GetAllItemsUnlockedInDemo()) {
             itemLockedInDemo = false;
@@ -100,8 +114,54 @@ public class ItemButtonUI : ButtonUI {
         itemMaxLevelText.font = font;
         buyItemFromOtherMerchantText.font = font;
 
-
         RefreshItemStatusVisuals();
+    }
+
+    private void GameInput_OnRefundGunPerformed(object sender, EventArgs e) {
+        // ONLY SUBBED FOR GUNS
+
+        if (!itemHovered) return;
+        if (!hubMerchantItem.GetItemBought()) return;
+
+        int redGemsToRefund = GetTotalRedGunGemsToRefund();
+        if (redGemsToRefund == 0) return;
+
+        RefundGunItems();
+
+        StartBuyItemVisuals();
+        if (outputLinkUnlockedImageList.Count != 0) {
+            foreach (Image image in outputLinkUnlockedImageList) {
+                image.gameObject.SetActive(true);
+                StartCoroutine(UnlockOutputLink(image));
+            }
+        }
+
+        UICurrencyManager.HubInventoryUI.AddCurrencyAmount(PlayerCurrencies.CurrencyType.redGem, redGemsToRefund);
+    }
+
+    private int GetTotalRedGunGemsToRefund() {
+        int totalGems = 0;
+
+        HubMerchantItem[] childItems = treeShowHide.GetComponentsInChildren<HubMerchantItem>();
+        foreach (HubMerchantItem item in childItems) {
+            totalGems += item.GetRedGemsPaid();
+            item.ResetGunItemStatus();
+        }
+
+        return totalGems;
+    }
+
+    private void RefundGunItems() {
+        HubMerchantItem[] childItems = treeShowHide.GetComponentsInChildren<HubMerchantItem>();
+        foreach(HubMerchantItem item in childItems) {
+            item.GetComponent<ItemButtonUI>().ResetItemStatusVisuals();
+        }
+
+        foreach (HubMerchantItem item in childItems) {
+            item.ResetGunItemStatus();
+        }
+
+        hubMerchantItem.ResetGunItemStatus();
     }
 
     private void HubChest_OnChestClosed(object sender, EventArgs e) {
@@ -147,6 +207,9 @@ public class ItemButtonUI : ButtonUI {
     }
 
     private void HubMerchantItem_OnHubMerchantItemLoaded(object sender, EventArgs e) {
+        //Debug.Log(hubMerchantItem.GetItemType() + " unlocked " + hubMerchantItem.GetItemUnlocked());
+        //Debug.Log(hubMerchantItem.GetItemType() + " bought " + hubMerchantItem.GetItemBought());
+
         if (hubMerchantItem.GetItemUnlocked()) {
             SetItemUnlocked();
             if (hubMerchantItem.GetItemBought()) {
@@ -160,7 +223,6 @@ public class ItemButtonUI : ButtonUI {
 
         RefreshItemStatusVisuals();
         RefreshItemLevelUI();
-        //RefreshDescriptionCard();
     }
 
     private void RefreshDescriptionCard() {
@@ -308,7 +370,6 @@ public class ItemButtonUI : ButtonUI {
         else {
             outlineImage.sprite = outlineImageBoughtSprite;
         }
-
         outlineImage.color = boughtOutlineColor;
         backgroundImage.color = boughtBackgroundColor;
 
@@ -318,7 +379,7 @@ public class ItemButtonUI : ButtonUI {
     }
 
     private void SetItemBoughtVisuals() {
-        if(hubMerchantItem.GetItemUpgradeable() && hubMerchantItem.GetItemMaxed()) {
+        if (hubMerchantItem.GetItemUpgradeable() && hubMerchantItem.GetItemMaxed()) {
             outlineImage.sprite = itemMaxedOutlineSprite;
         } else {
             outlineImage.sprite = outlineImageBoughtSprite;
@@ -449,7 +510,6 @@ public class ItemButtonUI : ButtonUI {
             lockHoverInteractions = false;
         }
 
-
         if (!hubMerchantItem.GetItemUnlocked() || (itemLockedInDemo && HUBManager.Instance.GetIsDemo())) {
             outlineImage.color = Color.grey;
             return;
@@ -473,6 +533,25 @@ public class ItemButtonUI : ButtonUI {
         }
         else {
             outlineImage.color = outlineUnlockedBuyableColor;
+        }
+
+    }
+
+    public void ResetItemStatusVisuals() {
+        outlineImage.color = Color.grey;
+        iconImage.material = new Material(iconImage.material);
+        iconImage.material.SetFloat("_GreyscaleBlend", 1);
+        backgroundImage.color = Color.black;
+        itemButtonUI_Visual.DisableAnimator();
+
+        foreach (Image image in outputLinkUnlockedImageList) {
+            image.gameObject.SetActive(false);
+            image.fillAmount = 0f;
+        }
+
+        lockingItemButtonUIList.Clear();
+        foreach (ItemButtonUI itemButtonUI in initialLockingItemButtonUIList) {
+            lockingItemButtonUIList.Add(itemButtonUI);
         }
 
     }

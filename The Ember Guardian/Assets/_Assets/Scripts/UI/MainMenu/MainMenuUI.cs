@@ -25,6 +25,9 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] protected TextMeshProUGUI continueGameText;
     [SerializeField] protected TextMeshProUGUI newGameText;
     [SerializeField] private GameObject swapCharacter_WorldCanvas;
+    [SerializeField] private Image logoImage;
+    [SerializeField] private Sprite demoLogo;
+    [SerializeField] private Sprite fullGameLogo;
 
     [SerializeField] protected GameObject mainMenuPanelGameObject;
 
@@ -40,6 +43,12 @@ public class MainMenuUI : MonoBehaviour {
 
         InitializeButtonNavigation();
 
+        if (VersioningManager.Instance.GetIsDemo()) {
+            logoImage.sprite = demoLogo;
+        }
+        else {
+            logoImage.sprite = fullGameLogo;
+        }
 
         if (!VersioningManager.Instance.CheckNewSaveFile() && !VersioningManager.Instance.CheckIncompatibleSaveFile()) {
 

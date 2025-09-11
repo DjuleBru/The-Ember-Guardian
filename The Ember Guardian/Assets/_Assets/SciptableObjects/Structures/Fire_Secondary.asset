@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureType: 23
   structureCategory: 3
-  structureLocationPrefab: {fileID: 0}
+  structureLocationPrefab: {fileID: 3574990976365491178, guid: 4e2f2cc6afe16f04cb7146bee3401ff4, type: 3}
   structurePrefab: {fileID: 7487199635880563748, guid: 1c1b837e2a89bed47bcc13873e65e804, type: 3}
   structureSprite: {fileID: 178506026, guid: 657e709620ca29f4085136fdc303700a, type: 3}
   structureNameLocalizationKey: Kindled Beacon
@@ -27,10 +27,16 @@ MonoBehaviour:
   upgradeableAtNight: 0
   functionUsableAtNight: 1
   playerCanAlwaysInteract: 0
+  engineerCanWorkByDay: 0
+  engineerCanWorkByNight: 0
+  workingEngineerHideTool: 0
+  workingEngineerHideVisual: 0
+  engineerWorkingPriority: 0
+  maxEngineersAssignedWorking: 0
+  maxEngineersAssignedRefilling: 0
+  refillCurrencyTypeNeeded: 0
   upgradeable: 0
-  tentLevelRequiredForLevel2: 2
-  tentLevelRequiredForLevel3: 3
-  tentLevelRequiredForLevel4: 4
+  maxLevel: 0
   buildingUpgradeSpriteList: []
   buildAudioClip: {fileID: 8300000, guid: 49ffc0467b2fc53458cbe4ef6c9b4e3f, type: 3}
   buildVolumeMultiplier: 1

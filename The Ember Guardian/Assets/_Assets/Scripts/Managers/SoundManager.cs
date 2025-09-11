@@ -929,7 +929,10 @@ public class SoundManager : MonoBehaviour
 
     private void PlaySound2D(AudioClip[] audioClipArray, float volume = 1f) {
         if (audioClipArray.Length == 0) return;
-
+        if (audioSource2D == null) {
+            Debug.LogError("PlaySound2D ignoré car audioSource2D est null !");
+            return;
+        }
 
         if (audioClipArray.Length == 1) {
             float originalPitch = audioSource2D.pitch;
@@ -948,6 +951,10 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlaySound2D(AudioClip audioClip, float volume = 1f) {
+        if (audioSource2D == null) {
+            Debug.LogError("PlaySound2D ignoré car audioSource2D est null !");
+            return;
+        } 
         audioSource2D.PlayOneShot(audioClip, volume * sfxVolume);
     }
 

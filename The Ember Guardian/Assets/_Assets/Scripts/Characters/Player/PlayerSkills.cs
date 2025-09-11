@@ -73,6 +73,7 @@ public class PlayerSkills : MonoBehaviour
     private int darkMineDamage = 30;
     private int reaperDamage = 50;
 
+    private List<Fire> firesEntered = new List<Fire>();
     private bool enteredLight;
     private bool increasedDamageInFireLight;
     private bool damageInFireLightCurrentlyBuffed;
@@ -862,7 +863,13 @@ public class PlayerSkills : MonoBehaviour
         if (collision.gameObject.GetComponent<Fire>() != null) return;
         if (collision.gameObject.GetComponent<FireOrbCollider>() != null) return;
 
-        if (collision.gameObject.GetComponentInParent<Fire>() != null) {
+        Fire fire = collision.gameObject.GetComponentInParent<Fire>();
+
+        if (fire != null) {
+            if(!firesEntered.Contains(fire)) {
+                firesEntered.Add(fire);
+            }
+
             enteredLight = true;
 
             if (!increasedDamageInFireLight && !increasedDamageOutFireLight) return;
@@ -874,11 +881,19 @@ public class PlayerSkills : MonoBehaviour
         if (collision.gameObject.GetComponent<Fire>() != null) return;
         if (collision.gameObject.GetComponent<FireOrbCollider>() != null) return;
 
-        if (collision.gameObject.GetComponentInParent<Fire>() != null) {
-            enteredLight = false;
-            if (!increasedDamageInFireLight && !increasedDamageOutFireLight) return;
+        Fire fire = collision.gameObject.GetComponentInParent<Fire>();
+        if (fire != null) {
+            if (firesEntered.Contains(fire)) {
+                firesEntered.Remove(fire);
+            }
 
-            StartCoroutine(HandleBuffDebuffsFireLight(false, 0f));
+            if(firesEntered.Count == 0) {
+                enteredLight = false;
+                if (!increasedDamageInFireLight && !increasedDamageOutFireLight) return;
+
+                StartCoroutine(HandleBuffDebuffsFireLight(false, 0f));
+            }
+
         }
     }
 

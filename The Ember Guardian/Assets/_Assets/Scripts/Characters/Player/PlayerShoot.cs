@@ -59,6 +59,7 @@ public class PlayerShoot : MonoBehaviour
 
     private float setupLMGTime = 1.8f;
     private float setupLMGTimer;
+    private float lmgBipodAimAngleLimit = 25f;
     private bool settingUpLMG;
     private bool holdingStationaryGun;
     private bool emptyingRevolverMag;
@@ -711,7 +712,7 @@ public class PlayerShoot : MonoBehaviour
                 gunKnockback = 0f;
 
                 PlayerAim.Instance.SetGunStraight();
-                PlayerAim.Instance.SetLimitAimAngle(true, 10);
+                PlayerAim.Instance.SetLimitAimAngle(true, lmgBipodAimAngleLimit);
                 OnPlayerSetupLMGStarted?.Invoke(this, EventArgs.Empty);
                 OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
 

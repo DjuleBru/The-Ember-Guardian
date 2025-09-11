@@ -299,7 +299,6 @@ public class Fire : Structure, IDamageable {
         };
     }
 
-
     private void PlayerCurrencies_OnEmberDropped(object sender, EventArgs e) {
         emberExtracted = false;
         EnableMainFireEmberExtraction(false);
@@ -417,7 +416,19 @@ public class Fire : Structure, IDamageable {
         if (state == State.extinguished) {
             SetStructurePrimaryFunctionUnlocked(false);
         }
-    } 
+    }
+
+    private void CheckSecondaryFireFeedable() {
+        if (!isSecondaryFire) return;
+        //if (DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) return;
+
+        if (fuelLevel < wildFuelTreshold - 1) {
+            SetStructurePrimaryFunctionUnlocked(true);
+        }
+        else {
+            SetStructurePrimaryFunctionUnlocked(false);
+        }
+    }
 
     private void CheckFireStateDowngrade() {
 
@@ -442,6 +453,7 @@ public class Fire : Structure, IDamageable {
         }
 
         CheckFireFeedable();
+        CheckSecondaryFireFeedable();
     }
 
     private void CheckFireStateUpgrade() {

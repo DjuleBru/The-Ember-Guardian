@@ -74,6 +74,7 @@ public class CampEditManager : MonoBehaviour {
         GameInput.Instance.OnEditCampDeselect += GameInput_OnEditCampDeselect;
         GameInput.Instance.OnEditCampSelect += GameInput_OnEditCampSelect;
         GameInput.Instance.OnEditCampSelectReleased += GameInput_OnEditCampSelectReleased;
+        HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
 
         scrollRectEvents.OnDragEnded += ScrollRectEvents_OnDragEnded;
@@ -164,7 +165,6 @@ public class CampEditManager : MonoBehaviour {
     }
 
     private void CancelPlacement() {
-
         cancellingMovement = true;
         blueprintBeingMoved.SetMoving(false);
         campGrid.SetOccupiedCells(blueprintBeingMoved.currentCell.x, blueprintBeingMoved.widthInCells, false);
@@ -328,6 +328,15 @@ public class CampEditManager : MonoBehaviour {
 
     }
 
+    private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
+        HubMerchant merchant = sender as HubMerchant;
+        if (merchant.GetHubMerchantType() != HubMerchant.HubMerchantType.ArchitectTable) return;
+
+        if (GetMovingBlueprint()) {
+            CancelPlacement();
+        }
+    }
+
     private void GameInput_OnEditCampSelect(object sender, System.EventArgs e) {
         // Pickup blueprint logic
 
@@ -426,13 +435,12 @@ public class CampEditManager : MonoBehaviour {
         StructureBlueprint[] structureBlueprints = initialStructureBlueprintsParentGO.GetComponentsInChildren<StructureBlueprint>(true);
         savedLayout = new List<StructurePlacementData>();
 
-
         PlaceBlueprintOnGrid(tentBlueprint, tentBlueprintInitialCell);
 
         foreach (StructureBlueprint blueprint in structureBlueprints) {
             if (blueprint.GetBlueprintLocked()) continue;
             blueprint.gameObject.SetActive(true);
-            blueprint.SetInitialCell();
+            blueprint.SetOccupiedCells();
             PlaceBlueprintOnGrid(blueprint, blueprint.currentCell.x);
         }
 
@@ -451,7 +459,6 @@ public class CampEditManager : MonoBehaviour {
             if (!so.structurePositionMovable) {
                 continue; // Skip les structures non déplaçables
             }
-
             layoutToSave.Add(new StructurePlacementData(pair.Key, type));
         }
 
@@ -534,6 +541,7 @@ public class CampEditManager : MonoBehaviour {
 
     private void OnDestroy() {
         HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
+        HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
     }
 
 }

@@ -74,6 +74,12 @@ public class ItemDescriptionCardUI : MonoBehaviour
     }
 
     public void SetDescriptionCardCost(int greenGem, int redGem, int blueGem, int yellowGem, int purpleGem, int cyanGem) {
+        greenGemCostGO.SetActive(true);
+        redGemCostGO.SetActive(true);
+        blueGemCostGO.SetActive(true);
+        yellowGemCostGO.SetActive(true);
+        purpleGemCostGO.SetActive(true);
+        cyanGemCostGO.SetActive(true);
 
         redGemAmountText.text = redGem.ToString();
         greenGemAmountText.text = greenGem.ToString();

@@ -74,7 +74,7 @@ public class StructureStats : MonoBehaviour
 
         orbFuelValue = ES3.Load("orbFuelValue", initialOrbFuelValue);
         mainFireMaxFuelTreshold = ES3.Load("maxFuelTreshold", initialMaxFuelTreshold);
-        mainFireFuelDepletionRate = ES3.Load("fuelDepletionRate", initialFuelDepletionRate);
+        mainFireFuelDepletionRate = ES3.Load("mainFireFuelDepletionRate", initialFuelDepletionRate);
         secondaryFireMaxFuelTreshold = ES3.Load("secondaryFireMaxFuelTreshold", initialSecondaryFireMaxFuelTreshold);
         secondaryFireFuelDepletionRate = ES3.Load("secondaryFireFuelDepletionRate", initialSecondaryFireFuelDepletionRate);
 
@@ -276,7 +276,7 @@ public class StructureStats : MonoBehaviour
     }
 
     public int GetOrbProcessorSingleOrbCraftDuration() {
-        return singleAmmoCraftDuration;
+        return singleOrbCraftDuration;
     }
     public int GetInitialSingleOrbCraftDuration() {
         return initialSingleOrbCraftDuration;

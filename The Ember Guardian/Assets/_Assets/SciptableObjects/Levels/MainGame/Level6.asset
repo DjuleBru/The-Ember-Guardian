@@ -25,6 +25,7 @@ MonoBehaviour:
   minesAmount: 0
   chestAmount: 0
   wildEmberlingsAmount: 0
+  duskDurationIncreasePerDay: 0
   levelObjectiveType: 23
   endLevelType: 16
   talkToNpcAFterObjective: 0
@@ -37,6 +38,8 @@ MonoBehaviour:
   merchantsUnlockedInLevel: 
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 9fe254dc38fc9434ba8e2d89c0f9e6b7, type: 2}
   newMerchantTextLinesAfterLevel: []
+  unlocksNewGemType: 0
+  newGemTypeUnlockedByLevelList: 
   isReplayableLevel: 0
   totalDayCreatureDifficulty: 0
   dayCreatureTypes: []
@@ -52,6 +55,7 @@ MonoBehaviour:
   hasBoss: 1
   bossCreatureType: {fileID: 11400000, guid: 99d459fd6a02c044d90152bcc6de9ffb, type: 2}
   bossNightSpawns: 0400000008000000
+  bossNightWaveDifficultyMultiplier: 0.33
   startWaveToSpawnFromBothSides: 2
   baseDifficulty: 40
   intialMinSubwaveDifficulty: 10
@@ -71,6 +75,10 @@ MonoBehaviour:
     m_RotationOrder: 4
   maxWaveInAnimationCurve: 0
   canSpawnElite: 1
+  hasSpecialWaveTypes: 0
+  specialWaveTypesInLevel: 
+  specialWaveProbability: 0.25
+  maxSpecialWaveAmount: 2
   environmentType: 4
   hasFog: 0
   fogFrontAlpha: 0

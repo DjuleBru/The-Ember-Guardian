@@ -146,7 +146,7 @@ public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
 
             for(int  i = 0; i < spawnData.amount; i++) {
                 spawnData.mobSpawner.SpawnCreatures(spawnData.creatureType, 1, true);
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(.3f);
             }
 
         }

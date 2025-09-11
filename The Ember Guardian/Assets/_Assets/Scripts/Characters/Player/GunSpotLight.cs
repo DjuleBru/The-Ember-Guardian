@@ -116,6 +116,8 @@ public class GunSpotLight : MonoBehaviour
         Vector3 dir = gunVisualTransform.right;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         gunSpotLightTransform.eulerAngles = new Vector3(0, 0, angle - 90);
+
+        //Debug.Log(angle);
     }
     private void SettingsManager_OnAutoSwitchLightGunChanged(object sender, EventArgs e) {
         autoSwitchWithDay = SettingsManager.Instance.GetAutoSwitchLight();

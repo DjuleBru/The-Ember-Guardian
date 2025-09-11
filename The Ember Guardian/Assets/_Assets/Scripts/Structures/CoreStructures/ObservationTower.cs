@@ -64,18 +64,15 @@ public class ObservationTower : Structure
         ActivateObservationTower();
     }
 
-    protected override void DayNightManager_OnNightStart(object sender, EventArgs e) {
-        base.DayNightManager_OnNightStart(sender, e);
-
-        SetStructurePrimaryFunctionUnlocked(false);
-        if (observationTowerActive) {
-            DeactivateObservationTower();
-        }
-    }
     protected override void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         base.DayNightManager_OnDawnStart(sender, e);
 
+        if (observationTowerActive) {
+            DeactivateObservationTower();
+        }
+
         SetStructurePrimaryFunctionUnlocked(true);
+
     }
 
     [Button]
