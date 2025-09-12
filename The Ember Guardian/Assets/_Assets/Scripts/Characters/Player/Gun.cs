@@ -562,6 +562,7 @@ public class Gun : MonoBehaviour
 
     public void SetBulletDamage_Meta(int bulletDamage) {
         this.damagePerBullet = bulletDamage;
+        damagePerBulletAtRunStart = bulletDamage;
     }
     public void SetShotsPerClip_Meta(int shotsPerClip) {
         this.shotsPerClip = shotsPerClip;
@@ -641,7 +642,7 @@ public class Gun : MonoBehaviour
     public void SaveMetaParameters() {
         if (!gunUnlocked) return;
 
-        MetaProgressionManager.Instance.SetGunDamagePerBullet(gunSO, damagePerBullet);
+        MetaProgressionManager.Instance.SetGunDamagePerBullet(gunSO, damagePerBulletAtRunStart);
         MetaProgressionManager.Instance.SetGunExplosionRadiusMultiplier(gunSO, explosionRadiusMultiplier);
         MetaProgressionManager.Instance.SetGunShotsPerClip(gunSO, shotsPerClip);
         MetaProgressionManager.Instance.SetGunMaxAmmo(gunSO, maxAmmo);

@@ -37,7 +37,7 @@ MonoBehaviour:
   shotNeedsLoading: 1
   loadedShotFiredIfNotFullyLoaded: 1
   loadShotTime: 0.5
-  minLoadShotTime: 0.15
+  minLoadShotTime: 0
   delayBetweenClickAndShot: 0
   useAngleInPS: 0
   damagePerBullet: 60
@@ -45,7 +45,7 @@ MonoBehaviour:
   pelletsPerBullet: 1
   shotsPerClip: 2
   critChance: 15
-  bulletLifetime: 2
+  bulletLifetime: 1.5
   bulletSpeed: 30
   shootCooldownTime: 1
   reloadTime: 2
@@ -62,7 +62,7 @@ MonoBehaviour:
   weightAccelerationFactor: 1
   reloadAccelerationFactor: 0.75
   followMouseSpeed: 40
-  swapToWeaponTimeMultiplier: 1.5
+  swapToWeaponTimeMultiplier: 1
   gunKnockback: 0.8
   gunRecoil: 1.5
   gunRecoilDamping: 4
@@ -114,4 +114,4 @@ MonoBehaviour:
   gunJammedVolumeMultiplier: 1
   gunJamHitProgressVolumeMultiplier: 1
   gunJamRepairedVolumeMultiplier: 0.5
-  swapToWeaponVolumeMultiplier: 0.4
+  swapToWeaponVolumeMultiplier: 0.3

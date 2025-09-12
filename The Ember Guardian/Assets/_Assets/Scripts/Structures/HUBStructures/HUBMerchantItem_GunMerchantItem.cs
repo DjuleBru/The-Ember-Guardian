@@ -885,6 +885,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
     public override void ResetGunItemStatus() {
         base.ResetGunItemStatus();
+
         ResetStats();
         RefreshStatValues();
         InvokeItemMustRefreshDescriptionCard();

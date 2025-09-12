@@ -9,6 +9,8 @@ public class UICurrencyManagerVisual : MonoBehaviour
     [SerializeField] private bool debugAlwaysShow;
     [SerializeField] private UICurrencyManager uICurrencyManager;
 
+    [SerializeField] private RectTransform ammoSpawnTransform;
+    [SerializeField] private RectTransform gemSpawnTransform;
     [SerializeField] private Sprite level2OrbContainerSprite;
     [SerializeField] private Sprite level3OrbContainerSprite;
     [SerializeField] private Sprite level2AmmoPocketSprite;
@@ -137,6 +139,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
             gemColliderParentRT.anchoredPosition = level2GemCollidersParentPosition;
             RectTransform ammoColliderParentRT = ammoCollidersParent.GetComponent<RectTransform>();
             ammoColliderParentRT.anchoredPosition = level2AmmoCollidersParentPosition;
+
         }
         if (PlayerStats.Instance.GetBackpackOrbSizePercentBuff_Meta() == 35f) {
             level3OrbContainerCollider.SetActive(true);
@@ -153,6 +156,17 @@ public class UICurrencyManagerVisual : MonoBehaviour
             gemColliderParentRT.anchoredPosition = level3GemCollidersParentPosition;
             RectTransform ammoColliderParentRT = ammoCollidersParent.GetComponent<RectTransform>();
             ammoColliderParentRT.anchoredPosition = level3AmmoCollidersParentPosition;
+
+
+            Vector3 ammoSpawnPosition = ammoSpawnTransform.anchoredPosition;
+            ammoSpawnPosition.x -= 5f;
+            ammoSpawnTransform.anchoredPosition = ammoSpawnPosition;
+
+            Vector3 gemSpawnPosition = gemSpawnTransform.anchoredPosition;
+            Debug.Log("gemSpawnPosition " + gemSpawnPosition);
+            gemSpawnPosition.x += 5f;
+            Debug.Log("gemSpawnPosition " + gemSpawnPosition);
+            gemSpawnTransform.anchoredPosition = gemSpawnPosition;
         }
 
         if (PlayerStats.Instance.GetBackpackAmmoSizePercentBuff_Meta() == 0f) {

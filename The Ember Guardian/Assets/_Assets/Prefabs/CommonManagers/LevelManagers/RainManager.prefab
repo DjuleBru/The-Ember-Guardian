@@ -132,7 +132,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1d03e97f2b3d9145b2b5bfe70a302c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modernWater2D: {fileID: 0}
   rainPS_GroundCollisions: {fileID: 4339784872706408193}
   rainPS_NoCollisions: {fileID: 1536503293303148041}
   rainFrontFogSpriteRenderer: {fileID: 1034756387110975043}
@@ -303,6 +302,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6258882574851438883, guid: 7aa00ea1093b76046b900099b8130e32, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 39.88924
+      objectReference: {fileID: 0}
+    - target: {fileID: 6258882574851438883, guid: 7aa00ea1093b76046b900099b8130e32, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
       value: 0.5
       objectReference: {fileID: 0}
@@ -324,7 +327,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6969475776653821853, guid: 7aa00ea1093b76046b900099b8130e32, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6969475776653821853, guid: 7aa00ea1093b76046b900099b8130e32, type: 3}
       propertyPath: m_LocalPosition.z
@@ -386,13 +389,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: RainPS_GroundCollisions
       objectReference: {fileID: 0}
+    - target: {fileID: 6258882574851438883, guid: 7aa00ea1093b76046b900099b8130e32, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 39.951813
+      objectReference: {fileID: 0}
     - target: {fileID: 6969475776653821853, guid: 7aa00ea1093b76046b900099b8130e32, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6969475776653821853, guid: 7aa00ea1093b76046b900099b8130e32, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6969475776653821853, guid: 7aa00ea1093b76046b900099b8130e32, type: 3}
       propertyPath: m_LocalPosition.z

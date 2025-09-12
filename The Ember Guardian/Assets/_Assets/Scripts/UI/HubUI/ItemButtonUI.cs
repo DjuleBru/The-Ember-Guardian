@@ -59,6 +59,8 @@ public class ItemButtonUI : ButtonUI {
     public static event EventHandler OnAnyOutputLinkUnlocked;
     public static event EventHandler OnAnyLockedButtonTryPress;
     public static event EventHandler OnAnyHubMerchantItemFailedBuy;
+    public static event EventHandler OnAnyHubMerchantItemRefunded;
+    public event EventHandler OnHubMerchantItemRefunded;
     public static event EventHandler OnAnyHubMerchantItemTryBuyMaxedItem;
 
     public void InitializeItemButtonUI() {
@@ -119,13 +121,11 @@ public class ItemButtonUI : ButtonUI {
 
     private void GameInput_OnRefundGunPerformed(object sender, EventArgs e) {
         // ONLY SUBBED FOR GUNS
-
-        if (!itemHovered) return;
-        if (!hubMerchantItem.GetItemBought()) return;
-
+        bool isUsingGamepad = GameInput.Instance.IsUsingGamepad();
+        if (!itemHovered && !isUsingGamepad) return;
+        if (!itemSelected && isUsingGamepad) return;
+        if (!GetItemRefundable()) return;
         int redGemsToRefund = GetTotalRedGunGemsToRefund();
-        if (redGemsToRefund == 0) return;
-
         RefundGunItems();
 
         StartBuyItemVisuals();
@@ -136,16 +136,23 @@ public class ItemButtonUI : ButtonUI {
             }
         }
 
-        UICurrencyManager.HubInventoryUI.AddCurrencyAmount(PlayerCurrencies.CurrencyType.redGem, redGemsToRefund);
+        UICurrencyManager.HubInventoryUI.AddCurrencyAmount(PlayerCurrencies.CurrencyType.redGem, redGemsToRefund, .15f);
     }
 
-    private int GetTotalRedGunGemsToRefund() {
+    public bool GetItemRefundable() {
+        if (!hubMerchantItem.GetItemBought()) return false;
+        int redGemsToRefund = GetTotalRedGunGemsToRefund();
+        if (redGemsToRefund == 0) return false;
+
+        return true;
+    }
+
+    public int GetTotalRedGunGemsToRefund() {
         int totalGems = 0;
 
         HubMerchantItem[] childItems = treeShowHide.GetComponentsInChildren<HubMerchantItem>();
         foreach (HubMerchantItem item in childItems) {
             totalGems += item.GetRedGemsPaid();
-            item.ResetGunItemStatus();
         }
 
         return totalGems;
@@ -162,6 +169,8 @@ public class ItemButtonUI : ButtonUI {
         }
 
         hubMerchantItem.ResetGunItemStatus();
+        OnAnyHubMerchantItemRefunded?.Invoke(this, EventArgs.Empty);
+        OnHubMerchantItemRefunded?.Invoke(this, EventArgs.Empty);
     }
 
     private void HubChest_OnChestClosed(object sender, EventArgs e) {

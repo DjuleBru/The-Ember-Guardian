@@ -11,6 +11,7 @@ public class ButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPo
     public static event EventHandler OnAnyButtonHovered;
     public static event EventHandler OnAnyButtonPressed;
     public static event EventHandler OnAnyButtonUnhovered;
+    public event EventHandler OnPointerExitedButtonUI;
 
     protected bool buttonSelected;
     protected bool buttonHovered;
@@ -62,6 +63,7 @@ public class ButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPo
 
     public virtual void OnPointerExit(PointerEventData eventData) {
         buttonHovered = false;
+        OnPointerExitedButtonUI?.Invoke(this, EventArgs.Empty);
     }
 
     public void OnDeselect(BaseEventData eventData) {

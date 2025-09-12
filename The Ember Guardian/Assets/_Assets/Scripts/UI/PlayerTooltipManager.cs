@@ -175,7 +175,7 @@ public class PlayerTooltipManager : MonoBehaviour
                 PrepareTooltipInstruction(AssaultRifleText1, AssaultRifleText2, InputControlIcons.Control.SecondaryGunAbility);
             }
             if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.GrenadeLauncher) {
-                PrepareTooltipInstruction(GrenadeLauncherText1, GrenadeLauncherText2, InputControlIcons.Control.Shoot);
+                PrepareTooltipInstruction(GrenadeLauncherText1, GrenadeLauncherText2, InputControlIcons.Control.SecondaryGunAbility);
             }
             if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.LMG) {
                 PrepareTooltipInstruction(LMGText1, LMGText2, InputControlIcons.Control.SecondaryGunAbility);

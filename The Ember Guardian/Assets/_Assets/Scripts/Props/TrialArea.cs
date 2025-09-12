@@ -82,6 +82,7 @@ public class TrialArea : MonoBehaviour
 
     protected void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         StartCoroutine(StartTrialCoroutine());
+        trialChest.SetTrialChestPaid();
     }
 
     private IEnumerator StartTrialCoroutine() {
@@ -104,7 +105,7 @@ public class TrialArea : MonoBehaviour
         yield return new WaitForSeconds(1f);
         for(int i =  0; i <= spawnersPerWave-1; i++) {
             MobSpawner spawner = creatureSpawners[currentSpawner];
-            yield return StartCoroutine(spawner.SpawnMobsCoroutine(.5f));
+            yield return StartCoroutine(spawner.SpawnMobsCoroutine(.25f));
             currentSpawner++;
         }
 
@@ -149,6 +150,7 @@ public class TrialArea : MonoBehaviour
 
     protected void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
+        if (trialStarted || trialCompleted) return;
 
         payCurrencyUI.SetPlayerInteracting(true);
     }

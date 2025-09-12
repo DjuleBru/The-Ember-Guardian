@@ -139,6 +139,7 @@ public class SoundManager : MonoBehaviour
         ItemButtonUI_Visual.OnAnyGemPSTriggered += ItemButtonUI_Visual_OnAnyGemPSTriggered;
         ItemButtonUI.OnAnyLockedButtonTryPress += ItemButtonUI_OnAnyLockedButtonTryPress;
         ItemButtonUI.OnAnyHubMerchantItemTryBuyMaxedItem += ItemButtonUI_OnAnyHubMerchantItemTryBuyMaxedItem;
+        ItemButtonUI.OnAnyHubMerchantItemRefunded += ItemButtonUI_OnAnyHubMerchantItemRefunded;
 
         ParticleCollision.OnAnyBulletHitEnemy += ParticleCollision_OnAnyBulletHitEnemy;
         ParticleCollision.OnAnyBulletHitGround += ParticleCollision_OnAnyBulletHitGround;
@@ -262,6 +263,10 @@ public class SoundManager : MonoBehaviour
     private void ItemButtonUI_OnAnyHubMerchantItemTryBuyMaxedItem(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.tryBuyMaxedHubMerchantItem);
     }
+    private void ItemButtonUI_OnAnyHubMerchantItemRefunded(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.hubMerchantRefundItem);
+    }
+
     private void CampEditManager_OnStructureDropped(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.campEdit_StructureDropped, .75f);
     }
@@ -1046,6 +1051,8 @@ public class SoundManager : MonoBehaviour
         ItemButtonUI.OnAnyHubMerchantItemFailedBuy -= ItemButtonUI_OnAnyHubMerchantItemFailedBuy;
         ItemButtonUI_Visual.OnAnyGemPSTriggered -= ItemButtonUI_Visual_OnAnyGemPSTriggered;
         ItemButtonUI.OnAnyLockedButtonTryPress -= ItemButtonUI_OnAnyLockedButtonTryPress;
+        ItemButtonUI.OnAnyHubMerchantItemTryBuyMaxedItem -= ItemButtonUI_OnAnyHubMerchantItemTryBuyMaxedItem;
+        ItemButtonUI.OnAnyHubMerchantItemRefunded -= ItemButtonUI_OnAnyHubMerchantItemRefunded;
         MenuButton.OnAnyMenuButtonHovered -= MenuButton_OnAnyMenuButtonHovered;
         MenuButton.OnAnyMenuButtonPressed -= MenuButton_OnAnyMenuButtonPressed;
         StructureBlueprint.OnAnyBlueprintWithStructureHovered -= StructureBlueprint_OnAnyBlueprintWithStructureHovered;

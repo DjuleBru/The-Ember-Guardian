@@ -66,6 +66,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip failBuyHubMerchantItem;
     public AudioClip tryBuyLockedHubMerchantItem;
     public AudioClip tryBuyMaxedHubMerchantItem;
+    public AudioClip hubMerchantRefundItem;
     public AudioClip merchantRefundItem;
     public AudioClip[] gemPSExplosion;
 

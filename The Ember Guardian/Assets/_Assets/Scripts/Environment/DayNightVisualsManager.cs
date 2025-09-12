@@ -433,7 +433,7 @@ public class DayNightVisualsManager : MonoBehaviour
     public IEnumerator RefreshSunColorBasedOnDifficultyAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
 
-        float currentWaveDifficulty = CreaturesSpawnManager.Instance.GetCurrentWaveDifficulty();
+        float currentWaveDifficulty = CreaturesSpawnManager.Instance.GetRawCurrentWaveDifficulty();
         float referenceWaveDifficulty = CreaturesSpawnManager.Instance.GetReferenceWaveDifficulty();
 
         float dangerRatio = currentWaveDifficulty / referenceWaveDifficulty;

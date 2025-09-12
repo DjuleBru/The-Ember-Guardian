@@ -223,4 +223,9 @@ public class CreatureAI_TarnishedWidow : CreatureAI
     public void ExitWaveDebug() {
         StartCoroutine(ExitWave());
     }
+
+    public bool GetIsFirstAppearance() {
+        return isFirstAppearance;
+    }
+
 }

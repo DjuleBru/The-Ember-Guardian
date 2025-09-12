@@ -437,7 +437,27 @@ public class PlayerSkills : MonoBehaviour
 
     public void AddActiveSkill(SkillItem skillItem) {
 
-        if (activeSkillLeft == null || activeSkillLeft.skillType == skillItem.skillType) {
+        if(activeSkillLeft != null && activeSkillLeft.skillType == skillItem.skillType) {
+            activeSkillLeft = skillItem;
+            leftSkillCooldown = activeSkillLeft.skillSO.activeSkillEffect.GetCooldownAtLevel(skillItem.currentLevel);
+            OnActiveSkillAdded?.Invoke(this, new OnSkillAddedEventArgs {
+                skillItemAdded = skillItem
+            });
+            SetActiveSkillParameters(skillItem);
+            return;
+        }
+
+        if (activeSkillRight != null && activeSkillRight.skillType == skillItem.skillType) {
+            activeSkillRight = skillItem;
+            rightSkillCooldown = activeSkillRight.skillSO.activeSkillEffect.GetCooldownAtLevel(skillItem.currentLevel);
+            OnActiveSkillAdded?.Invoke(this, new OnSkillAddedEventArgs {
+                skillItemAdded = skillItem
+            });
+            SetActiveSkillParameters(skillItem);
+            return;
+        }
+
+        if (activeSkillLeft == null) {
             // Active skill left is null OR player is upgrading left skill
 
             activeSkillLeft = skillItem;
@@ -449,11 +469,11 @@ public class PlayerSkills : MonoBehaviour
             return;
         }
 
-        if (activeSkillRight == null || activeSkillRight.skillType == skillItem.skillType) {
+        if (activeSkillRight == null) {
             // Active skill right is null OR player is upgrading right skill
 
             activeSkillRight = skillItem;
-            rightSkillCooldown = activeSkillLeft.skillSO.activeSkillEffect.GetCooldownAtLevel(skillItem.currentLevel);
+            rightSkillCooldown = activeSkillRight.skillSO.activeSkillEffect.GetCooldownAtLevel(skillItem.currentLevel);
             OnActiveSkillAdded?.Invoke(this, new OnSkillAddedEventArgs {
                 skillItemAdded = skillItem
             });
@@ -658,6 +678,7 @@ public class PlayerSkills : MonoBehaviour
             if (activeSkillLeft.skillType == skillItem.skillType) {
                 // Removing left skill
 
+                activeSkillLeft.currentLevel = 0;
                 activeSkillLeft = null;
                 OnActiveSkillRemoved?.Invoke(this, new OnSkillAddedEventArgs {
                     skillItemAdded = skillItem
@@ -671,6 +692,7 @@ public class PlayerSkills : MonoBehaviour
             if (activeSkillRight.skillType == skillItem.skillType) {
                 // Removing left skill
 
+                activeSkillRight.currentLevel = 0;
                 activeSkillRight = null;
                 OnActiveSkillRemoved?.Invoke(this, new OnSkillAddedEventArgs {
                     skillItemAdded = skillItem

@@ -80,7 +80,7 @@ public class BossUI : MonoBehaviour
         float currentHealth = linkedBoss.GetCreatureHealth();
         float healthNormalized = currentHealth / maxHealth;
 
-        if(bossHasMultiplePhases) {
+        if (bossHasMultiplePhases) {
             if (healthNormalized > 0.5f) {
                 // Phase 1 encore en cours
                 bossHealthBarPhase1.fillAmount = (healthNormalized - 0.5f) / 0.5f; // 100% à 50%
@@ -92,6 +92,11 @@ public class BossUI : MonoBehaviour
                 bossHealthBarPhase2.fillAmount = healthNormalized / 0.5f; // 50% à 0%
             }
         } else {
+
+            if (linkedBoss.GetCreatureSO().enemyName == "TarnishedWidow") {
+                healthNormalized = (healthNormalized - .5f) * 2;
+            }
+
             bossHealthBarFill.fillAmount = healthNormalized;
         }
     }

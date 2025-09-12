@@ -419,7 +419,6 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public void SetNewItemUnlocked(bool unlocked) {
-        Debug.Log(GetItemType() + " SetNewItemUnlocked " + unlocked);
         newItemUnlocked = unlocked;
         itemStatusChanged = true;
     }
@@ -440,8 +439,14 @@ public class HubMerchantItem : MonoBehaviour
 
         if (!itemStatusChanged) return;
 
-        if(itemBought && !MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType())) {
+        bool itemBoughtInSave = MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType());
+        if (itemBought && !itemBoughtInSave) {
             MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), itemBought);
+        }
+        if (!itemBought && itemBoughtInSave) {
+            MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType(), itemUnlocked);
+            MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), itemBought);
+            MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), itemLevel);
         }
 
         if (itemUpgradeable && MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType()) != itemLevel) {
@@ -482,6 +487,7 @@ public class HubMerchantItem : MonoBehaviour
 
         
     }
+
     public virtual void ResetGunItemStatus() {
         itemBought = false;
         itemUnlocked = false;
@@ -491,6 +497,5 @@ public class HubMerchantItem : MonoBehaviour
 
         UpdateItemCost();
         OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
-        OnItemMustRefreshDescriptionCard?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -236,7 +236,7 @@ public class MusicManager : MonoBehaviour {
 
     private void Player_OnPlayerStoppedExploring(object sender, EventArgs e) {
         if(isPlayingExplorationMusic) {
-            StopCurrentMusic(2f);
+            //StopCurrentMusic(2f);
         }
     }
 
@@ -398,6 +398,7 @@ public class MusicManager : MonoBehaviour {
         if (waitingToDiscoverLocation) return false;
         if (isDuskOrNight) return false;
         if (isPlayingEndLevelAreaMusic) return false;
+        if (isPlayingExplorationMusic) return false;
 
         return true;
     }

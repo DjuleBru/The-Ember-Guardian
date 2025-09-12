@@ -597,7 +597,7 @@ public class Creature : Mob
     public int GetCreatureHealth() {
         return health;
     }
-    public int GetCreatureMaxHealth() {
+    public virtual int GetCreatureMaxHealth() {
         return maxHealth;
     }
     public bool GetIsEliteCreature() {

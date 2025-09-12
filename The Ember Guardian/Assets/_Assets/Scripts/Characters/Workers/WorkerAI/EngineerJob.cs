@@ -300,7 +300,7 @@ public class EngineerJob : WorkerJob {
     }
 
     public void AssignStructure(Structure structure, bool working, bool refilling) {
-        if (assignedStructure != null) {
+        if (assignedStructure != null && assignedStructure != structure) {
             UnassignStructure();
         }
 

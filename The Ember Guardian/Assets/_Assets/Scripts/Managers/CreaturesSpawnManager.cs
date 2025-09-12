@@ -85,9 +85,11 @@ public class CreaturesSpawnManager : MonoBehaviour {
     [SerializeField] private float referenceWaveGrowthFactor;
     private float referenceWaveDifficulty;
     private float waveDifficulty;
-    private float initialMinSubwaveDifficulty;
+    private float minSubwaveDifficulty_min;
+    private float minSubwaveDifficulty_max;
     private float minSubwaveDifficulty;
-    private float initialMaxSubwaveDifficulty;
+    private float maxSubwaveDifficulty_min;
+    private float maxSubwaveDifficulty_max;
     private float maxSubwaveDifficulty;
     private float waveDifficultyLeftProportion;
     private float waveDifficultyRightProportion;
@@ -127,10 +129,10 @@ public class CreaturesSpawnManager : MonoBehaviour {
         bossNightsSpawns = levelSO.bossNightSpawns;
         bossNightWaveDifficultyMultiplier = levelSO.bossNightWaveDifficultyMultiplier;
 
-        minSubwaveDifficulty = levelSO.minSubwaveDifficulty;
-        initialMinSubwaveDifficulty = levelSO.intialMinSubwaveDifficulty;
-        maxSubwaveDifficulty = levelSO.maxSubwaveDifficulty;
-        initialMaxSubwaveDifficulty = levelSO.intialMaxSubwaveDifficulty;
+        minSubwaveDifficulty_max = levelSO.minSubwaveDifficulty;
+        minSubwaveDifficulty_min = levelSO.intialMinSubwaveDifficulty;
+        maxSubwaveDifficulty_max = levelSO.maxSubwaveDifficulty;
+        maxSubwaveDifficulty_min = levelSO.intialMaxSubwaveDifficulty;
 
         growthFactor = levelSO.growthFactor;
         minMaxSubwaveDifficultyGrowthFactor = levelSO.minMaxSubwaveDifficultyGrowthFactor;
@@ -291,8 +293,8 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
         }
 
-        minSubwaveDifficulty = initialMinSubwaveDifficulty * Mathf.Pow(minMaxSubwaveDifficultyGrowthFactor, waveNumber);
-        maxSubwaveDifficulty = initialMaxSubwaveDifficulty * Mathf.Pow(minMaxSubwaveDifficultyGrowthFactor, waveNumber);
+        minSubwaveDifficulty = Mathf.Min(minSubwaveDifficulty_min * Mathf.Pow(minMaxSubwaveDifficultyGrowthFactor, waveNumber), minSubwaveDifficulty_max);
+        maxSubwaveDifficulty = Mathf.Min(maxSubwaveDifficulty_min * Mathf.Pow(minMaxSubwaveDifficultyGrowthFactor, waveNumber), maxSubwaveDifficulty_max);
 
         // Appliquer le multiplicateur cumulatif
         waveDifficulty *= cumulativeDifficultyMultiplier;
@@ -731,7 +733,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         // Afficher les résultats dans le format souhaité
         foreach (var kvp in occurrences) {
             var (creatureType, position) = kvp.Key;
-            Debug.Log($"Creature Type: {creatureType.name}, Spawn Position: {position}, Count: {kvp.Value}");
+            //Debug.Log($"Creature Type: {creatureType.name}, Spawn Position: {position}, Count: {kvp.Value}");
         }
     }
 
@@ -791,8 +793,14 @@ public class CreaturesSpawnManager : MonoBehaviour {
         return currentWaveNumber;
     }
 
-    public float GetCurrentWaveDifficulty() {
-        return waveDifficulty;
+    public float GetRawCurrentWaveDifficulty() {
+        float rawWaveDifficulty = waveDifficulty;
+        if (bossSpawnsThisNight) {
+            rawWaveDifficulty /= bossNightWaveDifficultyMultiplier;
+        }
+
+        Debug.Log("bossSpawnsThisNight " + bossSpawnsThisNight + " rawWaveDifficulty " + rawWaveDifficulty);
+        return rawWaveDifficulty;
     }
     public float GetMaxWaveDifficulty() {
         return maxWaveDifficulty;

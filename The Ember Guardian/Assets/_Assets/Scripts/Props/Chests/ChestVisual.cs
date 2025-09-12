@@ -31,7 +31,9 @@ public class ChestVisual : MonoBehaviour
         chest.OnPlayerTriggeredIn += Chest_OnPlayerTriggeredIn;
         chest.OnPlayerTriggeredOut += Chest_OnPlayerTriggeredOut;
         chest.OnChestOpenedAnimationOver += Chest_OnChestOpenedAnimationOver;
+        chest.OnChestOpenable += Chest_OnChestOpenable;
     }
+
 
     protected virtual void Start() {
         chest.OnChestOpened += Chest_OnChestOpened;
@@ -62,6 +64,12 @@ public class ChestVisual : MonoBehaviour
             animator.runtimeAnimatorController = trapChestAnimator;
         }
     }
+
+    private void Chest_OnChestOpenable(object sender, System.EventArgs e) {
+        inputIconAnimator.ResetTrigger("Hide");
+        inputIconAnimator.SetTrigger("Show");
+    }
+
     protected void Chest_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
         chestSpriteRenderer.material = unhoveredMaterial;
 
@@ -87,8 +95,6 @@ public class ChestVisual : MonoBehaviour
             hoveringIndicatorGO.SetActive(false);
         }
     }
-
-
     protected void Chest_OnChestDisappear(object sender, System.EventArgs e) {
         animator.SetTrigger("Disappear");
         inputIconAnimator.gameObject.SetActive(false);

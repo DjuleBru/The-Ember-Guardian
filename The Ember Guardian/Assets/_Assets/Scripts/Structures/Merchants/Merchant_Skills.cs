@@ -30,6 +30,18 @@ public class Merchant_Skills : Merchant
     protected override void Start() {
         base.Start();
         PlayerSkills.Instance.OnInitialSkillsInitialized += PlayerSkills_OnInitialSkillsInitialized;
+        PlayerSkills.Instance.OnActiveSkillRemoved += PlayerSkills_OnActiveSkillRemoved;
+    }
+
+    private void PlayerSkills_OnActiveSkillRemoved(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
+        SkillItem skillItemRemoved = e.skillItemAdded;
+
+        foreach (SkillItem majorSkillItem in majorSkillList) {
+            if (skillItemRemoved.itemName == majorSkillItem.itemName) {
+                majorSkillItem.currentLevel = 1;
+                majorSkillItem.price = CalculateCost(majorSkillItem);
+            }
+        }
     }
 
     private void PlayerSkills_OnInitialSkillsInitialized(object sender, System.EventArgs e) {
@@ -136,6 +148,9 @@ public class Merchant_Skills : Merchant
         foreach (SkillItem skillItem in this.majorSkillList) {
             int currentLevel = PlayerSkills.Instance.GetCurrentSkillLevel(skillItem);
 
+            // Skill déjà au niveau max
+            if (currentLevel == skillItem.maxLevel) continue;
+
             if (currentLevel > 0 && activeSkillCount > 1) {
                 // Skill déjà acquis et plus d’un skill actif : appliquer la pondération
                 for (int i = 0; i < weight; i++) {
@@ -162,11 +177,14 @@ public class Merchant_Skills : Merchant
 
         // Calcul dynamique du weight en fonction du nombre total de skills
         // minWeight = 2 si peu d’éléments, maxWeight = 4 si beaucoup
-        int weight = minDrawWeightForMinorBoughtSkills + (this.majorSkillList.Count - initialMinorSkillAmount) * (maxDrawWeightForMinorBoughtSkills - minDrawWeightForMinorBoughtSkills) / (maxMinorSkillAmount - initialMinorSkillAmount);
+        int weight = minDrawWeightForMinorBoughtSkills + (this.minorSkillList.Count - initialMinorSkillAmount) * (maxDrawWeightForMinorBoughtSkills - minDrawWeightForMinorBoughtSkills) / (maxMinorSkillAmount - initialMinorSkillAmount);
         weight = Mathf.Clamp(weight, minDrawWeightForMinorBoughtSkills, maxDrawWeightForMinorBoughtSkills); // limite entre 2 et 4
 
         foreach (SkillItem skillItem in this.minorSkillList) {
             int currentLevel = PlayerSkills.Instance.GetCurrentSkillLevel(skillItem);
+
+            // Skill déjà au niveau max
+            if (currentLevel == skillItem.maxLevel) continue;
 
             if (currentLevel > 0) {
                 // Skill déjà acquis

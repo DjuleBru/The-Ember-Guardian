@@ -22,9 +22,10 @@ public class GunJamHandler : MonoBehaviour
     private float gunJamDuration;
     private float gunJamTimer;
 
-    private float inputSequenceTimePerInput = 1.4f;
-    private float spamButtonTimePerTick = 1.5f;
-    private float timingQTETimePerTick = 1.5f;
+    private float inputSequenceTimePerInput = 1.1f;
+    private float spamButtonTimePerTick = 1.25f;
+    private float timingQTETimePerTick = 1.25f;
+    private float minTimingQTETimePerTick = 1f;
     private float wrongInputTimePenaltyPercent = .2f;
 
     private Queue<GameInput.Binding> initialInputSequence;
@@ -188,7 +189,7 @@ public class GunJamHandler : MonoBehaviour
             lastStageReached = 0;
             spamStageCount = PlayerShoot.Instance.GetHeldGun().GetJamRepairHitAmount();
             spamTargetProgress = spamStageCount; // 1 touche = 1 unité
-            gunJamDuration = spamStageCount * spamButtonTimePerTick;
+            gunJamDuration = minTimingQTETimePerTick + spamStageCount * spamButtonTimePerTick;
 
             currentInputSequence = new Queue<GameInput.Binding>();
             currentInputSequence.Enqueue(GameInput.Binding.roll);
@@ -199,14 +200,14 @@ public class GunJamHandler : MonoBehaviour
             currentInputSequence.Enqueue(GameInput.Binding.roll);
 
             timingIndexAmount = PlayerShoot.Instance.GetHeldGun().GetJamRepairHitAmount();
-            gunJamDuration = timingIndexAmount * timingQTETimePerTick;
+            gunJamDuration = minTimingQTETimePerTick + timingIndexAmount * timingQTETimePerTick;
         }
 
         if (currentQTEType == QTEType.InputSequence) {
             int inputAmount = PlayerShoot.Instance.GetHeldGun().GetJamRepairHitAmount();
             currentInputSequence = GenerateRandomSequence(inputAmount);
 
-            gunJamDuration = inputAmount * inputSequenceTimePerInput;
+            gunJamDuration = minTimingQTETimePerTick + inputAmount * inputSequenceTimePerInput;
         }
 
         OnAnyJamSequenceGenerated?.Invoke(this, new OnJamSequenceGeneratedEventArgs {

@@ -30,8 +30,9 @@ public class LevelUI_WaveInfoUI : MonoBehaviour
         Dictionary<CreatureSO, int> leftSideCreatures = CreaturesSpawnManager.Instance.GetNextWaveCreaturesBySide(CreaturesSpawnManager.SpawnSide.Left);
         Dictionary<CreatureSO, int> rightSideCreatures = CreaturesSpawnManager.Instance.GetNextWaveCreaturesBySide(CreaturesSpawnManager.SpawnSide.Right);
 
-        float waveDifficulty = CreaturesSpawnManager.Instance.GetCurrentWaveDifficulty();
+        float waveDifficulty = CreaturesSpawnManager.Instance.GetRawCurrentWaveDifficulty();
         float maxWaveDifficulty = CreaturesSpawnManager.Instance.GetMaxWaveDifficulty();
+        Debug.Log("maxWaveDifficulty " + maxWaveDifficulty);
 
         var (leftScore, rightScore) = GetSideDifficultiesScaledByGlobalThreat(leftSideCreatures, rightSideCreatures, waveDifficulty, maxWaveDifficulty);
         leftSideInfo.RefreshDifficulty(leftScore);
@@ -51,8 +52,10 @@ public class LevelUI_WaveInfoUI : MonoBehaviour
 
         float globalThreatRatio = currentWaveDifficulty / maxWaveDifficulty;
 
-        float leftRatio = (float)leftRaw / currentWaveDifficulty;
-        float rightRatio = (float)rightRaw / currentWaveDifficulty;
+        // Ratios relatifs, garantis à faire 1 ensemble
+        float leftRatio = leftRaw / totalRaw;
+        float rightRatio = rightRaw / totalRaw;
+
 
         int leftScore = Mathf.Clamp(
             Mathf.RoundToInt(leftRatio * globalThreatRatio * maxDifficulty * 1.5f),

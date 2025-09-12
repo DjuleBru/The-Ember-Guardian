@@ -469,6 +469,7 @@ public class MetaProgressionManager : MonoBehaviour
         int damageToSave = (int)damage;
         string key = gunSO.gunType + "_damagePerBullet";
 
+        Debug.Log(gunSO + " SetGunDamagePerBullet " + damage);
         ES3.Save(key, damageToSave);
     }
 

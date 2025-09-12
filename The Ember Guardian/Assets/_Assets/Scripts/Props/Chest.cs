@@ -35,10 +35,12 @@ public class Chest : MonoBehaviour
     protected bool playerInTriggerArea;
     protected bool playerPayingCurrencies;
     protected bool chestPricePaid;
+    protected bool playerIsInTriggerAreaButChestLocked;
 
     public event EventHandler OnPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
     public event EventHandler OnChestUnlocked;
+    public event EventHandler OnChestOpenable;
     public event EventHandler OnChestOpened;
     public event EventHandler OnChestOpenedAnimationOver;
     public event EventHandler OnChestDisappear;
@@ -160,18 +162,20 @@ public class Chest : MonoBehaviour
     protected virtual void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
         if (chestDisappearsAutomaticallyAfterOpened && chestOpened) return;
+
+        playerIsInTriggerAreaButChestLocked = true;
         if (chestLocked) return;
 
         playerInTriggerArea = true;
         Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
 
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
-
     }
 
     protected virtual void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
         playerInTriggerArea = false;
+        playerIsInTriggerAreaButChestLocked = false;
 
         if (chestDisappearsAutomaticallyAfterOpened && chestOpened) return;
         if (chestLocked) return;
@@ -287,8 +291,23 @@ public class Chest : MonoBehaviour
     public bool GetChestPricePaid() {
         return chestPricePaid;
     }
+
     public void SetChestLocked(bool locked) {
         chestLocked = locked;
+
+        if(!locked) {
+            if(playerIsInTriggerAreaButChestLocked) {
+                playerInTriggerArea = true;
+                Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
+                OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
+            }
+            OnChestOpenable?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public void SetTrialChestPaid() {
+        chestPricePaid = true;
+        payToOpenChest = false;
     }
 
     private void OnDestroy() {

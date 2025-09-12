@@ -53,18 +53,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 92e601c9dd7bf334186de532c5e816de, type: 2}
   - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
   hasBoss: 1
-  bossCreatureType: {fileID: 11400000, guid: 99d459fd6a02c044d90152bcc6de9ffb, type: 2}
+  bossCreatureType: {fileID: 11400000, guid: e6be57e97fa23874fbed37ec86c291f2, type: 2}
   bossNightSpawns: 0400000008000000
-  bossNightWaveDifficultyMultiplier: 0.33
+  bossNightWaveDifficultyMultiplier: 0.5
   startWaveToSpawnFromBothSides: 2
-  baseDifficulty: 40
-  intialMinSubwaveDifficulty: 10
-  minSubwaveDifficulty: 25
-  intialMaxSubwaveDifficulty: 15
-  maxSubwaveDifficulty: 65
-  growthFactor: 1.15
+  baseDifficulty: 70
+  intialMinSubwaveDifficulty: 20
+  minSubwaveDifficulty: 50
+  intialMaxSubwaveDifficulty: 30
+  maxSubwaveDifficulty: 100
+  growthFactor: 1.05
   typicalLevelDaysToComplete: 8
-  minMaxSubwaveDifficultyGrowthFactor: 1.4
+  minMaxSubwaveDifficultyGrowthFactor: 1.2
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
   difficultyAnimationCurve:
@@ -76,7 +76,7 @@ MonoBehaviour:
   maxWaveInAnimationCurve: 0
   canSpawnElite: 1
   hasSpecialWaveTypes: 0
-  specialWaveTypesInLevel: 
+  specialWaveTypesInLevel: 010000000200000003000000
   specialWaveProbability: 0.25
   maxSpecialWaveAmount: 2
   environmentType: 4
@@ -87,7 +87,7 @@ MonoBehaviour:
   initialWindStrength: 0
   windStrengthsAllowedInLevel: 
   hasRain: 1
-  initialRainIntensity: 0
+  initialRainIntensity: 1
   rainIntensitiesAllowedInLevel: 0000000001000000020000000300000004000000
   levelRandomBackgroundTracks: []
   levelExplorationTracks:

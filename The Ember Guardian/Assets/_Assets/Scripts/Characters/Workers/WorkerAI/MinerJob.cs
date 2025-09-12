@@ -302,6 +302,11 @@ public class MinerJob : WorkerJob {
         assignedScavengable = null;
         workerAttack.RemoveAttackTarget();
 
+        if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk) {
+            ChangeState(MinerState.headToSafety);
+            return;
+        }
+
         if (CheckOrbsToCollect()) {
             ChangeState(MinerState.pickingUpOrbs);
         } else {

@@ -56,7 +56,15 @@ public class SkillItem : MerchantItem {
             itemType = skillSO.itemType;
             skillType = skillSO.skillType;
             icon = skillSO.Icon;
-            maxLevel = skillSO.maxLevel;
+
+            if(skillSO.passiveSkillEffect != null) {
+                maxLevel = skillSO.passiveSkillEffect.valuesByLevel.Count;
+            }
+            if (skillSO.activeSkillEffect != null) {
+                maxLevel = skillSO.activeSkillEffect.valuesByLevel.Count;
+            }
+
+
             currencyTypeToPay = skillSO.currencyTypeToPay;
 
             buyingLocksPurchasesUntilRefresh = true;

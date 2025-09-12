@@ -321,15 +321,15 @@ public class UICurrencyManager : MonoBehaviour
         });
     }
 
-    public void AddCurrencyAmount(PlayerCurrencies.CurrencyType currencyType, int currencyAmount) {
-        StartCoroutine(AddCurrencyCoroutine(currencyType, currencyAmount));
+    public void AddCurrencyAmount(PlayerCurrencies.CurrencyType currencyType, int currencyAmount, float delayBetweenDrops = .2f) {
+        StartCoroutine(AddCurrencyCoroutine(currencyType, currencyAmount, delayBetweenDrops));
     }
 
-    public void AddMultipleCurrencies(List<PlayerCurrencies.CurrencyType> currencyTypeList, List<int> currencyAmountList) {
-        StartCoroutine(AddMultipleCurrenciesCoroutine(currencyTypeList, currencyAmountList));
+    public void AddMultipleCurrencies(List<PlayerCurrencies.CurrencyType> currencyTypeList, List<int> currencyAmountList, float delayBetweenDrops = .2f) {
+        StartCoroutine(AddMultipleCurrenciesCoroutine(currencyTypeList, currencyAmountList, delayBetweenDrops));
     }
 
-    private IEnumerator AddMultipleCurrenciesCoroutine(List<PlayerCurrencies.CurrencyType> currencyTypeList, List<int> currencyAmountList) {
+    private IEnumerator AddMultipleCurrenciesCoroutine(List<PlayerCurrencies.CurrencyType> currencyTypeList, List<int> currencyAmountList, float delayBetweenDrops = .2f) {
         int i = 0;
         float delayBetweenEachCurrencyType = .75f;
 
@@ -337,17 +337,17 @@ public class UICurrencyManager : MonoBehaviour
             int currencyTypeAmount = currencyAmountList[i];
             float delay = currencyTypeAmount * .15f;
 
-            StartCoroutine(AddCurrencyCoroutine(currencyType, currencyTypeAmount));
+            StartCoroutine(AddCurrencyCoroutine(currencyType, currencyTypeAmount,delayBetweenDrops));
 
             yield return new WaitForSeconds(delay + delayBetweenEachCurrencyType);
             i++;
         }
     }
 
-    private IEnumerator AddCurrencyCoroutine(PlayerCurrencies.CurrencyType currencyType, int currencyAmount) {
+    private IEnumerator AddCurrencyCoroutine(PlayerCurrencies.CurrencyType currencyType, int currencyAmount, float delayBetweenDrops = .2f) {
         for (int i = 0; i < currencyAmount; i++) {
             AddCurrencyInBag(currencyType);
-            yield return new WaitForSeconds(.2f);
+            yield return new WaitForSeconds(delayBetweenDrops);
         }
     }
     public void RemoveMultipleCurrencies(List<PlayerCurrencies.CurrencyType> currencyTypeList, List<int> currencyAmountList) {
