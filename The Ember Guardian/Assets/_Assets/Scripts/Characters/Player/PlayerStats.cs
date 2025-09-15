@@ -532,7 +532,22 @@ public class PlayerStats : MonoBehaviour
 
     public void BuffPlayerHealthRegen(float buffAmount) {
         Debug.Log("BuffPlayerHealthRegen " + buffAmount);
-        hpRegenTime = buffAmount;
+
+        if(hpRegenTime == 0) {
+            hpRegenTime = buffAmount;
+        } else {
+            hpRegenTime += buffAmount;
+        }
+
+        Debug.Log("hpRegenTime " + hpRegenTime);
+
+        OnPlayerHPRegenChanged?.Invoke(this, EventArgs.Empty);
+    }
+    public void SetPlayerHealthRegen(float healthRegen) {
+        hpRegenTime = healthRegen;
+       
+        Debug.Log("SetPlayerHealthRegen " + hpRegenTime);
+
         OnPlayerHPRegenChanged?.Invoke(this, EventArgs.Empty);
     }
 

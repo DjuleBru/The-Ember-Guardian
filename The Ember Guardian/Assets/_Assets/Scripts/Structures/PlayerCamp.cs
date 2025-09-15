@@ -341,10 +341,12 @@ public class PlayerCamp : MonoBehaviour
     } 
 
     public Structure GetHighestPriorityAvailableEngineerStructure(bool nightOrDusk) {
+
         int highestPriority = 0;
         Structure highestPriorityStructure = null;
 
         foreach(Structure structure in builtStructures) {
+
             if (!nightOrDusk && !structure.GetStructureSO().engineerCanWorkByDay) continue;
             if (nightOrDusk && !structure.GetStructureSO().engineerCanWorkByNight) continue;
 

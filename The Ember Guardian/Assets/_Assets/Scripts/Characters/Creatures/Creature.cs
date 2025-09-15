@@ -76,7 +76,7 @@ public class Creature : Mob
     protected bool burnImmune;
     protected int burnAmount = 2;
     protected float burningTimer;
-    protected float burningRate = .5f;
+    protected float burningRate = .2f;
     protected float burningRateTimer;
     protected float burningDuration = 2f;
 

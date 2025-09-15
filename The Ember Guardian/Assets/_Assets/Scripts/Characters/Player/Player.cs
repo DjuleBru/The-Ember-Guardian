@@ -504,6 +504,10 @@ public class Player : MonoBehaviour, IDamageable
 
     #endregion
 
+    public bool GetInTeleporter() {
+        return inTeleporter;
+    }
+
     public void SetPosition(Vector3 position) {
         transform.position = position;
     }

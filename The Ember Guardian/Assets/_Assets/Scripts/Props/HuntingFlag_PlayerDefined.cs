@@ -32,9 +32,19 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
         CampZoneManager.Instance.OnCampZoneLimitsChanged += CampZoneManager_OnCampZoneLimitsChanged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
+        FastTravelTP.OnAnyPlayerPositionedOnTP += FastTravelTP_OnAnyPlayerPositionedOnTP;
 
         RefreshMaxSecureDistance();
         huntingFlag.OnPlayerResetManualHuntingLimit += HuntingFlag_OnPlayerResetManualHuntingLimit;
+    }
+
+    private void FastTravelTP_OnAnyPlayerPositionedOnTP(object sender, EventArgs e) {
+
+        if (huntingFlag.GetPlayerCarryingFlag()) {
+            Vector3 currentPosition = new Vector3(Player.Instance.transform.position.x - 2f, 0f, 0f);
+            SetNewFlagPosition(currentPosition);
+        }
+
     }
 
     private void Player_OnPlayerDied(object sender, EventArgs e) {
@@ -63,7 +73,6 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
     }
 
     private void FastTravelTP_OnAnyFastTravelTPBuilt(object sender, EventArgs e) {
-        Debug.Log("FastTravelTP_OnAnyFastTravelTPBuilt");
         Invoke("CheckSecureDistance", .1f);
     }
 
@@ -209,5 +218,6 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
 
     private void OnDestroy() {
         FastTravelTP.OnAnyFastTravelTPBuilt -= FastTravelTP_OnAnyFastTravelTPBuilt;
+        FastTravelTP.OnAnyPlayerPositionedOnTP -= FastTravelTP_OnAnyPlayerPositionedOnTP;
     }
 }

@@ -86,6 +86,11 @@ public class ProjectileVisual : MonoBehaviour
         } else {
             spriteRenderer.enabled = false;
         }
+
+        if(projectile.GetAlignToGroundOnImpact()) {
+            transform.localScale = new Vector3(1, 1, 1);
+            transform.eulerAngles = projectile.GetRotationOnImpact();
+        }
     }
 
     private void Update() {

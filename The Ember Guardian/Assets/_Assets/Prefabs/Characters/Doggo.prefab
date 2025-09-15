@@ -626,7 +626,7 @@ Animator:
   m_GameObject: {fileID: 849184809638594990}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6c69fb262f47f90439120bf9a6c99be2, type: 2}
+  m_Controller: {fileID: 9100000, guid: e639b3b491590e74299071758e043363, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2333,6 +2333,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1199573424225759243}
+  - {fileID: 3982906245120363615}
   m_Father: {fileID: 8253955507400564337}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &64445446173325310
@@ -2410,6 +2411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPetDogPosition: {fileID: 1199573424225759243}
+  playerPetDogPosition_DarkCompanion: {fileID: 3982906245120363615}
 --- !u!1 &6704456637512649685
 GameObject:
   m_ObjectHideFlags: 0
@@ -3007,6 +3009,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &7764234752395120353
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3982906245120363615}
+  m_Layer: 12
+  m_Name: PlayerPetPosition_DarkCompanion
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3982906245120363615
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7764234752395120353}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.9, y: -0.46000004, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1249783132439870820}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7978458729470706852
 GameObject:
   m_ObjectHideFlags: 0

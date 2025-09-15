@@ -530,7 +530,7 @@ public class PlayerShoot : MonoBehaviour
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
 
         // Grenade Launcher Secondary
-        if (projectileExplodesOnPlayerClickModeActive && projectileExplodesOnPlayerClick) {
+        if (projectileExplodesOnPlayerClickModeActive && projectileExplodesOnPlayerClick && heldGun.GetGunSO().gunType == GunSO.GunType.GrenadeLauncher) {
             OnPlayerTriggersProjectileExplosion?.Invoke(this, EventArgs.Empty);
             projectileExplodesOnPlayerClick = false;
             return;
@@ -772,22 +772,40 @@ public class PlayerShoot : MonoBehaviour
             projectileExplodesOnPlayerClickModeActive = !projectileExplodesOnPlayerClickModeActive;
             projectileExplodesOnPlayerClick = true;
 
+            if (projectileExplodesOnPlayerClickModeActive) {
+                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+            }
+            else {
+                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            }
+
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
-            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.AAGun) {
             aaGunSpawnsChildProjectiles = !aaGunSpawnsChildProjectiles;
 
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
-            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+
+            if (aaGunSpawnsChildProjectiles) {
+                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+            }
+            else {
+                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.RocketLauncher) {
             rocketLauncherSpawnsMiniRockets = !rocketLauncherSpawnsMiniRockets;
 
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
-            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+
+            if (rocketLauncherSpawnsMiniRockets) {
+                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+            }
+            else {
+                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Pistol) {
@@ -856,12 +874,7 @@ public class PlayerShoot : MonoBehaviour
             secondayGunSO = debugSecondaryGun;
         }
 
-        if (rifleSemiAutoModeActive) {
-            automaticWeapon = false;
-            rifleSemiAutoModeActive = false;
-            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
-            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
-        }
+        CancelSecondaryFireMode();
 
         if (secondayGunSO != null) {
             if (heldGunSO == secondayGunSO) return;
@@ -873,12 +886,7 @@ public class PlayerShoot : MonoBehaviour
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (!CanSwapGun()) return;
 
-        if (rifleSemiAutoModeActive) {
-            automaticWeapon = false;
-            rifleSemiAutoModeActive = false;
-            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
-            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
-        }
+        CancelSecondaryFireMode();
 
         if (useDebugGun) {
             primaryGunSO = debugGun;
@@ -893,7 +901,17 @@ public class PlayerShoot : MonoBehaviour
     private void SwapGun() {
         if (!CanSwapGun()) return;
 
-        Debug.Log("rifleSemiAutoModeActive " + rifleSemiAutoModeActive);
+        CancelSecondaryFireMode();
+
+        if (heldGunSO == secondayGunSO) {
+            StartCoroutine(SetActiveGunAfterDelay(primaryGunSO));
+        }
+        else {
+            StartCoroutine(SetActiveGunAfterDelay(secondayGunSO, false));
+        }
+    }
+
+    private void CancelSecondaryFireMode() {
         if (rifleSemiAutoModeActive) {
             automaticWeapon = false;
             rifleSemiAutoModeActive = false;
@@ -901,11 +919,34 @@ public class PlayerShoot : MonoBehaviour
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
         }
 
-        if (heldGunSO == secondayGunSO) {
-            StartCoroutine(SetActiveGunAfterDelay(primaryGunSO));
+        if (aaGunSpawnsChildProjectiles) {
+            aaGunSpawnsChildProjectiles = false;
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
         }
-        else {
-            StartCoroutine(SetActiveGunAfterDelay(secondayGunSO, false));
+
+        if(rocketLauncherSpawnsMiniRockets) {
+            rocketLauncherSpawnsMiniRockets = false;
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (projectileExplodesOnPlayerClickModeActive) {
+            projectileExplodesOnPlayerClickModeActive = false;
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (silencerActive) {
+            silencerActive = false;
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (silencerActive) {
+            silencerActive = false;
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
         }
     }
 

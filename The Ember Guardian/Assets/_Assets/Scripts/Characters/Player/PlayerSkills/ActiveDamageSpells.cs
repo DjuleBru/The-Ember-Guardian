@@ -10,7 +10,7 @@ public class ActiveDamageSpells : MonoBehaviour
     [SerializeField] private Transform darkMinePrefab;
 
     private float darkFlameDistanceToPlayer = 0f;
-    private float darkSwordistanceToPlayer = 3f;
+    private float darkSwordistanceToPlayer = 6f;
     private float reaperDistanceToPlayer = 5f;
     private float darkMinePrefabDistanceToPlayer = 3f;
     private float darkMineKnockbackAmount = 75f;

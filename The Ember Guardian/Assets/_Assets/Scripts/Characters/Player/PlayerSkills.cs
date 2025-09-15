@@ -594,7 +594,12 @@ public class PlayerSkills : MonoBehaviour
 
                 case SkillItem.SkillType.passiveHealthRegen:
 
-                    PlayerStats.Instance.BuffPlayerHealthRegen((int)relativeBuffEffectValue);
+                    if(relativeBuffEffectValue > 0) {
+                        PlayerStats.Instance.SetPlayerHealthRegen((int)relativeBuffEffectValue);
+                    } else {
+                        PlayerStats.Instance.BuffPlayerHealthRegen((int)relativeBuffEffectValue);
+                    }
+
 
                     break;
 

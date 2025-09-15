@@ -118,8 +118,11 @@ public class DogSounds : SoundObject
         if (!pettingDogBarkPlaying) {
 
             AudioClip audioClip = null;
-            if (Dog.Instance.GetDogType() == Dog.DogType.GermanShepherd || Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
+            if (Dog.Instance.GetDogType() == Dog.DogType.GermanShepherd || Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver || Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
                 audioClip = petBarkAudioClips[Random.Range(0, petBarkAudioClips.Length)];
+            }
+            if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
+                audioClip = barkAudioClips_darkCompanion[Random.Range(0, barkAudioClips_darkCompanion.Length)];
             }
 
             dogAudioSource.PlayOneShot(audioClip, sfxVolume*2);

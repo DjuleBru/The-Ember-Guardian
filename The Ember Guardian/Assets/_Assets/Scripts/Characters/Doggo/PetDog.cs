@@ -8,6 +8,9 @@ public class PetDog : MonoBehaviour
     public static PetDog Instance;
 
     [SerializeField] private Transform playerPetDogPosition;
+    [SerializeField] private Transform playerPetDogPosition_DarkCompanion;
+    private CircleCollider2D petCollider;
+    private Transform currentPlayerPetDogPosition;
     private MobMovement dogMovement;
 
     private bool playerInTriggerArea;
@@ -33,6 +36,8 @@ public class PetDog : MonoBehaviour
 
     private void Awake() {
         Instance = this;
+
+        petCollider = GetComponent<CircleCollider2D>();
     }
 
     private void Start() {
@@ -41,8 +46,24 @@ public class PetDog : MonoBehaviour
         Player.Instance.OnPlayerExitedAnyInteractableTriggerArea += Player_OnPlayerExitedAnyInteractableTriggerArea;
         Player.Instance.OnPlayerStartedInteractingWithAnyInteractable += Player_OnPlayerStartedInteractingWithAnyInteractable;
         Player.Instance.OnPlayerStoppedInteractingWithAnyInteractable += Player_OnPlayerStoppedInteractingWithAnyInteractable;
+        Dog.Instance.OnDogTypeChanged += Dog_OnDogTypeChanged;
 
         dogMovement = Dog.Instance.GetComponent<MobMovement>();
+
+        RefreshPlayerPetPosition();
+    }
+
+    private void Dog_OnDogTypeChanged(object sender, EventArgs e) {
+        RefreshPlayerPetPosition();
+    }
+
+    private void RefreshPlayerPetPosition() {
+        if(Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
+            currentPlayerPetDogPosition = playerPetDogPosition_DarkCompanion;
+        } else {
+            currentPlayerPetDogPosition = playerPetDogPosition;
+        }
+
     }
 
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
@@ -89,11 +110,12 @@ public class PetDog : MonoBehaviour
 
         dogMovement.SetCanMove(false);
         Player.Instance.SetPettingDog(true);
+        petCollider.radius = 2f;
 
         yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfFrame();
 
-        Player.Instance.transform.position = playerPetDogPosition.position;
+        Player.Instance.transform.position = currentPlayerPetDogPosition.position;
         float playerWatchDir = Player.Instance.transform.position.x - transform.position.x;
         PlayerAim.Instance.SetXScale(playerWatchDir);
         OnPlayerStartedPettingDog?.Invoke(this, EventArgs.Empty);
@@ -108,6 +130,7 @@ public class PetDog : MonoBehaviour
 
 
         OnPlayerStoppedPettingDog?.Invoke(this, EventArgs.Empty);
+        petCollider.radius = .57f;
         yield return new WaitForSeconds(petEndAnimationDuration);
 
         OnPlayerEndedPettingDog?.Invoke(this, EventArgs.Empty);

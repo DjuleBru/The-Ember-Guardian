@@ -101,7 +101,8 @@ public class CreatureAI : MonoBehaviour {
 
     private void Player_OnPlayerDied(object sender, EventArgs e) {
         creatureAttack.RemoveAttackTarget();
-        ChangeState(State.idle);
+
+        SetInitialState();
     }
 
     private void CreatureAttack_OnAttackSOChanged(object sender, EventArgs e) {

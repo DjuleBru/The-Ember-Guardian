@@ -40,6 +40,7 @@ public class CurrencyCrafter : Structure
 
     public class OnCurrencyInstantiatedEventArgs:EventArgs {
         public Collectible collectible;
+        public bool instantiatedByWorker;
     }
 
     protected override void Start() {
@@ -184,7 +185,7 @@ public class CurrencyCrafter : Structure
             if (!craftedCurrency) return;
             // Ammo has not finished crafting
 
-            StartCoroutine(CollectCurrencyFromCrafter(.2f, false));
+            StartCoroutine(CollectCurrencyFromCrafter(.2f, false, currencyTypeBeingCrafted));
 
             SetStructurePrimaryFunctionUnlocked(true);
             SetStructureSecondaryFunctionUnlocked(specialAmmoUnlocked);
@@ -213,12 +214,12 @@ public class CurrencyCrafter : Structure
 
     public void WorkerCollectCurrencyFromCrafter() {
         craftedCurrency = false;
-        StartCoroutine(CollectCurrencyFromCrafter(.2f, true));
+        StartCoroutine(CollectCurrencyFromCrafter(.2f, true, currencyTypeBeingCrafted));
         SetStructurePrimaryFunctionUnlocked(true);
         SetStructureSecondaryFunctionUnlocked(specialAmmoUnlocked);
     }
 
-    private IEnumerator CollectCurrencyFromCrafter(float delayBetweenAmmoInstantiation, bool collectedByWorker) {
+    private IEnumerator CollectCurrencyFromCrafter(float delayBetweenAmmoInstantiation, bool collectedByWorker, PlayerCurrencies.CurrencyType currencyTypeCrafter) {
         craftedCurrency = false;
         collectingCurrency = true;
         payCurrencyUI.ResetCurrencyPayment();
@@ -240,7 +241,8 @@ public class CurrencyCrafter : Structure
 
 
             OnCurrencyInstantiated?.Invoke(this, new OnCurrencyInstantiatedEventArgs {
-                collectible = collectible
+                collectible = collectible,
+                instantiatedByWorker = collectedByWorker,
             });
 
             yield return new WaitForSeconds(delayBetweenAmmoInstantiation);

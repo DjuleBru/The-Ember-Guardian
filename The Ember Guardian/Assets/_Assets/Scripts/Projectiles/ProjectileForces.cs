@@ -177,6 +177,11 @@ public class ProjectileForces : Projectile {
         if (enemyProjectile && Mathf.Abs(transform.position.x) < .5f) {
             Fire.Instance.TakeDamage(1, parentMob.transform);
         }
+
+        if(alignToGroundOnImpact) {
+            Vector3 explosionPosition = new Vector3(transform.position.x, 0, 0);
+            transform.position = explosionPosition;
+        }
     }
 
     public override Vector3 GetProjectileMoveDir() {
@@ -185,4 +190,5 @@ public class ProjectileForces : Projectile {
     public override Vector2 GetTrajectoryEndPoint() {
         return projectileTarget.transform.position;
     }
+
 }

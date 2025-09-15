@@ -83,15 +83,15 @@ public class SpecialTower_Manner : MonoBehaviour {
     }
 
     protected void SpecialTower_OnAmmoClipAdded(object sender, EventArgs e) {
-        if(engineersManning.Count == 0) {
-            readyToReload = true;
+        readyToReload = true;
+
+        if (engineersManning.Count == 0) {
             return;
         }
 
         if(towerOutOfAmmo && currentShotIndex == 0) {
             StartCoroutine(HandleReloading());
         }
-        towerOutOfAmmo = false;
     }
 
     protected virtual void Update() {
@@ -132,7 +132,6 @@ public class SpecialTower_Manner : MonoBehaviour {
         if(currentShotIndex == 0 && !towerOutOfAmmo) {
 
             StartCoroutine(HandleReloading());
-            reloading = true;
         }
 
 
@@ -147,6 +146,9 @@ public class SpecialTower_Manner : MonoBehaviour {
 
     protected IEnumerator HandleReloading() {
         if (hasReloadingEngineer && engineersManning.Count < maxEngineersManning) yield break;
+        reloading = true;
+        towerOutOfAmmo = false;
+        readyToReload = false;
 
         yield return new WaitForSeconds(.5f);
 
@@ -237,8 +239,6 @@ public class SpecialTower_Manner : MonoBehaviour {
                 if (towerOutOfAmmo && currentShotIndex == 0) {
                     StartCoroutine(HandleReloading());
                 }
-                towerOutOfAmmo = false;
-                readyToReload = false;
             }
         }
         else {
@@ -350,11 +350,11 @@ public class SpecialTower_Manner : MonoBehaviour {
     }
 
     public void BuffCooldownTime(float buff) {
-        Debug.Log("BuffCooldownTime " + buff);
+        //Debug.Log("BuffCooldownTime " + buff);
         attackSpeedBuff += buff;
     }
     public void DebuffCooldownTime(float buff) {
-        Debug.Log("DebuffCooldownTime " + buff);
+        //Debug.Log("DebuffCooldownTime " + buff);
         attackSpeedBuff -= buff;
     }
 

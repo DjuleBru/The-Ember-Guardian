@@ -118,7 +118,8 @@ public class EngineerJob : WorkerJob {
 
                 case EngineerState.headToSafety:
                     if (isInSafeZone) {
-                        RoamInCampCenter();
+                        ChangeState(EngineerState.idle);
+                        return;
                     }
                     else {
                         HeadToCampCenter();
@@ -187,6 +188,7 @@ public class EngineerJob : WorkerJob {
     }
 
     private void ChangeState(EngineerState newState) {
+        //Debug.Log("ChangeState " + newState);
         if (newState == state) return;
         if (worker.GetDead()) return;
 
@@ -554,8 +556,11 @@ public class EngineerJob : WorkerJob {
     }
 
     private void CurrencyCrafter_OnCurrencyInstantiated(object sender, CurrencyCrafter.OnCurrencyInstantiatedEventArgs e) {
-        AssignCollectible(e.collectible);
-        ChangeState(EngineerState.pickingUpCurrency);
+        if(e.instantiatedByWorker) {
+            AssignCollectible(e.collectible);
+            ChangeState(EngineerState.pickingUpCurrency);
+        }
+
     }
 
     public void OrbExtractorTriggerDrill() {

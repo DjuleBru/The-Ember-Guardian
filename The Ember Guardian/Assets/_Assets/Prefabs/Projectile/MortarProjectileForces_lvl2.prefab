@@ -831,6 +831,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16384
   solidCollider: {fileID: 6107622544754403661}
+  alignToGroundOnImpact: 1
+  rotationOnImpact: {x: 0, y: 0, z: -90}
 --- !u!95 &7831464554734585439
 Animator:
   serializedVersion: 5

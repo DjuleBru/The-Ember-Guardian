@@ -668,6 +668,14 @@ PrefabInstance:
       value: -0.03293498
       objectReference: {fileID: 0}
     - target: {fileID: 4559383177539395646, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: m_Size.x
+      value: 5.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559383177539395646, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: m_Size.y
+      value: 4.0625
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559383177539395646, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -1213891907, guid: 672641bae21ed5e4e957bbf0e0f2413f, type: 3}
@@ -831,6 +839,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16384
   solidCollider: {fileID: 6107622544754403661}
+  alignToGroundOnImpact: 1
+  rotationOnImpact: {x: 0, y: 0, z: -90}
 --- !u!95 &7831464554734585439
 Animator:
   serializedVersion: 5

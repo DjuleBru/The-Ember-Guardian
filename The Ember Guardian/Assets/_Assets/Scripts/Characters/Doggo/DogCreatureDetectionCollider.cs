@@ -83,12 +83,15 @@ public class DogCreatureDetectionCollider : MonoBehaviour
     }
 
     private void RefreshCreaturesInCollider() {
+        creaturesInDetectionColliderRange.RemoveAll(c => c == null);
+
         if (creaturesInDetectionColliderRange.Count > 0) {
             creaturesInDetectionCollider = true;
         }
         else {
             creaturesInDetectionCollider = false;
         }
+
 
         if (creaturesAmbushSpawnersInDetectionColliderRange.Count > 0) {
             ambushSpawnersInDetectionCollider = true;
@@ -130,9 +133,12 @@ public class DogCreatureDetectionCollider : MonoBehaviour
         int maxNeighborCount = -1;
 
         foreach (Creature candidate in creaturesInDetectionColliderRange) {
+            if (candidate == null) continue;
+
             int neighborCount = 0;
 
             foreach (Creature other in creaturesInDetectionColliderRange) {
+                if (other == null) continue;
                 if (other == candidate) continue;
 
                 float distance = Vector2.Distance(candidate.transform.position, other.transform.position);
@@ -154,6 +160,8 @@ public class DogCreatureDetectionCollider : MonoBehaviour
         float distanceToClosestCreature = Mathf.Infinity;
 
         foreach (Creature creature in creaturesInDetectionColliderRange) {
+            if (creature == null) continue;
+
             float distanceToCreature = Mathf.Abs(creature.transform.position.x - transform.position.x);
             if (distanceToCreature < distanceToClosestCreature) {
                 distanceToClosestCreature = distanceToCreature;

@@ -8,6 +8,8 @@ public class Projectile : MonoBehaviour
     [SerializeField] protected LayerMask animalLayer;
     [SerializeField] protected Collider2D solidCollider;
 
+    [SerializeField] protected bool alignToGroundOnImpact;
+    [SerializeField] protected Vector3 rotationOnImpact;
     protected ProjectileSO projectileSO;
 
     private AnimationCurve projectileTrajectoryAnimationCurve;
@@ -314,5 +316,12 @@ public class Projectile : MonoBehaviour
     }
     public void InvokeOnProjectileInitialized() {
         OnProjectileInitialized?.Invoke(this, EventArgs.Empty);
+    }
+    public bool GetAlignToGroundOnImpact() {
+        return alignToGroundOnImpact;
+    }
+
+    public Vector3 GetRotationOnImpact() {
+        return rotationOnImpact;
     }
 }

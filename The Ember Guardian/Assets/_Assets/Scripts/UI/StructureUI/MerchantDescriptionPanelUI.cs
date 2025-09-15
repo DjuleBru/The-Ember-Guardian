@@ -155,6 +155,13 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
                 currentStatText = ((int)(PlayerStats.Instance.GetMaxStamina() + relativeStatValue)).ToString() + "s";
                 break;
 
+            case SkillItem.SkillType.passiveHealthRegen:
+                previousStatValue = (int)PlayerStats.Instance.GetHpRegenTime();
+                relativeStatValue = currentBuffValue - previousStatValue;
+                previousStatText = "(" + (int)(PlayerStats.Instance.GetHpRegenTime()) + "s)";
+                currentStatText = ((int)(PlayerStats.Instance.GetHpRegenTime() + relativeStatValue)).ToString() + "s";
+                break;
+
         }
 
         passiveItemStatValue.text = currentStatText;

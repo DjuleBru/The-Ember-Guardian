@@ -337,7 +337,6 @@ public class PlayerAim : MonoBehaviour
 
         Vector2 reducedOffset = Vector2.Lerp(smoothedOffset, Vector2.zero, stationaryAccuracyFactor);
         Vector2 reducedNoise = Vector2.Lerp(noise, Vector2.zero, stationaryAccuracyFactor);
-
         offsetWithNoiseAndRecoil = reducedOffset + reducedNoise;
         offsetWithNoiseAndRecoil += recoilDirectionOffset;
 
@@ -593,7 +592,6 @@ public class PlayerAim : MonoBehaviour
     }
 
     private void RecalculatePrecision() {
-
         GunSO gunSO = PlayerShoot.Instance.GetHeldGun().GetGunSO();
         Gun gun = PlayerShoot.Instance.GetHeldGun();
 

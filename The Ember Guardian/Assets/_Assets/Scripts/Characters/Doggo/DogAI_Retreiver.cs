@@ -170,7 +170,7 @@ public class DogAI_Retreiver : DogAI {
                         Transform prefabToDrop = CurrenciesManager.Instance.GetCurrencyPrefab(currency.Key);
                         Collectible droppedCurrency = Instantiate(prefabToDrop, dropSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
                         droppedCurrency.ApplyRandomFrontForce(2f, 3f);
-                        droppedCurrency.SetCollectibleUnInteractable(1f);
+                        droppedCurrency.SetCollectibleUnInteractable(.3f);
                         OnAnyOrbDroppedByDog?.Invoke(this, EventArgs.Empty);
 
                         // Réduire la valeur après chaque drop

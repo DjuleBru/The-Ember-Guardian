@@ -1690,7 +1690,7 @@ PrefabInstance:
     - target: {fileID: 5757064800425388701, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: creatureSO
       value: 
-      objectReference: {fileID: 11400000, guid: 99d459fd6a02c044d90152bcc6de9ffb, type: 2}
+      objectReference: {fileID: 11400000, guid: e6be57e97fa23874fbed37ec86c291f2, type: 2}
     - target: {fileID: 5757064800425388701, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: useHitXPosition
       value: 1
@@ -2020,6 +2020,7 @@ MonoBehaviour:
   enteredLightFeedbacks: {fileID: 4275039096813007173}
   footStepFeedbacks: {fileID: 5770638787668322218}
   attackHitFeedbacks: {fileID: 6205369940484092142}
+  attackFeedbacks: {fileID: 0}
   creatureAnimatorManager: {fileID: 3275870740288881474}
   creatureAI: {fileID: 4155408012607941830}
   creature: {fileID: 7879982819402797649}
@@ -2092,6 +2093,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c48f4edb2c7a20488a149560faefc48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creatureContinousAudioSource: {fileID: 0}
   canHearCreatureOutsideScreen: 1
   creatureIdleAudioSource: {fileID: 2472456054417652496}
   creature: {fileID: 7879982819402797649}

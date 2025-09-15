@@ -111,6 +111,8 @@ public class Worker : Mob {
     }
 
     public override void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
+        if (defensiveStructureAssigned != null) return;
+
         base.TakeDamage(damage, damageSource, critHit, ignoreTemporaryInvincibility);
         refillHealthTimer = 0;
     }
@@ -125,7 +127,8 @@ public class Worker : Mob {
     public void CheckPlayerIsClose() {
         float distance = 2f;
 
-        if (Mathf.Abs(Player.Instance.transform.position.x - transform.position.x) < distance) {
+        float distanceToPlayer = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
+        if (distanceToPlayer < distance && !Player.Instance.GetInTeleporter()) {
             playerIsClose = true;
         }
         else {
