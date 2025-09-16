@@ -204,10 +204,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunProjectile_BounceHandler: {fileID: 5797460947717843792}
   explodeOnContact: 1
+  damagesPlayer: 0
+  maxDistanceToDamagePlayer: 1
   spawnChildBullets: 0
   damageToFlyingMultiplier: 4
   childGunAirProjectilePrefab: {fileID: 0}
   childGunProjectilePrefab: {fileID: 0}
+  childBulletLifetime: 10
+  childBulletAirLifetime: 0.3
+  childBulletKnockback: 0
 --- !u!114 &5797460947717843792 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2690273212303444028, guid: 536c1e5e297258a459e47d9ff303276b, type: 3}

@@ -994,7 +994,7 @@ public class PlayerShoot : MonoBehaviour
 
     private IEnumerator EmptyRevolverMag() {
         int remainingBullets = GetCurrentBullets();
-        float delayBetweenBullets = .175f;
+        float delayBetweenBullets = .155f;
 
         for (int i = 0; i < remainingBullets; i++) {
             Shoot();

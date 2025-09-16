@@ -25,6 +25,7 @@ MonoBehaviour:
   minesAmount: 0
   chestAmount: 0
   wildEmberlingsAmount: 0
+  duskDurationIncreasePerDay: 0
   levelObjectiveType: 21
   endLevelType: 21
   talkToNpcAFterObjective: 0
@@ -56,15 +57,16 @@ MonoBehaviour:
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
+  bossNightWaveDifficultyMultiplier: 0.33
   startWaveToSpawnFromBothSides: 2
-  baseDifficulty: 30
-  intialMinSubwaveDifficulty: 10
-  minSubwaveDifficulty: 25
-  intialMaxSubwaveDifficulty: 15
-  maxSubwaveDifficulty: 65
-  growthFactor: 1.7
+  baseDifficulty: 75
+  intialMinSubwaveDifficulty: 20
+  minSubwaveDifficulty: 50
+  intialMaxSubwaveDifficulty: 30
+  maxSubwaveDifficulty: 100
+  growthFactor: 1.4
   typicalLevelDaysToComplete: 7
-  minMaxSubwaveDifficultyGrowthFactor: 1.5
+  minMaxSubwaveDifficultyGrowthFactor: 1.4
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
   difficultyAnimationCurve:
@@ -75,11 +77,11 @@ MonoBehaviour:
     m_RotationOrder: 4
   maxWaveInAnimationCurve: 0
   canSpawnElite: 1
-  hasSpecialWaveTypes: 0
-  specialWaveTypesInLevel: 
-  specialWaveProbability: 0
-  maxSpecialWaveAmount: 0
-  environmentType: 3
+  hasSpecialWaveTypes: 1
+  specialWaveTypesInLevel: 00000000010000000200000003000000
+  specialWaveProbability: 0.15
+  maxSpecialWaveAmount: 2
+  environmentType: 2
   hasFog: 0
   fogFrontAlpha: 0
   fogBackAlpha: 0
