@@ -36,9 +36,7 @@ public class SpecialTower_Manner_MG : SpecialTower_Manner {
 
         currentShotIndex--;
         if (currentShotIndex == 0 && !towerOutOfAmmo) {
-
             StartCoroutine(HandleReloading());
-            reloading = true;
         }
 
 

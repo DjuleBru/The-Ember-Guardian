@@ -117,12 +117,6 @@ public class SpecialTower_Manner : MonoBehaviour {
     }
 
     protected virtual void Shoot() {
-        if (bulletIsProjectile) {
-            //GunProjectile gunProjectile = Instantiate(projectilePrefab, projectileSpawnPosition.position, Quaternion.identity).GetComponent<GunProjectile>();
-            //gunProjectile.gameObject.SetActive(true);
-            //Vector2 initialForce = PlayerAim.Instance.GetAimDir().normalized * bulletSpeed;
-            //gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce, explosionRadiusMultiplier);
-        }
 
         if (specialTower.GetCurrentAmmoClip() == 0) {
             towerOutOfAmmo = true;
@@ -130,7 +124,6 @@ public class SpecialTower_Manner : MonoBehaviour {
 
         currentShotIndex--;
         if(currentShotIndex == 0 && !towerOutOfAmmo) {
-
             StartCoroutine(HandleReloading());
         }
 
@@ -146,6 +139,7 @@ public class SpecialTower_Manner : MonoBehaviour {
 
     protected IEnumerator HandleReloading() {
         if (hasReloadingEngineer && engineersManning.Count < maxEngineersManning) yield break;
+
         reloading = true;
         towerOutOfAmmo = false;
         readyToReload = false;

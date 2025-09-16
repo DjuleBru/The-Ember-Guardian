@@ -31,6 +31,7 @@ public class ProjectileForces : Projectile {
         this.damage = damage;
         this.homing = homing;
         this.projectileSO = projectileSO;
+        transform.rotation = Quaternion.identity;
         projectileTarget = targetTransform;
         hasPassedApex = false;
 
@@ -50,7 +51,7 @@ public class ProjectileForces : Projectile {
         this.gravityScale = projectileSO.gravityScale;
         rb.velocity = Vector2.zero;
         rb.gravityScale = gravityScale;
-        transform.right = (projectileTarget.position - transform.position).normalized;
+        //transform.right = (projectileTarget.position - transform.position).normalized;
 
         float randomizedX = UnityEngine.Random.Range(-targetRandomizer, targetRandomizer);
         
@@ -86,9 +87,6 @@ public class ProjectileForces : Projectile {
 
     protected override void Update() {
         if (transform.position.y < 0 && !projectileHasHit) {
-
-           
-
             // Ground hit
             ProjectileHasHit(false);
             return;
@@ -97,13 +95,12 @@ public class ProjectileForces : Projectile {
 
     private void FixedUpdate() {
         if (hasHit || !homing || projectileTarget == null) return;
-
         Vector2 toTarget = ((Vector2)(projectileTarget.position - transform.position)).normalized;
         Vector2 velocity = rb.velocity;
         float speed = velocity.magnitude;
 
         // Clamp la rotation de la velocity
-        float maxTurnRate = 180f * Mathf.Deg2Rad; // max 180°/s
+        float maxTurnRate = 90f * Mathf.Deg2Rad; // max 180°/s
         float angleBetween = Vector2.SignedAngle(velocity, toTarget);
         float maxAngleDelta = maxTurnRate * Time.fixedDeltaTime;
 
@@ -170,7 +167,7 @@ public class ProjectileForces : Projectile {
 
     protected override void ProjectileHasHit(bool mobHit) {
         base.ProjectileHasHit(mobHit);
-        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.bodyType = RigidbodyType2D.Static;
         rb.velocity = Vector2.zero;
 
         // Fire hit ?
@@ -178,9 +175,8 @@ public class ProjectileForces : Projectile {
             Fire.Instance.TakeDamage(1, parentMob.transform);
         }
 
-        if(alignToGroundOnImpact) {
-            Vector3 explosionPosition = new Vector3(transform.position.x, 0, 0);
-            transform.position = explosionPosition;
+        if (alignToGroundOnImpact) {
+            transform.position = new Vector3(transform.position.x, 0, 0);
         }
     }
 

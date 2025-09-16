@@ -20,6 +20,7 @@ public class PlayerAim : MonoBehaviour
     [SerializeField] private RectTransform ammoBarLeftPosition;
     [SerializeField] private RectTransform ammoBarRightPosition;
 
+    [SerializeField] private float weaponProjectileSpeed = 10f;
     [SerializeField] private LayerMask enemyLayer; // Masque de couche pour les ennemis
     [SerializeField] private LayerMask groundLayer; // Masque de couche pour les ennemis
     [SerializeField] private LayerMask barricadesLayer; // Masque de couche pour les ennemis
@@ -443,6 +444,7 @@ public class PlayerAim : MonoBehaviour
         float closestDistance = float.MaxValue;
 
         foreach (var enemy in hitEnemies) {
+
             CreatureAutoAimCollider autoAimCollider = enemy.gameObject.GetComponent<CreatureAutoAimCollider>();
             if (autoAimCollider == null) continue;
 
@@ -450,13 +452,32 @@ public class PlayerAim : MonoBehaviour
             if(creature != null) {
                  if (creature.GetDead()) continue;
             }
-           
+            CreatureSpawnerContinuous creatureSpawner = enemy.GetComponentInParent<CreatureSpawnerContinuous>();
+            if (creatureSpawner != null) {
+                if (creatureSpawner.GetDead()) continue;
+            }
 
             Vector3 autoAimPos = autoAimCollider.GetAutoAimPosition();
             float distanceToEnemy = Vector2.Distance(autoAimPos, transform.position);
             if (distanceToEnemy > weaponRange * .9f) continue;
 
-            Vector2 dirToEnemy = (autoAimPos - transform.position).normalized;
+            Rigidbody2D enemyRb = enemy.attachedRigidbody;
+            Vector2 enemyVelocity = Vector2.zero;
+            if (enemyRb != null) {
+                enemyVelocity = enemyRb.velocity;
+            }
+
+            // --- Temps de trajet estimé ---
+            float projectileSpeed = weaponProjectileSpeed; // <-- expose ça dans ton script
+            float travelTime = distanceToEnemy / Mathf.Max(1f, projectileSpeed);
+
+            // --- Position prédite ---
+            Vector2 predictedPos = (Vector2)autoAimPos + enemyVelocity * travelTime;
+
+            // Direction vers la position prédite
+            Vector2 dirToEnemy = (predictedPos - (Vector2)transform.position).normalized;
+
+            //Vector2 dirToEnemy = (autoAimPos - transform.position).normalized;
             float dynamicConeAngle = Mathf.Lerp(
                 autoAimConeAngle,
                 maxAutoAimConeAngle,
@@ -470,7 +491,8 @@ public class PlayerAim : MonoBehaviour
                 if (distanceToEnemy < closestDistance) {
                     closestDistance = distanceToEnemy;
                     target = enemy.transform;
-                    closestEnemyAutoAimColliderPosition = autoAimPos;
+                    //closestEnemyAutoAimColliderPosition = autoAimPos;
+                    closestEnemyAutoAimColliderPosition = predictedPos;
                 }
             }
         }
@@ -582,6 +604,7 @@ public class PlayerAim : MonoBehaviour
             takeDamageTimer -= Time.deltaTime;
             if (takeDamageTimer <= 0) {
                 justTookDamage = false;
+                smoothedOffset = Vector2.zero;
                 RecalculatePrecision();
             }
         }
@@ -644,6 +667,7 @@ public class PlayerAim : MonoBehaviour
         currentPrecisionModifier /= buff;
         smoothSpeed /= buff;
         noiseAmount /= buff;
+
     }
 
     private void DebuffPrecision(float debuff) {

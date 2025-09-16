@@ -140,4 +140,7 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
         canSpawnMobsAtNight = canSpawn;
     }
 
+    public bool GetDead() {
+        return dead;
+    }
 }

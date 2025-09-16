@@ -228,7 +228,10 @@ public class MobAttack : MonoBehaviour
         Transform projectilePrefab = projectileSO.projectilePrefab;
 
         Projectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity, projectileSpawnPoint).GetComponent<Projectile>();
+        projectile.transform.SetParent(null);
+        projectile.transform.localScale = new Vector3(1, 1, 1);
         projectile.gameObject.SetActive(false);
+
         return projectile;
     }
 
@@ -236,6 +239,7 @@ public class MobAttack : MonoBehaviour
         Transform projectilePrefab = staticProjectilePrefab;
 
         StaticProjectile projectile = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity, projectileSpawnPoint).GetComponent<StaticProjectile>();
+        projectile.transform.SetParent(null);
         projectile.gameObject.SetActive(false);
         return projectile;
     }

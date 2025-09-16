@@ -254,6 +254,8 @@ public class DemoMainLevelManager : MonoBehaviour
         if (leftPropCollected) {
             endLevelPortal.transform.position = levelRightTeleporterPosition.position;
             StartCoroutine(EnableEndLevelPortal(4f));
+            LevelManager.Instance.LevelSuccess();
+            ES3.Save("demoFirstLevelCompleted", true);
         }
     }
 
@@ -265,6 +267,8 @@ public class DemoMainLevelManager : MonoBehaviour
         if (rightPropCollected) {
             endLevelPortal.transform.position = levelLeftTeleporterPosition.position;
             StartCoroutine(EnableEndLevelPortal(4f));
+            LevelManager.Instance.LevelSuccess();
+            ES3.Save("demoFirstLevelCompleted", true);
         }
     }
 

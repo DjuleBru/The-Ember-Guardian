@@ -71,7 +71,9 @@ public class ItemButtonUI : ButtonUI {
             initialLockingItemButtonUIList.Add(buttonUI);
         }
 
-        newUnlockedItemGO.SetActive(false);
+        if(newUnlockedItemGO != null) {
+            newUnlockedItemGO.SetActive(false);
+        }
 
         iconImage.material = new Material(iconImage.material);
         outlineImage.material = new Material(outlineImage.material);
@@ -443,9 +445,11 @@ public class ItemButtonUI : ButtonUI {
                 itemLevelText.text = "";
                 itemMaxLevelText.text = "";
             } else {
-                itemMaxedLevelText.text = "";
-                itemLevelText.text = hubMerchantItem.GetItemLevel().ToString();
-                itemMaxLevelText.text = "/" + hubMerchantItem.GetMaxItemLevel().ToString();
+                if(itemMaxedLevelText != null) {
+                    itemMaxedLevelText.text = "";
+                    itemLevelText.text = hubMerchantItem.GetItemLevel().ToString();
+                    itemMaxLevelText.text = "/" + hubMerchantItem.GetMaxItemLevel().ToString();
+                }
             }
         }
     }
@@ -514,7 +518,9 @@ public class ItemButtonUI : ButtonUI {
             }
         }
         else {
-            lockedFromOtherMerchantImage.gameObject.SetActive(false);
+            if(lockedFromOtherMerchantImage.gameObject != null) {
+                lockedFromOtherMerchantImage.gameObject.SetActive(false);
+            }
             iconImage.gameObject.SetActive(true);
             lockHoverInteractions = false;
         }

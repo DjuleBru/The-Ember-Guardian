@@ -687,6 +687,10 @@ PrefabInstance:
       propertyPath: m_BodyType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5585382106776468501, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7811116705413329226, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.028
@@ -832,7 +836,7 @@ MonoBehaviour:
     m_Bits: 16384
   solidCollider: {fileID: 6107622544754403661}
   alignToGroundOnImpact: 1
-  rotationOnImpact: {x: 0, y: 0, z: -90}
+  rotationOnImpact: {x: 0, y: 0, z: 90}
 --- !u!95 &7831464554734585439
 Animator:
   serializedVersion: 5

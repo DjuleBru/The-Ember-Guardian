@@ -25,6 +25,7 @@ public class ProjectileVisual : MonoBehaviour
 
     private void Projectile_OnProjectileInitialized(object sender, System.EventArgs e) {
         float direction = projectile.GetTrajectoryEndPoint().x - transform.position.x;
+        transform.rotation = Quaternion.identity;
         RefreshProjectileXAxisScale(direction);
     }
 
@@ -88,9 +89,15 @@ public class ProjectileVisual : MonoBehaviour
         }
 
         if(projectile.GetAlignToGroundOnImpact()) {
-            transform.localScale = new Vector3(1, 1, 1);
-            transform.eulerAngles = projectile.GetRotationOnImpact();
+            StartCoroutine(SetAlignToGroundOnImpactAfterFrame());
         }
+    }
+
+    private IEnumerator SetAlignToGroundOnImpactAfterFrame() {
+        yield return new WaitForEndOfFrame();
+
+        transform.localScale = new Vector3(1, 1, 1);
+        transform.eulerAngles = projectile.GetRotationOnImpact();
     }
 
     private void Update() {

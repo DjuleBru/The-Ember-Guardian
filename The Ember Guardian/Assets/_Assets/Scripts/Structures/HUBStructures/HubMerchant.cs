@@ -160,6 +160,10 @@ public class HubMerchant : MonoBehaviour
             merchantHasTalkLinesToShow = false;
         }
 
+        foreach (HubMerchantItem merchantItem in hubMerchantItems) {
+            merchantItem.LoadItemStatus();
+        }
+
         hubMerchantLoaded = true;
     }
 

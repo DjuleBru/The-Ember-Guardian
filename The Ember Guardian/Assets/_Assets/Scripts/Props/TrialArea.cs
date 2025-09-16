@@ -81,6 +81,7 @@ public class TrialArea : MonoBehaviour
     }
 
     protected void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
+        Player.Instance.SetInPayCurrencyArea(false);
         StartCoroutine(StartTrialCoroutine());
         trialChest.SetTrialChestPaid();
     }

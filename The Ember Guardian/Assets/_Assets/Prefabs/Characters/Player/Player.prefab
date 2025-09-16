@@ -24979,7 +24979,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6926878052834957446
 Transform:
   m_ObjectHideFlags: 0
@@ -89076,7 +89076,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5792039078304616635
 Transform:
   m_ObjectHideFlags: 0
@@ -126328,6 +126328,7 @@ MonoBehaviour:
   ammoBarTransform: {fileID: 4736914871900288309}
   ammoBarLeftPosition: {fileID: 7425993475763613498}
   ammoBarRightPosition: {fileID: 3641024503741475026}
+  weaponProjectileSpeed: 80
   enemyLayer:
     serializedVersion: 2
     m_Bits: 32768

@@ -163,9 +163,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
             ammoSpawnTransform.anchoredPosition = ammoSpawnPosition;
 
             Vector3 gemSpawnPosition = gemSpawnTransform.anchoredPosition;
-            Debug.Log("gemSpawnPosition " + gemSpawnPosition);
             gemSpawnPosition.x += 5f;
-            Debug.Log("gemSpawnPosition " + gemSpawnPosition);
             gemSpawnTransform.anchoredPosition = gemSpawnPosition;
         }
 

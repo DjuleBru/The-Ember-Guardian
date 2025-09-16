@@ -327,8 +327,8 @@ public class CreaturesSpawnManager : MonoBehaviour {
         Debug.Log("WaveDifficulty " + waveDifficulty);
         Debug.Log("minSubwaveDifficulty " + minSubwaveDifficulty);
         Debug.Log("maxSubwaveDifficulty " + maxSubwaveDifficulty);
-        //Debug.Log("waveLeftProportion " + waveDifficultyLeftProportion);
-        //Debug.Log("waveRightProportion " + waveDifficultyRightProportion);
+        Debug.Log("waveLeftProportion " + waveDifficultyLeftProportion);
+        Debug.Log("waveRightProportion " + waveDifficultyRightProportion);
 
         // Préparer la liste de toutes les créatures à spawner pour cette vague
         waveCreaturesDictionary.Clear();

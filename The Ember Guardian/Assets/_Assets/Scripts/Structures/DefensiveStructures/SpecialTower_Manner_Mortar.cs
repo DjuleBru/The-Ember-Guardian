@@ -78,8 +78,8 @@ public class SpecialTower_Manner_Mortar : SpecialTower_Manner
         Projectile projectile = engineersManning[0].GetComponent<WorkerAttack>().GetNextProjectileInPool(mortarProjectileSO);
 
         projectile.gameObject.SetActive(true);
+        projectile.transform.SetParent(null);
         projectile.transform.position = projectileSpawnPosition.position;
-        Vector3 randomizer = new Vector3(UnityEngine.Random.Range(1, -1), 0, 0);
 
         if(targetCreature == null) {
             // Target may have died in the delay

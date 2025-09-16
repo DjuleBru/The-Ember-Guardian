@@ -149,6 +149,10 @@ public class LevelManager : MonoBehaviour
 
 
     private void LevelUI_OnObjectiveCompleted(object sender, EventArgs e) {
+        if(DemoMainLevelManager.Instance != null) {
+            if (!DemoMainLevelManager.Instance.GetDemoFirstLevelCompleted()) return;
+        }
+
         LevelSuccess();
 
         float delayToShowReturnToHubObj = 2.5f;
@@ -159,7 +163,8 @@ public class LevelManager : MonoBehaviour
     }
 
     [Button]
-    private void LevelSuccess() {
+    public void LevelSuccess() {
+        Debug.Log("LevelSuccess");
         if (levelSucceeded) return;
         Vector3 endLevelPortalPosition = endLevelPortal.transform.position; 
 

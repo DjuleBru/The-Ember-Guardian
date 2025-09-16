@@ -364,18 +364,15 @@ public class HunterJob : WorkerJob {
                     }
 
 
-                    // DUSK : Keep checking if tower spots have been opened
-                    if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
+                    // Keep checking if tower spots have been opened
 
-                        if (worker.GetDefensiveStructureAssigned() == null) {
-                            TryAssignTower();
+                    if (worker.GetDefensiveStructureAssigned() == null) {
+                        TryAssignTower();
 
-                            if (assignedTower != null) {
-                                ChangeState(HunterState.headingToGuard);
-                            }
-                        };
-
-                    }
+                        if (assignedTower != null) {
+                            ChangeState(HunterState.headingToGuard);
+                        }
+                    };
 
                     if (targetCreature == null) {
 
