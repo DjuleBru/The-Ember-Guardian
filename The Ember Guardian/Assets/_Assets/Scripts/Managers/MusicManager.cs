@@ -58,6 +58,7 @@ public class MusicManager : MonoBehaviour {
     private List<AudioClip> levelExplorationTracksPooled;
 
     private float targetVolume;
+    private float currentTrackVolumeMultiplier;
     private float peacefulTimer;
     private float minPeacefulTimerDelay = 20f;
     private float playMusicAttemptTimer;
@@ -116,6 +117,7 @@ public class MusicManager : MonoBehaviour {
 
         SetAudioVolume(discoverNewLocationAudioVolume);
         SetAudioTargerVolume(discoverNewLocationAudioVolume);
+
         audioSourceA.ignoreListenerPause = true;
         audioSourceB.ignoreListenerPause = true;
 
@@ -331,7 +333,8 @@ public class MusicManager : MonoBehaviour {
 
     private void SettingsManager_OnMusicVolumeChanged(object sender, System.EventArgs e) {
         musicSettingVolume = SettingsManager.Instance.GetMusicVolume();
-        SetAudioVolume(musicSettingVolume);
+        Debug.Log("currentTrackVolumeMultiplier " + currentTrackVolumeMultiplier);
+        SetAudioVolume(currentTrackVolumeMultiplier);
     }
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
@@ -353,6 +356,7 @@ public class MusicManager : MonoBehaviour {
     private void LevelManager_OnNewLocationShown(object sender, System.EventArgs e) {
         audioSourceA.clip = LevelManager.Instance.GetLevelSO().newEnvironmentDiscoveryAudioClip;
         SetAudioVolume(discoverNewLocationAudioVolume);
+
         PlayMusicDelayed(4f);
         isPlayingLevelDiscoveryMusic = true;
         waitingToDiscoverLocation = false;
@@ -410,7 +414,7 @@ public class MusicManager : MonoBehaviour {
         if (levelRandomBackgroundTracks.Count == 0) return;
         AudioClip randomMusic = levelRandomBackgroundTracksPooled[UnityEngine.Random.Range(0, levelRandomBackgroundTracksPooled.Count)];
         audioSourceA.clip = randomMusic;
-        targetVolume = backgroundTracksAudioVolume * musicSettingVolume;
+        SetAudioTargerVolume(backgroundTracksAudioVolume);
         FadeInMusic(5f);
 
         levelRandomBackgroundTracksPooled.Remove(randomMusic);
@@ -428,7 +432,7 @@ public class MusicManager : MonoBehaviour {
 
         AudioClip randomMusic = levelExplorationTracksPooled[UnityEngine.Random.Range(0, levelExplorationTracksPooled.Count)];
         audioSourceA.clip = randomMusic;
-        targetVolume = backgroundTracksAudioVolume * musicSettingVolume;
+        SetAudioTargerVolume(backgroundTracksAudioVolume);
         FadeInMusic(5f);
 
         levelExplorationTracksPooled.Remove(randomMusic);
@@ -783,6 +787,7 @@ public class MusicManager : MonoBehaviour {
         return activeSource.volume;
     }
     public void SetAudioVolume(float volume) {
+        currentTrackVolumeMultiplier = volume;
         audioSourceA.volume = volume * musicSettingVolume;
         audioSourceB.volume = volume * musicSettingVolume;
     }
@@ -803,7 +808,7 @@ public class MusicManager : MonoBehaviour {
         if (isPlayingEndLevelAreaMusic) return;
         isPlayingEndLevelAreaMusic = true;
 
-        targetVolume = discoverNewLocationAudioVolume * musicSettingVolume;
+        SetAudioTargerVolume(discoverNewLocationAudioVolume);
 
         if (audioSourceA.isPlaying) {
 
@@ -818,7 +823,7 @@ public class MusicManager : MonoBehaviour {
 
     public void SetClearingObstacleMusic(float fadeInDuration) {
         isPlayingClearRubbleMusic = true;
-        targetVolume = discoverNewLocationAudioVolume * musicSettingVolume;
+        SetAudioTargerVolume(discoverNewLocationAudioVolume);
 
         if (audioSourceA.isPlaying) {
 

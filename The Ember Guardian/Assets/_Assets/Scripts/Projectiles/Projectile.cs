@@ -262,7 +262,9 @@ public class Projectile : MonoBehaviour
             };
 
             if (fire.GetIsMainFire()) {
-                parentMob.Die();
+                if (parentMob is Creature) {
+                    parentMob.Die();
+                };
                 Debug.Log("Fire Hit on Trigger");
             }
         }

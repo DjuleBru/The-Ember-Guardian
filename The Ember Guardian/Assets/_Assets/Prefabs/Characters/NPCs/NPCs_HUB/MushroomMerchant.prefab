@@ -2297,6 +2297,22 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 1025282778860133927}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 5491451860973373950}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 6339559354278823732}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 2344290593610811849}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_PassiveMeleeAttackMagmaShot
@@ -2474,6 +2490,17 @@ MonoBehaviour:
   mushroomItemCategory: 1
   linkedSkillSO: {fileID: 11400000, guid: cf849b55e83e3654aa6b8efad20c74f8, type: 2}
   linkedTrapSO: {fileID: 0}
+--- !u!114 &4837088546510688766 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 96510709501084790}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4798917069146753752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6977111322652013861 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -2700,6 +2727,22 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 282463392828854579}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 298562317460361978}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 2205180723493511938}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 1364869758960449956}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_PassiveShieldGenerator
@@ -2877,6 +2920,17 @@ MonoBehaviour:
   mushroomItemCategory: 1
   linkedSkillSO: {fileID: 11400000, guid: 43783caa7f7dfff4db159704c03cbfff, type: 2}
   linkedTrapSO: {fileID: 0}
+--- !u!114 &5005857673791812881 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 508471991635943577}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4954389265185926711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7056885517750079065 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7413315761527434944, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -3103,6 +3157,14 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 1237397626285852265}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 3698674373507647659}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_ActiveReaper
@@ -3241,6 +3303,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 635285425953003832}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5379243161033723056 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 635285425953003832}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5413061658953193366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5413061658953193366 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -3506,7 +3579,15 @@ PrefabInstance:
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 756367544635392097}
+      objectReference: {fileID: 2205180723493511938}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 7367908232938492942}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_MaxActiveSkillsDisplayed
@@ -3928,6 +4009,22 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 1364869758960449956}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 903297097752635188}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 298562317460361978}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 6339559354278823732}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_PassiveShootOnReload
@@ -4070,6 +4167,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 899709072207423946}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5623444795590097986 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 899709072207423946}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5743104369629783908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5743104369629783908 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -4335,6 +4443,22 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 4837088546510688766}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 4583750397248578620}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 6339559354278823732}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 2991946324037355557}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_PassiveChanceToDropDoubleXP
@@ -4473,6 +4597,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
   m_PrefabInstance: {fileID: 1027836398827068534}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5491451860973373950 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 1027836398827068534}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5587957368720036568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5587957368720036568 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -4738,6 +4873,18 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 6339559354278823732}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 903297097752635188}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 1590569199847761274}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_ShockerEjecotr
@@ -4915,6 +5062,17 @@ MonoBehaviour:
   mushroomItemCategory: 2
   linkedSkillSO: {fileID: 0}
   linkedTrapSO: {fileID: 11400000, guid: de35e79a19a499949b94793a64269f5f, type: 2}
+--- !u!114 &6015654426277273987 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 1228902470688142347}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5963331148715080357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8108874596979393880 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -5144,15 +5302,19 @@ PrefabInstance:
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 5229049089102650299}
+      objectReference: {fileID: 756367544635392097}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 2205180723493511938}
+      objectReference: {fileID: 6015654426277273987}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnLeft
       value: 
-      objectReference: {fileID: 756367544635392097}
+      objectReference: {fileID: 1364869758960449956}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 4837088546510688766}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_StartWithRandomPassiveSkill
@@ -5582,9 +5744,17 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 6339559354278823732}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
       objectReference: {fileID: 8440340857631156626}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 8423180910327420090}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_MaxTrapsDisplayed
@@ -5998,6 +6168,18 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 282463392828854579}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 5229049089102650299}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 2745092205255102231}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_ActiveMagmaShotBullet
@@ -6156,6 +6338,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3aaae745621c53a49a0d2b8e64a8ca73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7367908232938492942 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 2609277558533751174}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7492290218386902824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7492290218386902824 stripped
@@ -6401,6 +6594,18 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 298562317460361978}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 6649573421993304022}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 903297097752635188}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_BladeTrap
@@ -6559,6 +6764,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3aaae745621c53a49a0d2b8e64a8ca73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8423180910327420090 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 3932544030673387826}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8456847133130526620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8456847133130526620 stripped
@@ -6826,6 +7042,10 @@ PrefabInstance:
       objectReference: {fileID: 6649573421993304022}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
       value: 
       objectReference: {fileID: 2088481972415997563}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -7211,6 +7431,22 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 7367908232938492942}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 5005857673791812881}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 5229049089102650299}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 3599787511358993661}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_ActiveHealOnKills
@@ -7383,6 +7619,17 @@ MonoBehaviour:
   mushroomItemCategory: 0
   linkedSkillSO: {fileID: 11400000, guid: adcb68ae53d4a384199427db639fda02, type: 2}
   linkedTrapSO: {fileID: 0}
+--- !u!114 &282463392828854579 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 4728101659470300347}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167307411041929749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2312850584026985960 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -7614,6 +7861,22 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 5005857673791812881}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 8423180910327420090}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 2205180723493511938}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 5623444795590097986}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_PassiveDmgIncreaseInLight
@@ -7747,6 +8010,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7817613696620201936}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+--- !u!114 &298562317460361978 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 5067289851267565426}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404570909301967324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &404570909301967324 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -8028,15 +8302,19 @@ PrefabInstance:
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 5229049089102650299}
+      objectReference: {fileID: 0}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 2205180723493511938}
+      objectReference: {fileID: 6339559354278823732}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 2745092205255102231}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
-      objectReference: {fileID: 6339559354278823732}
+      objectReference: {fileID: 3698674373507647659}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_StartWithRandomActiveSkill
@@ -8461,6 +8739,22 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 3698674373507647659}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 4837088546510688766}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 756367544635392097}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 1237397626285852265}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_ActiveFeedFireOnKills
@@ -8594,6 +8888,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 8753500030354645591}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+--- !u!114 &1025282778860133927 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 5497941715857476527}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1117858632455996673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1117858632455996673 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -8864,6 +9169,18 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 5623444795590097986}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 8423180910327420090}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 6015654426277273987}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_SmokeEjector
@@ -8997,6 +9314,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7849856004902510498}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+--- !u!114 &903297097752635188 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 5692323917131936444}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950470821196053522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &950470821196053522 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -9267,6 +9595,22 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 3599787511358993661}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 5623444795590097986}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 5005857673791812881}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 6339559354278823732}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_PassiveAmmoGeneration
@@ -9400,6 +9744,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2154744435333856120}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+--- !u!114 &1364869758960449956 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 5802580588778400812}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389670623683207810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1389670623683207810 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -9670,6 +10025,18 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 5379243161033723056}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 2344290593610811849}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 1025282778860133927}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_ActivePlantMine
@@ -9842,6 +10209,17 @@ MonoBehaviour:
   mushroomItemCategory: 0
   linkedSkillSO: {fileID: 11400000, guid: 888aec5653cd81442aee344b2ef417ff, type: 2}
   linkedTrapSO: {fileID: 0}
+--- !u!114 &1237397626285852265 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 6006125185891701729}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195135417259810127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3871803069272407329 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7413315761527434944, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -10062,6 +10440,18 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 6339559354278823732}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 6015654426277273987}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 4583750397248578620}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_BearTrap
@@ -10195,6 +10585,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3867755446944448011}
   m_SourcePrefab: {fileID: 100100000, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+--- !u!114 &1590569199847761274 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 6081200762601238770}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705511323396619868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1705511323396619868 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -10474,9 +10875,17 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 5229049089102650299}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 756367544635392097}
+      objectReference: {fileID: 6649573421993304022}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 5005857673791812881}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_MaxPassiveSkillsDisplayed
@@ -10906,7 +11315,15 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 6649573421993304022}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
       value: 
       objectReference: {fileID: 8440340857631156626}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -11292,6 +11709,18 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 1237397626285852265}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 2991946324037355557}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 4837088546510688766}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_PassiveLastBulletDealsTwiceDamage
@@ -11434,6 +11863,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2344290593610811849 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 7133282084063435841}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2391816153117364975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2391816153117364975 stripped
@@ -11684,6 +12124,18 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 3599787511358993661}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 7367908232938492942}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 756367544635392097}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_ActiveDarkFlame
@@ -11837,6 +12289,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3aaae745621c53a49a0d2b8e64a8ca73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2745092205255102231 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 7236883606475938463}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2855670363113706545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2855670363113706545 stripped
@@ -12394,6 +12857,18 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 2344290593610811849}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 4583750397248578620}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 5491451860973373950}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_PassiveDmgIncreaseNotInLight
@@ -12577,6 +13052,17 @@ MonoBehaviour:
   mushroomItemCategory: 1
   linkedSkillSO: {fileID: 11400000, guid: d1c0810d3ea276c45b0d15e71381f7fa, type: 2}
   linkedTrapSO: {fileID: 0}
+--- !u!114 &2991946324037355557 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 7778722374634724781}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2899298456871113475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &9203512236501981080 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -12786,6 +13272,18 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 1025282778860133927}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 756367544635392097}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 5379243161033723056}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_ActiveDarkSword
@@ -12980,6 +13478,17 @@ MonoBehaviour:
   mushroomItemCategory: 0
   linkedSkillSO: {fileID: 11400000, guid: 3d01119ee7e48d34887e9f278a2d8234, type: 2}
   linkedTrapSO: {fileID: 0}
+--- !u!114 &3698674373507647659 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 8152149890348588323}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3669786628079997837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7307269025466324758 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -13189,6 +13698,22 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 2745092205255102231}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 1364869758960449956}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 282463392828854579}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnRight
+      value: 
+      objectReference: {fileID: 756367544635392097}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_ActiveWorkerAttackSpeedBuff
@@ -13383,6 +13908,17 @@ MonoBehaviour:
   mushroomItemCategory: 0
   linkedSkillSO: {fileID: 11400000, guid: 33830c2123521354b858f56b99ae2109, type: 2}
   linkedTrapSO: {fileID: 0}
+--- !u!114 &3599787511358993661 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 8323520959177073013}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3480407760088920027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7478778460846009152 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
@@ -13592,6 +14128,14 @@ PrefabInstance:
       propertyPath: m_Navigation.m_Mode
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnUp
+      value: 
+      objectReference: {fileID: 5491451860973373950}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 1590569199847761274}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_FireEjector
@@ -13775,6 +14319,17 @@ MonoBehaviour:
   mushroomItemCategory: 2
   linkedSkillSO: {fileID: 0}
   linkedTrapSO: {fileID: 11400000, guid: 6e18e8e5e3dfa2b4790f653cfacee2ea, type: 2}
+--- !u!114 &4583750397248578620 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 9073298794887164340}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4478028779027103514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7611143271476083585 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1462230981851548213, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}

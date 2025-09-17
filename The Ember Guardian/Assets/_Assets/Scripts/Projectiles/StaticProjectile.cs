@@ -103,8 +103,10 @@ public class StaticProjectile : MonoBehaviour
                 };
 
                 if (fire.GetIsMainFire()) {
-                    collision.GetComponent<Fire>().TakeDamage(1, transform, false);
-                    parentMob.Die();
+                    if (parentMob is Creature) {
+                        collision.GetComponent<Fire>().TakeDamage(1, transform, false);
+                        parentMob.Die();
+                    };
                 }
                 hasHit = true;
             }

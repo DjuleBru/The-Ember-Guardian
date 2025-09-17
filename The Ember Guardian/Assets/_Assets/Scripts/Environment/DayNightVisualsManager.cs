@@ -367,6 +367,7 @@ public class DayNightVisualsManager : MonoBehaviour
 
         if (showIncomingWaveDifficultyOnSun) {
             RefreshSunColorBasedOnDifficulty(.1f);
+            RefreshMoonColorBasedOnDifficulty(3f);
         }
     }
 
@@ -429,6 +430,10 @@ public class DayNightVisualsManager : MonoBehaviour
     public void RefreshSunColorBasedOnDifficulty(float delay) {
         StartCoroutine(RefreshSunColorBasedOnDifficultyAfterDelay(delay));
     }
+    public void RefreshMoonColorBasedOnDifficulty(float delay) {
+        StartCoroutine(RefreshMoonColorBasedOnDifficultyAfterDelay(delay));
+    }
+
 
     public IEnumerator RefreshSunColorBasedOnDifficultyAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
@@ -443,6 +448,21 @@ public class DayNightVisualsManager : MonoBehaviour
         Color sunColor = Color.Lerp(sunEasyIncomingWaveColor, sunHardIncomingWaveColor, dangerRatio);
 
         sunLight2D.color = sunColor;
+    }
+
+    public IEnumerator RefreshMoonColorBasedOnDifficultyAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+
+        float currentWaveDifficulty = CreaturesSpawnManager.Instance.GetRawCurrentWaveDifficulty();
+        float referenceWaveDifficulty = CreaturesSpawnManager.Instance.GetReferenceWaveDifficulty();
+
+        float dangerRatio = currentWaveDifficulty / referenceWaveDifficulty;
+        dangerRatio = Mathf.Clamp01((dangerRatio - 1f) / 0.5f);
+
+        Debug.Log("dangerRatio " + dangerRatio);
+        Color sunColor = Color.Lerp(sunEasyIncomingWaveColor, sunHardIncomingWaveColor, dangerRatio);
+
+        moonLight2D.color = sunColor;
     }
 
     public void SetInCave(bool inCave) {

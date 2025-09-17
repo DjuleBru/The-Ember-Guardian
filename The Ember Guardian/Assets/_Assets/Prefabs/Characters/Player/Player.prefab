@@ -24979,7 +24979,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6926878052834957446
 Transform:
   m_ObjectHideFlags: 0
@@ -170451,7 +170451,6 @@ MonoBehaviour:
   DebugActive: 0
   FeedbacksList:
   - rid: 7866843611745222669
-  - rid: 8262150600671363072
   KeepPlayModeChanges: 0
   PerformanceMode: 0
   StopFeedbacksOnDisable: 0
@@ -170527,7 +170526,7 @@ MonoBehaviour:
         RemapRangeFalloff: {x: 0, y: 1}
         Owner: {fileID: 760342803367411072}
         DebugActive: 0
-        Duration: 1
+        Duration: 0.6
         ResetShakerValuesAfterShake: 0
         ResetTargetValuesAfterShake: 0
         RelativeIntensity: 0
@@ -170565,114 +170564,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         RemapIntensityZero: 0
-        RemapIntensityOne: -0.15
-    - rid: 8262150600671363072
-      type: {class: MMF_CameraOrthographicSize, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks}
-      data:
-        Active: 1
-        UniqueID: -1433039411
-        Label: Orthographic Size
-        ChannelMode: 0
-        Channel: 0
-        MMChannelDefinition: {fileID: 0}
-        Chance: 100
-        DisplayColor: {r: 0, g: 0, b: 0, a: 1}
-        Timing:
-          TimescaleMode: 0
-          ExcludeFromHoldingPauses: 0
-          ContributeToTotalDuration: 1
-          InitialDelay: 0
-          CooldownDuration: 0
-          InterruptsOnStop: 1
-          NumberOfRepeats: 0
-          RepeatForever: 0
-          DelayBetweenRepeats: 1
-          MMFeedbacksDirectionCondition: 0
-          PlayDirection: 0
-          ConstantIntensity: 0
-          UseIntensityInterval: 0
-          IntensityIntervalMin: 0
-          IntensityIntervalMax: 0
-          Sequence: {fileID: 0}
-          TrackID: 0
-          Quantized: 0
-          TargetBPM: 120
-        AutomatedTargetAcquisition:
-          Mode: 0
-          ChildIndex: 0
-        RandomizeOutput: 0
-        RandomMultiplier: {x: 0.8, y: 1}
-        RandomizeDuration: 0
-        RandomDurationMultiplier: {x: 0.5, y: 2}
-        UseRange: 0
-        RangeDistance: 5
-        UseRangeFalloff: 0
-        RangeFalloff:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        RemapRangeFalloff: {x: 0, y: 1}
-        Owner: {fileID: 760342803367411072}
-        DebugActive: 0
-        Duration: 0.5
-        ResetShakerValuesAfterShake: 0
-        ResetTargetValuesAfterShake: 0
-        RelativeOrthographicSize: 1
-        ShakeOrthographicSize:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 0
-            inSlope: 2.3279412
-            outSlope: 2.3279412
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0.1043574
-          - serializedVersion: 3
-            time: 0.55
-            value: 1
-            inSlope: -0.035392124
-            outSlope: -0.035392124
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.19862552
-          - serializedVersion: 3
-            time: 1.001831
-            value: 0.00030517578
-            inSlope: -3.870154
-            outSlope: -3.870154
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.06928966
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        RemapOrthographicSizeZero: 0
-        RemapOrthographicSizeOne: -0.5
+        RemapIntensityOne: -0.35
 --- !u!1 &6824129050042967254
 GameObject:
   m_ObjectHideFlags: 0
@@ -182993,8 +182885,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.73, y: -0.557}
-  m_SizeDelta: {x: 0.3, y: 1}
+  m_AnchoredPosition: {x: -0.73, y: -0.25}
+  m_SizeDelta: {x: 0.3, y: 1.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5533642734957346242
 MonoBehaviour:
@@ -194976,7 +194868,6 @@ MonoBehaviour:
   DebugActive: 0
   FeedbacksList:
   - rid: 7866843611745222682
-  - rid: 7866843611745222683
   KeepPlayModeChanges: 0
   PerformanceMode: 0
   StopFeedbacksOnDisable: 0
@@ -195082,104 +194973,6 @@ MonoBehaviour:
         RemapIntensityZero: 0
         RemapIntensityOne: 0.4
         RelativeIntensity: 0
-    - rid: 7866843611745222683
-      type: {class: MMF_CameraOrthographicSize, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks}
-      data:
-        Active: 1
-        UniqueID: 749501527
-        Label: Orthographic Size
-        ChannelMode: 0
-        Channel: 0
-        MMChannelDefinition: {fileID: 0}
-        Chance: 100
-        DisplayColor: {r: 0, g: 0, b: 0, a: 1}
-        Timing:
-          TimescaleMode: 0
-          ExcludeFromHoldingPauses: 0
-          ContributeToTotalDuration: 1
-          InitialDelay: 0
-          CooldownDuration: 0
-          InterruptsOnStop: 1
-          NumberOfRepeats: 0
-          RepeatForever: 0
-          DelayBetweenRepeats: 1
-          MMFeedbacksDirectionCondition: 0
-          PlayDirection: 0
-          ConstantIntensity: 0
-          UseIntensityInterval: 0
-          IntensityIntervalMin: 0
-          IntensityIntervalMax: 0
-          Sequence: {fileID: 0}
-          TrackID: 0
-          Quantized: 0
-          TargetBPM: 120
-        AutomatedTargetAcquisition:
-          Mode: 0
-          ChildIndex: 0
-        RandomizeOutput: 0
-        RandomMultiplier: {x: 0.8, y: 1}
-        RandomizeDuration: 0
-        RandomDurationMultiplier: {x: 0.5, y: 2}
-        UseRange: 0
-        RangeDistance: 5
-        UseRangeFalloff: 0
-        RangeFalloff:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        RemapRangeFalloff: {x: 0, y: 1}
-        Owner: {fileID: 299487907472280097}
-        DebugActive: 0
-        Duration: 0.5
-        ResetShakerValuesAfterShake: 0
-        ResetTargetValuesAfterShake: 0
-        RelativeOrthographicSize: 1
-        ShakeOrthographicSize:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0.059931334
-            outSlope: 0.059931334
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.10314037
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        RemapOrthographicSizeZero: 0
-        RemapOrthographicSizeOne: -0.5
 --- !u!1 &7853792992362668171
 GameObject:
   m_ObjectHideFlags: 0
@@ -228952,7 +228745,6 @@ MonoBehaviour:
   DebugActive: 0
   FeedbacksList:
   - rid: 6464230304317440002
-  - rid: 6464230304317440003
   KeepPlayModeChanges: 0
   PerformanceMode: 0
   StopFeedbacksOnDisable: 0
@@ -229058,104 +228850,6 @@ MonoBehaviour:
         RemapIntensityZero: 0
         RemapIntensityOne: 0.4
         RelativeIntensity: 0
-    - rid: 6464230304317440003
-      type: {class: MMF_CameraOrthographicSize, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks}
-      data:
-        Active: 1
-        UniqueID: -1079151409
-        Label: Orthographic Size
-        ChannelMode: 0
-        Channel: 0
-        MMChannelDefinition: {fileID: 0}
-        Chance: 100
-        DisplayColor: {r: 0, g: 0, b: 0, a: 1}
-        Timing:
-          TimescaleMode: 0
-          ExcludeFromHoldingPauses: 0
-          ContributeToTotalDuration: 1
-          InitialDelay: 0
-          CooldownDuration: 0
-          InterruptsOnStop: 1
-          NumberOfRepeats: 0
-          RepeatForever: 0
-          DelayBetweenRepeats: 1
-          MMFeedbacksDirectionCondition: 0
-          PlayDirection: 0
-          ConstantIntensity: 0
-          UseIntensityInterval: 0
-          IntensityIntervalMin: 0
-          IntensityIntervalMax: 0
-          Sequence: {fileID: 0}
-          TrackID: 0
-          Quantized: 0
-          TargetBPM: 120
-        AutomatedTargetAcquisition:
-          Mode: 0
-          ChildIndex: 0
-        RandomizeOutput: 0
-        RandomMultiplier: {x: 0.8, y: 1}
-        RandomizeDuration: 0
-        RandomDurationMultiplier: {x: 0.5, y: 2}
-        UseRange: 0
-        RangeDistance: 5
-        UseRangeFalloff: 0
-        RangeFalloff:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        RemapRangeFalloff: {x: 0, y: 1}
-        Owner: {fileID: 7772971983373082436}
-        DebugActive: 0
-        Duration: 0.5
-        ResetShakerValuesAfterShake: 0
-        ResetTargetValuesAfterShake: 0
-        RelativeOrthographicSize: 1
-        ShakeOrthographicSize:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 0
-            inSlope: 0.059931334
-            outSlope: 0.059931334
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.10314037
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        RemapOrthographicSizeZero: 0.5
-        RemapOrthographicSizeOne: 0
 --- !u!1 &8737353265693034199
 GameObject:
   m_ObjectHideFlags: 0

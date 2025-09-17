@@ -18,11 +18,18 @@ public class ObservationTower : Structure
 
         Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
+        CreaturesSpawnManager.Instance.OnNightWaveDifficultyChanged += CreaturesSpawnManager_OnNightWaveDifficultyChanged;
 
         if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
             SetStructurePrimaryFunctionUnlocked(false);
         }
 
+    }
+
+    private void CreaturesSpawnManager_OnNightWaveDifficultyChanged(object sender, EventArgs e) {
+        if (observationTowerActive) {
+            LevelUI_WaveInfoUI.Instance.RefreshWaveInfo();
+        }
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {
@@ -94,4 +101,5 @@ public class ObservationTower : Structure
         LevelUI_WaveInfoUI.Instance.HideWaveInfoUI();
         SetStructurePrimaryFunctionUnlocked(false);
     }
+
 }

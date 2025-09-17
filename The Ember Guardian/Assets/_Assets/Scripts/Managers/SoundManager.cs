@@ -735,7 +735,7 @@ public class SoundManager : MonoBehaviour
     private void PlayerSkills_OnActiveSkillActivated(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
         SkillItem skillItem = e.skillItemAdded;
         AudioClip skillAudioClip = skillItem.GetSkillSO().activateSkillAudioClip;
-        PlaySound2D(skillAudioClip);
+        PlaySound2D(skillAudioClip, skillItem.GetSkillSO().activateSkillAudioClipVolumeMultiplier);
     }
 
     private void PlayerSkills_OnPassiveSkillAdded(object sender, PlayerSkills.OnSkillAddedEventArgs e) {

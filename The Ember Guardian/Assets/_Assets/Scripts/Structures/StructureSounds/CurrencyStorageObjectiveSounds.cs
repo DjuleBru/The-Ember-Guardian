@@ -15,7 +15,7 @@ public class CurrencyStorageObjectiveSounds : CurrencyStorageSounds
     }
 
     private void CurrencyStorageObjective_OnMaxCurrencyAmountReached(object sender, System.EventArgs e) {
-        PlaySound2D(maxCurrencyAmountReachedAucioClipWoosh);
-        PlaySFXAfterDelay(maxCurrencyAmountReachedAucioClip, .5f);
+        PlaySound2D(maxCurrencyAmountReachedAucioClipWoosh, 2f);
+        PlaySFXAfterDelay(maxCurrencyAmountReachedAucioClip, .5f, 2f);
     }
 }

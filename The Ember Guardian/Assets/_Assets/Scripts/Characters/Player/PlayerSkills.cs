@@ -46,7 +46,7 @@ public class PlayerSkills : MonoBehaviour
     private float healOnKillsTimer;
     private float healOnKillsSkillDuration = 15f;
     private int healPipsPerKill = 1;
-    private int pipsToHeal1Health = 4;
+    private int pipsToHeal1Health = 5;
 
     private bool fuelFireOnKillsActive;
     private float fuelFireOnKillsTimer;

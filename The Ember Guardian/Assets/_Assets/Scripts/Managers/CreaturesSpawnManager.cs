@@ -36,6 +36,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
     [SerializeField] private CreatureSO ghoulCreature;
     private SpecialWaveType currentSpecialWaveType = SpecialWaveType.none;
 
+    public event EventHandler OnNightWaveDifficultyChanged;
     public event EventHandler<OnRemainingNightCreaturesChangedEventArgs> OnRemainingNightCreaturesChanged;
     public class OnRemainingNightCreaturesChangedEventArgs : EventArgs {
         public float remainingNightCreaturesNormalized;
@@ -83,6 +84,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
     [SerializeField] private float referenceWaveInitialDifficulty;
     [SerializeField] private float referenceWaveGrowthFactor;
+
     private float referenceWaveDifficulty;
     private float waveDifficulty;
     private float minSubwaveDifficulty_min;
@@ -96,6 +98,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
     private int typicalLevelDaysToComplete;
     private float maxWaveDifficulty;
+    private float maxReferenceWaveDifficulty;
 
     private float minLevelXPosition;
     private float maxLevelXPosition;
@@ -164,7 +167,9 @@ public class CreaturesSpawnManager : MonoBehaviour {
         debugDontSpawnAtNight = DebugManager.Instance.GetDebugDontSpawnAtNight();
 
         maxWaveDifficulty = baseDifficulty * Mathf.Pow(typicalLevelDaysToComplete, growthFactor);
+        maxReferenceWaveDifficulty = referenceWaveInitialDifficulty * Mathf.Pow(typicalLevelDaysToComplete, referenceWaveGrowthFactor);
         Debug.Log("maxWaveDifficulty " + maxWaveDifficulty);
+        Debug.Log("referenceMaxWaveDifficulty " + maxReferenceWaveDifficulty);
     }
 
     private void LevelManager_OnLevelLimitsChanged(object sender, EventArgs e) {
@@ -364,6 +369,8 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
         //Debug.Log("totalNightCreatures " + totalNightCreatures);
         remainingNightCreatures = totalNightCreatures;
+
+        OnNightWaveDifficultyChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void SetReferenceWaveParameters(int waveNumber) {
@@ -583,8 +590,6 @@ public class CreaturesSpawnManager : MonoBehaviour {
             }
 
             // Attendre que toutes les créatures de cette subwave soient éliminées
-            Debug.Log("remainingSubWaveCreatures " + (remainingSubWaveCreatures));
-            Debug.Log("maxRemainingSubWaveCreaturesForNextSubwave " + maxRemainingSubWaveCreaturesForNextSubwave);
             yield return new WaitUntil(() => remainingSubWaveCreatures <= maxRemainingSubWaveCreaturesForNextSubwave);
 
             subWaveIndex++;
@@ -803,6 +808,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         return rawWaveDifficulty;
     }
     public float GetMaxWaveDifficulty() {
+        if (maxReferenceWaveDifficulty != 0) return maxReferenceWaveDifficulty;
         return maxWaveDifficulty;
     }
     public void SetSetDifficultyAnimationCurve() {

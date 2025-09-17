@@ -32,7 +32,7 @@ public class LevelUI_WaveInfoUI : MonoBehaviour
 
         float waveDifficulty = CreaturesSpawnManager.Instance.GetRawCurrentWaveDifficulty();
         float maxWaveDifficulty = CreaturesSpawnManager.Instance.GetMaxWaveDifficulty();
-        Debug.Log("maxWaveDifficulty " + maxWaveDifficulty);
+        Debug.Log("RefreshWaveInfo maxWaveDifficulty " + maxWaveDifficulty);
 
         var (leftScore, rightScore) = GetSideDifficultiesScaledByGlobalThreat(leftSideCreatures, rightSideCreatures, waveDifficulty, maxWaveDifficulty);
         leftSideInfo.RefreshDifficulty(leftScore);

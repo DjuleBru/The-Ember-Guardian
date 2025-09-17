@@ -498,7 +498,7 @@ public class Structure : MonoBehaviour {
 
     #endregion
 
-    protected void OnDestroy() {
+    protected virtual void OnDestroy() {
         if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB && SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.MainMenu) {
             DayNightManager.Instance.OnNightStart -= DayNightManager_OnNightStart;
             DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;

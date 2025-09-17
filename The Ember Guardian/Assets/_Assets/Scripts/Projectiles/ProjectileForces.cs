@@ -167,7 +167,7 @@ public class ProjectileForces : Projectile {
 
     protected override void ProjectileHasHit(bool mobHit) {
         base.ProjectileHasHit(mobHit);
-        rb.bodyType = RigidbodyType2D.Static;
+        rb.bodyType = RigidbodyType2D.Kinematic;
         rb.velocity = Vector2.zero;
 
         // Fire hit ?

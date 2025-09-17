@@ -28,6 +28,8 @@ public class GemDropManager : MonoBehaviour
     private int totalCyanGemCosts;
     private int totalPurpleGemCosts;
 
+    private float redGemCostsMultiplier = .7f;
+
     private List<PlayerCurrencies.CurrencyType> gemTypesDroppedUnlocked;
 
     private void Awake() {
@@ -117,7 +119,7 @@ public class GemDropManager : MonoBehaviour
 
     public PlayerCurrencies.CurrencyType GetBalancedGemType() {
         Dictionary<PlayerCurrencies.CurrencyType, int> demandPerType = new Dictionary<PlayerCurrencies.CurrencyType, int> {
-        { PlayerCurrencies.CurrencyType.redGem, totalRedGemCosts },
+        { PlayerCurrencies.CurrencyType.redGem, (int)(totalRedGemCosts*redGemCostsMultiplier) },
         { PlayerCurrencies.CurrencyType.blueGem, totalBlueGemCosts },
         { PlayerCurrencies.CurrencyType.greenGem, totalGreenGemCosts },
         { PlayerCurrencies.CurrencyType.yellowGem, totalYellowGemCosts },

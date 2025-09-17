@@ -110,7 +110,27 @@ public class Chest_Special : Chest
             int rewardAmount = rewardAmountList[j];
 
             for (int i = 0; i < rewardAmount; i++) {
-                Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyType), orbSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
+
+                bool secondaryGunUnlocked = PlayerShoot.Instance.GetSecondaryGunSO() != null;
+                PlayerCurrencies.CurrencyType currencyTypeToReward = currencyType;
+
+                if (PlayerShoot.Instance.GetPrimaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special || (secondaryGunUnlocked && PlayerShoot.Instance.GetSecondaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special)) {
+                    // Player has at least 1 special ammo weapon:
+                    float randomFloat = UnityEngine.Random.value;
+                    if (randomFloat < 0.5f) {
+                        currencyTypeToReward = PlayerCurrencies.CurrencyType.ammo_special;
+                        rewardAmount /= 2;
+                    }
+                    else {
+                        if (PlayerShoot.Instance.GetPrimaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special && (secondaryGunUnlocked && PlayerShoot.Instance.GetSecondaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special)) {
+                            // Player has at 2 special ammo weapons:
+                            currencyTypeToReward = PlayerCurrencies.CurrencyType.ammo_special;
+                            rewardAmount /= 2;
+                        }
+                    }
+                }
+
+                Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyTypeToReward), orbSpawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
 
                 InvokeOnAnyChestSpawnedCollectibles(currencyType);
 

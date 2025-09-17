@@ -98,9 +98,12 @@ public class StaticProjectile_DarkTrap : StaticProjectile
             // Hit Barricade
             Fire fire = collision.gameObject.GetComponent<Fire>();
             if (fire != null) {
-                collision.GetComponent<Fire>().TakeDamage(1, transform, false);
-                parentMob.Die();
-                hasHit = true;
+                if (parentMob is Creature) {
+                    collision.GetComponent<Fire>().TakeDamage(1, transform, false);
+                    parentMob.Die();
+                    hasHit = true;
+                };
+
             }
         }
 

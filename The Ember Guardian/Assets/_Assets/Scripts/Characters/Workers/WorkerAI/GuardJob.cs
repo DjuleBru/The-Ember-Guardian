@@ -153,6 +153,7 @@ public class GuardJob : WorkerJob {
             if (aggroedCreature == null) {
                 targetCreature = null;
                 workerAttack.RemoveAttackTarget();
+                return;
             }
 
             else {
@@ -165,8 +166,7 @@ public class GuardJob : WorkerJob {
                         mobMovement.SetMoveSpeed(headToCampMoveSpeed);
                     }
                     else {
-                        mobMovement.SetMoveTarget(guardingPosition);
-                        mobMovement.SetMoveSpeed(roamMoveSpeed);
+                        ChangeState(GuardState.headingToGuard);
                     }
 
                 }
@@ -369,9 +369,14 @@ public class GuardJob : WorkerJob {
     public GuardState GetState() {
         return state;
     }
+
     private void OnDestroy() {
         ScavengableObstacle.OnAnyScavengableObstacleActivatedMining -= ScavengableObstacle_OnAnyScavengableObstacleActivatedMining;
         ScavengableObstacle.OnAnyObstacleBuilt -= ScavengableObstacle_OnAnyObstacleBuilt;
         ScavengableObstacle.OnAnyScavengableObstacleDeActivatedMining -= ScavengableObstacle_OnAnyScavengableObstacleDeActivatedMining;
+
+        DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
+        DayNightManager.Instance.OnDuskStart -= DayNightManager_OnDuskStart;
+        DayNightManager.Instance.OnNightStart -= DayNightManager_OnNightStart;
     }
 }

@@ -6,6 +6,7 @@ public class ScavengableObstacleSubElement : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator animator;
+    [SerializeField] private bool applyTorque = true;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -23,10 +24,14 @@ public class ScavengableObstacleSubElement : MonoBehaviour
             Random.Range(0.5f * explosionForce, 1.5f * explosionForce)
         );
 
+
         float torque = Random.Range(-0.5f * torqueForce, 1.5f * torqueForce);
 
         rb.AddForce(force, ForceMode2D.Impulse);
-        rb.AddTorque(torque, ForceMode2D.Impulse);
+
+        if(applyTorque) {
+            rb.AddTorque(torque, ForceMode2D.Impulse);
+        }
     }
 
     public void TakeDamage() {

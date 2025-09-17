@@ -18,4 +18,5 @@ public class SkillSO : ScriptableObject
     public PlayerCurrencies.CurrencyType currencyTypeToPay;
     public int maxLevel;
     public AudioClip activateSkillAudioClip;
+    public float activateSkillAudioClipVolumeMultiplier = 1f;
 }

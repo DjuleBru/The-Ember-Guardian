@@ -108,21 +108,25 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
 
     private void PlayerSkills_OnRightActiveSkillDeactivated(object sender, System.EventArgs e) {
         if (!isRightActiveSkill) return;
+        if (skillTemplateAnimator == null) return;
         skillTemplateAnimator.SetBool("Active", false);
     }
 
     private void PlayerSkills_OnLeftActiveSkillDeactivated(object sender, System.EventArgs e) {
         if (!isLeftActiveSkill) return;
+        if (skillTemplateAnimator == null) return;
         skillTemplateAnimator.SetBool("Active", false);
     }
 
     private void PlayerSkills_OnRightActiveSkillActivated(object sender, System.EventArgs e) {
         if (!isRightActiveSkill) return;
+        if (skillTemplateAnimator == null) return;
         skillTemplateAnimator.SetBool("Active", true);
     }
 
     private void PlayerSkills_OnLeftActiveSkillActivated(object sender, System.EventArgs e) {
         if (!isLeftActiveSkill) return;
+        if (skillTemplateAnimator == null) return; 
         skillTemplateAnimator.SetBool("Active", true);
     }
 
@@ -298,5 +302,11 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
         PlayerTabMenuUI.Instance.OnPlayerTabOpened -= PlayerTabMenu_OnPlayerTabOpened;
         OnAnyButtonHovered -= LevelUI_SkillUI_OnAnyButtonHovered;
         OnAnyButtonSelected -= LevelUI_SkillUI_OnAnyButtonSelected;
+
+        PlayerSkills.Instance.OnLeftActiveSkillActivated -= PlayerSkills_OnLeftActiveSkillActivated;
+        PlayerSkills.Instance.OnRightActiveSkillActivated -= PlayerSkills_OnRightActiveSkillActivated;
+        PlayerSkills.Instance.OnLeftActiveSkillDeactivated -= PlayerSkills_OnLeftActiveSkillDeactivated;
+        PlayerSkills.Instance.OnRightActiveSkillDeactivated -= PlayerSkills_OnRightActiveSkillDeactivated;
+
     }
 }

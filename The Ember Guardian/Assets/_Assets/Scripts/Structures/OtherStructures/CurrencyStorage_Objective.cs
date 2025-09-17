@@ -41,6 +41,7 @@ public class CurrencyStorage_Objective : CurrencyStorage
     private void ActivateWaveDifficultyReductionEffect() {
         CreaturesSpawnManager.Instance.ApplyPermanentShockwaveEffect(difficultyReductionFactorsList[maxCurrencyStorageIndex]);
         DayNightVisualsManager.Instance.RefreshSunColorBasedOnDifficulty(.75f);
+        DayNightVisualsManager.Instance.RefreshMoonColorBasedOnDifficulty(.75f);
     }
 
     private void RefreshMaxCurrencyAmountStored() {
