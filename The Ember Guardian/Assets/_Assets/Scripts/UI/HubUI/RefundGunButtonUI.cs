@@ -22,6 +22,10 @@ public class RefundGunButtonUI : MonoBehaviour
         linkedItemButtonUI.OnHubMerchantItemRefunded += LinkedItemButtonUI_OnHubMerchantItemRefunded;
     }
 
+    private void Start() {
+        
+    }
+
     private void ButtonUI_OnAnyButtonSelected(object sender, System.EventArgs e) {
         if (!GameInput.Instance.IsUsingGamepad()) return;
         if (!linkedItemButtonUI.GetItemRefundable()) return;

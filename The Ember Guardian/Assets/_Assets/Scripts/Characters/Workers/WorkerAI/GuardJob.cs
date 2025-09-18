@@ -10,10 +10,11 @@ public class GuardJob : WorkerJob {
     private GuardState previousState;
 
     private float attackRange = 1f;
+    private float maxAttackRange = 2f;
     private float followPlayerTargetingRange = 10f;
     private float attackRangeRandomized;
     private float distanceToOuterWallWhenGuarding = 3f;
-    private float distanceToOuterWallToTargetCreatureAtNight = 14f;
+    private float distanceToOuterWallToTargetCreatureAtNight = 18f;
 
     private IEscortable assignedEscortable;
     private Transform escortTransform;
@@ -66,7 +67,6 @@ public class GuardJob : WorkerJob {
 
                 case GuardState.escorting:
 
-
                     CheckAggroClosestCreatureSmart(transform.position, followPlayerTargetingRange);
                     if (aggroedCreature == null) {
                         targetCreature = null;
@@ -80,7 +80,7 @@ public class GuardJob : WorkerJob {
                         return;
                     }
 
-                    if (!TargetIsInRange(aggroedCreature, attackRangeRandomized)) {
+                    if (!TargetIsInRange(aggroedCreature, maxAttackRange)) {
                         targetCreature = null;
                         workerAttack.RemoveAttackTarget();
 
@@ -149,29 +149,39 @@ public class GuardJob : WorkerJob {
 
             Vector2 outerWallPosition = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned());
             CheckAggroClosestCreatureSmart(outerWallPosition, distanceToOuterWallToTargetCreatureAtNight);
-
             if (aggroedCreature == null) {
                 targetCreature = null;
                 workerAttack.RemoveAttackTarget();
+                Roam(2f, guardingPosition);
                 return;
             }
 
             else {
-                if (!TargetIsInRange(aggroedCreature, attackRangeRandomized)) {
-                    targetCreature = null;
-                    workerAttack.RemoveAttackTarget();
+                if (TargetIsCloseToOuterWall(aggroedCreature)) {
+                    // target is in attack radius
 
-                    if (TargetIsCloseToOuterWall(aggroedCreature)) {
+                    if (TargetIsInRange(aggroedCreature, maxAttackRange)) {
+                        TargetCreature(aggroedCreature);
+                    } else {
+                        targetCreature = null;
+                        workerAttack.RemoveAttackTarget();
+
                         mobMovement.SetMoveTarget(aggroedCreature.transform.position);
                         mobMovement.SetMoveSpeed(headToCampMoveSpeed);
-                    }
-                    else {
-                        ChangeState(GuardState.headingToGuard);
+                        HeadToTarget();
                     }
 
                 }
                 else {
-                    TargetCreature(aggroedCreature);
+                    // target is too far
+                    targetCreature = null;
+                    workerAttack.RemoveAttackTarget();
+
+                    mobMovement.SetMoveTarget(transform.position);
+                    mobMovement.SetMoveSpeed(headToCampMoveSpeed);
+
+                    Roam(2f, guardingPosition);
+
                 }
             }
 
@@ -196,6 +206,9 @@ public class GuardJob : WorkerJob {
         else {
             ChangeState(GuardState.escorting);
         }
+    }
+    private void HeadToTarget() {
+        mobMovement.SetMoveTarget(aggroedCreature.transform.position);
     }
 
     private bool GuardIsTooFarFromEscortedTarget() {
@@ -323,6 +336,8 @@ public class GuardJob : WorkerJob {
 
     private void ChangeState(GuardState newState) {
         if (newState == state) return;
+
+        Debug.Log("newState " + newState);
         previousState = state;
 
         if(newState == GuardState.headingToEscort) {

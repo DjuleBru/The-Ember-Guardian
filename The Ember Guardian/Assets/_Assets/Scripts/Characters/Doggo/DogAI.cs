@@ -394,6 +394,7 @@ public class DogAI : MonoBehaviour
     protected void CheckNightInCamp() {
         if (isHubScene) return;
         if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) return;
+        if (currentBehaviorIdleState == State.stay) return;
 
         if(CampZoneManager.Instance.IsWithinCampZoneLimits(transform.position)) {
             SetIdleBehaviorState(State.nightInCampIdle);

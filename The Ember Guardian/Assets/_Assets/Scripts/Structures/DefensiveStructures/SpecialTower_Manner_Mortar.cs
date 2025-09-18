@@ -97,7 +97,7 @@ public class SpecialTower_Manner_Mortar : SpecialTower_Manner
         }
 
         currentShotIndex--;
-        if (currentShotIndex == 0 && !towerOutOfAmmo) {
+        if (currentShotIndex <= 0 && !towerOutOfAmmo) {
             InvokeOnMannerReloadingHandsEnded();
             currentShotIndex = shotsPerAmmoClip;
         }

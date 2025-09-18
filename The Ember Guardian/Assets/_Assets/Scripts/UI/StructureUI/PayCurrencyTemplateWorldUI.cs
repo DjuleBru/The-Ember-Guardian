@@ -53,6 +53,7 @@ public class PayCurrencyTemplateWorldUI : MonoBehaviour
     public void SetHovered(bool hovered) {
         if(payCurrencyUIAnimator == null) {
             Debug.Log("payCurrencyUIAnimator is null !");
+            return;
         }
 
         if (hovered) {

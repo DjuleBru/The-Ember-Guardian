@@ -48,12 +48,12 @@ MonoBehaviour:
   workerTargetingPriority: 0
   playerTargetingPriority: 3
   barricadeTargetingPriority: 0
-  probabilityToDropOrb: 1
+  probabilityToDropOrb: 0.5
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
   difficulty: 10
   initialWaveSpawn: 3
-  spawnProbability: 0.6
+  spawnProbability: 0.3
   maxCreaturesPerPacket: 3
   dieAudioClips:
   - {fileID: 8300000, guid: ebf06376f75092d438e3a03eabd09c31, type: 3}

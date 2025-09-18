@@ -98,6 +98,9 @@ public class ProjectileVisual : MonoBehaviour
 
         transform.localScale = new Vector3(1, 1, 1);
         transform.eulerAngles = projectile.GetRotationOnImpact();
+
+        yield return new WaitForEndOfFrame();
+        transform.eulerAngles = projectile.GetRotationOnImpact();
     }
 
     private void Update() {

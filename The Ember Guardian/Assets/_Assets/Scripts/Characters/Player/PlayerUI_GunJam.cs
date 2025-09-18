@@ -164,7 +164,7 @@ public class PlayerUI_GunJam : MonoBehaviour
     }
 
     private void GunJamHandler_OnAnyJamSequenceCompleted(object sender, System.EventArgs e) {
-        if (!jamUIActive) return;
+        //if (!jamUIActive) return;
 
         CleanUISequence();
 

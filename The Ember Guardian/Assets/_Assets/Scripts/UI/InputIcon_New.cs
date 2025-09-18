@@ -43,6 +43,12 @@ public class InputIcon_New : MonoBehaviour
                 inputSpriteRenderer2.sprite = InputControlIcons.Instance.GetControlIconSprite(control)[1];
             }
         }
+
+        LayoutGroup layoutGroup = GetComponentInParent<LayoutGroup>();
+        if (layoutGroup != null) {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup.GetComponent<RectTransform>());
+        }
+
     }
 
     private void OnDestroy() {

@@ -332,16 +332,17 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
     private void OnTriggerEnter2D(Collider2D collision) {
         if (!scavengedUnlocked) return;
         if (depleted) return;
-        //if (markedToScavenge && !isMine) return;
         if (collision.GetComponent<Player>() == null) return;
 
-        Player.Instance.SetInPayCurrencyArea(true);
         playerInTriggerArea = true;
         OnPlayerTriggerIn?.Invoke(this, EventArgs.Empty);
 
         if(isMine && markedToScavenge) {
             Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
         }
+
+        if (markedToScavenge && !isMine) return;
+        Player.Instance.SetInPayCurrencyArea(true);
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
@@ -359,5 +360,11 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
         if (isMine && markedToScavenge) {
             Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
         }
+    }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerInteractCanceled -= GameInput_OnPlayerInteractCanceled;
+        GameInput.Instance.OnPlayerInteractPerformed -= GameInput_OnPlayerInteractStarted;
+        DayNightManager.Instance.OnDuskStart -= DayNightManager_OnDuskStart;
     }
 }

@@ -44,6 +44,7 @@ public class DayNightVisualsManager : MonoBehaviour
     [SerializeField] private bool showIncomingWaveDifficultyOnSun;
     [SerializeField] private Color sunEasyIncomingWaveColor;
     [SerializeField] private Color sunHardIncomingWaveColor;
+    [SerializeField] private AnimationCurve sunColorEasyToHardAnimationCurve;
 
     private float nightDawnTransitionAnimationCurveFraction = .05f;
     [SerializeField] private float dawnAnimationCurveFraction = .1f;
@@ -444,8 +445,11 @@ public class DayNightVisualsManager : MonoBehaviour
         float dangerRatio = currentWaveDifficulty / referenceWaveDifficulty;
         dangerRatio = Mathf.Clamp01((dangerRatio - 1f) / 0.5f);
 
+        float animationCurveRatio = sunColorEasyToHardAnimationCurve.Evaluate(dangerRatio);
         Debug.Log("dangerRatio " + dangerRatio);
-        Color sunColor = Color.Lerp(sunEasyIncomingWaveColor, sunHardIncomingWaveColor, dangerRatio);
+        Debug.Log("animationCurveRation " + animationCurveRatio);
+
+        Color sunColor =  Color.Lerp(sunEasyIncomingWaveColor, sunHardIncomingWaveColor, animationCurveRatio);
 
         sunLight2D.color = sunColor;
     }
@@ -459,8 +463,11 @@ public class DayNightVisualsManager : MonoBehaviour
         float dangerRatio = currentWaveDifficulty / referenceWaveDifficulty;
         dangerRatio = Mathf.Clamp01((dangerRatio - 1f) / 0.5f);
 
+        float curvedRatio = Mathf.Pow(dangerRatio, 0.5f); // sqrt = tire plus vite vers le rouge
         Debug.Log("dangerRatio " + dangerRatio);
-        Color sunColor = Color.Lerp(sunEasyIncomingWaveColor, sunHardIncomingWaveColor, dangerRatio);
+        Debug.Log("curvedRatio " + curvedRatio);
+
+        Color sunColor = Color.Lerp(sunEasyIncomingWaveColor, sunHardIncomingWaveColor, curvedRatio);
 
         moonLight2D.color = sunColor;
     }

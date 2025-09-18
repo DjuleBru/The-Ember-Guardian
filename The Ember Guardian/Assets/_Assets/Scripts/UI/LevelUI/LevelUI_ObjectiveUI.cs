@@ -271,7 +271,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
             return LocalizationManager.Instance.GetLocalizedText("SubObj_ProgressWithScavengers") + " " + LevelObjectives.Instance.GetObstaclesToRemove() + " " + LocalizationManager.Instance.GetLocalizedText("SubObj_Obstacles") + " " + "(" + LevelObjectives.Instance.GetObstaclesRemoved() + "/" + LevelObjectives.Instance.GetObstaclesToRemove() + ")";
         }
         if (subObjectiveType == SubObjectiveType.CollectOrbs) {
-            return LocalizationManager.Instance.GetLocalizedText("SubObj_CollectOrbs") + "(" + LevelObjectives.Instance.GetWatcherArtifactFillAmount() + "/" + LevelObjectives.Instance.GetWatcherArtifactTotalFillAmount() + ")";
+            return LocalizationManager.Instance.GetLocalizedText("SubObj_CollectOrbs") + " (" + LevelObjectives.Instance.GetWatcherArtifactFillAmount() + "/" + LevelObjectives.Instance.GetWatcherArtifactTotalFillAmount() + ")";
         }
         return LocalizationManager.Instance.GetLocalizedText(subObjectiveKey);
         

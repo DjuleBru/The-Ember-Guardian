@@ -18,9 +18,11 @@ public class ObservationTowerSounds : StructureSounds {
 
     private void ObservationTower_OnObservationTowerDeActivated(object sender, System.EventArgs e) {
         audioSource2D.Stop();
+        audioSource2D.enabled = false;
     }
 
     private void ObservationTower_OnObservationTowerActivated(object sender, System.EventArgs e) {
+        audioSource2D.enabled = true;
         audioSource2D.Play();
     }
 }

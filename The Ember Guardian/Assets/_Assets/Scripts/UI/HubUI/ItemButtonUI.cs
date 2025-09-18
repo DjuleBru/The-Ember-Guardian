@@ -92,6 +92,8 @@ public class ItemButtonUI : ButtonUI {
         hubMerchantItem.OnHubMerchantItemEquipped += HubMerchantItem_OnHubMerchantItemEquipped;
         hubMerchantItem.OnHubMerchantItemUnequipped += HubMerchantItem_OnHubMerchantItemUnequipped;
 
+        HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+
         if (hubMerchantItem is HUBMerchantItem_GunMerchantItem) {
             HUBMerchantItem_GunMerchantItem gunItem = hubMerchantItem as HUBMerchantItem_GunMerchantItem;
             if(gunItem.GetGunItemCategory() == HUBMerchantItem_GunMerchantItem.GunItemCategory.newGun) {
@@ -105,7 +107,6 @@ public class ItemButtonUI : ButtonUI {
         base.Start();
         HubChest.Instance.OnChestClosed += HubChest_OnChestClosed;
         UICurrencyManager.HubInventoryUI.OnCurrencyRemovedFromBag += HubInventoryUI_OnCurrencyRemovedFromBag;
-
 
         if(DebugManager.Instance.GetAllItemsUnlockedInDemo()) {
             itemLockedInDemo = false;
@@ -121,15 +122,28 @@ public class ItemButtonUI : ButtonUI {
         RefreshItemStatusVisuals();
     }
 
+
+    private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
+        itemHovered = false;
+        itemSelected = false;
+    }
+
     private void GameInput_OnRefundGunPerformed(object sender, EventArgs e) {
         // ONLY SUBBED FOR GUNS
         bool isUsingGamepad = GameInput.Instance.IsUsingGamepad();
         if (!itemHovered && !isUsingGamepad) return;
         if (!itemSelected && isUsingGamepad) return;
         if (!GetItemRefundable()) return;
+
         int redGemsToRefund = GetTotalRedGunGemsToRefund();
         RefundGunItems();
 
+        ResetMajorGunItemAfterRefund();
+
+        UICurrencyManager.HubInventoryUI.AddCurrencyAmount(PlayerCurrencies.CurrencyType.redGem, redGemsToRefund, .15f);
+    }
+
+    public void ResetMajorGunItemAfterRefund() {
         StartBuyItemVisuals();
         if (outputLinkUnlockedImageList.Count != 0) {
             foreach (Image image in outputLinkUnlockedImageList) {
@@ -138,7 +152,6 @@ public class ItemButtonUI : ButtonUI {
             }
         }
 
-        UICurrencyManager.HubInventoryUI.AddCurrencyAmount(PlayerCurrencies.CurrencyType.redGem, redGemsToRefund, .15f);
     }
 
     public bool GetItemRefundable() {
@@ -154,6 +167,9 @@ public class ItemButtonUI : ButtonUI {
 
         HubMerchantItem[] childItems = treeShowHide.GetComponentsInChildren<HubMerchantItem>();
         foreach (HubMerchantItem item in childItems) {
+            HUBMerchantItem_GunMerchantItem gunItem = item as HUBMerchantItem_GunMerchantItem;
+            if (gunItem.GetGunItemCategory() == HUBMerchantItem_GunMerchantItem.GunItemCategory.gunAbility) continue;
+
             totalGems += item.GetRedGemsPaid();
         }
 
@@ -163,11 +179,27 @@ public class ItemButtonUI : ButtonUI {
     private void RefundGunItems() {
         HubMerchantItem[] childItems = treeShowHide.GetComponentsInChildren<HubMerchantItem>();
         foreach(HubMerchantItem item in childItems) {
+
+            HUBMerchantItem_GunMerchantItem gunItem = item as HUBMerchantItem_GunMerchantItem;
+            if (gunItem.GetGunItemCategory() == HUBMerchantItem_GunMerchantItem.GunItemCategory.gunAbility) continue;
+
             item.GetComponent<ItemButtonUI>().ResetItemStatusVisuals();
         }
 
         foreach (HubMerchantItem item in childItems) {
+
+            HUBMerchantItem_GunMerchantItem gunItem = item as HUBMerchantItem_GunMerchantItem;
+            if (gunItem.GetGunItemCategory() == HUBMerchantItem_GunMerchantItem.GunItemCategory.gunAbility) continue;
+
             item.ResetGunItemStatus();
+        }
+
+        foreach (HubMerchantItem item in childItems) {
+
+            HUBMerchantItem_GunMerchantItem gunItem = item as HUBMerchantItem_GunMerchantItem;
+            if (gunItem.GetGunItemCategory() == HUBMerchantItem_GunMerchantItem.GunItemCategory.gunAbility) {
+                gunItem.GetComponent<ItemButtonUI>().ResetMajorGunItemAfterRefund();
+            };
         }
 
         hubMerchantItem.ResetGunItemStatus();
@@ -714,6 +746,9 @@ public class ItemButtonUI : ButtonUI {
     }
     protected override void OnDestroy() {
         base.OnDestroy();
+
+        HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+
         OnAnyOutputLinkUnlocked -= ItemButtonUI_OnAnyOutputLinkUnlocked;
         OnAnyButtonHovered -= ButtonUI_OnAnyButtonHovered;
         OnAnyButtonSelected -= ButtonUI_OnAnyButtonSelected;

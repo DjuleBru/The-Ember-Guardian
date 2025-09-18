@@ -214,7 +214,7 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
         absoluteStatText = currentStatValue + skillSO.StatChangeUnit.ToString();
         cooldownStatText = currentCooldownValue.ToString() + "s";
 
-        activeItemStatValue.text = absoluteStatText;
+        activeItemStatValue.text = skillSO.StatChangePrefix + absoluteStatText;
 
         absoluteStatDescriptionText = LocalizationManager.Instance.GetLocalizedText(skillSO.StatChanges) + previousStatText;
         activeItemStatChangesDescription.text = absoluteStatDescriptionText;

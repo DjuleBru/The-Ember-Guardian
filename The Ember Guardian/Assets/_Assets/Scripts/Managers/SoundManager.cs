@@ -21,6 +21,9 @@ public class SoundManager : MonoBehaviour
     private float criticalFireTickRemovedTimer;
     private float criticalFireTickRemovedMinDelay = .3f;
 
+    private float lastOrbSoundTime = 0f;
+    private float orbSoundCooldown = 0.05f; // 50ms
+
     private void Awake() {
         Instance = this;
         audioSource2D = GetComponent<AudioSource>();
@@ -416,31 +419,34 @@ public class SoundManager : MonoBehaviour
 
     private void Collectible_OnAnyCollectibleTouchedFloor(object sender, System.EventArgs e) {
         Collectible collectible = (Collectible)sender;
+        AudioClip[] audioClipsToPlay = soundRefsSO.bigBlueOrbTouchedFloor;
+        float volumeToPlay = 1f;
 
-        if(collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigBlueOrb) {
-            PlaySound3D(soundRefsSO.bigBlueOrbTouchedFloor, (sender as MonoBehaviour).transform.position);
-        }
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.smallBlueOrb) {
-            PlaySound3D(soundRefsSO.smallBlueOrbTouchedFloor, (sender as MonoBehaviour).transform.position);
+            audioClipsToPlay = soundRefsSO.smallBlueOrbTouchedFloor;
         }
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.bigRedOrb) {
-            PlaySound3D(soundRefsSO.bigRedOrbTouchedFloor, (sender as MonoBehaviour).transform.position);
+            audioClipsToPlay = soundRefsSO.bigRedOrbTouchedFloor;
         }
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.smallRedOrb) {
-            PlaySound3D(soundRefsSO.smallRedOrbTouchedFloor, (sender as MonoBehaviour).transform.position);
+            audioClipsToPlay = soundRefsSO.smallRedOrbTouchedFloor;
         }
         if (collectible.GetCurrencyCategory() == PlayerCurrencies.CurrencyCategory.gem) {
-            PlaySound3D(soundRefsSO.gemTouchedFloor, (sender as MonoBehaviour).transform.position);
+            audioClipsToPlay = soundRefsSO.gemTouchedFloor;
         }
         if (collectible.GetCurrencyCategory() == PlayerCurrencies.CurrencyCategory.trap) {
-            PlaySound3D(soundRefsSO.trapTouchedFloor, (sender as MonoBehaviour).transform.position);
+            audioClipsToPlay = soundRefsSO.trapTouchedFloor;
         }
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo || collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo_special) {
-            PlaySound3D(soundRefsSO.ammoTouchedFloor, (sender as MonoBehaviour).transform.position, .7f);
+            audioClipsToPlay = soundRefsSO.ammoTouchedFloor;
+            volumeToPlay = .7f;
         }
         if (collectible.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember) {
-            PlaySound3D(soundRefsSO.emberTouchedFloor, (sender as MonoBehaviour).transform.position, 1f);
+            audioClipsToPlay = soundRefsSO.emberTouchedFloor;
         }
+
+
+        TryPlaySound(audioClipsToPlay, (sender as MonoBehaviour).transform.position, volumeToPlay);
     }
 
     private void HubInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -574,6 +580,7 @@ public class SoundManager : MonoBehaviour
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().bulletHitGroundSound;
         PlaySound2D(audioClipArray, .5f);
     }
+
     private void ParticleCollision_OnParticleBouncedOff(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = soundRefsSO.bulletBoucedOff;
         PlaySound2D(audioClipArray, .5f);
@@ -969,6 +976,12 @@ public class SoundManager : MonoBehaviour
     }
 
     #endregion
+    private void TryPlaySound(AudioClip[] clip, Vector3 pos, float volume = 1f) {
+        if (Time.time - lastOrbSoundTime < orbSoundCooldown) return;
+        lastOrbSoundTime = Time.time;
+
+        PlaySound3D(clip, pos, volume);
+    }
 
     private bool TestPlaySound(float probabilityToPlaySound) {
         float randomFloat = Random.Range(0f, 1f);

@@ -87,6 +87,7 @@ public class GunVisual : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
+        if (!gun.GetGunActive()) return;
         if (gunCooldownLightsSpriteRenderer == null) return;
         int bulletAmount = PlayerShoot.Instance.GetCurrentBullets();
         if(bulletAmount == 0) {

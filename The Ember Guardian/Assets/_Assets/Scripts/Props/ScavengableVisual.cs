@@ -146,6 +146,7 @@ public class ScavengableVisual : MonoBehaviour
     }
 
     private void Scavengable_OnPlayerTriggerOut(object sender, System.EventArgs e) {
+        scavengableUIAnimator.ResetTrigger("Show");
         scavengableUIAnimator.SetTrigger("Hide");
 
         if (scavengable.GetMarkedToScavenge()) return;

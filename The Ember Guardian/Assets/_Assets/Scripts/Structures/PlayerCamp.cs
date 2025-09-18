@@ -417,6 +417,7 @@ public class PlayerCamp : MonoBehaviour
         CurrencyStorage storage = null;
 
         foreach(CurrencyStorage currencyStorage in currencyStorages) {
+            if (currencyStorage is CurrencyStorage_Objective) continue;
             if(currencyStorage.GetCurrencyTypeStored() == currencyType && currencyStorage.GetCurrencyAmountStored() >= currencyAmountRequired) {
                 storage = currencyStorage;
             }

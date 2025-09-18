@@ -53,6 +53,8 @@ public class WindManager : MonoBehaviour
     private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
         if(currentWindStrength != WindStrength.none) {
             currentWindStrength = WindStrength.none;
+            windStrengthOutside = WindStrength.none;
+
             OnWindStrengthChanged?.Invoke(this, EventArgs.Empty);
         }
     }

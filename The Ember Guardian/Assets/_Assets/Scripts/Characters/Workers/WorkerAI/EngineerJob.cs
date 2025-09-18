@@ -75,8 +75,9 @@ public class EngineerJob : WorkerJob {
 
 
     private void Update() {
-        if (CheckDropCurrenciesToPlayer()) {
+        if (CheckDropCurrenciesToPlayer() && state != EngineerState.droppingCurrency) {
             ChangeState(EngineerState.droppingCurrency);
+            return;
         }
 
         if (escorting) {

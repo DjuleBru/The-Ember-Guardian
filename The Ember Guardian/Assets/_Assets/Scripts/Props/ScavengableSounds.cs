@@ -69,8 +69,9 @@ public class ScavengableSounds : SoundObject
     private void Scavengable_OnMinerStopsMining(object sender, System.EventArgs e) {
         PlaySound2D(minerGarrisonerAudioClip, .7f);
 
-        if (scavengable.GetIsMine()) {
+        if (scavengable.GetIsMine() && scavengable.GetMinerAmountMining() == 0) {
             backgroundAudioSource.Stop();
+            backgroundAudioSource.enabled = false;
             backgroundPlaying = false;
         }
     }
@@ -79,8 +80,10 @@ public class ScavengableSounds : SoundObject
         PlaySound2D(minerGarrisonerAudioClip, .7f);
 
         if (backgroundPlaying) return;
+
         if (scavengable.GetIsMine()) {
             backgroundAudioSource.clip = backgorundAudioClip;
+            backgroundAudioSource.enabled = true;
             backgroundAudioSource.Play();
             backgroundPlaying = true;
         }

@@ -67,6 +67,8 @@ public class StructureUI : MonoBehaviour
     }
 
     private void GameInput_OnPlayerLeftSwitchPerformed(object sender, System.EventArgs e) {
+        if (!structure.GetPlayerInTriggerArea()) return;
+
         List<Structure.StructureInteractionType> activeTypes = structure.GetActiveStructureInteractionTypeList();
         if (activeTypes.Count <= 1) return;
 
@@ -77,6 +79,8 @@ public class StructureUI : MonoBehaviour
     }
 
     private void GameInput_OnPlayerRightSwitchPerformed(object sender, System.EventArgs e) {
+        if (!structure.GetPlayerInTriggerArea()) return;
+
         List<Structure.StructureInteractionType> activeTypes = structure.GetActiveStructureInteractionTypeList();
         if (activeTypes.Count <= 1) return;
 
@@ -87,6 +91,7 @@ public class StructureUI : MonoBehaviour
     }
 
     private void SwitchToUIType(Structure.StructureInteractionType interactionType) {
+
         switch (interactionType) {
             case Structure.StructureInteractionType.primaryFunction:
                 ShowStructurePrimaryFunctionUI();
@@ -124,7 +129,6 @@ public class StructureUI : MonoBehaviour
     }
 
     private void Structure_OnWorkerStartedRefilling(object sender, EventArgs e) {
-        Debug.Log("Structure_OnWorkerStartedRefilling ");
         SetUIActive(true);
         StartCoroutine(SetUIActiveAfterDelay(1f, false));
     }
@@ -182,7 +186,10 @@ public class StructureUI : MonoBehaviour
         if(secondaryFunctionPayOrbsUIList != null) {
             secondaryFunctionUIGameObject.SetActive(false);
         }
-        if(upgradeGameObject != null) {
+        if (secondaryFunctionUIGameObject != null) {
+            secondaryFunctionUIGameObject.SetActive(false);
+        }
+        if (upgradeGameObject != null) {
             upgradeGameObject.SetActive(false);
         }
 
@@ -246,6 +253,7 @@ public class StructureUI : MonoBehaviour
         }
 
         // Afficher le type courant
+
         if (activeTypes.Contains(structure.GetCurrentStructureInteractionType())) {
             switch (structure.GetCurrentStructureInteractionType()) {
                 case Structure.StructureInteractionType.primaryFunction:

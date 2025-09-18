@@ -99,10 +99,17 @@ public class MobAttack : MonoBehaviour
 
         for(int i = 0; i < projectileAmountShotInAttack; i++) {
             if (mob.GetDead()) yield break;
+            if (attackTargetIDamageable is Player) {
+                if(Player.Instance.GetDead()) yield break;
+            }
 
             // Projectile can be instantiated AFTER attack target reset, so must keep track of previous attack target
 
             if (previousAttackTargetIDamageable != null) {
+                if (previousAttackTargetIDamageable is Player) {
+                    if (Player.Instance.GetDead()) yield break;
+                }
+
                 SpawnProjectile();
             }
             yield return new WaitForSeconds(delayBetweenProjectileSpawns);

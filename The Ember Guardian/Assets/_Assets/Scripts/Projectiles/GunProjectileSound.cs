@@ -9,6 +9,7 @@ public class GunProjectileSound : SoundObject
     [SerializeField] private AudioClip[] bounce2AudioClips;
     [SerializeField] private AudioClip[] bounce3AudioClips;
     [SerializeField] private AudioClip[] explosionAudioClips;
+    [SerializeField] private float explosionVolumeMultiplier = 1.0f;
     [SerializeField] private GunProjectile_BounceHandler gunProjectile_BounceHandler;
 
     private GunProjectile gunProjectile;
@@ -27,7 +28,7 @@ public class GunProjectileSound : SoundObject
     }
 
     private void GunProjectile_OnProjectileExploded(object sender, System.EventArgs e) {
-        PlaySound2D(explosionAudioClips);
+        PlaySound2D(explosionAudioClips, explosionVolumeMultiplier);
     }
 
     private void GunProjectile_BounceHandler_OnProjectileBouncedOnGround(object sender, System.EventArgs e) {

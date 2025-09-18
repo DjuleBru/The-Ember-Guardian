@@ -86,6 +86,8 @@ public class Tent : Structure
         fastTravelTP.gameObject.SetActive(true);
     }
 
+
+
     private void OnDestroy() {
         FastTravelTP.OnAnyFastTravelTPBuilt -= FastTravelTP_OnAnyFastTravelTPBuilt;
     }

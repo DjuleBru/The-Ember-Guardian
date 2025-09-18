@@ -65,6 +65,10 @@ PrefabInstance:
       value: GunProjectile_RocketLauncherChild
       objectReference: {fileID: 0}
     - target: {fileID: 5727399341827924888, guid: 536c1e5e297258a459e47d9ff303276b, type: 3}
+      propertyPath: explosionVolumeMultiplier
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727399341827924888, guid: 536c1e5e297258a459e47d9ff303276b, type: 3}
       propertyPath: bounce1AudioClips.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -243,14 +247,16 @@ MonoBehaviour:
   explodeOnContact: 1
   damagesPlayer: 1
   maxDistanceToDamagePlayer: 1.5
+  accelerationForce: 2
+  accelerationDuration: 1
   spawnChildBullets: 1
   damageToFlyingMultiplier: 1
   childGunProjectilePrefab: {fileID: 6959852132509442362}
   childGunProjectilesInstantiated: 0
+  childGunProjectilesForceMultiplier: 5
   childBulletLifetime: 0.15
-  childInitialForce: 20
+  childInitialForceMultiplier: 0
   childBulletKnockback: 0
-  maxChildProjectilesInstantiated: 0
 --- !u!114 &1529635003993342330 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2690273212303444028, guid: 536c1e5e297258a459e47d9ff303276b, type: 3}

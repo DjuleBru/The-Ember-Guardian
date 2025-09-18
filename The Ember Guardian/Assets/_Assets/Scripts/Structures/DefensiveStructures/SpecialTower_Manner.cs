@@ -92,19 +92,14 @@ public class SpecialTower_Manner : MonoBehaviour {
         if(towerOutOfAmmo && currentShotIndex == 0) {
             StartCoroutine(HandleReloading());
         }
+        towerOutOfAmmo = false;
+
     }
 
     protected virtual void Update() {
         if (engineersManning.Count == 0) return;
         if (reloading) return;
-
-        if (currentShotIndex == 0 && !towerOutOfAmmo) {
-            if (hasReloadingEngineer && engineersManning.Count < maxEngineersManning) return;
-            StartCoroutine(HandleReloading());
-            return;
-        }
-
-        if (currentShotIndex == 0) return;
+        if (currentShotIndex <= 0) return;
 
         HandleCooldown();
 
@@ -130,7 +125,7 @@ public class SpecialTower_Manner : MonoBehaviour {
         }
 
         currentShotIndex--;
-        if(currentShotIndex == 0 && !towerOutOfAmmo) {
+        if(currentShotIndex <= 0 && !towerOutOfAmmo) {
             StartCoroutine(HandleReloading());
         }
 

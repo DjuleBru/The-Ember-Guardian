@@ -1,3 +1,4 @@
+using Mono.CSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,37 +32,39 @@ public class DogAI_Retreiver : DogAI {
     protected override void Update() {
 
         if (pickUpItemsUnlocked) {
-
-            if (state == State.droppingOrbs) {
-                DroppingOrbsUpdate();
-                return;
-            }
-
-            if (state != State.droppingOrbs && CheckDropCurrenciesToPlayer()) {
-                droppingCurrencies = true;
-                ChangeState(State.droppingOrbs);
-                return;
-            }
-
-            if (state != State.pickingUpOrbs && state != State.droppingOrbs && currenciesDetectionCollider.GetClosestCollectibleToCollect() != null) {
-                ChangeState(State.pickingUpOrbs);
-                return;
-            }
-
-            if(state == State.pickingUpOrbs) {
-                if(currenciesDetectionCollider.GetClosestCollectibleToCollect() == null) {
-                    ChangeState(State.runWithPlayer);
+            if(currentBehaviorIdleState != State.stay) {
+                if (state == State.droppingOrbs) {
+                    DroppingOrbsUpdate();
                     return;
                 }
 
-                HeadToClosestOrb();
-                return;
-            }
+                if (state != State.droppingOrbs && CheckDropCurrenciesToPlayer()) {
+                    droppingCurrencies = true;
+                    ChangeState(State.droppingOrbs);
+                    return;
+                }
 
-            if (state == State.runToPlayer) {
-                HeadToPlayer();
-                return;
+                if (state != State.pickingUpOrbs && state != State.droppingOrbs && currenciesDetectionCollider.GetClosestCollectibleToCollect() != null) {
+                    ChangeState(State.pickingUpOrbs);
+                    return;
+                }
+
+                if (state == State.pickingUpOrbs) {
+                    if (currenciesDetectionCollider.GetClosestCollectibleToCollect() == null) {
+                        ChangeState(State.runWithPlayer);
+                        return;
+                    }
+
+                    HeadToClosestOrb();
+                    return;
+                }
+
+                if (state == State.runToPlayer) {
+                    HeadToPlayer();
+                    return;
+                }
             }
+           
 
         }
 

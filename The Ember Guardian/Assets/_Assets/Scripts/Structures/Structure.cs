@@ -209,6 +209,7 @@ public class Structure : MonoBehaviour {
 
     protected virtual void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
+        if (Player.Instance.GetDead()) return;
 
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
@@ -494,6 +495,10 @@ public class Structure : MonoBehaviour {
 
     public float GetWorldScaleX() {
         return worldScaleX;
+    }
+
+    public bool GetPlayerInTriggerArea() {
+        return playerInTriggerArea;
     }
 
     #endregion

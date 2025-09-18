@@ -28,7 +28,7 @@ public class GemDropManager : MonoBehaviour
     private int totalCyanGemCosts;
     private int totalPurpleGemCosts;
 
-    private float redGemCostsMultiplier = .7f;
+    private float redGemCostsMultiplier = .5f;
 
     private List<PlayerCurrencies.CurrencyType> gemTypesDroppedUnlocked;
 

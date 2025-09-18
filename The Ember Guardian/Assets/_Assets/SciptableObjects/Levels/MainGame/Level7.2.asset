@@ -25,7 +25,7 @@ MonoBehaviour:
   minesAmount: 0
   chestAmount: 0
   wildEmberlingsAmount: 0
-  duskDurationIncreasePerDay: 0
+  duskDurationIncreasePerDay: 1.5
   levelObjectiveType: 21
   endLevelType: 21
   talkToNpcAFterObjective: 0
@@ -64,8 +64,8 @@ MonoBehaviour:
   minSubwaveDifficulty: 100
   intialMaxSubwaveDifficulty: 30
   maxSubwaveDifficulty: 200
-  growthFactor: 1.5
-  typicalLevelDaysToComplete: 7
+  growthFactor: 1.4
+  typicalLevelDaysToComplete: 8
   minMaxSubwaveDifficultyGrowthFactor: 1.35
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0

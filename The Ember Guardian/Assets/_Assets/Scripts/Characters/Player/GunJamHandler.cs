@@ -152,9 +152,14 @@ public class GunJamHandler : MonoBehaviour
     private void PlayerShoo_OnPlayerSwappedGun(object sender, EventArgs e) {
         gunIsHeldGun = PlayerShoot.Instance.GetHeldGun() == gun;
 
-        if (!gunIsHeldGun) return;
+        if (gunJammed) {
+            gunJamTimer = gunJamDuration + 1;
+            CompleteGunJamMiniGame();
+        }
 
-        RefreshJamFeedbacks();
+        //if (!gunIsHeldGun) return;
+
+        //RefreshJamFeedbacks();
     }
 
     private void RefreshJamFeedbacks() {
@@ -432,7 +437,7 @@ public class GunJamHandler : MonoBehaviour
     }
 
     private void CompleteGunJamMiniGame() {
-        if (!gunIsHeldGun) return;
+        if (!gunJammed) return;
 
         isInGunJamQTE = false;
         gunJammed = false;

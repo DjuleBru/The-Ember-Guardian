@@ -886,7 +886,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     public override void ResetGunItemStatus() {
         base.ResetGunItemStatus();
 
-        if(gunItemCategory == GunItemCategory.newGun) {
+        if(gunItemCategory == GunItemCategory.newGun || gunItemCategory == GunItemCategory.gunAbility) {
             itemUnlocked = true;
             itemBought = true;
         }

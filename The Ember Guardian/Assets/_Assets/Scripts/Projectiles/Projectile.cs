@@ -211,10 +211,9 @@ public class Projectile : MonoBehaviour
         if (mobHit == null && !playerHit && barricade == null && !groundHitOrOther && fireOrbCollider == null) return;
         if (collision.gameObject.GetComponent<CreatureDetectionCollider>() != null) return;
         if (collision.gameObject.GetComponent<WorkerDetectionCollider>() != null) return;
-        if (collision.gameObject.GetComponent<WorkerInteractionCollider>() != null) return;
+        //if (collision.gameObject.GetComponent<WorkerInteractionCollider>() != null) return;
 
         // Hit mob
-        mobHit = collision.GetComponentInParent<Mob>();
         if (mobHit != null  && mobHit != parentMob) {
 
             Worker worker = mobHit as Worker;

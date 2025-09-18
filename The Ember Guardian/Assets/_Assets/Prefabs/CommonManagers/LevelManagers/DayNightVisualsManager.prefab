@@ -60,6 +60,7 @@ MonoBehaviour:
   moonLightIntensity: 1
   transitionDuration: 2
   skySpriteRenderer: {fileID: 0}
+  skySpriteRenderer2: {fileID: 0}
   globalLight2D: {fileID: 0}
   sunLight2D: {fileID: 0}
   moonLight2D: {fileID: 0}
@@ -118,6 +119,62 @@ MonoBehaviour:
   dontHandleMoonMovement: 0
   dontHandleSunMovement: 0
   dontHandleMoonLight: 0
+  showIncomingWaveDifficultyOnSun: 0
+  sunEasyIncomingWaveColor: {r: 0, g: 0, b: 0, a: 0}
+  sunHardIncomingWaveColor: {r: 0, g: 0, b: 0, a: 0}
+  sunColorEasyToHardAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.5
+      outSlope: 0.5
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.2
+      value: 0.1
+      inSlope: 1.1948981
+      outSlope: 1.1948981
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.42294514
+    - serializedVersion: 3
+      time: 0.3
+      value: 0.6
+      inSlope: 0.61532986
+      outSlope: 0.61532986
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.07740444
+    - serializedVersion: 3
+      time: 0.6979169
+      value: 0.8306344
+      inSlope: 0.5580652
+      outSlope: 0.5580652
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.560659
+      outSlope: 0.560659
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   dawnAnimationCurveFraction: 0.1
   dayAnimationCurveFraction: 0.5
   duskAnimationCurveFraction: 0.2
+  caveLightColor: {r: 0, g: 0, b: 0, a: 0}
+  caveLightIntensity: 0
