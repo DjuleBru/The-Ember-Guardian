@@ -172,7 +172,6 @@ public class MouseCursorManager : MonoBehaviour
 
     private void VideoTipUI_OnVideoTipPanelClosed(object sender, VideoTipUI.OnVideoTipPanelClosedEventArgs e) {
         videoTipMenuOpen = false;
-        Debug.Log("videoTipMenuOpen " + videoTipMenuOpen);
         if (!isUsingGamepad) {
             ShowMouse(false);
         }

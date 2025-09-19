@@ -46,6 +46,8 @@ public class PauseMenuUI : MonoBehaviour
 
         buttonConfirm_ExitGame.OnButtonDeselected += ButtonConfirm_ExitGame_OnButtonDeselected;
         buttonConfirm_MainMenu.OnButtonDeselected += ButtonConfirm_MainMenu_OnButtonDeselected;
+        buttonConfirm_ExitGame.OnButtonDeHovered += ButtonConfirm_ExitGame_OnButtonDeHovered;
+        buttonConfirm_MainMenu.OnButtonDeHovered += ButtonConfirm_MainMenu_OnButtonDeHovered;
 
         pausePanel.SetActive(false);
         fullGameDescriptionPanel.SetActive(false);
@@ -60,6 +62,11 @@ public class PauseMenuUI : MonoBehaviour
             UICurrencyManager.HubInventoryUI.OnCurrencyRemovedFromBag += HubInventoryUI_OnCurrencyRemovedFromBag;
 
         }
+
+        backToMenuText.text = LocalizationManager.Instance.GetLocalizedText("menu_mainMenu");
+        backToMenuText.font = LocalizationManager.Instance.GetCurrentFont();
+        exitGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_exitGame");
+        exitGameText.font = LocalizationManager.Instance.GetCurrentFont();
 
         //RefreshFonts();
     }
@@ -88,12 +95,28 @@ public class PauseMenuUI : MonoBehaviour
     private void ButtonConfirm_MainMenu_OnButtonDeselected(object sender, EventArgs e) {
         confirmBackToMenu = false;
         backToMenuText.text = LocalizationManager.Instance.GetLocalizedText("menu_mainMenu");
+        backToMenuText.font = LocalizationManager.Instance.GetCurrentFont();
         progressionSavedTextIndicator.SetTrigger("Hide");
     }
+    private void ButtonConfirm_MainMenu_OnButtonDeHovered(object sender, EventArgs e) {
+        confirmBackToMenu = false;
+        backToMenuText.text = LocalizationManager.Instance.GetLocalizedText("menu_mainMenu");
+        backToMenuText.font = LocalizationManager.Instance.GetCurrentFont();
+        progressionSavedTextIndicator.SetTrigger("Hide");
+    }
+
 
     private void ButtonConfirm_ExitGame_OnButtonDeselected(object sender, EventArgs e) {
         confirmExitGame = false;
         exitGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_exitGame");
+        exitGameText.font = LocalizationManager.Instance.GetCurrentFont();
+        progressionSavedTextIndicator.SetTrigger("Hide");
+    }
+
+    private void ButtonConfirm_ExitGame_OnButtonDeHovered(object sender, EventArgs e) {
+        confirmExitGame = false;
+        exitGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_exitGame");
+        exitGameText.font = LocalizationManager.Instance.GetCurrentFont();
         progressionSavedTextIndicator.SetTrigger("Hide");
     }
 

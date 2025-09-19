@@ -14,11 +14,15 @@ public class PauseMenuUI_Level : PauseMenuUI {
     protected override void Start() {
         base.Start();
         buttonConfirm_BackToHub.OnButtonDeselected += ButtonConfirm_BackToHub_OnButtonDeselected;
+
+        backToHubText.text = LocalizationManager.Instance.GetLocalizedText("menu_backToHub");
+        backToHubText.font = LocalizationManager.Instance.GetCurrentFont();
     }
 
     private void ButtonConfirm_BackToHub_OnButtonDeselected(object sender, System.EventArgs e) {
         confirmBackToHub = false;
         backToHubText.text = LocalizationManager.Instance.GetLocalizedText("menu_backToHub");
+        backToHubText.font = LocalizationManager.Instance.GetCurrentFont();
         progressionSavedTextIndicator.SetTrigger("Hide");
     }
 
@@ -43,6 +47,7 @@ public class PauseMenuUI_Level : PauseMenuUI {
 
             confirmBackToHub = true;
             backToHubText.text = LocalizationManager.Instance.GetLocalizedText("menu_confirm");
+            backToHubText.font = LocalizationManager.Instance.GetCurrentFont();
             progressionSavedTextIndicator.SetTrigger("Show"); 
             progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedText("menu_progressionNotSaved");
             progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = unsavedTextColor;

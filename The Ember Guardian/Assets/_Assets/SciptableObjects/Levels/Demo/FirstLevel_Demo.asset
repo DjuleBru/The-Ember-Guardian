@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: FirstLevel_Demo
   m_EditorClassIdentifier: 
   linkedSceneName: DemoLevel_First
+  isBranchingLevel: 0
+  requiredLevelSO1: {fileID: 0}
+  requiredLevelSO2: {fileID: 0}
+  parallelLevelSO: {fileID: 0}
   levelImage: {fileID: 0}
   levelNameLocalizationKey: 
   levelDescriptionLocalizationKey: 
@@ -21,6 +25,7 @@ MonoBehaviour:
   minesAmount: 0
   chestAmount: 0
   wildEmberlingsAmount: 0
+  duskDurationIncreasePerDay: 0
   levelObjectiveType: 16
   endLevelType: 16
   talkToNpcAFterObjective: 0
@@ -33,6 +38,8 @@ MonoBehaviour:
   newMerchantTextLinesAfterLevel:
   - {fileID: 11400000, guid: ba0b4ae1f1183ca4c9174883ce17e497, type: 2}
   - {fileID: 11400000, guid: 21cf534f747284149886fd8d74aaaf0d, type: 2}
+  unlocksNewGemType: 0
+  newGemTypeUnlockedByLevelList: 
   isReplayableLevel: 1
   totalDayCreatureDifficulty: 500
   dayCreatureTypes:
@@ -50,16 +57,30 @@ MonoBehaviour:
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
-  baseDifficulty: 20
+  bossNightWaveDifficultyMultiplier: 0.33
+  startWaveToSpawnFromBothSides: 2
+  baseDifficulty: 30
   intialMinSubwaveDifficulty: 5
   minSubwaveDifficulty: 25
   intialMaxSubwaveDifficulty: 10
   maxSubwaveDifficulty: 60
-  growthFactor: 1.35
-  maxWaveNumber: 0
+  growthFactor: 1.2
+  typicalLevelDaysToComplete: 0
   minMaxSubwaveDifficultyGrowthFactor: 1.5
-  startWaveToSpawnFromBothSides: 2
+  setDifficultyAnimationCurve: 0
+  difficultyAtMaxWave: 0
+  difficultyAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxWaveInAnimationCurve: 0
   canSpawnElite: 0
+  hasSpecialWaveTypes: 0
+  specialWaveTypesInLevel: 
+  specialWaveProbability: 0
+  maxSpecialWaveAmount: 0
   environmentType: 1
   hasFog: 0
   fogFrontAlpha: 1

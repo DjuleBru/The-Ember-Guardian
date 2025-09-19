@@ -272,7 +272,7 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
 
     private void SetDesciptionCardText() {
 
-        string skillName = LocalizationManager.Instance.GetLocalizedText(linkedSkill.skillSO.SkillName);
+        string skillName = linkedSkill.skillSO.SkillName;
         List<string> statList = new List<string>();
         List<string> statDescriptionList = new List<string>();
 

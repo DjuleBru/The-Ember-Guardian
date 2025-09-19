@@ -33,6 +33,7 @@ public class LocalizationManager : MonoBehaviour
         German,
         Spanish,
         Japanese,
+        Chinese,
     }
     [Serializable]
     public class LocalizationEntry {
@@ -70,7 +71,6 @@ public class LocalizationManager : MonoBehaviour
         if (File.Exists(filePath)) {
             string jsonContent = File.ReadAllText(filePath, Encoding.UTF8);
             localizationData = JsonUtility.FromJson<LocalizationData>(jsonContent);
-           
         }
         else {
             Debug.LogError("Localization file not found in StreamingAssets!");

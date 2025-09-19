@@ -1508,7 +1508,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8630344753813328900}
   - {fileID: 2210486982105085965}
   - {fileID: 2038135335667962273}
   - {fileID: 5897259808284768114}
@@ -1537,6 +1536,7 @@ RectTransform:
   - {fileID: 2063834674726280000}
   - {fileID: 8618281853970876613}
   - {fileID: 202697655482647177}
+  - {fileID: 8630344753813328900}
   m_Father: {fileID: 6182862714281802348}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -9272,7 +9272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6786197286744093847, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_fontSize
-      value: 0.35
+      value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: 6786197286744093847, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_fontSizeBase

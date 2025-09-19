@@ -17,6 +17,12 @@ public class ItemDescriptionCardUI : MonoBehaviour
     [SerializeField] private Material modifiedItemStatMaterial;
     [SerializeField] private Material initialItemStatMaterial;
     [SerializeField] private Material redFontMaterial;
+    [SerializeField] private Material modifiedItemStatMaterial_JP;
+    [SerializeField] private Material initialItemStatMaterial_JP;
+    [SerializeField] private Material redFontMaterial_JP;
+    [SerializeField] private Material modifiedItemStatMaterial_CH;
+    [SerializeField] private Material initialItemStatMaterial_CH;
+    [SerializeField] private Material redFontMaterial_CH;
     [SerializeField] private Color modifiedItemColor;
 
     [SerializeField] private TextMeshProUGUI itemStatDescriptionText;
@@ -130,11 +136,9 @@ public class ItemDescriptionCardUI : MonoBehaviour
 
 
             if (itemStatModifiersBools[i] == true) {
-                itemStatTemplateValue.fontMaterial = modifiedItemStatMaterial;
-                itemStatTemplateValue.color = modifiedItemColor;
+                SetGreenFontMaterial(itemStatTemplateValue);
             } else {
-                itemStatTemplateValue.fontMaterial = initialItemStatMaterial;
-                itemStatTemplateValue.color = Color.white;
+                SetInitialItemStatMaterial();
             }
 
             RectTransform template = Instantiate(itemStatDescriptionTemplate, itemStatDescriptionContainer).GetComponent<RectTransform>();
@@ -153,15 +157,15 @@ public class ItemDescriptionCardUI : MonoBehaviour
     }
 
     public void SetDescriptionCardMaxlevel() {
-        maxLevelText.text = LocalizationManager.Instance.GetLocalizedText("card_maxLevel"); 
+        SetGreenFontMaterial(maxLevelText);
+        maxLevelText.text = LocalizationManager.Instance.GetLocalizedText("card_maxLevel");
         DisableGemCostGO();
 
         maxLevelText.gameObject.SetActive(true);
     }
     public void SetDescriptionCardItemLockedInDemo() {
+        SetRedFontMaterial();
         maxLevelText.text = LocalizationManager.Instance.GetLocalizedText("card_lockedInDemo");
-        maxLevelText.fontMaterial = redFontMaterial;
-        maxLevelText.fontSize = 40;
 
         DisableGemCostGO();
 
@@ -171,6 +175,7 @@ public class ItemDescriptionCardUI : MonoBehaviour
 
     public void SetDescriptionCardBought() {
         maxLevelText.text = LocalizationManager.Instance.GetLocalizedText("card_unlocked");
+        SetGreenFontMaterial(maxLevelText);
         DisableGemCostGO();
         maxLevelText.gameObject.SetActive(true);
     }
@@ -183,6 +188,68 @@ public class ItemDescriptionCardUI : MonoBehaviour
         purpleGemCostGO.SetActive(false);
         cyanGemCostGO.SetActive(false);
 
+    }
+   
+    private void SetGreenFontMaterial(TextMeshProUGUI text) {
+        LocalizationManager.Language currentLanguage = SettingsManager.Instance.GetLanguage();
+
+        text.color = modifiedItemColor;
+
+        if (currentLanguage == LocalizationManager.Language.Japanese) {
+
+            text.fontMaterial = modifiedItemStatMaterial_JP;
+            return;
+        }
+
+        if (currentLanguage == LocalizationManager.Language.Chinese) {
+
+            text.fontMaterial = modifiedItemStatMaterial_CH;
+
+            return;
+        }
+
+        text.fontMaterial = modifiedItemStatMaterial;
+    }
+
+    private void SetInitialItemStatMaterial() {
+        LocalizationManager.Language currentLanguage = SettingsManager.Instance.GetLanguage();
+        itemStatTemplateValue.color = Color.white;
+
+        if (currentLanguage == LocalizationManager.Language.Japanese) {
+
+            itemStatTemplateValue.fontMaterial = initialItemStatMaterial_JP;
+            return;
+        }
+
+        if (currentLanguage == LocalizationManager.Language.Chinese) {
+
+            itemStatTemplateValue.fontMaterial = initialItemStatMaterial_CH;
+
+            return;
+        }
+
+        itemStatTemplateValue.fontMaterial = initialItemStatMaterial;
+
+    }
+
+    private void SetRedFontMaterial() {
+        LocalizationManager.Language currentLanguage = SettingsManager.Instance.GetLanguage();
+        maxLevelText.fontSize = 40;
+
+        if (currentLanguage == LocalizationManager.Language.Japanese) {
+
+            maxLevelText.fontMaterial = redFontMaterial_JP;
+            return;
+        }
+
+        if (currentLanguage == LocalizationManager.Language.Chinese) {
+
+            itemStatTemplateValue.fontMaterial = redFontMaterial_CH;
+
+            return;
+        }
+
+        maxLevelText.fontMaterial = redFontMaterial;
     }
 
 }

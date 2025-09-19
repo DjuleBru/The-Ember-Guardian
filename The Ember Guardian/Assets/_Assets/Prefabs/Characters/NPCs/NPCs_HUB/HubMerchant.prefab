@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 6603454757624187771}
   - component: {fileID: 7402336527072326945}
   - component: {fileID: 6786197286744093847}
+  - component: {fileID: 4318623390734221363}
   m_Layer: 0
   m_Name: ContinueInstructionText
   m_TagString: Untagged
@@ -226,11 +227,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.5
+  m_fontSize: 0.45
   m_fontSizeBase: 0.5
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 0.1
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 4
@@ -268,6 +269,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4318623390734221363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359589042317022151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizationKey: menu_continue
 --- !u!1 &388679641611174034
 GameObject:
   m_ObjectHideFlags: 0
@@ -1556,6 +1570,7 @@ MonoBehaviour:
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}
   bodySpriteRenderer: {fileID: 7580726008706340968}
   newItemsForSaleGameObject: {fileID: 8201136662256760279}
+  bodyAnimator: {fileID: 0}
 --- !u!95 &1830935907253760471
 Animator:
   serializedVersion: 5
@@ -2155,11 +2170,15 @@ MonoBehaviour:
   hubMerchantCameraFocusPosition: {fileID: 2823736090664261427}
   hubMerchantNameLocalizationKey: 
   hubMerchantUnlockedAtStart: 0
+  unlockHubMerchantWhenPlayerStopsTalking: 0
+  backToHubMerchantTextLines: {fileID: 0}
   activeGameObject: {fileID: 1547727666127543154}
   inactiveGameObject: {fileID: 3871428146972053218}
   hubMerchantItemParent: {fileID: 0}
   isHubMerchant: 1
   isLevelNPC: 0
+  fadeOutAfterTalk: 0
+  delayToFadeOutAfterTalk: 0
   isFunctionalDemoHubMerchant: 0
   isDecorationalDemoHubMerchant: 0
 --- !u!58 &2971541779210028289
@@ -3664,6 +3683,7 @@ GameObject:
   - component: {fileID: 7016385715153913671}
   - component: {fileID: 3193183991468947656}
   - component: {fileID: 1230237447525742314}
+  - component: {fileID: 3695269907625907909}
   m_Layer: 5
   m_Name: BackText
   m_TagString: Untagged
@@ -3748,9 +3768,9 @@ MonoBehaviour:
   m_fontSize: 50
   m_fontSizeBase: 50
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 50
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -3787,6 +3807,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3695269907625907909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8741337654596259625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizationKey: menu_back
 --- !u!1 &8830198885459635339
 GameObject:
   m_ObjectHideFlags: 0

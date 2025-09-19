@@ -3,12 +3,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Button_Confirm : MonoBehaviour {
+public class Button_Confirm : MonoBehaviour, IPointerExitHandler {
 
     private bool buttonPressedOnce;
     private Button button;
 
     public event EventHandler OnButtonDeselected;
+    public event EventHandler OnButtonDeHovered;
 
     private void Awake() {
         button = GetComponent<Button>();
@@ -36,5 +37,9 @@ public class Button_Confirm : MonoBehaviour {
         if(!buttonPressedOnce) {
             buttonPressedOnce = true;
         }
+    }
+
+    public void OnPointerExit(PointerEventData eventData) {
+        OnButtonDeHovered?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -538,16 +538,22 @@ public class ItemButtonUI : ButtonUI {
 
     private void RefreshItemStatusVisuals() {
         if (!hubMerchantItem.GetItemUnlocked()) {
+
             if (ItemLockedFromOtherMerchantItem() || hideItemIconUntilUnlocked) {
                 lockedFromOtherMerchantImage.gameObject.SetActive(true);
                 iconImage.gameObject.SetActive(false);
+
                 lockHoverInteractions = true;
             }
             else {
                 lockedFromOtherMerchantImage.gameObject.SetActive(false);
                 iconImage.gameObject.SetActive(true);
-                lockHoverInteractions = false;
+
+                if(!HUBManager.Instance.GetIsDemo()) {
+                    lockHoverInteractions = false;
+                }
             }
+
         }
         else {
             if(lockedFromOtherMerchantImage.gameObject != null) {

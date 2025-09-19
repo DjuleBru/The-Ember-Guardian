@@ -596,7 +596,6 @@ public class CreaturesSpawnManager : MonoBehaviour {
         }
     }
 
-
     private void SpawnCreatureAtSide(CreatureSO creatureToSpawn, SpawnSide spawnSide) {
         //Creature creature = GetCreatureFromPool(
         //    creatureToSpawn,
@@ -738,7 +737,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         // Afficher les résultats dans le format souhaité
         foreach (var kvp in occurrences) {
             var (creatureType, position) = kvp.Key;
-            //Debug.Log($"Creature Type: {creatureType.name}, Spawn Position: {position}, Count: {kvp.Value}");
+            Debug.Log($"Creature Type: {creatureType.name}, Spawn Position: {position}, Count: {kvp.Value}");
         }
     }
 

@@ -48,8 +48,10 @@ public class LevelUI_SkillDescriptionCardUI : MonoBehaviour
     public void SetDescriptionCardText(string itemName, List<string> itemStatDescriptionList, List<string> itemStatList) {
        
         itemNameText.text = LocalizationManager.Instance.GetLocalizedText(itemName);
-        itemDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(itemName + "_ItemDescription");
-        itemLoreDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(itemName + "_Description");
+        string itemDescriptionKey = itemName + "_ItemDescription";
+        itemDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(itemDescriptionKey);
+        string itemLoreDescriptionTextKey = itemName + "_Description";
+        itemLoreDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(itemLoreDescriptionTextKey);
 
         itemStatDescriptionTemplate.gameObject.SetActive(true);
         RefreshItemStatDescription(itemStatDescriptionList, itemStatList);

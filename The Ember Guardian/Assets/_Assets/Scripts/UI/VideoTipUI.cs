@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -73,6 +74,13 @@ public class VideoTipUI : MonoBehaviour
         //    OpenPanel();
         //    PlayTip();
         //}
+    }
+
+    [Button]
+    public void PlayTestTipSO() {
+        PlayTipSO(testTipSO);
+        OpenPanel();
+        PlayTip();
     }
 
     public void SetEndDemoTip() {

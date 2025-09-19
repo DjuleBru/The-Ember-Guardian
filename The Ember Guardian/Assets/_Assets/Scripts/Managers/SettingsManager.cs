@@ -159,8 +159,21 @@ public class SettingsManager : MonoBehaviour
         ES3.Save("showDamageNumbers", showDamageNumbers, settingsSaveFileSettings);
     }
     public void ChangeLanguage() {
-        int nextIndex = ((int)currentLanguage + 1) % System.Enum.GetValues(typeof(LocalizationManager.Language)).Length;
-        currentLanguage = (LocalizationManager.Language)nextIndex;
+        LocalizationManager.Language[] selectableLanguages = new LocalizationManager.Language[] {
+        LocalizationManager.Language.English,
+        LocalizationManager.Language.French,
+        LocalizationManager.Language.German,
+        LocalizationManager.Language.Spanish,
+        LocalizationManager.Language.Japanese
+        // pas de Chinese ici
+        };
+
+        // trouver l'index actuel dans cette liste
+        int currentIndex = Array.IndexOf(selectableLanguages, currentLanguage);
+
+        // avancer dans la liste
+        int nextIndex = (currentIndex + 1) % selectableLanguages.Length;
+        currentLanguage = selectableLanguages[nextIndex];
 
         LocalizationManager.Instance.SetLanguage(currentLanguage);
         OnLanguageChanged?.Invoke(this, EventArgs.Empty);
