@@ -87,8 +87,10 @@ public class Merchant : Structure {
     }
 
     protected override void TriggerStructurePrimaryFunction() {
+        Debug.Log("TriggerStructurePrimaryFunction");
 
-        if(!playerPayedToRefreshShop) {
+
+        if (!playerPayedToRefreshShop) {
             base.TriggerStructurePrimaryFunction();
             ActivateStructurePrimaryFunctionInteraction(false);
 
@@ -96,6 +98,14 @@ public class Merchant : Structure {
             OpenCloseShop(true);
 
         } else {
+
+            Debug.Log(currentHoveredItem.itemType);
+            if (currentHoveredItem.itemType == MerchantItem.MerchantItemType.RefreshShopItems) {
+                playerPayedToRefreshShop = false;
+                RefreshShopItems();
+                TriggerStructurePrimaryFunction();
+                return; // pas besoin de continuer le traitement normal
+            }
 
             OnPlayerBoughtItem?.Invoke(this, new OnPlayerBoughtItemEventArgs {
                 boughtItem = currentHoveredItem

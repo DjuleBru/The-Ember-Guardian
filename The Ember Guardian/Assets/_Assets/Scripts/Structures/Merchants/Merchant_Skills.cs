@@ -8,6 +8,7 @@ public class Merchant_Skills : Merchant
 {
 
     [SerializeField] private Transform refundDropPosition;
+    [SerializeField] private SkillSO refreshShopSkillSO;
     private List<SkillSO> merchantSkillSOList;
     private List<SkillItem> majorSkillList;
     private List<SkillItem> minorSkillList; // Référence aux skills du joueur
@@ -53,6 +54,7 @@ public class Merchant_Skills : Merchant
         minorSkillList = new List<SkillItem>();
         allItemsForSale = new List<MerchantItem>();
 
+
         merchantSkillSOList = PlayerSave.Instance.GetAllSkillsUnlocked();
         foreach (SkillSO skillSO in merchantSkillSOList) {
             var skillItem = new SkillItem();
@@ -79,6 +81,7 @@ public class Merchant_Skills : Merchant
                 minorSkillList.Add(skillItem);
             }
         }
+
     }
 
     protected override void InitializeMerchantItems() {
@@ -164,11 +167,18 @@ public class Merchant_Skills : Merchant
         }
 
         majorSkillItemsForSale = DrawSkillsWithoutReplacement(majorSkillListToDisplay, bigItemsToDisplayAmount);
+        SkillItem refreshShopSkillItem = new SkillItem();
+        refreshShopSkillItem.Initialize(refreshShopSkillSO);
+
+        majorSkillItemsForSale.Add(refreshShopSkillItem);
+
         majorItemListForSale = ConvertSkillListInMerchantItemList(majorSkillItemsForSale);
 
         foreach (SkillItem skillItem in majorItemListForSale) {
             allItemsForSale.Add(skillItem);
         }
+
+
     }
 
     protected void RefreshCurrentMinorItemListForSale() {
@@ -270,6 +280,13 @@ public class Merchant_Skills : Merchant
 
         }
         else {
+
+            if (currentHoveredItem.itemType == MerchantItem.MerchantItemType.RefreshShopItems) {
+                playerPayedToRefreshShop = false;
+                RefreshShopItems();
+                TriggerStructurePrimaryFunction();
+                return; // pas besoin de continuer le traitement normal
+            }
 
             InvokeOnPlayerBoughtItem();
         }

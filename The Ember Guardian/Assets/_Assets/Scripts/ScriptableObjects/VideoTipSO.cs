@@ -39,6 +39,8 @@ public class VideoTipSO : ScriptableObject
         SpecialAmmo,
         Wind,
         Guards,
+        SecondaryFires,
+        SkillsMerchant,
     }
 
     public VideoTipType tipType;

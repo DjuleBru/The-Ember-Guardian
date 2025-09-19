@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c809380acb1014c852c47b344da906, type: 3}
+  m_Name: RefreshShop
+  m_EditorClassIdentifier: 
+  itemType: 5
+  skillType: 25
+  passiveSkillEffect: {fileID: 0}
+  activeSkillEffect: {fileID: 11400000, guid: b6ae517026408b24e9d821004afb68ea, type: 2}
+  SkillName: Refresh Shop
+  StatChanges: 
+  StatChangePrefix: 
+  StatChangeUnit: 
+  Icon: {fileID: -1955705301, guid: 869a9f9d33a6507458c0cde97ad4d248, type: 3}
+  currencyTypeToPay: 2
+  maxLevel: 5
+  activateSkillAudioClip: {fileID: 8300000, guid: 119eeefba70a9964094831fb157befe9, type: 3}
+  activateSkillAudioClipVolumeMultiplier: 1

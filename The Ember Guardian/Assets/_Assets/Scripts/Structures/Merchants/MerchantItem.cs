@@ -11,6 +11,7 @@ public class MerchantItem
         SkillUpgrade,
         Trap,
         TrapUpgrade,
+        RefreshShopItems,
     }
 
     public string itemName;

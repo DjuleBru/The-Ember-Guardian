@@ -197,6 +197,7 @@ public class StructureUI : MonoBehaviour
     }
 
     protected void ShowStructureSecondaryFunctionUI() {
+        Debug.Log("ShowStructureSecondaryFunctionUI");
         structure.SetCurrentStructureInteractionType(Structure.StructureInteractionType.secondaryFunction);
 
         if (functionUIGameObject != null) {
@@ -215,6 +216,7 @@ public class StructureUI : MonoBehaviour
     }
 
     protected void ShowStructureUpgradeUI() {
+        Debug.Log("ShowStructureUpgradeUI");
         structure.SetCurrentStructureInteractionType(Structure.StructureInteractionType.upgrade);
 
         if (functionUIGameObject != null) {
@@ -237,7 +239,7 @@ public class StructureUI : MonoBehaviour
         payOrbsUI.SetOrbTemplateUIList(RecomposePayOrbsUIList(upgradeToNextLevelPayOrbsUIList[structureLevel - 1]));
     }
 
-    protected void RefreshShownUI() {
+    protected virtual void RefreshShownUI() {
         List<Structure.StructureInteractionType> activeTypes = structure.GetActiveStructureInteractionTypeList();
 
         // Désactiver toutes les UI par défaut
@@ -273,7 +275,6 @@ public class StructureUI : MonoBehaviour
             RefreshShownUI();
         }
 
-        //UpdateSwitchUIGameObjectActivation();
         UpdateArrowsVisibility();
     }
 

@@ -391,8 +391,10 @@ public class StructureUI_Merchant : StructureUI {
     }
     protected void ShowItemsToSale(bool show) {
         if(show) {
+            merchantUIAnimator.ResetTrigger("Hide");
             merchantUIAnimator.SetTrigger("Show");
         } else {
+            merchantUIAnimator.ResetTrigger("Show");
             merchantUIAnimator.SetTrigger("Hide");
         }
     }

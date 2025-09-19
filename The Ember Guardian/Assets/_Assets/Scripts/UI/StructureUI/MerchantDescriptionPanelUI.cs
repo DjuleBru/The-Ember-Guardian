@@ -83,6 +83,10 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
         descriptionPanelItemDescription.text = LocalizationManager.Instance.GetLocalizedText(merchantItem.itemName + "_ItemDescription");
 
         SetStatChangesText(merchantItem);
+
+        if(merchantItem.itemType == MerchantItem.MerchantItemType.RefreshShopItems) {
+            descriptionPanelItemName.text = LocalizationManager.Instance.GetLocalizedText(merchantItem.itemName);
+        }
     }
 
     private void SetStatChangesText(MerchantItem merchantItem) {
@@ -99,6 +103,13 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
 
             if(skillItem.itemType == MerchantItem.MerchantItemType.ActiveSkill) {
                 activeSkillItemStatChanges.SetActive(true);
+                passiveSkillItemStatChanges.SetActive(false);
+
+                SetActiveSkillStatsDescription(skillItem);
+            }
+
+            if (skillItem.itemType == MerchantItem.MerchantItemType.RefreshShopItems) {
+                activeSkillItemStatChanges.SetActive(false);
                 passiveSkillItemStatChanges.SetActive(false);
 
                 SetActiveSkillStatsDescription(skillItem);
@@ -170,7 +181,6 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
 
     private void SetActiveSkillStatsDescription(SkillItem skillItem) {
         SkillSO skillSO = skillItem.skillSO;
-
         ActiveSkillEffectSO skillEffect = skillSO.activeSkillEffect;
         string absoluteStatText = "";
         string previousStatText = "";

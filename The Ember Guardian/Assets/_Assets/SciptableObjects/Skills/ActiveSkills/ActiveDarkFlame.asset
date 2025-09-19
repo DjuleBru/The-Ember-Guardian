@@ -18,9 +18,10 @@ MonoBehaviour:
   activeSkillEffect: {fileID: 11400000, guid: 54856f42273159e4eb1f2da27566fa52, type: 2}
   SkillName: Kindled Dusk
   StatChanges: Burn Duration
-  Icon: {fileID: -1955705301, guid: 869a9f9d33a6507458c0cde97ad4d248, type: 3}
+  StatChangePrefix: 
+  StatChangeUnit: 
+  Icon: {fileID: -998403847, guid: 869a9f9d33a6507458c0cde97ad4d248, type: 3}
   currencyTypeToPay: 2
   maxLevel: 5
   activateSkillAudioClip: {fileID: 8300000, guid: 119eeefba70a9964094831fb157befe9, type: 3}
-  Description: Instantly teleport to a targeted location, bypassing obstacles and
-    confusing your enemies.
+  activateSkillAudioClipVolumeMultiplier: 1

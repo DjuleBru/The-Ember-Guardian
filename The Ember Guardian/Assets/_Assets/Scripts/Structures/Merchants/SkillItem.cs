@@ -32,6 +32,8 @@ public class SkillItem : MerchantItem {
         passiveMeleeAttackMagmaShot,
         passiveLastBulletDealsTwiceDamage,
         passiveDashFireTrail,
+
+        refreshShop,
     }
 
     public SkillSO skillSO { get; private set; }
@@ -41,14 +43,18 @@ public class SkillItem : MerchantItem {
 
     public override void Initialize(ScriptableObject data) {
         SkillSO SkillDataSO = data as SkillSO;
-
         if (SkillDataSO != null) {
             skillSO = SkillDataSO;
 
-            if(skillSO.itemType == MerchantItemType.PassiveSkill) {
+            if (skillSO.itemType == MerchantItemType.PassiveSkill) {
                 price = skillSO.passiveSkillEffect.GetPriceAtLevel(1);
             } else {
                 price = skillSO.activeSkillEffect.GetPriceAtLevel(1);
+            }
+
+            if (skillSO.itemType == MerchantItemType.RefreshShopItems) {
+                price = skillSO.activeSkillEffect.GetPriceAtLevel(1);
+                maxLevel = skillSO.activeSkillEffect.valuesByLevel.Count;
             }
 
             itemName = skillSO.SkillName;
