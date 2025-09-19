@@ -46,11 +46,13 @@ public class PassiveShieldVisual : MonoBehaviour
     }
 
     private void PassiveShield_OnShieldDied(object sender, System.EventArgs e) {
+        shieldAnimator.ResetTrigger("Activate");
         shieldAnimator.SetTrigger("Die");
     }
 
     private void PassiveShield_OnShieldActivated(object sender, System.EventArgs e) {
         shieldBodySpriteRenderer.enabled = true;
+        shieldAnimator.ResetTrigger("Die");
         shieldAnimator.SetTrigger("Activate");
     }
 

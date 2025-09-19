@@ -25,6 +25,7 @@ MonoBehaviour:
   minesAmount: 0
   chestAmount: 0
   wildEmberlingsAmount: 0
+  duskDurationIncreasePerDay: 0
   levelObjectiveType: 15
   endLevelType: 15
   talkToNpcAFterObjective: 0
@@ -71,8 +72,8 @@ MonoBehaviour:
   maxWaveInAnimationCurve: 0
   canSpawnElite: 0
   hasSpecialWaveTypes: 1
-  specialWaveTypesInLevel: 02000000
-  specialWaveProbability: 1
+  specialWaveTypesInLevel: 01000000
+  specialWaveProbability: 0
   maxSpecialWaveAmount: 0
   environmentType: 1
   hasFog: 0

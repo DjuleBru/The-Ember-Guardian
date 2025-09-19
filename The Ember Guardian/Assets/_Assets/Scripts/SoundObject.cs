@@ -7,6 +7,11 @@ public class SoundObject : MonoBehaviour
     protected float sfxVolume;
     protected AudioSource audioSource2D;
 
+    private static Dictionary<AudioClip, float> lastPlayedTime = new Dictionary<AudioClip, float>();
+    private static Dictionary<AudioClip, int> clipInstances = new Dictionary<AudioClip, int>();
+    [SerializeField] private float minIntervalBetweenSameClip = 0.1f; // délai minimal entre deux sons identiques
+    [SerializeField] private int maxInstancesPerClip = 10;             // nombre max global d’instances par son
+
     protected virtual void Start() {
         audioSource2D = GetComponent<AudioSource>();
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
@@ -29,6 +34,7 @@ public class SoundObject : MonoBehaviour
 
     protected void PlaySound2D(AudioClip[] audioClipArray, float volume = 1f) {
         if (audioClipArray.Length == 0) return;
+        if (audioSource2D.volume == 0) return;
 
         if (audioClipArray.Length == 1) {
             float originalPitch = audioSource2D.pitch;
@@ -44,7 +50,38 @@ public class SoundObject : MonoBehaviour
     }
 
     protected void PlaySound2D(AudioClip audioClip, float volume = 1f) {
+        if (audioClip == null) return;
+
+        // Vérif cooldown global
+        float lastTime;
+        if (lastPlayedTime.TryGetValue(audioClip, out lastTime)) {
+            if (Time.time - lastTime < minIntervalBetweenSameClip) {
+                return; // trop tôt : on ignore
+            }
+        }
+
+        // Vérif instances simultanées globales
+        int count;
+        clipInstances.TryGetValue(audioClip, out count);
+        if (count >= maxInstancesPerClip) {
+            return; // déjà trop d’instances actives
+        }
+
+        // Mise à jour des registres
+        lastPlayedTime[audioClip] = Time.time;
+        if (!clipInstances.ContainsKey(audioClip)) {
+            clipInstances[audioClip] = 0;
+        }
+        clipInstances[audioClip]++;
+
+        // Lecture et décrément après la durée du son
         audioSource2D.PlayOneShot(audioClip, volume * sfxVolume);
+        StartCoroutine(TrackClipInstance(audioClip, audioClip.length));
+    }
+
+    private IEnumerator TrackClipInstance(AudioClip clip, float duration) {
+        yield return new WaitForSeconds(duration);
+        clipInstances[clip]--;
     }
 
     protected void PlaySFXAfterDelay(AudioClip audioClip, float delay, float volume = 1f) {

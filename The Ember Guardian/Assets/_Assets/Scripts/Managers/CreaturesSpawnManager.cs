@@ -607,7 +607,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         creature.SetAsDayCreature(false);
         CreaturesManager.Instance.AddCreatureToNightWave(creature);
 
-        if (!canSpawnElite || creatureToSpawn.isBoss) return;
+        if (!canSpawnElite || creatureToSpawn.isBoss || currentSpecialWaveType != SpecialWaveType.none) return;
         float eliteRandomFloat = UnityEngine.Random.Range(0f, 1f);
         if (eliteRandomFloat < eliteSpawnProbability) {
             creature.SetAsEliteCreature();
