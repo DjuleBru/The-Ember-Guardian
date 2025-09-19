@@ -22,11 +22,11 @@ public class DogUI : MonoBehaviour {
         dogUIAnimator.SetTrigger("Show");
 
         if (Dog.Instance.GetIdleState() == DogAI.State.stay) {
-            dogUIStatText.text = LocalizationManager.Instance.GetLocalizedText("dog_follow");
+            dogUIStatText.text = LocalizationManager.Instance.GetLocalizedText("dog_stay");
         }
 
         if (Dog.Instance.GetIdleState() == DogAI.State.walkWithPlayer) {
-            dogUIStatText.text = LocalizationManager.Instance.GetLocalizedText("dog_stay");
+            dogUIStatText.text = LocalizationManager.Instance.GetLocalizedText("dog_follow");
         }
     }
 
