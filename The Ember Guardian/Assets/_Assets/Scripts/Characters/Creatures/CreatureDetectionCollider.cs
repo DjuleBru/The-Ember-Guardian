@@ -63,7 +63,6 @@ public class CreatureDetectionCollider : MonoBehaviour {
     private void Update() {
         if (DebugManager.Instance.GetDisableCreatureDetection()) return;
 
-
         refreshTargetTimer -= Time.deltaTime;
         if (refreshTargetTimer < 0) {
             refreshTargetTimer = refreshTargetcooldown;

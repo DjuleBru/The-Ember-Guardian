@@ -130,7 +130,7 @@ public class StructureUI : MonoBehaviour
 
     private void Structure_OnWorkerStartedRefilling(object sender, EventArgs e) {
         SetUIActive(true);
-        StartCoroutine(SetUIActiveAfterDelay(1f, false));
+        StartCoroutine(SetUIActiveAfterDelay(2.5f, false));
     }
 
     protected IEnumerator SetUIActiveAfterDelay(float delay, bool active) {

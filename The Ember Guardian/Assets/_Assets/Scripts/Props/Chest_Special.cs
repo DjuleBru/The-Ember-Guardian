@@ -16,6 +16,7 @@ public class Chest_Special : Chest
     private SkillSO skillSOSelected;
 
     private bool rewardOfferedToPlayerStarted;
+    public static event EventHandler OnAnyNewWeaponFound;
 
     protected override void Start() {
         base.Start();
@@ -77,6 +78,7 @@ public class Chest_Special : Chest
 
             PlayerShoot.Instance.ReplaceHeldWeaponSO(gunSOInChest);
             CheckUnlockNewWeapon();
+            OnAnyNewWeaponFound?.Invoke(this, EventArgs.Empty);
 
             yield return new WaitForSeconds(.2f);
             PlayerShoot.Instance.SetGunToMaxAmmo(gunSOInChest);

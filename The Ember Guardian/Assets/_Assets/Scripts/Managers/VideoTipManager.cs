@@ -37,6 +37,9 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO specialAmmoTip;
     [SerializeField] private VideoTipSO surgeWindowTip;
     [SerializeField] private VideoTipSO gunManagementTip;
+    [SerializeField] private VideoTipSO findingWeaponTip;
+    [SerializeField] private VideoTipSO skillsMerchantTip;
+    [SerializeField] private VideoTipSO secondaryFireTip;
 
     private bool isLevelScene;
     private bool isTutorialScene;
@@ -72,8 +75,13 @@ public class VideoTipManager : MonoBehaviour
     private bool trapTipShown;
     private bool surgeWindowTipShown;
     private bool gunManagementTipShown;
+    private bool findingWeaponTipShown;
+    private bool skillsMerchantTipShown;
+    private bool secondaryFireTipShown;
 
     private bool showGunManagementTip;
+    private bool showEngineersAdvancedTip;
+    private bool showSecondaryFireTip;
 
     private void Awake() {
         Instance = this;
@@ -142,6 +150,15 @@ public class VideoTipManager : MonoBehaviour
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         WindManager.Instance.OnWindStrengthChanged += WindManager_OnWindStrengthChanged;
         UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
+        Chest_Special.OnAnyNewWeaponFound += Chest_Special_OnAnyNewWeaponFound;
+    }
+
+    private void Chest_Special_OnAnyNewWeaponFound(object sender, EventArgs e) {
+        if (findingWeaponTipShown) return;
+        VideoTipUI.Instance.PlayTipSO(findingWeaponTip, 2f);
+
+        findingWeaponTipShown = true;
+        ES3.Save("findingWeaponTipShown", true);
     }
 
     private void Gun_OnAnyGunJammed(object sender, EventArgs e) {
@@ -219,10 +236,11 @@ public class VideoTipManager : MonoBehaviour
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
     }
     private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, EventArgs e) {
-        if (gunManagementTipShown) return;
+        
 
         if (sender is HUBMerchantItem_GunMerchantItem) {
             HUBMerchantItem_GunMerchantItem gunItem = sender as HUBMerchantItem_GunMerchantItem;
+            if (gunManagementTipShown) return;
             if (gunItem.GetGunItemCategory() == HUBMerchantItem_GunMerchantItem.GunItemCategory.newGun) {
                 showGunManagementTip = true;
             }
@@ -230,8 +248,25 @@ public class VideoTipManager : MonoBehaviour
 
         if (sender is HubMerchantItem_TrainerMerchantItem) {
             HubMerchantItem_TrainerMerchantItem trainerItem = sender as HubMerchantItem_TrainerMerchantItem;
+            if (gunManagementTipShown) return;
             if (trainerItem.GetTrainerItemType() == HubMerchantItem_TrainerMerchantItem.TrainerItemType.Hold2Weapons) {
                 showGunManagementTip = true;
+            }
+        }
+
+        if (sender is HubMerchantItem_WatcherMerchantItem) {
+            HubMerchantItem_WatcherMerchantItem watcherItem = sender as HubMerchantItem_WatcherMerchantItem;
+            if (engineerTipAdvancedShown) return;
+            if (watcherItem.GetStructureType() == StructureSO.StructureType.currencyStorage_BigOrb || watcherItem.GetStructureType() == StructureSO.StructureType.currencyStorage_SmallOrb || watcherItem.GetStructureType() == StructureSO.StructureType.currencyStorage_Ammo || watcherItem.GetStructureType() == StructureSO.StructureType.currencyStorage_SpecialAmmo) {
+                showEngineersAdvancedTip = true;
+            }
+        }
+
+        if (sender is HubMerchantItem_GemMerchantItem) {
+            HubMerchantItem_GemMerchantItem gemItem = sender as HubMerchantItem_GemMerchantItem;
+            if (secondaryFireTipShown) return;
+            if (gemItem.GetStructureType() == StructureSO.StructureType.secondaryFire) {
+                showSecondaryFireTip = true;
             }
         }
     }
@@ -239,7 +274,7 @@ public class VideoTipManager : MonoBehaviour
     private void HubChest_OnChestSetCanOpen(object sender, EventArgs e) {
         if (storeGemsTipShown) return;
 
-        VideoTipUI.Instance.PlayTipSO(storeGemsTip, 0f);
+        VideoTipUI.Instance.PlayTipSO(storeGemsTip, 1f);
 
         storeGemsTipShown = true;
         ES3.Save("storeGemsTipShown", true);
@@ -252,6 +287,18 @@ public class VideoTipManager : MonoBehaviour
             VideoTipUI.Instance.PlayTipSO(gunManagementTip, 1f);
             gunManagementTipShown = true;
             ES3.Save("gunManagementTipShown", true);
+        }
+
+        if (showEngineersAdvancedTip && !engineerTipAdvancedShown) {
+            VideoTipUI.Instance.PlayTipSO(engineersTip_advanced, 1f);
+            engineerTipAdvancedShown = true;
+            ES3.Save("engineerTipAdvancedShown", true);
+        }
+
+        if (showSecondaryFireTip && !secondaryFireTipShown) {
+            VideoTipUI.Instance.PlayTipSO(secondaryFireTip, 1f);
+            secondaryFireTipShown = true;
+            ES3.Save("secondaryFireTipShown", true);
         }
 
         if (hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.WorkerMerchant) {
@@ -305,15 +352,6 @@ public class VideoTipManager : MonoBehaviour
             watcherArtifactTipShown = true;
 
             ES3.Save("watcherArtifactTipShown", true);
-        }
-
-        if (structureSO.structureType == StructureSO.StructureType.currencyStorage_Ammo || structureSO.structureType == StructureSO.StructureType.currencyStorage_SpecialAmmo || structureSO.structureType == StructureSO.StructureType.currencyStorage_BigOrb || structureSO.structureType == StructureSO.StructureType.currencyStorage_SmallOrb) {
-            if (engineerTipAdvancedShown) return;
-
-            VideoTipUI.Instance.PlayTipSO(engineersTip_advanced, 0f);
-            engineerTipAdvancedShown = true;
-
-            ES3.Save("engineerTipAdvancedShown", true);
         }
     }
 
@@ -385,6 +423,16 @@ public class VideoTipManager : MonoBehaviour
             ES3.Save("worldPortalTipShown", true);
             VideoTipUI.Instance.PlayTipSO(worldPortalTip);
         }
+
+
+        if(structure.GetStructureSO().structureType == StructureSO.StructureType.merchant_skills) {
+            if (skillsMerchantTipShown) return;
+            VideoTipUI.Instance.PlayTipSO(skillsMerchantTip, 0f);
+
+            skillsMerchantTipShown = true;
+            ES3.Save("skillsMerchantTipShown", true);
+        }
+
     }
 
     private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {
@@ -482,6 +530,9 @@ public class VideoTipManager : MonoBehaviour
         trapTipShown = ES3.Load("trapTipShown", false);
         surgeWindowTipShown = ES3.Load("surgeWindowTipShown", false);
         gunManagementTipShown = ES3.Load("gunManagementTipShown", false);
+        findingWeaponTipShown = ES3.Load("findingWeaponTipShown", false);
+        skillsMerchantTipShown = ES3.Load("skillsMerchantTipShown", false);
+        secondaryFireTipShown = ES3.Load("secondaryFireTipShown", false);
     }
 
     private void OnDestroy() {
@@ -500,8 +551,9 @@ public class VideoTipManager : MonoBehaviour
         TutorialCollider.OnRecruitWorkerTipCollided -= TutorialCollider_OnRecruitWorkerTipCollided;
         StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn_Tutorial;
+        Chest_Special.OnAnyNewWeaponFound -= Chest_Special_OnAnyNewWeaponFound;
 
-        if(isLevelScene || isTutorialScene || isDemoTutorial) {
+        if (isLevelScene || isTutorialScene || isDemoTutorial) {
             DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
             Fire.Instance.OnInitialFireActivated -= Fire_OnInitialFireActivated;
         }
