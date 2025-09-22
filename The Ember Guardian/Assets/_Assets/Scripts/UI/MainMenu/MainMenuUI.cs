@@ -29,6 +29,10 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] private Sprite demoLogo;
     [SerializeField] private Sprite fullGameLogo;
 
+    [SerializeField] protected TextMeshProUGUI ctaText;
+    [SerializeField] protected Material ctaTextFontAsset;
+    [SerializeField] protected Material ctaTextFontAsset_JP;
+
     [SerializeField] protected GameObject mainMenuPanelGameObject;
 
     public event EventHandler OnGameStart;
@@ -39,6 +43,7 @@ public class MainMenuUI : MonoBehaviour {
 
     private void Start() {
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
+        SettingsManager.Instance.OnLanguageChanged += SettingsManager_OnLanguageChanged;
         buttonConfirm_ResetProgression.OnButtonDeselected += ButtonConfirm_ResetProgression_OnButtonDeselected;
 
         InitializeButtonNavigation();
@@ -63,9 +68,24 @@ public class MainMenuUI : MonoBehaviour {
             Debug.Log("Set interactable false");
             continueButton.interactable = false;
         }
+
+        RefreshFonts();
     }
 
- 
+    private void SettingsManager_OnLanguageChanged(object sender, EventArgs e) {
+        RefreshFonts();
+    }
+
+    private void RefreshFonts() {
+        if (SettingsManager.Instance.GetLanguage() == LocalizationManager.Language.Japanese) {
+            ctaText.fontMaterial = ctaTextFontAsset_JP;
+        }
+        else {
+            ctaText.fontMaterial = ctaTextFontAsset;
+        }
+    }
+
+
     private void SetFirstSelectedButton() {
         if (!MetaProgressionManager.Instance.GetSavedOnce()) {
             continueButton.interactable = false;
