@@ -20,6 +20,9 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] protected Button_Confirm buttonConfirm_MainMenu;
     [SerializeField] protected TextMeshProUGUI exitGameText;
     [SerializeField] protected TextMeshProUGUI backToMenuText;
+    [SerializeField] protected TextMeshProUGUI ctaText;
+    [SerializeField] protected Material ctaTextFontAsset;
+    [SerializeField] protected Material ctaTextFontAsset_JP;
 
     [SerializeField] protected Animator progressionSavedTextIndicator;
     [SerializeField] protected Color savedTextColor;
@@ -43,6 +46,7 @@ public class PauseMenuUI : MonoBehaviour
         GameInput.Instance.OnPlayerPausePerformed += GameInput_OnPlayerPausePerformed;
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
+        SettingsManager.Instance.OnLanguageChanged += SettingsManager_OnLanguageChanged;
 
         buttonConfirm_ExitGame.OnButtonDeselected += ButtonConfirm_ExitGame_OnButtonDeselected;
         buttonConfirm_MainMenu.OnButtonDeselected += ButtonConfirm_MainMenu_OnButtonDeselected;
@@ -64,17 +68,24 @@ public class PauseMenuUI : MonoBehaviour
         }
 
         backToMenuText.text = LocalizationManager.Instance.GetLocalizedText("menu_mainMenu");
-        backToMenuText.font = LocalizationManager.Instance.GetCurrentFont();
         exitGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_exitGame");
-        exitGameText.font = LocalizationManager.Instance.GetCurrentFont();
 
-        //RefreshFonts();
+        RefreshFonts();
+    }
+
+    private void SettingsManager_OnLanguageChanged(object sender, EventArgs e) {
+        RefreshFonts();
     }
 
     private void RefreshFonts() {
-        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
-        exitGameText.font = font;
-        backToMenuText.font = font;
+        backToMenuText.font = LocalizationManager.Instance.GetCurrentFont();
+        exitGameText.font = LocalizationManager.Instance.GetCurrentFont();
+
+        if(SettingsManager.Instance.GetLanguage() == LocalizationManager.Language.Japanese) {
+            ctaText.fontMaterial = ctaTextFontAsset_JP;
+        } else {
+            ctaText.fontMaterial = ctaTextFontAsset;
+        }
     }
 
     private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {

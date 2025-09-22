@@ -838,7 +838,7 @@ public class PlayerShoot : MonoBehaviour
 
             if (heldGun.GetGunSO().gunType == GunSO.GunType.Shotgun) {
                 loadingShot = false;
-
+                Debug.Log("OnPlayerFocusBlastStopped");
                 OnPlayerFocusBlastStopped?.Invoke(this, EventArgs.Empty);
                 OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
                 secondaryAbilityActive = false;

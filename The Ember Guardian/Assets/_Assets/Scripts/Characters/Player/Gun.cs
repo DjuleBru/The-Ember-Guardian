@@ -27,6 +27,7 @@ public class Gun : MonoBehaviour
     protected float delayBetweenJams = 60f;
 
     protected int pelletsPerBullet = 1;
+    protected int pelletsPerBullet_meta = 1;
     protected int damagePerBulletAtRunStart;
     protected int damagePerBullet;
     protected float explosionRadiusMultiplier = 1;
@@ -128,6 +129,7 @@ public class Gun : MonoBehaviour
 
     protected void PlayerShoot_OnPlayerFocusBlastStopped(object sender, System.EventArgs e) {
         if (gunSO.gunType != GunSO.GunType.Shotgun) return;
+
         SetPSShootAngle(defaultAngle);
 
         pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
@@ -193,6 +195,7 @@ public class Gun : MonoBehaviour
         gunUnlocked = MetaProgressionManager.Instance.GetGunUnlocked(gunSO);
 
         pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
+        pelletsPerBullet_meta = pelletsPerBullet;
 
         maxAmmo = MetaProgressionManager.Instance.GetGunMaxAmmo(gunSO);
         damagePerBullet = MetaProgressionManager.Instance.GetGunDamagePerBullet(gunSO);
@@ -206,7 +209,6 @@ public class Gun : MonoBehaviour
         handsReloadTime = MetaProgressionManager.Instance.GetHandsGunReloadTime(gunSO);
         swapToWeaponTimeMultiplier = MetaProgressionManager.Instance.GetSwapToWeaponTimeMultiplier(gunSO);
         secondaryAbilityUnlocked = MetaProgressionManager.Instance.GetGunSecondaryAbilityUnlocked(gunSO);
-        pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
         bulletLifetime = MetaProgressionManager.Instance.GetGunBulletLifetime(gunSO);
         bulletSpeed = MetaProgressionManager.Instance.GetGunBulletSpeed(gunSO);
         reloadAccelerationFactor = MetaProgressionManager.Instance.GetGunReloadAccelerationFactor(gunSO);
@@ -428,7 +430,7 @@ public class Gun : MonoBehaviour
     }
 
     public int GetPelletsPerBullet() {
-        return pelletsPerBullet;
+        return pelletsPerBullet_meta;
     }
     public float GetDefaultShootAngle() {
         return defaultAngle;
@@ -593,6 +595,7 @@ public class Gun : MonoBehaviour
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
     public void SetPelletsPerBullet_Meta(int pelletsPerBullet) {
+        this.pelletsPerBullet_meta = pelletsPerBullet;
         this.pelletsPerBullet = pelletsPerBullet;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
@@ -651,7 +654,7 @@ public class Gun : MonoBehaviour
         MetaProgressionManager.Instance.SetGunHandsReloadTime(gunSO, handsReloadTime);
         MetaProgressionManager.Instance.SetGunCritChance(gunSO, critChance);
         MetaProgressionManager.Instance.SetGunShootConeAnle(gunSO, defaultAngle);
-        MetaProgressionManager.Instance.SetGunPelletsPerBullet(gunSO, pelletsPerBullet);
+        MetaProgressionManager.Instance.SetGunPelletsPerBullet(gunSO, pelletsPerBullet_meta);
         MetaProgressionManager.Instance.SetGunBulletLifetime(gunSO, bulletLifetime);
         MetaProgressionManager.Instance.SetGunSubExplosivesDamage(gunSO, subExplosivesDamage);
         MetaProgressionManager.Instance.SetGunSubExplosivesAmount(gunSO, subExplosivesAmount);
