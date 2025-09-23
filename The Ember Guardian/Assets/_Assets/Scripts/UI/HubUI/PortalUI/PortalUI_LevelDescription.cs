@@ -19,13 +19,16 @@ public class PortalUI_LevelDescription : MonoBehaviour {
     [SerializeField] private Transform animalTickTemplate;
     [SerializeField] private Transform scavengableTickContainer;
     [SerializeField] private Transform scavengableTickTemplate;
-    [SerializeField] private Transform workerCampsTickContainer;
-    [SerializeField] private Transform workerCampsTickTemplate;
+    [SerializeField] private Transform minesTickContainer;
+    [SerializeField] private Transform minesTickTemplate;
     [SerializeField] private Transform ChestTickContainer;
     [SerializeField] private Transform ChestTickTemplate;
 
     [SerializeField] private Transform creatureContainer;
     [SerializeField] private Transform creatureTemplate;
+
+    [SerializeField] private GameObject unlockablesGO;
+    [SerializeField] private List<PortalUI_UnlockableTemplate> allUnlockablesList;
 
     [SerializeField] private LevelSO debugLevelSO;
 
@@ -55,8 +58,24 @@ public class PortalUI_LevelDescription : MonoBehaviour {
         RefreshCompletedIndicator();
         RefreshStat(animalTickContainer, animalTickTemplate, levelSO.faunaAmount);
         RefreshStat(scavengableTickContainer, scavengableTickTemplate, levelSO.scrapAmount);
-        RefreshStat(workerCampsTickContainer, workerCampsTickTemplate, levelSO.wildEmberlingsAmount);
+        RefreshStat(minesTickContainer, minesTickTemplate, levelSO.minesAmount);
         RefreshStat(ChestTickContainer, ChestTickTemplate, levelSO.chestAmount);
+        RefreshLevelUnlockables();
+    }
+
+    private void RefreshLevelUnlockables() {
+        foreach(PortalUI_UnlockableTemplate unlockableTemplate in allUnlockablesList) {
+            if(currentLevelSO.unlockablesList.Contains(unlockableTemplate.GetUnlockable())) {
+
+                unlockableTemplate.gameObject.SetActive(true);
+                unlockableTemplate.LoadUnlockableUnlocked();
+
+            } else {
+
+                unlockableTemplate.gameObject.SetActive(false);
+
+            }
+        }
     }
 
     private void RefreshCompletedIndicator() {

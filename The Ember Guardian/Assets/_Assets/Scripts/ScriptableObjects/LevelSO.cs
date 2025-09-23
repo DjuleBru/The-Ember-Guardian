@@ -14,6 +14,38 @@ public class LevelSO : ScriptableObject
         CorruptedCity,
         TheFracturedDistrict,
     }
+    public enum Unlockable {
+        NPC_Armorer,
+        NPC_Architect,
+        NPC_Trainer,
+        NPC_Watcher,
+        NPC_Tamer,
+        NPC_ArchitectTable,
+        NPC_Mushroom,
+        Worker_Miner,
+        Worker_Engineer,
+        Worker_Guard,
+        Weapon_SMG,
+        Weapon_Shotgun,
+        Weapon_Sniper,
+        Weapon_Revolver,
+        Weapon_LMG,
+        Weapon_GL,
+        Weapon_Pistol,
+        Weapon_RL,
+        Weapon_AA,
+        Weapon_AR,
+        Weapon_Minigun,
+        Dog_Golden,
+        Dog_DarkCompanion,
+        Traps,
+        CarryFlag,
+        Mines,
+        Scavengables,
+        ScavengableObstacles,
+        ThroneArtifact,
+        Trials,
+    }
 
 
 
@@ -55,6 +87,9 @@ public class LevelSO : ScriptableObject
     [LabelWidth(300)]
     [Range(0, 10)]
     public int wildEmberlingsAmount;
+    [BoxGroup("LevelDisplay")]
+    [LabelWidth(300)]
+    public List<LevelSO.Unlockable> unlockablesList;
 
     [Range(0, 5)]
     public float duskDurationIncreasePerDay;

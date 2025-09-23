@@ -16,6 +16,7 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] protected GameObject fullGameDescriptionPanel;
     [SerializeField] protected GameObject fullGameDescriptionPanel_WishlistButton;
     [SerializeField] protected GameObject fullGameDescriptionPanel_ExitGameButton;
+    [SerializeField] protected GameObject ctaButton;
     [SerializeField] protected Button_Confirm buttonConfirm_ExitGame;
     [SerializeField] protected Button_Confirm buttonConfirm_MainMenu;
     [SerializeField] protected TextMeshProUGUI exitGameText;
@@ -59,12 +60,16 @@ public class PauseMenuUI : MonoBehaviour
         if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
 
             SetCanSave(false);
-
+         
         } else {
 
             UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
             UICurrencyManager.HubInventoryUI.OnCurrencyRemovedFromBag += HubInventoryUI_OnCurrencyRemovedFromBag;
 
+        }
+
+        if (!VersioningManager.Instance.GetIsDemo()) {
+            ctaButton.gameObject.SetActive(false);
         }
 
         backToMenuText.text = LocalizationManager.Instance.GetLocalizedText("menu_mainMenu");

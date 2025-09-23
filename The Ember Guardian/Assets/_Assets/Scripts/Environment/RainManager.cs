@@ -203,14 +203,14 @@ public class RainManager : MonoBehaviour
         ParticleSystem.MainModule main_NoCollisions = rainPS_NoCollisions.main;
         ParticleSystem.MainModule main_SubEmitter = rainPS_SubEmitter.main;
 
-        if (currentRainIntensity == RainIntensity.none) {
+        if (rainLevel == RainIntensity.none) {
             emission_Collisions.rateOverTime = 0;
             emission_NoCollisions.rateOverTime = 0;
 
             targetAlpha = 0;
         }
 
-        if (currentRainIntensity == RainIntensity.sparse) {
+        if (rainLevel == RainIntensity.sparse) {
             emission_Collisions.rateOverTime = sparseRainPSEmission;
             emission_NoCollisions.rateOverTime = sparseRainPSEmission;
             main_Collisions.startSize = sparseRainPSSize;
@@ -223,7 +223,7 @@ public class RainManager : MonoBehaviour
             waterSim.SetRainWaveH(sparseRainStrength);
         }
 
-        if (currentRainIntensity == RainIntensity.medium) {
+        if (rainLevel == RainIntensity.medium) {
             emission_Collisions.rateOverTime = mediumRainPSEmission;
             emission_NoCollisions.rateOverTime = mediumRainPSEmission;
             main_Collisions.startSize = mediumRainPSSize;
@@ -236,7 +236,7 @@ public class RainManager : MonoBehaviour
             waterSim.SetRainWaveH(mediumRainStrength);
         }
 
-        if (currentRainIntensity == RainIntensity.strong) {
+        if (rainLevel == RainIntensity.strong) {
             emission_Collisions.rateOverTime = highRainPSEmission;
             emission_NoCollisions.rateOverTime = highRainPSEmission;
             main_Collisions.startSize = highRainPSSize;
@@ -249,7 +249,7 @@ public class RainManager : MonoBehaviour
             waterSim.SetRainWaveH(highRainStrength);
         }
 
-        if (currentRainIntensity == RainIntensity.extreme) {
+        if (rainLevel == RainIntensity.extreme) {
             emission_Collisions.rateOverTime = extremeRainPSEmission;
             emission_NoCollisions.rateOverTime = extremeRainPSEmission;
             main_Collisions.startSize = extremeRainPSSize;

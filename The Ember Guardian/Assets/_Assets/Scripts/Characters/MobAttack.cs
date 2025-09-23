@@ -256,7 +256,7 @@ public class MobAttack : MonoBehaviour
         if (attackTargetIDamageable != null) {
             attackTargetIDamageable.TakeDamage(attackDamage, transform, false, attackIgnoresTemporaryInvincibility);
         }
-        if ((attackTargetIDamageable as MonoBehaviour) == Fire.Instance) {
+        if ((attackTargetIDamageable is Fire)) {
             mob.Die();
         }
 
@@ -268,7 +268,7 @@ public class MobAttack : MonoBehaviour
             iDamageable.TakeDamage(attackDamage, transform, false, attackIgnoresTemporaryInvincibility);
         }
 
-        if ((iDamageable as MonoBehaviour) == Fire.Instance) {
+        if ((iDamageable is Fire)) {
             if(mob is Creature) {
                 Creature creature = (Creature) mob;
                 if (creature.GetCreatureSO().isBoss) return;

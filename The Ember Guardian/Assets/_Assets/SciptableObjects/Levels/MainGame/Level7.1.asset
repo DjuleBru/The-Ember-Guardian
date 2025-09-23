@@ -18,13 +18,15 @@ MonoBehaviour:
   requiredLevelSO2: {fileID: 0}
   parallelLevelSO: {fileID: 11400000, guid: 2907cb0bb1a923a47825d18e9c2d38d1, type: 2}
   levelImage: {fileID: 0}
-  levelNameLocalizationKey: Level 7.1
-  levelDescriptionLocalizationKey: 
+  levelNameLocalizationKey: Level7.1
+  levelDescriptionLocalizationKey: Level7.1_Description
   faunaAmount: 0
   scrapAmount: 0
   minesAmount: 0
   chestAmount: 0
   wildEmberlingsAmount: 0
+  unlockablesList: 1300000016000000
+  duskDurationIncreasePerDay: 0
   levelObjectiveType: 10
   endLevelType: 0
   talkToNpcAFterObjective: 0
@@ -36,6 +38,8 @@ MonoBehaviour:
   merchantsUnlockedInLevel: 01000000
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: 00bbf6daaa8ea5d438b42dd62cc98bd8, type: 2}
   newMerchantTextLinesAfterLevel: []
+  unlocksNewGemType: 0
+  newGemTypeUnlockedByLevelList: 
   isReplayableLevel: 0
   totalDayCreatureDifficulty: 0
   dayCreatureTypes: []
@@ -47,6 +51,7 @@ MonoBehaviour:
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
+  bossNightWaveDifficultyMultiplier: 0.33
   startWaveToSpawnFromBothSides: 2
   baseDifficulty: 6
   intialMinSubwaveDifficulty: 0
@@ -66,6 +71,10 @@ MonoBehaviour:
     m_RotationOrder: 4
   maxWaveInAnimationCurve: 0
   canSpawnElite: 1
+  hasSpecialWaveTypes: 0
+  specialWaveTypesInLevel: 
+  specialWaveProbability: 0
+  maxSpecialWaveAmount: 0
   environmentType: 3
   hasFog: 0
   fogFrontAlpha: 0

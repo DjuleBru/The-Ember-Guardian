@@ -570,7 +570,7 @@ public class PlayerSkills : MonoBehaviour
             switch (skillEffect.skillType) {
                 case SkillItem.SkillType.passiveMoveSpeedBuff:
 
-                    PlayerStats.Instance.BuffMoveSpeed(relativeBuffEffectValue / 100);
+                    PlayerMovement.Instance.BuffMoveSpeed(1 + relativeBuffEffectValue / 100);
 
                     break;
 

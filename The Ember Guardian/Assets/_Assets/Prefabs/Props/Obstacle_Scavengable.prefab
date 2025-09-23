@@ -830,6 +830,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a06f47bfc7a58994ab80b77fe7e3792c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   backgorundAudioClip: {fileID: 8300000, guid: 02838475c4d73be47bc476a8d52b9856, type: 3}
   minerGarrisonerAudioClip:
   - {fileID: 8300000, guid: d58451c493638094993245b8211c0728, type: 3}
@@ -2137,7 +2139,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 1.0899999, y: -0.75}
-  m_SizeDelta: {x: 1.18, y: 0.5}
+  m_SizeDelta: {x: 0, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1432758258174803815
 CanvasRenderer:

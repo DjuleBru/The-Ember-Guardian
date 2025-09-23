@@ -62,6 +62,7 @@ public class CreatureDetectionCollider : MonoBehaviour {
 
     private void Update() {
         if (DebugManager.Instance.GetDisableCreatureDetection()) return;
+        if (!creature.GetCreatureActive()) return;
 
         refreshTargetTimer -= Time.deltaTime;
         if (refreshTargetTimer < 0) {
@@ -82,17 +83,21 @@ public class CreatureDetectionCollider : MonoBehaviour {
         foreach (Collider2D hit in hits) {
             if (hit == null) continue;
 
-            Player player = hit.GetComponent<Player>();
-            if (player != null) currentFrame.Add(player);
+            if (hit.TryGetComponent<Player>(out var player)) {
+                currentFrame.Add(player);
+            }
 
-            Barricade barricade = hit.GetComponent<Barricade>();
-            if (barricade != null) currentFrame.Add(barricade);
+            if (hit.TryGetComponent<Barricade>(out var barricade)) {
+                currentFrame.Add(barricade);
+            }
 
-            Fire fire = hit.GetComponent<Fire>();
-            if (fire != null && !fire.GetIsEndLevelAreaFire()) currentFrame.Add(fire);
+            if (hit.TryGetComponent<Fire>(out var fire) && !fire.GetIsEndLevelAreaFire()) {
+                currentFrame.Add(fire);
+            }
 
-            Worker worker = hit.GetComponent<Worker>();
-            if (worker != null && worker.GetRecruited() && !(worker.GetDefensiveStructureAssigned() is Tower)) {
+            if (hit.TryGetComponent<Worker>(out var worker)
+                && worker.GetRecruited()
+                && !(worker.GetDefensiveStructureAssigned() is Tower)) {
                 currentFrame.Add(worker);
             }
         }
@@ -103,8 +108,8 @@ public class CreatureDetectionCollider : MonoBehaviour {
                 AddIDamageableInDetectionRange(dmg);
 
                 // Abonnements aux événements
-                if (dmg is Worker worker) worker.OnMobDied += Worker_OnMobDied;
-                if (dmg is Barricade barricade) barricade.OnBarricadeDestroyed += Barricade_OnBarricadeDestroyed;
+                if (dmg is Worker newWorker) newWorker.OnMobDied += Worker_OnMobDied;
+                if (dmg is Barricade newBarricade) newBarricade.OnBarricadeDestroyed += Barricade_OnBarricadeDestroyed;
 
                 if (dmg is Player || dmg is Worker) unaggroTimer = unaggroTime;
             }
@@ -120,10 +125,11 @@ public class CreatureDetectionCollider : MonoBehaviour {
             RemoveIDamageableInDetectionRange(dmg);
 
             // Désabonnements aux événements
-            if (dmg is Worker worker) worker.OnMobDied -= Worker_OnMobDied;
-            if (dmg is Barricade barricade) barricade.OnBarricadeDestroyed -= Barricade_OnBarricadeDestroyed;
+            if (dmg is Worker oldWorker) oldWorker.OnMobDied -= Worker_OnMobDied;
+            if (dmg is Barricade oldBarricade) oldBarricade.OnBarricadeDestroyed -= Barricade_OnBarricadeDestroyed;
         }
     }
+
 
     // --- Le reste du script reste inchangé ---
     private void HandleUnAggro() {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 
 public class WindManager : MonoBehaviour
@@ -15,6 +16,14 @@ public class WindManager : MonoBehaviour
         extreme,
     }
 
+    [SerializeField] private ParticleSystem windPS_singlePixels;
+    [SerializeField] private Color greenPSStartColor;
+    [SerializeField] private Color greenPSEndColor;
+    [SerializeField] private Color bluePSStartColor;
+    [SerializeField] private Color bluePSEndColor;
+    [SerializeField] private Color redPSStartColor;
+    [SerializeField] private Color redPSEndColor;
+
     private bool hasWind;
     private bool debugMode;
     private WindStrength currentWindStrength = WindStrength.none;
@@ -22,6 +31,7 @@ public class WindManager : MonoBehaviour
     private float currentWindDir;
     private List<WindStrength> windStrengthAllowedInLevel;
     private WindStrength previousWindStrength = WindStrength.none;
+    private Transform cameraTransform;
 
     public event EventHandler OnWindStrengthChanged;
 
@@ -43,53 +53,78 @@ public class WindManager : MonoBehaviour
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
 
-        currentWindStrength = LevelManager.Instance.GetLevelSO().initialWindStrength;
+        SetWindStrength(LevelManager.Instance.GetLevelSO().initialWindStrength);
         windStrengthOutside = currentWindStrength;
         RandomizeWindDir();
+        SetWindPSColor();
 
         debugMode = DebugManager.Instance.GetDebugMode_WindManager();
     }
 
     private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
         if(currentWindStrength != WindStrength.none) {
-            currentWindStrength = WindStrength.none;
+            SetWindStrength(WindStrength.none);
             windStrengthOutside = WindStrength.none;
-
-            OnWindStrengthChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
     private void Update() {
+        WindFollowCamera();
+
         if(debugMode) {
             HandleDebugWindInput();
         }
     }
 
+    private void SetWindPSColor() {
+        LevelSO.LevelEnvironment environment = LevelManager.Instance.GetLevelSO().environmentType;
+        var main = windPS_singlePixels.main;
+
+        switch (environment) {
+
+            case (LevelSO.LevelEnvironment.TheVerdantGraveyard):
+                main.startColor = new ParticleSystem.MinMaxGradient(greenPSStartColor,greenPSEndColor);
+
+                break;
+            case (LevelSO.LevelEnvironment.TheLostGreens):
+                main.startColor = new ParticleSystem.MinMaxGradient(greenPSStartColor, greenPSEndColor);
+                break;
+            case (LevelSO.LevelEnvironment.TheLumenHollow):
+                main.startColor = new ParticleSystem.MinMaxGradient(bluePSStartColor, bluePSEndColor);
+                break;
+            case (LevelSO.LevelEnvironment.CorruptedCity):
+                main.startColor = new ParticleSystem.MinMaxGradient(redPSStartColor, redPSEndColor);
+                break;
+        }
+
+    }
+    private void WindFollowCamera() {
+        cameraTransform = Camera.main.transform;
+        Vector3 newPosition = new Vector3(cameraTransform.position.x, cameraTransform.position.y-4f, 0);
+
+        windPS_singlePixels.transform.position = newPosition;
+    }
+
     private void HandleDebugWindInput() {
         if (Input.GetKeyDown(KeyCode.F)) {
             RandomizeWindDir();
-            currentWindStrength = WindStrength.none;
-            OnWindStrengthChanged?.Invoke(this, EventArgs.Empty);
+            SetWindStrength(WindStrength.none);
         }
         if (Input.GetKeyDown(KeyCode.G)) {
             RandomizeWindDir();
-            currentWindStrength = WindStrength.soft;
-            OnWindStrengthChanged?.Invoke(this, EventArgs.Empty);
+            SetWindStrength(WindStrength.soft);
         }
         if (Input.GetKeyDown(KeyCode.H)) {
             RandomizeWindDir();
-            currentWindStrength = WindStrength.medium;
-            OnWindStrengthChanged?.Invoke(this, EventArgs.Empty);
+            SetWindStrength(WindStrength.medium);
         }
         if (Input.GetKeyDown(KeyCode.J)) {
             RandomizeWindDir();
-            currentWindStrength = WindStrength.strong;
-            OnWindStrengthChanged?.Invoke(this, EventArgs.Empty);
+            SetWindStrength(WindStrength.strong);
         }
         if (Input.GetKeyDown(KeyCode.K)) {
             RandomizeWindDir();
-            currentWindStrength = WindStrength.extreme;
-            OnWindStrengthChanged?.Invoke(this, EventArgs.Empty);
+            SetWindStrength(WindStrength.extreme);
         }
 
     }
@@ -98,17 +133,17 @@ public class WindManager : MonoBehaviour
         if (!hasWind) return;
         if (windStrengthAllowedInLevel.Count == 0) return;
 
+        RandomizeWindDir();
+
         if (previousWindStrength == WindStrength.strong || previousWindStrength == WindStrength.extreme) {
-            currentWindStrength = WindStrength.none;
+            SetWindStrength(WindStrength.none);
         }
         else {
-            currentWindStrength = windStrengthAllowedInLevel[UnityEngine.Random.Range(0, windStrengthAllowedInLevel.Count)];
+            WindStrength newWindStrength = windStrengthAllowedInLevel[UnityEngine.Random.Range(0, windStrengthAllowedInLevel.Count)];
+            SetWindStrength(newWindStrength);
         }
 
         windStrengthOutside = currentWindStrength;
-
-        RandomizeWindDir();
-        OnWindStrengthChanged?.Invoke(this, EventArgs.Empty);
         previousWindStrength = currentWindStrength;
     }
 
@@ -133,6 +168,97 @@ public class WindManager : MonoBehaviour
         return currentWindDir;
     }
 
+    private void SetWindStrength(WindStrength windStrength) {
+        currentWindStrength = windStrength;
+        OnWindStrengthChanged?.Invoke(this, EventArgs.Empty);
+
+        SetWindPS(windStrength);
+
+        SetWindPSForce();
+    }
+
+    private void SetWindPS(WindStrength windStrength) {
+        ParticleSystem.EmissionModule emission = windPS_singlePixels.emission;
+
+        switch (windStrength) {
+            case WindStrength.none:
+                emission.rateOverTime = 0;
+            break;
+            case WindStrength.soft:
+                emission.rateOverTime = 2;
+                break;
+            case WindStrength.medium:
+                emission.rateOverTime = 5;
+                break;
+            case WindStrength.strong:
+                emission.rateOverTime = 10;
+                break;
+            case WindStrength.extreme:
+                emission.rateOverTime = 15;
+                break;
+
+        }
+    }
+
+    private void SetWindPSForce() {
+        var force = windPS_singlePixels.forceOverLifetime;
+        force.enabled = true;
+
+        // On récupère le signe du vent
+        float sign = Mathf.Sign(currentWindDir);
+
+        // Ici, tu définis les bornes min/max de la force.
+        // Exemple : entre 0.5 et 1.0, multiplié par le signe.
+        float min = GetMinPSForce() * sign;
+        float max = GetMaxPSForce() * sign;
+
+        force.x = new ParticleSystem.MinMaxCurve(min, max);
+    }
+
+    public float GetMinPSForce() {
+        float minForce = 0f;
+        switch (currentWindStrength) {
+            case WindStrength.none:
+                minForce = 0;
+                break;
+            case WindStrength.soft:
+                minForce = 5;
+                break;
+            case WindStrength.medium:
+                minForce = 10;
+                break;
+            case WindStrength.strong:
+                minForce = 15;
+                break;
+            case WindStrength.extreme:
+                minForce = 25;
+                break;
+        }
+        return minForce;
+    }
+
+    public float GetMaxPSForce() {
+        float maxForce = 0f;
+        switch (currentWindStrength) {
+            case WindStrength.none:
+                maxForce = 0;
+                break;
+            case WindStrength.soft:
+                maxForce = 10;
+                break;
+            case WindStrength.medium:
+                maxForce = 20;
+                break;
+            case WindStrength.strong:
+                maxForce = 30;
+                break;
+            case WindStrength.extreme:
+                maxForce = 50;
+                break;
+        }
+        return maxForce;
+    }
+
     public float GetWindStrengthImpactOnSpeed() {
 
 
@@ -148,15 +274,14 @@ public class WindManager : MonoBehaviour
 
         return 1;
     }
+
     public void SetInCavern(bool inCavern) {
         if (inCavern) {
-            currentWindStrength = WindStrength.none;
+            SetWindStrength(WindStrength.none);
         }
         else {
-            currentWindStrength = windStrengthOutside;
+            SetWindStrength(windStrengthOutside);
         }
-
-        OnWindStrengthChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnDestroy() {

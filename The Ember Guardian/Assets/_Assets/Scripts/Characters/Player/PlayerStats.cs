@@ -493,7 +493,7 @@ public class PlayerStats : MonoBehaviour
 
     #region BUFF TEMP PARAMETERS
 
-    public void BuffMoveSpeed(float buffAmount) {
+    public void BuffMoveSpeed_WithinLevel(float buffAmount) {
         Debug.Log("BuffMoveSpeed " + buffAmount);
         moveSpeed += initialMoveSpeed * buffAmount;
         OnMoveSpeedChanged?.Invoke(this, EventArgs.Empty);

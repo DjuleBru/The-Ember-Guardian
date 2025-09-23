@@ -197,7 +197,6 @@ public class StructureUI : MonoBehaviour
     }
 
     protected void ShowStructureSecondaryFunctionUI() {
-        Debug.Log("ShowStructureSecondaryFunctionUI");
         structure.SetCurrentStructureInteractionType(Structure.StructureInteractionType.secondaryFunction);
 
         if (functionUIGameObject != null) {
@@ -216,7 +215,6 @@ public class StructureUI : MonoBehaviour
     }
 
     protected void ShowStructureUpgradeUI() {
-        Debug.Log("ShowStructureUpgradeUI");
         structure.SetCurrentStructureInteractionType(Structure.StructureInteractionType.upgrade);
 
         if (functionUIGameObject != null) {

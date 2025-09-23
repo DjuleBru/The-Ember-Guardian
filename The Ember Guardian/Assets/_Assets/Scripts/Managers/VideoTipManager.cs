@@ -78,6 +78,7 @@ public class VideoTipManager : MonoBehaviour
     private bool findingWeaponTipShown;
     private bool skillsMerchantTipShown;
     private bool secondaryFireTipShown;
+    private bool trialTipShown;
 
     private bool showGunManagementTip;
     private bool showEngineersAdvancedTip;
@@ -151,7 +152,9 @@ public class VideoTipManager : MonoBehaviour
         WindManager.Instance.OnWindStrengthChanged += WindManager_OnWindStrengthChanged;
         UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
         Chest_Special.OnAnyNewWeaponFound += Chest_Special_OnAnyNewWeaponFound;
+        TrialArea.OnAnyTrialPaid += TrialArea_OnAnyTrialPaid;
     }
+
 
     private void Chest_Special_OnAnyNewWeaponFound(object sender, EventArgs e) {
         if (findingWeaponTipShown) return;
@@ -159,6 +162,14 @@ public class VideoTipManager : MonoBehaviour
 
         findingWeaponTipShown = true;
         ES3.Save("findingWeaponTipShown", true);
+    }
+
+    private void TrialArea_OnAnyTrialPaid(object sender, EventArgs e) {
+        if (trialTipShown) return;
+        //VideoTipUI.Instance.PlayTipSO(findingWeaponTip, 2f);
+
+        trialTipShown = true;
+        ES3.Save("trialTipShown", true);
     }
 
     private void Gun_OnAnyGunJammed(object sender, EventArgs e) {
@@ -533,7 +544,31 @@ public class VideoTipManager : MonoBehaviour
         findingWeaponTipShown = ES3.Load("findingWeaponTipShown", false);
         skillsMerchantTipShown = ES3.Load("skillsMerchantTipShown", false);
         secondaryFireTipShown = ES3.Load("secondaryFireTipShown", false);
+        trialTipShown = ES3.Load("trialTipShown", false);
     }
+
+    public bool GetHuntingFlagTipShown() {
+        return huntingFlagTipShown;
+    }
+    public bool GetTrapTipShown() {
+        return trapTipShown;
+    }
+    public bool GetMinesTipShown() {
+        return mineTipShown;
+    }
+    public bool GetScavengablesTipShown() {
+        return scavengablesTipShown;
+    }
+    public bool GetScavengableObstaclesTipShown() {
+        return huntingFlagTipShown;
+    }
+    public bool GetThroneArtifactTipShown() {
+        return watcherArtifactTipShown;
+    }
+    public bool GetTrialTipsShown() {
+        return trialTipShown;
+    }
+
 
     private void OnDestroy() {
 

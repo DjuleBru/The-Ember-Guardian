@@ -101,7 +101,7 @@ public class CreatureAttack : MobAttack
     public override void DealDamage() {
         if (attackTargetIDamageable != null) {
 
-            if ((attackTargetIDamageable as MonoBehaviour) == Fire.Instance) {
+            if ((attackTargetIDamageable is Fire)) {
                 attackTargetIDamageable.TakeDamage(damageToFire, transform, false, attackIgnoresTemporaryInvincibility);
 
                 if (!creature.GetCreatureSO().isBoss) {

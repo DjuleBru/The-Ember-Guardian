@@ -30,6 +30,8 @@ public class VersioningManager : MonoBehaviour
     }
 
     private void Start() {
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.MainMenu) return;
+
         int vMajor = isDemo ? demoState : state;
         int vMinor = isDemo ? demoMajor : major;
         int vPatch = isDemo ? demoMinor : minor;

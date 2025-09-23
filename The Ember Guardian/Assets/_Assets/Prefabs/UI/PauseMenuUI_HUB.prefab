@@ -57,6 +57,7 @@ MonoBehaviour:
   fullGameDescriptionPanel: {fileID: 7849242474670339380}
   fullGameDescriptionPanel_WishlistButton: {fileID: 1550507017950621124}
   fullGameDescriptionPanel_ExitGameButton: {fileID: 7976770761509023685}
+  ctaButton: {fileID: 8298827197467272509}
   buttonConfirm_ExitGame: {fileID: 2273160849019581064}
   buttonConfirm_MainMenu: {fileID: 2342040207346762658}
   exitGameText: {fileID: 1835937324941349501}
@@ -1172,6 +1173,10 @@ PrefabInstance:
     - target: {fileID: 1911841557683285207, guid: f3b889857c3d82c4f9a7374e445dc473, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: WishlistButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919734455076523828, guid: f3b889857c3d82c4f9a7374e445dc473, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1921300777476177657, guid: f3b889857c3d82c4f9a7374e445dc473, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3015,3 +3020,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8298827197467272509 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1919734455076523828, guid: f3b889857c3d82c4f9a7374e445dc473, type: 3}
+  m_PrefabInstance: {fileID: 7606332436960061961}
+  m_PrefabAsset: {fileID: 0}

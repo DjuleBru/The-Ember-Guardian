@@ -20,11 +20,13 @@ MonoBehaviour:
   levelImage: {fileID: 21300000, guid: b59289b8b5544cc418049bcc76eba1a5, type: 3}
   levelNameLocalizationKey: Level2
   levelDescriptionLocalizationKey: Level2_Description
-  faunaAmount: 0
+  faunaAmount: 4
   scrapAmount: 0
   minesAmount: 0
-  chestAmount: 0
+  chestAmount: 3
   wildEmberlingsAmount: 0
+  unlockablesList: 02000000040000000c00000017000000
+  duskDurationIncreasePerDay: 0
   levelObjectiveType: 13
   endLevelType: 13
   talkToNpcAFterObjective: 0
@@ -53,6 +55,7 @@ MonoBehaviour:
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
+  bossNightWaveDifficultyMultiplier: 0.33
   startWaveToSpawnFromBothSides: 1
   baseDifficulty: 25
   intialMinSubwaveDifficulty: 10
@@ -72,6 +75,10 @@ MonoBehaviour:
     m_RotationOrder: 4
   maxWaveInAnimationCurve: 0
   canSpawnElite: 1
+  hasSpecialWaveTypes: 0
+  specialWaveTypesInLevel: 
+  specialWaveProbability: 0
+  maxSpecialWaveAmount: 0
   environmentType: 1
   hasFog: 1
   fogFrontAlpha: 1

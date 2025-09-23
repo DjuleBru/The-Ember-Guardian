@@ -425,6 +425,7 @@ public class MetaProgressionManager : MonoBehaviour
         return ES3.Load(key, false);
     }
 
+
     public bool GetSpecialAmmoUnlocked() {
         return ES3.Load("specialAmmoUnlocked", false);
     }
@@ -722,7 +723,7 @@ public class MetaProgressionManager : MonoBehaviour
     #endregion
 
     #region CREATURES
-    
+
     public void SetCreatureUnlocked(CreatureSO creatureSO) {
         string key = creatureSO.enemyName + "_unlocked";
         ES3.Save(key, true);

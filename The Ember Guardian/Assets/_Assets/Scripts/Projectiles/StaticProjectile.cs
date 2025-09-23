@@ -97,17 +97,10 @@ public class StaticProjectile : MonoBehaviour
             // Hit Fire
             Fire fire = collision.gameObject.GetComponent<Fire>();
             if (fire != null) {
-
-                if (fire.GetIsSecondaryFire()) {
+                if (parentMob is Creature) {
                     collision.GetComponent<Fire>().TakeDamage(1, transform, false);
+                    parentMob.Die();
                 };
-
-                if (fire.GetIsMainFire()) {
-                    if (parentMob is Creature) {
-                        collision.GetComponent<Fire>().TakeDamage(1, transform, false);
-                        parentMob.Die();
-                    };
-                }
                 hasHit = true;
             }
         }

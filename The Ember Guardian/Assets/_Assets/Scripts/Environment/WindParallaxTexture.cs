@@ -6,32 +6,43 @@ public class WindParallaxTexture : MonoBehaviour
 {
 
     [SerializeField] private SpriteRenderer windTextureSprite;
+    [SerializeField] private bool isWindDetailsTexture;
     private Material windTextureMaterial; 
     private float fadeDuration = 2f; // Durée totale du fade-in
+    private WindManager.WindStrength previousWindStrength = WindManager.WindStrength.none;
 
     private void Start() {
         windTextureMaterial = windTextureSprite.material;
 
         WindManager.Instance.OnWindStrengthChanged += WindManager_OnWindStrengthChanged;
-        SetTextureVariables();
+        StartCoroutine(SetTextureVariables());
     }
 
     private void WindManager_OnWindStrengthChanged(object sender, System.EventArgs e) {
-        SetTextureVariables();
+        StartCoroutine(SetTextureVariables());
+        previousWindStrength = WindManager.Instance.GetWindStrength();
     }
 
-    private void SetTextureVariables() {
+    private IEnumerator SetTextureVariables() {
 
         WindManager.WindStrength currentWindStrength = WindManager.Instance.GetWindStrength();
         float windStrength = GetWindStrengthForWindTexture(currentWindStrength) * -WindManager.Instance.GetWindDir();
 
-        windTextureMaterial.SetFloat("_TextureScrollXSpeed", windStrength);
-
+        if(isWindDetailsTexture) {
+            windStrength *= 1.5f;
+        }
 
         float targetAlpha = GetAlphaForWindTexture(currentWindStrength);
 
         // Démarre une nouvelle coroutine pour le fade-in
         StartCoroutine(FadeAlpha(targetAlpha));
+
+        if(previousWindStrength != WindManager.WindStrength.none) {
+            yield return new WaitForSeconds(2f);
+        }
+
+        windTextureMaterial.SetFloat("_TextureScrollXSpeed", windStrength);
+
     }
 
     private IEnumerator FadeAlpha(float targetAlpha) {
@@ -75,20 +86,24 @@ public class WindParallaxTexture : MonoBehaviour
     }
 
     public float GetAlphaForWindTexture(WindManager.WindStrength windStrength) {
-
+        float alpha = 0;
         if (windStrength == WindManager.WindStrength.soft) {
-            return .03f;
+            alpha = .03f;
         }
         if (windStrength == WindManager.WindStrength.medium) {
-            return .03f;
+            alpha = .03f;
         }
         if (windStrength == WindManager.WindStrength.strong) {
-            return .04f;
+            alpha = .04f;
         }
         if (windStrength == WindManager.WindStrength.extreme) {
-            return .05f;
+            alpha = .05f;
         }
 
-        return 0;
+        if(LevelManager.Instance.GetLevelSO().environmentType == LevelSO.LevelEnvironment.CorruptedCity) {
+            alpha /= 2f;
+        }
+
+        return alpha;
     }
 }

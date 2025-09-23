@@ -647,6 +647,10 @@ public class Creature : Mob
 
     }
 
+    public bool GetCreatureActive() {
+        return creatureActive;
+    }
+
     protected void OnDestroy() {
         PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
         PlayerMovement.Instance.OnPlayerCrouched -= PlayerMovement_OnPlayerCrouched;

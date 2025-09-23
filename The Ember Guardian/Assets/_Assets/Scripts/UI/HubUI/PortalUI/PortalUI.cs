@@ -56,8 +56,9 @@ public class PortalUI : MonoBehaviour {
     }
     private void RefreshUnlockedLevels() {
         unlockedLevelSOList.Clear();
+
         foreach (LevelSO levelSO in linkedLevelSOList) {
-            if (MetaProgressionManager.Instance.GetLevelUnlocked(levelSO)) {
+            if (MetaProgressionManager.Instance.GetLevelUnlocked(levelSO) || DebugManager.Instance.GetDebugMode_Portals()) {
                 unlockedLevelSOList.Add(levelSO);
             }
         }

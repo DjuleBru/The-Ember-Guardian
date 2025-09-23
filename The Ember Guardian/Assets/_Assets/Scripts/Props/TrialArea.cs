@@ -28,6 +28,7 @@ public class TrialArea : MonoBehaviour
     public event EventHandler OnTrialFailed;
     public event EventHandler OnPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
+    public static event EventHandler OnAnyTrialPaid;
 
     private List<Creature> creatureSpawnedList = new List<Creature>();
 
@@ -89,6 +90,7 @@ public class TrialArea : MonoBehaviour
     private IEnumerator StartTrialCoroutine() {
         trialStarted = true;
         OnTrialPaid?.Invoke(this, EventArgs.Empty);
+        OnAnyTrialPaid?.Invoke(this, EventArgs.Empty);
         DayNightManager.Instance.SetCyclePaused(true, true);
 
         yield return new WaitForSeconds(.5f);

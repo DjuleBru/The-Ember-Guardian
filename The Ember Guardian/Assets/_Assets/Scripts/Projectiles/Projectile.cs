@@ -250,7 +250,7 @@ public class Projectile : MonoBehaviour
             barricade.TakeDamage(damage, parentMob.transform);
         }
 
-        // Hit Secondary Fire ?
+        // Hit Fire ?
         if (fireOrbCollider != null) {
             Fire fire = fireOrbCollider.GetComponentInParent<Fire>();
             if (fire.GetIsSecondaryFire()) {
@@ -260,11 +260,9 @@ public class Projectile : MonoBehaviour
                 }
             };
 
-            if (fire.GetIsMainFire()) {
-                if (parentMob is Creature) {
-                    parentMob.Die();
-                };
-            }
+            if (parentMob is Creature) {
+                parentMob.Die();
+            };
         }
 
         if (barricade != null && enemyProjectile && barricade.GetBarricadeHealthNormalized() > 0) {
