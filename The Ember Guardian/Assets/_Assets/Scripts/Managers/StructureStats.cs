@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,75 +67,113 @@ public class StructureStats : MonoBehaviour
         LoadStructureStats();
     }
 
+
     private void LoadStructureStats() {
-        barricadesSpiked = ES3.Load("barricadesSpiked", false);
-        startWithAmmoCrafter = ES3.Load("startWithAmmoCrafter", false);
-        startWithResearchTower = ES3.Load("startWithResearchTower", false);
-        startWithBarricadeLayer = ES3.Load("startWithBarricadeLayer", false);
+        if (!ES3.KeyExists("StructureStats"))
+            return;
 
-        orbFuelValue = ES3.Load("orbFuelValue", initialOrbFuelValue);
-        mainFireMaxFuelTreshold = ES3.Load("maxFuelTreshold", initialMaxFuelTreshold);
-        mainFireFuelDepletionRate = ES3.Load("mainFireFuelDepletionRate", initialFuelDepletionRate);
-        secondaryFireMaxFuelTreshold = ES3.Load("secondaryFireMaxFuelTreshold", initialSecondaryFireMaxFuelTreshold);
-        secondaryFireFuelDepletionRate = ES3.Load("secondaryFireFuelDepletionRate", initialSecondaryFireFuelDepletionRate);
+        var structureData = ES3.Load<Dictionary<string, object>>("StructureStats");
 
-        ammoCrafterBatchCapacity = ES3.Load("ammoCrafterBatchCapacity", initialAmmoCrafterBatchCapacity);
-        singleAmmoCraftDuration = ES3.Load("singleAmmoCraftDuration", initialSingleAmmoCraftDuration);
-        ammoCrafterMaxAmmoPerBatch = ES3.Load("ammoCrafterMaxAmmoPerBatch", initialAmmoCrafterMaxAmmoPerBatch);
+        // Structures de base
+        barricadesSpiked = GetValue(structureData, "barricadesSpiked", false);
+        startWithAmmoCrafter = GetValue(structureData, "startWithAmmoCrafter", false);
+        startWithResearchTower = GetValue(structureData, "startWithResearchTower", false);
+        startWithBarricadeLayer = GetValue(structureData, "startWithBarricadeLayer", false);
 
-        orbProcessorBatchCapacity = ES3.Load("orbProcessorBatchCapacity", initialOrbProcessorBatchCapacity);
-        singleOrbCraftDuration = ES3.Load("singleOrbCraftDuration", initialSingleOrbCraftDuration);
-        orbProcessorMaxOrbsPerBatch = ES3.Load("orbProcessorMaxOrbsPerBatch", initialOrbProcessorMaxOrbsPerBatch);
+        // Feu principal et secondaire
+        orbFuelValue = GetValue(structureData, "orbFuelValue", initialOrbFuelValue);
+        mainFireMaxFuelTreshold = GetValue(structureData, "mainFireMaxFuelTreshold", initialMaxFuelTreshold);
+        mainFireFuelDepletionRate = GetValue(structureData, "mainFireFuelDepletionRate", initialFuelDepletionRate);
+        secondaryFireMaxFuelTreshold = GetValue(structureData, "secondaryFireMaxFuelTreshold", initialSecondaryFireMaxFuelTreshold);
+        secondaryFireFuelDepletionRate = GetValue(structureData, "secondaryFireFuelDepletionRate", initialSecondaryFireFuelDepletionRate);
 
-        barricadeHealthPerCrate = ES3.Load("barricadeHealthPerCrate", initialBarricadeHealthPerCrate);
+        // Crafter munitions
+        ammoCrafterBatchCapacity = GetValue(structureData, "ammoCrafterBatchCapacity", initialAmmoCrafterBatchCapacity);
+        singleAmmoCraftDuration = GetValue(structureData, "singleAmmoCraftDuration", initialSingleAmmoCraftDuration);
+        ammoCrafterMaxAmmoPerBatch = GetValue(structureData, "ammoCrafterMaxAmmoPerBatch", initialAmmoCrafterMaxAmmoPerBatch);
 
-        tentHealAmountPerSmallOrb = ES3.Load("tentHealAmountPerSmallOrb", initialTentHealAmountPerSmallOrb);
+        // Crafter orbes
+        orbProcessorBatchCapacity = GetValue(structureData, "orbProcessorBatchCapacity", initialOrbProcessorBatchCapacity);
+        singleOrbCraftDuration = GetValue(structureData, "singleOrbCraftDuration", initialSingleOrbCraftDuration);
+        orbProcessorMaxOrbsPerBatch = GetValue(structureData, "orbProcessorMaxOrbsPerBatch", initialOrbProcessorMaxOrbsPerBatch);
 
-        skillMerchantMaxActiveSkillsDisplayed = ES3.Load("skillMerchantMaxActiveSkillsDisplayed", initialSkillMerchantMaxActiveSkillsDisplayed);
-        skillMerchantMaxPassiveSkillsDisplayed = ES3.Load("skillMerchantMaxPassiveSkillsDisplayed", initialSkillMerchantMaxPassiveSkillsDisplayed);
-        trapMerchantMaxTrapsDisplayed = ES3.Load("trapMerchantMaxTrapsDisplayed", initialTrapMerchantMaxTrapsDisplayed);
-        trapMerchantMaxTrapUpgradesDisplayed = ES3.Load("trapMerchantMaxTrapUpgradesDisplayed", initialTrapMerchantMaxTrapUpgradeDisplayed);
-        startWithRandomTrapAmount = ES3.Load("startWithRandomTrapAmount", initialStartWithRandomTrapAmount);
-        engineerContainerSizeBuff = ES3.Load("engineerContainerSizeBuff", 0f);
+        // Autres structures
+        tentHealAmountPerSmallOrb = GetValue(structureData, "tentHealAmountPerSmallOrb", initialTentHealAmountPerSmallOrb);
+        barricadeHealthPerCrate = GetValue(structureData, "barricadeHealthPerCrate", initialBarricadeHealthPerCrate);
 
-        observationTowerEnemyTypesDetectionUnlocked = ES3.Load("researchTowerEnemyTypesDetectionUnlocked", false);
-        observationTowerEnemyAmountDetectionUnlocked = ES3.Load("researchTowerEnemyAmountDetectionUnlocked", false);
+        // Marchands
+        skillMerchantMaxActiveSkillsDisplayed = GetValue(structureData, "skillMerchantMaxActiveSkillsDisplayed", initialSkillMerchantMaxActiveSkillsDisplayed);
+        skillMerchantMaxPassiveSkillsDisplayed = GetValue(structureData, "skillMerchantMaxPassiveSkillsDisplayed", initialSkillMerchantMaxPassiveSkillsDisplayed);
+        trapMerchantMaxTrapsDisplayed = GetValue(structureData, "trapMerchantMaxTrapsDisplayed", initialTrapMerchantMaxTrapsDisplayed);
+        trapMerchantMaxTrapUpgradesDisplayed = GetValue(structureData, "trapMerchantMaxTrapUpgradesDisplayed", initialTrapMerchantMaxTrapUpgradeDisplayed);
+        startWithRandomTrapAmount = GetValue(structureData, "startWithRandomTrapAmount", initialStartWithRandomTrapAmount);
+
+        // Buffs
+        engineerContainerSizeBuff = GetValue(structureData, "engineerContainerSizeBuff", 0f);
+
+        // Tour de recherche
+        observationTowerEnemyTypesDetectionUnlocked = GetValue(structureData, "researchTowerEnemyTypesDetectionUnlocked", false);
+        observationTowerEnemyAmountDetectionUnlocked = GetValue(structureData, "researchTowerEnemyAmountDetectionUnlocked", false);
     }
 
     public void SaveStructureStats() {
-        ES3.Save("barricadesSpiked", barricadesSpiked);
-        ES3.Save("startWithAmmoCrafter", startWithAmmoCrafter);
-        ES3.Save("startWithResearchTower", startWithResearchTower);
-        ES3.Save("startWithBarricadeLayer", startWithBarricadeLayer);
+        var structureData = new Dictionary<string, object>();
 
-        ES3.Save("orbFuelValue", orbFuelValue);
-        ES3.Save("mainFireMaxFuelTreshold", mainFireMaxFuelTreshold);
-        ES3.Save("mainFireFuelDepletionRate", mainFireFuelDepletionRate);
-        ES3.Save("secondaryFireFuelDepletionRate", secondaryFireFuelDepletionRate);
-        ES3.Save("secondaryFireMaxFuelTreshold", secondaryFireMaxFuelTreshold);
+        // Structures de base
+        structureData["barricadesSpiked"] = barricadesSpiked;
+        structureData["startWithAmmoCrafter"] = startWithAmmoCrafter;
+        structureData["startWithResearchTower"] = startWithResearchTower;
+        structureData["startWithBarricadeLayer"] = startWithBarricadeLayer;
 
-        ES3.Save("ammoCrafterBatchCapacity", ammoCrafterBatchCapacity);
-        ES3.Save("singleAmmoCraftDuration", singleAmmoCraftDuration);
-        ES3.Save("ammoCrafterMaxAmmoPerBatch", ammoCrafterMaxAmmoPerBatch);
+        // Feu principal et secondaire
+        structureData["orbFuelValue"] = orbFuelValue;
+        structureData["mainFireMaxFuelTreshold"] = mainFireMaxFuelTreshold;
+        structureData["mainFireFuelDepletionRate"] = mainFireFuelDepletionRate;
+        structureData["secondaryFireMaxFuelTreshold"] = secondaryFireMaxFuelTreshold;
+        structureData["secondaryFireFuelDepletionRate"] = secondaryFireFuelDepletionRate;
 
-        ES3.Save("orbProcessorBatchCapacity", orbProcessorBatchCapacity);
-        ES3.Save("singleOrbCraftDuration", singleOrbCraftDuration);
-        ES3.Save("orbProcessorMaxOrbsPerBatch", orbProcessorMaxOrbsPerBatch);
+        // Crafter munitions
+        structureData["ammoCrafterBatchCapacity"] = ammoCrafterBatchCapacity;
+        structureData["singleAmmoCraftDuration"] = singleAmmoCraftDuration;
+        structureData["ammoCrafterMaxAmmoPerBatch"] = ammoCrafterMaxAmmoPerBatch;
 
-        ES3.Save("tentHealAmountPerSmallOrb", tentHealAmountPerSmallOrb);
+        // Crafter orbes
+        structureData["orbProcessorBatchCapacity"] = orbProcessorBatchCapacity;
+        structureData["singleOrbCraftDuration"] = singleOrbCraftDuration;
+        structureData["orbProcessorMaxOrbsPerBatch"] = orbProcessorMaxOrbsPerBatch;
 
-        ES3.Save("barricadeHealthPerCrate", barricadeHealthPerCrate);
+        // Autres structures
+        structureData["tentHealAmountPerSmallOrb"] = tentHealAmountPerSmallOrb;
+        structureData["barricadeHealthPerCrate"] = barricadeHealthPerCrate;
 
-        ES3.Save("skillMerchantMaxActiveSkillsDisplayed", skillMerchantMaxActiveSkillsDisplayed);
-        ES3.Save("skillMerchantMaxPassiveSkillsDisplayed", skillMerchantMaxPassiveSkillsDisplayed);
-        ES3.Save("trapMerchantMaxTrapsDisplayed", trapMerchantMaxTrapsDisplayed);
-        ES3.Save("trapMerchantMaxTrapUpgradesDisplayed", trapMerchantMaxTrapUpgradesDisplayed);
-        ES3.Save("startWithRandomTrapAmount", startWithRandomTrapAmount);
+        // Marchands
+        structureData["skillMerchantMaxActiveSkillsDisplayed"] = skillMerchantMaxActiveSkillsDisplayed;
+        structureData["skillMerchantMaxPassiveSkillsDisplayed"] = skillMerchantMaxPassiveSkillsDisplayed;
+        structureData["trapMerchantMaxTrapsDisplayed"] = trapMerchantMaxTrapsDisplayed;
+        structureData["trapMerchantMaxTrapUpgradesDisplayed"] = trapMerchantMaxTrapUpgradesDisplayed;
+        structureData["startWithRandomTrapAmount"] = startWithRandomTrapAmount;
 
-        ES3.Save("engineerContainerSizeBuff", engineerContainerSizeBuff);
+        // Buffs
+        structureData["engineerContainerSizeBuff"] = engineerContainerSizeBuff;
 
-        ES3.Save("researchTowerEnemyTypesDetectionUnlocked", observationTowerEnemyTypesDetectionUnlocked);
-        ES3.Save("researchTowerEnemyAmountDetectionUnlocked", observationTowerEnemyAmountDetectionUnlocked);
+        // Tour de recherche
+        structureData["researchTowerEnemyTypesDetectionUnlocked"] = observationTowerEnemyTypesDetectionUnlocked;
+        structureData["researchTowerEnemyAmountDetectionUnlocked"] = observationTowerEnemyAmountDetectionUnlocked;
+
+        ES3.Save("StructureStats", structureData);
+    }
+
+
+    private T GetValue<T>(Dictionary<string, object> dict, string key, T defaultValue) {
+        if (dict.ContainsKey(key)) {
+            try {
+                return (T)Convert.ChangeType(dict[key], typeof(T));
+            }
+            catch {
+                return defaultValue;
+            }
+        }
+        return defaultValue;
     }
 
     #region FIRE

@@ -113,7 +113,10 @@ public class PlayerSave : MonoBehaviour
     }
 
     public void SaveNewUnlockedSkills() {
+        if (newSkillsUnlockedList.Count == 0) return; // rapide exit si vide
+
         foreach (SkillSO skillSO in newSkillsUnlockedList) {
+            Debug.Log("SaveNewUnlockedSkill " + skillSO);
             string key = skillSO.name + "_unlocked";
             ES3.Save(key, true);
         }

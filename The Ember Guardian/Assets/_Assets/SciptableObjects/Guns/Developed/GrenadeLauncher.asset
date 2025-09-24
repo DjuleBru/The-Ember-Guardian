@@ -75,6 +75,21 @@ MonoBehaviour:
   weaponMaxRecoilImpactOnMouseReticle: 0.35
   crouchPrecisionBuff: 2
   crouchRecoilReductionFactor: 2
+  damageStatModifier: {fileID: 11400000, guid: d93093779a4895d4d99f1ab6cbce7806, type: 2}
+  shotsPerClipStatModifier: {fileID: 11400000, guid: 4d94c3538d27aee44af437ab020d7be2, type: 2}
+  maxAmmoStatModifier: {fileID: 11400000, guid: 7c99285a708e57b4b8fb9ec60722c532, type: 2}
+  cooldownTimeStatModifier: {fileID: 11400000, guid: 8d55c5dd5fa87d840bb3b9b66000ac0c, type: 2}
+  reloadTimeStatModifier: {fileID: 11400000, guid: 3b0317679a94b174f814adcbdbfd94f1, type: 2}
+  critChanceStatModifier: {fileID: 0}
+  shootConeAngleStatModifier: {fileID: 0}
+  pelletsPerBulletStatModifier: {fileID: 0}
+  bulletLifetimeStatModifier: {fileID: 0}
+  jamRepairHitAmountStatModifier: {fileID: 0}
+  surgeWindowBulletAmountBuffedStatModifier: {fileID: 11400000, guid: 2b2976e40647518428007605fa86b3b1, type: 2}
+  explosionRadiusMultiplierStatModifier: {fileID: 11400000, guid: c70cb3ecd5105c743b91a619f0b0cac0, type: 2}
+  spinUpDurationStatModifier: {fileID: 0}
+  subExplosivesAmountStatModifier: {fileID: 0}
+  subExplosivesDamageStatModifier: {fileID: 0}
   shotCooldownAnimationTriggerTime: 0
   shootCooldownSFXTriggerTime: 1
   triggersShootFeedbackOnEachBuller: 1

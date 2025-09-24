@@ -61,10 +61,6 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         OnAnyHubMerchantItemEquipped += HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemEquipped;
     }
 
-    protected override void LoadItemEquipped() {
-        itemEquipped = (PlayerShoot.Instance.GetHeldGunSO() == linkedGunSO);
-    }
-
     public override string GetItemType() {
         return gunItem.ToString() + " " + linkedGunSO.ToString();
     }
@@ -144,141 +140,125 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
     private void SetNewStatIncreaseStats() {
         if (gunItem == GunItemType.bulletDamage || gunItem == GunItemType.explosionDamage) {
-            int modifiedDamage = linkedGunSO.damagePerBullet + (int)linkedStatModifierSO.statModifierList[itemLevel];
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetBulletDamage_Meta(modifiedDamage);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetBulletDamage_StatModifierListLevel(itemLevel);
         }
 
         if (gunItem == GunItemType.shotsPerClip) {
-            float modifiedShotsPerClip = linkedGunSO.shotsPerClip + linkedStatModifierSO.statModifierList[itemLevel];
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetShotsPerClip_Meta((int)modifiedShotsPerClip);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetShotsPerClip_StatModifierListLevel(itemLevel);
         }
 
         if (gunItem == GunItemType.maxAmmo) {
-            float modifiedMaxAmmo = linkedGunSO.maxAmmo + linkedStatModifierSO.statModifierList[itemLevel];
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetMaxAmmo_Meta((int)modifiedMaxAmmo);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetMaxAmmo_StatModifierListLevel(itemLevel);
         }
 
         if (gunItem == GunItemType.cooldownTime) {
-            float modifiedCooldown = linkedGunSO.shootCooldownTime + linkedGunSO.shootCooldownTime * linkedStatModifierSO.statModifierList[itemLevel] * 0.01f;
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetCooldownTime_Meta(modifiedCooldown);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetCooldownTime_StatModifierListLevel(itemLevel);
         }
 
         if (gunItem == GunItemType.reloadTime) {
-            float modifiedReloadTime = linkedGunSO.reloadTime + linkedGunSO.reloadTime * linkedStatModifierSO.statModifierList[itemLevel] * 0.01f;
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetReloadTime_Meta(modifiedReloadTime);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetReloadTime_StatModifierListLevel(itemLevel);
         }
 
         if (gunItem == GunItemType.critChance) {
-            float modifiedCritChange = linkedGunSO.critChance + linkedStatModifierSO.statModifierList[itemLevel];
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetCritChange_Meta((int)modifiedCritChange);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetCritChange_StatModifierListLevel(itemLevel);
         }
 
         if (gunItem == GunItemType.shootConeAngle) {
-            float modifiedShootAngle = linkedGunSO.shootConeAngle + linkedStatModifierSO.statModifierList[itemLevel];
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetShootConeAngle_Meta(modifiedShootAngle);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetShootConeAngle_StatModifierListLevel(itemLevel);
         }
 
         if (gunItem == GunItemType.pelletsPerBullet) {
-            float modifiedPelletsPerBullet = linkedGunSO.pelletsPerBullet + linkedStatModifierSO.statModifierList[itemLevel];
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetPelletsPerBullet_Meta((int)modifiedPelletsPerBullet);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetPelletsPerBullet_StatModifierListLevel(itemLevel);
         }
 
         if (gunItem == GunItemType.range) {
-            float modifiedBulletLifetime = linkedGunSO.bulletLifetime + linkedStatModifierSO.statModifierList[itemLevel] / linkedGunSO.bulletSpeed;
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetGunBulletLifetime_Meta(modifiedBulletLifetime);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetGunBulletLifetime_StatModifierListLevel(itemLevel);
         }
 
         if (gunItem == GunItemType.surgeWindowBoost) {
-            int modifiedBulletsAmount = linkedGunSO.perfectQTEBulletAmountDamageBuffed + (int)linkedStatModifierSO.statModifierList[itemLevel];
-            Debug.Log("modifiedBulletsAmount " + modifiedBulletsAmount);
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetSurgeWindowBulletBoost(modifiedBulletsAmount);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSurgeWindowBulletBoost_StatModifierListLevel(itemLevel);
         }
 
         if (gunItem == GunItemType.surgeWindowHitAmount) {
-            float modifiedJamRepairHitAmount = linkedGunSO.jamRepairHitAmount + linkedStatModifierSO.statModifierList[itemLevel];
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetJamRepairHitAmount((int)modifiedJamRepairHitAmount);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetJamRepairHitAmount_StatModifierListLevel(itemLevel);
         }
 
         if (gunItem == GunItemType.explosionRadiusBuff) {
-            float modifiedExplosionRadius = 100 + linkedStatModifierSO.statModifierList[itemLevel];
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetExplosionRadiusModified((float)modifiedExplosionRadius/100);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetExplosionRadiusModified_StatModifierListLevel(itemLevel);
         }
 
         if (gunItem == GunItemType.spinUpTime) {
-            float modifiedSpinUpTime = linkedGunSO.spinUpDuration + linkedStatModifierSO.statModifierList[itemLevel];
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetSpinUpDuration((float)modifiedSpinUpTime);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSpinUpDuration_StatModifierListLevel(itemLevel);
         }
 
         if (gunItem == GunItemType.subExplosivesDamage) {
-            float modifiedSubExplosivesDamage = linkedGunSO.subExplosivesDamage + linkedStatModifierSO.statModifierList[itemLevel];
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesDamage((int)modifiedSubExplosivesDamage);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesDamage_StatModifierListLevel(itemLevel);
         }
 
         if (gunItem == GunItemType.subExplosivesAmount) {
-            float modifiedSubExplosivesAmount = linkedGunSO.subExplosivesAmount + linkedStatModifierSO.statModifierList[itemLevel];
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesAmount((int)modifiedSubExplosivesAmount);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesAmount_StatModifierListLevel(itemLevel);
         }
     }
 
     private void ResetStats() {
         if (gunItem == GunItemType.bulletDamage || gunItem == GunItemType.explosionDamage) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetBulletDamage_Meta(linkedGunSO.damagePerBullet);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetBulletDamage_StatModifierListLevel(0);
         }
 
         if (gunItem == GunItemType.shotsPerClip) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetShotsPerClip_Meta((int)linkedGunSO.shotsPerClip);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetShotsPerClip_StatModifierListLevel(0);
         }
 
         if (gunItem == GunItemType.maxAmmo) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetMaxAmmo_Meta((int)linkedGunSO.maxAmmo);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetMaxAmmo_StatModifierListLevel(0);
         }
 
         if (gunItem == GunItemType.cooldownTime) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetCooldownTime_Meta(linkedGunSO.shootCooldownTime);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetCooldownTime_StatModifierListLevel(0);
         }
 
         if (gunItem == GunItemType.reloadTime) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetReloadTime_Meta(linkedGunSO.reloadTime);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetReloadTime_StatModifierListLevel(0);
         }
 
         if (gunItem == GunItemType.critChance) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetCritChange_Meta((int)linkedGunSO.critChance);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetCritChange_StatModifierListLevel(0);
         }
 
         if (gunItem == GunItemType.shootConeAngle) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetShootConeAngle_Meta(linkedGunSO.shootConeAngle);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetShootConeAngle_StatModifierListLevel(0);
         }
 
         if (gunItem == GunItemType.pelletsPerBullet) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetPelletsPerBullet_Meta((int)linkedGunSO.pelletsPerBullet);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetPelletsPerBullet_StatModifierListLevel(0);
         }
 
         if (gunItem == GunItemType.range) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetGunBulletLifetime_Meta(linkedGunSO.bulletLifetime);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetGunBulletLifetime_StatModifierListLevel(0);
         }
 
         if (gunItem == GunItemType.surgeWindowBoost) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetSurgeWindowBulletBoost(linkedGunSO.perfectQTEBulletAmountDamageBuffed);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSurgeWindowBulletBoost_StatModifierListLevel(0);
         }
 
         if (gunItem == GunItemType.surgeWindowHitAmount) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetJamRepairHitAmount((int)linkedGunSO.jamRepairHitAmount);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetJamRepairHitAmount_StatModifierListLevel(0);
         }
 
         if (gunItem == GunItemType.explosionRadiusBuff) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetExplosionRadiusModified(1);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetExplosionRadiusModified_StatModifierListLevel(0);
         }
 
         if (gunItem == GunItemType.spinUpTime) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetSpinUpDuration(linkedGunSO.spinUpDuration);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSpinUpDuration_StatModifierListLevel(0);
         }
 
         if (gunItem == GunItemType.subExplosivesDamage) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesDamage((int)linkedGunSO.subExplosivesDamage);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesDamage_StatModifierListLevel(0);
         }
 
         if (gunItem == GunItemType.subExplosivesAmount) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesAmount((int)linkedGunSO.subExplosivesAmount);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesAmount_StatModifierListLevel(0);
         }
     }
 
@@ -805,64 +785,6 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         return constantUnlockDescription;
     }
 
-    public override void EquipOrUnequipItem() {
-        return;
-
-        if(gunItemCategory == GunItemCategory.newGun) {
-
-            if (!itemEquipped) {
-
-                itemEquipped = true;
-
-                if (PlayerStats.Instance.GetHold2WeaponsUnlocked()) {
-                    // Player can hold 2 weapons
-
-                    if (PlayerShoot.Instance.GetSecondaryGunSO() == null) {
-                        // Player doesn't have a secondary gun yet
-
-                        EquipGun(false);
-
-                    } else {
-
-                    }
-
-                }
-
-                else {
-                    // Player can't hold 2 weapons
-                }
-
-                InvokeOnItemEquipped();
-
-            }
-        }
-
-        if (gunItemCategory == GunItemCategory.gunModule) {
-            if (!itemEquipped) {
-                itemEquipped = true;
-                InvokeOnItemEquipped();
-            } else {
-                itemEquipped = false;
-                InvokeOnItemUnequipped();
-            }
-        }
-    }
-
-    public override void UnequipItem() {
-        itemEquipped = false;
-        InvokeOnItemUnequipped();
-    }
-
-    private void EquipGun(bool primaryGun) {
-        itemEquipped = true;
-
-        if(primaryGun) {
-            PlayerShoot.Instance.SetActiveGun(linkedGunSO.gunType, true);
-        } else {
-            PlayerShoot.Instance.SetActiveGun(linkedGunSO.gunType, false);
-        }
-    }
-
     private void UnlockGun() {
         PlayerShoot.Instance.GetGun(linkedGunSO).SetGunUnlocked();
     }
@@ -870,10 +792,6 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     private void UnlockGunAbility() {
         PlayerShoot.Instance.GetGun(linkedGunSO).SetSecondaryAbilityUnlocked();
         PlayerTooltipManager.Instance.SetGunSOAbilityPrepared(linkedGunSO);
-    }
-
-    private void UnlockGunModule() {
-        MetaProgressionManager.Instance.SetGunModuleEquipped(linkedGunSO,gunItem);
     }
 
     public GunItemCategory GetGunItemCategory() {

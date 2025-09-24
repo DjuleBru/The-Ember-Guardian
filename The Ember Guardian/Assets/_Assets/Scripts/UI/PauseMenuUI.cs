@@ -65,6 +65,7 @@ public class PauseMenuUI : MonoBehaviour
 
             UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
             UICurrencyManager.HubInventoryUI.OnCurrencyRemovedFromBag += HubInventoryUI_OnCurrencyRemovedFromBag;
+            HUBManager.Instance.OnHubSaved += HubManager_OnHubSaved;
 
         }
 
@@ -77,6 +78,7 @@ public class PauseMenuUI : MonoBehaviour
 
         RefreshFonts();
     }
+
 
     private void SettingsManager_OnLanguageChanged(object sender, EventArgs e) {
         RefreshFonts();
@@ -192,10 +194,12 @@ public class PauseMenuUI : MonoBehaviour
     #region PAUSE MENU BUTTONS
     public virtual void SaveGameButton() {
         HUBManager.Instance.SaveHub();
-        SetProgressionSaved(true);
+    }
 
+    private void HubManager_OnHubSaved(object sender, EventArgs e) {
         progressionSavedTextIndicator.SetTrigger("Show");
         progressionSavedTextIndicator.SetTrigger("Hide");
+        SetProgressionSaved(true);
     }
 
     public virtual void ResumeButton() {

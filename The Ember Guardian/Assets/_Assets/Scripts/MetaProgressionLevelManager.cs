@@ -25,29 +25,29 @@ public class MetaProgressionLevelManager : MonoBehaviour
 
             if(LevelManager.Instance.GetLevelSO().levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArchitectTable) {
                 if (emberlingsControlUnlocked) return;
-                UnlockEmberlingsControl();
+                //UnlockEmberlingsControl();
             }
 
         }
     }
 
-    private void UnlockEmberlingsControl() {
-        ES3.Save("emberlingsControlUnlocked", true);
+    //private void UnlockEmberlingsControl() {
+    //    ES3.Save("emberlingsControlUnlocked", true);
 
-        MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.ControlEmberlings.ToString(), true);
-        MetaProgressionManager.Instance.SetHubMerchantItemBought(HubMerchantItem_WatcherMerchantItem.WatcherItemType.ControlEmberlings.ToString(), true);
-        MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.ControlEmberlings.ToString(), true);
+    //    MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.ControlEmberlings.ToString(), true);
+    //    MetaProgressionManager.Instance.SetHubMerchantItemBought(HubMerchantItem_WatcherMerchantItem.WatcherItemType.ControlEmberlings.ToString(), true);
+    //    MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.ControlEmberlings.ToString(), true);
 
-        MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.MaxFollowingWorkers.ToString(), true);
-        MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.MaxFollowingWorkers.ToString(), true);
+    //    MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.MaxFollowingWorkers.ToString(), true);
+    //    MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.MaxFollowingWorkers.ToString(), true);
 
-        MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.InitialEmberlings.ToString(), true);
-        MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.InitialEmberlings.ToString(), true);
+    //    MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.InitialEmberlings.ToString(), true);
+    //    MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.InitialEmberlings.ToString(), true);
 
-        MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.EmberlingArrivals.ToString(), true);
-        MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.EmberlingArrivals.ToString(), true);
+    //    MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.EmberlingArrivals.ToString(), true);
+    //    MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.EmberlingArrivals.ToString(), true);
 
-        MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType.WorkerMerchant, true);
-        WorkerStats.Instance.SetInteractionWithWorkersUnlocked();
-    }
+    //    MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType.WorkerMerchant, true);
+    //    WorkerStats.Instance.SetInteractionWithWorkersUnlocked();
+    //}
 }

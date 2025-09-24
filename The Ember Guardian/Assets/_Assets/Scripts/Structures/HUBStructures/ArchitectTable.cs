@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,36 +37,51 @@ public class ArchitectTable : MonoBehaviour
         LoadStats();
     }
 
-    private void LoadStats() {
-        architectTableUnlocked = ES3.Load("architectTableUnlocked", false);
-
-        maxAmmoCrafterAmount = ES3.Load("maxAmmoCrafterAmount", initialMaxAmmoCrafterAmount);
-        maxSecondaryFireAmount = ES3.Load("maxSecondaryFireAmount", initialMaxSecondaryFireAmount);
-        maxTrapSlotsAmount = ES3.Load("maxTrapSlotsAmount", initialMaxTrapSlotsAmount);
-        maxSniperTowerAmount = ES3.Load("maxSniperTowerAmount", initialMaxSniperTowerAmount);
-        maxMachineGunTowerAmount = ES3.Load("maxMachineGunTowerAmount", initialMaxMachineGunTowerAmount);
-        maxMortarPositionsAmount = ES3.Load("maxMortarPositionsAmount", initialMaxMortarPositionsAmount);
-        maxTowerAmount = ES3.Load("maxTowerAmount", initialMaxTowerAmount);
-        maxFastTravelTP = ES3.Load("maxFastTravelTP", initialMaxFastTravelTP);
-    }
-
     public void SaveStats() {
-        ES3.Save("architectTableUnlocked", architectTableUnlocked);
-        ES3.Save("maxAmmoCrafterAmount", maxAmmoCrafterAmount);
-        ES3.Save("maxSecondaryFireAmount", maxSecondaryFireAmount);
-        ES3.Save("maxTrapSlotsAmount", maxTrapSlotsAmount);
-        ES3.Save("maxSniperTowerAmount", maxSniperTowerAmount);
-        ES3.Save("maxMachineGunTowerAmount", maxMachineGunTowerAmount);
-        ES3.Save("maxMortarPositionsAmount", maxMortarPositionsAmount);
-        ES3.Save("maxTowerAmount", maxTowerAmount);
-        ES3.Save("maxFastTravelTP", maxFastTravelTP);
+        // Dictionnaire de toutes les valeurs à sauver
+        var statsToSave = new Dictionary<string, object>()
+        {
+        { "architectTableUnlocked", architectTableUnlocked },
+        { "maxAmmoCrafterAmount", maxAmmoCrafterAmount },
+        { "maxSecondaryFireAmount", maxSecondaryFireAmount },
+        { "maxTrapSlotsAmount", maxTrapSlotsAmount },
+        { "maxSniperTowerAmount", maxSniperTowerAmount },
+        { "maxMachineGunTowerAmount", maxMachineGunTowerAmount },
+        { "maxMortarPositionsAmount", maxMortarPositionsAmount },
+        { "maxTowerAmount", maxTowerAmount },
+        { "maxFastTravelTP", maxFastTravelTP }
+    };
 
+        // Sauvegarde batch
+        ES3.Save("ArchitectTableStats", statsToSave);
+
+        // Sauvegarde du layout du camp séparément
         CampEditManager.Instance.SaveCampLayout();
 
-        if(architectTableUnlocked) {
+        if (architectTableUnlocked) {
             MetaProgressionManager.Instance.SetMerchantUnlocked(HubMerchant.HubMerchantType.ArchitectTable);
         }
     }
+
+    private void LoadStats() {
+        if (!ES3.KeyExists("ArchitectTableStats")) {
+            // Si aucune sauvegarde, on garde les valeurs initiales
+            return;
+        }
+
+        var loadedStats = ES3.Load<Dictionary<string, object>>("ArchitectTableStats");
+
+        architectTableUnlocked = loadedStats.ContainsKey("architectTableUnlocked") ? Convert.ToBoolean(loadedStats["architectTableUnlocked"]) : false;
+        maxAmmoCrafterAmount = loadedStats.ContainsKey("maxAmmoCrafterAmount") ? Convert.ToInt32(loadedStats["maxAmmoCrafterAmount"]) : initialMaxAmmoCrafterAmount;
+        maxSecondaryFireAmount = loadedStats.ContainsKey("maxSecondaryFireAmount") ? Convert.ToInt32(loadedStats["maxSecondaryFireAmount"]) : initialMaxSecondaryFireAmount;
+        maxTrapSlotsAmount = loadedStats.ContainsKey("maxTrapSlotsAmount") ? Convert.ToInt32(loadedStats["maxTrapSlotsAmount"]) : initialMaxTrapSlotsAmount;
+        maxSniperTowerAmount = loadedStats.ContainsKey("maxSniperTowerAmount") ? Convert.ToInt32(loadedStats["maxSniperTowerAmount"]) : initialMaxSniperTowerAmount;
+        maxMachineGunTowerAmount = loadedStats.ContainsKey("maxMachineGunTowerAmount") ? Convert.ToInt32(loadedStats["maxMachineGunTowerAmount"]) : initialMaxMachineGunTowerAmount;
+        maxMortarPositionsAmount = loadedStats.ContainsKey("maxMortarPositionsAmount") ? Convert.ToInt32(loadedStats["maxMortarPositionsAmount"]) : initialMaxMortarPositionsAmount;
+        maxTowerAmount = loadedStats.ContainsKey("maxTowerAmount") ? Convert.ToInt32(loadedStats["maxTowerAmount"]) : initialMaxTowerAmount;
+        maxFastTravelTP = loadedStats.ContainsKey("maxFastTravelTP") ? Convert.ToInt32(loadedStats["maxFastTravelTP"]) : initialMaxFastTravelTP;
+    }
+
 
     public void SetArchitectTableUnlocked() {
         architectTableUnlocked = true;

@@ -21,7 +21,6 @@ public class HubMerchantItem : MonoBehaviour
     [SerializeField] private bool isBoughtAtStart;
     [SerializeField] private bool isUnlockedAtStart;
     [SerializeField] protected bool itemUpgradeable;
-    [SerializeField] private bool itemEquipable;
     [SerializeField] protected bool unlockRequiresAllPrerequisited;
 
     [SerializeField] protected HubMerchantItemStatModifierSO linkedStatModifierSO;
@@ -49,7 +48,6 @@ public class HubMerchantItem : MonoBehaviour
     protected bool itemBought;
     protected bool itemUnlocked;
     protected bool newItemUnlocked;
-    protected bool itemEquipped;
     protected bool itemStatusChanged;
     protected bool initializedCostList;
 
@@ -85,49 +83,7 @@ public class HubMerchantItem : MonoBehaviour
 
         initializedCostList = true;
     }
-    public virtual void LoadItemStatus() {
-        newItemUnlocked = MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType());
 
-        if (!isBoughtAtStart) {
-
-            itemBought = MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType());
-            
-            if(!itemUnlocked) {
-                itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType());
-            }
-
-            if(itemLevel == 0) {
-                itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
-            }
-
-            if(itemEquipable) {
-                itemEquipped = MetaProgressionManager.Instance.GetMerchantItemEquipped(GetItemType());
-            }
-
-        } else {
-            itemBought = true;
-            itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType());
-            if(newItemUnlocked) {
-                itemUnlocked = true;
-            }
-
-            itemLevel = maxItemLevel;
-
-            if(itemEquipable) {
-                LoadItemEquipped();
-            }
-        }
-
-        if (isUnlockedAtStart) {
-            itemUnlocked = true;
-        }
-
-        OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
-    }
-
-    protected virtual void LoadItemEquipped() {
-        itemEquipped = MetaProgressionManager.Instance.GetMerchantItemEquipped(GetItemType());
-    }
 
     public bool CanBuyItem() {
         int playerGreenGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count;
@@ -224,11 +180,6 @@ public class HubMerchantItem : MonoBehaviour
 
     public virtual void UnequipItem() {
         itemStatusChanged = true;
-    }
-
-    public void InvokeOnItemEquipped() {
-        OnHubMerchantItemEquipped?.Invoke(this, EventArgs.Empty);
-        OnAnyHubMerchantItemEquipped?.Invoke(this, EventArgs.Empty);
     }
 
     public void InvokeOnItemLoaded() {
@@ -406,9 +357,6 @@ public class HubMerchantItem : MonoBehaviour
             return false;
         }
     }
-    public bool GetitemEquipable() {
-        return itemEquipable;
-    }
 
     public bool GetItemUnlocked() {
         return itemUnlocked;
@@ -430,62 +378,152 @@ public class HubMerchantItem : MonoBehaviour
         return maxItemLevel;
     }
 
-    public bool GetItemEquipped() {
-        return itemEquipped;
-    }
+    //public void SaveItemStatus() {
 
-    public void SaveItemStatus() {
+    //    if (!itemStatusChanged) return;
 
-        if (!itemStatusChanged) return;
+    //    bool itemBoughtInSave = MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType());
+    //    if (itemBought && !itemBoughtInSave) {
+    //        MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), itemBought);
+    //    }
+    //    if (!itemBought && itemBoughtInSave) {
+    //        MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType(), itemUnlocked);
+    //        MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), itemBought);
+    //        MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), itemLevel);
+    //    }
 
-        bool itemBoughtInSave = MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType());
-        if (itemBought && !itemBoughtInSave) {
-            MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), itemBought);
-        }
-        if (!itemBought && itemBoughtInSave) {
-            MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType(), itemUnlocked);
-            MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), itemBought);
-            MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), itemLevel);
-        }
+    //    if (itemUpgradeable && MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType()) != itemLevel) {
+    //        MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), itemLevel);
+    //    }
 
-        if (itemUpgradeable && MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType()) != itemLevel) {
-            MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), itemLevel);
-        }
+    //    if (itemUnlocked && !MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType())) {
+    //        MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType(), itemUnlocked);
+    //    }
 
-        if (itemUnlocked && !MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType())) {
-            MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType(), itemUnlocked);
-        }
+    //    if(!newItemUnlocked && MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType())) {
+    //        MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(GetItemType(), false);
+    //    }
+    //    if (newItemUnlocked && !MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType())) {
+    //        MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(GetItemType(), true);
+    //    }
 
-        if(!newItemUnlocked && MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType())) {
-            MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(GetItemType(), false);
-        }
-        if (newItemUnlocked && !MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType())) {
-            MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(GetItemType(), true);
-        }
+    //    if (itemEquipable) {
+    //        MetaProgressionManager.Instance.SetHubMerchantItemEquipped(GetItemType(), itemEquipped);
+    //    }
 
-        if (itemEquipable) {
-            MetaProgressionManager.Instance.SetHubMerchantItemEquipped(GetItemType(), itemEquipped);
-        }
+    //}
 
-    }
+    //public virtual void LoadItemStatus() {
+    //    newItemUnlocked = MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType());
 
-    public void ResetItemStatus() {
+    //    if (!isBoughtAtStart) {
 
-        MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), false);
-        if (itemUpgradeable) {
-            MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), 0);
-        }
-        MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType(), false);
-        if (itemEquipable) {
-            MetaProgressionManager.Instance.SetHubMerchantItemEquipped(GetItemType(), false);
-        }
+    //        itemBought = MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType());
+
+    //        if (!itemUnlocked) {
+    //            itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType());
+    //        }
+
+    //        if (itemLevel == 0) {
+    //            itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
+    //        }
+
+    //        if (itemEquipable) {
+    //            itemEquipped = MetaProgressionManager.Instance.GetMerchantItemEquipped(GetItemType());
+    //        }
+
+    //    }
+    //    else {
+    //        itemBought = true;
+    //        itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType());
+    //        if (newItemUnlocked) {
+    //            itemUnlocked = true;
+    //        }
+
+    //        itemLevel = maxItemLevel;
+
+    //        if (itemEquipable) {
+    //            LoadItemEquipped();
+    //        }
+    //    }
+
+    //    if (isUnlockedAtStart) {
+    //        itemUnlocked = true;
+    //    }
+
+    //    OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
+    //}
+
+    public void LoadItemStatus_Batch() {
+        var key = GetItemType() + "_Data";
 
         if(isBoughtAtStart) {
-            MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(GetItemType(), false);
+            itemBought = true;
+        }
+        if (isUnlockedAtStart) {
+            itemUnlocked = true;
         }
 
-        
+        if (ES3.KeyExists(key)) {
+            var data = ES3.Load<Dictionary<string, object>>(key);
+
+            if(!itemBought) {
+                itemBought = data.ContainsKey("Bought") ? Convert.ToBoolean(data["Bought"]) : isBoughtAtStart;
+            }
+
+            if(!itemUnlocked) {
+                itemUnlocked = data.ContainsKey("Unlocked") ? Convert.ToBoolean(data["Unlocked"]) : isUnlockedAtStart;
+            }
+
+            if(!newItemUnlocked) {
+                newItemUnlocked = data.ContainsKey("NewlyUnlocked") ? Convert.ToBoolean(data["NewlyUnlocked"]) : false;
+            }
+
+            itemLevel = data.ContainsKey("Level") ? Convert.ToInt32(data["Level"]) : 0;
+        }
+
+        OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
     }
+
+    public void SaveItemStatus_Batch() {
+        if (!itemStatusChanged) return;
+
+        var dataToSave = new Dictionary<string, object> {
+            ["Bought"] = itemBought,
+            ["Unlocked"] = itemUnlocked,
+            ["NewlyUnlocked"] = newItemUnlocked,
+            ["Level"] = itemLevel
+        };
+
+        // Sauvegarde du dictionnaire complet en une seule clé
+        ES3.Save(GetItemType() + "_Data", dataToSave);
+
+        itemStatusChanged = false;
+    }
+
+    // --- RESET ---
+    public void ResetItemStatus_Batch() {
+        itemBought = false;
+        itemLevel = 0;
+        itemUnlocked = false;
+        newItemUnlocked = false;
+
+        SaveItemStatus_Batch();
+    }
+
+    //public void ResetItemStatus() {
+
+    //    MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), false);
+    //    if (itemUpgradeable) {
+    //        MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), 0);
+    //    }
+    //    MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType(), false);
+
+    //    if(isBoughtAtStart) {
+    //        MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(GetItemType(), false);
+    //    }
+
+    //}
 
     public virtual void ResetGunItemStatus() {
         itemBought = false;

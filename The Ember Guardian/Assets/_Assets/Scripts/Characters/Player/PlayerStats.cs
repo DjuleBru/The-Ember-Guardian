@@ -134,31 +134,44 @@ public class PlayerStats : MonoBehaviour
     }
 
     private void LoadPlayerStatBuffs_Meta() {
+        // Valeur isolée, pas dans le batch
         exhaustionTime = ES3.Load("exhaustionTime", 0);
 
-        maxStaminaBuff_meta = ES3.Load("maxStaminaBuff_meta", 0f);
-        moveSpeedPercentBuff_meta = ES3.Load("moveSpeedPercentBuff_meta", 0f);
-        swapWeaponTimeReductionPercentBuff_meta = ES3.Load("swapWeaponTimeReductionPercentBuff_meta", 0f);
-        crouchDetectionRangeReductionPercentBuff_meta = ES3.Load("crouchDetectionRangeReductionPercentBuff_meta", 0f);
-        runStaminaDepletionPercentBuff_meta = ES3.Load("runStaminaDepletionPercentBuff_meta", 0f);
-        rollForcePercentBuff_meta = ES3.Load("rollForcePercentBuff_meta", 0f);
-        rollStaminaDepletionPercentBuff_meta = ES3.Load("rollStaminaDepletionPercentBuff_meta", 0f);
-        flashlightRangeBuff_meta = ES3.Load("flashlightRangeBuff_meta", 0f);
-        absoluteHpRegenTimer_meta = ES3.Load("absoluteHpRegenTimer_meta", 0f);
-        maxPlayerHPBuffAbsolute_meta = ES3.Load("maxPlayerHPBuffAbsolute_meta", 0);
-        respawnPlayerHPBuffAbsolute_meta = ES3.Load("respawnPlayerHPBuffAbsolute_meta", 0);
+        if (!ES3.KeyExists("MetaBuffs"))
+            return;
 
-        startLevelAmmo_BuffAbsolute = ES3.Load("startLevelAmmo_BuffAbsolute", 0);
-        startLevelOrbs_BuffAbsolute = ES3.Load("startLevelOrbs_BuffAbsolute", 0);
+        var buffData = ES3.Load<Dictionary<string, object>>("MetaBuffs");
 
-        backpackGemSizePercentBuff = ES3.Load("backpackGemSizePercentBuff", 0f);
-        backpackAmmoSizePercentBuff = ES3.Load("backpackAmmoSizePercentBuff", 0f);
-        backpackOrbSizePercentBuff = ES3.Load("backpackOrbSizePercentBuff", 0f);
+        swapWeaponTimeReductionPercentBuff_meta = GetValue(buffData, "swapWeaponTimeReductionPercentBuff_meta", 0f);
+        maxStaminaBuff_meta = GetValue(buffData, "maxStaminaBuff_meta", 0f);
+        moveSpeedPercentBuff_meta = GetValue(buffData, "moveSpeedPercentBuff_meta", 0f);
 
-        startWithRandomActiveSkillLevel = ES3.Load("startWithRandomActiveSkillLevel", 0);
-        startWithRandomPassiveSkillLevel = ES3.Load("startWithRandomPassiveSkillLevel", 0);
+        crouchDetectionRangeReductionPercentBuff_meta = GetValue(buffData, "crouchDetectionRangeReductionPercentBuff_meta", 0f);
+        runStaminaDepletionPercentBuff_meta = GetValue(buffData, "runStaminaDepletionPercentBuff_meta", 0f);
+        rollForcePercentBuff_meta = GetValue(buffData, "rollForcePercentBuff_meta", 0f);
+        rollStaminaDepletionPercentBuff_meta = GetValue(buffData, "rollStaminaDepletionPercentBuff_meta", 0f);
 
-        hold2WeaponsUnlocked = ES3.Load("hold2WeaponsUnlocked", false);
+        maxPlayerHPBuffAbsolute_meta = GetValue(buffData, "maxPlayerHPBuffAbsolute_meta", 0);
+        respawnPlayerHPBuffAbsolute_meta = GetValue(buffData, "respawnPlayerHPBuffAbsolute_meta", 0);
+        absoluteHpRegenTimer_meta = GetValue(buffData, "absoluteHpRegenTimer_meta", 0f);
+
+        startLevelAmmo_BuffAbsolute = GetValue(buffData, "startLevelAmmo_BuffAbsolute", 0);
+        startLevelOrbs_BuffAbsolute = GetValue(buffData, "startLevelOrbs_BuffAbsolute", 0);
+        flashlightRangeBuff_meta = GetValue(buffData, "flashlightRangeBuff_meta", 0f);
+
+        backpackGemSizePercentBuff = GetValue(buffData, "backpackGemSizePercentBuff", 0f);
+        backpackAmmoSizePercentBuff = GetValue(buffData, "backpackAmmoSizePercentBuff", 0f);
+        backpackOrbSizePercentBuff = GetValue(buffData, "backpackOrbSizePercentBuff", 0f);
+
+        startWithRandomActiveSkillLevel = GetValue(buffData, "startWithRandomActiveSkillLevel", 0);
+        startWithRandomPassiveSkillLevel = GetValue(buffData, "startWithRandomPassiveSkillLevel", 0);
+
+        hold2WeaponsUnlocked = GetValue(buffData, "hold2WeaponsUnlocked", false);
+    }
+    private T GetValue<T>(Dictionary<string, object> dict, string key, T defaultValue) {
+        if (dict.ContainsKey(key) && dict[key] is T value)
+            return value;
+        return defaultValue;
     }
 
     private void SetTempPlayerStatBuffs() {
@@ -564,32 +577,36 @@ public class PlayerStats : MonoBehaviour
     #endregion
 
     public void SaveMetaBuffValues() {
-        ES3.Save("swapWeaponTimeReductionPercentBuff_meta", swapWeaponTimeReductionPercentBuff_meta);
+        var buffData = new Dictionary<string, object>();
 
-        ES3.Save("maxStaminaBuff_meta", maxStaminaBuff_meta);
-        ES3.Save("moveSpeedPercentBuff_meta", moveSpeedPercentBuff_meta);
+        buffData["swapWeaponTimeReductionPercentBuff_meta"] = swapWeaponTimeReductionPercentBuff_meta;
+        buffData["maxStaminaBuff_meta"] = maxStaminaBuff_meta;
+        buffData["moveSpeedPercentBuff_meta"] = moveSpeedPercentBuff_meta;
 
-        ES3.Save("crouchDetectionRangeReductionPercentBuff_meta", crouchDetectionRangeReductionPercentBuff_meta);
-        ES3.Save("runStaminaDepletionPercentBuff_meta", runStaminaDepletionPercentBuff_meta);
-        ES3.Save("rollForcePercentBuff_meta", rollForcePercentBuff_meta);
-        ES3.Save("rollStaminaDepletionPercentBuff_meta", rollStaminaDepletionPercentBuff_meta);
+        buffData["crouchDetectionRangeReductionPercentBuff_meta"] = crouchDetectionRangeReductionPercentBuff_meta;
+        buffData["runStaminaDepletionPercentBuff_meta"] = runStaminaDepletionPercentBuff_meta;
+        buffData["rollForcePercentBuff_meta"] = rollForcePercentBuff_meta;
+        buffData["rollStaminaDepletionPercentBuff_meta"] = rollStaminaDepletionPercentBuff_meta;
 
-        ES3.Save("maxPlayerHPBuffAbsolute_meta", maxPlayerHPBuffAbsolute_meta);
-        ES3.Save("respawnPlayerHPBuffAbsolute_meta", respawnPlayerHPBuffAbsolute_meta);
-        ES3.Save("absoluteHpRegenTimer_meta", absoluteHpRegenTimer_meta);
+        buffData["maxPlayerHPBuffAbsolute_meta"] = maxPlayerHPBuffAbsolute_meta;
+        buffData["respawnPlayerHPBuffAbsolute_meta"] = respawnPlayerHPBuffAbsolute_meta;
+        buffData["absoluteHpRegenTimer_meta"] = absoluteHpRegenTimer_meta;
 
-        ES3.Save("startLevelAmmo_BuffAbsolute", startLevelAmmo_BuffAbsolute);
-        ES3.Save("startLevelOrbs_BuffAbsolute", startLevelOrbs_BuffAbsolute);
-        ES3.Save("flashlightRangeBuff_meta", flashlightRangeBuff_meta);
+        buffData["startLevelAmmo_BuffAbsolute"] = startLevelAmmo_BuffAbsolute;
+        buffData["startLevelOrbs_BuffAbsolute"] = startLevelOrbs_BuffAbsolute;
+        buffData["flashlightRangeBuff_meta"] = flashlightRangeBuff_meta;
 
-        ES3.Save("backpackGemSizePercentBuff", backpackGemSizePercentBuff);
-        ES3.Save("backpackAmmoSizePercentBuff", backpackAmmoSizePercentBuff);
-        ES3.Save("backpackOrbSizePercentBuff", backpackOrbSizePercentBuff);
+        buffData["backpackGemSizePercentBuff"] = backpackGemSizePercentBuff;
+        buffData["backpackAmmoSizePercentBuff"] = backpackAmmoSizePercentBuff;
+        buffData["backpackOrbSizePercentBuff"] = backpackOrbSizePercentBuff;
 
-        ES3.Save("startWithRandomActiveSkillLevel", startWithRandomActiveSkillLevel);
-        ES3.Save("startWithRandomPassiveSkillLevel", startWithRandomPassiveSkillLevel);
+        buffData["startWithRandomActiveSkillLevel"] = startWithRandomActiveSkillLevel;
+        buffData["startWithRandomPassiveSkillLevel"] = startWithRandomPassiveSkillLevel;
 
-        ES3.Save("hold2WeaponsUnlocked", hold2WeaponsUnlocked);
+        buffData["hold2WeaponsUnlocked"] = hold2WeaponsUnlocked;
+
+        // Sauvegarde unique
+        ES3.Save("MetaBuffs", buffData);
     }
 
     public float GetSkillStat(SkillItem skillItem) {

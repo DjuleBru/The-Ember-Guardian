@@ -12,23 +12,23 @@ public class GameFlowCollider : MonoBehaviour
         if (collision.gameObject.GetComponent<Player>() == null) return;
         if (playerCollided) return;
 
-        if(isControlEmberlingsCollider) {
-            MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.ControlEmberlings.ToString(), true);
-            MetaProgressionManager.Instance.SetHubMerchantItemBought(HubMerchantItem_WatcherMerchantItem.WatcherItemType.ControlEmberlings.ToString(), true);
-            MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.ControlEmberlings.ToString(), true);
+        //if(isControlEmberlingsCollider) {
+        //    MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.ControlEmberlings.ToString(), true);
+        //    MetaProgressionManager.Instance.SetHubMerchantItemBought(HubMerchantItem_WatcherMerchantItem.WatcherItemType.ControlEmberlings.ToString(), true);
+        //    MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.ControlEmberlings.ToString(), true);
 
-            MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.MaxFollowingWorkers.ToString(), true);
-            MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.MaxFollowingWorkers.ToString(), true);
+        //    MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.MaxFollowingWorkers.ToString(), true);
+        //    MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.MaxFollowingWorkers.ToString(), true);
 
-            MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.InitialEmberlings.ToString(), true);
-            MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.InitialEmberlings.ToString(), true);
+        //    MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.InitialEmberlings.ToString(), true);
+        //    MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.InitialEmberlings.ToString(), true);
 
-            MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.EmberlingArrivals.ToString(), true);
-            MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.EmberlingArrivals.ToString(), true);
+        //    MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.EmberlingArrivals.ToString(), true);
+        //    MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HubMerchantItem_WatcherMerchantItem.WatcherItemType.EmberlingArrivals.ToString(), true);
 
-            MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType.WorkerMerchant, true);
-            WorkerStats.Instance.SetInteractionWithWorkersUnlocked();
-            playerCollided = true;
-        }
+        //    MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType.WorkerMerchant, true);
+        //    WorkerStats.Instance.SetInteractionWithWorkersUnlocked();
+        //    playerCollided = true;
+        //}
     }
 }

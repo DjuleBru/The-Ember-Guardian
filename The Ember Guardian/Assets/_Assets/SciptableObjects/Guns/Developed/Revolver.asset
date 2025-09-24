@@ -77,6 +77,21 @@ MonoBehaviour:
   weaponMaxRecoilImpactOnMouseReticle: 1
   crouchPrecisionBuff: 1
   crouchRecoilReductionFactor: 1
+  damageStatModifier: {fileID: 11400000, guid: e1f8f3ae9886ad14ba956afee4d6b5d0, type: 2}
+  shotsPerClipStatModifier: {fileID: 11400000, guid: af935dd1dd7bccd42a57fb47a24e28cd, type: 2}
+  maxAmmoStatModifier: {fileID: 11400000, guid: 2291640ca0be2704a9c6b9fb5ff1489e, type: 2}
+  cooldownTimeStatModifier: {fileID: 11400000, guid: 6b573939a757a894ebadc7ced13eee36, type: 2}
+  reloadTimeStatModifier: {fileID: 11400000, guid: 699cf45634e5e86419d3e09d5d9a0454, type: 2}
+  critChanceStatModifier: {fileID: 11400000, guid: a17e155fc4c906c41ba977536a94cda1, type: 2}
+  shootConeAngleStatModifier: {fileID: 11400000, guid: bbf241f1c09497545ba65b642808e936, type: 2}
+  pelletsPerBulletStatModifier: {fileID: 0}
+  bulletLifetimeStatModifier: {fileID: 11400000, guid: dd3a3ea517b87a54a805738a87f0d706, type: 2}
+  jamRepairHitAmountStatModifier: {fileID: 0}
+  surgeWindowBulletAmountBuffedStatModifier: {fileID: 11400000, guid: 22a0736a7cd2c4545b839d82053c157c, type: 2}
+  explosionRadiusMultiplierStatModifier: {fileID: 0}
+  spinUpDurationStatModifier: {fileID: 0}
+  subExplosivesAmountStatModifier: {fileID: 0}
+  subExplosivesDamageStatModifier: {fileID: 0}
   shotCooldownAnimationTriggerTime: 0
   shootCooldownSFXTriggerTime: 0.5
   triggersShootFeedbackOnEachBuller: 1

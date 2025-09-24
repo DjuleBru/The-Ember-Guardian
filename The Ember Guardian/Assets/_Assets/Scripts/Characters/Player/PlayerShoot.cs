@@ -417,7 +417,7 @@ public class PlayerShoot : MonoBehaviour
 
     private void InitializeGuns() {
         foreach (Gun gun in allGunsList) {
-            gun.RefreshGunStats();
+            gun.LoadGunStatModifierLevels();
             gun.gameObject.SetActive(false);
 
             allGunSOList.Add(gun.GetGunSO());
@@ -1208,7 +1208,7 @@ public class PlayerShoot : MonoBehaviour
 
     public void SaveAllGunStats() {
         foreach(Gun gun in allGunsList) {
-            gun.SaveMetaParameters();
+            gun.SaveGunStatModifierLevels();
         }
     }
 

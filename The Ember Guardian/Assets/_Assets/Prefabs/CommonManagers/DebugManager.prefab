@@ -44,15 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e5e9af7df1aa1b41812c1ecb36dcace, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowDebugInputs_CreaturesSpawnManager: 1
-  debugMode_DontSpawnWavesAtNight: 1
-  allowDebugInputs_DayNightManager: 1
+  allowDebugInputs_CreaturesSpawnManager: 0
+  debugMode_DontSpawnWavesAtNight: 0
+  allowDebugInputs_DayNightManager: 0
   allowDebugInputs_CurrencyUIManager: 1
   allowDebugInputs_gunJam: 0
   debugMode_PlayerWeapons: 0
   debugMode_Portals: 0
-  debugMode_HUBManager: 0
-  debugMode_HUBMerchants: 0
+  debugMode_HUBManager: 1
+  debugMode_HUBMerchants: 1
   debugMode_Tutorial: 0
   debugMode_PlayerCamp: 0
   debugMode_AllStructuresUnlocked: 0
@@ -60,7 +60,7 @@ MonoBehaviour:
   debugMode_FlagCarry: 0
   debugMode_WorkerInteractions: 0
   debugMode_DontShowVideoTip: 0
-  debugMode_WindManager: 1
+  debugMode_WindManager: 0
   debugMode_RainManager: 0
   debugMode_AllSkillsUnlocked: 0
   debugMode_AllTrapsUnlocked: 0
@@ -69,5 +69,5 @@ MonoBehaviour:
   allItemsUnlockedInDemo: 0
   dropRedOrbsUnlocked: 0
   takeScreenshotsContinuous: 0
-  takeScreenshotsOnKeyPressed: 1
+  takeScreenshotsOnKeyPressed: 0
   saveAfterEachLevel: 0

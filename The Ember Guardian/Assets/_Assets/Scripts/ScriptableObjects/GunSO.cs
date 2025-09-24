@@ -209,6 +209,52 @@ public class GunSO : ScriptableObject
     [LabelWidth(300)]
     public float crouchRecoilReductionFactor = 2f;
 
+    [BoxGroup("GunMerchantItemModifiers")]
+    [LabelWidth(300)]
+    public HubMerchantItemStatModifierSO damageStatModifier;
+    [BoxGroup("GunMerchantItemModifiers")]
+    [LabelWidth(300)]
+    public HubMerchantItemStatModifierSO shotsPerClipStatModifier;
+    [BoxGroup("GunMerchantItemModifiers")]
+    [LabelWidth(300)]
+    public HubMerchantItemStatModifierSO maxAmmoStatModifier;
+    [BoxGroup("GunMerchantItemModifiers")]
+    [LabelWidth(300)]
+    public HubMerchantItemStatModifierSO cooldownTimeStatModifier;
+    [BoxGroup("GunMerchantItemModifiers")]
+    [LabelWidth(300)]
+    public HubMerchantItemStatModifierSO reloadTimeStatModifier;
+    [BoxGroup("GunMerchantItemModifiers")]
+    [LabelWidth(300)]
+    public HubMerchantItemStatModifierSO critChanceStatModifier;
+    [BoxGroup("GunMerchantItemModifiers")]
+    [LabelWidth(300)]
+    public HubMerchantItemStatModifierSO shootConeAngleStatModifier;
+    [BoxGroup("GunMerchantItemModifiers")]
+    [LabelWidth(300)]
+    public HubMerchantItemStatModifierSO pelletsPerBulletStatModifier;
+    [BoxGroup("GunMerchantItemModifiers")]
+    [LabelWidth(300)]
+    public HubMerchantItemStatModifierSO bulletLifetimeStatModifier;
+    [BoxGroup("GunMerchantItemModifiers")]
+    [LabelWidth(300)]
+    public HubMerchantItemStatModifierSO jamRepairHitAmountStatModifier;
+    [BoxGroup("GunMerchantItemModifiers")]
+    [LabelWidth(300)]
+    public HubMerchantItemStatModifierSO surgeWindowBulletAmountBuffedStatModifier;
+    [BoxGroup("GunMerchantItemModifiers")]
+    [LabelWidth(300)]
+    public HubMerchantItemStatModifierSO explosionRadiusMultiplierStatModifier;
+    [BoxGroup("GunMerchantItemModifiers")]
+    [LabelWidth(300)]
+    public HubMerchantItemStatModifierSO spinUpDurationStatModifier;
+    [BoxGroup("GunMerchantItemModifiers")]
+    [LabelWidth(300)]
+    public HubMerchantItemStatModifierSO subExplosivesAmountStatModifier;
+    [BoxGroup("GunMerchantItemModifiers")]
+    [LabelWidth(300)]
+    public HubMerchantItemStatModifierSO subExplosivesDamageStatModifier;
+
     [BoxGroup("Sound")]
     [LabelWidth(300)]
     public float shotCooldownAnimationTriggerTime;

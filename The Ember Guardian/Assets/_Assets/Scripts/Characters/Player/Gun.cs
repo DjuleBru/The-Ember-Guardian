@@ -72,6 +72,22 @@ public class Gun : MonoBehaviour
     protected float focusedBlastAngle = .1f; // L'angle cible vers lequel le cône doit se diriger
     protected float focusedBlastDamageBuff;
 
+    protected int bulletDamageStatModifierLevel = 100;
+    protected int shotsPerClipStatModifierLevel = 100;
+    protected int maxAmmoStatModifierLevel = 100;
+    protected int cooldownTimeStatModifierLevel = 100;
+    protected int reloadTimeStatModifierLevel = 100;
+    protected int critChanceStatModifierLevel = 100;
+    protected int shootConeAngleStatModifierLevel = 100;
+    protected int pelletsPerBulletStatModifierLevel = 100;
+    protected int bulletLifetimeStatModifierLevel = 100;
+    protected int jamRepairHitAmountStatModifierLevel = 100;
+    protected int surgeWindowBulletAmountBuffedStatModifierLevel = 100;
+    protected int explosionRadiusMultiplierStatModifierLevel = 100;
+    protected int spinUpDurationStatModifierLevel = 100;
+    protected int subExplosivesAmountStatModifierLevel = 100;
+    protected int subExplosivesDamageStatModifierLevel = 100;
+
     public static event EventHandler OnAnyGunMaxAmmoChanged;
     public static event EventHandler OnAnyGunStatsUpgraded;
     public static event EventHandler OnAnyGunUnlocked;
@@ -121,7 +137,6 @@ public class Gun : MonoBehaviour
 
     }
 
-
     protected void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
         if (!gunActive) return;
         RecalculateDamage();
@@ -132,7 +147,7 @@ public class Gun : MonoBehaviour
 
         SetPSShootAngle(defaultAngle);
 
-        pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
+        pelletsPerBullet = gunSO.pelletsPerBullet + (int)gunSO.pelletsPerBulletStatModifier.statModifierList[pelletsPerBulletStatModifierLevel];
         DebuffBulletDamage(focusedBlastDamageBuff, false);
         ParticleSystem.MainModule shootPSMainModule = shootPS.main;
         shootPSMainModule.startSize = .2f;
@@ -192,37 +207,100 @@ public class Gun : MonoBehaviour
     }
 
     public virtual void RefreshGunStats() {
-        gunUnlocked = MetaProgressionManager.Instance.GetGunUnlocked(gunSO);
-
-        pelletsPerBullet = MetaProgressionManager.Instance.GetGunPelletsPerBullet(gunSO);
+        pelletsPerBullet = gunSO.pelletsPerBullet;
+        if (gunSO.pelletsPerBulletStatModifier != null && pelletsPerBulletStatModifierLevel != 100) {
+            pelletsPerBullet = gunSO.pelletsPerBullet + (int)gunSO.pelletsPerBulletStatModifier.statModifierList[pelletsPerBulletStatModifierLevel];
+        }
         pelletsPerBullet_meta = pelletsPerBullet;
 
-        maxAmmo = MetaProgressionManager.Instance.GetGunMaxAmmo(gunSO);
-        damagePerBullet = MetaProgressionManager.Instance.GetGunDamagePerBullet(gunSO);
-        damagePerBulletAtRunStart = damagePerBullet;
-        explosionRadiusMultiplier = MetaProgressionManager.Instance.GetGunExplosionRadiusMultiplier(gunSO);
-        bulletKnockback = MetaProgressionManager.Instance.GetGunBulletKnockback(gunSO);
-        shotsPerClip = MetaProgressionManager.Instance.GetGunShotsPerClip(gunSO);
-        critChance = MetaProgressionManager.Instance.GetGunCritChance(gunSO);
-        cooldownTime = MetaProgressionManager.Instance.GetGunCooldown(gunSO);
-        reloadTime = MetaProgressionManager.Instance.GetGunReloadTime(gunSO);
-        handsReloadTime = MetaProgressionManager.Instance.GetHandsGunReloadTime(gunSO);
-        swapToWeaponTimeMultiplier = MetaProgressionManager.Instance.GetSwapToWeaponTimeMultiplier(gunSO);
-        secondaryAbilityUnlocked = MetaProgressionManager.Instance.GetGunSecondaryAbilityUnlocked(gunSO);
-        bulletLifetime = MetaProgressionManager.Instance.GetGunBulletLifetime(gunSO);
-        bulletSpeed = MetaProgressionManager.Instance.GetGunBulletSpeed(gunSO);
-        reloadAccelerationFactor = MetaProgressionManager.Instance.GetGunReloadAccelerationFactor(gunSO);
-        weightAccelerationFactor = MetaProgressionManager.Instance.GetGunWeightAccelerationFactor(gunSO);
-        jamRepairHitAmount = MetaProgressionManager.Instance.GetGunJamRepairHitAmount(gunSO);
-        surgeWindowBulletAmountBuffed = MetaProgressionManager.Instance.GetGunSurgeWindowBulletsAmountBuffed(gunSO);
-        spinUpDuration = MetaProgressionManager.Instance.GetGunSpinUpDuration(gunSO);
-        subExplosivesAmount = MetaProgressionManager.Instance.GetGunSubExplosivesAmount(gunSO);
-        subExplosivesDamage = MetaProgressionManager.Instance.GetGunSubExplosivesDamage(gunSO);
+        maxAmmo = gunSO.maxAmmo;
+        if(gunSO.maxAmmoStatModifier != null && maxAmmoStatModifierLevel != 100) {
+            maxAmmo = gunSO.maxAmmo + (int)gunSO.maxAmmoStatModifier.statModifierList[maxAmmoStatModifierLevel];
+        }
 
+        damagePerBullet = gunSO.damagePerBullet;
+        if(gunSO.damageStatModifier != null && bulletDamageStatModifierLevel != 100) {
+            damagePerBullet = gunSO.damagePerBullet + (int)gunSO.damageStatModifier.statModifierList[bulletDamageStatModifierLevel];
+        }
+        damagePerBulletAtRunStart = damagePerBullet;
+
+
+        explosionRadiusMultiplier = 1;
+        if(gunSO.explosionRadiusMultiplierStatModifier != null && explosionRadiusMultiplierStatModifierLevel != 100) {
+            explosionRadiusMultiplier = (100 + gunSO.explosionRadiusMultiplierStatModifier.statModifierList[explosionRadiusMultiplierStatModifierLevel]) / 100;
+        }
+
+        shotsPerClip = gunSO.shotsPerClip;
+        if(gunSO.shotsPerClipStatModifier != null && shotsPerClipStatModifierLevel != 100) {
+            shotsPerClip = gunSO.shotsPerClip + (int)gunSO.shotsPerClipStatModifier.statModifierList[shotsPerClipStatModifierLevel];
+        }
+
+
+        critChance = gunSO.critChance;
+        if(gunSO.critChanceStatModifier != null && critChanceStatModifierLevel != 100) {
+            critChance = gunSO.critChance + gunSO.critChanceStatModifier.statModifierList[critChanceStatModifierLevel];
+        }
+
+
+        cooldownTime = gunSO.shootCooldownTime;
+        if(gunSO.cooldownTimeStatModifier != null && cooldownTimeStatModifierLevel != 100) {
+            cooldownTime = gunSO.shootCooldownTime + gunSO.shootCooldownTime * gunSO.cooldownTimeStatModifier.statModifierList[cooldownTimeStatModifierLevel] * 0.01f;
+        }
+
+        reloadTime = gunSO.reloadTime;
+        if(gunSO.reloadTimeStatModifier != null && reloadTimeStatModifierLevel != 100) {
+            reloadTime = gunSO.reloadTime + gunSO.reloadTime * gunSO.reloadTimeStatModifier.statModifierList[reloadTimeStatModifierLevel] * 0.01f;
+        }
+        float reloadTimeRecuctionFactor = handsReloadTime / gunSO.reloadTime;
+        handsReloadTime = gunSO.handsReloadTime * reloadTimeRecuctionFactor;
+
+        bulletLifetime = gunSO.bulletLifetime;
+        if(gunSO.bulletLifetimeStatModifier  != null && bulletLifetimeStatModifierLevel != 100) {
+            bulletLifetime = gunSO.bulletLifetime + gunSO.bulletLifetimeStatModifier.statModifierList[bulletLifetimeStatModifierLevel] / gunSO.bulletSpeed;
+        }
+
+
+        jamRepairHitAmount = gunSO.jamRepairHitAmount;
+        if(gunSO.jamRepairHitAmountStatModifier != null && jamRepairHitAmountStatModifierLevel != 100) {
+            jamRepairHitAmount = gunSO.jamRepairHitAmount + (int)gunSO.jamRepairHitAmountStatModifier.statModifierList[jamRepairHitAmountStatModifierLevel];
+        }
+
+
+        surgeWindowBulletAmountBuffed = gunSO.perfectQTEBulletAmountDamageBuffed;
+        if(gunSO.surgeWindowBulletAmountBuffedStatModifier != null && surgeWindowBulletAmountBuffedStatModifierLevel != 100) {
+            surgeWindowBulletAmountBuffed = gunSO.perfectQTEBulletAmountDamageBuffed + (int)gunSO.surgeWindowBulletAmountBuffedStatModifier.statModifierList[surgeWindowBulletAmountBuffedStatModifierLevel];
+        }
+
+        spinUpDuration = gunSO.spinUpDuration;
+        if(gunSO.spinUpDurationStatModifier != null && spinUpDurationStatModifierLevel != 100) {
+            spinUpDuration = gunSO.spinUpDuration + gunSO.spinUpDurationStatModifier.statModifierList[spinUpDurationStatModifierLevel];
+        
+        }
+
+        subExplosivesAmount = gunSO.subExplosivesAmount;
+        if(gunSO.subExplosivesAmountStatModifier != null && subExplosivesAmountStatModifierLevel != 100) {
+            subExplosivesAmount = gunSO.subExplosivesAmount + (int)gunSO.subExplosivesAmountStatModifier.statModifierList[subExplosivesAmountStatModifierLevel];
+        
+        }
+
+        subExplosivesDamage = gunSO.subExplosivesDamage;
+        if(gunSO.subExplosivesDamageStatModifier != null && subExplosivesDamageStatModifierLevel != 100) {
+            subExplosivesDamage = gunSO.subExplosivesDamage + (int)gunSO.subExplosivesDamageStatModifier.statModifierList[subExplosivesDamageStatModifierLevel];
+        }
+
+        defaultAngle = gunSO.shootConeAngle;
+        if(gunSO.shootConeAngleStatModifier != null && shootConeAngleStatModifierLevel != 100) {
+            defaultAngle = gunSO.shootConeAngle + gunSO.shootConeAngleStatModifier.statModifierList[shootConeAngleStatModifierLevel];
+        }
+
+        weightAccelerationFactor = gunSO.weightAccelerationFactor;
+        reloadAccelerationFactor = gunSO.reloadAccelerationFactor;
+        bulletSpeed = gunSO.bulletSpeed;
+        swapToWeaponTimeMultiplier = gunSO.swapToWeaponTimeMultiplier;
+        bulletKnockback = gunSO.bulletKnockback;
         jamProbability = gunSO.jamProbability;
         shootCreatureHearMultiplier = gunSO.shootCreatureHearMultiplier;
 
-        defaultAngle = MetaProgressionManager.Instance.GetGunShootConeAnle(gunSO);
         currentAngle = defaultAngle;
         targetAngle = defaultAngle;
         sightAngle = defaultAngle / 3;
@@ -562,110 +640,207 @@ public class Gun : MonoBehaviour
         secondaryAbilityUnlocked = true;
     }
 
-    public void SetBulletDamage_Meta(int bulletDamage) {
-        this.damagePerBullet = bulletDamage;
-        damagePerBulletAtRunStart = bulletDamage;
+    public void SetBulletDamage_StatModifierListLevel(int bulletDamageStatModifierLevel) {
+        this.bulletDamageStatModifierLevel = bulletDamageStatModifierLevel;
+
+        this.damagePerBullet = gunSO.damagePerBullet + (int)gunSO.damageStatModifier.statModifierList[bulletDamageStatModifierLevel];
+        damagePerBulletAtRunStart = damagePerBullet;
     }
-    public void SetShotsPerClip_Meta(int shotsPerClip) {
-        this.shotsPerClip = shotsPerClip;
+
+    public void SetShotsPerClip_StatModifierListLevel(int shotsPerClipStatModifierLevel) {
+        this.shotsPerClipStatModifierLevel = shotsPerClipStatModifierLevel;
+
+        int modifiedShotsPerClip = gunSO.shotsPerClip + (int)gunSO.shotsPerClipStatModifier.statModifierList[shotsPerClipStatModifierLevel];
+        this.shotsPerClip = modifiedShotsPerClip;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
-    public void SetMaxAmmo_Meta(int maxAmmo) {
-        this.maxAmmo = maxAmmo;
+
+    public void SetMaxAmmo_StatModifierListLevel(int maxAmmoModifierLevel) {
+        this.maxAmmoStatModifierLevel = maxAmmoModifierLevel;
+        int modifiedMaxAmmo = gunSO.maxAmmo + (int)gunSO.maxAmmoStatModifier.statModifierList[maxAmmoModifierLevel];
+
+        this.maxAmmo = modifiedMaxAmmo;
         OnAnyGunMaxAmmoChanged?.Invoke(this, EventArgs.Empty);
     }
-    public virtual void SetCooldownTime_Meta(float cooldownTime) {
-        this.cooldownTime = cooldownTime;
+
+    public virtual void SetCooldownTime_StatModifierListLevel(int cooldownTimeLevel) {
+        this.cooldownTimeStatModifierLevel = cooldownTimeLevel;
+        float modifiedCooldown = gunSO.shootCooldownTime + gunSO.shootCooldownTime * gunSO.cooldownTimeStatModifier.statModifierList[cooldownTimeLevel] * 0.01f;
+
+        this.cooldownTime = modifiedCooldown;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
-    public void SetReloadTime_Meta(float newReloadTime) {
-        float reloadTimeRecuctionFactor = newReloadTime / reloadTime;
-        reloadTime = newReloadTime;
+    public void SetReloadTime_StatModifierListLevel(int reloadTimeStatModifierLevel) {
+        this.reloadTimeStatModifierLevel = reloadTimeStatModifierLevel;
+
+        float modifiedReloadTime = gunSO.reloadTime + gunSO.reloadTime * gunSO.reloadTimeStatModifier.statModifierList[reloadTimeStatModifierLevel] * 0.01f;
+        float reloadTimeRecuctionFactor = modifiedReloadTime / reloadTime;
+
+        reloadTime = modifiedReloadTime;
         handsReloadTime *= reloadTimeRecuctionFactor;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
-    public void SetCritChange_Meta(float critChance) {
-        this.critChance = critChance;
+
+    public void SetCritChange_StatModifierListLevel(int critChanceStatModifierLevel) {
+        this.critChanceStatModifierLevel = critChanceStatModifierLevel;
+
+        float modifiedCritChance = gunSO.critChance + gunSO.critChanceStatModifier.statModifierList[critChanceStatModifierLevel];
+
+        this.critChance = modifiedCritChance;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
-    public void SetShootConeAngle_Meta(float shootConeAngle) {
-        this.defaultAngle = shootConeAngle;
+    public void SetShootConeAngle_StatModifierListLevel(int shootConeAngleStatModifierLevel) {
+        this.shootConeAngleStatModifierLevel = shootConeAngleStatModifierLevel;
+
+        float modifiedShootAngle = gunSO.shootConeAngle + gunSO.shootConeAngleStatModifier.statModifierList[shootConeAngleStatModifierLevel];
+
+        this.defaultAngle = modifiedShootAngle;
         ParticleSystem.ShapeModule shootPSShape = shootPS.shape;
         shootPSShape.angle = defaultAngle;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
-    public void SetPelletsPerBullet_Meta(int pelletsPerBullet) {
-        this.pelletsPerBullet_meta = pelletsPerBullet;
-        this.pelletsPerBullet = pelletsPerBullet;
+    public void SetPelletsPerBullet_StatModifierListLevel(int pelletsPerBulletStatModifierLevel) {
+        this.pelletsPerBulletStatModifierLevel = pelletsPerBulletStatModifierLevel;
+
+        int modifiedPelletsPerBullet = gunSO.pelletsPerBullet + (int)gunSO.pelletsPerBulletStatModifier.statModifierList[pelletsPerBulletStatModifierLevel];
+
+        this.pelletsPerBullet_meta = modifiedPelletsPerBullet;
+        this.pelletsPerBullet = modifiedPelletsPerBullet;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
-    public void SetGunBulletLifetime_Meta(float bulletLifetime) {
-        this.bulletLifetime = bulletLifetime;
+    public void SetGunBulletLifetime_StatModifierListLevel(int bulletLifetimeStatModifierLevel) {
+        this.bulletLifetimeStatModifierLevel = bulletLifetimeStatModifierLevel;
+
+        float modifiedBulletLifetime = gunSO.bulletLifetime + gunSO.bulletLifetimeStatModifier.statModifierList[bulletLifetimeStatModifierLevel] / gunSO.bulletSpeed;
+
+        this.bulletLifetime = modifiedBulletLifetime;
 
         ParticleSystem.MainModule shootPSMain = shootPS.main;
-        shootPSMain.startLifetime = bulletLifetime;
+        shootPSMain.startLifetime = modifiedBulletLifetime;
         shootPSMain.startSpeed = bulletSpeed;
 
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
+    public void SetSubExplosivesAmount_StatModifierListLevel(int subExplosivesAmountStatModifierLevel) {
+        this.subExplosivesAmountStatModifierLevel = subExplosivesAmountStatModifierLevel;
 
-    public void SetSubExplosivesAmount(int subExplosivesAmount) {
-        this.subExplosivesAmount = subExplosivesAmount;
+        int modifiedSubExplosivesAmount = gunSO.subExplosivesAmount + (int)gunSO.subExplosivesAmountStatModifier.statModifierList[subExplosivesAmountStatModifierLevel];
+
+        this.subExplosivesAmount = modifiedSubExplosivesAmount;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
-    public void SetSubExplosivesDamage(int subExplosivesDamage) {
-        this.subExplosivesDamage = subExplosivesDamage;
+    public void SetSubExplosivesDamage_StatModifierListLevel(int subExplosivesDamageStatModifierLevel) {
+        this.subExplosivesDamageStatModifierLevel = subExplosivesDamageStatModifierLevel;
+
+        int modifiedSubExplosivesDamage = gunSO.subExplosivesDamage + (int)gunSO.subExplosivesDamageStatModifier.statModifierList[subExplosivesDamageStatModifierLevel];
+
+        this.subExplosivesDamage = modifiedSubExplosivesDamage;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
-    public void SetSpinUpDuration(float spinUpDuration) {
-        this.spinUpDuration = spinUpDuration;
+    public void SetSpinUpDuration_StatModifierListLevel(int spinUpDurationStatModifierLevel) {
+        this.spinUpDurationStatModifierLevel = spinUpDurationStatModifierLevel;
+
+        float modifiedSpinUpTime = gunSO.spinUpDuration + gunSO.spinUpDurationStatModifier.statModifierList[spinUpDurationStatModifierLevel];
+
+        this.spinUpDuration = modifiedSpinUpTime;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
-    public void SetJamRepairHitAmount(int jamRepairHitAmount) {
-        this.jamRepairHitAmount = jamRepairHitAmount;
+    public void SetJamRepairHitAmount_StatModifierListLevel(int jamRepairHitAmountStatModifierLevel) {
+        this.jamRepairHitAmountStatModifierLevel = jamRepairHitAmountStatModifierLevel;
+
+        int modifiedJamRepairHitAmount = gunSO.jamRepairHitAmount + (int)gunSO.jamRepairHitAmountStatModifier.statModifierList[jamRepairHitAmountStatModifierLevel];
+
+        this.jamRepairHitAmount = modifiedJamRepairHitAmount;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
-    public void SetJamProbability(float jamProbability) {
-        this.jamProbability = jamProbability;
-        OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
-    }
-    public void SetSurgeWindowBulletBoost(int bulletAmount) {
-        surgeWindowBulletAmountBuffed = bulletAmount;
+    public void SetSurgeWindowBulletBoost_StatModifierListLevel(int surgeWindowBulletAmountStatModifierLevel) {
+        this.surgeWindowBulletAmountBuffedStatModifierLevel = surgeWindowBulletAmountStatModifierLevel;
+
+        int modifiedBulletsAmount = gunSO.perfectQTEBulletAmountDamageBuffed + (int)gunSO.surgeWindowBulletAmountBuffedStatModifier.statModifierList[surgeWindowBulletAmountStatModifierLevel];
+
+        surgeWindowBulletAmountBuffed = modifiedBulletsAmount;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
-    public void SetExplosionRadiusModified(float radiusModified) {
-        this.explosionRadiusMultiplier = radiusModified;
+    public void SetExplosionRadiusModified_StatModifierListLevel(int radiusModifiedStatModifierLevel) {
+        this.explosionRadiusMultiplierStatModifierLevel = radiusModifiedStatModifierLevel;
+        float modifiedExplosionRadius = (100 + gunSO.explosionRadiusMultiplierStatModifier.statModifierList[radiusModifiedStatModifierLevel]) / 100;
+
+        this.explosionRadiusMultiplier = modifiedExplosionRadius;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
     #endregion
 
-    public void SaveMetaParameters() {
-        if (!gunUnlocked) return;
+    public void SaveGunStatModifierLevels() {
+        // Dictionnaire pour stocker toutes les valeurs de cette arme
+        Dictionary<string, object> gunData = new Dictionary<string, object>();
 
-        MetaProgressionManager.Instance.SetGunDamagePerBullet(gunSO, damagePerBulletAtRunStart);
-        MetaProgressionManager.Instance.SetGunExplosionRadiusMultiplier(gunSO, explosionRadiusMultiplier);
-        MetaProgressionManager.Instance.SetGunShotsPerClip(gunSO, shotsPerClip);
-        MetaProgressionManager.Instance.SetGunMaxAmmo(gunSO, maxAmmo);
-        MetaProgressionManager.Instance.SetGunCooldown(gunSO, cooldownTime);
-        MetaProgressionManager.Instance.SetGunReloadTime(gunSO, reloadTime);
-        MetaProgressionManager.Instance.SetGunHandsReloadTime(gunSO, handsReloadTime);
-        MetaProgressionManager.Instance.SetGunCritChance(gunSO, critChance);
-        MetaProgressionManager.Instance.SetGunShootConeAnle(gunSO, defaultAngle);
-        MetaProgressionManager.Instance.SetGunPelletsPerBullet(gunSO, pelletsPerBullet_meta);
-        MetaProgressionManager.Instance.SetGunBulletLifetime(gunSO, bulletLifetime);
-        MetaProgressionManager.Instance.SetGunSubExplosivesDamage(gunSO, subExplosivesDamage);
-        MetaProgressionManager.Instance.SetGunSubExplosivesAmount(gunSO, subExplosivesAmount);
-        MetaProgressionManager.Instance.SetGunSpinUpDuration(gunSO, spinUpDuration);
-        MetaProgressionManager.Instance.SetGunSwapToWeaponTimeMultiplier(gunSO, swapToWeaponTimeMultiplier);
+        // --- Niveaux d'amélioration ---
+        gunData["bulletDamageLevel"] = bulletDamageStatModifierLevel;
+        gunData["explosionRadiusMultiplierLevel"] = explosionRadiusMultiplierStatModifierLevel;
+        gunData["shotsPerClipLevel"] = shotsPerClipStatModifierLevel;
+        gunData["maxAmmoLevel"] = maxAmmoStatModifierLevel;
+        gunData["cooldownTimeLevel"] = cooldownTimeStatModifierLevel;
+        gunData["reloadTimeLevel"] = reloadTimeStatModifierLevel;
+        gunData["critChanceLevel"] = critChanceStatModifierLevel;
+        gunData["shootConeAngleLevel"] = shootConeAngleStatModifierLevel;
+        gunData["pelletsPerBulletLevel"] = pelletsPerBulletStatModifierLevel;
+        gunData["bulletLifetimeLevel"] = bulletLifetimeStatModifierLevel;
+        gunData["subExplosivesDamageLevel"] = subExplosivesDamageStatModifierLevel;
+        gunData["subExplosivesAmountLevel"] = subExplosivesAmountStatModifierLevel;
+        gunData["spinUpDurationLevel"] = spinUpDurationStatModifierLevel;
+        gunData["surgeWindowBulletAmountBuffedLevel"] = surgeWindowBulletAmountBuffedStatModifierLevel;
+        gunData["jamRepairHitAmountLevel"] = jamRepairHitAmountStatModifierLevel;
 
-        MetaProgressionManager.Instance.SetGunJamProbability(gunSO, jamProbability);
-        MetaProgressionManager.Instance.SetGunSurgeWindowBulletsAmountBuffed(gunSO, surgeWindowBulletAmountBuffed);
-        MetaProgressionManager.Instance.SetGunJamRepairHitAmount(gunSO, jamRepairHitAmount);
+        gunData["secondaryAbilityUnlocked"] = secondaryAbilityUnlocked;
+        gunData["gunUnlocked"] = gunUnlocked;
 
-        MetaProgressionManager.Instance.SetGunSecondaryAbilityUnlocked(gunSO, secondaryAbilityUnlocked);
-        MetaProgressionManager.Instance.SetGunUnlocked(gunSO, gunUnlocked);
+        // Sauvegarde en batch
+        string key = gunSO.gunType + "_metaData";
+        ES3.Save(key, gunData);
     }
+
+    public void LoadGunStatModifierLevels() {
+        string key = gunSO.gunType + "_metaData";
+
+        if (!ES3.KeyExists(key)) {
+            RefreshGunStats();
+            return;
+        };
+
+        var gunData = ES3.Load<Dictionary<string, object>>(key);
+
+        int GetLevelSafe(string dataKey, HubMerchantItemStatModifierSO statModifier) {
+            int value = gunData.ContainsKey(dataKey) ? Convert.ToInt32(gunData[dataKey]) : 0;
+
+            if (statModifier == null || statModifier.statModifierList == null || statModifier.statModifierList.Count == 0)
+                return 0;
+
+            return Mathf.Clamp(value, 0, statModifier.statModifierList.Count - 1);
+        }
+
+        bulletDamageStatModifierLevel = GetLevelSafe("bulletDamageLevel", gunSO.damageStatModifier);
+        explosionRadiusMultiplierStatModifierLevel = GetLevelSafe("explosionRadiusMultiplierLevel", gunSO.explosionRadiusMultiplierStatModifier);
+        shotsPerClipStatModifierLevel = GetLevelSafe("shotsPerClipLevel", gunSO.shotsPerClipStatModifier);
+        maxAmmoStatModifierLevel = GetLevelSafe("maxAmmoLevel", gunSO.maxAmmoStatModifier);
+        cooldownTimeStatModifierLevel = GetLevelSafe("cooldownTimeLevel", gunSO.cooldownTimeStatModifier);
+        reloadTimeStatModifierLevel = GetLevelSafe("reloadTimeLevel", gunSO.reloadTimeStatModifier);
+        critChanceStatModifierLevel = GetLevelSafe("critChanceLevel", gunSO.critChanceStatModifier);
+        shootConeAngleStatModifierLevel = GetLevelSafe("shootConeAngleLevel", gunSO.shootConeAngleStatModifier);
+        pelletsPerBulletStatModifierLevel = GetLevelSafe("pelletsPerBulletLevel", gunSO.pelletsPerBulletStatModifier);
+        bulletLifetimeStatModifierLevel = GetLevelSafe("bulletLifetimeLevel", gunSO.bulletLifetimeStatModifier);
+        subExplosivesDamageStatModifierLevel = GetLevelSafe("subExplosivesDamageLevel", gunSO.subExplosivesDamageStatModifier);
+        subExplosivesAmountStatModifierLevel = GetLevelSafe("subExplosivesAmountLevel", gunSO.subExplosivesAmountStatModifier);
+        spinUpDurationStatModifierLevel = GetLevelSafe("spinUpDurationLevel", gunSO.spinUpDurationStatModifier);
+        surgeWindowBulletAmountBuffedStatModifierLevel = GetLevelSafe("surgeWindowBulletAmountBuffedLevel", gunSO.surgeWindowBulletAmountBuffedStatModifier);
+        jamRepairHitAmountStatModifierLevel = GetLevelSafe("jamRepairHitAmountLevel", gunSO.jamRepairHitAmountStatModifier);
+
+        secondaryAbilityUnlocked = gunData.ContainsKey("secondaryAbilityUnlocked") && Convert.ToBoolean(gunData["secondaryAbilityUnlocked"]);
+        gunUnlocked = gunData.ContainsKey("gunUnlocked") && Convert.ToBoolean(gunData["gunUnlocked"]);
+
+        RefreshGunStats();
+    }
+
 }

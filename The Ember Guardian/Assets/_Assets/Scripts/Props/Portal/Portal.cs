@@ -210,6 +210,7 @@ public class Portal : MonoBehaviour
         playerIsSetOnTeleporter = true;
 
         floorCollider.enabled = true;
+
         Player.Instance.MoveOnTeleporter(playerPosition);
         Dog.Instance.MoveOnTeleporter(dogPosition);
         OnPlayerStartedTeleportingFromHub?.Invoke(this, EventArgs.Empty);

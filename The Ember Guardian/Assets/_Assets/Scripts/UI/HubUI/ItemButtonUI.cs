@@ -89,8 +89,6 @@ public class ItemButtonUI : ButtonUI {
         hubMerchantItem.OnHubMerchantItemLoaded += HubMerchantItem_OnHubMerchantItemLoaded;
         hubMerchantItem.OnHubMerchantItemUpgraded += HubMerchantItem_OnHubMerchantItemUpgraded;
         hubMerchantItem.OnItemMustRefreshDescriptionCard += HubMerchantItem_OnItemMustRefreshDescriptionCard;
-        hubMerchantItem.OnHubMerchantItemEquipped += HubMerchantItem_OnHubMerchantItemEquipped;
-        hubMerchantItem.OnHubMerchantItemUnequipped += HubMerchantItem_OnHubMerchantItemUnequipped;
 
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
 
@@ -215,14 +213,6 @@ public class ItemButtonUI : ButtonUI {
         RefreshItemStatusVisuals();
     }
 
-    private void HubMerchantItem_OnHubMerchantItemUnequipped(object sender, EventArgs e) {
-        RefreshItemEquippedUI();
-    }
-
-    private void HubMerchantItem_OnHubMerchantItemEquipped(object sender, EventArgs e) {
-        RefreshItemEquippedUI();
-    }
-
     private void HubMerchantItem_OnItemMustRefreshDescriptionCard(object sender, EventArgs e) {
         RefreshDescriptionCard();
         RefreshItemLevelUI();
@@ -250,9 +240,6 @@ public class ItemButtonUI : ButtonUI {
     }
 
     private void HubMerchantItem_OnHubMerchantItemLoaded(object sender, EventArgs e) {
-        //Debug.Log(hubMerchantItem.GetItemType() + " unlocked " + hubMerchantItem.GetItemUnlocked());
-        //Debug.Log(hubMerchantItem.GetItemType() + " bought " + hubMerchantItem.GetItemBought());
-
         if (hubMerchantItem.GetItemUnlocked()) {
             SetItemUnlocked();
             if (hubMerchantItem.GetItemBought()) {
@@ -314,7 +301,6 @@ public class ItemButtonUI : ButtonUI {
         ItemButtonUI itemButtonUI = (ItemButtonUI)sender;
 
         if (lockingItemButtonUIList.Contains(itemButtonUI)) {
-
             SetLockingItemBought(itemButtonUI);
             CheckNewItemUnlocked(itemButtonUI);
             RefreshItemStatusVisuals();
@@ -328,7 +314,7 @@ public class ItemButtonUI : ButtonUI {
             return;
         }
 
-        if (!hubMerchantItem.GetitemEquipable() && hubMerchantItem.GetItemMaxed()) {
+        if (hubMerchantItem.GetItemMaxed()) {
             // Fail buy
             OnAnyHubMerchantItemTryBuyMaxedItem?.Invoke(this, EventArgs.Empty);
             return;
@@ -485,21 +471,6 @@ public class ItemButtonUI : ButtonUI {
             }
         }
     }
-
-    public void RefreshItemEquippedUI() {
-        if (hubMerchantItem.GetItemEquipped() && hubMerchantItem.GetitemEquipable()) {
-
-            outlineImage.sprite = itemEquippedOutlineSprite;
-            outlineImage.color = Color.white;
-
-        }
-
-        else {
-            outlineImage.sprite = defaultOutlineSprite;
-            RefreshItemStatusVisuals();
-        }
-    }
-
     public void StartUpgradeItemAnimation() {
         itemButtonUI_Visual.StartBuyAnimation(hubMerchantItem.GetRedGemCost(), hubMerchantItem.GetGreenGemCost(), hubMerchantItem.GetBlueGemCost(), hubMerchantItem.GetYellowGemCost(), hubMerchantItem.GetPurpleGemCost(), hubMerchantItem.GetCyanGemCost());
     }
@@ -570,13 +541,6 @@ public class ItemButtonUI : ButtonUI {
 
         if (hubMerchantItem.GetItemBought()) {
             SetItemBoughtVisuals();
-
-            if (hubMerchantItem.GetitemEquipable() && hubMerchantItem.GetItemEquipped()) {
-
-                outlineImage.sprite = itemEquippedOutlineSprite;
-                outlineImage.color = Color.white;
-
-            }
             return;
         }
 

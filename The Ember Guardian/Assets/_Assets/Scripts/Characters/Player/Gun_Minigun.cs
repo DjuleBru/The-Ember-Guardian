@@ -129,13 +129,14 @@ public class Gun_Minigun : Gun {
         }
     }
 
-    public override void SetCooldownTime_Meta(float cooldownTime) {
-        base.SetCooldownTime_Meta(cooldownTime);
+    public override void SetCooldownTime_StatModifierListLevel(int cooldownTimeStatModifierLevel) {
+        base.SetCooldownTime_StatModifierListLevel(cooldownTimeStatModifierLevel);
+        float modifiedCooldown = gunSO.shootCooldownTime + gunSO.shootCooldownTime * gunSO.cooldownTimeStatModifier.statModifierList[cooldownTimeStatModifierLevel] * 0.01f;
 
-        float cooldownBuff =  cooldownTime / gunSO.shootCooldownTime;
+        float cooldownBuff = modifiedCooldown / gunSO.shootCooldownTime;
 
-        spinStartCooldown = cooldownTime;
-        currentSpinCooldown = cooldownTime;
+        spinStartCooldown = modifiedCooldown;
+        currentSpinCooldown = modifiedCooldown;
         maxSpinRate = standardMaxSpinRate * cooldownBuff;
     }
 }

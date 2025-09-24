@@ -518,11 +518,19 @@ public class HUBManager : MonoBehaviour
     }
 
     public void SaveHub() {
-        MetaProgressionManager.Instance.SaveHubGems();
-        MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber();
-        MetaProgressionManager.Instance.SavePlayerHubPosition(Player.Instance.transform.position);
-        MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(nextArrivalThroughPortal);
+        SaveHubInstant();
+        //StartCoroutine(SaveHubCoroutine());
+    }
 
+    public IEnumerator SaveHubRoutine() {
+        return SaveHubCoroutine();
+    }
+
+    private void SaveHubInstant() {
+        MetaProgressionManager.Instance.SaveHubGemsBatch();
+        MetaProgressionManager.Instance.SavePlayerHubPosition(Player.Instance.transform.position);
+        MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber();
+        MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(nextArrivalThroughPortal);
         PlayerSave.Instance.SavePrimaryActiveGunSO(PlayerShoot.Instance.GetPrimaryGunSO());
         PlayerSave.Instance.SaveSecondaryActiveGunSO(PlayerShoot.Instance.GetSecondaryGunSO());
         PlayerSave.Instance.SavePlayerMetaStats();
@@ -531,6 +539,7 @@ public class HUBManager : MonoBehaviour
         WorkerStats.Instance.SaveWorkerValues();
         StructureStats.Instance.SaveStructureStats();
         TrapManager.Instance.SaveNewUnlockedTraps();
+
         SavePortalStatuses();
 
         if (ArchitectTable.Instance != null) {
@@ -545,10 +554,146 @@ public class HUBManager : MonoBehaviour
 
         foreach (HubMerchant hubMerchant in hubMerchantList) {
             hubMerchant.SaveMerchant();
+
         }
 
         foreach (Portal portal in allPortalsInHub) {
             MetaProgressionManager.Instance.SetPortalLinkedLevelSOIndex(portal.GetPortalNumber(), portal.GetLinkedLevelSOIndex());
+        }
+
+        OnHubSaved?.Invoke(this, EventArgs.Empty);
+    }
+
+    private IEnumerator SaveHubCoroutine() {
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+
+        sw.Start();
+        MetaProgressionManager.Instance.SaveHubGemsBatch();
+        sw.Stop();
+        Debug.Log($"SaveHubGemsBatch took {sw.ElapsedMilliseconds} ms");
+        yield return null;
+
+        sw.Reset();
+        sw.Start();
+        MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber();
+        sw.Stop();
+        Debug.Log($"SaveLevelGemsAndHoldingEmber took {sw.ElapsedMilliseconds} ms");
+        yield return null;
+
+        sw.Reset();
+        sw.Start();
+        MetaProgressionManager.Instance.SavePlayerHubPosition(Player.Instance.transform.position);
+        sw.Stop();
+        Debug.Log($"SavePlayerHubPosition took {sw.ElapsedMilliseconds} ms");
+        yield return null;
+
+        sw.Reset();
+        sw.Start();
+        MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(nextArrivalThroughPortal);
+        sw.Stop();
+        Debug.Log($"SetNextHubArrivalThroughPortal took {sw.ElapsedMilliseconds} ms");
+        yield return null;
+
+        sw.Reset();
+        sw.Start();
+        PlayerSave.Instance.SavePrimaryActiveGunSO(PlayerShoot.Instance.GetPrimaryGunSO());
+        sw.Stop();
+        Debug.Log($"SavePrimaryActiveGunSO took {sw.ElapsedMilliseconds} ms");
+        yield return null;
+
+        sw.Reset();
+        sw.Start();
+        PlayerSave.Instance.SaveSecondaryActiveGunSO(PlayerShoot.Instance.GetSecondaryGunSO());
+        sw.Stop();
+        Debug.Log($"SaveSecondaryActiveGunSO took {sw.ElapsedMilliseconds} ms");
+        yield return null;
+
+        sw.Reset();
+        sw.Start();
+        PlayerSave.Instance.SavePlayerMetaStats();
+        sw.Stop();
+        Debug.Log($"SavePlayerMetaStats took {sw.ElapsedMilliseconds} ms");
+        yield return null;
+
+        sw.Reset();
+        sw.Start();
+        PlayerSave.Instance.SaveNewUnlockedSkills();
+        sw.Stop();
+        Debug.Log($"SaveNewUnlockedSkills took {sw.ElapsedMilliseconds} ms");
+        yield return null;
+
+        sw.Reset();
+        sw.Start();
+        DogStats.Instance.SaveDogStats();
+        sw.Stop();
+        Debug.Log($"SaveDogStats took {sw.ElapsedMilliseconds} ms");
+        yield return null;
+
+        sw.Reset();
+        sw.Start();
+        WorkerStats.Instance.SaveWorkerValues();
+        sw.Stop();
+        Debug.Log($"SaveWorkerValues took {sw.ElapsedMilliseconds} ms");
+        yield return null;
+
+        sw.Reset();
+        sw.Start();
+        StructureStats.Instance.SaveStructureStats();
+        sw.Stop();
+        Debug.Log($"SaveStructureStats took {sw.ElapsedMilliseconds} ms");
+        yield return null;
+
+        sw.Reset();
+        sw.Start();
+        TrapManager.Instance.SaveNewUnlockedTraps();
+        sw.Stop();
+        Debug.Log($"SaveNewUnlockedTraps took {sw.ElapsedMilliseconds} ms");
+        yield return null;
+
+        sw.Reset();
+        sw.Start();
+        SavePortalStatuses();
+        sw.Stop();
+        Debug.Log($"SavePortalStatuses took {sw.ElapsedMilliseconds} ms");
+        yield return null;
+
+        if (ArchitectTable.Instance != null) {
+            sw.Reset();
+            sw.Start();
+            ArchitectTable.Instance.SaveStats();
+            sw.Stop();
+            Debug.Log($"ArchitectTable.Instance.SaveStats took {sw.ElapsedMilliseconds} ms");
+            yield return null;
+        }
+
+        bool holdingEmber = false;
+        if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ember).Count != 0) {
+            holdingEmber = true;
+        }
+        ES3.Save("holdingEmber", holdingEmber);
+        yield return null;
+
+
+        foreach (HubMerchant hubMerchant in hubMerchantList) {
+
+            sw.Reset();
+            sw.Start();
+            hubMerchant.SaveMerchant();
+            sw.Stop();
+            Debug.Log($"SaveMerchant took {sw.ElapsedMilliseconds} ms");
+            yield return null;
+
+        }
+
+        foreach (Portal portal in allPortalsInHub) {
+
+            sw.Reset();
+            sw.Start();
+            MetaProgressionManager.Instance.SetPortalLinkedLevelSOIndex(portal.GetPortalNumber(), portal.GetLinkedLevelSOIndex());
+            sw.Stop();
+            Debug.Log($"SetPortalLinkedLevelSOIndex took {sw.ElapsedMilliseconds} ms");
+            yield return null;
+
         }
 
         OnHubSaved?.Invoke(this, EventArgs.Empty);

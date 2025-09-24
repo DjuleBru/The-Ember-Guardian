@@ -60,29 +60,52 @@ public class WorkerStats : MonoBehaviour
     private void LoadStatValues() {
         workerInteractions_Debug = DebugManager.Instance.GetDebugMode_WorkerInteractions();
         interactionWithWorkersUnlocked = ES3.Load("interactionWithWorkersUnlocked", workerInteractions_Debug);
-        maxFollowingWorkers = ES3.Load("maxFollowingWorkers", initialMaxFollowingWorkers);
-        initialEmberlings = ES3.Load("initialEmberlings", 0);
-        emberlingArrivalsNumber = ES3.Load("emberlingArrivalsNumber", 0);
 
-        hunterDamageBuff = ES3.Load("hunterDamageBuff", 0);
-        hunterHealthBuff = ES3.Load("hunterHealthBuff", 0);
-        hunterAttackCooldownBuff = ES3.Load("hunterAttackCooldownBuff", 0f);
-        hunterAccuracyBuff = ES3.Load("hunterAccuracyBuff", 0f);
-        hunterMoveSpeedBuff = ES3.Load("hunterMoveSpeedBuff", 0f);
+        if (!ES3.KeyExists("WorkerStats"))
+            return;
 
-        guardDamageBuff = ES3.Load("guardDamageBuff", 0);
-        guardAttackCooldownBuff = ES3.Load("guardAttackCooldownBuff", 0f);
-        guardHealthBuff = ES3.Load("guardHealthBuff", 0);
-        guardMoveSpeedBuff = ES3.Load("guardMoveSpeedBuff", 0f);
+        var workerData = ES3.Load<Dictionary<string, object>>("WorkerStats");
 
-        minerAttackCooldownBuff = ES3.Load("minerAttackCooldownBuff", 0f);
-        minerDamageBuff = ES3.Load("minerDamageBuff", 0);
-        minerHealthBuff = ES3.Load("minerHealthBuff", 0);
-        minerPickaxeLuckyProb = ES3.Load("minerPickaxeLuckyProb", 0f);
-        minerMoveSpeedBuff = ES3.Load("minerMoveSpeedBuff", 0f);
+        // Global
+        maxFollowingWorkers = GetValue(workerData, "maxFollowingWorkers", initialMaxFollowingWorkers);
+        initialEmberlings = GetValue(workerData, "initialEmberlings", 0);
+        emberlingArrivalsNumber = GetValue(workerData, "emberlingArrivalsNumber", 0);
 
-        engineerMoveSpeedBuff = ES3.Load("engineerMoveSpeedBuff", 0f);
-        engineerWrenchSpeedBuff = ES3.Load("engineerWrenchSpeedBuff", 0f);
+        // Hunter
+        hunterHealthBuff = GetValue(workerData, "hunterHealthBuff", 0);
+        hunterDamageBuff = GetValue(workerData, "hunterDamageBuff", 0);
+        hunterAttackCooldownBuff = GetValue(workerData, "hunterAttackCooldownBuff", 0f);
+        hunterMoveSpeedBuff = GetValue(workerData, "hunterMoveSpeedBuff", 0f);
+        hunterAccuracyBuff = GetValue(workerData, "hunterAccuracyBuff", 0f);
+
+        // Guard
+        guardHealthBuff = GetValue(workerData, "guardHealthBuff", 0);
+        guardDamageBuff = GetValue(workerData, "guardDamageBuff", 0);
+        guardAttackCooldownBuff = GetValue(workerData, "guardAttackCooldownBuff", 0f);
+        guardMoveSpeedBuff = GetValue(workerData, "guardMoveSpeedBuff", 0f);
+
+        // Miner
+        minerHealthBuff = GetValue(workerData, "minerHealthBuff", 0);
+        minerDamageBuff = GetValue(workerData, "minerDamageBuff", 0);
+        minerAttackCooldownBuff = GetValue(workerData, "minerAttackCooldownBuff", 0f);
+        minerMoveSpeedBuff = GetValue(workerData, "minerMoveSpeedBuff", 0f);
+        minerPickaxeLuckyProb = GetValue(workerData, "minerPickaxeLuckyProb", 0f);
+
+        // Engineer
+        engineerMoveSpeedBuff = GetValue(workerData, "engineerMoveSpeedBuff", 0f);
+        engineerWrenchSpeedBuff = GetValue(workerData, "engineerWrenchSpeedBuff", 0f);
+    }
+
+    private T GetValue<T>(Dictionary<string, object> dict, string key, T defaultValue) {
+        if (dict.ContainsKey(key)) {
+            try {
+                return (T)Convert.ChangeType(dict[key], typeof(T));
+            }
+            catch {
+                return defaultValue;
+            }
+        }
+        return defaultValue;
     }
 
     public void SetInteractionWithWorkersUnlocked() {
@@ -291,25 +314,37 @@ public class WorkerStats : MonoBehaviour
     #endregion
 
     public void SaveWorkerValues() {
-        ES3.Save("maxFollowingWorkers", maxFollowingWorkers);
-        ES3.Save("initialEmberlings", initialEmberlings);
-        ES3.Save("emberlingArrivalsNumber", emberlingArrivalsNumber);
+        var workerData = new Dictionary<string, object>();
 
-        ES3.Save("hunterHealthBuff", hunterHealthBuff);
-        ES3.Save("minerHealthBuff", minerHealthBuff);
-        ES3.Save("guardHealthBuff", guardHealthBuff);
-        ES3.Save("hunterDamageBuff", hunterDamageBuff);
-        ES3.Save("guardDamageBuff", guardDamageBuff);
-        ES3.Save("minerDamageBuff", minerDamageBuff);
-        ES3.Save("hunterAttackCooldownBuff", hunterAttackCooldownBuff);
-        ES3.Save("guardAttackCooldownBuff", guardAttackCooldownBuff);
-        ES3.Save("minerAttackCooldownBuff", minerAttackCooldownBuff);
-        ES3.Save("hunterMoveSpeedBuff", hunterMoveSpeedBuff);
-        ES3.Save("minerMoveSpeedBuff", minerMoveSpeedBuff);
-        ES3.Save("guardMoveSpeedBuff", guardMoveSpeedBuff);
-        ES3.Save("engineerMoveSpeedBuff", engineerMoveSpeedBuff);
-        ES3.Save("engineerWrenchSpeedBuff", engineerWrenchSpeedBuff);
-        ES3.Save("hunterAccuracyBuff", hunterAccuracyBuff);
-        ES3.Save("minerPickaxeLuckyProb", minerPickaxeLuckyProb);
+        // Global
+        workerData["maxFollowingWorkers"] = maxFollowingWorkers;
+        workerData["initialEmberlings"] = initialEmberlings;
+        workerData["emberlingArrivalsNumber"] = emberlingArrivalsNumber;
+
+        // Hunter
+        workerData["hunterHealthBuff"] = hunterHealthBuff;
+        workerData["hunterDamageBuff"] = hunterDamageBuff;
+        workerData["hunterAttackCooldownBuff"] = hunterAttackCooldownBuff;
+        workerData["hunterMoveSpeedBuff"] = hunterMoveSpeedBuff;
+        workerData["hunterAccuracyBuff"] = hunterAccuracyBuff;
+
+        // Guard
+        workerData["guardHealthBuff"] = guardHealthBuff;
+        workerData["guardDamageBuff"] = guardDamageBuff;
+        workerData["guardAttackCooldownBuff"] = guardAttackCooldownBuff;
+        workerData["guardMoveSpeedBuff"] = guardMoveSpeedBuff;
+
+        // Miner
+        workerData["minerHealthBuff"] = minerHealthBuff;
+        workerData["minerDamageBuff"] = minerDamageBuff;
+        workerData["minerAttackCooldownBuff"] = minerAttackCooldownBuff;
+        workerData["minerMoveSpeedBuff"] = minerMoveSpeedBuff;
+        workerData["minerPickaxeLuckyProb"] = minerPickaxeLuckyProb;
+
+        // Engineer
+        workerData["engineerMoveSpeedBuff"] = engineerMoveSpeedBuff;
+        workerData["engineerWrenchSpeedBuff"] = engineerWrenchSpeedBuff;
+
+        ES3.Save("WorkerStats", workerData);
     }
 }

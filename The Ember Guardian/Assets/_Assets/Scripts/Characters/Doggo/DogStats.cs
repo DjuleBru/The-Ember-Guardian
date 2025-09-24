@@ -87,36 +87,59 @@ public class DogStats : MonoBehaviour {
     }
 
     private void LoadSavedDogStats() {
+        // Anciennes clés restées hors batch
         retreiverUnlocked = ES3.Load("retreiverUnlocked", false);
         darkCompanionUnlocked = ES3.Load("darkCompanionUnlocked", false);
 
-        germanShepherdBiteAbilityUnlocked = ES3.Load("germanShepherdBiteAbilityUnlocked", false);
-        germanShepherdDigResourceAbilityUnlocked = ES3.Load("germanShepherdDigResourceAbilityUnlocked", false);
-        germanShepherdDetectAmbushAbilityUnlocked = ES3.Load("germanShepherdDetectAmbushAbilityUnlocked", false);
-        retreiverBuffWorkersAbilityUnlocked = ES3.Load("retreiverBuffWorkersAbilityUnlocked", false);
-        retreiverPickUpItemsAbilityUnlocked = ES3.Load("retreiverPickUpItemsAbilityUnlocked", false);
-        darkCompanionLaserAbilityUnlocked = ES3.Load("darkCompanionLaserAbilityUnlocked", false);
-        darkCompanionStompAbilityUnlocked = ES3.Load("darkCompanionStompAbilityUnlocked", false);
+        if (!ES3.KeyExists("DogStats"))
+            return;
 
-        germanShepherdBiteDamage = ES3.Load("germanShepherdBiteDamage", initialGermanShepherdBiteDamage);
-        germanShepherdBiteCooldown = ES3.Load("germanShepherdBiteCooldown", initialGermanShepherdBiteCooldown);
-        germanShepherdDigResourceCooldown = ES3.Load("germanShepherdDigResourceCooldown", initialGermanShepherdDigResourceCooldown);
-        germanShepherdDigResourceProbability = ES3.Load("germanShepherdDigResourceProbability", initialGermanShepherdDigResourceProbability);
-        germanShepherdDigResourceDoubleProbability = ES3.Load("germanShepherdDigResourceDoubleProbability", initialGermanShepherdDigResourceDoubleProbability);
-        germanShepherdAmbushDetectionProbability = ES3.Load("germanShepherdAmbushDetectionProbability", initialGermanShepherdAmbushDetectionProbability);
+        var dogData = ES3.Load<Dictionary<string, object>>("DogStats");
 
-        retreiverBiteDamage = ES3.Load("retreiverBiteDamage", initialRetreiverBiteDamage);
-        retreiverBiteCooldown = ES3.Load("retreiverBiteCooldown", initialRetreiverBiteCooldown);
-        retreiverBuffWorkersAmount = ES3.Load("retreiverBuffWorkersAmount", initialRetreiverBuffWorkersAmount);
-        retreiverBuffWorkersRadius = ES3.Load("retreiverBuffWorkersRadius", initialRetreiverBuffWorkersRadius);
+        // Abilities
+        germanShepherdBiteAbilityUnlocked = GetValue(dogData, "germanShepherdBiteAbilityUnlocked", false);
+        germanShepherdDigResourceAbilityUnlocked = GetValue(dogData, "germanShepherdDigResourceAbilityUnlocked", false);
+        germanShepherdDetectAmbushAbilityUnlocked = GetValue(dogData, "germanShepherdDetectAmbushAbilityUnlocked", false);
 
-        darkCompanionBiteDamage = ES3.Load("darkCompanionBiteDamage", initialDarkCompanionBiteDamage);
-        darkCompanionBiteCooldown = ES3.Load("darkCompanionBiteCooldown", initialDarkCompanionBiteCooldown);
-        darkCompanionLaserDamage = ES3.Load("darkCompanionLaserDamage", initialDarkCompanionLaserDamage);
-        darkCompanionLaserCooldown = ES3.Load("darkCompanionLaserCooldown", initialDarkCompanionLaserCooldown);
-        darkCompanionStompDamage = ES3.Load("darkCompanionStompDamage", initialDarkCompanionStompDamage);
-        darkCompanionStompCooldown = ES3.Load("darkCompanionStompCooldown", initialDarkCompanionStompCooldown);
-        darkCompanionStompStunDuration = ES3.Load("darkCompanionStompStunDuration", initialDarkCompanionStompStunDuration);
+        retreiverBiteAbilityUnlocked = GetValue(dogData, "retreiverBiteAbilityUnlocked", false);
+        retreiverBuffWorkersAbilityUnlocked = GetValue(dogData, "retreiverBuffWorkersAbilityUnlocked", false);
+        retreiverPickUpItemsAbilityUnlocked = GetValue(dogData, "retreiverPickUpItemsAbilityUnlocked", false);
+
+        darkCompanionBiteAbilityUnlocked = GetValue(dogData, "darkCompanionBiteAbilityUnlocked", false);
+        darkCompanionLaserAbilityUnlocked = GetValue(dogData, "darkCompanionLaserAbilityUnlocked", false);
+        darkCompanionStompAbilityUnlocked = GetValue(dogData, "darkCompanionStompAbilityUnlocked", false);
+
+        // Stats
+        germanShepherdBiteDamage = GetValue(dogData, "germanShepherdBiteDamage", initialGermanShepherdBiteDamage);
+        germanShepherdBiteCooldown = GetValue(dogData, "germanShepherdBiteCooldown", initialGermanShepherdBiteCooldown);
+        germanShepherdDigResourceCooldown = GetValue(dogData, "germanShepherdDigResourceCooldown", initialGermanShepherdDigResourceCooldown);
+        germanShepherdDigResourceProbability = GetValue(dogData, "germanShepherdDigResourceProbability", initialGermanShepherdDigResourceProbability);
+        germanShepherdDigResourceDoubleProbability = GetValue(dogData, "germanShepherdDigResourceDoubleProbability", initialGermanShepherdDigResourceDoubleProbability);
+        germanShepherdAmbushDetectionProbability = GetValue(dogData, "germanShepherdAmbushDetectionProbability", initialGermanShepherdAmbushDetectionProbability);
+
+        retreiverBiteDamage = GetValue(dogData, "retreiverBiteDamage", initialRetreiverBiteDamage);
+        retreiverBiteCooldown = GetValue(dogData, "retreiverBiteCooldown", initialRetreiverBiteCooldown);
+        retreiverBuffWorkersAmount = GetValue(dogData, "retreiverBuffWorkersAmount", initialRetreiverBuffWorkersAmount);
+        retreiverBuffWorkersRadius = GetValue(dogData, "retreiverBuffWorkersRadius", initialRetreiverBuffWorkersRadius);
+
+        darkCompanionBiteDamage = GetValue(dogData, "darkCompanionBiteDamage", initialDarkCompanionBiteDamage);
+        darkCompanionBiteCooldown = GetValue(dogData, "darkCompanionBiteCooldown", initialDarkCompanionBiteCooldown);
+        darkCompanionLaserDamage = GetValue(dogData, "darkCompanionLaserDamage", initialDarkCompanionLaserDamage);
+        darkCompanionLaserCooldown = GetValue(dogData, "darkCompanionLaserCooldown", initialDarkCompanionLaserCooldown);
+        darkCompanionStompDamage = GetValue(dogData, "darkCompanionStompDamage", initialDarkCompanionStompDamage);
+        darkCompanionStompCooldown = GetValue(dogData, "darkCompanionStompCooldown", initialDarkCompanionStompCooldown);
+        darkCompanionStompStunDuration = GetValue(dogData, "darkCompanionStompStunDuration", initialDarkCompanionStompStunDuration);
+
+        // Dog type (enum direct)
+        Dog.DogType loadedDogType = GetValue(dogData, "dogType", Dog.DogType.GermanShepherd);
+        Dog.Instance.SetDogType(loadedDogType);
+    }
+
+
+    private T GetValue<T>(Dictionary<string, object> dict, string key, T defaultValue) {
+        if (dict.ContainsKey(key) && dict[key] is T value)
+            return value;
+        return defaultValue;
     }
 
     #region GET INITIAL PARAMETERS
@@ -422,36 +445,46 @@ public class DogStats : MonoBehaviour {
 
     #region SAVE PARAMETERS
     public void SaveDogStats() {
+        var dogData = new Dictionary<string, object>();
 
-        ES3.Save("germanShepherdBiteAbilityUnlocked", germanShepherdBiteAbilityUnlocked);
-        ES3.Save("germanShepherdDigResourceAbilityUnlocked", germanShepherdDigResourceAbilityUnlocked);
-        ES3.Save("germanShepherdDetectAmbushAbilityUnlocked", germanShepherdDetectAmbushAbilityUnlocked);
-        ES3.Save("retreiverBiteAbilityUnlocked", retreiverBiteAbilityUnlocked);
-        ES3.Save("retreiverBuffWorkersAbilityUnlocked", retreiverBuffWorkersAbilityUnlocked);
-        ES3.Save("retreiverPickUpItemsAbilityUnlocked", retreiverPickUpItemsAbilityUnlocked);
-        ES3.Save("darkCompanionBiteAbilityUnlocked", darkCompanionBiteAbilityUnlocked);
-        ES3.Save("darkCompanionLaserAbilityUnlocked", darkCompanionLaserAbilityUnlocked);
-        ES3.Save("darkCompanionStompAbilityUnlocked", darkCompanionStompAbilityUnlocked);
+        // Abilities
+        dogData["germanShepherdBiteAbilityUnlocked"] = germanShepherdBiteAbilityUnlocked;
+        dogData["germanShepherdDigResourceAbilityUnlocked"] = germanShepherdDigResourceAbilityUnlocked;
+        dogData["germanShepherdDetectAmbushAbilityUnlocked"] = germanShepherdDetectAmbushAbilityUnlocked;
 
-        ES3.Save("germanShepherdBiteDamage", germanShepherdBiteDamage);
-        ES3.Save("germanShepherdBiteCooldown", germanShepherdBiteCooldown);
-        ES3.Save("germanShepherdDigResourceCooldown", germanShepherdDigResourceCooldown);
-        ES3.Save("germanShepherdDigResourceProbability", germanShepherdDigResourceProbability);
-        ES3.Save("germanShepherdAmbushDetectionProbability", germanShepherdAmbushDetectionProbability);
-        ES3.Save("germanShepherdDigResourceDoubleProbability", germanShepherdDigResourceDoubleProbability);
+        dogData["retreiverBiteAbilityUnlocked"] = retreiverBiteAbilityUnlocked;
+        dogData["retreiverBuffWorkersAbilityUnlocked"] = retreiverBuffWorkersAbilityUnlocked;
+        dogData["retreiverPickUpItemsAbilityUnlocked"] = retreiverPickUpItemsAbilityUnlocked;
 
-        ES3.Save("retreiverBiteDamage", retreiverBiteDamage);
-        ES3.Save("retreiverBiteCooldown", retreiverBiteCooldown);
-        ES3.Save("retreiverBuffWorkersAmount", retreiverBuffWorkersAmount);
-        ES3.Save("retreiverBuffWorkersRadius", retreiverBuffWorkersRadius);
+        dogData["darkCompanionBiteAbilityUnlocked"] = darkCompanionBiteAbilityUnlocked;
+        dogData["darkCompanionLaserAbilityUnlocked"] = darkCompanionLaserAbilityUnlocked;
+        dogData["darkCompanionStompAbilityUnlocked"] = darkCompanionStompAbilityUnlocked;
 
-        ES3.Save("darkCompanionLaserDamage", darkCompanionLaserDamage);
-        ES3.Save("darkCompanionLaserCooldown", darkCompanionLaserCooldown);
-        ES3.Save("darkCompanionStompDamage", darkCompanionStompDamage);
-        ES3.Save("darkCompanionStompCooldown", darkCompanionStompCooldown);
-        ES3.Save("darkCompanionStompStunDuration", darkCompanionStompStunDuration);
+        // Stats
+        dogData["germanShepherdBiteDamage"] = germanShepherdBiteDamage;
+        dogData["germanShepherdBiteCooldown"] = germanShepherdBiteCooldown;
+        dogData["germanShepherdDigResourceCooldown"] = germanShepherdDigResourceCooldown;
+        dogData["germanShepherdDigResourceProbability"] = germanShepherdDigResourceProbability;
+        dogData["germanShepherdAmbushDetectionProbability"] = germanShepherdAmbushDetectionProbability;
+        dogData["germanShepherdDigResourceDoubleProbability"] = germanShepherdDigResourceDoubleProbability;
 
-        ES3.Save("dogType", Dog.Instance.GetDogType());
+        dogData["retreiverBiteDamage"] = retreiverBiteDamage;
+        dogData["retreiverBiteCooldown"] = retreiverBiteCooldown;
+        dogData["retreiverBuffWorkersAmount"] = retreiverBuffWorkersAmount;
+        dogData["retreiverBuffWorkersRadius"] = retreiverBuffWorkersRadius;
+
+        dogData["darkCompanionBiteDamage"] = darkCompanionBiteDamage;
+        dogData["darkCompanionBiteCooldown"] = darkCompanionBiteCooldown;
+        dogData["darkCompanionLaserDamage"] = darkCompanionLaserDamage;
+        dogData["darkCompanionLaserCooldown"] = darkCompanionLaserCooldown;
+        dogData["darkCompanionStompDamage"] = darkCompanionStompDamage;
+        dogData["darkCompanionStompCooldown"] = darkCompanionStompCooldown;
+        dogData["darkCompanionStompStunDuration"] = darkCompanionStompStunDuration;
+
+        // Dog type (enum direct)
+        dogData["dogType"] = Dog.Instance.GetDogType();
+
+        ES3.Save("DogStats", dogData);
     }
     #endregion
 }

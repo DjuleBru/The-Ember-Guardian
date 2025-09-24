@@ -142,7 +142,7 @@ public class HubMerchant : MonoBehaviour
         merchantHasNewItems = MetaProgressionManager.Instance.GetHubMerchantNewItemsToSale(hubMerchantType);
 
         foreach (HubMerchantItem merchantItem in hubMerchantItems) {
-            merchantItem.LoadItemStatus();
+            merchantItem.LoadItemStatus_Batch();
         }
 
         hubMerchantLoaded = true;
@@ -161,7 +161,7 @@ public class HubMerchant : MonoBehaviour
         }
 
         foreach (HubMerchantItem merchantItem in hubMerchantItems) {
-            merchantItem.LoadItemStatus();
+            merchantItem.LoadItemStatus_Batch();
         }
 
         hubMerchantLoaded = true;
@@ -407,14 +407,14 @@ public class HubMerchant : MonoBehaviour
         MetaProgressionManager.Instance.SetMerchantJustArrivedInHub(hubMerchantType, merchantJustArrivedInHub);
 
         foreach(HubMerchantItem merchantItem in hubMerchantItems) {
-            merchantItem.SaveItemStatus();
+            merchantItem.SaveItemStatus_Batch();
         }
     }
 
     public void ResetAllItemStatuses() {
         foreach (HubMerchantItem merchantItem in hubMerchantItems) {
             if(merchantItem.GetItemBought()) {
-                merchantItem.ResetItemStatus();
+                merchantItem.ResetItemStatus_Batch();
             }
         }
     }
