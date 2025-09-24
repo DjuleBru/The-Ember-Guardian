@@ -45,7 +45,9 @@ public class ItemButtonUI : ButtonUI {
     [SerializeField] private bool lockHoverInteractions;
     [SerializeField] private bool itemLockedInDemo;
     [SerializeField] private bool hideItemIconUntilUnlocked;
+    [SerializeField] private bool itemUnlockableOnlyInLevel;
 
+    [SerializeField] private List<ItemButtonUI> itemsToForceUnlockWhenBought = new List<ItemButtonUI>();
     [SerializeField] private ItemButtonUI_ChildTreeShowHide treeShowHide;
     [SerializeField] private bool isTreeParent;
     [SerializeField] private bool isTreeChild;
@@ -119,7 +121,6 @@ public class ItemButtonUI : ButtonUI {
 
         RefreshItemStatusVisuals();
     }
-
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
         itemHovered = false;
@@ -251,6 +252,17 @@ public class ItemButtonUI : ButtonUI {
             newUnlockedItemGO.SetActive(true);
         }
 
+        // Check if it force unlocks another item :
+        if(itemsToForceUnlockWhenBought.Count != 0) {
+            if(hubMerchantItem.GetItemBought()) {
+                foreach (ItemButtonUI itemButtonUI in itemsToForceUnlockWhenBought) {
+                    Debug.Log(itemButtonUI.GetHubMerchantItem());
+                    itemButtonUI.SetItemUnlocked();
+                    itemButtonUI.SetItemBought();
+                }
+            }
+        }
+
         RefreshItemStatusVisuals();
         RefreshItemLevelUI();
     }
@@ -281,7 +293,12 @@ public class ItemButtonUI : ButtonUI {
             return;
         }
 
-        if(!hubMerchantItem.GetItemUpgradeable()) {
+        if (!hubMerchantItem.GetItemBought() && itemUnlockableOnlyInLevel) {
+            descriptionCard.SetDescriptionCardItemUnlockableOnlyInLevel();
+            return;
+        }
+
+        if (!hubMerchantItem.GetItemUpgradeable()) {
             
             if (hubMerchantItem.GetItemBought()) {
                 descriptionCard.SetDescriptionCardBought();
@@ -308,7 +325,7 @@ public class ItemButtonUI : ButtonUI {
     }
 
     public void BuyItem() {
-        if (!hubMerchantItem.GetItemUnlocked() || (itemLockedInDemo && HUBManager.Instance.GetIsDemo())) {
+        if (!hubMerchantItem.GetItemUnlocked() || (itemLockedInDemo && HUBManager.Instance.GetIsDemo()) || (!hubMerchantItem.GetItemBought() && itemUnlockableOnlyInLevel)) {
             OnAnyLockedButtonTryPress?.Invoke(this, EventArgs.Empty);
             CheckItemLockedFromOtherMerchantItem();
             return;
@@ -507,17 +524,31 @@ public class ItemButtonUI : ButtonUI {
         RefreshItemStatusVisuals();
     }
 
+    public void SetItemBought() {
+        if (itemLockedInDemo && HUBManager.Instance.GetIsDemo()) return;
+        if (hubMerchantItem.GetItemBought()) return;
+
+        hubMerchantItem.UnlockItem();
+        hubMerchantItem.SetItemBought();
+        RefreshItemStatusVisuals();
+    }
+
     private void RefreshItemStatusVisuals() {
         if (!hubMerchantItem.GetItemUnlocked()) {
 
             if (ItemLockedFromOtherMerchantItem() || hideItemIconUntilUnlocked) {
                 lockedFromOtherMerchantImage.gameObject.SetActive(true);
-                iconImage.gameObject.SetActive(false);
+
+                Color semiTransparentColor = Color.white;
+                semiTransparentColor.a = .5f;
+                iconImage.color = semiTransparentColor;
 
                 lockHoverInteractions = true;
             }
             else {
                 lockedFromOtherMerchantImage.gameObject.SetActive(false);
+                iconImage.color = Color.white;
+
                 iconImage.gameObject.SetActive(true);
 
                 if(!HUBManager.Instance.GetIsDemo()) {
@@ -535,6 +566,11 @@ public class ItemButtonUI : ButtonUI {
         }
 
         if (!hubMerchantItem.GetItemUnlocked() || (itemLockedInDemo && HUBManager.Instance.GetIsDemo())) {
+            outlineImage.color = Color.grey;
+            return;
+        }
+
+        if ((!hubMerchantItem.GetItemBought() && itemUnlockableOnlyInLevel)) {
             outlineImage.color = Color.grey;
             return;
         }

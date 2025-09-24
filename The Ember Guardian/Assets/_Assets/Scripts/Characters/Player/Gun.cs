@@ -72,21 +72,21 @@ public class Gun : MonoBehaviour
     protected float focusedBlastAngle = .1f; // L'angle cible vers lequel le cône doit se diriger
     protected float focusedBlastDamageBuff;
 
-    protected int bulletDamageStatModifierLevel = 100;
-    protected int shotsPerClipStatModifierLevel = 100;
-    protected int maxAmmoStatModifierLevel = 100;
-    protected int cooldownTimeStatModifierLevel = 100;
-    protected int reloadTimeStatModifierLevel = 100;
-    protected int critChanceStatModifierLevel = 100;
-    protected int shootConeAngleStatModifierLevel = 100;
-    protected int pelletsPerBulletStatModifierLevel = 100;
-    protected int bulletLifetimeStatModifierLevel = 100;
-    protected int jamRepairHitAmountStatModifierLevel = 100;
-    protected int surgeWindowBulletAmountBuffedStatModifierLevel = 100;
-    protected int explosionRadiusMultiplierStatModifierLevel = 100;
-    protected int spinUpDurationStatModifierLevel = 100;
-    protected int subExplosivesAmountStatModifierLevel = 100;
-    protected int subExplosivesDamageStatModifierLevel = 100;
+    protected int bulletDamageStatModifierLevel = -1;
+    protected int shotsPerClipStatModifierLevel = -1;
+    protected int maxAmmoStatModifierLevel = -1;
+    protected int cooldownTimeStatModifierLevel = -1;
+    protected int reloadTimeStatModifierLevel = -1;
+    protected int critChanceStatModifierLevel = -1;
+    protected int shootConeAngleStatModifierLevel = -1;
+    protected int pelletsPerBulletStatModifierLevel = -1;
+    protected int bulletLifetimeStatModifierLevel = -1;
+    protected int jamRepairHitAmountStatModifierLevel = -1;
+    protected int surgeWindowBulletAmountBuffedStatModifierLevel = -1;
+    protected int explosionRadiusMultiplierStatModifierLevel = -1;
+    protected int spinUpDurationStatModifierLevel = -1;
+    protected int subExplosivesAmountStatModifierLevel = -1;
+    protected int subExplosivesDamageStatModifierLevel = -1;
 
     public static event EventHandler OnAnyGunMaxAmmoChanged;
     public static event EventHandler OnAnyGunStatsUpgraded;
@@ -208,88 +208,88 @@ public class Gun : MonoBehaviour
 
     public virtual void RefreshGunStats() {
         pelletsPerBullet = gunSO.pelletsPerBullet;
-        if (gunSO.pelletsPerBulletStatModifier != null && pelletsPerBulletStatModifierLevel != 100) {
+        if (gunSO.pelletsPerBulletStatModifier != null && pelletsPerBulletStatModifierLevel != -1) {
             pelletsPerBullet = gunSO.pelletsPerBullet + (int)gunSO.pelletsPerBulletStatModifier.statModifierList[pelletsPerBulletStatModifierLevel];
         }
         pelletsPerBullet_meta = pelletsPerBullet;
 
         maxAmmo = gunSO.maxAmmo;
-        if(gunSO.maxAmmoStatModifier != null && maxAmmoStatModifierLevel != 100) {
+        if(gunSO.maxAmmoStatModifier != null && maxAmmoStatModifierLevel != -1) {
             maxAmmo = gunSO.maxAmmo + (int)gunSO.maxAmmoStatModifier.statModifierList[maxAmmoStatModifierLevel];
         }
 
         damagePerBullet = gunSO.damagePerBullet;
-        if(gunSO.damageStatModifier != null && bulletDamageStatModifierLevel != 100) {
+        if(gunSO.damageStatModifier != null && bulletDamageStatModifierLevel != -1) {
             damagePerBullet = gunSO.damagePerBullet + (int)gunSO.damageStatModifier.statModifierList[bulletDamageStatModifierLevel];
         }
         damagePerBulletAtRunStart = damagePerBullet;
 
 
         explosionRadiusMultiplier = 1;
-        if(gunSO.explosionRadiusMultiplierStatModifier != null && explosionRadiusMultiplierStatModifierLevel != 100) {
+        if(gunSO.explosionRadiusMultiplierStatModifier != null && explosionRadiusMultiplierStatModifierLevel != -1) {
             explosionRadiusMultiplier = (100 + gunSO.explosionRadiusMultiplierStatModifier.statModifierList[explosionRadiusMultiplierStatModifierLevel]) / 100;
         }
 
         shotsPerClip = gunSO.shotsPerClip;
-        if(gunSO.shotsPerClipStatModifier != null && shotsPerClipStatModifierLevel != 100) {
+        if(gunSO.shotsPerClipStatModifier != null && shotsPerClipStatModifierLevel != -1) {
             shotsPerClip = gunSO.shotsPerClip + (int)gunSO.shotsPerClipStatModifier.statModifierList[shotsPerClipStatModifierLevel];
         }
 
 
         critChance = gunSO.critChance;
-        if(gunSO.critChanceStatModifier != null && critChanceStatModifierLevel != 100) {
+        if(gunSO.critChanceStatModifier != null && critChanceStatModifierLevel != -1) {
             critChance = gunSO.critChance + gunSO.critChanceStatModifier.statModifierList[critChanceStatModifierLevel];
         }
 
 
         cooldownTime = gunSO.shootCooldownTime;
-        if(gunSO.cooldownTimeStatModifier != null && cooldownTimeStatModifierLevel != 100) {
+        if(gunSO.cooldownTimeStatModifier != null && cooldownTimeStatModifierLevel != -1) {
             cooldownTime = gunSO.shootCooldownTime + gunSO.shootCooldownTime * gunSO.cooldownTimeStatModifier.statModifierList[cooldownTimeStatModifierLevel] * 0.01f;
         }
 
         reloadTime = gunSO.reloadTime;
-        if(gunSO.reloadTimeStatModifier != null && reloadTimeStatModifierLevel != 100) {
+        if(gunSO.reloadTimeStatModifier != null && reloadTimeStatModifierLevel != -1) {
             reloadTime = gunSO.reloadTime + gunSO.reloadTime * gunSO.reloadTimeStatModifier.statModifierList[reloadTimeStatModifierLevel] * 0.01f;
         }
         float reloadTimeRecuctionFactor = handsReloadTime / gunSO.reloadTime;
         handsReloadTime = gunSO.handsReloadTime * reloadTimeRecuctionFactor;
 
         bulletLifetime = gunSO.bulletLifetime;
-        if(gunSO.bulletLifetimeStatModifier  != null && bulletLifetimeStatModifierLevel != 100) {
+        if(gunSO.bulletLifetimeStatModifier  != null && bulletLifetimeStatModifierLevel != -1) {
             bulletLifetime = gunSO.bulletLifetime + gunSO.bulletLifetimeStatModifier.statModifierList[bulletLifetimeStatModifierLevel] / gunSO.bulletSpeed;
         }
 
 
         jamRepairHitAmount = gunSO.jamRepairHitAmount;
-        if(gunSO.jamRepairHitAmountStatModifier != null && jamRepairHitAmountStatModifierLevel != 100) {
+        if(gunSO.jamRepairHitAmountStatModifier != null && jamRepairHitAmountStatModifierLevel != -1) {
             jamRepairHitAmount = gunSO.jamRepairHitAmount + (int)gunSO.jamRepairHitAmountStatModifier.statModifierList[jamRepairHitAmountStatModifierLevel];
         }
 
 
         surgeWindowBulletAmountBuffed = gunSO.perfectQTEBulletAmountDamageBuffed;
-        if(gunSO.surgeWindowBulletAmountBuffedStatModifier != null && surgeWindowBulletAmountBuffedStatModifierLevel != 100) {
+        if(gunSO.surgeWindowBulletAmountBuffedStatModifier != null && surgeWindowBulletAmountBuffedStatModifierLevel != -1) {
             surgeWindowBulletAmountBuffed = gunSO.perfectQTEBulletAmountDamageBuffed + (int)gunSO.surgeWindowBulletAmountBuffedStatModifier.statModifierList[surgeWindowBulletAmountBuffedStatModifierLevel];
         }
 
         spinUpDuration = gunSO.spinUpDuration;
-        if(gunSO.spinUpDurationStatModifier != null && spinUpDurationStatModifierLevel != 100) {
+        if(gunSO.spinUpDurationStatModifier != null && spinUpDurationStatModifierLevel != -1) {
             spinUpDuration = gunSO.spinUpDuration + gunSO.spinUpDurationStatModifier.statModifierList[spinUpDurationStatModifierLevel];
         
         }
 
         subExplosivesAmount = gunSO.subExplosivesAmount;
-        if(gunSO.subExplosivesAmountStatModifier != null && subExplosivesAmountStatModifierLevel != 100) {
+        if(gunSO.subExplosivesAmountStatModifier != null && subExplosivesAmountStatModifierLevel != -1) {
             subExplosivesAmount = gunSO.subExplosivesAmount + (int)gunSO.subExplosivesAmountStatModifier.statModifierList[subExplosivesAmountStatModifierLevel];
         
         }
 
         subExplosivesDamage = gunSO.subExplosivesDamage;
-        if(gunSO.subExplosivesDamageStatModifier != null && subExplosivesDamageStatModifierLevel != 100) {
+        if(gunSO.subExplosivesDamageStatModifier != null && subExplosivesDamageStatModifierLevel != -1) {
             subExplosivesDamage = gunSO.subExplosivesDamage + (int)gunSO.subExplosivesDamageStatModifier.statModifierList[subExplosivesDamageStatModifierLevel];
         }
 
         defaultAngle = gunSO.shootConeAngle;
-        if(gunSO.shootConeAngleStatModifier != null && shootConeAngleStatModifierLevel != 100) {
+        if(gunSO.shootConeAngleStatModifier != null && shootConeAngleStatModifierLevel != -1) {
             defaultAngle = gunSO.shootConeAngle + gunSO.shootConeAngleStatModifier.statModifierList[shootConeAngleStatModifierLevel];
         }
 
@@ -818,7 +818,7 @@ public class Gun : MonoBehaviour
             if (statModifier == null || statModifier.statModifierList == null || statModifier.statModifierList.Count == 0)
                 return 0;
 
-            return Mathf.Clamp(value, 0, statModifier.statModifierList.Count - 1);
+            return Mathf.Clamp(value, -1, statModifier.statModifierList.Count - 1);
         }
 
         bulletDamageStatModifierLevel = GetLevelSafe("bulletDamageLevel", gunSO.damageStatModifier);

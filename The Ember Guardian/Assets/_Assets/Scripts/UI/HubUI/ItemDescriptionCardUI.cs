@@ -173,6 +173,16 @@ public class ItemDescriptionCardUI : MonoBehaviour
         foreGround.SetActive(true);
     }
 
+    public void SetDescriptionCardItemUnlockableOnlyInLevel() {
+        SetRedFontMaterial();
+        maxLevelText.text = LocalizationManager.Instance.GetLocalizedText("card_FindInLevel");
+
+        DisableGemCostGO(); 
+        
+        maxLevelText.gameObject.SetActive(true);
+        foreGround.SetActive(true);
+    }
+
     public void SetDescriptionCardBought() {
         maxLevelText.text = LocalizationManager.Instance.GetLocalizedText("card_unlocked");
         SetGreenFontMaterial(maxLevelText);
