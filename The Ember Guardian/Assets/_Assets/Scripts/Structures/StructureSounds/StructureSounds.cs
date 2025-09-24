@@ -18,10 +18,6 @@ public class StructureSounds : SoundObject
         StartCoroutine(FadeOutCoroutine(1f));
     }
 
-    protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
-        sfxVolume = SettingsManager.Instance.GetSfxVolume();
-    }
-
     private IEnumerator FadeOutCoroutine(float fadeDuration) {
         float startVolume = audioSource.volume;
 

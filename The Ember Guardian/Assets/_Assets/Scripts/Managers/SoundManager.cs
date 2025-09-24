@@ -12,6 +12,7 @@ public class SoundManager : MonoBehaviour
     
     private AudioSource audioSource2D;
     private float sfxVolume;
+    private float masterVolume;
 
     private bool initialCampBackgroundBuilt;
     private bool initialEmberGiven;
@@ -34,7 +35,9 @@ public class SoundManager : MonoBehaviour
 
     private void Start() {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
         SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+        SettingsManager.Instance.OnMasterVolumeChanged += SettingsManager_OnMasterVolumeChanged;
         SceneLoader.Instance.OnSceneFadeOut += SceneLoader_OnSceneFadeOut;
         SceneLoader.Instance.OnSceneFadeIn += SceneLoader_OnSceneFadeIn;
 
@@ -186,6 +189,7 @@ public class SoundManager : MonoBehaviour
         Merchant_Skills.OnPlayerRefundedItem += Merchant_Skills_OnPlayerRefundedItem;
     }
 
+
     private void Update() {
         if(criticalFireTickJustRemoved) {
             criticalFireTickRemovedTimer -= Time.deltaTime;
@@ -230,6 +234,9 @@ public class SoundManager : MonoBehaviour
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
+    }
+    private void SettingsManager_OnMasterVolumeChanged(object sender, System.EventArgs e) {
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
     }
 
 
@@ -692,7 +699,7 @@ public class SoundManager : MonoBehaviour
 
     private void PlayerShoot_OnShotStartedLoading(object sender, System.EventArgs e) {
         if(PlayerShoot.Instance.GetHeldGunSO().startLoadingShotGunSound != null) {
-            gunPoweringUpAudioSource.PlayOneShot(PlayerShoot.Instance.GetHeldGunSO().startLoadingShotGunSound, sfxVolume);
+            gunPoweringUpAudioSource.PlayOneShot(PlayerShoot.Instance.GetHeldGunSO().startLoadingShotGunSound, sfxVolume * masterVolume);
         }
     }
 
@@ -718,7 +725,7 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerFocusBlastStarted(object sender, System.EventArgs e) {
-        gunPoweringUpAudioSource.PlayOneShot(soundRefsSO.shotgunFocusedBlast, sfxVolume);
+        gunPoweringUpAudioSource.PlayOneShot(soundRefsSO.shotgunFocusedBlast, sfxVolume * masterVolume);
     }
 
     #endregion
@@ -936,7 +943,7 @@ public class SoundManager : MonoBehaviour
     private void PlaySound3D(AudioClip audioClip, Vector3 position, float volume = 1f) {
         Vector3 newPosition = new Vector3(position.x, position.y, Camera.main.transform.position.z);
 
-        AudioSource.PlayClipAtPoint(audioClip, newPosition, volume * sfxVolume);
+        AudioSource.PlayClipAtPoint(audioClip, newPosition, volume * sfxVolume * masterVolume);
     }
 
     private void PlaySound2D(AudioClip[] audioClipArray, float volume = 1f) {
@@ -967,12 +974,12 @@ public class SoundManager : MonoBehaviour
             Debug.LogError("PlaySound2D ignoré car audioSource2D est null !");
             return;
         } 
-        audioSource2D.PlayOneShot(audioClip, volume * sfxVolume);
+        audioSource2D.PlayOneShot(audioClip, volume * sfxVolume * masterVolume);
     }
 
     private IEnumerator PlaySound2DAfterDelay(float delay, AudioClip audioClip, float volume = 1f) {
         yield return new WaitForSeconds(delay);
-        audioSource2D.PlayOneShot(audioClip, volume * sfxVolume);
+        audioSource2D.PlayOneShot(audioClip, volume * sfxVolume * masterVolume);
     }
 
     #endregion
@@ -993,6 +1000,7 @@ public class SoundManager : MonoBehaviour
 
     private void OnDestroy() {
         SettingsManager.Instance.OnSfxVolumeChanged -= SettingsManager_OnSfxVolumeChanged;
+        SettingsManager.Instance.OnMasterVolumeChanged -= SettingsManager_OnMasterVolumeChanged;
 
         StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
         StructureLocation.OnAnyStructureSOToBuildChanged -= StructureLocation_OnAnyStructureSOToBuildChanged;

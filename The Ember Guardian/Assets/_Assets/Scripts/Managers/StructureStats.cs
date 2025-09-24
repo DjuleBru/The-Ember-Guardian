@@ -13,40 +13,40 @@ public class StructureStats : MonoBehaviour
     private float initialOrbFuelValue = 10;
     private float mainFireFuelDepletionRate = 0.05f;
     private float initialFuelDepletionRate = 0.05f;
-    private int mainFireMaxFuelTreshold;
+    private int mainFireMaxFuelTreshold = 50;
     private int initialMaxFuelTreshold = 50;
     private float secondaryFireFuelDepletionRate = 0.05f;
     private float initialSecondaryFireFuelDepletionRate = 0.05f;
     private int secondaryFireMaxFuelTreshold;
     private int initialSecondaryFireMaxFuelTreshold = 20;
 
-    private int ammoCrafterBatchCapacity;
+    private int ammoCrafterBatchCapacity = 1;
     private int initialAmmoCrafterBatchCapacity = 1;
-    private int singleAmmoCraftDuration;
+    private int singleAmmoCraftDuration = 15;
     private int initialSingleAmmoCraftDuration = 15;
-    private int ammoCrafterMaxAmmoPerBatch;
+    private int ammoCrafterMaxAmmoPerBatch = 3;
     private int initialAmmoCrafterMaxAmmoPerBatch = 3;
 
-    private int orbProcessorBatchCapacity;
+    private int orbProcessorBatchCapacity = 1;
     private int initialOrbProcessorBatchCapacity = 1;
-    private int singleOrbCraftDuration;
+    private int singleOrbCraftDuration = 45;
     private int initialSingleOrbCraftDuration = 45;
-    private int orbProcessorMaxOrbsPerBatch;
+    private int orbProcessorMaxOrbsPerBatch = 2;
     private int initialOrbProcessorMaxOrbsPerBatch = 2;
 
-    private int tentHealAmountPerSmallOrb;
+    private int tentHealAmountPerSmallOrb = 1;
     private int initialTentHealAmountPerSmallOrb = 1;
 
-    private int barricadeHealthPerCrate;
+    private int barricadeHealthPerCrate = 8;
     private int initialBarricadeHealthPerCrate = 8;
 
-    private int skillMerchantMaxActiveSkillsDisplayed;
+    private int skillMerchantMaxActiveSkillsDisplayed = 1;
     private int initialSkillMerchantMaxActiveSkillsDisplayed = 1;
-    private int skillMerchantMaxPassiveSkillsDisplayed;
+    private int skillMerchantMaxPassiveSkillsDisplayed = 2;
     private int initialSkillMerchantMaxPassiveSkillsDisplayed = 2;
-    private int trapMerchantMaxTrapsDisplayed;
+    private int trapMerchantMaxTrapsDisplayed = 1;
     private int initialTrapMerchantMaxTrapsDisplayed = 1;
-    private int trapMerchantMaxTrapUpgradesDisplayed;
+    private int trapMerchantMaxTrapUpgradesDisplayed = 2;
     private int initialTrapMerchantMaxTrapUpgradeDisplayed = 2;
 
     private int startWithRandomTrapAmount;

@@ -7,12 +7,17 @@ public class SettingsManager : MonoBehaviour
 {
     public static SettingsManager Instance;
 
+    [SerializeField] private float masterVolume = 1f;
     [SerializeField] private float sfxVolume = .5f;
     [SerializeField] private float musicVolume = .5f;
+    [SerializeField] private float dogVolume = .5f;
+
     private float gammaLevel = 0f;
 
+    public event EventHandler OnMasterVolumeChanged;
     public event EventHandler OnSfxVolumeChanged;
     public event EventHandler OnMusicVolumeChanged;
+    public event EventHandler OnDogVolumeChanged;
 
     public event EventHandler OnHoldToggleRunChanged;
     public event EventHandler OnAutoSwitchLightGunChanged;
@@ -51,9 +56,11 @@ public class SettingsManager : MonoBehaviour
     private void LoadSettings() {
         // Create a new ES3Settings to enable encryption.
 
+        masterVolume = ES3.Load("masterVolume", 1f, settingsSaveFileSettings);
         sfxVolume = ES3.Load("sfxVolume", .5f, settingsSaveFileSettings);
-
         musicVolume = ES3.Load("musicVolume", .5f, settingsSaveFileSettings);
+        dogVolume = ES3.Load("dogVolume", .5f, settingsSaveFileSettings);
+
         gammaLevel = ES3.Load("gammaLevel", 0f, settingsSaveFileSettings);
 
         currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
@@ -77,10 +84,10 @@ public class SettingsManager : MonoBehaviour
     }
 
     #region SET SETTINGS
-    public void SetSfxVolume(float newSfxVolume) {
-        sfxVolume = newSfxVolume;
-        ES3.Save("sfxVolume", newSfxVolume, settingsSaveFileSettings);
-        OnSfxVolumeChanged?.Invoke(this, EventArgs.Empty);
+    public void SetMasterVolume(float newMasterVolume) {
+        masterVolume = newMasterVolume;
+        ES3.Save("masterVolume", newMasterVolume, settingsSaveFileSettings);
+        OnMasterVolumeChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetMusicVolume(float newMusicVolume) {
@@ -88,6 +95,19 @@ public class SettingsManager : MonoBehaviour
         ES3.Save("musicVolume", newMusicVolume, settingsSaveFileSettings);
         OnMusicVolumeChanged?.Invoke(this, EventArgs.Empty);
     }
+
+    public void SetSfxVolume(float newSfxVolume) {
+        sfxVolume = newSfxVolume;
+        ES3.Save("sfxVolume", newSfxVolume, settingsSaveFileSettings);
+        OnSfxVolumeChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SetDogVolume(float newDogVolume) {
+        dogVolume = newDogVolume;
+        ES3.Save("dogVolume", newDogVolume, settingsSaveFileSettings);
+        OnDogVolumeChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     public void SetGammaLevel(float newGammaLevel) {
         gammaLevel = newGammaLevel;
         ES3.Save("gammaLevel", newGammaLevel, settingsSaveFileSettings);
@@ -218,6 +238,15 @@ public class SettingsManager : MonoBehaviour
     public LocalizationManager.Language GetLanguage() {
         return currentLanguage;
     }
+
+    public float GetMasterVolume() {
+        return masterVolume;
+    }
+
+    public float GetDogVolume() {
+        return dogVolume;
+    }
+
     public float GetSfxVolume() {
         return sfxVolume;
     }

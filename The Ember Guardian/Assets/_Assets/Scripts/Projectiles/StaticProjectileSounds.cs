@@ -29,7 +29,8 @@ public class StaticProjectileSounds : SoundObject
 
     private void StaticProjectile_OnTrapTriggered(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
-        audioSource.PlayOneShot(projectileExplosionAudioClips[Random.Range(0, projectileExplosionAudioClips.Length)], projectileSFXVolumeMultiplier * sfxVolume);
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
+        audioSource.PlayOneShot(projectileExplosionAudioClips[Random.Range(0, projectileExplosionAudioClips.Length)], projectileSFXVolumeMultiplier * sfxVolume * masterVolume);
     }
 
     private void Update() {
@@ -43,16 +44,18 @@ public class StaticProjectileSounds : SoundObject
 
     private void StaticProjectile_OnStaticProjectileHitCreature(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
         if (projectileCreatureHitAudioClips.Length == 0) return;
 
-        audioSource.PlayOneShot(projectileCreatureHitAudioClips[Random.Range(0, projectileCreatureHitAudioClips.Length)], projectileCreatureHitVolumeMultiplier * sfxVolume);
+        audioSource.PlayOneShot(projectileCreatureHitAudioClips[Random.Range(0, projectileCreatureHitAudioClips.Length)], projectileCreatureHitVolumeMultiplier * sfxVolume * masterVolume);
     }
 
     public void TriggerProjectileSFX() {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
         if (projectileSFXAudioClips.Length == 0) return;
 
         AudioClip audioClip = projectileSFXAudioClips[Random.Range(0, projectileSFXAudioClips.Length)];
-        audioSource.PlayOneShot(audioClip, projectileSFXVolumeMultiplier * sfxVolume);
+        audioSource.PlayOneShot(audioClip, projectileSFXVolumeMultiplier * sfxVolume * masterVolume);
     }
 }

@@ -22,6 +22,7 @@ public class MusicManager : MonoBehaviour {
     [SerializeField] private float nightMusicAudioVolume = .4f;
     [SerializeField] private float mainMenuMusicAudioVolume = .4f;
     private float musicSettingVolume;
+    private float masterSettingVolume;
 
     [SerializeField] private AudioClip mainMenuMusic; 
     [SerializeField] private AudioClip mainMenuMusicStreamerMode;
@@ -107,7 +108,9 @@ public class MusicManager : MonoBehaviour {
     private void Start() {
         SettingsManager.Instance.OnMusicVolumeChanged += SettingsManager_OnMusicVolumeChanged;
         SettingsManager.Instance.OnSteamerModeChanged += SettingsManager_OnSteamerModeChanged;
+        SettingsManager.Instance.OnMasterVolumeChanged += SettingsManager_OnMasterVolumeChanged;
         musicSettingVolume = SettingsManager.Instance.GetMusicVolume();
+        masterSettingVolume = SettingsManager.Instance.GetMasterVolume();
         streamerMode = SettingsManager.Instance.GetStreamerMode();
 
         if (PauseMenuUI.Instance != null) {
@@ -181,6 +184,7 @@ public class MusicManager : MonoBehaviour {
         }
 
     }
+
     private void Update() {
         if (fireDamageTakenRecently != 0) {
             fireDamageTakenTimer -= Time.deltaTime;
@@ -333,9 +337,13 @@ public class MusicManager : MonoBehaviour {
 
     private void SettingsManager_OnMusicVolumeChanged(object sender, System.EventArgs e) {
         musicSettingVolume = SettingsManager.Instance.GetMusicVolume();
-        Debug.Log("currentTrackVolumeMultiplier " + currentTrackVolumeMultiplier);
         SetAudioVolume(currentTrackVolumeMultiplier);
     }
+    private void SettingsManager_OnMasterVolumeChanged(object sender, EventArgs e) {
+        masterSettingVolume = SettingsManager.Instance.GetMasterVolume();
+        SetAudioVolume(currentTrackVolumeMultiplier);
+    }
+
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
         if (isPlayingLevelDiscoveryMusic && discoveryMusicInterruptionSource == NewLocationMusicInterruptionSource.buildFire) {
@@ -374,7 +382,7 @@ public class MusicManager : MonoBehaviour {
 
         StartCoroutine(PlayIntroNighMusicDelayed(2f));
 
-        SetAudioTargerVolume(nightMusicAudioVolume * musicSettingVolume);
+        SetAudioTargerVolume(nightMusicAudioVolume * musicSettingVolume * masterSettingVolume);
         //StartCoroutine(FadeInDelayedCoroutine(3f, 4f));
     }
 
@@ -478,7 +486,7 @@ public class MusicManager : MonoBehaviour {
         }
         
         isPlayingNightIntroMusic = true;
-        audioSourceA.volume = nightMusicAudioVolume * musicSettingVolume;
+        audioSourceA.volume = nightMusicAudioVolume * musicSettingVolume * masterSettingVolume;
         audioSourceA.Play();
         isUsingAudioSourceA = true;
 
@@ -664,7 +672,7 @@ public class MusicManager : MonoBehaviour {
 
     private IEnumerator CrossfadeCoroutine(AudioSource fromSource, AudioSource toSource, float duration) {
         float elapsedTime = 0f;
-        float maxVolume = nightMusicAudioVolume * musicSettingVolume;
+        float maxVolume = nightMusicAudioVolume * musicSettingVolume * masterSettingVolume;
 
         float clipTime = fromSource.time; // Récupère le temps de lecture actuel
         if (clipTime > fromSource.clip.length - 1f) {
@@ -788,16 +796,16 @@ public class MusicManager : MonoBehaviour {
     }
     public void SetAudioVolume(float volume) {
         currentTrackVolumeMultiplier = volume;
-        audioSourceA.volume = volume * musicSettingVolume;
-        audioSourceB.volume = volume * musicSettingVolume;
+        audioSourceA.volume = volume * musicSettingVolume * masterSettingVolume;
+        audioSourceB.volume = volume * musicSettingVolume * masterSettingVolume;
     }
 
     public void SetAudioTargerVolume(float volume) {
-        targetVolume = volume * musicSettingVolume;
+        targetVolume = volume * musicSettingVolume * masterSettingVolume;
     }
 
     public void SetTargetVolumeToMainTrack() {
-        targetVolume = discoverNewLocationAudioVolume * musicSettingVolume;
+        targetVolume = discoverNewLocationAudioVolume * musicSettingVolume * masterSettingVolume;
     }
 
     public void FadeInMusic(float fadeDuration) {

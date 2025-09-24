@@ -53,8 +53,16 @@ public class FireSound : StructureSounds
 
     protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
-        extractingEmberAudioSource.volume = sfxVolume;
-        audioSource.volume = sfxVolume;
+
+        extractingEmberAudioSource.volume = sfxVolume * masterVolume;
+        audioSource.volume = sfxVolume * masterVolume;
+    }
+
+    protected override void SettingsManager_OnMasterVolumeChanged(object sender, System.EventArgs e) {
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
+
+        extractingEmberAudioSource.volume = sfxVolume * masterVolume;
+        audioSource.volume = sfxVolume * masterVolume;
     }
 
     private void Fire_OnFireEmberExtractionStarted(object sender, System.EventArgs e) {
@@ -66,12 +74,12 @@ public class FireSound : StructureSounds
     }
 
     private void Fire_OnFireDamageTaken(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(fireDamagedAudioClipArray[Random.Range(0, fireDamagedAudioClipArray.Length)], sfxVolume);
+        audioSource.PlayOneShot(fireDamagedAudioClipArray[Random.Range(0, fireDamagedAudioClipArray.Length)], sfxVolume * masterVolume);
     }
 
     private void Fire_OnFireFuelled(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(orbDroppedInFireAudioClipArray1[Random.Range(0, orbDroppedInFireAudioClipArray1.Length)], .7f * sfxVolume);
-        audioSource.PlayOneShot(orbDroppedInFireAudioClipArray2[Random.Range(0, orbDroppedInFireAudioClipArray2.Length)], .7f * sfxVolume);
+        audioSource.PlayOneShot(orbDroppedInFireAudioClipArray1[Random.Range(0, orbDroppedInFireAudioClipArray1.Length)], .7f * sfxVolume * masterVolume);
+        audioSource.PlayOneShot(orbDroppedInFireAudioClipArray2[Random.Range(0, orbDroppedInFireAudioClipArray2.Length)], .7f * sfxVolume * masterVolume);
     }
 
     private void Fire_OnFireChangedState(object sender, Fire.OnFireChangedStateEventArgs e) {

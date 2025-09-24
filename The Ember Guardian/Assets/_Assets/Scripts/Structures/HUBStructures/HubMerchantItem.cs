@@ -109,7 +109,7 @@ public class HubMerchantItem : MonoBehaviour
         //Debug.Log("UnlockItem " + GetItemType());
     }
 
-    public  void SetItemBought() {
+    public virtual void SetItemBought() {
         itemBought = true;
         itemStatusChanged = true;
     }

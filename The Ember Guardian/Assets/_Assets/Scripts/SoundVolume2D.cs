@@ -11,6 +11,7 @@ public class SoundVolume2D : MonoBehaviour
     [SerializeField] private bool active = true;
     private bool isPlaying = true;
     private float sfxVolume;
+    private float masterVolume;
     private float fadeMultiplier = 1f;
 
     private void Awake() {
@@ -22,11 +23,19 @@ public class SoundVolume2D : MonoBehaviour
 
     private void Start() {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
-        audioSource.volume = sfxVolume;
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
+        audioSource.volume = sfxVolume * masterVolume;
+
         SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+        SettingsManager.Instance.OnMasterVolumeChanged += SettingsManager_OnMasterVolumeChanged;
+
         if(active) {
             HandleAudioSourceVolumeAndSleep();
         }
+    }
+
+    private void SettingsManager_OnMasterVolumeChanged(object sender, System.EventArgs e) {
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
     }
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
@@ -63,7 +72,7 @@ public class SoundVolume2D : MonoBehaviour
     private void HandleAudioSourceVolumeAndSleep() {
 
         float distanceToAudioSource = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
-        float volume = (1 - (distanceToAudioSource / maxDistanceToHear)) * maxAudioSourceVolume * sfxVolume;
+        float volume = (1 - (distanceToAudioSource / maxDistanceToHear)) * maxAudioSourceVolume * sfxVolume * masterVolume;
 
         if (volume < 0 && isPlaying) {
             audioSource.Stop();

@@ -68,6 +68,10 @@ public class PlayerStats : MonoBehaviour
     private float initialSwapWeaponTimeReductionPercent = 0;
     private float initialflashlightRange;
     private float flashlightRangeBuff_meta;
+
+    private int meleeDamage;
+    private int initialMeleeDamage = 5;
+    private int meleeDamageBuff_meta;
     #endregion
 
     #region BACKPACK
@@ -114,7 +118,6 @@ public class PlayerStats : MonoBehaviour
     }
 
     private void LoadPlayerStatsSO() {
-
         initialMoveSpeed = playerStatsSO.initialMoveSpeed;
         initialMaxStamina = playerStatsSO.initialMaxStamina;
         initialExhaustionTime = playerStatsSO.initialExhaustionTime;
@@ -131,6 +134,7 @@ public class PlayerStats : MonoBehaviour
         initialRespawnTime = playerStatsSO.initialRespawnTime;
         initialHpRegenTimer = playerStatsSO.initialHpRegenTimer;
 
+        initialMeleeDamage = playerStatsSO.initialMeleeDamage;
     }
 
     private void LoadPlayerStatBuffs_Meta() {
@@ -158,6 +162,7 @@ public class PlayerStats : MonoBehaviour
         startLevelAmmo_BuffAbsolute = GetValue(buffData, "startLevelAmmo_BuffAbsolute", 0);
         startLevelOrbs_BuffAbsolute = GetValue(buffData, "startLevelOrbs_BuffAbsolute", 0);
         flashlightRangeBuff_meta = GetValue(buffData, "flashlightRangeBuff_meta", 0f);
+        meleeDamageBuff_meta = (int)GetValue(buffData, "meleeDamageBuff_meta", 0);
 
         backpackGemSizePercentBuff = GetValue(buffData, "backpackGemSizePercentBuff", 0f);
         backpackAmmoSizePercentBuff = GetValue(buffData, "backpackAmmoSizePercentBuff", 0f);
@@ -168,6 +173,7 @@ public class PlayerStats : MonoBehaviour
 
         hold2WeaponsUnlocked = GetValue(buffData, "hold2WeaponsUnlocked", false);
     }
+
     private T GetValue<T>(Dictionary<string, object> dict, string key, T defaultValue) {
         if (dict.ContainsKey(key) && dict[key] is T value)
             return value;
@@ -191,6 +197,7 @@ public class PlayerStats : MonoBehaviour
         maxPlayerHP = initialMaxPlayerHP + maxPlayerHPBuffAbsolute_meta;
         respawnPlayerHP = initialPlayerRespawnHP + respawnPlayerHPBuffAbsolute_meta;
         hpRegenTime = initialHpRegenTimer + absoluteHpRegenTimer_meta;
+        meleeDamage = initialMeleeDamage + meleeDamageBuff_meta;
 
         damagedImmunityTime = initialDamagedImmunityTime;
         aimingSightDecelerationFactor = initialAimingSightDecelerationFactor;
@@ -247,6 +254,10 @@ public class PlayerStats : MonoBehaviour
 
     public void SetRespawnPlayerHPBuff(int respawnPlayerHPBuffAbsolute) {
         this.respawnPlayerHPBuffAbsolute_meta = respawnPlayerHPBuffAbsolute;
+        RefreshCurrentPlayerStats();
+    }
+    public void SetMeleeDamageBuff(int meleeDamageBuffAbsolute) {
+        this.meleeDamageBuff_meta = meleeDamageBuffAbsolute;
         RefreshCurrentPlayerStats();
     }
 
@@ -383,6 +394,10 @@ public class PlayerStats : MonoBehaviour
         return startWithRandomPassiveSkillLevel;
     }
 
+    public int GetMeleeDamage() {
+        return meleeDamage;
+    }
+
     #endregion
 
     #region GET INITIAL PARAMETERS
@@ -436,6 +451,9 @@ public class PlayerStats : MonoBehaviour
     public float GetInitialCrouchDetectionRangeReductionFactor() {
         return initialCrouchDetectionRangeReductionFactor;
     }
+    public int GetInitialMeleeDamage() {
+        return initialMeleeDamage;
+    }
     #endregion
 
     #region GET PARAMETER BUFFS META
@@ -471,6 +489,9 @@ public class PlayerStats : MonoBehaviour
 
     public int GetStartLevelOrbsBuff_Meta() {
         return startLevelOrbs_BuffAbsolute;
+    }
+    public int GetMeleeDamageBuff_meta() {
+        return meleeDamageBuff_meta;
     }
 
     public float GetRollForcePercentBuff_Meta() {
@@ -595,6 +616,7 @@ public class PlayerStats : MonoBehaviour
         buffData["startLevelAmmo_BuffAbsolute"] = startLevelAmmo_BuffAbsolute;
         buffData["startLevelOrbs_BuffAbsolute"] = startLevelOrbs_BuffAbsolute;
         buffData["flashlightRangeBuff_meta"] = flashlightRangeBuff_meta;
+        buffData["meleeDamageBuff_meta"] = meleeDamageBuff_meta;
 
         buffData["backpackGemSizePercentBuff"] = backpackGemSizePercentBuff;
         buffData["backpackAmmoSizePercentBuff"] = backpackAmmoSizePercentBuff;

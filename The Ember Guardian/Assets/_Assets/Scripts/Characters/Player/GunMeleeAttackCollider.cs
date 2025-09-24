@@ -13,6 +13,8 @@ public class GunMeleeAttackCollider : MonoBehaviour
 
     private void Start() {
         PlayerMeleeAttack.Instance.OnMeleeAttackStarted += PlayerMeleeAttack_OnMeleeAttackStarted;
+
+        meleeAttackDamage = PlayerStats.Instance.GetMeleeDamage();
     }
 
     private void PlayerMeleeAttack_OnMeleeAttackStarted(object sender, System.EventArgs e) {

@@ -56,6 +56,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodySpriteRenderer: {fileID: 1694784159719430684}
   glowSpriteRenderer: {fileID: 644999808924345169}
+  dayGlowAmount: 2
+  standardGlowAmount: 5
 --- !u!114 &2651699538797743912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,11 +340,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42251329e4bb13489231f279af5a88c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   animal: {fileID: 1420941586403054799}
   animatorManager: {fileID: 2651699538797743912}
-  footstepSFXVolume: 0.2
-  idleSFXVolume: 1
-  damagedSFXVolume: 1
+  footstepSFXVolume: 0.1
+  idleSFXVolume: 0.5
+  damagedSFXVolume: 0.5
 --- !u!82 &156374043522893267
 AudioSource:
   m_ObjectHideFlags: 0
@@ -773,6 +777,7 @@ MonoBehaviour:
   mobHitPS_Splatter: {fileID: 0}
   mobHitPS_Splatter_Continuous: {fileID: 0}
   mobHitPS_Splatter_Crit: {fileID: 0}
+  useHitXPosition: 0
   animalSO: {fileID: 0}
 --- !u!114 &2242113373876001478
 MonoBehaviour:

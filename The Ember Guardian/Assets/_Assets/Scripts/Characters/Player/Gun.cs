@@ -251,7 +251,9 @@ public class Gun : MonoBehaviour
         if(gunSO.reloadTimeStatModifier != null && reloadTimeStatModifierLevel != -1) {
             reloadTime = gunSO.reloadTime + gunSO.reloadTime * gunSO.reloadTimeStatModifier.statModifierList[reloadTimeStatModifierLevel] * 0.01f;
         }
-        float reloadTimeRecuctionFactor = handsReloadTime / gunSO.reloadTime;
+
+        float reloadTimeRecuctionFactor = reloadTime / gunSO.reloadTime;
+
         handsReloadTime = gunSO.handsReloadTime * reloadTimeRecuctionFactor;
 
         bulletLifetime = gunSO.bulletLifetime;
@@ -458,6 +460,8 @@ public class Gun : MonoBehaviour
     #region GET PARAMETERS
 
     public bool GetGunUnlocked() {
+        if (gunSO.gunType == GunSO.GunType.Rifle) return true;
+
         return gunUnlocked;
     }
 
@@ -795,7 +799,6 @@ public class Gun : MonoBehaviour
         gunData["jamRepairHitAmountLevel"] = jamRepairHitAmountStatModifierLevel;
 
         gunData["secondaryAbilityUnlocked"] = secondaryAbilityUnlocked;
-        gunData["gunUnlocked"] = gunUnlocked;
 
         // Sauvegarde en batch
         string key = gunSO.gunType + "_metaData";
@@ -804,6 +807,7 @@ public class Gun : MonoBehaviour
 
     public void LoadGunStatModifierLevels() {
         string key = gunSO.gunType + "_metaData";
+        gunUnlocked = MetaProgressionManager.Instance.GetGunUnlocked(gunSO);
 
         if (!ES3.KeyExists(key)) {
             RefreshGunStats();
@@ -838,7 +842,6 @@ public class Gun : MonoBehaviour
         jamRepairHitAmountStatModifierLevel = GetLevelSafe("jamRepairHitAmountLevel", gunSO.jamRepairHitAmountStatModifier);
 
         secondaryAbilityUnlocked = gunData.ContainsKey("secondaryAbilityUnlocked") && Convert.ToBoolean(gunData["secondaryAbilityUnlocked"]);
-        gunUnlocked = gunData.ContainsKey("gunUnlocked") && Convert.ToBoolean(gunData["gunUnlocked"]);
 
         RefreshGunStats();
     }

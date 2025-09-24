@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SoundObject : MonoBehaviour
 {
+    protected float masterVolume;
     protected float sfxVolume;
     protected AudioSource audioSource2D;
 
@@ -15,9 +16,14 @@ public class SoundObject : MonoBehaviour
     protected virtual void Start() {
         audioSource2D = GetComponent<AudioSource>();
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
         SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+        SettingsManager.Instance.OnMasterVolumeChanged += SettingsManager_OnMasterVolumeChanged;
     }
 
+    protected virtual void SettingsManager_OnMasterVolumeChanged(object sender, System.EventArgs e) {
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
+    }
 
     protected virtual void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
@@ -75,7 +81,7 @@ public class SoundObject : MonoBehaviour
         clipInstances[audioClip]++;
 
         // Lecture et décrément après la durée du son
-        audioSource2D.PlayOneShot(audioClip, volume * sfxVolume);
+        audioSource2D.PlayOneShot(audioClip, volume * sfxVolume * masterVolume);
         StartCoroutine(TrackClipInstance(audioClip, audioClip.length));
     }
 

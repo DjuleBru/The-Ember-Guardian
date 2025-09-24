@@ -13,6 +13,7 @@ public class PayCurrencyUI_SoundManager : MonoBehaviour
 
     private float pitch;
     private float sfxVolume;
+    private float masterVolume;
 
     private void Awake() {
         audioSource = GetComponent<AudioSource>();
@@ -20,12 +21,20 @@ public class PayCurrencyUI_SoundManager : MonoBehaviour
 
     private void Start() {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
         SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+        SettingsManager.Instance.OnMasterVolumeChanged += SettingsManager_OnMasterVolumeChanged;
         PayCurrencyUI.OnAnySingleCurrencyPaid += PayOrbsUI_OnSingleOrbFilled1;
+    }
+
+    private void SettingsManager_OnMasterVolumeChanged(object sender, System.EventArgs e) {
+        sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
     }
 
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
     }
 
     private void PayOrbsUI_OnSingleOrbFilled1(object sender, PayCurrencyUI.OnSingleOrbFilledEventArgs e) {
@@ -35,7 +44,7 @@ public class PayCurrencyUI_SoundManager : MonoBehaviour
 
         if ((sender as PayCurrencyUI).GetCurrentCurrencyTemplateWorldUI().GetCurrencyTypeToPay() == PlayerCurrencies.CurrencyType.ember) {
             audioClip = payEmberAudioClip;
-            audioSource.PlayOneShot(audioClip, sfxVolume);
+            audioSource.PlayOneShot(audioClip, sfxVolume*masterVolume);
             return;
         }
 
@@ -54,7 +63,7 @@ public class PayCurrencyUI_SoundManager : MonoBehaviour
             audioClip = paySmallRedOrbsUIAudioClips[Random.Range(0, paySmallRedOrbsUIAudioClips.Length)];
         }
 
-        audioSource.PlayOneShot(audioClip, sfxVolume);
+        audioSource.PlayOneShot(audioClip, sfxVolume * masterVolume);
 
     }
 

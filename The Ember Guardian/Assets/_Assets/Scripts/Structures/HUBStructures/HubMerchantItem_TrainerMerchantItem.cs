@@ -23,6 +23,7 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
         RespawnHP,
         InitialAmmo,
         InitialOrbs,
+        MeleeDamage,
     }
 
     [SerializeField] private TrainerItemType trainerItemType;
@@ -136,6 +137,14 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             if (trainerItemType == TrainerItemType.InitialOrbs) {
                 initialStatValue = PlayerStats.Instance.GetInitialStartLevelOrbs();
                 currentStatValue = PlayerStats.Instance.GetStartLevelOrbs().ToString();
+                totalStatWithModifierPostfix = "";
+                relativeStatPostfix = "";
+                relativeStatPrefix = "+";
+            }
+
+            if (trainerItemType == TrainerItemType.MeleeDamage) {
+                initialStatValue = PlayerStats.Instance.GetInitialMeleeDamage();
+                currentStatValue = PlayerStats.Instance.GetMeleeDamage().ToString();
                 totalStatWithModifierPostfix = "";
                 relativeStatPostfix = "";
                 relativeStatPrefix = "+";
@@ -304,6 +313,10 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
             PlayerStats.Instance.SetInitialStartLevelOrbsBuff((int)buff);
         }
 
+        if (trainerItemType == TrainerItemType.MeleeDamage) {
+            PlayerStats.Instance.SetMeleeDamageBuff((int)buff);
+        }
+
         if (trainerItemType == TrainerItemType.Heal) {
             PlayerStats.Instance.SetHpRegenTimeAbsolute(buff);
         }
@@ -413,6 +426,14 @@ public class HubMerchantItem_TrainerMerchantItem : HubMerchantItem
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_initialOrbs") + " ");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newInitialOrbs") + " ");
+        }
+
+        if (trainerItemType == TrainerItemType.MeleeDamage) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentMeleeDamage") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_initialMeleeDamage") + " ");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newMeleeDamage") + " ");
         }
 
         if (trainerItemType == TrainerItemType.Heal) {

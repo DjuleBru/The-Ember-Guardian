@@ -32,7 +32,7 @@ public class ChestSound : SoundObject
             audioClip = unlockChestAudioClip_SkillChest;
         }
 
-        audioSource.PlayOneShot(audioClip, .75f * sfxVolume);
+        audioSource.PlayOneShot(audioClip, .75f * sfxVolume * masterVolume);
     }
 
     private void Chest_OnChestOpened(object sender, System.EventArgs e) {
@@ -44,7 +44,7 @@ public class ChestSound : SoundObject
         if (chest.GetChestType() == Chest.ChestType.skillChest) {
             audioClip = startOpenChestAudioClip_SkillChest;
         }
-        audioSource.PlayOneShot(audioClip, .75f * sfxVolume);
+        audioSource.PlayOneShot(audioClip, .75f * sfxVolume * masterVolume);
 
     }
 }

@@ -64,6 +64,10 @@ public class GunSounds : SoundObject
 
     protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
-        surgeAudioSource.volume = sfxVolume * surgeBuffVolume;
+        surgeAudioSource.volume = sfxVolume * masterVolume * surgeBuffVolume;
+    }
+    protected override void SettingsManager_OnMasterVolumeChanged(object sender, System.EventArgs e) {
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
+        surgeAudioSource.volume = sfxVolume * masterVolume * surgeBuffVolume;
     }
 }

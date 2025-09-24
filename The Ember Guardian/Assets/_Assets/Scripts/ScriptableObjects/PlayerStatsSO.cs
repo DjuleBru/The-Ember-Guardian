@@ -48,4 +48,8 @@ public class PlayerStatsSO : ScriptableObject
     [LabelWidth(125)]
     public float flashlightRange = 10f;
 
+    [BoxGroup("Other")]
+    [LabelWidth(125)]
+    public int initialMeleeDamage = 5;
+
 }

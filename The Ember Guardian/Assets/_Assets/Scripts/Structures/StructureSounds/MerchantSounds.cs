@@ -35,7 +35,11 @@ public class MerchantSounds : StructureSounds
 
     protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
-        idleAudioSource.volume = sfxVolume;
+        idleAudioSource.volume = sfxVolume * masterVolume;
+    }
+    protected override void SettingsManager_OnMasterVolumeChanged(object sender, System.EventArgs e) {
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
+        idleAudioSource.volume = sfxVolume * masterVolume;
     }
 
     private void MerchantUI_OnPlayerBoughtMinorItem(object sender, System.EventArgs e) {

@@ -91,8 +91,46 @@ public class DogStats : MonoBehaviour {
         retreiverUnlocked = ES3.Load("retreiverUnlocked", false);
         darkCompanionUnlocked = ES3.Load("darkCompanionUnlocked", false);
 
-        if (!ES3.KeyExists("DogStats"))
+        // Initialisation par défaut
+        germanShepherdBiteAbilityUnlocked = false;
+        germanShepherdDigResourceAbilityUnlocked = false;
+        germanShepherdDetectAmbushAbilityUnlocked = false;
+
+        retreiverBiteAbilityUnlocked = true;
+        retreiverBuffWorkersAbilityUnlocked = false;
+        retreiverPickUpItemsAbilityUnlocked = false;
+
+        darkCompanionBiteAbilityUnlocked = true;
+        darkCompanionLaserAbilityUnlocked = false;
+        darkCompanionStompAbilityUnlocked = false;
+
+        germanShepherdBiteDamage = initialGermanShepherdBiteDamage;
+        germanShepherdBiteCooldown = initialGermanShepherdBiteCooldown;
+        germanShepherdDigResourceCooldown = initialGermanShepherdDigResourceCooldown;
+        germanShepherdDigResourceProbability = initialGermanShepherdDigResourceProbability;
+        germanShepherdDigResourceDoubleProbability = initialGermanShepherdDigResourceDoubleProbability;
+        germanShepherdAmbushDetectionProbability = initialGermanShepherdAmbushDetectionProbability;
+
+        retreiverBiteDamage = initialRetreiverBiteDamage;
+        retreiverBiteCooldown = initialRetreiverBiteCooldown;
+        retreiverBuffWorkersAmount = initialRetreiverBuffWorkersAmount;
+        retreiverBuffWorkersRadius = initialRetreiverBuffWorkersRadius;
+
+        darkCompanionBiteDamage = initialDarkCompanionBiteDamage;
+        darkCompanionBiteCooldown = initialDarkCompanionBiteCooldown;
+        darkCompanionLaserDamage = initialDarkCompanionLaserDamage;
+        darkCompanionLaserCooldown = initialDarkCompanionLaserCooldown;
+        darkCompanionStompDamage = initialDarkCompanionStompDamage;
+        darkCompanionStompCooldown = initialDarkCompanionStompCooldown;
+        darkCompanionStompStunDuration = initialDarkCompanionStompStunDuration;
+
+        // Dog type par défaut
+        Dog.DogType loadedDogType = Dog.DogType.GermanShepherd;
+
+        if (!ES3.KeyExists("DogStats")) {
+            Dog.Instance.SetDogType(loadedDogType);
             return;
+        }
 
         var dogData = ES3.Load<Dictionary<string, object>>("DogStats");
 
@@ -101,11 +139,11 @@ public class DogStats : MonoBehaviour {
         germanShepherdDigResourceAbilityUnlocked = GetValue(dogData, "germanShepherdDigResourceAbilityUnlocked", false);
         germanShepherdDetectAmbushAbilityUnlocked = GetValue(dogData, "germanShepherdDetectAmbushAbilityUnlocked", false);
 
-        retreiverBiteAbilityUnlocked = GetValue(dogData, "retreiverBiteAbilityUnlocked", false);
+        retreiverBiteAbilityUnlocked = GetValue(dogData, "retreiverBiteAbilityUnlocked", true);
         retreiverBuffWorkersAbilityUnlocked = GetValue(dogData, "retreiverBuffWorkersAbilityUnlocked", false);
         retreiverPickUpItemsAbilityUnlocked = GetValue(dogData, "retreiverPickUpItemsAbilityUnlocked", false);
 
-        darkCompanionBiteAbilityUnlocked = GetValue(dogData, "darkCompanionBiteAbilityUnlocked", false);
+        darkCompanionBiteAbilityUnlocked = GetValue(dogData, "darkCompanionBiteAbilityUnlocked", true);
         darkCompanionLaserAbilityUnlocked = GetValue(dogData, "darkCompanionLaserAbilityUnlocked", false);
         darkCompanionStompAbilityUnlocked = GetValue(dogData, "darkCompanionStompAbilityUnlocked", false);
 
@@ -131,7 +169,8 @@ public class DogStats : MonoBehaviour {
         darkCompanionStompStunDuration = GetValue(dogData, "darkCompanionStompStunDuration", initialDarkCompanionStompStunDuration);
 
         // Dog type (enum direct)
-        Dog.DogType loadedDogType = GetValue(dogData, "dogType", Dog.DogType.GermanShepherd);
+        loadedDogType = GetValue(dogData, "dogType", Dog.DogType.GermanShepherd);
+
         Dog.Instance.SetDogType(loadedDogType);
     }
 

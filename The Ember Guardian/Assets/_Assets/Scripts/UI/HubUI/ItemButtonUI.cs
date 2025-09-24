@@ -528,8 +528,8 @@ public class ItemButtonUI : ButtonUI {
         if (itemLockedInDemo && HUBManager.Instance.GetIsDemo()) return;
         if (hubMerchantItem.GetItemBought()) return;
 
-        hubMerchantItem.UnlockItem();
         hubMerchantItem.SetItemBought();
+        hubMerchantItem.UnlockItem();
         RefreshItemStatusVisuals();
     }
 

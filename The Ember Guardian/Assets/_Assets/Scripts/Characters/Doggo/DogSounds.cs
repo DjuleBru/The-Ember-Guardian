@@ -33,6 +33,8 @@ public class DogSounds : SoundObject
 
     [SerializeField] private DogAnimatorManager dogAnimator; 
 
+    private float dogVolume;
+
     private float growlTimer;
     private float growlRate = 2.5f;
 
@@ -48,6 +50,9 @@ public class DogSounds : SoundObject
 
     protected override void Start() {
         base.Start();
+
+        dogVolume = SettingsManager.Instance.GetDogVolume();
+        SettingsManager.Instance.OnDogVolumeChanged += SettingsManager_OnDogVolumeChanged;
 
         dogAnimator.OnFootstepTriggered += PlayerAnimator_OnFootStepTriggered;
         dogAnimator.OnDogSniffed += DogAnimator_OnDogSniffed;
@@ -72,6 +77,10 @@ public class DogSounds : SoundObject
         }
     }
 
+    private void SettingsManager_OnDogVolumeChanged(object sender, System.EventArgs e) {
+        dogVolume = SettingsManager.Instance.GetDogVolume();
+    }
+
     private void Dog_OnDogTypeChanged(object sender, System.EventArgs e) {
         dogAudioSource.Stop();
         dogOtherSFXAudioSource.Stop();
@@ -79,22 +88,22 @@ public class DogSounds : SoundObject
     }
 
     private void DarkCompanionAI_OnStompAbilityStarted(object sender, System.EventArgs e) {
-        dogAudioSource.PlayOneShot(stompAttackAudioClip, sfxVolume);
+        dogAudioSource.PlayOneShot(stompAttackAudioClip, masterVolume * dogVolume);
     }
 
     private void DarkCompanionAI_OnLaserAbilityStarted(object sender, System.EventArgs e) {
-        dogAudioSource.PlayOneShot(laserAttackAudioClip, sfxVolume);
+        dogAudioSource.PlayOneShot(laserAttackAudioClip, masterVolume * dogVolume);
     }
 
     private void DogAI_OnDogBite(object sender, System.EventArgs e) {
         if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
-            dogAudioSource.PlayOneShot(biteAudioClips_darkCompanion[Random.Range(0, biteAudioClips_darkCompanion.Length)], sfxVolume * .7f);
+            dogAudioSource.PlayOneShot(biteAudioClips_darkCompanion[Random.Range(0, biteAudioClips_darkCompanion.Length)], masterVolume * dogVolume * .7f);
         }
     }
 
     private void PetDog_OnPlayerEndedPettingDog(object sender, System.EventArgs e) {
         if(Dog.Instance.GetDogType() == Dog.DogType.GermanShepherd || Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
-            dogAudioSource.PlayOneShot(petBarkAudioClips[Random.Range(0, petBarkAudioClips.Length)], sfxVolume * 3f);
+            dogAudioSource.PlayOneShot(petBarkAudioClips[Random.Range(0, petBarkAudioClips.Length)], masterVolume * dogVolume * 3f);
         }
     }
 
@@ -103,14 +112,14 @@ public class DogSounds : SoundObject
         if(!pettingDogTapPlaying) {
 
             AudioClip tapAudioClip = petTapAudioClips[Random.Range(0, petTapAudioClips.Length)];
-            dogAudioSource.PlayOneShot(tapAudioClip, sfxVolume / 2);
+            dogAudioSource.PlayOneShot(tapAudioClip, masterVolume * dogVolume / 2);
             StartCoroutine(SetTappingDogSFXAfterSFXEnd(tapAudioClip.length * 5f));
         }
 
         if (!pettingDogSFXPlaying) {
 
             AudioClip audioClip = petLoopAudioClips[Random.Range(0, petLoopAudioClips.Length)];
-            dogAudioSource.PlayOneShot(audioClip, sfxVolume*2);
+            dogAudioSource.PlayOneShot(audioClip, masterVolume * dogVolume * 2);
             StartCoroutine(SetPettingDogSFXAfterSFXEnd(audioClip.length));
 
         }
@@ -125,7 +134,7 @@ public class DogSounds : SoundObject
                 audioClip = barkAudioClips_darkCompanion[Random.Range(0, barkAudioClips_darkCompanion.Length)];
             }
 
-            dogAudioSource.PlayOneShot(audioClip, sfxVolume*2);
+            dogAudioSource.PlayOneShot(audioClip, masterVolume * dogVolume * 2);
             StartCoroutine(SetPettingDogBarkSFXAfterSFXEnd(audioClip.length));
 
         }
@@ -148,7 +157,7 @@ public class DogSounds : SoundObject
     private IEnumerator PlayPetDogSFXAfterAnimationStart(float animationStartDuration) {
         yield return new WaitForSeconds(animationStartDuration);    
         AudioClip audioClip = petStartAudioClips[Random.Range(0, petStartAudioClips.Length)];
-        dogAudioSource.PlayOneShot(audioClip, sfxVolume);
+        dogAudioSource.PlayOneShot(audioClip, masterVolume * dogVolume);
         StartCoroutine(SetPettingDogSFXAfterSFXEnd(audioClip.length));
     }
 
@@ -206,20 +215,20 @@ public class DogSounds : SoundObject
     private void DogAnimator_OnDogBite(object sender, System.EventArgs e) {
         runningToAttack = false;
 
-        dogAudioSource.PlayOneShot(biteAudioClips[Random.Range(0, biteAudioClips.Length)], sfxVolume);
+        dogAudioSource.PlayOneShot(biteAudioClips[Random.Range(0, biteAudioClips.Length)], masterVolume * dogVolume);
     }
 
 
     private void DogAnimator_OnDogBark(object sender, System.EventArgs e) {
         if (Dog.Instance.GetDogType() == Dog.DogType.GermanShepherd) {
-            dogAudioSource.PlayOneShot(barkAudioClips[Random.Range(0, barkAudioClips.Length)], sfxVolume * .7f);
+            dogAudioSource.PlayOneShot(barkAudioClips[Random.Range(0, barkAudioClips.Length)], masterVolume * dogVolume * .7f);
         }
 
         if (Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
-            dogAudioSource.PlayOneShot(barkAudioClips_retreiver[Random.Range(0, barkAudioClips_retreiver.Length)], sfxVolume);
+            dogAudioSource.PlayOneShot(barkAudioClips_retreiver[Random.Range(0, barkAudioClips_retreiver.Length)], masterVolume * dogVolume);
         }
         if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
-            dogAudioSource.PlayOneShot(barkAudioClips_darkCompanion[Random.Range(0, barkAudioClips_darkCompanion.Length)], sfxVolume * 2f);
+            dogAudioSource.PlayOneShot(barkAudioClips_darkCompanion[Random.Range(0, barkAudioClips_darkCompanion.Length)], masterVolume * dogVolume * 2f);
         }
     }
 
@@ -233,7 +242,7 @@ public class DogSounds : SoundObject
 
             dogOtherSFXAudioSource.clip = audioClip;
             dogOtherSFXAudioSource.Play();
-            dogOtherSFXAudioSource.volume = sfxVolume * .7f;
+            dogOtherSFXAudioSource.volume = masterVolume * dogVolume * .7f;
             growlTimer = growlRate;
         }
     }
@@ -244,26 +253,26 @@ public class DogSounds : SoundObject
             audioClip = groanAudioClips_darkCompanion[Random.Range(0, groanAudioClips_darkCompanion.Length)];
         }
 
-        dogAudioSource.PlayOneShot(audioClip, sfxVolume * .7f);
+        dogAudioSource.PlayOneShot(audioClip, masterVolume * dogVolume * .7f);
     }
 
     private void DogAnimator_OnDogBreathe(object sender, System.EventArgs e) {
         AudioClip audioClip = breatheAudioClips[Random.Range(0, breatheAudioClips.Length)];
-        dogAudioSource.PlayOneShot(audioClip, sfxVolume * .8f);
+        dogAudioSource.PlayOneShot(audioClip, masterVolume * dogVolume * .8f);
     }
 
     private void PlayerAnimator_OnFootStepTriggered(object sender, System.EventArgs e) {
-        dogAudioSource.PlayOneShot(footStepAudioClips[Random.Range(0, footStepAudioClips.Length)], sfxVolume * .5f);
+        dogAudioSource.PlayOneShot(footStepAudioClips[Random.Range(0, footStepAudioClips.Length)], masterVolume * dogVolume * .5f);
     }
 
     private void DogAnimator_OnDogPant(object sender, System.EventArgs e) {
-        dogAudioSource.PlayOneShot(pantAudioClips[Random.Range(0, pantAudioClips.Length)], sfxVolume * .2f);
-        dogAudioSource.PlayOneShot(pantAudioClips[Random.Range(0, pantAudioClips.Length)], sfxVolume * .2f);
+        dogAudioSource.PlayOneShot(pantAudioClips[Random.Range(0, pantAudioClips.Length)], masterVolume * dogVolume * .2f);
+        dogAudioSource.PlayOneShot(pantAudioClips[Random.Range(0, pantAudioClips.Length)], masterVolume * dogVolume * .2f);
 
     }
 
     private void DogAnimator_OnDogSniffed(object sender, System.EventArgs e) {
-        dogAudioSource.PlayOneShot(sniffAudioClips[Random.Range(0, sniffAudioClips.Length)], sfxVolume * .15f);
+        dogAudioSource.PlayOneShot(sniffAudioClips[Random.Range(0, sniffAudioClips.Length)], masterVolume * dogVolume * .15f);
 
     }
 

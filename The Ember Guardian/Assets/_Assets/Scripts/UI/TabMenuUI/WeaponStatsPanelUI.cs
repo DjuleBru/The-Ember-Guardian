@@ -61,6 +61,8 @@ public class WeaponStatsPanelUI : MonoBehaviour
     }
 
     private void ChangeWeaponPanel_OnChangeWeaponPanelOpened(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetUnlockedAndUnequippedGunSOList().Count == 0) return;
+
         GunSO gunSOToDiplay = PlayerShoot.Instance.GetUnlockedAndUnequippedGunSOList()[0];
 
         if (gunSOToDiplay != null) {

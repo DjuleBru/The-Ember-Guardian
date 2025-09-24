@@ -27,6 +27,7 @@ public class BackgroundSoundsManager : MonoBehaviour
     private AudioSource currentAudioSourcePlaying;
 
     private float sfxVolume;
+    private float masterVolume;
 
     private void Awake() {
         Instance = this;
@@ -35,7 +36,9 @@ public class BackgroundSoundsManager : MonoBehaviour
 
     private void Start() {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
         SettingsManager.Instance.OnSfxVolumeChanged += SettingsManager_OnSfxVolumeChanged;
+        SettingsManager.Instance.OnMasterVolumeChanged += SettingsManager_OnMasterVolumeChanged;
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
@@ -51,12 +54,22 @@ public class BackgroundSoundsManager : MonoBehaviour
         currentAudioSourcePlaying = audioSource1;
     }
 
+    private void SettingsManager_OnMasterVolumeChanged(object sender, System.EventArgs e) {
+        masterVolume = SettingsManager.Instance.GetMasterVolume();
+
+        float newVolume = masterVolume * sfxVolume * audioClipVolume_Day;
+        if (DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+            newVolume = masterVolume * sfxVolume * audioClipVolume_Night;
+        }
+        currentAudioSourcePlaying.volume = newVolume;
+    }
+
     private void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         sfxVolume = SettingsManager.Instance.GetSfxVolume();
 
-        float newVolume = sfxVolume * audioClipVolume_Day;
+        float newVolume = masterVolume * sfxVolume * audioClipVolume_Day;
         if (DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
-            newVolume = sfxVolume * audioClipVolume_Night;
+            newVolume = masterVolume * sfxVolume * audioClipVolume_Night;
         }
         currentAudioSourcePlaying.volume = newVolume;
     }
@@ -166,11 +179,11 @@ public class BackgroundSoundsManager : MonoBehaviour
 
     private IEnumerator FadeInThenOutCoroutine(AudioSource audioSource, float fadeDuration, float volumeToReach, float timeBetweenFades) {
 
-        StartCoroutine(FadeAudioCoroutine(audioSource, fadeDuration, volumeToReach * sfxVolume, true));
+        StartCoroutine(FadeAudioCoroutine(audioSource, fadeDuration, volumeToReach, true));
 
         yield return new WaitForSeconds(timeBetweenFades + fadeDuration);
 
-        StartCoroutine(FadeAudioCoroutine(audioSource, fadeDuration, volumeToReach * sfxVolume, false));
+        StartCoroutine(FadeAudioCoroutine(audioSource, fadeDuration, volumeToReach, false));
 
     }
 
@@ -180,7 +193,7 @@ public class BackgroundSoundsManager : MonoBehaviour
 
         if (fadeIn) {
             startVolume = 0;
-            endVolume = volumeToReach * sfxVolume;
+            endVolume = volumeToReach * masterVolume * sfxVolume;
             audioSource.Play();
         }
         else {
