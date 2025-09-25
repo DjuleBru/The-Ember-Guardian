@@ -52,6 +52,7 @@ public class PlayerStats : MonoBehaviour
     private int respawnPlayerHPBuffAbsolute_meta;
 
     public event EventHandler OnPlayerMaxHPChanged;
+    public event EventHandler OnPlayerMaxStaminaBuffed;
     public event EventHandler OnPlayerHPRegenChanged;
 
     #endregion
@@ -556,6 +557,7 @@ public class PlayerStats : MonoBehaviour
     public void BuffStamina(float buffAmount) {
         Debug.Log("BuffStamina " + buffAmount);
         maxStamina += buffAmount;
+        OnPlayerMaxStaminaBuffed?.Invoke(this, EventArgs.Empty);
     }
 
     public void BuffMaxHP(int buffAmount) {
