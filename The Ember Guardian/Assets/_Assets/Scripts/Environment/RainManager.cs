@@ -56,15 +56,15 @@ public class RainManager : MonoBehaviour
     private float highRainSubEmitterPSSize = .05f;
     private float extremeRainSubEmitterPSSize = .06f;
 
-    private float sparseRainSpeed = .6f;
-    private float mediumRainSpeed = 1f;
-    private float highRainSpeed = 1.5f;
-    private float extremeRainSpeed = 2f;
+    private float sparseRainSpeed = .3f;
+    private float mediumRainSpeed = .75f;
+    private float highRainSpeed = 1f;
+    private float extremeRainSpeed = 1.5f;
 
-    private float sparseRainStrength = .5f;
-    private float mediumRainStrength = .6f;
-    private float highRainStrength = .7f;
-    private float extremeRainStrength = .8f;
+    private float sparseRainStrength = .3f;
+    private float mediumRainStrength = .45f;
+    private float highRainStrength = .5f;
+    private float extremeRainStrength = .6f;
 
 
     private void Awake()

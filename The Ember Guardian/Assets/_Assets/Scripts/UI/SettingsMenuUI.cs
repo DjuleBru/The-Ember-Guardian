@@ -20,6 +20,7 @@ public class SettingsMenuUI : MonoBehaviour
     [SerializeField] protected Slider musicVolumeSlider;
     [SerializeField] protected Slider sfxVolumeSlider;
     [SerializeField] protected Slider dogVolumeSlider;
+    [SerializeField] protected Slider waterReflectionsSlider;
     [SerializeField] protected GameObject firstSelectedButton;
 
     // Valeurs actuelles de volume
@@ -27,6 +28,7 @@ public class SettingsMenuUI : MonoBehaviour
     protected float currentMusicVolume;
     protected float currentSfxVolume;
     protected float currentDogVolume;
+    protected float waterReflectionsLevel;
 
     protected bool panelOpen;
 
@@ -42,18 +44,22 @@ public class SettingsMenuUI : MonoBehaviour
         currentMusicVolume = SettingsManager.Instance.GetMusicVolume();
         currentSfxVolume = SettingsManager.Instance.GetSfxVolume();
         currentDogVolume = SettingsManager.Instance.GetDogVolume();
+        waterReflectionsLevel = WaterManager.Instance.GetWaterReflectionLevel();
 
         // Initialiser les Sliders avec les valeurs actuelles
         masterVolumeSlider.value = currentMasterVolume;
         musicVolumeSlider.value = currentMusicVolume;
         sfxVolumeSlider.value = currentSfxVolume;
         dogVolumeSlider.value = currentDogVolume;
+        dogVolumeSlider.value = currentDogVolume;
+        waterReflectionsSlider.value = waterReflectionsLevel;
 
         // Ajouter des listeners pour détecter les changements de valeur
         masterVolumeSlider.onValueChanged.AddListener(UpdateMasterVolume);
         musicVolumeSlider.onValueChanged.AddListener(UpdateMusicVolume);
         sfxVolumeSlider.onValueChanged.AddListener(UpdateSfxVolume);
         dogVolumeSlider.onValueChanged.AddListener(UpdateDogVolume);
+        waterReflectionsSlider.onValueChanged.AddListener(UpdateWaterReflections);
 
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
     }
@@ -86,6 +92,12 @@ public class SettingsMenuUI : MonoBehaviour
         currentDogVolume = value;
         // Implémenter ici l'ajustement du volume des effets sonores (ex: AudioManager)
         SettingsManager.Instance.SetDogVolume(currentDogVolume);
+    }
+
+    protected void UpdateWaterReflections(float value) {
+        Debug.Log("UpdateWaterReflections");
+        waterReflectionsLevel = value;
+        WaterManager.Instance.SetReflectionLevel(waterReflectionsLevel);
     }
 
     public void OpenSettingsPanel() {

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1948070872221933452}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: OrbTemplateWorldUIList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,6 +114,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 866c7107f378f6848a5fd1f4e09979fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   startOpenChestAudioClip: {fileID: 8300000, guid: 246e64231eb93c347a2aa9b5e2d59102, type: 3}
   startOpenChestAudioClip_AmmoChest: {fileID: 8300000, guid: 59277acd0e387ed4aad8c8326372fea8, type: 3}
   startOpenChestAudioClip_SkillChest: {fileID: 8300000, guid: 7dbecd2b2fb2e49438479654688711e8, type: 3}
@@ -387,7 +389,7 @@ GameObject:
   - component: {fileID: 3054939863645779763}
   - component: {fileID: 4354887528122020116}
   - component: {fileID: 2942583896519697094}
-  m_Layer: 0
+  m_Layer: 23
   m_Name: ChestUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -931,9 +933,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1948070872221933452}
     m_Modifications:
+    - target: {fileID: 1054921438695944797, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
+      value: 23
+      objectReference: {fileID: 0}
     - target: {fileID: 1151666123000681640, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Name
       value: OrbTemplateWorldUI (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151666123000681640, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 2348105456408850973, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Pivot.x
@@ -1015,6 +1025,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5890131613221981005, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
+      value: 23
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1044,9 +1058,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1948070872221933452}
     m_Modifications:
+    - target: {fileID: 1054921438695944797, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
+      value: 23
+      objectReference: {fileID: 0}
     - target: {fileID: 1151666123000681640, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Name
       value: OrbTemplateWorldUI (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151666123000681640, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 2348105456408850973, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Pivot.x
@@ -1128,6 +1150,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5890131613221981005, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
+      value: 23
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1157,9 +1183,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1948070872221933452}
     m_Modifications:
+    - target: {fileID: 1054921438695944797, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
+      value: 23
+      objectReference: {fileID: 0}
     - target: {fileID: 1151666123000681640, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Name
       value: OrbTemplateWorldUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151666123000681640, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 2348105456408850973, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Pivot.x
@@ -1240,6 +1274,10 @@ PrefabInstance:
     - target: {fileID: 2348105456408850973, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5890131613221981005, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: m_Layer
+      value: 23
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
