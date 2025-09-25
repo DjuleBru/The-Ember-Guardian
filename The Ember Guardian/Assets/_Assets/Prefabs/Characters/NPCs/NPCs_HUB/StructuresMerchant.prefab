@@ -2699,6 +2699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoScrollWithMouse: 0
+  doNotLerp: 0
 --- !u!114 &3838485462143979392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3472,7 +3473,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 1
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 0f338339418401d42aa13d5d4e18fb66, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -3892,7 +3892,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: f2294d71d61fd4749aa94cd4edb1177a, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -4268,7 +4267,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 0
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -4669,7 +4667,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 11400000, guid: 2673c1d73eba146448a0069caf19330d, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -5081,7 +5078,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 11400000, guid: 7c892d89dacdb4749b5f6c2998419d87, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -5459,7 +5455,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 0
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -5849,7 +5844,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 0
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -6246,7 +6240,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 12ae614a7b7c5eb4cbb909a2313df0a4, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -6642,7 +6635,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 11400000, guid: 7c892d89dacdb4749b5f6c2998419d87, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -7075,7 +7067,6 @@ MonoBehaviour:
   isBoughtAtStart: 1
   isUnlockedAtStart: 0
   itemUpgradeable: 0
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -7464,7 +7455,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 1
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: af9204d65ce90ae468ce6b859531cd7c, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -7846,7 +7836,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 1
   itemUpgradeable: 0
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -8269,7 +8258,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 11400000, guid: 26f600a5000a94842811ebe44056881c, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -8692,7 +8680,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: d787434fc9af1d741a91736d13b99b53, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -9067,7 +9054,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: da3a4d8d24fd0e741bb9214fb560a896, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -9451,7 +9437,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 12ec1d01e06e2c44cac35a376adb2b6d, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -9822,7 +9807,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 0
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -10234,7 +10218,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 6ed5ac87abee71f4ba0a1e940b5e85cb, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -10641,7 +10624,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 11400000, guid: 739f167c50bbb644196b0c20cd2878d9, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -11048,7 +11030,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 11400000, guid: 729e1710c0bca65489bdc54c2f75005e, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -11455,7 +11436,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 11400000, guid: 892c0a9e71ea25b45834dade033e7e6c, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -11547,6 +11527,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3303024369073023726, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.021
+      objectReference: {fileID: 0}
+    - target: {fileID: 3303024369073023726, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.407
+      objectReference: {fileID: 0}
     - target: {fileID: 3539063435249221414, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: hubMerchantName
       value: The Burdened Architect
@@ -11606,6 +11594,14 @@ PrefabInstance:
     - target: {fileID: 4019432360029635251, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4294160218366277042, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.516
+      objectReference: {fileID: 0}
+    - target: {fileID: 4294160218366277042, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.104
       objectReference: {fileID: 0}
     - target: {fileID: 4544125195362706500, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchorMax.x
@@ -12169,7 +12165,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 0
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -12550,7 +12545,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 1
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 40fd06512d9a6494b845b31b4f1f94c1, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -12936,7 +12930,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 11400000, guid: a9d6631ee5bab2f4e897b4ca0b90aa15, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -13326,7 +13319,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 11400000, guid: df469b633377aa54e9e02d138bcd4a20, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
@@ -13749,7 +13741,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 1
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 1
   linkedStatModifierSO: {fileID: 11400000, guid: 2d354bb0dfc14624680b787725251a8d, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}

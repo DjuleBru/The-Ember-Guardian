@@ -6814,6 +6814,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoScrollWithMouse: 0
+  doNotLerp: 0
 --- !u!114 &450530458786321014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10290,6 +10291,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3303024369073023726, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.597
+      objectReference: {fileID: 0}
+    - target: {fileID: 3303024369073023726, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.446
+      objectReference: {fileID: 0}
     - target: {fileID: 3319439346613514299, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -10385,6 +10394,14 @@ PrefabInstance:
     - target: {fileID: 4019432360029635251, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4294160218366277042, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4294160218366277042, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.169
       objectReference: {fileID: 0}
     - target: {fileID: 4544125195362706500, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchorMax.x
@@ -10496,7 +10513,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6786197286744093847, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_fontSize
-      value: 0.35
+      value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: 6786197286744093847, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_fontSizeBase

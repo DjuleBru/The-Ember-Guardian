@@ -10,6 +10,8 @@ public class HubMerchantVisual : MonoBehaviour
     [SerializeField] private GameObject newItemsForSaleGameObject;
     [SerializeField] private Animator bodyAnimator;
 
+    [SerializeField] private Animator interactInputAnimator;
+
     private HubMerchant hubMerchant;
 
     private void Awake() {
@@ -46,17 +48,35 @@ public class HubMerchantVisual : MonoBehaviour
 
     private void HubMerchant_OnPlayerStartedTalkingWithHubMerchant(object sender, System.EventArgs e) {
         newItemsForSaleGameObject.gameObject.SetActive(false);
+        ShowInputIcon(false);
     }
 
     private void HubMerchant_OnPlayerInteractedWithHubMerchant(object sender, System.EventArgs e) {
         newItemsForSaleGameObject.gameObject.SetActive(false);
+        ShowInputIcon(false);
     }
 
     private void HubMerchant_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
         bodySpriteRenderer.material = emptyMaterial;
+        ShowInputIcon(false);
     }
 
     private void HubMerchant_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        if (hubMerchant.GetMerchantIsDecorationalDemoMerchant()) return;
         bodySpriteRenderer.material = hoveredMaterial;
+        ShowInputIcon(true);
+
+    }
+
+    private void ShowInputIcon(bool show) {
+
+        if(show) {
+            interactInputAnimator.ResetTrigger("Hide");
+            interactInputAnimator.SetTrigger("Show");
+        } else {
+            interactInputAnimator.ResetTrigger("Show");
+            interactInputAnimator.SetTrigger("Hide");
+        }
+
     }
 }
