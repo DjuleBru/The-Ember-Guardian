@@ -19,6 +19,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         AdjustGamma,
         StreamerMode,
         ShowDamageNumbers,
+        WaterSimulations,
     }
 
     [SerializeField] private SettingType settingType;
@@ -48,6 +49,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         SettingsManager.Instance.OnAutoReloadChanged += SettingsManager_OnAutoReloadChanged;
         SettingsManager.Instance.OnSteamerModeChanged += SettingsManager_OnSteamerModeChanged;
         SettingsManager.Instance.OnShowDamageNumbersChanged += SettingsManager_OnShowDamageNumbersChanged;
+        SettingsManager.Instance.OnWaterPerspectiveChanged += SettingsManager_OnWaterSimulationChanged;
 
         RefreshVisual();
     }
@@ -88,8 +90,14 @@ public class RadioButtonUI_Setting : RadioButtonUI
             AdjustGammaUI.Instance.OpenPanel(false);
             SettingsMenuUI.Instance.HideSettingsPanel();
         }
+        if (settingType == SettingType.WaterSimulations) {
+            SettingsManager.Instance.ChangeWaterPerspective();
+        }
     }
 
+    private void SettingsManager_OnWaterSimulationChanged(object sender, System.EventArgs e) {
+        RefreshVisual();
+    }
     private void SettingsManager_OnLanguageChanged(object sender, System.EventArgs e) {
         RefreshVisual();
     }
@@ -155,6 +163,9 @@ public class RadioButtonUI_Setting : RadioButtonUI
         }
         if (settingType == SettingType.ShowDamageNumbers) {
             toggledImageGameObject.SetActive(SettingsManager.Instance.GetShowDamageNumbers());
+        }
+        if (settingType == SettingType.WaterSimulations) {
+            toggledImageGameObject.SetActive(SettingsManager.Instance.GetWaterPerspectiveActive());
         }
     }
 

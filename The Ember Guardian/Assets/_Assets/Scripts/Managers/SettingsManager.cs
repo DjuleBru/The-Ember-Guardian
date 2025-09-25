@@ -24,6 +24,7 @@ public class SettingsManager : MonoBehaviour
     public event EventHandler OnAutoReloadChanged;
     public event EventHandler OnSteamerModeChanged;
     public event EventHandler OnShowDamageNumbersChanged;
+    public event EventHandler OnWaterPerspectiveChanged;
 
 
     private LocalizationManager.Language currentLanguage = LocalizationManager.Language.English;
@@ -36,6 +37,7 @@ public class SettingsManager : MonoBehaviour
     private bool autoReload;
     private bool streamerMode;
     private bool showDamageNumbers;
+    private bool waterPerspective;
 
     private float settingsVersion;
 
@@ -67,6 +69,7 @@ public class SettingsManager : MonoBehaviour
         currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
         streamerMode = ES3.Load("steamerMode", false, settingsSaveFileSettings);
         showDamageNumbers = ES3.Load("showDamageNumbers", true, settingsSaveFileSettings);
+        waterPerspective = ES3.Load("waterPerspective", true, settingsSaveFileSettings);
 
         if (settingsVersion < 0.9) {
             // Mise à jour vers la version 0.9 : autoReload passe à true
@@ -92,6 +95,7 @@ public class SettingsManager : MonoBehaviour
         gammaLevel = newGammaLevel;
         ES3.Save("gammaLevel", newGammaLevel, settingsSaveFileSettings);
     }
+   
 
     public void SetLanguage(LocalizationManager.Language language) {
         currentLanguage = language;
@@ -181,6 +185,13 @@ public class SettingsManager : MonoBehaviour
         ES3.Save("currentLanguage", currentLanguage, settingsSaveFileSettings);
     }
 
+    public void ChangeWaterPerspective() {
+        waterPerspective = !waterPerspective;
+        Debug.Log("waterPerspective " + waterPerspective);
+        ES3.Save("waterPerspective", waterPerspective);
+
+        OnWaterPerspectiveChanged?.Invoke(this, EventArgs.Empty);
+    }
 
     #endregion
     #region GET SETTINGS
@@ -215,6 +226,8 @@ public class SettingsManager : MonoBehaviour
         return autoReload;
     }
 
+
+
     public LocalizationManager.Language GetLanguage() {
         return currentLanguage;
     }
@@ -227,6 +240,10 @@ public class SettingsManager : MonoBehaviour
     }
     public float GetGammaLevel() {
         return gammaLevel;
+    }
+
+    public bool GetWaterPerspectiveActive() {
+        return waterPerspective;
     }
     #endregion
 }

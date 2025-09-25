@@ -36,6 +36,7 @@ public class SceneLoader : MonoBehaviour
         Instance = this;
         isCrossfading = true;
         transitionAnimator.speed = .5f;
+        QualitySettings.vSyncCount = 1;
         Application.targetFrameRate = 60;
        
         StartCoroutine(RemoveBlackBackgroundAfterDelay(.1f));

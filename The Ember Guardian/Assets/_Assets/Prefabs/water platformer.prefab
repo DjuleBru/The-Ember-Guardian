@@ -182,11 +182,11 @@ MonoBehaviour:
         _value: 0.99
       layers: 0000000001000000020000000300000004000000060000000b0000000c0000000d0000000e0000000f000000100000001100000012000000
       usePerspective:
-        _value: 0
+        _value: 1
       waterPerspective:
-        _value: {x: 1, y: -0.09}
+        _value: {x: 1.9, y: 1.8}
       reflectionsPerspective:
-        _value: {x: 1, y: 6.96}
+        _value: {x: 1, y: 0.2}
       falloffStrength:
         _value: 0.39
       falloffStart:
@@ -323,7 +323,7 @@ MonoBehaviour:
         _value: 0
     _simulationSettings:
       resolution:
-        _value: {x: 2048, y: 442}
+        _value: {x: 2048, y: 585}
       waterCmp: {fileID: 7200000, guid: 14821a0cc6771aa45b7163f15854b208, type: 3}
       sr: {fileID: 8469759505471155429}
       obstruction: {fileID: 0}
@@ -445,6 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e38818c5f424904db353f9af809d7ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reflectionLevel: 1
 --- !u!212 &8469759505471155429
 SpriteRenderer:
   m_ObjectHideFlags: 0
