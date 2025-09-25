@@ -5537,7 +5537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoScrollWithMouse: 0
-  isVerticalScroll: 0
+  doNotLerp: 0
 --- !u!114 &7169078274406461856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62900,6 +62900,14 @@ PrefabInstance:
     - target: {fileID: 2634346637618870733, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3303024369073023726, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 3303024369073023726, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.38
       objectReference: {fileID: 0}
     - target: {fileID: 3539063435249221414, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: hubMerchantName

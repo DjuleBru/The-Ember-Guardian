@@ -2065,6 +2065,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoScrollWithMouse: 0
+  doNotLerp: 0
 --- !u!114 &8520096916371657424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9149,6 +9150,14 @@ PrefabInstance:
     - target: {fileID: 4019432360029635251, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4294160218366277042, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.416
+      objectReference: {fileID: 0}
+    - target: {fileID: 4294160218366277042, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.986
       objectReference: {fileID: 0}
     - target: {fileID: 4544125195362706500, guid: 27daf587368ac3b47a553b9a41035514, type: 3}
       propertyPath: m_AnchorMax.x
