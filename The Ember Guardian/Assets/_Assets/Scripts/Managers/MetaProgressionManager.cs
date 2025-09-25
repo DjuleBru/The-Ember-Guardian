@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,6 +11,9 @@ public class MetaProgressionManager : MonoBehaviour
     [SerializeField] private bool destroySaveOnApplicationQuit;
     [SerializeField] private List<LevelSO> allLevelSOList;
     private bool flagCarry_Debug;
+
+    private List<string> unlockedVideoTipList = new List<string>();
+    private List<string> newlyUnlockedVideoTipList = new List<string>();
 
     public event EventHandler<OnLevelSOUnlockedEventArgs> OnLevelSOUnlocked;
     public class OnLevelSOUnlockedEventArgs : EventArgs {
@@ -59,6 +63,8 @@ public class MetaProgressionManager : MonoBehaviour
 
         flagCarry_Debug = DebugManager.Instance.GetDebugMode_FlagCarry();
         dropRedOrbsUnlocked = ES3.Load("dropRedOrbsUnlocked", false);
+        unlockedVideoTipList = ES3.Load("unlockedVideoTipList", new List<string>());
+        newlyUnlockedVideoTipList = ES3.Load("newlyUnlockedVideoTipList", new List<string>());
     }
 
     private void Update() {
@@ -101,6 +107,43 @@ public class MetaProgressionManager : MonoBehaviour
     }
     public bool GetTutorialSkipped() {
         return ES3.Load("tutorialSkipped", false);
+    }
+
+    public void SetTipUnlocked(VideoTipSO videoTipSO) {
+        if (unlockedVideoTipList.Contains(videoTipSO.tipNameLocalizationKey)) return;
+
+        unlockedVideoTipList.Add(videoTipSO.tipNameLocalizationKey);
+
+        ES3.Save("unlockedVideoTipList", unlockedVideoTipList);
+    }
+
+    public bool GetTipUnlocked(VideoTipSO videoTipSO) {
+        return unlockedVideoTipList.Contains(videoTipSO.tipNameLocalizationKey);
+    }
+    public List<string> GetTipUnlockedList() {
+        return unlockedVideoTipList;;
+    }
+
+
+    public void SetTipNewlyUnlocked(VideoTipSO videoTipSO, bool newlyUnlocked) {
+        string key = videoTipSO.tipNameLocalizationKey;
+
+        if(newlyUnlocked) {
+
+            if(newlyUnlockedVideoTipList.Contains(key)) return;
+            newlyUnlockedVideoTipList.Add(key);
+
+        } else {
+
+            if (!newlyUnlockedVideoTipList.Contains(key)) return;
+            newlyUnlockedVideoTipList.Remove(key);
+
+        }
+        ES3.Save("newlyUnlockedVideoTipList", newlyUnlockedVideoTipList);
+    }
+
+    public bool GetTipNewlyUnlocked(VideoTipSO videoTipSO) {
+        return newlyUnlockedVideoTipList.Contains(videoTipSO.tipNameLocalizationKey);
     }
 
     #endregion

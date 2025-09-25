@@ -16,6 +16,7 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] protected GameObject fullGameDescriptionPanel;
     [SerializeField] protected GameObject fullGameDescriptionPanel_WishlistButton;
     [SerializeField] protected GameObject fullGameDescriptionPanel_ExitGameButton;
+    [SerializeField] protected GameObject videoTipsButton;
     [SerializeField] protected GameObject ctaButton;
     [SerializeField] protected Button_Confirm buttonConfirm_ExitGame;
     [SerializeField] protected Button_Confirm buttonConfirm_MainMenu;
@@ -71,6 +72,10 @@ public class PauseMenuUI : MonoBehaviour
 
         if (!VersioningManager.Instance.GetIsDemo()) {
             ctaButton.gameObject.SetActive(false);
+            videoTipsButton.gameObject.SetActive(true);
+        } else {
+            ctaButton.gameObject.SetActive(true);
+            videoTipsButton.gameObject.SetActive(false);
         }
 
         backToMenuText.text = LocalizationManager.Instance.GetLocalizedText("menu_mainMenu");
@@ -140,6 +145,11 @@ public class PauseMenuUI : MonoBehaviour
 
     protected void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
         if (PlayerTabMenuUI.Instance.GetTabMenuOpen()) return;
+
+        if (VideoTipUI.Instance.GetPanelOpen()) {
+            VideoTipUI.Instance.ClosePanel();
+        };
+
         if (isPaused) {
             ShowPauseMenu(false);
             StartCoroutine(ResumePause());
@@ -151,6 +161,10 @@ public class PauseMenuUI : MonoBehaviour
         if (!canOpenPauseMenu) return;
         if (SceneLoader.Instance.GetIsCrossfading()) return;
 
+        if (VideoTipUI.Instance.GetPanelOpen()) {
+            VideoTipUI.Instance.ClosePanel();
+        };
+
         OpenClosePauseMenu();
     }
 
@@ -161,8 +175,13 @@ public class PauseMenuUI : MonoBehaviour
 
     public void HidePauseMenu() {
         pausePanel.SetActive(false);
+        isPaused = false;
     }
 
+    public void ForceClosePauseMenu() {
+        isPaused = true;
+        OpenClosePauseMenu();
+    }
 
     public void ShowPauseMenu(bool show) {
         pausePanel.SetActive(show);
@@ -231,6 +250,11 @@ public class PauseMenuUI : MonoBehaviour
 
     public virtual void ExitGameWithNoConfirmation() {
         Application.Quit();
+    }
+
+    public virtual void VideoTipsButton() {
+        VideoTipUI.Instance.OpenPanel(true);
+        HidePauseMenu();
     }
 
     public void LoadMainMenu() {

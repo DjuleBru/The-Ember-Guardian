@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class AutoScrollRect : MonoBehaviour {
 
     [SerializeField] private bool autoScrollWithMouse = false;
+    [SerializeField] private bool doNotLerp = false;
 
     private ScrollRect scrollRect;
     private RectTransform hoveredButtonUI;
@@ -75,15 +76,20 @@ public class AutoScrollRect : MonoBehaviour {
         float normalizedPositionX = Mathf.Clamp01((centeredPositionX + contentWidth / 2f) / (contentWidth - viewportWidth));
         float normalizedPositionY = Mathf.Clamp01((centeredPositionY + contentHeight / 2f) / (contentHeight - viewportHeight));
 
-        scrollRect.horizontalNormalizedPosition = Mathf.Lerp(
-            scrollRect.horizontalNormalizedPosition,
-            normalizedPositionX,
-            Time.deltaTime * smoothSpeed);
+        if(doNotLerp) {
+            scrollRect.verticalNormalizedPosition = normalizedPositionY;
+        } else {
+            scrollRect.horizontalNormalizedPosition = Mathf.Lerp(
+                 scrollRect.horizontalNormalizedPosition,
+                 normalizedPositionX,
+                 Time.deltaTime * smoothSpeed);
 
-        scrollRect.verticalNormalizedPosition = Mathf.Lerp(
-            scrollRect.verticalNormalizedPosition,
-            normalizedPositionY,
-            Time.deltaTime * smoothSpeed);
+            scrollRect.verticalNormalizedPosition = Mathf.Lerp(
+                scrollRect.verticalNormalizedPosition,
+                normalizedPositionY,
+                Time.deltaTime * smoothSpeed);
+        }
+
     }
 
     private float CalculateNormalizedX(RectTransform target) {

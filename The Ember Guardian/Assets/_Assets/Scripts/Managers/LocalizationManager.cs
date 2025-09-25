@@ -27,6 +27,15 @@ public class LocalizationManager : MonoBehaviour
     [SerializeField] private TMP_FontAsset standardFont;
     [SerializeField] private TMP_FontAsset japaneseFont;
 
+    [SerializeField] private Material standardMaterial;
+    [SerializeField] private Material standardMaterial_JP;
+    [SerializeField] private Material blueGlowMaterial;
+    [SerializeField] private Material blueGlowMaterial_JP;
+    [SerializeField] private Material greenGlowMaterial;
+    [SerializeField] private Material greenGlowMaterial_JP;
+    [SerializeField] private Material redGlowMaterial;
+    [SerializeField] private Material redGlowMaterial_JP;
+
     public enum Language {
         English,
         French,
@@ -131,6 +140,32 @@ public class LocalizationManager : MonoBehaviour
 
         if (currentLanguage == Language.Japanese) return japaneseFont;
         return standardFont;
+    }
+
+    public Material GetBlueGlowMaterial() {
+        Language currentLanguage = SettingsManager.Instance.GetLanguage();
+
+        if (currentLanguage == Language.Japanese) return blueGlowMaterial_JP;
+        return blueGlowMaterial;
+    }
+    public Material GetGreenGlowMaterial() {
+        Language currentLanguage = SettingsManager.Instance.GetLanguage();
+
+        if (currentLanguage == Language.Japanese) return greenGlowMaterial_JP;
+        return greenGlowMaterial;
+    }
+    public Material GetRedGlowMaterial() {
+        Language currentLanguage = SettingsManager.Instance.GetLanguage();
+
+        if (currentLanguage == Language.Japanese) return redGlowMaterial_JP;
+        return redGlowMaterial;
+    }
+
+    public Material GetStandardMaterial() {
+        Language currentLanguage = SettingsManager.Instance.GetLanguage();
+
+        if (currentLanguage == Language.Japanese) return standardMaterial_JP;
+        return standardMaterial;
     }
 
 }

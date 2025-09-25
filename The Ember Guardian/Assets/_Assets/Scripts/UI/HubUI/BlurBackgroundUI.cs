@@ -20,6 +20,19 @@ public class BlurBackgroundUI : MonoBehaviour
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         PauseMenuUI.Instance.OnPauseMenuOpened += PauseMenuUI_OnPauseMenuOpened;
         PauseMenuUI.Instance.OnPauseMenuClosed += PauseMenuUI_OnPauseMenuClosed;
+        VideoTipUI.Instance.OnVideoTipPanelClosed += VideoTipUI_OnVideoTipPanelClosed;
+        VideoTipUI.Instance.OnVideoTipPanelOpened += VideoTipUI_OnVideoTipPanelOpened;
+    }
+
+    private void VideoTipUI_OnVideoTipPanelOpened(object sender, System.EventArgs e) {
+        blurVolumeAnimator.ResetTrigger("Hide");
+        blurVolumeAnimator.SetTrigger("Show");
+    }
+
+    private void VideoTipUI_OnVideoTipPanelClosed(object sender, VideoTipUI.OnVideoTipPanelClosedEventArgs e) {
+        blurVolumeAnimator.ResetTrigger("Show");
+        blurVolumeAnimator.SetTrigger("Hide");
+
     }
 
     private void PauseMenuUI_OnPauseMenuClosed(object sender, System.EventArgs e) {

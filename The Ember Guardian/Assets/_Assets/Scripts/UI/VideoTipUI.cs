@@ -16,6 +16,7 @@ public class VideoTipUI : MonoBehaviour
     [SerializeField] private VideoPlayer videoPlayer;
 
     [SerializeField] private GameObject videoTipUIMainPanel;
+    [SerializeField] private GameObject videoTipUIManualPanel;
     [SerializeField] private GameObject replayTipButtonGO;
     [SerializeField] private GameObject resumeButtonGO;
     [SerializeField] private TextMeshProUGUI resumeButtonText;
@@ -55,6 +56,7 @@ public class VideoTipUI : MonoBehaviour
 
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         videoTipUIMainPanel.SetActive(false);
+        videoTipUIManualPanel.SetActive(false);
         replayTipButtonGO.GetComponent<Button>().interactable = false;
 
         TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
@@ -104,7 +106,7 @@ public class VideoTipUI : MonoBehaviour
         wishlistButton.gameObject.SetActive(true);
     }
 
-    public void PlayTipSO(VideoTipSO videoTipSO, float delayToPlayTip = 0f) {
+    public void PlayTipSO(VideoTipSO videoTipSO, float delayToPlayTip = 0f, bool openPanel = true, bool setReplayTipButtonInteractable = false, bool unlockNewTip = true) {
         if(videoTipSO == null) {
             Debug.LogError("VideoTipSO is null");
             return;
@@ -120,10 +122,17 @@ public class VideoTipUI : MonoBehaviour
         RefreshTipDescription();
 
         if (delayToPlayTip == 0) {
-            OpenPanel();
-            PlayTip(false);
+            if(openPanel) {
+                OpenPanel();
+            }
+            PlayTip(setReplayTipButtonInteractable);
         } else {
             StartCoroutine(PlayTipAfterDelay(delayToPlayTip));
+        }
+
+        if(unlockNewTip) {
+            MetaProgressionManager.Instance.SetTipUnlocked(videoTipSO);
+            MetaProgressionManager.Instance.SetTipNewlyUnlocked(videoTipSO, true);
         }
     }
 
@@ -154,7 +163,6 @@ public class VideoTipUI : MonoBehaviour
     }
 
     public void PlayTip(bool setReplayTipButtonInteractable = false) {
-
         tipFinishedDisplaying = false;
 
         videoPlayer.Play();
@@ -166,7 +174,7 @@ public class VideoTipUI : MonoBehaviour
         replayTipButtonGO.GetComponent<Button>().interactable = setReplayTipButtonInteractable;
     }
 
-    private void OpenPanel() {
+    public void OpenPanel(bool openManualPanel = false) {
         if (dontShowDebugMode) return;
 
         OnVideoTipPanelOpened?.Invoke(this, EventArgs.Empty);
@@ -177,6 +185,11 @@ public class VideoTipUI : MonoBehaviour
         videoTipUIMainPanelAnimator.ResetTrigger("Hide");
         videoTipUIMainPanelAnimator.SetTrigger("Show");
         EventSystem.current.SetSelectedGameObject(resumeButtonGO);
+
+        if(openManualPanel) {
+            videoTipUIManualPanel.SetActive(true);
+            VideoTipUI_ManualPanel.Instance.RefreshTipList();
+        }
     }
 
     private IEnumerator ShowTipTextList() {
@@ -208,6 +221,7 @@ public class VideoTipUI : MonoBehaviour
     private IEnumerator ActivatePanelAfterDelay(bool show, float delay) {
         yield return new WaitForSecondsRealtime(delay);
         videoTipUIMainPanel.SetActive(show);
+        videoTipUIManualPanel.SetActive(false);
     }
 
     public void ClosePanel() {
@@ -226,6 +240,7 @@ public class VideoTipUI : MonoBehaviour
 
     public void SkipTipOrResumeButton() {
         if(!tipFinishedDisplaying) {
+
             StopCoroutine(activeCoroutine);
 
             foreach (TipDescriptionTextTemplate textTemplate in tipDescriptionTextTemplateList) {
@@ -239,8 +254,11 @@ public class VideoTipUI : MonoBehaviour
             resumeButtonText.text = LocalizationManager.Instance.GetLocalizedText("menu_resume");
             replayTipButtonGO.GetComponent<Button>().interactable = true;
             tipFinishedDisplaying = true;
+
         } else {
+
             ClosePanel();
+            PauseMenuUI.Instance.ForceClosePauseMenu();
         }
     }
 
@@ -255,7 +273,12 @@ public class VideoTipUI : MonoBehaviour
         PlayTip(true);
     }
 
+
     #endregion
+
+    public bool GetPanelOpen() {
+        return panelOpen;
+    }
 
     private void OnDestroy() {
         GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;

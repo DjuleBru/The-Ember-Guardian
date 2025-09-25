@@ -133,7 +133,6 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     public override void SetItemBought() {
         base.SetItemBought();
 
-        Debug.Log(gunItem + " SetItemBought");
         if (gunItemCategory == GunItemCategory.newGun) {
             UnlockGun();
         }
@@ -142,7 +141,6 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     public override void UnlockItem() {
         base.UnlockItem();
 
-        Debug.Log(gunItem + " UnlockItem");
         if(gunItemCategory == GunItemCategory.newGun && itemBought) {
             UnlockGun();
         }
