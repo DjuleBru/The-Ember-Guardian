@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -32,6 +33,7 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] protected TextMeshProUGUI ctaText;
     [SerializeField] protected Material ctaTextFontAsset;
     [SerializeField] protected Material ctaTextFontAsset_JP;
+    [SerializeField] protected LevelSO firstLevelSO;
 
     [SerializeField] protected GameObject mainMenuPanelGameObject;
 
@@ -103,16 +105,48 @@ public class MainMenuUI : MonoBehaviour {
         StartCoroutine(ResumeCurrentSaveCoroutine());
     }
 
+    //public virtual void NewGameButton() {
+
+    //    if (!MetaProgressionManager.Instance.GetSavedOnce()) {
+
+    //        StartNewGame();
+
+    //    } else {
+
+    //        if (confirmResetProgression) {
+    //            ES3.DeleteFile();
+    //            continueButton.interactable = false;
+    //            EventSystem.current.SetSelectedGameObject(newGameButton.gameObject);
+    //            newGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_newGame");
+    //        }
+    //        else {
+    //            confirmResetProgression = true;
+    //            newGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_resetProgression");
+    //        }
+
+    //    }
+    //}
+
     public virtual void NewGameButton() {
-
         if (!MetaProgressionManager.Instance.GetSavedOnce()) {
-
             StartNewGame();
+        }
 
-        } else {
-
+        else {
             if (confirmResetProgression) {
-                ES3.DeleteFile();
+                string savePath = Path.Combine(Application.persistentDataPath, "SaveFile.es3");
+                string tutorialPath = Path.Combine(Application.persistentDataPath, "SaveFile_Tutorial.es3");
+
+                // 1 - Supprimer SaveFile
+                if (File.Exists(savePath)) {
+                    File.Delete(savePath);
+                }
+
+                // 2 & 3 - Copier SaveFile_Tutorial et renommer la copie en SaveFile
+                if (File.Exists(tutorialPath)) {
+                    File.Copy(tutorialPath, savePath);
+                }
+
                 continueButton.interactable = false;
                 EventSystem.current.SetSelectedGameObject(newGameButton.gameObject);
                 newGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_newGame");
@@ -121,7 +155,6 @@ public class MainMenuUI : MonoBehaviour {
                 confirmResetProgression = true;
                 newGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_resetProgression");
             }
-
         }
     }
 
@@ -158,7 +191,7 @@ public class MainMenuUI : MonoBehaviour {
         MetaProgressionManager.Instance.SetSavedOnce();
 
         if(VersioningManager.Instance.GetIsDemo()) {
-            SceneLoader.Instance.LoadDemoIntro(2f);
+            SceneLoader.Instance.LoadLevel(firstLevelSO, 2f);
 
         } else {
             SceneLoader.Instance.LoadTutorial(2f);
