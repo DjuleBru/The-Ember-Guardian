@@ -11,6 +11,7 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private float sfxVolume = .5f;
     [SerializeField] private float musicVolume = .5f;
     [SerializeField] private float dogVolume = .5f;
+    [SerializeField] private float zoomLevel = .8f;
 
     private float gammaLevel = 0f;
 
@@ -30,6 +31,7 @@ public class SettingsManager : MonoBehaviour
     public event EventHandler OnSteamerModeChanged;
     public event EventHandler OnShowDamageNumbersChanged;
     public event EventHandler OnWaterPerspectiveChanged;
+    public event EventHandler OnZoomLevelChanged;
 
 
     private LocalizationManager.Language currentLanguage = LocalizationManager.Language.English;
@@ -62,6 +64,7 @@ public class SettingsManager : MonoBehaviour
         sfxVolume = ES3.Load("sfxVolume", .5f, settingsSaveFileSettings);
         musicVolume = ES3.Load("musicVolume", .5f, settingsSaveFileSettings);
         dogVolume = ES3.Load("dogVolume", .5f, settingsSaveFileSettings);
+        zoomLevel = ES3.Load("zoomLevel", .8f, settingsSaveFileSettings);
 
         gammaLevel = ES3.Load("gammaLevel", 0f, settingsSaveFileSettings);
 
@@ -109,6 +112,11 @@ public class SettingsManager : MonoBehaviour
         dogVolume = newDogVolume;
         ES3.Save("dogVolume", newDogVolume, settingsSaveFileSettings);
         OnDogVolumeChanged?.Invoke(this, EventArgs.Empty);
+    }
+    public void SetZoomLevel(float newZoomLevel) {
+        zoomLevel = newZoomLevel;
+        ES3.Save("zoomLevel", newZoomLevel, settingsSaveFileSettings);
+        OnZoomLevelChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetGammaLevel(float newGammaLevel) {
@@ -262,6 +270,9 @@ public class SettingsManager : MonoBehaviour
 
     public float GetSfxVolume() {
         return sfxVolume;
+    }
+    public float GetZoomLevel() {
+        return zoomLevel;
     }
 
     public float GetMusicVolume() {
