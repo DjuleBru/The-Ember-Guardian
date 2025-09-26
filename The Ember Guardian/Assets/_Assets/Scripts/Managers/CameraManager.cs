@@ -10,10 +10,18 @@ public class CameraManager : MonoBehaviour
     public static CameraManager Instance;
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private Camera UICamera;
-    [SerializeField] private float initialCameraOrthographicSize = 10;
+    [SerializeField] private float initialCameraOrthographicSize = 11f;
+
+    [SerializeField] private float referenceCameraOrthographicSize = 11f;
+    [SerializeField] private float minCameraOrthographicSize = 7f;
+    [SerializeField] private float maxCameraOrthographicSize = 11.5f;
     private float zoomDuration = .5f; // Durée du zoom
 
     private Coroutine currentZoomCoroutine;
+
+    private bool isChangingOrthographicSize;
+    private float isChangingOrthographicSizeTimer;
+    private float isChangingOrthographicSizeTime = .05f;
 
     private bool isMainMenu;
     private bool cameraCenteredOnPlayer;
@@ -28,12 +36,22 @@ public class CameraManager : MonoBehaviour
     }
 
     private void Start() {
-        virtualCamera.m_Lens.OrthographicSize = initialCameraOrthographicSize;
+        RefreshCameraOrthographicSize(false);
 
+        SettingsManager.Instance.OnZoomLevelChanged += SettingsManager_OnZoomLevelChanged;
         isMainMenu = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu;
     }
 
+
     private void Update() {
+        if(isChangingOrthographicSize) {
+            isChangingOrthographicSizeTimer += Time.deltaTime;
+            if(isChangingOrthographicSizeTimer >= isChangingOrthographicSizeTime) {
+                isChangingOrthographicSize = false;
+                Time.timeScale = 0f;
+            }
+        }
+
         if (isMainMenu) return;
 
         // Check centrage caméra/player
@@ -60,6 +78,45 @@ public class CameraManager : MonoBehaviour
             zoomTimer = 0f;
         }
         
+    }
+
+    private void SettingsManager_OnZoomLevelChanged(object sender, EventArgs e) {
+        RefreshCameraOrthographicSize(true);
+    }
+
+    private void RefreshCameraOrthographicSize(bool pauseMenu) {
+        if (pauseMenu) {
+            Time.timeScale = 1f;
+            isChangingOrthographicSizeTimer = 0;
+            isChangingOrthographicSize = true;
+        }
+
+        float zoomLevel = SettingsManager.Instance.GetZoomLevel();
+        float cameraOrthograhpicSize;
+        if (zoomLevel <= 0.8f) {
+            cameraOrthograhpicSize = Mathf.Lerp(minCameraOrthographicSize, referenceCameraOrthographicSize, zoomLevel / 0.8f);
+        }
+        else {
+            cameraOrthograhpicSize = Mathf.Lerp(referenceCameraOrthographicSize, maxCameraOrthographicSize, (zoomLevel - 0.8f) / 0.2f);
+        }
+
+        initialCameraOrthographicSize = cameraOrthograhpicSize;
+
+        virtualCamera.m_Lens.OrthographicSize = initialCameraOrthographicSize;
+    }
+
+    private IEnumerator RefreshCameraOrthographicSizeCoroutine() {
+        float zoomLevel = SettingsManager.Instance.GetZoomLevel();
+        float cameraOrthograhpicSize =
+            (zoomLevel <= 0.8f)
+            ? Mathf.Lerp(minCameraOrthographicSize, referenceCameraOrthographicSize, zoomLevel / 0.8f)
+            : Mathf.Lerp(referenceCameraOrthographicSize, maxCameraOrthographicSize, (zoomLevel - 0.8f) / 0.2f);
+
+        initialCameraOrthographicSize = cameraOrthograhpicSize;
+        virtualCamera.m_Lens.OrthographicSize = initialCameraOrthographicSize;
+
+        // attendre un cycle complet pour que Cinemachine applique
+        yield return null;
     }
 
     public void ZoomIn(bool toInitialValue, float targetZoomInOrthographicSizeMultiplier = 1f, float zoomDuration = 1f) {

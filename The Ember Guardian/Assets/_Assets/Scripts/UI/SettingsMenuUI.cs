@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -21,7 +22,9 @@ public class SettingsMenuUI : MonoBehaviour
     [SerializeField] protected Slider sfxVolumeSlider;
     [SerializeField] protected Slider dogVolumeSlider;
     [SerializeField] protected Slider waterReflectionsSlider;
+    [SerializeField] protected Slider zoomLevelSlider;
     [SerializeField] protected GameObject firstSelectedButton;
+    [SerializeField] protected Animator takesEffectOnReloadAnimator;
 
     // Valeurs actuelles de volume
     protected float currentMasterVolume;
@@ -29,6 +32,7 @@ public class SettingsMenuUI : MonoBehaviour
     protected float currentSfxVolume;
     protected float currentDogVolume;
     protected float waterReflectionsLevel;
+    protected float zoomLevel;
 
     protected bool panelOpen;
 
@@ -45,6 +49,7 @@ public class SettingsMenuUI : MonoBehaviour
         currentSfxVolume = SettingsManager.Instance.GetSfxVolume();
         currentDogVolume = SettingsManager.Instance.GetDogVolume();
         waterReflectionsLevel = WaterManager.Instance.GetWaterReflectionLevel();
+        zoomLevel = SettingsManager.Instance.GetZoomLevel();
 
         // Initialiser les Sliders avec les valeurs actuelles
         masterVolumeSlider.value = currentMasterVolume;
@@ -53,6 +58,7 @@ public class SettingsMenuUI : MonoBehaviour
         dogVolumeSlider.value = currentDogVolume;
         dogVolumeSlider.value = currentDogVolume;
         waterReflectionsSlider.value = waterReflectionsLevel;
+        zoomLevelSlider.value = zoomLevel;
 
         // Ajouter des listeners pour détecter les changements de valeur
         masterVolumeSlider.onValueChanged.AddListener(UpdateMasterVolume);
@@ -60,6 +66,7 @@ public class SettingsMenuUI : MonoBehaviour
         sfxVolumeSlider.onValueChanged.AddListener(UpdateSfxVolume);
         dogVolumeSlider.onValueChanged.AddListener(UpdateDogVolume);
         waterReflectionsSlider.onValueChanged.AddListener(UpdateWaterReflections);
+        zoomLevelSlider.onValueChanged.AddListener(UpdateZoomLevel);
 
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
     }
@@ -97,7 +104,29 @@ public class SettingsMenuUI : MonoBehaviour
     protected void UpdateWaterReflections(float value) {
         Debug.Log("UpdateWaterReflections");
         waterReflectionsLevel = value;
+
+        StartCoroutine(SetTakesEffectOnReloadAnimatorAfterFrame());
         WaterManager.Instance.SetReflectionLevel(waterReflectionsLevel);
+    }
+    protected void UpdateZoomLevel(float value) {
+        Debug.Log("UpdateZoomLevel");
+        zoomLevel = value;
+
+        SettingsManager.Instance.SetZoomLevel(value);
+    }
+
+    private IEnumerator SetTakesEffectOnReloadAnimatorAfterFrame() {
+        AnimatorStateInfo stateInfo = takesEffectOnReloadAnimator.GetCurrentAnimatorStateInfo(0);
+        // Vérifie que l'animator n'est pas déjà dans le state "Blink"
+
+        if (!stateInfo.IsName("Blink")) {
+            takesEffectOnReloadAnimator.SetTrigger("Show");
+        }
+
+        yield return new WaitForEndOfFrame();
+
+        takesEffectOnReloadAnimator.ResetTrigger("Show");
+
     }
 
     public void OpenSettingsPanel() {
