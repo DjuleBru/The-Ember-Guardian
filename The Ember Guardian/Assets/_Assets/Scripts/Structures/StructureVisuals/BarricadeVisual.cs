@@ -50,10 +50,17 @@ public class BarricadeVisual : StructureVisual {
         barricade.OnFireLightTriggeredOut += Barricade_OnFireLightTriggeredOut;
         barricade.OnBarricadeLightSwitched += Barricade_OnBarricadeLightSwitched;
 
-        BuildPieces(level1BarricadePieceList);
-        foreach(Animator animator in barricadeLightBodyAnimatorList) {
-            animator.SetTrigger("Build");
+       
+        foreach (Animator animator in barricadeLightBodyAnimatorList) {
+            if (barricade.GetStructureBuiltOnLoad()) {
+                animator.SetTrigger("BuiltAtStart");
+            } else {
+                animator.SetTrigger("Build");
+            }
         }
+        
+
+
         currentLevelBarricadePieceList = level1BarricadePieceList;
         built = true;
 
@@ -63,6 +70,8 @@ public class BarricadeVisual : StructureVisual {
             barricadeSpotLightGameObject.SetActive(false);
         }
         SetXAxisScale();
+
+        BuildPieces(level1BarricadePieceList);
     }
 
     private void Barricade_OnBarricadeLightSwitched(object sender, EventArgs e) {
@@ -116,8 +125,9 @@ public class BarricadeVisual : StructureVisual {
     }
 
     private void BuildPieces(List<BarricadePiece> gameObjectList) {
+        bool animateBuild = !barricade.GetStructureBuiltOnLoad();
         foreach (BarricadePiece piece in gameObjectList) {
-            piece.BuildBarricadePiece();
+            piece.BuildBarricadePiece(animateBuild);
         }
     }
 
@@ -132,7 +142,6 @@ public class BarricadeVisual : StructureVisual {
         foreach (BarricadePiece piece in BarricadePieceList) {
             piece.BarricadePieceBuilt();
         }
-
     }
 
     private void DeactivateAllBarricadePieces() {
@@ -233,6 +242,6 @@ public class BarricadeVisual : StructureVisual {
     }
 
     public void OnEnable() {
-        SetBuildAnimation(level1BarricadePieceList);
+        //SetBuildAnimation(level1BarricadePieceList);
     }
 }

@@ -133,7 +133,7 @@ public class DemoLevelIntroManager : MonoBehaviour {
 
     private IEnumerator SetPlayerCurrenciesAfterDelay() {
         yield return new WaitForSeconds(.05f);
-        PlayerShoot.Instance.SetGunAmmo(PlayerShoot.Instance.GetHeldGunSO(), 0);
+        PlayerShoot.Instance.SetGunAmmo(PlayerShoot.Instance.GetHeldGunSO(), 0, 0);
         PlayerShoot.Instance.SetCanShoot(true);
         PlayerUI_AmmoBar.Instance.RefreshAmmoBar();
         PlayerCurrencies.Instance.SetCarryingEmber(false);

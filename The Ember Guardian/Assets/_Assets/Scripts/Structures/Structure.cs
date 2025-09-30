@@ -11,6 +11,7 @@ public class Structure : MonoBehaviour {
     [SerializeField] protected bool secondaryFunctionUnlocked;
     [SerializeField] protected GameObject visualIndicator;
     protected bool upgradable;
+    protected bool setBuiltOnLoad;
 
     private CampZoneManager.CampSide campSide;
     protected PayCurrencyUI payCurrencyUI;
@@ -20,12 +21,16 @@ public class Structure : MonoBehaviour {
     public static event EventHandler OnAnyPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
     public static event EventHandler OnAnyPlayerTriggeredOut;
-    public event EventHandler OnStructureUpgraded;
+    public event EventHandler<OnStructureUpgradedEventArgs> OnStructureUpgraded;
     public static event EventHandler OnAnyStructureUpgraded;
     public event EventHandler OnStructureFunctionUsed;
     public static event EventHandler OnAnyStructurePrimaryFunctionUsed;
     public event EventHandler OnStructureInteractionsUpdated;
     public event EventHandler OnInitialCampStructureBuilt;
+
+    public class OnStructureUpgradedEventArgs:EventArgs {
+        public bool upgradedOnLoad;
+    }
 
     protected bool playerInTriggerArea;
     protected bool playerCanInteract;
@@ -118,9 +123,22 @@ public class Structure : MonoBehaviour {
     protected virtual void UpgradeStructure() {
         structureLevel++;
         RefreshStructureUpgradeInteraction();
-        
-        OnStructureUpgraded?.Invoke(this, EventArgs.Empty);
+
+        OnStructureUpgraded?.Invoke(this, new OnStructureUpgradedEventArgs {
+            upgradedOnLoad = false
+        });
         OnAnyStructureUpgraded?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SetStructureLevel(int structureLevel) {
+        if (structureLevel == 1) return;
+
+        this.structureLevel = structureLevel;
+        RefreshStructureUpgradeInteraction();
+
+        OnStructureUpgraded?.Invoke(this, new OnStructureUpgradedEventArgs {
+            upgradedOnLoad = true
+        });
     }
 
     public bool GetUpgradableUnlocked() {
@@ -205,6 +223,14 @@ public class Structure : MonoBehaviour {
         
         SetStructureUpgradableUnlocked(upgradeUnlocked);
         OnStructureInteractionsUpdated?.Invoke(this, EventArgs.Empty);
+    }
+
+    public virtual void SetStructureBuiltOnLoad(bool setBuiltOnLoad = false) {
+        this.setBuiltOnLoad = setBuiltOnLoad;
+    }
+
+    public bool GetStructureBuiltOnLoad() {
+        return setBuiltOnLoad;
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision) {
@@ -460,9 +486,6 @@ public class Structure : MonoBehaviour {
         currentStructureInteractionType = interactionType;
     }
 
-    public void InvokeOnStructureUpgraded() {
-        OnStructureUpgraded?.Invoke(this, EventArgs.Empty);
-    }
 
     public GameObject GetVisualIndicator() {
         return visualIndicator;

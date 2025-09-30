@@ -27,6 +27,7 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
     }
 
     protected override void Start() {
+        spawnTimer = 1f;
     }
 
     protected void Update() {
@@ -132,8 +133,12 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
         });
     }
 
-    public void SetDead() {
+    public void SetDead(bool triggerDeathEvent = false) {
         dead = true;
+
+        if(triggerDeathEvent) {
+            OnSpawnerDied?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public void SetCanSpawnAtNight(bool canSpawn) {

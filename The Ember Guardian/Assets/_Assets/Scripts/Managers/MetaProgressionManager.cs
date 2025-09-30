@@ -204,6 +204,7 @@ public class MetaProgressionManager : MonoBehaviour
         Debug.Log("save hub gems");
 
         var gemData = new Dictionary<string, List<Vector3>>();
+        var gemRotationData = new Dictionary<string, List<Quaternion>>();
 
         gemData["greenGem"] = UICurrencyManager.HubInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.greenGem);
         gemData["redGem"] = UICurrencyManager.HubInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.redGem);
@@ -212,28 +213,41 @@ public class MetaProgressionManager : MonoBehaviour
         gemData["yellowGem"] = UICurrencyManager.HubInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.yellowGem);
         gemData["cyanGem"] = UICurrencyManager.HubInventoryUI.GetCurrencyPositions(PlayerCurrencies.CurrencyType.cyanGem);
 
+        gemRotationData["greenGem"] = UICurrencyManager.HubInventoryUI.GetCurrencyRotations(PlayerCurrencies.CurrencyType.greenGem);
+        gemRotationData["redGem"] = UICurrencyManager.HubInventoryUI.GetCurrencyRotations(PlayerCurrencies.CurrencyType.redGem);
+        gemRotationData["blueGem"] = UICurrencyManager.HubInventoryUI.GetCurrencyRotations(PlayerCurrencies.CurrencyType.blueGem);
+        gemRotationData["purpleGem"] = UICurrencyManager.HubInventoryUI.GetCurrencyRotations(PlayerCurrencies.CurrencyType.purpleGem);
+        gemRotationData["yellowGem"] = UICurrencyManager.HubInventoryUI.GetCurrencyRotations(PlayerCurrencies.CurrencyType.yellowGem);
+        gemRotationData["cyanGem"] = UICurrencyManager.HubInventoryUI.GetCurrencyRotations(PlayerCurrencies.CurrencyType.cyanGem);
+
         ES3.Save("HubGems", gemData);
+        ES3.Save("HubGemRotations", gemRotationData);
     }
 
     public void SaveLevelGemsAndHoldingEmber(float proportionToSave = 1f) {
         var gemData = new Dictionary<string, List<Vector3>>();
+        var gemDataRotations = new Dictionary<string, List<Quaternion>>();
 
         foreach (PlayerCurrencies.CurrencyType gemType in Enum.GetValues(typeof(PlayerCurrencies.CurrencyType))) {
             // Récupérer toutes les positions du type de gemme
             List<Vector3> positions = UICurrencyManager.PlayerInventoryUI.GetCurrencyPositions(gemType);
+            List<Quaternion> rotations = UICurrencyManager.PlayerInventoryUI.GetCurrencyRotations(gemType);
 
             // Calcul du nombre d’éléments à conserver
             int newSize = (int)(positions.Count * proportionToSave);
 
             // Tronquer la liste
             List<Vector3> truncatedPositions = positions.GetRange(0, newSize);
+            List<Quaternion> truncatedRotations = rotations.GetRange(0, newSize);
 
             // Ajouter au dictionnaire
             gemData[gemType.ToString()] = truncatedPositions;
+            gemDataRotations[gemType.ToString()] = truncatedRotations;
         }
 
         // Sauvegarde batch des gemmes (uniquement l’inventaire joueur ici)
         ES3.Save("PlayerGems", gemData);
+        ES3.Save("PlayerGemRotations", gemDataRotations);
 
         // Sauvegarde séparée pour l’Ember porté
         ES3.Save("holdingEmber", PlayerCurrencies.Instance.GetCarryingEmber());
@@ -257,6 +271,21 @@ public class MetaProgressionManager : MonoBehaviour
             return gemData[gemKey];
 
         return new List<Vector3>();
+    }
+
+    public List<Quaternion> GetGemRotations(PlayerCurrencies.CurrencyType gemType, bool playerInventory) {
+        string key = playerInventory ? "PlayerGemRotations" : "HubGemRotations";
+
+        if (!ES3.KeyExists(key))
+            return new List<Quaternion>();
+
+        var gemData = ES3.Load<Dictionary<string, List<Quaternion>>>(key);
+
+        string gemKey = gemType.ToString();
+        if (gemData.ContainsKey(gemKey))
+            return gemData[gemKey];
+
+        return new List<Quaternion>();
     }
 
 

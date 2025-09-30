@@ -65,7 +65,8 @@ public class WorkerUI : MonoBehaviour
         StartCoroutine(HideTextAfterDelay(3f));
     }
 
-    private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
+    private void WorkerAI_OnJobChanged(object sender, WorkerAI.OnJobSetEventArgs e) {
+        if (!e.triggerUITextLines) return;
 
         if (workerAI.GetJob() == WorkerAI.JobTypes.jobless) {
             int textRandomized = UnityEngine.Random.Range(1, 16);
@@ -75,6 +76,21 @@ public class WorkerUI : MonoBehaviour
         if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
             int textRandomized = UnityEngine.Random.Range(1, 11);
             string localizationKey = "worker_assignedHunter" + textRandomized;
+            talkText.text = LocalizationManager.Instance.GetLocalizedText(localizationKey);
+        }
+        if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
+            int textRandomized = UnityEngine.Random.Range(1, 11);
+            string localizationKey = "worker_assignedMiner" + textRandomized;
+            talkText.text = LocalizationManager.Instance.GetLocalizedText(localizationKey);
+        }
+        if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
+            int textRandomized = UnityEngine.Random.Range(1, 11);
+            string localizationKey = "worker_assignedEngineer" + textRandomized;
+            talkText.text = LocalizationManager.Instance.GetLocalizedText(localizationKey);
+        }
+        if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
+            int textRandomized = UnityEngine.Random.Range(1, 11);
+            string localizationKey = "worker_assignedGuard" + textRandomized;
             talkText.text = LocalizationManager.Instance.GetLocalizedText(localizationKey);
         }
 

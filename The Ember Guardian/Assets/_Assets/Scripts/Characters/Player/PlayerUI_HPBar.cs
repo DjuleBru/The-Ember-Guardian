@@ -42,6 +42,7 @@ public class PlayerUI_HPBar : MonoBehaviour
             return;
         }
 
+        Player.Instance.OnPlayerHealthLoaded += Player_OnPlayerHealthLoaded;
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         Player.Instance.OnPlayerHealed += Player_OnPlayerHealed;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
@@ -63,6 +64,10 @@ public class PlayerUI_HPBar : MonoBehaviour
         RefreshHPBar();
 
         hpBarGameObject.SetActive(false);
+    }
+
+    private void Player_OnPlayerHealthLoaded(object sender, EventArgs e) {
+        RefreshHPBar();
     }
 
     private void FastTravelTP_OnAnyPlayerWarped(object sender, EventArgs e) {

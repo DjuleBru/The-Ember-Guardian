@@ -55,7 +55,7 @@ public class ObservationTowerVisual : StructureVisual
     protected override void HandleInitialBuildAnimation() {
         base.HandleInitialBuildAnimation();
 
-        if (!animateSpriteMaterialOnBuild) {
+        if (!animateSpriteMaterialOnBuild || structure.GetStructureBuiltOnLoad()) {
             observationTowerTopMaterialAnimator.SetTrigger("BuiltAtStart");
 
         }

@@ -304,7 +304,7 @@ public class Tutorial : MonoBehaviour
 
     private IEnumerator SetGunAmmoAfterDelay() {
         yield return new WaitForSeconds(.05f);
-        PlayerShoot.Instance.SetGunAmmo(PlayerShoot.Instance.GetHeldGunSO(), 0);
+        PlayerShoot.Instance.SetGunAmmo(PlayerShoot.Instance.GetHeldGunSO(), 0, 0);
         PlayerShoot.Instance.SetCanShoot(true);
         PlayerUI_AmmoBar.Instance.RefreshAmmoBar();
     }

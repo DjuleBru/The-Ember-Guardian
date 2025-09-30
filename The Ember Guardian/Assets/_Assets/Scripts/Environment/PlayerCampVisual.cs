@@ -90,11 +90,12 @@ public class PlayerCampVisual : MonoBehaviour
         }
     }
 
-    private void CampZoneManager_OnCampZoneLimitsChanged(object sender, System.EventArgs e) {
+    private void CampZoneManager_OnCampZoneLimitsChanged(object sender, CampZoneManager.OnCampZoneLimitsChangedEventArgs e) {
         if(!campLimitsInitialized) {
             maxRightLimit = CampZoneManager.Instance.GetMaxZoneLimit();
             maxLeftLimit = Mathf.Abs(CampZoneManager.Instance.GetMinZoneLimit());
             campLimitsInitialized = true;
+            return;
         }
 
         float rightLimit = CampZoneManager.Instance.GetMaxZoneLimit();
@@ -109,6 +110,12 @@ public class PlayerCampVisual : MonoBehaviour
             right_fromScale = backgroundRightFenceTransform.localScale.x;
             right_toScale = rightLimit / scaleToWorldUnits;
 
+            if (!e.triggerSFXAndFenceAnimation) {
+                backgroundRightFenceTransform.localScale = right_toScale * Vector3.one;
+                backgroundRightFenceAnimator.SetTrigger("BuiltAtStart");
+                return;
+            };
+
             lerpingRight = true;
             OnCampBackgroundBuild_Start?.Invoke(this, EventArgs.Empty);
             backgroundRightFenceAnimator.SetTrigger("Build_Start");
@@ -120,6 +127,12 @@ public class PlayerCampVisual : MonoBehaviour
             maxLeftLimit = leftLimit;
             left_fromScale = backgroundLeftFenceTransform.localScale.x;
             left_toScale = leftLimit / scaleToWorldUnits;
+
+            if (!e.triggerSFXAndFenceAnimation) {
+                backgroundLeftFenceTransform.localScale = left_toScale * Vector3.one;
+                backgroundLeftFenceAnimator.SetTrigger("BuiltAtStart");
+                return;
+            };
 
             lerpingLeft = true;
             OnCampBackgroundBuild_Start?.Invoke(this, EventArgs.Empty);

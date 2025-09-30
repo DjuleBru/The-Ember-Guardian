@@ -7,6 +7,8 @@ public class WorkerManager : MonoBehaviour
 {
     public static WorkerManager Instance;
 
+    public Transform workerPrefab;
+
     private List<Worker> recruitedWorkers = new List<Worker>();
     private List<Worker> joblessWorkers = new List<Worker>();
 

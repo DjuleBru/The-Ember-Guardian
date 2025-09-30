@@ -57,14 +57,17 @@ public class BarricadePiece : MonoBehaviour {
         }
     }
 
-    public void BuildBarricadePiece() {
+    public void BuildBarricadePiece(bool triggerBuildAnimation) {
         gameObject.SetActive(true);
         transform.position = initialPosition;
 
         rb.bodyType = RigidbodyType2D.Static;
         spriteRenderer.enabled = true;
         pieceCollider.enabled = true;
-        animator.SetTrigger("Build");
+
+        if (triggerBuildAnimation) {
+            animator.SetTrigger("Build");
+        }
     }
 
     public void BarricadePieceFell() {

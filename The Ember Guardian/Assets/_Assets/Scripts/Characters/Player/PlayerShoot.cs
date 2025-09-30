@@ -28,7 +28,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnBulletsChanged;
     public event EventHandler OnPlayerSwappedGunStarted;
     public event EventHandler OnPlayerSwappedGunEnded;
-    public event EventHandler OnPlayerSwappedGun;
+    public event EventHandler<OnPlayerSwappedGunEventArgs> OnPlayerSwappedGun;
     public event EventHandler OnGunsLoaded;
     public event EventHandler OnShotStartedLoading;
 
@@ -55,6 +55,9 @@ public class PlayerShoot : MonoBehaviour
 
     public class OnPlayerResetLMGBipodEventArgs : EventArgs {
         public bool removeBecauseDied;
+    }
+    public class OnPlayerSwappedGunEventArgs : EventArgs {
+        public bool triggerSFX;
     }
 
     private float setupLMGTime = 1.8f;
@@ -142,17 +145,21 @@ public class PlayerShoot : MonoBehaviour
 
         autoReload = SettingsManager.Instance.GetAutoReload();
         useDebugGun = DebugManager.Instance.GetDebugMode_PlayerWeapons();
+
         if (useDebugGun) {
-            SetActiveGun(debugGun.gunType);
+
+            SetActiveGun(debugGun.gunType, true, false);
             if (debugSecondaryGun != null) {
                 canHold2Guns = true;
                 secondayGunSO = debugSecondaryGun;
             }
+
         } else {
-            SetActiveGun(PlayerSave.Instance.GetPrimaryActiveGunType());
             canHold2Guns = PlayerStats.Instance.GetCanHold2WeaponsUnlocked();
+
+            SetActiveGun(PlayerSave.Instance.GetPrimaryActiveGunType(), true, false);
             if (canHold2Guns) {
-                if(PlayerSave.Instance.GetSecondaryGunIsEquipped()) {
+                if (PlayerSave.Instance.GetSecondaryGunIsEquipped()) {
                     secondayGunSO = GetGunSO(PlayerSave.Instance.GetSecondaryActiveGunType());
                 }
             }
@@ -297,14 +304,24 @@ public class PlayerShoot : MonoBehaviour
         OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
     }
 
-    public void SetPrimaryWeaponSO(GunSO gunSO) {
+    public void SetPrimaryWeaponSO(GunSO gunSO, bool setGunActive = true) {
+
         primaryGunSO = gunSO;
-        SetActiveGun(gunSO.gunType, true);
+        if(setGunActive) {
+            SetActiveGun(gunSO.gunType, true);
+        }
+
+
         OnPrimaryWeaponChanged?.Invoke(this, EventArgs.Empty);
     }
-    public void SetSecondaryWeaponSO(GunSO gunSO) {
+
+    public void SetSecondaryWeaponSO(GunSO gunSO, bool setGunActive = true) {
         secondayGunSO = gunSO;
-        SetActiveGun(gunSO.gunType, false);
+
+        if (setGunActive) {
+            SetActiveGun(gunSO.gunType, false);
+        }
+
         OnSecondaryWeaponChanged?.Invoke(this, EventArgs.Empty);
     }
 
@@ -341,7 +358,15 @@ public class PlayerShoot : MonoBehaviour
         OnPlayerWeaponReplaced?.Invoke(this, EventArgs.Empty);
     }
 
-    public void SetActiveGun(GunSO.GunType gunType, bool primaryGun = true) {
+    public void SetGunSOInStock(GunSO gunSO) {
+        if (!replacedGunSOList.Contains(gunSO)) {
+            replacedGunSOList.Add(gunSO);
+        }
+
+        OnPlayerWeaponReplaced?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SetActiveGun(GunSO.GunType gunType, bool primaryGun = true, bool triggerSFX=true) {
         Gun activeGun = null;
         GunSO activeGunSO = null;
 
@@ -378,7 +403,9 @@ public class PlayerShoot : MonoBehaviour
             secondayGunSO = activeGunSO;
         }
 
-        OnPlayerSwappedGun?.Invoke(this, EventArgs.Empty);
+        OnPlayerSwappedGun?.Invoke(this, new OnPlayerSwappedGunEventArgs {
+            triggerSFX = triggerSFX
+        });
     }
 
     public GunSO GetGunSO(GunSO.GunType gunType) {
@@ -393,14 +420,16 @@ public class PlayerShoot : MonoBehaviour
         return gunSO;
     }
 
-    public void SetGunAmmo(GunSO gunSO, int ammoCount) {
+    public void SetGunAmmo(GunSO gunSO, int ammoCount, int currentBullet) {
         foreach (Gun gun in allGunsList) {
             if (gun.GetGunSO() == gunSO) {
-                gun.SetGunAmmo(ammoCount, ammoCount);
+                gun.SetGunAmmo(ammoCount, currentBullet);
             }
         }
+
         OnBulletsChanged?.Invoke(this, EventArgs.Empty);
     }
+
     public void SetGunToMaxAmmo(GunSO gunSO) {
         int ammoRefill = 0;
         foreach (Gun gun in allGunsList) {
@@ -414,6 +443,7 @@ public class PlayerShoot : MonoBehaviour
             ammoAmount = ammoRefill
         });
     }
+
 
     private void InitializeGuns() {
         foreach (Gun gun in allGunsList) {

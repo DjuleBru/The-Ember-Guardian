@@ -35344,9 +35344,6 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   groundDestroysBullet: 1
   isPlayerWeaponPS: 1
-  creaturesLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &3989973003179875256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40588,9 +40585,6 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   groundDestroysBullet: 1
   isPlayerWeaponPS: 1
-  creaturesLayerMask:
-    serializedVersion: 2
-    m_Bits: 32768
 --- !u!114 &3980899287632662433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53531,9 +53525,6 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   groundDestroysBullet: 1
   isPlayerWeaponPS: 1
-  creaturesLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &3488239442925101089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64620,9 +64611,6 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   groundDestroysBullet: 1
   isPlayerWeaponPS: 1
-  creaturesLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &5576169239083122850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76667,9 +76655,6 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   groundDestroysBullet: 1
   isPlayerWeaponPS: 1
-  creaturesLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &5217720791649849173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89107,9 +89092,6 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   groundDestroysBullet: 1
   isPlayerWeaponPS: 1
-  creaturesLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &226782777796843144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118733,9 +118715,6 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   groundDestroysBullet: 1
   isPlayerWeaponPS: 1
-  creaturesLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &2065878600095273499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125396,9 +125375,6 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   groundDestroysBullet: 1
   isPlayerWeaponPS: 1
-  creaturesLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &8386365938929130846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126501,6 +126477,32 @@ MonoBehaviour:
   passiveShield: {fileID: 4809968831329830375}
   magmaShotPrefab: {fileID: 8951337481921594862, guid: 194d1f6c4823ef046ba64fb93fdf9049, type: 3}
   fireDashPrefab: {fileID: 8951337481921594862, guid: be06d313fe24dce4eba9880e8384bf46, type: 3}
+  allSkillsSOList:
+  - {fileID: 11400000, guid: 586a280df149cc040bc19783fe1cb282, type: 2}
+  - {fileID: 11400000, guid: 3d01119ee7e48d34887e9f278a2d8234, type: 2}
+  - {fileID: 11400000, guid: 5a55ab67c9a5f39489a82e85a0849d70, type: 2}
+  - {fileID: 11400000, guid: adcb68ae53d4a384199427db639fda02, type: 2}
+  - {fileID: 11400000, guid: b1b7d387ea07a2b45b9833c87c48d601, type: 2}
+  - {fileID: 11400000, guid: 1a9c587c265ed66408c335427c041af8, type: 2}
+  - {fileID: 11400000, guid: 888aec5653cd81442aee344b2ef417ff, type: 2}
+  - {fileID: 11400000, guid: 6dd5a18d13298be44ad614592801565d, type: 2}
+  - {fileID: 11400000, guid: 1435a9d3c18b1ac4e8cd44799af00080, type: 2}
+  - {fileID: 11400000, guid: bef3187e59a62004b96469e0026ce9ad, type: 2}
+  - {fileID: 11400000, guid: 33830c2123521354b858f56b99ae2109, type: 2}
+  - {fileID: 11400000, guid: 77d8706390285b448b958271c9e7bd3a, type: 2}
+  - {fileID: 11400000, guid: 4ccf3f85e3e918640bb82a7dab550a0c, type: 2}
+  - {fileID: 11400000, guid: cece0554fbc60ae43a39a901a9d15b5d, type: 2}
+  - {fileID: 11400000, guid: 171117bc92c321647be425e391690423, type: 2}
+  - {fileID: 11400000, guid: d1c0810d3ea276c45b0d15e71381f7fa, type: 2}
+  - {fileID: 11400000, guid: 8cf09783aa4f4ad4bb07f598469c9486, type: 2}
+  - {fileID: 11400000, guid: c124a9e2c04e2494ea6da68756ddd787, type: 2}
+  - {fileID: 11400000, guid: e83aa25607a078f4485f71db05814b2e, type: 2}
+  - {fileID: 11400000, guid: cf849b55e83e3654aa6b8efad20c74f8, type: 2}
+  - {fileID: 11400000, guid: aabed18991198844986fec11b9e9d1f5, type: 2}
+  - {fileID: 11400000, guid: 3dbe63c11b3a0644686891a209223534, type: 2}
+  - {fileID: 11400000, guid: d6278a2c94a99b54e8e36cec27b5714e, type: 2}
+  - {fileID: 11400000, guid: 43783caa7f7dfff4db159704c03cbfff, type: 2}
+  - {fileID: 11400000, guid: b8d57f48695c9b4469cb7c9bcfc8f632, type: 2}
 --- !u!114 &2089533132175775193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133522,9 +133524,6 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   groundDestroysBullet: 1
   isPlayerWeaponPS: 1
-  creaturesLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &8023592926531044172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139231,9 +139230,6 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   groundDestroysBullet: 1
   isPlayerWeaponPS: 1
-  creaturesLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &480225270202749745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168922,9 +168918,6 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   groundDestroysBullet: 1
   isPlayerWeaponPS: 1
-  creaturesLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &7819770552940343977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194553,9 +194546,6 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   groundDestroysBullet: 1
   isPlayerWeaponPS: 1
-  creaturesLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &981957056020767933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234093,9 +234083,6 @@ MonoBehaviour:
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   groundDestroysBullet: 0
   isPlayerWeaponPS: 1
-  creaturesLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &2584384365149670642
 MonoBehaviour:
   m_ObjectHideFlags: 0

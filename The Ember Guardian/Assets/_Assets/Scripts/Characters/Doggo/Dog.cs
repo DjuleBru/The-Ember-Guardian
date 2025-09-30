@@ -130,7 +130,7 @@ public class Dog : MonoBehaviour
         SetCurrentDogAI();
         OnDogTypeChanged?.Invoke(this, EventArgs.Empty);
 
-        Debug.Log("SetDogType " + dogType);
+        //Debug.Log("SetDogType " + dogType);
     }
 
     [Button]

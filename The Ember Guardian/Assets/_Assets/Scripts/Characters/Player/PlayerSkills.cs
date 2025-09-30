@@ -12,6 +12,7 @@ public class PlayerSkills : MonoBehaviour
     [SerializeField] private PassiveShield passiveShield;
     [SerializeField] private Transform magmaShotPrefab;
     [SerializeField] private Transform fireDashPrefab;
+    [SerializeField] private List<SkillSO> allSkillsSOList;
 
     private List<SkillItem> passiveSkillList = new List<SkillItem>();
     private List<SkillItem> activeSkillList = new List<SkillItem>();
@@ -108,6 +109,7 @@ public class PlayerSkills : MonoBehaviour
 
     public class OnSkillAddedEventArgs : EventArgs {
         public SkillItem skillItemAdded;
+        public bool triggerAddSFX;
     }
     public class OnSkillDeactivatedArgs : EventArgs {
         public SkillItem.SkillType skillTypeDeactivated;
@@ -158,6 +160,15 @@ public class PlayerSkills : MonoBehaviour
 
         yield return new WaitForSeconds(.5f);
 
+        OnInitialSkillsInitialized?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SetPlayerSkillsInitialized() {
+        StartCoroutine(SetPlayerSkillsInitializedAfterDelay(1f));
+    }
+
+    private IEnumerator SetPlayerSkillsInitializedAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
         OnInitialSkillsInitialized?.Invoke(this, EventArgs.Empty);
     }
 
@@ -435,14 +446,16 @@ public class PlayerSkills : MonoBehaviour
         });
     }
 
-    public void AddActiveSkill(SkillItem skillItem) {
+    public void AddActiveSkill(SkillItem skillItem, bool triggerSFX = true) {
 
         if(activeSkillLeft != null && activeSkillLeft.skillType == skillItem.skillType) {
             activeSkillLeft = skillItem;
             leftSkillCooldown = activeSkillLeft.skillSO.activeSkillEffect.GetCooldownAtLevel(skillItem.currentLevel);
             OnActiveSkillAdded?.Invoke(this, new OnSkillAddedEventArgs {
-                skillItemAdded = skillItem
+                skillItemAdded = skillItem,
+                triggerAddSFX = triggerSFX,
             });
+            leftSkillReady = true;
             SetActiveSkillParameters(skillItem);
             return;
         }
@@ -451,8 +464,10 @@ public class PlayerSkills : MonoBehaviour
             activeSkillRight = skillItem;
             rightSkillCooldown = activeSkillRight.skillSO.activeSkillEffect.GetCooldownAtLevel(skillItem.currentLevel);
             OnActiveSkillAdded?.Invoke(this, new OnSkillAddedEventArgs {
-                skillItemAdded = skillItem
+                skillItemAdded = skillItem,
+                triggerAddSFX = triggerSFX,
             });
+            rightSkillReady = true;
             SetActiveSkillParameters(skillItem);
             return;
         }
@@ -463,8 +478,10 @@ public class PlayerSkills : MonoBehaviour
             activeSkillLeft = skillItem;
             leftSkillCooldown = activeSkillLeft.skillSO.activeSkillEffect.GetCooldownAtLevel(skillItem.currentLevel);
             OnActiveSkillAdded?.Invoke(this, new OnSkillAddedEventArgs {
-                skillItemAdded = skillItem
+                skillItemAdded = skillItem,
+                triggerAddSFX = triggerSFX,
             });
+            leftSkillReady = true;
             SetActiveSkillParameters(skillItem);
             return;
         }
@@ -475,8 +492,10 @@ public class PlayerSkills : MonoBehaviour
             activeSkillRight = skillItem;
             rightSkillCooldown = activeSkillRight.skillSO.activeSkillEffect.GetCooldownAtLevel(skillItem.currentLevel);
             OnActiveSkillAdded?.Invoke(this, new OnSkillAddedEventArgs {
-                skillItemAdded = skillItem
+                skillItemAdded = skillItem,
+                triggerAddSFX = triggerSFX,
             });
+            rightSkillReady = true;
             SetActiveSkillParameters(skillItem);
             return;
         }
@@ -526,7 +545,7 @@ public class PlayerSkills : MonoBehaviour
         }
     }
 
-    public void AddPassiveSkill(SkillItem skillItem) {
+    public void AddPassiveSkill(SkillItem skillItem, bool triggerSFX = true) {
 
         SkillSO skillSO = skillItem.GetSkillSO();
         SkillItem skillItemCopy = new SkillItem();
@@ -549,7 +568,8 @@ public class PlayerSkills : MonoBehaviour
         }
 
         OnPassiveSkillAdded?.Invoke(this, new OnSkillAddedEventArgs {
-            skillItemAdded = skillItemCopy
+            skillItemAdded = skillItemCopy,
+            triggerAddSFX = triggerSFX,
         });
 
         ApplyPassiveSkillEffect(skillItem);
@@ -1263,5 +1283,13 @@ public class PlayerSkills : MonoBehaviour
         skillItem.Initialize(skillSO);
         skillItem.currentLevel = level;
         AddPassiveSkill(skillItem);
+    }
+
+    public SkillSO GetSkillSO(SkillItem.SkillType skillType) {
+        foreach(SkillSO skillSO in allSkillsSOList) {
+            if(skillSO.skillType == skillType) return skillSO;
+        }
+
+        return allSkillsSOList[0];
     }
 }

@@ -9,13 +9,13 @@ public class StructureLocation_StartLevelFire : StructureLocation {
         base.Awake();
     }
 
-
-
-    public override Structure BuildStructure() {
-        InvokeOnAnyStructureBuilt(Fire.Instance);
+    public override Structure BuildStructure(bool buildOnLoad = false) {
+        InvokeOnAnyStructureBuilt(Fire.Instance, buildOnLoad);
         showTooltipOnTrigger.HideTooltipShown();
         Fire.Instance.gameObject.SetActive(true);
         Fire.Instance.ActivateInitialFire();
+
+        StructuresManager.Instance.AddBuiltStructure(Fire.Instance);
 
         StartCoroutine(DestroyGameObjectAfterFrame());
         return Fire.Instance;

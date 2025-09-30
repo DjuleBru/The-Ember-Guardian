@@ -67,10 +67,14 @@ public class Worker : Mob {
         }
     }
 
-    public void RecruitWorker(bool playSound = true) {
+    public void RecruitWorker(bool playSound = true, bool triggerUITextLines = true) {
         WorkerManager.Instance.AddRecruitedWorker(this);
-        mobSpawner.RemoveMobFromMobSpawnedList(this);
-        workerAI.SetJob(wildJobType);
+
+        if(mobSpawner != null) {
+            mobSpawner.RemoveMobFromMobSpawnedList(this);
+        }
+
+        workerAI.SetJob(wildJobType, triggerUITextLines);
         recruited = true;
 
         if (!playSound) return;
@@ -268,6 +272,10 @@ public class Worker : Mob {
 
     public WorkerAI.JobTypes GetWildJobType() {
         return wildJobType; 
+    }
+
+    public Dictionary<PlayerCurrencies.CurrencyType, int> GetCollectedCurrencies() {
+        return collectedCurrencies;
     }
 
 }

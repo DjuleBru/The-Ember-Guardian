@@ -61,6 +61,7 @@ public class Player : MonoBehaviour, IDamageable
     public event EventHandler OnPlayerBlinded;
     public event EventHandler<OnPlayerChangedHealthEventArgs> OnPlayerHealed;
     public event EventHandler OnPlayerDied;
+    public event EventHandler OnPlayerHealthLoaded;
     public event EventHandler OnPlayerRespawned;
     public event EventHandler OnPlayerBackToTentToRespawn;
     public event EventHandler OnPlayerEnteredAnyInteractableTriggerArea;
@@ -512,6 +513,10 @@ public class Player : MonoBehaviour, IDamageable
         transform.position = position;
     }
 
+    public void SetHP(int health) {
+        this.playerHealth = health;
+        OnPlayerHealthLoaded?.Invoke(this, EventArgs.Empty);
+    }
     public Transform GetProjectileTarget() {
         return projectileTarget;
     }

@@ -1,10 +1,26 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class MobSpawner : MonoBehaviour
 {
+    [SerializeField, HideInInspector] private string spawnerID;
+
+    public string GetSpawnerID() => spawnerID;
+
+#if UNITY_EDITOR
+    private void OnValidate() {
+        // Vérifie si on est dans une scène (pas dans un prefab)
+        if (string.IsNullOrEmpty(spawnerID) && gameObject.scene.IsValid()) {
+            spawnerID = Guid.NewGuid().ToString();
+            EditorUtility.SetDirty(this);
+        }
+    }
+
+#endif
+
     [SerializeField] protected SpriteRenderer sceneViewSpawnerSpriteRenderer;
     [SerializeField] protected Transform mobPrefab;
     [SerializeField] protected List<Transform> spawnPositionList;
@@ -35,7 +51,8 @@ public class MobSpawner : MonoBehaviour
     public event EventHandler OnAllMobRemoved;
 
     protected bool mobsCanSpawnAtDawn = true;
-
+    protected bool ambushSpawned;
+    protected bool firstDawnAfterLoad;
 
     public class OnMobSpawnedEventArgs : EventArgs {
         public Mob mob;
@@ -52,6 +69,11 @@ public class MobSpawner : MonoBehaviour
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         if (blockSpawningOnStart) return;
+
+        if (SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+            firstDawnAfterLoad = true;
+            return;
+        }
         SpawnMobs(mobAmountToSpawn);
     }
 
@@ -79,15 +101,7 @@ public class MobSpawner : MonoBehaviour
     }
 
     private void LinkedMobSpawner_OnAllMobRemoved(object sender, EventArgs e) {
-        List<Mob> mobListCopy = new List<Mob>();
-        foreach(Mob mob in mobSpawnedList) {
-            mobListCopy.Add(mob);
-        }
-
-        foreach (Mob mob in mobListCopy) {
-            RemoveMobFromMobSpawnedList(mob);
-            mob.Die();
-        }
+        KillRemainingSpawnedMobs();
     }
 
     public virtual void RemoveMobFromMobSpawnedList(Mob mob) {
@@ -103,6 +117,11 @@ public class MobSpawner : MonoBehaviour
 
     protected void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         if (!mobsCanSpawnAtDawn) return;
+        if (firstDawnAfterLoad) {
+            firstDawnAfterLoad = false;
+            return;
+        }
+
         int mobAmountToSpawnOnDawn = mobAmountToSpawn - mobSpawnedList.Count;
 
         if(mobAmountToSpawnOnDawn > maxMobsRespawningAtDawn) {
@@ -118,6 +137,7 @@ public class MobSpawner : MonoBehaviour
     }
 
     public virtual void SpawnMobs(int mobAmount) {
+        Debug.Log(this + " SpawnMobs " + mobAmount);
         for (int i = 0; i < mobAmount; i++) {
 
             float positionRandomizer = UnityEngine.Random.Range(-spawnPositionRandomizer, spawnPositionRandomizer);
@@ -272,15 +292,51 @@ public class MobSpawner : MonoBehaviour
         });
     }
 
+    public void LoadLinkedMobSpawner() {
+        if(linkedMobSpawner.GetMobCount() == 0) {
+            KillRemainingSpawnedMobs();
+            OnAllMobRemoved?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    private void KillRemainingSpawnedMobs() {
+        List<Mob> mobListCopy = new List<Mob>();
+        foreach (Mob mob in mobSpawnedList) {
+            mobListCopy.Add(mob);
+        }
+
+        foreach (Mob mob in mobListCopy) {
+            RemoveMobFromMobSpawnedList(mob);
+            mob.Die();
+        }
+    }
+
     public void SetMobsCanSpawnAtDawn(bool canSpawn) {
         mobsCanSpawnAtDawn = canSpawn;
     }
-
+    public void SetAmbushSpawned(bool ambushSpawned) {
+        this.ambushSpawned = ambushSpawned;
+    }
     public int GetMaxMobAmountSpawnedAtDawn() {
         return maxMobsRespawningAtDawn;
     }
 
     public float GetRadiusToRoamAround() {
         return radiusToRoamAround;
+    }
+
+    public int GetMobCount() {
+        return mobSpawnedList.Count;
+    }
+
+    public bool GetMobsCanSpawnAtDawn() {
+        return mobsCanSpawnAtDawn;
+    }
+
+    public bool GetAmbushSpawned() {
+        return ambushSpawned;
+    }
+    public void ForceNewID() {
+        spawnerID = Guid.NewGuid().ToString();
     }
 }

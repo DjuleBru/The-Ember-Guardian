@@ -436,7 +436,6 @@ public class Fire : Structure, IDamageable {
             ChangeState(State.extinguished);
             if(isSecondaryFire) {
                 SetStructurePrimaryFunctionUnlocked(true);
-                //StartCoroutine(ReactivateStructureLocationAfterDelay());
             }
         }
 
@@ -628,10 +627,13 @@ public class Fire : Structure, IDamageable {
         OnAnyFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
     }
 
-    public void ActivateInitialFire() {
+    public void ActivateInitialFire(bool forceSetCarryingEmber = true) {
         initialFireLit = true;
         OnInitialFireActivated?.Invoke(this, EventArgs.Empty);
-        PlayerCurrencies.Instance.SetCarryingEmber(false);
+
+        if(forceSetCarryingEmber) {
+            PlayerCurrencies.Instance.SetCarryingEmber(false);
+        }
     }
 
     [Button]

@@ -56,14 +56,12 @@ public class StructureVisual : MonoBehaviour {
         SetXAxisScale();
     }
 
-    private void Structure_OnInitialCampStructureBuilt(object sender, System.EventArgs e) {
+    protected void Structure_OnInitialCampStructureBuilt(object sender, System.EventArgs e) {
         HandleInitialBuildAnimation();
     }
 
     protected virtual void HandleInitialBuildAnimation() {
-
-        if (!animateSpriteMaterialOnBuild) {
-
+        if (!animateSpriteMaterialOnBuild || structure.GetStructureBuiltOnLoad()) {
             built = true;
             structureSpriteMaterialAnimator.SetTrigger("BuiltAtStart");
 
@@ -74,7 +72,6 @@ public class StructureVisual : MonoBehaviour {
 
         }
     }
-
 
     protected void PlayerCampVisual_OnCampBackgroundBuilt(object sender, System.EventArgs e) {
         if (!animateSpriteMaterialOnBuild) return;

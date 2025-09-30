@@ -216,4 +216,12 @@ public class Mob : MonoBehaviour, IDamageable
             inObstacleTriggerArea = false;
         }
     }
+
+    public int GetHealth() {
+        return health;
+    }
+
+    public void SetHealth(int health) {
+        this.health = health;
+    }
 }

@@ -16,7 +16,6 @@ public class SoundManager : MonoBehaviour
 
     private bool initialCampBackgroundBuilt;
     private bool initialEmberGiven;
-    private bool initialGunEquipped;
 
     private bool criticalFireTickJustRemoved;
     private float criticalFireTickRemovedTimer;
@@ -65,6 +64,7 @@ public class SoundManager : MonoBehaviour
             PlayerSkills.Instance.OnActiveSkillReady += PlayerSkills_OnActiveSkillReady;
             PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
             PlayerSkills.Instance.OnPassiveSkillAdded += PlayerSkills_OnPassiveSkillAdded;
+            PlayerSkills.Instance.OnActiveSkillAdded += PlayerSkills_OnActiveSkillAdded;
 
             PassiveShield.OnAnyPassiveShieldActivated += PassiveShield_OnAnyPassiveShieldActivated;
             PassiveShield.OnAnyPassiveShieldDied += PassiveShield_OnAnyPassiveShieldDied;
@@ -626,11 +626,9 @@ public class SoundManager : MonoBehaviour
         PlaySound3D(audioClipArray, e.bulletHitPosition, creatureHit.GetCreatureSO().bulletHitVolumeMultiplier);
     }
 
-    private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
-        if(!initialGunEquipped) {
-            initialGunEquipped = true;
-            return;
-        }
+    private void PlayerShoot_OnPlayerSwappedGun(object sender, PlayerShoot.OnPlayerSwappedGunEventArgs e) {
+        if (!e.triggerSFX) return;
+
         AudioClip audioClipArray = PlayerShoot.Instance.GetHeldGunSO().swapToWeaponSound;
         PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().swapToWeaponVolumeMultiplier);
     }
@@ -753,7 +751,16 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlayerSkills_OnPassiveSkillAdded(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
+
+        if (!e.triggerAddSFX) return;
         AudioClip skillAudioClip = soundRefsSO.passiveSkillAdded;
+        PlaySound2D(skillAudioClip, 1f);
+    }
+
+    private void PlayerSkills_OnActiveSkillAdded(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
+        
+        if (!e.triggerAddSFX) return;
+        AudioClip skillAudioClip = soundRefsSO.activeSkillReady;
         PlaySound2D(skillAudioClip, 1f);
     }
 
@@ -788,10 +795,12 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(audioClip, structureSO.upgradeVolumeMultiplier);
     }
 
-    private void StructureLocation_OnAnyStructureBuilt(object sender, System.EventArgs e) {
+    private void StructureLocation_OnAnyStructureBuilt(object sender, StructureLocation.OnAnyStructureBuiltEventArgs e) {
+        if (e.buildOnLoad) return;
+
         StructureSO structureSO = (sender as StructureLocation).GetStructureSOToBuild();
         AudioClip audioClip = structureSO.buildAudioClip;
-        PlaySound2D(audioClip, structureSO.buildVolumeMultiplier);
+        PlaySound3D(audioClip, (sender as StructureLocation).transform.position, structureSO.buildVolumeMultiplier);
     }
     private void StructureLocation_OnAnyStructureSOToBuildChanged(object sender, System.EventArgs e) {
         AudioClip audioClip = soundRefsSO.structureTypeToBuildChanged;

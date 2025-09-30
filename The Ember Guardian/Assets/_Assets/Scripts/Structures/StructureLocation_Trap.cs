@@ -17,20 +17,40 @@ public class StructureLocation_Trap : StructureLocation {
     protected override void Start() {
         base.Start();
         trapCurrencyTypes = CurrenciesManager.Instance.GetCurrencyTypesInCategory(PlayerCurrencies.CurrencyCategory.trap);
-        RefreshTrapTypesInPlayerInventory();
+        StartCoroutine(InitializeTrapTypesInPlayerInventory());
 
         GameInput.Instance.OnPlayerLeftSwitchPerformed += GameInput_OnPlayerLeftSwitchPerformed;
         GameInput.Instance.OnPlayerRightSwitchPerformed += GameInput_OnPlayerRightSwitchPerformed;
         UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
         UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped += PlayerInventoryUI_OnCurrencyDropped;
         UICurrencyManager.PlayerInventoryUI.OnCurrencyRemovedFromBag += PlayerInventoryUI_OnCurrencyRemovedFromBag;
+
+
     }
 
-    public override Structure BuildStructure() {
+    private IEnumerator InitializeTrapTypesInPlayerInventory() {
+        yield return new WaitForEndOfFrame();
+
+        if(SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+            yield return new WaitForEndOfFrame();
+        }
+
+        RefreshTrapTypesInPlayerInventory();
+    }
+
+    public void SetStructureSOToBuild(StructureSO structureSO) {
+        this.structureSOToBuild = structureSO;
+    }
+
+    public override Structure BuildStructure(bool buildOnLoad = false) {
 
         Structure_Trap trap = Instantiate(structureSOToBuild.structurePrefab, transform.position, Quaternion.identity).GetComponent<Structure_Trap>();
         trap.SetTrapStructureLocation(this);
-        InvokeOnAnyStructureBuilt(trap);
+        trap.SetStructureBuiltOnLoad(buildOnLoad);
+        InvokeOnAnyStructureBuilt(trap, buildOnLoad);
+
+        StructuresManager.Instance.RemoveStructureLocation(this);
+        StructuresManager.Instance.AddBuiltStructure(trap);
 
         trapLocationActive = false;
         gameObject.SetActive(false);
@@ -69,7 +89,6 @@ public class StructureLocation_Trap : StructureLocation {
         SetTrapSOToBuild();
     }
 
-
     private void PlayerInventoryUI_OnCurrencyRemovedFromBag(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         if (!trapLocationActive) return;
         if (!structureLocationUnlocked) return;
@@ -96,6 +115,8 @@ public class StructureLocation_Trap : StructureLocation {
 
     private void SetNewTrapSOToBuild() {
         PlayerCurrencies.CurrencyType currentTrapType = trapCurrencyTypesInPlayerInventory[currentCurrencyIndex];
+
+        Debug.Log("SetNewTrapSOToBuild " + currentTrapType);
 
         structureSOToBuild = TrapManager.Instance.GetTrapSO(TrapManager.Instance.GetTrapType(currentTrapType)).trapStructureSO;
         payCurrencyTemplate.SetCurrencyTypeToPay(currentTrapType);
@@ -140,6 +161,7 @@ public class StructureLocation_Trap : StructureLocation {
     }
 
     public void ReActivateTrapStructureLocation() {
+        structureLocationUnlocked = true;
         trapLocationActive = true;
         gameObject.SetActive(true);
 

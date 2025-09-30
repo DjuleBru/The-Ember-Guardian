@@ -111,6 +111,7 @@ public class ItemButtonUI : ButtonUI {
         if(DebugManager.Instance.GetAllItemsUnlockedInDemo()) {
             itemLockedInDemo = false;
             lockHoverInteractions = false;
+            itemUnlockableOnlyInLevel = false;
         }
 
         TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();

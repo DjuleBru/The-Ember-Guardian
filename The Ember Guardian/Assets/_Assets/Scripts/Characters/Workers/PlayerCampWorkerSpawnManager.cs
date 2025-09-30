@@ -17,7 +17,8 @@ public class PlayerCampWorkerSpawnManager : MonoBehaviour
 
         initialWorkersSpawned = WorkerStats.Instance.GetInitialEmberlings();
         emberlingsArrivals = (int)WorkerStats.Instance.GetEmberlingsArrivalsNumber();
-        Debug.Log("initialWorkersSpawned " + initialWorkersSpawned);
+
+        if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
         for(int i = 0; i < initialWorkersSpawned; i++) {
             debugWorkerSpawner.SpawnWorker(Tent.Instance.transform.position);
         }

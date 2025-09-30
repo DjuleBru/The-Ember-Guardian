@@ -120,7 +120,7 @@ public class Gun_Minigun : Gun {
             if(secondaryAmmoConsumptionTimer > secondaryAmmoConsumptionTime) {
                 secondaryAmmoConsumptionTimer = 0;
                 OnMinigunConsumeAmmoWhileSpinning?.Invoke(this, EventArgs.Empty);
-                PlayerShoot.Instance.SetGunAmmo(gunSO, GetCurrentBullet()-1);
+                PlayerShoot.Instance.SetGunAmmo(gunSO, currentAmmoClip , GetCurrentBullet()-1);
 
                 if(currentBullet <= 0) {
                     StopSpinning();

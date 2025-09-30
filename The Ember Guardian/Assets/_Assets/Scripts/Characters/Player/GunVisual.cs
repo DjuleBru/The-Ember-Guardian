@@ -59,6 +59,27 @@ public class GunVisual : MonoBehaviour
         }
     }
 
+    public void ForceInitializeAmmoVisual() {
+        gun = GetComponent<Gun>();
+        gunSO = gun.GetGunSO();
+        initialLightsColor = gunLightsSpriteRenderer.color;
+        gunReloadSprites = gunSO.shotCountSprites;
+
+        float bulletsAmountNormalized = (float)gun.GetCurrentBullet() / (float)gun.GetBulletsPerAmmoClip();
+        if (bulletsAmountNormalized == .5f) {
+            bulletsAmountNormalized = .49f;
+        }
+
+        int spriteIndex = Mathf.RoundToInt(bulletsAmountNormalized * gunReloadSprites.Count);
+
+        // bornes de sécurité
+        if (spriteIndex < 0) spriteIndex = 0;
+        if (spriteIndex >= gunReloadSprites.Count) spriteIndex = gunReloadSprites.Count - 1;
+
+        gunLightsSpriteRenderer.sprite = gunReloadSprites[spriteIndex];
+        gunLightSpriteIndex = spriteIndex;
+    }
+
     private void Gun_OnPerfectQTEDamageBuffEnded(object sender, System.EventArgs e) {
         gunLightsSpriteRenderer.material = initalLightsSpriteRendererMaterial;
     }

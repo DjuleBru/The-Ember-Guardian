@@ -52,7 +52,7 @@ public class PlayerUI_StaminaBar : MonoBehaviour
 
     private void RefreshStaminaBarSize() {
         float ratio = maxStamina / initialMaxStamina;
-        Debug.Log("RefreshStaminaBarSize " + ratio);
+        //Debug.Log("RefreshStaminaBarSize " + ratio);
 
         // 1. Redimensionne la barre principale
         float newWidth = initialSize.x * ratio;

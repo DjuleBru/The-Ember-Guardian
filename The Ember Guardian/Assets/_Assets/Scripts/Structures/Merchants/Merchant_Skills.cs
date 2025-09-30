@@ -46,6 +46,7 @@ public class Merchant_Skills : Merchant
     }
 
     private void PlayerSkills_OnInitialSkillsInitialized(object sender, System.EventArgs e) {
+        Debug.Log("PlayerSkills_OnInitialSkillsInitialized");
         InitializeMerchantItems();
     }
 
@@ -60,12 +61,16 @@ public class Merchant_Skills : Merchant
             var skillItem = new SkillItem();
             skillItem.Initialize(skillSO);
 
-            // Check if player already has skill (initial skills)
-            SkillItem activeSkillItem = PlayerSkills.Instance.GetActiveSkillLeft();
+            // Check if player already has skill (initial skills/load)
+            SkillItem leftActiveSkillItem = PlayerSkills.Instance.GetActiveSkillLeft();
+            SkillItem rightActiveSkillItem = PlayerSkills.Instance.GetActiveSkillRight();
             List<SkillItem> passiveSkillList = PlayerSkills.Instance.GetPassiveSkillList();
 
-            if (activeSkillItem != null && activeSkillItem.skillType == skillSO.skillType) {
+            if (leftActiveSkillItem != null && leftActiveSkillItem.skillType == skillSO.skillType) {
                 skillItem.currentLevel = PlayerSkills.Instance.GetActiveSkillLeft().currentLevel + 1;
+            }
+            if (rightActiveSkillItem != null && rightActiveSkillItem.skillType == skillSO.skillType) {
+                skillItem.currentLevel = PlayerSkills.Instance.GetActiveSkillRight().currentLevel + 1;
             }
             if (passiveSkillList.Count != 0 && passiveSkillList[0].skillType == skillSO.skillType) {
                 skillItem.currentLevel = PlayerSkills.Instance.GetPassiveSkillList()[0].currentLevel + 1;

@@ -28,11 +28,12 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool debugMode_AllTrapsUnlocked;
     [SerializeField] private bool disableCreatureDetection;
     [SerializeField] private bool showMobDestinationGizmos;
-    [SerializeField] private bool allItemsUnlockedInDemo;
+    [SerializeField] private bool allItemsUnlocked;
     [SerializeField] private bool dropRedOrbsUnlocked;
     [SerializeField] private bool takeScreenshotsContinuous;
     [SerializeField] private bool takeScreenshotsOnKeyPressed;
     [SerializeField] private bool saveAfterEachLevel;
+    [SerializeField] private bool logNightWaveData;
 
     int i = 0;
     private float screenshotTakeTimer;
@@ -149,7 +150,7 @@ public class DebugManager : MonoBehaviour
         return disableCreatureDetection;
     }
     public bool GetAllItemsUnlockedInDemo() {
-        return allItemsUnlockedInDemo;
+        return allItemsUnlocked;
     }
     public bool GetDropRedOrbsUnlocked() {
         return dropRedOrbsUnlocked;
@@ -160,5 +161,9 @@ public class DebugManager : MonoBehaviour
     }
     public bool GetSaveAfterEachLevelDebug() {
         return saveAfterEachLevel;
+    }
+
+    public bool GetLogNightWavesData() {
+        return logNightWaveData;
     }
 }

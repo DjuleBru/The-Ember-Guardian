@@ -30,6 +30,7 @@ public class Barricade : Structure, IDamageable {
     public event EventHandler OnBarricadeLightSwitched;
     public event EventHandler OnBarricadeBreached;
 
+
     private bool barricadeSpiked;
     private int spikeDamage = 3;
     private bool isInnerBarricade;
@@ -44,7 +45,10 @@ public class Barricade : Structure, IDamageable {
         healthPerCrate = StructureStats.Instance.GetBarricadeHealthPerCrate();
         barricadeMaxHealth = level1CrateAmount * healthPerCrate;
         barricadeHealth = level1CrateAmount * healthPerCrate;
+    }
 
+    public override void SetStructureBuiltOnLoad(bool setBuiltOnLoad = false) {
+        this.setBuiltOnLoad = setBuiltOnLoad;
         OnAnyBarricadeBuilt?.Invoke(this, EventArgs.Empty);
     }
 

@@ -109,6 +109,7 @@ public class Portal : MonoBehaviour
 
         if(isStartLevelTeleporter) {
             if (DEBUGMODE) return;
+            if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
             StartCoroutine(TeleportPlayerOutInLevel());
         }
     }

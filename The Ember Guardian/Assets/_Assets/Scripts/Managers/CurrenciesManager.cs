@@ -134,6 +134,7 @@ public class CurrenciesManager : MonoBehaviour
         }
         return bigBlueOrbPrefab;
     }
+   
 
     public Transform GetCurrencyPrefab(TrapItem.TrapType trapType) {
         if (trapType == TrapItem.TrapType.bearTrap) {

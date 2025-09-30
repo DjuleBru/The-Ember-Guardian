@@ -17,7 +17,7 @@ public class PlayerCamp : MonoBehaviour
     [SerializeField] private List<StructureLocation> towerLocations;
     [SerializeField] private List<StructureLocation> initialStructureLocationsBuilt;
     [SerializeField] private List<StructureLocation> worldStructureLocations;
-    private List<StructureLocation> allStructureLocations;
+    private List<StructureLocation> allStructureLocations = new List<StructureLocation>();
 
     [SerializeField] private StructureLocation ammoCrafter1Location;
     [SerializeField] private StructureLocation researchTowerLocation;
@@ -57,8 +57,6 @@ public class PlayerCamp : MonoBehaviour
     }
 
     private void Start() {
-        initialFireStructureLocation.UnlockStructureLocation();
-
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         Tent.Instance.OnStructureUpgraded += Tent_OnStructureUpgraded;
 
@@ -70,13 +68,21 @@ public class PlayerCamp : MonoBehaviour
         researchTowerBuiltAtStart = StructureStats.Instance.GetStartWithResearchTower();
         barricades1BuiltAtStart = StructureStats.Instance.GetStartWithBarricades();
 
-        LoadCustomCampLayout();
-        StartCoroutine(InitializeBuiltAtStartStructureLocations());
-        InitializeWorldStructureLocations();
+        if (SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+
+            initialFireStructureLocation.gameObject.SetActive(false);
+
+        } else {
+
+            initialFireStructureLocation.UnlockStructureLocation();
+            LoadCustomCampLayout();
+            StartCoroutine(InitializeBuiltAtStartStructureLocations());
+            InitializeWorldStructureLocations();
+        }
+
     }
 
     private void LoadCustomCampLayout() {
-        allStructureLocations = new List<StructureLocation>();
         List<CampEditManager.StructurePlacementData> structurePlacementData = ES3.Load("campLayout", new List<CampEditManager.StructurePlacementData>());
         customLayout = structurePlacementData.Count > 0;
 
@@ -108,14 +114,24 @@ public class PlayerCamp : MonoBehaviour
                 if (structureSO.structureLocationPrefab == null) continue;
                 StructureLocation structureLocation = Instantiate(structureSO.structureLocationPrefab, customCampStructureLocationParent).GetComponent<StructureLocation>();
                 structureLocation.transform.position = worldPosition;
-                FillCustomCampStructureLocationsList(structureSO, structureLocation);
+                AddCustomCampStructureLocationsList(structureSO, structureLocation);
             }
 
         }
-
     }
 
-    private void FillCustomCampStructureLocationsList(StructureSO structureSO, StructureLocation structureLocation) {
+    public void AddStructureLocationLoaded(StructureSO structureSO, Vector2 position, bool unlocked) {
+        StructureLocation structureLocation = Instantiate(structureSO.structureLocationPrefab, customCampStructureLocationParent).GetComponent<StructureLocation>();
+        structureLocation.transform.position = position;
+
+        if(unlocked) {
+            structureLocation.UnlockStructureLocation();
+        }
+
+        AddCustomCampStructureLocationsList(structureSO, structureLocation);
+    }
+
+    public void AddCustomCampStructureLocationsList(StructureSO structureSO, StructureLocation structureLocation) {
 
         allStructureLocations.Add(structureLocation);
 
@@ -133,12 +149,14 @@ public class PlayerCamp : MonoBehaviour
             researchTowerLocation = structureLocation;
         }
     }
+
     private void InitializeWorldStructureLocations() {
         foreach(StructureLocation location in worldStructureLocations) {
             location.UnlockStructureLocation();
             location.SetAsWorldStructureLocation();
         }
     }
+
     private IEnumerator InitializeBuiltAtStartStructureLocations() {
         yield return new WaitForSeconds(.1f);
         if (ammoCrafterBuiltAtStart) {
@@ -184,27 +202,6 @@ public class PlayerCamp : MonoBehaviour
                 }
             }
         }
-
-        // Build merchants when barricade built
-        //StartCoroutine(CheckBuildMerchantCoroutine(structureLocations, minBarricadePosition, maxBarricadePosition));
-    }
-
-    private IEnumerator CheckBuildMerchantCoroutine(List<StructureLocation> structureLocations, Vector3 minBarricadePosition, Vector3 maxBarricadePosition) {
-        if (!initialFireLit) yield break;
-
-        yield return new WaitForSeconds(.5f);
-
-        foreach (StructureLocation structureLocation in structureLocations) {
-            if (structureLocation == null) continue;
-            if (IsWithinBarricadePosition(structureLocation.transform.position, minBarricadePosition, maxBarricadePosition)) {
-                if(structureLocation.GetStructureLocationBought()) {
-                    if (structureLocation.GetStructureSOToBuild().structureType == StructureSO.StructureType.merchant_skills || structureLocation.GetStructureSOToBuild().structureType == StructureSO.StructureType.merchant_traps) {
-                        structureLocation.BuildStructure();
-                        yield return new WaitForSeconds(.3f);
-                    }
-                }
-            }
-        }
     }
 
     private bool IsWithinBarricadePosition(Vector3 position, Vector3 minBarricadePosition, Vector3 maxBarricadePosition) {
@@ -218,6 +215,9 @@ public class PlayerCamp : MonoBehaviour
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
         initialFireLit = true;
+
+        if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
+
         StartCoroutine(BuildStructuresUnlockedCoroutine(.5f));
 
         if (blockStructureUnlocks) return;
@@ -239,6 +239,7 @@ public class PlayerCamp : MonoBehaviour
         foreach (Structure structure in initialStructures) {
             structure.gameObject.SetActive(true);
             structure.BuildInitialCampStructure();
+            StructuresManager.Instance.AddBuiltStructure(structure);
         }
 
         float delayBetweenBuildsRandomized = UnityEngine.Random.Range(delayBetweenBuilds - delayBetweenBuilds / 2, delayBetweenBuilds + delayBetweenBuilds / 2);
@@ -255,7 +256,9 @@ public class PlayerCamp : MonoBehaviour
 
     }
 
-    private void Tent_OnStructureUpgraded(object sender, EventArgs e) {
+    private void Tent_OnStructureUpgraded(object sender, Structure.OnStructureUpgradedEventArgs e) {
+        if (e.upgradedOnLoad) return;
+
         Vector3 maxCampLimit = new Vector3(maxCampLimitPosition, 0, 0);
 
         if (Tent.Instance.GetStructureLevel() == 2) {

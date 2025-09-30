@@ -176,6 +176,38 @@ public class Structure_Trap : Structure
         return rearmPrice;
     }
 
+
+    public int GetCurrentRearmIndex() {
+        return currentRearmIndex;
+    }
+    public int GetCurrentUseIndex() {
+        return currentUseIndex;
+    }
+    public void SetCurrentRearmIndex(int rearmIndex) {
+        currentRearmIndex = rearmIndex;
+
+        if (trapSO.trapBreaksAfterRearms && currentRearmIndex == 0) {
+            StartCoroutine(BreakTrapAfterRandomDelay());
+            return;
+        }
+    }
+
+    public void SetCurrentUseIndex(int useIndex) {
+        StartCoroutine(SetCurrentUseIndexAfterDelay(useIndex));
+    }
+    public IEnumerator SetCurrentUseIndexAfterDelay(int useIndex) {
+
+        yield return new WaitForSeconds(.1f);
+
+        currentUseIndex = useIndex;
+
+        if (currentUseIndex != 0) {
+            OnTrapDepletedUses?.Invoke(this, EventArgs.Empty);
+            ActivateStructurePrimaryFunctionInteraction(true);
+            needsRefill = true;
+        }
+    }
+
     public TrapSO GetTrapSO() {
         return trapSO;
     }
@@ -198,11 +230,13 @@ public class Structure_Trap : Structure
         OnTrapBroken?.Invoke(this, EventArgs.Empty);
         PlayerCamp.Instance.RemoveStructure(this);
 
+        StructuresManager.Instance.RemoveBuiltStructure(this);
+        StructuresManager.Instance.AddStructureLocation(trapStructureLocation);
+
         yield return new WaitForSeconds(1f);
 
         Destroy(gameObject);
     }
-
 
     public void SetTrapStructureLocation(StructureLocation_Trap trapStructureLocation) {
         this.trapStructureLocation = trapStructureLocation;

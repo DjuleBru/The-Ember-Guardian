@@ -12,8 +12,6 @@ public class CreatureSpawner_Ambush : MobSpawner {
     [SerializeField] protected float maxSpawnPositionFromPlayer;
 
 
-    private bool ambushSpawned;
-
     protected override void Start() {
         if (sceneViewSpawnerSpriteRenderer != null) {
             sceneViewSpawnerSpriteRenderer.enabled = false;

@@ -101,7 +101,10 @@ public class UICurrencyManager : MonoBehaviour
                 AddDebugCurrency();
             }
 
-            StartCoroutine(AddInitialCurrencies());
+            if(!SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+                StartCoroutine(AddInitialCurrencies());
+            }
+
         }
     }
 
@@ -571,36 +574,25 @@ public class UICurrencyManager : MonoBehaviour
         return currencyPosition;
     }
 
-    public void LoadCurrencies(PlayerCurrencies.CurrencyType currencyType, List<Vector3> currencyPositions) {
-        Transform prefab = null;
+    public List<Quaternion> GetCurrencyRotations(PlayerCurrencies.CurrencyType currencyType) {
+        List<Quaternion> currencyRotations = new List<Quaternion>();
 
-        if (currencyType == PlayerCurrencies.CurrencyType.greenGem) {
-            prefab = greenGemUIPrefab;
+        foreach (Currency_UI currency in GetCurrenciesInBagOfType(currencyType)) {
+            if (currency == null) continue;
+            currencyRotations.Add(currency.transform.rotation);
         }
 
-        if (currencyType == PlayerCurrencies.CurrencyType.redGem) {
-            prefab = redGemUIPrefab;
-        }
+        return currencyRotations;
+    }
 
-        if (currencyType == PlayerCurrencies.CurrencyType.blueGem) {
-            prefab = blueGemUIPrefab;
-        }
+    public void LoadCurrencies(PlayerCurrencies.CurrencyType currencyType, List<Vector3> currencyPositions, List<Quaternion> currencyRotations) {
 
-        if (currencyType == PlayerCurrencies.CurrencyType.yellowGem) {
-            prefab = yellowGemUIPrefab;
-        }
+        Transform prefab = GetCurrencyUIPrefab(currencyType);
 
-        if (currencyType == PlayerCurrencies.CurrencyType.purpleGem) {
-            prefab = purpleGemUIPrefab;
-        }
-
-        if (currencyType == PlayerCurrencies.CurrencyType.cyanGem) {
-            prefab = cyanGemUIPrefab;
-        }
-
+        int i = 0;
         foreach (Vector3 position in currencyPositions) {
-            Quaternion randomRotation = Quaternion.Euler(0f, 0f, UnityEngine.Random.Range(0f, 360f)); // Rotation aléatoire sur l'axe Z
-            Currency_UI currencyUI = Instantiate(prefab, position, randomRotation, currencyContainer).GetComponent<Currency_UI>();
+
+            Currency_UI currencyUI = Instantiate(prefab, position, currencyRotations[i], currencyContainer).GetComponent<Currency_UI>();
             currenciesInBag.Add(currencyUI);
 
             if(isHubInventory) {
@@ -611,8 +603,73 @@ public class UICurrencyManager : MonoBehaviour
             if (isPlayerInventory) {
                 currencyUI.SetCurrencyLoaded();
             }
+
+            i++;
         }
 
+    }
+    public Transform GetCurrencyUIPrefab(PlayerCurrencies.CurrencyType currencyType) {
+        if (currencyType == PlayerCurrencies.CurrencyType.bigBlueOrb) {
+            return blueOrbUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.smallBlueOrb) {
+            return smallBlueOrbUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.bigRedOrb) {
+            return redOrbUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.smallRedOrb) {
+            return smallRedOrbUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.redGem) {
+            return redGemUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.cyanGem) {
+            return cyanGemUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.greenGem) {
+            return greenGemUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.blueGem) {
+            return blueGemUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.yellowGem) {
+            return yellowGemUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.purpleGem) {
+            return purpleGemUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.ammo) {
+            return ammoUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.ammo_special) {
+            return ammoSpecialUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.ember) {
+            return emberUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.bearTrap) {
+            return bearTrapUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.bladeTrap) {
+            return bladeTrapUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.shockerEjector) {
+            return shockerEjectorUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.spikeEjector) {
+            return spikeEjectorUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.smokeEjector) {
+            return smokeEjectorUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.spikes) {
+            return spikeUIPrefab;
+        }
+        if (currencyType == PlayerCurrencies.CurrencyType.fireEjector) {
+            return fireEjectorUIPrefab;
+        }
+        return blueOrbUIPrefab;
     }
 
     private void OnDestroy() {

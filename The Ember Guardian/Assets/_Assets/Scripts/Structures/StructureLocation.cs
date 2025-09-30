@@ -26,6 +26,7 @@ public class StructureLocation : MonoBehaviour {
 
     public class OnAnyStructureBuiltEventArgs : EventArgs {
         public Structure structureBuilt;
+        public bool buildOnLoad;
     }
 
     protected bool structureLocationUnlocked;
@@ -54,6 +55,9 @@ public class StructureLocation : MonoBehaviour {
 
         payCurrencyUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
         payCurrencyUI.SetOrbTemplateUIList(buildStructureOrbTemplates);
+
+        if (structureSOToBuild.structureType == StructureSO.StructureType.fire) return;
+        StructuresManager.Instance.AddStructureLocation(this);
     }
 
     private void DayNightManager_OnNightStart(object sender, EventArgs e) {
@@ -70,16 +74,23 @@ public class StructureLocation : MonoBehaviour {
         BuildStructure();
     }
 
-    public virtual Structure BuildStructure() {
+    public virtual Structure BuildStructure(bool buildOnLoad = false) {
 
         Structure structure = Instantiate(structureSOToBuild.structurePrefab, transform.position, Quaternion.identity).GetComponent<Structure>();
+        structure.SetStructureBuiltOnLoad(buildOnLoad);
+
         OnAnyStructureBuilt?.Invoke(this, new OnAnyStructureBuiltEventArgs {
-            structureBuilt = structure
+            structureBuilt = structure,
+            buildOnLoad = buildOnLoad
         });
+
         if(isWorldLocation) {
             structure.SetAsWorldStructure(worldLocationScaleX);
         }
-        
+
+        StructuresManager.Instance.RemoveStructureLocation(this);
+        StructuresManager.Instance.AddBuiltStructure(structure);
+
         StartCoroutine(DestroyGameObjectAfterFrame());
         return structure;
     }
@@ -149,9 +160,10 @@ public class StructureLocation : MonoBehaviour {
         return structureLocationUnlocked;
     }
 
-    public void InvokeOnAnyStructureBuilt(Structure structure) {
+    public void InvokeOnAnyStructureBuilt(Structure structure, bool buildOnLoad = false) {
         OnAnyStructureBuilt?.Invoke(this, new OnAnyStructureBuiltEventArgs {
-            structureBuilt = structure
+            structureBuilt = structure,
+            buildOnLoad = buildOnLoad
         });
     }
 

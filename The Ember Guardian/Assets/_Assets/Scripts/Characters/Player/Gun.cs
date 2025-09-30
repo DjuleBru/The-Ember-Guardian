@@ -99,6 +99,7 @@ public class Gun : MonoBehaviour
     public event EventHandler OnPerfectQTEDamageBuffEnded;
     public event EventHandler OnBuffedLastBulletShot;
     public event EventHandler OnDebuffLastBulletShot;
+    public event EventHandler OnAmmoAndBuleltsChanged;
 
     protected virtual void Start() {
         gunJamHandler = GetComponent<GunJamHandler>();
@@ -329,12 +330,16 @@ public class Gun : MonoBehaviour
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             ammoClip = maxAmmo;
         }
+
         currentAmmoClip = ammoClip;
     }
 
-    public void SetGunAmmo(int ammoCount, int currentBuller) {
-        currentAmmoClip = ammoCount;
-        currentBullet = currentBuller;
+    public void SetGunAmmo(int ammoClip, int currentBullet) {
+        this.currentAmmoClip = ammoClip;
+        this.currentBullet = currentBullet;
+
+        // force le refresh du visuel même si l'arme est inactive
+         GetComponent<GunVisual>().ForceInitializeAmmoVisual();
     }
 
     protected virtual void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {

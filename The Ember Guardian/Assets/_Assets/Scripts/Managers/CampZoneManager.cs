@@ -26,7 +26,10 @@ public class CampZoneManager : MonoBehaviour
 
     private float maxAnimalTargetingDistanceToCampOuterPoint = 60f;
 
-    public event EventHandler OnCampZoneLimitsChanged;
+    public event EventHandler<OnCampZoneLimitsChangedEventArgs> OnCampZoneLimitsChanged;
+    public class OnCampZoneLimitsChangedEventArgs:EventArgs {
+        public bool triggerSFXAndFenceAnimation;
+    }
 
     private void Awake() {
         Instance = this;
@@ -59,11 +62,15 @@ public class CampZoneManager : MonoBehaviour
 
     private void Barricade_OnAnyBarricadeBuilt(object sender, EventArgs e) {
         Barricade barricade = sender as Barricade;
-
         if (barricade.GetIsWorldStructure()) return;
 
         functionalBarricades.Add((barricade));
-        RefreshCampZoneLimits();
+
+        bool triggerSFXAndAnimation = true;
+        if (barricade.GetStructureBuiltOnLoad()) {
+            triggerSFXAndAnimation = false;
+        }
+        RefreshCampZoneLimits(triggerSFXAndAnimation);
     }
 
     private void Barricade_OnAnyBarricadeRepaired(object sender, EventArgs e) {
@@ -84,7 +91,7 @@ public class CampZoneManager : MonoBehaviour
         RefreshCampZoneLimits();
     }
 
-    private void RefreshCampZoneLimits() {
+    private void RefreshCampZoneLimits(bool triggerSFXAndFenceAnimation = true) {
         RefreshInnerBarricades();
 
         float minZoneLimit = campCenterMinLimit;
@@ -117,7 +124,9 @@ public class CampZoneManager : MonoBehaviour
         huntingFlaxMin.TrySetCampHuntingLimit(new Vector3(minZoneLimit - maxAnimalTargetingDistanceToCampOuterPoint, 0, 0));
         huntingFlagMax.TrySetCampHuntingLimit(new Vector3(maxZoneLimit + maxAnimalTargetingDistanceToCampOuterPoint, 0, 0));
 
-        OnCampZoneLimitsChanged?.Invoke(this, EventArgs.Empty);
+        OnCampZoneLimitsChanged?.Invoke(this, new OnCampZoneLimitsChangedEventArgs {
+            triggerSFXAndFenceAnimation = triggerSFXAndFenceAnimation
+        });
     }
 
     private void RefreshInnerBarricades() {

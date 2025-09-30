@@ -47,12 +47,12 @@ MonoBehaviour:
   allowDebugInputs_CreaturesSpawnManager: 0
   debugMode_DontSpawnWavesAtNight: 0
   allowDebugInputs_DayNightManager: 0
-  allowDebugInputs_CurrencyUIManager: 0
+  allowDebugInputs_CurrencyUIManager: 1
   allowDebugInputs_gunJam: 0
   debugMode_PlayerWeapons: 0
   debugMode_Portals: 0
-  debugMode_HUBManager: 0
-  debugMode_HUBMerchants: 0
+  debugMode_HUBManager: 1
+  debugMode_HUBMerchants: 1
   debugMode_Tutorial: 0
   debugMode_PlayerCamp: 0
   debugMode_AllStructuresUnlocked: 0
@@ -61,13 +61,14 @@ MonoBehaviour:
   debugMode_WorkerInteractions: 0
   debugMode_DontShowVideoTip: 0
   debugMode_WindManager: 0
-  debugMode_RainManager: 1
+  debugMode_RainManager: 0
   debugMode_AllSkillsUnlocked: 0
   debugMode_AllTrapsUnlocked: 0
   disableCreatureDetection: 0
   showMobDestinationGizmos: 0
-  allItemsUnlockedInDemo: 0
+  allItemsUnlocked: 1
   dropRedOrbsUnlocked: 0
   takeScreenshotsContinuous: 0
   takeScreenshotsOnKeyPressed: 0
   saveAfterEachLevel: 0
+  logNightWaveData: 0

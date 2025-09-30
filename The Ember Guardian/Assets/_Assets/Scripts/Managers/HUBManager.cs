@@ -147,12 +147,19 @@ public class HUBManager : MonoBehaviour
         List<Vector3> blueGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.blueGem, true);
         List<Vector3> cyanGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.cyanGem, true);
 
-        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.redGem, redGemPositions);
-        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.greenGem, greenGemPositions);
-        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.yellowGem, yellowGemPositions);
-        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.purpleGem, purpleGemPositions);
-        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.blueGem, blueGemPositions);
-        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.cyanGem, cyanGemPositions);
+        List<Quaternion> redGemRotations = MetaProgressionManager.Instance.GetGemRotations(PlayerCurrencies.CurrencyType.redGem, true);
+        List<Quaternion> greenGemRotations = MetaProgressionManager.Instance.GetGemRotations(PlayerCurrencies.CurrencyType.greenGem, true);
+        List<Quaternion> yellowGemRotations = MetaProgressionManager.Instance.GetGemRotations(PlayerCurrencies.CurrencyType.yellowGem, true);
+        List<Quaternion> purpleGemRotations = MetaProgressionManager.Instance.GetGemRotations(PlayerCurrencies.CurrencyType.purpleGem, true);
+        List<Quaternion> blueGemRotations = MetaProgressionManager.Instance.GetGemRotations(PlayerCurrencies.CurrencyType.blueGem, true);
+        List<Quaternion> cyanGemRotations = MetaProgressionManager.Instance.GetGemRotations(PlayerCurrencies.CurrencyType.cyanGem, true);
+
+        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.redGem, redGemPositions, redGemRotations);
+        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.greenGem, greenGemPositions, greenGemRotations);
+        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.yellowGem, yellowGemPositions, yellowGemRotations);
+        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.purpleGem, purpleGemPositions, purpleGemRotations);
+        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.blueGem, blueGemPositions, blueGemRotations);
+        UICurrencyManager.PlayerInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.cyanGem, cyanGemPositions, cyanGemRotations);
 
     }
 
@@ -164,12 +171,19 @@ public class HUBManager : MonoBehaviour
         List<Vector3> blueGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.blueGem, false);
         List<Vector3> cyanGemPositions = MetaProgressionManager.Instance.GetGemPositions(PlayerCurrencies.CurrencyType.cyanGem, false);
 
-        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.redGem, redGemPositions);
-        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.greenGem, greenGemPositions);
-        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.yellowGem, yellowGemPositions);
-        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.purpleGem, purpleGemPositions);
-        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.blueGem, blueGemPositions);
-        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.cyanGem, cyanGemPositions);
+        List<Quaternion> redGemRotations = MetaProgressionManager.Instance.GetGemRotations(PlayerCurrencies.CurrencyType.redGem, false);
+        List<Quaternion> greenGemRotations = MetaProgressionManager.Instance.GetGemRotations(PlayerCurrencies.CurrencyType.greenGem, false);
+        List<Quaternion> yellowGemRotations = MetaProgressionManager.Instance.GetGemRotations(PlayerCurrencies.CurrencyType.yellowGem, false);
+        List<Quaternion> purpleGemRotations = MetaProgressionManager.Instance.GetGemRotations(PlayerCurrencies.CurrencyType.purpleGem, false);
+        List<Quaternion> blueGemRotations = MetaProgressionManager.Instance.GetGemRotations(PlayerCurrencies.CurrencyType.blueGem, false);
+        List<Quaternion> cyanGemRotations = MetaProgressionManager.Instance.GetGemRotations(PlayerCurrencies.CurrencyType.cyanGem, false);
+
+        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.redGem, redGemPositions, redGemRotations);
+        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.greenGem, greenGemPositions, greenGemRotations);
+        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.yellowGem, yellowGemPositions, yellowGemRotations);
+        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.purpleGem, purpleGemPositions, purpleGemRotations);
+        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.blueGem, blueGemPositions, blueGemRotations);
+        UICurrencyManager.HubInventoryUI.LoadCurrencies(PlayerCurrencies.CurrencyType.cyanGem, cyanGemPositions, cyanGemRotations);
 
     }
 

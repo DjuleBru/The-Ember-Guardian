@@ -74,7 +74,7 @@ public class PlayerCurrencies : MonoBehaviour
         if (SceneLoader.Instance == null) return;
 
         emberHoldPosition.gameObject.SetActive(false);
-        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB) {
+        if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB && !SavingManager_Level.Instance.GetLoadingSavedLevel()) {
             StartCoroutine(SetCarryingEmberAfterDelay());
         }
 

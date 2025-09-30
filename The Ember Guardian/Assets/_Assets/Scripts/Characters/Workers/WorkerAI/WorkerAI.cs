@@ -30,11 +30,15 @@ public class WorkerAI : MonoBehaviour
     private JobTypes currentJob;
     private bool debugSpawn;
 
-    public event EventHandler OnJobChanged;
+    public event EventHandler<OnJobSetEventArgs> OnJobChanged;
     public event EventHandler OnWorkerFollowPlayerChanged;
     public event EventHandler OnEscortingChanged;
     public static event EventHandler OnAnyWorkerFollowPlayerStarted;
     public static event EventHandler OnAnyWorkerFollowPlayerStopped;
+
+    public class OnJobSetEventArgs:EventArgs {
+        public bool triggerUITextLines;
+    }
 
     protected virtual void Awake() {
         worker = GetComponent<Worker>();
@@ -50,12 +54,11 @@ public class WorkerAI : MonoBehaviour
 
     private void Start() {
         if (debugSpawn) return;
-        SetJob(JobTypes.wild);
+        SetJob(JobTypes.wild, false);
     }
 
-    public void SetJob(JobTypes newJob) {
+    public void SetJob(JobTypes newJob, bool triggerUITextLines = true) {
         SetAllJobTypesInactive();
-
         currentJob = newJob;
 
         if(currentJob == JobTypes.wild) {
@@ -90,7 +93,9 @@ public class WorkerAI : MonoBehaviour
             joblessJob.enabled = true;
         }
 
-        OnJobChanged?.Invoke(this, EventArgs.Empty);
+        OnJobChanged?.Invoke(this, new OnJobSetEventArgs {
+            triggerUITextLines = triggerUITextLines
+        });
     }
 
     private void SetAllJobTypesInactive() {

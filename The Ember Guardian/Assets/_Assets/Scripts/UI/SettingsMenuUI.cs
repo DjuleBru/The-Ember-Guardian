@@ -108,6 +108,7 @@ public class SettingsMenuUI : MonoBehaviour
         StartCoroutine(SetTakesEffectOnReloadAnimatorAfterFrame());
         WaterManager.Instance.SetReflectionLevel(waterReflectionsLevel);
     }
+
     protected void UpdateZoomLevel(float value) {
         Debug.Log("UpdateZoomLevel");
         zoomLevel = value;

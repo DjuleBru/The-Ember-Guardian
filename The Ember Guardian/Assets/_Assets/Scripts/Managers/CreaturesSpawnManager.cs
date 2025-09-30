@@ -168,8 +168,12 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
         maxWaveDifficulty = baseDifficulty * Mathf.Pow(typicalLevelDaysToComplete, growthFactor);
         maxReferenceWaveDifficulty = referenceWaveInitialDifficulty * Mathf.Pow(typicalLevelDaysToComplete, referenceWaveGrowthFactor);
-        Debug.Log("maxWaveDifficulty " + maxWaveDifficulty);
-        Debug.Log("referenceMaxWaveDifficulty " + maxReferenceWaveDifficulty);
+
+        if(DebugManager.Instance.GetLogNightWavesData()) {
+            Debug.Log("maxWaveDifficulty " + maxWaveDifficulty);
+            Debug.Log("referenceMaxWaveDifficulty " + maxReferenceWaveDifficulty);
+        }
+
     }
 
     private void LevelManager_OnLevelLimitsChanged(object sender, EventArgs e) {
@@ -327,13 +331,16 @@ public class CreaturesSpawnManager : MonoBehaviour {
             }
         }
 
-        Debug.Log("waveNumber " + waveNumber);
-        Debug.Log("Total subwaves " + subWaveNumber);
-        Debug.Log("WaveDifficulty " + waveDifficulty);
-        Debug.Log("minSubwaveDifficulty " + minSubwaveDifficulty);
-        Debug.Log("maxSubwaveDifficulty " + maxSubwaveDifficulty);
-        Debug.Log("waveLeftProportion " + waveDifficultyLeftProportion);
-        Debug.Log("waveRightProportion " + waveDifficultyRightProportion);
+        if(DebugManager.Instance.GetLogNightWavesData()) {
+            Debug.Log("waveNumber " + waveNumber);
+            Debug.Log("Total subwaves " + subWaveNumber);
+            Debug.Log("WaveDifficulty " + waveDifficulty);
+            Debug.Log("minSubwaveDifficulty " + minSubwaveDifficulty);
+            Debug.Log("maxSubwaveDifficulty " + maxSubwaveDifficulty);
+            Debug.Log("waveLeftProportion " + waveDifficultyLeftProportion);
+            Debug.Log("waveRightProportion " + waveDifficultyRightProportion);
+        }
+
 
         // Préparer la liste de toutes les créatures à spawner pour cette vague
         waveCreaturesDictionary.Clear();
@@ -378,8 +385,11 @@ public class CreaturesSpawnManager : MonoBehaviour {
     }
 
     private List<SpawnedCreatureInfo> PrepareSubWaveCreatures(float subWaveDifficulty, float leftProportion, int subWaveIndex, bool subWaveRandomSideProportion) {
+       
+        if (DebugManager.Instance.GetLogNightWavesData()) {
+            Debug.Log("Subwave " + subWaveIndex + " Difficulty " + subWaveDifficulty);
+        }
 
-        Debug.Log("Subwave " + subWaveIndex + " Difficulty " + subWaveDifficulty);
 
         List<SpawnedCreatureInfo> waveCreatures = new List<SpawnedCreatureInfo>();
 
@@ -537,13 +547,18 @@ public class CreaturesSpawnManager : MonoBehaviour {
     }
 
     private IEnumerator SpawnWave(int waveNumber) {
-        Debug.Log("Spawn wave " + waveNumber);
+        if (DebugManager.Instance.GetLogNightWavesData()) {
+            Debug.Log("Spawn wave " + waveNumber);
+        }
         subWaveIndex = 0;
 
         while (subWaveIndex < subWaveNumber && waveNumber == currentWaveNumber) {
-            Debug.Log("Spawning subwave " + subWaveIndex);
             remainingSubWaveCreatures = waveCreaturesDictionary[subWaveIndex].Count;
-            Debug.Log("TotalSubWaveCreatures " + remainingSubWaveCreatures);
+
+            if (DebugManager.Instance.GetLogNightWavesData()) {
+                Debug.Log("Spawning subwave " + subWaveIndex);
+                Debug.Log("TotalSubWaveCreatures " + remainingSubWaveCreatures);
+            }
 
             // Grouper les créatures par type
             var groupedCreatures = waveCreaturesDictionary[subWaveIndex]
@@ -737,7 +752,11 @@ public class CreaturesSpawnManager : MonoBehaviour {
         // Afficher les résultats dans le format souhaité
         foreach (var kvp in occurrences) {
             var (creatureType, position) = kvp.Key;
-            Debug.Log($"Creature Type: {creatureType.name}, Spawn Position: {position}, Count: {kvp.Value}");
+
+            if(DebugManager.Instance.GetLogNightWavesData()) {
+                Debug.Log($"Creature Type: {creatureType.name}, Spawn Position: {position}, Count: {kvp.Value}");
+            }
+
         }
     }
 
