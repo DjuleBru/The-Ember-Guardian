@@ -47,6 +47,7 @@ public class StructureUI_Fire : StructureUI
     private bool isRefuelling;
 
     private Fire fire;
+    private Coroutine refillProgressBarCoroutine;
 
     public static event EventHandler<OnFireTickRemovedEventArgs> OnMainFireTickRemoved;
     public static event EventHandler OnMainCricitalFireTickRemoved;
@@ -75,8 +76,47 @@ public class StructureUI_Fire : StructureUI
 
         RefreshRepairOrRebuildSecondaryFireUI();
         fire.OnPlayerTriggeredOut += Fire_OnPlayerTriggeredOut;
+        fire.OnFuelLevelLoaded += Fire_OnFuelLevelLoaded;
     }
 
+    private void Fire_OnFuelLevelLoaded(object sender, EventArgs e) {
+
+        if(refillProgressBarCoroutine != null) {
+            StopCoroutine(refillProgressBarCoroutine);
+        }
+        // Force recalcul des bornes max/min et du nombre de barres
+        RefreshBarState();
+
+        // Calcul du nombre de barres en fonction du fuel actuel
+        UpdateTargetBarAmount();
+
+        foreach (Transform child in progressBarContainer) {
+            if (child == progressBarTemplate) continue;
+            Destroy(child.gameObject);
+        }
+
+        for (int i = 0; i < targetBarAmount; i++) {
+            PlayerUI_TickTemplate tick = Instantiate(progressBarTemplate, progressBarContainer).GetComponent<PlayerUI_TickTemplate>();
+            tick.gameObject.SetActive(true);
+        }
+
+        // Aligner les compteurs
+        currentBarAmount = targetBarAmount;
+
+        // On déclenche aussi les events pour notifier de l'état
+        OnFireMaxBarAmountChanged?.Invoke(this, EventArgs.Empty);
+        if (fire.GetIsMainFire()) {
+            OnMainFireMaxBarAmountChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        if(Fire.Instance.GetFireFuelLevelCritical()) {
+            if (fire.GetIsMainFire()) {
+                OnMainCricitalFireTickRemoved?.Invoke(this, EventArgs.Empty);
+            }
+            OnCricitalFireTickRemoved?.Invoke(this, EventArgs.Empty);
+            fireUIAnimator.SetBool("FuelCritical", true);
+        }
+    }
 
     protected void Update() {
         HandleUIDisplay();
@@ -217,7 +257,7 @@ public class StructureUI_Fire : StructureUI
         int barDifference = targetBarAmount - currentBarAmount;
 
         if (barDifference > 0) {
-            StartCoroutine(RefillProgressBar(barDifference));
+            refillProgressBarCoroutine = StartCoroutine(RefillProgressBar(barDifference));
         }
         else {
             StopCoroutine(RemoveProgressBars(barDifference));

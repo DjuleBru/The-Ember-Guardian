@@ -27,6 +27,7 @@ public class Structure : MonoBehaviour {
     public static event EventHandler OnAnyStructurePrimaryFunctionUsed;
     public event EventHandler OnStructureInteractionsUpdated;
     public event EventHandler OnInitialCampStructureBuilt;
+    public event EventHandler OnForceUpdateInteractionTypeUI;
 
     public class OnStructureUpgradedEventArgs:EventArgs {
         public bool upgradedOnLoad;
@@ -430,6 +431,7 @@ public class Structure : MonoBehaviour {
     }
 
     protected virtual void ActivateStructureSecondaryFunctionInteraction(bool active) {
+        Debug.Log("ActivateStructureSecondaryFunctionInteraction " + active);
         if (active) {
             if (!activeStructureInteractionsTypeList.Contains(StructureInteractionType.secondaryFunction)) {
                 activeStructureInteractionsTypeList.Add(StructureInteractionType.secondaryFunction);
@@ -482,8 +484,12 @@ public class Structure : MonoBehaviour {
         return currentStructureInteractionType;
     }
 
-    public void SetCurrentStructureInteractionType(StructureInteractionType interactionType) {
+    public void SetCurrentStructureInteractionType(StructureInteractionType interactionType, bool forceUpdateUI= false) {
         currentStructureInteractionType = interactionType;
+
+        if(forceUpdateUI) {
+            OnForceUpdateInteractionTypeUI?.Invoke(this, EventArgs.Empty);
+        }
     }
 
 
@@ -507,7 +513,9 @@ public class Structure : MonoBehaviour {
         payCurrencyUI.SetWorkerInteracting(workerCurrencies, refilling);
         OnWorkerStartedRefilling?.Invoke(this, EventArgs.Empty);
     }
+
     public void SetAsWorldStructure(float scaleX) {
+        Debug.Log(this + " SetAsWorldStructure");
         isWorldStructure = true;
         worldScaleX = scaleX;
     }
@@ -523,6 +531,7 @@ public class Structure : MonoBehaviour {
     public bool GetPlayerInTriggerArea() {
         return playerInTriggerArea;
     }
+
 
     #endregion
 

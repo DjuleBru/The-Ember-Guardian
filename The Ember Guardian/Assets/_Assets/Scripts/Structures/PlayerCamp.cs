@@ -80,6 +80,7 @@ public class PlayerCamp : MonoBehaviour
             InitializeWorldStructureLocations();
         }
 
+
     }
 
     private void LoadCustomCampLayout() {
@@ -109,8 +110,11 @@ public class PlayerCamp : MonoBehaviour
             Vector3 worldPosition = new Vector3(worldPositionX, 0, 0);
 
             if (structureSO.structureType == StructureSO.StructureType.tent) {
+
                 Tent.Instance.transform.position = worldPosition;
+
             } else {
+
                 if (structureSO.structureLocationPrefab == null) continue;
                 StructureLocation structureLocation = Instantiate(structureSO.structureLocationPrefab, customCampStructureLocationParent).GetComponent<StructureLocation>();
                 structureLocation.transform.position = worldPosition;

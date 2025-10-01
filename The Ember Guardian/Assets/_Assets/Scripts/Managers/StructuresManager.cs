@@ -16,6 +16,7 @@ public class StructuresManager : MonoBehaviour
     }
 
     public StructureSO GetStructureSO(StructureSO.StructureType structureType) {
+
         foreach (StructureSO so in allStructureSOList) {
             if (so.structureType == structureType) return so;
         }

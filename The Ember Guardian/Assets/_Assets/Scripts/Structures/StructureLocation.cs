@@ -77,16 +77,19 @@ public class StructureLocation : MonoBehaviour {
     public virtual Structure BuildStructure(bool buildOnLoad = false) {
 
         Structure structure = Instantiate(structureSOToBuild.structurePrefab, transform.position, Quaternion.identity).GetComponent<Structure>();
+
+        if (isWorldLocation) {
+            structure.SetAsWorldStructure(worldLocationScaleX);
+        }
+
         structure.SetStructureBuiltOnLoad(buildOnLoad);
+
 
         OnAnyStructureBuilt?.Invoke(this, new OnAnyStructureBuiltEventArgs {
             structureBuilt = structure,
             buildOnLoad = buildOnLoad
         });
 
-        if(isWorldLocation) {
-            structure.SetAsWorldStructure(worldLocationScaleX);
-        }
 
         StructuresManager.Instance.RemoveStructureLocation(this);
         StructuresManager.Instance.AddBuiltStructure(structure);
@@ -235,6 +238,9 @@ public class StructureLocation : MonoBehaviour {
 
     public float GetStructureLocationWorldScaleX() {
         return worldLocationScaleX;
+    }
+    public void SetStructureLocationWorldScaleX(float worldLocationScaleX) {
+        this.worldLocationScaleX = worldLocationScaleX;
     }
 
 }

@@ -30,8 +30,10 @@ public class StructureUI_SpecialTower : StructureUI
         base.Awake();
         specialTower.OnAmmoClipAdded += SpecialTower_OnAmmoClipAdded;
         specialTower.OnAmmoClipRemoved += SpecialTower_OnAmmoClipRemoved;
+        specialTower.OnAmmoClipsLoaded += SpecialTower_OnAmmoClipsLoaded;
         payOrbsUI.SetOrbTemplateUIList(RecomposePayOrbsUIList(functionPayOrbsUIList));
     }
+
 
     protected override void Start() {
         base.Start();
@@ -49,6 +51,25 @@ public class StructureUI_SpecialTower : StructureUI
 
         if (uiActive) return;
         HandleFadeOut();
+    }
+
+    private void SpecialTower_OnAmmoClipsLoaded(object sender, EventArgs e) {
+        RefreshAmmoBar();
+    }
+
+    private void RefreshAmmoBar() {
+        Debug.Log("RefreshAmmoBar");
+        foreach (Transform child in ammoTickContainer) {
+            if (child == ammoTickTemplate) continue;
+            Destroy(child.gameObject);
+        }
+
+        int towerAmmo = specialTower.GetCurrentAmmoClip();
+
+        for (int i = 0; i < towerAmmo; i++) {
+            Transform tick = Instantiate(ammoTickTemplate, ammoTickContainer);
+            tick.gameObject.SetActive(true);
+        }
     }
 
     private void SpecialTower_OnAmmoClipRemoved(object sender, System.EventArgs e) {

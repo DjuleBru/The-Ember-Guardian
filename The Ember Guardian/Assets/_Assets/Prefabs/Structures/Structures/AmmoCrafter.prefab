@@ -588,6 +588,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd4d68cb30108f64b92fc81047f7f43a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   startCraftingAudioClip: {fileID: 8300000, guid: 655e2d34e50becc46856d586d3484ee7, type: 3}
   endCraftingAudioClip: {fileID: 8300000, guid: 690fb909be0b63140a9a11623c74b726, type: 3}
   currencyInstantiatedAudioClip: {fileID: 8300000, guid: ef3132fb6948a3349a81264e3676013a, type: 3}
@@ -950,8 +952,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: setInitialImageColorManual
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: initialPayCurrencySmoothTime
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.a
+      value: 0.44705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5701359116775254949, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_IsActive
@@ -1085,8 +1107,8 @@ MonoBehaviour:
   currencyTypeCrafted: 7
   currencyCraftAmount: 3
   showTooltipOnTrigger: {fileID: 6997359004773197039}
-  debugBatchCapacity: 0
-  debugSpecialAmmoUnlocked: 0
+  debugBatchCapacity: 2
+  debugSpecialAmmoUnlocked: 1
 --- !u!114 &6997359004773197039
 MonoBehaviour:
   m_ObjectHideFlags: 0

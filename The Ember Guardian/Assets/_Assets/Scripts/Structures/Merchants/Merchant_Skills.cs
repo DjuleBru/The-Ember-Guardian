@@ -90,8 +90,7 @@ public class Merchant_Skills : Merchant
     }
 
     protected override void InitializeMerchantItems() {
-
-        if(useDebugItemAmountToDisplay) {
+        if (useDebugItemAmountToDisplay) {
             bigItemsToDisplayAmount = debugBigItemToDisplay;
             smallItemsToDisplayAmount = debugSmallItemToDisplay;
         } else {

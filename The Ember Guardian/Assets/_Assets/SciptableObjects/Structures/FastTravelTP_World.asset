@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df36671b0790e8341a67078a96cfcbc5, type: 3}
   m_Name: FastTravelTP_World
   m_EditorClassIdentifier: 
-  structureType: 24
+  structureType: 34
   structureCategory: 3
   structureLocationPrefab: {fileID: 8434879454533105174, guid: d008efc4934213d4881790d87f2fa7be, type: 3}
   structurePrefab: {fileID: 6212992262444972498, guid: dea929e595cd780438c76c288eaf3c7b, type: 3}
@@ -36,9 +36,7 @@ MonoBehaviour:
   maxEngineersAssignedRefilling: 0
   refillCurrencyTypeNeeded: 0
   upgradeable: 0
-  tentLevelRequiredForLevel2: 2
-  tentLevelRequiredForLevel3: 3
-  tentLevelRequiredForLevel4: 4
+  maxLevel: 0
   buildingUpgradeSpriteList: []
   buildAudioClip: {fileID: 8300000, guid: df823c15f73ff894c9833c04673f6536, type: 3}
   buildVolumeMultiplier: 1

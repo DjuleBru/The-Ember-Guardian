@@ -244,7 +244,6 @@ public class StructureUI_Merchant : StructureUI {
     private void HideItemUI() {
         merchantDescriptionPanelUI.ClosePanel();
 
-        Debug.Log(bigMerchantItemUIList.Count);
         foreach (MerchantItemUI merchantItemUI in bigMerchantItemUIList) {
 
             merchantItemUI.HighlightItem(false);

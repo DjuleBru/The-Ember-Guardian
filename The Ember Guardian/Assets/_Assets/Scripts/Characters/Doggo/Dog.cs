@@ -51,6 +51,12 @@ public class Dog : MonoBehaviour
         currentIdleState = initialIdleState;
 
         OnDogTypeChanged?.Invoke(this, EventArgs.Empty);
+
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            if(SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+                SetPosition(new Vector3(UnityEngine.Random.Range(-10, 10), 0, 0));
+            }
+        }
     }
 
     private void SetCurrentDogAI() {

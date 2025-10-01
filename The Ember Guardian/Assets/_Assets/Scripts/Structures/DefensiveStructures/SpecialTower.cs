@@ -18,6 +18,7 @@ public class SpecialTower : Structure {
 
     public event EventHandler OnAmmoClipAdded;
     public event EventHandler OnAmmoClipRemoved;
+    public event EventHandler OnAmmoClipsLoaded;
     public event EventHandler<OnEngineerEnteredTowerEventArgs> OnEngineerExitedTower;
     public event EventHandler<OnEngineerEnteredTowerEventArgs> OnEngineerEnteredTower;
     public event EventHandler OnPlayerClimberOnSpecialTower;
@@ -71,6 +72,22 @@ public class SpecialTower : Structure {
         else {
             payCurrencyUI.SetPlayerInteracting(false);
         }
+    }
+
+    public void SetCurrentAmmoClips(int ammoClips) {
+        StartCoroutine(SetAmmoClipsAfterFrame(ammoClips));
+    }
+
+    private IEnumerator SetAmmoClipsAfterFrame(int ammoClips) {
+        yield return new WaitForEndOfFrame();
+        this.currentAmmoClip = ammoClips;
+
+        if (currentAmmoClip == maxAmmoClipsInStorage) {
+            needsRefill = false;
+            ActivateStructurePrimaryFunctionInteraction(false);
+        }
+
+        OnAmmoClipsLoaded?.Invoke(this, EventArgs.Empty);
     }
 
     protected override void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {

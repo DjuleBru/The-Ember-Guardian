@@ -40,10 +40,15 @@ public class Structure_Trap : Structure
     protected override void Start() {
         base.Start();
         MerchantItem.OnAnyMerchantItemBought += MerchantItem_OnAnyMerchantItemBought;
+        TrapManager.Instance.OnTrapUpgradeLevelsSet += TrapManager_OnTrapUpgradeLevelsSet;
 
         RefreshTrapStats();
         maxRearms = trapSO.maxRearmsBeforeBreaking;
         currentRearmIndex = maxRearms;
+    }
+
+    private void TrapManager_OnTrapUpgradeLevelsSet(object sender, EventArgs e) {
+        RefreshTrapStats();
     }
 
     protected void Update() {
@@ -267,5 +272,6 @@ public class Structure_Trap : Structure
         DayNightManager.Instance.OnNightStart -= DayNightManager_OnNightStart;
         DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
         Tent.Instance.OnStructureUpgraded -= Tent_OnStructureUpgraded;
+        TrapManager.Instance.OnTrapUpgradeLevelsSet -= TrapManager_OnTrapUpgradeLevelsSet;
     }
 }

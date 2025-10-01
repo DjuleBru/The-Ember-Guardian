@@ -42,10 +42,12 @@ public class StructureUI : MonoBehaviour
         structure.OnStructureInteractionsUpdated += Structure_OnStructureInteractionsUpdated;
         structure.OnStructureUpgraded += Structure_OnStructureUpgraded;
         structure.OnWorkerStartedRefilling += Structure_OnWorkerStartedRefilling;
+        structure.OnForceUpdateInteractionTypeUI += Structure_OnForceUpdateInteractionTypeUI;
 
         GameInput.Instance.OnPlayerRightSwitchPerformed += GameInput_OnPlayerRightSwitchPerformed;
         GameInput.Instance.OnPlayerLeftSwitchPerformed += GameInput_OnPlayerLeftSwitchPerformed;
     }
+
 
     protected void Structure_OnStructureUpgraded(object sender, System.EventArgs e) {
         foreach(GameObject go in levelSlotVisualContainerList) {
@@ -64,6 +66,20 @@ public class StructureUI : MonoBehaviour
 
     protected void Structure_OnStructureInteractionsUpdated(object sender, System.EventArgs e) {
         RefreshShownUI();
+    }
+
+    private void Structure_OnForceUpdateInteractionTypeUI(object sender, EventArgs e) {
+        if(structure.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.primaryFunction) {
+            ShowStructurePrimaryFunctionUI();
+        }
+        if (structure.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.secondaryFunction) {
+            ShowStructureSecondaryFunctionUI();
+        }
+        if (structure.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.upgrade) {
+            ShowStructureUpgradeUI();
+        }
+        UpdateArrowsVisibility();
+        OnStructureDisplayedFunctionChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private void GameInput_OnPlayerLeftSwitchPerformed(object sender, System.EventArgs e) {

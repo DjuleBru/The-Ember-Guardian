@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class MobSpawner : MonoBehaviour
 {
-    [SerializeField, HideInInspector] private string spawnerID;
+    [SerializeField] private string spawnerID;
 
     public string GetSpawnerID() => spawnerID;
 

@@ -33,6 +33,8 @@ public class CurrencyCrafterVisual : StructureVisual
         base.Awake();
         currencyCrafter = GetComponentInParent<CurrencyCrafter>();
         crafterAnimator = GetComponent<Animator>();
+
+        craftCurrency_PayOrbsGameObject.SetActive(true);
     }
 
     protected override void Start() {
@@ -46,8 +48,8 @@ public class CurrencyCrafterVisual : StructureVisual
         currencyCrafter.OnPlayerTriggeredIn += AmmoCrafter_OnPlayerTriggeredIn;
         currencyCrafter.OnPlayerTriggeredOut += AmmoCrafter_OnPlayerTriggeredOut;
         currencyCrafter.OnWorkerStartedRefilling += CurrencyCrafter_OnWorkerStartedRefilling;
+        currencyCrafter.OnCurrencyTypeBeingCraftedLoaded += CurrencyCrafter_OnCurrencyTypeBeingCraftedLoaded;
 
-        craftCurrency_PayOrbsGameObject.SetActive(true); 
         if (craftSpecialCurrency_PayOrbsGameObject != null) {
             craftSpecialCurrency_PayOrbsGameObject.SetActive(true);
         }
@@ -55,6 +57,7 @@ public class CurrencyCrafterVisual : StructureVisual
         RefreshCurrencyBarVisuals();
         HighlightStructureFunctionIcon(true);
     }
+
 
     private void AmmoCrafter_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
         if (currencyCrafter.GetCraftingCurrency()) return;
@@ -91,6 +94,10 @@ public class CurrencyCrafterVisual : StructureVisual
         RefreshCurrencyBarVisuals();
     }
 
+    private void CurrencyCrafter_OnCurrencyTypeBeingCraftedLoaded(object sender, System.EventArgs e) {
+        RefreshCurrencyBarVisuals();
+    }
+
     private void CurrencyCrafter_OnPlayerCollectedAmmo(object sender, System.EventArgs e) {
         craftCurrency_PayOrbsGameObject.SetActive(true);
         if (craftSpecialCurrency_PayOrbsGameObject != null) {
@@ -101,7 +108,6 @@ public class CurrencyCrafterVisual : StructureVisual
     }
 
     private void CurrencyCrafter_OnNewCurrencyBatchCraftingStarted(object sender, System.EventArgs e) {
-        //craftCurrency_craftingCurrencyGameObject.SetActive(true);
         RefreshCurrencyBarVisuals();
         HighlightStructureFunctionIcon(false);
 
@@ -152,6 +158,7 @@ public class CurrencyCrafterVisual : StructureVisual
     }
 
     private void RefreshCurrencyBarVisuals() {
+
         currencyBarTemplate.gameObject.SetActive(true);
 
         if(currencyCrafter.GetCurrentBatch() == 0) {

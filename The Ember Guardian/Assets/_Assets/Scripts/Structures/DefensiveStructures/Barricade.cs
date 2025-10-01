@@ -234,4 +234,13 @@ public class Barricade : Structure, IDamageable {
         return spikeDamage;
     }
 
+    public void SetHealth(int health) {
+        this.barricadeHealth = health;
+        barricadeVisual.SyncWithHealth(barricadeHealth, barricadeMaxHealth);
+        RefreshBarricadeRepair();
+    }
+
+    public int GetHealth() {
+        return barricadeHealth;
+    }
 }

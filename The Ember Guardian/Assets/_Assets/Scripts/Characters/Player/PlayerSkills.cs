@@ -126,6 +126,7 @@ public class PlayerSkills : MonoBehaviour
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
 
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
             StartCoroutine(SetPlayerInitialSkills());
         }
     }

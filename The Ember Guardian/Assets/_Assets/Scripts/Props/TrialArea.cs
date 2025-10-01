@@ -5,6 +5,23 @@ using UnityEngine;
 
 public class TrialArea : MonoBehaviour
 {
+
+
+    [SerializeField] private string trialAreaID;
+    public string GetTrialAreaID() => trialAreaID;
+
+#if UNITY_EDITOR
+    private void OnValidate() {
+        if (string.IsNullOrEmpty(trialAreaID) && gameObject.scene.IsValid()) {
+            trialAreaID = System.Guid.NewGuid().ToString();
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+    }
+    public void ForceNewID() {
+        trialAreaID = System.Guid.NewGuid().ToString();
+    }
+#endif
+
     [SerializeField] private Chest trialChest;
     [SerializeField] private List<MobSpawner> creatureSpawners;
     [SerializeField] private int waveAmount;

@@ -46,6 +46,7 @@ public class Merchant : Structure {
 
     protected override void Start() {
         base.Start();
+
         InitializeMerchantItems();
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
@@ -87,8 +88,6 @@ public class Merchant : Structure {
     }
 
     protected override void TriggerStructurePrimaryFunction() {
-        Debug.Log("TriggerStructurePrimaryFunction");
-
 
         if (!playerPayedToRefreshShop) {
             base.TriggerStructurePrimaryFunction();
@@ -99,7 +98,6 @@ public class Merchant : Structure {
 
         } else {
 
-            Debug.Log(currentHoveredItem.itemType);
             if (currentHoveredItem.itemType == MerchantItem.MerchantItemType.RefreshShopItems) {
                 playerPayedToRefreshShop = false;
                 RefreshShopItems();

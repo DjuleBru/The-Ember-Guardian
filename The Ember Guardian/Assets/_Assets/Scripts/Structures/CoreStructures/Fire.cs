@@ -74,6 +74,7 @@ public class Fire : Structure, IDamageable {
     }
 
     public event EventHandler OnInitialFireActivated;
+    public event EventHandler OnFuelLevelLoaded;
     public event EventHandler OnFireFuelled;
     public static event EventHandler OnAnyFireFuelled;
     public event EventHandler OnFireDamageTaken;
@@ -229,6 +230,13 @@ public class Fire : Structure, IDamageable {
     private void LevelManager_OnLevelSuccess(object sender, EventArgs e) {
         ES3.Save("lastPrimordialFireLit", primordialFireColor);
         LevelUI_Locations.Instance.ShowFireTextForTime(5f);
+    }
+
+    public void SetFuelLevel(float fuelLevel) {
+        this.fuelLevel = fuelLevel;
+        CheckFireStateUpgrade();
+        CheckFireStateDowngrade();
+        OnFuelLevelLoaded?.Invoke(this, EventArgs.Empty);
     }
 
     protected override void TriggerStructurePrimaryFunction() {

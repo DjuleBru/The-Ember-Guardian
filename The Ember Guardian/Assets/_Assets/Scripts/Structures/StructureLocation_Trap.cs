@@ -45,6 +45,11 @@ public class StructureLocation_Trap : StructureLocation {
     public override Structure BuildStructure(bool buildOnLoad = false) {
 
         Structure_Trap trap = Instantiate(structureSOToBuild.structurePrefab, transform.position, Quaternion.identity).GetComponent<Structure_Trap>();
+
+        if (isWorldLocation) {
+            trap.SetAsWorldStructure(worldLocationScaleX);
+        }
+
         trap.SetTrapStructureLocation(this);
         trap.SetStructureBuiltOnLoad(buildOnLoad);
         InvokeOnAnyStructureBuilt(trap, buildOnLoad);

@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -112,6 +113,7 @@ public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
         ToggleScavengingActive();
     }
 
+    [Button]
     public void TakeDamage(int damage, Transform damageSource, bool crit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
         health -= damage;
         hitsTaken += damage;
@@ -130,7 +132,6 @@ public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
 
         foreach (var spawnThreshold in spawnOnDamageThresholds) {
             if (spawnThreshold.hasTriggered) continue;
-
 
             if (healthNormalized <= spawnThreshold.healthThresholdNormalized) {
                 OnCreatureSpawned?.Invoke(this, EventArgs.Empty);
@@ -173,14 +174,14 @@ public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
         minerAssignedList.Clear();
     }
 
-    public override void BuildObstacle() {
+    public override void BuildObstacle(bool triggerSFX = true) {
         foreach (Collider2D collider in blockingColliders) {
             collider.enabled = false;
         }
 
         depleted = true;
         obstacleBuilt = true;
-        InvokeObstacleBuiltEvents();
+        InvokeObstacleBuiltEvents(triggerSFX);
         SetTriggerExit();
     }
 

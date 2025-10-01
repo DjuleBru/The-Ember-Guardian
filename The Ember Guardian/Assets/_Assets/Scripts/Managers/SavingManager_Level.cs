@@ -46,9 +46,23 @@ public class SavingManager_Level : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         SaveRecruitedWorkers();
+        yield return new WaitForEndOfFrame();
+
         SaveSpawners();
+        yield return new WaitForEndOfFrame();
+
         SavePlayer();
+        yield return new WaitForEndOfFrame();
+
         SaveStructures();
+        yield return new WaitForEndOfFrame();
+
+        SaveTrapUpgrades();
+        SaveTrapTypes();
+        yield return new WaitForEndOfFrame();
+
+        SaveObstacles();
+        SaveChests();
     }
 
     private void SaveRecruitedWorkers() {
@@ -200,6 +214,10 @@ public class SavingManager_Level : MonoBehaviour
     private void SaveStructures() {
         List<StructureSaveData> structuresData = new List<StructureSaveData>();
         List<TrapSaveData> trapsData = new List<TrapSaveData>();
+        List<FireSaveData> fireData = new List<FireSaveData>();
+        List<CurrencyCrafterSaveData> crafterData = new List<CurrencyCrafterSaveData>();
+        List<SpecialTowerSaveData> specialTowerData = new List<SpecialTowerSaveData>();
+        List<BarricadeSaveData> barricadeData = new List<BarricadeSaveData>();
 
         foreach (StructureLocation location in StructuresManager.Instance.GetStructureLocationsList()) {
             if (location == null) continue;
@@ -218,16 +236,20 @@ public class SavingManager_Level : MonoBehaviour
             if (structure == null) continue;
 
             StructureSaveData data = new StructureSaveData();
+            StructureSO.StructureType structureType = structure.GetStructureSO().structureType;
+            StructureSO.StructureCategory structureCategory= structure.GetStructureSO().structureCategory;
 
             data.structureType = structure.GetStructureSO().structureType;
             data.posX = structure.transform.position.x;
             data.posY = structure.transform.position.y;
             data.structureBuilt = true;
-            data.structureLevel = structure.GetStructureLevel(); ;
+            data.structureLevel = structure.GetStructureLevel();
+            data.isWorldStructure = structure.GetIsWorldStructure();
+            data.worldStructureScaleX = structure.GetWorldScaleX();
 
             structuresData.Add(data);
 
-            if (structure.GetStructureSO().structureCategory == StructureSO.StructureCategory.trap) {
+            if (structureCategory == StructureSO.StructureCategory.trap) {
                 Structure_Trap trapStructure = structure as Structure_Trap;
 
                 TrapSaveData data_trap = new TrapSaveData();
@@ -236,11 +258,80 @@ public class SavingManager_Level : MonoBehaviour
 
                 trapsData.Add(data_trap);
             }
+
+            if (structureType == StructureSO.StructureType.barricade) {
+                Barricade barricade = structure as Barricade;
+
+                BarricadeSaveData data_barricade = new BarricadeSaveData();
+                data_barricade.barricadeHealth = barricade.GetHealth();
+
+                barricadeData.Add(data_barricade);
+            }
+
+            if (structureType == StructureSO.StructureType.machineGunTower || structureType == StructureSO.StructureType.sniperTower || structureType == StructureSO.StructureType.mortarTower) {
+                SpecialTower specialTower = structure as SpecialTower;
+
+                SpecialTowerSaveData data_specialTower = new SpecialTowerSaveData();
+                data_specialTower.currentAmmoClips = specialTower.GetCurrentAmmoClip();
+
+                specialTowerData.Add(data_specialTower);
+            }
+
+            if (structureType == StructureSO.StructureType.fire || structureType == StructureSO.StructureType.secondaryFire) {
+                Fire fireStructure = structure as Fire;
+
+                FireSaveData data_fire = new FireSaveData();
+                data_fire.currentFuelLevel = fireStructure.GetCurrentFuelLevel();
+
+                fireData.Add(data_fire);
+            }
+
+            if (structureType == StructureSO.StructureType.ammoCrafter || structureType == StructureSO.StructureType.orbProcessor) {
+                CurrencyCrafter currencyCrafterStructure = structure as CurrencyCrafter;
+
+                CurrencyCrafterSaveData data_currencyCrafter = new CurrencyCrafterSaveData();
+                data_currencyCrafter.currentBatches = currencyCrafterStructure.GetCurrentBatch();
+                data_currencyCrafter.currencyCraftTimer = currencyCrafterStructure.GetCurrencyCraftTimer();  
+                data_currencyCrafter.craftingCurrency = currencyCrafterStructure.GetCraftingCurrency();  
+                data_currencyCrafter.craftedCurrency = currencyCrafterStructure.GetCraftedCurrency();  
+                data_currencyCrafter.currencyTypeCrafted = currencyCrafterStructure.GetCurrencyTypeBeingCrafted();  
+
+                crafterData.Add(data_currencyCrafter);
+            }
         }
 
 
         ES3.Save("Structures", structuresData, "LevelSave.es3");
         ES3.Save("Structures_Traps", trapsData, "LevelSave.es3");
+        ES3.Save("Structures_Fire", fireData, "LevelSave.es3");
+        ES3.Save("Structures_CurrencyCrafters", crafterData, "LevelSave.es3");
+        ES3.Save("Structures_SpecialTowers", specialTowerData, "LevelSave.es3");
+        ES3.Save("Structures_Barricades", barricadeData, "LevelSave.es3");
+    }
+
+    private void SaveTrapUpgrades() {
+
+        ES3.Save("TrapUpgrades", TrapManager.Instance.GetTrapUpgradesLevels(), "LevelSave.es3");
+        
+    }
+    private void SaveTrapTypes() {
+        ES3.Save("TrapTypes", TrapManager.Instance.GetTrapTypesBoughtByPlayer(), "LevelSave.es3");
+    }
+
+    private void SaveObstacles() {
+        var list = new List<ObstacleSaveData>();
+        foreach (Obstacle obstacle in LevelManager.Instance.GetAllObstacles()) {
+            list.Add(new ObstacleSaveData { obstacleID = obstacle.GetObstacleID(), built = obstacle.GetBuilt() });
+        }
+        ES3.Save("Obstacles", list, "LevelSave.es3");
+    }
+
+    private void SaveChests() {
+        var list = new List<ChestSaveData>();
+        foreach (Chest chest in LevelManager.Instance.GetAllChests()) {
+            list.Add(new ChestSaveData { chestID = chest.GetChestID(), opened = chest.GetChestOpened(), chestLocked = chest.GetChestLocked() });
+        }
+        ES3.Save("Obstacles", list, "LevelSave.es3");
     }
 
     #endregion
@@ -253,6 +344,8 @@ public class SavingManager_Level : MonoBehaviour
         StartCoroutine(LoadSpawners());
         StartCoroutine(LoadPlayer());
         StartCoroutine(LoadStructures());
+        StartCoroutine(LoadTraps());
+        StartCoroutine(LoadObstacles());
     }
     private IEnumerator LoadWorkers() {
         if (!ES3.KeyExists("Workers", "LevelSave.es3")) yield break;
@@ -347,7 +440,6 @@ public class SavingManager_Level : MonoBehaviour
             spawner.LoadLinkedMobSpawner();
         }
     }
-
     private IEnumerator LoadPlayer() {
         if (!ES3.KeyExists("Player", "LevelSave.es3"))
             yield break;
@@ -432,7 +524,6 @@ public class SavingManager_Level : MonoBehaviour
 
         yield return null;
     }
-
     private IEnumerator LoadStructures() {
         if (!ES3.KeyExists("Structures", "LevelSave.es3"))
             yield break;
@@ -448,19 +539,35 @@ public class SavingManager_Level : MonoBehaviour
 
         List<StructureSaveData> structuresData = ES3.Load<List<StructureSaveData>>("Structures", "LevelSave.es3 ");
         List<TrapSaveData> trapsData = ES3.Load<List<TrapSaveData>>("Structures_Traps", "LevelSave.es3 ");
+        List<FireSaveData> fireData = ES3.Load<List<FireSaveData>>("Structures_Fire", "LevelSave.es3 ");
+        List<CurrencyCrafterSaveData> crafterData = ES3.Load<List<CurrencyCrafterSaveData>>("Structures_CurrencyCrafters", "LevelSave.es3 ");
+        List<SpecialTowerSaveData> towerData = ES3.Load<List<SpecialTowerSaveData>>("Structures_SpecialTowers", "LevelSave.es3 ");
+        List<BarricadeSaveData> barricadeData = ES3.Load<List<BarricadeSaveData>>("Structures_Barricades", "LevelSave.es3 ");
 
         int trapSaveDataIndex = 0;
+        int fireSaveDataIndex = 0;
+        int currencyCrafterSaveDataIndex = 0;
+        int towerDataIndex = 0;
+        int barricadesDataIndex = 0;
 
         foreach(StructureSaveData data in structuresData) {
             StructureSO.StructureType loadedStructureType = data.structureType;
             StructureSO loadedStructureSO = StructuresManager.Instance.GetStructureSO(loadedStructureType);
             Vector2 structurePos = new Vector2(data.posX, data.posY);
 
+            //Debug.Log("loading " +  loadedStructureType);
             bool structureBuilt = data.structureBuilt;
 
             if (structureBuilt) {
+                yield return new WaitForEndOfFrame();
 
-                if(data.structureType == StructureSO.StructureType.fire) continue;
+                if (loadedStructureType == StructureSO.StructureType.fire) {
+                    float fuelLevel = fireData[fireSaveDataIndex].currentFuelLevel;
+                    Fire.Instance.SetFuelLevel(fuelLevel);
+                    fireSaveDataIndex++;
+
+                    continue;
+                };
 
                 if (data.structureType == StructureSO.StructureType.tent) {
                     Tent.Instance.transform.position = structurePos;
@@ -473,18 +580,25 @@ public class SavingManager_Level : MonoBehaviour
 
                 Vector3 position = new Vector3(structurePos.x, structurePos.y, 0);
                 StructureLocation structureLocation = Instantiate(loadedStructureSO.structureLocationPrefab, position, Quaternion.identity).GetComponent<StructureLocation>();
+                if (data.isWorldStructure) {
+                    structureLocation.SetAsWorldStructureLocation();
+                    structureLocation.SetStructureLocationWorldScaleX(data.worldStructureScaleX);
+                }
 
-                if(structureLocation is StructureLocation_Trap) {
+                if (structureLocation is StructureLocation_Trap) {
                     StructureLocation_Trap structureLocation_Trap = (StructureLocation_Trap)structureLocation;
                     structureLocation_Trap.SetStructureSOToBuild(loadedStructureSO);
                 }
 
                 Structure structure = structureLocation.BuildStructure(true);
+
                 yield return new WaitForEndOfFrame();
 
                 if (data.structureLevel != 1) {
                     structure.SetStructureLevel(data.structureLevel);
                 }
+
+                yield return new WaitForEndOfFrame();
 
 
                 if (loadedStructureSO.structureCategory == StructureSO.StructureCategory.trap) {
@@ -496,6 +610,51 @@ public class SavingManager_Level : MonoBehaviour
                     trapSaveDataIndex++;
                 };
 
+                if (loadedStructureSO.structureType == StructureSO.StructureType.secondaryFire) {
+
+                    Fire secondaryFire = structure as Fire;
+                    float fuelLevel = fireData[fireSaveDataIndex].currentFuelLevel;
+                    secondaryFire.SetFuelLevel(fuelLevel);
+                    fireSaveDataIndex++;
+                    continue;
+                }; 
+                
+                if (loadedStructureSO.structureType == StructureSO.StructureType.barricade) {
+
+                    Barricade barricade = structure as Barricade;
+                    int barricadeHealth = barricadeData[barricadesDataIndex].barricadeHealth;
+                    barricade.SetHealth(barricadeHealth);
+                    barricadesDataIndex++;
+                    continue;
+                };
+
+                if (loadedStructureSO.structureType == StructureSO.StructureType.machineGunTower || loadedStructureSO.structureType == StructureSO.StructureType.sniperTower || loadedStructureSO.structureType == StructureSO.StructureType.mortarTower) {
+
+                    SpecialTower specialTower = structure as SpecialTower;
+                    int ammoCount = towerData[towerDataIndex].currentAmmoClips;
+                    specialTower.SetCurrentAmmoClips(ammoCount);
+                    towerDataIndex++;
+                    continue;
+                };
+
+                if (loadedStructureSO.structureType == StructureSO.StructureType.ammoCrafter || loadedStructureSO.structureType == StructureSO.StructureType.orbProcessor) {
+
+                    CurrencyCrafter crafter = structure as CurrencyCrafter;
+                    int currentBatches = crafterData[currencyCrafterSaveDataIndex].currentBatches;
+                    float currencyCraftTimer = crafterData[currencyCrafterSaveDataIndex].currencyCraftTimer;
+                    bool craftingCurrency = crafterData[currencyCrafterSaveDataIndex].craftingCurrency;
+                    bool craftedCurrency = crafterData[currencyCrafterSaveDataIndex].craftedCurrency;
+                    PlayerCurrencies.CurrencyType currencyTypeCrafted = crafterData[currencyCrafterSaveDataIndex].currencyTypeCrafted;
+
+                    crafter.SetCurrencyTypeBeingCrafted(currencyTypeCrafted);
+                    crafter.SetCurrencyCraftTimer(currencyCraftTimer);
+                    crafter.SetCurrentBatches(currentBatches);
+                    crafter.SetCraftingCurrency(craftingCurrency);
+                    crafter.SetCraftedCurrency(craftedCurrency);
+
+                    currencyCrafterSaveDataIndex++;
+                    continue;
+                };
 
             }
             else {
@@ -508,7 +667,54 @@ public class SavingManager_Level : MonoBehaviour
 
         yield return null;
     }
+    private IEnumerator LoadTraps() {
+        if (ES3.KeyExists("TrapTypes", "LevelSave.es3")) {
+            yield return new WaitForEndOfFrame();
 
+            List<TrapItem.TrapType> trapTypes = ES3.Load<List<TrapItem.TrapType>>("TrapTypes", "LevelSave.es3");
+            TrapManager.Instance.SetTrapTypesBoughtByPlayer(trapTypes);
+
+        }
+
+
+        if (ES3.KeyExists("TrapUpgrades", "LevelSave.es3")) {
+            yield return new WaitForEndOfFrame();
+
+            Dictionary<TrapItem.TrapType, Dictionary<TrapUpgradeSO.TrapUpgradeType, int>> trapUpgrades = ES3.Load<Dictionary<TrapItem.TrapType, Dictionary<TrapUpgradeSO.TrapUpgradeType, int>>>("TrapUpgrades", "LevelSave.es3");
+            TrapManager.Instance.SetTrapUpgradeLevels(trapUpgrades);
+        }
+
+
+    }
+
+    private IEnumerator LoadObstacles() {
+        if (!ES3.KeyExists("Obstacles", "LevelSave.es3"))
+            yield break;
+
+        var list = ES3.Load<List<ObstacleSaveData>>("Obstacles", "LevelSave.es3");
+        if (list == null || list.Count == 0)
+            yield break;
+
+        // on attend un frame LevelManager ait fini son Awake/Start
+        yield return new WaitForEndOfFrame();
+
+        foreach (var data in list) {
+            if (string.IsNullOrEmpty(data.obstacleID)) continue;
+
+            var obstacle = LevelManager.Instance
+                .GetAllObstacles()
+                .Find(o => o != null && o.GetObstacleID() == data.obstacleID);
+
+            if (obstacle == null) {
+                Debug.LogWarning($"[Save] Obstacle {data.obstacleID} introuvable.");
+                continue;
+            }
+
+            if (data.built && !obstacle.GetBuilt()) {
+                obstacle.BuildObstacle(false);
+            }
+        }
+    }
     #endregion
 
 

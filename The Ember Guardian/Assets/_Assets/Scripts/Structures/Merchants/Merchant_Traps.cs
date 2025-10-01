@@ -16,7 +16,9 @@ public class Merchant_Traps : Merchant
     protected override void Start() {
         base.Start();
         MerchantItem.OnAnyMerchantItemBought += MerchantItem_OnAnyMerchantItemBought;
+        TrapManager.Instance.OnTrapUpgradeLevelsSet += TrapManager_OnTrapUpgradeLevelsSet;
     }
+
 
     private void MerchantItem_OnAnyMerchantItemBought(object sender, System.EventArgs e) {
         if (!(sender is TrapItem)) return;
@@ -29,6 +31,11 @@ public class Merchant_Traps : Merchant
         }
     }
 
+    private void TrapManager_OnTrapUpgradeLevelsSet(object sender, EventArgs e) {
+        InitializeTrapItems();
+        RefreshShopItems();
+    }
+
     protected void InitializeTrapItems() {
         trapList = new List<TrapItem>();
         trapUpgradeList = new List<TrapItem>();
@@ -38,14 +45,20 @@ public class Merchant_Traps : Merchant
             var trapItem = new TrapItem();
             trapItem.Initialize(trapSO);
 
+            if (trapSO.itemType == MerchantItem.MerchantItemType.TrapUpgrade) {
+                // Synchroniser le currentLevel avec le TrapManager
+                int savedLevel = TrapManager.Instance.GetTrapUpgradesLevels()[trapSO.trapType][trapSO.trapUpgradeSO.trapUpgradeType];
+
+                trapItem.currentLevel = savedLevel+1;
+                trapItem.price = trapSO.trapUpgradeSO.GetPriceAtLevel(savedLevel);
+
+                allMinorMerchantItems.Add(trapItem);
+                trapUpgradeList.Add(trapItem);
+            }
+
             if (trapSO.itemType == MerchantItem.MerchantItemType.Trap) {
                 allMajorMerchantItems.Add(trapItem);
                 trapList.Add(trapItem);
-            }
-
-            if (trapSO.itemType == MerchantItem.MerchantItemType.TrapUpgrade) {
-                allMinorMerchantItems.Add(trapItem);
-                trapUpgradeList.Add(trapItem);
             }
         }
     }
@@ -73,7 +86,7 @@ public class Merchant_Traps : Merchant
         }
     }
 
-    private void SetAllSkillsUnsold() {
+    private void SetAllTrapsUnsold() {
         foreach (TrapItem trapItem in trapList) {
             trapItem.Unpurchase();
         }
@@ -90,7 +103,7 @@ public class Merchant_Traps : Merchant
     protected override void RefreshShopItems() {
         base.RefreshShopItems();
 
-        SetAllSkillsUnsold();
+        SetAllTrapsUnsold();
         RefreshCurrentMajorItemForSale();
         RefreshCurrentMinorItemListForSale();
     }

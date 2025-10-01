@@ -16,8 +16,8 @@ public class CurrencyCrafterVisual_CurrencyBarTemplate : MonoBehaviour
 
     public void SetCrafted() {
         currencyBarFill.material = glowMaterial;
-
-        if(craftedSprited != null) {
+        currencyBarFill.fillAmount = 1f;
+        if (craftedSprited != null) {
             currencyBarFill.sprite = craftedSprited;
         }
     }

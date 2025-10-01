@@ -14,9 +14,11 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private Transform leftLevelEndCollider;
     [SerializeField] private Transform rightLevelEndCollider;
-    [SerializeField] private List<Obstacle> blockingObstacles;
     [SerializeField] private StructureLocation conditionalLockedStructureLocation;
     [SerializeField] private bool setEndLevelPositionRelativeToPlayer = true;
+    private List<Obstacle> allObstacles = new List<Obstacle>();
+    private List<Obstacle> blockingObstacles = new List<Obstacle>();
+    private List<Chest> allChests = new List<Chest>();
     private float minLevelLimit;
     private float maxLevelLimit;
 
@@ -79,6 +81,7 @@ public class LevelManager : MonoBehaviour
     private void Obstacle_OnAnyObstacleInitialized(object sender, EventArgs e) {
         Obstacle obstacle = (Obstacle)sender;
         blockingObstacles.Add(obstacle);
+        allObstacles.Add(obstacle);
         obstacle.OnObstacleBuilt += Obstacle_OnObstacleBuilt;
     }
 
@@ -271,6 +274,18 @@ public class LevelManager : MonoBehaviour
         return levelSucceeded;
     }
 
+    public List<Obstacle> GetAllObstacles() {
+        return allObstacles;
+    }
+
+    public void AddChest(Chest chest) {
+        allChests.Add(chest);
+    }
+
+    public List<Chest> GetAllChests() {
+        return allChests;
+    }
+
     private void OnDestroy() {
         LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted -= LevelUI_OnObjectiveCompleted;
         Obstacle.OnAnyObstacleInitialized -= Obstacle_OnAnyObstacleInitialized;
@@ -279,4 +294,6 @@ public class LevelManager : MonoBehaviour
             EndLevelArea.Instance.OnEndLevelFireLit -= EndLevelArea_OnEndLevelFireLit;
         }
     }
+
+
 }

@@ -25,13 +25,17 @@ public class CurrencyCrafterSound : StructureSounds
     }
 
     private void AmmoCrafter_OnCurrencyInstantiated(object sender, System.EventArgs e) {
+        soundVolume2D.SetSoundVolume2DActiveAfterDelay(true, 0f);
         audioSource.PlayOneShot(currencyInstantiatedAudioClip, sfxVolume);
     }
 
-    private void AmmoCrafter_OnAmmoCraftingStarted(object sender, System.EventArgs e) {
+    private void AmmoCrafter_OnAmmoCraftingStarted(object sender, CurrencyCrafter.OnNewCurrencyBatchCraftingStartedEventArgs e) {
         soundVolume2D.SetSoundVolume2DActiveAfterDelay(true, 0);
 
-        audioSource.PlayOneShot(startCraftingAudioClip, sfxVolume);
+        if(e.triggerStartCraftingSFX) {
+            audioSource.PlayOneShot(startCraftingAudioClip, sfxVolume);
+        }
+
         audioSource.volume = 1f * sfxVolume;
 
         if (currencyCrafter.GetCraftingCurrency()) return;
@@ -46,9 +50,7 @@ public class CurrencyCrafterSound : StructureSounds
     }
 
     private void AmmoCrafter_OnAmmoCraftingEnded(object sender, System.EventArgs e) {
-        audioSource.volume = 1f * sfxVolume;
-        audioSource.PlayOneShot(endCraftingAudioClip, sfxVolume);
-        audioSource.Stop();
+        audioSource.PlayOneShot(endCraftingAudioClip, sfxVolume * 2);
         soundVolume2D.SetSoundVolume2DActiveAfterDelay(false, endCraftingAudioClip.length);
     }
 }

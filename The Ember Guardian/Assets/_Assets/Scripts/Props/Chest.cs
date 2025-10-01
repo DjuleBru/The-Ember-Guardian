@@ -5,6 +5,20 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour
 {
+    [SerializeField] private string chestID;
+    public string GetChestID() => chestID;
+
+#if UNITY_EDITOR
+    private void OnValidate() {
+        if (string.IsNullOrEmpty(chestID) && gameObject.scene.IsValid()) {
+            chestID = System.Guid.NewGuid().ToString();
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+    }
+    public void ForceNewID() {
+        chestID = System.Guid.NewGuid().ToString();
+    }
+#endif
     public enum ChestType {
         orbChest,
         gemChest,
@@ -107,6 +121,7 @@ public class Chest : MonoBehaviour
             i++;
         }
         GemDropManager.Instance.RecordChestGems(totalGemAmount);
+        LevelManager.Instance.AddChest(this);
     }
 
 
@@ -261,7 +276,7 @@ public class Chest : MonoBehaviour
         Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
 
         yield return new WaitForSeconds(delayToDisappear);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     public ChestType GetChestType() {
@@ -308,6 +323,10 @@ public class Chest : MonoBehaviour
     public void SetTrialChestPaid() {
         chestPricePaid = true;
         payToOpenChest = false;
+    }
+
+    public bool GetChestLocked() {
+        return chestLocked;
     }
 
     private void OnDestroy() {

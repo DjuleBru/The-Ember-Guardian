@@ -6,6 +6,21 @@ using UnityEngine.Tilemaps;
 
 public class Obstacle : MonoBehaviour {
 
+    [SerializeField] private string obstacleID;
+    public string GetObstacleID() => obstacleID;
+
+#if UNITY_EDITOR
+    private void OnValidate() {
+        if (string.IsNullOrEmpty(obstacleID) && gameObject.scene.IsValid()) {
+            obstacleID = System.Guid.NewGuid().ToString();
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+    }
+    public void ForceNewID() {
+        obstacleID = System.Guid.NewGuid().ToString();
+    }
+#endif
+
     protected PayCurrencyUI payCurrencyUI;
     [SerializeField] protected List<Collider2D> blockingColliders;
     [SerializeField] protected TilemapCollider2D obstacleSolidCollider;
@@ -20,13 +35,17 @@ public class Obstacle : MonoBehaviour {
     protected bool playerInTriggerArea;
     protected bool obstacleBuilt;
 
-    public event EventHandler OnObstacleBuilt;
+    public event EventHandler<OnObstacleBuiltEventArgs> OnObstacleBuilt;
     public static event EventHandler OnAnyObstacleInitialized;
-    public static event EventHandler OnAnyObstacleBuilt;
+    public static event EventHandler<OnObstacleBuiltEventArgs> OnAnyObstacleBuilt;
     public static event EventHandler OnAnyPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredIn;
     public static event EventHandler OnAnyPlayerTriggeredOut;
     public event EventHandler OnPlayerTriggeredOut;
+
+    public class OnObstacleBuiltEventArgs:EventArgs {
+        public bool triggerSFX;
+    }
 
     protected virtual void Awake() {
         payCurrencyUI = GetComponent<PayCurrencyUI>();
@@ -52,7 +71,7 @@ public class Obstacle : MonoBehaviour {
         BuildObstacle();
     }
 
-    public virtual void BuildObstacle() {
+    public virtual void BuildObstacle(bool triggerSFX = true) {
         foreach(Collider2D collider in blockingColliders) {
               collider.enabled = false;
         }
@@ -62,13 +81,17 @@ public class Obstacle : MonoBehaviour {
         }
 
         obstacleBuilt = true;
-        InvokeObstacleBuiltEvents();
+        InvokeObstacleBuiltEvents(triggerSFX);
         SetTriggerExit();
     }
 
-    public void InvokeObstacleBuiltEvents() {
-        OnObstacleBuilt?.Invoke(this, EventArgs.Empty);
-        OnAnyObstacleBuilt?.Invoke(this, EventArgs.Empty);
+    public void InvokeObstacleBuiltEvents(bool triggerSFX = true) {
+        OnObstacleBuilt?.Invoke(this, new OnObstacleBuiltEventArgs {
+            triggerSFX = triggerSFX
+        });
+        OnAnyObstacleBuilt?.Invoke(this, new OnObstacleBuiltEventArgs {
+            triggerSFX = triggerSFX
+        });
     }
 
     protected virtual void GameInput_OnPlayerInteractStarted(object sender, EventArgs e) {

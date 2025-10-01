@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 4
   trapType: 5
-  trapUpgradeSO: {fileID: 11400000, guid: e7accb87400274d4caf58e9dc9a2af6c, type: 2}
+  trapUpgradeSO: {fileID: 11400000, guid: 9fa8cc3dcdab4984c9846e8f3d0f26a1, type: 2}
   trapStructureSO: {fileID: 0}
   linkedTrapSO: {fileID: 11400000, guid: 635aa25162d699f4a8e9a2b3a2a020cc, type: 2}
   TrapName: Spikes Damage
@@ -27,6 +27,8 @@ MonoBehaviour:
   rearmPrice: 0
   trapActiveDuration: 0
   trapHasAOEAttack: 0
+  trapBreaksAfterRearms: 0
+  trapBreaksAfterUses: 0
   Icon: {fileID: -525832460, guid: 131d4d4cb09addc43b80369788938af7, type: 3}
   currencyTypeToPay: 0
   triggerTrapAudioClip:

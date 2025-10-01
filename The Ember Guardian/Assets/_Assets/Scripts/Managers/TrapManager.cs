@@ -21,6 +21,8 @@ public class TrapManager : MonoBehaviour
 
     private List<TrapItem.TrapType> trapTypesBoughtByPlayer = new List<TrapItem.TrapType>();
 
+    public event EventHandler OnTrapUpgradeLevelsSet;
+
     private void Awake() {
         Instance = this;
         InitializeTraps(allTrapTypes);
@@ -38,6 +40,7 @@ public class TrapManager : MonoBehaviour
     }
 
     public void SetTrapUpgradeLevel(TrapItem.TrapType trapType, TrapUpgradeSO.TrapUpgradeType upgradeType, int level) {
+        Debug.Log("SetTrapUpgradeLevel " + level);
         if (trapUpgradesLevels.ContainsKey(trapType) && trapUpgradesLevels[trapType].ContainsKey(upgradeType)) {
             trapUpgradesLevels[trapType][upgradeType] = level;
         }
@@ -48,12 +51,22 @@ public class TrapManager : MonoBehaviour
         if (trapUpgradesLevels.TryGetValue(trapType, out var upgradeDict) &&
             upgradeDict.TryGetValue(upgradeType, out var level)) {
             // Trouver l'UpgradeSO correspondant
+
             TrapUpgradeSO upgradeSO = allTrapUpgradeSOs.Find(upg => upg.linkedTrapType == trapType && upg.trapUpgradeType == upgradeType);
             if (upgradeSO != null) {
                 return upgradeSO.GetValueAtLevel(level);
             }
         }
         return 0f; // Retourne 0 si l'amélioration ou le niveau est invalide
+    }
+
+    public Dictionary<TrapItem.TrapType, Dictionary<TrapUpgradeSO.TrapUpgradeType, int>> GetTrapUpgradesLevels() {
+        return trapUpgradesLevels;
+    }
+
+    public void SetTrapUpgradeLevels(Dictionary<TrapItem.TrapType, Dictionary<TrapUpgradeSO.TrapUpgradeType, int>> trapUpgradesLevels) {
+        this.trapUpgradesLevels = trapUpgradesLevels;
+        OnTrapUpgradeLevelsSet?.Invoke(this, EventArgs.Empty);
     }
 
     public List<TrapSO> GetAllTrapSOList() {
@@ -94,6 +107,12 @@ public class TrapManager : MonoBehaviour
 
     public List<TrapUpgradeSO> GetTrapUpgradeSOList() {
         return allTrapUpgradeSOs;
+    }
+    public List<TrapItem.TrapType> GetTrapTypesBoughtByPlayer() {
+        return trapTypesBoughtByPlayer;
+    }
+    public void SetTrapTypesBoughtByPlayer(List<TrapItem.TrapType> trapTypes) {
+        trapTypesBoughtByPlayer = trapTypes;
     }
 
     public void AddTrapTypeBought(TrapItem.TrapType trapType) {

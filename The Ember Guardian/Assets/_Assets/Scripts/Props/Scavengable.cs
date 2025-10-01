@@ -5,6 +5,22 @@ using UnityEngine;
 
 public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
 
+
+    [SerializeField] private string scavengableID;
+    public string GetScavengableID() => scavengableID;
+
+#if UNITY_EDITOR
+    private void OnValidate() {
+        if (string.IsNullOrEmpty(scavengableID) && gameObject.scene.IsValid()) {
+            scavengableID = System.Guid.NewGuid().ToString();
+            UnityEditor.EditorUtility.SetDirty(this);
+        }
+    }
+    public void ForceNewID() {
+        scavengableID = System.Guid.NewGuid().ToString();
+    }
+#endif
+
     private PayCurrencyUI payOrbsUI;
     protected List<PayCurrencyTemplateWorldUI> scavengeStructureCurrencyTemplates = new List<PayCurrencyTemplateWorldUI>();
 

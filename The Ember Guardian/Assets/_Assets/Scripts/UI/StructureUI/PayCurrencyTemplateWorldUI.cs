@@ -13,6 +13,8 @@ public class PayCurrencyTemplateWorldUI : MonoBehaviour
    [SerializeField] private Animator payCurrencyUIAnimator;
     [SerializeField] private float initialPayCurrencySmoothTime = 4f;
 
+    [SerializeField] private bool setInitialImageColorManual;
+    [SerializeField] private Color initialImageOutlineColor_ManualSet;
     private Color initialImageOutlineColor;
 
     private bool currencyPaid;
@@ -20,12 +22,15 @@ public class PayCurrencyTemplateWorldUI : MonoBehaviour
     public event EventHandler OnCurrencyPaid;
 
     private void Awake() {
-        initialImageOutlineColor = orbImageOutline.color;
+        if (setInitialImageColorManual) {
+            initialImageOutlineColor = initialImageOutlineColor_ManualSet;
+        } else {
+            initialImageOutlineColor = orbImageOutline.color;
+        }
     }
 
     public void SetCurrencyPaid(bool paid) {
         currencyPaid = paid;
-
         SetHovered(paid);
 
         if (paid) {
@@ -34,7 +39,13 @@ public class PayCurrencyTemplateWorldUI : MonoBehaviour
             orbImageOutline.color = fullColor;
             OnCurrencyPaid?.Invoke(this, EventArgs.Empty);
         } else {
-            orbImageOutline.color = initialImageOutlineColor;
+
+            if (setInitialImageColorManual) {
+                orbImageOutline.color = initialImageOutlineColor_ManualSet;
+            }
+            else {
+                orbImageOutline.color = initialImageOutlineColor;
+            }
         }
     }
 

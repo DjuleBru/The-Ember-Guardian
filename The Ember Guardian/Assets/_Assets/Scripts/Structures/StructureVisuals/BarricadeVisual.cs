@@ -240,6 +240,27 @@ public class BarricadeVisual : StructureVisual {
             return false;
         }
     }
+    public void SyncWithHealth(int currentHealth, int maxHealth) {
+        currentFallenBarricadePieceList.Clear();
+
+        float healthNormalized = (float)currentHealth / (float)maxHealth;
+        int totalPieces = currentLevelBarricadePieceList.Count;
+
+        // combien de pièces doivent être "tombées"
+        int fallenPieces = Mathf.RoundToInt((1f - healthNormalized) * totalPieces);
+
+        for (int i = 0; i < totalPieces; i++) {
+            if (i < fallenPieces) {
+                currentLevelBarricadePieceList[i].DisableBarricadePiece(); // ou BarricadePieceFell() si tu veux la physique
+                currentFallenBarricadePieceList.Add(currentLevelBarricadePieceList[i]);
+            }
+            else {
+                currentLevelBarricadePieceList[i].EnableBarricadePiece();
+            }
+        }
+
+        spriteIndex = Mathf.Clamp(fallenPieces + 1, 1, totalPieces + 1);
+    }
 
     public void OnEnable() {
         //SetBuildAnimation(level1BarricadePieceList);

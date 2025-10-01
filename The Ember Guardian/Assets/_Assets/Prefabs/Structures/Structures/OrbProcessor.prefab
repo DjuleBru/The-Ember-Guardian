@@ -619,6 +619,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd4d68cb30108f64b92fc81047f7f43a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   startCraftingAudioClip: {fileID: 8300000, guid: 204ee30043c0e444fb0dc9a570b3c400, type: 3}
   endCraftingAudioClip: {fileID: 8300000, guid: 3bef76283c677974f812ddba464d34a1, type: 3}
   currencyInstantiatedAudioClip: {fileID: 8300000, guid: 3c251547637eb0d45bfe5cbcdc28ade4, type: 3}
@@ -823,8 +825,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: setInitialImageColorManual
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: initialPayCurrencySmoothTime
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.a
+      value: 0.44705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8891634777496794373, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Sprite
@@ -945,8 +967,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: setInitialImageColorManual
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: initialPayCurrencySmoothTime
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.a
+      value: 0.44705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8891634777496794373, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Sprite
@@ -1107,8 +1149,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: setInitialImageColorManual
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: initialPayCurrencySmoothTime
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.a
+      value: 0.44705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563765968262856779, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5670219007980291320, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1393,8 +1455,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: setInitialImageColorManual
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: initialPayCurrencySmoothTime
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.a
+      value: 0.44705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8891634777496794373, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Sprite
@@ -1515,8 +1597,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: setInitialImageColorManual
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: initialPayCurrencySmoothTime
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.a
+      value: 0.44705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8891634777496794373, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Sprite
@@ -1637,8 +1739,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: setInitialImageColorManual
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: initialPayCurrencySmoothTime
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.a
+      value: 0.44705883
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6693436485697052919, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
+      propertyPath: initialImageOutlineColor_ManualSet.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8891634777496794373, guid: 466a1ce05be3df444ab5e6a9ba847289, type: 3}
       propertyPath: m_Sprite

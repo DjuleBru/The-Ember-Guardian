@@ -427,7 +427,7 @@ public class VideoTipManager : MonoBehaviour
 
     private void Structure_OnAnyPlayerTriggeredIn_Level(object sender, EventArgs e) {
         Structure structure = sender as Structure;
-        if(structure.GetStructureSO().structureType == StructureSO.StructureType.fastTravelTeleporter) {
+        if(structure.GetStructureSO().structureType == StructureSO.StructureType.fastTravelTeleporter || structure.GetStructureSO().structureType == StructureSO.StructureType.fastTravelTeleporter_World) {
             if (worldPortalTipShown) return;
 
             worldPortalTipShown = true;

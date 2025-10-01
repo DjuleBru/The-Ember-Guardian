@@ -778,7 +778,8 @@ public class SoundManager : MonoBehaviour
 
     #region STRUCTURES
 
-    private void Obstacle_OnAnyObstacleBuilt(object sender, System.EventArgs e) {
+    private void Obstacle_OnAnyObstacleBuilt(object sender, Obstacle.OnObstacleBuiltEventArgs e) {
+        if (!e.triggerSFX) return;
         AudioClip audioClip = (sender as Obstacle).GetObstacleBuiltAudioClip();
         PlaySound2D(audioClip);
     }

@@ -42,6 +42,7 @@ public class StructureSO : ScriptableObject
         currencyStorage_SmallOrb,
         currencyStorage_Ammo,
         currencyStorage_SpecialAmmo,
+        fastTravelTeleporter_World,
     }
     public enum StructureCategory {
         core,
