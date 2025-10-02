@@ -13,8 +13,9 @@ public interface IScavengable : IDamageable
     public event EventHandler OnMinerExtractedResourceFromMine;
     public event EventHandler OnMinerStartsMining;
     public event EventHandler OnMinerStopsMining;
-    public event EventHandler OnActivatedMining;
-    public event EventHandler OnDeactivatedMining;
+    public event EventHandler OnMineEffortLoaded;
+    public event EventHandler<Scavengable.OnScavengableDeactivatedMiningEventArgs> OnActivatedMining;
+    public event EventHandler<Scavengable.OnScavengableDeactivatedMiningEventArgs> OnDeactivatedMining;
 
     bool GetDepleted();
     bool GetMaxMinersAssigned();

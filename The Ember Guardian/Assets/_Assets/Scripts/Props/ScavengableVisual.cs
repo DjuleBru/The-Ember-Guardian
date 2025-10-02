@@ -40,6 +40,7 @@ public class ScavengableVisual : MonoBehaviour
         scavengable.OnScavengableMarkedToScavenge += Scavengable_OnScavengableMarkedToScavenge;
         scavengable.OnMinerStartsMining += Scavengable_OnMinerStartsMining;
         scavengable.OnMinerStopsMining += Scavengable_OnMinerStopsMining;
+        scavengable.OnMineEffortLoaded += Scavengable_OnMinerEffortLoaded;
         scavengable.OnMinerExtractedResourceFromMine += Scavengable_OnMinerExtractedResourceFromMine;
         scavengable.OnActivatedMining += Scavengable_OnActivatedMining;
         scavengable.OnDeactivatedMining += Scavengable_OnDeactivatedMining;
@@ -61,6 +62,10 @@ public class ScavengableVisual : MonoBehaviour
             cancelText.font = font;
         }
 
+    }
+
+    private void Scavengable_OnMinerEffortLoaded(object sender, System.EventArgs e) {
+        RefreshEffortRequired();
     }
 
     private void Scavengable_OnDeactivatedMining(object sender, System.EventArgs e) {

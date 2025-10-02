@@ -286,6 +286,20 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         return currentObjectiveType;
     }
 
+    public List<SubObjectiveType> GetCurrentSubObjectivesList() {
+        List<SubObjectiveType> currentSubObjectives = new List<SubObjectiveType>();
+
+        foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>(true)) {
+            if (subObjectiveUI.GetSubObjectiveType() == SubObjectiveType.None) continue;
+            if (subObjectiveUI.GetCompleted()) continue;
+
+            currentSubObjectives.Add(subObjectiveUI.GetSubObjectiveType());
+
+        }
+
+        return currentSubObjectives;
+    }
+
     private void OnDestroy() {
         if (LevelObjectives.Instance != null) {
             LevelObjectives.Instance.OnNightSurvived -= LevelObjectives_OnNightSurvived;

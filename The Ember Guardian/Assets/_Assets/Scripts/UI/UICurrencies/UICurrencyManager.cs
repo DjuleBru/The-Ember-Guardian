@@ -602,6 +602,10 @@ public class UICurrencyManager : MonoBehaviour
 
             if (isPlayerInventory) {
                 currencyUI.SetCurrencyLoaded();
+
+                if(currencyType == PlayerCurrencies.CurrencyType.ember) {
+                    PlayerCurrencies.Instance.SetCarryingEmber(true);
+                }
             }
 
             i++;

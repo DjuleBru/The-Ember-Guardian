@@ -32,8 +32,18 @@ public class ScavengableObstacleSubElement : MonoBehaviour
         if(applyTorque) {
             rb.AddTorque(torque, ForceMode2D.Impulse);
         }
+
+        StartCoroutine(DeactivateAfterDelay());
     }
 
+    private IEnumerator DeactivateAfterDelay() {
+        yield return new WaitForSeconds(3f);
+        gameObject.SetActive(false);
+    }
+
+    public void Deactivate() {
+        gameObject.SetActive(false);
+    }
     public void TakeDamage() {
         animator.SetTrigger("Hit");
     }

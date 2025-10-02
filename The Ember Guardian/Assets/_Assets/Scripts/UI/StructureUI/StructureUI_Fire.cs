@@ -116,6 +116,7 @@ public class StructureUI_Fire : StructureUI
             OnCricitalFireTickRemoved?.Invoke(this, EventArgs.Empty);
             fireUIAnimator.SetBool("FuelCritical", true);
         }
+        isRefuelling = false;
     }
 
     protected void Update() {

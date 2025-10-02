@@ -19,7 +19,8 @@ public class CurrencyStorageSounds : StructureSounds
         PlaySound2D(removeCurrencyAudioClips, 2f);
     }
 
-    protected void CurrencyStorage_OnCurrencyStored(object sender, System.EventArgs e) {
+    protected void CurrencyStorage_OnCurrencyStored(object sender, CurrencyStorage.OnAnyCurrencyStoredEventArgs e) {
+        if (!e.triggerSFX) return;
         PlaySound2D(addCurrencyAudioClips, 2f);
 
     }

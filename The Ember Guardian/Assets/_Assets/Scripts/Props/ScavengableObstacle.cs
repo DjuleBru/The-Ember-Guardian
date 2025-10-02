@@ -11,16 +11,20 @@ public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
     public event EventHandler OnPlayerTriggerOut;
     public event EventHandler OnScavengableDepleted;
     public event EventHandler OnScavengableMarkedToScavenge;
-    public static event EventHandler OnAnyScavengableMarkedToScavenge;
+    public static event EventHandler<Scavengable.OnAnyScavengableMarkedToScavengeEventArgs> OnAnyScavengableMarkedToScavenge;
     public event EventHandler OnMinerExtractedResourceFromMine;
     public event EventHandler OnMinerStartsMining;
     public event EventHandler OnMinerStopsMining;
-    public event EventHandler OnActivatedMining;
+    public event EventHandler OnMineEffortLoaded;
+    public event EventHandler<Scavengable.OnScavengableDeactivatedMiningEventArgs> OnActivatedMining;
     public static event EventHandler OnAnyScavengableObstacleActivatedMining;
     public static event EventHandler OnAnyScavengableObstacleDeActivatedMining;
-    public event EventHandler OnDeactivatedMining;
+    public event EventHandler<Scavengable.OnScavengableDeactivatedMiningEventArgs> OnDeactivatedMining;
     public event EventHandler OnDamageTaken;
     public event EventHandler OnCreatureSpawned;
+    public event EventHandler OnHealthLoaded;
+
+
 
     [SerializeField] protected int miningPriority;
     [SerializeField] protected bool requiresMiners;
@@ -92,25 +96,38 @@ public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
         payCurrencyUI.SetPlayerInteracting(false);
         payCurrencyUI.ResetCurrencyPayment();
     }
+
     private void ToggleScavengingActive() {
         scavengingActive = !scavengingActive;
 
         if (scavengingActive) {
-            OnActivatedMining?.Invoke(this, EventArgs.Empty);
+            OnActivatedMining?.Invoke(this, new Scavengable.OnScavengableDeactivatedMiningEventArgs { triggerSFX = true });
             OnAnyScavengableObstacleActivatedMining?.Invoke(this, EventArgs.Empty);
         }
         else {
-            OnDeactivatedMining?.Invoke(this, EventArgs.Empty);
+            OnDeactivatedMining?.Invoke(this, new Scavengable.OnScavengableDeactivatedMiningEventArgs { triggerSFX = true });
             OnAnyScavengableObstacleDeActivatedMining?.Invoke(this, EventArgs.Empty);
             UnassignAllMiners();
         }
     }
 
     protected override void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
+        MarkToScavenge();
+    }
+
+    public void MarkToScavenge(bool markFromLoadingSaveFile = false) {
         markedToScavenge = true;
         OnScavengableMarkedToScavenge?.Invoke(this, EventArgs.Empty);
-        OnAnyScavengableMarkedToScavenge?.Invoke(this, EventArgs.Empty);
-        ToggleScavengingActive();
+        OnAnyScavengableMarkedToScavenge?.Invoke(this, new Scavengable.OnAnyScavengableMarkedToScavengeEventArgs {
+            triggerSFX = !markFromLoadingSaveFile
+        });
+
+        if(!markFromLoadingSaveFile) {
+            ToggleScavengingActive();
+        } else {
+            OnDeactivatedMining?.Invoke(this, new Scavengable.OnScavengableDeactivatedMiningEventArgs { triggerSFX = false });
+        }
+
     }
 
     [Button]
@@ -272,6 +289,42 @@ public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
 
     public bool GetEscortedByWorkers() {
         return escortedByWorkers;
+    }
+
+    public int GetHealth() {
+        return health;
+    }
+    public int GetHitsTaken() {
+        return hitsTaken;
+    }
+
+    public void SetHealth(int health) {
+        this.health = health;
+
+        OnHealthLoaded?.Invoke(this, EventArgs.Empty);
+        if (health <= 0) {
+            Die();
+        }
+    }
+
+    public void SetHitsTaken(int hitsTaken) {
+        this.hitsTaken = hitsTaken;
+    }
+
+    public void SetSpawnersTriggered(List<bool> spawnsTriggered) {
+        int i = 0;
+        foreach (SpawnOnDamageThreshold treshold in spawnOnDamageThresholds) {
+            treshold.hasTriggered = spawnsTriggered[i];
+            i++;
+        }
+    }
+
+    public List<bool> GetSpawnsTriggered() {
+        List<bool> bools = new List<bool>();
+        foreach(SpawnOnDamageThreshold treshold in spawnOnDamageThresholds) {
+            bools.Add(treshold.hasTriggered);
+        }
+        return bools;
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {

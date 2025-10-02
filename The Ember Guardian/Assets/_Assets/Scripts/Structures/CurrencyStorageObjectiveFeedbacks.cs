@@ -18,7 +18,8 @@ public class CurrencyStorageObjectiveFeedbacks : MonoBehaviour
         shockwaveGO.SetActive(false);
     }
 
-    private void CurrencyStorageObj_OnCurrencyStored(object sender, System.EventArgs e) {
+    private void CurrencyStorageObj_OnCurrencyStored(object sender, CurrencyStorage.OnAnyCurrencyStoredEventArgs e) {
+        if (!e.triggerSFX) return;
         addedOrbPS.Play();
     }
 

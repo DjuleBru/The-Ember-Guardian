@@ -15,11 +15,15 @@ public class TrialAreaVisual : MonoBehaviour
         trialArea.OnPlayerTriggeredOut += TrialArea_OnPlayerTriggeredOut;
         trialArea.OnPlayerTriggeredIn += TrialArea_OnPlayerTriggeredIn;
         trialArea.OnTrialPaid += TrialArea_OnTrialPaid;
+        trialArea.OnTrialAreaLoaded_Completed += TrialArea_OnTrialAreaLoaded_Completed;
+    }
+
+    private void TrialArea_OnTrialAreaLoaded_Completed(object sender, System.EventArgs e) {
+        animator.SetTrigger("Hide");
     }
 
     private void TrialArea_OnTrialPaid(object sender, System.EventArgs e) {
         animator.SetTrigger("Hide");
-
     }
 
     private void TrialArea_OnPlayerTriggeredIn(object sender, System.EventArgs e) {

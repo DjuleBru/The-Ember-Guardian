@@ -63,6 +63,8 @@ public class HubMerchantVisual : MonoBehaviour
 
     private void HubMerchant_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
         if (hubMerchant.GetMerchantIsDecorationalDemoMerchant()) return;
+        if (hubMerchant.GetMerchantIsLevelNPC() && !hubMerchant.GetMerchantHasNewTalkLinkes()) return;
+
         bodySpriteRenderer.material = hoveredMaterial;
         ShowInputIcon(true);
 

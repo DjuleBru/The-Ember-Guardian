@@ -1105,6 +1105,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 781514561002078723, guid: f909cd01d88f26d478ab9ce9dd6a7b26, type: 3}
     - target: {fileID: 9143658945679022475, guid: ddf7de1779530ba4780c25b13ea37728, type: 3}
+      propertyPath: spawnerID
+      value: 06679901-c548-48ce-9ba6-02cc40741f14
+      objectReference: {fileID: 0}
+    - target: {fileID: 9143658945679022475, guid: ddf7de1779530ba4780c25b13ea37728, type: 3}
       propertyPath: mobAmountToSpawn
       value: 2
       objectReference: {fileID: 0}
@@ -1372,6 +1376,54 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 733846387962377602, guid: 6de8626bdaa6ef642ab2f0bf9f065462, type: 3}
   m_PrefabInstance: {fileID: 959617151}
   m_PrefabAsset: {fileID: 0}
+--- !u!28 &46701003
+Texture2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 2
+  m_Width: 128
+  m_Height: 1
+  m_CompleteImageSize: 512
+  m_MipsStripped: 0
+  m_TextureFormat: 5
+  m_MipCount: 1
+  m_IsReadable: 1
+  m_IsPreProcessed: 0
+  m_IgnoreMipmapLimit: 0
+  m_MipmapLimitGroupName: 
+  m_StreamingMipmaps: 0
+  m_StreamingMipmapsPriority: 0
+  m_VTOnly: 0
+  m_AlphaIsTransparency: 0
+  m_ImageCount: 1
+  m_TextureDimension: 2
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 0
+    m_WrapV: 0
+    m_WrapW: 0
+  m_LightmapFormat: 0
+  m_ColorSpace: 1
+  m_PlatformBlob: 
+  image data: 512
+  _typelessdata: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+  m_StreamData:
+    serializedVersion: 2
+    offset: 0
+    size: 0
+    path: 
 --- !u!1 &54153419
 GameObject:
   m_ObjectHideFlags: 0
@@ -1381,6 +1433,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 54153420}
+  - component: {fileID: 54153421}
   m_Layer: 0
   m_Name: DaySpawners
   m_TagString: Untagged
@@ -1406,6 +1459,18 @@ Transform:
   - {fileID: 14629386}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &54153421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54153419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 376d89206a895e14fa46869d0015cffd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &57147954 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2165719094908457459, guid: f0c67ac8cf150e84499f46922d92b697, type: 3}
@@ -1853,7 +1918,7 @@ MonoBehaviour:
     reflectionLayerIdx: -1
     copyMainBackground: 0
     lastOrtographicSize: 10.5
-    lastAspectRatio: 1.1849912
+    lastAspectRatio: 1.1855136
   _run: 0
   startupQF: 1
   pivotDetectionAlphaTreshold: 0
@@ -1986,44 +2051,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!84 &65737765
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 5
-  m_Width: 306
-  m_Height: 172
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 0
-  m_ColorFormat: 8
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_EnableRandomWrite: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 0
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 0
-    m_WrapV: 0
-    m_WrapW: 0
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
 --- !u!1 &72667402
 GameObject:
   m_ObjectHideFlags: 0
@@ -2759,6 +2786,10 @@ PrefabInstance:
     - target: {fileID: 1621881242586693024, guid: f4fbd4f6a5e6a374ba6e1a4c988df2c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4270873409750334256, guid: f4fbd4f6a5e6a374ba6e1a4c988df2c8, type: 3}
+      propertyPath: spawnerID
+      value: 4bcbd3ad-c730-4882-904e-9e9d70f35b1c
       objectReference: {fileID: 0}
     - target: {fileID: 5746285705061752666, guid: f4fbd4f6a5e6a374ba6e1a4c988df2c8, type: 3}
       propertyPath: level1StructureLocationsUnlocked.Array.size
@@ -3526,6 +3557,7 @@ Transform:
   - {fileID: 2003169004}
   - {fileID: 130868686}
   - {fileID: 1120802104}
+  - {fileID: 954453810}
   - {fileID: 2113994605}
   - {fileID: 512150665}
   - {fileID: 1291295823}
@@ -10901,6 +10933,146 @@ Transform:
   - {fileID: 1562344681}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &248547332
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: water2d/waterg
+  m_Shader: {fileID: -6465566751694194690, guid: 13326eeed13ec4b498f4eb0770b38c60, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 0a9a0f36a52ce7f4d813fbf5d8f76a1c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _alphaTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _belowWaterTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _colorGradient:
+        m_Texture: {fileID: 46701003}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _distortion_tex:
+        m_Texture: {fileID: 2800000, guid: 63a3a961b343e5341a13f8efb4988815, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _simTex:
+        m_Texture: {fileID: 1662117363}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _sun_strips:
+        m_Texture: {fileID: 2800000, guid: 02b9ccfabe688644ebd37eb70cbe2341, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _surfaceTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _belowWaterTexAlpha: 0
+    - _belowWaterTexDistortionStrength: 0
+    - _color_type: 1
+    - _depthFromObstructors: 0
+    - _depthMlp: 0
+    - _distortionFPRH: 0
+    - _edgeIgnoreTransparency: 0
+    - _edgeSize: 0
+    - _enableFalloff: 1
+    - _enable_nor: 0
+    - _enable_obs: 1
+    - _enable_pl: 1
+    - _enable_ref: 1
+    - _enable_rm: 0
+    - _enable_scrolling: 1
+    - _enable_sim: 1
+    - _enable_td: 1
+    - _falloffStart: 0.766
+    - _falloffStrength: 0.39
+    - _foam_alpha: 0.052
+    - _foam_density: 0.109
+    - _foam_size: 4.5
+    - _lighting: 1
+    - _normStr: 0.56
+    - _num_of_pixels: 256
+    - _obstruction_alpha: 0.231
+    - _obstruction_width: 0.32
+    - _pixel_perfect: 1
+    - _raymarchFalloffEnd: 0
+    - _raymarchFalloffStart: 0
+    - _raymarchSteps: 0
+    - _reflectionY: 0.32428572
+    - _rm_type2: 0
+    - _scrStrength: 0.5
+    - _strips_alpha: 0.243
+    - _strips_density: 35.79
+    - _strips_scrolling_speed: 0
+    - _strips_size: 1
+    - _strips_speed: 0.5
+    - _surfaceAlpha: 1
+    - _surfaceTexAlpha: 0
+    - _useFoamSpeedForST: 0
+    - _usePerspective: 1
+    m_Colors:
+    - _belowWaterTexUV: {r: 0, g: 0, b: 1, a: 1}
+    - _color: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
+    - _deep_color: {r: 0.11764706, g: 0.13725491, b: 0.20784314, a: 0.92941177}
+    - _deep_minmax: {r: 0.29, g: 0.99, b: 0, a: 0}
+    - _distortion_color: {r: 0, g: 0, b: 0, a: 1}
+    - _distortion_minmax: {r: 0, g: 0, b: 0, a: 0}
+    - _distortion_speed: {r: 0.02, g: 0.02, b: 0, a: 0}
+    - _distortion_strength: {r: 0.03, g: 0.01, b: 0, a: 0}
+    - _distortion_tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _edgeColor: {r: 1, g: 1, b: 1, a: 1}
+    - _foam_color: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 0}
+    - _foam_speed: {r: 0.01, g: 0.01, b: 0, a: 0}
+    - _obs_transform: {r: 0.8, g: 0.8, b: 0.1, a: 0.1}
+    - _obstruction_color: {r: 1, g: 1, b: 1, a: 0}
+    - _perspective: {r: 1.9, g: 1.8, b: 0, a: 0}
+    - _perspective2: {r: 1, g: 0.2, b: 0, a: 0}
+    - _playerPosition: {r: -200.1, g: 1.62, b: -10, a: 0}
+    - _refTexRes: {r: 907, g: 765, b: 0, a: 0}
+    - _ref_transform: {r: 1, g: 0.6666666, b: 0, a: 0.16666667}
+    - _reflectionsColor: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 1}
+    - _simFoamColor: {r: 1, g: 1, b: 1, a: 0.92941177}
+    - _simMinMaxWavesHeightFoam: {r: 0, g: 0.4, b: 0, a: 0}
+    - _surfaceTexSpeed: {r: 0, g: 0, b: 0, a: 0}
+    - _surfaceTexTiling: {r: 0, g: 0, b: 0, a: 0}
+    - _surfaceTexUV: {r: 0, g: 0, b: 1, a: 1}
+    - _tiling: {r: 1.4, g: 1.4, b: 0, a: 0}
+  m_BuildTextureStacks: []
 --- !u!1 &251151020
 GameObject:
   m_ObjectHideFlags: 0
@@ -11386,8 +11558,8 @@ RenderTexture:
   m_DownscaleFallback: 0
   m_IsAlphaChannelOptional: 0
   serializedVersion: 5
-  m_Width: 679
-  m_Height: 382
+  m_Width: 802
+  m_Height: 451
   m_AntiAliasing: 1
   m_MipCount: -1
   m_DepthStencilFormat: 0
@@ -11815,6 +11987,10 @@ PrefabInstance:
     - target: {fileID: 2850969090547738140, guid: c9840b8f541b48b49b0d815bdbd7362c, type: 3}
       propertyPath: m_Name
       value: WorkerSpawner_City
+      objectReference: {fileID: 0}
+    - target: {fileID: 3980510619331750526, guid: c9840b8f541b48b49b0d815bdbd7362c, type: 3}
+      propertyPath: spawnerID
+      value: 1ee19931-1996-437d-b8c6-7b7018ba54a6
       objectReference: {fileID: 0}
     - target: {fileID: 3980510619331750526, guid: c9840b8f541b48b49b0d815bdbd7362c, type: 3}
       propertyPath: mobAmountToSpawn
@@ -12595,6 +12771,22 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2107532717748430613, guid: 15811d6cbf4f7e34f9297bbde2538a36, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2107532717748430613, guid: 15811d6cbf4f7e34f9297bbde2538a36, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2107532717748430613, guid: 15811d6cbf4f7e34f9297bbde2538a36, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2107532717748430613, guid: 15811d6cbf4f7e34f9297bbde2538a36, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2119698154848236768, guid: 15811d6cbf4f7e34f9297bbde2538a36, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -12741,6 +12933,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3900714520901269726, guid: 15811d6cbf4f7e34f9297bbde2538a36, type: 3}
       propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3954889176424729661, guid: 15811d6cbf4f7e34f9297bbde2538a36, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4192052033240142613, guid: 15811d6cbf4f7e34f9297bbde2538a36, type: 3}
@@ -13247,6 +13443,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9103540475231547885, guid: 15811d6cbf4f7e34f9297bbde2538a36, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9157168514609381136, guid: 15811d6cbf4f7e34f9297bbde2538a36, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -13280,6 +13480,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1630550597}
     m_Modifications:
+    - target: {fileID: 1725126269263942441, guid: 21af2d3ad65ac204985c4428e384b3fd, type: 3}
+      propertyPath: chestID
+      value: 1c3616cb-f024-460f-9656-ad69641072d8
+      objectReference: {fileID: 0}
     - target: {fileID: 1725126269263942441, guid: 21af2d3ad65ac204985c4428e384b3fd, type: 3}
       propertyPath: chestType
       value: 4
@@ -13996,8 +14200,8 @@ RenderTexture:
   m_DownscaleFallback: 0
   m_IsAlphaChannelOptional: 0
   serializedVersion: 5
-  m_Width: 679
-  m_Height: 573
+  m_Width: 802
+  m_Height: 676
   m_AntiAliasing: 1
   m_MipCount: -1
   m_DepthStencilFormat: 0
@@ -14173,7 +14377,7 @@ MonoBehaviour:
     reflectionLayerIdx: -1
     copyMainBackground: 0
     lastOrtographicSize: 10.5
-    lastAspectRatio: 1.1849912
+    lastAspectRatio: 1.1855136
   _run: 1
   startupQF: 1
   pivotDetectionAlphaTreshold: 0
@@ -14392,7 +14596,7 @@ MonoBehaviour:
     reflectionLayerIdx: -1
     copyMainBackground: 0
     lastOrtographicSize: 7
-    lastAspectRatio: 1.7774869
+    lastAspectRatio: 1.7782705
   _run: 0
 --- !u!20 &395478729
 Camera:
@@ -14847,6 +15051,10 @@ PrefabInstance:
       propertyPath: mobPrefab
       value: 
       objectReference: {fileID: 781514561002078723, guid: f909cd01d88f26d478ab9ce9dd6a7b26, type: 3}
+    - target: {fileID: 9143658945679022475, guid: ddf7de1779530ba4780c25b13ea37728, type: 3}
+      propertyPath: spawnerID
+      value: 07f46a14-0b94-4d3b-84cd-e09bedf765d5
+      objectReference: {fileID: 0}
     - target: {fileID: 9143658945679022475, guid: ddf7de1779530ba4780c25b13ea37728, type: 3}
       propertyPath: mobAmountToSpawn
       value: 2
@@ -30269,6 +30477,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8811988416004137763, guid: a1c69d248cb28af438808c4ee0d9106a, type: 3}
     - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
+      propertyPath: spawnerID
+      value: ae595b22-5ea6-4a81-858a-7b34de926c5d
+      objectReference: {fileID: 0}
+    - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
       propertyPath: mobAmountToSpawn
       value: 1
       objectReference: {fileID: 0}
@@ -30887,8 +31099,8 @@ RenderTexture:
   m_DownscaleFallback: 0
   m_IsAlphaChannelOptional: 0
   serializedVersion: 5
-  m_Width: 679
-  m_Height: 573
+  m_Width: 802
+  m_Height: 676
   m_AntiAliasing: 1
   m_MipCount: -1
   m_DepthStencilFormat: 0
@@ -31117,6 +31329,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8811988416004137763, guid: a1c69d248cb28af438808c4ee0d9106a, type: 3}
     - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
+      propertyPath: spawnerID
+      value: 69a51543-9b17-4ac5-b113-f958516c5279
+      objectReference: {fileID: 0}
+    - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
       propertyPath: mobAmountToSpawn
       value: 1
       objectReference: {fileID: 0}
@@ -31220,6 +31436,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1925735489}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &619988196
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: gaussian blur
+  m_Shader: {fileID: -6465566751694194690, guid: 35a7ec563f3ea1f44ab85a217408b015, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex2:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _area: 0.01
+    - _falloffE: 1
+    - _falloffP: 0
+    - _falloffS: 0
+    - _falloffU: 0
+    - _sigmaX: 0.6
+    m_Colors: []
+  m_BuildTextureStacks: []
 --- !u!4 &628368786 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 733846387962377602, guid: 9b97d18e581f03a4fbe71bfe5f214231, type: 3}
@@ -33179,6 +33448,44 @@ Transform:
   - {fileID: 168126089}
   m_Father: {fileID: 1925735489}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!84 &787376342
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 5
+  m_Width: 306
+  m_Height: 172
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 0
+  m_ColorFormat: 8
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_EnableRandomWrite: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 0
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 0
+    m_WrapV: 0
+    m_WrapW: 0
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!4 &787498191 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2844787064415360721, guid: 1b2c44f4bc35dfa47854ea0da2aff872, type: 3}
@@ -33463,6 +33770,9 @@ MonoBehaviour:
   virtualCamera: {fileID: 1304871683}
   UICamera: {fileID: 0}
   initialCameraOrthographicSize: 7
+  referenceCameraOrthographicSize: 11
+  minCameraOrthographicSize: 7
+  maxCameraOrthographicSize: 11.5
   maxZoomDurationBeforeReset: 15
 --- !u!1 &818408365
 GameObject:
@@ -33963,6 +34273,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1630550597}
     m_Modifications:
     - target: {fileID: 1725126269263942441, guid: 21af2d3ad65ac204985c4428e384b3fd, type: 3}
+      propertyPath: chestID
+      value: 999e37c7-f3b4-4f6b-ac84-5f272388a6a7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725126269263942441, guid: 21af2d3ad65ac204985c4428e384b3fd, type: 3}
       propertyPath: chestType
       value: 3
       objectReference: {fileID: 0}
@@ -34109,6 +34423,10 @@ PrefabInstance:
       propertyPath: mobPrefab
       value: 
       objectReference: {fileID: 8811988416004137763, guid: a1c69d248cb28af438808c4ee0d9106a, type: 3}
+    - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
+      propertyPath: spawnerID
+      value: 90131984-e18e-4af9-9100-de552e548d0d
+      objectReference: {fileID: 0}
     - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
       propertyPath: mobAmountToSpawn
       value: 2
@@ -34408,6 +34726,10 @@ PrefabInstance:
       propertyPath: mobPrefab
       value: 
       objectReference: {fileID: 781514561002078723, guid: f909cd01d88f26d478ab9ce9dd6a7b26, type: 3}
+    - target: {fileID: 9143658945679022475, guid: ddf7de1779530ba4780c25b13ea37728, type: 3}
+      propertyPath: spawnerID
+      value: 1ef285ed-8cfa-4ed4-8f16-391a8d2ea785
+      objectReference: {fileID: 0}
     - target: {fileID: 9143658945679022475, guid: ddf7de1779530ba4780c25b13ea37728, type: 3}
       propertyPath: mobAmountToSpawn
       value: 2
@@ -80131,6 +80453,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4809557616947706693, guid: 0ea903550be88a34d909c5b84274ffa5, type: 3}
   m_PrefabInstance: {fileID: 942353835}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &954453809
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 117857896}
+    m_Modifications:
+    - target: {fileID: 6455012421415795356, guid: d707501176f70f8419b22bfc4e70d6a6, type: 3}
+      propertyPath: m_Name
+      value: SaveManager_Level
+      objectReference: {fileID: 0}
+    - target: {fileID: 6892433828150611181, guid: d707501176f70f8419b22bfc4e70d6a6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6892433828150611181, guid: d707501176f70f8419b22bfc4e70d6a6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6892433828150611181, guid: d707501176f70f8419b22bfc4e70d6a6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6892433828150611181, guid: d707501176f70f8419b22bfc4e70d6a6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6892433828150611181, guid: d707501176f70f8419b22bfc4e70d6a6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6892433828150611181, guid: d707501176f70f8419b22bfc4e70d6a6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6892433828150611181, guid: d707501176f70f8419b22bfc4e70d6a6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6892433828150611181, guid: d707501176f70f8419b22bfc4e70d6a6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6892433828150611181, guid: d707501176f70f8419b22bfc4e70d6a6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6892433828150611181, guid: d707501176f70f8419b22bfc4e70d6a6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d707501176f70f8419b22bfc4e70d6a6, type: 3}
+--- !u!4 &954453810 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6892433828150611181, guid: d707501176f70f8419b22bfc4e70d6a6, type: 3}
+  m_PrefabInstance: {fileID: 954453809}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &959617151
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -80248,6 +80632,10 @@ PrefabInstance:
       propertyPath: mobPrefab
       value: 
       objectReference: {fileID: 2100628709117196716, guid: a348dcd32c6420442bf13c1e8971f0de, type: 3}
+    - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
+      propertyPath: spawnerID
+      value: 73da39f1-fcdb-4069-b87e-61bd2e3b9b1f
+      objectReference: {fileID: 0}
     - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
       propertyPath: mobAmountToSpawn
       value: 2
@@ -81311,6 +81699,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 781514561002078723, guid: 5ef82b63b778c5947926a31b98381cd6, type: 3}
     - target: {fileID: 9143658945679022475, guid: ddf7de1779530ba4780c25b13ea37728, type: 3}
+      propertyPath: spawnerID
+      value: ebf2c0f1-81f4-4acf-93e3-1decfdb2576b
+      objectReference: {fileID: 0}
+    - target: {fileID: 9143658945679022475, guid: ddf7de1779530ba4780c25b13ea37728, type: 3}
       propertyPath: mobAmountToSpawn
       value: 2
       objectReference: {fileID: 0}
@@ -81671,6 +82063,44 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2844787064415360721, guid: 1b2c44f4bc35dfa47854ea0da2aff872, type: 3}
   m_PrefabInstance: {fileID: 1225646296}
   m_PrefabAsset: {fileID: 0}
+--- !u!84 &1119628933
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 5
+  m_Width: 306
+  m_Height: 172
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 0
+  m_ColorFormat: 8
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_EnableRandomWrite: 1
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 0
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 0
+    m_WrapV: 0
+    m_WrapW: 0
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!4 &1120802104 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8796809590129549166, guid: 303c6284e870b234287c9c97ecb95f48, type: 3}
@@ -82431,44 +82861,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!84 &1178273209
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 5
-  m_Width: 306
-  m_Height: 172
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 0
-  m_ColorFormat: 8
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_EnableRandomWrite: 1
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 0
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 0
-    m_WrapV: 0
-    m_WrapW: 0
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
 --- !u!4 &1179042548 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6726162121237374260, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
@@ -82534,6 +82926,10 @@ PrefabInstance:
       propertyPath: mobPrefab
       value: 
       objectReference: {fileID: 8811988416004137763, guid: a1c69d248cb28af438808c4ee0d9106a, type: 3}
+    - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
+      propertyPath: spawnerID
+      value: bcd06661-1e0c-4854-9b2b-c6f3c54b247b
+      objectReference: {fileID: 0}
     - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
       propertyPath: mobAmountToSpawn
       value: 1
@@ -82621,7 +83017,7 @@ MonoBehaviour:
     reflectionLayerIdx: 9
     copyMainBackground: 0
     lastOrtographicSize: 8.75
-    lastAspectRatio: 1.7774869
+    lastAspectRatio: 1.7782705
   _run: 1
   overrideMainCamera:
     _value: 0
@@ -82636,8 +83032,8 @@ MonoBehaviour:
   uvShader: {fileID: 0}
   jfMaterial: {fileID: 0}
   uvMaterial: {fileID: 0}
-  jfRenderTexture1: {fileID: 65737765}
-  jfRenderTexture2: {fileID: 1178273209}
+  jfRenderTexture1: {fileID: 1119628933}
+  jfRenderTexture2: {fileID: 787376342}
   _mainCamera: {fileID: 519420031}
   genSDF: 0
 --- !u!20 &1182699108
@@ -85089,6 +85485,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1630550597}
     m_Modifications:
     - target: {fileID: 1725126269263942441, guid: 21af2d3ad65ac204985c4428e384b3fd, type: 3}
+      propertyPath: chestID
+      value: 6edd6b25-3102-4d12-a7bc-48f78ed4b8d7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1725126269263942441, guid: 21af2d3ad65ac204985c4428e384b3fd, type: 3}
       propertyPath: chestType
       value: 3
       objectReference: {fileID: 0}
@@ -85200,8 +85600,8 @@ RenderTexture:
   m_DownscaleFallback: 0
   m_IsAlphaChannelOptional: 0
   serializedVersion: 5
-  m_Width: 679
-  m_Height: 382
+  m_Width: 802
+  m_Height: 451
   m_AntiAliasing: 1
   m_MipCount: -1
   m_DepthStencilFormat: 0
@@ -85577,6 +85977,10 @@ PrefabInstance:
       propertyPath: mobPrefab
       value: 
       objectReference: {fileID: 2100628709117196716, guid: a348dcd32c6420442bf13c1e8971f0de, type: 3}
+    - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
+      propertyPath: spawnerID
+      value: 4a1e4e28-2447-49a1-af38-9870fc6f4c8d
+      objectReference: {fileID: 0}
     - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
       propertyPath: mobAmountToSpawn
       value: 1
@@ -87116,6 +87520,10 @@ PrefabInstance:
       propertyPath: mobPrefab
       value: 
       objectReference: {fileID: 2100628709117196716, guid: a348dcd32c6420442bf13c1e8971f0de, type: 3}
+    - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
+      propertyPath: spawnerID
+      value: 0c362a1f-b09c-430c-87ff-89906cf85e29
+      objectReference: {fileID: 0}
     - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
       propertyPath: mobAmountToSpawn
       value: 1
@@ -90593,6 +91001,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100628709117196716, guid: a348dcd32c6420442bf13c1e8971f0de, type: 3}
     - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
+      propertyPath: spawnerID
+      value: 4edb1ebc-57a0-48a4-b7dc-ec0fa0baf984
+      objectReference: {fileID: 0}
+    - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
       propertyPath: mobAmountToSpawn
       value: 1
       objectReference: {fileID: 0}
@@ -91357,6 +91769,10 @@ PrefabInstance:
     - target: {fileID: 2850969090547738140, guid: c9840b8f541b48b49b0d815bdbd7362c, type: 3}
       propertyPath: m_Name
       value: WorkerSpawner_City
+      objectReference: {fileID: 0}
+    - target: {fileID: 3980510619331750526, guid: c9840b8f541b48b49b0d815bdbd7362c, type: 3}
+      propertyPath: spawnerID
+      value: 520a10bb-9db2-48b8-a0b9-133eb7d0ce9c
       objectReference: {fileID: 0}
     - target: {fileID: 4869388976213401018, guid: c9840b8f541b48b49b0d815bdbd7362c, type: 3}
       propertyPath: mobAmountToSpawn
@@ -92774,6 +93190,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100628709117196716, guid: a348dcd32c6420442bf13c1e8971f0de, type: 3}
     - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
+      propertyPath: spawnerID
+      value: 800ae1ed-edbc-4ca0-b6b5-0b9f97aad2df
+      objectReference: {fileID: 0}
+    - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
       propertyPath: mobAmountToSpawn
       value: 1
       objectReference: {fileID: 0}
@@ -93849,6 +94269,44 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3629662120114078080, guid: 4ac312e4894e6fa4b819672749c6c81a, type: 3}
   m_PrefabInstance: {fileID: 199229275}
   m_PrefabAsset: {fileID: 0}
+--- !u!84 &1662117363
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 5
+  m_Width: 3072
+  m_Height: 877
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 0
+  m_ColorFormat: 46
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_EnableRandomWrite: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!4 &1666133870 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2165719094908457459, guid: 0bdd78959634dde45ac8659b0abecaaa, type: 3}
@@ -93914,6 +94372,10 @@ PrefabInstance:
       propertyPath: mobPrefab
       value: 
       objectReference: {fileID: 2100628709117196716, guid: a348dcd32c6420442bf13c1e8971f0de, type: 3}
+    - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
+      propertyPath: spawnerID
+      value: 92264e54-3f34-459b-8200-36f85678b3b6
+      objectReference: {fileID: 0}
     - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
       propertyPath: mobAmountToSpawn
       value: 1
@@ -95278,8 +95740,8 @@ RenderTexture:
   m_DownscaleFallback: 0
   m_IsAlphaChannelOptional: 0
   serializedVersion: 5
-  m_Width: 613
-  m_Height: 345
+  m_Width: 724
+  m_Height: 407
   m_AntiAliasing: 1
   m_MipCount: -1
   m_DepthStencilFormat: 0
@@ -96244,6 +96706,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100628709117196716, guid: a348dcd32c6420442bf13c1e8971f0de, type: 3}
     - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
+      propertyPath: spawnerID
+      value: 8e56593f-2b97-49ea-86ab-1399b2f867b8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
       propertyPath: mobAmountToSpawn
       value: 2
       objectReference: {fileID: 0}
@@ -96371,6 +96837,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1630550597}
     m_Modifications:
+    - target: {fileID: 1725126269263942441, guid: 21af2d3ad65ac204985c4428e384b3fd, type: 3}
+      propertyPath: chestID
+      value: 95a3e8e0-8fc0-4a6c-bf1c-46bb3454a864
+      objectReference: {fileID: 0}
     - target: {fileID: 1725126269263942441, guid: 21af2d3ad65ac204985c4428e384b3fd, type: 3}
       propertyPath: chestType
       value: 3
@@ -108583,6 +109053,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 781514561002078723, guid: 5ef82b63b778c5947926a31b98381cd6, type: 3}
     - target: {fileID: 9143658945679022475, guid: ddf7de1779530ba4780c25b13ea37728, type: 3}
+      propertyPath: spawnerID
+      value: 986f5512-03a1-4ee8-9a25-dfae16381ce0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9143658945679022475, guid: ddf7de1779530ba4780c25b13ea37728, type: 3}
       propertyPath: mobAmountToSpawn
       value: 2
       objectReference: {fileID: 0}
@@ -109226,6 +109700,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1630550597}
     m_Modifications:
+    - target: {fileID: 1725126269263942441, guid: 21af2d3ad65ac204985c4428e384b3fd, type: 3}
+      propertyPath: chestID
+      value: 9890a1d2-758d-48b4-9117-d85294fdc7ae
+      objectReference: {fileID: 0}
     - target: {fileID: 1725126269263942441, guid: 21af2d3ad65ac204985c4428e384b3fd, type: 3}
       propertyPath: chestType
       value: 3
@@ -109901,6 +110379,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100628709117196716, guid: a348dcd32c6420442bf13c1e8971f0de, type: 3}
     - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
+      propertyPath: spawnerID
+      value: b01f0803-c286-476f-aa2f-3c406e4c651d
+      objectReference: {fileID: 0}
+    - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
       propertyPath: mobAmountToSpawn
       value: 1
       objectReference: {fileID: 0}
@@ -109977,6 +110459,10 @@ PrefabInstance:
       propertyPath: mobPrefab
       value: 
       objectReference: {fileID: 8811988416004137763, guid: a1c69d248cb28af438808c4ee0d9106a, type: 3}
+    - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
+      propertyPath: spawnerID
+      value: 06f0f56d-37e3-46eb-8332-4b229e62eadf
+      objectReference: {fileID: 0}
     - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
       propertyPath: mobAmountToSpawn
       value: 2
@@ -110797,6 +111283,10 @@ PrefabInstance:
       propertyPath: mobPrefab
       value: 
       objectReference: {fileID: 2100628709117196716, guid: a348dcd32c6420442bf13c1e8971f0de, type: 3}
+    - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
+      propertyPath: spawnerID
+      value: 34714baa-3ce9-4a5c-87c1-8fc9860d460f
+      objectReference: {fileID: 0}
     - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
       propertyPath: mobAmountToSpawn
       value: 1
@@ -112142,7 +112632,7 @@ MonoBehaviour:
     reflectionLayerIdx: 8
     copyMainBackground: 0
     lastOrtographicSize: 7
-    lastAspectRatio: 1.7774869
+    lastAspectRatio: 1.7782705
   _run: 1
   startupQF: 1
   pivotDetectionAlphaTreshold: 0
@@ -112402,6 +112892,10 @@ PrefabInstance:
       propertyPath: mobPrefab
       value: 
       objectReference: {fileID: 2100628709117196716, guid: a348dcd32c6420442bf13c1e8971f0de, type: 3}
+    - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
+      propertyPath: spawnerID
+      value: 166a6d25-4d07-4da6-8328-18908574041a
+      objectReference: {fileID: 0}
     - target: {fileID: 9082425103772949417, guid: c438656b65c72c1428dcdc5a9c39ecba, type: 3}
       propertyPath: mobAmountToSpawn
       value: 1

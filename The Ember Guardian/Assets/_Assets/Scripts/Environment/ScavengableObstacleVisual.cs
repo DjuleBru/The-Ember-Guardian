@@ -19,6 +19,11 @@ public class ScavengableObstacleVisual : MonoBehaviour
 
     private void Start() {
         scavengableObstacle.OnDamageTaken += ScavengableObstacle_OnDamageTaken;
+        scavengableObstacle.OnHealthLoaded += ScavengableObstacle_OnHealthLoaded;
+    }
+
+    private void ScavengableObstacle_OnHealthLoaded(object sender, EventArgs e) {
+        SyncVisualWithHealth();
     }
 
     private void ScavengableObstacle_OnDamageTaken(object sender, System.EventArgs e) {
@@ -33,6 +38,21 @@ public class ScavengableObstacleVisual : MonoBehaviour
             subElements[elementsFallen].Fall(fallForce, torqueForce, fallRandomness);
             elementsFallen++;
             OnPieceFell?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public void SyncVisualWithHealth() {
+        float destructionProgress = scavengableObstacle.GetHealthNormalized();
+        int targetFallCount = Mathf.FloorToInt(subElements.Count * destructionProgress);
+
+        // Reset
+        Debug.Log("destructionProgress " + destructionProgress);
+        elementsFallen = 0;
+
+        // Appliquer la destruction déjà subie
+        while (elementsFallen < targetFallCount && elementsFallen < subElements.Count) {
+            subElements[elementsFallen].Deactivate();
+            elementsFallen++;
         }
     }
 }

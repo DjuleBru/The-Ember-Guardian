@@ -55,13 +55,14 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
 
     public override void SpawnMobs(int mobAmount) {
         for (int i = 0; i < mobAmount; i++) {
-            Mob mob = Instantiate(mobPrefab, spawnPositionList[i].position, Quaternion.identity).GetComponent<Mob>();
+            Mob mob = Instantiate(mobPrefab, spawnPositionList[UnityEngine.Random.Range(0, spawnPositionList.Count)].position, Quaternion.identity).GetComponent<Mob>();
             mobSpawnedList.Add(mob);
             mob.SetMobSpawner(this);
 
             HandleMobSpawn(mob);
             InvokeOnMobSpawned(mob);
         }
+
     }
 
     public void SpawnMobAtPosition(Transform position) {

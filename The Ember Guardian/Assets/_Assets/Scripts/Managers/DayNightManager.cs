@@ -68,6 +68,8 @@ public class DayNightManager : MonoBehaviour
         }
 
         SetCyclePaused(true, true);
+
+        if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
         state = State.Dawn;
         OnDawnStart?.Invoke(this, EventArgs.Empty);
     }
@@ -201,6 +203,13 @@ public class DayNightManager : MonoBehaviour
         } else {
             OnCycleUnpaused?.Invoke(this, EventArgs.Empty);
         }
+    }
+
+    public void LoadCurrentDay(int currentDay) {
+        this.currentDay = currentDay;
+
+        state = State.Dawn;
+        OnDawnStart?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetCyclePausedTutorial(bool paused) {

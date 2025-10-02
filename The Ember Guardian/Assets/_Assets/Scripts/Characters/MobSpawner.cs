@@ -58,6 +58,11 @@ public class MobSpawner : MonoBehaviour
         public Mob mob;
     }
 
+    protected void Awake() {
+        if (GetComponentInParent<Creature>() != null) return;
+        SpawnersManager.Instance.AddSpawner(this);
+    }
+
     protected virtual void Start() {
         if(sceneViewSpawnerSpriteRenderer != null) {
             sceneViewSpawnerSpriteRenderer.enabled = false;
@@ -119,7 +124,6 @@ public class MobSpawner : MonoBehaviour
         if (!mobsCanSpawnAtDawn) return;
         if (firstDawnAfterLoad) {
             firstDawnAfterLoad = false;
-            return;
         }
 
         int mobAmountToSpawnOnDawn = mobAmountToSpawn - mobSpawnedList.Count;
@@ -137,7 +141,6 @@ public class MobSpawner : MonoBehaviour
     }
 
     public virtual void SpawnMobs(int mobAmount) {
-        Debug.Log(this + " SpawnMobs " + mobAmount);
         for (int i = 0; i < mobAmount; i++) {
 
             float positionRandomizer = UnityEngine.Random.Range(-spawnPositionRandomizer, spawnPositionRandomizer);
@@ -293,6 +296,7 @@ public class MobSpawner : MonoBehaviour
     }
 
     public void LoadLinkedMobSpawner() {
+        if (linkedMobSpawner == null) return;
         if(linkedMobSpawner.GetMobCount() == 0) {
             KillRemainingSpawnedMobs();
             OnAllMobRemoved?.Invoke(this, EventArgs.Empty);

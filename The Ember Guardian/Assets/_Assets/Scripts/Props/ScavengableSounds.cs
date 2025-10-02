@@ -56,11 +56,15 @@ public class ScavengableSounds : SoundObject
         PlaySound2D(pieceFellAudioClip);
     }
 
-    private void Scavengable_OnActivatedMining(object sender, System.EventArgs e) {
+    private void Scavengable_OnActivatedMining(object sender, Scavengable.OnScavengableDeactivatedMiningEventArgs e) {
+        if (!e.triggerSFX) return;
+
         PlaySound2D(toggleMiningAudioClip, 2f);
     }
 
-    private void Scavengable_OnDeactivatedMining(object sender, System.EventArgs e) {
+    private void Scavengable_OnDeactivatedMining(object sender, Scavengable.OnScavengableDeactivatedMiningEventArgs e) {
+        if (!e.triggerSFX) return;
+
         PlaySound2D(toggleMiningAudioClip, 2f);
         creaturesSpawning = false;
         MusicManager.Instance.FadeOutMusic(2f);

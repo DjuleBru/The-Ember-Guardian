@@ -116,13 +116,20 @@ public class EndLevelArea : MonoBehaviour
         }
 
         playerDestroyedNest = true;
-
-        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) return;
-
     }
 
     public bool GetPlayerDestroyedNest() {
         return playerDestroyedNest;
+    }
+
+    public void SetPlayerDestroyedNest() {
+
+        OnEndLevelFireLit?.Invoke(this, EventArgs.Empty);
+        foreach (MobSpawner spawner in endLevelAreaSpawnerList) {
+            spawner.SetMobsCanSpawnAtDawn(false);
+        }
+
+        this.playerDestroyedNest = true;
     }
 
     public bool AllCreaturesKilled() {

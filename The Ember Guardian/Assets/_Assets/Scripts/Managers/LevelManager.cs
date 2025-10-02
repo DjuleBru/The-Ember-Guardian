@@ -16,14 +16,15 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Transform rightLevelEndCollider;
     [SerializeField] private StructureLocation conditionalLockedStructureLocation;
     [SerializeField] private bool setEndLevelPositionRelativeToPlayer = true;
+
     private List<Obstacle> allObstacles = new List<Obstacle>();
     private List<Obstacle> blockingObstacles = new List<Obstacle>();
     private List<Chest> allChests = new List<Chest>();
+    private List<TrialArea> allTrialAreas = new List<TrialArea>();
+    private List<Collectible> collectiblesInWorld = new List<Collectible>();
     private float minLevelLimit;
     private float maxLevelLimit;
 
-
-    private bool levelRegionUnlocked;
     private bool levelSucceeded;
     private int levelHubMerchantInteractionIndex;
 
@@ -72,6 +73,11 @@ public class LevelManager : MonoBehaviour
     }
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
+        if(SavingManager_Level.Instance != null) {
+            if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
+        }
+
+
         if(levelHubMerchant != null) {
             if (levelHubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.WorkerMerchant) return;
             levelHubMerchant.SetHasTalkLinesToShow(true);
@@ -138,7 +144,8 @@ public class LevelManager : MonoBehaviour
             }
 
             LevelObjectives.Instance.ShowReturnToHubObj(delayToShowReturnToHubObj);
-            StartCoroutine(EnableEndLevelPortal(delayToShowReturnToHubObj+1f));
+            LevelSuccess(delayToShowReturnToHubObj + 1f);
+            //StartCoroutine(EnableEndLevelPortal(delayToShowReturnToHubObj+1f));
         }
 
         if(levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
@@ -149,7 +156,6 @@ public class LevelManager : MonoBehaviour
             }
         }
     }
-
 
     private void LevelUI_OnObjectiveCompleted(object sender, EventArgs e) {
         if(DemoMainLevelManager.Instance != null) {
@@ -166,8 +172,10 @@ public class LevelManager : MonoBehaviour
     }
 
     [Button]
-    public void LevelSuccess() {
+    public void LevelSuccess(float delayToReturnToHub = 2f) {
         Debug.Log("LevelSuccess");
+        Debug.Log("levelSucceeded " + levelSucceeded);
+
         if (levelSucceeded) return;
         Vector3 endLevelPortalPosition = endLevelPortal.transform.position; 
 
@@ -182,18 +190,18 @@ public class LevelManager : MonoBehaviour
 
                 // Demo level
                 endLevelPortal.transform.position = endLevelPortalPosition;
-                StartCoroutine(EnableEndLevelPortal(2f));
+                StartCoroutine(EnableEndLevelPortal(delayToReturnToHub));
 
             }
             else {
-                if(levelHubMerchant != null) {
+                if(levelHubMerchant != null && !setEndLevelPositionRelativeToPlayer) {
                     endLevelPortalPosition = new Vector3(levelHubMerchant.transform.position.x + 10f, 0, 0);
                 }
-                StartCoroutine(EnableEndLevelPortal(2f));
+                StartCoroutine(EnableEndLevelPortal(delayToReturnToHub));
             }
 
         } else {
-            StartCoroutine(EnableEndLevelPortal(2f));
+            StartCoroutine(EnableEndLevelPortal(delayToReturnToHub));
         }
 
         OnLevelSuccess?.Invoke(this, EventArgs.Empty);
@@ -204,7 +212,8 @@ public class LevelManager : MonoBehaviour
     private void EndLevelArea_OnEndLevelFireLit(object sender, EventArgs e) {
         if (levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArmorer) return;
 
-        StartCoroutine(EnableEndLevelPortal(4f));
+        LevelSuccess(4f);
+        //StartCoroutine(EnableEndLevelPortal(4f));
     }
 
     public void SaveLevelCompletedProgression() {
@@ -270,6 +279,10 @@ public class LevelManager : MonoBehaviour
         MetaProgressionManager.Instance.SetNextMerchantTalkLines(HubMerchant.HubMerchantType.GemMerchant, levelSO.gemMerchantTextLinesAfterLevel);
     }
 
+    public int GetLevelHubMerchantInteractionIndex() {
+        return levelHubMerchantInteractionIndex;
+    }
+
     public bool GetLevelSucceeded() {
         return levelSucceeded;
     }
@@ -284,6 +297,37 @@ public class LevelManager : MonoBehaviour
 
     public List<Chest> GetAllChests() {
         return allChests;
+    }
+    public void AddTrialArea(TrialArea trialArea) {
+        allTrialAreas.Add(trialArea);
+    }
+
+    public List<TrialArea> GetAllTrialAreas() {
+        return allTrialAreas;
+    }
+
+    public List<Collectible> GetAllCollectibles() {
+        return collectiblesInWorld;
+    }
+
+    public void AddCollectible(Collectible collectible) {
+        collectiblesInWorld.Add(collectible);
+    }
+
+    public void RemoveCollectible(Collectible collectible) {
+        collectiblesInWorld.Remove(collectible);
+    }
+
+    public bool GetLevelHubMerchantHasTalkLinesToShow() {
+        return levelHubMerchant.GetMerchantHasNewTalkLinkes();
+    }
+    public void SetLevelHubMerchantHasTalkLinesToShow(bool hasTalkLines) {
+        levelHubMerchant.SetHasTalkLinesToShow(hasTalkLines);
+    }
+
+
+    public void SetLevelHubMerchantInteractionIndex(int levelHubMerchantInteractionIndex) {
+        this.levelHubMerchantInteractionIndex = levelHubMerchantInteractionIndex;
     }
 
     private void OnDestroy() {

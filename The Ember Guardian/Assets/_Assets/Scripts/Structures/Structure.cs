@@ -431,7 +431,7 @@ public class Structure : MonoBehaviour {
     }
 
     protected virtual void ActivateStructureSecondaryFunctionInteraction(bool active) {
-        Debug.Log("ActivateStructureSecondaryFunctionInteraction " + active);
+        //Debug.Log("ActivateStructureSecondaryFunctionInteraction " + active);
         if (active) {
             if (!activeStructureInteractionsTypeList.Contains(StructureInteractionType.secondaryFunction)) {
                 activeStructureInteractionsTypeList.Add(StructureInteractionType.secondaryFunction);

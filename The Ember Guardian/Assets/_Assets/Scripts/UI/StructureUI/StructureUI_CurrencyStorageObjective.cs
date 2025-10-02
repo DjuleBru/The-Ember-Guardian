@@ -23,9 +23,18 @@ public class StructureUI_CurrencyStorageObjective : StructureUI
         progressBarCanvasGroup = fireProgressBarGameObject.GetComponent<CanvasGroup>();
         currencyStorageObj.OnCurrencyStored += CurrencyStorageObj_OnCurrencyStored;
         currencyStorageObj.OnMaxCurrencyAmountChanged += CurrencyStorageObj_OnMaxCurrencyAmountChanged;
+        currencyStorageObj.OnMaxCurrencyStorageIndexLoaded += CurrencyStorageObj_OnMaxCurrencyStorageIndexLoaded;
+        currencyStorageObj.OnCurrencyAmountStoredLoaded += CurrencyStorageObj_OnCurrencyAmountStoredLoaded;
         progressBarTemplate.gameObject.SetActive(false);
     }
 
+    private void CurrencyStorageObj_OnCurrencyAmountStoredLoaded(object sender, System.EventArgs e) {
+        RefreshProgressBar();
+    }
+
+    private void CurrencyStorageObj_OnMaxCurrencyStorageIndexLoaded(object sender, System.EventArgs e) {
+        RefreshBackgroundBar(currencyStorageObj.GetMaxCurrencyAmountStored());
+    }
 
     protected override void Start() {
         base.Start();
@@ -76,6 +85,18 @@ public class StructureUI_CurrencyStorageObjective : StructureUI
         PlayerUI_TickTemplate[] fireTickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
         fireTickArray[0].AddTick();
 
+    }
+
+    private void RefreshProgressBar() {
+        Debug.Log("RefreshProgressBar");
+        foreach(Transform child in  progressBarContainer) {
+            if (child == progressBarTemplate) continue;
+            Destroy(child.gameObject);
+        }
+
+        for (int i = 0; i < currencyStorageObj.GetCurrencyAmountStored(); i++) {
+            Instantiate(progressBarTemplate, progressBarContainer).gameObject.SetActive(true);
+        }
     }
 
     private IEnumerator RemoveAllProgressBars() {

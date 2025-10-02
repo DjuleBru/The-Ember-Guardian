@@ -11,12 +11,17 @@ public class CurrencyStorage : Structure
     protected bool engineersCanPickUpOrbs = true;
     protected int currencyAmountStored;
 
-    public event EventHandler OnCurrencyStored;
+    public event EventHandler<OnAnyCurrencyStoredEventArgs> OnCurrencyStored;
+    public event EventHandler OnCurrencyAmountStoredLoaded;
     public event EventHandler OnCurrencyRemoved;
     public static event EventHandler<OnAnyCurrencySpawnedEventArgs> OnAnyCurrencySpawned;
     public class OnAnyCurrencySpawnedEventArgs:EventArgs {
         public PlayerCurrencies.CurrencyType currencyType;
     }
+    public class OnAnyCurrencyStoredEventArgs : EventArgs {
+        public bool triggerSFX;
+    }
+
 
     protected override void Awake() {
         base.Awake();
@@ -52,9 +57,8 @@ public class CurrencyStorage : Structure
         base.TriggerStructurePrimaryFunction();
 
         StoreCurrency();
-
         if (GetHasCurrenciesToPay() && playerInteracting && currencyAmountStored < maxCurrencyAmountStored) {
-            payCurrencyUI.SetPlayerInteractingContinuous(.2f); // Continue l'interaction
+            payCurrencyUI.SetPlayerInteractingContinuous(.05f); // Continue l'interaction
         }
         else {
             payCurrencyUI.SetPlayerInteracting(false);
@@ -63,10 +67,11 @@ public class CurrencyStorage : Structure
 
     public void StoreCurrency() {
         currencyAmountStored++;
-        OnCurrencyStored?.Invoke(this, EventArgs.Empty);
+        OnCurrencyStored?.Invoke(this, new OnAnyCurrencyStoredEventArgs {
+            triggerSFX = true
+        });
 
         RefreshInteractable();
-
     }
 
     public void RemoveCurrency() {
@@ -78,6 +83,18 @@ public class CurrencyStorage : Structure
 
     public int GetCurrencyAmountStored() {
         return currencyAmountStored;
+    }
+
+    public void SetCurrencyAmountStored(int currencyAmountStored) {
+
+        this.currencyAmountStored = currencyAmountStored;
+        OnCurrencyStored?.Invoke(this, new OnAnyCurrencyStoredEventArgs {
+            triggerSFX = false
+        });
+        RefreshInteractable();
+
+
+        OnCurrencyAmountStoredLoaded?.Invoke(this, EventArgs.Empty);
     }
 
     public int GetMaxCurrencyAmountStored() {

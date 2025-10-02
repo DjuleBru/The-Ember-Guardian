@@ -50,15 +50,21 @@ public class Chest : MonoBehaviour
     protected bool playerPayingCurrencies;
     protected bool chestPricePaid;
     protected bool playerIsInTriggerAreaButChestLocked;
+    protected bool rewardOfferedToPlayer;
 
     public event EventHandler OnPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
-    public event EventHandler OnChestUnlocked;
+    public event EventHandler<OnChestUnlockedEventArgs> OnChestUnlocked;
     public event EventHandler OnChestOpenable;
-    public event EventHandler OnChestOpened;
+    public event EventHandler<OnChestUnlockedEventArgs> OnChestOpened;
     public event EventHandler OnChestOpenedAnimationOver;
     public event EventHandler OnChestDisappear;
     public event EventHandler OnChestPricePaid;
+    public event EventHandler OnChestPricePaidLoaded;
+
+    public class OnChestUnlockedEventArgs:EventArgs {
+        public bool triggerSFX;
+    }
 
 
     public static event EventHandler<OnAnyChestSpawnedCollectibleEventArgs> OnAnyChestSpawnedCollectible;
@@ -161,7 +167,9 @@ public class Chest : MonoBehaviour
     protected void OpenChest(bool spawnCollectibles) {
         chestOpened = true;
         StartCoroutine(OpenChestCoroutine(spawnCollectibles));
-        OnChestOpened?.Invoke(this, EventArgs.Empty);
+        OnChestOpened?.Invoke(this, new OnChestUnlockedEventArgs {
+            triggerSFX = true
+        });
     }
 
     private void Player_OnPlayerDied(object sender, EventArgs e) {
@@ -200,7 +208,7 @@ public class Chest : MonoBehaviour
         OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
     }
 
-    protected IEnumerator OpenChestCoroutine(bool spawnCollectibles) {
+    protected IEnumerator OpenChestCoroutine(bool spawnCollectibles, bool triggerSFX = true) {
         yield return new WaitForSeconds(.1f);
 
         if(chestDisappearsAutomaticallyAfterOpened) {
@@ -210,7 +218,9 @@ public class Chest : MonoBehaviour
         yield return new WaitForSeconds(delayToChestUnlockAnimation - .1f);
 
         playerPayingCurrencies = false;
-        OnChestUnlocked?.Invoke(this, EventArgs.Empty);
+        OnChestUnlocked?.Invoke(this, new OnChestUnlockedEventArgs {
+            triggerSFX = triggerSFX,
+        });
 
         yield return new WaitForSeconds(delayToSpawnCollectibles - delayToChestUnlockAnimation - .1f);
 
@@ -283,8 +293,10 @@ public class Chest : MonoBehaviour
         return chestType;
     }
 
-    public void InvokeOnChestOpened() {
-        OnChestOpened?.Invoke(this, EventArgs.Empty);
+    public void InvokeOnChestOpened(bool triggerSFX = true) {
+        OnChestOpened?.Invoke(this, new OnChestUnlockedEventArgs {
+            triggerSFX = triggerSFX
+        });
     }
 
     public void InvokeOnAnyChestSpawnedCollectibles(PlayerCurrencies.CurrencyType currencyType) {
@@ -306,6 +318,14 @@ public class Chest : MonoBehaviour
     public bool GetChestPricePaid() {
         return chestPricePaid;
     }
+    public bool GetRewardOfferedToPlayer() {
+        return rewardOfferedToPlayer;
+    }
+
+    public void SetRewardOfferedToPlayer(bool rewardOfferedToPlayer) {
+        this.rewardOfferedToPlayer = rewardOfferedToPlayer;
+
+    }
 
     public void SetChestLocked(bool locked) {
         chestLocked = locked;
@@ -315,14 +335,29 @@ public class Chest : MonoBehaviour
                 playerInTriggerArea = true;
                 Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
                 OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
+                OnChestOpenable?.Invoke(this, EventArgs.Empty);
             }
-            OnChestOpenable?.Invoke(this, EventArgs.Empty);
+        }
+
+    }
+
+    public void SetChestOpened(bool opened) {
+        chestOpened = opened;
+
+        if(chestOpened && chestDisappearsAutomaticallyAfterOpened) {
+            gameObject.SetActive(false);
         }
     }
 
-    public void SetTrialChestPaid() {
-        chestPricePaid = true;
-        payToOpenChest = false;
+    public virtual void SetChestPaid(bool paid) {
+        
+        chestPricePaid = paid;
+
+
+        if (payToOpenChest) {
+            payToOpenChest = !paid;
+        }
+
     }
 
     public bool GetChestLocked() {

@@ -30,8 +30,6 @@ public class SavingManager_Level : MonoBehaviour
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
     }
 
-
-
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         if (DayNightManager.Instance.GetCurrentDay() == 0) return;
         SaveGame();
@@ -42,8 +40,18 @@ public class SavingManager_Level : MonoBehaviour
     private void SaveGame() {
         StartCoroutine(SaveAfterDelay(1f));
     }
+
     private IEnumerator SaveAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
+
+        if (ES3.FileExists("LevelSave.es3")) {
+            ES3.DeleteFile("LevelSave.es3");
+        }
+        SaveLevelState();
+        yield return new WaitForEndOfFrame();
+
+        SaveCollectibles();
+        yield return new WaitForEndOfFrame();
 
         SaveRecruitedWorkers();
         yield return new WaitForEndOfFrame();
@@ -63,6 +71,55 @@ public class SavingManager_Level : MonoBehaviour
 
         SaveObstacles();
         SaveChests();
+
+        yield return new WaitForEndOfFrame();
+        SaveScavengables();
+
+        yield return new WaitForEndOfFrame();
+        SaveTrialAreas();
+    }
+
+    private void SaveLevelState() {
+        LevelSaveData levelSaveData = new LevelSaveData();
+
+        levelSaveData.currentDay = DayNightManager.Instance.GetCurrentDay();
+        levelSaveData.currentObjectiveType = LevelUI_ObjectiveUI.Instance.GetCurrentObjectiveType();
+        levelSaveData.currentSubObjectiveTypeList = LevelUI_ObjectiveUI.Instance.GetCurrentSubObjectivesList();
+
+        levelSaveData.emberExtracted = LevelObjectives.Instance.GetEmberExtracted();
+        levelSaveData.initialFireLit = LevelObjectives.Instance.GetInitialFireLit();
+        levelSaveData.darklingNestFound = LevelObjectives.Instance.GetDarklingNestFound();
+        levelSaveData.darklingNestCleared = LevelObjectives.Instance.GetDarklingNestCleared();
+        levelSaveData.returnToHubObjectiveShown = LevelObjectives.Instance.GetReturnToHubObjectiveShown();
+        levelSaveData.hubMerchantHasTalkLinesToShow = LevelManager.Instance.GetLevelHubMerchantHasTalkLinesToShow();
+        levelSaveData.levelSucceeded = LevelManager.Instance.GetLevelSucceeded();
+
+        levelSaveData.NPCInteractionsIndex = LevelObjectives.Instance.GetNPCInteractionsIndex();
+        levelSaveData.levelManager_levelHubMerchantInteractionIndex = LevelManager.Instance.GetLevelHubMerchantInteractionIndex();
+        levelSaveData.nightsSurvived = LevelObjectives.Instance.GetNightsSurvived();
+        levelSaveData.obstaclesRemoved = LevelObjectives.Instance.GetObstaclesRemoved();
+        levelSaveData.watcherArtifactFillUpAmount = LevelObjectives.Instance.GetWatcherArtifactFillAmount();
+
+        ES3.Save("LevelState", levelSaveData, "LevelSave.es3");
+    }
+
+    private void SaveCollectibles() {
+        List<CollectibleSaveData> collectibleData = new List<CollectibleSaveData>();
+
+        foreach (Collectible collectible in LevelManager.Instance.GetAllCollectibles()) {
+            CollectibleSaveData data = new CollectibleSaveData();
+
+            // Position
+            data.posX = collectible.transform.position.x;
+            data.posY = collectible.transform.position.y;
+            data.rotation = collectible.transform.rotation;
+
+            data.currencyType = collectible.GetCurrencyType();
+            collectibleData.Add(data);
+        }
+
+        // Sauvegarde via EasySave
+        ES3.Save("Collectibles", collectibleData, "LevelSave.es3");
     }
 
     private void SaveRecruitedWorkers() {
@@ -218,6 +275,7 @@ public class SavingManager_Level : MonoBehaviour
         List<CurrencyCrafterSaveData> crafterData = new List<CurrencyCrafterSaveData>();
         List<SpecialTowerSaveData> specialTowerData = new List<SpecialTowerSaveData>();
         List<BarricadeSaveData> barricadeData = new List<BarricadeSaveData>();
+        List<CurrencyStorageSaveData> currencyStorageData = new List<CurrencyStorageSaveData>();
 
         foreach (StructureLocation location in StructuresManager.Instance.GetStructureLocationsList()) {
             if (location == null) continue;
@@ -249,6 +307,20 @@ public class SavingManager_Level : MonoBehaviour
 
             structuresData.Add(data);
 
+            if (structureCategory == StructureSO.StructureCategory.storage) {
+                CurrencyStorage storage = structure as CurrencyStorage;
+
+                CurrencyStorageSaveData data_storage = new CurrencyStorageSaveData();
+                data_storage.currencyAmountStored = storage.GetCurrencyAmountStored();
+
+                if(storage is CurrencyStorage_Objective) {
+                    CurrencyStorage_Objective storage_obj = storage as CurrencyStorage_Objective;
+                    data_storage.maxCurrencyStorageIndex = storage_obj.GetMaxCurrencyStorageIndex();
+                }
+
+                currencyStorageData.Add(data_storage);
+            }
+
             if (structureCategory == StructureSO.StructureCategory.trap) {
                 Structure_Trap trapStructure = structure as Structure_Trap;
 
@@ -268,6 +340,7 @@ public class SavingManager_Level : MonoBehaviour
                 barricadeData.Add(data_barricade);
             }
 
+
             if (structureType == StructureSO.StructureType.machineGunTower || structureType == StructureSO.StructureType.sniperTower || structureType == StructureSO.StructureType.mortarTower) {
                 SpecialTower specialTower = structure as SpecialTower;
 
@@ -282,6 +355,9 @@ public class SavingManager_Level : MonoBehaviour
 
                 FireSaveData data_fire = new FireSaveData();
                 data_fire.currentFuelLevel = fireStructure.GetCurrentFuelLevel();
+                data_fire.isMainFire = fireStructure.GetIsMainFire();
+                data_fire.isSecondaryFire = fireStructure.GetIsSecondaryFire();
+                data_fire.isEndLevelFire = fireStructure.GetIsEndLevelAreaFire();
 
                 fireData.Add(data_fire);
             }
@@ -307,6 +383,7 @@ public class SavingManager_Level : MonoBehaviour
         ES3.Save("Structures_CurrencyCrafters", crafterData, "LevelSave.es3");
         ES3.Save("Structures_SpecialTowers", specialTowerData, "LevelSave.es3");
         ES3.Save("Structures_Barricades", barricadeData, "LevelSave.es3");
+        ES3.Save("Structures_CurrencyStorages", currencyStorageData, "LevelSave.es3");
     }
 
     private void SaveTrapUpgrades() {
@@ -319,19 +396,73 @@ public class SavingManager_Level : MonoBehaviour
     }
 
     private void SaveObstacles() {
-        var list = new List<ObstacleSaveData>();
+        var obstacleDataList = new List<ObstacleSaveData>();
+        var scavengableObstacleDataList = new List<ScavengableObstacleSaveData>();
+
         foreach (Obstacle obstacle in LevelManager.Instance.GetAllObstacles()) {
-            list.Add(new ObstacleSaveData { obstacleID = obstacle.GetObstacleID(), built = obstacle.GetBuilt() });
+
+            if(obstacle is ScavengableObstacle) {
+                ScavengableObstacle scave = (ScavengableObstacle)obstacle;
+                scavengableObstacleDataList.Add(new ScavengableObstacleSaveData {
+                    scavObstacleID = scave.GetObstacleID(),
+                    markedToScavenge = scave.GetMarkedToScavenge(),
+                    health = scave.GetHealth(),
+                    hitsTaken = scave.GetHitsTaken(),
+                    thresholdsTriggered = scave.GetSpawnsTriggered(),
+                });
+
+            } else {
+                obstacleDataList.Add(new ObstacleSaveData { obstacleID = obstacle.GetObstacleID(), built = obstacle.GetBuilt() });
+            }
+
         }
-        ES3.Save("Obstacles", list, "LevelSave.es3");
+
+        ES3.Save("Obstacles", obstacleDataList, "LevelSave.es3");
+        ES3.Save("ScavengableObstacles", scavengableObstacleDataList, "LevelSave.es3");
     }
 
     private void SaveChests() {
         var list = new List<ChestSaveData>();
         foreach (Chest chest in LevelManager.Instance.GetAllChests()) {
-            list.Add(new ChestSaveData { chestID = chest.GetChestID(), opened = chest.GetChestOpened(), chestLocked = chest.GetChestLocked() });
+            list.Add(new ChestSaveData { 
+                chestID = chest.GetChestID(),
+                opened = chest.GetChestOpened(),
+                chestLocked = chest.GetChestLocked(),
+                chestPricePaid = chest.GetChestPricePaid(),
+                rewardOfferedToPlayer = chest.GetRewardOfferedToPlayer(),
+            });
         }
-        ES3.Save("Obstacles", list, "LevelSave.es3");
+
+        ES3.Save("Chests", list, "LevelSave.es3");
+    }
+
+    private void SaveTrialAreas() {
+        var list = new List<TrialAreaSaveData>();
+        foreach (TrialArea trialArea in LevelManager.Instance.GetAllTrialAreas()) {
+            list.Add(new TrialAreaSaveData {
+                trialAreaID = trialArea.GetTrialAreaID(),
+                trialCompleted = trialArea.GetTrialAreaCompleted(),
+            });
+        }
+
+        ES3.Save("TrialAreas", list, "LevelSave.es3");
+    }
+    private void SaveScavengables() {
+        if (ScavengableManager.Instance == null) return;
+
+        var list = new List<ScavengableSaveData>();
+        foreach (Scavengable scav in ScavengableManager.Instance.GetScavengablesList()) {
+            list.Add(new ScavengableSaveData { 
+                scavengableID = scav.GetScavengableID(), 
+                health = scav.GetHealth(),
+                hitsTaken = scav.GetHitsTaken(),
+                timeToMineOneResource = scav.GetTimeToMineOneResource(),
+                scavengingActive = scav.GetScavengingActive(),
+                markedToScavenge = scav.GetMarkedToScavenge()
+            });
+        }
+
+        ES3.Save("Scavengables", list, "LevelSave.es3");
     }
 
     #endregion
@@ -340,13 +471,69 @@ public class SavingManager_Level : MonoBehaviour
 
     [Button]
     public void LoadGame() {
+        StartCoroutine(LoadLevelState());
+        StartCoroutine(LoadCollectibles());
         StartCoroutine(LoadWorkers());
         StartCoroutine(LoadSpawners());
         StartCoroutine(LoadPlayer());
         StartCoroutine(LoadStructures());
         StartCoroutine(LoadTraps());
         StartCoroutine(LoadObstacles());
+        StartCoroutine(LoadScavengableObstacles());
+        StartCoroutine(LoadScavengables());
+        StartCoroutine(LoadChests());
+        StartCoroutine(LoadTrialAreas());
     }
+
+
+    private IEnumerator LoadLevelState() {
+        if (!ES3.KeyExists("LevelState", "LevelSave.es3")) yield break;
+
+        yield return new WaitForEndOfFrame();
+
+        LevelSaveData saveData = ES3.Load<LevelSaveData>("LevelState", "LevelSave.es3");
+
+        DayNightManager.Instance.LoadCurrentDay(saveData.currentDay);
+
+        LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(saveData.currentObjectiveType);
+        LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(saveData.currentSubObjectiveTypeList);
+
+        LevelObjectives.Instance.SetEmberExtracted(saveData.emberExtracted);
+        LevelObjectives.Instance.SetInitialFireLit(saveData.initialFireLit);
+        LevelObjectives.Instance.SetDarklingNestFound(saveData.darklingNestFound);
+        LevelObjectives.Instance.SetDarklingNestCleared(saveData.darklingNestCleared);
+        LevelObjectives.Instance.SetReturnToHubObjectiveShown(saveData.returnToHubObjectiveShown);
+        LevelObjectives.Instance.SetReturnToHubObjectiveShown(saveData.returnToHubObjectiveShown);
+        LevelManager.Instance.SetLevelHubMerchantHasTalkLinesToShow(saveData.hubMerchantHasTalkLinesToShow);
+
+        if(saveData.levelSucceeded) {
+            LevelManager.Instance.LevelSuccess();
+        }
+
+        LevelObjectives.Instance.SetNPCInteractionsIndex(saveData.NPCInteractionsIndex);
+        LevelManager.Instance.SetLevelHubMerchantInteractionIndex(saveData.levelManager_levelHubMerchantInteractionIndex);
+        LevelObjectives.Instance.SetNightsSurvived(saveData.nightsSurvived);
+        LevelObjectives.Instance.SetObstaclesRemoved(saveData.obstaclesRemoved);
+        LevelObjectives.Instance.SetWatcherArtifactFillAmount(saveData.watcherArtifactFillUpAmount);
+
+    }
+
+    private IEnumerator LoadCollectibles() {
+        if (!ES3.KeyExists("Collectibles", "LevelSave.es3")) yield break;
+
+        List<CollectibleSaveData> collectibleData = ES3.Load<List<CollectibleSaveData>>("Collectibles", "LevelSave.es3 ");
+
+        foreach (var data in collectibleData) {
+            // Respawn du collectible
+            Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(data.currencyType), new Vector3(data.posX, data.posY, 0), Quaternion.identity).GetComponent<Collectible>();
+            collectible.SetCollectibleUnInteractable(.1f);
+            collectible.SetCollectibleJustLoaded();
+            collectible.transform.rotation = data.rotation;
+
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
     private IEnumerator LoadWorkers() {
         if (!ES3.KeyExists("Workers", "LevelSave.es3")) yield break;
 
@@ -543,28 +730,37 @@ public class SavingManager_Level : MonoBehaviour
         List<CurrencyCrafterSaveData> crafterData = ES3.Load<List<CurrencyCrafterSaveData>>("Structures_CurrencyCrafters", "LevelSave.es3 ");
         List<SpecialTowerSaveData> towerData = ES3.Load<List<SpecialTowerSaveData>>("Structures_SpecialTowers", "LevelSave.es3 ");
         List<BarricadeSaveData> barricadeData = ES3.Load<List<BarricadeSaveData>>("Structures_Barricades", "LevelSave.es3 ");
+        List<CurrencyStorageSaveData> storagesData = ES3.Load<List<CurrencyStorageSaveData>>("Structures_CurrencyStorages", "LevelSave.es3 ");
 
         int trapSaveDataIndex = 0;
         int fireSaveDataIndex = 0;
         int currencyCrafterSaveDataIndex = 0;
         int towerDataIndex = 0;
         int barricadesDataIndex = 0;
+        int storageDataIndex = 0;
 
         foreach(StructureSaveData data in structuresData) {
             StructureSO.StructureType loadedStructureType = data.structureType;
             StructureSO loadedStructureSO = StructuresManager.Instance.GetStructureSO(loadedStructureType);
             Vector2 structurePos = new Vector2(data.posX, data.posY);
 
-            //Debug.Log("loading " +  loadedStructureType);
+
+            if (loadedStructureSO.structureType != loadedStructureType) {
+                Debug.LogError("Structure SO " + loadedStructureType + " Not referenced in StructuresManager");
+            }
+
             bool structureBuilt = data.structureBuilt;
 
             if (structureBuilt) {
                 yield return new WaitForEndOfFrame();
 
                 if (loadedStructureType == StructureSO.StructureType.fire) {
-                    float fuelLevel = fireData[fireSaveDataIndex].currentFuelLevel;
-                    Fire.Instance.SetFuelLevel(fuelLevel);
-                    fireSaveDataIndex++;
+
+                    if(fireData[fireSaveDataIndex].isMainFire) {
+                        float fuelLevel = fireData[fireSaveDataIndex].currentFuelLevel;
+                        Fire.Instance.SetFuelLevel(fuelLevel);
+                        fireSaveDataIndex++;
+                    }
 
                     continue;
                 };
@@ -580,6 +776,7 @@ public class SavingManager_Level : MonoBehaviour
 
                 Vector3 position = new Vector3(structurePos.x, structurePos.y, 0);
                 StructureLocation structureLocation = Instantiate(loadedStructureSO.structureLocationPrefab, position, Quaternion.identity).GetComponent<StructureLocation>();
+
                 if (data.isWorldStructure) {
                     structureLocation.SetAsWorldStructureLocation();
                     structureLocation.SetStructureLocationWorldScaleX(data.worldStructureScaleX);
@@ -610,11 +807,32 @@ public class SavingManager_Level : MonoBehaviour
                     trapSaveDataIndex++;
                 };
 
-                if (loadedStructureSO.structureType == StructureSO.StructureType.secondaryFire) {
+                if (loadedStructureSO.structureCategory == StructureSO.StructureCategory.storage) {
+                    CurrencyStorageSaveData storageData = storagesData[storageDataIndex];
+                    CurrencyStorage storageStructure = structure as CurrencyStorage;
+                    storageStructure.SetCurrencyAmountStored(storageData.currencyAmountStored);
 
-                    Fire secondaryFire = structure as Fire;
+                    if(loadedStructureSO.structureType == StructureSO.StructureType.currencyStorage_Objective) {
+                        CurrencyStorage_Objective storageStructure_Obj = storageStructure as CurrencyStorage_Objective;
+                        storageStructure_Obj.SetMaxCurrencyStorageIndex(storageData.maxCurrencyStorageIndex);
+                    }
+
+                    storageDataIndex++;
+                };
+
+                if (loadedStructureSO.structureType == StructureSO.StructureType.fire || loadedStructureSO.structureType == StructureSO.StructureType.secondaryFire) {
+
+                    Fire fire = structure as Fire;
                     float fuelLevel = fireData[fireSaveDataIndex].currentFuelLevel;
-                    secondaryFire.SetFuelLevel(fuelLevel);
+                    fire.SetFuelLevel(fuelLevel);
+
+                    if(fireData[fireSaveDataIndex].isSecondaryFire) {
+                        fire.SetAsSecondaryFire();
+                    }
+                    if (fireData[fireSaveDataIndex].isEndLevelFire) {
+                        fire.SetAsEndFire();
+                    }
+
                     fireSaveDataIndex++;
                     continue;
                 }; 
@@ -715,6 +933,141 @@ public class SavingManager_Level : MonoBehaviour
             }
         }
     }
+
+    private IEnumerator LoadScavengableObstacles() {
+        if (!ES3.KeyExists("ScavengableObstacles", "LevelSave.es3"))
+            yield break;
+
+        var list = ES3.Load<List<ScavengableObstacleSaveData>>("ScavengableObstacles", "LevelSave.es3");
+        if (list == null || list.Count == 0)
+            yield break;
+
+        // on attend un frame LevelManager ait fini son Awake/Start
+        yield return new WaitForEndOfFrame();
+
+        foreach (var data in list) {
+            if (string.IsNullOrEmpty(data.scavObstacleID)) continue;
+
+            var obstacle = LevelManager.Instance
+                .GetAllObstacles()
+                .Find(o => o != null && o.GetObstacleID() == data.scavObstacleID);
+
+            ScavengableObstacle scavObstacle = obstacle as ScavengableObstacle;
+            yield return new WaitForEndOfFrame();
+
+            if (scavObstacle == null) {
+                Debug.LogWarning($"[Save] Obstacle {data.scavObstacleID} introuvable.");
+                continue;
+            }
+
+            if(data.markedToScavenge) {
+                scavObstacle.MarkToScavenge(true);
+            }
+
+            scavObstacle.SetHitsTaken(data.hitsTaken);
+            scavObstacle.SetHealth(data.health);
+            scavObstacle.SetSpawnersTriggered(data.thresholdsTriggered);
+        }
+    }
+
+    private IEnumerator LoadScavengables() {
+        if (!ES3.KeyExists("Scavengables", "LevelSave.es3"))
+            yield break;
+
+        var list = ES3.Load<List<ScavengableSaveData>>("Scavengables", "LevelSave.es3");
+        if (list == null || list.Count == 0)
+            yield break;
+
+        // on attend un frame LevelManager ait fini son Awake/Start
+        yield return new WaitForEndOfFrame();
+
+        foreach (var data in list) {
+            if (string.IsNullOrEmpty(data.scavengableID)) continue;
+
+            var scavengable = ScavengableManager.Instance
+                .GetScavengablesList()
+                .Find(o => o != null && o.GetScavengableID() == data.scavengableID);
+
+            yield return new WaitForEndOfFrame();
+
+            if (scavengable == null) {
+                Debug.LogWarning($"[Save] Scavengable {data.scavengableID} introuvable.");
+                continue;
+            }
+
+            if (data.markedToScavenge) {
+                scavengable.MarkToScavenge(true);
+            }
+
+            scavengable.SetScavengingActive(data.scavengingActive);
+            scavengable.SetHitsTaken(data.hitsTaken);
+            scavengable.SetHealth(data.health);
+            scavengable.SetTimeToMineOneResource(data.timeToMineOneResource);
+        }
+    }
+    private IEnumerator LoadChests() {
+        if (!ES3.KeyExists("Chests", "LevelSave.es3"))
+            yield break;
+
+        var list = ES3.Load<List<ChestSaveData>>("Chests", "LevelSave.es3");
+        if (list == null || list.Count == 0)
+            yield break;
+
+        // on attend un frame LevelManager ait fini son Awake/Start
+        yield return new WaitForEndOfFrame();
+
+        foreach (var data in list) {
+            if (string.IsNullOrEmpty(data.chestID)) continue;
+
+            var chest
+                = LevelManager.Instance
+                .GetAllChests()
+                .Find(o => o != null && o.GetChestID() == data.chestID);
+
+            yield return new WaitForEndOfFrame();
+
+            if (chest == null) {
+                Debug.LogWarning($"[Save] Chest {data.chestID} introuvable.");
+                continue;
+            }
+
+            chest.SetRewardOfferedToPlayer(data.rewardOfferedToPlayer);
+            chest.SetChestPaid(data.chestPricePaid);
+            chest.SetChestOpened(data.opened);
+            chest.SetChestLocked(data.chestLocked);
+        }
+    }
+
+    private IEnumerator LoadTrialAreas() {
+        if (!ES3.KeyExists("TrialAreas", "LevelSave.es3"))
+            yield break;
+
+        var list = ES3.Load<List<TrialAreaSaveData>>("TrialAreas", "LevelSave.es3");
+        if (list == null || list.Count == 0)
+            yield break;
+
+        // on attend un frame LevelManager ait fini son Awake/Start
+        yield return new WaitForEndOfFrame();
+
+        foreach (var data in list) {
+            if (string.IsNullOrEmpty(data.trialAreaID)) continue;
+
+            var trialArea
+                = LevelManager.Instance
+                .GetAllTrialAreas()
+                .Find(o => o != null && o.GetTrialAreaID() == data.trialAreaID);
+
+            yield return new WaitForEndOfFrame();
+
+            if (trialArea == null) {
+                Debug.LogWarning($"[Save] TrialArea {data.trialAreaID} introuvable.");
+                continue;
+            }
+
+            trialArea.SetTrialAreaCompleted(data.trialCompleted);
+        }
+    }
+
     #endregion
 
 

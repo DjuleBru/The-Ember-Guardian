@@ -45,6 +45,7 @@ public class TrialArea : MonoBehaviour
     public event EventHandler OnTrialFailed;
     public event EventHandler OnPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
+    public event EventHandler OnTrialAreaLoaded_Completed;
     public static event EventHandler OnAnyTrialPaid;
 
     private List<Creature> creatureSpawnedList = new List<Creature>();
@@ -59,6 +60,7 @@ public class TrialArea : MonoBehaviour
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
+        LevelManager.Instance.AddTrialArea(this);
 
         payCurrencyUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
         payCurrencyUI.SetOrbTemplateUIList(buildStructureOrbTemplates);
@@ -101,7 +103,7 @@ public class TrialArea : MonoBehaviour
     protected void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         Player.Instance.SetInPayCurrencyArea(false);
         StartCoroutine(StartTrialCoroutine());
-        trialChest.SetTrialChestPaid();
+        trialChest.SetChestPaid(true);
     }
 
     private IEnumerator StartTrialCoroutine() {
@@ -144,7 +146,6 @@ public class TrialArea : MonoBehaviour
 
         trialChest.SetChestLocked(false);
         OnTrialChestUnlocked?.Invoke(this, EventArgs.Empty);
-
     }
 
     private void FailTrial() {
@@ -188,6 +189,15 @@ public class TrialArea : MonoBehaviour
         foreach (PayCurrencyTemplateWorldUI orbTemplateWorldUI in orbTemplates) {
             buildStructureOrbTemplates.Add(orbTemplateWorldUI);
         }
+    }
+
+    public bool GetTrialAreaCompleted() {
+        return trialCompleted;
+    }
+
+    public void SetTrialAreaCompleted(bool completed) {
+        trialCompleted = completed;
+        OnTrialAreaLoaded_Completed?.Invoke(this, EventArgs.Empty);
     }
 
     protected void OnTriggerEnter2D(Collider2D collision) {

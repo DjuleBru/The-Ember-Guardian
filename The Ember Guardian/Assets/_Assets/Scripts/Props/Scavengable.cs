@@ -1,7 +1,9 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ScavengableObstacle;
 
 public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
 
@@ -57,8 +59,8 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
     private bool scavengingActive = true;
 
 
-    public event EventHandler OnActivatedMining;
-    public event EventHandler OnDeactivatedMining;
+    public event EventHandler<OnScavengableDeactivatedMiningEventArgs> OnActivatedMining;
+    public event EventHandler<OnScavengableDeactivatedMiningEventArgs> OnDeactivatedMining;
     public event EventHandler OnPlayerTriggerIn;
     public event EventHandler OnPlayerTriggerOut;
     public event EventHandler OnDamageTaken;
@@ -66,10 +68,16 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
     public event EventHandler OnMinerStartsMining;
     public event EventHandler OnMinerStopsMining;
     public event EventHandler OnMinerExtractedResourceFromMine;
-    public static event EventHandler OnAnyScavengableMarkedToScavenge;
+    public event EventHandler OnMineEffortLoaded;
+    public static event EventHandler<OnAnyScavengableMarkedToScavengeEventArgs> OnAnyScavengableMarkedToScavenge;
     public event EventHandler OnScavengableDepleted;
     public event EventHandler<OnStavengableSpawnedCurrencyEventArgs> OnScavengableSpawnedCurrency;
-
+    public class OnAnyScavengableMarkedToScavengeEventArgs : EventArgs {
+        public bool triggerSFX;
+    }
+    public class OnScavengableDeactivatedMiningEventArgs : EventArgs {
+        public bool triggerSFX;
+    }
     public class OnStavengableSpawnedCurrencyEventArgs : EventArgs {
         public Collectible collectibleSpawned;
     }
@@ -95,7 +103,9 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
         if(isMine) {
             timeToMineOneResource = initialTimeToMineOneResource;
             miningTimer = timeToMineOneResource;
-            OnDeactivatedMining?.Invoke(this, EventArgs.Empty);
+            OnDeactivatedMining?.Invoke(this, new OnScavengableDeactivatedMiningEventArgs {
+                triggerSFX = false
+            });
         }
     }
 
@@ -148,13 +158,26 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
     }
 
     protected void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
+        MarkToScavenge();
+    }
+
+    public void MarkToScavenge(bool markedFromSave = false) {
         markedToScavenge = true;
+
         OnScavengableMarkedToScavenge?.Invoke(this, EventArgs.Empty);
-        OnAnyScavengableMarkedToScavenge?.Invoke(this, EventArgs.Empty);
+        OnAnyScavengableMarkedToScavenge?.Invoke(this, new OnAnyScavengableMarkedToScavengeEventArgs {
+            triggerSFX = !markedFromSave,
+        });
 
         if (isMine) {
-            Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
-            OnActivatedMining?.Invoke(this, EventArgs.Empty);
+
+            if(!markedFromSave) {
+                Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
+            }
+
+            OnActivatedMining?.Invoke(this, new OnScavengableDeactivatedMiningEventArgs {
+                triggerSFX = !markedFromSave,
+            });
         }
     }
 
@@ -180,6 +203,7 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
         return transform;
     }
 
+    [Button]
     public void TakeDamage(int damage, Transform damageSource, bool crit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
         health -= damage;
         hitsTaken += damage;
@@ -235,6 +259,7 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
     }
 
     private void AssignRandomMinerToCollect(Collectible collectible) {
+        if (minerAssignedList.Count == 0) return;
         MinerJob miner = minerAssignedList[UnityEngine.Random.Range(0, minerAssignedList.Count)];
         miner.AssignCollectible(collectible);
     }
@@ -283,6 +308,34 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
         return depleted;
     }
 
+    public int GetHealth() {
+        return health;
+    }
+
+    public int GetHitsTaken() {
+        return hitsTaken;
+    }
+
+    public void SetHealth(int health) {
+        this.health = health;
+
+        if (health <= 0 && !infiniteSource) {
+            Die();
+        }
+    }
+    public void SetHitsTaken(int hitsTaken) {
+        this.hitsTaken = hitsTaken;
+    }
+    public void SetTimeToMineOneResource(float timeToMine) {
+        if (!isMine) return;
+        this.timeToMineOneResource = timeToMine;
+        OnMineEffortLoaded?.Invoke(this, EventArgs.Empty);
+    }
+
+    public float GetTimeToMineOneResource() {
+        return timeToMineOneResource;
+    }
+
     public int GetMiningPriority() {
         return miningPriority;
     }
@@ -315,9 +368,33 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
         scavengingActive = !scavengingActive;
 
         if(scavengingActive) {
-            OnActivatedMining?.Invoke(this, EventArgs.Empty);
+            OnActivatedMining?.Invoke(this, new OnScavengableDeactivatedMiningEventArgs {
+                triggerSFX = true
+            });
+
         } else {
-            OnDeactivatedMining?.Invoke(this, EventArgs.Empty);
+            OnDeactivatedMining?.Invoke(this, new OnScavengableDeactivatedMiningEventArgs {
+                triggerSFX = true
+            });
+            StartCoroutine(RemoveMinersFromMine());
+        }
+    }
+
+    public void SetScavengingActive(bool scavengingActive, bool setFromLoad = true) {
+        if (!isMine) return;
+
+        this.scavengingActive = scavengingActive;
+
+        if (scavengingActive) {
+            OnActivatedMining?.Invoke(this, new OnScavengableDeactivatedMiningEventArgs {
+                triggerSFX = !setFromLoad
+            });
+
+        }
+        else {
+            OnDeactivatedMining?.Invoke(this, new OnScavengableDeactivatedMiningEventArgs {
+                triggerSFX = !setFromLoad
+            });
             StartCoroutine(RemoveMinersFromMine());
         }
     }
@@ -336,6 +413,7 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
     public bool GetScavengingActive() {
         return scavengingActive;
     }
+
 
     public float GetTimeToExtractOneResourceNormalized() {
         return (timeToMineOneResource - initialTimeToMineOneResource) / (maxTimeToMineOneResource - initialTimeToMineOneResource);

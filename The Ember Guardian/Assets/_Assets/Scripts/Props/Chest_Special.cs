@@ -21,7 +21,7 @@ public class Chest_Special : Chest
     protected override void Start() {
         base.Start();
         if (chestType == ChestType.skillChest) {
-            StartCoroutine(CheckSkillStatueActive());
+            //StartCoroutine(CheckSkillStatueActive());
             SelectRandomSkill();
         }
 
@@ -54,20 +54,22 @@ public class Chest_Special : Chest
             if (!chestPricePaid) return;
         };
 
-        if(!chestOpenedAnimationOver) {
+        TryOpenSpecialChest(true);
+    }
+
+    private void TryOpenSpecialChest(bool triggerSFX) {
+        if (!chestOpenedAnimationOver) {
             if (chestOpenedAnimationStarted) return;
             chestOpened = true;
             chestOpenedAnimationStarted = true;
-            StartCoroutine(OpenChestCoroutine(false));
-            InvokeOnChestOpened();
-
-        } else {
+            StartCoroutine(OpenChestCoroutine(false, triggerSFX));
+            InvokeOnChestOpened(triggerSFX);
+        }
+        else {
             if (rewardOfferedToPlayerStarted) return;
             rewardOfferedToPlayerStarted = true;
             StartCoroutine(OfferRewardToPlayer());
-
         }
-      
     }
 
     private IEnumerator OfferRewardToPlayer() {
@@ -142,6 +144,8 @@ public class Chest_Special : Chest
             }
             j++;
         }
+
+        rewardOfferedToPlayer = true;
     }
 
     public SkillSO GetSkillSO() {
@@ -160,6 +164,24 @@ public class Chest_Special : Chest
         MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(gunShopItemString, true);
         MetaProgressionManager.Instance.SetGunUnlocked(gunSOInChest, true);
 
+    }
+
+    public override void SetChestPaid(bool paid) {
+        chestPricePaid = paid;
+
+        if(payToOpenChest) {
+            payToOpenChest = !paid;
+        }
+
+        if (rewardOfferedToPlayer) {
+            gameObject.SetActive(false);
+            return;
+        }
+        if (!paid) return;
+
+
+
+        TryOpenSpecialChest(false);
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {

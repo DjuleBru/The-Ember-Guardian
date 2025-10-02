@@ -49,6 +49,7 @@ public class StructureSO : ScriptableObject
         tower,
         trap,
         util,
+        storage,
     }
 
     public StructureType structureType;

@@ -11,6 +11,8 @@ public class ScavengableManager : MonoBehaviour
 
     private void Awake() {
         Instance = this;
+
+        scavengablesUnlocked = ES3.Load("scavengablesUnlocked", false);
     }
 
     private void Start() {
@@ -32,6 +34,8 @@ public class ScavengableManager : MonoBehaviour
             foreach (IScavengable scavengable in scavengablesInLevelList) {
                 scavengable.SetScavengableUnlocked(true);
             }
+
+            ES3.Save("scavengablesUnlocked", true);
         }
     }
 
@@ -48,6 +52,18 @@ public class ScavengableManager : MonoBehaviour
         }
 
         return scavengablesToScavenge;
+    }
+
+    public List<Scavengable> GetScavengablesList() {
+        List<Scavengable> allScavengables = new List<Scavengable>();
+
+        foreach (IScavengable scavengable in scavengablesInLevelList) {
+            if (scavengable is Scavengable) {
+                allScavengables.Add(scavengable as Scavengable);
+            }
+        }
+
+        return allScavengables;
     }
 
     public IScavengable GetClosestHighestPriorityScavengableToScavenge(MinerJob requestingMiner) {

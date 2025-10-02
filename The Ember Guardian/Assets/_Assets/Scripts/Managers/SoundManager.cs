@@ -820,7 +820,9 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(soundRefsSO.hubChestClose,.8f) ;
     }
 
-    private void Scavengable_OnAnyScavengableMarkedToScavenge(object sender, System.EventArgs e) {
+    private void Scavengable_OnAnyScavengableMarkedToScavenge(object sender, Scavengable.OnAnyScavengableMarkedToScavengeEventArgs e) {
+        if (!e.triggerSFX) return;
+
         PlaySound2D(soundRefsSO.scavengableMarkedToScavenge, .6f);
     }
 

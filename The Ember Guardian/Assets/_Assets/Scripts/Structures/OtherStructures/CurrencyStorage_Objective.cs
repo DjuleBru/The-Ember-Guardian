@@ -13,6 +13,7 @@ public class CurrencyStorage_Objective : CurrencyStorage
     public event EventHandler OnMaxCurrencyAmountReached;
     public static event EventHandler OnAnyMaxCurrencyAmountReached;
     public event EventHandler OnMaxCurrencyAmountChanged;
+    public event EventHandler OnMaxCurrencyStorageIndexLoaded;
 
     protected override void Awake() {
         base.Awake();
@@ -26,7 +27,7 @@ public class CurrencyStorage_Objective : CurrencyStorage
         if(currencyAmountStored == maxCurrencyAmountStored) {
             OnMaxCurrencyAmountReached?.Invoke(this, EventArgs.Empty);
             OnAnyMaxCurrencyAmountReached?.Invoke(this, EventArgs.Empty);
-            ActivateWaveDifficultyReductionEffect();
+            ActivateWaveDifficultyReductionEffect(maxCurrencyStorageIndex);
 
             if ((maxCurrencyStorageIndex+1) < maxCurrencyStorageList.Count) {
                 RefreshMaxCurrencyAmountStored();
@@ -38,7 +39,7 @@ public class CurrencyStorage_Objective : CurrencyStorage
 
     }
 
-    private void ActivateWaveDifficultyReductionEffect() {
+    private void ActivateWaveDifficultyReductionEffect(int maxCurrencyStorageIndex) {
         CreaturesSpawnManager.Instance.ApplyPermanentShockwaveEffect(difficultyReductionFactorsList[maxCurrencyStorageIndex]);
         DayNightVisualsManager.Instance.RefreshSunColorBasedOnDifficulty(.75f);
         DayNightVisualsManager.Instance.RefreshMoonColorBasedOnDifficulty(.75f);
@@ -48,6 +49,19 @@ public class CurrencyStorage_Objective : CurrencyStorage
         maxCurrencyStorageIndex++;
         maxCurrencyAmountStored = maxCurrencyStorageList[maxCurrencyStorageIndex];
         OnMaxCurrencyAmountChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public int GetMaxCurrencyStorageIndex() {
+        return maxCurrencyStorageIndex;
+    }
+    public void SetMaxCurrencyStorageIndex(int maxCurrencyStorageIndex) {
+        this.maxCurrencyStorageIndex = maxCurrencyStorageIndex;
+        maxCurrencyAmountStored = maxCurrencyStorageList[maxCurrencyStorageIndex];
+        OnMaxCurrencyStorageIndexLoaded?.Invoke(this, EventArgs.Empty);
+
+        for(int i = 0; i < maxCurrencyStorageIndex; i++) {
+            ActivateWaveDifficultyReductionEffect(i);
+        }
     }
 
     protected override void GameInput_OnCurrencyCollectedFromContainer(object sender, EventArgs e) {

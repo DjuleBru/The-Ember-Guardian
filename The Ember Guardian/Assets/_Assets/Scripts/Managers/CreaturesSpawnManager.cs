@@ -237,7 +237,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
-        currentWaveNumber++;
+        currentWaveNumber = DayNightManager.Instance.GetCurrentDay() + 1;
 
         if (spawnEquallyFromBothSides) {
 
@@ -284,7 +284,6 @@ public class CreaturesSpawnManager : MonoBehaviour {
             if (roll < specialWaveProbability) {
                 currentSpecialWaveType = specialWaveTypesInLevel[UnityEngine.Random.Range(0, specialWaveTypesInLevel.Count)];
                 currentSpecialWaveAmount++;
-                Debug.Log("Special wave type selected: " + currentSpecialWaveType);
             }
         }
 

@@ -9,7 +9,6 @@ public class SpawnersManager : MonoBehaviour
     private List<MobSpawner> mobSpawners = new List<MobSpawner>();
     private void Awake() {
         Instance = this;
-
         InitializeSpawners();
     }
 
@@ -18,6 +17,9 @@ public class SpawnersManager : MonoBehaviour
         foreach(MobSpawner spawner in mobSpawnerChilds) {
             mobSpawners.Add(spawner);
         }
+    }
+    public void AddSpawner(MobSpawner spawner) {
+        mobSpawners.Add(spawner);
     }
 
     public List<MobSpawner> GetAllSpawners() {

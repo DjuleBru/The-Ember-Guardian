@@ -311,6 +311,8 @@ public class HubMerchant : MonoBehaviour
     }
 
     public void SetHasTalkLinesToShow(bool hasTalkLinesToShow, bool showExclamationMark = true) {
+        Debug.Log("SetHasTalkLinesToShow " + hasTalkLinesToShow);
+
         merchantHasTalkLinesToShow = hasTalkLinesToShow;
 
         if (hasTalkLinesToShow && showExclamationMark) {

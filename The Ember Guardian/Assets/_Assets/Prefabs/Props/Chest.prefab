@@ -374,7 +374,7 @@ MonoBehaviour:
   hugeChestAnimator: {fileID: 22100000, guid: 01840261963901c408e21c90b42cd3ac, type: 2}
   weaponChestAnimator: {fileID: 22100000, guid: a932329454047504c9a7f72deb7e2c67, type: 2}
   skillChestAnimator: {fileID: 22100000, guid: 7062f826669f4dd439dd69932f517abb, type: 2}
-  trapChestAnimator: {fileID: 0}
+  trapChestAnimator: {fileID: 22100000, guid: bcc30e9fbecb4794092af96641288040, type: 2}
 --- !u!1 &5620205297416123787
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af3f2696dca26043a68a81b7ef978d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chestID: 3719fcb0-8e3b-4958-83ad-68521b7a259f
   chestType: 5
   orbSpawnPosition: {fileID: 5709709022671916459}
   currencyTypeToRewardList: 00000000

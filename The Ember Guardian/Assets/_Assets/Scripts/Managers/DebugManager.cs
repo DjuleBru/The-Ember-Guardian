@@ -37,7 +37,7 @@ public class DebugManager : MonoBehaviour
 
     int i = 0;
     private float screenshotTakeTimer;
-    private float screenshotTakeCooldown = .1f;
+    private float screenshotTakeCooldown = .5f;
     private bool takingScreenshots;
 
     private void Awake() {

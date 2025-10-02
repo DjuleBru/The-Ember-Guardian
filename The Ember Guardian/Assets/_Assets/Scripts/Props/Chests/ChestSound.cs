@@ -25,7 +25,9 @@ public class ChestSound : SoundObject
     }
 
 
-    private void Chest_OnChestUnlocked(object sender, System.EventArgs e) {
+    private void Chest_OnChestUnlocked(object sender, Chest.OnChestUnlockedEventArgs e) {
+        if (!e.triggerSFX) return;
+
         AudioClip audioClip = unlockChestAudioClip;
 
         if (chest.GetChestType() == Chest.ChestType.skillChest) {
@@ -35,7 +37,9 @@ public class ChestSound : SoundObject
         audioSource.PlayOneShot(audioClip, .75f * sfxVolume * masterVolume);
     }
 
-    private void Chest_OnChestOpened(object sender, System.EventArgs e) {
+    private void Chest_OnChestOpened(object sender, Chest.OnChestUnlockedEventArgs e) {
+        if (!e.triggerSFX) return;
+
         AudioClip audioClip = startOpenChestAudioClip;
 
         if(chest.GetChestType() == Chest.ChestType.ammoChest) {

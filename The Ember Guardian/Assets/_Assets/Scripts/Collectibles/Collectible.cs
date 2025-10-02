@@ -39,6 +39,7 @@ public class Collectible : MonoBehaviour
     protected bool collected;
     protected bool touchedFloor;
     protected bool enteredPayCurrencyUISlot;
+    protected bool collectibleJustLoaded;
 
     protected bool movingForReloading;
     protected bool movingForPayment;
@@ -62,6 +63,10 @@ public class Collectible : MonoBehaviour
             Invoke("SetCanBePickedUpByWorker", 3f);
         }
 
+        if(LevelManager.Instance != null) {
+            LevelManager.Instance.AddCollectible(this);
+        }
+
     }
 
     protected void Update() {
@@ -83,6 +88,7 @@ public class Collectible : MonoBehaviour
 
     protected void OnTriggerEnter2D(Collider2D collision) {
         if (!touchedFloor && collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+            if (collectibleJustLoaded) return;
             touchedFloor = true;
             OnAnyCollectibleTouchedFloor?.Invoke(this, EventArgs.Empty);
         }
@@ -381,17 +387,22 @@ public class Collectible : MonoBehaviour
         return aggroedByWorker;
     }
 
-    public void SetCollected() {
-        collected = true;
+    public void SetCollectibleJustLoaded() {
+        collectibleJustLoaded = true;
+        StartCoroutine(SetCollectibleLoadedAfterDelay(1f));
     }
 
-    public bool GetCollected() {
-        Debug.Log("GetCollected " + collected);
-        return collected;
+    private IEnumerator SetCollectibleLoadedAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+        collectibleJustLoaded = false;
     }
-
 
     protected void OnDestroy() {
+
+        if(LevelManager.Instance != null) {
+            LevelManager.Instance.RemoveCollectible(this);
+        }
+
         OnCollectibleDestroyed?.Invoke(this, EventArgs.Empty);
     }
 

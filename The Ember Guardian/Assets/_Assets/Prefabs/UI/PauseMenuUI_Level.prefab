@@ -132,6 +132,8 @@ MonoBehaviour:
   fullGameDescriptionPanel: {fileID: 3776966506443994719}
   fullGameDescriptionPanel_WishlistButton: {fileID: 5548688305743474351}
   fullGameDescriptionPanel_ExitGameButton: {fileID: 3906672333664939182}
+  videoTipsButton: {fileID: 3781835477863996379}
+  ctaButton: {fileID: 3147800818441610838}
   buttonConfirm_ExitGame: {fileID: 5120457299238154723}
   buttonConfirm_MainMenu: {fileID: 2632623975852417290}
   exitGameText: {fileID: 4755493559078277398}
@@ -2627,6 +2629,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3147800818441610838 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1919734455076523828, guid: f3b889857c3d82c4f9a7374e445dc473, type: 3}
+  m_PrefabInstance: {fileID: 3534050799981128034}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3647007924845619348 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 258884518087901686, guid: f3b889857c3d82c4f9a7374e445dc473, type: 3}
@@ -2635,6 +2642,11 @@ GameObject:
 --- !u!1 &3776966506443994719 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 387594877097680701, guid: f3b889857c3d82c4f9a7374e445dc473, type: 3}
+  m_PrefabInstance: {fileID: 3534050799981128034}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3781835477863996379 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 392023375998022329, guid: f3b889857c3d82c4f9a7374e445dc473, type: 3}
   m_PrefabInstance: {fileID: 3534050799981128034}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &3906672333664939182 stripped

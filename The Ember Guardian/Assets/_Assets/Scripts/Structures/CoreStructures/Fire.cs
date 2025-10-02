@@ -239,6 +239,14 @@ public class Fire : Structure, IDamageable {
         OnFuelLevelLoaded?.Invoke(this, EventArgs.Empty);
     }
 
+    public void SetAsEndFire() {
+        isEndLevelFire = true;
+    }
+
+    public void SetAsSecondaryFire() {
+        isSecondaryFire = true;
+    }
+
     protected override void TriggerStructurePrimaryFunction() {
         base.TriggerStructurePrimaryFunction();
 

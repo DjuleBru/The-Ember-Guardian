@@ -138,6 +138,8 @@ public class LevelObjectives : MonoBehaviour
             if (!DemoMainLevelManager.Instance.GetDemoMainLevelTutorialCompleted() || !DemoMainLevelManager.Instance.GetDemoFirstLevelCompleted()) return;
         }
 
+        if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
+
         StartCoroutine(ShowLevelObjective());
     }
 
@@ -383,7 +385,12 @@ public class LevelObjectives : MonoBehaviour
         Debug.Log("SetNightsToSurvive " + nightsToSurvive);
         this.nightsToSurvive = nightsToSurvive;
     }
-
+    public void SetNightsSurvived(int nightsSurvived) {
+        this.nightsSurvived = nightsSurvived;
+    }
+    public void SetObstaclesRemoved(int obstaclesRemoved) {
+        this.obstaclesRemoved = obstaclesRemoved;
+    }
     public int GetObstaclesToRemove() {
         return obstaclesToRemove;
     }
@@ -391,12 +398,55 @@ public class LevelObjectives : MonoBehaviour
         return obstaclesRemoved;
     }
 
+    public bool GetEmberExtracted() {
+        return emberExtracted;
+    }
+    public void SetEmberExtracted(bool emberExtracted) {
+        this.emberExtracted = emberExtracted;
+    }
+    public bool GetInitialFireLit() {
+        return initialFireLit;
+    }
+    public void SetInitialFireLit(bool initialFireLit) {
+        this.initialFireLit = initialFireLit;
+    }
+    public bool GetDarklingNestCleared() {
+        return darklingNestCleared;
+    }
+    public void SetDarklingNestCleared(bool darklingNestCleared) {
+        this.darklingNestCleared = darklingNestCleared;
+    }
+    public bool GetReturnToHubObjectiveShown() {
+        return returnToHubObjectiveShown;
+    }
+    public void SetReturnToHubObjectiveShown(bool returnToHubObjectiveShown) {
+        this.returnToHubObjectiveShown = returnToHubObjectiveShown;
+    }
+    public bool GetDarklingNestFound() {
+        return darklingNestFound;
+    }
+    public void SetDarklingNestFound(bool darklingNestFound) {
+        this.darklingNestFound = darklingNestFound;
+    }
+    public int GetNPCInteractionsIndex() {
+        return NPCInteractionsIndex;
+    }
+
+    public void SetNPCInteractionsIndex(int NPCInteractionsIndex) {
+        this.NPCInteractionsIndex = NPCInteractionsIndex;
+    }
     public int GetWatcherArtifactTotalFillAmount() {
         return watcherArtifactFillUpTotalAmount;
     }
+
     public int GetWatcherArtifactFillAmount() {
         return watcherArtifactFillUpAmount;
     }
+    public void SetWatcherArtifactFillAmount(int watcherArtifactFillUpAmount) {
+        this.watcherArtifactFillUpAmount = watcherArtifactFillUpAmount;
+    }
+
+
 
     private void OnDestroy() {
         EndLevelAreaCollider.OnPlayerTriggeredInAnyEndLevelArea -= EndLevelAreaCollider_OnPlayerTriggeredInAnyEndLevelArea;
