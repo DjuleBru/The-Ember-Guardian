@@ -109,7 +109,10 @@ public class Portal : MonoBehaviour
 
         if(isStartLevelTeleporter) {
             if (DEBUGMODE) return;
-            if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
+            if (SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+                gameObject.SetActive(false);
+                return;
+            } 
             StartCoroutine(TeleportPlayerOutInLevel());
         }
     }
@@ -218,6 +221,7 @@ public class Portal : MonoBehaviour
 
         if (isHUBTeleporter) {
             HUBManager.Instance.SaveHub();
+            MetaProgressionManager.Instance.DeleteLevelSaveFile();
         }
 
         yield return new WaitForEndOfFrame();

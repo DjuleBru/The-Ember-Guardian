@@ -44,7 +44,7 @@ public class Obstacle : MonoBehaviour {
     public event EventHandler OnPlayerTriggeredOut;
 
     public class OnObstacleBuiltEventArgs:EventArgs {
-        public bool triggerSFX;
+        public bool builtFromGame;
     }
 
     protected virtual void Awake() {
@@ -85,12 +85,12 @@ public class Obstacle : MonoBehaviour {
         SetTriggerExit();
     }
 
-    public void InvokeObstacleBuiltEvents(bool triggerSFX = true) {
+    public void InvokeObstacleBuiltEvents(bool builtFromGame = true) {
         OnObstacleBuilt?.Invoke(this, new OnObstacleBuiltEventArgs {
-            triggerSFX = triggerSFX
+            builtFromGame = builtFromGame
         });
         OnAnyObstacleBuilt?.Invoke(this, new OnObstacleBuiltEventArgs {
-            triggerSFX = triggerSFX
+            builtFromGame = builtFromGame
         });
     }
 

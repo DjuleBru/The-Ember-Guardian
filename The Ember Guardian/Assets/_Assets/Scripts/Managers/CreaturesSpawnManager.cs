@@ -815,6 +815,14 @@ public class CreaturesSpawnManager : MonoBehaviour {
         return currentWaveNumber;
     }
 
+    public int GetCurrentSpecialWaveAmount() {
+        return currentSpecialWaveAmount;
+    }
+
+    public void SetCurrentSpecialWaveAmount(int specialWaveAmount) {
+        this.currentSpecialWaveAmount = specialWaveAmount;
+    }
+
     public float GetRawCurrentWaveDifficulty() {
         float rawWaveDifficulty = waveDifficulty;
         if (bossSpawnsThisNight) {

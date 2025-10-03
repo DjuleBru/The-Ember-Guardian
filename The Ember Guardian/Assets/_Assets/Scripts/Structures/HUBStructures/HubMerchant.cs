@@ -257,12 +257,16 @@ public class HubMerchant : MonoBehaviour
         playerInteractingWithMerchant = false;
 
         if(fadeOutAfterTalk) {
-            yield return new WaitForSeconds(delayToFadeOutAfterTalk);
-            OnMerchantFadeOutStarted?.Invoke(this, EventArgs.Empty);
-            yield return new WaitForSeconds(fadeOutDuration);
-
-            gameObject.SetActive(false);
+            StartCoroutine(FadeOutCoroutine());
         }
+    }
+
+    private IEnumerator FadeOutCoroutine() {
+        yield return new WaitForSeconds(delayToFadeOutAfterTalk);
+        OnMerchantFadeOutStarted?.Invoke(this, EventArgs.Empty);
+        yield return new WaitForSeconds(fadeOutDuration);
+
+        gameObject.SetActive(false);
     }
 
     public void StartTalkingWithMerchant() {
@@ -310,15 +314,17 @@ public class HubMerchant : MonoBehaviour
         }
     }
 
-    public void SetHasTalkLinesToShow(bool hasTalkLinesToShow, bool showExclamationMark = true) {
-        Debug.Log("SetHasTalkLinesToShow " + hasTalkLinesToShow);
-
+    public void SetHasTalkLinesToShow(bool hasTalkLinesToShow, bool showExclamationMark = true, bool loadingFromLevelSave = false) {
         merchantHasTalkLinesToShow = hasTalkLinesToShow;
 
         if (hasTalkLinesToShow && showExclamationMark) {
             OnMerchantHasNewInteraction?.Invoke(this, EventArgs.Empty);
         } else {
             OnMerchantHideExclamationMark?.Invoke(this, EventArgs.Empty);
+
+            if(loadingFromLevelSave && fadeOutAfterTalk) {
+                gameObject.SetActive(false);
+            }
         }
     }
 

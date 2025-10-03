@@ -21,7 +21,7 @@ public class DogReplaceButton : ButtonUI
     }
 
     private void SwapDog() {
-        Dog.Instance.SetDogType(linkedDogType);
+        Dog.Instance.SetDogType(linkedDogType, true);
         OnDogSwapped?.Invoke(this, EventArgs.Empty);
 
         ChangeDogPanel.Instance.OpenClosePanel();

@@ -100,39 +100,41 @@ public class LocalizationManager : MonoBehaviour
         return new LocalizedResult(translatedText, fontToUse);
     }
 
-    public string GetLocalizedText(string key) {
+    public string GetLocalizedText(string key, params object[] args) {
         string translatedText = "";
         LocalizationEntry localizationEntry = null;
+
         foreach (var entry in localizationData.entries) {
             if (entry.key == key) {
                 localizationEntry = entry;
                 switch (currentLanguage.ToString()) {
-                    case "French": translatedText = entry.French;
-                        break;
-                    case "English": translatedText = entry.English;
-                        break;
-                    case "German": translatedText = entry.German;
-                        break;
-                    case "Spanish": translatedText = entry.Spanish;
-                        break;
-                    case "Japanese": translatedText = entry.Japanese;
-                        break;
-                    default: translatedText = entry.English;  // Default language
-                        break;
+                    case "French": translatedText = entry.French; break;
+                    case "English": translatedText = entry.English; break;
+                    case "German": translatedText = entry.German; break;
+                    case "Spanish": translatedText = entry.Spanish; break;
+                    case "Japanese": translatedText = entry.Japanese; break;
+                    default: translatedText = entry.English; break;
                 }
+                break;
             }
         }
-        if(translatedText == "") {
 
-            if(localizationEntry == null) {
+        if (string.IsNullOrEmpty(translatedText)) {
+            if (localizationEntry == null) {
                 Debug.LogError("No localization entry for key " + key);
                 translatedText = key;
-            } else {
+            }
+            else {
                 translatedText = localizationEntry.English;
             }
-
         }
-        return translatedText;  // Return the key if no translation is found
+
+        // Injection des arguments (si présents)
+        if (args != null && args.Length > 0) {
+            translatedText = string.Format(translatedText, args);
+        }
+
+        return translatedText;
     }
 
     public TMP_FontAsset GetCurrentFont() {

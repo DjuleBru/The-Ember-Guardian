@@ -64,6 +64,7 @@ public class Player : MonoBehaviour, IDamageable
     public event EventHandler OnPlayerHealthLoaded;
     public event EventHandler OnPlayerRespawned;
     public event EventHandler OnPlayerBackToTentToRespawn;
+    public event EventHandler OnPlayerPositionSet;
     public event EventHandler OnPlayerEnteredAnyInteractableTriggerArea;
     public event EventHandler OnPlayerExitedAnyInteractableTriggerArea;
     public event EventHandler OnPlayerStartedInteractingWithAnyInteractable;
@@ -389,6 +390,8 @@ public class Player : MonoBehaviour, IDamageable
 
     public bool GetPlayerControlInputsEnabled() {
         // Move, aim, shoot
+        if (SavingManager_Level.Instance != null && SavingManager_Level.Instance.GetLoading()) return false;
+
         return GetAllMenusClosed() && GetInteractingWithNoOtherObject() && !dead && !cameraHasOtherTarget && !cameraHasOtherTarget && !pettingDog;
     }
 
@@ -511,7 +514,9 @@ public class Player : MonoBehaviour, IDamageable
 
     public void SetPosition(Vector3 position) {
         transform.position = position;
+        OnPlayerPositionSet?.Invoke(this, EventArgs.Empty);
     }
+
 
     public void SetHP(int health) {
         this.playerHealth = health;

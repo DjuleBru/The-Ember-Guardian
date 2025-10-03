@@ -53,6 +53,7 @@ public class LevelObjectives : MonoBehaviour
             if (EndLevelArea.Instance != null) {
                 EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
                 EndLevelArea.Instance.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
+                EndLevelArea.Instance.OnEndLevelAreaUnCleared += EndLevelArea_OnEndLevelAreaUnCleared;
                 EndLevelAreaCollider.OnPlayerTriggeredInAnyEndLevelArea += EndLevelAreaCollider_OnPlayerTriggeredInAnyEndLevelArea;
             }
         }
@@ -99,7 +100,9 @@ public class LevelObjectives : MonoBehaviour
         }
     }
 
-    private void ScavengableObstacle_OnAnyObstacleBuilt(object sender, EventArgs e) {
+    private void ScavengableObstacle_OnAnyObstacleBuilt(object sender, Obstacle.OnObstacleBuiltEventArgs e) {
+        if (!e.builtFromGame) return;
+
         ScavengableObstacle obstacle = sender as ScavengableObstacle;
         if (obstacle != null) {
             obstaclesRemoved++;
@@ -118,9 +121,10 @@ public class LevelObjectives : MonoBehaviour
         if(location.GetStructureSOToBuild().structureType == StructureSO.StructureType.currencyStorage_Objective) {
             if(LevelManager.Instance.GetLevelSO().levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
 
+                if (LevelUI_ObjectiveUI.Instance.SubObjectiveAlreadyDisplayed(LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbs)) return;
+
                 List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveList = new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbs };
                 LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveList);
-
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.BuildWatcherArtifact);
 
             }
@@ -349,6 +353,11 @@ public class LevelObjectives : MonoBehaviour
         LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.ClearNest, LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
     }
 
+    private void EndLevelArea_OnEndLevelAreaUnCleared(object sender, EventArgs e) {
+        darklingNestCleared = false;
+        LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.LightFire, LevelUI_ObjectiveUI.SubObjectiveType.ClearNest, false);
+    }
+
     private void EndLevelAreaCollider_OnPlayerTriggeredInAnyEndLevelArea(object sender, EventArgs e) {
         if (darklingNestFound) return;
         darklingNestFound = true;
@@ -446,7 +455,21 @@ public class LevelObjectives : MonoBehaviour
         this.watcherArtifactFillUpAmount = watcherArtifactFillUpAmount;
     }
 
+    public List<bool> GetLevelMerchantsHaveTalkLinesToShow() {
+        List<bool> merchantsHaveTalkLinesToShow = new List<bool>();
+        foreach(HubMerchant merchant in levelMerchantList) {
+            merchantsHaveTalkLinesToShow.Add(merchant.GetMerchantHasNewTalkLinkes());
+        }
 
+        return merchantsHaveTalkLinesToShow;
+    }
+    public void SetLevelMerchantsHaveTalkLinesToShow(List<bool> haveTalkLinesList) {
+        int i = 0;
+        foreach (HubMerchant merchant in levelMerchantList) {
+            merchant.SetHasTalkLinesToShow(haveTalkLinesList[i], true, true);
+            i++;
+        }
+    }
 
     private void OnDestroy() {
         EndLevelAreaCollider.OnPlayerTriggeredInAnyEndLevelArea -= EndLevelAreaCollider_OnPlayerTriggeredInAnyEndLevelArea;

@@ -17,11 +17,13 @@ public class EndLevelArea : MonoBehaviour
     private List<Mob> mobsInArea = new List<Mob>();
     private List<Mob> mobsAggroingPlayer = new List<Mob>();
 
+    public event EventHandler OnEndLevelAreaUnCleared;
     public event EventHandler OnEndLevelAreaCleared;
     public event EventHandler OnEndLevelFireLit;
 
     private bool playerInTriggerArea;
     private bool playerDestroyedNest;
+    private bool endLevelAreaCleared;
 
     private void Awake() {
         Instance = this;
@@ -51,6 +53,11 @@ public class EndLevelArea : MonoBehaviour
         mobsInArea.Add(mob);
         mob.GetComponent<CreatureAI>().OnCreatureTargetPlayer += CreatureAI_OnCreatureTargetPlayer;
         mob.GetComponent<CreatureAI>().OnCreatureUntargetPlayer += CreatureAI_OnCreatureUnaggro;
+
+        if(endLevelAreaCleared) {
+            endLevelAreaCleared = false;
+            OnEndLevelAreaUnCleared?.Invoke(this, EventArgs.Empty);
+        }
 
     }
 
@@ -99,6 +106,8 @@ public class EndLevelArea : MonoBehaviour
         StartCoroutine(ActivateEndLevelTPAfterDelay(1f));
         OnEndLevelAreaCleared?.Invoke(this, EventArgs.Empty);
         MusicManager.Instance.StopCurrentMusic();
+
+        endLevelAreaCleared = true;
     }
 
     private IEnumerator ActivateEndLevelTPAfterDelay(float delay) {

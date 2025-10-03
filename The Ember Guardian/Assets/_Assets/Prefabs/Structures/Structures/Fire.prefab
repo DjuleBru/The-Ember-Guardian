@@ -11093,6 +11093,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814f3a117acff70438f17220495c658b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   fireUI: {fileID: 1462040423932742404}
   extractingEmberAudioSource: {fileID: 7980981743070373733}
   calmFireAudioClip: {fileID: 8300000, guid: 4c19ab16980a9ee45b5681353e4248a7, type: 3}
@@ -48151,6 +48153,7 @@ MonoBehaviour:
   fireLimitLightSprite4: {fileID: 21300000, guid: d610036d5378db84ab1ef31aa40f93c3, type: 3}
   blueLimitLightColor: {r: 0, g: 0.9003706, b: 1, a: 1}
   blueAmbientLightColor: {r: 0.6933962, g: 1, b: 1, a: 1}
+  blueAOELightColor: {r: 1, g: 1, b: 1, a: 1}
   blueFuelledPSMinMaxGradient:
     m_Mode: 2
     m_GradientMin:
@@ -48277,6 +48280,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   redLimitLightColor: {r: 0.754717, g: 0, b: 0, a: 1}
   redAmbientLightColor: {r: 1, g: 0.7216981, b: 0.7216981, a: 1}
+  redAOELightColor: {r: 0.78431374, g: 0.15294118, b: 0.15294118, a: 1}
   redFuelledPSMinMaxGradient:
     m_Mode: 2
     m_GradientMin:
@@ -48403,6 +48407,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   greenLimitLightColor: {r: 0.1397975, g: 0.754717, b: 0, a: 1}
   greenAmbientLightColor: {r: 0.514151, g: 1, b: 0.5160562, a: 1}
+  greenAOELightColor: {r: 1, g: 1, b: 1, a: 1}
   greenFuelledPSMinMaxGradient:
     m_Mode: 2
     m_GradientMin:
@@ -48529,6 +48534,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   purpleLimitLightColor: {r: 0.9085846, g: 0, b: 1, a: 1}
   purpleAmbientLightColor: {r: 0.92373514, g: 0.48584908, b: 1, a: 1}
+  purpleAOELightColor: {r: 1, g: 1, b: 1, a: 1}
   purpleFuelledPSMinMaxGradient:
     m_Mode: 2
     m_GradientMin:

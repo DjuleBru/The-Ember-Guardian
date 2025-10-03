@@ -69,6 +69,7 @@ MonoBehaviour:
   progressionSavedTextIndicator: {fileID: 7187315685161661026}
   savedTextColor: {r: 0.45490196, g: 0.67058825, b: 0.4392157, a: 1}
   unsavedTextColor: {r: 0.7647059, g: 0.5686275, b: 0.13333334, a: 1}
+  progressionLostTextColor: {r: 0.7176471, g: 0.14117648, b: 0.14117648, a: 1}
   saveButton: {fileID: 8176016989452222357}
 --- !u!223 &5671939728703349502
 Canvas:
@@ -363,6 +364,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3480665212783952095, guid: 3f44d0fefd189764bb2eff258020487e, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776951448218277878, guid: 3f44d0fefd189764bb2eff258020487e, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3795097031834395413, guid: 3f44d0fefd189764bb2eff258020487e, type: 3}
@@ -786,6 +791,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8732000804714959850, guid: 3f44d0fefd189764bb2eff258020487e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8997838289141951014, guid: 3f44d0fefd189764bb2eff258020487e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}

@@ -28,7 +28,11 @@ public class Dog : MonoBehaviour
 
     public event EventHandler OnIdleStateChanged;
     public event EventHandler OnPlayerCalledDog;
-    public event EventHandler OnDogTypeChanged;
+    public event EventHandler<OnDogTypeChangedEventArgs> OnDogTypeChanged;
+
+    public class OnDogTypeChangedEventArgs:EventArgs {
+        public bool selectedFromMenu;
+    }
 
     private void Awake() {
         Instance = this; 
@@ -50,7 +54,9 @@ public class Dog : MonoBehaviour
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         currentIdleState = initialIdleState;
 
-        OnDogTypeChanged?.Invoke(this, EventArgs.Empty);
+        OnDogTypeChanged?.Invoke(this, new OnDogTypeChangedEventArgs {
+            selectedFromMenu = false
+        });
 
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             if(SavingManager_Level.Instance.GetLoadingSavedLevel()) {
@@ -131,10 +137,12 @@ public class Dog : MonoBehaviour
         return dogType;
     }
 
-    public void SetDogType(DogType dogType) {
+    public void SetDogType(DogType dogType, bool selectedFromMenu = false) {
         this.dogType = dogType;
         SetCurrentDogAI();
-        OnDogTypeChanged?.Invoke(this, EventArgs.Empty);
+        OnDogTypeChanged?.Invoke(this, new OnDogTypeChangedEventArgs {
+            selectedFromMenu = selectedFromMenu
+        });
 
         //Debug.Log("SetDogType " + dogType);
     }
@@ -159,7 +167,9 @@ public class Dog : MonoBehaviour
 
         this.dogType = dogType;
         SetCurrentDogAI();
-        OnDogTypeChanged?.Invoke(this, EventArgs.Empty);
+        OnDogTypeChanged?.Invoke(this, new OnDogTypeChangedEventArgs {
+            selectedFromMenu = false
+        });
     }
 
     public List<DogAI> GetDogAIList() {

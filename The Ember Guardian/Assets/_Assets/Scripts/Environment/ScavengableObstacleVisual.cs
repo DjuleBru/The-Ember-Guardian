@@ -46,7 +46,6 @@ public class ScavengableObstacleVisual : MonoBehaviour
         int targetFallCount = Mathf.FloorToInt(subElements.Count * destructionProgress);
 
         // Reset
-        Debug.Log("destructionProgress " + destructionProgress);
         elementsFallen = 0;
 
         // Appliquer la destruction déjà subie

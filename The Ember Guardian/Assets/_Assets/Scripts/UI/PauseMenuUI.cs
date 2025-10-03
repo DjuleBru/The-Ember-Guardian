@@ -29,6 +29,7 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] protected Animator progressionSavedTextIndicator;
     [SerializeField] protected Color savedTextColor;
     [SerializeField] protected Color unsavedTextColor;
+    [SerializeField] protected Color progressionLostTextColor;
     [SerializeField] protected Button saveButton;
     protected bool progressionSaved;
 
@@ -121,6 +122,7 @@ public class PauseMenuUI : MonoBehaviour
         backToMenuText.font = LocalizationManager.Instance.GetCurrentFont();
         progressionSavedTextIndicator.SetTrigger("Hide");
     }
+
     private void ButtonConfirm_MainMenu_OnButtonDeHovered(object sender, EventArgs e) {
         confirmBackToMenu = false;
         backToMenuText.text = LocalizationManager.Instance.GetLocalizedText("menu_mainMenu");
@@ -168,7 +170,7 @@ public class PauseMenuUI : MonoBehaviour
         OpenClosePauseMenu();
     }
 
-    private void OpenClosePauseMenu() {
+    protected void OpenClosePauseMenu() {
         isPaused = !isPaused;
         ShowPauseMenu(isPaused);
     }
@@ -257,7 +259,7 @@ public class PauseMenuUI : MonoBehaviour
         HidePauseMenu();
     }
 
-    public void LoadMainMenu() {
+    public virtual void LoadMainMenu() {
         if (confirmBackToMenu || progressionSaved) {
             SceneLoader.Instance.LoadMainMenu(2f);
             OpenClosePauseMenu();
@@ -323,13 +325,5 @@ public class PauseMenuUI : MonoBehaviour
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
     }
 
-    private void OnApplicationQuit() {
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
-            ES3.Save("lastLevel", LevelManager.Instance.GetLevelSO().linkedSceneName);
-            ES3.Save("playerLeftInLevel", true);
-        }
-        else {
-            ES3.Save("playerLeftInLevel", false);
-        }
-    }
+   
 }

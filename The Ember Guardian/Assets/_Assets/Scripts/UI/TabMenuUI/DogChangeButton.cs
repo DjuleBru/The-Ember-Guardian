@@ -32,8 +32,10 @@ public class DogChangeButton : ButtonUI {
         UpdateDogIconImage(Dog.Instance.GetDogType());
     }
 
-    private void Dog_OnDogTypeChanged(object sender, System.EventArgs e) {
+    private void Dog_OnDogTypeChanged(object sender, Dog.OnDogTypeChangedEventArgs e) {
         UpdateDogIconImage(Dog.Instance.GetDogType());
+
+        if (!e.selectedFromMenu) return;
         EventSystem.current.SetSelectedGameObject(gameObject);
     }
 

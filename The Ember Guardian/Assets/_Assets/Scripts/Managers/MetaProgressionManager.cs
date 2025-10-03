@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class MetaProgressionManager : MonoBehaviour
@@ -75,6 +76,11 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     #region GENERAL
+
+    public void DeleteLevelSaveFile() {
+        ES3.DeleteFile("LevelSave.es3");
+    }
+
     public bool GetSavedOnce() {
         return ES3.Load("savedOnce", false);
     }
@@ -92,6 +98,18 @@ public class MetaProgressionManager : MonoBehaviour
         ES3.Save("dropRedOrbsUnlocked", true);
     }
 
+    public bool GetPlayerLeftInLevel() {
+        return ES3.Load("playerLeftInLevel", false);
+    }
+
+    public void SetPlayerLeftFromLevel(bool leftInLevel) {
+        ES3.Save("playerLeftInLevel", leftInLevel);
+    }
+
+    public void SetLastLevel(string sceneName) {
+        ES3.Save("lastLevel", sceneName);
+    }
+
     #endregion
 
     #region TUTORIAL
@@ -99,8 +117,10 @@ public class MetaProgressionManager : MonoBehaviour
         ES3.Save("tutorialComplete", true);
     }
 
-    public bool GetTutorialCompleted() {
-        return ES3.Load("tutorialComplete", false);
+    public bool GetTutorialCompletedOrSkipped() {
+        bool tutorialCompleted = ES3.Load("tutorialComplete", false);
+        bool tutorialSkipped = ES3.Load("tutorialSkipped", false);
+        return tutorialCompleted || tutorialSkipped;
     }
     public void SetTutorialSkipped() {
         ES3.Save("tutorialSkipped", true);
@@ -545,8 +565,11 @@ public class MetaProgressionManager : MonoBehaviour
 
     #endregion
 
+
+
     private void OnApplicationQuit() {
-        if(destroySaveOnApplicationQuit) {
+
+        if (destroySaveOnApplicationQuit) {
             ES3.DeleteFile("SaveFile.es3");
         }
     }

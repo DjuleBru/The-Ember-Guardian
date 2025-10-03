@@ -191,14 +191,14 @@ public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
         minerAssignedList.Clear();
     }
 
-    public override void BuildObstacle(bool triggerSFX = true) {
+    public override void BuildObstacle(bool builtFromGame = true) {
         foreach (Collider2D collider in blockingColliders) {
             collider.enabled = false;
         }
 
         depleted = true;
         obstacleBuilt = true;
-        InvokeObstacleBuiltEvents(triggerSFX);
+        InvokeObstacleBuiltEvents(builtFromGame);
         SetTriggerExit();
     }
 
@@ -298,12 +298,15 @@ public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
         return hitsTaken;
     }
 
-    public void SetHealth(int health) {
+    public void LoadHealth(int health) {
         this.health = health;
 
         OnHealthLoaded?.Invoke(this, EventArgs.Empty);
+
         if (health <= 0) {
-            Die();
+            OnScavengableDepleted?.Invoke(this, EventArgs.Empty);
+            BuildObstacle(false);
+            UnassignAllMiners();
         }
     }
 

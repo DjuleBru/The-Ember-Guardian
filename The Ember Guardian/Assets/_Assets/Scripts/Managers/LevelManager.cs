@@ -26,6 +26,8 @@ public class LevelManager : MonoBehaviour
     private float maxLevelLimit;
 
     private bool levelSucceeded;
+    private bool conditionalLockedStructureLocationUnlocked;
+    private bool conditionalLockedStructureLocationBuilt;
     private int levelHubMerchantInteractionIndex;
 
     public event EventHandler OnNewLocationShown;
@@ -40,8 +42,9 @@ public class LevelManager : MonoBehaviour
 
 
     private void Start() {
-        if(conditionalLockedStructureLocation != null) {
+        if(conditionalLockedStructureLocation != null && !conditionalLockedStructureLocationUnlocked) {
             conditionalLockedStructureLocation.gameObject.SetActive(false);
+            conditionalLockedStructureLocation.OnStructureBuilt += ConditionalLockedStructureLocation_OnStructureBuilt;
         }
 
         if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest) {
@@ -61,15 +64,23 @@ public class LevelManager : MonoBehaviour
         }
 
         if (levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
-            levelHubMerchant.SetHasTalkLinesToShowAfterDelay(false,false, 1f);
             levelHubMerchant.OnPlayerStoppedInteractingWithHubMerchant += LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant;
             LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
+
+            if(!SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+                levelHubMerchant.SetHasTalkLinesToShowAfterDelay(false, false, 1f);
+            }
+
         }
 
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         ES3.Save("lastLevelEnvironment", levelSO.environmentType);
 
         RefreshLevelLimits();
+    }
+
+    private void ConditionalLockedStructureLocation_OnStructureBuilt(object sender, EventArgs e) {
+        conditionalLockedStructureLocationBuilt = true;
     }
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
@@ -152,6 +163,7 @@ public class LevelManager : MonoBehaviour
             if (conditionalLockedStructureLocation != null) {
                 conditionalLockedStructureLocation.gameObject.SetActive(true);
                 conditionalLockedStructureLocation.UnlockStructureLocation();
+                conditionalLockedStructureLocationUnlocked = true;
                 Debug.Log("LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant");
             }
         }
@@ -173,8 +185,6 @@ public class LevelManager : MonoBehaviour
 
     [Button]
     public void LevelSuccess(float delayToReturnToHub = 2f) {
-        Debug.Log("LevelSuccess");
-        Debug.Log("levelSucceeded " + levelSucceeded);
 
         if (levelSucceeded) return;
         Vector3 endLevelPortalPosition = endLevelPortal.transform.position; 
@@ -319,15 +329,37 @@ public class LevelManager : MonoBehaviour
     }
 
     public bool GetLevelHubMerchantHasTalkLinesToShow() {
+        if (levelHubMerchant == null) return false;
+
         return levelHubMerchant.GetMerchantHasNewTalkLinkes();
     }
     public void SetLevelHubMerchantHasTalkLinesToShow(bool hasTalkLines) {
-        levelHubMerchant.SetHasTalkLinesToShow(hasTalkLines);
+        if (levelHubMerchant == null) return;
+        levelHubMerchant.SetHasTalkLinesToShow(hasTalkLines, true, true);
     }
 
 
     public void SetLevelHubMerchantInteractionIndex(int levelHubMerchantInteractionIndex) {
         this.levelHubMerchantInteractionIndex = levelHubMerchantInteractionIndex;
+    }
+
+    public bool GetConditionalLockedStructureLocationUnlocked() {
+        return conditionalLockedStructureLocationUnlocked;
+    }
+    public bool GetConditionalLockedStructureLocationBuilt() {
+        return conditionalLockedStructureLocationBuilt;
+    }
+
+    public void SetConditionalLockedStructureLocationState(bool conditionalLockedStructureLocationUnlocked, bool conditionalLockedStructureLocationBuilt) {
+        this.conditionalLockedStructureLocationUnlocked = conditionalLockedStructureLocationUnlocked;
+        this.conditionalLockedStructureLocationBuilt = conditionalLockedStructureLocationBuilt;
+
+        if(conditionalLockedStructureLocationUnlocked && conditionalLockedStructureLocation != null) {
+            if (conditionalLockedStructureLocationBuilt) return;
+
+            conditionalLockedStructureLocation.gameObject.SetActive(true);
+            conditionalLockedStructureLocation.UnlockStructureLocation();
+        }
     }
 
     private void OnDestroy() {

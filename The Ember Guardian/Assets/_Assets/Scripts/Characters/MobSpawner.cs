@@ -52,7 +52,7 @@ public class MobSpawner : MonoBehaviour
 
     protected bool mobsCanSpawnAtDawn = true;
     protected bool ambushSpawned;
-    protected bool firstDawnAfterLoad;
+    protected bool firstDawnAfterLoad = true;
 
     public class OnMobSpawnedEventArgs : EventArgs {
         public Mob mob;
@@ -79,6 +79,7 @@ public class MobSpawner : MonoBehaviour
             firstDawnAfterLoad = true;
             return;
         }
+
         SpawnMobs(mobAmountToSpawn);
     }
 
@@ -124,6 +125,7 @@ public class MobSpawner : MonoBehaviour
         if (!mobsCanSpawnAtDawn) return;
         if (firstDawnAfterLoad) {
             firstDawnAfterLoad = false;
+            return;
         }
 
         int mobAmountToSpawnOnDawn = mobAmountToSpawn - mobSpawnedList.Count;
@@ -141,6 +143,9 @@ public class MobSpawner : MonoBehaviour
     }
 
     public virtual void SpawnMobs(int mobAmount) {
+        if (mobPrefab == null) return;
+        if (ambushSpawned) return;
+
         for (int i = 0; i < mobAmount; i++) {
 
             float positionRandomizer = UnityEngine.Random.Range(-spawnPositionRandomizer, spawnPositionRandomizer);

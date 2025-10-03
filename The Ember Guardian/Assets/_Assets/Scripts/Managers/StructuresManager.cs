@@ -31,10 +31,12 @@ public class StructuresManager : MonoBehaviour
         return structureLocationsList;
     }
     public void AddStructureLocation(StructureLocation location) {
+        if (structureLocationsList.Contains(location)) return;
         structureLocationsList.Add(location);
     }
 
     public void AddBuiltStructure(Structure structure) {
+        if (structuresBuiltList.Contains(structure)) return;
         structuresBuiltList.Add(structure);
     }
     public void RemoveBuiltStructure(Structure structure) {

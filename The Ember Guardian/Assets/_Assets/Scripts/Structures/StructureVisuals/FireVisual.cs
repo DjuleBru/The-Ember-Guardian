@@ -49,24 +49,28 @@ public class FireVisual : StructureVisual
 
     [SerializeField] private Color blueLimitLightColor;
     [SerializeField] private Color blueAmbientLightColor;
+    [SerializeField] private Color blueAOELightColor;
     [SerializeField] private ParticleSystem.MinMaxGradient blueFuelledPSMinMaxGradient;
     [SerializeField] private Gradient blueContinuousPSColorGradient;
     [SerializeField] private Gradient blueOtherPSColorGradient;
 
     [SerializeField] private Color redLimitLightColor;
     [SerializeField] private Color redAmbientLightColor;
+    [SerializeField] private Color redAOELightColor;
     [SerializeField] private ParticleSystem.MinMaxGradient redFuelledPSMinMaxGradient;
     [SerializeField] private Gradient redContinuousPSColorGradient;
     [SerializeField] private Gradient redOtherPSColorGradient;
 
     [SerializeField] private Color greenLimitLightColor;
     [SerializeField] private Color greenAmbientLightColor;
+    [SerializeField] private Color greenAOELightColor;
     [SerializeField] private ParticleSystem.MinMaxGradient greenFuelledPSMinMaxGradient;
     [SerializeField] private Gradient greenContinuousPSColorGradient;
     [SerializeField] private Gradient greenOtherPSColorGradient;
 
     [SerializeField] private Color purpleLimitLightColor;
     [SerializeField] private Color purpleAmbientLightColor;
+    [SerializeField] private Color purpleAOELightColor;
     [SerializeField] private ParticleSystem.MinMaxGradient purpleFuelledPSMinMaxGradient;
     [SerializeField] private Gradient purpleContinuousPSColorGradient;
     [SerializeField] private Gradient purpleOtherPSColorGradient;
@@ -132,6 +136,7 @@ public class FireVisual : StructureVisual
     private void SetPrimordialFireColors(Fire.PrimordialFireColor fireColor) {
         Color limitLightColor = blueLimitLightColor;
         Color ambientLightColor = blueAmbientLightColor;
+        Color AOELightColor = blueAOELightColor;
         Gradient continuousPSColorGradient = blueContinuousPSColorGradient;
         Gradient otherPSColorGradient = blueOtherPSColorGradient;
         ParticleSystem.MinMaxGradient fuelledPSMinMaxGradient = blueFuelledPSMinMaxGradient;
@@ -140,6 +145,7 @@ public class FireVisual : StructureVisual
 
         if(fireColor == Fire.PrimordialFireColor.Red) {
             limitLightColor = redLimitLightColor;
+            AOELightColor = redAOELightColor;
             ambientLightColor = redAmbientLightColor;
             continuousPSColorGradient = redContinuousPSColorGradient;
             otherPSColorGradient = redOtherPSColorGradient;
@@ -151,6 +157,7 @@ public class FireVisual : StructureVisual
         if (fireColor == Fire.PrimordialFireColor.Green) {
             limitLightColor = greenLimitLightColor;
             ambientLightColor = greenAmbientLightColor;
+            AOELightColor = greenAOELightColor;
             continuousPSColorGradient = greenContinuousPSColorGradient;
             otherPSColorGradient = greenOtherPSColorGradient;
             fuelledPSMinMaxGradient = greenFuelledPSMinMaxGradient;
@@ -161,6 +168,7 @@ public class FireVisual : StructureVisual
         if (fireColor == Fire.PrimordialFireColor.Purple) {
             limitLightColor = purpleLimitLightColor;
             ambientLightColor = purpleAmbientLightColor;
+            AOELightColor = purpleAOELightColor;
             continuousPSColorGradient = purpleContinuousPSColorGradient;
             otherPSColorGradient = purpleOtherPSColorGradient;
             fuelledPSMinMaxGradient = purpleFuelledPSMinMaxGradient;
@@ -170,6 +178,7 @@ public class FireVisual : StructureVisual
 
         if (fireColor == Fire.PrimordialFireColor.Orange) return;
 
+        AOEFireLight.color = AOELightColor;
         fireLimitLight.color = limitLightColor;
         fireLimitLightSpriteRenderer.color = limitLightColor;
 

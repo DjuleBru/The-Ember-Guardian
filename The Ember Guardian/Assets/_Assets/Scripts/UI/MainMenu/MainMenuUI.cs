@@ -171,13 +171,14 @@ public class MainMenuUI : MonoBehaviour {
 
         yield return new WaitForSeconds(1f);
 
+        // DEMO
         if (VersioningManager.Instance.GetIsDemo()) {
-            bool demoTutorialCompleted = MetaProgressionManager.Instance.tutorialComplete;
+            bool demoTutorialCompleted = MetaProgressionManager.Instance.GetTutorialCompletedOrSkipped();
             if (!demoTutorialCompleted) {
                 SceneLoader.Instance.LoadDemoIntro(2f);
             }
             else {
-                bool playerLeftInLevel = ES3.Load("playerLeftInLevel", false);
+                bool playerLeftInLevel = MetaProgressionManager.Instance.GetPlayerLeftInLevel();
 
                 if(playerLeftInLevel) {
                     SceneLoader.Instance.LoadLastLevel(1f);
@@ -188,9 +189,17 @@ public class MainMenuUI : MonoBehaviour {
             }
 
         }
+        // FULL GAME
         else {
-            if (MetaProgressionManager.Instance.tutorialComplete) {
-                SceneLoader.Instance.LoadHub(1f);
+            if (MetaProgressionManager.Instance.GetTutorialCompletedOrSkipped()) {
+                bool playerLeftInLevel = MetaProgressionManager.Instance.GetPlayerLeftInLevel();
+
+                if (playerLeftInLevel) {
+                    SceneLoader.Instance.LoadLastLevel(1f);
+                }
+                else {
+                    SceneLoader.Instance.LoadHub(1f);
+                }
             }
             else {
                 SceneLoader.Instance.LoadTutorial(1f);

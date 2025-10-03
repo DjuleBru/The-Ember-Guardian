@@ -35,7 +35,7 @@
  {
    "key": "Japanese",
    "English": "",
-   "Japanese": "イタリア語",
+   "Japanese": "日本語",
    "French": "",
    "German": "",
    "Spanish": ""
@@ -4913,6 +4913,14 @@
    "Spanish": "Criaturas"
  },
  {
+   "key": "Discoveries",
+   "English": "Discoveries",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
    "key": "Tutorial",
    "English": "Ignition Protocol",
    "Japanese": "",
@@ -5690,7 +5698,7 @@
  },
  {
    "key": "VideoTip_EngineersAdvanced2",
-   "English": "• They’ll refuel the fire, deliver orbs, and load ammo into towers.",
+   "English": "• They’ll refuel the fire, deliver orbs to crafters, and load ammo into towers.",
    "Japanese": "",
    "French": "",
    "German": "",
@@ -7291,6 +7299,30 @@
  {
    "key": "card_newDarkCompanionStompStunDuration",
    "English": "New Stun Duration",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "card_currentMeleeDamage",
+   "English": "Current Melee Damage",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "card_initialMeleeDamage",
+   "English": "Melee Damage",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "card_newMeleeDamage",
+   "English": "New Melee Damage",
    "Japanese": "",
    "French": "",
    "German": "",
@@ -10657,6 +10689,30 @@
    "Spanish": ""
  },
  {
+   "key": "Stockbreaker",
+   "English": "Stockbreaker",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "Stockbreaker_Description",
+   "English": "Increases melee strike damage.",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "Stockbreaker_UnlockDescription",
+   "English": "A reinforced grip and hardened stock built for close-quarters.",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
    "key": "Bio-Regen Module",
    "English": "Bio-Regen Module",
    "Japanese": "",
@@ -12929,8 +12985,312 @@
    "Spanish": ""
  },
  {
-   "key": "",
-   "English": "Le Colosse",
+   "key": "card_findInLevel",
+   "English": "FIND IN LEVEL",
+   "Japanese": "",
+   "French": "TROUVER",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "menu_master",
+   "English": "Master",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "menu_dog",
+   "English": "Dog",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "menu_videoTips",
+   "English": "Manual",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "menu_waterPerspective",
+   "English": "Water Perspective",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "menu_reflections",
+   "English": "Reflections Quality",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "menu_takesEffectOnReload",
+   "English": "Takes effect on reload",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "menu_zoom",
+   "English": "Zoom level",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "menu_lastProgressionSaved",
+   "English": "Last Save: {0}m {1}s ago",
+   "Japanese": "",
+   "French": "Dernière sauvegarde : il y a {0}min {1}s",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedMiner1",
+   "English": "<slide a=.2>Dig dig dig…</slide>",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedMiner2",
+   "English": "Found a shine!",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedMiner3",
+   "English": "<wiggle a=.05 f=2>Shiny orbs!</wiggle>",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedMiner4",
+   "English": "<bounce a=.3 f=1.3>Treasure!</bounce>",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedMiner5",
+   "English": "I’ll scavenge!",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedMiner6",
+   "English": "For the flame’s fuel.",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedMiner7",
+   "English": "<shake a=.2>Crack! Break!</shake>",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedMiner8",
+   "English": "<slide a=.2>Scraps for us…</slide>",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedMiner9",
+   "English": "Rubble hides secrets.",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedMiner10",
+   "English": "Loot secured.",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedEngineer1",
+   "English": "<wave a=.2 f=1.3>Wrench ready!</wave>",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedEngineer2",
+   "English": "Turrets armed!",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedEngineer3",
+   "English": "<wiggle a=.05 f=2>Click, tighten!</wiggle>",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedEngineer4",
+   "English": "<shake a=.3>More bolts!</shake>",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedEngineer5",
+   "English": "<bounce a=.25 f=1.2>Boosted!</bounce>",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedEngineer6",
+   "English": "Structures reinforced.",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedEngineer7",
+   "English": "Ammo steady.",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedEngineer8",
+   "English": "<shake a=.3>Keep firing!</shake>",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedEngineer9",
+   "English": "Systems synced!",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedEngineer10",
+   "English": "I’ll fix it.",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedGuard1",
+   "English": "Stand firm.",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedGuard2",
+   "English": "<shake a=.3>Shield up!</shake>",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedGuard3",
+   "English": "I’ll hold them.",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedGuard4",
+   "English": "For the flame!",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedGuard5",
+   "English": "<wiggle a=.05 f=2>Come at me!</wiggle>",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedGuard6",
+   "English": "Strong stance.",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedGuard7",
+   "English": "<bounce a=.2 f=1.2>Defend!</bounce>",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedGuard8",
+   "English": "Unbroken line.",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedGuard9",
+   "English": "They won’t pass.",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "worker_assignedGuard10",
+   "English": "<slide a=.2>Hold the night…</slide>",
    "Japanese": "",
    "French": "",
    "German": "",

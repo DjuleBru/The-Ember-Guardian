@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -26,6 +27,20 @@ public class PauseMenuUI_Level : PauseMenuUI {
         progressionSavedTextIndicator.SetTrigger("Hide");
     }
 
+    public override void LoadMainMenu() {
+
+        if (confirmBackToMenu || progressionSaved) {
+            SceneLoader.Instance.LoadMainMenu(2f);
+            OpenClosePauseMenu();
+        }
+
+        else {
+            confirmBackToMenu = true;
+            ShowProgressionSavedText();
+            progressionSavedTextIndicator.SetTrigger("Show");
+        }
+    }
+
     public void BackToHubButton() {
 
         if (confirmBackToHub) {
@@ -48,10 +63,8 @@ public class PauseMenuUI_Level : PauseMenuUI {
             confirmBackToHub = true;
             backToHubText.text = LocalizationManager.Instance.GetLocalizedText("menu_confirm");
             backToHubText.font = LocalizationManager.Instance.GetCurrentFont();
-            progressionSavedTextIndicator.SetTrigger("Show"); 
-            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedText("menu_progressionNotSaved");
-            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = unsavedTextColor;
-        
+            ShowProgressionWillBeLost();
+
         }
     }
 
@@ -67,10 +80,36 @@ public class PauseMenuUI_Level : PauseMenuUI {
         else {
             confirmExitGame = true;
             exitGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_confirm");
-            progressionSavedTextIndicator.SetTrigger("Show");
-            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedText("menu_progressionNotSaved");
-            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = unsavedTextColor;
+            ShowProgressionSavedText();
         }
     }
+
+    private void ShowProgressionSavedText() {
+        progressionSavedTextIndicator.SetTrigger("Show");
+
+        if (SavingManager_Level.Instance.GetSavedOnce()) {
+
+            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = SavingManager_Level.Instance.GetLocalizedLastSaveText();
+            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = savedTextColor;
+
+        } else {
+
+            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedText("menu_progressionNotSaved");
+            progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = unsavedTextColor;
+
+        }
+
+    }
+
+    private void ShowProgressionWillBeLost() {
+        progressionSavedTextIndicator.SetTrigger("Show");
+
+
+        progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedText("menu_progressionWillBeLost");
+        progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = progressionLostTextColor;
+
+
+    }
+
 
 }

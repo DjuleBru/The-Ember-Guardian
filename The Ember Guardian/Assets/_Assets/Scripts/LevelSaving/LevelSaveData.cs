@@ -4,6 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class LevelSaveData {
 
+    public string sceneName;
     public int currentDay;
 
     public LevelUI_ObjectiveUI.ObjectiveType currentObjectiveType;
@@ -15,10 +16,13 @@ public class LevelSaveData {
     public bool darklingNestCleared;
     public bool returnToHubObjectiveShown;
     public bool levelSucceeded;
-
     public bool hubMerchantHasTalkLinesToShow;
+    public bool conditionalLockedStructureLocationUnlocked;
+    public bool conditionalLockedStructureLocationBuilt;
+    public List<bool> hubMerchantsHaveTalkLinesToShow_LevelObjectives;
 
 
+    public int currentSpecialWaveAmount;
     public int NPCInteractionsIndex;
     public int levelManager_levelHubMerchantInteractionIndex;
     public int nightsSurvived;

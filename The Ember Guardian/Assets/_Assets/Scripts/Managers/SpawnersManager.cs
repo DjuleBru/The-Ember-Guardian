@@ -9,16 +9,10 @@ public class SpawnersManager : MonoBehaviour
     private List<MobSpawner> mobSpawners = new List<MobSpawner>();
     private void Awake() {
         Instance = this;
-        InitializeSpawners();
     }
 
-    public void InitializeSpawners() {
-        MobSpawner[] mobSpawnerChilds = GetComponentsInChildren<MobSpawner>();
-        foreach(MobSpawner spawner in mobSpawnerChilds) {
-            mobSpawners.Add(spawner);
-        }
-    }
     public void AddSpawner(MobSpawner spawner) {
+        if (mobSpawners.Contains(spawner)) return;
         mobSpawners.Add(spawner);
     }
 

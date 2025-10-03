@@ -130,4 +130,8 @@ public class VideoTipUI_ManualPanel : MonoBehaviour
         replayNav.selectOnLeft = lastSelectedTipButton; //  maintenant ça revient au dernier tip sélectionné
         replayTipButton.navigation = replayNav;
     }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
+    }
 }

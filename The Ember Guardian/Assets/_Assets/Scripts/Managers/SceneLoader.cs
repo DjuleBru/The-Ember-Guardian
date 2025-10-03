@@ -10,6 +10,7 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private SceneType sceneType;
     [SerializeField] private Animator transitionAnimator;
     [SerializeField] private GameObject blackBackground;
+    [SerializeField] private GameObject loadingIcon;
     [SerializeField] private LevelSO defaultLevelSO;
     [SerializeField] private bool isDemoIntro;
 
@@ -38,8 +39,35 @@ public class SceneLoader : MonoBehaviour
         transitionAnimator.speed = .5f;
         QualitySettings.vSyncCount = 1;
         Application.targetFrameRate = 60;
-       
+
         StartCoroutine(RemoveBlackBackgroundAfterDelay(.1f));
+
+        if (sceneType == SceneType.Level) {
+            if(SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+                SavingManager_Level.Instance.OnLoadGameEnded += SavingManager_OnLoadGameEnded;
+                return;
+            }
+        };
+
+        transitionAnimator.SetTrigger("End");
+        loadingIcon.gameObject.SetActive(false);
+        StartCoroutine(SetCrossadeEndedAfterDelay(1.5f));
+    }
+
+
+    private void Start() {
+        SetPlayerLeftFromLevel();
+
+        if (sceneType != SceneType.Level) return;
+        if(SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+            loadingIcon.gameObject.SetActive(true);
+        } else {
+            loadingIcon.gameObject.SetActive(false);
+        }
+    }
+
+    private void SavingManager_OnLoadGameEnded(object sender, EventArgs e) {
+        transitionAnimator.SetTrigger("End");
         StartCoroutine(SetCrossadeEndedAfterDelay(1.5f));
     }
 
@@ -47,6 +75,7 @@ public class SceneLoader : MonoBehaviour
     public SceneType GetSceneType() {
         return sceneType;
     }
+
     public void LoadTutorial(float crossfadeDuration) {
         Debug.Log("LoadTutorial ");
         StartCoroutine(LoadSceneAfterCrossfade("Level0_Tutorial", crossfadeDuration));
@@ -105,6 +134,7 @@ public class SceneLoader : MonoBehaviour
         yield return new WaitForSeconds(delay);
         isCrossfading = false;
     }
+
     public void StartFadeOut() {
         OnSceneFadeIn?.Invoke(this, EventArgs.Empty);
         transitionAnimator.SetTrigger("Start");
@@ -114,4 +144,14 @@ public class SceneLoader : MonoBehaviour
         return isCrossfading;
     }
 
+    private void SetPlayerLeftFromLevel() {
+        if (sceneType == SceneType.Level) {
+            MetaProgressionManager.Instance.SetPlayerLeftFromLevel(true);
+            MetaProgressionManager.Instance.SetLastLevel(SceneManager.GetActiveScene().name);
+        }
+
+        if (sceneType == SceneType.HUB) {
+            MetaProgressionManager.Instance.SetPlayerLeftFromLevel(false);
+        }
+    }
 }

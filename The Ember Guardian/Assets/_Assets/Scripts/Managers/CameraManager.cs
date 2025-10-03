@@ -212,4 +212,20 @@ public class CameraManager : MonoBehaviour
     public bool GetCameraCenteredOnPlayer() {
         return cameraCenteredOnPlayer;
     }
+
+    public void SetCameraPositionToPlayer() {
+
+        virtualCamera.OnTargetObjectWarped(
+            Player.Instance.transform,
+            Player.Instance.transform.position - virtualCamera.transform.position
+        );
+
+        // Optionnel : reset le blend pour être sûr
+        var brain = Camera.main.GetComponent<CinemachineBrain>();
+        if (brain != null) {
+            brain.m_DefaultBlend.m_Style = CinemachineBlendDefinition.Style.Cut;
+        }
+
+        cameraCenteredOnPlayer = true;
+    }
 }

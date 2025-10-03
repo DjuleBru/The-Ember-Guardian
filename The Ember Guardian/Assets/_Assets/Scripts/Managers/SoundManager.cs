@@ -779,7 +779,7 @@ public class SoundManager : MonoBehaviour
     #region STRUCTURES
 
     private void Obstacle_OnAnyObstacleBuilt(object sender, Obstacle.OnObstacleBuiltEventArgs e) {
-        if (!e.triggerSFX) return;
+        if (!e.builtFromGame) return;
         AudioClip audioClip = (sender as Obstacle).GetObstacleBuiltAudioClip();
         PlaySound2D(audioClip);
     }
@@ -1008,6 +1008,11 @@ public class SoundManager : MonoBehaviour
         if(probabilityToPlaySound > randomFloat) {
             return true;
         } else { return false; }
+    }
+
+    public void SetInitialEmberGiven(bool given) {
+        Debug.Log("SetInitialEmberGiven " + given);
+        initialEmberGiven = given;
     }
 
     private void OnDestroy() {

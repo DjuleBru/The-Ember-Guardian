@@ -3,18 +3,37 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SavingManager_Level : MonoBehaviour
 {
     public static SavingManager_Level Instance;
     private bool loadingSavedLevel;
+    private bool firstDawnAfterGameStart = true;
+    private bool isLoading;
+    private bool gameSavedOnce;
+    private DateTime lastSaveTime;
+
+    public event EventHandler OnLoadGameEnded;
+    public event EventHandler OnSaveGameStarted;
+    public event EventHandler OnSaveGameEnded;
 
     private void Awake() {
+        Debug.Log("SavingManager_Level Awake");
         Instance = this;
 
         if (ES3.FileExists("LevelSave.es3")) {
-            Debug.Log($"[Save] Save file found for scene" + "LevelSave" + " loading...");
+
+            if (!ES3.KeyExists("LevelState", "LevelSave.es3")) return;
+            LevelSaveData saveData = ES3.Load<LevelSaveData>("LevelState", "LevelSave.es3");
+
+            if(saveData.sceneName != SceneManager.GetActiveScene().name) {
+                ES3.DeleteFile("LevelSave.es3");
+                return;
+            }
+
             loadingSavedLevel = true;
+            Debug.Log($"[Save] Save file found for scene" + "LevelSave" + " loading...");
         }
         else {
             Debug.Log($"[Save] No save file for scene {"LevelSave"}, starting fresh.");
@@ -31,13 +50,18 @@ public class SavingManager_Level : MonoBehaviour
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
-        if (DayNightManager.Instance.GetCurrentDay() == 0) return;
+        if (firstDawnAfterGameStart) {
+            firstDawnAfterGameStart = false;
+            return;
+        };
+
         SaveGame();
     }
 
     #region SAVE
 
     private void SaveGame() {
+        OnSaveGameStarted?.Invoke(this, EventArgs.Empty);
         StartCoroutine(SaveAfterDelay(1f));
     }
 
@@ -66,6 +90,8 @@ public class SavingManager_Level : MonoBehaviour
         yield return new WaitForEndOfFrame();
 
         SaveTrapUpgrades();
+        yield return new WaitForEndOfFrame();
+
         SaveTrapTypes();
         yield return new WaitForEndOfFrame();
 
@@ -77,11 +103,18 @@ public class SavingManager_Level : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
         SaveTrialAreas();
+
+        yield return new WaitForSeconds(3f);
+
+        OnSaveGameEnded?.Invoke(this, EventArgs.Empty);
+        gameSavedOnce = true;
+        lastSaveTime = DateTime.Now;
     }
 
     private void SaveLevelState() {
         LevelSaveData levelSaveData = new LevelSaveData();
 
+        levelSaveData.sceneName = SceneManager.GetActiveScene().name;
         levelSaveData.currentDay = DayNightManager.Instance.GetCurrentDay();
         levelSaveData.currentObjectiveType = LevelUI_ObjectiveUI.Instance.GetCurrentObjectiveType();
         levelSaveData.currentSubObjectiveTypeList = LevelUI_ObjectiveUI.Instance.GetCurrentSubObjectivesList();
@@ -91,9 +124,13 @@ public class SavingManager_Level : MonoBehaviour
         levelSaveData.darklingNestFound = LevelObjectives.Instance.GetDarklingNestFound();
         levelSaveData.darklingNestCleared = LevelObjectives.Instance.GetDarklingNestCleared();
         levelSaveData.returnToHubObjectiveShown = LevelObjectives.Instance.GetReturnToHubObjectiveShown();
+        levelSaveData.conditionalLockedStructureLocationBuilt = LevelManager.Instance.GetConditionalLockedStructureLocationBuilt();
+        levelSaveData.conditionalLockedStructureLocationUnlocked = LevelManager.Instance.GetConditionalLockedStructureLocationUnlocked();
         levelSaveData.hubMerchantHasTalkLinesToShow = LevelManager.Instance.GetLevelHubMerchantHasTalkLinesToShow();
+        levelSaveData.hubMerchantsHaveTalkLinesToShow_LevelObjectives = LevelObjectives.Instance.GetLevelMerchantsHaveTalkLinesToShow();
         levelSaveData.levelSucceeded = LevelManager.Instance.GetLevelSucceeded();
 
+        levelSaveData.currentSpecialWaveAmount = CreaturesSpawnManager.Instance.GetCurrentSpecialWaveAmount();
         levelSaveData.NPCInteractionsIndex = LevelObjectives.Instance.GetNPCInteractionsIndex();
         levelSaveData.levelManager_levelHubMerchantInteractionIndex = LevelManager.Instance.GetLevelHubMerchantInteractionIndex();
         levelSaveData.nightsSurvived = LevelObjectives.Instance.GetNightsSurvived();
@@ -471,18 +508,31 @@ public class SavingManager_Level : MonoBehaviour
 
     [Button]
     public void LoadGame() {
-        StartCoroutine(LoadLevelState());
-        StartCoroutine(LoadCollectibles());
-        StartCoroutine(LoadWorkers());
-        StartCoroutine(LoadSpawners());
-        StartCoroutine(LoadPlayer());
-        StartCoroutine(LoadStructures());
-        StartCoroutine(LoadTraps());
-        StartCoroutine(LoadObstacles());
-        StartCoroutine(LoadScavengableObstacles());
-        StartCoroutine(LoadScavengables());
-        StartCoroutine(LoadChests());
-        StartCoroutine(LoadTrialAreas());
+        AudioListener.pause = true;
+        isLoading = true;
+        StartCoroutine(LoadGameCoroutine());
+    }
+
+    private IEnumerator LoadGameCoroutine() {
+        yield return StartCoroutine(LoadPlayer());
+        yield return StartCoroutine(LoadLevelState());
+        yield return StartCoroutine(LoadCollectibles());
+        yield return StartCoroutine(LoadWorkers());
+        yield return StartCoroutine(LoadSpawners());
+        yield return StartCoroutine(LoadStructures());
+        yield return StartCoroutine(LoadTraps());
+        yield return StartCoroutine(LoadObstacles());
+        yield return StartCoroutine(LoadScavengableObstacles());
+        yield return StartCoroutine(LoadScavengables());
+        yield return StartCoroutine(LoadChests());
+        yield return StartCoroutine(LoadTrialAreas());
+        yield return StartCoroutine(LoadObjectives());
+
+        // Quand tout est fini
+        isLoading = false;
+        CameraManager.Instance.SetCameraPositionToPlayer();
+        AudioListener.pause = false;
+        OnLoadGameEnded?.Invoke(this, EventArgs.Empty);
     }
 
 
@@ -495,9 +545,7 @@ public class SavingManager_Level : MonoBehaviour
 
         DayNightManager.Instance.LoadCurrentDay(saveData.currentDay);
 
-        LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(saveData.currentObjectiveType);
-        LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(saveData.currentSubObjectiveTypeList);
-
+        CreaturesSpawnManager.Instance.SetCurrentSpecialWaveAmount(saveData.currentSpecialWaveAmount);
         LevelObjectives.Instance.SetEmberExtracted(saveData.emberExtracted);
         LevelObjectives.Instance.SetInitialFireLit(saveData.initialFireLit);
         LevelObjectives.Instance.SetDarklingNestFound(saveData.darklingNestFound);
@@ -505,6 +553,8 @@ public class SavingManager_Level : MonoBehaviour
         LevelObjectives.Instance.SetReturnToHubObjectiveShown(saveData.returnToHubObjectiveShown);
         LevelObjectives.Instance.SetReturnToHubObjectiveShown(saveData.returnToHubObjectiveShown);
         LevelManager.Instance.SetLevelHubMerchantHasTalkLinesToShow(saveData.hubMerchantHasTalkLinesToShow);
+        LevelManager.Instance.SetConditionalLockedStructureLocationState(saveData.conditionalLockedStructureLocationUnlocked, saveData.conditionalLockedStructureLocationBuilt);
+        LevelObjectives.Instance.SetLevelMerchantsHaveTalkLinesToShow(saveData.hubMerchantsHaveTalkLinesToShow_LevelObjectives);
 
         if(saveData.levelSucceeded) {
             LevelManager.Instance.LevelSuccess();
@@ -642,6 +692,7 @@ public class SavingManager_Level : MonoBehaviour
         // Inventory
         var currencyData = data.currencyData;
         var currencyRotationData = data.currencyRotationData;
+        bool hasEmber = false;
 
         foreach (PlayerCurrencies.CurrencyType currencyType in Enum.GetValues(typeof(PlayerCurrencies.CurrencyType))) {
             string key = currencyType.ToString();
@@ -650,10 +701,15 @@ public class SavingManager_Level : MonoBehaviour
                 if (currencyRotationData.TryGetValue(key, out List<Quaternion> rotations)) {
                     UICurrencyManager.PlayerInventoryUI.LoadCurrencies(currencyType, positions, rotations);
                 }
+
+                if (currencyType == PlayerCurrencies.CurrencyType.ember && positions.Count != 0) {
+                    hasEmber = true;
+                }
             }
-            else {
-                Debug.LogWarning($"[Save] Aucun data trouvé pour {currencyType}, inventaire vide.");
-            }
+        }
+
+        if(!hasEmber) {
+            SoundManager.Instance.SetInitialEmberGiven(true);
         }
 
         yield return new WaitForEndOfFrame();
@@ -760,9 +816,9 @@ public class SavingManager_Level : MonoBehaviour
                         float fuelLevel = fireData[fireSaveDataIndex].currentFuelLevel;
                         Fire.Instance.SetFuelLevel(fuelLevel);
                         fireSaveDataIndex++;
-                    }
 
-                    continue;
+                        continue;
+                    }
                 };
 
                 if (data.structureType == StructureSO.StructureType.tent) {
@@ -965,7 +1021,7 @@ public class SavingManager_Level : MonoBehaviour
             }
 
             scavObstacle.SetHitsTaken(data.hitsTaken);
-            scavObstacle.SetHealth(data.health);
+            scavObstacle.LoadHealth(data.health);
             scavObstacle.SetSpawnersTriggered(data.thresholdsTriggered);
         }
     }
@@ -1067,11 +1123,36 @@ public class SavingManager_Level : MonoBehaviour
             trialArea.SetTrialAreaCompleted(data.trialCompleted);
         }
     }
+    private IEnumerator LoadObjectives() {
+        if (!ES3.KeyExists("LevelState", "LevelSave.es3")) yield break;
+
+        yield return new WaitForEndOfFrame();
+
+        LevelSaveData saveData = ES3.Load<LevelSaveData>("LevelState", "LevelSave.es3");
+
+        LevelUI_ObjectiveUI.Instance.ShowObjectiveAfterDelay(saveData.currentObjectiveType, 2f);
+        LevelUI_ObjectiveUI.Instance.SetSubObjectivesUIAfterDelay(saveData.currentSubObjectiveTypeList, 2f);
+    }
 
     #endregion
 
+    public string GetLocalizedLastSaveText() {
+        TimeSpan elapsed = DateTime.Now - lastSaveTime;
+        int minutes = (int)elapsed.TotalMinutes;
+        int seconds = elapsed.Seconds;
+
+        // On envoie minutes et secondes dans les placeholders
+        return LocalizationManager.Instance.GetLocalizedText("menu_lastProgressionSaved", minutes, seconds);
+    }
 
     public bool GetLoadingSavedLevel() {
         return loadingSavedLevel;
+    }
+    public bool GetSavedOnce() {
+        return gameSavedOnce;
+    }
+
+    public bool GetLoading() {
+        return isLoading;
     }
 }

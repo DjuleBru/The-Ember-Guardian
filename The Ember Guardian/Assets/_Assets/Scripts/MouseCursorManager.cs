@@ -69,6 +69,7 @@ public class MouseCursorManager : MonoBehaviour
         PetDog.Instance.OnPlayerEndedPettingDog += PetDog_OnPlayerEndedPettingDog;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
+        Player.Instance.OnPlayerPositionSet += Player_OnPlayerPositionSet;
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
@@ -107,6 +108,10 @@ public class MouseCursorManager : MonoBehaviour
         }
     }
 
+
+    private void Player_OnPlayerPositionSet(object sender, System.EventArgs e) {
+        PlayerAim.Instance.SetWeaponReticleToAimPos();
+    }
 
     private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
         ShowWeaponCursorGO(true);

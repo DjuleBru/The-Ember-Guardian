@@ -113,6 +113,23 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         objectiveText.font = LocalizationManager.Instance.GetCurrentFont();
     }
 
+    public void ShowObjectiveAfterDelay(ObjectiveType objectiveType, float delay) {
+        StartCoroutine(ShowObjectiveAfterDelayCoroutine(objectiveType, delay));
+    }
+
+    public void SetSubObjectivesUIAfterDelay(List<SubObjectiveType> subObjectiveTypeList, float delay) {
+        StartCoroutine(SetSubObjectivesUIAfterDelayCoroutine(subObjectiveTypeList, delay));
+    }
+
+    private IEnumerator ShowObjectiveAfterDelayCoroutine(ObjectiveType objectiveType, float delay) {
+        yield return new WaitForSeconds(delay);
+        ShowObjectiveUI(objectiveType);
+    }
+
+    private IEnumerator SetSubObjectivesUIAfterDelayCoroutine(List<SubObjectiveType> subObjectiveTypeList, float delay) {
+        yield return new WaitForSeconds(delay);
+        SetSubObjectivesUI(subObjectiveTypeList);
+    }
 
     public void ShowObjectiveUI(ObjectiveType objectiveType) {
         objectiveText.text = GetObjectiveTextFromType(objectiveType);
@@ -149,6 +166,10 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     private IEnumerator InstantiateSubObjectivesUICoroutine(List<SubObjectiveType> subObjectiveTypeList, float delay) {
         List<SubObjectiveUI> subObjectivesUIList = new List<SubObjectiveUI>();
         foreach (SubObjectiveType subObjective in subObjectiveTypeList) {
+
+            if (SubObjectiveAlreadyDisplayed(subObjective)) continue;
+            if (CountableSubObjectiveComplete(subObjective)) continue;
+
             SubObjectiveUI subObjectiveText = Instantiate(subObjectiveTemplate, subObjectiveContainer).GetComponent<SubObjectiveUI>();
             subObjectiveText.SetSubObjective(subObjective);
             subObjectivesUIList.Add(subObjectiveText);
@@ -157,7 +178,8 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         foreach (SubObjectiveUI subObjectiveUI in subObjectivesUIList) {
-            if(!subObjectiveUI.GetCompleted()) {
+
+            if (!subObjectiveUI.GetCompleted()) {
                 subObjectiveUI.gameObject.SetActive(true);
                 yield return new WaitForSeconds(.3f);
             }
@@ -177,12 +199,16 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         StartCoroutine(SetSubObjectiveCompleteCoroutine(subObjectiveType, subObjectiveTypeUnlockedList));
     }
 
-    public void SetNextSubObjective(SubObjectiveType subObjectiveType, SubObjectiveType nextSubObjective) {
+    public void SetNextSubObjective(SubObjectiveType subObjectiveType, SubObjectiveType nextSubObjective, bool triggerSFX = true) {
         foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>(true)) {
 
             if (subObjectiveUI.GetSubObjectiveType() == subObjectiveType) {
                 subObjectiveUI.SetNext(nextSubObjective);
-                OnSubObjectiveUIProgressed?.Invoke(this, EventArgs.Empty);
+
+                if(triggerSFX) {
+                    OnSubObjectiveUIProgressed?.Invoke(this, EventArgs.Empty);
+                }
+
             }
 
         }
@@ -286,13 +312,31 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         return currentObjectiveType;
     }
 
+    public bool SubObjectiveAlreadyDisplayed(SubObjectiveType subObjectiveType) {
+        return GetCurrentSubObjectivesList().Contains(subObjectiveType);
+    }
+    public bool CountableSubObjectiveComplete(SubObjectiveType subObjectiveType) {
+        if(subObjectiveType == SubObjectiveType.CollectOrbs) {
+            if (LevelObjectives.Instance.GetWatcherArtifactFillAmount() == LevelObjectives.Instance.GetWatcherArtifactTotalFillAmount()) return true;
+        }
+
+        if (subObjectiveType == SubObjectiveType.SurviveNights) {
+            if (LevelObjectives.Instance.GetNightsToSurvive() == LevelObjectives.Instance.GetNightsSurvived()) return true;
+        }
+
+        if (subObjectiveType == SubObjectiveType.ProgressWithScavengers) {
+            if (LevelObjectives.Instance.GetObstaclesRemoved() == LevelObjectives.Instance.GetObstaclesToRemove()) return true;
+        }
+
+        return false;
+    }
+
     public List<SubObjectiveType> GetCurrentSubObjectivesList() {
         List<SubObjectiveType> currentSubObjectives = new List<SubObjectiveType>();
 
         foreach (SubObjectiveUI subObjectiveUI in subObjectiveContainer.GetComponentsInChildren<SubObjectiveUI>(true)) {
             if (subObjectiveUI.GetSubObjectiveType() == SubObjectiveType.None) continue;
             if (subObjectiveUI.GetCompleted()) continue;
-
             currentSubObjectives.Add(subObjectiveUI.GetSubObjectiveType());
 
         }

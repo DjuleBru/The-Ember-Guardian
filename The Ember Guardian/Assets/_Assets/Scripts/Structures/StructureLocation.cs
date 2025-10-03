@@ -22,6 +22,7 @@ public class StructureLocation : MonoBehaviour {
     public event EventHandler OnStructureSOToBuildChanged;
     public static event EventHandler OnAnyPlayerTriggeredIn;
     public static event EventHandler OnAnyStructureSOToBuildChanged;
+    public  event EventHandler OnStructureBuilt;
     public static event EventHandler<OnAnyStructureBuiltEventArgs> OnAnyStructureBuilt;
 
     public class OnAnyStructureBuiltEventArgs : EventArgs {
@@ -75,7 +76,6 @@ public class StructureLocation : MonoBehaviour {
     }
 
     public virtual Structure BuildStructure(bool buildOnLoad = false) {
-
         Structure structure = Instantiate(structureSOToBuild.structurePrefab, transform.position, Quaternion.identity).GetComponent<Structure>();
 
         if (isWorldLocation) {
@@ -84,7 +84,7 @@ public class StructureLocation : MonoBehaviour {
 
         structure.SetStructureBuiltOnLoad(buildOnLoad);
 
-
+        OnStructureBuilt?.Invoke(this, EventArgs.Empty);
         OnAnyStructureBuilt?.Invoke(this, new OnAnyStructureBuiltEventArgs {
             structureBuilt = structure,
             buildOnLoad = buildOnLoad
@@ -160,7 +160,7 @@ public class StructureLocation : MonoBehaviour {
     }
 
     public bool GetStructureLocationUnlocked() {
-        return structureLocationUnlocked;
+        return structureLocationUnlocked || isAlwaysUnlocked;
     }
 
     public void InvokeOnAnyStructureBuilt(Structure structure, bool buildOnLoad = false) {
