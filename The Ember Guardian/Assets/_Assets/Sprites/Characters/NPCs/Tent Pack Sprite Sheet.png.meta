@@ -1,0 +1,963 @@
+fileFormatVersion: 2
+guid: db5fb9942f809cd4aa1eaff8eecc05d9
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 528
+        width: 62
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b83f5abc85be2db4f979f83292102a9e
+      internalID: 1481834061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 528
+        width: 62
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1335dfdc5b8306d4b938f10af6004e5e
+      internalID: -2123249288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 528
+        width: 62
+        height: 33
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0375a23e321bc043846fdbdb679923d
+      internalID: -428279815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 528
+        width: 122
+        height: 43
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d410c873c801b7498d0542d5d46b43f
+      internalID: -599502504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 528
+        width: 64
+        height: 21
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf505b67ce9932a4e9c380d44b1ea34f
+      internalID: -1497411950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 389
+        y: 528
+        width: 55
+        height: 18
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f80a590a5635e9e418b5c34e4af37c55
+      internalID: -732122873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 480
+        width: 62
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b80430573284f5c49802674ee8f2fde7
+      internalID: 541525183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 480
+        width: 62
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab065979eeb9cb74ba948006c6360b81
+      internalID: -1230024585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 480
+        width: 62
+        height: 33
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20c442c6429577840a5a95b07df8c3ae
+      internalID: 1627902233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 480
+        width: 122
+        height: 43
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9cef183362960cd4a9ce3b32a7513a16
+      internalID: -764064397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 496
+        width: 51
+        height: 19
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ceffe6547bd094049bb42f9803f820df
+      internalID: 232076366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 394
+        y: 496
+        width: 61
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca0735c0549b9d140bb8e1841e1b981e
+      internalID: -728657680
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 432
+        width: 62
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d8f13eee5dfd284cba3607b3345c316
+      internalID: 1119651046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 432
+        width: 62
+        height: 34
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65e292e6aa1c70a4c9303e6541afe667
+      internalID: 1168079244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 432
+        width: 62
+        height: 33
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39ebc566acd11f7489520a639c908099
+      internalID: -420506300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_15
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 432
+        width: 122
+        height: 43
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46ee430b145aab04e875995bb85820b1
+      internalID: 203466456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_16
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 432
+        width: 30
+        height: 53
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cdb5b8293cf144c459c86ca5f298f8c9
+      internalID: 1801344401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_17
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 432
+        width: 30
+        height: 53
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba635232c5ee652499857165c3bcf866
+      internalID: -1630627510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_18
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 432
+        width: 30
+        height: 53
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 735ae9169f2a30c4393629da6c4a3420
+      internalID: -470513533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_19
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 432
+        width: 34
+        height: 26
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b8795ac72894f64d8ee6f793ca48d4f
+      internalID: -1720932912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_20
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 432
+        width: 34
+        height: 26
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d132dfee1bd99ef4b8fd3f0e5b37c88d
+      internalID: -1936999438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_21
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 368
+        width: 54
+        height: 58
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72aea2eb850943346bddd46df75fe4d0
+      internalID: -1621030974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_22
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 368
+        width: 54
+        height: 58
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d90ea013f6709804cb79689aaaf94c1f
+      internalID: -2094979184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_23
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 368
+        width: 54
+        height: 58
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91a68fae7fb28c9419204a82dfcfdbcc
+      internalID: 773765922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_24
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 384
+        width: 38
+        height: 26
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc420c8814f3e5248b37853e2ce9a4f9
+      internalID: 1053819832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_25
+      rect:
+        serializedVersion: 2
+        x: 246
+        y: 384
+        width: 38
+        height: 26
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 057e29e9303e9fa47add67079ee262f8
+      internalID: -1380458375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_26
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 320
+        width: 77
+        height: 66
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9ffa16704d3b014693c1883600985ae
+      internalID: 697735998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_27
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 320
+        width: 77
+        height: 66
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ba4833d9fb168f4fbb446404dcb53b2
+      internalID: -1139109249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_28
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 320
+        width: 77
+        height: 66
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3fbed6b489cb55342a1ac66ee81061bc
+      internalID: -658961757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_29
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 320
+        width: 82
+        height: 41
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e340c2a078a7fd4a87d9f9a0d158084
+      internalID: -648094024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_30
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 320
+        width: 82
+        height: 41
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f4855bd3860d984db91ecacebc4de81
+      internalID: -10183210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_31
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 320
+        width: 82
+        height: 41
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86522a2189b5eec469d6271819c3e388
+      internalID: 35264479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_32
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 224
+        width: 221
+        height: 94
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7cf585ae8e71c76469783175a5703cf2
+      internalID: 1144351511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_33
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 224
+        width: 320
+        height: 85
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f7323e5e4a7f1a45b849c3c6d6c7602
+      internalID: -1658168040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_34
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 128
+        width: 221
+        height: 94
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3fefd344d0f0fc64c97f0c91590292c2
+      internalID: 1690711203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_35
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 128
+        width: 320
+        height: 85
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20c9d69c6993ceb42b69aab27511f8ac
+      internalID: 1987783553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_36
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 32
+        width: 221
+        height: 94
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d75828d4e87fe53498469f675382abdf
+      internalID: -302111025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tent Pack Sprite Sheet_37
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 32
+        width: 320
+        height: 86
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a3704e81a672af469ee5c973c5250de
+      internalID: 982998939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Tent Pack Sprite Sheet_0: 1481834061
+      Tent Pack Sprite Sheet_1: -2123249288
+      Tent Pack Sprite Sheet_10: 232076366
+      Tent Pack Sprite Sheet_11: -728657680
+      Tent Pack Sprite Sheet_12: 1119651046
+      Tent Pack Sprite Sheet_13: 1168079244
+      Tent Pack Sprite Sheet_14: -420506300
+      Tent Pack Sprite Sheet_15: 203466456
+      Tent Pack Sprite Sheet_16: 1801344401
+      Tent Pack Sprite Sheet_17: -1630627510
+      Tent Pack Sprite Sheet_18: -470513533
+      Tent Pack Sprite Sheet_19: -1720932912
+      Tent Pack Sprite Sheet_2: -428279815
+      Tent Pack Sprite Sheet_20: -1936999438
+      Tent Pack Sprite Sheet_21: -1621030974
+      Tent Pack Sprite Sheet_22: -2094979184
+      Tent Pack Sprite Sheet_23: 773765922
+      Tent Pack Sprite Sheet_24: 1053819832
+      Tent Pack Sprite Sheet_25: -1380458375
+      Tent Pack Sprite Sheet_26: 697735998
+      Tent Pack Sprite Sheet_27: -1139109249
+      Tent Pack Sprite Sheet_28: -658961757
+      Tent Pack Sprite Sheet_29: -648094024
+      Tent Pack Sprite Sheet_3: -599502504
+      Tent Pack Sprite Sheet_30: -10183210
+      Tent Pack Sprite Sheet_31: 35264479
+      Tent Pack Sprite Sheet_32: 1144351511
+      Tent Pack Sprite Sheet_33: -1658168040
+      Tent Pack Sprite Sheet_34: 1690711203
+      Tent Pack Sprite Sheet_35: 1987783553
+      Tent Pack Sprite Sheet_36: -302111025
+      Tent Pack Sprite Sheet_37: 982998939
+      Tent Pack Sprite Sheet_4: -1497411950
+      Tent Pack Sprite Sheet_5: -732122873
+      Tent Pack Sprite Sheet_6: 541525183
+      Tent Pack Sprite Sheet_7: -1230024585
+      Tent Pack Sprite Sheet_8: 1627902233
+      Tent Pack Sprite Sheet_9: -764064397
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

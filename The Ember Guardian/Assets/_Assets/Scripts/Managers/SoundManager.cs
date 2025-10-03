@@ -886,7 +886,7 @@ public class SoundManager : MonoBehaviour
             PlaySound2D(soundRefsSO.muhsroomMerchantVoiceLines);
         }
         if (merchantType == HubMerchant.HubMerchantType.HeroMerchant) {
-            PlaySound2D(soundRefsSO.heroMerchantVoiceLines);
+            PlaySound2D(soundRefsSO.heroMerchantVoiceLines, .5f);
         }
     }
 
@@ -916,7 +916,7 @@ public class SoundManager : MonoBehaviour
             PlaySound2D(soundRefsSO.muhsroomMerchantVoiceLines);
         }
         if (merchantType == HubMerchant.HubMerchantType.HeroMerchant) {
-            PlaySound2D(soundRefsSO.heroMerchantVoiceLines);
+            PlaySound2D(soundRefsSO.heroMerchantVoiceLines, .5f);
         }
     }
 
