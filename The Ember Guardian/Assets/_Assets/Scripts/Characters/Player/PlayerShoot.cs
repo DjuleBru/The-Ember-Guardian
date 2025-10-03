@@ -215,15 +215,9 @@ public class PlayerShoot : MonoBehaviour
             playerJustPressedReloadTimer += Time.deltaTime;
             if (playerJustPressedReloadTimer > .2f) {
                 playerJustPressedReload = false;
-                StartTransferringAmmoFromBagInGun();
-            }
-        }
-
-        if (transferringAmmoFromBag) {
-            transferringAmmoFromBagTimer += Time.deltaTime;
-            if (transferringAmmoFromBagTimer > transferringAmmoFromBagCooldown) {
-                transferringAmmoFromBagTimer = 0;
-                TransferNextAmmoFromBag();
+                if(CanReloadGun()) {
+                    StartCoroutine(ReloadGunCoroutine());
+                }
             }
         }
 
@@ -285,6 +279,48 @@ public class PlayerShoot : MonoBehaviour
             }
 
         }
+    }
+
+    private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+        if (!canShoot) return;
+        if (swappingGun) return;
+        if (heldGun.GetGunJammedAndNextInputSequence(GameInput.Binding.reload)) return;
+
+        playerJustPressedReload = true;
+        playerJustPressedReloadTimer = 0;
+    }
+
+    private void GameInput_OnPlayerReloadCanceled(object sender, EventArgs e) {
+        if (!playerJustPressedReload) {
+            // Player is trying to reload weapon
+            transferringAmmoFromBag = false;
+            return;
+        };
+
+        playerJustPressedReload = false;
+        playerJustPressedReloadTimer = 0;
+
+        TransferNextAmmoFromBag();
+    }
+
+    private bool CanReloadGun() {
+
+        if (heldGun.GetCurrentBullet() == heldGun.GetBulletsPerAmmoClip()) return false;
+        if (reloading) return false;
+        if (coolingDown) return false;
+
+        if (heldGun.GetCurrentAmmoClip() == 0) {
+            OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+
+            if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count > 0) {
+                OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag?.Invoke(this, EventArgs.Empty);
+            }
+
+            return false;
+        };
+
+        return true;
     }
 
     public void RemoveLMGBipod(bool removeBecauseDied) {
@@ -504,13 +540,7 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
-    private void StartTransferringAmmoFromBagInGun() {
-        transferringAmmoFromBagTimer = 0;
-        transferringAmmoFromBag = true;
-        TransferNextAmmoFromBag();
-    }
-
-    private void TransferNextAmmoFromBag() {
+    private void TransferNextAmmoFromBag(bool reloadGunDirectly = false) {
         PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
         int ammoAmountInBag = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(ammoType).Count;
 
@@ -521,6 +551,11 @@ public class PlayerShoot : MonoBehaviour
 
         if (ammoAmountInBag > 0 && heldGun.GetCurrentAmmoClip() < heldGun.GetMaxAmmo()) {
             UICurrencyManager.PlayerInventoryUI.DropNextCurrencyInBag(ammoType);
+
+            if(!reloadGunDirectly) {
+                AddAmmoClip(1);
+            }
+
         } else {
             OnPlayerTryReloadAmmoBelt_NoAmmoInBag?.Invoke(this, EventArgs.Empty);
             transferringAmmoFromBag = false;
@@ -544,16 +579,16 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
-        if(e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
-            Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
-            collectible.SetMovingForPayment(true, 5f, ammoDestinationPoint, true);
-            collectible.SetScale(.5f);
-        }
-        if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo_special) {
-            Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo_special), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
-            collectible.SetMovingForPayment(true, 5f, ammoDestinationPoint, true);
-            collectible.SetScale(.5f);
-        }
+        //if(e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
+        //    Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
+        //    collectible.SetMovingForPayment(true, 5f, ammoDestinationPoint, true);
+        //    collectible.SetScale(.5f);
+        //}
+        //if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo_special) {
+        //    Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo_special), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
+        //    collectible.SetMovingForPayment(true, 5f, ammoDestinationPoint, true);
+        //    collectible.SetScale(.5f);
+        //}
     }
 
     private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {
@@ -618,51 +653,17 @@ public class PlayerShoot : MonoBehaviour
             StartCoroutine(ReloadGunCoroutine());
         }
         else {
-            OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
 
-            if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count > 0) {
-                OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag?.Invoke(this, EventArgs.Empty);
+            if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(heldGun.GetGunSO().ammoTypeUsed).Count > 0) {
+                TransferNextAmmoFromBag(true);
+                StartCoroutine(ReloadGunCoroutine());
+                return;
             }
 
+            OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
         }
     }
  
-    private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
-        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
-        if (!canShoot) return;
-        if (swappingGun) return;
-        if (heldGun.GetGunJammedAndNextInputSequence(GameInput.Binding.reload)) return;
-
-        playerJustPressedReload = true;
-        playerJustPressedReloadTimer = 0;
-    }
-
-    private void GameInput_OnPlayerReloadCanceled(object sender, EventArgs e) {
-        if (!playerJustPressedReload) {
-            // Player is transferring ammo from bag in gun
-            transferringAmmoFromBag = false;
-            return;
-        };
-
-        playerJustPressedReload = false;
-        playerJustPressedReloadTimer = 0;
-
-        if (heldGun.GetCurrentBullet() == heldGun.GetBulletsPerAmmoClip()) return;
-        if (reloading) return;
-        if (coolingDown) return;
-
-        if (heldGun.GetCurrentAmmoClip() == 0) {
-            OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
-
-            if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count > 0) {
-                OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag?.Invoke(this, EventArgs.Empty);
-            }
-
-            return;
-        };
-
-        StartCoroutine(ReloadGunCoroutine());
-    }
 
     private void GameInput_OnWeaponSecondaryAbilitytPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
