@@ -45,6 +45,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     }
 
     private void Start() {
+        PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerShoot.Instance.OnPlayerReloadHandEnded += PlayerSHoot_OnPlayerReloadHandEnded;
         PlayerShoot.Instance.OnPlayerAmmoRefilled += PlayerShoot_OnPlayerAmmoRefilled;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
@@ -74,6 +75,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         ammoBarBackgroundGameObject.SetActive(false);
         ammoBarCanvasGroup = ammoBarGameObject.GetComponent<CanvasGroup>();
     }
+
 
     private void PlayerShoot_OnPlayerTryReload_FullAmmoBelt(object sender, EventArgs e) {
         ForceShowAmmoBar(ammoBarReloadDisplayTime);
@@ -185,8 +187,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
             ammoBarCritical = false;
         }
     }
-
-    private void PlayerSHoot_OnPlayerReloadHandEnded(object sender, EventArgs e) {
+    private void PlayerShoot_OnPlayerReload(object sender, PlayerShoot.OnPlayerReloadEventArgs e) {
         if (PlayerShoot.Instance.GetCurrentAmmoClip() < 0) return;
 
         // Affiche directement la barre (ignore tout fade-out en cours)
@@ -205,11 +206,21 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         PlayerUI_TickTemplate[] ammoTickArray = ammoTickContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
         if (ammoTickArray.Length > 0) {
             ammoTickArray[0].GetComponent<RectTransform>().SetParent(transform);
-            ammoTickArray[0].RemoveTick();
+
+            float tickForceYMultiplier = 1f;
+            if (e.surgeReload) {
+                tickForceYMultiplier = 1.3f;
+            }
+            ammoTickArray[0].RemoveTick(tickForceYMultiplier, true, 1, 0, e.surgeReload, false, 1.5f, false);
+            //ammoTickArray[0].transform.SetParent(null);
         }
 
         // Rafraîchit l’affichage des ticks
         RefreshAmmoBar();
+    }
+
+    private void PlayerSHoot_OnPlayerReloadHandEnded(object sender, PlayerShoot.OnPlayerReloadEventArgs e) {
+        
     }
 
     private IEnumerator RefillAmmoBar(int ammoCount) {

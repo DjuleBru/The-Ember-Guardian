@@ -64,6 +64,7 @@ public class PlayerFeedbacks : MonoBehaviour
         GunJamHandler.OnAnyJamSequenceCancelled += GunJamHandler_OnAnyJamSequenceCancelled;
         GunJamHandler.OnAnyJamSequenceRestarted += GunJamHandler_OnAnyJamSequenceRestarted;
         GunJamHandler.OnAnyPerfectJamSequenceCompleted += GunJamHandler_OnAnyPerfectJamSequenceCompleted;
+        Gun.OnAnyGunJamRepaired += Gun_OnAnyGunJamRepaired;
     }
 
 
@@ -118,6 +119,10 @@ public class PlayerFeedbacks : MonoBehaviour
         if (gunJamPerfectSequenceFeedbacks.IsPlaying) return;
 
         gunJamFeedbacksPlaying = false;
+        gunJamPerfectSequenceFeedbacks.PlayFeedbacks();
+    }
+
+    private void Gun_OnAnyGunJamRepaired(object sender, System.EventArgs e) {
         gunJamPerfectSequenceFeedbacks.PlayFeedbacks();
     }
 
@@ -241,6 +246,7 @@ public class PlayerFeedbacks : MonoBehaviour
         GunJamHandler.OnAnyJamSequenceCancelled -= GunJamHandler_OnAnyJamSequenceCancelled;
         GunJamHandler.OnAnyJamSequenceRestarted -= GunJamHandler_OnAnyJamSequenceRestarted;
         GunJamHandler.OnAnyPerfectJamSequenceCompleted -= GunJamHandler_OnAnyPerfectJamSequenceCompleted;
+        Gun.OnAnyGunJamRepaired -= Gun_OnAnyGunJamRepaired;
 
         PassiveShield.OnAnyPassiveShieldDied -= PassiveShield_OnAnyPassiveShieldDied;
 

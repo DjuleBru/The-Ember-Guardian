@@ -43,6 +43,8 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip[] hunterArrowReleased;
     public AudioClip[] hunterArrowHit;
     public AudioClip[] bulletBoucedOff;
+    public AudioClip[] bulletPingShine;
+    public AudioClip bulletPingShineDropped;
 
     public AudioClip[] propBurned;
     public AudioClip[] playerCallDog;

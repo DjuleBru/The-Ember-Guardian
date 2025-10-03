@@ -613,6 +613,13 @@ public class Gun : MonoBehaviour
         }
     }
 
+    public void ApplySurgeWindowBuff() {
+        OnAnyGunJamRepaired?.Invoke(this, EventArgs.Empty);
+        OnPerfectQTEDamageBuff?.Invoke(this, EventArgs.Empty);
+        BuffBulletDamage(perfectJamDamageBuff, false);
+        damageSurgeBuffed = true;
+    }
+
     [Button]
     public void JamGun() {
         gunJammed = true;

@@ -19,8 +19,8 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag;
     public event EventHandler OnPlayerTryReload_FullAmmoBelt;
     public event EventHandler OnPlayerTryReloadAmmoBelt_NoAmmoInBag;
-    public event EventHandler OnPlayerReload;
-    public event EventHandler OnPlayerReloadHandEnded;
+    public event EventHandler<OnPlayerReloadEventArgs> OnPlayerReload;
+    public event EventHandler<OnPlayerReloadEventArgs> OnPlayerReloadHandEnded;
     public event EventHandler OnPlayerReloadInterrupted;
     public event EventHandler OnPlayerReloadInterruptedEnded;
     public event EventHandler OnPlayerReloadEnded;
@@ -52,6 +52,8 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerEmptyRevolverMagStart;
     public event EventHandler OnPlayerEmptyRevolverMagEnd;
     public event EventHandler OnPlayerTriggersProjectileExplosion;
+    public event EventHandler OnSpinningBulletFail;
+    public event EventHandler OnSpinningBulletSuccess;
 
     public class OnPlayerResetLMGBipodEventArgs : EventArgs {
         public bool removeBecauseDied;
@@ -70,6 +72,10 @@ public class PlayerShoot : MonoBehaviour
 
     public class OnAmmoRefilledEventArgs : EventArgs {
         public int ammoAmount;
+    }
+
+    public class OnPlayerReloadEventArgs:EventArgs {
+        public bool surgeReload;
     }
 
     [SerializeField] private Transform ammoDestinationPoint;
@@ -93,8 +99,11 @@ public class PlayerShoot : MonoBehaviour
     private bool reloadingInterrupted;
     private bool coolDownSFXTriggered;
     private bool coolDownAnimationTriggered;
-    private bool playerJustPressedReload;
-    private bool transferringAmmoFromBag;
+    private bool surgeBulletSpinning;
+    private bool surgeBulletSpinningInWindow;
+    private float surgeBulletSpinningTimer;
+    private float surgeBulletSpinningDelay = .8f;
+    private float surgeBulletSpinningWindow = .3f;
 
     private bool secondaryAbilityActive;
     private bool rifleSemiAutoModeActive;
@@ -211,13 +220,26 @@ public class PlayerShoot : MonoBehaviour
             }
         }
 
-        if (playerJustPressedReload) {
-            playerJustPressedReloadTimer += Time.deltaTime;
-            if (playerJustPressedReloadTimer > .2f) {
-                playerJustPressedReload = false;
-                if(CanReloadGun()) {
-                    StartCoroutine(ReloadGunCoroutine());
-                }
+        //if (playerJustPressedReload) {
+        //    playerJustPressedReloadTimer += Time.deltaTime;
+        //    if (playerJustPressedReloadTimer > .2f) {
+        //        playerJustPressedReload = false;
+        //        if(CanReloadGun()) {
+        //            StartCoroutine(ReloadGunCoroutine());
+        //        }
+        //    }
+        //}
+
+        if(surgeBulletSpinning) {
+            surgeBulletSpinningTimer += Time.deltaTime;
+
+            if(surgeBulletSpinningTimer > surgeBulletSpinningDelay && !surgeBulletSpinningInWindow) {
+                surgeBulletSpinningInWindow = true;
+            }
+
+            if(surgeBulletSpinningTimer > (surgeBulletSpinningDelay+surgeBulletSpinningWindow)) {
+                surgeBulletSpinningInWindow = false;
+                surgeBulletSpinning = false;
             }
         }
 
@@ -283,25 +305,64 @@ public class PlayerShoot : MonoBehaviour
 
     private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+        PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
+        bool canTransferAmmoInBelt = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(ammoType).Count > 0;
+
+        // Insert clips during reload in belt
+        //if (reloading) {
+            
+        //    if (canTransferAmmoInBelt) {
+        //        // Weapon is full : transfer clip to belt
+        //        TransferNextAmmoFromBag();
+        //        return;
+        //    }
+        //}
+
+        if(surgeBulletSpinning) {
+            if (surgeBulletSpinningInWindow) {
+                // Success
+                OnSpinningBulletSuccess?.Invoke(this, EventArgs.Empty);
+            } else {
+                // Fail
+                EndBulletSpinning();
+            }
+        }
+
         if (!canShoot) return;
         if (swappingGun) return;
         if (heldGun.GetGunJammedAndNextInputSequence(GameInput.Binding.reload)) return;
 
-        playerJustPressedReload = true;
-        playerJustPressedReloadTimer = 0;
+        if(heldGun.GetCurrentBullet() != heldGun.GetBulletsPerAmmoClip()) {
+            // Weapon is NOT full : reload
+            if (CanReloadGun()) {
+                bool canReloadGunFromBelt = CanReloadGunFromBelt();
+                StartCoroutine(ReloadGunCoroutine(!canReloadGunFromBelt));
+            }
+
+        } else {
+            if (canTransferAmmoInBelt) {
+                // Weapon is full : transfer clip to belt
+                TransferNextAmmoFromBag();
+                return;
+            }
+        }
     }
 
     private void GameInput_OnPlayerReloadCanceled(object sender, EventArgs e) {
-        if (!playerJustPressedReload) {
-            // Player is trying to reload weapon
-            transferringAmmoFromBag = false;
-            return;
-        };
+        //if (!playerJustPressedReload) {
+        //    // Player is trying to reload weapon
+        //    transferringAmmoFromBag = false;
+        //    return;
+        //};
 
-        playerJustPressedReload = false;
-        playerJustPressedReloadTimer = 0;
+        //playerJustPressedReload = false;
+        //playerJustPressedReloadTimer = 0;
+    }
 
-        TransferNextAmmoFromBag();
+    private void EndBulletSpinning() {
+        surgeBulletSpinning = false;
+        surgeBulletSpinningInWindow = false;
+        OnSpinningBulletFail?.Invoke(this, EventArgs.Empty);
     }
 
     private bool CanReloadGun() {
@@ -310,18 +371,36 @@ public class PlayerShoot : MonoBehaviour
         if (reloading) return false;
         if (coolingDown) return false;
 
-        if (heldGun.GetCurrentAmmoClip() == 0) {
-            OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+        if (heldGun.GetCurrentAmmoClip() != 0) {
+            // Gun has no ammo in belt
+            return true;
 
-            if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ammo).Count > 0) {
-                OnPlayerTryReload_EmptyAmmoBeltButAmmoInBag?.Invoke(this, EventArgs.Empty);
+        } else {
+            // Gun has No ammo in belt
+            PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
+
+            if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(ammoType).Count > 0) {
+                return true;
             }
-
-            return false;
+            else {
+                OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+                return false;
+            }
         };
-
-        return true;
     }
+
+    private bool CanReloadGunFromBelt() {
+        if (heldGun.GetCurrentAmmoClip() == 0) return false;
+
+        PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
+        if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(ammoType).Count > 0) {
+            return true;
+        }
+
+        Debug.Log(UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(ammoType).Count);
+        return false;
+    }
+
 
     public void RemoveLMGBipod(bool removeBecauseDied) {
         if (!holdingStationaryGun) return;
@@ -540,11 +619,37 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
-    private void TransferNextAmmoFromBag(bool reloadGunDirectly = false) {
+    private IEnumerator ReloadGunCoroutine(bool reloadDirectlyFromBag) {
+        PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
+
+        reloading = true;
+        reloadingHands = true;
+        reloadTimer = 0;
+        reloadTime = PlayerStats.Instance.GetReloadTime();
+        handsReloadTime = PlayerStats.Instance.GetHandsReloadTime();
+
+        if (reloadDirectlyFromBag) {
+            TransferNextAmmoFromBag(true);
+        }
+
+        if (PlayerSkills.Instance.GetShootOnReload()) {
+            Shoot(true);
+            yield return new WaitForEndOfFrame();
+        }
+
+        OnPlayerReload?.Invoke(this, new OnPlayerReloadEventArgs {
+            surgeReload = TrySurgeReload()
+        });
+
+        yield return new WaitForEndOfFrame();
+        heldGun.SetCurrentAmmoClip(heldGun.GetCurrentAmmoClip() - 1);
+    }
+
+    private void TransferNextAmmoFromBag(bool reloadGunDirectlyFromBag = false) {
         PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
         int ammoAmountInBag = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(ammoType).Count;
 
-        if(heldGun.GetCurrentAmmoClip() == heldGun.GetMaxAmmo()) {
+        if (heldGun.GetCurrentAmmoClip() == heldGun.GetMaxAmmo()) {
             OnPlayerTryReload_FullAmmoBelt?.Invoke(this, EventArgs.Empty);
             return;
         }
@@ -552,13 +657,12 @@ public class PlayerShoot : MonoBehaviour
         if (ammoAmountInBag > 0 && heldGun.GetCurrentAmmoClip() < heldGun.GetMaxAmmo()) {
             UICurrencyManager.PlayerInventoryUI.DropNextCurrencyInBag(ammoType);
 
-            if(!reloadGunDirectly) {
+            if (!reloadGunDirectlyFromBag) {
                 AddAmmoClip(1);
             }
 
         } else {
             OnPlayerTryReloadAmmoBelt_NoAmmoInBag?.Invoke(this, EventArgs.Empty);
-            transferringAmmoFromBag = false;
         }
         
     }
@@ -649,21 +753,13 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void TryAutoReload() {
-        if (heldGun.GetCurrentAmmoClip() > 0 && autoReload) {
-            StartCoroutine(ReloadGunCoroutine());
+        if (!autoReload) return;
+        if (CanReloadGun()) {
+            bool canReloadGunFromBelt = CanReloadGunFromBelt();
+            StartCoroutine(ReloadGunCoroutine(!canReloadGunFromBelt));
         }
-        else {
 
-            if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(heldGun.GetGunSO().ammoTypeUsed).Count > 0) {
-                TransferNextAmmoFromBag(true);
-                StartCoroutine(ReloadGunCoroutine());
-                return;
-            }
-
-            OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
-        }
     }
- 
 
     private void GameInput_OnWeaponSecondaryAbilitytPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
@@ -1001,26 +1097,24 @@ public class PlayerShoot : MonoBehaviour
         OnPlayerSwappedGunEnded?.Invoke(this, EventArgs.Empty);
     }
 
-    private IEnumerator ReloadGunCoroutine() {
-        reloading = true;
-        reloadingHands = true;
-        playerJustPressedReload = false;
-        reloadTimer = 0;
-        reloadTime = PlayerStats.Instance.GetReloadTime();
-        handsReloadTime = PlayerStats.Instance.GetHandsReloadTime();
-
-        if (PlayerSkills.Instance.GetShootOnReload()) {
-            Shoot(true);
-            yield return new WaitForEndOfFrame();
-        }
-
-        OnPlayerReload?.Invoke(this, EventArgs.Empty);
-    }
-
     private void EndHandReload() {
         reloadingHands = false;
-        heldGun.SetCurrentAmmoClip(heldGun.GetCurrentAmmoClip() - 1);
-        OnPlayerReloadHandEnded?.Invoke(this, EventArgs.Empty);
+        OnPlayerReloadHandEnded?.Invoke(this, new OnPlayerReloadEventArgs {
+            surgeReload = TrySurgeReload()
+        });
+    }
+
+    private bool TrySurgeReload() {
+        float surgeReloadProbability = 1f;
+
+        bool surgeReload = UnityEngine.Random.Range(0f, 1f) < surgeReloadProbability;
+
+        if(surgeReload) {
+            surgeBulletSpinning = true;
+            surgeBulletSpinningTimer = 0f;
+        }
+
+        return surgeReload;
     }
 
     private IEnumerator EmptyRevolverMag() {
@@ -1059,6 +1153,7 @@ public class PlayerShoot : MonoBehaviour
             OnPlayerReloadInterruptedEnded?.Invoke(this, EventArgs.Empty);
         }
     }
+
     private void Player_OnPlayerDied(object sender, EventArgs e) {
 
         if(settingUpLMG || holdingStationaryGun) {

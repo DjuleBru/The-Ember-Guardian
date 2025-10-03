@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField] private SoundRefsSO soundRefsSO;
     [SerializeField] private AudioSource gunPoweringUpAudioSource;
+    [SerializeField] private AudioSource bulletSpinningAudioSource;
     
     private AudioSource audioSource2D;
     private float sfxVolume;
@@ -60,6 +61,8 @@ public class SoundManager : MonoBehaviour
             PlayerShoot.Instance.OnPlayerSetupLMGStarted += PlayerSHoot_OnPlayerSetupLMGStarted;
             PlayerShoot.Instance.OnPlayerSetupLMGStopped += PlayerShoot_OnPlayerSetupLMGStopped;
             PlayerShoot.Instance.OnPlayerEmptyRevolverMagEnd += PlayerSHoot_OnPlayerEmptyRevolverMagEnd;
+            PlayerShoot.Instance.OnSpinningBulletSuccess += PlayerShoot_OnSpinningBulletSuccess;
+            PlayerShoot.Instance.OnSpinningBulletFail += PlayerShoot_OnSpinningBulletFail;
 
             PlayerSkills.Instance.OnActiveSkillReady += PlayerSkills_OnActiveSkillReady;
             PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
@@ -178,6 +181,8 @@ public class SoundManager : MonoBehaviour
         GunSpotLight.OnAnyLightSwitched += GunSpotLight_OnAnyLightSwitched;
         Gun.OnAnyGunJammed += Gun_OnAnyGunJammed;
         Gun.OnAnyGunJamRepaired += Gun_OnAnyGunJamRepaired;
+        PlayerUI_TickTemplate.OnAnyBulletPingShine += PlayerUI_TickTemplate_OnAnyBulletPingShine;
+        PlayerUI_TickTemplate.OnAnyBulletPingShineDropped += PlayerUI_TickTemplate_OnAnyBulletPingShineDropped;
 
         Tutorial.OnAnySpotLightActivated += Tutorial_OnAnySpotLightActivated;
 
@@ -188,7 +193,6 @@ public class SoundManager : MonoBehaviour
         DeleteSkillUI.OnAnyActiveSkillDeleted += DeleteSkillUI_OnAnyActiveSkillDeleted;
         Merchant_Skills.OnPlayerRefundedItem += Merchant_Skills_OnPlayerRefundedItem;
     }
-
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -574,6 +578,29 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region SHOOTING
+
+    private void PlayerShoot_OnSpinningBulletSuccess(object sender, System.EventArgs e) {
+        AudioClip[] audioClipArray = soundRefsSO.bulletPingShine;
+        PlaySound2D(audioClipArray, .5f);
+
+        if (bulletSpinningAudioSource.isPlaying) {
+            bulletSpinningAudioSource.Stop();
+        }
+    }
+
+    private void PlayerShoot_OnSpinningBulletFail(object sender, System.EventArgs e) {
+        if (bulletSpinningAudioSource.isPlaying) {
+            bulletSpinningAudioSource.Stop();
+        }
+    }
+
+    private void PlayerUI_TickTemplate_OnAnyBulletPingShine(object sender, System.EventArgs e) {
+        //AudioClip[] audioClipArray = soundRefsSO.bulletPingShine;
+        //PlaySound2D(audioClipArray, .5f);
+    }
+    private void PlayerUI_TickTemplate_OnAnyBulletPingShineDropped(object sender, System.EventArgs e) {
+        bulletSpinningAudioSource.PlayOneShot(soundRefsSO.bulletPingShineDropped, sfxVolume * masterVolume * .5f);
+    }
 
     private void Mob_OnAnyMobDamageTaken(object sender, System.EventArgs e) {
         //Mob mob = sender as Mob;
@@ -1040,6 +1067,8 @@ public class SoundManager : MonoBehaviour
             PlayerShoot.Instance.OnPlayerFocusBlastStarted -= PlayerShoot_OnPlayerFocusBlastStarted;
             PlayerShoot.Instance.OnPlayerFocusBlastStopped -= Player_OnPlayerFocusBlastStopped;
             PlayerShoot.Instance.OnPlayerEmptyRevolverMagEnd -= PlayerSHoot_OnPlayerEmptyRevolverMagEnd;
+            PlayerShoot.Instance.OnSpinningBulletSuccess -= PlayerShoot_OnSpinningBulletSuccess;
+            PlayerShoot.Instance.OnSpinningBulletFail -= PlayerShoot_OnSpinningBulletFail;
 
             PlayerShoot.Instance.OnPlayerSetupLMGStarted -= PlayerSHoot_OnPlayerSetupLMGStarted;
             PlayerShoot.Instance.OnPlayerSetupLMGStopped -= PlayerShoot_OnPlayerSetupLMGStopped;
@@ -1095,6 +1124,8 @@ public class SoundManager : MonoBehaviour
         MenuButton.OnAnyMenuButtonPressed -= MenuButton_OnAnyMenuButtonPressed;
         StructureBlueprint.OnAnyBlueprintWithStructureHovered -= StructureBlueprint_OnAnyBlueprintWithStructureHovered;
         GridVisualUnit.OnAnyGridWithoutStructureHovered -= GridVisualUnit_OnAnyGidWithoutStructureHovered;
+        PlayerUI_TickTemplate.OnAnyBulletPingShine -= PlayerUI_TickTemplate_OnAnyBulletPingShine;
+        PlayerUI_TickTemplate.OnAnyBulletPingShineDropped -= PlayerUI_TickTemplate_OnAnyBulletPingShineDropped;
 
 
         ParticleCollision.OnAnyBulletHitEnemy -= ParticleCollision_OnAnyBulletHitEnemy;
@@ -1137,5 +1168,4 @@ public class SoundManager : MonoBehaviour
         DeleteSkillUI.OnAnyActiveSkillDeleted -= DeleteSkillUI_OnAnyActiveSkillDeleted;
         Merchant_Skills.OnPlayerRefundedItem -= Merchant_Skills_OnPlayerRefundedItem;
     }
-
 }
