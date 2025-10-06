@@ -11,6 +11,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private Camera UICamera;
     [SerializeField] private float initialCameraOrthographicSize = 11f;
+    [SerializeField] private float tutorialInitialCameraOrthographicSize = 7f;
 
     [SerializeField] private float referenceCameraOrthographicSize = 11f;
     [SerializeField] private float minCameraOrthographicSize = 7f;
@@ -24,6 +25,8 @@ public class CameraManager : MonoBehaviour
     private float isChangingOrthographicSizeTime = .05f;
 
     private bool isMainMenu;
+    private bool isTutorial;
+    private bool initialCameraOrthographicSizeForceSet;
     private bool cameraCenteredOnPlayer;
     public event EventHandler OnCameraCenteredOnPlayer;
 
@@ -40,6 +43,11 @@ public class CameraManager : MonoBehaviour
 
         SettingsManager.Instance.OnZoomLevelChanged += SettingsManager_OnZoomLevelChanged;
         isMainMenu = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu;
+        isTutorial = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial;
+
+        if(isTutorial) {
+            SetCameraOrthographicSize(tutorialInitialCameraOrthographicSize);
+        }
     }
 
 
@@ -53,6 +61,7 @@ public class CameraManager : MonoBehaviour
         }
 
         if (isMainMenu) return;
+        if (initialCameraOrthographicSizeForceSet) return;
 
         // Check centrage caméra/player
         if (!cameraCenteredOnPlayer) {
@@ -105,19 +114,8 @@ public class CameraManager : MonoBehaviour
         virtualCamera.m_Lens.OrthographicSize = initialCameraOrthographicSize;
     }
 
-    private IEnumerator RefreshCameraOrthographicSizeCoroutine() {
-        float zoomLevel = SettingsManager.Instance.GetZoomLevel();
-        float cameraOrthograhpicSize =
-            (zoomLevel <= 0.8f)
-            ? Mathf.Lerp(minCameraOrthographicSize, referenceCameraOrthographicSize, zoomLevel / 0.8f)
-            : Mathf.Lerp(referenceCameraOrthographicSize, maxCameraOrthographicSize, (zoomLevel - 0.8f) / 0.2f);
 
-        initialCameraOrthographicSize = cameraOrthograhpicSize;
-        virtualCamera.m_Lens.OrthographicSize = initialCameraOrthographicSize;
 
-        // attendre un cycle complet pour que Cinemachine applique
-        yield return null;
-    }
 
     public void ZoomIn(bool toInitialValue, float targetZoomInOrthographicSizeMultiplier = 1f, float zoomDuration = 1f) {
         // Démarre le zoom vers l'intérieur
@@ -196,11 +194,15 @@ public class CameraManager : MonoBehaviour
     }
 
     public void SetCameraOrthographicSize(float orthographicSize) {
+        initialCameraOrthographicSizeForceSet = true;
+        initialCameraOrthographicSize = orthographicSize;
         virtualCamera.m_Lens.OrthographicSize = orthographicSize;
     }
+
     public void ResetCameraOrthographicSize() {
         virtualCamera.m_Lens.OrthographicSize = initialCameraOrthographicSize;
     }
+
     public void SetCameraLockedByTransition(bool locked) {
         cameraLockedByTransition = locked;
     }

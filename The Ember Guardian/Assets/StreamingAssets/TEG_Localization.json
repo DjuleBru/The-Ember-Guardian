@@ -1434,7 +1434,7 @@
  },
  {
    "key": "VideoTip_Reloading1",
-   "English": "Reloading your weapon is done in two stages",
+   "English": "Ammo is stored in your backpack and in your belt.",
    "Japanese": "武器のリロードは二段階で行われます。",
    "French": "Recharger votre arme se fait en deux temps",
    "German": "Deine Waffe wird in 2 Phasen nachgeladen",
@@ -1442,7 +1442,7 @@
  },
  {
    "key": "VideoTip_Reloading2",
-   "English": "• 1. <b>Hold</b>[icon:Reload]to move clips to your belt.",
+   "English": "1. <b>Press</b>[icon:Reload] to reload : ammo is drawn from your belt.",
    "Japanese": "• 1. [icon:Reload]を<b>長押し</b>：マガジンを弾帯へ移動します。",
    "French": "• 1. <b>Maintenez</b>[icon:Reload]pour déplacer des chargeurs vers votre ceinture.",
    "German": "• 1. <b>Halte</b>[icon:Reload]um Munitionsclips an deinen Gürtel zu bewegen.",
@@ -1450,11 +1450,19 @@
  },
  {
    "key": "VideoTip_Reloading3",
-   "English": "• 2. <b>Press</b>[icon:Reload]to load a clip in your gun",
+   "English": "2. <b>Hold</b>[icon:Reload] to refill the belt.",
    "Japanese": "• 2. [icon:Reload]を<b>押す</b>：マガジンを銃に装填します。",
    "French": "• 2. <b>Appuyez</b> sur[icon:Reload]pour insérer un chargeur dans votre arme",
    "German": "• 2. <b>Drücke</b>[icon:Reload]um einen Munitionsclip in deine Waffe zu laden.",
    "Spanish": "• 2. <b>Presiona</b>[icon:Reload]para sumar un cargador a tu arma."
+ },
+ {
+   "key": "VideoTip_Reloading4",
+   "English": "• Reloading from the belt is <b>faster</b>. If the belt runs dry, the weapon pulls from your backpack instead.",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
  },
  {
    "key": "VideoTip_Hunters0",
@@ -1722,7 +1730,7 @@
  },
  {
    "key": "VideoTip_GunJams0",
-   "English": "Surge Window",
+   "English": "Surge Reload",
    "Japanese": "ブーストウィンドウ",
    "French": "Fenêtre de surtension",
    "German": "Boost Zeitfenster",
@@ -1730,7 +1738,7 @@
  },
  {
    "key": "VideoTip_GunJams1",
-   "English": "Shooting can open a Surge Window.",
+   "English": "Reloading from the ammo belt can trigger a Surge Reload opportunity.",
    "Japanese": "射撃するとブーストウィンドウが開くことがあります。",
    "French": "Tirer peut ouvrir une fenêtre de surtension.",
    "German": "Das schießen deiner Waffe kann ein Boost Zeitfenster öffnen",
@@ -1738,7 +1746,7 @@
  },
  {
    "key": "VideoTip_GunJams2",
-   "English": "• Solve the QTE in time to boost your next bullet(s) damage!",
+   "English": "• During this window, the magazine briefly spins upward, charged with blue energy.",
    "Japanese": "• 制限時間内にQTEを成功させると、次弾の威力が強化されます。",
    "French": "• Résolvez le QTE pour augmenter les dégâts de vos prochaines balles !",
    "German": "• Absolviere das QTE rechtzeitig, um deine nächsten Kugeln zu boosten",
@@ -1746,7 +1754,7 @@
  },
  {
    "key": "VideoTip_GunJams3",
-   "English": "• The QTE can be ignored with no consequences.",
+   "English": "• Press [icon:Reload] at the peak of its arc to sync with the weapon’s energy flow.",
    "Japanese": "• QTEを無視してもペナルティはありません。",
    "French": "• Le QTE peut être ignoré sans conséquence.",
    "German": "• Du kannst das QTE ohne Konsequenzen ignorieren",
@@ -1754,7 +1762,7 @@
  },
  {
    "key": "VideoTip_GunJams4",
-   "English": "• You can upgrade the Surge Window at the armorer !",
+   "English": "• A perfect sync amplifies your next shots, increasing their damage output.",
    "Japanese": "• ブーストウィンドウは武器職人のもとで強化できます。",
    "French": "• Vous pouvez améliorer la fenêtre de surtension. chez l'armurier.",
    "German": "• Du kannst das Boost Zeitfenster beim Waffenschmied verbessern",
@@ -2105,26 +2113,26 @@
    "Spanish": "Nuevas balas con daño aumentado"
  },
  {
-   "key": "card_currentJamRepairHitAmount",
-   "English": "Current Surge Bashes",
+   "key": "card_currentSurgeReloadProbability",
+   "English": "Current Surge Probability",
    "Japanese": "武器ブーストの回数(現在)",
-   "French": "Nombre de Coups pour Surtension",
+   "French": "Probabilité de Surtension Actuelle",
    "German": "Aktuelle Schläge zur Überladung",
    "Spanish": "Golpes de sobrecarga actuales"
  },
  {
-   "key": "card_jamRepairHitAmount",
-   "English": "Surge Bashes",
+   "key": "card_surgeReloadProbability",
+   "English": "Surge Probability",
    "Japanese": "武器ブーストの回数",
-   "French": "Coups pour Surtension",
+   "French": "Probabilité de Surtension",
    "German": "Schläge zur Überladung",
    "Spanish": "Golpes de sobrecarga"
  },
  {
-   "key": "card_newJamRepairHitAmount",
-   "English": "New Surge Bashes",
+   "key": "card_newSurgeReloadProbability",
+   "English": "New Surge Probability",
    "Japanese": "武器ブーストの回数(強化後)",
-   "French": "Nouveaux Coups pour Surtension",
+   "French": "Nouvelle Probabilité de Surtension",
    "German": "Neue Schläge zur Überladung",
    "Spanish": "Nuevos golpes de sobrecarga"
  },
@@ -13053,6 +13061,30 @@
    "English": "Last Save: {0}m {1}s ago",
    "Japanese": "",
    "French": "Dernière sauvegarde : il y a {0}min {1}s",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "menu_progressionWillBeLost",
+   "English": "Your progression in this level will be lost!",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "menu_low",
+   "English": "Low",
+   "Japanese": "",
+   "French": "",
+   "German": "",
+   "Spanish": ""
+ },
+ {
+   "key": "menu_hight",
+   "English": "High",
+   "Japanese": "",
+   "French": "",
    "German": "",
    "Spanish": ""
  },

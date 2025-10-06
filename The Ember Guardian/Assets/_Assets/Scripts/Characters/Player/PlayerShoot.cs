@@ -20,7 +20,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerTryReload_FullAmmoBelt;
     public event EventHandler OnPlayerTryReloadAmmoBelt_NoAmmoInBag;
     public event EventHandler<OnPlayerReloadEventArgs> OnPlayerReload;
-    public event EventHandler<OnPlayerReloadEventArgs> OnPlayerReloadHandEnded;
+    public event EventHandler OnPlayerReloadHandEnded;
     public event EventHandler OnPlayerReloadInterrupted;
     public event EventHandler OnPlayerReloadInterruptedEnded;
     public event EventHandler OnPlayerReloadEnded;
@@ -52,6 +52,7 @@ public class PlayerShoot : MonoBehaviour
     public event EventHandler OnPlayerEmptyRevolverMagStart;
     public event EventHandler OnPlayerEmptyRevolverMagEnd;
     public event EventHandler OnPlayerTriggersProjectileExplosion;
+    public event EventHandler OnSurgeReloadStart;
     public event EventHandler OnSpinningBulletFail;
     public event EventHandler OnSpinningBulletSuccess;
 
@@ -85,15 +86,18 @@ public class PlayerShoot : MonoBehaviour
     private float shootCooldownSFXTriggerTime;
     private float playerJustPressedReloadTimer;
     private float transferringAmmoFromBagTimer;
-    private float transferringAmmoFromBagCooldown = 1f;
+    private float transferringAmmoFromBagCooldown = .3f;
     private float reloadTimer;
+    private bool playerJustPressedReload;
+    private bool transferringAmmoFromBag;
     private float reloadTime;
     private float handsReloadTime;
 
     private bool swappingGun;
     private bool autoReload;
     private bool canShoot = true;
-    private bool gunCanJam = true;
+    private bool canStartSurgeWindow = true;
+    private bool nextBulletSurgeWindow = true;
     private bool coolingDown;
     private bool reloading;
     private bool reloadingInterrupted;
@@ -102,8 +106,10 @@ public class PlayerShoot : MonoBehaviour
     private bool surgeBulletSpinning;
     private bool surgeBulletSpinningInWindow;
     private float surgeBulletSpinningTimer;
-    private float surgeBulletSpinningDelay = .8f;
+    private float surgeBulletSpinningDelay = .6f;
     private float surgeBulletSpinningWindow = .3f;
+    private float reloadingFromBeltReloadBuff = .95f;
+    private float reloadingFromBagReloadDebuff = 1.2f;
 
     private bool secondaryAbilityActive;
     private bool rifleSemiAutoModeActive;
@@ -174,10 +180,6 @@ public class PlayerShoot : MonoBehaviour
             }
         }
 
-        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
-            SetGunCanJam(false);
-        }
-
         SettingsManager.Instance.OnAutoReloadChanged += SettingsManager_OnAutoReloadChanged;
         GameInput.Instance.OnPlayerShootCanceled += GameInput_OnPlayerShootCanceled;
         GameInput.Instance.OnPlayerShootPerformed += GameInput_OnPlayerShootStarted;
@@ -220,17 +222,25 @@ public class PlayerShoot : MonoBehaviour
             }
         }
 
-        //if (playerJustPressedReload) {
-        //    playerJustPressedReloadTimer += Time.deltaTime;
-        //    if (playerJustPressedReloadTimer > .2f) {
-        //        playerJustPressedReload = false;
-        //        if(CanReloadGun()) {
-        //            StartCoroutine(ReloadGunCoroutine());
-        //        }
-        //    }
-        //}
+        if (playerJustPressedReload) {
+            playerJustPressedReloadTimer += Time.deltaTime;
 
-        if(surgeBulletSpinning) {
+            if (playerJustPressedReloadTimer > .2f) {
+                playerJustPressedReload = false;
+                StartTransferringAmmoFromBagInGun();
+            }
+
+        }
+
+        if (transferringAmmoFromBag) {
+            transferringAmmoFromBagTimer += Time.deltaTime;
+            if (transferringAmmoFromBagTimer > transferringAmmoFromBagCooldown) {
+                transferringAmmoFromBagTimer = 0;
+                TransferNextAmmoFromBag();
+            }
+        }
+
+        if (surgeBulletSpinning) {
             surgeBulletSpinningTimer += Time.deltaTime;
 
             if(surgeBulletSpinningTimer > surgeBulletSpinningDelay && !surgeBulletSpinningInWindow) {
@@ -302,21 +312,14 @@ public class PlayerShoot : MonoBehaviour
 
         }
     }
+    private void StartTransferringAmmoFromBagInGun() {
+        transferringAmmoFromBagTimer = 0;
+        transferringAmmoFromBag = true;
+        TransferNextAmmoFromBag(false);
+    }
 
     private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
-        PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
-        bool canTransferAmmoInBelt = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(ammoType).Count > 0;
-
-        // Insert clips during reload in belt
-        //if (reloading) {
-            
-        //    if (canTransferAmmoInBelt) {
-        //        // Weapon is full : transfer clip to belt
-        //        TransferNextAmmoFromBag();
-        //        return;
-        //    }
-        //}
 
         if(surgeBulletSpinning) {
             if (surgeBulletSpinningInWindow) {
@@ -332,31 +335,34 @@ public class PlayerShoot : MonoBehaviour
         if (swappingGun) return;
         if (heldGun.GetGunJammedAndNextInputSequence(GameInput.Binding.reload)) return;
 
-        if(heldGun.GetCurrentBullet() != heldGun.GetBulletsPerAmmoClip()) {
+        playerJustPressedReload = true;
+        playerJustPressedReloadTimer = 0;
+       
+    }
+
+    private void GameInput_OnPlayerReloadCanceled(object sender, EventArgs e) {
+        if(playerJustPressedReload) {
+            playerJustPressedReload = false;
+        }
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+        if (!canShoot) return;
+        if (swappingGun) return;
+        if (heldGun.GetGunJammedAndNextInputSequence(GameInput.Binding.reload)) return;
+
+        if (transferringAmmoFromBag) {
+            // Player is trying to reload weapon
+            transferringAmmoFromBag = false;
+            return;
+        };
+
+        if (heldGun.GetCurrentBullet() != heldGun.GetBulletsPerAmmoClip()) {
             // Weapon is NOT full : reload
             if (CanReloadGun()) {
                 bool canReloadGunFromBelt = CanReloadGunFromBelt();
                 StartCoroutine(ReloadGunCoroutine(!canReloadGunFromBelt));
             }
 
-        } else {
-            if (canTransferAmmoInBelt) {
-                // Weapon is full : transfer clip to belt
-                TransferNextAmmoFromBag();
-                return;
-            }
         }
-    }
-
-    private void GameInput_OnPlayerReloadCanceled(object sender, EventArgs e) {
-        //if (!playerJustPressedReload) {
-        //    // Player is trying to reload weapon
-        //    transferringAmmoFromBag = false;
-        //    return;
-        //};
-
-        //playerJustPressedReload = false;
-        //playerJustPressedReloadTimer = 0;
     }
 
     private void EndBulletSpinning() {
@@ -390,15 +396,11 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private bool CanReloadGunFromBelt() {
-        if (heldGun.GetCurrentAmmoClip() == 0) return false;
-
-        PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
-        if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(ammoType).Count > 0) {
+        if (heldGun.GetCurrentAmmoClip() == 0) {
+            return false;
+        } else {
             return true;
         }
-
-        Debug.Log(UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(ammoType).Count);
-        return false;
     }
 
 
@@ -622,6 +624,14 @@ public class PlayerShoot : MonoBehaviour
     private IEnumerator ReloadGunCoroutine(bool reloadDirectlyFromBag) {
         PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
 
+        float handsReloadTimeModified = heldGun.GetHandsReloadTime();
+        if(reloadDirectlyFromBag) {
+            handsReloadTimeModified *= reloadingFromBagReloadDebuff;
+        } else {
+            handsReloadTimeModified *= reloadingFromBeltReloadBuff;
+        }
+        PlayerStats.Instance.SetHandsReloadTime(handsReloadTimeModified);
+
         reloading = true;
         reloadingHands = true;
         reloadTimer = 0;
@@ -637,12 +647,16 @@ public class PlayerShoot : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
+        yield return new WaitForEndOfFrame();
+        if (!reloadDirectlyFromBag) {
+            heldGun.SetCurrentAmmoClip(heldGun.GetCurrentAmmoClip() - 1);
+        }
+
+        surgeBulletSpinningInWindow = false;
         OnPlayerReload?.Invoke(this, new OnPlayerReloadEventArgs {
             surgeReload = TrySurgeReload()
         });
 
-        yield return new WaitForEndOfFrame();
-        heldGun.SetCurrentAmmoClip(heldGun.GetCurrentAmmoClip() - 1);
     }
 
     private void TransferNextAmmoFromBag(bool reloadGunDirectlyFromBag = false) {
@@ -668,7 +682,6 @@ public class PlayerShoot : MonoBehaviour
     }
 
     public void AddAmmoClip(int ammoCount) {
-
         int ammoRefilled = ammoCount;
         if(heldGun.GetCurrentAmmoClip() + ammoRefilled > heldGun.GetMaxAmmo()) {
             ammoRefilled = heldGun.GetMaxAmmo() - heldGun.GetCurrentAmmoClip();
@@ -849,7 +862,6 @@ public class PlayerShoot : MonoBehaviour
 
                 secondaryAbilityActive = true;
                 holdingStationaryGun = true;
-                SetGunCanJam(false);
 
             } else
             {
@@ -865,7 +877,6 @@ public class PlayerShoot : MonoBehaviour
                 canShoot = false;
 
                 secondaryAbilityActive = false;
-                SetGunCanJam(true);
 
             }
 
@@ -1099,19 +1110,23 @@ public class PlayerShoot : MonoBehaviour
 
     private void EndHandReload() {
         reloadingHands = false;
-        OnPlayerReloadHandEnded?.Invoke(this, new OnPlayerReloadEventArgs {
-            surgeReload = TrySurgeReload()
-        });
+        OnPlayerReloadHandEnded?.Invoke(this, EventArgs.Empty);
     }
 
     private bool TrySurgeReload() {
-        float surgeReloadProbability = 1f;
+        float surgeReloadProbability = heldGun.GetSurgeReloadProbability();
 
         bool surgeReload = UnityEngine.Random.Range(0f, 1f) < surgeReloadProbability;
 
-        if(surgeReload) {
+        if (!canStartSurgeWindow) {
+            return false;
+        }
+
+        if(surgeReload || nextBulletSurgeWindow) {
             surgeBulletSpinning = true;
+            nextBulletSurgeWindow = false;
             surgeBulletSpinningTimer = 0f;
+            OnSurgeReloadStart?.Invoke(this, EventArgs.Empty);
         }
 
         return surgeReload;
@@ -1184,8 +1199,12 @@ public class PlayerShoot : MonoBehaviour
         this.canShoot = canShoot;
     }
 
-    public void SetGunCanJam(bool canJam) {
-        gunCanJam = canJam;
+    public void SetCanStartSurgeWindow(bool canStartSurgeWindow) {
+        this.canStartSurgeWindow = canStartSurgeWindow;
+    }
+
+    public void SurgeWindowNextBullet(bool nextBulletSurgeWindow) {
+        this.nextBulletSurgeWindow = nextBulletSurgeWindow;
     }
 
     #region GET PARAMETERS
@@ -1326,8 +1345,8 @@ public class PlayerShoot : MonoBehaviour
         return reloading;
     }
 
-    public bool GetGunCanJam() {
-        return gunCanJam;
+    public bool GetCanSurgeWindow() {
+        return canStartSurgeWindow;
     }
 
     #endregion

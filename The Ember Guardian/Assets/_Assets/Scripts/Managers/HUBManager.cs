@@ -395,6 +395,8 @@ public class HUBManager : MonoBehaviour
     }
 
     private IEnumerator FirstHUBSpawnCoroutine() {
+        yield return new WaitForEndOfFrame();
+
         CameraManager.Instance.SetCameraOrthographicSize(8f);
 
         if (!DEBUGMODE) {

@@ -50,7 +50,7 @@ public class DemoMainLevelManager : MonoBehaviour
     private bool ammoCraftCollected;
     private bool recruitWorkerTooltipShown;
     private bool tabMenuTooltipShown;
-    private bool gunJammed;
+    private bool surgeWindow;
 
     private int demoLevelLostAmount;
     private bool demoMainLevelTutorialCompleted;
@@ -127,7 +127,7 @@ public class DemoMainLevelManager : MonoBehaviour
             CreaturesSpawnManager.Instance.SetMaxRemainingSubwaveCreaturesForNextSubwave(2);
             CreaturesSpawnManager.Instance.SetCanSpawnElite(false);
             CreaturesSpawnManager.Instance.SetSpawnEquallyFromBothSides(true);
-            PlayerShoot.Instance.SetGunCanJam(false);
+            PlayerShoot.Instance.SetCanStartSurgeWindow(false);
 
             if (!demoMainLevelTutorialCompleted) {
                 StartCoroutine(SetDemoTutorialObjective());
@@ -168,11 +168,11 @@ public class DemoMainLevelManager : MonoBehaviour
     private void PlayerShoot_OnPlayerShot(object sender, EventArgs e) {
         if (!demoMainLevelTutorialCompleted) return;
         if (demoFirstLevelCompleted) return;
-        if (gunJammed) return;
+        if (surgeWindow) return;
 
-        PlayerShoot.Instance.GetHeldGun().JamGun();
-        PlayerShoot.Instance.SetGunCanJam(true);
-        gunJammed = true;
+        PlayerShoot.Instance.SetCanStartSurgeWindow(true);
+        PlayerShoot.Instance.SurgeWindowNextBullet(true);
+        surgeWindow = true;
     }
 
     private void GameInput_OnPlayerSecondaryGunSelected(object sender, EventArgs e) {

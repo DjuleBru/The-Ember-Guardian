@@ -42,7 +42,6 @@ public class Tutorial : MonoBehaviour
     private bool aimTooltipHidden;
     private bool transferAmmoTooltipShown;
     private bool rollTooltipShown;
-    private bool reloadTooltipShown;
     private bool reloadTooltipHidden;
     private bool saveAmmoTooltipShown;
     private bool climbTowerTooltipShown;
@@ -53,6 +52,8 @@ public class Tutorial : MonoBehaviour
 
     private bool dropOrbShown;
 
+    private bool beltRefilled;
+    private bool weaponReloaded;
     private bool healTooltipShown;
     private bool huntingFlagTooltipShown;
     private bool fireBuilt;
@@ -134,7 +135,7 @@ public class Tutorial : MonoBehaviour
         }
 
         PlayerShoot.Instance.SetCanShoot(false);
-        PlayerShoot.Instance.SetGunCanJam(false);
+        PlayerShoot.Instance.SetCanStartSurgeWindow(false);
         StartCoroutine(SetGunAmmoAfterDelay());
         StartCoroutine(ShowMoveTooltipAfterDelay());
 
@@ -210,15 +211,15 @@ public class Tutorial : MonoBehaviour
             }
         }
 
-        if(!reloadTooltipHidden) {
+        if(!weaponReloaded || !beltRefilled) {
             HandleBlockingCollider(firstCreatureCollider.transform.position, LocalizationManager.Instance.GetLocalizedText("tooltip_getGunReady"));
         }
 
-        if(reloadTooltipHidden && workerNumberRecruited < 4) {
+        if(weaponReloaded && workerNumberRecruited < 4) {
             HandleBlockingCollider(blockingWorkersCollider.transform.position, LocalizationManager.Instance.GetLocalizedText("tooltip_recruitFirst"));
         }
 
-        if (reloadTooltipHidden && !dawnStarted && workerNumberRecruited >= 4) {
+        if (weaponReloaded && !dawnStarted && workerNumberRecruited >= 4) {
             HandleBlockingCollider(endLevelAreaCollider.transform.position, LocalizationManager.Instance.GetLocalizedText("tooltip_tooDangerous"));
         }
 
@@ -611,9 +612,17 @@ public class Tutorial : MonoBehaviour
 
 
     private void PlayerShoot_OnPlayerAmmoRefilled(object sender, PlayerShoot.OnAmmoRefilledEventArgs e) {
-        if (reloadTooltipShown) return;
-        reloadTooltipShown = true;
-        StartCoroutine(SwapReloadInstructionsCoroutine(1.5f));
+        if (beltRefilled) return;
+        beltRefilled = true;
+
+        PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
+
+        if(!weaponReloaded) {
+            StartCoroutine(ShowTooltipAfterDelay(0f, LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("menu_reload"), InputControlIcons.Control.Reload));
+        } else {
+            showingGetReady = false;
+            firstCreatureCollider.SetColliderTrigger();
+        }
     }
 
     private void VideoTipUI_OnVideoTipPanelClosed(object sender, VideoTipUI.OnVideoTipPanelClosedEventArgs e) {
@@ -693,22 +702,6 @@ public class Tutorial : MonoBehaviour
         fireLocationIndicator.gameObject.SetActive(true);
     }
 
-    private IEnumerator SwapReloadInstructionsCoroutine(float delay) {
-        yield return new WaitForSeconds(delay);
-
-        PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
-
-        yield return new WaitForSeconds(3f);
-
-        if (PlayerShoot.Instance.GetCurrentBullets() == 0) {
-            StartCoroutine(ShowTooltipAfterDelay(0f, LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("menu_reload"), InputControlIcons.Control.Reload));
-        }
-        else {
-            reloadTooltipHidden = true;
-        }
-
-    }
-
     private IEnumerator ShowMoveTooltipAfterDelay() {
         StartCoroutine(ShowTooltipAfterDelay(2f, LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("menu_moveLeftRight"), InputControlIcons.Control.Move));
         yield return new WaitForSeconds(2f);
@@ -734,12 +727,21 @@ public class Tutorial : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
-        if (reloadTooltipShown && !reloadTooltipHidden) {
+
+        if (!weaponReloaded) {
+
             PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
-            reloadTooltipHidden = true;
-            showingGetReady = false;
-            firstCreatureCollider.SetColliderTrigger();
+            weaponReloaded = true;
+
+            if(!beltRefilled) {
+                StartCoroutine(ShowTooltipAfterDelay(0f, LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_ammoTip"), InputControlIcons.Control.Reload));
+            } else {
+                showingGetReady = false;
+                firstCreatureCollider.SetColliderTrigger();
+            }
+
             return;
+
         }
 
         if (!saveAmmoTooltipShown) {

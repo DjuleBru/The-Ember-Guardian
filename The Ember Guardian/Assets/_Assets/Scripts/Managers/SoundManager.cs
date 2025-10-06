@@ -180,9 +180,10 @@ public class SoundManager : MonoBehaviour
         HuntingFlag_PlayerDefined.OnAnyHuntingFlagPickedUp += HuntingFlag_PlayerDefined_OnAnyHuntingFlagPickedUp;
         GunSpotLight.OnAnyLightSwitched += GunSpotLight_OnAnyLightSwitched;
         Gun.OnAnyGunJammed += Gun_OnAnyGunJammed;
-        Gun.OnAnyGunJamRepaired += Gun_OnAnyGunJamRepaired;
-        PlayerUI_TickTemplate.OnAnyBulletPingShine += PlayerUI_TickTemplate_OnAnyBulletPingShine;
-        PlayerUI_TickTemplate.OnAnyBulletPingShineDropped += PlayerUI_TickTemplate_OnAnyBulletPingShineDropped;
+        Gun.OnAnySurgeReloadSuccess += Gun_OnAnyGunJamRepaired;
+        PlayerUI_TickTemplate.OnAnyBulletPingShineWindowStarted += PlayerUI_TickTemplate_OnAnyBulletPingShineWindowStarted;
+        PlayerUI_TickTemplate.OnAnyBulletPingShineStarted += PlayerUI_TickTemplate_OnAnyBulletPingShineStarted;
+        PlayerUI_TickTemplate.OnAnyBulletPingShineReachedGun += PlayerUI_TickTemplate_OnAnyBulletPingShineReachedGun;
 
         Tutorial.OnAnySpotLightActivated += Tutorial_OnAnySpotLightActivated;
 
@@ -193,6 +194,7 @@ public class SoundManager : MonoBehaviour
         DeleteSkillUI.OnAnyActiveSkillDeleted += DeleteSkillUI_OnAnyActiveSkillDeleted;
         Merchant_Skills.OnPlayerRefundedItem += Merchant_Skills_OnPlayerRefundedItem;
     }
+
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -581,7 +583,7 @@ public class SoundManager : MonoBehaviour
 
     private void PlayerShoot_OnSpinningBulletSuccess(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = soundRefsSO.bulletPingShine;
-        PlaySound2D(audioClipArray, .5f);
+        PlaySound2D(audioClipArray, .6f);
 
         if (bulletSpinningAudioSource.isPlaying) {
             bulletSpinningAudioSource.Stop();
@@ -594,12 +596,17 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    private void PlayerUI_TickTemplate_OnAnyBulletPingShine(object sender, System.EventArgs e) {
+    private void PlayerUI_TickTemplate_OnAnyBulletPingShineWindowStarted(object sender, System.EventArgs e) {
         //AudioClip[] audioClipArray = soundRefsSO.bulletPingShine;
         //PlaySound2D(audioClipArray, .5f);
     }
-    private void PlayerUI_TickTemplate_OnAnyBulletPingShineDropped(object sender, System.EventArgs e) {
-        bulletSpinningAudioSource.PlayOneShot(soundRefsSO.bulletPingShineDropped, sfxVolume * masterVolume * .5f);
+
+    private void PlayerUI_TickTemplate_OnAnyBulletPingShineStarted(object sender, System.EventArgs e) {
+        bulletSpinningAudioSource.PlayOneShot(soundRefsSO.bulletPingShineSpin, sfxVolume * masterVolume * .5f);
+        PlaySound2D(soundRefsSO.bulletPingShineStart, .6f);
+    }
+    private void PlayerUI_TickTemplate_OnAnyBulletPingShineReachedGun(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.bulletPingShineEnteredGun, 3f);
     }
 
     private void Mob_OnAnyMobDamageTaken(object sender, System.EventArgs e) {
@@ -1124,8 +1131,9 @@ public class SoundManager : MonoBehaviour
         MenuButton.OnAnyMenuButtonPressed -= MenuButton_OnAnyMenuButtonPressed;
         StructureBlueprint.OnAnyBlueprintWithStructureHovered -= StructureBlueprint_OnAnyBlueprintWithStructureHovered;
         GridVisualUnit.OnAnyGridWithoutStructureHovered -= GridVisualUnit_OnAnyGidWithoutStructureHovered;
-        PlayerUI_TickTemplate.OnAnyBulletPingShine -= PlayerUI_TickTemplate_OnAnyBulletPingShine;
-        PlayerUI_TickTemplate.OnAnyBulletPingShineDropped -= PlayerUI_TickTemplate_OnAnyBulletPingShineDropped;
+        PlayerUI_TickTemplate.OnAnyBulletPingShineWindowStarted -= PlayerUI_TickTemplate_OnAnyBulletPingShineWindowStarted;
+        PlayerUI_TickTemplate.OnAnyBulletPingShineStarted -= PlayerUI_TickTemplate_OnAnyBulletPingShineStarted;
+        PlayerUI_TickTemplate.OnAnyBulletPingShineReachedGun -= PlayerUI_TickTemplate_OnAnyBulletPingShineReachedGun;
 
 
         ParticleCollision.OnAnyBulletHitEnemy -= ParticleCollision_OnAnyBulletHitEnemy;
@@ -1158,7 +1166,7 @@ public class SoundManager : MonoBehaviour
         HuntingFlag_PlayerDefined.OnAnyHuntingFlagPickedUp -= HuntingFlag_PlayerDefined_OnAnyHuntingFlagPickedUp;
         GunSpotLight.OnAnyLightSwitched -= GunSpotLight_OnAnyLightSwitched;
         Gun.OnAnyGunJammed -= Gun_OnAnyGunJammed;
-        Gun.OnAnyGunJamRepaired -= Gun_OnAnyGunJamRepaired;
+        Gun.OnAnySurgeReloadSuccess -= Gun_OnAnyGunJamRepaired;
 
         Tutorial.OnAnySpotLightActivated -= Tutorial_OnAnySpotLightActivated;
 

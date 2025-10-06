@@ -11,11 +11,14 @@ public class PlayerUI_TickTemplate : MonoBehaviour
     [SerializeField] private Image image;
     [SerializeField] private MMF_Player outMmfPlayer;
     [SerializeField] private MMF_Player outMmfPlayer_surgeReload;
+    [SerializeField] private MMF_Player outMmfPlayer_surgeReloadSuccess;
     [SerializeField] private MMF_Player inMmfPlayer;
     [SerializeField] private Animator shineBulletAnimator;
 
-    public static event EventHandler OnAnyBulletPingShine;
-    public static event EventHandler OnAnyBulletPingShineDropped;
+    private Coroutine spinBulletCoroutine;
+
+    public static event EventHandler OnAnyBulletPingShineWindowStarted;
+    public static event EventHandler OnAnyBulletPingShineStarted;
     public static event EventHandler OnAnyBulletPingShineReachedGun;
 
     private bool isSpinningBullet;
@@ -23,7 +26,7 @@ public class PlayerUI_TickTemplate : MonoBehaviour
     private bool isMoving;
 
     private float acceleration = 100f;  // accélération
-    private float maxSpeed = 50f;       // vitesse max
+    private float maxSpeed = 40f;       // vitesse max
     private float currentSpeed = 20f;
 
     private void Awake() {
@@ -32,7 +35,9 @@ public class PlayerUI_TickTemplate : MonoBehaviour
 
     private void Start() {
         PlayerShoot.Instance.OnSpinningBulletSuccess += PlayerShoot_OnSpinningBulletSuccess;
+        PlayerShoot.Instance.OnSpinningBulletFail += PlayerShoot_OnSpinningBulletFail;
     }
+
 
     private void Update() {
         if (isMoving) {
@@ -48,21 +53,38 @@ public class PlayerUI_TickTemplate : MonoBehaviour
             transform.position += dir * currentSpeed * Time.deltaTime;
 
             // check arrivée
-            if (Vector3.Distance(transform.position, PlayerShoot.Instance.GetHeldGun().transform.position) < 0.25f) {
+            if (Vector3.Distance(transform.position, PlayerShoot.Instance.GetHeldGun().transform.position) < 0.35f) {
                 OnAnyBulletPingShineReachedGun?.Invoke(this, EventArgs.Empty);
-                PlayerShoot.Instance.GetHeldGun().ApplySurgeWindowBuff();
+                PlayerShoot.Instance.GetHeldGun().ApplySurgeWindowBuffAfterDelay(.15f);
                 Destroy(gameObject);
             }
 
         }
     }
 
+    private void PlayerShoot_OnSpinningBulletFail(object sender, EventArgs e) {
+        if (!isSpinningBullet) return;
+        rb.gravityScale = 1.5f;
+        shineBulletAnimator.enabled = false;
+
+        if(spinBulletCoroutine != null) {
+            StopCoroutine(spinBulletCoroutine);
+        }
+    }
+
     private void PlayerShoot_OnSpinningBulletSuccess(object sender, EventArgs e) {
         if (!isSpinningBullet) return;
 
+        outMmfPlayer_surgeReloadSuccess.PlayFeedbacks();
         isSpinningBulletSuccess = true;
-        rb.bodyType = RigidbodyType2D.Kinematic;
+        StartCoroutine(SlowDownBullet());
+        StartCoroutine(SetMovingAfterDelay(.3f));
+    }
 
+    private IEnumerator SetMovingAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        isMoving = true;
     }
 
     public void AddTick() {
@@ -90,10 +112,10 @@ public class PlayerUI_TickTemplate : MonoBehaviour
 
             if (surgeReload) {
                 isSpinningBullet = true;
-                rb.gravityScale = 1.25f;
+                rb.gravityScale = 1f;
                 shineBulletAnimator.enabled = true;
                 outMmfPlayer_surgeReload.PlayFeedbacks();
-                StartCoroutine(SurgeReloadCoroutine(.8f, 100f, .3f, .1f));
+                spinBulletCoroutine = StartCoroutine(SurgeReloadCoroutine(.8f, 100f, .3f, .1f));
                 torque *= 10f;
             }
             else {
@@ -113,33 +135,42 @@ public class PlayerUI_TickTemplate : MonoBehaviour
     }
 
     private IEnumerator SurgeReloadCoroutine(float initialDelay,  float drag, float surgeWindowDelay, float speedReductionFactor) {
-        OnAnyBulletPingShineDropped?.Invoke(this, EventArgs.Empty);
+        OnAnyBulletPingShineStarted?.Invoke(this, EventArgs.Empty);
+        float originalAngularDrag = rb.angularDrag;
+        float originalDrag = rb.drag;
 
         yield return new WaitForSeconds(initialDelay);
+
+        OnAnyBulletPingShineWindowStarted?.Invoke(this, EventArgs.Empty);
+
+        yield return new WaitForSeconds(surgeWindowDelay); // le "slow" dure un court instant
+
+        // on remet les valeurs normales
+        rb.gravityScale = 2f;
+        rb.drag = originalDrag;
+        rb.angularDrag = originalAngularDrag;
+    }
+
+    private IEnumerator SlowDownBullet() {
 
         // court ralentissement
         float originalGravity = rb.gravityScale;
         float originalAngularDrag = rb.angularDrag;
         float originalDrag = rb.drag;
 
-        rb.velocity = rb.velocity * speedReductionFactor;  // on coupe la vitesse
-        rb.angularVelocity = rb.angularVelocity * speedReductionFactor;
+        rb.velocity = rb.velocity * .1f;  // on coupe la vitesse
+        rb.angularVelocity = rb.angularVelocity * .1f;
 
         //rb.gravityScale = gravityScale;      // réduit la chute
-        rb.drag = drag;                // amortit le déplacement
-        rb.angularDrag = drag;         // amortit la rotation
+        rb.drag = 100;                // amortit le déplacement
+        rb.angularDrag = 100;         // amortit la rotation
 
-        OnAnyBulletPingShine?.Invoke(this, EventArgs.Empty);
-        yield return new WaitForSeconds(surgeWindowDelay); // le "slow" dure un court instant
+        yield return new WaitForSeconds(.3f); // le "slow" dure un court instant
 
         // on remet les valeurs normales
         rb.gravityScale = originalGravity;
         rb.drag = originalDrag;
         rb.angularDrag = originalAngularDrag;
-
-        if(isSpinningBulletSuccess) {
-            isMoving = true;
-        }
     }
 
     private IEnumerator DestroyGameObjectAfterDelay(float delay) {
@@ -169,6 +200,7 @@ public class PlayerUI_TickTemplate : MonoBehaviour
 
     private void OnDestroy() {
         PlayerShoot.Instance.OnSpinningBulletSuccess -= PlayerShoot_OnSpinningBulletSuccess;
+        PlayerShoot.Instance.OnSpinningBulletFail -= PlayerShoot_OnSpinningBulletFail;
     }
 
 }

@@ -52,7 +52,7 @@ public class PlayerSounds : SoundObject
         GunJamHandler.OnAnyJamWrongInput += GunJamHandler_OnAnyJamSequenceFailed;
         GunJamHandler.OnAnySpamButtonPressed += GunJamHandler_OnAnySpamButtonPressed;
         GunJamHandler.OnAnyPerfectJamSequenceCompleted += GunJamHandler_OnAnyPerfectJamSequenceCompleted;
-        Gun.OnAnyGunJamRepaired += Gun_OnAnyGunJamRepaired;
+        Gun.OnAnySurgeReloadSuccess += Gun_OnAnyGunJamRepaired;
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
 
@@ -201,6 +201,6 @@ public class PlayerSounds : SoundObject
         GunJamHandler.OnAnyJamWrongInput -= GunJamHandler_OnAnyJamSequenceFailed;
         GunJamHandler.OnAnySpamButtonPressed -= GunJamHandler_OnAnySpamButtonPressed;
         GunJamHandler.OnAnyPerfectJamSequenceCompleted -= GunJamHandler_OnAnyPerfectJamSequenceCompleted;
-        Gun.OnAnyGunJamRepaired -= Gun_OnAnyGunJamRepaired;
+        Gun.OnAnySurgeReloadSuccess -= Gun_OnAnyGunJamRepaired;
     }
 }

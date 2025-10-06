@@ -168,6 +168,23 @@ public class Collectible : MonoBehaviour
         OnAnyCollectiblePickedUpByPlayer?.Invoke(this, EventArgs.Empty);
 
         if(currencyType != PlayerCurrencies.CurrencyType.ember) {
+
+            // AMMO GOES STRAIGHT INTO WEAPON BELT
+            //if(currencyType == PlayerCurrencies.CurrencyType.ammo || currencyType == PlayerCurrencies.CurrencyType.ammo_special) {
+            //    Gun heldGun = PlayerShoot.Instance.GetHeldGun();
+
+            //    if (heldGun.GetCurrentAmmoClip() < heldGun.GetMaxAmmo()) {
+
+            //        if(heldGun.GetGunSO().ammoTypeUsed == currencyType) {
+            //            PlayerShoot.Instance.AddAmmoClip(1);
+            //            Destroy(gameObject);
+            //            return;
+            //        }
+
+            //    }
+
+            //}
+
             UICurrencyManager.PlayerInventoryUI.AddCurrencyInBag(currencyType);
             Destroy(gameObject);
 

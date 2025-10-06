@@ -16,6 +16,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 
     [SerializeField] private Transform ammoTickTemplate;
     [SerializeField] private Transform ammoTickContainer;
+    [SerializeField] private Transform ejectedClipsParentTransform;
 
     [SerializeField] private Transform ammoTickTemplateBackground;
     [SerializeField] private Transform ammoTickContainerBackground;
@@ -61,8 +62,6 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         Structure.OnAnyPlayerTriggeredOut += Structure_OnAnyPlayerTriggeredOut;
 
         Gun.OnAnyGunMaxAmmoChanged += Gun_OnAnyGunMaxAmmoChanged;
-        
-
 
         if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
             PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
@@ -187,6 +186,8 @@ public class PlayerUI_AmmoBar : MonoBehaviour
             ammoBarCritical = false;
         }
     }
+
+
     private void PlayerShoot_OnPlayerReload(object sender, PlayerShoot.OnPlayerReloadEventArgs e) {
         if (PlayerShoot.Instance.GetCurrentAmmoClip() < 0) return;
 
@@ -212,20 +213,21 @@ public class PlayerUI_AmmoBar : MonoBehaviour
                 tickForceYMultiplier = 1.3f;
             }
             ammoTickArray[0].RemoveTick(tickForceYMultiplier, true, 1, 0, e.surgeReload, false, 1.5f, false);
-            //ammoTickArray[0].transform.SetParent(null);
+            ammoTickArray[0].transform.SetParent(ejectedClipsParentTransform);
         }
 
         // Rafraîchit l’affichage des ticks
         RefreshAmmoBar();
     }
 
-    private void PlayerSHoot_OnPlayerReloadHandEnded(object sender, PlayerShoot.OnPlayerReloadEventArgs e) {
+    private void PlayerSHoot_OnPlayerReloadHandEnded(object sender, System.EventArgs e) {
         
     }
 
     private IEnumerator RefillAmmoBar(int ammoCount) {
         for (int i = 0; i < ammoCount; i++) {
 
+            
             PlayerUI_TickTemplate ammoTick = Instantiate(ammoTickTemplate, ammoTickContainer).GetComponent<PlayerUI_TickTemplate>();
 
             PlayerCurrencies.CurrencyType ammoType = PlayerShoot.Instance.GetCurrentAmmoType();

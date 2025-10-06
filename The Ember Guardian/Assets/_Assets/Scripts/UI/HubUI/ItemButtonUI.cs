@@ -562,6 +562,7 @@ public class ItemButtonUI : ButtonUI {
             if(lockedFromOtherMerchantImage.gameObject != null) {
                 lockedFromOtherMerchantImage.gameObject.SetActive(false);
             }
+            iconImage.color = Color.white;
             iconImage.gameObject.SetActive(true);
             lockHoverInteractions = false;
         }

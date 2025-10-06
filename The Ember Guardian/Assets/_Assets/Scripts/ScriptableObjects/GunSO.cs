@@ -152,7 +152,7 @@ public class GunSO : ScriptableObject
     public float shootCreatureHearMultiplier = 1.75f;
     [BoxGroup("Stats/Shoot")]
     [LabelWidth(300)]
-    public float jamProbability = 0.05f;
+    public float surgeReloadProbability = 0.2f;
     [BoxGroup("Stats/Shoot")]
     [LabelWidth(300)]
     public int jamRepairHitAmount = 3;
@@ -238,7 +238,7 @@ public class GunSO : ScriptableObject
     public HubMerchantItemStatModifierSO bulletLifetimeStatModifier;
     [BoxGroup("GunMerchantItemModifiers")]
     [LabelWidth(300)]
-    public HubMerchantItemStatModifierSO jamRepairHitAmountStatModifier;
+    public HubMerchantItemStatModifierSO surgeReloadProbabilityStatModifier;
     [BoxGroup("GunMerchantItemModifiers")]
     [LabelWidth(300)]
     public HubMerchantItemStatModifierSO surgeWindowBulletAmountBuffedStatModifier;

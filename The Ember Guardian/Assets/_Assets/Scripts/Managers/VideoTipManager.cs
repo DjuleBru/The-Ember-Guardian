@@ -107,7 +107,7 @@ public class VideoTipManager : MonoBehaviour
         }
 
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
-        Gun.OnAnyGunJammed += Gun_OnAnyGunJammed;
+        PlayerShoot.Instance.OnSurgeReloadStart += PlayerShoot_OnSurgeReloadStart;
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
             isTutorialScene = true;
@@ -124,7 +124,6 @@ public class VideoTipManager : MonoBehaviour
             emberExtractionTipShown = true;
         }
     }
-
 
     private void SubscribeToDemoTutorialEvents() {
         UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
@@ -172,7 +171,7 @@ public class VideoTipManager : MonoBehaviour
         ES3.Save("trialTipShown", true);
     }
 
-    private void Gun_OnAnyGunJammed(object sender, EventArgs e) {
+    private void PlayerShoot_OnSurgeReloadStart(object sender, EventArgs e) {
         if (surgeWindowTipShown) return;
         VideoTipUI.Instance.PlayTipSO(surgeWindowTip, .7f);
 
@@ -578,7 +577,6 @@ public class VideoTipManager : MonoBehaviour
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         HubMerchant.OnAnyPlayerTriggeredIn -= HubMerchant_OnAnyPlayerTriggeredIn;
         Worker.OnAnyWorkerRecruited -= Worker_OnAnyWorkerRecruited;
-        Gun.OnAnyGunJammed -= Gun_OnAnyGunJammed;
 
         UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
         Mob.OnAnyMobDied -= Creature_OnAnyMobDied;

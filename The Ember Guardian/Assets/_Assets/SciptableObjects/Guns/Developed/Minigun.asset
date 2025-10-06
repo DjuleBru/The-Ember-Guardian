@@ -74,9 +74,9 @@ MonoBehaviour:
   subExplosivesAmount: 0
   subExplosivesDamage: 0
   shootCreatureHearMultiplier: 1.75
-  jamProbability: 0
+  surgeReloadProbability: 0.15
   jamRepairHitAmount: 0
-  perfectQTEBulletAmountDamageBuffed: 0
+  perfectQTEBulletAmountDamageBuffed: 25
   weightAccelerationFactor: 0.85
   reloadAccelerationFactor: 0.85
   followMouseSpeed: 10
@@ -102,8 +102,8 @@ MonoBehaviour:
   shootConeAngleStatModifier: {fileID: 11400000, guid: 9e21c8309de62964c9eb98c4dda86d46, type: 2}
   pelletsPerBulletStatModifier: {fileID: 0}
   bulletLifetimeStatModifier: {fileID: 0}
-  jamRepairHitAmountStatModifier: {fileID: 0}
-  surgeWindowBulletAmountBuffedStatModifier: {fileID: 0}
+  surgeReloadProbabilityStatModifier: {fileID: 0}
+  surgeWindowBulletAmountBuffedStatModifier: {fileID: 11400000, guid: 0cfeda0f498717e448e35ec7a6cac981, type: 2}
   explosionRadiusMultiplierStatModifier: {fileID: 0}
   spinUpDurationStatModifier: {fileID: 11400000, guid: 487e120adc727bc4088ce0602bd9c9ce, type: 2}
   subExplosivesAmountStatModifier: {fileID: 0}

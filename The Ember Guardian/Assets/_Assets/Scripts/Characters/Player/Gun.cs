@@ -45,7 +45,7 @@ public class Gun : MonoBehaviour
     protected float shootCreatureHearMultiplier;
 
     protected int jamRepairHitAmount;
-    protected float jamProbability;
+    protected float surgeReloadProbability;
     protected bool damageSurgeBuffed;
     protected bool damageSurgeBuffedLastBullet;
     protected int bulletAfterPerfectJamSucceededIndex;
@@ -81,7 +81,7 @@ public class Gun : MonoBehaviour
     protected int shootConeAngleStatModifierLevel = -1;
     protected int pelletsPerBulletStatModifierLevel = -1;
     protected int bulletLifetimeStatModifierLevel = -1;
-    protected int jamRepairHitAmountStatModifierLevel = -1;
+    protected int surgeReloadProbabilityStatModifierLevel = -1;
     protected int surgeWindowBulletAmountBuffedStatModifierLevel = -1;
     protected int explosionRadiusMultiplierStatModifierLevel = -1;
     protected int spinUpDurationStatModifierLevel = -1;
@@ -92,7 +92,7 @@ public class Gun : MonoBehaviour
     public static event EventHandler OnAnyGunStatsUpgraded;
     public static event EventHandler OnAnyGunUnlocked;
     public static event EventHandler OnAnyGunJammed;
-    public static event EventHandler OnAnyGunJamRepaired;
+    public static event EventHandler OnAnySurgeReloadSuccess;
     public static event EventHandler OnAnyGunJamBuffedDamageShot;
     public event EventHandler OnGunJammed;
     public event EventHandler OnPerfectQTEDamageBuff;
@@ -118,13 +118,6 @@ public class Gun : MonoBehaviour
 
 
     protected virtual void Update() {
-
-        if (DebugManager.Instance.GetGunJamDebugInputsAllowed() && gunActive) {
-            if (Input.GetKeyDown(KeyCode.J)) {
-                JamGun();
-            }
-        }
-
         if (!gunJamInCooldown) return;
 
         gunJustJammedTimer += Time.deltaTime;
@@ -263,9 +256,9 @@ public class Gun : MonoBehaviour
         }
 
 
-        jamRepairHitAmount = gunSO.jamRepairHitAmount;
-        if(gunSO.jamRepairHitAmountStatModifier != null && jamRepairHitAmountStatModifierLevel != -1) {
-            jamRepairHitAmount = gunSO.jamRepairHitAmount + (int)gunSO.jamRepairHitAmountStatModifier.statModifierList[jamRepairHitAmountStatModifierLevel];
+        surgeReloadProbability = gunSO.surgeReloadProbability;
+        if(gunSO.surgeReloadProbabilityStatModifier != null && surgeReloadProbabilityStatModifierLevel != -1) {
+            surgeReloadProbability = gunSO.surgeReloadProbability + gunSO.surgeReloadProbabilityStatModifier.statModifierList[surgeReloadProbabilityStatModifierLevel];
         }
 
 
@@ -301,7 +294,6 @@ public class Gun : MonoBehaviour
         bulletSpeed = gunSO.bulletSpeed;
         swapToWeaponTimeMultiplier = gunSO.swapToWeaponTimeMultiplier;
         bulletKnockback = gunSO.bulletKnockback;
-        jamProbability = gunSO.jamProbability;
         shootCreatureHearMultiplier = gunSO.shootCreatureHearMultiplier;
 
         currentAngle = defaultAngle;
@@ -347,7 +339,7 @@ public class Gun : MonoBehaviour
 
         //Check Passive SKills
         CheckPassiveSkillEffectsOnBullet();
-        HandleGunJams();
+        //HandleGunJams();
 
         Shoot();
     }
@@ -405,11 +397,11 @@ public class Gun : MonoBehaviour
     }
 
     protected void HandleGunJams() {
-        if (!PlayerShoot.Instance.GetGunCanJam()) return;
+        if (!PlayerShoot.Instance.GetCanSurgeWindow()) return;
         if (PlayerShoot.Instance.GetNotHeldGun() != null && PlayerShoot.Instance.GetNotHeldGun().GetGunJammed()) return;
         if (gunJamInCooldown) return;
 
-        if (UnityEngine.Random.value < jamProbability/100f) {
+        if (UnityEngine.Random.value < surgeReloadProbability/100f) {
             JamGun();
         }
     }
@@ -578,8 +570,8 @@ public class Gun : MonoBehaviour
     public int GetJamRepairHitAmount() {
         return jamRepairHitAmount;
     }
-    public float GetJamProbability() {
-        return jamProbability;
+    public float GetSurgeReloadProbability() {
+        return surgeReloadProbability;
     }
     public float GetExplosionRadiusMultiplier() {
         return explosionRadiusMultiplier;
@@ -602,7 +594,7 @@ public class Gun : MonoBehaviour
         gunJammed = false;
 
         if(gunJamSuccess) {
-            OnAnyGunJamRepaired?.Invoke(this, EventArgs.Empty);
+            OnAnySurgeReloadSuccess?.Invoke(this, EventArgs.Empty);
         }
 
         this.damageSurgeBuffed = gunJamSuccess;
@@ -613,8 +605,13 @@ public class Gun : MonoBehaviour
         }
     }
 
-    public void ApplySurgeWindowBuff() {
-        OnAnyGunJamRepaired?.Invoke(this, EventArgs.Empty);
+    public void ApplySurgeWindowBuffAfterDelay(float delay) {
+        StartCoroutine(ApplySurgeWindowBuffAfterDelayCoroutine(delay));
+    }
+
+    private IEnumerator ApplySurgeWindowBuffAfterDelayCoroutine(float delay) {
+        yield return new WaitForSeconds(delay);
+        OnAnySurgeReloadSuccess?.Invoke(this, EventArgs.Empty);
         OnPerfectQTEDamageBuff?.Invoke(this, EventArgs.Empty);
         BuffBulletDamage(perfectJamDamageBuff, false);
         damageSurgeBuffed = true;
@@ -762,14 +759,16 @@ public class Gun : MonoBehaviour
         this.spinUpDuration = modifiedSpinUpTime;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
-    public void SetJamRepairHitAmount_StatModifierListLevel(int jamRepairHitAmountStatModifierLevel) {
-        this.jamRepairHitAmountStatModifierLevel = jamRepairHitAmountStatModifierLevel;
 
-        int modifiedJamRepairHitAmount = gunSO.jamRepairHitAmount + (int)gunSO.jamRepairHitAmountStatModifier.statModifierList[jamRepairHitAmountStatModifierLevel];
+    public void SetSurgeReloadProbability_StatModifierListLevel(int surgeReloadProbabilityStatModifierLevel) {
+        this.surgeReloadProbabilityStatModifierLevel = surgeReloadProbabilityStatModifierLevel;
 
-        this.jamRepairHitAmount = modifiedJamRepairHitAmount;
+        float modifiedSurgeReloadProbability = gunSO.surgeReloadProbability + gunSO.surgeReloadProbabilityStatModifier.statModifierList[this.surgeReloadProbabilityStatModifierLevel];
+
+        this.surgeReloadProbability = modifiedSurgeReloadProbability;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
+
     public void SetSurgeWindowBulletBoost_StatModifierListLevel(int surgeWindowBulletAmountStatModifierLevel) {
         this.surgeWindowBulletAmountBuffedStatModifierLevel = surgeWindowBulletAmountStatModifierLevel;
 
@@ -808,7 +807,7 @@ public class Gun : MonoBehaviour
         gunData["subExplosivesAmountLevel"] = subExplosivesAmountStatModifierLevel;
         gunData["spinUpDurationLevel"] = spinUpDurationStatModifierLevel;
         gunData["surgeWindowBulletAmountBuffedLevel"] = surgeWindowBulletAmountBuffedStatModifierLevel;
-        gunData["jamRepairHitAmountLevel"] = jamRepairHitAmountStatModifierLevel;
+        gunData["surgeReloadProbabilityStatModifierLevel"] = surgeReloadProbabilityStatModifierLevel;
 
         gunData["secondaryAbilityUnlocked"] = secondaryAbilityUnlocked;
 
@@ -851,7 +850,7 @@ public class Gun : MonoBehaviour
         subExplosivesAmountStatModifierLevel = GetLevelSafe("subExplosivesAmountLevel", gunSO.subExplosivesAmountStatModifier);
         spinUpDurationStatModifierLevel = GetLevelSafe("spinUpDurationLevel", gunSO.spinUpDurationStatModifier);
         surgeWindowBulletAmountBuffedStatModifierLevel = GetLevelSafe("surgeWindowBulletAmountBuffedLevel", gunSO.surgeWindowBulletAmountBuffedStatModifier);
-        jamRepairHitAmountStatModifierLevel = GetLevelSafe("jamRepairHitAmountLevel", gunSO.jamRepairHitAmountStatModifier);
+        surgeReloadProbabilityStatModifierLevel = GetLevelSafe("surgeReloadProbabilityStatModifierLevel", gunSO.surgeReloadProbabilityStatModifier);
 
         secondaryAbilityUnlocked = gunData.ContainsKey("secondaryAbilityUnlocked") && Convert.ToBoolean(gunData["secondaryAbilityUnlocked"]);
 
