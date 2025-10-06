@@ -56,22 +56,32 @@ public class VideoTipUI_ManualPanel : MonoBehaviour
         buttonTemplate.gameObject.SetActive(true);
 
         List<VideoTipUI_TipTemplate> tipButtons = new List<VideoTipUI_TipTemplate>();
-        int i = 0;
+
 
         List<VideoTipSO> orderedTipSOList = new List<VideoTipSO>();
-
         foreach (string key in MetaProgressionManager.Instance.GetTipUnlockedList()) {
             foreach (VideoTipSO tip in allVideoTipsList) {
+
                 if(tip.tipNameLocalizationKey == key) {
                     orderedTipSOList.Add(tip);
                 }
+
             }
         }
-        
-        foreach (VideoTipSO tip in orderedTipSOList) {
-            if (!MetaProgressionManager.Instance.GetTipUnlocked(tip)) continue;
 
+        int lockedTipsNumber = allVideoTipsList.Count - orderedTipSOList.Count;
+        for (int j = 0; j < lockedTipsNumber; j++) {
+            orderedTipSOList.Add(allVideoTipsList[0]);
+        }
+
+        int i = 0;
+        foreach (VideoTipSO tip in orderedTipSOList) {
             VideoTipUI_TipTemplate tipTemplate = Instantiate(buttonTemplate, buttonContainer).GetComponent<VideoTipUI_TipTemplate>();
+            if (!MetaProgressionManager.Instance.GetTipUnlocked(tip)) {
+                tipTemplate.SetLocked();
+                continue;
+            };
+
             tipTemplate.SetVideoTipSO(tip);
             tipButtons.Add(tipTemplate);
 

@@ -24,13 +24,13 @@ public class WaterManager : MonoBehaviour
         settingsSaveFileSettings = new ES3Settings("Settings.es3");
         reflectionLevel = ES3.Load("reflectionLevel", 1f, settingsSaveFileSettings);
 
-        RefreshReflectionsLevel();
     }
 
     private void Start() {
         //RefreshPerspectiveActive();
 
         SettingsManager.Instance.OnWaterPerspectiveChanged += SettingsManager_OnWaterPerspectiveChanged;
+        RefreshReflectionsLevel();
     }
 
     private void SettingsManager_OnWaterPerspectiveChanged(object sender, System.EventArgs e) {
@@ -61,7 +61,7 @@ public class WaterManager : MonoBehaviour
         int totalLayers = allLayers.Count;
         int layersToKeep = Mathf.RoundToInt(reflectionLevel * totalLayers);
 
-        if(layersToKeep == 0) {
+        if(layersToKeep <= 2) {
             layersToKeep = 2;
         }
 
@@ -80,6 +80,7 @@ public class WaterManager : MonoBehaviour
             modernWater2D.settings._reflectionsSettings,
             false
         );
+        modernWater2D.RefreshReflections();
     }
     public float GetWaterReflectionLevel() {
         return reflectionLevel;
@@ -90,5 +91,7 @@ public class WaterManager : MonoBehaviour
         ES3.Save("reflectionLevel", reflectionLevel, settingsSaveFileSettings);
 
         OnReflectionLevelChanged?.Invoke(this, EventArgs.Empty);
+
+        RefreshReflectionsLevel();
     }
 }

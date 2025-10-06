@@ -86,33 +86,33 @@ public class PlayerSounds : SoundObject
     }
 
     private void GunJamHandler_OnAnyPerfectJamSequenceCompleted(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(gunJamPerfectQTE[Random.Range(0, gunJamPerfectQTE.Length)], sfxVolume * .75f);
+        playerAudioSource.PlayOneShot(gunJamPerfectQTE[Random.Range(0, gunJamPerfectQTE.Length)], sfxVolume * .75f * masterVolume);
     }
     private void Gun_OnAnyGunJamRepaired(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(gunJamPerfectQTE[Random.Range(0, gunJamPerfectQTE.Length)], sfxVolume * .75f);
+        playerAudioSource.PlayOneShot(gunJamPerfectQTE[Random.Range(0, gunJamPerfectQTE.Length)], sfxVolume * .75f * masterVolume);
     }
 
 
     private void GunJamHandler_OnAnySpamButtonPressed(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(gunJamSpamHitPerformed[Random.Range(0, gunJamSpamHitPerformed.Length)], sfxVolume * .5f);
+        playerAudioSource.PlayOneShot(gunJamSpamHitPerformed[Random.Range(0, gunJamSpamHitPerformed.Length)], sfxVolume * .5f * masterVolume);
     }
 
     private void GunJamHandler_OnAnyJamSequenceFailed(object sender, GunJamHandler.OnAnyJamSequenceProgressedEventArgs e) {
-        playerAudioSource.PlayOneShot(gunJamHitFailed[Random.Range(0, gunJamHitFailed.Length)], sfxVolume * .7f);
+        playerAudioSource.PlayOneShot(gunJamHitFailed[Random.Range(0, gunJamHitFailed.Length)], sfxVolume * .7f * masterVolume);
     }
 
     private void GunJamHandler_OnAnyCorrectJamSequenceInput(object sender, System.EventArgs e) {
         AudioClip[] gunJamHitProgress = PlayerShoot.Instance.GetHeldGunSO().gunJammHitProgressSound;
         float volumeMultiplier = PlayerShoot.Instance.GetHeldGunSO().gunJamHitProgressVolumeMultiplier;
-        playerAudioSource.PlayOneShot(gunJamHitProgress[Random.Range(0, gunJamHitProgress.Length)], sfxVolume * volumeMultiplier);
+        playerAudioSource.PlayOneShot(gunJamHitProgress[Random.Range(0, gunJamHitProgress.Length)], sfxVolume * volumeMultiplier * masterVolume);
     }
 
     private void GunMeleeAttackCollider_OnAnyGunMeleeAttackHit(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(playerMeleeAttackHitAudioClips[Random.Range(0, playerMeleeAttackHitAudioClips.Length)], sfxVolume*.7f);
+        playerAudioSource.PlayOneShot(playerMeleeAttackHitAudioClips[Random.Range(0, playerMeleeAttackHitAudioClips.Length)], sfxVolume*.7f * masterVolume);
     }
 
     private void PlayerMeleeAttack_OnMeleeAttackStarted(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(playerMeleeAttackStartedAudioClips[Random.Range(0, playerMeleeAttackStartedAudioClips.Length)], sfxVolume);
+        playerAudioSource.PlayOneShot(playerMeleeAttackStartedAudioClips[Random.Range(0, playerMeleeAttackStartedAudioClips.Length)], sfxVolume * masterVolume);
     }
 
     private void PlayerMovement_OnPlayerAlmostExhaustionDeactivateFeedbacks(object sender, System.EventArgs e) {
@@ -137,21 +137,21 @@ public class PlayerSounds : SoundObject
         playerReloadAudioSource.time = 0;
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().reloadGunSound;
         playerReloadAudioSource.clip = audioClipArray[Random.Range(0, audioClipArray.Length)];
-        playerReloadAudioSource.volume = sfxVolume * PlayerShoot.Instance.GetHeldGunSO().reloadSFXVolumeMultiplier;
+        playerReloadAudioSource.volume = sfxVolume * PlayerShoot.Instance.GetHeldGunSO().reloadSFXVolumeMultiplier * masterVolume;
         playerReloadAudioSource.Play();
     }
 
 
     private void PlayerMovement_OnPlayerRoll(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(playerRollAudioClips[Random.Range(0, playerRollAudioClips.Length)], sfxVolume*.7f);
+        playerAudioSource.PlayOneShot(playerRollAudioClips[Random.Range(0, playerRollAudioClips.Length)], sfxVolume*.7f * masterVolume);
     }
 
     private void Player_OnPlayerDied(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(playerDiedAudioClips_selectedGender[Random.Range(0, playerDiedAudioClips_selectedGender.Length)], sfxVolume);
+        playerAudioSource.PlayOneShot(playerDiedAudioClips_selectedGender[Random.Range(0, playerDiedAudioClips_selectedGender.Length)], sfxVolume * masterVolume);
     }
 
     private void Player_OnPlayerDamaged(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(playerDamagedElectricAudioClips[Random.Range(0, playerDamagedElectricAudioClips.Length)], sfxVolume * .4f);
+        playerAudioSource.PlayOneShot(playerDamagedElectricAudioClips[Random.Range(0, playerDamagedElectricAudioClips.Length)], sfxVolume * .4f * masterVolume);
 
         if (Player.Instance.GetHP() == 0) return;
         StartCoroutine(PlayHumanDamagedAudioClip());
@@ -159,18 +159,18 @@ public class PlayerSounds : SoundObject
 
     private IEnumerator PlayHumanDamagedAudioClip() {
         yield return new WaitForSeconds(.075f);
-        playerAudioSource.PlayOneShot(playerDamagedAudioClips_selectedGender[Random.Range(0, playerDamagedAudioClips_selectedGender.Length)], sfxVolume);
+        playerAudioSource.PlayOneShot(playerDamagedAudioClips_selectedGender[Random.Range(0, playerDamagedAudioClips_selectedGender.Length)], sfxVolume * masterVolume);
     }
 
     private void PlayerMovement_OnPlayerExhaustionStarted(object sender, System.EventArgs e) {
         exhaustedSFXPlaying = true;
         AudioClip audioclip = playerExhaustedAudioClips_selectedGender[Random.Range(0, playerExhaustedAudioClips_selectedGender.Length)];
-        playerAudioSource.PlayOneShot(audioclip, sfxVolume * .5f);
+        playerAudioSource.PlayOneShot(audioclip, sfxVolume * .5f * masterVolume);
 
         StartCoroutine(SetExhaustionSFXPlaying(audioclip.length));
     }
     private void PlayerAnimator_OnFootStepTriggered(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(footStepAudioClips[Random.Range(0, footStepAudioClips.Length)], sfxVolume);
+        playerAudioSource.PlayOneShot(footStepAudioClips[Random.Range(0, footStepAudioClips.Length)], sfxVolume * masterVolume);
     }
 
     private void PlayerAnimator_OnPantTriggered(object sender, System.EventArgs e) {
@@ -183,10 +183,10 @@ public class PlayerSounds : SoundObject
             volumeMultiplier = .15f;
         }
 
-        playerAudioSource.PlayOneShot(playerPantAudioClips_selectedGender[Random.Range(0, playerPantAudioClips_selectedGender.Length)], sfxVolume * volumeMultiplier);
+        playerAudioSource.PlayOneShot(playerPantAudioClips_selectedGender[Random.Range(0, playerPantAudioClips_selectedGender.Length)], sfxVolume * volumeMultiplier * masterVolume);
     }
     private void ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(activeMoveSpeedBoostFootstepAudioClip, sfxVolume / 8);
+        playerAudioSource.PlayOneShot(activeMoveSpeedBoostFootstepAudioClip, sfxVolume / 8 * masterVolume);
     }
 
     private IEnumerator SetExhaustionSFXPlaying(float sfxDuration) {

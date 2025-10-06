@@ -173,10 +173,14 @@ public class VideoTipManager : MonoBehaviour
 
     private void PlayerShoot_OnSurgeReloadStart(object sender, EventArgs e) {
         if (surgeWindowTipShown) return;
+
         VideoTipUI.Instance.PlayTipSO(surgeWindowTip, .7f);
 
         surgeWindowTipShown = true;
         ES3.Save("surgeWindowTipShown", true);
+
+        // Second surge reload (just to train the player)
+        PlayerShoot.Instance.SurgeWindowNextBullet(true);
     }
 
     private void WindManager_OnWindStrengthChanged(object sender, EventArgs e) {

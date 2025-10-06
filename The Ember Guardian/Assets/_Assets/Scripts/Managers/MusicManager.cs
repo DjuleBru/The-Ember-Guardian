@@ -75,6 +75,7 @@ public class MusicManager : MonoBehaviour {
     private bool isMainMenuScene;
     private bool isHUBScene;
     private bool isLevelScene;
+    private bool isTutorialScene;
     private bool isPlayingLevelDiscoveryMusic;
     private bool isPlayingPeacefulMusic;
     private bool isPlayingExplorationMusic;
@@ -132,8 +133,9 @@ public class MusicManager : MonoBehaviour {
         isLevelScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level;
         isMainMenuScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu;
         isHUBScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB;
+        isTutorialScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial;
 
-        if(isLevelScene) {
+        if(isLevelScene || isTutorialScene) {
             levelRandomBackgroundTracks = LevelManager.Instance.GetLevelSO().levelRandomBackgroundTracks;
             levelExplorationTracks = LevelManager.Instance.GetLevelSO().levelExplorationTracks;
             levelExplorationTracksStreamerMode = LevelManager.Instance.GetLevelSO().levelExplorationTracksStreamerMode;
@@ -452,25 +454,28 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void CreaturesManager_OnAllCreaturesAtNightKilled(object sender, EventArgs e) {
-        if (!isLevelScene) return;
+        if (isLevelScene || isTutorialScene) {
 
-        audioSourceA.loop = false;
-        audioSourceB.loop = false;
+            audioSourceA.loop = false;
+            audioSourceB.loop = false;
 
-        if(nightCoroutine != null) {
-            StopCoroutine(nightCoroutine);
-        }
-        AudioClip outroAudioClip = nightMusicOutro;
-        if(streamerMode) {
-            outroAudioClip = nightMusicOutroStreamer;
-        }
-        CrossfadeToNextNightClip(outroAudioClip);
+            if (nightCoroutine != null) {
+                StopCoroutine(nightCoroutine);
+            }
+            AudioClip outroAudioClip = nightMusicOutro;
+            if (streamerMode) {
+                outroAudioClip = nightMusicOutroStreamer;
+            }
+            CrossfadeToNextNightClip(outroAudioClip);
 
-        StartCoroutine(FadeOutDelayedCoroutine(5f, 2f));
-        isDuskOrNight = false;
-        peacefulTimer = 0;
-        playMusicAttemptTimer = 0;
-        isPlayingNightMusic = false;
+            StartCoroutine(FadeOutDelayedCoroutine(5f, 2f));
+            isDuskOrNight = false;
+            peacefulTimer = 0;
+            playMusicAttemptTimer = 0;
+            isPlayingNightMusic = false;
+
+        };
+
     }
 
     private IEnumerator PlayIntroNighMusicDelayed(float delay) {
@@ -862,7 +867,7 @@ public class MusicManager : MonoBehaviour {
         Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
         CreatureAI.OnAnyCreatureAggro -= CreatureAI_OnAnyCreatureAggro;
 
-        if (isLevelScene) {
+        if (isLevelScene ||isTutorialScene) {
             DayNightManager.Instance.OnDuskStart -= DayNightManager_OnDuskStart;
             CreaturesManager.Instance.OnAllCreaturesAtNightKilled += CreaturesManager_OnAllCreaturesAtNightKilled;
             DayNightManager.Instance.OnNightStart -= DayNightManager_OnNightStart;

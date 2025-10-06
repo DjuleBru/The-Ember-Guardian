@@ -226,6 +226,11 @@ namespace Water2D
                     layers |= (1 << bit);
                 }
             }
+
+            // Force le rafraîchissement du cullingMask de la caméra
+            if (reflectionCamera != null) {
+                reflectionCamera.cullingMask = layers;
+            }
         }
 
 

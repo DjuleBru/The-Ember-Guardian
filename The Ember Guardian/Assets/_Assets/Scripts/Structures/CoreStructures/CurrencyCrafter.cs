@@ -17,6 +17,7 @@ public class CurrencyCrafter : Structure
     [SerializeField] private int currencyCraftAmount = 3;
     [SerializeField] private ShowTooltipOnTrigger showTooltipOnTrigger;
 
+    [SerializeField] private bool useDebugBatchCapacity;
     [SerializeField] private int debugBatchCapacity;
     [SerializeField] private bool debugSpecialAmmoUnlocked;
 
@@ -73,12 +74,10 @@ public class CurrencyCrafter : Structure
         }
 
         primaryCurrencyCraftTime = currencyCraftTime;
-        if (debugBatchCapacity != 0) {
+        if (useDebugBatchCapacity) {
             batchCapacity = debugBatchCapacity;
         }
 
-
-        Debug.Log("Start currencyCraftTime " + currencyCraftTime);
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {

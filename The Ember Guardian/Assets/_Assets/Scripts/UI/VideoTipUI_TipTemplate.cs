@@ -36,6 +36,13 @@ public class VideoTipUI_TipTemplate : MonoBehaviour, ISelectHandler, IPointerEnt
         RefreshFontMaterial();
     }
 
+    public void SetLocked() {
+        tipUnlocked = false;
+
+        tipNameText.text = "????";
+        GetComponent<CanvasGroup>().alpha = .5f;
+    }
+
     private void PlayVideoTipSO() {
         if (!tipUnlocked) return;
         VideoTipUI.Instance.PlayTipSO(videoTipSO, 0, false, true, false);

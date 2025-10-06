@@ -102,10 +102,9 @@ public class SettingsMenuUI : MonoBehaviour
     }
 
     protected void UpdateWaterReflections(float value) {
-        Debug.Log("UpdateWaterReflections");
         waterReflectionsLevel = value;
 
-        StartCoroutine(SetTakesEffectOnReloadAnimatorAfterFrame());
+        //StartCoroutine(SetTakesEffectOnReloadAnimatorAfterFrame());
         WaterManager.Instance.SetReflectionLevel(waterReflectionsLevel);
     }
 

@@ -252,6 +252,10 @@ namespace Water2D
 
         }
 
+        public void RefreshReflections() {
+            OnReflectionsChanged();
+        }
+
         //sets the water layer for water
         void SetLayers()
         {

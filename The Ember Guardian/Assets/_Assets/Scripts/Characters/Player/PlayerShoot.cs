@@ -325,6 +325,7 @@ public class PlayerShoot : MonoBehaviour
             if (surgeBulletSpinningInWindow) {
                 // Success
                 OnSpinningBulletSuccess?.Invoke(this, EventArgs.Empty);
+                surgeBulletSpinningInWindow = false;
             } else {
                 // Fail
                 EndBulletSpinning();
@@ -625,11 +626,15 @@ public class PlayerShoot : MonoBehaviour
         PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
 
         float handsReloadTimeModified = heldGun.GetHandsReloadTime();
+        float reloadTimeModified = heldGun.GetReloadTime();
         if(reloadDirectlyFromBag) {
             handsReloadTimeModified *= reloadingFromBagReloadDebuff;
+            reloadTimeModified *= reloadingFromBagReloadDebuff;
         } else {
             handsReloadTimeModified *= reloadingFromBeltReloadBuff;
+            reloadTimeModified *= reloadingFromBeltReloadBuff;
         }
+        PlayerStats.Instance.SetReloadTime(reloadTimeModified);
         PlayerStats.Instance.SetHandsReloadTime(handsReloadTimeModified);
 
         reloading = true;
@@ -654,7 +659,7 @@ public class PlayerShoot : MonoBehaviour
 
         surgeBulletSpinningInWindow = false;
         OnPlayerReload?.Invoke(this, new OnPlayerReloadEventArgs {
-            surgeReload = TrySurgeReload()
+            surgeReload = TrySurgeReload(!reloadDirectlyFromBag)
         });
 
     }
@@ -1113,7 +1118,9 @@ public class PlayerShoot : MonoBehaviour
         OnPlayerReloadHandEnded?.Invoke(this, EventArgs.Empty);
     }
 
-    private bool TrySurgeReload() {
+    private bool TrySurgeReload(bool reloadFromBelt) {
+        if (!reloadFromBelt) return false;
+
         float surgeReloadProbability = heldGun.GetSurgeReloadProbability();
 
         bool surgeReload = UnityEngine.Random.Range(0f, 1f) < surgeReloadProbability;

@@ -165,6 +165,7 @@ GameObject:
   - component: {fileID: 2843042333225755311}
   - component: {fileID: 3508508961029735415}
   - component: {fileID: 7464992886062037219}
+  - component: {fileID: 1767821084642212572}
   m_Layer: 5
   m_Name: TipButton
   m_TagString: Untagged
@@ -332,6 +333,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tipNameText: {fileID: 4269402168942741323}
+--- !u!225 &1767821084642212572
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322947718077752684}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &575054080281169953
 GameObject:
   m_ObjectHideFlags: 0
@@ -1084,8 +1097,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8092972153247137310}
   m_HandleRect: {fileID: 5019738915690030307}
   m_Direction: 2
-  m_Value: 0.99999994
-  m_Size: 0.3167112
+  m_Value: 1.0000001
+  m_Size: 0.31671122
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

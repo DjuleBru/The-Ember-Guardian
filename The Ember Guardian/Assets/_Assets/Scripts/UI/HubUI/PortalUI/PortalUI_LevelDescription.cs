@@ -76,6 +76,9 @@ public class PortalUI_LevelDescription : MonoBehaviour {
 
             }
         }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(unlockablesGO.GetComponent<RectTransform>());
+        //Canvas.ForceUpdateCanvases();
     }
 
     private void RefreshCompletedIndicator() {

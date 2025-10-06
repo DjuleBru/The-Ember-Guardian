@@ -48,7 +48,7 @@ public class PortalSound : SoundObject {
     }
 
     private void Portal_OnPortalActivated(object sender, System.EventArgs e) {
-        teleporterAudioSource.PlayOneShot(sideLightsAudioClip, sfxVolume);
+        teleporterAudioSource.PlayOneShot(sideLightsAudioClip, sfxVolume * masterVolume);
     }
 
     private void Portal_OnPortalUnlocked(object sender, System.EventArgs e) {
@@ -62,16 +62,16 @@ public class PortalSound : SoundObject {
     }
 
     private void Portal_OnPortalDisappeared(object sender, System.EventArgs e) {
-        teleporterAudioSource.PlayOneShot(appearAudioClip, .15f * sfxVolume);
+        teleporterAudioSource.PlayOneShot(appearAudioClip, .15f * sfxVolume * masterVolume);
         FadeOutIdleAudio(2f);
     }
 
     private void Portal_OnPlayerExitedTriggerArea(object sender, System.EventArgs e) {
-        teleporterAudioSource.PlayOneShot(beamLightOffAudioClip, .5f * sfxVolume);
+        teleporterAudioSource.PlayOneShot(beamLightOffAudioClip, .5f * sfxVolume * masterVolume);
     }
 
     private void Portal_OnPlayerEnteredTriggerArea(object sender, System.EventArgs e) {
-        teleporterAudioSource.PlayOneShot(beamLightOnAudioClip, .5f * sfxVolume);
+        teleporterAudioSource.PlayOneShot(beamLightOnAudioClip, .5f * sfxVolume * masterVolume);
     }
 
     private void Portal_OnPortalAppeared(object sender, System.EventArgs e) {
@@ -80,17 +80,17 @@ public class PortalSound : SoundObject {
     }
 
     private void Portal_OnPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
-        teleporterAudioSource.PlayOneShot(teleportAudioClip, sfxVolume);
+        teleporterAudioSource.PlayOneShot(teleportAudioClip, sfxVolume * masterVolume);
     }
 
     private IEnumerator PlayShortTeleportSoundAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
-        teleporterAudioSource.PlayOneShot(teleportShortAudioClip, .5f * sfxVolume);
+        teleporterAudioSource.PlayOneShot(teleportShortAudioClip, .5f * sfxVolume * masterVolume);
     }
 
     private IEnumerator PlayDelayed(float delay, AudioClip audioClip, float volume) {
         yield return new WaitForSeconds(delay);
-        teleporterAudioSource.PlayOneShot(audioClip, volume * sfxVolume);
+        teleporterAudioSource.PlayOneShot(audioClip, volume * sfxVolume * masterVolume);
     }
     public void FadeInIdleAudio(float duration = 1f) {
         if (!teleporterIdleAudioSource.isPlaying)
