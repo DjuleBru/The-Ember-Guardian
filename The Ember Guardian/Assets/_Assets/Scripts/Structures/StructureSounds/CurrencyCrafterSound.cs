@@ -5,15 +5,18 @@ using UnityEngine;
 public class CurrencyCrafterSound : StructureSounds
 {
     private CurrencyCrafter currencyCrafter;
-    private SoundVolume2D soundVolume2D;
+    [SerializeField] private SoundVolume2D craftingAudioSourceSoundVolume2D;
+    [SerializeField] private AudioSource craftingAudioSource;
     [SerializeField] private AudioClip startCraftingAudioClip;
     [SerializeField] private AudioClip endCraftingAudioClip;
+    [SerializeField] private AudioClip loopCraftingAudioClip;
     [SerializeField] private AudioClip currencyInstantiatedAudioClip;
 
     protected override void Awake() {
         base.Awake();
         currencyCrafter = GetComponentInParent<CurrencyCrafter>();
-        soundVolume2D = GetComponent<SoundVolume2D>();
+        craftingAudioSource.clip = loopCraftingAudioClip;
+        craftingAudioSource.loop = true;
     }
 
     protected override void Start()
@@ -25,18 +28,18 @@ public class CurrencyCrafterSound : StructureSounds
     }
 
     private void AmmoCrafter_OnCurrencyInstantiated(object sender, System.EventArgs e) {
-        soundVolume2D.SetSoundVolume2DActiveAfterDelay(true, 0f);
+        craftingAudioSourceSoundVolume2D.SetSoundVolume2DActiveAfterDelay(true, 0f);
+        GetComponent<SoundVolume2D>().SetSoundVolume2DActiveAfterDelay(true, 0);
         audioSource.PlayOneShot(currencyInstantiatedAudioClip, sfxVolume);
     }
 
     private void AmmoCrafter_OnAmmoCraftingStarted(object sender, CurrencyCrafter.OnNewCurrencyBatchCraftingStartedEventArgs e) {
-        soundVolume2D.SetSoundVolume2DActiveAfterDelay(true, 0);
+        craftingAudioSourceSoundVolume2D.SetSoundVolume2DActiveAfterDelay(true, 0);
+        GetComponent<SoundVolume2D>().SetSoundVolume2DActiveAfterDelay(true, 0);
 
         if(e.triggerStartCraftingSFX) {
-            audioSource.PlayOneShot(startCraftingAudioClip, sfxVolume);
+            audioSource.PlayOneShot(startCraftingAudioClip, sfxVolume * masterVolume);
         }
-
-        audioSource.volume = 1f * sfxVolume;
 
         if (currencyCrafter.GetCraftingCurrency()) return;
 
@@ -44,13 +47,16 @@ public class CurrencyCrafterSound : StructureSounds
     }
 
     private IEnumerator StartPlayingLoop() {
+        craftingAudioSource.Stop();
         yield return new WaitForSeconds(1f);
-        audioSource.volume = .3f * sfxVolume;
-        audioSource.Play();
+        craftingAudioSource.volume = .3f * sfxVolume * masterVolume;
+        craftingAudioSource.Play();
     }
 
     private void AmmoCrafter_OnAmmoCraftingEnded(object sender, System.EventArgs e) {
+        craftingAudioSource.Stop();
         audioSource.PlayOneShot(endCraftingAudioClip, sfxVolume * 2);
-        soundVolume2D.SetSoundVolume2DActiveAfterDelay(false, endCraftingAudioClip.length);
+        craftingAudioSourceSoundVolume2D.SetSoundVolume2DActiveAfterDelay(false, endCraftingAudioClip.length);
+        GetComponent<SoundVolume2D>().SetSoundVolume2DActiveAfterDelay(false, endCraftingAudioClip.length);
     }
 }

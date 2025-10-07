@@ -41,6 +41,7 @@ public class SavingManager_Level : MonoBehaviour
     }
 
     private void Start() {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) return;
 
         if (loadingSavedLevel) {
             LoadGame();

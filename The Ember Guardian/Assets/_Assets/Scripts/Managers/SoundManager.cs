@@ -83,6 +83,7 @@ public class SoundManager : MonoBehaviour
 
             if(Dog.Instance != null) {
                 Dog.Instance.OnPlayerCalledDog += Dog_OnPlayerCalledDog;
+                Dog.Instance.OnPlayerStayDog += Dog_OnPlayerStayDog;
             }
 
             PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor += PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;
@@ -180,7 +181,7 @@ public class SoundManager : MonoBehaviour
         HuntingFlag_PlayerDefined.OnAnyHuntingFlagPickedUp += HuntingFlag_PlayerDefined_OnAnyHuntingFlagPickedUp;
         GunSpotLight.OnAnyLightSwitched += GunSpotLight_OnAnyLightSwitched;
         Gun.OnAnyGunJammed += Gun_OnAnyGunJammed;
-        Gun.OnAnySurgeReloadSuccess += Gun_OnAnyGunJamRepaired;
+        Gun.OnAnySurgeReloadSuccess += Gun_OnAnySurgeReloadSuccess;
         PlayerUI_TickTemplate.OnAnyBulletPingShineWindowStarted += PlayerUI_TickTemplate_OnAnyBulletPingShineWindowStarted;
         PlayerUI_TickTemplate.OnAnyBulletPingShineStarted += PlayerUI_TickTemplate_OnAnyBulletPingShineStarted;
         PlayerUI_TickTemplate.OnAnyBulletPingShineReachedGun += PlayerUI_TickTemplate_OnAnyBulletPingShineReachedGun;
@@ -194,7 +195,6 @@ public class SoundManager : MonoBehaviour
         DeleteSkillUI.OnAnyActiveSkillDeleted += DeleteSkillUI_OnAnyActiveSkillDeleted;
         Merchant_Skills.OnPlayerRefundedItem += Merchant_Skills_OnPlayerRefundedItem;
     }
-
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -583,7 +583,7 @@ public class SoundManager : MonoBehaviour
 
     private void PlayerShoot_OnSpinningBulletSuccess(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = soundRefsSO.bulletPingShine;
-        PlaySound2D(audioClipArray, .6f);
+        PlaySound2D(audioClipArray);
 
         if (bulletSpinningAudioSource.isPlaying) {
             bulletSpinningAudioSource.Stop();
@@ -602,8 +602,8 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlayerUI_TickTemplate_OnAnyBulletPingShineStarted(object sender, System.EventArgs e) {
-        bulletSpinningAudioSource.PlayOneShot(soundRefsSO.bulletPingShineSpin, sfxVolume * masterVolume * .5f);
-        PlaySound2D(soundRefsSO.bulletPingShineStart, .6f);
+        bulletSpinningAudioSource.PlayOneShot(soundRefsSO.bulletPingShineSpin, sfxVolume * masterVolume * .8f);
+        PlaySound2D(soundRefsSO.bulletPingShineStart);
     }
     private void PlayerUI_TickTemplate_OnAnyBulletPingShineReachedGun(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.bulletPingShineEnteredGun, 3f);
@@ -686,7 +686,7 @@ public class SoundManager : MonoBehaviour
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().gunJammedSound;
         PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().gunJammedVolumeMultiplier);
     }
-    private void Gun_OnAnyGunJamRepaired(object sender, System.EventArgs e) {
+    private void Gun_OnAnySurgeReloadSuccess(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGunSO().gunJamRepairedSound;
         PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().gunJamRepairedVolumeMultiplier);
     }
@@ -958,6 +958,10 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(soundRefsSO.playerCallDog, .6f);
     }
 
+    private void Dog_OnPlayerStayDog(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.playerStayDog, .6f);
+    }
+
     private void DogReplaceButton_OnDogSwapped(object sender, System.EventArgs e) {
         AudioClip audioClip = soundRefsSO.germanShepherdSelected;
 
@@ -1166,7 +1170,7 @@ public class SoundManager : MonoBehaviour
         HuntingFlag_PlayerDefined.OnAnyHuntingFlagPickedUp -= HuntingFlag_PlayerDefined_OnAnyHuntingFlagPickedUp;
         GunSpotLight.OnAnyLightSwitched -= GunSpotLight_OnAnyLightSwitched;
         Gun.OnAnyGunJammed -= Gun_OnAnyGunJammed;
-        Gun.OnAnySurgeReloadSuccess -= Gun_OnAnyGunJamRepaired;
+        Gun.OnAnySurgeReloadSuccess -= Gun_OnAnySurgeReloadSuccess;
 
         Tutorial.OnAnySpotLightActivated -= Tutorial_OnAnySpotLightActivated;
 

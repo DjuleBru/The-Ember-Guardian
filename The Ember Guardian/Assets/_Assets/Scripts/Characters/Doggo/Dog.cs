@@ -28,6 +28,7 @@ public class Dog : MonoBehaviour
 
     public event EventHandler OnIdleStateChanged;
     public event EventHandler OnPlayerCalledDog;
+    public event EventHandler OnPlayerStayDog;
     public event EventHandler<OnDogTypeChangedEventArgs> OnDogTypeChanged;
 
     public class OnDogTypeChangedEventArgs:EventArgs {
@@ -83,6 +84,7 @@ public class Dog : MonoBehaviour
         if (currentIdleState == DogAI.State.walkWithPlayer) {
 
             currentIdleState = DogAI.State.stay;
+            OnPlayerStayDog?.Invoke(this, EventArgs.Empty);
 
         } else if (currentIdleState == DogAI.State.stay || currentIdleState == DogAI.State.idle) {
 

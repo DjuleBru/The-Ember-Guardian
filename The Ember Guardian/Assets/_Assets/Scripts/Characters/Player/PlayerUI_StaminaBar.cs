@@ -23,6 +23,8 @@ public class PlayerUI_StaminaBar : MonoBehaviour
     private float maxStamina;
     private Vector2 initialSize;
 
+    private bool alwaysDisplay;
+
     private void Awake() {
         staminaBarCanvasGroup = staminaBarGameObject.GetComponent<CanvasGroup>();
         staminaBarCanvasGroup.alpha = 0f;
@@ -38,11 +40,31 @@ public class PlayerUI_StaminaBar : MonoBehaviour
         PlayerMovement.Instance.OnPlayerAlmostExhaustionStarted += PlayerMovement_OnPlayerAlmostExhaustionStarted;
         PlayerMovement.Instance.OnPlayerAlmostExhaustionStopped += PlayerMovement_OnPlayerAlmostExhaustionStopped;
         PlayerStats.Instance.OnPlayerMaxStaminaBuffed += PlayerStats_OnPlayerMaxStaminaBuffed;
+        Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
 
         initialMaxStamina = PlayerStats.Instance.GetInitialMaxStamina();
         maxStamina = PlayerStats.Instance.GetMaxStamina();
 
         RefreshStaminaBarSize();
+        RefreshAlwaysDisplay();
+        SettingsManager.Instance.OnUIDisplayChanged += SettingsManager_OnUIDisplayChanged;
+    }
+
+    private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, System.EventArgs e) {
+        if (alwaysDisplay) {
+            staminaBarCanvasGroup.alpha = 1f;
+        }
+        else {
+            staminaBarCanvasGroup.alpha = 0f;
+        }
+    }
+
+    private void SettingsManager_OnUIDisplayChanged(object sender, System.EventArgs e) {
+        RefreshAlwaysDisplay();
+    }
+
+    private void RefreshAlwaysDisplay() {
+        alwaysDisplay = SettingsManager.Instance.GetCurrentUIDisplayType() == SettingsManager.UIDisplayType.Persistent;
     }
 
     private void PlayerStats_OnPlayerMaxStaminaBuffed(object sender, System.EventArgs e) {
@@ -77,10 +99,12 @@ public class PlayerUI_StaminaBar : MonoBehaviour
     }
 
     private void PlayerMovement_OnPlayerAlmostExhaustionStarted(object sender, System.EventArgs e) {
+        if (alwaysDisplay) return;
         StartFade(true);
     }
 
     private void PlayerMovement_OnPlayerAlmostExhaustionStopped(object sender, System.EventArgs e) {
+        if (alwaysDisplay) return;
         StartFade(false);
     }
 
@@ -105,5 +129,9 @@ public class PlayerUI_StaminaBar : MonoBehaviour
 
         staminaBarCanvasGroup.alpha = targetAlpha;
         fadeCoroutine = null;
+    }
+
+    private void OnDestroy() {
+        Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
     }
 }

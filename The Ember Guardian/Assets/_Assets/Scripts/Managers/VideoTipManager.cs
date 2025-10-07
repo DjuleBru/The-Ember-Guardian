@@ -40,6 +40,7 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO findingWeaponTip;
     [SerializeField] private VideoTipSO skillsMerchantTip;
     [SerializeField] private VideoTipSO secondaryFireTip;
+    [SerializeField] private VideoTipSO savingTip;
 
     private bool isLevelScene;
     private bool isTutorialScene;
@@ -79,6 +80,7 @@ public class VideoTipManager : MonoBehaviour
     private bool skillsMerchantTipShown;
     private bool secondaryFireTipShown;
     private bool trialTipShown;
+    private bool savingTipShown;
 
     private bool showGunManagementTip;
     private bool showEngineersAdvancedTip;
@@ -152,8 +154,16 @@ public class VideoTipManager : MonoBehaviour
         UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
         Chest_Special.OnAnyNewWeaponFound += Chest_Special_OnAnyNewWeaponFound;
         TrialArea.OnAnyTrialPaid += TrialArea_OnAnyTrialPaid;
+        SavingManager_Level.Instance.OnSaveGameStarted += SavingManager_Level_OnSaveGameStarted;
     }
 
+    private void SavingManager_Level_OnSaveGameStarted(object sender, EventArgs e) {
+        if (savingTipShown) return;
+        VideoTipUI.Instance.PlayTipSO(savingTip, 2f);
+
+        savingTipShown = true;
+        ES3.Save("savingTipShown", true);
+    }
 
     private void Chest_Special_OnAnyNewWeaponFound(object sender, EventArgs e) {
         if (findingWeaponTipShown) return;
@@ -548,6 +558,7 @@ public class VideoTipManager : MonoBehaviour
         skillsMerchantTipShown = ES3.Load("skillsMerchantTipShown", false);
         secondaryFireTipShown = ES3.Load("secondaryFireTipShown", false);
         trialTipShown = ES3.Load("trialTipShown", false);
+        savingTipShown = ES3.Load("savingTipShown", false);
     }
 
     public bool GetHuntingFlagTipShown() {

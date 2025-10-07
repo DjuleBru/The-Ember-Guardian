@@ -54,6 +54,7 @@ public class StructureUI_Fire : StructureUI
     public static event EventHandler OnMainFireMaxBarAmountChanged;
 
     public event EventHandler<OnFireTickRemovedEventArgs> OnFireTickRemoved;
+    public event EventHandler<OnFireTickRemovedEventArgs> OnFireTickAdded;
     public event EventHandler OnCricitalFireTickRemoved;
     public event EventHandler OnFireMaxBarAmountChanged;
 
@@ -291,6 +292,10 @@ public class StructureUI_Fire : StructureUI
             fireTick.gameObject.SetActive(true);
             fireTickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
             fireTickArray[0].AddTick();
+
+            OnFireTickAdded?.Invoke(this, new OnFireTickRemovedEventArgs {
+                currentBars = currentBarAmount
+            });
 
             yield return new WaitForSeconds(.05f);
 

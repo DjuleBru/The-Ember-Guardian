@@ -32,7 +32,14 @@ public class SettingsManager : MonoBehaviour
     public event EventHandler OnShowDamageNumbersChanged;
     public event EventHandler OnWaterPerspectiveChanged;
     public event EventHandler OnZoomLevelChanged;
+    public event EventHandler OnUIDisplayChanged;
 
+    public enum UIDisplayType {
+        Adaptive,
+        Essentials,
+        Persistent,
+    }
+    private UIDisplayType currentUIDisplayType;
 
     private LocalizationManager.Language currentLanguage = LocalizationManager.Language.English;
     private bool holdToRun;
@@ -67,6 +74,7 @@ public class SettingsManager : MonoBehaviour
         zoomLevel = ES3.Load("zoomLevel", .8f, settingsSaveFileSettings);
 
         gammaLevel = ES3.Load("gammaLevel", 0f, settingsSaveFileSettings);
+        currentUIDisplayType = ES3.Load("currentUIDisplayType", UIDisplayType.Adaptive, settingsSaveFileSettings);
 
         currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
         holdToRun = ES3.Load("holdToRun", true, settingsSaveFileSettings);
@@ -90,6 +98,22 @@ public class SettingsManager : MonoBehaviour
     }
 
     #region SET SETTINGS
+    public void ChangeUIDisplayType() {
+        switch (currentUIDisplayType) {
+            case UIDisplayType.Adaptive:
+                currentUIDisplayType = UIDisplayType.Essentials;
+            break;
+            case UIDisplayType.Essentials:
+                currentUIDisplayType = UIDisplayType.Persistent;
+                break;
+            case UIDisplayType.Persistent:
+                currentUIDisplayType = UIDisplayType.Adaptive;
+                break;
+        }
+
+        ES3.Save("currentUIDisplayType", currentUIDisplayType, settingsSaveFileSettings);
+        OnUIDisplayChanged?.Invoke(this, EventArgs.Empty);
+    }
     public void SetMasterVolume(float newMasterVolume) {
         masterVolume = newMasterVolume;
         ES3.Save("masterVolume", newMasterVolume, settingsSaveFileSettings);
@@ -223,6 +247,11 @@ public class SettingsManager : MonoBehaviour
 
     #endregion
     #region GET SETTINGS
+
+    public UIDisplayType GetCurrentUIDisplayType() {
+        return currentUIDisplayType;
+    }
+
     public bool GetHoldToRun() {
         return holdToRun;
     }

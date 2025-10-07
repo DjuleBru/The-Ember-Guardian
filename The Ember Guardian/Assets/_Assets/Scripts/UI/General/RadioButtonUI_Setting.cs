@@ -20,6 +20,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         StreamerMode,
         ShowDamageNumbers,
         WaterSimulations,
+        UIDisplay,
     }
 
     [SerializeField] private SettingType settingType;
@@ -50,10 +51,10 @@ public class RadioButtonUI_Setting : RadioButtonUI
         SettingsManager.Instance.OnSteamerModeChanged += SettingsManager_OnSteamerModeChanged;
         SettingsManager.Instance.OnShowDamageNumbersChanged += SettingsManager_OnShowDamageNumbersChanged;
         SettingsManager.Instance.OnWaterPerspectiveChanged += SettingsManager_OnWaterSimulationChanged;
+        SettingsManager.Instance.OnUIDisplayChanged += SettingsManager_OnUIDisplayChanged;
 
         RefreshVisual();
     }
-
 
     private void ChangeLinkedSetting() {
         if (settingType == SettingType.HoldToRun) {
@@ -93,9 +94,17 @@ public class RadioButtonUI_Setting : RadioButtonUI
         if (settingType == SettingType.WaterSimulations) {
             SettingsManager.Instance.ChangeWaterPerspective();
         }
+
+        if (settingType == SettingType.UIDisplay) {
+            SettingsManager.Instance.ChangeUIDisplayType();
+        }
     }
 
     private void SettingsManager_OnWaterSimulationChanged(object sender, System.EventArgs e) {
+        RefreshVisual();
+    }
+
+    private void SettingsManager_OnUIDisplayChanged(object sender, System.EventArgs e) {
         RefreshVisual();
     }
     private void SettingsManager_OnLanguageChanged(object sender, System.EventArgs e) {
@@ -126,6 +135,11 @@ public class RadioButtonUI_Setting : RadioButtonUI
             } else {
                 toggledText.text = LocalizationManager.Instance.GetLocalizedText("menu_toggle");
             }
+        }
+
+        if (settingType == SettingType.UIDisplay) {
+            string displayTypeText = "menu_" + SettingsManager.Instance.GetCurrentUIDisplayType().ToString();
+            toggledText.text = LocalizationManager.Instance.GetLocalizedText(displayTypeText);
         }
 
         if (settingType == SettingType.ScreenMode) {

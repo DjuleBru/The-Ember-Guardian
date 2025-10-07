@@ -38,6 +38,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
     private bool ammoBarCritical = false;
     private bool inAmmoCrafterArea = false;
     private bool tabMenuOpen = false;
+    private bool alwaysDisplay;
 
     public event EventHandler OnAmmoTickAdded;
 
@@ -57,6 +58,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
         Portal.OnAnyPlayerTeleported += Portal_OnAnyPlayerTeleported;
+        Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
 
         Structure.OnAnyPlayerTriggeredIn += Structure_OnAnyPlayerTriggeredIn;
         Structure.OnAnyPlayerTriggeredOut += Structure_OnAnyPlayerTriggeredOut;
@@ -73,6 +75,30 @@ public class PlayerUI_AmmoBar : MonoBehaviour
         ammoBarGameObject.SetActive(false);
         ammoBarBackgroundGameObject.SetActive(false);
         ammoBarCanvasGroup = ammoBarGameObject.GetComponent<CanvasGroup>();
+
+        RefreshAlwaysDisplay();
+        SettingsManager.Instance.OnUIDisplayChanged += SettingsManager_OnUIDisplayChanged;
+    }
+
+    private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {
+        if (alwaysDisplay) {
+            ammoBarCanvasGroup.alpha = 1f;
+            ammoBarGameObject.SetActive(true);
+            RefreshAmmoBar();
+            RefreshAmmoBarBackground();
+        }
+        else {
+            ammoBarCanvasGroup.alpha = 0f;
+        }
+    }
+
+    private void SettingsManager_OnUIDisplayChanged(object sender, System.EventArgs e) {
+        RefreshAlwaysDisplay();
+    }
+
+    private void RefreshAlwaysDisplay() {
+        alwaysDisplay = SettingsManager.Instance.GetCurrentUIDisplayType() == SettingsManager.UIDisplayType.Persistent;
+
     }
 
 
@@ -113,6 +139,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 
     private void Update() {
         if (Player.Instance.GetDead()) return;
+        if (alwaysDisplay) return;
 
         if (isFadingIn) {
             HandleFadeIn();
@@ -369,6 +396,7 @@ public class PlayerUI_AmmoBar : MonoBehaviour
 
         Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
         Portal.OnAnyPlayerTeleported -= Portal_OnAnyPlayerTeleported;
+        Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
 
         Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn;
         Structure.OnAnyPlayerTriggeredOut -= Structure_OnAnyPlayerTriggeredOut;

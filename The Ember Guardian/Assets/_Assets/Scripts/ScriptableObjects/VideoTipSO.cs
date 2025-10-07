@@ -42,6 +42,7 @@ public class VideoTipSO : ScriptableObject
         SecondaryFires,
         SkillsMerchant,
         FindingWeapon,
+        Saving,
     }
 
     public VideoTipType tipType;

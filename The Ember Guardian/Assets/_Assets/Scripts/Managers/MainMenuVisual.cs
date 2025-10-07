@@ -10,8 +10,6 @@ public class MainMenuVisual : MonoBehaviour
     [SerializeField] private LevelSO.LevelEnvironment debugEnvironment;
     [SerializeField] private bool isDemo;
 
-    [SerializeField] private GameObject mainGameLogo;
-    [SerializeField] private GameObject demoLogo;
     [SerializeField] private SpriteRenderer skySpriteRenderer;
     [SerializeField] private SpriteRenderer water2DSpriteRenderer;
 
@@ -86,16 +84,14 @@ public class MainMenuVisual : MonoBehaviour
 
     private void Start() {
         // This is saved in LevelManager Start and HubManager Start
-        levelEnvironment = ES3.Load("lastLevelEnvironment", LevelSO.LevelEnvironment.TheVerdantGraveyard);
-        Debug.Log(levelEnvironment);
-
+        LevelSO.LevelEnvironment defaultEnvironment = LevelSO.LevelEnvironment.City;
+        isDemo = VersioningManager.Instance.GetIsDemo();
         if(isDemo) {
-            mainGameLogo.SetActive(false);
-            demoLogo.SetActive(true);
-        } else {
-            mainGameLogo.SetActive(true);
-            demoLogo.SetActive(false);
+            defaultEnvironment = LevelSO.LevelEnvironment.TheVerdantGraveyard;
         }
+        levelEnvironment = ES3.Load("lastLevelEnvironment", defaultEnvironment);
+
+        Debug.Log("levelEnvironment " + levelEnvironment);
 
         if(showDebugEnvironment) {
             levelEnvironment = debugEnvironment;

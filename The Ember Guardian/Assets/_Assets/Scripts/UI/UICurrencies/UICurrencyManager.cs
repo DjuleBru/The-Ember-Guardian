@@ -108,6 +108,7 @@ public class UICurrencyManager : MonoBehaviour
         }
     }
 
+
     private void Update() {
         if(tryingToDropOrb) {
             tryingToDropOrbTimer += Time.deltaTime;
@@ -118,8 +119,8 @@ public class UICurrencyManager : MonoBehaviour
         if(allowDebugInputs) {
             HandleDebugInputs();
         }
-        
     }
+
     private void HandleDebugInputs() {
         if (Input.GetKeyDown(KeyCode.G)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.greenGem);

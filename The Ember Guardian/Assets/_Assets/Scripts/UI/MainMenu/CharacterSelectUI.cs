@@ -54,7 +54,6 @@ public class CharacterSelectUI : MonoBehaviour
     }
 
     public void OpenPanel() {
-        Debug.Log("OpenPanel");
         panel.gameObject.SetActive(true);
 
         EventSystem.current.SetSelectedGameObject(maleCharacterButton.gameObject);

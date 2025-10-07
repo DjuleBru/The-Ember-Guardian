@@ -66,6 +66,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
     public float fadeInDuration = .2f;  // Durée du fade-in
 
 
+    private bool alwaysDisplay;
     private bool backpackAlmostFull;
     private float backpackBarDiplayTimer = 0f;
     private bool isShowingBackpackFront = true;
@@ -102,6 +103,21 @@ public class UICurrencyManagerVisual : MonoBehaviour
         }
 
         RefreshBackpackVisuals();
+        RefreshAlwaysDisplay();
+        SettingsManager.Instance.OnUIDisplayChanged += SettingsManager_OnUIDisplayChanged;
+    }
+
+    private void SettingsManager_OnUIDisplayChanged(object sender, System.EventArgs e) {
+        RefreshAlwaysDisplay();
+    }
+
+    private void RefreshAlwaysDisplay() {
+        alwaysDisplay = SettingsManager.Instance.GetCurrentUIDisplayType() == SettingsManager.UIDisplayType.Persistent || SettingsManager.Instance.GetCurrentUIDisplayType() == SettingsManager.UIDisplayType.Essentials;
+        if (alwaysDisplay) {
+            canvasGroup.alpha = 1f;
+        } else {
+            canvasGroup.alpha = 0f;
+        }
     }
 
     private void PlayerStats_OnBackpackDimensionsChanged(object sender, System.EventArgs e) {
@@ -281,7 +297,7 @@ public class UICurrencyManagerVisual : MonoBehaviour
     }
 
     private void Update() {
-        if (debugAlwaysShow) return;
+        if (debugAlwaysShow || alwaysDisplay) return;
 
         if (isFadingIn) {
             HandleFadeIn();

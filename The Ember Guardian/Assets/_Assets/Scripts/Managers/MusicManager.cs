@@ -319,7 +319,6 @@ public class MusicManager : MonoBehaviour {
 
     private void SettingsManager_OnSteamerModeChanged(object sender, EventArgs e) {
         streamerMode = SettingsManager.Instance.GetStreamerMode();
-        Debug.Log(audioSourceA.clip);
         if(isMainMenuScene) {
             if(streamerMode) {
                 StartCoroutine(FadeOutThenInCoroutine(1f, 1f, mainMenuMusicStreamerMode));

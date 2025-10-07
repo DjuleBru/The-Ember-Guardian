@@ -51,6 +51,7 @@ public class SoundRefsSO : ScriptableObject
 
     public AudioClip[] propBurned;
     public AudioClip[] playerCallDog;
+    public AudioClip[] playerStayDog;
 
     public AudioClip[] gemMerchantVoiceLines;
     public AudioClip[] dogTamerVoiceLines;

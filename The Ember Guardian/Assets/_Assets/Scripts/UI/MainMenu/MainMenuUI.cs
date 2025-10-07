@@ -65,7 +65,6 @@ public class MainMenuUI : MonoBehaviour {
             }
 
         } else {
-            Debug.Log("Set interactable false");
             continueButton.interactable = false;
         }
 

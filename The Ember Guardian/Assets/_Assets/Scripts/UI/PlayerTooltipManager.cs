@@ -136,7 +136,6 @@ public class PlayerTooltipManager : MonoBehaviour
         ES3.Save("huntingFlagTooFarShown", true);
     }
 
-
     private void PlayerShoot_OnPlayerSwappedGun(object sender, System.EventArgs e) {
         TryShowGunSecondaryAbilityTooltip();
     }

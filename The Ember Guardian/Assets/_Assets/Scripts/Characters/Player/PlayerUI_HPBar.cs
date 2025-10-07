@@ -12,6 +12,7 @@ public class PlayerUI_HPBar : MonoBehaviour
     [SerializeField] private Transform hpTickTemplate;
     [SerializeField] private Transform hpTickContainer;
     [SerializeField] private bool debugAlwaysShow;
+    private bool alwaysDisplay;
     private float tickWidth = .15f;
     private float sidesWidth = .5f;
 
@@ -51,6 +52,7 @@ public class PlayerUI_HPBar : MonoBehaviour
         Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
         Portal.OnAnyPlayerTeleported += Portal_OnAnyPlayerTeleported;
         Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
+        Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
         PlayerStats.Instance.OnPlayerMaxHPChanged += PlayerStats_OnPlayerMaxHPChanged;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         FastTravelTP.OnAnyPlayerPositionedOnTP += FastTravelTP_OnAnyPlayerPositionedOnTP;
@@ -64,6 +66,29 @@ public class PlayerUI_HPBar : MonoBehaviour
         RefreshHPBar();
 
         hpBarGameObject.SetActive(false);
+        RefreshAlwaysDisplay();
+        SettingsManager.Instance.OnUIDisplayChanged += SettingsManager_OnUIDisplayChanged;
+    }
+
+    private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {
+        if (alwaysDisplay) {
+            hpBarCanvasGroup.alpha = 1f;
+            hpBarGameObject.SetActive(true);
+            RefreshHPBar();
+            RefreshHPBarSize();
+        }
+        else {
+            hpBarCanvasGroup.alpha = 0f;
+        }
+    }
+
+    private void SettingsManager_OnUIDisplayChanged(object sender, System.EventArgs e) {
+        RefreshAlwaysDisplay();
+    }
+
+    private void RefreshAlwaysDisplay() {
+        alwaysDisplay = SettingsManager.Instance.GetCurrentUIDisplayType() == SettingsManager.UIDisplayType.Persistent;
+
     }
 
     private void Player_OnPlayerHealthLoaded(object sender, EventArgs e) {
@@ -97,6 +122,7 @@ public class PlayerUI_HPBar : MonoBehaviour
     }
 
     private void Update() {
+        if (alwaysDisplay || debugAlwaysShow) return;
         if (hpBarCritical) return;
         if (Player.Instance.GetDead()) return;
 
@@ -106,7 +132,6 @@ public class PlayerUI_HPBar : MonoBehaviour
         }
 
         if (inTentArea) return;
-        if (debugAlwaysShow) return;
         HandleFadeOut();
 
     }
@@ -301,6 +326,7 @@ public class PlayerUI_HPBar : MonoBehaviour
             Tent.Instance.OnPlayerTriggeredIn -= Tent_OnPlayerTriggeredIn;
             Tent.Instance.OnPlayerTriggeredOut -= Tent_OnPlayerTriggeredOut;
             Fire.Instance.OnInitialFireActivated -= Fire_OnInitialFireActivated;
+            Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
 
             if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Tutorial) {
                 PlayerTabMenuUI.Instance.OnPlayerTabClosed -= PlayerTabMenuUI_OnPlayerTabClosed;
