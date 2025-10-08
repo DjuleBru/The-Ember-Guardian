@@ -1999,7 +1999,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 8406804491557972424}
   outMmfPlayer: {fileID: 7088249186023977113}
+  outMmfPlayer_surgeReload: {fileID: 0}
+  outMmfPlayer_surgeReloadSuccess: {fileID: 0}
   inMmfPlayer: {fileID: 0}
+  shineBulletAnimator: {fileID: 0}
 --- !u!50 &1470989452461399217
 Rigidbody2D:
   serializedVersion: 4
@@ -2528,6 +2531,7 @@ GameObject:
   - component: {fileID: 7811095861176368742}
   - component: {fileID: 3656139705152597637}
   - component: {fileID: 1071389304898820758}
+  - component: {fileID: 7076456817501759608}
   m_Layer: 24
   m_Name: CriticalFuel
   m_TagString: Untagged
@@ -2672,6 +2676,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7076456817501759608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3902847760508338262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizationKey: fire_criticalFuel
 --- !u!1 &3943000961426349441
 GameObject:
   m_ObjectHideFlags: 0
@@ -3454,7 +3471,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 2677102162904161419}
   outMmfPlayer: {fileID: 0}
+  outMmfPlayer_surgeReload: {fileID: 0}
+  outMmfPlayer_surgeReloadSuccess: {fileID: 0}
   inMmfPlayer: {fileID: 0}
+  shineBulletAnimator: {fileID: 0}
 --- !u!1 &4571013539430815377
 GameObject:
   m_ObjectHideFlags: 0

@@ -360,6 +360,7 @@ public class HUBManager_Demo : MonoBehaviour
 
         if(gemAmountDroppedInChest == gemsToDropInChest) {
             LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUBDemo_DropGems, LevelUI_ObjectiveUI.SubObjectiveType.HUBDemo_BuyUpgrade);
+            gemMerchant.SetPlayerCanInteractWithMerchant(true);
             StartCoroutine(StartGemMerchantLines(gemMerchantComeBuyTextLines));
             chestIndicator.gameObject.SetActive(false);
             chestIndicatorActive = false;
@@ -383,6 +384,7 @@ public class HUBManager_Demo : MonoBehaviour
                     LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUB_TalkToTrader, LevelUI_ObjectiveUI.SubObjectiveType.HUBDemo_DropGems);
                     chestIndicator.gameObject.SetActive(true);
                     chestIndicatorActive = true;
+                    gemMerchant.SetPlayerCanInteractWithMerchant(false);
 
                     foreach (HubMerchant functionalHubMerchant in functionalDemoHubMerchantList) {
                         functionalHubMerchant.SetHasTalkLinesToShow(true, false);

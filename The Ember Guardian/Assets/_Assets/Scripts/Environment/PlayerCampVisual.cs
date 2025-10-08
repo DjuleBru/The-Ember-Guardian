@@ -7,10 +7,17 @@ public class PlayerCampVisual : MonoBehaviour
 {
     public static PlayerCampVisual Instance;
 
-    [SerializeField] private Transform backgroundLeftFenceTransform;
-    [SerializeField] private Transform backgroundRightFenceTransform;
-    [SerializeField] private Animator backgroundRightFenceAnimator;
-    [SerializeField] private Animator backgroundLeftFenceAnimator;
+    [SerializeField] private Transform backgroundSpriteMaskLeft;
+    [SerializeField] private Transform backgroundSpriteMaskRight;
+    [SerializeField] private Transform backgroundLeftFenceTransform_Level1;
+    [SerializeField] private Transform backgroundRightFenceTransform_Level1;
+    [SerializeField] private Transform backgroundLeftFenceTransform_Level2;
+    [SerializeField] private Transform backgroundRightFenceTransform_Level2;
+    [SerializeField] private Transform backgroundLeftFenceTransform_Level3;
+    [SerializeField] private Transform backgroundRightFenceTransform_Level3;
+
+    [SerializeField] private Animator currentBackgroundRightFenceAnimator;
+    [SerializeField] private Animator currentBackgroundLeftFenceAnimator;
 
     private float maxLeftLimit;
     private float maxRightLimit;
@@ -41,8 +48,55 @@ public class PlayerCampVisual : MonoBehaviour
     private void Start() {
         CampZoneManager.Instance.OnCampZoneLimitsChanged += CampZoneManager_OnCampZoneLimitsChanged;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
-        backgroundLeftFenceTransform.localScale = Vector3.zero;
-        backgroundRightFenceTransform.localScale = Vector3.zero;
+        Tent.Instance.OnStructureUpgraded += Tent_OnStructureUpgraded;
+        backgroundSpriteMaskLeft.localScale = Vector3.zero;
+        backgroundSpriteMaskRight.localScale = Vector3.zero;
+        UpdateActiveFence();
+    }
+
+    private void Tent_OnStructureUpgraded(object sender, Structure.OnStructureUpgradedEventArgs e) {
+        UpdateActiveFence();
+    }
+
+    private void UpdateActiveFence() {
+        backgroundLeftFenceTransform_Level1.gameObject.SetActive(false);
+        backgroundRightFenceTransform_Level1.gameObject.SetActive(false);
+        backgroundLeftFenceTransform_Level2.gameObject.SetActive(false);
+        backgroundRightFenceTransform_Level2.gameObject.SetActive(false);
+        backgroundLeftFenceTransform_Level3.gameObject.SetActive(false);
+        backgroundRightFenceTransform_Level3.gameObject.SetActive(false);
+
+        if (Tent.Instance.GetStructureLevel() == 1) {
+
+            backgroundLeftFenceTransform_Level1.gameObject.SetActive(true);
+            backgroundRightFenceTransform_Level1.gameObject.SetActive(true);
+
+            currentBackgroundRightFenceAnimator = backgroundRightFenceTransform_Level1.GetComponent<Animator>();
+            currentBackgroundLeftFenceAnimator = backgroundLeftFenceTransform_Level1.GetComponent<Animator>();
+        }
+        if (Tent.Instance.GetStructureLevel() == 2) {
+
+            backgroundLeftFenceTransform_Level2.gameObject.SetActive(true);
+            backgroundRightFenceTransform_Level2.gameObject.SetActive(true);
+
+            currentBackgroundRightFenceAnimator = backgroundRightFenceTransform_Level2.GetComponent<Animator>();
+            currentBackgroundLeftFenceAnimator = backgroundLeftFenceTransform_Level2.GetComponent<Animator>();
+
+        }
+        if (Tent.Instance.GetStructureLevel() == 3) {
+
+            backgroundLeftFenceTransform_Level3.gameObject.SetActive(true);
+            backgroundRightFenceTransform_Level3.gameObject.SetActive(true);
+
+            currentBackgroundRightFenceAnimator = backgroundRightFenceTransform_Level3.GetComponent<Animator>();
+            currentBackgroundLeftFenceAnimator = backgroundLeftFenceTransform_Level3.GetComponent<Animator>();
+
+        }
+
+        currentBackgroundRightFenceAnimator.ResetTrigger("Build_Start");
+        currentBackgroundRightFenceAnimator.SetTrigger("Build");
+        currentBackgroundLeftFenceAnimator.ResetTrigger("Build_Start");
+        currentBackgroundLeftFenceAnimator.SetTrigger("Build");
     }
 
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
@@ -59,12 +113,12 @@ public class PlayerCampVisual : MonoBehaviour
             float newLeftScaleValue = Mathf.Abs(Mathf.Lerp(left_fromScale, left_toScale, timerNormalized));
             Vector3 newLeftLocalScale = newLeftScaleValue * Vector3.one;
 
-            backgroundLeftFenceTransform.localScale = newLeftLocalScale;
+            backgroundSpriteMaskLeft.localScale = newLeftLocalScale;
 
             if (timerNormalized >= 1) {
                 lerpingLeft = false;
-                backgroundLeftFenceAnimator.ResetTrigger("Build_Start");
-                backgroundLeftFenceAnimator.SetTrigger("Build");
+                currentBackgroundLeftFenceAnimator.ResetTrigger("Build_Start");
+                currentBackgroundLeftFenceAnimator.SetTrigger("Build");
 
                 OnCampBackgroundBuilt?.Invoke(this, EventArgs.Empty);
             }
@@ -78,12 +132,12 @@ public class PlayerCampVisual : MonoBehaviour
             float newRightScaleValue = Mathf.Lerp(right_fromScale, right_toScale, timerNormalized);
             Vector3 newRightLocalScale = newRightScaleValue * Vector3.one;
 
-            backgroundRightFenceTransform.localScale = newRightLocalScale;
+            backgroundSpriteMaskRight.localScale = newRightLocalScale;
 
             if(timerNormalized >= 1) {
                 lerpingRight = false;
-                backgroundRightFenceAnimator.ResetTrigger("Build_Start");
-                backgroundRightFenceAnimator.SetTrigger("Build");
+                currentBackgroundRightFenceAnimator.ResetTrigger("Build_Start");
+                currentBackgroundRightFenceAnimator.SetTrigger("Build");
 
                 OnCampBackgroundBuilt?.Invoke(this, EventArgs.Empty);
             }
@@ -107,36 +161,36 @@ public class PlayerCampVisual : MonoBehaviour
             lerpDuration =  (rightLimit - maxRightLimit)/ lerpDurationDistanceToTimeFactor;
 
             maxRightLimit = rightLimit;
-            right_fromScale = backgroundRightFenceTransform.localScale.x;
+            right_fromScale = backgroundSpriteMaskRight.localScale.x;
             right_toScale = rightLimit / scaleToWorldUnits;
 
             if (!e.triggerSFXAndFenceAnimation) {
-                backgroundRightFenceTransform.localScale = right_toScale * Vector3.one;
-                backgroundRightFenceAnimator.SetTrigger("BuiltAtStart");
+                backgroundSpriteMaskRight.localScale = right_toScale * Vector3.one;
+                currentBackgroundRightFenceAnimator.SetTrigger("BuiltAtStart");
                 return;
             };
 
             lerpingRight = true;
             OnCampBackgroundBuild_Start?.Invoke(this, EventArgs.Empty);
-            backgroundRightFenceAnimator.SetTrigger("Build_Start");
+            currentBackgroundRightFenceAnimator.SetTrigger("Build_Start");
         }
 
         if(leftLimit > maxLeftLimit) {
             lerpDuration = (leftLimit - maxLeftLimit)/ lerpDurationDistanceToTimeFactor;
 
             maxLeftLimit = leftLimit;
-            left_fromScale = backgroundLeftFenceTransform.localScale.x;
+            left_fromScale = backgroundSpriteMaskLeft.localScale.x;
             left_toScale = leftLimit / scaleToWorldUnits;
 
             if (!e.triggerSFXAndFenceAnimation) {
-                backgroundLeftFenceTransform.localScale = left_toScale * Vector3.one;
-                backgroundLeftFenceAnimator.SetTrigger("BuiltAtStart");
+                backgroundSpriteMaskLeft.localScale = left_toScale * Vector3.one;
+                currentBackgroundLeftFenceAnimator.SetTrigger("BuiltAtStart");
                 return;
             };
 
             lerpingLeft = true;
             OnCampBackgroundBuild_Start?.Invoke(this, EventArgs.Empty);
-            backgroundLeftFenceAnimator.SetTrigger("Build_Start");
+            currentBackgroundLeftFenceAnimator.SetTrigger("Build_Start");
         }
 
     }

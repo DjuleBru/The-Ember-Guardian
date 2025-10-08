@@ -780,6 +780,7 @@ public class SavingManager_Level : MonoBehaviour
         StructuresManager.Instance.AddBuiltStructure(Tent.Instance);
         Tent.Instance.gameObject.SetActive(true);
         Tent.Instance.SetStructureBuiltOnLoad(true);
+        Tent.Instance.BuildInitialCampStructure();
 
         List<StructureSaveData> structuresData = ES3.Load<List<StructureSaveData>>("Structures", "LevelSave.es3 ");
         List<TrapSaveData> trapsData = ES3.Load<List<TrapSaveData>>("Structures_Traps", "LevelSave.es3 ");
