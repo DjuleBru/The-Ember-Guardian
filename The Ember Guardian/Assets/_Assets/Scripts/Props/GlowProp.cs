@@ -21,8 +21,14 @@ public class GlowProp : MonoBehaviour
         if (isAnimatedGlow) {
             glowAnimator.enabled = true;
             glowAnimator.SetBool(animationType.ToString(), true);
-        } else {
+
+            // Décale la phase de l’animation de façon aléatoire
+            float randomOffset = Random.Range(0f, 1f);
+            glowAnimator.Play(0, -1, randomOffset);
+        }
+        else {
             glowAnimator.enabled = false;
         }
     }
+
 }
