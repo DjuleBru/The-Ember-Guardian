@@ -52,7 +52,7 @@ public class Dog : MonoBehaviour
     }
 
     private void Start() {
-        GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
+        GameInput.Instance.OnPlayerCallDogPerformed += GameInput_OnPlayerCallDogPerformed;
         currentIdleState = initialIdleState;
 
         OnDogTypeChanged?.Invoke(this, new OnDogTypeChangedEventArgs {
@@ -76,7 +76,7 @@ public class Dog : MonoBehaviour
         }
     }
 
-    private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
+    private void GameInput_OnPlayerCallDogPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (PetDog.Instance.GetPlayerCanPetDog()) return;
         if (PlayerShoot.Instance.GetHeldGun().GetGunJammedAndNextInputSequence(GameInput.Binding.callDoggo)) return;
@@ -183,6 +183,6 @@ public class Dog : MonoBehaviour
     }
 
     private void OnDestroy() {
-        GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
+        GameInput.Instance.OnPlayerCallDogPerformed -= GameInput_OnPlayerCallDogPerformed;
     }
 }

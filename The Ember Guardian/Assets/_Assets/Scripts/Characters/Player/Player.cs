@@ -497,7 +497,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     private IEnumerator SetStopInteractingWithMerchantCoroutine() {
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.1f);
         interactingWithMerchant = false;
         OnPlayerStoppedInteractingWithAnyInteractable?.Invoke(this, EventArgs.Empty);
     }

@@ -167,6 +167,8 @@ public class PlayerWorldUITooltip : MonoBehaviour
     }
 
     private IEnumerator HideTooltipCoroutine(float delay = 0f) {
+        if (!isActive) yield break;
+
         yield return new WaitForSeconds(delay);
 
         OnTooltipHidden?.Invoke(this, EventArgs.Empty);

@@ -90,6 +90,7 @@ public class Fire : Structure, IDamageable {
     private bool extractingEmber;
     private float extractingEmberTimer;
     private float extractingEmberTime = 3f;
+    private float extractingEmberFuelUsed;
     private bool respawningPlayer;
     private float respawningPlayerTimer;
     private float respawningPlayerTime = 5f;
@@ -346,6 +347,7 @@ public class Fire : Structure, IDamageable {
         if (extractingEmber) {
             extractingEmberTimer -= Time.deltaTime;
             fuelLevel -= Time.deltaTime * extractingEmberFuelRateDepletion;
+            extractingEmberFuelUsed += Time.deltaTime * extractingEmberFuelRateDepletion;
             if (extractingEmberTimer < 0) {
                 extractingEmber = false;
                 StartCoroutine(ExtractEmber());
@@ -614,6 +616,7 @@ public class Fire : Structure, IDamageable {
             OnAnyFireEmberExtractionStarted?.Invoke(this, EventArgs.Empty);
             extractingEmber = true;
             extractingEmberTimer = extractingEmberTime;
+            extractingEmberFuelUsed = 0;
 
         } else {
 
@@ -633,14 +636,18 @@ public class Fire : Structure, IDamageable {
         payCurrencyUI.SetPlayerInteracting(false);
 
         if(extractingEmber) {
-            StopExtractingEmber();
+            StopExtractingEmber(true);
         }
     }
 
-    protected void StopExtractingEmber() {
+    protected void StopExtractingEmber(bool refundFuel = false) {
         extractingEmber = false;
         OnFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
         OnAnyFireEmberExtractionStopped?.Invoke(this, EventArgs.Empty);
+
+        if(refundFuel) {
+            FuelFire(extractingEmberFuelUsed);
+        }
     }
 
     public void ActivateInitialFire(bool forceSetCarryingEmber = true) {
@@ -673,7 +680,7 @@ public class Fire : Structure, IDamageable {
     protected override void OnTriggerExit2D(Collider2D collision) {
         if(collision.GetComponent<Player>() != null) {
             if (extractingEmber) {
-                StopExtractingEmber();
+                StopExtractingEmber(true);
             }
         }
 

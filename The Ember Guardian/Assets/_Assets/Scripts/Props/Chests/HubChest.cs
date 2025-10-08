@@ -57,6 +57,7 @@ public class HubChest : MonoBehaviour
         if (!playerInTriggerArea) return;
         if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember) return;
         if (chestOpen) return;
+        if (chestOpening) return;
         OpenChest();
     }
 
@@ -195,6 +196,7 @@ public class HubChest : MonoBehaviour
         if (tooltipCoroutine != null) {
             StopCoroutine(tooltipCoroutine);
         }
+
         PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
         ES3.Save("hubChestInteractionTooltipShown", true);
     }

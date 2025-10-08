@@ -8,7 +8,7 @@ public class GunSO : ScriptableObject
 {
     public enum GunType {
         Rifle,
-        UZI,
+        SMG,
         Shotgun,
         Sniper,
         Revolver,

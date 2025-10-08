@@ -26271,6 +26271,7 @@ MonoBehaviour:
   initialItemStatMaterial_CH: {fileID: 0}
   redFontMaterial_CH: {fileID: 0}
   modifiedItemColor: {r: 0.79607844, g: 1, b: 0.7529412, a: 1}
+  redItemColor: {r: 0.9056604, g: 0, b: 0, a: 1}
   itemStatDescriptionText: {fileID: 5601341674912315513}
   redGemAmountText: {fileID: 7606239037726255158}
   greenGemAmountText: {fileID: 7101319304048592382}
@@ -27550,9 +27551,9 @@ RectTransform:
   - {fileID: 6539566308396166188}
   m_Father: {fileID: 5685225195234117914}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 1.1, y: 0.5}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -8.6, y: -8.6}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4806141882787367324
@@ -27768,14 +27769,14 @@ MonoBehaviour:
   lockingItemButtonUIList: []
   descriptionCard: {fileID: 7951833101944601258}
   newUnlockedItemGO: {fileID: 6517768906159386673}
-  outlineUnlockedBuyableColor: {r: 0.8395321, g: 0.9811321, b: 0.47668213, a: 1}
-  outlineUnlockedButNotBuyableColor: {r: 1, g: 0.5496947, b: 0.13679248, a: 1}
+  outlineUnlockedBuyableColor: {r: 1, g: 0.6922987, b: 0, a: 1}
+  outlineUnlockedButNotBuyableColor: {r: 1, g: 0.27262208, b: 0.1372549, a: 1}
   iconImage: {fileID: 6631584754312160576}
   outlineImage: {fileID: 4198312412177153308}
   backgroundImage: {fileID: 6013559330784213198}
   lockedFromOtherMerchantImage: {fileID: 8884337824891635709}
   itemButtonUI_Visual: {fileID: 8418487513335298205}
-  boughtOutlineColor: {r: 0.4769392, g: 0.6603774, b: 0, a: 1}
+  boughtOutlineColor: {r: 0.41790205, g: 0.5754717, b: 0, a: 1}
   boughtBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
   outputLinkUnlockedImageList:
   - {fileID: 3808289898414762461}
@@ -27795,6 +27796,8 @@ MonoBehaviour:
   lockHoverInteractions: 0
   itemLockedInDemo: 0
   hideItemIconUntilUnlocked: 0
+  itemUnlockableOnlyInLevel: 0
+  itemsToForceUnlockWhenBought: []
   treeShowHide: {fileID: 0}
   isTreeParent: 0
   isTreeChild: 0
@@ -27825,7 +27828,6 @@ MonoBehaviour:
   isBoughtAtStart: 0
   isUnlockedAtStart: 0
   itemUpgradeable: 0
-  itemEquipable: 0
   unlockRequiresAllPrerequisited: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 0}

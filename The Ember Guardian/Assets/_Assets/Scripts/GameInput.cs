@@ -83,6 +83,7 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnHoverWorkersPerformed;
     public event EventHandler OnMeleeAttackPerformed;
 
+    public event EventHandler OnPlayerCallDogPerformed;
     public event EventHandler OnPlayerBackPerformed;
     public event EventHandler OnPlayerPausePerformed;
     public event EventHandler OnPlayerOpenPlayerTabPerformed;
@@ -172,6 +173,7 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.Pause.performed += Pause_performed;
         playerInputActions.Player.OpenPlayerTab.performed += OpenPlayerTab_performed;
         playerInputActions.Player.MeleeAttack.performed += MeleeAttack_performed;
+        playerInputActions.Player.CallDog.performed += CallDog_performed;
 
         playerInputActions.Player.CommandWorker.performed += CommandWorker_performed;
         playerInputActions.Player.CommandWorker.canceled += CommandWorker_canceled;
@@ -190,6 +192,9 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.RefundWeapon.performed += RefundWeapon_performed;
     }
 
+    private void CallDog_performed(InputAction.CallbackContext obj) {
+        OnPlayerCallDogPerformed?.Invoke(this, EventArgs.Empty);
+    }
 
     private void Update() {
         DetectControlSchemeMouse();

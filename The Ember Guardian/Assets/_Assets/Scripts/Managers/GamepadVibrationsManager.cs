@@ -57,8 +57,13 @@ public class GamepadVibrationsManager : MonoBehaviour
         ItemButtonUI.OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
 
         SettingsManager.Instance.OnControllerVibrationsChanged += SettingsManager_OnControllerVibrationsChanged;
+        GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
         vibrationsEnabled = SettingsManager.Instance.GetControllerVibrations();
 
+        RefreshVibrationsEnabled();
+    }
+
+    private void GameInput_OnPlayerInputChanged(object sender, System.EventArgs e) {
         RefreshVibrationsEnabled();
     }
 
@@ -67,7 +72,7 @@ public class GamepadVibrationsManager : MonoBehaviour
     }
 
     private void RefreshVibrationsEnabled() {
-        vibrationsEnabled = SettingsManager.Instance.GetControllerVibrations();
+        vibrationsEnabled = SettingsManager.Instance.GetControllerVibrations() && GameInput.Instance.IsUsingGamepad();
 
         if (vibrationsEnabled) {
             HapticController.hapticsEnabled = true;

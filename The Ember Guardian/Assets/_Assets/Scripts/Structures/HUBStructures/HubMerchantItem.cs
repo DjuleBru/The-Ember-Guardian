@@ -45,6 +45,7 @@ public class HubMerchantItem : MonoBehaviour
     public static event EventHandler OnAnyHubMerchantItemEquipped;
     public event EventHandler OnHubMerchantItemUnequipped;
 
+    protected bool canBuyItem;
     protected bool itemBought;
     protected bool itemUnlocked;
     protected bool newItemUnlocked;
@@ -65,6 +66,22 @@ public class HubMerchantItem : MonoBehaviour
 
     protected virtual void Start() {
         OnItemMustRefreshDescriptionCard?.Invoke(this, EventArgs.Empty);
+
+        UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
+    }
+
+    private void HubInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        if(canBuyItem && !CanBuyItem()) {
+            canBuyItem = CanBuyItem();
+            OnItemMustRefreshDescriptionCard?.Invoke(this, EventArgs.Empty);
+
+        }
+
+        if (!canBuyItem && CanBuyItem()) {
+            canBuyItem = CanBuyItem();
+            OnItemMustRefreshDescriptionCard?.Invoke(this, EventArgs.Empty);
+
+        }
     }
 
     protected void InitializeCostLists() {
@@ -94,7 +111,6 @@ public class HubMerchantItem : MonoBehaviour
         int playerPurpleGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count;
 
         if (playerGreenGems >= greenGemCost && playerRedGems >= redGemCost && playerBlueGems >= blueGemCost && playerYellowGems >= yellowGemCost && playerPurpleGems >= purpleGemCost && playerCyanGems >= cyanGemCost) {
-
             return true;
         }
         else {
@@ -177,6 +193,8 @@ public class HubMerchantItem : MonoBehaviour
         if (cyanGemCostList != null && cyanGemCostList.Count > itemLevel) {
             cyanGemCost = cyanGemCostList[itemLevel];
         }
+
+        canBuyItem = CanBuyItem();
     }
 
     public virtual void EquipOrUnequipItem() {
@@ -529,6 +547,10 @@ public class HubMerchantItem : MonoBehaviour
     //    }
 
     //}
+
+    private void OnDestroy() {
+        UICurrencyManager.HubInventoryUI.OnCurrencyCollected -= HubInventoryUI_OnCurrencyCollected;
+    }
 
     public virtual void ResetGunItemStatus() {
         itemBought = false;

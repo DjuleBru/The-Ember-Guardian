@@ -337,6 +337,7 @@ public class MouseCursorManager : MonoBehaviour
     private void GameInput_OnPlayerInputChanged(object sender, System.EventArgs e) {
         isUsingGamepad = GameInput.Instance.IsUsingGamepad();
 
+        if (AllMenusClosed()) return;
         RefreshMouseHideWithGamepad();
     }
 

@@ -372,10 +372,10 @@ public class HUBManager : MonoBehaviour
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, System.EventArgs e) {
         if (firstHubEncounterRoutineOver) return;
 
-
         if(!playerInteractedWithMerchantOnce) {
             LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUB_TalkToTrader, LevelUI_ObjectiveUI.SubObjectiveType.HUBDemo_DropGems);
             HubChest.Instance.SetCanOpenChest(true);
+            gemMerchant.SetPlayerCanInteractWithMerchant(false);
         }
 
         playerInteractedWithMerchantOnce = true;
@@ -383,6 +383,7 @@ public class HUBManager : MonoBehaviour
         if (gemAmountDroppedInChest == totalGemsAfterTutorial && !playerBoughtItem) {
             gemMerchantIndicator.gameObject.SetActive(true);
             hubFire.SetHubFireEmberExtractable(false);
+            gemMerchant.SetPlayerCanInteractWithMerchant(true);
             return;
         };
 
@@ -432,6 +433,10 @@ public class HUBManager : MonoBehaviour
 
         LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.HUB_HeadToFire);
         gemMerchantTalkUI.SetTextLinesSO(gemMerchantIntroTextLines);
+
+        yield return new WaitForSeconds(1.5f);
+
+        DirectionIndicator.Instance.ShowDirection(1f);
     }
 
     private IEnumerator FirstHUBEnterCoroutine() {

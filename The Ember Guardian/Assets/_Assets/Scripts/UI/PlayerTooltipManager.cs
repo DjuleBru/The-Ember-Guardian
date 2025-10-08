@@ -160,7 +160,7 @@ public class PlayerTooltipManager : MonoBehaviour
             if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Shotgun) {
                 PrepareTooltipInstruction(shotgunText1, shotgunText2, InputControlIcons.Control.SecondaryGunAbility);
             }
-            if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.UZI) {
+            if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.SMG) {
                 PrepareTooltipInstruction(smgText1, smgText2, InputControlIcons.Control.SecondaryGunAbility);
             }
             if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Sniper) {
@@ -234,7 +234,7 @@ public class PlayerTooltipManager : MonoBehaviour
         if (gunSO.gunType == GunSO.GunType.Shotgun) {
             PrepareTooltipInstruction(shotgunText1, shotgunText2, InputControlIcons.Control.SecondaryGunAbility);
         }
-        if (gunSO.gunType == GunSO.GunType.UZI) {
+        if (gunSO.gunType == GunSO.GunType.SMG) {
             PrepareTooltipInstruction(smgText1, smgText2, InputControlIcons.Control.SecondaryGunAbility);
         }
         if (gunSO.gunType == GunSO.GunType.Sniper) {

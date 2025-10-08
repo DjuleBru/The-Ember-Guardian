@@ -85,6 +85,11 @@ public class PauseMenuUI : MonoBehaviour
         RefreshFonts();
     }
 
+    protected void LateUpdate() {
+        if (menuOpen) {
+            Time.timeScale = 0f;
+        }
+    }
 
     private void SettingsManager_OnLanguageChanged(object sender, EventArgs e) {
         RefreshFonts();

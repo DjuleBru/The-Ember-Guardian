@@ -269,6 +269,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CallDog"",
+                    ""type"": ""Button"",
+                    ""id"": ""cafba301-cde3-4b97-a187-0f0c084d1813"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -374,7 +383,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""af4a2211-4567-403d-9114-f2462a4637b2"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -462,7 +471,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""90b91789-9046-4a7d-9c6d-63470757cfc1"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
@@ -572,7 +581,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""31442442-9d70-4d23-99a7-1ed2cca0eaf1"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -621,17 +630,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Pause"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""fc892f5f-7f53-470d-88a3-1c7de8c7a9b9"",
-                    ""path"": ""<Keyboard>/c"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard"",
-                    ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1041,6 +1039,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""RefundWeapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ab2867ee-d7a1-4a84-99fc-8445c3626215"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""CallDog"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""582a02e8-daee-450a-8306-bde074393535"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""CallDog"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1099,6 +1119,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_CollectCurrencyFromContainer = m_Player.FindAction("CollectCurrencyFromContainer", throwIfNotFound: true);
         m_Player_CommandWorker = m_Player.FindAction("CommandWorker", throwIfNotFound: true);
         m_Player_RefundWeapon = m_Player.FindAction("RefundWeapon", throwIfNotFound: true);
+        m_Player_CallDog = m_Player.FindAction("CallDog", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -1192,6 +1213,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_CollectCurrencyFromContainer;
     private readonly InputAction m_Player_CommandWorker;
     private readonly InputAction m_Player_RefundWeapon;
+    private readonly InputAction m_Player_CallDog;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1223,6 +1245,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @CollectCurrencyFromContainer => m_Wrapper.m_Player_CollectCurrencyFromContainer;
         public InputAction @CommandWorker => m_Wrapper.m_Player_CommandWorker;
         public InputAction @RefundWeapon => m_Wrapper.m_Player_RefundWeapon;
+        public InputAction @CallDog => m_Wrapper.m_Player_CallDog;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1313,6 +1336,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @RefundWeapon.started += instance.OnRefundWeapon;
             @RefundWeapon.performed += instance.OnRefundWeapon;
             @RefundWeapon.canceled += instance.OnRefundWeapon;
+            @CallDog.started += instance.OnCallDog;
+            @CallDog.performed += instance.OnCallDog;
+            @CallDog.canceled += instance.OnCallDog;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1398,6 +1424,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @RefundWeapon.started -= instance.OnRefundWeapon;
             @RefundWeapon.performed -= instance.OnRefundWeapon;
             @RefundWeapon.canceled -= instance.OnRefundWeapon;
+            @CallDog.started -= instance.OnCallDog;
+            @CallDog.performed -= instance.OnCallDog;
+            @CallDog.canceled -= instance.OnCallDog;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1462,5 +1491,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnCollectCurrencyFromContainer(InputAction.CallbackContext context);
         void OnCommandWorker(InputAction.CallbackContext context);
         void OnRefundWeapon(InputAction.CallbackContext context);
+        void OnCallDog(InputAction.CallbackContext context);
     }
 }

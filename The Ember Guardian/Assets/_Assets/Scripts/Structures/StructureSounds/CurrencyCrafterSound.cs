@@ -25,6 +25,8 @@ public class CurrencyCrafterSound : StructureSounds
         currencyCrafter.OnCurrencyCraftingEnded += AmmoCrafter_OnAmmoCraftingEnded;
         currencyCrafter.OnNewCurrencyBatchCraftingStarted += AmmoCrafter_OnAmmoCraftingStarted;
         currencyCrafter.OnCurrencyInstantiated += AmmoCrafter_OnCurrencyInstantiated;
+
+        craftingAudioSourceSoundVolume2D.SetSoundVolume2DActiveAfterDelay(false, 0);
     }
 
     private void AmmoCrafter_OnCurrencyInstantiated(object sender, System.EventArgs e) {

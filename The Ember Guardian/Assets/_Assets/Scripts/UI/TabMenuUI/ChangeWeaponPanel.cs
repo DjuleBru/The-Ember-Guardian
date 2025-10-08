@@ -140,7 +140,10 @@ public class ChangeWeaponPanel : MonoBehaviour
             OnChangeWeaponPanelClosed?.Invoke(this, EventArgs.Empty);
         } else {
             if(changeWeaponButtons.Count > 0) {
-                EventSystem.current.SetSelectedGameObject(changeWeaponButtons[0]);
+                if (GameInput.Instance.IsUsingGamepad()) {
+                    EventSystem.current.SetSelectedGameObject(changeWeaponButtons[0]);
+                };
+
                 OnChangeWeaponPanelOpened?.Invoke(this, EventArgs.Empty);
             }
         }

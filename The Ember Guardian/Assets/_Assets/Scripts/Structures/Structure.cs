@@ -163,6 +163,11 @@ public class Structure : MonoBehaviour {
     }
 
     public void BuildInitialCampStructure() {
+        StartCoroutine(BuildInitialCampStructureCoroutine());
+    }
+
+    private IEnumerator BuildInitialCampStructureCoroutine() {
+        yield return new WaitForEndOfFrame();
         OnInitialCampStructureBuilt?.Invoke(this, EventArgs.Empty);
     }
 

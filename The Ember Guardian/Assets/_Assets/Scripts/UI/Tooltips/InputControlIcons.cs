@@ -215,7 +215,7 @@ public class InputControlIcons : MonoBehaviour
 
         if(GameInput.Instance.IsUsingGamepad()) {
             if (control == Control.Reload) {
-                spriteList.Add(gamepadYSprite);
+                spriteList.Add(gamepadXSprite);
             }
             if (control == Control.Skill1) {
                 spriteList.Add(gamepadLbSprite);
@@ -230,7 +230,7 @@ public class InputControlIcons : MonoBehaviour
                 spriteList.Add(gamepadRtSprite);
             }
             if (control == Control.Interact) {
-                spriteList.Add(gamepadXSprite);
+                spriteList.Add(gamepadASprite);
             }
             if (control == Control.Move) {
                 spriteList.Add(gamepadLLeftRightSprite);
@@ -245,7 +245,7 @@ public class InputControlIcons : MonoBehaviour
                 spriteList.Add(gamepadDownArrowSprite);
             }
             if (control == Control.SwitchDog) {
-                spriteList.Add(gamepadBSprite);
+                spriteList.Add(gamepadYSprite);
             }
             if (control == Control.Aim) {
                 spriteList.Add(gamepadRJoystickSprite);
@@ -257,7 +257,7 @@ public class InputControlIcons : MonoBehaviour
                 spriteList.Add(gamepadLtSprite);
             }
             if (control == Control.Roll) {
-                spriteList.Add(gamepadASprite);
+                spriteList.Add(gamepadBSprite);
             }
             if (control == Control.OpenPlayerMenu) {
                 spriteList.Add(gamepadSelectSprite);

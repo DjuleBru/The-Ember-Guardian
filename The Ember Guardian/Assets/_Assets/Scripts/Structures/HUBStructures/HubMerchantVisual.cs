@@ -66,7 +66,10 @@ public class HubMerchantVisual : MonoBehaviour
         if (hubMerchant.GetMerchantIsLevelNPC() && !hubMerchant.GetMerchantHasNewTalkLinkes()) return;
 
         bodySpriteRenderer.material = hoveredMaterial;
-        ShowInputIcon(true);
+
+        if(hubMerchant.GetPlayerCanInteractWithMerchant()) {
+            ShowInputIcon(true);
+        }
 
     }
 

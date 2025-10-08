@@ -247,6 +247,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CallDog",
+                    "type": "Button",
+                    "id": "cafba301-cde3-4b97-a187-0f0c084d1813",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -352,7 +361,7 @@
                 {
                     "name": "",
                     "id": "af4a2211-4567-403d-9114-f2462a4637b2",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -440,7 +449,7 @@
                 {
                     "name": "",
                     "id": "90b91789-9046-4a7d-9c6d-63470757cfc1",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -550,7 +559,7 @@
                 {
                     "name": "",
                     "id": "31442442-9d70-4d23-99a7-1ed2cca0eaf1",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -599,17 +608,6 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "fc892f5f-7f53-470d-88a3-1c7de8c7a9b9",
-                    "path": "<Keyboard>/c",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard",
-                    "action": "Back",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -1017,6 +1015,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "RefundWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ab2867ee-d7a1-4a84-99fc-8445c3626215",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "CallDog",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "582a02e8-daee-450a-8306-bde074393535",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "CallDog",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

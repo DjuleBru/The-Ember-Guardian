@@ -20,6 +20,8 @@ public class HubMerchantTalkUI : MonoBehaviour
 
     [SerializeField] protected bool DEBUGShowTextLines;
 
+    private Coroutine startTalkingCoroutine;
+
     public static event EventHandler OnAnyMerchantShowNewTalkLine;
     public static event EventHandler OnAnyMerchantEndTalk;
     public event EventHandler OnMerchantEndTalk;
@@ -42,6 +44,7 @@ public class HubMerchantTalkUI : MonoBehaviour
         hubMerchant.OnPlayerStartedTalkingWithHubMerchant += HubMerchant_OnPlayerStartedTalkingWithHubMerchant;
         hubMerchant.OnPlayerTriggeredIn += HubMerchant_OnPlayerTriggeredIn;
         hubMerchant.OnPlayerTriggeredOut += HubMerchant_OnPlayerTriggeredOut;
+        hubMerchant.OnPlayerInterruptedInteractingWithHubMerchant += HubMerchant_OnPlayerInterruptedInteractingWithHubMerchant;
 
         continueInputImage.sprite = InputControlIcons.Instance.GetControlIconSprite(InputControlIcons.Control.Interact)[0];
 
@@ -50,6 +53,7 @@ public class HubMerchantTalkUI : MonoBehaviour
 
         LoadTalkData();
     }
+
 
     private void LoadTalkData() {
         merchantHasTalkLinesToShow = MetaProgressionManager.Instance.GetMerchantHasTalkLinesToShow(hubMerchant.GetHubMerchantType());
@@ -77,10 +81,8 @@ public class HubMerchantTalkUI : MonoBehaviour
             talkLinesIndex++;
 
             if (talkLinesIndex == merchantTalkLinesLocalizationKeys.Count) {
-                talkText.text = "";
-                playerIsTalkingToMerchant = false;
+                EndTalkUI();
                 hubMerchant.SetPlayerFinishedTalkingWithMerchant(showShopAfterDialog);
-                talkPanelUIGameObject.SetActive(false);
                 CameraManager.Instance.ZoomOut(true, 1f);
                 OnAnyMerchantEndTalk?.Invoke(this, EventArgs.Empty);
                 OnMerchantEndTalk?.Invoke(this, EventArgs.Empty);
@@ -99,8 +101,24 @@ public class HubMerchantTalkUI : MonoBehaviour
 
     }
 
+    private void HubMerchant_OnPlayerInterruptedInteractingWithHubMerchant(object sender, EventArgs e) {
+        if(startTalkingCoroutine != null) {
+            StopCoroutine(startTalkingCoroutine);
+        }
+        EndTalkUI();
+        talkLinesIndex = 0;
+        currentDialogLineShown = false;
+        CameraManager.Instance.ZoomOut(true, 1f);
+    }
+
+    private void EndTalkUI() {
+        talkText.text = "";
+        playerIsTalkingToMerchant = false;
+        talkPanelUIGameObject.SetActive(false);
+    }
+
     private void HubMerchant_OnPlayerStartedTalkingWithHubMerchant(object sender, System.EventArgs e) {
-        StartCoroutine(StartTalkingToMerchantCoroutine());
+        startTalkingCoroutine = StartCoroutine(StartTalkingToMerchantCoroutine());
     }
 
     private void HubMerchant_OnPlayerTriggeredOut(object sender, EventArgs e) {
@@ -124,7 +142,7 @@ public class HubMerchantTalkUI : MonoBehaviour
         merchantTalkLinesLocalizationKeys = textLinesSO.merchantTextLinesLocalizationKeys;
         hubMerchant.StartTalkingWithMerchant();
 
-        StartCoroutine(StartTalkingToMerchantCoroutine());
+        startTalkingCoroutine = StartCoroutine(StartTalkingToMerchantCoroutine());
     }
 
     public void SetTextLinesSO(MerchantTextLinesSO textLinesSO) {

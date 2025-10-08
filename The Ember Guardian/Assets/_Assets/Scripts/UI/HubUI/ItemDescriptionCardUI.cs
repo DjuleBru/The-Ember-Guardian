@@ -24,6 +24,7 @@ public class ItemDescriptionCardUI : MonoBehaviour
     [SerializeField] private Material initialItemStatMaterial_CH;
     [SerializeField] private Material redFontMaterial_CH;
     [SerializeField] private Color modifiedItemColor;
+    [SerializeField] private Color redItemColor;
 
     [SerializeField] private TextMeshProUGUI itemStatDescriptionText;
     [SerializeField] private TextMeshProUGUI redGemAmountText;
@@ -42,6 +43,13 @@ public class ItemDescriptionCardUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI maxLevelText;
     [SerializeField] private GameObject foreGround;
 
+    private int greenGem;
+    private int redGem;
+    private int blueGem;
+    private int yellowGem;
+    private int purpleGem;
+    private int cyanGem;
+
     public void SetDescriptionCardFonts() {
         TMP_FontAsset fontAsset = LocalizationManager.Instance.GetCurrentFont();
 
@@ -56,6 +64,20 @@ public class ItemDescriptionCardUI : MonoBehaviour
         yellowGemAmountText.font = fontAsset;
         purpleGemAmountText.font = fontAsset;
         cyanGemAmountText.font= fontAsset;
+
+        redGemAmountText.color = Color.white;
+        greenGemAmountText.color = Color.white;
+        blueGemAmountText.color = Color.white;
+        yellowGemAmountText.color = Color.white;
+        purpleGemAmountText.color = Color.white;
+        cyanGemAmountText.color = Color.white;
+
+        redGemAmountText.color = Color.white;
+        greenGemAmountText.color = Color.white;
+        blueGemAmountText.color = Color.white;
+        yellowGemAmountText.color = Color.white;
+        purpleGemAmountText.color = Color.white;
+        cyanGemAmountText.color = Color.white;
 
         maxLevelText.font = fontAsset;
     }
@@ -80,6 +102,13 @@ public class ItemDescriptionCardUI : MonoBehaviour
     }
 
     public void SetDescriptionCardCost(int greenGem, int redGem, int blueGem, int yellowGem, int purpleGem, int cyanGem) {
+        this.greenGem = greenGem;
+        this.redGem = redGem;
+        this.blueGem = blueGem;
+        this.yellowGem = yellowGem;
+        this.purpleGem = purpleGem;
+        this.cyanGem = cyanGem;
+
         greenGemCostGO.SetActive(true);
         redGemCostGO.SetActive(true);
         blueGemCostGO.SetActive(true);
@@ -93,6 +122,56 @@ public class ItemDescriptionCardUI : MonoBehaviour
         yellowGemAmountText.text = yellowGem.ToString();
         purpleGemAmountText.text = purpleGem.ToString();
         cyanGemAmountText.text = cyanGem.ToString();
+
+        int playerGreenGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count;
+        int playerRedGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count;
+        int playerCyanGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.cyanGem).Count;
+        int playerBlueGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count;
+        int playerYellowGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count;
+        int playerPurpleGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count;
+
+        if (greenGem > playerGreenGems) {
+            //greenGemAmountText.fontMaterial = LocalizationManager.Instance.GetRedGlowMaterial();
+            greenGemAmountText.color = redItemColor;
+        } else {
+            greenGemAmountText.color = Color.white;
+        }
+
+        if (redGem > playerRedGems) {
+            //redGemAmountText.fontMaterial = LocalizationManager.Instance.GetRedGlowMaterial();
+            redGemAmountText.color = redItemColor;
+        }
+        else {
+            redGemAmountText.color = Color.white;
+        }
+        if (cyanGem > playerCyanGems) {
+            //cyanGemAmountText.fontMaterial = LocalizationManager.Instance.GetRedGlowMaterial();
+            cyanGemAmountText.color = redItemColor;
+        }
+        else {
+            cyanGemAmountText.color = Color.white;
+        }
+        if (blueGem > playerBlueGems) {
+            //blueGemAmountText.fontMaterial = LocalizationManager.Instance.GetRedGlowMaterial();
+            blueGemAmountText.color = redItemColor;
+        }
+        else {
+            blueGemAmountText.color = Color.white;
+        }
+        if (yellowGem > playerYellowGems) {
+            //yellowGemAmountText.fontMaterial = LocalizationManager.Instance.GetRedGlowMaterial();
+            yellowGemAmountText.color = redItemColor;
+        }
+        else {
+            yellowGemAmountText.color = Color.white;
+        }
+        if (purpleGem > playerPurpleGems) {
+            //purpleGemAmountText.fontMaterial = LocalizationManager.Instance.GetRedGlowMaterial();
+            purpleGemAmountText.color = redItemColor;
+        }
+        else {
+            purpleGemAmountText.color = Color.white;
+        }
 
         if (greenGem == 0) {
             greenGemCostGO.SetActive(false);
@@ -163,6 +242,7 @@ public class ItemDescriptionCardUI : MonoBehaviour
 
         maxLevelText.gameObject.SetActive(true);
     }
+
     public void SetDescriptionCardItemLockedInDemo() {
         SetRedFontMaterial();
         maxLevelText.text = LocalizationManager.Instance.GetLocalizedText("card_lockedInDemo");

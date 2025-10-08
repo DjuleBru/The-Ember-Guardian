@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -12,6 +13,7 @@ public class WeaponChangeButton : ButtonUI
 
     [SerializeField] private Image gunIconImage;
     [SerializeField] private bool isPrimaryWeaponButton;
+    [SerializeField] private TextMeshProUGUI weaponNameText;
 
     public static event EventHandler OnAnyWeaponChangeButtonPressed;
 
@@ -78,12 +80,16 @@ public class WeaponChangeButton : ButtonUI
     private void PlayerShoot_OnSecondaryWeaponChanged(object sender, System.EventArgs e) {
         if (isPrimaryWeaponButton) return;
         UpdateGunIconImage(PlayerShoot.Instance.GetSecondaryGunSO());
+
+        if (!GameInput.Instance.IsUsingGamepad()) return;
         EventSystem.current.SetSelectedGameObject(gameObject);
     }
 
     private void PlayerShoot_OnPrimaryWeaponChanged(object sender, System.EventArgs e) {
         if (!isPrimaryWeaponButton) return;
         UpdateGunIconImage(PlayerShoot.Instance.GetPrimaryGunSO());
+
+        if (!GameInput.Instance.IsUsingGamepad()) return;
         EventSystem.current.SetSelectedGameObject(gameObject);
     }
 
@@ -104,6 +110,12 @@ public class WeaponChangeButton : ButtonUI
         linkedGunSO = gunSO;
 
         UpdateGunIconImage(linkedGunSO);
+        if(linkedGunSO != null) {
+            weaponNameText.text = LocalizationManager.Instance.GetLocalizedText(gunSO.gunType.ToString());
+        } else {
+            weaponNameText.text = "";
+        }
+
     }
 
     public GunSO GetLinkedGunSO() {

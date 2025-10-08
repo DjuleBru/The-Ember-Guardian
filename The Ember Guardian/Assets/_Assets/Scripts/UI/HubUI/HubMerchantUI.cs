@@ -44,11 +44,13 @@ public class HubMerchantUI : MonoBehaviour
         UICurrencyManager.HubInventoryUI.OnCurrencyDropped += UICurrencymanager_OnCurrencyDropped;
         hubMerchant.OnPlayerOpenedHubMerchantShop += HubMerchant_OnPlayerInteractedWithHubMerchant;
         hubMerchant.OnPlayerStoppedInteractingWithHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithHubMerchant;
+        hubMerchant.OnPlayerInterruptedInteractingWithHubMerchant += HubMerchant_OnPlayerInterruptedInteractingWithHubMerchant;
 
         canvas.worldCamera = CameraManager.Instance.GetUICamera();
         canvas.sortingLayerName = "UI";
         RefreshPlayerHubGems();
     }
+
 
     private void GameInput_OnPlayerInputChanged(object sender, System.EventArgs e) {
         RefreshGameInputView();
@@ -91,6 +93,15 @@ public class HubMerchantUI : MonoBehaviour
     }
 
     private void HubMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, System.EventArgs e) {
+        hubMerchantUInimator.ResetTrigger("Show");
+        hubMerchantUInimator.SetTrigger("Hide");
+
+        EventSystem.current.SetSelectedGameObject(null);
+
+        OnAnyHubMerchantCloseUIPanel?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void HubMerchant_OnPlayerInterruptedInteractingWithHubMerchant(object sender, EventArgs e) {
         hubMerchantUInimator.ResetTrigger("Show");
         hubMerchantUInimator.SetTrigger("Hide");
 

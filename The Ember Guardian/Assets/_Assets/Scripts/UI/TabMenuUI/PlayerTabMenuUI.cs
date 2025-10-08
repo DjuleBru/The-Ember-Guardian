@@ -63,6 +63,7 @@ public class PlayerTabMenuUI : MonoBehaviour
         changeWeaponPanelOpen = false; 
         
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            if(!GameInput.Instance.IsUsingGamepad()) return;
             EventSystem.current.SetSelectedGameObject(firstButtonSelected);
         }
     }
@@ -88,9 +89,8 @@ public class PlayerTabMenuUI : MonoBehaviour
         if (PauseMenuUI.Instance.isPaused) return;
         OpenCloseTab();
 
+        if (!GameInput.Instance.IsUsingGamepad()) return;
         EventSystem.current.SetSelectedGameObject(firstButtonSelected);
-        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
-        }
     }
 
     private void FadeInTab() {
@@ -134,6 +134,7 @@ public class PlayerTabMenuUI : MonoBehaviour
     }
 
     public void SelectFirstButtonSelected() {
+        if (!GameInput.Instance.IsUsingGamepad()) return;
         EventSystem.current.SetSelectedGameObject(firstButtonSelected);
     }
 

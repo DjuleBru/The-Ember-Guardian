@@ -18,6 +18,7 @@ public class ButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPo
 
     [SerializeField] protected bool buttonPressable = true;
 
+
     protected virtual void Start() {
         OnAnyButtonHovered += ButtonUI_OnAnyButtonHovered;
         OnAnyButtonSelected += ButtonUI_OnAnyButtonSelected;

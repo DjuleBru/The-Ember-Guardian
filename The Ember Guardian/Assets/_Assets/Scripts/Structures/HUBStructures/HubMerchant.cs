@@ -46,6 +46,7 @@ public class HubMerchant : MonoBehaviour
     public event EventHandler OnPlayerTriggeredOut;
     public event EventHandler OnPlayerOpenedHubMerchantShop;
     public event EventHandler OnPlayerStoppedInteractingWithHubMerchant;
+    public event EventHandler OnPlayerInterruptedInteractingWithHubMerchant;
     public event EventHandler OnPlayerStartedTalkingWithHubMerchant;
     public event EventHandler OnMerchantHasNewInteraction;
     public event EventHandler OnMerchantHideExclamationMark;
@@ -64,6 +65,7 @@ public class HubMerchant : MonoBehaviour
     [SerializeField] protected bool isDecorationalDemoHubMerchant;
 
     protected bool hubMerchantLoaded;
+    protected bool playerCanInteractWithMerchant = true;
 
     protected int redGemCosts;
     protected int blueGemCosts;
@@ -90,6 +92,7 @@ public class HubMerchant : MonoBehaviour
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         GameInput.Instance.OnPlayerPausePerformed += GameInput_OnPlayerPausePerformed;
+        Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
 
         if (isHubMerchant) {
             // HUB behavior
@@ -104,6 +107,12 @@ public class HubMerchant : MonoBehaviour
 
 
         SetHubMerchantParentInItems();
+    }
+
+    private void Player_OnPlayerDamaged(object sender, Player.OnPlayerChangedHealthEventArgs e) {
+        if(playerInteractingWithMerchant) {
+            StartCoroutine(InterruptInteractingWithMerchant());
+        }
     }
 
     protected void InitializeItemButtonUIs() {
@@ -201,6 +210,7 @@ public class HubMerchant : MonoBehaviour
         if (isHubMerchant && !merchantUnlocked) return;
         if (isDecorationalDemoHubMerchant) return;
         if (playerInteractingWithMerchant) return;
+        if (!playerCanInteractWithMerchant) return;
         if (Player.Instance.GetCameraHasOtherTarget()) return;
 
         if (isHubMerchant) {
@@ -226,6 +236,18 @@ public class HubMerchant : MonoBehaviour
         }
 
         playerInteractingWithMerchant = true;
+    }
+
+    private IEnumerator InterruptInteractingWithMerchant() {
+        Player.Instance.StopInteractingWithMerchant();
+        CameraManager.Instance.ResetCameraTargetToPlayer();
+        PauseMenuUI.Instance.SetCanOpenPauseMenuAfterFrame(true);
+
+        OnPlayerStoppedInteractingWithAnyHubMerchant?.Invoke(this, EventArgs.Empty);
+        OnPlayerInterruptedInteractingWithHubMerchant?.Invoke(this, EventArgs.Empty);
+        yield return new WaitForEndOfFrame();
+        playerInteractingWithMerchant = false;
+
     }
 
     private IEnumerator StopInteractingWithMerchant() {
@@ -355,9 +377,21 @@ public class HubMerchant : MonoBehaviour
         isDecorationalDemoHubMerchant = false;
     }
 
+    public void SetPlayerCanInteractWithMerchant(bool canInteract) {
+        playerCanInteractWithMerchant = canInteract;
+    }
+
     #endregion
 
     #region GET PARAMETERS
+
+    public bool GetPlayerCanInteractWithMerchant() {
+        if (isHubMerchant && !merchantUnlocked) return false;
+        if (isDecorationalDemoHubMerchant) return false;
+        if (playerInteractingWithMerchant) return false;
+        if (!playerCanInteractWithMerchant) return false;
+        return true;
+    }
 
     public HubMerchantType GetHubMerchantType() {
         return hubMerchantType;

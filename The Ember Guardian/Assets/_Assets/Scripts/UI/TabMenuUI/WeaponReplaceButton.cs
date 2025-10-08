@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ using UnityEngine.UI;
 public class WeaponReplaceButton : ButtonUI {
 
     [SerializeField] private Image gunIconImage;
+    [SerializeField] private TextMeshProUGUI weaponNameText;
 
     private Button button;
     private GunSO linkedGunSO;
@@ -16,7 +18,7 @@ public class WeaponReplaceButton : ButtonUI {
     public static event EventHandler OnAnyWeaponReplaceButtonHovered;
     public static event EventHandler OnAnyWeaponReplaceButtonUnhovered;
 
-    private void Awake() {
+    protected void Awake() {
         button = GetComponent<Button>();
         button.onClick.AddListener(() => {
             SwapWeapon();
@@ -48,6 +50,8 @@ public class WeaponReplaceButton : ButtonUI {
     public void SetLinkedGunSO(GunSO gunSO) {
         linkedGunSO = gunSO;
         UpdateGunIconImage(gunSO);
+
+        weaponNameText.text = LocalizationManager.Instance.GetLocalizedText(gunSO.gunType.ToString());
     }
 
     private void UpdateGunIconImage(GunSO gunSO) {

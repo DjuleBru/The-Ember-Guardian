@@ -123,6 +123,7 @@ public class ItemButtonUI : ButtonUI {
         RefreshItemStatusVisuals();
     }
 
+
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
         itemHovered = false;
         itemSelected = false;
@@ -209,10 +210,12 @@ public class ItemButtonUI : ButtonUI {
 
     private void HubChest_OnChestClosed(object sender, EventArgs e) {
         RefreshItemStatusVisuals();
+        RefreshDescriptionCardCosts();
     }
 
     private void HubInventoryUI_OnCurrencyRemovedFromBag(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         RefreshItemStatusVisuals();
+        RefreshDescriptionCardCosts();
     }
 
     private void HubMerchantItem_OnItemMustRefreshDescriptionCard(object sender, EventArgs e) {
@@ -313,6 +316,18 @@ public class ItemButtonUI : ButtonUI {
             }
         }
 
+    }
+
+    private void RefreshDescriptionCardCosts() {
+
+        int greenGemCost = hubMerchantItem.GetGreenGemCost();
+        int redGemCost = hubMerchantItem.GetRedGemCost();
+        int blueGemCost = hubMerchantItem.GetBlueGemCost();
+        int yellowGemCost = hubMerchantItem.GetYellowGemCost();
+        int purpleGemCost = hubMerchantItem.GetPurpleGemCost();
+        int cyanGemCost = hubMerchantItem.GetCyanGemCost();
+
+        descriptionCard.SetDescriptionCardCost(greenGemCost, redGemCost, blueGemCost, yellowGemCost, purpleGemCost, cyanGemCost);
     }
 
     private void ItemButtonUI_OnAnyOutputLinkUnlocked(object sender, EventArgs e) {
@@ -488,7 +503,28 @@ public class ItemButtonUI : ButtonUI {
                 }
             }
         }
+
+        if(showItemLevel && hideItemMaxLevel) {
+            SetItemLevelRomanNumber(hubMerchantItem.GetItemLevel());
+        }
     }
+
+    private void SetItemLevelRomanNumber(int level) {
+        if(level == 1) {
+            itemMaxedLevelText.text = "I";
+        }
+        if (level == 2) {
+            itemMaxedLevelText.text = "II";
+        }
+        if (level == 3) {
+            itemMaxedLevelText.text = "III";
+        }
+        if (level == 4) {
+            itemMaxedLevelText.text = "IV";
+        }
+
+    }
+
     public void StartUpgradeItemAnimation() {
         itemButtonUI_Visual.StartBuyAnimation(hubMerchantItem.GetRedGemCost(), hubMerchantItem.GetGreenGemCost(), hubMerchantItem.GetBlueGemCost(), hubMerchantItem.GetYellowGemCost(), hubMerchantItem.GetPurpleGemCost(), hubMerchantItem.GetCyanGemCost());
     }
