@@ -10,7 +10,7 @@ public class DirectionIndicator : MonoBehaviour
 
     private bool directionIsBeingShown;
     private float showTimer;
-    private float showTime = 3f;
+    private float showTime = 2f;
     private float direction;
 
     private void Awake() {

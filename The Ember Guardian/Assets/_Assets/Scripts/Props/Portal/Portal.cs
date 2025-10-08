@@ -275,6 +275,11 @@ public class Portal : MonoBehaviour
         yield return new WaitForSeconds(delayToReleasePlayerAnimation);
 
         Player.Instance.ReleasePlayerFromTeleporter();
+
+        if(LevelManager.Instance.GetLevelSO().showDirectionAtStart) {
+            DirectionIndicator.Instance.ShowDirection(LevelManager.Instance.GetLevelSO().directionToShow);
+        }
+
     }
 
     public void TeleportPlayerOutInHubManually() {

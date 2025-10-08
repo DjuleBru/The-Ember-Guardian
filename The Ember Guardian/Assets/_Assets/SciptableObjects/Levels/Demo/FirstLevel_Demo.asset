@@ -25,6 +25,7 @@ MonoBehaviour:
   minesAmount: 0
   chestAmount: 0
   wildEmberlingsAmount: 0
+  unlockablesList: 
   duskDurationIncreasePerDay: 0
   levelObjectiveType: 16
   endLevelType: 16
@@ -103,3 +104,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cfe595955de0ac64d8b321b39f2e80b8, type: 3}
   levelExplorationTracksStreamerMode:
   - {fileID: 8300000, guid: b6b8d5d5190a7704fbf565f746935fb2, type: 3}
+  showDirectionAtStart: 0
+  directionToShow: -1

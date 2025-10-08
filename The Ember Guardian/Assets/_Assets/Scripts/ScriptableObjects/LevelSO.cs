@@ -263,6 +263,14 @@ public class LevelSO : ScriptableObject
     [LabelWidth(300)]
     public List<AudioClip> levelExplorationTracksStreamerMode;
 
+
+    [BoxGroup("Other")]
+    [LabelWidth(300)]
+    public bool showDirectionAtStart;
+    [BoxGroup("Other")]
+    [LabelWidth(300)]
+    public float directionToShow = 1f;
+
     public string GetLevelEnvironmentTypeString() {
         return LocalizationManager.Instance.GetLocalizedText(environmentType.ToString());
     }
