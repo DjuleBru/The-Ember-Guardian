@@ -100,8 +100,9 @@ public class PlayerAim : MonoBehaviour
     private Vector3 virtualMousePosition;
     private float aimFollowSpeed;
     private float currentCursorDistanceFactor = 0.5f;
-    private float restingCursorDistanceMultiplier = .4f;
+    private float restingCursorDistanceMultiplier = .6f;
     private float activeAimCursorDistanceMultiplier = .8f;
+    private float maxWeaponRangeForGamepadAim = 13.5f;
     private float cursorLerpSpeed = 15f;
 
     private RaycastHit2D closestHit;
@@ -198,23 +199,8 @@ public class PlayerAim : MonoBehaviour
         if (lookInput.magnitude > GameInput.gamepadDeadzone) {
             Vector3 targetDir = new Vector3(lookInput.x, lookInput.y, 0f).normalized;
 
-            float angleDiff = Vector2.Angle(previousGamepadAim, targetDir);
-            float inputSpeed = (targetDir - previousGamepadAim).magnitude / Time.deltaTime;
-
-            // Seuils dynamiques
-            float dynamicDeadzone = Mathf.Lerp(0.2f, 1f, Mathf.Clamp01(lookInput.magnitude)); // plus tu pousses le stick, plus tu tolères les variations
-            float stabilityThreshold = 25f; // Si l'input bouge moins vite que ça : on le considère "stable"
-            // Si le joueur bouge réellement le stick, on met à jour directement
-
-            if (angleDiff > dynamicDeadzone && inputSpeed > stabilityThreshold) {
-                aimDir = Vector3.Lerp(previousGamepadAim, targetDir, Time.deltaTime * 20f).normalized;
-                previousGamepadAim = targetDir;
-            }
-            // Sinon, on stabilise lentement vers la moyenne pour éviter les micro-tremblements
-            else {
-                aimDir = Vector3.Lerp(previousGamepadAim, targetDir, Time.deltaTime * 8f).normalized;
-                previousGamepadAim = aimDir;
-            }
+            aimDir = Vector3.Lerp(previousGamepadAim, targetDir, Time.deltaTime * 10f).normalized;
+            previousGamepadAim = aimDir;
         }
         else {
             // Utiliser la direction du déplacement quand le stick est au repos *si l'option est activée*
@@ -242,20 +228,16 @@ public class PlayerAim : MonoBehaviour
         // Distance max dépend du stick (.5f * range pour au repos, .9f*range si poussé)
         float baseDistanceFactor = Mathf.Lerp(restingCursorDistanceMultiplier, activeAimCursorDistanceMultiplier, stickIntensity);
 
-        // Réduction si la visée est verticale
-        float horizontalFactor = Mathf.Clamp01(Mathf.Abs(aimDir.x)); // 1 = horizontal, 0 = vertical
-        float adjustedDistanceFactor = baseDistanceFactor * Mathf.Lerp(0.65f, 1f, horizontalFactor);
-        // On peut aller jusqu’à moitié moins de portée en vertical
+        currentCursorDistanceFactor = Mathf.Lerp(currentCursorDistanceFactor, baseDistanceFactor, Time.deltaTime * cursorLerpSpeed);
 
-        currentCursorDistanceFactor = Mathf.Lerp(currentCursorDistanceFactor, adjustedDistanceFactor, Time.deltaTime * cursorLerpSpeed);
-
+        float weaponRangeClamped = Mathf.Clamp(weaponRange, 0, maxWeaponRangeForGamepadAim);
         // Position finale du viseur
         if (autoAimTargetPos != Vector2.zero) {
             // Snap direct sur l’ennemi auto-aimé
             virtualMousePosition = Vector3.Lerp(virtualMousePosition, autoAimTargetPos, Time.deltaTime * autoAimSnapSmoothSpeed);
         }
         else {
-            virtualMousePosition = rayOrigin + (Vector3)(aimDir.normalized * weaponRange * currentCursorDistanceFactor);
+            virtualMousePosition = rayOrigin + (Vector3)(aimDir.normalized * weaponRangeClamped * currentCursorDistanceFactor);
         }
 
         // Position finale du réticule d’arme (autour du pointeur)

@@ -10,6 +10,7 @@ public class PlayerShoot : MonoBehaviour
     public static PlayerShoot Instance;
 
     public event EventHandler OnPlayerShot;
+    public event EventHandler OnCooldownEnded;
     public event EventHandler OnPlayerStartedShot;
     public event EventHandler OnPlayerTryShoot_OutOfAmmo;
     public event EventHandler OnPlayerTryShoot_GunJammed;
@@ -611,7 +612,7 @@ public class PlayerShoot : MonoBehaviour
 
     private void CooldownFinished() {
         coolingDown = false;
-
+        OnCooldownEnded?.Invoke(this, EventArgs.Empty);
         // Handle reload
         if (heldGun.GetCurrentBullet() > 0) {
             if (automaticWeapon && playerIsHoldingDownShoot && !Player.Instance.GetDead()) {

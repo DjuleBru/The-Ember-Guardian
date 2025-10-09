@@ -25269,6 +25269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 394026981001251134}
+  gunLaserLight: {fileID: 0}
   gunVisualTransform: {fileID: 4967986625033554732}
   gunShootLight: {fileID: 5269175169450886220}
 --- !u!114 &3482212332294706136
@@ -43083,6 +43084,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 6866856342818988487}
+  gunLaserLight: {fileID: 0}
   gunVisualTransform: {fileID: 871559164532370852}
   gunShootLight: {fileID: 1827367430551232383}
 --- !u!114 &5768703856942408318
@@ -43708,6 +43710,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 5730413854482163264}
+  gunLaserLight: {fileID: 0}
   gunVisualTransform: {fileID: 6796312713700034363}
   gunShootLight: {fileID: 1170960659375871895}
 --- !u!114 &5584489385993432367
@@ -64916,6 +64919,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 5809702841180457636}
+  gunLaserLight: {fileID: 0}
   gunVisualTransform: {fileID: 8564061704340424980}
   gunShootLight: {fileID: 3403375300662680104}
 --- !u!114 &1736638518901546363
@@ -89863,6 +89867,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 5688780893442863143}
+  gunLaserLight: {fileID: 0}
   gunVisualTransform: {fileID: 6120018022691297178}
   gunShootLight: {fileID: 5735189648912926184}
 --- !u!114 &6282089536953184017
@@ -90200,6 +90205,88 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bec840fb22c549e47a3a05856923ba96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3296497453258686539
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8603003125298305283}
+  - component: {fileID: 6125611624177364258}
+  m_Layer: 12
+  m_Name: LaserLight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8603003125298305283
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3296497453258686539}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 1.4065142, y: 0.030806065, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3452345584255350507}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+--- !u!114 &6125611624177364258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3296497453258686539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ComponentVersion: 1
+  m_LightType: 1
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 1
+  m_Color: {r: 0, g: 0.7880776, b: 1, a: 1}
+  m_Intensity: 1
+  m_LightVolumeIntensity: 0.075
+  m_LightVolumeIntensityEnabled: 1
+  m_ApplyToSortingLayers: 05d1c0ac8db138b14302e2a0159706bb01e06951c5f28fcad99f534563b1ca2987c78f8019c70efd000000004142e356351325104fb1f6c0
+  m_LightCookieSprite: {fileID: 0}
+  m_DeprecatedPointLightCookieSprite: {fileID: 0}
+  m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
+  m_OverlapOperation: 0
+  m_NormalMapDistance: 3
+  m_NormalMapQuality: 2
+  m_UseNormalMap: 0
+  m_ShadowIntensityEnabled: 0
+  m_ShadowIntensity: 0.75
+  m_ShadowVolumeIntensityEnabled: 0
+  m_ShadowVolumeIntensity: 0.75
+  m_LocalBounds:
+    m_Center: {x: 0.003000006, y: 12.55305, z: 0}
+    m_Extent: {x: 0.263, y: 12.71235, z: 0}
+  m_PointLightInnerAngle: 0
+  m_PointLightOuterAngle: 0.5
+  m_PointLightInnerRadius: 0
+  m_PointLightOuterRadius: 25
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.25
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.010284883, y: 0.09018631, z: 0}
+  - {x: 0.015634673, y: 0.09126147, z: 0}
+  - {x: 0.017030025, y: 25.01271, z: 0}
+  - {x: 0.002505864, y: 25.015924, z: 0}
 --- !u!1 &3301422868166321595
 GameObject:
   m_ObjectHideFlags: 0
@@ -95484,6 +95571,37 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &3483962734850665825
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2089691869865555562}
+  m_Layer: 12
+  m_Name: Laser
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2089691869865555562
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3483962734850665825}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.407, y: 0.013, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3452345584255350507}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3521704812154482461
 GameObject:
   m_ObjectHideFlags: 0
@@ -96486,6 +96604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 9128017327593537454}
+  gunLaserLight: {fileID: 0}
   gunVisualTransform: {fileID: 1025872282387384616}
   gunShootLight: {fileID: 2412736093035876414}
 --- !u!114 &6133799421252220771
@@ -127201,7 +127320,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3936417832050387728
 Transform:
   m_ObjectHideFlags: 0
@@ -127332,6 +127451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 8500947976074543661}
+  gunLaserLight: {fileID: 0}
   gunVisualTransform: {fileID: 2822234430507241355}
   gunShootLight: {fileID: 8848354220431731542}
 --- !u!114 &814900274101968808
@@ -128552,6 +128672,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 6686344414672661394}
+  gunLaserLight: {fileID: 0}
   gunVisualTransform: {fileID: 727233497362004869}
   gunShootLight: {fileID: 1406419003093835135}
 --- !u!114 &1842778142744184738
@@ -171543,6 +171664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 350367173954285410}
+  gunLaserLight: {fileID: 0}
   gunVisualTransform: {fileID: 2562765826656679937}
   gunShootLight: {fileID: 2285016182102965455}
 --- !u!114 &8220129150877712735
@@ -184737,6 +184859,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 3542189886094820931}
+  gunLaserLight: {fileID: 0}
   gunVisualTransform: {fileID: 9087013205538204572}
   gunShootLight: {fileID: 7400103338334246543}
 --- !u!114 &2851711274343402637
@@ -189946,6 +190069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 8949719813477746143}
+  gunLaserLight: {fileID: 0}
   gunVisualTransform: {fileID: 3684639907533519759}
   gunShootLight: {fileID: 6818120942766008867}
 --- !u!114 &3597277944654952628
@@ -196834,7 +196958,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3452345584255350507
 Transform:
   m_ObjectHideFlags: 0
@@ -196855,8 +196979,10 @@ Transform:
   - {fileID: 7989455296964682784}
   - {fileID: 8638544195411602581}
   - {fileID: 374253611518500350}
+  - {fileID: 2089691869865555562}
   - {fileID: 735273416867235987}
   - {fileID: 1240302768291049608}
+  - {fileID: 8603003125298305283}
   - {fileID: 3184030084038397659}
   m_Father: {fileID: 981314326692650962}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -196965,6 +197091,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 3184030084038397659}
+  gunLaserLight: {fileID: 6125611624177364258}
   gunVisualTransform: {fileID: 4309091949621783138}
   gunShootLight: {fileID: 4239879708297367954}
 --- !u!114 &7576038695451401619
@@ -202076,6 +202203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 5033532780396519105}
+  gunLaserLight: {fileID: 0}
   gunVisualTransform: {fileID: 5833587477277505022}
   gunShootLight: {fileID: 344518295167259464}
 --- !u!114 &1455190701125724453
@@ -213589,6 +213717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSpotLightTransform: {fileID: 7131794822164019350}
+  gunLaserLight: {fileID: 0}
   gunVisualTransform: {fileID: 2420442902185994048}
   gunShootLight: {fileID: 6898336410409134958}
 --- !u!114 &307284862435142928

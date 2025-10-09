@@ -8,6 +8,7 @@ using UnityEngine.Rendering.Universal;
 public class GunSpotLight : MonoBehaviour
 {
     [SerializeField] private Transform gunSpotLightTransform;
+    [SerializeField] private Light2D gunLaserLight;
     [SerializeField] private Transform gunVisualTransform;
     [SerializeField] private Light2D gunShootLight;
     private Light2D gunSpotLight;
@@ -18,6 +19,8 @@ public class GunSpotLight : MonoBehaviour
     private float noFogVolumetricAmount = .2f;
     private float fogVolumetricAmount = .1f;
     private bool autoSwitchWithDay;
+    private bool laserLightActiveWithInput;
+    private bool laserLightActive = true;
     public static bool lightActive = true;
     private bool rolling;
     private bool reloading;
@@ -25,6 +28,11 @@ public class GunSpotLight : MonoBehaviour
     private static bool playerJustTeleported;
     private float playerJustTeleportedTimer;
     public static event EventHandler OnAnyLightSwitched;
+
+    private Coroutine laserLerpCoroutine;
+    private float laserLerpDuration_StateChange = 0.2f;
+    private float laserLerpDuration_ShootCooldown = 0.05f;
+    private float laserBaseIntensity = 1f;
 
     private void Awake() {
         gun = GetComponent<Gun>();
@@ -35,6 +43,7 @@ public class GunSpotLight : MonoBehaviour
         gunSpotLight = gunSpotLightTransform.GetComponent<Light2D>();
         gunShootLight.pointLightOuterAngle = 360;
         gunShootLight.pointLightInnerAngle = 360;
+
     }
 
     private void Start() {
@@ -64,8 +73,14 @@ public class GunSpotLight : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReloadInterrupted += PlayerShoot_OnPlayerReloadInterrupted;
         PlayerShoot.Instance.OnPlayerReloadInterruptedEnded += PlayerShooot_OnPlayerReloadInterruptedEnded;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+        PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerAim.Instance.OnXAimDirChanged += PlayerAim_OnXAimDirChanged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
+        Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
+        GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
+        PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
+        PlayerShoot.Instance.OnCooldownEnded += PlayerShoot_OnCooldownEnded;
+
 
         if(PauseMenuUI.Instance != null) {
             PauseMenuUI.Instance.OnPauseMenuClosed += PauseMenuUI_OnPauseMenuClosed;
@@ -73,6 +88,20 @@ public class GunSpotLight : MonoBehaviour
         }
 
         PlayerStats.Instance.OnFlashlightRangeChanged += PlayerStats_OnFlashlightRangeChanged;
+
+        RefreshLaserLightActiveWithInput();
+    }
+
+    private void PlayerShoot_OnCooldownEnded(object sender, EventArgs e) {
+
+    }
+
+    private void PlayerShoot_OnPlayerShot(object sender, EventArgs e) {
+
+    }
+
+    private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
+        RefreshLaserLightActiveWithInput();
     }
 
 
@@ -82,11 +111,73 @@ public class GunSpotLight : MonoBehaviour
             if (playerJustTeleportedTimer > .5f) {
                 playerJustTeleported = false;
                 SwitchLight();
+                SwitchLaserLight();
             }
         }
 
         if (rolling) return;
         RefreshLightRotation();
+    }
+
+    private void RefreshLaserLightActiveWithInput() {
+        if (GameInput.Instance.IsUsingGamepad()) {
+            laserLightActiveWithInput = true;
+        }
+        else {
+            laserLightActiveWithInput = false;
+        }
+
+        RefreshLaserLightActive();
+    }
+
+    private void RefreshLaserLightActive() {
+        bool laserShouldBeActive = true;
+
+        if(!laserLightActiveWithInput) {
+            laserShouldBeActive = false;
+        }
+
+        if (Player.Instance.GetDead()) {
+            laserShouldBeActive = false;
+        }
+
+        if (reloading) {
+            laserShouldBeActive = false;
+        }
+
+        if(rolling) {
+            laserShouldBeActive = false;
+        }
+
+        float targetIntensity = (laserShouldBeActive && laserLightActive) ? laserBaseIntensity : 0f;
+
+        if (laserLerpCoroutine != null)
+            StopCoroutine(laserLerpCoroutine);
+
+        laserLerpCoroutine = StartCoroutine(LerpLaserLightIntensity(targetIntensity, laserLerpDuration_StateChange));
+    }
+
+    private IEnumerator LerpLaserLightIntensity(float targetIntensity, float duration) {
+        float startIntensity = gunLaserLight.intensity;
+        float time = 0f;
+
+        // On s'assure que la lumière reste active pendant le fade-out
+        if (!gunLaserLight.enabled)
+            gunLaserLight.enabled = true;
+
+        while (time < duration) {
+            time += Time.deltaTime;
+            gunLaserLight.intensity = Mathf.Lerp(startIntensity, targetIntensity, time / duration);
+            yield return null;
+        }
+
+        gunLaserLight.intensity = targetIntensity;
+
+        // Si elle est éteinte, on la disable pour éviter un drawcall inutile
+        if (Mathf.Approximately(targetIntensity, 0f))
+            gunLaserLight.enabled = false;
+
+        laserLerpCoroutine = null;
     }
 
     private void PlayerAim_OnXAimDirChanged(object sender, EventArgs e) {
@@ -109,6 +200,9 @@ public class GunSpotLight : MonoBehaviour
         if (lightActive) {
             SwitchLight();
         }
+        if(laserLightActive) {
+            SwitchLaserLight();
+        }
     }
 
 
@@ -130,6 +224,13 @@ public class GunSpotLight : MonoBehaviour
         } else {
             gunSpotLight.enabled = false;
         }
+
+        if (laserLightActive) {
+            gunLaserLight.enabled = true;
+        }
+        else {
+            gunLaserLight.enabled = false;
+        }
     }
 
     private void Player_OnPlayerDied(object sender, EventArgs e) {
@@ -137,8 +238,12 @@ public class GunSpotLight : MonoBehaviour
 
         lightActive = false;
         gunSpotLight.enabled = false;
+        RefreshLaserLightActive();
     }
 
+    private void Player_OnPlayerRespawned(object sender, EventArgs e) {
+        RefreshLaserLightActive();
+    }
     private void PlayerStats_OnFlashlightRangeChanged(object sender, EventArgs e) {
         RefreshFlashlightRange();
     }
@@ -164,36 +269,43 @@ public class GunSpotLight : MonoBehaviour
 
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
         reloading = false;
+        RefreshLaserLightActive();
     }
 
     private void PlayerShoot_OnPlayerReloadInterrupted(object sender, EventArgs e) {
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
 
         reloading = false;
+        RefreshLaserLightActive();
     }
 
     private void PlayerShooot_OnPlayerReloadInterruptedEnded(object sender, EventArgs e) {
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
 
         reloading = true;
+        RefreshLaserLightActive();
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, EventArgs e) {
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
 
         reloading = true;
+        RefreshLaserLightActive();
     }
+
 
     private void PlayerMovement_OnPlayerRollEnded(object sender, EventArgs e) {
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
 
         rolling = false;
+        RefreshLaserLightActive();
     }
 
     private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
 
         rolling = true;
+        RefreshLaserLightActive();
     }
 
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
@@ -210,6 +322,7 @@ public class GunSpotLight : MonoBehaviour
         if (!canSwitchLight) return;
         if (Player.Instance.GetInCurrencyStorageArea()) return;
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+
         SwitchLight();
     }
 
@@ -223,6 +336,10 @@ public class GunSpotLight : MonoBehaviour
             gunSpotLight.enabled = false;
         }
         OnAnyLightSwitched?.Invoke(this, EventArgs.Empty);
+    }
+    private void SwitchLaserLight() {
+        laserLightActive = !laserLightActive;
+        RefreshLaserLightActive();
     }
 
     private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
@@ -249,10 +366,12 @@ public class GunSpotLight : MonoBehaviour
 
     private void OnDestroy() {
         GameInput.Instance.OnPlayerGunLightSwitch -= GameInput_OnPlayerGunLightSwitch;
+        GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
         Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
         Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
         Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
         FastTravelTP.OnAnyPlayerWarped -= FastTravelTP_OnAnyPlayerWarped;
         FastTravelTP.OnAnyPlayerWarpedOut -= FastTravelTP_OnAnyPlayerWarpedOut;
+        PlayerShoot.Instance.OnPlayerReloadInterruptedEnded -= PlayerShooot_OnPlayerReloadInterruptedEnded;
     }
 }

@@ -33,7 +33,7 @@ MonoBehaviour:
   dayMoveSpeed: 4.5
   nightMoveSpeed: 4.5
   aggroMoveSpeedBuff: 1.5
-  enteredLightMoveSpeedDebuff: 1.3
+  enteredLightMoveSpeedDebuff: 2
   moveSpeedRandomizerDelta: 0.5
   maxHealth: 20
   enteredLightattackRateDebuff: 1.5
@@ -41,6 +41,7 @@ MonoBehaviour:
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0
+  immuneToFire: 0
   hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 1.3
@@ -78,7 +79,7 @@ MonoBehaviour:
   footstepVolumeMultiplier: 0.5
   hasContinousAudioClip: 0
   continuousAudioClip: []
-  hasContinousMovementAudioClip: 1
+  hasContinousMovementAudioClip: 0
   continuousMovementAudioClip:
   - {fileID: 8300000, guid: 7b377760a9355954e8ae0ca645852823, type: 3}
   spawnAudioClips:

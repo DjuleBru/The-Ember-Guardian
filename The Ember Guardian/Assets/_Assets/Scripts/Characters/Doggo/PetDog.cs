@@ -41,7 +41,7 @@ public class PetDog : MonoBehaviour
     }
 
     private void Start() {
-        GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
+        GameInput.Instance.OnPlayerCallDogPerformed += GameInput_OnPlayerCallDogPerformed;
         Player.Instance.OnPlayerEnteredAnyInteractableTriggerArea += Player_OnPlayerEnteredAnyInteractableTriggerArea;
         Player.Instance.OnPlayerExitedAnyInteractableTriggerArea += Player_OnPlayerExitedAnyInteractableTriggerArea;
         Player.Instance.OnPlayerStartedInteractingWithAnyInteractable += Player_OnPlayerStartedInteractingWithAnyInteractable;
@@ -66,7 +66,7 @@ public class PetDog : MonoBehaviour
 
     }
 
-    private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
+    private void GameInput_OnPlayerCallDogPerformed(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (playerPettingDogOnCooldown) return;
         if (!playerCanPetDog) return;
