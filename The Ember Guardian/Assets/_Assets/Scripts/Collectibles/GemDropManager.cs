@@ -9,11 +9,7 @@ public class GemDropManager : MonoBehaviour
 
     [SerializeField] private List<HubMerchant> allHubMerchantsInHub;
 
-    private int maxBagGemCapacity;
-
-    private int level1BagGemCapacity = 25;
-    private int level2BagGemCapacity = 35;
-    private int level3BagGemCapacity = 55;
+    private int baseGemDropPool;
 
     private int totalChestGems;
     private int totalGemsDropPoolPerRun;
@@ -41,6 +37,8 @@ public class GemDropManager : MonoBehaviour
         isHubScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB;
         isLevelScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level;
 
+        baseGemDropPool = LevelManager.Instance.GetLevelSO().gemDropPool;
+
         if (isLevelScene) {
             if (LevelManager.Instance.GetLevelSO().unlocksNewGemType) {
                 List<PlayerCurrencies.CurrencyType> newGemTypeList = LevelManager.Instance.GetLevelSO().newGemTypeUnlockedByLevelList;
@@ -62,16 +60,6 @@ public class GemDropManager : MonoBehaviour
             totalPurpleGemCosts = ES3.Load("totalPurpleGemCosts", 0);
             totalCyanGemCosts = ES3.Load("totalCyanGemCosts", 0);
 
-            if (PlayerStats.Instance.GetBackpackGemSizePercentBuff_Meta() == 0f) {
-                maxBagGemCapacity = level1BagGemCapacity;
-            }
-            if (PlayerStats.Instance.GetBackpackGemSizePercentBuff_Meta() == 15f) {
-                maxBagGemCapacity = level2BagGemCapacity;
-            }
-            if (PlayerStats.Instance.GetBackpackGemSizePercentBuff_Meta() == 35f) {
-                maxBagGemCapacity = level3BagGemCapacity;
-            }
-
             StartCoroutine(UpdateLevelGems());
         }
 
@@ -82,7 +70,7 @@ public class GemDropManager : MonoBehaviour
 
     private IEnumerator UpdateLevelGems() {
         yield return new WaitForSeconds(1f);
-        totalGemsDropPoolPerRun = Mathf.RoundToInt((maxBagGemCapacity * 2f - totalChestGems));
+        totalGemsDropPoolPerRun = Mathf.RoundToInt(baseGemDropPool - totalChestGems);
         currentGemDropPool = totalGemsDropPoolPerRun;
     }
 

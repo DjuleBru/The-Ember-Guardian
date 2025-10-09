@@ -133,6 +133,9 @@ public class LevelSO : ScriptableObject
     [LabelWidth(300)]
     [ShowIf("unlocksNewGemType")]
     public List<PlayerCurrencies.CurrencyType> newGemTypeUnlockedByLevelList;
+    [BoxGroup("Progression")]
+    [LabelWidth(300)]
+    public int gemDropPool = 50;
 
     [BoxGroup("Creatures")]
     [LabelWidth(300)]
