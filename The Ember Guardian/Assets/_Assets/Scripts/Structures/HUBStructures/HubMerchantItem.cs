@@ -65,9 +65,15 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     protected virtual void Start() {
-        OnItemMustRefreshDescriptionCard?.Invoke(this, EventArgs.Empty);
-
+        StartCoroutine(RefreshDescriptionCardAfterFrame());
         UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
+    }
+
+    private IEnumerator RefreshDescriptionCardAfterFrame() {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+
+        OnItemMustRefreshDescriptionCard?.Invoke(this, EventArgs.Empty);
     }
 
     private void HubInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -401,82 +407,6 @@ public class HubMerchantItem : MonoBehaviour
         return maxItemLevel;
     }
 
-    //public void SaveItemStatus() {
-
-    //    if (!itemStatusChanged) return;
-
-    //    bool itemBoughtInSave = MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType());
-    //    if (itemBought && !itemBoughtInSave) {
-    //        MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), itemBought);
-    //    }
-    //    if (!itemBought && itemBoughtInSave) {
-    //        MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType(), itemUnlocked);
-    //        MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), itemBought);
-    //        MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), itemLevel);
-    //    }
-
-    //    if (itemUpgradeable && MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType()) != itemLevel) {
-    //        MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), itemLevel);
-    //    }
-
-    //    if (itemUnlocked && !MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType())) {
-    //        MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType(), itemUnlocked);
-    //    }
-
-    //    if(!newItemUnlocked && MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType())) {
-    //        MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(GetItemType(), false);
-    //    }
-    //    if (newItemUnlocked && !MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType())) {
-    //        MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(GetItemType(), true);
-    //    }
-
-    //    if (itemEquipable) {
-    //        MetaProgressionManager.Instance.SetHubMerchantItemEquipped(GetItemType(), itemEquipped);
-    //    }
-
-    //}
-
-    //public virtual void LoadItemStatus() {
-    //    newItemUnlocked = MetaProgressionManager.Instance.GetHubMerchantItemNewlyUnlocked(GetItemType());
-
-    //    if (!isBoughtAtStart) {
-
-    //        itemBought = MetaProgressionManager.Instance.GetMerchantItemBought(GetItemType());
-
-    //        if (!itemUnlocked) {
-    //            itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType());
-    //        }
-
-    //        if (itemLevel == 0) {
-    //            itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
-    //        }
-
-    //        if (itemEquipable) {
-    //            itemEquipped = MetaProgressionManager.Instance.GetMerchantItemEquipped(GetItemType());
-    //        }
-
-    //    }
-    //    else {
-    //        itemBought = true;
-    //        itemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(GetItemType());
-    //        if (newItemUnlocked) {
-    //            itemUnlocked = true;
-    //        }
-
-    //        itemLevel = maxItemLevel;
-
-    //        if (itemEquipable) {
-    //            LoadItemEquipped();
-    //        }
-    //    }
-
-    //    if (isUnlockedAtStart) {
-    //        itemUnlocked = true;
-    //    }
-
-    //    OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
-    //}
-
     public void LoadItemStatus_Batch() {
         var key = GetItemType() + "_Data";
 
@@ -503,6 +433,12 @@ public class HubMerchantItem : MonoBehaviour
             }
 
             itemLevel = data.ContainsKey("Level") ? Convert.ToInt32(data["Level"]) : 0;
+
+            if(linkedStatModifierSO != null) {
+                // Balancing Security 
+                int maxItemLevel = Mathf.Max(linkedStatModifierSO.blueGemCostList.Count, linkedStatModifierSO.redGemCostList.Count, linkedStatModifierSO.yellowGemCostList.Count, linkedStatModifierSO.purleGemCostList.Count, linkedStatModifierSO.cyanGemCostList.Count, linkedStatModifierSO.greenGemCostList.Count);
+                if(itemLevel > maxItemLevel) { itemLevel = maxItemLevel; }
+            }
         }
 
         OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
@@ -533,20 +469,6 @@ public class HubMerchantItem : MonoBehaviour
 
         SaveItemStatus_Batch();
     }
-
-    //public void ResetItemStatus() {
-
-    //    MetaProgressionManager.Instance.SetHubMerchantItemBought(GetItemType(), false);
-    //    if (itemUpgradeable) {
-    //        MetaProgressionManager.Instance.SetHubMerchantItemLevel(GetItemType(), 0);
-    //    }
-    //    MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(GetItemType(), false);
-
-    //    if(isBoughtAtStart) {
-    //        MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(GetItemType(), false);
-    //    }
-
-    //}
 
     private void OnDestroy() {
         UICurrencyManager.HubInventoryUI.OnCurrencyCollected -= HubInventoryUI_OnCurrencyCollected;

@@ -52,13 +52,17 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     [SerializeField] private GunSO linkedGunSO;
     
     protected override void Awake() {
+
         base.Awake();
-
-        RefreshStatValues();
-
         OnAnyHubMerchantItemBought += HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemBoughtOrUpgraded;
         OnAnyHubMerchantItemUpgraded += HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemBoughtOrUpgraded;
         OnAnyHubMerchantItemEquipped += HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemEquipped;
+        StartCoroutine(DelayedRefresh());
+    }
+
+    private IEnumerator DelayedRefresh() {
+        yield return new WaitForEndOfFrame(); // attend 1 frame
+        RefreshStatValues();
     }
 
     public override string GetItemType() {
@@ -418,9 +422,6 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             float initialRange = linkedGunSO.bulletLifetime * linkedGunSO.bulletSpeed;
             float modifiedRange = PlayerShoot.Instance.GetGun(linkedGunSO).GetBulletLifetime() * linkedGunSO.bulletSpeed;
 
-            //Debug.Log("initialRange " + initialRange);
-            //Debug.Log("modifiedRange " + modifiedRange);
-
             if (initialRange != modifiedRange) {
                 statModifiedBools.Add(true);
             }
@@ -444,6 +445,11 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
         if(gunItemCategory == GunItemCategory.statIncrease) {
             maxItemLevel = linkedStatModifierSO.statModifierList.Count;
+
+            if(itemLevel > maxItemLevel) {
+                // Balancing security 
+                itemLevel = maxItemLevel;
+            }
 
             string totalStatValue = "";
             string currentStatValue = "";

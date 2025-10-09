@@ -319,6 +319,7 @@ public class ItemButtonUI : ButtonUI {
     }
 
     private void RefreshDescriptionCardCosts() {
+        if (hubMerchantItem.GetItemBought()) return;
 
         int greenGemCost = hubMerchantItem.GetGreenGemCost();
         int redGemCost = hubMerchantItem.GetRedGemCost();
@@ -414,6 +415,7 @@ public class ItemButtonUI : ButtonUI {
             }
         }
     }
+
     private bool ItemLockedFromOtherMerchantItem() {
         foreach (ItemButtonUI itemButtonUI in lockingItemButtonUIList) {
             HubMerchant lockingItemHubMerchantParent = itemButtonUI.GetHubMerchantParent();

@@ -100,6 +100,9 @@ public class ItemButtonUI_ChildTreeShowHide : MonoBehaviour
         canvasGroup.alpha = 0f;
         canvasGroup.interactable = false;
         treeRaycastImage.raycastTarget = true;
+        if (treeRaycastImage2 != null) {
+            treeRaycastImage2.raycastTarget = true;
+        }
         foreach (var image in inputLinkList) {
             Color color = image.color;
             color.a = 0f;

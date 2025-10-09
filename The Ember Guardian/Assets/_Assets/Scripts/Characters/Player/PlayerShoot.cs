@@ -151,6 +151,8 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private GunSO debugSecondaryGun;
     [SerializeField] private bool debugSecondaryAbilityUnlocked;
 
+    private Coroutine swappingGunCoroutine;
+
     private void Awake() {
         Instance = this;
     }
@@ -202,6 +204,7 @@ public class PlayerShoot : MonoBehaviour
             UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
         }
     }
+
 
     private void SettingsManager_OnAutoReloadChanged(object sender, EventArgs e) {
         autoReload = SettingsManager.Instance.GetAutoReload();
@@ -1021,7 +1024,7 @@ public class PlayerShoot : MonoBehaviour
 
         if (secondayGunSO != null) {
             if (heldGunSO == secondayGunSO) return;
-            StartCoroutine(SetActiveGunAfterDelay(secondayGunSO, false));
+            swappingGunCoroutine = StartCoroutine(SetActiveGunAfterDelay(secondayGunSO, false));
         }
     }
 
@@ -1037,7 +1040,7 @@ public class PlayerShoot : MonoBehaviour
 
         if (secondayGunSO != null) {
             if (heldGunSO == primaryGunSO) return;
-            StartCoroutine(SetActiveGunAfterDelay(primaryGunSO));
+            swappingGunCoroutine = StartCoroutine(SetActiveGunAfterDelay(primaryGunSO));
         }
     }
 
@@ -1047,10 +1050,10 @@ public class PlayerShoot : MonoBehaviour
         CancelSecondaryFireMode();
 
         if (heldGunSO == secondayGunSO) {
-            StartCoroutine(SetActiveGunAfterDelay(primaryGunSO));
+            swappingGunCoroutine = StartCoroutine(SetActiveGunAfterDelay(primaryGunSO));
         }
         else {
-            StartCoroutine(SetActiveGunAfterDelay(secondayGunSO, false));
+            swappingGunCoroutine = StartCoroutine(SetActiveGunAfterDelay(secondayGunSO, false));
         }
     }
 
@@ -1111,6 +1114,14 @@ public class PlayerShoot : MonoBehaviour
         yield return new WaitForSeconds(swapGunEndAnimationTime);
         swappingGun = false;
         OnPlayerSwappedGunEnded?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void InterruptGunSwap() {
+        if(swappingGunCoroutine != null) {
+            StopCoroutine(swappingGunCoroutine);
+            swappingGun = false;
+            OnPlayerSwappedGunEnded?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     private void EndHandReload() {
@@ -1180,6 +1191,10 @@ public class PlayerShoot : MonoBehaviour
 
         if(settingUpLMG || holdingStationaryGun) {
             RemoveLMGBipod(true);
+        }
+
+        if(swappingGun) {
+            InterruptGunSwap();
         }
 
     }

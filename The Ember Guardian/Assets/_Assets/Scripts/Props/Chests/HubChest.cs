@@ -11,6 +11,7 @@ public class HubChest : MonoBehaviour
     private bool playerInTriggerArea;
     private bool chestOpen;
     private bool chestOpening;
+    private bool hubChestInteractionTooltipShowing;
     private bool hubChestInteractionTooltipShown;
 
     private PayCurrencyUI payCurrencyUI;
@@ -25,7 +26,7 @@ public class HubChest : MonoBehaviour
     [SerializeField] protected PayCurrencyTemplateWorldUI payGemTemplate;
     protected List<PayCurrencyTemplateWorldUI> payCurrencyTemplates = new List<PayCurrencyTemplateWorldUI>();
 
-    private Coroutine tooltipCoroutine;
+    private Coroutine openingChestCoroutine;
 
     private void Awake() {
         Instance = this;
@@ -124,16 +125,18 @@ public class HubChest : MonoBehaviour
         if (!HasGemsToPay()) return;
 
         OpenChest();
-
-        if(!hubChestInteractionTooltipShown) {
-            tooltipCoroutine = StartCoroutine(ShowInteractionTooltipAfterDelay());
-        }
     }
 
-    private IEnumerator ShowInteractionTooltipAfterDelay() {
-        yield return new WaitForSeconds(3f);
+    private void ShowInteractionTooltip() {
         PlayerTooltipManager.Instance.GetTooltipLeft().ShowTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_dropGems"), InputControlIcons.Control.Interact, 999);
+        hubChestInteractionTooltipShowing = true;
     }
+
+    private void HideInteractionTooltip() {
+        PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
+        hubChestInteractionTooltipShowing = false;
+    }
+
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (lockChestOpening) return;
@@ -142,18 +145,10 @@ public class HubChest : MonoBehaviour
         if (!chestOpen && !chestOpening) return;
 
         CloseChest();
-
-        if (!hubChestInteractionTooltipShown) {
-            if(tooltipCoroutine != null) {
-                StopCoroutine(tooltipCoroutine);
-            }
-            PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
-            
-        }
     }
 
     private void OpenChest() {
-        StartCoroutine(OpenChestCoroutine());
+        openingChestCoroutine = StartCoroutine(OpenChestCoroutine());
     }
 
     private IEnumerator OpenChestCoroutine() {
@@ -166,14 +161,26 @@ public class HubChest : MonoBehaviour
         chestOpening = false;
         Player.Instance.SetInOtherInteractableObjectTriggerArea(true);
 
+        if(!hubChestInteractionTooltipShowing && !hubChestInteractionTooltipShown) {
+            ShowInteractionTooltip();
+        }
+
     }
 
     private void CloseChest() {
+        if(openingChestCoroutine != null) {
+            StopCoroutine(openingChestCoroutine);
+        }
+
         chestOpen = false;
         gemTypeIndex = 0;
         currentGemType = allGemTypesList[0];
         OnChestClosed?.Invoke(this, EventArgs.Empty);
         Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
+
+        if (hubChestInteractionTooltipShowing && !hubChestInteractionTooltipShown) {
+            HideInteractionTooltip();
+        }
     }
 
     public void SetCanOpenChest(bool canOpenChest) {
@@ -193,11 +200,8 @@ public class HubChest : MonoBehaviour
 
     public void SetInteractionTooltipShown() {
         hubChestInteractionTooltipShown = true;
-        if (tooltipCoroutine != null) {
-            StopCoroutine(tooltipCoroutine);
-        }
 
-        PlayerTooltipManager.Instance.GetTooltipLeft().HideTooltip();
+        HideInteractionTooltip();
         ES3.Save("hubChestInteractionTooltipShown", true);
     }
 
