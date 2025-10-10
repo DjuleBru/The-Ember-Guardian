@@ -10,6 +10,7 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
     [SerializeField] protected float spawnRate;
     [SerializeField] protected float spawnAnimationDelay;
     [SerializeField] protected bool canSpawnMobsAtNight;
+    [SerializeField] protected bool blockAutoMobSpawn;
 
     protected float spawnTimer;
 
@@ -39,16 +40,21 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
     protected void Update() {
         if (!loaded) return;
         if (dead) return;
+        if (blockAutoMobSpawn) return;
         if (!canSpawnMobsAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) return;
 
         spawnTimer -= Time.deltaTime;
 
-        if (mobSpawnedList.Count >= mobAmountToSpawn) return;
+        if (SpawnedMaxMobs()) return;
 
         if (spawnTimer < 0) {
             spawnTimer = spawnRate;
             StartCoroutine(SpawnCreature());
         }
+    }
+
+    public bool SpawnedMaxMobs() {
+        return mobSpawnedList.Count >= mobAmountToSpawn;
     }
 
     private IEnumerator SpawnCreature() {
@@ -70,6 +76,24 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
             InvokeOnMobSpawned(mob);
         }
 
+    }
+
+    public void StartSpawnMobs_Summoner(int mobAmount, List<Transform> spawnPositionList) {
+        OnSpawnerSpawnStart?.Invoke(this, EventArgs.Empty);
+        StartCoroutine(SpawnMobsCoroutine_Summoner(mobAmount, spawnPositionList));
+    }
+
+    private IEnumerator SpawnMobsCoroutine_Summoner(int mobAmount, List<Transform> spawnPositionList) {
+        yield return new WaitForSeconds(spawnAnimationDelay);
+
+        for (int i = 0; i < mobAmount; i++) {
+            Mob mob = Instantiate(mobPrefab, spawnPositionList[i].position, Quaternion.identity).GetComponent<Mob>();
+            mobSpawnedList.Add(mob);
+            mob.SetMobSpawner(this);
+
+            HandleMobSpawn(mob);
+            InvokeOnMobSpawned(mob);
+        }
     }
 
     public void SpawnMobAtPosition(Transform position) {

@@ -39,6 +39,20 @@ public class CreatureAnimatorManager : MonoBehaviour
         mobMovement.OnMoveSpeedBuffChanged += MobMovement_OnMoveSpeedBuffChanged;
     }
 
+    protected void RandomizeIdleAnimationStart() {
+        if (animator == null) return;
+
+        // On récupère les infos de l’état actuel
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        // Si l’animation actuelle est l’Idle
+        if (stateInfo.IsName("Idle") || stateInfo.IsTag("Idle")) {
+            // Randomize le point de départ (entre 0 et 1 = cycle complet)
+            float randomTime = UnityEngine.Random.Range(0f, 1f);
+            animator.Play(stateInfo.fullPathHash, 0, randomTime);
+        }
+    }
+
     private void Creature_OnCreatureEnabled(object sender, EventArgs e) {
         SpawnVisuals();
     }
@@ -146,6 +160,7 @@ public class CreatureAnimatorManager : MonoBehaviour
         HandleScaleChange(randomDir);
         yield return new WaitForSeconds(delay);
         spawned = true;
+        RandomizeIdleAnimationStart();
     }
 
     protected virtual void MobAttack_OnMobAttack(object sender, System.EventArgs e) {

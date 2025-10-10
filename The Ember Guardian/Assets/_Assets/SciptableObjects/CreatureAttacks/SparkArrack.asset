@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4031d27ff643044292075ec5021e470, type: 3}
+  m_Name: SparkArrack
+  m_EditorClassIdentifier: 
+  isRangedAttack: 0
+  isProjectileAttack: 0
+  isStaticProjectileAttack: 0
+  isAnimatedAttack: 0
+  attackCooldown: 3
+  minAttackRange: 0.75
+  maxAttackRange: 1.5
+  hasDifferentDayAndNightRange: 0
+  minAttackRange_Night: 0
+  maxAttackRange_Night: 0
+  attackRangeRandomizer: 0.2
+  maxAttackRangeRandomizer: 0
+  damage: 1
+  damageToFire: 1
+  damageToBarricades: 1
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 1
+  attackAnimationDelay: 0.3
+  totalAttackAnimationTime: 0.5
+  attackSFXDelayAfterAnimationStart: 0
+  staticProjectilePrefab: {fileID: 0}
+  staticProjectileAutoTargetsPlayer: 0
+  projectileAmountInPool: 0
+  projectileAmountShotInAttack: 0
+  delayBetweenProjectileSpawns: 0
+  projectileSO: {fileID: 0}
+  attackRangeRandomizerMiss: 0
+  attackSFXHandledByAnimation: 0
+  attackAudioClips:
+  - {fileID: 8300000, guid: b951f71ef087b66478082293c9e4651c, type: 3}
+  - {fileID: 8300000, guid: 07f65b3e101f4f74f871dfa3ebcc80dd, type: 3}
+  - {fileID: 8300000, guid: 272d30f743f2fec47ae8cd4c7f863a67, type: 3}
+  - {fileID: 8300000, guid: f602534ae7fed024197ca8cd175ecb7a, type: 3}
+  - {fileID: 8300000, guid: 58698d52397ff194589e195a38fdffd7, type: 3}
+  attackHitAudioClips: []
+  attackStartedChargingAudioClips: []
+  attackReleasedAudioClips: []
+  attackVolumeMultiplier: 0.5
+  attackHitVolumeMultiplier: 0.7

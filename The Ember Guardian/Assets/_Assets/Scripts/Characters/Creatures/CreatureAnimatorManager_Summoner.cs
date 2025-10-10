@@ -13,6 +13,5 @@ public class CreatureAnimatorManager_Summoner : CreatureAnimatorManager
 
     private void Spawner_OnSpawnerSpawnStart(object sender, System.EventArgs e) {
         animator.SetTrigger("Special");
-
     }
 }

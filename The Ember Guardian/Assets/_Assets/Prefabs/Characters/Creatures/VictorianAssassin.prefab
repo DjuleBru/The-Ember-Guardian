@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
+  - {fileID: 2100000, guid: 10274fdf248913c45b46a5fc6958e543, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4.375, y: 1.625}
+  m_Size: {x: 5.6875, y: 1.1875}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -572,6 +572,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: -0.19320533
       objectReference: {fileID: 0}
+    - target: {fileID: 628358577469823449, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 56cd6926194f9a2478817a289f64bd46, type: 2}
     - target: {fileID: 795836368442943769, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Offset.x
       value: -0.09
@@ -656,6 +660,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.574
       objectReference: {fileID: 0}
+    - target: {fileID: 5348768613547079162, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 5348768613547079162, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.93
+      objectReference: {fileID: 0}
     - target: {fileID: 5478679135054183592, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: maxImpactAmountInSingleAnimation
       value: 3
@@ -664,6 +676,18 @@ PrefabInstance:
       propertyPath: creatureSO
       value: 
       objectReference: {fileID: 11400000, guid: 1c512ef937e37b042a835048852cbd87, type: 2}
+    - target: {fileID: 5757064800425388701, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: mobHitPS_Splatter
+      value: 
+      objectReference: {fileID: 1657823130492668103, guid: 05a90c2ffb770a542bffecae03f7a56f, type: 3}
+    - target: {fileID: 5757064800425388701, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: mobHitPS_Splatter_Crit
+      value: 
+      objectReference: {fileID: 1657823130492668103, guid: 5bc4eaa021d314241ac93307bc5e5352, type: 3}
+    - target: {fileID: 5757064800425388701, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: mobHitPS_Splatter_Continuous
+      value: 
+      objectReference: {fileID: 1657823130492668103, guid: e0c2978ddc7011a469bee0caaac72154, type: 3}
     - target: {fileID: 6065107878212410819, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -734,7 +758,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7409206551375934071, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7484656603021351616, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Layer

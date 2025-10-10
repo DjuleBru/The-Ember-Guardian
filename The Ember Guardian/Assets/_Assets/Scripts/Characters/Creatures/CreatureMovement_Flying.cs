@@ -6,10 +6,20 @@ using UnityEngine;
 
 public class CreatureMovement_Flying : CreatureMovement {
 
+    [SerializeField] private bool useNoise;
     [SerializeField] private float noiseAmplitude = 0.5f; // Amplitude du bruit
     [SerializeField] private float noiseFrequency = 1f;   // Fréquence du bruit
     private Vector3 noiseOffset;
 
+    protected override void Start() {
+        base.Start();
+        // Décalage aléatoire pour que plusieurs créatures n’aient pas la même “vibration”
+        noiseOffset = new Vector3(
+            UnityEngine.Random.Range(0f, 1000f),
+            UnityEngine.Random.Range(0f, 1000f),
+            0f
+        );
+    }
 
     protected override void FixedUpdate() {
         Debug.DrawLine(transform.position, targetDestination, Color.yellow);
@@ -29,14 +39,25 @@ public class CreatureMovement_Flying : CreatureMovement {
         }
     }
 
-    protected override void HandleMovementForces() {  
+    protected override void HandleMovementForces() {
         Vector2 moveDirection = (targetDestination - transform.position).normalized;
+
+        // --- Si le vol est bruyant, on perturbe la direction ---
+        if (useNoise) {
+            float time = Time.time * noiseFrequency;
+            float noiseX = (Mathf.PerlinNoise(noiseOffset.x, time) - 0.5f) * 2f; // entre -1 et 1
+            float noiseY = (Mathf.PerlinNoise(noiseOffset.y, time) - 0.5f) * 2f;
+            Vector2 noise = new Vector2(noiseX, noiseY) * noiseAmplitude;
+
+            moveDirection += noise;
+            moveDirection.Normalize(); // garder une direction cohérente
+        }
 
         // Calcul de la vitesse cible en fonction de la direction
         targetSpeed = moveSpeed;
-        float speedDifX = targetSpeed * moveDirection.x - rb.velocity.x; // Différence de vitesse sur X
-        float speedDifY = targetSpeed * moveDirection.y - rb.velocity.y; // Différence de vitesse sur Y
-        
+        float speedDifX = targetSpeed * moveDirection.x - rb.velocity.x;
+        float speedDifY = targetSpeed * moveDirection.y - rb.velocity.y;
+
         // Calculer le taux d'accélération
         float accelRateX = (Mathf.Abs(speedDifX) > 0.01f) ? acceleration : deceleration;
         float accelRateY = (Mathf.Abs(speedDifY) > 0.01f) ? acceleration : deceleration;

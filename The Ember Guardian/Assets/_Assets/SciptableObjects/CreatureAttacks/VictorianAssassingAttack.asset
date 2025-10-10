@@ -23,6 +23,7 @@ MonoBehaviour:
   minAttackRange_Night: 10
   maxAttackRange_Night: 15
   attackRangeRandomizer: 0.3
+  maxAttackRangeRandomizer: 0
   damage: 1
   damageToFire: 1
   damageToBarricades: 1
@@ -46,9 +47,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 847acbedb1031194785921cc2aa568c9, type: 3}
   - {fileID: 8300000, guid: e44cdcac083cd4a41b267f82be2d046e, type: 3}
   attackHitAudioClips:
-  - {fileID: 8300000, guid: 300d3bd6039a10545ad2b7c9bb41e01c, type: 3}
-  - {fileID: 8300000, guid: 46f47b256de48d44fa6cdb698adf0ffa, type: 3}
-  - {fileID: 8300000, guid: 613df4a8fdcc6884889acaa78768e016, type: 3}
+  - {fileID: 8300000, guid: 6a4b8902c91bfbd4098e356c3675b227, type: 3}
+  - {fileID: 8300000, guid: 5ff9c9a9de87e014fb623cfcd23b8d9d, type: 3}
   attackStartedChargingAudioClips: []
   attackReleasedAudioClips: []
   attackVolumeMultiplier: 0.5

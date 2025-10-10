@@ -17,7 +17,7 @@ MonoBehaviour:
   description: Basic monster, a bit swarmy.
   creatureIcon: {fileID: 21300000, guid: d63bf30d4e0117a46931ce00fe835fb2, type: 3}
   creatureIcon_Portrait: {fileID: 21300000, guid: 4589dc6dbaf83974a8c03f7865eae38a, type: 3}
-  creaturePrefab: {fileID: 2465624883499499618, guid: a8793271aaf69044ba6edbef7ca07720, type: 3}
+  creaturePrefab: {fileID: 4997657120178985709, guid: ac4600aea6ebdf0479c51a9fcd96f0a5, type: 3}
   mass: 25
   detectionRange_Day: 15
   detectionRange_Night: 15
@@ -30,14 +30,14 @@ MonoBehaviour:
   flightMinAltitude: 0
   flightMaxAltitude: 0
   flightAltitudeRandomizer: 0
-  dayMoveSpeed: 5
-  nightMoveSpeed: 5
+  dayMoveSpeed: 7.5
+  nightMoveSpeed: 7.5
   aggroMoveSpeedBuff: 1.2
   enteredLightMoveSpeedDebuff: 2
   moveSpeedRandomizerDelta: 0.5
-  maxHealth: 70
+  maxHealth: 120
   enteredLightattackRateDebuff: 2.5
-  probabilityToAggroOnGunShot: 1
+  probabilityToAggroOnGunShot: 0.75
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0
@@ -56,19 +56,21 @@ MonoBehaviour:
   spawnProbability: 0.4
   maxCreaturesPerPacket: 2
   dieAudioClips:
-  - {fileID: 8300000, guid: 012709c5ea965c44a945131254e77563, type: 3}
-  - {fileID: 8300000, guid: 55513b5fe67635042a93e16e45e32faa, type: 3}
+  - {fileID: 8300000, guid: 78d33b8d317a8c443a851d861770f563, type: 3}
+  - {fileID: 8300000, guid: 39108a9d461c7444699969639f1ebe39, type: 3}
   dieVolumeMultiplier: 1.5
   aggroAudioClips:
-  - {fileID: 8300000, guid: f5680875d7fd75341b8739bcbf311f3b, type: 3}
-  - {fileID: 8300000, guid: 5e61f7311e3c77d4ba048f23049db1db, type: 3}
-  - {fileID: 8300000, guid: cf635f3ba78e31840a3f4e9511263213, type: 3}
-  aggroVolumeMultiplier: 0.5
+  - {fileID: 8300000, guid: d713684e95275ce498f93a9a170f8096, type: 3}
+  - {fileID: 8300000, guid: a1fa4ffaf41240c4e8ac71df59fc17b9, type: 3}
+  - {fileID: 8300000, guid: 81a48936b8fea0d4eb074b0a5b4db0a4, type: 3}
+  - {fileID: 8300000, guid: 0af85b8635c3da348a3d821df2e218b8, type: 3}
+  aggroVolumeMultiplier: 1
   idleAudioClips:
-  - {fileID: 8300000, guid: ddc721f6345d1df4691af1a8c185dd67, type: 3}
-  - {fileID: 8300000, guid: a91bc433b093edc4e8a6c1cd0ff2fbf8, type: 3}
-  - {fileID: 8300000, guid: 9a6dbb53f4da0e94ca1d65240e9e7b8e, type: 3}
-  idleVolumeMultiplier: 0.5
+  - {fileID: 8300000, guid: 92ae54c9cb53f224982cb1fbd0d75c94, type: 3}
+  - {fileID: 8300000, guid: 0345c304b813cbd458aa0612f91f230c, type: 3}
+  - {fileID: 8300000, guid: b512323d1483c6442840e4d5b8ff6e75, type: 3}
+  - {fileID: 8300000, guid: 674df01777f1b8e408dcaab81ada9a97, type: 3}
+  idleVolumeMultiplier: 1
   footStepAudioClips:
   - {fileID: 8300000, guid: 6c21cb43be1fda34caf16432ebc427b6, type: 3}
   - {fileID: 8300000, guid: b6ae59eff4f97e649a18297818a2d612, type: 3}
