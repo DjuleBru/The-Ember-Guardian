@@ -58,13 +58,21 @@ public class HUBManager : MonoBehaviour
     private void Awake() {
         Instance = this;
 
-        if(!demoHUB) {
+        if (!demoHUB) {
             gemMerchantIndicator.gameObject.SetActive(false);
             chestIndicator.gameObject.SetActive(false);
             fireIndicator.gameObject.SetActive(false);
         }
 
         totalGemsAfterTutorial = initialGreenGemsAfterTutorial + initialYellowGemsAfterTutorial + initialRedGemsAfterTutorial + initialPurpleGemsAfterTutorial;
+
+        string mainPath = "SaveFile.es3";
+        string backupPath = "SaveFile_backup.es3";
+
+        // Si le fichier principal est corrompu ou manquant mais qu’un backup existe
+        if (!ES3.FileExists(mainPath) && ES3.FileExists(backupPath)) {
+            ES3.CopyFile(backupPath, mainPath);
+        }
     }
 
     private void Start() {
@@ -548,41 +556,55 @@ public class HUBManager : MonoBehaviour
     }
 
     private void SaveHubInstant() {
-        MetaProgressionManager.Instance.SaveHubGemsBatch();
-        MetaProgressionManager.Instance.SavePlayerHubPosition(Player.Instance.transform.position);
-        MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber();
-        MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(nextArrivalThroughPortal);
-        PlayerSave.Instance.SavePrimaryActiveGunSO(PlayerShoot.Instance.GetPrimaryGunSO());
-        PlayerSave.Instance.SaveSecondaryActiveGunSO(PlayerShoot.Instance.GetSecondaryGunSO());
-        PlayerSave.Instance.SavePlayerMetaStats();
-        PlayerSave.Instance.SaveNewUnlockedSkills();
-        DogStats.Instance.SaveDogStats();
-        WorkerStats.Instance.SaveWorkerValues();
-        StructureStats.Instance.SaveStructureStats();
-        TrapManager.Instance.SaveNewUnlockedTraps();
+        string mainPath = "SaveFile.es3";
+        string backupPath = "SaveFile_backup.es3";
 
-        SavePortalStatuses();
+        try {
+            if (ES3.FileExists(mainPath)) {
+                ES3.CopyFile(mainPath, backupPath);
+            }
 
-        if (ArchitectTable.Instance != null) {
-            ArchitectTable.Instance.SaveStats();
+            MetaProgressionManager.Instance.SaveHubGemsBatch();
+            MetaProgressionManager.Instance.SavePlayerHubPosition(Player.Instance.transform.position);
+            MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber();
+            MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(nextArrivalThroughPortal);
+            PlayerSave.Instance.SavePrimaryActiveGunSO(PlayerShoot.Instance.GetPrimaryGunSO());
+            PlayerSave.Instance.SaveSecondaryActiveGunSO(PlayerShoot.Instance.GetSecondaryGunSO());
+            PlayerSave.Instance.SavePlayerMetaStats();
+            PlayerSave.Instance.SaveNewUnlockedSkills();
+            DogStats.Instance.SaveDogStats();
+            WorkerStats.Instance.SaveWorkerValues();
+            StructureStats.Instance.SaveStructureStats();
+            TrapManager.Instance.SaveNewUnlockedTraps();
+
+            SavePortalStatuses();
+
+            if (ArchitectTable.Instance != null) {
+                ArchitectTable.Instance.SaveStats();
+            }
+
+            bool holdingEmber = false;
+            if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ember).Count != 0) {
+                holdingEmber = true;
+            }
+            ES3.Save("holdingEmber", holdingEmber);
+
+            foreach (HubMerchant hubMerchant in hubMerchantList) {
+                hubMerchant.SaveMerchant();
+
+            }
+
+            foreach (Portal portal in allPortalsInHub) {
+                MetaProgressionManager.Instance.SetPortalLinkedLevelSOIndex(portal.GetPortalNumber(), portal.GetLinkedLevelSOIndex());
+            }
+
+            OnHubSaved?.Invoke(this, EventArgs.Empty);
+
+
+        }
+        catch (Exception ex) {
         }
 
-        bool holdingEmber = false;
-        if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.ember).Count != 0) {
-            holdingEmber = true;
-        }
-        ES3.Save("holdingEmber", holdingEmber);
-
-        foreach (HubMerchant hubMerchant in hubMerchantList) {
-            hubMerchant.SaveMerchant();
-
-        }
-
-        foreach (Portal portal in allPortalsInHub) {
-            MetaProgressionManager.Instance.SetPortalLinkedLevelSOIndex(portal.GetPortalNumber(), portal.GetLinkedLevelSOIndex());
-        }
-
-        OnHubSaved?.Invoke(this, EventArgs.Empty);
     }
 
     private IEnumerator SaveHubCoroutine() {

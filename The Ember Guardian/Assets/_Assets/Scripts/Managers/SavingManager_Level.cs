@@ -19,8 +19,11 @@ public class SavingManager_Level : MonoBehaviour
     public event EventHandler OnSaveGameEnded;
 
     private void Awake() {
-        Debug.Log("SavingManager_Level Awake");
         Instance = this;
+
+        if (ES3.FileExists("LevelSave_temp.es3")) {
+            ES3.DeleteFile("LevelSave_temp.es3");
+        }
 
         if (ES3.FileExists("LevelSave.es3")) {
 
@@ -69,41 +72,52 @@ public class SavingManager_Level : MonoBehaviour
     private IEnumerator SaveAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
 
-        if (ES3.FileExists("LevelSave.es3")) {
-            ES3.DeleteFile("LevelSave.es3");
+        string mainPath = "LevelSave.es3";
+        string tempPath = "LevelSave_temp.es3";
+        string backupPath = "LevelSave_backup.es3";
+
+        if (ES3.FileExists(tempPath))
+            ES3.DeleteFile(tempPath);
+
+        SaveLevelState(tempPath);
+        yield return new WaitForEndOfFrame();
+
+        SaveCollectibles(tempPath);
+        yield return new WaitForEndOfFrame();
+
+        SaveRecruitedWorkers(tempPath);
+        yield return new WaitForEndOfFrame();
+
+        SaveSpawners(tempPath);
+        yield return new WaitForEndOfFrame();
+
+        SavePlayer(tempPath);
+        yield return new WaitForEndOfFrame();
+
+        SaveStructures(tempPath);
+        yield return new WaitForEndOfFrame();
+
+        SaveTrapUpgrades(tempPath);
+        yield return new WaitForEndOfFrame();
+
+        SaveTrapTypes(tempPath);
+        yield return new WaitForEndOfFrame();
+
+        SaveObstacles(tempPath);
+        SaveChests(tempPath);
+
+        yield return new WaitForEndOfFrame();
+        SaveScavengables(tempPath);
+
+        yield return new WaitForEndOfFrame();
+        SaveTrialAreas(tempPath);
+
+        if (ES3.FileExists(mainPath)) {
+            ES3.CopyFile(mainPath, backupPath); // sauvegarde de secours
+            ES3.DeleteFile(mainPath);
         }
-        SaveLevelState();
-        yield return new WaitForEndOfFrame();
 
-        SaveCollectibles();
-        yield return new WaitForEndOfFrame();
-
-        SaveRecruitedWorkers();
-        yield return new WaitForEndOfFrame();
-
-        SaveSpawners();
-        yield return new WaitForEndOfFrame();
-
-        SavePlayer();
-        yield return new WaitForEndOfFrame();
-
-        SaveStructures();
-        yield return new WaitForEndOfFrame();
-
-        SaveTrapUpgrades();
-        yield return new WaitForEndOfFrame();
-
-        SaveTrapTypes();
-        yield return new WaitForEndOfFrame();
-
-        SaveObstacles();
-        SaveChests();
-
-        yield return new WaitForEndOfFrame();
-        SaveScavengables();
-
-        yield return new WaitForEndOfFrame();
-        SaveTrialAreas();
+        ES3.RenameFile(tempPath, mainPath);
 
         yield return new WaitForSeconds(3f);
 
@@ -112,7 +126,7 @@ public class SavingManager_Level : MonoBehaviour
         lastSaveTime = DateTime.Now;
     }
 
-    private void SaveLevelState() {
+    private void SaveLevelState(string path) {
         LevelSaveData levelSaveData = new LevelSaveData();
 
         levelSaveData.sceneName = SceneManager.GetActiveScene().name;
@@ -138,10 +152,10 @@ public class SavingManager_Level : MonoBehaviour
         levelSaveData.obstaclesRemoved = LevelObjectives.Instance.GetObstaclesRemoved();
         levelSaveData.watcherArtifactFillUpAmount = LevelObjectives.Instance.GetWatcherArtifactFillAmount();
 
-        ES3.Save("LevelState", levelSaveData, "LevelSave.es3");
+        ES3.Save("LevelState", levelSaveData, path);
     }
 
-    private void SaveCollectibles() {
+    private void SaveCollectibles(string path) {
         List<CollectibleSaveData> collectibleData = new List<CollectibleSaveData>();
 
         foreach (Collectible collectible in LevelManager.Instance.GetAllCollectibles()) {
@@ -157,10 +171,10 @@ public class SavingManager_Level : MonoBehaviour
         }
 
         // Sauvegarde via EasySave
-        ES3.Save("Collectibles", collectibleData, "LevelSave.es3");
+        ES3.Save("Collectibles", collectibleData, path);
     }
 
-    private void SaveRecruitedWorkers() {
+    private void SaveRecruitedWorkers(string path) {
         List<WorkerSaveData> workersData = new List<WorkerSaveData>();
 
         foreach (Worker worker in WorkerManager.Instance.GetRecruitedWorkers()) {
@@ -191,11 +205,11 @@ public class SavingManager_Level : MonoBehaviour
             workersData.Add(data);
 
             // Sauvegarde via EasySave
-            ES3.Save("Workers", workersData, "LevelSave.es3");
+            ES3.Save("Workers", workersData, path);
         }
     }
 
-    private void SaveSpawners() {
+    private void SaveSpawners(string path) {
         List<SpawnerSaveData> spawnersData = new List<SpawnerSaveData>();
 
         foreach (MobSpawner spawner in SpawnersManager.Instance.GetAllSpawners()) {
@@ -213,10 +227,10 @@ public class SavingManager_Level : MonoBehaviour
             spawnersData.Add(data);
         }
 
-        ES3.Save("Spawners", spawnersData, "LevelSave.es3");
+        ES3.Save("Spawners", spawnersData, path);
     }
 
-    private void SavePlayer() {
+    private void SavePlayer(string path) {
         PlayerSaveData data = new PlayerSaveData();
 
         // Position
@@ -303,10 +317,10 @@ public class SavingManager_Level : MonoBehaviour
 
         }
 
-        ES3.Save("Player", data, "LevelSave.es3");
+        ES3.Save("Player", data, path);
     }
 
-    private void SaveStructures() {
+    private void SaveStructures(string path) {
         List<StructureSaveData> structuresData = new List<StructureSaveData>();
         List<TrapSaveData> trapsData = new List<TrapSaveData>();
         List<FireSaveData> fireData = new List<FireSaveData>();
@@ -415,25 +429,25 @@ public class SavingManager_Level : MonoBehaviour
         }
 
 
-        ES3.Save("Structures", structuresData, "LevelSave.es3");
-        ES3.Save("Structures_Traps", trapsData, "LevelSave.es3");
-        ES3.Save("Structures_Fire", fireData, "LevelSave.es3");
-        ES3.Save("Structures_CurrencyCrafters", crafterData, "LevelSave.es3");
-        ES3.Save("Structures_SpecialTowers", specialTowerData, "LevelSave.es3");
-        ES3.Save("Structures_Barricades", barricadeData, "LevelSave.es3");
-        ES3.Save("Structures_CurrencyStorages", currencyStorageData, "LevelSave.es3");
+        ES3.Save("Structures", structuresData, path);
+        ES3.Save("Structures_Traps", trapsData, path);
+        ES3.Save("Structures_Fire", fireData, path);
+        ES3.Save("Structures_CurrencyCrafters", crafterData, path);
+        ES3.Save("Structures_SpecialTowers", specialTowerData, path);
+        ES3.Save("Structures_Barricades", barricadeData, path);
+        ES3.Save("Structures_CurrencyStorages", currencyStorageData, path);
     }
 
-    private void SaveTrapUpgrades() {
+    private void SaveTrapUpgrades(string path) {
 
-        ES3.Save("TrapUpgrades", TrapManager.Instance.GetTrapUpgradesLevels(), "LevelSave.es3");
+        ES3.Save("TrapUpgrades", TrapManager.Instance.GetTrapUpgradesLevels(), path);
         
     }
-    private void SaveTrapTypes() {
-        ES3.Save("TrapTypes", TrapManager.Instance.GetTrapTypesBoughtByPlayer(), "LevelSave.es3");
+    private void SaveTrapTypes(string path) {
+        ES3.Save("TrapTypes", TrapManager.Instance.GetTrapTypesBoughtByPlayer(), path);
     }
 
-    private void SaveObstacles() {
+    private void SaveObstacles(string path) {
         var obstacleDataList = new List<ObstacleSaveData>();
         var scavengableObstacleDataList = new List<ScavengableObstacleSaveData>();
 
@@ -455,11 +469,11 @@ public class SavingManager_Level : MonoBehaviour
 
         }
 
-        ES3.Save("Obstacles", obstacleDataList, "LevelSave.es3");
-        ES3.Save("ScavengableObstacles", scavengableObstacleDataList, "LevelSave.es3");
+        ES3.Save("Obstacles", obstacleDataList, path);
+        ES3.Save("ScavengableObstacles", scavengableObstacleDataList, path);
     }
 
-    private void SaveChests() {
+    private void SaveChests(string path)    {
         var list = new List<ChestSaveData>();
         foreach (Chest chest in LevelManager.Instance.GetAllChests()) {
             list.Add(new ChestSaveData { 
@@ -471,10 +485,10 @@ public class SavingManager_Level : MonoBehaviour
             });
         }
 
-        ES3.Save("Chests", list, "LevelSave.es3");
+        ES3.Save("Chests", list, path);
     }
 
-    private void SaveTrialAreas() {
+    private void SaveTrialAreas(string path) {
         var list = new List<TrialAreaSaveData>();
         foreach (TrialArea trialArea in LevelManager.Instance.GetAllTrialAreas()) {
             list.Add(new TrialAreaSaveData {
@@ -483,9 +497,9 @@ public class SavingManager_Level : MonoBehaviour
             });
         }
 
-        ES3.Save("TrialAreas", list, "LevelSave.es3");
+        ES3.Save("TrialAreas", list, path);
     }
-    private void SaveScavengables() {
+    private void SaveScavengables(string path) {
         if (ScavengableManager.Instance == null) return;
 
         var list = new List<ScavengableSaveData>();
@@ -500,7 +514,7 @@ public class SavingManager_Level : MonoBehaviour
             });
         }
 
-        ES3.Save("Scavengables", list, "LevelSave.es3");
+        ES3.Save("Scavengables", list, path);
     }
 
     #endregion
@@ -649,6 +663,7 @@ public class SavingManager_Level : MonoBehaviour
             if (spawner is CreatureSpawnerContinuous continuousSpawner) {
                 if (data.dead) {
                     continuousSpawner.SetDead(true);
+                    continuousSpawner.SetLoaded();
                     continue;
                 }
             }

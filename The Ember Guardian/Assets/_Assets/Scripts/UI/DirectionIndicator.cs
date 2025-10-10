@@ -37,6 +37,9 @@ public class DirectionIndicator : MonoBehaviour
         showHideAnimator.SetTrigger("Show");
         directionIsBeingShown = true;
         showTimer = 0;
+
+        transform.localScale = new Vector3(direction, 1, 1);
+
     }
 
     private void HideDirection() {

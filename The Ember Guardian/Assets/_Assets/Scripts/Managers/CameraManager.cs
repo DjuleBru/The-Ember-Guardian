@@ -13,6 +13,10 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private float initialCameraOrthographicSize = 11f;
     [SerializeField] private float tutorialInitialCameraOrthographicSize = 7f;
 
+    private CinemachineBlendDefinition.Style blendStyle = CinemachineBlendDefinition.Style.EaseInOut;
+    private float blendTime = 1.5f;
+    private CinemachineBrain brain;
+
     [SerializeField] private float referenceCameraOrthographicSize = 11f;
     [SerializeField] private float minCameraOrthographicSize = 7f;
     [SerializeField] private float maxCameraOrthographicSize = 11.5f;
@@ -39,25 +43,42 @@ public class CameraManager : MonoBehaviour
     }
 
     private void Start() {
+        brain = Camera.main.GetComponent<CinemachineBrain>();
+        RestoreBlend();
+
         RefreshCameraOrthographicSize(false);
 
         SettingsManager.Instance.OnZoomLevelChanged += SettingsManager_OnZoomLevelChanged;
         isMainMenu = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu;
         isTutorial = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial;
 
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            SavingManager_Level.Instance.OnLoadGameEnded += SavingManager_OnLoadGameEnded;
+        }
+
         if(isTutorial) {
             SetCameraOrthographicSize(tutorialInitialCameraOrthographicSize);
         }
     }
 
+    private void SavingManager_OnLoadGameEnded(object sender, EventArgs e) {
+        RestoreBlend();
+    }
+
+    private void RestoreBlend() {
+        if (brain != null)
+            brain.m_DefaultBlend = new CinemachineBlendDefinition(blendStyle, blendTime);
+    }
 
     private void Update() {
         if(isChangingOrthographicSize) {
-            isChangingOrthographicSizeTimer += Time.deltaTime;
-            if(isChangingOrthographicSizeTimer >= isChangingOrthographicSizeTime) {
+            isChangingOrthographicSizeTimer += Time.unscaledDeltaTime;
+
+            if (isChangingOrthographicSizeTimer >= isChangingOrthographicSizeTime) {
                 isChangingOrthographicSize = false;
                 Time.timeScale = 0f;
             }
+
         }
 
         if (isMainMenu) return;
@@ -113,9 +134,6 @@ public class CameraManager : MonoBehaviour
 
         virtualCamera.m_Lens.OrthographicSize = initialCameraOrthographicSize;
     }
-
-
-
 
     public void ZoomIn(bool toInitialValue, float targetZoomInOrthographicSizeMultiplier = 1f, float zoomDuration = 1f) {
         // Démarre le zoom vers l'intérieur
@@ -229,5 +247,9 @@ public class CameraManager : MonoBehaviour
         }
 
         cameraCenteredOnPlayer = true;
+    }
+
+    public bool IsChangingCameraOrthographicSize() {
+        return isChangingOrthographicSize;
     }
 }

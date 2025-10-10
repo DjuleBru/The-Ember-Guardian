@@ -529,6 +529,7 @@ public class SoundManager : MonoBehaviour
             PlaySound2D(soundRefsSO.ammoSpecialPickedUpByPlayer);
         }
         if (currencyTypeCollected == PlayerCurrencies.CurrencyType.ember) {
+            Debug.Log("initialEmberGiven " + initialEmberGiven);
             if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.HUB && !initialEmberGiven) {
                 initialEmberGiven = true;
                 return;

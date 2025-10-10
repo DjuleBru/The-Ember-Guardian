@@ -141,7 +141,13 @@ public class Gun : MonoBehaviour
 
         SetPSShootAngle(defaultAngle);
 
-        pelletsPerBullet = gunSO.pelletsPerBullet + (int)gunSO.pelletsPerBulletStatModifier.statModifierList[pelletsPerBulletStatModifierLevel];
+        int buffedPelletsPerBullet = 0;
+        if(pelletsPerBulletStatModifierLevel != -1) {
+            buffedPelletsPerBullet = (int)gunSO.pelletsPerBulletStatModifier.statModifierList[pelletsPerBulletStatModifierLevel];
+        }
+        pelletsPerBullet = gunSO.pelletsPerBullet + buffedPelletsPerBullet;
+
+
         DebuffBulletDamage(focusedBlastDamageBuff, false);
         ParticleSystem.MainModule shootPSMainModule = shootPS.main;
         shootPSMainModule.startSize = .2f;
@@ -813,7 +819,6 @@ public class Gun : MonoBehaviour
 
         // Sauvegarde en batch
         string key = gunSO.gunType + "_metaData";
-        ES3.Save(key, gunData);
     }
 
     public void LoadGunStatModifierLevels() {

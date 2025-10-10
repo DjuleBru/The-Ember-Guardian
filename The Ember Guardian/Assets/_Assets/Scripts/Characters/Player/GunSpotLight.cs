@@ -24,21 +24,34 @@ public class GunSpotLight : MonoBehaviour
     public static bool lightActive = true;
     private bool rolling;
     private bool reloading;
+    private bool shotCoolingDown;
+    private bool swappingGun;
     private bool canSwitchLight = true;
-    private static bool playerJustTeleported;
+    private bool dead;
+    private bool aiming = false;
+    private bool aimingPreviousFrame;
+    private static bool playerJustTeleportedStatic;
+    private bool playerJustTeleported;
+    private bool playerTeleporting;
+    private bool playerSteppedOnPortal;
+    private float playerJustTeleportedTimerStatic;
     private float playerJustTeleportedTimer;
     public static event EventHandler OnAnyLightSwitched;
 
     private Coroutine laserLerpCoroutine;
-    private float laserLerpDuration_StateChange = 0.2f;
-    private float laserLerpDuration_ShootCooldown = 0.05f;
-    private float laserBaseIntensity = 1f;
+    private Coroutine shotCoolingDownCoroutine;
+    private Coroutine swappingGunCoroutine;
+    private float laserLerpDuration_StateChangeEnd = 0.2f;
+    private float laserLerpDuration_StateChangeStart = 0.05f;
+    private float laserBaseIntensity = 1.5f;
 
     private void Awake() {
         gun = GetComponent<Gun>();
         Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
         FastTravelTP.OnAnyPlayerWarped += FastTravelTP_OnAnyPlayerWarped;
         FastTravelTP.OnAnyPlayerWarpedOut += FastTravelTP_OnAnyPlayerWarpedOut;
+        FastTravelTP.OnAnyPlayerPositionedOnTP += FastTravelTP_OnAnyPlayerPositionedOnTP;
+        FastTravelTP.OnAnyPlayerCanceledTP += FastTravelTP_OnAnyPlayerCanceledTP;
 
         gunSpotLight = gunSpotLightTransform.GetComponent<Light2D>();
         gunShootLight.pointLightOuterAngle = 360;
@@ -76,10 +89,12 @@ public class GunSpotLight : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerAim.Instance.OnXAimDirChanged += PlayerAim_OnXAimDirChanged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
-        Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
+        Player.Instance.OnPlayerRespawnEnded += Player_OnPlayerRespawnEnded;
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShot;
         PlayerShoot.Instance.OnCooldownEnded += PlayerShoot_OnCooldownEnded;
+        PlayerShoot.Instance.OnPlayerSwappedGunStarted += PlayerShoot_OnPlayerSwappedGunStarted;
+        PlayerShoot.Instance.OnPlayerSwappedGunEnded += PlayerShoot_OnPlayerSwappedGunEnded;
 
 
         if(PauseMenuUI.Instance != null) {
@@ -90,33 +105,97 @@ public class GunSpotLight : MonoBehaviour
         PlayerStats.Instance.OnFlashlightRangeChanged += PlayerStats_OnFlashlightRangeChanged;
 
         RefreshLaserLightActiveWithInput();
+        StartCoroutine(RefreshLaserRangeAfterFrame());
     }
-
-    private void PlayerShoot_OnCooldownEnded(object sender, EventArgs e) {
-
-    }
-
-    private void PlayerShoot_OnPlayerShot(object sender, EventArgs e) {
-
-    }
-
-    private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
-        RefreshLaserLightActiveWithInput();
-    }
-
 
     private void LateUpdate() {
-        if (playerJustTeleported) {
-            playerJustTeleportedTimer += Time.deltaTime;
-            if (playerJustTeleportedTimer > .5f) {
-                playerJustTeleported = false;
+        aiming = PlayerAim.Instance.GetAimInputGamepad() != Vector2.zero;
+
+        if(aiming && !aimingPreviousFrame) {
+            RefreshLaserLightActive(laserLerpDuration_StateChangeStart);
+        }
+
+        if(!aiming && aimingPreviousFrame) {
+            RefreshLaserLightActive(laserLerpDuration_StateChangeEnd);
+        }
+        aimingPreviousFrame = aiming;
+
+
+        if (playerJustTeleportedStatic) {
+            playerJustTeleportedTimerStatic += Time.deltaTime;
+            if (playerJustTeleportedTimerStatic > 1f) {
+                playerJustTeleportedStatic = false;
                 SwitchLight();
-                SwitchLaserLight();
+                RefreshLaserLightActive(laserLerpDuration_StateChangeEnd);
             }
         }
 
         if (rolling) return;
         RefreshLightRotation();
+    }
+
+    private IEnumerator RefreshLaserRangeAfterFrame() {
+        yield return new WaitForEndOfFrame();
+        RefreshLaserRange();
+    }
+
+    private void PlayerShoot_OnPlayerSwappedGunEnded(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+        swappingGun = false;
+
+        // Stoppe la coroutine précédente
+        if (swappingGunCoroutine != null)
+            StopCoroutine(swappingGunCoroutine);
+
+        // Lance le délai avant de rallumer le laser
+        swappingGunCoroutine = StartCoroutine(SwappingGunCoroutine());
+    }
+    private IEnumerator SwappingGunCoroutine() {
+        yield return new WaitForSeconds(0.35f); // duree du cooldown visuel
+
+        swappingGun = false;
+        RefreshLaserLightActive(laserLerpDuration_StateChangeEnd);
+    }
+
+    private void PlayerShoot_OnPlayerSwappedGunStarted(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+        swappingGun = true;
+
+        RefreshLaserLightActive(laserLerpDuration_StateChangeStart);
+    }
+
+    private void PlayerShoot_OnCooldownEnded(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
+        // Stoppe la coroutine précédente
+        if (shotCoolingDownCoroutine != null)
+            StopCoroutine(shotCoolingDownCoroutine);
+
+        // Lance le délai avant de rallumer le laser
+        shotCoolingDownCoroutine = StartCoroutine(ShotCoolingDownCoroutine());
+    }
+
+    private void PlayerShoot_OnPlayerShot(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
+        shotCoolingDown = true;
+        RefreshLaserLightActive(laserLerpDuration_StateChangeStart);
+
+        // On arrete la coroutine éventuelle pour éviter le rallumage trop tôt
+        if (shotCoolingDownCoroutine != null)
+            StopCoroutine(shotCoolingDownCoroutine);
+    }
+
+    private IEnumerator ShotCoolingDownCoroutine() {
+        yield return new WaitForSeconds(0.1f); // duree du cooldown visuel
+
+        shotCoolingDown = false;
+        RefreshLaserLightActive(laserLerpDuration_StateChangeStart);
+    }
+
+    private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+        RefreshLaserLightActiveWithInput();
     }
 
     private void RefreshLaserLightActiveWithInput() {
@@ -125,19 +204,25 @@ public class GunSpotLight : MonoBehaviour
         }
         else {
             laserLightActiveWithInput = false;
+            gunLaserLight.intensity = 0;
         }
 
-        RefreshLaserLightActive();
+        RefreshLaserLightActive(laserLerpDuration_StateChangeStart);
     }
 
-    private void RefreshLaserLightActive() {
-        bool laserShouldBeActive = true;
+    private void RefreshLaserLightActive(float lerpDuration) {
+        if (gunLaserLight == null) return;
 
-        if(!laserLightActiveWithInput) {
+        bool laserShouldBeActive = true;
+        if (!aiming) {
             laserShouldBeActive = false;
         }
 
-        if (Player.Instance.GetDead()) {
+        if (!laserLightActiveWithInput && !DebugManager.Instance.GetDebugShowLaser()) {
+            laserShouldBeActive = false;
+        }
+
+        if (dead) {
             laserShouldBeActive = false;
         }
 
@@ -149,15 +234,31 @@ public class GunSpotLight : MonoBehaviour
             laserShouldBeActive = false;
         }
 
-        float targetIntensity = (laserShouldBeActive && laserLightActive) ? laserBaseIntensity : 0f;
+        if (shotCoolingDown) {
+            laserShouldBeActive = false;
+        }
 
+        if(swappingGun) {
+            laserShouldBeActive = false;
+        }
+
+        if (playerJustTeleportedStatic || playerTeleporting || playerSteppedOnPortal) {
+            laserShouldBeActive = false;
+        }
+
+        float targetIntensity = (laserShouldBeActive && laserLightActive) ? laserBaseIntensity : 0f;
+        LerpLaserLightIntensity(targetIntensity, lerpDuration);
+    }
+
+    private void LerpLaserLightIntensity(float targetIntensity, float duration) {
+        if (gunLaserLight == null) return;
         if (laserLerpCoroutine != null)
             StopCoroutine(laserLerpCoroutine);
 
-        laserLerpCoroutine = StartCoroutine(LerpLaserLightIntensity(targetIntensity, laserLerpDuration_StateChange));
+        laserLerpCoroutine = StartCoroutine(LerpLaserLightIntensityCoroutine(targetIntensity, duration));
     }
 
-    private IEnumerator LerpLaserLightIntensity(float targetIntensity, float duration) {
+    private IEnumerator LerpLaserLightIntensityCoroutine(float targetIntensity, float duration) {
         float startIntensity = gunLaserLight.intensity;
         float time = 0f;
 
@@ -186,13 +287,38 @@ public class GunSpotLight : MonoBehaviour
 
     private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {
         if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Level) return;
+
+        playerJustTeleportedStatic = true;
+
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
         playerJustTeleported = true;
+    }
+
+    private void FastTravelTP_OnAnyPlayerPositionedOnTP(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
+        playerSteppedOnPortal = true;
+        RefreshLaserLightActive(laserLerpDuration_StateChangeStart);
+    }
+    private void FastTravelTP_OnAnyPlayerCanceledTP(object sender, EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
+        playerSteppedOnPortal = false;
+        RefreshLaserLightActive(laserLerpDuration_StateChangeEnd);
+
     }
 
     private void FastTravelTP_OnAnyPlayerWarpedOut(object sender, EventArgs e) {
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
+        playerJustTeleportedTimerStatic = 0;
         playerJustTeleportedTimer = 0;
+        playerJustTeleportedStatic = true;
         playerJustTeleported = true;
+        playerTeleporting = false;
+        playerSteppedOnPortal = false;
+
+        RefreshLaserLightActive(laserLerpDuration_StateChangeEnd);
     }
 
     private void FastTravelTP_OnAnyPlayerWarped(object sender, EventArgs e) {
@@ -200,9 +326,8 @@ public class GunSpotLight : MonoBehaviour
         if (lightActive) {
             SwitchLight();
         }
-        if(laserLightActive) {
-            SwitchLaserLight();
-        }
+
+        playerTeleporting = true;
     }
 
 
@@ -225,25 +350,34 @@ public class GunSpotLight : MonoBehaviour
             gunSpotLight.enabled = false;
         }
 
+        if (gunLaserLight == null) return;
         if (laserLightActive) {
             gunLaserLight.enabled = true;
         }
         else {
             gunLaserLight.enabled = false;
         }
+
+        RefreshLaserRange();
     }
 
     private void Player_OnPlayerDied(object sender, EventArgs e) {
+        dead = true;
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
 
         lightActive = false;
         gunSpotLight.enabled = false;
-        RefreshLaserLightActive();
+        RefreshLaserLightActive(laserLerpDuration_StateChangeStart);
     }
 
-    private void Player_OnPlayerRespawned(object sender, EventArgs e) {
-        RefreshLaserLightActive();
+    private void Player_OnPlayerRespawnEnded(object sender, EventArgs e) {
+        dead = false;
+
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
+        RefreshLaserLightActive(laserLerpDuration_StateChangeEnd);
     }
+
     private void PlayerStats_OnFlashlightRangeChanged(object sender, EventArgs e) {
         RefreshFlashlightRange();
     }
@@ -251,6 +385,26 @@ public class GunSpotLight : MonoBehaviour
     private void RefreshFlashlightRange() {
         gunSpotLightRange = PlayerStats.Instance.GetFlashlightRange();
         gunSpotLight.pointLightOuterRadius = gunSpotLightRange;
+    }
+
+    private void RefreshLaserRange() {
+        if (gunLaserLight == null) return;
+        float weaponRange = PlayerShoot.Instance.GetHeldGun().GetRange();
+
+        // Interpolation linéaire entre 10m, 0.36 et 15m, 0.54
+        float a = ((0.54f - 0.36f) / (15f - 10f));
+        float b = 0.36f - a * 10;
+        float laserLightYScale = a * weaponRange + b;
+
+        GunSO.GunType gunType = PlayerShoot.Instance.GetHeldGunSO().gunType;
+        if (gunType == GunSO.GunType.RocketLauncher) {
+            laserLightYScale *= 2f;
+        }
+        if (gunType == GunSO.GunType.AAGun) {
+            laserLightYScale = .45f;
+        }
+
+        gunLaserLight.transform.localScale = new Vector3(1, laserLightYScale, 1);
     }
 
     private void PauseMenuUI_OnPauseMenuOpened(object sender, EventArgs e) {
@@ -266,31 +420,30 @@ public class GunSpotLight : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerReloadEnded(object sender, EventArgs e) {
-
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
         reloading = false;
-        RefreshLaserLightActive();
+        RefreshLaserLightActive(laserLerpDuration_StateChangeEnd);
     }
 
     private void PlayerShoot_OnPlayerReloadInterrupted(object sender, EventArgs e) {
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
 
         reloading = false;
-        RefreshLaserLightActive();
+        RefreshLaserLightActive(laserLerpDuration_StateChangeEnd);
     }
 
     private void PlayerShooot_OnPlayerReloadInterruptedEnded(object sender, EventArgs e) {
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
 
         reloading = true;
-        RefreshLaserLightActive();
+        RefreshLaserLightActive(laserLerpDuration_StateChangeEnd);
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, EventArgs e) {
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
 
         reloading = true;
-        RefreshLaserLightActive();
+        RefreshLaserLightActive(laserLerpDuration_StateChangeStart);
     }
 
 
@@ -298,14 +451,14 @@ public class GunSpotLight : MonoBehaviour
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
 
         rolling = false;
-        RefreshLaserLightActive();
+        RefreshLaserLightActive(laserLerpDuration_StateChangeEnd);
     }
 
     private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
         if (PlayerShoot.Instance.GetHeldGun() != gun) return;
 
         rolling = true;
-        RefreshLaserLightActive();
+        RefreshLaserLightActive(laserLerpDuration_StateChangeStart);
     }
 
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
@@ -313,6 +466,9 @@ public class GunSpotLight : MonoBehaviour
         lightActive = false;
         gunSpotLight.enabled = false;
         canSwitchLight = false;
+        playerSteppedOnPortal = true;
+
+        RefreshLaserLightActive(laserLerpDuration_StateChangeStart);
     }
 
     private void GameInput_OnPlayerGunLightSwitch(object sender, System.EventArgs e) {
@@ -339,7 +495,7 @@ public class GunSpotLight : MonoBehaviour
     }
     private void SwitchLaserLight() {
         laserLightActive = !laserLightActive;
-        RefreshLaserLightActive();
+        RefreshLaserLightActive(laserLerpDuration_StateChangeEnd);
     }
 
     private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
@@ -372,6 +528,8 @@ public class GunSpotLight : MonoBehaviour
         Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
         FastTravelTP.OnAnyPlayerWarped -= FastTravelTP_OnAnyPlayerWarped;
         FastTravelTP.OnAnyPlayerWarpedOut -= FastTravelTP_OnAnyPlayerWarpedOut;
+        FastTravelTP.OnAnyPlayerPositionedOnTP -= FastTravelTP_OnAnyPlayerPositionedOnTP;
+        FastTravelTP.OnAnyPlayerCanceledTP -= FastTravelTP_OnAnyPlayerCanceledTP;
         PlayerShoot.Instance.OnPlayerReloadInterruptedEnded -= PlayerShooot_OnPlayerReloadInterruptedEnded;
     }
 }

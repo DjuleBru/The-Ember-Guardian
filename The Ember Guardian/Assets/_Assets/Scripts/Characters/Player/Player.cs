@@ -63,6 +63,7 @@ public class Player : MonoBehaviour, IDamageable
     public event EventHandler OnPlayerDied;
     public event EventHandler OnPlayerHealthLoaded;
     public event EventHandler OnPlayerRespawned;
+    public event EventHandler OnPlayerRespawnEnded;
     public event EventHandler OnPlayerBackToTentToRespawn;
     public event EventHandler OnPlayerPositionSet;
     public event EventHandler OnPlayerEnteredAnyInteractableTriggerArea;
@@ -460,6 +461,7 @@ public class Player : MonoBehaviour, IDamageable
 
         yield return new WaitForSeconds(1.5f);
         dead = false;
+        OnPlayerRespawnEnded?.Invoke(this, EventArgs.Empty);
     }
 
     private IEnumerator HealPlayerCoroutine(int healAmount, float delayBetweenHeals) {

@@ -109,7 +109,6 @@ public class SettingsMenuUI : MonoBehaviour
     }
 
     protected void UpdateZoomLevel(float value) {
-        Debug.Log("UpdateZoomLevel");
         zoomLevel = value;
 
         SettingsManager.Instance.SetZoomLevel(value);

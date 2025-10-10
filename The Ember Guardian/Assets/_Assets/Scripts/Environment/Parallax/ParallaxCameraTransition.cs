@@ -26,17 +26,23 @@ public class ParallaxCameraTransition : MonoBehaviour
         rightCameraTransitionPosition = transform.position.x + cameraTransitionRadius;
 
         lastCameraX = Camera.main.transform.position.x;
+
+        transitionCamera.enabled = true;
+        mainCamera.enabled = true;
+
+        transitionCamera.Priority = 10;
+        mainCamera.Priority = 20;
     }
 
     private void Update() {
-
         float cameraX = Camera.main.transform.position.x;
+
         // GESTION DE LA CAMERA
         if (cameraX < rightCameraTransitionPosition && cameraX > leftCameraTransitionPosition) {
 
             if (!transitionStarted && hasCameraTransition) {
-                transitionCamera.enabled = true;
-                mainCamera.enabled = false;
+                transitionCamera.Priority = 20;
+                mainCamera.Priority = 10;
                 transitionStarted = true;
                 CameraManager.Instance.SetCameraLockedByTransition(true);
             }
@@ -45,8 +51,8 @@ public class ParallaxCameraTransition : MonoBehaviour
         else {
 
             if (transitionStarted && hasCameraTransition) {
-                transitionCamera.enabled = false;
-                mainCamera.enabled = true;
+                transitionCamera.Priority = 10;
+                mainCamera.Priority = 20;
                 transitionStarted = false;
                 CameraManager.Instance.SetCameraLockedByTransition(false);
             }

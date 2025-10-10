@@ -107,7 +107,7 @@ public class CurrencyCrafter : Structure
             unlockSpecialAmmo = true;
         }
 
-        if(unlockSpecialAmmo) {
+        if (unlockSpecialAmmo) {
             SetStructureSecondaryFunctionUnlocked(true);
             specialAmmoUnlocked = true;
         } else {

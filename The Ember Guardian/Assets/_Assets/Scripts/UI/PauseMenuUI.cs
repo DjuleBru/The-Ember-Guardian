@@ -86,7 +86,7 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     protected void LateUpdate() {
-        if (menuOpen) {
+        if (menuOpen && !CameraManager.Instance.IsChangingCameraOrthographicSize()) {
             Time.timeScale = 0f;
         }
     }

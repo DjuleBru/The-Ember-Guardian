@@ -26,15 +26,16 @@ public class PlayerAim : MonoBehaviour
     [SerializeField] private LayerMask barricadesLayer; // Masque de couche pour les ennemis
     
     private bool autoAimActive;
-    private float autoAimSnapSmoothSpeed = 15f;
-    private float minAutoAimSnapSpeed = 5f;
-    private float maxAutoAimSnapSpeed = 15f;
-    private float maxTargetVelocityForSnap = 10f; // vitesse max à partir de laquelle on atteint la snap speed max
-    private float autoAimConeAngle = 12.5f; // Angle du cône de visée autour de la direction de visée
-    private float maxAutoAimConeAngle = 25f; // Angle max du cône de visée si l'ennemi est très proche
-    private float distanceToHaveMinAutoAimConeAngle = 10f; // Distance à partir de laquelle on considère que l’ennemi est "loin"
-    float distanceToHaveMaxAutoAimConeAngle = .5f; // Distance à partir de laquelle on considère que l’ennemi est "proche"
-    private float detectionRange = 15f; // Portée de détection des ennemis
+    private bool autoAiming;
+    [SerializeField] private float autoAimSnapSmoothSpeed = 10f;
+    [SerializeField] private float minAutoAimSnapSpeed = 5f;
+    [SerializeField] private float maxAutoAimSnapSpeed = 15f;
+    [SerializeField] private float maxTargetVelocityForSnap = 10f; // vitesse max à partir de laquelle on atteint la snap speed max
+    [SerializeField] private float autoAimConeAngle = 12.5f; // Angle du cône de visée autour de la direction de visée
+    [SerializeField] private float maxAutoAimConeAngle = 30f; // Angle max du cône de visée si l'ennemi est très proche
+    [SerializeField] private float distanceToHaveMinAutoAimConeAngle = 10f; // Distance à partir de laquelle on considère que l’ennemi est "loin"
+    [SerializeField] float distanceToHaveMaxAutoAimConeAngle = .5f; // Distance à partir de laquelle on considère que l’ennemi est "proche"
+    [SerializeField] private float detectionRange = 15f; // Portée de détection des ennemis
 
     private bool isUsingGamepad;
     private bool isAimingSight;
@@ -115,6 +116,8 @@ public class PlayerAim : MonoBehaviour
     public event EventHandler OnXAimDirChanged;
     public event EventHandler OnPlayerAimSightStarted;
     public event EventHandler OnPlayerAimSightEnded;
+    public event EventHandler OnAutoAimStarted;
+    public event EventHandler OnAutoAimEnded;
 
     private void Awake() {
         Instance = this;
@@ -508,8 +511,18 @@ public class PlayerAim : MonoBehaviour
             float t = Mathf.Clamp01(targetSpeed / maxTargetVelocityForSnap);
             autoAimSnapSmoothSpeed = Mathf.Lerp(minAutoAimSnapSpeed, maxAutoAimSnapSpeed, t);
 
+            if(!autoAiming) {
+                OnAutoAimStarted?.Invoke(this, EventArgs.Empty);
+                autoAiming = true;
+            }
+
             // Snap visuel
             return closestEnemyAutoAimColliderPosition;
+        } else {
+            if (autoAiming) {
+                OnAutoAimEnded?.Invoke(this, EventArgs.Empty);
+                autoAiming = false;
+            }
         }
 
         return Vector2.zero;
@@ -818,6 +831,11 @@ public class PlayerAim : MonoBehaviour
 
     public float GetAimAngle() {
         return mouseAimAngle;
+    }
+
+    public Vector2 GetAimInputGamepad() {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return Vector2.zero;
+        return GameInput.Instance.GetAimInput();
     }
 
     private void HandleXScale() {

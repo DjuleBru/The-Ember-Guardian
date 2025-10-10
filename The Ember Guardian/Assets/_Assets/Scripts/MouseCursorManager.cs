@@ -26,6 +26,7 @@ public class MouseCursorManager : MonoBehaviour
     private bool pauseMenuOpen;
     private bool tabMenuOpen;
     private bool videoTipMenuOpen;
+    private bool autoAiming;
 
     private GunSO currentGunSO;
     private float initialMouseCursorWidth = 55f;
@@ -83,6 +84,9 @@ public class MouseCursorManager : MonoBehaviour
         FastTravelTP.OnAnyPlayerCanceledTP += FastTravelTP_OnAnyPlayerCanceledTP;
         FastTravelTP.OnAnyPlayerPositionedOnTP += FastTravelTP_OnAnyPlayerPositionedOnTP;
 
+        PlayerAim.Instance.OnAutoAimEnded += PlayerAim_OnAutoAimEnded;
+        PlayerAim.Instance.OnAutoAimStarted += PlayerAim_OnAutoAimStarted;
+
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerOpenedAnyHubMerchantShop;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant += HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
@@ -104,46 +108,81 @@ public class MouseCursorManager : MonoBehaviour
             HandleMouseCursorPosition();
         }
         else {
-            HandleGamepadCursorPosition();
+            if(autoAiming) {
+                HandleGamepadCursorPosition();
+            }
+
         }
     }
 
+    private void PlayerAim_OnAutoAimStarted(object sender, System.EventArgs e) {
+        autoAiming = true;
+        ShowWeaponAndMouseCursorGO(true);
+    }
+
+    private void PlayerAim_OnAutoAimEnded(object sender, System.EventArgs e) {
+        autoAiming = false;
+        ShowWeaponAndMouseCursorGO(false);
+    }
 
     private void Player_OnPlayerPositionSet(object sender, System.EventArgs e) {
         PlayerAim.Instance.SetWeaponReticleToAimPos();
     }
 
     private void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
-        ShowWeaponCursorGO(true);
+        if (!isUsingGamepad) {
+            ShowWeaponCursorGO(true);
+        }
+
     }
 
     private void Player_OnPlayerDied(object sender, System.EventArgs e) {
-        ShowWeaponCursorGO(false);
+        if (!isUsingGamepad) {
+            ShowWeaponCursorGO(false);
+        }
     }
 
     private void PetDog_OnPlayerEndedPettingDog(object sender, System.EventArgs e) {
-        ShowWeaponCursorGO(true);
+        if (!isUsingGamepad) {
+            ShowWeaponCursorGO(true);
+        }
     }
 
     private void PetDog_OnPlayerStartedPettingDog(object sender, System.EventArgs e) {
-        ShowWeaponCursorGO(false);
+        if (!isUsingGamepad) {
+            ShowWeaponCursorGO(false);
+        }
+
     }
 
     private void PlayerMovement_OnPlayerRollEnded(object sender, System.EventArgs e) {
-        ShowWeaponCursorGO(true);
+        if (!isUsingGamepad) {
+            ShowWeaponCursorGO(true);
+        }
+
     }
 
     private void PlayerMovement_OnPlayerRoll(object sender, System.EventArgs e) {
+        if (!isUsingGamepad) {
+            ShowWeaponCursorGO(true);
+        }
         ShowWeaponCursorGO(false);
     }
 
     private void PlayerShoot_OnPlayerReloadEnded(object sender, System.EventArgs e) {
-        ShowWeaponCursorGO(true);
+        if (!isUsingGamepad) {
+            ShowWeaponCursorGO(true);
+        }
+
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, System.EventArgs e) {
-        ShowWeaponCursorGO(false);
+        if(!isUsingGamepad) {
+            ShowWeaponCursorGO(false);
+        }
+
     }
+
     private void VideoTipUI_OnVideoTipPanelOpened(object sender, System.EventArgs e) {
         videoTipMenuOpen = true;
         Debug.Log("videoTipMenuOpen " + videoTipMenuOpen);
@@ -187,14 +226,14 @@ public class MouseCursorManager : MonoBehaviour
         if (!isUsingGamepad) {
             ShowMouse(false);
         } else {
-            ShowWeaponAndMouseCursorGO(true);
+            //ShowWeaponAndMouseCursorGO(true);
         }
     }
     private void HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant(object sender, System.EventArgs e) {
         if (!isUsingGamepad) {
             ShowMouse(true);
         } else {
-            ShowWeaponAndMouseCursorGO(true);
+            //ShowWeaponAndMouseCursorGO(true);
         }
     }
     private void PortalUI_OnAnyPortalUIClosed(object sender, System.EventArgs e) {
@@ -211,7 +250,7 @@ public class MouseCursorManager : MonoBehaviour
     }
     private void HubMerchant_OnPlayerOpenedAnyHubMerchantShop(object sender, System.EventArgs e) {
         if(isUsingGamepad) {
-            ShowWeaponAndMouseCursorGO(false);
+            //ShowWeaponAndMouseCursorGO(false);
         } else {
            ShowMouse(true);
         }        
@@ -276,6 +315,7 @@ public class MouseCursorManager : MonoBehaviour
     }
 
     private void HandleMouseCursorSize() {
+
         float currentPrecisionModifier = PlayerAim.Instance.GetCurrentPrecisionModifier() / PlayerAim.Instance.GetWeaponPrecisionModifier();
         float currentRecoilNormalized = PlayerAim.Instance.GetCurrentRecoil() / currentGunSO.gunRecoil;
 
@@ -285,6 +325,10 @@ public class MouseCursorManager : MonoBehaviour
         float precisionDifference = currentPrecisionModifier - 1;
         precisionDifference *= precisionModifierScaleMultiplier;
         float scaledPrecisionDifference = 1 + precisionDifference;
+
+        if(isUsingGamepad) {
+            scaledPrecisionDifference = 1f;
+        }
 
         float targetWidth = initialMouseCursorWidth * scaledPrecisionDifference;
         float targetHeight = initialMouseCursorHeight * scaledPrecisionDifference;
@@ -337,13 +381,20 @@ public class MouseCursorManager : MonoBehaviour
     private void GameInput_OnPlayerInputChanged(object sender, System.EventArgs e) {
         isUsingGamepad = GameInput.Instance.IsUsingGamepad();
 
+        if (isUsingGamepad) {
+            ShowMouse(false);
+            ShowWeaponAndMouseCursorGO(false);
+        }
+
         if (AllMenusClosed()) return;
         RefreshMouseHideWithGamepad();
     }
 
     private void RefreshMouseHideWithGamepad() {
+        Debug.Log("RefreshMouseHideWithGamepad");
         if (isUsingGamepad) {
             ShowMouse(false);
+            ShowWeaponAndMouseCursorGO(false);
         }
         else {
             ShowMouse(true);
@@ -380,6 +431,8 @@ public class MouseCursorManager : MonoBehaviour
     private void ShowWeaponAndMouseCursorGO(bool show) {
         weaponCursorGameObject.SetActive(show);
         mouseCursorGameObject.SetActive(show);
+        weaponCursorImage.enabled = show;
+        weaponCursorHitImage.enabled = show;
         PlayerAim.Instance.SetWeaponReticleToAimPos();
     }
 

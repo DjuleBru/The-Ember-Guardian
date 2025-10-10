@@ -170,9 +170,10 @@ public class MetaProgressionManager : MonoBehaviour
 
     #region HUB
 
-    public void SetPortalLinkedLevelSOIndex(int portalNumber, int levelSOIndex) {
+    public void SetPortalLinkedLevelSOIndex(int portalNumber, int levelSOIndex, string savePath = "SaveFile.es3") {
+        ES3Settings settings = new ES3Settings(savePath);
         string key = "portal_" + portalNumber.ToString() + "_linkedLevelSOIndex";
-        ES3.Save(key, levelSOIndex);
+        ES3.Save(key, levelSOIndex, settings);
     }
 
     public int GetPortalLinkedLevelSOIndex(int portalNumber) {
@@ -181,8 +182,9 @@ public class MetaProgressionManager : MonoBehaviour
 
     } 
 
-    public void SetNextHubArrivalThroughPortal(bool arrivalThroughPortal) {
-        ES3.Save("nextHubArrivalThroughPortal", arrivalThroughPortal);
+    public void SetNextHubArrivalThroughPortal(bool arrivalThroughPortal, string savePath = "SaveFile.es3") {
+        ES3Settings settings = new ES3Settings(savePath);
+        ES3.Save("nextHubArrivalThroughPortal", arrivalThroughPortal, settings);
     }
 
     public bool GetNextHubArrivalThroughPortal() {
@@ -194,9 +196,10 @@ public class MetaProgressionManager : MonoBehaviour
         ES3.Save("lastHUBPortalUsedByPlayer", portalNumber);
     }
 
-    public void SetPortalUnlocked(string portalName) {
+    public void SetPortalUnlocked(string portalName, string savePath = "SaveFile.es3") {
+        ES3Settings settings = new ES3Settings(savePath);
         string key = portalName + "_Unlocked";
-        ES3.Save(key, true);
+        ES3.Save(key, true, settings);
     }
 
     public bool GetPortalUnlocked(string portalName) {
@@ -204,8 +207,9 @@ public class MetaProgressionManager : MonoBehaviour
         return ES3.Load(key, false);
     }
 
-    public void SavePlayerHubPosition(Vector3 position) {
-        ES3.Save("_playerHUBPosition", position);
+    public void SavePlayerHubPosition(Vector3 position, string savePath = "SaveFile.es3") {
+        ES3Settings settings = new ES3Settings(savePath);
+        ES3.Save("_playerHUBPosition", position, settings);
     }
 
     public Vector3 GetPlayerHubPosition() {
@@ -220,8 +224,8 @@ public class MetaProgressionManager : MonoBehaviour
         ES3.Save(key, gemAmount);
     }
 
-    public void SaveHubGemsBatch() {
-        Debug.Log("save hub gems");
+    public void SaveHubGemsBatch(string savePath = "SaveFile.es3") {
+        ES3Settings settings = new ES3Settings(savePath);
 
         var gemData = new Dictionary<string, List<Vector3>>();
         var gemRotationData = new Dictionary<string, List<Quaternion>>();
@@ -240,11 +244,13 @@ public class MetaProgressionManager : MonoBehaviour
         gemRotationData["yellowGem"] = UICurrencyManager.HubInventoryUI.GetCurrencyRotations(PlayerCurrencies.CurrencyType.yellowGem);
         gemRotationData["cyanGem"] = UICurrencyManager.HubInventoryUI.GetCurrencyRotations(PlayerCurrencies.CurrencyType.cyanGem);
 
-        ES3.Save("HubGems", gemData);
-        ES3.Save("HubGemRotations", gemRotationData);
+        ES3.Save("HubGems", gemData, settings);
+        ES3.Save("HubGemRotations", gemRotationData, settings);
     }
 
-    public void SaveLevelGemsAndHoldingEmber(float proportionToSave = 1f) {
+    public void SaveLevelGemsAndHoldingEmber(float proportionToSave = 1f, string savePath = "SaveFile.es3") {
+        ES3Settings settings = new ES3Settings(savePath);
+
         var gemData = new Dictionary<string, List<Vector3>>();
         var gemDataRotations = new Dictionary<string, List<Quaternion>>();
 
@@ -266,11 +272,11 @@ public class MetaProgressionManager : MonoBehaviour
         }
 
         // Sauvegarde batch des gemmes (uniquement l’inventaire joueur ici)
-        ES3.Save("PlayerGems", gemData);
-        ES3.Save("PlayerGemRotations", gemDataRotations);
+        ES3.Save("PlayerGems", gemData, settings);
+        ES3.Save("PlayerGemRotations", gemDataRotations, settings);
 
         // Sauvegarde séparée pour l’Ember porté
-        ES3.Save("holdingEmber", PlayerCurrencies.Instance.GetCarryingEmber());
+        ES3.Save("holdingEmber", PlayerCurrencies.Instance.GetCarryingEmber(), settings);
     }
 
     public void SaveGemPositions(PlayerCurrencies.CurrencyType gemType, List<Vector3> positions, bool playerInventory) {
@@ -312,9 +318,11 @@ public class MetaProgressionManager : MonoBehaviour
     #endregion
 
     #region HUB MERCHANTS
-    public void SetMerchantHasTalkLinesToShow(HubMerchant.HubMerchantType merchantType, bool hasTalkLinesToShow) {
+    public void SetMerchantHasTalkLinesToShow(HubMerchant.HubMerchantType merchantType, bool hasTalkLinesToShow, string savePath = "SaveFile.es3") {
+        ES3Settings settings = new ES3Settings(savePath);
+
         string key = merchantType.ToString() + "_TalkLinesToShow";
-        ES3.Save(key, hasTalkLinesToShow);
+        ES3.Save(key, hasTalkLinesToShow, settings);
     }
 
     public bool GetMerchantHasTalkLinesToShow(HubMerchant.HubMerchantType merchantType) {
@@ -344,9 +352,10 @@ public class MetaProgressionManager : MonoBehaviour
         return ES3.Load(key, defaultMerchantTextLinesSO.showShopAfterDialog);
     }
 
-    public void SetMerchantJustArrivedInHub(HubMerchant.HubMerchantType merchantType, bool justArrived) {
+    public void SetMerchantJustArrivedInHub(HubMerchant.HubMerchantType merchantType, bool justArrived, string savePath = "SaveFile.es3") {
+        ES3Settings settings = new ES3Settings(savePath);
         string key = merchantType.ToString() + "_JustArrivedInHub";
-        ES3.Save(key, justArrived);
+        ES3.Save(key, justArrived, settings);
     }
 
     public bool GetMerchantJustArrivedInHub(HubMerchant.HubMerchantType merchantType) {

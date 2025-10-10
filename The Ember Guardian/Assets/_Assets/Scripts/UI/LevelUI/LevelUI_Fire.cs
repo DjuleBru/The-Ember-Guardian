@@ -198,7 +198,6 @@ public class LevelUI_Fire : MonoBehaviour
     }
 
     private void RefreshProgressBar(int currentBarAmount) {
-        Debug.Log("RefreshProgressBar " + currentBarAmount);
         progressBarTemplate.gameObject.SetActive(true);
 
         foreach (RectTransform child in progressBarContainer) {
@@ -226,7 +225,6 @@ public class LevelUI_Fire : MonoBehaviour
     }
 
     private void RefreshProgressBarInstant(int currentBarAmount) {
-        Debug.Log("RefreshProgressBar " + currentBarAmount);
         progressBarTemplate.gameObject.SetActive(true);
 
         foreach (RectTransform child in progressBarContainer) {

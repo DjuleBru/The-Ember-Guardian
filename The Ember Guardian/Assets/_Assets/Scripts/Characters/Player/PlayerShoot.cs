@@ -1375,7 +1375,7 @@ public class PlayerShoot : MonoBehaviour
     #endregion
 
     public void SaveAllGunStats() {
-        foreach(Gun gun in allGunsList) {
+        foreach (Gun gun in allGunsList) {
             gun.SaveGunStatModifierLevels();
         }
     }

@@ -97,6 +97,8 @@ public class PlayerCurrencies : MonoBehaviour
         if(carryingEmber) {
 
             emberHoldPosition.gameObject.SetActive(true);
+
+            if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(CurrencyType.ember).Count != 0) return;
             UICurrencyManager.PlayerInventoryUI.AddCurrencyInBag(CurrencyType.ember);
 
         } else {

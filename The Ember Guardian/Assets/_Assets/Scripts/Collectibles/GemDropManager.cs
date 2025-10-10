@@ -37,9 +37,9 @@ public class GemDropManager : MonoBehaviour
         isHubScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB;
         isLevelScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level;
 
-        baseGemDropPool = LevelManager.Instance.GetLevelSO().gemDropPool;
 
         if (isLevelScene) {
+            baseGemDropPool = LevelManager.Instance.GetLevelSO().gemDropPool;
             if (LevelManager.Instance.GetLevelSO().unlocksNewGemType) {
                 List<PlayerCurrencies.CurrencyType> newGemTypeList = LevelManager.Instance.GetLevelSO().newGemTypeUnlockedByLevelList;
 

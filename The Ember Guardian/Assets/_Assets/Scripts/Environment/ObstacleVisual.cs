@@ -18,6 +18,7 @@ public class ObstacleVisual : MonoBehaviour
     }
 
     private void Obstacle_OnObstacleBuilt(object sender, System.EventArgs e) {
+        obstacleVisualGameObject.SetActive(true);
         obstacleAnimator.SetTrigger("Build");
         obstacleUIGameObject.SetActive(false);
 

@@ -51,7 +51,7 @@ public class Obstacle : MonoBehaviour {
         payCurrencyUI = GetComponent<PayCurrencyUI>();
         InitializeOrbTemplateList();
 
-        if(obstacleSolidCollider != null) {
+        if (obstacleSolidCollider != null) {
             obstacleSolidCollider.enabled = false;
         }
     }
@@ -72,6 +72,7 @@ public class Obstacle : MonoBehaviour {
     }
 
     public virtual void BuildObstacle(bool triggerSFX = true) {
+
         foreach(Collider2D collider in blockingColliders) {
               collider.enabled = false;
         }
@@ -85,7 +86,14 @@ public class Obstacle : MonoBehaviour {
         SetTriggerExit();
     }
 
+
     public void InvokeObstacleBuiltEvents(bool builtFromGame = true) {
+        StartCoroutine(InvokeObstacleBuiltEventsAfterFrame(builtFromGame));
+    }
+
+    private IEnumerator InvokeObstacleBuiltEventsAfterFrame(bool builtFromGame = true) {
+        yield return new WaitForEndOfFrame();
+
         OnObstacleBuilt?.Invoke(this, new OnObstacleBuiltEventArgs {
             builtFromGame = builtFromGame
         });

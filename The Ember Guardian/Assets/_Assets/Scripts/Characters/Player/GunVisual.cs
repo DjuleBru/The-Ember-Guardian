@@ -44,6 +44,7 @@ public class GunVisual : MonoBehaviour
         gun.OnPerfectQTEDamageBuffEnded += Gun_OnPerfectQTEDamageBuffEnded;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
+        Player.Instance.OnPlayerRespawnEnded += Player_OnPlayerRespawnEnded;
 
         PlayerShoot.Instance.OnBulletsChanged += PlayerShoot_OnClipsChanged;
         PlayerShoot.Instance.OnPlayerReloadHandEnded += PlayerShoot_OnPlayerReloadHandEnded;
@@ -213,6 +214,10 @@ public class GunVisual : MonoBehaviour
     }
 
     protected void Player_OnPlayerRespawned(object sender, System.EventArgs e) {
+
+    }
+
+    private void Player_OnPlayerRespawnEnded(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
         gunVisualGameObject.SetActive(true);
         armGameObject.SetActive(true);

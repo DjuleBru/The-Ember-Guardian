@@ -318,9 +318,9 @@ public class Portal : MonoBehaviour
         playerOpenedPortalUI = isOpen;
     }
 
-    public void SetPortalUnlockedInSave() {
-        if(portalUnlocked) {
-            MetaProgressionManager.Instance.SetPortalUnlocked(gameObject.name);
+    public void SetPortalUnlockedInSave(string savePath = "SaveFile.es3") {
+        if (portalUnlocked) {
+            MetaProgressionManager.Instance.SetPortalUnlocked(gameObject.name, savePath);
         }
     }
 

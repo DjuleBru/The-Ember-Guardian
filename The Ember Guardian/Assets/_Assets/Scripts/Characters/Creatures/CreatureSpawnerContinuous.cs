@@ -14,6 +14,7 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
     protected float spawnTimer;
 
     private bool dead;
+    protected bool loaded = true;
 
     public event EventHandler OnSpawnerDamaged;
     public event EventHandler OnSpawnerDied;
@@ -28,9 +29,15 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
 
     protected override void Start() {
         spawnTimer = 1f;
+
+        if(SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+            loaded = false;
+        }
     }
 
+
     protected void Update() {
+        if (!loaded) return;
         if (dead) return;
         if (!canSpawnMobsAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) return;
 
@@ -134,12 +141,16 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
         });
     }
 
-    public void SetDead(bool triggerDeathEvent = false) {
+    public void SetDead(bool setDeadFromLoadLevel = false) {
         dead = true;
 
-        if(triggerDeathEvent) {
+        if(setDeadFromLoadLevel) {
+            GetComponent<Collider2D>().enabled = false;
             OnSpawnerDied?.Invoke(this, EventArgs.Empty);
         }
+    }
+    public void SetLoaded() {
+        loaded = true;
     }
 
     public void SetCanSpawnAtNight(bool canSpawn) {

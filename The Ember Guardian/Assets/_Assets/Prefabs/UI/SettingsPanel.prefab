@@ -7758,7 +7758,7 @@ GameObject:
   - component: {fileID: 7426848538133612428}
   - component: {fileID: 1498680834671134605}
   m_Layer: 5
-  m_Name: Interact
+  m_Name: Reload
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7811,7 +7811,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Interact
+  m_text: Reload
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 936e06df7aac60142948329aab0cde98, type: 2}
   m_sharedMaterial: {fileID: 6846190248783435760, guid: 936e06df7aac60142948329aab0cde98, type: 2}
@@ -7892,7 +7892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizationKey: menu_interact
+  localizationKey: menu_reload
 --- !u!1 &1498940486541883891
 GameObject:
   m_ObjectHideFlags: 0
@@ -25897,7 +25897,7 @@ GameObject:
   - component: {fileID: 6025026779301988336}
   - component: {fileID: 7180122069322838007}
   m_Layer: 5
-  m_Name: Dog_Back
+  m_Name: Roll
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25950,7 +25950,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Call Doggo/Back
+  m_text: Roll
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 936e06df7aac60142948329aab0cde98, type: 2}
   m_sharedMaterial: {fileID: 6846190248783435760, guid: 936e06df7aac60142948329aab0cde98, type: 2}
@@ -26031,7 +26031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizationKey: menu_callDoggo_Back
+  localizationKey: menu_roll
 --- !u!1 &5543405628071186684
 GameObject:
   m_ObjectHideFlags: 0
@@ -27981,7 +27981,7 @@ GameObject:
   - component: {fileID: 2248146485363821872}
   - component: {fileID: 3329699074666318662}
   m_Layer: 5
-  m_Name: Roll
+  m_Name: Interact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28034,7 +28034,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Roll
+  m_text: Interact
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 936e06df7aac60142948329aab0cde98, type: 2}
   m_sharedMaterial: {fileID: 6846190248783435760, guid: 936e06df7aac60142948329aab0cde98, type: 2}
@@ -28115,7 +28115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizationKey: menu_roll
+  localizationKey: menu_interact
 --- !u!1 &5965964692429043829
 GameObject:
   m_ObjectHideFlags: 0
@@ -34834,7 +34834,7 @@ GameObject:
   - component: {fileID: 518429914274087661}
   - component: {fileID: 2174356774710705420}
   m_Layer: 5
-  m_Name: Reload
+  m_Name: CallDoggo_Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34887,7 +34887,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Reload
+  m_text: Call Doggo/Back
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 936e06df7aac60142948329aab0cde98, type: 2}
   m_sharedMaterial: {fileID: 6846190248783435760, guid: 936e06df7aac60142948329aab0cde98, type: 2}
@@ -34968,7 +34968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizationKey: menu_reload
+  localizationKey: menu_callDoggo
 --- !u!1 &7316978625670463404
 GameObject:
   m_ObjectHideFlags: 0
