@@ -143,12 +143,9 @@ public class RadioButtonUI_Setting : RadioButtonUI
         }
 
         if (settingType == SettingType.ScreenMode) {
-            if (SettingsManager.Instance.GetFullScreen()) {
-                toggledText.text = LocalizationManager.Instance.GetLocalizedText("menu_fullScreen");
-            }
-            else {
-                toggledText.text = LocalizationManager.Instance.GetLocalizedText("menu_windowed");
-            }
+            SettingsManager.ScreenMode screenMode = SettingsManager.Instance.GetCurrentScreenMode();
+            string localizationKey = "menu_" + screenMode;
+            toggledText.text = LocalizationManager.Instance.GetLocalizedText(localizationKey);
         }
 
         if (settingType == SettingType.AutoToggleLight) {

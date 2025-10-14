@@ -599,22 +599,22 @@ public class UICurrencyManager : MonoBehaviour
         int i = 0;
         foreach (Vector3 position in currencyPositions) {
 
-            Currency_UI currencyUI = Instantiate(prefab, position, currencyRotations[i], currencyContainer).GetComponent<Currency_UI>();
-            currenciesInBag.Add(currencyUI);
+            if(currencyType != PlayerCurrencies.CurrencyType.ember) {
+                Currency_UI currencyUI = Instantiate(prefab, position, currencyRotations[i], currencyContainer).GetComponent<Currency_UI>();
+                currenciesInBag.Add(currencyUI);
 
-            if(isHubInventory) {
-                currencyUI.transform.localScale *= 1.5f;
-                currencyUI.PurifyGem();
-            }
-
-            if (isPlayerInventory) {
-                currencyUI.SetCurrencyLoaded();
-
-                if(currencyType == PlayerCurrencies.CurrencyType.ember) {
-                    PlayerCurrencies.Instance.SetCarryingEmber(true);
+                if (isHubInventory) {
+                    currencyUI.transform.localScale *= 1.5f;
+                    currencyUI.PurifyGem();
                 }
-            }
 
+                if (isPlayerInventory) {
+                    currencyUI.SetCurrencyLoaded();
+                }
+
+            } else {
+                PlayerCurrencies.Instance.SetCarryingEmber(true);
+            }
             i++;
         }
 

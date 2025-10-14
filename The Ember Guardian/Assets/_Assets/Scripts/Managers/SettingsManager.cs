@@ -39,6 +39,12 @@ public class SettingsManager : MonoBehaviour
         Essentials,
         Persistent,
     }
+    public enum ScreenMode {
+        Windowed,
+        MaximizedWindow,
+        Fullscreen
+    }
+
     private UIDisplayType currentUIDisplayType;
 
     private LocalizationManager.Language currentLanguage = LocalizationManager.Language.English;
@@ -46,8 +52,8 @@ public class SettingsManager : MonoBehaviour
     private bool aimAssist;
     private bool autoAlignAimWithMovement;
     private bool autoSwitchLightGun;
-    private bool controllerVibrations;
-    private bool fullScreen;
+    private bool controllerVibrations; 
+    private ScreenMode currentScreenMode = ScreenMode.Fullscreen;
     private bool autoReload;
     private bool streamerMode;
     private bool showDamageNumbers;
@@ -82,12 +88,14 @@ public class SettingsManager : MonoBehaviour
         autoAlignAimWithMovement = ES3.Load("autoAlignAimWithMovement", true, settingsSaveFileSettings);
         autoSwitchLightGun = ES3.Load("autoSwitchLightGun", true, settingsSaveFileSettings);
         controllerVibrations = ES3.Load("controllerVibrations", true, settingsSaveFileSettings);
-        fullScreen = ES3.Load("fullScreen", true, settingsSaveFileSettings);
+        currentScreenMode = ES3.Load("currentScreenMode", ScreenMode.Fullscreen, settingsSaveFileSettings);
         autoReload = ES3.Load("autoReload", true, settingsSaveFileSettings);
         currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
         streamerMode = ES3.Load("steamerMode", false, settingsSaveFileSettings);
         showDamageNumbers = ES3.Load("showDamageNumbers", true, settingsSaveFileSettings);
         waterPerspective = ES3.Load("waterPerspective", true, settingsSaveFileSettings);
+
+        ApplyScreenMode(currentScreenMode);
 
         if (settingsVersion < 0.9) {
             // Mise à jour vers la version 0.9 : autoReload passe à true
@@ -182,13 +190,49 @@ public class SettingsManager : MonoBehaviour
     }
 
     public void ChangeScreenMode() {
-        fullScreen = !fullScreen;
+        // fait tourner entre les 3 modes
+        switch (currentScreenMode) {
+            case ScreenMode.Windowed:
+                currentScreenMode = ScreenMode.MaximizedWindow;
+                break;
+            case ScreenMode.MaximizedWindow:
+                currentScreenMode = ScreenMode.Fullscreen;
+                break;
+            case ScreenMode.Fullscreen:
+                currentScreenMode = ScreenMode.Windowed;
+                break;
+        }
+
+        ApplyScreenMode(currentScreenMode);
+
+        ES3.Save("currentScreenMode", currentScreenMode, settingsSaveFileSettings);
         OnFullScreenChanged?.Invoke(this, EventArgs.Empty);
-
-        Screen.fullScreen = fullScreen;
-
-        ES3.Save("fullScreen", fullScreen, settingsSaveFileSettings);
     }
+
+    private void ApplyScreenMode(ScreenMode mode) {
+        switch (mode) {
+            case ScreenMode.Windowed:
+                Screen.fullScreenMode = FullScreenMode.Windowed;
+                Screen.fullScreen = false;
+                Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
+                break;
+
+            case ScreenMode.MaximizedWindow:
+                Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
+                Screen.fullScreen = true;
+                Screen.SetResolution(Display.main.systemWidth, Display.main.systemHeight, FullScreenMode.MaximizedWindow);
+                break;
+
+            case ScreenMode.Fullscreen:
+                Resolution native = Screen.currentResolution;
+                Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+                Screen.SetResolution(native.width, native.height, FullScreenMode.ExclusiveFullScreen);
+                break;
+        }
+    }
+
+    public ScreenMode GetCurrentScreenMode() => currentScreenMode;
+   
 
     public void ChangeAimAssist() {
         aimAssist = !aimAssist;
@@ -254,9 +298,6 @@ public class SettingsManager : MonoBehaviour
 
     public bool GetHoldToRun() {
         return holdToRun;
-    }
-    public bool GetFullScreen() {
-        return fullScreen;
     }
 
     public bool GetAutoSwitchLight() {

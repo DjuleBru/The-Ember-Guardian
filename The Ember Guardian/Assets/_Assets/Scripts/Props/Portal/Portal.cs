@@ -138,7 +138,7 @@ public class Portal : MonoBehaviour
             return;
         }
 
-        if(isHUBTeleporter && MetaProgressionManager.Instance.GetLevelUnlocked(linkedLevelSOList[0])) {
+        if(isHUBTeleporter && (MetaProgressionManager.Instance.GetLevelUnlocked(linkedLevelSOList[0]) || DEBUGMODE)) {
             OnPlayerInteractedWithPortalFromHub?.Invoke(this, EventArgs.Empty);
             return;
         }

@@ -12,16 +12,37 @@ public class DirectionIndicator : MonoBehaviour
     private float showTimer;
     private float showTime = 2f;
     private float direction;
+    private Vector3 positionToIndicate;
 
     private void Awake() {
         Instance = this;
         showHideAnimator = GetComponent<Animator>();
     }
 
+    private void Start() {
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            LevelManager.Instance.OnEndLevelPortalEnabled += LevelManager_OnEndLevelPortalEnabled;
+        }
+    }
+
+    private void LevelManager_OnEndLevelPortalEnabled(object sender, LevelManager.OnEndLevelPortalEnabledEventArgs e) {
+        Debug.Log("LevelManager_OnEndLevelPortalEnabled");
+        positionToIndicate = e.endLevelPortalPosition;
+        direction = (float)positionToIndicate.x - Player.Instance.transform.position.x;
+
+        if(direction > 0) {
+            direction = 1;
+        } else {
+            direction = -1;
+        }
+
+        ShowDirection(direction);
+    }
+
+
     private void Update() {
         if(directionIsBeingShown) {
-
-            if(GameInput.Instance.GetMovementFloatNormalized() * direction > 0) {
+            if (GameInput.Instance.GetMovementFloatNormalized() * direction > 0) {
                 showTimer += Time.deltaTime; 
                 if(showTimer > showTime) {
                     HideDirection();

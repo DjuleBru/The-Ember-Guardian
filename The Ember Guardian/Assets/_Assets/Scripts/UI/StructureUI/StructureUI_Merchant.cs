@@ -417,10 +417,10 @@ public class StructureUI_Merchant : StructureUI {
 
     protected void SwitchOpenShopInstruction(bool shopOpen) {
         if (shopOpen) {
-            openShopInstructionText.text = LocalizationManager.Instance.GetLocalizedText("menu_closeShop");
+            openShopInstructionText.text = LocalizationManager.Instance.GetLocalizedText("menu_close");
         }
         else {
-            openShopInstructionText.text = LocalizationManager.Instance.GetLocalizedText("menu_openShop");
+            openShopInstructionText.text = LocalizationManager.Instance.GetLocalizedText("menu_open");
         }
     }
 

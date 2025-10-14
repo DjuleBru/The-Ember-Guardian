@@ -34,6 +34,10 @@ public class LevelManager : MonoBehaviour
     public event EventHandler OnLevelSuccess;
     public event EventHandler OnLevelFailed;
     public event EventHandler OnLevelLimitsChanged;
+    public event EventHandler<OnEndLevelPortalEnabledEventArgs> OnEndLevelPortalEnabled;
+    public class OnEndLevelPortalEnabledEventArgs : EventArgs {
+        public Vector3 endLevelPortalPosition;
+    }
 
     private void Awake() {
         Instance = this;
@@ -268,6 +272,9 @@ public class LevelManager : MonoBehaviour
     private IEnumerator EnableEndLevelPortal(float delayToEnable) {
         yield return new WaitForSeconds(delayToEnable);
         endLevelPortal.gameObject.SetActive(true);
+        OnEndLevelPortalEnabled?.Invoke(this, new OnEndLevelPortalEnabledEventArgs {
+            endLevelPortalPosition = endLevelPortal.transform.position
+        });
     }
 
     [Button]
