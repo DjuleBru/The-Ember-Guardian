@@ -26,6 +26,7 @@ public class ParticleCollision : MonoBehaviour
     public static event EventHandler<OnBulletHitEventArgs> OnAnyPlayerBulletHitEnemy;
     public static event EventHandler<OnBulletHitEventArgs> OnAnyPlayerBulletHitEnemyCrit;
     public static event EventHandler OnAnyParticleBouncedOff;
+    public static event EventHandler OnAnyParticleHitBarricade;
 
     public class OnBulletHitEventArgs {
         public Vector3 bulletHitPosition;
@@ -106,6 +107,11 @@ public class ParticleCollision : MonoBehaviour
                 Projectile projectileHit = other.GetComponent<Projectile>();
                 if (projectileHit != null) {
                     projectileHit.TryDestroyProjectile();
+                }
+
+                Barricade barricade = other.GetComponentInParent<Barricade>();
+                if (barricade != null) {
+                    OnAnyParticleHitBarricade?.Invoke(this, EventArgs.Empty);
                 }
 
                 if (groundDestroysBullet) {

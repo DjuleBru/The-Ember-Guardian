@@ -58,7 +58,6 @@ public class StructureUI_SpecialTower : StructureUI
     }
 
     private void RefreshAmmoBar() {
-        Debug.Log("RefreshAmmoBar");
         foreach (Transform child in ammoTickContainer) {
             if (child == ammoTickTemplate) continue;
             Destroy(child.gameObject);

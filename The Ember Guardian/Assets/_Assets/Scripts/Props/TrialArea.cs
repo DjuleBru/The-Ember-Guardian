@@ -72,10 +72,8 @@ public class TrialArea : MonoBehaviour
     }
 
     private void Player_OnPlayerDied(object sender, EventArgs e) {
-        if (trialCompleted) return;
-        if(trialStarted) {
-            FailTrial();
-        }
+        if (!trialStarted) return;
+        FailTrial();
     }
 
     private void Spawner_OnMobSpawned(object sender, MobSpawner.OnMobSpawnedEventArgs e) {
@@ -111,6 +109,7 @@ public class TrialArea : MonoBehaviour
         OnTrialPaid?.Invoke(this, EventArgs.Empty);
         OnAnyTrialPaid?.Invoke(this, EventArgs.Empty);
         DayNightManager.Instance.SetCyclePaused(true, true);
+        currentSpawner = 0;
 
         yield return new WaitForSeconds(.5f);
         OnTrialWallsLifted?.Invoke(this, EventArgs.Empty);

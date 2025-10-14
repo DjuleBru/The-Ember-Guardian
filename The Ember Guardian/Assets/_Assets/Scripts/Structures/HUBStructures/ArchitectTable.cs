@@ -28,6 +28,7 @@ public class ArchitectTable : MonoBehaviour
 
     [SerializeField] private GameObject activeHubMerchantGameObject;
     [SerializeField] private GameObject inActiveHubMerchantGameObject;
+    [SerializeField] private GameObject allStructureBlueprintsParent;
     private HubMerchant architectTableHubMerchant;
 
     private void Awake() {
@@ -35,6 +36,11 @@ public class ArchitectTable : MonoBehaviour
 
         architectTableHubMerchant= GetComponent<HubMerchant>();
         LoadStats();
+
+        AddStructureBlueprint[] allStructureBlueprints = allStructureBlueprintsParent.GetComponentsInChildren<AddStructureBlueprint>();
+        foreach(AddStructureBlueprint blueprint in allStructureBlueprints) {
+            blueprint.SubscribeToNewItemsEvents();
+        }
     }
 
     public void SaveStats() {
@@ -64,8 +70,17 @@ public class ArchitectTable : MonoBehaviour
     }
 
     private void LoadStats() {
+        //Debug.Log("ARCHITECT TABLE LOAD STATS");
         if (!ES3.KeyExists("ArchitectTableStats")) {
             // Si aucune sauvegarde, on garde les valeurs initiales
+            maxAmmoCrafterAmount = initialMaxAmmoCrafterAmount;
+            maxSecondaryFireAmount = initialMaxSecondaryFireAmount;
+            maxTrapSlotsAmount = initialMaxTrapSlotsAmount;
+            maxSniperTowerAmount = initialMaxSniperTowerAmount;
+            maxMachineGunTowerAmount = initialMaxMachineGunTowerAmount;
+            maxMortarPositionsAmount = initialMaxMortarPositionsAmount;
+            maxTowerAmount = initialMaxTowerAmount;
+            maxFastTravelTP = initialMaxFastTravelTP;
             return;
         }
 
@@ -82,6 +97,9 @@ public class ArchitectTable : MonoBehaviour
         maxFastTravelTP = loadedStats.ContainsKey("maxFastTravelTP") ? Convert.ToInt32(loadedStats["maxFastTravelTP"]) : initialMaxFastTravelTP;
     }
 
+    public HubMerchant GetArchitectTableHubMerchant() {
+        return architectTableHubMerchant;
+    }
 
     public void SetArchitectTableUnlocked() {
         architectTableUnlocked = true;

@@ -15,6 +15,7 @@ public class PayCurrencyUI : MonoBehaviour
     protected WorkerCurrencies workerCurrenciesInteracting;
 
     public event EventHandler OnCurrencyPaymentSuccess;
+    public event EventHandler OnCurrencyPaymentFailedOrCanceled;
     public event EventHandler<OnSingleOrbFilledEventArgs> OnSingleCurrencyPaid;
     public static event EventHandler<OnSingleOrbFilledEventArgs> OnAnySingleCurrencyPaid;
 
@@ -46,7 +47,6 @@ public class PayCurrencyUI : MonoBehaviour
         if (playerInteracting == isInteracting) return;
 
         PlayerCurrencies.CurrencyType currencyTypeToPay = currencyTemplateWorldUIList[0].GetCurrencyTypeToPay();
-        playerInteracting = isInteracting;
         currencyIndex = 0;
 
         if (!isInteracting) {
@@ -61,9 +61,13 @@ public class PayCurrencyUI : MonoBehaviour
                 StopCoroutine(payingCurrencyContinuousCoroutine);
             }
 
+            OnCurrencyPaymentFailedOrCanceled?.Invoke(this, EventArgs.Empty);
+
         } else {
             UICurrencyManager.PlayerInventoryUI.SetPayingCurrency(this, currencyTypeToPay, true);
         }
+
+        playerInteracting = isInteracting;
     }
 
     public void SetPlayerInteractingContinuous(float delayBetweenDrops) {
@@ -163,7 +167,6 @@ public class PayCurrencyUI : MonoBehaviour
     }
 
     public bool GetPlayerInteracting() {
-        Debug.Log("GetPlayerInteracting " + playerInteracting);
         return playerInteracting;
     }
 

@@ -12,6 +12,8 @@ public class StructureUI_Merchant : StructureUI {
     protected Merchant merchant;
     [SerializeField] protected PayCurrencyUI payCurrencyUI;
     [SerializeField] protected Animator merchantUIAnimator;
+    [SerializeField] protected Animator openShopInstructionAnimator;
+    [SerializeField] protected TextMeshProUGUI openShopInstructionText;
 
     [SerializeField] protected RectTransform allMerchantItemUIContainer;
     [SerializeField] protected RectTransform bigMerchantItemUIContainer;
@@ -69,6 +71,7 @@ public class StructureUI_Merchant : StructureUI {
 
     protected void Merchant_OnPlayerStartedInteractedWithMerchant(object sender, System.EventArgs e) {
         ShowItemsToSale(true);
+        ShowOpenShopInstruction(true);
         SelectFirstAvailableItem();
         UpdateSelectedItemUI();
         UpdateDescriptionPanelVisuals();
@@ -388,6 +391,7 @@ public class StructureUI_Merchant : StructureUI {
         selectedRow = 0;
         ClampSelection();
     }
+
     protected void ShowItemsToSale(bool show) {
         if(show) {
             merchantUIAnimator.ResetTrigger("Hide");
@@ -396,7 +400,30 @@ public class StructureUI_Merchant : StructureUI {
             merchantUIAnimator.ResetTrigger("Show");
             merchantUIAnimator.SetTrigger("Hide");
         }
+
+        SwitchOpenShopInstruction(show);
     }
+
+    protected void ShowOpenShopInstruction(bool show) {
+        if (show) {
+            openShopInstructionAnimator.ResetTrigger("Hide");
+            openShopInstructionAnimator.SetTrigger("Show");
+        }
+        else {
+            openShopInstructionAnimator.ResetTrigger("Show");
+            openShopInstructionAnimator.SetTrigger("Hide");
+        }
+    }
+
+    protected void SwitchOpenShopInstruction(bool shopOpen) {
+        if (shopOpen) {
+            openShopInstructionText.text = LocalizationManager.Instance.GetLocalizedText("menu_closeShop");
+        }
+        else {
+            openShopInstructionText.text = LocalizationManager.Instance.GetLocalizedText("menu_openShop");
+        }
+    }
+
 
     void ClampSelection() {
         int maxRow = GetCurrentColumn().Count - 1;
@@ -479,5 +506,19 @@ public class StructureUI_Merchant : StructureUI {
         Debug.LogWarning("Index hors des limites dans GetGridPosFromIndex");
         return new Vector2Int(0, 0);  // Si l'index est invalide
     }
+    protected override void Structure_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
+        base.Structure_OnPlayerTriggeredOut(sender, e);
 
+        if (structure.GetPlayerInTriggerArea()) return;
+        if (!merchant.GetPlayerPaidToRefreshShop()) return;
+        ShowOpenShopInstruction(false);
+    }
+
+    protected override void Structure_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        base.Structure_OnPlayerTriggeredIn(sender, e);
+
+        if (!merchant.GetPlayerPaidToRefreshShop()) return;
+        ShowOpenShopInstruction(true);
+
+    }
 }

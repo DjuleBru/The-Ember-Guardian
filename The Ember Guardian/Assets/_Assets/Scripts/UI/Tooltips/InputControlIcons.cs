@@ -28,7 +28,7 @@ public class InputControlIcons : MonoBehaviour
         EditCampDeselect,
         CollectCurrencyFromContainer,
         CommandWorkers,
-        RefundGun,
+        RefundWeapon,
     }
 
 
@@ -278,7 +278,7 @@ public class InputControlIcons : MonoBehaviour
             if (control == Control.EditCampSelect) {
                 spriteList.Add(gamepadASprite);
             }
-            if (control == Control.RefundGun) {
+            if (control == Control.RefundWeapon) {
                 spriteList.Add(gamepadYSprite);
             }
         } else {
@@ -438,7 +438,7 @@ public class InputControlIcons : MonoBehaviour
                     spriteList.Add(keyboardQuestionMarkSprite);
                 }
             }
-            if (control == Control.RefundGun) {
+            if (control == Control.RefundWeapon) {
                 string roll = GameInput.Instance.GetBindingText(GameInput.Binding.editCampDeselect);
 
                 if (keyboardIconLookup.TryGetValue(roll, out Sprite icon1)) {

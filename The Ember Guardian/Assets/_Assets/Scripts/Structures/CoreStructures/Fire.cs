@@ -685,8 +685,8 @@ public class Fire : Structure, IDamageable {
         }
 
         base.OnTriggerExit2D(collision);
-
     }
+
     #region GET PARAMETERS
     public State GetState() {
         return state;

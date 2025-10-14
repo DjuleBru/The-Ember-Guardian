@@ -55,6 +55,7 @@ public class VideoTipUI : MonoBehaviour
         dontShowDebugMode = DebugManager.Instance.GetDebugMode_DontShowVideoTips();
 
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
+        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
         videoTipUIMainPanel.SetActive(false);
         videoTipUIManualPanel.SetActive(false);
         replayTipButtonGO.GetComponent<Button>().interactable = false;
@@ -62,6 +63,11 @@ public class VideoTipUI : MonoBehaviour
         TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
         resumeButtonText.font = font;
         tipName.font = font;
+    }
+
+    private void GameInput_OnPlayerInteractPerformed(object sender, EventArgs e) {
+        if (!panelOpen) return;
+        SkipTipOrResumeButton();
     }
 
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {

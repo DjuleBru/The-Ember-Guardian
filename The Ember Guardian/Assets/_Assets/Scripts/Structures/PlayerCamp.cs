@@ -166,9 +166,11 @@ public class PlayerCamp : MonoBehaviour
         if (ammoCrafterBuiltAtStart) {
             initialStructureLocationsBuilt.Add(ammoCrafter1Location);
         }
+
         if (researchTowerBuiltAtStart) {
             initialStructureLocationsBuilt.Add(researchTowerLocation);
         }
+
         if (barricades1BuiltAtStart) {
             initialStructureLocationsBuilt.Add(rightBarricade1);
             initialStructureLocationsBuilt.Add(leftBarricade1);
@@ -221,7 +223,7 @@ public class PlayerCamp : MonoBehaviour
         initialFireLit = true;
 
         if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
-
+        Debug.Log("BuildStructuresUnlockedCoroutine");
         StartCoroutine(BuildStructuresUnlockedCoroutine(.5f));
 
         if (blockStructureUnlocks) return;
@@ -250,6 +252,7 @@ public class PlayerCamp : MonoBehaviour
         yield return new WaitForSeconds(delayBetweenBuildsRandomized);
 
         foreach (StructureLocation location in initialStructureLocationsBuilt) {
+            if (location == null) continue;
             Structure structure = location.BuildStructure();
             initialStructures.Add(structure);
 
@@ -472,6 +475,8 @@ public class PlayerCamp : MonoBehaviour
             if (newLocation.GetStructureSOToBuild().structureCategory == StructureSO.StructureCategory.tower)
                 towerLocations.Add(newLocation);
         }
+
+        StructuresManager.Instance.RemoveStructureLocation(oldLocation);
     }
 
     public bool GetHasSkillMerchantInLayoutAndUnlocked() {

@@ -39,13 +39,19 @@ public class PortalVisual : MonoBehaviour
 
     private void Start() {
         portalFloorFrontGameObject.SetActive(false);
+        SetPortalUnlockedVisals();
+    }
+
+    private IEnumerator SetPortalUnlockedVisals() {
+        yield return new WaitForEndOfFrame();
 
         if (portal.GetIsHUBTeleporter()) {
             if (!portal.GetPortalUnlocked()) {
+                Debug.Log(portal + " GetPortalUnlocked " + portal.GetPortalUnlocked());
                 portalFloorBackGameObject.SetActive(false);
             }
 
-            if(portal.GetPortalHasUnlockedUnfinishedLevels()) {
+            if (portal.GetPortalHasUnlockedUnfinishedLevels()) {
                 TurnOnSideLights(true);
             }
         }

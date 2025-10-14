@@ -108,6 +108,7 @@ public class GunSpotLight : MonoBehaviour
         StartCoroutine(RefreshLaserRangeAfterFrame());
     }
 
+
     private void LateUpdate() {
         aiming = PlayerAim.Instance.GetAimInputGamepad() != Vector2.zero;
 
@@ -199,6 +200,8 @@ public class GunSpotLight : MonoBehaviour
     }
 
     private void RefreshLaserLightActiveWithInput() {
+        if (gunLaserLight == null) return;
+
         if (GameInput.Instance.IsUsingGamepad()) {
             laserLightActiveWithInput = true;
         }
@@ -462,6 +465,7 @@ public class GunSpotLight : MonoBehaviour
     }
 
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
 
         lightActive = false;
         gunSpotLight.enabled = false;

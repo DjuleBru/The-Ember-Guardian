@@ -41,6 +41,7 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO skillsMerchantTip;
     [SerializeField] private VideoTipSO secondaryFireTip;
     [SerializeField] private VideoTipSO savingTip;
+    [SerializeField] private VideoTipSO refundGunsTip;
 
     private bool isLevelScene;
     private bool isTutorialScene;
@@ -81,6 +82,7 @@ public class VideoTipManager : MonoBehaviour
     private bool secondaryFireTipShown;
     private bool trialTipShown;
     private bool savingTipShown;
+    private bool refundGunsTipShown;
 
     private bool showGunManagementTip;
     private bool showEngineersAdvancedTip;
@@ -259,9 +261,9 @@ public class VideoTipManager : MonoBehaviour
         HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
     }
+
     private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, EventArgs e) {
         
-
         if (sender is HUBMerchantItem_GunMerchantItem) {
             HUBMerchantItem_GunMerchantItem gunItem = sender as HUBMerchantItem_GunMerchantItem;
             if (gunManagementTipShown) return;
@@ -390,12 +392,23 @@ public class VideoTipManager : MonoBehaviour
         if (!hubMerchant.GetMerchantUnlocked()) return;
 
         if(hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.GunMerchant) {
-            if (gunTipShown) return;
+            if (!gunTipShown) {
+                VideoTipUI.Instance.PlayTipSO(gunTip, 0f);
 
-            VideoTipUI.Instance.PlayTipSO(gunTip, 0f);
+                gunTipShown = true;
+                ES3.Save("gunTipShown", true);
+            };
 
-            gunTipShown = true;
-            ES3.Save("gunTipShown", true);
+            if(!refundGunsTipShown) {
+                if(PlayerShoot.Instance.GetUnlockedGunSOList().Count > 3) {
+                    VideoTipUI.Instance.PlayTipSO(refundGunsTip, 0f);
+
+                    refundGunsTipShown = true;
+                    ES3.Save("refundGunsTipShown", true);
+                }
+              
+            }
+
         }
 
         if (hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.ArchitectTable) {
@@ -559,6 +572,7 @@ public class VideoTipManager : MonoBehaviour
         secondaryFireTipShown = ES3.Load("secondaryFireTipShown", false);
         trialTipShown = ES3.Load("trialTipShown", false);
         savingTipShown = ES3.Load("savingTipShown", false);
+        refundGunsTipShown = ES3.Load("refundGunsTipShown", false);
     }
 
     public bool GetHuntingFlagTipShown() {

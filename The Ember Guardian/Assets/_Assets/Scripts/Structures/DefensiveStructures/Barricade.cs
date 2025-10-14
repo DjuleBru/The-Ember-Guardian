@@ -57,7 +57,7 @@ public class Barricade : Structure, IDamageable {
         OnAnyBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
         OnBarricadeBreached?.Invoke(this, EventArgs.Empty);
     }
-
+    
     public Transform GetProjectileTarget() {
         return transform;
     }
@@ -192,8 +192,7 @@ public class Barricade : Structure, IDamageable {
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {
-        base.OnTriggerEnter2D(collision);
-        
+
         if (collision.gameObject.GetComponentInParent<Fire>()) {
             OnFireLightTriggeredIn?.Invoke(this, EventArgs.Empty);
         }

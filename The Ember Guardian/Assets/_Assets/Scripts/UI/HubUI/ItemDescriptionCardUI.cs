@@ -196,6 +196,8 @@ public class ItemDescriptionCardUI : MonoBehaviour
         if (cyanGem == 0) {
             cyanGemCostGO.SetActive(false);
         }
+
+       
     }
 
     private void RefreshItemStatDescription(List<string> itemStatDescriptionList, List<string> itemStatList, List<bool> itemStatModifiersBools) {
@@ -233,6 +235,16 @@ public class ItemDescriptionCardUI : MonoBehaviour
         }
 
         itemStatDescriptionTemplate.gameObject.SetActive(false);
+    }
+
+    public void ChestDescriptionCardFree(int greenGem, int redGem, int blueGem, int yellowGem, int purpleGem, int cyanGem) {
+        if (greenGem == 0 && redGem == 0 && blueGem == 0 && yellowGem == 0 && purpleGem == 0 && cyanGem == 0) {
+            SetGreenFontMaterial(maxLevelText);
+            maxLevelText.text = LocalizationManager.Instance.GetLocalizedText("card_free");
+            DisableGemCostGO();
+
+            maxLevelText.gameObject.SetActive(true);
+        }
     }
 
     public void SetDescriptionCardMaxlevel() {

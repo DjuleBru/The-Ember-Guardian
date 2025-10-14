@@ -19,18 +19,22 @@ public class TrialAreaVisual : MonoBehaviour
     }
 
     private void TrialArea_OnTrialAreaLoaded_Completed(object sender, System.EventArgs e) {
+        animator.ResetTrigger("Show");
         animator.SetTrigger("Hide");
     }
 
     private void TrialArea_OnTrialPaid(object sender, System.EventArgs e) {
+        animator.ResetTrigger("Show");
         animator.SetTrigger("Hide");
     }
 
     private void TrialArea_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
+        animator.ResetTrigger("Hide");
         animator.SetTrigger("Show");
     }
 
     private void TrialArea_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
+        animator.ResetTrigger("Show");
         animator.SetTrigger("Hide");
     }
 }

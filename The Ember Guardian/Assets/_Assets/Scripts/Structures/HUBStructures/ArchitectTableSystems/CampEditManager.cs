@@ -469,7 +469,7 @@ public class CampEditManager : MonoBehaviour {
 
     public void LoadCampLayout() {
         savedLayout = ES3.Load("campLayout", new List<StructurePlacementData>());
-        Debug.Log("LoadCampLayout " + savedLayout.Count);
+        //Debug.Log("LoadCampLayout " + savedLayout.Count);
     }
 
     public bool GetCampLayoutCustomized() {

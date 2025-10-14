@@ -79,6 +79,7 @@ public class Structure : MonoBehaviour {
         }
 
         payCurrencyUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
+        payCurrencyUI.OnCurrencyPaymentFailedOrCanceled += PayCurrencyUI_OnCurrencyPaymentFailedOrCanceled;
 
         RefreshStructureUpgradeInteraction();
 
@@ -91,24 +92,22 @@ public class Structure : MonoBehaviour {
     }
 
     protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
-        payCurrencyUI.SetPlayerInteracting(false);
-        payCurrencyUI.StopWorkerInteraction();
-        isBeingRefilledByEngineer = false;
 
         if (currentStructureInteractionType == StructureInteractionType.primaryFunction) {
             TriggerStructurePrimaryFunction();
-            return;
         }
 
         if (currentStructureInteractionType == StructureInteractionType.secondaryFunction) {
             TriggerStructureSecondaryFunction();
-            return;
         }
 
         if (currentStructureInteractionType == StructureInteractionType.upgrade) {
             UpgradeStructure();
-            return;
         }
+
+        payCurrencyUI.SetPlayerInteracting(false);
+        payCurrencyUI.StopWorkerInteraction();
+        isBeingRefilledByEngineer = false;
     }
 
     protected virtual void TriggerStructurePrimaryFunction() {
@@ -122,6 +121,7 @@ public class Structure : MonoBehaviour {
     }
 
     protected virtual void UpgradeStructure() {
+
         structureLevel++;
         RefreshStructureUpgradeInteraction();
 
@@ -242,6 +242,7 @@ public class Structure : MonoBehaviour {
     protected virtual void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
         if (Player.Instance.GetDead()) return;
+        if (Player.Instance.GetInPortalTriggerArea()) return;
 
         OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
@@ -255,13 +256,26 @@ public class Structure : MonoBehaviour {
     protected virtual void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
-        OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
-        OnAnyPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+        if (!payCurrencyUI.GetPlayerInteracting()) {
+            OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+            OnAnyPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+        };
+
         playerInTriggerArea = false;
-        payCurrencyUI.SetPlayerInteracting(false);
 
         Player.Instance.SetInPayCurrencyArea(false);
     }
+
+    protected void PayCurrencyUI_OnCurrencyPaymentFailedOrCanceled(object sender, EventArgs e) {
+        if (playerInTriggerArea) return;
+
+        OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+        OnAnyPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+        playerInTriggerArea = false;
+
+        Player.Instance.SetInPayCurrencyArea(false);
+    }
+
 
     public void AssignEngineerRefill(EngineerJob engineerJob) {
         if (engineersAssignedRefilling.Contains(engineerJob)) return;
@@ -362,7 +376,6 @@ public class Structure : MonoBehaviour {
     }
 
     protected virtual void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
-        if (!playerInTriggerArea) return;
         if (!playerCanInteract) return;
         if (!playerInteracting) return;
 
@@ -419,6 +432,7 @@ public class Structure : MonoBehaviour {
     }
 
     protected virtual void ActivateStructurePrimaryFunctionInteraction(bool active) {
+        //Debug.Log("ActivateStructurePrimaryFunctionInteraction " + active);
         if (active) {
             if (!activeStructureInteractionsTypeList.Contains(StructureInteractionType.primaryFunction)) {
                 activeStructureInteractionsTypeList.Add(StructureInteractionType.primaryFunction);
@@ -519,6 +533,9 @@ public class Structure : MonoBehaviour {
         OnWorkerStartedRefilling?.Invoke(this, EventArgs.Empty);
     }
 
+    public PayCurrencyUI GetPayCurrencyUI() {
+        return payCurrencyUI;
+    }
     public void SetAsWorldStructure(float scaleX) {
         Debug.Log(this + " SetAsWorldStructure");
         isWorldStructure = true;

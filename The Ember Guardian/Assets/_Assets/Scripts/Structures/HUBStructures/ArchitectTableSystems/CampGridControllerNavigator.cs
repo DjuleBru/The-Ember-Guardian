@@ -87,7 +87,6 @@ public class CampGridControllerNavigator : MonoBehaviour
     }
 
     private void HighlightCurrent() {
-        Debug.Log("HighlightCurrent " + currentIndex);
         Vector2Int gridPos = new Vector2Int(currentIndex, 0);
 
         GridVisualUnit gridUnit = CampGrid.Instance.GetGridVisualAt(gridPos);

@@ -76,8 +76,8 @@ public class GunAnimator : MonoBehaviour
 
     protected void PlayerShoot_OnPlayerCooldownAnimationTrigger(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
-        StartCoroutine(TriggerCDAnimationAfterDelay(gun.GetGunSO().shotCooldownAnimationTriggerTime));
 
+        StartCoroutine(TriggerCDAnimationAfterDelay(gun.GetGunSO().shotCooldownAnimationTriggerTime));
     }
 
     protected IEnumerator TriggerCDAnimationAfterDelay(float delay) {

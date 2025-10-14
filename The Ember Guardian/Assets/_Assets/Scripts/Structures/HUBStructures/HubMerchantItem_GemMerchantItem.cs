@@ -23,5 +23,4 @@ public class HubMerchantItem_GemMerchantItem : HubMerchantItem
         }
 
     }
-
 }

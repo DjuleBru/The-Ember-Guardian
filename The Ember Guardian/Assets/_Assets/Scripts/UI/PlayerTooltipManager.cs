@@ -19,6 +19,7 @@ public class PlayerTooltipManager : MonoBehaviour
     private bool selectOtherGunTooltipShown;
     private bool selectOtherGunTooltipBeingShown;
     private bool huntingFlagTooFarShown;
+    private bool shootBarricadeShown;
     private bool secondaryWeaponAbilityShown;
 
     private int tryReloadAttemptAmount;
@@ -63,10 +64,12 @@ public class PlayerTooltipManager : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReload += PlayerShoot_OnPlayerReload;
         PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
         HuntingFlag_PlayerDefined.OnHuntingFlagTooFarCarriedByPlayer += HuntingFlag_PlayerDefined_OnHuntingFlagTooFar;
+        ParticleCollision.OnAnyParticleHitBarricade += ParticleCollision_OnAnyParticleHitBarricade;
 
         gunSOAbilityPreparedList = ES3.Load("gunSOAbilityPreparedList", new List<GunSO>());
         selectOtherGunTooltipShown = ES3.Load("selectOtherGunTooltipShown", false);
         huntingFlagTooFarShown = ES3.Load("huntingFlagTooFarShown", false);
+        shootBarricadeShown = ES3.Load("shootBarricadeShown", false);
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
 
@@ -95,6 +98,13 @@ public class PlayerTooltipManager : MonoBehaviour
             RocketLauncherText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
             RocketLauncherText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_RocketLauncherText2");
         }
+    }
+
+    private void ParticleCollision_OnAnyParticleHitBarricade(object sender, System.EventArgs e) {
+        if (shootBarricadeShown) return;
+
+        PlayerTalkUI.Instance.ShowTalkText(LocalizationManager.Instance.GetLocalizedText("tooltip_shootBarricade"), 5f);
+        ES3.Save("shootBarricadeShown", true);
     }
 
     private void PlayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
@@ -272,5 +282,6 @@ public class PlayerTooltipManager : MonoBehaviour
         PlayerShoot.Instance.OnPlayerSwappedGun -= PlayerShoot_OnPlayerSwappedGun;
         HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
         HuntingFlag_PlayerDefined.OnHuntingFlagTooFarCarriedByPlayer -= HuntingFlag_PlayerDefined_OnHuntingFlagTooFar;
+        ParticleCollision.OnAnyParticleHitBarricade -= ParticleCollision_OnAnyParticleHitBarricade;
     }
 }

@@ -548,11 +548,13 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     public void BuffMoveSpeed(float buffAmount) {
+        //Debug.Log("BuffMoveSpeed " + buffAmount);
         moveSpeed *= buffAmount;
         OnPlayerMovespeedChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void DebuffMoveSpeed(float buffAmount) {
+        //Debug.Log("DebuffMoveSpeed " + buffAmount);
         moveSpeed /= buffAmount;
         OnPlayerMovespeedChanged?.Invoke(this, EventArgs.Empty);
     }

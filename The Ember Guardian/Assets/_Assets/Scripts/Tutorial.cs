@@ -45,6 +45,7 @@ public class Tutorial : MonoBehaviour
     private bool reloadTooltipHidden;
     private bool saveAmmoTooltipShown;
     private bool climbTowerTooltipShown;
+    private bool buildTowerTooltipShown;
 
     private bool shootTipShown;
     private bool shootTipHidden;
@@ -375,6 +376,13 @@ public class Tutorial : MonoBehaviour
         if (structureSO.structureType == StructureSO.StructureType.tower) {
             towerNumberBuilt++;
 
+            if(towerNumberBuilt == 1) {
+
+                if (buildTowerTooltipShown) return;
+
+                buildTowerTooltipShown = true;
+                PlayerTalkUI.Instance.ShowTalkText(LocalizationManager.Instance.GetLocalizedText("tooltip_towerTip"), 4f);
+            }
             if (towerNumberBuilt == 2) {
                 //StartCoroutine(ShowTooltipAfterDelay(.5f, LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("menu_hold"), InputControlIcons.Control.Interact));
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.Build2Towers);

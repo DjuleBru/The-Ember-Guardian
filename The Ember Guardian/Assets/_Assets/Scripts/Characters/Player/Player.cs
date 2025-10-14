@@ -35,6 +35,7 @@ public class Player : MonoBehaviour, IDamageable
     private bool inTeleporterLevelSelectionMenu = false;
     private bool cameraHasOtherTarget = false;
     private bool pettingDog = false;
+    private bool inPortalTriggerArea = false;
 
     private bool tabMenuOpen = false;
     private bool pauseMenuOpen = false;
@@ -397,7 +398,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public bool GetCanInteractWithStructureLocation() {
-        return GetAllMenusClosed() && GetPlayerControlInputsEnabled();
+        return GetAllMenusClosed() && GetPlayerControlInputsEnabled() && !inPortalTriggerArea;
     }
 
     public void Die() {
@@ -507,11 +508,17 @@ public class Player : MonoBehaviour, IDamageable
     public void SetInTeleporterLevelSelectionMenu(bool inMenu) {
         inTeleporterLevelSelectionMenu = inMenu;
     }
+    public void SetInPortalTriggerArea(bool inPortalTriggerArea) {
+        this.inPortalTriggerArea = inPortalTriggerArea;
+    }
 
     #endregion
 
     public bool GetInTeleporter() {
         return inTeleporter;
+    }
+    public bool GetInPortalTriggerArea() {
+        return inPortalTriggerArea;
     }
 
     public void SetPosition(Vector3 position) {

@@ -70,6 +70,7 @@ public class StructureLocationVisual : MonoBehaviour
     }
 
     protected void StructureLocation_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
+        if (structureLocation.GetPlayerInTriggerArea() && structureLocation.GetPayCurrencyUI().GetPlayerInteracting()) return;
         if (progression_locked) return;
         if (!buildable) return;
         HideVisuals();

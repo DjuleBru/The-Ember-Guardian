@@ -391,7 +391,6 @@ public class MouseCursorManager : MonoBehaviour
     }
 
     private void RefreshMouseHideWithGamepad() {
-        Debug.Log("RefreshMouseHideWithGamepad");
         if (isUsingGamepad) {
             ShowMouse(false);
             ShowWeaponAndMouseCursorGO(false);

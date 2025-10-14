@@ -43,6 +43,7 @@ public class HubMerchantItem : MonoBehaviour
     public event EventHandler OnHubMerchantItemLoaded;
     public event EventHandler OnHubMerchantItemEquipped;
     public static event EventHandler OnAnyHubMerchantItemEquipped;
+    public static event EventHandler OnAnyHubMerchantItemArchitectTableUnlocks;
     public event EventHandler OnHubMerchantItemUnequipped;
 
     protected bool canBuyItem;
@@ -137,7 +138,6 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public virtual void BuyItem() {
-
         if (itemUpgradeable) {
             itemLevel++;
         }
@@ -369,10 +369,6 @@ public class HubMerchantItem : MonoBehaviour
         return itemUpgradeable;
     }
 
-    public bool GetItemBoughtAtStart() {
-        return isBoughtAtStart;
-    }
-
     public bool GetItemBought() {
         return itemBought;
     }
@@ -394,7 +390,8 @@ public class HubMerchantItem : MonoBehaviour
         return newItemUnlocked;
     }
 
-    public void SetNewItemUnlocked(bool unlocked) {
+    public virtual void SetNewItemUnlocked(bool unlocked) {
+        //Debug.Log(GetItemType() + "SetNewItemUnlocked " + unlocked);
         newItemUnlocked = unlocked;
         itemStatusChanged = true;
     }
@@ -413,6 +410,7 @@ public class HubMerchantItem : MonoBehaviour
         if(isBoughtAtStart) {
             itemBought = true;
         }
+
         if (isUnlockedAtStart) {
             itemUnlocked = true;
         }
@@ -430,6 +428,10 @@ public class HubMerchantItem : MonoBehaviour
 
             if(!newItemUnlocked) {
                 newItemUnlocked = data.ContainsKey("NewlyUnlocked") ? Convert.ToBoolean(data["NewlyUnlocked"]) : false;
+                if(newItemUnlocked) {
+                    SetNewItemUnlocked(true);
+                }
+
             }
 
             itemLevel = data.ContainsKey("Level") ? Convert.ToInt32(data["Level"]) : 0;
@@ -442,6 +444,10 @@ public class HubMerchantItem : MonoBehaviour
         }
 
         OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void InvokeOnAnyHubMerchantItemArchitectTableUnlocks() {
+        OnAnyHubMerchantItemArchitectTableUnlocks?.Invoke(this, EventArgs.Empty);
     }
 
     public void SaveItemStatus_Batch() {

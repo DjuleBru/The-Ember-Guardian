@@ -585,7 +585,6 @@ public class PlayerSkills : MonoBehaviour
         if (skillItem.currentLevel > 1) {
             relativeBuffEffectValue -= skillEffect.GetValueAtLevel(skillItem.currentLevel - 1);
         }
-        Debug.Log(skillItem.itemName + " skillItem.currentLevel " + skillItem.currentLevel + " " + relativeBuffEffectValue);
 
         if (skillEffect != null) {
             switch (skillEffect.skillType) {

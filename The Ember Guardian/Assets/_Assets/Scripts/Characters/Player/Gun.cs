@@ -336,8 +336,16 @@ public class Gun : MonoBehaviour
         this.currentAmmoClip = ammoClip;
         this.currentBullet = currentBullet;
 
+        if(currentAmmoClip < 0) {
+            currentAmmoClip = 0;
+        }
+
+        if (this.currentBullet < 0) {
+            this.currentBullet = 0;
+        }
+
         // force le refresh du visuel même si l'arme est inactive
-         GetComponent<GunVisual>().ForceInitializeAmmoVisual();
+        GetComponent<GunVisual>().ForceInitializeAmmoVisual();
     }
 
     protected virtual void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
@@ -640,10 +648,18 @@ public class Gun : MonoBehaviour
 
     public void SetCurrentAmmoClip(int currentAmmoClip) {
         this.currentAmmoClip = currentAmmoClip;
+
+        if(currentAmmoClip < 0) {
+            this.currentAmmoClip = 0;
+        }
     }
 
     public void SetCurrentBullet(int currentBullet) {
         this.currentBullet = currentBullet;
+
+        if (currentBullet < 0) {
+            this.currentBullet = 0;
+        }
     }
 
     #endregion
@@ -819,6 +835,7 @@ public class Gun : MonoBehaviour
 
         // Sauvegarde en batch
         string key = gunSO.gunType + "_metaData";
+        ES3.Save(key, gunData);
     }
 
     public void LoadGunStatModifierLevels() {

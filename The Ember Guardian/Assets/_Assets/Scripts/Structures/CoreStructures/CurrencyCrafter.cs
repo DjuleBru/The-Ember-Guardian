@@ -52,8 +52,12 @@ public class CurrencyCrafter : Structure
         base.Start();
         SetStructurePrimaryFunctionUnlocked(true);
         ActivateStructurePrimaryFunctionInteraction(true);
-        needsRefill = true;
-        needsWorking = false;
+
+        if(!SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+            needsRefill = true;
+            needsWorking = false;
+        }
+
 
         if (currencyTypeCrafted == PlayerCurrencies.CurrencyType.ammo) {
             currencyCraftAmount = StructureStats.Instance.GetAmmoCrafterMaxAmmoPerBatch();
@@ -208,12 +212,26 @@ public class CurrencyCrafter : Structure
 
             StartCoroutine(CollectCurrencyFromCrafter(.2f, false, currencyTypeBeingCrafted));
 
-            SetStructurePrimaryFunctionUnlocked(true);
-            SetStructureSecondaryFunctionUnlocked(specialAmmoUnlocked);
+            if(currencyTypeCrafted == PlayerCurrencies.CurrencyType.bigBlueOrb) {
+                SetStructurePrimaryFunctionUnlocked(true);
+            }
 
-            if (currencyTypeBeingCrafted == PlayerCurrencies.CurrencyType.ammo_special) {
-                ActivateStructureSecondaryFunctionInteraction(true);
-                SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction, true);
+            if(currencyTypeCrafted == PlayerCurrencies.CurrencyType.ammo) {
+                SetStructureSecondaryFunctionUnlocked(specialAmmoUnlocked);
+
+                if (currencyTypeBeingCrafted == PlayerCurrencies.CurrencyType.ammo_special) {
+
+                    ActivateStructureSecondaryFunctionInteraction(true);
+                    SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction, true);
+
+                } else {
+
+                    ActivateStructurePrimaryFunctionInteraction(true);
+                    SetStructurePrimaryFunctionUnlocked(true);
+                    SetCurrentStructureInteractionType(StructureInteractionType.primaryFunction, true);
+
+                }
+
             }
 
             RefreshPlayerCanInteract();
@@ -319,15 +337,18 @@ public class CurrencyCrafter : Structure
             this.currentBatches++;
         }
 
-        needsRefill = false;
-        needsWorking = true;
+        if(currentBatches > 0) {
+            needsRefill = false;
+            needsWorking = true;
+        }
 
         if (currentBatches == batchCapacity) {
-            playerCanInteract = false;
             OnMaxCurrencyBatchCraftingStarted?.Invoke(this, EventArgs.Empty);
             SetStructurePrimaryFunctionUnlocked(false);
             SetStructureSecondaryFunctionUnlocked(false);
         }
+
+        RefreshPlayerCanInteract();
     }
 
     public void SetCurrencyCraftTimer(float currencyCraftTimer) {
@@ -336,6 +357,12 @@ public class CurrencyCrafter : Structure
 
     public void SetCraftingCurrency(bool craftingCurrency) {
         this.craftingCurrency = craftingCurrency;
+
+        if(craftingCurrency) {
+            needsWorking = true;
+            SetStructurePrimaryFunctionUnlocked(false);
+            SetStructureSecondaryFunctionUnlocked(false);
+        }
     }
 
     public void SetCraftedCurrency(bool craftedCurrency) {
@@ -345,7 +372,6 @@ public class CurrencyCrafter : Structure
     public virtual void SetCurrencyTypeBeingCrafted(PlayerCurrencies.CurrencyType currencyTypeBeingCrafted) {
         this.currencyTypeBeingCrafted = currencyTypeBeingCrafted;
 
-        Debug.Log("SetCurrencyTypeBeingCrafted " + currencyTypeBeingCrafted);
         if(currencyTypeBeingCrafted == PlayerCurrencies.CurrencyType.ammo_special) {
             currencyCraftTime = secondaryCurrencyCraftTime;
             SetStructureSecondaryFunctionUnlocked(true);
@@ -356,6 +382,7 @@ public class CurrencyCrafter : Structure
 
         if(currencyTypeBeingCrafted == PlayerCurrencies.CurrencyType.ammo) {
             currencyCraftTime = primaryCurrencyCraftTime;
+            SetCurrentStructureInteractionType(StructureInteractionType.primaryFunction);
         }
 
         OnCurrencyTypeBeingCraftedLoaded?.Invoke(this, EventArgs.Empty);
@@ -366,14 +393,11 @@ public class CurrencyCrafter : Structure
         this.craftedCurrency = craftedCurrency; 
 
         if(craftedCurrency) {
-            playerCanInteract = true;
             needsWorking = false;
             OnCurrencyCraftingEnded?.Invoke(this, EventArgs.Empty);
-        } else {
-            playerCanInteract = false;
-            needsWorking = true;
         }
 
+        RefreshPlayerCanInteract(); 
     }
 
     public PlayerCurrencies.CurrencyType GetCurrencyTypeCrafted() {
@@ -398,7 +422,6 @@ public class CurrencyCrafter : Structure
             playerCanInteract = true;
             return;
         }
-
 
         if (activeStructureInteractionsTypeList.Count == 0) {
             playerCanInteract = false;

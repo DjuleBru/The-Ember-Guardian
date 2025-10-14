@@ -32,7 +32,6 @@ public class PayCurrencyTemplateWorldUI : MonoBehaviour
     public void SetCurrencyPaid(bool paid) {
         currencyPaid = paid;
         SetHovered(paid);
-
         if (paid) {
             Color fullColor = initialImageOutlineColor;
             fullColor.a = 1f;

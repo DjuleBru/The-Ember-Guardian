@@ -25,7 +25,6 @@ public class StructureUI : MonoBehaviour
     protected bool uiActive = true;
     protected PayCurrencyUI payOrbsUI;
     protected Structure structure;
-    protected bool playerInTriggerArea;
     public event EventHandler OnStructureDisplayedFunctionChanged;
 
     protected virtual void Awake() {
@@ -125,11 +124,13 @@ public class StructureUI : MonoBehaviour
     }
 
     protected virtual void Structure_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
-        if (!playerInTriggerArea) return;
+        if (structure.GetPlayerInTriggerArea() && structure.GetPayCurrencyUI().GetPlayerInteracting()) return;
 
-        playerInTriggerArea = false;
+        HideStructureUI();
+    }
 
-        if(returnToPrimaryFunctionUIOnTriggerExit) {
+    protected void HideStructureUI() {
+        if (returnToPrimaryFunctionUIOnTriggerExit) {
             SwitchToUIType(Structure.StructureInteractionType.primaryFunction);
         }
 
@@ -137,9 +138,8 @@ public class StructureUI : MonoBehaviour
     }
 
     protected virtual void Structure_OnPlayerTriggeredIn(object sender, System.EventArgs e) {
-        if (playerInTriggerArea) return;
+        if (structure.GetPlayerInTriggerArea()) return;
 
-        playerInTriggerArea = true;
         SetUIActive(true);
         RefreshShownUI();
     }
@@ -185,12 +185,6 @@ public class StructureUI : MonoBehaviour
             rightArrow.gameObject.SetActive(true);
         }
         return;
-
-        int currentIndex = activeTypes.IndexOf(structure.GetCurrentStructureInteractionType());
-
-        // Afficher ou cacher les flèches
-        leftArrow.gameObject.SetActive(currentIndex > 0); // Flèche gauche active si ce n'est pas le premier élément
-        rightArrow.gameObject.SetActive(currentIndex < activeTypes.Count - 1); // Flèche droite active si ce n'est pas le dernier élément
     }
 
     protected void ShowStructurePrimaryFunctionUI() {

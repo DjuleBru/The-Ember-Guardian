@@ -43,6 +43,7 @@ public class VideoTipSO : ScriptableObject
         SkillsMerchant,
         FindingWeapon,
         Saving,
+        RefundGun,
     }
 
     public VideoTipType tipType;

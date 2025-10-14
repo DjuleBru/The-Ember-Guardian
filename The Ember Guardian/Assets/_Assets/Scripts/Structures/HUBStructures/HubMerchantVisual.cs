@@ -24,12 +24,27 @@ public class HubMerchantVisual : MonoBehaviour
         hubMerchant.OnPlayerTriggeredOut += HubMerchant_OnPlayerTriggeredOut;
         hubMerchant.OnPlayerOpenedHubMerchantShop += HubMerchant_OnPlayerInteractedWithHubMerchant;
         hubMerchant.OnPlayerStartedTalkingWithHubMerchant += HubMerchant_OnPlayerStartedTalkingWithHubMerchant;
+        hubMerchant.OnPlayerStoppedInteractingWithHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithHubMerchant;
         hubMerchant.OnMerchantHasNewInteraction += HubMerchant_OnMerchantHasNewTalkLines;
         hubMerchant.OnMerchantHideExclamationMark += HubMerchant_OnMerchantHideExclamationMark;
         hubMerchant.OnMerchantFadeOutStarted += HubMerchant_OnMerchantFadeOutStarted;
 
 
         if (hubMerchant.GetMerchantHasNewItems() || hubMerchant.GetMerchantJustArrivedInHub() || hubMerchant.GetMerchantIsLevelNPC() || hubMerchant.GetMerchantHasNewTalkLinkes()) {
+            newItemsForSaleGameObject.gameObject.SetActive(true);
+        }
+    }
+
+    private void HubMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, System.EventArgs e) {
+        StartCoroutine(CheckNewItemsForSaleActiveAfterFrame());
+    }
+
+    private IEnumerator CheckNewItemsForSaleActiveAfterFrame() {
+        yield return new WaitForEndOfFrame();
+        if (!hubMerchant.GetMerchantHasNewItems()) {
+            newItemsForSaleGameObject.gameObject.SetActive(false);
+        }
+        else {
             newItemsForSaleGameObject.gameObject.SetActive(true);
         }
     }
@@ -53,6 +68,7 @@ public class HubMerchantVisual : MonoBehaviour
 
     private void HubMerchant_OnPlayerInteractedWithHubMerchant(object sender, System.EventArgs e) {
         newItemsForSaleGameObject.gameObject.SetActive(false);
+       
         ShowInputIcon(false);
     }
 

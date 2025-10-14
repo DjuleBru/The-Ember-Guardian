@@ -148,7 +148,9 @@ public class HubMerchant : MonoBehaviour
             }
         }
 
-        merchantHasNewItems = MetaProgressionManager.Instance.GetHubMerchantNewItemsToSale(hubMerchantType);
+        if(!merchantHasNewItems) {
+            merchantHasNewItems = MetaProgressionManager.Instance.GetHubMerchantNewItemsToSale(hubMerchantType);
+        }
 
         foreach (HubMerchantItem merchantItem in hubMerchantItems) {
             merchantItem.LoadItemStatus_Batch();
@@ -201,7 +203,7 @@ public class HubMerchant : MonoBehaviour
         if (merchantHasTalkLinesToShow) return;
 
         if (playerInteractingWithMerchant) {
-            StartCoroutine(StopInteractingWithMerchant());
+            StartCoroutine(StopInteractingWithMerchant(false));
         }
     }
 
@@ -250,7 +252,7 @@ public class HubMerchant : MonoBehaviour
 
     }
 
-    private IEnumerator StopInteractingWithMerchant() {
+    private IEnumerator StopInteractingWithMerchant(bool stopFromTalking) {
 
         Player.Instance.StopInteractingWithMerchant();
         CameraManager.Instance.ResetCameraTargetToPlayer();
@@ -259,9 +261,11 @@ public class HubMerchant : MonoBehaviour
         OnPlayerStoppedInteractingWithHubMerchant?.Invoke(this, EventArgs.Empty);
         OnPlayerStoppedInteractingWithAnyHubMerchant?.Invoke(this, EventArgs.Empty);
 
-        if (merchantHasNewItems) {
-            MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(hubMerchantType, false);
-            merchantHasNewItems = false;
+        if(!stopFromTalking) {
+            if (merchantHasNewItems) {
+                MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(hubMerchantType, false);
+                merchantHasNewItems = false;
+            }
         }
 
         if (merchantJustArrivedInHub) {
@@ -332,7 +336,7 @@ public class HubMerchant : MonoBehaviour
             StartInteractingWithMerchant();
         }
         else {
-            StartCoroutine(StopInteractingWithMerchant());
+            StartCoroutine(StopInteractingWithMerchant(true));
         }
     }
 
@@ -412,6 +416,7 @@ public class HubMerchant : MonoBehaviour
     public void SetMerchantHasNewItems() {
         merchantHasNewItems = true;
         OnMerchantHasNewInteraction?.Invoke(this, EventArgs.Empty);
+        //Debug.Log(this + " SetMerchantHasNewItems " + merchantHasNewItems);
     }
 
     public bool GetMerchantJustArrivedInHub() {

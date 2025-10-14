@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -14,23 +15,29 @@ public class SavingManager : MonoBehaviour
     private void Start() {
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             Portal.OnAnyPlayerTeleported += Portal_OnAnyPlayerTeleported;
-
-            if (DebugManager.Instance.GetSaveAfterEachLevelDebug()) {
-                string saveFileName = "SaveFile";
-                string original = Application.persistentDataPath + "/" + saveFileName + ".es3";
-
-                string lastLevelCompletedString = MetaProgressionManager.Instance.GetLastLevelCompletedString();
-
-                string newSaveFile = Application.persistentDataPath + "/" + saveFileName + "_After_" + lastLevelCompletedString + "_Completed.es3";
-
-                if (File.Exists(original)) {
-                    File.Copy(original, newSaveFile, true); // true = overwrite si backup existe déjà
-                }
-            }
+            Portal.OnAnyTeleporterTeleportedPlayerOut += Portal_OnAnyTeleporterTeleportedPlayerOut;
         }
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             LevelManager.Instance.OnLevelFailed += LevelManager_OnLevelFailed;
+        }
+    }
+
+    private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, EventArgs e) {
+        //Debug.Log("Portal_OnAnyTeleporterTeleportedPlayerOut");
+
+        if (DebugManager.Instance.GetSaveAfterEachLevelDebug()) {
+            string saveFileName = "SaveFile";
+            string original = Application.persistentDataPath + "/" + saveFileName + ".es3";
+
+            string lastLevelCompletedString = MetaProgressionManager.Instance.GetLastLevelCompletedString();
+
+            string newSaveFile = Application.persistentDataPath + "/" + saveFileName + "_After_" + lastLevelCompletedString + "_Completed.es3";
+
+            if (File.Exists(original)) {
+                File.Copy(original, newSaveFile, true); // true = overwrite si backup existe déjà
+            }
+
         }
     }
 
@@ -60,25 +67,28 @@ public class SavingManager : MonoBehaviour
     }
 
     private void Portal_OnAnyPlayerTeleported(object sender, System.EventArgs e) {
-        Portal portal = sender as Portal;
-        string saveFileName = "SaveFile";
-        string original = Application.persistentDataPath + "/" + saveFileName + ".es3";
+        Debug.Log("Portal_OnAnyPlayerTeleported");
+        if (DebugManager.Instance.GetSaveAfterEachLevelDebug()) {
+            Portal portal = sender as Portal;
+            string saveFileName = "SaveFile";
+            string original = Application.persistentDataPath + "/" + saveFileName + ".es3";
 
-        string levelStartingString = portal.GetLinkedLevelSO().ToString();
+            string levelStartingString = portal.GetLinkedLevelSO().ToString();
 
-        // Déterminer le numéro d’attempt pour ce niveau
-        int attemptNumber = 1;
-        if (levelAttempts.ContainsKey(levelStartingString)) {
-            attemptNumber = levelAttempts[levelStartingString] + 1;
+            // Déterminer le numéro d’attempt pour ce niveau
+            int attemptNumber = 1;
+            if (levelAttempts.ContainsKey(levelStartingString)) {
+                attemptNumber = levelAttempts[levelStartingString] + 1;
+            }
+
+            string newSaveFile = Application.persistentDataPath + "/" + saveFileName + "_Before_" + levelStartingString + "_Attempt_" + attemptNumber + ".es3";
+
+            if (File.Exists(original)) {
+                File.Copy(original, newSaveFile, true);
+            }
+
+            SaveLevelAttempts();
         }
-
-        string newSaveFile = Application.persistentDataPath + "/" + saveFileName + "_Before_" + levelStartingString + "_Attempt_" + attemptNumber + ".es3";
-
-        if (File.Exists(original)) {
-            File.Copy(original, newSaveFile, true);
-        }
-
-        SaveLevelAttempts();
     }
 
     private void SaveLevelAttempts() {
@@ -87,5 +97,6 @@ public class SavingManager : MonoBehaviour
 
     private void OnDestroy() {
         Portal.OnAnyPlayerTeleported -= Portal_OnAnyPlayerTeleported;
+        Portal.OnAnyTeleporterTeleportedPlayerOut -= Portal_OnAnyTeleporterTeleportedPlayerOut;
     }
 }

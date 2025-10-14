@@ -56,7 +56,6 @@ public class StructureVisual_Trap : StructureVisual
     }
 
     private void SetDepletedVisuals() {
-        Debug.Log("SetDepletedVisuals");
         trapAnimator.enabled = false;
         trapSpriteRenderer.sprite = trapDepletedSprite;
         depletedUsesGlowSpriteRenderer.enabled = true;

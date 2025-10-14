@@ -199,11 +199,23 @@ public class PlayerAim : MonoBehaviour
 
     private void HandleAimGamepad(Vector2 lookInput) {
 
-        if (lookInput.magnitude > GameInput.gamepadDeadzone) {
+        float magnitude = lookInput.magnitude;
+
+        if (magnitude > GameInput.gamepadDeadzone) {
             Vector3 targetDir = new Vector3(lookInput.x, lookInput.y, 0f).normalized;
 
-            aimDir = Vector3.Lerp(previousGamepadAim, targetDir, Time.deltaTime * 10f).normalized;
-            previousGamepadAim = aimDir;
+            // --- Ajout du filtre anti-jitter ---
+            float angleDiff = Vector3.Angle(previousGamepadAim, targetDir);
+
+            // Seuil d'angle minimal avant d'accepter un changement de direction
+            if (angleDiff > .5f) {
+                aimDir = Vector3.Lerp(previousGamepadAim, targetDir, Time.deltaTime * 15f).normalized;
+                previousGamepadAim = aimDir;
+            }
+            else {
+                // Si le stick ne bouge presque pas, garde la direction précédente
+                aimDir = previousGamepadAim;
+            }
         }
         else {
             // Utiliser la direction du déplacement quand le stick est au repos *si l'option est activée*

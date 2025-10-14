@@ -172,7 +172,7 @@ public class StructureUI_Fire : StructureUI
     }
 
     private void HandleUIDisplay() {
-        if (playerInTriggerArea) return;
+        if (structure.GetPlayerInTriggerArea()) return;
 
         if (isDisplaying) {
             displayTimer += Time.deltaTime;

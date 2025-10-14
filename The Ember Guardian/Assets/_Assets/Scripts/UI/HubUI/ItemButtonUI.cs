@@ -73,7 +73,7 @@ public class ItemButtonUI : ButtonUI {
             initialLockingItemButtonUIList.Add(buttonUI);
         }
 
-        if(newUnlockedItemGO != null) {
+        if(newUnlockedItemGO != null ) {
             newUnlockedItemGO.SetActive(false);
         }
 
@@ -105,8 +105,8 @@ public class ItemButtonUI : ButtonUI {
 
     protected override void Start() {
         base.Start();
-        HubChest.Instance.OnChestClosed += HubChest_OnChestClosed;
         UICurrencyManager.HubInventoryUI.OnCurrencyRemovedFromBag += HubInventoryUI_OnCurrencyRemovedFromBag;
+        UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
 
         if(DebugManager.Instance.GetAllItemsUnlockedInDemo()) {
             itemLockedInDemo = false;
@@ -123,6 +123,9 @@ public class ItemButtonUI : ButtonUI {
         RefreshItemStatusVisuals();
     }
 
+    private void HubInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
+        RefreshItemStatusVisuals();
+    }
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
         itemHovered = false;
@@ -132,6 +135,7 @@ public class ItemButtonUI : ButtonUI {
     private void GameInput_OnRefundGunPerformed(object sender, EventArgs e) {
         // ONLY SUBBED FOR GUNS
         bool isUsingGamepad = GameInput.Instance.IsUsingGamepad();
+
         if (!itemHovered && !isUsingGamepad) return;
         if (!itemSelected && isUsingGamepad) return;
         if (!GetItemRefundable()) return;
@@ -145,6 +149,8 @@ public class ItemButtonUI : ButtonUI {
     }
 
     public void ResetMajorGunItemAfterRefund() {
+        if (!hubMerchantItem.GetItemBought()) return;
+
         StartBuyItemVisuals();
         if (outputLinkUnlockedImageList.Count != 0) {
             foreach (Image image in outputLinkUnlockedImageList) {
@@ -208,14 +214,9 @@ public class ItemButtonUI : ButtonUI {
         OnHubMerchantItemRefunded?.Invoke(this, EventArgs.Empty);
     }
 
-    private void HubChest_OnChestClosed(object sender, EventArgs e) {
-        RefreshItemStatusVisuals();
-        RefreshDescriptionCardCosts();
-    }
 
     private void HubInventoryUI_OnCurrencyRemovedFromBag(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         RefreshItemStatusVisuals();
-        RefreshDescriptionCardCosts();
     }
 
     private void HubMerchantItem_OnItemMustRefreshDescriptionCard(object sender, EventArgs e) {
@@ -252,7 +253,8 @@ public class ItemButtonUI : ButtonUI {
             }
         }
 
-        if(hubMerchantItem.GetNewItemUnlocked() && hubMerchantItem.GetItemUnlocked()) {
+        //Debug.Log("Loaded " + hubMerchantItem.GetItemType() + " GetNewItemUnlocked " + hubMerchantItem.GetNewItemUnlocked() + " GetItemUnlocked " + hubMerchantItem.GetItemUnlocked());
+        if (hubMerchantItem.GetNewItemUnlocked() && hubMerchantItem.GetItemUnlocked()) {
             newUnlockedItemGO.SetActive(true);
         }
 
@@ -260,7 +262,6 @@ public class ItemButtonUI : ButtonUI {
         if(itemsToForceUnlockWhenBought.Count != 0) {
             if(hubMerchantItem.GetItemBought()) {
                 foreach (ItemButtonUI itemButtonUI in itemsToForceUnlockWhenBought) {
-                    Debug.Log(itemButtonUI.GetHubMerchantItem());
                     itemButtonUI.SetItemUnlocked();
                     itemButtonUI.SetItemBought();
                 }
@@ -291,6 +292,7 @@ public class ItemButtonUI : ButtonUI {
         descriptionCard.SetDescriptionCardFonts();
         descriptionCard.SetDescriptionCardText(itemName, constantUnlockDescription, itemStatDescription, itemDescription, itemStatValues, itemStatModifierValues);
         descriptionCard.SetDescriptionCardCost(greenGemCost, redGemCost, blueGemCost, yellowGemCost, purpleGemCost, cyanGemCost);
+        descriptionCard.ChestDescriptionCardFree(greenGemCost, redGemCost, blueGemCost, yellowGemCost, purpleGemCost, cyanGemCost);
 
         if(itemLockedInDemo && HUBManager.Instance.GetIsDemo()) {
             descriptionCard.SetDescriptionCardItemLockedInDemo();
@@ -320,7 +322,6 @@ public class ItemButtonUI : ButtonUI {
 
     private void RefreshDescriptionCardCosts() {
         if (hubMerchantItem.GetItemBought()) return;
-
         int greenGemCost = hubMerchantItem.GetGreenGemCost();
         int redGemCost = hubMerchantItem.GetRedGemCost();
         int blueGemCost = hubMerchantItem.GetBlueGemCost();
@@ -539,18 +540,43 @@ public class ItemButtonUI : ButtonUI {
     }
 
     private void CheckNewItemUnlocked(ItemButtonUI itemButtonUI) {
+        bool hasLockedItemFromOtherMerchant = false;
+        foreach(ItemButtonUI bttonUI in initialLockingItemButtonUIList) {
+            if(itemButtonUI.GetHubMerchantParent() != GetHubMerchantParent()) {
+                hasLockedItemFromOtherMerchant = true;
+            }
+        }
+
+        if (!hasLockedItemFromOtherMerchant) return;
+
+        //Debug.Log(itemButtonUI.GetHubMerchantParent());
+        //Debug.Log(GetHubMerchantParent());
+
         if (itemButtonUI.GetHubMerchantParent() != GetHubMerchantParent()) {
 
             bool lockingItemBought = MetaProgressionManager.Instance.GetMerchantItemBought(itemButtonUI.GetHubMerchantItem().GetItemType());
             bool lockingItemUnlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(itemButtonUI.GetHubMerchantItem().GetItemType());
 
-            if (lockingItemBought || !lockingItemUnlocked) return;
+            //Debug.Log(itemButtonUI.GetHubMerchantItem().GetItemType() + " lockingItemBought " + lockingItemBought);
+            //Debug.Log(itemButtonUI.GetHubMerchantItem().GetItemType() + " lockingItemUnlocked " + lockingItemUnlocked);
 
-            hubMerchantItem.SetNewItemUnlocked(true);
+            //if (!lockingItemBought && lockingItemUnlocked) {
+            //    hubMerchantItem.SetNewItemUnlocked(true);
+            //}; 
+            
+            if (!lockingItemBought) {
+                hubMerchantItem.SetNewItemUnlocked(true);
+            };
+        }
+
+        //Debug.Log(hubMerchantItem.GetItemType() + " hubMerchantItem.GetNewItemUnlocked() " + hubMerchantItem.GetNewItemUnlocked());
+        if (hubMerchantItem.GetNewItemUnlocked()) {
+            //Debug.Log(hubMerchantItem.GetItemType() + " lockingItemButtonUIList.Count " + lockingItemButtonUIList.Count);
 
             if (lockingItemButtonUIList.Count != 0 && hubMerchantItem.GetUnlockRequiresAllPrerequisites()) return;
 
             newUnlockedItemGO.SetActive(true);
+            //Debug.Log(hubMerchantItem.GetItemType() + parentHubMerchant);
             parentHubMerchant.SetMerchantHasNewItems();
         }
     }
@@ -671,6 +697,7 @@ public class ItemButtonUI : ButtonUI {
 
         if (this == itemButtonUI) {
             itemHovered = true;
+            RefreshDescriptionCardCosts();
             descriptionCard.gameObject.SetActive(true);
 
             if (hubMerchantItem.GetNewItemUnlocked() && hubMerchantItem.GetItemUnlocked()) {

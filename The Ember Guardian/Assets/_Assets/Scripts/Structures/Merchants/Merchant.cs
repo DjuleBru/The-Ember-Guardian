@@ -209,6 +209,10 @@ public class Merchant : Structure {
     public bool GetShopOpen() {
         return shopOpened;
     }
+    public bool GetPlayerPaidToRefreshShop() {
+        return playerPayedToRefreshShop;
+    }
+
 
     public List<MerchantItem> GetMajorItemListForSale() {
         return majorItemListForSale;

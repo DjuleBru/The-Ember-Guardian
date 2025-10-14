@@ -827,16 +827,23 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     }
 
     public override void ResetGunItemStatus() {
-        base.ResetGunItemStatus();
+        itemLevel = 0;
+        itemStatusChanged = true;
 
-        if(gunItemCategory == GunItemCategory.newGun || gunItemCategory == GunItemCategory.gunAbility) {
+        UpdateItemCost();
+
+        if (gunItemCategory == GunItemCategory.newGun || gunItemCategory == GunItemCategory.gunAbility) {
             itemUnlocked = true;
             itemBought = true;
+        } else {
+            itemBought = false;
+            itemUnlocked = false;
         }
 
         ResetStats();
         RefreshStatValues();
         InvokeItemMustRefreshDescriptionCard();
+        InvokeOnItemLoaded();
     }
 
     private void OnDestroy() {

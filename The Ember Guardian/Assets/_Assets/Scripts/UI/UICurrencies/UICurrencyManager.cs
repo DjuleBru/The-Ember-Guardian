@@ -142,7 +142,9 @@ public class UICurrencyManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.H)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.ammo);
-            //AddCurrencyInBag(PlayerCurrencies.CurrencyType.ammo_special);
+        }
+        if (Input.GetKeyDown(KeyCode.I)) {
+            AddCurrencyInBag(PlayerCurrencies.CurrencyType.ammo_special);
         }
         if (Input.GetKeyDown(KeyCode.J)) {
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.bigRedOrb);
@@ -382,16 +384,17 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     public List<Currency_UI> GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType currencyType) {
+        currenciesInBag.RemoveAll(c => c == null);
+
         List<Currency_UI> currencyList = new List<Currency_UI>();
 
-        foreach(Currency_UI currency in currenciesInBag) {
-            if(currency.GetCurrencyType() == currencyType) {
+        foreach (Currency_UI currency in currenciesInBag) {
+            if (currency.GetCurrencyType() == currencyType)
                 currencyList.Add(currency);
-            }
         }
-
         return currencyList;
     }
+
     public List<Currency_UI> GetCurrenciesInBagOfCategory(PlayerCurrencies.CurrencyCategory category) {
         List<Currency_UI> currencyList = new List<Currency_UI>();
 
@@ -410,6 +413,9 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     private void DropCurrencyFromBag(Currency_UI currencyUI) {
+        if (currencyUI == null) return;
+        if (currencyUI.gameObject == null) return;
+
         currencyUI.RemoveFromBag(this);
 
         OnCurrencyDropped?.Invoke(this, new OnCurrencyDroppedEventArgs {

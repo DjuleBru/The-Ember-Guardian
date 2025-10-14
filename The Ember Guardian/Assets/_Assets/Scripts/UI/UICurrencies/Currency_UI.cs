@@ -32,6 +32,7 @@ public class Currency_UI : MonoBehaviour
     private float speedToDisableRb = 1f;
     private bool initialTimerOver;
     private bool fellFromBag;
+    private bool isBeingDestroyed = false;
 
     private int ammoTriggerAmount;
 
@@ -72,6 +73,9 @@ public class Currency_UI : MonoBehaviour
 
     public void RemoveFromBag(UICurrencyManager currencyManagerSender) {
         currencyManagerSender.RemoveCurrencyUIFromInventoryList(this);
+
+        if (isBeingDestroyed) return;
+
         dropCurrencyFeedback.PlayFeedbacks();
         StartCoroutine(DestroyAfterDelay(.2f));
     }
@@ -107,6 +111,8 @@ public class Currency_UI : MonoBehaviour
     }
 
     private IEnumerator DestroyAfterDelay(float delay) {
+        isBeingDestroyed = true;
+
         yield return new WaitForSeconds(delay);
         Destroy(gameObject);
     }

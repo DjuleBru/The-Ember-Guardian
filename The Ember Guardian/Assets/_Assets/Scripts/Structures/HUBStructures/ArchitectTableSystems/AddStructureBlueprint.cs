@@ -22,10 +22,12 @@ public class AddStructureBlueprint : ButtonUI
     [SerializeField] private TextMeshProUGUI currentStructureBlueprintText;
     [SerializeField] private TextMeshProUGUI maxedOutStructureBlueprintText;
     [SerializeField] private GameObject plusIcon;
+    [SerializeField] private GameObject newItemGO;
 
     [SerializeField] private int currentBlueprintAmount;
     [SerializeField] private int maxBlueprintAmount;
-    private bool locked;
+    private bool locked = true;
+    private bool newItem;
     private Button button;
 
     private void Awake() {
@@ -36,11 +38,19 @@ public class AddStructureBlueprint : ButtonUI
         });
 
         structureIconImage.sprite = linkedStructureSO.structureSprite;
+
+        if(!newItem) {
+            newItemGO.SetActive(false);
+        }
+
     }
 
     protected override void Start() {
         base.Start();
-        LoadStructureUnlocked();
+
+        if(locked) {
+            LoadStructureUnlocked();
+        }
 
         var localizedResult = LocalizationManager.Instance.GetLocalized(linkedStructureSO.structureNameLocalizationKey);
         structureNameText.text = localizedResult.text;
@@ -48,7 +58,6 @@ public class AddStructureBlueprint : ButtonUI
             structureNameText.font = localizedResult.font;
         }
 
-        HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
         CampEditManager.Instance.OnStructureAdded += CampEditManager_OnStructureAdded;
         CampEditManager.Instance.OnStructureRemovedAnySituation += CampEditManager_OnStructureRemovedAnySituation;
         CampEditManager.Instance.OnLayoutResetToDefault += CampEditManager_OnLayoutResetToDefault;
@@ -56,10 +65,28 @@ public class AddStructureBlueprint : ButtonUI
         RefreshStructureAmounts();
     }
 
+    public void SubscribeToNewItemsEvents() {
+
+        HubMerchantItem.OnAnyHubMerchantItemArchitectTableUnlocks += HubMerchantItem_OnAnyHubMerchantItemArchitectTableUnlocks;
+        HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
+
+    }
+
     private void GameInput_OnEditCampDeselect(object sender, EventArgs e) {
         if (locked) return;
         if(buttonHovered || buttonSelected) {
             CampEditManager.Instance.TryRemoveBlueprintFromCamp(linkedStructureSO);
+        }
+    }
+
+    private void HubMerchantItem_OnAnyHubMerchantItemArchitectTableUnlocks(object sender, EventArgs e) {
+        HubMerchantItem merchantItem = sender as HubMerchantItem;
+
+        HubMerchantItem_WatcherMerchantItem watcherMerchantItem = merchantItem as HubMerchantItem_WatcherMerchantItem;
+        if (watcherMerchantItem != null) {
+            if (watcherMerchantItem.GetStructureType() == linkedStructureSO.structureType) {
+                SetStructureUnlocked();
+            }
         }
     }
 
@@ -74,18 +101,13 @@ public class AddStructureBlueprint : ButtonUI
         }
 
         HubMerchantItem_GemMerchantItem gemMerchantItem = merchantItem as HubMerchantItem_GemMerchantItem;
-        if(gemMerchantItem != null) {
-            if (gemMerchantItem.GetStructureType() == linkedStructureSO.structureType) {
+        if (gemMerchantItem != null) {
+            if (gemMerchantItem.GetStructureType() == linkedStructureSO.structureType && gemMerchantItem.GetItemLevel() == 1) {
+                Debug.Log("BOUGH GEM ITEM " + linkedStructureSO.structureType + " " + gemMerchantItem.GetItemLevel());
                 SetStructureUnlocked();
             }
         }
 
-        HubMerchantItem_WatcherMerchantItem watcherMerchantItem = merchantItem as HubMerchantItem_WatcherMerchantItem;
-        if (watcherMerchantItem != null) {
-            if (watcherMerchantItem.GetStructureType() == linkedStructureSO.structureType) {
-                SetStructureUnlocked();
-            }
-        }
     }
 
     private void LoadStructureUnlocked() {
@@ -98,8 +120,6 @@ public class AddStructureBlueprint : ButtonUI
 
         if (itemIsLocked) {
             locked = true;
-            //button.enabled = false;
-            //button.interactable = false;
             structureIconImage.sprite = lockedStructureSprite;
             plusIcon.GetComponent<Image>().enabled = false;
             maxStructureAmountGameObject.SetActive(false);
@@ -108,14 +128,18 @@ public class AddStructureBlueprint : ButtonUI
     }
 
     private void SetStructureUnlocked() {
+
         locked = false;
-        //button.enabled = true;
-        //button.interactable = true;
         structureIconImage.sprite = linkedStructureSO.structureSprite;
         plusIcon.GetComponent<Image>().enabled = true;
         maxStructureAmountGameObject.SetActive(true);
         structureNameText.gameObject.SetActive(true);
         RefreshStructureAmounts();
+        newItemGO.SetActive(true);
+        newItem = true;
+        //Debug.Log("SetStructureUnlocked " + linkedStructureSO);
+        ArchitectTable.Instance.GetArchitectTableHubMerchant().SetMerchantHasNewItems();
+
     }
 
     private void TryAddStructureBlueprint() {
@@ -139,6 +163,7 @@ public class AddStructureBlueprint : ButtonUI
     private void CampEditManager_OnLayoutResetToDefault(object sender, EventArgs e) {
         RefreshStructureAmounts();
     }
+
     private void RefreshStructureAmounts() {
         currentBlueprintAmount = CampEditManager.Instance.GetPlacedStructureBlueprintAmountOfType(linkedStructureSO);
         maxBlueprintAmount = linkedStructureSO.maxStructureBlueprintAmount;
@@ -186,7 +211,6 @@ public class AddStructureBlueprint : ButtonUI
             break;
         }
 
-
         RefreshStructureAmountTexts();
     }
 
@@ -208,8 +232,33 @@ public class AddStructureBlueprint : ButtonUI
         }
     }
 
+    protected override void ButtonUI_OnAnyButtonSelected(object sender, EventArgs e) {
+        base.ButtonUI_OnAnyButtonSelected(sender, e);
+
+        ButtonUI button = sender as ButtonUI;
+        if (button != this) return;
+
+        if (newItem) {
+            newItemGO.SetActive(false);
+            newItem = false;
+        }
+    }
+
+    protected override void ButtonUI_OnAnyButtonHovered(object sender, EventArgs e) {
+        base.ButtonUI_OnAnyButtonHovered(sender, e);
+
+        ButtonUI button  = sender as ButtonUI;
+        if (button != this) return;
+
+        if (newItem) {
+            newItemGO.SetActive(false);
+            newItem = false;
+        }
+    }
+
     protected override void OnDestroy() {
         base.OnDestroy();
         HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
+        HubMerchantItem.OnAnyHubMerchantItemArchitectTableUnlocks -= HubMerchantItem_OnAnyHubMerchantItemArchitectTableUnlocks;
     }
 }

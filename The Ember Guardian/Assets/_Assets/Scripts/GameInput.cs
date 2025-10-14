@@ -37,6 +37,7 @@ public class GameInput : MonoBehaviour
         editCampDeselect,
         collectCurrencyFromContainer,
         commandWorkers,
+        refundGun,
     }
 
     private PlayerInputActions playerInputActions;

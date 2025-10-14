@@ -75,17 +75,22 @@ public class LevelObjectives : MonoBehaviour
         OnNightSurvived?.Invoke(this, EventArgs.Empty);
 
         if (nightsSurvived == nightsToSurvive) {
+            CompleteSurviveNightsObjective();
 
-            if(LevelManager.Instance.GetLevelSO().talkToNpcAFterObjective) {
+        }
+    }
 
-                LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.SurviveNights, LevelUI_ObjectiveUI.SubObjectiveType.TalkToWatcher);
-                levelMerchantTalkUI.SetTextLinesSO(finalMerchantTextLines);
+    private void CompleteSurviveNightsObjective() {
 
-            } else {
-                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.SurviveNights);
-                ShowReturnToHubObj(4f);
-            }
+        if (LevelManager.Instance.GetLevelSO().talkToNpcAFterObjective) {
 
+            LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.SurviveNights, LevelUI_ObjectiveUI.SubObjectiveType.TalkToWatcher);
+            levelMerchantTalkUI.SetTextLinesSO(finalMerchantTextLines);
+
+        }
+        else {
+            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.SurviveNights);
+            ShowReturnToHubObj(4f);
         }
     }
 
@@ -391,11 +396,14 @@ public class LevelObjectives : MonoBehaviour
     }
 
     public void SetNightsToSurvive(int nightsToSurvive) {
-        Debug.Log("SetNightsToSurvive " + nightsToSurvive);
         this.nightsToSurvive = nightsToSurvive;
     }
     public void SetNightsSurvived(int nightsSurvived) {
         this.nightsSurvived = nightsSurvived;
+
+        if(nightsSurvived == nightsToSurvive) {
+            LevelManager.Instance.LevelSuccess();
+        }
     }
     public void SetObstaclesRemoved(int obstaclesRemoved) {
         this.obstaclesRemoved = obstaclesRemoved;

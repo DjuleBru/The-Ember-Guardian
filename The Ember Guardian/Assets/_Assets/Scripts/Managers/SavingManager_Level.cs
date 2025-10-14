@@ -60,6 +60,7 @@ public class SavingManager_Level : MonoBehaviour
         };
 
         SaveGame();
+        CreateLevelSaveCopy();
     }
 
     #region SAVE
@@ -151,6 +152,10 @@ public class SavingManager_Level : MonoBehaviour
         levelSaveData.nightsSurvived = LevelObjectives.Instance.GetNightsSurvived();
         levelSaveData.obstaclesRemoved = LevelObjectives.Instance.GetObstaclesRemoved();
         levelSaveData.watcherArtifactFillUpAmount = LevelObjectives.Instance.GetWatcherArtifactFillAmount();
+
+        if(levelSaveData.currentObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights && levelSaveData.nightsSurvived == LevelManager.Instance.GetLevelSO().nightsToSurviveAmount) {
+            levelSaveData.currentObjectiveType = LevelUI_ObjectiveUI.ObjectiveType.ReturnToHub;
+        }
 
         ES3.Save("LevelState", levelSaveData, path);
     }
@@ -565,8 +570,9 @@ public class SavingManager_Level : MonoBehaviour
         LevelObjectives.Instance.SetInitialFireLit(saveData.initialFireLit);
         LevelObjectives.Instance.SetDarklingNestFound(saveData.darklingNestFound);
         LevelObjectives.Instance.SetDarklingNestCleared(saveData.darklingNestCleared);
+
         LevelObjectives.Instance.SetReturnToHubObjectiveShown(saveData.returnToHubObjectiveShown);
-        LevelObjectives.Instance.SetReturnToHubObjectiveShown(saveData.returnToHubObjectiveShown);
+
         LevelManager.Instance.SetLevelHubMerchantHasTalkLinesToShow(saveData.hubMerchantHasTalkLinesToShow);
         LevelManager.Instance.SetConditionalLockedStructureLocationState(saveData.conditionalLockedStructureLocationUnlocked, saveData.conditionalLockedStructureLocationBuilt);
         LevelObjectives.Instance.SetLevelMerchantsHaveTalkLinesToShow(saveData.hubMerchantsHaveTalkLinesToShow_LevelObjectives);
@@ -577,7 +583,9 @@ public class SavingManager_Level : MonoBehaviour
 
         LevelObjectives.Instance.SetNPCInteractionsIndex(saveData.NPCInteractionsIndex);
         LevelManager.Instance.SetLevelHubMerchantInteractionIndex(saveData.levelManager_levelHubMerchantInteractionIndex);
+
         LevelObjectives.Instance.SetNightsSurvived(saveData.nightsSurvived);
+
         LevelObjectives.Instance.SetObstaclesRemoved(saveData.obstaclesRemoved);
         LevelObjectives.Instance.SetWatcherArtifactFillAmount(saveData.watcherArtifactFillUpAmount);
 
@@ -1152,6 +1160,19 @@ public class SavingManager_Level : MonoBehaviour
     }
 
     #endregion
+
+    private void CreateLevelSaveCopy() {
+        if (DebugManager.Instance.GetSaveAfterEachLevelDebug());
+
+        string mainPath = "LevelSave.es3";
+
+        if (!ES3.FileExists(mainPath)) return;
+
+        int currentDay = DayNightManager.Instance.GetCurrentDay();
+        string backupPath = "LevelSave_" + LevelManager.Instance.GetLevelSO() + "_Day_" + currentDay + ".es3";
+
+        ES3.CopyFile(mainPath, backupPath);
+    }
 
     public string GetLocalizedLastSaveText() {
         TimeSpan elapsed = DateTime.Now - lastSaveTime;

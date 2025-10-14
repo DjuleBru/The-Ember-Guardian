@@ -34,6 +34,7 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool takeScreenshotsOnKeyPressed;
     [SerializeField] private bool saveAfterEachLevel;
     [SerializeField] private bool debugShowLaser;
+    [SerializeField] private bool debugSurgeReload;
     [SerializeField] private bool logNightWaveData;
 
     int i = 0;
@@ -169,5 +170,8 @@ public class DebugManager : MonoBehaviour
     }
     public bool GetDebugShowLaser() {
         return debugShowLaser;
+    }
+    public bool GetDebugSurgeReload() {
+        return debugSurgeReload;
     }
 }

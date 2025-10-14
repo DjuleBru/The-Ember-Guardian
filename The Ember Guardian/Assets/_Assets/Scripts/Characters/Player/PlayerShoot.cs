@@ -109,6 +109,8 @@ public class PlayerShoot : MonoBehaviour
     private float surgeBulletSpinningTimer;
     private float surgeBulletSpinningDelay = .6f;
     private float surgeBulletSpinningWindow = .3f;
+    private float surgeBulletSpinningStartWindow = .15f;
+
     private float reloadingFromBeltReloadBuff = .95f;
     private float reloadingFromBagReloadDebuff = 1.2f;
 
@@ -325,16 +327,7 @@ public class PlayerShoot : MonoBehaviour
     private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
 
-        if(surgeBulletSpinning) {
-            if (surgeBulletSpinningInWindow) {
-                // Success
-                OnSpinningBulletSuccess?.Invoke(this, EventArgs.Empty);
-                surgeBulletSpinningInWindow = false;
-            } else {
-                // Fail
-                EndBulletSpinning();
-            }
-        }
+        HandleSurgeBulletSpinningInput();
 
         if (!canShoot) return;
         if (swappingGun) return;
@@ -343,6 +336,26 @@ public class PlayerShoot : MonoBehaviour
         playerJustPressedReload = true;
         playerJustPressedReloadTimer = 0;
        
+    }
+
+    private void HandleSurgeBulletSpinningInput() {
+        if (surgeBulletSpinning) {
+            if (surgeBulletSpinningInWindow) {
+
+                // Success
+                OnSpinningBulletSuccess?.Invoke(this, EventArgs.Empty);
+                surgeBulletSpinningInWindow = false;
+
+            }
+            else {
+
+                if (surgeBulletSpinningTimer > surgeBulletSpinningStartWindow) {
+                    // Fail
+                    EndBulletSpinning();
+                }
+
+            }
+        }
     }
 
     private void GameInput_OnPlayerReloadCanceled(object sender, EventArgs e) {
@@ -382,18 +395,20 @@ public class PlayerShoot : MonoBehaviour
         if (reloading) return false;
         if (coolingDown) return false;
 
-        if (heldGun.GetCurrentAmmoClip() != 0) {
-            // Gun has no ammo in belt
+        if (heldGun.GetCurrentAmmoClip() > 0) {
+            // Gun has ammo in belt
             return true;
 
         } else {
-            // Gun has No ammo in belt
+            // Gun has no ammo in belt
             PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
 
             if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(ammoType).Count > 0) {
+                // There is ammo in bag
                 return true;
             }
             else {
+                // There is no ammo in bag
                 OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
                 return false;
             }
@@ -719,6 +734,7 @@ public class PlayerShoot : MonoBehaviour
 
     private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+        HandleSurgeBulletSpinningInput();
 
         // Grenade Launcher Secondary
         if (projectileExplodesOnPlayerClickModeActive && projectileExplodesOnPlayerClick && heldGun.GetGunSO().gunType == GunSO.GunType.GrenadeLauncher) {
@@ -1140,8 +1156,8 @@ public class PlayerShoot : MonoBehaviour
         if (!canStartSurgeWindow) {
             return false;
         }
-
-        if(surgeReload || nextBulletSurgeWindow) {
+        surgeReload = surgeReload || nextBulletSurgeWindow || DebugManager.Instance.GetDebugSurgeReload();
+        if (surgeReload) {
             surgeBulletSpinning = true;
             nextBulletSurgeWindow = false;
             surgeBulletSpinningTimer = 0f;

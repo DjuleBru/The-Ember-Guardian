@@ -56,6 +56,7 @@ public class StructureLocation : MonoBehaviour {
 
         payCurrencyUI.OnCurrencyPaymentSuccess += PayOrbsUI_OnOrbPaymentSuccess;
         payCurrencyUI.SetOrbTemplateUIList(buildStructureOrbTemplates);
+        payCurrencyUI.OnCurrencyPaymentFailedOrCanceled += PayCurrencyUI_OnCurrencyPaymentFailedOrCanceled;
 
         if (structureSOToBuild.structureType == StructureSO.StructureType.fire) return;
         StructuresManager.Instance.AddStructureLocation(this);
@@ -74,6 +75,16 @@ public class StructureLocation : MonoBehaviour {
         showTooltipOnTrigger.HideTooltipShown();
         BuildStructure();
     }
+
+    private void PayCurrencyUI_OnCurrencyPaymentFailedOrCanceled(object sender, EventArgs e) {
+        if (playerInTriggerArea) return;
+
+        OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+        playerInTriggerArea = false;
+
+        Player.Instance.SetInPayCurrencyArea(false);
+    }
+
 
     public virtual Structure BuildStructure(bool buildOnLoad = false) {
         Structure structure = Instantiate(structureSOToBuild.structurePrefab, transform.position, Quaternion.identity).GetComponent<Structure>();
@@ -115,8 +126,8 @@ public class StructureLocation : MonoBehaviour {
 
     protected void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
         if (isBeingDestroyed) return;
-        if (!playerInTriggerArea) return;
         if (!structureLocationUnlocked) return;
+        if (!payCurrencyUI.GetPlayerInteracting()) return;
 
         payCurrencyUI.SetPlayerInteracting(false);
         payCurrencyUI.ResetCurrencyPayment();
@@ -140,13 +151,14 @@ public class StructureLocation : MonoBehaviour {
         if (!playerInTriggerArea) return;
         if (collision.gameObject.GetComponent<Player>() == null) return;
 
+        if (!payCurrencyUI.GetPlayerInteracting()) {
+            OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+        };
+
         Player.Instance.SetInPayCurrencyArea(false);
         playerInTriggerArea = false;
-        OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
 
         if (!structureSOToBuild.buildableAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) return;
-
-        payCurrencyUI.SetPlayerInteracting(false);
     }
 
     public StructureSO GetStructureSOToBuild() {
@@ -234,6 +246,12 @@ public class StructureLocation : MonoBehaviour {
 
     public bool GetStructureLocationBought() {
         return structureLocationBought;
+    }
+
+    public bool GetPlayerInTriggerArea() { return playerInTriggerArea; }
+
+    public PayCurrencyUI GetPayCurrencyUI() {
+        return payCurrencyUI;
     }
 
     public float GetStructureLocationWorldScaleX() {

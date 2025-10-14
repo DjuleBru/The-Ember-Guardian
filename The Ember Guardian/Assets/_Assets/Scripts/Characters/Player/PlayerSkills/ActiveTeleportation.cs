@@ -109,8 +109,6 @@ public class ActiveTeleportation : MonoBehaviour
         GameObject teleportRay = Instantiate(teleportRayPrefab, Vector3.zero, Quaternion.identity);
         LineRenderer lineRenderer = teleportRay.GetComponent<LineRenderer>();
 
-        Debug.Log("startPoint " + startPoint);
-        Debug.Log("endPoint " + endPoint);
         if (lineRenderer != null) {
             lineRenderer.SetPosition(0, startPoint); // Définir le point de départ
             lineRenderer.SetPosition(1, endPoint);   // Définir le point d'arrivée

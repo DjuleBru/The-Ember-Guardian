@@ -13,6 +13,7 @@ public class PlayerCampStructureLocationReplacer : MonoBehaviour
     }
 
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
+        if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
         StartCoroutine(ReplaceClosestStructuresAfterDelay(.1f));
     }
 
