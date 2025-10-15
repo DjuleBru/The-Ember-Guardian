@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4031d27ff643044292075ec5021e470, type: 3}
+  m_Name: ShielderAttack_Melee
+  m_EditorClassIdentifier: 
+  isRangedAttack: 0
+  isProjectileAttack: 0
+  isStaticProjectileAttack: 1
+  isAnimatedAttack: 0
+  attackCooldown: 3
+  minAttackRange: 4
+  maxAttackRange: 5
+  hasDifferentDayAndNightRange: 0
+  minAttackRange_Night: 10
+  maxAttackRange_Night: 15
+  attackRangeRandomizer: 0
+  maxAttackRangeRandomizer: 0
+  damage: 1
+  damageToFire: 1
+  damageToBarricades: 1
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 0
+  attackAnimationDelay: 0.5
+  totalAttackAnimationTime: 1.6
+  attackSFXDelayAfterAnimationStart: 0
+  staticProjectilePrefab: {fileID: 3659220867067385079, guid: 1cd965756d33c874bac6798ea163a746, type: 3}
+  staticProjectileAutoTargetsPlayer: 0
+  projectileAmountInPool: 2
+  projectileAmountShotInAttack: 1
+  delayBetweenProjectileSpawns: 0
+  projectileSO: {fileID: 11400000, guid: 0602c8ce3c78c4541af18d4ac8f1a47f, type: 2}
+  attackRangeRandomizerMiss: 2
+  attackSFXHandledByAnimation: 0
+  attackAudioClips:
+  - {fileID: 8300000, guid: 76638fa084fe0644488cef9674268413, type: 3}
+  attackHitAudioClips: []
+  attackStartedChargingAudioClips: []
+  attackReleasedAudioClips: []
+  attackVolumeMultiplier: 2.5
+  attackHitVolumeMultiplier: 0.5
