@@ -503,10 +503,23 @@ public class PlayerSkills : MonoBehaviour
     }
 
     private void SetActiveSkillParameters(SkillItem skillItem) {
+        if (skillItem.currentLevel > 1) {
+            for (int i = 1; i <= skillItem.currentLevel; i++) {
+                SkillItem temp = new SkillItem();
+                temp.Initialize(skillItem.skillSO);
+                temp.currentLevel = i;
+                ApplyActiveSkillEffectInternal(temp);
+            }
+        }
+        else {
+            ApplyActiveSkillEffectInternal(skillItem);
+        }
+    }
+
+    private void ApplyActiveSkillEffectInternal(SkillItem skillItem) {
         float skillBuffValue = skillItem.skillSO.activeSkillEffect.GetValueAtLevel(skillItem.currentLevel);
 
         switch (skillItem.skillType) {
-
             case SkillItem.SkillType.activeMoveSpeedBuff:
                 moveSpeedBuffTimer = skillBuffValue;
                 break;
@@ -517,7 +530,6 @@ public class PlayerSkills : MonoBehaviour
 
             case SkillItem.SkillType.activeMagmaShotBullet:
                 magmaShotBulletSkillDuration = skillBuffValue;
-
                 break;
 
             case SkillItem.SkillType.activeHealOnKills:
@@ -542,6 +554,10 @@ public class PlayerSkills : MonoBehaviour
 
             case SkillItem.SkillType.activePlantMine:
                 darkMinePoisonAmount = (int)skillBuffValue;
+                break;
+
+            case SkillItem.SkillType.activeWorkerAttackSpeedBuff:
+                workerAttackSpeedBuffAmount = (int)skillBuffValue;
                 break;
         }
     }
@@ -580,124 +596,109 @@ public class PlayerSkills : MonoBehaviour
         SkillSO skillItemSO = skillItem.GetSkillSO();
         PassiveSkillEffectSO skillEffect = skillItemSO.passiveSkillEffect;
 
-        float absoluteBuffEffectValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
-        float relativeBuffEffectValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
-        if (skillItem.currentLevel > 1) {
-            relativeBuffEffectValue -= skillEffect.GetValueAtLevel(skillItem.currentLevel - 1);
+        if (skillEffect == null) {
+            Debug.LogWarning($"Passive skill effect is null for {skillItem.itemName}");
+            return;
         }
 
-        if (skillEffect != null) {
-            switch (skillEffect.skillType) {
-                case SkillItem.SkillType.passiveMoveSpeedBuff:
+        // On applique les effets cumulés jusqu'au niveau actuel
+        float totalBuffValue = skillEffect.GetValueAtLevel(skillItem.currentLevel);
+        float previousLevelValue = (skillItem.currentLevel > 1) ? skillEffect.GetValueAtLevel(skillItem.currentLevel - 1) : 0f;
+        float relativeBuffEffectValue = totalBuffValue - previousLevelValue;
 
-                    PlayerMovement.Instance.BuffMoveSpeed(1 + relativeBuffEffectValue / 100);
-
-                    break;
-
-                case SkillItem.SkillType.passiveRunAccelerationFactorBuff:
-
-                    PlayerStats.Instance.BuffRunAccelerationFactor(relativeBuffEffectValue / 100);
-
-                    break;
-
-                case SkillItem.SkillType.passiveRunMaxTimeBuff:
-
-                    PlayerStats.Instance.BuffStamina(relativeBuffEffectValue);
-
-                    break;
-
-                case SkillItem.SkillType.passiveMaxHPIncrease:
-
-                    PlayerStats.Instance.BuffMaxHP((int)relativeBuffEffectValue);
-
-                    break;
-
-                case SkillItem.SkillType.passiveHealthRegen:
-
-                    if(relativeBuffEffectValue > 0) {
-                        PlayerStats.Instance.SetPlayerHealthRegen((int)relativeBuffEffectValue);
-                    } else {
-                        PlayerStats.Instance.BuffPlayerHealthRegen((int)relativeBuffEffectValue);
-                    }
-
-
-                    break;
-
-                case SkillItem.SkillType.passiveAmmoGenerator:
-
-                    PlayerStats.Instance.BuffPlayerAmmoRegen((int)relativeBuffEffectValue);
-
-                    break;
-
-                case SkillItem.SkillType.passiveChanceToDoubleXPDrop:
-
-                    PlayerStats.Instance.BuffChanceToDropx2((int)relativeBuffEffectValue);
-
-                    break;
-
-                case SkillItem.SkillType.passiveShieldGenerator:
-
-                    passiveShield.UnlockShield(absoluteBuffEffectValue);
-
-                    break;
-                case SkillItem.SkillType.passiveLastBulletDealsTwiceDamage:
-
-                    lastBulletDealsMoreDamage = true;
-                    lastBulletDealsMoreDamageBuff = 1 + relativeBuffEffectValue / 100;
-
-                    break;
-
-                case SkillItem.SkillType.passiveShootOnReload:
-
-                    shootOnReload = true;
-
-                    break;
-
-                case SkillItem.SkillType.passiveMeleeAttackMagmaShot:
-
-                    meleeAttackMagmaShot = true;
-                    meleeAttackMagmaShotBurnDuration += (int)relativeBuffEffectValue;
-
-                    break;
-
-                case SkillItem.SkillType.passiveDashFireTrail:
-
-                    fireDashRoll = true;
-                    fireDashRollBurnDuration += (int)relativeBuffEffectValue;
-
-                    break;
-
-                case SkillItem.SkillType.passiveDmgIncreaseInLight:
-
-                    increasedDamageInFireLight = true;
-                    damageBuffInFireLight = 1 + relativeBuffEffectValue / 100;
-
-                    if (enteredLight) {
-                        OnPlayerInFireLightBuffedDmg?.Invoke(this, EventArgs.Empty);
-                        damageInFireLightCurrentlyBuffed = true;
-                    }
-
-                    break;
-
-                case SkillItem.SkillType.passiveDmgIncreaseNotInLight:
-
-                    increasedDamageOutFireLight = true;
-                    damageBuffOutFireLight = 1 + relativeBuffEffectValue / 100;
-
-                    if (!enteredLight) {
-                        OnPlayerOutFireLightBuffedDmg?.Invoke(this, EventArgs.Empty);
-                        damageOutFireLightCurrentlyBuffed = true;
-                    }
-
-                    break;
-                default:
-
-                    Debug.LogWarning($"Unhandled skill type: {skillEffect.skillType}");
-                    break;
+        // Si le skill commence à un niveau supérieur à 1 (comme au lancement du joueur),
+        // on veut appliquer tous les niveaux précédents aussi.
+        if (skillItem.currentLevel > 1) {
+            for (int i = 1; i <= skillItem.currentLevel; i++) {
+                float valueAtThisLevel = skillEffect.GetValueAtLevel(i);
+                float prevValue = (i > 1) ? skillEffect.GetValueAtLevel(i - 1) : 0f;
+                float delta = valueAtThisLevel - prevValue;
+                ApplyPassiveSkillEffectInternal(skillEffect, delta);
             }
         }
+        else {
+            ApplyPassiveSkillEffectInternal(skillEffect, relativeBuffEffectValue);
+        }
     }
+    private void ApplyPassiveSkillEffectInternal(PassiveSkillEffectSO skillEffect, float relativeBuffEffectValue) {
+        switch (skillEffect.skillType) {
+            case SkillItem.SkillType.passiveMoveSpeedBuff:
+                PlayerMovement.Instance.BuffMoveSpeed(1 + relativeBuffEffectValue / 100);
+                break;
 
+            case SkillItem.SkillType.passiveRunAccelerationFactorBuff:
+                PlayerStats.Instance.BuffRunAccelerationFactor(relativeBuffEffectValue / 100);
+                break;
+
+            case SkillItem.SkillType.passiveRunMaxTimeBuff:
+                PlayerStats.Instance.BuffStamina(relativeBuffEffectValue);
+                break;
+
+            case SkillItem.SkillType.passiveMaxHPIncrease:
+                PlayerStats.Instance.BuffMaxHP((int)relativeBuffEffectValue);
+                break;
+
+            case SkillItem.SkillType.passiveHealthRegen:
+                if (relativeBuffEffectValue > 0)
+                    PlayerStats.Instance.SetPlayerHealthRegen((int)relativeBuffEffectValue);
+                else
+                    PlayerStats.Instance.BuffPlayerHealthRegen((int)relativeBuffEffectValue);
+                break;
+
+            case SkillItem.SkillType.passiveAmmoGenerator:
+                PlayerStats.Instance.BuffPlayerAmmoRegen((int)relativeBuffEffectValue);
+                break;
+
+            case SkillItem.SkillType.passiveChanceToDoubleXPDrop:
+                PlayerStats.Instance.BuffChanceToDropx2((int)relativeBuffEffectValue);
+                break;
+
+            case SkillItem.SkillType.passiveShieldGenerator:
+                PlayerSkills.Instance.GetPassiveShield().UnlockShield(relativeBuffEffectValue);
+                break;
+
+            case SkillItem.SkillType.passiveLastBulletDealsTwiceDamage:
+                lastBulletDealsMoreDamage = true;
+                lastBulletDealsMoreDamageBuff = 1 + relativeBuffEffectValue / 100;
+                break;
+
+            case SkillItem.SkillType.passiveShootOnReload:
+                shootOnReload = true;
+                break;
+
+            case SkillItem.SkillType.passiveMeleeAttackMagmaShot:
+                meleeAttackMagmaShot = true;
+                meleeAttackMagmaShotBurnDuration += (int)relativeBuffEffectValue;
+                break;
+
+            case SkillItem.SkillType.passiveDashFireTrail:
+                fireDashRoll = true;
+                fireDashRollBurnDuration += (int)relativeBuffEffectValue;
+                break;
+
+            case SkillItem.SkillType.passiveDmgIncreaseInLight:
+                increasedDamageInFireLight = true;
+                damageBuffInFireLight = 1 + relativeBuffEffectValue / 100;
+                if (enteredLight) {
+                    OnPlayerInFireLightBuffedDmg?.Invoke(this, EventArgs.Empty);
+                    damageInFireLightCurrentlyBuffed = true;
+                }
+                break;
+
+            case SkillItem.SkillType.passiveDmgIncreaseNotInLight:
+                increasedDamageOutFireLight = true;
+                damageBuffOutFireLight = 1 + relativeBuffEffectValue / 100;
+                if (!enteredLight) {
+                    OnPlayerOutFireLightBuffedDmg?.Invoke(this, EventArgs.Empty);
+                    damageOutFireLightCurrentlyBuffed = true;
+                }
+                break;
+
+            default:
+                Debug.LogWarning($"Unhandled passive skill type: {skillEffect.skillType}");
+                break;
+        }
+    }
     public void RemoveActiveSkill(SkillItem skillItem) {
         if(activeSkillLeft != null) {
             if (activeSkillLeft.skillType == skillItem.skillType) {
@@ -1046,10 +1047,14 @@ public class PlayerSkills : MonoBehaviour
 
     }
 
-    public List<string> GetActiveSkillStatList(SkillItem skillItem) {
+    public List<string> GetActiveSkillStatList(SkillItem skillItem, bool calledFromHub = false) {
         List<string> skillStatList = new List<string>();
         ActiveSkillEffectSO skillEffectSO = skillItem.skillSO.activeSkillEffect;
         int skillLevel = GetCurrentSkillLevel(skillItem);
+
+        if(calledFromHub) {
+            skillLevel = 1;
+        }
 
         switch (skillItem.skillType) {
 
@@ -1200,10 +1205,14 @@ public class PlayerSkills : MonoBehaviour
         return skillStatDescriptionList;
 
     }
-    public List<string> GetPassiveSkillStatList(SkillItem skillItem) {
+    public List<string> GetPassiveSkillStatList(SkillItem skillItem, bool calledFromHub = false) {
         List<string> skillStatList = new List<string>();
         PassiveSkillEffectSO skillEffectSO = skillItem.skillSO.passiveSkillEffect;
         int skillLevel = GetCurrentSkillLevel(skillItem);
+
+        if(calledFromHub) {
+            skillLevel = 1;
+        }
 
         switch (skillItem.skillType) {
 

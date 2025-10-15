@@ -11,10 +11,12 @@ public class PlayerTabMenuUI : MonoBehaviour
 
     [SerializeField] private GameObject tabMenuPanel;
     [SerializeField] private GameObject firstButtonSelected;
+    [SerializeField] private GameObject firstSkillButtonSelected;
 
     private bool canCloseTab = true;
     private bool tabMenuOpen;
     private bool changeWeaponPanelOpen;
+    private bool skillDescriptionPanelOpen;
 
     private CanvasGroup canvasGroup;
     private Animator panelAnimator;
@@ -37,12 +39,17 @@ public class PlayerTabMenuUI : MonoBehaviour
         HubMerchantUI.OnAnyHubMerchantCloseUIPanel += HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
         ChangeWeaponPanel.Instance.OnChangeWeaponPanelOpened += ChangeWeaponPanel_OnChangeWeaponPanelOpened;
         ChangeWeaponPanel.Instance.OnChangeWeaponPanelClosed += ChangeWeaponPanel_OnChangeWeaponPanelClosed;
+
+        SkillsDescriptionPanel.Instance.OnNewSkillsDescriptionPanelOpened += SkillsDescriptionPanel_OnNewSkillsDescriptionPanelOpened;
+        SkillsDescriptionPanel.Instance.OnSkillsDescriptionPanelClosed += SkillsDescriptionPanel_OnSkillsDescriptionPanelClosed;
     }
+
 
     private void GameInput_OnPlayerPausePerformed(object sender, EventArgs e) {
         if (!tabMenuOpen) return;
         if (!canCloseTab) return;
         if (changeWeaponPanelOpen) return;
+        if (skillDescriptionPanelOpen) return;
 
         StartCoroutine(OpenCloseTabAfterFrame());
     }
@@ -51,10 +58,23 @@ public class PlayerTabMenuUI : MonoBehaviour
         if (!tabMenuOpen) return;
         if (!canCloseTab) return;
         if (changeWeaponPanelOpen) return;
+        if (skillDescriptionPanelOpen) return;
 
         StartCoroutine(OpenCloseTabAfterFrame());
     }
 
+    private void SkillsDescriptionPanel_OnSkillsDescriptionPanelClosed(object sender, EventArgs e) {
+        skillDescriptionPanelOpen = false;
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            if (!GameInput.Instance.IsUsingGamepad()) return;
+            EventSystem.current.SetSelectedGameObject(firstSkillButtonSelected);
+        }
+    }
+
+    private void SkillsDescriptionPanel_OnNewSkillsDescriptionPanelOpened(object sender, EventArgs e) {
+        skillDescriptionPanelOpen = true;
+    }
     private void ChangeWeaponPanel_OnChangeWeaponPanelOpened(object sender, EventArgs e) {
         changeWeaponPanelOpen = true;
     }

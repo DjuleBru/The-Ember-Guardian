@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -9, z: 8.360001}
-  m_LocalScale: {x: 3.5, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -182,11 +182,11 @@ MonoBehaviour:
         _value: 0.99
       layers: 00000000060000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000190000001c0000001d0000001e000000
       usePerspective:
-        _value: 0
+        _value: 1
       waterPerspective:
-        _value: {x: 1.9, y: 1.8}
+        _value: {x: 0.43, y: 2.08}
       reflectionsPerspective:
-        _value: {x: 1, y: 0.2}
+        _value: {x: 1, y: 0.15}
       falloffStrength:
         _value: 0.39
       falloffStart:
@@ -199,7 +199,7 @@ MonoBehaviour:
         _value: 0
       playerPosition: {fileID: 0}
       scrollingStrength:
-        _value: 0.5
+        _value: 0.45
       DistortionFPRH:
         _value: 0
       raymarchlayers: 
@@ -218,7 +218,7 @@ MonoBehaviour:
         _value: {r: 0.7803922, g: 0.8941177, b: 0.8313726, a: 0.92941177}
       coloringType: 1
       tiling:
-        _value: {x: 1.4, y: 1.4}
+        _value: {x: 1, y: 0.9}
       baseAlpha:
         _value: 1
       alphaTexture: {fileID: 0}

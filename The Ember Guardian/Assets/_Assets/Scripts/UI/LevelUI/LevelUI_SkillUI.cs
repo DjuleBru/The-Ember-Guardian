@@ -30,7 +30,12 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
     protected override void Start() {
         base.Start();
         button = GetComponent<Button>();
-        button.enabled = false;
+
+        if(GameInput.Instance.IsUsingGamepad()) {
+            button.enabled = false;
+            EnableSkillDeleteButton(true);
+        }
+
 
         PlayerSkills.Instance.OnLeftActiveSkillActivated += PlayerSkills_OnLeftActiveSkillActivated;
         PlayerSkills.Instance.OnRightActiveSkillActivated += PlayerSkills_OnRightActiveSkillActivated;
@@ -131,23 +136,27 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
     }
 
     private void PlayerTabMenu_OnPlayerTabOpened(object sender, EventArgs e) {
-        button.enabled = true;
-        tabMenuOpen = true;
+        if (GameInput.Instance.IsUsingGamepad()) {
+            button.enabled = true;
+            tabMenuOpen = true;
+            EnableSkillDeleteButton(true);
+        }
 
-        EnableSkillDeleteButton(true);
     }
 
     private void PlayerTabMenu_OnPlayerTabClosed(object sender, EventArgs e) {
-        button.enabled = false;
-        tabMenuOpen = false;
-        EnableSkillDeleteButton(false);
+        if (GameInput.Instance.IsUsingGamepad()) {
+            button.enabled = false;
+            tabMenuOpen = false;
+            EnableSkillDeleteButton(false);
+        }
+
 
         if (skillDeleteAnimator != null) {
             skillDeleteAnimator.ResetTrigger("Show");
             skillDeleteAnimator.SetTrigger("Hide");
         }
     }
-
 
     public void RemoveSkill() {
         OpenCloseSkillDescriptionCard(false);
@@ -206,11 +215,9 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
 
     private void LevelUI_SkillUI_OnAnyButtonHovered(object sender, System.EventArgs e) {
         if (sender as ButtonUI != this) return;
-        if (!tabMenuOpen) return;
 
         OpenCloseSkillDescriptionCard(true);
         SetDescriptionCardPosition();
-
 
         if (skillDeleteAnimator != null) {
             skillDeleteAnimator.ResetTrigger("Hide");
@@ -220,12 +227,10 @@ public class LevelUI_SkillUI : ButtonUI, IPointerEnterHandler, IPointerExitHandl
     }
 
     public override void OnPointerEnter(PointerEventData eventData) {
-        if (!tabMenuOpen) return;
         base.OnPointerEnter(eventData);
     }
 
     public override void OnPointerExit(PointerEventData eventData) {
-        if (!tabMenuOpen) return;
         base.OnPointerExit(eventData);
         OpenCloseSkillDescriptionCard(false); 
         

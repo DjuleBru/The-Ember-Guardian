@@ -121,6 +121,25 @@ public class CurrencyStorage : Structure
         return currencyAmountStored >= maxCurrencyAmountStored && engineersCanPickUpOrbs;
     }
 
+    protected override void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
+
+        if (currentStructureInteractionType == StructureInteractionType.primaryFunction) {
+            TriggerStructurePrimaryFunction();
+        }
+
+        if (currentStructureInteractionType == StructureInteractionType.secondaryFunction) {
+            TriggerStructureSecondaryFunction();
+        }
+
+        if (currentStructureInteractionType == StructureInteractionType.upgrade) {
+            UpgradeStructure();
+        }
+
+        //payCurrencyUI.SetPlayerInteracting(false);
+        //payCurrencyUI.StopWorkerInteraction();
+        //isBeingRefilledByEngineer = false;
+    }
+
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);
         if (collision.gameObject.GetComponent<Player>() == null) return;

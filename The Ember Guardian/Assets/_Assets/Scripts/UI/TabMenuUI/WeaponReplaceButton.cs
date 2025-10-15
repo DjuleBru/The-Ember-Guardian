@@ -43,7 +43,7 @@ public class WeaponReplaceButton : ButtonUI {
 
         }
 
-        ChangeWeaponPanel.Instance.OpenClosePanel();
+        ChangeWeaponPanel.Instance.ClosePanel();
         OnWeaponReplaceButtonPressed?.Invoke(this, EventArgs.Empty);
     }
 

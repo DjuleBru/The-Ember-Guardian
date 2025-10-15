@@ -114,7 +114,10 @@ public class HubMerchantUI : MonoBehaviour
         RefreshGameInputView();
         hubMerchantUInimator.SetTrigger("Show");
         hubMerchantUInimator.ResetTrigger("Hide");
-        EventSystem.current.SetSelectedGameObject(firstButtonSelected);
+
+        if(GameInput.Instance.IsUsingGamepad()) {
+            EventSystem.current.SetSelectedGameObject(firstButtonSelected);
+        }
 
         OnAnyHubMerchantOpenUIPanel?.Invoke(this, EventArgs.Empty);
     }

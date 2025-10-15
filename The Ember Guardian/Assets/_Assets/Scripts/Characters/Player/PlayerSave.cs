@@ -144,6 +144,31 @@ public class PlayerSave : MonoBehaviour
         }
     }
 
+    public List<SkillSO> GetAllActiveSkills() {
+        List<SkillSO> allActiveSkills = new List<SkillSO>();
+
+        foreach (SkillSO skillSO in allSkillsList) {
+
+            if (skillSO.itemType == MerchantItem.MerchantItemType.ActiveSkill) {
+                allActiveSkills.Add(skillSO);
+            }
+        }
+
+        return allActiveSkills;
+    }
+    public List<SkillSO> GetAllPassiveSkills() {
+        List<SkillSO> allPassiveSkills = new List<SkillSO>();
+
+        foreach (SkillSO skillSO in allSkillsList) {
+
+            if (skillSO.itemType == MerchantItem.MerchantItemType.PassiveSkill) {
+                allPassiveSkills.Add(skillSO);
+            }
+        }
+
+        return allPassiveSkills;
+    }
+
     public List<SkillSO> GetActiveSkillsUnlocked() {
         List<SkillSO> activeSkillSOsUnlocked = new List<SkillSO>();
 

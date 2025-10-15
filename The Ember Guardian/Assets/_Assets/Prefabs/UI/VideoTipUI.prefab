@@ -1097,7 +1097,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8092972153247137310}
   m_HandleRect: {fileID: 5019738915690030307}
   m_Direction: 2
-  m_Value: 1.0000001
+  m_Value: 0.99999994
   m_Size: 0.31671122
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1482,7 +1482,6 @@ GameObject:
   - component: {fileID: 4642235433118389113}
   - component: {fileID: 1777351695337246843}
   - component: {fileID: 2339057828061764}
-  - component: {fileID: 8286606467725835920}
   m_Layer: 5
   m_Name: ManualPanel
   m_TagString: Untagged
@@ -1578,28 +1577,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &8286606467725835920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2754112077666539529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fb257e27a3826f498ef156582ea8142, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ultraWidePanelOffsetMinX: 1450
-  ultraWidePanelOffsetMinY: 0
-  ultraWidePanelOffsetMaxX: 0
-  ultraWidePanelOffsetMaxY: 0
-  ultraWidePanelPosX: 0
-  ultraWidePanelPosY: 0
-  ultraWidePanelWidth: 0
-  ultraWidePanelHeight: 0
-  onlyVerticalResize: 0
-  stretchedPanel: 1
 --- !u!1 &2838809578218615555
 GameObject:
   m_ObjectHideFlags: 0
@@ -2685,9 +2662,9 @@ RectTransform:
   - {fileID: 2100978015757800928}
   m_Father: {fileID: 4642235433118389113}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -378.1, y: -73.71}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 250, y: -73.71}
   m_SizeDelta: {x: 200, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7161813439845907810
@@ -3674,7 +3651,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.5
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -4135,7 +4112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fb257e27a3826f498ef156582ea8142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ultraWidePanelOffsetMinX: 1450
+  ultraWidePanelOffsetMinX: 1700
   ultraWidePanelOffsetMinY: 0
   ultraWidePanelOffsetMaxX: 0
   ultraWidePanelOffsetMaxY: 0

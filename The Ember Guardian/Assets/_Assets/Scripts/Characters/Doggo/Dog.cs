@@ -44,7 +44,7 @@ public class Dog : MonoBehaviour
         }
 
         dogType = ES3.Load("dogType", DogType.GermanShepherd);
-
+        Debug.Log(dogType);
         if (useDebugDogType) {
             dogType = debugDogType;
         }
@@ -145,6 +145,7 @@ public class Dog : MonoBehaviour
         OnDogTypeChanged?.Invoke(this, new OnDogTypeChangedEventArgs {
             selectedFromMenu = selectedFromMenu
         });
+        Debug.Log("SetDogType " + dogType);
 
         //Debug.Log("SetDogType " + dogType);
     }

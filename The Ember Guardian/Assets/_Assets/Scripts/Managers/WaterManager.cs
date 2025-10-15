@@ -27,14 +27,14 @@ public class WaterManager : MonoBehaviour
     }
 
     private void Start() {
-        //RefreshPerspectiveActive();
+        RefreshPerspectiveActive();
 
         SettingsManager.Instance.OnWaterPerspectiveChanged += SettingsManager_OnWaterPerspectiveChanged;
         RefreshReflectionsLevel();
     }
 
     private void SettingsManager_OnWaterPerspectiveChanged(object sender, System.EventArgs e) {
-        //RefreshPerspectiveActive();
+        RefreshPerspectiveActive();
     }
 
     private void RefreshPerspectiveActive() {

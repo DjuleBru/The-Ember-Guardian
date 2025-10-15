@@ -505,6 +505,7 @@ public class MetaProgressionManager : MonoBehaviour
     }
     public string GetLastLevelCompletedString() {
         string key = "LastLevelCompleted_";
+        if (!ES3.KeyExists(key)) return "";
         return ES3.Load<string>(key);
     }
 

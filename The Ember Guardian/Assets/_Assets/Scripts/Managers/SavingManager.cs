@@ -32,6 +32,8 @@ public class SavingManager : MonoBehaviour
 
             string lastLevelCompletedString = MetaProgressionManager.Instance.GetLastLevelCompletedString();
 
+            if (lastLevelCompletedString == "") return;
+
             string newSaveFile = Application.persistentDataPath + "/" + saveFileName + "_After_" + lastLevelCompletedString + "_Completed.es3";
 
             if (File.Exists(original)) {

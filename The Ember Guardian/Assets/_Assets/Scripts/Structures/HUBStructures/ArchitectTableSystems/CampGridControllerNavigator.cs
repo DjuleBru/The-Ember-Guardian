@@ -121,6 +121,7 @@ public class CampGridControllerNavigator : MonoBehaviour
     }
 
     private void GameInput_OnPlayerNavigateUIPerformed(object sender, System.EventArgs e) {
+        if (!architectTableHubMerchant.GetPlayerInteractingWithMerchant()) return;
         Vector2 input = GameInput.Instance.GetUINavigationVector();
         if (input == Vector2.zero) return;
 

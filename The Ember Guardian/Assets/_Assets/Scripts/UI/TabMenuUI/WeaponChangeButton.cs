@@ -49,15 +49,10 @@ public class WeaponChangeButton : ButtonUI
 
         if (PlayerShoot.Instance.GetUnlockedGunSOList().Count <= 1) return;
 
+        ChangeWeaponPanel.Instance.SetLastWeaponChangeButton(this);
+        ChangeWeaponPanel.Instance.OpenClosePanel(isPrimaryWeaponButton);
         ChangeWeaponPanel.Instance.SetPrimaryWeaponSwap(isPrimaryWeaponButton);
 
-        if (ChangeWeaponPanel.Instance.GetJustPressedByOtherWeaponButton(this)) {
-            ChangeWeaponPanel.Instance.SetLastWeaponChangeButton(this);
-            return;
-        };
-
-        ChangeWeaponPanel.Instance.SetLastWeaponChangeButton(this);
-        ChangeWeaponPanel.Instance.OpenClosePanel();
         ;
     }
 
@@ -66,15 +61,10 @@ public class WeaponChangeButton : ButtonUI
 
         if (PlayerShoot.Instance.GetGunSOInStock() == null) return;
 
-        ChangeWeaponPanel.Instance.SetPrimaryWeaponSwap(isPrimaryWeaponButton);
-
-        if (ChangeWeaponPanel.Instance.GetJustPressedByOtherWeaponButton(this)) {
-            ChangeWeaponPanel.Instance.SetLastWeaponChangeButton(this);
-            return;
-        };
 
         ChangeWeaponPanel.Instance.SetLastWeaponChangeButton(this);
-        ChangeWeaponPanel.Instance.OpenClosePanel();
+        ChangeWeaponPanel.Instance.OpenClosePanel(isPrimaryWeaponButton);
+        ChangeWeaponPanel.Instance.SetPrimaryWeaponSwap(isPrimaryWeaponButton);
     }
 
     private void PlayerShoot_OnSecondaryWeaponChanged(object sender, System.EventArgs e) {

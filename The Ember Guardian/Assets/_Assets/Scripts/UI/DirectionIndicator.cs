@@ -26,7 +26,6 @@ public class DirectionIndicator : MonoBehaviour
     }
 
     private void LevelManager_OnEndLevelPortalEnabled(object sender, LevelManager.OnEndLevelPortalEnabledEventArgs e) {
-        Debug.Log("LevelManager_OnEndLevelPortalEnabled");
         positionToIndicate = e.endLevelPortalPosition;
         direction = (float)positionToIndicate.x - Player.Instance.transform.position.x;
 

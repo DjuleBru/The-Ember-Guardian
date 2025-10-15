@@ -77,7 +77,9 @@ public class SoundManager : MonoBehaviour
             PlayerWorldUITooltip.OnTooltipHidden += PlayerWorldUITooltip_OnTooltipHidden;
             PlayerWorldUITooltip.OnTooltipShown += PlayerWorldUITooltup_OnTooltipShown;
 
-            if(UICurrencyManager.PlayerInventoryUI != null) {
+            SkillsDescriptionPanel.Instance.OnNewSkillsDescriptionPanelOpened += SkillsDescriptionPanel_OnSkillsDescriptionPanelOpened;
+
+            if (UICurrencyManager.PlayerInventoryUI != null) {
                 UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
             }
 
@@ -363,6 +365,10 @@ public class SoundManager : MonoBehaviour
 
     private void PlayerWorldUITooltup_OnTooltipShown(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.tooltipShown, .7f);
+    }
+
+    private void SkillsDescriptionPanel_OnSkillsDescriptionPanelOpened(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.openSkillsMenuPanel, .7f);
     }
 
     private void PlayerWorldUITooltip_OnTooltipHidden(object sender, System.EventArgs e) {
@@ -1092,6 +1098,7 @@ public class SoundManager : MonoBehaviour
             PlayerUI_AmmoBar.Instance.OnAmmoTickAdded -= PlayerUI_AmmoBar_OnAmmoTickAdded;
             PlayerUI_HPBar.Instance.OnHPTickAdded -= PlayerUI_HPBar_OnHPTickAdded;
             PlayerCurrencies.Instance.OnBlueOrbDroppedOnTheFloor -= PlayerCurrencies_OnBlueOrbDroppedOnTheFloor;
+            SkillsDescriptionPanel.Instance.OnNewSkillsDescriptionPanelOpened -= SkillsDescriptionPanel_OnSkillsDescriptionPanelOpened;
 
             UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected -= UICurrencyManager_OnCurrencyCollected;
             Dog.Instance.OnPlayerCalledDog -= Dog_OnPlayerCalledDog;

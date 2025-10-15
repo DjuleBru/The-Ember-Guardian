@@ -85,7 +85,24 @@ public class Tent : Structure
     private void FastTravelTP_OnAnyFastTravelTPBuilt(object sender, EventArgs e) {
         fastTravelTP.gameObject.SetActive(true);
     }
+    protected override void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
 
+        if (currentStructureInteractionType == StructureInteractionType.primaryFunction) {
+            TriggerStructurePrimaryFunction();
+        }
+
+        if (currentStructureInteractionType == StructureInteractionType.secondaryFunction) {
+            TriggerStructureSecondaryFunction();
+        }
+
+        if (currentStructureInteractionType == StructureInteractionType.upgrade) {
+            UpgradeStructure();
+        }
+
+        //payCurrencyUI.SetPlayerInteracting(false);
+        //payCurrencyUI.StopWorkerInteraction();
+        //isBeingRefilledByEngineer = false;
+    }
 
 
     private void OnDestroy() {

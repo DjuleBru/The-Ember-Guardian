@@ -116,7 +116,6 @@ public class DogDigAbility : MonoBehaviour
             int rewardAmount = rewardAmountList[j];
 
             for (int i = 0; i < rewardAmount; i++) {
-                Debug.Log("Instantiate " + currencyType);
                 Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyType), spawnPosition.position, Quaternion.identity).GetComponent<Collectible>();
 
                 collectible.ApplyRandomUpwardsForce(5, 8);

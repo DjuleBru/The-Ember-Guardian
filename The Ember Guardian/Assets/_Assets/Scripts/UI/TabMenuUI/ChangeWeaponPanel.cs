@@ -9,8 +9,10 @@ public class ChangeWeaponPanel : MonoBehaviour
 
     public static ChangeWeaponPanel Instance;
 
+    private int totalWeaponAmount = 12;
     private bool panelOpen;
     private bool primaryWeaponSwap;
+    private bool openedOnce;
     private bool isLevelScene;
 
     [SerializeField] private Transform changeWeaponSlotContainer;
@@ -59,7 +61,7 @@ public class ChangeWeaponPanel : MonoBehaviour
 
     private void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
         if(panelOpen) {
-            OpenClosePanel();
+            ClosePanel();
         }
     }
 
@@ -116,7 +118,7 @@ public class ChangeWeaponPanel : MonoBehaviour
             unlockedGunAmount++;
         }
 
-        for(int i = 0; i < 12 - unlockedGunAmount; i++) {
+        for(int i = 0; i < totalWeaponAmount - unlockedGunAmount; i++) {
             Instantiate(emptyWeaponSlotTemplate, changeWeaponSlotContainer);
         }
 
@@ -131,21 +133,32 @@ public class ChangeWeaponPanel : MonoBehaviour
         lastChangeButtonThatOpenedThisPanel = changeButton;
     }
 
-    public void OpenClosePanel() {
-        panelOpen = !panelOpen;
-        gameObject.SetActive(panelOpen);
+    public void OpenClosePanel(bool calledFromPrimaryWeaponButton) {
 
-        if(!panelOpen) {
-            lastChangeButtonThatOpenedThisPanel = null;
-            OnChangeWeaponPanelClosed?.Invoke(this, EventArgs.Empty);
+        if(panelOpen) {
+
+            if (!openedOnce || (primaryWeaponSwap && calledFromPrimaryWeaponButton) || (!primaryWeaponSwap && !calledFromPrimaryWeaponButton)) {
+                lastChangeButtonThatOpenedThisPanel = null;
+                OnChangeWeaponPanelClosed?.Invoke(this, EventArgs.Empty);
+                panelOpen = false;
+                gameObject.SetActive(false);
+            }
+
+
         } else {
-            if(changeWeaponButtons.Count > 0) {
+
+            SkillsDescriptionPanel.Instance.ClosePanel();
+            openedOnce = true;
+            if (changeWeaponButtons.Count > 0) {
                 if (GameInput.Instance.IsUsingGamepad()) {
                     EventSystem.current.SetSelectedGameObject(changeWeaponButtons[0]);
                 };
 
                 OnChangeWeaponPanelOpened?.Invoke(this, EventArgs.Empty);
+                panelOpen = true;
+                gameObject.SetActive(true);
             }
+
         }
     }
 
@@ -157,6 +170,13 @@ public class ChangeWeaponPanel : MonoBehaviour
 
     public bool GetPrimaryWeaponSwap() {
         return primaryWeaponSwap;
+    }
+
+    public void ClosePanel() {
+        panelOpen = false;
+        gameObject.SetActive(panelOpen);
+
+        OnChangeWeaponPanelClosed?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnDestroy() {

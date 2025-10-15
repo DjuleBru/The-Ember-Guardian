@@ -244,7 +244,11 @@ public class PauseMenuUI : MonoBehaviour
 
     public virtual void ExitGameButton() {
         if (confirmExitGame || progressionSaved) {
-            OpenFullGameDescriptionPanel();
+            if (VersioningManager.Instance.GetIsDemo()) {
+                OpenFullGameDescriptionPanel();
+            } else {
+                ExitGameWithNoConfirmation();
+            }
         }
 
         else {
@@ -287,7 +291,6 @@ public class PauseMenuUI : MonoBehaviour
     protected void OpenFullGameDescriptionPanel() {
         fullGameDescriptionPanel.SetActive(true);
         EventSystem.current.SetSelectedGameObject(fullGameDescriptionPanel_WishlistButton);
-
     }
 
     public void SetCanOpenPauseMenu(bool canOpen) {
