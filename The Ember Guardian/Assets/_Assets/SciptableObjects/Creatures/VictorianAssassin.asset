@@ -15,8 +15,8 @@ MonoBehaviour:
   enemyName: VictorianAssassin
   isBoss: 0
   description: Basic monster, a bit swarmy.
-  creatureIcon: {fileID: 21300000, guid: d63bf30d4e0117a46931ce00fe835fb2, type: 3}
-  creatureIcon_Portrait: {fileID: 21300000, guid: 4589dc6dbaf83974a8c03f7865eae38a, type: 3}
+  creatureIcon: {fileID: 21300000, guid: 0ba2a592c63e0e041a2d80494c9e2659, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: b27111ac50be610408a67414c78b9226, type: 3}
   creaturePrefab: {fileID: 4997657120178985709, guid: ac4600aea6ebdf0479c51a9fcd96f0a5, type: 3}
   mass: 25
   detectionRange_Day: 15
@@ -51,10 +51,10 @@ MonoBehaviour:
   probabilityToDropOrb: 0.5
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
-  difficulty: 5
+  difficulty: 12
   initialWaveSpawn: 2
   spawnProbability: 0.4
-  maxCreaturesPerPacket: 2
+  maxCreaturesPerPacket: 4
   dieAudioClips:
   - {fileID: 8300000, guid: 78d33b8d317a8c443a851d861770f563, type: 3}
   - {fileID: 8300000, guid: 39108a9d461c7444699969639f1ebe39, type: 3}

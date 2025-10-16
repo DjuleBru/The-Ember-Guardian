@@ -11,9 +11,9 @@ public class DoggoVisualOnly : MonoBehaviour
     private Dog.DogType dogType = Dog.DogType.GermanShepherd;
 
     private void Start() {
-        var dogData = ES3.Load<Dictionary<string, object>>("DogStats");
 
         if (ES3.KeyExists("DogStats")) {
+            var dogData = ES3.Load<Dictionary<string, object>>("DogStats");
             dogType = GetValue(dogData, "dogType", Dog.DogType.GermanShepherd);
         }
 

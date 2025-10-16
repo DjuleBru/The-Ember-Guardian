@@ -817,6 +817,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void SetEndLevelMusic(float fadeInDuration) {
+        Debug.Log("SetEndLevelMusic ");
         if (isPlayingEndLevelAreaMusic) return;
         isPlayingEndLevelAreaMusic = true;
 

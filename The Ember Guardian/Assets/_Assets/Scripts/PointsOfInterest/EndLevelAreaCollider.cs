@@ -5,15 +5,21 @@ using UnityEngine;
 
 public class EndLevelAreaCollider : MonoBehaviour
 {
+    private EndLevelArea endLevelArea;
     public static event EventHandler OnPlayerTriggeredInAnyEndLevelArea;
+
+    private void Awake() {
+        endLevelArea = GetComponentInParent<EndLevelArea>();
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() != null) {
-            if (EndLevelArea.Instance.GetPlayerDestroyedNest()) return;
-            if (EndLevelArea.Instance.AllCreaturesKilled()) return;
+            if (endLevelArea.GetPlayerDestroyedNest()) return;
+            if (endLevelArea.AllCreaturesKilled()) return;
 
             OnPlayerTriggeredInAnyEndLevelArea?.Invoke(this, EventArgs.Empty);
-            EndLevelArea.Instance.SetPlayerInTriggerArea(true);
+            endLevelArea.SetPlayerInTriggerArea(true);
             MusicManager.Instance.SetEndLevelMusic(2f);
             MusicManager.Instance.SetAudioTargerVolume(.3f);
         }
@@ -22,8 +28,8 @@ public class EndLevelAreaCollider : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() != null) {
 
-            EndLevelArea.Instance.SetPlayerInTriggerArea(false);
-            EndLevelArea.Instance.TryFadeOutMusic();
+            endLevelArea.SetPlayerInTriggerArea(false);
+            endLevelArea.TryFadeOutMusic();
         }
     }
 }

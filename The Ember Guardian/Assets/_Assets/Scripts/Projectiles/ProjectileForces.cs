@@ -51,10 +51,9 @@ public class ProjectileForces : Projectile {
         this.gravityScale = projectileSO.gravityScale;
         rb.velocity = Vector2.zero;
         rb.gravityScale = gravityScale;
-        //transform.right = (projectileTarget.position - transform.position).normalized;
 
         float randomizedX = UnityEngine.Random.Range(-targetRandomizer, targetRandomizer);
-        
+
         Vector2 targetPosition = new Vector2(projectileTarget.position.x - randomizedX, projectileTarget.position.y);
         if(homing) {
             float estFlightTime = Vector2.Distance(transform.position, projectileTarget.position)
@@ -70,6 +69,8 @@ public class ProjectileForces : Projectile {
 
         switch (projectileSO.trajectoryMode) {
             case TrajectoryMode.StraightLine:
+                float randomizedY = projectileTarget.position.y + UnityEngine.Random.Range(-projectileSO.straightLineYTargetRandomizer, projectileSO.straightLineYTargetRandomizer);
+                targetPosition = new Vector2(projectileTarget.position.x - randomizedX, randomizedY);
                 launchVelocity = CalculateStraightLineVelocity(transform.position, targetPosition, projectileSO.straightLineSpeed);
                 break;
             case TrajectoryMode.CurvedApex:
@@ -161,6 +162,8 @@ public class ProjectileForces : Projectile {
     }
 
     private Vector2 CalculateStraightLineVelocity(Vector2 start, Vector2 end, float speed) {
+
+
         Vector2 dir = (end - start).normalized;
         return dir * speed;
     }

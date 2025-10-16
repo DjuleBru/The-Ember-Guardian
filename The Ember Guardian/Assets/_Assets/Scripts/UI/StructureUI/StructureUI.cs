@@ -262,8 +262,7 @@ public class StructureUI : MonoBehaviour
             upgradeGameObject.SetActive(false);
         }
 
-        // Afficher le type courant
-
+        // Afficher le type courantx
         if (activeTypes.Contains(structure.GetCurrentStructureInteractionType())) {
             switch (structure.GetCurrentStructureInteractionType()) {
                 case Structure.StructureInteractionType.primaryFunction:

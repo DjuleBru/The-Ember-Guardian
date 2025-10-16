@@ -202,8 +202,10 @@ public class MobAttack : MonoBehaviour
     }
     protected virtual IEnumerator AnimatedAttackCoroutine(float totalAttackAnimationTime) {
         attackStarted = true;
+        attacking = true;
         yield return new WaitForSeconds(totalAttackAnimationTime);
         attackStarted = false;
+        attacking = false;
     }
 
     public void InitializeProjectilePool(ProjectileSO projectileSO) {

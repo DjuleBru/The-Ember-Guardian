@@ -111,7 +111,15 @@ public class Fire : Structure, IDamageable {
         }
 
         if(isEndLevelFire) {
-            EndLevelArea.Instance.SetEndLevelFireLit();
+            if(EndLevelArea.Instance_Left != null) {
+                if(Player.Instance.transform.position.x < 0) {
+                    EndLevelArea.Instance_Left.SetEndLevelFireLit();
+                } else {
+                    EndLevelArea.Instance.SetEndLevelFireLit();
+                }
+            } else {
+                EndLevelArea.Instance.SetEndLevelFireLit();
+            }
         }
 
         if(isHubFire) {

@@ -15,8 +15,8 @@ MonoBehaviour:
   enemyName: SparkGuardian
   isBoss: 0
   description: Melee mob that can respawn after it's first death !
-  creatureIcon: {fileID: 21300000, guid: c8da4e1937bd88c43951c33f6d726431, type: 3}
-  creatureIcon_Portrait: {fileID: 21300000, guid: 9d43ad776aed051429d6cfc34ba8c831, type: 3}
+  creatureIcon: {fileID: 21300000, guid: b56be93e6c630784cbe7066142410c0f, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: ba3a42c9d62e6324d9bb36df1d88a61c, type: 3}
   creaturePrefab: {fileID: 4997657120178985709, guid: 9beaab064cf1da8418805daba22dc8bf, type: 3}
   mass: 20
   detectionRange_Day: 8
@@ -51,10 +51,10 @@ MonoBehaviour:
   probabilityToDropOrb: 1
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 02000000
-  difficulty: 10
-  initialWaveSpawn: 3
+  difficulty: 15
+  initialWaveSpawn: 4
   spawnProbability: 0.25
-  maxCreaturesPerPacket: 2
+  maxCreaturesPerPacket: 1
   dieAudioClips:
   - {fileID: 8300000, guid: 7238c040c3c6f0f45877e458ed292127, type: 3}
   - {fileID: 8300000, guid: 1ccfac7dab77f8d41a7f6cfe317273c9, type: 3}

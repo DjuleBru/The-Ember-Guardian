@@ -1632,6 +1632,11 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 7868727550266577229, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
   m_PrefabInstance: {fileID: 2669040421589755040}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5477494818737260368 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7568772629749081072, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
+  m_PrefabInstance: {fileID: 2669040421589755040}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &6117757297469953653 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8209206451638645461, guid: ee0fee15dbec76e44ad5e68c0530bace, type: 3}
@@ -1676,7 +1681,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureSpriteRenderer: {fileID: 190870229499975902}
   structureFunctionIconSpriteRenderer: {fileID: 1816938978050232834}
-  structureInteractionIconImage: {fileID: 0}
+  structureInteractionIconGO: {fileID: 5477494818737260368}
   greyedStructionIconColor: {r: 1, g: 1, b: 1, a: 0.3137255}
   unhoveredMaterial: {fileID: 2100000, guid: df9439eea0a1a624e9c059fa02039641, type: 2}
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}

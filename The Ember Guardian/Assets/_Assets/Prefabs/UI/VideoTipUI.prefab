@@ -4083,10 +4083,10 @@ RectTransform:
   - {fileID: 3047722527791541418}
   m_Father: {fileID: 6417983938811343800}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 550, y: 0}
-  m_SizeDelta: {x: -1100, y: -100}
+  m_AnchoredPosition: {x: -410, y: 0}
+  m_SizeDelta: {x: 820, y: -60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1531181941658231217
 CanvasGroup:
@@ -4107,12 +4107,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6868289196194885508}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1fb257e27a3826f498ef156582ea8142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ultraWidePanelOffsetMinX: 1700
+  ultraWidePanelOffsetMinX: 1500
   ultraWidePanelOffsetMinY: 0
   ultraWidePanelOffsetMaxX: 0
   ultraWidePanelOffsetMaxY: 0
@@ -4120,6 +4120,14 @@ MonoBehaviour:
   ultraWidePanelPosY: 0
   ultraWidePanelWidth: 0
   ultraWidePanelHeight: 0
+  verticalPanelOffsetMinX: 0
+  verticalPanelOffsetMinY: 0
+  verticalPanelOffsetMaxX: 0
+  verticalPanelOffsetMaxY: 0
+  verticalPanelPosX: 0
+  verticalPanelPosY: 0
+  verticalPanelWidth: 0
+  verticalPanelHeight: 0
   onlyVerticalResize: 0
   stretchedPanel: 1
 --- !u!1 &6985904492987669233

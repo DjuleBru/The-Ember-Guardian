@@ -15,8 +15,8 @@ MonoBehaviour:
   enemyName: Ghoul_Purple
   isBoss: 0
   description: Melee mob that can respawn after it's first death !
-  creatureIcon: {fileID: 21300000, guid: ca6fe3ce67c07e74ba47082016ab73a5, type: 3}
-  creatureIcon_Portrait: {fileID: 21300000, guid: 4e54dbb297b2c5242925f3ffd973c146, type: 3}
+  creatureIcon: {fileID: 21300000, guid: e476c8cb27998af419bc3bde1c8ba851, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: e53408325a875f940ac035af1c179deb, type: 3}
   creaturePrefab: {fileID: 4997657120178985709, guid: 58ec7bd36bc4aef44b1c22c9257f9094, type: 3}
   mass: 20
   detectionRange_Day: 10
@@ -51,7 +51,7 @@ MonoBehaviour:
   probabilityToDropOrb: 0.5
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
-  difficulty: 3
+  difficulty: 5
   initialWaveSpawn: 1
   spawnProbability: 1
   maxCreaturesPerPacket: 8

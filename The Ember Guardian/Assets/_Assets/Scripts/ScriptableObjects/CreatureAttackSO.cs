@@ -59,6 +59,9 @@ public class CreatureAttackSO : ScriptableObject
     [BoxGroup("General")]
     [LabelWidth(200)]
     public bool canAttackPlayerOnTower;
+    [BoxGroup("General")]
+    [LabelWidth(200)]
+    public bool blockSwitchXScaleWhileAttacking;
 
     [BoxGroup("Animation")]
     [LabelWidth(200)]

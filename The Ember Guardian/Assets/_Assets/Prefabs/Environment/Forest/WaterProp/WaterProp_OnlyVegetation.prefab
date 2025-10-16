@@ -84,6 +84,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &6446837568244877164
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6749309920533336540}
+  m_Layer: 16
+  m_Name: PerspectiveReferencePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6749309920533336540
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6446837568244877164}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4808995770938988489}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6467159594734000263
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,10 +306,43 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3326069694480528757, guid: b95c12d75d0e41544ac8508bdf61caad, type: 3}
       insertIndex: -1
       addedObject: {fileID: 358882392734991790}
-    m_AddedComponents: []
+    - targetCorrespondingSourceObject: {fileID: 3326069694480528757, guid: b95c12d75d0e41544ac8508bdf61caad, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6749309920533336540}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5084585353443021545, guid: b95c12d75d0e41544ac8508bdf61caad, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3234217558019535156}
   m_SourcePrefab: {fileID: 100100000, guid: b95c12d75d0e41544ac8508bdf61caad, type: 3}
+--- !u!1 &3027682975358169173 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5084585353443021545, guid: b95c12d75d0e41544ac8508bdf61caad, type: 3}
+  m_PrefabInstance: {fileID: 7824000427046249148}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3234217558019535156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3027682975358169173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a138249bb3831f94ba10a15c92130839, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  perspectiveReferencePoint: {fileID: 6749309920533336540}
+  spriteRenderer: {fileID: 9095669354067475163}
+  foliageSpriteRenderer: {fileID: 0}
+  reflectionSpriteRenderer: {fileID: 6227025865631154398}
+  foamSpriteRenderer: {fileID: 6466713600208568145}
 --- !u!4 &4808995770938988489 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3326069694480528757, guid: b95c12d75d0e41544ac8508bdf61caad, type: 3}
+  m_PrefabInstance: {fileID: 7824000427046249148}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &9095669354067475163 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1346050693219326055, guid: b95c12d75d0e41544ac8508bdf61caad, type: 3}
   m_PrefabInstance: {fileID: 7824000427046249148}
   m_PrefabAsset: {fileID: 0}

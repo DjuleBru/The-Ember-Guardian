@@ -15,8 +15,8 @@ MonoBehaviour:
   enemyName: CagedShocker
   isBoss: 0
   description: Melee mob that can respawn after it's first death !
-  creatureIcon: {fileID: 21300000, guid: be39524c206226a409dd916f4be200db, type: 3}
-  creatureIcon_Portrait: {fileID: 21300000, guid: a3482e2598499f245a0f5c2f74f3661d, type: 3}
+  creatureIcon: {fileID: 21300000, guid: 33bd504f3e5776f488f2710ae7dec06e, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: f15bb53bdc73f3f4a93d88a6c8a21c42, type: 3}
   creaturePrefab: {fileID: 4997657120178985709, guid: e107dc19459fba14fbee64b7a3a499b0, type: 3}
   mass: 50
   detectionRange_Day: 10
@@ -51,10 +51,10 @@ MonoBehaviour:
   probabilityToDropOrb: 0.5
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
-  difficulty: 4
-  initialWaveSpawn: 2
-  spawnProbability: 0.5
-  maxCreaturesPerPacket: 4
+  difficulty: 18
+  initialWaveSpawn: 3
+  spawnProbability: 0.4
+  maxCreaturesPerPacket: 2
   dieAudioClips:
   - {fileID: 8300000, guid: b20e22a6e49bd804f8b562acd66bd39a, type: 3}
   - {fileID: 8300000, guid: 6724b378e9d583e4ea4daeb7cec054ab, type: 3}

@@ -10,8 +10,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3027682975358169173, guid: e184a0cfeef9ec54aafdddd2b3f89ca5, type: 3}
       propertyPath: m_Name
-      value: WaterProp_OnlyVegetation
+      value: WaterProp_OnlyVegetation_GrassAgainstGround
       objectReference: {fileID: 0}
+    - target: {fileID: 3234217558019535156, guid: e184a0cfeef9ec54aafdddd2b3f89ca5, type: 3}
+      propertyPath: perspectiveReferencePoint
+      value: 
+      objectReference: {fileID: 4590602039513801237}
     - target: {fileID: 4808995770938988489, guid: e184a0cfeef9ec54aafdddd2b3f89ca5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -52,8 +56,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6749309920533336540, guid: e184a0cfeef9ec54aafdddd2b3f89ca5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.297
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e184a0cfeef9ec54aafdddd2b3f89ca5, type: 3}
+--- !u!4 &4590602039513801237 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6749309920533336540, guid: e184a0cfeef9ec54aafdddd2b3f89ca5, type: 3}
+  m_PrefabInstance: {fileID: 7070446521846576073}
+  m_PrefabAsset: {fileID: 0}

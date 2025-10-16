@@ -7,11 +7,14 @@ using UnityEngine;
 public class EndLevelArea : MonoBehaviour
 {
     public static EndLevelArea Instance;
+    public static EndLevelArea Instance_Left;
 
     [SerializeField] private Transform endLevelAreaSpawnerParent;
     [SerializeField] private GameObject endLevelAreaFire;
     [SerializeField] private Portal endLevelPortal;
     [SerializeField] private StructureLocation endLevelAreaBackToBaseTPLocation;
+
+    [SerializeField] private bool isLeftEndLevelArea;
 
     private MobSpawner[] endLevelAreaSpawnerList;
     private List<Mob> mobsInArea = new List<Mob>();
@@ -26,7 +29,11 @@ public class EndLevelArea : MonoBehaviour
     private bool endLevelAreaCleared;
 
     private void Awake() {
-        Instance = this;
+        if(!isLeftEndLevelArea) {
+            Instance = this;
+        } else {
+            Instance_Left = this;
+        }
 
         endLevelAreaSpawnerList = endLevelAreaSpawnerParent.GetComponentsInChildren<MobSpawner>();
 

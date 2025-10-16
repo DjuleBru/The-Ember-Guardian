@@ -8,7 +8,7 @@ public class StructureVisual : MonoBehaviour {
 
     [SerializeField] protected SpriteRenderer structureSpriteRenderer;
     [SerializeField] protected SpriteRenderer structureFunctionIconSpriteRenderer;
-    [SerializeField] protected Image structureInteractionIconImage;
+    [SerializeField] protected GameObject structureInteractionIconGO;
     [SerializeField] protected Color greyedStructionIconColor;
     [SerializeField] protected Material unhoveredMaterial;
     [SerializeField] protected Material hoveredMaterial;
@@ -23,8 +23,8 @@ public class StructureVisual : MonoBehaviour {
     protected virtual void Awake() {
         structure = GetComponentInParent<Structure>();
 
-        if (structureInteractionIconImage != null) {
-            structureInteractionIconImage.enabled = false;
+        if (structureInteractionIconGO != null) {
+            structureInteractionIconGO.SetActive(false);
         }
         SetXAxisScale();
     }
@@ -107,8 +107,8 @@ public class StructureVisual : MonoBehaviour {
     protected virtual void Structure_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
         structureSpriteRenderer.material = unhoveredMaterial;
 
-        if(structureInteractionIconImage != null) {
-            structureInteractionIconImage.enabled = false;
+        if(structureInteractionIconGO != null) {
+            structureInteractionIconGO.SetActive(false);
         }
     }
 
@@ -118,8 +118,8 @@ public class StructureVisual : MonoBehaviour {
 
             structureSpriteRenderer.material = hoveredMaterial;
 
-            if (structureInteractionIconImage != null) {
-                structureInteractionIconImage.enabled = true;
+            if (structureInteractionIconGO != null) {
+                structureInteractionIconGO.SetActive(true);
             }
 
         }

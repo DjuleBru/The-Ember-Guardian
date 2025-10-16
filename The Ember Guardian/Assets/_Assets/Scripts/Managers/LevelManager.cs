@@ -55,6 +55,11 @@ public class LevelManager : MonoBehaviour
             EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
         }
 
+        if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindAndDestroyTwoNests) {
+            EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
+            EndLevelArea.Instance_Left.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
+        }
+
         if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
             LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
         }
@@ -152,6 +157,7 @@ public class LevelManager : MonoBehaviour
 
     private void LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, EventArgs e) {
         levelHubMerchantInteractionIndex++;
+
         if(levelHubMerchantInteractionIndex == 2) {
             float delayToShowReturnToHubObj = 2f;
             if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
@@ -226,8 +232,17 @@ public class LevelManager : MonoBehaviour
     private void EndLevelArea_OnEndLevelFireLit(object sender, EventArgs e) {
         if (levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArmorer) return;
 
-        LevelSuccess(4f);
-        //StartCoroutine(EnableEndLevelPortal(4f));
+        if (levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.ExploreCorruptedCity) {
+            if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest && LevelObjectives.Instance.GetNPCInteractionsIndex() == 1) {
+                LevelSuccess(4f);
+            };
+        };
+
+        if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindAndDestroyTwoNests) {
+            if(LevelObjectives.Instance.GetLeftDarklingNestDestroyed() && LevelObjectives.Instance.GetRightDarklingNestDestroyed()) {
+                LevelSuccess(4f);
+            }
+        };
     }
 
     public void SaveLevelCompletedProgression() {

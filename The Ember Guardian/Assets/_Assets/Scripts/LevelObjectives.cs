@@ -16,6 +16,10 @@ public class LevelObjectives : MonoBehaviour
     private bool initialFireLit;
     private bool darklingNestFound;
     private bool darklingNestCleared;
+    private bool leftDarklingNestFound;
+    private bool leftDarklingNestDestroyed; 
+    private bool rightDarklingNestFound;
+    private bool rightDarklingNestDestroyed;
     private bool returnToHubObjectiveShown;
     private int NPCInteractionsIndex;
 
@@ -54,6 +58,18 @@ public class LevelObjectives : MonoBehaviour
                 EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
                 EndLevelArea.Instance.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
                 EndLevelArea.Instance.OnEndLevelAreaUnCleared += EndLevelArea_OnEndLevelAreaUnCleared;
+                EndLevelAreaCollider.OnPlayerTriggeredInAnyEndLevelArea += EndLevelAreaCollider_OnPlayerTriggeredInAnyEndLevelArea;
+            }
+        }
+
+        if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindAndDestroyTwoNests) {
+            if (EndLevelArea.Instance != null) {
+                EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
+                EndLevelAreaCollider.OnPlayerTriggeredInAnyEndLevelArea += EndLevelAreaCollider_OnPlayerTriggeredInAnyEndLevelArea;
+            }
+
+            if (EndLevelArea.Instance_Left != null) {
+                EndLevelArea.Instance_Left.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
                 EndLevelAreaCollider.OnPlayerTriggeredInAnyEndLevelArea += EndLevelAreaCollider_OnPlayerTriggeredInAnyEndLevelArea;
             }
         }
@@ -214,6 +230,17 @@ public class LevelObjectives : MonoBehaviour
 
         }
 
+        if (objectiveTypeToShow == LevelUI_ObjectiveUI.ObjectiveType.FindAndDestroyTwoNests) {
+
+            LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.FindAndDestroyTwoNests);
+            List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
+                    LevelUI_ObjectiveUI.SubObjectiveType.FindLeftNest,
+                    LevelUI_ObjectiveUI.SubObjectiveType.FindRightNest,
+                };
+
+            LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
+        }
+
     }
 
     private void LevelMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, System.EventArgs e) {
@@ -294,6 +321,11 @@ public class LevelObjectives : MonoBehaviour
 
             if((LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest)) {
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.FindArchitect);
+
+                if(EndLevelArea.Instance.GetPlayerDestroyedNest()) {
+                    ShowReturnToHubObj(2f);
+                    LevelManager.Instance.LevelSuccess(4f);
+                }
             }
                 
         }
@@ -344,13 +376,36 @@ public class LevelObjectives : MonoBehaviour
     }
 
     private void EndLevelArea_OnEndLevelFireLit(object sender, System.EventArgs e) {
+
         if(LevelManager.Instance.GetLevelSO().levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArmorer) {
             StartCoroutine(StartFinalMerchantDialog());
-        } else {
-            ShowReturnToHubObj(3f);
+            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
+            return;
         }
 
-        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
+        if(LevelManager.Instance.GetLevelSO().levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.ExploreCorruptedCity) {
+            LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
+            if (NPCInteractionsIndex == 1) {
+                ShowReturnToHubObj(3f);
+            }
+        }
+
+        if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindAndDestroyTwoNests) {
+            EndLevelArea endLevelArea = (sender as MonoBehaviour).gameObject.GetComponentInParent<EndLevelArea>();
+
+            if (endLevelArea == EndLevelArea.Instance) {
+                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.DestroyRightNest);
+                rightDarklingNestDestroyed = true;
+            }
+            if (endLevelArea == EndLevelArea.Instance_Left) {
+                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.DestroyLeftNest);
+                leftDarklingNestDestroyed = true;
+            }
+
+            if(rightDarklingNestDestroyed && leftDarklingNestDestroyed) {
+                ShowReturnToHubObj(3f);
+            }
+        }
     }
 
     private void EndLevelArea_OnEndLevelAreaCleared(object sender, System.EventArgs e) {
@@ -364,9 +419,27 @@ public class LevelObjectives : MonoBehaviour
     }
 
     private void EndLevelAreaCollider_OnPlayerTriggeredInAnyEndLevelArea(object sender, EventArgs e) {
-        if (darklingNestFound) return;
-        darklingNestFound = true;
-        LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.FindNest, LevelUI_ObjectiveUI.SubObjectiveType.ClearNest);
+        if(LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest) {
+            if (darklingNestFound) return;
+            darklingNestFound = true;
+            LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.FindNest, LevelUI_ObjectiveUI.SubObjectiveType.ClearNest);
+        }
+
+        if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindAndDestroyTwoNests) {
+            GameObject senderGO = (sender as MonoBehaviour ).gameObject;
+            EndLevelArea endLevelArea = senderGO.GetComponentInParent<EndLevelArea>();
+
+            if(endLevelArea == EndLevelArea.Instance) {
+                if (rightDarklingNestFound) return;
+                rightDarklingNestFound = true;
+                LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.FindRightNest, LevelUI_ObjectiveUI.SubObjectiveType.DestroyRightNest);
+            }
+            if (endLevelArea == EndLevelArea.Instance_Left) {
+                if (leftDarklingNestFound) return;
+                leftDarklingNestFound = true;
+                LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.FindLeftNest, LevelUI_ObjectiveUI.SubObjectiveType.DestroyLeftNest);
+            }
+        }
     }
 
     private void UICurrencyManager_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -444,6 +517,30 @@ public class LevelObjectives : MonoBehaviour
     }
     public void SetDarklingNestFound(bool darklingNestFound) {
         this.darklingNestFound = darklingNestFound;
+    }
+    public bool GetLeftDarklingNestFound() {
+        return leftDarklingNestFound;
+    }
+    public void SetLeftDarklingNestFound(bool darklingNestFound) {
+        this.leftDarklingNestFound = darklingNestFound;
+    }
+    public bool GetRightDarklingNestFound() {
+        return rightDarklingNestFound;
+    }
+    public void SetRightDarklingNestDestroyed(bool darklingNestDestroyed) {
+        this.rightDarklingNestDestroyed = darklingNestDestroyed;
+    }
+    public bool GetLeftDarklingNestDestroyed() {
+        return leftDarklingNestDestroyed;
+    }
+    public void SetLeftDarklingNestDestroyed(bool darklingNestDestroyed) {
+        this.leftDarklingNestDestroyed = darklingNestDestroyed;
+    }
+    public bool GetRightDarklingNestDestroyed() {
+        return rightDarklingNestDestroyed;
+    }
+    public void SetRightDarklingNestFound(bool darklingNestFound) {
+        this.rightDarklingNestFound = darklingNestFound;
     }
     public int GetNPCInteractionsIndex() {
         return NPCInteractionsIndex;

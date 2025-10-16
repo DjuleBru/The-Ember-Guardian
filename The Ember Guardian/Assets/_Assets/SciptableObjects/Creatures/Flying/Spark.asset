@@ -15,8 +15,8 @@ MonoBehaviour:
   enemyName: Spark
   isBoss: 0
   description: Melee mob that can respawn after it's first death !
-  creatureIcon: {fileID: 21300000, guid: 94dd52a0697a9c04094397af1d499cdf, type: 3}
-  creatureIcon_Portrait: {fileID: 21300000, guid: 7d317277886596c4db0482b6d7cf0c93, type: 3}
+  creatureIcon: {fileID: 21300000, guid: 0cb76d28a75eba54390e6f9b4468feff, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: 9f58e1b531e7fdf41a086d3f9b0d70d2, type: 3}
   creaturePrefab: {fileID: 4997657120178985709, guid: ca5d29d02ac96e845a2c632bd40b1997, type: 3}
   mass: 5
   detectionRange_Day: 10
@@ -51,7 +51,7 @@ MonoBehaviour:
   probabilityToDropOrb: 0.2
   currencyTypeDroppedList: 03000000
   currencyDropAmountList: 01000000
-  difficulty: 1
+  difficulty: 2
   initialWaveSpawn: 2
   spawnProbability: 0.6
   maxCreaturesPerPacket: 8

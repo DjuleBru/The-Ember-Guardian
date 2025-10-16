@@ -15,8 +15,8 @@ MonoBehaviour:
   enemyName: CagedSpider
   isBoss: 0
   description: Basic monster, a bit swarmy.
-  creatureIcon: {fileID: 21300000, guid: eb6de8e99ab46ed42bc756bb49482541, type: 3}
-  creatureIcon_Portrait: {fileID: 21300000, guid: 8536efaf080df0841b42a3246a1088c4, type: 3}
+  creatureIcon: {fileID: 21300000, guid: 1edc30f35fc825946bc52d4d745ac7c6, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: f15bb53bdc73f3f4a93d88a6c8a21c42, type: 3}
   creaturePrefab: {fileID: 4997657120178985709, guid: 0a80c319183c688429cc2188a61c6a1a, type: 3}
   mass: 10
   detectionRange_Day: 10
@@ -51,7 +51,7 @@ MonoBehaviour:
   probabilityToDropOrb: 0.2
   currencyTypeDroppedList: 03000000
   currencyDropAmountList: 01000000
-  difficulty: 4
+  difficulty: 3
   initialWaveSpawn: 1
   spawnProbability: 0.4
   maxCreaturesPerPacket: 8

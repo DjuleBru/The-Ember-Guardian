@@ -59,14 +59,14 @@ MonoBehaviour:
   bossNightSpawns: 0400000008000000
   bossNightWaveDifficultyMultiplier: 0.5
   startWaveToSpawnFromBothSides: 2
-  baseDifficulty: 70
-  intialMinSubwaveDifficulty: 20
-  minSubwaveDifficulty: 50
-  intialMaxSubwaveDifficulty: 30
-  maxSubwaveDifficulty: 100
-  growthFactor: 1.05
+  baseDifficulty: 100
+  intialMinSubwaveDifficulty: 30
+  minSubwaveDifficulty: 65
+  intialMaxSubwaveDifficulty: 50
+  maxSubwaveDifficulty: 120
+  growthFactor: 1.025
   typicalLevelDaysToComplete: 8
-  minMaxSubwaveDifficultyGrowthFactor: 1.2
+  minMaxSubwaveDifficultyGrowthFactor: 1.1
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
   difficultyAnimationCurve:

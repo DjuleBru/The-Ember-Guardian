@@ -80,6 +80,10 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         BuildWatcherArtifact,
         CollectOrbs,
         TalkToMushroomMerchant,
+        DestroyLeftNest,
+        DestroyRightNest, 
+        FindLeftNest,
+        FindRightNest,
     }
 
     public static LevelUI_ObjectiveUI Instance;

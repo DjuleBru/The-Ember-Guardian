@@ -13,13 +13,13 @@ public class TowerVisual : StructureVisual
         structureSpriteRenderer.sprite = structure.GetStructureSO().buildingUpgradeSpriteList[structureLevel - 1];
 
         if (structure.GetStructureLevel() == 2 ) {
-            structureInteractionIconImage.transform.position = level2InteractIconPosition.position;
+            structureInteractionIconGO.transform.position = level2InteractIconPosition.position;
         }
         if (structure.GetStructureLevel() == 3) {
-            structureInteractionIconImage.transform.position = level2InteractIconPosition.position;
+            structureInteractionIconGO.transform.position = level2InteractIconPosition.position;
         }
         if (structure.GetStructureLevel() == 4) {
-            structureInteractionIconImage.transform.position = level2InteractIconPosition.position;
+            structureInteractionIconGO.transform.position = level2InteractIconPosition.position;
         }
     }
 }

@@ -31,6 +31,8 @@ public class ProjectileSO : ScriptableObject
     public ProjectileForces.TrajectoryMode trajectoryMode = TrajectoryMode.CurvedApex;
     [BoxGroup("Forces")]
     public float straightLineSpeed = 10f;
+    [BoxGroup("Forces")]
+    public float straightLineYTargetRandomizer;
 
     [BoxGroup("Forces")]
     public float minApexY;
