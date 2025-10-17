@@ -30,11 +30,11 @@ MonoBehaviour:
   flightMinAltitude: 2
   flightMaxAltitude: 10
   flightAltitudeRandomizer: 3
-  dayMoveSpeed: 4
-  nightMoveSpeed: 4
+  dayMoveSpeed: 3
+  nightMoveSpeed: 3
   aggroMoveSpeedBuff: 1.5
   enteredLightMoveSpeedDebuff: 1.5
-  moveSpeedRandomizerDelta: 2.5
+  moveSpeedRandomizerDelta: 2
   maxHealth: 3
   enteredLightattackRateDebuff: 2
   probabilityToAggroOnGunShot: 0.5
@@ -63,7 +63,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 14046920686191b4a8b0482ef76d112c, type: 3}
   - {fileID: 8300000, guid: b9e10cb16b695094aa223e04ff23fc56, type: 3}
   - {fileID: 8300000, guid: 3143a992ff9a40c4b9d8a120610e50e4, type: 3}
-  dieVolumeMultiplier: 1
+  dieVolumeMultiplier: 0.75
   aggroAudioClips: []
   aggroVolumeMultiplier: 1
   idleAudioClips: []

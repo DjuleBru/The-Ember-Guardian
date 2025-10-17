@@ -21,6 +21,7 @@ public class CreatureAI_SummonerAgressive : CreatureAI {
 
         if (creatureAttack.GetAttacking()) return;
         if (creatureSpawnerContinuous.SpawnedMaxMobs()) return;
+        if (creature.GetDead()) return;
 
         spawnTimer += Time.deltaTime;
 

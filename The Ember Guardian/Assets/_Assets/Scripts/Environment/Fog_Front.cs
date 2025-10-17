@@ -57,6 +57,15 @@ public class Fog_Front : MonoBehaviour
     }
 
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
+        if(SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+            fireLitAndOutsideFogDisappeared = true;
+            if (Mathf.Abs(Player.Instance.transform.position.x) < 25) {
+                fogRenderer.color = new Color(fogRenderer.color.r, fogRenderer.color.g, fogRenderer.color.b, 0f);
+                fogRenderer.material.SetFloat("_FadeAmount", 0);
+            }
+            return;
+        }
+       
         StartCoroutine(FadeOutFog());
     }
 

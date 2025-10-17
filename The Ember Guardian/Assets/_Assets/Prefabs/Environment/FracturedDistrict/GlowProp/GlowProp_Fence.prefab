@@ -24,6 +24,14 @@ PrefabInstance:
       propertyPath: isAnimatedGlow
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3219297117802104465, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
+      propertyPath: glowSpriteRenderer
+      value: 
+      objectReference: {fileID: 6338867661558080983}
+    - target: {fileID: 3219297117802104465, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
+      propertyPath: switchOffLightAtDay
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3471064213896037879, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.36
@@ -130,3 +138,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
+--- !u!212 &6338867661558080983 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4107045546097410403, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
+  m_PrefabInstance: {fileID: 8000370580297475252}
+  m_PrefabAsset: {fileID: 0}

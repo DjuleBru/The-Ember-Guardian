@@ -112,7 +112,7 @@ public class Fire : Structure, IDamageable {
 
         if(isEndLevelFire) {
             if(EndLevelArea.Instance_Left != null) {
-                if(Player.Instance.transform.position.x < 0) {
+                if(transform.position.x < 0) {
                     EndLevelArea.Instance_Left.SetEndLevelFireLit();
                 } else {
                     EndLevelArea.Instance.SetEndLevelFireLit();

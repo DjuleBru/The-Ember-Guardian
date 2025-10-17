@@ -409,6 +409,7 @@ public class Player : MonoBehaviour, IDamageable
 
         OnPlayerDied?.Invoke(this, EventArgs.Empty);
         dead = true;
+        rb.velocity = Vector2.zero;
 
         if(!Fire.Instance.GetInitialFireLit() && !isTutorial) {
             // Fire hasn't been built yet
@@ -586,6 +587,7 @@ public class Player : MonoBehaviour, IDamageable
     }
     
     public void BlindPlayer() {
+        if (dead) return;
         OnPlayerBlinded?.Invoke(this, EventArgs.Empty);
     }
     

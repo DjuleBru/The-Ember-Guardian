@@ -70,7 +70,7 @@ public class SoundVolume2D : MonoBehaviour
     }
 
     private void HandleAudioSourceVolumeAndSleep() {
-
+        if (Player.Instance == null) return;
         float distanceToAudioSource = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
         float volume = (1 - (distanceToAudioSource / maxDistanceToHear)) * maxAudioSourceVolume * sfxVolume * masterVolume;
 

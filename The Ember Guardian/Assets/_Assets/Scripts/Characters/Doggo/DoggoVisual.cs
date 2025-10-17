@@ -34,10 +34,12 @@ public class DoggoVisual : MonoBehaviour
     }
 
     private void DetectionCollider_OnNoAmbushDetected(object sender, System.EventArgs e) {
+        if (Dog.Instance.GetDogType() != Dog.DogType.GermanShepherd) return;
         detectedAmbushGO.SetActive(false);
     }
 
     private void DetectionCollider_OnAmbushDetected(object sender, System.EventArgs e) {
+        if (Dog.Instance.GetDogType() != Dog.DogType.GermanShepherd) return;
         detectedAmbushGO.SetActive(true);
     }
 

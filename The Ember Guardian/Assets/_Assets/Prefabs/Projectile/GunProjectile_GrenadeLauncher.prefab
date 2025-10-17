@@ -5498,7 +5498,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 33554432
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -5532,6 +5532,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunProjectile_BounceHandler: {fileID: 2690273212303444028}
   explodeOnContact: 0
+  damagesPlayer: 0
+  maxDistanceToDamagePlayer: 1
 --- !u!1 &6112042537097569714
 GameObject:
   m_ObjectHideFlags: 0
@@ -5578,6 +5580,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1559cbf22ee1cf34fa09d950fb6a39ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   bounceOnCreatureAudioClips:
   - {fileID: 8300000, guid: f1838753b53df84439313b212c62a244, type: 3}
   - {fileID: 8300000, guid: c0353d6efb03226488a061199578493c, type: 3}
@@ -5594,6 +5598,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f4b68c348fda3dc478343af938497192, type: 3}
   - {fileID: 8300000, guid: 2ee53071197a4234d8027422e8f2de4c, type: 3}
   - {fileID: 8300000, guid: 85b2ed02c9bd504458ebc85d9936273b, type: 3}
+  explosionVolumeMultiplier: 1
   gunProjectile_BounceHandler: {fileID: 2690273212303444028}
 --- !u!114 &2363891335058779701
 MonoBehaviour:

@@ -73,6 +73,11 @@ public class Dog : MonoBehaviour
                 currentDogAI = dogAI;
             }
         }
+
+        if(dogType != DogType.GermanShepherd) {
+            GetComponent<DogDigAbility>().enabled = false;
+        }
+
     }
 
     private void GameInput_OnPlayerCallDogPerformed(object sender, EventArgs e) {

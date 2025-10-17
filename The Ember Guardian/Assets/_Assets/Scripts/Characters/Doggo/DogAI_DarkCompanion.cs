@@ -132,7 +132,7 @@ public class DogAI_DarkCompanion : DogAI
 
     protected override void HeadToAttackClosestCreature() {
         targetCreature = closestCreature;
-        Debug.Log("targetCreature " + targetCreature);
+        //Debug.Log("targetCreature " + targetCreature);
         if (targetCreature == null) return;
 
         if(currentAttackAbility == AttackAbility.stomp || currentAttackAbility == AttackAbility.laserContinuous) {
@@ -140,7 +140,7 @@ public class DogAI_DarkCompanion : DogAI
         }
         float distanceToCreature = Mathf.Abs(transform.position.x - targetCreature.transform.position.x);
 
-        Debug.Log("distanceToCreature " + distanceToCreature);
+        //Debug.Log("distanceToCreature " + distanceToCreature);
         if (distanceToCreature < biteRange && distanceToCreature > minAttackDistance) {
             dogMovement.SetMoveTarget(transform.position);
 

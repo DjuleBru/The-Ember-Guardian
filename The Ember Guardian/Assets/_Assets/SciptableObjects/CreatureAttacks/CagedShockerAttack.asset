@@ -29,6 +29,7 @@ MonoBehaviour:
   damageToBarricades: 2
   canAttackPlayerBehindBarricades: 0
   canAttackPlayerOnTower: 0
+  blockSwitchXScaleWhileAttacking: 0
   attackAnimationDelay: 0.7
   totalAttackAnimationTime: 1.6
   attackSFXDelayAfterAnimationStart: 0
@@ -41,12 +42,12 @@ MonoBehaviour:
   attackRangeRandomizerMiss: 0.5
   attackSFXHandledByAnimation: 1
   attackAudioClips:
+  - {fileID: 8300000, guid: e3b5cc23921780941b976d4c1e21f296, type: 3}
+  - {fileID: 8300000, guid: 95de6e29c3e11df4c87de4fd83946c7a, type: 3}
+  attackHitAudioClips:
   - {fileID: 8300000, guid: e9b78e10f23da264c8c463e6f0683f5f, type: 3}
   - {fileID: 8300000, guid: 5b907014ef39a904eba5dbdc05698f8d, type: 3}
-  attackHitAudioClips:
-  - {fileID: 8300000, guid: 204d378a964050244b20211c73ebe78e, type: 3}
-  - {fileID: 8300000, guid: 57b51e26db4619c49a9eb8445bb28ee7, type: 3}
   attackStartedChargingAudioClips: []
   attackReleasedAudioClips: []
   attackVolumeMultiplier: 1
-  attackHitVolumeMultiplier: 0.5
+  attackHitVolumeMultiplier: 1

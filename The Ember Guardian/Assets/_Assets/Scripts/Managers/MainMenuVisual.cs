@@ -8,7 +8,7 @@ public class MainMenuVisual : MonoBehaviour
 {
     [SerializeField] private bool showDebugEnvironment;
     [SerializeField] private LevelSO.LevelEnvironment debugEnvironment;
-    [SerializeField] private bool isDemo;
+    private bool isDemo;
 
     [SerializeField] private SpriteRenderer skySpriteRenderer;
     [SerializeField] private SpriteRenderer water2DSpriteRenderer;
@@ -167,6 +167,20 @@ public class MainMenuVisual : MonoBehaviour
                 moonLight.pointLightOuterRadius = lumenHollowMoonOuterRadius;
 
                 lumenHollowWaterGO.SetActive(true);
+                break;
+
+            case LevelSO.LevelEnvironment.TheFracturedDistrict:
+                fracturedDistrictParallaxGO.SetActive(true);
+                fracturedDistrictPropsGO.SetActive(true);
+                facturedDistrictGridGO.SetActive(true);
+
+                moonTransform.position = fracturedDistrictMoonPosition.position;
+                skySpriteRenderer.color = fracturedDistrictSkyColor;
+                globalLight.intensity = fracturedDistrictIntensity;
+                moonLight.intensity = fracturedDistrictMoonIntensity;
+                moonLight.pointLightOuterRadius = fracturedDistrictOuterRadius;
+
+                fracturedDistrictWaterGO.SetActive(true);
                 break;
         }
     }

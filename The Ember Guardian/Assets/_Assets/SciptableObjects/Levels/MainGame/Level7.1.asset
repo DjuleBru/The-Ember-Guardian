@@ -17,13 +17,13 @@ MonoBehaviour:
   requiredLevelSO1: {fileID: 0}
   requiredLevelSO2: {fileID: 0}
   parallelLevelSO: {fileID: 11400000, guid: 2907cb0bb1a923a47825d18e9c2d38d1, type: 2}
-  levelImage: {fileID: 0}
+  levelImage: {fileID: 21300000, guid: b9db065bdd770f043bf6b18d0c7ce470, type: 3}
   levelNameLocalizationKey: Level7.1
   levelDescriptionLocalizationKey: Level7.1_Description
-  faunaAmount: 0
+  faunaAmount: 7
   scrapAmount: 0
   minesAmount: 0
-  chestAmount: 0
+  chestAmount: 6
   wildEmberlingsAmount: 0
   unlockablesList: 1300000016000000
   duskDurationIncreasePerDay: 0
@@ -43,10 +43,10 @@ MonoBehaviour:
   gemDropPool: 110
   isReplayableLevel: 0
   totalDayCreatureDifficulty: 0
-  dayCreatureTypes: []
+  dayCreatureTypes:
+  - {fileID: 11400000, guid: 582a862bd856e30469b02bdae99cc2af, type: 2}
   nightCreatureTypes:
   - {fileID: 11400000, guid: 4e5dcb6e7b000544a8108cf3501dd7db, type: 2}
-  - {fileID: 11400000, guid: 582a862bd856e30469b02bdae99cc2af, type: 2}
   - {fileID: 11400000, guid: d8a8277b64666ae43a153dd6c6383caa, type: 2}
   - {fileID: 11400000, guid: bf813eac411ac844b92b889ee4c4b8a5, type: 2}
   - {fileID: 11400000, guid: 218ffb649696043488f4dd67b673e0f9, type: 2}
@@ -57,14 +57,14 @@ MonoBehaviour:
   bossNightSpawns: 
   bossNightWaveDifficultyMultiplier: 0.33
   startWaveToSpawnFromBothSides: 2
-  baseDifficulty: 6
-  intialMinSubwaveDifficulty: 0
-  minSubwaveDifficulty: 0
-  intialMaxSubwaveDifficulty: 0
-  maxSubwaveDifficulty: 10
-  growthFactor: 1.6
-  typicalLevelDaysToComplete: 0
-  minMaxSubwaveDifficultyGrowthFactor: 0
+  baseDifficulty: 100
+  intialMinSubwaveDifficulty: 30
+  minSubwaveDifficulty: 65
+  intialMaxSubwaveDifficulty: 50
+  maxSubwaveDifficulty: 120
+  growthFactor: 1.025
+  typicalLevelDaysToComplete: 8
+  minMaxSubwaveDifficultyGrowthFactor: 1.1
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
   difficultyAnimationCurve:
@@ -75,14 +75,14 @@ MonoBehaviour:
     m_RotationOrder: 4
   maxWaveInAnimationCurve: 0
   canSpawnElite: 1
-  hasSpecialWaveTypes: 0
-  specialWaveTypesInLevel: 
+  hasSpecialWaveTypes: 1
+  specialWaveTypesInLevel: 030000000100000002000000
   specialWaveProbability: 0
-  maxSpecialWaveAmount: 0
+  maxSpecialWaveAmount: 2
   environmentType: 5
-  hasFog: 0
-  fogFrontAlpha: 0
-  fogBackAlpha: 0
+  hasFog: 1
+  fogFrontAlpha: 0.5
+  fogBackAlpha: 0.7
   hasWind: 0
   initialWindStrength: 0
   windStrengthsAllowedInLevel: 
@@ -97,5 +97,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 225988420223d59428ac58bc41ac618a, type: 3}
   - {fileID: 8300000, guid: cfe595955de0ac64d8b321b39f2e80b8, type: 3}
   levelExplorationTracksStreamerMode: []
-  showDirectionAtStart: 0
+  showDirectionAtStart: 1
   directionToShow: 1

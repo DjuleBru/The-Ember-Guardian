@@ -139,6 +139,10 @@ public class SavingManager_Level : MonoBehaviour
         levelSaveData.initialFireLit = LevelObjectives.Instance.GetInitialFireLit();
         levelSaveData.darklingNestFound = LevelObjectives.Instance.GetDarklingNestFound();
         levelSaveData.darklingNestCleared = LevelObjectives.Instance.GetDarklingNestCleared();
+        levelSaveData.darklingNest_RightFound = LevelObjectives.Instance.GetRightDarklingNestFound();
+        levelSaveData.darklingNest_RightDestroyed = LevelObjectives.Instance.GetRightDarklingNestDestroyed();
+        levelSaveData.darklingNest_LeftFound = LevelObjectives.Instance.GetLeftDarklingNestFound();
+        levelSaveData.darklingNest_LeftDestroyed = LevelObjectives.Instance.GetLeftDarklingNestDestroyed();
         levelSaveData.returnToHubObjectiveShown = LevelObjectives.Instance.GetReturnToHubObjectiveShown();
         levelSaveData.conditionalLockedStructureLocationBuilt = LevelManager.Instance.GetConditionalLockedStructureLocationBuilt();
         levelSaveData.conditionalLockedStructureLocationUnlocked = LevelManager.Instance.GetConditionalLockedStructureLocationUnlocked();
@@ -554,8 +558,6 @@ public class SavingManager_Level : MonoBehaviour
         AudioListener.pause = false;
         OnLoadGameEnded?.Invoke(this, EventArgs.Empty);
     }
-
-
     private IEnumerator LoadLevelState() {
         if (!ES3.KeyExists("LevelState", "LevelSave.es3")) yield break;
 
@@ -570,6 +572,10 @@ public class SavingManager_Level : MonoBehaviour
         LevelObjectives.Instance.SetInitialFireLit(saveData.initialFireLit);
         LevelObjectives.Instance.SetDarklingNestFound(saveData.darklingNestFound);
         LevelObjectives.Instance.SetDarklingNestCleared(saveData.darklingNestCleared);
+        LevelObjectives.Instance.SetRightDarklingNestFound(saveData.darklingNest_RightFound);
+        LevelObjectives.Instance.SetRightDarklingNestDestroyed(saveData.darklingNest_RightDestroyed);
+        LevelObjectives.Instance.SetLeftDarklingNestFound(saveData.darklingNest_LeftFound);
+        LevelObjectives.Instance.SetLeftDarklingNestDestroyed(saveData.darklingNest_LeftDestroyed);
 
         LevelObjectives.Instance.SetReturnToHubObjectiveShown(saveData.returnToHubObjectiveShown);
 

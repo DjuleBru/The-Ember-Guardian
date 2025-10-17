@@ -38,6 +38,7 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         AAgun,
         pistol,
         rocketLauncher,
+        assaultRifle,
     }
 
     public enum GunItemCategory {

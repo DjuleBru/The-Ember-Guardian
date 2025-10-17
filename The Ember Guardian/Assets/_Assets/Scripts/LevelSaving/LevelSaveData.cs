@@ -14,6 +14,10 @@ public class LevelSaveData {
     public bool initialFireLit;
     public bool darklingNestFound;
     public bool darklingNestCleared;
+    public bool darklingNest_RightFound;
+    public bool darklingNest_RightDestroyed;
+    public bool darklingNest_LeftFound;
+    public bool darklingNest_LeftDestroyed;
     public bool returnToHubObjectiveShown;
     public bool levelSucceeded;
     public bool hubMerchantHasTalkLinesToShow;

@@ -29,6 +29,7 @@ MonoBehaviour:
   damageToBarricades: 1
   canAttackPlayerBehindBarricades: 0
   canAttackPlayerOnTower: 0
+  blockSwitchXScaleWhileAttacking: 0
   attackAnimationDelay: 0.6
   totalAttackAnimationTime: 1.6
   attackSFXDelayAfterAnimationStart: 0
@@ -55,4 +56,4 @@ MonoBehaviour:
   attackStartedChargingAudioClips: []
   attackReleasedAudioClips: []
   attackVolumeMultiplier: 1
-  attackHitVolumeMultiplier: 0.5
+  attackHitVolumeMultiplier: 0.35

@@ -351,7 +351,7 @@ public class LevelObjectives : MonoBehaviour
         if (returnToHubObjectiveShown) return;
 
         returnToHubObjectiveShown = true;
-
+        Debug.Log("ShowReturnToHubObj");
         StartCoroutine(ShowReturnToHubObjective(delay));
     }
  
@@ -395,11 +395,11 @@ public class LevelObjectives : MonoBehaviour
 
             if (endLevelArea == EndLevelArea.Instance) {
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.DestroyRightNest);
-                rightDarklingNestDestroyed = true;
+                SetRightDarklingNestDestroyed(true);
             }
             if (endLevelArea == EndLevelArea.Instance_Left) {
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.DestroyLeftNest);
-                leftDarklingNestDestroyed = true;
+                SetLeftDarklingNestDestroyed(true);
             }
 
             if(rightDarklingNestDestroyed && leftDarklingNestDestroyed) {

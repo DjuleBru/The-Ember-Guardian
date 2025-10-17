@@ -121,7 +121,7 @@ public class Structure : MonoBehaviour {
     }
 
     protected virtual void UpgradeStructure() {
-
+        Debug.Log("Upgrade");
         structureLevel++;
         RefreshStructureUpgradeInteraction();
 
