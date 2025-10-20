@@ -28,10 +28,18 @@ public class PassiveShield : MonoBehaviour, IDamageable
 
     }
 
-    public void UnlockShield(float shieldRegenTime) {
+    public void UnlockShield() {
         shieldUnlocked = true;
-        activateShieldTime = shieldRegenTime;
         ActivateShield();
+    }
+    public void SetShieldRegenTime(float shieldRegenTime) {
+        if(shieldRegenTime > 0) {
+            activateShieldTime = shieldRegenTime;
+        } else {
+            activateShieldTime += shieldRegenTime;
+        }
+        Debug.Log("shield regen time " + activateShieldTime);
+
     }
 
     public void ActivateShield() {

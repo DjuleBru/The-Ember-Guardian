@@ -13,6 +13,7 @@ public class ParallaxCameraTransition : MonoBehaviour
 
     [SerializeField] private float transitionRadius;
     [SerializeField] private float cameraTransitionRadius;
+    [SerializeField] private float transitionCameraOrthographicSize = 5f;
 
     private float lastCameraX;
 
@@ -42,6 +43,7 @@ public class ParallaxCameraTransition : MonoBehaviour
 
             if (!transitionStarted && hasCameraTransition) {
                 transitionCamera.Priority = 20;
+                transitionCamera.m_Lens.OrthographicSize = transitionCameraOrthographicSize;
                 mainCamera.Priority = 10;
                 transitionStarted = true;
                 CameraManager.Instance.SetCameraLockedByTransition(true);

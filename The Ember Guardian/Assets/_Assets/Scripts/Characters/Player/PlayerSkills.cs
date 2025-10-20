@@ -56,6 +56,7 @@ public class PlayerSkills : MonoBehaviour
     private int fuelPerPip = 1;
 
     private bool shootOnReload;
+    private int shootOnReloadShotAmount;
     private bool meleeAttackMagmaShot;
     private bool lastBulletDealsMoreDamage;
     private float lastBulletDealsMoreDamageBuff;
@@ -609,12 +610,14 @@ public class PlayerSkills : MonoBehaviour
         // Si le skill commence à un niveau supérieur à 1 (comme au lancement du joueur),
         // on veut appliquer tous les niveaux précédents aussi.
         if (skillItem.currentLevel > 1) {
+
             for (int i = 1; i <= skillItem.currentLevel; i++) {
                 float valueAtThisLevel = skillEffect.GetValueAtLevel(i);
                 float prevValue = (i > 1) ? skillEffect.GetValueAtLevel(i - 1) : 0f;
                 float delta = valueAtThisLevel - prevValue;
                 ApplyPassiveSkillEffectInternal(skillEffect, delta);
             }
+
         }
         else {
             ApplyPassiveSkillEffectInternal(skillEffect, relativeBuffEffectValue);
@@ -654,7 +657,8 @@ public class PlayerSkills : MonoBehaviour
                 break;
 
             case SkillItem.SkillType.passiveShieldGenerator:
-                PlayerSkills.Instance.GetPassiveShield().UnlockShield(relativeBuffEffectValue);
+                PlayerSkills.Instance.GetPassiveShield().SetShieldRegenTime(relativeBuffEffectValue);
+                PlayerSkills.Instance.GetPassiveShield().UnlockShield();
                 break;
 
             case SkillItem.SkillType.passiveLastBulletDealsTwiceDamage:
@@ -664,6 +668,9 @@ public class PlayerSkills : MonoBehaviour
 
             case SkillItem.SkillType.passiveShootOnReload:
                 shootOnReload = true;
+                Debug.Log("relativeBuffEffectValue " + relativeBuffEffectValue);
+                shootOnReloadShotAmount += (int)relativeBuffEffectValue;
+                Debug.Log("shootOnReloadShotAmount " + shootOnReloadShotAmount);
                 break;
 
             case SkillItem.SkillType.passiveMeleeAttackMagmaShot:
@@ -848,6 +855,10 @@ public class PlayerSkills : MonoBehaviour
     }
     public bool GetShootOnReload() {
         return shootOnReload;
+    }
+
+    public int GetShootOnReloadShotAmount() {
+        return shootOnReloadShotAmount;
     }
     public bool GetMagmaBullet() {
         return magmaShotBulletActive;
@@ -1198,7 +1209,13 @@ public class PlayerSkills : MonoBehaviour
             break;
 
             case SkillItem.SkillType.passiveShootOnReload:
-                skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Bullets shot"));
+                if(skillItem.currentLevel == 1) {
+                    skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Free shot"));
+                } else {
+                    skillStatDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("Free shot 2+"));
+                }
+
+
             break;
         }
 

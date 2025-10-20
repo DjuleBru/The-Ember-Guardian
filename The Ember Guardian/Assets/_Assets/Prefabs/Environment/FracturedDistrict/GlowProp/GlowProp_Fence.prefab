@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3219297117802104465, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3219297117802104465, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
       propertyPath: animationType
@@ -27,7 +27,7 @@ PrefabInstance:
     - target: {fileID: 3219297117802104465, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
       propertyPath: glowSpriteRenderer
       value: 
-      objectReference: {fileID: 6338867661558080983}
+      objectReference: {fileID: 3152965776191833293}
     - target: {fileID: 3219297117802104465, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
       propertyPath: switchOffLightAtDay
       value: 1
@@ -133,13 +133,14 @@ PrefabInstance:
     - {fileID: 3043630478309455294, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
     - {fileID: 6345781813244852916, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
     - {fileID: 8470427595836256783, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
+    - {fileID: 7991486878890622200, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
     m_RemovedGameObjects:
     - {fileID: 8311591866137550448, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
---- !u!212 &6338867661558080983 stripped
+--- !u!212 &3152965776191833293 stripped
 SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 4107045546097410403, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4955810122820296825, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
   m_PrefabInstance: {fileID: 8000370580297475252}
   m_PrefabAsset: {fileID: 0}

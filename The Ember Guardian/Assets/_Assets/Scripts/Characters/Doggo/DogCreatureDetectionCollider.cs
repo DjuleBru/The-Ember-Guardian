@@ -9,6 +9,7 @@ public class DogCreatureDetectionCollider : MonoBehaviour
     private List<CreatureSpawner_Ambush> creaturesAmbushSpawnersInDetectionColliderRange = new List<CreatureSpawner_Ambush>();
     private bool creaturesInDetectionCollider;
     private bool ambushSpawnersInDetectionCollider;
+    private bool isHub;
     private CircleCollider2D detectionCollider;
 
     private float detectionColliderRadius_Day = 14f;
@@ -19,11 +20,15 @@ public class DogCreatureDetectionCollider : MonoBehaviour
 
     private void Awake() {
         detectionCollider = GetComponent<CircleCollider2D>();
+
     }
     private void Start() {
         if(DayNightManager.Instance != null) {
             DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
             DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
+        }
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            isHub = true;
         }
     }
 
@@ -36,6 +41,8 @@ public class DogCreatureDetectionCollider : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
+        if (isHub) return;
+
         Creature creature = collision.gameObject.GetComponent<Creature>();
         CreatureSpawner_Ambush ambushSpawner = collision.gameObject.GetComponent<CreatureSpawner_Ambush>();
 
@@ -63,6 +70,7 @@ public class DogCreatureDetectionCollider : MonoBehaviour
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
+        if (isHub) return;
         Creature creature = collision.gameObject.GetComponent<Creature>();
         CreatureSpawner_Ambush ambushSpawner = collision.gameObject.GetComponent<CreatureSpawner_Ambush>();
 

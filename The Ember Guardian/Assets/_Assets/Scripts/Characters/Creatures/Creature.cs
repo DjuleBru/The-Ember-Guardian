@@ -123,7 +123,7 @@ public class Creature : Mob
         MetaProgressionManager.Instance.OnCreatureSOUnlocked += MetaProgressionMaanger_OnCreatureSOUnlocked;
     }
 
-    protected void OnEnable() {
+    protected virtual void OnEnable() {
         CreaturesManager.Instance.AddCreatureSpawned(this);
         dead = false;
         health = creatureSO.maxHealth;

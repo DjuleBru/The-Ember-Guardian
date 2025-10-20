@@ -667,8 +667,17 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (PlayerSkills.Instance.GetShootOnReload()) {
-            Shoot(true);
-            yield return new WaitForEndOfFrame();
+
+            int shotAmount = PlayerSkills.Instance.GetShootOnReloadShotAmount();
+            if(heldGunSO.gunType == GunSO.GunType.RocketLauncher || heldGunSO.gunType == GunSO.GunType.GrenadeLauncher || heldGunSO.gunType == GunSO.GunType.AAGun) {
+                shotAmount = 1;
+            }
+
+            for (int i = 0; i < shotAmount; i++) {
+                Shoot(true);
+                yield return new WaitForSeconds(.13f);
+            }
+
         }
 
         yield return new WaitForEndOfFrame();

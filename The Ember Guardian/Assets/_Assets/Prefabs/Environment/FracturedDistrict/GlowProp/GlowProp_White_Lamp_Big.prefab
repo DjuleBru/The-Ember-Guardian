@@ -103,6 +103,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3219297117802104465, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
+      propertyPath: isAnimatedGlow
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3219297117802104465, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
       propertyPath: glowSpriteRenderer
       value: 
       objectReference: {fileID: 3152965776191833293}
@@ -214,7 +218,8 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: a551e8cfa099e434baf1668903ab1f5d, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7991486878890622200, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6726162121237374260, guid: d18a5d1c3c9b78f42a63ea095a5d30fe, type: 3}

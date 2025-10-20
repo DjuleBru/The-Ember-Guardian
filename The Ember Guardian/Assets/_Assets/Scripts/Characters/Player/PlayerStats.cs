@@ -588,8 +588,8 @@ public class PlayerStats : MonoBehaviour
     }
 
     public void BuffPlayerAmmoRegen(float buffAmount) {
-        Debug.Log("BuffPlayerAmmoRegen " + buffAmount);
         ammoRegenTime += buffAmount;
+        Debug.Log("BuffPlayerAmmoRegen " + ammoRegenTime);
         OnPlayerAmmoRegenTimeChanged?.Invoke(this, EventArgs.Empty);
     }
 
