@@ -122,7 +122,10 @@ public class CreatureAnimatorManager : MonoBehaviour
         if (stunned || immobilized) return;
 
         if (creatureAttack.GetAttacking()) {
-            if (creatureAttack.GetCurrentCreatureAttackSO().blockSwitchXScaleWhileAttacking) return;
+            if (creatureAttack.GetCurrentCreatureAttackSO().blockSwitchXScaleWhileAttacking) {
+                return;
+            }
+
             HandleScaleChange(creatureAttack.GetAttackDir().x);
             return;
         }

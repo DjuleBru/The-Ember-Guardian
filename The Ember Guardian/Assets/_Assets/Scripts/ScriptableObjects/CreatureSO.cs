@@ -15,6 +15,10 @@ public class CreatureSO : ScriptableObject
     public bool isBoss;
     [BoxGroup("Basic Info")]
     [LabelWidth(100)]
+    [ShowIf("isBoss")]
+    public bool appearTwiceOnSecondPhase;
+    [BoxGroup("Basic Info")]
+    [LabelWidth(100)]
     [TextArea]
     public string description;
     [BoxGroup("Basic Info")]
@@ -104,6 +108,10 @@ public class CreatureSO : ScriptableObject
     [LabelWidth(200)]
     [Range(1, 3)]
     public float enteredLightattackRateDebuff;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
+    [Range(0, 2)]
+    public float nightSpawnYPosition = 2f;
 
     [BoxGroup("Game Data/Status Effects")]
     [LabelWidth(200)]

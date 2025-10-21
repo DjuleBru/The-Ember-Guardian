@@ -43,7 +43,7 @@ public class MobAttack : MonoBehaviour
     public event EventHandler OnAttackTargetSet;
     public event EventHandler OnAttackSpeedModified;
 
-    protected bool stunned = true;
+    protected bool notStunned = true;
     protected bool attacking;
     protected bool attackStarted;
     protected bool homingProjectile;
@@ -60,7 +60,7 @@ public class MobAttack : MonoBehaviour
     }
 
     protected void Update() {
-        if (!stunned) return;
+        if (!notStunned) return;
 
         attackTimer -= Time.deltaTime;
 
@@ -286,8 +286,9 @@ public class MobAttack : MonoBehaviour
     }
 
     public void SetAttackTarget(IDamageable iDamageable) {
+        //Debug.Log("SetAttackTarget");
 
-        if(GetIsRangedAttack() && attackTimer == 0) {
+        if (GetIsRangedAttack() && attackTimer == 0) {
             attackTimer = UnityEngine.Random.Range(0, attackCooldown / 3);
         }
 

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Colossus
   isBoss: 1
+  appearTwiceOnSecondPhase: 0
   description: Basic, slightly tanky, slow creature.
   creatureIcon: {fileID: 21300000, guid: fc2ff6869f9b2c24680784fcec2a3cb5, type: 3}
   creatureIcon_Portrait: {fileID: 21300000, guid: a0ad925b64dd46943b94d5d1303efa8d, type: 3}
@@ -37,6 +38,7 @@ MonoBehaviour:
   moveSpeedRandomizerDelta: 0
   maxHealth: 2500
   enteredLightattackRateDebuff: 2.5
+  nightSpawnYPosition: 2
   probabilityToAggroOnGunShot: 1
   immuneToPoison: 1
   immuneToShock: 1
@@ -56,11 +58,9 @@ MonoBehaviour:
   spawnProbability: 0.4
   maxCreaturesPerPacket: 1
   dieAudioClips:
-  - {fileID: 8300000, guid: 2a3446bc08c9f6a4595d9866b94523bb, type: 3}
-  - {fileID: 8300000, guid: cdd869efb1b2e0c42b7745dc889baf63, type: 3}
-  - {fileID: 8300000, guid: 8da1f384e8bb1d14bb892c5479f906e5, type: 3}
-  - {fileID: 8300000, guid: 19fd99e0681d27a45882321d1040c18e, type: 3}
-  - {fileID: 8300000, guid: 891be6df791ce064990b3cbb90a21447, type: 3}
+  - {fileID: 8300000, guid: 2aacf1f4dfbfd344abcc334250c0a30a, type: 3}
+  - {fileID: 8300000, guid: 11fae8d2abe8d0d46937105f934664c5, type: 3}
+  - {fileID: 8300000, guid: c8099f5101160ab4590a4224d6d15a4b, type: 3}
   dieVolumeMultiplier: 0.75
   aggroAudioClips:
   - {fileID: 8300000, guid: f9806935ce84d5448b45d1681abcfe70, type: 3}

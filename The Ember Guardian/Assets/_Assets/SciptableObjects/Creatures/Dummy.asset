@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Ghoul
   isBoss: 0
+  appearTwiceOnSecondPhase: 0
   description: Melee mob that can respawn after it's first death !
   creatureIcon: {fileID: 21300000, guid: acedcfdae6ef8cf49ac7fd46f78fcad7, type: 3}
   creatureIcon_Portrait: {fileID: 21300000, guid: 3b8a9b85ff3f1e845abcd2d9f0ef7cb1, type: 3}
@@ -37,11 +38,12 @@ MonoBehaviour:
   moveSpeedRandomizerDelta: 0.25
   maxHealth: 45
   enteredLightattackRateDebuff: 2.5
+  nightSpawnYPosition: 2
   probabilityToAggroOnGunShot: 1
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0
-  dieAnimationDuration: 0.7
+  immuneToFire: 0
   hasCustomSpawnAnimation: 1
   spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 0.85
@@ -96,9 +98,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b6d953aeaa52e58499a331b756752ad1, type: 3}
   spawnVolumeMultiplier: 0.75
   bulletHitAudioClips:
-  - {fileID: 8300000, guid: 5f188511e9287924ab0bc56282bb5bb1, type: 3}
-  - {fileID: 8300000, guid: 370af63962d422e42a9ddc6c19243081, type: 3}
-  - {fileID: 8300000, guid: 32433cb07860c854f8514231e93f3813, type: 3}
-  - {fileID: 8300000, guid: 7c4ef5419b0a7a24b9c549ea14b1e263, type: 3}
-  - {fileID: 8300000, guid: 3aa5ce64a65a5a2489835833a2a763a5, type: 3}
+  - {fileID: 8300000, guid: eb04286ec091b5e44ba3a1e1b91d17b3, type: 3}
+  - {fileID: 8300000, guid: 84014d60e4e8a6c40bb7d56d24bf11cf, type: 3}
+  - {fileID: 8300000, guid: bbacdb38ac62ebb4291252e78da51090, type: 3}
+  - {fileID: 8300000, guid: 1022ee993aba6e14e9951dcbb649ce22, type: 3}
+  - {fileID: 8300000, guid: 8087eaedc121c4a4cb5b29e9f3281186, type: 3}
+  - {fileID: 8300000, guid: 87f5eebc53862bf4abc7c6a4e068421b, type: 3}
+  - {fileID: 8300000, guid: b3af6de13c93fbd479241a1dfeac7ac8, type: 3}
   bulletHitVolumeMultiplier: 0.5

@@ -404,7 +404,6 @@ public class CurrencyCrafter : Structure
         return currencyTypeCrafted;
     }
     public PlayerCurrencies.CurrencyType GetCurrencyTypeBeingCrafted() {
-        Debug.Log("GetCurrencyTypeBeingCrafted " + currencyTypeBeingCrafted);
         return currencyTypeBeingCrafted;
     }
     protected override void RefreshPlayerCanInteract() {

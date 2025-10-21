@@ -453,6 +453,13 @@ public class CreaturesSpawnManager : MonoBehaviour {
                 waveCreatures.Add(new SpawnedCreatureInfo(creatureToSpawn, SpawnSide.Right));
             }
         }
+
+        var bosses = waveCreatures.Where(c => c.creature.isBoss).ToList();
+        if (bosses.Count == 2) {
+            bosses[0].spawnSide = SpawnSide.Left;
+            bosses[1].spawnSide = SpawnSide.Right;
+        }
+
         return waveCreatures;
     }
 
@@ -636,12 +643,16 @@ public class CreaturesSpawnManager : MonoBehaviour {
         }
 
         // Add boss
-        if (hasBoss && subWaveIndex == 0) {
-            if (bossNightsSpawns.Contains(currentWaveNumber)) {
+        if (hasBoss && subWaveIndex == 0 && bossNightsSpawns.Contains(currentWaveNumber)) {
+            int bossSpawnIndex = bossNightsSpawns.IndexOf(currentWaveNumber);
+
+            creaturesToSpawn.Add(bossCreatureType);
+            difficultyBudget -= bossCreatureType.difficulty;
+
+            if(bossSpawnIndex != 0 && bossCreatureType.appearTwiceOnSecondPhase) {
                 creaturesToSpawn.Add(bossCreatureType);
                 difficultyBudget -= bossCreatureType.difficulty;
-
-            };
+            }
         }
 
         // Normaliser les probabilités de spawn
@@ -706,7 +717,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
             xSpawnPosition = CampZoneManager.Instance.GetMaxZoneLimit() + spawnDistance;
         }
 
-        float yPosition = 2f;
+        float yPosition = creatureToSpawn.nightSpawnYPosition;
         if (creatureToSpawn.flying) {
             yPosition = UnityEngine.Random.Range(creatureToSpawn.flightMinAltitude, creatureToSpawn.flightMaxAltitude);
         }

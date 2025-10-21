@@ -513,7 +513,7 @@ public class GameInput : MonoBehaviour
                 return HandleLanguageConversions(playerInputActions.Player.HoverWorkers.bindings[0].ToDisplayString());
 
             case Binding.callDoggo:
-                return HandleLanguageConversions(playerInputActions.Player.Back.bindings[0].ToDisplayString());
+                return HandleLanguageConversions(playerInputActions.Player.CallDog.bindings[0].ToDisplayString());
 
             case Binding.torchOnOff:
                 return HandleLanguageConversions(playerInputActions.Player.SwitchGunLight.bindings[0].ToDisplayString());

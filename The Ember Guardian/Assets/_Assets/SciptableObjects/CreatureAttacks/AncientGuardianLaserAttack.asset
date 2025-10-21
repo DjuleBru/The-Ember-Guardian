@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4031d27ff643044292075ec5021e470, type: 3}
+  m_Name: AncientGuardianLaserAttack
+  m_EditorClassIdentifier: 
+  isRangedAttack: 0
+  isProjectileAttack: 0
+  isStaticProjectileAttack: 0
+  isAnimatedAttack: 1
+  attackCooldown: 4
+  minAttackRange: 4
+  maxAttackRange: 6
+  hasDifferentDayAndNightRange: 0
+  minAttackRange_Night: 0
+  maxAttackRange_Night: 0
+  attackRangeRandomizer: 0
+  maxAttackRangeRandomizer: 0
+  damage: 1
+  damageToFire: 1
+  damageToBarricades: 1
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 0
+  blockSwitchXScaleWhileAttacking: 1
+  attackAnimationDelay: 0.7
+  totalAttackAnimationTime: 2.3
+  attackSFXDelayAfterAnimationStart: 0.5
+  staticProjectilePrefab: {fileID: 0}
+  staticProjectileAutoTargetsPlayer: 0
+  projectileAmountInPool: 0
+  projectileAmountShotInAttack: 0
+  delayBetweenProjectileSpawns: 0
+  projectileSO: {fileID: 0}
+  attackRangeRandomizerMiss: 0
+  attackSFXHandledByAnimation: 1
+  attackAudioClips:
+  - {fileID: 8300000, guid: c5e1ff411cc57474dafad46b2038877b, type: 3}
+  attackHitAudioClips: []
+  attackStartedChargingAudioClips: []
+  attackReleasedAudioClips: []
+  attackVolumeMultiplier: 1
+  attackHitVolumeMultiplier: 1

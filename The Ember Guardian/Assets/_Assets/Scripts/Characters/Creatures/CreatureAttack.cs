@@ -43,7 +43,7 @@ public class CreatureAttack : MobAttack
     private void Creature_OnCreatureEnabled(object sender, EventArgs e) {
         attacking = false;
         attackStarted = false;
-        stunned = false;
+        notStunned = true;
         InitializeCreatureAttack();
     }
 
@@ -59,6 +59,7 @@ public class CreatureAttack : MobAttack
 
     public void SetAttackSO(CreatureAttackSO attackSO) {
         if (attackSO == null) return;
+
         currentCreatureAttackSO = attackSO;
 
         isProjectileAttack = attackSO.isProjectileAttack;
@@ -153,11 +154,11 @@ public class CreatureAttack : MobAttack
     }
 
     protected void Creature_OnCreatureStunStopped(object sender, EventArgs e) {
-        stunned = true;
+        notStunned = true;
     }
 
     protected void Creature_OnCreatureStunStarted(object sender, EventArgs e) {
-        stunned = false;
+        notStunned = false;
     }
 
     public bool GetIsPrimaryAttack() {

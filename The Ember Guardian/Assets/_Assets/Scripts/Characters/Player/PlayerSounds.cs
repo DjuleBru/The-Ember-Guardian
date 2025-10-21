@@ -48,6 +48,7 @@ public class PlayerSounds : SoundObject
         playerAnimator.OnFootStepTriggered += PlayerAnimator_OnFootStepTriggered;
         playerBreathAnimator.OnPantTriggered += PlayerAnimator_OnPantTriggered;
 
+        PlayerUI_TickTemplate.OnAnyBulletPingShineReachedGun += PlayerUI_TickTemplate_OnAnyBulletPingShineReachedGun;
         GunJamHandler.OnAnyCorrectJamSequenceInput += GunJamHandler_OnAnyCorrectJamSequenceInput;
         GunJamHandler.OnAnyJamWrongInput += GunJamHandler_OnAnyJamSequenceFailed;
         GunJamHandler.OnAnySpamButtonPressed += GunJamHandler_OnAnySpamButtonPressed;
@@ -69,6 +70,7 @@ public class PlayerSounds : SoundObject
 
         activeMoveSpeedBoostVisual.OnMoveSpeedFootStepTriggered += ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered;
     }
+
 
     private void SetSelectedGenderAudioClips(bool isFemale) {
         if(isFemale) {
@@ -102,6 +104,11 @@ public class PlayerSounds : SoundObject
     }
 
     private void GunJamHandler_OnAnyCorrectJamSequenceInput(object sender, System.EventArgs e) {
+        AudioClip[] gunJamHitProgress = PlayerShoot.Instance.GetHeldGunSO().gunJammHitProgressSound;
+        float volumeMultiplier = PlayerShoot.Instance.GetHeldGunSO().gunJamHitProgressVolumeMultiplier;
+        playerAudioSource.PlayOneShot(gunJamHitProgress[Random.Range(0, gunJamHitProgress.Length)], sfxVolume * volumeMultiplier * masterVolume);
+    }
+    private void PlayerUI_TickTemplate_OnAnyBulletPingShineReachedGun(object sender, System.EventArgs e) {
         AudioClip[] gunJamHitProgress = PlayerShoot.Instance.GetHeldGunSO().gunJammHitProgressSound;
         float volumeMultiplier = PlayerShoot.Instance.GetHeldGunSO().gunJamHitProgressVolumeMultiplier;
         playerAudioSource.PlayOneShot(gunJamHitProgress[Random.Range(0, gunJamHitProgress.Length)], sfxVolume * volumeMultiplier * masterVolume);
@@ -202,5 +209,6 @@ public class PlayerSounds : SoundObject
         GunJamHandler.OnAnySpamButtonPressed -= GunJamHandler_OnAnySpamButtonPressed;
         GunJamHandler.OnAnyPerfectJamSequenceCompleted -= GunJamHandler_OnAnyPerfectJamSequenceCompleted;
         Gun.OnAnySurgeReloadSuccess -= Gun_OnAnyGunJamRepaired;
+        PlayerUI_TickTemplate.OnAnyBulletPingShineReachedGun -= PlayerUI_TickTemplate_OnAnyBulletPingShineReachedGun;
     }
 }

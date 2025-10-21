@@ -51,8 +51,8 @@ MonoBehaviour:
   allowDebugInputs_gunJam: 0
   debugMode_PlayerWeapons: 0
   debugMode_Portals: 1
-  debugMode_HUBManager: 0
-  debugMode_HUBMerchants: 0
+  debugMode_HUBManager: 1
+  debugMode_HUBMerchants: 1
   debugMode_Tutorial: 0
   debugMode_PlayerCamp: 0
   debugMode_AllStructuresUnlocked: 0
@@ -64,7 +64,7 @@ MonoBehaviour:
   debugMode_RainManager: 0
   debugMode_AllSkillsUnlocked: 0
   debugMode_AllTrapsUnlocked: 0
-  disableCreatureDetection: 1
+  disableCreatureDetection: 0
   showMobDestinationGizmos: 0
   allItemsUnlocked: 0
   dropRedOrbsUnlocked: 0
@@ -72,5 +72,5 @@ MonoBehaviour:
   takeScreenshotsOnKeyPressed: 0
   saveAfterEachLevel: 1
   debugShowLaser: 0
-  debugSurgeReload: 0
-  logNightWaveData: 0
+  debugSurgeReload: 1
+  logNightWaveData: 1

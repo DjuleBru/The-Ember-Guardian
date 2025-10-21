@@ -55,7 +55,7 @@ public class PlayerUI_TickTemplate : MonoBehaviour
             // check arrivée
             if (Vector3.Distance(transform.position, PlayerShoot.Instance.GetHeldGun().transform.position) < 0.35f) {
                 OnAnyBulletPingShineReachedGun?.Invoke(this, EventArgs.Empty);
-                PlayerShoot.Instance.GetHeldGun().ApplySurgeWindowBuffAfterDelay(.15f);
+                PlayerShoot.Instance.GetHeldGun().ApplySurgeWindowBuffAfterDelay(.3f);
                 Destroy(gameObject);
             }
 

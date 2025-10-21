@@ -30,9 +30,6 @@ public class CreatureDetectionCollider : MonoBehaviour {
     private int playerTargetingPriority;
     private int barricadeTargetingPriority;
 
-    // LayerMask à configurer dans l'Inspector ou ici
-    [SerializeField] private LayerMask detectionLayerMask;
-
     private void Awake() {
         creature = GetComponentInParent<Creature>();
         creatureAI = GetComponentInParent<CreatureAI>();

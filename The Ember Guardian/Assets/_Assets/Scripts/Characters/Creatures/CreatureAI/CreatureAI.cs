@@ -87,13 +87,14 @@ public class CreatureAI : MonoBehaviour {
         if (died) return;
         if (!spawned) return;
 
-        if(hasRangedAndMeleeAttack) {
+        if (hasRangedAndMeleeAttack) {
             CheckAttackChange();
         }
 
         HandleAggroRecently();
         StateSwitch();
     }
+
     private void Creature_OnCreatureEnabled(object sender, EventArgs e) {
         creatureAttack.RemoveAttackTarget(); 
         StartCoroutine(SetSpawnedAfterDelay(creature.GetCreatureSO().spawnAnimationDuration));
@@ -333,6 +334,7 @@ public class CreatureAI : MonoBehaviour {
 
     protected virtual void ChangeState(State newState) {
         if (died) return;
+        //Debug.Log("ChangeState " + newState);
         if (newState == State.attacking) {
             creatureMovement.SetMoveTarget(transform.position);
             creatureAttack.SetAttackTarget(attackTarget);

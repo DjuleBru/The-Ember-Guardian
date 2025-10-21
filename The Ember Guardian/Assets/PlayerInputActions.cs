@@ -1042,22 +1042,22 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ab2867ee-d7a1-4a84-99fc-8445c3626215"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""id"": ""582a02e8-daee-450a-8306-bde074393535"",
+                    ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": "";Keyboard"",
                     ""action"": ""CallDog"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""582a02e8-daee-450a-8306-bde074393535"",
-                    ""path"": ""<Keyboard>/c"",
+                    ""id"": ""ab2867ee-d7a1-4a84-99fc-8445c3626215"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard"",
+                    ""groups"": "";Gamepad"",
                     ""action"": ""CallDog"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

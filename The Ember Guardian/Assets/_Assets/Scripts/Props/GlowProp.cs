@@ -39,8 +39,11 @@ public class GlowProp : MonoBehaviour
         }
 
         if(switchOffLightAtDay) {
-            DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
-            DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+            if(DayNightManager.Instance != null) {
+                DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
+                DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+            }
+
         }
 
         if(glowSpriteRenderer != null) {

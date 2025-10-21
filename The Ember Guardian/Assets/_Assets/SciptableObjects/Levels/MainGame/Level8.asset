@@ -17,7 +17,7 @@ MonoBehaviour:
   requiredLevelSO1: {fileID: 11400000, guid: 20e7ee7a32bd5d7448e5e07ae7827ed9, type: 2}
   requiredLevelSO2: {fileID: 11400000, guid: 2907cb0bb1a923a47825d18e9c2d38d1, type: 2}
   parallelLevelSO: {fileID: 0}
-  levelImage: {fileID: 0}
+  levelImage: {fileID: 21300000, guid: 1ffe77dd93b978743a06e59395a0a728, type: 3}
   levelNameLocalizationKey: Level8
   levelDescriptionLocalizationKey: Level8_Description
   faunaAmount: 7
@@ -26,9 +26,9 @@ MonoBehaviour:
   chestAmount: 1
   wildEmberlingsAmount: 0
   unlockablesList: 09000000
-  duskDurationIncreasePerDay: 1.5
-  levelObjectiveType: 4
-  endLevelType: 4
+  duskDurationIncreasePerDay: 1
+  levelObjectiveType: 23
+  endLevelType: 16
   talkToNpcAFterObjective: 0
   nightsToSurviveAmount: 9
   isNewEnvironmentDiscoveryLevel: 0
@@ -55,17 +55,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2a869f182b5b34b41aa44f2e41093c0d, type: 2}
   - {fileID: 11400000, guid: 62e52f1a115920948b5e7acc35ebadd9, type: 2}
   - {fileID: 11400000, guid: a0252d9509f4f3244af84b9de1268479, type: 2}
-  hasBoss: 0
-  bossCreatureType: {fileID: 0}
-  bossNightSpawns: 
+  hasBoss: 1
+  bossCreatureType: {fileID: 11400000, guid: 44e05b39601b93a44b972c72bd9253d5, type: 2}
+  bossNightSpawns: 0400000009000000
   bossNightWaveDifficultyMultiplier: 0.33
   startWaveToSpawnFromBothSides: 1
-  baseDifficulty: 120
+  baseDifficulty: 110
   intialMinSubwaveDifficulty: 30
   minSubwaveDifficulty: 80
   intialMaxSubwaveDifficulty: 50
   maxSubwaveDifficulty: 150
-  growthFactor: 1.6
+  growthFactor: 1
   typicalLevelDaysToComplete: 9
   minMaxSubwaveDifficultyGrowthFactor: 1.1
   setDifficultyAnimationCurve: 0
@@ -91,7 +91,7 @@ MonoBehaviour:
   windStrengthsAllowedInLevel: 
   hasRain: 1
   initialRainIntensity: 1
-  rainIntensitiesAllowedInLevel: 00000000010000000200000003000000
+  rainIntensitiesAllowedInLevel: 0000000001000000
   levelRandomBackgroundTracks: []
   levelExplorationTracks:
   - {fileID: 8300000, guid: 6aff3c3b53839b84999b8acaf10537cd, type: 3}

@@ -34,12 +34,12 @@ public class GunAnimator : MonoBehaviour
         PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerSHoot_OnPlayerSwitchedFireMode;
         PlayerShoot.Instance.OnPlayerSwappedGunStarted += PlayerShoot_OnPlayerSwappedGunStarted;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+        PlayerUI_TickTemplate.OnAnyBulletPingShineReachedGun += PlayerUI_TickTemplate_OnAnyBulletPingShineReachedGun;
 
         PlayerMeleeAttack.Instance.OnMeleeAttackStarted += PlayerMeleeAttack_OnMeleeAttackStarted;
 
         Player.Instance.OnPlayerRespawned += Player_OnPlayerRespawned;
     }
-
 
     protected void GunJamHandler_OnJamSequenceFailStarted(object sender, System.EventArgs e) {
         //animator.SetTrigger("GunJamHit");
@@ -50,6 +50,10 @@ public class GunAnimator : MonoBehaviour
     }
 
     protected void GunJamHandler_OnCorrectJamSequenceInput(object sender, System.EventArgs e) {
+
+    }
+
+    private void PlayerUI_TickTemplate_OnAnyBulletPingShineReachedGun(object sender, System.EventArgs e) {
         animator.SetTrigger("GunJamHit");
     }
 
@@ -158,6 +162,7 @@ public class GunAnimator : MonoBehaviour
         PlayerShoot.Instance.OnPlayerSwitchedFireMode -= PlayerSHoot_OnPlayerSwitchedFireMode;
 
         PlayerMeleeAttack.Instance.OnMeleeAttackStarted -= PlayerMeleeAttack_OnMeleeAttackStarted;
+        PlayerUI_TickTemplate.OnAnyBulletPingShineReachedGun -= PlayerUI_TickTemplate_OnAnyBulletPingShineReachedGun;
 
         Player.Instance.OnPlayerRespawned -= Player_OnPlayerRespawned;
     }

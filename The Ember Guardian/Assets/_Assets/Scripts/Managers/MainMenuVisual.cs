@@ -191,23 +191,27 @@ public class MainMenuVisual : MonoBehaviour
         verdantGraveyardWaterGO.SetActive(false);
         corruptedCityWaterGO.SetActive(false);
         lumenHollowWaterGO.SetActive(false);
+        fracturedDistrictWaterGO.SetActive(false);
 
         cityParallaxGO.SetActive(false);
         lumenHollowParallaxGO.SetActive(false);
         verdantGraveyardParallaxGO.SetActive(false);
         lostGreensParallaxGO.SetActive(false);
+        fracturedDistrictParallaxGO.SetActive(false);
 
         cityPropsGO.SetActive(false);
         verdantPropsGO.SetActive(false);
         lostPropsGO.SetActive(false);
         corruptedPropsGO.SetActive(false);
         lumenHollowPropsGO.SetActive(false);
+        fracturedDistrictPropsGO.SetActive(false);
 
         cityGridGO.SetActive(false);
         verdantGridGO.SetActive(false);
         lostGridGO.SetActive(false);
         corruptedGridGO.SetActive(false);
         lumenHollowGridGO.SetActive(false);
+        facturedDistrictGridGO.SetActive(false);
 
 
     }
