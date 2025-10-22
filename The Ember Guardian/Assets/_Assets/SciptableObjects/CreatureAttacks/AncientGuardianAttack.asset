@@ -30,9 +30,10 @@ MonoBehaviour:
   canAttackPlayerBehindBarricades: 0
   canAttackPlayerOnTower: 0
   blockSwitchXScaleWhileAttacking: 1
+  startblockSwitchXScaleWhileAttackingTime: 0.5
   attackAnimationDelay: 0.7
   totalAttackAnimationTime: 2.3
-  attackSFXDelayAfterAnimationStart: 0.5
+  attackSFXDelayAfterAnimationStart: 0.3
   staticProjectilePrefab: {fileID: 0}
   staticProjectileAutoTargetsPlayer: 0
   projectileAmountInPool: 0

@@ -62,6 +62,9 @@ public class CreatureAttackSO : ScriptableObject
     [BoxGroup("General")]
     [LabelWidth(200)]
     public bool blockSwitchXScaleWhileAttacking;
+    [BoxGroup("General")]
+    [LabelWidth(200)]
+    public float startblockSwitchXScaleWhileAttackingTime = 0.1f;
 
     [BoxGroup("Animation")]
     [LabelWidth(200)]

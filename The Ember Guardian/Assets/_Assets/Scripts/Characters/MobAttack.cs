@@ -315,7 +315,9 @@ public class MobAttack : MonoBehaviour
     public bool GetAttacking() {
         return attacking || attackStarted;
     }
-
+    public float GetAttackTimer() {
+        return attackTimer;
+    }
     public bool GetAttackStarted() {
         return attackStarted;
     }

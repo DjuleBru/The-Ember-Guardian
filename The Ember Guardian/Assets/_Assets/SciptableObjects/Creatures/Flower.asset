@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Flower
   isBoss: 0
+  appearTwiceOnSecondPhase: 0
   description: Basic monster, a bit swarmy.
   creatureIcon: {fileID: 21300000, guid: 48d1f662dea026c46a1b8a2ee7ee59d9, type: 3}
   creatureIcon_Portrait: {fileID: 21300000, guid: 1c2511c31d164f0488e8cbbc863c47b7, type: 3}
-  creaturePrefab: {fileID: 2465624883499499618, guid: 524c6a0ce009f85409e05496540227ac, type: 3}
+  creaturePrefab: {fileID: 4997657120178985709, guid: e817b10efc5039c40a882ccd95be2b1c, type: 3}
   mass: 10
   detectionRange_Day: 10
   detectionRange_Night: 10
@@ -37,10 +38,12 @@ MonoBehaviour:
   moveSpeedRandomizerDelta: 0.4
   maxHealth: 20
   enteredLightattackRateDebuff: 1.5
+  nightSpawnYPosition: 2
   probabilityToAggroOnGunShot: 0.5
   immuneToPoison: 0
   immuneToShock: 0
   immuneToImmobilize: 0
+  immuneToFire: 0
   hasCustomSpawnAnimation: 0
   spawnAnimationDuration: 1
   baseMovementAnimationSpeed: 1.3

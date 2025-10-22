@@ -77,9 +77,6 @@ public class CreatureAI : MonoBehaviour {
 
         SetAttackRange();
 
-        if (creature.GetCreatureSO().canFlank) {
-            flankDirection = Mathf.Sign(UnityEngine.Random.Range(-1f, 1f));
-        }
     }
 
 
@@ -132,8 +129,13 @@ public class CreatureAI : MonoBehaviour {
     }
 
     protected void SetAttackDir() {
-        if (creature.GetCreatureSO().canFlank) return;
         if ((attackTarget as MonoBehaviour) == null) return;
+
+        if (creature.GetCreatureSO().canFlank && !(attackTarget is Barricade)) {
+            flankDirection = Mathf.Sign(UnityEngine.Random.Range(-1f, 1f));
+            return;
+        }
+
 
         flankDirection = -Mathf.Sign((attackTarget as MonoBehaviour).transform.position.x - transform.position.x);
     }

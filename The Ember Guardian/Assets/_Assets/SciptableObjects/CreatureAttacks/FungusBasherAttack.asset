@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4031d27ff643044292075ec5021e470, type: 3}
+  m_Name: FungusBasherAttack
+  m_EditorClassIdentifier: 
+  isRangedAttack: 0
+  isProjectileAttack: 0
+  isStaticProjectileAttack: 0
+  isAnimatedAttack: 1
+  attackCooldown: 2
+  minAttackRange: 1.2
+  maxAttackRange: 2.5
+  hasDifferentDayAndNightRange: 0
+  minAttackRange_Night: 10
+  maxAttackRange_Night: 15
+  attackRangeRandomizer: 0.3
+  maxAttackRangeRandomizer: 0
+  damage: 2
+  damageToFire: 4
+  damageToBarricades: 2
+  canAttackPlayerBehindBarricades: 0
+  canAttackPlayerOnTower: 0
+  blockSwitchXScaleWhileAttacking: 1
+  startblockSwitchXScaleWhileAttackingTime: 0.2
+  attackAnimationDelay: 0.6
+  totalAttackAnimationTime: 0.9
+  attackSFXDelayAfterAnimationStart: 0.3
+  staticProjectilePrefab: {fileID: 7991158393713654780, guid: a5ea1941e0688aa4fb8f9502aeee8c9d, type: 3}
+  staticProjectileAutoTargetsPlayer: 0
+  projectileAmountInPool: 0
+  projectileAmountShotInAttack: 0
+  delayBetweenProjectileSpawns: 0
+  projectileSO: {fileID: 11400000, guid: f6761823ce1e8164095fc93d0a9bbfd2, type: 2}
+  attackRangeRandomizerMiss: 0.5
+  attackSFXHandledByAnimation: 0
+  attackAudioClips:
+  - {fileID: 8300000, guid: 8c7eb43257f3f3141b5dd80a9f48eea0, type: 3}
+  - {fileID: 8300000, guid: 30cc7bda19aa43d47aced6168c137f40, type: 3}
+  - {fileID: 8300000, guid: 9bbe3329bd9dcde41b4525acc099acfe, type: 3}
+  - {fileID: 8300000, guid: 76766b8d063f52b4fb2df825650b1064, type: 3}
+  attackHitAudioClips:
+  - {fileID: 8300000, guid: 0d5b7fb294838c2448e96a0e852a67b0, type: 3}
+  - {fileID: 8300000, guid: c1576f447f5189d4c904c2bfa0b5850d, type: 3}
+  - {fileID: 8300000, guid: 358e1008e8e48dc45b885b841df4928a, type: 3}
+  - {fileID: 8300000, guid: 052c80922c8a73740b3492d6e90228b6, type: 3}
+  attackStartedChargingAudioClips: []
+  attackReleasedAudioClips: []
+  attackVolumeMultiplier: 1.2
+  attackHitVolumeMultiplier: 0.75
