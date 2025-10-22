@@ -13,6 +13,7 @@ public class VideoTipManager_Demo : MonoBehaviour
     [SerializeField] private VideoTipSO trapTip;
     [SerializeField] private VideoTipSO gunJamTip;
     [SerializeField] private VideoTipSO gunManagementTip;
+    [SerializeField] private VideoTipSO surgeReloadTip;
 
     private bool workerRecruited;
     private bool healTentTipShown;
@@ -23,6 +24,7 @@ public class VideoTipManager_Demo : MonoBehaviour
     private bool gunJamTipShown;
     private bool showGunManagementTip;
     private bool gunManagementTipShown;
+    private bool surgeReloadTipShown;
 
     private int hunterNumberRecruited;
 
@@ -37,10 +39,23 @@ public class VideoTipManager_Demo : MonoBehaviour
             Worker.OnAnyWorkerAssignedHunter += Worker_OnAnyWorkerAssignedHunter;
             UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
             Gun.OnAnyGunJammed += Gun_OnAnyGunJammed;
+            PlayerShoot.Instance.OnSurgeReloadStart += PlayerShoot_OnSurgeReloadStart;
         }
         
         HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+    }
+
+    private void PlayerShoot_OnSurgeReloadStart(object sender, EventArgs e) {
+        if (surgeReloadTipShown) return;
+
+        VideoTipUI.Instance.PlayTipSO(surgeReloadTip, .7f);
+
+        surgeReloadTipShown = true;
+        ES3.Save("surgeReloadTipShown", true);
+
+        // Second surge reload (just to train the player)
+        PlayerShoot.Instance.SurgeWindowNextBullet(true);
     }
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
@@ -145,6 +160,7 @@ public class VideoTipManager_Demo : MonoBehaviour
         trapTipShown = ES3.Load("trapTipShown", false);
         gunJamTipShown = ES3.Load("gunJamTipShown", false);
         gunManagementTipShown = ES3.Load("gunManagementTipShown", false);
+        surgeReloadTipShown = ES3.Load("surgeReloadTipShown", false);
     }
 
     private void OnDestroy() {

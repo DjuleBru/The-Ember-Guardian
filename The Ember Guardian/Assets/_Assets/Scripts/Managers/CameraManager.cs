@@ -71,7 +71,9 @@ public class CameraManager : MonoBehaviour
     }
 
     private void Update() {
-        if(isChangingOrthographicSize) {
+        if (isMainMenu) return;
+
+        if (isChangingOrthographicSize) {
             isChangingOrthographicSizeTimer += Time.unscaledDeltaTime;
 
             if (isChangingOrthographicSizeTimer >= isChangingOrthographicSizeTime) {
@@ -81,7 +83,6 @@ public class CameraManager : MonoBehaviour
 
         }
 
-        if (isMainMenu) return;
         if (initialCameraOrthographicSizeForceSet) return;
 
         // Check centrage caméra/player

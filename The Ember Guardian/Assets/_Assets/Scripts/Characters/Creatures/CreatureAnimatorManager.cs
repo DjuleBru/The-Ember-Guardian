@@ -202,4 +202,15 @@ public class CreatureAnimatorManager : MonoBehaviour
     public void SetUnReadyToMoveAnimatorAndStopMoving() {
         mobMovement.SetUnReadyToMoveAnimatorAndStopMoving();
     }
+
+    public void SetCreatureUntargetable() {
+        creature.SetCreatureCanBeTargeted(false);
+        creature.SetGravityScale(0f);
+        creature.EnableCollider(false);
+    }
+    public void SetCreatureTargetable() {
+        creature.SetCreatureCanBeTargeted(true);
+        creature.SetGravityScale(1f);
+        creature.EnableCollider(true);
+    }
 }

@@ -78,17 +78,17 @@ public class WorkerUI : MonoBehaviour
             string localizationKey = "worker_assignedHunter" + textRandomized;
             talkText.text = LocalizationManager.Instance.GetLocalizedText(localizationKey);
         }
-        if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
+        if (workerAI.GetJob() == WorkerAI.JobTypes.miner) {
             int textRandomized = UnityEngine.Random.Range(1, 11);
             string localizationKey = "worker_assignedMiner" + textRandomized;
             talkText.text = LocalizationManager.Instance.GetLocalizedText(localizationKey);
         }
-        if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
+        if (workerAI.GetJob() == WorkerAI.JobTypes.engineer) {
             int textRandomized = UnityEngine.Random.Range(1, 11);
             string localizationKey = "worker_assignedEngineer" + textRandomized;
             talkText.text = LocalizationManager.Instance.GetLocalizedText(localizationKey);
         }
-        if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
+        if (workerAI.GetJob() == WorkerAI.JobTypes.guard) {
             int textRandomized = UnityEngine.Random.Range(1, 11);
             string localizationKey = "worker_assignedGuard" + textRandomized;
             talkText.text = LocalizationManager.Instance.GetLocalizedText(localizationKey);

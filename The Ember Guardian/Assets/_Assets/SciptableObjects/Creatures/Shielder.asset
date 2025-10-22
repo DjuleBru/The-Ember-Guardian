@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Shielder
   isBoss: 0
+  appearTwiceOnSecondPhase: 0
   description: Ranged mob that fires arced projectiles
   creatureIcon: {fileID: 21300000, guid: 967e5a0e19c688e4da27cf1f0ef83905, type: 3}
   creatureIcon_Portrait: {fileID: 21300000, guid: 8c08eb2204738414c94a3b8801c27da6, type: 3}
   creaturePrefab: {fileID: 4997657120178985709, guid: 48028c480f2feec46b2115a6842111c3, type: 3}
-  mass: 20
+  mass: 150
   detectionRange_Day: 20
   detectionRange_Night: 16.5
   primaryAttackSO: {fileID: 11400000, guid: 9ccafab7be52aa044aae21011032b45d, type: 2}
@@ -37,6 +38,7 @@ MonoBehaviour:
   moveSpeedRandomizerDelta: 0.25
   maxHealth: 120
   enteredLightattackRateDebuff: 2.5
+  nightSpawnYPosition: 2
   probabilityToAggroOnGunShot: 1
   immuneToPoison: 0
   immuneToShock: 0

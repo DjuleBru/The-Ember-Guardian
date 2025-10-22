@@ -335,7 +335,7 @@ public class HUBManager_Demo : MonoBehaviour
         hubFire.SetHubFireEmberExtractable(false);
 
         yield return new WaitForSeconds(5f);
-        gemMerchant.ResetAllItemStatuses();
+        //gemMerchant.ResetAllItemStatuses();
 
         LevelUI_Locations.Instance.ShowLocationText(LocalizationManager.Instance.GetLocalizedText("TheEternalFlame"));
         MusicManager.Instance.PlayMusicDelayed(2f);

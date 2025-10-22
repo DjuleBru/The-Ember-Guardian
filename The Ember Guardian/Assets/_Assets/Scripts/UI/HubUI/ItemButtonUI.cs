@@ -151,7 +151,13 @@ public class ItemButtonUI : ButtonUI {
     public void ResetMajorGunItemAfterRefund() {
         if (!hubMerchantItem.GetItemBought()) return;
 
-        StartBuyItemVisuals();
+        HUBMerchantItem_GunMerchantItem gunItem = hubMerchantItem as HUBMerchantItem_GunMerchantItem;
+
+        if(gunItem.GetGunItemCategory() == HUBMerchantItem_GunMerchantItem.GunItemCategory.newGun) {
+            StartBuyItemVisuals();
+        }
+
+
         if (outputLinkUnlockedImageList.Count != 0) {
             foreach (Image image in outputLinkUnlockedImageList) {
                 image.gameObject.SetActive(true);
@@ -322,6 +328,7 @@ public class ItemButtonUI : ButtonUI {
 
     private void RefreshDescriptionCardCosts() {
         if (hubMerchantItem.GetItemBought()) return;
+        if (itemLockedInDemo) return;
         int greenGemCost = hubMerchantItem.GetGreenGemCost();
         int redGemCost = hubMerchantItem.GetRedGemCost();
         int blueGemCost = hubMerchantItem.GetBlueGemCost();

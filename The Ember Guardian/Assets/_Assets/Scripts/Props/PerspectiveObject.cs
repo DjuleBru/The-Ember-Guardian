@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ public class PerspectiveObject : MonoBehaviour {
     static float parallaxPower = .85f;             
     float Y0 = -1.5f;                 // Niveau du joueur
     float Ymax = -10f;             // Limite "profonde"
+    float distanceToPlayerToActivateParallaxEffect = 50f;
+    bool isParallaxActive;
 
     [Header("References")]
     [SerializeField] Transform perspectiveReferencePoint;
@@ -38,19 +41,34 @@ public class PerspectiveObject : MonoBehaviour {
 
         ApplyPerspectiveScale();
         UpdateSortingOrder();
+
+        float aspectRatio = (float)Screen.width / Screen.height;
+        if (aspectRatio >= 2.33f) {
+            distanceToPlayerToActivateParallaxEffect = 50f;
+        }
+        else {
+            distanceToPlayerToActivateParallaxEffect = 30f;
+        }
     }
 
     void LateUpdate() {
+        CheckParallaxActive();
         ApplyPerspective();
         ApplyPerspectiveScale();
     }
 
     void ApplyPerspective() {
-        // --- 3. Déplace en réaction au mouvement de la caméra ---
-        Vector3 camDelta = cameraTransform.position - lastCameraPos;
-        offset -= camDelta * (depth * parallaxFactor);
-        transform.position += offset;
-        offset = Vector3.zero; // Réinitialise pour éviter l'accumulation
+
+
+        if (isParallaxActive) {
+            // --- 3. Déplace en réaction au mouvement de la caméra ---
+
+            Vector3 camDelta = cameraTransform.position - lastCameraPos;
+            offset -= camDelta * (depth * parallaxFactor);
+            transform.position += offset;
+            offset = Vector3.zero; // Réinitialise pour éviter l'accumulation
+        };
+
 
         lastCameraPos = cameraTransform.position;
     }
@@ -89,4 +107,15 @@ public class PerspectiveObject : MonoBehaviour {
     public void SetParallaxPower(float newparallaxPower) {
         parallaxPower = newparallaxPower;
     }
+
+    private void CheckParallaxActive() {
+        float distanceToPlayer = Mathf.Abs(Camera.main.transform.position.x - transform.position.x);
+
+        if(distanceToPlayer > distanceToPlayerToActivateParallaxEffect) {
+            isParallaxActive = false;
+        } else {
+            isParallaxActive = true;
+        }
+    }
+
 }

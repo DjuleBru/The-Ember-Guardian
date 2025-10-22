@@ -38,14 +38,18 @@ public class MainMenuUI_StartupMessagePanel : MonoBehaviour
 
     public void ClosePanel() {
         startupMessagePanel.gameObject.SetActive(false);
-        MainMenuUI.Instance.ShowMainMenuButtons();
+        MainMenuUI.Instance.HandleMenuStartup();
     }
 
     public void SetErasedSaveFilePanel() {
-        panelName.text = "Warning";
-        panelText.text = "Your previous save file was incompatible with the current version of the game, your progression has been reset.\n\nSorry for the inconvenience.";
+        string loadedText = LocalizationManager.Instance.GetLocalizedText("startupMessagePanel_Text");
+        loadedText = loadedText.Replace("\\n", "\n");
+        panelName.text = LocalizationManager.Instance.GetLocalizedText("startupMessagePanel_Name");
+        panelText.text = loadedText;
+
         panelNameImageAnimator.SetTrigger("DeletedSaveFile");
     }
+
     public void SetNewTesterPanel() {
         panelName.text = "Hello, Emberling !";
         panelText.text = "Welcome to The Ember Guardian! Please note that the game is still in early development, so you may come across some bugs. I hope you enjoy the experience!\n\nThank you for keeping the flame alive!";

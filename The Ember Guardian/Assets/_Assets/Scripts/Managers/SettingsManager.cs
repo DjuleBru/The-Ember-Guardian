@@ -41,7 +41,7 @@ public class SettingsManager : MonoBehaviour
     }
     public enum ScreenMode {
         Windowed,
-        MaximizedWindow,
+        MaximisedWindow,
         Fullscreen
     }
 
@@ -193,9 +193,9 @@ public class SettingsManager : MonoBehaviour
         // fait tourner entre les 3 modes
         switch (currentScreenMode) {
             case ScreenMode.Windowed:
-                currentScreenMode = ScreenMode.MaximizedWindow;
+                currentScreenMode = ScreenMode.MaximisedWindow;
                 break;
-            case ScreenMode.MaximizedWindow:
+            case ScreenMode.MaximisedWindow:
                 currentScreenMode = ScreenMode.Fullscreen;
                 break;
             case ScreenMode.Fullscreen:
@@ -217,7 +217,7 @@ public class SettingsManager : MonoBehaviour
                 Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
                 break;
 
-            case ScreenMode.MaximizedWindow:
+            case ScreenMode.MaximisedWindow:
                 Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
                 Screen.fullScreen = true;
                 Screen.SetResolution(Display.main.systemWidth, Display.main.systemHeight, FullScreenMode.MaximizedWindow);

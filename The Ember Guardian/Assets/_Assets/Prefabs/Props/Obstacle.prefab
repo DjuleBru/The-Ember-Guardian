@@ -100,7 +100,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 1.1251745}
+  m_Offset: {x: 0, y: 8.943309}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -111,7 +111,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 3.250349}
+  m_Size: {x: 1, y: 18.886618}
   m_EdgeRadius: 0
 --- !u!1 &2930215387888486929
 GameObject:
@@ -492,7 +492,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 1.1251745}
+  m_Offset: {x: 0, y: 8.883253}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -503,7 +503,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 3.250349}
+  m_Size: {x: 1, y: 18.766506}
   m_EdgeRadius: 0
 --- !u!1 &6038177527845614095
 GameObject:
@@ -554,6 +554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 952ad76c9ebf37e409b8481d741784c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obstacleID: 840a02e0-3fce-4b8a-a5b7-2057070d170d
   blockingColliders:
   - {fileID: 4544320094906451099}
   - {fileID: 484025103827018907}
@@ -684,6 +685,8 @@ MonoBehaviour:
   orbImageOutline: {fileID: 2417488607516134995}
   payCurrencyUIAnimator: {fileID: 2899916506533799793}
   initialPayCurrencySmoothTime: 6
+  setInitialImageColorManual: 0
+  initialImageOutlineColor_ManualSet: {r: 0, g: 0, b: 0, a: 0}
 --- !u!58 &3258630055826654497
 CircleCollider2D:
   m_ObjectHideFlags: 0

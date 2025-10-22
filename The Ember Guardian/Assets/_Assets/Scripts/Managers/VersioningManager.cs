@@ -51,7 +51,6 @@ public class VersioningManager : MonoBehaviour
     }
 
     public bool CheckIncompatibleSaveFile() {
-        return false;
         float version = ReconstructFloatVersion(state, major, minor, patch);
         string key = "buildVersion_" + version + "_saveFileDeleted";
         string latestBuildSavedKey = "latestBuildSaved";
@@ -66,6 +65,10 @@ public class VersioningManager : MonoBehaviour
         };
 
         saveFileDeleted = ES3.Load(key, false);
+
+        Debug.Log("latestBuildSaved " + latestBuildSaved);
+        Debug.Log("latestCompatibleBuildVersion " + latestCompatibleBuildVersion);
+        Debug.Log("saveFileDeleted " + saveFileDeleted);
 
         if (latestBuildSaved > latestCompatibleBuildVersion) return false;
         if (saveFileDeleted) return false;
@@ -84,10 +87,10 @@ public class VersioningManager : MonoBehaviour
         Debug.Log("ES3.FileExists " + ES3.FileExists());
         if (!ES3.FileExists()) {
 
-            if(MainMenuUI_StartupMessagePanel.Instance != null) {
-                MainMenuUI_StartupMessagePanel.Instance.OpenPanel();
-                MainMenuUI_StartupMessagePanel.Instance.SetNewTesterPanel();
-            } 
+            //if(MainMenuUI_StartupMessagePanel.Instance != null) {
+            //    MainMenuUI_StartupMessagePanel.Instance.OpenPanel();
+            //    MainMenuUI_StartupMessagePanel.Instance.SetNewTesterPanel();
+            //} 
 
             if(AdjustGammaUI.Instance != null) {
                 AdjustGammaUI.Instance.OpenPanel(true);

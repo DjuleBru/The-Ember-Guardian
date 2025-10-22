@@ -83,6 +83,7 @@ public class MusicManager : MonoBehaviour {
     private bool isPlayingEndLevelAreaMusic;
     private bool isPlayingNightMusic;
     private bool musicAudioLevelReducedWithPause;
+    private float musicVolumeReductionWithPause = 2.5f;
     private AudioSource audioSourceA;
     private AudioSource audioSourceB;
     private bool isUsingAudioSourceA = true;
@@ -135,6 +136,10 @@ public class MusicManager : MonoBehaviour {
         isHUBScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB;
         isTutorialScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial;
 
+        if(VideoTipUI.Instance != null) {
+            VideoTipUI.Instance.OnVideoTipPanelOpened += VideoTip_OnVideoTipPanelOpened;
+        }
+
         if(isLevelScene || isTutorialScene) {
             levelRandomBackgroundTracks = LevelManager.Instance.GetLevelSO().levelRandomBackgroundTracks;
             levelExplorationTracks = LevelManager.Instance.GetLevelSO().levelExplorationTracks;
@@ -186,6 +191,7 @@ public class MusicManager : MonoBehaviour {
         }
 
     }
+
 
     private void Update() {
         if (fireDamageTakenRecently != 0) {
@@ -305,17 +311,28 @@ public class MusicManager : MonoBehaviour {
     private void PauseMenuUI_OnPauseMenuOpened(object sender, EventArgs e) {
         if(isPlayingEndLevelAreaMusic || isPlayingLevelDiscoveryMusic || isPlayingNightMusic || isPlayingPeacefulMusic || isPlayingExplorationMusic) {
 
+            if (musicAudioLevelReducedWithPause) return;
+
             musicAudioLevelReducedWithPause = true;
-            audioSourceA.volume /= 2.5f;
+            audioSourceA.volume /= musicVolumeReductionWithPause;
         }
     }
 
     private void PauseMenuUI_OnPauseMenuClosed(object sender, EventArgs e) {
         if(musicAudioLevelReducedWithPause) {
-            audioSourceA.volume *= 2.5f;
+            audioSourceA.volume *= musicVolumeReductionWithPause;
+            musicAudioLevelReducedWithPause = false;
         }
     }
+    private void VideoTip_OnVideoTipPanelOpened(object sender, EventArgs e) {
+        if (isPlayingEndLevelAreaMusic || isPlayingLevelDiscoveryMusic || isPlayingNightMusic || isPlayingPeacefulMusic || isPlayingExplorationMusic) {
 
+            if (musicAudioLevelReducedWithPause) return;
+
+            musicAudioLevelReducedWithPause = true;
+            audioSourceA.volume /= musicVolumeReductionWithPause;
+        }
+    }
 
     private void SettingsManager_OnSteamerModeChanged(object sender, EventArgs e) {
         streamerMode = SettingsManager.Instance.GetStreamerMode();
@@ -338,11 +355,12 @@ public class MusicManager : MonoBehaviour {
 
     private void SettingsManager_OnMusicVolumeChanged(object sender, System.EventArgs e) {
         musicSettingVolume = SettingsManager.Instance.GetMusicVolume();
-        SetAudioVolume(currentTrackVolumeMultiplier);
+        SetAudioVolume(musicSettingVolume);
     }
+
     private void SettingsManager_OnMasterVolumeChanged(object sender, EventArgs e) {
         masterSettingVolume = SettingsManager.Instance.GetMasterVolume();
-        SetAudioVolume(currentTrackVolumeMultiplier);
+        SetAudioVolume(musicSettingVolume);
     }
 
 
@@ -798,13 +816,19 @@ public class MusicManager : MonoBehaviour {
         AudioSource activeSource = isUsingAudioSourceA ? audioSourceA : audioSourceB;
         return activeSource.volume;
     }
+
     public void SetAudioVolume(float volume) {
-        currentTrackVolumeMultiplier = volume;
+        if(musicAudioLevelReducedWithPause) {
+            volume /= musicVolumeReductionWithPause;
+        }
+        Debug.Log("SetAudioVolume " + volume);
+
         audioSourceA.volume = volume * musicSettingVolume * masterSettingVolume;
         audioSourceB.volume = volume * musicSettingVolume * masterSettingVolume;
     }
 
     public void SetAudioTargerVolume(float volume) {
+        Debug.Log("SetAudioTargerVolume " + volume);
         targetVolume = volume * musicSettingVolume * masterSettingVolume;
     }
 

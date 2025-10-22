@@ -438,6 +438,17 @@ public class Creature : Mob
             OnCreatureUntargetable?.Invoke(this, EventArgs.Empty);
         }
     }
+
+    public void EnableCollider(bool enable) {
+        GetComponent<Collider2D>().enabled = enable;
+    }
+
+    public void SetGravityScale(float gravityScale) {
+        rb.velocity = Vector2.zero;
+        rb.gravityScale = gravityScale;
+    }
+
+
     public void SetCreatureHealth(int health) {
         this.health = health;
         this.maxHealth = health;

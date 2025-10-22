@@ -88,7 +88,8 @@ MonoBehaviour:
   initialRainIntensity: 0
   rainIntensitiesAllowedInLevel: 
   levelRandomBackgroundTracks: []
-  levelExplorationTracks: []
+  levelExplorationTracks:
+  - {fileID: 8300000, guid: cb6f8d7822fd016409eec5af46d881b9, type: 3}
   levelExplorationTracksStreamerMode: []
   showDirectionAtStart: 0
   directionToShow: 1

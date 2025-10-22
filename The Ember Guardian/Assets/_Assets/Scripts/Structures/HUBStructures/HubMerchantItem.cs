@@ -469,7 +469,9 @@ public class HubMerchantItem : MonoBehaviour
     // --- RESET ---
     public void ResetItemStatus_Batch() {
         itemBought = false;
+
         itemLevel = 0;
+
         itemUnlocked = false;
         newItemUnlocked = false;
 

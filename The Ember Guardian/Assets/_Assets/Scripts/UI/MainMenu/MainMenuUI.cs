@@ -57,18 +57,23 @@ public class MainMenuUI : MonoBehaviour {
 
         if (!VersioningManager.Instance.CheckNewSaveFile() && !VersioningManager.Instance.CheckIncompatibleSaveFile()) {
 
-
-            if (!CharacterSelectUI.Instance.HasChosenCharacter()) {
-                CharacterSelectUI.Instance.OpenPanel();
-            } else {
-                StartCoroutine(FadeInMainMenu(1.5f));
-            }
+            HandleMenuStartup();
 
         } else {
             continueButton.interactable = false;
         }
 
         RefreshFonts();
+    }
+
+    public void HandleMenuStartup() {
+
+        if (!CharacterSelectUI.Instance.HasChosenCharacter()) {
+            CharacterSelectUI.Instance.OpenPanel();
+        }
+        else {
+            StartCoroutine(FadeInMainMenu(1.5f));
+        }
     }
 
     private void SettingsManager_OnLanguageChanged(object sender, EventArgs e) {

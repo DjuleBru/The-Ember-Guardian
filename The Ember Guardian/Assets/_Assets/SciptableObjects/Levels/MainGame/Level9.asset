@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
   m_Name: Level9
   m_EditorClassIdentifier: 
-  linkedSceneName: Level1_VerdantGraveyard
+  linkedSceneName: Level9_FracturedDistrict
   isBranchingLevel: 0
   requiredLevelSO1: {fileID: 0}
   requiredLevelSO2: {fileID: 0}
@@ -31,11 +31,11 @@ MonoBehaviour:
   endLevelType: 0
   talkToNpcAFterObjective: 0
   nightsToSurviveAmount: 0
-  isNewEnvironmentDiscoveryLevel: 1
+  isNewEnvironmentDiscoveryLevel: 0
   newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: 519f3c004a8b3d245ae3e68490546920, type: 3}
   levelsUnlockedByLevel:
   - {fileID: 11400000, guid: dc41c2c9ab6c4e8459ab552e2fe64f6d, type: 2}
-  merchantsUnlockedInLevel: 01000000
+  merchantsUnlockedInLevel: 
   gemMerchantTextLinesAfterLevel: {fileID: 11400000, guid: bffcfa231e98bf94fa2775d04f47f468, type: 2}
   newMerchantTextLinesAfterLevel: []
   unlocksNewGemType: 0
@@ -43,12 +43,16 @@ MonoBehaviour:
   gemDropPool: 110
   isReplayableLevel: 0
   totalDayCreatureDifficulty: 0
-  dayCreatureTypes: []
+  dayCreatureTypes:
+  - {fileID: 11400000, guid: 582a862bd856e30469b02bdae99cc2af, type: 2}
+  - {fileID: 11400000, guid: 9c9076f8b6a22de4ebbd843c06ddcb3d, type: 2}
   nightCreatureTypes:
-  - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
-  - {fileID: 11400000, guid: a0c1321c3dbd0704c9f6bf0aec0e77b3, type: 2}
-  - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
-  - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
+  - {fileID: 11400000, guid: 4e5dcb6e7b000544a8108cf3501dd7db, type: 2}
+  - {fileID: 11400000, guid: d8a8277b64666ae43a153dd6c6383caa, type: 2}
+  - {fileID: 11400000, guid: bf813eac411ac844b92b889ee4c4b8a5, type: 2}
+  - {fileID: 11400000, guid: 218ffb649696043488f4dd67b673e0f9, type: 2}
+  - {fileID: 11400000, guid: 604cbcacfcd27be40a3e20be70304914, type: 2}
+  - {fileID: 11400000, guid: 35a1cdab232f14c40a9813f44a5243b7, type: 2}
   hasBoss: 0
   bossCreatureType: {fileID: 0}
   bossNightSpawns: 
@@ -76,10 +80,10 @@ MonoBehaviour:
   specialWaveTypesInLevel: 
   specialWaveProbability: 0
   maxSpecialWaveAmount: 0
-  environmentType: 3
-  hasFog: 0
-  fogFrontAlpha: 0
-  fogBackAlpha: 0
+  environmentType: 4
+  hasFog: 1
+  fogFrontAlpha: 0.5
+  fogBackAlpha: 0.5
   hasWind: 0
   initialWindStrength: 0
   windStrengthsAllowedInLevel: 

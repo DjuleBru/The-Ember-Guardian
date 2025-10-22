@@ -93,6 +93,7 @@ public class BossUI : MonoBehaviour
         bossUIPanel.SetActive(true);
         bossUIPanelAnimator.SetTrigger("Show");
         panelShown = true;
+
         StartCoroutine(ShowCoroutine());
     }
 
@@ -106,7 +107,7 @@ public class BossUI : MonoBehaviour
         bossHealthBarPhase2.fillAmount = 0;
         yield return new WaitForEndOfFrame();
 
-        if (bossName != "") {
+        if (bossName != null) {
             bossNameText.text = bossName;
         }
 
