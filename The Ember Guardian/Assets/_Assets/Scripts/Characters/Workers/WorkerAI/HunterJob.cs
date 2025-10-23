@@ -133,13 +133,28 @@ public class HunterJob : WorkerJob {
             switch (state) {
 
                 case HunterState.headingToEscort:
+                    mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
+
+                    if (worker.GetDefensiveStructureAssigned() != null) {
+                        assignedTower = worker.GetDefensiveStructureAssigned() as Tower;
+                    }
+                    else {
+                        TryAssignWorldTower();
+                    }
+
+                    if (assignedTower != null) {
+                        HeadToAssignedTower();
+                        return;
+                    }
 
                     HeadToEscort();
 
                     break;
 
                 case HunterState.escortingIdle:
-                    Escort();
+                    if(assignedTower == null) {
+                        Escort();
+                    }
 
                     if (closestCreature != null) {
 
@@ -150,9 +165,7 @@ public class HunterJob : WorkerJob {
                             targetCreature = null;
                             workerAttack.RemoveAttackTarget();
 
-                        }
-
-                        else {
+                        } else {
 
                             if (!CreatureIsTooClose(closestCreature, minimumDistanceToStaySafeFromCreature)) {
                                 ChangeState(HunterState.escortAttackCreature);
@@ -170,22 +183,23 @@ public class HunterJob : WorkerJob {
                         return;
                     }
 
-                    if (CreatureIsTooClose(closestCreature, minimumDistanceToStaySafeFromCreature)) {
+                    if (CreatureIsTooClose(closestCreature, minimumDistanceToStaySafeFromCreature) && assignedTower == null) {
                         workerAttack.RemoveAttackTarget();
                         StayAwayFromCreature(closestCreature);
                         return;
                     }
 
-                    if (PlayerIsTooFar()) {
-                        workerAttack.RemoveAttackTarget();
-                        ChangeState(HunterState.escortingIdle);
-                        return;
-                    }
+                    //if (PlayerIsTooFar()) {
+                    //    workerAttack.RemoveAttackTarget();
+                    //    ChangeState(HunterState.escortingIdle);
+                    //    return;
+                    //}
 
                     if (!TargetIsInHuntingRange(targetCreature)) {
                         workerAttack.RemoveAttackTarget();
                         ChangeState(HunterState.escortingIdle);
                     }
+
                     else {
                         mobMovement.SetMoveTarget(transform.position);
                         workerAttack.SetAttackTarget(targetCreature);
@@ -486,12 +500,14 @@ public class HunterJob : WorkerJob {
     }
 
     private void Escort() {
-        mobMovement.SetMoveSpeed(escortMoveSpeed);
+
 
         RoamBetweenPoints(assignedEscortable.GetEscortMinTransform().position, assignedEscortable.GetEscortMaxTransform().position);
-        if(transform.position.x > assignedEscortable.GetEscortMaxTransform().position.x || transform.position.x < assignedEscortable.GetEscortMinTransform().position.x) {
+        if (transform.position.x > assignedEscortable.GetEscortMaxTransform().position.x || transform.position.x < assignedEscortable.GetEscortMinTransform().position.x) {
             ChangeState(HunterState.headingToEscort);
         }
+        
+
     }
 
     private void HeadToEscort() {
@@ -774,10 +790,20 @@ public class HunterJob : WorkerJob {
         
     }
 
+    public void TryAssignWorldTower() {
+        if (assignedTower != null) return;
+
+        if (PlayerCamp.Instance.GetAvailableWorldTowers(escortDestination) != 0) {
+            assignedTower = PlayerCamp.Instance.GetClosestAvailableWorldTower(escortDestination, transform.position);
+            assignedTower.AssignWorker(worker);
+        }
+
+    }
+
     public void HeadToAssignedTower() {
 
         if (!hasSetSpeed) {
-            mobMovement.SetMoveSpeed(headToCampMoveSpeed);
+            mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
             hasSetSpeed = true;
         }
 
@@ -788,7 +814,12 @@ public class HunterJob : WorkerJob {
             
             assignedTower.GarrisonWorker(worker);
 
-            ChangeState(HunterState.guarding);
+            if(state == HunterState.headingToGuard) {
+                ChangeState(HunterState.guarding);
+            } else {
+                ChangeState(HunterState.escortingIdle);
+            }
+
         }
 
         hasSetSpeed = false;
@@ -896,8 +927,9 @@ public class HunterJob : WorkerJob {
     }
 
     private void SetDuskStartParameters() {
-        if (escorting) return;
+        //if (escorting) return;
 
+        assignedTower = null;
         ChangeState(HunterState.headingToGuard);
     }
 

@@ -16,12 +16,12 @@ MonoBehaviour:
   isProjectileAttack: 0
   isStaticProjectileAttack: 1
   isAnimatedAttack: 0
-  attackCooldown: 8
-  minAttackRange: 10
-  maxAttackRange: 15
+  attackCooldown: 9
+  minAttackRange: 13
+  maxAttackRange: 18
   hasDifferentDayAndNightRange: 1
-  minAttackRange_Night: 10
-  maxAttackRange_Night: 15
+  minAttackRange_Night: 13
+  maxAttackRange_Night: 18
   attackRangeRandomizer: 1
   maxAttackRangeRandomizer: 0
   damage: 1
@@ -30,14 +30,15 @@ MonoBehaviour:
   canAttackPlayerBehindBarricades: 0
   canAttackPlayerOnTower: 0
   blockSwitchXScaleWhileAttacking: 0
+  startblockSwitchXScaleWhileAttackingTime: 0.1
   attackAnimationDelay: 2
   totalAttackAnimationTime: 5.5
   attackSFXDelayAfterAnimationStart: 2
   staticProjectilePrefab: {fileID: 243873972303441863, guid: 5be2348208502f045b3f1b7c34ae2ae8, type: 3}
   staticProjectileAutoTargetsPlayer: 1
-  projectileAmountInPool: 2
-  projectileAmountShotInAttack: 1
-  delayBetweenProjectileSpawns: 0
+  projectileAmountInPool: 6
+  projectileAmountShotInAttack: 3
+  delayBetweenProjectileSpawns: 0.9
   projectileSO: {fileID: 11400000, guid: c931c3b4f4eb19c4996930d41df57ad8, type: 2}
   attackRangeRandomizerMiss: 2
   attackSFXHandledByAnimation: 1

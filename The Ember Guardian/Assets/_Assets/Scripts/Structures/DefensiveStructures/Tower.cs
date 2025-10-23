@@ -38,8 +38,10 @@ public class Tower : Structure
         level1TowerCollider.SetActive(true);
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+        DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
         Worker.OnAnyWorkerDied += Worker_OnAnyWorkerDied;
     }
+
 
     protected void Worker_OnAnyWorkerDied(object sender, EventArgs e) {
         Worker worker = (Worker)sender;
@@ -171,6 +173,11 @@ public class Tower : Structure
         return false;
     }
 
+    private void DayNightManager_OnDuskStart(object sender, EventArgs e) {
+        if (isWorldStructure) {
+            StartCoroutine(UnGarrisonWorkersCoroutine());
+        }
+    }
     protected override void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         base.DayNightManager_OnDawnStart(sender, e);
 

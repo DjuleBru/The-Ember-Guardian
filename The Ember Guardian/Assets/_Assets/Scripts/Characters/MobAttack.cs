@@ -160,29 +160,36 @@ public class MobAttack : MonoBehaviour
 
         // Projectile can be instantiated AFTER attack target reset, so must keep track of previous attack target
 
-        if (previousAttackTargetIDamageable != null) {
-            Vector3 spawnPosition = projectileSpawnPoint.position;
 
-            if(staticProjectileAutoTargetsPlayer) {
-                float xRandomizer = UnityEngine.Random.Range(-1.5f, 1.5f);
-                spawnPosition = attackTargetGameObject.transform.position;
-                spawnPosition.x += xRandomizer;
+        for (int i = 0; i < projectileAmountShotInAttack; i++) {
+            if (previousAttackTargetIDamageable != null) {
+                Vector3 spawnPosition = projectileSpawnPoint.position;
+
+                if (staticProjectileAutoTargetsPlayer) {
+                    float xRandomizer = UnityEngine.Random.Range(-1.5f, 1.5f);
+                    spawnPosition = attackTargetGameObject.transform.position;
+                    spawnPosition.x += xRandomizer;
+                }
+
+                StaticProjectile projectile = null;
+                if (availableStaticProjectiles.Count > 1) {
+                    projectile = availableStaticProjectiles.Dequeue(); // Prendre un projectile disponible
+                }
+                else {
+                    projectile = AddNewStaticProjectileInProjectilePool();
+                }
+
+                projectile.gameObject.SetActive(true);
+                projectile.transform.SetParent(null);
+                projectile.transform.position = spawnPosition;
+                projectile.Initialize(GetAttackDir().x, mob, attackDamage, false, true);
             }
 
-            StaticProjectile projectile = null;
-            if(availableStaticProjectiles.Count > 1) {
-                projectile = availableStaticProjectiles.Dequeue(); // Prendre un projectile disponible
-            } else {
-                projectile = AddNewStaticProjectileInProjectilePool();
-            }
-
-            projectile.gameObject.SetActive(true);
-            projectile.transform.SetParent(null);
-            projectile.transform.position = spawnPosition;
-            projectile.Initialize(GetAttackDir().x, mob, attackDamage, false, true);
+            OnMobAttackHit?.Invoke(this, EventArgs.Empty);
+            yield return new WaitForSeconds(delayBetweenProjectileSpawns);
         }
 
-        OnMobAttackHit?.Invoke(this, EventArgs.Empty);
+       
 
         yield return new WaitForSeconds(totalAttackAnimationTime - delayToSpawnStaticProjectile);
 

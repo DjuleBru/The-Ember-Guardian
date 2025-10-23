@@ -124,7 +124,6 @@ public class CreatureAnimatorManager : MonoBehaviour
         if (creatureAttack.GetAttacking()) {
 
             float initialXScaleChangeAllowedTime = creatureAttack.GetCurrentCreatureAttackSO().attackCooldown - creatureAttack.GetCurrentCreatureAttackSO().startblockSwitchXScaleWhileAttackingTime;
-            Debug.Log(creatureAttack.GetAttackTimer() < initialXScaleChangeAllowedTime);
             if (creatureAttack.GetCurrentCreatureAttackSO().blockSwitchXScaleWhileAttacking && creatureAttack.GetAttackTimer() < initialXScaleChangeAllowedTime) {
                 return;
             }

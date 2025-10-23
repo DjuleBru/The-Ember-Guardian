@@ -84,6 +84,18 @@ public class LevelObjectives : MonoBehaviour
             CurrencyStorage_Objective.OnAnyMaxCurrencyAmountReached += CurrencyStorage_Objective_OnAnyMaxCurrencyAmountReached;
         }
 
+        if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindWatcherArtifact) {
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
+            PlayerCurrencies.Instance.OnEmberDropped += PlayerCurrencies_OnEmberDropped;
+
+            if (EndLevelArea.Instance != null) {
+                EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
+                EndLevelArea.Instance.OnEndLevelAreaCleared += EndLevelArea_OnEndLevelAreaCleared;
+                EndLevelArea.Instance.OnEndLevelAreaUnCleared += EndLevelArea_OnEndLevelAreaUnCleared;
+                EndLevelAreaCollider.OnPlayerTriggeredInAnyEndLevelArea += EndLevelAreaCollider_OnPlayerTriggeredInAnyEndLevelArea;
+            }
+        }
+
     }
 
     private void DayNightManager_OnDawnStart(object sender, EventArgs e) {
@@ -130,8 +142,14 @@ public class LevelObjectives : MonoBehaviour
             OnObstacleRemoved?.Invoke(this, EventArgs.Empty);
 
             if (obstaclesRemoved == obstaclesToRemove) {
-                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.ProgressWithScavengers);
-                ShowReturnToHubObj(4f);
+
+                if(LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindWatcherArtifact) {
+                    LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.ProgressWithScavengers, LevelUI_ObjectiveUI.SubObjectiveType.BuildWatcherArtifact);
+                } else {
+                    LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.ProgressWithScavengers);
+                    ShowReturnToHubObj(4f);
+                }
+
             }
         }
     }
@@ -147,6 +165,15 @@ public class LevelObjectives : MonoBehaviour
                 List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveList = new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.CollectOrbs };
                 LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveList);
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.BuildWatcherArtifact);
+
+            }
+
+            Debug.Log(LevelManager.Instance.GetLevelSO().levelObjectiveType);
+            if (LevelManager.Instance.GetLevelSO().levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindWatcherArtifact) {
+
+                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.BuildWatcherArtifact);
+                LevelManager.Instance.LevelSuccess(3f);
+                ShowReturnToHubObj(3f);
 
             }
         }
@@ -241,6 +268,14 @@ public class LevelObjectives : MonoBehaviour
             LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
         }
 
+        if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindWatcherArtifact) {
+
+            List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType> {
+                LevelUI_ObjectiveUI.SubObjectiveType.ProgressWithScavengers};
+
+            LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
+
+        }
     }
 
     private void LevelMerchant_OnPlayerStoppedInteractingWithHubMerchant(object sender, System.EventArgs e) {

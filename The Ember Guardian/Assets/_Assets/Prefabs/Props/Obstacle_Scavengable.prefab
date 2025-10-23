@@ -540,6 +540,8 @@ MonoBehaviour:
   orbImageOutline: {fileID: 7669788774838485611}
   payCurrencyUIAnimator: {fileID: 6449674559939141621}
   initialPayCurrencySmoothTime: 4
+  setInitialImageColorManual: 0
+  initialImageOutlineColor_ManualSet: {r: 0, g: 0, b: 0, a: 0}
 --- !u!58 &8752149679208228229
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1374,6 +1376,8 @@ MonoBehaviour:
   orbImageOutline: {fileID: 5114316894763857297}
   payCurrencyUIAnimator: {fileID: 8298131630434765575}
   initialPayCurrencySmoothTime: 4
+  setInitialImageColorManual: 0
+  initialImageOutlineColor_ManualSet: {r: 0, g: 0, b: 0, a: 0}
 --- !u!58 &6112250710308808171
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2139,7 +2143,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 1.0899999, y: -0.75}
-  m_SizeDelta: {x: 0, y: 0.5}
+  m_SizeDelta: {x: 1.18, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1432758258174803815
 CanvasRenderer:
@@ -2330,6 +2334,8 @@ MonoBehaviour:
   orbImageOutline: {fileID: 1866540481326486732}
   payCurrencyUIAnimator: {fileID: 5219023906419009830}
   initialPayCurrencySmoothTime: 4
+  setInitialImageColorManual: 0
+  initialImageOutlineColor_ManualSet: {r: 0, g: 0, b: 0, a: 0}
 --- !u!58 &4405393992103074441
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2927,6 +2933,8 @@ MonoBehaviour:
   orbImageOutline: {fileID: 50027434031497253}
   payCurrencyUIAnimator: {fileID: 4160890443542495363}
   initialPayCurrencySmoothTime: 4
+  setInitialImageColorManual: 0
+  initialImageOutlineColor_ManualSet: {r: 0, g: 0, b: 0, a: 0}
 --- !u!58 &161872941099608151
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5655,6 +5663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2c6a45e1da937640a9d07f370accc80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obstacleID: f89b3082-85e4-4890-8fdf-aaafca6b474b
   blockingColliders:
   - {fileID: 8490199492736831114}
   - {fileID: 5509043897083195018}

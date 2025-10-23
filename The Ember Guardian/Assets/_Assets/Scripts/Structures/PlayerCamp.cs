@@ -320,6 +320,23 @@ public class PlayerCamp : MonoBehaviour
 
             if (tower.GetCampSide() != workerCampSide) continue;
             if (tower.GetTowerFull()) continue;
+            if (tower.GetIsWorldStructure()) continue;
+            availableTowers++;
+        }
+
+        return availableTowers;
+    }
+
+    public int GetAvailableWorldTowers(Vector3 escortDestination) {
+        int availableTowers = 0;
+
+        foreach (Tower tower in builtTowers) {
+            if (tower.GetTowerFull()) continue;
+            if (!tower.GetIsWorldStructure()) continue;
+
+            float distanceToEscortDestination = Mathf.Abs(escortDestination.x - tower.transform.position.x);
+            if (distanceToEscortDestination > 50f) continue;
+
             availableTowers++;
         }
 
@@ -334,8 +351,32 @@ public class PlayerCamp : MonoBehaviour
 
             if (tower.GetCampSide() != workerCampSide) continue;
             if (tower.GetTowerFull()) continue;
+            if (tower.GetIsWorldStructure()) continue;
 
             float distanceToTower = Mathf.Abs(position.x - tower.transform.position.x);
+
+            if (distanceToTower < closestDistanceToTower) {
+                closestTower = tower;
+                closestDistanceToTower = distanceToTower;
+            }
+        }
+
+        return closestTower;
+    }
+    public Tower GetClosestAvailableWorldTower(Vector3 escortDestination, Vector3 position) {
+
+        float closestDistanceToTower = Mathf.Infinity;
+        Tower closestTower = null;
+
+        foreach (Tower tower in builtTowers) {
+
+            if (tower.GetTowerFull()) continue;
+            if (!tower.GetIsWorldStructure()) continue;
+
+            float distanceToTower = Mathf.Abs(position.x - tower.transform.position.x);
+            float distanceToEscortDestination = Mathf.Abs(escortDestination.x - tower.transform.position.x);
+
+            if (distanceToEscortDestination > 50f) continue;
 
             if (distanceToTower < closestDistanceToTower) {
                 closestTower = tower;

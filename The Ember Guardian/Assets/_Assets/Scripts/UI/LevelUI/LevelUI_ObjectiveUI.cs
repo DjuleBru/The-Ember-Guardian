@@ -30,7 +30,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         ExploreCorruptedCity,
         FindArchitectTable,
         CollectOrbs,
-        EscortConvoy,
+        FindWatcherArtifact,
         DefendFlame,
         FindAndDestroyTwoNests,
     }
