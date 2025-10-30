@@ -52,6 +52,7 @@ public class LocalizationManager : MonoBehaviour
         public string German;
         public string Spanish;
         public string Japanese;
+        public string Chinese;
     }
     public class LocalizationData {
         public List<LocalizationEntry> entries;
@@ -113,6 +114,7 @@ public class LocalizationManager : MonoBehaviour
                     case "German": translatedText = entry.German; break;
                     case "Spanish": translatedText = entry.Spanish; break;
                     case "Japanese": translatedText = entry.Japanese; break;
+                    case "Chinese": translatedText = entry.Chinese; break;
                     default: translatedText = entry.English; break;
                 }
                 break;
@@ -140,7 +142,7 @@ public class LocalizationManager : MonoBehaviour
     public TMP_FontAsset GetCurrentFont() {
         Language currentLanguage = SettingsManager.Instance.GetLanguage();
 
-        if (currentLanguage == Language.Japanese) return japaneseFont;
+        if (currentLanguage == Language.Japanese || currentLanguage == Language.German) return japaneseFont;
         return standardFont;
     }
 
